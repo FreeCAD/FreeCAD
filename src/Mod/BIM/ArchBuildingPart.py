@@ -427,11 +427,12 @@ class ViewProviderBuildingPart:
 
     def __init__(self,vobj):
 
-        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
-        #vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython")
-        vobj.Proxy = self
-        self.setProperties(vobj)
-        vobj.ShapeColor = ArchCommands.getDefaultColor("Helpers")
+        if vobj:
+            vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
+            vobj.Proxy = self
+            self.setProperties(vobj)
+            vobj.ShapeColor = ArchCommands.getDefaultColor("Helpers")
+            self.Object = vobj.Object
 
     def setProperties(self,vobj):
 
@@ -533,6 +534,9 @@ class ViewProviderBuildingPart:
                 return ":/icons/Arch_Building_Tree.svg"
             elif self.Object.IfcType == "Annotation":
                 return ":/icons/BIM_ArchView.svg"
+            elif hasattr(self.Object,"IfcClass"):
+                from nativeifc import ifc_viewproviders
+                return ifc_viewproviders.get_icon(self)
         return ":/icons/Arch_BuildingPart_Tree.svg"
 
     def attach(self,vobj):
@@ -662,7 +666,10 @@ class ViewProviderBuildingPart:
                         self.lco.point.setValues([[-fs,0,0],[fs,0,0],[0,-fs,0],[0,fs,0],[0,0,-fs],[0,0,fs]])
         elif prop in ["OverrideUnit","ShowUnit","ShowLevel","ShowLabel"]:
             if hasattr(vobj,"OverrideUnit") and hasattr(vobj,"ShowUnit") and hasattr(vobj,"ShowLevel") and hasattr(vobj,"ShowLabel") and hasattr(self,"txt"):
-                z = vobj.Object.Placement.Base.z + vobj.Object.LevelOffset.Value
+                offset = getattr(vobj.Object, "LevelOffset", 0)
+                if hasattr(offset, "Value"):
+                    offset = offset.Value
+                z = vobj.Object.Placement.Base.z + offset
                 q = FreeCAD.Units.Quantity(z,FreeCAD.Units.Length)
                 txt = ""
                 if vobj.ShowLabel:
@@ -730,7 +737,7 @@ class ViewProviderBuildingPart:
                     self.clip.plane.setValue(plane)
                     sg.insertChild(self.clip,0)
                 else:
-                    if self.clip:
+                    if getattr(self,"clip",None):
                         sg.removeChild(self.clip)
                         self.clip = None
                     for o in Draft.get_group_contents(vobj.Object.Group,

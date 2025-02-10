@@ -33,7 +33,7 @@
 #include <App/Color.h>
 
 #include "NaviCube.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "SoFCSelectionAction.h"
 #include "View3DSettings.h"
 #include "View3DInventorViewer.h"

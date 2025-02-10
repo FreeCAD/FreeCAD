@@ -28,7 +28,7 @@ translate = FreeCAD.Qt.translate
 
 # the property groups below should not be treated as psets
 NON_PSETS = ["Base", "IFC", "", "Geometry", "Dimension", "Linear/radial dimension",
-             "SectionPlane", "Axis", "PhysicalProperties"]
+             "SectionPlane", "Axis", "PhysicalProperties", "BuildingPart", "IFC Attributes"]
 
 class ifc_object:
     """Base class for all IFC-based objects"""
@@ -324,8 +324,6 @@ class ifc_object:
         from nativeifc import ifc_types  # lazy import
 
         ifc_types.edit_type(obj)
-
-
 
     def edit_quantity(self, obj, prop):
         """Edits the given quantity"""

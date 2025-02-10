@@ -231,14 +231,11 @@ class Wire(DraftObject):
                     obj.Points = pts
 
         elif prop == "Length":
-            if (len(obj.Points) == 2
-                    and obj.Length.Value > tol
-                    and obj.Shape
-                    and (not obj.Shape.isNull())
-                    and abs(obj.Length.Value - obj.Shape.Length) > tol):
-                v = obj.Points[-1].sub(obj.Points[0])
-                v = DraftVecUtils.scaleTo(v, obj.Length.Value)
-                obj.Points = [obj.Points[0], obj.Points[0].add(v)]
+            if len(obj.Points) == 2 and obj.Length.Value > tol:
+                vec = obj.Points[-1].sub(obj.Points[0])
+                if abs(obj.Length.Value - vec.Length) > tol:
+                    vec = DraftVecUtils.scaleTo(vec, obj.Length.Value)
+                    obj.Points = [obj.Points[0], obj.Points[0].add(vec)]
 
     def update_start_end(self, obj):
         tol = 1e-7

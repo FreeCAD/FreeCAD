@@ -107,7 +107,7 @@
 #include "MainWindow.h"
 #include "Multisample.h"
 #include "NaviCube.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "Selection.h"
 #include "SoDevicePixelRatioElement.h"
 #include "SoFCDB.h"
@@ -126,8 +126,8 @@
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderLink.h"
-#include "NavigationAnimator.h"
-#include "NavigationAnimation.h"
+#include "Navigation/NavigationAnimator.h"
+#include "Navigation/NavigationAnimation.h"
 #include "Utilities.h"
 
 #include <Inventor/So3DAnnotation.h>
@@ -486,8 +486,6 @@ void View3DInventorViewer::init()
     // increase refcount before passing it to setScenegraph(), to avoid
     // premature destruction
     pcViewProviderRoot->ref();
-    // is not really working with Coin3D.
-    //redrawOverlayOnSelectionChange(pcSelection);
     setSceneGraph(pcViewProviderRoot);
     // Event callback node
     pEventCallback = new SoEventCallback();
@@ -810,7 +808,7 @@ bool View3DInventorViewer::searchNode(SoNode* node) const
     searchAction.setInterest(SoSearchAction::FIRST);
     searchAction.apply(this->getSceneGraph());
     SoPath* selectionPath = searchAction.getPath();
-    return selectionPath ? true : false;
+    return selectionPath != nullptr;
 }
 
 bool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const

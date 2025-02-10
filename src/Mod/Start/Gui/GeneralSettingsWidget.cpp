@@ -39,7 +39,7 @@
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Language/Translator.h>
-#include <Gui/NavigationStyle.h>
+#include <Gui/Navigation/NavigationStyle.h>
 
 using namespace StartGui;
 

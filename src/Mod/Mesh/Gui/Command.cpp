@@ -51,7 +51,7 @@
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MouseSelection.h>
-#include <Gui/NavigationStyle.h>
+#include <Gui/Navigation/NavigationStyle.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>

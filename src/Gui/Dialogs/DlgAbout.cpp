@@ -45,6 +45,7 @@
 #include <App/Application.h>
 #include <App/Metadata.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <CXX/WrapPython.h>
 
 #include <boost/filesystem.hpp>
@@ -652,6 +653,28 @@ void AboutDialog::copyToClipboard()
     str << "Qt " << QT_VERSION_STR << ", ";
     str << "Coin " << COIN_VERSION << ", ";
     str << "Vtk " << fcVtkVersion << ", ";
+
+    const char* cmd = "import ifcopenshell\n"
+                      "version = ifcopenshell.version";
+    PyObject * ifcopenshellVer = nullptr;
+
+    try {
+        ifcopenshellVer = Base::Interpreter().getValue(cmd, "version");
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Log("%s (safe to ignore, unless using the BIM workbench and IFC).\n", e.what());
+    }
+
+    if (ifcopenshellVer) {
+        const char* ifcopenshellVerAsStr = PyUnicode_AsUTF8(ifcopenshellVer);
+
+        if (ifcopenshellVerAsStr) {
+            str << "IfcOpenShell " << ifcopenshellVerAsStr << ", ";
+            Py_DECREF(ifcopenshellVerAsStr);
+        }
+        Py_DECREF(ifcopenshellVer);
+    }
+
 #if defined(HAVE_OCC_VERSION)
     str << "OCC " << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE
 #ifdef OCC_VERSION_DEVELOPMENT

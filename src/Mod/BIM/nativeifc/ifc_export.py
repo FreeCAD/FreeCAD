@@ -13,10 +13,10 @@
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 # *   GNU Library General Public License for more details.                  *
 # *                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
+#*   You should have received a copy of the GNU Library General Public      *
+#*   License along with this program; if not, write to the Free Software    *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307   *
+#*   USA                                                                    *
 # *                                                                         *
 # ***************************************************************************
 
@@ -196,6 +196,8 @@ def get_object_type(ifcentity, objecttype=None):
             objecttype = "axis"
         elif ifcentity.is_a("IfcControl"):
             objecttype = "schedule"
+        elif ifcentity.is_a() in ["IfcBuilding", "IfcBuildingStorey"]:
+            objecttype = "buildingpart"
     return objecttype
 
 

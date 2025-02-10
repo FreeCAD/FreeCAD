@@ -25,13 +25,13 @@
       <Documentation>
         <UserDocu>The number of columns in the array.</UserDocu>
       </Documentation>
-      <Parameter Name="Columns" Type="Int"/>
+      <Parameter Name="Columns" Type="Long"/>
     </Attribute>
     <Attribute Name="Depth" ReadOnly="true">
       <Documentation>
         <UserDocu>The depth of the array (3rd dimension).</UserDocu>
       </Documentation>
-      <Parameter Name="Columns" Type="Int"/>
+      <Parameter Name="Columns" Type="Long"/>
     </Attribute>
     <Methode Name="getRows" ReadOnly="true">
       <Documentation>

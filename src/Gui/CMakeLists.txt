@@ -262,7 +262,7 @@ generate_from_xml(LinkViewPy)
 generate_from_xml(ViewProviderLinkPy)
 generate_from_xml(AxisOriginPy)
 generate_from_xml(CommandPy)
-generate_from_xml(NavigationStylePy)
+generate_from_xml(Navigation/NavigationStylePy)
 
 generate_from_py(FreeCADGuiInit GuiInitScript.h)
 
@@ -895,18 +895,6 @@ SET(View3D_CPP_SRCS
     GLPainter.cpp
     Multisample.cpp
     MouseSelection.cpp
-    NavigationStyle.cpp
-    NavigationStylePyImp.cpp
-    InventorNavigationStyle.cpp
-    CADNavigationStyle.cpp
-    RevitNavigationStyle.cpp
-    BlenderNavigationStyle.cpp
-    MayaGestureNavigationStyle.cpp
-    OpenCascadeNavigationStyle.cpp
-    OpenSCADNavigationStyle.cpp
-    TinkerCADNavigationStyle.cpp
-    TouchpadNavigationStyle.cpp
-    GestureNavigationStyle.cpp
     SplitView3DInventor.cpp
     View.cpp
     View3DInventor.cpp
@@ -918,8 +906,6 @@ SET(View3D_CPP_SRCS
     View3DPy.cpp
     View3DViewerPy.cpp
     NaviCube.cpp
-    NavigationAnimator.cpp
-    NavigationAnimation.cpp
 )
 SET(View3D_SRCS
     ${View3D_CPP_SRCS}
@@ -929,9 +915,6 @@ SET(View3D_SRCS
     GLPainter.h
     Multisample.h
     MouseSelection.h
-    NavigationStyle.h
-    NavigationStylePy.xml
-    GestureNavigationStyle.h
     SplitView3DInventor.h
     View.h
     View3DInventor.h
@@ -943,10 +926,34 @@ SET(View3D_SRCS
     CoinRiftWidget.h
     View3DViewerPy.h
     NaviCube.h
-    NavigationAnimator.h
-    NavigationAnimation.h
 )
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
+
+SET(Navigation_CPP_SRCS
+    Navigation/NavigationStyle.cpp
+    Navigation/NavigationStylePyImp.cpp
+    Navigation/InventorNavigationStyle.cpp
+    Navigation/CADNavigationStyle.cpp
+    Navigation/RevitNavigationStyle.cpp
+    Navigation/BlenderNavigationStyle.cpp
+    Navigation/MayaGestureNavigationStyle.cpp
+    Navigation/OpenCascadeNavigationStyle.cpp
+    Navigation/OpenSCADNavigationStyle.cpp
+    Navigation/TinkerCADNavigationStyle.cpp
+    Navigation/TouchpadNavigationStyle.cpp
+    Navigation/GestureNavigationStyle.cpp
+    Navigation/NavigationAnimator.cpp
+    Navigation/NavigationAnimation.cpp
+)
+SET(Navigation_SRCS
+    ${Navigation_CPP_SRCS}
+    Navigation/NavigationStyle.h
+    Navigation/NavigationStylePy.xml
+    Navigation/GestureNavigationStyle.h
+    Navigation/NavigationAnimator.h
+    Navigation/NavigationAnimation.h
+)
+SOURCE_GROUP("Navigation" FILES ${Navigation_SRCS})
 
 #quarter sources
 FILE(GLOB_RECURSE Quarter_CPP_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} Quarter/*.cpp)
@@ -1360,6 +1367,7 @@ SET(FreeCADGui_SRCS
     ${Resource_SRCS}
     ${Quarter_SRCS}
     ${View3D_SRCS}
+    ${Navigation_SRCS}
     ${Viewprovider_SRCS}
     ${Widget_SRCS}
     ${Params_SRCS}

@@ -19,7 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""PathUtils -common functions used in PathScripts for filtering, sorting, and generating gcode toolpath data """
+"""PathUtils -common functions used in PathScripts for filtering, sorting, and generating gcode toolpath data"""
 
 import FreeCAD
 from FreeCAD import Vector

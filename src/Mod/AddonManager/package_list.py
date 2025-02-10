@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Defines the PackageList QWidget for displaying a list of Addons. """
+"""Defines the PackageList QWidget for displaying a list of Addons."""
 import datetime
 import threading
 

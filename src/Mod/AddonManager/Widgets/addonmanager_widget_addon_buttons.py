@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Defines a QWidget-derived class for displaying the single-addon buttons. """
+"""Defines a QWidget-derived class for displaying the single-addon buttons."""
 
 from enum import Enum, auto
 

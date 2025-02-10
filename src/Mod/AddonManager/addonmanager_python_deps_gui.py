@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Provides classes and support functions for managing the automatically-installed
+"""Provides classes and support functions for managing the automatically-installed
 Python library dependencies. No support is provided for uninstalling those dependencies
-because pip's uninstall function does not support the target directory argument. """
+because pip's uninstall function does not support the target directory argument."""
 
 import json
 import os
