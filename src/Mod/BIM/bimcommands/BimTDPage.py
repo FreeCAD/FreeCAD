@@ -57,7 +57,7 @@ class BIM_TDPage:
         ).GetString("TDTemplateDir", "")
         if not templatedir:
             templatedir = None
-        filename = QtGui.QFileDialog.getOpenFileName(
+        filename, _ = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
             translate("BIM", "Select page template"),
             templatedir,
