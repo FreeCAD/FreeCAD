@@ -2462,7 +2462,7 @@ Py::List SketchObjectPy::getConflictingConstraints() const
     Py::List conflicting;
 
     for (auto cid : conflictinglist) {
-        conflicting.append(Py::Int(cid));
+        conflicting.append(Py::Long(cid));
     }
 
     return conflicting;
@@ -2475,7 +2475,7 @@ Py::List SketchObjectPy::getRedundantConstraints() const
     Py::List redundant;
 
     for (auto cid : redundantlist) {
-        redundant.append(Py::Int(cid));
+        redundant.append(Py::Long(cid));
     }
 
     return redundant;
@@ -2488,7 +2488,7 @@ Py::List SketchObjectPy::getPartiallyRedundantConstraints() const
     Py::List redundant;
 
     for (auto cid : redundantlist) {
-        redundant.append(Py::Int(cid));
+        redundant.append(Py::Long(cid));
     }
 
     return redundant;
@@ -2501,7 +2501,7 @@ Py::List SketchObjectPy::getMalformedConstraints() const
     Py::List malformed;
 
     for (auto cid : malformedlist) {
-        malformed.append(Py::Int(cid));
+        malformed.append(Py::Long(cid));
     }
 
     return malformed;

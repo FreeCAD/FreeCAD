@@ -53,13 +53,13 @@ ViewProviderRobotObject::ViewProviderRobotObject()
     ADD_PROPERTY(Manipulator, (0));
 
     pcRobotRoot = new Gui::SoFCSelection();
-    pcRobotRoot->highlightMode = Gui::SoFCSelection::OFF;
+    pcRobotRoot->preselectionMode = Gui::SoFCSelection::OFF;
     // pcRobotRoot->selectionMode = Gui::SoFCSelection::SEL_OFF;
     // pcRobotRoot->style = Gui::SoFCSelection::BOX;
     pcRobotRoot->ref();
 
     pcSimpleRoot = new Gui::SoFCSelection();
-    pcSimpleRoot->highlightMode = Gui::SoFCSelection::OFF;
+    pcSimpleRoot->preselectionMode = Gui::SoFCSelection::OFF;
     // pcSimpleRoot->selectionMode = Gui::SoFCSelection::SEL_OFF;
     pcSimpleRoot->ref();
 

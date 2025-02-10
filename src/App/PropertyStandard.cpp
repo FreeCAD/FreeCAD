@@ -177,7 +177,7 @@ PropertyPath::~PropertyPath() = default;
 //**************************************************************************
 // Setter/getter for the property
 
-void PropertyPath::setValue(const boost::filesystem::path& Path)
+void PropertyPath::setValue(const std::filesystem::path& Path)
 {
     aboutToSetValue();
     _cValue = Path;
@@ -187,15 +187,11 @@ void PropertyPath::setValue(const boost::filesystem::path& Path)
 void PropertyPath::setValue(const char* Path)
 {
     aboutToSetValue();
-#if (BOOST_FILESYSTEM_VERSION == 2)
-    _cValue = boost::filesystem::path(Path, boost::filesystem::no_check);
-#else
-    _cValue = boost::filesystem::path(Path);
-#endif
+    _cValue = std::filesystem::path(Path);
     hasSetValue();
 }
 
-const boost::filesystem::path& PropertyPath::getValue() const
+const std::filesystem::path& PropertyPath::getValue() const
 {
     return _cValue;
 }
@@ -491,7 +487,7 @@ void PropertyEnumeration::setPyObject(PyObject* value)
             if (seq.size() == 2) {
                 Py::Object v(seq[0].ptr());
                 if (!v.isString() && v.isSequence()) {
-                    idx = Py::Int(seq[1].ptr());
+                    idx = Py::Long(seq[1].ptr());
                     seq = v;
                 }
             }
@@ -608,7 +604,7 @@ bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier& path, Py::Objec
         else {
             Py::Tuple tuple(2);
             tuple.setItem(0, res);
-            tuple.setItem(1, Py::Int(getValue()));
+            tuple.setItem(1, Py::Long(getValue()));
             r = tuple;
         }
     }
@@ -617,7 +613,7 @@ bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier& path, Py::Objec
         r = Py::String(v ? v : "");
     }
     else {
-        r = Py::Int(getValue());
+        r = Py::Long(getValue());
     }
     return true;
 }

@@ -3221,7 +3221,7 @@ QString findUserHomePath(const QString& userHome)
  * Returns the path where to store application files to.
  * If \a customHome is not empty it will be used, otherwise a path starting from \a stdHome will be used.
  */
-boost::filesystem::path findPath(const QString& stdHome, const QString& customHome,
+std::filesystem::path findPath(const QString& stdHome, const QString& customHome,
                                  const std::vector<std::string>& paths, bool create)
 {
     QString dataPath = customHome;
@@ -3229,7 +3229,7 @@ boost::filesystem::path findPath(const QString& stdHome, const QString& customHo
         dataPath = stdHome;
     }
 
-    boost::filesystem::path appData(Base::FileInfo::stringToPath(dataPath.toStdString()));
+    std::filesystem::path appData(Base::FileInfo::stringToPath(dataPath.toStdString()));
 
     // If a custom user home path is given then don't modify it
     if (customHome.isEmpty()) {
@@ -3238,10 +3238,10 @@ boost::filesystem::path findPath(const QString& stdHome, const QString& customHo
     }
 
     // In order to write to our data path, we must create some directories, first.
-    if (create && !boost::filesystem::exists(appData) && !Py_IsInitialized()) {
+    if (create && !std::filesystem::exists(appData) && !Py_IsInitialized()) {
         try {
-            boost::filesystem::create_directories(appData);
-        } catch (const boost::filesystem::filesystem_error& e) {
+            std::filesystem::create_directories(appData);
+        } catch (const std::filesystem::filesystem_error& e) {
             throw Base::FileSystemError("Could not create directories. Failed with: " + e.code().message());
         }
     }
@@ -3373,13 +3373,13 @@ void Application::ExtractUserPath()
 
     // User data path
     //
-    boost::filesystem::path data = findPath(dataHome, customData, subdirs, true);
+    std::filesystem::path data = findPath(dataHome, customData, subdirs, true);
     mConfig["UserAppData"] = Base::FileInfo::pathToString(data) + PATHSEP;
 
 
     // User config path
     //
-    boost::filesystem::path config = findPath(configHome, customHome, subdirs, true);
+    std::filesystem::path config = findPath(configHome, customHome, subdirs, true);
     mConfig["UserConfigPath"] = Base::FileInfo::pathToString(config) + PATHSEP;
 
 
@@ -3387,14 +3387,14 @@ void Application::ExtractUserPath()
     //
     std::vector<std::string> cachedirs = subdirs;
     cachedirs.emplace_back("Cache");
-    boost::filesystem::path cache = findPath(cacheHome, customTemp, cachedirs, true);
+    std::filesystem::path cache = findPath(cacheHome, customTemp, cachedirs, true);
     mConfig["UserCachePath"] = Base::FileInfo::pathToString(cache) + PATHSEP;
 
 
     // Set application tmp. directory
     //
     std::vector<std::string> empty;
-    boost::filesystem::path tmp = findPath(tempPath, customTemp, empty, true);
+    std::filesystem::path tmp = findPath(tempPath, customTemp, empty, true);
     mConfig["AppTempPath"] = Base::FileInfo::pathToString(tmp) + PATHSEP;
 
 
@@ -3402,7 +3402,7 @@ void Application::ExtractUserPath()
     //
     std::vector<std::string> macrodirs = subdirs;
     macrodirs.emplace_back("Macro");
-    boost::filesystem::path macro = findPath(dataHome, customData, macrodirs, true);
+    std::filesystem::path macro = findPath(dataHome, customData, macrodirs, true);
     mConfig["UserMacroPath"] = Base::FileInfo::pathToString(macro) + PATHSEP;
 }
 

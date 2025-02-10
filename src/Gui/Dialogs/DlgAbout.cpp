@@ -48,7 +48,7 @@
 #include <Base/Interpreter.h>
 #include <CXX/WrapPython.h>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <LibraryVersions.h>
 #include <zlib.h>
 
@@ -60,7 +60,7 @@
 
 using namespace Gui;
 using namespace Gui::Dialog;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 static QString prettyProductInfoWrapper()
 {
@@ -548,8 +548,8 @@ void AboutDialog::addModuleInfo(QTextStream& str, const QString& modPath, bool& 
     str << "  * " << (mod.isDir() ? QDir(modPath).dirName() : mod.fileName());
     try {
         auto metadataFile =
-            boost::filesystem::path(mod.absoluteFilePath().toStdString()) / "package.xml";
-        if (boost::filesystem::exists(metadataFile)) {
+            std::filesystem::path(mod.absoluteFilePath().toStdString()) / "package.xml";
+        if (std::filesystem::exists(metadataFile)) {
             App::Metadata metadata(metadataFile);
             if (metadata.version() != App::Meta::Version()) {
                 str << QLatin1String(" ") + QString::fromStdString(metadata.version().str());

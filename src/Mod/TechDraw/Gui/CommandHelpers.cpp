@@ -137,8 +137,8 @@ void CommandHelpers::getSelectedShapes(Gui::Command* cmd,
                        App::DocumentObject* faceObj,
                        std::string& faceName)
 {
-    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
-    bool single = false;                                         //mystery
+    auto resolve = Gui::ResolveMode::OldStyleElement;
+    bool single = false;
     auto selection = cmd->getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
                                                         resolve, single);
     for (auto& sel : selection) {

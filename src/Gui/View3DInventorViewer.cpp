@@ -792,11 +792,11 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges & reason)
     {
         //Hint: do not create a tmp. instance of SelectionChanges
         SelectionChanges selChanges(SelectionChanges::RmvPreselect);
-        SoFCHighlightAction cAct(selChanges);
-        cAct.apply(pcViewProviderRoot);
+        SoFCPreselectionAction preselectionAction(selChanges);
+        preselectionAction.apply(pcViewProviderRoot);
     } else {
-        SoFCSelectionAction cAct(Reason);
-        cAct.apply(pcViewProviderRoot);
+        SoFCSelectionAction selectionAction(Reason);
+        selectionAction.apply(pcViewProviderRoot);
     }
 }
 /// @endcond
@@ -1140,7 +1140,12 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode)
 
     overrideMode = mode;
 
-    auto views = getDocument()->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
+    auto document = getDocument();
+    if (!document) {
+        return;
+    }
+
+    auto views = document->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
     if (mode == "No Shading") {
         this->shading = false;
         std::string flatLines = "Flat Lines";
@@ -1796,14 +1801,12 @@ const std::vector<SbVec2s>& View3DInventorViewer::getPolygon(SelectionRole* role
 
 void View3DInventorViewer::setSelectionEnabled(bool enable)
 {
-    SoNode* root = getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(enable);  // NOLINT
+    this->selectionRoot->selectionEnabled.setValue(enable);  // NOLINT
 }
 
 bool View3DInventorViewer::isSelectionEnabled() const
 {
-    SoNode* root = getSceneGraph();
-    return static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.getValue();  // NOLINT
+    return this->selectionRoot->selectionEnabled.getValue();  // NOLINT
 }
 
 SbVec2f View3DInventorViewer::screenCoordsOfPath(SoPath* path) const

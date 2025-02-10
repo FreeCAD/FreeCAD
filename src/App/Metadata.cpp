@@ -57,7 +57,7 @@ directly. If you did not intend to use a system-defined macro
 #endif
 
 using namespace App;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER
 using namespace XERCES_CPP_NAMESPACE;
@@ -246,7 +246,7 @@ std::string Metadata::classname() const
     return _classname;
 }
 
-boost::filesystem::path Metadata::subdirectory() const
+std::filesystem::path Metadata::subdirectory() const
 {
     return _subdirectory;
 }
@@ -370,7 +370,7 @@ void Metadata::setClassname(const std::string& name)
     _classname = name;
 }
 
-void Metadata::setSubdirectory(const boost::filesystem::path& path)
+void Metadata::setSubdirectory(const std::filesystem::path& path)
 {
     _subdirectory = path;
 }
@@ -475,7 +475,7 @@ void Metadata::removeTag(const std::string& tag)
     _tag.erase(new_end, _tag.end());
 }
 
-void Metadata::removeFile(const boost::filesystem::path& path)
+void Metadata::removeFile(const std::filesystem::path& path)
 {
     auto new_end = std::remove(_file.begin(), _file.end(), path);
     _file.erase(new_end, _file.end());

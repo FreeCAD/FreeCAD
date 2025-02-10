@@ -262,6 +262,16 @@ class PathArray(DraftLink):
             obj.ExpandArray = False
             obj.setPropertyStatus('Shape', 'Transient')
 
+        if not self.use_link:
+            if "PlacementList" not in properties:
+                _tip = QT_TRANSLATE_NOOP("App::Property",
+                                         "The placement for each array element")
+                obj.addProperty("App::PropertyPlacementList",
+                                "PlacementList",
+                                "Objects",
+                                _tip)
+                obj.PlacementList = []
+
     def set_align_properties(self, obj, properties):
         """Set general properties only if they don't exist."""
         if "ExtraTranslation" not in properties:
@@ -541,37 +551,39 @@ class PathArray(DraftLink):
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
-        # Run updates in order:
-        self.ensure_updated(obj)
-
-    def ensure_updated(self, obj):
-        # ReversePath was added together with several Spacing properties in v1.1.
-        # V1.1 props should be OK if it is present.
-        if hasattr(obj, "ReversePath"):
+        # ReversePath was added together with several Spacing properties in v1.1,
+        # and PlacementList property was added for non-link arrays in v1.1,
+        # obj should be OK if both are present:
+        if hasattr(obj, "ReversePath") and hasattr(obj, "PlacementList"):
             return
 
-        # Fuse property was added in v1.0. Check if it is already present to
-        # correctly issue warning.
-        fuse_was_present = hasattr(obj, "Fuse")
-
-        self.set_properties(obj)
         if hasattr(obj, "PathObj"):
             _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'PathObj' property to 'PathObject'"))
+        if hasattr(obj, "PathSubs"):
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'PathSubs' property to 'PathSubelements'"))
+        if hasattr(obj, "Xlate"):
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'Xlate' property to 'ExtraTranslation'"))
+        if not hasattr(obj, "Fuse"):
+            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
+        if obj.getGroupOfProperty("Count") != "Spacing":
+            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "moved 'Count' property to 'Spacing' subsection"))
+        if not hasattr(obj, "ReversePath"):
+            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added 'ReversePath', 'SpacingMode', 'SpacingUnit', 'UseSpacingPattern' and 'SpacingPattern' properties"))
+        if not hasattr(obj, "PlacementList"):
+            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added hidden property 'PlacementList'"))
+
+        self.set_properties(obj)
+        obj.setGroupOfProperty("Count", "Spacing")
+        if hasattr(obj, "PathObj"):
             obj.PathObject = obj.PathObj
             obj.removeProperty("PathObj")
         if hasattr(obj, "PathSubs"):
-            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'PathSubs' property to 'PathSubelements'"))
             obj.PathSubelements = obj.PathSubs
             obj.removeProperty("PathSubs")
         if hasattr(obj, "Xlate"):
-            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'Xlate' property to 'ExtraTranslation'"))
             obj.ExtraTranslation = obj.Xlate
             obj.removeProperty("Xlate")
-        if not fuse_was_present:
-            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
-        obj.setGroupOfProperty("Count", "Spacing")
-        _wrn("v1.1, " + obj.Label + ", " + translate("draft", "moved 'Count' to 'Spacing' subsection"))
-        _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added 'ReversePath', 'SpacingMode', 'SpacingUnit', 'UseSpacingPattern' and 'SpacingPattern' properties"))
+        self.execute(obj) # Required to update PlacementList.
 
 
 # Alias for compatibility with v0.18 and earlier

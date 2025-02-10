@@ -62,7 +62,7 @@
 
 using namespace Gui;
 using namespace Gui::Dialog;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 using namespace Base;
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsGeneral */

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>402</width>
-    <height>470</height>
+    <width>443</width>
+    <height>840</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>This screen allows you to configure a new BIM project in FreeCAD.</string>
+      <string>This screen allows you to create and configure a new BIM project in FreeCAD.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -25,43 +25,42 @@
     </widget>
    </item>
    <item>
-    <widget class="QComboBox" name="presets">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <property name="text">
-       <string>Use preset...</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QPushButton" name="buttonSaveTemplate">
+      <widget class="QComboBox" name="presets">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="toolTip">
-        <string>Saves the current document as a template, including all the current BIM settings</string>
+        <string>Fill this dialog with preset values</string>
        </property>
-       <property name="text">
-        <string>Save template...</string>
-       </property>
-       <property name="icon">
-        <iconset theme="gtk-save">
-         <normaloff/>
-        </iconset>
-       </property>
+       <item>
+        <property name="text">
+         <string>Use preset...</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonLoadTemplate">
+      <widget class="QPushButton" name="buttonSave">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="toolTip">
-        <string>Loads the contents of a FCStd file into the active document, applying all the BIM settings stored in it if any</string>
+        <string>The settings below can be saved as a preset. Presets are stored as .txt files in your FreeCAD user folder</string>
        </property>
        <property name="text">
-        <string>Load template...</string>
+        <string>Save preset</string>
        </property>
        <property name="icon">
-        <iconset theme="gtk-open">
-         <normaloff/>
-        </iconset>
+        <iconset theme="gtk-save">
+         <normaloff>../../../../../../../.designer/backup</normaloff>../../../../../../../.designer/backup</iconset>
        </property>
       </widget>
      </item>
@@ -76,58 +75,108 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>369</width>
-        <height>1214</height>
+        <y>-1041</y>
+        <width>428</width>
+        <height>1740</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QGroupBox" name="groupNewDocument">
+        <widget class="QGroupBox" name="groupNewProject">
+         <property name="toolTip">
+          <string>Create a new BIM project</string>
+         </property>
          <property name="title">
-          <string>Create new document</string>
+          <string>Create a new BIM project</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
          </property>
          <property name="checked">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
-         <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_18">
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QLabel" name="label_8">
             <property name="text">
-             <string>Project name</string>
+             <string>A new BIM project will be created, either as a new FreeCAD document or as a Native IFC project</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="projectName">
-            <property name="text">
-             <string>Unnamed</string>
-            </property>
-           </widget>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_8">
+            <item>
+             <widget class="QRadioButton" name="radioNative1">
+              <property name="toolTip">
+               <string>This will create a new FreeCAD docment that allows you to build a BIM model, but with no specific IFC structure yet. This is the most flexible option when you start working ona BIM project. You can convert this project to IFC anytime later.</string>
+              </property>
+              <property name="text">
+               <string>Create a new document witout IFC support yet</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="radioNative2">
+              <property name="toolTip">
+               <string>This will create an IFC project. All the BIM objects you will add to that IFC project will immediately become IFC objects. This is less flexible, but allows you to stick more strictly to the IFC standard.</string>
+              </property>
+              <property name="text">
+               <string>Create a Native IFC project in the current dopcument</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="radioNative3">
+              <property name="toolTip">
+               <string>The new IFC project will be created as a new FreeCAD document.  In that mode, the IFC project is the FreeCAD document, anything you create in that document becomes part of the IFC project. This is extremely restrictive as no non-IFC object can be added to the document.</string>
+              </property>
+              <property name="text">
+               <string>Create a locked Native IFC project as a new document</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QLabel" name="label_18">
+              <property name="text">
+               <string>Project name</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="projectName">
+              <property name="toolTip">
+               <string>A name for this BIM or IFC project</string>
+              </property>
+              <property name="text">
+               <string>Unnamed</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="addHumanFigure">
-         <property name="toolTip">
-          <string>If this is checked, a human figure will be added, which helps greatly to give a sense of scale when viewing the model</string>
-         </property>
-         <property name="text">
-          <string>Add a human figure</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QGroupBox" name="groupSite">
+         <property name="toolTip">
+          <string>Create a new site</string>
+         </property>
          <property name="title">
-          <string>Create Site</string>
+          <string>Create site</string>
          </property>
          <property name="flat">
           <bool>false</bool>
@@ -150,17 +199,20 @@
            <layout class="QGridLayout" name="gridLayout">
             <item row="3" column="1">
              <widget class="QDoubleSpinBox" name="siteLongitude">
+              <property name="toolTip">
+               <string>The East longitude of this site</string>
+              </property>
               <property name="suffix">
                <string> E</string>
               </property>
               <property name="decimals">
                <number>4</number>
               </property>
+              <property name="minimum">
+               <double>-180.000000000000000</double>
+              </property>
               <property name="maximum">
-                <double>180.0</double>
-                </property>
-                <property name="minimum">
-                <double>-180.0</double>
+               <double>180.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -180,6 +232,9 @@
             </item>
             <item row="0" column="1">
              <widget class="QLineEdit" name="siteName">
+              <property name="toolTip">
+               <string>A name for this site</string>
+              </property>
               <property name="text">
                <string>Default Site</string>
               </property>
@@ -194,6 +249,9 @@
             </item>
             <item row="5" column="1">
              <widget class="QDoubleSpinBox" name="siteDeviation">
+              <property name="toolTip">
+               <string>The difference between the up direction of this site and the true North direction</string>
+              </property>
               <property name="suffix">
                <string> °</string>
               </property>
@@ -211,13 +269,20 @@
             </item>
             <item row="6" column="1">
              <widget class="Gui::InputField" name="siteElevation">
+              <property name="toolTip">
+               <string>The elevation of this site</string>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true"/>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QLineEdit" name="siteAddress"/>
+             <widget class="QLineEdit" name="siteAddress">
+              <property name="toolTip">
+               <string>The physical (postal) address of this site</string>
+              </property>
+             </widget>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_2">
@@ -235,17 +300,20 @@
             </item>
             <item row="2" column="1">
              <widget class="QDoubleSpinBox" name="siteLatitude">
+              <property name="toolTip">
+               <string>The North latitude of this site</string>
+              </property>
               <property name="suffix">
                <string> N</string>
               </property>
               <property name="decimals">
                <number>4</number>
               </property>
-              <property name="maximum">
-               <double>90.0</double>
-              </property>
               <property name="minimum">
-               <double>-90.0</double>
+               <double>-90.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>90.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -256,8 +324,11 @@
        </item>
        <item>
         <widget class="QGroupBox" name="groupBuilding">
+         <property name="toolTip">
+          <string>Create a new building</string>
+         </property>
          <property name="title">
-          <string>Create Building</string>
+          <string>Create building</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -332,6 +403,9 @@
                 <height>16777215</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>The main use of this building</string>
+              </property>
               <property name="sizeAdjustPolicy">
                <enum>QComboBox::AdjustToMinimumContentsLength</enum>
               </property>
@@ -352,6 +426,9 @@
             </item>
             <item row="7" column="1">
              <widget class="QSpinBox" name="countVAxes">
+              <property name="toolTip">
+               <string>Number of vertical axes</string>
+              </property>
               <property name="value">
                <number>0</number>
               </property>
@@ -366,6 +443,9 @@
             </item>
             <item row="9" column="1">
              <widget class="QSpinBox" name="countHAxes">
+              <property name="toolTip">
+               <string>Number of horizontal axes</string>
+              </property>
               <property name="value">
                <number>0</number>
               </property>
@@ -373,8 +453,11 @@
             </item>
             <item row="5" column="1">
              <widget class="Gui::InputField" name="buildingWidth">
+              <property name="toolTip">
+               <string>An estimate building width. Keep 0 if you don't want to specify this now</string>
+              </property>
               <property name="text">
-               <string>0 </string>
+               <string>0</string>
               </property>
               <property name="unit" stdset="0">
                <string notr="true"/>
@@ -383,6 +466,9 @@
             </item>
             <item row="13" column="1">
              <widget class="QSpinBox" name="lineWidth">
+              <property name="toolTip">
+               <string>The line width of axes</string>
+              </property>
               <property name="value">
                <number>2</number>
               </property>
@@ -390,8 +476,11 @@
             </item>
             <item row="8" column="1">
              <widget class="Gui::InputField" name="distVAxes">
+              <property name="toolTip">
+               <string>Distance between vertical axes</string>
+              </property>
               <property name="text">
-               <string>0 </string>
+               <string>0</string>
               </property>
               <property name="unit" stdset="0">
                <string notr="true"/>
@@ -400,8 +489,11 @@
             </item>
             <item row="4" column="1">
              <widget class="Gui::InputField" name="buildingLength">
+              <property name="toolTip">
+               <string>An estimate building length. Keep 0 if you don't want to specify this now</string>
+              </property>
               <property name="text">
-               <string>0 </string>
+               <string>0</string>
               </property>
               <property name="unit" stdset="0">
                <string notr="true"/>
@@ -410,6 +502,9 @@
             </item>
             <item row="10" column="1">
              <widget class="Gui::InputField" name="distHAxes">
+              <property name="toolTip">
+               <string>Distance between horizontal axes</string>
+              </property>
               <property name="text">
                <string>0 </string>
               </property>
@@ -427,6 +522,9 @@
             </item>
             <item row="14" column="1">
              <widget class="Gui::ColorButton" name="lineColor">
+              <property name="toolTip">
+               <string>The color of axes</string>
+              </property>
               <property name="color">
                <color>
                 <red>33</red>
@@ -449,15 +547,53 @@
         </widget>
        </item>
        <item>
+        <widget class="QGroupBox" name="addHumanFigure">
+         <property name="toolTip">
+          <string>Add a human figure to the document</string>
+         </property>
+         <property name="title">
+          <string>Add a human figure</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>A human figure will be added to the document, which helps giving a sense of scale</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
           <string>Levels</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>BIM projects are typically organized into levels, that represents the different storeys of a building. Although it is not mandatory to work with levels in FreeCAD, you can set up default levels here</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
            <layout class="QGridLayout" name="gridLayout_5">
             <item row="0" column="1">
              <widget class="QSpinBox" name="countLevels">
+              <property name="toolTip">
+               <string>The number of levels to create</string>
+              </property>
               <property name="singleStep">
                <number>1</number>
               </property>
@@ -475,6 +611,9 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::InputField" name="levelHeight">
+              <property name="toolTip">
+               <string>The vertical distance between each level</string>
+              </property>
               <property name="text">
                <string>0 </string>
               </property>
@@ -493,28 +632,20 @@
            </layout>
           </item>
           <item>
-           <widget class="QCheckBox" name="levelsAxis">
-            <property name="text">
-             <string>Bind levels to vertical axes</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="levelsWP">
-            <property name="text">
-             <string>Define a working plane for each level</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QLabel" name="label_34">
             <property name="text">
-             <string>Default groups to be added to each level</string>
+             <string>Default groups to be added to each level. Defautl groups such as walls, windows,... are useful to organize the different building elements inside a level</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QListWidget" name="groupsList">
+            <property name="toolTip">
+             <string>A list of grouls to add under each level</string>
+            </property>
             <property name="dragEnabled">
              <bool>true</bool>
             </property>
@@ -530,25 +661,29 @@
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
              <widget class="QPushButton" name="buttonAdd">
+              <property name="toolTip">
+               <string>Add a new group</string>
+              </property>
               <property name="text">
                <string>Add</string>
               </property>
               <property name="icon">
                <iconset theme="add">
-                <normaloff/>
-               </iconset>
+                <normaloff>../../../../../../../.designer/backup</normaloff>../../../../../../../.designer/backup</iconset>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="buttonDel">
+              <property name="toolTip">
+               <string>Delete a selected group</string>
+              </property>
               <property name="text">
                <string>Del</string>
               </property>
               <property name="icon">
                <iconset theme="remove">
-                <normaloff/>
-               </iconset>
+                <normaloff>../../../../../../../.designer/backup</normaloff>../../../../../../../.designer/backup</iconset>
               </property>
              </widget>
             </item>
@@ -562,29 +697,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_35">
-     <property name="text">
-      <string>The above settings can be saved as a preset. Presets are stored as .txt files in your FreeCAD user folder</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QPushButton" name="buttonSave">
-       <property name="text">
-        <string>Save preset</string>
-       </property>
-       <property name="icon">
-        <iconset theme="gtk-save">
-         <normaloff/>
-        </iconset>
-       </property>
-      </widget>
-     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -600,25 +713,29 @@
      </item>
      <item>
       <widget class="QPushButton" name="buttonOK">
+       <property name="toolTip">
+        <string>Accept the values fo this form</string>
+       </property>
        <property name="text">
         <string>OK</string>
        </property>
        <property name="icon">
         <iconset theme="gtk-ok">
-         <normaloff/>
-        </iconset>
+         <normaloff>../../../../../../../.designer/backup</normaloff>../../../../../../../.designer/backup</iconset>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonCancel">
+       <property name="toolTip">
+        <string>Cancel</string>
+       </property>
        <property name="text">
         <string>Cancel</string>
        </property>
        <property name="icon">
         <iconset theme="gtk-cancel">
-         <normaloff/>
-        </iconset>
+         <normaloff>../../../../../../../.designer/backup</normaloff>../../../../../../../.designer/backup</iconset>
        </property>
       </widget>
      </item>
@@ -638,43 +755,6 @@
    <header>Gui/Widgets.h</header>
   </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>presets</tabstop>
-  <tabstop>buttonSaveTemplate</tabstop>
-  <tabstop>buttonLoadTemplate</tabstop>
-  <tabstop>scrollArea</tabstop>
-  <tabstop>groupNewDocument</tabstop>
-  <tabstop>projectName</tabstop>
-  <tabstop>addHumanFigure</tabstop>
-  <tabstop>groupSite</tabstop>
-  <tabstop>siteName</tabstop>
-  <tabstop>siteAddress</tabstop>
-  <tabstop>siteLatitude</tabstop>
-  <tabstop>siteLongitude</tabstop>
-  <tabstop>siteDeviation</tabstop>
-  <tabstop>siteElevation</tabstop>
-  <tabstop>groupBuilding</tabstop>
-  <tabstop>buildingName</tabstop>
-  <tabstop>buildingUse</tabstop>
-  <tabstop>buildingLength</tabstop>
-  <tabstop>buildingWidth</tabstop>
-  <tabstop>countVAxes</tabstop>
-  <tabstop>distVAxes</tabstop>
-  <tabstop>countHAxes</tabstop>
-  <tabstop>distHAxes</tabstop>
-  <tabstop>lineWidth</tabstop>
-  <tabstop>lineColor</tabstop>
-  <tabstop>countLevels</tabstop>
-  <tabstop>levelHeight</tabstop>
-  <tabstop>levelsAxis</tabstop>
-  <tabstop>levelsWP</tabstop>
-  <tabstop>groupsList</tabstop>
-  <tabstop>buttonAdd</tabstop>
-  <tabstop>buttonDel</tabstop>
-  <tabstop>buttonSave</tabstop>
-  <tabstop>buttonOK</tabstop>
-  <tabstop>buttonCancel</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>
