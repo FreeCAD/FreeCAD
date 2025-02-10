@@ -7572,6 +7572,12 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         }
     }
 
+    // Solve even if `noRecomputes==false`, because recompute may fail, and leave the
+    // sketch in an inconsistent state. A concrete example. If the copied sketch
+    // has broken external geometry, its recomputation will fail. And because we
+    // use expression for copied constraint to add dependency to the copied
+    // sketch, this sketch will not be recomputed (because its dependency fails
+    // to recompute).
     solve();
 
     return svals.size();
