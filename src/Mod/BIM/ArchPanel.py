@@ -115,8 +115,6 @@ class _Panel(ArchComponent.Component):
 
         if self.clone(obj):
             return
-        if not self.ensureBase(obj):
-            return
 
         layers = []
         length = 0
