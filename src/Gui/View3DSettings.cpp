@@ -185,7 +185,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"EnablePreselection") == 0) {
         const ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
-        SoFCEnableHighlightAction cAct(rclGrp.GetBool("EnablePreselection", true));
+        SoFCEnablePreselectionAction cAct(rclGrp.GetBool("EnablePreselection", true));
         for (auto _viewer : _viewers) {
             cAct.apply(_viewer->getSceneGraph());
         }
