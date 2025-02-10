@@ -485,7 +485,8 @@ Base::Vector3d DrawUtil::vertex2Vector(const TopoDS_Vertex& v)
     return Base::Vector3d(gp.X(), gp.Y(), gp.Z());
 }
 
-//TODO: make formatVector using toVector3d
+// template specialization
+//template <>  // GCC BUG 85282, wanting this to be outside class body
 std::string DrawUtil::formatVector(const Base::Vector3d& v)
 {
     std::stringstream builder;
@@ -493,53 +494,7 @@ std::string DrawUtil::formatVector(const Base::Vector3d& v)
     builder << " (" << v.x << ", " << v.y << ", " << v.z << ") ";
     return builder.str();
 }
-
-std::string DrawUtil::formatVector(const gp_Dir& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ", " << v.Z() << ") ";
-    return builder.str();
-}
-
-std::string DrawUtil::formatVector(const gp_Dir2d& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ") ";
-    return builder.str();
-}
-std::string DrawUtil::formatVector(const gp_Vec& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ", " << v.Z() << ") ";
-    return builder.str();
-}
-
-std::string DrawUtil::formatVector(const gp_Pnt& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ", " << v.Z() << ") ";
-    return builder.str();
-}
-
-std::string DrawUtil::formatVector(const gp_Pnt2d& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ") ";
-    return builder.str();
-}
-
-std::string DrawUtil::formatVector(const QPointF& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.x() << ", " << v.y() << ") ";
-    return builder.str();
-}
+//template std::string DrawUtil::formatVector<Base::Vector3d>(const Base::Vector3d &v);
 
 //! compare 2 vectors for sorting - true if v1 < v2
 //! precision::Confusion() is too strict for vertex - vertex comparisons
@@ -669,7 +624,7 @@ Base::Vector3d DrawUtil::vecRotate(Base::Vector3d vec, double angle, Base::Vecto
 
 gp_Vec DrawUtil::closestBasis(gp_Vec inVec)
 {
-    return gp_Vec(togp_Dir(closestBasis(toVector3d(inVec))));
+    return gp_Vec(to<gp_Dir>(closestBasis(toVector3d(inVec))));
 }
 
 //! returns stdX, stdY or stdZ.
@@ -909,7 +864,7 @@ gp_Vec DrawUtil::maskDirection(gp_Vec inVec, gp_Dir directionToMask)
 
 Base::Vector3d DrawUtil::maskDirection(Base::Vector3d inVec, Base::Vector3d directionToMask)
 {
-    return toVector3d(maskDirection(togp_Vec(inVec), togp_Vec(directionToMask)));
+    return toVector3d(maskDirection(to<gp_Vec>(inVec), to<gp_Vec>(directionToMask)));
 }
 
 //! get the coordinate of inPoint for the cardinal unit direction.
