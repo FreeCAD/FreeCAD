@@ -494,7 +494,7 @@ Py::Object DocumentPy::getInEditInfo() const {
         return Py::None();
 
     return Py::TupleN(Py::Object(vp->getObject()->getPyObject(),true),
-            Py::String(subname),Py::String(subelement),Py::Int(mode));
+            Py::String(subname),Py::String(subelement),Py::Long(mode));
 }
 
 void DocumentPy::setInEditInfo(Py::Object arg)
@@ -509,12 +509,12 @@ void DocumentPy::setInEditInfo(Py::Object arg)
                 pyobj)->getViewProviderDocumentObjectPtr(),subname);
 }
 
-Py::Int DocumentPy::getEditMode() const
+Py::Long DocumentPy::getEditMode() const
 {
     int mode = -1;
     getDocumentPtr()->getInEdit(nullptr,nullptr,&mode);
 
-    return Py::Int(mode);
+    return Py::Long(mode);
 }
 
 Py::Boolean DocumentPy::getTransacting() const

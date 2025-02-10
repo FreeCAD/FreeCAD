@@ -1042,7 +1042,7 @@ PyObject* Application::sCheckLinkDepth(PyObject* /*self*/, PyObject* args)
     PY_TRY
     {
         return Py::new_reference_to(
-            Py::Int(GetApplication().checkLinkDepth(depth, MessageOption::Throw)));
+            Py::Long(GetApplication().checkLinkDepth(depth, MessageOption::Throw)));
     }
     PY_CATCH;
 }
@@ -1132,7 +1132,7 @@ PyObject* Application::sSetActiveTransaction(PyObject* /*self*/, PyObject* args)
 
     PY_TRY
     {
-        Py::Int ret(GetApplication().setActiveTransaction(name, Base::asBoolean(persist)));
+        Py::Long ret(GetApplication().setActiveTransaction(name, Base::asBoolean(persist)));
         return Py::new_reference_to(ret);
     }
     PY_CATCH;
@@ -1153,7 +1153,7 @@ PyObject* Application::sGetActiveTransaction(PyObject* /*self*/, PyObject* args)
         }
         Py::Tuple ret(2);
         ret.setItem(0, Py::String(name));
-        ret.setItem(1, Py::Int(id));
+        ret.setItem(1, Py::Long(id));
         return Py::new_reference_to(ret);
     }
     PY_CATCH;

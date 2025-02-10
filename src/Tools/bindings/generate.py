@@ -3,9 +3,9 @@
 # (c) 2006 Jürgen Riegel  GPL
 
 import os, sys, getopt
-import generateBase.generateModel_Module
-import generateTemplates.templateModule
-import generateTemplates.templateClassPyExport
+import model.generateModel_Module
+import templates.templateModule
+import templates.templateClassPyExport
 
 Usage = """generate - generates a FreeCAD Module out of an XML model
 
@@ -31,27 +31,28 @@ Version:
 # Globals
 
 
-def generate(filename, path):
+def generate(filename, outputPath):
     # load model
-    GenerateModelInst = generateBase.generateModel_Module.parse(filename)
+    GenerateModelInst = model.generateModel_Module.parse(filename)
 
     if len(GenerateModelInst.Module) != 0:
-        Module = generateTemplates.templateModule.TemplateModule()
-        Module.path = path
+        Module = templates.templateModule.TemplateModule()
+        Module.outputDir = outputPath
         Module.module = GenerateModelInst.Module[0]
         Module.Generate()
         print("Done generating: " + GenerateModelInst.Module[0].Name)
     else:
-        Export = generateTemplates.templateClassPyExport.TemplateClassPyExport()
-        Export.path = path + "/"
-        Export.dirname = os.path.dirname(filename) + "/"
+        Export = templates.templateClassPyExport.TemplateClassPyExport()
+        Export.outputDir = outputPath + "/"
+        Export.inputDir = os.path.dirname(filename) + "/"
         Export.export = GenerateModelInst.PythonExport[0]
         Export.Generate()
         print("Done generating: " + GenerateModelInst.PythonExport[0].Name)
 
 
 def main():
-    defaultPath = ""
+    verbose = False
+    outputPath = ""
 
     class generateOutput:
         def write(self, data):
@@ -60,10 +61,8 @@ def main():
         def flush(self):  # mandatory for file-like objects
             pass
 
-    sys.stdout = generateOutput()
-
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "ho:", ["help", "outputPath="])
+        opts, args = getopt.getopt(sys.argv[1:], "hvo:", ["help", "verbose", "outputPath="])
     except getopt.GetoptError:
         # print help information and exit:
         sys.stderr.write(Usage)
@@ -75,7 +74,12 @@ def main():
             sys.stderr.write(Usage)
             sys.exit()
         if o in ("-o", "--outputPath"):
-            defaultPath = a
+            outputPath = a
+        if o in ("-v", "--verbose"):
+            verbose = True
+
+    if not verbose:
+        sys.stdout = generateOutput()
 
     # running through the files
     if len(args) == 0:
@@ -83,12 +87,11 @@ def main():
     else:
         for i in args:
             filename = os.path.abspath(i)
-            if defaultPath == "":
-                head, tail = os.path.split(filename)
-                print(head, tail)
+            if outputPath == "":
+                head, _ = os.path.split(filename)
                 generate(filename, head)
             else:
-                generate(filename, defaultPath)
+                generate(filename, outputPath)
 
 
 if __name__ == "__main__":
