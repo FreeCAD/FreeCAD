@@ -175,7 +175,7 @@ class Arch_Wall:
                     # join existing subwalls first if possible, then add the new one
                     w = Arch.joinWalls(self.existing)
                     if w:
-                        if ArchWall.areSameWallTypes([w,self]):
+                        if Arch.areSameWallTypes([w,self]):
                             FreeCADGui.doCommand('FreeCAD.ActiveDocument.'+w.Name+'.Base.addGeometry(trace)')
                         else:
                             # if not possible, add new wall as addition to the existing one
