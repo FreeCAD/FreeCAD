@@ -317,10 +317,14 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
     Bnd_Box bBox;
     BRepBndLib::AddOptimal(face, bBox);
     bBox.SetGap(0.0);
+    gp_Vec translateVector(hatchOffset.x, hatchOffset.y, 0.);
+    auto cornerMin = bBox.CornerMin().Translated(-translateVector);
+    auto cornerMax = bBox.CornerMax().Translated(-translateVector);
+    bBox = Bnd_Box(cornerMin, cornerMax);
 
     for (auto& ls: lineSets) {
         PATLineSpec hl = ls.getPATLineSpec();
-        std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, scale);   //completely cover face bbox with lines
+        std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, scale, hatchRotation);   //completely cover face bbox with lines
 
         //make Compound for this linespec
         BRep_Builder builder;
@@ -331,14 +335,6 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
         }
 
         TopoDS_Shape grid = gridComp;
-        if (hatchRotation != 0.0) {
-            double hatchRotationRad = hatchRotation * M_PI / 180.0;
-            gp_Ax1 gridAxis(gp_Pnt(0.0, 0.0, 0.0), gp_Vec(gp::OZ().Direction()));
-            gp_Trsf xGridRotate;
-            xGridRotate.SetRotation(gridAxis, hatchRotationRad);
-            BRepBuilderAPI_Transform mkTransRotate(grid, xGridRotate, true);
-            grid = mkTransRotate.Shape();
-        }
         gp_Trsf xGridTranslate;
         xGridTranslate.SetTranslation(DrawUtil::to<gp_Vec>(hatchOffset));
         BRepBuilderAPI_Transform mkTransTranslate(grid, xGridTranslate, true);
@@ -386,7 +382,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
 }
 
 /* static */
-std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hatchLine, Bnd_Box bBox, double scale)
+std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hatchLine, Bnd_Box bBox, double scale, double rotation)
 {
     const size_t MaxNumberOfEdges = Preferences::getPreferenceGroup("PAT")->GetInt("MaxSeg", 10000l);
 
@@ -401,7 +397,8 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hatchLine, B
     Base::Vector3d origin = hatchLine.getOrigin() * scale;
     double interval = hatchLine.getInterval() * scale;
     double offset = hatchLine.getOffset() * scale;
-    double angle = hatchLine.getAngle();
+    double angle = hatchLine.getAngle() + rotation;
+    origin.RotateZ(rotation * M_PI / 180.);
 
     if (scale == 0. || interval == 0.)
         return {};
@@ -516,7 +513,7 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int iFace)
 
     for (auto& ls: m_lineSets) {
         PATLineSpec hl = ls.getPATLineSpec();
-        std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, ScalePattern.getValue());
+        std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, ScalePattern.getValue(), PatternRotation.getValue());
         std::vector<TechDraw::BaseGeomPtr> resultGeoms;
         for (auto& e: candidates) {
             TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(e);

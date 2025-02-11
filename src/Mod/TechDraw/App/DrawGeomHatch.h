@@ -94,7 +94,7 @@ public:
                                                                 Base::Vector3d hatchOffset = Base::Vector3d(0.0, 0.0, 0.0));
 
     static std::vector<TopoDS_Edge> makeEdgeOverlay(PATLineSpec hatchLine, Bnd_Box bBox,
-                                    double scale);
+                                    double scale, double rotation);
     static TopoDS_Edge makeLine(const Base::Vector3d& start, const Base::Vector3d& end);
     static std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
     static TopoDS_Face extractFace(DrawViewPart* source, int iface );
