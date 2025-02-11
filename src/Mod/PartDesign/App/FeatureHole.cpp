@@ -1176,12 +1176,13 @@ std::optional<double> Hole::determineDiameter() const
             return std::nullopt;
         throw Base::IndexError("Thread size out of range");
     }
-    double diameter = threadDescription[threadType][threadSize].diameter;
-    double pitch = threadDescription[threadType][threadSize].pitch;
-    double clearance = 0.0;
 
     if (threadType == 0)
         return std::nullopt;
+
+    double diameter = threadDescription[threadType][threadSize].diameter;
+    double pitch = threadDescription[threadType][threadSize].pitch;
+    double clearance = 0.0;
 
     if (Threaded.getValue()) {
 
