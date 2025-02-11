@@ -99,9 +99,8 @@ DlgBindSheet::DlgBindSheet(Sheet* sheet, const std::vector<Range>& ranges, QWidg
     ui->lineEditToStart->setText(QLatin1String(toStart.c_str()));
     ui->lineEditToEnd->setText(QLatin1String(toEnd.c_str()));
 
-    ui->comboBox->addItem(
-        QString::fromLatin1(". (%1)").arg(QString::fromUtf8(sheet->Label.getValue())),
-        QByteArray(""));
+    ui->comboBox->addItem(QStringLiteral(". (%1)").arg(QString::fromUtf8(sheet->Label.getValue())),
+                          QByteArray(""));
 
     App::DocumentObject* target = bindingTarget.getDocumentObject();
     for (auto obj : sheet->getDocument()->getObjectsOfType<Sheet>()) {
@@ -110,9 +109,8 @@ DlgBindSheet::DlgBindSheet(Sheet* sheet, const std::vector<Range>& ranges, QWidg
         }
         QString label;
         if (obj->Label.getStrValue() != obj->getNameInDocument()) {
-            label =
-                QString::fromLatin1("%1 (%2)").arg(QString::fromLatin1(obj->getNameInDocument()),
-                                                   QString::fromUtf8(obj->Label.getValue()));
+            label = QStringLiteral("%1 (%2)").arg(QString::fromLatin1(obj->getNameInDocument()),
+                                                  QString::fromUtf8(obj->Label.getValue()));
         }
         else {
             label = QLatin1String(obj->getNameInDocument());
@@ -133,9 +131,8 @@ DlgBindSheet::DlgBindSheet(Sheet* sheet, const std::vector<Range>& ranges, QWidg
             std::string fullname = obj->getFullName();
             QString label;
             if (obj->Label.getStrValue() != obj->getNameInDocument()) {
-                label =
-                    QString::fromLatin1("%1 (%2)").arg(QString::fromLatin1(fullname.c_str()),
-                                                       QString::fromUtf8(obj->Label.getValue()));
+                label = QStringLiteral("%1 (%2)").arg(QString::fromLatin1(fullname.c_str()),
+                                                      QString::fromUtf8(obj->Label.getValue()));
             }
             else {
                 label = QLatin1String(fullname.c_str());

@@ -293,13 +293,13 @@ QString MaterialValue::getYAMLString() const
         else if (getType() == MaterialValue::Float) {
             auto value = getValue();
             if (!value.isNull()) {
-                yaml += QString::fromLatin1("%1").arg(value.toFloat(), 0, 'g', 6);
+                yaml += QStringLiteral("%1").arg(value.toFloat(), 0, 'g', 6);
             }
         }
         else if (getType() == MaterialValue::List) {
             for (auto& it : getList()) {
-                yaml += QString::fromLatin1("\n      - \"") + escapeString(it.toString())
-                    + QString::fromLatin1("\"");
+                yaml += QStringLiteral("\n      - \"") + escapeString(it.toString())
+                    + QStringLiteral("\"");
             }
             return yaml;
         }
@@ -307,7 +307,7 @@ QString MaterialValue::getYAMLString() const
             yaml += getValue().toString();
         }
     }
-    yaml = QString::fromLatin1(" \"") + escapeString(yaml) + QString::fromLatin1("\"");
+    yaml = QStringLiteral(" \"") + escapeString(yaml) + QStringLiteral("\"");
     return yaml;
 }
 

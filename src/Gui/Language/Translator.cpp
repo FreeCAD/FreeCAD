@@ -182,7 +182,7 @@ Translator::Translator()
     auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");
     // The format of the entries is "Language Name 1"="code1";"Language Name 2"="code2";...
     // Example: <FCText Name="AdditionalLanguageDomainEntries">"Romanian"="ro";"Polish"="pl";</FCText>
-    QRegularExpression matchingRE(QString::fromUtf8("\"(.*[^\\s]+.*)\"\\s*=\\s*\"([^\\s]+)\";?"));
+    QRegularExpression matchingRE(QStringLiteral("\"(.*[^\\s]+.*)\"\\s*=\\s*\"([^\\s]+)\";?"));
     auto matches = matchingRE.globalMatch(QString::fromStdString(entries));
     while (matches.hasNext()) {
         QRegularExpressionMatch match = matches.next();
@@ -223,7 +223,7 @@ TStringMap Translator::supportedLocales() const
     for (const auto& domainMap : d->mapLanguageTopLevelDomain) {
         for (const auto& directoryName : std::as_const(d->paths)) {
             QDir dir(directoryName);
-            QString filter = QString::fromLatin1("*_%1.qm").arg(QString::fromStdString(domainMap.second));
+            QString filter = QStringLiteral("*_%1.qm").arg(QString::fromStdString(domainMap.second));
             QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
             if (!fileNames.isEmpty()) {
                 d->mapSupportedLocales[domainMap.first] = domainMap.second;
@@ -309,7 +309,7 @@ void Translator::addPath(const QString& path)
 
 void Translator::installQMFiles(const QDir& dir, const char* locale)
 {
-    QString filter = QString::fromLatin1("*_%1.qm").arg(QLatin1String(locale));
+    QString filter = QStringLiteral("*_%1.qm").arg(QLatin1String(locale));
     QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
     for (const auto &it : fileNames){
         bool ok=false;

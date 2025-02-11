@@ -151,16 +151,16 @@ public:
         QColor pressed(38, 162, 105);  // NOLINT
         pressed = getUserColor(pressed, "FileCardSelectionColor");
 
-        return QString::fromLatin1("QPushButton {"
-                                   " background-color: rgb(%1, %2, %3);"
-                                   " border-radius: 8px;"
-                                   "}"
-                                   "QPushButton:hover {"
-                                   " border: 2px solid rgb(%4, %5, %6);"
-                                   "}"
-                                   "QPushButton:pressed {"
-                                   " border: 2px solid rgb(%7, %8, %9);"
-                                   "}")
+        return QStringLiteral("QPushButton {"
+                              " background-color: rgb(%1, %2, %3);"
+                              " border-radius: 8px;"
+                              "}"
+                              "QPushButton:hover {"
+                              " border: 2px solid rgb(%4, %5, %6);"
+                              "}"
+                              "QPushButton:pressed {"
+                              " border: 2px solid rgb(%7, %8, %9);"
+                              "}")
             .arg(background.red())
             .arg(background.green())
             .arg(background.blue())

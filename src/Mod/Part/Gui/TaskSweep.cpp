@@ -315,14 +315,14 @@ bool SweepWidget::accept()
 
     QString list, solid, frenet;
     if (d->ui.checkSolid->isChecked())
-        solid = QString::fromLatin1("True");
+        solid = QStringLiteral("True");
     else
-        solid = QString::fromLatin1("False");
+        solid = QStringLiteral("False");
 
     if (d->ui.checkFrenet->isChecked())
-        frenet = QString::fromLatin1("True");
+        frenet = QStringLiteral("True");
     else
-        frenet = QString::fromLatin1("False");
+        frenet = QStringLiteral("False");
 
     QTextStream str(&list);
 
@@ -349,7 +349,7 @@ bool SweepWidget::accept()
     try {
         Gui::WaitCursor wc;
         QString cmd;
-        cmd = QString::fromLatin1(
+        cmd = QStringLiteral(
             "App.getDocument('%5').addObject('Part::Sweep','Sweep')\n"
             "App.getDocument('%5').ActiveObject.Sections=[%1]\n"
             "App.getDocument('%5').ActiveObject.Spine=%2\n"

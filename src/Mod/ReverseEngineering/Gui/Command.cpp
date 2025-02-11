@@ -654,11 +654,11 @@ void CmdViewTriangulation::activated(int)
             QString document = QString::fromStdString(objT.getDocumentPython());
             QString object = QString::fromStdString(objT.getObjectPython());
 
-            QString command = QString::fromLatin1("%1.addObject('Mesh::Feature', 'View mesh').Mesh "
-                                                  "= ReverseEngineering.viewTriangulation("
-                                                  "Points=%2.Points,"
-                                                  "Width=%2.Width,"
-                                                  "Height=%2.Height)")
+            QString command = QStringLiteral("%1.addObject('Mesh::Feature', 'View mesh').Mesh "
+                                             "= ReverseEngineering.viewTriangulation("
+                                             "Points=%2.Points,"
+                                             "Width=%2.Width,"
+                                             "Height=%2.Height)")
                                   .arg(document, object);
             runCommand(Doc, command.toLatin1());
         }

@@ -108,7 +108,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     isContextualMenuEnabled = true;
 
     QString tabText = QString::fromUtf8(pageVp->getDrawPage()->getNameInDocument());
-    tabText += QString::fromUtf8("[*]");
+    tabText += QStringLiteral("[*]");
     setWindowTitle(tabText);
 
     //NOLINTBEGIN
@@ -283,7 +283,7 @@ void MDIViewPage::zoomOut()
 void MDIViewPage::setTabText(std::string tabText)
 {
     if (!isPassive() && !tabText.empty()) {
-        QString cap = QString::fromLatin1("%1 [*]").arg(QString::fromUtf8(tabText.c_str()));
+        QString cap = QStringLiteral("%1 [*]").arg(QString::fromUtf8(tabText.c_str()));
         setWindowTitle(cap);
     }
 }
@@ -1075,7 +1075,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel,
 
 void MDIViewPage::showStatusMsg(const char* string1, const char* string2, const char* string3) const
 {
-    QString msg = QString::fromLatin1("%1 %2.%3.%4 ")
+    QString msg = QStringLiteral("%1 %2.%3.%4 ")
                       .arg(tr("Selected:"), QString::fromUtf8(string1), QString::fromUtf8(string2),
                            QString::fromUtf8(string3));
     if (Gui::getMainWindow()) {

@@ -69,17 +69,17 @@ PreferencePack::PreferencePack(const fs::path& path, const App::Metadata& metada
         throw std::runtime_error{ "Cannot access " + path.string() };
     }
 
-    auto qssPaths = QDir::searchPaths(QString::fromUtf8("qss"));
-    auto cssPaths = QDir::searchPaths(QString::fromUtf8("css"));
-    auto overlayPaths = QDir::searchPaths(QString::fromUtf8("overlay"));
+    auto qssPaths = QDir::searchPaths(QStringLiteral("qss"));
+    auto cssPaths = QDir::searchPaths(QStringLiteral("css"));
+    auto overlayPaths = QDir::searchPaths(QStringLiteral("overlay"));
 
     qssPaths.append(QString::fromStdString(Base::FileInfo::pathToString(_path)));
     cssPaths.append(QString::fromStdString(Base::FileInfo::pathToString(_path)));
     overlayPaths.append(QString::fromStdString(Base::FileInfo::pathToString(_path) + "/overlay"));
 
-    QDir::setSearchPaths(QString::fromUtf8("qss"), qssPaths);
-    QDir::setSearchPaths(QString::fromUtf8("css"), cssPaths);
-    QDir::setSearchPaths(QString::fromUtf8("overlay"), overlayPaths);
+    QDir::setSearchPaths(QStringLiteral("qss"), qssPaths);
+    QDir::setSearchPaths(QStringLiteral("css"), cssPaths);
+    QDir::setSearchPaths(QStringLiteral("overlay"), overlayPaths);
 }
 
 std::string PreferencePack::name() const

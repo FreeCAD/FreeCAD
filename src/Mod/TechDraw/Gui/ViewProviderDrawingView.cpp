@@ -362,7 +362,7 @@ void ViewProviderDrawingView::onProgressMessage(const TechDraw::DrawView* dv,
 
 void ViewProviderDrawingView::showProgressMessage(const std::string featureName, const std::string text) const
 {
-    QString msg = QString::fromUtf8("%1 %2")
+    QString msg = QStringLiteral("%1 %2")
             .arg(QString::fromStdString(featureName),
                  QString::fromStdString(text));
     if (Gui::getMainWindow()) {

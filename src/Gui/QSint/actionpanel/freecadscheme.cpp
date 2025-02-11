@@ -271,7 +271,7 @@ QString SystemPanelScheme::systemStyle(const QPalette& p) const
     QColor actionSelectedText = p.color(QPalette::Active, QPalette::ButtonText);
     QColor actionSelectedBorder = p.color(QPalette::Active, QPalette::Highlight);
 
-    QString style = QString::fromLatin1(
+    QString style = QStringLiteral(
         "QSint--ActionGroup QFrame[class='header'] {"
             "border: 1px solid transparent;"
             "background-color: %1;"

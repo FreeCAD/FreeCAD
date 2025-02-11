@@ -105,7 +105,7 @@ QGIView::QGIView()
     addToGroup(m_caption);
     m_lock = new QGCustomImage();
     m_lock->setParentItem(m_border);
-    m_lock->load(QString::fromUtf8(":/icons/TechDraw_Lock.svg"));
+    m_lock->load(QStringLiteral(":/icons/TechDraw_Lock.svg"));
     QSize sizeLock = m_lock->imageSize();
     m_lockWidth = (double) sizeLock.width();
     m_lockHeight = (double) sizeLock.height();
@@ -173,10 +173,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             if(alignHash.size() == 1) {   //if aligned.
                 QGraphicsItem* item = alignHash.begin().value();
                 QString alignMode   = alignHash.begin().key();
-                if(alignMode == QString::fromLatin1("Vertical")) {
+                if(alignMode == QStringLiteral("Vertical")) {
                     newPos.setX(item->pos().x());
                 }
-                else if(alignMode == QString::fromLatin1("Horizontal")) {
+                else if(alignMode == QStringLiteral("Horizontal")) {
                     newPos.setY(item->pos().y());
                 }
             }
@@ -570,7 +570,7 @@ void QGIView::setViewFeature(TechDraw::DrawView *obj)
     viewName = obj->getNameInDocument();
 
             //mark the actual QGraphicsItem so we can check what's in the scene later
-    setData(0, QString::fromUtf8("QGIV"));
+    setData(0, QStringLiteral("QGIV"));
     setData(1, QString::fromUtf8(obj->getNameInDocument()));
 }
 

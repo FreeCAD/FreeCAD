@@ -497,7 +497,7 @@ void TaskProjGroup::projectionTypeChanged(QString qText)
         return;
     }
 
-    if (qText == QString::fromUtf8("Page")) {
+    if (qText == QStringLiteral("Page")) {
         multiView->ProjectionType.setValue("Default");
     }
     else {
@@ -769,7 +769,7 @@ void TaskProjGroup::setUiPrimary()
 
 QString TaskProjGroup::formatVector(Base::Vector3d vec)
 {
-    QString data = QString::fromLatin1("[%1 %2 %3]")
+    QString data = QStringLiteral("[%1 %2 %3]")
         .arg(QLocale().toString(vec.x, 'f', 2),
              QLocale().toString(vec.y, 'f', 2),
              QLocale().toString(vec.z, 'f', 2));

@@ -407,7 +407,7 @@ void TaskSectionView::enableAll(bool enable)
     ui->cmbScaleType->setEnabled(enable);
     QString qScaleType = ui->cmbScaleType->currentText();
     //Allow or prevent scale changing initially
-    if (qScaleType == QString::fromUtf8("Custom")) {
+    if (qScaleType == QStringLiteral("Custom")) {
         ui->sbScale->setEnabled(true);
     }
     else {

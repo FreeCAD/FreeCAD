@@ -48,7 +48,7 @@ using namespace Gui;
 
 QString ToolHandler::getCrosshairCursorSVGName() const
 {
-    return QString::fromLatin1("None");
+    return QStringLiteral("None");
 }
 
 bool ToolHandler::activate()
@@ -230,7 +230,7 @@ void ToolHandler::updateCursor()
 {
     auto cursorstring = getCrosshairCursorSVGName();
 
-    if (cursorstring != QString::fromLatin1("None")) {
+    if (cursorstring != QStringLiteral("None")) {
         setCrosshairCursor(cursorstring);
     }
 }
