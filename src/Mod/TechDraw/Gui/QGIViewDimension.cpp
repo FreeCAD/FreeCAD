@@ -1437,20 +1437,20 @@ void QGIViewDimension::resetArrows() const
     aHead2->setFlipped(false);
 }
 
+// NOLINTNEXTLINE
 void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], double angles[],
                                   bool flipped, bool forcePoint) const
 {
-    const int arrowCount = 2;
-    QGIArrow* arrows[arrowCount] = {aHead1, aHead2};
-
+    constexpr int arrowCount{2};
+    QGIArrow* arrows[arrowCount] = {aHead1, aHead2};    // NOLINT
     arrowPositionsToFeature(positions);
 
     for (int i = 0; i < arrowCount; ++i) {
-        QGIArrow* arrow = arrows[i];
+        QGIArrow* arrow = arrows[i];                    // NOLINT
 
         if (positions && angles) {
-            arrow->setPos(toQtGui(positions[i]));
-            arrow->setDirection(toQtRad(angles[i]));
+            arrow->setPos(toQtGui(positions[i]));       // NOLINT
+            arrow->setDirection(toQtRad(angles[i]));    // NOLINT
         }
 
         if (i >= count) {
@@ -1464,7 +1464,7 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
         }
 
         // some dimensions must use point ends (area). The point style is 3.
-        arrow->setStyle(forcePoint ? static_cast<long>(ArrowType::DOT) : vp->ArrowStyle.getValue());
+        arrow->setStyle(forcePoint ? ArrowType::DOT : static_cast<int>(vp->ArrowStyle.getValue()));
         auto arrowSize = vp->Arrowsize.getValue();
         arrow->setSize(arrowSize);
         arrow->setFlipped(flipped);

@@ -56,6 +56,7 @@
 using namespace TechDrawGui;
 using namespace TechDraw;
 
+// NOLINTBEGIN
 const char *ViewProviderDimension::StandardAndStyleEnums[]=
     { "ISO Oriented", "ISO Referencing", "ASME Inlined", "ASME Referencing", nullptr };
 
@@ -63,6 +64,7 @@ const char *ViewProviderDimension::RenderingExtentEnums[]=
     { "None", "Minimal", "Confined", "Reduced", "Normal", "Expanded", nullptr };
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDimension, TechDrawGui::ViewProviderDrawingView)
+// NOLINTEND
 
 //**************************************************************************
 // Construction/Destruction
@@ -82,7 +84,7 @@ ViewProviderDimension::ViewProviderDimension()
                                      group, (App::PropertyType)(App::Prop_None),
                                                                      "Arrow size in units");
 
-    ArrowStyle.setEnums(ArrowPropEnum::ArrowTypeEnums);
+    ArrowStyle.setEnums(ArrowPropEnum::ArrowTypeEnums);     // NOLINT
     ADD_PROPERTY_TYPE(ArrowStyle, (PreferencesGui::dimArrowStyle()),
                                     group, (App::PropertyType)(App::Prop_None),
                                    "Arrow end symbol - point, filled arrow, etc");
@@ -92,11 +94,11 @@ ViewProviderDimension::ViewProviderDimension()
     ADD_PROPERTY_TYPE(Color, (prefColor()), group, App::Prop_None, "Color of the dimension");
     ADD_PROPERTY_TYPE(StandardAndStyle, (prefStandardAndStyle()), group, App::Prop_None,
                                         "Standard and style according to which dimension is drawn");
-    StandardAndStyle.setEnums(StandardAndStyleEnums);
+    StandardAndStyle.setEnums(StandardAndStyleEnums);   // NOLINT
 
     ADD_PROPERTY_TYPE(RenderingExtent, (REND_EXTENT_NORMAL), group, App::Prop_None,
                                          "Select the rendering mode by space requirements");
-    RenderingExtent.setEnums(RenderingExtentEnums);
+    RenderingExtent.setEnums(RenderingExtentEnums);     // NOLINT
     ADD_PROPERTY_TYPE(FlipArrowheads, (false), group, App::Prop_None,
                                           "Reverses usual direction of dimension line terminators");
     ADD_PROPERTY_TYPE(GapFactorISO, (Preferences::GapISO()), group, App::Prop_None,
@@ -115,7 +117,7 @@ void ViewProviderDimension::attach(App::DocumentObject *pcFeat)
     // call parent attach method
     ViewProviderDrawingView::attach(pcFeat);
 
-//    sPixmap = "TechDraw_Dimension";
+    //    sPixmap = "TechDraw_Dimension";
     setPixmapForType();
     if (getViewObject()->isDerivedFrom<TechDraw::LandmarkDimension>()) {
         sPixmap = "TechDraw_LandmarkDimension";
@@ -131,7 +133,8 @@ bool ViewProviderDimension::doubleClicked()
 void ViewProviderDimension::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     auto* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
+    QAction* act = menu->addAction(
+        QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
     act->setData(QVariant((int)ViewProvider::Default));
     func->trigger(act, [this](){
         this->startDefaultEditMode();
@@ -165,19 +168,14 @@ void ViewProviderDimension::updateData(const App::Property* prop)
 
     //Dimension handles X, Y updates differently that other QGIView
     //call QGIViewDimension::updateView
-    if (prop == &(getViewObject()->X)  ||
-        prop == &(getViewObject()->Y)  ||
-        prop == &(getViewObject()->FormatSpec) ||
-        prop == &(getViewObject()->Arbitrary) ||
-        prop == &(getViewObject()->FormatSpecOverTolerance) ||
-        prop == &(getViewObject()->FormatSpecUnderTolerance) ||
-        prop == &(getViewObject()->ArbitraryTolerances) ||
-        prop == &(getViewObject()->MeasureType) ||
-        prop == &(getViewObject()->TheoreticalExact) ||
-        prop == &(getViewObject()->EqualTolerance) ||
-        prop == &(getViewObject()->OverTolerance) ||
-        prop == &(getViewObject()->UnderTolerance) ||
-        prop == &(getViewObject()->Inverted) ) {
+    if (prop == &(getViewObject()->X) || prop == &(getViewObject()->Y)
+        || prop == &(getViewObject()->FormatSpec) || prop == &(getViewObject()->Arbitrary)
+        || prop == &(getViewObject()->FormatSpecOverTolerance)
+        || prop == &(getViewObject()->FormatSpecUnderTolerance)
+        || prop == &(getViewObject()->ArbitraryTolerances)
+        || prop == &(getViewObject()->MeasureType) || prop == &(getViewObject()->TheoreticalExact)
+        || prop == &(getViewObject()->EqualTolerance) || prop == &(getViewObject()->OverTolerance)
+        || prop == &(getViewObject()->UnderTolerance) || prop == &(getViewObject()->Inverted)) {
 
         QGIView* qgiv = getQView();
         if (qgiv) {
@@ -187,7 +185,7 @@ void ViewProviderDimension::updateData(const App::Property* prop)
     }
 
     //Skip QGIView X, Y processing - do not call ViewProviderDrawingView
-    Gui::ViewProviderDocumentObject::updateData(prop);
+    Gui::ViewProviderDocumentObject::updateData(prop);      //NOLINT
 }
 
 void ViewProviderDimension::setPixmapForType()
@@ -214,6 +212,7 @@ void ViewProviderDimension::onChanged(const App::Property* prop)
     if ((prop == &Font)  ||
         (prop == &Fontsize) ||
         (prop == &Arrowsize) ||
+        (prop == &ArrowStyle) ||
         (prop == &LineWidth) ||
         (prop == &StandardAndStyle) ||
         (prop == &RenderingExtent) ||
@@ -271,7 +270,8 @@ double ViewProviderDimension::prefWeight() const
 
 int ViewProviderDimension::prefStandardAndStyle() const
 {
-    return Preferences::getPreferenceGroup("Dimensions")->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED);
+    return static_cast<int>(
+                Preferences::getPreferenceGroup("Dimensions")->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED));
 }
 
 void ViewProviderDimension::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
