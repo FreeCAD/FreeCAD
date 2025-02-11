@@ -1088,14 +1088,18 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.B8, rot)
         self.assertEqual(sheet.C8, pla)
 
-    def testIssue3128(self):
-        """Regression test for issue 3128; mod should work with arbitrary units for both arguments"""
+    def testIssue19517(self):
+        """Regression test for issue 19517; mod should work with units"""
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
         sheet.set("A1", "=mod(7mm;3mm)")
-        sheet.set("A2", "=mod(7kg;3mm)")
         self.doc.recompute()
-        self.assertEqual(sheet.A1, Units.Quantity("1"))
-        self.assertEqual(sheet.A2, Units.Quantity("1 kg/mm"))
+        self.assertEqual(sheet.A1, Units.Quantity("1 mm"))
+        try:
+            sheet.set("A2", "=mod(7kg;3mm)")
+            self.doc.recompute()
+            self.fail("Units need to be the same or dimensionless")
+        except Exception:
+            pass
 
     def testIssue3363(self):
         """Regression test for issue 3363; Nested conditionals statement fails with additional conditional statement in false-branch"""
