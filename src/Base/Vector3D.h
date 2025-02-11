@@ -260,7 +260,8 @@ public:
 
 /// Returns the distance between two points
 template<class float_type>
-[[nodiscard]]inline float_type Distance(const Vector3<float_type>& v1, const Vector3<float_type>& v2)
+[[nodiscard]] inline float_type Distance(const Vector3<float_type>& v1,
+                                         const Vector3<float_type>& v2)
 {
     float_type x = v1.x - v2.x;
     float_type y = v1.y - v2.y;
@@ -270,7 +271,8 @@ template<class float_type>
 
 /// Returns the squared distance between two points
 template<class float_type>
-[[nodiscard]]inline float_type DistanceP2(const Vector3<float_type>& v1, const Vector3<float_type>& v2)
+[[nodiscard]] inline float_type DistanceP2(const Vector3<float_type>& v1,
+                                           const Vector3<float_type>& v2)
 {
     float_type x = v1.x - v2.x;
     float_type y = v1.y - v2.y;
@@ -280,13 +282,14 @@ template<class float_type>
 
 /// Multiplication of scalar with vector.
 template<class float_type>
-[[nodiscard]]inline Vector3<float_type> operator*(float_type fFac, const Vector3<float_type>& rcVct)
+[[nodiscard]] inline Vector3<float_type> operator*(float_type fFac,
+                                                   const Vector3<float_type>& rcVct)
 {
     return Vector3<float_type>(rcVct.x * fFac, rcVct.y * fFac, rcVct.z * fFac);
 }
 
 template<class Pr1, class Pr2>
-[[nodiscard]]inline Vector3<Pr1> toVector(const Vector3<Pr2>& v)
+[[nodiscard]] inline Vector3<Pr1> toVector(const Vector3<Pr2>& v)
 {
     return Vector3<Pr1>(static_cast<Pr1>(v.x), static_cast<Pr1>(v.y), static_cast<Pr1>(v.z));
 }
