@@ -2451,7 +2451,17 @@ void View3DInventorViewer::renderScene()
         stream.precision(1);
         stream.setf(std::ios::fixed | std::ios::showpoint);
         stream << framesPerSecond[0] << " ms / " << framesPerSecond[1] << " fps";
-        draw2DString(stream.str().c_str(), SbVec2s(10, 10), SbVec2f(0.1F, 0.1F));  // NOLINT
+        ParameterGrp::handle hGrpOverlayL = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/MainWindow/DockWindows/OverlayLeft");
+        std::string overlayLeftWidgets = hGrpOverlayL->GetASCII("Widgets", "");
+        ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View");
+        unsigned long axisLetterColor =
+            hGrpView->GetUnsigned("AxisLetterColor", 4294902015);  // default FPS color (yellow)
+        draw2DString(stream.str().c_str(),
+                     SbVec2s(10, 10),
+                     SbVec2f((overlayLeftWidgets.empty() ? 0.1f : 1.1f), 0.1f),
+                     App::Color(static_cast<uint32_t>(axisLetterColor)));  // NOLINT
     }
 
     if (naviCubeEnabled) {
