@@ -3544,7 +3544,7 @@ DocumentObject* Document::addObject(const char* sType,
                                     const char* viewType,
                                     bool isPartial)
 {
-    Base::Type type =
+    const Base::Type type =
         Base::Type::getTypeIfDerivedFrom(sType, App::DocumentObject::getClassTypeId(), true);
     if (type.isBad()) {
         std::stringstream str;
@@ -3557,8 +3557,7 @@ DocumentObject* Document::addObject(const char* sType,
         return nullptr;
     }
 
-    App::DocumentObject* pcObject = static_cast<App::DocumentObject*>(typeInstance);
-
+    auto* pcObject = static_cast<App::DocumentObject*>(typeInstance);
     pcObject->setDocument(this);
 
     // do no transactions if we do a rollback!
@@ -3571,15 +3570,8 @@ DocumentObject* Document::addObject(const char* sType,
     }
 
     // get Unique name
-    string ObjectName;
-
-    if (pObjectName && pObjectName[0] != '\0') {
-        ObjectName = getUniqueObjectName(pObjectName);
-    }
-    else {
-        ObjectName = getUniqueObjectName(sType);
-    }
-
+    const bool hasName = pObjectName && pObjectName[0] != '\0';
+    const string ObjectName = getUniqueObjectName(hasName ? pObjectName : type.getName());
 
     d->activeObject = pcObject;
 

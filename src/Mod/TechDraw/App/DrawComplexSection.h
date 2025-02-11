@@ -37,7 +37,7 @@ namespace TechDraw
 
 class TechDrawExport DrawComplexSection: public DrawViewSection
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawComplexSection);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawComplexSection);
 
 public:
     DrawComplexSection();

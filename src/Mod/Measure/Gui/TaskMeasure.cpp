@@ -219,13 +219,12 @@ Measure::MeasureBase* TaskMeasure::createObject(const App::MeasureType* measureT
         auto pyMeasureClass = measureType->pythonClass;
 
         // Create a MeasurePython instance
-        auto featurePython = doc->addObject("Measure::MeasurePython", measureType->label.c_str());
-        _mMeasureObject = dynamic_cast<Measure::MeasureBase*>(featurePython);
+        _mMeasureObject = doc->addObject<Measure::MeasurePython>(measureType->label.c_str());
 
         // Create an instance of the pyMeasureClass, the classe's initializer sets the object as
         // proxy
         Py::Tuple args(1);
-        args.setItem(0, Py::asObject(featurePython->getPyObject()));
+        args.setItem(0, Py::asObject(_mMeasureObject->getPyObject()));
         PyObject* result = PyObject_CallObject(pyMeasureClass, args.ptr());
         Py_XDECREF(result);
     }
@@ -249,8 +248,7 @@ void TaskMeasure::update()
         App::DocumentObject* sub = ob->getSubObject(sel.SubName);
 
         // Resolve App::Link
-        if (sub->isDerivedFrom<App::Link>()) {
-            auto link = static_cast<App::Link*>(sub);
+        if (auto link = Base::freecad_dynamic_cast<App::Link>(sub)) {
             sub = link->getLinkedObject(true);
         }
 
@@ -341,7 +339,7 @@ void TaskMeasure::initViewObject()
     dynamic_cast<MeasureGui::ViewProviderMeasureBase*>(viewObject)->positionAnno(_mMeasureObject);
 
     // Set the ShowDelta Property if it exists on the measurements view object
-    auto* prop = dynamic_cast<App::PropertyBool*>(viewObject->getPropertyByName("ShowDelta"));
+    auto* prop = viewObject->getPropertyByName<App::PropertyBool>("ShowDelta");
     setDeltaPossible(prop != nullptr);
     if (prop) {
         prop->setValue(showDelta->isChecked());
@@ -370,10 +368,9 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
 
 
     if (!obj || !obj->isValid() || !obj->isDerivedFrom<App::DocumentObjectGroup>()) {
-        obj = doc->addObject("App::DocumentObjectGroup",
-                             measurementGroupName,
-                             true,
-                             "MeasureGui::ViewProviderMeasureGroup");
+        obj = doc->addObject<App::DocumentObjectGroup>(measurementGroupName,
+                                                       true,
+                                                       "MeasureGui::ViewProviderMeasureGroup");
     }
 
     auto group = static_cast<App::DocumentObjectGroup*>(obj);

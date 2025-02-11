@@ -457,7 +457,7 @@ TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol()
 {
 //    Base::Console().Message("TWS::createWeldingSymbol()\n");
     App::Document *doc = Application::Instance->activeDocument()->getDocument();
-    auto weldSymbol = dynamic_cast<TechDraw::DrawWeldSymbol*>(doc->addObject("TechDraw::DrawWeldSymbol", "WeldSymbol"));
+    auto weldSymbol = doc->addObject<TechDraw::DrawWeldSymbol>("WeldSymbol");
     if (!weldSymbol) {
         throw Base::RuntimeError("TaskWeldingSymbol - new symbol object not found");
     }

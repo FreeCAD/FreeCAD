@@ -241,7 +241,7 @@ void ImportOCAFAssembly::createShape(const TopoDS_Shape& aShape,
                                      const TopLoc_Location& loc,
                                      const std::string& name)
 {
-    Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
+    Part::Feature* part = doc->addObject<Part::Feature>();
     if (!loc.IsIdentity()) {
         part->Shape.setValue(aShape.Moved(loc));
     }

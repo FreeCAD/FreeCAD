@@ -119,8 +119,7 @@ void Importer::createMeshFromSegments(const std::string& name,
 
 Feature* Importer::createMesh(const std::string& name, MeshObject& mesh)
 {
-    Mesh::Feature* pcFeature =
-        static_cast<Mesh::Feature*>(document->addObject("Mesh::Feature", name.c_str()));
+    Mesh::Feature* pcFeature = document->addObject<Mesh::Feature>(name.c_str());
     pcFeature->Label.setValue(name);
     pcFeature->Mesh.swapMesh(mesh);
     return pcFeature;

@@ -503,8 +503,7 @@ void CmdMeshFromGeometry::activated(int)
             }
 
             // create a mesh feature and assign the mesh
-            Mesh::Feature* mf =
-                static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature", "Mesh"));
+            Mesh::Feature* mf = doc->addObject<Mesh::Feature>("Mesh");
             mf->Mesh.setValue(mesh.getKernel());
         }
     }
@@ -1703,8 +1702,7 @@ void CmdMeshMerge::activated(int)
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Mesh merge"));
-    Mesh::Feature* pcFeature =
-        static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Mesh"));
+    Mesh::Feature* pcFeature = pcDoc->addObject<Mesh::Feature>("Mesh");
     Mesh::MeshObject* newMesh = pcFeature->Mesh.startEditing();
     std::vector<App::DocumentObject*> objs =
         Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
@@ -1759,8 +1757,7 @@ void CmdMeshSplitComponents::activated(int)
             std::unique_ptr<MeshObject> kernel(mesh.meshFromSegment(comp));
             kernel->setTransform(mesh.getTransform());
 
-            Mesh::Feature* feature =
-                static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Component"));
+            Mesh::Feature* feature = pcDoc->addObject<Mesh::Feature>("Component");
             feature->Mesh.setValuePtr(kernel.release());
         }
     }

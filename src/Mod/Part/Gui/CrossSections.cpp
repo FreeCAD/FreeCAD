@@ -260,8 +260,7 @@ void CrossSections::apply()
         App::Document* doc = (*it)->getDocument();
         std::string s = (*it)->getNameInDocument();
         s += "_cs";
-        Part::Feature* section = static_cast<Part::Feature*>
-            (doc->addObject("Part::Feature",s.c_str()));
+        auto* section = doc->addObject<Part::Feature>(s.c_str());
         section->Shape.setValue(comp);
         section->purgeTouched();
     }
