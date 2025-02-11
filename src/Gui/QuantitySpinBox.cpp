@@ -834,7 +834,7 @@ QSize QuantitySpinBox::sizeHintCalculator(int h) const
 
     const QFontMetrics fm(fontMetrics());
     int w = 0;
-    constexpr int maxStrLen = 12;
+    constexpr int maxStrLen = 9;
 
     QString s;
     QString fixedContent = QLatin1String(" ");

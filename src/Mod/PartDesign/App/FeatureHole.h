@@ -108,6 +108,8 @@ public:
     void Restore(Base::XMLReader & reader) override;
 
     virtual void updateProps();
+    bool isDynamicCounterbore(const std::string &thread, const std::string &holeCutType);
+    bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -219,8 +221,6 @@ private:
     const CutDimensionSet& find_cutDimensionSet(const CutDimensionKey &k);
 
     void addCutType(const CutDimensionSet& dimensions);
-    bool isDynamicCounterbore(const std::string &thread, const std::string &holeCutType);
-    bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
     void updateHoleCutParams();
     std::optional<double> determineDiameter() const;
     void updateDiameterParam();
