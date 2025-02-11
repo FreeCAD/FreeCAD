@@ -2471,7 +2471,9 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     case MOD:
         if (e2.isNone())
             _EXPR_THROW("Invalid second argument.",expr);
-        unit = v1.getUnit() / v2.getUnit();
+        if (v1.getUnit() != v2.getUnit() && !v1.isDimensionless() && !v2.isDimensionless())
+            _EXPR_THROW("Units must be equal or dimensionless.",expr);
+        unit = v1.getUnit();
         break;
     case POW: {
         if (e2.isNone())
