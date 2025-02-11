@@ -71,6 +71,7 @@ public:
     App::PropertyAngle          DrillPointAngle;
     App::PropertyBool           DrillForDepth;
     App::PropertyBool           Tapered;
+    App::PropertyBool           SelfFormingThreads;
     App::PropertyAngle          TaperedAngle;
     App::PropertyBool           UseCustomThreadClearance;
     App::PropertyLength         CustomThreadClearance;
