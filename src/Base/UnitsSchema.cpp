@@ -28,6 +28,7 @@
 #include <QLocale>
 #include <QString>
 
+#include "Quantity.h"
 #include "UnitsSchema.h"
 
 using namespace Base;

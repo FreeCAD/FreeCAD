@@ -34,6 +34,8 @@
 #include <FCGlobal.h>
 #endif
 
+#include "Placement.h"
+
 namespace Base
 {
 class Matrix4D;

@@ -31,7 +31,6 @@
 #include "Factory.h"
 #include "Console.h"
 
-
 using namespace Base;
 
 

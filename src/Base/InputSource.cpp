@@ -23,6 +23,8 @@
 
 #include "PreCompiled.h"
 
+#include <istream>
+
 #include <qglobal.h>
 #if QT_VERSION < 0x060000
 #include <QTextCodec>

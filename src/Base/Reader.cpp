@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #include <memory>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
+#include <xercesc/sax2/Attributes.hpp>
 #endif
 
 #include <locale>
@@ -34,6 +35,7 @@
 #include "Base64.h"
 #include "Base64Filter.h"
 #include "Console.h"
+#include "Exception.h"
 #include "InputSource.h"
 #include "Persistence.h"
 #include "Sequencer.h"

@@ -30,6 +30,7 @@
 #include <unistd.h>
 #endif
 
+#include "Quantity.h"
 #include "UnitsSchemaImperial1.h"
 
 using namespace Base;

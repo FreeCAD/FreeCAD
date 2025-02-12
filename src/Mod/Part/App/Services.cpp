@@ -23,6 +23,8 @@
 
 #include "PreCompiled.h"
 
+#include <Base/Vector3D.h>
+
 #include "Services.h"
 
 AttacherSubObjectPlacement::AttacherSubObjectPlacement()

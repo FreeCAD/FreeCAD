@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #include "Type.h"
-#include "BaseClassPy.h"
 #include "BindingManager.h"
 #include "TypePy.h"
 #include "TypePy.cpp"

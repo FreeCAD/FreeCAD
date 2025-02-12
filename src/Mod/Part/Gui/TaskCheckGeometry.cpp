@@ -57,6 +57,7 @@
 #endif //_PreComp_
 
 #include <Base/Interpreter.h>
+#include <Base/TimeInfo.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
