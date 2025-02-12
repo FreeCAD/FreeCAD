@@ -19,6 +19,8 @@
 # *                                                                         *
 # ***************************************************************************
 """Helper functions that are used by SH3D importer."""
+import itertools
+import numpy as np
 import math
 import os
 import re
@@ -28,14 +30,15 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 import Arch
+import BOPTools.SplitFeatures
+import BOPTools.BOPFeatures
 import Draft
 import DraftGeomUtils
 import DraftVecUtils
 import Mesh
 import MeshPart
-import numpy
 import Part
-from draftobjects.facebinder import Facebinder
+
 from draftutils.messages import _err, _log, _msg, _wrn
 from draftutils.params import get_param_arch
 
@@ -44,7 +47,6 @@ import FreeCAD as App
 if App.GuiUp:
     import FreeCADGui as Gui
     from draftutils.translate import translate
-    from draftviewproviders.view_facebinder import ViewProviderFacebinder
 else:
     # \cond
     def translate(_, text):
@@ -86,7 +88,7 @@ Z_NORM = App.Vector(0, 0, 1)
 #       "Sliding 4-pane", "Awning"]
 # unzip -p all-windows.sh3d Home.xml | \
 #   grep 'catalogId=' | \
-#   sed -e 's/.*catalogId=//;s/ name=.*/: ("Open 2-pane","Window"),/' | sort -u
+#   sed -e 's/.*catalogId=//;s/ name=.*/: ("Fixed","Window"),/' | sort -u
 # unzip -p all-doors.sh3d Home.xml | \
 #   grep 'catalogId=' | \
 #   sed -e 's/.*catalogId=//;s/ name=.*/: ("Simple door","Door")/' | sort -u
@@ -115,38 +117,50 @@ DOOR_MODELS = {
     'Scopia#glass_door': ("Glass door","Door"),
     'Scopia#puerta': ("Simple door","Door"),
 
-    'eTeks#doubleFrenchWindow126x200': ("Open 2-pane","Window"),
-    'eTeks#doubleHungWindow80x122': ("Open 2-pane","Window"),
-    'eTeks#doubleOutwardOpeningWindow': ("Open 2-pane","Window"),
-    'eTeks#doubleWindow126x123': ("Open 2-pane","Window"),
-    'eTeks#doubleWindow126x163': ("Open 2-pane","Window"),
-    'eTeks#fixedTriangleWindow85x85': ("Open 2-pane","Window"),
-    'eTeks#fixedWindow85x123': ("Open 2-pane","Window"),
-    'eTeks#frenchWindow85x200': ("Open 2-pane","Window"),
-    'eTeks#halfRoundWindow': ("Open 2-pane","Window"),
-    'eTeks#roundWindow': ("Open 2-pane","Window"),
-    'eTeks#sliderWindow126x200': ("Open 2-pane","Window"),
-    'eTeks#window85x123': ("Open 2-pane","Window"),
-    'eTeks#window85x163': ("Open 2-pane","Window"),
-    'Kator Legaz#window-01': ("Open 2-pane","Window"),
-    'Kator Legaz#window-08-02': ("Open 2-pane","Window"),
-    'Kator Legaz#window-08': ("Open 2-pane","Window"),
-    'Scopia#turn-window': ("Open 2-pane","Window"),
-    'Scopia#window_2x1_medium_with_large_pane': ("Open 2-pane","Window"),
-    'Scopia#window_2x1_with_sliders': ("Open 2-pane","Window"),
-    'Scopia#window_2x3_arched': ("Open 2-pane","Window"),
-    'Scopia#window_2x3': ("Open 2-pane","Window"),
-    'Scopia#window_2x3_regular': ("Open 2-pane","Window"),
-    'Scopia#window_2x4_arched': ("Open 2-pane","Window"),
-    'Scopia#window_2x4': ("Open 2-pane","Window"),
-    'Scopia#window_2x6': ("Open 2-pane","Window"),
-    'Scopia#window_3x1': ("Open 2-pane","Window"),
-    'Scopia#window_4x1': ("Open 2-pane","Window"),
-    'Scopia#window_4x3_arched': ("Open 2-pane","Window"),
-    'Scopia#window_4x3': ("Open 2-pane","Window"),
-    'Scopia#window_4x5': ("Open 2-pane","Window"),
+    'eTeks#doubleFrenchWindow126x200': ("Fixed","Window"),
+    'eTeks#doubleHungWindow80x122': ("Fixed","Window"),
+    'eTeks#doubleOutwardOpeningWindow': ("Fixed","Window"),
+    'eTeks#doubleWindow126x123': ("Fixed","Window"),
+    'eTeks#doubleWindow126x163': ("Fixed","Window"),
+    'eTeks#fixedTriangleWindow85x85': ("Fixed","Window"),
+    'eTeks#fixedWindow85x123': ("Fixed","Window"),
+    'eTeks#frenchWindow85x200': ("Fixed","Window"),
+    'eTeks#halfRoundWindow': ("Fixed","Window"),
+    'eTeks#roundWindow': ("Fixed","Window"),
+    'eTeks#sliderWindow126x200': ("Fixed","Window"),
+    'eTeks#window85x123': ("Fixed","Window"),
+    'eTeks#window85x163': ("Fixed","Window"),
+    'Kator Legaz#window-01': ("Fixed","Window"),
+    'Kator Legaz#window-08-02': ("Fixed","Window"),
+    'Kator Legaz#window-08': ("Fixed","Window"),
+    'Scopia#turn-window': ("Fixed","Window"),
+    'Scopia#window_2x1_medium_with_large_pane': ("Fixed","Window"),
+    'Scopia#window_2x1_with_sliders': ("Fixed","Window"),
+    'Scopia#window_2x3_arched': ("Fixed","Window"),
+    'Scopia#window_2x3': ("Fixed","Window"),
+    'Scopia#window_2x3_regular': ("Fixed","Window"),
+    'Scopia#window_2x4_arched': ("Fixed","Window"),
+    'Scopia#window_2x4': ("Fixed","Window"),
+    'Scopia#window_2x6': ("Fixed","Window"),
+    'Scopia#window_3x1': ("Fixed","Window"),
+    'Scopia#window_4x1': ("Fixed","Window"),
+    'Scopia#window_4x3_arched': ("Fixed","Window"),
+    'Scopia#window_4x3': ("Fixed","Window"),
+    'Scopia#window_4x5': ("Fixed","Window"),
 
 }
+
+
+ET_XPATH_LEVEL = 'level'
+ET_XPATH_ROOM = 'room'
+ET_XPATH_WALL = 'wall'
+ET_XPATH_DOOR_OR_WINDOWS = './/doorOrWindow'
+ET_XPATH_PIECE_OF_FURNITURE = './/pieceOfFurniture'
+ET_XPATH_LIGHT = 'light'
+ET_XPATH_OBSERVER_CAMERA = 'observerCamera'
+ET_XPATH_CAMERA = 'camera'
+ET_XPATH_DUMMY_SLAB = 'DummySlab'
+ET_XPATH_DUMMY_DECORATE = 'DummyDecorate'
 
 class SH3DImporter:
     """The main class to import an SH3D file.
@@ -179,8 +193,8 @@ class SH3DImporter:
         self.building = None
         self.default_floor = None
         self.floors = {}
-        self.walls = []
-        self.space_upper_faces = []
+        self.walls = {}
+        self.spaces = {}
 
     def import_sh3d_from_string(self, home:str):
         """Import the SH3D Home from a String.
@@ -234,17 +248,15 @@ class SH3DImporter:
         # Get all the FreeCAD object in the active doc, in order to allow
         # for merge of existing object
         if self.preferences["MERGE"]:
-            for object in doc.Objects:
-                if hasattr(object, 'id'):
-                    self.fc_objects[object.id] = object
+            list(map(lambda o2: self.add_fc_objects(o2), list(filter(lambda o1: hasattr(o1, 'id'), doc.Objects))))
 
         # Let's create the project and site for this import
         self._setup_project(home)
 
         # Import the <level> element if any. If none are defined
         # create a default one.
-        if home.find(path='level') != None:
-            self._import_elements(home, 'level')
+        if home.find(ET_XPATH_LEVEL) != None:
+            self._import_elements(home, ET_XPATH_LEVEL)
         else:
             # Has the default floor already been created from a
             # previous import?
@@ -252,54 +264,47 @@ class SH3DImporter:
             self.default_floor = self.fc_objects.get('Level') if 'Level' in self.fc_objects else self._create_default_floor()
 
         # Importing <room> elements ...
-        self._import_elements(home, 'room')
+        self._import_elements(home, ET_XPATH_ROOM)
 
         # Importing <wall> elements ...
-        self._import_elements(home, 'wall')
+        self._import_elements(home, ET_XPATH_WALL)
+        self._refresh()
 
+        # Walls&Rooms have been imported. Created the floor slabs
+        self._create_slabs()
         self._refresh()
 
         if self.preferences["CREATE_GROUND_MESH"]:
             self._create_ground_mesh(home)
+            self._refresh()
 
-        self._refresh()
         if App.GuiUp and self.preferences["FIT_VIEW"]:
             Gui.SendMsgToActiveView("ViewFit")
 
         # Importing <doorOrWindow> elements ...
         if self.preferences["IMPORT_DOORS_AND_WINDOWS"]:
-            self._import_elements(home, 'doorOrWindow')
-            for furniture_group in home.findall('furnitureGroup'):
-                self._import_elements(furniture_group, 'doorOrWindow', False)
+            self._import_elements(home, ET_XPATH_DOOR_OR_WINDOWS)
             self._refresh()
-            group = App.ActiveDocument.Facebinders
-            for element in group.Group:
-                faces = []
-                new_sel_subshapes = []
-                for (sel_object, sel_subshapes) in element.Faces:
-                    for sel_subshape in sel_subshapes:
-                        sel_subshape = sel_subshape[1:] if sel_subshape.startswith('?') else sel_subshape
-                        new_sel_subshapes.append(sel_subshape)
-                    faces.append((sel_object, new_sel_subshapes))
-                element.Faces = faces
+
+        # Door&Windows have been imported. Now we can decorate...
+        if self.preferences["DECORATE_SURFACES"]:
+            self._decorate_surfaces()
             self._refresh()
 
         # Importing <pieceOfFurniture> && <furnitureGroup> elements ...
         if self.preferences["IMPORT_FURNITURES"]:
-            self._import_elements(home, 'pieceOfFurniture')
-            for furniture_group in home.findall('furnitureGroup'):
-                self._import_elements(furniture_group, 'pieceOfFurniture', False)
+            self._import_elements(home, ET_XPATH_PIECE_OF_FURNITURE)
             self._refresh()
 
         # Importing <light> elements ...
         if self.preferences["IMPORT_LIGHTS"]:
-            self._import_elements(home, 'light')
+            self._import_elements(home, ET_XPATH_LIGHT)
             self._refresh()
 
         # Importing <observerCamera> elements ...
         if self.preferences["IMPORT_CAMERAS"]:
-            self._import_elements(home, 'observerCamera')
-            self._import_elements(home, 'camera')
+            self._import_elements(home, ET_XPATH_OBSERVER_CAMERA)
+            self._import_elements(home, ET_XPATH_CAMERA)
             self._refresh()
 
         if self.preferences["CREATE_RENDER_PROJECT"] and self.site:
@@ -338,29 +343,32 @@ class SH3DImporter:
             'CREATE_GROUND_MESH': get_param_arch("sh3dCreateGroundMesh"),
             'DEFAULT_GROUND_COLOR': color_fc2sh(get_param_arch("sh3dDefaultGroundColor")),
             'DEFAULT_SKY_COLOR': color_fc2sh(get_param_arch("sh3dDefaultSkyColor")),
+            'DECORATE_SURFACES': get_param_arch("sh3dDecorateSurfaces"),
         }
 
     def _setup_handlers(self):
         self.handlers = {
-            'level': LevelHandler(self),
-            'room': RoomHandler(self),
-            'wall': WallHandler(self),
+            ET_XPATH_LEVEL: LevelHandler(self),
+            ET_XPATH_ROOM: RoomHandler(self),
+            ET_XPATH_WALL: WallHandler(self),
+            ET_XPATH_DUMMY_SLAB : None,
         }
         if self.preferences["IMPORT_DOORS_AND_WINDOWS"]:
-            self.handlers['doorOrWindow'] = DoorOrWindowHandler(self)
-            self.handlers['furnitureGroup'] = None
+            self.handlers[ET_XPATH_DOOR_OR_WINDOWS] = DoorOrWindowHandler(self)
+
+        if self.preferences["DECORATE_SURFACES"]:
+            self.handlers[ET_XPATH_DUMMY_DECORATE] = None,
 
         if self.preferences["IMPORT_FURNITURES"]:
-            self.handlers['pieceOfFurniture'] = FurnitureHandler(self)
-            self.handlers['furnitureGroup'] = None
+            self.handlers[ET_XPATH_PIECE_OF_FURNITURE] = FurnitureHandler(self)
 
         if self.preferences["IMPORT_LIGHTS"]:
-            self.handlers['light'] = LightHandler(self)
+            self.handlers[ET_XPATH_LIGHT] = LightHandler(self)
 
         if self.preferences["IMPORT_CAMERAS"]:
             camera_handler = CameraHandler(self)
-            self.handlers['observerCamera'] = camera_handler
-            self.handlers['camera'] = camera_handler
+            self.handlers[ET_XPATH_OBSERVER_CAMERA] = camera_handler
+            self.handlers[ET_XPATH_CAMERA] = camera_handler
 
     def _refresh(self):
         App.ActiveDocument.recompute()
@@ -392,10 +400,14 @@ class SH3DImporter:
                 value = str(value.get(name, ""))
             elif type_ == "App::PropertyFloat":
                 value = float(value.get(name, 0))
+            elif type_ == "App::PropertyQuantity":
+                value = float(value.get(name, 0))
             elif type_ == "App::PropertyInteger":
                 value = int(value.get(name, 0))
+            elif type_ == "App::PropertyPercent":
+                value = int(value.get(name, 0))
             elif type_ == "App::PropertyBool":
-                value = bool(value.get(name, True))
+                value = value.get(name, "true") == "true"
         if self.preferences["DEBUG"]:
             _log(f"Setting @{obj}.{name} = {value}")
         setattr(obj, name, value)
@@ -413,6 +425,17 @@ class SH3DImporter:
         """
         if name not in obj.PropertiesList:
             obj.addProperty(property_type, name, group, description)
+
+    def add_fc_objects(self, obj):
+        """Register `obj`.
+
+        This object can then be referenced later on by
+        other objects (i.e. light, etc.)
+
+        Args:
+            obj (AppDocumentObject): the object to register
+        """
+        self.fc_objects[obj.id] = obj
 
     def get_fc_object(self, id, sh_type):
         """Returns the FC doc element corresponding to the imported id and sh_type
@@ -455,6 +478,14 @@ class SH3DImporter:
             return self.default_floor
         return self.floors.get(level_id, None)
 
+    def add_space(self, floor, space):
+        if floor.id not in self.spaces:
+            self.spaces[floor.id] = []
+        self.spaces[floor.id].append(space)
+
+    def get_spaces(self, floor):
+        return self.spaces.get(floor.id, [])
+
     def get_space(self, floor, p):
         """Returns the Space this point belongs to.
 
@@ -468,26 +499,35 @@ class SH3DImporter:
             Space: the space the object belongs to or None
         """
         closest_space = None
-        for (space_floor, space, space_face) in self.space_upper_faces:
-            if not space_face: #?!?
-                continue
-            space_face_z = space_face.CenterOfMass.z
-            projection = App.Vector(p.x, p.y, space_face_z)
+        for space in self.spaces.get(floor.id, []):
+            space_face = space.Base.Shape
+            space_z = space_face.CenterOfMass.z
+            projection = App.Vector(p.x, p.y, space_z)
             # Checks that:
             #   - the point's projection is inside the face
             #   - the point is above the face
             #   - the point's parent and the face's are on the same level
             # NOTE: If two rooms overlap on the same level, the result is
             #   undefined...
-            if space_face.isInside(projection, 1, True) and space_face_z < p.z and space_floor.id == floor.id:
+            if space_face.isInside(projection, 1, True) and space_z < p.z:
                 closest_space = space
         return closest_space
 
-    def add_wall(self, wall):
-        self.walls.append(wall)
+    def add_wall(self, floor, wall):
+        if floor.id not in self.walls:
+            self.walls[floor.id] = []
+        self.walls[floor.id].append(wall)
 
-    def get_walls(self):
-        return self.walls
+    def get_walls(self, floor):
+      """Returns the wall belonging to the specified level
+
+      Args:
+          floor (Arch.Level): the level for which to return the list of wall
+
+      Returns:
+          list: the list of Arch.Wall
+      """
+      return self.walls.get(floor.id, [])
 
     def _create_groups(self):
         """Create FreeCAD Group for the different imported elements
@@ -507,10 +547,6 @@ class SH3DImporter:
             elm (str): the <home> element
 
         """
-        if 'Project' in self.fc_objects:
-            self.project = self.fc_objects.get('Project')
-        elif self.preferences["CREATE_IFC_PROJECT"]:
-            self.project = self._create_project()
         if 'Site' in self.fc_objects:
             self.site = self.fc_objects.get('Site')
         else:
@@ -522,10 +558,14 @@ class SH3DImporter:
         else:
             self.building = self._create_building(elm)
 
-        if self.preferences["CREATE_IFC_PROJECT"]:
-            self.project.addObject(self.site)
-
         self.site.addObject(self.building)
+
+        if 'Project' in self.fc_objects:
+            self.project = self.fc_objects.get('Project')
+        elif self.preferences["CREATE_IFC_PROJECT"]:
+            self.project = self._create_project()
+        if self.project:
+            self.project.addObject(self.site)
 
     def _create_project(self):
         """Create a default Arch::Project object
@@ -589,7 +629,7 @@ class SH3DImporter:
 
         self.site.addObject(ground)
 
-    def _import_elements(self, parent, tag, update_progress=True):
+    def _import_elements(self, parent, xpath):
         """Generic function to import a specific element.
 
         This function will lookup the handler registered for the elements
@@ -599,30 +639,39 @@ class SH3DImporter:
         Args:
             parent (Element): the parent of the elements to be imported.
                 Usually the <home> element.
-            tag (str): the tag of the elements to be imported.
+            xpath (str): the xpath of the elements to be imported.
             update_progress (bool, optional): whether to update the
                 progress. Set to false when importing a group of elements.
                 Defaults to True.
         """
-        tags = list(self.handlers.keys())
-        elements = parent.findall(tag)
-        if update_progress and self.progress_bar:
+        xpaths = list(self.handlers.keys())
+        elements = parent.findall(xpath)
+        tag_name = xpath[3:] if xpath.startswith('.') else xpath
+
+        total_steps, current_step, total_elements = self._get_progress_info(xpath, elements)
+        if self.progress_bar:
             self.progress_bar.stop()
-            self.progress_bar.start(f"Step {tags.index(tag)+1}/{len(tags)}: importing {len(elements)} '{tag}' elements. Please wait ...", len(elements))
-            _msg(f"Importing {len(elements)} '{tag}' elements ...")
+            self.progress_bar.start(f"Step {current_step}/{total_steps}: importing {total_elements} '{tag_name}' elements. Please wait ...", total_elements)
+            _msg(f"Importing {total_elements} '{tag_name}' elements ...")
         def _process(tuple):
             (i, elm) = tuple
-            _msg(f"Importing {tag}#{i} ({self.current_object_count + 1}/{self.total_object_count}) ...")
+            _msg(f"Importing {tag_name}#{i} ({self.current_object_count + 1}/{self.total_object_count}) ...")
             try:
-                self.handlers[tag].process(parent, i, elm)
+                self.handlers[xpath].process(parent, i, elm)
             except Exception as e:
-                _err(f"Failed to import <{tag}>#{i} ({elm.get('id', elm.get('name'))}):")
+                _err(f"Failed to import <{tag_name}>#{i} ({elm.get('id', elm.get('name'))}):")
                 _err(str(e))
                 _err(traceback.format_exc())
-            if update_progress and self.progress_bar:
+            if self.progress_bar:
                 self.progress_bar.next()
             self.current_object_count = self.current_object_count + 1
         list(map(_process, enumerate(elements)))
+
+    def _get_progress_info(self, xpath, elements):
+        xpaths = list(self.handlers.keys())
+        total_steps = len(xpaths)
+        current_step = xpaths.index(xpath)+1
+        return total_steps, current_step, len(elements)
 
     def _set_site_properties(self, elm):
         # All information in environment?, backgroundImage?, print?, compass
@@ -691,6 +740,52 @@ class SH3DImporter:
         else:
             _msg(f"No <compass> tag found in <{elm.tag}>")
 
+    def _create_slabs(self):
+        floors = self.floors.values()
+        total_steps, current_step, total_elements = self._get_progress_info(ET_XPATH_DUMMY_SLAB, floors)
+        if self.progress_bar:
+            self.progress_bar.stop()
+            self.progress_bar.start(f"Step {current_step}/{total_steps}: Creating {total_elements} 'slab' elements. Please wait ...", total_elements)
+            _msg(f"Creating {total_elements} 'slab' elements ...")
+        handler = self.handlers[ET_XPATH_LEVEL]
+        def _create_slab(tuple):
+            (i, floor) = tuple
+            _msg(f"Creating slab#{i} for floor '{floor.Label}' ...")
+            try:
+                handler.create_slabs(floor)
+            except Exception as e:
+                _err(f"Failed to create slab#{i} for floor '{floor.Label}':")
+                _err(str(e))
+                _err(traceback.format_exc())
+            if self.progress_bar:
+                self.progress_bar.next()
+        list(map(_create_slab, enumerate(floors)))
+
+    def _decorate_surfaces(self):
+
+        all_spaces = self.spaces.values()
+        all_spaces = list(itertools.chain(*all_spaces))
+        all_walls = self.walls.values()
+        all_walls = list(itertools.chain(*all_walls))
+
+        total_elements = len(all_spaces)+len(all_walls)
+
+        if self.progress_bar:
+            self.progress_bar.stop()
+            self.progress_bar.start(f"Decorating {total_elements} elements. Please wait ...", total_elements)
+        _msg(f"Decorating {total_elements} elements ...")
+
+        handler = self.handlers[ET_XPATH_ROOM]
+        for i, space in enumerate(all_spaces):
+            handler.post_process(space)
+            if self.progress_bar: self.progress_bar.next()
+
+        handler = self.handlers[ET_XPATH_WALL]
+        for i, wall in enumerate(all_walls):
+            handler.post_process(wall)
+            if self.progress_bar: self.progress_bar.next()
+        if self.progress_bar: self.progress_bar.stop()
+
 
 class BaseHandler:
     """The base class for all importers."""
@@ -741,6 +836,9 @@ class BaseHandler:
         """
         return self.importer.get_floor(level_id)
 
+    def get_spaces(self, floor):
+        return self.importer.get_spaces(floor)
+
     def get_space(self, floor, p):
         """Returns the Space this point belongs to.
 
@@ -755,47 +853,30 @@ class BaseHandler:
         """
         return self.importer.get_space(floor, p)
 
-    def _get_upper_face(self, faces):
-        """Returns the upper face of a given list of faces
+    def get_walls(self, floor):
+        return self.importer.get_walls(floor)
 
-        More specifically returns the face with the highest z.
-        It is used to figure out which space a furniture belongs to.
+    def _ps(self, section, print_z: bool = False):
+        # Pretty print a Section in a condensed way
+        if hasattr(section, 'Shape'):
+            v = section.Shape.Vertexes
+        else:
+            # a Part.Face
+            v = section.Vertexes
+        return f"[{self._pv(v[0].Point, print_z)}, {self._pv(v[1].Point, print_z)}, {self._pv(v[2].Point, print_z)}, {self._pv(v[3].Point, print_z)}]"
 
-        Args:
-            faces (list): The list of faces
+    def _pe(self, edge, print_z: bool = False):
+        # Print an Edge in a condensed way
+        v = edge.Vertexes
+        return f"[{self._pv(v[0].Point, print_z)}, {self._pv(v[1].Point, print_z)}]"
 
-        Returns:
-            Face: the upper face
-        """
-        upper_face = None
-        com_max_z = -float('inf')
-        for face in faces:
-            com = face.CenterOfMass
-            if com.z > com_max_z:
-                upper_face = face
-                com_max_z = com.z
-        return upper_face
-
-    def _get_lower_face(self, faces):
-        """Returns the lower face of a given list of faces
-
-        More specifically returns the face with the lowest z.
-        It is used to figure out which space a furniture belongs to.
-
-        Args:
-            faces (list): The list of faces
-
-        Returns:
-            Face: the lower face
-        """
-        lower_face = None
-        com_min_z = float('inf')
-        for face in faces:
-            com = face.CenterOfMass
-            if com.z < com_min_z:
-                lower_face = face
-                com_min_z = com.z
-        return lower_face
+    def _pv(self, v, print_z: bool = False, ndigits: None = None):
+        # Print an Vector in a condensed way
+        if hasattr(v,'X'):
+            return f"({round(getattr(v, 'X'), ndigits)},{round(getattr(v, 'Y'), ndigits)}{',' + str(round(getattr(v, 'Z'), ndigits)) if print_z else ''})"
+        elif hasattr(v,'x'):
+            return f"({round(getattr(v, 'x'), ndigits)},{round(getattr(v, 'y'), ndigits)}{',' + str(round(getattr(v, 'z'), ndigits)) if print_z else ''})"
+        raise ValueError(f"Expected a Point or Vector, got {type(v)}")
 
 
 class LevelHandler(BaseHandler):
@@ -822,9 +903,8 @@ class LevelHandler(BaseHandler):
         floor.Placement.Base.z = dim_sh2fc(float(elm.get('elevation')))
         floor.Height = dim_sh2fc(float(elm.get('height')))
         self._set_properties(floor, elm)
-
-        floor.ViewObject.Visibility = elm.get('visible', 'true') == 'true'
-        self._add_groups(floor)
+        floor.Visibility = elm.get('visible', 'true') == 'true'
+        self._create_groups(floor)
         self.importer.add_floor(floor)
 
     def create_default_floor(self):
@@ -833,8 +913,8 @@ class LevelHandler(BaseHandler):
         floor.Placement.Base.z = 0
         floor.Height = 2500
 
-        self._set_properties(floor, dict({'shType': 'level', 'id':'Level', 'floorThickness':dim_fc2sh(250), 'elevationIndex': 0, 'viewable': True}))
-        self._add_groups(floor)
+        self._set_properties(floor, dict({'shType': 'level', 'id':'Level', 'floorThickness':25, 'elevationIndex': 0, 'viewable': True}))
+        self._create_groups(floor)
         self.importer.add_floor(floor)
 
         return floor
@@ -842,20 +922,126 @@ class LevelHandler(BaseHandler):
     def _set_properties(self, obj, elm):
         self.setp(obj, "App::PropertyString", "shType", "The element type", 'level')
         self.setp(obj, "App::PropertyString", "id", "The floor's id", elm)
-        self.setp(obj, "App::PropertyFloat", "floorThickness", "The floor's slab thickness", dim_sh2fc(float(elm.get('floorThickness'))))
+        self.setp(obj, "App::PropertyQuantity", "floorThickness", "The floor's slab thickness", dim_sh2fc(float(elm.get('floorThickness'))))
         self.setp(obj, "App::PropertyInteger", "elevationIndex", "The floor number", elm)
         self.setp(obj, "App::PropertyBool", "viewable", "Whether the floor is viewable", elm)
 
+    def _create_groups(self, floor):
+        # This is a special group that does not appear in the TreeView.
+        group = floor.newObject("App::DocumentObjectGroup")
+        group.Label = f"References-{floor.Label}"
+        self.setp(floor, "App::PropertyString", "ReferenceFacesGroupName", "The DocumentObjectGroup name for all Reference Faces on this floor", group.Name)
+        group.Visibility = False
+        group.ViewObject.ShowInTree = False
 
-    def _add_groups(self, floor):
-        group = floor.newObject("App::DocumentObjectGroup", "Facebinders")
-        self.setp(floor, "App::PropertyString", "FacebinderGroupName", "The DocumentObjectGroup name for all Facebinders on this floor", group.Name)
+        if self.importer.preferences["DECORATE_SURFACES"]:
+            group = floor.newObject("App::DocumentObjectGroup")
+            group.Label = f"Decoration-{floor.Label}-Walls"
+            self.setp(floor, "App::PropertyString", "DecorationWallsGroupName", "The DocumentObjectGroup name for all wall decorations on this floor", group.Name)
+            group = floor.newObject("App::DocumentObjectGroup")
+            group.Label = f"Decoration-{floor.Label}-Ceilings"
+            self.setp(floor, "App::PropertyString", "DecorationCeilingsGroupName", "The DocumentObjectGroup name for all ceilings decoration on this floor", group.Name)
+            group = floor.newObject("App::DocumentObjectGroup")
+            group.Label = f"Decoration-{floor.Label}-Floors"
+            self.setp(floor, "App::PropertyString", "DecorationFloorsGroupName", "The DocumentObjectGroup name for all floors decoration on this floor", group.Name)
+            group = floor.newObject("App::DocumentObjectGroup")
+            group.Label = f"Decoration-{floor.Label}-Baseboards"
+            self.setp(floor, "App::PropertyString", "DecorationBaseboardsGroupName", "The DocumentObjectGroup name for all baseboards on this floor", group.Name)
 
         if self.importer.preferences["IMPORT_FURNITURES"]:
-            group = floor.newObject("App::DocumentObjectGroup", "Furnitures")
+            group = floor.newObject("App::DocumentObjectGroup", f"Furnitures-{floor.Label}")
             self.setp(floor, "App::PropertyString", "FurnitureGroupName", "The DocumentObjectGroup name for all furnitures in this floor", group.Name)
-            group = floor.newObject("App::DocumentObjectGroup", "Baseboards")
-            self.setp(floor, "App::PropertyString", "BaseboardGroupName", "The DocumentObjectGroup name for all baseboards on this floor", group.Name)
+
+    def create_slabs(self, floor):
+        """Creates a Arch.Slab for the given floor.
+
+        Creating a slab consists in projecting all the structures of that
+        floor into a plane, then create a extrusion for each one and then
+        fuse thogether (in order to simplify the slab geometry).
+
+        Args:
+            floor (Arch.Floor): the Arch Floor for which to create the Slab
+        """
+        # Take the walls and only the spaces whose floor is actually visible.
+        objects_to_project = list(filter(lambda s: s.floorVisible, self.get_spaces(floor)))
+        objects_to_project.extend(self.get_walls(floor))
+        objects_to_fuse = self._get_object_to_fuse(floor, objects_to_project)
+        if len(objects_to_fuse) > 0:
+            if len(objects_to_fuse) > 1:
+                bf = BOPTools.BOPFeatures.BOPFeatures(App.ActiveDocument)
+                slab_base = bf.make_multi_fuse([ o.Name for o in objects_to_fuse])
+                slab_base.Label = f"{floor.Label}-footprint"
+            else:
+                slab_base = objects_to_fuse[0]
+                slab_base.Label = f"{floor.Label}-footprint"
+
+            slab = Arch.makeStructure(slab_base)
+            slab.Label = f"{floor.Label}-slab"
+            slab.setExpression('Height', f"{slab_base.Name}.Shape.BoundBox.ZLength")
+            slab.Normal = -Z_NORM
+            floor.addObject(slab)
+        else:
+            _wrn(f"No object found for floor {floor.Label}. No slab created.")
+
+    def _get_object_to_fuse(self, floor, objects_to_project):
+        group = floor.newObject("App::DocumentObjectGroup", f"SlabObjects-{floor.Label}")
+        group.Visibility = False
+        group.ViewObject.ShowInTree = False
+
+        objects_to_fuse = []
+        for object in objects_to_project:
+            # Project the floor's objects onto the XY plane
+            sv = Draft.make_shape2dview(object, Z_NORM)
+            sv.Label = f"SV-{floor.Label}-{object.Label}"
+            sv.Placement.Base.z = floor.Placement.Base.z
+            sv.Visibility = False
+            sv.recompute()
+            group.addObject(sv)
+
+            wire = Part.Wire(sv.Shape.Edges)
+            if not wire.isClosed():
+                # Sometimes the wire is not closed because the edges are
+                # not sorted and do not form a "chain". Therefore, sort them,
+                # recreate the wire while also rounding the precision of the
+                # Vertices in order to avoid not closing because the points
+                # are not close enough
+                wire = Part.Wire(Part.__sortEdges__(self._round(sv.Shape.Edges)))
+                if not wire.isClosed():
+                    _wrn(f"Projected Face for {object.Label} does not produce a closed wire. Not adding to slab construction ...")
+                    continue
+
+            face = Part.Face(wire)
+            extrude = face.extrude(-Z_NORM*floor.floorThickness.Value)
+            part = Part.show(extrude, "Footprint")
+            part.Label = f"Extrude-{floor.Label}-{object.Label}-footprint"
+            part.recompute()
+            part.Visibility = False
+            part.ViewObject.ShowInTree = False
+            objects_to_fuse.append(part)
+        return objects_to_fuse
+
+    def _round(self, edges, decimals=2):
+        """
+        Rounds the coordinates of all vertices in a list of edges to the specified number of decimals.
+
+        :param edges: A list of Part.Edge objects.
+        :param decimals: Number of decimal places to round to (default: 2).
+        :return: A list of edges with rounded vertices.
+        """
+        new_edges = []
+
+        for edge in edges:
+            vertices = edge.Vertexes
+            if len(vertices) != 2:  # Line or similar
+                raise ValueError("Unsupported edge type: Only straight edges are handled.")
+            new_vertices = [
+                App.Vector(round(v.X, decimals), round(v.Y, decimals), round(v.Z, decimals))
+                for v in vertices
+            ]
+            # Create a new edge with the rounded vertices
+            new_edge = Part.Edge(Part.LineSegment(new_vertices[0], new_vertices[1]))
+            new_edges.append(new_edge)
+        return new_edges
 
 
 class RoomHandler(BaseHandler):
@@ -878,57 +1064,43 @@ class RoomHandler(BaseHandler):
         floor = self.get_floor(level_id)
         assert floor != None, f"Missing floor '{level_id}' for <room> '{elm.get('id')}' ..."
 
-        # A Room is composed of a space with the slab as the base object
-
-        points = []
-        for point in elm.findall('point'):
-            x = float(point.get('x'))
-            y = float(point.get('y'))
-            z = dim_fc2sh(floor.Placement.Base.z)
-            points.append(coord_sh2fc(App.Vector(x, y, z)))
-
-        slab = None
+        space = face = None
         if self.importer.preferences["MERGE"]:
-            slab = self.get_fc_object(elm.get("id"), 'room')
+            space = self.get_fc_object(elm.get("id"), 'room')
 
-        if not slab:
-            line = Draft.make_wire(points, placement=App.Placement(), closed=True, face=True, support=None)
-            slab = Arch.makeStructure(line, height=floor.floorThickness)
-
-        slab.Label = elm.get('name', 'Room') + '-slab'
-        slab.IfcType = "Slab"
-        slab.Normal = -Z_NORM
-
-        color = elm.get('floorColor', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
-        set_color_and_transparency(slab, color)
-        self._set_properties(slab, elm)
-
-        slab.recompute(True)
-
-        # No 1-to-1 correspondance between SH3D <room> and FC element.
-        # Creating a fake SH3D elemement in order to take advantage of the
-        # different lookup facilities. NOTE the suffix '-space' for both
-        # the sh_type and id...
-        space = None
-        if self.importer.preferences["MERGE"]:
-            space = self.get_fc_object(elm.get("id")+"-space", 'room-space')
-
+        # A Room is composed of a space with a Face as the base object
         if not space:
-            space = Arch.makeSpace(slab)
+            floor_z = dim_fc2sh(floor.Placement.Base.z)
+            points = [ coord_sh2fc(App.Vector(float(p.get('x')), float(p.get('y')), floor_z)) for p in elm.findall('point') ]
+            # remove consecutive identical points
+            points = [points[i] for i in range(len(points)) if i == 0 or points[i] != points[i - 1]]
+
+            # Create a reference face that can be used later on to create
+            # the floor & ceiling decoration...
+            reference_face = Draft.make_wire(points, closed=True, face=True, support=None)
+            reference_face.Label = elm.get('name', 'Room') + '-reference'
+            reference_face.Visibility = False
+            reference_face.recompute()
+            floor.getObject(floor.ReferenceFacesGroupName).addObject(reference_face)
+
+            # NOTE: for room to properly display and calculate the area, the
+            # Base object can not be a face but must have a height...
+            footprint = App.ActiveDocument.addObject("Part::Feature", "Footprint")
+            footprint.Shape = reference_face.Shape.extrude(Z_NORM)
+            footprint.Label = elm.get('name', 'Room') + '-footprint'
+
+            space = Arch.makeSpace(footprint)
             space.IfcType = "Space"
             space.Label = elm.get('name', 'Room')
-            self._set_space_properties(space, elm)
+            self._set_properties(space, elm)
 
-        self.importer.fc_objects[slab.id] = slab
-        self.importer.fc_objects[space.id] = space
+            space.setExpression('ElevationWithFlooring', f"{footprint.Name}.Shape.BoundBox.ZMin")
+            self.setp(space, "App::PropertyLink", "ReferenceFace", "The Reference Part.Face", reference_face)
+            self.setp(space, "App::PropertyString", "ReferenceFloorName", "The name of the Arch.Floor this room belongs to", floor.Name)
 
-        upper_face = self._get_upper_face(slab.Shape.Faces)
-        if not upper_face:
-            _wrn(f"Couldn't find the upper face of slab {slab.Label} on level {floor.Label}!")
-        else:
-            self.importer.space_upper_faces.append((floor, space, upper_face))
+        self.importer.add_space(floor, space)
 
-        slab.Visibility = True
+        space.Visibility = True if space.floorVisible else False
 
         floor.addObject(space)
 
@@ -947,15 +1119,41 @@ class RoomHandler(BaseHandler):
         self.setp(obj, "App::PropertyFloat", "areaYOffset", "The room's area annotation y offset", elm)
         self.setp(obj, "App::PropertyBool", "floorVisible", "Whether the floor of the room is displayed", elm)
         self.setp(obj, "App::PropertyString", "floorColor", "The room's floor color", floor_color)
-        self.setp(obj, "App::PropertyFloat", "floorShininess", "The room's floor shininess", elm)
+        self.setp(obj, "App::PropertyPercent", "floorShininess", "The room's floor shininess", percent_sh2fc(elm.get('floorShininess', 0)))
         self.setp(obj, "App::PropertyBool", "ceilingVisible", "Whether the ceiling of the room is displayed", elm)
         self.setp(obj, "App::PropertyString", "ceilingColor", "The room's ceiling color", ceiling_color)
-        self.setp(obj, "App::PropertyFloat", "ceilingShininess", "The room's ceiling shininess", elm)
+        self.setp(obj, "App::PropertyPercent", "ceilingShininess", "The room's ceiling shininess", percent_sh2fc(elm.get('ceilingShininess', 0)))
         self.setp(obj, "App::PropertyBool", "ceilingFlat", "", elm)
 
-    def _set_space_properties(self, obj, elm):
-        self.setp(obj, "App::PropertyString", "shType", "The element type", 'room-space')
-        self.setp(obj, "App::PropertyString", "id", "The slab's id", elm.get('id', str(uuid.uuid4()))+"-space")
+    def post_process(self, obj):
+        if self.importer.preferences["DECORATE_SURFACES"]:
+            floor = App.ActiveDocument.getObject(obj.ReferenceFloorName)
+            self._add_facebinder(floor, obj, "floor")
+            self._add_facebinder(floor, obj, "ceiling")
+
+    def _add_facebinder(self, floor, space, side):
+        facebinder_id = f"{floor.id}-{space.id}-{side}-facebinder"
+        facebinder = None
+        if self.importer.preferences["MERGE"]:
+            facebinder = self.get_fc_object(facebinder_id, 'facebinder')
+
+        if not facebinder:
+            # NOTE: always use Face1 as this is a 2D object
+            facebinder = Draft.make_facebinder(( space.ReferenceFace, ("Face1", ) ))
+            facebinder.Extrusion = 1
+            facebinder.Label = space.Label + f" {side} finish"
+
+        facebinder.Placement.Base.z = 1 if (side == "floor") else floor.Height.Value-1
+        facebinder.Visibility = getattr(space, f"{side}Visible")
+        set_color_and_transparency(facebinder, getattr(space, f"{side}Color"))
+        set_shininess(facebinder, getattr(space, f"{side}Shininess", 0))
+
+        self.setp(facebinder, "App::PropertyString", "shType", "The element type", 'facebinder')
+        self.setp(facebinder, "App::PropertyString", "id", "The element's id", facebinder_id)
+        self.setp(facebinder, "App::PropertyString", "ReferenceRoomName", "The Reference Arch.Space", space.Name)
+
+        group_name = getattr(floor, "DecorationFloorsGroupName") if (side == "floor") else getattr(floor, "DecorationCeilingsGroupName")
+        floor.getObject(group_name).addObject(facebinder)
 
 
 class WallHandler(BaseHandler):
@@ -991,16 +1189,12 @@ class WallHandler(BaseHandler):
 
         wall.IfcType = "Wall"
         wall.Label = f"wall{i}"
+        wall.Base.Label = f"wall{i}-wallshape"
         self._set_properties(wall, elm)
+        self._set_baseboard_properties(wall, elm)
+        self.setp(wall, "App::PropertyString", "ReferenceFloorName", "The Name of the Arch.Floor this walls belongs to", floor.Name)
+
         wall.recompute(True)
-
-        self._create_facebinders(floor, wall, elm)
-
-        if self.importer.preferences["IMPORT_FURNITURES"]:
-            for baseboard in elm.findall('baseboard'):
-                space = self._import_baseboard(floor, wall, baseboard)
-                if space:
-                    space.Boundaries = space.Boundaries + [wall]
 
         floor.addObject(wall)
         if base_object:
@@ -1008,7 +1202,7 @@ class WallHandler(BaseHandler):
             base_object.Visibility = False
             base_object.Label = base_object.Label + "-" + wall.Label
 
-        self.importer.add_wall(wall)
+        self.importer.add_wall(floor, wall)
 
     def _get_sibling_wall(self, parent, wall, sibling_attribute_name):
         sibling_wall_id = wall.get(sibling_attribute_name, None)
@@ -1021,11 +1215,32 @@ class WallHandler(BaseHandler):
         return sibling_wall
 
     def _set_properties(self, obj, elm):
+
+        top_color = elm.get('topColor', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
+        left_side_color = elm.get('leftSideColor', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
+        right_side_color = elm.get('rightSideColor', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
+
         self.setp(obj, "App::PropertyString", "shType", "The element type", 'wall')
         self.setp(obj, "App::PropertyString", "id", "The wall's id", elm)
         self.setp(obj, "App::PropertyString", "wallAtStart", "The Id of the contiguous wall at the start of this wall", elm)
         self.setp(obj, "App::PropertyString", "wallAtEnd", "The Id of the contiguous wall at the end of this wall", elm)
         self.setp(obj, "App::PropertyString", "pattern", "The pattern of this wall in plan view", elm)
+        self.setp(obj, "App::PropertyString", "topColor", "The wall inner color", top_color)
+        self.setp(obj, "App::PropertyString", "leftSideColor", "The wall inner color", left_side_color)
+        self.setp(obj, "App::PropertyPercent","leftSideShininess", "The room's ceiling shininess", percent_sh2fc(elm.get('leftSideShininess', 0)))
+        self.setp(obj, "App::PropertyString", "rightSideColor", "The wall inner color", right_side_color)
+        self.setp(obj, "App::PropertyPercent","rightSideShininess", "The room's ceiling shininess", percent_sh2fc(elm.get('rightSideShininess', 0)))
+
+    def _set_baseboard_properties(self, obj, elm):
+        # Baseboard are a little bit special:
+        # Since their placement and other characteristics are dependant of
+        # the wall elements to be created (such as Door&Windows), their
+        # creation is delayed until the
+        for baseboard in elm.findall('baseboard'):
+            side = baseboard.get('attribute')
+            self.setp(obj, "App::PropertyQuantity", f"{side}Thickness", f"The thickness of the {side} baseboard", dim_sh2fc(float(baseboard.get("thickness"))))
+            self.setp(obj, "App::PropertyQuantity", f"{side}Height", f"The height of the {side} baseboard", dim_sh2fc(float(baseboard.get("height"))))
+            self.setp(obj, "App::PropertyString", f"{side}Color", f"The color of the {side} baseboard", baseboard.get("color"))
 
     def _create_wall(self, floor, prev, next, elm):
         """Create an Arch::Structure from an SH3D Element.
@@ -1070,7 +1285,7 @@ class WallHandler(BaseHandler):
         # object based on ruled surface instead.
         # See https://github.com/FreeCAD/FreeCAD/issues/18658 and related OCCT
         #   ticket
-        if (sweep.Shape.isNull() or not sweep.Shape.isValid()):
+        if sweep.Shape.isNull() or not sweep.Shape.isValid():
             if is_wall_straight:
                 _log(f"Sweep's shape is invalid, using ruled surface instead ...")
                 App.ActiveDocument.removeObject(sweep.Label)
@@ -1082,13 +1297,13 @@ class WallHandler(BaseHandler):
         else:
             wall = Arch.makeWall(sweep)
 
-        # Keep track of base object. Used for baseboard import
+        # Keep track of base objects. Used to decorate walls
         self.importer.set_property(wall, "App::PropertyLinkList", "BaseObjects", "The different base objects whose sweep failed. Kept for compatibility reasons", [section_start, section_end, spine])
 
         # TODO: Width is incorrect when joining walls
-        wall.setExpression('Length', f'{spine.Label}.Length')
-        wall.setExpression('Width', f'({section_start.Label}.Length + {section_end.Label}.Length) / 2')
-        wall.setExpression('Height', f'({section_start.Label}.Height + {section_end.Label}.Height) / 2')
+        wall.setExpression('Length', f'{spine.Name}.Length')
+        wall.setExpression('Width', f'({section_start.Name}.Length + {section_end.Name}.Length) / 2')
+        wall.setExpression('Height', f'({section_start.Name}.Height + {section_end.Name}.Height) / 2')
 
         return wall, base_object
 
@@ -1104,7 +1319,7 @@ class WallHandler(BaseHandler):
             Part::Sweep: the Part::Sweep
         """
         App.ActiveDocument.recompute([section_start, section_end, spine])
-        sweep = App.ActiveDocument.addObject('Part::Sweep')
+        sweep = App.ActiveDocument.addObject('Part::Sweep', "WallShape")
         sweep.Sections = [section_start, section_end]
         sweep.Spine = spine
         sweep.Solid = True
@@ -1137,7 +1352,7 @@ class WallHandler(BaseHandler):
         compound.Links = [ruled_surface, section_start, section_end, spine]
         compound.recompute()
 
-        compound_solid = App.ActiveDocument.addObject("Part::Feature")
+        compound_solid = App.ActiveDocument.addObject("Part::Feature", "WallShape")
         compound_solid.Shape = Part.Solid(Part.Shell(compound.Shape.Faces))
 
         return compound_solid, compound
@@ -1170,11 +1385,6 @@ class WallHandler(BaseHandler):
         height_start = dim_sh2fc(elm.get('height', dim_fc2sh(floor.Height)))
         height_end = dim_sh2fc(elm.get('heightAtEnd', dim_fc2sh(height_start)))
 
-        # NOTE: the wall height is adjusted with the floor thickness
-        # BUG: It should be adjusted for all floor except the last one.
-        height_start = height_start + floor.floorThickness
-        height_end = height_end + floor.floorThickness
-
         start = coord_sh2fc(App.Vector(x_start, y_start, z))
         end = coord_sh2fc(App.Vector(x_end, y_end, z))
 
@@ -1197,6 +1407,7 @@ class WallHandler(BaseHandler):
         section_end = self._get_section(wall_details, False, next_wall_details)
 
         spine = Draft.makeLine(start, end)
+        spine.Label = f"Spine"
         App.ActiveDocument.recompute([section_start, section_end, spine])
         if self.importer.preferences["DEBUG"]:
             _log(f"_create_straight_segment(): wall {self._pv(start)}->{self._pv(end)} => section_start={self._ps(section_start)}, section_end={self._ps(section_end)}")
@@ -1237,7 +1448,12 @@ class WallHandler(BaseHandler):
         # The Length property is used in the Wall to calculate volume, etc...
         # Since make Circle does not calculate this Length I calculate it here...
         self.importer.set_property(spine, "App::PropertyFloat", "Length", "The length of the Arc", length, group="Draft")
+        # The Start and End property are used in the Wall to determine Facebinders
+        # characteristics...
+        self.importer.set_property(spine, "App::PropertyVector", "Start", "The start point of the Arc", start, group="Draft")
+        self.importer.set_property(spine, "App::PropertyVector", "End", "The end point of the Arc", end, group="Draft")
 
+        spine.Label = f"Spine"
         App.ActiveDocument.recompute([section_start, section_end, spine])
         if self.importer.preferences["DEBUG"]:
             _log(f"_create_curved_segment(): wall {self._pv(start)}->{self._pv(end)} => section_start={self._ps(section_start)}, section_end={self._ps(section_end)}")
@@ -1301,6 +1517,7 @@ class WallHandler(BaseHandler):
             section.recompute()
             _color_section(section)
 
+        section.Label = "Section-start" if at_start else "Section-end"
         return section
 
     def _get_intersection_edge(self, lside, rside, sibling_lside, sibling_rside):
@@ -1359,7 +1576,7 @@ class WallHandler(BaseHandler):
             # We take the center that preserve the arc_extent orientation (in FC
             #   coordinate). The orientation is calculated from start to end
             center = circles[0].Center
-            if numpy.sign(arc_extent) != numpy.sign(DraftVecUtils.angle(start-center, end-center, Z_NORM)):
+            if np.sign(arc_extent) != np.sign(DraftVecUtils.angle(start-center, end-center, Z_NORM)):
                 invert_angle = True
                 center = circles[1].Center
 
@@ -1410,85 +1627,87 @@ class WallHandler(BaseHandler):
         """
         return (b - a).cross(c - a).normalize()
 
-    def _ps(self, section, print_z: bool = False):
-        # Pretty print a Section in a condensed way
-        if hasattr(section, 'Shape'):
-            v = section.Shape.Vertexes
-        else:
-            # a Part.Face
-            v = section.Vertexes
-        return f"[{self._pv(v[0].Point, print_z)}, {self._pv(v[1].Point, print_z)}, {self._pv(v[2].Point, print_z)}, {self._pv(v[3].Point, print_z)}]"
+    def post_process(self, obj):
+        if self.importer.preferences["DECORATE_SURFACES"]:
+            floor = App.ActiveDocument.getObject(obj.ReferenceFloorName)
 
-    def _pe(self, edge, print_z: bool = False):
-        # Print an Edge in a condensed way
-        v = edge.Vertexes
-        return f"[{self._pv(v[0].Point, print_z)}, {self._pv(v[1].Point, print_z)}]"
+            (left_face_name, left_face, right_face_name, right_face) = self._get_faces(obj)
 
-    def _pv(self, v, print_z: bool = False, ndigits: None = None):
-        # Print an Vector in a condensed way
-        if hasattr(v,'X'):
-            return f"({round(getattr(v, 'X'), ndigits)},{round(getattr(v, 'Y'), ndigits)}{',' + str(round(getattr(v, 'Z'), ndigits)) if print_z else ''})"
-        elif hasattr(v,'x'):
-            return f"({round(getattr(v, 'x'), ndigits)},{round(getattr(v, 'y'), ndigits)}{',' + str(round(getattr(v, 'z'), ndigits)) if print_z else ''})"
-        raise ValueError(f"Expected a Point or Vector, got {type(v)}")
+            self._create_facebinders(floor, obj, left_face_name, right_face_name)
 
-    def _create_facebinders(self, floor, wall, elm):
+            self._create_baseboards(floor, obj, left_face, right_face)
+
+    def _create_facebinders(self, floor, wall, left_face_name, right_face_name):
         """Set the wall's colors taken from `elm`.
 
         Creates 2 FaceBinders (left and right) and sets the corresponding
         color and the shininess of the wall.
 
         Args:
+            floor (Arch::Level): the level the wall belongs to. Used to group
+                the resulting Facebinders
             wall (Arch::Wall): the wall to paint
             elm (Element): the xml element for the wall to be imported
+            left_face_name (str): the name of the left face suitable for selecting
+            right_face_name (str): the name of the right face suitable for selecting
         """
         # The top color is the color of the "mass" of the wall
-        top_color = elm.get('topColor', self.importer.preferences["DEFAULT_FLOOR_COLOR"])
+        top_color = wall.topColor
         set_color_and_transparency(wall, top_color)
+        self._create_facebinder(floor, wall,left_face_name,  "left")
+        self._create_facebinder(floor, wall, right_face_name,  "right")
 
-        left_facebinder = Draft.make_facebinder(( wall, ("Face2", ) ))
-        left_facebinder.Extrusion = 1
-        left_facebinder.Label = wall.Label + "-fb-left"
-        left_side_color = elm.get('leftSideColor', top_color)
-        set_color_and_transparency(left_facebinder, left_side_color)
-        left_side_shininess = elm.get('leftSideShininess', 0)
-        set_shininess(left_facebinder, left_side_shininess)
-        floor.getObject(floor.FacebinderGroupName).addObject(left_facebinder)
+    def _create_facebinder(self, floor, wall, face_name, side):
+        if face_name:
+            facebinder_id = f"{wall.id}-{side}-facebinder"
+            facebinder = None
+            if self.importer.preferences["MERGE"]:
+                facebinder = self.get_fc_object(facebinder_id, 'facebinder')
 
-        right_facebinder = Draft.make_facebinder(( wall, ("Face4", ) ))
-        right_facebinder.Extrusion = 1
-        right_facebinder.Label = wall.Label + "-fb-right"
-        right_side_color = elm.get('rightSideColor', top_color)
-        set_color_and_transparency(right_facebinder, right_side_color)
-        right_side_shininess = elm.get('rightSideShininess', 0)
-        set_shininess(right_facebinder, right_side_shininess)
-        floor.getObject(floor.FacebinderGroupName).addObject(right_facebinder)
+            if not facebinder:
+                facebinder = Draft.make_facebinder(( wall, (face_name, ) ))
+                facebinder.Extrusion = 1
+                facebinder.Label = wall.Label + f" {side} side finish"
 
-    def _import_baseboard(self, floor, wall, elm):
+            color = getattr(wall, f"{side}SideColor")
+            set_color_and_transparency(facebinder, color)
+            shininess = getattr(wall, f"{side}SideShininess", 0)
+            set_shininess(facebinder, shininess)
+            self.setp(facebinder, "App::PropertyString", "shType", "The element type", 'facebinder')
+            self.setp(facebinder, "App::PropertyString", "id", "The element's id", facebinder_id)
+            self.setp(facebinder, "App::PropertyString", "ReferenceWallName", "The element's wall Name", wall.Name)
+
+            floor.getObject(floor.DecorationWallsGroupName).addObject(facebinder)
+        else:
+            _wrn(f"Failed to determine {side} face for wall {wall.Label}!")
+
+    def _create_baseboards(self, floor, wall, left_face, right_face):
         """Creates and returns a Part::Extrusion from the imported_baseboard object
 
         Args:
             floor (Slab): the Slab the wall belongs to
             wall (Wall): the Arch wall
-            elm (Element): the wall being imported
+            elm (Element): the wall being imported (with child baseboards)
+            left_face (Part.Face): the left hand side of the wall
+            right_face (Part.Face): the right hand side of the wall
 
         Returns:
             Part::Extrusion: the newly created object
         """
-        wall_width = float(wall.Width)
+        for side in ["leftSideBaseboard", "rightSideBaseboard"]:
+            if hasattr(wall, f"{side}Height"):
+                face = left_face if side == "leftSideBaseboard" else right_face
+                self._create_baseboard(floor, wall, side, face)
 
-        baseboard_width = dim_sh2fc(elm.get('thickness'))
-        baseboard_height = dim_sh2fc(elm.get('height'))
+    def _create_baseboard(self, floor, wall, side, face):
 
-        # This is brittle in case the wall is merged and the there are already
-        # some doors, windows, etc...
-        side = elm.get('attribute')
-        faces = wall.Base.Shape.Faces
-        face = faces[1] if side == 'leftSideBaseboard' else faces[3]
+        baseboard_width = getattr(wall, f"{side}Thickness").Value
+        baseboard_height = getattr(wall, f"{side}Height").Value
 
         # Once I have the face, I get the lowest edge.
         lowest_z = float('inf')
         bottom_edge = None
+
         for edge in face.Edges:
             if edge and edge.CenterOfMass and edge.CenterOfMass.z < lowest_z:
                 lowest_z = edge.CenterOfMass.z
@@ -1512,16 +1731,16 @@ class WallHandler(BaseHandler):
         for edge in [edge0, edge1, edge2, edge3]:
             edge.Vertexes[0].Point.z = edge.Vertexes[1].Point.z = ref_z
 
-        baseboard_id = f"{wall.id}-{side}"
+        baseboard_id = f"{wall.id} {side}"
         baseboard = None
         if self.importer.preferences["MERGE"]:
             baseboard = self.get_fc_object(baseboard_id, 'baseboard')
 
         if not baseboard:
-            base = App.ActiveDocument.addObject("Part::Feature", "baseboard-base")
+            base = App.ActiveDocument.addObject("Part::Feature", f"{wall.Label} {side} base")
             base.Shape = Part.makeFace([ Part.Wire([edge0, edge1, edge2, edge3]) ])
             base.Visibility = False
-            baseboard = App.ActiveDocument.addObject('Part::Extrusion', f"{wall.Label}-{side}")
+            baseboard = App.ActiveDocument.addObject('Part::Extrusion', f"{wall.Label} {side}")
             baseboard.Base = base
 
         baseboard.DirMode = "Custom"
@@ -1535,23 +1754,79 @@ class WallHandler(BaseHandler):
         baseboard.TaperAngle = 0
         baseboard.TaperAngleRev = 0
 
-        set_color_and_transparency(baseboard, elm.get('color'))
+        set_color_and_transparency(baseboard, getattr(wall, f"{side}Color"))
 
         self.setp(baseboard, "App::PropertyString", "shType", "The element type", 'baseboard')
         self.setp(baseboard, "App::PropertyString", "id", "The element's id", baseboard_id)
-        self.setp(baseboard, "App::PropertyLink", "parent", "The element parent", wall)
+        self.setp(baseboard, "App::PropertyString", "ReferenceWallName", "The element's wall Name", wall.Name)
 
         baseboard.recompute(True)
+        floor.getObject(floor.DecorationBaseboardsGroupName).addObject(baseboard)
 
-        space = self.get_space(floor, baseboard.Shape.BoundBox.Center)
-        if space:
-            space.Group = space.Group + [baseboard]
-        else:
-            _log(f"No space found to enclose {baseboard.Label}. Adding to generic group.")
-            floor.getObject(floor.BaseboardGroupName).addObject(baseboard)
+    def _get_faces(self, wall):
+        """Returns the name of the left and right face for `wall`
 
-        # Returns the Space for the wall to be added to the space.Boundaries
-        return space
+        The face names are suitable for selection later on when creating
+        the Facebinders and baseboards. Note, that this must be executed
+        once the wall has been completely constructed. If a window or
+        door is added afterward, this will have an impact on what is
+        considered the left and right side of the wall
+
+        Args:
+            wall (Arch.Wall): the wall for which we have to determine
+                the left and right side.
+
+        Returns:
+            tuple: a tuple of string containing the name of the left and
+                right side of the wall
+        """
+        # In order to handle curved walls, take the oriented line (from
+        # start to end) that pass through the center of gravity of the wall
+        # Hopefully the COG of the face will always be on the correct side
+        # of the COG of the wall
+        wall_start = wall.BaseObjects[2].Start
+        wall_end = wall.BaseObjects[2].End
+        wall_cog_start = wall.Shape.CenterOfGravity
+        wall_cog_end = wall_cog_start + wall_end - wall_start
+
+        left_face_name = right_face_name = None
+        left_face = right_face = None
+        for (i, face) in enumerate(wall.Shape.Faces):
+            face_cog = face.CenterOfGravity
+
+            # The face COG is not on the same z as the wall COG
+            # just skipping.
+            if not math.isclose(face_cog.z, wall_cog_start.z, abs_tol=1):
+                continue
+
+            side = self._get_face_side(wall_cog_start, wall_cog_end, face_cog)
+            # NOTE: face names start at 1...
+            if side > 0:
+                left_face_name = f"Face{i+1}"
+                left_face = face
+            elif side < 0:
+                right_face_name = f"Face{i+1}"
+                right_face = face
+            if left_face_name and right_face_name:
+                # Optimization. Is it always true?
+                break
+        return (left_face_name, left_face, right_face_name, right_face)
+
+    def _get_face_side(self, start:App.Vector, end:App.Vector, cog:App.Vector):
+        # Compute vectors
+        ab = end - start  # Vector from start to end
+        ac = cog - start  # Vector from start to CenterOfGravity
+
+        ab.z = 0
+        ac.z = 0
+
+        # Compute the cross product (z-component is enough for 2D test)
+        cross_z = ab.x * ac.y - ab.y * ac.x
+
+        # Determine the position of point cog
+        if math.isclose(cross_z, 0, abs_tol=1):
+            return 0
+        return cross_z
 
 
 class BaseFurnitureHandler(BaseHandler):
@@ -1594,7 +1869,7 @@ class BaseFurnitureHandler(BaseHandler):
         self.setp(obj, "App::PropertyBool", "deformable", "Whether the object is deformable", elm)
         self.setp(obj, "App::PropertyBool", "texturable", "Whether the object is texturable", elm)
         self.setp(obj, "App::PropertyString", "staircaseCutOutShape", "", elm)
-        self.setp(obj, "App::PropertyFloat", "shininess", "The object's shininess", elm)
+        self.setp(obj, "App::PropertyPercent", "shininess", "The object's shininess", percent_sh2fc(elm.get('shininess', 0)))
         self.setp(obj, "App::PropertyFloat", "valueAddedTaxPercentage", "The object's VAT percentage", elm)
         self.setp(obj, "App::PropertyString", "currency", "The object's price currency", str(elm.get('currency', 'EUR')))
 
@@ -1687,7 +1962,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         center = coord_sh2fc(App.Vector(x_center, y_center, z_center))
         center.z += floor.Placement.Base.z
 
-        # First create a solid representing the window countour and find the
+        # First create a solid representing the window contour and find the
         # walls containing that window
         width = dim_sh2fc(elm.get('width'))
         depth = dim_sh2fc(elm.get('depth'))
@@ -1696,18 +1971,27 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
 
         corner = center.add(App.Vector(-width/2, -depth/2, -height/2))
 
+        # Then create a box that represent the BoundingBox of the windows
+        # to find out which wall contains the window.
         solid = Part.makeBox(width, depth, height)
         solid.rotate(solid.CenterOfMass, Z_NORM, math.degrees(ang_sh2fc(angle)))
         solid.translate(corner)
 
         # Get all the walls hosting that door/window...
         wall_width = -DEFAULT_WALL_WIDTH
-        walls = self._get_containing_walls(solid)
+        walls = self._get_containing_walls(floor, solid)
         if len(walls) == 0:
             _err(f"Missing wall for <doorOrWindow> {elm.get('id')}. Defaulting to width {DEFAULT_WALL_WIDTH} ...")
         else:
-            wall_width = walls[0].Width
-
+            # NOTE:
+            # The main host (the one defining the width of the door/window) is
+            # the one that contains the CenterOfMass of the windows, or maybe
+            # the one that has the same normal?
+            wall_width = float(walls[0].Width)
+            com = solid.CenterOfMass
+            for wall in walls:
+                if wall.Shape.isInside(com, 1, False):
+                    wall_width = float(wall.Width)
 
         center2corner = App.Vector(-width/2, -wall_width/2, 0)
         rotation = App.Rotation(Z_NORM, math.degrees(ang_sh2fc(angle)))
@@ -1730,13 +2014,14 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
             (windowtype, ifc_type) = ('Simple door', 'Door')
 
         # See the https://wiki.freecad.org/Arch_Window for details about these values
-        h1 = 50
-        h2 = 50
-        h3 = 50
-        o1 = 40
-        w1 = float(wall_width)-o1 # make sure the door takes the whole wall (facebinder+baseboard)
-        w2 = 40
-        o2 = (w1-w2) / 2
+        # Only using Opening / Fixed / Simple Door
+        h1 = min(50,height*.025) # 2.5% of frame
+        h2 = h1
+        h3 = 0
+        w1 = wall_width
+        w2 = min(20.0,wall_width*.2) # 20% of width
+        o1 = 0
+        o2 = (wall_width-w2)/2
         window = Arch.makeWindowPreset(windowtype, width, height, h1, h2, h3, w1, w2, o1, o2, pl)
         window.IfcType = ifc_type
 
@@ -1752,10 +2037,11 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         window.Hosts = walls
         return window
 
-    def _get_containing_walls(self, solid):
+    def _get_containing_walls(self, floor, solid):
         """Returns the wall(s) intersecting with the door/window.
 
         Args:
+            floor (Arch.Level): the level the solid must belongs to
             solid (Part.Solid): the solid to test against each wall's
                 bounding box
 
@@ -1763,7 +2049,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
             list(Arch::Wall): the wall(s) containing the given solid
         """
         host_walls = []
-        for wall in self.importer.get_walls():
+        for wall in self.importer.get_walls(floor):
             if solid.common(wall.Shape).Volume > 0:
                 host_walls.append(wall)
         return host_walls
@@ -1821,7 +2107,7 @@ class FurnitureHandler(BaseFurnitureHandler):
 
         # We add the object to the list of known object that can then
         # be referenced elsewhere in the SH3D model (i.e. lights).
-        self.importer.fc_objects[feature.id] = feature
+        self.importer.add_fc_objects(feature)
 
     def _create_equipment(self, floor, elm):
         width = dim_sh2fc(float(elm.get('width')))
@@ -1852,7 +2138,7 @@ class FurnitureHandler(BaseFurnitureHandler):
                 App.Vector(rij[3], rij[4], rij[5]),
                 App.Vector(rij[6], rij[7], rij[8])
                 )
-            _msg(f"model_rotation is not yet implemented ...")
+            _msg(f"{elm.get('id')}: modelRotation is not yet implemented ...")
         transform.scale(width/bb.XLength, height/bb.YLength, depth/bb.ZLength)
         # NOTE: the model is facing up, thus y and z are inverted
         transform.rotateX(math.pi/2)
@@ -2093,8 +2379,17 @@ def _color_section(section):
 
 
 def set_shininess(obj, shininess):
+    # TODO: it seems a shininess of 0 means the wall looses its
+    # color. We'll leave it at the default setting until a later time
+    return
     if not App.GuiUp or not shininess:
         return
-    if hasattr(obj.ViewObject, "Shininess"):
-        # Shininess goes from 0 -> 0.25 in SH3d and 0 -> 100 in FC
-        obj.ViewObject.Shininess = int((100*shininess)/0.25)
+    if hasattr(obj.ViewObject, "ShapeAppearance"):
+        mat = obj.ViewObject.ShapeAppearance[0]
+        mat.Shininess = float(shininess)/100
+        obj.ViewObject.ShapeAppearance = mat
+
+
+def percent_sh2fc(percent):
+    # percent goes from 0 -> 1 in SH3d and 0 -> 100 in FC
+    return int(float(percent)*100)

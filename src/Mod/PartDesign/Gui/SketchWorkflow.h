@@ -25,7 +25,7 @@
 
 #include <tuple>
 #include <Mod/PartDesign/PartDesignGlobal.h>
-#include <Gui/SelectionFilter.h>
+#include <Gui/Selection/SelectionFilter.h>
 
 namespace App {
 class Document;

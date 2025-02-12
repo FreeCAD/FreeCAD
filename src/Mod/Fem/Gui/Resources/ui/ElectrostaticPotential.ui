@@ -6,519 +6,427 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>317</width>
-    <height>303</height>
+    <width>357</width>
+    <height>593</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Analysis feature properties</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_4">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item row="0" column="0">
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="potentialLbl">
-       <property name="text">
-        <string>Potential:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="2">
-      <widget class="Gui::QuantitySpinBox" name="potentialQSB">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Electric potential</string>
-       </property>
-       <property name="keyboardTracking">
-        <bool>true</bool>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">V</string>
-       </property>
-       <property name="minimum">
-        <double>-1000000000000000000000.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>1000000000000000000000.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>1.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QCheckBox" name="potentialBox">
-       <property name="text">
-        <string>unspecified</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="0">
-    <widget class="QCheckBox" name="vectorFieldBox">
-     <property name="toolTip">
-      <string>To define a vector field</string>
+    <widget class="QGroupBox" name="gb_boundary_condition">
+     <property name="title">
+      <string></string>
      </property>
-     <property name="text">
-      <string>Vector Field</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
+     <layout class="QFormLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_boundary_condition">
+        <property name="text">
+         <string>Boundary Condition:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="cb_boundary_condition"/>
+      </item>
+     </layout>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QGroupBox" name="vectorFieldGB">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="toolTip">
-      <string>Imaginary part is only used for equations
-with a harmonic/oscillating driving force</string>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="gb_dirichlet">
+     <property name="title">
+      <string>Dirichlet</string>
      </property>
      <property name="checkable">
       <bool>false</bool>
      </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="1">
-       <widget class="QLabel" name="labelReal">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Real</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QLabel" name="labelImaginary">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Imaginary</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="labelScalar">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Scalar</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="Gui::QuantitySpinBox" name="realScalarQSB">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Potential as specified above</string>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-        <property name="keyboardTracking">
-         <bool>true</bool>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true">V</string>
-        </property>
-        <property name="minimum">
-         <double>-1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="Gui::QuantitySpinBox" name="imagScalarQSB">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Imaginary part of scalar potential</string>
-        </property>
-        <property name="keyboardTracking">
-         <bool>true</bool>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true">V</string>
-        </property>
-        <property name="minimum">
-         <double>-1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="4">
-       <widget class="QCheckBox" name="imScalarunspecBox">
-        <property name="toolTip">
-         <string>unspecified</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="labelX">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>x</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="Gui::QuantitySpinBox" name="realXQSB">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Real part of potential x-component
-Note: has no effect if a solid was selected</string>
-        </property>
-        <property name="keyboardTracking">
-         <bool>true</bool>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true">V</string>
-        </property>
-        <property name="minimum">
-         <double>-1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QCheckBox" name="reXunspecBox">
-        <property name="toolTip">
-         <string>unspecified</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="3">
-       <widget class="Gui::QuantitySpinBox" name="imagXQSB">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Imaginary part of potential x-component
-Note: has no effect if a solid was selected</string>
-        </property>
-        <property name="keyboardTracking">
-         <bool>true</bool>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true">V</string>
-        </property>
-        <property name="minimum">
-         <double>-1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="4">
-       <widget class="QCheckBox" name="imXunspecBox">
-        <property name="toolTip">
-         <string>unspecified</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QFormLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="ckb_potential">
+          <property name="text">
+           <string>Potential:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_potential">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>Electric potential</string>
+          </property>
+          <property name="keyboardTracking">
+           <bool>true</bool>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">V</string>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="labelY">
-        <property name="enabled">
-         <bool>true</bool>
+       <widget class="QCheckBox" name="ckb_electromagnetic">
+        <property name="toolTip">
+         <string>To define scalar potential and magnetic vector potential</string>
         </property>
         <property name="text">
-         <string>y</string>
+         <string>Electromagnetic Potential</string>
         </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="Gui::QuantitySpinBox" name="realYQSB">
-        <property name="enabled">
+        <property name="checked">
          <bool>true</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Real part of potential y-component
-Note: has no effect if a solid was selected</string>
-        </property>
-        <property name="keyboardTracking">
-         <bool>true</bool>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true">V</string>
-        </property>
-        <property name="minimum">
-         <double>-1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="QCheckBox" name="reYunspecBox">
-        <property name="toolTip">
-         <string>unspecified</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="3">
-       <widget class="Gui::QuantitySpinBox" name="imagYQSB">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Imaginary part of potential y-component
-Note: has no effect if a solid was selected</string>
-        </property>
-        <property name="keyboardTracking">
-         <bool>true</bool>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true">V</string>
-        </property>
-        <property name="minimum">
-         <double>-1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="4">
-       <widget class="QCheckBox" name="imYunspecBox">
-        <property name="toolTip">
-         <string>unspecified</string>
-        </property>
-        <property name="text">
-         <string/>
         </property>
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QLabel" name="labelZ">
+       <widget class="QGroupBox" name="gb_electromagnetic">
+        <property name="title">
+         <string></string>
+        </property>
         <property name="enabled">
          <bool>true</bool>
         </property>
+        <property name="toolTip">
+         <string>Imaginary part is only used for equations
+with a harmonic/oscillating driving force</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,0,255,255">
+         <item row="0" column="2">
+          <widget class="QLabel" name="labelReal">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Real</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLabel" name="labelImaginary">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Imaginary</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelScalar">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Scalar</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QCheckBox" name="ckb_av">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="Gui::QuantitySpinBox" name="qsb_av_re">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Real part of scalar potential</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>true</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">V</string>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="Gui::QuantitySpinBox" name="qsb_av_im">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Imaginary part of scalar potential</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>true</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">V</string>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="labelX">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>x</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QCheckBox" name="ckb_av_1">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="Gui::QuantitySpinBox" name="qsb_av_re_1">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Real part of vector potential x-component
+Note: has no effect if a solid was selected</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>true</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">Wb/m</string>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="Gui::QuantitySpinBox" name="qsb_av_im_1">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Imaginary part of vector potential x-component
+Note: has no effect if a solid was selected</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>true</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">Wb/m</string>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="labelY">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>y</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QCheckBox" name="ckb_av_2">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="Gui::QuantitySpinBox" name="qsb_av_re_2">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Real part of vector potential y-component
+Note: has no effect if a solid was selected</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>true</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">Wb/m</string>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="3">
+          <widget class="Gui::QuantitySpinBox" name="qsb_av_im_2">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Imaginary part of vector potential y-component
+Note: has no effect if a solid was selected</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>true</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">Wb/m</string>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="labelZ">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>z</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QCheckBox" name="ckb_av_3">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="Gui::QuantitySpinBox" name="qsb_av_re_3">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Real part of vector potential z-component
+Note: has no effect if a solid was selected</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>true</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">Wb/m</string>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="3">
+          <widget class="Gui::QuantitySpinBox" name="qsb_av_im_3">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Imaginary part of vector potential z-component
+Note: has no effect if a solid was selected</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>true</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">Wb/m</string>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="ckb_electric_infinity">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string>Whether the boundary condition defines a farfield potential</string>
+          </property>
+          <property name="text">
+           <string>Electric Infinity</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QCheckBox" name="ckb_potential_constant">
+          <property name="toolTip">
+           <string>Whether the boundary condition defines a constant potential</string>
+          </property>
+          <property name="text">
+           <string>Potential Constant</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="gb_neumann">
+     <property name="title">
+      <string>Neumann</string>
+     </property>
+     <layout class="QFormLayout" name="gridLayout_8">
+      <item row="0" column="0">
+       <widget class="QLabel" name="surfacechargedensityLbl">
         <property name="text">
-         <string>z</string>
+         <string>Surface Charge Density:</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="Gui::QuantitySpinBox" name="realZQSB">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>20</height>
-         </size>
-        </property>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="qsb_surface_charge_density">
         <property name="toolTip">
-         <string>Real part of potential z-component
-Note: has no effect if a solid was selected</string>
-        </property>
-        <property name="keyboardTracking">
-         <bool>true</bool>
+         <string>Surface charge density</string>
         </property>
         <property name="unit" stdset="0">
-         <string notr="true">V</string>
-        </property>
-        <property name="minimum">
-         <double>-1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2">
-       <widget class="QCheckBox" name="reZunspecBox">
-        <property name="toolTip">
-         <string>unspecified</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="3">
-       <widget class="Gui::QuantitySpinBox" name="imagZQSB">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Imaginary part of potential z-component
-Note: has no effect if a solid was selected</string>
-        </property>
-        <property name="keyboardTracking">
-         <bool>true</bool>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true">V</string>
-        </property>
-        <property name="minimum">
-         <double>-1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1000000000000000000000.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="4">
-       <widget class="QCheckBox" name="imZunspecBox">
-        <property name="toolTip">
-         <string>unspecified</string>
-        </property>
-        <property name="text">
-         <string/>
+         <string notr="true">C/m^2</string>
         </property>
        </widget>
       </item>
@@ -526,90 +434,39 @@ Note: has no effect if a solid was selected</string>
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QCheckBox" name="potentialConstantBox">
-     <property name="toolTip">
-      <string>Whether the boundary condition defines a constant potential</string>
+    <widget class="QGroupBox" name="gb_boundary_condition">
+     <property name="title">
+      <string>Capacitance</string>
      </property>
-     <property name="text">
-      <string>Potential Constant</string>
-     </property>
+     <layout class="QFormLayout" name="gridLayout">
+      <item row="6" column="0">
+       <widget class="QCheckBox" name="ckb_capacitance_body">
+        <property name="text">
+         <string>Capacitance Body:</string>
+        </property>
+        <property name="toolTip">
+         <string>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="Gui::IntSpinBox" name="spb_capacitance_body">
+        <property name="toolTip">
+         <string>Counter of the body (or face) with a capacitance</string>
+        </property>
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="value">
+         <number>1</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QCheckBox" name="electricInfinityBox">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="toolTip">
-      <string>Whether the boundary condition defines a farfield potential</string>
-     </property>
-     <property name="text">
-      <string>Farfield / Electric infinity</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QCheckBox" name="electricForcecalculationBox">
-     <property name="toolTip">
-      <string>Whether the boundary condition is for the electric force</string>
-     </property>
-     <property name="text">
-      <string>Calculate Electric Force</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QLabel" name="capacityBody_label">
-       <property name="text">
-        <string extracomment="Enabled by 'Calculate Capacity Matrix' in Electrostatic equation">Capacity Body:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="2">
-      <widget class="QCheckBox" name="capacitanceBodyBox">
-       <property name="text">
-        <string>unspecified</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QSpinBox" name="capacitanceBody_spinBox">
-       <property name="maximumSize">
-        <size>
-         <width>55</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Counter of the body (or face) with a capacitance</string>
-       </property>
-       <property name="minimum">
-        <number>1</number>
-       </property>
-       <property name="value">
-        <number>1</number>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>
@@ -619,168 +476,11 @@ Note: has no effect if a solid was selected</string>
    <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
+  <customwidget>
+   <class>Gui::IntSpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/SpinBox.h</header>
+  </customwidget>
  </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>capacitanceBodyBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>capacitanceBody_spinBox</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>262</x>
-     <y>116</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>323</x>
-     <y>116</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>potentialBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>potentialQSB</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>301</x>
-     <y>19</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>206</x>
-     <y>19</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>potentialQSB</sender>
-   <signal>valueChanged(Base::Quantity)</signal>
-   <receiver>realScalarQSB</receiver>
-   <slot>setValue(Base::Quantity)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>126</x>
-     <y>19</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>103</x>
-     <y>98</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>reZunspecBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>realZQSB</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>179</x>
-     <y>178</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>103</x>
-     <y>176</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>reYunspecBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>realYQSB</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>179</x>
-     <y>148</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>103</x>
-     <y>150</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>imXunspecBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>imagXQSB</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>339</x>
-     <y>128</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>258</x>
-     <y>127</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>reXunspecBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>realXQSB</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>179</x>
-     <y>128</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>103</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>imZunspecBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>imagZQSB</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>339</x>
-     <y>178</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>258</x>
-     <y>179</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>imYunspecBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>imagYQSB</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>339</x>
-     <y>148</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>258</x>
-     <y>153</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>imScalarunspecBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>imagScalarQSB</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>339</x>
-     <y>98</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>258</x>
-     <y>101</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
 </ui>

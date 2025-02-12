@@ -231,6 +231,8 @@ DrawViewDimension::DrawViewDimension()
                       "If true, area dimensions return the area of the face minus the areas of any enclosed faces. \
                        If false, the area of the face's outer boundary is returned.");
 
+    ADD_PROPERTY_TYPE(ShowUnits, (Preferences::showUnits()), "Format", App::Prop_None,
+                                          "Show or hide the units.");
     measurement = new Measure::Measurement();
     // TODO: should have better initial datumLabel position than (0, 0) in the DVP?? something
     // closer to the object being measured?
@@ -809,7 +811,7 @@ pointPair DrawViewDimension::getPointsOneEdge(ReferenceVector references)
 {
     App::DocumentObject* refObject = references.front().getObject();
     int iSubelement = DrawUtil::getIndexFromName(references.front().getSubName());
-    if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())
+    if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()
         && !references.at(0).getSubName().empty()) {
         // TODO: Notify if not straight line Edge?
         // this is a 2d object (a DVP + subelements)
@@ -850,7 +852,7 @@ pointPair DrawViewDimension::getPointsTwoEdges(ReferenceVector references)
     App::DocumentObject* refObject = references.front().getObject();
     int iSubelement0 = DrawUtil::getIndexFromName(references.at(0).getSubName());
     int iSubelement1 = DrawUtil::getIndexFromName(references.at(1).getSubName());
-    if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())
+    if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()
         && !references.at(0).getSubName().empty()) {
         // this is a 2d object (a DVP + subelements)
         TechDraw::BaseGeomPtr geom0 = getViewPart()->getGeomByIndex(iSubelement0);
@@ -882,7 +884,7 @@ pointPair DrawViewDimension::getPointsTwoVerts(ReferenceVector references)
     App::DocumentObject* refObject = references.front().getObject();
     int iSubelement0 = DrawUtil::getIndexFromName(references.at(0).getSubName());
     int iSubelement1 = DrawUtil::getIndexFromName(references.at(1).getSubName());
-    if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())
+    if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()
         && !references.at(0).getSubName().empty()) {
         // this is a 2d object (a DVP + subelements)
         TechDraw::VertexPtr v0 = getViewPart()->getProjVertexByIndex(iSubelement0);
@@ -919,7 +921,7 @@ pointPair DrawViewDimension::getPointsEdgeVert(ReferenceVector references)
     App::DocumentObject* refObject = references.front().getObject();
     int iSubelement0 = DrawUtil::getIndexFromName(references.at(0).getSubName());
     int iSubelement1 = DrawUtil::getIndexFromName(references.at(1).getSubName());
-    if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())
+    if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()
         && !references.at(0).getSubName().empty()) {
         // this is a 2d object (a DVP + subelements)
         TechDraw::BaseGeomPtr edge;
@@ -975,7 +977,7 @@ arcPoints DrawViewDimension::getArcParameters(ReferenceVector references)
 {
     App::DocumentObject* refObject = references.front().getObject();
     int iSubelement = DrawUtil::getIndexFromName(references.front().getSubName());
-    if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())
+    if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()
         && !references.at(0).getSubName().empty()) {
         // this is a 2d object (a DVP + subelements)
         TechDraw::BaseGeomPtr geom = getViewPart()->getGeomByIndex(iSubelement);
@@ -1129,8 +1131,8 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
         if (pts.isArc) {
             // part of circle
             gp_Ax1 axis = circle.Axis();
-            gp_Vec startVec = DrawUtil::togp_Vec(pts.arcEnds.first() - pts.center);
-            gp_Vec endVec = DrawUtil::togp_Vec(pts.arcEnds.second() - pts.center);
+            gp_Vec startVec = DrawUtil::to<gp_Vec>(pts.arcEnds.first() - pts.center);
+            gp_Vec endVec = DrawUtil::to<gp_Vec>(pts.arcEnds.second() - pts.center);
             double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
             pts.arcCW = (angle < 0.0);
         }
@@ -1149,8 +1151,8 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
         if (pts.isArc) {
             // part of ellipse
             gp_Ax1 axis = ellipse.Axis();
-            gp_Vec startVec = DrawUtil::togp_Vec(pts.arcEnds.first() - pts.center);
-            gp_Vec endVec = DrawUtil::togp_Vec(pts.arcEnds.second() - pts.center);
+            gp_Vec startVec = DrawUtil::to<gp_Vec>(pts.arcEnds.first() - pts.center);
+            gp_Vec endVec = DrawUtil::to<gp_Vec>(pts.arcEnds.second() - pts.center);
             double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
             pts.arcCW = (angle < 0.0);
         }
@@ -1178,8 +1180,8 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
             if (pts.isArc) {
                 // part of circle
                 gp_Ax1 axis = circle.Axis();
-                gp_Vec startVec = DrawUtil::togp_Vec(pts.arcEnds.first() - pts.center);
-                gp_Vec endVec = DrawUtil::togp_Vec(pts.arcEnds.second() - pts.center);
+                gp_Vec startVec = DrawUtil::to<gp_Vec>(pts.arcEnds.first() - pts.center);
+                gp_Vec endVec = DrawUtil::to<gp_Vec>(pts.arcEnds.second() - pts.center);
                 double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
                 pts.arcCW = (angle < 0.0);
             }
@@ -1207,7 +1209,7 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
     App::DocumentObject* refObject = references.front().getObject();
     int iSubelement0 = DrawUtil::getIndexFromName(references.at(0).getSubName());
     int iSubelement1 = DrawUtil::getIndexFromName(references.at(1).getSubName());
-    if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())
+    if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()
         && !references.at(0).getSubName().empty()) {
         // this is a 2d object (a DVP + subelements)
         TechDraw::BaseGeomPtr geom0 = getViewPart()->getGeomByIndex(iSubelement0);
@@ -1315,7 +1317,7 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
     if (!haveIntersection) {
         throw Base::RuntimeError("Geometry for 3d angle dimension does not intersect");
     }
-    gp_Pnt gApex = DrawUtil::togp_Pnt(vApex);
+    gp_Pnt gApex = DrawUtil::to<gp_Pnt>(vApex);
 
     gp_Pnt gFar0 = gEnd0;
     if (gStart0.Distance(gApex) > gEnd0.Distance(gApex)) {
@@ -1345,7 +1347,7 @@ anglePoints DrawViewDimension::getAnglePointsThreeVerts(ReferenceVector referenc
     int iSubelement0 = DrawUtil::getIndexFromName(references.at(0).getSubName());
     int iSubelement1 = DrawUtil::getIndexFromName(references.at(1).getSubName());
     int iSubelement2 = DrawUtil::getIndexFromName(references.at(2).getSubName());
-    if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())
+    if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()
         && !references.at(0).getSubName().empty()) {
         // this is a 2d object (a DVP + subelements)
         TechDraw::VertexPtr vert0 = getViewPart()->getProjVertexByIndex(iSubelement0);
@@ -1715,9 +1717,9 @@ double DrawViewDimension::getArcAngle(Base::Vector3d center, Base::Vector3d star
     auto leg0 = startPoint - center;
     auto leg1 = endPoint - startPoint;
     auto referenceDirection = leg0.Cross(leg1);
-    gp_Ax1 axis{DU::togp_Pnt(center), DU::togp_Vec(referenceDirection)};
-    gp_Vec startVec = DrawUtil::togp_Vec(leg0);
-    gp_Vec endVec = DrawUtil::togp_Vec(leg1);
+    gp_Ax1 axis{DU::to<gp_Pnt>(center), DU::to<gp_Vec>(referenceDirection)};
+    gp_Vec startVec = DrawUtil::to<gp_Vec>(leg0);
+    gp_Vec endVec = DrawUtil::to<gp_Vec>(leg1);
     double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
     return angle;
 }
@@ -2076,7 +2078,7 @@ bool DrawViewDimension::hasOverUnderTolerance() const
 
 bool DrawViewDimension::showUnits() const
 {
-    return Preferences::getPreferenceGroup("Dimensions")->GetBool("ShowUnits", false);
+    return ShowUnits.getValue();
 }
 
 bool DrawViewDimension::useDecimals() const

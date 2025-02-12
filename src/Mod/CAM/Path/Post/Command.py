@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 """Post Process command that will make use of the Output File and Post
-Processor entries in PathJob """
+Processor entries in PathJob"""
 
 
 import FreeCAD
@@ -186,6 +186,8 @@ class CommandPathPost:
         postprocessor = PostProcessorFactory.get_post_processor(self.candidate, postprocessor_name)
 
         post_data = postprocessor.export()
+        # None is returned if there was an error during argument processing
+        # otherwise the "usual" post_data data structure is returned.
         if not post_data:
             FreeCAD.ActiveDocument.abortTransaction()
             return
@@ -203,8 +205,26 @@ class CommandPathPost:
             generator.set_subpartname(subpart)
             fname = next(generated_filename)
 
-            # write the results to the file
-            self._write_file(fname, gcode, policy)
+            #
+            # It is useful for a postprocessor to be able to either skip writing out
+            # a file or write out a zero-length file to indicate that something unusual
+            # has happened.  The "gcode" variable is usually a string containing gcode
+            # formatted for output.  If the gcode string is zero length then a zero
+            # length file will be written out.  If the "gcode" variable contains None
+            # instead, that indicates that the postprocessor doesn't want a file to be
+            # written at all.
+            #
+            # There is at least one old-style postprocessor that currently puts the
+            # gcode file out to a file server and doesn't need to write out a file to
+            # the system where FreeCAD is running.  In the old-style postprocessors the
+            # postprocessor code decided whether to write out a file.  Eventually a
+            # newer (more object-oriented) version of that postprocessor will return
+            # None for the "gcode" variable value to tell this code not to write out
+            # a file.  There may be other uses found for this capability over time.
+            #
+            if gcode is not None:
+                # write the results to the file
+                self._write_file(fname, gcode, policy)
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

@@ -107,7 +107,7 @@
 #include "MainWindow.h"
 #include "Multisample.h"
 #include "NaviCube.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "Selection.h"
 #include "SoDevicePixelRatioElement.h"
 #include "SoFCDB.h"
@@ -126,8 +126,8 @@
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderLink.h"
-#include "NavigationAnimator.h"
-#include "NavigationAnimation.h"
+#include "Navigation/NavigationAnimator.h"
+#include "Navigation/NavigationAnimation.h"
 #include "Utilities.h"
 
 #include <Inventor/So3DAnnotation.h>
@@ -486,8 +486,6 @@ void View3DInventorViewer::init()
     // increase refcount before passing it to setScenegraph(), to avoid
     // premature destruction
     pcViewProviderRoot->ref();
-    // is not really working with Coin3D.
-    //redrawOverlayOnSelectionChange(pcSelection);
     setSceneGraph(pcViewProviderRoot);
     // Event callback node
     pEventCallback = new SoEventCallback();
@@ -569,7 +567,11 @@ void View3DInventorViewer::init()
     //filter a few qt events
     viewerEventFilter = new ViewerEventFilter;
     installEventFilter(viewerEventFilter);
-    getEventFilter()->registerInputDevice(new SpaceNavigatorDevice);
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View");
+    if (hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+        getEventFilter()->registerInputDevice(new SpaceNavigatorDevice);
+    }
     getEventFilter()->registerInputDevice(new GesturesDevice(this));
 
     try{
@@ -588,6 +590,8 @@ void View3DInventorViewer::init()
 
     naviCube = new NaviCube(this);
     naviCubeEnabled = true;
+
+    updateColors();
 }
 
 View3DInventorViewer::~View3DInventorViewer()
@@ -788,11 +792,11 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges & reason)
     {
         //Hint: do not create a tmp. instance of SelectionChanges
         SelectionChanges selChanges(SelectionChanges::RmvPreselect);
-        SoFCHighlightAction cAct(selChanges);
-        cAct.apply(pcViewProviderRoot);
+        SoFCPreselectionAction preselectionAction(selChanges);
+        preselectionAction.apply(pcViewProviderRoot);
     } else {
-        SoFCSelectionAction cAct(Reason);
-        cAct.apply(pcViewProviderRoot);
+        SoFCSelectionAction selectionAction(Reason);
+        selectionAction.apply(pcViewProviderRoot);
     }
 }
 /// @endcond
@@ -804,7 +808,7 @@ bool View3DInventorViewer::searchNode(SoNode* node) const
     searchAction.setInterest(SoSearchAction::FIRST);
     searchAction.apply(this->getSceneGraph());
     SoPath* selectionPath = searchAction.getPath();
-    return selectionPath ? true : false;
+    return selectionPath != nullptr;
 }
 
 bool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const
@@ -1136,7 +1140,12 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode)
 
     overrideMode = mode;
 
-    auto views = getDocument()->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
+    auto document = getDocument();
+    if (!document) {
+        return;
+    }
+
+    auto views = document->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
     if (mode == "No Shading") {
         this->shading = false;
         std::string flatLines = "Flat Lines";
@@ -1792,14 +1801,12 @@ const std::vector<SbVec2s>& View3DInventorViewer::getPolygon(SelectionRole* role
 
 void View3DInventorViewer::setSelectionEnabled(bool enable)
 {
-    SoNode* root = getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(enable);  // NOLINT
+    this->selectionRoot->selectionEnabled.setValue(enable);  // NOLINT
 }
 
 bool View3DInventorViewer::isSelectionEnabled() const
 {
-    SoNode* root = getSceneGraph();
-    return static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.getValue();  // NOLINT
+    return this->selectionRoot->selectionEnabled.getValue();  // NOLINT
 }
 
 SbVec2f View3DInventorViewer::screenCoordsOfPath(SoPath* path) const
@@ -2444,12 +2451,42 @@ void View3DInventorViewer::renderScene()
         stream.precision(1);
         stream.setf(std::ios::fixed | std::ios::showpoint);
         stream << framesPerSecond[0] << " ms / " << framesPerSecond[1] << " fps";
-        draw2DString(stream.str().c_str(), SbVec2s(10, 10), SbVec2f(0.1F, 0.1F));  // NOLINT
+        ParameterGrp::handle hGrpOverlayL = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/MainWindow/DockWindows/OverlayLeft");
+        std::string overlayLeftWidgets = hGrpOverlayL->GetASCII("Widgets", "");
+        ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View");
+        unsigned long axisLetterColor =
+            hGrpView->GetUnsigned("AxisLetterColor", 4294902015);  // default FPS color (yellow)
+        draw2DString(stream.str().c_str(),
+                     SbVec2s(10, 10),
+                     SbVec2f((overlayLeftWidgets.empty() ? 0.1f : 1.1f), 0.1f),
+                     App::Color(static_cast<uint32_t>(axisLetterColor)));  // NOLINT
     }
 
     if (naviCubeEnabled) {
         naviCube->drawNaviCube();
     }
+
+    // Workaround for inconsistent QT behavior related to handling custom OpenGL widgets that
+    // leave non opaque alpha values in final output.
+    // On wayland that can cause window to become transparent or blurry trail effect in the
+    // parts that contain partially transparent objects.
+    //
+    // At the end of rendering clear alpha value, so that it doesn't matter how rest of the
+    // compositing stack at QT and desktop level would interpret transparent pixels.
+    //
+    // Related issues:
+    // https://bugreports.qt.io/browse/QTBUG-110014
+    // https://bugreports.qt.io/browse/QTBUG-132197
+    // https://bugreports.qt.io/browse/QTBUG-119214
+    // https://github.com/FreeCAD/FreeCAD/issues/8341
+    // https://github.com/FreeCAD/FreeCAD/issues/6177
+    glPushAttrib(GL_COLOR_BUFFER_BIT);
+    glColorMask(false, false, false, true);
+    glClearColor(0, 0, 0, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glPopAttrib();
 }
 
 void View3DInventorViewer::setSeekMode(bool on)
@@ -3706,6 +3743,25 @@ void View3DInventorViewer::setAxisLetterColor(const SbColor& color)
     recolor(ZPM_PIXEL_MASK, ZPM_pixel_data, ZPM_WIDTH, ZPM_HEIGHT, ZPM_BYTES_PER_PIXEL);
 }
 
+void View3DInventorViewer::updateColors()
+{
+    unsigned long colorLong;
+
+    colorLong = Gui::ViewParams::instance()->getAxisXColor();
+    m_xColor = App::Color(static_cast<uint32_t>(colorLong));
+    colorLong = Gui::ViewParams::instance()->getAxisYColor();
+    m_yColor = App::Color(static_cast<uint32_t>(colorLong));
+    colorLong = Gui::ViewParams::instance()->getAxisZColor();
+    m_zColor = App::Color(static_cast<uint32_t>(colorLong));
+
+    naviCube->updateColors();
+
+    if(hasAxisCross()) {
+        setAxisCross(false);  // Force redraw
+        setAxisCross(true);
+    }
+}
+
 void View3DInventorViewer::drawAxisCross()
 {
     // NOLINTBEGIN
@@ -3813,10 +3869,10 @@ void View3DInventorViewer::drawAxisCross()
             glPushMatrix();
 
             if (i == XAXIS) {                        // X axis.
-                if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO)
-                    glColor3f(0.500F, 0.5F, 0.5F);
+                if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO)  // What is this
+                    glColor3f(0.500F, 0.5F, 0.5F);  // Why different colors??
                 else
-                    glColor3f(0.500F, 0.125F, 0.125F);
+                    glColor3f(m_xColor.r, m_xColor.g, m_xColor.b);
             }
             else if (i == YAXIS) {                   // Y axis.
                 glRotatef(90, 0, 0, 1);
@@ -3824,7 +3880,7 @@ void View3DInventorViewer::drawAxisCross()
                 if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO)
                     glColor3f(0.400F, 0.4F, 0.4F);
                 else
-                    glColor3f(0.125F, 0.500F, 0.125F);
+                    glColor3f(m_yColor.r, m_yColor.g, m_yColor.b);
             }
             else {                                        // Z axis.
                 glRotatef(-90, 0, 1, 0);
@@ -3832,7 +3888,7 @@ void View3DInventorViewer::drawAxisCross()
                 if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO)
                     glColor3f(0.300F, 0.3F, 0.3F);
                 else
-                    glColor3f(0.125F, 0.125F, 0.500F);
+                    glColor3f(m_zColor.r, m_zColor.g, m_zColor.b);
             }
 
             drawArrow();

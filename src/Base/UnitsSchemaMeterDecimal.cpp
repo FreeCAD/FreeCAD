@@ -44,7 +44,7 @@ std::string UnitsSchemaMeterDecimal::schemaTranslate(const Base::Quantity& quant
                                                      std::string& unitString)
 {
     static std::array<std::pair<Unit, std::pair<std::string, double>>, 7> unitSpecs {{
-        {Unit::Length, {"m", 1e0}},
+        {Unit::Length, {"m", 1e3}},
         {Unit::Area, {"m^2", 1e6}},
         {Unit::Volume, {"m^3", 1e9}},
         {Unit::Power, {"W", 1000000}},

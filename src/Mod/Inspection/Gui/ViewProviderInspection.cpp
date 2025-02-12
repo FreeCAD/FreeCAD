@@ -385,7 +385,7 @@ void ViewProviderInspection::setDistances()
         SoDebugError::post("ViewProviderInspection::setDistances", "Unknown property 'Distances'");
         return;
     }
-    if (pDistances->getTypeId() != Inspection::PropertyDistanceList::getClassTypeId()) {
+    if (!pDistances->is<Inspection::PropertyDistanceList>()) {
         SoDebugError::post(
             "ViewProviderInspection::setDistances",
             "Property 'Distances' has type %s (Inspection::PropertyDistanceList was expected)",

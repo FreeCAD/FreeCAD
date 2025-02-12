@@ -425,7 +425,8 @@ public:
             "read(string) -- Load the file and return the shape."
         );
         add_varargs_method("show",&Module::show,
-            "show(shape,[string]) -- Add the shape to the active document or create one if no document exists."
+            "show(shape,[string]) -- Add the shape to the active document or create one if no document exists.\n"
+            "Returns document object."
         );
         add_varargs_method("getFacets",&Module::getFacets,
             "getFacets(shape): simplified mesh generation"
@@ -865,7 +866,7 @@ private:
         } else {
             throw Py::TypeError("Expects argument of type DocumentObject, Shape, or Geometry");
         }
-        Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name));
+        Part::Feature *pcFeature = pcDoc->addObject<Part::Feature>(name);
         // copy the data
         pcFeature->Shape.setValue(shape);
         pcFeature->purgeTouched();
@@ -1053,7 +1054,7 @@ private:
                           if (!PyLong_Check(value)) {
                               throw Py::ValueError(err);
                           }
-                          int order = Py::Int(value);
+                          int order = Py::Long(value);
                           params.orders[s] = static_cast<TopoShape::Continuity>(order);
                           return;
                       });
@@ -1130,7 +1131,7 @@ private:
                           if (!PyLong_Check(value)) {
                               throw Py::ValueError(err);
                           }
-                          int order = Py::Int(value);
+                          int order = Py::Long(value);
                           params.orders[s] = static_cast<TopoShape::Continuity>(order);
                           return;
                       });

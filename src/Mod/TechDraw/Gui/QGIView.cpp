@@ -1,5 +1,6 @@
 ﻿/***************************************************************************
  *   Copyright (c) 2012-2013 Luke Parry <l.parry@warwick.ac.uk>            *
+ *   Copyright (c) 2024 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,7 +38,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/TechDraw/App/DrawPage.h>
@@ -56,6 +57,7 @@
 #include "QGCustomImage.h"
 #include "QGCustomLabel.h"
 #include "QGICaption.h"
+#include "QGIEdge.h"
 #include "QGIVertex.h"
 #include "QGIViewClip.h"
 #include "QGSPage.h"
@@ -103,7 +105,7 @@ QGIView::QGIView()
     addToGroup(m_caption);
     m_lock = new QGCustomImage();
     m_lock->setParentItem(m_border);
-    m_lock->load(QString::fromUtf8(":/icons/TechDraw_Lock.svg"));
+    m_lock->load(QStringLiteral(":/icons/TechDraw_Lock.svg"));
     QSize sizeLock = m_lock->imageSize();
     m_lockWidth = (double) sizeLock.width();
     m_lockHeight = (double) sizeLock.height();
@@ -171,10 +173,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             if(alignHash.size() == 1) {   //if aligned.
                 QGraphicsItem* item = alignHash.begin().value();
                 QString alignMode   = alignHash.begin().key();
-                if(alignMode == QString::fromLatin1("Vertical")) {
+                if(alignMode == QStringLiteral("Vertical")) {
                     newPos.setX(item->pos().x());
                 }
-                else if(alignMode == QString::fromLatin1("Horizontal")) {
+                else if(alignMode == QStringLiteral("Horizontal")) {
                     newPos.setY(item->pos().y());
                 }
             }
@@ -568,7 +570,7 @@ void QGIView::setViewFeature(TechDraw::DrawView *obj)
     viewName = obj->getNameInDocument();
 
             //mark the actual QGraphicsItem so we can check what's in the scene later
-    setData(0, QString::fromUtf8("QGIV"));
+    setData(0, QStringLiteral("QGIV"));
     setData(1, QString::fromUtf8(obj->getNameInDocument()));
 }
 
@@ -971,5 +973,32 @@ void QGIView::makeMark(QPointF pos, QColor color)
 {
     makeMark(pos.x(), pos.y(), color);
 }
+
+//! Retrieves objects of type T with given indexes
+template <typename T>
+std::vector<T> QGIView::getObjects(std::vector<int> indexes)
+{
+    QList<QGraphicsItem*> children = childItems();
+    std::vector<T> result;
+    for (QGraphicsItem*& child : children) {
+        //                   Convert QGIVertex* (as T) to QGIVertex
+        if (child->type() != std::remove_pointer<T>::type::Type) {
+            continue;
+        }
+
+        // Get index of child item
+        T object = static_cast<T>(child);
+        int target = object->getProjIndex();
+        // If child item's index in indexes, then add to results
+        if (std::find(indexes.begin(), indexes.end(), target) != indexes.end()) {
+            result.push_back(object);
+        }
+    }
+    return result;
+}
+
+template std::vector<QGIVertex*> QGIView::getObjects<QGIVertex*>(std::vector<int>);
+template std::vector<QGIEdge*> QGIView::getObjects<QGIEdge*>(std::vector<int>);
+
 
 #include <Mod/TechDraw/Gui/moc_QGIView.cpp>

@@ -56,8 +56,8 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/SoFCColorBarNotifier.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -1036,7 +1036,7 @@ void ViewProviderFemPostObject::hide()
     for (auto it : ObjectsList) {
         if (it->isDerivedFrom<Fem::FemPostObject>()) {
             if (!firstVisiblePostObject && it->Visibility.getValue()
-                && !it->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
+                && !it->isDerivedFrom<Fem::FemPostDataAtPointFilter>()) {
                 firstVisiblePostObject = it;
                 break;
             }

@@ -413,7 +413,7 @@ static void linkConvert(bool unlink) {
                     continue;
             }else{
                 auto name = doc->getUniqueObjectName("Link");
-                auto link = static_cast<App::Link*>(doc->addObject("App::Link",name.c_str()));
+                auto link = doc->addObject<App::Link>(name.c_str());
                 if(!link)
                     FC_THROWM(Base::RuntimeError,"Failed to create link");
                 link->setLink(-1,obj);

@@ -110,7 +110,7 @@ int Exporter::addObject(App::DocumentObject* obj, float tol)
         auto linked = sobj->getLinkedObject(true, &matrix, false);
         auto it = meshCache.find(linked);
         if (it == meshCache.end()) {
-            if (linked->isDerivedFrom(Mesh::Feature::getClassTypeId())) {
+            if (linked->isDerivedFrom<Mesh::Feature>()) {
                 it = meshCache.emplace(linked, static_cast<Mesh::Feature*>(linked)->Mesh.getValue())
                          .first;
                 it->second.setTransform(matrix);

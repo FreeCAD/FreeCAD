@@ -425,54 +425,75 @@ def get_svg(obj,
         It defaults to `True`.
     """
     # If this is a group, recursively call this function to gather
-    # all the SVG strings from the contents of the group
-    if hasattr(obj, "isDerivedFrom"):
-        if (obj.isDerivedFrom("App::DocumentObjectGroup")
-                or utils.get_type(obj) in ["Layer", "BuildingPart", "IfcGroup"]
-                or obj.isDerivedFrom("App::LinkGroup")
+    # all the SVG strings from the contents of the group.
+    if (obj.isDerivedFrom("App::DocumentObjectGroup")
+            or utils.get_type(obj) in ["Layer", "BuildingPart", "IfcGroup"]
+            or obj.isDerivedFrom("App::LinkGroup")
+            or (obj.isDerivedFrom("App::Link")
+                    and obj.LinkedObject.isDerivedFrom("App::DocumentObjectGroup"))):
+
+        hidden_doc = None
+
+        if (obj.isDerivedFrom("App::LinkGroup")
                 or (obj.isDerivedFrom("App::Link")
                         and obj.LinkedObject.isDerivedFrom("App::DocumentObjectGroup"))):
-
-            hidden_doc = None
-
-            if (obj.isDerivedFrom("App::LinkGroup")
-                    or (obj.isDerivedFrom("App::Link")
-                            and obj.LinkedObject.isDerivedFrom("App::DocumentObjectGroup"))):
-                if obj.Placement.isIdentity():
-                    if obj.isDerivedFrom("App::LinkGroup"):
-                        group = obj.ElementList
-                    else:
-                        group = obj.Group
+            if obj.Placement.isIdentity():
+                if obj.isDerivedFrom("App::LinkGroup"):
+                    group = obj.ElementList
                 else:
-                    # Using a hidden doc hack to handle placements.
-                    hidden_doc = App.newDocument(name="hidden", hidden=True, temp=True)
-                    new = hidden_doc.copyObject(obj, True)
-                    pla = new.Placement
-                    new.Placement = App.Placement()
-                    if new.isDerivedFrom("App::LinkGroup"):
-                        group = new.ElementList
-                    else:
-                        group = new.Group
-                    for child in group:
-                        child.Placement = pla * child.Placement
+                    group = obj.Group
             else:
-                group = obj.Group
+                # Hidden doc hack:
+                hidden_doc = App.newDocument(name="hidden", hidden=True, temp=True)
+                new = hidden_doc.copyObject(obj, True)
+                pla = new.Placement
+                new.Placement = App.Placement()
+                if new.isDerivedFrom("App::LinkGroup"):
+                    group = new.ElementList
+                else:
+                    group = new.Group
+                for child in group:
+                    child.Placement = pla * child.Placement
+        else:
+            group = obj.Group
 
-            svg = ""
-            for child in group:
-                svg += get_svg(child,
-                               scale, linewidth, fontsize,
-                               fillstyle, direction, linestyle,
-                               color, linespacing, techdraw,
-                               rotation, fillspaces, override)
+        svg = ""
+        for child in group:
+            svg += get_svg(child,
+                           scale, linewidth, fontsize,
+                           fillstyle, direction, linestyle,
+                           color, linespacing, techdraw,
+                           rotation, fillspaces, override)
 
-            if hidden_doc is not None:
-                try:
-                    App.closeDocument(hidden_doc.Name)
-                except:
-                    pass
+        if hidden_doc is not None:
+            try:
+                App.closeDocument(hidden_doc.Name)
+            except:
+                pass
 
-            return svg
+        return svg
+
+    # Handle Links to texts and dimensions. These Links do not have a Shape.
+    if obj.isDerivedFrom("App::Link") and obj.LinkedObject and not hasattr(obj, "Shape"):
+        # Hidden doc hack:
+        hidden_doc = App.newDocument(name="hidden", hidden=True, temp=True)
+        new = hidden_doc.copyObject(obj.LinkedObject, True)
+        if utils.get_type(new) in ("Dimension", "LinearDimension", "AngularDimension"):
+            new.Proxy.transform(new, obj.Placement)
+        elif utils.get_type(new) == "Text" or obj.LinkTransform:
+            new.Placement = obj.Placement * new.Placement
+        else:
+            new.Placement = obj.Placement
+        svg = get_svg(new,
+                      scale, linewidth, fontsize,
+                      fillstyle, direction, linestyle,
+                      color, linespacing, techdraw,
+                      rotation, fillspaces, override)
+        try:
+            App.closeDocument(hidden_doc.Name)
+        except:
+            pass
+        return svg
 
     vobj = _get_view_object(obj)
 

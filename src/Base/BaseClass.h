@@ -156,16 +156,10 @@ public:
     }
 
     template<typename T>
-    bool is() const
-    {
-        return getTypeId() == T::getClassTypeId();
-    }
+    bool is() const;
 
     template<typename T>
-    bool isDerivedFrom() const
-    {
-        return getTypeId().isDerivedFrom(T::getClassTypeId());
-    }
+    bool isDerivedFrom() const;
 
 private:
     static Type classTypeId;  // NOLINT
@@ -187,6 +181,20 @@ public:
     virtual ~BaseClass();
 };
 
+template<typename T>
+bool BaseClass::is() const
+{
+    static_assert(std::is_base_of<BaseClass, T>::value, "T must be derived from Base::BaseClass");
+    return getTypeId() == T::getClassTypeId();
+}
+
+template<typename T>
+bool BaseClass::isDerivedFrom() const
+{
+    static_assert(std::is_base_of<BaseClass, T>::value, "T must be derived from Base::BaseClass");
+    return getTypeId().isDerivedFrom(T::getClassTypeId());
+}
+
 /**
  * Template that works just like dynamic_cast, but expects the argument to
  * inherit from Base::BaseClass.
@@ -195,6 +203,8 @@ public:
 template<typename T>
 T* freecad_dynamic_cast(Base::BaseClass* type)
 {
+    static_assert(std::is_base_of<BaseClass, T>::value, "T must be derived from Base::BaseClass");
+
     if (type && type->isDerivedFrom(T::getClassTypeId())) {
         return static_cast<T*>(type);
     }
@@ -210,6 +220,8 @@ T* freecad_dynamic_cast(Base::BaseClass* type)
 template<typename T>
 const T* freecad_dynamic_cast(const Base::BaseClass* type)
 {
+    static_assert(std::is_base_of<BaseClass, T>::value, "T must be derived from Base::BaseClass");
+
     if (type && type->isDerivedFrom(T::getClassTypeId())) {
         return static_cast<const T*>(type);
     }

@@ -177,7 +177,7 @@ PropertyPath::~PropertyPath() = default;
 //**************************************************************************
 // Setter/getter for the property
 
-void PropertyPath::setValue(const boost::filesystem::path& Path)
+void PropertyPath::setValue(const std::filesystem::path& Path)
 {
     aboutToSetValue();
     _cValue = Path;
@@ -187,15 +187,11 @@ void PropertyPath::setValue(const boost::filesystem::path& Path)
 void PropertyPath::setValue(const char* Path)
 {
     aboutToSetValue();
-#if (BOOST_FILESYSTEM_VERSION == 2)
-    _cValue = boost::filesystem::path(Path, boost::filesystem::no_check);
-#else
-    _cValue = boost::filesystem::path(Path);
-#endif
+    _cValue = std::filesystem::path(Path);
     hasSetValue();
 }
 
-const boost::filesystem::path& PropertyPath::getValue() const
+const std::filesystem::path& PropertyPath::getValue() const
 {
     return _cValue;
 }
@@ -491,7 +487,7 @@ void PropertyEnumeration::setPyObject(PyObject* value)
             if (seq.size() == 2) {
                 Py::Object v(seq[0].ptr());
                 if (!v.isString() && v.isSequence()) {
-                    idx = Py::Int(seq[1].ptr());
+                    idx = Py::Long(seq[1].ptr());
                     seq = v;
                 }
             }
@@ -608,7 +604,7 @@ bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier& path, Py::Objec
         else {
             Py::Tuple tuple(2);
             tuple.setItem(0, res);
-            tuple.setItem(1, Py::Int(getValue()));
+            tuple.setItem(1, Py::Long(getValue()));
             r = tuple;
         }
     }
@@ -617,7 +613,7 @@ bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier& path, Py::Objec
         r = Py::String(v ? v : "");
     }
     else {
-        r = Py::Int(getValue());
+        r = Py::Long(getValue());
     }
     return true;
 }
@@ -1970,17 +1966,14 @@ PyObject* PropertyMap::getPyObject()
 
 void PropertyMap::setPyObject(PyObject* value)
 {
-    if (PyDict_Check(value)) {
-
+    if (PyMapping_Check(value)) {
         std::map<std::string, std::string> values;
         // get key and item list
-        PyObject* keyList = PyDict_Keys(value);
-
-        PyObject* itemList = PyDict_Values(value);
+        PyObject* keyList = PyMapping_Keys(value);
+        PyObject* itemList = PyMapping_Values(value);
         Py_ssize_t nSize = PyList_Size(keyList);
 
         for (Py_ssize_t i = 0; i < nSize; ++i) {
-
             // check on the key:
             std::string keyStr;
             PyObject* key = PyList_GetItem(keyList, i);
@@ -1988,7 +1981,7 @@ void PropertyMap::setPyObject(PyObject* value)
                 keyStr = PyUnicode_AsUTF8(key);
             }
             else {
-                std::string error("type of the key need to be unicode or string, not");
+                std::string error("type of the key need to be string, not ");
                 error += key->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
@@ -1999,16 +1992,19 @@ void PropertyMap::setPyObject(PyObject* value)
                 values[keyStr] = PyUnicode_AsUTF8(item);
             }
             else {
-                std::string error("type in list must be string or unicode, not ");
+                std::string error("type in values must be string, not ");
                 error += item->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
         }
 
+        Py_XDECREF(itemList);
+        Py_XDECREF(keyList);
+
         setValues(values);
     }
     else {
-        std::string error("type must be a dict object");
+        std::string error("type must be a dict or object with mapping protocol, not ");
         error += value->ob_type->tp_name;
         throw Base::TypeError(error);
     }

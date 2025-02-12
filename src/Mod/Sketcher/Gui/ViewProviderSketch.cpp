@@ -49,9 +49,9 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MenuManager.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
+#include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -2618,7 +2618,7 @@ float ViewProviderSketch::getScaleFactor() const
     assert(isInEditMode());
     Gui::MDIView* mdi =
         Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
-    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
         SoCamera* camera = viewer->getSoRenderManager()->getCamera();
         float scale = camera->getViewVolume(camera->aspectRatio.getValue())
@@ -2825,7 +2825,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationoverl
     }
 
     Gui::MDIView* mdi = this->getActiveView();
-    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
         static_cast<Gui::View3DInventor*>(mdi)->getViewer()->redraw();
     }
 }
@@ -2889,7 +2889,7 @@ void ViewProviderSketch::slotSolverUpdate()
             + getSketchObject()->getHighestCurveIndex() + 1
         == getSolvedSketch().getGeometrySize()) {
         Gui::MDIView* mdi = Gui::Application::Instance->editDocument()->getActiveView();
-        if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
+        if (mdi->isDerivedFrom<Gui::View3DInventor>())
             draw(false, true);
 
         signalConstraintsChanged();
@@ -3050,7 +3050,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
         Gui::Command::addModule(Gui::Command::Gui, "Show");
         try {
             QString cmdstr =
-                QString::fromLatin1(
+                QStringLiteral(
                     "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
                     "tv = Show.TempoVis(App.ActiveDocument, tag= ActiveSketch.ViewObject.TypeId)\n"
                     "ActiveSketch.ViewObject.TempoVis = tv\n"
@@ -3200,16 +3200,16 @@ inline QString intListHelper(const std::vector<int>& ints)
     if (ints.size() < 8) {// The 8 is a bit heuristic... more than that and we shift formats
         for (const auto i : ints) {
             if (results.isEmpty())
-                results.append(QString::fromUtf8("%1").arg(i));
+                results.append(QStringLiteral("%1").arg(i));
             else
-                results.append(QString::fromUtf8(", %1").arg(i));
+                results.append(QStringLiteral(", %1").arg(i));
         }
     }
     else {
         const int numToShow = 3;
         int more = ints.size() - numToShow;
         for (int i = 0; i < numToShow; ++i) {
-            results.append(QString::fromUtf8("%1, ").arg(ints[i]));
+            results.append(QStringLiteral("%1, ").arg(ints[i]));
         }
         results.append(QCoreApplication::translate("ViewProviderSketch", "and %1 more").arg(more));
     }
@@ -3227,51 +3227,51 @@ void ViewProviderSketch::UpdateSolverInformation()
     bool hasMalformed = getSketchObject()->getLastHasMalformedConstraints();
 
     if (getSketchObject()->Geometry.getSize() == 0) {
-        signalSetUp(QString::fromUtf8("empty_sketch"), tr("Empty sketch"), QString(), QString());
+        signalSetUp(QStringLiteral("empty_sketch"), tr("Empty sketch"), QString(), QString());
     }
     else if (dofs < 0 || hasConflicts) {// over-constrained sketch
         signalSetUp(
-            QString::fromUtf8("conflicting_constraints"),
+            QStringLiteral("conflicting_constraints"),
             tr("Over-constrained:") + QLatin1String(" "),
-            QString::fromUtf8("#conflicting"),
-            QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastConflicting())));
+            QStringLiteral("#conflicting"),
+            QStringLiteral("(%1)").arg(intListHelper(getSketchObject()->getLastConflicting())));
     }
     else if (hasMalformed) {// malformed constraints
-        signalSetUp(QString::fromUtf8("malformed_constraints"),
+        signalSetUp(QStringLiteral("malformed_constraints"),
                     tr("Malformed constraints:") + QLatin1String(" "),
-                    QString::fromUtf8("#malformed"),
-                    QString::fromUtf8("(%1)").arg(
+                    QStringLiteral("#malformed"),
+                    QStringLiteral("(%1)").arg(
                         intListHelper(getSketchObject()->getLastMalformedConstraints())));
     }
     else if (hasRedundancies) {
         signalSetUp(
-            QString::fromUtf8("redundant_constraints"),
+            QStringLiteral("redundant_constraints"),
             tr("Redundant constraints:") + QLatin1String(" "),
-            QString::fromUtf8("#redundant"),
-            QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastRedundant())));
+            QStringLiteral("#redundant"),
+            QStringLiteral("(%1)").arg(intListHelper(getSketchObject()->getLastRedundant())));
     }
     else if (hasPartiallyRedundant) {
-        signalSetUp(QString::fromUtf8("partially_redundant_constraints"),
+        signalSetUp(QStringLiteral("partially_redundant_constraints"),
                     tr("Partially redundant:") + QLatin1String(" "),
-                    QString::fromUtf8("#partiallyredundant"),
-                    QString::fromUtf8("(%1)").arg(
+                    QStringLiteral("#partiallyredundant"),
+                    QStringLiteral("(%1)").arg(
                         intListHelper(getSketchObject()->getLastPartiallyRedundant())));
     }
     else if (getSketchObject()->getLastSolverStatus() != 0) {
-        signalSetUp(QString::fromUtf8("solver_failed"),
+        signalSetUp(QStringLiteral("solver_failed"),
                     tr("Solver failed to converge"),
-                    QString::fromUtf8(""),
-                    QString::fromUtf8(""));
+                    QStringLiteral(""),
+                    QStringLiteral(""));
     }
     else if (dofs > 0) {
-        signalSetUp(QString::fromUtf8("under_constrained"),
+        signalSetUp(QStringLiteral("under_constrained"),
                     tr("Under-constrained:") + QLatin1String(" "),
-                    QString::fromUtf8("#dofs"),
+                    QStringLiteral("#dofs"),
                     tr("%n DoF(s)", "", dofs));
     }
     else {
         signalSetUp(
-            QString::fromUtf8("fully_constrained"), tr("Fully constrained"), QString(), QString());
+            QStringLiteral("fully_constrained"), tr("Fully constrained"), QString(), QString());
     }
 }
 
@@ -3349,7 +3349,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     // visibility automation
     try {
         QString cmdstr =
-            QString::fromLatin1("ActiveSketch = App.getDocument('%1').getObject('%2')\n"
+            QStringLiteral("ActiveSketch = App.getDocument('%1').getObject('%2')\n"
                                 "tv = ActiveSketch.ViewObject.TempoVis\n"
                                 "if tv:\n"
                                 "  tv.restore()\n"
@@ -3377,7 +3377,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     if (!this->TempoVis.getValue().isNone()) {
         try {
             QString cmdstr =
-                QString::fromLatin1(
+                QStringLiteral(
                     "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
                     "if ActiveSketch.ViewObject.RestoreCamera:\n"
                     "  ActiveSketch.ViewObject.TempoVis.saveCamera()\n"
@@ -3943,7 +3943,7 @@ std::unique_ptr<SoRayPickAction> ViewProviderSketch::getRayPickAction() const
     assert(isInEditMode());
     Gui::MDIView* mdi =
         Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
-    if (!(mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())))
+    if (!(mdi && mdi->isDerivedFrom<Gui::View3DInventor>()))
         return nullptr;
     Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
 
@@ -4027,7 +4027,7 @@ double ViewProviderSketch::getRotation(SbVec3f pos0, SbVec3f pos1) const
 
     Gui::MDIView* mdi =
         Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
-    if (!(mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())))
+    if (!(mdi && mdi->isDerivedFrom<Gui::View3DInventor>()))
         return 0;
     Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
     SoCamera* pCam = viewer->getSoRenderManager()->getCamera();

@@ -59,7 +59,7 @@ void QGIDrawingTemplate::clearContents()
 
 TechDraw::DrawParametricTemplate * QGIDrawingTemplate::getParametricTemplate()
 {
-    if(pageTemplate && pageTemplate->isDerivedFrom(TechDraw::DrawParametricTemplate::getClassTypeId()))
+    if(pageTemplate && pageTemplate->isDerivedFrom<TechDraw::DrawParametricTemplate>())
         return static_cast<TechDraw::DrawParametricTemplate *>(pageTemplate);
     else
         return nullptr;

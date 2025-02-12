@@ -33,7 +33,7 @@
 #include <App/DocumentObject.h>
 #include <App/Datums.h>
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraintForce.h>
 #include <Mod/Fem/App/FemTools.h>
@@ -434,7 +434,7 @@ bool TaskDlgFemConstraintForce::accept()
         std::string scale = "1";
 
         if (!dirname.empty()) {
-            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+            QString buf = QStringLiteral("(App.ActiveDocument.%1,[\"%2\"])");
             buf = buf.arg(QString::fromStdString(dirname));
             buf = buf.arg(QString::fromStdString(dirobj));
             Gui::Command::doCommand(Gui::Command::Doc,

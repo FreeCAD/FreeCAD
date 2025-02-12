@@ -55,7 +55,7 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/SelectionFilter.h>
+#include <Gui/Selection/SelectionFilter.h>
 
 using namespace PartDesignGui;
 
@@ -105,7 +105,7 @@ public:
         // https://forum.freecad.org/viewtopic.php?f=3&t=37448
         if (object == activeBody) {
             App::DocumentObject* tip = activeBody->Tip.getValue();
-            if (tip && tip->isDerivedFrom(Part::Feature::getClassTypeId()) && elements.size() == 1) {
+            if (tip && tip->isDerivedFrom<Part::Feature>() && elements.size() == 1) {
                 Gui::SelectionChanges msg;
                 msg.pDocName = faceSelection.getDocName();
                 msg.pObjectName = tip->getNameInDocument();

@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Contains a the Addon Manager's preferences dialog management class """
+"""Contains a the Addon Manager's preferences dialog management class"""
 
 import os
 

@@ -19,14 +19,14 @@ IF(CMAKE_BUILD_TYPE)
     add_definitions(-DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
 ENDIF(CMAKE_BUILD_TYPE)
 
-if (FREECAD_USE_3DCONNEXION_LEGACY)
+if (FREECAD_USE_3DCONNEXION_LEGACY AND (MSVC OR APPLE))
     add_definitions(-D_USE_3DCONNEXION_SDK)
     if(APPLE)
         set(3DCONNEXION_LINKFLAGS "-F/Library/Frameworks -weak_framework 3DconnexionClient")
         list(APPEND 3DCONNEXION_INCLUDE_DIR ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers
                                     ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers/3DconnexionClient )
     endif(APPLE)
-endif(FREECAD_USE_3DCONNEXION_LEGACY)
+endif(FREECAD_USE_3DCONNEXION_LEGACY AND (MSVC OR APPLE))
 
 if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
     add_definitions(-DUSE_3DCONNEXION_NAVLIB)
@@ -48,6 +48,8 @@ include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/Quarter
+    ${CMAKE_CURRENT_SOURCE_DIR}/PreferencePages
+    ${CMAKE_CURRENT_SOURCE_DIR}/Selection
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}/..
@@ -138,7 +140,8 @@ if(${Qt5WinExtras_FOUND})
     )
 endif()
 
-IF(SPNAV_FOUND)
+IF(SPNAV_FOUND AND FREECAD_USE_3DCONNEXION_LEGACY)
+    add_definitions(-D_USE_3DCONNEXION_SDK)
     if(SPNAV_USE_X11)
         add_definitions(-DSPNAV_USE_X11)
         if (FREECAD_QT_MAJOR_VERSION EQUAL 5 AND UNIX AND NOT APPLE)
@@ -186,7 +189,7 @@ IF(SPNAV_FOUND)
     list(APPEND FreeCADGui_LIBS
         ${SPNAV_LIBRARIES}
     )
-ENDIF(SPNAV_FOUND)
+ENDIF(SPNAV_FOUND AND FREECAD_USE_3DCONNEXION_LEGACY)
 
 IF(OCULUS_FOUND)
     add_definitions(-DOCULUS_FOUND)
@@ -254,12 +257,12 @@ generate_from_xml(ViewProviderDocumentObjectPy)
 generate_from_xml(ViewProviderGeometryObjectPy)
 generate_from_xml(ViewProviderExtensionPy)
 generate_from_xml(WorkbenchPy)
-generate_from_xml(SelectionObjectPy)
+generate_from_xml(Selection/SelectionObjectPy)
 generate_from_xml(LinkViewPy)
 generate_from_xml(ViewProviderLinkPy)
 generate_from_xml(AxisOriginPy)
 generate_from_xml(CommandPy)
-generate_from_xml(NavigationStylePy)
+generate_from_xml(Navigation/NavigationStylePy)
 
 generate_from_py(FreeCADGuiInit GuiInitScript.h)
 
@@ -271,7 +274,7 @@ SET(FreeCADGui_XML_SRCS
     ViewProviderExtensionPy.xml
     PythonWorkbenchPy.xml
     WorkbenchPy.xml
-    SelectionObjectPy.xml
+    Selection/SelectionObjectPy.xml
     DocumentPy.xml
     LinkViewPy.xml
     ViewProviderLinkPy.xml
@@ -354,37 +357,37 @@ set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURR
 set_property(SOURCE GraphvizView.h APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp)
 
 SET(Gui_UIC_SRCS
-    AboutApplication.ui
+    Dialogs/AboutApplication.ui
     Clipping.ui
     DemoMode.ui
-    DlgActions.ui
-    DlgActivateWindow.ui
-    DlgUnitsCalculator.ui
-    DlgAuthorization.ui
-    DlgChooseIcon.ui
-    DlgCreateNewPreferencePack.ui
-    DlgInputDialog.ui
-    DlgKeyboard.ui
-    DlgMacroExecute.ui
-    DlgRunExternal.ui
-    DlgMacroRecord.ui
-    DlgMaterialProperties.ui
-    DlgOnlineHelp.ui
-    DlgParameter.ui
-    DlgParameterFind.ui
-    DlgPreferencePackManagement.ui
-    DlgPreferences.ui
-    DlgProjectInformation.ui
-    DlgProjectUtility.ui
-    DlgPropertyLink.ui
-    DlgRevertToBackupConfig.ui
+    Dialogs/DlgActions.ui
+    Dialogs/DlgActivateWindow.ui
+    Dialogs/DlgUnitsCalculator.ui
+    Dialogs/DlgAuthorization.ui
+    Dialogs/DlgChooseIcon.ui
+    Dialogs/DlgCreateNewPreferencePack.ui
+    Dialogs/DlgInputDialog.ui
+    Dialogs/DlgKeyboard.ui
+    Dialogs/DlgMacroExecute.ui
+    Dialogs/DlgRunExternal.ui
+    Dialogs/DlgMacroRecord.ui
+    Dialogs/DlgMaterialProperties.ui
+    Dialogs/DlgOnlineHelp.ui
+    Dialogs/DlgParameter.ui
+    Dialogs/DlgParameterFind.ui
+    Dialogs/DlgPreferencePackManagement.ui
+    Dialogs/DlgPreferences.ui
+    Dialogs/DlgProjectInformation.ui
+    Dialogs/DlgProjectUtility.ui
+    Dialogs/DlgPropertyLink.ui
+    Dialogs/DlgRevertToBackupConfig.ui
     PreferencePages/DlgSettings3DView.ui
     PreferencePages/DlgSettingsCacheDirectory.ui
-    DlgSettingsColorGradient.ui
+    Dialogs/DlgSettingsColorGradient.ui
     PreferencePages/DlgSettingsDocument.ui
     PreferencePages/DlgSettingsEditor.ui
     PreferencePages/DlgSettingsGeneral.ui
-    DlgSettingsImage.ui
+    Dialogs/DlgSettingsImage.ui
     PreferencePages/DlgSettingsLightSources.ui
     PreferencePages/DlgSettingsMacro.ui
     PreferencePages/DlgSettingsNavigation.ui
@@ -395,15 +398,15 @@ SET(Gui_UIC_SRCS
     PreferencePages/DlgSettingsUI.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
-    DlgCheckableMessageBox.ui
-    DlgToolbars.ui
-    DlgTreeWidget.ui
-    DlgLocationAngle.ui
-    DlgLocationPos.ui
+    Dialogs/DlgCheckableMessageBox.ui
+    Dialogs/DlgToolbars.ui
+    Dialogs/DlgTreeWidget.ui
+    Dialogs/DlgLocationAngle.ui
+    Dialogs/DlgLocationPos.ui
     DocumentRecovery.ui
     DownloadManager.ui
     DownloadItem.ui
-    DlgExpressionInput.ui
+    Dialogs/DlgExpressionInput.ui
     MouseButtons.ui
     SceneInspector.ui
     InputVector.ui
@@ -415,14 +418,14 @@ SET(Gui_UIC_SRCS
     TaskView/TaskImage.ui
     TaskView/TaskSelectLinkProperty.ui
     TaskElementColors.ui
-    DlgObjectSelection.ui
-    DlgAddProperty.ui
-    DlgAddPropertyVarSet.ui
+    Dialogs/DlgObjectSelection.ui
+    Dialogs/DlgAddProperty.ui
+    Dialogs/DlgAddPropertyVarSet.ui
     VectorListEditor.ui
 )
 
 if(FREECAD_USE_3DCONNEXION_LEGACY)
-    list(APPEND Gui_UIC_SRCS DlgCustomizeSpNavSettings.ui)
+    list(APPEND Gui_UIC_SRCS Dialogs/DlgCustomizeSpNavSettings.ui)
 endif(FREECAD_USE_3DCONNEXION_LEGACY)
 
 set (FreeCAD_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Language/FreeCAD_translation.qrc)
@@ -475,28 +478,28 @@ SOURCE_GROUP("Command" FILES ${Command_SRCS})
 SET(Dialog_CPP_SRCS
     Clipping.cpp
     DemoMode.cpp
-    DlgAbout.cpp
-    DlgActivateWindowImp.cpp
-    DlgCreateNewPreferencePackImp.cpp
-    DlgUnitsCalculatorImp.cpp
-    DlgInputDialogImp.cpp
-    DlgMacroExecuteImp.cpp
-    DlgRunExternal.cpp
-    DlgEditFileIncludePropertyExternal.cpp
-    DlgMacroRecordImp.cpp
-    DlgMaterialPropertiesImp.cpp
-    DlgParameterImp.cpp
-    DlgParameterFind.cpp
-    DlgPreferencePackManagementImp.cpp
-    DlgProjectInformationImp.cpp
-    DlgProjectUtility.cpp
-    DlgPropertyLink.cpp
-    DlgRevertToBackupConfigImp.cpp
-    DlgExpressionInput.cpp
+    Dialogs/DlgAbout.cpp
+    Dialogs/DlgActivateWindowImp.cpp
+    Dialogs/DlgCreateNewPreferencePackImp.cpp
+    Dialogs/DlgUnitsCalculatorImp.cpp
+    Dialogs/DlgInputDialogImp.cpp
+    Dialogs/DlgMacroExecuteImp.cpp
+    Dialogs/DlgRunExternal.cpp
+    Dialogs/DlgEditFileIncludePropertyExternal.cpp
+    Dialogs/DlgMacroRecordImp.cpp
+    Dialogs/DlgMaterialPropertiesImp.cpp
+    Dialogs/DlgParameterImp.cpp
+    Dialogs/DlgParameterFind.cpp
+    Dialogs/DlgPreferencePackManagementImp.cpp
+    Dialogs/DlgProjectInformationImp.cpp
+    Dialogs/DlgProjectUtility.cpp
+    Dialogs/DlgPropertyLink.cpp
+    Dialogs/DlgRevertToBackupConfigImp.cpp
+    Dialogs/DlgExpressionInput.cpp
     TaskDlgRelocation.cpp
-    DlgCheckableMessageBox.cpp
+    Dialogs/DlgCheckableMessageBox.cpp
     TaskCSysDragger.cpp
-    DlgUndoRedo.cpp
+    Dialogs/DlgUndoRedo.cpp
     InputVector.cpp
     Placement.cpp
     PropertyPage.cpp
@@ -507,37 +510,37 @@ SET(Dialog_CPP_SRCS
     DownloadManager.cpp
     DocumentRecovery.cpp
     TaskElementColors.cpp
-    DlgObjectSelection.cpp
-    DlgAddProperty.cpp
-    DlgAddPropertyVarSet.cpp
+    Dialogs/DlgObjectSelection.cpp
+    Dialogs/DlgAddProperty.cpp
+    Dialogs/DlgAddPropertyVarSet.cpp
     VectorListEditor.cpp
 )
 
 SET(Dialog_HPP_SRCS
     Clipping.h
     DemoMode.h
-    DlgAbout.h
-    DlgActivateWindowImp.h
-    DlgCreateNewPreferencePackImp.h
-    DlgUnitsCalculatorImp.h
-    DlgInputDialogImp.h
-    DlgMacroExecuteImp.h
-    DlgRunExternal.h
-    DlgEditFileIncludePropertyExternal.h
-    DlgMacroRecordImp.h
-    DlgMaterialPropertiesImp.h
-    DlgParameterImp.h
-    DlgParameterFind.h
-    DlgPreferencePackManagementImp.h
-    DlgProjectInformationImp.h
-    DlgProjectUtility.h
-    DlgPropertyLink.h
-    DlgRevertToBackupConfigImp.h
-    DlgCheckableMessageBox.h
-    DlgExpressionInput.h
+    Dialogs/DlgAbout.h
+    Dialogs/DlgActivateWindowImp.h
+    Dialogs/DlgCreateNewPreferencePackImp.h
+    Dialogs/DlgUnitsCalculatorImp.h
+    Dialogs/DlgInputDialogImp.h
+    Dialogs/DlgMacroExecuteImp.h
+    Dialogs/DlgRunExternal.h
+    Dialogs/DlgEditFileIncludePropertyExternal.h
+    Dialogs/DlgMacroRecordImp.h
+    Dialogs/DlgMaterialPropertiesImp.h
+    Dialogs/DlgParameterImp.h
+    Dialogs/DlgParameterFind.h
+    Dialogs/DlgPreferencePackManagementImp.h
+    Dialogs/DlgProjectInformationImp.h
+    Dialogs/DlgProjectUtility.h
+    Dialogs/DlgPropertyLink.h
+    Dialogs/DlgRevertToBackupConfigImp.h
+    Dialogs/DlgCheckableMessageBox.h
+    Dialogs/DlgExpressionInput.h
     TaskDlgRelocation.h
     TaskCSysDragger.h
-    DlgUndoRedo.h
+    Dialogs/DlgUndoRedo.h
     InputVector.h
     Placement.h
     PropertyPage.h
@@ -548,40 +551,40 @@ SET(Dialog_HPP_SRCS
     DownloadManager.h
     DocumentRecovery.h
     TaskElementColors.h
-    DlgObjectSelection.h
-    DlgAddProperty.h
-    DlgAddPropertyVarSet.h
+    Dialogs/DlgObjectSelection.h
+    Dialogs/DlgAddProperty.h
+    Dialogs/DlgAddPropertyVarSet.h
     VectorListEditor.h
 )
 
 SET(Dialog_SRCS
     ${Dialog_CPP_SRCS}
     ${Dialog_HPP_SRCS}
-    AboutApplication.ui
+    Dialogs/AboutApplication.ui
     Clipping.ui
     DemoMode.ui
-    DlgActivateWindow.ui
-    DlgUnitsCalculator.ui
-    DlgAuthorization.ui
-    DlgInputDialog.ui
-    DlgAddProperty.ui
-    DlgLocationAngle.ui
-    DlgLocationPos.ui
-    DlgMacroExecute.ui
-    DlgRunExternal.ui
-    DlgMacroRecord.ui
-    DlgMaterialProperties.ui
-    DlgParameter.ui
-    DlgParameterFind.ui
-    DlgPreferencePackManagement.ui
-    DlgProjectInformation.ui
-    DlgProjectUtility.ui
-    DlgPropertyLink.ui
-    DlgRevertToBackupConfig.ui
-    DlgCheckableMessageBox.ui
-    DlgTreeWidget.ui
-    DlgExpressionInput.ui
-    DlgCreateNewPreferencePack.ui
+    Dialogs/DlgActivateWindow.ui
+    Dialogs/DlgUnitsCalculator.ui
+    Dialogs/DlgAuthorization.ui
+    Dialogs/DlgInputDialog.ui
+    Dialogs/DlgAddProperty.ui
+    Dialogs/DlgLocationAngle.ui
+    Dialogs/DlgLocationPos.ui
+    Dialogs/DlgMacroExecute.ui
+    Dialogs/DlgRunExternal.ui
+    Dialogs/DlgMacroRecord.ui
+    Dialogs/DlgMaterialProperties.ui
+    Dialogs/DlgParameter.ui
+    Dialogs/DlgParameterFind.ui
+    Dialogs/DlgPreferencePackManagement.ui
+    Dialogs/DlgProjectInformation.ui
+    Dialogs/DlgProjectUtility.ui
+    Dialogs/DlgPropertyLink.ui
+    Dialogs/DlgRevertToBackupConfig.ui
+    Dialogs/DlgCheckableMessageBox.ui
+    Dialogs/DlgTreeWidget.ui
+    Dialogs/DlgExpressionInput.ui
+    Dialogs/DlgCreateNewPreferencePack.ui
     DownloadManager.ui
     DownloadItem.ui
     DocumentRecovery.ui
@@ -591,58 +594,58 @@ SET(Dialog_SRCS
     SceneInspector.ui
     TextureMapping.ui
     TaskElementColors.ui
-    DlgObjectSelection.ui
+    Dialogs/DlgObjectSelection.ui
     VectorListEditor.ui
 )
 SOURCE_GROUP("Dialog" FILES ${Dialog_SRCS})
 
 # The customize dialog sources
 SET(Dialog_Customize_CPP_SRCS
-    DlgActionsImp.cpp
-    DlgCustomizeImp.cpp
-    DlgKeyboardImp.cpp
-    DlgToolbarsImp.cpp
-    ListWidgetDragBugFix.cpp
+    Dialogs/DlgActionsImp.cpp
+    Dialogs/DlgCustomizeImp.cpp
+    Dialogs/DlgKeyboardImp.cpp
+    Dialogs/DlgToolbarsImp.cpp
+    PreferencePages/ListWidgetDragBugFix.cpp
 )
 SET(Dialog_Customize_HPP_SRCS
-    DlgActionsImp.h
-    DlgCustomizeImp.h
-    DlgKeyboardImp.h
-    DlgToolbarsImp.h
-    ListWidgetDragBugFix.h
+    Dialogs/DlgActionsImp.h
+    Dialogs/DlgCustomizeImp.h
+    Dialogs/DlgKeyboardImp.h
+    Dialogs/DlgToolbarsImp.h
+    PreferencePages/ListWidgetDragBugFix.h
 )
 
 if(FREECAD_USE_3DCONNEXION_LEGACY)
-    list(APPEND Dialog_Customize_CPP_SRCS DlgCustomizeSpaceball.cpp DlgCustomizeSpNavSettings.cpp)
-    list(APPEND Dialog_Customize_HPP_SRCS DlgCustomizeSpaceball.h DlgCustomizeSpNavSettings.h)
+    list(APPEND Dialog_Customize_CPP_SRCS Dialogs/DlgCustomizeSpaceball.cpp Dialogs/DlgCustomizeSpNavSettings.cpp)
+    list(APPEND Dialog_Customize_HPP_SRCS Dialogs/DlgCustomizeSpaceball.h Dialogs/DlgCustomizeSpNavSettings.h)
 endif(FREECAD_USE_3DCONNEXION_LEGACY)
 
 SET(Dialog_Customize_SRCS
     ${Dialog_Customize_CPP_SRCS}
     ${Dialog_Customize_HPP_SRCS}
-    DlgActions.ui
-    DlgChooseIcon.ui
-    DlgKeyboard.ui
-    DlgToolbars.ui
+    Dialogs/DlgActions.ui
+    Dialogs/DlgChooseIcon.ui
+    Dialogs/DlgKeyboard.ui
+    Dialogs/DlgToolbars.ui
 )
 
 if(FREECAD_USE_3DCONNEXION_LEGACY)
-    list(APPEND Dialog_Customize_SRCS  DlgCustomizeSpNavSettings.ui)
+    list(APPEND Dialog_Customize_SRCS  Dialogs/DlgCustomizeSpNavSettings.ui)
 endif(FREECAD_USE_3DCONNEXION_LEGACY)
 
 SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 
 # The settings dialog sources
 SET(Dialog_Settings_CPP_SRCS
-    DlgOnlineHelpImp.cpp
-    DlgPreferencesImp.cpp
+    Dialogs/DlgOnlineHelpImp.cpp
+    Dialogs/DlgPreferencesImp.cpp
     PreferencePages/DlgSettings3DViewImp.cpp
     PreferencePages/DlgSettingsCacheDirectory.cpp
-    DlgSettingsColorGradientImp.cpp
+    Dialogs/DlgSettingsColorGradientImp.cpp
     PreferencePages/DlgSettingsDocumentImp.cpp
     PreferencePages/DlgSettingsEditor.cpp
     PreferencePages/DlgSettingsGeneral.cpp
-    DlgSettingsImageImp.cpp
+    Dialogs/DlgSettingsImageImp.cpp
     PreferencePages/DlgSettingsLightSources.cpp
     PreferencePages/DlgSettingsMacroImp.cpp
     PreferencePages/DlgSettingsNavigation.cpp
@@ -656,15 +659,15 @@ SET(Dialog_Settings_CPP_SRCS
     PreferencePages/DlgSettingsAdvanced.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
-    DlgOnlineHelpImp.h
-    DlgPreferencesImp.h
+    Dialogs/DlgOnlineHelpImp.h
+    Dialogs/DlgPreferencesImp.h
     PreferencePages/DlgSettings3DViewImp.h
     PreferencePages/DlgSettingsCacheDirectory.h
-    DlgSettingsColorGradientImp.h
+    Dialogs/DlgSettingsColorGradientImp.h
     PreferencePages/DlgSettingsDocumentImp.h
     PreferencePages/DlgSettingsEditor.h
     PreferencePages/DlgSettingsGeneral.h
-    DlgSettingsImageImp.h
+    Dialogs/DlgSettingsImageImp.h
     PreferencePages/DlgSettingsLightSources.h
     PreferencePages/DlgSettingsMacroImp.h
     PreferencePages/DlgSettingsNavigation.h
@@ -680,15 +683,15 @@ SET(Dialog_Settings_HPP_SRCS
 SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}
     ${Dialog_Settings_HPP_SRCS}
-    DlgOnlineHelp.ui
-    DlgPreferences.ui
+    Dialogs/DlgOnlineHelp.ui
+    Dialogs/DlgPreferences.ui
     PreferencePages/DlgSettings3DView.ui
     PreferencePages/DlgSettingsCacheDirectory.ui
-    DlgSettingsColorGradient.ui
+    Dialogs/DlgSettingsColorGradient.ui
     PreferencePages/DlgSettingsDocument.ui
     PreferencePages/DlgSettingsEditor.ui
     PreferencePages/DlgSettingsGeneral.ui
-    DlgSettingsImage.ui
+    Dialogs/DlgSettingsImage.ui
     PreferencePages/DlgSettingsLightSources.ui
     PreferencePages/DlgSettingsMacro.ui
     PreferencePages/DlgSettingsNavigation.ui
@@ -708,7 +711,7 @@ SET(Dock_Windows_CPP_SRCS
     DockWindow.cpp
     PropertyView.cpp
     ReportView.cpp
-    SelectionView.cpp
+    Selection/SelectionView.cpp
     ToolBox.cpp
     Tree.cpp
     TreeView.cpp
@@ -723,7 +726,7 @@ SET(Dock_Windows_HPP_SRCS
     DockWindow.h
     PropertyView.h
     ReportView.h
-    SelectionView.h
+    Selection/SelectionView.h
     ToolBox.h
     Tree.h
     TreeView.h
@@ -892,18 +895,6 @@ SET(View3D_CPP_SRCS
     GLPainter.cpp
     Multisample.cpp
     MouseSelection.cpp
-    NavigationStyle.cpp
-    NavigationStylePyImp.cpp
-    InventorNavigationStyle.cpp
-    CADNavigationStyle.cpp
-    RevitNavigationStyle.cpp
-    BlenderNavigationStyle.cpp
-    MayaGestureNavigationStyle.cpp
-    OpenCascadeNavigationStyle.cpp
-    OpenSCADNavigationStyle.cpp
-    TinkerCADNavigationStyle.cpp
-    TouchpadNavigationStyle.cpp
-    GestureNavigationStyle.cpp
     SplitView3DInventor.cpp
     View.cpp
     View3DInventor.cpp
@@ -915,8 +906,6 @@ SET(View3D_CPP_SRCS
     View3DPy.cpp
     View3DViewerPy.cpp
     NaviCube.cpp
-    NavigationAnimator.cpp
-    NavigationAnimation.cpp
 )
 SET(View3D_SRCS
     ${View3D_CPP_SRCS}
@@ -926,9 +915,6 @@ SET(View3D_SRCS
     GLPainter.h
     Multisample.h
     MouseSelection.h
-    NavigationStyle.h
-    NavigationStylePy.xml
-    GestureNavigationStyle.h
     SplitView3DInventor.h
     View.h
     View3DInventor.h
@@ -940,10 +926,34 @@ SET(View3D_SRCS
     CoinRiftWidget.h
     View3DViewerPy.h
     NaviCube.h
-    NavigationAnimator.h
-    NavigationAnimation.h
 )
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
+
+SET(Navigation_CPP_SRCS
+    Navigation/NavigationStyle.cpp
+    Navigation/NavigationStylePyImp.cpp
+    Navigation/InventorNavigationStyle.cpp
+    Navigation/CADNavigationStyle.cpp
+    Navigation/RevitNavigationStyle.cpp
+    Navigation/BlenderNavigationStyle.cpp
+    Navigation/MayaGestureNavigationStyle.cpp
+    Navigation/OpenCascadeNavigationStyle.cpp
+    Navigation/OpenSCADNavigationStyle.cpp
+    Navigation/TinkerCADNavigationStyle.cpp
+    Navigation/TouchpadNavigationStyle.cpp
+    Navigation/GestureNavigationStyle.cpp
+    Navigation/NavigationAnimator.cpp
+    Navigation/NavigationAnimation.cpp
+)
+SET(Navigation_SRCS
+    ${Navigation_CPP_SRCS}
+    Navigation/NavigationStyle.h
+    Navigation/NavigationStylePy.xml
+    Navigation/GestureNavigationStyle.h
+    Navigation/NavigationAnimator.h
+    Navigation/NavigationAnimation.h
+)
+SOURCE_GROUP("Navigation" FILES ${Navigation_SRCS})
 
 #quarter sources
 FILE(GLOB_RECURSE Quarter_CPP_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} Quarter/*.cpp)
@@ -1069,10 +1079,10 @@ SET(Inventor_CPP_SRCS
     SoFCInteractiveElement.cpp
     SoFCOffscreenRenderer.cpp
     SoQtOffscreenRendererPy.cpp
-    SoFCSelection.cpp
-    SoFCUnifiedSelection.cpp
-    SoFCSelectionContext.cpp
-    SoFCSelectionAction.cpp
+    Selection/SoFCSelection.cpp
+    Selection/SoFCUnifiedSelection.cpp
+    Selection/SoFCSelectionContext.cpp
+    Selection/SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
     SoDevicePixelRatioElement.cpp
@@ -1101,10 +1111,10 @@ SET(Inventor_SRCS
     SoFCInteractiveElement.h
     SoFCOffscreenRenderer.h
     SoQtOffscreenRendererPy.h
-    SoFCSelection.h
-    SoFCUnifiedSelection.h
-    SoFCSelectionContext.h
-    SoFCSelectionAction.h
+    Selection/SoFCSelection.h
+    Selection/SoFCUnifiedSelection.h
+    Selection/SoFCSelectionContext.h
+    Selection/SoFCSelectionAction.h
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
     SoDevicePixelRatioElement.h
@@ -1136,6 +1146,9 @@ SET(Widget_CPP_SRCS
     Widgets.cpp
     Window.cpp
     WorkbenchSelector.cpp
+    ElideLabel.cpp
+    ElideCheckBox.cpp
+    FontScaledSVG.cpp
 )
 SET(Widget_HPP_SRCS
     FileDialog.h
@@ -1157,6 +1170,9 @@ SET(Widget_HPP_SRCS
     Widgets.h
     Window.h
     WorkbenchSelector.h
+    ElideLabel.h
+    ElideCheckBox.h
+    FontScaledSVG.h
 )
 SET(Widget_SRCS
     ${Widget_CPP_SRCS}
@@ -1241,19 +1257,19 @@ SET(Workbench_SRCS
 SOURCE_GROUP("Workbench" FILES ${Workbench_SRCS})
 
 SET(Selection_SRCS
-    SelectionObjectPyImp.cpp
-    SelectionObject.h
-    SelectionObject.cpp
-    Selection.h
-    Selection.cpp
-    SelectionFilter.h
-    SelectionFilter.cpp
-    SelectionFilterPy.h
-    SelectionFilterPy.cpp
-    SelectionFilter.y
-    SelectionFilter.l
-    SelectionObserverPython.cpp
-    SelectionObserverPython.h
+    Selection/SelectionObjectPyImp.cpp
+    Selection/SelectionObject.h
+    Selection/SelectionObject.cpp
+    Selection/Selection.h
+    Selection/Selection.cpp
+    Selection/SelectionFilter.h
+    Selection/SelectionFilter.cpp
+    Selection/SelectionFilterPy.h
+    Selection/SelectionFilterPy.cpp
+    Selection/SelectionFilter.y
+    Selection/SelectionFilter.l
+    Selection/SelectionObserverPython.cpp
+    Selection/SelectionObserverPython.h
 )
 SOURCE_GROUP("Selection" FILES ${Selection_SRCS})
 
@@ -1357,6 +1373,7 @@ SET(FreeCADGui_SRCS
     ${Resource_SRCS}
     ${Quarter_SRCS}
     ${View3D_SRCS}
+    ${Navigation_SRCS}
     ${Viewprovider_SRCS}
     ${Widget_SRCS}
     ${Params_SRCS}
@@ -1411,7 +1428,7 @@ if (EIGEN3_NO_DEPRECATED_COPY)
         NaviCube.cpp
         Inventor/SoAutoZoomTranslation.cpp
         SoFCOffscreenRenderer.cpp
-        SoFCSelectionAction.cpp
+        Selection/SoFCSelectionAction.cpp
         SoFCCSysDragger.cpp
         Quarter/QuarterWidget.cpp
         View3DInventorViewer.cpp

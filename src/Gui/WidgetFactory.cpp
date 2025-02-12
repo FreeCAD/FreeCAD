@@ -493,7 +493,7 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
     QList<QWidget*> list = myDlg->findChildren<QWidget*>();
     QList<QWidget*>::const_iterator it = list.cbegin();
     QObject *obj;
-    QString sigStr = QString::fromLatin1("2%1").arg(QString::fromLatin1(signal));
+    QString sigStr = QStringLiteral("2%1").arg(QString::fromLatin1(signal));
 
     while ( it != list.cend() ) {
         obj = *it;
@@ -584,7 +584,7 @@ Py::Object PyResource::value(const Py::Tuple& args)
         item = Py::Long(static_cast<unsigned long>(v.toUInt()));
         break;
     case QMetaType::Int:
-        item = Py::Int(v.toInt());
+        item = Py::Long(v.toInt());
         break;
     default:
         item = Py::String("");

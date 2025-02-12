@@ -63,7 +63,7 @@ Gui::SoFCSelection* ViewProviderBuilder::createSelection()
     bool enablePre = hGrp->GetBool("EnablePreselection", true);
     bool enableSel = hGrp->GetBool("EnableSelection", true);
     if (!enablePre) {
-        sel->highlightMode = Gui::SoFCSelection::OFF;
+        sel->preselectionMode = Gui::SoFCSelection::OFF;
     }
     else {
         // Search for a user defined value with the current color as default

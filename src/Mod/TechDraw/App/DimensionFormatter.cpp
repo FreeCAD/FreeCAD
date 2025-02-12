@@ -108,11 +108,11 @@ std::string DimensionFormatter::formatValue(const qreal value,
         // neverheless limited. To keep old drawings, we limit the number of decimals too
         // if the TD preferences option to use the global decimal number is set
         // the formatSpecifier can have a prefix and/or suffix
-        if (m_dimension->useDecimals() && formatSpecifier.contains(QString::fromLatin1("%g"), Qt::CaseInsensitive)) {
+        if (m_dimension->useDecimals() && formatSpecifier.contains(QStringLiteral("%g"), Qt::CaseInsensitive)) {
                 int globalPrecision = Base::UnitsApi::getDecimals();
                 // change formatSpecifier to e.g. "%.2f"
                 QString newSpecifier = QString::fromStdString("%." + std::to_string(globalPrecision) + "f");
-                formatSpecifier.replace(QString::fromLatin1("%g"), newSpecifier, Qt::CaseInsensitive);
+                formatSpecifier.replace(QStringLiteral("%g"), newSpecifier, Qt::CaseInsensitive);
         }
 
         // since we are not using a multiValueSchema, we know that angles are in '°' and for
@@ -129,14 +129,14 @@ std::string DimensionFormatter::formatValue(const qreal value,
         double userVal;
         if (angularMeasure) {
             userVal = asQuantity.getValue();
-            qBasicUnit = QString::fromUtf8("°");
+            qBasicUnit = QStringLiteral("°");
         }
         else {
             double convertValue = Base::Quantity::parse("1" + qBasicUnit.toStdString()).getValue();
             userVal = asQuantity.getValue() / convertValue;
             if (areaMeasure) {
                 userVal = userVal / convertValue; // divide again as area is length²
-                qBasicUnit = qBasicUnit + QString::fromUtf8("²");
+                qBasicUnit = qBasicUnit + QStringLiteral("²");
             }
         }
 
@@ -287,11 +287,11 @@ std::string DimensionFormatter::getFormattedDimensionValue(const int partial) co
 
         // tolerance might start with a plus sign that we don't want, so cut it off
         // note plus sign is not at pos = 0!
-        QRegularExpression plus(QString::fromUtf8("^\\s*\\+"));
+        QRegularExpression plus(QStringLiteral("^\\s*\\+"));
         tolerance.remove(plus);
 
         return (labelText +
-                 QString::fromUtf8(" \xC2\xB1 ") +          // +/- symbol
+                 QStringLiteral(" \xC2\xB1 ") +          // +/- symbol
                  tolerance).toStdString();
 
         if (partial == 2) {
@@ -398,7 +398,7 @@ std::string DimensionFormatter::getDefaultFormatSpec(bool isToleranceFormat) con
     }
 
     if (isToleranceFormat) {
-        formatSpec.replace(QString::fromUtf8("%"), QString::fromUtf8("%+"));
+        formatSpec.replace(QStringLiteral("%"), QStringLiteral("%+"));
     }
 
     return formatSpec.toStdString();

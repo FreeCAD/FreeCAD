@@ -233,7 +233,7 @@ void DlgSettingsLightSources::saveDirection()
     if (lightDragger) {
         const SbRotation rotation = lightDragger->rotation.getValue();
         const SbVec3f dir = getDirectionVector(rotation);
-        const QString headlightDir = QString::fromLatin1("(%1,%2,%3)").arg(dir[0]).arg(dir[1]).arg(dir[2]);
+        const QString headlightDir = QStringLiteral("(%1,%2,%3)").arg(dir[0]).arg(dir[1]).arg(dir[2]);
 
         ParameterGrp::handle grp = ui->sliderIntensity1->getWindowParameter();
 

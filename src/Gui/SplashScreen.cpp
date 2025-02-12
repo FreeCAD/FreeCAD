@@ -260,7 +260,7 @@ QPixmap SplashScreen::splashImage()
 {
     // search in the UserAppData dir as very first
     QPixmap splash_image;
-    QFileInfo fi(QString::fromLatin1("images:splash_image.png"));
+    QFileInfo fi(QStringLiteral("images:splash_image.png"));
     if (fi.isFile() && fi.exists()) {
         splash_image.load(fi.filePath(), "PNG");
     }
@@ -316,7 +316,7 @@ QPixmap SplashScreen::splashImage()
         QString minor = QString::fromStdString(App::Application::Config()["BuildVersionMinor"]);
         QString point = QString::fromStdString(App::Application::Config()["BuildVersionPoint"]);
         QString suffix = QString::fromStdString(App::Application::Config()["BuildVersionSuffix"]);
-        QString version = QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix);
+        QString version = QStringLiteral("%1.%2.%3%4").arg(major, minor, point, suffix);
         QString position, fontFamily;
 
         std::map<std::string, std::string>::const_iterator te =

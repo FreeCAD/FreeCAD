@@ -29,6 +29,8 @@
 # include <GL/gl.h>
 # endif
 
+#include <sstream>
+
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
@@ -49,6 +51,9 @@
 # include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoTranslation.h>
 #endif
+
+#include <App/Color.h>
+#include <Gui/ViewParams.h>
 
 #include "SoAxisCrossKit.h"
 #include "SoDevicePixelRatioElement.h"
@@ -218,12 +223,28 @@ SoAxisCrossKit::createAxes()
    set("xAxis.appearance.drawStyle", "lineWidth 1");
    set("yAxis.appearance.drawStyle", "lineWidth 1");
    set("zAxis.appearance.drawStyle", "lineWidth 1");
-   set("xAxis.appearance.material", "diffuseColor 0.5 0.125 0.125");
-   set("xHead.appearance.material", "diffuseColor 0.5 0.125 0.125");
-   set("yAxis.appearance.material", "diffuseColor 0.125 0.5 0.125");
-   set("yHead.appearance.material", "diffuseColor 0.125 0.5 0.125");
-   set("zAxis.appearance.material", "diffuseColor 0.125 0.125 0.5");
-   set("zHead.appearance.material", "diffuseColor 0.125 0.125 0.5");
+
+   unsigned long colorLong;
+   App::Color color;
+   std::stringstream parameterstring;
+
+   colorLong = Gui::ViewParams::instance()->getAxisXColor();
+   color = App::Color(static_cast<uint32_t>(colorLong));
+   parameterstring << "diffuseColor " << color.r << " " << color.g << " " << color.b;
+   set("xAxis.appearance.material", parameterstring.str().c_str());
+   set("xHead.appearance.material", parameterstring.str().c_str());
+
+   colorLong = Gui::ViewParams::instance()->getAxisYColor();
+   color = App::Color(static_cast<uint32_t>(colorLong));
+   parameterstring << "diffuseColor " << color.r << " " << color.g << " " << color.b;
+   set("yAxis.appearance.material", parameterstring.str().c_str());
+   set("yHead.appearance.material", parameterstring.str().c_str());
+
+   colorLong = Gui::ViewParams::instance()->getAxisZColor();
+   color = App::Color(static_cast<uint32_t>(colorLong));
+   parameterstring << "diffuseColor " << color.r << " " << color.g << " " << color.b;
+   set("zAxis.appearance.material", parameterstring.str().c_str());
+   set("zHead.appearance.material", parameterstring.str().c_str());
 
    // Make unpickable
    set("xAxis.pickStyle", "style UNPICKABLE");

@@ -61,7 +61,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -915,7 +915,7 @@ void TaskCheckGeometryResults::currentRowChanged (const QModelIndex &current, co
 
 bool TaskCheckGeometryResults::split(QString &input, QString &doc, QString &object, QString &sub)
 {
-    QStringList strings = input.split(QString::fromLatin1("."));
+    QStringList strings = input.split(QStringLiteral("."));
     if (strings.size() != 3)
         return false;
     doc = strings.at(0);

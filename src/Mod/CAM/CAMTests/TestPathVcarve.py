@@ -21,6 +21,8 @@
 # ***************************************************************************
 
 import FreeCAD
+import Part
+import Path.Main.Job as PathJob
 import Path.Op.Vcarve as PathVcarve
 import Path.Tool.Bit as PathToolBit
 import math
@@ -43,6 +45,34 @@ Scale60 = math.sqrt(3)
 
 class TestPathVcarve(PathTestBase):
     """Test Vcarve milling basics."""
+
+    def tearDown(self):
+        if hasattr(self, "doc"):
+            FreeCAD.closeDocument(self.doc.Name)
+
+    def testFinishingPass(self):
+        self.doc = FreeCAD.newDocument()
+        part = FreeCAD.ActiveDocument.addObject("Part::Feature", "TestShape")
+        rect = Part.makePolygon([(0, 0, 0), (5, 0, 0), (5, 10, 0), (0, 10, 0), (0, 0, 0)])
+        part.Shape = Part.makeFace(rect, "Part::FaceMakerSimple")
+        job = PathJob.Create("Job", [part])
+        tool_file = PathToolBit.findToolBit("60degree_Vbit.fctb")
+        job.Tools.Group[0].Tool = PathToolBit.Factory.CreateFrom(tool_file)
+
+        op = PathVcarve.Create("TestVCarve")
+        op.Base = job.Model.Group[0]
+
+        op.FinishingPass = False
+        op.Proxy.execute(op)
+        min_z_no_finish = op.Path.BoundBox.ZMin
+
+        finishing_offset = -0.1
+        op.FinishingPass = True
+        op.FinishingPassZOffset = finishing_offset
+        op.Proxy.execute(op)
+        min_z_with_finish = op.Path.BoundBox.ZMin
+
+        self.assertRoughly(min_z_with_finish - min_z_no_finish, finishing_offset)
 
     def test00(self):
         """Verify 90 deg depth calculation"""

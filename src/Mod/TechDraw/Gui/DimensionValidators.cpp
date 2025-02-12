@@ -29,7 +29,7 @@
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Measure/App/ShapeFinder.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/ShapeExtractor.h>
@@ -54,10 +54,10 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& re
                                             allowOnlySingle);
 
     for (auto& selItem : selectionAll) {
-        if (selItem.getObject()->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+        if (selItem.getObject()->isDerivedFrom<TechDraw::DrawViewDimension>()) {
             //we are probably repairing a dimension, but we will check later
             dim = static_cast<TechDraw::DrawViewDimension*>(selItem.getObject());  //NOLINT cppcoreguidelines-pro-type-static-cast-downcast
-        } else if (selItem.getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        } else if (selItem.getObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
             //this could be a 2d geometry selection or just a DrawViewPart for context in
             //a 3d selection
             dvp = static_cast<TechDraw::DrawViewPart*>(selItem.getObject());  //NOLINT cppcoreguidelines-pro-type-static-cast-downcast
@@ -75,7 +75,7 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& re
                 ReferenceEntry ref(dvp, ShapeFinder::getLastTerm(sub));
                 references2d.push_back(ref);
             }
-        } else if (!selItem.getObject()->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+        } else if (!selItem.getObject()->isDerivedFrom<TechDraw::DrawView>()) {
             App::DocumentObject* obj3d = selItem.getObject();
             // this is a regular 3d reference in form obj + long subelement
             for (auto& sub3d : selItem.getSubNames()) {

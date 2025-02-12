@@ -476,7 +476,7 @@ void PropertyPartShape::saveToFile(Base::Writer &writer) const
         // We only print an error message but continue writing the next files to the
         // stream...
         App::PropertyContainer* father = this->getContainer();
-        if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        if (father && father->isDerivedFrom<App::DocumentObject>()) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
             Base::Console().Error("Shape of '%s' cannot be written to BRep file '%s'\n",
                 obj->Label.getValue(),fi.filePath().c_str());
@@ -528,7 +528,7 @@ void PropertyPartShape::loadFromFile(Base::Reader &reader)
             // We only print an error message but continue reading the next files from the
             // stream...
             App::PropertyContainer* father = this->getContainer();
-            if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+            if (father && father->isDerivedFrom<App::DocumentObject>()) {
                 App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
                 Base::Console().Error("BRep file '%s' with shape of '%s' seems to be empty\n",
                     fi.filePath().c_str(),obj->Label.getValue());

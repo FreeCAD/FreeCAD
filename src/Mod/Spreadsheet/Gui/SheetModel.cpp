@@ -125,19 +125,19 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
         sheet->providesTo(CellAddress(row, col), provides);
 
         if (deps.size() > 0) {
-            v += QString::fromUtf8("Depends on:");
+            v += QStringLiteral("Depends on:");
             for (std::set<std::string>::const_iterator i = deps.begin(); i != deps.end(); ++i) {
-                v += QString::fromUtf8("\n\t") + Tools::fromStdString(*i);
+                v += QStringLiteral("\n\t") + Tools::fromStdString(*i);
             }
-            v += QString::fromUtf8("\n");
+            v += QStringLiteral("\n");
         }
         if (provides.size() > 0) {
-            v += QString::fromUtf8("Used by:");
+            v += QStringLiteral("Used by:");
             for (std::set<std::string>::const_iterator i = provides.begin(); i != provides.end();
                  ++i) {
-                v += QString::fromUtf8("\n\t") + Tools::fromStdString(*i);
+                v += QStringLiteral("\n\t") + Tools::fromStdString(*i);
             }
-            v += QString::fromUtf8("\n");
+            v += QStringLiteral("\n");
         }
         return QVariant(v);
     }
@@ -154,18 +154,18 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
         switch (role) {
             case Qt::ToolTipRole: {
                 QString txt(QString::fromStdString(cell->getException()).toHtmlEscaped());
-                return QVariant(QString::fromLatin1("<pre>%1</pre>").arg(txt));
+                return QVariant(QStringLiteral("<pre>%1</pre>").arg(txt));
             }
             case Qt::DisplayRole: {
 #ifdef DEBUG_DEPS
                 return QVariant::fromValue(
-                    QString::fromUtf8("#ERR: %1").arg(Tools::fromStdString(cell->getException())));
+                    QStringLiteral("#ERR: %1").arg(Tools::fromStdString(cell->getException())));
 #else
                 std::string str;
                 if (cell->getStringContent(str)) {
                     return QVariant::fromValue(QString::fromUtf8(str.c_str()));
                 }
-                return QVariant::fromValue(QString::fromUtf8("#ERR"));
+                return QVariant::fromValue(QStringLiteral("#ERR"));
 #endif
             }
             case Qt::ForegroundRole:
@@ -286,7 +286,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                 return {};
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyString>()) {
         /* String */
         const App::PropertyString* stringProp = static_cast<const App::PropertyString*>(prop);
 
@@ -321,7 +321,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                 return {};
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyQuantity>()) {
         /* Number */
         const App::PropertyQuantity* floatProp = static_cast<const App::PropertyQuantity*>(prop);
 
@@ -370,7 +370,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                         v = number + QString::fromStdString(" " + displayUnit.stringRep);
                     }
                     else {
-                        v = QString::fromUtf8("#ERR: unit");
+                        v = QStringLiteral("#ERR: unit");
                     }
                 }
                 else {
@@ -386,13 +386,13 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                 return {};
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())
-             || prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyFloat>()
+             || prop->isDerivedFrom<App::PropertyInteger>()) {
         /* Number */
         double d {};
         long l {};
         bool isInteger = false;
-        if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+        if (prop->isDerivedFrom<App::PropertyFloat>()) {
             d = static_cast<const App::PropertyFloat*>(prop)->getValue();
         }
         else {
@@ -454,7 +454,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                 return {};
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyPythonObject>()) {
         auto pyProp = static_cast<const App::PropertyPythonObject*>(prop);
 
         switch (role) {
@@ -523,7 +523,7 @@ QVariant SheetModel::headerData(int section, Qt::Orientation orientation, int ro
     }
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal) {
-            static QString labels = QString::fromUtf8("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+            static QString labels = QStringLiteral("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
             if (section < 26) {
                 return QVariant(labels[section]);
             }

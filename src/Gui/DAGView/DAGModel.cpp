@@ -47,7 +47,7 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MenuManager.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include "DAGModel.h"
@@ -315,7 +315,7 @@ void Model::slotChangeObject(const ViewProviderDocumentObject &VPDObjectIn, cons
       text->setPlainText(QString::fromUtf8(record.DObject->Label.getValue()));
     }
   }
-  else if (propertyIn.isDerivedFrom(App::PropertyLinkBase::getClassTypeId()))
+  else if (propertyIn.isDerivedFrom<App::PropertyLinkBase>())
   {
     if (hasRecord(&VPDObjectIn, *graphLink))
     {

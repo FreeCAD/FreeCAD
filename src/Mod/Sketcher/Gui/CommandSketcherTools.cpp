@@ -43,8 +43,8 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Notifications.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Sketcher/App/PythonConverter.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
@@ -1635,7 +1635,7 @@ void CmdSketcherCompCopy::activated(int iMsg)
     else if (iMsg == 2) {
         CmdSketcherMove sc;
         sc.activate();
-        pcAction->setShortcut(QString::fromLatin1(""));
+        pcAction->setShortcut(QStringLiteral(""));
     }
 }
 

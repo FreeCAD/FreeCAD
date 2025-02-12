@@ -398,7 +398,7 @@
      stroke-width="1px"
      word-spacing="0px"
      style="line-height:0%;text-decoration-line:none;text-indent:0;text-transform:none"
-     freecad:editable="DrawingNumber"><tspan
+     freecad:editable="drawing_number"><tspan
        id="tspan3792-9"
        x="199.7832"
        y="405.91364">Drawing Number</tspan></text>
@@ -414,7 +414,7 @@
      stroke-width="1px"
      word-spacing="0px"
      style="line-height:0%;text-decoration-line:none;text-indent:0;text-transform:none"
-     freecad:editable="Revision"><tspan
+     freecad:editable="revision_index"><tspan
        id="tspan3796-0"
        x="253.53323"
        y="405.54474">Rev</tspan></text>
@@ -488,7 +488,7 @@
      letter-spacing="0px"
      word-spacing="0px"
      style="line-height:0%"
-     freecad:editable="Scale"
+     freecad:editable="scale"
      freecad:autofill="scale"><tspan
        id="tspan3770-2"
        x="165.41287"

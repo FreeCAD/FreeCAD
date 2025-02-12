@@ -4,6 +4,7 @@
         <file>icons/Draft_AddConstruction.svg</file>
         <file>icons/Draft_AddPoint.svg</file>
         <file>icons/Draft_AddToGroup.svg</file>
+        <file>icons/Draft_AddToLayer.svg</file>
         <file>icons/Draft_AddNamedGroup.svg</file>
         <file>icons/Draft_Annotation_Style.svg</file>
         <file>icons/Draft_Apply.svg</file>
@@ -47,6 +48,7 @@
         <file>icons/Draft_Join.svg</file>
         <file>icons/Draft_Label.svg</file>
         <file>icons/Draft_Layer.svg</file>
+        <file>icons/Draft_Layers.svg</file>
         <file>icons/Draft_LayerManager.svg</file>
         <file>icons/Draft_Line.svg</file>
         <file>icons/Draft_LinkArray.svg</file>

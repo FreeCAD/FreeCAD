@@ -29,7 +29,7 @@
 
 // INCLUDE YOUR PREFERENCE PAGES HERE
 //
-#include "DlgPreferencesImp.h"
+#include "Dialogs/DlgPreferencesImp.h"
 #include "PreferencePages/DlgSettings3DViewImp.h"
 #include "PreferencePages/DlgSettingsCacheDirectory.h"
 #include "PreferencePages/DlgSettingsDocumentImp.h"
@@ -47,13 +47,13 @@
 #include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "PreferencePages/DlgSettingsAdvanced.h"
 
-#include "DlgToolbarsImp.h"
-#include "DlgActionsImp.h"
-#include "DlgKeyboardImp.h"
+#include "Dialogs/DlgToolbarsImp.h"
+#include "Dialogs/DlgActionsImp.h"
+#include "Dialogs/DlgKeyboardImp.h"
 
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
-#include "DlgCustomizeSpaceball.h"
-#include "DlgCustomizeSpNavSettings.h"
+#include "Dialogs/DlgCustomizeSpaceball.h"
+#include "Dialogs/DlgCustomizeSpNavSettings.h"
 #endif
 
 #include "InputField.h"

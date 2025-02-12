@@ -301,7 +301,7 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     //of course only if thisObj is in a body, as otherwise the old workflow would not
     //be supported
     PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
-    bool originfeature = selObj->isDerivedFrom(App::DatumElement::getClassTypeId());
+    bool originfeature = selObj->isDerivedFrom<App::DatumElement>();
     if (!originfeature && body) {
         PartDesign::Body* selBody = PartDesignGui::getBodyFor(selObj, false);
         if (!selBody || body != selBody) {
@@ -348,7 +348,7 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
         return QString::fromLatin1(obj->getNameInDocument());
     }
     else if (!sub.empty()) {
-        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") +
+        return QString::fromLatin1(obj->getNameInDocument()) + QStringLiteral(":") +
                QString::fromLatin1(sub.front().c_str());
     }
 

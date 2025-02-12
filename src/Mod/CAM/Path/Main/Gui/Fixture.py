@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Used to create CNC machine fixture offsets such as G54,G55, etc..."""
+"""Used to create CNC machine fixture offsets such as G54,G55, etc..."""
 
 import FreeCAD
 import FreeCADGui

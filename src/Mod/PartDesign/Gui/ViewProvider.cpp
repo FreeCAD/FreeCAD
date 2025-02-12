@@ -190,7 +190,7 @@ void ViewProvider::onChanged(const App::Property* prop) {
             //hide all features in the body other than this object
             for(App::DocumentObject* obj : body->Group.getValues()) {
 
-                if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && obj != getObject()) {
+                if(obj->isDerivedFrom<PartDesign::Feature>() && obj != getObject()) {
                    auto vpd = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
                            Gui::Application::Instance->getViewProvider(obj));
                    if(vpd && vpd->Visibility.getValue())
@@ -324,7 +324,7 @@ ViewProviderBody* ViewProvider::getBodyViewProvider() {
     auto doc = getDocument();
     if(body && doc) {
         auto vp = doc->getViewProvider(body);
-        if(vp && vp->isDerivedFrom(ViewProviderBody::getClassTypeId()))
+        if(vp && vp->isDerivedFrom<ViewProviderBody>())
            return static_cast<ViewProviderBody*>(vp);
     }
 

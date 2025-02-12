@@ -34,7 +34,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Widgets.h>
 
 #include <Mod/Part/App/PartFeature.h>
@@ -302,7 +302,7 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
 
         // get selected object
         auto docObj = vp->getObject()->getDocument()->getObject(msg.pObjectName);
-        if (docObj && docObj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (docObj && docObj->isDerivedFrom<Part::Feature>()) {
             selectedObj = static_cast<Part::Feature*>(docObj);
         }
 

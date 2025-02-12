@@ -31,7 +31,7 @@
 
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include "TaskDlgMeshShapeNetgen.h"
 #include "ViewProviderFemMeshShapeNetgen.h"

@@ -281,7 +281,7 @@ ExpressionWidget::ExpressionWidget() = default;
 
 QPixmap ExpressionWidget::getIcon(const char* name, const QSize& size) const
 {
-    QString key = QString::fromLatin1("%1_%2x%3")
+    QString key = QStringLiteral("%1_%2x%3")
         .arg(QString::fromLatin1(name))
         .arg(size.width())
         .arg(size.height());
@@ -308,8 +308,8 @@ void ExpressionWidget::makeLabel(QLineEdit* le)
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
     iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
+    iconLabel->setStyleSheet(QStringLiteral("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
     iconLabel->hide();
     iconLabel->setExpressionText(QString());
-    le->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
+    le->setStyleSheet(QStringLiteral("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
 }

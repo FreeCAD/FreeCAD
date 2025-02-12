@@ -59,6 +59,7 @@
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderProjGroupItem.h"
+#include "ViewProviderProjGroup.h"
 
 
 using namespace Gui;
@@ -75,6 +76,7 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     ui->setupUi(this);
 
     m_page = view->findParentPage();
+    m_viewName = view->getNameInDocument();
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_page);
     auto* dvp = static_cast<ViewProviderPage*>(vp);
@@ -276,6 +278,7 @@ void TaskProjGroup::viewToggled(bool toggle)
         else {
             // If toggle then we remove the view object and create a proj group instead.
             turnViewToProjGroup();
+            changed = true;
         }
     }
 
@@ -293,6 +296,10 @@ void TaskProjGroup::viewToggled(bool toggle)
     }
 
     if (changed) {
+        // necessary to prevent position problems
+        Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
+        auto* vppg = static_cast<ViewProviderProjGroup*>(activeGui->getViewProvider(multiView));
+        vppg->regroupSubViews();
         if (view->ScaleType.isValue("Automatic")) {
             double scale = view->getScale();
             setFractionalScale(scale);
@@ -312,7 +319,6 @@ void TaskProjGroup::turnViewToProjGroup()
     Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().%s.addView(App.activeDocument().%s)", view->findParentPage()->getNameInDocument(), multiViewName.c_str());
 
     auto* viewPart = static_cast<TechDraw::DrawViewPart*>(view);
-    m_page->removeView(viewPart);
 
     multiView = static_cast<TechDraw::DrawProjGroup*>(doc->getObject(multiViewName.c_str()));
     multiView->Source.setValues(viewPart->Source.getValues());
@@ -322,23 +328,24 @@ void TaskProjGroup::turnViewToProjGroup()
     multiView->Scale.setValue(viewPart->Scale.getValue());
     multiView->ScaleType.setValue(viewPart->ScaleType.getValue());
     multiView->ProjectionType.setValue(Preferences::projectionAngle());
+
+    multiView->addView(viewPart);
+    multiView->Anchor.setValue(viewPart);
+    multiView->Anchor.purgeTouched();
+
     viewPart->X.setValue(0.0);
     viewPart->Y.setValue(0.0);
     viewPart->ScaleType.setValue("Custom");
     viewPart->ScaleType.setStatus(App::Property::Hidden, true);
     viewPart->Scale.setStatus(App::Property::Hidden, true);
     viewPart->Label.setValue("Front");
-
-    multiView->addView(viewPart);
-    multiView->Anchor.setValue(view);
-    multiView->Anchor.purgeTouched();
-
     viewPart->LockPosition.setValue(true);
     viewPart->LockPosition.setStatus(App::Property::ReadOnly, true); //Front should stay locked.
     viewPart->LockPosition.purgeTouched();
 
     m_page->requestPaint();
     view = multiView;
+    m_page->removeView(viewPart);   // prevent multiple entries in tree
 
     updateUi();
 }
@@ -490,7 +497,7 @@ void TaskProjGroup::projectionTypeChanged(QString qText)
         return;
     }
 
-    if (qText == QString::fromUtf8("Page")) {
+    if (qText == QStringLiteral("Page")) {
         multiView->ProjectionType.setValue("Default");
     }
     else {
@@ -762,7 +769,7 @@ void TaskProjGroup::setUiPrimary()
 
 QString TaskProjGroup::formatVector(Base::Vector3d vec)
 {
-    QString data = QString::fromLatin1("[%1 %2 %3]")
+    QString data = QStringLiteral("[%1 %2 %3]")
         .arg(QLocale().toString(vec.x, 'f', 2),
              QLocale().toString(vec.y, 'f', 2),
              QLocale().toString(vec.z, 'f', 2));
@@ -791,8 +798,13 @@ bool TaskProjGroup::apply()
 
 bool TaskProjGroup::accept()
 {
-    Gui::Document* doc = Gui::Application::Instance->getDocument(view->getDocument());
+    Gui::Document* doc = Gui::Application::Instance->getDocument(m_page->getDocument());
     if (!doc) {
+        return false;
+    }
+    auto viewCheck = m_page->getDocument()->getObject(m_viewName.c_str());
+    if (!viewCheck) {
+        // view has been deleted while this dialog is open
         return false;
     }
 
@@ -808,8 +820,14 @@ bool TaskProjGroup::accept()
 
 bool TaskProjGroup::reject()
 {
-    Gui::Document* doc = Gui::Application::Instance->getDocument(view->getDocument());
+    Gui::Document* doc = Gui::Application::Instance->getDocument(m_page->getDocument());
     if (!doc) {
+        return false;
+    }
+
+    auto viewCheck = m_page->getDocument()->getObject(m_viewName.c_str());
+    if (!viewCheck) {
+        // view has been deleted while this dialog is open
         return false;
     }
 

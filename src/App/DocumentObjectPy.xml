@@ -305,7 +305,7 @@ or None if the GUI is not up</UserDocu>
             <Documentation>
                 <UserDocu>The unique identifier (among its document) of this object</UserDocu>
             </Documentation>
-            <Parameter Name="ID" Type="Int"/>
+            <Parameter Name="ID" Type="Long"/>
         </Attribute>
         <Attribute Name="Removing" ReadOnly="true">
             <Documentation>

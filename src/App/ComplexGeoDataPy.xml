@@ -117,7 +117,7 @@
       <Documentation>
         <UserDocu>Geometry Tag</UserDocu>
       </Documentation>
-      <Parameter Name="Tag" Type="Int"/>
+      <Parameter Name="Tag" Type="Long"/>
     </Attribute>
     <Attribute Name="Hasher">
       <Documentation>
@@ -129,7 +129,7 @@
       <Documentation>
         <UserDocu>Get the current element map size</UserDocu>
       </Documentation>
-      <Parameter Name="ElementMapSize" Type="Int" />
+      <Parameter Name="ElementMapSize" Type="Long" />
     </Attribute>
     <Attribute Name="ElementMap">
       <Documentation>

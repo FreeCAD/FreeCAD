@@ -219,7 +219,7 @@
          <text x="117.5" y="203" fill="#000000" font-size="5" text-align="center" freecad:editable="CRAFTS_NAME"><tspan>评审人</tspan></text>
          <text x="190" y="202" fill="#000000" font-size="5" text-align="center" freecad:editable="TOTAL_SHEETS"><tspan> 99 </tspan></text>
          <text x="214" y="202" fill="#000000" font-size="5" text-align="center" freecad:editable="OF_SHEET"><tspan> 1 </tspan></text>
-         <text x="224" y="193" fill="#000000" font-size="5" text-align="center" freecad:editable="SCALE"><tspan>M x:x</tspan></text>
+         <text x="224" y="193" fill="#000000" font-size="5" text-align="center" freecad:editable="scale"><tspan>M x:x</tspan></text>
          <text x="187.25" y="193" fill="#000000" font-size="5" text-align="center" freecad:editable="STAGE-S"><tspan/></text>
          <text x="194.25" y="193" fill="#000000" font-size="5" text-align="center" freecad:editable="STAGE-A"><tspan/></text>
          <text x="200.25" y="193" fill="#000000" font-size="5" text-align="center" freecad:editable="STAGE-B"><tspan/></text>

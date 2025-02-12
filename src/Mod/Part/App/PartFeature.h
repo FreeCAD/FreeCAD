@@ -201,7 +201,7 @@ private:
     std::vector<std::pair<std::string, PropertyPartShape*>> _elementCachePrefixMap;
 };
 
-class FilletBase : public Part::Feature
+class PartExport FilletBase : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::FilletBase);
 

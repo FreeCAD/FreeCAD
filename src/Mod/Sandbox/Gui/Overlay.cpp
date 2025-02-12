@@ -34,7 +34,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/GLPainter.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -60,7 +60,7 @@ public:
         {
             QPainter p(&img);
             p.setPen(Qt::white);
-            p.drawText(200,200,QString::fromLatin1("Render to QImage"));
+            p.drawText(200,200,QStringLiteral("Render to QImage"));
         }
 
         fbo = new QtGLFramebufferObject(v->getGLWidget()->size());
@@ -310,7 +310,7 @@ void paintSelection()
 }
 
 // ---------------------------------------
-#include <Gui/NavigationStyle.h>
+#include <Gui/Navigation/NavigationStyle.h>
 
 DrawingPlane::DrawingPlane()
 {
@@ -345,7 +345,7 @@ void DrawingPlane::terminate()
     SoGLRenderAction a(SbViewportRegion(128,128));
     a.apply(_pcView3D->getSoRenderManager()->getSceneGraph());
     fbo->release();
-    fbo->toImage().save(QString::fromLatin1("C:/Temp/DrawingPlane.png"));
+    fbo->toImage().save(QStringLiteral("C:/Temp/DrawingPlane.png"));
     delete fbo;
 }
 

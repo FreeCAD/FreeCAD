@@ -34,7 +34,7 @@
 #include <Base/UnitsApi.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -182,7 +182,7 @@ bool SketcherGui::ReleaseHandler(Gui::Document* doc)
 {
     if (doc) {
         if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             SketcherGui::ViewProviderSketch* vp =
                 static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
 
@@ -479,7 +479,7 @@ void SketcherGui::ActivateHandler(Gui::Document* doc, std::unique_ptr<DrawSketch
 {
     if (doc) {
         if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             SketcherGui::ViewProviderSketch* vp =
                 static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
             vp->purgeHandler();
@@ -522,7 +522,7 @@ bool SketcherGui::isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelecti
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
                 == ViewProviderSketch::STATUS_NONE) {
                 if (!actsOnSelection) {
@@ -726,7 +726,7 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
 
     // get the numeric part of the user string
     QRegularExpression rxNoUnits(
-        QString::fromUtf8("(.*) \\D*$"));  // text before space + any non digits at end of string
+        QStringLiteral("(.*) \\D*$"));  // text before space + any non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(QString::fromStdString(userString));
     if (!match.hasMatch()) {
         // no units in userString?
@@ -776,10 +776,10 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
     if (Base::UnitsApi::isMultiUnitAngle()) {
         // just return the user string
         // Coin SbString doesn't handle utf8 well, so we convert to ascii
-        QString schemeMinute = QString::fromUtf8("\xE2\x80\xB2");  // prime symbol
-        QString schemeSecond = QString::fromUtf8("\xE2\x80\xB3");  // double prime symbol
-        QString escapeMinute = QString::fromLatin1("\'");          // substitute ascii single quote
-        QString escapeSecond = QString::fromLatin1("\"");          // substitute ascii double quote
+        QString schemeMinute = QStringLiteral("\xE2\x80\xB2");  // prime symbol
+        QString schemeSecond = QStringLiteral("\xE2\x80\xB3");  // double prime symbol
+        QString escapeMinute = QStringLiteral("\'");            // substitute ascii single quote
+        QString escapeSecond = QStringLiteral("\"");            // substitute ascii double quote
         QString displayString = qUserString.replace(schemeMinute, escapeMinute);
         displayString = displayString.replace(schemeSecond, escapeSecond);
         return displayString.toStdString();
@@ -791,7 +791,7 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
     auto decimalSep = QLocale().decimalPoint();
 
     // get the numeric part of the user string
-    QRegularExpression rxNoUnits(QString::fromUtf8("(\\d*\\%1?\\d*)(\\D*)$")
+    QRegularExpression rxNoUnits(QStringLiteral("(\\d*\\%1?\\d*)(\\D*)$")
                                      .arg(decimalSep));  // number + non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(qUserString);
     if (!match.hasMatch()) {

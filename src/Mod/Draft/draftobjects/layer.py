@@ -113,12 +113,49 @@ class Layer:
         """Execute when the object is created or recomputed. Do nothing."""
         pass
 
+    def _get_other_layers(self, obj, child):
+        other_lyrs = []
+        for find in child.Document.findObjects(Type="App::FeaturePython"):
+            if utils.get_type(find) == "Layer" and find != obj and child in find.Group:
+                other_lyrs.append(find)
+        return other_lyrs
+
+    def onBeforeChange(self, obj, prop):
+        if prop == "Group":
+            self.oldGroup = obj.Group
+
+    def onChanged(self, obj, prop):
+        if prop != "Group":
+            return
+        vobj = getattr(obj, "ViewObject", None)
+        old_grp = getattr(self, "oldGroup", [])
+        for child in obj.Group:
+            if child in old_grp:
+                continue
+            for other_lyr in self._get_other_layers(obj, child):
+                other_grp = other_lyr.Group
+                other_grp.remove(child)
+                other_lyr.Group = other_grp
+            if vobj is None:
+                continue
+            for prop in ("LineColor", "ShapeAppearance", "LineWidth", "DrawStyle", "Visibility"):
+                vobj.Proxy.change_view_properties(vobj, prop, old_prop=None, targets=[child])
+
     def addObject(self, obj, child):
-        """Add an object to this object if not in the Group property."""
-        group = obj.Group
-        if child not in group:
-            group.append(child)
-        obj.Group = group
+        if utils.get_type(child) in ("Layer", "LayerContainer"):
+            return
+        grp = obj.Group
+        if child in grp:
+            return
+        grp.append(child)
+        obj.Group = grp
+
+    def removeObject(self, obj, child):
+        grp = obj.Group
+        if not child in grp:
+            return
+        grp.remove(child)
+        obj.Group = grp
 
 
 # Alias for compatibility with v0.18 and earlier
@@ -147,9 +184,9 @@ class LayerContainer:
         Update the value of `Group` by sorting the contained layers
         by `Label`.
         """
-        group = obj.Group
-        group.sort(key=lambda layer: layer.Label)
-        obj.Group = group
+        grp = obj.Group
+        grp.sort(key=lambda layer: layer.Label)
+        obj.Group = grp
 
     def dumps(self):
         """Return a tuple of objects to save or None."""
@@ -162,7 +199,6 @@ class LayerContainer:
             self.Type = state
 
 
-# Similar function as in view_layer.py
 def get_layer(obj):
     """Get the layer the object belongs to."""
     finds = obj.Document.findObjects(Name="LayerContainer")

@@ -439,7 +439,7 @@ TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
     artificial = new QTreeView(qobject_cast<QWidget*>(parent));
-    artificial->setObjectName(QString::fromLatin1("DocumentTreeItems"));
+    artificial->setObjectName(QStringLiteral("DocumentTreeItems"));
     artificial->setFixedSize(0, 0); // ensure that it does not render
 }
 
@@ -1075,7 +1075,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
         contextMenu.addAction(this->toggleVisibilityInTreeAction);
 
         if (!acrossDocuments) { // is only sensible for selections within one document
-            if (objitem->object()->getObject()->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
+            if (objitem->object()->getObject()->isDerivedFrom<App::DocumentObjectGroup>())
                 contextMenu.addAction(this->createGroupAction);
             // if there are dependent objects in the selection, add context menu to add them to selection
             if (CheckForDependents())
@@ -1201,7 +1201,7 @@ void TreeWidget::onCreateGroup()
     if (this->contextItem->type() == DocumentType) {
         auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
-        QString cmd = QString::fromLatin1("App.getDocument(\"%1\").addObject"
+        QString cmd = QStringLiteral("App.getDocument(\"%1\").addObject"
             "(\"App::DocumentObjectGroup\",\"Group\").Label=\"%2\"")
             .arg(QString::fromLatin1(doc->getName()), name);
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
@@ -1211,7 +1211,7 @@ void TreeWidget::onCreateGroup()
             (this->contextItem);
         App::DocumentObject* obj = objitem->object()->getObject();
         App::Document* doc = obj->getDocument();
-        QString cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\")"
+        QString cmd = QStringLiteral("App.getDocument(\"%1\").getObject(\"%2\")"
             ".newObject(\"App::DocumentObjectGroup\",\"Group\").Label=\"%3\"")
             .arg(QString::fromLatin1(doc->getName()),
                 QString::fromLatin1(obj->getNameInDocument()),
@@ -2885,7 +2885,7 @@ void TreeWidget::slotRenameDocument(const Gui::Document& Doc)
 void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::Property& prop)
 {
     if (!App::GetApplication().isRestoring()
-        && vp.isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+        && vp.isDerivedFrom<ViewProviderDocumentObject>())
     {
         const auto& vpd = static_cast<const ViewProviderDocumentObject&>(vp);
         if (&prop == &vpd.ShowInTree) {

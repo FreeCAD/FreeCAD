@@ -61,7 +61,7 @@ from draftutils import params
 from draftutils import utils
 from draftutils.translate import translate
 from draftutils.messages import _err, _msg, _wrn
-from builtins import open as pyopen
+from draftutils.utils import pyopen
 
 if FreeCAD.GuiUp:
     from PySide import QtWidgets

@@ -42,8 +42,8 @@
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionFilter.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -1169,7 +1169,7 @@ bool CmdFemDefineNodesSet::isActive()
     }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
@@ -1296,7 +1296,7 @@ void CmdFemDefineElementsSet::activated(int)
         if (it == docObj.begin()) {
             Gui::Document* doc = getActiveGuiDocument();
             Gui::MDIView* view = doc->getActiveView();
-            if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+            if (view->isDerivedFrom<Gui::View3DInventor>()) {
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
                 viewer->startSelection(Gui::View3DInventorViewer::Clip);
@@ -1318,7 +1318,7 @@ bool CmdFemDefineElementsSet::isActive()
     }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
@@ -2755,7 +2755,7 @@ void CmdFemPostPipelineFromResult::activated(int)
         // create the pipeline object
         openCommand(QT_TRANSLATE_NOOP("Command", "Create pipeline from result"));
         if (foundAnalysis) {
-            pcAnalysis->addObject("Fem::FemPostPipeline", FeatName.c_str());
+            pcAnalysis->addObject<Fem::FemPostPipeline>(FeatName.c_str());
         }
         else {
             doCommand(Doc,

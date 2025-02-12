@@ -24,6 +24,9 @@
 
 #include "Mod/Sketcher/App/ExternalGeometryFacade.h"
 
+#include <App/Color.h>
+#include <Gui/ViewParams.h>
+
 #include "EditModeCoinManagerParameters.h"
 
 
@@ -50,10 +53,20 @@ int GeometryLayerParameters::getSubLayerIndex(const int geoId,
                                                  : SubLayer::Normal);
 }
 
-SbColor DrawingParameters::InformationColor(0.0f, 1.0f, 0.0f);       // #00FF00 -> (  0,255,  0)
-SbColor DrawingParameters::CreateCurveColor(0.5f, 0.5f, 0.5f);       // ##7f7f7f -> (127,127,127)
-SbColor DrawingParameters::CrossColorH(0.8f, 0.4f, 0.4f);            // #CC6666 -> (204,102,102)
-SbColor DrawingParameters::CrossColorV(0.47f, 1.0f, 0.51f);          // #83FF83 -> (120,255,131)
+SbColor DrawingParameters::InformationColor(0.0f, 1.0f, 0.0f);  // #00FF00 -> (  0,255,  0)
+SbColor DrawingParameters::CreateCurveColor(0.5f, 0.5f, 0.5f);  // ##7f7f7f -> (127,127,127)
+
+namespace
+{  // Anonymous namespace to avoid making those variables global
+unsigned long HColorLong = Gui::ViewParams::instance()->getAxisXColor();
+App::Color Hcolor = App::Color(static_cast<uint32_t>(HColorLong));
+
+unsigned long VColorLong = Gui::ViewParams::instance()->getAxisYColor();
+App::Color Vcolor = App::Color(static_cast<uint32_t>(VColorLong));
+}  // namespace
+SbColor DrawingParameters::CrossColorH(Hcolor.r, Hcolor.g, Hcolor.b);
+SbColor DrawingParameters::CrossColorV(Vcolor.r, Vcolor.g, Vcolor.b);
+
 SbColor DrawingParameters::InvalidSketchColor(1.0f, 0.42f, 0.0f);    // #FF6D00 -> (255,109,  0)
 SbColor DrawingParameters::FullyConstrainedColor(0.0f, 1.0f, 0.0f);  // #00FF00 -> (  0,255,  0)
 SbColor
