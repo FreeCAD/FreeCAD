@@ -84,7 +84,7 @@ bool MacroFile::commit()
     str.setCodec("UTF-8");
 #endif
     QStringList import;
-    import << QString::fromLatin1("import FreeCAD");
+    import << QStringLiteral("import FreeCAD");
     QStringList body;
 
     for (const auto& it : std::as_const(this->macroInProgress)) {
@@ -99,14 +99,14 @@ bool MacroFile::commit()
     }
 
     QString header;
-    header += QString::fromLatin1("# -*- coding: utf-8 -*-\n\n");
-    header += QString::fromLatin1("# Macro Begin: ");
+    header += QStringLiteral("# -*- coding: utf-8 -*-\n\n");
+    header += QStringLiteral("# Macro Begin: ");
     header += this->macroName;
-    header += QString::fromLatin1(" +++++++++++++++++++++++++++++++++++++++++++++++++\n");
+    header += QStringLiteral(" +++++++++++++++++++++++++++++++++++++++++++++++++\n");
 
-    QString footer = QString::fromLatin1("# Macro End: ");
+    QString footer = QStringLiteral("# Macro End: ");
     footer += this->macroName;
-    footer += QString::fromLatin1(" +++++++++++++++++++++++++++++++++++++++++++++++++\n");
+    footer += QStringLiteral(" +++++++++++++++++++++++++++++++++++++++++++++++++\n");
 
     // write the data to the text file
     str << header;
@@ -329,7 +329,7 @@ void MacroManager::addToOutput(LineType type, const char* line)
 void MacroManager::setModule(const char* sModule)
 {
     if (macroFile.isOpen() && sModule && *sModule != '\0')  {
-        macroFile.append(QString::fromLatin1("import %1").arg(QString::fromLatin1(sModule)));
+        macroFile.append(QStringLiteral("import %1").arg(QString::fromLatin1(sModule)));
     }
 }
 

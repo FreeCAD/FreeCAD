@@ -692,7 +692,7 @@ Py::Object ObjectIdentifier::Component::get(const Py::Object& pyobj) const
     }
     else if (isArray()) {
         if (pyobj.isMapping()) {
-            res = Py::Mapping(pyobj).getItem(Py::Int(begin));
+            res = Py::Mapping(pyobj).getItem(Py::Long(begin));
         }
         else {
             res = Py::Sequence(pyobj).getItem(begin);
@@ -703,9 +703,9 @@ Py::Object ObjectIdentifier::Component::get(const Py::Object& pyobj) const
     }
     else {
         assert(isRange());
-        Py::Object slice(PySlice_New(Py::Int(begin).ptr(),
-                                     end != INT_MAX ? Py::Int(end).ptr() : nullptr,
-                                     step != 1 ? Py::Int(step).ptr() : nullptr),
+        Py::Object slice(PySlice_New(Py::Long(begin).ptr(),
+                                     end != INT_MAX ? Py::Long(end).ptr() : nullptr,
+                                     step != 1 ? Py::Long(step).ptr() : nullptr),
                          true);
         PyObject* r = PyObject_GetItem(pyobj.ptr(), slice.ptr());
         if (!r) {
@@ -731,7 +731,7 @@ void ObjectIdentifier::Component::set(Py::Object& pyobj, const Py::Object& value
     }
     else if (isArray()) {
         if (pyobj.isMapping()) {
-            Py::Mapping(pyobj).setItem(Py::Int(begin), value);
+            Py::Mapping(pyobj).setItem(Py::Long(begin), value);
         }
         else {
             Py::Sequence(pyobj).setItem(begin, value);
@@ -742,9 +742,9 @@ void ObjectIdentifier::Component::set(Py::Object& pyobj, const Py::Object& value
     }
     else {
         assert(isRange());
-        Py::Object slice(PySlice_New(Py::Int(begin).ptr(),
-                                     end != INT_MAX ? Py::Int(end).ptr() : nullptr,
-                                     step != 1 ? Py::Int(step).ptr() : nullptr),
+        Py::Object slice(PySlice_New(Py::Long(begin).ptr(),
+                                     end != INT_MAX ? Py::Long(end).ptr() : nullptr,
+                                     step != 1 ? Py::Long(step).ptr() : nullptr),
                          true);
         if (PyObject_SetItem(pyobj.ptr(), slice.ptr(), value.ptr()) < 0) {
             Base::PyException::ThrowException();
@@ -759,7 +759,7 @@ void ObjectIdentifier::Component::del(Py::Object& pyobj) const
     }
     else if (isArray()) {
         if (pyobj.isMapping()) {
-            Py::Mapping(pyobj).delItem(Py::Int(begin));
+            Py::Mapping(pyobj).delItem(Py::Long(begin));
         }
         else {
             PySequence_DelItem(pyobj.ptr(), begin);
@@ -770,9 +770,9 @@ void ObjectIdentifier::Component::del(Py::Object& pyobj) const
     }
     else {
         assert(isRange());
-        Py::Object slice(PySlice_New(Py::Int(begin).ptr(),
-                                     end != INT_MAX ? Py::Int(end).ptr() : nullptr,
-                                     step != 1 ? Py::Int(step).ptr() : nullptr),
+        Py::Object slice(PySlice_New(Py::Long(begin).ptr(),
+                                     end != INT_MAX ? Py::Long(end).ptr() : nullptr,
+                                     step != 1 ? Py::Long(step).ptr() : nullptr),
                          true);
         if (PyObject_DelItem(pyobj.ptr(), slice.ptr()) < 0) {
             Base::PyException::ThrowException();
@@ -1828,7 +1828,7 @@ ObjectIdentifier::access(const ResolveResults& result, Py::Object* value, Depend
                     auto container = result.resolvedProperty->getContainer();
                     if (container && container != result.resolvedDocumentObject
                         && container != result.resolvedSubObject) {
-                        if (!container->isDerivedFrom(DocumentObject::getClassTypeId())) {
+                        if (!container->isDerivedFrom<DocumentObject>()) {
                             FC_WARN("Invalid property container");
                         }
                         else {

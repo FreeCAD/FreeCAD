@@ -2016,7 +2016,7 @@ Py::Object FunctionExpression::evalAggregate(
     }
 
     for (auto &arg : args) {
-        if (arg->isDerivedFrom(RangeExpression::getClassTypeId())) {
+        if (arg->isDerivedFrom<RangeExpression>()) {
             Range range(static_cast<const RangeExpression&>(*arg).getRange());
 
             do {
@@ -2159,7 +2159,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
     switch (f) {
     case LIST: {
-        if (args.size() == 1 && args[0]->isDerivedFrom(RangeExpression::getClassTypeId()))
+        if (args.size() == 1 && args[0]->isDerivedFrom<RangeExpression>())
             return args[0]->getPyValue();
         Py::List list(args.size());
         int i = 0;
@@ -2168,7 +2168,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         return list;
     }
     case TUPLE: {
-        if (args.size() == 1 && args[0]->isDerivedFrom(RangeExpression::getClassTypeId()))
+        if (args.size() == 1 && args[0]->isDerivedFrom<RangeExpression>())
             return Py::Tuple(args[0]->getPyValue());
         Py::Tuple tuple(args.size());
         int i = 0;

@@ -303,8 +303,6 @@ class _ArchPipeConnector(ArchComponent.Component):
 
         if self.clone(obj):
             return
-        if not self.ensureBase(obj):
-            return
 
         tol = 1 # tolerance for alignment. This is only visual, we can keep it low...
         ptol = 0.001 # tolerance for coincident points

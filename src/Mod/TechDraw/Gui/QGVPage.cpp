@@ -40,8 +40,8 @@
 #include <Base/Parameter.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
-#include <Gui/NavigationStyle.h>
-#include <Gui/Selection.h>
+#include <Gui/Navigation/NavigationStyle.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 
@@ -561,7 +561,7 @@ QColor QGVPage::getBackgroundColor()
 double QGVPage::getDevicePixelRatio() const
 {
     for (Gui::MDIView* view : m_vpPage->getDocument()->getMDIViews()) {
-        if (view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        if (view->isDerivedFrom<Gui::View3DInventor>()) {
             return static_cast<Gui::View3DInventor*>(view)->getViewer()->devicePixelRatio();
         }
     }

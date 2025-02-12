@@ -34,8 +34,8 @@
 
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawView.h>
@@ -100,7 +100,7 @@ std::vector<std::string> CommandHelpers::getSelectedSubElements(Gui::Command* cm
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        if ((*itSel).getObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
             dvp = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             subNames = (*itSel).getSubNames();
             break;
@@ -137,19 +137,19 @@ void CommandHelpers::getSelectedShapes(Gui::Command* cmd,
                        App::DocumentObject* faceObj,
                        std::string& faceName)
 {
-    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
-    bool single = false;                                         //mystery
+    auto resolve = Gui::ResolveMode::OldStyleElement;
+    bool single = false;
     auto selection = cmd->getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
                                                         resolve, single);
     for (auto& sel : selection) {
         bool is_linked = false;
         auto obj = sel.getObject();
-        if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+        if (obj->isDerivedFrom<TechDraw::DrawPage>()) {
             continue;
         }
-        if (obj->isDerivedFrom(App::LinkElement::getClassTypeId())
-            || obj->isDerivedFrom(App::LinkGroup::getClassTypeId())
-            || obj->isDerivedFrom(App::Link::getClassTypeId())) {
+        if (obj->isDerivedFrom<App::LinkElement>()
+            || obj->isDerivedFrom<App::LinkGroup>()
+            || obj->isDerivedFrom<App::Link>()) {
             is_linked = true;
         }
         // If parent of the obj is a link to another document, we possibly need to treat non-link obj as linked, too
@@ -162,9 +162,9 @@ void CommandHelpers::getSelectedShapes(Gui::Command* cmd,
                     continue;
                 }
                 // 2nd, do we really have a link to obj?
-                if (parent->isDerivedFrom(App::LinkElement::getClassTypeId())
-                    || parent->isDerivedFrom(App::LinkGroup::getClassTypeId())
-                    || parent->isDerivedFrom(App::Link::getClassTypeId())) {
+                if (parent->isDerivedFrom<App::LinkElement>()
+                    || parent->isDerivedFrom<App::LinkGroup>()
+                    || parent->isDerivedFrom<App::Link>()) {
                     // We have a link chain from this document to obj, and obj is in another document -> it is an XLink target
                     is_linked = true;
                 }

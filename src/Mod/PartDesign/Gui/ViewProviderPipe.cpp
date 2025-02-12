@@ -54,16 +54,16 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren()const
         temp.push_back(sketch);
 
     for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
-        if (obj && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        if (obj && obj->isDerivedFrom<Part::Part2DObject>())
             temp.push_back(obj);
     }
 
     App::DocumentObject* spine = pcPipe->Spine.getValue();
-    if (spine && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (spine && spine->isDerivedFrom<Part::Part2DObject>())
         temp.push_back(spine);
 
     App::DocumentObject* auxspine = pcPipe->AuxillerySpine.getValue();
-    if (auxspine && auxspine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (auxspine && auxspine->isDerivedFrom<Part::Part2DObject>())
         temp.push_back(auxspine);
 
     return temp;
@@ -171,14 +171,14 @@ void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vecto
 }
 
 QIcon ViewProviderPipe::getIcon() const {
-    QString str = QString::fromLatin1("PartDesign_");
+    QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::Pipe>();
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive");
+        str += QStringLiteral("Additive");
     else
-        str += QString::fromLatin1("Subtractive");
+        str += QStringLiteral("Subtractive");
 
-    str += QString::fromLatin1("Pipe.svg");
+    str += QStringLiteral("Pipe.svg");
     return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 

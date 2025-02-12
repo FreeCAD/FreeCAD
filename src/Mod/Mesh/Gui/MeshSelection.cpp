@@ -40,7 +40,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/MouseSelection.h>
-#include <Gui/NavigationStyle.h>
+#include <Gui/Navigation/NavigationStyle.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -136,7 +136,7 @@ std::list<ViewProviderMesh*> MeshSelection::getViewProviders() const
     std::vector<App::DocumentObject*> objs = getObjects();
     std::list<ViewProviderMesh*> vps;
     for (auto obj : objs) {
-        if (obj->isDerivedFrom(Mesh::Feature::getClassTypeId())) {
+        if (obj->isDerivedFrom<Mesh::Feature>()) {
             Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
             if (vp->isVisible()) {
                 vps.push_back(static_cast<ViewProviderMesh*>(vp));

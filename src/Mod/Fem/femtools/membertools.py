@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of functions for the Fem module.
+"""Collection of functions for the Fem module.
 
 This module contains function for managing a analysis and all the different
 types of objects it contains, helper for executing a simulation.

@@ -35,7 +35,7 @@
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Control.h>
 
 #include <Mod/Part/App/PartFeature.h>
@@ -134,7 +134,7 @@ bool QuickMeasure::shouldMeasure(const Gui::SelectionChanges& msg) const
 bool QuickMeasure::isObjAcceptable(App::DocumentObject* obj)
 {
     // only measure shapes
-    if (obj && obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (obj && obj->isDerivedFrom<Part::Feature>()) {
         return true;
     }
 
@@ -185,9 +185,15 @@ static QString areaStr(double value)
     return QString::fromStdString(area.getUserString());
 }
 
-static QString lenghtStr(double value)
+static QString lengthStr(double value)
 {
     Base::Quantity dist(value, Base::Unit::Length);
+    return QString::fromStdString(dist.getUserString());
+}
+
+static QString angleStr(double value)
+{
+    Base::Quantity dist(value, Base::Unit::Angle);
     return QString::fromStdString(dist.getUserString());
 }
 
@@ -206,7 +212,7 @@ void QuickMeasure::printResult()
     %2").arg(vol.getSafeUserString()).arg(area.getSafeUserString()));
     }*/
     else if (mtype == MeasureType::TwoPlanes) {
-        print(tr("Nominal distance: %1").arg(lenghtStr(measurement->planePlaneDistance())));
+        print(tr("Nominal distance: %1").arg(lengthStr(measurement->planePlaneDistance())));
     }
     else if (mtype == MeasureType::Cone || mtype == MeasureType::Plane) {
         print(tr("Area: %1").arg(areaStr(measurement->area())));
@@ -214,32 +220,32 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::Cylinder || mtype == MeasureType::Sphere
              || mtype == MeasureType::Torus) {
         print(tr("Area: %1, Radius: %2")
-                  .arg(areaStr(measurement->area()), lenghtStr(measurement->radius())));
+                  .arg(areaStr(measurement->area()), lengthStr(measurement->radius())));
     }
     else if (mtype == MeasureType::Edges) {
-        print(tr("Total length: %1").arg(lenghtStr(measurement->length())));
+        print(tr("Total length: %1").arg(lengthStr(measurement->length())));
     }
     else if (mtype == MeasureType::TwoParallelLines) {
-        print(tr("Nominal distance: %1").arg(lenghtStr(measurement->lineLineDistance())));
+        print(tr("Nominal distance: %1").arg(lengthStr(measurement->lineLineDistance())));
     }
     else if (mtype == MeasureType::TwoLines) {
         print(tr("Angle: %1, Total length: %2")
-                  .arg(lenghtStr(measurement->angle()), lenghtStr(measurement->length())));
+                  .arg(angleStr(measurement->angle()), lengthStr(measurement->length())));
     }
     else if (mtype == MeasureType::Line) {
-        print(tr("Length: %1").arg(lenghtStr(measurement->length())));
+        print(tr("Length: %1").arg(lengthStr(measurement->length())));
     }
     else if (mtype == MeasureType::Circle) {
-        print(tr("Radius: %1").arg(lenghtStr(measurement->radius())));
+        print(tr("Radius: %1").arg(lengthStr(measurement->radius())));
     }
     else if (mtype == MeasureType::PointToPoint) {
-        print(tr("Distance: %1").arg(lenghtStr(measurement->length())));
+        print(tr("Distance: %1").arg(lengthStr(measurement->length())));
     }
     else if (mtype == MeasureType::PointToEdge || mtype == MeasureType::PointToSurface) {
-        print(tr("Minimum distance: %1").arg(lenghtStr(measurement->length())));
+        print(tr("Minimum distance: %1").arg(lengthStr(measurement->length())));
     }
     else {
-        print(QString::fromLatin1(""));
+        print(QStringLiteral(""));
     }
 }
 

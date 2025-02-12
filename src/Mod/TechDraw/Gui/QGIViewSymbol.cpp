@@ -42,6 +42,7 @@
 #include "QGCustomSvg.h"
 #include "QGDisplayArea.h"
 #include "Rez.h"
+#include "ViewProviderSymbol.h"
 
 
 using namespace TechDrawGui;
@@ -110,8 +111,14 @@ void QGIViewSymbol::drawSvg()
         return;
     }
 
+    auto vp = getViewProvider(viewSymbol);
+    auto vps = dynamic_cast<ViewProviderSymbol*>(vp);
+    if (!vp || !vps) {
+        return;
+    }
+
     double scaling{1};
-    if (Preferences::useLegacySvgScaling()) {
+    if (vps->LegacyScaling.getValue()) {
         scaling = legacyScaler(viewSymbol);
     } else {
         scaling = symbolScaler(viewSymbol);
@@ -170,8 +177,8 @@ double QGIViewSymbol::legacyScaler(TechDraw::DrawViewSymbol* feature) const
     //    double pxMm = 3.54;                 //90px/25.4mm ( inkscape value version <= 0.91)
     //some software uses different px/in, so symbol will need Scale adjusted.
     //Arch/Draft views are in px and need to be scaled @ rezfactor px/mm to ensure proper representation
-    if (feature->isDerivedFrom(TechDraw::DrawViewArch::getClassTypeId())
-        || feature->isDerivedFrom(TechDraw::DrawViewDraft::getClassTypeId())) {
+    if (feature->isDerivedFrom<TechDraw::DrawViewArch>()
+        || feature->isDerivedFrom<TechDraw::DrawViewDraft>()) {
         scaling = scaling * rezfactor;
     }
     else {
@@ -192,11 +199,11 @@ double QGIViewSymbol::symbolScaler(TechDraw::DrawViewSymbol* feature) const
     QByteArray qba(feature->Symbol.getValue(), strlen(feature->Symbol.getValue()));
     QString qSymbolString = QString::fromUtf8(qba);
 
-    const QString pxToken{QString::fromUtf8("px")};
-    const QString mmToken{QString::fromUtf8("mm")};
+    const QString pxToken{QStringLiteral("px")};
+    const QString mmToken{QStringLiteral("mm")};
 
     // heightRegex finds (height="51.8309mm") in the svg text and returns the mm if present
-    QString heightRegex = QString::fromUtf8(R"(height=\"\d*\.?\d+([a-zA-Z]+)\")");
+    QString heightRegex = QStringLiteral(R"(height=\"\d*\.?\d+([a-zA-Z]+)\")");
     QRegularExpression reHeight(heightRegex);
     QRegularExpressionMatch matchHeight = reHeight.match(qSymbolString);
 
@@ -206,18 +213,15 @@ double QGIViewSymbol::symbolScaler(TechDraw::DrawViewSymbol* feature) const
         matchUnits = matchHeight.captured(1);
     }
 
-    if (matchUnits.isEmpty() ||
-        matchUnits == pxToken) {
-        scaling *= rezfactor;
-    }
+    // if there are no units specified, or the units are px, we just draw the symbol
 
     if (matchUnits == mmToken) {
         auto svgSize = m_svgItem->renderer()->defaultSize();
-        auto vpSize = m_svgItem->renderer()->viewBox();
+        auto vportSize = m_svgItem->renderer()->viewBox();
         // wf: this calculation works, but I don't know why. :(
         // hints here: https://stackoverflow.com/questions/49866474/get-svg-size-from-qsvgrenderer
         // and here: https://stackoverflow.com/questions/7544921/qt-qgraphicssvgitem-renders-too-big-0-5-unit-on-each-side
-        scaling *= rezfactor * vpSize.width() / svgSize.width();
+        scaling *= rezfactor * vportSize.width() / svgSize.width();
     }
 
     return scaling;

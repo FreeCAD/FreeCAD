@@ -50,6 +50,8 @@
 # include <Inventor/SoPickedPoint.h>
 #endif
 
+
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <Base/Builder3D.h>
@@ -65,7 +67,7 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "NaviCube.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "SoFCDB.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCVectorizeSVGAction.h"
@@ -248,7 +250,7 @@ void View3DInventor::print()
 void View3DInventor::printPdf()
 {
     QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(),
-        QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+        QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         Gui::WaitCursor wc;
         QPrinter printer(QPrinter::ScreenResolution);
@@ -257,6 +259,7 @@ void View3DInventor::printPdf()
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFileName(filename);
+        printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
         print(&printer);
     }
 }
@@ -808,7 +811,7 @@ RayPickInfo View3DInventor::getObjInfoRay(Base::Vector3d* startvec, Base::Vector
 
     ret.point = Base::convertTo<Base::Vector3d>(Point->getPoint());
     ViewProvider* vp = getViewer()->getViewProviderByPath(Point->getPath());
-    if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+    if (vp && vp->isDerivedFrom<ViewProviderDocumentObject>()) {
         if (!vp->isSelectable()) {
             return ret;
         }

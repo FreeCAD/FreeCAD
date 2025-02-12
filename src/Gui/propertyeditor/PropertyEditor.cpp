@@ -39,7 +39,7 @@
 #include <Base/Tools.h>
 
 #include "PropertyEditor.h"
-#include "DlgAddProperty.h"
+#include "Dialogs/DlgAddProperty.h"
 #include "MainWindow.h"
 #include "PropertyItemDelegate.h"
 #include "PropertyModel.h"
@@ -643,7 +643,7 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList&& props, bool _checkDoc
                 continue;
             }
             // Include document to get proper handling in PropertyView::slotDeleteDocument()
-            if (checkDocument && container->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+            if (checkDocument && container->isDerivedFrom<App::DocumentObject>()) {
                 propOwners.insert(static_cast<App::DocumentObject*>(container)->getDocument());
             }
             propOwners.insert(container);
@@ -779,7 +779,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     if (props.size() == 1) {
         auto item = static_cast<PropertyItem*>(contextIndex.internalPointer());
         auto prop = *props.begin();
-        if (item->isBound() && !prop->isDerivedFrom(App::PropertyExpressionEngine::getClassTypeId())
+        if (item->isBound() && !prop->isDerivedFrom<App::PropertyExpressionEngine>()
             && !prop->isReadOnly() && !prop->testStatus(App::Property::Immutable)
             && !(prop->getType() & App::Prop_ReadOnly)) {
             contextIndex = propertyModel->buddy(contextIndex);
@@ -794,7 +794,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         menu.addSeparator();
 
         // the subMenu is allocated on the heap but managed by menu.
-        auto subMenu = new QMenu(QString::fromLatin1("Status"), &menu);
+        auto subMenu = new QMenu(QStringLiteral("Status"), &menu);
 
         QAction* action;
         QString text;
@@ -811,7 +811,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     do {                                                                                           \
         _ACTION_SETUP(_name);                                                                      \
         if (propType & App::Prop_##_name) {                                                        \
-            action->setText(text + QString::fromLatin1(" *"));                                     \
+            action->setText(text + QStringLiteral(" *"));                                          \
             action->setChecked(true);                                                              \
         }                                                                                          \
     } while (0)

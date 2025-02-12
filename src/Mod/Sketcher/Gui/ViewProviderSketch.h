@@ -33,7 +33,7 @@
 #include <Base/Placement.h>
 #include <Gui/Document.h>
 #include <Gui/GLPainter.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Part/Gui/ViewProvider2DObject.h>
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/Part/Gui/ViewProviderGridExtension.h>

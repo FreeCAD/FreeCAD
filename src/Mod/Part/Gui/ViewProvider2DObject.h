@@ -41,13 +41,28 @@ class PartGuiExport ViewProvider2DObject : public PartGui::ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProvider2DObject);
 
+    static constexpr float horizontalPlanePadding = 8;
+    static constexpr float verticalPlanePadding = 5;
+
 public:
     /// constructor
     ViewProvider2DObject();
     /// destructor
     ~ViewProvider2DObject() override;
+
+    App::PropertyBool ShowPlane;
+
+    void attach(App::DocumentObject*) override;
+    void updateData(const App::Property *) override;
+    void onChanged(const App::Property *) override;
+
     std::vector<std::string> getDisplayModes() const override;
     const char* getDefaultDisplayMode() const override;
+
+protected:
+    void updatePlane();
+
+    Gui::CoinPtr<SoSwitch> plane;
 };
 
 class PartGuiExport ViewProvider2DObjectGrid : public ViewProvider2DObject

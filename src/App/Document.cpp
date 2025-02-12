@@ -60,7 +60,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #ifndef _PreComp_
 #include <bitset>
 #include <stack>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #endif
 
 #include <boost/algorithm/string.hpp>
@@ -131,7 +131,7 @@ using namespace zipios;
 #define FC_LOGFEATUREUPDATE
 #endif
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 namespace App
 {
@@ -835,7 +835,7 @@ void Document::onChanged(const Property* prop)
 
 void Document::onBeforeChangeProperty(const TransactionalObject* Who, const Property* What)
 {
-    if (Who->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    if (Who->isDerivedFrom<App::DocumentObject>()) {
         signalBeforeChangeObject(*static_cast<const App::DocumentObject*>(Who), *What);
     }
     if (!d->rollback && !globalIsRelabeling) {
@@ -3544,7 +3544,7 @@ DocumentObject* Document::addObject(const char* sType,
                                     const char* viewType,
                                     bool isPartial)
 {
-    Base::Type type =
+    const Base::Type type =
         Base::Type::getTypeIfDerivedFrom(sType, App::DocumentObject::getClassTypeId(), true);
     if (type.isBad()) {
         std::stringstream str;
@@ -3557,8 +3557,7 @@ DocumentObject* Document::addObject(const char* sType,
         return nullptr;
     }
 
-    App::DocumentObject* pcObject = static_cast<App::DocumentObject*>(typeInstance);
-
+    auto* pcObject = static_cast<App::DocumentObject*>(typeInstance);
     pcObject->setDocument(this);
 
     // do no transactions if we do a rollback!
@@ -3571,15 +3570,8 @@ DocumentObject* Document::addObject(const char* sType,
     }
 
     // get Unique name
-    string ObjectName;
-
-    if (pObjectName && pObjectName[0] != '\0') {
-        ObjectName = getUniqueObjectName(pObjectName);
-    }
-    else {
-        ObjectName = getUniqueObjectName(sType);
-    }
-
+    const bool hasName = pObjectName && pObjectName[0] != '\0';
+    const string ObjectName = getUniqueObjectName(hasName ? pObjectName : type.getName());
 
     d->activeObject = pcObject;
 
@@ -4338,7 +4330,7 @@ std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId
 {
     std::vector<DocumentObject*> Objects;
     for (auto it : d->objectArray) {
-        if (it->getTypeId().isDerivedFrom(typeId)) {
+        if (it->isDerivedFrom(typeId)) {
             Objects.push_back(it);
         }
     }
@@ -4376,7 +4368,7 @@ Document::findObjects(const Base::Type& typeId, const char* objname, const char*
     std::vector<DocumentObject*> Objects;
     DocumentObject* found = nullptr;
     for (auto it : d->objectArray) {
-        if (it->getTypeId().isDerivedFrom(typeId)) {
+        if (it->isDerivedFrom(typeId)) {
             found = it;
 
             if (!rx_name.empty() && !boost::regex_search(it->getNameInDocument(), what, rx_name)) {
@@ -4398,7 +4390,7 @@ Document::findObjects(const Base::Type& typeId, const char* objname, const char*
 int Document::countObjectsOfType(const Base::Type& typeId) const
 {
     return std::count_if(d->objectMap.begin(), d->objectMap.end(), [&](const auto& it) {
-        return it.second->getTypeId().isDerivedFrom(typeId);
+        return it.second->isDerivedFrom(typeId);
     });
 }
 

@@ -32,7 +32,7 @@
 #endif
 
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintDisplacement.h>
 #include <Mod/Part/App/PartFeature.h>
 
@@ -409,21 +409,21 @@ std::string TaskFemConstraintDisplacement::get_spinzRotation() const
 std::string TaskFemConstraintDisplacement::get_xFormula() const
 {
     QString xFormula = ui->DisplacementXFormulaLE->text();
-    xFormula.replace(QString::fromLatin1("\""), QString::fromLatin1("\\\""));
+    xFormula.replace(QStringLiteral("\""), QStringLiteral("\\\""));
     return xFormula.toStdString();
 }
 
 std::string TaskFemConstraintDisplacement::get_yFormula() const
 {
     QString yFormula = ui->DisplacementYFormulaLE->text();
-    yFormula.replace(QString::fromLatin1("\""), QString::fromLatin1("\\\""));
+    yFormula.replace(QStringLiteral("\""), QStringLiteral("\\\""));
     return yFormula.toStdString();
 }
 
 std::string TaskFemConstraintDisplacement::get_zFormula() const
 {
     QString zFormula = ui->DisplacementZFormulaLE->text();
-    zFormula.replace(QString::fromLatin1("\""), QString::fromLatin1("\\\""));
+    zFormula.replace(QStringLiteral("\""), QStringLiteral("\\\""));
     return zFormula.toStdString();
 }
 

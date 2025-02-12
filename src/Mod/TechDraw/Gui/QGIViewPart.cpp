@@ -33,7 +33,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/App/CenterLine.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/DrawComplexSection.h>
@@ -685,7 +685,7 @@ void QGIViewPart::drawAllSectionLines()
     if (vp->ShowSectionLine.getValue()) {
         auto refs = viewPart->getSectionRefs();
         for (auto& r : refs) {
-            if (r->isDerivedFrom(DrawComplexSection::getClassTypeId())) {
+            if (r->isDerivedFrom<DrawComplexSection>()) {
                 drawComplexSectionLine(r, true);
             }
             else {
@@ -1010,7 +1010,7 @@ void QGIViewPart::drawMatting()
 {
     auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     TechDraw::DrawViewDetail* dvd = nullptr;
-    if (viewPart && viewPart->isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId())) {
+    if (viewPart && viewPart->isDerivedFrom<TechDraw::DrawViewDetail>()) {
         dvd = static_cast<TechDraw::DrawViewDetail*>(viewPart);
     }
     else {

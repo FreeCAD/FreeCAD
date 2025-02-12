@@ -123,8 +123,7 @@ private:
         Base::FileInfo file(EncodedName.c_str());
         // create new document and add Import feature
         App::Document* pcDoc = App::GetApplication().newDocument();
-        FemMeshObject* pcFeature = static_cast<FemMeshObject*>(
-            pcDoc->addObject("Fem::FemMeshObject", file.fileNamePure().c_str()));
+        FemMeshObject* pcFeature = pcDoc->addObject<FemMeshObject>(file.fileNamePure().c_str());
         pcFeature->Label.setValue(file.fileNamePure().c_str());
         pcFeature->FemMesh.setValuePtr(mesh.release());
         pcFeature->purgeTouched();
@@ -160,8 +159,7 @@ private:
             std::unique_ptr<FemMesh> mesh(new FemMesh);
             mesh->read(EncodedName.c_str());
 
-            FemMeshObject* pcFeature = static_cast<FemMeshObject*>(
-                pcDoc->addObject("Fem::FemMeshObject", file.fileNamePure().c_str()));
+            FemMeshObject* pcFeature = pcDoc->addObject<FemMeshObject>(file.fileNamePure().c_str());
             pcFeature->Label.setValue(file.fileNamePure().c_str());
             pcFeature->FemMesh.setValuePtr(mesh.release());
             pcFeature->purgeTouched();
@@ -170,8 +168,7 @@ private:
 #ifdef FC_USE_VTK
             if (FemPostPipeline::canRead(file)) {
 
-                FemPostPipeline* pcFeature = static_cast<FemPostPipeline*>(
-                    pcDoc->addObject("Fem::FemPostPipeline", file.fileNamePure().c_str()));
+                auto* pcFeature = pcDoc->addObject<FemPostPipeline>(file.fileNamePure().c_str());
 
                 pcFeature->Label.setValue(file.fileNamePure().c_str());
                 pcFeature->read(file);
@@ -203,13 +200,12 @@ private:
             "User parameter:BaseApp/Preferences/Mod/Fem");
 
         Py::Sequence list(object);
-        Base::Type meshId = Base::Type::fromName("Fem::FemMeshObject");
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 App::DocumentObject* obj =
                     static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                if (obj->getTypeId().isDerivedFrom(meshId)) {
+                if (obj->isDerivedFrom<Fem::FemMeshObject>()) {
                     auto femMesh = static_cast<FemMeshObject*>(obj)->FemMesh.getValue();
                     if (file.hasExtension({"vtk", "vtu"})) {
                         // get VTK prefs
@@ -322,8 +318,7 @@ private:
         }
 
         FemMeshPy* pShape = static_cast<FemMeshPy*>(pcObj);
-        Fem::FemMeshObject* pcFeature =
-            static_cast<Fem::FemMeshObject*>(pcDoc->addObject("Fem::FemMeshObject", name));
+        Fem::FemMeshObject* pcFeature = pcDoc->addObject<Fem::FemMeshObject>(name);
         // copy the data
         pcFeature->FemMesh.setValue(*(pShape->getFemMeshPtr()));
         pcDoc->recompute();

@@ -270,6 +270,8 @@ private:
 
         std::vector<TopoDS_Edge> closedEdges;
         edgeList = DrawProjectSplit::scrubEdges(edgeList, closedEdges);
+        // Need to also check closed edges- those are valid wires
+        edgeList.insert( edgeList.end(), closedEdges.begin(), closedEdges.end() );
 
         std::vector<TopoDS_Wire> sortedWires;
         try {
@@ -326,6 +328,8 @@ private:
 
         std::vector<TopoDS_Edge> closedEdges;
         edgeList = DrawProjectSplit::scrubEdges(edgeList, closedEdges);
+        // Need to also check closed edges, since that may be the outline
+        edgeList.insert( edgeList.end(), closedEdges.begin(), closedEdges.end() );
 
         PyObject* outerWire = nullptr;
         std::vector<TopoDS_Wire> sortedWires;
@@ -389,6 +393,8 @@ private:
 
         std::vector<TopoDS_Edge> closedEdges;
         edgeList = DrawProjectSplit::scrubEdges(edgeList, closedEdges);
+        // Need to also check closed edges, since that may be the outline
+        edgeList.insert( edgeList.end(), closedEdges.begin(), closedEdges.end() );
 
         PyObject* outerWire = nullptr;
         std::vector<TopoDS_Wire> sortedWires;
@@ -553,7 +559,7 @@ private:
         TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
         double offX = 0.0;
         double offY = 0.0;
-        if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        if (dvp->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(dvp);
             TechDraw::DrawProjGroup*      dpg = dpgi->getPGroup();
             if (dpg) {
@@ -687,13 +693,13 @@ private:
                 dPage = static_cast<TechDraw::DrawPage*>(obj);
                 auto views = dPage->getAllViews();
                 for (auto& view : views) {
-                    if (view->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+                    if (view->isDerivedFrom<TechDraw::DrawViewPart>()) {
                         TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(view);
                         layerName = dvp->getNameInDocument();
                         writer.setLayerName(layerName);
                         write1ViewDxf(writer, dvp, true);
 
-                    } else if (view->isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId())) {
+                    } else if (view->isDerivedFrom<TechDraw::DrawViewAnnotation>()) {
                         TechDraw::DrawViewAnnotation* dva = static_cast<TechDraw::DrawViewAnnotation*>(view);
                         layerName = dva->getNameInDocument();
                         writer.setLayerName(layerName);
@@ -703,7 +709,7 @@ private:
                         auto lines = dva->Text.getValues();
                         writer.exportText(lines[0].c_str(), loc, loc, height, just);
 
-                    } else if (view->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+                    } else if (view->isDerivedFrom<TechDraw::DrawViewDimension>()) {
                         DrawViewDimension* dvd = static_cast<TechDraw::DrawViewDimension*>(view);
                         TechDraw::DrawViewPart* dvp = dvd->getViewPart();
                         if (!dvp) {
@@ -711,7 +717,7 @@ private:
                         }
                         double grandParentX = 0.0;
                         double grandParentY = 0.0;
-                        if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+                        if (dvp->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
                             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(dvp);
                             TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
                             if (!dpg) {

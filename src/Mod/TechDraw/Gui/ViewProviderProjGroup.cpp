@@ -33,7 +33,7 @@
 #include <App/DocumentObject.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
@@ -43,6 +43,9 @@
 #include <Mod/TechDraw/App/DrawViewSection.h>
 
 #include "TaskProjGroup.h"
+#include "QGIViewPart.h"
+#include "QGSPage.h"
+#include "ViewProviderPage.h"
 #include "ViewProviderProjGroup.h"
 
 using namespace TechDrawGui;
@@ -216,3 +219,25 @@ TechDraw::DrawProjGroup* ViewProviderProjGroup::getObject() const
 {
     return getViewObject();
 }
+
+
+//! gather the (existing) graphics for our sub views into our scene group.
+void ViewProviderProjGroup::regroupSubViews()
+{
+    auto vpPage = getViewProviderPage();
+    if (!vpPage) {
+        return;
+    }
+
+    auto scene = vpPage->getQGSPage();
+    auto dpgQView = getQView();
+
+    auto viewsAll =  getObject()->getViewsAsDPGI();
+    for (auto& view : viewsAll) {
+        auto viewQView = dynamic_cast<QGIViewPart *>(scene->findQViewForDocObj(view));
+        if (viewQView) {
+            scene->addItemToParent(viewQView, dpgQView);
+        }
+    }
+}
+

@@ -25,13 +25,13 @@
       <Documentation>
         <UserDocu>The number of rows in the array.</UserDocu>
       </Documentation>
-      <Parameter Name="Rows" Type="Int"/>
+      <Parameter Name="Rows" Type="Long"/>
     </Attribute>
     <Attribute Name="Columns" ReadOnly="true">
       <Documentation>
         <UserDocu>The number of columns in the array.</UserDocu>
       </Documentation>
-      <Parameter Name="Columns" Type="Int"/>
+      <Parameter Name="Columns" Type="Long"/>
     </Attribute>
     <Methode Name="getRow" ReadOnly="true">
       <Documentation>

@@ -39,7 +39,7 @@
 #include "Gui/Command.h"
 #include "Gui/Control.h"
 #include "Gui/Document.h"
-#include "Gui/Selection.h"
+#include "Gui/Selection/Selection.h"
 #include "Mod/Fem/App/FemConstraint.h"
 
 #include "ViewProviderFemConstraint.h"

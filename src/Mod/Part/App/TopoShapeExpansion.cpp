@@ -474,11 +474,11 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
                     return res;
                 }
                 if (shapeType == TopAbs_EDGE) {
-                    isLine = (geom->isDerivedFrom(GeomLine::getClassTypeId())
-                              || geom->isDerivedFrom(GeomLineSegment::getClassTypeId()));
+                    isLine = (geom->isDerivedFrom<GeomLine>()
+                              || geom->isDerivedFrom<GeomLineSegment>());
                 }
                 else {
-                    isPlane = geom->isDerivedFrom(GeomPlane::getClassTypeId());
+                    isPlane = geom->isDerivedFrom<GeomPlane>();
                 }
             }
 
@@ -491,8 +491,8 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
                     // For lines, don't compare geometry, just check the
                     // vertices below instead, because the exact same edge
                     // may have different geometrical representation.
-                    if (!g2->isDerivedFrom(GeomLine::getClassTypeId())
-                        && !g2->isDerivedFrom(GeomLineSegment::getClassTypeId())) {
+                    if (!g2->isDerivedFrom<GeomLine>()
+                        && !g2->isDerivedFrom<GeomLineSegment>()) {
                         return false;
                     }
                 }
@@ -500,7 +500,7 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
                     // For planes, don't compare geometry either, so that
                     // we don't need to worry about orientation and so on.
                     // Just check the edges.
-                    if (!g2->isDerivedFrom(GeomPlane::getClassTypeId())) {
+                    if (!g2->isDerivedFrom<GeomPlane>()) {
                         return false;
                     }
                 }
@@ -603,8 +603,8 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
                             }
                             bool isLine2 = false;
                             gp_Pnt pt1, pt2;
-                            if (geom2->isDerivedFrom(GeomLine::getClassTypeId())
-                                || geom2->isDerivedFrom(GeomLineSegment::getClassTypeId())) {
+                            if (geom2->isDerivedFrom<GeomLine>()
+                                || geom2->isDerivedFrom<GeomLineSegment>()) {
                                 pt1 = BRep_Tool::Pnt(TopExp::FirstVertex(TopoDS::Edge(edge)));
                                 pt2 = BRep_Tool::Pnt(TopExp::LastVertex(TopoDS::Edge(edge)));
                                 isLine2 = true;
@@ -624,8 +624,8 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
                                     }
                                 }
                                 if (isLine2) {
-                                    if (g1->isDerivedFrom(GeomLine::getClassTypeId())
-                                        || g1->isDerivedFrom(GeomLineSegment::getClassTypeId())) {
+                                    if (g1->isDerivedFrom<GeomLine>()
+                                        || g1->isDerivedFrom<GeomLineSegment>()) {
                                         auto p1 =
                                             BRep_Tool::Pnt(TopExp::FirstVertex(TopoDS::Edge(e1)));
                                         auto p2 =
@@ -2203,8 +2203,8 @@ TopoShape& TopoShape::makeElementRuledSurface(const std::vector<TopoShape>& shap
     // if both shapes are sub-elements of one common shape then the fill
     // algorithm leads to problems if the shape has set a placement. The
     // workaround is to copy the sub-shape
-    S1 = S1.makeElementCopy();
-    S2 = S2.makeElementCopy();
+    S1.setTransform(S1.getTransform());
+    S2.setTransform(S2.getTransform());
 
     if (orientation == 0) {
         // Automatic
@@ -3427,7 +3427,7 @@ TopoShape::makeElementCopy(const TopoShape& shape, const char* op, bool copyGeom
 
     TopoShape tmp(shape);
     tmp.setShape(BRepBuilderAPI_Copy(shape.getShape(), copyGeom, copyMesh).Shape(), false);
-    tmp.setTransform(shape.getTransform());
+
     if (op || (shape.Tag && shape.Tag != Tag)) {
         setShape(tmp._Shape);
         initCache();
@@ -5751,7 +5751,7 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
 
 bool TopoShape::isSame(const Data::ComplexGeoData& _other) const
 {
-    if (!_other.isDerivedFrom(TopoShape::getClassTypeId())) {
+    if (!_other.isDerivedFrom<TopoShape>()) {
         return false;
     }
 

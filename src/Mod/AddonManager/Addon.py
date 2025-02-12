@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Defines the Addon class to encapsulate information about FreeCAD Addons """
+"""Defines the Addon class to encapsulate information about FreeCAD Addons"""
 
 import os
 import re
@@ -149,6 +149,9 @@ class Addon:
 
     # The location of the Mod directory: overridden by testing code
     mod_directory = fci.DataPaths().mod_dir
+
+    # The location of the Macro directory: overridden by testing code
+    macro_directory = fci.DataPaths().macro_dir
 
     def __init__(
         self,

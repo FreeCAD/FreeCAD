@@ -119,11 +119,11 @@ void FileCardDelegate::paint(QPainter* painter,
         _widget->setProperty("state", QStringLiteral("pressed"));
         if (qApp->styleSheet().isEmpty()) {
             QColor color = getSelectionColor();
-            style = QString::fromLatin1("QWidget#thumbnailWidget {"
-                                        " border: 2px solid rgb(%1, %2, %3);"
-                                        " border-radius: 4px;"
-                                        " padding: 2px;"
-                                        "}")
+            style = QStringLiteral("QWidget#thumbnailWidget {"
+                                   " border: 2px solid rgb(%1, %2, %3);"
+                                   " border-radius: 4px;"
+                                   " padding: 2px;"
+                                   "}")
                         .arg(color.red())
                         .arg(color.green())
                         .arg(color.blue());
@@ -133,11 +133,11 @@ void FileCardDelegate::paint(QPainter* painter,
         _widget->setProperty("state", QStringLiteral("hovered"));
         if (qApp->styleSheet().isEmpty()) {
             QColor color = getBorderColor();
-            style = QString::fromLatin1("QWidget#thumbnailWidget {"
-                                        " border: 2px solid rgb(%1, %2, %3);"
-                                        " border-radius: 4px;"
-                                        " padding: 2px;"
-                                        "}")
+            style = QStringLiteral("QWidget#thumbnailWidget {"
+                                   " border: 2px solid rgb(%1, %2, %3);"
+                                   " border-radius: 4px;"
+                                   " padding: 2px;"
+                                   "}")
                         .arg(color.red())
                         .arg(color.green())
                         .arg(color.blue());
@@ -145,10 +145,10 @@ void FileCardDelegate::paint(QPainter* painter,
     }
     else if (qApp->styleSheet().isEmpty()) {
         QColor color = getBackgroundColor();
-        style = QString::fromLatin1("QWidget#thumbnailWidget {"
-                                    " background-color: rgb(%1, %2, %3);"
-                                    " border-radius: 8px;"
-                                    "}")
+        style = QStringLiteral("QWidget#thumbnailWidget {"
+                               " background-color: rgb(%1, %2, %3);"
+                               " border-radius: 8px;"
+                               "}")
                     .arg(color.red())
                     .arg(color.green())
                     .arg(color.blue());

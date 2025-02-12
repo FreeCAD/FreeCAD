@@ -69,6 +69,7 @@ public:
     int type() const override { return Type;}
 
     QRectF boundingRect() const override;
+    QRectF tightBoundingRect() const;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void paint( QPainter *painter,
                         const QStyleOptionGraphicsItem *option,
@@ -83,7 +84,6 @@ public:
     QFont getFont() const { return m_dimText->font(); }
     void setDimString(QString text);
     void setDimString(QString text, qreal maxWidth);
-    void setUnitString(QString text);
     void setToleranceString();
     void setPrettySel();
     void setPrettyPre();

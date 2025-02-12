@@ -186,14 +186,14 @@ App::DocumentObjectExecReturn* FeatureViewSpreadsheet::execute(void)
             App::Property* prop = sheet->getPropertyByName(address.toString().c_str());
             std::stringstream field;
             if (prop) {
-                if (prop->isDerivedFrom((App::PropertyQuantity::getClassTypeId()))) {
-                    field << static_cast<App::PropertyQuantity*>(prop)->getValue();
+                if (auto* p = Base::freecad_dynamic_cast<App::PropertyQuantity>(prop)) {
+                    field << p->getValue();
                 }
-                else if (prop->isDerivedFrom((App::PropertyFloat::getClassTypeId()))) {
-                    field << static_cast<App::PropertyFloat*>(prop)->getValue();
+                else if (auto p = Base::freecad_dynamic_cast<App::PropertyFloat>(prop)) {
+                    field << p->getValue();
                 }
-                else if (prop->isDerivedFrom((App::PropertyString::getClassTypeId()))) {
-                    field << static_cast<App::PropertyString*>(prop)->getValue();
+                else if (auto p = Base::freecad_dynamic_cast<App::PropertyString>(prop)) {
+                    field << p->getValue();
                 }
                 else {
                     assert(0);

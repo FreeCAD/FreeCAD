@@ -166,7 +166,7 @@ def read(filename):
 
     # Print the errors that occurred during reading.
     if col.errors:
-        FreeCAD.Console.PrintWarning(translate("BIM", "File was read but some errors occured:") + "\n")
+        FreeCAD.Console.PrintWarning(translate("BIM", "File was read but some errors occurred:") + "\n")
     for e in col.errors:
         FreeCAD.Console.PrintWarning(str(e) + "\n")
 

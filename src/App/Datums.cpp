@@ -156,7 +156,7 @@ App::DatumElement* LocalCoordinateSystem::getDatumElement(const char* role) cons
 {
     const auto& features = OriginFeatures.getValues();
     auto featIt = std::find_if(features.begin(), features.end(), [role](App::DocumentObject* obj) {
-        return obj->isDerivedFrom(App::DatumElement::getClassTypeId())
+        return obj->isDerivedFrom<App::DatumElement>()
             && strcmp(static_cast<App::DatumElement*>(obj)->Role.getValue(), role) == 0;
     });
     if (featIt != features.end()) {
@@ -171,7 +171,7 @@ App::DatumElement* LocalCoordinateSystem::getDatumElement(const char* role) cons
 App::Line* LocalCoordinateSystem::getAxis(const char* role) const
 {
     App::DatumElement* feat = getDatumElement(role);
-    if (feat->isDerivedFrom(App::Line::getClassTypeId())) {
+    if (feat->isDerivedFrom<App::Line>()) {
         return static_cast<App::Line*>(feat);
     }
     std::stringstream err;
@@ -183,7 +183,7 @@ App::Line* LocalCoordinateSystem::getAxis(const char* role) const
 App::Plane* LocalCoordinateSystem::getPlane(const char* role) const
 {
     App::DatumElement* feat = getDatumElement(role);
-    if (feat->isDerivedFrom(App::Plane::getClassTypeId())) {
+    if (feat->isDerivedFrom<App::Plane>()) {
         return static_cast<App::Plane*>(feat);
     }
     std::stringstream err;
@@ -195,7 +195,7 @@ App::Plane* LocalCoordinateSystem::getPlane(const char* role) const
 App::Point* LocalCoordinateSystem::getPoint(const char* role) const
 {
     App::DatumElement* feat = getDatumElement(role);
-    if (feat->isDerivedFrom(App::Point::getClassTypeId())) {
+    if (feat->isDerivedFrom<App::Point>()) {
         return static_cast<App::Point*>(feat);
     }
     std::stringstream err;
@@ -262,7 +262,7 @@ DatumElement* LocalCoordinateSystem::createDatum(const SetupData& data)
     std::string objName = doc->getUniqueObjectName(data.role);
     App::DocumentObject* featureObj = doc->addObject(data.type.getName(), objName.c_str());
 
-    assert(featureObj && featureObj->isDerivedFrom(App::DatumElement::getClassTypeId()));
+    assert(featureObj && featureObj->isDerivedFrom<App::DatumElement>());
 
     QByteArray byteArray = data.label.toUtf8();
     featureObj->Label.setValue(byteArray.constData());

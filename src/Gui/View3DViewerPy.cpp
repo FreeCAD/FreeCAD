@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoCamera.h>
+# include <string>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -31,7 +32,7 @@
 #include <Base/MatrixPy.h>
 
 #include "PythonWrapper.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "View3DViewerPy.h"
 #include "View3DInventorViewer.h"
 
@@ -97,6 +98,10 @@ void View3DInventorViewerPy::init_type()
         "isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled.");
     add_varargs_method("grabFramebuffer", &View3DInventorViewerPy::grabFramebuffer,
         "grabFramebuffer() -> QImage: renders and returns a 32-bit RGB image of the framebuffer.");
+
+    add_varargs_method("setOverrideMode", &View3DInventorViewerPy::setOverrideMode,
+        "setOverrideMode(mode): sets the display override mode.");
+
     add_varargs_method("setEnabledNaviCube", &View3DInventorViewerPy::setEnabledNaviCube,
         "setEnabledNaviCube(bool): enables or disables the navi cube of the viewer.");
     add_varargs_method("isEnabledNaviCube", &View3DInventorViewerPy::isEnabledNaviCube,
@@ -272,8 +277,8 @@ Py::Object View3DInventorViewerPy::seekToPoint(const Py::Tuple& args)
             _viewer->seekToPoint(hitpoint);
         }
         else {
-            Py::Int x(tuple[0]);
-            Py::Int y(tuple[1]);
+            Py::Long x(tuple[0]);
+            Py::Long y(tuple[1]);
 
             SbVec2s hitpoint ((long)x,(long)y);
             _viewer->seekToPoint(hitpoint);
@@ -339,8 +344,8 @@ Py::Object View3DInventorViewerPy::getPointOnFocalPlane(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "hh", &x, &y)) {
         PyErr_Clear();
         Py::Tuple t(args[0]);
-        x = (int)Py::Int(t[0]);
-        y = (int)Py::Int(t[1]);
+        x = (int)Py::Long(t[0]);
+        y = (int)Py::Long(t[1]);
     }
     try {
         SbVec3f pt = _viewer->getPointOnFocalPlane(SbVec2s(x,y));
@@ -579,6 +584,17 @@ Py::Object View3DInventorViewerPy::grabFramebuffer(const Py::Tuple& args)
     PythonWrapper wrap;
     wrap.loadGuiModule();
     return wrap.fromQImage(img.mirrored());
+}
+
+Py::Object View3DInventorViewerPy::setOverrideMode(const Py::Tuple& args)
+{
+    const char* mode;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &mode)) {
+        throw Py::Exception();
+    }
+
+    _viewer->setOverrideMode(std::string(mode));
+    return Py::None();
 }
 
 Py::Object View3DInventorViewerPy::setEnabledNaviCube(const Py::Tuple& args)

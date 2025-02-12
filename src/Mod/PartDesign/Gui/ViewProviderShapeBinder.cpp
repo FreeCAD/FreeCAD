@@ -138,7 +138,7 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
     App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
 
-    if (getObject()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
+    if (getObject()->isDerivedFrom<PartDesign::ShapeBinder>())
         PartDesign::ShapeBinder::getFilteredReferences(&getObject<PartDesign::ShapeBinder>()->Support, obj, subs);
     else
         return;

@@ -91,7 +91,7 @@ Helix::Helix()
     ADD_PROPERTY_TYPE(Angle, (0.0), group, App::Prop_None,
         QT_TRANSLATE_NOOP("App::Property", "The angle of the cone that forms a hull around the helix.\n"
             "Non-zero values turn the helix into a conical spiral.\n"
-            "Positive values make the radius grow, nevatige shrink."));
+            "Positive values make the radius grow, negative shrinks."));
     Angle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(Growth, (0.0), group, App::Prop_None,
         QT_TRANSLATE_NOOP("App::Property", "The growth of the helix' radius per turn.\n"

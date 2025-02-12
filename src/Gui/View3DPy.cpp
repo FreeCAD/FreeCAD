@@ -56,7 +56,7 @@
 #include "Camera.h"
 #include "Document.h"
 #include "Inventor/SoMouseWheelEvent.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "PythonWrapper.h"
 #include "SoFCDB.h"
 #include "SoFCOffscreenRenderer.h"
@@ -1282,8 +1282,8 @@ Py::Object View3DInventorPy::getCursorPos()
         auto viewer = getView3DInventorPtr()->getViewer();
         SbVec2s vec = viewer->fromQPoint(pos);
         Py::Tuple tuple(2);
-        tuple.setItem(0, Py::Int(vec[0]));
-        tuple.setItem(1, Py::Int(vec[1]));
+        tuple.setItem(0, Py::Long(vec[0]));
+        tuple.setItem(1, Py::Long(vec[1]));
         return tuple;
     }
     catch (const Py::Exception&) {
@@ -1300,13 +1300,13 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
 
     try {
         //Note: For gcc (4.2) we need the 'const' keyword to avoid the compiler error:
-        //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Int' requested
+        //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Long' requested
         //We should report this problem to the PyCXX project as in the documentation an
         //example without the 'const' keyword is used.
-        //Or we can also write Py::Int x(tuple[0]);
+        //Or we can also write Py::Long x(tuple[0]);
         const Py::Tuple tuple(object);
-        Py::Int x(tuple[0]);
-        Py::Int y(tuple[1]);
+        Py::Long x(tuple[0]);
+        Py::Long y(tuple[1]);
 
         // As this method could be called during a SoHandleEventAction scene
         // graph traversal we must not use a second SoHandleEventAction as
@@ -1327,7 +1327,7 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
             dict.setItem("z", Py::Float(pt[2]));
 
             ViewProvider *vp = getView3DInventorPtr()->getViewer()->getViewProviderByPath(Point->getPath());
-            if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+            if (vp && vp->isDerivedFrom<ViewProviderDocumentObject>()) {
                 if (!vp->isSelectable())
                     return ret;
                 auto vpd = static_cast<ViewProviderDocumentObject*>(vp);
@@ -1406,13 +1406,13 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
 
     try {
         //Note: For gcc (4.2) we need the 'const' keyword to avoid the compiler error:
-        //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Int' requested
+        //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Long' requested
         //We should report this problem to the PyCXX project as in the documentation an
         //example without the 'const' keyword is used.
-        //Or we can also write Py::Int x(tuple[0]);
+        //Or we can also write Py::Long x(tuple[0]);
         const Py::Tuple tuple(object);
-        Py::Int x(tuple[0]);
-        Py::Int y(tuple[1]);
+        Py::Long x(tuple[0]);
+        Py::Long y(tuple[1]);
 
         // As this method could be called during a SoHandleEventAction scene
         // graph traversal we must not use a second SoHandleEventAction as
@@ -1437,7 +1437,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                 dict.setItem("z", Py::Float(pt[2]));
 
                 ViewProvider *vp = getView3DInventorPtr()->getViewer()->getViewProviderByPath(point->getPath());
-                if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                if(vp && vp->isDerivedFrom<ViewProviderDocumentObject>()) {
                     if(!vp->isSelectable())
                         continue;
                     auto vpd = static_cast<ViewProviderDocumentObject*>(vp);
@@ -1562,8 +1562,8 @@ Py::Object View3DInventorPy::getSize()
     try {
         SbVec2s size = getView3DInventorPtr()->getViewer()->getSoRenderManager()->getSize();
         Py::Tuple tuple(2);
-        tuple.setItem(0, Py::Int(size[0]));
-        tuple.setItem(1, Py::Int(size[1]));
+        tuple.setItem(0, Py::Long(size[0]));
+        tuple.setItem(1, Py::Long(size[1]));
         return tuple;
     }
     catch (const Py::Exception&) {
@@ -1577,8 +1577,8 @@ Py::Object View3DInventorPy::getPointOnFocalPlane(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "hh", &x, &y)) {
         PyErr_Clear();
         Py::Tuple t(args[0]);
-        x = (int)Py::Int(t[0]);
-        y = (int)Py::Int(t[1]);
+        x = (int)Py::Long(t[0]);
+        y = (int)Py::Long(t[1]);
     }
     try {
         SbVec3f pt = getView3DInventorPtr()->getViewer()->getPointOnFocalPlane(SbVec2s(x,y));
@@ -1612,8 +1612,8 @@ Py::Object View3DInventorPy::getPointOnViewport(const Py::Tuple& args)
     try {
         SbVec2s pt = getView3DInventorPtr()->getViewer()->getPointOnViewport(SbVec3f(vx,vy,vz));
         Py::Tuple tuple(2);
-        tuple.setItem(0, Py::Int(pt[0]));
-        tuple.setItem(1, Py::Int(pt[1]));
+        tuple.setItem(0, Py::Long(pt[0]));
+        tuple.setItem(1, Py::Long(pt[1]));
 
         return tuple;
     }
@@ -1631,8 +1631,8 @@ Py::Object View3DInventorPy::projectPointToLine(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "hh", &x, &y)) {
         PyErr_Clear();
         Py::Tuple t(args[0]);
-        x = (int)Py::Int(t[0]);
-        y = (int)Py::Int(t[1]);
+        x = (int)Py::Long(t[0]);
+        y = (int)Py::Long(t[1]);
     }
     try {
         SbVec3f pt1, pt2;
@@ -1691,8 +1691,8 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
         dict.setItem("Time", Py::String(std::string(e->getTime().formatDate("%Y-%m-%d %H:%M:%S").getString())));
         SbVec2s p = n->getEvent()->getPosition();
         Py::Tuple pos(2);
-        pos.setItem(0, Py::Int(p[0]));
-        pos.setItem(1, Py::Int(p[1]));
+        pos.setItem(0, Py::Long(p[0]));
+        pos.setItem(1, Py::Long(p[1]));
         // Position
         dict.setItem("Position", pos);
         // Shift, Ctrl, Alt down
@@ -2565,7 +2565,7 @@ Py::Object View3DInventorPy::setCornerCrossSize(const Py::Tuple& args)
 Py::Object View3DInventorPy::getCornerCrossSize()
 {
     int size = getView3DInventorPtr()->getViewer()->getFeedbackSize();
-    return Py::Int(size);
+    return Py::Long(size);
 }
 
 Py::Object View3DInventorPy::cast_to_base()

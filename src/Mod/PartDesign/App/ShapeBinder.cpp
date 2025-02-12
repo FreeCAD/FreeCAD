@@ -597,8 +597,11 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 recomputeCopy = true;
                 clearCopiedObjects();
 
-                auto tmpDoc = App::GetApplication().newDocument(
-                    "_tmp_binder", nullptr, false, true);
+                App::DocumentCreateFlags createFlags;
+                createFlags.createView = false;
+                createFlags.temporary = true;
+
+                auto tmpDoc = App::GetApplication().newDocument("_tmp_binder", nullptr, createFlags);
                 tmpDoc->setUndoMode(0);
                 auto objs = tmpDoc->copyObject({ obj }, true, true);
                 if (!objs.empty()) {
@@ -838,7 +841,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     for (auto& v : mats) {
         const char* name = cacheName(v.first);
         auto prop = getDynamicPropertyByName(name);
-        if (!prop || !prop->isDerivedFrom(App::PropertyMatrix::getClassTypeId())) {
+        if (!prop || !prop->isDerivedFrom<App::PropertyMatrix>()) {
             if (prop)
                 removeDynamicProperty(name);
             prop = addDynamicProperty("App::PropertyMatrix", name, "Cache", nullptr, 0, false, true);

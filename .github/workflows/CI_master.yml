@@ -45,11 +45,11 @@ jobs:
     with:
       artifactBasename: Pixi-${{ github.run_id }}
 
-  Ubuntu_20-04:
+  Ubuntu:
     needs: [Prepare]
-    uses: ./.github/workflows/sub_buildUbuntu2004.yml
+    uses: ./.github/workflows/sub_buildUbuntu.yml
     with:
-      artifactBasename: Ubuntu_20-04-${{ github.run_id }}
+      artifactBasename: Ubuntu-${{ github.run_id }}
 
   Windows:
     needs: [Prepare]
@@ -70,7 +70,7 @@ jobs:
     needs: [
         Prepare,
         Pixi,
-        Ubuntu_20-04,
+        Ubuntu,
         Windows,
         Lint
       ]

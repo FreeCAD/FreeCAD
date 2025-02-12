@@ -148,6 +148,9 @@ Major grid lines are thicker than minor grid lines.</string>
         <property name="suffix">
          <string> squares</string>
         </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
         <property name="value">
          <number>10</number>
         </property>
@@ -220,7 +223,7 @@ Major grid lines are thicker than minor grid lines.</string>
          <string> squares</string>
         </property>
         <property name="maximum">
-         <number>9999</number>
+         <number>10000</number>
         </property>
         <property name="value">
          <number>100</number>

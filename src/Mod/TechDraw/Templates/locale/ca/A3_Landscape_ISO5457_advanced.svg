@@ -503,7 +503,7 @@
          x="360"
          y="236.2"
          style="text-align:center;text-anchor:middle"
-         freecad:editable="page_scale"
+         freecad:editable="scale"
          freecad:autofill="scale"><tspan
            id="tspan13">1 : 1</tspan></text>
       <text

@@ -370,7 +370,7 @@ bool EditorView::saveAs()
         this,
         QObject::tr("Save Macro"),
         QString(),
-        QString::fromLatin1("%1 (*.FCMacro);;Python (*.py)").arg(tr("FreeCAD macro")));
+        QStringLiteral("%1 (*.FCMacro);;Python (*.py)").arg(tr("FreeCAD macro")));
     if (fn.isEmpty()) {
         return false;
     }
@@ -503,7 +503,7 @@ void EditorView::printPdf()
         FileDialog::getSaveFileName(this,
                                     tr("Export PDF"),
                                     QString(),
-                                    QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+                                    QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
         // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under:
@@ -511,6 +511,7 @@ void EditorView::printPdf()
         printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
+        printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
         d->textEdit->document()->print(&printer);
     }
 }
@@ -540,7 +541,7 @@ void EditorView::setCurrentFileName(const QString& fileName)
         shownName = tr("untitled[*]");
     }
     else {
-        shownName = QString::fromLatin1("%1[*]").arg(name);
+        shownName = QStringLiteral("%1[*]").arg(name);
     }
     shownName += tr(" - Editor");
     setWindowTitle(shownName);
@@ -893,7 +894,7 @@ void SearchBar::findText(bool skip, bool next, const QString& str)
 
     QString styleSheet;
     if (!found) {
-        styleSheet = QString::fromLatin1(" QLineEdit {\n"
+        styleSheet = QStringLiteral(" QLineEdit {\n"
                                          "     background-color: rgb(221,144,161);\n"
                                          " }\n");
     }

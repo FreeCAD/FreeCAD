@@ -759,7 +759,7 @@ bool DocumentObject::removeDynamicProperty(const char* name)
         return false;
     }
 
-    if (prop->isDerivedFrom(PropertyLinkBase::getClassTypeId())) {
+    if (prop->isDerivedFrom<PropertyLinkBase>()) {
         clearOutListCache();
     }
 

@@ -35,6 +35,7 @@ import DraftVecUtils
 import WorkingPlane
 from draftfunctions import svgtext
 from draftfunctions.svgshapes import get_proj, get_circle, get_path
+from draftobjects import layer
 from draftutils import params
 from draftutils import utils
 from draftutils.messages import _wrn, _err
@@ -424,54 +425,75 @@ def get_svg(obj,
         It defaults to `True`.
     """
     # If this is a group, recursively call this function to gather
-    # all the SVG strings from the contents of the group
-    if hasattr(obj, "isDerivedFrom"):
-        if (obj.isDerivedFrom("App::DocumentObjectGroup")
-                or utils.get_type(obj) in ["Layer", "BuildingPart", "IfcGroup"]
-                or obj.isDerivedFrom("App::LinkGroup")
+    # all the SVG strings from the contents of the group.
+    if (obj.isDerivedFrom("App::DocumentObjectGroup")
+            or utils.get_type(obj) in ["Layer", "BuildingPart", "IfcGroup"]
+            or obj.isDerivedFrom("App::LinkGroup")
+            or (obj.isDerivedFrom("App::Link")
+                    and obj.LinkedObject.isDerivedFrom("App::DocumentObjectGroup"))):
+
+        hidden_doc = None
+
+        if (obj.isDerivedFrom("App::LinkGroup")
                 or (obj.isDerivedFrom("App::Link")
                         and obj.LinkedObject.isDerivedFrom("App::DocumentObjectGroup"))):
-
-            hidden_doc = None
-
-            if (obj.isDerivedFrom("App::LinkGroup")
-                    or (obj.isDerivedFrom("App::Link")
-                            and obj.LinkedObject.isDerivedFrom("App::DocumentObjectGroup"))):
-                if obj.Placement.isIdentity():
-                    if obj.isDerivedFrom("App::LinkGroup"):
-                        group = obj.ElementList
-                    else:
-                        group = obj.Group
+            if obj.Placement.isIdentity():
+                if obj.isDerivedFrom("App::LinkGroup"):
+                    group = obj.ElementList
                 else:
-                    # Using a hidden doc hack to handle placements.
-                    hidden_doc = App.newDocument(name="hidden", hidden=True, temp=True)
-                    new = hidden_doc.copyObject(obj, True)
-                    pla = new.Placement
-                    new.Placement = App.Placement()
-                    if new.isDerivedFrom("App::LinkGroup"):
-                        group = new.ElementList
-                    else:
-                        group = new.Group
-                    for child in group:
-                        child.Placement = pla * child.Placement
+                    group = obj.Group
             else:
-                group = obj.Group
+                # Hidden doc hack:
+                hidden_doc = App.newDocument(name="hidden", hidden=True, temp=True)
+                new = hidden_doc.copyObject(obj, True)
+                pla = new.Placement
+                new.Placement = App.Placement()
+                if new.isDerivedFrom("App::LinkGroup"):
+                    group = new.ElementList
+                else:
+                    group = new.Group
+                for child in group:
+                    child.Placement = pla * child.Placement
+        else:
+            group = obj.Group
 
-            svg = ""
-            for child in group:
-                svg += get_svg(child,
-                               scale, linewidth, fontsize,
-                               fillstyle, direction, linestyle,
-                               color, linespacing, techdraw,
-                               rotation, fillspaces, override)
+        svg = ""
+        for child in group:
+            svg += get_svg(child,
+                           scale, linewidth, fontsize,
+                           fillstyle, direction, linestyle,
+                           color, linespacing, techdraw,
+                           rotation, fillspaces, override)
 
-            if hidden_doc is not None:
-                try:
-                    App.closeDocument(hidden_doc.Name)
-                except:
-                    pass
+        if hidden_doc is not None:
+            try:
+                App.closeDocument(hidden_doc.Name)
+            except:
+                pass
 
-            return svg
+        return svg
+
+    # Handle Links to texts and dimensions. These Links do not have a Shape.
+    if obj.isDerivedFrom("App::Link") and obj.LinkedObject and not hasattr(obj, "Shape"):
+        # Hidden doc hack:
+        hidden_doc = App.newDocument(name="hidden", hidden=True, temp=True)
+        new = hidden_doc.copyObject(obj.LinkedObject, True)
+        if utils.get_type(new) in ("Dimension", "LinearDimension", "AngularDimension"):
+            new.Proxy.transform(new, obj.Placement)
+        elif utils.get_type(new) == "Text" or obj.LinkTransform:
+            new.Placement = obj.Placement * new.Placement
+        else:
+            new.Placement = obj.Placement
+        svg = get_svg(new,
+                      scale, linewidth, fontsize,
+                      fillstyle, direction, linestyle,
+                      color, linespacing, techdraw,
+                      rotation, fillspaces, override)
+        try:
+            App.closeDocument(hidden_doc.Name)
+        except:
+            pass
+        return svg
 
     vobj = _get_view_object(obj)
 
@@ -955,31 +977,14 @@ def _get_view_object(obj):
     return None
 
 
-# Similar function as in view_layer.py
-def _get_layer(obj):
-    """Get the layer the object belongs to."""
-    finds = obj.Document.findObjects(Name="LayerContainer")
-    if not finds:
-        return None
-    # First look in the LayerContainer:
-    for layer in finds[0].Group:
-        if utils.get_type(layer) == "Layer" and obj in layer.Group:
-            return layer
-    # If not found, look through all App::FeaturePython objects (not just layers):
-    for find in obj.Document.findObjects(Type="App::FeaturePython"):
-        if utils.get_type(find) == "Layer" and obj in find.Group:
-            return find
-    return None
-
-
 def get_print_color(obj):
     """Return the print color of the parent layer, if available."""
     # Layers are not in the Inlist of obj because a layer's Group is App::PropertyLinkListHidden:
-    layer = _get_layer(obj)
-    if layer is None:
+    lyr = layer.get_layer(obj)
+    if lyr is None:
         return None
-    if layer.ViewObject.UsePrintColor:
-        return layer.ViewObject.LinePrintColor
+    if lyr.ViewObject.UsePrintColor:
+        return lyr.ViewObject.LinePrintColor
     return None
 
 

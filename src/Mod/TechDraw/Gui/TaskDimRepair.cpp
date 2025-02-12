@@ -33,7 +33,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 
@@ -210,7 +210,7 @@ void TaskDimRepair::fillList(QListWidget* lwItems, std::vector<std::string> labe
     for (; i < labelCount; i++) {
         qLabel = QString::fromStdString(labels[i]);
         qName = QString::fromStdString(names[i]);
-        qText = QString::fromUtf8("%1 %2").arg(qName, qLabel);
+        qText = QStringLiteral("%1 %2").arg(qName, qLabel);
         item = new QListWidgetItem(qText, lwItems);
         item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         item->setData(Qt::UserRole, qName);

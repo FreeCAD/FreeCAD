@@ -29,7 +29,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/MenuManager.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/ToolBarManager.h>
 #include <Mod/Mesh/App/MeshFeature.h>
@@ -122,10 +122,10 @@ public:
             numMax->setText(tr("X: %1\tY: %2\tZ: %3").arg(bbox.MaxX).arg(bbox.MaxY).arg(bbox.MaxZ));
         }
         else {
-            numPoints->setText(QString::fromLatin1(""));
-            numFacets->setText(QString::fromLatin1(""));
-            numMin->setText(QString::fromLatin1(""));
-            numMax->setText(QString::fromLatin1(""));
+            numPoints->setText(QStringLiteral(""));
+            numFacets->setText(QStringLiteral(""));
+            numMin->setText(QStringLiteral(""));
+            numMax->setText(QStringLiteral(""));
         }
     }
 

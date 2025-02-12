@@ -92,7 +92,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     }
     App::DocumentObject* obj = m_lineFeat->LeaderParent.getValue();
     if (obj) {
-        if (obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) )  {
+        if (obj->isDerivedFrom<TechDraw::DrawView>() )  {
             m_baseFeat = static_cast<TechDraw::DrawView*>(m_lineFeat->LeaderParent.getValue());
         }
     }
@@ -364,7 +364,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
         throw Base::RuntimeError("TaskLeaderLine - new markup object not found");
     }
 
-    if (obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawLeaderLine>()) {
         m_lineFeat = static_cast<TechDraw::DrawLeaderLine*>(obj);
         auto forMath{m_attachPoint};
         if (baseRotation != 0) {

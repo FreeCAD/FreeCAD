@@ -88,26 +88,32 @@ class _ArchSchedule:
         self.setProperties(obj)
         if hasattr(obj, "Result"):
             self.update_properties_0v21(obj)
+        if hasattr(obj, "Description"):
+            self.update_properties_1v1(obj)
 
     def update_properties_0v21(self,obj):
+        from draftutils.messages import _wrn
         sp = obj.Result
         if sp is not None:
             self.setSchedulePropertySpreadsheet(sp, obj)
         obj.removeProperty("Result")
-        from draftutils.messages import _wrn
-        if "Description" in obj.PropertiesList:
-            if obj.getTypeOfProperty("Description") == "App::PropertyStringList":
-                obj.Operation = obj.Description
-                obj.removeProperty("Description")
-                _wrn("v0.21, " + sp.Label + ", " + translate("Arch", "renamed property 'Description' to 'Operation'"))
         _wrn("v0.21, " + obj.Label + ", " + translate("Arch", "removed property 'Result', and added property 'AutoUpdate'"))
         if sp is not None:
             _wrn("v0.21, " + sp.Label + ", " + translate("Arch", "added property 'Schedule'"))
 
+    def update_properties_1v1(self,obj):
+        from draftutils.messages import _wrn
+        if obj.getTypeIdOfProperty("Description") == "App::PropertyStringList":
+            obj.Operation = obj.Description
+            obj.removeProperty("Description")
+            _wrn("v1.1, " + obj.Label + ", " + translate("Arch", "renamed property 'Description' to 'Operation'"))
+        for prop in ("Operation", "Value", "Unit", "Objects", "Filter", "CreateSpreadsheet", "DetailedResults"):
+            obj.setGroupOfProperty(prop,"Schedule")
+
     def setProperties(self,obj):
 
         if not "Operation" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Operation",       "Schedule",QT_TRANSLATE_NOOP("App::Property","The operation column"))
+            obj.addProperty("App::PropertyStringList","Operation",         "Schedule",QT_TRANSLATE_NOOP("App::Property","The operation column"))
         if not "Value" in obj.PropertiesList:
             obj.addProperty("App::PropertyStringList","Value",             "Schedule",QT_TRANSLATE_NOOP("App::Property","The values column"))
         if not "Unit" in obj.PropertiesList:
@@ -265,7 +271,10 @@ class _ArchSchedule:
                     if objs[0].isDerivedFrom("App::DocumentObjectGroup"):
                         objs = objs[0].Group
                 objs = Draft.get_group_contents(objs)
-                objs = Arch.pruneIncluded(objs,strict=True,silent=True)
+                objs = self.expandArrays(objs)
+                # Remove included objects (e.g. walls that are part of another wall,
+                # base geometry, etc)
+                objs = Arch.pruneIncluded(objs, strict=True, silent=True)
                 # Remove all schedules and spreadsheets:
                 objs = [o for o in objs if Draft.get_type(o) not in ["Schedule", "Spreadsheet::Sheet"]]
 
@@ -574,6 +583,51 @@ class _ArchSchedule:
         if state:
             self.Type = state
 
+    def getIfcClass(self, obj):
+        """gets the IFC class of this object"""
+
+        if hasattr(obj, "IfcType"):
+            return obj.IfcType
+        elif hasattr(obj, "IfcRole"):
+            return obj.IfcRole
+        elif hasattr(obj, "IfcClass"):
+            return obj.IfcClass
+        else:
+            return None
+
+    def getArray(self, obj):
+        "returns a count number if this object needs to be duplicated"
+
+        import Draft
+
+        elementCount = 0
+
+        # The given object can belong to multiple arrays
+        # o is a potential parent array of the given object
+        for o in obj.InList:
+            if Draft.getType(o) == "Array":
+                elementCount += o.Count
+
+        return elementCount
+
+    def expandArrays(self, objs):
+        """Expands array elements in the given list of objects"""
+
+        expandedobjs = []
+
+        for obj in objs:
+            ifcClass = self.getIfcClass(obj)
+            # This filters out the array object itself, which has no IFC class,
+            # but leaves the array elements, which do have an IFC class.
+            if ifcClass:
+                expandedobjs.append(obj)
+                # If the object is in an array, add it and the rest of its elements
+                # to the list.
+                array = self.getArray(obj)
+                for i in range(1, array): # The first element (0) was already added
+                    expandedobjs.append(obj)
+
+        return expandedobjs
 
 class _ViewProviderArchSchedule:
 

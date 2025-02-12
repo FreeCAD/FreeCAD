@@ -115,7 +115,7 @@ void TextDocumentEditorView::textChanged()
 
 void TextDocumentEditorView::labelChanged()
 {
-    setWindowTitle(QString::fromUtf8(textDocument->Label.getValue()) + QString::fromLatin1("[*]"));
+    setWindowTitle(QString::fromUtf8(textDocument->Label.getValue()) + QStringLiteral("[*]"));
 }
 
 void TextDocumentEditorView::refresh()

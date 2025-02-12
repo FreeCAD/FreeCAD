@@ -24,7 +24,7 @@
 #ifndef GUI_TASKVIEW_TASKAPPERANCE_H
 #define GUI_TASKVIEW_TASKAPPERANCE_H
 
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include "TaskView.h"
 
 

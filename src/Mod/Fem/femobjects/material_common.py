@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2013 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2024 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,14 +24,16 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM material document object"
-__author__ = "Juergen Riegel, Bernd Hahnebach"
+__author__ = "Juergen Riegel, Bernd Hahnebach, Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
 ## @package material_common
 #  \ingroup FEM
 #  \brief material common object
 
-from FreeCAD import Base
+from FreeCAD import Base, Units
+import Materials
+
 from . import base_fempythonobject
 
 _PropHelper = base_fempythonobject._PropHelper
@@ -97,8 +100,41 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
                 # change References to App::PropertyLinkSubListGlobal
                 prop.handle_change_type(obj, old_type="App::PropertyLinkSubList")
 
+        # try update UUID from Material
+        if not obj.UUID:
+            obj.UUID = self._get_material_uuid(obj.Material)
+
         if not obj.hasExtension("App::SuppressibleExtensionPython"):
             obj.addExtension("App::SuppressibleExtensionPython")
+
+    def _get_material_uuid(self, material):
+        if not material:
+            return ""
+
+        material_manager = Materials.MaterialManager()
+
+        for a_mat in material_manager.Materials:
+            unmatched_item = True
+            a_mat_prop = material_manager.getMaterial(a_mat).Properties
+            for it in material:
+                if it in a_mat_prop:
+                    # first try to compare quantities
+                    try:
+                        unmatched_item = Units.Quantity(material[it]) != Units.Quantity(
+                            a_mat_prop[it]
+                        )
+                    except ValueError:
+                        # if there is no quantity, compare values directly
+                        unmatched_item = material[it] != a_mat_prop[it]
+
+                if unmatched_item:
+                    break
+
+            if not unmatched_item:
+                # all material items are found in a_mat
+                return a_mat
+
+        return ""
 
         """
         Some remarks to the category. Not finished, thus to be continued.

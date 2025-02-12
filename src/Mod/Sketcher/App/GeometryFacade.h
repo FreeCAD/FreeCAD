@@ -87,7 +87,7 @@ class GeometryFacadePy;
  *
  *  Part::Geometry* copy = v->copy();
  *
- *  if(construction && copy->getTypeId() != Part::GeomPoint::getClassTypeId()) {
+ *  if(construction && !copy->is<Part::GeomPoint>()) {
  *      GeometryFacade::setConstruction(copy, construction);
  *  }
  *

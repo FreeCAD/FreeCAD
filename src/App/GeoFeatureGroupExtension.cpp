@@ -55,7 +55,7 @@ GeoFeatureGroupExtension::~GeoFeatureGroupExtension() = default;
 void GeoFeatureGroupExtension::initExtension(ExtensionContainer* obj)
 {
 
-    if (!obj->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+    if (!obj->isDerivedFrom<App::GeoFeature>()) {
         throw Base::RuntimeError("GeoFeatureGroupExtension can only be applied to GeoFeatures");
     }
 
@@ -88,7 +88,7 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
     }
 
     // we will find origins, but not origin features
-    if (obj->isDerivedFrom(App::DatumElement::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::DatumElement>()) {
         return OriginGroupExtension::getGroupOfObject(obj);
     }
 
@@ -307,8 +307,8 @@ void GeoFeatureGroupExtension::getCSOutList(const App::DocumentObject* obj,
 
     //we remove all links to origin features and origins, they belong to a CS too and can't be moved
     result.erase(std::remove_if(result.begin(), result.end(), [](App::DocumentObject* obj)->bool {
-        return (obj->isDerivedFrom(App::DatumElement::getClassTypeId()) ||
-                obj->isDerivedFrom(App::Origin::getClassTypeId()));
+        return (obj->isDerivedFrom<App::DatumElement>() ||
+                obj->isDerivedFrom<App::Origin>());
     }), result.end());
 
     vec.insert(vec.end(), result.begin(), result.end());
@@ -483,7 +483,7 @@ bool GeoFeatureGroupExtension::isLinkValid(App::Property* prop)
     }
 
     // get the object that holds the property
-    if (!prop->getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    if (!prop->getContainer()->isDerivedFrom<App::DocumentObject>()) {
         return true;  // this link comes not from a document object, scopes are meaningless
     }
     auto obj = static_cast<App::DocumentObject*>(prop->getContainer());

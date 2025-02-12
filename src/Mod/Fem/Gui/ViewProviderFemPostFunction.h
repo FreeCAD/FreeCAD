@@ -95,7 +95,7 @@ private:
 
 class FemGuiExport ViewProviderFemPostFunctionProvider: public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostFunction);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostFunctionProvider);
 
 public:
     ViewProviderFemPostFunctionProvider();

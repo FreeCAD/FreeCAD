@@ -43,7 +43,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProvider.h>
@@ -57,7 +57,7 @@ long NavlibInterface::GetSelectionTransform(navlib::matrix_t&) const
 
 long NavlibInterface::GetIsSelectionEmpty(navlib::bool_t& empty) const
 {
-    empty = !Gui::SelectionSingleton::instance().hasSelection();
+    empty = !Gui::Selection().hasSelection();
     return 0;
 }
 
@@ -109,9 +109,11 @@ long NavlibInterface::SetPivotVisible(bool visible)
     return 0;
 }
 
+extern template SoCamera* NavlibInterface::getCamera<SoCamera*>() const;
+
 long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
 {
-    if (is2DView())
+    if (is2DView() || !is3DView())
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
     const Gui::View3DInventorViewer* const inventorViewer = currentView.pView3d->getViewer();

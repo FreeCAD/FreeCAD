@@ -550,7 +550,7 @@ App::DocumentObject* getObjectByType(const Base::Type type)
     if (obj->is<FemAnalysis>()) {
         std::vector<App::DocumentObject*> fem = (static_cast<FemAnalysis*>(obj))->Group.getValues();
         for (const auto& it : fem) {
-            if (it->getTypeId().isDerivedFrom(type)) {
+            if (it->isDerivedFrom(type)) {
                 return static_cast<App::DocumentObject*>(it);  // return the first of that type
             }
         }
@@ -619,7 +619,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
         }
     }
 
-    App::DocumentObject* mesh = pcDoc->addObject("Fem::FemMeshObject", "ResultMesh");
+    auto* mesh = pcDoc->addObject<Fem::FemMeshObject>("ResultMesh");
     std::unique_ptr<FemMesh> fmesh(new FemMesh());
     importVTKMesh(dataset, fmesh.get());
     static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->setValuePtr(fmesh.release());
@@ -891,7 +891,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
     // vtk has more points. Vtk does not support point gaps, thus the gaps are
     // filled with points. Then the mapping must be correct)
     App::DocumentObject* meshObj = res->Mesh.getValue();
-    if (!meshObj || !meshObj->isDerivedFrom(FemMeshObject::getClassTypeId())) {
+    if (!meshObj || !meshObj->isDerivedFrom<FemMeshObject>()) {
         Base::Console().Error("Result object does not correctly link to mesh");
         return;
     }

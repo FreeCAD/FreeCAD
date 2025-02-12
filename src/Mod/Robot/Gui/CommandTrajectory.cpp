@@ -31,7 +31,7 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Placement.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Robot/App/Edge2TracObject.h>
 #include <Mod/Robot/App/RobotObject.h>
 #include <Mod/Robot/App/TrajectoryCompound.h>
@@ -294,7 +294,7 @@ void CmdRobotSetDefaultValues::activated(int)
                                          QObject::tr("Set default speed"),
                                          QObject::tr("speed: (e.g. 1 m/s or 3 cm/s)"),
                                          QLineEdit::Normal,
-                                         QString::fromLatin1("1 m/s"),
+                                         QStringLiteral("1 m/s"),
                                          &ok,
                                          Qt::MSWindowsFixedSizeDialogHint);
     if (ok && !text.isEmpty()) {
@@ -302,7 +302,7 @@ void CmdRobotSetDefaultValues::activated(int)
     }
 
     QStringList items;
-    items << QString::fromLatin1("False") << QString::fromLatin1("True");
+    items << QStringLiteral("False") << QStringLiteral("True");
 
     QString item = QInputDialog::getItem(nullptr,
                                          QObject::tr("Set default continuity"),
@@ -322,7 +322,7 @@ void CmdRobotSetDefaultValues::activated(int)
                                  QObject::tr("Set default acceleration"),
                                  QObject::tr("acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)"),
                                  QLineEdit::Normal,
-                                 QString::fromLatin1("1 m/s^2"),
+                                 QStringLiteral("1 m/s^2"),
                                  &ok,
                                  Qt::MSWindowsFixedSizeDialogHint);
     if (ok && !text.isEmpty()) {

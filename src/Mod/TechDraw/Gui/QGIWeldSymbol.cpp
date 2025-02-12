@@ -71,7 +71,7 @@ QGIWeldSymbol::QGIWeldSymbol() :
     setZValue(ZVALUE::DIMENSION);
 
     m_tailText->setPlainText(
-                QString::fromUtf8(" "));
+                QStringLiteral(" "));
     addToGroup(m_tailText);
     m_tailText->hide();
     m_tailText->setPos(0.0, 0.0);         //avoid bRect issues

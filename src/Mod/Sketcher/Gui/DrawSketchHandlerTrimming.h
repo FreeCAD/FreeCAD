@@ -27,7 +27,7 @@
 #include <Base/Tools.h>
 
 #include <Gui/Notifications.h>
-#include <Gui/SelectionFilter.h>
+#include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 
@@ -197,7 +197,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Trimming");
+        return QStringLiteral("Sketcher_Pointer_Trimming");
     }
 
 private:

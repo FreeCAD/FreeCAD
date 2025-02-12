@@ -35,7 +35,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/TechDraw/App/DrawPage.h>
@@ -407,7 +407,7 @@ void TaskSectionView::enableAll(bool enable)
     ui->cmbScaleType->setEnabled(enable);
     QString qScaleType = ui->cmbScaleType->currentText();
     //Allow or prevent scale changing initially
-    if (qScaleType == QString::fromUtf8("Custom")) {
+    if (qScaleType == QStringLiteral("Custom")) {
         ui->sbScale->setEnabled(true);
     }
     else {
