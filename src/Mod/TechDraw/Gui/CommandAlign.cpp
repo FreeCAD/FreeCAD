@@ -19,6 +19,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QMessageBox>
+#endif
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
