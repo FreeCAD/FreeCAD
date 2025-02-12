@@ -7,8 +7,11 @@
 
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%{name}/lib, less '.so' and 'Gui.so', here
+%if 0%{?fedora} > 38
+%global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libOndselSolver libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
+%else
 %global plugins Fem FreeCAD PathApp Import Inspection Mesh MeshPart Part Points ReverseEngineering Robot Sketcher Start Web PartDesignGui _PartDesign Path PathGui Spreadsheet SpreadsheetGui area DraftUtils DraftUtils libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers Measure TechDraw TechDrawGui libarea-native Surface SurfaceGui AssemblyGui flatmesh QtUnitGui PathSimulator MatGui Material
-
+%endif
 
 # Some configuration options for other environments
 # rpmbuild --with=bundled_zipios:  use bundled version of zipios++
@@ -33,7 +36,7 @@
 
 Name:           %{name}
 Epoch:          1
-Version:        0.22
+Version:        1.1.0
 Release:        pre_{{{git_commit_no}}}%{?dist}
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
@@ -65,19 +68,31 @@ BuildRequires:  python3-pivy
 BuildRequires:  boost-devel
 BuildRequires:  boost-python3-devel
 BuildRequires:  eigen3-devel
+%if 0%{?fedora} > 38
+# Qt6 dependencies
+BuildRequires:  qt6-qtsvg-devel
+BuildRequires:  qt6-qttools-static
+%else
 # Qt5 dependencies
-\BuildRequires:  qt5-qtsvg-devel
+BuildRequires:  qt5-qtsvg-devel
 BuildRequires:  qt5-qttools-static
+%endif
 
 BuildRequires:  fmt-devel
-
 
 BuildRequires:  xerces-c
 BuildRequires:  xerces-c-devel
 BuildRequires:  libspnav-devel
+
+%if 0%{?fedora} > 38
+BuildRequires:  python3-shiboken6-devel
+BuildRequires:  python3-pyside6-devel
+BuildRequires:  pyside6-tools
+%else
 BuildRequires:  python3-shiboken2-devel
 BuildRequires:  python3-pyside2-devel
 BuildRequires:  pyside2-tools
+%endif
 %if ! %{bundled_smesh}
 BuildRequires:  smesh-devel
 %endif
@@ -111,7 +126,11 @@ BuildRequires:  libappstream-glib
 # here.
 Requires:       %{name}-data = %{epoch}:%{version}-%{release}
 # Obsolete old doc package since it's required for functionality.
-Obsoletes:      %{name}-doc < 0.13-5
+#%if %{version} > 0.22
+Obsoletes:      %{name}-doc < 0.22-1
+#%else
+#Obsoletes:      %{name}-doc < 0.13-5
+#%endif
 Requires:       hicolor-icon-theme
 
 Requires:       fmt
@@ -119,8 +138,13 @@ Requires:       fmt
 Requires:       python3-pivy
 Requires:       python3-matplotlib
 Requires:       python3-collada
-Requires:       python3-pyside2
+%if 0%{?fedora} > 38
+Requires:       python3-pyside6
+Requires:       qt6-assistant
+%else
+Requires:       python3-pyside5
 Requires:       qt5-assistant
+%endif
 
 %if %{bundled_smesh}
 Provides:       bundled(smesh) = %{bundled_smesh_version}
@@ -197,13 +221,29 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DCMAKE_INSTALL_INCLUDEDIR=%{_includedir} \
        -DRESOURCEDIR=%{_datadir}/%{name} \
        -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
+%if 0%{?fedora} > 38
+       -DFREECAD_USE_EXTERNAL_FMT=TRUE \
+%endif
+%if 0%{?fedora} < 39
        -DFREECAD_USE_PCL=TRUE \
+%endif
+%if 0%{?fedora} > 38
+       -DFREECAD_QT_VERSION:STRING=6 \
+       -DSHIBOKEN_INCLUDE_DIR=%{_includedir}/shiboken6 \
+       -DSHIBOKEN_LIBRARY=-lshiboken6.%{py_suffix} \
+%else
        -DBUILD_QT5=ON \
        -DSHIBOKEN_INCLUDE_DIR=%{_includedir}/shiboken2 \
        -DSHIBOKEN_LIBRARY=-lshiboken2.%{py_suffix} \
+%endif
        -DPYTHON_SUFFIX=.%{py_suffix} \
+%if 0%{?fedora} > 38
+       -DPYSIDE_INCLUDE_DIR=/usr/include/PySide6 \
+       -DPYSIDE_LIBRARY=-lpyside6.%{py_suffix} \
+%else
        -DPYSIDE_INCLUDE_DIR=/usr/include/PySide2 \
        -DPYSIDE_LIBRARY=-lpyside2.%{py_suffix} \
+%endif
        -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python3 \
        -DMEDFILE_INCLUDE_DIRS=%{MEDFILE_INCLUDE_DIRS} \
        -DOpenGL_GL_PREFERENCE=GLVND \
@@ -226,7 +266,7 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DPACKAGE_WCREF="%{release} (Git)" \
        -DPACKAGE_WCURL="git://github.com/%{github_name}/FreeCAD.git main" \
        -DENABLE_DEVELOPER_TESTS=FALSE \
-	   -DBUILD_GUI=TRUE \
+       -DBUILD_GUI=TRUE \
        ../
 
 make fc_version
@@ -275,10 +315,20 @@ popd
 # Remove obsolete Start_Page.html
 rm -f %{buildroot}%{_docdir}/%{name}/Start_Page.html
 # Belongs in %%license not %%doc
+# Well since it is trying to open it from "Help > About FreeCAD > Libraries", 
+# and there is only 3D Mouse Support under "Help > About FreeCAD > License", 
+# it is better to keep it as documentation for now /ljo
+%if 0%{?fedora} < 39
 rm -f %{buildroot}%{_docdir}/freecad/ThirdPartyLibraries.html
+%endif
 
 # Remove header from external library that's erroneously installed
 rm -f %{buildroot}%{_libdir}/%{name}/include/E57Format/E57Export.h
+
+%if 0%{?fedora} > 38
+rm -rf %{buildroot}%{_includedir}/OndselSolver/*
+rm -f %{buildroot}%{_libdir}/%{name}/share/pkgconfig/OndselSolver.pc
+%endif
 
 # Bug maintainers to keep %%{plugins} macro up to date.
 #
@@ -346,6 +396,9 @@ fi
 %{_datadir}/pixmaps/*
 %{_datadir}/mime/packages/*
 %{_datadir}/thumbnailers/*
+%if 0%{?fedora} > 38
+%{_libdir}/../lib/python*/site-packages/%{name}/*
+%endif
 
 %files data
 %{_datadir}/%{name}/
@@ -353,5 +406,5 @@ fi
 
 
 %changelog
-
-
+* Mon Feb 10 2025 Leif-Jöran Olsson <info@friprogramvarusyndikatet.se> - 1.0.0-1
+- Adding support for building with Qt6 and PySide6 for Fedora 39+
