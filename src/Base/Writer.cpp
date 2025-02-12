@@ -37,10 +37,9 @@
 #include "Tools.h"
 
 #include <boost/iostreams/filtering_stream.hpp>
+#include <zipios++/zipinputstream.h>
 
 using namespace Base;
-using namespace std;
-using namespace zipios;
 
 // boost iostream filter to escape ']]>' in text file saved into CDATA section.
 // It does not check if the character is valid utf8 or not.
@@ -146,7 +145,7 @@ void Writer::insertAsciiFile(const char* FileName)
     while (from.get(ch)) {
         Stream().put(ch);
     }
-    Stream() << "]]>" << endl;
+    Stream() << "]]>" << std::endl;
 }
 
 void Writer::insertBinFile(const char* FileName)
@@ -164,7 +163,7 @@ void Writer::insertBinFile(const char* FileName)
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
     from.read(reinterpret_cast<char*>(bytes.data()), fileSize);
     Stream() << Base::base64_encode(bytes.data(), static_cast<unsigned int>(fileSize));
-    Stream() << "]]>" << endl;
+    Stream() << "]]>" << std::endl;
 }
 
 void Writer::setForceXML(bool on)
@@ -336,7 +335,7 @@ ZipWriter::ZipWriter(const char* FileName)
     ZipStream.imbue(std::locale::classic());
 #endif
     ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
-    ZipStream.setf(ios::fixed, ios::floatfield);
+    ZipStream.setf(std::ios::fixed, std::ios::floatfield);
 }
 
 ZipWriter::ZipWriter(std::ostream& os)
@@ -348,7 +347,7 @@ ZipWriter::ZipWriter(std::ostream& os)
     ZipStream.imbue(std::locale::classic());
 #endif
     ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
-    ZipStream.setf(ios::fixed, ios::floatfield);
+    ZipStream.setf(std::ios::fixed, std::ios::floatfield);
 }
 
 void ZipWriter::putNextEntry(const char* file, const char* obj)

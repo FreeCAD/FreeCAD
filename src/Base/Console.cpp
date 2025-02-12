@@ -34,7 +34,6 @@
 #endif
 
 #include "Console.h"
-#include "Exception.h"
 #include "PyObjectBase.h"
 #include <QCoreApplication>
 

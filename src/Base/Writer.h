@@ -28,16 +28,9 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include <cassert>
 #include <memory>
 
-#ifdef _MSC_VER
-#include <zipios++/zipios-config.h>
-#endif
-#include <zipios++/zipfile.h>
-#include <zipios++/zipinputstream.h>
 #include <zipios++/zipoutputstream.h>
-#include <zipios++/meta-iostreams.h>
 
 #include "FileInfo.h"
 

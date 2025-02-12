@@ -25,11 +25,8 @@
 
 #ifndef _PreComp_
 #include <algorithm>
-#include <cassert>
-#include <exception>
 #include <string>
 #include <string_view>
-#include <fstream>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/lexical_cast.hpp>
@@ -40,9 +37,7 @@
 #include "Console.h"
 #include "Exception.h"
 #include "FileInfo.h"
-#include "Matrix.h"
 #include "Stream.h"
-#include "Tools.h"
 
 
 using namespace Base;

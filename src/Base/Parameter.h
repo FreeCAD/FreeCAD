@@ -45,10 +45,6 @@ using PyObject = struct _object;
 #undef isalnum
 #endif
 
-#ifdef FC_OS_LINUX
-#include <sstream>
-#endif
-
 #include <map>
 #include <vector>
 #include <boost/signals2.hpp>
@@ -67,7 +63,6 @@ using PyObject = struct _object;
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER
-using namespace XERCES_CPP_NAMESPACE;
 namespace XERCES_CPP_NAMESPACE
 {
 class DOMNode;

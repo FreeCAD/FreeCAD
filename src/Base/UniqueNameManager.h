@@ -30,9 +30,7 @@
 #include <string>
 #include <set>
 #include <map>
-#include <algorithm>
-#include <utility>
-#include <tuple>
+#include <utility>  // Forward declares std::tuple
 
 // ----------------------------------------------------------------------------
 
