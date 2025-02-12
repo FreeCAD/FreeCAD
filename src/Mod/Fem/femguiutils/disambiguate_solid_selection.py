@@ -155,6 +155,9 @@ def disambiguate_solid_selection(
     highlight_colors_for_solid = build_highlight_map(parent_part, solid_indices)
 
     def set_part_colors(solid_name: Optional[str]) -> None:
+        if solid_name not in highlight_colors_for_solid:
+            solid_name = None
+
         parent_part.ViewObject.DiffuseColor = highlight_colors_for_solid[solid_name]
         parent_part.ViewObject.update()
 
