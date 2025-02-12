@@ -18,6 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
 #include <QMessageBox>
 
 #include <App/DocumentObject.h>
