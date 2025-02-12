@@ -46,8 +46,8 @@ protected:
     }
 
 private:
-    App::Document* _doc = nullptr;  // NOLINT Can't be private in a test framework
-    std::string _testPath;          // NOLINT Can't be private in a test framework
+    App::Document* _doc = nullptr;
+    std::string _testPath;
 };
 
 TEST_F(BackwardCompatibilityTest, TestOpenV021Model)
