@@ -61,6 +61,7 @@ RED = (255,0,0,1)
 GREEN = (0,255,0,1)
 BLUE = (0,0,255,1)
 MAGENTA = (255,85,255,1)
+MAGENTA_LIGHT = (255,85,127,1)
 ORANGE = (255,85,0,1)
 
 try:
@@ -88,6 +89,7 @@ ORIGIN = App.Vector(0, 0, 0)
 X_NORM = App.Vector(1, 0, 0)
 Y_NORM = App.Vector(0, 1, 0)
 Z_NORM = App.Vector(0, 0, 1)
+NO_ROT = App.Rotation()
 
 # The Windows lookup map. This is really brittle and a better system should
 # be found. Arch.WindowPresets =  ["Fixed", "Open 1-pane", "Open 2-pane",
@@ -1021,17 +1023,20 @@ class BaseHandler:
         App.ActiveDocument.DEBUG_GEOMETRY.addObject(part)
         return part
 
-    def _debug_vector(self, vector, label, color=RED, at=ORIGIN):
+    def _debug_vector(self, vector, label, color=RED, placement=None):
         part = Draft.make_line(ORIGIN, vector)
-        part.Placement.Base = at
+        if placement:
+            part.Placement = placement
         part.Label = label
         part.ViewObject.LineWidth = 5
         part.ViewObject.LineColor = color
         App.ActiveDocument.DEBUG_GEOMETRY.addObject(part)
         return part
 
-    def _debug_shape(self, shape, label, color=GREEN, transparency=.75):
+    def _debug_shape(self, shape, label, color=GREEN, transparency=.75, placement=None):
         part = Part.show(shape)
+        if placement:
+            part.Placement = placement
         part.Label = label
         part.ViewObject.LineColor = color
         part.ViewObject.PointSize = 5
@@ -1042,13 +1047,13 @@ class BaseHandler:
         App.ActiveDocument.DEBUG_GEOMETRY.addObject(part)
         return part
 
-    def _debug_mesh(self, mesh, label, transform=None, color=GREEN):
+    def _debug_mesh(self, mesh, label, transform=None, color=GREEN, transparency=.75, placement=None):
         shape = Part.Shape()
         new_mesh = mesh.copy()
         if transform:
             new_mesh.transform(transform)
         shape.makeShapeFromMesh(new_mesh.Topology, 1)
-        self._debug_shape(shape, label, color)
+        self._debug_shape(shape, label, color, transparency, placement)
 
 
 class LevelHandler(BaseHandler):
@@ -2499,25 +2504,25 @@ class FurnitureHandler(BaseFurnitureHandler):
         floor = self.get_floor(level_id)
         assert floor != None, f"Missing floor '{level_id}' for <pieceOfFurniture> '{furniture_id}' ..."
 
-        feature = None
+        furniture = None
         if self.importer.preferences["MERGE"]:
-            feature = self.get_fc_object(furniture_id, 'pieceOfFurniture')
+            furniture = self.get_fc_object(furniture_id, 'pieceOfFurniture')
 
-        if not feature:
-            feature = self._create_equipment(floor, elm)
-            if not feature:
+        if not furniture:
+            furniture = self._create_furniture(floor, elm)
+            if not furniture:
                 return
 
         color = elm.get('color', self.importer.preferences["DEFAULT_FURNITURE_COLOR"])
-        set_color_and_transparency(feature, color)
+        set_color_and_transparency(furniture, color)
 
-        feature.ViewObject.DisplayMode = 'Flat Lines'
+        furniture.ViewObject.DisplayMode = 'Flat Lines'
 
-        self.setp(feature, "App::PropertyString", "shType", "The element type", 'pieceOfFurniture')
-        self.set_furniture_common_properties(feature, elm)
-        self.set_piece_of_furniture_common_properties(feature, elm)
-        self.set_piece_of_furniture_horizontal_rotation_properties(feature, elm)
-        self.setp(feature, "App::PropertyString", "id", "The furniture's id", furniture_id)
+        self.setp(furniture, "App::PropertyString", "shType", "The element type", 'pieceOfFurniture')
+        self.set_furniture_common_properties(furniture, elm)
+        self.set_piece_of_furniture_common_properties(furniture, elm)
+        self.set_piece_of_furniture_horizontal_rotation_properties(furniture, elm)
+        self.setp(furniture, "App::PropertyString", "id", "The furniture's id", furniture_id)
 
         if 'FurnitureGroupName' not in floor.PropertiesList:
             group = floor.newObject("App::DocumentObjectGroup", "Furnitures")
@@ -2528,46 +2533,50 @@ class FurnitureHandler(BaseFurnitureHandler):
         # else:
         #     p = feature.Mesh.BoundBox.Center
 
+        # XXX: Furniture should be grouped in a space, but the Visibility
+        #   setting is not propagated and therefore makes it not so user friendly.
         # space = self.get_space(floor, p)
         # if space:
         #     space.Group = space.Group + [feature]
         # else:
         #     _log(f"No space found to enclose {feature.Label}. Adding to generic group.")
         #     floor.getObject(floor.FurnitureGroupName).addObject(feature)
-        floor.getObject(floor.FurnitureGroupName).addObject(feature)
+        floor.getObject(floor.FurnitureGroupName).addObject(furniture)
 
         # We add the object to the list of known object that can then
         # be referenced elsewhere in the SH3D model (i.e. lights).
-        self.importer.add_fc_objects(feature)
+        self.importer.add_fc_objects(furniture)
 
-    def _create_equipment(self, floor, elm):
+    def _create_furniture(self, floor, elm):
         debug_geometry = self.importer.preferences["DEBUG_GEOMETRY"]
+        # REF:
+        # - SweetHome3D/src/com/eteks/sweethome3d/model/HomePieceOfFurniture#readObject()
+        # - SweetHome3D/src/com/eteks/sweethome3d/j3d/ModelManager#getNormalizedTransform()
+        # - SweetHome3D/src/com/eteks/sweethome3d/j3d/ModelManager#getPieceOfFurnitureNormalizedModelTransformation()
 
-        x = float(elm.get('x', 0))
-        y = float(elm.get('y', 0))
+        name = elm.get('name', elm.get('id', "NA"))
+
+        # The general process is as follow:
+        # - we load the mesh and center it properly.
+        # - we apply the modelRotation, pitch and roll
+        # - we scale
+        # - we apply the yaw
+        # - then we workout the Placement
+        x = float(elm.get('x', 0.0))
+        y = float(elm.get('y', 0.0))
         z = float(elm.get('elevation', 0.0))
 
-        # REF:
-        # -  SweetHome3D/src/com/eteks/sweethome3d/model/HomePieceOfFurniture#readObject()
-        width = dim_sh2fc(elm.get('width'))
-        depth = dim_sh2fc(elm.get('depth'))
-        height = dim_sh2fc(elm.get('height'))
-
-        width_in_plan = dim_sh2fc(elm.get('widthInPlan', dim_fc2sh(width)))
-        depth_in_plan = dim_sh2fc(elm.get('depthInPlan', dim_fc2sh(depth)))
-        height_in_plan = dim_sh2fc(elm.get('heightInPlan', dim_fc2sh(height)))
-
-        # drop_on_top_elevation = float(elm.get('dropOnTopElevation', 1.0))
-        # horizontally_rotatable = elm.get('horizontallyRotatable', True)
-        model_rotation = elm.get('modelRotation', None)
-        model_mirrored = elm.get('modelMirrored', "false") == "true"
-        model_centered_at_origin = elm.get('modelCenteredAtOrigin', "false") == "true"
+        width = dim_sh2fc(elm.get('width', 0.0))
+        depth = dim_sh2fc(elm.get('depth', 0.0))
+        height = dim_sh2fc(elm.get('height', 0.0))
 
         pitch = norm_rad_ang(elm.get('pitch', 0.0))
         roll = norm_rad_ang(elm.get('roll', 0.0))
         angle = ang_sh2fc(elm.get('angle', 0.0))
 
-        name = elm.get('name', elm.get('id', "NA"))
+        model_rotation = elm.get('modelRotation', None)
+        model_mirrored = elm.get('modelMirrored', "false") == "true"
+        model_centered_at_origin = elm.get('modelCenteredAtOrigin', "false") == "true"
 
         mesh = self._get_mesh(elm)
 
@@ -2576,20 +2585,15 @@ class FurnitureHandler(BaseFurnitureHandler):
             _wrn(f"Import of pieceOfFurniture#{name} resulted in an empty Mesh. Skipping.")
             return None
 
-        bb = mesh.BoundBox
+        model_bb = mesh.BoundBox
         if debug_geometry: self._debug_mesh(mesh, f"{name}-original", None, MAGENTA)
 
-        # REF:
-        # - SweetHome3D/src/com/eteks/sweethome3d/j3d/ModelManager#getNormalizedTransform()
-        # - SweetHome3D/src/com/eteks/sweethome3d/j3d/ModelManager#getPieceOfFurnitureNormalizedModelTransformation()
-        transform = App.Matrix()
+        mesh_transform = App.Matrix()
 
-        # Centering the model
-        transform.move(-bb.Center)
-        if debug_geometry:
-            self._debug_point(bb.Center, f"{name}-center", MAGENTA)
-            self._debug_mesh(mesh, f"{name}-centered", transform, MAGENTA)
+        mesh_transform.move(-model_bb.Center)
+        if debug_geometry: self._debug_mesh(mesh, f"{name}-centered", mesh_transform, MAGENTA)
 
+        # The model rotation is necessary to get the scaling right
         if model_rotation:
             rij = [ float(v) for v in model_rotation.split() ]
             rotation = App.Matrix(
@@ -2597,64 +2601,88 @@ class FurnitureHandler(BaseFurnitureHandler):
                 App.Vector(rij[1], rij[4], rij[7]),
                 App.Vector(rij[2], rij[5], rij[8])
                 )
-            # XXX: Is that the correct order?
-            transform = rotation.multiply(transform)
-            if debug_geometry: self._debug_mesh(mesh, f"{name}-rotated", transform, MAGENTA)
+            mesh_transform = rotation.multiply(mesh_transform)
+            if debug_geometry: self._debug_mesh(mesh, f"{name}-rotated", mesh_transform, MAGENTA)
 
-        xy_rotated = True if pitch != 0 or roll != 0 else False
-        transform.rotateX(math.pi/2-pitch)
-        if debug_geometry: self._debug_mesh(mesh, f"{name}-pitch", transform)
-        transform.rotateY(roll)
-        if debug_geometry: self._debug_mesh(mesh, f"{name}-roll", transform)
+        if model_mirrored:
+            mesh_transform.scale(-1, 1, 1) # Mirror along X
+            if debug_geometry: self._debug_mesh(mesh, f"{name}-mirrored", mesh_transform)
+
+        # We add an initial 90º in order for a yaw-pitch-roll-rotation free 
+        # model to appear properly in FC
+        mesh_transform.rotateX(math.pi/2)
+        if debug_geometry: self._debug_mesh(mesh, f"{name}-x90", mesh_transform)
 
         # The scaling is calculated using the models coordinate system.
         # We use a simple box to calculate the scale factors for each axis.
-        normalized_model = Part.makeBox(bb.XLength, bb.YLength, bb.ZLength)
-        normalized_bb = normalized_model.transformGeometry(transform).BoundBox
-        if xy_rotated:
-            scale = App.Vector(width_in_plan / normalized_bb.XLength, depth_in_plan / normalized_bb.YLength, height_in_plan / normalized_bb.ZLength)
-        else:
-            scale = App.Vector(width / normalized_bb.XLength, depth / normalized_bb.YLength, height / normalized_bb.ZLength)
-        transform.scale(scale)
-        if debug_geometry: self._debug_mesh(mesh, f"{name}-scaled", transform, MAGENTA)
+        # Note that we use the absolute value since the orientation will
+        # be handled by the Placement. 
+        # Note that we do that before the model has had any ypr angles applied
+        normalized_model = Part.makeBox(model_bb.XLength, model_bb.YLength, model_bb.ZLength)
+        normalized_model = normalized_model.transformGeometry(mesh_transform)
+        normilized_bb = normalized_model.BoundBox
+        x_scale = width / normilized_bb.XLength
+        y_scale = depth / normilized_bb.YLength
+        z_scale = height / normilized_bb.ZLength
 
-        transform.scale(-1 if model_mirrored else 1, 1, 1) # Mirror along X
-        if debug_geometry: self._debug_mesh(mesh, f"{name}-mirrored", transform)
+        mesh_transform.scale(x_scale, y_scale, z_scale)
+        if debug_geometry: 
+            model_size = App.Vector(model_bb.XLength, model_bb.YLength, model_bb.ZLength)
+            normalized_size = App.Vector(normilized_bb.XLength, normilized_bb.YLength, normilized_bb.ZLength)
+            final_size = App.Vector(width, depth, height)
+            factors = App.Vector(x_scale, y_scale, z_scale)
+            _msg(f"{name}-size_model={self._pv(model_size, True, 1)} -> {self._pv(normalized_size, True, 1)} (x{self._pv(factors, True, 1)}) -> {self._pv(final_size, True, 1)}")
+            self._debug_mesh(mesh, f"{name}-scaled", mesh_transform, MAGENTA)
 
-        transform.rotateZ(angle)
-        if debug_geometry: self._debug_mesh(mesh, f"{name}-yaw", transform, MAGENTA)
+        # At that point the mesh has the proper scale. We determine the placement.
+        # In order to do that, we need to apply the different rotation (ypr) and 
+        # also the translation from the origin to the final point.
+        if pitch != 0:
+            r_pitch = App.Rotation(X_NORM, Radian=-pitch)
+            mesh_transform = r_pitch.toMatrix().multiply(mesh_transform)
+            if debug_geometry: self._debug_mesh(mesh, f"{name}-pitch", mesh_transform)
+        elif roll != 0:
+            r_roll = App.Rotation(Y_NORM, Radian=roll)
+            mesh_transform = r_roll.toMatrix().multiply(mesh_transform)
+            if debug_geometry: self._debug_mesh(mesh, f"{name}-roll", mesh_transform)
+        if angle != 0:
+            r_yaw = App.Rotation(Z_NORM, Radian=angle)
+            mesh_transform = r_yaw.toMatrix().multiply(mesh_transform)
+            if debug_geometry: self._debug_mesh(mesh, f"{name}-yaw", mesh_transform)
 
+        mesh.transform(mesh_transform)
 
-        # Let's simulate the move
-        center_coord = coord_sh2fc(App.Vector(x, y, z))
-        transform.move(center_coord)
-        if debug_geometry: self._debug_mesh(mesh, f"{name}-xy-moved", transform, MAGENTA)
-        transform.move(-center_coord)
+        # SH(x,y,z) refer to the projection of the CenterOfGravity on the
+        # bottom face of the model bounding box
+        translation = coord_sh2fc(App.Vector(x, y, z))
+        if debug_geometry: self._debug_mesh(mesh, f"{name}-xyz", color=MAGENTA, placement=App.Placement(translation, NO_ROT))
 
-        mesh.transform(transform)
+        # Note that the SH coordinates represent the CenterOfGravity of the
+        # lower face of the scaled model bounding box.
+        translation.z += abs(mesh.BoundBox.ZMin)
+        if debug_geometry: self._debug_mesh(mesh, f"{name}-+zmin", color=MAGENTA_LIGHT, placement=App.Placement(translation, NO_ROT))
 
-        new_bb = None
+        # Finally we add the placement of the floor itself.
+        # XXX: strange that is not simply added when we add the object to the floor
+        translation.z += floor.Placement.Base.z
+
+        # The placement is ready. Note that the rotations have the origin
+        # in the center of the bounding box of the scaled mesh.
+        placement = App.Placement(translation, NO_ROT)
+
+        # Ok, everything is ready to create the equipment
         if self.importer.preferences["CREATE_ARCH_EQUIPMENT"]:
             shape = Part.Shape()
             shape.makeShapeFromMesh(mesh.Topology, 1)
-            equipment = Arch.makeEquipment(name="Furniture")
-            equipment.Shape = shape
-            new_bb = shape.BoundBox
+            furniture = Arch.makeEquipment(name="Furniture")
+            furniture.Shape = shape
         else:
-            equipment = App.ActiveDocument.addObject("Mesh::Feature", "Furniture")
-            equipment.Mesh = mesh
-            new_bb = mesh.BoundBox
+            furniture = App.ActiveDocument.addObject("Mesh::Feature", "Furniture")
+            furniture.Mesh = mesh
 
-        z_offset = 0.0
-        if not model_centered_at_origin:
-            # Let's add 
-            z_offset = new_bb.ZLength / 2.0
-
-        equipment.Placement.Base = center_coord
-        equipment.Placement.Base.z += floor.Placement.Base.z + z_offset
-        equipment.Label = elm.get('name')
-
-        return equipment
+        furniture.Placement = placement
+        furniture.Label = elm.get('name')
+        return furniture
 
 
 class LightHandler(FurnitureHandler):
@@ -2835,6 +2863,7 @@ def norm_deg_ang(angle:float):
     """
     return round(math.degrees(float(angle)) % 360)
 
+
 def norm_rad_ang(angle:float):
     """Normalize a radian angle into a radian angle..
 
@@ -2845,7 +2874,6 @@ def norm_rad_ang(angle:float):
         float: a normalized angle
     """
     return (float(angle) % TWO_PI + TWO_PI) % TWO_PI
-
 
 
 def set_color_and_transparency(obj, color):
