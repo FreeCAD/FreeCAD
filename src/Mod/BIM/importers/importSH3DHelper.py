@@ -588,13 +588,10 @@ class SH3DImporter:
         """Create FreeCAD Group for the different imported elements
         """
         doc = App.ActiveDocument
-        if self.preferences["IMPORT_LIGHTS"] and not doc.getObject("Lights"):
-            _log(f"Creating Lights group ...")
-            doc.addObject("App::DocumentObjectGroup", "Lights")
         if self.preferences["IMPORT_CAMERAS"] and not doc.getObject("Cameras"):
             _log(f"Creating Cameras group ...")
             doc.addObject("App::DocumentObjectGroup", "Cameras")
-        if self.preferences["DEBUG_GEOMETRY"]:
+        if self.preferences["DEBUG_GEOMETRY"] and not doc.getObject("DEBUG_GEOMETRY"):
             _log(f"Creating DEBUG_GEOMETRY group ...")
             doc.addObject("App::DocumentObjectGroup", "DEBUG_GEOMETRY")
 
@@ -1123,6 +1120,9 @@ class LevelHandler(BaseHandler):
 
         if self.importer.preferences["IMPORT_FURNITURES"]:
             self._create_group(floor, "FurnitureGroupName", f"Furnitures-{floor.Label}")
+
+        if self.importer.preferences["IMPORT_LIGHTS"]:
+            self._create_group(floor, "LightGroupName", f"Lights-{floor.Label}")
 
     def _create_group(self, floor, prop_group_name, group_label):
         group = None
@@ -2499,7 +2499,7 @@ class FurnitureHandler(BaseFurnitureHandler):
             i (int): the ordinal of the imported element
             elm (Element): the xml element
         """
-        furniture_id = f"{elm.get('id', elm.get('name'))}-{i}"
+        furniture_id = self._get_furniture_id(i, elm)
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
         assert floor != None, f"Missing floor '{level_id}' for <pieceOfFurniture> '{furniture_id}' ..."
@@ -2616,7 +2616,7 @@ class FurnitureHandler(BaseFurnitureHandler):
         # The scaling is calculated using the models coordinate system.
         # We use a simple box to calculate the scale factors for each axis.
         # Note that we use the absolute value since the orientation will
-        # be handled by the Placement. 
+        # be handled by the Placement.
         # Note that we do that before the model has had any ypr angles applied
         normalized_model = Part.makeBox(model_bb.XLength, model_bb.YLength, model_bb.ZLength)
         normalized_model = normalized_model.transformGeometry(mesh_transform)
@@ -2684,6 +2684,9 @@ class FurnitureHandler(BaseFurnitureHandler):
         furniture.Label = elm.get('name')
         return furniture
 
+    def _get_furniture_id(self, i, elm):
+        return f"{elm.get('id', elm.get('name'))}-{i}"
+
 
 class LightHandler(FurnitureHandler):
     """A helper class to import a SH3D `<light>` object."""
@@ -2698,13 +2701,13 @@ class LightHandler(FurnitureHandler):
             i (int): the ordinal of the imported element
             elm (Element): the xml element
         """
-        light_id = f"{elm.get('id', elm.get('name'))}-{i}"
+        light_id = super()._get_furniture_id(i, elm)
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
         assert floor != None, f"Missing floor '{level_id}' for <doorOrWindow> '{light_id}' ..."
 
         if self.importer.preferences["IMPORT_FURNITURES"]:
-            super().process(i, elm)
+            super().process(parent, i, elm)
             light_apppliance = self.get_fc_object(light_id, 'pieceOfFurniture')
             assert light_apppliance != None, f"Missing <light> furniture {light_id} ..."
             self.setp(light_apppliance, "App::PropertyFloat", "power", "The power of the light",  float(elm.get('power', 0.5)))
@@ -2734,7 +2737,7 @@ class LightHandler(FurnitureHandler):
             self.setp(light_source, "App::PropertyString", "id", "The elment's id", light_source_id)
             self.setp(light_source, "App::PropertyLink", "lightAppliance", "The furniture", light_apppliance)
 
-            App.ActiveDocument.Lights.addObject(light_source)
+            floor.getObject(floor.LightGroupName).addObject(light_source)
 
 
 class CameraHandler(BaseHandler):
@@ -2771,7 +2774,6 @@ class CameraHandler(BaseHandler):
 
         if not camera:
             _, camera, _ = Camera.create()
-            App.ActiveDocument.Cameras.addObject(camera)
 
         # ¿How to convert fov to FocalLength?
         fieldOfView = float(elm.get('fieldOfView'))
@@ -2786,6 +2788,8 @@ class CameraHandler(BaseHandler):
         camera.AspectRatio = 1.33333333  # /home/environment/@photoAspectRatio
 
         self._set_properties(camera, elm)
+
+        App.ActiveDocument.Cameras.addObject(camera)
 
     def _set_properties(self, obj, elm):
         self.setp(obj, "App::PropertyString", "shType", "The element type", 'camera')
