@@ -1466,7 +1466,7 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
         }
 
         // some dimensions must use point ends (area). The point style is 3.
-        arrow->setStyle(forcePoint ? ArrowType::DOT : static_cast<int>(vp->ArrowStyle.getValue()));
+        arrow->setStyle(forcePoint ? ArrowType::DOT : static_cast<ArrowType>(vp->ArrowStyle.getValue()));
         auto arrowSize = vp->Arrowsize.getValue();
         arrow->setSize(arrowSize);
         arrow->setFlipped(flipped);
