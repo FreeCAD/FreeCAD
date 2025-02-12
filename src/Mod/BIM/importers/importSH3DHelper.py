@@ -338,7 +338,7 @@ class SH3DImporter:
             self._refresh()
 
         # Importing <light> elements ...
-        if self.preferences["IMPORT_LIGHTS"]:
+        if self.preferences["IMPORT_LIGHTS"] or self.preferences["IMPORT_FURNITURES"]:
             self._import_elements(home, ET_XPATH_LIGHT)
             self._refresh()
 
@@ -403,6 +403,7 @@ class SH3DImporter:
 
         if self.preferences["IMPORT_FURNITURES"]:
             self.handlers[ET_XPATH_PIECE_OF_FURNITURE] = FurnitureHandler(self)
+            self.handlers[ET_XPATH_LIGHT] = LightHandler(self)
 
         if self.preferences["IMPORT_LIGHTS"]:
             self.handlers[ET_XPATH_LIGHT] = LightHandler(self)
@@ -661,26 +662,36 @@ class SH3DImporter:
 
     def _create_ground_mesh(self, elm):
         self.building.recompute(True)
-        bb = self.building.Shape.BoundBox
-        dx = bb.XLength/2
-        dy = bb.YLength/2
-        SO = App.Vector(bb.XMin-dx, bb.YMin-dy, 0)
-        NO = App.Vector(bb.XMin-dx, bb.YMax+dy, 0)
-        NE = App.Vector(bb.XMax+dx, bb.YMax+dy, 0)
-        SE = App.Vector(bb.XMax+dx, bb.YMin-dy, 0)
-        edge0 = Part.makeLine(SO, NO)
-        edge1 = Part.makeLine(NO, NE)
-        edge2 = Part.makeLine(NE, SE)
-        edge3 = Part.makeLine(SE, SO)
-        ground_face = Part.makeFace([ Part.Wire([edge0, edge1, edge2, edge3]) ])
 
-        ground =  App.ActiveDocument.addObject("Mesh::Feature", "Ground")
-        ground.Mesh = MeshPart.meshFromShape(Shape=ground_face, LinearDeflection=0.1, AngularDeflection=0.523599, Relative=False)
-        ground.Label = "Ground"
+        ground = None
+        if self.preferences["MERGE"]:
+            ground = self.get_fc_object('ground', 'ground')
+
+        if not ground:
+            bb = self.building.Shape.BoundBox
+            dx = bb.XLength/2
+            dy = bb.YLength/2
+            SO = App.Vector(bb.XMin-dx, bb.YMin-dy, 0)
+            NO = App.Vector(bb.XMin-dx, bb.YMax+dy, 0)
+            NE = App.Vector(bb.XMax+dx, bb.YMax+dy, 0)
+            SE = App.Vector(bb.XMax+dx, bb.YMin-dy, 0)
+            edge0 = Part.makeLine(SO, NO)
+            edge1 = Part.makeLine(NO, NE)
+            edge2 = Part.makeLine(NE, SE)
+            edge3 = Part.makeLine(SE, SO)
+            ground_face = Part.makeFace([ Part.Wire([edge0, edge1, edge2, edge3]) ])
+
+            ground =  App.ActiveDocument.addObject("Mesh::Feature", "Ground")
+            ground.Mesh = MeshPart.meshFromShape(Shape=ground_face, LinearDeflection=0.1, AngularDeflection=0.523599, Relative=False)
+            ground.Label = "Ground"
+            self.set_property(ground, "App::PropertyString", "shType", "The element type", 'ground')
+            self.set_property(ground, "App::PropertyString", "id", "The ground's id", 'ground')
+
 
         set_color_and_transparency(ground, self.site.groundColor)
         ground.ViewObject.Transparency = 50
-        # TODO: apply possible <texture> within the <environment> element
+
+        self.add_fc_objects(ground)
 
         self.site.addObject(ground)
 
@@ -2523,7 +2534,6 @@ class FurnitureHandler(BaseFurnitureHandler):
         self.set_piece_of_furniture_common_properties(furniture, elm)
         self.set_piece_of_furniture_horizontal_rotation_properties(furniture, elm)
         self.setp(furniture, "App::PropertyString", "id", "The furniture's id", furniture_id)
-
         if 'FurnitureGroupName' not in floor.PropertiesList:
             group = floor.newObject("App::DocumentObjectGroup", "Furnitures")
             self.setp(floor, "App::PropertyString", "FurnitureGroupName", "The DocumentObjectGroup name for all furnitures on this floor", group.Name)
@@ -2689,7 +2699,7 @@ class FurnitureHandler(BaseFurnitureHandler):
 
 
 class LightHandler(FurnitureHandler):
-    """A helper class to import a SH3D `<light>` object."""
+    """A helper class to import a SH3D `<lightSource>` object."""
 
     def __init__(self, importer: SH3DImporter):
         super().__init__(importer)
@@ -2710,34 +2720,36 @@ class LightHandler(FurnitureHandler):
             super().process(parent, i, elm)
             light_apppliance = self.get_fc_object(light_id, 'pieceOfFurniture')
             assert light_apppliance != None, f"Missing <light> furniture {light_id} ..."
-            self.setp(light_apppliance, "App::PropertyFloat", "power", "The power of the light",  float(elm.get('power', 0.5)))
+            self.setp(light_apppliance, "App::PropertyFloat", "power", "The power of the light. In percent???",  float(elm.get('power', 0.5)))
 
-        # Import the lightSource sub-elments
-        for j, sub_elm in enumerate(elm.findall('lightSource')):
-            light_source = None
-            light_source_id = f"{light_id}-{j}"
-            if self.importer.preferences["MERGE"]:
-                light_source = self.get_fc_object(light_source_id, 'lightSource')
+        if self.importer.preferences["IMPORT_LIGHTS"]:
+            # Import the lightSource sub-elments
+            for j, sub_elm in enumerate(elm.findall('lightSource')):
+                light_source = None
+                light_source_id = f"{light_id}-{j}"
+                if self.importer.preferences["MERGE"]:
+                    light_source = self.get_fc_object(light_source_id, 'lightSource')
 
-            if not light_source:
-                _, light_source, _ = PointLight.create()
+                if not light_source:
+                    _, light_source, _ = PointLight.create()
 
-            x = float(sub_elm.get('x'))
-            y = float(sub_elm.get('y'))
-            z = float(sub_elm.get('z'))
-            diameter = float(sub_elm.get('diameter'))
-            color = sub_elm.get('color')
+                x = float(sub_elm.get('x'))
+                y = float(sub_elm.get('y'))
+                z = float(sub_elm.get('z'))
+                diameter = float(sub_elm.get('diameter'))
+                color = sub_elm.get('color')
 
-            light_source.Label = elm.get('name')
-            light_source.Placement.Base = coord_sh2fc(App.Vector(x, y, z))
-            light_source.Radius = dim_sh2fc(diameter / 2)
-            light_source.Color = hex2rgb(color)
+                light_source.Label = elm.get('name')
+                light_source.Placement.Base = coord_sh2fc(App.Vector(x, y, z))
+                light_source.Radius = dim_sh2fc(diameter / 2)
+                light_source.Color = hex2rgb(color)
 
-            self.setp(light_source, "App::PropertyString", "shType", "The element type", 'lightSource')
-            self.setp(light_source, "App::PropertyString", "id", "The elment's id", light_source_id)
-            self.setp(light_source, "App::PropertyLink", "lightAppliance", "The furniture", light_apppliance)
+                self.setp(light_source, "App::PropertyString", "shType", "The element type", 'lightSource')
+                self.setp(light_source, "App::PropertyString", "id", "The elment's id", light_source_id)
+                if self.importer.preferences["IMPORT_FURNITURES"]:
+                    self.setp(light_source, "App::PropertyLink", "lightAppliance", "The light apppliance", light_apppliance)
 
-            floor.getObject(floor.LightGroupName).addObject(light_source)
+                floor.getObject(floor.LightGroupName).addObject(light_source)
 
 
 class CameraHandler(BaseHandler):
@@ -2767,8 +2779,7 @@ class CameraHandler(BaseHandler):
             _log(translate("BIM", f"Type of <{elm.tag}> #{i} is not supported: '{attribute}'. Skipping!"))
             return
 
-        camera_id = f"{attribute}-{i}"
-        camera = None
+        camera_id = f"{elm.get('id', attribute)}-{i}"
         if self.importer.preferences["MERGE"]:
             camera = self.get_fc_object(camera_id, attribute)
 
@@ -2779,7 +2790,7 @@ class CameraHandler(BaseHandler):
         fieldOfView = float(elm.get('fieldOfView'))
         fieldOfView = math.degrees(fieldOfView)
 
-        camera.Label = elm.get('name', attribute.title())
+        camera.Label = elm.get('name', attribute)
         camera.Placement.Base = coord_sh2fc(App.Vector(x, y, z))
         # NOTE: the coordinate system is screen like, thus roll & picth are inverted ZY'X''
         camera.Placement.Rotation.setYawPitchRoll(
@@ -2787,13 +2798,13 @@ class CameraHandler(BaseHandler):
         camera.Projection = "Perspective"
         camera.AspectRatio = 1.33333333  # /home/environment/@photoAspectRatio
 
+        self.setp(camera, "App::PropertyString", "shType", "The element type", 'camera')
+        self.setp(camera, "App::PropertyString", "id", "The object ID", camera_id)
         self._set_properties(camera, elm)
 
         App.ActiveDocument.Cameras.addObject(camera)
 
     def _set_properties(self, obj, elm):
-        self.setp(obj, "App::PropertyString", "shType", "The element type", 'camera')
-        self.setp(obj, "App::PropertyString", "id", "The object ID", elm)
         self.setp(obj, "App::PropertyEnumeration", "attribute", "The type of camera", elm.get('attribute'), valid_values=["topCamera", "observerCamera", "storedCamera", "cameraPath"])
         self.setp(obj, "App::PropertyBool", "fixedSize", "Whether the object is fixed size", bool(elm.get('fixedSize', False)))
         self.setp(obj, "App::PropertyEnumeration", "lens", "The object's lens (PINHOLE | NORMAL | FISHEYE | SPHERICAL)", str(elm.get('lens', "PINHOLE")), valid_values=["PINHOLE", "NORMAL", "FISHEYE", "SPHERICAL"])
