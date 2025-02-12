@@ -1531,6 +1531,30 @@ class Wall(ArchComponent.Component):
         placement = FreeCAD.Placement()
         return base, placement
 
+    def calc_endpoints(self, obj):
+        """Returns endpoints for this wall"""
+
+        p1 = obj.Placement.multVec(Vector(-obj.Length.Value/2, 0, 0))
+        p2 = obj.Placement.multVec(Vector(obj.Length.Value/2, 0, 0))
+        return [p1,p2]
+
+    def set_from_endpoints(self, obj, pts):
+        """Sets placement and length of this wall from the given endpoints"""
+
+        import DraftGeomUtils
+
+        if len(pts) < 2:
+            return
+        lv = pts[1].sub(pts[0])
+        length = lv.Length
+        lv.multiply(0.5)
+        pb = pts[0] + lv
+        epts = self.calc_endpoints(obj)
+        le = epts[1].sub(epts[0])
+        pr = FreeCAD.Rotation(le, lv)
+        obj.Placement = FreeCAD.Placement(pb, pr)
+        obj.Length = length
+
 
 class ViewProviderWall(ArchComponent.ViewProviderComponent):
     """The view provider for the wall object"""
