@@ -24,7 +24,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Standard_Failure.hxx>
+#include <Standard_Failure.hxx>
 #endif
 
 #include <App/Application.h>
@@ -44,27 +44,34 @@ PROPERTY_SOURCE(PartDesign::FeatureRefine, PartDesign::Feature)
 
 FeatureRefine::FeatureRefine()
 {
-    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after operations");
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    ADD_PROPERTY_TYPE(Refine,
+                      (0),
+                      "Part Design",
+                      (App::PropertyType)(App::Prop_None),
+                      "Refine shape (clean up redundant edges) after operations");
+    // init Refine property
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/PartDesign");
     this->Refine.setValue(hGrp->GetBool("RefineModel", true));
 }
 
 bool FeatureRefine::onlyHasToRefine() const
 {
-    if( ! Refine.isTouched()){
+    if (!Refine.isTouched()) {
         return false;
     }
-    if (rawShape.isNull()){
+    if (rawShape.isNull()) {
         return false;
     }
     std::vector<App::Property*> propList;
     getPropertyList(propList);
-    for (auto prop : propList){
+    for (auto prop : propList) {
         if (prop != &Refine
             /*&& prop != &SuppressedShape*/
-            && prop->isTouched()){
+            && prop->isTouched()) {
             return false;
         }
     }
@@ -74,7 +81,7 @@ bool FeatureRefine::onlyHasToRefine() const
 
 bool FeatureRefine::onlyHaveRefined()
 {
-    if (onlyHasToRefine()){
+    if (onlyHasToRefine()) {
         TopoShape result = refineShapeIfActive(rawShape);
         Shape.setValue(result);
         return true;
@@ -82,37 +89,46 @@ bool FeatureRefine::onlyHaveRefined()
     return false;
 }
 
-TopoShape FeatureRefine::refineShapeIfActive(const TopoShape& oldShape, const RefineErrorPolicy onError) const
+TopoShape FeatureRefine::refineShapeIfActive(const TopoShape& oldShape,
+                                             const RefineErrorPolicy onError) const
 {
-    if (this->Refine.getValue()) {
-        TopoShape shape(oldShape);
-        try {
-            return shape.makeElementRefine();
+    if (!this->Refine.getValue()) {
+        return oldShape;
+    }
+    TopoShape shape(oldShape);
+    try {
+        return shape.makeElementRefine();
+    }
+    catch (Standard_Failure& err) {
+        if (onError == RefineErrorPolicy::Warn) {
+            Base::Console().Warning(
+                fmt::format("Refine failed: {}", err.GetMessageString()).c_str());
         }
-        catch (Standard_Failure& err) {
-            if(onError == RefineErrorPolicy::Warn){
-                Base::Console().Warning((std::string("Refine failed: ") + err.GetMessageString()).c_str());
-            } else {
-                throw;
-            }
+        else {
+            throw;
         }
     }
     return oldShape;
 }
 
-}
+}  // namespace PartDesign
 
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PartDesign::FeatureRefinePython, PartDesign::FeatureRefine)
-template<> const char* PartDesign::FeatureRefinePython::getViewProviderName() const {
+template<>
+const char* PartDesign::FeatureRefinePython::getViewProviderName() const
+{
     return "PartDesignGui::ViewProviderPython";
 }
-template<> PyObject* PartDesign::FeatureRefinePython::getPyObject() {
+template<>
+PyObject* PartDesign::FeatureRefinePython::getPyObject()
+{
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new FeaturePythonPyT<PartDesign::FeaturePy>(this),true);
+        PythonObject = Py::Object(new FeaturePythonPyT<PartDesign::FeaturePy>(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -120,6 +136,4 @@ template<> PyObject* PartDesign::FeatureRefinePython::getPyObject() {
 
 // explicit template instantiation
 template class PartDesignExport FeaturePythonT<PartDesign::FeatureRefine>;
-}
-
-
+}  // namespace App

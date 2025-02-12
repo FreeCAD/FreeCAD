@@ -50,7 +50,24 @@ protected:
     //store the shape before refinement
     TopoShape rawShape;
 
+    /**
+     * Check to see if this feature can just execute the refine operation, or if a more complete
+     * calculation is necessary (e.g. if some other property has changed). See also
+     * `onlyHaveRefined()`, which actually *does* the refinement if this is true.
+     *
+     * @return true if only the refinement needs to be done, false if a recompute is necessary
+     */
     bool onlyHasToRefine() const;
+
+    /**
+     * Check if the feature *only* requires the refinement operation, and do that refinement if so.
+     * Typically called as the first operation in a subclass's `execute()` method to provide an
+     * early exit if no other parameters have been changed (so the base feature is still
+     * up-to-date).
+     *
+     * @return true if the refine was done and that was the only thing needed, or false if further
+     * computation is necessary.
+     */
     bool onlyHaveRefined();
     TopoShape refineShapeIfActive(const TopoShape& oldShape, const RefineErrorPolicy onError = RefineErrorPolicy::Raise) const;
 };
