@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-
+import FreeCAD
 import FreeCADGui
 import ArchBuildingPart
 

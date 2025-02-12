@@ -77,7 +77,7 @@ class Arch_Wall:
         self.continueCmd = False
         self.Width = params.get_param_arch("WallWidth")
         self.Height = params.get_param_arch("WallHeight")
-        self.JOIN_WALLS_SKETCHES = params.get_param_arch("joinWallSketches")
+        self.WALL_BASE = PARAMS.GetInt("WallBaseline",0)  # 0 = no base, 1 = draft, 2 = sketch
         self.AUTOJOIN = params.get_param_arch("autoJoinWalls")
         sel = FreeCADGui.Selection.getSelectionEx()
         done = False
@@ -133,9 +133,6 @@ class Arch_Wall:
         """
 
         import Draft
-        import Part
-        import Arch
-        import ArchWall
         from draftutils import gui_utils
         if obj:
             if Draft.getType(obj) == "Wall":
@@ -158,20 +155,52 @@ class Arch_Wall:
                                         title=translate("Arch","Next point")+":",mode="line")
 
         elif len(self.points) == 2:
-            l = Part.LineSegment(self.wp.get_local_coords(self.points[0]),
-                                 self.wp.get_local_coords(self.points[1]))
-            self.tracker.off()
-            FreeCAD.activeDraftCommand = None
-            FreeCADGui.Snapper.off()
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
-            FreeCADGui.addModule("Arch")
+            self.create_wall()
+
+    def create_wall(self):
+        """Create a wall from the collected points"""
+
+        import Draft
+        import Part
+        import Arch
+        import ArchWall
+        import DraftGeomUtils
+
+        self.WALL_BASE = PARAMS.GetInt("WallBaseline",0)
+        p0 = self.wp.get_local_coords(self.points[0])
+        p1 = self.wp.get_local_coords(self.points[1])
+        self.tracker.off()
+        FreeCAD.activeDraftCommand = None
+        FreeCADGui.Snapper.off()
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
+        FreeCADGui.addModule("Arch")
+        FreeCADGui.addModule("Draft")
+        if self.WALL_BASE == 0:
+            l = p1.sub(p0)
+            length = l.Length
+            p2 = p0.add(l.multiply(0.5))
+            p3 = self.wp.axis.cross(l)
+            pl = DraftGeomUtils.placement_from_points(p2,p1,p3)
+            plbase = "FreeCAD."+str(p2)
+            plrot = "FreeCAD.Rotation"+str(pl.Rotation.Q)
+            plstring = "FreeCAD.Placement(" + plbase + ", " + plrot + ")"
+            args = "baseobj=None, length="+str(length)+", width="+str(self.Width)+", height="+str(self.Height)
+            FreeCADGui.doCommand("wall = Arch.makeWall(" + args + ")")
+            FreeCADGui.doCommand("wall.Placement = " + plstring)
+            FreeCADGui.doCommand("wall.Normal = FreeCAD."+str(self.wp.axis))
+            if self.MultiMat:
+                FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument."+self.MultiMat.Name)
+            #FreeCADGui.doCommand("Draft.autogroup(wall)")
+            #FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
+        else:
+            l = Part.LineSegment(p0, p1)
             FreeCADGui.doCommand('import Part')
             FreeCADGui.doCommand('trace=Part.LineSegment(FreeCAD.'+str(l.StartPoint)+',FreeCAD.'+str(l.EndPoint)+')')
             if not self.existing:
                 # no existing wall snapped, just add a default wall
                 self.addDefault()
             else:
-                if self.JOIN_WALLS_SKETCHES:
+                if self.WALL_BASE == 2:
                     # join existing subwalls first if possible, then add the new one
                     w = Arch.joinWalls(self.existing)
                     if w:
@@ -189,12 +218,13 @@ class Arch_Wall:
                     self.addDefault()
                     if self.AUTOJOIN:
                         FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+self.existing[0].Name+')')
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
-            # gui_utils.end_all_events()  # Causes a crash on Linux.
-            self.tracker.finalize()
-            if self.continueCmd:
-                self.Activated()
+
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+        # gui_utils.end_all_events()  # Causes a crash on Linux.
+        self.tracker.finalize()
+        if self.continueCmd:
+            self.Activated()
 
     def addDefault(self):
         """Create a wall using a line segment, with all parameters as the default.
@@ -210,7 +240,7 @@ class Arch_Wall:
         FreeCADGui.addModule("Draft")
         FreeCADGui.addModule("WorkingPlane")
         FreeCADGui.doCommand("wp = WorkingPlane.get_working_plane()")
-        if params.get_param_arch("WallSketches"):
+        if self.WALL_BASE ==2:
             # Use ArchSketch if SketchArch add-on is present
             try:
                 import ArchSketchObject
@@ -329,11 +359,11 @@ class Arch_Wall:
         grid.addWidget(value4,5,1,1,1)
 
         label5 = QtGui.QLabel(translate("Arch","Use sketches"))
-        value5 = QtGui.QCheckBox()
-        value5.setObjectName("UseSketches")
-        value5.setLayoutDirection(QtCore.Qt.RightToLeft)
+        value5 = QtGui.QComboBox()
+        value5.setObjectName("Baseline")
         label5.setBuddy(value5)
-        value5.setChecked(params.get_param_arch("WallSketches"))
+        value5.addItems(["No baseline", "Draft line", "Sketch"])
+        value5.setCurrentIndex(PARAMS.GetInt("WallBaseline",0))
         grid.addWidget(label5,6,0,1,1)
         grid.addWidget(value5,6,1,1,1)
 
@@ -342,7 +372,7 @@ class Arch_Wall:
         value2.valueChanged.connect(self.setHeight)
         value3.currentIndexChanged.connect(self.setAlign)
         value4.stateChanged.connect(self.setContinue)
-        value5.stateChanged.connect(self.setUseSketch)
+        value5.currentIndexChanged.connect(self.setBaseline)
         self.Length.returnPressed.connect(value1.setFocus)
         self.Length.returnPressed.connect(value1.selectAll)
         value1.returnPressed.connect(value2.setFocus)
@@ -406,11 +436,10 @@ class Arch_Wall:
         self.continueCmd = bool(i)
         params.set_param("ContinueMode", bool(i))
 
-    def setUseSketch(self,i):
+    def setBaseline(self,i):
         """Simple callback to set if walls should based on sketches."""
 
-        from draftutils import params
-        params.set_param_arch("WallSketches",bool(i))
+        PARAMS.SetInt("WallBaseline",i)
 
     def createFromGUI(self):
         """Callback to create wall by using the _CommandWall.taskbox()"""
