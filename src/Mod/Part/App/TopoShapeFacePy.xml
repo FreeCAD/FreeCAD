@@ -123,7 +123,7 @@ validate()
 curveOnSurface(Edge) -> (curve, min, max) or None
 --
 If this curve exists then a tuple of curve and parameter range is returned.
-Returns None if this curve  does not exist.
+Returns None if this curve does not exist.
                 </UserDocu>
             </Documentation>
         </Methode>
@@ -204,22 +204,22 @@ coordinate system.</UserDocu>
     <Attribute Name="StaticMoments" ReadOnly="true">
       <Documentation>
         <UserDocu>Returns Ix, Iy, Iz, the static moments of inertia of the
- current system; i.e. the moments of inertia about the
- three axes of the Cartesian coordinate system.</UserDocu>
+current system; i.e. the moments of inertia about the
+three axes of the Cartesian coordinate system.</UserDocu>
       </Documentation>
       <Parameter Name="StaticMoments" Type="Object"/>
     </Attribute>
     <Attribute Name="PrincipalProperties" ReadOnly="true">
       <Documentation>
         <UserDocu>Computes the principal properties of inertia of the current system.
- There is always a set of axes for which the products
- of inertia of a geometric system are equal to 0; i.e. the
- matrix of inertia of the system is diagonal. These axes
- are the principal axes of inertia. Their origin is
- coincident with the center of mass of the system. The
- associated moments are called the principal moments of inertia.
- This function computes the eigen values and the
- eigen vectors of the matrix of inertia of the system.</UserDocu>
+There is always a set of axes for which the products
+of inertia of a geometric system are equal to 0; i.e. the
+matrix of inertia of the system is diagonal. These axes
+are the principal axes of inertia. Their origin is
+coincident with the center of mass of the system. The
+associated moments are called the principal moments of inertia.
+This function computes the eigen values and the
+eigen vectors of the matrix of inertia of the system.</UserDocu>
       </Documentation>
       <Parameter Name="PrincipalProperties" Type="Dict"/>
     </Attribute>

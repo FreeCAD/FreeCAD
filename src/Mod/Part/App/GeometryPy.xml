@@ -55,10 +55,9 @@ It describes the common behavior of these objects when:
     </Methode>
     <Methode Name="isSame" Const="true">
         <Documentation>
-            <UserDocu>
-                isSame(geom, tol, angulartol) -> boolean
+            <UserDocu>isSame(geom, tol, angulartol) -> boolean
 
-                Compare this geometry to another one</UserDocu>
+Compare this geometry to another one</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="hasExtensionOfType" Const="true">
