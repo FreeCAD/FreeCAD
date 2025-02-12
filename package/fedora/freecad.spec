@@ -403,7 +403,10 @@ fi
 %files data
 %{_datadir}/%{name}/
 %{_docdir}/%{name}/LICENSE.html
-
+# Please see note above about keeping it for now until merged./ljo
+%if 0%{?fedora} > 38 
+%{_docdir}/%{name}/ThirdPartyLibraries.html
+%endif
 
 %changelog
 * Mon Feb 10 2025 Leif-Jöran Olsson <info@friprogramvarusyndikatet.se> - 1.0.0-1
