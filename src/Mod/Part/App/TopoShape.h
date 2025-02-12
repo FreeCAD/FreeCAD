@@ -1502,7 +1502,7 @@ public:
     void mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op = nullptr) const;
     bool hasPendingElementMap() const;
 
-    virtual std::string getElementMapVersion() const;
+    std::string getElementMapVersion() const override;
 
     void flushElementMap() const override;
 

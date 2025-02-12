@@ -2062,16 +2062,11 @@ static const std::string& _getElementMapVersion()
     static std::string _ver;
     if (_ver.empty()) {
         std::ostringstream ss;
-        unsigned occ_ver;
-        // Stabilize the reported OCCT version: for any version of OpenCASCADE in the 7.x series,
-        // report 7.2.0 as the version so that we aren't constantly inadvertently reporting differing
-        // versions. This is retained for cross-compatibility with LinkStage3.
-        if ((OCC_VERSION_HEX & 0xFF0000) == 0x070000) {
-            occ_ver = 0x070200;
-        }
-        else {
-            occ_ver = OCC_VERSION_HEX;
-        }
+        // Stabilize the reported OCCT version: report 7.2.0 as the version so that we aren't
+        // constantly inadvertently reporting differing versions. This is retained for
+        // cross-compatibility with LinkStage3 (which retains supporting code for OCCT 6.x,
+        // removed here).
+        unsigned occ_ver {0x070200};
         ss << OpCodes::Version << '.' << std::hex << occ_ver << '.';
         _ver = ss.str();
     }
