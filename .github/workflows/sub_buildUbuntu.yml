@@ -22,9 +22,9 @@
 # ***************************************************************************
 
 # This is a build and test workflow for CI of FreeCAD.
-# This workflow aims at building and testing FreeCAD on Ubuntu 20.04 using GCC.
+# This workflow aims at building and testing FreeCAD on Ubuntu 22.04 using GCC.
 
-name: Build Ubuntu 20.04
+name: Build Ubuntu 22.04
 
 on:
   workflow_call:
@@ -47,7 +47,7 @@ on:
 jobs:
 
   Build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
       CCACHE_DIR: ${{ github.workspace }}/ccache
