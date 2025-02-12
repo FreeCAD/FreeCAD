@@ -125,7 +125,7 @@ public:
      *  Inserts items from this group into another.
      *
      *  @param[out] Group The group to insert into.
-     * 
+     *
      *  @note
      *  Inserts new and replaces existing items.
      */
@@ -149,7 +149,7 @@ public:
      *  Inserts items from the given file.
      *
      *  @param[in] FileName The path to the file.
-     * 
+     *
      *  @note
      *  Inserts new and replaces existing items.
      */
@@ -159,7 +159,7 @@ public:
      *  Removes items from this group that are present in the given file.
      *
      *  @param[in] FileName The path to the file.
-     * 
+     *
      *  @note
      *  Only removes items that have the same value.
      */
@@ -169,12 +169,12 @@ public:
      *  Removes items from this group that are present in the other.
      *
      *  @param[in] Group The group to compare with.
-     * 
+     *
      *  @note
      *  Only removes items that have the same value.
      */
     void revert(const Base::Reference<ParameterGrp>& Group);
-    
+
     //@}
 
     /** @name methods for group handling */
