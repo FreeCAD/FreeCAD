@@ -166,16 +166,21 @@ void ViewProviderDimension::updateData(const App::Property* prop)
         setPixmapForType();
     }
 
-    //Dimension handles X, Y updates differently that other QGIView
-    //call QGIViewDimension::updateView
-    if (prop == &(getViewObject()->X) || prop == &(getViewObject()->Y)
-        || prop == &(getViewObject()->FormatSpec) || prop == &(getViewObject()->Arbitrary)
-        || prop == &(getViewObject()->FormatSpecOverTolerance)
-        || prop == &(getViewObject()->FormatSpecUnderTolerance)
-        || prop == &(getViewObject()->ArbitraryTolerances)
-        || prop == &(getViewObject()->MeasureType) || prop == &(getViewObject()->TheoreticalExact)
-        || prop == &(getViewObject()->EqualTolerance) || prop == &(getViewObject()->OverTolerance)
-        || prop == &(getViewObject()->UnderTolerance) || prop == &(getViewObject()->Inverted)) {
+    // Dimension handles X, Y updates differently that other QGIView
+    // call QGIViewDimension::updateView
+    if (prop == &(getViewObject()->X) ||
+        prop == &(getViewObject()->Y) ||
+        prop == &(getViewObject()->FormatSpec) ||
+        prop == &(getViewObject()->Arbitrary) ||
+        prop == &(getViewObject()->FormatSpecOverTolerance) ||
+        prop == &(getViewObject()->FormatSpecUnderTolerance) ||
+        prop == &(getViewObject()->ArbitraryTolerances) ||
+        prop == &(getViewObject()->MeasureType) ||
+        prop == &(getViewObject()->TheoreticalExact) ||
+        prop == &(getViewObject()->EqualTolerance) ||
+        prop == &(getViewObject()->OverTolerance) ||
+        prop == &(getViewObject()->UnderTolerance) ||
+        prop == &(getViewObject()->Inverted)) {
 
         QGIView* qgiv = getQView();
         if (qgiv) {
@@ -334,4 +339,5 @@ std::vector<App::DocumentObject*> ViewProviderDimension::claimChildren() const
    }
    return temp;
 }
+
 
