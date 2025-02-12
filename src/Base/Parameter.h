@@ -134,15 +134,15 @@ public:
 
     /**
      *  Returns or creates a sub-group with the given name.
-     * 
+     *
      *  @param[in] Name Name of the sub-group.
      *  @returns A handle to the sub-group.
      */
     Base::Reference<ParameterGrp> GetGroup(const char* Name);
-    
+
     /**
      *  Returns all sub-groups.
-     * 
+     *
      *  @returns A vector of handles to the sub-groups.
      */
     std::vector<Base::Reference<ParameterGrp>> GetGroups();
@@ -154,7 +154,7 @@ public:
 
     /**
      *  Tests if a sub-group exists.
-     * 
+     *
      *  @param[in] Name Name of the sub-group.
      */
     bool HasGroup(const char* Name) const;
@@ -164,25 +164,25 @@ public:
 
     /**
      *  Removes a sub-group.
-     * 
+     *
      *  @param[in] Name Name of the sub-group.
      */
     void RemoveGrp(const char* Name);
 
     /**
      *  Renames a sub-group.
-     * 
+     *
      *  @param[in] OldName The current name of the sub-group.
      *  @param[in] NewName The new name the sub-group will have.
      *  @returns Whether or not the renaming succeeded.
-     * 
+     *
      *  @note Does nothing if a sub-group with the new name already exists.
      */
     bool RenameGrp(const char* OldName, const char* NewName);
 
     /**
      *  Empties this group.
-     * 
+     *
      *  @param[in] notify Whether to notify on deleted parameters using the Observer interface.
      */
     void Clear(bool notify = false);
@@ -191,7 +191,7 @@ public:
 
     /** @name methods for generic attribute handling */
     //@{
-    
+
     enum class ParamType
     {
         FCInvalid = 0,
