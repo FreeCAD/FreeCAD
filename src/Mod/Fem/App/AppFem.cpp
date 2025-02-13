@@ -206,6 +206,8 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemPostSphereFunction                ::init();
 
     Fem::PropertyPostDataObject               ::init();
+
+    Fem::PostFilterPython                     ::init();
 #endif
     // clang-format on
 

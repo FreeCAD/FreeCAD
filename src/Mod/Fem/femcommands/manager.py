@@ -89,6 +89,10 @@ class CommandManager:
                 FreeCADGui.ActiveDocument is not None
                 and self.result_selected()
             )
+        elif self.is_active == "with_vtk_selresult":
+            active = (
+                self.vtk_result_selected()
+            )
         elif self.is_active == "with_part_feature":
             active = FreeCADGui.ActiveDocument is not None and self.part_feature_selected()
         elif self.is_active == "with_femmesh":
@@ -144,6 +148,8 @@ class CommandManager:
             self.add_obj_on_gui_selobj_set_edit(self.__class__.__name__.lstrip("_"))
         elif self.do_activated == "add_obj_on_gui_selobj_expand_noset_edit":
             self.add_obj_on_gui_selobj_expand_noset_edit(self.__class__.__name__.lstrip("_"))
+        elif self.do_activated == "add_filter":
+            self.add_filter(self.__class__.__name__.lstrip("_"))
         # in all other cases Activated is implemented it the command class
 
     def results_present(self):
@@ -165,6 +171,13 @@ class CommandManager:
     def result_selected(self):
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemResultObject"):
+            self.selobj = sel[0]
+            return True
+        return False
+
+    def vtk_result_selected(self):
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemPostObject"):
             self.selobj = sel[0]
             return True
         return False
@@ -361,5 +374,35 @@ class CommandManager:
             "ObjectsFem.make{}("
             "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})".format(objtype, self.selobj.Name)
         )
+        # expand selobj in tree view
+        expandParentObject()
+
+    def add_filter(self, filtertype):
+        # like add_obj_on_gui_selobj_noset_edit but the selection is kept
+        # and the selobj is expanded in the tree to see the added obj
+
+        # Note: we know selobj is a FemPostObject as otherwise the command should not have been active
+        # We also assume the all filters are in PostGroups and not astray
+        group = None
+        if self.selobj.hasExtension("Fem::FemPostGroupExtension"):
+            group = self.selobj
+        else:
+            group = self.selobj.getParentPostGroup()
+
+        FreeCAD.ActiveDocument.openTransaction(f"Create Fem{filtertype}")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.doCommand(
+            "ObjectsFem.make{}("
+            "FreeCAD.ActiveDocument, FreeCAD.ActiveDocument.{})".format(filtertype, group.Name)
+        )
+        # set display and selection style to assure the user sees the new object
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.ViewObject.DisplayMode = \"Surface\"");
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.ViewObject.SelectionStyle = \"BoundBox\"");
+
+        # hide selected filter
+        FreeCADGui.doCommand(
+            "FreeCAD.ActiveDocument.{}.ViewObject.Visibility = False".format(self.selobj.Name)
+        )
+
         # expand selobj in tree view
         expandParentObject()

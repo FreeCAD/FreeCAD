@@ -22,52 +22,50 @@
 
 #include "PreCompiled.h"
 
+// clang-format off
+#include <Gui/Control.h>
+#include <Gui/PythonWrapper.h>
+#include "ViewProviderFemPostFilter.h"
 #include "TaskPostBoxes.h"
-#include "ViewProviderFemPostBranchFilter.h"
-#include <Mod/Fem/App/FemPostGroupExtension.h>
-#include <Gui/BitmapFactory.h>
+// inclusion of the generated files (generated out of ViewProviderFemPostFilterPy.xml)
+#include "ViewProviderFemPostFilterPy.h"
+#include "ViewProviderFemPostFilterPy.cpp"
+#include <Base/PyWrapParseTupleAndKeywords.h>
+// clang-format on
 
 
 using namespace FemGui;
 
-
-PROPERTY_SOURCE_WITH_EXTENSIONS(FemGui::ViewProviderFemPostBranchFilter,
-                                FemGui::ViewProviderFemPostObject)
-
-ViewProviderFemPostBranchFilter::ViewProviderFemPostBranchFilter()
-    : Gui::ViewProviderGroupExtension()
+// returns a string which represents the object e.g. when printed in python
+std::string ViewProviderFemPostFilterPy::representation() const
 {
-    Gui::ViewProviderGroupExtension::initExtension(this);
-    sPixmap = "FEM_PostBranchFilter";
+    return {"<ViewProviderFemPostFilter object>"};
 }
 
-ViewProviderFemPostBranchFilter::~ViewProviderFemPostBranchFilter()
-{}
-
-void ViewProviderFemPostBranchFilter::setupTaskDialog(TaskDlgPost* dlg)
+PyObject* ViewProviderFemPostFilterPy::createDisplayTaskWidget(PyObject* args)
 {
-    // add the branch ui
-    auto panel = new TaskPostBranch(this);
-    dlg->addTaskBox(panel->windowIcon().pixmap(32), panel);
-
-    // add the display options
-    FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
-}
-
-bool ViewProviderFemPostBranchFilter::acceptReorderingObjects() const
-{
-    return true;
-}
-
-bool ViewProviderFemPostBranchFilter::canDragObjectToTarget(App::DocumentObject*,
-                                                            App::DocumentObject* target) const
-{
-
-    // allow drag only to other post groups
-    if (target) {
-        return target->hasExtension(Fem::FemPostGroupExtension::getExtensionClassTypeId());
+    // we take no arguments
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
     }
-    else {
-        return false;
+
+    auto panel = new TaskPostDisplay(getViewProviderFemPostObjectPtr());
+
+    Gui::PythonWrapper wrap;
+    if (wrap.loadCoreModule()) {
+        return Py::new_reference_to(wrap.fromQWidget(panel));
     }
+
+    PyErr_SetString(PyExc_TypeError, "creating the panel failed");
+    return nullptr;
+}
+
+PyObject* ViewProviderFemPostFilterPy::getCustomAttributes(const char* /*attr*/) const
+{
+    return nullptr;
+}
+
+int ViewProviderFemPostFilterPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
+    return 0;
 }
