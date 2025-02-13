@@ -77,9 +77,10 @@ struct TypeData;
   information: super classes must be registered before any of their
   derived classes are.
 */
-class BaseExport Type
+class BaseExport Type final
 {
 public:
+    using TypeId = unsigned int;
     /// Construction
     Type(const Type& type) = default;
     Type(Type&& type) = default;
@@ -88,33 +89,33 @@ public:
     ~Type() = default;
 
     /// creates a instance of this type
-    void* createInstance() const;
+    [[nodiscard]] void* createInstance() const;
     /// Checks whether this type can instantiate
-    bool canInstantiate() const;
+    [[nodiscard]] bool canInstantiate() const;
     /// creates a instance of the named type
-    static void* createInstanceByName(const char* TypeName, bool bLoadModule = false);
+    [[nodiscard]] static void* createInstanceByName(const char* typeName, bool loadModule = false);
     static void importModule(const char* TypeName);
 
     using instantiationMethod = void* (*)();
 
-    static Type fromName(const char* name);
-    static Type fromKey(unsigned int key);
-    const char* getName() const;
-    Type getParent() const;
-    bool isDerivedFrom(const Type type) const;
+    [[nodiscard]] static const Type fromName(const char* name);
+    [[nodiscard]] static const Type fromKey(TypeId key);
+    [[nodiscard]] const char* getName() const;
+    [[nodiscard]] const Type getParent() const;
+    [[nodiscard]] bool isDerivedFrom(const Type type) const;
 
-    static int getAllDerivedFrom(const Type type, std::vector<Type>& List);
+    static int getAllDerivedFrom(const Type type, std::vector<Type>& list);
     /// Returns the given named type if is derived from parent type, otherwise return bad type
-    static Type
+    [[nodiscard]] static const Type
     getTypeIfDerivedFrom(const char* name, const Type parent, bool loadModule = false);
 
-    static int getNumTypes();
+    [[nodiscard]] static int getNumTypes();
 
-    static Type
+    [[nodiscard]] static const Type
     createType(const Type parent, const char* name, instantiationMethod method = nullptr);
 
-    unsigned int getKey() const;
-    bool isBad() const;
+    [[nodiscard]] TypeId getKey() const;
+    [[nodiscard]] bool isBad() const;
 
     Type& operator=(const Type& type) = default;
     Type& operator=(Type&& type) = default;
@@ -130,19 +131,20 @@ public:
     static void init();
     static void destruct();
 
-    static std::string getModuleName(const char* ClassName);
-
+    static const std::string getModuleName(const char* className);
 
 private:
-    unsigned int index {0};
+    TypeId index {BadTypeIndex};
 
-    static std::map<std::string, unsigned int> typemap;
-    static std::vector<TypeData*> typedata;
+    static std::map<std::string, TypeId> typemap;
+    static std::vector<TypeData*> typedata;  // use pointer to hide implementation details
     static std::set<std::string> loadModuleSet;
+
+    static constexpr TypeId BadTypeIndex = 0;
 };
 
 
-inline unsigned int Type::getKey() const
+inline Type::TypeId Type::getKey() const
 {
     return this->index;
 }
@@ -179,7 +181,7 @@ inline bool Type::operator>(const Type& type) const
 
 inline bool Type::isBad() const
 {
-    return (this->index == 0);
+    return this->index == BadTypeIndex;
 }
 
 }  // namespace Base

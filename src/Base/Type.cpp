@@ -33,7 +33,7 @@
 
 using namespace Base;
 
-static_assert(sizeof(Base::Type) == sizeof(unsigned int),
+static_assert(sizeof(Base::Type) == sizeof(Type::TypeId),
               "Base::Type has been designed to be small to be passed around by value efficiently. "
               "The size of Base::Type has changed. Be careful when adding more data members.");
 
@@ -45,21 +45,26 @@ static_assert(
 
 struct Base::TypeData
 {
-    TypeData(const char* theName,
-             const Type type = Type::BadType,
-             const Type theParent = Type::BadType,
-             Type::instantiationMethod method = nullptr)
-        : name(theName)
-        , parent(theParent)
+    TypeData(const char* name,
+             const Type type,
+             const Type parent,
+             const Type::instantiationMethod instMethod)
+        : name(name)
+        , parent(parent)
         , type(type)
-        , instMethod(method)
+        , instMethod(instMethod)
     {}
 
-    std::string name;
-    Type parent;
-    Type type;
-    Type::instantiationMethod instMethod;
+    const std::string name;
+    const Type parent;
+    const Type type;
+    const Type::instantiationMethod instMethod;
 };
+
+namespace
+{
+constexpr const char* BadTypeName = "BadType";
+}
 
 std::map<std::string, unsigned int> Type::typemap;
 std::vector<TypeData*> Type::typedata;
@@ -79,26 +84,23 @@ bool Type::canInstantiate() const
     return method != nullptr;
 }
 
-void* Type::createInstanceByName(const char* TypeName, bool bLoadModule)
+void* Type::createInstanceByName(const char* typeName, bool loadModule)
 {
     // if not already, load the module
-    if (bLoadModule) {
-        importModule(TypeName);
+    if (loadModule) {
+        importModule(typeName);
     }
 
     // now the type should be in the type map
-    Type type = fromName(TypeName);
-    if (type == BadType) {
-        return nullptr;
-    }
-
+    const Type type = fromName(typeName);
+    // let createInstance handle isBad check
     return type.createInstance();
 }
 
-void Type::importModule(const char* TypeName)
+void Type::importModule(const char* typeName)
 {
     // cut out the module name
-    const std::string mod = getModuleName(TypeName);
+    const std::string mod = getModuleName(typeName);
 
     // ignore base modules
     if (mod == "App" || mod == "Gui" || mod == "Base") {
@@ -106,22 +108,21 @@ void Type::importModule(const char* TypeName)
     }
 
     // remember already loaded modules
-    const auto pos = loadModuleSet.find(mod);
-    if (pos != loadModuleSet.end()) {
+    if (loadModuleSet.contains(mod)) {
         return;
     }
 
     // lets load the module
     Interpreter().loadModule(mod.c_str());
 #ifdef FC_LOGLOADMODULE
-    Console().Log("Act: Module %s loaded through class %s \n", Mod.c_str(), TypeName);
+    Console().Log("Act: Module %s loaded through class %s \n", Mod.c_str(), typeName);
 #endif
     loadModuleSet.insert(mod);
 }
 
-std::string Type::getModuleName(const char* ClassName)
+const std::string Type::getModuleName(const char* className)
 {
-    std::string_view classNameView(ClassName);
+    std::string_view classNameView(className);
     auto pos = classNameView.find("::");
 
     return pos != std::string_view::npos ? std::string(classNameView.substr(0, pos))
@@ -129,15 +130,16 @@ std::string Type::getModuleName(const char* ClassName)
 }
 
 
-Type Type::createType(const Type parent, const char* name, instantiationMethod method)
+const Type Type::createType(const Type parent, const char* name, instantiationMethod method)
 {
+    assert(name && name[0] != '\0' && "Type name must not be empty");
+
     Type newType;
     newType.index = static_cast<unsigned int>(Type::typedata.size());
-    TypeData* typeData = new TypeData(name, newType, parent, method);
-    Type::typedata.push_back(typeData);
+    Type::typedata.emplace_back(new TypeData(name, newType, parent, method));
 
     // add to dictionary for fast lookup
-    Type::typemap[name] = newType.getKey();
+    Type::typemap.emplace(name, newType.getKey());
 
     return newType;
 }
@@ -145,11 +147,9 @@ Type Type::createType(const Type parent, const char* name, instantiationMethod m
 
 void Type::init()
 {
-    assert(Type::typedata.empty());
-
-
-    Type::typedata.push_back(new TypeData("BadType"));
-    Type::typemap["BadType"] = 0;
+    assert(Type::typedata.size() == 0 && "Type::init() should only be called once");
+    typedata.emplace_back(new TypeData(BadTypeName, BadType, BadType, nullptr));
+    typemap[BadTypeName] = 0;
 }
 
 void Type::destruct()
@@ -162,19 +162,17 @@ void Type::destruct()
     loadModuleSet.clear();
 }
 
-Type Type::fromName(const char* name)
+const Type Type::fromName(const char* name)
 {
-    std::map<std::string, unsigned int>::const_iterator pos;
-
-    pos = typemap.find(name);
-    if (pos != typemap.end()) {
-        return typedata[pos->second]->type;
+    const auto pos = typemap.find(name);
+    if (pos == typemap.end()) {
+        return Type::BadType;
     }
 
-    return Type::BadType;
+    return typedata[pos->second]->type;
 }
 
-Type Type::fromKey(unsigned int key)
+const Type Type::fromKey(TypeId key)
 {
     if (key < typedata.size()) {
         return typedata[key]->type;
@@ -188,7 +186,7 @@ const char* Type::getName() const
     return typedata[index]->name.c_str();
 }
 
-Type Type::getParent() const
+const Type Type::getParent() const
 {
     return typedata[index]->parent;
 }
@@ -206,13 +204,13 @@ bool Type::isDerivedFrom(const Type type) const
     return false;
 }
 
-int Type::getAllDerivedFrom(const Type type, std::vector<Type>& List)
+int Type::getAllDerivedFrom(const Type type, std::vector<Type>& list)
 {
     int cnt = 0;
 
     for (auto it : typedata) {
         if (it->type.isDerivedFrom(type)) {
-            List.push_back(it->type);
+            list.push_back(it->type);
             cnt++;
         }
     }
@@ -224,13 +222,13 @@ int Type::getNumTypes()
     return static_cast<int>(typedata.size());
 }
 
-Type Type::getTypeIfDerivedFrom(const char* name, const Type parent, bool loadModule)
+const Type Type::getTypeIfDerivedFrom(const char* name, const Type parent, bool loadModule)
 {
     if (loadModule) {
         importModule(name);
     }
 
-    if (Type type(fromName(name)); type.isDerivedFrom(parent)) {
+    if (const Type type(fromName(name)); type.isDerivedFrom(parent)) {
         return type;
     }
 
