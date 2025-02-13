@@ -1186,11 +1186,11 @@ void Model::visiblyIsolate(Gui::DAG::Vertex sourceIn)
     std::vector<Base::Type> out;
     Base::Type type;
     type = Base::Type::fromName("App::DocumentObjectGroup");
-    if (type != Base::Type::badType()) out.push_back(type);
+    if (!type.isBad()) out.push_back(type);
     type = Base::Type::fromName("App::Part");
-    if (type != Base::Type::badType()) out.push_back(type);
+    if (!type.isBad()) out.push_back(type);
     type = Base::Type::fromName("PartDesign::Body");
-    if (type != Base::Type::badType()) out.push_back(type);
+    if (!type.isBad()) out.push_back(type);
 
     return out;
   };

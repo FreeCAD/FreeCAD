@@ -190,7 +190,7 @@ Base::Type DlgExpressionInput::determineTypeVarSet()
 bool DlgExpressionInput::typeOkForVarSet()
 {
     std::string unitType = impliedUnit.getTypeString();
-    return determineTypeVarSet() != Base::Type::badType();
+    return !determineTypeVarSet().isBad();
 }
 
 void DlgExpressionInput::initializeVarSets()
