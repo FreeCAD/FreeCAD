@@ -23,7 +23,7 @@
 #ifndef ROBOT_TrajectoryCompound_H
 #define ROBOT_TrajectoryCompound_H
 
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 
 #include "TrajectoryObject.h"
 

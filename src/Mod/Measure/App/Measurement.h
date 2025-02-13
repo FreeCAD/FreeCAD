@@ -26,7 +26,7 @@
 #include <gp_Pnt.hxx>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLinkSubList.h>
 
 #include <Base/BaseClass.h>
 #include <Base/Vector3D.h>

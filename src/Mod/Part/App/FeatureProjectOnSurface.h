@@ -25,8 +25,8 @@
 #ifndef PART_FEATUREPROJECTONSURFACE_H
 #define PART_FEATUREPROJECTONSURFACE_H
 
-#include "PartFeature.h"
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
+#include <App/PropertyLinkSubList.h>
 #include <App/PropertyUnits.h>
 
 

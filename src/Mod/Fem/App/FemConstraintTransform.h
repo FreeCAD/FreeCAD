@@ -24,6 +24,8 @@
 #ifndef FEM_CONSTRAINTTransform_H
 #define FEM_CONSTRAINTTransform_H
 
+#include <App/PropertyLinkList.h>
+
 #include "FemConstraint.h"
 
 namespace Fem

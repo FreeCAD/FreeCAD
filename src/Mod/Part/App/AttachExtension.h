@@ -29,7 +29,8 @@
 
 #include <App/DocumentObjectExtension.h>
 #include <App/ExtensionPython.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
+#include <App/PropertyLinkSubList.h>
 #include <App/PropertyStandard.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>

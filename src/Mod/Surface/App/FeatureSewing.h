@@ -23,6 +23,7 @@
 #ifndef SURFACE_FEATURESEWING_H
 #define SURFACE_FEATURESEWING_H
 
+#include <App/PropertyLinkSubList.h>
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Surface/SurfaceGlobal.h>

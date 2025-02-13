@@ -30,7 +30,7 @@
 #include <Mod/Assembly/AssemblyGlobal.h>
 
 #include <Mod/Spreadsheet/App/Sheet.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 
 namespace App
 {

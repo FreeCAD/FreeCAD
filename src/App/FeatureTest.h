@@ -26,7 +26,10 @@
 
 #include "DocumentObject.h"
 #include "PropertyGeo.h"
-#include "PropertyLinks.h"
+#include "PropertyLink.h"
+#include "PropertyLinkList.h"
+#include "PropertyLinkSub.h"
+#include "PropertyLinkSubList.h"
 #include "PropertyPythonObject.h"
 #include "PropertyUnits.h"
 
@@ -71,7 +74,10 @@ public:
     App::PropertyIntegerList IntegerList;
     App::PropertyFloatList FloatList;
 
-    // Standard Properties (PropertyLinks.h)
+    // Standard Properties (PropertyLink.h)
+    // Standard Properties (PropertyLinkSub.h)
+    // Standard Properties (PropertyLinkList.h)
+    // Standard Properties (PropertyLinkSubList.h)
     App::PropertyLink Link;
     App::PropertyLinkSub LinkSub;
     App::PropertyLinkList LinkList;

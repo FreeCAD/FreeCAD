@@ -77,7 +77,7 @@ App::DocumentObjectExecReturn* Sewing::execute()
     try {
         BRepBuilderAPI_Sewing builder(atol, opt1, opt2, opt3, opt4);
 
-        std::vector<App::PropertyLinkSubList::SubSet> subset = ShapeList.getSubListValues();
+        std::vector<App::SubSet> subset = ShapeList.getSubListValues();
         for (const auto& it : subset) {
             // the subset has the documentobject and the element name which belongs to it,
             // in our case for example the cube object and the "Edge1" string

@@ -25,6 +25,7 @@
 
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
+#include <App/PropertyLinkSub.h>
 #include <Mod/Material/App/PropertyMaterial.h>
 #include <Mod/Part/PartGlobal.h>
 

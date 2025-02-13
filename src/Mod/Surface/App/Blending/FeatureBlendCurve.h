@@ -23,7 +23,7 @@
 #ifndef FEATURE_BLEND_CURVE_H
 #define FEATURE_BLEND_CURVE_H
 
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <Mod/Part/App/FeaturePartSpline.h>

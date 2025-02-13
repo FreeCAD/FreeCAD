@@ -32,7 +32,7 @@
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewPart.h"

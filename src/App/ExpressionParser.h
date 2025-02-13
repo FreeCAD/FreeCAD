@@ -30,6 +30,10 @@
 #include <Base/Quantity.h>
 #include <Base/Vector3D.h>
 
+namespace Base {
+class XMLReader;
+}
+
 namespace App
 {
 

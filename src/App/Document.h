@@ -30,7 +30,7 @@
 #include <Base/Handle.h>
 
 #include "PropertyContainer.h"
-#include "PropertyLinks.h"
+#include "PropertyLink.h"
 #include "PropertyStandard.h"
 
 #include <map>

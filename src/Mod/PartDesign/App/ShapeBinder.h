@@ -24,7 +24,7 @@
 #ifndef PARTDESIGN_DATUMSHAPE_H
 #define PARTDESIGN_DATUMSHAPE_H
 
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 #include <App/DocumentObserver.h>
 #include <App/FeaturePython.h>
 #include <Mod/Part/App/DatumFeature.h>

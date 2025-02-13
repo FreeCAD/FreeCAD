@@ -26,7 +26,7 @@
 #include <tuple>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewDimension.h"

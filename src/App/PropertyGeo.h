@@ -30,7 +30,7 @@
 #include <Base/Unit.h>
 #include <Base/Vector3D.h>
 
-#include "PropertyLinks.h"
+#include "PropertyLink.h"
 #include <FCGlobal.h>
 
 

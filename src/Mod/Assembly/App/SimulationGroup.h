@@ -28,7 +28,7 @@
 #include <Mod/Assembly/AssemblyGlobal.h>
 
 #include <App/DocumentObjectGroup.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 
 
 namespace Assembly

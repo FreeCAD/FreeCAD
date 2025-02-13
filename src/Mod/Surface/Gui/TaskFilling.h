@@ -24,6 +24,7 @@
 #define SURFACEGUI_TASKFILLING_H
 
 #include <App/DocumentObserver.h>
+#include <App/PropertyLinkSubList.h>
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -49,7 +50,7 @@ class Ui_TaskFilling;
 class ViewProviderFilling: public PartGui::ViewProviderSpline
 {
     PROPERTY_HEADER_WITH_OVERRIDE(SurfaceGui::ViewProviderFilling);
-    using References = std::vector<App::PropertyLinkSubList::SubSet>;
+    using References = std::vector<App::SubSet>;
 
 public:
     enum ShapeType

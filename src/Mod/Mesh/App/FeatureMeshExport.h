@@ -24,7 +24,7 @@
 #define MESH_FEATUREMESHEXPORT_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 
 #ifndef MESH_GLOBAL_H
 #include <Mod/Mesh/MeshGlobal.h>

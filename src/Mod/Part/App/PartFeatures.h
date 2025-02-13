@@ -23,6 +23,7 @@
 #ifndef PART_FEATURES_H
 #define PART_FEATURES_H
 
+#include <App/PropertyLinkList.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 

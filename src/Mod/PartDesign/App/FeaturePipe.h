@@ -27,6 +27,10 @@
 #include "FeatureSketchBased.h"
 #include <BRepOffsetAPI_MakePipeShell.hxx>
 
+namespace App {
+using SubSet = std::pair<DocumentObject*, std::vector<std::string>>;
+}
+
 namespace PartDesign
 {
 
@@ -63,7 +67,7 @@ public:
                                                    int mode = 2,
                                                    const Base::Vector3d &binormalVector = Base::Vector3d(),
                                                    int transformation = 0,
-                                                   const std::vector<App::PropertyLinkSubList::SubSet> &multisections = {},
+                                                   const std::vector<App::SubSet> &multisections = {},
                                                    bool moveProfile = false,
                                                    bool rotateProfile = false);
 

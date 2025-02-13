@@ -29,7 +29,9 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
+#include <App/PropertyLinkList.h>
+#include <App/PropertyLinkSubList.h>
 
 #include "DocumentModel.h"
 #include "Application.h"

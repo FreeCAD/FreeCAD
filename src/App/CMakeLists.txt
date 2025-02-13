@@ -233,31 +233,43 @@ SOURCE_GROUP("Document" FILES ${Document_SRCS})
 
 # The property stuff
 SET(Properties_CPP_SRCS
+    DocInfo.cpp
     DynamicProperty.cpp
     ObjectIdentifier.cpp
     Property.cpp
     PropertyContainer.cpp
     PropertyContainerPyImp.cpp
+    PropertyExpressionEngine.cpp
     PropertyFile.cpp
     PropertyGeo.cpp
-    PropertyLinks.cpp
+    PropertyLink.cpp
+    PropertyLinkBase.cpp
+    PropertyLinkList.cpp
+    PropertyLinkSub.cpp
+    PropertyLinkSubList.cpp
     PropertyPythonObject.cpp
     PropertyStandard.cpp
     PropertyUnits.cpp
-    PropertyExpressionEngine.cpp
+    PropertyXLink.cpp
 )
 SET(Properties_HPP_SRCS
+    DocInfo.h
     DynamicProperty.h
     ObjectIdentifier.h
     Property.h
     PropertyContainer.h
+    PropertyExpressionEngine.h
     PropertyFile.h
     PropertyGeo.h
-    PropertyLinks.h
+    PropertyLink.h
+    PropertyLinkBase.h
+    PropertyLinkList.h
+    PropertyLinkSub.h
+    PropertyLinkSubList.h
     PropertyPythonObject.h
     PropertyStandard.h
     PropertyUnits.h
-    PropertyExpressionEngine.h
+    PropertyXLink.h
 )
 SET(Properties_SRCS
     ${Properties_CPP_SRCS}

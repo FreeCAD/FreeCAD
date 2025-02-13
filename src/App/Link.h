@@ -30,7 +30,9 @@
 #include "DocumentObjectExtension.h"
 #include "FeaturePython.h"
 #include "GroupExtension.h"
-#include "PropertyLinks.h"
+#include "PropertyLink.h"
+#include "PropertyLinkList.h"
+#include "PropertyLinkSub.h"
 
 
 // FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro

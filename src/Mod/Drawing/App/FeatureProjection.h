@@ -24,7 +24,7 @@
 #define DRAWING_FEATUREPROJECTION
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 #include <Mod/Drawing/DrawingGlobal.h>
 #include <Mod/Part/App/PartFeature.h>
 

@@ -31,6 +31,7 @@
 #include <vtkSmartPointer.h>
 #include <vtkSphere.h>
 
+#include <App/PropertyLinkList.h>
 #include <App/PropertyUnits.h>
 
 #include "FemPostObject.h"

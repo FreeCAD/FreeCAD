@@ -23,7 +23,8 @@
 #ifndef PART_FEATURECOMPOUND_H
 #define PART_FEATURECOMPOUND_H
 
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
+#include <App/PropertyLinkList.h>
 #include "PartFeature.h"
 
 

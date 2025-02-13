@@ -32,7 +32,7 @@
 
 #include <App/DocumentObserver.h>
 #include <App/GeoFeature.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 #include <App/PropertyStandard.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>

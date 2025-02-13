@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 
+#include <App/PropertyLinkSubList.h>
 #include <Base/Vector3D.h>
 
 #include "Services.h"

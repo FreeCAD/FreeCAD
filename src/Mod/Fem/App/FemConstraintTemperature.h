@@ -27,6 +27,8 @@
 #ifndef FEM_CONSTRAINTTEMPERATURE_H
 #define FEM_CONSTRAINTTEMPERATURE_H
 
+#include <App/PropertyLinkList.h>
+
 #include "FemConstraint.h"
 
 namespace Fem

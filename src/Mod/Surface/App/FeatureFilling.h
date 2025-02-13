@@ -23,7 +23,7 @@
 #ifndef SURFACE_FEATUREFILLING_H
 #define SURFACE_FEATUREFILLING_H
 
-#include <App/PropertyLinks.h>
+#include <App/PropertyLinkSubList.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
 #include <Mod/Surface/SurfaceGlobal.h>
 

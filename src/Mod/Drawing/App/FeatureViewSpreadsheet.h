@@ -24,7 +24,7 @@
 #define _FeatureViewSpreadsheet_h_
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 
 #include "FeatureView.h"
 

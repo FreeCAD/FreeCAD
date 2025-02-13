@@ -25,7 +25,7 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 #include <App/PropertyUnits.h>
 #include <App/GeoFeature.h>
 

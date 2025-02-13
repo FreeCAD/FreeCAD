@@ -23,7 +23,7 @@
 #ifndef FEATURE_MESH_SEGMENTBYMESH_H
 #define FEATURE_MESH_SEGMENTBYMESH_H
 
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 
 #include "MeshFeature.h"
 
