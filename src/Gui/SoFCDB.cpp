@@ -189,6 +189,7 @@ void Gui::SoFCDB::init()
     CADNavigationStyle              ::init();
     RevitNavigationStyle            ::init();
     BlenderNavigationStyle          ::init();
+    SWNavigationStyle               ::init();
     MayaGestureNavigationStyle      ::init();
     TouchpadNavigationStyle         ::init();
     GestureNavigationStyle          ::init();
