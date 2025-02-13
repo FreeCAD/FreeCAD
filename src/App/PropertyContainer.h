@@ -375,7 +375,7 @@ void _class_::init(void){\
 }
 
 #define TYPESYSTEM_SOURCE_TEMPLATE(_class_) \
-template<> Base::Type _class_::classTypeId = Base::Type::badType();  \
+template<> Base::Type _class_::classTypeId = Base::Type::BadType; \
 template<> Base::Type _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 template<> Base::Type _class_::getTypeId(void) const { return _class_::classTypeId; } \
 template<> void * _class_::create(void){\
