@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   id="svg2"
+   version="1.1"
+   sodipodi:docname="FEM_PostFilterGlyph.svg"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="8.6344367"
+     inkscape:cx="33.238995"
+     inkscape:cy="26.232169"
+     inkscape:window-width="3132"
+     inkscape:window-height="1772"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient3802">
+      <stop
+         style="stop-color:#4e9a06;stop-opacity:1"
+         offset="0"
+         id="stop3804" />
+      <stop
+         style="stop-color:#73d216;stop-opacity:1"
+         offset="1"
+         id="stop3806" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3802"
+       id="linearGradient3808"
+       x1="49"
+       y1="58"
+       x2="47"
+       y2="42"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-77.65959,-38.104787)" />
+  </defs>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Alexander Gryson]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>fem-warp</dc:title>
+        <dc:date>2017-03-11</dc:date>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     id="path5"
+     style="fill:#5bae0c;stroke:#172a04;stroke-width:0.783709;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:9.6"
+     d="M 28.643627,7.4834885 14.376899,11.359125 26.588343,21.800077 Z M 23.279624,18.970903 17.46429,13.999367 0.84260476,32.570907 6.6625341,37.537309 Z"
+     sodipodi:nodetypes="ccccccccc" />
+  <path
+     id="path6"
+     style="fill:#5bae0c;stroke:#172a04;stroke-width:0.709324;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:9.6"
+     d="m 54.160189,35.642295 -12.759634,3.549837 10.921464,9.563249 z m -4.797366,10.521743 -5.20102,-4.553612 -14.865822,17.01035 5.20513,4.548909 z"
+     sodipodi:nodetypes="ccccccccc" />
+  <path
+     id="path6-6"
+     style="fill:#5bae0c;stroke:#172a04;stroke-width:1.43581;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:9.6"
+     d="M 59.446346,1.4589408 33.618389,8.6444946 55.725536,28.002353 Z M 49.735554,22.756974 39.207689,13.539587 9.1164014,47.971811 19.652586,57.179679 Z"
+     sodipodi:nodetypes="ccccccccc" />
+</svg>

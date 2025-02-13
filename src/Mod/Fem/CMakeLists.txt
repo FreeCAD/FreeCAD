@@ -202,6 +202,7 @@ SET(FemObjects_SRCS
     femobjects/mesh_netgen.py
     femobjects/mesh_region.py
     femobjects/mesh_result.py
+    femobjects/post_glyphfilter.py
     femobjects/result_mechanical.py
     femobjects/solver_ccxtools.py
 )
@@ -602,6 +603,7 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_mesh_group.py
     femtaskpanels/task_mesh_region.py
     femtaskpanels/task_mesh_netgen.py
+    femtaskpanels/task_post_glyphfilter.py
     femtaskpanels/task_result_mechanical.py
     femtaskpanels/task_solver_ccxtools.py
 )
@@ -651,6 +653,7 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_mesh_netgen.py
     femviewprovider/view_mesh_region.py
     femviewprovider/view_mesh_result.py
+    femviewprovider/view_post_glyphfilter.py
     femviewprovider/view_result_mechanical.py
     femviewprovider/view_solver_ccxtools.py
 )

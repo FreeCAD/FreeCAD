@@ -36,6 +36,7 @@ set(FemGui_LIBS
 generate_from_xml(ViewProviderFemConstraintPy)
 generate_from_xml(ViewProviderFemMeshPy)
 generate_from_xml(ViewProviderFemPostPipelinePy)
+generate_from_xml(ViewProviderFemPostFilterPy)
 
 SET(Python_SRCS
     ViewProviderFemConstraintPy.xml
@@ -44,6 +45,8 @@ SET(Python_SRCS
     ViewProviderFemMeshPyImp.cpp
     ViewProviderFemPostPipelinePy.xml
     ViewProviderFemPostPipelinePyImp.cpp
+    ViewProviderFemPostFilterPy.xml
+    ViewProviderFemPostFilterPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -429,6 +432,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/ResultHints.ui
     Resources/ui/ResultShow.ui
     Resources/ui/SolverCalculix.ui
+    Resources/ui/TaskPostGlyph.ui
 )
 
 ADD_CUSTOM_TARGET(FemPythonUi ALL
