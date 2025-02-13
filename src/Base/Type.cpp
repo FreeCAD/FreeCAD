@@ -33,6 +33,15 @@
 
 using namespace Base;
 
+static_assert(sizeof(Base::Type) == sizeof(unsigned int),
+              "Base::Type has been designed to be small to be passed around by value efficiently. "
+              "The size of Base::Type has changed. Be careful when adding more data members.");
+
+static_assert(
+    sizeof(Base::Type) <= 2 * sizeof(void*),
+    "Base::Type has been designed to be small to be passed around by value efficiently. "
+    "When the size grows larger than ~2 words, consider passing by const reference instead. "
+    "Exact limit depends on the architecture and ABI.");
 
 struct Base::TypeData
 {
