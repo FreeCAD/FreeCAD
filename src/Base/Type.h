@@ -88,33 +88,39 @@ public:
     /// Destruction
     ~Type() = default;
 
-    /// creates a instance of this type
+    /// Creates an instance of this type
     [[nodiscard]] void* createInstance() const;
     /// Checks whether this type can instantiate
     [[nodiscard]] bool canInstantiate() const;
-    /// creates a instance of the named type
+    /// Creates an instance of the named type
     [[nodiscard]] static void* createInstanceByName(const char* typeName, bool loadModule = false);
     static void importModule(const char* TypeName);
 
     using instantiationMethod = void* (*)();
 
+    /// Returns a type object by name
     [[nodiscard]] static const Type fromName(const char* name);
+    /// Returns a type object by key
     [[nodiscard]] static const Type fromKey(TypeId key);
+    /// Returns the name of the type
     [[nodiscard]] const char* getName() const;
+    /// Returns the parent type
     [[nodiscard]] const Type getParent() const;
+    /// Checks whether this type is derived from "type"
     [[nodiscard]] bool isDerivedFrom(const Type type) const;
-
+    /// Returns all descendants from the given type
     static int getAllDerivedFrom(const Type type, std::vector<Type>& list);
     /// Returns the given named type if is derived from parent type, otherwise return bad type
     [[nodiscard]] static const Type
     getTypeIfDerivedFrom(const char* name, const Type parent, bool loadModule = false);
-
+    /// Returns the number of types created so far
     [[nodiscard]] static int getNumTypes();
-
+    /// Creates a new type with the given name, parent and instantiation method
     [[nodiscard]] static const Type
     createType(const Type parent, const char* name, instantiationMethod method = nullptr);
-
+    /// Returns the inner index of the type
     [[nodiscard]] TypeId getKey() const;
+    /// Checks if the type is invalid
     [[nodiscard]] bool isBad() const;
 
     Type& operator=(const Type& type) = default;
@@ -131,6 +137,7 @@ public:
     static void init();
     static void destruct();
 
+    /// Returns the name of the module the class is defined in
     static const std::string getModuleName(const char* className);
 
 private:
