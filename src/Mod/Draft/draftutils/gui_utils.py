@@ -705,7 +705,7 @@ def select(objs=None, gui=App.GuiUp):
                     if parent and parent.getSubObject(obj[2]):
                         Gui.Selection.addSelection(*obj)
                     continue
-                if not obj.isAttachedToDocument():
+                if utils.is_deleted(obj):
                     continue
                 Gui.Selection.addSelection(obj)
 
