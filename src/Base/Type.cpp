@@ -129,7 +129,7 @@ std::string Type::getModuleName(const char* ClassName)
 }
 
 
-Type Type::createType(const Type& parent, const char* name, instantiationMethod method)
+Type Type::createType(const Type parent, const char* name, instantiationMethod method)
 {
     Type newType;
     newType.index = static_cast<unsigned int>(Type::typedata.size());
@@ -193,9 +193,8 @@ Type Type::getParent() const
     return typedata[index]->parent;
 }
 
-bool Type::isDerivedFrom(const Type& type) const
+bool Type::isDerivedFrom(const Type type) const
 {
-
     Type temp(*this);
     do {
         if (temp == type) {
@@ -207,7 +206,7 @@ bool Type::isDerivedFrom(const Type& type) const
     return false;
 }
 
-int Type::getAllDerivedFrom(const Type& type, std::vector<Type>& List)
+int Type::getAllDerivedFrom(const Type type, std::vector<Type>& List)
 {
     int cnt = 0;
 
@@ -225,15 +224,13 @@ int Type::getNumTypes()
     return static_cast<int>(typedata.size());
 }
 
-Type Type::getTypeIfDerivedFrom(const char* name, const Type& parent, bool bLoadModule)
+Type Type::getTypeIfDerivedFrom(const char* name, const Type parent, bool loadModule)
 {
-    if (bLoadModule) {
+    if (loadModule) {
         importModule(name);
     }
 
-    Type type = fromName(name);
-
-    if (type.isDerivedFrom(parent)) {
+    if (Type type(fromName(name)); type.isDerivedFrom(parent)) {
         return type;
     }
 

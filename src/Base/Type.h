@@ -101,17 +101,17 @@ public:
     static Type fromKey(unsigned int key);
     const char* getName() const;
     Type getParent() const;
-    bool isDerivedFrom(const Type& type) const;
+    bool isDerivedFrom(const Type type) const;
 
-    static int getAllDerivedFrom(const Type& type, std::vector<Type>& List);
+    static int getAllDerivedFrom(const Type type, std::vector<Type>& List);
     /// Returns the given named type if is derived from parent type, otherwise return bad type
     static Type
-    getTypeIfDerivedFrom(const char* name, const Type& parent, bool bLoadModule = false);
+    getTypeIfDerivedFrom(const char* name, const Type parent, bool loadModule = false);
 
     static int getNumTypes();
 
     static Type
-    createType(const Type& parent, const char* name, instantiationMethod method = nullptr);
+    createType(const Type parent, const char* name, instantiationMethod method = nullptr);
 
     unsigned int getKey() const;
     bool isBad() const;
