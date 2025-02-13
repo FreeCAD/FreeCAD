@@ -225,7 +225,7 @@ This feature may slightly increase recomputation time.</string>
          </font>
         </property>
         <property name="text">
-         <string>Format time as string documentation</string>
+         <string>Show format documentation</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
