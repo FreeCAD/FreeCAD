@@ -242,7 +242,7 @@ PyObject* GeometryPy::getExtensionOfType(PyObject *args)
 
         Base::Type type = Base::Type::fromName(o);
 
-        if(type != Base::Type::badType()) {
+        if(!type.isBad()) {
             try {
                 std::shared_ptr<const GeometryExtension> ext(this->getGeometryPtr()->getExtension(type));
 
@@ -313,7 +313,7 @@ PyObject* GeometryPy::hasExtensionOfType(PyObject *args)
 
         Base::Type type = Base::Type::fromName(o);
 
-        if(type != Base::Type::badType()) {
+        if(!type.isBad()) {
             try {
                 return Py::new_reference_to(Py::Boolean(this->getGeometryPtr()->hasExtension(type)));
             }
@@ -360,7 +360,7 @@ PyObject* GeometryPy::deleteExtensionOfType(PyObject *args)
 
         Base::Type type = Base::Type::fromName(o);
 
-        if(type != Base::Type::badType()) {
+        if(!type.isBad()) {
             try {
                 this->getGeometryPtr()->deleteExtension(type);
                 Py_Return;
