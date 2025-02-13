@@ -122,7 +122,7 @@ PyObject* TypePy::isDerivedFrom(PyObject* args)
         return nullptr;
     } while (false);
 
-    bool val = (type != Base::Type::badType() && getBaseTypePtr()->isDerivedFrom(type));
+    bool val = (!type.isBad() && getBaseTypePtr()->isDerivedFrom(type));
     return PyBool_FromLong(val ? 1 : 0);
 }
 
