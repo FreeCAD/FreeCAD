@@ -126,7 +126,7 @@ public:
     bool operator>=(const Type& type) const;
     bool operator>(const Type& type) const;
 
-    static Type badType();
+    static const Type BadType;
     static void init();
     static void destruct();
 

@@ -32,7 +32,7 @@
 
 using namespace Base;
 
-Type BaseClass::classTypeId = Base::Type::badType();  // NOLINT
+Type BaseClass::classTypeId = Base::Type::BadType;
 
 
 //**************************************************************************
@@ -63,8 +63,7 @@ void BaseClass::init()
     /*assert(!parentType.isBad() && "you forgot init() on parentclass!");*/
 
     /* Set up entry in the type system. */
-    BaseClass::classTypeId =
-        Type::createType(Type::badType(), "Base::BaseClass", BaseClass::create);
+    BaseClass::classTypeId = Type::createType(Type::BadType, "Base::BaseClass", BaseClass::create);
 }
 
 Type BaseClass::getClassTypeId()

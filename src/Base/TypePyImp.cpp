@@ -76,8 +76,7 @@ PyObject* TypePy::getBadType(PyObject* args)
         return nullptr;
     }
 
-    Base::Type type = Base::Type::badType();
-    return new TypePy(new Base::Type(type));
+    return new TypePy(new Base::Type(Base::Type::BadType));
 }
 
 PyObject* TypePy::getParent(PyObject* args)
