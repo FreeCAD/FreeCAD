@@ -56,7 +56,7 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp(QWidget* parent)
         QString::fromLatin1("<html><head/><body>"
                             "<a href=\"http://www.cplusplus.com/reference/ctime/strftime/\">%1</a>"
                             "</body></html>")
-            .arg(tr("Format time as string documentation"));
+            .arg(tr("Show format documentation"));
     ui->prefSaveBackupDateFormat->setToolTip(tip);
     ui->FormatTimeDocsLabel->setText(link);
 
