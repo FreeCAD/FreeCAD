@@ -107,8 +107,10 @@ class _BaseMeshTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
         if status == QtCore.QProcess.ExitStatus.NormalExit:
             if code != 0:
                 self.write_log(
-                    "Meshing finished with errors\n", QtGui.QColor(getOutputWinColor("Error"))
+                    "Process finished with errors. Mesh not updated\n",
+                    QtGui.QColor(getOutputWinColor("Error")),
                 )
+                return
             self.tool.update_properties()
             self.write_log("Process finished\n", QtGui.QColor(getOutputWinColor("Text")))
         else:
