@@ -563,8 +563,8 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     // get shape objects from a base view
     std::vector<App::DocumentObject*> shapesFromBase;
     std::vector<App::DocumentObject*> xShapesFromBase;
-    std::vector<App::DocumentObject*> baseViews =
-        getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    std::vector<TechDraw::DrawViewPart*> baseViews =
+        getSelection().getObjectsOfType<TechDraw::DrawViewPart>();
     TechDraw::DrawViewPart* dvp{nullptr};
     if (!baseViews.empty()) {
         dvp = static_cast<TechDraw::DrawViewPart*>(*baseViews.begin());
@@ -848,8 +848,8 @@ bool CmdTechDrawSectionView::isActive()
 
 void execSimpleSection(Gui::Command* cmd)
 {
-    std::vector<App::DocumentObject*> baseObj =
-        cmd->getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    std::vector<TechDraw::DrawViewPart*> baseObj =
+        cmd->getSelection().getObjectsOfType<TechDraw::DrawViewPart>();
     if (baseObj.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("Select at least 1 DrawViewPart object as Base."));
@@ -1015,8 +1015,8 @@ void CmdTechDrawDetailView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    std::vector<App::DocumentObject*> baseObj =
-        getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    std::vector<TechDraw::DrawViewPart*> baseObj =
+        getSelection().getObjectsOfType<TechDraw::DrawViewPart>();
     if (baseObj.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("Select at least 1 DrawViewPart object as Base."));
@@ -1197,8 +1197,8 @@ bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs)
         return false;
     }
 
-    std::vector<App::DocumentObject*> pages =
-        cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    std::vector<TechDraw::DrawPage*> pages =
+        cmd->getDocument()->getObjectsOfType<TechDraw::DrawPage>();
     if (pages.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
                              QObject::tr("Create a page first."));
@@ -1437,8 +1437,7 @@ bool CmdTechDrawClipGroupAdd::isActive()
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveClip = false;
     if (havePage) {
-        auto drawClipType(TechDraw::DrawViewClip::getClassTypeId());
-        auto selClips = getDocument()->getObjectsOfType(drawClipType);
+        auto selClips = getDocument()->getObjectsOfType<TechDraw::DrawViewClip>();
         if (!selClips.empty()) {
             haveClip = true;
         }
@@ -1465,7 +1464,7 @@ CmdTechDrawClipGroupRemove::CmdTechDrawClipGroupRemove() : Command("TechDraw_Cli
 void CmdTechDrawClipGroupRemove::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    auto dObj(getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId()));
+    auto dObj(getSelection().getObjectsOfType<TechDraw::DrawView>());
     if (dObj.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("Select exactly one View to remove from Group."));
@@ -1508,8 +1507,7 @@ bool CmdTechDrawClipGroupRemove::isActive()
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveClip = false;
     if (havePage) {
-        auto drawClipType(TechDraw::DrawViewClip::getClassTypeId());
-        auto selClips = getDocument()->getObjectsOfType(drawClipType);
+        auto selClips = getDocument()->getObjectsOfType<TechDraw::DrawViewClip>();
         if (!selClips.empty()) {
             haveClip = true;
         }
@@ -1605,7 +1603,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     std::vector<App::DocumentObject*> objects =
-        getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+        getSelection().getObjectsOfType<App::DocumentObject>();
 
     if (objects.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1668,7 +1666,7 @@ void CmdTechDrawArchView::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     const std::vector<App::DocumentObject*> objects =
-        getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+        getSelection().getObjectsOfType<App::DocumentObject>();
     App::DocumentObject* archObject = nullptr;
     int archCount = 0;
     for (auto& obj : objects) {
@@ -1743,8 +1741,8 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
     }
     std::string PageName = page->getNameInDocument();
 
-    const std::vector<App::DocumentObject*> spreads =
-        getSelection().getObjectsOfType(Spreadsheet::Sheet::getClassTypeId());
+    const std::vector<Spreadsheet::Sheet*> spreads =
+        getSelection().getObjectsOfType<Spreadsheet::Sheet>();
     if (spreads.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("Select exactly one Spreadsheet object."));
@@ -1781,8 +1779,7 @@ bool CmdTechDrawSpreadsheetView::isActive()
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveSheet = false;
     if (havePage) {
-        auto spreadSheetType(Spreadsheet::Sheet::getClassTypeId());
-        auto selSheets = getDocument()->getObjectsOfType(spreadSheetType);
+        auto selSheets = getDocument()->getObjectsOfType<Spreadsheet::Sheet>();
         if (!selSheets.empty()) {
             haveSheet = true;
         }

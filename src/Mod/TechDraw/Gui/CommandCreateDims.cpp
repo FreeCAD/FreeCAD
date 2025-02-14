@@ -2218,8 +2218,8 @@ CmdTechDrawDimensionRepair::CmdTechDrawDimensionRepair()
 void CmdTechDrawDimensionRepair::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<App::DocumentObject*> dimObjs =
-        getSelection().getObjectsOfType(TechDraw::DrawViewDimension::getClassTypeId());
+    std::vector<TechDraw::DrawViewDimension*> dimObjs =
+        getSelection().getObjectsOfType<TechDraw::DrawViewDimension>();
     TechDraw::DrawViewDimension* dim = nullptr;
     if (dimObjs.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -2281,8 +2281,8 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
         return;
     }
 
-    const std::vector<App::DocumentObject*> views =
-        getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    const std::vector<TechDraw::DrawViewPart*> views =
+        getSelection().getObjectsOfType<TechDraw::DrawViewPart>();
     if (views.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Wrong selection"),
@@ -2560,8 +2560,8 @@ bool _checkSelection(Gui::Command* cmd, unsigned maxObjs)
         return false;
     }
 
-    std::vector<App::DocumentObject*> pages =
-        cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    std::vector<TechDraw::DrawPage*> pages =
+        cmd->getDocument()->getObjectsOfType<TechDraw::DrawPage>();
     if (pages.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect selection"),

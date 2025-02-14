@@ -311,8 +311,8 @@ void execCosmeticVertex(Gui::Command* cmd)
         return;
     }
 
-    std::vector<App::DocumentObject*> shapes = cmd->getSelection().
-                                       getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    std::vector<TechDraw::DrawViewPart*> shapes = cmd->getSelection().
+                                       getObjectsOfType<TechDraw::DrawViewPart>();
     if (shapes.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("No DrawViewPart objects in this selection"));
@@ -412,8 +412,8 @@ void CmdTechDrawCosmeticVertex::activated(int iMsg)
         return;
     }
 
-    std::vector<App::DocumentObject*> shapes = getSelection().
-                                       getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    std::vector<TechDraw::DrawViewPart*> shapes = getSelection().
+                                       getObjectsOfType<TechDraw::DrawViewPart>();
     if (shapes.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("No DrawViewPart objects in this selection"));
@@ -1571,10 +1571,10 @@ void CmdTechDrawWeldSymbol::activated(int iMsg)
         return;
     }
 
-    std::vector<App::DocumentObject*> leaders = getSelection().
-                                         getObjectsOfType(TechDraw::DrawLeaderLine::getClassTypeId());
-    std::vector<App::DocumentObject*> welds = getSelection().
-                                         getObjectsOfType(TechDraw::DrawWeldSymbol::getClassTypeId());
+    std::vector<TechDraw::DrawLeaderLine*> leaders = getSelection().
+                                         getObjectsOfType<TechDraw::DrawLeaderLine>();
+    std::vector<TechDraw::DrawWeldSymbol*> welds = getSelection().
+                                         getObjectsOfType<TechDraw::DrawWeldSymbol>();
     TechDraw::DrawLeaderLine* leadFeat = nullptr;
     TechDraw::DrawWeldSymbol* weldFeat = nullptr;
     if ( (leaders.size() != 1) &&

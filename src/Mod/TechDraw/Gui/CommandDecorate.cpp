@@ -396,7 +396,7 @@ bool _checkSelectionHatch(Gui::Command* cmd) {
         return false;
     }
 
-    std::vector<App::DocumentObject*> pages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    std::vector<TechDraw::DrawPage*> pages = cmd->getDocument()->getObjectsOfType<TechDraw::DrawPage>();
     if (pages.empty()){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
             QObject::tr("Create a page to insert."));

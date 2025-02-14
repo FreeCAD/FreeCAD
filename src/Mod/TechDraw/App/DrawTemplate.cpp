@@ -104,7 +104,7 @@ DrawPage* DrawTemplate::getParentPage() const
 // Return the counts related to pages, namely collated page index and total page count
 std::pair<int, int> DrawTemplate::getPageNumbers() const
 {
-    std::vector<DocumentObject *> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    std::vector<TechDraw::DrawPage*> pages = getDocument()->getObjectsOfType<TechDraw::DrawPage>();
     std::vector<QString> pageNames;
     for (auto page : pages) {
         if (page->isAttachedToDocument() &&
