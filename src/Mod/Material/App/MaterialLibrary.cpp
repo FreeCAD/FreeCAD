@@ -120,7 +120,7 @@ void MaterialLibrary::deleteFile(MaterialManager& manager, const QString& path)
         _materialPathMap->erase(rPath);
     }
     else {
-        QString error = QString::fromStdString("DeleteError: Unable to delete ") + path;
+        QString error = QStringLiteral("DeleteError: Unable to delete ") + path;
         throw DeleteError(error);
     }
 }
@@ -295,13 +295,13 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
         auto material = it.second;
 
         if (materialInTree(material, filter, options)) {
-            QStringList list = filename.split(QString::fromStdString("/"));
+            QStringList list = filename.split(QStringLiteral("/"));
 
             // Start at the root
             std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> node =
                 materialTree;
             for (auto& itp : list) {
-                if (itp.endsWith(QString::fromStdString(".FCMat"))) {
+                if (itp.endsWith(QStringLiteral(".FCMat"))) {
                     std::shared_ptr<MaterialTreeNode> child = std::make_shared<MaterialTreeNode>();
                     child->setData(material);
                     (*node)[itp] = child;
@@ -330,7 +330,7 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
     if (!filter || options.includeEmptyFolders()) {
         auto folderList = MaterialLoader::getMaterialFolders(*this);
         for (auto& folder : *folderList) {
-            QStringList list = folder.split(QString::fromStdString("/"));
+            QStringList list = folder.split(QStringLiteral("/"));
 
             // Start at the root
             auto node = materialTree;

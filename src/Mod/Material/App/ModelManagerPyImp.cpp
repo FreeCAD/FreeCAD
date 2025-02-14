@@ -64,16 +64,16 @@ PyObject* ModelManagerPy::getModel(PyObject* args)
         return new ModelPy(new Model(*model));
     }
     catch (ModelNotFound const&) {
-        QString error = QString::fromStdString("Model not found:\n");
+        QString error = QStringLiteral("Model not found:\n");
         auto _modelMap = getModelManagerPtr()->getModels();
-        error += QString::fromStdString("ModelMap:\n");
+        error += QStringLiteral("ModelMap:\n");
         for (auto itp = _modelMap->begin(); itp != _modelMap->end(); itp++) {
-            error += QString::fromStdString("\t_modelMap[") + itp->first
-                + QString::fromStdString("] = '") + itp->second->getName()
-                + QString::fromStdString("'\n");
+            error += QStringLiteral("\t_modelMap[") + itp->first
+                + QStringLiteral("] = '") + itp->second->getName()
+                + QStringLiteral("'\n");
         }
-        error += QString::fromStdString("\tuuid = '") + QString::fromStdString(uuid)
-            + QString::fromStdString("'\n");
+        error += QStringLiteral("\tuuid = '") + QString::fromStdString(uuid)
+            + QStringLiteral("'\n");
         PyErr_SetString(PyExc_LookupError, error.toStdString().c_str());
         return nullptr;
     }
