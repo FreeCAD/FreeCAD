@@ -1180,6 +1180,7 @@ int SketchObject::setLabelPosition(int ConstrId, float value)
     constNew->LabelPosition = value;
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(std::move(newVals));
+    solvedSketch.updateConstraints({ConstrId}, this->Constraints.getValues());
 
     return 0;
 }
@@ -1214,6 +1215,7 @@ int SketchObject::setLabelDistance(int ConstrId, float value)
     constNew->LabelDistance = value;
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(std::move(newVals));
+    solvedSketch.updateConstraints({ConstrId}, this->Constraints.getValues());
 
     return 0;
 }
@@ -1405,6 +1407,7 @@ int SketchObject::setVirtualSpace(int ConstrId, bool isinvirtualspace)
     newVals[ConstrId] = constNew;
 
     this->Constraints.setValues(std::move(newVals));
+    solvedSketch.updateConstraints({ConstrId}, this->Constraints.getValues());
 
     // Solver didn't actually update, but we need this to inform view provider
     // to redraw
@@ -1440,6 +1443,7 @@ int SketchObject::setVirtualSpace(std::vector<int> constrIds, bool isinvirtualsp
     }
 
     this->Constraints.setValues(std::move(newVals));
+    solvedSketch.updateConstraints(constrIds, this->Constraints.getValues());
 
     // Solver didn't actually update, but we need this to inform view provider
     // to redraw
@@ -1479,6 +1483,7 @@ int SketchObject::toggleVirtualSpace(int ConstrId)
     newVals[ConstrId] = constNew;
 
     this->Constraints.setValues(std::move(newVals));
+    solvedSketch.updateConstraints({ConstrId}, this->Constraints.getValues());
 
     // Solver didn't actually update, but we need this to inform view provider
     // to redraw
