@@ -24,7 +24,8 @@
             <Documentation>
                 <UserDocu>
                     removeProperty(string) -- Remove a generic property.
-                    Note, you can only remove user-defined properties but not built-in ones.
+
+Note, you can only remove user-defined properties but not built-in ones.
                 </UserDocu>
             </Documentation>
         </Methode>
@@ -68,7 +69,7 @@
                 <UserDocu>recompute(recursive=False): Recomputes this object</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="getStatusString" const="True">
+        <Methode Name="getStatusString" Const="true">
             <Documentation>
                 <UserDocu>Returns the status of the object as string.
 If the object is invalid its error description will be returned.
@@ -77,7 +78,7 @@ If the object is valid but touched then &apos;Touched&apos; will be returned,
 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="isValid" const="True">
+        <Methode Name="isValid" Const="true">
             <Documentation>
                 <UserDocu>Returns True if the object is valid, False otherwise</UserDocu>
             </Documentation>
@@ -169,24 +170,28 @@ Return -1 if element visibility is not supported or element not found, 0 if invi
         <Methode Name="getParentGroup">
             <Documentation>
                 <UserDocu>Returns the group the object is in or None if it is not part of a group.
-                          Note that an object can only be in a single group, hence only a single return
-                          value.</UserDocu>
+
+Note that an object can only be in a single group, hence only a single return value.
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getParentGeoFeatureGroup">
             <Documentation>
                 <UserDocu>Returns the GeoFeatureGroup, and hence the local coordinate system, the object
-                          is in or None if it is not part of a group. Note that an object can only be
-                          in a single group, hence only a single return value.</UserDocu>
+is in or None if it is not part of a group.
+
+Note that an object can only be in a single group, hence only a single return value.
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getParent">
             <Documentation>
                 <UserDocu>Returns the group the object is in or None if it is not part of a group.
-                          Note that an object can only be in a single group, hence only a single return
-                          value.
-                          The parent can be a simple group as with getParentGroup() or a
-                          GeoFeature group as with getParentGeoFeatureGroup().</UserDocu>
+
+Note that an object can only be in a single group, hence only a single return value.
+The parent can be a simple group as with getParentGroup() or a GeoFeature group as
+with getParentGeoFeatureGroup().
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getPathsByOutList">
@@ -235,7 +240,9 @@ Return tuple(obj,newElementName,oldElementName)
         <Methode Name="isAttachedToDocument" Const="true">
             <Documentation>
                 <UserDocu>
-                    isAttachedToDocument(): return true if the object is part of a document, false otherwise
+                    isAttachedToDocument() -> bool
+
+Return true if the object is part of a document, false otherwise.
                 </UserDocu>
             </Documentation>
         </Methode>
