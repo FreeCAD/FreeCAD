@@ -44,7 +44,5 @@ std::string UnitsSchema::toLocale(const Base::Quantity& quant,
     }
 
     QString Ln = Lc.toString((quant.getValue() / factor), format.toFormat(), format.precision);
-    return QString::fromStdString("%1 %2")
-        .arg(Ln, QString::fromStdString(unitString))
-        .toStdString();
+    return QStringLiteral("%1 %2").arg(Ln, QString::fromStdString(unitString)).toStdString();
 }
