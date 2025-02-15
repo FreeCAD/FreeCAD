@@ -26,7 +26,7 @@
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <memory>
 
 #include <Base/Parameter.h>
