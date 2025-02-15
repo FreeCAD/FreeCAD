@@ -26,7 +26,7 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawView.h>
