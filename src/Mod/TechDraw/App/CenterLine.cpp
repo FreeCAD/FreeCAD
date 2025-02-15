@@ -894,18 +894,7 @@ void CenterLine::Save(Base::Writer &writer) const
     }
 
     writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->getGeomType() <<"\"/>" << std::endl;
-    if (m_geometry->getGeomType() == GeomType::GENERIC) {
-        GenericPtr gen = std::static_pointer_cast<Generic>(m_geometry);
-        gen->Save(writer);
-    } else if (m_geometry->getGeomType() == GeomType::CIRCLE) {
-        TechDraw::CirclePtr circ = std::static_pointer_cast<TechDraw::Circle>(m_geometry);
-        circ->Save(writer);
-    } else if (m_geometry->getGeomType() == GeomType::ARCOFCIRCLE) {
-        TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(m_geometry);
-        aoc->Save(writer);
-    } else {
-        Base::Console().Message("CL::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
-    }
+    m_geometry->Save(writer);
 
     // TODO: this should be in LineFormat::Save, but it wasn't saved in extension
     // of other LineFormat properties.
