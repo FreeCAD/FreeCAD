@@ -51,6 +51,7 @@ EXTENSION_PROPERTY_SOURCE(App::VariantExtension, App::GroupExtension)
 
 VariantExtension::VariantExtension()
 {
+    initExtensionType(VariantExtension::getExtensionClassTypeId());
     EXTENSION_ADD_PROPERTY_TYPE(Support, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_None), "Support of the geometry");
 }
 

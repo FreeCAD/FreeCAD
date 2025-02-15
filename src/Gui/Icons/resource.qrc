@@ -299,6 +299,8 @@
         <file>image-plane.svg</file>
         <file>image-scaling.svg</file>
         <file>VarSet.svg</file>
+        <file>Variant.svg</file>
+        <file>VariantOverlay.svg</file>
         <file>Std_ToggleFreeze.svg</file>
         <file>3dx_pivot.png</file>
         <file>overlay_recompute.svg</file>

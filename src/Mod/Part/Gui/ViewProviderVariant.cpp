@@ -22,17 +22,30 @@
 
 #include "PreCompiled.h"
 
+#include <qapplication.h>
+#include <qstyle.h>
+
+#include <App/VariantExtension.h>
+
+#include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+
 #include "ViewProviderVariant.h"
 
 
 using namespace PartGui;
+using namespace Gui;
 using namespace std;
 
-PROPERTY_SOURCE(PartGui::ViewProviderVariant, PartGui::ViewProviderPart)
+FC_LOG_LEVEL_INIT("App", true, true, true)
+
+PROPERTY_SOURCE_WITH_EXTENSIONS(PartGui::ViewProviderVariant, PartGui::ViewProviderPart)
 
 ViewProviderVariant::ViewProviderVariant()
 {
-  sPixmap = "Part_Box_Parametric";
+    Gui::ViewProviderGroupExtension::initExtension(this);
 }
 
 ViewProviderVariant::~ViewProviderVariant() = default;
@@ -50,3 +63,61 @@ std::vector<std::string> ViewProviderVariant::getDisplayModes() const
 
   return StrList;
 }
+
+static ViewProvider* getViewProvider(App::DocumentObject* obj)
+{
+    Document *doc = Application::Instance->getDocument(obj->getDocument());
+    if (doc) {
+        return doc->getViewProvider(obj);
+    }
+    return nullptr;
+ }
+
+std::vector<App::DocumentObject*> ViewProviderVariant::extensionClaimChildren() const
+{
+    std::vector<App::DocumentObject*> children = Gui::ViewProviderGroupExtension::extensionClaimChildren();
+    for (auto obj : children) {
+        ViewProvider* vp = getViewProvider(obj);
+        auto vpObj = dynamic_cast<ViewProviderDocumentObject*>(vp);
+        if (vpObj) {
+            vpObj->ShowInTree.setValue(false);
+        }
+    }
+    return children;
+}
+
+
+QIcon ViewProviderVariant::getNonOverlayIcon() const
+{
+    auto ext = pcObject->getExtensionByType<App::VariantExtension>(true);
+    if (ext) {
+        auto support = ext->Support.getValue();
+        if (support) {
+            ViewProvider* vp = getViewProvider(support);
+            if (vp && vp->isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
+                return vp->getIcon();
+            }
+        }
+    }
+    return ViewProviderPart::getIcon();
+}
+
+
+QIcon ViewProviderVariant::getIcon() const
+{
+    int sizeOverlay = 12 * getMainWindow()->devicePixelRatioF();
+    static int iconSize = -1;
+    if(iconSize < 0) {
+        iconSize = QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon).width();
+    }
+
+    QPixmap overlay = BitmapFactory().pixmapFromSvg("VariantOverlay", QSizeF(sizeOverlay, sizeOverlay));
+    QIcon nonOverlayIcon = getNonOverlayIcon();
+    QIcon icon = QIcon();
+    icon.addPixmap(BitmapFactory().merge(nonOverlayIcon.pixmap(iconSize, iconSize, QIcon::Normal, QIcon::Off),
+                                         overlay, BitmapFactoryInst::BottomRight), QIcon::Normal, QIcon::Off);
+    icon.addPixmap(BitmapFactory().merge(nonOverlayIcon.pixmap(iconSize, iconSize, QIcon::Normal, QIcon::On),
+                                         overlay, BitmapFactoryInst::BottomRight), QIcon::Normal, QIcon::On);
+    return icon;
+}
+

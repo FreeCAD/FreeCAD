@@ -37,6 +37,8 @@ class PartExport Variant : public Part::Feature, public App::VariantExtension
 
 public:
     Variant();
+
+    const char* getViewProviderName() const override;
 };
 
 } // namespace Part

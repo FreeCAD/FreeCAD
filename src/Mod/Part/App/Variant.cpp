@@ -38,5 +38,10 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Part::Variant, Part::Feature)
 
 Variant::Variant()
 {
-  App::GroupExtension::initExtension(this);
+    App::VariantExtension::initExtension(this);
+}
+
+const char* Variant::getViewProviderName() const
+{
+    return "PartGui::ViewProviderVariant";
 }

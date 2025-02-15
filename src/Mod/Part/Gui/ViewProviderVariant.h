@@ -24,13 +24,14 @@
 #ifndef PARTGUI_VIEWPROVIDERVARIANT_H
 #define PARTGUI_VIEWPROVIDERVARIANT_H
 
+#include <Gui/ViewProviderGroupExtension.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 namespace PartGui {
 
-class PartGuiExport ViewProviderVariant : public ViewProviderPart
+class PartGuiExport ViewProviderVariant : public ViewProviderPart, public Gui::ViewProviderGroupExtension
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderVariant);
+    PROPERTY_HEADER_WITH_EXTENSIONS(PartGui::ViewProviderVariant);
 
 public:
     /// constructor
@@ -40,7 +41,13 @@ public:
 
     std::vector<std::string> getDisplayModes() const override;
 
-protected:
+    QIcon getIcon() const override;
+
+    std::vector<App::DocumentObject*> extensionClaimChildren() const override;
+
+private:
+
+    QIcon getNonOverlayIcon() const;
 
 };
 
