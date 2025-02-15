@@ -28,7 +28,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <Base/Type.h>
 #include <Gui/Application.h>

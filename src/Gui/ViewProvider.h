@@ -28,7 +28,7 @@
 #include <string>
 #include <vector>
 #include <QIcon>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <boost/intrusive_ptr.hpp>
 
 #include <App/Material.h>
