@@ -199,7 +199,7 @@ StartView::StartView(QWidget* parent)
     if (!legacyCustomFolder.empty()) {
         hGrp->SetASCII("CustomFolder", legacyCustomFolder);
         hGrp->RemoveASCII("ShowCustomFolder");
-        Base::Console().Warning("v1.1: renamed ShowCustomFolder parameter to CustomFolder\n");
+        Base::Console().Message("v1.1: renamed ShowCustomFolder parameter to CustomFolder\n");
     }
     // End of migration code
 
