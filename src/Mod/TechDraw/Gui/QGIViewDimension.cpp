@@ -2788,7 +2788,7 @@ QColor QGIViewDimension::prefNormalColor()
     if (vp) {
         vpDim = dynamic_cast<ViewProviderDimension*>(vp);
         if (vpDim) {
-            App::Color fcColor = vpDim->Color.getValue();
+            Base::Color fcColor = vpDim->Color.getValue();
             fcColor = Preferences::getAccessibleColor(fcColor);
             setNormalColor(fcColor.asValue<QColor>());
         }

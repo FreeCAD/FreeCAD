@@ -534,9 +534,9 @@ private:
     bool vboEnabled;
     bool naviCubeEnabled;
 
-    App::Color m_xColor;
-    App::Color m_yColor;
-    App::Color m_zColor;
+    Base::Color m_xColor;
+    Base::Color m_yColor;
+    Base::Color m_zColor;
 
     bool editing;
     QCursor editCursor, zoomCursor, panCursor, spinCursor;

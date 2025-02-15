@@ -24,12 +24,12 @@
 #ifndef GUI_COLORTRAITS_H
 #define GUI_COLORTRAITS_H
 
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbColor4f.h>
 #include <QColor>
 
-namespace App
+namespace Base
 {
 // Specialization for SbColor
 template<>
@@ -188,91 +188,6 @@ struct color_traits<SbColor4f>
     void setAlpha(int alpha)
     {
         ct[3] = static_cast<float>(alpha) / 255.0F;
-    }
-    static color_type makeColor(int red, int green, int blue, int alpha = 255)
-    {
-        return color_type{static_cast<float>(red) / 255.0F,
-                          static_cast<float>(green) / 255.0F,
-                          static_cast<float>(blue) / 255.0F,
-                          static_cast<float>(alpha) / 255.0F};
-    }
-
-private:
-    color_type ct;
-};
-
-// Specialization for Color
-template<>
-struct color_traits<App::Color>
-{
-    using color_type = App::Color;
-    color_traits() = default;
-    explicit color_traits(const color_type& ct)
-        : ct(ct)
-    {}
-    float redF() const
-    {
-        return ct.r;
-    }
-    float greenF() const
-    {
-        return ct.g;
-    }
-    float blueF() const
-    {
-        return ct.b;
-    }
-    float alphaF() const
-    {
-        return ct.a;
-    }
-    void setRedF(float red)
-    {
-        ct.r = red;
-    }
-    void setGreenF(float green)
-    {
-        ct.g = green;
-    }
-    void setBlueF(float blue)
-    {
-        ct.b = blue;
-    }
-    void setAlphaF(float alpha)
-    {
-        ct.a = alpha;
-    }
-    int red() const
-    {
-        return int(std::lround(ct.r * 255.0F));
-    }
-    int green() const
-    {
-        return int(std::lround(ct.g * 255.0F));
-    }
-    int blue() const
-    {
-        return int(std::lround(ct.b * 255.0F));
-    }
-    int alpha() const
-    {
-        return int(std::lround(ct.a * 255.0F));
-    }
-    void setRed(int red)
-    {
-        ct.r = static_cast<float>(red) / 255.0F;
-    }
-    void setGreen(int green)
-    {
-        ct.g = static_cast<float>(green) / 255.0F;
-    }
-    void setBlue(int blue)
-    {
-        ct.b = static_cast<float>(blue) / 255.0F;
-    }
-    void setAlpha(int alpha)
-    {
-        ct.a = static_cast<float>(alpha) / 255.0F;
     }
     static color_type makeColor(int red, int green, int blue, int alpha = 255)
     {

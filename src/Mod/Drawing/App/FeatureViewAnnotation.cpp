@@ -58,7 +58,7 @@ FeatureViewAnnotation::~FeatureViewAnnotation()
 App::DocumentObjectExecReturn* FeatureViewAnnotation::execute(void)
 {
     stringstream result, hr, hg, hb;
-    const App::Color& c = TextColor.getValue();
+    const Base::Color& c = TextColor.getValue();
     hr << hex << setfill('0') << setw(2) << (int)(255.0 * c.r);
     hg << hex << setfill('0') << setw(2) << (int)(255.0 * c.g);
     hb << hex << setfill('0') << setw(2) << (int)(255.0 * c.b);

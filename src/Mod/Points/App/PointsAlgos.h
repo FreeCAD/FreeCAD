@@ -57,7 +57,7 @@ public:
     bool hasProperties() const;
     const std::vector<float>& getIntensities() const;
     bool hasIntensities() const;
-    const std::vector<App::Color>& getColors() const;
+    const std::vector<Base::Color>& getColors() const;
     bool hasColors() const;
     const std::vector<Base::Vector3f>& getNormals() const;
     bool hasNormals() const;
@@ -74,7 +74,7 @@ protected:
     // NOLINTBEGIN
     PointKernel points;
     std::vector<float> intensity;
-    std::vector<App::Color> colors;
+    std::vector<Base::Color> colors;
     std::vector<Base::Vector3f> normals;
     int width {0};
     int height {1};
@@ -149,7 +149,7 @@ public:
     virtual void write(const std::string& filename) = 0;
 
     void setIntensities(const std::vector<float>&);
-    void setColors(const std::vector<App::Color>&);
+    void setColors(const std::vector<Base::Color>&);
     void setNormals(const std::vector<Base::Vector3f>&);
     void setWidth(int);
     void setHeight(int);
@@ -164,7 +164,7 @@ protected:
     // NOLINTBEGIN
     const PointKernel& points;
     std::vector<float> intensity;
-    std::vector<App::Color> colors;
+    std::vector<Base::Color> colors;
     std::vector<Base::Vector3f> normals;
     int width, height;
     Base::Placement placement;

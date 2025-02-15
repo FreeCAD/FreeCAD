@@ -34,7 +34,7 @@ PROPERTY_SOURCE(Gui::ViewProviderFeature, Gui::ViewProviderDocumentObject)
 
 ViewProviderFeature::ViewProviderFeature()
 {
-    App::Color c;
+    Base::Color c;
     ADD_PROPERTY(ColourList,(c));
 }
 

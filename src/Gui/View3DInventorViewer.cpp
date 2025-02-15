@@ -1432,7 +1432,7 @@ void View3DInventorViewer::showRotationCenter(bool show)
                     .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
                     ->GetUnsigned("RotationCenterColor", 4278190131);  // NOLINT
 
-            QColor color = App::Color::fromPackedRGBA<QColor>(rotationCenterColor);
+            QColor color = Base::Color::fromPackedRGBA<QColor>(rotationCenterColor);
 
             rotationCenterGroup = new SoSkipBoundingGroup();
 
@@ -2461,7 +2461,7 @@ void View3DInventorViewer::renderScene()
         draw2DString(stream.str().c_str(),
                      SbVec2s(10, 10),
                      SbVec2f((overlayLeftWidgets.empty() ? 0.1f : 1.1f), 0.1f),
-                     App::Color(static_cast<uint32_t>(axisLetterColor)));  // NOLINT
+                     Base::Color(static_cast<uint32_t>(axisLetterColor)));  // NOLINT
     }
 
     if (naviCubeEnabled) {
@@ -3748,11 +3748,11 @@ void View3DInventorViewer::updateColors()
     unsigned long colorLong;
 
     colorLong = Gui::ViewParams::instance()->getAxisXColor();
-    m_xColor = App::Color(static_cast<uint32_t>(colorLong));
+    m_xColor = Base::Color(static_cast<uint32_t>(colorLong));
     colorLong = Gui::ViewParams::instance()->getAxisYColor();
-    m_yColor = App::Color(static_cast<uint32_t>(colorLong));
+    m_yColor = Base::Color(static_cast<uint32_t>(colorLong));
     colorLong = Gui::ViewParams::instance()->getAxisZColor();
-    m_zColor = App::Color(static_cast<uint32_t>(colorLong));
+    m_zColor = Base::Color(static_cast<uint32_t>(colorLong));
 
     naviCube->updateColors();
 

@@ -136,9 +136,9 @@ public:
             "User parameter:BaseApp/Preferences/Mod/Start");
 
         auto getUserColor = [&hGrp](QColor color, const char* parameter) {
-            uint32_t packed = App::Color::asPackedRGB<QColor>(color);
+            uint32_t packed = Base::Color::asPackedRGB<QColor>(color);
             packed = hGrp->GetUnsigned(parameter, packed);
-            color = App::Color::fromPackedRGB<QColor>(packed);
+            color = Base::Color::fromPackedRGB<QColor>(packed);
             return color;
         };
 

@@ -31,6 +31,7 @@
 
 #ifndef BASE_PARAMETER_H
 #define BASE_PARAMETER_H
+#include <Base/Color.h>
 
 // Python stuff
 using PyObject = struct _object;

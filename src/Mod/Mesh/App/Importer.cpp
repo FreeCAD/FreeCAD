@@ -65,19 +65,19 @@ void Importer::load(const std::string& fileName)
     }
 }
 
-void Importer::addVertexColors(Feature* feature, const std::vector<App::Color>& colors)
+void Importer::addVertexColors(Feature* feature, const std::vector<Base::Color>& colors)
 {
     addColors(feature, "VertexColors", colors);
 }
 
-void Importer::addFaceColors(Feature* feature, const std::vector<App::Color>& colors)
+void Importer::addFaceColors(Feature* feature, const std::vector<Base::Color>& colors)
 {
     addColors(feature, "FaceColors", colors);
 }
 
 void Importer::addColors(Feature* feature,
                          const std::string& property,
-                         const std::vector<App::Color>& colors)
+                         const std::vector<Base::Color>& colors)
 {
     App::PropertyColorList* prop = static_cast<App::PropertyColorList*>(
         feature->addDynamicProperty("App::PropertyColorList", property.c_str()));
@@ -105,7 +105,7 @@ void Importer::createMeshFromSegments(const std::string& name,
         if (mat.binding == MeshCore::MeshIO::PER_FACE
             && mat.diffuseColor.size() == mesh.countFacets()) {
 
-            std::vector<App::Color> diffuseColor;
+            std::vector<Base::Color> diffuseColor;
             diffuseColor.reserve(group.getIndices().size());
             for (const auto& it : group.getIndices()) {
                 diffuseColor.push_back(mat.diffuseColor[it]);
