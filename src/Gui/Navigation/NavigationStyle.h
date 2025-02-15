@@ -384,14 +384,14 @@ private:
     SbBool lockButton1{false};
 };
 
-class GuiExport SWNavigationStyle : public UserNavigationStyle {
+class GuiExport SolidWorksNavigationStyle : public UserNavigationStyle {
     using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-SWNavigationStyle();
-    ~SWNavigationStyle() override;
+SolidWorksNavigationStyle();
+    ~SolidWorksNavigationStyle() override;
     const char* mouseButtons(ViewerMode) override;
 
 protected:

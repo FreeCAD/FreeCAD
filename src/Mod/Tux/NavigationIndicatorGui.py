@@ -76,6 +76,7 @@ def RePopulateIcons():
     a8.setIcon(QtGui.QIcon(":/icons/NavigationRevit_" + StyleSheetType + ".svg"))
     a9.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
     a10.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
+    a11.setIcon(QtGui.QIcon(":/icons/NavigationSolidWorks_" + StyleSheetType + ".svg"))
 
 
 def retranslateUi():
@@ -566,6 +567,44 @@ def retranslateUi():
         + "</p>"
     )
 
+    global t11
+    t11 = (
+        "<p align='center'><b>SolidWorks</b> "
+        + text06
+        + """</p>
+    <table>
+     <tr>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMiddle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_CtrlMiddle.svg'></td>
+     </tr>
+    </table>
+    <b>"""
+        + text08
+        + ":</b> "
+        + text10
+        + "</small></p>"
+    )
+
     menuSettings.setTitle(translate("NavigationIndicator", "Settings"))
     menuOrbit.setTitle(translate("NavigationIndicator", "Orbit style"))
     aCompact.setText(translate("NavigationIndicator", "Compact"))
@@ -670,6 +709,11 @@ a10.setText("Touchpad  ")
 a10.setData("Gui::TouchpadNavigationStyle")
 a10.setObjectName("Indicator_NavigationTouchpad")
 
+a11 = QtGui.QAction(gStyle)
+a11.setText("SolidWorks  ")
+a11.setData("Gui::SolidWorksNavigationStyle")
+a11.setObjectName("Indicator_NavigationSolidWorks")
+
 RePopulateIcons()
 
 menu.addMenu(menuSettings)
@@ -685,6 +729,7 @@ menu.addAction(a7)
 menu.addAction(a8)
 menu.addAction(a9)
 menu.addAction(a10)
+menu.addAction(a11)
 
 pView.Attach(indicator)
 
@@ -725,6 +770,7 @@ def onTooltip():
         a8.setToolTip(t8)
         a9.setToolTip(t9)
         a10.setToolTip(t10)
+        a11.setToolTip(t11)
         p.SetBool("Tooltip", 1)
     else:
         for i in gStyle.actions():

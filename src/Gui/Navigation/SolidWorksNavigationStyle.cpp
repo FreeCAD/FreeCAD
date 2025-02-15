@@ -35,17 +35,17 @@ using namespace Gui;
 
 // ----------------------------------------------------------------------------------
 
-/* TRANSLATOR Gui::SWNavigationStyle */
+/* TRANSLATOR Gui::SolidWorksNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::SWNavigationStyle, Gui::UserNavigationStyle)
+TYPESYSTEM_SOURCE(Gui::SolidWorksNavigationStyle, Gui::UserNavigationStyle)
 
-SWNavigationStyle::SWNavigationStyle() : lockButton1(false)
+SolidWorksNavigationStyle::SolidWorksNavigationStyle() : lockButton1(false)
 {
 }
 
-SWNavigationStyle::~SWNavigationStyle() = default;
+SolidWorksNavigationStyle::~SolidWorksNavigationStyle() = default;
 
-const char* SWNavigationStyle::mouseButtons(ViewerMode mode)
+const char* SolidWorksNavigationStyle::mouseButtons(ViewerMode mode)
 {
     switch (mode) {
     case NavigationStyle::SELECTION:
@@ -61,7 +61,7 @@ const char* SWNavigationStyle::mouseButtons(ViewerMode mode)
     }
 }
 
-SbBool SWNavigationStyle::processSoEvent(const SoEvent * const ev)
+SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent * const ev)
 {
     // Events when in "ready-to-seek" mode are ignored, except those
     // which influence the seek mode itself -- these are handled further
