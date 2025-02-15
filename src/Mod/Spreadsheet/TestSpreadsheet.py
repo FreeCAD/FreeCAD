@@ -112,33 +112,31 @@ class SpreadsheetAggregates(unittest.TestCase):
     def tearDownClass(cls):
         FreeCAD.closeDocument(cls.doc.Name)
 
-    def test_values(self):
+    def test_sum(self):
         self.assertEqual(self.sheet.A1, 1)
         self.assertEqual(self.sheet.A2, 3)
         self.assertEqual(self.sheet.A3, 6)
         self.assertEqual(self.sheet.A4, 10)
         self.assertEqual(self.sheet.A5, 21)
 
-    def test_sum(self):
+    def test_min(self):
         self.assertEqual(self.sheet.B1, 1)
         self.assertEqual(self.sheet.B2, 1)
         self.assertEqual(self.sheet.B3, 1)
         self.assertEqual(self.sheet.B4, 1)
         self.assertEqual(self.sheet.B5, 1)
 
-    def test_min(self):
+    def test_max(self):
         self.assertEqual(self.sheet.C1, 1)
         self.assertEqual(self.sheet.C2, 2)
         self.assertEqual(self.sheet.C3, 3)
         self.assertEqual(self.sheet.C4, 4)
         self.assertEqual(self.sheet.C5, 6)
 
-    def test_max(self):
+    def test_stddev(self):
         self.assertTrue(
             self.sheet.D1.startswith("ERR: Invalid number of entries: at least two required.")
         )
-
-    def test_stddev(self):
         self.assertEqual(self.sheet.D2, 0.7071067811865476)
         self.assertEqual(self.sheet.D3, 1.0)
         self.assertEqual(self.sheet.D4, 1.2909944487358056)
@@ -315,9 +313,8 @@ class SpreadsheetFunction(unittest.TestCase):
             self.assertNotIsInstance(b, str)
             self.assertTrue(
                 math.fabs(a - b) < 1e-14,
-                "Values are not equal: %s != %s" % (a, b),
+                "Values are not 'Mostly Equal': %s != %s" % (a, b),
             )
-            self.assertTrue(math.fabs(a - b) < 1e-14)
 
     def test_cos_num(self):
         self.assertMostlyEqual(self.sheet.A1, 0.5)
