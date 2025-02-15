@@ -24,18 +24,22 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge.hxx>
+# include <TopoDS.hxx>
 #endif
 
-#include <App/Application.h>
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/App/CosmeticEdgePy.h>
 #include <Mod/TechDraw/App/GeomFormatPy.h>
 
 #include "Cosmetic.h"
+#include "CosmeticVertex.h"
 #include "DrawUtil.h"
-#include "DrawViewPart.h"
-#include "GeometryObject.h"
+#include "ShapeUtils.h"
 #include "Preferences.h"
+
+namespace TechDraw {
+class DrawViewPart;
+}
 
 using namespace TechDraw;
 using namespace std;

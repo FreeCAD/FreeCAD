@@ -60,31 +60,22 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
-#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
-#include <BRepAlgo_NormalProjection.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepGProp.hxx>
 #include <BRepLProp_SLProps.hxx>
-#include <BRepLib.hxx>
-#include <BRepPrimAPI_MakeBox.hxx>
-#include <BRepPrimAPI_MakeHalfSpace.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
 #include <Bnd_Box.hxx>
-#include <Bnd_OBB.hxx>
 #include <GProp_GProps.hxx>
-#include <Geom_Plane.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentRun>
-#include <ShapeExtend_WireData.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
@@ -105,15 +96,8 @@
 
 #include <sstream>
 
-#include <App/Application.h>
 #include <App/Document.h>
-#include <App/Material.h>
-#include <Base/BoundBox.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Interpreter.h>
-#include <Base/Parameter.h>
 
 #include <Mod/Part/App/PartFeature.h>
 
@@ -123,8 +107,58 @@
 #include "ShapeUtils.h"
 
 using namespace TechDraw;
-using namespace std;
 using DU = DrawUtil;
+
+//===========================================================================
+// Helpers
+//===========================================================================
+
+// Anonymous namespace
+namespace {
+//returns the normal of the face to be extruded into a cutting tool
+//the face is expected to be planar
+// TODO: Consider using GeomLib::NormEstim?
+gp_Dir getFaceNormal(TopoDS_Face& face)
+{
+    BRepAdaptor_Surface adapt(face);
+    double uParmFirst = adapt.FirstUParameter();
+    double uParmLast = adapt.LastUParameter();
+    double vParmFirst = adapt.FirstVParameter();
+    double vParmLast = adapt.LastVParameter();
+    double uMid = (uParmFirst + uParmLast) / 2.0;
+    double vMid = (vParmFirst + vParmLast) / 2.0;
+
+    BRepLProp_SLProps prop(adapt, uMid, vMid, 1, 0.01);
+    gp_Dir normalDir(0.0, 0.0, 1.0);//default
+    if (prop.IsNormalDefined()) {
+        normalDir = prop.Normal();
+    }
+    return normalDir;
+}
+
+//static
+//TODO: centralize all the projection routines scattered around the module!
+gp_Vec projectVector(const gp_Vec& vec, gp_Ax2 sectionCS)
+{
+    //    Base::Console().Message("DCS::projectVector(%s, CS)\n", DU::formatVector(vec).c_str());
+    HLRAlgo_Projector projector(sectionCS);
+    gp_Pnt2d prjPnt;
+    projector.Project(gp_Pnt(vec.XYZ()), prjPnt);
+    return gp_Vec(prjPnt.X(), prjPnt.Y(), 0.0);
+}
+
+gp_Vec makeProfileVector(TopoDS_Wire profileWire)
+{
+    //    Base::Console().Message("DCS::makeProfileVector()\n");
+    TopoDS_Vertex tvFirst, tvLast;
+    TopExp::Vertices(profileWire, tvFirst, tvLast);
+    gp_Pnt gpFirst = BRep_Tool::Pnt(tvFirst);
+    gp_Pnt gpLast = BRep_Tool::Pnt(tvLast);
+    return (gp_Vec(gpLast.XYZ()) - gp_Vec(gpFirst.XYZ())).Normalized();
+}
+
+} // anonymous namespace
+
 
 //===========================================================================
 // DrawComplexSection
@@ -356,7 +390,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
     //now we want to know what the profileVector looks like on the page (only X,Y coords)
     //so we know if we are going to stack views vertically or horizontally and if the segments
     //will occur (left to right or right to left) or (top to bottom or bottom to top)
-    gProfileVec = projectVector(gProfileVec).Normalized();
+    gProfileVec = projectVector(gProfileVec, getProjectionCS()).Normalized();
 
     bool isProfileVertical = true;
     if (fabs(gProfileVec.Dot(gp::OY().Direction().XYZ())) != 1.0) {
@@ -398,7 +432,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
             continue;
         }
         if (debugSection()) {
-            stringstream ss;
+            std::stringstream ss;
             ss << "DCSAintersect" << iPiece << ".brep";
             BRepTools::Write(intersect, ss.str().c_str());//debug
             ss.clear();
@@ -421,7 +455,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
         BRepBuilderAPI_Transform mkTransXLate(intersect, xPieceCenter, true);
         TopoDS_Shape pieceCentered = mkTransXLate.Shape();
         if (debugSection()) {
-            stringstream ss;
+            std::stringstream ss;
             ss << "DCSBpieceCentered" << iPiece << ".brep";
             BRepTools::Write(pieceCentered, ss.str().c_str());//debug
             ss.clear();
@@ -441,7 +475,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
         TopoDS_Shape pieceRotated = mkTransRotate.Shape();
 
         if (debugSection()) {
-            stringstream ss;
+            std::stringstream ss;
             ss << "DCSCpieceRotated" << iPiece << ".brep";
             BRepTools::Write(pieceRotated, ss.str().c_str());//debug
             ss.clear();
@@ -465,7 +499,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
         pieceAligned = mkTransRecenter.Shape();
 
         if (debugSection()) {
-            stringstream ss;
+            std::stringstream ss;
             ss << "DCSDpieceAligned" << iPiece << ".brep";
             BRepTools::Write(pieceAligned, ss.str().c_str());//debug
             ss.clear();
@@ -493,7 +527,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
         TopoDS_Shape pieceToPlane = mkTransDisplace.Shape();
 
         if (debugSection()) {
-            stringstream ss;
+            std::stringstream ss;
             ss << "DCSEpieceToPlane" << iPiece << ".brep";
             BRepTools::Write(pieceToPlane, ss.str().c_str());//debug
         }
@@ -535,7 +569,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
         distanceToMove += pieceSizeMoveDist;
 
         if (debugSection()) {
-            stringstream ss;
+            std::stringstream ss;
             ss << "DCSFpieceSpaced" << iPiece << ".brep";
             BRepTools::Write(pieces.at(iPiece), ss.str().c_str());//debug
         }
@@ -724,16 +758,6 @@ TopoDS_Wire DrawComplexSection::makeProfileWire(App::DocumentObject* toolObj)
         profileWire = BRepBuilderAPI_MakeWire(edge).Wire();
     }
     return profileWire;
-}
-
-gp_Vec DrawComplexSection::makeProfileVector(TopoDS_Wire profileWire)
-{
-    //    Base::Console().Message("DCS::makeProfileVector()\n");
-    TopoDS_Vertex tvFirst, tvLast;
-    TopExp::Vertices(profileWire, tvFirst, tvLast);
-    gp_Pnt gpFirst = BRep_Tool::Pnt(tvFirst);
-    gp_Pnt gpLast = BRep_Tool::Pnt(tvLast);
-    return (gp_Vec(gpLast.XYZ()) - gp_Vec(gpFirst.XYZ())).Normalized();
 }
 
 //methods related to section line
@@ -942,15 +966,6 @@ gp_Ax2 DrawComplexSection::getCSFromBase(const std::string sectionName) const
     return DrawViewSection::getCSFromBase(sectionName);
 }
 
-//simple projection of a 3d vector onto the paper space
-gp_Vec DrawComplexSection::projectVector(const gp_Vec& vec) const
-{
-    HLRAlgo_Projector projector(getProjectionCS());
-    gp_Pnt2d prjPnt;
-    projector.Project(gp_Pnt(vec.XYZ()), prjPnt);
-    return gp_Vec(prjPnt.X(), prjPnt.Y(), 0.0);
-}
-
 // check for profile segments that are almost, but not quite in the same direction
 // as the section normal direction.  this often indicates a problem with the direction
 // being slightly wrong.  see https://forum.freecad.org/viewtopic.php?t=79017&sid=612a62a60f5db955ee071a7aaa362dbb
@@ -984,17 +999,6 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::getSegmentEnds(Top
     result.first = DU::toVector3d(gpFirst);
     result.second = DU::toVector3d(gpLast);
     return result;
-}
-
-//static
-//TODO: centralize all the projection routines scattered around the module!
-gp_Vec DrawComplexSection::projectVector(const gp_Vec& vec, gp_Ax2 sectionCS)
-{
-    //    Base::Console().Message("DCS::projectVector(%s, CS)\n", DU::formatVector(vec).c_str());
-    HLRAlgo_Projector projector(sectionCS);
-    gp_Pnt2d prjPnt;
-    projector.Project(gp_Pnt(vec.XYZ()), prjPnt);
-    return gp_Vec(prjPnt.X(), prjPnt.Y(), 0.0);
 }
 
 //get the "effective" (flattened) section plane for Aligned and
@@ -1078,7 +1082,7 @@ bool DrawComplexSection::validateProfilePosition(TopoDS_Wire profileWire, gp_Ax2
     return true;
 }
 
-bool DrawComplexSection::showSegment(gp_Dir segmentNormal) const
+bool DrawComplexSection::showSegment(const gp_Dir& segmentNormal) const
 {
     if (ProjectionStrategy.getValue() < 2) {
         //Offset or Aligned are always true
@@ -1131,26 +1135,6 @@ TopoDS_Shape DrawComplexSection::extrudeWireToFace(TopoDS_Wire& wire, gp_Dir ext
     BRepPrimAPI_MakePrism mkPrism(wire, gp_Vec(extrudeDir) * 2.0 * extrudeDist);
 
     return mkPrism.Shape();
-}
-
-//returns the normal of the face to be extruded into a cutting tool
-//the face is expected to be planar
-gp_Dir DrawComplexSection::getFaceNormal(TopoDS_Face& face)
-{
-    BRepAdaptor_Surface adapt(face);
-    double uParmFirst = adapt.FirstUParameter();
-    double uParmLast = adapt.LastUParameter();
-    double vParmFirst = adapt.FirstVParameter();
-    double vParmLast = adapt.LastVParameter();
-    double uMid = (uParmFirst + uParmLast) / 2.0;
-    double vMid = (vParmFirst + vParmLast) / 2.0;
-
-    BRepLProp_SLProps prop(adapt, uMid, vMid, 1, 0.01);
-    gp_Dir normalDir(0.0, 0.0, 1.0);//default
-    if (prop.IsNormalDefined()) {
-        normalDir = prop.Normal();
-    }
-    return normalDir;
 }
 
 bool DrawComplexSection::boxesIntersect(TopoDS_Face& face, TopoDS_Shape& shape)

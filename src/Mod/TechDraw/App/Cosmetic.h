@@ -23,10 +23,7 @@
 #ifndef TECHDRAW_COSMETIC_H
 #define TECHDRAW_COSMETIC_H
 
-#include <QColor>
-
-#include <App/FeaturePython.h>
-#include <App/Color.h>
+#include <CXX/Objects.hxx>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 

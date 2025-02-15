@@ -23,13 +23,15 @@
 #ifndef TechDraw_DrawLeaderLine_h_
 #define TechDraw_DrawLeaderLine_h_
 
-#include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
-#include <App/PropertyLinks.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawView.h"
 
+namespace App {
+class DocumentObject;
+class DocumentObjectExecReturn;
+}
 
 namespace TechDraw
 {

@@ -27,7 +27,6 @@
 #endif
 
 #include <App/Application.h>
-#include <App/Document.h>
 
 #include "DrawTileWeld.h"
 #include "DrawTileWeldPy.h"  // generated from DrawTileWeldPy.xml

@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
+# include <TopoDS.hxx>
 #endif
 
 #include <App/DocumentObject.h>
@@ -36,6 +37,7 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>

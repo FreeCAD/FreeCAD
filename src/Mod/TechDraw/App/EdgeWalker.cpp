@@ -41,6 +41,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Exception.h>
 
 #include "EdgeWalker.h"
 #include "DrawUtil.h"

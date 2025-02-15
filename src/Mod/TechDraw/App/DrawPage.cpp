@@ -27,7 +27,6 @@
 # include <Precision.hxx>
 #endif
 
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/Link.h>
 #include <Base/Console.h>

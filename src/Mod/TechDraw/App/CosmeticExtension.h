@@ -28,7 +28,6 @@
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include "Geometry.h"
 #include "PropertyCenterLineList.h"
 #include "PropertyCosmeticEdgeList.h"
 #include "PropertyCosmeticVertexList.h"

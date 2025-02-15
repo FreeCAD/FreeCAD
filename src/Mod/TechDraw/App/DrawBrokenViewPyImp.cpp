@@ -20,14 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#include <Base/Console.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 
 #include "DrawBrokenView.h"
-#include "DrawViewPart.h"
 // inclusion of the generated files
 #include <Mod/TechDraw/App/DrawViewPartPy.h>
 #include <Mod/TechDraw/App/DrawBrokenViewPy.h>

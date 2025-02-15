@@ -42,24 +42,18 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <BRepAdaptor_Curve.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRepPrimAPI_MakePrism.hxx>
+#include <BRepPrimAPI_MakeHalfSpace.hxx>
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
 #include <Bnd_Box.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <QtConcurrentRun>
-#include <ShapeAnalysis.hxx>
-#include <ShapeFix_Shape.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
+#include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
@@ -70,22 +64,11 @@
 #include <gp_Pnt.hxx>
 #endif
 
-#include <App/Document.h>
-#include <Base/BoundBox.h>
 #include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
 
-#include <Mod/Part/App/PartFeature.h>
-
-#include "DrawGeomHatch.h"
-#include "DrawHatch.h"
 #include "DrawUtil.h"
-#include "DrawViewDetail.h"
-#include "GeometryObject.h"
 #include "ShapeExtractor.h"
 #include "ShapeUtils.h"
-// #include "Preferences.h"
 
 #include "DrawBrokenView.h"
 #include "DrawBrokenViewPy.h"

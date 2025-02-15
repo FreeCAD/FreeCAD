@@ -25,30 +25,19 @@
 # include <TopoDS_Shape.hxx>
 #endif
 
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <TopExp.hxx>
-
-#include <App/GeoFeature.h>
-#include <App/DocumentObject.h>
 #include <App/Document.h>
-#include <App/Link.h>
 #include <Base/Console.h>
 
 #include <Mod/Measure/App/ShapeFinder.h>
 #include <Mod/Part/App/TopoShape.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/Feature.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "DimensionReferences.h"
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
 #include "ShapeUtils.h"
-#include "CosmeticVertex.h"
 
 using namespace TechDraw;
-using namespace Measure;
 using DU = DrawUtil;
 using SU = ShapeUtils;
 
@@ -114,7 +103,7 @@ TopoDS_Shape ReferenceEntry::getGeometry() const
     }
 
     // 3d geometry
-    return ShapeFinder::getLocatedShape(*getObject(), getSubName(true));
+    return Measure::ShapeFinder::getLocatedShape(*getObject(), getSubName(true));
 }
 
 
@@ -163,7 +152,7 @@ std::string ReferenceEntry::getSubName(bool longForm) const
         return m_subName;
     }
 
-    return ShapeFinder::getLastTerm(m_subName);
+    return Measure::ShapeFinder::getLastTerm(m_subName);
 }
 
 

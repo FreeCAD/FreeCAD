@@ -25,8 +25,6 @@
 
 #include "PreCompiled.h"
 
-#include <App/Application.h>
-#include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
 #include "CosmeticVertex.h"
@@ -37,7 +35,6 @@
 #include "DrawViewPart.h"
 
 using namespace TechDraw;
-using namespace std;
 using DU = DrawUtil;
 
 TYPESYSTEM_SOURCE(TechDraw::CosmeticVertex, Base::Persistence)
@@ -119,13 +116,13 @@ void CosmeticVertex::Save(Base::Writer &writer) const
                 << "X=\"" <<  permaPoint.x <<
                 "\" Y=\"" <<  permaPoint.y <<
                 "\" Z=\"" <<  permaPoint.z <<
-                 "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<LinkGeom value=\"" <<  linkGeom << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Color value=\"" <<  color.asHexString() << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Size value=\"" <<  size << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Style value=\"" <<  style << "\"/>" << endl;
+                 "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<LinkGeom value=\"" <<  linkGeom << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Color value=\"" <<  color.asHexString() << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Size value=\"" <<  size << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Style value=\"" <<  style << "\"/>" << std::endl;
     const char v = visible?'1':'0';
-    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << std::endl;
     Tag::Save(writer);
 }
 

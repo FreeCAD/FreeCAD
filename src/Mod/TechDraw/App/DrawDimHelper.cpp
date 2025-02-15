@@ -37,7 +37,6 @@
 #endif
 
 #include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Vector3D.h>
@@ -57,10 +56,14 @@
 #define VERTICAL 1
 #define LENGTH 2
 
+namespace App {
+class DocumentObject;
+}
+
 using namespace TechDraw;
 
 DrawViewDimension* DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
-    const std::string& dimType, ReferenceVector references2d)
+    const std::string& dimType, const ReferenceVector& references2d)
 {
     std::vector<std::string> edgeNames;
     for (auto& ref : references2d) {
@@ -138,13 +141,13 @@ DrawViewDimension* DrawDimHelper::makeExtentDim(DrawViewPart* dvp, std::vector<s
     return dimExt;
 }
 
-void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp, const std::string& dimType, ReferenceVector references3d)
+void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp, const std::string& dimType, const ReferenceVector& references3d)
 {
     int direction = dimType == "DistanceX" ? 0 : dimType == "DistanceY" ? 1 : 2;
     return makeExtentDim3d(dvp, references3d, direction);
 }
 
-void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp, ReferenceVector references, int direction)
+void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp, const ReferenceVector& references, int direction)
 {
     //    Base::Console().Message("DDH::makeExtentDim3d() - dvp: %s references: %d\n",
     //                            dvp->Label.getValue(), references.size());
@@ -294,7 +297,7 @@ DrawDimHelper::minMax(DrawViewPart* dvp, std::vector<std::string> edgeNames, int
 
 //given list of curves, find the closest point from any curve to a boundary
 //computation intensive for a cosmetic result.
-gp_Pnt DrawDimHelper::findClosestPoint(std::vector<TopoDS_Edge> inEdges, TopoDS_Edge& boundary)
+gp_Pnt DrawDimHelper::findClosestPoint(const std::vector<TopoDS_Edge>& inEdges, TopoDS_Edge& boundary)
 {
     //    Base::Console().Message("DDH::findClosestPoint() - edges: %d\n", inEdges.size());
     //
@@ -322,7 +325,7 @@ gp_Pnt DrawDimHelper::findClosestPoint(std::vector<TopoDS_Edge> inEdges, TopoDS_
 }
 
 std::pair<Base::Vector3d, Base::Vector3d>
-DrawDimHelper::minMax3d(DrawViewPart* dvp, ReferenceVector references, int direction)
+DrawDimHelper::minMax3d(DrawViewPart* dvp, const ReferenceVector& references, int direction)
 {
     //    Base::Console().Message("DDH::minMax3d() - references: %d\n", references.size());
     std::pair<Base::Vector3d, Base::Vector3d> result;

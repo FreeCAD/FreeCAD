@@ -28,12 +28,14 @@
 #include <string>
 #include <vector>
 
+#include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
 
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/TechDraw/App/Geometry.h>
+
+class TopoDS_Edge;
+class TopoDS_Vertex;
 
 namespace App
 {

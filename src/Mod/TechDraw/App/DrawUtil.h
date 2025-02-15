@@ -25,26 +25,21 @@
 
 #include <string>
 
-#include <QByteArray>
 #include <QPointF>
 #include <QString>
 
-#include <Geom_Curve.hxx>
-#include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
-#include <gp_Ax2.hxx>
 #include <gp_Dir.hxx>
-#include <gp_Dir2d.hxx>
 #include <gp_Pnt.hxx>
-#include <gp_Pnt2d.hxx>
 #include <gp_Vec.hxx>
 
+#include <App/Color.h>
+#include <Base/Precision.h>
+#include <Base/Tools2D.h>
 #include <Base/Vector3D.h>
-#include <Mod/Part/App/PartFeature.h>
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 
@@ -54,8 +49,8 @@
 
 constexpr double DegreesHalfCircle{180.0};
 
-#define VERTEXTOLERANCE (2.0 * Precision::Confusion())
-#define VECTORTOLERANCE (Precision::Confusion())
+#define VERTEXTOLERANCE (2.0 * Base::Precision::Confusion())
+#define VECTORTOLERANCE (Base::Precision::Confusion())
 
 #define SVG_NS_URI "http://www.w3.org/2000/svg"
 #define FREECAD_SVG_NS_URI "https://www.freecad.org/wiki/index.php?title=Svg_Namespace"
@@ -72,6 +67,21 @@ constexpr double DegreesHalfCircle{180.0};
 //a multiplier for EWTOLERANCE used in fuzzy fuse and common operations.
 #define FUZZYADJUST 4.0
 
+class QByteArray;
+
+class gp_Ax2;
+class gp_Dir2d;
+class gp_Pnt2d;
+class Geom_Curve;
+class TopoDS_Face;
+class TopoDS_Vertex;
+
+using PyObject = struct _object;
+
+namespace App
+{
+class DocumentObject;
+}
 
 namespace TechDraw
 {
@@ -95,17 +105,17 @@ public:
     static std::string getGeomTypeFromName(const std::string& geomName);
     static bool isGeomTypeConsistent(const std::vector<std::string>& geomNames);
     static std::string makeGeomName(const std::string& geomType, int index);
-    static bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2, double tolerance = VERTEXTOLERANCE);
+    static bool isSamePoint(const TopoDS_Vertex& v1, const TopoDS_Vertex& v2, double tolerance = VERTEXTOLERANCE);
     static bool isZeroEdge(TopoDS_Edge e, double tolerance = VERTEXTOLERANCE);
     static double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2);
     static double sensibleScale(double working_scale);
     static double angleWithX(TopoDS_Edge e, bool reverse);
-    static double angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
+    static double angleWithX(TopoDS_Edge e, const TopoDS_Vertex& v, double tolerance = VERTEXTOLERANCE);
     static double angleWithX(Base::Vector3d inVec);
-    static double incidenceAngleAtVertex(TopoDS_Edge e, TopoDS_Vertex v, double tolerance);
+    static double incidenceAngleAtVertex(TopoDS_Edge e, const TopoDS_Vertex& v, double tolerance);
 
-    static bool isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
-    static bool isLastVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
+    static bool isFirstVert(TopoDS_Edge e, const TopoDS_Vertex& v, double tolerance = VERTEXTOLERANCE);
+    static bool isLastVert(TopoDS_Edge e, const TopoDS_Vertex& v, double tolerance = VERTEXTOLERANCE);
     static bool fpCompare(const double& d1, const double& d2, double tolerance = FLT_EPSILON);
     static std::pair<Base::Vector3d, Base::Vector3d>
     boxIntersect2d(Base::Vector3d point, Base::Vector3d dir, double xRange, double yRange);
@@ -134,7 +144,7 @@ public:
             return DrawUtil::vectorLess(a, b);
         }
     };
-    static bool vertexEqual(TopoDS_Vertex& v1, TopoDS_Vertex& v2);
+    static bool vertexEqual(const TopoDS_Vertex& v1, const TopoDS_Vertex& v2);
     static bool vectorEqual(Base::Vector3d& v1, Base::Vector3d& v2);
 
     static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Edge> vecIn, bool invert = true);
@@ -151,8 +161,8 @@ public:
 
     static Base::Vector3d closestBasis(Base::Vector3d v);
     static gp_Vec closestBasis(gp_Vec inVec);
-    static Base::Vector3d closestBasis(Base::Vector3d vDir, gp_Ax2 coordSys);
-    static Base::Vector3d closestBasis(gp_Dir gDir, gp_Ax2 coordSys);
+    static Base::Vector3d closestBasis(Base::Vector3d vDir, const gp_Ax2& coordSys);
+    static Base::Vector3d closestBasis(gp_Dir gDir, const gp_Ax2& coordSys);
     static Base::Vector3d closestBasisOriented(Base::Vector3d v);
 
     static double getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape);
@@ -202,10 +212,13 @@ public:
     static std::vector<std::string> split(std::string csvLine);
     static std::vector<std::string> tokenize(std::string csvLine,
                                              std::string delimiter = ", $$$, ");
+
+    // TODO: deprecate this, there are probably a base definition
     static App::Color pyTupleToColor(PyObject* pColor);
     static PyObject* colorToPyTuple(App::Color color);
+
     static bool isCrazy(TopoDS_Edge e);
-    static Base::Vector3d getFaceCenter(TopoDS_Face f);
+    static Base::Vector3d getFaceCenter(const TopoDS_Face& f);
     static bool circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C);
     static Base::Vector3d getTrianglePoint(Base::Vector3d p1, Base::Vector3d d, Base::Vector3d p2);
     static int countSubShapes(TopoDS_Shape shape, TopAbs_ShapeEnum subShape);
