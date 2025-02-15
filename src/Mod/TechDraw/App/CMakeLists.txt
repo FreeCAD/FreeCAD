@@ -9,7 +9,7 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )
 
