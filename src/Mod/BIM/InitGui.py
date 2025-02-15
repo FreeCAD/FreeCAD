@@ -267,6 +267,20 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools(self.generictools))
         self.bimtools.append("BIM_GenericTools")
 
+        # create join group
+
+        class BIM_JoinTools:
+            def GetCommands(self):
+                return ["BIM_Join_Miter", "BIM_Join_Butt", "BIM_Join_Tee"]
+            def GetResources(self):
+                t = QT_TRANSLATE_NOOP("BIM_JoinTools", "Join tools")
+                return { "MenuText": t, "ToolTip": t, "Icon": "BIM_Join_Miter"}
+            def IsActive(self):
+                v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+                return v
+        FreeCADGui.addCommand("BIM_JoinTools", BIM_JoinTools())
+        self.modify_obj.append("BIM_GenericTools")
+
         # load rebar tools (Reinforcement addon)
 
         try:
