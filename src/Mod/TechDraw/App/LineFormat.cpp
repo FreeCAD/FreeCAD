@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <Base/Writer.h>
 #include <Base/Reader.h>
 
 #include "LineGroup.h"
@@ -134,4 +135,15 @@ void LineFormat::Restore(Base::XMLReader &reader)
     setColor(tempColor);
     reader.readElement("Visible");
     setVisible(reader.getAttributeAsInteger("value") != 0);
+}
+
+void LineFormat::Save(Base::Writer &writer) const
+{
+    // <Style value="" /> is deprecated in favour of line number, but we still save and restore it
+    // to avoid problems with old documents.
+    writer.Stream() << writer.ind() << "<Style value=\"" << m_style << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Weight value=\"" << m_weight << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Color value=\"" << m_color.asHexString() << "\"/>" << std::endl;
+    const char v = m_visible ? '1' : '0';
+    writer.Stream() << writer.ind() << "<Visible value=\"" << v << "\"/>" << std::endl;
 }

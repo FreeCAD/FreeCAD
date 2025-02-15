@@ -31,6 +31,9 @@
 
 #include <App/Color.h>
 
+namespace Base {
+    class Writer;
+}
 
 namespace TechDraw {
 
@@ -77,6 +80,7 @@ public:
     static int getDefEdgeStyle();
 
     void Restore(Base::XMLReader &reader);
+    void Save(Base::Writer &writer) const;
 
 
     void dump(const char* title);

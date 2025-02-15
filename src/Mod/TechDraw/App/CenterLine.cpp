@@ -886,13 +886,7 @@ void CenterLine::Save(Base::Writer &writer) const
     writer.decInd();
     writer.Stream() << writer.ind() << "</CLPoints>" << std::endl ;
 
-    // style is deprecated in favour of line number, but we still save and restore it
-    // to avoid problems with old documents.
-    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.getStyle() << "\"/>" << std::endl;
-    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.getWidth() << "\"/>" << std::endl;
-    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.getColor().asHexString() << "\"/>" << std::endl;
-    const char v = m_format.getVisible() ? '1' : '0';
-    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << std::endl;
+    m_format.Save(writer);
 
 //stored geometry
     if (!m_geometry) {
@@ -913,6 +907,8 @@ void CenterLine::Save(Base::Writer &writer) const
         Base::Console().Message("CL::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
     }
 
+    // TODO: this should be in LineFormat::Save, but it wasn't saved in extension
+    // of other LineFormat properties.
     writer.Stream() << writer.ind() << "<LineNumber value=\"" <<  m_format.getLineNumber() << "\"/>" << std::endl;
 
 }
@@ -1010,6 +1006,8 @@ void CenterLine::Restore(Base::XMLReader &reader)
         Base::Console().Warning("CL::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
     }
 
+    // TODO: this should be in LineFormat::Restore, but it wasn't saved in extension
+    // of other LineFormat properties.
     // older documents may not have the LineNumber element, so we need to check the
     // next entry.  if it is a start element, then we check if it is a start element
     // for LineNumber.
