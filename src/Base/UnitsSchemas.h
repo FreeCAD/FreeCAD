@@ -61,8 +61,10 @@ public:
     UnitsSchema* currentSchema() const;
 
 private:
+    /** DRY utils */
     std::vector<std::string> getVec(const std::function<std::string(UnitsSchemaSpec)>& fn);
     UnitsSchemaSpec findSpec(const std::function<bool(UnitsSchemaSpec)>& fn);
+    void makeCurr(const UnitsSchemaSpec& spec);
 
     UnitsSchemasDataPack pack;
     std::unique_ptr<UnitsSchema> current {std::make_unique<UnitsSchema>(spec())};

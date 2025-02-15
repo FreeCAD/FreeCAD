@@ -31,7 +31,6 @@
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
-#include "Base/UnitsSchemas.h"
 
 // forward declarations
 using PyObject = struct _object;
@@ -393,7 +392,6 @@ public:
     std::map<std::string, std::string> getExportFilters() const;
     //@}
 
-    Base::UnitsSchemas* getSchemas() const {return unitSchemas.get();}
     /** @name Init, Destruct an Access methods */
     //@{
     static void init(int argc, char ** argv);
@@ -612,8 +610,6 @@ private:
         std::string module;
         std::vector<std::string> types;
     };
-
-    std::unique_ptr<Base::UnitsSchemas> unitSchemas;
 
     /// open ending information
     std::vector<FileTypeItem> _mImportTypes;

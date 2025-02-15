@@ -27,9 +27,12 @@
 #include "UnitsSchemas.h"
 #include "Exception.h"
 #include "Quantity.h"
+#include "UnitsApi.h"
 #include "UnitsSchema.h"
 #include "UnitsSchemasSpecs.h"
 #include "UnitsSchemasData.h"
+
+#include <boost/multiprecision/number.hpp>
 
 using Base::Quantity;
 using Base::UnitsSchema;
@@ -87,22 +90,27 @@ void UnitsSchemas::setdefFractDenominator(const std::size_t size)
 
 void UnitsSchemas::select()
 {
-    current = std::make_unique<UnitsSchema>(spec());
+    makeCurr(spec());
 }
 
 void UnitsSchemas::select(const std::string_view& name)
 {
-    current = std::make_unique<UnitsSchema>(spec(name));
+    makeCurr(spec(name));
 }
 
 void UnitsSchemas::select(const std::size_t num)
 {
-    current = std::make_unique<UnitsSchema>(spec(num));
+    makeCurr(spec(num));
 }
 
 UnitsSchema* UnitsSchemas::currentSchema() const
 {
     return current.get();
+}
+
+void UnitsSchemas::makeCurr(const UnitsSchemaSpec& spec)
+{
+    current = std::make_unique<UnitsSchema>(spec);
 }
 
 UnitsSchemaSpec UnitsSchemas::findSpec(const std::function<bool(UnitsSchemaSpec)>& fn)
