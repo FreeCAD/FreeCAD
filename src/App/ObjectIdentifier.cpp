@@ -1835,6 +1835,10 @@ ObjectIdentifier::access(const ResolveResults& result, Py::Object* value, Depend
                             obj = static_cast<DocumentObject*>(container);
                         }
                     }
+                    DocumentObject* contextObj = obj->getContext();
+                    if (contextObj) {
+                        obj = contextObj;
+                    }
                     pyobj = Py::Object(obj->getPyObject(), true);
                     idx = result.propertyIndex;
                     break;
@@ -1879,6 +1883,10 @@ ObjectIdentifier::access(const ResolveResults& result, Py::Object* value, Depend
     };
 
     App::DocumentObject* lastObj = result.resolvedDocumentObject;
+    DocumentObject* contextObj = lastObj->getContext();
+    if (contextObj) {
+        lastObj = contextObj;
+    }
     if (result.resolvedSubObject) {
         setPropDep(lastObj, nullptr, nullptr);
         lastObj = result.resolvedSubObject;

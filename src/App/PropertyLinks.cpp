@@ -914,104 +914,114 @@ PropertyLinkList::~PropertyLinkList()
 
 void PropertyLinkList::setSize(int newSize)
 {
-    for (int i = newSize; i < (int)_lValueList.size(); ++i) {
-        auto obj = _lValueList[i];
-        if (!obj || !obj->isAttachedToDocument()) {
-            continue;
-        }
-        _nameMap.erase(obj->getNameInDocument());
+    using FuncType = void (PropertyLinkList::*)(int);
+    if (!setInContext<PropertyLinkList, FuncType>(&PropertyLinkList::setSize, newSize)) {
+        for (int i = newSize; i < (int)_lValueList.size(); ++i) {
+            auto obj = _lValueList[i];
+            if (!obj || !obj->isAttachedToDocument()) {
+                continue;
+            }
+            _nameMap.erase(obj->getNameInDocument());
 #ifndef USE_OLD_DAG
-        if (_pcScope != LinkScope::Hidden) {
-            obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-        }
+            if (_pcScope != LinkScope::Hidden) {
+                obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+            }
 #endif
+        }
+        _lValueList.resize(newSize);
     }
-    _lValueList.resize(newSize);
 }
 
 void PropertyLinkList::setSize(int newSize, const_reference def)
 {
-    auto oldSize = getSize();
-    setSize(newSize);
-    for (auto i = oldSize; i < newSize; ++i) {
-        _lValueList[i] = def;
+    using FuncType = void (PropertyLinkList::*)(int, const_reference);
+    if (!setInContext<PropertyLinkList, FuncType>(&PropertyLinkList::setSize, newSize, def)) {
+        auto oldSize = getSize();
+        setSize(newSize);
+        for (auto i = oldSize; i < newSize; ++i) {
+            _lValueList[i] = def;
+        }
     }
 }
 
 void PropertyLinkList::set1Value(int idx, DocumentObject* const& value)
 {
-    DocumentObject* obj = nullptr;
-    if (idx >= 0 && idx < (int)_lValueList.size()) {
-        obj = _lValueList[idx];
-        if (obj == value) {
-            return;
+    if (!setInContext<PropertyLinkList>(&PropertyLinkList::set1Value, idx, value)) {
+        DocumentObject* obj = nullptr;
+        if (idx >= 0 && idx < (int)_lValueList.size()) {
+            obj = _lValueList[idx];
+            if (obj == value) {
+                return;
+            }
         }
-    }
 
-    if (!value || !value->isAttachedToDocument()) {
-        throw Base::ValueError("invalid document object");
-    }
+        if (!value || !value->isAttachedToDocument()) {
+            throw Base::ValueError("invalid document object");
+        }
 
-    _nameMap.clear();
+        _nameMap.clear();
 
 #ifndef USE_OLD_DAG
-    if (getContainer() && getContainer()->isDerivedFrom<App::DocumentObject>()) {
-        App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
-        // before accessing internals make sure the object is not about to be destroyed
-        // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
-            if (obj) {
-                obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-            }
-            if (value) {
-                value->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+        if (getContainer() && getContainer()->isDerivedFrom<App::DocumentObject>()) {
+            App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+            // before accessing internals make sure the object is not about to be destroyed
+            // otherwise the backlink contains dangling pointers
+            if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
+                if (obj) {
+                    obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
+                }
+                if (value) {
+                    value->_addBackLink(static_cast<DocumentObject*>(getContainer()));
+                }
             }
         }
-    }
 #endif
 
-    inherited::set1Value(idx, value);
+        inherited::set1Value(idx, value);
+    }
 }
 
 void PropertyLinkList::setValues(const std::vector<DocumentObject*>& value)
 {
-    if (value.size() == 1 && !value[0]) {
-        // one null element means clear, as backward compatibility for old code
-        setValues(std::vector<DocumentObject*>());
-        return;
-    }
+    if (!setInContext<PropertyLinkList>(&PropertyLinkList::setValues, value)) {
+        if (value.size() == 1 && !value[0]) {
+            // one null element means clear, as backward compatibility for old code
+            setValues(std::vector<DocumentObject*>());
+            return;
+        }
 
-    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
-    for (auto obj : value) {
-        if (!obj || !obj->isAttachedToDocument()) {
-            throw Base::ValueError("PropertyLinkList: invalid document object");
+        auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+        for (auto obj : value) {
+            if (!obj || !obj->isAttachedToDocument()) {
+                throw Base::ValueError("PropertyLinkList: invalid document object");
+            }
+            if (!testFlag(LinkAllowExternal) && parent && parent->getDocument() != obj->getDocument()) {
+                throw Base::ValueError("PropertyLinkList does not support external object");
+            }
         }
-        if (!testFlag(LinkAllowExternal) && parent && parent->getDocument() != obj->getDocument()) {
-            throw Base::ValueError("PropertyLinkList does not support external object");
-        }
-    }
-    _nameMap.clear();
+        _nameMap.clear();
 
 #ifndef USE_OLD_DAG
-    // maintain the back link in the DocumentObject class
-    if (parent) {
-        // before accessing internals make sure the object is not about to be destroyed
-        // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
-            for (auto* obj : _lValueList) {
-                if (obj) {
-                    obj->_removeBackLink(parent);
+        // maintain the back link in the DocumentObject class
+        if (parent) {
+            // before accessing internals make sure the object is not about to be destroyed
+            // otherwise the backlink contains dangling pointers
+            if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
+                for (auto* obj : _lValueList) {
+                    if (obj) {
+                        obj->_removeBackLink(parent);
+                    }
                 }
-            }
-            for (auto* obj : value) {
-                if (obj) {
-                    obj->_addBackLink(parent);
+                for (auto* obj : value) {
+                    if (obj) {
+                        obj->_addBackLink(parent);
+                    }
                 }
             }
         }
-    }
 #endif
-    inherited::setValues(value);
+        inherited::setValues(value);
+    }
 }
 
 PyObject* PropertyLinkList::getPyObject()
@@ -1328,52 +1338,68 @@ void PropertyLinkSub::setValue(App::DocumentObject* lValue,
                                std::vector<std::string>&& subs,
                                std::vector<ShadowSub>&& shadows)
 {
-    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
-    if (lValue) {
-        if (!lValue->isAttachedToDocument()) {
-            throw Base::ValueError("PropertyLinkSub: invalid document object");
+    using FuncType = void (PropertyLinkSub::*)(DocumentObject*, std::vector<std::string>&&, std::vector<ShadowSub>&&);
+    if (!setInContext<PropertyLinkSub, FuncType>(&PropertyLinkSub::setValue, lValue, std::move(subs), std::move(shadows))) {
+        auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+        if (lValue) {
+            if (!lValue->isAttachedToDocument()) {
+                throw Base::ValueError("PropertyLinkSub: invalid document object");
+            }
+            if (!testFlag(LinkAllowExternal) && parent
+                && parent->getDocument() != lValue->getDocument()) {
+                throw Base::ValueError("PropertyLinkSub does not support external object");
+            }
         }
-        if (!testFlag(LinkAllowExternal) && parent
-            && parent->getDocument() != lValue->getDocument()) {
-            throw Base::ValueError("PropertyLinkSub does not support external object");
-        }
-    }
-    aboutToSetValue();
+        aboutToSetValue();
 #ifndef USE_OLD_DAG
-    if (parent) {
-        // before accessing internals make sure the object is not about to be destroyed
-        // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
-            if (_pcLinkSub) {
-                _pcLinkSub->_removeBackLink(parent);
-            }
-            if (lValue) {
-                lValue->_addBackLink(parent);
+        if (parent) {
+            // before accessing internals make sure the object is not about to be destroyed
+            // otherwise the backlink contains dangling pointers
+            if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
+                if (_pcLinkSub) {
+                    _pcLinkSub->_removeBackLink(parent);
+                }
+                if (lValue) {
+                    lValue->_addBackLink(parent);
+                }
             }
         }
-    }
 #endif
-    _pcLinkSub = lValue;
-    _cSubList = std::move(subs);
-    if (shadows.size() == _cSubList.size()) {
-        _ShadowSubList = std::move(shadows);
-        onContainerRestored();  // re-register element references
+        _pcLinkSub = lValue;
+        _cSubList = std::move(subs);
+        if (shadows.size() == _cSubList.size()) {
+            _ShadowSubList = std::move(shadows);
+            onContainerRestored();  // re-register element references
+        }
+        else {
+            updateElementReference(nullptr);
+        }
+        checkLabelReferences(_cSubList);
+        hasSetValue();
     }
-    else {
-        updateElementReference(nullptr);
-    }
-    checkLabelReferences(_cSubList);
-    hasSetValue();
 }
 
 App::DocumentObject* PropertyLinkSub::getValue() const
 {
-    return _pcLinkSub;
+    try {
+        using FuncType = App::DocumentObject* (PropertyLinkSub::*)() const;
+        return getFromContext<PropertyLinkSub, App::DocumentObject*, FuncType>(&PropertyLinkSub::getValue);
+    }
+    catch (const NoContextException& e) {
+        return _pcLinkSub;
+    }
 }
 
 const std::vector<std::string>& PropertyLinkSub::getSubValues() const
 {
-    return _cSubList;
+    try {
+        using FuncType = const std::vector<std::string>& (PropertyLinkSub::*)() const;
+        return getFromContext<PropertyLinkSub, const std::vector<std::string>&, FuncType>
+            (&PropertyLinkSub::getSubValues);
+    }
+    catch (const NoContextException& e) {
+        return _cSubList;
+    }
 }
 
 static inline const std::string& getSubNameWithStyle(const std::string& subName,
@@ -1430,7 +1456,13 @@ std::vector<std::string> PropertyLinkSub::getSubValuesStartsWith(const char* sta
 
 App::DocumentObject* PropertyLinkSub::getValue(Base::Type t) const
 {
-    return (_pcLinkSub && _pcLinkSub->isDerivedFrom(t)) ? _pcLinkSub : nullptr;
+    try {
+        using FuncType = App::DocumentObject* (PropertyLinkSub::*)(Base::Type) const;
+        return getFromContext<PropertyLinkSub, App::DocumentObject*, FuncType>(&PropertyLinkSub::getValue, t);
+    }
+    catch (const NoContextException& e) {
+        return (_pcLinkSub && _pcLinkSub->isDerivedFrom(t)) ? _pcLinkSub : nullptr;
+    }
 }
 
 PyObject* PropertyLinkSub::getPyObject()
@@ -2212,107 +2244,121 @@ void PropertyLinkSubList::verifyObject(App::DocumentObject* obj, App::DocumentOb
 
 void PropertyLinkSubList::setSize(int newSize)
 {
-    _lValueList.resize(newSize);
-    _lSubList.resize(newSize);
-    _ShadowSubList.resize(newSize);
+    if (!setInContext<PropertyLinkSubList>(&PropertyLinkSubList::setSize, newSize)) {
+        _lValueList.resize(newSize);
+        _lSubList.resize(newSize);
+        _ShadowSubList.resize(newSize);
+    }
 }
 
 int PropertyLinkSubList::getSize() const
 {
-    return static_cast<int>(_lValueList.size());
+    try {
+        return getFromContext<PropertyLinkSubList, int>(&PropertyLinkSubList::getSize);
+    }
+    catch (const NoContextException& e) {
+        return static_cast<int>(_lValueList.size());
+    }
 }
 
 void PropertyLinkSubList::setValue(DocumentObject* lValue, const char* SubName)
 {
-    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
-    verifyObject(lValue, parent);
+    using FuncType = void (PropertyLinkSubList::*)(DocumentObject*, const char*);
+    if (!setInContext<PropertyLinkSubList, FuncType>(&PropertyLinkSubList::setValue, lValue, SubName)) {
+
+        auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+        verifyObject(lValue, parent);
 
 #ifndef USE_OLD_DAG
-    // maintain backlinks
-    if (parent) {
-        // before accessing internals make sure the object is not about to be destroyed
-        // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
-            for (auto* obj : _lValueList) {
-                if (obj) {
-                    obj->_removeBackLink(parent);
+        // maintain backlinks
+        if (parent) {
+            // before accessing internals make sure the object is not about to be destroyed
+            // otherwise the backlink contains dangling pointers
+            if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
+                for (auto* obj : _lValueList) {
+                    if (obj) {
+                        obj->_removeBackLink(parent);
+                    }
+                }
+                if (lValue) {
+                    lValue->_addBackLink(parent);
                 }
             }
-            if (lValue) {
-                lValue->_addBackLink(parent);
-            }
         }
-    }
 #endif
 
-    if (lValue) {
-        aboutToSetValue();
-        _lValueList.resize(1);
-        _lValueList[0] = lValue;
-        _lSubList.resize(1);
-        _lSubList[0] = SubName;
+        if (lValue) {
+            aboutToSetValue();
+            _lValueList.resize(1);
+            _lValueList[0] = lValue;
+            _lSubList.resize(1);
+            _lSubList[0] = SubName;
+        }
+        else {
+            aboutToSetValue();
+            _lValueList.clear();
+            _lSubList.clear();
+        }
+        updateElementReference(nullptr);
+        checkLabelReferences(_lSubList);
+        hasSetValue();
     }
-    else {
-        aboutToSetValue();
-        _lValueList.clear();
-        _lSubList.clear();
-    }
-    updateElementReference(nullptr);
-    checkLabelReferences(_lSubList);
-    hasSetValue();
 }
 
 void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
                                     const std::vector<const char*>& lSubNames)
 {
-    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
-    for (auto obj : lValue) {
-        verifyObject(obj, parent);
-    }
+    using FuncType = void (PropertyLinkSubList::*)(const std::vector<DocumentObject*>&, const std::vector<const char*>&);
+    if (!setInContext<PropertyLinkSubList, FuncType>(&PropertyLinkSubList::setValues, lValue, lSubNames)) {
+        auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+        for (auto obj : lValue) {
+            verifyObject(obj, parent);
+        }
 
-    if (lValue.size() != lSubNames.size()) {
-        throw Base::ValueError(
-            "PropertyLinkSubList::setValues: size of subelements list != size of objects list");
-    }
+        if (lValue.size() != lSubNames.size()) {
+            throw Base::ValueError(
+                    "PropertyLinkSubList::setValues: size of subelements list != size of objects list");
+        }
 
 #ifndef USE_OLD_DAG
-    // maintain backlinks.
-    if (parent) {
-        // before accessing internals make sure the object is not about to be destroyed
-        // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
-            //_lValueList can contain items multiple times, but we trust the document
-            // object to ensure that this works
-            for (auto* obj : _lValueList) {
-                if (obj) {
-                    obj->_removeBackLink(parent);
+        // maintain backlinks.
+        if (parent) {
+            // before accessing internals make sure the object is not about to be destroyed
+            // otherwise the backlink contains dangling pointers
+            if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
+                //_lValueList can contain items multiple times, but we trust the document
+                // object to ensure that this works
+                for (auto* obj : _lValueList) {
+                    if (obj) {
+                        obj->_removeBackLink(parent);
+                    }
                 }
-            }
 
-            // maintain backlinks. lValue can contain items multiple times, but we trust the
-            // document object to ensure that the backlink is only added once
-            for (auto* obj : lValue) {
-                if (obj) {
-                    obj->_addBackLink(parent);
+                // maintain backlinks. lValue can contain items multiple times, but we trust the
+                // document object to ensure that the backlink is only added once
+                for (auto* obj : lValue) {
+                    if (obj) {
+                        obj->_addBackLink(parent);
+                    }
                 }
             }
         }
-    }
 #endif
 
-    aboutToSetValue();
-    _lValueList = lValue;
-    _lSubList.resize(lSubNames.size());
-    int i = 0;
-    for (std::vector<const char*>::const_iterator it = lSubNames.begin(); it != lSubNames.end();
-         ++it, ++i) {
-        if (*it) {
-            _lSubList[i] = *it;
+        aboutToSetValue();
+        _lValueList = lValue;
+        _lSubList.resize(lSubNames.size());
+        int i = 0;
+        for (std::vector<const char*>::const_iterator it = lSubNames.begin(); it != lSubNames.end();
+             ++it, ++i) {
+            if (*it) {
+                _lSubList[i] = *it;
+            }
         }
+        updateElementReference(nullptr);
+        checkLabelReferences(_lSubList);
+        hasSetValue();
     }
-    updateElementReference(nullptr);
-    checkLabelReferences(_lSubList);
-    hasSetValue();
 }
 
 void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
@@ -2328,167 +2374,178 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
                                     std::vector<std::string>&& lSubNames,
                                     std::vector<ShadowSub>&& ShadowSubList)
 {
-    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
-    for (auto obj : lValue) {
-        verifyObject(obj, parent);
-    }
-    if (lValue.size() != lSubNames.size()) {
-        throw Base::ValueError(
-            "PropertyLinkSubList::setValues: size of subelements list != size of objects list");
-    }
+    using FuncType = void (PropertyLinkSubList::*)
+        (std::vector<DocumentObject*>&&, std::vector<std::string>&&, std::vector<ShadowSub>&&);
+    if (!setInContext<PropertyLinkSubList, FuncType>(
+                &PropertyLinkSubList::setValues,
+                std::move(lValue), std::move(lSubNames), std::move(ShadowSubList))) {
+        auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+        for (auto obj : lValue) {
+            verifyObject(obj, parent);
+        }
+        if (lValue.size() != lSubNames.size()) {
+            throw Base::ValueError(
+                    "PropertyLinkSubList::setValues: size of subelements list != size of objects list");
+        }
 
 #ifndef USE_OLD_DAG
-    // maintain backlinks.
-    if (parent) {
-        // before accessing internals make sure the object is not about to be destroyed
-        // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
-            //_lValueList can contain items multiple times, but we trust the document
-            // object to ensure that this works
-            for (auto* obj : _lValueList) {
-                if (obj) {
-                    obj->_removeBackLink(parent);
+        // maintain backlinks.
+        if (parent) {
+            // before accessing internals make sure the object is not about to be destroyed
+            // otherwise the backlink contains dangling pointers
+            if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
+                //_lValueList can contain items multiple times, but we trust the document
+                // object to ensure that this works
+                for (auto* obj : _lValueList) {
+                    if (obj) {
+                        obj->_removeBackLink(parent);
+                    }
                 }
-            }
 
-            // maintain backlinks. lValue can contain items multiple times, but we trust the
-            // document object to ensure that the backlink is only added once
-            for (auto* obj : lValue) {
-                if (obj) {
-                    obj->_addBackLink(parent);
+                // maintain backlinks. lValue can contain items multiple times, but we trust the
+                // document object to ensure that the backlink is only added once
+                for (auto* obj : lValue) {
+                    if (obj) {
+                        obj->_addBackLink(parent);
+                    }
                 }
             }
         }
-    }
 #endif
 
-    aboutToSetValue();
-    _lValueList = std::move(lValue);
-    _lSubList = std::move(lSubNames);
-    if (ShadowSubList.size() == _lSubList.size()) {
-        _ShadowSubList = std::move(ShadowSubList);
-        onContainerRestored();  // re-register element references
+        aboutToSetValue();
+        _lValueList = std::move(lValue);
+        _lSubList = std::move(lSubNames);
+        if (ShadowSubList.size() == _lSubList.size()) {
+            _ShadowSubList = std::move(ShadowSubList);
+            onContainerRestored();  // re-register element references
+        }
+        else {
+            updateElementReference(nullptr);
+        }
+        checkLabelReferences(_lSubList);
+        hasSetValue();
     }
-    else {
-        updateElementReference(nullptr);
-    }
-    checkLabelReferences(_lSubList);
-    hasSetValue();
 }
 
 void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<std::string>& SubList)
 {
-    auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
-    verifyObject(lValue, parent);
+    using FuncType = void (PropertyLinkSubList::*)(DocumentObject*, const std::vector<std::string>&);
+    if (!setInContext<PropertyLinkSubList, FuncType>(&PropertyLinkSubList::setValue, lValue, SubList)) {
+        auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
+        verifyObject(lValue, parent);
 
 #ifndef USE_OLD_DAG
-    // maintain backlinks.
-    if (parent) {
-        // before accessing internals make sure the object is not about to be destroyed
-        // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
-            //_lValueList can contain items multiple times, but we trust the document
-            // object to ensure that this works
-            for (auto* obj : _lValueList) {
-                if (obj) {
-                    obj->_removeBackLink(parent);
+        // maintain backlinks.
+        if (parent) {
+            // before accessing internals make sure the object is not about to be destroyed
+            // otherwise the backlink contains dangling pointers
+            if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
+                //_lValueList can contain items multiple times, but we trust the document
+                // object to ensure that this works
+                for (auto* obj : _lValueList) {
+                    if (obj) {
+                        obj->_removeBackLink(parent);
+                    }
+                }
+
+                // maintain backlinks. lValue can contain items multiple times, but we trust the
+                // document object to ensure that the backlink is only added once
+                if (lValue) {
+                    lValue->_addBackLink(parent);
                 }
             }
-
-            // maintain backlinks. lValue can contain items multiple times, but we trust the
-            // document object to ensure that the backlink is only added once
-            if (lValue) {
-                lValue->_addBackLink(parent);
-            }
         }
-    }
 #endif
 
-    aboutToSetValue();
-    std::size_t size = SubList.size();
-    this->_lValueList.clear();
-    this->_lSubList.clear();
-    if (size == 0) {
-        if (lValue) {
-            this->_lValueList.push_back(lValue);
-            this->_lSubList.emplace_back();
+        aboutToSetValue();
+        std::size_t size = SubList.size();
+        this->_lValueList.clear();
+        this->_lSubList.clear();
+        if (size == 0) {
+            if (lValue) {
+                this->_lValueList.push_back(lValue);
+                this->_lSubList.emplace_back();
+            }
         }
+        else {
+            this->_lSubList = SubList;
+            this->_lValueList.insert(this->_lValueList.begin(), size, lValue);
+        }
+        updateElementReference(nullptr);
+        checkLabelReferences(_lSubList);
+        hasSetValue();
     }
-    else {
-        this->_lSubList = SubList;
-        this->_lValueList.insert(this->_lValueList.begin(), size, lValue);
-    }
-    updateElementReference(nullptr);
-    checkLabelReferences(_lSubList);
-    hasSetValue();
 }
 
 void PropertyLinkSubList::addValue(App::DocumentObject* obj,
                                    const std::vector<std::string>& subs,
                                    bool reset)
 {
-    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
-    verifyObject(obj, parent);
+    if (!setInContext<PropertyLinkSubList>(&PropertyLinkSubList::addValue, obj, subs, reset)) {
+        auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+        verifyObject(obj, parent);
 
 #ifndef USE_OLD_DAG
-    // maintain backlinks.
-    if (parent) {
-        // before accessing internals make sure the object is not about to be destroyed
-        // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
-            //_lValueList can contain items multiple times, but we trust the document
-            // object to ensure that this works
-            if (reset) {
-                for (auto* value : _lValueList) {
-                    if (value && value == obj) {
-                        value->_removeBackLink(parent);
+        // maintain backlinks.
+        if (parent) {
+            // before accessing internals make sure the object is not about to be destroyed
+            // otherwise the backlink contains dangling pointers
+            if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
+                //_lValueList can contain items multiple times, but we trust the document
+                // object to ensure that this works
+                if (reset) {
+                    for (auto* value : _lValueList) {
+                        if (value && value == obj) {
+                            value->_removeBackLink(parent);
+                        }
                     }
                 }
-            }
 
-            // maintain backlinks. lValue can contain items multiple times, but we trust the
-            // document object to ensure that the backlink is only added once
-            if (obj) {
-                obj->_addBackLink(parent);
+                // maintain backlinks. lValue can contain items multiple times, but we trust the
+                // document object to ensure that the backlink is only added once
+                if (obj) {
+                    obj->_addBackLink(parent);
+                }
             }
         }
-    }
 #endif
 
-    std::vector<DocumentObject*> valueList;
-    std::vector<std::string> subList;
+        std::vector<DocumentObject*> valueList;
+        std::vector<std::string> subList;
 
-    if (reset) {
-        for (std::size_t i = 0; i < _lValueList.size(); i++) {
-            if (_lValueList[i] != obj) {
-                valueList.push_back(_lValueList[i]);
-                subList.push_back(_lSubList[i]);
+        if (reset) {
+            for (std::size_t i = 0; i < _lValueList.size(); i++) {
+                if (_lValueList[i] != obj) {
+                    valueList.push_back(_lValueList[i]);
+                    subList.push_back(_lSubList[i]);
+                }
             }
         }
-    }
-    else {
-        valueList = _lValueList;
-        subList = _lSubList;
-    }
-
-    std::size_t size = subs.size();
-    if (size == 0) {
-        if (obj) {
-            valueList.push_back(obj);
-            subList.emplace_back();
+        else {
+            valueList = _lValueList;
+            subList = _lSubList;
         }
-    }
-    else if (obj) {
-        subList.insert(subList.end(), subs.begin(), subs.end());
-        valueList.insert(valueList.end(), size, obj);
-    }
 
-    aboutToSetValue();
-    _lValueList = valueList;
-    _lSubList = subList;
-    updateElementReference(nullptr);
-    checkLabelReferences(_lSubList);
-    hasSetValue();
+        std::size_t size = subs.size();
+        if (size == 0) {
+            if (obj) {
+                valueList.push_back(obj);
+                subList.emplace_back();
+            }
+        }
+        else if (obj) {
+            subList.insert(subList.end(), subs.begin(), subs.end());
+            valueList.insert(valueList.end(), size, obj);
+        }
+
+        aboutToSetValue();
+        _lValueList = valueList;
+        _lSubList = subList;
+        updateElementReference(nullptr);
+        checkLabelReferences(_lSubList);
+        hasSetValue();
+    }
 }
 
 const string PropertyLinkSubList::getPyReprString() const

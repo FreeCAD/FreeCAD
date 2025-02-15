@@ -610,18 +610,43 @@ public:
 
     friend atomic_change;
 
+    PropertyListsT<T, ListT, ParentT>* getContextProp(CreatePropOption option = CreatePropOption::DoNotCreate) const
+    {
+        Property* prop = this->getContextProperty(option);
+        if (prop) {
+            return dynamic_cast<PropertyListsT<T, ListT, ParentT>*>(prop);
+        }
+        return nullptr;
+    }
+
     virtual void setSize(int newSize, const_reference def)
     {
-        _lValueList.resize(newSize, def);
+        auto prop = this->getContextProp(CreatePropOption::Create);
+        if (prop) {
+            prop->setSize(newSize, def);
+        }
+        else {
+            _lValueList.resize(newSize, def);
+        }
     }
 
     void setSize(int newSize) override
     {
-        _lValueList.resize(newSize);
+        auto prop = this->getContextProp(CreatePropOption::Create);
+        if (prop) {
+            prop->setSize(newSize);
+        }
+        else {
+            _lValueList.resize(newSize);
+        }
     }
 
     int getSize() const override
     {
+        auto prop = this->getContextProp();
+        if (prop) {
+            return prop->getSize();
+        }
         return static_cast<int>(_lValueList.size());
     }
 
@@ -634,10 +659,16 @@ public:
 
     virtual void setValues(const ListT& newValues = ListT())
     {
-        atomic_change guard(*this);
-        this->_touchList.clear();
-        this->_lValueList = newValues;
-        guard.tryInvoke();
+        auto prop = getContextProp(CreatePropOption::Create);
+        if (prop) {
+            prop->setValues(newValues);
+        }
+        else {
+            atomic_change guard(*this);
+            this->_touchList.clear();
+            this->_lValueList = newValues;
+            guard.tryInvoke();
+        }
     }
 
     void setValue(const ListT& newValues = ListT())
@@ -647,6 +678,10 @@ public:
 
     const ListT& getValues() const
     {
+        auto prop = getContextProp();
+        if (prop) {
+            return prop->getValues();
+        }
         return _lValueList;
     }
 
@@ -658,6 +693,10 @@ public:
 
     const_reference operator[](int idx) const
     {
+        auto prop = getContextProp();
+        if (prop) {
+            return (*prop)[idx];
+        }
         return _lValueList[idx];
     }
 

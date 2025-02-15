@@ -68,21 +68,32 @@ PropertyVector::~PropertyVector() = default;
 
 void PropertyVector::setValue(const Base::Vector3d& vec)
 {
-    aboutToSetValue();
-    _cVec = vec;
-    hasSetValue();
+    using FuncType = void (PropertyVector::*)(const Base::Vector3d&);
+    if (!setInContext<PropertyVector, FuncType>(&PropertyVector::setValue, vec)) {
+        aboutToSetValue();
+        _cVec = vec;
+        hasSetValue();
+    }
 }
 
 void PropertyVector::setValue(double x, double y, double z)
 {
-    aboutToSetValue();
-    _cVec.Set(x, y, z);
-    hasSetValue();
+    using FuncType = void (PropertyVector::*)(double, double, double);
+    if (!setInContext<PropertyVector, FuncType>(&PropertyVector::setValue, x, y, z)) {
+        aboutToSetValue();
+        _cVec.Set(x, y, z);
+        hasSetValue();
+    }
 }
 
 const Base::Vector3d& PropertyVector::getValue() const
 {
-    return _cVec;
+    try {
+        return getFromContext<PropertyVector, const Base::Vector3d&>(&PropertyVector::getValue);
+    }
+    catch (const NoContextException& e) {
+        return _cVec;
+    }
 }
 
 PyObject* PropertyVector::getPyObject()
@@ -537,9 +548,11 @@ PropertyPlacement::~PropertyPlacement() = default;
 
 void PropertyPlacement::setValue(const Base::Placement& pos)
 {
-    aboutToSetValue();
-    _cPos = pos;
-    hasSetValue();
+    if (!setInContext<PropertyPlacement>(&PropertyPlacement::setValue, pos)) {
+        aboutToSetValue();
+        _cPos = pos;
+        hasSetValue();
+    }
 }
 
 bool PropertyPlacement::setValueIfChanged(const Base::Placement& pos, double tol, double atol)
@@ -555,7 +568,12 @@ bool PropertyPlacement::setValueIfChanged(const Base::Placement& pos, double tol
 
 const Base::Placement& PropertyPlacement::getValue() const
 {
-    return _cPos;
+    try {
+        return getFromContext<PropertyPlacement, const Base::Placement&>(&PropertyPlacement::getValue);
+    }
+    catch (NoContextException& e) {
+        return _cPos;
+    }
 }
 
 void PropertyPlacement::getPaths(std::vector<ObjectIdentifier>& paths) const

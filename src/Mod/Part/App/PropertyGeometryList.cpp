@@ -59,79 +59,101 @@ PropertyGeometryList::~PropertyGeometryList()
 
 void PropertyGeometryList::setSize(int newSize)
 {
-    for (unsigned int i = newSize; i < _lValueList.size(); i++)
-        delete _lValueList[i];
-    _lValueList.resize(newSize);
+    if (!setInContext<PropertyGeometryList>(&PropertyGeometryList::setSize, newSize)) {
+        for (unsigned int i = newSize; i < _lValueList.size(); i++) {
+            delete _lValueList[i];
+        }
+        _lValueList.resize(newSize);
+    }
 }
 
 int PropertyGeometryList::getSize() const
 {
-    return static_cast<int>(_lValueList.size());
+    try {
+        return getFromContext<PropertyGeometryList, int>(&PropertyGeometryList::getSize);
+    }
+    catch (const NoContextException& e) {
+        return static_cast<int>(_lValueList.size());
+    }
 }
 
 void PropertyGeometryList::setValue(const Geometry* lValue)
 {
-    if (lValue) {
-        aboutToSetValue();
-        Geometry* newVal = lValue->clone();
-        for (auto it : _lValueList)
-            delete it;
-        _lValueList.resize(1);
-        _lValueList[0] = newVal;
-        hasSetValue();
+    if (!setInContext<PropertyGeometryList>(&PropertyGeometryList::setValue, lValue)) {
+        if (lValue) {
+            aboutToSetValue();
+            Geometry* newVal = lValue->clone();
+            for (auto it : _lValueList)
+                delete it;
+            _lValueList.resize(1);
+            _lValueList[0] = newVal;
+            hasSetValue();
+        }
     }
 }
 
 void PropertyGeometryList::setValues(const std::vector<Geometry*>& lValue)
 {
-    auto copy = lValue;
-    aboutToSetValue();
-    std::sort(_lValueList.begin(), _lValueList.end());
-    for (auto & geo : copy) {
-        auto range = std::equal_range(_lValueList.begin(), _lValueList.end(), geo);
-        // clone if the new entry does not exist in the original value list, or
-        // else, simply reuse it (i.e. erase it so that it won't get deleted below).
-        if (range.first == range.second)
-            geo = geo->clone();
-        else
-            _lValueList.erase(range.first, range.second);
+    using FuncType = void (PropertyGeometryList::*)(const std::vector<Geometry*>&);
+    if (!setInContext<PropertyGeometryList, FuncType>(&PropertyGeometryList::setValues, lValue)) {
+        auto copy = lValue;
+        aboutToSetValue();
+        std::sort(_lValueList.begin(), _lValueList.end());
+        for (auto & geo : copy) {
+            auto range = std::equal_range(_lValueList.begin(), _lValueList.end(), geo);
+            // clone if the new entry does not exist in the original value list, or
+            // else, simply reuse it (i.e. erase it so that it won't get deleted below).
+            if (range.first == range.second)
+                geo = geo->clone();
+            else
+                _lValueList.erase(range.first, range.second);
+        }
+        for (auto v : _lValueList)
+            delete v;
+        _lValueList = std::move(copy);
+        hasSetValue();
     }
-    for (auto v : _lValueList)
-        delete v;
-    _lValueList = std::move(copy);
-    hasSetValue();
-}
+ }
 
 void PropertyGeometryList::setValues(std::vector<Geometry*> &&lValue)
 {
-    // Unlike above, the moved version of setValues() indicates the caller want
-    // us to manager the memory of the passed in values. So no need clone.
-    aboutToSetValue();
-    std::sort(_lValueList.begin(), _lValueList.end());
-    for (auto geo : lValue) {
-        auto range = std::equal_range(_lValueList.begin(), _lValueList.end(), geo);
-        _lValueList.erase(range.first, range.second);
+    // In this case we shouldn't use move semantics because the context will
+    // also claim ownership.
+    using FuncType = void (PropertyGeometryList::*)(const std::vector<Geometry*>&);
+    if (!setInContext<PropertyGeometryList, FuncType>
+        (&PropertyGeometryList::setValues, lValue)) {
+
+        // Unlike above, the moved version of setValues() indicates the caller want
+        // us to manager the memory of the passed in values. So no need clone.
+        aboutToSetValue();
+        std::sort(_lValueList.begin(), _lValueList.end());
+        for (auto geo : lValue) {
+            auto range = std::equal_range(_lValueList.begin(), _lValueList.end(), geo);
+            _lValueList.erase(range.first, range.second);
+        }
+        for (auto geo : _lValueList)
+            delete geo;
+        _lValueList = std::move(lValue);
+        hasSetValue();
     }
-    for (auto geo : _lValueList)
-        delete geo;
-    _lValueList = std::move(lValue);
-    hasSetValue();
 }
 
 void PropertyGeometryList::set1Value(int idx, std::unique_ptr<Geometry> &&lValue)
 {
-    if (!lValue)
-        return;
-    if(idx>=(int)_lValueList.size())
-        throw Base::IndexError("Index out of bound");
-    aboutToSetValue();
-    if(idx < 0)
-        _lValueList.push_back(lValue.release());
-    else {
-        delete _lValueList[idx];
-        _lValueList[idx] = lValue.release();
+    if (!setInContext<PropertyGeometryList>(&PropertyGeometryList::set1Value, idx, std::move(lValue))) {
+        if (!lValue)
+            return;
+        if(idx>=(int)_lValueList.size())
+            throw Base::IndexError("Index out of bound");
+        aboutToSetValue();
+        if(idx < 0)
+            _lValueList.push_back(lValue.release());
+        else {
+            delete _lValueList[idx];
+            _lValueList[idx] = lValue.release();
+        }
+        hasSetValue();
     }
-    hasSetValue();
 }
 
 PyObject *PropertyGeometryList::getPyObject()
@@ -301,10 +323,15 @@ void PropertyGeometryList::Paste(const Property &from)
 
 unsigned int PropertyGeometryList::getMemSize() const
 {
-    int size = sizeof(PropertyGeometryList);
-    for (int i = 0; i < getSize(); i++)
-        size += _lValueList[i]->getMemSize();
-    return size;
+    try {
+        return getFromContext<PropertyGeometryList, unsigned int>(&PropertyGeometryList::getMemSize);
+    }
+    catch (const NoContextException& e) {
+        int size = sizeof(PropertyGeometryList);
+        for (int i = 0; i < getSize(); i++)
+            size += _lValueList[i]->getMemSize();
+        return size;
+    }
 }
 
 void PropertyGeometryList::moveValues(PropertyGeometryList &&other)

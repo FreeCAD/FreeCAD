@@ -287,16 +287,19 @@ PropertyEnumeration::~PropertyEnumeration() = default;
 
 void PropertyEnumeration::setEnums(const char** plEnums)
 {
-    // For backward compatibility, if the property container is not attached to
-    // any document (i.e. its full name starts with '?'), do not notify, or
-    // else existing code may crash.
-    bool notify = !boost::starts_with(getFullName(), "?");
-    if (notify) {
-        aboutToSetValue();
-    }
-    _enum.setEnums(plEnums);
-    if (notify) {
-        hasSetValue();
+    using FuncType = void (PropertyEnumeration::*)(const char** plEnums);
+    if (!setInContext<PropertyEnumeration, FuncType>(&PropertyEnumeration::setEnums, plEnums)) {
+        // For backward compatibility, if the property container is not attached to
+        // any document (i.e. its full name starts with '?'), do not notify, or
+        // else existing code may crash.
+        bool notify = !boost::starts_with(getFullName(), "?");
+        if (notify) {
+            aboutToSetValue();
+        }
+        _enum.setEnums(plEnums);
+        if (notify) {
+            hasSetValue();
+        }
     }
 }
 
@@ -307,81 +310,133 @@ void PropertyEnumeration::setEnums(const std::vector<std::string>& Enums)
 
 void PropertyEnumeration::setValue(const char* value)
 {
-    aboutToSetValue();
-    _enum.setValue(value);
-    hasSetValue();
+    using FuncType = void (PropertyEnumeration::*)(const char* value);
+    if (!setInContext<PropertyEnumeration, FuncType>(&PropertyEnumeration::setValue, value)) {
+        aboutToSetValue();
+        _enum.setValue(value);
+        hasSetValue();
+    }
 }
 
 void PropertyEnumeration::setValue(long value)
 {
-    aboutToSetValue();
-    _enum.setValue(value);
-    hasSetValue();
+    using FuncType = void (PropertyEnumeration::*)(long value);
+    if (!setInContext<PropertyEnumeration, FuncType>(&PropertyEnumeration::setValue, value)) {
+        aboutToSetValue();
+        _enum.setValue(value);
+        hasSetValue();
+    }
 }
 
 void PropertyEnumeration::setValue(const Enumeration& source)
 {
-    aboutToSetValue();
-    _enum = source;
-    hasSetValue();
+    using FuncType = void (PropertyEnumeration::*)(const Enumeration& source);
+    if (!setInContext<PropertyEnumeration, FuncType>(&PropertyEnumeration::setValue, source)) {
+        aboutToSetValue();
+        _enum = source;
+        hasSetValue();
+    }
 }
 
 long PropertyEnumeration::getValue() const
 {
-    return _enum.getInt();
+    try {
+        return getFromContext<PropertyEnumeration, long>(&PropertyEnumeration::getValue);
+    }
+    catch (const NoContextException& e) {
+        return _enum.getInt();
+    }
 }
 
 bool PropertyEnumeration::isValue(const char* value) const
 {
-    return _enum.isValue(value);
+    try {
+        return getFromContext<PropertyEnumeration, bool>(&PropertyEnumeration::isValue, value);
+    }
+    catch (const NoContextException& e) {
+        return _enum.isValue(value);
+    }
 }
 
 bool PropertyEnumeration::isPartOf(const char* value) const
 {
-    return _enum.contains(value);
+    try {
+        return getFromContext<PropertyEnumeration, bool>(&PropertyEnumeration::isPartOf, value);
+    }
+    catch (const NoContextException& e) {
+        return _enum.contains(value);
+    }
 }
 
 const char* PropertyEnumeration::getValueAsString() const
 {
-    if (!_enum.isValid()) {
-        throw Base::RuntimeError("Cannot get value from invalid enumeration");
+    try {
+        return getFromContext<PropertyEnumeration, const char*>(&PropertyEnumeration::getValueAsString);
     }
-    return _enum.getCStr();
+    catch (const NoContextException& e) {
+        if (!_enum.isValid()) {
+            throw Base::RuntimeError("Cannot get value from invalid enumeration");
+        }
+        return _enum.getCStr();
+    }
 }
 
 const Enumeration& PropertyEnumeration::getEnum() const
 {
-    return _enum;
+    try {
+        return getFromContext<PropertyEnumeration, const Enumeration&>(&PropertyEnumeration::getEnum);
+    }
+    catch (const NoContextException& e) {
+        return _enum;
+    }
 }
 
 std::vector<std::string> PropertyEnumeration::getEnumVector() const
 {
-    return _enum.getEnumVector();
+    try {
+        return getFromContext<PropertyEnumeration, std::vector<std::string>>
+            (&PropertyEnumeration::getEnumVector);
+    }
+    catch (const NoContextException& e) {
+        return _enum.getEnumVector();
+    }
 }
 
 void PropertyEnumeration::setEnumVector(const std::vector<std::string>& values)
 {
-    // For backward compatibility, if the property container is not attached to
-    // any document (i.e. its full name starts with '?'), do not notify, or
-    // else existing code may crash.
-    bool notify = !boost::starts_with(getFullName(), "?");
-    if (notify) {
-        aboutToSetValue();
-    }
-    _enum.setEnums(values);
-    if (notify) {
-        hasSetValue();
+    if (!setInContext<PropertyEnumeration>(&PropertyEnumeration::setEnumVector, values)) {
+        // For backward compatibility, if the property container is not attached to
+        // any document (i.e. its full name starts with '?'), do not notify, or
+        // else existing code may crash.
+        bool notify = !boost::starts_with(getFullName(), "?");
+        if (notify) {
+            aboutToSetValue();
+        }
+        _enum.setEnums(values);
+        if (notify) {
+            hasSetValue();
+        }
     }
 }
 
 bool PropertyEnumeration::hasEnums() const
 {
-    return _enum.hasEnums();
+    try {
+        return getFromContext<PropertyEnumeration, bool>(&PropertyEnumeration::hasEnums);
+    }
+    catch (const NoContextException& e) {
+        return _enum.hasEnums();
+    }
 }
 
 bool PropertyEnumeration::isValid() const
 {
-    return _enum.isValid();
+    try {
+        return getFromContext<PropertyEnumeration, bool>(&PropertyEnumeration::isValid);
+    }
+    catch (const NoContextException& e) {
+        return _enum.isValid();
+    }
 }
 
 void PropertyEnumeration::Save(Base::Writer& writer) const
@@ -1008,14 +1063,21 @@ PropertyFloat::~PropertyFloat() = default;
 
 void PropertyFloat::setValue(double lValue)
 {
-    aboutToSetValue();
-    _dValue = lValue;
-    hasSetValue();
+    if (!setInContext<PropertyFloat>(&PropertyFloat::setValue, lValue)) {
+        aboutToSetValue();
+        _dValue = lValue;
+        hasSetValue();
+    }
 }
 
 double PropertyFloat::getValue() const
 {
-    return _dValue;
+    try {
+        return getFromContext<PropertyFloat, double>(&PropertyFloat::getValue);
+    }
+    catch (const NoContextException& e) {
+        return _dValue;
+    }
 }
 
 PyObject* PropertyFloat::getPyObject()
@@ -2089,14 +2151,21 @@ PropertyBool::~PropertyBool() = default;
 
 void PropertyBool::setValue(bool lValue)
 {
-    aboutToSetValue();
-    _lValue = lValue;
-    hasSetValue();
+    if (!setInContext<PropertyBool>(&PropertyBool::setValue, lValue)) {
+        aboutToSetValue();
+        _lValue = lValue;
+        hasSetValue();
+    }
 }
 
 bool PropertyBool::getValue() const
 {
-    return _lValue;
+    try {
+        return getFromContext<PropertyBool, bool>(&PropertyBool::getValue);
+    }
+    catch (const NoContextException& e) {
+        return _lValue;
+    }
 }
 
 PyObject* PropertyBool::getPyObject()

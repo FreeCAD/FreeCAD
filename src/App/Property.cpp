@@ -302,12 +302,18 @@ void Property::destroy(Property* p)
 
 void Property::touch()
 {
-    PropertyCleaner guard(this);
-    if (father) {
-        father->onEarlyChange(this);
-        father->onChanged(this);
+    Property* contextProperty = getContextProperty(CreatePropOption::Create);
+    if (contextProperty) {
+        contextProperty->touch();
     }
-    StatusBits.set(Touched);
+    else {
+        PropertyCleaner guard(this);
+        if (father) {
+            father->onEarlyChange(this);
+            father->onChanged(this);
+        }
+        StatusBits.set(Touched);
+    }
 }
 
 void Property::setReadOnly(bool readOnly)

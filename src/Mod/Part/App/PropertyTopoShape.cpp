@@ -65,55 +65,72 @@ PropertyPartShape::~PropertyPartShape() = default;
 
 void PropertyPartShape::setValue(const TopoShape& sh)
 {
-    aboutToSetValue();
-    _Shape = sh;
-    auto obj = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
-    if(obj) {
-        auto tag = obj->getID();
-        if(_Shape.Tag && tag!=_Shape.Tag) {
-            auto hasher = _Shape.Hasher?_Shape.Hasher:obj->getDocument()->getStringHasher();
-            _Shape.reTagElementMap(tag,hasher);
-        } else
-            _Shape.Tag = obj->getID();
-        if (!_Shape.Hasher && _Shape.hasChildElementMap()) {
-            _Shape.Hasher = obj->getDocument()->getStringHasher();
-            _Shape.hashChildMaps();
+    using FuncType = void (PropertyPartShape::*)(const TopoShape&);
+    if (!setInContext<PropertyPartShape, FuncType>(&PropertyPartShape::setValue, sh)) {
+        aboutToSetValue();
+        _Shape = sh;
+        auto obj = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+        if(obj) {
+            auto tag = obj->getID();
+            if(_Shape.Tag && tag!=_Shape.Tag) {
+                auto hasher = _Shape.Hasher?_Shape.Hasher:obj->getDocument()->getStringHasher();
+                _Shape.reTagElementMap(tag,hasher);
+            } else
+                _Shape.Tag = obj->getID();
+            if (!_Shape.Hasher && _Shape.hasChildElementMap()) {
+                _Shape.Hasher = obj->getDocument()->getStringHasher();
+                _Shape.hashChildMaps();
+            }
         }
+        hasSetValue();
+        _Ver.clear();
     }
-    hasSetValue();
-    _Ver.clear();
 }
 
 void PropertyPartShape::setValue(const TopoDS_Shape& sh, bool resetElementMap)
 {
-    aboutToSetValue();
-    auto obj = dynamic_cast<App::DocumentObject*>(getContainer());
-    if(obj)
-        _Shape.Tag = obj->getID();
-    _Shape.setShape(sh,resetElementMap);
-    hasSetValue();
-    _Ver.clear();
+    using FuncType = void (PropertyPartShape::*)(const TopoDS_Shape&, bool);
+    if (!setInContext<PropertyPartShape, FuncType>
+        (&PropertyPartShape::setValue, sh, resetElementMap)) {
+        aboutToSetValue();
+        auto obj = dynamic_cast<App::DocumentObject*>(getContainer());
+        if(obj)
+            _Shape.Tag = obj->getID();
+        _Shape.setShape(sh,resetElementMap);
+        hasSetValue();
+        _Ver.clear();
+    }
 }
 
 const TopoDS_Shape& PropertyPartShape::getValue() const
 {
-    return _Shape.getShape();
+    try {
+        return getFromContext<PropertyPartShape, const TopoDS_Shape&>(&PropertyPartShape::getValue);
+    }
+    catch (const App::NoContextException& e) {
+        return _Shape.getShape();
+    }
 }
 
 const TopoShape& PropertyPartShape::getShape() const
 {
-    _Shape.initCache(-1);
-    // March, 2024 Toponaming project:  There was originally an unused feature to disable
-    // elementMapping that has not been kept:
-    //    if (Feature::isElementMappingDisabled(getContainer()))
-    //        res.Tag = -1;
-    //    else if (!res.Tag) {
-    if (!_Shape.Tag) {
-        if (auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer())) {
-            _Shape.Tag = parent->getID();
-        }
+    try {
+        return getFromContext<PropertyPartShape, const TopoShape&>(&PropertyPartShape::getShape);
     }
-    return _Shape;
+    catch (const App::NoContextException& e) {
+        _Shape.initCache(-1);
+        // March, 2024 Toponaming project:  There was originally an unused feature to disable
+        // elementMapping that has not been kept:
+        //    if (Feature::isElementMappingDisabled(getContainer()))
+        //        res.Tag = -1;
+        //    else if (!res.Tag) {
+        if (!_Shape.Tag) {
+            if (auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer())) {
+                _Shape.Tag = parent->getID();
+            }
+        }
+        return _Shape;
+    }
 }
 
 const Data::ComplexGeoData* PropertyPartShape::getComplexData() const
