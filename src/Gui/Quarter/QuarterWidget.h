@@ -114,9 +114,9 @@ public:
 
 
 public:
-  explicit QuarterWidget(QWidget * parent = nullptr, const QtGLWidget * sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-  explicit QuarterWidget(QtGLContext * context, QWidget * parent = nullptr, const QtGLWidget * sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-  explicit QuarterWidget(const QtGLFormat & format, QWidget * parent = nullptr, const QtGLWidget * shareWidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+  explicit QuarterWidget(QWidget * parent = nullptr, const QOpenGLWidget * sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+  explicit QuarterWidget(QOpenGLContext * context, QWidget * parent = nullptr, const QOpenGLWidget * sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+  explicit QuarterWidget(const QSurfaceFormat & format, QWidget * parent = nullptr, const QOpenGLWidget * shareWidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
   ~QuarterWidget() override;
 
   TransparencyType transparencyType() const;
@@ -203,7 +203,7 @@ protected:
   virtual bool updateDevicePixelRatio();
 
 private:
-  void constructor(const QtGLFormat& format, const QtGLWidget* sharewidget);
+  void constructor(const QSurfaceFormat& format, const QOpenGLWidget* sharewidget);
   friend class QuarterWidgetP;
   class QuarterWidgetP * pimpl;
   bool initialized;

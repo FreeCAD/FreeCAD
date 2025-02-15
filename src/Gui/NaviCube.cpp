@@ -196,7 +196,7 @@ private:
     SbVec2s m_PosAreaBase = SbVec2s(0,0);
     SbVec2s m_PosAreaSize = SbVec2s(0,0);
 
-    QtGLFramebufferObject* m_PickingFramebuffer;
+    QOpenGLFramebufferObject* m_PickingFramebuffer;
     Gui::View3DInventorViewer* m_View3DInventorViewer;
 
     map<PickId, Face> m_Faces;
@@ -704,8 +704,8 @@ void NaviCubeImplementation::prepare()
     if (m_PickingFramebuffer)
         delete m_PickingFramebuffer;
     m_PickingFramebuffer =
-        new QtGLFramebufferObject(2 * m_CubeWidgetSize, 2 * m_CubeWidgetSize,
-                                  QtGLFramebufferObject::CombinedDepthStencil);
+        new QOpenGLFramebufferObject(2 * m_CubeWidgetSize, 2 * m_CubeWidgetSize,
+                                  QOpenGLFramebufferObject::CombinedDepthStencil);
     m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
 }
 
@@ -935,7 +935,7 @@ NaviCubeImplementation::PickId NaviCubeImplementation::pickFace(short x, short y
     GLubyte pixels[4] = {0};
     if (m_PickingFramebuffer && std::abs(x) <= m_CubeWidgetSize / 2 &&
         std::abs(y) <= m_CubeWidgetSize / 2) {
-        static_cast<QtGLWidget*>(m_View3DInventorViewer->viewport())->makeCurrent();
+        static_cast<QOpenGLWidget*>(m_View3DInventorViewer->viewport())->makeCurrent();
         m_PickingFramebuffer->bind();
 
         glViewport(0, 0, m_CubeWidgetSize * 2, m_CubeWidgetSize * 2);
@@ -946,7 +946,7 @@ NaviCubeImplementation::PickId NaviCubeImplementation::pickFace(short x, short y
         glReadPixels(2 * x + m_CubeWidgetSize, 2 * y + m_CubeWidgetSize, 1, 1,
                      GL_RGBA, GL_UNSIGNED_BYTE, &pixels);
         m_PickingFramebuffer->release();
-        static_cast<QtGLWidget*>(m_View3DInventorViewer->viewport())->doneCurrent();
+        static_cast<QOpenGLWidget*>(m_View3DInventorViewer->viewport())->doneCurrent();
     }
     return pixels[3] == 255 ? static_cast<PickId>(pixels[0]) : PickId::None;
 }

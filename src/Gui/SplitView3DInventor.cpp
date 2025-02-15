@@ -580,7 +580,7 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
     bool smoothing = false;
     bool glformat = false;
     int samples = View3DInventorViewer::getNumSamples();
-    QtGLFormat f;
+    QSurfaceFormat f;
 
     if (samples > 1) {
         glformat = true;

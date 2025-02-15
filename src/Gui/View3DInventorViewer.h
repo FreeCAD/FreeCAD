@@ -137,8 +137,8 @@ public:
     };
     //@}
 
-    explicit View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = nullptr);
-    View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = nullptr);
+    explicit View3DInventorViewer (QWidget *parent, const QOpenGLWidget* sharewidget = nullptr);
+    View3DInventorViewer (const QSurfaceFormat& format, QWidget *parent, const QOpenGLWidget* sharewidget = nullptr);
     ~View3DInventorViewer() override;
 
     void init();
@@ -183,7 +183,7 @@ public:
     static int getNumSamples();
     void setRenderType(RenderType type);
     RenderType getRenderType() const;
-    void renderToFramebuffer(QtGLFramebufferObject*);
+    void renderToFramebuffer(QOpenGLFramebufferObject*);
     QImage grabFramebuffer();
     void imageFromFramebuffer(int width, int height, int samples,
                               const QColor& bgcolor, QImage& img);
@@ -530,7 +530,7 @@ private:
     SoClipPlane *pcClipPlane;
 
     RenderType renderType;
-    QtGLFramebufferObject* framebuffer;
+    QOpenGLFramebufferObject* framebuffer;
     QImage glImage;
     bool shading;
     SoSwitch *dimensionRoot;

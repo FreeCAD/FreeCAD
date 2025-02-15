@@ -148,7 +148,7 @@ constexpr const int defaultSize = 100;
 
 // NOLINTBEGIN(readability-implicit-bool-conversion)
 SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(QWidget* parent,
-                                                             const QtGLWidget* sharewidget,
+                                                             const QOpenGLWidget* sharewidget,
                                                              Qt::WindowFlags flags)
     : QuarterWidget(parent, sharewidget, flags)
     , matrixaction(SbViewportRegion(defaultSize, defaultSize))
@@ -156,9 +156,9 @@ SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(QWidget* parent,
     init();
 }
 
-SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(const QtGLFormat& format,
+SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(const QSurfaceFormat& format,
                                                              QWidget* parent,
-                                                             const QtGLWidget* shareWidget,
+                                                             const QOpenGLWidget* shareWidget,
                                                              Qt::WindowFlags flags)
     : QuarterWidget(format, parent, shareWidget, flags)
     , matrixaction(SbViewportRegion(defaultSize, defaultSize))
@@ -166,9 +166,9 @@ SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(const QtGLFormat& f
     init();
 }
 
-SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(QtGLContext* context,
+SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(QOpenGLContext* context,
                                                              QWidget* parent,
-                                                             const QtGLWidget* sharewidget,
+                                                             const QOpenGLWidget* sharewidget,
                                                              Qt::WindowFlags flags)
     : QuarterWidget(context, parent, sharewidget, flags)
     , matrixaction(SbViewportRegion(defaultSize, defaultSize))

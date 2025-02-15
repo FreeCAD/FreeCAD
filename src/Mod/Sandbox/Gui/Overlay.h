@@ -55,7 +55,7 @@ private:
     QPoint lastPoint;
     QList<QPoint> selection;
 
-    QtGLFramebufferObject* fbo;
+    QOpenGLFramebufferObject* fbo;
 };
 
 } // SandboxGui

@@ -50,15 +50,15 @@ class QUARTER_DLL_API SoQTQuarterAdaptor :  public QuarterWidget {
 
 public:
     explicit SoQTQuarterAdaptor(QWidget* parent = nullptr,
-                                const QtGLWidget* sharewidget = nullptr,
+                                const QOpenGLWidget* sharewidget = nullptr,
                                 Qt::WindowFlags flags = Qt::WindowFlags());
-    explicit SoQTQuarterAdaptor(const QtGLFormat& format,
+    explicit SoQTQuarterAdaptor(const QSurfaceFormat& format,
                                 QWidget* parent = nullptr,
-                                const QtGLWidget* shareWidget = nullptr,
+                                const QOpenGLWidget* shareWidget = nullptr,
                                 Qt::WindowFlags flags = Qt::WindowFlags());
-    explicit SoQTQuarterAdaptor(QtGLContext* context,
+    explicit SoQTQuarterAdaptor(QOpenGLContext* context,
                                 QWidget* parent = nullptr,
-                                const QtGLWidget* sharewidget = nullptr,
+                                const QOpenGLWidget* sharewidget = nullptr,
                                 Qt::WindowFlags flags = Qt::WindowFlags());
     ~SoQTQuarterAdaptor() override;
 

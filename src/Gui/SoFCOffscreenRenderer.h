@@ -136,7 +136,7 @@ private:
     SbBool renderFromBase(SoBase * base);
     void makeFrameBuffer(int width, int height, int samples);
 
-    QtGLFramebufferObject*  framebuffer;
+    QOpenGLFramebufferObject*  framebuffer;
     uint32_t                cache_context; // our unique context id
 
     SbViewportRegion viewport;

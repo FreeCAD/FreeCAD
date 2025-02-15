@@ -82,7 +82,7 @@ class GuiExport View3DInventor : public MDIView
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    View3DInventor(Gui::Document* pcDocument, QWidget* parent, const QtGLWidget* sharewidget = nullptr, Qt::WindowFlags wflags=Qt::WindowFlags());
+    View3DInventor(Gui::Document* pcDocument, QWidget* parent, const QOpenGLWidget* sharewidget = nullptr, Qt::WindowFlags wflags=Qt::WindowFlags());
     ~View3DInventor() override;
 
     /// Message handler

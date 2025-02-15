@@ -47,7 +47,7 @@ using namespace SandboxGui;
 
 class MyPaintable : public Gui::GLGraphicsItem
 {
-    QtGLFramebufferObject* fbo;
+    QOpenGLFramebufferObject* fbo;
     Gui::View3DInventorViewer* view;
     QImage img;
 public:
@@ -63,7 +63,7 @@ public:
             p.drawText(200,200,QStringLiteral("Render to QImage"));
         }
 
-        fbo = new QtGLFramebufferObject(v->getGLWidget()->size());
+        fbo = new QOpenGLFramebufferObject(v->getGLWidget()->size());
         fbo->bind();
         fbo->release();
 
@@ -92,7 +92,7 @@ public:
 
 class Teapots : public Gui::GLGraphicsItem
 {
-    QtGLFramebufferObject *fbObject;
+    QOpenGLFramebufferObject *fbObject;
     GLuint glTeapotObject;
     QPoint rubberBandCorner1;
     QPoint rubberBandCorner2;
@@ -106,8 +106,8 @@ Teapots(Gui::View3DInventorViewer* v) :view(v)
     SbVec2s size = vp.getViewportSizePixels();
 
     rubberBandIsShown = false;
-    fbObject = new QtGLFramebufferObject(size[0],size[1],
-                                         QtGLFramebufferObject::Depth);
+    fbObject = new QOpenGLFramebufferObject(size[0],size[1],
+                                         QOpenGLFramebufferObject::Depth);
     resizeGL(size[0],size[1]);
 
     rubberBandIsShown = true;
@@ -332,7 +332,7 @@ DrawingPlane::~DrawingPlane()
 
 void DrawingPlane::initialize()
 {
-    fbo = new QtGLFramebufferObject(128, 128,QtGLFramebufferObject::Depth);
+    fbo = new QOpenGLFramebufferObject(128, 128,QOpenGLFramebufferObject::Depth);
 }
 
 void DrawingPlane::terminate()
@@ -353,7 +353,7 @@ void DrawingPlane::draw ()
 {return;
     if (1/*mustRedraw*/) {
         SbVec2s view = _pcView3D->getSoRenderManager()->getSize();
-        static_cast<QtGLWidget*>(_pcView3D->getGLWidget())->makeCurrent();
+        static_cast<QOpenGLWidget*>(_pcView3D->getGLWidget())->makeCurrent();
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();

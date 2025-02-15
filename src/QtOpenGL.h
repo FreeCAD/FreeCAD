@@ -24,19 +24,11 @@
 #ifndef QUARTER_QTOPENGL_H
 #define QUARTER_QTOPENGL_H
 
-/* QtOpenGL.h.  Generated from QtOpenGL.h.cmake by cmake.  */
-
 #include <QOpenGLContext>
 #include <QSurfaceFormat>
 #include <QOpenGLWidget>
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLVersionProfile>
 #include <QOpenGLFunctions>
-
-using QtGLContext = QOpenGLContext;
-using QtGLFormat = QSurfaceFormat;
-using QtGLWidget = QOpenGLWidget;
-using QtGLFramebufferObject = QOpenGLFramebufferObject;
-using QtGLFramebufferObjectFormat = QOpenGLFramebufferObjectFormat;
 
 #endif //QUARTER_QTOPENGL_H
