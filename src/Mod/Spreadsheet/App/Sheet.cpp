@@ -912,7 +912,7 @@ void Sheet::recomputeCell(CellAddress p)
         }
     }
     catch (const Base::Exception& e) {
-        QString msg = QString::fromUtf8("ERR: %1").arg(QString::fromUtf8(e.what()));
+        QString msg = QStringLiteral("ERR: %1").arg(QString::fromUtf8(e.what()));
 
         setStringProperty(p, msg.toStdString());
         if (cell) {

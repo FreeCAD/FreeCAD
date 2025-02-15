@@ -438,9 +438,9 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
 
     if (strcmp(balloon->BubbleShape.getValueAsString(), "Rectangle") == 0) {
         std::vector<int> newSeps;
-        while (labelText.contains(QString::fromUtf8("|"))) {
-            int pos = labelText.indexOf(QString::fromUtf8("|"));
-            labelText.replace(pos, 1, QString::fromUtf8("   "));
+        while (labelText.contains(QStringLiteral("|"))) {
+            int pos = labelText.indexOf(QStringLiteral("|"));
+            labelText.replace(pos, 1, QStringLiteral("   "));
             QFontMetrics fm(balloonLabel->getFont());
             newSeps.push_back(Gui::QtTools::horizontalAdvance(fm, labelText.left(pos + 2)));
             balloonLabel->setVerticalSep(true);

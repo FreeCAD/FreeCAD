@@ -426,10 +426,21 @@ PyObject* DocumentPy::removeObject(PyObject* args)
     }
 }
 
-PyObject* DocumentPy::copyObject(PyObject* args)
+PyObject* DocumentPy::copyObject(PyObject* args, PyObject* kwd)
 {
-    PyObject *obj, *rec = Py_False, *retAll = Py_False;
-    if (!PyArg_ParseTuple(args, "O|O!O!", &obj, &PyBool_Type, &rec, &PyBool_Type, &retAll)) {
+    PyObject* obj;
+    PyObject* rec = Py_False;
+    PyObject* retAll = Py_False;
+    static constexpr std::array<const char*, 4> kwlist {"object", "recursive", "return_all", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwd,
+                                             "O|O!O!",
+                                             kwlist,
+                                             &obj,
+                                             &PyBool_Type,
+                                             &rec,
+                                             &PyBool_Type,
+                                             &retAll)) {
         return nullptr;
     }
 

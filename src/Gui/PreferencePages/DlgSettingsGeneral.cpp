@@ -62,7 +62,7 @@
 
 using namespace Gui;
 using namespace Gui::Dialog;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 using namespace Base;
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsGeneral */
@@ -322,7 +322,7 @@ void DlgSettingsGeneral::loadSettings()
     int index = 1;
     TStringMap list = Translator::instance()->supportedLocales();
     ui->Languages->clear();
-    ui->Languages->addItem(QString::fromLatin1("English"), QByteArray("English"));
+    ui->Languages->addItem(QStringLiteral("English"), QByteArray("English"));
     for (auto it = list.begin(); it != list.end(); ++it, index++) {
         QByteArray lang = it->first.c_str();
         QString langname = QString::fromLatin1(lang.constData());
@@ -739,7 +739,7 @@ void DlgSettingsGeneral::onImportConfigClicked()
     auto path = fs::path(QFileDialog::getOpenFileName(this,
         tr("Choose a FreeCAD config file to import"),
         QString(),
-        QString::fromUtf8("*.cfg")).toStdString());
+        QStringLiteral("*.cfg")).toStdString());
     if (!path.empty()) {
         // Create a name from the filename:
         auto packName = path.filename().stem().string();

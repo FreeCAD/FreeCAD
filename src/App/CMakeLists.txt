@@ -60,6 +60,7 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
+    ${ZIPIOS_INCLUDES}
 )
 
 set(FreeCADApp_LIBS

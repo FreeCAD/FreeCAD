@@ -759,6 +759,9 @@ Hole::Hole()
     ADD_PROPERTY_TYPE(Diameter, (6.0), "Hole", App::Prop_None, "Diameter");
     Diameter.setConstraints(&diameterRange);
 
+    ADD_PROPERTY_TYPE(ThreadDiameter, (0.0), "Hole", App::Prop_None, "Thread major diameter");
+    ThreadDiameter.setReadOnly(true);
+
     ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Hole", App::Prop_None, "Thread direction");
     ThreadDirection.setEnums(ThreadDirectionEnums);
     ThreadDirection.setReadOnly(true);
@@ -1173,12 +1176,13 @@ std::optional<double> Hole::determineDiameter() const
             return std::nullopt;
         throw Base::IndexError("Thread size out of range");
     }
-    double diameter = threadDescription[threadType][threadSize].diameter;
-    double pitch = threadDescription[threadType][threadSize].pitch;
-    double clearance = 0.0;
 
     if (threadType == 0)
         return std::nullopt;
+
+    double diameter = threadDescription[threadType][threadSize].diameter;
+    double pitch = threadDescription[threadType][threadSize].pitch;
+    double clearance = 0.0;
 
     if (Threaded.getValue()) {
 
@@ -1346,6 +1350,12 @@ std::optional<double> Hole::determineDiameter() const
 
 void Hole::updateDiameterParam()
 {
+    int threadType = ThreadType.getValue();
+    int threadSize = ThreadSize.getValue();
+    if (threadType > 0 && threadSize > 0)
+        ThreadDiameter.setValue(
+            threadDescription[threadType][threadSize].diameter
+        );
     if (auto opt = determineDiameter())
         Diameter.setValue(opt.value());
 }
@@ -1356,6 +1366,32 @@ double Hole::getThreadProfileAngle()
     return 90 - 1.79;
 }
 
+void Hole::findClosestDesignation()
+{
+    // Intended for thread type changes
+    // finds the closest diameter of the new thread type
+    int threadType = ThreadType.getValue();
+    int closestSize = 0;
+    double diameter = ThreadDiameter.getValue();
+    if (diameter == 0)
+        diameter = Diameter.getValue();
+    double closestDifference = std::numeric_limits<double>::infinity();
+    double difference;
+
+    for (size_t i = 0; i < threadDescription[threadType].size(); i++) {
+        difference = threadDescription[threadType][i].diameter - diameter;
+        if (difference == 0) {
+            closestSize = i;
+            break;
+        }
+        if (std::abs(difference) < closestDifference) {
+            closestSize = i;
+            closestDifference = std::abs(difference);
+        }
+    }
+    ThreadSize.setValue(closestSize);
+}
+
 void Hole::onChanged(const App::Property* prop)
 {
     if (prop == &ThreadType) {
@@ -1363,7 +1399,10 @@ void Hole::onChanged(const App::Property* prop)
         if (ThreadType.isValid()) {
             type = ThreadType.getValueAsString();
             ThreadSize.setEnums(getThreadDesignations(ThreadType.getValue()));
+            if (type != "None")
+                findClosestDesignation();
         }
+
         if (HoleCutType.isValid())
             holeCutTypeStr = HoleCutType.getValueAsString();
 
@@ -1639,6 +1678,11 @@ void Hole::onChanged(const App::Property* prop)
         // a changed diameter means we also need to check the hole cut
         // because the hole cut diameter must not be <= than the diameter
         updateHoleCutParams();
+        if (ThreadType.getValue() == 0) {
+            // Profile is None but this is needed to find the closest
+            // designation if the user switch to threaded
+            ThreadDiameter.setValue(Diameter.getValue());
+        }
     }
     else if (prop == &HoleCutType) {
         ProfileBased::onChanged(&HoleCutDiameter);

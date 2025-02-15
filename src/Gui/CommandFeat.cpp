@@ -244,30 +244,30 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
         // clear variables from previous run, if any
         QString cmd = QLatin1String("try:\n    del(doc,lnk,obj,shp,sub,subs)\nexcept Exception:\n    pass\n");
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
-        cmd = QString::fromLatin1("doc = App.getDocument(\"%1\")").arg(docname);
+        cmd = QStringLiteral("doc = App.getDocument(\"%1\")").arg(docname);
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
         //support links
         if (obj->isDerivedFrom<App::Link>()) {
-            cmd = QString::fromLatin1("lnk = doc.getObject(\"%1\")").arg(objname);
+            cmd = QStringLiteral("lnk = doc.getObject(\"%1\")").arg(objname);
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
-            cmd = QString::fromLatin1("obj = lnk.getLinkedObject()");
+            cmd = QStringLiteral("obj = lnk.getLinkedObject()");
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
             const auto link = static_cast<const App::Link*>(obj);
             obj = link->getLinkedObject();
         } else {
-            cmd = QString::fromLatin1("obj = doc.getObject(\"%1\")").arg(objname);
+            cmd = QStringLiteral("obj = doc.getObject(\"%1\")").arg(objname);
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
         }
         if (obj->isDerivedFrom<App::GeoFeature>()) {
             const auto geoObj = static_cast<const App::GeoFeature*>(obj);
             const App::PropertyGeometry* geo = geoObj->getPropertyOfGeometry();
             if (geo){
-                cmd = QString::fromLatin1("shp = obj.") + QLatin1String(geo->getName()); //"Shape", "Mesh", "Points", etc.
+                cmd = QStringLiteral("shp = obj.") + QLatin1String(geo->getName()); //"Shape", "Mesh", "Points", etc.
                 Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
                 if (sels[0].hasSubNames()) {
                     std::vector<std::string> subnames = sels[0].getSubNames();
                     QString subname = QString::fromLatin1(subnames[0].c_str());
-                    cmd = QString::fromLatin1("sub = obj.getSubObject(\"%1\")").arg(subname);
+                    cmd = QStringLiteral("sub = obj.getSubObject(\"%1\")").arg(subname);
                     Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
                     if (subnames.size() > 1) {
                         std::ostringstream strm;

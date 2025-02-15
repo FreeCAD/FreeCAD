@@ -60,7 +60,7 @@ TextEdit::TextEdit(QWidget* parent)
     //Note: Set the correct context to this shortcut as we may use several instances of this
     //class at a time
     auto shortcut = new QShortcut(this);
-    shortcut->setKey(QKeySequence(QString::fromLatin1("CTRL+Space")));
+    shortcut->setKey(QKeySequence(QStringLiteral("CTRL+Space")));
     shortcut->setContext(Qt::WidgetShortcut);
     connect(shortcut, &QShortcut::activated, this, &TextEdit::complete);
 
@@ -502,7 +502,7 @@ void PythonTextEditor::keyPressEvent (QKeyEvent * e)
         bool space = hPrefGrp->GetBool("Spaces", true);
         int indent = hPrefGrp->GetInt( "IndentSize", 4 );
         QString ch = space ? QString(indent, QLatin1Char(' '))
-                           : QString::fromLatin1("\t");
+                           : QStringLiteral("\t");
 
         QTextCursor cursor = textCursor();
         if (!cursor.hasSelection()) {

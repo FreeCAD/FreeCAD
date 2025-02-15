@@ -103,7 +103,7 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
 
     // build Python command for execution
     QString cmd;
-    cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").addObject("
+    cmd = QStringLiteral("App.getDocument(\"%1\").getObject(\"%2\").addObject("
                         "App.getDocument(\"%1\").getObject(\"%3\"))")
                         .arg(QString::fromLatin1(doc->getName()),
                              QString::fromLatin1(grp->getNameInDocument()),

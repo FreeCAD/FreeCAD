@@ -219,10 +219,10 @@ private:
     QString getCrosshairCursorSVGName() const override
     {
         if (intersection) {
-            return QString::fromLatin1("Sketcher_Pointer_External_Intersection");
+            return QStringLiteral("Sketcher_Pointer_External_Intersection");
         }
 
-        return QString::fromLatin1("Sketcher_Pointer_External");
+        return QStringLiteral("Sketcher_Pointer_External");
     }
 
     void deactivated() override

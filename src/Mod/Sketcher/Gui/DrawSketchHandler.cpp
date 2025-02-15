@@ -385,22 +385,22 @@ DrawSketchHandler::suggestedConstraintsPixmaps(std::vector<AutoConstraint>& sugg
         QString iconType;
         switch (autoCstr.Type) {
             case Horizontal:
-                iconType = QString::fromLatin1("Constraint_Horizontal");
+                iconType = QStringLiteral("Constraint_Horizontal");
                 break;
             case Vertical:
-                iconType = QString::fromLatin1("Constraint_Vertical");
+                iconType = QStringLiteral("Constraint_Vertical");
                 break;
             case Coincident:
-                iconType = QString::fromLatin1("Constraint_PointOnPoint");
+                iconType = QStringLiteral("Constraint_PointOnPoint");
                 break;
             case PointOnObject:
-                iconType = QString::fromLatin1("Constraint_PointOnObject");
+                iconType = QStringLiteral("Constraint_PointOnObject");
                 break;
             case Symmetric:
-                iconType = QString::fromLatin1("Constraint_Symmetric");
+                iconType = QStringLiteral("Constraint_Symmetric");
                 break;
             case Tangent:
-                iconType = QString::fromLatin1("Constraint_Tangent");
+                iconType = QStringLiteral("Constraint_Tangent");
                 break;
             default:
                 break;

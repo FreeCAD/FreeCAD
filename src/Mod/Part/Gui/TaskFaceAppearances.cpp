@@ -397,14 +397,14 @@ void FaceAppearances::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void FaceAppearances::updatePanel()
 {
-    QString faces = QString::fromLatin1("[");
+    QString faces = QStringLiteral("[");
     int size = d->index.size();
     for (int it : d->index) {
         faces += QString::number(it + 1);
         if (--size > 0)
-            faces += QString::fromLatin1(",");
+            faces += QStringLiteral(",");
     }
-    faces += QString::fromLatin1("]");
+    faces += QStringLiteral("]");
 
     int maxWidth = d->ui->labelElement->width();
     QFontMetrics fm(d->ui->labelElement->font());

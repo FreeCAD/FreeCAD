@@ -183,10 +183,10 @@ private:
     QString getCrosshairCursorSVGName() const override
     {
         if (constructionMethod() == ConstructionMethod::OnePointLengthAngle) {
-            return QString::fromLatin1("Sketcher_Pointer_Create_Line_Polar");
+            return QStringLiteral("Sketcher_Pointer_Create_Line_Polar");
         }
         else {
-            return QString::fromLatin1("Sketcher_Pointer_Create_Line.svg");
+            return QStringLiteral("Sketcher_Pointer_Create_Line.svg");
         }
     }
 

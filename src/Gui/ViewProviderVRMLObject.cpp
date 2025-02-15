@@ -59,7 +59,7 @@ PROPERTY_SOURCE(Gui::ViewProviderVRMLObject, Gui::ViewProviderDocumentObject)
 ViewProviderVRMLObject::ViewProviderVRMLObject()
 {
     pcVRML = new SoFCSelection();
-    pcVRML->highlightMode = Gui::SoFCSelection::OFF;
+    pcVRML->preselectionMode = Gui::SoFCSelection::OFF;
     pcVRML->selectionMode = Gui::SoFCSelection::SEL_OFF;
     //pcVRML->style = Gui::SoFCSelection::BOX;
     pcVRML->ref();

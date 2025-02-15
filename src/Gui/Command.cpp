@@ -1079,7 +1079,7 @@ Action * GroupCommand::createAction() {
 
     for(auto &v : cmds) {
         if(!v.first)
-            pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
+            pcAction->addAction(QStringLiteral(""))->setSeparator(true);
         else
             v.first->addToGroup(pcAction);
     }
@@ -1175,7 +1175,7 @@ void MacroCommand::activated(int iMsg)
         d = QDir(QString::fromUtf8(cMacroPath.c_str()));
     }
     else {
-        QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
+        QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QStringLiteral("Macro");
         d = QDir(dirstr);
     }
 

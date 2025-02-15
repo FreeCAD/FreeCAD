@@ -268,7 +268,7 @@ void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
 
 void ViewProviderMeasureBase::setLabelValue(const QString& value)
 {
-    auto lines = value.split(QString::fromLatin1("\n"));
+    auto lines = value.split(QStringLiteral("\n"));
 
     int i = 0;
     for (auto& it : lines) {

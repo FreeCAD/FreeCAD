@@ -147,7 +147,7 @@ void TaskRevolutionParameters::setupDialog()
         ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
     }
     else if (obj && faceId >= 0) {
-        ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
+        ui->lineFaceName->setText(QStringLiteral("%1:%2%3")
                                   .arg(QString::fromUtf8(obj->Label.getValue()),
                                        tr("Face"),
                                        QString::number(faceId)));
@@ -438,7 +438,7 @@ void TaskRevolutionParameters::onFaceName(const QString& text)
         QVariant name = objectNameByLabel(label, ui->lineFaceName->property("FeatureName"));
         if (name.isValid()) {
             parts[0] = name.toString();
-            QString uptoface = parts.join(QString::fromLatin1(":"));
+            QString uptoface = parts.join(QStringLiteral(":"));
             ui->lineFaceName->setProperty("FeatureName", name);
             ui->lineFaceName->setProperty("FaceName", setUpToFace(uptoface));
         }
@@ -463,7 +463,7 @@ void TaskRevolutionParameters::translateFaceName()
         }
 
         if (ok) {
-            ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
+            ui->lineFaceName->setText(QStringLiteral("%1:%2%3")
                                       .arg(parts[0], tr("Face"))
                                       .arg(faceId));
         }
@@ -481,7 +481,7 @@ QString TaskRevolutionParameters::getFaceName() const
         return getFaceReference(featureName.toString(), faceName);
     }
 
-    return QString::fromLatin1("None");
+    return QStringLiteral("None");
 }
 
 void TaskRevolutionParameters::clearFaceName()
@@ -697,7 +697,7 @@ void TaskRevolutionParameters::apply()
     FCMD_OBJ_CMD(tobj, "Reversed = " << (getReversed() ? 1 : 0));
     int mode = ui->changeMode->currentIndex();
     FCMD_OBJ_CMD(tobj, "Type = " << mode);
-    QString facename = QString::fromLatin1("None");
+    QString facename = QStringLiteral("None");
     if (static_cast<PartDesign::Revolution::RevolMethod>(mode) == PartDesign::Revolution::RevolMethod::ToFace) {
         facename = getFaceName();
     }

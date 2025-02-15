@@ -21,6 +21,7 @@
 # ***************************************************************************
 
 
+import FreeCAD
 import FreeCADGui
 import ArchBuildingPart
 
@@ -687,7 +688,7 @@ def get_icon(vp):
             rclass = vp.Object.IfcClass.replace("Type","")
             ifcicon = ":/icons/IFC/" + rclass + ".svg"
             if QtCore.QFile.exists(ifcicon):
-                if getattr(self, "ifcclass", "") != rclass:
+                if getattr(vp, "ifcclass", "") != rclass:
                     vp.ifcclass = rclass
                     vp.ifcicon = overlay(ifcicon, ":/icons/IFC.svg")
                 return getattr(vp, "ifcicon", overlay(ifcicon, ":/icons/IFC.svg"))

@@ -5,6 +5,7 @@ include_directories(
     ${COIN3D_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
 )
 

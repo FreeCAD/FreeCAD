@@ -146,7 +146,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         saver.dirName = dirName;
 
         // Write recovery meta file
-        QFile file(QString::fromLatin1("%1/fc_recovery_file.xml")
+        QFile file(QStringLiteral("%1/fc_recovery_file.xml")
             .arg(QString::fromUtf8(doc->TransientDir.getValue())));
         if (file.open(QFile::WriteOnly)) {
             QTextStream str(&file);
@@ -333,7 +333,7 @@ public:
 
         dirName = QString::fromUtf8(dir);
         fileName = QString::fromUtf8(file);
-        tmpName = QString::fromLatin1("%1.tmp%2").arg(fileName).arg(rand());
+        tmpName = QStringLiteral("%1.tmp%2").arg(fileName).arg(rand());
         writer.putNextEntry(tmpName.toUtf8().constData());
     }
     ~RecoveryRunnable() override

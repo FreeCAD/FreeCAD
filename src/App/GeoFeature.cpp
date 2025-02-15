@@ -48,6 +48,11 @@ PROPERTY_SOURCE(App::GeoFeature, App::DocumentObject)
 GeoFeature::GeoFeature()
 {
     ADD_PROPERTY_TYPE(Placement, (Base::Placement()), nullptr, Prop_NoRecompute, nullptr);
+    ADD_PROPERTY_TYPE(_ElementMapVersion,
+                    (""),
+                    "Base",
+                    (App::PropertyType)(Prop_Output | Prop_Hidden | Prop_Transient),
+                    "");
 }
 
 GeoFeature::~GeoFeature() = default;
@@ -239,6 +244,16 @@ void GeoFeature::updateElementReference()
         return;
     }
     bool reset = false;
+
+    auto version = getElementMapVersion(prop);
+    if (_ElementMapVersion.getStrValue().empty()) {
+        _ElementMapVersion.setValue(version);
+    }
+    else if (_ElementMapVersion.getStrValue() != version) {
+        reset = true;
+        _ElementMapVersion.setValue(version);
+    }
+
     PropertyLinkBase::updateElementReferences(this, reset);
 }
 
@@ -251,6 +266,14 @@ void GeoFeature::onChanged(const Property* prop)
         }
     }
     DocumentObject::onChanged(prop);
+}
+
+void GeoFeature::onDocumentRestored()
+{
+    if (!getDocument()->testStatus(Document::Status::Importing)) {
+        _ElementMapVersion.setValue(getElementMapVersion(getPropertyOfGeometry(), true));
+    }
+    DocumentObject::onDocumentRestored();
 }
 
 const std::vector<std::string>& GeoFeature::searchElementCache(const std::string& element,

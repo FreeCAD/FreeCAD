@@ -59,6 +59,6 @@
 		<ClassDeclarations>private:
     friend class StringID;
     int _index = 0;
-		</ClassDeclarations>
+        </ClassDeclarations>
     </PythonExport>
 </GenerateModel>

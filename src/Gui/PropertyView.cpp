@@ -79,7 +79,7 @@ PropertyView::PropertyView(QWidget *parent)
     connect(timer, &QTimer::timeout, this, &PropertyView::onTimer);
 
     tabs = new QTabWidget (this);
-    tabs->setObjectName(QString::fromUtf8("propertyTab"));
+    tabs->setObjectName(QStringLiteral("propertyTab"));
     tabs->setTabPosition(QTabWidget::South);
     pLayout->addWidget(tabs, 0, 0);
 

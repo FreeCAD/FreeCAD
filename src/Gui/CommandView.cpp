@@ -339,19 +339,19 @@ Action * StdCmdFreezeViews::createAction()
     saveView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* loadView = pcAction->addAction(QObject::tr("&Load views..."));
     loadView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
-    pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
+    pcAction->addAction(QStringLiteral(""))->setSeparator(true);
     freezeView = pcAction->addAction(QObject::tr("F&reeze view"));
     freezeView->setShortcut(QString::fromLatin1(getAccel()));
     freezeView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     clearView = pcAction->addAction(QObject::tr("&Clear views"));
     clearView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
-    separator = pcAction->addAction(QString::fromLatin1(""));
+    separator = pcAction->addAction(QStringLiteral(""));
     separator->setSeparator(true);
     offset = pcAction->actions().count();
 
     // allow up to 50 views
     for (int i=0; i<maxViews; i++)
-        pcAction->addAction(QString::fromLatin1(""))->setVisible(false);
+        pcAction->addAction(QStringLiteral(""))->setVisible(false);
 
     return pcAction;
 }
@@ -394,7 +394,7 @@ void StdCmdFreezeViews::activated(int iMsg)
                 (*it)->setToolTip(QString::fromLatin1(ppReturn));
                 (*it)->setVisible(true);
                 if (index < 10) {
-                    (*it)->setShortcut(QKeySequence(QString::fromLatin1("CTRL+%1").arg(index)));
+                    (*it)->setShortcut(QKeySequence(QStringLiteral("CTRL+%1").arg(index)));
                 }
                 break;
             }
@@ -410,7 +410,7 @@ void StdCmdFreezeViews::activated(int iMsg)
         // Activate a view
         QList<QAction*> acts = pcAction->actions();
         QString data = acts[iMsg]->toolTip();
-        QString send = QString::fromLatin1("SetCamera %1").arg(data);
+        QString send = QStringLiteral("SetCamera %1").arg(data);
         getGuiApplication()->sendMsgToActiveView(send.toLatin1());
     }
 }
@@ -419,7 +419,7 @@ void StdCmdFreezeViews::onSaveViews()
 {
     // Save the views to an XML file
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save frozen views"),
-                                             QString(), QString::fromLatin1("%1 (*.cam)").arg(QObject::tr("Frozen views")));
+                                             QString(), QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views")));
     if (fn.isEmpty())
         return;
     QFile file(fn);
@@ -440,11 +440,11 @@ void StdCmdFreezeViews::onSaveViews()
             // remove the first line because it's a comment like '#Inventor V2.1 ascii'
             QString viewPos;
             if (!data.isEmpty()) {
-                QStringList lines = data.split(QString::fromLatin1("\n"));
+                QStringList lines = data.split(QStringLiteral("\n"));
                 if (lines.size() > 1) {
                     lines.pop_front();
                 }
-                viewPos = lines.join(QString::fromLatin1(" "));
+                viewPos = lines.join(QStringLiteral(" "));
             }
 
             str << "    <Camera settings=\"" << viewPos.toLatin1().constData() << "\"/>\n";
@@ -469,7 +469,7 @@ void StdCmdFreezeViews::onRestoreViews()
 
     // Restore the views from an XML file
     QString fn = FileDialog::getOpenFileName(getMainWindow(), QObject::tr("Restore frozen views"),
-                                             QString(), QString::fromLatin1("%1 (*.cam)").arg(QObject::tr("Frozen views")));
+                                             QString(), QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views")));
     if (fn.isEmpty())
         return;
     QFile file(fn);
@@ -500,19 +500,19 @@ void StdCmdFreezeViews::onRestoreViews()
     }
 
     bool ok;
-    int scheme = root.attribute(QString::fromLatin1("SchemaVersion")).toInt(&ok);
+    int scheme = root.attribute(QStringLiteral("SchemaVersion")).toInt(&ok);
     if (!ok)
         return;
     // SchemeVersion "1"
     if (scheme == 1) {
         // read the views, ignore the attribute 'Count'
-        QDomElement child = root.firstChildElement(QString::fromLatin1("Views"));
-        QDomElement views = child.firstChildElement(QString::fromLatin1("Camera"));
+        QDomElement child = root.firstChildElement(QStringLiteral("Views"));
+        QDomElement views = child.firstChildElement(QStringLiteral("Camera"));
         QStringList cameras;
         while (!views.isNull()) {
-            QString setting = views.attribute(QString::fromLatin1("settings"));
+            QString setting = views.attribute(QStringLiteral("settings"));
             cameras << setting;
-            views = views.nextSiblingElement(QString::fromLatin1("Camera"));
+            views = views.nextSiblingElement(QStringLiteral("Camera"));
         }
 
         // use this rather than the attribute 'Count' because it could be
@@ -533,7 +533,7 @@ void StdCmdFreezeViews::onRestoreViews()
             acts[i+offset]->setToolTip(setting);
             acts[i+offset]->setVisible(true);
             if (i < 9) {
-                acts[i+offset]->setShortcut(QKeySequence(QString::fromLatin1("CTRL+%1").arg(i+1)));
+                acts[i+offset]->setShortcut(QKeySequence(QStringLiteral("CTRL+%1").arg(i+1)));
             }
         }
 
@@ -668,44 +668,44 @@ Gui::Action * StdCmdDrawStyle::createAction()
     a0->setCheckable(true);
     a0->setIcon(BitmapFactory().iconFromTheme("DrawStyleAsIs"));
     a0->setChecked(true);
-    a0->setObjectName(QString::fromLatin1("Std_DrawStyleAsIs"));
-    a0->setShortcut(QKeySequence(QString::fromUtf8("V,1")));
+    a0->setObjectName(QStringLiteral("Std_DrawStyleAsIs"));
+    a0->setShortcut(QKeySequence(QStringLiteral("V,1")));
     a0->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a1 = pcAction->addAction(QString());
     a1->setCheckable(true);
     a1->setIcon(BitmapFactory().iconFromTheme("DrawStylePoints"));
-    a1->setObjectName(QString::fromLatin1("Std_DrawStylePoints"));
-    a1->setShortcut(QKeySequence(QString::fromUtf8("V,2")));
+    a1->setObjectName(QStringLiteral("Std_DrawStylePoints"));
+    a1->setShortcut(QKeySequence(QStringLiteral("V,2")));
     a1->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a2 = pcAction->addAction(QString());
     a2->setCheckable(true);
     a2->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
-    a2->setObjectName(QString::fromLatin1("Std_DrawStyleWireframe"));
-    a2->setShortcut(QKeySequence(QString::fromUtf8("V,3")));
+    a2->setObjectName(QStringLiteral("Std_DrawStyleWireframe"));
+    a2->setShortcut(QKeySequence(QStringLiteral("V,3")));
     a2->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a3 = pcAction->addAction(QString());
     a3->setCheckable(true);
     a3->setIcon(BitmapFactory().iconFromTheme("DrawStyleHiddenLine"));
-    a3->setObjectName(QString::fromLatin1("Std_DrawStyleHiddenLine"));
-    a3->setShortcut(QKeySequence(QString::fromUtf8("V,4")));
+    a3->setObjectName(QStringLiteral("Std_DrawStyleHiddenLine"));
+    a3->setShortcut(QKeySequence(QStringLiteral("V,4")));
     a3->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a4 = pcAction->addAction(QString());
     a4->setCheckable(true);
     a4->setIcon(BitmapFactory().iconFromTheme("DrawStyleNoShading"));
-    a4->setObjectName(QString::fromLatin1("Std_DrawStyleNoShading"));
-    a4->setShortcut(QKeySequence(QString::fromUtf8("V,5")));
+    a4->setObjectName(QStringLiteral("Std_DrawStyleNoShading"));
+    a4->setShortcut(QKeySequence(QStringLiteral("V,5")));
     a4->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a5 = pcAction->addAction(QString());
     a5->setCheckable(true);
     a5->setIcon(BitmapFactory().iconFromTheme("DrawStyleShaded"));
-    a5->setObjectName(QString::fromLatin1("Std_DrawStyleShaded"));
-    a5->setShortcut(QKeySequence(QString::fromUtf8("V,6")));
+    a5->setObjectName(QStringLiteral("Std_DrawStyleShaded"));
+    a5->setShortcut(QKeySequence(QStringLiteral("V,6")));
     a5->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a6 = pcAction->addAction(QString());
     a6->setCheckable(true);
     a6->setIcon(BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
-    a6->setObjectName(QString::fromLatin1("Std_DrawStyleFlatLines"));
-    a6->setShortcut(QKeySequence(QString::fromUtf8("V,7")));
+    a6->setObjectName(QStringLiteral("Std_DrawStyleFlatLines"));
+    a6->setShortcut(QKeySequence(QStringLiteral("V,7")));
     a6->setWhatsThis(QString::fromLatin1(getWhatsThis()));
 
     pcAction->setIcon(a0->icon());
@@ -1959,7 +1959,7 @@ void StdViewScreenShot::activated(int iMsg)
         QStringList filter;
         QString selFilter;
         for (QStringList::Iterator it = formats.begin(); it != formats.end(); ++it) {
-            filter << QString::fromLatin1("%1 %2 (*.%3)").arg((*it).toUpper(),
+            filter << QStringLiteral("%1 %2 (*.%3)").arg((*it).toUpper(),
                 QObject::tr("files"), (*it).toLower());
             if (ext == *it)
                 selFilter = filter.last();
@@ -2121,8 +2121,8 @@ void StdViewLoadImage::activated(int iMsg)
     QFileDialog dialog(Gui::getMainWindow());
     dialog.setWindowTitle(QObject::tr("Choose an image file to open"));
     dialog.setMimeTypeFilters(mimeTypeFilters);
-    dialog.selectMimeTypeFilter(QString::fromLatin1("image/png"));
-    dialog.setDefaultSuffix(QString::fromLatin1("png"));
+    dialog.selectMimeTypeFilter(QStringLiteral("image/png"));
+    dialog.setDefaultSuffix(QStringLiteral("png"));
     dialog.setAcceptMode(QFileDialog::AcceptOpen);
     dialog.setOption(QFileDialog::DontUseNativeDialog);
 

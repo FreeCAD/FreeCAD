@@ -247,16 +247,16 @@ Gui::Action * CmdTechDrawCosmeticVertexGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_CosmeticVertex"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_CosmeticVertex"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_CosmeticVertex"));
+    p1->setObjectName(QStringLiteral("TechDraw_CosmeticVertex"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_CosmeticVertex"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_Midpoints"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_Midpoints"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_Midpoints"));
+    p2->setObjectName(QStringLiteral("TechDraw_Midpoints"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_Midpoints"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_Quadrants"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_Quadrants"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_Quadrants"));
+    p3->setObjectName(QStringLiteral("TechDraw_Quadrants"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_Quadrants"));
 
     _pcAction = pcAction;
     languageChange();
@@ -621,16 +621,16 @@ Gui::Action * CmdTechDrawCenterLineGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_FaceCenterLine"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_FaceCenterLine"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_FaceCenterLine"));
+    p1->setObjectName(QStringLiteral("TechDraw_FaceCenterLine"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_FaceCenterLine"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_2LineCenterline"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_2LineCenterLine"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_2LineCenterLine"));
+    p2->setObjectName(QStringLiteral("TechDraw_2LineCenterLine"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_2LineCenterLine"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_2PointCenterline"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_2PointCenterLine"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_2PointCenterLine"));
+    p3->setObjectName(QStringLiteral("TechDraw_2PointCenterLine"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_2PointCenterLine"));
 
     _pcAction = pcAction;
     languageChange();

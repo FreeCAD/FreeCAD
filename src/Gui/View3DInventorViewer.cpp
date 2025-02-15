@@ -792,11 +792,11 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges & reason)
     {
         //Hint: do not create a tmp. instance of SelectionChanges
         SelectionChanges selChanges(SelectionChanges::RmvPreselect);
-        SoFCHighlightAction cAct(selChanges);
-        cAct.apply(pcViewProviderRoot);
+        SoFCPreselectionAction preselectionAction(selChanges);
+        preselectionAction.apply(pcViewProviderRoot);
     } else {
-        SoFCSelectionAction cAct(Reason);
-        cAct.apply(pcViewProviderRoot);
+        SoFCSelectionAction selectionAction(Reason);
+        selectionAction.apply(pcViewProviderRoot);
     }
 }
 /// @endcond
@@ -1140,7 +1140,12 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode)
 
     overrideMode = mode;
 
-    auto views = getDocument()->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
+    auto document = getDocument();
+    if (!document) {
+        return;
+    }
+
+    auto views = document->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
     if (mode == "No Shading") {
         this->shading = false;
         std::string flatLines = "Flat Lines";
@@ -1796,14 +1801,12 @@ const std::vector<SbVec2s>& View3DInventorViewer::getPolygon(SelectionRole* role
 
 void View3DInventorViewer::setSelectionEnabled(bool enable)
 {
-    SoNode* root = getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(enable);  // NOLINT
+    this->selectionRoot->selectionEnabled.setValue(enable);  // NOLINT
 }
 
 bool View3DInventorViewer::isSelectionEnabled() const
 {
-    SoNode* root = getSceneGraph();
-    return static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.getValue();  // NOLINT
+    return this->selectionRoot->selectionEnabled.getValue();  // NOLINT
 }
 
 SbVec2f View3DInventorViewer::screenCoordsOfPath(SoPath* path) const
@@ -2448,12 +2451,42 @@ void View3DInventorViewer::renderScene()
         stream.precision(1);
         stream.setf(std::ios::fixed | std::ios::showpoint);
         stream << framesPerSecond[0] << " ms / " << framesPerSecond[1] << " fps";
-        draw2DString(stream.str().c_str(), SbVec2s(10, 10), SbVec2f(0.1F, 0.1F));  // NOLINT
+        ParameterGrp::handle hGrpOverlayL = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/MainWindow/DockWindows/OverlayLeft");
+        std::string overlayLeftWidgets = hGrpOverlayL->GetASCII("Widgets", "");
+        ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View");
+        unsigned long axisLetterColor =
+            hGrpView->GetUnsigned("AxisLetterColor", 4294902015);  // default FPS color (yellow)
+        draw2DString(stream.str().c_str(),
+                     SbVec2s(10, 10),
+                     SbVec2f((overlayLeftWidgets.empty() ? 0.1f : 1.1f), 0.1f),
+                     App::Color(static_cast<uint32_t>(axisLetterColor)));  // NOLINT
     }
 
     if (naviCubeEnabled) {
         naviCube->drawNaviCube();
     }
+
+    // Workaround for inconsistent QT behavior related to handling custom OpenGL widgets that
+    // leave non opaque alpha values in final output.
+    // On wayland that can cause window to become transparent or blurry trail effect in the
+    // parts that contain partially transparent objects.
+    //
+    // At the end of rendering clear alpha value, so that it doesn't matter how rest of the
+    // compositing stack at QT and desktop level would interpret transparent pixels.
+    //
+    // Related issues:
+    // https://bugreports.qt.io/browse/QTBUG-110014
+    // https://bugreports.qt.io/browse/QTBUG-132197
+    // https://bugreports.qt.io/browse/QTBUG-119214
+    // https://github.com/FreeCAD/FreeCAD/issues/8341
+    // https://github.com/FreeCAD/FreeCAD/issues/6177
+    glPushAttrib(GL_COLOR_BUFFER_BIT);
+    glColorMask(false, false, false, true);
+    glClearColor(0, 0, 0, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glPopAttrib();
 }
 
 void View3DInventorViewer::setSeekMode(bool on)

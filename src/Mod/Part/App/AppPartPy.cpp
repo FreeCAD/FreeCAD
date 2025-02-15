@@ -866,7 +866,7 @@ private:
         } else {
             throw Py::TypeError("Expects argument of type DocumentObject, Shape, or Geometry");
         }
-        Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name));
+        Part::Feature *pcFeature = pcDoc->addObject<Part::Feature>(name);
         // copy the data
         pcFeature->Shape.setValue(shape);
         pcFeature->purgeTouched();

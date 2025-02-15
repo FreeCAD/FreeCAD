@@ -529,40 +529,40 @@ private:
     {
         if (!roundCorners && !makeFrame) {
             if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                return QString::fromLatin1("Sketcher_Pointer_Create_Box_Center");
+                return QStringLiteral("Sketcher_Pointer_Create_Box_Center");
             }
             else if (constructionMethod() == ConstructionMethod::ThreePoints) {
-                return QString::fromLatin1("Sketcher_Pointer_Create_Box_3Points");
+                return QStringLiteral("Sketcher_Pointer_Create_Box_3Points");
             }
             else if (constructionMethod() == ConstructionMethod::CenterAnd3Points) {
-                return QString::fromLatin1("Sketcher_Pointer_Create_Box_3Points_Center");
+                return QStringLiteral("Sketcher_Pointer_Create_Box_3Points_Center");
             }
             else {
-                return QString::fromLatin1("Sketcher_Pointer_Create_Box");
+                return QStringLiteral("Sketcher_Pointer_Create_Box");
             }
         }
         else if (roundCorners && !makeFrame) {
             if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                return QString::fromLatin1("Sketcher_Pointer_Oblong_Center");
+                return QStringLiteral("Sketcher_Pointer_Oblong_Center");
             }
             else {
-                return QString::fromLatin1("Sketcher_Pointer_Oblong");
+                return QStringLiteral("Sketcher_Pointer_Oblong");
             }
         }
         else if (!roundCorners && makeFrame) {
             if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                return QString::fromLatin1("Sketcher_Pointer_Create_Frame_Center");
+                return QStringLiteral("Sketcher_Pointer_Create_Frame_Center");
             }
             else {
-                return QString::fromLatin1("Sketcher_Pointer_Create_Frame");
+                return QStringLiteral("Sketcher_Pointer_Create_Frame");
             }
         }
         else {  // both roundCorners and makeFrame
             if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                return QString::fromLatin1("Sketcher_Pointer_Oblong_Frame_Center");
+                return QStringLiteral("Sketcher_Pointer_Oblong_Frame_Center");
             }
             else {
-                return QString::fromLatin1("Sketcher_Pointer_Oblong_Frame");
+                return QStringLiteral("Sketcher_Pointer_Oblong_Frame");
             }
         }
     }

@@ -25,7 +25,7 @@
 
 #include "FCConfig.h"
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include <map>
 #include <memory>
@@ -67,11 +67,11 @@ struct AppExport Contact
 struct AppExport License
 {
     License() = default;
-    License(std::string name, boost::filesystem::path file);
+    License(std::string name, std::filesystem::path file);
     explicit License(const XERCES_CPP_NAMESPACE::DOMElement* elem);
     std::string
         name;  //< Short name of license, e.g. "LGPL2", "MIT", "Mozilla Public License", etc.
-    boost::filesystem::path
+    std::filesystem::path
         file;  //< Optional path to the license file, relative to the XML file's location
     bool operator==(const License& rhs) const;
 };
@@ -205,7 +205,7 @@ public:
      * This constructor takes a path to an XML file and loads the XML from that file as
      * metadata.
      */
-    explicit Metadata(const boost::filesystem::path& metadataFile);
+    explicit Metadata(const std::filesystem::path& metadataFile);
 
     /**
      * Construct a Metadata object from a DOM node.
@@ -248,12 +248,12 @@ public:
     std::vector<Meta::Dependency>
     replace() const;  //< Zero or more packages this package is intended to replace.
     std::vector<std::string> tag() const;  //< Zero or more text tags related to this package.
-    boost::filesystem::path icon() const;  //< Path to an icon file.
+    std::filesystem::path icon() const;  //< Path to an icon file.
     std::string
     classname() const;  //< Recognized for convenience -- generally only used by Workbenches.
-    boost::filesystem::path
+    std::filesystem::path
     subdirectory() const;  //< Optional, override the default subdirectory name for this item.
-    std::vector<boost::filesystem::path>
+    std::vector<std::filesystem::path>
     file() const;  //< Arbitrary files associated with this package or content item.
     Meta::Version freecadmin() const;  //< The minimum FreeCAD version.
     Meta::Version freecadmax() const;  //< The maximum FreeCAD version.
@@ -307,10 +307,10 @@ public:
     void addConflict(const Meta::Dependency& dep);
     void addReplace(const Meta::Dependency& dep);
     void addTag(const std::string& tag);
-    void setIcon(const boost::filesystem::path& path);
+    void setIcon(const std::filesystem::path& path);
     void setClassname(const std::string& name);
-    void setSubdirectory(const boost::filesystem::path& path);
-    void addFile(const boost::filesystem::path& path);
+    void setSubdirectory(const std::filesystem::path& path);
+    void addFile(const std::filesystem::path& path);
     void addContentItem(const std::string& tag, const Metadata& item);
     void setFreeCADMin(const Meta::Version& version);
     void setFreeCADMax(const Meta::Version& version);
@@ -327,7 +327,7 @@ public:
     void removeConflict(const Meta::Dependency& dep);
     void removeReplace(const Meta::Dependency& dep);
     void removeTag(const std::string& tag);
-    void removeFile(const boost::filesystem::path& path);
+    void removeFile(const std::filesystem::path& path);
 
     // Utility functions to clear lists
     void clearContent();
@@ -344,7 +344,7 @@ public:
     /**
      * Write the metadata to an XML file
      */
-    void write(const boost::filesystem::path& file) const;
+    void write(const std::filesystem::path& file) const;
 
     /**
      * Determine whether this package satisfies the given dependency
@@ -371,10 +371,10 @@ private:
     std::vector<Meta::Dependency> _conflict;
     std::vector<Meta::Dependency> _replace;
     std::vector<std::string> _tag;
-    boost::filesystem::path _icon;
+    std::filesystem::path _icon;
     std::string _classname;
-    boost::filesystem::path _subdirectory;
-    std::vector<boost::filesystem::path> _file;
+    std::filesystem::path _subdirectory;
+    std::vector<std::filesystem::path> _file;
     Meta::Version _freecadmin;
     Meta::Version _freecadmax;
     Meta::Version _pythonmin;

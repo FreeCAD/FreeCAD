@@ -442,7 +442,7 @@ void Body::onChanged(const App::Property* prop) {
             if (BaseFeature.getValue()) {
                 //setup the FeatureBase if needed
                 if (!first || !first->isDerivedFrom<FeatureBase>()) {
-                    bf = static_cast<FeatureBase*>(getDocument()->addObject("PartDesign::FeatureBase", "BaseFeature"));
+                    bf = getDocument()->addObject<FeatureBase>("BaseFeature");
                     insertObject(bf, first, false);
 
                     if (!Tip.getValue())

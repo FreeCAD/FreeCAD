@@ -63,6 +63,7 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
+    ${ZIPIOS_INCLUDES}
     ${3DCONNEXION_INCLUDE_DIR}
 )
 
@@ -1146,6 +1147,9 @@ SET(Widget_CPP_SRCS
     Widgets.cpp
     Window.cpp
     WorkbenchSelector.cpp
+    ElideLabel.cpp
+    ElideCheckBox.cpp
+    FontScaledSVG.cpp
 )
 SET(Widget_HPP_SRCS
     FileDialog.h
@@ -1167,6 +1171,9 @@ SET(Widget_HPP_SRCS
     Widgets.h
     Window.h
     WorkbenchSelector.h
+    ElideLabel.h
+    ElideCheckBox.h
+    FontScaledSVG.h
 )
 SET(Widget_SRCS
     ${Widget_CPP_SRCS}

@@ -268,6 +268,21 @@ public:
                               bool isNew = true,
                               const char* viewType = nullptr,
                               bool isPartial = false);
+    //@{
+    /** Add a feature of T type with sName (ASCII) to this document and set it active.
+     * Unicode names are set through the Label property.
+     * @param pObjectName if nonNULL use that name otherwise generate a new unique name based on the
+     * \a sType
+     * @param isNew       if false don't call the \c DocumentObject::setupObject() callback (default
+     * is true)
+     * @param viewType    override object's view provider name
+     * @param isPartial   indicate if this object is meant to be partially loaded
+     */
+    template<typename T>
+    T* addObject(const char* pObjectName = nullptr,
+                 bool isNew = true,
+                 const char* viewType = nullptr,
+                 bool isPartial = false);
     /** Add an array of features of the given types and names.
      * Unicode names are set through the Label property.
      * @param sType       The type of created object
@@ -662,6 +677,12 @@ inline int Document::countObjectsOfType() const
     return this->countObjectsOfType(T::getClassTypeId());
 }
 
+template<typename T>
+T* Document::addObject(const char* pObjectName, bool isNew, const char* viewType, bool isPartial)
+{
+    static_assert(std::is_base_of<DocumentObject, T>::value, "T must be derived from DocumentObject");
+    return static_cast<T*>(addObject(T::getClassName(), pObjectName, isNew, viewType, isPartial));
+}
 
 }  // namespace App
 

@@ -74,7 +74,7 @@ void DlgStringListEditor::fillList(std::vector<std::string> texts)
         ui->lwTexts->addItem(item);
     }
     //add a blank line at the end to allow extending the list
-    QListWidgetItem* item = new QListWidgetItem(QString::fromUtf8(""));
+    QListWidgetItem* item = new QListWidgetItem(QStringLiteral(""));
     item->setFlags(item->flags() | Qt::ItemIsEditable);
     ui->lwTexts->addItem(item);
 }

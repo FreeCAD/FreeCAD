@@ -173,7 +173,7 @@ public:
 
         //Prep for expression parser
         //This regex matches chunks between +,-,$,^ accounting for matching parenthesis.
-        QRegularExpression chunkRe(QString::fromUtf8("(?<=^|[\\+\\-])((\\((?>[^()]|(?2))*\\))|[^\\+\\-\n])*(?=$|[\\+\\-])"));
+        QRegularExpression chunkRe(QStringLiteral("(?<=^|[\\+\\-])((\\((?>[^()]|(?2))*\\))|[^\\+\\-\n])*(?=$|[\\+\\-])"));
         QRegularExpressionMatchIterator expressionChunk = chunkRe.globalMatch(copy);
         unsigned int lengthOffset = 0;
         while (expressionChunk.hasNext()) {
@@ -198,7 +198,7 @@ public:
                 if (fixUnitsMatch.lastCapturedIndex() == 2 || (fixUnitsMatch.lastCapturedIndex() == 3 && fixUnitsMatch.captured(3).isEmpty())){
                     QString matchUnits = fixUnitsMatch.captured(1);
                     QString matchNumbers = fixUnitsMatch.captured(2);
-                    copyChunk.replace(matchUnits+matchNumbers, QString::fromUtf8(")")+matchUnits+QString::fromUtf8("1(*")+matchNumbers);
+                    copyChunk.replace(matchUnits+matchNumbers, QStringLiteral(")")+matchUnits+QStringLiteral("1(*")+matchNumbers);
                 }
             }
 
@@ -208,7 +208,7 @@ public:
 
                 QRegularExpressionMatch match = unitsRe.match(copyChunk);
                 if (!match.hasMatch() && !copyChunk.isEmpty()) //If no units are found, use default units
-                    copyChunk.prepend(QString::fromUtf8(")")+reverseUnitStr+QString::fromUtf8("1(*")); // Add units to the end of chunk *(1unit)
+                    copyChunk.prepend(QStringLiteral(")")+reverseUnitStr+QStringLiteral("1(*")); // Add units to the end of chunk *(1unit)
             }
 
             std::reverse(copyChunk.begin(), copyChunk.end());
@@ -834,7 +834,7 @@ QSize QuantitySpinBox::sizeHintCalculator(int h) const
 
     const QFontMetrics fm(fontMetrics());
     int w = 0;
-    constexpr int maxStrLen = 12;
+    constexpr int maxStrLen = 9;
 
     QString s;
     QString fixedContent = QLatin1String(" ");
@@ -923,7 +923,7 @@ void QuantitySpinBox::clear()
 
 void QuantitySpinBox::selectNumber()
 {
-    QString expr = QString::fromLatin1("^([%1%2]?[0-9\\%3]*)\\%4?([0-9]+(%5[%1%2]?[0-9]+)?)")
+    QString expr = QStringLiteral("^([%1%2]?[0-9\\%3]*)\\%4?([0-9]+(%5[%1%2]?[0-9]+)?)")
                    .arg(locale().negativeSign())
                    .arg(locale().positiveSign())
                    .arg(locale().groupSeparator())

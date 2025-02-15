@@ -73,7 +73,7 @@ DlgCustomActionsImp::DlgCustomActionsImp(QWidget* parent)
     }
 
     QString systemMacroDirStr =
-        QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
+        QString::fromStdString(App::Application::getHomePath()) + QStringLiteral("Macro");
     d = QDir(systemMacroDirStr, QLatin1String("*.FCMacro *.py"));
     if (d.exists()) {
         for (unsigned int i = 0; i < d.count(); i++) {
@@ -483,7 +483,7 @@ void IconDialog::onAddIconPath()
                 QStringList filters;
                 QList<QByteArray> formats = QImageReader::supportedImageFormats();
                 for (const auto& format : formats) {
-                    filters << QString::fromLatin1("*.%1").arg(
+                    filters << QStringLiteral("*.%1").arg(
                         QString::fromLatin1(format).toLower());
                 }
                 QDir d(path);

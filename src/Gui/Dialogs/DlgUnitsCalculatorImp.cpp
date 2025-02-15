@@ -51,7 +51,7 @@ DlgUnitsCalculator::DlgUnitsCalculator(QWidget* parent, Qt::WindowFlags fl)
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
 
-    ui->comboBoxScheme->addItem(QString::fromLatin1("Preference system"), static_cast<int>(-1));
+    ui->comboBoxScheme->addItem(QStringLiteral("Preference system"), static_cast<int>(-1));
     int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
     for (int i = 0; i < num; i++) {
         QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
@@ -83,8 +83,8 @@ DlgUnitsCalculator::DlgUnitsCalculator(QWidget* parent, Qt::WindowFlags fl)
 
     ui->ValueInput->setParamGrpPath(QByteArray("User parameter:BaseApp/History/UnitsCalculator"));
     // set a default that also illustrates how the dialog works
-    ui->ValueInput->setText(QString::fromLatin1("1 cm"));
-    ui->UnitInput->setText(QString::fromLatin1("in"));
+    ui->ValueInput->setText(QStringLiteral("1 cm"));
+    ui->UnitInput->setText(QStringLiteral("in"));
 
     units << Base::Unit::Acceleration << Base::Unit::AmountOfSubstance << Base::Unit::Angle
           << Base::Unit::Area << Base::Unit::Density << Base::Unit::CurrentDensity
@@ -137,10 +137,10 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
     // first check the unit, if it is invalid, getTypeString() outputs an empty string
     // explicitly check for "ee" like in "eeV" because this would trigger an exception in Base::Unit
     // since it expects then a scientific notation number like "1e3"
-    if ((ui->UnitInput->text().mid(0, 2) == QString::fromLatin1("ee"))
+    if ((ui->UnitInput->text().mid(0, 2) == QStringLiteral("ee"))
         || Base::Unit(ui->UnitInput->text().toStdString()).getTypeString().empty()) {
         ui->ValueOutput->setText(
-            QString::fromLatin1("%1 %2").arg(tr("unknown unit:"), ui->UnitInput->text()));
+            QStringLiteral("%1 %2").arg(tr("unknown unit:"), ui->UnitInput->text()));
         ui->pushButton_Copy->setEnabled(false);
     }
     else {  // the unit is valid
@@ -167,7 +167,7 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
                 val = QLocale().toString(value, 'f', Base::UnitsApi::getDecimals());
             }
             // create the output string
-            QString out = QString::fromLatin1("%1 %2").arg(val, ui->UnitInput->text());
+            QString out = QStringLiteral("%1 %2").arg(val, ui->UnitInput->text());
             ui->ValueOutput->setText(out);
             ui->pushButton_Copy->setEnabled(true);
         }
@@ -191,7 +191,7 @@ void DlgUnitsCalculator::copy()
 void DlgUnitsCalculator::returnPressed()
 {
     if (ui->pushButton_Copy->isEnabled()) {
-        ui->textEdit->append(ui->ValueInput->text() + QString::fromLatin1(" = ")
+        ui->textEdit->append(ui->ValueInput->text() + QStringLiteral(" = ")
                              + ui->ValueOutput->text());
         ui->ValueInput->pushToHistory();
     }

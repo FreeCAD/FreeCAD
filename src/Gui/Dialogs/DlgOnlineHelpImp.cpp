@@ -49,7 +49,7 @@ DlgOnlineHelpImp::DlgOnlineHelpImp( QWidget* parent )
 {
     ui->setupUi(this);
 
-    ui->prefStartPage->setFilter(QString::fromLatin1("%1 (*.html *.htm)").arg(tr("HTML files")));
+    ui->prefStartPage->setFilter(QStringLiteral("%1 (*.html *.htm)").arg(tr("HTML files")));
     if (ui->prefStartPage->fileName().isEmpty()) {
         ui->prefStartPage->setFileName(getStartpage());
     }
@@ -69,7 +69,7 @@ DlgOnlineHelpImp::~DlgOnlineHelpImp() = default;
 QString DlgOnlineHelpImp::getStartpage()
 {
     QDir docdir = QDir(QString::fromUtf8(App::Application::getHelpDir().c_str()));
-    return docdir.absoluteFilePath(QString::fromUtf8("Start_Page.html"));
+    return docdir.absoluteFilePath(QStringLiteral("Start_Page.html"));
 }
 
 void DlgOnlineHelpImp::saveSettings()

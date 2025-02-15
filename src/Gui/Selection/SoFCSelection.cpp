@@ -79,7 +79,7 @@ SoFCSelection::SoFCSelection()
     SO_NODE_ADD_FIELD(colorHighlight, (SbColor(0.8f, 0.1f, 0.1f)));
     SO_NODE_ADD_FIELD(colorSelection, (SbColor(0.1f, 0.8f, 0.1f)));
     SO_NODE_ADD_FIELD(style,          (EMISSIVE));
-    SO_NODE_ADD_FIELD(highlightMode,  (AUTO));
+    SO_NODE_ADD_FIELD(preselectionMode,  (AUTO));
     SO_NODE_ADD_FIELD(selectionMode,  (SEL_ON));
     SO_NODE_ADD_FIELD(selected,       (NOTSELECTED));
     SO_NODE_ADD_FIELD(documentName,   (""));
@@ -92,10 +92,10 @@ SoFCSelection::SoFCSelection()
     SO_NODE_DEFINE_ENUM_VALUE(Styles, BOX);
     SO_NODE_SET_SF_ENUM_TYPE(style,   Styles);
 
-    SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, AUTO);
-    SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, ON);
-    SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, OFF);
-    SO_NODE_SET_SF_ENUM_TYPE (highlightMode, HighlightModes);
+    SO_NODE_DEFINE_ENUM_VALUE(PreselectionModes, AUTO);
+    SO_NODE_DEFINE_ENUM_VALUE(PreselectionModes, ON);
+    SO_NODE_DEFINE_ENUM_VALUE(PreselectionModes, OFF);
+    SO_NODE_SET_SF_ENUM_TYPE (preselectionMode, PreselectionModes);
 
     SO_NODE_DEFINE_ENUM_VALUE(SelectionModes, SEL_ON);
     SO_NODE_DEFINE_ENUM_VALUE(SelectionModes, SEL_OFF);
@@ -216,19 +216,19 @@ void SoFCSelection::doAction(SoAction *action)
 
     if(!useNewSelection.getValue()) {
 
-        if (action->getTypeId() == SoFCEnableHighlightAction::getClassTypeId()) {
-            auto preaction = static_cast<SoFCEnableHighlightAction*>(action);
-            if (preaction->highlight) {
-                this->highlightMode = SoFCSelection::AUTO;
+        if (action->getTypeId() == SoFCEnablePreselectionAction::getClassTypeId()) {
+            auto preaction = static_cast<SoFCEnablePreselectionAction*>(action);
+            if (preaction->enabled) {
+                this->preselectionMode = SoFCSelection::AUTO;
             }
             else {
-                this->highlightMode = SoFCSelection::OFF;
+                this->preselectionMode = SoFCSelection::OFF;
             }
         }
 
         if (action->getTypeId() == SoFCEnableSelectionAction::getClassTypeId()) {
             auto selaction = static_cast<SoFCEnableSelectionAction*>(action);
-            if (selaction->selection) {
+            if (selaction->enabled) {
                 this->selectionMode = SoFCSelection::SEL_ON;
             }
             else {
@@ -359,7 +359,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
     }
 
     static char buf[513];
-    auto mymode = static_cast<HighlightModes>(this->highlightMode.getValue());
+    auto mymode = static_cast<PreselectionModes>(this->preselectionMode.getValue());
     const SoEvent * event = action->getEvent();
 #ifdef NO_FRONTBUFFER
     // mouse move events for preselection
@@ -777,7 +777,7 @@ SoFCSelection::preRender(SoGLRenderAction *action, GLint &oldDepthFunc)
 ////////////////////////////////////////////////////////////////////////
 {
     // If not performing locate highlighting, just return.
-    if (highlightMode.getValue() == OFF)
+    if (preselectionMode.getValue() == OFF)
         return false;
 
     SoState *state = action->getState();
@@ -787,7 +787,7 @@ SoFCSelection::preRender(SoGLRenderAction *action, GLint &oldDepthFunc)
     // ??? never be called. We are not caching this node correctly yet....
     //SoCacheElement::invalidate(state);
 
-    SbBool drawHighlighted = (highlightMode.getValue() == ON || isHighlighted(action) || selected.getValue() == SELECTED);
+    SbBool drawHighlighted = (preselectionMode.getValue() == ON || isHighlighted(action) || selected.getValue() == SELECTED);
 
     if (drawHighlighted) {
         // prevent diffuse & emissive color from leaking out...
@@ -930,7 +930,7 @@ SoFCSelection::readInstance  (  SoInput *  in, unsigned short  flags )
 bool
 SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
 {
-    auto mymode = static_cast<HighlightModes>(this->highlightMode.getValue());
+    auto mymode = static_cast<PreselectionModes>(this->preselectionMode.getValue());
     bool preselected = ctx && ctx->isHighlighted() && (useNewSelection.getValue()||mymode == AUTO);
     if (!preselected && mymode!=ON && (!ctx || !ctx->isSelected()))
         return false;
@@ -1040,7 +1040,7 @@ void SoFCSelection::applySettings ()
     bool enablePre = hGrp->GetBool("EnablePreselection", true);
     bool enableSel = hGrp->GetBool("EnableSelection", true);
     if (!enablePre) {
-        this->highlightMode = Gui::SoFCSelection::OFF;
+        this->preselectionMode = Gui::SoFCSelection::OFF;
     }
     else {
         // Search for a user defined value with the current color as default
