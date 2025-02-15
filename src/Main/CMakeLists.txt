@@ -10,7 +10,7 @@ if(BUILD_GUI)
         ${ZLIB_INCLUDE_DIR}
         ${QtWidgets_INCLUDE_DIRS}
         ${QT_INCLUDE_DIR}
-        ${PYTHON_INCLUDE_DIRS}
+        ${Python3_INCLUDE_DIRS}
         ${XercesC_INCLUDE_DIRS}
     )
 else(BUILD_GUI)
@@ -18,7 +18,7 @@ else(BUILD_GUI)
         ${Boost_INCLUDE_DIRS}
         ${ZLIB_INCLUDE_DIR}
         ${QT_INCLUDE_DIR}
-        ${PYTHON_INCLUDE_DIRS}
+        ${Python3_INCLUDE_DIRS}
         ${XercesC_INCLUDE_DIRS}
     )
 endif(BUILD_GUI)
@@ -40,7 +40,7 @@ if(BUILD_GUI)
         # executables have to be linked against python libraries,
         # because extension modules are not.
         list(APPEND FreeCAD_LIBS
-            ${PYTHON_LIBRARIES}
+            ${Python3_LIBRARIES}
         )
     endif(NOT BUILD_DYNAMIC_LINK_PYTHON)
 
@@ -88,7 +88,7 @@ if(NOT BUILD_DYNAMIC_LINK_PYTHON)
     # executables have to be linked against python libraries,
     # because extension modules are not.
     list(APPEND FreeCADMainCmd_LIBS
-        ${PYTHON_LIBRARIES}
+        ${Python3_LIBRARIES}
     )
 endif(NOT BUILD_DYNAMIC_LINK_PYTHON)
 

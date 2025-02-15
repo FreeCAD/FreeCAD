@@ -21,7 +21,7 @@ include_directories(
     ${COIN3D_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${Python3_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
     ${VTK_INCLUDE_DIRS}
 )

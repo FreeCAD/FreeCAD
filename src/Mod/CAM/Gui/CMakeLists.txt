@@ -7,7 +7,7 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )
 
