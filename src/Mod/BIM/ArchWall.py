@@ -169,6 +169,28 @@ class Wall(ArchComponent.Component):
                     "object (ArchSketch) provides the information.",
                 ),
             )
+        if "EndingStart" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyPlacement",
+                "EndingStart",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "A placement, relative to the main wall placement,,describing"
+                    "a plane that cuts the end of the wall, at start position.",
+                ),
+            )
+        if "EndingEnd" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyPlacement",
+                "EndingEnd",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "A placement, relative to the main wall placement,,describing"
+                    "a plane that cuts the end of the wall, at end position.",
+                ),
+            )
 
     def set_archsketch_properties(self, obj):
         """Sets archsketch specific properties"""
@@ -509,6 +531,7 @@ class Wall(ArchComponent.Component):
             # walls can be made of only a series of additions and have no base shape
             base = Part.Shape()
         base = self.processSubShapes(obj, base, pl)
+        base = self.process_endings(obj, base, pl)
         self.applyShape(obj, base, pl)
         self.apply_count(obj)
 
@@ -905,8 +928,8 @@ class Wall(ArchComponent.Component):
         layers = self.get_layers(obj)
         base = None
         placement = None
-        self.basewires, normal = self.build_basewires(obj, normal)
 
+        self.basewires, normal = self.build_basewires(obj, normal)
         if self.basewires:
             if (len(self.basewires) == 1) and layers:
                 self.basewires = [self.basewires[0] for layer in layers]
@@ -1282,6 +1305,8 @@ class Wall(ArchComponent.Component):
             # normal = obj.Base.getGlobalPlacement().\
             # Rotation.multVec(FreeCAD.Vector(0,0,1))
             # normal = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
+        if basewires:
+            baseewires = self.extend_endings(basewires, obj)
         return basewires, normal
 
     def build_from_face(self, obj):
@@ -1505,28 +1530,27 @@ class Wall(ArchComponent.Component):
         else:
             align = Vector()
         base = []
+        l2a, l2b = self.extend_points(length / 2 or 0.5, obj)
         if layers:
             totalwidth = sum([abs(layer) for layer in layers])
             offset = 0
             base = []
             for layer in layers:
                 if layer > 0:
-                    l2 = length / 2 or 0.5
                     w1 = -totalwidth / 2 + offset
                     w2 = w1 + layer
-                    v1 = Vector(-l2, w1, 0) + align
-                    v2 = Vector(l2, w1, 0) + align
-                    v3 = Vector(l2, w2, 0) + align
-                    v4 = Vector(-l2, w2, 0) + align
+                    v1 = Vector(-l2a, w1, 0) + align
+                    v2 = Vector(l2b, w1, 0) + align
+                    v3 = Vector(l2b, w2, 0) + align
+                    v4 = Vector(-l2a, w2, 0) + align
                     base.append(Part.Face(Part.makePolygon([v1, v2, v3, v4, v1])))
                 offset += abs(l)
         else:
-            l2 = length / 2 or 0.5
             w2 = width / 2 or 0.5
-            v1 = Vector(-l2, -w2, 0) + align
-            v2 = Vector(l2, -w2, 0) + align
-            v3 = Vector(l2, w2, 0) + align
-            v4 = Vector(-l2, w2, 0) + align
+            v1 = Vector(-l2a, -w2, 0) + align
+            v2 = Vector(l2b, -w2, 0) + align
+            v3 = Vector(l2b, w2, 0) + align
+            v4 = Vector(-l2a, w2, 0) + align
             base = Part.Face(Part.makePolygon([v1, v2, v3, v4, v1]))
         placement = FreeCAD.Placement()
         return base, placement
@@ -1536,7 +1560,7 @@ class Wall(ArchComponent.Component):
 
         p1 = obj.Placement.multVec(Vector(-obj.Length.Value/2, 0, 0))
         p2 = obj.Placement.multVec(Vector(obj.Length.Value/2, 0, 0))
-        return [p1,p2]
+        return [p1, p2]
 
     def set_from_endpoints(self, obj, pts):
         """Sets placement and length of this wall from the given endpoints"""
@@ -1554,6 +1578,115 @@ class Wall(ArchComponent.Component):
         pr = FreeCAD.Rotation(le, lv)
         obj.Placement = FreeCAD.Placement(pb, pr)
         obj.Length = length
+
+    def process_endings(self, obj, base, pl, ending=None):
+        """
+        Cuts the given base against the given ending,
+        be it Start or End. If ending is None (or something else), both ends
+        are processed.
+        """
+
+        if ending not in ["Start", "End"]:
+            if getattr(obj, "EndingStart", None):
+                base = self.process_endings(base, obj, pl, "Start")
+            if getattr(obj, "EndingStart", None):
+                base = self.process_endings(base, obj, pl, "End")
+        else:
+            if getattr(obj, "Ending" + ending).isNull():
+                return base
+            plength = base.BoundBox.DiagonalLength * 2  # security margin
+            plane = Part.makePlane(plength, plength)
+            compl = FreeCAD.Placement(getattr(obj, "Ending" + ending)).multiply(pl)
+            plane.Placement = compl
+            extv = compl.multVec(Vector(0, 0, plength))
+            subsolid = plane.extrude(extv)
+            if base.ShapeType == "Compound":
+                newcomp = []
+                for ss in base.SubShapes:
+                    newcomp.append(ss.cut(subsolid))
+                base = newcomp
+            else:
+                base = base.cut(subsolid)
+        return base
+
+    def extend_points(self, half_length, obj):
+        """
+        Applies extend_endings to a bare helf length value.
+        The half length represents a line with its center at
+        (0,0) and total length of 2 * half_length
+        """
+
+        import Part
+
+        v1 = Vector(-half_length, 0, 0)
+        v2 - Vector(half_length, 0, 0)
+        edge = Part.makeLine(v1, v2)
+        wire = Part.Wire([edge])
+        newwires = self.extend_endings([wire], obj)
+        edge = newwires[0].Edges[0]
+        return edge.Vertexes[0].Point.Length, edge.Vertexes[-1].Point.Length
+
+    def extend_endings(self, wires, obj, ending=None):
+        """
+        Extends/shrinks the given list of wires to meet the given ending,
+        be it Start or End. If ending is None (or something else), wires are
+        extended/shrunk at both ends.
+        """
+
+        import Part
+
+        if ending not in ["Start", "End"]:
+            if getattr(obj, "EndingStart", None):
+                wires = self.extend_endings(wires, obj, "Start")
+            if getattr(obj, "EndingStart", None):
+                wires = self.extend_endings(wires, obj, "End")
+        else:
+            if getattr(obj, "Ending" + ending).isNull():
+                return wires
+            plength = Part.makeCompound(wires).BoundBox.DiagonalLength * 2  # security margin
+            plane = Part.makePlane(plength, plength)
+            compl = FreeCAD.Placement(getattr(obj, "Ending" + ending)).multiply(obj.Placement)
+            plane.Placement = compl
+            newwires = []
+            for wire in wires:
+                for i, edge in enumerate(wire.Edges):
+                    dist = plane.distToShape(edge)
+                    if dist[0] == 0:
+                        # found an intersecting edge
+                        newparam = dist[2][0][-1]
+                        restedges = []
+                        if ending == "Start":
+                            newedge = Part.Edge(edge.Curve, newparam, edge.LastParameter)
+                            if i < len(wire.Edges)-1:
+                                restedges = wire.Edges[i+1:]
+                            edges = [newedge] + restedges
+                        else:
+                            newedge = Part.Edge(edge.Curve, edge.FirstParameter, newparam)
+                            restedges = wire.Edges[:i]
+                            edges = restedges + [newedge]
+                        newwires.append(Part.Wire(edges))
+                else:
+                    # no edge intersects, we try extending the first or last edge
+                    if ending == "Start":
+                        edge = wire.Edges[0]
+                    else:
+                        edge = wire.Edges[-1]
+                    extp = edge.Curve.intersect(plane.Surface)[0]
+                    if extp:
+                        extp = Part.Vertex(extp[0][0]).Point
+                        newparam = edge.parameter(extp)
+                        if ending == "Start":
+                            newedge = Part.Edge(edge.Curve, newparam, edge.LastParameter)
+                            edges = [newedge] + wire.Edges[1:]
+                        else:
+                            newedge = Part.Edge(edge.Curve, edge.FirstParameter, newparam)
+                            edges = wire.Edges[:-1] + [newedge]
+                        newwires.append(Part.Wire(edges))
+                    else:
+                        # nothing worked, we keep the wire as is
+                        newwires.append(wire)
+            return newwires
+        return wires
 
 
 class ViewProviderWall(ArchComponent.ViewProviderComponent):
