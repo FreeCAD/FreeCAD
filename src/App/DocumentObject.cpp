@@ -182,6 +182,24 @@ DocumentObjectExecReturn* DocumentObject::execute()
     return executeExtensions();
 }
 
+void DocumentObject::pushContext(DocumentObject* objContext)
+{
+    context.push(objContext);
+}
+
+void DocumentObject::popContext()
+{
+    context.pop();
+}
+
+DocumentObject* DocumentObject::getContext()
+{
+    if (!context.empty()) {
+        return context.top();
+    }
+    return nullptr;
+}
+
 App::DocumentObjectExecReturn* DocumentObject::executeExtensions()
 {
     // execute extensions but stop on error

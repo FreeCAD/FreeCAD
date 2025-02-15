@@ -32,6 +32,7 @@
 #include <Base/SmartPtrPy.h>
 
 #include <bitset>
+#include <stack>
 #include <unordered_map>
 
 namespace Base
@@ -259,6 +260,8 @@ public:
     virtual bool hasChildElement() const;
     //@}
 
+    void pushContext(DocumentObject* context);
+    void popContext();
 
     /** DAG handling
         This part of the interface deals with viewing the document as
@@ -379,6 +382,8 @@ public:
      * objects that link it (i.e. its InList) will be recomputed.
      */
     virtual short mustExecute() const;
+
+    DocumentObject* getContext();
 
     /** Recompute only this feature
      *
@@ -791,6 +796,8 @@ private:
     mutable std::unordered_map<const char*, App::DocumentObject*, CStringHasher, CStringHasher>
         _outListMap;
     mutable bool _outListCached = false;
+
+    std::stack<DocumentObject*> context;
 };
 
 }  // namespace App
