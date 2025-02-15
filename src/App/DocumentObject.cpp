@@ -200,6 +200,48 @@ DocumentObject* DocumentObject::getContext()
     return nullptr;
 }
 
+
+DocumentObjectExecReturn* DocumentObject::executeWithContext(DocumentObject* context)
+{
+    std::string objectName = getFullName();
+
+    FC_MSG("executeWithContext");
+    FC_MSG("  this: " << objectName);
+    FC_MSG("  context: " << context->getFullName());
+
+    DocumentObjectExecReturn* returnCode = nullptr;
+
+    try {
+        returnCode = context->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteNonOutput);
+        if (returnCode != DocumentObject::StdReturn) {
+            return returnCode;
+        }
+
+        returnCode = execute();
+        if (returnCode != DocumentObject::StdReturn) {
+            return returnCode;
+        }
+
+        returnCode = context->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteOutput);
+    }
+    catch (Base::AbortException& e) {
+        e.ReportException();
+        FC_ERR("Failed to recompute " << objectName << ": " << e.what());
+    }
+    catch (const Base::MemoryException& e) {
+        FC_ERR("Memory exception in " << objectName << " thrown: " << e.what());
+    }
+    catch (Base::Exception& e) {
+        e.ReportException();
+        FC_ERR("Failed to recompute " << objectName << ": " << e.what());
+    }
+    catch (std::exception& e) {
+        FC_ERR("exception in " << objectName << " thrown: " << e.what());
+    }
+
+    return returnCode;
+}
+
 App::DocumentObjectExecReturn* DocumentObject::executeExtensions()
 {
     // execute extensions but stop on error
@@ -808,6 +850,14 @@ bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSub& linkTo) const
     return this->testIfLinkDAGCompatible(linkTo_in_vector);
 }
 
+bool DocumentObject::isExposed(const char* name) const
+{
+    Property* prop = getPropertyByName(name);
+    if (prop == nullptr) { return false; }
+
+    return isExposed(prop);
+}
+
 bool DocumentObject::isExposed(const Property* prop) const
 {
     return prop->testStatus(Property::Exposed);
@@ -819,6 +869,16 @@ bool DocumentObject::isExposed() const
     getPropertyList(allProps);
     return std::any_of(allProps.begin(), allProps.end(),
                        [this](Property* prop) { return isExposed(prop); });
+}
+
+void DocumentObject::getExposedPropertyList(std::vector<Property*>& props) const
+{
+    std::vector<Property*> allProps;
+    getPropertyList(allProps);
+    std::copy_if(allProps.begin(), allProps.end(), std::back_inserter(props),
+                 [this](const Property* prop){
+                     return this->isExposed(prop);
+                 });
 }
 
 void DocumentObject::onLostLinkToObject(DocumentObject*)

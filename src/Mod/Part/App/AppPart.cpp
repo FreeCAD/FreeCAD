@@ -89,6 +89,7 @@
 #include "FeaturePartSpline.h"
 #include "FeatureProjectOnSurface.h"
 #include "FeatureRevolution.h"
+#include "Variant.h"
 #include "Geometry.h"
 #include "Geometry2d.h"
 #include "GeometryBoolExtensionPy.h"
@@ -496,6 +497,7 @@ PyMOD_INIT_FUNC(Part)
     Part::Thickness             ::init();
     Part::Refine                ::init();
     Part::Reverse               ::init();
+    Part::Variant               ::init();
 
     // Geometry types
     Part::GeometryExtension       	::init();

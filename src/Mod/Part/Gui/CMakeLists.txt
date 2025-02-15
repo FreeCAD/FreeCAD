@@ -224,6 +224,8 @@ SET(PartGui_SRCS
     ViewProviderRuledSurface.h
     ViewProviderPrimitive.cpp
     ViewProviderPrimitive.h
+    ViewProviderVariant.cpp
+    ViewProviderVariant.h
     Workbench.cpp
     Workbench.h
     WorkbenchManipulator.cpp

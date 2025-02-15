@@ -37,6 +37,7 @@
 #include "Property.h"
 #include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
+#include "VariantExtension.h"
 
 
 using namespace App;
@@ -166,31 +167,6 @@ void Property::setContainer(PropertyContainer* Father)
     father = Father;
 }
 
-Property* Property::createPropertyContext(const char* name,
-                                          DocumentObject* obj, DocumentObject* objContext) const
-{
-    Property* prop = objContext->addDynamicProperty(getTypeId().getName(), name,
-                                                    getGroup(), getDocumentation());
-    std::unique_ptr<App::Property> pcopy(Copy());
-    prop->Paste(*pcopy);
-
-    auto renameObjIds = [objContext, name](const auto& expressions) {
-        for (const auto& [oldObjId, expression] : expressions) {
-            if (oldObjId.getPropertyName() == name) {
-                ObjectIdentifier newObjId(oldObjId);
-                newObjId.setDocumentObjectName(objContext);
-                std::shared_ptr<Expression> copiedExpr(expression->copy());
-                objContext->setExpression(newObjId, copiedExpr);
-            }
-        }
-    };
-
-    renameObjIds(obj->ExpressionEngine.getExpressions());
-    objContext->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteNonOutput);
-
-    return prop;
-}
-
 Property* Property::getContextProperty(CreatePropOption option) const
 {
     PropertyContainer* container = getContainer();
@@ -206,7 +182,7 @@ Property* Property::getContextProperty(CreatePropOption option) const
     Property* prop = objContext->getPropertyByName(name);
 
     if (prop == nullptr && option == CreatePropOption::Create) {
-        return createPropertyContext(name, obj, objContext);
+        return VariantExtension::createPropertyContext(objContext, obj, name);
     }
 
     return prop;

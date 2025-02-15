@@ -223,6 +223,8 @@ SET(Features_SRCS
     PrismExtension.h
     VectorAdapter.cpp
     VectorAdapter.h
+    Variant.cpp
+    Variant.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 

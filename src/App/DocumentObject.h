@@ -349,9 +349,12 @@ public:
     bool testIfLinkDAGCompatible(App::PropertyLinkSub& linkTo) const;
 
     /// check if the property is exposed
+    bool isExposed(const char* name) const;
+    /// check if the property is exposed
     bool isExposed(const Property* prop) const;
     /// check whether any of the properties in the container are exposed
     bool isExposed() const;
+    void getExposedPropertyList(std::vector<Property*>& props) const;
 
 
     /** Return the element map version of the geometry data stored in the given property
@@ -384,6 +387,7 @@ public:
     virtual short mustExecute() const;
 
     DocumentObject* getContext();
+    App::DocumentObjectExecReturn* executeWithContext(DocumentObject* context);
 
     /** Recompute only this feature
      *
