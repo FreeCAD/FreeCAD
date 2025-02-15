@@ -48,6 +48,7 @@
 #include <App/PropertyGeo.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyUnits.h>
+#include <App/VariantExtension.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
@@ -660,6 +661,13 @@ void PropertyItem::setPropertyValue(const QString& value)
     setPropertyValue(value.toStdString());
 }
 
+static bool isInVariant(const App::Property* prop) {
+    auto obj = dynamic_cast<App::DocumentObject*>(prop->getContainer());
+    return (obj != nullptr)
+        && (obj->getExtension<App::VariantExtension>() != nullptr)
+        && prop->testStatus(App::Property::PropDynamic);
+}
+
 QVariant PropertyItem::dataProperty(int role) const
 {
     if (role == Qt::ForegroundRole && linked) {
@@ -672,6 +680,13 @@ QVariant PropertyItem::dataProperty(int role) const
             && !propertyItems.front()->testStatus(App::Property::LockDynamic)) {
             return role == Qt::BackgroundRole
                 ? QVariant::fromValue(QColor(0xFF, 0xFF, 0x99))  // NOLINT
+                : QVariant::fromValue(QColor(0, 0, 0));
+        }
+        if (propertyItems.size() == 1
+            && (propertyItems.front()->testStatus(App::Property::Exposed) ||
+                isInVariant(propertyItems.front()))) {
+            return role == Qt::BackgroundRole
+                ? QVariant::fromValue(QColor(0xE0, 0xA7, 0xF7)) // NOLINT
                 : QVariant::fromValue(QColor(0, 0, 0));
         }
         return {};
