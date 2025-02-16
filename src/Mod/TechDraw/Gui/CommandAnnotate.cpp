@@ -1090,8 +1090,7 @@ void execLine2Points(Gui::Command* cmd)
     //get the 2D points
     if (!vertexNames.empty()) {
         for (auto& v2d: vertexNames) {
-            int idx = DrawUtil::getIndexFromName(v2d);
-            TechDraw::VertexPtr v = baseFeat->getGeometry<Vertex>(idx);
+            TechDraw::VertexPtr v = baseFeat->getGeometry<Vertex>(v2d);
             if (v) {
                 points.push_back(v->point());
                 is3d.push_back(false);
@@ -1235,8 +1234,7 @@ void execCosmeticCircle(Gui::Command* cmd)
     //get the 2D points
     if (!vertexNames.empty()) {
         for (auto& v2d: vertexNames) {
-            int idx = DrawUtil::getIndexFromName(v2d);
-            TechDraw::VertexPtr v = baseFeat->getGeometry<Vertex>(idx);
+            TechDraw::VertexPtr v = baseFeat->getGeometry<Vertex>(v2d);
             if (v) {
                 points.push_back(v->point());
                 is3d.push_back(false);
@@ -1336,10 +1334,9 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
         std::vector<std::string> ce2Delete;
         std::vector<std::string> cl2Delete;
         for (auto& s: subNames) {
-            int idx = TechDraw::DrawUtil::getIndexFromName(s);
             std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
             if (geomType == "Edge") {
-                TechDraw::BaseGeomPtr bg = objFeat->getGeometry<BaseGeom>(idx);
+                TechDraw::BaseGeomPtr bg = objFeat->getGeometry<BaseGeom>(s);
                 if (bg && bg->getCosmetic()) {
                     SourceType source = bg->source();
                     std::string tag = bg->getCosmeticTag();
@@ -1349,17 +1346,17 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                         cl2Delete.push_back(tag);
                     } else {
                         Base::Console().Message(
-                            "CMD::CosmeticEraser - edge: %d is confused - source: %d\n", idx, static_cast<int>(source));
+                            "CMD::CosmeticEraser - edge: %s is confused - source: %d\n", s, static_cast<int>(source));
                     }
                 }
             } else if (geomType == "Vertex") {
-                TechDraw::VertexPtr tdv = objFeat->getGeometry<Vertex>(idx);
+                TechDraw::VertexPtr tdv = objFeat->getGeometry<Vertex>(s);
                 if (!tdv)
-                    Base::Console().Message("CMD::eraser - geom: %d not found!\n", idx);
+                    Base::Console().Message("CMD::eraser - geom: %s not found!\n", s);
 
                 std::string delTag = tdv->getCosmeticTag();
                 if (delTag.empty())
-                    Base::Console().Warning("Vertex%d is not cosmetic! Can not erase.\n", idx);
+                    Base::Console().Warning("%s is not cosmetic! Can not erase.\n", s);
                 cv2Delete.push_back(delTag);
             } else {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),

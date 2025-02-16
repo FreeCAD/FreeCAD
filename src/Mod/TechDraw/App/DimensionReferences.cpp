@@ -257,9 +257,8 @@ std::string ReferenceEntry::geomType() const
 
 GeomType ReferenceEntry::geomEdgeType() const
 {
-    int geoId = TechDraw::DrawUtil::getIndexFromName(getSubName());
     auto dvp = getObject<TechDraw::DrawViewPart>();
-    BaseGeomPtr geom = dvp->getGeometry<BaseGeom>(geoId);
+    BaseGeomPtr geom = dvp->getGeometry<BaseGeom>(getSubName());
 
     if (geomType() == "Edge" && geom) {
         return geom->getGeomType();
@@ -323,16 +322,15 @@ bool ReferenceEntry::hasGeometry2d() const
     if (getSubName().empty()) {
         return false;
     }
-    int geomNumber = DU::getIndexFromName(getSubName());
     std::string gType = geomType();
     if (gType == "Vertex") {
-        auto vert = dvp->getGeometry<Vertex>(geomNumber);
+        auto vert = dvp->getGeometry<Vertex>(getSubName());
         if (vert) {
             return true;
         }
     }
     else if (gType == "Edge") {
-        auto edge = dvp->getGeometry<BaseGeom>(geomNumber);
+        auto edge = dvp->getGeometry<BaseGeom>(getSubName());
         if (edge) {
             return true;
         }

@@ -832,17 +832,3 @@ void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
     }
     vertexGeom = newVerts;
 }
-
-//! does this GeometryObject already have this vertex
-bool GeometryObject::findVertex(Base::Vector3d v)
-{
-    std::vector<VertexPtr>::iterator it = vertexGeom.begin();
-    for (; it != vertexGeom.end(); it++) {
-        double dist = (v - (*it)->point()).Length();
-        if (dist < Precision::Confusion()) {
-            return true;
-        }
-    }
-    return false;
-}
-
