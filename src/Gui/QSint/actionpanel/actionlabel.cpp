@@ -9,6 +9,7 @@
 
 #include <QApplication>
 #include <QStyleOptionToolButton>
+#include <QAction>
 
 namespace QSint
 {

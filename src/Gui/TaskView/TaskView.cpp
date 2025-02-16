@@ -185,7 +185,7 @@ void TaskBox::hideGroupBox()
     }
     else {
         m_tempHeight = m_fullHeight = myGroup->height();
-        m_foldDelta = m_fullHeight / 20; // foldsteps
+        m_foldDelta = m_fullHeight / myScheme->groupFoldSteps;
     }
 
     m_foldStep = 0.0;

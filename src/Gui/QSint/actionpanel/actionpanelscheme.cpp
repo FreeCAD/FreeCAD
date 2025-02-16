@@ -21,10 +21,12 @@ const QString ActionPanelScheme::minimumStyle = QString::fromLatin1(
         "border: none;"
         "font-weight: bold;"
         "text-align: center;"
+        "background: none;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action'] {"
         "border: none;"
+        "background: none;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:hover {"
@@ -64,54 +66,33 @@ QString ActionPanelScheme::systemStyle(const QPalette& p)
 }
 
 // Draws fold/unfold icons based on the palette
-QPixmap ActionPanelScheme::drawFoldIcon(const QPalette& palette, bool fold, bool hover) const
+QPixmap ActionPanelScheme::drawFoldIcon(const QPalette& palette, bool fold, bool /*hover*/) const
 {
-    QSize bSize = headerButtonSize;
-    QImage img(bSize.width(), bSize.height(), QImage::Format_ARGB32_Premultiplied);
-    img.fill(Qt::transparent);
+    QStyle::StandardPixmap iconType = fold ? QStyle::SP_ArrowUp : QStyle::SP_ArrowDown;
+    QIcon icon = qApp->style()->standardIcon(iconType);
+
+    QSize iconSize = headerButtonSize;
+    QPixmap pixmap = icon.pixmap(iconSize);
+    QImage img = pixmap.toImage();
+    img = img.convertToFormat(QImage::Format_ARGB32);
 
     QPainter painter(&img);
-    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    painter.fillRect(img.rect(), palette.color(QPalette::HighlightedText));
+    painter.end();
 
-    qreal penWidth = bSize.width() / 14.0;
-    qreal lef_X = 0.25 * bSize.width();
-    qreal mid_X = 0.50 * bSize.width();
-    qreal rig_X = 0.75 * bSize.width();
-    qreal bot_Y = 0.40 * bSize.height();
-    qreal top_Y = 0.64 * bSize.height();
-
-    if (hover) {
-        penWidth *= 1.8;
-    }
-
-    painter.setBrush(Qt::NoBrush);
-    painter.setPen(QPen(palette.color(QPalette::HighlightedText), penWidth));
-
-    QPolygon chevron;
-    if (fold) {
-        // Upward chevron
-        chevron << QPoint(lef_X, top_Y)
-                << QPoint(mid_X, bot_Y)
-                << QPoint(rig_X, top_Y);
-    } else {
-        // Downward chevron
-        chevron << QPoint(lef_X, bot_Y)
-                << QPoint(mid_X, top_Y)
-                << QPoint(rig_X, bot_Y);
-    }
-
-    painter.drawPolyline(chevron);
     return QPixmap::fromImage(img);
 }
 
 ActionPanelScheme::ActionPanelScheme()
 {
-    headerSize = 28;
+    QFontMetrics fm(QApplication::font());
+    headerSize = fm.height() + 10;
     headerAnimation = true;
 
     QPalette p = QApplication::palette();
 
-    headerButtonSize = QSize(17, 17);
+    headerButtonSize = QSize(16, 16);
     headerButtonFold = drawFoldIcon(p, true, false);
     headerButtonFoldOver = drawFoldIcon(p, true, true);
     headerButtonUnfold = drawFoldIcon(p, false, false);

@@ -19,7 +19,6 @@
 namespace QSint
 {
 
-
 TaskHeader::TaskHeader(const QIcon &icon, const QString &title, bool expandable, QWidget *parent)
   : BaseClass(parent),
   myExpandable(expandable),
@@ -27,6 +26,7 @@ TaskHeader::TaskHeader(const QIcon &icon, const QString &title, bool expandable,
   m_buttonOver(false),
   m_fold(true),
   m_opacity(0.1),
+
   myButton(nullptr)
 {
     setProperty("class", "header");
@@ -40,7 +40,7 @@ TaskHeader::TaskHeader(const QIcon &icon, const QString &title, bool expandable,
     connect(myTitle, &ActionLabel::clicked, this, &TaskHeader::fold);
 
     QHBoxLayout *hbl = new QHBoxLayout();
-    hbl->setContentsMargins(2, 2, 2, 2);
+    hbl->setContentsMargins(4, 2, 8, 2);
     setLayout(hbl);
 
     hbl->addWidget(myTitle);
@@ -48,7 +48,6 @@ TaskHeader::TaskHeader(const QIcon &icon, const QString &title, bool expandable,
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 
     setScheme(ActionPanelScheme::defaultScheme());
-    //myTitle->setSchemePointer(&myLabelScheme);
 
     setExpandable(myExpandable);
 }
@@ -110,16 +109,10 @@ void TaskHeader::setScheme(ActionPanelScheme *scheme)
 {
   if (scheme) {
     myScheme = scheme;
-    //myLabelScheme = &(scheme->headerLabelScheme);
-    setStyleSheet(myScheme->actionStyle);
-
     if (myExpandable) {
-      //setCursor(myLabelScheme->cursorOver ? Qt::PointingHandCursor : cursor());
       changeIcons();
     }
-
     setFixedHeight(scheme->headerSize);
-
     update();
   }
 }
@@ -130,11 +123,6 @@ void TaskHeader::paintEvent ( QPaintEvent * event )
 
   if (myScheme->headerAnimation)
     p.setOpacity(m_opacity+0.7);
-
-//  p.setPen(m_over ? myScheme->headerBorderOver : myScheme->headerBorder);
-//  p.setBrush(m_over ? myScheme->headerBackgroundOver : myScheme->headerBackground);
-
-//  myScheme->headerCorners.draw(&p, rect());
 
   BaseClass::paintEvent(event);
 }

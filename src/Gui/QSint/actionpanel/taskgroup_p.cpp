@@ -35,8 +35,6 @@ bool TaskGroup::addActionLabel(ActionLabel *label, bool addToLayout, bool addStr
   if (!label)
       return false;
 
-  label->setStyleSheet("");
-
   return addWidget(label, addToLayout, addStretch);
 }
 
@@ -72,18 +70,6 @@ QPixmap TaskGroup::transparentRender()
   render(&pm, QPoint(0,0), rect(), DrawChildren | IgnoreMask);
 
   return pm;
-}
-
-void TaskGroup::paintEvent ( QPaintEvent * event )
-{
-//  QPainter p(this);
-
-//  p.setBrush(myScheme->groupBackground);
-
-//  p.setPen(myScheme->groupBorder);
-//  p.drawRect(rect().adjusted(0,-(int)myHasHeader,-1,-1));
-
-    BaseClass::paintEvent(event);
 }
 
 void TaskGroup::keyPressEvent ( QKeyEvent * event )
