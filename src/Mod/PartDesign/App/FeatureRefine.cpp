@@ -58,7 +58,7 @@ FeatureRefine::FeatureRefine()
     this->Refine.setValue(hGrp->GetBool("RefineModel", true));
 }
 
-bool FeatureRefine::onlyHasToRefine() const
+bool FeatureRefine::onlyHaveRefined()
 {
     if (!Refine.isTouched()) {
         return false;
@@ -75,20 +75,10 @@ bool FeatureRefine::onlyHasToRefine() const
             return false;
         }
     }
+    TopoShape result = refineShapeIfActive(rawShape);
+    Shape.setValue(result);
     return true;
 }
-
-
-bool FeatureRefine::onlyHaveRefined()
-{
-    if (onlyHasToRefine()) {
-        TopoShape result = refineShapeIfActive(rawShape);
-        Shape.setValue(result);
-        return true;
-    }
-    return false;
-}
-
 TopoShape FeatureRefine::refineShapeIfActive(const TopoShape& oldShape,
                                              const RefineErrorPolicy onError) const
 {
