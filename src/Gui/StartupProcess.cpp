@@ -54,7 +54,6 @@ StartupProcess::StartupProcess() = default;
 void StartupProcess::setupApplication()
 {
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 
     // Automatic scaling for legacy apps (disable once all parts of GUI are aware of HiDpi)
