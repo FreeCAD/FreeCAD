@@ -232,8 +232,7 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(const 
     if (!dvp) {
         return nullptr;
     }
-    int idx = DrawUtil::getIndexFromName(name);
-    TechDraw::VertexPtr v = dvp->getGeometry<Vertex>(idx);
+    TechDraw::VertexPtr v = dvp->getGeometry<Vertex>(name);
     if (!v || v->getCosmeticTag().empty()) {
         return nullptr;
     }
@@ -388,8 +387,7 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(const std:
     if (!dvp) {
         return nullptr;
     }
-    int idx = DrawUtil::getIndexFromName(name);
-    TechDraw::BaseGeomPtr base = dvp->getGeometry<BaseGeom>(idx);
+    TechDraw::BaseGeomPtr base = dvp->getGeometry<BaseGeom>(name);
     if (!base || base->getCosmeticTag().empty()) {
         return nullptr;
     }
@@ -550,8 +548,7 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(const std::str
     if (!dvp) {
         return nullptr;
     }
-    int idx = DrawUtil::getIndexFromName(name);
-    TechDraw::BaseGeomPtr base = dvp->getGeometry<BaseGeom>(idx);
+    TechDraw::BaseGeomPtr base = dvp->getGeometry<BaseGeom>(name);
     if (!base || base->getCosmeticTag().empty()) {
         return nullptr;
     }

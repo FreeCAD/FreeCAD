@@ -219,8 +219,7 @@ DrawDimHelper::minMax(DrawViewPart* dvp, std::vector<std::string> edgeNames, int
         for (auto& n : edgeNames) {
             std::string geomType = DrawUtil::getGeomTypeFromName(n);
             if (geomType == "Edge") {
-                int i = DrawUtil::getIndexFromName(n);
-                BaseGeomPtr bg = dvp->getGeometry<BaseGeom>(i);
+                BaseGeomPtr bg = dvp->getGeometry<BaseGeom>(n);
                 if (bg) {
                     edgeGeomList.push_back(bg);
                 }

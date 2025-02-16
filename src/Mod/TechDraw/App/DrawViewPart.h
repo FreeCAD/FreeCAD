@@ -168,12 +168,6 @@ public:
     template <typename drawobject>
     void removeAll();
 
-    // get existing geom for vertex by unique tag
-    TechDraw::VertexPtr getProjVertexByCosTag(std::string cosTag);
-    //get edges for face idx in projection
-    std::vector<TechDraw::BaseGeomPtr> getFaceEdgesByIndex(int idx) const;
-    // get the wires that define face idx
-    virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
     //returns a compound of all the visible projected edges
     TopoDS_Shape getEdgeCompound() const;
 

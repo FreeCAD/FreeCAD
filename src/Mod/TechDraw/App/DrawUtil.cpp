@@ -1863,8 +1863,7 @@ std::string DrawUtil::translateArbitrary(std::string context, std::string baseNa
 bool DrawUtil::isCosmeticVertex(App::DocumentObject* owner, std::string element)
 {
     auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
-    auto vertexIndex = DrawUtil::getIndexFromName(element);
-    auto vertex = ownerView->getGeometry<Vertex>(vertexIndex);
+    auto vertex = ownerView->getGeometry<Vertex>(element);
     if (vertex) {
         return vertex->getCosmetic();
     }

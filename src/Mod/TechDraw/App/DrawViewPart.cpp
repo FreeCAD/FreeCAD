@@ -814,35 +814,6 @@ template TechDrawExport const std::vector<VertexPtr> DrawViewPart::getAllGeometr
 template TechDrawExport const std::vector<BaseGeomPtr> DrawViewPart::getAllGeometry<BaseGeom>() const;
 template TechDrawExport const std::vector<FacePtr> DrawViewPart::getAllGeometry<Face>() const;
 
-TechDraw::VertexPtr DrawViewPart::getProjVertexByCosTag(std::string cosTag)
-{
-    std::vector<TechDraw::VertexPtr> gVerts = getAllGeometry<Vertex>();
-    if (gVerts.empty()) {
-        return nullptr;
-    }
-
-    for (auto& gv : gVerts) {
-        if (gv->getCosmeticTag() == cosTag) {
-            return gv;
-        }
-    }
-    return nullptr;
-}
-
-
-//! returns existing geometry of 2D Face(idx)
-std::vector<TechDraw::BaseGeomPtr> DrawViewPart::getFaceEdgesByIndex(int index) const
-{
-    const FacePtr& face = getGeometry<Face>(index);
-    return face->getConnectedGeometry();
-}
-
-std::vector<TopoDS_Wire> DrawViewPart::getWireForFace(int idx) const
-{
-    const FacePtr& face = getGeometry<Face>(idx);
-    return face->getCleanWires();
-}
-
 Base::BoundBox3d DrawViewPart::getBoundingBox() const {
     if(!geometryObject) {
         return Base::BoundBox3d(Base::Vector3d(0.0, 0.0, 0.0), 0.0);

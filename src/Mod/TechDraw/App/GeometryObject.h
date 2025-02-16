@@ -157,8 +157,6 @@ protected:
     std::vector<VertexPtr> vertexGeom;
     std::vector<FacePtr> faceGeom;
 
-    bool findVertex(Base::Vector3d v);
-
     std::string m_parentName;
     TechDraw::DrawView* m_parent;
     int m_isoCount;
