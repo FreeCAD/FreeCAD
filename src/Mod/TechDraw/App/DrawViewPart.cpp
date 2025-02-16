@@ -1216,33 +1216,25 @@ void DrawViewPart::unsetupObject()
 
     // Remove Dimensions which reference this DVP
     // must use page->removeObject first
-    TechDraw::DrawPage* page = findParentPage();
-    if (page) {
-        std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
-        std::vector<TechDraw::DrawViewDimension*>::iterator it3 = dims.begin();
-        for (; it3 != dims.end(); it3++) {
-            page->removeView(*it3);
-            const char* name = (*it3)->getNameInDocument();
-            if (name) {
-                Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                                 docName.c_str(), name);
-            }
+    std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
+    std::vector<TechDraw::DrawViewDimension*>::iterator it3 = dims.begin();
+    for (; it3 != dims.end(); it3++) {
+        const char* name = (*it3)->getNameInDocument();
+        if (name) {
+            Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                                docName.c_str(), name);
         }
     }
 
     // Remove Balloons which reference this DVP
     // must use page->removeObject first
-    page = findParentPage();
-    if (page) {
-        std::vector<TechDraw::DrawViewBalloon*> balloons = getBalloons();
-        std::vector<TechDraw::DrawViewBalloon*>::iterator it3 = balloons.begin();
-        for (; it3 != balloons.end(); it3++) {
-            page->removeView(*it3);
-            const char* name = (*it3)->getNameInDocument();
-            if (name) {
-                Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                                 docName.c_str(), name);
-            }
+    std::vector<TechDraw::DrawViewBalloon*> balloons = getBalloons();
+    std::vector<TechDraw::DrawViewBalloon*>::iterator it4 = balloons.begin();
+    for (; it4 != balloons.end(); it4++) {
+        const char* name = (*it4)->getNameInDocument();
+        if (name) {
+            Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                                docName.c_str(), name);
         }
     }
 }

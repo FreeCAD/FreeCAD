@@ -125,6 +125,8 @@ public:
 
     static bool isProjGroupItem(DrawViewPart* item);
 
+    void unsetupObject() override;
+
 protected:
     void onBeforeChange(const App::Property *prop) override;
     void onChanged(const App::Property* prop) override;
