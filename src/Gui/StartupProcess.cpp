@@ -55,9 +55,7 @@ void StartupProcess::setupApplication()
 {
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
-#endif
 
     // Automatic scaling for legacy apps (disable once all parts of GUI are aware of HiDpi)
     ParameterGrp::handle hDPI =
@@ -76,7 +74,7 @@ void StartupProcess::setupApplication()
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0) && defined(Q_OS_WIN)
+#if defined(Q_OS_WIN)
         QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
     }
@@ -94,19 +92,7 @@ void StartupProcess::setupApplication()
         QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     }
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
-    // By default (on platforms that support it, see docs for
-    // Qt::AA_CompressHighFrequencyEvents) QT applies compression
-    // for high frequency events (mouse move, touch, window resizes)
-    // to keep things smooth even when handling the event takes a
-    // while (e.g. to calculate snapping).
-    // However, tablet pen move events (and mouse move events
-    // synthesised from those) are not compressed by default (to
-    // allow maximum precision when e.g. hand-drawing curves),
-    // leading to unacceptable slowdowns using a tablet pen. Enable
-    // compression for tablet events here to solve that.
     QCoreApplication::setAttribute(Qt::AA_CompressTabletEvents);
-#endif
 }
 
 void StartupProcess::execute()
