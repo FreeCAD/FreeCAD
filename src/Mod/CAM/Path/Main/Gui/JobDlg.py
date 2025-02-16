@@ -76,31 +76,46 @@ class JobCreate:
         if Path.Preferences.suppressVelocity():
             return
 
-        minute_based_schemes = map(FreeCAD.Units.listSchemas, [2, 3, 6])
+        # schemas in order of preference -- the first ones get proposed to the user
+        minute_based_schemes = list(map(FreeCAD.Units.listSchemas, [6, 3, 2]))
         if FreeCAD.ActiveDocument.UnitSystem in minute_based_schemes:
             return
 
-        msg = translate(
+        # NB: On macOS the header is ignored as per its UI guidelines.
+        header = translate("CAM_Job", "Warning: Incompatible Unit Schema")
+        info = translate(
             "CAM_Job",
             (
-                "The currently selected unit schema: \n"
-                "     '{}' for this document\n"
-                " Does not use 'minutes' for velocity values. \n"
-                " \n"
-                "CNC machines require feed rate to be expressed in \n"
-                "unit/minute. To ensure correct G-code: \n"
-                "Select a minute-based schema in preferences.\n"
-                "For example:\n"
-                "    'Metric, Small Parts & CNC'\n"
-                "    'US Customary'\n"
-                "    'Imperial Decimal'"
+                "This document uses an improper unit schema "
+                "which can result in dangerous situations and machine crashes!"
             ),
-        ).format(FreeCAD.ActiveDocument.UnitSystem)
-        header = translate("CAM_Job", "Warning")
-        msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, msg)
+        )
+        details = translate(
+            "CAM_Job",
+            (
+                "<p>This document's unit schema, '{}', "
+                "expresses velocity in values <i>per second</i>."
+                "\n"
+                "<p>Please change the unit schema in the document properties "
+                "to one that expresses feed rates <i>per minute</i> instead. "
+                "\n"
+                "For example: \n"
+                "<ul>\n"
+                "<li>{}\n"
+                "<li>{}\n"
+                "</ul>\n"
+                "\n"
+                "<p>Keeping the current unit schema can result in dangerous G-code errors. "
+                "For details please refer to the "
+                "<a href='https://wiki.freecad.org/CAM_Workbench#Units'>Units section</a> "
+                "of the CAM Workbench's wiki page."
+            ),
+        ).format(FreeCAD.ActiveDocument.UnitSystem, *minute_based_schemes[:2])
+        msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, info)
+        msgbox.setInformativeText(details)
         msgbox.addButton(translate("CAM_Job", "Ok"), QtGui.QMessageBox.AcceptRole)
         dont_show_again_button = msgbox.addButton(
-            translate("CAM_Job", "Don't Show This Anymore"),
+            translate("CAM_Job", "Don't show this warning again"),
             QtGui.QMessageBox.ActionRole,
         )
 
