@@ -182,9 +182,9 @@ protected:
 
     QPixmap m_foldPixmap;      ///< Pixmap for the fold/unfold icon.
 
-    std::unique_ptr<TaskHeader> myHeader;  ///< The group's header.
-    std::unique_ptr<TaskGroup> myGroup;    ///< The container for actions/widgets.
-    std::unique_ptr<QWidget> myDummy;      ///< Dummy widget for animation.
+    TaskHeader *myHeader = nullptr;        ///< The group's header.
+    TaskGroup *myGroup = nullptr;          ///< The container for actions/widgets.
+    QWidget *myDummy = nullptr;            ///< Dummy widget for animation.
     ActionPanelScheme *myScheme = nullptr; ///< The color scheme.
 };
 } // namespace QSint
