@@ -50,14 +50,6 @@ protected:
     //store the shape before refinement
     TopoShape rawShape;
 
-    /**
-     * Check to see if this feature can just execute the refine operation, or if a more complete
-     * calculation is necessary (e.g. if some other property has changed). See also
-     * `onlyHaveRefined()`, which actually *does* the refinement if this is true.
-     *
-     * @return true if only the refinement needs to be done, false if a recompute is necessary
-     */
-    bool onlyHasToRefine() const;
 
     /**
      * Check if the feature *only* requires the refinement operation, and do that refinement if so.
