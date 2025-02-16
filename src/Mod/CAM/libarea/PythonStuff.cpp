@@ -32,10 +32,8 @@
 
 #define BOOST_BIND_GLOBAL_PLACEHOLDERS
 
-// #include <boost/progress.hpp>
-// #include <boost/timer.hpp>
 #include <boost/foreach.hpp>
-#include <boost_python.hpp>
+#include <boost/python.hpp>
 #include <boost/python/module.hpp>
 #include <boost/python/class.hpp>
 #include <boost/python/wrapper.hpp>

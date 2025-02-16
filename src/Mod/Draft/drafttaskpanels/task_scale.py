@@ -35,15 +35,9 @@ import PySide.QtWidgets as QtWidgets
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Draft
-import Draft_rc
-from draftguitools import gui_trackers as trackers
 from draftutils import params
 from draftutils import utils
 from draftutils.translate import translate
-
-# So the resource file doesn't trigger errors from code checkers (flake8)
-True if Draft_rc.__name__ else False
 
 
 class ScaleTaskPanel:
@@ -235,6 +229,9 @@ class ScaleTaskPanelEdit(ScaleTaskPanel):
 
     def set_ghost(self):
         """Set the ghost to display."""
+        # Import has to happen here to avoid circular imports.
+        from draftguitools import gui_trackers as trackers
+
         if self.ghost is not None:
             self.ghost.remove()
         objs, places, _ = utils._modifiers_process_selection(self.selection, copy=False, scale=True)

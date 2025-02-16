@@ -11,10 +11,11 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${PYCXX_INCLUDE_DIR}
+    ${ZIPIOS_INCLUDES}
 )
 
 if(MSVC)
@@ -64,7 +65,7 @@ list(APPEND FreeCADBase_LIBS ${QtCore_LIBRARIES})
 list(APPEND FreeCADBase_LIBS fmt::fmt)
 
 if (BUILD_DYNAMIC_LINK_PYTHON)
-    list(APPEND FreeCADBase_LIBS ${PYTHON_LIBRARIES})
+    list(APPEND FreeCADBase_LIBS ${Python3_LIBRARIES})
 endif (BUILD_DYNAMIC_LINK_PYTHON)
 
 # needed for OpenSUSE
@@ -99,56 +100,6 @@ if(SWIG_FOUND)
     )
     add_definitions(-DHAVE_SWIG=1)
 endif(SWIG_FOUND)
-
-if (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++ AND NOT FREECAD_USE_EXTERNAL_ZIPIOS)
-SET(zipios_SRCS
-    ../zipios++/backbuffer.h
-    ../zipios++/collcoll.cpp
-    ../zipios++/collcoll.h
-    ../zipios++/deflateoutputstreambuf.cpp
-    ../zipios++/deflateoutputstreambuf.h
-    ../zipios++/fcoll.cpp
-    ../zipios++/fcoll.h
-    ../zipios++/fcollexceptions.cpp
-    ../zipios++/fcollexceptions.h
-    ../zipios++/fileentry.cpp
-    ../zipios++/fileentry.h
-    ../zipios++/filepath.cpp
-    ../zipios++/filepath.h
-    ../zipios++/filterinputstreambuf.cpp
-    ../zipios++/filterinputstreambuf.h
-    ../zipios++/filteroutputstreambuf.cpp
-    ../zipios++/filteroutputstreambuf.h
-    ../zipios++/gzipoutputstream.cpp
-    ../zipios++/gzipoutputstream.h
-    ../zipios++/gzipoutputstreambuf.cpp
-    ../zipios++/gzipoutputstreambuf.h
-    ../zipios++/inflateinputstreambuf.cpp
-    ../zipios++/inflateinputstreambuf.h
-    ../zipios++/meta-iostreams.h
-    ../zipios++/outputstringstream.h
-    ../zipios++/simplesmartptr.h
-    ../zipios++/virtualseeker.h
-    ../zipios++/zipfile.cpp
-    ../zipios++/zipfile.h
-    ../zipios++/ziphead.cpp
-    ../zipios++/ziphead.h
-    ../zipios++/zipheadio.cpp
-    ../zipios++/zipheadio.h
-    ../zipios++/zipinputstream.cpp
-    ../zipios++/zipinputstream.h
-    ../zipios++/zipinputstreambuf.cpp
-    ../zipios++/zipinputstreambuf.h
-    ../zipios++/zipios_common.h
-    ../zipios++/zipios-config.h
-    ../zipios++/zipios_defs.h
-    ../zipios++/zipoutputstreambuf.cpp
-    ../zipios++/zipoutputstreambuf.h
-    ../zipios++/zipoutputstream.cpp
-    ../zipios++/zipoutputstream.h
-)
-SOURCE_GROUP("zipios" FILES ${zipios_SRCS})
-endif ()
 
 SOURCE_GROUP("pycxx" FILES ${PYCXX_SOURCES})
 
@@ -363,26 +314,12 @@ IF (MSVC)
     )
 ENDIF(MSVC)
 
-# Use external zipios++ if specified.
 if(FREECAD_USE_EXTERNAL_ZIPIOS)
-    find_library(ZIPIOS_LIBRARY zipios)
-    find_path(ZIPIOS_INCLUDES zipios++/zipios-config.h)
-    if(ZIPIOS_LIBRARY)
-        message(STATUS "Found zipios++: ${ZIPIOS}")
-    endif()
-    if(ZIPIOS_INCLUDES)
-        message(STATUS "Found zipios++ headers.")
-    endif()
-    if(ZIPIOS_LIBRARY AND ZIPIOS_INCLUDES)
-        list(APPEND FreeCADBase_LIBS ${ZIPIOS_LIBRARY})
-        include_directories(${ZIPIOS_INCLUDES})
-    else()
-        message(FATAL_ERROR "Using external zipios++ was specified but was not found.")
-    endif()
-else(FREECAD_USE_EXTERNAL_ZIPIOS)
+    list(APPEND FreeCADBase_LIBS ${ZIPIOS_LIBRARY})
+else()
     list(APPEND FreeCADBase_SRCS ${zipios_SRCS})
-endif(FREECAD_USE_EXTERNAL_ZIPIOS)
-
+    SOURCE_GROUP("zipios" FILES ${zipios_SRCS})
+endif()
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

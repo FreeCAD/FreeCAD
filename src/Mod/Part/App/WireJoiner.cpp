@@ -59,7 +59,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <deque>
-#include <boost_geometry.hpp>
+#include <boost/geometry.hpp>
 #include <utility>
 
 #include <Base/Console.h>

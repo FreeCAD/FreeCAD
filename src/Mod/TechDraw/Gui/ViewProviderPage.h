@@ -27,7 +27,7 @@
 #include <QObject>
 #include <QPointer>
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderDocumentObject.h>

@@ -696,12 +696,16 @@ def select(objs=None, gui=App.GuiUp):
                 if not obj:
                     continue
                 if isinstance(obj, tuple):
-                    Gui.Selection.addSelection(*obj)
+                    # Example of tuple (Rectangle in Part):
+                    #   ("", "Part", "Rectangle.")
+                    # See:
+                    #   utils._modifiers_process_selection()
+                    #   utils._modifiers_process_subselection()
+                    parent = App.ActiveDocument.getObject(obj[1])
+                    if parent and parent.getSubObject(obj[2]):
+                        Gui.Selection.addSelection(*obj)
                     continue
-                try:
-                    if not obj.isAttachedToDocument():
-                        continue
-                except:
+                if utils.is_deleted(obj):
                     continue
                 Gui.Selection.addSelection(obj)
 

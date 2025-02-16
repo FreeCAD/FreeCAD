@@ -22,7 +22,7 @@ Returns the value of a named property. Note that the returned property may not
 always belong to this container (e.g. from a linked object).
 
 name : str
-     Name of the property.
+    Name of the property.
 checkOwner : int
     0: just return the property.
     1: raise exception if not found or the property does not belong to this container.

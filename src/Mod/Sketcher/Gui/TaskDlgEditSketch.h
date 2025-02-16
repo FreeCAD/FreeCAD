@@ -23,7 +23,7 @@
 #ifndef SKETCHERGUI_TaskDlgEditSketch_H
 #define SKETCHERGUI_TaskDlgEditSketch_H
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <Gui/TaskView/TaskDialog.h>
 

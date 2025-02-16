@@ -28,7 +28,7 @@
 #ifndef _PreComp_
 #include <cfloat>
 
-#include <boost_geometry.hpp>
+#include <boost/geometry.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
 #include <boost/geometry/index/rtree.hpp>
 #include <boost/range/adaptor/transformed.hpp>
@@ -74,6 +74,7 @@
 #include <Base/Exception.h>
 #include <Mod/Part/App/CrossSection.h>
 #include <Mod/Part/App/FaceMakerBullseye.h>
+#include <Mod/Part/App/FuzzyHelper.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/CAM/App/PathSegmentWalker.h>
 #include <Mod/CAM/libarea/Area.h>
@@ -1920,7 +1921,13 @@ std::vector<shared_ptr<Area>> Area::makeSections(PARAM_ARGS(PARAM_FARG, AREA_PAR
                     showShape(xp.Current(), nullptr, "section_%u_shape", i);
                     std::list<TopoDS_Wire> wires;
                     Part::CrossSection section(a, b, c, xp.Current());
-                    wires = section.slice(-d);
+                    Part::FuzzyHelper::withBooleanFuzzy(.0, [&]() {
+                        // Workaround for https://github.com/FreeCAD/FreeCAD/issues/17748
+                        // needed to make finish pass work.
+                        // This fix might be better to move into Part::CrossSection but it is kept
+                        // here for now to be on the safe side.
+                        wires = section.slice(-d);
+                    });
                     showShapes(wires, nullptr, "section_%u_wire", i);
                     if (wires.empty()) {
                         AREA_LOG("Section returns no wires");

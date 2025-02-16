@@ -26,7 +26,7 @@
 #include <list>
 #include <map>
 #include <string>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <QString>
 
 #include <Base/Persistence.h>

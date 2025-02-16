@@ -244,7 +244,7 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DPYSIDE_INCLUDE_DIR=/usr/include/PySide2 \
        -DPYSIDE_LIBRARY=-lpyside2.%{py_suffix} \
 %endif
-       -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python3 \
+       -DPython3_EXECUTABLE:FILEPATH=/usr/bin/python3 \
        -DMEDFILE_INCLUDE_DIRS=%{MEDFILE_INCLUDE_DIRS} \
        -DOpenGL_GL_PREFERENCE=GLVND \
        -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin4 \

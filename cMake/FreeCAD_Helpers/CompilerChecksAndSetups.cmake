@@ -17,9 +17,9 @@ macro(CompilerChecksAndSetups)
         add_definitions(-DHAVE_SNPRINTF)
     endif()
 
-    # Allow developers to use Boost < 1.65
+    # Allow developers to use Boost < 1.74
     if (NOT BOOST_MIN_VERSION)
-        set(BOOST_MIN_VERSION 1.65)
+        set(BOOST_MIN_VERSION 1.74)
     endif()
 
     # For older cmake versions the variable 'CMAKE_CXX_COMPILER_VERSION' is missing

@@ -25,7 +25,7 @@
 #define GUI_TOOLBARMANAGER_H
 
 #include <string>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <QStringList>
 #include <QPointer>

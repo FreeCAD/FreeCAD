@@ -26,7 +26,7 @@
 #include <QListWidget>
 #include <QStyledItemDelegate>
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskView.h>

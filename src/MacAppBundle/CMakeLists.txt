@@ -22,7 +22,7 @@ endif()
 #
 if(FREECAD_CREATE_MAC_APP)
 
-set(PYTHON_DIR_BASENAME python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
+set(PYTHON_DIR_BASENAME python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR})
 
 if(PYTHON_LIBRARY MATCHES "(.*Python\\.framework).*")
     #framework

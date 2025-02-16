@@ -26,7 +26,7 @@
 
 #include <Base/BaseClass.h>
 #include <Base/Bitmask.h>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <memory>
 #include <set>
 #include <FCGlobal.h>

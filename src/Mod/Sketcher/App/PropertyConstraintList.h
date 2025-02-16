@@ -27,7 +27,7 @@
 #include <vector>
 
 #include <boost/unordered/unordered_map.hpp>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <App/Property.h>
 #include <Mod/Part/App/Geometry.h>

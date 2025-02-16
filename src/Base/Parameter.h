@@ -51,7 +51,7 @@ using PyObject = struct _object;
 
 #include <map>
 #include <vector>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <xercesc/util/XercesDefs.hpp>
 
 #include "Handle.h"

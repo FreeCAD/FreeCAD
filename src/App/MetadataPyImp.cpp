@@ -136,12 +136,12 @@ int MetadataPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::Object MetadataPy::getName() const
+Py::String MetadataPy::getName() const
 {
     return Py::String(getMetadataPtr()->name());
 }
 
-void MetadataPy::setName(Py::Object args)
+void MetadataPy::setName(Py::String args)
 {
     const char* name = nullptr;
     if (!PyArg_Parse(args.ptr(), "z", &name)) {
@@ -155,12 +155,12 @@ void MetadataPy::setName(Py::Object args)
     }
 }
 
-Py::Object MetadataPy::getVersion() const
+Py::String MetadataPy::getVersion() const
 {
     return Py::String(getMetadataPtr()->version().str());
 }
 
-void MetadataPy::setVersion(Py::Object args)
+void MetadataPy::setVersion(Py::String args)
 {
     const char* name = nullptr;
     if (!PyArg_Parse(args.ptr(), "z", &name)) {
@@ -174,12 +174,12 @@ void MetadataPy::setVersion(Py::Object args)
     }
 }
 
-Py::Object MetadataPy::getDate() const
+Py::String MetadataPy::getDate() const
 {
     return Py::String(getMetadataPtr()->date());
 }
 
-void MetadataPy::setDate(Py::Object args)
+void MetadataPy::setDate(Py::String args)
 {
     const char* date = nullptr;
     if (!PyArg_Parse(args.ptr(), "z", &date)) {
@@ -193,12 +193,12 @@ void MetadataPy::setDate(Py::Object args)
     }
 }
 
-Py::Object MetadataPy::getDescription() const
+Py::String MetadataPy::getDescription() const
 {
     return Py::String(getMetadataPtr()->description());
 }
 
-void MetadataPy::setDescription(Py::Object args)
+void MetadataPy::setDescription(Py::String args)
 {
     const char* description = nullptr;
     if (!PyArg_Parse(args.ptr(), "s", &description)) {
@@ -207,12 +207,12 @@ void MetadataPy::setDescription(Py::Object args)
     getMetadataPtr()->setDescription(description);
 }
 
-Py::Object MetadataPy::getType() const
+Py::String MetadataPy::getType() const
 {
     return Py::String(getMetadataPtr()->type());
 }
 
-void MetadataPy::setType(Py::Object args)
+void MetadataPy::setType(Py::String args)
 {
     const char* type = nullptr;
     if (!PyArg_Parse(args.ptr(), "s", &type)) {
@@ -221,7 +221,7 @@ void MetadataPy::setType(Py::Object args)
     getMetadataPtr()->setType(type);
 }
 
-Py::Object MetadataPy::getMaintainer() const
+Py::List MetadataPy::getMaintainer() const
 {
     auto maintainers = getMetadataPtr()->maintainer();
     Py::List pyMaintainers;
@@ -234,7 +234,7 @@ Py::Object MetadataPy::getMaintainer() const
     return pyMaintainers;
 }
 
-void MetadataPy::setMaintainer(Py::Object args)
+void MetadataPy::setMaintainer(Py::List args)
 {
     PyObject* list = nullptr;
     if (!PyArg_Parse(args.ptr(), "O!", &PyList_Type, &list)) {
@@ -276,7 +276,7 @@ PyObject* MetadataPy::removeMaintainer(PyObject* args)
 }
 
 
-Py::Object MetadataPy::getAuthor() const
+Py::List MetadataPy::getAuthor() const
 {
     auto authors = getMetadataPtr()->author();
     Py::List pyAuthors;
@@ -289,7 +289,7 @@ Py::Object MetadataPy::getAuthor() const
     return pyAuthors;
 }
 
-void MetadataPy::setAuthor(Py::Object args)
+void MetadataPy::setAuthor(Py::List args)
 {
     PyObject* list = nullptr;
     if (!PyArg_Parse(args.ptr(), "O!", &PyList_Type, &list)) {
@@ -330,7 +330,7 @@ PyObject* MetadataPy::removeAuthor(PyObject* args)
     return Py_None;
 }
 
-Py::Object MetadataPy::getLicense() const
+Py::List MetadataPy::getLicense() const
 {
     auto licenses = getMetadataPtr()->license();
     Py::List pyLicenses;
@@ -343,7 +343,7 @@ Py::Object MetadataPy::getLicense() const
     return pyLicenses;
 }
 
-void MetadataPy::setLicense(Py::Object args)
+void MetadataPy::setLicense(Py::List args)
 {
     PyObject* list = nullptr;
     if (!PyArg_Parse(args.ptr(), "O!", &PyList_Type, &list)) {
@@ -384,7 +384,7 @@ PyObject* MetadataPy::removeLicense(PyObject* args)
     return Py_None;
 }
 
-Py::Object MetadataPy::getUrls() const
+Py::List MetadataPy::getUrls() const
 {
     auto urls = getMetadataPtr()->url();
     Py::List pyUrls;
@@ -422,7 +422,7 @@ Py::Object MetadataPy::getUrls() const
     return pyUrls;
 }
 
-void MetadataPy::setUrls(Py::Object args)
+void MetadataPy::setUrls(Py::List args)
 {
     PyObject* list = nullptr;
     if (!PyArg_Parse(args.ptr(), "O!", &PyList_Type, &list)) {
@@ -591,7 +591,7 @@ Meta::Dependency pyObjectToDependency(const Py::Object& d)
     return result;
 }
 
-Py::Object MetadataPy::getDepend() const
+Py::List MetadataPy::getDepend() const
 {
     auto dependencies = getMetadataPtr()->depend();
     Py::List pyDependencies;
@@ -601,7 +601,7 @@ Py::Object MetadataPy::getDepend() const
     return pyDependencies;
 }
 
-void MetadataPy::setDepend(Py::Object args)
+void MetadataPy::setDepend(Py::List args)
 {
     PyObject* list = nullptr;
     if (!PyArg_Parse(args.ptr(), "O!", &PyList_Type, &list)) {
@@ -640,7 +640,7 @@ PyObject* MetadataPy::removeDepend(PyObject* args)
     return Py_None;
 }
 
-Py::Object MetadataPy::getConflict() const
+Py::List MetadataPy::getConflict() const
 {
     auto dependencies = getMetadataPtr()->conflict();
     Py::List pyDependencies;
@@ -650,7 +650,7 @@ Py::Object MetadataPy::getConflict() const
     return pyDependencies;
 }
 
-void MetadataPy::setConflict(Py::Object args)
+void MetadataPy::setConflict(Py::List args)
 {
     PyObject* list = nullptr;
     if (!PyArg_Parse(args.ptr(), "O!", &PyList_Type, &list)) {
@@ -689,7 +689,7 @@ PyObject* MetadataPy::removeConflict(PyObject* args)
     return Py_None;
 }
 
-Py::Object MetadataPy::getReplace() const
+Py::List MetadataPy::getReplace() const
 {
     auto dependencies = getMetadataPtr()->replace();
     Py::List pyDependencies;
@@ -699,7 +699,7 @@ Py::Object MetadataPy::getReplace() const
     return pyDependencies;
 }
 
-void MetadataPy::setReplace(Py::Object args)
+void MetadataPy::setReplace(Py::List args)
 {
     PyObject* list = nullptr;
     if (!PyArg_Parse(args.ptr(), "O!", &PyList_Type, &list)) {
@@ -740,7 +740,7 @@ PyObject* MetadataPy::removeReplace(PyObject* args)
 
 // Tag, icon, classname, file
 
-Py::Object MetadataPy::getTag() const
+Py::List MetadataPy::getTag() const
 {
     auto tags = getMetadataPtr()->tag();
     Py::List pyTags;
@@ -750,7 +750,7 @@ Py::Object MetadataPy::getTag() const
     return pyTags;
 }
 
-void MetadataPy::setTag(Py::Object args)
+void MetadataPy::setTag(Py::List args)
 {
     PyObject* list = nullptr;
     if (!PyArg_Parse(args.ptr(), "O!", &PyList_Type, &list)) {
@@ -787,12 +787,12 @@ PyObject* MetadataPy::removeTag(PyObject* args)
     return Py_None;
 }
 
-Py::Object MetadataPy::getIcon() const
+Py::String MetadataPy::getIcon() const
 {
     return Py::String(getMetadataPtr()->icon().string());
 }
 
-void MetadataPy::setIcon(Py::Object args)
+void MetadataPy::setIcon(Py::String args)
 {
     const char* name;
     if (!PyArg_Parse(args.ptr(), "s", &name)) {
@@ -801,12 +801,12 @@ void MetadataPy::setIcon(Py::Object args)
     getMetadataPtr()->setIcon(name);
 }
 
-Py::Object MetadataPy::getClassname() const
+Py::String MetadataPy::getClassname() const
 {
     return Py::String(getMetadataPtr()->classname());
 }
 
-void MetadataPy::setClassname(Py::Object args)
+void MetadataPy::setClassname(Py::String args)
 {
     const char* name;
     if (!PyArg_Parse(args.ptr(), "s", &name)) {
@@ -815,12 +815,12 @@ void MetadataPy::setClassname(Py::Object args)
     getMetadataPtr()->setClassname(name);
 }
 
-Py::Object MetadataPy::getSubdirectory() const
+Py::String MetadataPy::getSubdirectory() const
 {
     return Py::String(getMetadataPtr()->subdirectory().string());
 }
 
-void MetadataPy::setSubdirectory(Py::Object args)
+void MetadataPy::setSubdirectory(Py::String args)
 {
     const char* name;
     if (!PyArg_Parse(args.ptr(), "s", &name)) {
@@ -829,7 +829,7 @@ void MetadataPy::setSubdirectory(Py::Object args)
     getMetadataPtr()->setSubdirectory(name);
 }
 
-Py::Object MetadataPy::getFile() const
+Py::List MetadataPy::getFile() const
 {
     auto files = getMetadataPtr()->file();
     Py::List pyFiles;
@@ -839,7 +839,7 @@ Py::Object MetadataPy::getFile() const
     return pyFiles;
 }
 
-void MetadataPy::setFile(Py::Object args)
+void MetadataPy::setFile(Py::List args)
 {
     PyObject* list = nullptr;
     if (!PyArg_Parse(args.ptr(), "O!", &PyList_Type, &list)) {
@@ -877,7 +877,7 @@ PyObject* MetadataPy::removeFile(PyObject* args)
 }
 
 
-Py::Object MetadataPy::getContent() const
+Py::Dict MetadataPy::getContent() const
 {
     auto content = getMetadataPtr()->content();
     std::set<std::string> keys;
@@ -899,7 +899,7 @@ Py::Object MetadataPy::getContent() const
     return pyContent;
 }
 
-void MetadataPy::setContent(Py::Object arg)
+void MetadataPy::setContent(Py::Dict arg)
 {
     PyObject* obj = nullptr;
     if (!PyArg_Parse(arg.ptr(), "O!", &PyList_Type, &obj)) {
@@ -940,12 +940,12 @@ PyObject* MetadataPy::getGenericMetadata(PyObject* args)
     return Py::new_reference_to(pyGenericMetadata);
 }
 
-Py::Object MetadataPy::getFreeCADMin() const
+Py::String MetadataPy::getFreeCADMin() const
 {
     return Py::String(getMetadataPtr()->freecadmin().str());
 }
 
-void MetadataPy::setFreeCADMin(Py::Object args)
+void MetadataPy::setFreeCADMin(Py::String args)
 {
     char* version = nullptr;
     PyObject* p = args.ptr();
@@ -960,12 +960,12 @@ void MetadataPy::setFreeCADMin(Py::Object args)
     }
 }
 
-Py::Object MetadataPy::getFreeCADMax() const
+Py::String MetadataPy::getFreeCADMax() const
 {
     return Py::String(getMetadataPtr()->freecadmax().str());
 }
 
-void MetadataPy::setFreeCADMax(Py::Object args)
+void MetadataPy::setFreeCADMax(Py::String args)
 {
     char* version = nullptr;
     PyObject* p = args.ptr();
@@ -981,12 +981,12 @@ void MetadataPy::setFreeCADMax(Py::Object args)
     }
 }
 
-Py::Object MetadataPy::getPythonMin() const
+Py::String MetadataPy::getPythonMin() const
 {
     return Py::String(getMetadataPtr()->pythonmin().str());
 }
 
-void MetadataPy::setPythonMin(Py::Object args)
+void MetadataPy::setPythonMin(Py::String args)
 {
     char* version = nullptr;
     PyObject* p = args.ptr();

@@ -12,7 +12,7 @@ if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/Version.h)
     add_custom_command(
         OUTPUT version_file
         BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/Version.h
-        COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/SubWCRev.py
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/SubWCRev.py
             --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR}
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/Version.h.out
             ${CMAKE_CURRENT_BINARY_DIR}/Version.h

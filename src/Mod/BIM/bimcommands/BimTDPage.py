@@ -57,14 +57,13 @@ class BIM_TDPage:
         ).GetString("TDTemplateDir", "")
         if not templatedir:
             templatedir = None
-        filename = QtGui.QFileDialog.getOpenFileName(
+        filename, _ = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
             translate("BIM", "Select page template"),
             templatedir,
             "SVG file (*.svg)",
         )
         if filename:
-            filename = filename[0]
             name = os.path.splitext(os.path.basename(filename))[0]
             FreeCAD.ActiveDocument.openTransaction("Create page")
             page = FreeCAD.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
