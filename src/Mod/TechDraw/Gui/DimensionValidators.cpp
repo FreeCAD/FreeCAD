@@ -373,8 +373,7 @@ DimensionGeometryType TechDraw::isValidSingleEdge(ReferenceEntry ref)
     }
 
     //the geometry exists (redundant?)
-    int GeoId(TechDraw::DrawUtil::getIndexFromName(ref.getSubName()));
-    TechDraw::BaseGeomPtr geom = objFeat->getGeometry<BaseGeom>(GeoId);
+    TechDraw::BaseGeomPtr geom = objFeat->getGeometry<BaseGeom>(ref.getSubName());
     if (!geom) {
         return isInvalid;
     }
@@ -524,10 +523,8 @@ DimensionGeometryType TechDraw::isValidMultiEdge(ReferenceVector refs)
     }
 
     //exactly 2 edges. could be angle, could be distance
-    int GeoId0(TechDraw::DrawUtil::getIndexFromName(refs.at(0).getSubName()));
-    int GeoId1(TechDraw::DrawUtil::getIndexFromName(refs.at(1).getSubName()));
-    TechDraw::BaseGeomPtr geom0 = objFeat0->getGeometry<BaseGeom>(GeoId0);
-    TechDraw::BaseGeomPtr geom1 = objFeat0->getGeometry<BaseGeom>(GeoId1);
+    TechDraw::BaseGeomPtr geom0 = objFeat0->getGeometry<BaseGeom>(refs.at(0).getSubName());
+    TechDraw::BaseGeomPtr geom1 = objFeat0->getGeometry<BaseGeom>(refs.at(0).getSubName());
 
     if (geom0->getGeomType() == TechDraw::GENERIC && geom1->getGeomType() == TechDraw::GENERIC) {
         TechDraw::GenericPtr gen0 = std::static_pointer_cast<TechDraw::Generic>(geom0);

@@ -840,18 +840,16 @@ PyObject* DrawViewPartPy::getVertexByIndex(PyObject *args)
 
 PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
 {
-    int edgeIndex = 0;
     char* selName;           //Selection routine name - "Edge0"
     if (!PyArg_ParseTuple(args, "s", &selName)) {
         return nullptr;
     }
 
-    edgeIndex = DrawUtil::getIndexFromName(std::string(selName));
     DrawViewPart* dvp = getDrawViewPartPtr();
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
-    TechDraw::BaseGeomPtr geom = dvp->getGeometry<BaseGeom>(edgeIndex);
+    TechDraw::BaseGeomPtr geom = dvp->getGeometry<BaseGeom>(selName);
     if (!geom) {
         PyErr_SetString(PyExc_ValueError, "Wrong edge index");
         return nullptr;
@@ -868,18 +866,16 @@ PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
 
 PyObject* DrawViewPartPy::getVertexBySelection(PyObject *args)
 {
-    int vertexIndex = 0;
     const char* selName;           //Selection routine name - "Vertex0"
     if (!PyArg_ParseTuple(args, "s", &selName)) {
         return nullptr;
     }
 
-    vertexIndex = DrawUtil::getIndexFromName(std::string(selName));
     DrawViewPart* dvp = getDrawViewPartPtr();
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
-    TechDraw::VertexPtr vert = dvp->getGeometry<Vertex>(vertexIndex);
+    TechDraw::VertexPtr vert = dvp->getGeometry<Vertex>(selName);
     if (!vert) {
         PyErr_SetString(PyExc_ValueError, "Wrong vertex index");
         return nullptr;
