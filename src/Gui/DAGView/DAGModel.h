@@ -26,7 +26,7 @@
 #include <memory>
 #include <vector>
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <QBrush>
 #include <QGraphicsScene>
