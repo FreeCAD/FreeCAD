@@ -819,15 +819,12 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
 
 void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
 {
-    const std::vector<VertexPtr>& oldVerts = getVertexGeometry();
+    const std::vector<VertexPtr>& oldVerts = getAll<Vertex>();
     std::vector<VertexPtr> newVerts;
     for (auto& v : oldVerts) {
         Base::Vector3d v3 = v->point();
         double length = (v3 - center).Length();
-        if (length < Precision::Confusion()) {
-            continue;
-        }
-        else if (length < radius) {
+        if (length > Precision::Confusion() && length < radius) {
             newVerts.push_back(v);
         }
     }
@@ -845,5 +842,21 @@ bool GeometryObject::findVertex(Base::Vector3d v)
         }
     }
     return false;
+}
+void GeometryObject::removeReferenceVertexes()
+{
+    if(vertexGeom.empty()) {
+        return;
+    }
+    std::vector<VertexPtr> newVerts;
+    std::copy_if(
+        vertexGeom.begin(),
+        vertexGeom.end(),
+        std::back_inserter(newVerts),
+        [](const VertexPtr& vert){ return !vert->isReference(); }
+    );
+    vertexGeom = newVerts;
+    // When C++20:
+    // std::erase_if(vertexGeom, [](VertexPtr vert){ return vert->isReference(); })
 }
 
