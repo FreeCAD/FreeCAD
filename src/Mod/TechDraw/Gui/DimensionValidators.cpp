@@ -376,7 +376,7 @@ DimensionGeometry TechDraw::isValidSingleEdge(const ReferenceEntry& ref)
 
     //the geometry exists (redundant?)
     int GeoId(TechDraw::DrawUtil::getIndexFromName(ref.getSubName()));
-    TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
+    TechDraw::BaseGeomPtr geom = objFeat->getGeometry<BaseGeom>(GeoId);
     if (!geom) {
         return DimensionGeometry::isInvalid;
     }
@@ -471,7 +471,7 @@ DimensionGeometry TechDraw::isValidSingleFace(const ReferenceEntry& ref)
         return DimensionGeometry::isInvalid;
     }
 
-    auto geom = objFeat->getFace(ref.getSubName());
+    auto geom = objFeat->getGeometry<Face>(ref.getSubName());
     if (!geom) {
         return DimensionGeometry::isInvalid;
     }
@@ -527,8 +527,8 @@ DimensionGeometry TechDraw::isValidMultiEdge(const ReferenceVector& refs)
     //exactly 2 edges. could be angle, could be distance
     int GeoId0(TechDraw::DrawUtil::getIndexFromName(refs.at(0).getSubName()));
     int GeoId1(TechDraw::DrawUtil::getIndexFromName(refs.at(1).getSubName()));
-    TechDraw::BaseGeomPtr geom0 = objFeat0->getGeomByIndex(GeoId0);
-    TechDraw::BaseGeomPtr geom1 = objFeat0->getGeomByIndex(GeoId1);
+    TechDraw::BaseGeomPtr geom0 = objFeat0->getGeometry<BaseGeom>(GeoId0);
+    TechDraw::BaseGeomPtr geom1 = objFeat0->getGeometry<BaseGeom>(GeoId1);
 
     if (geom0->getGeomType() == GeomType::GENERIC && geom1->getGeomType() == GeomType::GENERIC) {
         TechDraw::GenericPtr gen0 = std::static_pointer_cast<TechDraw::Generic>(geom0);
@@ -630,8 +630,8 @@ DimensionGeometry TechDraw::isValidVertexes(const ReferenceVector& refs)
 
     if (refs.size() == 2) {
         //2 vertices can only make a distance dimension
-        TechDraw::VertexPtr v0 = dvp->getVertex(refs.at(0).getSubName());
-        TechDraw::VertexPtr v1 = dvp->getVertex(refs.at(1).getSubName());
+        TechDraw::VertexPtr v0 = dvp->getGeometry<Vertex>(refs.at(0).getSubName());
+        TechDraw::VertexPtr v1 = dvp->getGeometry<Vertex>(refs.at(1).getSubName());
         Base::Vector3d line = v1->point() - v0->point();
         if (fabs(line.y) < std::numeric_limits<float>::epsilon()) {
             return DimensionGeometry::isHorizontal;

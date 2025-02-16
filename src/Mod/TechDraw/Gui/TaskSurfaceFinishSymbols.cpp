@@ -111,19 +111,19 @@ TaskSurfaceFinishSymbols::TaskSurfaceFinishSymbols(const std::string &ownerName)
         if (viewPart && !subName.empty()) {
             std::string subType = DrawUtil::getGeomTypeFromName(subName);
             if (subType == "Vertex") {
-                TechDraw::VertexPtr vertex = viewPart->getVertex(subName);
+                TechDraw::VertexPtr vertex = viewPart->getGeometry<Vertex>(subName);
                 if (vertex) {
                     placement = vertex->point();
                 }
             }
             else if (subType == "Edge") {
-                TechDraw::BaseGeomPtr edge = viewPart->getEdge(subName);
+                TechDraw::BaseGeomPtr edge = viewPart->getGeometry<BaseGeom>(subName);
                 if (edge) {
                     placement = edge->getMidPoint();
                 }
             }
             else if (subType == "Face") {
-                TechDraw::FacePtr face = viewPart->getFace(subName);
+                TechDraw::FacePtr face = viewPart->getGeometry<Face>(subName);
                 if (face) {
                     placement = face->getCenter();
                 }

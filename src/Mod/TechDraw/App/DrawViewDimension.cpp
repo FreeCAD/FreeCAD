@@ -818,7 +818,7 @@ pointPair DrawViewDimension::getPointsOneEdge(ReferenceVector references)
         && !references.at(0).getSubName().empty()) {
         // TODO: Notify if not straight line Edge?
         // this is a 2d object (a DVP + subelements)
-        TechDraw::BaseGeomPtr geom = getViewPart()->getGeomByIndex(iSubelement);
+        TechDraw::BaseGeomPtr geom = getViewPart()->getGeometry<BaseGeom>(iSubelement);
         if (!geom) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (1)";
@@ -858,8 +858,8 @@ pointPair DrawViewDimension::getPointsTwoEdges(ReferenceVector references)
     if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()
         && !references.at(0).getSubName().empty()) {
         // this is a 2d object (a DVP + subelements)
-        TechDraw::BaseGeomPtr geom0 = getViewPart()->getGeomByIndex(iSubelement0);
-        TechDraw::BaseGeomPtr geom1 = getViewPart()->getGeomByIndex(iSubelement1);
+        TechDraw::BaseGeomPtr geom0 = getViewPart()->getGeometry<BaseGeom>(iSubelement0);
+        TechDraw::BaseGeomPtr geom1 = getViewPart()->getGeometry<BaseGeom>(iSubelement1);
         if (!geom0 || !geom1) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (2)";
@@ -890,8 +890,8 @@ pointPair DrawViewDimension::getPointsTwoVerts(ReferenceVector references)
     if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()
         && !references.at(0).getSubName().empty()) {
         // this is a 2d object (a DVP + subelements)
-        TechDraw::VertexPtr v0 = getViewPart()->getProjVertexByIndex(iSubelement0);
-        TechDraw::VertexPtr v1 = getViewPart()->getProjVertexByIndex(iSubelement1);
+        TechDraw::VertexPtr v0 = getViewPart()->getGeometry<Vertex>(iSubelement0);
+        TechDraw::VertexPtr v1 = getViewPart()->getGeometry<Vertex>(iSubelement1);
         if (!v0 || !v1) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (3)";
@@ -930,12 +930,12 @@ pointPair DrawViewDimension::getPointsEdgeVert(ReferenceVector references)
         TechDraw::BaseGeomPtr edge;
         TechDraw::VertexPtr vertex;
         if (DrawUtil::getGeomTypeFromName(references.at(0).getSubName()) == "Edge") {
-            edge = getViewPart()->getGeomByIndex(iSubelement0);
-            vertex = getViewPart()->getProjVertexByIndex(iSubelement1);
+            edge = getViewPart()->getGeometry<BaseGeom>(iSubelement0);
+            vertex = getViewPart()->getGeometry<Vertex>(iSubelement1);
         }
         else {
-            edge = getViewPart()->getGeomByIndex(iSubelement1);
-            vertex = getViewPart()->getProjVertexByIndex(iSubelement0);
+            edge = getViewPart()->getGeometry<BaseGeom>(iSubelement1);
+            vertex = getViewPart()->getGeometry<Vertex>(iSubelement0);
         }
         if (!vertex || !edge) {
             throw Base::RuntimeError("Missing geometry for dimension (4)");
@@ -983,7 +983,7 @@ arcPoints DrawViewDimension::getArcParameters(ReferenceVector references)
     if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()
         && !references.at(0).getSubName().empty()) {
         // this is a 2d object (a DVP + subelements)
-        TechDraw::BaseGeomPtr geom = getViewPart()->getGeomByIndex(iSubelement);
+        TechDraw::BaseGeomPtr geom = getViewPart()->getGeometry<BaseGeom>(iSubelement);
         if (!geom) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (4)";
@@ -1215,8 +1215,8 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
     if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()
         && !references.at(0).getSubName().empty()) {
         // this is a 2d object (a DVP + subelements)
-        TechDraw::BaseGeomPtr geom0 = getViewPart()->getGeomByIndex(iSubelement0);
-        TechDraw::BaseGeomPtr geom1 = getViewPart()->getGeomByIndex(iSubelement1);
+        TechDraw::BaseGeomPtr geom0 = getViewPart()->getGeometry<BaseGeom>(iSubelement0);
+        TechDraw::BaseGeomPtr geom1 = getViewPart()->getGeometry<BaseGeom>(iSubelement1);
         if (!geom0 || !geom1) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (5)";
@@ -1353,9 +1353,9 @@ anglePoints DrawViewDimension::getAnglePointsThreeVerts(ReferenceVector referenc
     if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()
         && !references.at(0).getSubName().empty()) {
         // this is a 2d object (a DVP + subelements)
-        TechDraw::VertexPtr vert0 = getViewPart()->getProjVertexByIndex(iSubelement0);
-        TechDraw::VertexPtr vert1 = getViewPart()->getProjVertexByIndex(iSubelement1);
-        TechDraw::VertexPtr vert2 = getViewPart()->getProjVertexByIndex(iSubelement2);
+        TechDraw::VertexPtr vert0 = getViewPart()->getGeometry<Vertex>(iSubelement0);
+        TechDraw::VertexPtr vert1 = getViewPart()->getGeometry<Vertex>(iSubelement1);
+        TechDraw::VertexPtr vert2 = getViewPart()->getGeometry<Vertex>(iSubelement2);
         if (!vert0 || !vert1 || !vert2) {
             throw Base::RuntimeError("References for three point angle dimension are not vertices");
         }
@@ -1393,7 +1393,7 @@ areaPoint DrawViewDimension::getAreaParameters(ReferenceVector references)
     App::DocumentObject* refObject = references.front().getObject();
     if (refObject->isDerivedFrom<DrawViewPart>() && !references[0].getSubName().empty()) {
         // this is a 2d object (a DVP + subelements)
-        TechDraw::FacePtr face = getViewPart()->getFace(references[0].getSubName());
+        TechDraw::FacePtr face = getViewPart()->getGeometry<Face>(references[0].getSubName());
         if (!face) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (4)";
@@ -1612,13 +1612,13 @@ bool DrawViewDimension::checkReferences2D() const
 
         int idx = DrawUtil::getIndexFromName(sub);
         if (DrawUtil::getGeomTypeFromName(sub) == "Edge") {
-            TechDraw::BaseGeomPtr geom = getViewPart()->getGeomByIndex(idx);
+            TechDraw::BaseGeomPtr geom = getViewPart()->getGeometry<BaseGeom>(idx);
             if (!geom) {
                 return false;
             }
         }
         else if (DrawUtil::getGeomTypeFromName(sub) == "Vertex") {
-            TechDraw::VertexPtr vert = getViewPart()->getProjVertexByIndex(idx);
+            TechDraw::VertexPtr vert = getViewPart()->getGeometry<Vertex>(idx);
             if (!vert) {
                 return false;
             }
@@ -1979,7 +1979,7 @@ bool DrawViewDimension::leaderIntersectsArc(Base::Vector3d s, Base::Vector3d poi
     bool result = false;
     const std::vector<std::string>& subElements = References2D.getSubValues();
     int idx = DrawUtil::getIndexFromName(subElements[0]);
-    TechDraw::BaseGeomPtr base = getViewPart()->getGeomByIndex(idx);
+    TechDraw::BaseGeomPtr base = getViewPart()->getGeometry<BaseGeom>(idx);
     if (base && base->getGeomType() == GeomType::ARCOFCIRCLE) {
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(base);
         if (aoc->intersectsArc(s, pointOnCircle)) {

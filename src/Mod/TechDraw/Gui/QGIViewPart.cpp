@@ -266,9 +266,9 @@ void QGIViewPart::drawAllFaces(void)
         faceColor.setAlpha((100 - vpp->FaceTransparency.getValue())*255/100);
     }
 
-    std::vector<TechDraw::DrawHatch*> regularHatches = dvp->getHatches();
-    std::vector<TechDraw::DrawGeomHatch*> geomHatches = dvp->getGeomHatches();
-    const std::vector<TechDraw::FacePtr>& faceGeoms = dvp->getFaceGeometry();
+    std::vector<TechDraw::DrawHatch*> regularHatches = dvp->getAll<DrawHatch>();
+    std::vector<TechDraw::DrawGeomHatch*> geomHatches = dvp->getAll<DrawGeomHatch>();
+    const std::vector<TechDraw::FacePtr>& faceGeoms = dvp->getAllGeometry<Face>();
     int iFace(0);
     for (auto& face : faceGeoms) {
         QGIFace* newFace = drawFace(face, iFace);
@@ -345,7 +345,7 @@ void QGIViewPart::drawAllEdges()
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
 
-    const TechDraw::BaseGeomPtrVector& geoms = dvp->getEdgeGeometry();
+    const TechDraw::BaseGeomPtrVector& geoms = dvp->getAllGeometry<BaseGeom>();
     TechDraw::BaseGeomPtrVector::const_iterator itGeom = geoms.begin();
     QGIEdge* item;
     for (int iEdge = 0; itGeom != geoms.end(); itGeom++, iEdge++) {
@@ -435,7 +435,7 @@ void QGIViewPart::drawAllVertexes()
 
     QColor vertexColor = PreferencesGui::getAccessibleQColor(PreferencesGui::vertexQColor());
 
-    const std::vector<TechDraw::VertexPtr>& verts = dvp->getVertexGeometry();
+    const std::vector<TechDraw::VertexPtr>& verts = dvp->getAllGeometry<Vertex>();
     std::vector<TechDraw::VertexPtr>::const_iterator vert = verts.begin();
     for (int i = 0; vert != verts.end(); ++vert, i++) {
         if ((*vert)->isCenter()) {

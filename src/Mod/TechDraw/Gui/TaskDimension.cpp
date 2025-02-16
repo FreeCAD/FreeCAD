@@ -420,8 +420,8 @@ std::pair<double, bool> TaskDimension::getAngleFromSelection()
             std::string geomName1 = DrawUtil::getGeomTypeFromName(SubNames[1]);
             int geomIndex1 = DrawUtil::getIndexFromName(SubNames[1]);
             if ((geomName0 == "Vertex") && (geomName1 == "Vertex"))  {
-                TechDraw::VertexPtr v0 = objFeat->getProjVertexByIndex(geomIndex0);
-                TechDraw::VertexPtr v1 = objFeat->getProjVertexByIndex(geomIndex1);
+                TechDraw::VertexPtr v0 = objFeat->getGeometry<Vertex>(geomIndex0);
+                TechDraw::VertexPtr v1 = objFeat->getGeometry<Vertex>(geomIndex1);
                 Base::Vector2d v02(v0->point().x, -v0->point().y);
                 Base::Vector2d v12(v1->point().x, -v1->point().y);
                 result.first = (v12 - v02).Angle();
@@ -431,7 +431,7 @@ std::pair<double, bool> TaskDimension::getAngleFromSelection()
             std::string geomName0 = DrawUtil::getGeomTypeFromName(SubNames[0]);
             int geomIndex0 = DrawUtil::getIndexFromName(SubNames[0]);
             if (geomName0 == "Edge") {
-                TechDraw::BaseGeomPtr edge = objFeat->getGeomByIndex(geomIndex0);
+                TechDraw::BaseGeomPtr edge = objFeat->getGeometry<BaseGeom>(geomIndex0);
                 Base::Vector2d v02(edge->getStartPoint().x, -edge->getStartPoint().y);
                 Base::Vector2d v12(edge->getEndPoint().x, -edge->getEndPoint().y);
                 result.first = (v12 - v02).Angle();

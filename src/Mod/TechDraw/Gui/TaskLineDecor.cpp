@@ -105,7 +105,7 @@ void TaskLineDecor::initUi()
 
 TechDraw::LineFormat *TaskLineDecor::getFormatAccessPtr(const std::string &edgeName, std::string *newFormatTag)
 {
-    BaseGeomPtr bg = m_partFeat->getEdge(edgeName);
+    BaseGeomPtr bg = m_partFeat->getGeometry<BaseGeom>(edgeName);
     if (bg) {
         if (bg->getCosmetic()) {
             if (bg->source() == SourceType::COSMETICEDGE) {

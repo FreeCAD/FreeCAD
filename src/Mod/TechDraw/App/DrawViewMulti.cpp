@@ -110,7 +110,6 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute()
     try {
         inputCenter = ShapeUtils::findCentroid(comp,
                                                      Direction.getValue());
-        shapeCentroid = Base::Vector3d(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
         TopoDS_Shape mirroredShape = ShapeUtils::mirrorShape(comp,
                                                     inputCenter,
                                                     getScale());

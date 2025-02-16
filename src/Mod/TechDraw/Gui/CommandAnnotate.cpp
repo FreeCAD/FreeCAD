@@ -338,7 +338,7 @@ void execMidpoints(Gui::Command* cmd)
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Midpoint Vertices"));
 
-    const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
+    const TechDraw::BaseGeomPtrVector edges = dvp->getAllGeometry<BaseGeom>();
     for (auto& s: selectedEdges) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
         TechDraw::BaseGeomPtr geom = edges.at(GeoId);
@@ -365,7 +365,7 @@ void execQuadrants(Gui::Command* cmd)
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Quadrant Vertices"));
 
-    const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
+    const TechDraw::BaseGeomPtrVector edges = dvp->getAllGeometry<BaseGeom>();
     for (auto& s: selectedEdges) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
         TechDraw::BaseGeomPtr geom = edges.at(GeoId);
@@ -1091,7 +1091,7 @@ void execLine2Points(Gui::Command* cmd)
     if (!vertexNames.empty()) {
         for (auto& v2d: vertexNames) {
             int idx = DrawUtil::getIndexFromName(v2d);
-            TechDraw::VertexPtr v = baseFeat->getProjVertexByIndex(idx);
+            TechDraw::VertexPtr v = baseFeat->getGeometry<Vertex>(idx);
             if (v) {
                 points.push_back(v->point());
                 is3d.push_back(false);
@@ -1236,7 +1236,7 @@ void execCosmeticCircle(Gui::Command* cmd)
     if (!vertexNames.empty()) {
         for (auto& v2d: vertexNames) {
             int idx = DrawUtil::getIndexFromName(v2d);
-            TechDraw::VertexPtr v = baseFeat->getProjVertexByIndex(idx);
+            TechDraw::VertexPtr v = baseFeat->getGeometry<Vertex>(idx);
             if (v) {
                 points.push_back(v->point());
                 is3d.push_back(false);
@@ -1339,7 +1339,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             int idx = TechDraw::DrawUtil::getIndexFromName(s);
             std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
             if (geomType == "Edge") {
-                TechDraw::BaseGeomPtr bg = objFeat->getGeomByIndex(idx);
+                TechDraw::BaseGeomPtr bg = objFeat->getGeometry<BaseGeom>(idx);
                 if (bg && bg->getCosmetic()) {
                     SourceType source = bg->source();
                     std::string tag = bg->getCosmeticTag();
@@ -1353,7 +1353,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                     }
                 }
             } else if (geomType == "Vertex") {
-                TechDraw::VertexPtr tdv = objFeat->getProjVertexByIndex(idx);
+                TechDraw::VertexPtr tdv = objFeat->getGeometry<Vertex>(idx);
                 if (!tdv)
                     Base::Console().Message("CMD::eraser - geom: %d not found!\n", idx);
 

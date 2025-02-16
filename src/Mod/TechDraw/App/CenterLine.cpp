@@ -605,7 +605,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(const 
             continue;
         }
         int idx = TechDraw::DrawUtil::getIndexFromName(en);
-        TechDraw::BaseGeomPtr bg = partFeat->getGeomByIndex(idx);
+        TechDraw::BaseGeomPtr bg = partFeat->getGeometry<BaseGeom>(idx);
         if (bg) {
             edges.push_back(bg);
         } else {
@@ -722,7 +722,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(const
             continue;
         }
         int idx = TechDraw::DrawUtil::getIndexFromName(vn);
-        TechDraw::VertexPtr v = partFeat->getProjVertexByIndex(idx);
+        TechDraw::VertexPtr v = partFeat->getGeometry<Vertex>(idx);
         if (v) {
             points.push_back(v);
         }
