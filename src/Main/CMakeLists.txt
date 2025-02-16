@@ -10,6 +10,7 @@ if(BUILD_GUI)
         ${ZLIB_INCLUDE_DIR}
         ${QtWidgets_INCLUDE_DIRS}
         ${QT_INCLUDE_DIR}
+        ${PYCXX_INCLUDE_DIR}
         ${Python3_INCLUDE_DIRS}
         ${XercesC_INCLUDE_DIRS}
     )
@@ -18,6 +19,7 @@ else(BUILD_GUI)
         ${Boost_INCLUDE_DIRS}
         ${ZLIB_INCLUDE_DIR}
         ${QT_INCLUDE_DIR}
+        ${PYCXX_INCLUDE_DIR}
         ${Python3_INCLUDE_DIRS}
         ${XercesC_INCLUDE_DIRS}
     )
