@@ -221,7 +221,7 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
         auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(qgiv->getViewObject());
         if (dvp) {
             snapPercent = 0.2;
-            std::vector<TechDraw::DrawViewDimension*> dims = dvp->getDimensions();
+            std::vector<TechDraw::DrawViewDimension*> dims = dvp->getAll<DrawViewDimension>();
             for (auto& d : dims) {
                 if (d == dim) { continue; }
 

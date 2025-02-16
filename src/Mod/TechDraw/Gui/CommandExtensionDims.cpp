@@ -2367,10 +2367,10 @@ DrawViewDimension* TechDrawGui::makeArcLengthDimension(const ReferenceEntry& ref
     auto* dvp = static_cast<DrawViewPart*>(ref.getObject());
 
     int geoId = DrawUtil::getIndexFromName(ref.getSubName());
-    BaseGeomPtr geom = dvp->getGeomByIndex(geoId);
+    BaseGeomPtr geom = dvp->getGeometry<BaseGeom>(geoId);
 
     // Find the edge length.
-    TechDraw::BaseGeomPtr edge = dvp->getEdge(ref.getSubName());
+    TechDraw::BaseGeomPtr edge = dvp->getGeometry<BaseGeom>(ref.getSubName());
     if (!edge) {
         return nullptr;
     }
@@ -2505,7 +2505,7 @@ namespace TechDrawGui {
             std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(name);
             if (geoType == "Vertex") {
                 int geoId = TechDraw::DrawUtil::getIndexFromName(name);
-                TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(geoId);
+                TechDraw::VertexPtr vert = objFeat->getGeometry<Vertex>(geoId);
                 nextVertex.name = name;
                 nextVertex.point.x = vert->point().x;
                 nextVertex.point.y = vert->point().y;

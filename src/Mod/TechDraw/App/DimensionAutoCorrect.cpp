@@ -474,7 +474,7 @@ ReferenceEntry DimensionAutoCorrect::searchViewForVert(DrawViewPart* obj,
     // Base::Console().Message("DAC::searchViewForVert()\n");
     (void)exact;
     std::vector<TechDraw::VertexPtr> gVertexAll =
-        getDimension()->getViewPart()->getVertexGeometry();
+        getDimension()->getViewPart()->getAllGeometry<Vertex>();
     getMatcher()->setPointTolerance(EWTOLERANCE);
     int iVertex = 0;
     for (auto& vert : gVertexAll) {
@@ -495,7 +495,7 @@ ReferenceEntry DimensionAutoCorrect::searchViewForExactEdge(DrawViewPart* obj,
                                                             const Part::TopoShape& refEdge) const
 {
     // Base::Console().Message("DAC::searchViewForExactEdge()\n");
-    auto gEdgeAll = getDimension()->getViewPart()->getEdgeGeometry();
+    auto gEdgeAll = getDimension()->getViewPart()->getAllGeometry<BaseGeom>();
     int iEdge {0};
     for (auto& edge : gEdgeAll) {
         // edge is scaled and rotated. we need it in the same scale/rotate state as

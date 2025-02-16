@@ -1842,7 +1842,7 @@ std::vector<FacePtr> GeometryUtils::findHolesInFace(const DrawViewPart* dvp, con
     auto bigCheeseIndex = DU::getIndexFromName(bigCheeseSubRef);
 
     // v0.0 brute force
-    auto facesAll = dvp->getFaceGeometry();
+    auto facesAll = dvp->getAllGeometry<Face>();
     if (facesAll.empty()) {
         // tarfu
         throw Base::RuntimeError("GU::findHolesInFace - no holes to find!!");

@@ -2,6 +2,7 @@
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2025 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -42,7 +43,6 @@
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
@@ -51,10 +51,10 @@
 #include <QtConcurrentRun>
 #include <ShapeAnalysis.hxx>
 #include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
+#include <TopoDS_Iterator.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
@@ -62,7 +62,6 @@
 #include <gp_Dir.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
-#include <sstream>
 #endif
 
 #include <App/Document.h>
@@ -75,7 +74,6 @@
 #include "CenterLine.h"
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
-#include "DrawPage.h"
 #include "DrawProjectSplit.h"
 #include "DrawUtil.h"
 #include "DrawViewBalloon.h"
@@ -99,7 +97,6 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(TechDraw::DrawViewPart, TechDraw::DrawView)
 DrawViewPart::DrawViewPart()
     : geometryObject(nullptr),
       m_tempGeometryObject(nullptr),
-      m_handleFaces(false),
       nowUnsetting(false),
       m_waitingForFaces(false),
       m_waitingForHlr(false)
@@ -147,14 +144,12 @@ DrawViewPart::DrawViewPart()
 
     ADD_PROPERTY_TYPE(ScrubCount, (Preferences::scrubCount()), sgroup, App::Prop_None,
                       "The number of times FreeCAD should try to clean the HLR result.");
-
-    //initialize bbox to non-garbage
-    bbox = Base::BoundBox3d(Base::Vector3d(0.0, 0.0, 0.0), 0.0);
 }
 
 DrawViewPart::~DrawViewPart()
 {
     //don't delete this object while it still has dependent threads running
+    // TODO: just terminate the threads
     if (m_hlrFuture.isRunning()) {
         Base::Console().Message("%s is waiting for HLR to finish\n", Label.getValue());
         m_hlrFuture.waitForFinished();
@@ -163,7 +158,7 @@ DrawViewPart::~DrawViewPart()
         Base::Console().Message("%s is waiting for face finding to finish\n", Label.getValue());
         m_faceFuture.waitForFinished();
     }
-    removeAllReferencesFromGeom();
+    geometryObject->removeReferenceVertexes();
 }
 
 //! returns a compound of all the shapes from the DocumentObjects in the Source &
@@ -258,12 +253,26 @@ short DrawViewPart::mustExecute() const
         return TechDraw::DrawView::mustExecute();
     }
 
-    if (Direction.isTouched() || Source.isTouched() || XSource.isTouched()
-        || Perspective.isTouched() || Focus.isTouched() || Rotation.isTouched()
-        || SmoothVisible.isTouched() || SeamVisible.isTouched() || IsoVisible.isTouched()
-        || HardHidden.isTouched() || SmoothHidden.isTouched() || SeamHidden.isTouched()
-        || IsoHidden.isTouched() || IsoCount.isTouched() || CoarseView.isTouched()
-        || CosmeticVertexes.isTouched() || CosmeticEdges.isTouched() || CenterLines.isTouched()) {
+    if (
+        Direction.isTouched() ||
+        Source.isTouched() ||
+        XSource.isTouched() ||
+        Perspective.isTouched() ||
+        Focus.isTouched() ||
+        Rotation.isTouched() ||
+        SmoothVisible.isTouched() ||
+        SeamVisible.isTouched() ||
+        IsoVisible.isTouched() ||
+        HardHidden.isTouched() ||
+        SmoothHidden.isTouched() ||
+        SeamHidden.isTouched() ||
+        IsoHidden.isTouched() ||
+        IsoCount.isTouched() ||
+        CoarseView.isTouched() ||
+        CosmeticVertexes.isTouched() ||
+        CosmeticEdges.isTouched() ||
+        CenterLines.isTouched()
+    ) {
         return 1;
     }
 
@@ -282,7 +291,7 @@ void DrawViewPart::onChanged(const App::Property* prop)
     DrawView::onChanged(prop);
 }
 
-void DrawViewPart::partExec(TopoDS_Shape& shape)
+void DrawViewPart::partExec(const TopoDS_Shape& shape)
 {
     //    Base::Console().Message("DVP::partExec() - %s\n", getNameInDocument());
     if (waitingForHlr()) {
@@ -299,7 +308,7 @@ void DrawViewPart::partExec(TopoDS_Shape& shape)
 }
 
 //! prepare the shape for HLR processing by centering, scaling and rotating it
-GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
+GeometryObjectPtr DrawViewPart::makeGeometryForShape(const TopoDS_Shape& shape)
 {
 //    Base::Console().Message("DVP::makeGeometryForShape() - %s\n", getNameInDocument());
 
@@ -320,7 +329,7 @@ GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 
 //! Modify a shape by centering, scaling and rotating and return the centered (but not rotated) shape
 TopoDS_Shape DrawViewPart::centerScaleRotate(const DrawViewPart *dvp, TopoDS_Shape& inOutShape,
-                                             Base::Vector3d centroid)
+                                             const Base::Vector3d& centroid)
 {
 //    Base::Console().Message("DVP::centerScaleRotate() - %s\n", dvp->getNameInDocument());
     gp_Ax2 viewAxis = dvp->getProjectionCS();
@@ -338,7 +347,7 @@ TopoDS_Shape DrawViewPart::centerScaleRotate(const DrawViewPart *dvp, TopoDS_Sha
 }
 
 //! create a geometry object and trigger the HLR process in another thread
-TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shape,
+TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(const TopoDS_Shape& shape,
                                                               const gp_Ax2& viewAxis)
 {
 //    Base::Console().Message("DVP::buildGeometryObject() - %s\n", getNameInDocument());
@@ -395,9 +404,6 @@ void DrawViewPart::onHlrFinished()
                               getNameInDocument(), Label.getValue());
     }
 
-    //the last hlr related task is to make a bbox of the results
-    bbox = geometryObject->calcBoundingBox();
-
     waitingForHlr(false);
     QObject::disconnect(connectHlrWatcher);
     showProgressMessage(getNameInDocument(), "has finished finding hidden lines");
@@ -439,15 +445,21 @@ void DrawViewPart::postHlrTasks()
     addReferencesToGeom();
     addPoints();
 
+
+    getAll<DrawHatch>();
+    getAll<DrawGeomHatch>();
+    getAll<DrawViewDimension>();
+    getAll<DrawViewBalloon>();
+
     //balloons need to be recomputed here because their
     //references will be invalid until the geometry exists
-    std::vector<TechDraw::DrawViewBalloon*> balloonsAll = getBalloons();
+    std::vector<TechDraw::DrawViewBalloon*> balloonsAll = getAll<DrawViewBalloon>();
     for (auto& balloon : balloonsAll) {
         balloon->recomputeFeature();
     }
     // Dimensions need to be recomputed now if face finding is not going to take place.
     if (!handleFaces() || CoarseView.getValue()) {
-        std::vector<TechDraw::DrawViewDimension*> dimsAll = getDimensions();
+        std::vector<TechDraw::DrawViewDimension*> dimsAll = getAll<DrawViewDimension>();
         for (auto& dim : dimsAll) {
             dim->recomputeFeature();
         }
@@ -475,7 +487,7 @@ void DrawViewPart::postFaceExtractionTasks()
 
     // Dimensions need to be recomputed because their references will be invalid
     //  until all the geometry (including centerlines dependent on faces) exists.
-    std::vector<TechDraw::DrawViewDimension*> dimsAll = getDimensions();
+    std::vector<TechDraw::DrawViewDimension*> dimsAll = getAll<DrawViewDimension>();
     for (auto& dim : dimsAll) {
         dim->recomputeFeature();
     }
@@ -708,38 +720,27 @@ void DrawViewPart::onFacesFinished()
 }
 
 //retrieve all the face hatches associated with this dvp
-std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
+template <typename drawobject>
+std::vector<drawobject*> DrawViewPart::getAll() const
 {
-    std::vector<TechDraw::DrawHatch*> result;
+    std::vector<drawobject*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (auto& child : children) {
-        if (child->isDerivedFrom<DrawHatch>() && !child->isRemoving()) {
-            TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(child);
+        if (child->isDerivedFrom<drawobject>() && !child->isRemoving()) {
+            drawobject* hatch = static_cast<drawobject*>(child);
             result.push_back(hatch);
         }
     }
     return result;
 }
+template std::vector<DrawHatch*> DrawViewPart::getAll<DrawHatch>() const;
+template std::vector<DrawGeomHatch*> DrawViewPart::getAll<DrawGeomHatch>() const;
 
-//retrieve all the geometric hatches associated with this dvp
-std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
-{
-    std::vector<TechDraw::DrawGeomHatch*> result;
-    std::vector<App::DocumentObject*> children = getInList();
-    for (auto& child : children) {
-        if (child->isDerivedFrom<DrawGeomHatch>()
-            && !child->isRemoving()) {
-            TechDraw::DrawGeomHatch* geom = dynamic_cast<TechDraw::DrawGeomHatch*>(child);
-            result.push_back(geom);
-        }
-    }
-    return result;
-}
-
-//return *unique* list of Dimensions which reference this DVP
-//if the dimension has two references to this dvp, it will appear twice in
-//the inlist
-std::vector<TechDraw::DrawViewDimension*> DrawViewPart::getDimensions() const
+//! Return *unique* list of Dimensions which reference this DrawViewPart.
+//! If the dimension has two references to this dvp, it will appear twice in
+//! the inlist
+template <>
+std::vector<DrawViewDimension*> DrawViewPart::getAll<DrawViewDimension>() const
 {
     std::vector<TechDraw::DrawViewDimension*> result;
     std::vector<App::DocumentObject*> children = getInList();
@@ -755,7 +756,8 @@ std::vector<TechDraw::DrawViewDimension*> DrawViewPart::getDimensions() const
     return result;
 }
 
-std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
+template <>
+std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getAll() const
 {
     std::vector<TechDraw::DrawViewBalloon*> result;
     std::vector<App::DocumentObject*> children = getInList();
@@ -771,104 +773,52 @@ std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
     return result;
 }
 
-const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
+//! Returns geometry of `geomtype` that has name `geomName`
+template<typename geomtype>
+const std::shared_ptr<geomtype> DrawViewPart::getGeometry(std::string geomName) const
 {
-    if (geometryObject) {
-        return geometryObject->getAll<Vertex>();
-    }
-    return std::vector<TechDraw::VertexPtr>();
+    size_t index = DrawUtil::getIndexFromName(geomName);
+    return getGeometry<geomtype>(index);
 }
+// Explicit template instantiation:
+template const VertexPtr DrawViewPart::getGeometry<Vertex>(std::string geomName) const;
+template const BaseGeomPtr DrawViewPart::getGeometry<BaseGeom>(std::string geomName) const;
+template const FacePtr DrawViewPart::getGeometry<Face>(std::string geomName) const;
 
-
-//! TechDraw vertex names run from 0 to n-1
-TechDraw::VertexPtr DrawViewPart::getVertex(std::string vertexName) const
+//! Returns geometry of `geomtype` that has index `index`
+//! TechDraw geometry indexes are from 0 to n-1
+template <typename geomtype>
+const std::shared_ptr<geomtype> DrawViewPart::getGeometry(int index) const
 {
-    // Base::Console().Message("DVP::getVertex(%s)\n", vertexName.c_str());
-    auto vertexIndex = DrawUtil::getIndexFromName(vertexName);
-    auto vertex = getProjVertexByIndex(vertexIndex);
-    return vertex;
-}
-
-//! returns existing BaseGeom of 2D Edge
-//! TechDraw edge names run from 0 to n-1
-TechDraw::BaseGeomPtr DrawViewPart::getEdge(std::string edgeName) const
-{
-    const std::vector<TechDraw::BaseGeomPtr>& geoms = getEdgeGeometry();
-    if (geoms.empty()) {
+    const std::vector<std::shared_ptr<geomtype>>& geoms = geometryObject->getAll<geomtype>();
+    if (geoms.empty() || static_cast<size_t>(index) >= geoms.size()) {
         //should not happen
         return nullptr;
     }
-    size_t iEdge = DrawUtil::getIndexFromName(edgeName);
-    if ((unsigned)iEdge >= geoms.size()) {
-        return nullptr;
-    }
-    return geoms.at(iEdge);
+    return geoms.at(index);
 }
+// Explicit template instantiation:
+template const VertexPtr DrawViewPart::getGeometry<Vertex>(int idx) const;
+template const BaseGeomPtr DrawViewPart::getGeometry<BaseGeom>(int index) const;
+template const FacePtr DrawViewPart::getGeometry<Face>(int index) const;
 
-
-//! returns existing 2d Face
-//! TechDraw face names run from 0 to n-1
-TechDraw::FacePtr DrawViewPart::getFace(std::string faceName) const
+//! Returns all geometry of `geomtype`
+template <typename geomtype>
+const std::vector<std::shared_ptr<geomtype>> DrawViewPart::getAllGeometry() const
 {
-    const std::vector<TechDraw::FacePtr>& faces = getFaceGeometry();
-    if (faces.empty()) {
-        //should not happen
-        return nullptr;
+    if (!geometryObject) {
+        return {};
     }
-    size_t iFace = DrawUtil::getIndexFromName(faceName);
-    if (iFace >= faces.size()) {
-        return nullptr;
-    }
-    return faces.at(iFace);
+    return geometryObject->getAll<geomtype>();
 }
-
-
-const std::vector<TechDraw::FacePtr> DrawViewPart::getFaceGeometry() const
-{
-    std::vector<TechDraw::FacePtr> result;
-    if (waitingForFaces() || !geometryObject) {
-        return std::vector<TechDraw::FacePtr>();
-    }
-    return geometryObject->getAll<Face>();
-}
-
-const BaseGeomPtrVector DrawViewPart::getEdgeGeometry() const
-{
-    if (geometryObject) {
-        return geometryObject->getAll<BaseGeom>();
-    }
-    return BaseGeomPtrVector();
-}
-
-//! returns existing BaseGeom of 2D Edge(idx)
-TechDraw::BaseGeomPtr DrawViewPart::getGeomByIndex(int idx) const
-{
-    const std::vector<TechDraw::BaseGeomPtr>& geoms = getEdgeGeometry();
-    if (geoms.empty()) {
-        return nullptr;
-    }
-    if (idx >= (int)geoms.size()) {
-        return nullptr;
-    }
-    return geoms.at(idx);
-}
-
-//! returns existing geometry of 2D Vertex(idx)
-TechDraw::VertexPtr DrawViewPart::getProjVertexByIndex(int idx) const
-{
-    const std::vector<TechDraw::VertexPtr>& geoms = getVertexGeometry();
-    if (geoms.empty()) {
-       return nullptr;
-    }
-    if ((unsigned)idx >= geoms.size()) {
-        return nullptr;
-    }
-    return geoms.at(idx);
-}
+// Explicit template instantiation:
+template const std::vector<VertexPtr> DrawViewPart::getAllGeometry<Vertex>() const;
+template const std::vector<BaseGeomPtr> DrawViewPart::getAllGeometry<BaseGeom>() const;
+template const std::vector<FacePtr> DrawViewPart::getAllGeometry<Face>() const;
 
 TechDraw::VertexPtr DrawViewPart::getProjVertexByCosTag(std::string cosTag)
 {
-    std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
+    std::vector<TechDraw::VertexPtr> gVerts = getAllGeometry<Vertex>();
     if (gVerts.empty()) {
         return nullptr;
     }
@@ -883,57 +833,33 @@ TechDraw::VertexPtr DrawViewPart::getProjVertexByCosTag(std::string cosTag)
 
 
 //! returns existing geometry of 2D Face(idx)
-std::vector<TechDraw::BaseGeomPtr> DrawViewPart::getFaceEdgesByIndex(int idx) const
+std::vector<TechDraw::BaseGeomPtr> DrawViewPart::getFaceEdgesByIndex(int index) const
 {
-    std::vector<TechDraw::BaseGeomPtr> result;
-    const std::vector<TechDraw::FacePtr>& faces = getFaceGeometry();
-    if (idx < (int)faces.size()) {
-        TechDraw::FacePtr projFace = faces.at(idx);
-        for (auto& w : projFace->wires) {
-            for (auto& g : w->geoms) {
-                if (g->getCosmetic()) {
-                    //if g is cosmetic, we should skip it
-                    continue;
-                }
-                else {
-                    result.push_back(g);
-                }
-            }
-        }
-    }
-    return result;
+    const FacePtr& face = getGeometry<Face>(index);
+    return face->getConnectedGeometry();
 }
 
 std::vector<TopoDS_Wire> DrawViewPart::getWireForFace(int idx) const
 {
-    std::vector<TopoDS_Wire> result;
-    std::vector<TopoDS_Edge> edges;
-    const std::vector<TechDraw::FacePtr>& faces = getFaceGeometry();
-    TechDraw::FacePtr ourFace = faces.at(idx);
-    for (auto& w : ourFace->wires) {
-        edges.clear();
-        for (auto& g : w->geoms) {
-            edges.push_back(g->getOCCEdge());
-        }
-        TopoDS_Wire occwire = EdgeWalker::makeCleanWire(edges);
-        result.push_back(occwire);
-    }
-
-    return result;
+    const FacePtr& face = getGeometry<Face>(idx);
+    return face->getCleanWires();
 }
 
-Base::BoundBox3d DrawViewPart::getBoundingBox() const { return bbox; }
+Base::BoundBox3d DrawViewPart::getBoundingBox() const {
+    if(!geometryObject) {
+        return Base::BoundBox3d(Base::Vector3d(0.0, 0.0, 0.0), 0.0);
+    }
+    return geometryObject->calcBoundingBox();
+}
 
 double DrawViewPart::getBoxX() const
 {
-    Base::BoundBox3d bbx = getBoundingBox();//bbox is already scaled & centered!
-    return (bbx.MaxX - bbx.MinX);
+    return getBoundingBox().LengthX();
 }
 
 double DrawViewPart::getBoxY() const
 {
-    Base::BoundBox3d bbx = getBoundingBox();
-    return (bbx.MaxY - bbx.MinY);
+    return getBoundingBox().LengthY();
 }
 
 QRectF DrawViewPart::getRect() const
@@ -974,7 +900,7 @@ TopoDS_Shape DrawViewPart::getEdgeCompound() const
 // returns the (unscaled) size of the visible lines along the alignment vector.
 // alignment vector is already projected onto our CS, so only has X,Y components
 // used in calculating the length of a section line
-double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
+double DrawViewPart::getSizeAlongVector(const Base::Vector3d& alignmentVector) const
 {
     //    Base::Console().Message("DVP::GetSizeAlongVector(%s)\n", DrawUtil::formatVector(alignmentVector).c_str());
     double alignmentAngle = atan2(alignmentVector.y, alignmentVector.x) * -1.0;
@@ -1040,8 +966,8 @@ bool DrawViewPart::hasGeometry() const
         return false;
     }
 
-    const std::vector<TechDraw::VertexPtr>& verts = getVertexGeometry();
-    const std::vector<TechDraw::BaseGeomPtr>& edges = getEdgeGeometry();
+    const std::vector<TechDraw::VertexPtr>& verts = getAllGeometry<Vertex>();
+    const std::vector<TechDraw::BaseGeomPtr>& edges = getAllGeometry<BaseGeom>();
     return !(verts.empty() && edges.empty());
 }
 
@@ -1137,7 +1063,7 @@ std::vector<DrawViewSection*> DrawViewPart::getSectionRefs() const
         if (o->isDerivedFrom<DrawViewSection>()) {
             // expressions can add extra links to this DVP so we keep only
             // objects that are BaseViews
-            auto section = dynamic_cast<TechDraw::DrawViewSection*>(o);
+            auto section = static_cast<TechDraw::DrawViewSection*>(o);
             auto base = section->BaseView.getValue();
             if (base == this) {
                 result.push_back(section);
@@ -1156,7 +1082,7 @@ std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs() const
             !o->isRemoving() ) {
             // expressions can add extra links to this DVP so we keep only
             // objects that are BaseViews
-            auto detail = dynamic_cast<TechDraw::DrawViewDetail*>(o);
+            auto detail = static_cast<TechDraw::DrawViewDetail*>(o);
             auto base = detail->BaseView.getValue();
             if (base == this) {
                 result.push_back(detail);
@@ -1172,66 +1098,51 @@ const BaseGeomPtrVector DrawViewPart::getVisibleFaceEdges() const
     return geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(), SeamVisible.getValue());
 }
 
-bool DrawViewPart::handleFaces()
+bool DrawViewPart::handleFaces() const
 {
     return Preferences::getPreferenceGroup("General")->GetBool("HandleFaces", true);
 }
 
-bool DrawViewPart::newFaceFinder()
+bool DrawViewPart::newFaceFinder() const
 {
     return Preferences::getPreferenceGroup("General")->GetBool("NewFaceFinder", false);
 }
 
-//! remove features that are useless without this DVP
+template <typename drawobject>
+void DrawViewPart::removeAll()
+{
+    App::Document* doc = getDocument();
+    const char* docName = doc->getName();
+
+    std::vector<drawobject*> objects = getAll<drawobject>();
+    for(const drawobject* object : objects) {
+        const char* viewName = object->getNameInDocument();
+        Base::Interpreter().runStringArg(
+            "App.getDocument(\"%s\").removeObject(\"%s\")",
+            docName,
+            viewName
+        );
+    }
+}
+// Explicit template instatiation
+template void DrawViewPart::removeAll<DrawHatch>();
+template void DrawViewPart::removeAll<DrawGeomHatch>();
+template void DrawViewPart::removeAll<DrawViewDimension>();
+template void DrawViewPart::removeAll<DrawViewBalloon>();
+
+//! Called upon removeObject("DrawViewPartX") in Python
+//! Removes features that are useless without this DVP
 //! hatches, geomhatches, dimensions, ...
 void DrawViewPart::unsetupObject()
 {
 //    Base::Console().Message("DVP::unsetupObject()\n");
     nowUnsetting = true;
-    App::Document* doc = getDocument();
-    std::string docName = doc->getName();
 
     // Remove the View's Hatches from document
-    std::vector<TechDraw::DrawHatch*> hatches = getHatches();
-    std::vector<TechDraw::DrawHatch*>::iterator it = hatches.begin();
-    for (; it != hatches.end(); it++) {
-        std::string viewName = (*it)->getNameInDocument();
-        Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                         docName.c_str(), viewName.c_str());
-    }
-
-    // Remove the View's GeomHatches from document
-    std::vector<TechDraw::DrawGeomHatch*> gHatches = getGeomHatches();
-    std::vector<TechDraw::DrawGeomHatch*>::iterator it2 = gHatches.begin();
-    for (; it2 != gHatches.end(); it2++) {
-        std::string viewName = (*it2)->getNameInDocument();
-        Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                         docName.c_str(), viewName.c_str());
-    }
-
-    // Remove Dimensions which reference this DVP
-    // must use page->removeObject first
-    std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
-    std::vector<TechDraw::DrawViewDimension*>::iterator it3 = dims.begin();
-    for (; it3 != dims.end(); it3++) {
-        const char* name = (*it3)->getNameInDocument();
-        if (name) {
-            Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                                docName.c_str(), name);
-        }
-    }
-
-    // Remove Balloons which reference this DVP
-    // must use page->removeObject first
-    std::vector<TechDraw::DrawViewBalloon*> balloons = getBalloons();
-    std::vector<TechDraw::DrawViewBalloon*>::iterator it4 = balloons.begin();
-    for (; it4 != balloons.end(); it4++) {
-        const char* name = (*it4)->getNameInDocument();
-        if (name) {
-            Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                                docName.c_str(), name);
-        }
-    }
+    removeAll<DrawHatch>();
+    removeAll<DrawGeomHatch>();
+    removeAll<DrawViewDimension>();
+    removeAll<DrawViewBalloon>();
 }
 
 bool DrawViewPart::checkXDirection() const
@@ -1307,7 +1218,7 @@ void DrawViewPart::spin(double angle)
     recompute();
 }
 
-std::pair<Base::Vector3d, Base::Vector3d> DrawViewPart::getDirsFromFront(std::string viewType)
+std::pair<Base::Vector3d, Base::Vector3d> DrawViewPart::getDirsFromFront(const std::string& viewType) const
 {
     //    Base::Console().Message("DVP::getDirsFromFront(%s)\n", viewType.c_str());
     std::pair<Base::Vector3d, Base::Vector3d> result;
@@ -1329,49 +1240,49 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawViewPart::getDirsFromFront(std::st
 
     if (viewType == "Right") {
         newCS = anchorCS.Rotated(gUpAxis, angle);
-        projDir = dir2vec(newCS.Direction());
-        rotVec = dir2vec(newCS.XDirection());
+        projDir = DrawUtil::toVector3d(newCS.Direction());
+        rotVec = DrawUtil::toVector3d(newCS.XDirection());
     }
     else if (viewType == "Left") {
         newCS = anchorCS.Rotated(gUpAxis, -angle);
-        projDir = dir2vec(newCS.Direction());
-        rotVec = dir2vec(newCS.XDirection());
+        projDir = DrawUtil::toVector3d(newCS.Direction());
+        rotVec = DrawUtil::toVector3d(newCS.XDirection());
     }
     else if (viewType == "Top") {
-        projDir = dir2vec(gYDir);
-        rotVec = dir2vec(gXDir);
+        projDir = DrawUtil::toVector3d(gYDir);
+        rotVec = DrawUtil::toVector3d(gXDir);
     }
     else if (viewType == "Bottom") {
-        projDir = dir2vec(gYDir.Reversed());
-        rotVec = dir2vec(gXDir);
+        projDir = DrawUtil::toVector3d(gYDir.Reversed());
+        rotVec = DrawUtil::toVector3d(gXDir);
     }
     else if (viewType == "Rear") {
-        projDir = dir2vec(gDir.Reversed());
-        rotVec = dir2vec(gXDir.Reversed());
+        projDir = DrawUtil::toVector3d(gDir.Reversed());
+        rotVec = DrawUtil::toVector3d(gXDir.Reversed());
     }
     else if (viewType == "FrontTopLeft") {
         gp_Dir newDir = gp_Dir(gp_Vec(gDir) - gp_Vec(gXDir) + gp_Vec(gYDir));
-        projDir = dir2vec(newDir);
+        projDir = DrawUtil::toVector3d(newDir);
         gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) + gp_Vec(gDir));
-        rotVec = dir2vec(newXDir);
+        rotVec = DrawUtil::toVector3d(newXDir);
     }
     else if (viewType == "FrontTopRight") {
         gp_Dir newDir = gp_Dir(gp_Vec(gDir) + gp_Vec(gXDir) + gp_Vec(gYDir));
-        projDir = dir2vec(newDir);
+        projDir = DrawUtil::toVector3d(newDir);
         gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) - gp_Vec(gDir));
-        rotVec = dir2vec(newXDir);
+        rotVec = DrawUtil::toVector3d(newXDir);
     }
     else if (viewType == "FrontBottomLeft") {
         gp_Dir newDir = gp_Dir(gp_Vec(gDir) - gp_Vec(gXDir) - gp_Vec(gYDir));
-        projDir = dir2vec(newDir);
+        projDir = DrawUtil::toVector3d(newDir);
         gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) + gp_Vec(gDir));
-        rotVec = dir2vec(newXDir);
+        rotVec = DrawUtil::toVector3d(newXDir);
     }
     else if (viewType == "FrontBottomRight") {
         gp_Dir newDir = gp_Dir(gp_Vec(gDir) + gp_Vec(gXDir) - gp_Vec(gYDir));
-        projDir = dir2vec(newDir);
+        projDir = DrawUtil::toVector3d(newDir);
         gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) - gp_Vec(gDir));
-        rotVec = dir2vec(newXDir);
+        rotVec = DrawUtil::toVector3d(newXDir);
     }
     else {
         // not one of the standard view directions, so complain and use the values for "Front"
@@ -1385,11 +1296,6 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawViewPart::getDirsFromFront(std::st
     return std::make_pair(projDir, rotVec);
 }
 
-Base::Vector3d DrawViewPart::dir2vec(gp_Dir d)
-{
-    return Base::Vector3d(d.X(), d.Y(), d.Z());
-}
-
 Base::Vector3d DrawViewPart::getLegacyX(const Base::Vector3d& pt, const Base::Vector3d& axis,
                                         const bool flip) const
 {
@@ -1401,7 +1307,7 @@ Base::Vector3d DrawViewPart::getLegacyX(const Base::Vector3d& pt, const Base::Ve
 // reference dimensions & their vertices
 // these routines may be obsolete
 
-void DrawViewPart::updateReferenceVert(std::string tag, Base::Vector3d loc2d)
+void DrawViewPart::updateReferenceVert(const std::string& tag, const Base::Vector3d& loc2d)
 {
     for (auto& v : m_referenceVerts) {
         if (v->getTagAsString() == tag) {
@@ -1413,25 +1319,24 @@ void DrawViewPart::updateReferenceVert(std::string tag, Base::Vector3d loc2d)
 
 void DrawViewPart::addReferencesToGeom()
 {
-    std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
+    std::vector<TechDraw::VertexPtr> gVerts = getAllGeometry<Vertex>();
     gVerts.insert(gVerts.end(), m_referenceVerts.begin(), m_referenceVerts.end());
     getGeometryObject()->setVertexGeometry(gVerts);
 }
 
 //add a vertex that is not part of the geometry, but is used by
 //ex. LandmarkDimension as a reference
-std::string DrawViewPart::addReferenceVertex(Base::Vector3d v)
+std::string DrawViewPart::addReferenceVertex(const Base::Vector3d& v)
 {
-    std::string refTag;
     Base::Vector3d scaledV = v;
     TechDraw::VertexPtr ref(std::make_shared<TechDraw::Vertex>(scaledV));
     ref->isReference(true);
-    refTag = ref->getTagAsString();
+    std::string refTag = ref->getTagAsString();
     m_referenceVerts.push_back(ref);
     return refTag;
 }
 
-void DrawViewPart::removeReferenceVertex(std::string tag)
+void DrawViewPart::removeReferenceVertex(const std::string& tag)
 {
     std::vector<TechDraw::VertexPtr> newRefVerts;
     for (auto& v : m_referenceVerts) {
@@ -1446,26 +1351,10 @@ void DrawViewPart::removeReferenceVertex(std::string tag)
     resetReferenceVerts();
 }
 
-//! remove reference vertexes from the view geometry
-void DrawViewPart::removeAllReferencesFromGeom()
-{
-    //    Base::Console().Message("DVP::removeAllReferencesFromGeom()\n");
-    if (!m_referenceVerts.empty()) {
-        std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
-        std::vector<TechDraw::VertexPtr> newVerts;
-        for (auto& gv : gVerts) {
-            if (!gv->isReference()) {
-                newVerts.push_back(gv);
-            }
-        }
-        getGeometryObject()->setVertexGeometry(newVerts);
-    }
-}
-
 void DrawViewPart::resetReferenceVerts()
 {
     //    Base::Console().Message("DVP::resetReferenceVerts() %s\n", getNameInDocument());
-    removeAllReferencesFromGeom();
+    geometryObject->removeReferenceVertexes();
     addReferencesToGeom();
 }
 
@@ -1477,7 +1366,7 @@ void DrawViewPart::dumpVerts(std::string text)
         Base::Console().Message("no verts to dump yet\n");
         return;
     }
-    std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
+    std::vector<TechDraw::VertexPtr> gVerts = getAllGeometry<Vertex>();
     Base::Console().Message("%s - dumping %d vertGeoms\n", text.c_str(), gVerts.size());
     for (auto& gv : gVerts) {
         gv->dump();
