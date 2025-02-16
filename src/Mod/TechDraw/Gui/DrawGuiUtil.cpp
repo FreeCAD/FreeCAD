@@ -801,7 +801,7 @@ void DrawGuiUtil::rotateToAlign(const QGIEdge* edge, const Base::Vector2d& direc
 {
     QGIViewPart* view = static_cast<QGIViewPart*>(edge->parentItem());
     DrawViewPart* dvp = static_cast<DrawViewPart*>(view->getViewObject());
-    BaseGeomPtr bg = dvp->getEdgeGeometry().at(edge->getProjIndex());
+    BaseGeomPtr bg = dvp->getAllGeometry<BaseGeom>().at(edge->getProjIndex());
     std::vector<Base::Vector3d> endPoints = bg->findEndPoints();
     Base::Vector3d oldDirection3d = endPoints.at(0) - endPoints.at(1);
     Base::Vector2d oldDirection2d(oldDirection3d.x, oldDirection3d.y);

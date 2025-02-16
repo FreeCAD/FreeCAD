@@ -1863,7 +1863,7 @@ bool DrawUtil::isCosmeticVertex(App::DocumentObject* owner, std::string element)
 {
     auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
     auto vertexIndex = DrawUtil::getIndexFromName(element);
-    auto vertex = ownerView->getProjVertexByIndex(vertexIndex);
+    auto vertex = ownerView->getGeometry<Vertex>(vertexIndex);
     if (vertex) {
         return vertex->getCosmetic();
     }
@@ -1874,7 +1874,7 @@ bool DrawUtil::isCosmeticVertex(App::DocumentObject* owner, std::string element)
 bool DrawUtil::isCosmeticEdge(App::DocumentObject* owner, std::string element)
 {
     auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
-    auto edge = ownerView->getEdge(element);
+    auto edge = ownerView->getGeometry<BaseGeom>(element);
     if (edge && edge->source() == SourceType::COSMETICEDGE && edge->getCosmetic()) {
         return true;
     }
@@ -1885,7 +1885,7 @@ bool DrawUtil::isCosmeticEdge(App::DocumentObject* owner, std::string element)
 bool DrawUtil::isCenterLine(App::DocumentObject* owner, std::string element)
 {
     auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
-    auto edge = ownerView->getEdge(element);
+    auto edge = ownerView->getGeometry<BaseGeom>(element);
     if (edge && edge->source() == SourceType::CENTERLINE && edge->getCosmetic()) {
         return true;
     }

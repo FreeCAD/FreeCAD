@@ -111,7 +111,7 @@ void execHoleCircle(Gui::Command* cmd)
     for (const std::string& Name : SubNames) {
         int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
-        TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
+        TechDraw::BaseGeomPtr geom = objFeat->getGeometry<BaseGeom>(GeoId);
         if (GeoType == "Edge") {
             if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
                 TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
@@ -209,7 +209,7 @@ void execCircleCenterLines(Gui::Command* cmd)
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (const std::string& Name : SubNames) {
         int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
-        TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
+        TechDraw::BaseGeomPtr geom = objFeat->getGeometry<BaseGeom>(GeoId);
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
         if (GeoType == "Edge") {
             if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
@@ -800,7 +800,7 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg)
     const std::vector<std::string> subNames = selection[0].getSubNames();
     for (const std::string& name : subNames) {
         int num = DrawUtil::getIndexFromName(name);
-        BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
+        BaseGeomPtr baseGeo = objFeat->getGeometry<BaseGeom>(num);
         if (baseGeo) {
             if (baseGeo->getCosmetic()) {
                 if (baseGeo->source() == SourceType::COSMETICEDGE) {
@@ -864,9 +864,9 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
         std::string GeoType2 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]);
         if (GeoType1 == "Edge" && GeoType2 == "Edge") {
             int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
+            TechDraw::BaseGeomPtr geom1 = objFeat->getGeometry<BaseGeom>(GeoId1);
             int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-            TechDraw::BaseGeomPtr geom2 = objFeat->getGeomByIndex(GeoId2);
+            TechDraw::BaseGeomPtr geom2 = objFeat->getGeometry<BaseGeom>(GeoId2);
 
             std::vector<Base::Vector3d> interPoints = geom1->intersection(geom2);
             for (auto pt : interPoints) {
@@ -1247,14 +1247,14 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel)
             // we don't have an edge + vertex as selection
             return;
         }
-        TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(EdgeId);
+        TechDraw::BaseGeomPtr geom1 = objFeat->getGeometry<BaseGeom>(EdgeId);
         TechDraw::GenericPtr lineGen = std::static_pointer_cast<TechDraw::Generic>(geom1);
         // ends are scaled and rotated
         Base::Vector3d lineStart = lineGen->points.at(0);
         lineStart = CosmeticVertex::makeCanonicalPointInverted(objFeat, lineStart);
         Base::Vector3d lineEnd = lineGen->points.at(1);
         lineEnd = CosmeticVertex::makeCanonicalPointInverted(objFeat, lineEnd);
-        TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(VertId);
+        TechDraw::VertexPtr vert = objFeat->getGeometry<Vertex>(VertId);
         Base::Vector3d vertexPoint(vert->point().x, vert->point().y, 0.0);
         vertexPoint = CosmeticVertex::makeCanonicalPointInverted(objFeat, vertexPoint);
 
@@ -1514,7 +1514,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
         int num = DrawUtil::getIndexFromName(name);
         std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(name);
         if (geoType == "Edge") {
-            TechDraw::BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
+            TechDraw::BaseGeomPtr baseGeo = objFeat->getGeometry<BaseGeom>(num);
             if (baseGeo) {
                 if (baseGeo->getGeomType() == GeomType::GENERIC) {
                     // start and end points are geometry points and are scaled, rotated and inverted
@@ -1801,7 +1801,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     Base::Vector3d center;
     double totalArea = 0.0;
     for (const std::string& name : subNames) {
-        TechDraw::FacePtr face = objFeat->getFace(name);
+        TechDraw::FacePtr face = objFeat->getGeometry<Face>(name);
         if (!face) {
             continue;
         }
@@ -1932,7 +1932,7 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
     double totalLength = 0.0;
     for (size_t iName = 0; iName < subNames.size(); ++iName) {
         lengths[iName] = totalLength;
-        TechDraw::BaseGeomPtr edge = objFeat->getEdge(subNames[iName]);
+        TechDraw::BaseGeomPtr edge = objFeat->getGeometry<BaseGeom>(subNames[iName]);
         if (!edge) {
             continue;
         }
@@ -1965,7 +1965,7 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
     }
 
     // As reasonable anchor base point seems the "halving" edge endpoint
-    BRepAdaptor_Curve curve(objFeat->getEdge(subNames[iLength])->getOCCEdge());
+    BRepAdaptor_Curve curve(objFeat->getGeometry<BaseGeom>(subNames[iLength])->getOCCEdge());
     gp_Pnt midPoint;
     curve.D0(curve.LastParameter(), midPoint);
 
@@ -2086,7 +2086,7 @@ std::vector<Base::Vector3d> _getVertexPoints(const std::vector<std::string>& Sub
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
         if (GeoType == "Vertex") {
             int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
-            TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(GeoId);
+            TechDraw::VertexPtr vert = objFeat->getGeometry<Vertex>(GeoId);
             vertexPoints.push_back(vert->point());
         }
     }
@@ -2119,7 +2119,7 @@ void _createThreadCircle(const std::string Name, TechDraw::DrawViewPart* objFeat
     // create the 3/4 arc symbolizing a thread from top seen
     double scale = objFeat->getScale();
     int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
-    TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
+    TechDraw::BaseGeomPtr geom = objFeat->getGeometry<BaseGeom>(GeoId);
     std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
 
     if (GeoType == "Edge" && geom->getGeomType() == GeomType::CIRCLE) {
@@ -2145,8 +2145,8 @@ void _createThreadLines(const std::vector<std::string>& SubNames, TechDraw::Draw
     if ((GeoType0 == "Edge") && (GeoType1 == "Edge")) {
         int GeoId0 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
         int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-        TechDraw::BaseGeomPtr geom0 = objFeat->getGeomByIndex(GeoId0);
-        TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
+        TechDraw::BaseGeomPtr geom0 = objFeat->getGeometry<BaseGeom>(GeoId0);
+        TechDraw::BaseGeomPtr geom1 = objFeat->getGeometry<BaseGeom>(GeoId1);
         if (geom0->getGeomType() != GeomType::GENERIC || geom1->getGeomType() != GeomType::GENERIC) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw Thread Hole Side"),
                                  QObject::tr("Please select two straight lines"));
