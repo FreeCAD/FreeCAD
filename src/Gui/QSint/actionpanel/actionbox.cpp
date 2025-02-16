@@ -8,28 +8,24 @@
 #include "actionbox.h"
 
 #include <QVariant>
-#include <memory>
 
 namespace QSint
 {
 
 ActionBox::ActionBox(QWidget *parent)
-    : QFrame(parent),
-      dataLayout(std::make_unique<QVBoxLayout>())
+    : QFrame(parent)
 {
     init();
 }
 
 ActionBox::ActionBox(const QString & headerText, QWidget *parent)
-    : QFrame(parent),
-      dataLayout(std::make_unique<QVBoxLayout>() )
+    : QFrame(parent)
 {
     init(headerText);
 }
 
 ActionBox::ActionBox(const QPixmap & icon, const QString & headerText, QWidget *parent)
-    : QFrame(parent),
-      dataLayout(std::make_unique<QVBoxLayout>())
+    : QFrame(parent)
 {
     init(headerText);
     setIcon(icon);
@@ -48,7 +44,8 @@ void ActionBox::init(const QString &headerText)
     iconLayout->addWidget(iconLabel);
     iconLayout->addStretch();
 
-    mainLayout->addLayout(dataLayout.get());
+    dataLayout = new QVBoxLayout();
+    mainLayout->addLayout(dataLayout);
 
     headerLabel = createItem(headerText);
     headerLabel->setProperty("class", "header");

@@ -121,7 +121,7 @@ public:
      * @brief Returns the default layout used for actions.
      * @return The default layout.
      */
-    inline QLayout* itemLayout() const { return dataLayout.get(); }
+    inline QLayout* itemLayout() const { return dataLayout; }
 
     /**
      * @brief Adds a layout.
@@ -150,9 +150,9 @@ protected:
      */
     void init(const QString &headerText = QString());
 
-    std::unique_ptr<QVBoxLayout> dataLayout;  ///< Default layout for actions/widgets.
-    QLabel *iconLabel = nullptr;           ///< Label for the ActionBox icon.
-    ActionLabel *headerLabel = nullptr;      ///< Label for the header.
+    QVBoxLayout *dataLayout;       ///< Default layout for actions/widgets.
+    QLabel *iconLabel;             ///< Label for the ActionBox icon.
+    ActionLabel *headerLabel;      ///< Label for the header.
 };
 } // namespace
 
