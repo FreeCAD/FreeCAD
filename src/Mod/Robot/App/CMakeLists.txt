@@ -6,6 +6,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
+    ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}

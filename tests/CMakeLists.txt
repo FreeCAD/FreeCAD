@@ -68,6 +68,7 @@ function(setup_qt_test)
         endif()
 
         target_include_directories(${_testname}_Tests_run PUBLIC
+            ${PYCXX_INCLUDE_DIR}
             ${Python3_INCLUDE_DIRS}
             ${XercesC_INCLUDE_DIRS}
             ${ZIPIOS_INCLUDES}
@@ -134,6 +135,7 @@ endif()
 add_subdirectory(src)
 
 target_include_directories(Tests_run PUBLIC
+    ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZIPIOS_INCLUDES}

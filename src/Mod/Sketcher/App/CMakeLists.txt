@@ -18,6 +18,7 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
+    ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}

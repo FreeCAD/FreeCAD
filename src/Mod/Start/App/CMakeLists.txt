@@ -22,6 +22,7 @@
 #  ***************************************************************************/
 
 include_directories(
+        ${PYCXX_INCLUDE_DIR}
         ${Python3_INCLUDE_DIRS}
         ${QtCore_INCLUDE_DIRS}
         ${ZIPIOS_INCLUDES}
