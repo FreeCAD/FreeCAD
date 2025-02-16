@@ -21,7 +21,7 @@ namespace QSint
 
 class TaskGroup : public QFrame
 {
-  typedef QFrame BaseClass;
+  using BaseClass = QFrame;
 
 public:
   TaskGroup(QWidget *parent, bool hasHeader = false);
@@ -38,7 +38,6 @@ public:
   QPixmap transparentRender();
 
 protected:
-  void paintEvent ( QPaintEvent * event ) override;
   void keyPressEvent ( QKeyEvent * event ) override;
   void keyReleaseEvent ( QKeyEvent * event ) override;
 

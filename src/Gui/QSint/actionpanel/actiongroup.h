@@ -16,18 +16,15 @@
 
 namespace QSint
 {
-
-
 class ActionLabel;
+class ActionPanelScheme;
 class TaskHeader;
 class TaskGroup;
 
 /**
- * @brief A collapsible group widget for organizing actions
+ * @brief A collapsible group widget for organizing actions.
  *
- * ActionGroup consists of an optional header and a collection of actions represented by ActionLabel.
- * It can also contain arbitrary widgets.
- *
+ * An ActionGroup can have a header and contains actions (ActionLabels) or other widgets.
  */
 class QSINT_EXPORT ActionGroup : public QWidget
 {
@@ -38,107 +35,158 @@ class QSINT_EXPORT ActionGroup : public QWidget
     Q_PROPERTY(QString headerText READ headerText WRITE setHeaderText)
 
 public:
-    explicit ActionGroup(QWidget *parent = nullptr);
-    explicit ActionGroup(const QString& title, bool expandable = true, QWidget *parent = nullptr);
-    explicit ActionGroup(const QPixmap& icon, const QString& title, bool expandable = true, QWidget *parent = nullptr);
-    ~ActionGroup() override;
     /**
-     * @brief Creates an action item from the given `action` and returns it.
-     *
-     * If `addToLayout` is `true` (default), the action is added to the default vertical layout, meaning
-     * subsequent calls will arrange multiple `ActionLabel`s vertically, one below another.
-     *
-     * If `addToLayout` is `false`, the action must be added to a layout manually.
-     * This allows for custom arrangements, such as horizontal layouts.
-     *
-     * If `addStretch` is `true` (default),`ActionLabel` will be automatically aligned to the left side.
-     * if `addStretch` is `false` `ActionLabel` will occupy all available horizontal space.
+     * @brief Constructs an ActionGroup.
+     * @param parent The parent widget.
+     */
+    explicit ActionGroup(QWidget *parent = nullptr);
+
+    /**
+     * @brief Constructs an ActionGroup with a title.
+     * @param title The title of the group's header.
+     * @param expandable If `true` (default), the group can be expanded/collapsed.
+     * @param parent The parent widget.
+     */
+    explicit ActionGroup(const QString& title, bool expandable = true, QWidget *parent = nullptr);
+
+    /**
+     * @brief Constructs an ActionGroup with an icon and title.
+     * @param icon The icon for the group's header.
+     * @param title The title of the group's header.
+     * @param expandable If `true` (default), the group can be expanded/collapsed.
+     * @param parent The parent widget.
+     */
+    explicit ActionGroup(const QPixmap& icon, const QString& title, bool expandable = true, QWidget *parent = nullptr);
+
+    /**
+     * @brief Destroys the ActionGroup.
+     */
+    ~ActionGroup() override;
+
+    /**
+     * @brief Creates and adds an action.
+     * @param action The QAction to add.
+     * @param addToLayout If `true` (default), adds the action to the group's layout.
+     * @param addStretch If `true` (default), aligns the ActionLabel to the left.
+     * @return The newly created ActionLabel.
      */
     ActionLabel* addAction(QAction *action, bool addToLayout = true, bool addStretch = true);
 
     /**
-     * @brief Adds an `ActionLabel` to the group.
-     * See `addAction()` for parameter details.
+     * @brief Adds an existing ActionLabel.
+     * @param label The ActionLabel to add.
+     * @param addToLayout If `true` (default), adds the label to the group's layout.
+     * @param addStretch If `true` (default), aligns the ActionLabel to the left.
+     * @return The added ActionLabel.
      */
     ActionLabel* addActionLabel(ActionLabel *label, bool addToLayout = true, bool addStretch = true);
 
     /**
-     * @brief Adds a `QWidget` to the group. Returns `true` if added successfully.
-     * See `addAction()` for parameter details.
+     * @brief Adds a widget to the group.
+     * @param widget The widget to add.
+     * @param addToLayout If `true` (default), adds the widget to the group's layout.
+     * @param addStretch If `true` (default), aligns the widget to the left.
+     * @return `true` if added successfully.
      */
     bool addWidget(QWidget *widget, bool addToLayout = true, bool addStretch = true);
 
     /**
-     * @brief Returns the group's layout (QVBoxLayout by default).
+     * @brief Returns the group's layout.
+     * @return The group's layout (QVBoxLayout by default).
      */
     QBoxLayout* groupLayout();
 
     /**
-     * @brief Checks if the group can collapse or expand.
+     * @brief Checks if the group is expandable.
+     * @return `true` if the group is expandable, `false` otherwise.
      */
     bool isExpandable() const;
 
     /**
-     * @brief Makes the group expandable or not.
+     * @brief Sets whether the group is expandable.
+     * @param expandable If `true`, the group can be expanded/collapsed.
      */
     void setExpandable(bool expandable);
 
     /**
      * @brief Checks if the group has a header.
+     * @return `true` if the group has a header, `false` otherwise.
      */
     bool hasHeader() const;
 
     /**
-     * @brief Enables or disables the group's header.
+     * @brief Sets whether the group has a header.
+     * @param enable If `true`, the group will have a header.
      */
     void setHeader(bool enable);
 
     /**
-     * @brief Returns the text of the header.
+     * @brief Returns the header text.
+     * @return The header text.
      */
     QString headerText() const;
+
     /**
-     * @brief Sets the text of the header.
+     * @brief Sets the header text.
+     * @param text The header text.
      */
     void setHeaderText(const QString &text);
+
     /**
-     * @brief Sets the icon of the header.
+     * @brief Sets the header icon.
+     * @param icon The header icon.
      */
     void setHeaderIcon(const QPixmap &icon);
 
+    /**
+     * @brief Returns the recommended minimum size for the group.
+     * @return The minimum size hint.
+     */
     QSize minimumSizeHint() const override;
 
-    enum FoldEffect
-    {
-        NoFolding,
-        ShrunkFolding,
-        SlideFolding
-    };
-
 public Q_SLOTS:
+    /**
+     * @brief Shows or hides the group's contents.
+     */
     void showHide();
 
 protected Q_SLOTS:
+    /**
+     * @brief Handles hiding the group's contents.
+     */
     void processHide();
+
+    /**
+     * @brief Handles showing the group's contents.
+     */
     void processShow();
 
 protected:
+    /**
+     * @brief Paints the group.
+     * @param event The paint event.
+     */
     void paintEvent(QPaintEvent *event) override;
+
+    /**
+     * @brief Initializes the group.
+     * @param hasHeader Whether the group has a header.
+     */
     void init(bool hasHeader);
 
-    double m_foldStep = 0;
-    double m_foldDelta = 0;
-    double m_fullHeight = 0;
-    double m_tempHeight = 0;
-    int m_foldDirection = 0;
+    double m_foldStep = 0;      ///< Current folding animation step.
+    double m_foldDelta = 0;     ///< Change in height per animation step.
+    double m_fullHeight = 0;    ///< Full (expanded) height of the group.
+    double m_tempHeight = 0;    ///< Temporary height during animation.
+    int m_foldDirection = 0;   ///< Direction of folding animation.
 
-    QPixmap m_foldPixmap;
+    QPixmap m_foldPixmap;      ///< Pixmap for the fold/unfold icon.
 
-    std::unique_ptr<TaskHeader> myHeader;
-    std::unique_ptr<TaskGroup> myGroup;
-    std::unique_ptr<QWidget> myDummy;
+    std::unique_ptr<TaskHeader> myHeader;  ///< The group's header.
+    std::unique_ptr<TaskGroup> myGroup;    ///< The container for actions/widgets.
+    std::unique_ptr<QWidget> myDummy;      ///< Dummy widget for animation.
+    ActionPanelScheme *myScheme = nullptr; ///< The color scheme.
 };
-
 } // namespace QSint
 
 #endif // ACTIONGROUP_H

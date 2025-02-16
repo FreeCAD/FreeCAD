@@ -18,59 +18,97 @@
 #include <QHash>
 #include <QSize>
 #include <QString>
+#include <QStyle>
+#include <QFontMetrics>
 
 namespace QSint
 {
-
 /**
- * #@brief Class representing color scheme for ActionPanel and ActionGroup.
+ * @brief Provides a color scheme and layout parameters for ActionPanel and ActionGroup widgets.
+ *
+ * ActionPanels group related actions, and ActionGroups organize actions within a panel.
+ * This class defines the visual appearance and behavior (e.g., folding animation) of these components.
  */
 class QSINT_EXPORT ActionPanelScheme
 {
 public:
     /**
-     * @brief Animation effect during expanding/collapsing of the ActionGroup's contents.
+     * @brief Animation effect used when expanding or collapsing an ActionGroup's contents.
      */
     enum FoldEffect
     {
-        NoFolding,
-        ShrunkFolding,
-        SlideFolding
+        NoFolding,      ///< No folding animation.
+        ShrunkFolding,   ///< Contents shrink to a point during folding.
+        SlideFolding    ///< Contents slide in and out during folding.
     };
 
+    /**
+     * @brief Constructs a default ActionPanelScheme.
+     */
     ActionPanelScheme();
 
-    /** Returns a pointer to the default scheme object.
-     * Must be reimplemented in derived classes for custom schemes.
+    /**
+     * @brief Returns a pointer to the default ActionPanelScheme object.
+     * Derived classes can override this to provide a custom default scheme.
+     * @return A pointer to the default ActionPanelScheme.
      */
     static ActionPanelScheme* defaultScheme();
 
-    /// Height of the header in pixels.
+    /**
+     * @brief Height of the header area in pixels.
+     */
     int headerSize;
-    /// If set to \a true, moving mouse over the header results in changing its opacity slowly.
+
+    /**
+     * @brief Whether mouseover on the header triggers a slow opacity change.
+     */
     bool headerAnimation;
 
-    /// Image of folding button when the group is expanded.
+    /**
+     * @brief Image of the folding button when the group is expanded.
+     */
     QPixmap headerButtonFold;
-    /// Image of folding button when the group is expanded and mouse cursor is over the button.
+    /**
+     * @brief Image of the folding button when the group is expanded and the mouse is over it.
+     */
     QPixmap headerButtonFoldOver;
-    /// Image of folding button when the group is collapsed.
+    /**
+     * @brief Image of the folding button when the group is collapsed.
+     */
     QPixmap headerButtonUnfold;
-    /// Image of folding button when the group is collapsed and mouse cursor is over the button.
+    /**
+     * @brief Image of the folding button when the group is collapsed and the mouse is over it.
+     */
     QPixmap headerButtonUnfoldOver;
 
+    /**
+     * @brief Size of the header button.
+     */
     QSize headerButtonSize;
 
-    /// Number of steps made for expanding/collapsing animation (default 20).
+    /**
+     * @brief Number of steps in the expanding/collapsing animation (default: 20).
+     */
     int groupFoldSteps;
-    /// Delay in ms between steps made for expanding/collapsing animation (default 15).
+
+    /**
+     * @brief Delay in milliseconds between animation steps (default: 15).
+     */
     int groupFoldDelay;
-    /// Sets folding effect during expanding/collapsing.
+
+    /**
+     * @brief Folding effect used during expanding/collapsing.
+     */
     FoldEffect groupFoldEffect;
-    /// If set to \a true, changes group's opacity slowly during expanding/collapsing.
+
+    /**
+     * @brief Whether the group's opacity changes slowly during folding.
+     */
     bool groupFoldThaw;
 
-    /// The CSS for the ActionPanel/ActionGroup elements.
+    /**
+     * @brief CSS style for ActionPanel/ActionGroup elements.
+     */
     QString actionStyle;
 
     /**
@@ -83,27 +121,32 @@ public:
      */
     void restoreActionStyle();
 
+    /**
+     * @brief Minimal CSS style.
+     */
     static const QString minimumStyle;
 
     /**
      * @brief Generates a custom system style based on the palette.
      * @param p The palette to use for generating the style.
-     * @return A QString containing the generated style.
+     * @return The generated style.
      */
     QString systemStyle(const QPalette& p);
 
 protected:
     /**
-     * @brief Draws a fold/unfold icon based on the palette.
+     * @brief Draws a fold/unfold icon.
      * @param p The palette to use for coloring the icon.
-     * @param fold True for fold icon, false for unfold icon.
-     * @param hover True for hover effect, false otherwise.
-     * @return A QPixmap representing the icon.
+     * @param fold `true` for fold icon, `false` for unfold icon.
+     * @param hover `true` for hover effect, `false` otherwise.
+     * @return The icon as a QPixmap.
      */
     QPixmap drawFoldIcon(const QPalette& p, bool fold, bool hover) const;
 
 private:
-    // Store the built-in icons for restoration.
+    /**
+     * @brief Stores the built-in icons for restoration.
+     */
     QPixmap builtinFold;
     QPixmap builtinFoldOver;
     QPixmap builtinUnfold;
