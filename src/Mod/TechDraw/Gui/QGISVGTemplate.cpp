@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <QDomDocument>
 # include <QFile>
+# include <QFontMetrics>
 # include <QGraphicsColorizeEffect>
 # include <QGraphicsEffect>
 # include <QGraphicsSvgItem>
@@ -42,11 +43,13 @@
 #include <Mod/TechDraw/App/XMLQuery.h>
 
 #include "QGISVGTemplate.h"
+#include "QGIView.h"
 #include "PreferencesGui.h"
 #include "QGSPage.h"
 #include "Rez.h"
 #include "TemplateTextField.h"
 #include "ZVALUE.h"
+#include "DrawGuiUtil.h"
 
 
 using namespace TechDrawGui;
@@ -132,8 +135,24 @@ void QGISVGTemplate::draw()
 
 void QGISVGTemplate::updateView(bool update)
 {
-    Q_UNUSED(update);
+    if (update) {
+        clearClickHandles();
+        createClickHandles();
+    }
     draw();
+}
+
+void QGISVGTemplate::clearClickHandles()
+{
+    constexpr int TemplateTextFieldType{QGraphicsItem::UserType + 160};
+    auto templateChildren = childItems();
+    for (auto& child : templateChildren) {
+        if (child->type() == TemplateTextFieldType) {
+            child->hide();
+            scene()->removeItem(child);
+            delete child;
+        }
+     }
 }
 
 void QGISVGTemplate::createClickHandles()
@@ -176,70 +195,93 @@ void QGISVGTemplate::createClickHandles()
     // XPath query to select all <text> nodes with "freecad:editable" attribute
     // XPath query to select all <tspan> nodes whose <text> parent
     // has "freecad:editable" attribute
-    query.processItems(QStringLiteral("declare default element namespace \"" SVG_NS_URI "\"; "
+    // this is effectively a loop with each pass using the next <text>/<tspan>
+    query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
                                          "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
                                          "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
                        [&](QDomElement& tspan) -> bool {
-        QString fontSizeString = tspan.attribute(QStringLiteral("font-size"));
+
         QDomElement textElement = tspan.parentNode().toElement();
-        QString textAnchorString = textElement.attribute(QStringLiteral("text-anchor"));
-        QString name = textElement.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
 
         double x = Rez::guiX(
-            textElement.attribute(QStringLiteral("x"), QStringLiteral("0.0")).toDouble());
+            textElement.attribute(QString::fromUtf8("x"), QString::fromUtf8("0.0")).toDouble());
         double y = Rez::guiX(
-            textElement.attribute(QStringLiteral("y"), QStringLiteral("0.0")).toDouble());
+            textElement.attribute(QString::fromUtf8("y"), QString::fromUtf8("0.0")).toDouble());
+
+        QString name = textElement.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
         if (name.isEmpty()) {
             Base::Console().Warning(
                 "QGISVGTemplate::createClickHandles - no name for editable text at %f, %f\n", x, y);
             return true;
         }
-        std::string editableNameString = textMap[name.toStdString()];
 
-        // default box size
+        std::string editableValue = textMap[name.toStdString()];
+        if (editableValue.empty()) {
+            editableValue = " ";
+        }
+
+
         double textHeight{0};
-        QString style = textElement.attribute(QStringLiteral("style"));
-        if (!style.isEmpty()) {
-            // get text attributes from style element
-            textHeight = getFontSizeFromStyle(style);
-        }
+        constexpr int MaxLevels{4};
+        TextAttributes attributes;
+        findTextAttributesForElement(attributes, tspan, MaxLevels);
 
-        if (textHeight == 0) {
-            textHeight = getFontSizeFromElement(fontSizeString);
-        }
-
-        if (textHeight == 0.0) {
-            textHeight =  Preferences::labelFontSizeMM() * 3.78;  // 3.78 = px/mm
+        auto family = attributes.family().isEmpty() ? QString::fromUtf8("Sans") : attributes.family();
+        auto align = attributes.align().isEmpty() ? QString::fromUtf8("start") : attributes.align();
+        constexpr double PixelsPerMM{3.78};     // based on 96px / inch
+        if (attributes.size() == 0) {
+            textHeight = Preferences::labelFontSizeMM() * PixelsPerMM;  // pixels
+        } else {
+            textHeight = QGIView::exactFontSize(family.toStdString(), attributes.size());  // pixels
         }
 
         QGraphicsTextItem textItemForLength;
-        QFont fontForLength(Preferences::labelFontQString());
-        fontForLength.setPixelSize(textHeight);
+        QFont fontForLength(family);
+        fontForLength.setPixelSize(static_cast<int>(textHeight));      // px is really mm if viewbox = page size
         textItemForLength.setFont(fontForLength);
-        textItemForLength.setPlainText(QString::fromStdString(editableNameString));
-        auto brect = textItemForLength.boundingRect();
-        auto newLength = brect.width();
+        textItemForLength.setPlainText(QString::fromStdString(editableValue));
+        QFontMetricsF qfm{fontForLength};
+        auto trect = qfm.tightBoundingRect(QString::fromStdString(editableValue));  // pixels
 
-        double charWidth = newLength / editableNameString.length();
-        if (textAnchorString == QStringLiteral("middle")) {
-            x = x - editableNameString.length() * charWidth / 2;
+        constexpr double StdDpi{96};
+        auto dpiFont = qfm.fontDpi();
+
+        auto clickWidth  = trect.width() * StdDpi / dpiFont;    // pixels but we want mm
+        auto clickHeight = trect.height() * StdDpi / dpiFont;
+
+        const QString middleAnchorToken{QString::fromUtf8("middle")};
+        const QString endAnchorToken{QString::fromUtf8("end")};
+
+        constexpr double hPad{2.0};
+        if (align == middleAnchorToken) {
+            x = x - (clickWidth / static_cast<double>(2)) ;
+            x -= (hPad + hPad + hPad);
+        } else if (align == endAnchorToken) {
+            x = x - clickWidth;
+        } else {
+            x -= hPad;
         }
-
-        double textLength = editableNameString.length() * charWidth;
-        textLength = std::max(charWidth, textLength);
 
         auto item(new TemplateTextField(this, svgTemplate, name.toStdString()));
         auto autoValue = svgTemplate->getAutofillByEditableName(name);
         item->setAutofill(autoValue);
 
-        double pad = 1.0;
-        double top = Rez::guiX(-svgTemplate->getHeight()) + y - textHeight - pad;
-        double bottom = top + textHeight + 2.0 * pad;
-        double left = x - pad;
-        item->setRectangle(QRectF(left, top,
-                      newLength + 2.0 * pad, textHeight + 2.0 * pad));
-        item->setLine(QPointF( left, bottom),
-                      QPointF(left + newLength + 2.0 * pad, bottom));
+        // in svg the position point of text is on the baseline of the text.  in qt,
+        // the position point is upper-left of the text bounding rect.
+        // svg positions (0, 0) at upper-left of the page with +Y down (and +X right).
+        // our scene coordinates have (0, 0) at lower-left with +Y down.
+
+        auto bottomOfText = Rez::guiX(-svgTemplate->getHeight()) + y;
+        constexpr double vPad{2.0};
+        auto topOfText = bottomOfText - clickHeight + vPad;
+        auto underlineY = bottomOfText;
+        underlineY  += vPad;   // move down a bit
+
+
+        QRectF clickrect{ x,  topOfText, clickWidth, clickHeight};
+        item->setRectangle(clickrect);
+        item->setLine(QPointF(x, underlineY),
+                      QPointF(x + clickWidth, underlineY));
         item->setLineColor(editClickBoxColor);
 
         item->setZValue(ZVALUE::SVGTEMPLATE + 1);
@@ -250,45 +292,149 @@ void QGISVGTemplate::createClickHandles()
     });
 }
 
-//! find the font-size hidden in a style element
-double QGISVGTemplate::getFontSizeFromStyle(QString style)
+// class TextInterpreter begins
+void QGISVGTemplate::findTextAttributesForElement(TextAttributes& attributes, QDomElement element, int maxlevels, int thislevel)
 {
-    if (style.isEmpty()) {
-        return 0.0;
+    if (thislevel > maxlevels) {
+        // we give up here
+        return;
     }
 
-    // get text attributes from style element
-    QRegularExpression rxFontSize(QStringLiteral("font-size:([0-9]*.?[0-9]*)px;"));
+    const QString StyleAttrName{QString::fromUtf8("style")};
+    const QString SizeAttrName{QString::fromUtf8("font-size")};
+    const QString FamilyAttrName{QString::fromUtf8("font-family")};
+    const QString AnchorAttrName{QString::fromUtf8("text-anchor")};
+
+    QString styleValue = element.attribute(StyleAttrName);
+    if (!styleValue.isEmpty()) {
+        QString styleFamily = findFamilyInStyle(styleValue);
+        if (!styleFamily.isEmpty() &&
+            attributes.family().isEmpty()) {
+            attributes.setFamily(styleFamily);
+        }
+
+        double styleSize = findFontSizeInStyle(styleValue);
+        if (styleSize != 0  &&
+            attributes.size() == 0) {
+            attributes.setSize(styleSize);
+        }
+
+        QString styleAlign = findAlignInStyle(styleValue);
+        if (!styleAlign.isEmpty() &&
+            attributes.align().isEmpty()) {
+            attributes.setAlign(styleAlign);
+        }
+    }
+
+    if (attributes.finished()) {
+        return;
+    }
+
+    // check for a font-size attribute for element
+    if (attributes.size() == 0) {
+        QString sizeValue = element.attribute(SizeAttrName);
+        if (!sizeValue.isEmpty()) {
+            auto newSize = findFontSizeInAttribute(sizeValue);
+            if (newSize != 0 &&
+                attributes.size() == 0) {
+                attributes.setSize(newSize);
+            }
+        }
+    }
+
+    // check for a font-family attribute for element
+    if (attributes.family().isEmpty()) {
+        QString familyValue = element.attribute(FamilyAttrName);
+        if (!familyValue.isEmpty()) {
+            attributes.setFamily(familyValue);
+        }
+    }
+
+    // check for a text-anchor attribute for element
+    if (attributes.align().isEmpty()) {
+        QString anchorValue = element.attribute(AnchorAttrName);
+        if (!anchorValue.isEmpty()) {
+            attributes.setAlign(anchorValue);
+        }
+    }
+    if (!attributes.finished()) {
+        // try next level
+        auto parent = element.parentNode().toElement();
+        if (!parent.isNull()) {
+            // look harder
+            findTextAttributesForElement(attributes, parent, maxlevels, ++thislevel);
+        }
+    }
+}
+
+QString QGISVGTemplate::findRegexInString(QRegularExpression rx, QString searchThis)
+{
+    if (searchThis.isEmpty()) {
+        return {};
+    }
+
     QRegularExpressionMatch match;
 
     int pos{0};
-    pos = style.indexOf(rxFontSize, 0, &match);
+    pos = searchThis.indexOf(rx, 0, &match);
     if (pos != -1) {
-        return Rez::guiX(match.captured(1).toDouble());
+        return match.captured(match.lastCapturedIndex());
     }
 
-    return 0.0;
+    return {};
 }
 
-//! find the font-size hidden in a style element
-double QGISVGTemplate::getFontSizeFromElement(QString element)
+
+//! find the font-family hidden in a style string
+QString QGISVGTemplate::findFamilyInStyle(QString style)
 {
-    if (element.isEmpty()) {
+    // /font-family:([^;]+);/gm
+    //                                          style="font-family:Arial;...
+    QRegularExpression rxFontSize(QString::fromUtf8(R"(font-family:([^;]+)[;"]*)"));
+    return findRegexInString(rxFontSize, style);
+}
+
+
+//! find the font-family hidden in a style string
+QString QGISVGTemplate::findAlignInStyle(QString style)
+{
+    //                                          style="text-anchor:middle;">
+    QRegularExpression rxTextAnchor(QString::fromUtf8(R"(text-anchor:([^;]+)[;"]*)"));
+    return findRegexInString(rxTextAnchor, style);
+}
+
+
+//! find the font size hidden in a style string
+double QGISVGTemplate::findFontSizeInStyle(QString style)
+{
+    //                                          style="font-size:2.82222px;">
+    QRegularExpression rxFontSize(QString::fromUtf8(R"(font-size:([0-9]*\.?[0-9]*)\D)"));
+    auto numberString = findRegexInString(rxFontSize, style);
+    if (numberString.isEmpty()) {
         return 0.0;
     }
-
-    //                                               font-size="3.95px"
-    QRegularExpression rxFontSize(QStringLiteral("([0-9]*.?[0-9]*)px"));
-    QRegularExpressionMatch match;
-
-    int pos{0};
-    pos = element.indexOf(rxFontSize, 0, &match);
-    if (pos != -1) {
-        return Rez::guiX(match.captured(1).toDouble());
-    }
-
-    return 0.0;
+    return numberString.toDouble();
 }
+
+
+//! find the numbers in a font-size attribute text
+double QGISVGTemplate::findFontSizeInAttribute(QString attrText)
+{
+    //                                                 "3.95px"
+    QRegularExpression rxFontSize(QString::fromUtf8(R"(([0-9]*\.?[0-9]*)\D)"));
+    auto numberString = findRegexInString(rxFontSize, attrText);
+    if (numberString.isEmpty()) {
+        return 0.0;
+    }
+    return numberString.toDouble();
+}
+// end TextInterpreter
+
+bool TextAttributes::finished() const
+{
+    return !(family().isNull() || align().isNull() || size() == 0);
+}
+
 
 
 #include <Mod/TechDraw/Gui/moc_QGISVGTemplate.cpp>
