@@ -29,6 +29,7 @@
 #include <App/FeaturePython.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
+#include "FeatureRefine.h"
 
 namespace PartDesign
 {
@@ -41,7 +42,7 @@ namespace PartDesign
  */
 // TODO Add better documentation (2015-09-11, Fat-Zer)
 
-class PartDesignExport ShapeBinder : public Part::Feature
+class PartDesignExport ShapeBinder : public PartDesign::FeatureRefine
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::ShapeBinder);
 

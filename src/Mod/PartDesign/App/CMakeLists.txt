@@ -95,6 +95,8 @@ SET(FeaturesSketchBased_SRCS
     FeatureRevolution.h
     FeatureGroove.cpp
     FeatureGroove.h
+    FeatureRefine.cpp
+    FeatureRefine.h
     FeatureAddSub.cpp
     FeatureAddSub.h
     FeatureHole.h

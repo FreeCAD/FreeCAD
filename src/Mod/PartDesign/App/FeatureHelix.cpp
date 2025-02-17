@@ -126,12 +126,7 @@ short Helix::mustExecute() const
 
 App::DocumentObjectExecReturn* Helix::execute()
 {
-
-    if (onlyHasToRefine()){
-        TopoShape result = refineShapeIfActive(rawShape, RefineErrorPolicy::Warn);
-        Shape.setValue(result);
-        return App::DocumentObject::StdReturn;
-    }
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     // Validate and normalize parameters
     HelixMode mode = static_cast<HelixMode>(Mode.getValue());
