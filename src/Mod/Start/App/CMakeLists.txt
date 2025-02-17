@@ -37,6 +37,8 @@ SET(Start_SRCS
         DisplayedFilesModel.h
         ExamplesModel.cpp
         ExamplesModel.h
+        CustomFolderModel.cpp
+        CustomFolderModel.h
         PreCompiled.cpp
         PreCompiled.h
         RecentFilesModel.cpp
