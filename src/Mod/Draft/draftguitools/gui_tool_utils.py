@@ -201,6 +201,8 @@ def get_point(target, args, noTracker=False):
     smod = has_mod(args, get_mod_snap_key())
     cmod = has_mod(args, get_mod_constrain_key())
     point = None
+    info = None  
+    mask = None  
 
     if hasattr(Gui, "Snapper"):
         point = Gui.Snapper.snap(args["Position"],
@@ -346,4 +348,119 @@ def redraw_3d_view():
 
 redraw3DView = redraw_3d_view
 
+
+def init_ortho_tracking():
+    """Initialize orthogonal tracking."""
+    if hasattr(Gui, "Snapper"):
+        if not hasattr(Gui.Snapper, "ortho_tracking"):
+            from draftguitools.gui_snaps import Draft_Snap_Ortho_Extension
+            Gui.Snapper.ortho_tracking = Draft_Snap_Ortho_Extension()
+            
+def enable_ortho_tracking():
+    """Enable orthogonal tracking."""
+    if hasattr(Gui, "Snapper"):
+        if hasattr(Gui.Snapper, "ortho_tracking"):
+            Gui.Snapper.ortho_tracking.activate()
+
+def disable_ortho_tracking():
+    """Disable orthogonal tracking."""  
+    if hasattr(Gui, "Snapper"):
+        if hasattr(Gui.Snapper, "ortho_tracking"):
+            Gui.Snapper.ortho_tracking.deactivate()
+
+class Draft_Snap_Ortho_Extension():
+    """Extends orthogonal snap functionality."""
+    
+    def __init__(self):
+        self.active = False
+        self.base_point = None
+        self.distance = None
+        self.tracker = None
+        self.last_cursor_pos = None
+        self.dimension_display = None
+        self.keyboard_buffer = ""  
+        self.keyboard_input_active = False
+        
+    def activate(self):
+        """Activate ortho tracking."""
+        self.active = True
+        if not self.tracker:
+            self.tracker = orthoTracker()
+            
+        # Add keyboard shortcuts
+        self.keyboard_cb = Gui.ActiveDocument.ActiveView.addEventCallbackPivy(
+            coin.SoKeyboardEvent.getClassTypeId(), self.keyboard_event)
+            
+        # Add mouse tracking
+        self.mouse_cb = Gui.ActiveDocument.ActiveView.addEventCallbackPivy(
+            coin.SoLocation2Event.getClassTypeId(), self.mouse_event)
+            
+        self.tracker.on()
+
+    def deactivate(self):
+        """Deactivate ortho tracking."""
+        self.active = False
+        if self.tracker:
+            self.tracker.off()
+            self.tracker.finalize()
+            self.tracker = None
+            
+        # Remove callbacks
+        if hasattr(self, 'keyboard_cb'):
+            Gui.ActiveDocument.ActiveView.removeEventCallbackPivy(
+                coin.SoKeyboardEvent.getClassTypeId(), self.keyboard_cb)
+        if hasattr(self, 'mouse_cb'):    
+            Gui.ActiveDocument.ActiveView.removeEventCallbackPivy(
+                coin.SoLocation2Event.getClassTypeId(), self.mouse_cb)
+                
+        self.base_point = None
+        self.distance = None
+        
+    def keyboard_event(self, event):
+        """Handle keyboard events."""
+        # Q key activates held point
+        if event.getKey() == ord('Q'):
+            if event.getState() == coin.SoKeyboardEvent.DOWN:
+                if self.last_cursor_pos:
+                    self.set_base_point(self.last_cursor_pos)
+                    
+        # Enter key for numeric input
+        elif event.getKey() == coin.SoKeyboardEvent.RETURN:
+            if self.keyboard_input_active:
+                try:
+                    dist = float(self.keyboard_buffer)
+                    self.set_distance(dist)
+                except ValueError:
+                    pass
+                self.keyboard_input_active = False
+                self.keyboard_buffer = ""
+                
+        # Numeric input
+        elif event.getKey() in range(ord('0'), ord('9')+1) or event.getKey() == ord('.'):
+            if not self.keyboard_input_active:
+                self.keyboard_input_active = True
+                self.keyboard_buffer = ""
+            self.keyboard_buffer += chr(event.getKey())
+
+    def mouse_event(self, event):
+        """Handle mouse movement."""
+        pos = event.getPosition()
+        view = Gui.ActiveDocument.ActiveView
+        point = view.getPoint(pos)
+        self.last_cursor_pos = point
+        
+        if self.tracker:
+            self.tracker.update(point)
+
+    def set_base_point(self, point):
+        """Set new base point for orthogonal tracking."""
+        self.base_point = point
+        if self.tracker:
+            self.tracker.set_base_point(point)
+
+    def set_distance(self, dist):
+        """Set fixed tracking distance."""
+        self.distance = dist
+        if self.tracker:
+            self.tracker.set_distance(dist)       
 ## @}

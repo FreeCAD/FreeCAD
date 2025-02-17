@@ -30,15 +30,17 @@
 
 ## \addtogroup draftguitools
 # @{
+import math
+import FreeCAD
+import FreeCADGui as Gui
 from PySide import QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-import FreeCADGui as Gui
 import draftguitools.gui_base as gui_base
-
 from draftutils.messages import _log
 from draftutils.translate import translate
-
+from draftguitools.gui_trackers import orthoTracker
+from pivy import coin
 
 class Draft_Snap_Base():
     """Base Class inherited by all Draft Snap commands."""
@@ -288,5 +290,154 @@ class ShowSnapBar(Draft_Snap_Base):
 
 
 Gui.addCommand('Draft_ShowSnapBar', ShowSnapBar())
+
+class Draft_Snap_Ortho_Extension():
+    """Extends orthogonal snap functionality."""
+    
+    def __init__(self):
+        self.active = False
+        self.base_point = None
+        self.distance = None
+        self.tracker = None
+        self.last_cursor_pos = None
+        self.dimension_display = None
+        self.keyboard_buffer = ""
+        self.keyboard_input_active = False
+        
+    def activate(self):
+        """Activate ortho tracking."""
+        if not self.active:
+            self.active = True
+            if not self.tracker:
+                from draftguitools.gui_trackers import orthoTracker
+                self.tracker = orthoTracker()
+                
+            # callbacks only when activating
+            from pivy import coin
+            self.keyboard_cb = Gui.ActiveDocument.ActiveView.addEventCallbackPivy(
+                coin.SoKeyboardEvent.getClassTypeId(), self.keyboard_event)
+            self.mouse_cb = Gui.ActiveDocument.ActiveView.addEventCallbackPivy(
+                coin.SoLocation2Event.getClassTypeId(), self.mouse_event)
+                
+            self.tracker.on()
+
+    def deactivate(self):
+        """Deactivate ortho tracking."""
+        self.active = False
+        if self.tracker:
+            self.tracker.off()
+            self.tracker.finalize()
+            self.tracker = None
+        self.base_point = None
+        self.distance = None
+
+    def get_ortho_points(self, point):
+        """Calculate orthogonal points from base point."""
+        if not self.base_point:
+            return []
+            
+        # Calculating points at 0, 90, 180, 270 degrees
+        points = []
+        if self.distance:
+            # Use specified distance
+            for angle in [0, math.pi/2, math.pi, 3*math.pi/2]:
+                vec = FreeCAD.Vector(math.cos(angle), math.sin(angle), 0)
+                vec.scale(self.distance, self.distance, self.distance)
+                points.append(self.base_point.add(vec))
+        else:
+            # Use the cursor distance
+            dx = point.x - self.base_point.x
+            dy = point.y - self.base_point.y
+            dist = math.sqrt(dx*dx + dy*dy)
+            
+            for angle in [0, math.pi/2, math.pi, 3*math.pi/2]:
+                vec = FreeCAD.Vector(math.cos(angle), math.sin(angle), 0)
+                vec.scale(dist, dist, dist)
+                points.append(self.base_point.add(vec))
+                
+        return points
+
+    def set_base_point(self, point):
+        """Set new base point for orthogonal tracking."""
+        self.base_point = point
+        if self.tracker:
+            self.tracker.set_base_point(point)
+
+    def set_distance(self, dist):
+        """Set fixed tracking distance."""
+        self.distance = dist
+        if self.tracker:
+            self.tracker.set_distance(dist)
+
+    def keyboard_event(self, event):
+        """Handle keyboard events for ortho tracking.
+        
+        Parameters
+        ----------
+        event: coin.SoKeyboardEvent
+            The keyboard event from the 3D view
+        """
+        # Q key activates held point
+        if event.getKey() == ord('Q'):
+            if event.getState() == coin.SoKeyboardEvent.DOWN:
+                if self.last_cursor_pos:
+                    self.set_base_point(self.last_cursor_pos)
+                    
+        # Enter key for numeric input
+        elif event.getKey() == coin.SoKeyboardEvent.RETURN:
+            if self.keyboard_input_active:
+                try:
+                    dist = float(self.keyboard_buffer)
+                    self.set_distance(dist)
+                except ValueError:
+                    pass
+                self.keyboard_input_active = False
+                self.keyboard_buffer = ""
+                
+        # Numeric input
+        elif event.getKey() in range(ord('0'), ord('9')+1) or event.getKey() == ord('.'):
+            if not self.keyboard_input_active:
+                self.keyboard_input_active = True
+                self.keyboard_buffer = ""
+            self.keyboard_buffer += chr(event.getKey())
+
+    def mouse_event(self, event):
+        """Handle mouse movement for ortho tracking.
+        
+        Parameters
+        ----------
+        event: coin.SoLocation2Event  
+            The mouse movement event from the 3D view
+        """
+        pos = event.getPosition()
+        view = Gui.ActiveDocument.ActiveView
+        point = view.getPoint(pos)
+        self.last_cursor_pos = point
+        
+        if self.tracker:
+            self.tracker.update(point)
+
+class Draft_Ortho_Track(Draft_Snap_Base):
+    """GuiCommand for the Draft_Ortho_Track tool."""
+
+    def GetResources(self):
+        shortcut = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("Draft_Ortho_Tracking_Shortcut")
+        return {"Pixmap": "Draft_Snap_Ortho",
+                "Accel": shortcut,
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Ortho_Track", "Orthogonal tracking"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Ortho_Track", "Helps you draw orthogonal lines from the previous point"),
+                "CmdType": "ForEdit"}
+
+    def Activated(self):
+        if hasattr(Gui, "Snapper"):
+            if not hasattr(Gui.Snapper, "ortho_tracking"):
+                from draftguitools.gui_tool_utils import init_ortho_tracking
+                init_ortho_tracking()
+            if Gui.Snapper.ortho_tracking.active:
+                disable_ortho_tracking()
+            else:
+                enable_ortho_tracking()
+
+Gui.addCommand('Draft_Ortho_Track', Draft_Ortho_Track())
 
 ## @}

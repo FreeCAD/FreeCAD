@@ -25,6 +25,12 @@ import os
 import FreeCAD
 import FreeCADGui
 
+from draftutils import init_tools
+from draftutils import params
+from draftutils.init_tools import get_draft_snap_commands
+from draftguitools.gui_snaps import Draft_Snap_Lock  
+from draftguitools.gui_tool_utils import init_ortho_tracking
+
 __title__ = "FreeCAD Draft Workbench - Init file"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = "https://www.freecad.org"
@@ -76,74 +82,83 @@ class DraftWorkbench(FreeCADGui.Workbench):
         if not dependencies_OK:
             return
 
-        # Import Draft tools, icons
         try:
             import Draft_rc
             import DraftTools
             import DraftGui
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")
-        except Exception as exc:
-            FreeCAD.Console.PrintError(exc)
-            FreeCAD.Console.PrintError("Error: Initializing one or more "
-                                       "of the Draft modules failed, "
-                                       "Draft will not work as expected.\n")
+            
+            # Now initialize ortho tracking
+            init_ortho_tracking()
+            
+            # Continue with rest of initialization
+            # Set up command lists
+            import draftutils.init_tools as it
+            self.drawing_commands = it.get_draft_drawing_commands()
+            self.annotation_commands = it.get_draft_annotation_commands()
+            self.modification_commands = it.get_draft_modification_commands()
+            self.utility_commands_menu = it.get_draft_utility_commands_menu()
+            self.utility_commands_toolbar = it.get_draft_utility_commands_toolbar()
+            self.context_commands = it.get_draft_context_commands()
 
-        # Set up command lists
-        import draftutils.init_tools as it
-        self.drawing_commands = it.get_draft_drawing_commands()
-        self.annotation_commands = it.get_draft_annotation_commands()
-        self.modification_commands = it.get_draft_modification_commands()
-        self.utility_commands_menu = it.get_draft_utility_commands_menu()
-        self.utility_commands_toolbar = it.get_draft_utility_commands_toolbar()
-        self.context_commands = it.get_draft_context_commands()
+            # Set up toolbars
+            it.init_toolbar(self,
+                            QT_TRANSLATE_NOOP("Workbench", "Draft creation tools"),
+                            self.drawing_commands)
+            it.init_toolbar(self,
+                            QT_TRANSLATE_NOOP("Workbench", "Draft annotation tools"),
+                            self.annotation_commands)
+            it.init_toolbar(self,
+                            QT_TRANSLATE_NOOP("Workbench", "Draft modification tools"),
+                            self.modification_commands)
+            it.init_toolbar(self,
+                            QT_TRANSLATE_NOOP("Workbench", "Draft utility tools"),
+                            self.utility_commands_toolbar)
+            it.init_toolbar(self,
+                            QT_TRANSLATE_NOOP("Workbench", "Draft snap"),
+                            it.get_draft_snap_commands())
 
-        # Set up toolbars
-        it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft creation tools"),
-                        self.drawing_commands)
-        it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft annotation tools"),
-                        self.annotation_commands)
-        it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft modification tools"),
-                        self.modification_commands)
-        it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft utility tools"),
-                        self.utility_commands_toolbar)
-        it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft snap"),
-                        it.get_draft_snap_commands())
+            # Set up menus
+            it.init_menu(self,
+                         [QT_TRANSLATE_NOOP("Workbench", "&Drafting")],
+                         self.drawing_commands)
+            it.init_menu(self,
+                         [QT_TRANSLATE_NOOP("Workbench", "&Annotation")],
+                         self.annotation_commands)
+            it.init_menu(self,
+                         [QT_TRANSLATE_NOOP("Workbench", "&Modification")],
+                         self.modification_commands)
+            it.init_menu(self,
+                         [QT_TRANSLATE_NOOP("Workbench", "&Utilities")],
+                         self.utility_commands_menu)
 
-        # Set up menus
-        it.init_menu(self,
-                     [QT_TRANSLATE_NOOP("Workbench", "&Drafting")],
-                     self.drawing_commands)
-        it.init_menu(self,
-                     [QT_TRANSLATE_NOOP("Workbench", "&Annotation")],
-                     self.annotation_commands)
-        it.init_menu(self,
-                     [QT_TRANSLATE_NOOP("Workbench", "&Modification")],
-                     self.modification_commands)
-        it.init_menu(self,
-                     [QT_TRANSLATE_NOOP("Workbench", "&Utilities")],
-                     self.utility_commands_menu)
+            # Set up preferences pages
+            if hasattr(FreeCADGui, "draftToolBar"):
+                if not hasattr(FreeCADGui.draftToolBar, "loadedPreferences"):
+                    from draftutils import params
+                    params._param_observer_start()
+                    FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
+                    FreeCADGui.addPreferencePage(":/ui/preferences-draftinterface.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
+                    FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
+                    FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
+                    FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
+                    FreeCADGui.draftToolBar.loadedPreferences = True
 
-        # Set up preferences pages
-        if hasattr(FreeCADGui, "draftToolBar"):
-            if not hasattr(FreeCADGui.draftToolBar, "loadedPreferences"):
-                from draftutils import params
-                params._param_observer_start()
-                FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-draftinterface.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
-                FreeCADGui.draftToolBar.loadedPreferences = True
+            # Setting up preferences
+            param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+            if not param.GetString("Draft_Ortho_Tracking_Shortcut"):
+                param.SetString("Draft_Ortho_Tracking_Shortcut", "Q")
 
-        FreeCADGui.getMainWindow().mainWindowClosed.connect(self.Deactivated)
+            FreeCADGui.getMainWindow().mainWindowClosed.connect(self.Deactivated)
 
-        FreeCAD.Console.PrintLog('Loading Draft workbench, done.\n')
+            FreeCAD.Console.PrintLog('Loading Draft workbench, done.\n')
+            
+            return True
+            
+        except Exception as e:
+            FreeCAD.Console.PrintError(f"Error initializing Draft workbench: {e}\n")
+            return False
 
     def Activated(self):
         """When entering the workbench."""

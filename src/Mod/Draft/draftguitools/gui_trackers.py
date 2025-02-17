@@ -1578,4 +1578,96 @@ class archDimTracker(Tracker):
         else:
             return Vector(self.pnts.getValues()[-1].getValue())
 
+
+class orthoTracker(Tracker):
+    """Tracker for orthogonal snap points and visual feedback."""
+    
+    def __init__(self, base_point=None, distance=None):
+        # Setup scene graph nodes
+        self.base = base_point or FreeCAD.Vector(0,0,0)
+        self.distance = distance
+        
+        # Line set for tracking lines
+        self.lines = coin.SoLineSet()
+        self.lines.numVertices.setValue(2)
+        
+        # Marker for points
+        self.markers = coin.SoMarkerSet()
+        self.markers.markerIndex = FreeCADGui.getMarkerIndex("CIRCLE_FILLED", 5)
+        
+        # Text for dimensions
+        self.text = coin.SoText2()
+        self.text.string = ""
+        self.textpos = coin.SoTransform()
+        
+        # Coordinates
+        self.coords = coin.SoCoordinate3()
+        self.coords.point.setValues(0, 8, [0,0,0, 0,0,0]*4) # Space for 4 lines
+        
+        # Group all nodes
+        self.sep = coin.SoSeparator()
+        self.sep.addChild(self.coords)
+        self.sep.addChild(self.lines) 
+        self.sep.addChild(self.markers)
+        self.sep.addChild(self.textpos)
+        self.sep.addChild(self.text)
+
+        super().__init__(children=[self.sep])
+        self.update()
+
+    def update(self, cursor_pos=None):
+        """Update visual elements based on cursor position."""
+        if not self.base:
+            return
+            
+        wp = FreeCAD.DraftWorkingPlane
+        points = []
+        
+        # Calculate ortho points in working plane
+        if cursor_pos:
+            # Project cursor onto working plane
+            cursor_wp = wp.projectPoint(cursor_pos)
+            
+            # Get distance either from parameter or cursor
+            if self.distance:
+                dist = self.distance
+            else:
+                dist = (cursor_wp - self.base).Length
+                
+            # Calculate 4 ortho points
+            for angle in [0, 90, 180, 270]:
+                rad = math.radians(angle)
+                vec = wp.u * math.cos(rad) + wp.v * math.sin(rad)
+                point = self.base + vec * dist
+                points.append(point)
+                
+        # Update coordinates
+        coords = []
+        for p in points:
+            # Add line from base to ortho point
+            coords.extend([self.base.x, self.base.y, self.base.z])
+            coords.extend([p.x, p.y, p.z])
+            
+        self.coords.point.setValues(0, len(coords)//3, coords)
+        
+        # Update markers
+        self.markers.numPoints = len(points) + 1
+        
+        # Update dimension text if cursor position given
+        if cursor_pos:
+            dist_str = FreeCAD.Units.Quantity(dist, FreeCAD.Units.Length).UserString
+            self.text.string.setValue(dist_str)
+            # Position text near cursor
+            self.textpos.translation.setValue(cursor_pos.x + 10, cursor_pos.y + 10, 0)
+
+    def set_base_point(self, point):
+        """Set new base point."""
+        self.base = point
+        self.update()
+
+    def set_distance(self, dist):
+        """Set fixed tracking distance."""
+        self.distance = dist
+        self.update()
+
 ## @}
