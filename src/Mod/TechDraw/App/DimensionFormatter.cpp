@@ -372,8 +372,8 @@ std::string DimensionFormatter::getDefaultFormatSpec(bool isToleranceFormat) con
     QString formatSpec;
     QString qPrefix;
     if (prefFormat.empty()) {
-        QString format1 = QString::fromStdString("%.");
-        QString format2 = QString::fromStdString("f");
+        QString format1 = QStringLiteral("%.");
+        QString format2 = QStringLiteral("f");
         int precision;
         if (m_dimension->useDecimals()) {
             precision = Base::UnitsApi::getDecimals();

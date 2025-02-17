@@ -1493,7 +1493,7 @@ void MainWindow::processMessages(const QList<QString> & msg)
     try {
         WaitCursor wc;
         std::list<std::string> files;
-        QString action = QString::fromStdString("OpenFile:");
+        QString action = QStringLiteral("OpenFile:");
         for (const auto & it : msg) {
             if (it.startsWith(action))
                 files.emplace_back(it.mid(action.size()).toStdString());
