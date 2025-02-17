@@ -49,6 +49,8 @@
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
+
+#include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Builder3D.h>
 #include <Base/Console.h>
@@ -253,6 +255,7 @@ void View3DInventor::printPdf()
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFileName(filename);
+        printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
         print(&printer);
     }
 }

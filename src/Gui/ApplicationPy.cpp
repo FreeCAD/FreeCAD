@@ -728,10 +728,11 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args)
                     if (view3d)
                         view3d->viewAll();
                     QPrinter printer(QPrinter::ScreenResolution);
-                    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+                    // setPdfVersion sets the printed PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
                     printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
                     printer.setOutputFormat(QPrinter::PdfFormat);
                     printer.setOutputFileName(fileName);
+                    printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
                     view->print(&printer);
                 }
             }

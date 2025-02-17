@@ -188,6 +188,9 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
     pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
 
     pdfWriter.setTitle(documentName);
+    pdfWriter.setCreator(QString::fromStdString(App::Application::getNameWithVersion())
+                       + QLatin1String(" TechDraw"));
+
     pdfWriter.setResolution(printer->resolution());
     QPageLayout pageLayout = printer->pageLayout();
     // we want to set the layout for the first page before we make the painter(&pdfWriter) or the layout for the first page will
@@ -355,6 +358,9 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     QString documentName = QString::fromUtf8(vpPage->getDrawPage()->getNameInDocument());
     pdfWriter.setTitle(documentName);
     // default pdfWriter dpi is 1200.
+
+    pdfWriter.setCreator(QString::fromStdString(App::Application::getNameWithVersion())
+                       + QLatin1String(" TechDraw"));
 
     // set up the page layout
     auto dPage = vpPage->getDrawPage();
