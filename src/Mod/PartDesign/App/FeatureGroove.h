@@ -22,45 +22,26 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #ifndef PARTDESIGN_Groove_H
 #define PARTDESIGN_Groove_H
 
+#include <array>
 #include <App/PropertyUnits.h>
-#include "FeatureSketchBased.h"
+#include "FeatureRevolved.h"
 
 namespace PartDesign
 {
 
-class PartDesignExport Groove: public ProfileBased
+class PartDesignExport Groove: public Revolved
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Groove);
 
 public:
     Groove();
 
-    App::PropertyEnumeration Type;
-    App::PropertyVector Base;
-    App::PropertyVector Axis;
-    App::PropertyAngle Angle;
-    App::PropertyAngle Angle2;
-
-    /** if this property is set to a valid link, both Axis and Base properties
-     *  are calculated according to the linked line
-     */
-    App::PropertyLinkSub ReferenceAxis;
-
     /** @name methods override feature */
     //@{
-    /** Recalculate the feature
-     * Revolves the Sketch around the given Axis (with basepoint Base)
-     * The angle of the revolution is given by Angle.
-     * If Midplane is true, then the revolution will extend for half of Angle on both sides of the
-     * sketch plane. If Reversed is true then the direction of revolution will be reversed. The
-     * created material will be cut out of the sketch support
-     */
     App::DocumentObjectExecReturn* execute() override;
-    short mustExecute() const override;
     /// returns the type name of the view provider
     const char* getViewProviderName() const override
     {
@@ -68,67 +49,9 @@ public:
     }
     //@}
 
-    /// suggests a value for Reversed flag so that material is always removed from the support
-    bool suggestReversed();
-
-    enum class RevolMethod
-    {
-        Angle,
-        ThroughAll,
-        ToLast = ThroughAll,
-        ToFirst,
-        ToFace,
-        TwoAngles
-    };
-
 protected:
-    /// updates Axis from ReferenceAxis
-    void updateAxis();
-
-    static const App::PropertyAngle::Constraints floatAngle;
-
-    // See BRepFeat_MakeRevol
-    enum RevolMode
-    {
-        CutFromBase = 0,
-        FuseWithBase = 1,
-        None = 2
-    };
-
-    /**
-     * Generates a [groove] of the input sketchshape and stores it in the given \a revol.
-     */
-    void generateRevolution(
-        TopoShape& revol,
-        const TopoShape& sketchshape,
-        const gp_Ax1& ax1,
-        const double angle,
-        const double angle2,
-        const bool midplane,
-        const bool reversed,
-        RevolMethod method
-    );
-
-    /**
-     * Generates a [groove] of the input \a profileshape.
-     * It will be a stand-alone solid created with BRepFeat_MakeRevol.
-     */
-    void generateRevolution(
-        TopoShape& revol,
-        const TopoShape& baseshape,
-        const TopoDS_Shape& profileshape,
-        const TopoDS_Face& supportface,
-        const TopoDS_Face& uptoface,
-        const gp_Ax1& ax1,
-        RevolMethod method,
-        RevolMode Mode,
-        Standard_Boolean Modify
-    );
-
-    /**
-     * Disables settings that are not valid for the current method
-     */
-    void updateProperties(RevolMethod method);
+    TopoShape makeShape(const TopoShape& base, const TopoShape& revolve) const override;
+    bool suggestReversedAngle(double angle) const override;
 
 private:
     static const char* TypeEnums[];
@@ -136,5 +59,4 @@ private:
 
 }  // namespace PartDesign
 
-
-#endif  // PART_Groove_H
+#endif  // PARTDESIGN_Groove_H

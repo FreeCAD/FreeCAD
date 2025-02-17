@@ -22,55 +22,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PARTDESIGN_Revolution_H
 #define PARTDESIGN_Revolution_H
 
+#include <array>
 #include <App/PropertyUnits.h>
-#include "FeatureSketchBased.h"
+#include "FeatureRevolved.h"
 
 namespace PartDesign
 {
 
-enum FuseOrder : std::uint8_t
-{
-    BaseFirst,
-    FeatureFirst,
-};
-
-class PartDesignExport Revolution: public ProfileBased
+class PartDesignExport Revolution: public Revolved
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Revolution);
 
 public:
     Revolution();
 
-    App::PropertyEnumeration Type;
-    App::PropertyVector Base;
-    App::PropertyVector Axis;
-    App::PropertyAngle Angle;
-    App::PropertyAngle Angle2;
-
-    /** if this property is set to a valid link, both Axis and Base properties
-     *  are calculated according to the linked line
-     */
-    App::PropertyLinkSub ReferenceAxis;
-
     /**
-     * Compatibility property that is required to preserve behavior from 1.0, that while incorrect
-     * may have an impact over user files.
+     * Compatibility property that is required to preserve behavior from 1.0,
+     * that while incorrect may have an impact over user files.
      */
     App::PropertyEnumeration FuseOrder;
 
     /** @name methods override feature */
     //@{
-    /** Recalculate the feature
-     * Revolves the Sketch around the given Axis (with basepoint Base)
-     * The angle of the revolution is given by Angle.
-     * If Midplane is true, then the revolution will extend for half of Angle on both sides of the
-     * sketch plane. If Reversed is true then the direction of revolution will be reversed. The
-     * created material will be fused with the sketch support (if there is one)
-     */
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     /// returns the type name of the view provider
@@ -80,69 +56,16 @@ public:
     }
     //@}
 
-    void Restore(Base::XMLReader& reader) override;
-
-    /// suggests a value for Reversed flag so that material is always added to the support
-    bool suggestReversed();
-
-    enum class RevolMethod
+    enum FuseOrder : std::uint8_t
     {
-        Angle,
-        ThroughAll,
-        ToLast = ThroughAll,
-        ToFirst,
-        ToFace,
-        TwoAngles
+        BaseFirst,
+        FeatureFirst
     };
 
 protected:
-    /// updates Axis from ReferenceAxis
-    void updateAxis();
-
-    static const App::PropertyAngle::Constraints floatAngle;
-
-    // See BRepFeat_MakeRevol
-    enum RevolMode
-    {
-        CutFromBase = 0,
-        FuseWithBase = 1,
-        None = 2
-    };
-
-    /**
-     * Generates a revolution of the input sketchshape and stores it in the given \a revol.
-     */
-    void generateRevolution(
-        TopoShape& revol,
-        const TopoShape& sketchshape,
-        const gp_Ax1& ax1,
-        const double angle,
-        const double angle2,
-        const bool midplane,
-        const bool reversed,
-        RevolMethod method
-    );
-
-    /**
-     * Generates a revolution of the input \a profileshape.
-     * It will be a stand-alone solid created with BRepFeat_MakeRevol.
-     */
-    void generateRevolution(
-        TopoShape& revol,
-        const TopoShape& baseshape,
-        const TopoDS_Shape& profileshape,
-        const TopoDS_Face& supportface,
-        const TopoDS_Face& uptoface,
-        const gp_Ax1& ax1,
-        RevolMethod method,
-        RevolMode Mode,
-        Standard_Boolean Modify
-    );
-
-    /**
-     * Disables settings that are not valid for the current method
-     */
-    void updateProperties(RevolMethod method);
+    TopoShape makeShape(const TopoShape& base, const TopoShape& revolve) const override;
+    bool suggestReversedAngle(double angle) const override;
+    void Restore(Base::XMLReader& reader) override;
 
 private:
     static const char* TypeEnums[];
@@ -151,5 +74,4 @@ private:
 
 }  // namespace PartDesign
 
-
-#endif  // PART_Revolution_H
+#endif  // PARTDESIGN_Revolution_H
