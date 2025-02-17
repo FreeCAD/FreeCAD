@@ -74,10 +74,7 @@
 #include "Inventor/SmSwitchboard.h"
 #include "Inventor/SoAutoZoomTranslation.h"
 #include "Inventor/SoDrawingGrid.h"
-#include "SoFCBackgroundGradient.h"
-#include "SoFCBoundingBox.h"
-#include "SoMouseWheelEvent.h"
-#include "SoFCTransform.h"
+#include "Inventor/SoFCTransform.h"
 #include "propertyeditor/PropertyItem.h"
 #include "ArcEngine.h"
 
