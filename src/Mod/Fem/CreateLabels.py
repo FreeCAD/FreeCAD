@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2024 Peter McB
+# *   Copyright (c) 2024 Peter McB                                          *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
