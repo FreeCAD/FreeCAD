@@ -71,9 +71,6 @@ public:
     };
 
 protected:
-    /// updates Axis from ReferenceAxis
-    void updateAxis();
-
     /** Recalculate the feature
      * Revolves the Sketch around the given Axis (with basepoint Base)
      * The angle of the revolution is given by Angle.
@@ -82,6 +79,24 @@ protected:
      * created material will be fused with the sketch support (if there is one)
      */
     App::DocumentObjectExecReturn* executeRevolved(Part::RevolMode revolMode);
+
+private:
+    App::DocumentObjectExecReturn* tryExecuteRevolved(Part::RevolMode revolMode);
+    TopoShape tryGetBaseShape() const;
+    TopoShape tryGetSupportShape() const;
+    TopoShape tryToRevolveToFace(
+        const TopLoc_Location& invObjLoc,
+        gp_Pnt pnt,
+        gp_Dir dir,
+        TopoShape& base,
+        TopoShape& supportface,
+        const TopoShape& sketchshape,
+        Part::RevolMode revolMode
+    ) const;
+    void setResult(const TopoShape& base, const TopoShape& revolved);
+
+    /// updates Axis from ReferenceAxis
+    void updateAxis();
 
     virtual TopoShape makeShape(const TopoShape& base, const TopoShape& revolve) const = 0;
     virtual bool suggestReversedAngle(double angle) const = 0;
@@ -121,7 +136,6 @@ protected:
      */
     void updateProperties(RevolMethod method);
 
-private:
     static const App::PropertyAngle::Constraints floatAngle;
 };
 

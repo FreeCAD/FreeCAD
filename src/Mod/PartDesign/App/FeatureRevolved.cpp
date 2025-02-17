@@ -59,6 +59,27 @@ short Revolved::mustExecute() const
 
 App::DocumentObjectExecReturn* Revolved::executeRevolved(Part::RevolMode revolMode)
 {
+    try {
+        return tryExecuteRevolved(revolMode);
+    }
+    catch (const Standard_Failure& e) {
+        if (std::string(e.GetMessageString()) == "TopoDS::Face") {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Could not create face from sketch.\n"
+                "Intersecting sketch entities in a sketch are not allowed."
+            ));
+        }
+
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+    catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
+}
+
+App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revolMode)
+{
     if (onlyHaveRefined()) {
         return App::DocumentObject::StdReturn;
     }
@@ -91,6 +112,143 @@ App::DocumentObjectExecReturn* Revolved::executeRevolved(Part::RevolMode revolMo
     TopoShape sketchshape = getTopoShapeVerifiedFace();
 
     // if the Base property has a valid shape, fuse the AddShape into it
+    TopoShape base = tryGetBaseShape();
+
+    // update Axis from ReferenceAxis
+    updateAxis();
+
+    // get revolve axis
+    const Base::Vector3d v = Axis.getValue();
+    if (v.IsNull()) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Reference axis is invalid")
+        );
+    }
+
+    if (sketchshape.isNull()) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Creating a face from sketch failed")
+        );
+    }
+
+    const Base::Vector3d b = Base.getValue();
+    gp_Dir dir(v.x, v.y, v.z);
+    gp_Pnt pnt(b.x, b.y, b.z);
+    positionByPrevious();
+    auto invObjLoc = getLocation().Inverted();
+    pnt.Transform(invObjLoc.Transformation());
+    dir.Transform(invObjLoc.Transformation());
+    base.move(invObjLoc);
+    sketchshape.move(invObjLoc);
+
+    // Check distance between sketchshape and axis - to avoid failures and crashes
+    TopExp_Explorer xp;
+    xp.Init(sketchshape.getShape(), TopAbs_FACE);
+    for (; xp.More(); xp.Next()) {
+        if (checkLineCrossesFace(gp_Lin(pnt, dir), TopoDS::Face(xp.Current()))) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Revolve axis intersects the sketch")
+            );
+        }
+    }
+
+    // Create a fresh support even when base exists so that it can be used for patterns
+    TopoShape result(0);
+    TopoShape supportface = tryGetSupportShape();
+
+    supportface.move(invObjLoc);
+
+    if (method == RevolMethod::ToFirst) {
+        // TODO: Implement finding the first face this revolution would intersect with
+        return new App::DocumentObjectExecReturn("Up to first is not yet supported");
+    }
+
+    if (method == RevolMethod::ToFace) {
+        result = tryToRevolveToFace(invObjLoc, pnt, dir, base, supportface, sketchshape, revolMode);
+    }
+    else {
+        bool midplane = Midplane.getValue();
+        bool reversed = Reversed.getValue();
+        generateRevolution(result, sketchshape, gp_Ax1(pnt, dir), angle, angle2, midplane, reversed, method);
+    }
+
+    setResult(base, result);
+
+    // eventually disable some settings that are not valid for the current method
+    updateProperties(method);
+
+    return App::DocumentObject::StdReturn;
+}
+
+void Revolved::setResult(const TopoShape& base, const TopoShape& revolved)
+{
+    if (revolved.isNull()) {
+        throw Base::RuntimeError(QT_TRANSLATE_NOOP("Exception", "Could not revolve the sketch!"));
+    }
+    // store shape before refinement
+    this->rawShape = revolved;
+    TopoShape result = refineShapeIfActive(revolved);
+    // set the additive shape property for later usage in e.g. pattern
+    this->AddSubShape.setValue(result);
+
+    if (!base.isNull()) {
+        result = makeShape(base, result);
+        // store shape before refinement
+        this->rawShape = result;
+        result = refineShapeIfActive(result);
+    }
+    if (!isSingleSolidRuleSatisfied(result.getShape())) {
+        throw Base::RuntimeError(QT_TRANSLATE_NOOP(
+            "Exception",
+            "Result has multiple solids: enable 'Allow Compound' in the active body."
+        ));
+    }
+    result = getSolid(result);
+    this->Shape.setValue(result);
+}
+
+TopoShape Revolved::tryToRevolveToFace(
+    const TopLoc_Location& invObjLoc,
+    gp_Pnt pnt,
+    gp_Dir dir,
+    TopoShape& base,
+    TopoShape& supportface,
+    const TopoShape& sketchshape,
+    Part::RevolMode revolMode
+) const
+{
+    TopoShape upToFace;
+    getUpToFaceFromLinkSub(upToFace, UpToFace);
+    upToFace.move(invObjLoc);
+
+    if (Reversed.getValue()) {
+        dir.Reverse();
+    }
+
+    TopExp_Explorer Ex(supportface.getShape(), TopAbs_WIRE);
+    if (!Ex.More()) {
+        supportface = TopoDS_Face();
+    }
+
+    try {
+        return base.makeElementRevolution(
+            base,
+            TopoDS::Face(sketchshape.getShape()),
+            gp_Ax1(pnt, dir),
+            TopoDS::Face(supportface.getShape()),
+            TopoDS::Face(upToFace.getShape()),
+            nullptr,
+            revolMode,
+            Standard_True
+        );
+    }
+    catch (const Standard_Failure&) {
+        throw Base::RuntimeError("Could not revolve the sketch!");
+    }
+}
+
+TopoShape Revolved::tryGetBaseShape() const
+{
     TopoShape base;
     try {
         base = getBaseTopoShape();
@@ -99,162 +257,20 @@ App::DocumentObjectExecReturn* Revolved::executeRevolved(Part::RevolMode revolMo
         // fall back to support (for legacy features)
     }
 
-    // update Axis from ReferenceAxis
+    return base;
+}
+
+TopoShape Revolved::tryGetSupportShape() const
+{
+    TopoShape supportface(0);
     try {
-        updateAxis();
+        supportface = getSupportFace();
     }
-    catch (const Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
+    catch (...) {
+        // do nothing, null shape is handled later
     }
 
-    try {
-        // get revolve axis
-        Base::Vector3d b = Base.getValue();
-        gp_Pnt pnt(b.x, b.y, b.z);
-        Base::Vector3d v = Axis.getValue();
-
-        if (v.IsNull()) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Reference axis is invalid")
-            );
-        }
-
-        gp_Dir dir(v.x, v.y, v.z);
-
-        if (sketchshape.isNull()) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Creating a face from sketch failed")
-            );
-        }
-
-        this->positionByPrevious();
-        auto invObjLoc = getLocation().Inverted();
-        pnt.Transform(invObjLoc.Transformation());
-        dir.Transform(invObjLoc.Transformation());
-        base.move(invObjLoc);
-        sketchshape.move(invObjLoc);
-
-        // Check distance between sketchshape and axis - to avoid failures and crashes
-        TopExp_Explorer xp;
-        xp.Init(sketchshape.getShape(), TopAbs_FACE);
-        for (; xp.More(); xp.Next()) {
-            if (checkLineCrossesFace(gp_Lin(pnt, dir), TopoDS::Face(xp.Current()))) {
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Revolve axis intersects the sketch")
-                );
-            }
-        }
-
-        // Create a fresh support even when base exists so that it can be used for patterns
-        TopoShape result(0);
-        TopoShape supportface(0);
-        try {
-            supportface = getSupportFace();
-        }
-        catch (...) {
-            // do nothing, null shape is handle below
-        }
-
-        supportface.move(invObjLoc);
-
-        if (method == RevolMethod::ToFace || method == RevolMethod::ToFirst) {
-            TopoShape upToFace;
-            if (method == RevolMethod::ToFace) {
-                getUpToFaceFromLinkSub(upToFace, UpToFace);
-                upToFace.move(invObjLoc);
-            }
-            else {
-                // TODO: Implement finding the first face this revolution would intersect with
-                return new App::DocumentObjectExecReturn("Up to first is not yet supported");
-            }
-
-            if (Reversed.getValue()) {
-                dir.Reverse();
-            }
-
-            TopExp_Explorer Ex(supportface.getShape(), TopAbs_WIRE);
-            if (!Ex.More()) {
-                supportface = TopoDS_Face();
-            }
-
-            try {
-                result = base.makeElementRevolution(
-                    base,
-                    TopoDS::Face(sketchshape.getShape()),
-                    gp_Ax1(pnt, dir),
-                    TopoDS::Face(supportface.getShape()),
-                    TopoDS::Face(upToFace.getShape()),
-                    nullptr,
-                    revolMode,
-                    Standard_True
-                );
-            }
-            catch (Standard_Failure&) {
-                return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
-            }
-        }
-        else {
-            bool midplane = Midplane.getValue();
-            bool reversed = Reversed.getValue();
-            generateRevolution(
-                result,
-                sketchshape,
-                gp_Ax1(pnt, dir),
-                angle,
-                angle2,
-                midplane,
-                reversed,
-                method
-            );
-        }
-
-        if (!result.isNull()) {
-            // store shape before refinement
-            this->rawShape = result;
-            result = refineShapeIfActive(result);
-            // set the additive shape property for later usage in e.g. pattern
-            this->AddSubShape.setValue(result);
-
-            if (!base.isNull()) {
-                result = makeShape(base, result);
-                // store shape before refinement
-                this->rawShape = result;
-                result = refineShapeIfActive(result);
-            }
-            if (!isSingleSolidRuleSatisfied(result.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                    "Exception",
-                    "Result has multiple solids: enable 'Allow Compound' in the active body."
-                ));
-            }
-            result = getSolid(result);
-            this->Shape.setValue(result);
-        }
-        else {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Could not revolve the sketch!")
-            );
-        }
-
-        // eventually disable some settings that are not valid for the current method
-        updateProperties(method);
-
-        return App::DocumentObject::StdReturn;
-    }
-    catch (const Standard_Failure& e) {
-        if (std::string(e.GetMessageString()) == "TopoDS::Face") {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                "Exception",
-                "Could not create face from sketch.\n"
-                "Intersecting sketch entities in a sketch are not allowed."
-            ));
-        }
-
-        return new App::DocumentObjectExecReturn(e.GetMessageString());
-    }
-    catch (Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
+    return supportface;
 }
 
 bool Revolved::suggestReversed()
