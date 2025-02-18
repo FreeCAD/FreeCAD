@@ -69,7 +69,7 @@ class MaterialEditor:
         self.iconPath = (filePath + "Resources" + os.sep + "icons" + os.sep)
 
         # load the UI file from the same directory as this script
-        self.widget = FreeCADGui.PySideUic.loadUi(filePath + "Resources" + os.sep + "ui" + os.sep + "materials-editor.ui")
+        self.widget = FreeCADGui.PySideUic.loadUi(":/ui/materials-editor.ui")
         # remove unused Help button
         self.widget.setWindowFlags(self.widget.windowFlags()
                                    & ~QtCore.Qt.WindowContextHelpButtonHint)
@@ -107,7 +107,7 @@ class MaterialEditor:
         standardButtons.button(QtGui.QDialogButtonBox.Ok).setAutoDefault(False)
         standardButtons.button(QtGui.QDialogButtonBox.Cancel).setAutoDefault(False)
         self.updateCardsInCombo()
-        # TODO allow to enter a custom property by pressing Enter in the lineedit
+        # TODO allow one to enter a custom property by pressing Enter in the lineedit
         # currently closes the dialog
 
         standardButtons.rejected.connect(self.reject)
@@ -950,7 +950,7 @@ def openEditor(obj=None, prop=None):
     #     editor = MaterialEditor(obj, prop)
     #     editor.exec_()
     # else:
-    FreeCADGui.runCommand('Materials_Edit',0)
+    FreeCADGui.runCommand('Material_Edit',0)
 
 
 def editMaterial(material=None, card_path=None, category="Solid"):
@@ -980,7 +980,7 @@ import MaterialEditor
 MaterialEditor.openEditor()
 
 doc = FreeCAD.open(
-    FreeCAD.ConfigGet("AppHomePath") + "data/examples/FemCalculixCantilever3D.FCStd"
+    FreeCAD.ConfigGet("AppHomePath") + "data/examples/FEMExample.FCStd"
 )
 import MaterialEditor
 MaterialEditor.openEditor("SolidMaterial", "Material")

@@ -3,8 +3,10 @@
 #include <gtest/gtest.h>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <Standard_TypeMismatch.hxx>
+#include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
 #include <TopoDS_Vertex.hxx>
 
 // NOLINTBEGIN
@@ -32,6 +34,13 @@ TEST(TopoDS_Shape, TestCastNullEdge)
     TopoDS_Vertex vertex;
     EXPECT_NO_THROW(vertex = TopoDS::Vertex(edge));
     EXPECT_TRUE(vertex.IsNull());
+}
+
+TEST(TopoDS_Shape, TestExploreNullShape)
+{
+    TopoDS_Face face;
+    TopExp_Explorer xp(face, TopAbs_FACE);
+    EXPECT_FALSE(xp.More());
 }
 
 // clang-format on

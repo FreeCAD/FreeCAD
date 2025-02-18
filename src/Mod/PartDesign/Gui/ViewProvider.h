@@ -26,7 +26,7 @@
 
 #include <Mod/Part/Gui/ViewProvider.h>
 #include "ViewProviderBody.h"
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include "Gui/ViewProviderSuppressibleExtension.h"
 
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
@@ -54,6 +54,8 @@ public:
     bool doubleClicked() override;
     void updateData(const App::Property*) override;
     void onChanged(const App::Property* prop) override;
+
+    Gui::ViewProvider* startEditing(int ModNum) override;
 
     void setTipIcon(bool onoff);
 
@@ -93,7 +95,7 @@ protected:
     bool isSetTipIcon{false};
 };
 
-using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProvider>;
+using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProvider>;
 
 } // namespace PartDesignGui
 

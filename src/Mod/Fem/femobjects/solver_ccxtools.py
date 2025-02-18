@@ -36,13 +36,12 @@ from femsolver.calculix.solver import _BaseSolverCalculix
 
 
 class SolverCcxTools(base_fempythonobject.BaseFemPythonObject, _BaseSolverCalculix):
-    """The Fem::FemSolver's Proxy python type, add solver specific properties
-    """
+    """The Fem::FemSolver's Proxy python type, add solver specific properties"""
 
     Type = "Fem::SolverCcxTools"
 
     def __init__(self, obj):
-        super(SolverCcxTools, self).__init__(obj)
+        super().__init__(obj)
 
         # implemented in framework calculix solver module
         self.add_attributes(obj)
@@ -51,7 +50,7 @@ class SolverCcxTools(base_fempythonobject.BaseFemPythonObject, _BaseSolverCalcul
             "App::PropertyPath",
             "WorkingDir",
             "Fem",
-            "Working directory for calculations, will only be used it is left blank in preferences"
+            "Working directory for calculations, will only be used it is left blank in preferences",
         )
         obj.setPropertyStatus("WorkingDir", "LockDynamic")
         # the working directory is not set, the solver working directory is

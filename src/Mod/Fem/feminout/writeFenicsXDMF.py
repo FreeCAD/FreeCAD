@@ -44,12 +44,7 @@ from .importToolsFem import get_MaxDimElementFromList
 ENCODING_ASCII = "ASCII"
 ENCODING_HDF5 = "HDF5"
 
-FreeCAD_Group_Dimensions = {
-    "Vertex": 0,
-    "Edge": 1,
-    "Face": 2,
-    "Volume": 3
-}
+FreeCAD_Group_Dimensions = {"Vertex": 0, "Edge": 1, "Face": 2, "Volume": 3}
 
 FreeCAD_to_Fenics_XDMF_dict = {
     ("Node", 1): ("Polyvertex", 1),
@@ -58,16 +53,14 @@ FreeCAD_to_Fenics_XDMF_dict = {
     ("Triangle", 1): ("Triangle", 3),
     ("Triangle", 2): ("Tri_6", 6),
     ("Tetra", 1): ("Tetrahedron", 4),
-    ("Tetra", 2): ("Tet_10", 10)
+    ("Tetra", 2): ("Tet_10", 10),
 }
 
 # we need numpy functions to later access and process large data sets in a fast manner
 # also the hd5 support works better together with numpy
 
 
-def numpy_array_to_str(
-    npa
-):
+def numpy_array_to_str(npa):
     res = ""
     dt = str(npa.dtype)
     if "int" in dt:
@@ -77,27 +70,17 @@ def numpy_array_to_str(
     return res
 
 
-def points_to_numpy(
-    pts,
-    dim=3
-):
+def points_to_numpy(pts, dim=3):
     return np.array([[p.x, p.y, p.z] for p in pts])[:, :dim]
 
 
-def tuples_to_numpy(
-    tpls,
-    numbers_per_line
-):
+def tuples_to_numpy(tpls, numbers_per_line):
     return np.array([list(t) for t in tpls])[:, :numbers_per_line]
 
 
-def write_fenics_mesh_points_xdmf(
-    fem_mesh_obj,
-    geometrynode,
-    encoding=ENCODING_ASCII
-):
+def write_fenics_mesh_points_xdmf(fem_mesh_obj, geometrynode, encoding=ENCODING_ASCII):
     """
-        Writes either into hdf5 file or into open mesh file
+    Writes either into hdf5 file or into open mesh file
     """
 
     numnodes = fem_mesh_obj.FemMesh.NodeCount
@@ -114,13 +97,10 @@ def write_fenics_mesh_points_xdmf(
 
     if encoding == ENCODING_ASCII:
         dataitem = ET.SubElement(
-            geometrynode,
-            "DataItem",
-            Dimensions="%d %d" % (numnodes, effective_dim),
-            Format="XML"
+            geometrynode, "DataItem", Dimensions="%d %d" % (numnodes, effective_dim), Format="XML"
         )
         nodes = []
-        for (ind, (key, node)) in enumerate(list(fem_mesh_obj.FemMesh.Nodes.items())):
+        for ind, (key, node) in enumerate(list(fem_mesh_obj.FemMesh.Nodes.items())):
             nodes.append(node)
             recalc_nodes_ind_dict[key] = ind
 
@@ -132,11 +112,7 @@ def write_fenics_mesh_points_xdmf(
 
 
 def write_fenics_mesh_codim_xdmf(
-    fem_mesh_obj,
-    topologynode,
-    nodes_dict,
-    codim=0,
-    encoding=ENCODING_ASCII
+    fem_mesh_obj, topologynode, nodes_dict, codim=0, encoding=ENCODING_ASCII
 ):
     mesh_dimension = get_FemMeshObjectDimension(fem_mesh_obj)
 
@@ -151,7 +127,7 @@ def write_fenics_mesh_codim_xdmf(
     writeout_element_dimension = mesh_dimension - codim
 
     (num_topo, name_topo, dim_topo) = (0, "", 0)
-    for (num, name, dim) in element_types:
+    for num, name, dim in element_types:
         if writeout_element_dimension == dim:
             (num_topo, name_topo, dim_topo) = (num, name, dim)
 
@@ -171,19 +147,22 @@ def write_fenics_mesh_codim_xdmf(
         fc_topo = fem_mesh_obj.FemMesh.Nodes
     else:
         fc_topo = []
-        Console.PrintError("Dimension of mesh incompatible with export" +
-                           f" XDMF function: {dim_topo}\n")
+        Console.PrintError(
+            "Dimension of mesh incompatible with export" + f" XDMF function: {dim_topo}\n"
+        )
 
-    nodeindices = [(
-        nodes_dict[ind] for ind in fem_mesh_obj.FemMesh.getElementNodes(fc_topo_ind)
-    ) for (fen_ind, fc_topo_ind) in enumerate(fc_topo)]
+    nodeindices = [
+        (nodes_dict[ind] for ind in fem_mesh_obj.FemMesh.getElementNodes(fc_topo_ind))
+        for (fen_ind, fc_topo_ind) in enumerate(fc_topo)
+    ]
 
     if encoding == ENCODING_ASCII:
         dataitem = ET.SubElement(
-            topologynode, "DataItem",
+            topologynode,
+            "DataItem",
             NumberType="UInt",
             Dimensions="%d %d" % (num_topo, nodes_per_element),
-            Format="XML"
+            Format="XML",
         )
         dataitem.text = numpy_array_to_str(tuples_to_numpy(nodeindices, nodes_per_element))
     elif encoding == ENCODING_HDF5:
@@ -193,9 +172,7 @@ def write_fenics_mesh_codim_xdmf(
 
 
 def write_fenics_mesh_scalar_cellfunctions(
-    name, cell_array,
-    attributenode,
-    encoding=ENCODING_ASCII
+    name, cell_array, attributenode, encoding=ENCODING_ASCII
 ):
     attributenode.set("AttributeType", "Scalar")
     attributenode.set("Center", "Cell")
@@ -205,9 +182,7 @@ def write_fenics_mesh_scalar_cellfunctions(
 
     if encoding == ENCODING_ASCII:
         dataitem = ET.SubElement(
-            attributenode, "DataItem",
-            Dimensions="%d %d" % (num_cells, num_dims),
-            Format="XML"
+            attributenode, "DataItem", Dimensions="%d %d" % (num_cells, num_dims), Format="XML"
         )
         dataitem.text = numpy_array_to_str(cell_array)
     elif encoding == ENCODING_HDF5:
@@ -253,14 +228,9 @@ Example: mesh with two topologies and one mesh function for the facet one
 """
 
 
-def write_fenics_mesh_xdmf(
-    fem_mesh_obj,
-    outputfile,
-    group_values_dict={},
-    encoding=ENCODING_ASCII
-):
+def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, group_values_dict={}, encoding=ENCODING_ASCII):
     """
-        For the export of xdmf.
+    For the export of xdmf.
     """
 
     Console.PrintMessage(f"Converting {fem_mesh_obj.Label} to fenics XDMF File\n")
@@ -283,16 +253,9 @@ def write_fenics_mesh_xdmf(
 
     # ***********************************
     # write base topo and geometry
-    nodes_dict = write_fenics_mesh_points_xdmf(
-        fem_mesh_obj,
-        base_geometry,
-        encoding=encoding
-    )
+    nodes_dict = write_fenics_mesh_points_xdmf(fem_mesh_obj, base_geometry, encoding=encoding)
     write_fenics_mesh_codim_xdmf(
-        fem_mesh_obj, base_topology,
-        nodes_dict,
-        codim=0,
-        encoding=encoding
+        fem_mesh_obj, base_topology, nodes_dict, codim=0, encoding=encoding
     )
     # ***********************************
 
@@ -307,14 +270,14 @@ def write_fenics_mesh_xdmf(
         mesh_function_codim = dim_cell - FreeCAD_Group_Dimensions[mesh_function_type]
         mesh_function_name = fem_mesh.getGroupName(g)
 
-        Console.PrintMessage(f"group id: {g} (label: {mesh_function_name})" +
-                             f" with element type {mesh_function_type} and" +
-                             " codim {mesh_function_codim}\n")
+        Console.PrintMessage(
+            f"group id: {g} (label: {mesh_function_name})"
+            + f" with element type {mesh_function_type} and"
+            + " codim {mesh_function_codim}\n"
+        )
 
         mesh_function_grid = ET.SubElement(
-            domain, "Grid",
-            Name=mesh_function_name + "_mesh",
-            GridType="Uniform"
+            domain, "Grid", Name=mesh_function_name + "_mesh", GridType="Uniform"
         )
         mesh_function_topology = ET.SubElement(mesh_function_grid, "Topology")
 
@@ -322,11 +285,11 @@ def write_fenics_mesh_xdmf(
             fem_mesh_obj,
             mesh_function_topology,
             nodes_dict,
-            codim=mesh_function_codim, encoding=encoding
+            codim=mesh_function_codim,
+            encoding=encoding,
         )
 
-        mesh_function_geometry = ET.SubElement(mesh_function_grid, "Geometry",
-                                               Reference="XML")
+        mesh_function_geometry = ET.SubElement(mesh_function_grid, "Geometry", Reference="XML")
         mesh_function_geometry.text = "/Xdmf/Domain/Grid/Geometry"
         mesh_function_attribute = ET.SubElement(mesh_function_grid, "Attribute")
 
@@ -341,21 +304,18 @@ def write_fenics_mesh_xdmf(
         for e in fem_mesh.getGroupElements(g):
             elem_dict[e] = elem_mark_group
 
-        val_array = np.array([
-            elem_dict.get(e, elem_mark_default) for e in mesh_function_topology_description
-        ])
+        val_array = np.array(
+            [elem_dict.get(e, elem_mark_default) for e in mesh_function_topology_description]
+        )
         topo_array = np.vstack((val_array,)).T
         write_fenics_mesh_scalar_cellfunctions(
-            mesh_function_name,
-            topo_array,
-            mesh_function_attribute,
-            encoding=ENCODING_ASCII
+            mesh_function_name, topo_array, mesh_function_attribute, encoding=ENCODING_ASCII
         )
 
     # TODO: improve cell functions support
 
     fp = open(outputfile, "wb")
-    fp.write(b'''<?xml version="1.0"?>\n<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>\n''')
+    fp.write(b"""<?xml version="1.0"?>\n<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>\n""")
     fp.write(ET.tostring(root))
     # xml core functionality does not support pretty printing
     # so the output file looks quite ugly

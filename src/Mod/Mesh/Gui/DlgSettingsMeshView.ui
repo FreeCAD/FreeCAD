@@ -248,7 +248,7 @@
         <item row="3" column="0">
          <widget class="Gui::PrefCheckBox" name="checkboxRendering">
           <property name="toolTip">
-           <string>The bottom side of surface will be rendered the same way than top side.
+           <string>The bottom side of the surface will be rendered the same way as the top side.
 If not checked, it depends on the option &quot;Enable backlight color&quot;
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</string>
@@ -335,7 +335,7 @@ will be used or black.</string>
 Shading defines the appearance of surfaces.
 
 With flat shading the surface normals are not defined per vertex that leads
-to a unreal appearance for curved surfaces while using Phong shading leads
+to an unreal appearance for curved surfaces while using Phong shading leads
 to a smoother appearance.
 </string>
         </property>

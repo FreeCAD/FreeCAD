@@ -35,6 +35,10 @@
 # endif
 # include <boost/program_options.hpp>
 # include <boost/date_time/posix_time/posix_time.hpp>
+# include <boost/scope_exit.hpp>
+# include <chrono>
+# include <random>
+# include <fmt/format.h>
 #endif
 
 #ifdef FC_OS_WIN32
@@ -47,6 +51,7 @@
 #include <sys/sysctl.h>
 #endif
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QProcessEnvironment>
@@ -60,6 +65,7 @@
 #include <Base/BaseClass.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/ConsoleObserver.h>
+#include <Base/ServiceProvider.h>
 #include <Base/CoordinateSystemPy.h>
 #include <Base/Exception.h>
 #include <Base/ExceptionFactory.h>
@@ -86,6 +92,7 @@
 #include "Application.h"
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
+#include "Services.h"
 #include "DocumentObjectFileIncluded.h"
 #include "DocumentObjectGroup.h"
 #include "DocumentObjectGroupPy.h"
@@ -104,13 +111,13 @@
 #include "MaterialObject.h"
 #include "MeasureManagerPy.h"
 #include "Origin.h"
-#include "OriginFeature.h"
+#include "Datums.h"
 #include "OriginGroupExtension.h"
 #include "OriginGroupExtensionPy.h"
 #include "SuppressibleExtension.h"
 #include "SuppressibleExtensionPy.h"
 #include "Part.h"
-#include "PartPy.h"
+#include "GeoFeaturePy.h"
 #include "Placement.h"
 #include "ProgramOptionsUtilities.h"
 #include "Property.h"
@@ -136,6 +143,8 @@
 #include <App/InitScript.h>
 #include <App/TestScript.h>
 #include <App/CMakeScript.h>
+
+#include "SafeMode.h"
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
 # pragma warning( disable : 4535 )
@@ -330,7 +339,6 @@ void Application::setupPythonTypes()
     Base::Interpreter().addType(&App::DocumentObjectPy::Type, pAppModule, "DocumentObject");
     Base::Interpreter().addType(&App::DocumentObjectGroupPy::Type, pAppModule, "DocumentObjectGroup");
     Base::Interpreter().addType(&App::GeoFeaturePy::Type, pAppModule, "GeoFeature");
-    Base::Interpreter().addType(&App::PartPy::Type, pAppModule, "Part");
 
     // Add extension types
     Base::Interpreter().addType(&App::ExtensionPy::Type, pAppModule, "Extension");
@@ -424,6 +432,14 @@ void Application::setupPythonException(PyObject* module)
     Base::PyExc_FC_CADKernelError = PyErr_NewException("Base.CADKernelError", Base::PyExc_FC_GeneralError, nullptr);
     Py_INCREF(Base::PyExc_FC_CADKernelError);
     PyModule_AddObject(module, "CADKernelError", Base::PyExc_FC_CADKernelError);
+
+    Base::PyExc_FC_PropertyError = PyErr_NewException("Base.PropertyError", PyExc_AttributeError, nullptr);
+    Py_INCREF(Base::PyExc_FC_PropertyError);
+    PyModule_AddObject(module, "PropertyError", Base::PyExc_FC_PropertyError);
+
+    Base::PyExc_FC_AbortIOException = PyErr_NewException("Base.PyExc_FC_AbortIOException", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_AbortIOException);
+    PyModule_AddObject(module, "AbortIOException", Base::PyExc_FC_AbortIOException);
 }
 // clang-format on
 
@@ -438,7 +454,7 @@ void Application::renameDocument(const char *OldName, const char *NewName)
     throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
 }
 
-Document* Application::newDocument(const char * Name, const char * UserName, bool createView, bool tempDoc)
+Document* Application::newDocument(const char * Name, const char * UserName, DocumentCreateFlags CreateFlags)
 {
     auto getNameAndLabel = [this](const char * Name, const char * UserName) -> std::tuple<std::string, std::string> {
         bool defaultName = (!Name || Name[0] == '\0');
@@ -472,10 +488,10 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     auto tuple = getNameAndLabel(Name, UserName);
     std::string name = std::get<0>(tuple);
     std::string userName = std::get<1>(tuple);
-    name = getUniqueDocumentName(name.c_str(), tempDoc);
+    name = getUniqueDocumentName(name.c_str(), CreateFlags.temporary);
 
     // return the temporary document if it exists
-    if (tempDoc) {
+    if (CreateFlags.temporary) {
         auto it = DocMap.find(name);
         if (it != DocMap.end() && it->second->testStatus(Document::TempDoc))
             return it->second;
@@ -483,7 +499,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
 
     // create the FreeCAD document
     std::unique_ptr<Document> newDoc(new Document(name.c_str()));
-    newDoc->setStatus(Document::TempDoc, tempDoc);
+    newDoc->setStatus(Document::TempDoc, CreateFlags.temporary);
 
     auto oldActiveDoc = _pActiveDoc;
     auto doc = newDoc.release(); // now owned by the Application
@@ -524,13 +540,13 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
         Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"), active);
     }
 
-    signalNewDocument(*_pActiveDoc, createView);
+    signalNewDocument(*_pActiveDoc, CreateFlags.createView);
 
     // set the UserName after notifying all observers
     _pActiveDoc->Label.setValue(userName);
 
     // set the old document active again if the new is temporary
-    if (tempDoc && oldActiveDoc)
+    if (CreateFlags.temporary && oldActiveDoc)
         setActiveDocument(oldActiveDoc);
 
     return doc;
@@ -686,9 +702,9 @@ public:
     }
 };
 
-Document* Application::openDocument(const char * FileName, bool createView) {
+Document* Application::openDocument(const char * FileName, DocumentCreateFlags createFlags) {
     std::vector<std::string> filenames(1,FileName);
-    auto docs = openDocuments(filenames, nullptr, nullptr, nullptr, createView);
+    auto docs = openDocuments(filenames, nullptr, nullptr, nullptr, createFlags);
     if(!docs.empty())
         return docs.front();
     return nullptr;
@@ -733,7 +749,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                                                   const std::vector<std::string> *paths,
                                                   const std::vector<std::string> *labels,
                                                   std::vector<std::string> *errs,
-                                                  bool createView)
+                                                  DocumentCreateFlags createFlags)
 {
     std::vector<Document*> res(filenames.size(), nullptr);
     if (filenames.empty())
@@ -797,7 +813,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                         label = (*labels)[count].c_str();
                 }
 
-                auto doc = openDocumentPrivate(path, name.c_str(), label, isMainDoc, createView, std::move(objNames));
+                auto doc = openDocumentPrivate(path, name.c_str(), label, isMainDoc, createFlags, std::move(objNames));
                 FC_DURATION_PLUS(timing.d1,t1);
                 if (doc) {
                     timings[doc].d1 += timing.d1;
@@ -936,7 +952,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
 Document* Application::openDocumentPrivate(const char * FileName,
         const char *propFileName, const char *label,
-        bool isMainDoc, bool createView,
+        bool isMainDoc, DocumentCreateFlags createFlags,
         std::vector<std::string> &&objNames)
 {
     FileInfo File(FileName);
@@ -1007,8 +1023,8 @@ Document* Application::openDocumentPrivate(const char * FileName,
     // to only contain valid ASCII characters but the user name will be kept.
     if(!label)
         label = name.c_str();
-    Document* newDoc = newDocument(name.c_str(),label,isMainDoc && createView);
 
+    Document* newDoc = newDocument(name.c_str(), label, createFlags);
     newDoc->FileName.setValue(propFileName==FileName?File.filePath():propFileName);
 
     try {
@@ -1105,6 +1121,21 @@ Application::TransactionSignaller::~TransactionSignaller() {
     }
 }
 
+int64_t Application::applicationPid()
+{
+    static int64_t randomNumber = []() {
+        auto tp = std::chrono::high_resolution_clock::now();
+        auto dur = tp.time_since_epoch();
+        auto seed = dur.count();
+        std::mt19937 generator(static_cast<unsigned>(seed));
+        constexpr int64_t minValue {1};
+        constexpr int64_t maxValue {1000000};
+        std::uniform_int_distribution<int64_t> distribution(minValue, maxValue);
+        return distribution(generator);
+    }();
+    return randomNumber;
+}
+
 std::string Application::getHomePath()
 {
     return mConfig["AppHomePath"];
@@ -1113,6 +1144,17 @@ std::string Application::getHomePath()
 std::string Application::getExecutableName()
 {
     return mConfig["ExeName"];
+}
+
+std::string Application::getNameWithVersion()
+{
+    auto appname = QCoreApplication::applicationName().toStdString();
+    auto config = App::Application::Config();
+    auto major = config["BuildVersionMajor"];
+    auto minor = config["BuildVersionMinor"];
+    auto point = config["BuildVersionPoint"];
+    auto suffix = config["BuildVersionSuffix"];
+    return fmt::format("{} {}.{}.{}{}", appname, major, minor, point, suffix);
 }
 
 std::string Application::getTempPath()
@@ -1735,6 +1777,7 @@ void Application::destruct()
     Base::InterpreterSingleton::Destruct();
     Base::Type::destruct();
     ParameterManager::Terminate();
+    SafeMode::Destruct();
 }
 
 void Application::destructObserver()
@@ -1987,6 +2030,7 @@ void Application::initTypes()
     App::PropertyLinkSubListHidden  ::init();
     App::PropertyXLink              ::init();
     App::PropertyXLinkSub           ::init();
+    App::PropertyXLinkSubHidden     ::init();
     App::PropertyXLinkSubList       ::init();
     App::PropertyXLinkList          ::init();
     App::PropertyXLinkContainer     ::init();
@@ -2029,8 +2073,10 @@ void Application::initTypes()
     App::PropertyElectricalInductance       ::init();
     App::PropertyElectricalResistance       ::init();
     App::PropertyElectricCharge             ::init();
+    App::PropertySurfaceChargeDensity       ::init();
     App::PropertyElectricCurrent            ::init();
     App::PropertyElectricPotential          ::init();
+    App::PropertyElectromagneticPotential   ::init();
     App::PropertyFrequency                  ::init();
     App::PropertyForce                      ::init();
     App::PropertyHeatFlux                   ::init();
@@ -2118,9 +2164,11 @@ void Application::initTypes()
     App::TextDocument              ::init();
     App::Placement                 ::init();
     App::PlacementPython           ::init();
-    App::OriginFeature             ::init();
+    App::DatumElement              ::init();
     App::Plane                     ::init();
     App::Line                      ::init();
+    App::Point                     ::init();
+    App::LocalCoordinateSystem     ::init();
     App::Part                      ::init();
     App::Origin                    ::init();
     App::Link                      ::init();
@@ -2184,6 +2232,9 @@ void Application::initTypes()
     new Base::ExceptionProducer<Base::UnitsMismatchError>;
     new Base::ExceptionProducer<Base::CADKernelError>;
     new Base::ExceptionProducer<Base::RestoreError>;
+    new Base::ExceptionProducer<Base::PropertyError>;
+
+    Base::registerServiceImplementation<CenterOfMassProvider>(new NullCenterOfMass);
 }
 
 namespace {
@@ -2217,9 +2268,13 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("user-cfg,u", value<string>(),"User config file to load/save user settings")
     ("system-cfg,s", value<string>(),"System config file to load/save system settings")
     ("run-test,t", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.")
+    ("run-open,r", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
+    ("macro-path,E", value< vector<string> >()->composing(),"Additional macro paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
+    ("disable-addon", value< vector<string> >()->composing(),"Disable a given addon.")
     ("single-instance", "Allow to run a single instance of the application")
+    ("safe-mode", "Force enable safe mode")
     ("pass", value< vector<string> >()->multitoken(), "Ignores the following arguments and pass them through to be used by a script")
     ;
 
@@ -2258,7 +2313,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
 #endif
     ;
 
-   
+
     //0000723: improper handling of qt specific command line arguments
     std::vector<std::string> args;
     bool merge=false;
@@ -2379,11 +2434,6 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         throw Base::ProgramInformation(str.str());
     }
 
-    if (vm.count("console")) {
-        mConfig["Console"] = "1";
-        mConfig["RunMode"] = "Cmd";
-    }
-
     if (vm.count("module-path")) {
         vector<string> Mods = vm["module-path"].as< vector<string> >();
         string temp;
@@ -2393,10 +2443,29 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["AdditionalModulePaths"] = temp;
     }
 
+    if (vm.count("macro-path")) {
+        vector<string> Macros = vm["macro-path"].as< vector<string> >();
+        string temp;
+        for (const auto & It : Macros)
+            temp += It + ";";
+        temp.erase(temp.end()-1);
+        mConfig["AdditionalMacroPaths"] = temp;
+    }
+
     if (vm.count("python-path")) {
         vector<string> Paths = vm["python-path"].as< vector<string> >();
         for (const auto & It : Paths)
             Base::Interpreter().addPythonPath(It.c_str());
+    }
+
+    if (vm.count("disable-addon")) {
+        auto Addons = vm["disable-addon"].as< vector<string> >();
+        string temp;
+        for (const auto & It : Addons) {
+            temp += It + ";";
+        }
+        temp.erase(temp.end()-1);
+        mConfig["DisabledAddons"] = temp;
     }
 
     if (vm.count("input-file")) {
@@ -2441,8 +2510,9 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["SystemParameter"] = vm["system-cfg"].as<string>();
     }
 
-    if (vm.count("run-test")) {
-        string testCase = vm["run-test"].as<string>();
+    if (vm.count("run-test") || vm.count("run-open")) {
+        string testCase = vm.count("run-open") ? vm["run-open"].as<string>() : vm["run-test"].as<string>();
+
         if ( "0" == testCase) {
             testCase = "TestApp.All";
         }
@@ -2452,6 +2522,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["TestCase"] = testCase;
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
+        mConfig["ExitTests"] = vm.count("run-open") == 0  ? "yes" : "no";
     }
 
     if (vm.count("single-instance")) {
@@ -2528,7 +2599,7 @@ void Application::initConfig(int argc, char ** argv)
     // Now it's time to read-in the file branding.xml if it exists
     Branding brand;
     QString binDir = QString::fromUtf8((mConfig["AppHomePath"] + "bin").c_str());
-    QFileInfo fi(binDir, QString::fromLatin1("branding.xml"));
+    QFileInfo fi(binDir, QStringLiteral("branding.xml"));
     if (fi.exists() && brand.readFile(fi.absoluteFilePath())) {
         Branding::XmlConfig cfg = brand.getUserDefines();
         for (Branding::XmlConfig::iterator it = cfg.begin(); it != cfg.end(); ++it) {
@@ -2537,7 +2608,17 @@ void Application::initConfig(int argc, char ** argv)
     }
 
     variables_map vm;
-    parseProgramOptions(argc, argv, mConfig["ExeName"], vm);
+    {
+        BOOST_SCOPE_EXIT_ALL(&) {
+            // console-mode needs to be set (if possible) also in case parseProgramOptions
+            // throws, as it's needed when reporting such exceptions
+            if (vm.count("console")) {
+                mConfig["Console"] = "1";
+                mConfig["RunMode"] = "Cmd";
+            }
+        };
+        parseProgramOptions(argc, argv, mConfig["ExeName"], vm);
+    }
 
     if (vm.count("keep-deprecated-paths")) {
         mConfig["KeepDeprecatedPaths"] = "1";
@@ -2545,6 +2626,10 @@ void Application::initConfig(int argc, char ** argv)
 
     // extract home paths
     ExtractUserPath();
+
+    if (vm.count("safe-mode")) {
+        SafeMode::StartSafeMode();
+    }
 
 #   ifdef FC_DEBUG
     mConfig["Debug"] = "1";
@@ -2633,6 +2718,12 @@ void Application::initConfig(int argc, char ** argv)
                               mConfig["BuildVersionPoint"].c_str(),
                               mConfig["BuildVersionSuffix"].c_str(),
                               mConfig["BuildRevision"].c_str());
+
+        if (SafeMode::SafeModeEnabled()) {
+            Base::Console().Message("FreeCAD is running in _SAFE_MODE_.\n"
+                                    "Safe mode temporarily disables your configurations and "
+                                    "addons. Restart the application to exit safe mode.\n\n");
+        }
     }
     LoadParameters();
 
@@ -3005,7 +3096,7 @@ void Application::LoadParameters()
     }
 }
 
-#if defined(_MSC_VER) && BOOST_VERSION < 108300
+#if defined(_MSC_VER) && BOOST_VERSION < 108200
     // fix weird error while linking boost (all versions of VC)
     // VS2010: https://forum.freecad.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
     namespace boost { namespace program_options { std::string arg="arg"; } }
@@ -3064,7 +3155,7 @@ QString getOldGenericDataLocation(QString home)
         return QString::fromStdString(converter.to_bytes(szPath));
     }
 #elif defined(FC_OS_MACOSX)
-    QFileInfo fi(home, QString::fromLatin1("Library/Preferences"));
+    QFileInfo fi(home, QStringLiteral("Library/Preferences"));
     home = fi.absoluteFilePath();
 #endif
 
@@ -3130,7 +3221,7 @@ QString findUserHomePath(const QString& userHome)
  * Returns the path where to store application files to.
  * If \a customHome is not empty it will be used, otherwise a path starting from \a stdHome will be used.
  */
-boost::filesystem::path findPath(const QString& stdHome, const QString& customHome,
+std::filesystem::path findPath(const QString& stdHome, const QString& customHome,
                                  const std::vector<std::string>& paths, bool create)
 {
     QString dataPath = customHome;
@@ -3138,7 +3229,7 @@ boost::filesystem::path findPath(const QString& stdHome, const QString& customHo
         dataPath = stdHome;
     }
 
-    boost::filesystem::path appData(Base::FileInfo::stringToPath(dataPath.toStdString()));
+    std::filesystem::path appData(Base::FileInfo::stringToPath(dataPath.toStdString()));
 
     // If a custom user home path is given then don't modify it
     if (customHome.isEmpty()) {
@@ -3147,10 +3238,10 @@ boost::filesystem::path findPath(const QString& stdHome, const QString& customHo
     }
 
     // In order to write to our data path, we must create some directories, first.
-    if (create && !boost::filesystem::exists(appData) && !Py_IsInitialized()) {
+    if (create && !std::filesystem::exists(appData) && !Py_IsInitialized()) {
         try {
-            boost::filesystem::create_directories(appData);
-        } catch (const boost::filesystem::filesystem_error& e) {
+            std::filesystem::create_directories(appData);
+        } catch (const std::filesystem::filesystem_error& e) {
             throw Base::FileSystemError("Could not create directories. Failed with: " + e.code().message());
         }
     }
@@ -3171,9 +3262,9 @@ boost::filesystem::path findPath(const QString& stdHome, const QString& customHo
 std::tuple<QString, QString, QString> getCustomPaths()
 {
     QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
-    QString userHome = env.value(QString::fromLatin1("FREECAD_USER_HOME"));
-    QString userData = env.value(QString::fromLatin1("FREECAD_USER_DATA"));
-    QString userTemp = env.value(QString::fromLatin1("FREECAD_USER_TEMP"));
+    QString userHome = env.value(QStringLiteral("FREECAD_USER_HOME"));
+    QString userData = env.value(QStringLiteral("FREECAD_USER_DATA"));
+    QString userTemp = env.value(QStringLiteral("FREECAD_USER_TEMP"));
 
     auto toNativePath = [](QString& path) {
         if (!path.isEmpty()) {
@@ -3198,8 +3289,8 @@ std::tuple<QString, QString, QString> getCustomPaths()
     // if FREECAD_USER_HOME is set but not FREECAD_USER_TEMP
     if (!userHome.isEmpty() && userTemp.isEmpty()) {
         QDir dir(userHome);
-        dir.mkdir(QString::fromLatin1("temp"));
-        QFileInfo fi(dir, QString::fromLatin1("temp"));
+        dir.mkdir(QStringLiteral("temp"));
+        QFileInfo fi(dir, QStringLiteral("temp"));
         userTemp = fi.absoluteFilePath();
     }
 
@@ -3282,13 +3373,13 @@ void Application::ExtractUserPath()
 
     // User data path
     //
-    boost::filesystem::path data = findPath(dataHome, customData, subdirs, true);
+    std::filesystem::path data = findPath(dataHome, customData, subdirs, true);
     mConfig["UserAppData"] = Base::FileInfo::pathToString(data) + PATHSEP;
 
 
     // User config path
     //
-    boost::filesystem::path config = findPath(configHome, customHome, subdirs, true);
+    std::filesystem::path config = findPath(configHome, customHome, subdirs, true);
     mConfig["UserConfigPath"] = Base::FileInfo::pathToString(config) + PATHSEP;
 
 
@@ -3296,14 +3387,14 @@ void Application::ExtractUserPath()
     //
     std::vector<std::string> cachedirs = subdirs;
     cachedirs.emplace_back("Cache");
-    boost::filesystem::path cache = findPath(cacheHome, customTemp, cachedirs, true);
+    std::filesystem::path cache = findPath(cacheHome, customTemp, cachedirs, true);
     mConfig["UserCachePath"] = Base::FileInfo::pathToString(cache) + PATHSEP;
 
 
     // Set application tmp. directory
     //
     std::vector<std::string> empty;
-    boost::filesystem::path tmp = findPath(tempPath, customTemp, empty, true);
+    std::filesystem::path tmp = findPath(tempPath, customTemp, empty, true);
     mConfig["AppTempPath"] = Base::FileInfo::pathToString(tmp) + PATHSEP;
 
 
@@ -3311,11 +3402,50 @@ void Application::ExtractUserPath()
     //
     std::vector<std::string> macrodirs = subdirs;
     macrodirs.emplace_back("Macro");
-    boost::filesystem::path macro = findPath(dataHome, customData, macrodirs, true);
+    std::filesystem::path macro = findPath(dataHome, customData, macrodirs, true);
     mConfig["UserMacroPath"] = Base::FileInfo::pathToString(macro) + PATHSEP;
 }
 
-#if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
+// TODO: Consider using this for all UNIX-like OSes
+#if defined(__OpenBSD__)
+#include <cstdio>
+#include <cstdlib>
+#include <sys/param.h>
+#include <QCoreApplication>
+
+std::string Application::FindHomePath(const char* sCall)
+{
+    // We have three ways to start this application either use one of the two executables or
+    // import the FreeCAD.so module from a running Python session. In the latter case the
+    // Python interpreter is already initialized.
+    std::string absPath;
+    std::string homePath;
+    if (Py_IsInitialized()) {
+        // Note: realpath is known to cause a buffer overflow because it
+        // expands the given path to an absolute path of unknown length.
+        // Even setting PATH_MAX does not necessarily solve the problem
+        // for sure but the risk of overflow is rather small.
+        char resolved[PATH_MAX];
+        char* path = realpath(sCall, resolved);
+        if (path)
+            absPath = path;
+    }
+    else {
+        int argc = 1;
+        QCoreApplication app(argc, (char**)(&sCall));
+        absPath = QCoreApplication::applicationFilePath().toStdString();
+    }
+
+    // should be an absolute path now
+    std::string::size_type pos = absPath.find_last_of("/");
+    homePath.assign(absPath,0,pos);
+    pos = homePath.find_last_of("/");
+    homePath.assign(homePath,0,pos+1);
+
+    return homePath;
+}
+
+#elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
 #include <cstdio>
 #include <cstdlib>
 #include <sys/param.h>

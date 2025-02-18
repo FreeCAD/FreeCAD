@@ -33,7 +33,7 @@
 #include <App/Color.h>
 
 #include "NaviCube.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "SoFCSelectionAction.h"
 #include "View3DSettings.h"
 #include "View3DInventorViewer.h"
@@ -86,6 +86,9 @@ void View3DSettings::applySettings()
     OnChange(*hGrp,"UseBackgroundColorMid");
     OnChange(*hGrp,"ShowFPS");
     OnChange(*hGrp,"ShowNaviCube");
+    OnChange(*hGrp,"AxisXColor");
+    OnChange(*hGrp,"AxisYColor");
+    OnChange(*hGrp,"AxisZColor");
     OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"RenderCache");
     OnChange(*hGrp,"Orthographic");
@@ -129,9 +132,11 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"HeadlightDirection") == 0) {
         try {
             std::string pos = rGrp.GetASCII("HeadlightDirection");
-            Base::Vector3f dir = Base::to_vector(pos);
-            for (auto _viewer : _viewers) {
-                _viewer->getHeadlight()->direction.setValue(dir.x, dir.y, dir.z);
+            if (!pos.empty()) {
+                Base::Vector3f dir = Base::to_vector(pos);
+                for (auto _viewer : _viewers) {
+                    _viewer->getHeadlight()->direction.setValue(dir.x, dir.y, dir.z);
+                }
             }
         }
         catch (const std::exception&) {
@@ -161,9 +166,11 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"BacklightDirection") == 0) {
         try {
             std::string pos = rGrp.GetASCII("BacklightDirection");
-            Base::Vector3f dir = Base::to_vector(pos);
-            for (auto _viewer : _viewers) {
-                _viewer->getBacklight()->direction.setValue(dir.x, dir.y, dir.z);
+            if (!pos.empty()) {
+                Base::Vector3f dir = Base::to_vector(pos);
+                for (auto _viewer : _viewers) {
+                    _viewer->getBacklight()->direction.setValue(dir.x, dir.y, dir.z);
+                }
             }
         }
         catch (const std::exception&) {
@@ -178,7 +185,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"EnablePreselection") == 0) {
         const ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
-        SoFCEnableHighlightAction cAct(rclGrp.GetBool("EnablePreselection", true));
+        SoFCEnablePreselectionAction cAct(rclGrp.GetBool("EnablePreselection", true));
         for (auto _viewer : _viewers) {
             cAct.apply(_viewer->getSceneGraph());
         }
@@ -335,6 +342,11 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"ShowNaviCube") == 0) {
         for (auto _viewer : _viewers) {
             _viewer->setEnabledNaviCube(rGrp.GetBool("ShowNaviCube", true));
+        }
+    }
+    else if (strcmp(Reason,"AxisXColor") == 0 || strcmp(Reason,"AxisYColor") == 0 || strcmp(Reason,"AxisZColor") == 0) {
+        for (auto _viewer : _viewers) {
+            _viewer->updateColors();
         }
     }
     else if (strcmp(Reason,"UseVBO") == 0) {

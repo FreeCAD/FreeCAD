@@ -27,6 +27,7 @@
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoTransform.h>
+# include <Inventor/nodes/SoSwitch.h>
 #endif // _PreComp_
 
 #include <Gui/Application.h>
@@ -60,13 +61,17 @@ EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
     , function(Function::Positioning)
 {
     // NOLINTBEGIN
-    root = new SoAnnotation;
+    root = new SoSwitch;
     root->ref();
-    root->renderCaching = SoSeparator::OFF;
+
+    annotation = new SoAnnotation;
+    annotation->ref();
+    annotation->renderCaching = SoSeparator::OFF;
+    root->addChild(annotation);
 
     transform = new SoTransform();
     transform->ref();
-    root->addChild(transform);
+    annotation->addChild(transform);
 
     label = new SoDatumLabel();
     label->ref();
@@ -82,16 +87,19 @@ EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
     if (autoDistance) {
         setLabelRecommendedDistance();
     }
-    root->addChild(label);
+    annotation->addChild(label);
 
     setPlacement(plc);
     // NOLINTEND
+
+    static_cast<SoSeparator*>(viewer->getSceneGraph())->addChild(root); // NOLINT
 }
 
 EditableDatumLabel::~EditableDatumLabel()
 {
     deactivate();
     transform->unref();
+    annotation->unref();
     root->unref();
     label->unref();
 }
@@ -102,7 +110,7 @@ void EditableDatumLabel::activate()
         return;
     }
 
-    static_cast<SoSeparator*>(viewer->getSceneGraph())->addChild(root); // NOLINT
+    root->whichChild = 0;
 
     //track camera movements to update spinbox position.
     auto info = new NodeData{ this };
@@ -129,9 +137,7 @@ void EditableDatumLabel::deactivate()
         cameraSensor = nullptr;
     }
 
-    if (viewer) {
-        static_cast<SoSeparator*>(viewer->getSceneGraph())->removeChild(root); // NOLINT
-    }
+    root->whichChild = SO_SWITCH_NONE;
 }
 
 void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool visibleToMouse)
@@ -180,10 +186,10 @@ void EditableDatumLabel::stopEdit()
         Base::Quantity quantity = spinBox->value();
 
         double factor{};
-        QString unitStr;
-        QString valueStr;
+        std::string unitStr;
+        std::string valueStr;
         valueStr = quantity.getUserString(factor, unitStr);
-        label->string = SbString(valueStr.toUtf8().constData());
+        label->string = SbString(valueStr.c_str());
 
         spinBox->deleteLater();
         spinBox = nullptr;

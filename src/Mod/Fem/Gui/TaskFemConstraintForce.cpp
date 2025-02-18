@@ -31,12 +31,13 @@
 #endif
 
 #include <App/DocumentObject.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraintForce.h>
 #include <Mod/Fem/App/FemTools.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintForce.h"
 #include "ui_TaskFemConstraintForce.h"
@@ -60,8 +61,7 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce* C
     this->groupLayout()->addWidget(proxy);
 
     // Get the feature data
-    Fem::ConstraintForce* pcConstraint =
-        static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
+    Fem::ConstraintForce* pcConstraint = ConstraintView->getObject<Fem::ConstraintForce>();
     auto force = pcConstraint->Force.getQuantityValue();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
@@ -126,8 +126,7 @@ void TaskFemConstraintForce::addToSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintForce* pcConstraint =
-        static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
+    Fem::ConstraintForce* pcConstraint = ConstraintView->getObject<Fem::ConstraintForce>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -198,8 +197,7 @@ void TaskFemConstraintForce::removeFromSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintForce* pcConstraint =
-        static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
+    Fem::ConstraintForce* pcConstraint = ConstraintView->getObject<Fem::ConstraintForce>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
@@ -319,8 +317,7 @@ void TaskFemConstraintForce::onButtonDirection(const bool pressed)
 
     try {
         std::vector<std::string> direction(1, link.second);
-        Fem::ConstraintForce* pcConstraint =
-            static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
+        Fem::ConstraintForce* pcConstraint = ConstraintView->getObject<Fem::ConstraintForce>();
 
         // update the direction
         pcConstraint->Direction.setValue(link.first, direction);
@@ -335,14 +332,13 @@ void TaskFemConstraintForce::onButtonDirection(const bool pressed)
 
 void TaskFemConstraintForce::onCheckReverse(const bool pressed)
 {
-    Fem::ConstraintForce* pcConstraint =
-        static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
+    Fem::ConstraintForce* pcConstraint = ConstraintView->getObject<Fem::ConstraintForce>();
     pcConstraint->Reversed.setValue(pressed);
 }
 
 const std::string TaskFemConstraintForce::getForce() const
 {
-    return ui->spinForce->value().getSafeUserString().toStdString();
+    return ui->spinForce->value().getSafeUserString();
 }
 
 const std::string TaskFemConstraintForce::getReferences() const
@@ -385,11 +381,6 @@ bool TaskFemConstraintForce::getReverse() const
 
 TaskFemConstraintForce::~TaskFemConstraintForce() = default;
 
-bool TaskFemConstraintForce::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintForce::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);
@@ -426,21 +417,6 @@ TaskDlgFemConstraintForce::TaskDlgFemConstraintForce(ViewProviderFemConstraintFo
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintForce::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Force load");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintForce::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
@@ -458,7 +434,7 @@ bool TaskDlgFemConstraintForce::accept()
         std::string scale = "1";
 
         if (!dirname.empty()) {
-            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+            QString buf = QStringLiteral("(App.ActiveDocument.%1,[\"%2\"])");
             buf = buf.arg(QString::fromStdString(dirname));
             buf = buf.arg(QString::fromStdString(dirobj));
             Gui::Command::doCommand(Gui::Command::Doc,
@@ -476,12 +452,6 @@ bool TaskDlgFemConstraintForce::accept()
                                 "App.ActiveDocument.%s.Reversed = %s",
                                 name.c_str(),
                                 parameterForce->getReverse() ? "True" : "False");
-
-        scale = parameterForce->getScale();  // OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -489,16 +459,6 @@ bool TaskDlgFemConstraintForce::accept()
     }
 
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintForce::reject()
-{
-    // roll back the changes
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintForce.cpp"

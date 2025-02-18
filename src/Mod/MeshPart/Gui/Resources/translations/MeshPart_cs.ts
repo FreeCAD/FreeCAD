@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="280"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>MeshPart</source>
       <translation>Síťový díl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>Cross-sections...</source>
       <translation>Řezy...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="283"/>
       <source>Cross-sections</source>
       <translation>Řezy</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="316"/>
+      <location filename="../../Command.cpp" line="317"/>
       <source>Mesh</source>
       <translation>Síť</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Curve on mesh...</source>
       <translation>Křivka na síť...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="319"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Vytvoří přibližnou křivku na povrchu sítě.
@@ -72,7 +72,7 @@ Tento příkaz funguje pouze se 'síťovým' objektem.</translation>
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <source>Section</source>
-      <translation>Výběr</translation>
+      <translation>Řez</translation>
     </message>
   </context>
   <context>
@@ -398,7 +398,7 @@ Nejmenší hodnota je 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="239"/>
       <source>Coarse</source>
-      <translation>Hrubé</translation>
+      <translation>Hrubá</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
@@ -408,7 +408,7 @@ Nejmenší hodnota je 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation>Jemný</translation>
+      <translation>Jemná</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>

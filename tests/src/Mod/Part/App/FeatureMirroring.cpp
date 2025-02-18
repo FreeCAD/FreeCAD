@@ -21,7 +21,7 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _mirror = dynamic_cast<Part::Mirroring*>(_doc->addObject("Part::Mirroring"));
+        _mirror = _doc->addObject<Part::Mirroring>();
         _mirror->Source.setValue(_boxes[0]);
         _mirror->Base.setValue(1, 0, 0);
         _mirror->execute();
@@ -42,7 +42,6 @@ TEST_F(FeatureMirroringTest, testXMirror)
     // Mirrored it around X from 0,0,0 -> 1,2,3  to  0,0,-3 -> 1,2,0
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(0, 0, -3, 1, 2, 0)));
     // Assert correct element Map
-#ifdef FC_USE_TNP_FIX
     EXPECT_TRUE(allElementsMatch(
         _mirror->Shape.getShape(),
         {
@@ -56,16 +55,13 @@ TEST_F(FeatureMirroringTest, testXMirror)
             "Vertex4;:M;MIR;:H70c:7,V", "Vertex5;:M;MIR;:H70c:7,V", "Vertex6;:M;MIR;:H70c:7,V",
             "Vertex7;:M;MIR;:H70c:7,V", "Vertex8;:M;MIR;:H70c:7,V",
         }));
-#else
-    EXPECT_EQ(_mirror->Shape.getShape().getElementMapSize(), 0);
-#endif
 }
 
 TEST_F(FeatureMirroringTest, testYMirrorWithExistingElementMap)
 {
     // Arrange
     Part::Fuse* _fuse = nullptr;  // NOLINT Can't be private in a test framework
-    _fuse = dynamic_cast<Part::Fuse*>(_doc->addObject("Part::Fuse"));
+    _fuse = _doc->addObject<Part::Fuse>();
     _fuse->Base.setValue(_boxes[0]);
     _fuse->Tool.setValue(_boxes[1]);
     // Act
@@ -80,7 +76,6 @@ TEST_F(FeatureMirroringTest, testYMirrorWithExistingElementMap)
     // Mirrored it around X from 0,0,0 -> 1,2,3  to  0,0,-3 -> 1,2,0
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(0, 0, -3, 1, 3, 0)));
     // Assert correct element Map
-#ifdef FC_USE_TNP_FIX
     EXPECT_TRUE(elementsMatch(_mirror->Shape.getShape(),
                               {
                                   "Edge10;:H11c3,E;:M;MIR;:H11ca:7,E",
@@ -142,10 +137,6 @@ TEST_F(FeatureMirroringTest, testYMirrorWithExistingElementMap)
                                   "Vertex8;:H11c3,V;:M;MIR;:H11ca:7,V",
                                   "Vertex8;:H11c4,V;:M;MIR;:H11ca:7,V",
                               }));
-
-#else
-    EXPECT_EQ(_mirror->Shape.getShape().getElementMapSize(), 0);
-#endif
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

@@ -62,6 +62,12 @@ void DlgTemplateField::setFieldContent(std::string content)
     ui->leInput->setText(qs);
 }
 
+void DlgTemplateField::setAutofillContent(std::string content)
+{
+    QString qs = QString::fromUtf8(content.data(), content.size());
+    ui->leAutofill->setText(qs);
+}
+
 QString DlgTemplateField::getFieldContent()
 {
     return ui->leInput->text();

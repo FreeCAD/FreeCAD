@@ -45,18 +45,16 @@ ANALYSIS_TYPES = ["static"]
 
 
 def create(doc, name="SolverZ88"):
-    return femutils.createObject(
-        doc, name, Proxy, ViewProxy)
+    return femutils.createObject(doc, name, Proxy, ViewProxy)
 
 
 class Proxy(solverbase.Proxy):
-    """The Fem::FemSolver's Proxy python type, add solver specific properties
-    """
+    """The Fem::FemSolver's Proxy python type, add solver specific properties"""
 
     Type = "Fem::SolverZ88"
 
     def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
+        super().__init__(obj)
         obj.Proxy = self
 
         # z88_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
@@ -67,39 +65,41 @@ class Proxy(solverbase.Proxy):
 
     def createMachine(self, obj, directory, testmode=False):
         return run.Machine(
-            solver=obj, directory=directory,
+            solver=obj,
+            directory=directory,
             check=tasks.Check(),
             prepare=tasks.Prepare(),
             solve=tasks.Solve(),
             results=tasks.Results(),
-            testmode=testmode)
+            testmode=testmode,
+        )
 
     def editSupported(self):
         return True
 
     def edit(self, directory):
         pattern = os.path.join(directory, "z88i1.txt")
-        FreeCAD.Console.PrintMessage("{}\n".format(pattern))
+        FreeCAD.Console.PrintMessage(f"{pattern}\n")
         f = glob.glob(pattern)[0]
         FemGui.open(f)
         pattern = os.path.join(directory, "z88i2.txt")
-        FreeCAD.Console.PrintMessage("{}\n".format(pattern))
+        FreeCAD.Console.PrintMessage(f"{pattern}\n")
         f = glob.glob(pattern)[0]
         FemGui.open(f)
         pattern = os.path.join(directory, "z88i5.txt")
-        FreeCAD.Console.PrintMessage("{}\n".format(pattern))
+        FreeCAD.Console.PrintMessage(f"{pattern}\n")
         f = glob.glob(pattern)[0]
         FemGui.open(f)
         pattern = os.path.join(directory, "z88man.txt")
-        FreeCAD.Console.PrintMessage("{}\n".format(pattern))
+        FreeCAD.Console.PrintMessage(f"{pattern}\n")
         f = glob.glob(pattern)[0]
         FemGui.open(f)
         pattern = os.path.join(directory, "z88mat.txt")
-        FreeCAD.Console.PrintMessage("{}\n".format(pattern))
+        FreeCAD.Console.PrintMessage(f"{pattern}\n")
         f = glob.glob(pattern)[0]
         FemGui.open(f)
         pattern = os.path.join(directory, "z88elp.txt")
-        FreeCAD.Console.PrintMessage("{}\n".format(pattern))
+        FreeCAD.Console.PrintMessage(f"{pattern}\n")
         f = glob.glob(pattern)[0]
         FemGui.open(f)
 
@@ -111,5 +111,6 @@ class ViewProxy(solverbase.ViewProxy):
 
     def getIcon(self):
         return ":/icons/FEM_SolverZ88.svg"
+
 
 ##  @}

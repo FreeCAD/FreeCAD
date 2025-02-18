@@ -122,7 +122,7 @@ bool WriterOBJ::Save(std::ostream& out)
     // vertices
     Base::Vector3f pt;
     std::size_t index = 0;
-    for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it, ++index) {
+    for (auto it = rPoints.begin(); it != rPoints.end(); ++it, ++index) {
         if (this->apply_transform) {
             pt = this->_transform * *it;
         }
@@ -139,9 +139,9 @@ bool WriterOBJ::Save(std::ostream& out)
                 c = _material->diffuseColor.front();
             }
 
-            int r = static_cast<int>(c.r * 255.0f);
-            int g = static_cast<int>(c.g * 255.0f);
-            int b = static_cast<int>(c.b * 255.0f);
+            int r = static_cast<int>(c.r * 255.0F);
+            int g = static_cast<int>(c.g * 255.0F);
+            int b = static_cast<int>(c.b * 255.0F);
 
             out << "v " << pt.x << " " << pt.y << " " << pt.z << " " << r << " " << g << " " << b
                 << '\n';
@@ -149,7 +149,7 @@ bool WriterOBJ::Save(std::ostream& out)
         else {
             out << "v " << pt.x << " " << pt.y << " " << pt.z << '\n';
         }
-        seq.next(true);  // allow to cancel
+        seq.next(true);  // allow one to cancel
     }
     // Export normals
     MeshFacetIterator clIter(_kernel), clEnd(_kernel);
@@ -163,7 +163,7 @@ bool WriterOBJ::Save(std::ostream& out)
         out << "vn " << pclFacet->GetNormal().x << " " << pclFacet->GetNormal().y << " "
             << pclFacet->GetNormal().z << '\n';
         ++clIter;
-        seq.next(true);  // allow to cancel
+        seq.next(true);  // allow one to cancel
     }
 
     if (_groups.empty()) {
@@ -179,12 +179,10 @@ bool WriterOBJ::Save(std::ostream& out)
             App::Color prev;
             int faceIdx = 1;
             const std::vector<App::Color>& Kd = _material->diffuseColor;
-            for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end();
-                 ++it, index++) {
+            for (auto it = rFacets.begin(); it != rFacets.end(); ++it, index++) {
                 if (index == 0 || prev != Kd[index]) {
                     prev = Kd[index];
-                    std::vector<App::Color>::iterator c_it =
-                        std::find(colors.begin(), colors.end(), prev);
+                    auto c_it = std::find(colors.begin(), colors.end(), prev);
                     if (c_it != colors.end()) {
                         out << "usemtl material_" << (c_it - colors.begin()) << '\n';
                     }
@@ -192,7 +190,7 @@ bool WriterOBJ::Save(std::ostream& out)
                 out << "f " << it->_aulPoints[0] + 1 << "//" << faceIdx << " "
                     << it->_aulPoints[1] + 1 << "//" << faceIdx << " " << it->_aulPoints[2] + 1
                     << "//" << faceIdx << '\n';
-                seq.next(true);  // allow to cancel
+                seq.next(true);  // allow one to cancel
                 faceIdx++;
             }
         }
@@ -203,7 +201,7 @@ bool WriterOBJ::Save(std::ostream& out)
                 out << "f " << it._aulPoints[0] + 1 << "//" << faceIdx << " "
                     << it._aulPoints[1] + 1 << "//" << faceIdx << " " << it._aulPoints[2] + 1
                     << "//" << faceIdx << '\n';
-                seq.next(true);  // allow to cancel
+                seq.next(true);  // allow one to cancel
                 faceIdx++;
             }
         }
@@ -226,8 +224,7 @@ bool WriterOBJ::Save(std::ostream& out)
                     if (first || prev != Kd[it]) {
                         first = false;
                         prev = Kd[it];
-                        std::vector<App::Color>::iterator c_it =
-                            std::find(colors.begin(), colors.end(), prev);
+                        auto c_it = std::find(colors.begin(), colors.end(), prev);
                         if (c_it != colors.end()) {
                             out << "usemtl material_" << (c_it - colors.begin()) << '\n';
                         }
@@ -236,7 +233,7 @@ bool WriterOBJ::Save(std::ostream& out)
                     out << "f " << f._aulPoints[0] + 1 << "//" << it + 1 << " "
                         << f._aulPoints[1] + 1 << "//" << it + 1 << " " << f._aulPoints[2] + 1
                         << "//" << it + 1 << '\n';
-                    seq.next(true);  // allow to cancel
+                    seq.next(true);  // allow one to cancel
                 }
             }
         }
@@ -248,7 +245,7 @@ bool WriterOBJ::Save(std::ostream& out)
                     out << "f " << f._aulPoints[0] + 1 << "//" << it + 1 << " "
                         << f._aulPoints[1] + 1 << "//" << it + 1 << " " << f._aulPoints[2] + 1
                         << "//" << it + 1 << '\n';
-                    seq.next(true);  // allow to cancel
+                    seq.next(true);  // allow one to cancel
                 }
             }
         }

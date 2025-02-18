@@ -29,7 +29,8 @@
 #include "PropertyStandard.h"
 
 
-namespace Base {
+namespace Base
+{
 class Writer;
 }
 
@@ -39,7 +40,7 @@ namespace App
 /** Float with Unit property
  * This is a property for float with a predefined Unit associated.
  */
-class AppExport PropertyQuantity : public PropertyFloat
+class AppExport PropertyQuantity: public PropertyFloat
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -51,35 +52,59 @@ public:
 
     const char* getEditorName() const override;
 
-    PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject*) override;
 
-    void setUnit(const Base::Unit &u) {_Unit = u;}
-    const Base::Unit &getUnit() const {return _Unit;}
+    void setUnit(const Base::Unit& u)
+    {
+        _Unit = u;
+    }
+    const Base::Unit& getUnit() const
+    {
+        return _Unit;
+    }
 
-    void setValue(double lValue) { PropertyFloat::setValue(lValue); }
-    double getValue() const { return PropertyFloat::getValue(); }
+    void setValue(double lValue)
+    {
+        PropertyFloat::setValue(lValue);
+    }
+    double getValue() const
+    {
+        return PropertyFloat::getValue();
+    }
 
-    void setPathValue(const App::ObjectIdentifier &path, const boost::any &value) override;
-    const boost::any getPathValue(const App::ObjectIdentifier &path) const override;
+    const Base::QuantityFormat& getFormat() const
+    {
+        return _Format;
+    }
+    void setFormat(const Base::QuantityFormat& fmt)
+    {
+        _Format = fmt;
+    }
 
-    bool isSame(const Property &other) const override {
-        if (&other == this)
+    void setPathValue(const App::ObjectIdentifier& path, const boost::any& value) override;
+    const boost::any getPathValue(const App::ObjectIdentifier& path) const override;
+
+    bool isSame(const Property& other) const override
+    {
+        if (&other == this) {
             return true;
+        }
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue()
             && _Unit == static_cast<decltype(this)>(&other)->_Unit;
     }
 
 protected:
-    Base::Quantity createQuantityFromPy(PyObject *value);
+    Base::Quantity createQuantityFromPy(PyObject* value);
     Base::Unit _Unit;
+    Base::QuantityFormat _Format;
 };
 
 /** Float with Unit property
  * This is a property for float with a predefined Unit associated.
  */
-class AppExport PropertyQuantityConstraint : public PropertyQuantity
+class AppExport PropertyQuantityConstraint: public PropertyQuantity
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -90,7 +115,8 @@ public:
     /// Constraint methods
     //@{
     /// the boundary struct
-    struct Constraints {
+    struct Constraints
+    {
         double LowerBound, UpperBound, StepSize;
     };
     /** setting the boundaries
@@ -103,7 +129,7 @@ public:
      */
     void setConstraints(const Constraints* sConstrain);
     /// get the constraint struct
-    const Constraints*  getConstraints() const;
+    const Constraints* getConstraints() const;
     //@}
 
     double getMinimum() const;
@@ -111,10 +137,10 @@ public:
     double getStepSize() const;
 
     const char* getEditorName() const override;
-    void setPyObject(PyObject *) override;
+    void setPyObject(PyObject*) override;
 
 private:
-    const Constraints* _ConstStruct{nullptr};
+    const Constraints* _ConstStruct {nullptr};
 };
 
 // ------------------------------------------------------
@@ -158,7 +184,10 @@ class AppExport PropertyAngle: public PropertyQuantityConstraint
 public:
     PropertyAngle();
     ~PropertyAngle() override = default;
-    const char *getEditorName() const override { return "Gui::PropertyEditor::PropertyAngleItem"; }
+    const char* getEditorName() const override
+    {
+        return "Gui::PropertyEditor::PropertyAngleItem";
+    }
 };
 
 /** Area property
@@ -332,6 +361,19 @@ public:
     ~PropertyElectricCharge() override = default;
 };
 
+/** SurfaceChargeDensity property
+ * This is a property for representing surface charge density. It is basically a float
+ * property. On the Gui it has a quantity like C/m^2.
+ */
+class AppExport PropertySurfaceChargeDensity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertySurfaceChargeDensity();
+    ~PropertySurfaceChargeDensity() override = default;
+};
+
 /** ElectricCurrent property
  * This is a property for representing electric currents. It is basically a
  * float property. On the Gui it has a quantity like A.
@@ -425,7 +467,7 @@ public:
 
 /** InverseVolume property
  * This is a property for representing the reciprocal of volume. It is basically a float
-*  property. which must not be negative. On the Gui it has a quantity like 1/m^3.
+ *  property. which must not be negative. On the Gui it has a quantity like 1/m^3.
  */
 class AppExport PropertyInverseVolume: public PropertyQuantity
 {
@@ -514,17 +556,30 @@ public:
     ~PropertyMagneticFluxDensity() override = default;
 };
 
- /** Magnetization property
+/** Magnetization property
  * This is a property for representing magnetizations. It is basically a float
  * property. On the Gui it has a quantity like A/m.
  */
-    class AppExport PropertyMagnetization: public PropertyQuantity
+class AppExport PropertyMagnetization: public PropertyQuantity
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyMagnetization();
     ~PropertyMagnetization() override = default;
+};
+
+/** ElectromagneticPotential property
+ * This is a property for representing electromagnetic potentials. It is basically a float
+ * property. On the Gui it has a quantity like Wb/m.
+ */
+class AppExport PropertyElectromagneticPotential: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyElectromagneticPotential();
+    ~PropertyElectromagneticPotential() override = default;
 };
 
 /** Mass property
@@ -852,6 +907,6 @@ public:
     ~PropertyYoungsModulus() override = default;
 };
 
-}// namespace App
+}  // namespace App
 
-#endif// APP_PROPERTYUNITS_H
+#endif  // APP_PROPERTYUNITS_H

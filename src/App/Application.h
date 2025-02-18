@@ -24,7 +24,7 @@
 #ifndef APP_APPLICATION_H
 #define APP_APPLICATION_H
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <deque>
 #include <vector>
@@ -69,6 +69,10 @@ enum class MessageOption {
     Throw, /**< Throw an exception. */
 };
 
+struct DocumentCreateFlags {
+    bool createView {true};
+    bool temporary {false};
+};
 
 /** The Application
  *  The root of the whole application
@@ -78,7 +82,6 @@ class AppExport Application
 {
 
 public:
-
     //---------------------------------------------------------------------
     // exported functions go here +++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
@@ -95,13 +98,13 @@ public:
      * the user and stored in the App::Document::Name property.
      */
     App::Document* newDocument(const char * Name=nullptr, const char * UserName=nullptr,
-            bool createView=true, bool tempDoc=false);
+            DocumentCreateFlags CreateFlags=DocumentCreateFlags());
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
     /// find a unique document name
     std::string getUniqueDocumentName(const char *Name, bool tempDoc=false) const;
     /// Open an existing document from a file
-    App::Document* openDocument(const char * FileName=nullptr, bool createView=true);
+    App::Document* openDocument(const char * FileName=nullptr, DocumentCreateFlags createFlags = DocumentCreateFlags{});
     /** Open multiple documents
      *
      * @param filenames: input file names
@@ -123,7 +126,7 @@ public:
             const std::vector<std::string> *paths=nullptr,
             const std::vector<std::string> *labels=nullptr,
             std::vector<std::string> *errs=nullptr,
-            bool createView = true);
+            DocumentCreateFlags createFlags = DocumentCreateFlags{});
     /// Retrieve the active document
     App::Document* getActiveDocument() const;
     /// Retrieve a named document
@@ -205,6 +208,8 @@ public:
     void closeActiveTransaction(bool abort=false, int id=0);
     //@}
 
+    // NOLINTBEGIN
+    // clang-format off
     /** @name Signals of the Application */
     //@{
     /// signal on new Document
@@ -311,7 +316,9 @@ public:
     boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalBeforeAddingDynamicExtension;
     /// signal after the extension was added
     boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalAddedDynamicExtension;
-     //@}
+    //@}
+    // clang-format off
+    // NOLINTEND
 
 
     /** @name methods for parameter handling */
@@ -399,12 +406,14 @@ public:
     static std::map<std::string, std::string> &Config(){return mConfig;}
     static int GetARGC(){return _argc;}
     static char** GetARGV(){return _argv;}
+    static int64_t applicationPid();
     //@}
 
     /** @name Application directories */
     //@{
     static std::string getHomePath();
     static std::string getExecutableName();
+    static std::string getNameWithVersion();
     /*!
      Returns the temporary directory. By default, this is set to the
      system's temporary directory but can be customized by the user.
@@ -482,7 +491,7 @@ protected:
 
     /// open single document only
     App::Document* openDocumentPrivate(const char * FileName, const char *propFileName,
-            const char *label, bool isMainDoc, bool createView, std::vector<std::string> &&objNames);
+            const char *label, bool isMainDoc, DocumentCreateFlags createFlags, std::vector<std::string> &&objNames);
 
     /// Helper class for App::Document to signal on close/abort transaction
     class AppExport TransactionSignaller {

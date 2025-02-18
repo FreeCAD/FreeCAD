@@ -36,7 +36,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
@@ -66,7 +66,7 @@ bool ViewProviderSections::setEdit(int ModNum)
         // object unsets and sets its edit mode without closing
         // the task panel
 
-        Surface::Sections* obj = static_cast<Surface::Sections*>(this->getObject());
+        Surface::Sections* obj = this->getObject<Surface::Sections>();
 
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
 
@@ -212,7 +212,7 @@ public:
         if (pObj == editedObject) {
             return false;
         }
-        if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (!pObj->isDerivedFrom<Part::Feature>()) {
             return false;
         }
 
@@ -279,7 +279,11 @@ SectionsPanel::SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj)
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        action->setShortcut(QKeySequence(shortcut));
+    }
     ui->listSections->addAction(action);
     connect(action, &QAction::triggered, this, &SectionsPanel::onDeleteEdge);
     ui->listSections->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -322,8 +326,8 @@ void SectionsPanel::setEditedObject(Surface::Sections* fea)
         QListWidgetItem* item = new QListWidgetItem(ui->listSections);
         ui->listSections->addItem(item);
 
-        QString text = QString::fromLatin1("%1.%2").arg(QString::fromUtf8(obj->Label.getValue()),
-                                                        QString::fromStdString(edge));
+        QString text = QStringLiteral("%1.%2").arg(QString::fromUtf8(obj->Label.getValue()),
+                                                   QString::fromStdString(edge));
         item->setText(text);
 
         // The user data field of a list widget item
@@ -471,9 +475,9 @@ void SectionsPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->listSections->addItem(item);
 
             Gui::SelectionObject sel(msg);
-            QString text = QString::fromLatin1("%1.%2").arg(
-                QString::fromUtf8(sel.getObject()->Label.getValue()),
-                QString::fromLatin1(msg.pSubName));
+            QString text =
+                QStringLiteral("%1.%2").arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
+                                            QString::fromLatin1(msg.pSubName));
             item->setText(text);
 
             QList<QVariant> data;

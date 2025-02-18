@@ -43,7 +43,7 @@
 
 #ifndef _PreComp_
 #include <BRepAdaptor_Curve.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -206,7 +206,7 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
     moveDir0.Normalize();
     moveDir0 = DU::closestBasisOriented(moveDir0);
     auto halfSpace0 = makeHalfSpace(breakPoints.first, moveDir0, breakPoints.second);
-    BRepAlgoAPI_Cut mkCut0(inShape, halfSpace0);
+    FCBRepAlgoAPI_Cut mkCut0(inShape, halfSpace0);
     if (!mkCut0.IsDone()) {
         Base::Console().Message("DBV::apply1Break - cut0 failed\n");
     }
@@ -218,7 +218,7 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
     moveDir1.Normalize();
     moveDir1 = DU::closestBasisOriented(moveDir1);
     auto halfSpace1 = makeHalfSpace(breakPoints.second, moveDir1, breakPoints.first);
-    BRepAlgoAPI_Cut mkCut1(inShape, halfSpace1);
+    FCBRepAlgoAPI_Cut mkCut1(inShape, halfSpace1);
     if (!mkCut1.IsDone()) {
         Base::Console().Message("DBV::apply1Break - cut1 failed\n");
     }
@@ -240,11 +240,8 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
 TopoDS_Shape DrawBrokenView::compressShape(const TopoDS_Shape& shapeToCompress) const
 {
     // Base::Console().Message("DBV::compressShape()\n");
-    TopoDS_Shape result;
     TopoDS_Shape compressed = compressHorizontal(shapeToCompress);
-    result = compressVertical(compressed);
-
-    return result;
+    return compressVertical(compressed);
 }
 
 //! move the broken pieces in the input shape "right" to close up the removed areas.
@@ -339,12 +336,12 @@ TopoDS_Shape DrawBrokenView::makeHalfSpace(Base::Vector3d planePoint, Base::Vect
     //                         DU::formatVector(planePoint).c_str(),
     //                         DU::formatVector(planeNormal).c_str(),
     //                         DU::formatVector(pointInSpace).c_str());
-    gp_Pnt origin = DU::togp_Pnt(planePoint);
-    gp_Dir axis   = DU::togp_Dir(planeNormal);
+    gp_Pnt origin = DU::to<gp_Pnt>(planePoint);
+    gp_Dir axis   = DU::to<gp_Dir>(planeNormal);
     gp_Pln plane(origin, axis);
     BRepBuilderAPI_MakeFace mkFace(plane);
     TopoDS_Face face = mkFace.Face();
-    BRepPrimAPI_MakeHalfSpace mkHalf(face, DU::togp_Pnt(pointInSpace));
+    BRepPrimAPI_MakeHalfSpace mkHalf(face, DU::to<gp_Pnt>(pointInSpace));
 
     return mkHalf.Solid();
 }
@@ -412,7 +409,6 @@ bool DrawBrokenView::isBreakObject(const App::DocumentObject& breakObj)
 //! horizontal or vertical
 bool DrawBrokenView::isBreakObjectSketch(const App::DocumentObject& breakObj)
 {
-    // Base::Console().Message("DBV::isBreakObjectSketch()\n");
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
     if (locShape.IsNull()) {
         return false;
@@ -970,7 +966,7 @@ Base::Vector3d DrawBrokenView::mapPoint2dFromView(Base::Vector3d point2d) const
     gp_Ax3 projCS3(getProjectionCS(getCompressedCentroid()));
     gp_Trsf xTo3d;
     xTo3d.SetTransformation(projCS3, OXYZ);
-    auto pseudo3d = DU::toVector3d(DU::togp_Pnt(point2d).Transformed(xTo3d));
+    auto pseudo3d = DU::toVector3d(DU::to<gp_Pnt>(point2d).Transformed(xTo3d));
 
     // now shift down and left
     auto breaksAll = Breaks.getValues();
@@ -1250,7 +1246,7 @@ Base::Vector3d DrawBrokenView::getCompressedCentroid() const
 //! construct a perpendicular direction in the projection CS
 Base::Vector3d  DrawBrokenView::makePerpendicular(Base::Vector3d inDir) const
 {
-    gp_Dir gDir = DU::togp_Dir(inDir);
+    gp_Dir gDir = DU::to<gp_Dir>(inDir);
     gp_Pnt origin(0.0, 0.0, 0.0);
     auto dir = getProjectionCS().Direction();
     gp_Ax1 axis(origin, dir);

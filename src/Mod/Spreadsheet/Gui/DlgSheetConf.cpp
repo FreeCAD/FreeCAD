@@ -115,8 +115,7 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
             e.ReportException();
             FC_THROWM(Base::RuntimeError, "Failed to parse expression for property");
         }
-        if (expr->hasComponent()
-            || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId())) {
+        if (expr->hasComponent() || !expr->isDerivedFrom<App::VariableExpression>()) {
             FC_THROWM(Base::RuntimeError, "Invalid property expression: " << expr->toString());
         }
 
@@ -130,7 +129,7 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
         auto prop = path.getProperty(&pseudoType);
         if (pseudoType
             || (prop
-                && (!prop->isDerivedFrom(App::PropertyEnumeration::getClassTypeId())
+                && (!prop->isDerivedFrom<App::PropertyEnumeration>()
                     || !prop->testStatus(App::Property::PropDynamic)))) {
             FC_THROWM(Base::RuntimeError, "Invalid property referenced in: " << expr->toString());
         }
@@ -140,7 +139,7 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
     Cell* cell = sheet->getCell(from);
     if (cell && cell->getExpression()) {
         auto expr = cell->getExpression();
-        if (expr->isDerivedFrom(FunctionExpression::getClassTypeId())) {
+        if (expr->isDerivedFrom<FunctionExpression>()) {
             auto fexpr = Base::freecad_dynamic_cast<FunctionExpression>(cell->getExpression());
             if (fexpr
                 && (fexpr->getFunction() == FunctionExpression::HREF
@@ -184,7 +183,7 @@ void DlgSheetConf::accept()
             auto cell = sheet->getCell(*r);
             if (cell && cell->getExpression()) {
                 ExpressionPtr expr(cell->getExpression()->eval());
-                if (expr->isDerivedFrom(StringExpression::getClassTypeId())) {
+                if (expr->isDerivedFrom<StringExpression>()) {
                     continue;
                 }
             }
@@ -196,8 +195,7 @@ void DlgSheetConf::accept()
 
         std::string exprTxt(ui->lineEditProp->text().trimmed().toUtf8().constData());
         App::ExpressionPtr expr(App::Expression::parse(sheet, exprTxt));
-        if (expr->hasComponent()
-            || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId())) {
+        if (expr->hasComponent() || !expr->isDerivedFrom<App::VariableExpression>()) {
             FC_THROWM(Base::RuntimeError, "Invalid property expression: " << expr->toString());
         }
 

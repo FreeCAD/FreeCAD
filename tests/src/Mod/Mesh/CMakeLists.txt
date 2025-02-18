@@ -4,7 +4,9 @@ target_include_directories(Mesh_tests_run PUBLIC
     ${OCC_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
 )
+target_link_directories(Mesh_tests_run PUBLIC ${OCC_LIBRARY_DIR})
 
 target_link_libraries(Mesh_tests_run
     gtest_main

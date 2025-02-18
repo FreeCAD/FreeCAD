@@ -42,7 +42,7 @@ Separator {
 
     }
     Translation {
-      translation 0 -0.525 0
+      translation 0 -0.5 0
 
     }
     Cube {

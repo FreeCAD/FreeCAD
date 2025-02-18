@@ -64,7 +64,7 @@ class ArchGrid:
         if not "Columns" in pl:
             obj.addProperty("App::PropertyInteger","Columns","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The number of columns'))
         if not "RowSize" in pl:
-            obj.addProperty("App::PropertyFloatList","RowSize","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The sizes for rows'))
+            obj.addProperty("App::PropertyFloatList","RowSize","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The sizes of rows'))
         if not "ColumnSize" in pl:
             obj.addProperty("App::PropertyFloatList","ColumnSize","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The sizes of columns'))
         if not "Spans" in pl:
@@ -282,6 +282,8 @@ class ViewProviderArchGrid:
         return True
 
     def setupContextMenu(self, vobj, menu):
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
         QtCore.QObject.connect(actionEdit,
@@ -387,8 +389,8 @@ class ArchGridTaskPanel:
         self.hLabel.setText(QtGui.QApplication.translate("Arch", "Total height", None))
         self.addRowButton.setText(QtGui.QApplication.translate("Arch", "Add row", None))
         self.delRowButton.setText(QtGui.QApplication.translate("Arch", "Del row", None))
-        self.addColumnButton.setText(QtGui.QApplication.translate("Arch", "Add col", None))
-        self.delColumnButton.setText(QtGui.QApplication.translate("Arch", "Del col", None))
+        self.addColumnButton.setText(QtGui.QApplication.translate("Arch", "Add column", None))
+        self.delColumnButton.setText(QtGui.QApplication.translate("Arch", "Del column", None))
         self.spanButton.setText(QtGui.QApplication.translate("Arch", "Create span", None))
         self.delSpanButton.setText(QtGui.QApplication.translate("Arch", "Remove span", None))
         self.title.setText(QtGui.QApplication.translate("Arch", "Rows", None)+": "+str(self.table.rowCount())+" / "+QtGui.QApplication.translate("Arch", "Columns", None)+": "+str(self.table.columnCount()))

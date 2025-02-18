@@ -44,8 +44,8 @@ protected:
     }
 
     Base::Quantity parse_quantity_text_as_quantity(const char* quantity_text) {
-        auto quantity_qstr = QString::fromStdString(std::string(quantity_text));
-        auto quantity_result = Base::Quantity::parse(quantity_qstr);
+        auto quantity_str = std::string(quantity_text);
+        auto quantity_result = Base::Quantity::parse(quantity_str);
         return quantity_result;
     }
 
@@ -95,11 +95,26 @@ TEST_F(ExpressionParserTest, functionPARSEQUANT)
         EXPECT_EQ(expression_result, quantity_result) << "mismatch:"
             " expression_text='" + std::string(expression_text) + "'"
             " quantity_text='" + std::string(quantity_text) + "'"
-            " expression_representation='" + expression_result.getUserString().toStdString() + "'"
-            " quantity_representation='" + quantity_result.getUserString().toStdString() + "'"
+            " expression_representation='" + expression_result.getUserString() + "'"
+            " quantity_representation='" + quantity_result.getUserString() + "'"
         ;
     }
 
+}
+
+TEST_F(ExpressionParserTest, isTokenAConstant)
+{
+    std::array<std::string, 7> constants {"pi", "e", "True", "False", "true", "false", "None"};
+    for (const auto & constant : constants) {
+        EXPECT_TRUE(App::ExpressionParser::isTokenAConstant(constant))
+          << "\"" << constant << "\" did not evaluate as a constant";
+    }
+
+    std::array<std::string, 6> notConstants {"PI", "E", "TRUE", "FALSE", "NONE", "none"};
+    for (const auto & nonConstant : notConstants) {
+        EXPECT_FALSE(App::ExpressionParser::isTokenAConstant(nonConstant))
+          << "\"" << nonConstant << "\" evaluated as a constant";
+    }
 }
 
 // clang-format on

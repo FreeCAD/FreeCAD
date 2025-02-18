@@ -23,11 +23,13 @@
 #ifndef Preferences_h_
 #define Preferences_h_
 
+#include <Qt>
 #include <string>
 
 #include <Base/Parameter.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "DrawBrokenView.h"
 
 class QColor;
 class QString;
@@ -64,6 +66,9 @@ public:
     static bool keepPagesUpToDate();
 
     static int projectionAngle();
+    static bool groupAutoDistribute();
+    static double groupSpaceX();
+    static double groupSpaceY();
 
     static int balloonArrow();
     static double balloonKinkLength();
@@ -132,9 +137,31 @@ public:
     static bool showSectionLine();
     static bool includeCutLine();
 
-    static int BreakType();
+    static DrawBrokenView::BreakType BreakType();
 
     static bool useExactMatchOnDims();
+
+    static bool useCameraDirection();
+    static bool alwaysShowLabel();
+
+    static bool SnapViews();
+    static double SnapLimitFactor();
+
+    static Qt::KeyboardModifiers multiselectModifiers();
+
+    static Qt::KeyboardModifiers balloonDragModifiers();
+    static void setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers);
+
+    static bool enforceISODate();
+    static bool switchOnClick();
+
+    static bool checkShapesBeforeUse();
+    static bool debugBadShape();
+
+    static bool useLegacySvgScaling();
+
+    static bool showUnits();
+
 };
 
 

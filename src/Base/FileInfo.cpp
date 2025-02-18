@@ -208,18 +208,18 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
 #endif
 }
 
-boost::filesystem::path FileInfo::stringToPath(const std::string& str)
+std::filesystem::path FileInfo::stringToPath(const std::string& str)
 {
 #if defined(FC_OS_WIN32)
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    boost::filesystem::path path(converter.from_bytes(str));
+    std::filesystem::path path(converter.from_bytes(str));
 #else
-    boost::filesystem::path path(str);
+    std::filesystem::path path(str);
 #endif
     return path;
 }
 
-std::string FileInfo::pathToString(const boost::filesystem::path& path)
+std::string FileInfo::pathToString(const std::filesystem::path& path)
 {
 #if defined(FC_OS_WIN32)
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -431,9 +431,7 @@ bool FileInfo::isDir() const
         return ((st.st_mode & _S_IFDIR) != 0);
 
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        struct stat st
-        {
-        };
+        struct stat st {};
         if (stat(FileName.c_str(), &st) != 0) {
             return false;
         }
@@ -463,9 +461,7 @@ unsigned int FileInfo::size() const
         }
 
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        struct stat st
-        {
-        };
+        struct stat st {};
         if (stat(FileName.c_str(), &st) == 0) {
             bytes = st.st_size;
         }
@@ -487,9 +483,7 @@ TimeInfo FileInfo::lastModified() const
         }
 
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        struct stat st
-        {
-        };
+        struct stat st {};
         if (stat(FileName.c_str(), &st) == 0) {
             ti.setTime_t(st.st_mtime);
         }
@@ -511,9 +505,7 @@ TimeInfo FileInfo::lastRead() const
         }
 
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        struct stat st
-        {
-        };
+        struct stat st {};
         if (stat(FileName.c_str(), &st) == 0) {
             ti.setTime_t(st.st_atime);
         }
@@ -591,14 +583,14 @@ bool FileInfo::createDirectory() const
 bool FileInfo::createDirectories() const
 {
     try {
-        boost::filesystem::path path(stringToPath(FileName));
-        if (boost::filesystem::exists(path)) {
+        std::filesystem::path path(stringToPath(FileName));
+        if (std::filesystem::exists(path)) {
             return true;
         }
-        boost::filesystem::create_directories(path);
+        std::filesystem::create_directories(path);
         return true;
     }
-    catch (const boost::filesystem::filesystem_error&) {
+    catch (const std::filesystem::filesystem_error&) {
         return false;
     }
 }

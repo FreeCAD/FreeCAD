@@ -13,7 +13,7 @@
       Constructor="true">
     <Documentation>
       <Author Licence="LGPL" Name="Abdullah Tahiri" EMail="abdullah.tahiri.yo[at]gmail.com" />
-      <UserDocu>Describes a portion of an parabola</UserDocu>
+      <UserDocu>Describes a portion of a parabola</UserDocu>
     </Documentation>
     <Attribute Name="Focal" ReadOnly="false">
       <Documentation>

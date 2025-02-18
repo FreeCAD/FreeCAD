@@ -40,15 +40,13 @@ if(MSVC)
     endif()
 endif()
 
-add_compile_options("-DFC_USE_TNP_FIX")
-
 if(WIN32)
     add_definitions(-DCOIN_DLL -D_USE_MATH_DEFINES)
 endif(WIN32)
 
 if(NOT BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND Google_Tests_LIBS
-        ${PYTHON_LIBRARIES}
+        ${Python3_LIBRARIES}
     )
 endif()
 
@@ -65,13 +63,14 @@ function(setup_qt_test)
 
         if(NOT BUILD_DYNAMIC_LINK_PYTHON)
             list(APPEND ${_testname}_LIBS
-                ${PYTHON_LIBRARIES}
+                ${Python3_LIBRARIES}
             )
         endif()
 
         target_include_directories(${_testname}_Tests_run PUBLIC
             ${Python3_INCLUDE_DIRS}
             ${XercesC_INCLUDE_DIRS}
+            ${ZIPIOS_INCLUDES}
             ${QtGui_INCLUDE_DIRS}
             ${QtWidgets_INCLUDE_DIRS}
             ${QtTest_INCLUDE_DIRS}
@@ -98,9 +97,15 @@ endif(BUILD_ASSEMBLY)
 if(BUILD_MATERIAL)
   list (APPEND TestExecutables Material_tests_run)
 endif(BUILD_MATERIAL)
+if(BUILD_MEASURE)
+  list (APPEND TestExecutables Measure_tests_run)
+endif(BUILD_MEASURE)
 if(BUILD_MESH)
   list (APPEND TestExecutables Mesh_tests_run)
 endif(BUILD_MESH)
+if(BUILD_MESH_PART)
+  list (APPEND TestExecutables MeshPart_tests_run)
+endif(BUILD_MESH_PART)
 if(BUILD_PART)
   list (APPEND TestExecutables Part_tests_run)
 endif(BUILD_PART)
@@ -113,6 +118,9 @@ endif(BUILD_POINTS)
 if(BUILD_SKETCHER)
   list (APPEND TestExecutables Sketcher_tests_run)
 endif(BUILD_SKETCHER)
+if(BUILD_SPREADSHEET)
+  list (APPEND TestExecutables Spreadsheet_tests_run)
+endif()
 
 # -------------------------
 
@@ -128,6 +136,7 @@ add_subdirectory(src)
 target_include_directories(Tests_run PUBLIC
     ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
 )
 target_link_libraries(Tests_run
     gtest_main

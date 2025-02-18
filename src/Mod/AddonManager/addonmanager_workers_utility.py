@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Misc. worker thread classes for the FreeCAD Addon Manager. """
+"""Misc. worker thread classes for the FreeCAD Addon Manager."""
 
 from typing import Optional
 

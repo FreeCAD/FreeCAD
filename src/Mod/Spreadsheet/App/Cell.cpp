@@ -34,7 +34,6 @@
 #include <Base/Console.h>
 #include <Base/Quantity.h>
 #include <Base/Reader.h>
-#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Base/Writer.h>
 
@@ -1090,16 +1089,15 @@ App::Color Cell::decodeColor(const std::string& color, const App::Color& default
 // roughly based on Spreadsheet/Gui/SheetModel.cpp
 std::string Cell::getFormattedQuantity()
 {
-    std::string result;
     QString qFormatted;
     App::CellAddress thisCell = getAddress();
     Property* prop = owner->sheet()->getPropertyByName(thisCell.toString().c_str());
 
-    if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
+    if (prop->isDerivedFrom<App::PropertyString>()) {
         const App::PropertyString* stringProp = static_cast<const App::PropertyString*>(prop);
         qFormatted = QString::fromUtf8(stringProp->getValue());
     }
-    else if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyQuantity>()) {
         double rawVal = static_cast<App::PropertyQuantity*>(prop)->getValue();
         const App::PropertyQuantity* floatProp = static_cast<const App::PropertyQuantity*>(prop);
         DisplayUnit du;
@@ -1111,11 +1109,11 @@ std::string Cell::getFormattedQuantity()
             if (computedUnit.isEmpty() || computedUnit == du.unit) {
                 QString number =
                     QLocale().toString(rawVal / duScale, 'f', Base::UnitsApi::getDecimals());
-                qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+                qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);
             }
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyFloat>()) {
         double rawVal = static_cast<const App::PropertyFloat*>(prop)->getValue();
         DisplayUnit du;
         bool hasDisplayUnit = getDisplayUnit(du);
@@ -1124,10 +1122,10 @@ std::string Cell::getFormattedQuantity()
         if (hasDisplayUnit) {
             QString number =
                 QLocale().toString(rawVal / duScale, 'f', Base::UnitsApi::getDecimals());
-            qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+            qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyInteger>()) {
         double rawVal = static_cast<const App::PropertyInteger*>(prop)->getValue();
         DisplayUnit du;
         bool hasDisplayUnit = getDisplayUnit(du);
@@ -1137,9 +1135,8 @@ std::string Cell::getFormattedQuantity()
         if (hasDisplayUnit) {
             QString number =
                 QLocale().toString(rawVal / duScale, 'f', Base::UnitsApi::getDecimals());
-            qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+            qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);
         }
     }
-    result = Base::Tools::toStdString(qFormatted);
-    return result;
+    return qFormatted.toStdString();
 }

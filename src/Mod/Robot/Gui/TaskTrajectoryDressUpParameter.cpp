@@ -27,7 +27,7 @@
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Placement.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include "TaskTrajectoryDressUpParameter.h"
 #include "ui_TaskTrajectoryDressUpParameter.h"
@@ -103,7 +103,7 @@ void TaskTrajectoryDressUpParameter::viewPlacement()
     double A, B, C;
     Base::Vector3d pos = PosAdd.getPosition();
     PosAdd.getRotation().getYawPitchRoll(A, B, C);
-    QString val = QString::fromLatin1("(%1,%2,%3),(%4,%5,%6)\n")
+    QString val = QStringLiteral("(%1,%2,%3),(%4,%5,%6)\n")
                       .arg(pos.x, 0, 'g', 6)
                       .arg(pos.y, 0, 'g', 6)
                       .arg(pos.z, 0, 'g', 6)

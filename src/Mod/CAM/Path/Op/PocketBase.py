@@ -90,11 +90,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
     def areaOpFeatures(self, obj):
         """areaOpFeatures(obj) ... Pockets have a FinishDepth and work on Faces"""
-        return (
-            PathOp.FeatureBaseFaces
-            | PathOp.FeatureFinishDepth
-            | self.pocketOpFeatures(obj)
-        )
+        return PathOp.FeatureBaseFaces | PathOp.FeatureFinishDepth | self.pocketOpFeatures(obj)
 
     def pocketOpFeatures(self, obj):
         return 0
@@ -129,7 +125,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "Pocket",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The direction that the toolpath should go around the part ClockWise (Climb) or CounterClockWise (Conventional)",
+                "The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)",
             ),
         )
         obj.addProperty(
@@ -177,9 +173,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "App::PropertyBool",
             "KeepToolDown",
             "Pocket",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Attempts to avoid unnecessary retractions."
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Attempts to avoid unnecessary retractions."),
         )
         obj.addProperty(
             "App::PropertyPercent",

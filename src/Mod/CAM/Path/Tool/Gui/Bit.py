@@ -112,9 +112,7 @@ class ViewProvider(object):
         if os.path.exists(vobj.Object.BitShape):
             self.setEdit(vobj)
         else:
-            msg = translate(
-                "CAM_Toolbit", "Toolbit cannot be edited: Shapefile not found"
-            )
+            msg = translate("CAM_Toolbit", "Toolbit cannot be edited: Shapefile not found")
             diag = QtGui.QMessageBox(QtGui.QMessageBox.Warning, "Error", msg)
             diag.setWindowModality(QtCore.Qt.ApplicationModal)
             diag.exec_()
@@ -166,7 +164,8 @@ class TaskPanel:
 class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
     def Create(self, name="ToolBit", shapeFile=None, path=None):
         """Create(name = 'ToolBit') ... creates a new tool bit.
-        It is assumed the tool will be edited immediately so the internal bit body is still attached."""
+        It is assumed the tool will be edited immediately so the internal bit body is still attached.
+        """
 
         Path.Log.track(name, shapeFile, path)
         FreeCAD.ActiveDocument.openTransaction("Create ToolBit")

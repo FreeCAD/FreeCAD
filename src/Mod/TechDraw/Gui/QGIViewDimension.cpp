@@ -30,6 +30,7 @@
 # include <cmath>
 
 # include <QApplication>
+# include <QGraphicsRectItem>
 # include <QGraphicsScene>
 # include <QGraphicsSceneMouseEvent>
 # include <QPaintDevice>
@@ -68,6 +69,7 @@
 
 using namespace TechDraw;
 using namespace TechDrawGui;
+using Format = DimensionFormatter::Format;
 
 enum SnapMode
 {
@@ -98,23 +100,41 @@ QGIDatumLabel::QGIDatumLabel() : m_dragState(NoDrag)
     setSelectability(true);
     setFiltersChildEvents(true);
 
+    m_textItems = new QGraphicsItemGroup();
+    m_textItems->setParentItem(this);
     m_dimText = new QGCustomText();
     m_dimText->setTightBounding(true);
-    m_dimText->setParentItem(this);
+    m_dimText->setParentItem(m_textItems);
     m_tolTextOver = new QGCustomText();
     m_tolTextOver->setTightBounding(true);
-    m_tolTextOver->setParentItem(this);
+    m_tolTextOver->setParentItem(m_textItems);
     m_tolTextUnder = new QGCustomText();
     m_tolTextUnder->setTightBounding(true);
-    m_tolTextUnder->setParentItem(this);
+    m_tolTextUnder->setParentItem(m_textItems);
     m_unitText = new QGCustomText();
     m_unitText->setTightBounding(true);
-    m_unitText->setParentItem(this);
+    m_unitText->setParentItem(m_textItems);
+
+    m_frame = new QGraphicsRectItem();
+    QPen framePen;
+    framePen.setWidthF(Rez::guiX(0.5));
+    framePen.setColor(m_dimText->defaultTextColor());
+    framePen.setJoinStyle(Qt::MiterJoin);
+    m_frame->setPen(framePen);
 
     m_ctrl = false;
+}
 
-    m_isFramed = false;
-    m_lineWidth = Rez::guiX(0.5);
+void QGIDatumLabel::setFramed(bool framed)
+{
+    if(framed) {
+        m_frame->setVisible(true);
+        m_frame->setParentItem(this);
+    }
+    else {
+        m_frame->setVisible(false);
+        m_frame->setParentItem(nullptr);
+    }
 }
 
 QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant& value)
@@ -332,9 +352,46 @@ void QGIDatumLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 
 QRectF QGIDatumLabel::boundingRect() const
 {
-    QRectF result = childrenBoundingRect();
-    result.adjust(-m_lineWidth * 4.0, 0.0, 0.0, 0.0);
-    return result;
+    return childrenBoundingRect();
+}
+
+QRectF QGIDatumLabel::tightBoundingRect() const
+{
+    QRectF totalRect;
+    for (QGraphicsItem* item : m_textItems->childItems()) {
+        auto* customText = dynamic_cast<QGCustomText*>(item);
+        if (customText && !customText->toPlainText().isEmpty()) {
+            QRectF itemRect = customText->alignmentRect();
+            QPointF pos = customText->pos();
+            itemRect.translate(pos.x(), pos.y());
+            totalRect = totalRect.isNull() ? itemRect : totalRect.united(itemRect);
+        }
+    }
+    int fontSize = m_dimText->font().pixelSize();
+    int paddingLeft = fontSize * 0.2;
+    int paddingTop = fontSize * 0.1;
+    int paddingRight = fontSize * 0.2;
+    int paddingBottom = fontSize * 0.1;
+    return totalRect.adjusted(-paddingLeft, -paddingTop, paddingRight, paddingBottom);
+}
+
+void QGIDatumLabel::updateFrameRect() {
+    prepareGeometryChange();
+    m_frame->setRect(tightBoundingRect());
+}
+
+void QGIDatumLabel::setLineWidth(double lineWidth)
+{
+    QPen pen = m_frame->pen();
+    pen.setWidthF(lineWidth);
+    m_frame->setPen(pen);
+}
+
+void QGIDatumLabel::setFrameColor(QColor color)
+{
+    QPen pen = m_frame->pen();
+    pen.setColor(color);
+    m_frame->setPen(pen);
 }
 
 void QGIDatumLabel::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
@@ -347,18 +404,6 @@ void QGIDatumLabel::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
 
     //    painter->setPen(Qt::blue);
     //    painter->drawRect(boundingRect());          //good for debugging
-
-    if (m_isFramed) {
-        QPen prevPen = painter->pen();
-        QPen framePen(prevPen);
-
-        framePen.setWidthF(m_lineWidth);
-        framePen.setColor(m_dimText->defaultTextColor());
-
-        painter->setPen(framePen);
-        painter->drawRect(boundingRect());
-        painter->setPen(prevPen);
-    }
 }
 
 void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCenter)
@@ -385,29 +430,26 @@ void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCente
         m_unitText->setPlainText(QString());
     }
 
-    QRectF labelBox = m_dimText->boundingRect();
+    QRectF labelBox = m_dimText->alignmentRect();
     double right = labelBox.right();
-    double top = labelBox.top();
-    double bottom = labelBox.bottom();
-    double middle = (top + bottom) / 2.0;
+    double middle = labelBox.center().y();
 
     //set unit position
-    QRectF unitBox = m_unitText->boundingRect();
+    QRectF unitBox = m_unitText->alignmentRect();
     double unitWidth = unitBox.width();
     double unitRight = right + unitWidth;
     // Set the m_unitText font *baseline* at same height as the m_dimText font baseline
     m_unitText->setPos(right, 0.0);
 
     //set tolerance position
-    QRectF overBox = m_tolTextOver->boundingRect();
+    QRectF overBox = m_tolTextOver->alignmentRect();
     double tolLeft  = unitRight;
 
     // Adjust for difference in tight and original bounding box sizes, note the y-coord down system
     QPointF tol_adj = m_tolTextOver->tightBoundingAdjust();
-    m_tolTextOver->justifyLeftAt(tolLeft + tol_adj.x(), middle - tol_adj.y(), false);
+    m_tolTextOver->justifyLeftAt(tolLeft + tol_adj.x(), middle + tol_adj.y()/2.0, false);
     tol_adj = m_tolTextUnder->tightBoundingAdjust();
-    m_tolTextUnder->justifyLeftAt(tolLeft + tol_adj.x(), middle + overBox.height() - tol_adj.y(),
-                                   false);
+    m_tolTextUnder->justifyLeftAt(tolLeft + tol_adj.x(), middle + overBox.height() + tol_adj.y()/2.0, false);
 }
 
 void QGIDatumLabel::setLabelCenter()
@@ -420,7 +462,7 @@ void QGIDatumLabel::setLabelCenter()
 
 Base::Vector2d QGIDatumLabel::getPosToCenterVec()
 {
-    QPointF center = m_dimText->boundingRect().center();
+    QPointF center = tightBoundingRect().center();
 
     return Base::Vector2d(center.x(), center.y());
 }
@@ -433,15 +475,17 @@ void QGIDatumLabel::setFont(QFont font)
     QFont tFont(font);
     double fontSize = font.pixelSize();
     double tolAdj = getTolAdjust();
-    tFont.setPixelSize((int)(fontSize * tolAdj));
+    tFont.setPixelSize(std::max(1, (int)(fontSize * tolAdj)));
     m_tolTextOver->setFont(tFont);
     m_tolTextUnder->setFont(tFont);
+    updateFrameRect();
 }
 
 void QGIDatumLabel::setDimString(QString text)
 {
     prepareGeometryChange();
     m_dimText->setPlainText(text);
+    updateFrameRect();
 }
 
 void QGIDatumLabel::setDimString(QString text, qreal maxWidth)
@@ -449,6 +493,7 @@ void QGIDatumLabel::setDimString(QString text, qreal maxWidth)
     prepareGeometryChange();
     m_dimText->setPlainText(text);
     m_dimText->setTextWidth(maxWidth);
+    updateFrameRect();
 }
 
 void QGIDatumLabel::setToleranceString()
@@ -471,25 +516,26 @@ void QGIDatumLabel::setToleranceString()
         // TheoreticalExact would be as wide as necessary for the text
         m_tolTextOver->setPlainText(QString());
         m_tolTextUnder->setPlainText(QString());
+        updateFrameRect();
         return;
     }
 
     std::pair<std::string, std::string> labelTexts, unitTexts;
 
     if (dim->ArbitraryTolerances.getValue()) {
-        labelTexts = dim->getFormattedToleranceValues(1);//copy tolerance spec
+        labelTexts = dim->getFormattedToleranceValues(Format::FORMATTED);//copy tolerance spec
         unitTexts.first = "";
         unitTexts.second = "";
     }
     else {
         if (dim->isMultiValueSchema()) {
-            labelTexts = dim->getFormattedToleranceValues(0);//don't format multis
+            labelTexts = dim->getFormattedToleranceValues(Format::UNALTERED);//don't format multis
             unitTexts.first = "";
             unitTexts.second = "";
         }
         else {
-            labelTexts = dim->getFormattedToleranceValues(1);// prefix value [unit] postfix
-            unitTexts = dim->getFormattedToleranceValues(2); //just the unit
+            labelTexts = dim->getFormattedToleranceValues(Format::FORMATTED);// prefix value [unit] postfix
+            unitTexts = dim->getFormattedToleranceValues(Format::UNIT); //just the unit
         }
     }
 
@@ -508,19 +554,7 @@ void QGIDatumLabel::setToleranceString()
         m_tolTextOver->show();
     }
 
-    return;
-}
-
-void QGIDatumLabel::setUnitString(QString text)
-{
-    prepareGeometryChange();
-    if (text.isEmpty()) {
-        m_unitText->hide();
-    }
-    else {
-        m_unitText->setPlainText(text);
-        m_unitText->show();
-    }
+    updateFrameRect();
 }
 
 
@@ -545,6 +579,7 @@ void QGIDatumLabel::setPrettySel()
     m_tolTextOver->setPrettySel();
     m_tolTextUnder->setPrettySel();
     m_unitText->setPrettySel();
+    setFrameColor(PreferencesGui::selectQColor());
     Q_EMIT setPretty(SEL);
 }
 
@@ -555,6 +590,7 @@ void QGIDatumLabel::setPrettyPre()
     m_tolTextOver->setPrettyPre();
     m_tolTextUnder->setPrettyPre();
     m_unitText->setPrettyPre();
+    setFrameColor(PreferencesGui::preselectQColor());
     Q_EMIT setPretty(PRE);
 }
 
@@ -565,6 +601,7 @@ void QGIDatumLabel::setPrettyNormal()
     m_tolTextOver->setPrettyNormal();
     m_tolTextUnder->setPrettyNormal();
     m_unitText->setPrettyNormal();
+    setFrameColor(PreferencesGui::normalQColor());
     Q_EMIT setPretty(NORMAL);
 }
 
@@ -576,6 +613,7 @@ void QGIDatumLabel::setColor(QColor color)
     m_tolTextOver->setColor(m_colNormal);
     m_tolTextUnder->setColor(m_colNormal);
     m_unitText->setColor(m_colNormal);
+    setFrameColor(m_colNormal);
 }
 
 void QGIDatumLabel::setSelectability(bool val)
@@ -629,11 +667,12 @@ QGIViewDimension::QGIViewDimension() : dvDimension(nullptr), hasHover(false), m_
                                  //above this Dimension's parent view.   need Layers?
     hideFrame();
 
-    m_refFlag = new QGCustomSvg();
-    m_refFlag->setParentItem(this);
-    m_refFlag->load(QString::fromUtf8(":/icons/TechDraw_RefError.svg"));
-    m_refFlag->setZValue(ZVALUE::LOCK);
-    m_refFlag->hide();
+    // needs phase 2 of autocorrect to be useful
+    // m_refFlag = new QGCustomSvg();
+    // m_refFlag->setParentItem(this);
+    // m_refFlag->load(QStringLiteral(":/icons/TechDraw_RefError.svg"));
+    // m_refFlag->setZValue(ZVALUE::LOCK);
+    // m_refFlag->hide();
 }
 
 QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant& value)
@@ -770,12 +809,13 @@ void QGIViewDimension::updateView(bool update)
         updateDim();
     }
 
-    if (dim->hasGoodReferences()) {
-        m_refFlag->hide();
-    } else {
-        m_refFlag->centerAt(datumLabel->pos() + datumLabel->boundingRect().center());
-        m_refFlag->show();
-    }
+    // needs Phase 2 of autocorrect to be useful
+    // if (dim->hasGoodReferences()) {
+    //     m_refFlag->hide();
+    // } else {
+    //     m_refFlag->centerAt(datumLabel->pos() + datumLabel->boundingRect().center());
+    //     m_refFlag->show();
+    // }
 
     draw();
 }
@@ -792,10 +832,11 @@ void QGIViewDimension::updateDim()
     }
 
     QString labelText =
-        QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str());// pre value [unit] post
+        // what about fromStdString?
+        QString::fromUtf8(dim->getFormattedDimensionValue(Format::FORMATTED).c_str());// pre value [unit] post
     if (dim->isMultiValueSchema()) {
         labelText =
-            QString::fromUtf8(dim->getFormattedDimensionValue(0).c_str());//don't format multis
+            QString::fromUtf8(dim->getFormattedDimensionValue(Format::UNALTERED).c_str());//don't format multis
     }
 
     QFont font = datumLabel->getFont();
@@ -2306,7 +2347,7 @@ void QGIViewDimension::drawDistance(TechDraw::DrawViewDimension* dimension,
                                     ViewProviderDimension* viewProvider) const
 {
     Base::BoundBox2d labelRectangle(
-        fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
+        fromQtGui(mapRectFromItem(datumLabel, datumLabel->tightBoundingRect())));
 
     pointPair linePoints = dimension->getLinearPoints();
     const char* dimensionType = dimension->Type.getValueAsString();
@@ -2343,7 +2384,7 @@ void QGIViewDimension::drawRadius(TechDraw::DrawViewDimension* dimension,
                                   ViewProviderDimension* viewProvider) const
 {
     Base::BoundBox2d labelRectangle(
-        fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
+        fromQtGui(mapRectFromItem(datumLabel, datumLabel->tightBoundingRect())));
     arcPoints curvePoints = dimension->getArcPoints();
 
     double endAngle;
@@ -2374,7 +2415,7 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension* dimension,
                                     ViewProviderDimension* viewProvider) const
 {
     Base::BoundBox2d labelRectangle(
-        fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
+        fromQtGui(mapRectFromItem(datumLabel, datumLabel->tightBoundingRect())));
     Base::Vector2d labelCenter(labelRectangle.GetCenter());
 
     arcPoints curvePoints = dimension->getArcPoints();
@@ -2541,7 +2582,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
     QPainterPath anglePath;
 
     Base::BoundBox2d labelRectangle(
-        fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
+        fromQtGui(mapRectFromItem(datumLabel, datumLabel->tightBoundingRect())));
     Base::Vector2d labelCenter(labelRectangle.GetCenter());
     double labelAngle = 0.0;
 
@@ -2731,7 +2772,7 @@ void QGIViewDimension::drawArea(TechDraw::DrawViewDimension* dimension,
     ViewProviderDimension* viewProvider) const
 {
     Base::BoundBox2d labelRectangle(
-        fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
+        fromQtGui(mapRectFromItem(datumLabel, datumLabel->tightBoundingRect())));
     areaPoint areaPoint = dimension->getAreaPoint();
 
     drawAreaExecutive(

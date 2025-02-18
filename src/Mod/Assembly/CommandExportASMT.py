@@ -45,7 +45,6 @@ class CommandExportASMT:
         return {
             "Pixmap": "Assembly_ExportASMT",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_ExportASMT", "Export ASMT File"),
-            "Accel": "E",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_ExportASMT",
                 "Export currently active assembly as a ASMT file.",
@@ -54,7 +53,7 @@ class CommandExportASMT:
         }
 
     def IsActive(self):
-        return UtilsAssembly.isAssemblyCommandActive() and UtilsAssembly.isAssemblyGrounded()
+        return UtilsAssembly.isAssemblyCommandActive()
 
     def Activated(self):
         document = App.ActiveDocument
@@ -75,7 +74,7 @@ class CommandExportASMT:
         )
 
         if filePath:
-            assembly.exportAsASMT(filePath)
+            Gui.doCommand(f'assembly.exportAsASMT("{filePath}")')
 
 
 if App.GuiUp:

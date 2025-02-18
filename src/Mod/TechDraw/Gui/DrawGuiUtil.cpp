@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2024 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,13 +49,14 @@
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
+#include <Base/Tools2D.h>
 #include <Base/Type.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/PrefWidgets.h>
@@ -68,11 +70,15 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/LineGenerator.h>
+#include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "DlgPageChooser.h"
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
+#include "QGIEdge.h"
+#include "QGIVertex.h"
+#include "QGIViewPart.h"
 #include "QGSPage.h"
 #include "ViewProviderPage.h"
 #include "Rez.h"
@@ -163,7 +169,7 @@ void DrawGuiUtil::loadLineStandardsChoices(QComboBox* combo)
     combo->clear();
     std::vector<std::string> choices = LineGenerator::getAvailableLineStandards();
     for (auto& entry : choices) {
-        QString qentry = Base::Tools::fromStdString(entry);
+        QString qentry = QString::fromStdString(entry);
         combo->addItem(qentry);
     }
 }
@@ -179,14 +185,32 @@ void DrawGuiUtil::loadLineStyleChoices(QComboBox* combo, LineGenerator* generato
         choices = LineGenerator::getLineDescriptions();
     }
 
+    auto translationContext = LineName::currentTranslationContext();
     int itemNumber {0};
     for (auto& entry : choices) {
-        QString qentry = Base::Tools::fromStdString(entry);
+        QString qentry = QCoreApplication::translate(translationContext.c_str(), entry.c_str());
         combo->addItem(qentry);
         if (generator) {
             combo->setItemIcon(itemNumber, iconForLine(itemNumber + 1, generator));
         }
         itemNumber++;
+    }
+}
+
+void DrawGuiUtil::loadLineGroupChoices(QComboBox* combo)
+{
+    combo->clear();
+    std::string lgFileName = Preferences::lineGroupFile();
+    std::string lgRecord = LineGroup::getGroupNamesFromFile(lgFileName);
+    // split collected groups
+    std::stringstream ss(lgRecord);
+    std::vector<QString> lgNames;
+    while (std::getline(ss, lgRecord, ',')) {
+        lgNames.push_back(QString::fromStdString(lgRecord));
+    }
+    // fill the combobox with the found names
+    for (auto& name : lgNames) {
+        combo->addItem(name);
     }
 }
 
@@ -757,3 +781,53 @@ QIcon DrawGuiUtil::maskBlackPixels(QIcon itemIcon, QSize iconSize, QColor textCo
     return filler;
 }
 
+void DrawGuiUtil::rotateToAlign(const QGIEdge* edge, const Base::Vector2d& direction)
+{
+    QGIViewPart* view = static_cast<QGIViewPart*>(edge->parentItem());
+    DrawViewPart* dvp = static_cast<DrawViewPart*>(view->getViewObject());
+    BaseGeomPtr bg = dvp->getEdgeGeometry().at(edge->getProjIndex());
+    std::vector<Base::Vector3d> endPoints = bg->findEndPoints();
+    Base::Vector3d oldDirection3d = endPoints.at(0) - endPoints.at(1);
+    Base::Vector2d oldDirection2d(oldDirection3d.x, oldDirection3d.y);
+    rotateToAlign(dvp, oldDirection2d, direction);
+}
+
+//! The view of p1 and p2 will be rotated to make p1 and p2 aligned with direction (for instance horizontalle aligned)
+void DrawGuiUtil::rotateToAlign(const QGIVertex* p1, const QGIVertex* p2, const Base::Vector2d& direction)
+{
+    QGIViewPart* view = static_cast<QGIViewPart*>(p1->parentItem());
+    if(view != static_cast<QGIViewPart*>(p2->parentItem())) {
+        Base::Console().Error("Vertexes have to be from the same view!");
+    }
+
+    Base::Vector2d oldDirection = p2->vector2dBetweenPoints(p1);
+    DrawViewPart* dvp = static_cast<DrawViewPart*>(view->getViewObject());
+    rotateToAlign(dvp, oldDirection, direction);
+}
+
+void DrawGuiUtil::rotateToAlign(DrawViewPart* view, const Base::Vector2d& oldDirection, const Base::Vector2d& newDirection)
+{
+    // If pointing counterclockwise, we need to rotate clockwise
+    // If pointing clockwise, we need to rotate counter clockwise
+    int cw = 1;
+    if(newDirection.Angle() > oldDirection.Angle()) {
+        cw = -1;
+    }
+
+    double toRotate = newDirection.GetAngle(oldDirection);
+    // Radians to degrees
+    toRotate = toRotate * 180 / M_PI;
+
+    // Rotate least amount possible
+    if(toRotate > 90) {
+        // Instead of rotating 145 degrees to match direction
+        // we only rotate -35 degrees
+        toRotate = toRotate - 180;
+    }
+    else if(toRotate < -90) {
+        toRotate = toRotate + 180;
+    }
+
+    double oldRotation = view->Rotation.getValue();
+    view->Rotation.setValue(oldRotation + toRotate * cw);
+}

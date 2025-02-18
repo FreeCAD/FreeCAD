@@ -40,7 +40,7 @@
 #include <Base/Placement.h>
 
 #include "Namespace.h"
-#include "Selection.h"
+#include "Selection/Selection.h"
 
 #include "CornerCrossLetters.h"
 #include "View3DInventorSelection.h"
@@ -66,6 +66,10 @@ class NaviCube;
 class SoClipPlane;
 
 namespace Quarter = SIM::Coin3D::Quarter;
+
+namespace Base {
+    class BoundBox2d;
+}
 
 namespace Gui {
 
@@ -107,22 +111,6 @@ public:
         DisallowRotation=8,/**< switch off the rotation. */
         DisallowPanning=16,/**< switch off the panning. */
         DisallowZooming=32,/**< switch off the zooming. */
-    };
-    //@}
-
-    /** @name Anti-Aliasing modes of the rendered 3D scene
-      * Specifies Anti-Aliasing (AA) method
-      * - Smoothing enables OpenGL line and vertex smoothing (basically deprecated)
-      * - MSAA is hardware multi sampling (with 2, 4 or 8 passes), a quite common and efficient AA technique
-      */
-    //@{
-    enum AntiAliasing {
-        None = 0,
-        Smoothing = 1,
-        MSAA2x = 2,
-        MSAA4x = 3,
-        MSAA6x = 5,
-        MSAA8x = 4
     };
     //@}
 
@@ -325,7 +313,10 @@ public:
     SbVec3f getPointOnLine(const SbVec2s&, const SbVec3f& axisCenter, const SbVec3f& axis) const;
 
     /** Returns the 3d point on the XY plane of a placement to the given 2d point. */
-    SbVec3f getPointOnXYPlaneOfPlacement(const SbVec2s&, Base::Placement&) const;
+    SbVec3f getPointOnXYPlaneOfPlacement(const SbVec2s&, const Base::Placement&) const;
+
+    /** Returns the bounding box on the XY plane of a placement to the given 2d point. */
+    Base::BoundBox2d getViewportOnXYPlaneOfPlacement(Base::Placement plc) const;
 
     /** Returns the 2d coordinates on the viewport to the given 3d point. */
     SbVec2s getPointOnViewport(const SbVec3f&) const;
@@ -443,6 +434,9 @@ public:
     bool isEnabledVBO() const;
     void setRenderCache(int);
 
+    //! Update colors of axis in corner to match preferences
+    void updateColors();
+
     void getDimensions(float& fHeight, float& fWidth) const;
     float getMaxDimension() const;
     SbVec3f getCenterPointOnFocalPlane() const;
@@ -539,6 +533,10 @@ private:
     bool fpsEnabled;
     bool vboEnabled;
     bool naviCubeEnabled;
+
+    App::Color m_xColor;
+    App::Color m_yColor;
+    App::Color m_zColor;
 
     bool editing;
     QCursor editCursor, zoomCursor, panCursor, spinCursor;

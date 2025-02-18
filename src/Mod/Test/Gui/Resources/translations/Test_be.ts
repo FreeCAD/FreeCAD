@@ -41,7 +41,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="141"/>
       <source>&amp;About</source>
-      <translation>&amp;Аб праграме</translation>
+      <translation>&amp;Пра праграму</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="144"/>
@@ -115,12 +115,12 @@ Double click on an error in the tree view to see more information about it, incl
       <translation>Увядзіце імя аб'екта, які пры выкліку верне TestCase.
 Націсніце "Запуск", і тэст пачне сваю працу.
 
-Двойчы пстрыкніце на памылку ў дрэвы прагляду, каб паглядзець дадатковую інфармацыю, які ўключае і трасіроўку стэка.</translation>
+Двойчы пстрыкніце на памылку ў дрэвы прагляду, каб паглядзець дадатковую інфармацыю, якае ўключае і трасіроўку стэка.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="179"/>
       <source>About FreeCAD UnitTest</source>
-      <translation>Аб FreeCAD UnitTest</translation>
+      <translation>Пра FreeCAD UnitTest</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="180"/>

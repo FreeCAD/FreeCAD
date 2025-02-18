@@ -26,7 +26,6 @@
 # include <QStyleOptionGraphicsItem>
 #endif
 
-#include <Base/Tools.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "QGIHighlight.h"
@@ -100,7 +99,7 @@ void QGIHighlight::makeHighlight()
 void QGIHighlight::makeReference()
 {
     prepareGeometryChange();
-    int fontSize = QGIView::exactFontSize(Base::Tools::toStdString(m_refFont.family()),
+    int fontSize = QGIView::exactFontSize(m_refFont.family().toStdString(),
                                           m_refSize);
     m_refFont .setPixelSize(fontSize);
     m_reference->setFont(m_refFont);
@@ -191,7 +190,6 @@ void QGIHighlight::setTools()
 {
     m_pen.setWidthF(m_width);
     m_pen.setColor(m_colCurrent);
-    m_pen.setStyle(Qt::CustomDashLine);
 
     m_brush.setStyle(m_brushCurrent);
     m_brush.setColor(m_colCurrent);

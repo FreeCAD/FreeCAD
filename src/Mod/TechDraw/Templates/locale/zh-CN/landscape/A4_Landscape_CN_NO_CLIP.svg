@@ -152,7 +152,7 @@
                 <text x="112.5" y="198" freecad:editable="CRAFTS_NAME"><tspan>评审人</tspan></text>
                 <text x="185" y="197" freecad:editable="TOTAL_SHEETS"><tspan> 99 </tspan></text>
                 <text x="210" y="197" freecad:editable="OF_SHEET"><tspan> 1 </tspan></text>
-                <text x="219" y="188" freecad:editable="SCALE"><tspan>M x:x</tspan></text>
+                <text x="219" y="188" freecad:editable="scale"><tspan>M x:x</tspan></text>
                 <text x="207" y="188" freecad:editable="WEIGHT"><tspan>重量</tspan></text>
   		<text x="185.25" y="188" fill="#000000" font-size="3.5" text-align="center" freecad:editable="STAGE-S"><tspan/></text>
   		<text x="191.75" y="188" fill="#000000" font-size="3.5" text-align="center" freecad:editable="STAGE-A"><tspan/></text>

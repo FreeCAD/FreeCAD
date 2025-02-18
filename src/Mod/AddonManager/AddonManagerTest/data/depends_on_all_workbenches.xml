@@ -13,7 +13,7 @@
 		<workbench>
 			<classname>MyFirstWorkbench</classname>
 			<icon>Resources/icons/PackageIcon.svg</icon>
-			<depend>Arch</depend>
+			<depend>BIM</depend>
 			<depend>Assembly</depend>
 			<depend>DraftWB</depend>
 			<depend>FEM WB</depend>

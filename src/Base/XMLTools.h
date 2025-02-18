@@ -31,12 +31,22 @@
 
 #include <Base/Exception.h>
 
-
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+namespace XERCES_CPP_NAMESPACE
+{
+class DOMNode;
+class DOMElement;
+class DOMDocument;
+}  // namespace XERCES_CPP_NAMESPACE
+#else
 XERCES_CPP_NAMESPACE_BEGIN
 class DOMNode;
 class DOMElement;
 class DOMDocument;
 XERCES_CPP_NAMESPACE_END
+#endif
 
 // Helper class
 class BaseExport XMLTools
@@ -164,6 +174,15 @@ inline XStr::~XStr()
     XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&fUnicodeForm);
 }
 
+// Uses the compiler to create a cache of transcoded string literals so that each subsequent call
+// can re-use the data from the lambda's initial creation. Permits the same usage as
+// XStr("literal").unicodeForm()
+#define XStrLiteral(literal)                                                                       \
+    ([]() -> const XStr& {                                                                         \
+        static const XStr str {literal};                                                           \
+        return str;                                                                                \
+    }())
+
 
 // -----------------------------------------------------------------------
 //  Getter methods
@@ -200,6 +219,14 @@ inline XUTF8Str::XUTF8Str(const char* const fromTranscode)
 
 inline XUTF8Str::~XUTF8Str() = default;
 
+// Uses the compiler to create a cache of transcoded string literals so that each subsequent call
+// can re-use the data from the lambda's initial creation. Permits the same usage as
+// XStr("literal").unicodeForm()
+#define XUTF8StrLiteral(literal)                                                                   \
+    ([]() -> const XUTF8Str& {                                                                     \
+        static const XUTF8Str str {literal};                                                       \
+        return str;                                                                                \
+    }())
 
 // -----------------------------------------------------------------------
 //  Getter methods

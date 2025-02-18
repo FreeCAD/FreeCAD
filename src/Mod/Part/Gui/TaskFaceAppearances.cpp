@@ -46,10 +46,10 @@
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
-#include <Gui/DlgMaterialPropertiesImp.h>
+#include <Gui/Dialogs/DlgMaterialPropertiesImp.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
@@ -278,18 +278,16 @@ FaceAppearances::~FaceAppearances()
 
 void FaceAppearances::setupConnections()
 {
+    // clang-format off
     connect(d->ui->defaultButton, &QPushButton::clicked,
             this, &FaceAppearances::onDefaultButtonClicked);
     connect(d->ui->boxSelection, &QPushButton::toggled,
             this, &FaceAppearances::onBoxSelectionToggled);
-    connect(d->ui->widgetMaterial,
-            &MatGui::MaterialTreeWidget::materialSelected,
-            this,
-            &FaceAppearances::onMaterialSelected);
-    connect(d->ui->buttonCustomAppearance,
-            &QPushButton::clicked,
-            this,
-            &FaceAppearances::onButtonCustomAppearanceClicked);
+    connect(d->ui->widgetMaterial, &MatGui::MaterialTreeWidget::materialSelected,
+            this, &FaceAppearances::onMaterialSelected);
+    connect(d->ui->buttonCustomAppearance, &QPushButton::clicked,
+            this, &FaceAppearances::onButtonCustomAppearanceClicked);
+    // clang-format on
 }
 
 void FaceAppearances::slotUndoDocument(const Gui::Document& Doc)
@@ -399,14 +397,14 @@ void FaceAppearances::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void FaceAppearances::updatePanel()
 {
-    QString faces = QString::fromLatin1("[");
+    QString faces = QStringLiteral("[");
     int size = d->index.size();
     for (int it : d->index) {
         faces += QString::number(it + 1);
         if (--size > 0)
-            faces += QString::fromLatin1(",");
+            faces += QStringLiteral(",");
     }
-    faces += QString::fromLatin1("]");
+    faces += QStringLiteral("]");
 
     int maxWidth = d->ui->labelElement->width();
     QFontMetrics fm(d->ui->labelElement->font());
@@ -428,7 +426,7 @@ int FaceAppearances::getFirstIndex() const
 }
 
 /**
- * Opens a dialog that allows to modify the 'ShapeMaterial' property of all selected view providers.
+ * Opens a dialog that allows one to modify the 'ShapeMaterial' property of all selected view providers.
  */
 void FaceAppearances::onButtonCustomAppearanceClicked()
 {

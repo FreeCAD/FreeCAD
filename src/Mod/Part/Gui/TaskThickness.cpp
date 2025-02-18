@@ -33,9 +33,9 @@
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionFilter.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Part/App/PartFeatures.h>
 
@@ -119,6 +119,7 @@ ThicknessWidget::~ThicknessWidget()
 
 void ThicknessWidget::setupConnections()
 {
+    // clang-format off
     connect(d->ui.spinOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &ThicknessWidget::onSpinOffsetValueChanged);
     connect(d->ui.modeType, qOverload<int>(&QComboBox::activated),
@@ -133,6 +134,7 @@ void ThicknessWidget::setupConnections()
             this, &ThicknessWidget::onFacesButtonToggled);
     connect(d->ui.updateView, &QCheckBox::toggled,
             this, &ThicknessWidget::onUpdateViewToggled);
+    // clang-format on
 }
 
 Part::Thickness* ThicknessWidget::getObject() const

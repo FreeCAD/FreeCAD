@@ -46,8 +46,8 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/TechDraw/App/DrawDimHelper.h>
@@ -87,6 +87,13 @@ using DimensionType = TechDraw::DrawViewDimension::DimensionType;
 bool _checkSelection(Gui::Command* cmd, unsigned maxObjs = 2);
 bool _checkDrawViewPart(Gui::Command* cmd);
 
+bool isDimCmdActive(Gui::Command* cmd)
+{
+    bool havePage = DrawGuiUtil::needPage(cmd);
+    bool haveView = DrawGuiUtil::needView(cmd);
+    return (havePage && haveView);
+}
+
 
 void execDistance(Gui::Command* cmd);
 void execDistanceX(Gui::Command* cmd);
@@ -96,6 +103,7 @@ void execAngle3Pt(Gui::Command* cmd);
 void execRadius(Gui::Command* cmd);
 void execDiameter(Gui::Command* cmd);
 void execArea(Gui::Command* cmd);
+void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometry, std::vector<int> minimumCounts, std::vector<DimensionGeometryType> acceptableDimensionGeometrys);
 
 void execExtent(Gui::Command* cmd, const std::string& dimType);
 
@@ -566,7 +574,7 @@ public:
 private:
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("TechDraw_Dimension_Pointer");
+        return QStringLiteral("TechDraw_Dimension_Pointer");
     }
 
 protected:
@@ -665,7 +673,7 @@ protected:
                 return emptyVector;
             }
 
-            if (geom->getGeomType() == TechDraw::GENERIC) {
+            if (geom->getGeomType() == GeomType::GENERIC) {
                 TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom);
                 if (gen1->points.size() < 2) {
                     return emptyVector;
@@ -673,13 +681,13 @@ protected:
                 return selLine;
                 //Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
             }
-            else if (geom->getGeomType() == TechDraw::CIRCLE || geom->getGeomType() == TechDraw::ARCOFCIRCLE) {
+            else if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
                 return selCircleArc;
             }
-            else if (geom->getGeomType() == TechDraw::ELLIPSE || geom->getGeomType() == TechDraw::ARCOFELLIPSE) {
+            else if (geom->getGeomType() == GeomType::ELLIPSE || geom->getGeomType() == GeomType::ARCOFELLIPSE) {
                 return selEllipseArc;
             }
-            else if (geom->getGeomType() == TechDraw::BSPLINE) {
+            else if (geom->getGeomType() == GeomType::BSPLINE) {
                 //TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(geom);
                 //if (spline->isCircle()) {
                 //    return isBSplineCircle;
@@ -973,7 +981,7 @@ protected:
         }
         if (availableDimension == AvailableDimension::SECOND) {
             createRadiusDiameterDimension(selCircleArc[0], false);
-            if (selCircleArc[0].geomEdgeType() != TechDraw::ARCOFCIRCLE) {
+            if (selCircleArc[0].geomEdgeType() != GeomType::ARCOFCIRCLE) {
                 availableDimension = AvailableDimension::RESET;
             }
         }
@@ -1007,7 +1015,7 @@ protected:
         }
         if (availableDimension == AvailableDimension::SECOND) {
             createRadiusDiameterDimension(selEllipseArc[0], false);
-            if (selEllipseArc[0].geomEdgeType() != TechDraw::ARCOFELLIPSE) {
+            if (selEllipseArc[0].geomEdgeType() != GeomType::ARCOFELLIPSE) {
                 availableDimension = AvailableDimension::RESET;
             }
         }
@@ -1066,7 +1074,7 @@ protected:
     void createRadiusDiameterDimension(ReferenceEntry ref, bool firstCstr) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(ref.getSubName()));
         TechDraw::BaseGeomPtr geom = partFeat->getGeomByIndex(GeoId);
-        bool isCircleGeom = (geom->getGeomType() == TechDraw::CIRCLE) || (geom->getGeomType() == TechDraw::ELLIPSE);
+        bool isCircleGeom = (geom->getGeomType() == GeomType::CIRCLE) || (geom->getGeomType() == GeomType::ELLIPSE);
 
         // Use same preference as in sketcher?
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw/dimensioning");
@@ -1406,7 +1414,6 @@ CmdTechDrawDimension::CmdTechDrawDimension()
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_Dimension";
     sAccel = "D";
-    eType = ForEdit;
 }
 
 void CmdTechDrawDimension::activated(int iMsg)
@@ -1424,9 +1431,7 @@ void CmdTechDrawDimension::activated(int iMsg)
 
 bool CmdTechDrawDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 
@@ -1444,7 +1449,6 @@ public:
         sToolTipText = QT_TR_NOOP("Dimension tools.");
         sWhatsThis = "TechDraw_CompDimensionTools";
         sStatusTip = sToolTipText;
-        eType = ForEdit;
 
         setCheckable(false);
         setRememberLast(false);
@@ -1477,6 +1481,11 @@ public:
     }
 
     const char* className() const override { return "CmdTechDrawCompDimensionTools"; }
+
+    bool isActive() override
+    {
+        return isDimCmdActive(this);
+    }
 };
 
 //===========================================================================
@@ -1513,92 +1522,18 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
 
 bool CmdTechDrawRadiusDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execRadius(Gui::Command* cmd)
 {
-    bool result = _checkDrawViewPart(cmd);
-    if (!result) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
-                             QObject::tr("No View of a Part in selection."));
-        return;
-    }
-
-    ReferenceVector references2d;
-    ReferenceVector references3d;
-    TechDraw::DrawViewPart* partFeat =
-        TechDraw::getReferencesFromSelection(references2d, references3d);
-
     //Define the geometric configuration required for a radius dimension
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({1});
     std::vector<DimensionGeometryType> acceptableDimensionGeometrys(
         {isCircle, isEllipse, isBSplineCircle, isBSpline});
 
-    //what 2d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs2d = validateDimSelection(
-        references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-    if (geometryRefs2d == TechDraw::isInvalid) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make 2d radius dimension from selection"));
-        return;
-    }
-
-    //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d(isInvalid);
-    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
-        geometryRefs3d = validateDimSelection3d(partFeat,
-                                                references3d,
-                                                acceptableGeometry,
-                                                minimumCounts,
-                                                acceptableDimensionGeometrys);
-        if (geometryRefs3d == TechDraw::isInvalid) {
-            QMessageBox::warning(Gui::getMainWindow(),
-                                 QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make 3d radius dimension from selection"));
-            return;
-        }
-    }
-
-    //errors and warnings
-    if (geometryRefs2d == isEllipse || geometryRefs3d == isEllipse) {
-        QMessageBox::StandardButton result = QMessageBox::warning(
-            Gui::getMainWindow(),
-            QObject::tr("Ellipse Curve Warning"),
-            QObject::tr("Selected edge is an Ellipse.  Radius will be approximate. Continue?"),
-            QMessageBox::Ok | QMessageBox::Cancel,
-            QMessageBox::Cancel);
-        if (result != QMessageBox::Ok) {
-            return;
-        }
-    }
-    if (geometryRefs2d == isBSplineCircle || geometryRefs3d == isBSplineCircle) {
-        QMessageBox::StandardButton result = QMessageBox::warning(
-            Gui::getMainWindow(),
-            QObject::tr("BSpline Curve Warning"),
-            QObject::tr("Selected edge is a BSpline.  Radius will be approximate. Continue?"),
-            QMessageBox::Ok | QMessageBox::Cancel,
-            QMessageBox::Cancel);
-        if (result != QMessageBox::Ok) {
-            return;
-        }
-    }
-    if (geometryRefs2d == isBSpline || geometryRefs3d == isBSpline) {
-        QMessageBox::critical(
-            Gui::getMainWindow(),
-            QObject::tr("BSpline Curve Error"),
-            QObject::tr("Selected edge is a BSpline and a radius can not be calculated."));
-        return;
-    }
-
-    //build the dimension
-    //    DrawViewDimension* dim =
-    dimensionMaker(partFeat, "Radius", references2d, references3d);
+    execDim(cmd, "Radius", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
 
 //===========================================================================
@@ -1635,92 +1570,18 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
 
 bool CmdTechDrawDiameterDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execDiameter(Gui::Command* cmd)
 {
-    bool result = _checkDrawViewPart(cmd);
-    if (!result) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
-                             QObject::tr("No View of a Part in selection."));
-        return;
-    }
-
-    ReferenceVector references2d;
-    ReferenceVector references3d;
-    TechDraw::DrawViewPart* partFeat =
-        TechDraw::getReferencesFromSelection(references2d, references3d);
-
     //Define the geometric configuration required for a diameter dimension
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({1});
     std::vector<DimensionGeometryType> acceptableDimensionGeometrys(
         {isCircle, isEllipse, isBSplineCircle, isBSpline});
 
-    //what 2d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs2d = validateDimSelection(
-        references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-    if (geometryRefs2d == TechDraw::isInvalid) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make 2d diameter dimension from selection"));
-        return;
-    }
-
-    //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d(isInvalid);
-    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
-        geometryRefs3d = validateDimSelection3d(partFeat,
-                                                references3d,
-                                                acceptableGeometry,
-                                                minimumCounts,
-                                                acceptableDimensionGeometrys);
-        if (geometryRefs3d == TechDraw::isInvalid) {
-            QMessageBox::warning(Gui::getMainWindow(),
-                                 QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make 3d diameter dimension from selection"));
-            return;
-        }
-    }
-
-    //errors and warnings
-    if (geometryRefs2d == isEllipse || geometryRefs3d == isEllipse) {
-        QMessageBox::StandardButton result = QMessageBox::warning(
-            Gui::getMainWindow(),
-            QObject::tr("Ellipse Curve Warning"),
-            QObject::tr("Selected edge is an Ellipse.  Diameter will be approximate. Continue?"),
-            QMessageBox::Ok | QMessageBox::Cancel,
-            QMessageBox::Cancel);
-        if (result != QMessageBox::Ok) {
-            return;
-        }
-    }
-    if (geometryRefs2d == isBSplineCircle || geometryRefs3d == isBSplineCircle) {
-        QMessageBox::StandardButton result = QMessageBox::warning(
-            Gui::getMainWindow(),
-            QObject::tr("BSpline Curve Warning"),
-            QObject::tr("Selected edge is a BSpline.  Diameter will be approximate. Continue?"),
-            QMessageBox::Ok | QMessageBox::Cancel,
-            QMessageBox::Cancel);
-        if (result != QMessageBox::Ok) {
-            return;
-        }
-    }
-    if (geometryRefs2d == isBSpline || geometryRefs3d == isBSpline) {
-        QMessageBox::critical(
-            Gui::getMainWindow(),
-            QObject::tr("BSpline Curve Error"),
-            QObject::tr("Selected edge is a BSpline and a diameter can not be calculated."));
-        return;
-    }
-
-    //build the dimension
-    //    DrawViewDimension* dim =
-    dimensionMaker(partFeat, "Diameter", references2d, references3d);
+    execDim(cmd, "Diameter", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
 
 //===========================================================================
@@ -1757,65 +1618,17 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
 
 bool CmdTechDrawLengthDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execDistance(Gui::Command* cmd)
 {
-    bool result = _checkDrawViewPart(cmd);
-    if (!result) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
-                             QObject::tr("No View of a Part in selection."));
-        return;
-    }
-
-    ReferenceVector references2d;
-    ReferenceVector references3d;
-    TechDraw::DrawViewPart* partFeat =
-        TechDraw::getReferencesFromSelection(references2d, references3d);
-
-    //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
     std::vector<DimensionGeometryType> acceptableDimensionGeometrys(
         {isVertical, isHorizontal, isDiagonal, isHybrid});
 
-    //what 2d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs2d = validateDimSelection(
-        references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-
-    if (geometryRefs2d == TechDraw::isInvalid) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make 2d linear dimension from selection"));
-        return;
-    }
-
-    //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d;
-    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
-        geometryRefs3d = validateDimSelection3d(partFeat,
-                                                references3d,
-                                                acceptableGeometry,
-                                                minimumCounts,
-                                                acceptableDimensionGeometrys);
-
-        if (geometryRefs3d == TechDraw::isInvalid) {
-            QMessageBox::warning(Gui::getMainWindow(),
-                                 QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make 3d linear dimension from selection"));
-            return;
-        }
-    }
-
-    //build the dimension
-    DrawViewDimension* dim = dimensionMaker(partFeat, "Distance", references2d, references3d);
-
-    //position the Dimension text on the view
-    positionDimText(dim);
+    execDim(cmd, "Distance", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
 
 //===========================================================================
@@ -1853,63 +1666,17 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
 
 bool CmdTechDrawHorizontalDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execDistanceX(Gui::Command* cmd)
 {
-    bool result = _checkDrawViewPart(cmd);
-    if (!result) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
-                             QObject::tr("No View of a Part in selection."));
-        return;
-    }
-
-    ReferenceVector references2d;
-    ReferenceVector references3d;
-    TechDraw::DrawViewPart* partFeat =
-        TechDraw::getReferencesFromSelection(references2d, references3d);
-
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
     std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isHorizontal, isDiagonal, isHybrid});
 
-    //what 2d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs2d = validateDimSelection(
-        references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-    if (geometryRefs2d == TechDraw::isInvalid) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make 2d horizontal dimension from selection"));
-        return;
-    }
-
-    //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d;
-    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
-        geometryRefs3d = validateDimSelection3d(partFeat,
-                                                references3d,
-                                                acceptableGeometry,
-                                                minimumCounts,
-                                                acceptableDimensionGeometrys);
-        if (geometryRefs3d == TechDraw::isInvalid) {
-            QMessageBox::warning(
-                Gui::getMainWindow(),
-                QObject::tr("Incorrect Selection"),
-                QObject::tr("Can not make 3d horizontal dimension from selection"));
-            return;
-        }
-    }
-
-    //build the dimension
-    DrawViewDimension* dim = dimensionMaker(partFeat, "DistanceX", references2d, references3d);
-
-    //position the Dimension text on the view
-    positionDimText(dim);
+    execDim(cmd, "DistanceX", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
 
 //===========================================================================
@@ -1947,62 +1714,17 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
 
 bool CmdTechDrawVerticalDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execDistanceY(Gui::Command* cmd)
 {
-    bool result = _checkDrawViewPart(cmd);
-    if (!result) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
-                             QObject::tr("No View of a Part in selection."));
-        return;
-    }
-
-    ReferenceVector references2d;
-    ReferenceVector references3d;
-    TechDraw::DrawViewPart* partFeat =
-        TechDraw::getReferencesFromSelection(references2d, references3d);
-
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
     std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isVertical, isDiagonal, isHybrid});
 
-    //what 2d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs2d = validateDimSelection(
-        references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-    if (geometryRefs2d == TechDraw::isInvalid) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make 2d vertical dimension from selection"));
-        return;
-    }
-
-    //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d;
-    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
-        geometryRefs3d = validateDimSelection3d(partFeat,
-                                                references3d,
-                                                acceptableGeometry,
-                                                minimumCounts,
-                                                acceptableDimensionGeometrys);
-        if (geometryRefs3d == TechDraw::isVertical) {
-            QMessageBox::warning(Gui::getMainWindow(),
-                                 QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make 3d vertical dimension from selection"));
-            return;
-        }
-    }
-
-    //build the dimension
-    DrawViewDimension* dim = dimensionMaker(partFeat, "DistanceY", references2d, references3d);
-
-    //position the Dimension text on the view
-    positionDimText(dim);
+    execDim(cmd, "DistanceY", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
 
 //===========================================================================
@@ -2039,62 +1761,17 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
 
 bool CmdTechDrawAngleDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execAngle(Gui::Command* cmd)
 {
-    bool result = _checkDrawViewPart(cmd);
-    if (!result) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
-                             QObject::tr("No View of a Part in selection."));
-        return;
-    }
-
-    ReferenceVector references2d;
-    ReferenceVector references3d;
-    TechDraw::DrawViewPart* partFeat =
-        TechDraw::getReferencesFromSelection(references2d, references3d);
-
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({2});
     std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isAngle});
 
-    //what 2d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs2d = validateDimSelection(
-        references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-    if (geometryRefs2d == TechDraw::isInvalid) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make 2d angle dimension from selection"));
-        return;
-    }
-
-    //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d;
-    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
-        geometryRefs3d = validateDimSelection3d(partFeat,
-                                                references3d,
-                                                acceptableGeometry,
-                                                minimumCounts,
-                                                acceptableDimensionGeometrys);
-        if (geometryRefs3d == TechDraw::isInvalid) {
-            QMessageBox::warning(Gui::getMainWindow(),
-                                 QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make 3d angle dimension from selection"));
-            return;
-        }
-    }
-
-    //build the dimension
-    DrawViewDimension* dim = dimensionMaker(partFeat, "Angle", references2d, references3d);
-
-    //position the Dimension text on the view
-    positionDimText(dim);
+    execDim(cmd, "Angle", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
 
 //===========================================================================
@@ -2131,62 +1808,17 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
 
 bool CmdTechDraw3PtAngleDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execAngle3Pt(Gui::Command* cmd)
 {
-    bool result = _checkDrawViewPart(cmd);
-    if (!result) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
-                             QObject::tr("No View of a Part in selection."));
-        return;
-    }
-
-    ReferenceVector references2d;
-    ReferenceVector references3d;
-    TechDraw::DrawViewPart* partFeat =
-        TechDraw::getReferencesFromSelection(references2d, references3d);
-
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Vertex"});
     std::vector<int> minimumCounts({3});
     std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isAngle3Pt});
 
-    //what 2d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs2d = validateDimSelection(
-        references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-    if (geometryRefs2d == TechDraw::isInvalid) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make 2d angle dimension from selection"));
-        return;
-    }
-
-    //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d;
-    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
-        geometryRefs3d = validateDimSelection3d(partFeat,
-                                                references3d,
-                                                acceptableGeometry,
-                                                minimumCounts,
-                                                acceptableDimensionGeometrys);
-        if (geometryRefs3d == TechDraw::isInvalid) {
-            QMessageBox::warning(Gui::getMainWindow(),
-                                 QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make 3d angle dimension from selection"));
-            return;
-        }
-    }
-
-    //build the dimension
-    DrawViewDimension* dim = dimensionMaker(partFeat, "Angle3Pt", references2d, references3d);
-
-    //position the Dimension text on the view
-    positionDimText(dim);
+    execDim(cmd, "Angle3Pt", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
 
 //===========================================================================
@@ -2200,7 +1832,7 @@ CmdTechDrawAreaDimension::CmdTechDrawAreaDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Area Dimension");
+    sMenuText = QT_TR_NOOP("Insert Area Annotation");
     sToolTipText = sMenuText;
     sWhatsThis = "TechDraw_AreaDimension";
     sStatusTip = sToolTipText;
@@ -2223,59 +1855,17 @@ void CmdTechDrawAreaDimension::activated(int iMsg)
 
 bool CmdTechDrawAreaDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execArea(Gui::Command* cmd)
 {
-    bool result = _checkDrawViewPart(cmd);
-    if (!result) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
-                             QObject::tr("No View of a Part in selection."));
-        return;
-    }
-
-    ReferenceVector references2d;
-    ReferenceVector references3d;
-    TechDraw::DrawViewPart* partFeat =
-        TechDraw::getReferencesFromSelection(references2d, references3d);
-
-    //Define the geometric configuration required for a length dimension
+    //Define the geometric configuration required for a area dimension
     StringVector acceptableGeometry({"Face"});
     std::vector<int> minimumCounts({1});
     std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isFace});
 
-    //what 2d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs2d = validateDimSelection(
-        references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-    if (geometryRefs2d == TechDraw::isInvalid) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make 2d angle dimension from selection"));
-        return;
-    }
-
-    //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d;
-    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
-        geometryRefs3d = validateDimSelection3d(partFeat,
-                                                references3d,
-                                                acceptableGeometry,
-                                                minimumCounts,
-                                                acceptableDimensionGeometrys);
-        if (geometryRefs3d == TechDraw::isInvalid) {
-            QMessageBox::warning(Gui::getMainWindow(),
-                                 QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make 3d angle dimension from selection"));
-            return;
-        }
-    }
-
-    //build the dimension
-    dimensionMaker(partFeat, "Area", references2d, references3d);
+    execDim(cmd, "Area", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
 
 
@@ -2413,12 +2003,12 @@ Gui::Action* CmdTechDrawExtentGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_HorizontalExtentDimension"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_HorizontalExtentDimension"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_HorizontalExtentDimension"));
+    p1->setObjectName(QStringLiteral("TechDraw_HorizontalExtentDimension"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_HorizontalExtentDimension"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_VerticalExtentDimension"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_VerticalExtentDimension"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_VerticalExtentDimension"));
+    p2->setObjectName(QStringLiteral("TechDraw_VerticalExtentDimension"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_VerticalExtentDimension"));
 
     _pcAction = pcAction;
     languageChange();
@@ -2454,9 +2044,7 @@ void CmdTechDrawExtentGroup::languageChange()
 
 bool CmdTechDrawExtentGroup::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 //===========================================================================
@@ -2494,9 +2082,7 @@ void CmdTechDrawHorizontalExtentDimension::activated(int iMsg)
 
 bool CmdTechDrawHorizontalExtentDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execExtent(Gui::Command* cmd, const std::string& dimType)
@@ -2520,7 +2106,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
             if (!ref.getSubName().empty()) {
                 QMessageBox::warning(Gui::getMainWindow(),
                     QObject::tr("Incorrect selection"),
-                    QObject::tr("Selection contains both 2d and 3d geometry"));
+                    QObject::tr("Selection contains both 2D and 3D geometry"));
                 return;
             }
         }
@@ -2545,7 +2131,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     if (geometryRefs2d == TechDraw::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make 2d extent dimension from selection"));
+                             QObject::tr("Can not make 2D extent dimension from selection"));
         return;
     }
 
@@ -2560,7 +2146,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
         if (geometryRefs3d == isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make 3d extent dimension from selection"));
+                                 QObject::tr("Can not make 3D extent dimension from selection"));
             return;
         }
     }
@@ -2608,9 +2194,7 @@ void CmdTechDrawVerticalExtentDimension::activated(int iMsg)
 
 bool CmdTechDrawVerticalExtentDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 //===========================================================================
@@ -2764,9 +2348,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
 
 bool CmdTechDrawLandmarkDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 //------------------------------------------------------------------------------
@@ -2796,6 +2378,94 @@ void CreateTechDrawCommandsDims()
 //------------------------------------------------------------------------------
 
 //Common code to build a dimension feature
+
+void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometry, std::vector<int> minimumCounts, std::vector<DimensionGeometryType> acceptableDimensionGeometrys)
+{
+    bool result = _checkDrawViewPart(cmd);
+    if (!result) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            QObject::tr("Incorrect selection"),
+            QObject::tr("No View of a Part in selection."));
+        return;
+    }
+
+    ReferenceVector references2d;
+    ReferenceVector references3d;
+    TechDraw::DrawViewPart* partFeat =
+        TechDraw::getReferencesFromSelection(references2d, references3d);
+
+    //what 2d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs2d = validateDimSelection(
+        references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
+    if (geometryRefs2d == TechDraw::isInvalid) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            QObject::tr("Incorrect Selection"),
+            QObject::tr("Can not make 2D dimension from selection"));
+        return;
+    }
+
+    //what 3d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs3d{TechDraw::isInvalid};
+    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
+        geometryRefs3d = validateDimSelection3d(partFeat,
+            references3d,
+            acceptableGeometry,
+            minimumCounts,
+            acceptableDimensionGeometrys);
+
+        if (geometryRefs3d == TechDraw::isInvalid) {
+            QMessageBox::warning(Gui::getMainWindow(),
+                QObject::tr("Incorrect Selection"),
+                QObject::tr("Can not make 3D dimension from selection"));
+            return;
+        }
+    }
+    else {
+        references3d.clear();
+    }
+
+    //errors and warnings
+    if (type == "Radius" || type == "Diameter") {
+        if (geometryRefs2d == isEllipse || geometryRefs3d == isEllipse) {
+            QMessageBox::StandardButton result = QMessageBox::warning(
+                Gui::getMainWindow(),
+                QObject::tr("Ellipse Curve Warning"),
+                QObject::tr("Selected edge is an Ellipse. Value will be approximate. Continue?"),
+                QMessageBox::Ok | QMessageBox::Cancel,
+                QMessageBox::Cancel);
+            if (result != QMessageBox::Ok) {
+                return;
+            }
+        }
+        if (geometryRefs2d == isBSplineCircle || geometryRefs3d == isBSplineCircle) {
+            QMessageBox::StandardButton result = QMessageBox::warning(
+                Gui::getMainWindow(),
+                QObject::tr("B-spline Curve Warning"),
+                QObject::tr("Selected edge is a B-spline. Value will be approximate. Continue?"),
+                QMessageBox::Ok | QMessageBox::Cancel,
+                QMessageBox::Cancel);
+            if (result != QMessageBox::Ok) {
+                return;
+            }
+        }
+        if (geometryRefs2d == isBSpline || geometryRefs3d == isBSpline) {
+            QMessageBox::critical(
+                Gui::getMainWindow(),
+                QObject::tr("B-spline Curve Error"),
+                QObject::tr("Selected edge is a B-spline and a radius/diameter can not be calculated."));
+            return;
+        }
+    }
+
+    //build the dimension
+    DrawViewDimension* dim = dimensionMaker(partFeat, type, references2d, references3d);
+
+    if (type == "Distance" || type == "DistanceX" || type == "DistanceY" || type == "Angle" || type == "Angle3Pt") {
+        //position the Dimension text on the view
+        positionDimText(dim);
+    }
+}
+
 DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
                                   ReferenceVector references2d, ReferenceVector references3d)
 {

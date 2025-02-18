@@ -1553,7 +1553,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Automatisk</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="99"/>

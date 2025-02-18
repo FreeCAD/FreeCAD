@@ -36,46 +36,43 @@ import FreeCADGui
 
 from femguiutils import selection_widgets
 
-from femtools import femutils
 from femtools import membertools
+from . import base_femtaskpanel
 
 
-class _TaskPanel(object):
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
     def __init__(self, obj):
-        self.obj = obj
+        super().__init__(obj)
 
         self.parameter_widget = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/BodyHeatSource.ui")
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/BodyHeatSource.ui"
+        )
 
         self.init_parameter_widget()
 
         QtCore.QObject.connect(
             self.parameter_widget.qsb_dissipation_rate,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.dissipation_rate_changed
+            self.dissipation_rate_changed,
         )
 
         QtCore.QObject.connect(
             self.parameter_widget.qsb_total_power,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.total_power_changed
+            self.total_power_changed,
         )
 
         QtCore.QObject.connect(
             self.parameter_widget.cb_mode,
             QtCore.SIGNAL("currentIndexChanged(int)"),
-            self.mode_changed
+            self.mode_changed,
         )
-
 
         # geometry selection widget
         # start with Solid in list!
         self.selection_widget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Solid", "Face"],
-            True,
-            False
+            obj.References, ["Solid", "Face"], True, False
         )
 
         # form made from param and selection widget
@@ -87,7 +84,7 @@ class _TaskPanel(object):
         if analysis is not None:
             self._mesh = membertools.get_single_member(analysis, "Fem::FemMeshObject")
         if self._mesh is not None:
-            self._part = femutils.get_part_to_mesh(self._mesh)
+            self._part = self._mesh.Shape
         self._partVisible = None
         self._meshVisible = None
 
@@ -101,8 +98,7 @@ class _TaskPanel(object):
     def reject(self):
         self.restore_visibility()
         self.selection_widget.finish_selection()
-        FreeCADGui.ActiveDocument.resetEdit()
-        return True
+        return super().reject()
 
     def accept(self):
         self.obj.References = self.selection_widget.references
@@ -110,11 +106,9 @@ class _TaskPanel(object):
         self.obj.TotalPower = self.total_power
         self.obj.Mode = self.mode
 
-        self.obj.Document.recompute()
         self.selection_widget.finish_selection()
-        FreeCADGui.ActiveDocument.resetEdit()
         self.restore_visibility()
-        return True
+        return super().accept()
 
     def restore_visibility(self):
         if self._mesh is not None and self._part is not None:
@@ -127,16 +121,17 @@ class _TaskPanel(object):
             else:
                 self._part.ViewObject.hide()
 
-
     def init_parameter_widget(self):
         self.dissipation_rate = self.obj.DissipationRate
         self.total_power = self.obj.TotalPower
-        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_dissipation_rate)\
-            .bind(self.obj, "DissipationRate")
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_dissipation_rate).bind(
+            self.obj, "DissipationRate"
+        )
         self.parameter_widget.qsb_dissipation_rate.setProperty("value", self.dissipation_rate)
 
-        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_total_power)\
-            .bind(self.obj, "TotalPower")
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_total_power).bind(
+            self.obj, "TotalPower"
+        )
         self.parameter_widget.qsb_total_power.setProperty("value", self.total_power)
 
         self.mode = self.obj.Mode

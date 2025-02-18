@@ -37,7 +37,7 @@
 #include <App/DocumentObject.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -60,11 +60,11 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
               true,
               parent)
     , proxy(nullptr)
-    , DressUpView(DressUpView)
     , deleteAction(nullptr)
     , addAllEdgesAction(nullptr)
     , allowFaces(selectFaces)
     , allowEdges(selectEdges)
+    , DressUpView(DressUpView)
 {
     // remember initial transaction ID
     App::GetApplication().getActiveTransaction(&transactionID);
@@ -93,7 +93,7 @@ const QString TaskDressUpParameters::btnSelectStr()
 
 void TaskDressUpParameters::setupTransaction()
 {
-    if (!DressUpView)
+    if (DressUpView.expired())
         return;
 
     int tid = 0;
@@ -114,7 +114,7 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
 
     Gui::Selection().clearSelection();
 
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
+    PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     App::DocumentObject* base = this->getBase();
 
     // TODO: Must we make a copy here instead of assigning to const char* ?
@@ -140,14 +140,13 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
 
 void TaskDressUpParameters::addAllEdges(QListWidget* widget)
 {
-#ifdef FC_USE_TNP_FIX
     Q_UNUSED(widget)
 
-    if (!DressUpView) {
+    if (DressUpView.expired()) {
         return;
     }
 
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
+    PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     App::DocumentObject* base = pcDressUp->Base.getValue();
     if (!base) {
         return;
@@ -172,28 +171,6 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
     catch (Base::Exception& e) {
         e.ReportException();
     }
-#else
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
-
-    Gui::WaitCursor wait;
-    int count = pcDressUp->getBaseTopoShape().countSubElements("Edge");
-    std::vector<std::string> edgeNames;
-    for (int ii = 0; ii < count; ii++){
-        std::ostringstream edgeName;
-        edgeName << "Edge" << ii+1;
-        edgeNames.push_back(edgeName.str());
-    }
-
-    //First we need to clear the widget in case the user had faces selected. Else the faces will still be in widget but not in the feature refs!
-    QSignalBlocker block(widget);
-    widget->clear();
-
-    for (const auto & it : edgeNames){
-        widget->addItem(QLatin1String(it.c_str()));
-    }
-
-    updateFeature(pcDressUp, edgeNames);
-#endif
 }
 
 void TaskDressUpParameters::deleteRef(QListWidget* widget)
@@ -204,7 +181,7 @@ void TaskDressUpParameters::deleteRef(QListWidget* widget)
     // get the list of items to be deleted
     QList<QListWidgetItem*> selectedList = widget->selectedItems();
 
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
+    PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     std::vector<std::string> refs = pcDressUp->Base.getSubValues();
 
     // delete the selection backwards to assure the list index keeps valid for the deletion
@@ -283,9 +260,24 @@ void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
 
             // highlight the selected item
             bool block = this->blockSelection(true);
-            Gui::Selection().addSelection(docName.c_str(), objName.c_str(), subName.c_str(), 0, 0, 0);
+            tryAddSelection(docName, objName, subName);
             this->blockSelection(block);
         }
+    }
+}
+
+void TaskDressUpParameters::tryAddSelection(const std::string& doc,
+                                            const std::string& obj,
+                                            const std::string& sub)
+{
+    try {
+        Gui::Selection().addSelection(doc.c_str(), obj.c_str(), sub.c_str(), 0, 0, 0);
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+    catch (const Standard_Failure& e) {
+        Base::Console().Error("OCC error: %s\n", e.GetMessageString());
     }
 }
 
@@ -299,7 +291,7 @@ void TaskDressUpParameters::createAddAllEdgesAction(QListWidget* parentList)
     // creates a context menu, a shortcut for it and connects it to a slot function
 
     addAllEdgesAction = new QAction(tr("Add all edges"), this);
-    addAllEdgesAction->setShortcut(QKeySequence(QString::fromLatin1("Ctrl+Shift+A")));
+    addAllEdgesAction->setShortcut(QKeySequence(QStringLiteral("Ctrl+Shift+A")));
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     addAllEdgesAction->setShortcutVisibleInContextMenu(true);
@@ -314,7 +306,11 @@ void TaskDressUpParameters::createDeleteAction(QListWidget* parentList)
     // creates a context menu, a shortcut for it and connects it to a slot function
 
     deleteAction = new QAction(tr("Remove"), this);
-    deleteAction->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        deleteAction->setShortcut(QKeySequence(shortcut));
+    }
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     deleteAction->setShortcutVisibleInContextMenu(true);
@@ -323,11 +319,10 @@ void TaskDressUpParameters::createDeleteAction(QListWidget* parentList)
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
-bool TaskDressUpParameters::KeyEvent(QEvent *e)
+bool TaskDressUpParameters::event(QEvent* event)
 {
-    // in case another instance takes key events, accept the overridden key event
-    if (e && e->type() == QEvent::ShortcutOverride) {
-        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+    if (event->type() == QEvent::ShortcutOverride) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(event);  // NOLINT
         if (deleteAction && Gui::QtTools::matches(kevent, deleteAction->shortcut())) {
             kevent->accept();
             return true;
@@ -337,27 +332,29 @@ bool TaskDressUpParameters::KeyEvent(QEvent *e)
             return true;
         }
     }
-    // if we have a Del key, trigger the deleteAction
-    else if (e && e->type() == QEvent::KeyPress) {
-        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
-        if (deleteAction && deleteAction->isEnabled() &&
-            Gui::QtTools::matches(kevent, deleteAction->shortcut())) {
-            deleteAction->trigger();
-            return true;
-        }
-        if (addAllEdgesAction && addAllEdgesAction->isEnabled() &&
-            Gui::QtTools::matches(kevent, addAllEdgesAction->shortcut())) {
-            addAllEdgesAction->trigger();
-            return true;
-        }
+
+    return TaskBox::event(event);
+}
+
+void TaskDressUpParameters::keyPressEvent(QKeyEvent* ke)
+{
+    if (deleteAction && deleteAction->isEnabled() &&
+        Gui::QtTools::matches(ke, deleteAction->shortcut())) {
+        deleteAction->trigger();
+        return;
+    }
+    if (addAllEdgesAction && addAllEdgesAction->isEnabled() &&
+        Gui::QtTools::matches(ke, addAllEdgesAction->shortcut())) {
+        addAllEdgesAction->trigger();
+        return;
     }
 
-    return TaskDressUpParameters::event(e);
+    TaskBox::keyPressEvent(ke);
 }
 
 const std::vector<std::string> TaskDressUpParameters::getReferences() const
 {
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
+    PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     std::vector<std::string> result = pcDressUp->Base.getSubValues();
     return result;
 }
@@ -383,36 +380,55 @@ void TaskDressUpParameters::hideOnError()
         showObject();
 }
 
-void TaskDressUpParameters::hideObject()
+void TaskDressUpParameters::setDressUpVisibility(bool visible)
 {
     App::DocumentObject* base = getBase();
-    if(base) {
-        DressUpView->getObject()->Visibility.setValue(false);
-        base->Visibility.setValue(true);
+    if (base) {
+        App::DocumentObject* duv = DressUpView->getObject();
+        if (duv->Visibility.getValue() != visible) {
+            duv->Visibility.setValue(visible);
+        }
+        if (base->Visibility.getValue() == visible) {
+            base->Visibility.setValue(!visible);
+        }
     }
+}
+
+void TaskDressUpParameters::hideObject()
+{
+    setDressUpVisibility(false);
 }
 
 void TaskDressUpParameters::showObject()
 {
-    App::DocumentObject* base = getBase();
-    if (base) {
-        DressUpView->getObject()->Visibility.setValue(true);
-        base->Visibility.setValue(false);
-    }
+    setDressUpVisibility(true);
+}
+
+ViewProviderDressUp* TaskDressUpParameters::getDressUpView() const
+{
+    return DressUpView.expired() ? nullptr : DressUpView.get();
 }
 
 Part::Feature* TaskDressUpParameters::getBase() const
 {
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
-    // Unlikely but this may throw an exception in case we are started to edit an object which base feature
-    // was deleted. This exception will be likely unhandled inside the dialog and pass upper, But an error
-    // message inside the report view is better than a SEGFAULT.
-    // Generally this situation should be prevented in ViewProviderDressUp::setEdit()
-    return pcDressUp->getBaseObject();
+    if (ViewProviderDressUp* vp = getDressUpView()) {
+        auto dressUp = vp->getObject<PartDesign::DressUp>();
+        // Unlikely but this may throw an exception in case we are started to edit an object which
+        // base feature was deleted. This exception will be likely unhandled inside the dialog and
+        // pass upper. But an error message inside the report view is better than a SEGFAULT.
+        // Generally this situation should be prevented in ViewProviderDressUp::setEdit()
+        return dressUp->getBaseObject();
+    }
+
+    return nullptr;
 }
 
 void TaskDressUpParameters::setSelectionMode(selectionModes mode)
 {
+    if (DressUpView.expired()) {
+        return;
+    }
+
     selectionMode = mode;
     setButtons(mode);
 
@@ -448,6 +464,22 @@ TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp *DressUpV
     , parameter(nullptr)
 {
     assert(DressUpView);
+    auto pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
+    auto base = pcDressUp->Base.getValue();
+    std::vector<std::string> newSubList;
+    bool changed = false;
+    auto& shadowSubs = pcDressUp->Base.getShadowSubs();
+    for ( auto &shadowSub : shadowSubs ) {
+        auto displayName = shadowSub.oldName;
+        // If there is a missing tag on the shadow sub, take a guess at a new name.
+        if ( boost::starts_with(shadowSub.oldName,Data::MISSING_PREFIX)) {
+            Part::Feature::guessNewLink(displayName, base, shadowSub.newName.c_str());
+            newSubList.emplace_back(displayName);
+            changed = true;
+        }
+    }
+    if ( changed )
+        pcDressUp->Base.setValue(base, newSubList);
 }
 
 TaskDlgDressUpParameters::~TaskDlgDressUpParameters() = default;
@@ -456,10 +488,10 @@ TaskDlgDressUpParameters::~TaskDlgDressUpParameters() = default;
 
 bool TaskDlgDressUpParameters::accept()
 {
-    getDressUpView()->highlightReferences(false);
+    getViewObject<ViewProviderDressUp>()->highlightReferences(false);
     std::vector<std::string> refs = parameter->getReferences();
     std::stringstream str;
-    str << Gui::Command::getObjectCmd(vp->getObject()) << ".Base = ("
+    str << Gui::Command::getObjectCmd(getObject()) << ".Base = ("
         << Gui::Command::getObjectCmd(parameter->getBase()) << ",[";
     for (const auto & ref : refs)
         str << "\"" << ref << "\",";
@@ -470,7 +502,7 @@ bool TaskDlgDressUpParameters::accept()
 
 bool TaskDlgDressUpParameters::reject()
 {
-    getDressUpView()->highlightReferences(false);
+    getViewObject<ViewProviderDressUp>()->highlightReferences(false);
     return TaskDlgFeatureParameters::reject();
 }
 

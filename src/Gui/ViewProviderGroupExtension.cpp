@@ -72,32 +72,38 @@ bool ViewProviderGroupExtension::extensionCanDropObjects() const {
     return true;
 }
 
-bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj) const {
-
+bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj) const
+{
 #ifdef FC_DEBUG
-    Base::Console().Log("Check ViewProviderGroupExtension");
+    Base::Console().Log("Check ViewProviderGroupExtension\n");
 #endif
 
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
+    auto extobj = getExtendedViewProvider()->getObject();
+    auto group = extobj->getExtensionByType<App::GroupExtension>();
 
     //we cannot drop thing of this group into it again if it does not allow reorder
-    if (group->hasObject(obj) && !getExtendedViewProvider()->acceptReorderingObjects())
+    if (group->hasObject(obj) && !getExtendedViewProvider()->acceptReorderingObjects()) {
         return false;
+    }
 
-    if (group->allowObject(obj))
-        return true;
+    // Check for possible cyclic dependencies if we allowed to drop the object
+    const auto& list = obj->getOutList();
+    if (std::find(list.begin(), list.end(), extobj) != list.end()) {
+        Base::Console().Warning("Do not add cyclic dependency to %s\n", extobj->Label.getValue());
+        return false;
+    }
 
-    return false;
+    return group->allowObject(obj);
 }
 
 void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
 
-    auto grp = static_cast<App::DocumentObject*>(getExtendedViewProvider()->getObject());
+    auto grp = getExtendedViewProvider()->getObject();
     App::Document* doc = grp->getDocument();
 
     // build Python command for execution
     QString cmd;
-    cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").addObject("
+    cmd = QStringLiteral("App.getDocument(\"%1\").getObject(\"%2\").addObject("
                         "App.getDocument(\"%1\").getObject(\"%3\"))")
                         .arg(QString::fromLatin1(doc->getName()),
                              QString::fromLatin1(grp->getNameInDocument()),

@@ -37,15 +37,13 @@ import FreeCAD
 from os.path import join
 
 
-def get_fem_test_home_dir(
-):
+def get_fem_test_home_dir():
     return join(FreeCAD.getHomePath(), "Mod", "Fem", "femtest", "data")
 
 
-def get_fem_test_tmp_dir(
-    dirname=None
-):
+def get_fem_test_tmp_dir(dirname=None):
     from uuid import uuid4
+
     _unique_id = str(uuid4())[-12:]
     # print(_unique_id)
     if dirname is None:
@@ -54,23 +52,18 @@ def get_fem_test_tmp_dir(
         temp_dir = join(tempfile.gettempdir(), "FEM_unittests", dirname + "_" + _unique_id)
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
-    return(temp_dir)
+    return temp_dir
 
 
-def get_unit_test_tmp_dir(
-    temp_dir,
-    unittestdir
-):
+def get_unit_test_tmp_dir(temp_dir, unittestdir):
     testdir = join(temp_dir, unittestdir)
     if not os.path.exists(testdir):
         os.makedirs(testdir)
     return testdir
 
 
-def fcc_print(
-    message
-):
-    FreeCAD.Console.PrintMessage("{} \n".format(message))
+def fcc_print(message):
+    FreeCAD.Console.PrintMessage(f"{message} \n")
 
 
 def get_namefromdef(strdel="", stradd=""):
@@ -78,16 +71,14 @@ def get_namefromdef(strdel="", stradd=""):
     return (sys._getframe(1).f_code.co_name).replace(strdel, stradd)
 
 
-def get_defmake_count(
-    fem_vtk_post=True
-):
+def get_defmake_count(fem_vtk_post=True):
     """
     count the def make in module ObjectsFem
     could also be done in bash with
     grep -c  "def make" src/Mod/Fem/ObjectsFem.py
     """
     name_modfile = join(FreeCAD.getHomePath(), "Mod", "Fem", "ObjectsFem.py")
-    modfile = open(name_modfile, "r")
+    modfile = open(name_modfile)
     lines_modefile = modfile.readlines()
     modfile.close()
     lines_defmake = [li for li in lines_modefile if li.startswith("def make")]
@@ -102,11 +93,10 @@ def get_defmake_count(
     return len(lines_defmake)
 
 
-def get_fem_test_defs(
-):
+def get_fem_test_defs():
 
     test_path = join(FreeCAD.getHomePath(), "Mod", "Fem", "femtest", "app")
-    print("Modules, classes, methods taken from: {}".format(test_path))
+    print(f"Modules, classes, methods taken from: {test_path}")
 
     collected_test_module_paths = []
     for tfile in sorted(os.listdir(test_path)):
@@ -118,11 +108,11 @@ def get_fem_test_defs(
     collected_test_methods = []
     for f in collected_test_module_paths:
         module_name = os.path.splitext(os.path.basename(f))[0]
-        module_path = "femtest.app.{}".format(module_name)
+        module_path = f"femtest.app.{module_name}"
         if module_path not in collected_test_modules:
             collected_test_modules.append(module_path)
         class_name = ""
-        tfile = open(f, "r")
+        tfile = open(f)
         for ln in tfile:
             ln = ln.lstrip()
             ln = ln.rstrip()
@@ -130,7 +120,7 @@ def get_fem_test_defs(
                 ln = ln.lstrip("class ")
                 ln = ln.split("(")[0]
                 class_name = ln
-                class_path = "femtest.app.{}.{}".format(module_name, class_name)
+                class_path = f"femtest.app.{module_name}.{class_name}"
                 if class_path not in collected_test_classes:
                     collected_test_classes.append(class_path)
             if ln.startswith("def test"):
@@ -138,7 +128,7 @@ def get_fem_test_defs(
                 ln = ln.split("(")[0]
                 if ln == "test_00print":
                     continue
-                method_path = "femtest.app.{}.{}.{}".format(module_name, class_name, ln)
+                method_path = f"femtest.app.{module_name}.{class_name}.{ln}"
                 collected_test_methods.append(method_path)
         tfile.close()
 
@@ -161,17 +151,17 @@ def get_fem_test_defs(
     cf.write("\n")
     cf.write("# modules\n")
     for m in collected_test_modules:
-        cf.write("make -j 4 && ./bin/FreeCADCmd -t {}\n".format(m))
+        cf.write(f"make -j 4 && ./bin/FreeCADCmd -t {m}\n")
     cf.write("\n")
     cf.write("\n")
     cf.write("# classes\n")
     for m in collected_test_classes:
-        cf.write("make -j 4 && ./bin/FreeCADCmd -t {}\n".format(m))
+        cf.write(f"make -j 4 && ./bin/FreeCADCmd -t {m}\n")
     cf.write("\n")
     cf.write("\n")
     cf.write("# methods\n")
     for m in collected_test_methods:
-        cf.write("make -j 4 && ./bin/FreeCADCmd -t {}\n".format(m))
+        cf.write(f"make -j 4 && ./bin/FreeCADCmd -t {m}\n")
     cf.write("\n")
     cf.write("\n")
     cf.write("# methods in FreeCAD\n")
@@ -180,11 +170,10 @@ def get_fem_test_defs(
             "\nimport unittest\n"
             "unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(\n"
             "    '{}'\n"
-            "))\n"
-            .format(m)
+            "))\n".format(m)
         )
     cf.close()
-    print("The file was saved in:{}".format(file_path))
+    print(f"The file was saved in:{file_path}")
 
 
 def try_converting_to_float(line: str) -> Union[None, List[float]]:
@@ -267,28 +256,38 @@ def parse_diff(diff_lines: Iterator[str]) -> List[str]:
         bad_lines.extend(changes_block)
     return bad_lines
 
-def compare_inp_files(
-    file_name1,
-    file_name2
-):
-    file1 = open(file_name1, "r")
+
+def compare_inp_files(file_name1, file_name2):
+    file1 = open(file_name1)
     f1 = file1.readlines()
     file1.close()
     # l.startswith("17671.0,1") is a temporary workaround
     # for python3 problem with 1DFlow input
     # TODO as soon as the 1DFlow result reading is fixed
     # this should be triggered in the 1DFlow unit test
-    lf1 = [li for li in f1 if not (
-        li.startswith("**   written ") or li.startswith("**   file ") or li.startswith("17671.0,1")
-    )]
+    lf1 = [
+        li
+        for li in f1
+        if not (
+            li.startswith("**   written ")
+            or li.startswith("**   file ")
+            or li.startswith("17671.0,1")
+        )
+    ]
     lf1 = force_unix_line_ends(lf1)
-    file2 = open(file_name2, "r")
+    file2 = open(file_name2)
     f2 = file2.readlines()
     file2.close()
     # TODO see comment on file1
-    lf2 = [li for li in f2 if not (
-        li.startswith("**   written ") or li.startswith("**   file ") or li.startswith("17671.0,1")
-    )]
+    lf2 = [
+        li
+        for li in f2
+        if not (
+            li.startswith("**   written ")
+            or li.startswith("**   file ")
+            or li.startswith("17671.0,1")
+        )
+    ]
     lf2 = force_unix_line_ends(lf2)
     import difflib
 
@@ -299,11 +298,8 @@ def compare_inp_files(
         return f"Comparing {file_name1} to {file_name2} failed!\n{''.join(bad_lines)}"
 
 
-def compare_files(
-    file_name1,
-    file_name2
-):
-    file1 = open(file_name1, "r")
+def compare_files(file_name1, file_name2):
+    file1 = open(file_name1)
     f1 = file1.readlines()
     file1.close()
 
@@ -312,39 +308,43 @@ def compare_files(
 
     # workaround to compare geos of elmer test and temporary file path
     # (not only names change, path changes with operating system)
-    lf1 = [li for li in f1 if not (
-        li.startswith('Merge "')
-        or li.startswith('Save "')
-        or li.startswith("// ")
-        or li.startswith("General.NumThreads")
-    )]
+    lf1 = [
+        li
+        for li in f1
+        if not (
+            li.startswith('Merge "')
+            or li.startswith('Save "')
+            or li.startswith("// ")
+            or li.startswith("General.NumThreads")
+        )
+    ]
     lf1 = force_unix_line_ends(lf1)
-    file2 = open(file_name2, "r")
+    file2 = open(file_name2)
     f2 = file2.readlines()
     file2.close()
-    lf2 = [li for li in f2 if not (
-        li.startswith('Merge "')
-        or li.startswith('Save "')
-        or li.startswith("// ")
-        or li.startswith("General.NumThreads")
-    )]
+    lf2 = [
+        li
+        for li in f2
+        if not (
+            li.startswith('Merge "')
+            or li.startswith('Save "')
+            or li.startswith("// ")
+            or li.startswith("General.NumThreads")
+        )
+    ]
     lf2 = force_unix_line_ends(lf2)
     import difflib
+
     diff = difflib.unified_diff(lf1, lf2, n=0)
     result = ""
     for li in diff:
         result += li
     if result:
-        result = "Comparing {} to {} failed!\n".format(file_name1, file_name2) + result
+        result = f"Comparing {file_name1} to {file_name2} failed!\n" + result
     return result
 
 
-def compare_stats(
-    fea,
-    stat_file,
-    res_obj_name,
-    loc_stat_types=None
-):
+def compare_stats(fea, stat_file, res_obj_name, loc_stat_types=None):
     import femresult.resulttools as resulttools
 
     # get the stat types which should be compared
@@ -361,7 +361,7 @@ def compare_stats(
         "Peeq",
         "Temp",
         "MFlow",
-        "NPress"
+        "NPress",
     ]
     if not loc_stat_types:
         loc_stat_types = stat_types
@@ -374,16 +374,13 @@ def compare_stats(
         stats = []
         for s in loc_stat_types:
             statval = resulttools.get_stats(obj, s)
-            stats.append(
-                "{}: ({:.10f}, {:.10f})\n"
-                .format(s, statval[0], statval[1])
-            )
+            stats.append(f"{s}: ({statval[0]:.10f}, {statval[1]:.10f})\n")
     else:
-        fcc_print("Result object not found. Name: {}".format(res_obj_name))
+        fcc_print(f"Result object not found. Name: {res_obj_name}")
         return True
 
     # get stats to compare with, the expected ones
-    sf = open(stat_file, "r")
+    sf = open(stat_file)
     sf_content = []
     for li in sf.readlines():
         for st in loc_stat_types:
@@ -396,20 +393,18 @@ def compare_stats(
 
     # compare stats
     if stats != sf_content:
-        fcc_print("Stats read from {}.frd file".format(fea.base_name))
+        fcc_print(f"Stats read from {fea.base_name}.frd file")
         fcc_print("!=")
-        fcc_print("Expected stats from {}".format(stat_file))
+        fcc_print(f"Expected stats from {stat_file}")
         for i in range(len(stats)):
             if stats[i] != sf_content[i]:
-                fcc_print("{} != {}".format(stats[i].rstrip(), sf_content[i].rstrip()))
+                fcc_print(f"{stats[i].rstrip()} != {sf_content[i].rstrip()}")
         return True
 
     return False
 
 
-def force_unix_line_ends(
-    line_list
-):
+def force_unix_line_ends(line_list):
     new_line_list = []
     for ln in line_list:
         if ln.endswith("\r\n"):
@@ -418,9 +413,7 @@ def force_unix_line_ends(
     return new_line_list
 
 
-def collect_python_modules(
-    femsubdir=None
-):
+def collect_python_modules(femsubdir=None):
     if not femsubdir:
         pydir = join(FreeCAD.ConfigGet("AppHomePath"), "Mod", "Fem")
     else:
@@ -430,20 +423,17 @@ def collect_python_modules(
     for pyfile in sorted(os.listdir(pydir)):
         if pyfile.endswith(".py") and not pyfile.startswith("Init"):
             if not femsubdir:
-                collected_modules.append(
-                    os.path.splitext(os.path.basename(pyfile))[0]
-                )
+                collected_modules.append(os.path.splitext(os.path.basename(pyfile))[0])
             else:
                 collected_modules.append(
-                    femsubdir.replace("/", ".") + "." + os.path.splitext(
-                        os.path.basename(pyfile)
-                    )[0]
+                    femsubdir.replace("/", ".")
+                    + "."
+                    + os.path.splitext(os.path.basename(pyfile))[0]
                 )
     return collected_modules
 
 
-def all_test_files(
-):
+def all_test_files():
     # open all files
     cube_frequency()
     cube_static()
@@ -454,61 +444,38 @@ def all_test_files(
 
 # run the specific test case of the file
 # open the file in FreeCAD GUI and return the doc identifier
-def cube_frequency(
-):
+def cube_frequency():
     testname = "femtest.testccxtools.TestCcxTools.test_3_freq_analysis"
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
-    doc = FreeCAD.open(join(
-        get_fem_test_tmp_dir(),
-        "FEM_ccx_frequency",
-        "cube_frequency.FCStd")
-    )
+    doc = FreeCAD.open(join(get_fem_test_tmp_dir(), "FEM_ccx_frequency", "cube_frequency.FCStd"))
     return doc
 
 
-def cube_static(
-):
+def cube_static():
     testname = "femtest.testccxtools.TestCcxTools.test_1_static_analysis"
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
-    doc = FreeCAD.open(
-        join(get_fem_test_tmp_dir(),
-             "FEM_ccx_static",
-             "cube_static.FCStd")
-    )
+    doc = FreeCAD.open(join(get_fem_test_tmp_dir(), "FEM_ccx_static", "cube_static.FCStd"))
     return doc
 
 
-def Flow1D_thermomech(
-):
+def Flow1D_thermomech():
     testname = "femtest.testccxtools.TestCcxTools.test_5_Flow1D_thermomech_analysis"
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
-    doc = FreeCAD.open(join(
-        get_fem_test_tmp_dir(),
-        "FEM_ccx_Flow1D_thermomech",
-        "Flow1D_thermomech.FCStd")
+    doc = FreeCAD.open(
+        join(get_fem_test_tmp_dir(), "FEM_ccx_Flow1D_thermomech", "Flow1D_thermomech.FCStd")
     )
     return doc
 
 
-def multimat(
-):
+def multimat():
     testname = "femtest.testccxtools.TestCcxTools.test_2_static_multiple_material"
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
-    doc = FreeCAD.open(join(
-        get_fem_test_tmp_dir(),
-        "FEM_ccx_multimat",
-        "multimat.FCStd")
-    )
+    doc = FreeCAD.open(join(get_fem_test_tmp_dir(), "FEM_ccx_multimat", "multimat.FCStd"))
     return doc
 
 
-def spine_thermomech(
-):
+def spine_thermomech():
     testname = "femtest.testccxtools.TestCcxTools.test_4_thermomech_analysis"
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
-    doc = FreeCAD.open(join(
-        get_fem_test_tmp_dir(),
-        "FEM_ccx_thermomech",
-        "spine_thermomech.FCStd")
-    )
+    doc = FreeCAD.open(join(get_fem_test_tmp_dir(), "FEM_ccx_thermomech", "spine_thermomech.FCStd"))
     return doc

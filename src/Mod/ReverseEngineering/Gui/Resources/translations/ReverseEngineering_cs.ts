@@ -233,9 +233,9 @@
       <translation>Umístění</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
-      <source>Fit B-Spline</source>
+      <location filename="../../FitBSplineCurve.cpp" line="139"/>
+      <source>Fit B-spline</source>
       <translation>Přizpůsobit B-splajn</translation>
     </message>
     <message>
@@ -591,8 +591,8 @@
     <name>ReenGui::FitBSplineCurve</name>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
-      <source>Fit B-spline surface</source>
-      <translation>Přizpůsobit B-splajn plochu</translation>
+      <source>Fit B-spline curve</source>
+      <translation type="unfinished">Fit B-spline curve</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>

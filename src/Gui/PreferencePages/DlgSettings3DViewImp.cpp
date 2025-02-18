@@ -33,7 +33,9 @@
 #include <App/Application.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
+#include <Gui/Multisample.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewParams.h>
 
 #include "DlgSettings3DViewImp.h"
 #include "ui_DlgSettings3DView.h"
@@ -73,6 +75,9 @@ void DlgSettings3DViewImp::saveSettings()
     ui->sliderIntensity->onSave();
     ui->radioPerspective->onSave();
     ui->radioOrthographic->onSave();
+    ui->xAxisColor->onSave();
+    ui->yAxisColor->onSave();
+    ui->zAxisColor->onSave();
 }
 
 void DlgSettings3DViewImp::loadSettings()
@@ -91,94 +96,44 @@ void DlgSettings3DViewImp::loadSettings()
     ui->radioPerspective->onRestore();
     ui->radioOrthographic->onRestore();
     ui->comboTransparentRender->onRestore();
+    ui->xAxisColor->onRestore();
+    ui->yAxisColor->onRestore();
+    ui->zAxisColor->onRestore();
 
     loadAntiAliasing();
     loadRenderCache();
     loadMarkerSize();
 }
 
-namespace {
-class GLFormatCheck {
-public:
-    GLFormatCheck() {
-        context.setFormat(format);
-        context.create();
-        offscreen.setFormat(format);
-        offscreen.create();
-        context.makeCurrent(&offscreen);
-    }
-
-    bool testSamples(int num) {
-        QOpenGLFramebufferObjectFormat fboFormat;
-        fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
-        fboFormat.setSamples(num);
-        QOpenGLFramebufferObject fbo(100, 100, fboFormat);  // NOLINT
-        return fbo.format().samples() == num;
-    }
-
-private:
-    QSurfaceFormat format;
-    QOpenGLContext context;
-    QOffscreenSurface offscreen;
-};
-}
-
 void DlgSettings3DViewImp::addAntiAliasing()
 {
-    QString none = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "None");
-    QString line = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "Line Smoothing");
-    QString msaa2x = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "MSAA 2x");
-    QString msaa4x = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "MSAA 4x");
-    QString msaa6x = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "MSAA 6x");
-    QString msaa8x = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "MSAA 8x");
     ui->comboAliasing->clear();
-    ui->comboAliasing->addItem(none, int(Gui::View3DInventorViewer::None));
-    ui->comboAliasing->addItem(line, int(Gui::View3DInventorViewer::Smoothing));
 
     // Do the samples checks only once
-    static std::vector<std::pair<QString, int>> modes;
+    static std::vector<std::pair<QString, AntiAliasing>> modes;
     static bool formatCheck = true;
     if (formatCheck) {
         formatCheck = false;
 
-        GLFormatCheck check;
-        // NOLINTBEGIN
-        if (check.testSamples(2)) {
-            modes.emplace_back(msaa2x, int(Gui::View3DInventorViewer::MSAA2x));
-        }
-        if (check.testSamples(4)) {
-            modes.emplace_back(msaa4x, int(Gui::View3DInventorViewer::MSAA4x));
-        }
-        if (check.testSamples(6)) {
-            modes.emplace_back(msaa6x, int(Gui::View3DInventorViewer::MSAA6x));
-        }
-        if (check.testSamples(8)) {
-            modes.emplace_back(msaa8x, int(Gui::View3DInventorViewer::MSAA8x));
-        }
-        // NOLINTEND
+        Multisample check;
+        modes = check.supported();
     }
 
     for (const auto& it : modes) {
-        ui->comboAliasing->addItem(it.first, it.second);
+        ui->comboAliasing->addItem(it.first, int(it.second));
     }
 }
 
 void DlgSettings3DViewImp::saveAntiAliasing()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
-
     int index = ui->comboAliasing->currentIndex();
     int aliasing = ui->comboAliasing->itemData(index).toInt();
-    hGrp->SetInt("AntiAliasing", aliasing);
+    Multisample::writeMSAAToSettings(static_cast<AntiAliasing>(aliasing));
 }
 
 void DlgSettings3DViewImp::loadAntiAliasing()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
-
-    int aliasing = int(hGrp->GetInt("AntiAliasing", int(Gui::View3DInventorViewer::None)));
+    int aliasing = int(Multisample::readMSAAFromSettings());
     int index = ui->comboAliasing->findData(aliasing);
     if (index != -1) {
         ui->comboAliasing->setCurrentIndex(index);
@@ -291,4 +246,5 @@ void DlgSettings3DViewImp::onAliasingChanged(int index)
 }
 
 #include "moc_DlgSettings3DViewImp.cpp"
+
 

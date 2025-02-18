@@ -40,9 +40,11 @@
 #include <vtkDoubleArray.h>
 #include <vtkHexahedron.h>
 #include <vtkIdList.h>
+#include <vtkLine.h>
 #include <vtkPointData.h>
 #include <vtkPyramid.h>
 #include <vtkQuad.h>
+#include <vtkQuadraticEdge.h>
 #include <vtkQuadraticHexahedron.h>
 #include <vtkQuadraticPyramid.h>
 #include <vtkQuadraticQuad.h>
@@ -166,6 +168,13 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
         std::vector<int> ids;
         fillMeshElementIds(cell, ids);
         switch (cell->GetCellType()) {
+            // 1D edges
+            case VTK_LINE:  // seg2
+                meshds->AddEdgeWithID(ids[0], ids[1], iCell + 1);
+                break;
+            case VTK_QUADRATIC_EDGE:  // seg3
+                meshds->AddEdgeWithID(ids[0], ids[1], ids[2], iCell + 1);
+                break;
             // 2D faces
             case VTK_TRIANGLE:  // tria3
                 meshds->AddFaceWithID(ids[0], ids[1], ids[2], iCell + 1);
@@ -282,7 +291,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
             // not handled cases
             default: {
                 Base::Console().Error(
-                    "Only common 2D and 3D Cells are supported in VTK mesh import\n");
+                    "Only common 1D, 2D and 3D Cells are supported in VTK mesh import\n");
                 break;
             }
         }
@@ -330,13 +339,35 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     return mesh;
 }
 
-void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
+void exportFemMeshEdges(vtkSmartPointer<vtkCellArray>& elemArray,
+                        std::vector<int>& types,
+                        const SMDS_EdgeIteratorPtr& aEdgeIter)
+{
+    Base::Console().Log("  Start: VTK mesh builder edges.\n");
+
+    while (aEdgeIter->more()) {
+        const SMDS_MeshEdge* aEdge = aEdgeIter->next();
+        // edge
+        if (aEdge->GetEntityType() == SMDSEntity_Edge) {
+            fillVtkArray<vtkLine>(elemArray, types, aEdge);
+        }
+        // quadratic edge
+        else if (aEdge->GetEntityType() == SMDSEntity_Quad_Edge) {
+            fillVtkArray<vtkQuadraticEdge>(elemArray, types, aEdge);
+        }
+        else {
+            throw Base::TypeError("Edge not yet supported by FreeCAD's VTK mesh builder\n");
+        }
+    }
+
+    Base::Console().Log("  End: VTK mesh builder edges.\n");
+}
+
+void exportFemMeshFaces(vtkSmartPointer<vtkCellArray>& elemArray,
+                        std::vector<int>& types,
                         const SMDS_FaceIteratorPtr& aFaceIter)
 {
     Base::Console().Log("  Start: VTK mesh builder faces.\n");
-
-    vtkSmartPointer<vtkCellArray> elemArray = vtkSmartPointer<vtkCellArray>::New();
-    std::vector<int> types;
 
     while (aFaceIter->more()) {
         const SMDS_MeshFace* aFace = aFaceIter->next();
@@ -361,20 +392,14 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
         }
     }
 
-    if (elemArray->GetNumberOfCells() > 0) {
-        grid->SetCells(types.data(), elemArray);
-    }
-
     Base::Console().Log("  End: VTK mesh builder faces.\n");
 }
 
-void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
+void exportFemMeshCells(vtkSmartPointer<vtkCellArray>& elemArray,
+                        std::vector<int>& types,
                         const SMDS_VolumeIteratorPtr& aVolIter)
 {
     Base::Console().Log("  Start: VTK mesh builder volumes.\n");
-
-    vtkSmartPointer<vtkCellArray> elemArray = vtkSmartPointer<vtkCellArray>::New();
-    std::vector<int> types;
 
     while (aVolIter->more()) {
         const SMDS_MeshVolume* aVol = aVolIter->next();
@@ -408,15 +433,12 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
         }
     }
 
-    if (elemArray->GetNumberOfCells() > 0) {
-        grid->SetCells(types.data(), elemArray);
-    }
-
     Base::Console().Log("  End: VTK mesh builder volumes.\n");
 }
 
 void FemVTKTools::exportVTKMesh(const FemMesh* mesh,
                                 vtkSmartPointer<vtkUnstructuredGrid> grid,
+                                bool highest,
                                 float scale)
 {
 
@@ -450,18 +472,45 @@ void FemVTKTools::exportVTKMesh(const FemMesh* mesh,
     Base::Console().Log("    Size of nodes in VTK grid: %i.\n", nNodes);
     Base::Console().Log("  End: VTK mesh builder nodes.\n");
 
-    // faces
-    SMDS_FaceIteratorPtr aFaceIter = meshDS->facesIterator();
-    exportFemMeshFaces(grid, aFaceIter);
+    vtkSmartPointer<vtkCellArray> elemArray = vtkSmartPointer<vtkCellArray>::New();
+    std::vector<int> types;
 
-    // volumes
-    SMDS_VolumeIteratorPtr aVolIter = meshDS->volumesIterator();
-    exportFemMeshCells(grid, aVolIter);
+    if (highest) {
+        // try volumes
+        SMDS_VolumeIteratorPtr aVolIter = meshDS->volumesIterator();
+        exportFemMeshCells(elemArray, types, aVolIter);
+        // try faces
+        if (elemArray->GetNumberOfCells() == 0) {
+            SMDS_FaceIteratorPtr aFaceIter = meshDS->facesIterator();
+            exportFemMeshFaces(elemArray, types, aFaceIter);
+        }
+        // try edges
+        if (elemArray->GetNumberOfCells() == 0) {
+            SMDS_EdgeIteratorPtr aEdgeIter = meshDS->edgesIterator();
+            exportFemMeshEdges(elemArray, types, aEdgeIter);
+        }
+    }
+    else {
+        // export all elements
+        // edges
+        SMDS_EdgeIteratorPtr aEdgeIter = meshDS->edgesIterator();
+        exportFemMeshEdges(elemArray, types, aEdgeIter);
+        // faces
+        SMDS_FaceIteratorPtr aFaceIter = meshDS->facesIterator();
+        exportFemMeshFaces(elemArray, types, aFaceIter);
+        // volumes
+        SMDS_VolumeIteratorPtr aVolIter = meshDS->volumesIterator();
+        exportFemMeshCells(elemArray, types, aVolIter);
+    }
+
+    if (elemArray->GetNumberOfCells() > 0) {
+        grid->SetCells(types.data(), elemArray);
+    }
 
     Base::Console().Log("End: VTK mesh builder ======================\n");
 }
 
-void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
+void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh, bool highest)
 {
 
     Base::TimeElapsed Start;
@@ -469,7 +518,7 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
     Base::FileInfo f(filename);
 
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
-    exportVTKMesh(mesh, grid);
+    exportVTKMesh(mesh, grid, highest);
     Base::Console().Log("Start: writing mesh data ======================\n");
     if (f.hasExtension("vtu")) {
         writeVTKFile<vtkXMLUnstructuredGridWriter>(filename, grid);
@@ -501,7 +550,7 @@ App::DocumentObject* getObjectByType(const Base::Type type)
     if (obj->is<FemAnalysis>()) {
         std::vector<App::DocumentObject*> fem = (static_cast<FemAnalysis*>(obj))->Group.getValues();
         for (const auto& it : fem) {
-            if (it->getTypeId().isDerivedFrom(type)) {
+            if (it->isDerivedFrom(type)) {
                 return static_cast<App::DocumentObject*>(it);  // return the first of that type
             }
         }
@@ -570,7 +619,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
         }
     }
 
-    App::DocumentObject* mesh = pcDoc->addObject("Fem::FemMeshObject", "ResultMesh");
+    auto* mesh = pcDoc->addObject<Fem::FemMeshObject>("ResultMesh");
     std::unique_ptr<FemMesh> fmesh(new FemMesh());
     importVTKMesh(dataset, fmesh.get());
     static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->setValuePtr(fmesh.release());
@@ -842,7 +891,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
     // vtk has more points. Vtk does not support point gaps, thus the gaps are
     // filled with points. Then the mapping must be correct)
     App::DocumentObject* meshObj = res->Mesh.getValue();
-    if (!meshObj || !meshObj->isDerivedFrom(FemMeshObject::getClassTypeId())) {
+    if (!meshObj || !meshObj->isDerivedFrom<FemMeshObject>()) {
         Base::Console().Error("Result object does not correctly link to mesh");
         return;
     }

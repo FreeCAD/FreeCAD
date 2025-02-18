@@ -43,7 +43,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProvider.h>
@@ -57,7 +57,7 @@ long NavlibInterface::GetSelectionTransform(navlib::matrix_t&) const
 
 long NavlibInterface::GetIsSelectionEmpty(navlib::bool_t& empty) const
 {
-    empty = !Gui::SelectionSingleton::instance().hasSelection();
+    empty = !Gui::Selection().hasSelection();
     return 0;
 }
 
@@ -109,9 +109,11 @@ long NavlibInterface::SetPivotVisible(bool visible)
     return 0;
 }
 
+extern template SoCamera* NavlibInterface::getCamera<SoCamera*>() const;
+
 long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
 {
-    if (is2DView())
+    if (is2DView() || !is3DView())
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
     const Gui::View3DInventorViewer* const inventorViewer = currentView.pView3d->getViewer();
@@ -136,35 +138,61 @@ long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
 
     pCamera->orientation.getValue().getValue(cameraMatrix);
 
-    // Initialize the samples array if it wasn't done before
+     // Initialize the samples array if it wasn't done before
     initializePattern();
 
+    navlib::bool_t isPerspective;
+    GetIsViewPerspective(isPerspective);
+
     for (uint32_t i = 0; i < hitTestingResolution; i++) {
-        // Scale the sample like it was defined in camera space (placed on XY plane)
-        SbVec3f transform(
-            hitTestPattern[i][0] * ray.radius, hitTestPattern[i][1] * ray.radius, 0.0f);
 
-        // Apply the model-view transform to a sample (only the rotation)
-        cameraMatrix.multVecMatrix(transform, transform);
+        SbVec3f origin;
 
-        // Calculate origin of current hit-testing ray
-        SbVec3f newOrigin = ray.origin + transform;
+        if (wasPointerPick) {
+            origin = ray.origin;
+        }
+        else {
+            // Scale the sample like it was defined in camera space (placed on XY plane)
+            SbVec3f transform(hitTestPattern[i][0] * ray.radius,
+                              hitTestPattern[i][1] * ray.radius,
+                              0.0f);
+
+            // Apply the model-view transform to a sample (only the rotation)
+            cameraMatrix.multVecMatrix(transform, transform);
+
+            // Calculate origin of current hit-testing ray
+            origin = ray.origin + transform;
+        }
 
         // Perform the hit-test
-        rayPickAction.setRay(newOrigin, ray.direction);
+        if (isPerspective) {
+            rayPickAction.setRay(origin,
+                                 ray.direction,
+                                 pCamera->nearDistance.getValue(),
+                                 pCamera->farDistance.getValue());
+        }
+        else {
+            rayPickAction.setRay(origin, ray.direction);
+        }
+
         rayPickAction.apply(pSceneGraph);
         SoPickedPoint* pickedPoint = rayPickAction.getPickedPoint();
 
         // Check if there was a hit
         if (pickedPoint != nullptr) {
             SbVec3f hitPoint = pickedPoint->getPoint();
-            float distance = (newOrigin - hitPoint).length();
+            float distance = (origin - hitPoint).length();
 
             // Save hit of the lowest depth
             if (distance < minLength) {
                 minLength = distance;
                 closestHitPoint = hitPoint;
             }
+        }
+
+        if (wasPointerPick) {
+            wasPointerPick = false;
+            break;
         }
     }
 
@@ -219,7 +247,22 @@ long NavlibInterface::SetHitDirection(const navlib::vector_t& direction)
 
 long NavlibInterface::SetHitLookFrom(const navlib::point_t& eye)
 {
-    ray.origin.setValue(eye.x, eye.y, eye.z);
+    navlib::bool_t isPerspective;
+
+    GetIsViewPerspective(isPerspective);
+
+    if (isPerspective) {
+        ray.origin.setValue(eye.x, eye.y, eye.z);
+    }
+    else {
+        auto pCamera = getCamera<SoCamera*>();
+        if (pCamera == nullptr) {
+            return navlib::make_result_code(navlib::navlib_errc::no_data_available);
+        }
+
+        SbVec3f position = pCamera->position.getValue();
+        ray.origin = position + orthoNearDistance * ray.direction;
+    }
     return 0;
 }
 
@@ -241,7 +284,7 @@ void NavlibInterface::initializePivot()
     pivot.pDepthTestAlways->function.setValue(SoDepthBufferElement::ALWAYS);
     pivot.pDepthTestLess->function.setValue(SoDepthBufferElement::LESS);
 
-    pivot.pivotImage = QImage(QString::fromStdString(":/icons/3dx_pivot.png"));
+    pivot.pivotImage = QImage(QStringLiteral(":/icons/3dx_pivot.png"));
     Gui::BitmapFactory().convert(pivot.pivotImage, pivot.pImage->image);
 
     pivot.pVisibility->ref();

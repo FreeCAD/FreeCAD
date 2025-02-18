@@ -108,22 +108,10 @@ units_information = """*********************************************************
 
 class FemInputWriterCcx(writerbase.FemInputWriter):
     def __init__(
-        self,
-        analysis_obj,
-        solver_obj,
-        mesh_obj,
-        member,
-        dir_name=None,
-        mat_geo_sets=None
+        self, analysis_obj, solver_obj, mesh_obj, member, dir_name=None, mat_geo_sets=None
     ):
         writerbase.FemInputWriter.__init__(
-            self,
-            analysis_obj,
-            solver_obj,
-            mesh_obj,
-            member,
-            dir_name,
-            mat_geo_sets
+            self, analysis_obj, solver_obj, mesh_obj, member, dir_name, mat_geo_sets
         )
         self.mesh_name = self.mesh_object.Name
         self.file_name = join(self.dir_name, self.mesh_name + ".inp")
@@ -138,10 +126,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         time_start = time.process_time()
         FreeCAD.Console.PrintMessage("\n")  # because of time print in separate line
         FreeCAD.Console.PrintMessage("CalculiX solver input writing...\n")
-        FreeCAD.Console.PrintMessage(
-            "Input file:{}\n"
-            .format(self.file_name)
-        )
+        FreeCAD.Console.PrintMessage(f"Input file:{self.file_name}\n")
 
         if self.solver_obj.SplitInputWriter is True:
             FreeCAD.Console.PrintMessage("Split input file.\n")
@@ -161,7 +146,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         # element sets constraints
         self.write_constraints_meshsets(inpfile, self.member.cons_centrif, con_centrif)
-        self.write_constraints_meshsets(inpfile, self.member.cons_bodyheatsource, con_bodyheatsource)
+        self.write_constraints_meshsets(
+            inpfile, self.member.cons_bodyheatsource, con_bodyheatsource
+        )
 
         # node sets
         self.write_constraints_meshsets(inpfile, self.member.cons_fixed, con_fixed)
@@ -193,12 +180,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         # constraints dependent from steps
         self.write_constraints_propdata(inpfile, self.member.cons_fixed, con_fixed)
-        self.write_constraints_propdata(inpfile, self.member.cons_rigidbody_step, con_rigidbody_step)
+        self.write_constraints_propdata(
+            inpfile, self.member.cons_rigidbody_step, con_rigidbody_step
+        )
         self.write_constraints_propdata(inpfile, self.member.cons_displacement, con_displacement)
         self.write_constraints_propdata(inpfile, self.member.cons_sectionprint, con_sectionprint)
         self.write_constraints_propdata(inpfile, self.member.cons_selfweight, con_selfweight)
         self.write_constraints_propdata(inpfile, self.member.cons_centrif, con_centrif)
-        self.write_constraints_propdata(inpfile, self.member.cons_bodyheatsource, con_bodyheatsource)
+        self.write_constraints_propdata(
+            inpfile, self.member.cons_bodyheatsource, con_bodyheatsource
+        )
         self.write_constraints_meshsets(inpfile, self.member.cons_force, con_force)
         self.write_constraints_meshsets(inpfile, self.member.cons_pressure, con_pressure)
         self.write_constraints_propdata(inpfile, self.member.cons_temperature, con_temperature)
@@ -216,17 +207,14 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         inpfile.close()
 
         writetime = round((time.process_time() - time_start), 3)
-        FreeCAD.Console.PrintMessage(
-            "Writing time CalculiX input file: {} seconds.\n".format(writetime)
-        )
+        FreeCAD.Console.PrintMessage(f"Writing time CalculiX input file: {writetime} seconds.\n")
 
         # return
         if self.femelement_count_test is True:
             return self.file_name
         else:
-            FreeCAD.Console.PrintError(
-                "Problems on writing input file, check report prints.\n\n"
-            )
+            FreeCAD.Console.PrintError("Problems on writing input file, check report prints.\n\n")
             return ""
+
 
 ##  @}

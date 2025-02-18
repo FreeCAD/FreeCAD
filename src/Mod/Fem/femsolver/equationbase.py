@@ -34,21 +34,19 @@ if FreeCAD.GuiUp:
     from pivy import coin
 
 
-class BaseProxy(object):
+class BaseProxy:
 
     BaseType = "App::FeaturePython"
 
     def __init__(self, obj):
         obj.Proxy = self
-        obj.addProperty(
-            "App::PropertyLinkSubList", "References",
-            "Base", "")
+        obj.addProperty("App::PropertyLinkSubList", "References", "Base", "")
 
     def execute(self, obj):
         return True
 
 
-class BaseViewProxy(object):
+class BaseViewProxy:
 
     def __init__(self, vobj):
         vobj.Proxy = self

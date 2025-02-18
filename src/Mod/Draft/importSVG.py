@@ -61,7 +61,7 @@ from draftutils import params
 from draftutils import utils
 from draftutils.translate import translate
 from draftutils.messages import _err, _msg, _wrn
-from builtins import open as pyopen
+from draftutils.utils import pyopen
 
 if FreeCAD.GuiUp:
     from PySide import QtWidgets
@@ -1712,7 +1712,7 @@ def getContents(filename, tag, stringmode=False):
     searchpat = '<' + tag + '.*?</' + tag + '>'
     tags = re.findall(searchpat, contents)
     for t in tags:
-        tagid = re.findall('id="(.*?)"', t)
+        tagid = re.findall(r'id="(.*?)"', t)
         if tagid:
             tagid = tagid[0]
         else:

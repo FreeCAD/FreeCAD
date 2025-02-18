@@ -132,7 +132,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
                 //}
 
                 Part::Feature *pcFeature;
-                pcFeature = static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name.c_str()));
+                pcFeature = pcDoc->addObject<Part::Feature>(name.c_str());
                 pcFeature->Shape.setValue(aSolid);
 
                 // This is a trick to access the GUI via Python and set the color property
@@ -167,7 +167,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
                 //    name += ws->Model()->StringLabel(ent)->ToCString();
                 //}
 
-                Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name.c_str()));
+                Part::Feature *pcFeature = pcDoc->addObject<Part::Feature>(name.c_str());
                 pcFeature->Shape.setValue(aShell);
             }
 

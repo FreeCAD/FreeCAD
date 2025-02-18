@@ -38,7 +38,6 @@
 #include <Base/FileInfo.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
-#include <Base/Tools.h>
 
 #include "Sheet.h"
 #include "SheetObserver.h"
@@ -109,7 +108,11 @@ Sheet::~Sheet()
 }
 
 /**
- * Clear all cells in the sheet.
+ * Clear all cells in the sheet.  These are implemented as dynamic
+ * properties, for example "A1" is added as a dynamic property. Since
+ * now users may add dynamic properties, we need to try to avoid
+ * removing those, too, so we check whether the dynamic property name
+ * is a valid cell address name before removing it.
  */
 
 void Sheet::clearAll()
@@ -119,7 +122,9 @@ void Sheet::clearAll()
     std::vector<std::string> propNames = props.getDynamicPropertyNames();
 
     for (const auto& propName : propNames) {
-        this->removeDynamicProperty(propName.c_str());
+        if (cells.isValidCellAddressName(propName.c_str())) {
+            this->removeDynamicProperty(propName.c_str());
+        }
     }
 
     propAddress.clear();
@@ -324,17 +329,19 @@ bool Sheet::exportToFile(const std::string& filename,
 
         std::stringstream field;
 
-        if (prop->isDerivedFrom((PropertyQuantity::getClassTypeId()))) {
-            field << static_cast<PropertyQuantity*>(prop)->getValue();
+        using Base::freecad_dynamic_cast;
+
+        if (auto p = freecad_dynamic_cast<PropertyQuantity>(prop)) {
+            field << p->getValue();
         }
-        else if (prop->isDerivedFrom((PropertyFloat::getClassTypeId()))) {
-            field << static_cast<PropertyFloat*>(prop)->getValue();
+        else if (auto p = freecad_dynamic_cast<PropertyFloat>(prop)) {
+            field << p->getValue();
         }
-        else if (prop->isDerivedFrom((PropertyInteger::getClassTypeId()))) {
-            field << static_cast<PropertyInteger*>(prop)->getValue();
+        else if (auto p = freecad_dynamic_cast<PropertyInteger>(prop)) {
+            field << p->getValue();
         }
-        else if (prop->isDerivedFrom((PropertyString::getClassTypeId()))) {
-            field << static_cast<PropertyString*>(prop)->getValue();
+        else if (auto p = freecad_dynamic_cast<PropertyString>(prop)) {
+            field << p->getValue();
         }
         else {
             assert(0);
@@ -342,7 +349,8 @@ bool Sheet::exportToFile(const std::string& filename,
 
         std::string str = field.str();
 
-        if (quoteChar && str.find(quoteChar) != std::string::npos) {
+        if (quoteChar
+            && str.find_first_of(std::string(quoteChar, delimiter)) != std::string::npos) {
             writeEscaped(str, quoteChar, escapeChar, file);
         }
         else {
@@ -567,7 +575,7 @@ Property* Sheet::setFloatProperty(CellAddress key, double value)
     Property* prop = props.getDynamicPropertyByName(name.c_str());
     PropertyFloat* floatProp;
 
-    if (!prop || prop->getTypeId() != PropertyFloat::getClassTypeId()) {
+    if (!prop || !prop->is<PropertyFloat>()) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
@@ -595,7 +603,7 @@ Property* Sheet::setIntegerProperty(CellAddress key, long value)
     Property* prop = props.getDynamicPropertyByName(name.c_str());
     PropertyInteger* intProp;
 
-    if (!prop || prop->getTypeId() != PropertyInteger::getClassTypeId()) {
+    if (!prop || !prop->is<PropertyInteger>()) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
@@ -635,7 +643,7 @@ Property* Sheet::setQuantityProperty(CellAddress key, double value, const Base::
     Property* prop = props.getDynamicPropertyByName(name.c_str());
     PropertySpreadsheetQuantity* quantityProp;
 
-    if (!prop || prop->getTypeId() != PropertySpreadsheetQuantity::getClassTypeId()) {
+    if (!prop || !prop->is<PropertySpreadsheetQuantity>()) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
@@ -904,9 +912,9 @@ void Sheet::recomputeCell(CellAddress p)
         }
     }
     catch (const Base::Exception& e) {
-        QString msg = QString::fromUtf8("ERR: %1").arg(QString::fromUtf8(e.what()));
+        QString msg = QStringLiteral("ERR: %1").arg(QString::fromUtf8(e.what()));
 
-        setStringProperty(p, Base::Tools::toStdString(msg));
+        setStringProperty(p, msg.toStdString());
         if (cell) {
             cell->setException(e.what());
         }
@@ -918,7 +926,7 @@ void Sheet::recomputeCell(CellAddress p)
         cellErrors.insert(p);
         cellUpdated(p);
 
-        if (e.isDerivedFrom(Base::AbortException::getClassTypeId())) {
+        if (e.isDerivedFrom<Base::AbortException>()) {
             throw;
         }
     }
@@ -1785,7 +1793,7 @@ PROPERTY_SOURCE_TEMPLATE(Spreadsheet::SheetPython, Spreadsheet::Sheet)
 template<>
 const char* Spreadsheet::SheetPython::getViewProviderName() const
 {
-    return "SpreadsheetGui::ViewProviderSheet";
+    return "SpreadsheetGui::ViewProviderSheetPython";
 }
 template<>
 PyObject* Spreadsheet::SheetPython::getPyObject()

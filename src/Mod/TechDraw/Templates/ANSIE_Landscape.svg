@@ -4,36 +4,14 @@
    width="1118"
    height="864"
    version="1.1"
-   sodipodi:docname="ANSIE_Landscape.svg"
-   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:freecad0="https://www.freecad.org/wiki/index.php?title=Svg_Namespace">
+   xmlns:freecad="http://www.freecad.org/wiki/index.php?title=Svg_Namespace">
   <defs
      id="defs1" />
-  <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="58.531744"
-     inkscape:cx="1061.3728"
-     inkscape:cy="810.81644"
-     inkscape:window-width="2560"
-     inkscape:window-height="1369"
-     inkscape:window-x="2728"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg7700" />
   <!-- Working space 28 30 1090 834 -->
   <metadata
      id="metadata7705">
@@ -43,7 +21,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -822,7 +799,8 @@
      stroke-width=".10643"
      word-spacing="0px"
      style="line-height:125%"
-     index0:editable="AUTHOR NAME"><tspan
+     freecad:editable="AUTHOR NAME"
+     freecad:autofill="author"><tspan
        id="tspan3333"
        x="938.71722"
        y="788.95203"
@@ -838,7 +816,8 @@
      stroke-width=".10643"
      word-spacing="0px"
      style="line-height:125%"
-     index0:editable="CREATION DATE"><tspan
+     freecad:editable="CREATION DATE"
+     freecad:autofill="date"><tspan
        id="tspan3333-6"
        x="938.54797"
        y="795.13385"
@@ -854,7 +833,7 @@
      stroke-width=".10643"
      word-spacing="0px"
      style="line-height:125%"
-     index0:editable="SUPERVISOR NAME"><tspan
+     freecad:editable="SUPERVISOR NAME"><tspan
        id="tspan3333-6-9"
        x="938.51123"
        y="801.21924"
@@ -870,7 +849,7 @@
      stroke-width=".10643"
      word-spacing="0px"
      style="line-height:125%"
-     index0:editable="CHECK DATE"><tspan
+     freecad:editable="CHECK DATE"><tspan
        id="tspan3333-6-1"
        x="938.46893"
        y="807.29144"
@@ -886,7 +865,7 @@
      stroke-width=".10643"
      word-spacing="0px"
      style="line-height:125%"
-     index0:editable="SCALE"><tspan
+     freecad:editable="scale"><tspan
        id="tspan3333-6-6"
        x="938.44073"
        y="826.30487"
@@ -902,7 +881,7 @@
      stroke-width=".10643"
      word-spacing="0px"
      style="line-height:125%"
-     index0:editable="WEIGHT"><tspan
+     freecad:editable="WEIGHT"><tspan
        id="tspan3333-6-6-3"
        x="954.69568"
        y="826.30487"
@@ -918,7 +897,7 @@
      stroke-width=".10643"
      word-spacing="0px"
      style="line-height:125%"
-     index0:editable="NUMBER"><tspan
+     freecad:editable="NUMBER"><tspan
        id="tspan3333-6-6-3-8"
        x="975.98267"
        y="826.30487"
@@ -934,7 +913,8 @@
      stroke-width=".10643"
      word-spacing="0px"
      style="line-height:125%"
-     index0:editable="SHEET"><tspan
+     freecad:editable="SHEET"
+     freecad:autofill="sheet"><tspan
        id="tspan3333-6-6-3-8-7"
        x="1057.8556"
        y="826.30487"
@@ -950,7 +930,8 @@
      stroke-width=".10643"
      word-spacing="0px"
      style="line-height:125%"
-     index0:editable="TITLE"><tspan
+     freecad:editable="TITLE"
+     freecad:autofill="title"><tspan
        id="tspan3333-5"
        x="979.00104"
        y="795.75458"
@@ -967,7 +948,7 @@
      stroke-width=".10643"
      word-spacing="0px"
      style="line-height:125%"
-     index0:editable="SUBTITLE"><tspan
+     freecad:editable="SUBTITLE"><tspan
        id="tspan3333-5-6"
        x="979.00104"
        y="800.66699"

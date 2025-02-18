@@ -5,10 +5,6 @@
    height="24in"
    version="1.1"
    viewBox="0 0 914.4 609.6"
-   sodipodi:docname="Arch_D_Landscape.svg"
-   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -17,25 +13,6 @@
    xmlns:freecad="https://www.freecad.org/wiki/index.php?title=Svg_Namespace">
   <defs
      id="defs1" />
-  <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="in"
-     inkscape:zoom="9.4673741"
-     inkscape:cx="3249.898"
-     inkscape:cy="2142.78"
-     inkscape:window-width="2560"
-     inkscape:window-height="1369"
-     inkscape:window-x="2728"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg7113" />
   <metadata
      id="metadata7118">
     <rdf:RDF>
@@ -44,7 +21,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1148,7 +1124,8 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     freecad:editable="AuthorName"><tspan
+     freecad:editable="AuthorName"
+     freecad:autofill="author"><tspan
        id="tspan3333-63"
        x="739.44379"
        y="544.41577"
@@ -1164,7 +1141,8 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     freecad:editable="CreationDate"><tspan
+     freecad:editable="CreationDate"
+     freecad:autofill="date"><tspan
        id="tspan3333-6-0"
        x="739.28473"
        y="550.33386"
@@ -1228,7 +1206,8 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     freecad:editable="Scale"><tspan
+     freecad:editable="scale"
+     freecad:autofill="scale"><tspan
        id="tspan3333-6-6-7"
        x="739.46631"
        y="582.08734"
@@ -1260,7 +1239,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     freecad:editable="DrawingNumber"><tspan
+     freecad:editable="drawing_number"><tspan
        id="tspan3333-6-6-3-8-5"
        x="775.64185"
        y="582.06567"
@@ -1276,7 +1255,8 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     freecad:editable="SheetNumber"><tspan
+     freecad:editable="SheetNumber"
+     freecad:autofill="sheet"><tspan
        id="tspan3333-6-6-3-8-7-5"
        x="856.922"
        y="582.08734"
@@ -1295,7 +1275,8 @@
      text-anchor="middle"
      word-spacing="0px"
      style="line-height:125%"
-     freecad:editable="Title"><tspan
+     freecad:editable="Title"
+     freecad:autofill="title"><tspan
        id="tspan3333-5-2"
        x="823.79169"
        y="549.75775"
@@ -1337,7 +1318,8 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     freecad:editable="Company_name"><tspan
+     freecad:editable="Company_name"
+     freecad:autofill="organization"><tspan
        id="tspan243-0"
        x="775.78003"
        y="570.71552"

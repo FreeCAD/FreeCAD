@@ -17,9 +17,9 @@ macro(CompilerChecksAndSetups)
         add_definitions(-DHAVE_SNPRINTF)
     endif()
 
-    # Allow developers to use Boost < 1.65
+    # Allow developers to use Boost < 1.74
     if (NOT BOOST_MIN_VERSION)
-        set(BOOST_MIN_VERSION 1.65)
+        set(BOOST_MIN_VERSION 1.74)
     endif()
 
     # For older cmake versions the variable 'CMAKE_CXX_COMPILER_VERSION' is missing
@@ -42,9 +42,11 @@ macro(CompilerChecksAndSetups)
         endif()
 
     # Escape the two plus chars as otherwise cmake complains about invalid regex
-    if(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+20")
+    if(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+23")
+        set(CMAKE_CXX_STANDARD 23)
+    elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+20")
         set(CMAKE_CXX_STANDARD 20)
-    elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+17")
+    else()#Enabled C++17
         set(CMAKE_CXX_STANDARD 17)
     endif()
 
@@ -80,6 +82,15 @@ macro(CompilerChecksAndSetups)
                 endif()
             endif()
         endif(BUILD_DYNAMIC_LINK_PYTHON)
+
+        if(BUILD_USE_LIBCXX)
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+        endif()
+
+        if(BUILD_ENABLE_TIME_TRACE)
+            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ftime-trace")
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftime-trace")
+        endif()
     endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
     if(CMAKE_COMPILER_IS_CLANGXX)

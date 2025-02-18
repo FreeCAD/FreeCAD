@@ -4,18 +4,18 @@
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="475"/>
+      <location filename="../../Command.cpp" line="510"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="511"/>
       <source>&amp;Annotation</source>
       <translation>&amp;Aprašas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="477"/>
-      <location filename="../../Command.cpp" line="479"/>
+      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Inserts an Annotation view in the active drawing</source>
       <translation>Įterpti aprašą į rengiamą techninį brėžinį</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdDrawingClip</name>
     <message>
-      <location filename="../../Command.cpp" line="523"/>
+      <location filename="../../Command.cpp" line="565"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="524"/>
+      <location filename="../../Command.cpp" line="566"/>
       <source>&amp;Clip</source>
       <translation>&amp;Papildomas vaizdas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="525"/>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="567"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>Inserts a clip group in the active drawing</source>
       <translation>Įterpti papildomo vaizdo grupę į rengiamą techninį brėžinį</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="775"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="715"/>
+      <location filename="../../Command.cpp" line="776"/>
       <source>&amp;Draft View</source>
       <translation>&amp;Braižyklės vaizdas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
-      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="778"/>
+      <location filename="../../Command.cpp" line="780"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
       <translation>Įterpti pasirinkto(-ų) daikto(-ų) braižinį į rengiamą techninį brėžinį</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
+      <location filename="../../Command.cpp" line="683"/>
       <source>File</source>
       <translation>Failas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="626"/>
+      <location filename="../../Command.cpp" line="684"/>
       <source>&amp;Export page...</source>
       <translation>&amp;Eksportuoti puslapį...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="627"/>
-      <location filename="../../Command.cpp" line="629"/>
+      <location filename="../../Command.cpp" line="685"/>
+      <location filename="../../Command.cpp" line="687"/>
       <source>Export a page to an SVG file</source>
       <translation>Eksportuoti lapą į SVG failą</translation>
     </message>
@@ -80,13 +80,13 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location filename="../../Command.cpp" line="269"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="270"/>
-      <location filename="../../Command.cpp" line="271"/>
+      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Insert new A3 landscape drawing</source>
       <translation type="unfinished">Insert new A3 landscape drawing</translation>
     </message>
@@ -94,13 +94,13 @@
   <context>
     <name>CmdDrawingNewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="91"/>
+      <location filename="../../Command.cpp" line="93"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="92"/>
-      <location filename="../../Command.cpp" line="93"/>
+      <location filename="../../Command.cpp" line="94"/>
+      <location filename="../../Command.cpp" line="95"/>
       <source>Insert new drawing</source>
       <translation>Įterpti naują techninį brėžinį</translation>
     </message>
@@ -108,17 +108,17 @@
   <context>
     <name>CmdDrawingNewView</name>
     <message>
-      <location filename="../../Command.cpp" line="308"/>
+      <location filename="../../Command.cpp" line="316"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="317"/>
       <source>Insert view in drawing</source>
       <translation>Įterpti vaizdą į brėžinį</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="310"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Insert a new View of a Part in the active drawing</source>
       <translation>Įterpti naują detalės vaizdą į rengiamą techninį brėžinį</translation>
     </message>
@@ -144,18 +144,18 @@
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location filename="../../Command.cpp" line="437"/>
+      <location filename="../../Command.cpp" line="471"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="438"/>
+      <location filename="../../Command.cpp" line="472"/>
       <source>Open &amp;browser view</source>
       <translation>Atidaryti &amp;naršyklės rodinį</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="439"/>
-      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="473"/>
+      <location filename="../../Command.cpp" line="475"/>
       <source>Opens the selected page in a browser view</source>
       <translation>Atidaro pasirinktąjį puslapį naršyklės rodinyje</translation>
     </message>
@@ -163,17 +163,17 @@
   <context>
     <name>CmdDrawingOrthoViews</name>
     <message>
-      <location filename="../../Command.cpp" line="387"/>
+      <location filename="../../Command.cpp" line="416"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="388"/>
+      <location filename="../../Command.cpp" line="417"/>
       <source>Insert orthographic views</source>
       <translation>Įterpti ortografinius vaizdus</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="389"/>
+      <location filename="../../Command.cpp" line="418"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
       <translation>Įterpti ortografinę detalės projekciją į rengiamą techninį brėžinį</translation>
     </message>
@@ -181,18 +181,18 @@
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="678"/>
+      <location filename="../../Command.cpp" line="740"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="679"/>
+      <location filename="../../Command.cpp" line="741"/>
       <source>Project shape...</source>
       <translation>Projekcijų išvaizda...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="680"/>
-      <location filename="../../Command.cpp" line="681"/>
+      <location filename="../../Command.cpp" line="742"/>
+      <location filename="../../Command.cpp" line="743"/>
       <source>Project shape onto a user-defined plane</source>
       <translation>Projektuoti daikto atvaizdą į pasirinktą plokštumą</translation>
     </message>
@@ -200,18 +200,18 @@
   <context>
     <name>CmdDrawingSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="745"/>
+      <location filename="../../Command.cpp" line="807"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="746"/>
+      <location filename="../../Command.cpp" line="808"/>
       <source>&amp;Spreadsheet View</source>
       <translation>&amp;Skaičiuoklės rodinys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="747"/>
-      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="809"/>
+      <location filename="../../Command.cpp" line="811"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
       <translation>Įterpti vaizdą iš pasirinktos skaičiuoklės į rengiamą techninį brėžinį</translation>
     </message>
@@ -219,146 +219,146 @@
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="568"/>
+      <location filename="../../Command.cpp" line="615"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="569"/>
+      <location filename="../../Command.cpp" line="616"/>
       <source>&amp;Symbol</source>
       <translation>Ž&amp;ymuo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="570"/>
-      <location filename="../../Command.cpp" line="572"/>
-      <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>Įterpti ženklą iš svg failo į rengiamą techninį brėžinį</translation>
+      <location filename="../../Command.cpp" line="617"/>
+      <location filename="../../Command.cpp" line="619"/>
+      <source>Inserts a symbol from a SVG file in the active drawing</source>
+      <translation>Įterpti ženklą iš SVG failo į rengiamą techninį brėžinį</translation>
     </message>
   </context>
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="209"/>
+      <location filename="../../DrawingView.cpp" line="217"/>
       <source>&amp;Background</source>
       <translation>&amp;Fonas</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="215"/>
+      <location filename="../../DrawingView.cpp" line="223"/>
       <source>&amp;Outline</source>
       <translation>&amp;Kontūras</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="221"/>
+      <location filename="../../DrawingView.cpp" line="229"/>
       <source>&amp;Native</source>
       <translation>&amp;Savasis</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="225"/>
+      <location filename="../../DrawingView.cpp" line="233"/>
       <source>&amp;OpenGL</source>
       <translation>&amp;OpenGL</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="228"/>
+      <location filename="../../DrawingView.cpp" line="236"/>
       <source>&amp;Image</source>
       <translation>&amp;Paveikslėlis</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="232"/>
+      <location filename="../../DrawingView.cpp" line="240"/>
       <source>&amp;High Quality Antialiasing</source>
       <translation>&amp;Aukštos kokybės kraštų glodinimas</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="269"/>
+      <location filename="../../DrawingView.cpp" line="278"/>
       <source>Open SVG File</source>
       <translation>Atidaryti SVG failą</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="270"/>
+      <location filename="../../DrawingView.cpp" line="279"/>
       <source>Could not open file '%1'.</source>
       <translation>Nepavyko atidaryti failo '%1'.</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="357"/>
+      <location filename="../../DrawingView.cpp" line="370"/>
       <source>&amp;Renderer</source>
       <translation>&amp;Tikroviškasis atvaizdavimas</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="462"/>
+      <location filename="../../DrawingView.cpp" line="485"/>
       <source>Export PDF</source>
       <translation>Eksportuoti į PDF</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="463"/>
+      <location filename="../../DrawingView.cpp" line="486"/>
       <source>PDF file</source>
       <translation>PDF failas</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="479"/>
+      <location filename="../../DrawingView.cpp" line="502"/>
       <source>Page sizes</source>
       <translation>Puslapio dydžiai</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="480"/>
+      <location filename="../../DrawingView.cpp" line="503"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="482"/>
+      <location filename="../../DrawingView.cpp" line="505"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="484"/>
+      <location filename="../../DrawingView.cpp" line="507"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="486"/>
+      <location filename="../../DrawingView.cpp" line="509"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="488"/>
+      <location filename="../../DrawingView.cpp" line="511"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="490"/>
+      <location filename="../../DrawingView.cpp" line="513"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="573"/>
+      <location filename="../../DrawingView.cpp" line="597"/>
       <source>Different orientation</source>
       <translation>Kitokia padėtis</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="574"/>
+      <location filename="../../DrawingView.cpp" line="598"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>Spausdintuvas naudoja kitokią lapo padėtį nei brėžinys.
 Ar norite tęsti?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="581"/>
-      <location filename="../../DrawingView.cpp" line="589"/>
+      <location filename="../../DrawingView.cpp" line="608"/>
+      <location filename="../../DrawingView.cpp" line="619"/>
       <source>Different paper size</source>
       <translation>Kitoks popieriaus dydis</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="582"/>
-      <location filename="../../DrawingView.cpp" line="590"/>
+      <location filename="../../DrawingView.cpp" line="609"/>
+      <location filename="../../DrawingView.cpp" line="620"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Spausdintuvas naudoja kitokio dydžio lapą, nei brėžinys. Ar norite tęsti?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="601"/>
+      <location filename="../../DrawingView.cpp" line="634"/>
       <source>Opening file failed</source>
       <translation>Failo atidarymas nepavyko</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="602"/>
+      <location filename="../../DrawingView.cpp" line="635"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>Nepavyksta atidaryti failo '%1' įrašymui.</translation>
     </message>
@@ -556,77 +556,77 @@ Do you want to continue?</source>
   <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-      <location filename="../../TaskDialog.cpp" line="48"/>
+      <location filename="../../TaskDialog.cpp" line="46"/>
       <source>Visible sharp edges</source>
       <translation>Matomos aštrios kraštinės</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="49"/>
+      <location filename="../../TaskDialog.cpp" line="47"/>
       <source>Visible smooth edges</source>
       <translation>Matomos glodintos kraštinės</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="50"/>
+      <location filename="../../TaskDialog.cpp" line="48"/>
       <source>Visible sewn edges</source>
       <translation>Matomos susiūtos kraštinės</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="51"/>
+      <location filename="../../TaskDialog.cpp" line="49"/>
       <source>Visible outline edges</source>
       <translation>Matomos kontūro kraštinės</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="52"/>
+      <location filename="../../TaskDialog.cpp" line="50"/>
       <source>Visible isoparameters</source>
       <translation>Matomi izoparametrai</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="53"/>
+      <location filename="../../TaskDialog.cpp" line="51"/>
       <source>Hidden sharp edges</source>
       <translation>Nematomos aštrios kraštinės</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="54"/>
+      <location filename="../../TaskDialog.cpp" line="52"/>
       <source>Hidden smooth edges</source>
       <translation>Nematomos glotnios kraštinės</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="55"/>
+      <location filename="../../TaskDialog.cpp" line="53"/>
       <source>Hidden sewn edges</source>
       <translation>Nematomos susiūtos kraštinės</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="56"/>
+      <location filename="../../TaskDialog.cpp" line="54"/>
       <source>Hidden outline edges</source>
       <translation>Nematomos apvado kraštinės</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="57"/>
+      <location filename="../../TaskDialog.cpp" line="55"/>
       <source>Hidden isoparameters</source>
       <translation>Nematomi izoparametrai</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="74"/>
+      <location filename="../../TaskDialog.cpp" line="70"/>
       <source>Project shapes</source>
       <translation>Projekcijų išvaizda</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="88"/>
+      <location filename="../../TaskDialog.cpp" line="85"/>
       <source>No active document</source>
       <translation>Nėra taisytino dokumento</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="89"/>
+      <location filename="../../TaskDialog.cpp" line="86"/>
       <source>There is currently no active document to complete the operation</source>
       <translation>Nėra rengiamo dokumento veiksmui užbaigti</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="94"/>
+      <location filename="../../TaskDialog.cpp" line="93"/>
       <source>No active view</source>
       <translation>Nėra pasirinktų rodinių</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="95"/>
+      <location filename="../../TaskDialog.cpp" line="94"/>
       <source>There is currently no active view to complete the operation</source>
       <translation>Šiuo metu nėra pasirinktas rodinys veiksmui užbaigti</translation>
     </message>
@@ -634,32 +634,37 @@ Do you want to continue?</source>
   <context>
     <name>Drawing_NewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="106"/>
+      <source>Page</source>
+      <translation>Puslapis</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="231"/>
       <source>Landscape</source>
       <translation>Gulsčias</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="219"/>
+      <location filename="../../Command.cpp" line="234"/>
       <source>Portrait</source>
       <translation>Stačias</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="223"/>
+      <location filename="../../Command.cpp" line="239"/>
       <source>%1%2 %3</source>
       <translation>%1%2 %3</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="228"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>Insert new %1%2 %3 drawing</source>
       <translation>Įterpti naują %1%2 %3 techninį brėžinį</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../Command.cpp" line="246"/>
       <source>%1%2 %3 (%4)</source>
       <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="241"/>
+      <location filename="../../Command.cpp" line="249"/>
       <source>Insert new %1%2 %3 (%4) drawing</source>
       <translation>Įterpti naują %1%2 %3 (%4) techninį brėžinį</translation>
     </message>
@@ -667,93 +672,93 @@ Do you want to continue?</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="70"/>
-      <location filename="../../Command.cpp" line="589"/>
+      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="640"/>
       <source>Choose an SVG file to open</source>
       <translation>Pasirinkite SVG failą atvėrimui</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
-      <location filename="../../Command.cpp" line="590"/>
-      <location filename="../../Command.cpp" line="644"/>
+      <location filename="../../Command.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="642"/>
+      <location filename="../../Command.cpp" line="703"/>
       <source>Scalable Vector Graphic</source>
       <translation>SVG vektorinis grafikas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="321"/>
-      <location filename="../../Command.cpp" line="400"/>
-      <location filename="../../Command.cpp" line="450"/>
-      <location filename="../../Command.cpp" line="638"/>
-      <location filename="../../Command.cpp" line="758"/>
+      <location filename="../../Command.cpp" line="331"/>
+      <location filename="../../Command.cpp" line="431"/>
+      <location filename="../../Command.cpp" line="485"/>
+      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="822"/>
       <source>Wrong selection</source>
       <translation>Netinkama pasirinktis</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="322"/>
+      <location filename="../../Command.cpp" line="332"/>
       <source>Select a Part object.</source>
       <translation>Pasirinkite detalę.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="330"/>
-      <location filename="../../Command.cpp" line="409"/>
-      <location filename="../../Command.cpp" line="490"/>
-      <location filename="../../Command.cpp" line="538"/>
-      <location filename="../../Command.cpp" line="583"/>
-      <location filename="../../Command.cpp" line="764"/>
+      <location filename="../../Command.cpp" line="342"/>
+      <location filename="../../Command.cpp" line="442"/>
+      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="582"/>
+      <location filename="../../Command.cpp" line="632"/>
+      <location filename="../../Command.cpp" line="830"/>
       <source>No page found</source>
       <translation>Nerasta puslapių</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="331"/>
-      <location filename="../../Command.cpp" line="410"/>
-      <location filename="../../Command.cpp" line="491"/>
-      <location filename="../../Command.cpp" line="539"/>
-      <location filename="../../Command.cpp" line="584"/>
-      <location filename="../../Command.cpp" line="765"/>
+      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="443"/>
+      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="583"/>
+      <location filename="../../Command.cpp" line="633"/>
+      <location filename="../../Command.cpp" line="831"/>
       <source>Create a page first.</source>
       <translation>Pirmiausia sukurkite puslapį.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="432"/>
       <source>Select exactly one Part object.</source>
       <translation>Pasirinkite tik vieną detalę.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="451"/>
-      <location filename="../../Command.cpp" line="639"/>
+      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="698"/>
       <source>Select one Page object.</source>
       <translation>Pasirinkite puslapį.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="645"/>
+      <location filename="../../Command.cpp" line="704"/>
       <source>All Files</source>
       <translation>Visi failai</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="647"/>
+      <location filename="../../Command.cpp" line="707"/>
       <source>Export page</source>
       <translation>Eksportuoti puslapį</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="759"/>
+      <location filename="../../Command.cpp" line="823"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Pasirinkite tik vieną skaičiuoklės objektą.</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="46"/>
-      <location filename="../../TaskOrthoViews.cpp" line="969"/>
+      <location filename="../../TaskOrthoViews.cpp" line="47"/>
+      <location filename="../../TaskOrthoViews.cpp" line="1041"/>
       <source>Make axonometric...</source>
       <translation>Daryti aksonometrinį...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="47"/>
-      <location filename="../../TaskOrthoViews.cpp" line="970"/>
+      <location filename="../../TaskOrthoViews.cpp" line="48"/>
+      <location filename="../../TaskOrthoViews.cpp" line="1042"/>
       <source>Edit axonometric settings...</source>
       <translation>Keisti aksonometrinio vaizdo nustatymus...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="48"/>
-      <location filename="../../TaskOrthoViews.cpp" line="971"/>
+      <location filename="../../TaskOrthoViews.cpp" line="49"/>
+      <location filename="../../TaskOrthoViews.cpp" line="1043"/>
       <source>Make orthographic</source>
       <translation>Daryti ortografinį</translation>
     </message>

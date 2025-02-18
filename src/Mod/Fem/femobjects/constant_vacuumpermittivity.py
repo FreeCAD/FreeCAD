@@ -40,12 +40,12 @@ class ConstantVacuumPermittivity(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::ConstantVacuumPermittivity"
 
     def __init__(self, obj):
-        super(ConstantVacuumPermittivity, self).__init__(obj)
+        super().__init__(obj)
         obj.addProperty(
             "App::PropertyVacuumPermittivity",
             "VacuumPermittivity",
             "Constants",
-            "Overwrites default permittivity of vacuum"
+            "Overwrites default permittivity of vacuum",
         )
         obj.setPropertyStatus("VacuumPermittivity", "LockDynamic")
         # we must set an expression so that the small value can actually be entered

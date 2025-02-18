@@ -157,9 +157,7 @@ class PathBoundary:
         tc = PathDressup.toolController(self.baseOp)
 
         self.safeHeight = float(PathUtil.opProperty(self.baseOp, "SafeHeight"))
-        self.clearanceHeight = float(
-            PathUtil.opProperty(self.baseOp, "ClearanceHeight")
-        )
+        self.clearanceHeight = float(PathUtil.opProperty(self.baseOp, "ClearanceHeight"))
         self.strG0ZsafeHeight = Path.Command(  # was a Feed rate with G1
             "G0", {"Z": self.safeHeight, "F": tc.VertRapid.Value}
         )
@@ -195,9 +193,7 @@ class PathBoundary:
                                 bogusX or bogusY
                             ):  # don't insert false paths based on bogus m/c position
                                 commands.extend(
-                                    self.boundaryCommands(
-                                        lastExit, pos, tc.VertFeed.Value
-                                    )
+                                    self.boundaryCommands(lastExit, pos, tc.VertFeed.Value)
                                 )
                             lastExit = None
                         commands.append(cmd)
@@ -209,9 +205,7 @@ class PathBoundary:
                             lastExit = pos
                         pos = Path.Geom.commandEndPoint(cmd, pos)
                     else:
-                        Path.Log.track(
-                            _vstr(pos), _vstr(lastExit), len(inside), len(outside), cmd
-                        )
+                        Path.Log.track(_vstr(pos), _vstr(lastExit), len(inside), len(outside), cmd)
                         # cmd pierces boundary
                         while inside or outside:
                             ie = [e for e in inside if Path.Geom.edgeConnectsTo(e, pos)]
@@ -226,9 +220,7 @@ class PathBoundary:
                                 if lastExit:
                                     if not (bogusX or bogusY):
                                         commands.extend(
-                                            self.boundaryCommands(
-                                                lastExit, pos, tc.VertFeed.Value
-                                            )
+                                            self.boundaryCommands(lastExit, pos, tc.VertFeed.Value)
                                         )
                                     lastExit = None
                                 Path.Log.track(e, flip)
@@ -249,19 +241,13 @@ class PathBoundary:
                                 pos = newPos
                                 lastExit = newPos
                             else:
-                                oe = [
-                                    e
-                                    for e in outside
-                                    if Path.Geom.edgeConnectsTo(e, pos)
-                                ]
+                                oe = [e for e in outside if Path.Geom.edgeConnectsTo(e, pos)]
                                 Path.Log.track(oe)
                                 if oe:
                                     e = oe[0]
                                     ptL = e.valueAt(e.LastParameter)
                                     flip = Path.Geom.pointsCoincide(pos, ptL)
-                                    newPos = (
-                                        e.valueAt(e.FirstParameter) if flip else ptL
-                                    )
+                                    newPos = e.valueAt(e.FirstParameter) if flip else ptL
                                     # outside edges are never taken at this point (see swap of
                                     # inside/outside above) - so just move along ...
                                     outside.remove(e)
@@ -301,8 +287,7 @@ def Create(base, name="DressupPathBoundary"):
 
     if not base.isDerivedFrom("Path::Feature"):
         Path.Log.error(
-            translate("CAM_DressupPathBoundary", "The selected object is not a path")
-            + "\n"
+            translate("CAM_DressupPathBoundary", "The selected object is not a path") + "\n"
         )
         return None
 

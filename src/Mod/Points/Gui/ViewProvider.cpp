@@ -41,7 +41,7 @@
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/SoFCSelection.h>
+#include <Gui/Selection/SoFCSelection.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Points/App/PointsFeature.h>
 #include <Mod/Points/App/Properties.h>
@@ -670,7 +670,7 @@ PROPERTY_SOURCE_TEMPLATE(PointsGui::ViewProviderPython, PointsGui::ViewProviderS
 /// @endcond
 
 // explicit template instantiation
-template class PointsGuiExport ViewProviderPythonFeatureT<PointsGui::ViewProviderScattered>;
+template class PointsGuiExport ViewProviderFeaturePythonT<PointsGui::ViewProviderScattered>;
 }  // namespace Gui
 
 // -------------------------------------------------

@@ -14,21 +14,23 @@
         <Documentation>
             <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net"/>
             <UserDocu>Describes a cylinder in 3D space
-                To create a cylinder there are several ways:
-                Part.Cylinder()
-                    Creates a default cylinder with center (0,0,0) and radius 1
 
-                Part.Cylinder(Cylinder)
-                    Creates a copy of the given cylinder
+To create a cylinder there are several ways:
 
-                Part.Cylinder(Cylinder, Distance)
-                    Creates a cylinder parallel to given cylinder at a certain distance
+Part.Cylinder()
+    Creates a default cylinder with center (0,0,0) and radius 1
 
-                Part.Cylinder(Point1,Point2,Point2)
-                    Creates a cylinder defined by three non-linear points
+Part.Cylinder(Cylinder)
+    Creates a copy of the given cylinder
 
-                Part.Cylinder(Circle)
-                    Creates a cylinder by a circular base</UserDocu>
+Part.Cylinder(Cylinder, Distance)
+    Creates a cylinder parallel to given cylinder at a certain distance
+
+Part.Cylinder(Point1, Point2, Point2)
+    Creates a cylinder defined by three non-linear points
+
+Part.Cylinder(Circle)
+    Creates a cylinder by a circular base</UserDocu>
         </Documentation>
         <Attribute Name="Radius" ReadOnly="false">
             <Documentation>

@@ -59,7 +59,7 @@ PROPERTY_SOURCE(Gui::ViewProviderVRMLObject, Gui::ViewProviderDocumentObject)
 ViewProviderVRMLObject::ViewProviderVRMLObject()
 {
     pcVRML = new SoFCSelection();
-    pcVRML->highlightMode = Gui::SoFCSelection::OFF;
+    pcVRML->preselectionMode = Gui::SoFCSelection::OFF;
     pcVRML->selectionMode = Gui::SoFCSelection::SEL_OFF;
     //pcVRML->style = Gui::SoFCSelection::BOX;
     pcVRML->ref();
@@ -249,7 +249,7 @@ void ViewProviderVRMLObject::updateData(const App::Property* prop)
             SoInput::removeDirectory(subpath.constData());
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId()) &&
+    else if (prop->isDerivedFrom<App::PropertyPlacement>() &&
              strcmp(prop->getName(), "Placement") == 0) {
         // Note: If R is the rotation, c the rotation center and t the translation
         // vector then Inventor applies the following transformation: R*(x-c)+c+t

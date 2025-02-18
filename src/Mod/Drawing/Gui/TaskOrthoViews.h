@@ -28,7 +28,7 @@
 
 #include <QCheckBox>
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <Base/BoundBox.h>
 #include <Gui/TaskView/TaskDialog.h>

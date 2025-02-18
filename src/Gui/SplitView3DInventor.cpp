@@ -36,7 +36,7 @@
 #include "Application.h"
 #include "Camera.h"
 #include "Document.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "SoFCSelectionAction.h"
 #include "View3DInventorViewer.h"
 #include "View3DPy.h"
@@ -233,6 +233,9 @@ bool AbstractSplitView::onHasMsg(const char* pMsg) const
         return true;
     }
     else if (strcmp("ViewAxo",pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
         return true;
     }
     return false;

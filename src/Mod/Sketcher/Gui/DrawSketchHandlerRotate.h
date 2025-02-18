@@ -155,7 +155,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Rotate");
+        return QStringLiteral("Sketcher_Pointer_Create_Rotate");
     }
 
     std::unique_ptr<QWidget> createWidget() const override
@@ -397,8 +397,31 @@ private:
                             newConstr->Second = secondIndexi;
                             geoIdsWhoAlreadyHasEqual.push_back(secondIndexi);
                         }
-                        else {
+                        else if (cstr->Type == Distance) {
                             newConstr->Second = secondIndexi;
+                        }
+                        else {
+                            // We should be able to handle cases where rotation is 90 or 180, but
+                            // this is segfaulting. The same is reported in
+                            // SketchObject::addSymmetric. There's apparently a problem with
+                            // creation of DistanceX/Y. On top of the segfault the DistanceX/Y flips
+                            // the new geometry.
+                            /*if (cstr->Type == DistanceX || cstr->Type == DistanceY) {
+                                //DistanceX/Y can be applied only if the rotation if 90 or 180.
+                                if (fabs(fmod(individualAngle, M_PI)) < Precision::Confusion()) {
+                                    // ok and nothing to do actually
+                                }
+                                else if (fabs(fmod(individualAngle, M_PI * 0.5)) <
+                            Precision::Confusion()) { cstr->Type = cstr->Type == DistanceX ?
+                            DistanceY : DistanceX;
+                                }
+                                else {
+                                    // cannot apply for random angles
+                                    continue;
+                                }
+                            }*/
+                            // So for now we just ignore all DistanceX/Y
+                            continue;
                         }
                     }
                     else if ((cstr->Type == Block) && firstIndex >= 0) {
@@ -474,15 +497,16 @@ void DSHRotateController::configureToolWidget()
     if (!init) {  // Code to be executed only upon initialisation
         toolWidget->setCheckboxLabel(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_offset", "Clone constraints"));
+            QApplication::translate("TaskSketcherTool_c1_offset", "Apply equal constraints"));
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
-            QString::fromLatin1("<p>")
+            QStringLiteral("<p>")
                 + QApplication::translate("TaskSketcherTool_c1_offset",
-                                          "This concerns the datum constraints (e.g. distance)."
-                                          "If you activate Clone, the tool will copy the datum."
-                                          "Else it will try to replace them with equalities.")
-                + QString::fromLatin1("</p>"));
+                                          "If this option is selected dimensional constraints are "
+                                          "excluded from the operation.\n"
+                                          "Instead equal constraints are applied between the "
+                                          "original objects and their copies.")
+                + QStringLiteral("</p>"));
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);

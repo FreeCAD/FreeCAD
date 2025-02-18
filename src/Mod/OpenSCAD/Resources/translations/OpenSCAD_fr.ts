@@ -350,7 +350,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="159"/>
       <source>Create Refine Shape Feature</source>
-      <translation>Créer une fonction d'affinage de forme</translation>
+      <translation>Créer une fonction pour affiner la forme</translation>
     </message>
   </context>
   <context>
@@ -358,12 +358,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="186"/>
       <source>Mirror Mesh Feature...</source>
-      <translation>Miroir du maillage...</translation>
+      <translation>Créer un objet maillé en miroir...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="189"/>
       <source>Create Mirror Mesh Feature</source>
-      <translation>Créer un miroir du maillage</translation>
+      <translation>Créer une fonction miroir du maillage</translation>
     </message>
   </context>
   <context>

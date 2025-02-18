@@ -22,7 +22,9 @@
 # ***************************************************************************/
 
 import FreeCAD, os, unittest, tempfile
+from FreeCAD import Base
 import math
+import xml.etree.ElementTree as ET
 
 # ---------------------------------------------------------------------------
 # define the functions to test the FreeCAD Document code
@@ -42,6 +44,16 @@ class Proxy:
         self.Dictionary = data
 
 
+class MyFeature:
+    def __init__(self, obj):
+        obj.Proxy = self
+        obj.addProperty("App::PropertyLinkList", "propLink")
+
+    def onDocumentRestored(self, obj):
+        if hasattr(obj, "propLink"):
+            obj.removeProperty("propLink")
+
+
 class DocumentBasicCases(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("CreateTest")
@@ -53,6 +65,15 @@ class DocumentBasicCases(unittest.TestCase):
         FreeCAD.closeDocument("CreateTest")
         self.Doc = FreeCAD.open(SaveName)
         return self.Doc
+
+    def testIssue18601(self):
+        lnk = self.Doc.addObject("App::FeaturePython", "MyLink")
+        obj = self.Doc.addObject("App::FeaturePython", "MyFeature")
+        fea = MyFeature(obj)
+        obj.propLink = [lnk]
+        doc = self.saveAndRestore()
+        FreeCAD.closeDocument(doc.Name)
+        self.Doc = FreeCAD.newDocument("CreateTest")
 
     def testAccessByNameOrID(self):
         obj = self.Doc.addObject("App::DocumentObject", "MyName")
@@ -166,8 +187,6 @@ class DocumentBasicCases(unittest.TestCase):
         self.assertTrue(L1.Float - 47.11 < 0.001)
         self.assertTrue(L1.Bool == True)
         self.assertTrue(L1.String == "4711")
-        # temporarily not checked because of strange behavior of boost::filesystem JR
-        # self.assertTrue(L1.Path  == "c:/temp")
         self.assertTrue(float(L1.Angle) - 3.0 < 0.001)
         self.assertTrue(float(L1.Distance) - 47.11 < 0.001)
 
@@ -634,6 +653,18 @@ class DocumentBasicCases(unittest.TestCase):
         obj = doc.Python.Proxy
 
         self.assertEqual(obj.Dictionary, {"Stored data": [3, 5, 7]})
+
+    def testContent(self):
+        test = self.Doc.addObject("App::FeaturePython", "Python")
+        types = Base.TypeId.getAllDerivedFrom("App::Property")
+        for type in types:
+            try:
+                test.addProperty(type.Name, type.Name.replace(":", "_"))
+                print("Add property type: {}".format(type.Name))
+            except Exception as e:
+                pass
+        root = ET.fromstring(test.Content)
+        self.assertEqual(root.tag, "Properties")
 
     def tearDown(self):
         # closing doc
@@ -1437,11 +1468,11 @@ class DocumentPlatformCases(unittest.TestCase):
         self.assertTrue(abs(self.Doc.Test.ColourList[0][0] - 1.0) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[0][1] - 0.5) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[0][2] - 0.0) < 0.01)
-        self.assertTrue(abs(self.Doc.Test.ColourList[0][3] - 0.0) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.ColourList[0][3] - 1.0) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[1][0] - 0.0) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[1][1] - 0.5) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[1][2] - 1.0) < 0.01)
-        self.assertTrue(abs(self.Doc.Test.ColourList[1][3] - 0.0) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.ColourList[1][3] - 1.0) < 0.01)
 
     def testVectorList(self):
         self.Doc.Test.VectorList = [(-0.05, 2.5, 5.2), (-0.05, 2.5, 5.2)]
@@ -2078,7 +2109,7 @@ class DocumentObserverCases(unittest.TestCase):
         FreeCAD.closeDocument(self.Doc2.Name)
         self.assertEqual(self.Obs.signal.pop(), "DocDeleted")
         self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
-        if FreeCAD.GuiUp:
+        if FreeCAD.GuiUp and not FreeCAD.Gui.HasQtBug_129596:
             # only has document activated signal when running in GUI mode
             self.assertEqual(self.Obs.signal.pop(), "DocActivated")
             self.assertTrue(self.Obs.parameter.pop() is self.Doc1)

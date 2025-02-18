@@ -27,9 +27,11 @@
 
 #include <Gui/PropertyPage.h>
 #include <memory>
+#include <QPointer>
 
 class SoDragger;
 class SoDirectionalLightDragger;
+class SoOrthographicCamera;
 
 namespace Gui {
 class View3DInventorViewer;
@@ -47,30 +49,39 @@ class DlgSettingsLightSources : public PreferencePage
 
 public:
     explicit DlgSettingsLightSources(QWidget* parent = nullptr);
-    ~DlgSettingsLightSources() override;
+    ~DlgSettingsLightSources() override = default;
 
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
 
-protected:
-    void changeEvent(QEvent* event) override;
-    void showEvent(QShowEvent* event) override;
-
-private:
-    void setupConnection();
+public Q_SLOTS:
+    void updateDraggerQS ();
+    void updateDraggerXYZ();
     void toggleLight(bool on);
     void lightIntensity(int value);
     void lightColor();
+
+    void pushIn (void);
+    void pullOut(void);
+
+protected:
+    void changeEvent(QEvent* event) override;
+
+private:
     void saveDirection();
     void loadDirection();
-    QWidget* createViewer(QWidget* parent);
+    void createViewer();
     SoDirectionalLightDragger* createDragger();
     static void dragMotionCallback(void *data, SoDragger *drag);
 
 private:
     std::unique_ptr<Ui_DlgSettingsLightSources> ui;
-    View3DInventorViewer* view = nullptr;
+    QPointer <View3DInventorViewer> view;
     SoDirectionalLightDragger* lightDragger = nullptr;
+    SoOrthographicCamera *camera = nullptr;
+
+    float cam_step = 3.0f;
 };
 
 } // namespace Dialog

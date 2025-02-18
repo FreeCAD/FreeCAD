@@ -2,7 +2,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${Boost_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )
 

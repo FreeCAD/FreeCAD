@@ -28,17 +28,19 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 class QTimer;
 
-namespace Measure {
-    class Measurement;
+namespace Measure
+{
+class Measurement;
 }
 
-namespace MeasureGui {
+namespace MeasureGui
+{
 
-class QuickMeasure : public QObject, Gui::SelectionObserver
+class QuickMeasure: public QObject, Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -50,8 +52,9 @@ private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void tryMeasureSelection();
 
-    bool canMeasureSelection(const Gui::SelectionChanges& msg) const;
+    bool shouldMeasure(const Gui::SelectionChanges& msg) const;
     void addSelectionToMeasurement();
+    bool isObjAcceptable(App::DocumentObject* obj);
     void printResult();
     void print(const QString& message);
 
@@ -63,6 +66,6 @@ private:
     bool pendingProcessing;
 };
 
-} //namespace MeasureGui
+}  // namespace MeasureGui
 
-#endif // MEASUREGUI_QUICKMEASURE_H
+#endif  // MEASUREGUI_QUICKMEASURE_H

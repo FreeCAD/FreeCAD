@@ -22,8 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Worker thread classes for Addon Manager startup """
-import datetime
+"""Worker thread classes for Addon Manager startup"""
 import hashlib
 import json
 import os
@@ -33,7 +32,8 @@ import shutil
 import stat
 import threading
 import time
-from typing import List
+from typing import List, Optional
+import xml.etree.ElementTree
 
 from PySide import QtCore
 
@@ -45,6 +45,7 @@ from AddonStats import AddonStats
 import NetworkManager
 from addonmanager_git import initialize_git, GitFailed
 from addonmanager_metadata import MetadataReader, get_branch_from_metadata
+import addonmanager_freecad_interface as fci
 
 translate = FreeCAD.Qt.translate
 
@@ -56,8 +57,8 @@ class CreateAddonListWorker(QtCore.QThread):
     """This worker updates the list of available workbenches, emitting an "addon_repo"
     signal for each Addon as they are processed."""
 
-    status_message = QtCore.Signal(str)
     addon_repo = QtCore.Signal(object)
+    progress_made = QtCore.Signal(str, int, int)
 
     def __init__(self):
         QtCore.QThread.__init__(self)
@@ -120,7 +121,6 @@ class CreateAddonListWorker(QtCore.QThread):
                 "Failed to connect to GitHub. Check your connection and proxy settings.",
             )
             FreeCAD.Console.PrintError(message + "\n")
-            self.status_message.emit(message)
             raise ConnectionError
 
     def _process_deprecated(self, deprecated_addons):
@@ -194,10 +194,18 @@ class CreateAddonListWorker(QtCore.QThread):
                 repo = Addon(name, addon["url"], state, addon["branch"])
                 md_file = os.path.join(addondir, "package.xml")
                 if os.path.isfile(md_file):
-                    repo.installed_metadata = MetadataReader.from_file(md_file)
-                    repo.installed_version = repo.installed_metadata.version
-                    repo.updated_timestamp = os.path.getmtime(md_file)
-                    repo.verify_url_and_branch(addon["url"], addon["branch"])
+                    try:
+                        repo.installed_metadata = MetadataReader.from_file(md_file)
+                        repo.installed_version = repo.installed_metadata.version
+                        repo.updated_timestamp = os.path.getmtime(md_file)
+                        repo.verify_url_and_branch(addon["url"], addon["branch"])
+                    except xml.etree.ElementTree.ParseError:
+                        fci.Console.PrintWarning(
+                            "An invalid or corrupted package.xml file was installed for"
+                        )
+                        fci.Console.PrintWarning(
+                            f" custom addon {self.name}... ignoring the bad data.\n"
+                        )
 
                 self.addon_repo.emit(repo)
 
@@ -237,10 +245,16 @@ class CreateAddonListWorker(QtCore.QThread):
             repo = Addon(name, url, state, branch)
             md_file = os.path.join(addondir, "package.xml")
             if os.path.isfile(md_file):
-                repo.installed_metadata = MetadataReader.from_file(md_file)
-                repo.installed_version = repo.installed_metadata.version
-                repo.updated_timestamp = os.path.getmtime(md_file)
-                repo.verify_url_and_branch(url, branch)
+                try:
+                    repo.installed_metadata = MetadataReader.from_file(md_file)
+                    repo.installed_version = repo.installed_metadata.version
+                    repo.updated_timestamp = os.path.getmtime(md_file)
+                    repo.verify_url_and_branch(url, branch)
+                except xml.etree.ElementTree.ParseError:
+                    fci.Console.PrintWarning(
+                        "An invalid or corrupted package.xml file was installed for"
+                    )
+                    fci.Console.PrintWarning(f" addon {self.name}... ignoring the bad data.\n")
 
             if name in self.py2only:
                 repo.python2 = True
@@ -249,8 +263,6 @@ class CreateAddonListWorker(QtCore.QThread):
             if name in self.obsolete:
                 repo.obsolete = True
             self.addon_repo.emit(repo)
-
-            self.status_message.emit(translate("AddonsInstaller", "Workbenches list was updated."))
 
     def _retrieve_macros_from_git(self):
         """Retrieve macros from FreeCAD-macros.git
@@ -264,9 +276,8 @@ class CreateAddonListWorker(QtCore.QThread):
         if not self.git_manager:
             message = translate(
                 "AddonsInstaller",
-                "Git is disabled, skipping git macros",
+                "Git is disabled, skipping Git macros",
             )
-            self.status_message.emit(message)
             FreeCAD.Console.PrintWarning(message + "\n")
             return
 
@@ -312,7 +323,7 @@ class CreateAddonListWorker(QtCore.QThread):
                     FreeCAD.Console.PrintWarning(
                         translate(
                             "AddonsInstaller",
-                            "Attempting to change non-git Macro setup to use git\n",
+                            "Attempting to change non-Git Macro setup to use Git\n",
                         )
                     )
                     self.git_manager.repair(
@@ -384,7 +395,7 @@ class CreateAddonListWorker(QtCore.QThread):
             )
             return
         p = p.data().decode("utf8")
-        macros = re.findall('title="(Macro.*?)"', p)
+        macros = re.findall(r'title="(Macro.*?)"', p)
         macros = [mac for mac in macros if "translated" not in mac]
         macro_names = []
         for _, mac in enumerate(macros):
@@ -454,7 +465,7 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
                     if os.path.isfile(repo_metadata_cache_path):
                         try:
                             repo.load_metadata_file(repo_metadata_cache_path)
-                        except Exception as e:
+                        except RuntimeError as e:
                             FreeCAD.Console.PrintLog(f"Failed loading {repo_metadata_cache_path}\n")
                             FreeCAD.Console.PrintLog(str(e) + "\n")
                     self.addon_repo.emit(repo)
@@ -514,7 +525,7 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
     """This worker checks for available updates for all workbenches"""
 
     update_status = QtCore.Signal(Addon)
-    progress_made = QtCore.Signal(int, int)
+    progress_made = QtCore.Signal(str, int, int)
 
     def __init__(self, repos: List[Addon]):
 
@@ -534,7 +545,10 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
         for repo in self.repos:
             if self.current_thread.isInterruptionRequested():
                 return
-            self.progress_made.emit(count, len(self.repos))
+            message = translate("AddonsInstaller", "Checking {} for update").format(
+                repo.display_name
+            )
+            self.progress_made.emit(message, count, len(self.repos))
             count += 1
             if repo.status() == Addon.Status.UNCHECKED:
                 if repo.repo_type == Addon.Kind.WORKBENCH:
@@ -577,7 +591,7 @@ class UpdateChecker:
             with wb.git_lock:
                 try:
                     status = self.git_manager.status(clonedir)
-                    if "(no branch)" in self.git_manager.status(clonedir):
+                    if "(no branch)" in status:
                         # By definition, in a detached-head state we cannot
                         # update, so don't even bother checking.
                         wb.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
@@ -588,7 +602,7 @@ class UpdateChecker:
                         "AddonManager: "
                         + translate(
                             "AddonsInstaller",
-                            "Unable to fetch git updates for workbench {}",
+                            "Unable to fetch Git updates for workbench {}",
                         ).format(wb.name)
                         + "\n"
                     )
@@ -602,7 +616,7 @@ class UpdateChecker:
                             wb.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
                     except GitFailed:
                         FreeCAD.Console.PrintWarning(
-                            translate("AddonsInstaller", "git status failed for {}").format(wb.name)
+                            translate("AddonsInstaller", "Git status failed for {}").format(wb.name)
                             + "\n"
                         )
                         wb.set_status(Addon.Status.CANNOT_CHECK)
@@ -612,13 +626,15 @@ class UpdateChecker:
         installed_metadata_file = os.path.join(clone_dir, "package.xml")
         if not os.path.isfile(installed_metadata_file):
             return False
+        if not hasattr(package, "metadata") or package.metadata is None:
+            return False
         try:
             installed_metadata = MetadataReader.from_file(installed_metadata_file)
             installed_default_branch = get_branch_from_metadata(installed_metadata)
             remote_default_branch = get_branch_from_metadata(package.metadata)
             if installed_default_branch != remote_default_branch:
                 return True
-        except Exception:
+        except RuntimeError:
             return False
         return False
 
@@ -663,7 +679,7 @@ class UpdateChecker:
                     package.set_status(Addon.Status.UPDATE_AVAILABLE)
                 else:
                     package.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
-            except Exception:
+            except RuntimeError:
                 FreeCAD.Console.PrintWarning(
                     translate(
                         "AddonsInstaller",
@@ -686,7 +702,7 @@ class UpdateChecker:
                 mac = mac.replace("+", "%2B")
                 url = "https://wiki.freecad.org/Macro_" + mac
                 macro_wrapper.macro.fill_details_from_wiki(url)
-        except Exception:
+        except RuntimeError:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
@@ -726,9 +742,8 @@ class UpdateChecker:
 class CacheMacroCodeWorker(QtCore.QThread):
     """Download and cache the macro code, and parse its internal metadata"""
 
-    status_message = QtCore.Signal(str)
     update_macro = QtCore.Signal(Addon)
-    progress_made = QtCore.Signal(int, int)
+    progress_made = QtCore.Signal(str, int, int)
 
     def __init__(self, repos: List[Addon]) -> None:
         QtCore.QThread.__init__(self)
@@ -743,8 +758,6 @@ class CacheMacroCodeWorker(QtCore.QThread):
     def run(self):
         """Rarely called directly: create an instance and call start() on it instead to
         launch in a new thread"""
-
-        self.status_message.emit(translate("AddonsInstaller", "Caching macro code..."))
 
         self.repo_queue = queue.Queue()
         num_macros = 0
@@ -817,7 +830,7 @@ class CacheMacroCodeWorker(QtCore.QThread):
             time.sleep(0.1)
         return False
 
-    def update_and_advance(self, repo: Addon) -> None:
+    def update_and_advance(self, repo: Optional[Addon]) -> None:
         """Emit the updated signal and launch the next item from the queue."""
         if repo is not None:
             if repo.macro.name not in self.failed:
@@ -829,7 +842,11 @@ class CacheMacroCodeWorker(QtCore.QThread):
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
 
-        self.progress_made.emit(len(self.repos) - self.repo_queue.qsize(), len(self.repos))
+        if repo is not None:
+            message = translate("AddonsInstaller", "Caching {} macro").format(repo.display_name)
+        else:
+            message = translate("AddonsInstaller", "Caching macros")
+        self.progress_made.emit(message, len(self.repos) - self.repo_queue.qsize(), len(self.repos))
 
         try:
             next_repo = self.repo_queue.get_nowait()
@@ -840,12 +857,6 @@ class CacheMacroCodeWorker(QtCore.QThread):
                 self.terminators.append(
                     QtCore.QTimer.singleShot(10000, lambda: self.terminate(worker))
                 )
-            self.status_message.emit(
-                translate(
-                    "AddonsInstaller",
-                    "Getting metadata from macro {}",
-                ).format(next_repo.macro.name)
-            )
             worker.start()
         except queue.Empty:
             pass
@@ -878,7 +889,6 @@ class CacheMacroCodeWorker(QtCore.QThread):
 class GetMacroDetailsWorker(QtCore.QThread):
     """Retrieve the macro details for a macro"""
 
-    status_message = QtCore.Signal(str)
     readme_updated = QtCore.Signal(str)
 
     def __init__(self, repo):
@@ -890,12 +900,9 @@ class GetMacroDetailsWorker(QtCore.QThread):
         """Rarely called directly: create an instance and call start() on it instead to
         launch in a new thread"""
 
-        self.status_message.emit(translate("AddonsInstaller", "Retrieving macro description..."))
         if not self.macro.parsed and self.macro.on_git:
-            self.status_message.emit(translate("AddonsInstaller", "Retrieving info from git"))
             self.macro.fill_details_from_file(self.macro.src_filename)
         if not self.macro.parsed and self.macro.on_wiki:
-            self.status_message.emit(translate("AddonsInstaller", "Retrieving info from wiki"))
             mac = self.macro.name.replace(" ", "_")
             mac = mac.replace("&", "%26")
             mac = mac.replace("+", "%2B")
@@ -935,7 +942,8 @@ class GetBasicAddonStatsWorker(QtCore.QThread):
             FreeCAD.Console.PrintError(
                 translate(
                     "AddonsInstaller",
-                    "Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate\n",
+                    "Failed to get Addon statistics from {} -- only sorting alphabetically will"
+                    " be accurate\n",
                 ).format(self.url)
             )
             return
@@ -994,5 +1002,5 @@ class GetAddonScoreWorker(QtCore.QThread):
                     self.update_addon_score.emit(addon)
                 except (ValueError, OverflowError):
                     FreeCAD.Console.PrintLog(
-                        f"Failed to convert score value '{score}' to an integer for addon {addon.name}"
+                        f"Failed to convert score value '{score}' to an integer for {addon.name}"
                     )

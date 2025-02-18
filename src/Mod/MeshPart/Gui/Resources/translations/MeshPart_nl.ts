@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="280"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>MeshPart</source>
       <translation>Mesh onderdeel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>Cross-sections...</source>
       <translation>Dwarsdoorsneden...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="283"/>
       <source>Cross-sections</source>
       <translation>Dwarsdoorsneden</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="316"/>
+      <location filename="../../Command.cpp" line="317"/>
       <source>Mesh</source>
       <translation>Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Curve on mesh...</source>
       <translation>Ronding op gaas...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="319"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Maakt een geschatte curve bovenop een maaswerk.
@@ -67,7 +67,7 @@ Deze opdracht werkt alleen met een 'maaswerk' object.</translation>
     <message>
       <location filename="../../Command.cpp" line="193"/>
       <source>Create section from mesh and plane</source>
-      <translation>Genereer doorsnede van maaswerk en vlak</translation>
+      <translation>Genereer doorsnede van mesh en vlak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>
@@ -80,7 +80,7 @@ Deze opdracht werkt alleen met een 'maaswerk' object.</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -580,7 +580,7 @@ Selecteer een andere vorm alstublieft.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Mesh uitvouwen</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -593,7 +593,7 @@ Selecteer een andere vorm alstublieft.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Vlak uitvouwen</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

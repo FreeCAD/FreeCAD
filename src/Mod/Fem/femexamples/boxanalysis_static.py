@@ -39,12 +39,14 @@ def get_information():
         "constraints": ["fixed", "force", "pressure"],
         "solvers": ["ccxtools", "elmer"],
         "material": "solid",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.boxanalysis_static import setup
@@ -55,6 +57,7 @@ See forum topic post:
 ...
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -75,7 +78,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # solver
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
-        solver_obj.WorkingDir = u""
+        solver_obj.WorkingDir = ""
     elif solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
         ObjectsFem.makeEquationElasticity(doc, solver_obj)

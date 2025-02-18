@@ -22,8 +22,9 @@
 #  ***************************************************************************/
 
 include_directories(
-        ${PYTHON_INCLUDE_DIRS}
+        ${Python3_INCLUDE_DIRS}
         ${QtCore_INCLUDE_DIRS}
+        ${ZIPIOS_INCLUDES}
 )
 
 set(Start_LIBS
@@ -36,6 +37,8 @@ SET(Start_SRCS
         DisplayedFilesModel.h
         ExamplesModel.cpp
         ExamplesModel.h
+        CustomFolderModel.cpp
+        CustomFolderModel.h
         PreCompiled.cpp
         PreCompiled.h
         RecentFilesModel.cpp

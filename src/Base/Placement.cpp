@@ -22,6 +22,8 @@
 
 #include "PreCompiled.h"
 
+#include <fmt/format.h>
+
 #include "Placement.h"
 #include "Matrix.h"
 #include "Rotation.h"
@@ -208,4 +210,19 @@ Placement Placement::sclerp(const Placement& p0, const Placement& p1, double t, 
 {
     Placement trf = p0.inverse() * p1;
     return p0 * trf.pow(t, shorten);
+}
+
+std::string Placement::toString() const
+{
+    Base::Vector3d pos = getPosition();
+    Base::Rotation rot = getRotation();
+
+    Base::Vector3d axis;
+    double angle {};
+    rot.getRawValue(axis, angle);
+
+    // clang-format off
+    return fmt::format("position ({:.1f}, {:.1f}, {:.1f}), axis ({:.1f}, {:.1f}, {:.1f}), angle {:.1f}\n",
+                       pos.x, pos.y, pos.z, axis.x, axis.y, axis.z, angle);
+    // clang-format on
 }

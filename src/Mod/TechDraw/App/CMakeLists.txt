@@ -7,8 +7,9 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )
 
@@ -16,9 +17,12 @@ set(TechDrawLIBS
     Measure
     Part
     Spreadsheet
-    Import
     PartDesign
 )
+
+if (BUILD_IMPORT)
+    list(APPEND TechDrawLIBS Import)
+endif ()
 
 include_directories(
     ${QtConcurrent_INCLUDE_DIRS}

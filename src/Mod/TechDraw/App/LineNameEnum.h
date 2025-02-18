@@ -33,7 +33,17 @@
 namespace TechDraw
 {
 
+
+
 //! common definitions for line numbers, names and lineicon names
+
+class TechDrawExport LineName {
+public:
+    static std::string translationContext(size_t iStandard);
+    static std::string currentTranslationContext();
+
+    static std::vector<std::string> ContextStrings;
+};
 
 class TechDrawExport ISOLineName {
     Q_DECLARE_TR_FUNCTIONS(TechDraw::ISOLineName)

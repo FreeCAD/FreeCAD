@@ -74,7 +74,7 @@
 
 #include "ActionFunction.h"
 #include "Command.h"
-#include "DlgObjectSelection.h"
+#include "Dialogs/DlgObjectSelection.h"
 
 FC_LOG_LEVEL_INIT("App::Link", true, true)
 
@@ -140,7 +140,7 @@ public:
             Document *pDoc = Application::Instance->getDocument(obj->getDocument());
             if(pDoc) {
                 ViewProvider *vp = pDoc->getViewProvider(obj);
-                if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+                if(vp && vp->isDerivedFrom<ViewProviderDocumentObject>())
                     return static_cast<ViewProviderDocumentObject*>(vp);
             }
         }
@@ -283,7 +283,7 @@ public:
                 continue;
             int count = pcSwitches[i]->getNumChildren();
             if((index<0 && i==LinkView::SnapshotChild) || !count)
-                pcSwitches[i]->whichChild = -1;
+                pcSwitches[i]->whichChild = SO_SWITCH_NONE;
             else if(count>pcLinked->getDefaultMode())
                 pcSwitches[i]->whichChild = pcLinked->getDefaultMode();
             else
@@ -313,12 +313,8 @@ public:
         }
     }
 
-    // VC2013 has trouble with template argument dependent lookup in
+    // MSVC has trouble with template argument dependent lookup in
     // namespace. Have to put the below functions in global namespace.
-    //
-    // However, gcc seems to behave the opposite, hence the conditional
-    // compilation  here.
-    //
 #if defined(_MSC_VER)
     friend void Gui::intrusive_ptr_add_ref(LinkInfo *px);
     friend void Gui::intrusive_ptr_release(LinkInfo *px);
@@ -334,7 +330,7 @@ public:
         for(int idx : indices) {
             if(!pcSwitches[idx])
                 continue;
-            if(pcSwitches[idx]->whichChild.getValue()==-1)
+            if(pcSwitches[idx]->whichChild.getValue()==SO_SWITCH_NONE)
                 return false;
         }
         return true;
@@ -348,7 +344,7 @@ public:
             if(!pcSwitches[idx])
                 continue;
             if(!visible)
-                pcSwitches[idx]->whichChild = -1;
+                pcSwitches[idx]->whichChild = SO_SWITCH_NONE;
             else if(pcSwitches[idx]->getNumChildren()>pcLinked->getDefaultMode())
                 pcSwitches[idx]->whichChild = pcLinked->getDefaultMode();
         }
@@ -389,7 +385,7 @@ public:
         pcLinkedSwitch.reset();
 
         coinRemoveAllChildren(pcSnapshot);
-        pcModeSwitch->whichChild = -1;
+        pcModeSwitch->whichChild = SO_SWITCH_NONE;
         coinRemoveAllChildren(pcModeSwitch);
 
         SoSwitch *pcUpdateSwitch = pcModeSwitch;
@@ -1002,7 +998,7 @@ void LinkView::setMaterial(int index, const App::Material *material) {
             return;
         }
         App::Color c = material->diffuseColor;
-        c.a = material->transparency;
+        c.setTransparency(material->transparency);
         pcLinkRoot->setColorOverride(c);
         for(int i=0;i<getSize();++i)
             setMaterial(i,nullptr);
@@ -1015,7 +1011,7 @@ void LinkView::setMaterial(int index, const App::Material *material) {
             return;
         }
         App::Color c = material->diffuseColor;
-        c.a = material->transparency;
+        c.setTransparency(material->transparency);
         info.pcRoot->setColorOverride(c);
     }
 }
@@ -1142,7 +1138,7 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
         auto &info = *nodeArray[i];
         info.isGroup = false;
         info.groupIndex = -1;
-        info.pcSwitch->whichChild = (vis.size()<=i||vis[i])?0:-1;
+        info.pcSwitch->whichChild = (vis.size()<=i||vis[i])?0:SO_SWITCH_NONE;
         info.link(obj);
         if(obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false)) {
             info.isGroup = true;
@@ -1193,7 +1189,7 @@ void LinkView::setTransform(int index, const Base::Matrix4D &mat) {
 
 void LinkView::setElementVisible(int idx, bool visible) {
     if(idx>=0 && idx<(int)nodeArray.size())
-        nodeArray[idx]->pcSwitch->whichChild = visible?0:-1;
+        nodeArray[idx]->pcSwitch->whichChild = visible?0:SO_SWITCH_NONE;
 }
 
 bool LinkView::isElementVisible(int idx) const {
@@ -1366,42 +1362,53 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
     CoinPtr<SoPath> path = pp->getPath();
     if(!nodeArray.empty()) {
         auto idx = path->findNode(pcLinkRoot);
-        if(idx<0 || idx+2>=path->getLength())
+        if (idx < 0 || idx + 2 >= path->getLength()) {
             return false;
+        }
         auto node = path->getNode(idx+1);
         auto it = nodeMap.find(node);
-        if(it == nodeMap.end() || !isElementVisible(it->second))
+        if(it == nodeMap.end() || !isElementVisible(it->second)) {
             return false;
+        }
         int nodeIdx = it->second;
         ++idx;
         while(nodeArray[nodeIdx]->isGroup) {
             auto &info = *nodeArray[nodeIdx];
-            if(!info.isLinked())
+            if(!info.isLinked()) {
                 return false;
+            }
             ss << info.linkInfo->getLinkedName() << '.';
             idx += 2;
-            if(idx>=path->getLength())
+            if(idx>=path->getLength()) {
                 return false;
+            }
             auto iter = nodeMap.find(path->getNode(idx));
-            if(iter == nodeMap.end() || !isElementVisible(iter->second))
+            if(iter == nodeMap.end() || !isElementVisible(iter->second)) {
                 return false;
+            }
             nodeIdx = iter->second;
         }
+
         auto &info = *nodeArray[nodeIdx];
-        if(nodeIdx == it->second)
+        if (!info.linkInfo) {
             ss << it->second << '.';
-        else
+        }
+        else {
             ss << info.linkInfo->getLinkedName() << '.';
+        }
+
         if(info.isLinked()) {
-            if(!info.linkInfo->getElementPicked(false,childType,pp,ss))
+            if (!info.linkInfo->getElementPicked(false, childType, pp, ss)) {
                 return false;
+            }
             subname = ss.str();
             return true;
         }
     }
 
-    if(!isLinked())
+    if(!isLinked()) {
         return false;
+    }
 
     if(nodeType >= 0) {
         if(linkInfo->getElementPicked(false,nodeType,pp,ss)) {
@@ -1411,26 +1418,33 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
         return false;
     }
     auto idx = path->findNode(pcLinkedRoot);
-    if(idx<0 || idx+1>=path->getLength())
+    if(idx<0 || idx+1>=path->getLength()) {
         return false;
+    }
     auto node = path->getNode(idx+1);
     for(const auto &v : subInfo) {
         auto &sub = *v.second;
-        if(node != sub.pcNode) continue;
+        if (node != sub.pcNode) {
+            continue;
+        }
+
         std::ostringstream ss2;
-        if(!sub.linkInfo->getElementPicked(false,SnapshotTransform,pp,ss2))
+        if(!sub.linkInfo->getElementPicked(false,SnapshotTransform,pp,ss2)) {
             return false;
+        }
         const std::string &element = ss2.str();
         if(!sub.subElements.empty()) {
             if(sub.subElements.find(element)==sub.subElements.end()) {
                 auto pos = element.find('.');
-                if(pos==std::string::npos ||
-                   sub.subElements.find(element.c_str()+pos+1)==sub.subElements.end())
+                if (pos == std::string::npos ||
+                    sub.subElements.find(element.c_str() + pos + 1) == sub.subElements.end()) {
                     return false;
+                }
             }
         }
-        if(!autoSubLink || subInfo.size()>1)
+        if (!autoSubLink || subInfo.size() > 1) {
             ss << v.first;
+        }
         ss << element;
         subname = ss.str();
         return true;
@@ -1606,7 +1620,7 @@ static const char *_LinkElementIcon = "LinkElement";
 
 ViewProviderLink::ViewProviderLink()
     :linkType(LinkTypeNone),hasSubName(false),hasSubElement(false)
-    ,useCenterballDragger(false),childVp(nullptr),overlayCacheKey(0)
+    ,childVp(nullptr),overlayCacheKey(0)
 {
     sPixmap = _LinkIcon;
 
@@ -1652,7 +1666,7 @@ ViewProviderLink::~ViewProviderLink()
 }
 
 bool ViewProviderLink::isSelectable() const {
-    return !pcDragger && Selectable.getValue();
+    return Selectable.getValue();
 }
 
 void ViewProviderLink::attach(App::DocumentObject *pcObj) {
@@ -1667,7 +1681,7 @@ void ViewProviderLink::attach(App::DocumentObject *pcObj) {
     setDisplayMaskMode("Link");
     inherited::attach(pcObj);
     checkIcon();
-    if(pcObj->isDerivedFrom(App::LinkElement::getClassTypeId()))
+    if(pcObj->isDerivedFrom<App::LinkElement>())
         hide();
     linkView->setOwner(this);
 
@@ -1832,8 +1846,6 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop == ext->getPlacementProperty() || prop == ext->getLinkPlacementProperty()) {
         auto propLinkPlacement = ext->getLinkPlacementProperty();
         if(!propLinkPlacement || propLinkPlacement == prop) {
-            const auto &pla = static_cast<const App::PropertyPlacement*>(prop)->getValue();
-            ViewProviderGeometryObject::updateTransform(pla, pcTransform);
             const auto &v = ext->getScaleVector();
             if(canScale(v))
                 pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
@@ -2016,7 +2028,7 @@ void ViewProviderLink::checkIcon(const App::LinkBaseExtension *ext) {
             return;
     }
     const char *icon;
-    auto element = freecad_dynamic_cast<App::LinkElement>(getObject());
+    auto element = getObject<App::LinkElement>();
     if(element)
         icon = _LinkElementIcon;
     else if(!ext->getLinkedObjectProperty() && ext->getElementListProperty())
@@ -2280,20 +2292,24 @@ bool ViewProviderLink::canDragAndDropObject(App::DocumentObject* obj) const {
 }
 
 bool ViewProviderLink::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
-    if(!isSelectable())
+    if(!isSelectable()) {
         return false;
+    }
     auto ext = getLinkExtension();
-    if(!ext)
+    if (!ext) {
         return false;
+    }
     if(childVpLink && childVp) {
         auto path = pp->getPath();
         int idx = path->findNode(childVpLink->getSnapshot(LinkView::SnapshotTransform));
-        if(idx>=0)
-            return childVp->getElementPicked(pp,subname);
+        if(idx>=0) {
+            return childVp->getElementPicked(pp, subname);
+        }
     }
     bool ret = linkView->linkGetElementPicked(pp,subname);
-    if(!ret)
+    if(!ret) {
         return ret;
+    }
     if(isGroup(ext,true)) {
         const char *sub = nullptr;
         int idx = App::LinkBaseExtension::getArrayIndex(subname.c_str(),&sub);
@@ -2358,7 +2374,7 @@ bool ViewProviderLink::getDetailPath(
 }
 
 bool ViewProviderLink::onDelete(const std::vector<std::string> &) {
-    auto element = freecad_dynamic_cast<App::LinkElement>(getObject());
+    auto element = getObject<App::LinkElement>();
     if (element && !element->canDelete())
         return false;
     auto ext = getLinkExtension();
@@ -2742,25 +2758,28 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
     }
 
     static thread_local bool _pendingTransform;
-    static thread_local Base::Matrix4D  _editingTransform;
+    static thread_local Matrix4D _editingTransform;
 
     auto doc = Application::Instance->editDocument();
 
-    if(mode==ViewProvider::Transform) {
-        if(_pendingTransform && doc)
+    if (mode == ViewProvider::Transform) {
+        if (_pendingTransform && doc) {
             doc->setEditingTransform(_editingTransform);
+        }
 
-        if(!initDraggingPlacement())
+        if (!initDraggingPlacement()) {
             return nullptr;
-        if(useCenterballDragger)
-            pcDragger = CoinPtr<SoCenterballDragger>(new SoCenterballDragger);
-        else
-            pcDragger = CoinPtr<SoFCCSysDragger>(new SoFCCSysDragger);
-        updateDraggingPlacement(dragCtx->initialPlacement,true);
-        pcDragger->addStartCallback(dragStartCallback, this);
-        pcDragger->addFinishCallback(dragFinishCallback, this);
-        pcDragger->addMotionCallback(dragMotionCallback, this);
-        return inherited::startEditing(mode);
+        }
+
+        if (auto result = inherited::startEditing(mode)) {
+            csysDragger->addStartCallback(dragStartCallback, this);
+            csysDragger->addFinishCallback(dragFinishCallback, this);
+            csysDragger->addMotionCallback(dragMotionCallback, this);
+
+            setDraggerPlacement(dragCtx->initialPlacement);
+
+            return result;
+        }
     }
 
     if(!linkEdit()) {
@@ -2817,6 +2836,7 @@ bool ViewProviderLink::setEdit(int ModNum)
         Selection().clearSelection();
         return true;
     }
+
     return inherited::setEdit(ModNum);
 }
 
@@ -2827,125 +2847,21 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
         return;
     }
 
-    if (pcDragger && viewer)
-    {
-        auto rootPickStyle = new SoPickStyle();
-        rootPickStyle->style = SoPickStyle::UNPICKABLE;
-        static_cast<SoFCUnifiedSelection*>(
-                viewer->getSceneGraph())->insertChild(rootPickStyle, 0);
-
-        if(useCenterballDragger) {
-            auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
-            auto group = new SoAnnotation;
-            auto pickStyle = new SoPickStyle;
-            pickStyle->setOverride(true);
-            group->addChild(pickStyle);
-            group->addChild(pcDragger);
-
-            // Because the dragger is not grouped with the actual geometry,
-            // we use an invisible cube sized by the bounding box obtained from
-            // initDraggingPlacement() to scale the centerball dragger properly
-
-            auto * ss = static_cast<SoSurroundScale*>(dragger->getPart("surroundScale", TRUE));
-            ss->numNodesUpToContainer = 3;
-            ss->numNodesUpToReset = 2;
-
-            auto *geoGroup = new SoGroup;
-            group->addChild(geoGroup);
-            auto *style = new SoDrawStyle;
-            style->style.setValue(SoDrawStyle::INVISIBLE);
-            style->setOverride(TRUE);
-            geoGroup->addChild(style);
-            auto *cube = new SoCube;
-            geoGroup->addChild(cube);
-            auto length = std::max(std::max(dragCtx->bbox.LengthX(),
-                        dragCtx->bbox.LengthY()), dragCtx->bbox.LengthZ());
-            cube->width = length;
-            cube->height = length;
-            cube->depth = length;
-
-            viewer->setupEditingRoot(group,&dragCtx->preTransform);
-        }else{
-            auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
-            dragger->draggerSize.setValue(0.05f);
-            dragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
-            viewer->setupEditingRoot(pcDragger,&dragCtx->preTransform);
-
-            auto task = new TaskCSysDragger(this, dragger);
-            Gui::Control().showDialog(task);
-        }
-    }
+    ViewProviderDragger::setEditViewer(viewer, ModNum);
 }
 
 void ViewProviderLink::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
-    SoNode *child = static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->getChild(0);
-    if (child && child->isOfType(SoPickStyle::getClassTypeId()))
-        static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->removeChild(child);
-    pcDragger.reset();
     dragCtx.reset();
-    Gui::Control().closeDialog();
+
+    inherited::unsetEditViewer(viewer);
 }
 
-Base::Placement ViewProviderLink::currentDraggingPlacement() const
-{
-    // if there isn't an active dragger return a default placement
-    if (!pcDragger)
-        return Base::Placement();
-
-    SbVec3f v;
-    SbRotation r;
-    if (useCenterballDragger) {
-        auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
-        v = dragger->center.getValue();
-        r = dragger->rotation.getValue();
-    }
-    else {
-        auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
-        v = dragger->translation.getValue();
-        r = dragger->rotation.getValue();
-    }
-
-    float q1,q2,q3,q4;
-    r.getValue(q1,q2,q3,q4);
-    return Base::Placement(Base::Vector3d(v[0],v[1],v[2]),Base::Rotation(q1,q2,q3,q4));
-}
-
-void ViewProviderLink::enableCenterballDragger(bool enable) {
-    if(enable == useCenterballDragger)
-        return;
-    if(pcDragger)
-        LINK_THROW(Base::RuntimeError,"Cannot change dragger during dragging");
-    useCenterballDragger = enable;
-}
-
-void ViewProviderLink::updateDraggingPlacement(const Base::Placement &pla, bool force) {
-    if(pcDragger && (force || currentDraggingPlacement()!=pla)) {
-        const auto &pos = pla.getPosition();
-        const auto &rot = pla.getRotation();
-        FC_LOG("updating dragger placement (" << pos.x << ", " << pos.y << ", " << pos.z << ')');
-        if(useCenterballDragger) {
-            auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
-            SbBool wasenabled = dragger->enableValueChangedCallbacks(FALSE);
-            SbMatrix matrix;
-            matrix = convert(pla.toMatrix());
-            dragger->center.setValue(SbVec3f(0,0,0));
-            dragger->setMotionMatrix(matrix);
-            if (wasenabled) {
-                dragger->enableValueChangedCallbacks(TRUE);
-                dragger->valueChanged();
-            }
-        }else{
-            auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
-            dragger->translation.setValue(SbVec3f(pos.x,pos.y,pos.z));
-            dragger->rotation.setValue(rot[0],rot[1],rot[2],rot[3]);
-        }
-    }
-}
-
-bool ViewProviderLink::callDraggerProxy(const char *fname, bool update) {
-    if(!pcDragger)
+bool ViewProviderLink::callDraggerProxy(const char* fname) {
+    if (!csysDragger) {
         return false;
+    }
+
     Base::PyGILStateLocker lock;
     try {
         auto* proxy = getPropertyByName("Proxy");
@@ -2964,48 +2880,32 @@ bool ViewProviderLink::callDraggerProxy(const char *fname, bool update) {
         return true;
     }
 
-    if(update) {
-        auto ext = getLinkExtension();
-        if(ext) {
-            const auto &pla = currentDraggingPlacement();
-            auto prop = ext->getLinkPlacementProperty();
-            if(!prop)
-                prop = ext->getPlacementProperty();
-            if(prop) {
-                auto plaNew = pla * Base::Placement(dragCtx->mat);
-                if(prop->getValue()!=plaNew)
-                    prop->setValue(plaNew);
-            }
-            updateDraggingPlacement(pla);
-        }
-    }
     return false;
 }
 
 void ViewProviderLink::dragStartCallback(void *data, SoDragger *) {
     auto me = static_cast<ViewProviderLink*>(data);
-    me->dragCtx->initialPlacement = me->currentDraggingPlacement();
-    if(!me->callDraggerProxy("onDragStart",false)) {
-        me->dragCtx->cmdPending = true;
-        me->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Link Transform"));
-    }else
-        me->dragCtx->cmdPending = false;
+
+    me->dragCtx->initialPlacement = me->getDraggerPlacement();
+    me->callDraggerProxy("onDragStart");
 }
 
 void ViewProviderLink::dragFinishCallback(void *data, SoDragger *) {
     auto me = static_cast<ViewProviderLink*>(data);
-    me->callDraggerProxy("onDragEnd",true);
-    if(me->dragCtx->cmdPending) {
-        if(me->currentDraggingPlacement() == me->dragCtx->initialPlacement)
+    me->callDraggerProxy("onDragEnd");
+
+    if (me->dragCtx->cmdPending) {
+        if (me->getDraggerPlacement() == me->dragCtx->initialPlacement) {
             me->getDocument()->abortCommand();
-        else
+        } else {
             me->getDocument()->commitCommand();
+        }
     }
 }
 
 void ViewProviderLink::dragMotionCallback(void *data, SoDragger *) {
     auto me = static_cast<ViewProviderLink*>(data);
-    me->callDraggerProxy("onDragMotion",true);
+    me->callDraggerProxy("onDragMotion");
 }
 
 void ViewProviderLink::updateLinks(ViewProvider *vp) {
@@ -3052,7 +2952,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
     if(wildcard == "Face" || wildcard == "Face*" || wildcard.empty()) {
         if(wildcard.size()==4 || OverrideMaterial.getValue()) {
             App::Color c = ShapeMaterial.getValue().diffuseColor;
-            c.a = ShapeMaterial.getValue().transparency;
+            c.setTransparency(ShapeMaterial.getValue().transparency);
             colors["Face"] = c;
             if(wildcard.size()==4)
                 return colors;
@@ -3073,16 +2973,16 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         for(const auto &sub : subs) {
             if(++i >= size)
                 break;
-            auto pos = sub.second.rfind('.');
+            auto pos = sub.oldName.rfind('.');
             if(pos == std::string::npos)
                 pos = 0;
             else
                 ++pos;
-            const char *element = sub.second.c_str()+pos;
+            const char *element = sub.oldName.c_str()+pos;
             if(boost::starts_with(element,wildcard))
-                colors[sub.second] = OverrideColorList[i];
+                colors[sub.oldName] = OverrideColorList[i];
             else if(!element[0] && wildcard=="Face")
-                colors[sub.second.substr(0,element-sub.second.c_str())+wildcard] = OverrideColorList[i];
+                colors[sub.oldName.substr(0,element-sub.oldName.c_str())+wildcard] = OverrideColorList[i];
         }
 
         // In case of multi-level linking, we recursively call into each level,
@@ -3091,7 +2991,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         while(true) {
             if(wildcard!=ViewProvider::hiddenMarker() && vp->OverrideMaterial.getValue()) {
                 auto color = ShapeMaterial.getValue().diffuseColor;
-                color.a = ShapeMaterial.getValue().transparency;
+                color.setTransparency(ShapeMaterial.getValue().transparency);
                 colors.emplace(wildcard,color);
             }
             auto link = vp->getObject()->getLinkedObject(false);
@@ -3117,7 +3017,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
                     if(!overrides[i])
                         continue;
                     auto color = mat.diffuseColor;
-                    color.a = mat.transparency;
+                    color.setTransparency(mat.transparency);
                     colors.emplace(std::to_string(i)+"."+wildcard,color);
                 }
             }
@@ -3133,15 +3033,15 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
 
         int offset = 0;
 
-        if(!sub.second.empty() && element_count && !std::isdigit(sub.second[0])) {
+        if(!sub.oldName.empty() && element_count && !std::isdigit(sub.oldName[0])) {
             // For checking and expanding color override of array base
             if(!subname[0]) {
                 std::ostringstream ss;
-                ss << "0." << sub.second;
+                ss << "0." << sub.oldName;
                 if(getObject()->getSubObject(ss.str().c_str())) {
                     for(int j=0;j<element_count;++j) {
                         ss.str("");
-                        ss << j << '.' << sub.second;
+                        ss << j << '.' << sub.oldName;
                         colors.emplace(ss.str(),OverrideColorList[i]);
                     }
                     continue;
@@ -3154,16 +3054,16 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         }
 
         if(isPrefix) {
-            if(!boost::starts_with(sub.first,subname+offset)
-                    && !boost::starts_with(sub.second,subname+offset))
+            if(!boost::starts_with(sub.newName,subname+offset)
+                    && !boost::starts_with(sub.oldName,subname+offset))
                 continue;
-        }else if(sub.first!=subname+offset && sub.second!=subname+offset)
+        }else if(sub.newName!=subname+offset && sub.oldName!=subname+offset)
             continue;
 
         if(offset)
-            colors.emplace(std::string(subname,offset)+sub.second, OverrideColorList[i]);
+            colors.emplace(std::string(subname,offset)+sub.oldName, OverrideColorList[i]);
         else
-            colors[sub.second] = OverrideColorList[i];
+            colors[sub.oldName] = OverrideColorList[i];
     }
 
     if(!subname[0])
@@ -3262,7 +3162,7 @@ void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> 
     if(hasFaceColor) {
         auto mat = ShapeMaterial.getValue();
         mat.diffuseColor = faceColor;
-        mat.transparency = faceColor.a;
+        mat.transparency = faceColor.transparency();
         ShapeMaterial.setStatus(App::Property::User3,true);
         ShapeMaterial.setValue(mat);
         ShapeMaterial.setStatus(App::Property::User3,false);
@@ -3446,5 +3346,5 @@ void ViewProviderLink::setTransformation(const SbMatrix &rcMatrix)
 
 namespace Gui {
 PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderLinkPython, Gui::ViewProviderLink)
-template class GuiExport ViewProviderPythonFeatureT<ViewProviderLink>;
+template class GuiExport ViewProviderFeaturePythonT<ViewProviderLink>;
 }

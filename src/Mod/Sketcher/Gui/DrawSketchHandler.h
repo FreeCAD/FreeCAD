@@ -30,7 +30,7 @@
 
 #include <Base/Parameter.h>
 #include <Base/Tools2D.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ToolHandler.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/Constraint.h>
@@ -172,6 +172,12 @@ public:
                            const Base::Vector2d& Pos,
                            const Base::Vector2d& Dir,
                            AutoConstraint::TargetType type = AutoConstraint::VERTEX);
+
+    int seekAndRenderAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
+                                    const Base::Vector2d& Pos,
+                                    const Base::Vector2d& Dir,
+                                    AutoConstraint::TargetType type = AutoConstraint::VERTEX);
+
     // createowncommand indicates whether a separate command shall be create and committed (for
     // example for undo purposes) or not is not it is the responsibility of the developer to create
     // and commit the command appropriately.
@@ -200,7 +206,7 @@ public:
     std::unique_ptr<QWidget> createToolWidget() const;
 
     /** @brief Returns whether this tool expects/supports a visible tool widget. Emphasis is in
-     * visibility, so to allow to adapt the interface accordingly.
+     * visibility, so to allow one to adapt the interface accordingly.
      * This is an NVI interface and specific handlers must overload the corresponding virtual
      * function.
      */

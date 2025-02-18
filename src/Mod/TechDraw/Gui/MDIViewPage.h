@@ -27,7 +27,7 @@
 
 #include <Gui/MDIView.h>
 #include <Gui/MDIViewPy.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "ViewProviderPage.h"
@@ -99,7 +99,6 @@ public:
 
     PyObject* getPyObject() override;
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
-
     ViewProviderPage* getViewProviderPage() {return m_vpPage;}
 
     void setTabText(std::string tabText);
@@ -131,7 +130,7 @@ protected:
 
     bool compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel);
     void addSceneItemToTreeSel(QGraphicsItem* sceneItem, std::vector<Gui::SelectionObject> treeSel);
-    void removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::SelectionObject& sel);
+    void removeUnselectedTreeSelection(QList<QGraphicsItem*> sceneSel, Gui::SelectionObject& treeSelection);
     std::string getSceneSubName(QGraphicsItem* scene);
     void setTreeToSceneSelect();
     void sceneSelectionManager();
@@ -158,9 +157,7 @@ private:
 
     QList<QGraphicsItem*> m_orderedSceneSelection;        //items in selection order
 
-    void getPaperAttributes();
-    PagePrinter* m_pagePrinter;
-
+    QString defaultFileName();
 };
 
 class MDIViewPagePy : public Py::PythonExtension<MDIViewPagePy>

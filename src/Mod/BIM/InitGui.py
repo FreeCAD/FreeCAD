@@ -95,14 +95,16 @@ class BIMWorkbench(Workbench):
             "BIM_DimensionVertical",
             "BIM_Leader",
             "Draft_Label",
+            "Draft_Hatch",
             "Arch_Axis",
             "Arch_AxisSystem",
             "Arch_Grid",
             "Arch_SectionPlane",
-            "Draft_Hatch",
+            "BIM_DrawingView",
+            "BIM_Shape2DView",
+            "BIM_Shape2DCut",
             "BIM_TDPage",
             "BIM_TDView",
-            "BIM_Shape2DView",
         ]
 
         self.bimtools = [
@@ -168,7 +170,7 @@ class BIMWorkbench(Workbench):
         self.modify_3d = [
             "Draft_OrthoArray",
             "Draft_PathArray",
-            "Draft_CircularArray",
+            "Draft_PolarArray",
             "Draft_PointArray",
             "Arch_CutPlane",
             "Draft_Mirror",
@@ -217,6 +219,7 @@ class BIMWorkbench(Workbench):
             "Arch_Survey",
             "BIM_Diff",
             "BIM_IfcExplorer",
+            "Arch_IfcSpreadsheet",
             "BIM_ImagePlane",
             "BIM_Unclone",
             "BIM_Rewire",
@@ -473,8 +476,8 @@ class BIMWorkbench(Workbench):
     def Activated(self):
 
         import WorkingPlane
-        from DraftGui import todo
-        import BimStatusBar
+        from draftutils import todo
+        import BimStatus
         from nativeifc import ifc_observer
         from draftutils import grid_observer
 
@@ -488,8 +491,8 @@ class BIMWorkbench(Workbench):
         grid_observer._view_observer_setup()
 
         if PARAMS.GetBool("FirstTime", True) and (not hasattr(FreeCAD, "TestEnvironment")):
-            todo.delay(FreeCADGui.runCommand, "BIM_Welcome")
-        todo.delay(BimStatusBar.setStatusIcons, True)
+            todo.ToDo.delay(FreeCADGui.runCommand, "BIM_Welcome")
+        todo.ToDo.delay(BimStatus.setStatusIcons, True)
         FreeCADGui.Control.clearTaskWatcher()
 
         class BimWatcher:
@@ -551,8 +554,8 @@ class BIMWorkbench(Workbench):
 
     def Deactivated(self):
 
-        from DraftGui import todo
-        import BimStatusBar
+        from draftutils import todo
+        import BimStatus
         from bimcommands import BimViews
         import WorkingPlane
         from nativeifc import ifc_observer
@@ -572,13 +575,13 @@ class BIMWorkbench(Workbench):
         grid_observer._view_observer_setup()
 
         # print("Deactivating status icon")
-        todo.delay(BimStatusBar.setStatusIcons, False)
+        todo.ToDo.delay(BimStatus.setStatusIcons, False)
         FreeCADGui.Control.clearTaskWatcher()
 
         # store views widget state and vertical size
         w = BimViews.findWidget()
-        PARAMS.SetBool("RestoreBimViews", bool(w))
         if w:
+            PARAMS.SetBool("RestoreBimViews", w.isVisible())
             PARAMS.SetInt("BimViewsSize", w.height())
             w.hide()
             w.toggleViewAction().setVisible(False)
@@ -674,6 +677,7 @@ t = QT_TRANSLATE_NOOP("QObject", "Import-Export")
 FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui", t)
 FreeCADGui.addPreferencePage(":/ui/preferences-ifc-export.ui", t)
 FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui", t)
+FreeCADGui.addPreferencePage(":/ui/preferences-sh3d-import.ui", t)
 
 # Add unit tests
 FreeCAD.__unit_test__ += ["TestArch"]

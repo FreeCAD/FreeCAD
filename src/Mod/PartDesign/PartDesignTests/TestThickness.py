@@ -46,9 +46,11 @@ class TestThickness(unittest.TestCase):
         self.Thickness.Base = (self.Box, ["Face1"])
         self.Doc.recompute()
         self.assertEqual(len(self.Thickness.Shape.Faces), 11)
+        # 6 faces of outer box + 4 faces of inner box + 16 edges outer, 8 inner,
+        # + 8 vertexes outer, 8 inner + 1 solid = 51
+        self.assertEqual(self.Thickness.Shape.ElementMapSize,51)
 
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartDesignTestThickness")
         # print ("omit closing document for debugging")
-

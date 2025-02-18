@@ -36,17 +36,17 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
+from . import base_femtaskpanel
 
 
 # TODO uses the old style Add button, move to the new style. See constraint fixed
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     """
     The TaskPanel for editing References property of ConstraintSectionPrint objects
     """
 
     def __init__(self, obj):
-
-        self.obj = obj
+        super().__init__(obj)
 
         # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(
@@ -58,15 +58,12 @@ class _TaskPanel:
         QtCore.QObject.connect(
             self.parameterWidget.cb_variable,
             QtCore.SIGNAL("currentIndexChanged(int)"),
-            self.variable_changed
+            self.variable_changed,
         )
 
         # geometry selection widget
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Face"],
-            False,
-            False
+            obj.References, ["Face"], False, False
         )
 
         # form made from param and selection widget
@@ -80,8 +77,9 @@ class _TaskPanel:
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(QtGui.QMessageBox.Question)
             msgBox.setText(
-                "Constraint SectionPrint requires exactly one face\n\nfound references: {}"
-                .format(items)
+                "Constraint SectionPrint requires exactly one face\n\nfound references: {}".format(
+                    items
+                )
             )
             msgBox.setWindowTitle("FreeCAD FEM Constraint SectionPrint")
             retryButton = msgBox.addButton(QtGui.QMessageBox.Retry)
@@ -95,18 +93,12 @@ class _TaskPanel:
 
         self.obj.Variable = self.variable
         self.obj.References = self.selectionWidget.references
-        self.recompute_and_set_back_all()
-        return True
+        self.selectionWidget.finish_selection()
+        return super().accept()
 
     def reject(self):
-        self.recompute_and_set_back_all()
-        return True
-
-    def recompute_and_set_back_all(self):
-        doc = FreeCADGui.getDocument(self.obj.Document)
-        doc.Document.recompute()
         self.selectionWidget.finish_selection()
-        doc.resetEdit()
+        return super().reject()
 
     def init_parameter_widget(self):
         self.variable = self.obj.Variable

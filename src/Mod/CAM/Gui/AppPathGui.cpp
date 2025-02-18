@@ -47,14 +47,15 @@ void loadPathResource()
     Gui::Translator::instance()->refresh();
 }
 
-namespace PathGui {
+namespace PathGui
+{
 extern PyObject* initModule();
 }
 
 /* Python entry */
 PyMOD_INIT_FUNC(PathGui)
 {
-     if (!Gui::Application::Instance) {
+    if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
         PyMOD_Return(nullptr);
     }
@@ -62,7 +63,7 @@ PyMOD_INIT_FUNC(PathGui)
         Base::Interpreter().runString("import PartGui");
         Base::Interpreter().runString("import Path");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
         PyMOD_Return(nullptr);
     }
@@ -73,21 +74,21 @@ PyMOD_INIT_FUNC(PathGui)
     CreatePathCommands();
 
     // addition objects
-    PathGui::ViewProviderPath               ::init();
-    PathGui::ViewProviderPathCompound       ::init();
+    PathGui::ViewProviderPath ::init();
+    PathGui::ViewProviderPathCompound ::init();
     PathGui::ViewProviderPathCompoundPython ::init();
-    PathGui::ViewProviderPathShape          ::init();
-    PathGui::ViewProviderPathPython         ::init();
-    PathGui::ViewProviderArea               ::init();
-    PathGui::ViewProviderAreaPython         ::init();
-    PathGui::ViewProviderAreaView           ::init();
-    PathGui::ViewProviderAreaViewPython     ::init();
+    PathGui::ViewProviderPathShape ::init();
+    PathGui::ViewProviderPathPython ::init();
+    PathGui::ViewProviderArea ::init();
+    PathGui::ViewProviderAreaPython ::init();
+    PathGui::ViewProviderAreaView ::init();
+    PathGui::ViewProviderAreaViewPython ::init();
 
-     // add resources and reloads the translators
+    // add resources and reloads the translators
     loadPathResource();
 
     // register preferences pages
-    new Gui::PrefPageProducer<PathGui::DlgSettingsPathColor> (QT_TRANSLATE_NOOP("QObject","CAM"));
+    new Gui::PrefPageProducer<PathGui::DlgSettingsPathColor>(QT_TRANSLATE_NOOP("QObject", "CAM"));
 
     PyMOD_Return(mod);
 }

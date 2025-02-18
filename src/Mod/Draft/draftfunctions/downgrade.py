@@ -32,6 +32,7 @@ See also the `upgrade` function.
 # @{
 import FreeCAD as App
 from draftfunctions import cut
+from draftmake import make_copy
 from draftutils import utils
 from draftutils import params
 from draftutils import gui_utils
@@ -85,13 +86,33 @@ def downgrade(objects, delete=False, force=None):
 
     # actions definitions
     def explode(obj):
-        """Explode a Draft block."""
-        pl = obj.Placement
-        for o in obj.Components:
-            o.Placement = pl.multiply(o.Placement)
-            if App.GuiUp:
-                o.ViewObject.Visibility = True
+        """Explode a Draft block or array."""
+        obj_pl = obj.Placement
+        # block:
+        if getattr(obj, "Components", []):
+            delete_list.append(obj)
+            for comp in obj.Components:
+                comp.Placement = obj_pl.multiply(comp.Placement)
+                comp.Visibility = True
+            return True
+        # array:
+        if getattr(obj, "Base", None) is None:
+            return False
+        if not hasattr(obj, "PlacementList"):
+            return False
+        base = obj.Base
         delete_list.append(obj)
+        if getattr(obj, "ExpandArray", False):
+            for lnk in obj.ElementList:
+                new = make_copy.make_copy(base)
+                new.Placement = obj_pl.multiply(lnk.Placement)
+                new.Visibility = True
+                delete_list.append(lnk)
+        else:
+            for arr_pl in obj.PlacementList:
+                new = make_copy.make_copy(base)
+                new.Placement = obj_pl.multiply(arr_pl)
+                new.Visibility = True
         return True
 
     def cut2(objects):
@@ -240,15 +261,22 @@ def downgrade(objects, delete=False, force=None):
             shapify = utils.shapify
             result = eval(force)(objects)
         else:
-            _msg(translate("draft","Upgrade: Unknown force method:") + " " + force)
+            _msg(translate("draft", "Upgrade: Unknown force method:") + " " + force)
             result = None
     else:
-        # applying transformation automatically
         # we have a block, we explode it
         if len(objects) == 1 and utils.get_type(objects[0]) == "Block":
             result = explode(objects[0])
             if result:
-                _msg(translate("draft","Found 1 block: exploding it"))
+                _msg(translate("draft", "Found 1 block: exploding it"))
+
+        # we have an array, we explode it
+        elif len(objects) == 1 \
+                and "Array" in utils.get_type(objects[0]) \
+                and hasattr(objects[0], "PlacementList"):
+            result = explode(objects[0])
+            if result:
+                _msg(translate("draft", "Found 1 array: exploding it"))
 
         # we have one multi-solids compound object: extract its solids
         elif len(objects) == 1 \
@@ -257,7 +285,7 @@ def downgrade(objects, delete=False, force=None):
             result = splitCompounds(objects)
             # print(result)
             if result:
-                _msg(translate("draft","Found 1 multi-solids compound: exploding it"))
+                _msg(translate("draft", "Found 1 multi-solids compound: exploding it"))
 
         # special case, we have one parametric object: we "de-parametrize" it
         elif len(objects) == 1 \
@@ -266,7 +294,7 @@ def downgrade(objects, delete=False, force=None):
                 and not objects[0].isDerivedFrom("PartDesign::Feature"):
             result = utils.shapify(objects[0])
             if result:
-                _msg(translate("draft","Found 1 parametric object: breaking its dependencies"))
+                _msg(translate("draft", "Found 1 parametric object: breaking its dependencies"))
                 add_list.append(result)
                 # delete_list.append(objects[0])
 
@@ -274,35 +302,35 @@ def downgrade(objects, delete=False, force=None):
         elif len(objects) == 2:
             result = cut2(objects)
             if result:
-                _msg(translate("draft","Found 2 objects: subtracting them"))
+                _msg(translate("draft", "Found 2 objects: subtracting them"))
 
         elif len(faces) > 1:
             # one object with several faces: split it
             if len(objects) == 1:
                 result = splitFaces(objects)
                 if result:
-                    _msg(translate("draft","Found several faces: splitting them"))
+                    _msg(translate("draft", "Found several faces: splitting them"))
             # several objects: remove all the faces from the first one
             else:
                 result = subtr(objects)
                 if result:
-                    _msg(translate("draft","Found several objects: subtracting them from the first one"))
+                    _msg(translate("draft", "Found several objects: subtracting them from the first one"))
 
         # only one face: we extract its wires
         elif len(faces) > 0:
             result = getWire(objects[0])
             if result:
-                _msg(translate("draft","Found 1 face: extracting its wires"))
+                _msg(translate("draft", "Found 1 face: extracting its wires"))
 
         # no faces: split wire into single edges
         elif not onlyedges:
             result = splitWires(objects)
             if result:
-                _msg(translate("draft","Found only wires: extracting their edges"))
+                _msg(translate("draft", "Found only wires: extracting their edges"))
 
         # no result has been obtained
         if not result:
-            _msg(translate("draft","No more downgrade possible"))
+            _msg(translate("draft", "No more downgrade possible"))
 
     if delete:
         for o in delete_list:

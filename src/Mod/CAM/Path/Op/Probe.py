@@ -64,17 +64,13 @@ class ObjectProbing(PathOp.ObjectOp):
             "App::PropertyInteger",
             "PointCountX",
             "Probe",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Number of points to probe in X direction"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in X direction"),
         )
         obj.addProperty(
             "App::PropertyInteger",
             "PointCountY",
             "Probe",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Number of points to probe in Y direction"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in Y direction"),
         )
         obj.addProperty(
             "App::PropertyFile",
@@ -141,6 +137,7 @@ class ObjectProbing(PathOp.ObjectOp):
         support = hasattr(tool, "ShapeName") and (tool.ShapeName == "probe")
         Path.Log.track(tool.Label, support)
         return support
+
 
 def SetupProperties():
     setup = ["Xoffset", "Yoffset", "PointCountX", "PointCountY", "OutputFileName"]

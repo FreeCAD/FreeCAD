@@ -27,12 +27,13 @@
 
 // point at which warnings of overly long specifiers disabled
 #ifdef _MSC_VER
-#pragma warning( disable : 4251 )
-#pragma warning( disable : 4273 )
-#pragma warning( disable : 4275 )
-#pragma warning( disable : 4482 )  // nonstandard extension used: enum 'App::ObjectStatus' used in qualified name
-#pragma warning( disable : 4503 )
-#pragma warning( disable : 4786 )  // specifier longer then 255 chars
+#pragma warning(disable : 4251)
+#pragma warning(disable : 4273)
+#pragma warning(disable : 4275)
+#pragma warning(disable : 4482)  // nonstandard extension used: enum 'App::ObjectStatus' used in
+                                 // qualified name
+#pragma warning(disable : 4503)
+#pragma warning(disable : 4786)  // specifier longer then 255 chars
 #endif
 
 #ifdef FC_OS_WIN32
@@ -52,15 +53,15 @@
 #include <cfloat>
 
 #ifdef FC_OS_WIN32
-# include <crtdbg.h>
-# include <direct.h>
-# include <windows.h>
+#include <crtdbg.h>
+#include <direct.h>
+#include <windows.h>
 #endif
 
 #if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-# include <pwd.h>
-# include <unistd.h>
-# include <sys/types.h>
+#include <pwd.h>
+#include <unistd.h>
+#include <sys/types.h>
 #endif
 
 // Streams
@@ -69,6 +70,7 @@
 
 // STL
 #include <bitset>
+#include <chrono>
 #include <exception>
 #include <functional>
 #include <iterator>
@@ -87,7 +89,7 @@
 
 // Boost
 #include <boost_graph_adjacency_list.hpp>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <boost/program_options.hpp>
 #include <boost/regex.hpp>
@@ -98,7 +100,10 @@
 #include <boost/filesystem/exception.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
+#include <boost/scope_exit.hpp>
 
-#endif //_PreComp_
+#include <fmt/format.h>
 
-#endif // APP_PRECOMPILED_H
+#endif  //_PreComp_
+
+#endif  // APP_PRECOMPILED_H

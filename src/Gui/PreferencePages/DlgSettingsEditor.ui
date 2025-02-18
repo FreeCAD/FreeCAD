@@ -162,6 +162,9 @@
         <property name="toolTip">
          <string>Tabulator raster (how many spaces)</string>
         </property>
+        <property name="suffix">
+         <string comment="Do not remove leading space"> spaces</string>
+        </property>
         <property name="value">
          <number>4</number>
         </property>
@@ -185,6 +188,9 @@
         <property name="toolTip">
          <string>How many spaces will be inserted when pressing &lt;Tab&gt;</string>
         </property>
+        <property name="suffix">
+         <string comment="Do not remove leading space"> spaces</string>
+        </property>
         <property name="value">
          <number>4</number>
         </property>
@@ -205,7 +211,7 @@
          <string>Keep tabs</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>Tabs</cstring>
@@ -225,6 +231,9 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>Spaces</cstring>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Editor</cstring>
@@ -313,6 +322,9 @@
         </property>
         <property name="toolTip">
          <string>Font size to be used for selected code type</string>
+        </property>
+        <property name="suffix">
+         <string notr="true"> pt</string>
         </property>
         <property name="minimum">
          <number>1</number>

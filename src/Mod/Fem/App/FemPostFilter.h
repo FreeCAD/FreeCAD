@@ -24,6 +24,7 @@
 #define Fem_FemPostFilter_H
 
 #include <vtkContourFilter.h>
+#include <vtkSmoothPolyDataFilter.h>
 #include <vtkCutter.h>
 #include <vtkExtractGeometry.h>
 #include <vtkExtractVectorComponents.h>
@@ -36,6 +37,7 @@
 #include <vtkWarpVector.h>
 
 #include <App/PropertyUnits.h>
+#include <App/DocumentObjectExtension.h>
 
 #include "FemPostObject.h"
 
@@ -75,6 +77,37 @@ private:
     // handling of multiple pipelines which can be the filter
     std::map<std::string, FilterPipeline> m_pipelines;
     std::string m_activePipeline;
+};
+
+class FemExport FemPostSmoothFilterExtension: public App::DocumentObjectExtension
+{
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostSmoothFilterExtension);
+
+public:
+    FemPostSmoothFilterExtension();
+    ~FemPostSmoothFilterExtension() override = default;
+
+    App::PropertyBool BoundarySmoothing;
+    App::PropertyAngle EdgeAngle;
+    App::PropertyBool EdgeSmoothing;
+    App::PropertyBool EnableSmoothing;
+    App::PropertyAngle FeatureAngle;
+    App::PropertyIntegerConstraint Iterations;
+    App::PropertyFloatConstraint RelaxationFactor;
+
+    vtkSmartPointer<vtkSmoothPolyDataFilter> getFilter() const
+    {
+        return m_smooth;
+    }
+
+protected:
+    void extensionOnChanged(const App::Property* prop) override;
+
+private:
+    vtkSmartPointer<vtkSmoothPolyDataFilter> m_smooth;
+    static const App::PropertyQuantityConstraint::Constraints angleRange;
+    static const App::PropertyIntegerConstraint::Constraints iterationRange;
+    static const App::PropertyFloatConstraint::Constraints relaxationRange;
 };
 
 // ***************************************************************************
@@ -210,11 +243,14 @@ public:
 protected:
     App::DocumentObjectExecReturn* execute() override;
     void onChanged(const App::Property* prop) override;
+
     void recalculateContours(double min, double max);
     void refreshFields();
     void refreshVectors();
     bool m_blockPropertyChanges = false;
+
     std::string contourFieldName;
+    FemPostSmoothFilterExtension smoothExtension;
 
 private:
     vtkSmartPointer<vtkContourFilter> m_contours;

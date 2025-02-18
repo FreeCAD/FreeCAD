@@ -32,6 +32,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
 
 #include <Base/Interpreter.h>
 
@@ -53,33 +54,16 @@ QIcon ViewProviderBom::getIcon() const
 
 bool ViewProviderBom::doubleClicked()
 {
-    try {
-        // Ensure the Python interpreter is initialized
-        if (!Py_IsInitialized()) {
-            Py_Initialize();
-        }
+    std::string obj_name = getObject()->getNameInDocument();
+    std::string doc_name = getObject()->getDocument()->getName();
 
-        // Acquire the GIL (Global Interpreter Lock)
-        PyGILState_STATE gstate;
-        gstate = PyGILState_Ensure();
-        std::string obj_name = getObject()->getNameInDocument();
-        std::string doc_name = getObject()->getDocument()->getName();
+    std::string pythonCommand = "import CommandCreateBom\n"
+                                "obj = App.getDocument('"
+        + doc_name + "').getObject('" + obj_name
+        + "')\n"
+          "Gui.Control.showDialog(CommandCreateBom.TaskAssemblyCreateBom(obj))";
 
-        // Call the Python function
-        std::string pythonCommand = "import CommandCreateBom\n"
-                                    "obj = App.getDocument('"
-            + doc_name + "').getObject('" + obj_name
-            + "')\n"
-              "Gui.Control.showDialog(CommandCreateBom.TaskAssemblyCreateBom(obj))";
-
-        PyRun_SimpleString(pythonCommand.c_str());
-
-        // Release the GIL
-        PyGILState_Release(gstate);
-    }
-    catch (...) {
-        PyErr_Print();
-    }
+    Gui::Command::runCommand(Gui::Command::App, pythonCommand.c_str());
 
     return true;
 }

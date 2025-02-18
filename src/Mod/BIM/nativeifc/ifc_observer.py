@@ -3,20 +3,20 @@
 # *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License (GPL)            *
-# *   as published by the Free Software Foundation; either version 3 of     *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
+# *   GNU Library General Public License for more details.                  *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
@@ -24,14 +24,13 @@
 
 
 import os
-
 import FreeCAD
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 
 
 def add_observer():
-    """Adds an observer to the running FreeCAD instance"""
+    """Adds this observer to the running FreeCAD instance"""
 
     FreeCAD.BIMobserver = ifc_observer()
     FreeCAD.addDocumentObserver(FreeCAD.BIMobserver)
@@ -82,10 +81,14 @@ class ifc_observer:
     def slotChangedDocument(self, doc, prop):
         """Watch document IFC properties"""
 
+        # only look at locked IFC documents
+        if not "IfcFilePath" in doc.PropertiesList:
+            return
+
         from nativeifc import ifc_tools  # lazy import
         from nativeifc import ifc_status
 
-        if prop == "Schema" and "IfcFilePath" in doc.PropertiesList:
+        if prop == "Schema":
             schema = doc.Schema
             ifcfile = ifc_tools.get_ifcfile(doc)
             if ifcfile:
@@ -102,6 +105,10 @@ class ifc_observer:
                         ]
                         if len(child) == 1:
                             child[0].StepId = new_id
+        elif prop == "Label":
+            ifcfile = ifc_tools.get_ifcfile(doc)
+            project = ifc_tools.get_ifc_element(doc)
+            ifc_tools.set_attribute(ifcfile, project, "Name", doc.Label)
 
     def slotCreatedObject(self, obj):
         """If this is an IFC document, turn the object into IFC"""
@@ -122,6 +129,11 @@ class ifc_observer:
         from nativeifc import ifc_status
 
         ifc_status.on_activate()
+
+    def slotRemoveDynamicProperty(self, obj, prop):
+
+        from nativeifc import ifc_psets
+        ifc_psets.remove_property(obj, prop)
 
     # implementation methods
 
@@ -192,8 +204,10 @@ class ifc_observer:
             return
         del self.docname
         del self.objname
-        if obj.isDerivedFrom("Part::Feature") or "IfcType" in obj.PropertiesList:
-            FreeCAD.Console.PrintLog("Converting" + obj.Label + "to IFC\n")
+        if obj.isDerivedFrom("Part::Feature") \
+        or "IfcType" in obj.PropertiesList \
+        or "CreateSpreadsheet" in obj.PropertiesList:
+            FreeCAD.Console.PrintLog("Converting " + obj.Label + " to IFC\n")
             from nativeifc import ifc_geometry  # lazy loading
             from nativeifc import ifc_tools  # lazy loading
 

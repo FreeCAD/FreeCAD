@@ -82,7 +82,7 @@
 
 // Boost
 #include <boost_graph_adjacency_list.hpp>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/core/ignore_unused.hpp>
@@ -97,6 +97,9 @@
 // Xerces
 #include <xercesc/util/TranscodingException.hpp>
 #include <xercesc/util/XMLString.hpp>
+
+// Qt/OpenGL
+#include <QOpenGLFramebufferObjectFormat>
 
 // Keep this order to avoid compiler warnings
 #include "QtAll.h"

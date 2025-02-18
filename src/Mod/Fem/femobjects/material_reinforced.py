@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2024 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,17 +23,18 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM reinforced material"
-__author__ = "Bernd Hahnebach"
+__author__ = "Bernd Hahnebach, Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
 ## @package material_reinforced
 #  \ingroup FEM
 #  \brief reinforced object
 
-from . import base_fempythonobject
+from . import material_common
+from .base_fempythonobject import _PropHelper
 
 
-class MaterialReinforced(base_fempythonobject.BaseFemPythonObject):
+class MaterialReinforced(material_common.MaterialCommon):
     """
     The MaterialReinforced object
     """
@@ -40,31 +42,39 @@ class MaterialReinforced(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::MaterialReinforced"
 
     def __init__(self, obj):
-        super(MaterialReinforced, self).__init__(obj)
+        super().__init__(obj)
 
-        obj.addProperty(
-            "App::PropertyLinkSubList",
-            "References",
-            "Material",
-            "List of material shapes"
-        )
-        obj.setPropertyStatus("References", "LockDynamic")
-
-        obj.addProperty(
-            "App::PropertyMap",
-            "Reinforcement",
-            "Composites",
-            "Reinforcement material properties"
-        )
-        obj.setPropertyStatus("Reinforcement", "LockDynamic")
-
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "Category",
-            "Material",
-            "Matrix material properties"
-        )
-        obj.setPropertyStatus("Category", "LockDynamic")
-
+        # overwrite Category enumeration
         obj.Category = ["Solid"]
-        obj.Category = "Solid"
+
+    def _get_properties(self):
+        prop = super()._get_properties()
+
+        prop.append(
+            _PropHelper(
+                type="App::PropertyMap",
+                name="Reinforcement",
+                group="Composites",
+                doc="Reinforcement material properties",
+                value={},
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyString",
+                name="ReinforcementUUID",
+                group="Composites",
+                doc="Reinforcement material UUID",
+                hidden=True,
+                value="",
+            )
+        )
+
+        return prop
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+
+        # try update Reinforcement UUID from Reinforcement
+        if not obj.ReinforcementUUID:
+            obj.ReinforcementUUID = self._get_material_uuid(obj.Reinforcement)

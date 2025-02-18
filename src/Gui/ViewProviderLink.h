@@ -25,10 +25,10 @@
 
 #include <App/Link.h>
 
-#include "SoFCUnifiedSelection.h"
+#include "Selection/SoFCUnifiedSelection.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
-#include "ViewProviderPythonFeature.h"
+#include "ViewProviderFeaturePython.h"
 
 
 class SoBase;
@@ -41,7 +41,7 @@ class LinkInfo;
 using LinkInfoPtr = boost::intrusive_ptr<LinkInfo>;
 
 #if defined(_MSC_VER)
-// forward declaration to please VC 2013
+// forward declaration to please MSVC
 void intrusive_ptr_add_ref(Gui::LinkInfo *px);
 void intrusive_ptr_release(Gui::LinkInfo *px);
 #endif
@@ -184,10 +184,10 @@ protected:
     Py::Object PythonObject;
 };
 
-class GuiExport ViewProviderLink : public ViewProviderDocumentObject
+class GuiExport ViewProviderLink : public ViewProviderDragger
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderLink);
-    using inherited = ViewProviderDocumentObject;
+    using inherited = ViewProviderDragger;
 
 public:
     App::PropertyBool OverrideMaterial;
@@ -248,11 +248,6 @@ public:
 
     static void updateLinks(ViewProvider *vp);
 
-    void updateDraggingPlacement(const Base::Placement &pla, bool force=false);
-    Base::Placement currentDraggingPlacement() const;
-    void enableCenterballDragger(bool enable);
-    bool isUsingCenterballDragger() const { return useCenterballDragger; }
-
     std::map<std::string, App::Color> getElementColors(const char *subname=nullptr) const override;
     void setElementColors(const std::map<std::string, App::Color> &colors) override;
 
@@ -311,7 +306,7 @@ protected:
     ViewProvider *getLinkedView(bool real,const App::LinkBaseExtension *ext=nullptr) const;
 
     bool initDraggingPlacement();
-    bool callDraggerProxy(const char *fname, bool update);
+    bool callDraggerProxy(const char* fname);
 
 private:
     static void dragStartCallback(void * data, SoDragger * d);
@@ -323,7 +318,6 @@ protected:
     LinkType linkType;
     bool hasSubName;
     bool hasSubElement;
-    bool useCenterballDragger;
 
     struct DraggerContext{
         Base::Matrix4D preTransform;
@@ -333,13 +327,12 @@ protected:
         bool cmdPending;
     };
     std::unique_ptr<DraggerContext> dragCtx;
-    CoinPtr<SoDragger> pcDragger;
     ViewProviderDocumentObject *childVp;
     LinkInfoPtr childVpLink;
     mutable qint64 overlayCacheKey;
 };
 
-using ViewProviderLinkPython = ViewProviderPythonFeatureT<ViewProviderLink>;
+using ViewProviderLinkPython = ViewProviderFeaturePythonT<ViewProviderLink>;
 
 } //namespace Gui
 

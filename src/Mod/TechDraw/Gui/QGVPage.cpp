@@ -40,8 +40,8 @@
 #include <Base/Parameter.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
-#include <Gui/NavigationStyle.h>
-#include <Gui/Selection.h>
+#include <Gui/Navigation/NavigationStyle.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 
@@ -561,7 +561,7 @@ QColor QGVPage::getBackgroundColor()
 double QGVPage::getDevicePixelRatio() const
 {
     for (Gui::MDIView* view : m_vpPage->getDocument()->getMDIViews()) {
-        if (view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        if (view->isDerivedFrom<Gui::View3DInventor>()) {
             return static_cast<Gui::View3DInventor*>(view)->getViewer()->devicePixelRatio();
         }
     }
@@ -586,7 +586,7 @@ QPixmap QGVPage::prepareCursorPixmap(const char* iconName, QPoint& hotspot)
     // the 64x64 based hotspot position for our 32x32 based cursor pixmaps accordingly
     floatHotspot *= 0.5;
 
-#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+#if !defined(Q_OS_WIN32) && !defined(Q_OS_MACOS)
     // On XCB platform, the pixmap device pixel ratio is not taken into account for cursor hot spot,
     // therefore we must take care of the transformation ourselves...
     // Refer to QTBUG-68571 - https://bugreports.qt.io/browse/QTBUG-68571
@@ -683,24 +683,36 @@ Base::Type QGVPage::getStyleType(std::string model)
     return type;
 }
 
+static QCursor createCursor(QBitmap &bitmap, QBitmap &mask, int hotX, int hotY, double dpr)
+{
+#if defined(Q_OS_WIN32)
+    bitmap.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#else
+    Q_UNUSED(dpr)
+#endif
+#if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6,6,0) && QT_VERSION >= QT_VERSION_CHECK(5,13,0)
+    if (qGuiApp->platformName() == QLatin1String("wayland")) {
+        QImage img = bitmap.toImage();
+        img.convertTo(QImage::Format_ARGB32);
+        QPixmap pixmap = QPixmap::fromImage(img);
+        pixmap.setMask(mask);
+        return QCursor(pixmap, hotX, hotY);
+    }
+#endif
+
+    return QCursor(bitmap, mask, hotX, hotY);
+}
+
 void QGVPage::createStandardCursors(double dpr)
 {
-    (void)dpr;//avoid clang warning re unused parameter
     QBitmap cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
     QBitmap mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
-#if defined(Q_OS_WIN32)
-    cursor.setDevicePixelRatio(dpr);
-    mask.setDevicePixelRatio(dpr);
-#endif
-    panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
+    panCursor = createCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y, dpr);
 
     cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
     mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
-#if defined(Q_OS_WIN32)
-    cursor.setDevicePixelRatio(dpr);
-    mask.setDevicePixelRatio(dpr);
-#endif
-    zoomCursor = QCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y);
+    zoomCursor = createCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y, dpr);
 }
 
 #include <Mod/TechDraw/Gui/moc_QGVPage.cpp>

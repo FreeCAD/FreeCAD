@@ -28,7 +28,6 @@
 #include <QKeyEvent>
 #include <QListWidget>
 #include <QMessageBox>
-#include <boost/lexical_cast.hpp>  // OvG conversion between string and int etc.
 #include <sstream>
 #endif
 
@@ -37,7 +36,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraint.h>
 
@@ -60,12 +59,32 @@ TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint* ConstraintView,
     , proxy(nullptr)
     , deleteAction(nullptr)
     , ConstraintView(ConstraintView)
+    , selectionMode(selref)
+{}
+
+bool TaskFemConstraint::event(QEvent* event)
 {
-    selectionMode = selref;
+    if (event && event->type() == QEvent::ShortcutOverride) {
+        auto ke = static_cast<QKeyEvent*>(event);  // NOLINT
+        if (deleteAction) {
+            if (ke->matches(QKeySequence::Delete) || ke->matches(QKeySequence::Backspace)) {
+                ke->accept();
+            }
+        }
+    }
+    return TaskBox::event(event);
 }
 
 void TaskFemConstraint::keyPressEvent(QKeyEvent* ke)
 {
+    // if we have a Del key, trigger the deleteAction
+    if (ke->matches(QKeySequence::Delete) || ke->matches(QKeySequence::Backspace)) {
+        if (deleteAction && deleteAction->isEnabled()) {
+            ke->accept();
+            deleteAction->trigger();
+        }
+    }
+
     TaskBox::keyPressEvent(ke);
 }
 
@@ -82,13 +101,11 @@ const std::string TaskFemConstraint::getReferences(const std::vector<std::string
     return result;
 }
 
-const std::string
-TaskFemConstraint::getScale() const  // OvG: Return pre-calculated scale for constraint display
+const std::string TaskFemConstraint::getScale() const
 {
-    std::string result;
-    Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
-    result = boost::lexical_cast<std::string>(pcConstraint->Scale.getValue());
-    return result;
+    Fem::Constraint* pcConstraint = ConstraintView->getObject<Fem::Constraint>();
+
+    return std::to_string(pcConstraint->Scale.getValue());
 }
 
 void TaskFemConstraint::setSelection(QListWidgetItem* item)
@@ -114,7 +131,7 @@ void TaskFemConstraint::setSelection(QListWidgetItem* item)
 
 void TaskFemConstraint::onReferenceDeleted(const int row)
 {
-    Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
+    Fem::Constraint* pcConstraint = ConstraintView->getObject<Fem::Constraint>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -151,39 +168,17 @@ void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
     // creates a context menu, a shortcut for it and connects it to a slot function
 
     deleteAction = new QAction(tr("Delete"), this);
-    deleteAction->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        deleteAction->setShortcut(QKeySequence(shortcut));
+    }
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     deleteAction->setShortcutVisibleInContextMenu(true);
 #endif
     parentList->addAction(deleteAction);
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
-}
-
-bool TaskFemConstraint::KeyEvent(QEvent* e)
-{
-    // in case another instance takes key events, accept the overridden key even
-    if (e && e->type() == QEvent::ShortcutOverride) {
-        QKeyEvent* kevent = static_cast<QKeyEvent*>(e);
-        if (kevent->modifiers() == Qt::NoModifier) {
-            if (deleteAction && kevent->key() == Qt::Key_Delete) {
-                kevent->accept();
-                return true;
-            }
-        }
-    }
-    // if we have a Del key, trigger the deleteAction
-    else if (e && e->type() == QEvent::KeyPress) {
-        QKeyEvent* kevent = static_cast<QKeyEvent*>(e);
-        if (kevent->key() == Qt::Key_Delete) {
-            if (deleteAction && deleteAction->isEnabled()) {
-                deleteAction->trigger();
-            }
-            return true;
-        }
-    }
-
-    return TaskFemConstraint::event(e);
 }
 
 //**************************************************************************
@@ -195,12 +190,11 @@ bool TaskFemConstraint::KeyEvent(QEvent* e)
 
 void TaskDlgFemConstraint::open()
 {
-    ConstraintView->setVisible(true);
-    Gui::Command::runCommand(
-        Gui::Command::Doc,
-        ViewProviderFemConstraint::gethideMeshShowPartStr(
-            (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-            .c_str());  // OvG: Hide meshes and show parts
+    if (!Gui::Command::hasPendingCommand()) {
+        const char* typeName = ConstraintView->getObject()->getTypeId().getName();
+        Gui::Command::openCommand(typeName);
+        ConstraintView->setVisible(true);
+    }
 }
 
 bool TaskDlgFemConstraint::accept()
@@ -223,6 +217,11 @@ bool TaskDlgFemConstraint::accept()
             return false;
         }
 
+        std::string scale = parameter->getScale();
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.Scale = %s",
+                                name.c_str(),
+                                scale.c_str());
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         if (!ConstraintView->getObject()->isValid()) {
             throw Base::RuntimeError(ConstraintView->getObject()->getStatusString());
@@ -243,9 +242,9 @@ bool TaskDlgFemConstraint::reject()
     // roll back the changes
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+    Gui::Command::updateActive();
 
     return true;
 }
-
 
 #include "moc_TaskFemConstraint.cpp"

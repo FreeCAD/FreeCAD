@@ -25,7 +25,7 @@
 
 #include <Inventor/SbBox3f.h>
 #include <QWidget>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/Fem/App/FemPostFunction.h>
@@ -65,9 +65,14 @@ protected:
     {
         return m_view;
     }
-    Fem::FemPostFunction* getObject()
+    Fem::FemPostFunction* getObject() const
     {
         return m_object;
+    }
+    template<class T>
+    T* getObject() const
+    {
+        return dynamic_cast<T*>(getObject());
     }
 
     bool blockObjectUpdates()
@@ -90,7 +95,7 @@ private:
 
 class FemGuiExport ViewProviderFemPostFunctionProvider: public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostFunction);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostFunctionProvider);
 
 public:
     ViewProviderFemPostFunctionProvider();

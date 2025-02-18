@@ -40,12 +40,12 @@ class MeshGroup(base_femmeshelement.BaseFemMeshElement):
     Type = "Fem::MeshGroup"
 
     def __init__(self, obj):
-        super(MeshGroup, self).__init__(obj)
+        super().__init__(obj)
 
         obj.addProperty(
             "App::PropertyBool",
             "UseLabel",
             "MeshGroupProperties",
-            "The identifier used for export (True: Label, False: Name)"
+            "The identifier used for export (True: Label, False: Name)",
         )
         obj.setPropertyStatus("UseLabel", "LockDynamic")

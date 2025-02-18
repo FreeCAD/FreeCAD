@@ -151,7 +151,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Scale");
+        return QStringLiteral("Sketcher_Pointer_Create_Scale");
     }
 
     std::unique_ptr<QWidget> createWidget() const override
@@ -473,8 +473,7 @@ void DSHScaleController::adaptParameters(Base::Vector2d onSketchPos)
         } break;
         case SelectMode::SeekThird: {
             if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                onViewParameters[OnViewParameter::Third]->setSpinboxValue(handler->scaleFactor,
-                                                                          Base::Unit());
+                setOnViewParameterValue(OnViewParameter::Third, handler->scaleFactor, Base::Unit());
             }
 
             Base::Vector3d start = toVector3d(handler->referencePoint);

@@ -453,7 +453,7 @@ void DrawViewPart::postHlrTasks()
         }
     }
 
-    //second pass if required
+    // rescale if view doesn't fit on page
     if (ScaleType.isValue("Automatic") && !checkFit()) {
         double newScale = autoScale();
         Scale.setValue(newScale);
@@ -1099,7 +1099,7 @@ gp_Ax2 DrawViewPart::getRotatedCS(const Base::Vector3d basePoint) const
 {
     //    Base::Console().Message("DVP::getRotatedCS() - %s - %s\n", getNameInDocument(), Label.getValue());
     gp_Ax2 unrotated = getProjectionCS(basePoint);
-    gp_Ax1 rotationAxis(DU::togp_Pnt(basePoint), unrotated.Direction());
+    gp_Ax1 rotationAxis(DU::to<gp_Pnt>(basePoint), unrotated.Direction());
     double angleRad = Rotation.getValue() * M_PI / 180.0;
     gp_Ax2 rotated = unrotated.Rotated(rotationAxis, -angleRad);
     return rotated;

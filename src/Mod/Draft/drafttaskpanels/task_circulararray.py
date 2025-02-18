@@ -200,7 +200,7 @@ class TaskPanelCircularArray:
         """Check that the input is valid.
 
         Some values may not need to be checked because
-        the interface may not allow to input wrong data.
+        the interface may not allow one to input wrong data.
         """
         if not selection:
             _err(translate("draft","At least one element must be selected."))
@@ -478,7 +478,8 @@ class TaskPanelCircularArray:
         the delayed functions, and perform cleanup.
         """
         # App.ActiveDocument.commitTransaction()
-        Gui.ActiveDocument.resetEdit()
+        if Gui.ActiveDocument is not None:
+            Gui.ActiveDocument.resetEdit()
         # Runs the parent command to complete the call
         self.source_command.completed()
 

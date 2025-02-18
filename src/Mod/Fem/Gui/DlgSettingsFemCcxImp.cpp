@@ -45,9 +45,6 @@ DlgSettingsFemCcxImp::DlgSettingsFemCcxImp(QWidget* parent)
     // set ranges
     ui->dsb_ccx_analysis_time->setMaximum(FLOAT_MAX);
     ui->dsb_ccx_initial_time_step->setMaximum(FLOAT_MAX);
-    // determine number of CPU cores
-    int processor_count = QThread::idealThreadCount();
-    ui->sb_ccx_numcpu->setMaximum(processor_count);
 
     connect(ui->fc_ccx_binary_path,
             &Gui::PrefFileChooser::fileNameChanged,
@@ -117,6 +114,11 @@ void DlgSettingsFemCcxImp::loadSettings()
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
+
+    // determine number of CPU threads
+    int processor_count = hGrp->GetInt("AnalysisNumCPUs", QThread::idealThreadCount());
+    ui->sb_ccx_numcpu->setValue(processor_count);
+
     int index = hGrp->GetInt("Solver", 0);
     if (index > -1) {
         ui->cmb_solver->setCurrentIndex(index);

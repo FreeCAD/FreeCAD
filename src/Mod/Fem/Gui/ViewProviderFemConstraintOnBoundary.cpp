@@ -23,8 +23,9 @@
 
 #include "PreCompiled.h"
 
-#include "Mod/Fem/App/FemConstraint.h"
 #include <Gui/Application.h>
+#include "Mod/Fem/App/FemConstraint.h"
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/Gui/ReferenceHighlighter.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
@@ -42,7 +43,7 @@ ViewProviderFemConstraintOnBoundary::~ViewProviderFemConstraintOnBoundary() = de
 
 void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
 {
-    Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(this->getObject());
+    Fem::Constraint* pcConstraint = this->getObject<Fem::Constraint>();
     const auto& subSets = pcConstraint->References.getSubListValues();
 
     for (auto& subSet : subSets) {

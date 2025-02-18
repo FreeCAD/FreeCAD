@@ -21,7 +21,17 @@
 # *                                                                         *
 # ***************************************************************************
 
-from PySide import QtCore, QtWidgets
+import sys
+
+try:
+    from PySide import QtCore, QtWidgets
+except ImportError:
+    try:
+        from PySide6 import QtCore, QtWidgets
+    except ImportError:
+        from PySide2 import QtCore, QtWidgets
+
+sys.path.append("../../")  # For running in standalone mode during testing
 
 from AddonManagerTest.app.mocks import SignalCatcher
 
@@ -45,7 +55,9 @@ class DialogInteractor(QtCore.QObject):
         self.execution_counter = 0
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.run)
-        self.timer.start(10)
+        self.timer.start(
+            1
+        )  # At 10 this occasionally left open dialogs; less than 1 produced failed tests
 
     def run(self):
         widget = QtWidgets.QApplication.activeModalWidget()
