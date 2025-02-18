@@ -377,12 +377,6 @@ class BIM_Setup:
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool(
             "FirstTime", True
         ):
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").SetInt(
-                "OrbitStyle", 0
-            )
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document").SetBool(
-                "SaveThumbnail", True
-            )
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetString(
                 "svgDashedLine", "3,1"
             )
@@ -394,9 +388,6 @@ class BIM_Setup:
             )
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetFloat(
                 "HatchPatternSize", 0.025
-            )
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat(
-                "WallSketches", False
             )
 
         # finish
