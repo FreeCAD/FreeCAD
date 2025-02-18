@@ -19,21 +19,21 @@ IF(CMAKE_BUILD_TYPE)
     add_definitions(-DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
 ENDIF(CMAKE_BUILD_TYPE)
 
-if (FREECAD_USE_3DCONNEXION)
+if (FREECAD_USE_3DCONNEXION_LEGACY)
     add_definitions(-D_USE_3DCONNEXION_SDK)
     if(APPLE)
         set(3DCONNEXION_LINKFLAGS "-F/Library/Frameworks -weak_framework 3DconnexionClient")
-        set(3DCONNEXION_INCLUDE_DIR ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers
+        list(APPEND 3DCONNEXION_INCLUDE_DIR ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers
                                     ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers/3DconnexionClient )
     endif(APPLE)
-endif(FREECAD_USE_3DCONNEXION)
+endif(FREECAD_USE_3DCONNEXION_LEGACY)
 
 if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
     add_definitions(-DUSE_3DCONNEXION_NAVLIB)
     if(APPLE)
         add_definitions(-D__APPLE__)
     endif(APPLE)
-    set(3DCONNEXION_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/inc)
+    list(APPEND 3DCONNEXION_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/inc)
 endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
 
 if (BUILD_VR)
@@ -78,7 +78,7 @@ if(MSVC)
          ${OPENGL_gl_LIBRARY}
     )
 
-    if(FREECAD_USE_3DCONNEXION)
+    if(FREECAD_USE_3DCONNEXION_LEGACY)
         list(APPEND FreeCADGui_LIBS
             hid
         )
@@ -275,7 +275,7 @@ SET(FreeCADGui_XML_SRCS
 SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
 
 # The 3D Connexion SDK files
-if(FREECAD_USE_3DCONNEXION AND MSVC)
+if(FREECAD_USE_3DCONNEXION_LEGACY AND MSVC)
     SET(FreeCADGui_SDK_SRCS
         3Dconnexion/I3dMouseParams.h
         3Dconnexion/MouseParameters.cpp
@@ -294,9 +294,9 @@ if(FREECAD_USE_3DCONNEXION AND MSVC)
     list(APPEND FreeCADGui_connexion_HDRS
         ${FreeCADGui_SDK_MOC_HDRS}
     )
-endif(FREECAD_USE_3DCONNEXION AND MSVC)
+endif(FREECAD_USE_3DCONNEXION_LEGACY AND MSVC)
 
-if(FREECAD_USE_3DCONNEXION AND APPLE)
+if(FREECAD_USE_3DCONNEXION_LEGACY AND APPLE)
     SET(FreeCADGui_SDK_SRCS
         3Dconnexion/GuiAbstractNativeEvent.cpp
         3Dconnexion/GuiNativeEventMac.cpp
@@ -312,7 +312,7 @@ if(FREECAD_USE_3DCONNEXION AND APPLE)
     list(APPEND FreeCADGui_connexion_HDRS
         ${FreeCADGui_SDK_MOC_HDRS}
     )
-endif(FREECAD_USE_3DCONNEXION AND APPLE)
+endif(FREECAD_USE_3DCONNEXION_LEGACY AND APPLE)
 
 if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
     SET(NAVLIB_STUB_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/src)
@@ -414,9 +414,9 @@ SET(Gui_UIC_SRCS
     VectorListEditor.ui
 )
 
-if(FREECAD_USE_3DCONNEXION_RAWINPUT)
+if(FREECAD_USE_3DCONNEXION_LEGACY)
     list(APPEND Gui_UIC_SRCS DlgCustomizeSpNavSettings.ui)
-endif(FREECAD_USE_3DCONNEXION_RAWINPUT)
+endif(FREECAD_USE_3DCONNEXION_LEGACY)
 
 set (FreeCAD_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Language/FreeCAD_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Language/FreeCAD_*.ts"
@@ -603,10 +603,10 @@ SET(Dialog_Customize_HPP_SRCS
     ListWidgetDragBugFix.h
 )
 
-if(FREECAD_USE_3DCONNEXION_RAWINPUT)
+if(FREECAD_USE_3DCONNEXION_LEGACY)
     list(APPEND Dialog_Customize_CPP_SRCS DlgCustomizeSpaceball.cpp DlgCustomizeSpNavSettings.cpp)
     list(APPEND Dialog_Customize_HPP_SRCS DlgCustomizeSpaceball.h DlgCustomizeSpNavSettings.h)
-endif(FREECAD_USE_3DCONNEXION_RAWINPUT)
+endif(FREECAD_USE_3DCONNEXION_LEGACY)
 
 SET(Dialog_Customize_SRCS
     ${Dialog_Customize_CPP_SRCS}
@@ -617,9 +617,9 @@ SET(Dialog_Customize_SRCS
     DlgToolbars.ui
 )
 
-if(FREECAD_USE_3DCONNEXION_RAWINPUT)
+if(FREECAD_USE_3DCONNEXION_LEGACY)
     list(APPEND Dialog_Customize_SRCS  DlgCustomizeSpNavSettings.ui)
-endif(FREECAD_USE_3DCONNEXION_RAWINPUT)
+endif(FREECAD_USE_3DCONNEXION_LEGACY)
 
 SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 

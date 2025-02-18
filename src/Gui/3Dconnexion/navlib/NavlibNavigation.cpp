@@ -127,6 +127,8 @@ CameraType NavlibInterface::getCamera() const
     return nullptr;
 }
 
+template SoCamera* NavlibInterface::getCamera<SoCamera*>() const;
+
 void NavlibInterface::onViewChanged(const Gui::MDIView* view)
 {
     if (view == nullptr)
@@ -185,7 +187,8 @@ void NavlibInterface::enableNavigation()
         exportCommands(std::string(wb));
     });
 
-    exportCommands("StartWorkbench");
+    auto activeWorkbench = Gui::WorkbenchManager::instance()->activeName();
+    exportCommands(activeWorkbench);
 
     initializePivot();
     connectActiveTab();
