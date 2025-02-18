@@ -64,7 +64,10 @@ private:
 class TechDrawGuiExport SvgAttributeReader
 {
 public:
-    static void findTextAttributesForElement(SvgTextAttributes& attributes, QDomElement element, int maxlevels, int thislevel = 0);
+    static void findTextAttributesForElement(SvgTextAttributes& attributes,
+                                             QDomElement element,
+                                             int maxlevels,
+                                             int thislevel = 0);
     static QString findRegexInString(QRegularExpression rx, QString searchThis);
     static QString findFamilyInStyle(QString styleValue);
     static QString findAnchorInStyle(QString styleValue);

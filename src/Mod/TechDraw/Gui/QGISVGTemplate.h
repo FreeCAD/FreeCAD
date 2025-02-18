@@ -44,8 +44,10 @@ namespace TechDrawGui
 {
 class QGSPage;
 
+//NOLINTBEGIN
 class TechDrawGuiExport QGISVGTemplate : public TechDrawGui::QGITemplate,
                                          public TechDraw::SvgAttributeReader
+//NOLINTEND
 {
     Q_OBJECT
 
@@ -68,11 +70,14 @@ protected:
     void openFile(const QFile& file);
     void load(const QByteArray& svgCode);
 
+    QSizeF calculateClickboxSize(const QString &editableValue,
+                                 const TechDraw::SvgTextAttributes& attributes) const;
+
+
     void createClickHandles();
     void clearClickHandles();
 
 private:
-    bool firstTime;
     QGraphicsSvgItem* m_svgItem;
     QSvgRenderer* m_svgRender;
 };// class QGISVGTemplate

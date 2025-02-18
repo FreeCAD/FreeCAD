@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"   // NOLINT
+#include "PreCompiled.h"   //NOLINT
 #ifndef _PreComp_
 # include <QDomDocument>
 # include <QFile>
@@ -55,12 +55,10 @@
 using namespace TechDrawGui;
 using namespace TechDraw;
 
-QGISVGTemplate::QGISVGTemplate(QGSPage* scene) : QGITemplate(scene), firstTime(true)
+QGISVGTemplate::QGISVGTemplate(QGSPage* scene) : QGITemplate(scene),
+    m_svgItem(new QGraphicsSvgItem(this)),
+    m_svgRender(new QSvgRenderer())
 {
-
-    m_svgItem = new QGraphicsSvgItem(this);
-    m_svgRender = new QSvgRenderer();
-
     m_svgItem->setSharedRenderer(m_svgRender);
 
     m_svgItem->setFlags(QGraphicsItem::ItemClipsToShape);
@@ -83,16 +81,12 @@ void QGISVGTemplate::load(const QByteArray& svgCode)
     QSize size = m_svgRender->defaultSize();
     m_svgItem->setSharedRenderer(m_svgRender);
 
-    if (firstTime) {
-        createClickHandles();
-        firstTime = false;
-    }
+    createClickHandles();
 
     //convert from pixels or mm or inches in svg file to mm page size
     TechDraw::DrawSVGTemplate* tmplte = getSVGTemplate();
-    double xaspect, yaspect;
-    xaspect = tmplte->getWidth() / static_cast<double>(size.width());
-    yaspect = tmplte->getHeight() / static_cast<double>(size.height());
+    double xaspect = tmplte->getWidth() / static_cast<double>(size.width());
+    double yaspect = tmplte->getHeight() / static_cast<double>(size.height());
 
     QTransform qtrans;
     qtrans.translate(0.0, Rez::guiX(-tmplte->getHeight()));
@@ -100,8 +94,8 @@ void QGISVGTemplate::load(const QByteArray& svgCode)
     m_svgItem->setTransform(qtrans);
 
     if (Preferences::lightOnDark()) {
-        QColor color = PreferencesGui::getAccessibleQColor(QColor(Qt::black));
-        QGraphicsColorizeEffect* colorizeEffect = new QGraphicsColorizeEffect();
+        auto color = PreferencesGui::getAccessibleQColor(QColor(Qt::black));
+        auto* colorizeEffect = new QGraphicsColorizeEffect();
         colorizeEffect->setColor(color);
         m_svgItem->setGraphicsEffect(colorizeEffect);
     }
@@ -118,9 +112,8 @@ TechDraw::DrawSVGTemplate* QGISVGTemplate::getSVGTemplate()
     if (pageTemplate && pageTemplate->isDerivedFrom<TechDraw::DrawSVGTemplate>()) {
         return static_cast<TechDraw::DrawSVGTemplate*>(pageTemplate);
     }
-    else {
-        return nullptr;
-    }
+
+    return nullptr;
 }
 
 void QGISVGTemplate::draw()
@@ -220,43 +213,24 @@ void QGISVGTemplate::createClickHandles()
             editableValue = " ";
         }
 
-
-        double textHeight{0};
         constexpr int MaxLevels{4};
         SvgTextAttributes attributes;
         findTextAttributesForElement(attributes, tspan, MaxLevels);
 
-        auto family = attributes.family().isEmpty() ? QString::fromUtf8("Sans") : attributes.family();
-        auto anchor = attributes.anchor().isEmpty() ? QString::fromUtf8("start") : attributes.anchor();
-        constexpr double PixelsPerMM{3.78};     // based on 96px / inch
-        if (attributes.size() == 0) {
-            textHeight = Preferences::labelFontSizeMM() * PixelsPerMM;  // pixels
-        } else {
-            textHeight = QGIView::exactFontSize(family.toStdString(), attributes.size());  // pixels
-        }
+        auto clickRectSize = calculateClickboxSize(QString::fromStdString(editableValue),
+                                                   attributes);
 
-        QGraphicsTextItem textItemForLength;
-        QFont fontForLength(family);
-        fontForLength.setPixelSize(static_cast<int>(textHeight));      // px is really mm if viewbox = page size
-        textItemForLength.setFont(fontForLength);
-        textItemForLength.setPlainText(QString::fromStdString(editableValue));
-        QFontMetricsF qfm{fontForLength};
-        auto trect = qfm.tightBoundingRect(QString::fromStdString(editableValue));  // pixels
-
-        constexpr double StdDpi{96};
-        auto dpiFont = qfm.fontDpi();
-
-        auto clickWidth  = trect.width() * StdDpi / dpiFont;    // pixels but we want mm
-        auto clickHeight = trect.height() * StdDpi / dpiFont;
+        auto clickWidth  = clickRectSize.width();
+        auto clickHeight = clickRectSize.height();
 
         const QString middleAnchorToken{QString::fromUtf8("middle")};
         const QString endAnchorToken{QString::fromUtf8("end")};
 
         constexpr double hPad{2.0};
-        if (anchor == middleAnchorToken) {
+        if (attributes.anchor() == middleAnchorToken) {
             x = x - (clickWidth / static_cast<double>(2)) ;
             x -= (hPad + hPad + hPad);
-        } else if (anchor == endAnchorToken) {
+        } else if (attributes.anchor() == endAnchorToken) {
             x = x - clickWidth;
         } else {
             x -= hPad;
@@ -266,9 +240,11 @@ void QGISVGTemplate::createClickHandles()
         auto autoValue = svgTemplate->getAutofillByEditableName(name);
         item->setAutofill(autoValue);
 
-        // in svg the position point of text is on the baseline of the text.  in qt,
-        // the position point is upper-left of the text bounding rect.
         // svg positions (0, 0) at upper-left of the page with +Y down (and +X right).
+        // in svg the position point of text is on the baseline of the text (the
+        // y coord is the baseline).
+        // in qt, the position point is upper-left of the text bounding rect (the baseline
+        // position is not available).
         // our scene coordinates have (0, 0) at lower-left with +Y down.
 
         auto bottomOfText = Rez::guiX(-svgTemplate->getHeight()) + y;
@@ -293,4 +269,34 @@ void QGISVGTemplate::createClickHandles()
 }
 
 
+//! estimate the size of the required clickbox from the font family and font size
+QSizeF QGISVGTemplate::calculateClickboxSize(const QString& editableValue,
+                                             const TechDraw::SvgTextAttributes& attributes) const
+{
+    constexpr double PixelsPerMM{3.78};     // based on CSS 96px / inch
+    constexpr double StdCSSDpi{96};
+
+    auto family = attributes.family().isEmpty() ? QString::fromUtf8("Sans") : attributes.family();
+
+    double textHeight{0};
+    if (attributes.size() == 0) {
+        textHeight = Preferences::labelFontSizeMM() * PixelsPerMM;  // pixels
+    } else {
+        textHeight = QGIView::exactFontSize(family.toStdString(), attributes.size());  // pixels
+    }
+
+    QFont fontForLength(family);
+    fontForLength.setPixelSize(static_cast<int>(textHeight));
+    QFontMetricsF qfm{fontForLength};
+    auto trect = qfm.tightBoundingRect(editableValue);  // pixels
+
+    auto dpiFont = qfm.fontDpi();
+    auto clickWidth  = trect.width() * StdCSSDpi / dpiFont;    // pixels
+    auto clickHeight = trect.height() * StdCSSDpi / dpiFont;
+
+    return { clickWidth, clickHeight };
+}
+
+
+//NOLINTNEXTLINE
 #include <Mod/TechDraw/Gui/moc_QGISVGTemplate.cpp>
