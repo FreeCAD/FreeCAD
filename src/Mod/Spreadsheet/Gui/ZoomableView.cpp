@@ -187,7 +187,7 @@ void ZoomableView::updateView(void)
     centerOn(new_geometry.center());
 }
 
-void ZoomableView::focusOutEvent(QFocusEvent *event)
+void ZoomableView::focusOutEvent(QFocusEvent* event)
 {
     Q_UNUSED(event);
 }
