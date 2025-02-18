@@ -62,6 +62,9 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     retranslate();
 #if !defined(_USE_3DCONNEXION_SDK) && !defined(SPNAV_FOUND)
     ui->legacySpaceMouseDevices->setDisabled(true);
+#elif !defined(USE_3DCONNEXION_NAVLIB)
+    ui->spaceMouseDevice->setHidden(true);
+    ui->legacySpaceMouseDevices->setHidden(true);
 #endif
 }
 
