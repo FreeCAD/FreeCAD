@@ -3838,6 +3838,7 @@ void Document::removeObject(const char* sName)
     if (object->testStatus(ObjectStatus::PendingRecompute)) {
         // TODO: shall we allow removal if there is active undo transaction?
         FC_MSG("pending remove of " << sName << " after recomputing document " << getName());
+        object->setStatus(ObjectStatus::PendingRemoval, true);
         d->pendingRemove.emplace_back(object);
         return;
     }
@@ -3852,6 +3853,7 @@ void Document::removeObject(const char* sName)
     }
 
     // Mark the object as about to be deleted
+    object->setStatus(ObjectStatus::PendingRemoval, false);
     object->setStatus(ObjectStatus::Remove, true);
     if (!d->undoing && !d->rollback) {
         object->unsetupObject();

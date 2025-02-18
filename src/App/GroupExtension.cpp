@@ -29,6 +29,8 @@
 #include "GeoFeatureGroupExtension.h"
 #include "GroupExtensionPy.h"
 
+#include <set>
+
 
 using namespace App;
 namespace sp = std::placeholders;
@@ -163,12 +165,19 @@ std::vector<DocumentObject*> GroupExtension::removeObjects(std::vector<DocumentO
 
 void GroupExtension::removeObjectsFromDocument()
 {
-    while (Group.getSize() > 0) {
+    std::set<DocumentObject*> objectsPendingRemoval;
+
+    while (Group.getSize() > 0 &&
+           objectsPendingRemoval.size() != static_cast<size_t>(Group.getSize())) {
         // Remove the objects step by step because it can happen
         // that an object is part of several groups and thus a
         // double destruction could be possible
         const std::vector<DocumentObject*>& grp = Group.getValues();
         removeObjectFromDocument(grp.front());
+
+        for (auto docObject : grp) {
+            objectsPendingRemoval.insert(docObject);
+        }
     }
 }
 
