@@ -70,6 +70,7 @@ enum ObjectStatus
     Recompute2 = 9, ///< Whether the object is going to be recomputed in the second pass.
     PartialObject = 10, ///< Whether this is a partially loaded object.
     PendingRecompute = 11, ///< Whether the object is in the recomputation queue, set by Document.
+    PendingRemoval = 12, ///< Whether the object is pending removal, set by Document.
     ObjImporting = 13, ///< Whether the object is being imported.
     NoTouch = 14, ///< Whether the object should be touched on a property change.
     GeoExcluded = 15, ///< Whether the object is a member but not claimed by a GeoFeatureGroup.
