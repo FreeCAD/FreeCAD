@@ -2501,7 +2501,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectUtility.ui" line="72"/>
       <source>Create document</source>
-      <translation>Dokument erstellen</translation>
+      <translation>Создать документ</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="137"/>
