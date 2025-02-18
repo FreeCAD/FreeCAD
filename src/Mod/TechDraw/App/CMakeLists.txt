@@ -184,6 +184,8 @@ SET(TechDraw_SRCS
     LineGenerator.h
     LineFormat.cpp
     LineFormat.h
+    SvgAttributeReader.cpp
+    SvgAttributeReader.h
 )
 
 SET(Geometry_SRCS
