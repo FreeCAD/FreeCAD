@@ -202,6 +202,7 @@ struct PropertyCleaner {
             if (p != prop) {
                 p->setContainer(nullptr);
                 delete p;
+            }
             else
                 found = true;
         }
