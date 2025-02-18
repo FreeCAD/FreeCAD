@@ -250,7 +250,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label,
             if (!localValue.empty()) {
                 if (aShapeTool->IsAssembly(label)) {
                     App::Part* pcPart = nullptr;
-                    pcPart = static_cast<App::Part*>(doc->addObject("App::Part", asm_name.c_str()));
+                    pcPart = doc->addObject<App::Part>(asm_name.c_str());
                     pcPart->Label.setValue(asm_name);
                     pcPart->addObjects(localValue);
 
@@ -326,7 +326,7 @@ void ImportOCAF::createShape(const TDF_Label& label,
             // Ok we got a Compound which is computed
             // Just need to add it to a Part::Feature and push it to lValue
             if (!comp.IsNull() && (ctSolids || ctShells || ctEdges || ctVertices)) {
-                Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
+                Part::Feature* part = doc->addObject<Part::Feature>();
                 // Let's allocate the relative placement of the Compound from the STEP file
                 tryPlacementFromLoc(part, loc);
                 if (!loc.IsIdentity()) {
@@ -352,7 +352,7 @@ void ImportOCAF::createShape(const TDF_Label& label,
         }
 
         if (!localValue.empty() && !mergeShape) {
-            pcPart = static_cast<App::Part*>(doc->addObject("App::Part", name.c_str()));
+            pcPart = doc->addObject<App::Part>(name.c_str());
             pcPart->Label.setValue(name);
 
             // localValue contain the objects that  must added to the local Part
@@ -376,7 +376,7 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape,
                              const std::string& name,
                              std::vector<App::DocumentObject*>& lvalue)
 {
-    Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
+    Part::Feature* part = doc->addObject<Part::Feature>();
 
     if (!loc.IsIdentity()) {
         part->Shape.setValue(aShape.Moved(loc));
@@ -497,7 +497,7 @@ void ImportXCAF::loadShapes()
 void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setname) const
 {
     Part::Feature* part;
-    part = static_cast<Part::Feature*>(doc->addObject("Part::Feature", default_name.c_str()));
+    part = doc->addObject<Part::Feature>(default_name.c_str());
     part->Label.setValue(default_name);
     part->Shape.setValue(shape);
     std::map<Standard_Integer, Quantity_ColorRGBA>::const_iterator jt;

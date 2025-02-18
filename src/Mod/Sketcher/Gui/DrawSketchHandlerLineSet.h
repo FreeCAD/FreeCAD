@@ -751,7 +751,7 @@ public:
 private:
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Lineset");
+        return QStringLiteral("Sketcher_Pointer_Create_Lineset");
     }
 
 protected:

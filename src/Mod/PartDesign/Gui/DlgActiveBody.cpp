@@ -52,7 +52,7 @@ DlgActiveBody::DlgActiveBody(QWidget *parent, App::Document*& doc, const QString
             this, &DlgActiveBody::accept);
 
     if (!infoText.isEmpty()) {
-        ui->label->setText(infoText + QString::fromUtf8("\n\n") + tr("Please select"));
+        ui->label->setText(infoText + QStringLiteral("\n\n") + tr("Please select"));
     }
 
     auto bodies = _doc->getObjectsOfType(PartDesign::Body::getClassTypeId());

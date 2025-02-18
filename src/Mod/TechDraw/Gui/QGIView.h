@@ -25,7 +25,7 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <QColor>
 #include <QFont>
@@ -167,6 +167,9 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
+    template <typename T>
+    std::vector<T> getObjects(std::vector<int> indexes);
 
 protected:
     QGIView* getQGIVByName(std::string name);

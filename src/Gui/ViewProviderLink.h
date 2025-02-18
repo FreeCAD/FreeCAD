@@ -25,7 +25,7 @@
 
 #include <App/Link.h>
 
-#include "SoFCUnifiedSelection.h"
+#include "Selection/SoFCUnifiedSelection.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
 #include "ViewProviderFeaturePython.h"
@@ -41,7 +41,7 @@ class LinkInfo;
 using LinkInfoPtr = boost::intrusive_ptr<LinkInfo>;
 
 #if defined(_MSC_VER)
-// forward declaration to please VC 2013
+// forward declaration to please MSVC
 void intrusive_ptr_add_ref(Gui::LinkInfo *px);
 void intrusive_ptr_release(Gui::LinkInfo *px);
 #endif

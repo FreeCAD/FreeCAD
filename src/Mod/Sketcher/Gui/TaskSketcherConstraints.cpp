@@ -44,8 +44,8 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Notifications.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -157,7 +157,7 @@ public:
                 case Sketcher::Weight:
                 case Sketcher::Diameter:
                 case Sketcher::Angle:
-                    name = QString::fromLatin1("%1 (%2)").arg(
+                    name = QStringLiteral("%1 (%2)").arg(
                         name,
                         QString::fromStdString(constraint->getPresentationValue().getUserString()));
                     break;
@@ -171,7 +171,7 @@ public:
                     else {
                         n1 = 1 / v;
                     }
-                    name = QString::fromLatin1("%1 (%2/%3)").arg(name).arg(n2).arg(n1);
+                    name = QStringLiteral("%1 (%2/%3)").arg(name).arg(n2).arg(n1);
                     break;
                 }
                 case Sketcher::InternalAlignment:
@@ -186,13 +186,13 @@ public:
 
             if (extended) {
                 if (constraint->Second == Sketcher::GeoEnum::GeoUndef) {
-                    name = QString::fromLatin1("%1 [(%2,%3)]")
+                    name = QStringLiteral("%1 [(%2,%3)]")
                                .arg(name)
                                .arg(constraint->First)
                                .arg(static_cast<int>(constraint->FirstPos));
                 }
                 else if (constraint->Third == Sketcher::GeoEnum::GeoUndef) {
-                    name = QString::fromLatin1("%1 [(%2,%3),(%4,%5)]")
+                    name = QStringLiteral("%1 [(%2,%3),(%4,%5)]")
                                .arg(name)
                                .arg(constraint->First)
                                .arg(static_cast<int>(constraint->FirstPos))
@@ -200,7 +200,7 @@ public:
                                .arg(static_cast<int>(constraint->SecondPos));
                 }
                 else {
-                    name = QString::fromLatin1("%1 [(%2,%3),(%4,%5),(%6,%7)]")
+                    name = QStringLiteral("%1 [(%2,%3),(%4,%5),(%6,%7)]")
                                .arg(name)
                                .arg(constraint->First)
                                .arg(static_cast<int>(constraint->FirstPos))
@@ -447,7 +447,7 @@ public:
 protected:
     QPixmap getIcon(const char* name, const QSize& size) const
     {
-        QString key = QString::fromLatin1("%1_%2x%3")
+        QString key = QStringLiteral("%1_%2x%3")
                           .arg(QString::fromLatin1(name))
                           .arg(size.width())
                           .arg(size.height());
@@ -955,7 +955,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
 
     multiFilterStatus = filterList->getMultiFilter();
 
-    ui->listWidgetConstraints->setStyleSheet(QString::fromLatin1("margin-top: 0px"));
+    ui->listWidgetConstraints->setStyleSheet(QStringLiteral("margin-top: 0px"));
 
     //NOLINTBEGIN
     Gui::Application* app = Gui::Application::Instance;
@@ -1355,7 +1355,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
         if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) == 0
             && strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) == 0) {
             if (msg.pSubName) {
-                QRegularExpression rx(QString::fromLatin1("^Constraint(\\d+)$"));
+                QRegularExpression rx(QStringLiteral("^Constraint(\\d+)$"));
                 QRegularExpressionMatch match;
                 QString expr = QString::fromLatin1(msg.pSubName);
                 boost::ignore_unused(expr.indexOf(rx, 0, &match));
@@ -1438,7 +1438,7 @@ void TaskSketcherConstraints::OnChange(Base::Subject<const char*>& rCaller, cons
 void TaskSketcherConstraints::getSelectionGeoId(QString expr, int& geoid,
                                                 Sketcher::PointPos& pointpos)
 {
-    QRegularExpression rxEdge(QString::fromLatin1("^Edge(\\d+)$"));
+    QRegularExpression rxEdge(QStringLiteral("^Edge(\\d+)$"));
     QRegularExpressionMatch match;
     boost::ignore_unused(expr.indexOf(rxEdge, 0, &match));
     geoid = Sketcher::GeoEnum::GeoUndef;
@@ -1452,7 +1452,7 @@ void TaskSketcherConstraints::getSelectionGeoId(QString expr, int& geoid,
         }
     }
     else {
-        QRegularExpression rxVertex(QString::fromLatin1("^Vertex(\\d+)$"));
+        QRegularExpression rxVertex(QStringLiteral("^Vertex(\\d+)$"));
         boost::ignore_unused(expr.indexOf(rxVertex, 0, &match));
 
         if (match.hasMatch()) {
@@ -1648,6 +1648,8 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
             default:
                 break;
         }
+
+        visible |= !constraint->Name.empty() && checkFilterBitset(multiFilterStatus, FilterValue::Named);
 
         // Then we re-filter based on selected/associated if such mode selected.
         if (visible && specialFilterMode == SpecialFilterType::Selected) {

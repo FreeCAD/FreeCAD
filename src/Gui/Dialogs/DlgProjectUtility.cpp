@@ -47,7 +47,7 @@ DlgProjectUtility::DlgProjectUtility(QWidget* parent, Qt::WindowFlags fl)
     ui->setupUi(this);
     connect(ui->extractButton, &QPushButton::clicked, this, &DlgProjectUtility::extractButton);
     connect(ui->createButton, &QPushButton::clicked, this, &DlgProjectUtility::createButton);
-    ui->extractSource->setFilter(QString::fromLatin1("%1 (*.FCStd)").arg(tr("Project file")));
+    ui->extractSource->setFilter(QStringLiteral("%1 (*.FCStd)").arg(tr("Project file")));
 }
 
 /**
@@ -85,7 +85,7 @@ void DlgProjectUtility::createButton()
         return;
     }
 
-    dest = QDir(dest).absoluteFilePath(QString::fromUtf8("project.fcstd"));
+    dest = QDir(dest).absoluteFilePath(QStringLiteral("project.fcstd"));
 
     bool openFile = ui->checkLoadProject->isChecked();
     tryCreateArchive(source, dest, openFile);

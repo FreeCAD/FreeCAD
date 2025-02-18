@@ -84,7 +84,6 @@ public:
     QFont getFont() const { return m_dimText->font(); }
     void setDimString(QString text);
     void setDimString(QString text, qreal maxWidth);
-    void setUnitString(QString text);
     void setToleranceString();
     void setPrettySel();
     void setPrettyPre();

@@ -25,7 +25,7 @@ include_directories(
         ${CMAKE_CURRENT_BINARY_DIR}
         ${Boost_INCLUDE_DIRS}
         ${COIN3D_INCLUDE_DIRS}
-        ${PYTHON_INCLUDE_DIRS}
+        ${Python3_INCLUDE_DIRS}
         ${QtCore_INCLUDE_DIRS}
         ${QtSvg_INCLUDE_DIRS}
         ${QtUiTools_INCLUDE_DIRS}

@@ -43,7 +43,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProvider.h>
@@ -57,7 +57,7 @@ long NavlibInterface::GetSelectionTransform(navlib::matrix_t&) const
 
 long NavlibInterface::GetIsSelectionEmpty(navlib::bool_t& empty) const
 {
-    empty = !Gui::SelectionSingleton::instance().hasSelection();
+    empty = !Gui::Selection().hasSelection();
     return 0;
 }
 
@@ -284,7 +284,7 @@ void NavlibInterface::initializePivot()
     pivot.pDepthTestAlways->function.setValue(SoDepthBufferElement::ALWAYS);
     pivot.pDepthTestLess->function.setValue(SoDepthBufferElement::LESS);
 
-    pivot.pivotImage = QImage(QString::fromStdString(":/icons/3dx_pivot.png"));
+    pivot.pivotImage = QImage(QStringLiteral(":/icons/3dx_pivot.png"));
     Gui::BitmapFactory().convert(pivot.pivotImage, pivot.pImage->image);
 
     pivot.pVisibility->ref();

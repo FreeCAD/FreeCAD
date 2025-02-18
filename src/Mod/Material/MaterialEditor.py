@@ -950,7 +950,7 @@ def openEditor(obj=None, prop=None):
     #     editor = MaterialEditor(obj, prop)
     #     editor.exec_()
     # else:
-    FreeCADGui.runCommand('Materials_Edit',0)
+    FreeCADGui.runCommand('Material_Edit',0)
 
 
 def editMaterial(material=None, card_path=None, category="Solid"):

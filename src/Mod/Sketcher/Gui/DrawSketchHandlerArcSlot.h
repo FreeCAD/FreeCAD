@@ -242,10 +242,10 @@ private:
     QString getCrosshairCursorSVGName() const override
     {
         if (constructionMethod() == DrawSketchHandlerArcSlot::ConstructionMethod::ArcSlot) {
-            return QString::fromLatin1("Sketcher_Pointer_Create_ArcSlot");
+            return QStringLiteral("Sketcher_Pointer_Create_ArcSlot");
         }
         else {
-            return QString::fromLatin1("Sketcher_Pointer_Create_RectangleSlot");
+            return QStringLiteral("Sketcher_Pointer_Create_RectangleSlot");
         }
     }
 

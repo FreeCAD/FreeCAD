@@ -36,7 +36,7 @@
 #include <Base/Parameter.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
@@ -132,7 +132,7 @@ ViewProviderViewPart::ViewProviderViewPart()
 
     // properties that affect BrokenViews
     BreakLineType.setEnums(DrawBrokenView::BreakTypeEnums);
-    ADD_PROPERTY_TYPE(BreakLineType, (Preferences::BreakType()), bvgroup, App::Prop_None,
+    ADD_PROPERTY_TYPE(BreakLineType, (static_cast<int>(Preferences::BreakType())), bvgroup, App::Prop_None,
                         "Adjusts the type of break line depiction on broken views");
     ADD_PROPERTY_TYPE(BreakLineStyle, (Preferences::BreakLineStyle()), bvgroup, App::Prop_None,
                         "Set break line style if applicable");

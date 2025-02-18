@@ -34,9 +34,10 @@
 #include <sys/mman.h>
 #endif
 
-#include <boost/filesystem.hpp>
+#include <system_error>
+#include <filesystem>
 
-namespace boofs = boost::filesystem;
+namespace stdfs = std::filesystem;
 
 //================================================================================
 /*!
@@ -168,8 +169,8 @@ bool SMESH_File::remove()
 {
   close();
 
-  boost::system::error_code err;
-  boofs::remove( _name, err );
+  std::error_code err;
+  stdfs::remove( _name, err );
   _error = err.message();
 
   return !err;
@@ -185,8 +186,8 @@ long SMESH_File::size()
 {
   if ( _size >= 0 ) return _size; // size of an open file
 
-  boost::system::error_code err;
-  boost::uintmax_t size = boofs::file_size( _name, err );
+  std::error_code err;
+  std::uintmax_t size = stdfs::file_size( _name, err );
   _error = err.message();
 
   return err ? -1 : (long) size;
@@ -200,8 +201,8 @@ long SMESH_File::size()
 
 bool SMESH_File::exists()
 {
-  boost::system::error_code err;
-  bool res = boofs::exists( _name, err );
+  std::error_code err;
+  bool res = stdfs::exists( _name, err );
   _error = err.message();
 
   return err ? false : res;
@@ -215,8 +216,8 @@ bool SMESH_File::exists()
 
 bool SMESH_File::isDirectory()
 {
-  boost::system::error_code err;
-  bool res = boofs::is_directory( _name, err );
+  std::error_code err;
+  bool res = stdfs::is_directory( _name, err );
   _error = err.message();
 
   return err ? false : res;

@@ -1079,7 +1079,7 @@ Action * GroupCommand::createAction() {
 
     for(auto &v : cmds) {
         if(!v.first)
-            pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
+            pcAction->addAction(QStringLiteral(""))->setSeparator(true);
         else
             v.first->addToGroup(pcAction);
     }
@@ -1175,7 +1175,7 @@ void MacroCommand::activated(int iMsg)
         d = QDir(QString::fromUtf8(cMacroPath.c_str()));
     }
     else {
-        QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
+        QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QStringLiteral("Macro");
         d = QDir(dirstr);
     }
 
@@ -1560,7 +1560,7 @@ void PythonGroupCommand::activated(int iMsg)
         if (cmd.hasAttr("Activated")) {
             Py::Callable call(cmd.getAttr("Activated"));
             Py::Tuple args(1);
-            args.setItem(0, Py::Int(iMsg));
+            args.setItem(0, Py::Long(iMsg));
             Py::Object ret = call.apply(args);
         }
         // If the command group doesn't implement the 'Activated' method then invoke the command directly
@@ -1640,7 +1640,7 @@ Action * PythonGroupCommand::createAction()
 
         if (cmd.hasAttr("GetDefaultCommand")) {
             Py::Callable call2(cmd.getAttr("GetDefaultCommand"));
-            Py::Int def(call2.apply(args));
+            Py::Long def(call2.apply(args));
             defaultId = static_cast<int>(def);
         }
 

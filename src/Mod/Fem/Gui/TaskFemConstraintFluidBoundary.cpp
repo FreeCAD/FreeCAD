@@ -37,7 +37,7 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemConstraintFluidBoundary.h>
@@ -387,31 +387,31 @@ void TaskFemConstraintFluidBoundary::updateBoundaryTypeUI()
 
     // Update subtypes, any change here should be written back to FemConstraintFluidBoundary.cpp
     if (boundaryType == "wall") {
-        ui->labelBoundaryValue->setText(QString::fromUtf8("velocity (m/s)"));
+        ui->labelBoundaryValue->setText(QStringLiteral("velocity (m/s)"));
         ui->tabBasicBoundary->setEnabled(false);
         pcConstraint->Subtype.setEnums(WallSubtypes);
     }
     else if (boundaryType == "interface") {
-        ui->labelBoundaryValue->setText(QString::fromUtf8("value not needed"));
+        ui->labelBoundaryValue->setText(QStringLiteral("value not needed"));
         ui->tabBasicBoundary->setEnabled(false);
         pcConstraint->Subtype.setEnums(InterfaceSubtypes);
     }
     else if (boundaryType == "freestream") {
         ui->tabBasicBoundary->setEnabled(false);
-        ui->labelBoundaryValue->setText(QString::fromUtf8("value not needed"));
+        ui->labelBoundaryValue->setText(QStringLiteral("value not needed"));
         ui->tabBasicBoundary->setEnabled(false);
         pcConstraint->Subtype.setEnums(FreestreamSubtypes);
     }
     else if (boundaryType == "inlet") {
         ui->tabBasicBoundary->setEnabled(true);
         pcConstraint->Subtype.setEnums(InletSubtypes);
-        ui->labelBoundaryValue->setText(QString::fromUtf8("Pressure [Pa]"));  // default to pressure
+        ui->labelBoundaryValue->setText(QStringLiteral("Pressure [Pa]"));  // default to pressure
         pcConstraint->Reversed.setValue(true);  // inlet must point into volume
     }
     else if (boundaryType == "outlet") {
         ui->tabBasicBoundary->setEnabled(true);
         pcConstraint->Subtype.setEnums(OutletSubtypes);
-        ui->labelBoundaryValue->setText(QString::fromUtf8("Pressure [Pa]"));
+        ui->labelBoundaryValue->setText(QStringLiteral("Pressure [Pa]"));
         pcConstraint->Reversed.setValue(false);  // outlet must point outward
     }
     else {
@@ -437,49 +437,49 @@ void TaskFemConstraintFluidBoundary::updateSubtypeUI()
     if (boundaryType == "inlet" || boundaryType == "outlet") {
         ui->tabBasicBoundary->setEnabled(true);
         if (subtype == "totalPressure" || subtype == "staticPressure") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("pressure [Pa]"));
+            ui->labelBoundaryValue->setText(QStringLiteral("pressure [Pa]"));
             ui->buttonDirection->setEnabled(false);
             ui->lineDirection->setEnabled(false);
         }
         else if (subtype == "uniformVelocity") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("velocity [m/s]"));
+            ui->labelBoundaryValue->setText(QStringLiteral("velocity [m/s]"));
             ui->buttonDirection->setEnabled(true);
             ui->lineDirection->setEnabled(true);
         }
         else if (subtype == "massFlowrate") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("flowrate [kg/s]"));
+            ui->labelBoundaryValue->setText(QStringLiteral("flowrate [kg/s]"));
             ui->buttonDirection->setEnabled(false);
             ui->lineDirection->setEnabled(false);
         }
         else if (subtype == "volumetricFlowRate") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("flowrate [m3/s]"));
+            ui->labelBoundaryValue->setText(QStringLiteral("flowrate [m3/s]"));
             ui->buttonDirection->setEnabled(false);
             ui->lineDirection->setEnabled(false);
         }
         else {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("unspecific"));
+            ui->labelBoundaryValue->setText(QStringLiteral("unspecific"));
             ui->tabBasicBoundary->setEnabled(false);
         }
     }
     else if (boundaryType == "wall") {
         if (subtype == "moving") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("moving speed (m/s)"));
+            ui->labelBoundaryValue->setText(QStringLiteral("moving speed (m/s)"));
             ui->tabBasicBoundary->setEnabled(true);
             ui->buttonDirection->setEnabled(false);  // moving speed must be parallel to wall
             ui->lineDirection->setEnabled(false);
         }
         else if (subtype == "slip") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("not needed"));
+            ui->labelBoundaryValue->setText(QStringLiteral("not needed"));
             ui->tabBasicBoundary->setEnabled(false);
         }
         else if (subtype == "partialSlip") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("slip ratio(0~1)"));
+            ui->labelBoundaryValue->setText(QStringLiteral("slip ratio(0~1)"));
             ui->tabBasicBoundary->setEnabled(true);
             ui->buttonDirection->setEnabled(false);
             ui->lineDirection->setEnabled(false);
         }
         else {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("unspecific"));
+            ui->labelBoundaryValue->setText(QStringLiteral("unspecific"));
             ui->tabBasicBoundary->setEnabled(false);
         }
     }
@@ -1016,7 +1016,7 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
         std::string dirobj = boundary->getDirectionObject().data();
 
         if (!dirname.empty()) {
-            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+            QString buf = QStringLiteral("(App.ActiveDocument.%1,[\"%2\"])");
             buf = buf.arg(QString::fromStdString(dirname));
             buf = buf.arg(QString::fromStdString(dirobj));
             Gui::Command::doCommand(Gui::Command::Doc,

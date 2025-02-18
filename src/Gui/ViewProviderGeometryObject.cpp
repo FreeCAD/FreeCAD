@@ -347,13 +347,13 @@ void ViewProviderGeometryObject::setSelectable(bool selectable)
         if (selectable) {
             if (selNode) {
                 selNode->selectionMode = SoFCSelection::SEL_ON;
-                selNode->highlightMode = SoFCSelection::AUTO;
+                selNode->preselectionMode = SoFCSelection::AUTO;
             }
         }
         else {
             if (selNode) {
                 selNode->selectionMode = SoFCSelection::SEL_OFF;
-                selNode->highlightMode = SoFCSelection::OFF;
+                selNode->preselectionMode = SoFCSelection::OFF;
                 selNode->selected = SoFCSelection::NOTSELECTED;
             }
         }

@@ -34,7 +34,7 @@
 #include <App/Document.h>
 #include <Gui/Command.h>
 #include <Gui/QuantitySpinBox.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintTemperature.h>
 #include <Mod/Part/App/PartFeature.h>
 

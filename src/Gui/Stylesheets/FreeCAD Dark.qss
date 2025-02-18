@@ -1292,7 +1292,8 @@ QDialogButtonBox QPushButton {
   min-width: 80px;
 }
 
-QMessageBox[objectName="macroGuideWalkthrough"] QDialogButtonBox QPushButton {
+QMessageBox[objectName="macroGuideWalkthrough"] QDialogButtonBox QPushButton,
+QMessageBox[objectName="confirmSave"] QDialogButtonBox QPushButton {
   min-width: 20px;
 }
 /* QToolButton ------------------------------------------------------------
@@ -2469,7 +2470,7 @@ QTableCornerButton::section {
 
 QHeaderView {
   background-color: transparent;
-  margin: -1px; /* fix for misalignement*/
+  margin: -1px; /* fix for misalignment*/
 }
 
 QHeaderView:disabled {

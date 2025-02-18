@@ -19,14 +19,14 @@ IF(CMAKE_BUILD_TYPE)
     add_definitions(-DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
 ENDIF(CMAKE_BUILD_TYPE)
 
-if (FREECAD_USE_3DCONNEXION_LEGACY)
+if (FREECAD_USE_3DCONNEXION_LEGACY AND (MSVC OR APPLE))
     add_definitions(-D_USE_3DCONNEXION_SDK)
     if(APPLE)
         set(3DCONNEXION_LINKFLAGS "-F/Library/Frameworks -weak_framework 3DconnexionClient")
         list(APPEND 3DCONNEXION_INCLUDE_DIR ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers
                                     ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers/3DconnexionClient )
     endif(APPLE)
-endif(FREECAD_USE_3DCONNEXION_LEGACY)
+endif(FREECAD_USE_3DCONNEXION_LEGACY AND (MSVC OR APPLE))
 
 if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
     add_definitions(-DUSE_3DCONNEXION_NAVLIB)
@@ -49,6 +49,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/Quarter
     ${CMAKE_CURRENT_SOURCE_DIR}/PreferencePages
+    ${CMAKE_CURRENT_SOURCE_DIR}/Selection
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}/..
@@ -59,9 +60,10 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/DAGView
     ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
+    ${ZIPIOS_INCLUDES}
     ${3DCONNEXION_INCLUDE_DIR}
 )
 
@@ -139,7 +141,8 @@ if(${Qt5WinExtras_FOUND})
     )
 endif()
 
-IF(SPNAV_FOUND)
+IF(SPNAV_FOUND AND FREECAD_USE_3DCONNEXION_LEGACY)
+    add_definitions(-D_USE_3DCONNEXION_SDK)
     if(SPNAV_USE_X11)
         add_definitions(-DSPNAV_USE_X11)
         if (FREECAD_QT_MAJOR_VERSION EQUAL 5 AND UNIX AND NOT APPLE)
@@ -187,7 +190,7 @@ IF(SPNAV_FOUND)
     list(APPEND FreeCADGui_LIBS
         ${SPNAV_LIBRARIES}
     )
-ENDIF(SPNAV_FOUND)
+ENDIF(SPNAV_FOUND AND FREECAD_USE_3DCONNEXION_LEGACY)
 
 IF(OCULUS_FOUND)
     add_definitions(-DOCULUS_FOUND)
@@ -255,12 +258,12 @@ generate_from_xml(ViewProviderDocumentObjectPy)
 generate_from_xml(ViewProviderGeometryObjectPy)
 generate_from_xml(ViewProviderExtensionPy)
 generate_from_xml(WorkbenchPy)
-generate_from_xml(SelectionObjectPy)
+generate_from_xml(Selection/SelectionObjectPy)
 generate_from_xml(LinkViewPy)
 generate_from_xml(ViewProviderLinkPy)
 generate_from_xml(AxisOriginPy)
 generate_from_xml(CommandPy)
-generate_from_xml(NavigationStylePy)
+generate_from_xml(Navigation/NavigationStylePy)
 
 generate_from_py(FreeCADGuiInit GuiInitScript.h)
 
@@ -272,7 +275,7 @@ SET(FreeCADGui_XML_SRCS
     ViewProviderExtensionPy.xml
     PythonWorkbenchPy.xml
     WorkbenchPy.xml
-    SelectionObjectPy.xml
+    Selection/SelectionObjectPy.xml
     DocumentPy.xml
     LinkViewPy.xml
     ViewProviderLinkPy.xml
@@ -709,7 +712,7 @@ SET(Dock_Windows_CPP_SRCS
     DockWindow.cpp
     PropertyView.cpp
     ReportView.cpp
-    SelectionView.cpp
+    Selection/SelectionView.cpp
     ToolBox.cpp
     Tree.cpp
     TreeView.cpp
@@ -724,7 +727,7 @@ SET(Dock_Windows_HPP_SRCS
     DockWindow.h
     PropertyView.h
     ReportView.h
-    SelectionView.h
+    Selection/SelectionView.h
     ToolBox.h
     Tree.h
     TreeView.h
@@ -893,18 +896,6 @@ SET(View3D_CPP_SRCS
     GLPainter.cpp
     Multisample.cpp
     MouseSelection.cpp
-    NavigationStyle.cpp
-    NavigationStylePyImp.cpp
-    InventorNavigationStyle.cpp
-    CADNavigationStyle.cpp
-    RevitNavigationStyle.cpp
-    BlenderNavigationStyle.cpp
-    MayaGestureNavigationStyle.cpp
-    OpenCascadeNavigationStyle.cpp
-    OpenSCADNavigationStyle.cpp
-    TinkerCADNavigationStyle.cpp
-    TouchpadNavigationStyle.cpp
-    GestureNavigationStyle.cpp
     SplitView3DInventor.cpp
     View.cpp
     View3DInventor.cpp
@@ -916,8 +907,6 @@ SET(View3D_CPP_SRCS
     View3DPy.cpp
     View3DViewerPy.cpp
     NaviCube.cpp
-    NavigationAnimator.cpp
-    NavigationAnimation.cpp
 )
 SET(View3D_SRCS
     ${View3D_CPP_SRCS}
@@ -927,9 +916,6 @@ SET(View3D_SRCS
     GLPainter.h
     Multisample.h
     MouseSelection.h
-    NavigationStyle.h
-    NavigationStylePy.xml
-    GestureNavigationStyle.h
     SplitView3DInventor.h
     View.h
     View3DInventor.h
@@ -941,10 +927,34 @@ SET(View3D_SRCS
     CoinRiftWidget.h
     View3DViewerPy.h
     NaviCube.h
-    NavigationAnimator.h
-    NavigationAnimation.h
 )
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
+
+SET(Navigation_CPP_SRCS
+    Navigation/NavigationStyle.cpp
+    Navigation/NavigationStylePyImp.cpp
+    Navigation/InventorNavigationStyle.cpp
+    Navigation/CADNavigationStyle.cpp
+    Navigation/RevitNavigationStyle.cpp
+    Navigation/BlenderNavigationStyle.cpp
+    Navigation/MayaGestureNavigationStyle.cpp
+    Navigation/OpenCascadeNavigationStyle.cpp
+    Navigation/OpenSCADNavigationStyle.cpp
+    Navigation/TinkerCADNavigationStyle.cpp
+    Navigation/TouchpadNavigationStyle.cpp
+    Navigation/GestureNavigationStyle.cpp
+    Navigation/NavigationAnimator.cpp
+    Navigation/NavigationAnimation.cpp
+)
+SET(Navigation_SRCS
+    ${Navigation_CPP_SRCS}
+    Navigation/NavigationStyle.h
+    Navigation/NavigationStylePy.xml
+    Navigation/GestureNavigationStyle.h
+    Navigation/NavigationAnimator.h
+    Navigation/NavigationAnimation.h
+)
+SOURCE_GROUP("Navigation" FILES ${Navigation_SRCS})
 
 #quarter sources
 FILE(GLOB_RECURSE Quarter_CPP_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} Quarter/*.cpp)
@@ -1070,10 +1080,10 @@ SET(Inventor_CPP_SRCS
     SoFCInteractiveElement.cpp
     SoFCOffscreenRenderer.cpp
     SoQtOffscreenRendererPy.cpp
-    SoFCSelection.cpp
-    SoFCUnifiedSelection.cpp
-    SoFCSelectionContext.cpp
-    SoFCSelectionAction.cpp
+    Selection/SoFCSelection.cpp
+    Selection/SoFCUnifiedSelection.cpp
+    Selection/SoFCSelectionContext.cpp
+    Selection/SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
     SoDevicePixelRatioElement.cpp
@@ -1102,10 +1112,10 @@ SET(Inventor_SRCS
     SoFCInteractiveElement.h
     SoFCOffscreenRenderer.h
     SoQtOffscreenRendererPy.h
-    SoFCSelection.h
-    SoFCUnifiedSelection.h
-    SoFCSelectionContext.h
-    SoFCSelectionAction.h
+    Selection/SoFCSelection.h
+    Selection/SoFCUnifiedSelection.h
+    Selection/SoFCSelectionContext.h
+    Selection/SoFCSelectionAction.h
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
     SoDevicePixelRatioElement.h
@@ -1137,6 +1147,9 @@ SET(Widget_CPP_SRCS
     Widgets.cpp
     Window.cpp
     WorkbenchSelector.cpp
+    ElideLabel.cpp
+    ElideCheckBox.cpp
+    FontScaledSVG.cpp
 )
 SET(Widget_HPP_SRCS
     FileDialog.h
@@ -1158,6 +1171,9 @@ SET(Widget_HPP_SRCS
     Widgets.h
     Window.h
     WorkbenchSelector.h
+    ElideLabel.h
+    ElideCheckBox.h
+    FontScaledSVG.h
 )
 SET(Widget_SRCS
     ${Widget_CPP_SRCS}
@@ -1242,19 +1258,19 @@ SET(Workbench_SRCS
 SOURCE_GROUP("Workbench" FILES ${Workbench_SRCS})
 
 SET(Selection_SRCS
-    SelectionObjectPyImp.cpp
-    SelectionObject.h
-    SelectionObject.cpp
-    Selection.h
-    Selection.cpp
-    SelectionFilter.h
-    SelectionFilter.cpp
-    SelectionFilterPy.h
-    SelectionFilterPy.cpp
-    SelectionFilter.y
-    SelectionFilter.l
-    SelectionObserverPython.cpp
-    SelectionObserverPython.h
+    Selection/SelectionObjectPyImp.cpp
+    Selection/SelectionObject.h
+    Selection/SelectionObject.cpp
+    Selection/Selection.h
+    Selection/Selection.cpp
+    Selection/SelectionFilter.h
+    Selection/SelectionFilter.cpp
+    Selection/SelectionFilterPy.h
+    Selection/SelectionFilterPy.cpp
+    Selection/SelectionFilter.y
+    Selection/SelectionFilter.l
+    Selection/SelectionObserverPython.cpp
+    Selection/SelectionObserverPython.h
 )
 SOURCE_GROUP("Selection" FILES ${Selection_SRCS})
 
@@ -1358,6 +1374,7 @@ SET(FreeCADGui_SRCS
     ${Resource_SRCS}
     ${Quarter_SRCS}
     ${View3D_SRCS}
+    ${Navigation_SRCS}
     ${Viewprovider_SRCS}
     ${Widget_SRCS}
     ${Params_SRCS}
@@ -1412,7 +1429,7 @@ if (EIGEN3_NO_DEPRECATED_COPY)
         NaviCube.cpp
         Inventor/SoAutoZoomTranslation.cpp
         SoFCOffscreenRenderer.cpp
-        SoFCSelectionAction.cpp
+        Selection/SoFCSelectionAction.cpp
         SoFCCSysDragger.cpp
         Quarter/QuarterWidget.cpp
         View3DInventorViewer.cpp

@@ -43,7 +43,7 @@
         <UserDocu>Checks if the document is saved</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getProgramVersion">
+    <Methode Name="getProgramVersion" Type="String">
       <Documentation>
         <UserDocu>Get the program version that a project file was created with</UserDocu>
       </Documentation>
@@ -60,11 +60,11 @@ For a temporary document it returns its transient directory.
       <Documentation>
         <UserDocu>getUniqueObjectName(objName) -> objName
 
-          Return the same name, or the name made unique, for Example Box -> Box002 if there are conflicting name
-          already in the document.
+Return the same name, or the name made unique, for Example Box -> Box002 if there are conflicting name
+already in the document.
 
-          ObjName : str
-          Object name.
+ObjName : str
+Object name.
         </UserDocu>
       </Documentation>
     </Methode>
@@ -127,7 +127,7 @@ viewType (String): override the view provider type directly, only effective when
         <Documentation>
             <UserDocu>
                 removeProperty(string) -- Remove a generic property.
-                Note, you can only remove user-defined properties but not built-in ones.
+Note, you can only remove user-defined properties but not built-in ones.
             </UserDocu>
         </Documentation>
     </Methode>
@@ -136,15 +136,15 @@ viewType (String): override the view provider type directly, only effective when
         <UserDocu>Remove an object from the document</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="copyObject">
+    <Methode Name="copyObject" Keyword="true">
       <Documentation>
           <UserDocu>
-copyObject(object, with_dependencies=False, return_all=False)
+copyObject(object, recursive=False, return_all=False)
 Copy an object or objects from another document to this document.
 
-object: can either a single object or sequence of objects
-with_dependencies: if True, all internal dependent objects are copied too.
-return_all: if True, return all copied objects, or else return only the copied
+object: can either be a single object or sequence of objects
+recursive: if True, also recursively copies internal objects
+return_all: if True, returns all copied objects, or else return only the copied
             object corresponding to the input objects.
           </UserDocu>
       </Documentation>
@@ -313,25 +313,25 @@ sort: whether to topologically sort the return list
       <Documentation>
         <UserDocu>The Undo mode of the Document (0 = no Undo, 1 = Undo/Redo)</UserDocu>
       </Documentation>
-      <Parameter Name="UndoMode" Type="Int" />
+      <Parameter Name="UndoMode" Type="Long" />
     </Attribute>
     <Attribute Name="UndoRedoMemSize" ReadOnly="true">
       <Documentation>
         <UserDocu>The size of the Undo stack in byte</UserDocu>
       </Documentation>
-      <Parameter Name="UndoRedoMemSize" Type="Int" />
+      <Parameter Name="UndoRedoMemSize" Type="Long" />
     </Attribute>
     <Attribute Name="UndoCount" ReadOnly="true">
       <Documentation>
         <UserDocu>Number of possible Undos</UserDocu>
       </Documentation>
-      <Parameter Name="UndoCount" Type="Int" />
+      <Parameter Name="UndoCount" Type="Long" />
     </Attribute>
     <Attribute Name="RedoCount" ReadOnly="true">
       <Documentation>
         <UserDocu>Number of possible Redos</UserDocu>
       </Documentation>
-      <Parameter Name="RedoCount" Type="Int"/>
+      <Parameter Name="RedoCount" Type="Long"/>
     </Attribute>
     <Attribute Name="UndoNames" ReadOnly="true">
       <Documentation>

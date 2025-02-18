@@ -28,7 +28,7 @@
 #include <string>
 #include <vector>
 #include <QIcon>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <boost/intrusive_ptr.hpp>
 
 #include <App/Material.h>
@@ -178,7 +178,7 @@ public:
      * @param append: If true, pPath will be first appended with the root node and
      * the mode switch node of this view provider.
      *
-     * @return the coint detail of the subelement
+     * @return the coin detail of the subelement
      *
      * If this view provider links to other view provider, then the
      * implementation of getDetailPath() shall also append all intermediate

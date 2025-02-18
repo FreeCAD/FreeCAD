@@ -50,8 +50,8 @@
 #include "SoFCDB.h"
 #include "Camera.h"
 #include "Flag.h"
-#include "GestureNavigationStyle.h"
-#include "NavigationStyle.h"
+#include "Navigation/GestureNavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "SelectionObject.h"
 #include "SoDevicePixelRatioElement.h"
 #include "SoFCColorBar.h"
@@ -107,13 +107,13 @@ void Gui::SoFCDB::init()
     SoFCBoundingBox                 ::initClass();
     SoFCSelection                   ::initClass();
     SoFCUnifiedSelection            ::initClass();
-    SoFCHighlightAction             ::initClass();
+    SoFCPreselectionAction          ::initClass();
     SoFCSelectionAction             ::initClass();
     SoFCDocumentAction              ::initClass();
     SoGLWidgetNode                  ::initClass();
     SoGLVBOActivatedElement         ::initClass();
     SoFCEnableSelectionAction       ::initClass();
-    SoFCEnableHighlightAction       ::initClass();
+    SoFCEnablePreselectionAction    ::initClass();
     SoFCSelectionColorAction        ::initClass();
     SoFCHighlightColorAction        ::initClass();
     SoFCDocumentObjectAction        ::initClass();
@@ -226,12 +226,12 @@ void Gui::SoFCDB::finish()
     SoFCBackgroundGradient          ::finish();
     SoFCBoundingBox                 ::finish();
     SoFCSelection                   ::finish();
-    SoFCHighlightAction             ::finish();
+    SoFCPreselectionAction          ::finish();
     SoFCSelectionAction             ::finish();
     SoFCDocumentAction              ::finish();
     SoFCDocumentObjectAction        ::finish();
     SoFCEnableSelectionAction       ::finish();
-    SoFCEnableHighlightAction       ::finish();
+    SoFCEnablePreselectionAction    ::finish();
     SoFCSelectionColorAction        ::finish();
     SoUpdateVBOAction               ::finish();
     SoFCHighlightColorAction        ::finish();

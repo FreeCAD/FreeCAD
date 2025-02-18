@@ -255,7 +255,7 @@ void MaterialTreeWidget::editorClicked(bool checked)
         setMaterial(material->getUUID());
     }
 
-    // Gui::Application::Instance->commandManager().runCommandByName("Materials_Edit");
+    // Gui::Application::Instance->commandManager().runCommandByName("Material_Edit");
     // Toggle the open state
     // setExpanded(!m_expanded);
 }
@@ -425,7 +425,7 @@ void MaterialTreeWidget::getFavorites()
         "User parameter:BaseApp/Preferences/Mod/Material/Favorites");
     auto count = param->GetInt("Favorites", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
-        QString key = QString::fromLatin1("FAV%1").arg(i);
+        QString key = QStringLiteral("FAV%1").arg(i);
         QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
         if (!_filter || _filter->modelIncluded(uuid)) {
             _favorites.push_back(uuid);
@@ -442,7 +442,7 @@ void MaterialTreeWidget::getRecents()
     _recentMax = static_cast<int>(param->GetInt("RecentMax", defaultRecents));
     auto count = param->GetInt("Recent", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
-        QString key = QString::fromLatin1("MRU%1").arg(i);
+        QString key = QStringLiteral("MRU%1").arg(i);
         QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
         if (!_filter || _filter->modelIncluded(uuid)) {
             _recents.push_back(uuid);
@@ -458,7 +458,7 @@ void MaterialTreeWidget::saveRecents()
     // Clear out the existing favorites
     int count = param->GetInt("Recent", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
-        QString key = QString::fromLatin1("MRU%1").arg(i);
+        QString key = QStringLiteral("MRU%1").arg(i);
         param->RemoveASCII(key.toStdString().c_str());
     }
 
@@ -470,7 +470,7 @@ void MaterialTreeWidget::saveRecents()
     param->SetInt("Recent", size);
     int j = 0;
     for (auto& recent : _recents) {
-        QString key = QString::fromLatin1("MRU%1").arg(j);
+        QString key = QStringLiteral("MRU%1").arg(j);
         param->SetASCII(key.toStdString().c_str(), recent.toStdString());
 
         j++;
@@ -570,7 +570,7 @@ void MaterialTreeWidget::fillMaterialTree()
             addExpanded(model, lib, param);
 
             QIcon icon(library->getIconPath());
-            QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
+            QIcon folderIcon(QStringLiteral(":/icons/folder.svg"));
 
             addMaterials(*lib, modelTree, folderIcon, icon, param);
         }

@@ -25,7 +25,7 @@
 #ifndef GUI_TASKVIEW_TaskSketchBasedParameters_H
 #define GUI_TASKVIEW_TaskSketchBasedParameters_H
 
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include "ViewProvider.h"
 
 #include "TaskFeatureParameters.h"

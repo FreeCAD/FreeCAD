@@ -357,7 +357,7 @@ void TDragger::drag()
                             Base::Unit::Length);
 
     QString message =
-        QString::fromLatin1("%1 %2").arg(QObject::tr("Translation:"), QString::fromStdString(quantity.getUserString()));
+        QStringLiteral("%1 %2").arg(QObject::tr("Translation:"), QString::fromStdString(quantity.getUserString()));
     getMainWindow()->showMessage(message, 3000);
 }
 
@@ -642,7 +642,7 @@ void TPlanarDragger::drag()
                                  * translationIncrement.getValue(),
                              Base::Unit::Length);
 
-    QString message = QString::fromLatin1("%1 %2, %3")
+    QString message = QStringLiteral("%1 %2, %3")
                           .arg(QObject::tr("Translation XY:"),
                                QString::fromStdString(quantityX.getUserString()),
                                QString::fromStdString(quantityY.getUserString()));
@@ -970,7 +970,7 @@ void RDragger::drag()
                             Base::Unit::Angle);
 
     QString message =
-        QString::fromLatin1("%1 %2").arg(QObject::tr("Rotation:"), QString::fromStdString(quantity.getUserString()));
+        QStringLiteral("%1 %2").arg(QObject::tr("Rotation:"), QString::fromStdString(quantity.getUserString()));
     getMainWindow()->showMessage(message, 3000);
 }
 

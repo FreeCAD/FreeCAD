@@ -32,7 +32,7 @@
 #include <Base/MatrixPy.h>
 
 #include "PythonWrapper.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "View3DViewerPy.h"
 #include "View3DInventorViewer.h"
 
@@ -277,8 +277,8 @@ Py::Object View3DInventorViewerPy::seekToPoint(const Py::Tuple& args)
             _viewer->seekToPoint(hitpoint);
         }
         else {
-            Py::Int x(tuple[0]);
-            Py::Int y(tuple[1]);
+            Py::Long x(tuple[0]);
+            Py::Long y(tuple[1]);
 
             SbVec2s hitpoint ((long)x,(long)y);
             _viewer->seekToPoint(hitpoint);
@@ -344,8 +344,8 @@ Py::Object View3DInventorViewerPy::getPointOnFocalPlane(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "hh", &x, &y)) {
         PyErr_Clear();
         Py::Tuple t(args[0]);
-        x = (int)Py::Int(t[0]);
-        y = (int)Py::Int(t[1]);
+        x = (int)Py::Long(t[0]);
+        y = (int)Py::Long(t[1]);
     }
     try {
         SbVec3f pt = _viewer->getPointOnFocalPlane(SbVec2s(x,y));

@@ -736,8 +736,7 @@ std::string ImpExpDxfRead::Deformat(const char* text)
 void ImpExpDxfRead::DrawingEntityCollector::AddObject(const TopoDS_Shape& shape,
                                                       const char* nameBase)
 {
-    auto pcFeature =
-        dynamic_cast<Part::Feature*>(Reader.document->addObject("Part::Feature", nameBase));
+    auto pcFeature = Reader.document->addObject<Part::Feature>(nameBase);
     pcFeature->Shape.setValue(shape);
     Reader.MoveToLayer(pcFeature);
     Reader.ApplyGuiStyles(pcFeature);

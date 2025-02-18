@@ -36,6 +36,7 @@
 #include "QGCustomText.h"
 #include "QGIDecoration.h"
 
+using BreakType = TechDraw::DrawBrokenView::BreakType;
 
 namespace TechDrawGui
 {
@@ -59,8 +60,8 @@ public:
     void setLinePen(QPen isoPen);
     void setBreakColor(QColor c);
 
-    void setBreakType(int style) { m_breakType = style; }
-    int  breakType() const { return m_breakType; }
+    void setBreakType(BreakType style) { m_breakType = style; }
+    BreakType breakType() const { return m_breakType; }
 
 protected:
 
@@ -84,7 +85,7 @@ private:
     double             m_left;
     double             m_right;
 
-    int                m_breakType{0};
+    BreakType m_breakType = BreakType::NONE;
 };
 
 }

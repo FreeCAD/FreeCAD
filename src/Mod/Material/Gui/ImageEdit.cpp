@@ -111,7 +111,7 @@ ImageEdit::ImageEdit(const QString& propertyName,
     : QDialog(parent)
     , ui(new Ui_ImageEdit)
     , _material(material)
-    , _pixmap(QString::fromStdString(":/images/default_image.png"))
+    , _pixmap(QStringLiteral(":/images/default_image.png"))
 {
     ui->setupUi(this);
 

@@ -51,7 +51,7 @@ using PyObject = struct _object;
 
 #include <map>
 #include <vector>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <xercesc/util/XercesDefs.hpp>
 
 #include "Handle.h"
@@ -131,27 +131,67 @@ public:
 
     /** @name methods for group handling */
     //@{
-    /// get a handle to a sub group or create one
+
+    /**
+     *  Returns or creates a sub-group with the given name.
+     *
+     *  @param[in] Name Name of the sub-group.
+     *  @returns A handle to the sub-group.
+     */
     Base::Reference<ParameterGrp> GetGroup(const char* Name);
-    /// get a vector of all sub groups in this group
+
+    /**
+     *  Returns all sub-groups.
+     *
+     *  @returns A vector of handles to the sub-groups.
+     */
     std::vector<Base::Reference<ParameterGrp>> GetGroups();
-    /// test if this group is empty
+
+    /**
+     *  Tests if this group is empty.
+     */
     bool IsEmpty() const;
-    /// test if a special sub group is in this group
+
+    /**
+     *  Tests if a sub-group exists.
+     *
+     *  @param[in] Name Name of the sub-group.
+     */
     bool HasGroup(const char* Name) const;
+
     /// type of the handle
     using handle = Base::Reference<ParameterGrp>;
-    /// remove a sub group from this group
+
+    /**
+     *  Removes a sub-group.
+     *
+     *  @param[in] Name Name of the sub-group.
+     */
     void RemoveGrp(const char* Name);
-    /// rename a sub group from this group
+
+    /**
+     *  Renames a sub-group.
+     *
+     *  @param[in] OldName The current name of the sub-group.
+     *  @param[in] NewName The new name the sub-group will have.
+     *  @returns Whether or not the renaming succeeded.
+     *
+     *  @note Does nothing if a sub-group with the new name already exists.
+     */
     bool RenameGrp(const char* OldName, const char* NewName);
-    /// clears everything in this group (all types)
-    /// @param notify: whether to notify on deleted parameters using the Observer interface.
+
+    /**
+     *  Empties this group.
+     *
+     *  @param[in] notify Whether to notify on deleted parameters using the Observer interface.
+     */
     void Clear(bool notify = false);
+
     //@}
 
     /** @name methods for generic attribute handling */
     //@{
+
     enum class ParamType
     {
         FCInvalid = 0,
@@ -164,18 +204,64 @@ public:
     };
     static const char* TypeName(ParamType type);
     static ParamType TypeValue(const char*);
+
+    /**
+     *  Sets the value of an attribute.
+     *
+     *  @param[in] Type The type of the attribute.
+     *  @param[in] Name The name of the attribute.
+     *  @param[in] Value The value to be set.
+     */
     void SetAttribute(ParamType Type, const char* Name, const char* Value);
+
+    /**
+     *  Removes an attribute.
+     *
+     *  @param[in] Type The type of the attribute.
+     *  @param[in] Name The name of the attribute.
+     */
     void RemoveAttribute(ParamType Type, const char* Name);
+
+    /**
+     *  Returns the value of the attribute.
+     *
+     *  If the attribute can't be found, \n
+     *  the fallback value is returned.
+     *
+     *  @param[in] Type The type of the attribute.
+     *  @param[in] Name The name of the attribute.
+     *  @param[out] Value The value of attribute or the fallback value.
+     *  @param[in] Default The fallback value.
+     */
     const char*
     GetAttribute(ParamType Type, const char* Name, std::string& Value, const char* Default) const;
+
+    /**
+     *  Returns all attributes with the given type.
+     *
+     *  Optionally filters them to only include attributes \n
+     *  with names that contain a certain string.
+     *
+     *  @param[in] Type The type of attributes to be returned
+     *  @param[in] sFilter String that has to be present in the names of the attributes.
+     *  @returns Vector of attribute name & value pairs.
+     */
     std::vector<std::pair<std::string, std::string>>
     GetAttributeMap(ParamType Type, const char* sFilter = nullptr) const;
-    /** Return the type and name of all parameters with optional filter
-     *  @param sFilter only strings which name includes sFilter are put in the vector
-     *  @return std::vector of pair(type, name)
+
+
+    /**
+     *  Returns all parameters.
+     *
+     *  Optionally filters them to only include attributes \n
+     *  with names that contain a certain string.
+     *
+     *  @param[in] sFilter String that has to be present in the names of the attributes.
+     *  @returns Vector of attribute type & name pairs.
      */
     std::vector<std::pair<ParamType, std::string>>
     GetParameterNames(const char* sFilter = nullptr) const;
+
     //@}
 
     /** @name methods for bool handling */

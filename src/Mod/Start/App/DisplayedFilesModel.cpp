@@ -96,9 +96,9 @@ std::string getThumbnailsImage()
 QString getThumbnailsName()
 {
 #if defined(Q_OS_LINUX)
-    return QString::fromLatin1("thumbnails/normal");
+    return QStringLiteral("thumbnails/normal");
 #else
-    return QString::fromLatin1("FreeCADStartThumbnails");
+    return QStringLiteral("FreeCADStartThumbnails");
 #endif
 }
 
@@ -127,7 +127,7 @@ QString getMD5Hash(const std::string& path)
     // Use MD5 hash as specified here:
     // https://specifications.freedesktop.org/thumbnail-spec/0.8.0/thumbsave.html
     QUrl url(QString::fromStdString(path));
-    url.setScheme(QString::fromLatin1("file"));
+    url.setScheme(QStringLiteral("file"));
     QCryptographicHash hash(QCryptographicHash::Md5);
     hash.addData(url.toEncoded());
     QByteArray ba = hash.result().toHex();

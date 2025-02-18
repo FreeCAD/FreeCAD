@@ -69,7 +69,7 @@ DlgSettingsColorGradientImp::DlgSettingsColorGradientImp(const App::ColorGradien
     // assure that the LineEdit is as wide to contain numbers with 4 digits and 6 decimals
     QFontMetrics fm(ui->floatLineEditMax->font());
     ui->floatLineEditMax->setMinimumWidth(
-        QtTools::horizontalAdvance(fm, QString::fromLatin1("-8000.000000")));
+        QtTools::horizontalAdvance(fm, QStringLiteral("-8000.000000")));
 
     setColorModelNames(cg.getColorModelNames());
     setProfile(cg.getProfile());

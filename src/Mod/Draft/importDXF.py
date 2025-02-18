@@ -67,7 +67,7 @@ from Draft import LinearDimension
 from draftobjects.dimension import _Dimension
 from draftutils import params
 from draftutils import utils
-from builtins import open as pyopen
+from draftutils.utils import pyopen
 
 gui = FreeCAD.GuiUp
 draftui = None

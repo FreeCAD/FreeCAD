@@ -231,6 +231,8 @@ DrawViewDimension::DrawViewDimension()
                       "If true, area dimensions return the area of the face minus the areas of any enclosed faces. \
                        If false, the area of the face's outer boundary is returned.");
 
+    ADD_PROPERTY_TYPE(ShowUnits, (Preferences::showUnits()), "Format", App::Prop_None,
+                                          "Show or hide the units.");
     measurement = new Measure::Measurement();
     // TODO: should have better initial datumLabel position than (0, 0) in the DVP?? something
     // closer to the object being measured?
@@ -603,7 +605,7 @@ bool DrawViewDimension::isMultiValueSchema() const
 }
 
 std::string
-DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int partial, bool isDim)
+DrawViewDimension::formatValue(qreal value, QString qFormatSpec, DimensionFormatter::Format partial, bool isDim)
 {
     return m_formatter->formatValue(value, qFormatSpec, partial, isDim);
 }
@@ -620,19 +622,19 @@ bool DrawViewDimension::haveTolerance()
     return false;
 }
 
-std::string DrawViewDimension::getFormattedToleranceValue(int partial)
+std::string DrawViewDimension::getFormattedToleranceValue(DimensionFormatter::Format partial)
 {
     return m_formatter->getFormattedToleranceValue(partial);
 }
 
 ////get over and under tolerances
-std::pair<std::string, std::string> DrawViewDimension::getFormattedToleranceValues(int partial)
+std::pair<std::string, std::string> DrawViewDimension::getFormattedToleranceValues(DimensionFormatter::Format partial)
 {
     return m_formatter->getFormattedToleranceValues(partial);
 }
 
 ////partial = 2 unit only
-std::string DrawViewDimension::getFormattedDimensionValue(int partial)
+std::string DrawViewDimension::getFormattedDimensionValue(DimensionFormatter::Format partial)
 {
     return m_formatter->getFormattedDimensionValue(partial);
 }
@@ -819,7 +821,7 @@ pointPair DrawViewDimension::getPointsOneEdge(ReferenceVector references)
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (1)";
             throw Base::RuntimeError(ssMessage.str());
         }
-        if (geom->getGeomType() != TechDraw::GeomType::GENERIC) {
+        if (geom->getGeomType() != GeomType::GENERIC) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " 2d reference is a " << geom->geomTypeName();
             throw Base::RuntimeError(ssMessage.str());
@@ -1005,12 +1007,12 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
     arcPoints pts;
     pts.center = Base::Vector3d(0.0, 0.0, 0.0);
     pts.radius = 0.0;
-    if ((base && base->getGeomType() == TechDraw::GeomType::CIRCLE)
-        || (base && base->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE)) {
+    if ((base && base->getGeomType() == GeomType::CIRCLE)
+        || (base && base->getGeomType() == GeomType::ARCOFCIRCLE)) {
         circle = std::static_pointer_cast<TechDraw::Circle>(base);
         pts.center = Base::Vector3d(circle->center.x, circle->center.y, 0.0);
         pts.radius = circle->radius;
-        if (base->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
+        if (base->getGeomType() == GeomType::ARCOFCIRCLE) {
             TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(circle);
             pts.isArc = true;
             pts.onCurve.first(Base::Vector3d(aoc->midPnt.x, aoc->midPnt.y, 0.0));
@@ -1027,8 +1029,8 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
                 pts.center + Base::Vector3d(-1, 0, 0) * circle->radius);  // arbitrary point on edge
         }
     }
-    else if ((base && base->getGeomType() == TechDraw::GeomType::ELLIPSE)
-             || (base && base->getGeomType() == TechDraw::GeomType::ARCOFELLIPSE)) {
+    else if ((base && base->getGeomType() == GeomType::ELLIPSE)
+             || (base && base->getGeomType() == GeomType::ARCOFELLIPSE)) {
         TechDraw::EllipsePtr ellipse = std::static_pointer_cast<TechDraw::Ellipse>(base);
         if (ellipse->closed()) {
             double r1 = ellipse->minor;
@@ -1061,7 +1063,7 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
                                + Base::Vector3d(-1, 0, 0) * rAvg);  // arbitrary point on edge
         }
     }
-    else if (base && base->getGeomType() == TechDraw::GeomType::BSPLINE) {
+    else if (base && base->getGeomType() == GeomType::BSPLINE) {
         TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(base);
         if (spline->isCircle()) {
             bool arc{false};
@@ -1129,8 +1131,8 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
         if (pts.isArc) {
             // part of circle
             gp_Ax1 axis = circle.Axis();
-            gp_Vec startVec = DrawUtil::togp_Vec(pts.arcEnds.first() - pts.center);
-            gp_Vec endVec = DrawUtil::togp_Vec(pts.arcEnds.second() - pts.center);
+            gp_Vec startVec = DrawUtil::to<gp_Vec>(pts.arcEnds.first() - pts.center);
+            gp_Vec endVec = DrawUtil::to<gp_Vec>(pts.arcEnds.second() - pts.center);
             double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
             pts.arcCW = (angle < 0.0);
         }
@@ -1149,8 +1151,8 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
         if (pts.isArc) {
             // part of ellipse
             gp_Ax1 axis = ellipse.Axis();
-            gp_Vec startVec = DrawUtil::togp_Vec(pts.arcEnds.first() - pts.center);
-            gp_Vec endVec = DrawUtil::togp_Vec(pts.arcEnds.second() - pts.center);
+            gp_Vec startVec = DrawUtil::to<gp_Vec>(pts.arcEnds.first() - pts.center);
+            gp_Vec endVec = DrawUtil::to<gp_Vec>(pts.arcEnds.second() - pts.center);
             double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
             pts.arcCW = (angle < 0.0);
         }
@@ -1178,8 +1180,8 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
             if (pts.isArc) {
                 // part of circle
                 gp_Ax1 axis = circle.Axis();
-                gp_Vec startVec = DrawUtil::togp_Vec(pts.arcEnds.first() - pts.center);
-                gp_Vec endVec = DrawUtil::togp_Vec(pts.arcEnds.second() - pts.center);
+                gp_Vec startVec = DrawUtil::to<gp_Vec>(pts.arcEnds.first() - pts.center);
+                gp_Vec endVec = DrawUtil::to<gp_Vec>(pts.arcEnds.second() - pts.center);
                 double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
                 pts.arcCW = (angle < 0.0);
             }
@@ -1217,13 +1219,13 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (5)";
             throw Base::RuntimeError(ssMessage.str());
         }
-        if (geom0->getGeomType() != TechDraw::GeomType::GENERIC) {
+        if (geom0->getGeomType() != GeomType::GENERIC) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " first 2d reference is a "
                       << geom0->geomTypeName();
             throw Base::RuntimeError(ssMessage.str());
         }
-        if (geom1->getGeomType() != TechDraw::GeomType::GENERIC) {
+        if (geom1->getGeomType() != GeomType::GENERIC) {
             std::stringstream ssMessage;
             ssMessage << getNameInDocument() << " second 2d reference is a "
                       << geom0->geomTypeName();
@@ -1315,7 +1317,7 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
     if (!haveIntersection) {
         throw Base::RuntimeError("Geometry for 3d angle dimension does not intersect");
     }
-    gp_Pnt gApex = DrawUtil::togp_Pnt(vApex);
+    gp_Pnt gApex = DrawUtil::to<gp_Pnt>(vApex);
 
     gp_Pnt gFar0 = gEnd0;
     if (gStart0.Distance(gApex) > gEnd0.Distance(gApex)) {
@@ -1715,9 +1717,9 @@ double DrawViewDimension::getArcAngle(Base::Vector3d center, Base::Vector3d star
     auto leg0 = startPoint - center;
     auto leg1 = endPoint - startPoint;
     auto referenceDirection = leg0.Cross(leg1);
-    gp_Ax1 axis{DU::togp_Pnt(center), DU::togp_Vec(referenceDirection)};
-    gp_Vec startVec = DrawUtil::togp_Vec(leg0);
-    gp_Vec endVec = DrawUtil::togp_Vec(leg1);
+    gp_Ax1 axis{DU::to<gp_Pnt>(center), DU::to<gp_Vec>(referenceDirection)};
+    gp_Vec startVec = DrawUtil::to<gp_Vec>(leg0);
+    gp_Vec endVec = DrawUtil::to<gp_Vec>(leg1);
     double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
     return angle;
 }
@@ -1975,13 +1977,13 @@ bool DrawViewDimension::leaderIntersectsArc(Base::Vector3d s, Base::Vector3d poi
     const std::vector<std::string>& subElements = References2D.getSubValues();
     int idx = DrawUtil::getIndexFromName(subElements[0]);
     TechDraw::BaseGeomPtr base = getViewPart()->getGeomByIndex(idx);
-    if (base && base->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
+    if (base && base->getGeomType() == GeomType::ARCOFCIRCLE) {
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(base);
         if (aoc->intersectsArc(s, pointOnCircle)) {
             result = true;
         }
     }
-    else if (base && base->getGeomType() == TechDraw::GeomType::BSPLINE) {
+    else if (base && base->getGeomType() == GeomType::BSPLINE) {
         TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(base);
         if (spline->isCircle()) {
             if (spline->intersectsArc(s, pointOnCircle)) {
@@ -2076,7 +2078,7 @@ bool DrawViewDimension::hasOverUnderTolerance() const
 
 bool DrawViewDimension::showUnits() const
 {
-    return Preferences::getPreferenceGroup("Dimensions")->GetBool("ShowUnits", false);
+    return ShowUnits.getValue();
 }
 
 bool DrawViewDimension::useDecimals() const

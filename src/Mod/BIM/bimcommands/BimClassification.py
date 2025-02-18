@@ -29,6 +29,7 @@ import os
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
 class BIM_Classification:
@@ -63,11 +64,15 @@ class BIM_Classification:
         # load the form and set the tree model up
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogClassification.ui")
         self.form.setWindowIcon(QtGui.QIcon(":/icons/BIM_Classification.svg"))
+        self.form.groupMode.setItemIcon(0, QtGui.QIcon(":/icons/Arch_SectionPlane_Tree.svg")) # Alphabetical
+        self.form.groupMode.setItemIcon(1, QtGui.QIcon(":/icons/IFC.svg")) # Type
+        self.form.groupMode.setItemIcon(2, QtGui.QIcon(":/icons/Arch_Material.svg")) # Material
+        self.form.groupMode.setItemIcon(3, QtGui.QIcon(":/icons/Document.svg")) # Model structure
 
         # restore saved values
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
-        w = p.GetInt("BimClassificationDialogWidth", 629)
-        h = p.GetInt("BimClassificationDialogHeight", 516)
+        self.form.onlyVisible.setChecked(PARAMS.GetInt("BimClassificationVisibleState", 0))
+        w = PARAMS.GetInt("BimClassificationDialogWidth", 629)
+        h = PARAMS.GetInt("BimClassificationDialogHeight", 516)
         self.form.resize(w, h)
 
         # add modified search box from bimmaterial
@@ -151,6 +156,7 @@ class BIM_Classification:
         self.form.treeClass.itemDoubleClicked.connect(self.apply)
         self.form.search.up.connect(self.onUpArrow)
         self.form.search.down.connect(self.onDownArrow)
+        self.form.onlyVisible.stateChanged.connect(self.onVisible)
 
         # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()
@@ -649,6 +655,10 @@ class BIM_Classification:
             i = self.form.treeClass.currentItem()
             if self.form.treeClass.itemBelow(i):
                 self.form.treeClass.setCurrentItem(self.form.treeClass.itemBelow(i))
+
+    def onVisible(self, index):
+        PARAMS.SetInt("BimClassificationVisibleState", index)
+        self.updateObjects()
 
     def getIcon(self,obj):
         """returns a QIcon for an object"""

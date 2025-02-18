@@ -22,10 +22,10 @@ protected:
     {
         createTestDoc();
         std::string testPath = App::Application::getHomePath() + "/tests/brepfiles/";
-        _fuse = dynamic_cast<Part::Fuse*>(_doc->addObject("Part::Fuse"));
-        _cylinder1 = dynamic_cast<Part::ImportBrep*>(_doc->addObject("Part::ImportBrep"));
+        _fuse = _doc->addObject<Part::Fuse>();
+        _cylinder1 = _doc->addObject<Part::ImportBrep>();
         _cylinder1->FileName.setValue(testPath + "cylinder1.brep");
-        _helix1 = dynamic_cast<Part::ImportBrep*>(_doc->addObject("Part::ImportBrep"));
+        _helix1 = _doc->addObject<Part::ImportBrep>();
         _helix1->FileName.setValue(testPath + "helix1.brep");
 
         // Load

@@ -25,7 +25,7 @@
 
 #include <App/DocumentObject.h>
 #include <Gui/Control.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>

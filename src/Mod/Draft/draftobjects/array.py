@@ -65,15 +65,18 @@ class Array(DraftLink):
 
     def onDocumentRestored(self, obj):
         super(Array, self).onDocumentRestored(obj)
-        if hasattr(obj, "Count"):
+        # Count property was added in v0.21 and PlacementList property was added
+        # for non-link arrays in v1.1, obj should be OK if both are present:
+        if hasattr(obj, "Count") and hasattr(obj, "PlacementList"):
             return
-        self.update_properties_0v21(obj)
 
-    def update_properties_0v21(self, obj):
+        if not hasattr(obj, "Count"):
+            _wrn("v0.21, " + obj.Label + ", " + translate("draft", "added property 'Count'"))
+        if not hasattr(obj, "PlacementList"):
+            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added hidden property 'PlacementList'"))
+
         self.set_general_properties(obj)
-        self.execute(obj) # Required to update Count to the correct value.
-        _wrn("v0.21, " + obj.Label + ", "
-             + translate("draft", "added property 'Count'"))
+        self.execute(obj) # Required to update Count and/or PlacementList.
 
     def set_properties(self, obj):
         """Set properties only if they don't exist."""
@@ -140,6 +143,16 @@ class Array(DraftLink):
                             _tip)
             obj.Count = 0
             obj.setEditorMode("Count", 1)  # Read only
+
+        if not self.use_link:
+            if "PlacementList" not in properties:
+                _tip = QT_TRANSLATE_NOOP("App::Property",
+                                         "The placement for each array element")
+                obj.addProperty("App::PropertyPlacementList",
+                                "PlacementList",
+                                "Objects",
+                                _tip)
+                obj.PlacementList = []
 
     def set_ortho_properties(self, obj):
         """Set orthogonal properties only if they don't exist."""

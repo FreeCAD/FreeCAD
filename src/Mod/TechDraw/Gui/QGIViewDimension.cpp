@@ -69,6 +69,7 @@
 
 using namespace TechDraw;
 using namespace TechDrawGui;
+using Format = DimensionFormatter::Format;
 
 enum SnapMode
 {
@@ -522,19 +523,19 @@ void QGIDatumLabel::setToleranceString()
     std::pair<std::string, std::string> labelTexts, unitTexts;
 
     if (dim->ArbitraryTolerances.getValue()) {
-        labelTexts = dim->getFormattedToleranceValues(1);//copy tolerance spec
+        labelTexts = dim->getFormattedToleranceValues(Format::FORMATTED);//copy tolerance spec
         unitTexts.first = "";
         unitTexts.second = "";
     }
     else {
         if (dim->isMultiValueSchema()) {
-            labelTexts = dim->getFormattedToleranceValues(0);//don't format multis
+            labelTexts = dim->getFormattedToleranceValues(Format::UNALTERED);//don't format multis
             unitTexts.first = "";
             unitTexts.second = "";
         }
         else {
-            labelTexts = dim->getFormattedToleranceValues(1);// prefix value [unit] postfix
-            unitTexts = dim->getFormattedToleranceValues(2); //just the unit
+            labelTexts = dim->getFormattedToleranceValues(Format::FORMATTED);// prefix value [unit] postfix
+            unitTexts = dim->getFormattedToleranceValues(Format::UNIT); //just the unit
         }
     }
 
@@ -553,19 +554,6 @@ void QGIDatumLabel::setToleranceString()
         m_tolTextOver->show();
     }
 
-    updateFrameRect();
-}
-
-void QGIDatumLabel::setUnitString(QString text)
-{
-    prepareGeometryChange();
-    if (text.isEmpty()) {
-        m_unitText->hide();
-    }
-    else {
-        m_unitText->setPlainText(text);
-        m_unitText->show();
-    }
     updateFrameRect();
 }
 
@@ -682,7 +670,7 @@ QGIViewDimension::QGIViewDimension() : dvDimension(nullptr), hasHover(false), m_
     // needs phase 2 of autocorrect to be useful
     // m_refFlag = new QGCustomSvg();
     // m_refFlag->setParentItem(this);
-    // m_refFlag->load(QString::fromUtf8(":/icons/TechDraw_RefError.svg"));
+    // m_refFlag->load(QStringLiteral(":/icons/TechDraw_RefError.svg"));
     // m_refFlag->setZValue(ZVALUE::LOCK);
     // m_refFlag->hide();
 }
@@ -844,10 +832,11 @@ void QGIViewDimension::updateDim()
     }
 
     QString labelText =
-        QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str());// pre value [unit] post
+        // what about fromStdString?
+        QString::fromUtf8(dim->getFormattedDimensionValue(Format::FORMATTED).c_str());// pre value [unit] post
     if (dim->isMultiValueSchema()) {
         labelText =
-            QString::fromUtf8(dim->getFormattedDimensionValue(0).c_str());//don't format multis
+            QString::fromUtf8(dim->getFormattedDimensionValue(Format::UNALTERED).c_str());//don't format multis
     }
 
     QFont font = datumLabel->getFont();

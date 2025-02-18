@@ -81,10 +81,14 @@ class ifc_observer:
     def slotChangedDocument(self, doc, prop):
         """Watch document IFC properties"""
 
+        # only look at locked IFC documents
+        if not "IfcFilePath" in doc.PropertiesList:
+            return
+
         from nativeifc import ifc_tools  # lazy import
         from nativeifc import ifc_status
 
-        if prop == "Schema" and "IfcFilePath" in doc.PropertiesList:
+        if prop == "Schema":
             schema = doc.Schema
             ifcfile = ifc_tools.get_ifcfile(doc)
             if ifcfile:
@@ -101,6 +105,10 @@ class ifc_observer:
                         ]
                         if len(child) == 1:
                             child[0].StepId = new_id
+        elif prop == "Label":
+            ifcfile = ifc_tools.get_ifcfile(doc)
+            project = ifc_tools.get_ifc_element(doc)
+            ifc_tools.set_attribute(ifcfile, project, "Name", doc.Label)
 
     def slotCreatedObject(self, obj):
         """If this is an IFC document, turn the object into IFC"""

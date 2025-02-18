@@ -59,7 +59,7 @@
 
 #include <Gui/GLBuffer.h>
 #include <Gui/SoFCInteractiveElement.h>
-#include <Gui/SoFCSelectionAction.h>
+#include <Gui/Selection/SoFCSelectionAction.h>
 
 #include "SoFCIndexedFaceSet.h"
 

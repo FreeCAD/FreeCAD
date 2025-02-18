@@ -50,7 +50,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Application.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Inventor/SbVec3d.h>
 
 #include "DlgProjectionOnSurface.h"
@@ -165,8 +165,7 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget* parent)
     }
     this->attachDocument(m_partDocument);
     m_partDocument->openTransaction("Project on surface");
-    m_projectionObject = dynamic_cast<Part::Feature*>(
-        m_partDocument->addObject("Part::Feature", "Projection Object"));
+    m_projectionObject = m_partDocument->addObject<Part::Feature>("Projection Object");
     if (!m_projectionObject) {
         throw Base::ValueError(QString(tr("Can not create a projection object!!!")).toUtf8());
     }
@@ -1557,8 +1556,7 @@ TaskProjectOnSurface::TaskProjectOnSurface(App::Document* doc)
 {
     setDocumentName(doc->getName());
     doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Project on surface"));
-    auto obj = doc->addObject("Part::ProjectOnSurface", "Projection");
-    auto feature = dynamic_cast<Part::ProjectOnSurface*>(obj);
+    auto feature = doc->addObject<Part::ProjectOnSurface>("Projection");
     widget = new DlgProjectOnSurface(feature);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_ProjectionOnSurface"),
                                          widget->windowTitle(), true, nullptr);

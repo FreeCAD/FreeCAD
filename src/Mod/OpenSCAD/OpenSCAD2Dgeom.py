@@ -34,7 +34,7 @@ class Overlappingfaces():
     def __init__(self,facelist):
         self.sortedfaces = sorted(facelist,key=(lambda shape: shape.Area),reverse=True)
         self.builddepdict()
-        
+
     @staticmethod
     def dofacesoverlapboundbox(bigface,smallface):
         return bigface.BoundBox.isIntersection(smallface.BoundBox)
@@ -196,7 +196,7 @@ class Overlappingfaces():
                     toolface=fusefaces([faces[tfi] for tfi in directchildren])
                     faces[fi]=faces[fi].cut(toolface)
                     removefaces(directchildren)
-                
+
         faces =[face for index,face in enumerate(faces) if index not in finishedwith]
         return fusefaces(faces)
 

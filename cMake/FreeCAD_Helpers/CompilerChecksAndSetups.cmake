@@ -17,9 +17,9 @@ macro(CompilerChecksAndSetups)
         add_definitions(-DHAVE_SNPRINTF)
     endif()
 
-    # Allow developers to use Boost < 1.65
+    # Allow developers to use Boost < 1.74
     if (NOT BOOST_MIN_VERSION)
-        set(BOOST_MIN_VERSION 1.65)
+        set(BOOST_MIN_VERSION 1.74)
     endif()
 
     # For older cmake versions the variable 'CMAKE_CXX_COMPILER_VERSION' is missing
@@ -82,6 +82,15 @@ macro(CompilerChecksAndSetups)
                 endif()
             endif()
         endif(BUILD_DYNAMIC_LINK_PYTHON)
+
+        if(BUILD_USE_LIBCXX)
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+        endif()
+
+        if(BUILD_ENABLE_TIME_TRACE)
+            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ftime-trace")
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftime-trace")
+        endif()
     endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
     if(CMAKE_COMPILER_IS_CLANGXX)

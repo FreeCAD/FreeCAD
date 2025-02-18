@@ -29,7 +29,7 @@
 #include <App/FeaturePythonPyImp.h>
 #include <App/GroupExtension.h>
 #include <Gui/Application.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
 

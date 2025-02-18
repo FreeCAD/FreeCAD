@@ -191,7 +191,7 @@ void QGIViewAnnotation::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 
     const std::vector<std::string>& values = annotation->Text.getValues();
     DlgStringListEditor dlg(values, Gui::getMainWindow());
-    dlg.setWindowTitle(QString::fromUtf8("Annotation Text Editor"));
+    dlg.setWindowTitle(QStringLiteral("Annotation Text Editor"));
     if (dlg.exec() == QDialog::Accepted) {
         App::GetApplication().setActiveTransaction("Set Annotation Text");
         annotation->Text.setValues(dlg.getTexts());

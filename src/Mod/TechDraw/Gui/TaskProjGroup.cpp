@@ -76,6 +76,7 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     ui->setupUi(this);
 
     m_page = view->findParentPage();
+    m_viewName = view->getNameInDocument();
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_page);
     auto* dvp = static_cast<ViewProviderPage*>(vp);
@@ -496,7 +497,7 @@ void TaskProjGroup::projectionTypeChanged(QString qText)
         return;
     }
 
-    if (qText == QString::fromUtf8("Page")) {
+    if (qText == QStringLiteral("Page")) {
         multiView->ProjectionType.setValue("Default");
     }
     else {
@@ -768,7 +769,7 @@ void TaskProjGroup::setUiPrimary()
 
 QString TaskProjGroup::formatVector(Base::Vector3d vec)
 {
-    QString data = QString::fromLatin1("[%1 %2 %3]")
+    QString data = QStringLiteral("[%1 %2 %3]")
         .arg(QLocale().toString(vec.x, 'f', 2),
              QLocale().toString(vec.y, 'f', 2),
              QLocale().toString(vec.z, 'f', 2));
@@ -797,8 +798,13 @@ bool TaskProjGroup::apply()
 
 bool TaskProjGroup::accept()
 {
-    Gui::Document* doc = Gui::Application::Instance->getDocument(view->getDocument());
+    Gui::Document* doc = Gui::Application::Instance->getDocument(m_page->getDocument());
     if (!doc) {
+        return false;
+    }
+    auto viewCheck = m_page->getDocument()->getObject(m_viewName.c_str());
+    if (!viewCheck) {
+        // view has been deleted while this dialog is open
         return false;
     }
 
@@ -814,8 +820,14 @@ bool TaskProjGroup::accept()
 
 bool TaskProjGroup::reject()
 {
-    Gui::Document* doc = Gui::Application::Instance->getDocument(view->getDocument());
+    Gui::Document* doc = Gui::Application::Instance->getDocument(m_page->getDocument());
     if (!doc) {
+        return false;
+    }
+
+    auto viewCheck = m_page->getDocument()->getObject(m_viewName.c_str());
+    if (!viewCheck) {
+        // view has been deleted while this dialog is open
         return false;
     }
 

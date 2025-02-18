@@ -397,8 +397,7 @@ bool TaskSurfaceFinishSymbols::accept()
 {
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Surface Finish Symbols"));
     App::Document *doc = Application::Instance->activeDocument()->getDocument();
-    App::DocumentObject *docObject = doc->addObject("TechDraw::DrawViewSymbol", "SurfaceSymbol");
-    TechDraw::DrawViewSymbol *surfaceSymbol = dynamic_cast<TechDraw::DrawViewSymbol*>(docObject);
+    auto* surfaceSymbol = doc->addObject<TechDraw::DrawViewSymbol>("SurfaceSymbol");
     surfaceSymbol->Symbol.setValue(completeSymbol());
     surfaceSymbol->Rotation.setValue(ui->leAngle->text().toDouble());
 
