@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include "PreCompiled.h"   // NOLINT
 #ifndef _PreComp_
 # include <QDomDocument>
 # include <QFile>
@@ -223,11 +223,11 @@ void QGISVGTemplate::createClickHandles()
 
         double textHeight{0};
         constexpr int MaxLevels{4};
-        TextAttributes attributes;
+        SvgTextAttributes attributes;
         findTextAttributesForElement(attributes, tspan, MaxLevels);
 
         auto family = attributes.family().isEmpty() ? QString::fromUtf8("Sans") : attributes.family();
-        auto align = attributes.align().isEmpty() ? QString::fromUtf8("start") : attributes.align();
+        auto anchor = attributes.anchor().isEmpty() ? QString::fromUtf8("start") : attributes.anchor();
         constexpr double PixelsPerMM{3.78};     // based on 96px / inch
         if (attributes.size() == 0) {
             textHeight = Preferences::labelFontSizeMM() * PixelsPerMM;  // pixels
@@ -253,10 +253,10 @@ void QGISVGTemplate::createClickHandles()
         const QString endAnchorToken{QString::fromUtf8("end")};
 
         constexpr double hPad{2.0};
-        if (align == middleAnchorToken) {
+        if (anchor == middleAnchorToken) {
             x = x - (clickWidth / static_cast<double>(2)) ;
             x -= (hPad + hPad + hPad);
-        } else if (align == endAnchorToken) {
+        } else if (anchor == endAnchorToken) {
             x = x - clickWidth;
         } else {
             x -= hPad;
@@ -291,150 +291,6 @@ void QGISVGTemplate::createClickHandles()
         return true;
     });
 }
-
-// class TextInterpreter begins
-void QGISVGTemplate::findTextAttributesForElement(TextAttributes& attributes, QDomElement element, int maxlevels, int thislevel)
-{
-    if (thislevel > maxlevels) {
-        // we give up here
-        return;
-    }
-
-    const QString StyleAttrName{QString::fromUtf8("style")};
-    const QString SizeAttrName{QString::fromUtf8("font-size")};
-    const QString FamilyAttrName{QString::fromUtf8("font-family")};
-    const QString AnchorAttrName{QString::fromUtf8("text-anchor")};
-
-    QString styleValue = element.attribute(StyleAttrName);
-    if (!styleValue.isEmpty()) {
-        QString styleFamily = findFamilyInStyle(styleValue);
-        if (!styleFamily.isEmpty() &&
-            attributes.family().isEmpty()) {
-            attributes.setFamily(styleFamily);
-        }
-
-        double styleSize = findFontSizeInStyle(styleValue);
-        if (styleSize != 0  &&
-            attributes.size() == 0) {
-            attributes.setSize(styleSize);
-        }
-
-        QString styleAlign = findAlignInStyle(styleValue);
-        if (!styleAlign.isEmpty() &&
-            attributes.align().isEmpty()) {
-            attributes.setAlign(styleAlign);
-        }
-    }
-
-    if (attributes.finished()) {
-        return;
-    }
-
-    // check for a font-size attribute for element
-    if (attributes.size() == 0) {
-        QString sizeValue = element.attribute(SizeAttrName);
-        if (!sizeValue.isEmpty()) {
-            auto newSize = findFontSizeInAttribute(sizeValue);
-            if (newSize != 0 &&
-                attributes.size() == 0) {
-                attributes.setSize(newSize);
-            }
-        }
-    }
-
-    // check for a font-family attribute for element
-    if (attributes.family().isEmpty()) {
-        QString familyValue = element.attribute(FamilyAttrName);
-        if (!familyValue.isEmpty()) {
-            attributes.setFamily(familyValue);
-        }
-    }
-
-    // check for a text-anchor attribute for element
-    if (attributes.align().isEmpty()) {
-        QString anchorValue = element.attribute(AnchorAttrName);
-        if (!anchorValue.isEmpty()) {
-            attributes.setAlign(anchorValue);
-        }
-    }
-    if (!attributes.finished()) {
-        // try next level
-        auto parent = element.parentNode().toElement();
-        if (!parent.isNull()) {
-            // look harder
-            findTextAttributesForElement(attributes, parent, maxlevels, ++thislevel);
-        }
-    }
-}
-
-QString QGISVGTemplate::findRegexInString(QRegularExpression rx, QString searchThis)
-{
-    if (searchThis.isEmpty()) {
-        return {};
-    }
-
-    QRegularExpressionMatch match;
-
-    int pos{0};
-    pos = searchThis.indexOf(rx, 0, &match);
-    if (pos != -1) {
-        return match.captured(match.lastCapturedIndex());
-    }
-
-    return {};
-}
-
-
-//! find the font-family hidden in a style string
-QString QGISVGTemplate::findFamilyInStyle(QString style)
-{
-    // /font-family:([^;]+);/gm
-    //                                          style="font-family:Arial;...
-    QRegularExpression rxFontSize(QString::fromUtf8(R"(font-family:([^;]+)[;"]*)"));
-    return findRegexInString(rxFontSize, style);
-}
-
-
-//! find the font-family hidden in a style string
-QString QGISVGTemplate::findAlignInStyle(QString style)
-{
-    //                                          style="text-anchor:middle;">
-    QRegularExpression rxTextAnchor(QString::fromUtf8(R"(text-anchor:([^;]+)[;"]*)"));
-    return findRegexInString(rxTextAnchor, style);
-}
-
-
-//! find the font size hidden in a style string
-double QGISVGTemplate::findFontSizeInStyle(QString style)
-{
-    //                                          style="font-size:2.82222px;">
-    QRegularExpression rxFontSize(QString::fromUtf8(R"(font-size:([0-9]*\.?[0-9]*)\D)"));
-    auto numberString = findRegexInString(rxFontSize, style);
-    if (numberString.isEmpty()) {
-        return 0.0;
-    }
-    return numberString.toDouble();
-}
-
-
-//! find the numbers in a font-size attribute text
-double QGISVGTemplate::findFontSizeInAttribute(QString attrText)
-{
-    //                                                 "3.95px"
-    QRegularExpression rxFontSize(QString::fromUtf8(R"(([0-9]*\.?[0-9]*)\D)"));
-    auto numberString = findRegexInString(rxFontSize, attrText);
-    if (numberString.isEmpty()) {
-        return 0.0;
-    }
-    return numberString.toDouble();
-}
-// end TextInterpreter
-
-bool TextAttributes::finished() const
-{
-    return !(family().isNull() || align().isNull() || size() == 0);
-}
-
 
 
 #include <Mod/TechDraw/Gui/moc_QGISVGTemplate.cpp>

@@ -25,9 +25,6 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <utility>
-
-
 class QGraphicsScene;
 class QGraphicsSvgItem;
 class QSvgRenderer;
@@ -35,43 +32,20 @@ class QFile;
 class QString;
 class QDomElement;
 
+#include <Mod/TechDraw/App/SvgAttributeReader.h>
+#include "QGITemplate.h"
+
 namespace TechDraw
 {
 class DrawSVGTemplate;
 }
 
-#include "QGITemplate.h"
-
 namespace TechDrawGui
 {
 class QGSPage;
 
-class TextAttributes
-{
-public:
-    TextAttributes() : m_size(0)  {}
-
-    TextAttributes(QString  family, const double& size, QString  align) :
-        m_family(std::move(family)), m_size(size), m_align(std::move(align))  {}
-
-    QString family() const  { return m_family; }
-    double size() const { return m_size; }
-    QString align() const { return m_align; }
-
-    void setFamily(const QString& newFamily)  { m_family = newFamily; }
-    void setSize(double newSize)  { m_size = newSize; }
-    void setAlign(const QString& newAlign)  { m_align = newAlign;}
-
-    bool finished() const;
-
-private:
-    QString m_family;
-    double m_size;
-    QString m_align;
-};
-
-
-class TechDrawGuiExport QGISVGTemplate: public QGITemplate
+class TechDrawGuiExport QGISVGTemplate : public TechDrawGui::QGITemplate,
+                                         public TechDraw::SvgAttributeReader
 {
     Q_OBJECT
 
@@ -96,13 +70,6 @@ protected:
 
     void createClickHandles();
     void clearClickHandles();
-
-    static void findTextAttributesForElement(TextAttributes& attributes, QDomElement element, int maxlevels, int thislevel = 0);
-    static QString findRegexInString(QRegularExpression rx, QString searchThis);
-    static QString findFamilyInStyle(QString styleValue);
-    static QString findAlignInStyle(QString styleValue);
-    static double findFontSizeInStyle(QString style);
-    static double findFontSizeInAttribute(QString attrText);
 
 private:
     bool firstTime;
