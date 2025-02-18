@@ -120,6 +120,7 @@ void positionDimText(DrawViewDimension* dim, int indexOffset = 0);
 
 void activateHandler(TechDrawHandler* newHandler)
 {
+    std::unique_ptr<TechDrawHandler> ptr(newHandler);
     auto* mdi = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
     if (!mdi) {
         return;
@@ -134,7 +135,7 @@ void activateHandler(TechDrawHandler* newHandler)
     if (!viewPage) {
         return;
     }
-    viewPage->activateHandler(newHandler);
+    viewPage->activateHandler(ptr.release());
 }
 
 //===========================================================================
@@ -517,8 +518,12 @@ public:
             return;
         }
 
+        App::Document* pageDoc = nullptr;
+        if (auto page = getPage()) {
+            pageDoc = page->getDocument();
+        }
         if (msg.Object.getObjectName().empty()
-            || msg.Object.getDocument() != getPage()->getDocument()) {
+            || (msg.Object.getDocument() != pageDoc)) {
             if (msg.Type == Gui::SelectionChanges::AddSelection) {
                 Gui::Selection().rmvSelection(msg.pDocName, msg.pObjectName, msg.pSubName);
             }
