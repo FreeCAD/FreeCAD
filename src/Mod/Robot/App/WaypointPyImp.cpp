@@ -137,6 +137,27 @@ int WaypointPy::PyInit(PyObject* args, PyObject* kwd)
         getWaypointPtr()->Type = Waypoint::UNDEF;
     }
 
+    auto toDouble = [](PyObject* dargs, const Unit& unit) {
+        {
+            if (PyUnicode_Check(dargs)) {
+                const std::string str(PyUnicode_AsUTF8(dargs));
+                if (const Quantity qty = Quantity::parse(str); qty.getUnit() == unit) {
+                    return qty.getValue();
+                }
+                throw UnitsMismatchError("Wrong unit type!");
+            }
+
+            if (PyFloat_Check(dargs)) {
+                return PyFloat_AsDouble(dargs);
+            }
+            if (PyLong_Check(dargs)) {
+                return static_cast<double>(PyLong_AsLong(dargs));
+            }
+
+            throw UnitsMismatchError("Wrong parameter type!");
+        }
+    };
+
     if (!vel) {
         switch (getWaypointPtr()->Type) {
             case Waypoint::PTP:
@@ -153,7 +174,7 @@ int WaypointPy::PyInit(PyObject* args, PyObject* kwd)
         }
     }
     else {
-        getWaypointPtr()->Velocity = Base::UnitsApi::toDouble(vel, Base::Unit::Velocity);
+        getWaypointPtr()->Velocity = toDouble(vel, Base::Unit::Velocity);
     }
     getWaypointPtr()->Cont = cont ? true : false;
     getWaypointPtr()->Tool = tool;
@@ -162,7 +183,7 @@ int WaypointPy::PyInit(PyObject* args, PyObject* kwd)
         getWaypointPtr()->Acceleration = 100;
     }
     else {
-        getWaypointPtr()->Acceleration = Base::UnitsApi::toDouble(acc, Base::Unit::Acceleration);
+        getWaypointPtr()->Acceleration = toDouble(acc, Base::Unit::Acceleration);
     }
 
     return 0;

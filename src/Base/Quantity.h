@@ -165,25 +165,18 @@ public:
     {
         myFormat = fmt;
     }
-    /// transfer to user preferred unit/potence
+    /// transfer to user preferred unit/potence (whatever that means!)
+    std::string getUserString() const;
     std::string getUserString(double& factor, std::string& unitString) const;
-    std::string getUserString() const
-    {  // to satisfy GCC
-        double dummy1 {};
-        std::string dummy2 {};
-        return getUserString(dummy1, dummy2);
-    }
     std::string getUserString(UnitsSchema* schema, double& factor, std::string& unitString) const;
     std::string getSafeUserString() const;
 
     static Quantity parse(const std::string& string);
 
-    /// returns the unit of the quantity
     const Unit& getUnit() const
     {
         return myUnit;
     }
-    /// set the unit of the quantity
     void setUnit(const Unit& un)
     {
         myUnit = un;

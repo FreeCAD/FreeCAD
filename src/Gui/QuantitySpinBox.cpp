@@ -44,6 +44,7 @@
 #include <Base/Exception.h>
 #include <Base/UnitsApi.h>
 #include <Base/Tools.h>
+#include "Base/UnitsSchema.h"
 
 #include "QuantitySpinBox.h"
 #include "QuantitySpinBox_p.h"
@@ -721,7 +722,7 @@ void QuantitySpinBox::setDecimals(int v)
     updateText(d->quantity);
 }
 
-void QuantitySpinBox::setSchema(const Base::UnitSystem& s)
+void QuantitySpinBox::setSchema(const int s)
 {
     Q_D(QuantitySpinBox);
     d->scheme = Base::UnitsApi::createSchema(s);
@@ -739,7 +740,7 @@ QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor
 {
     Q_D(const QuantitySpinBox);
     std::string unitStr;
-    std::string str = d->scheme ? val.getUserString(d->scheme.get(), factor, unitStr)
+    const std::string str = d->scheme ? val.getUserString(d->scheme.get(), factor, unitStr)
                                 : val.getUserString(factor, unitStr);
     unitString = QString::fromStdString(unitStr);
     return QString::fromStdString(str);

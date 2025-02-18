@@ -2825,20 +2825,23 @@ void Application::initApplication()
     new Base::ScriptProducer( "FreeCADTest",    FreeCADTest    );
 
     // creating the application
-    if (!(mConfig["Verbose"] == "Strict"))
+    if (mConfig["Verbose"] != "Strict") {
         Base::Console().Log("Create Application\n");
-    Application::_pcSingleton = new Application(mConfig);
+    }
+
+    _pcSingleton = new Application(mConfig);
+
 
     // set up Unit system default
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-       ("User parameter:BaseApp/Preferences/Units");
-    Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema",0));
-    Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+    const ParameterGrp::handle hGrp =
+        _pcSingleton->GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
 
-    // In case we are using fractional inches, get user setting for min unit
-    int denom = hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator());
-    Base::QuantityFormat::setDefaultDenominator(denom);
-
+    UnitsApi::setSchema(hGrp->GetInt("UserSchema", UnitsApi::getDefSchemaNum()));
+    UnitsApi::setDecimals(hGrp->GetInt("Decimals", UnitsApi::getDecimals()));
+    QuantityFormat::setDefaultDenominator(
+        hGrp->GetInt("FracInch", UnitsApi::getFractDenominator()));
+    QuantityFormat::setDefaultDenominator(
+        hGrp->GetInt("FracInch", QuantityFormat::getDefaultDenominator()));
 
 #if defined (_DEBUG)
     Base::Console().Log("Application is built with debug information\n");

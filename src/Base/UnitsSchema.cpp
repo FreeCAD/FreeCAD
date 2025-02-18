@@ -21,28 +21,118 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifdef __GNUC__
-#include <unistd.h>
-#endif
 
-#include <QLocale>
-#include <QString>
+#include <iomanip>
+#include <sstream>
+#include <string>
 
 #include "UnitsSchema.h"
+#include "UnitsSchemasData.h"
+#include "UnitsSchemasSpecs.h"
+#include "Exception.h"
+#include "Quantity.h"
 
-using namespace Base;
+using Base::UnitsSchema;
+using Base::UnitsSchemaSpec;
 
-std::string UnitsSchema::toLocale(const Base::Quantity& quant,
-                                  double factor,
-                                  const std::string& unitString) const
+
+UnitsSchema::UnitsSchema(UnitsSchemaSpec spec)
+    : spec {std::move(spec)}
+{}
+
+std::string UnitsSchema::translate(const Quantity& quant) const
+{  // to satisfy GCC
+    double dummy1 {};
+    std::string dummy2;
+    return translate(quant, dummy1, dummy2);
+}
+
+std::string
+UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitString) const
 {
-    QLocale Lc;
-    const QuantityFormat& format = quant.getFormat();
-    if (format.option != QuantityFormat::None) {
-        int opt = format.option;
-        Lc.setNumberOptions(static_cast<QLocale::NumberOptions>(opt));
+    if (spec.translationSpecs.empty()) {
+        return toLocale(quant, 1.0, unitString);
     }
 
-    QString Ln = Lc.toString((quant.getValue() / factor), format.toFormat(), format.precision);
-    return QStringLiteral("%1 %2").arg(Ln, QString::fromStdString(unitString)).toStdString();
+    const auto unitName = quant.getUnit().getTypeString();
+
+    if (spec.translationSpecs.count(unitName) == 0) {
+        // no schema-level translation. Use defaults.
+        factor = 1.0;
+        unitString = quant.getUnit().getString();
+
+        return toLocale(quant, factor, unitString);
+    }
+
+    const auto value = quant.getValue();
+
+    auto isSuitable = [&](const UnitTranslationSpec& row) {
+        return row.threshold > value || row.threshold == 0;  // zero indicates default
+    };
+
+    auto unitSpecs = spec.translationSpecs.at(unitName);
+    const auto unitSpec = std::find_if(unitSpecs.begin(), unitSpecs.end(), isSuitable);
+    if (unitSpec == unitSpecs.end()) {
+        throw RuntimeError("Suitable threshhold not found. Schema: " + spec.name
+                           + " value: " + std::to_string(value));
+    }
+
+    if (unitSpec->factor == 0) {
+        return UnitsSchemasData::runSpecial(unitSpec->unitString, value);
+    }
+
+    factor = unitSpec->factor;
+    unitString = unitSpec->unitString;
+
+    return toLocale(quant, factor, unitString);
+}
+
+std::string
+UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::string& unitString)
+{
+    std::stringstream ss;
+    const QuantityFormat& format = quant.getFormat();
+
+    if (format.format == QuantityFormat::Fixed) {
+        ss << std::fixed;
+    }
+    else if (format.format == QuantityFormat::Scientific) {
+        ss << std::scientific;
+    }
+
+    ss.imbue(std::locale());
+    ss << std::setprecision(format.precision) << quant.getValue() / factor;
+    ss << unitString;
+
+    return ss.str();
+}
+
+bool UnitsSchema::isMultiUnitLength() const
+{
+    return spec.isMultUnitLen;
+}
+
+bool UnitsSchema::isMultiUnitAngle() const
+{
+    return spec.isMultUnitAngle;
+}
+
+std::string UnitsSchema::getBasicLengthUnit() const
+{
+    return spec.basicLengthUnitStr;
+}
+
+std::string UnitsSchema::getName() const
+{
+    return spec.name;
+}
+
+std::string UnitsSchema::getDescription() const
+{
+    return spec.description;
+}
+
+int UnitsSchema::getNum() const
+{
+    return static_cast<int>(spec.num);
 }

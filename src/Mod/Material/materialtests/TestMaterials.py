@@ -158,7 +158,7 @@ class MaterialTestCases(unittest.TestCase):
         # print("ShearModulus " + properties["ShearModulus"])
         print("SpecificHeat " + properties["SpecificHeat"])
         print("ThermalConductivity " + properties["ThermalConductivity"])
-        print("ThermalExpansionCoefficient " + properties["ThermalExpansionCoefficient"])
+        # print("ThermalExpansionCoefficient " + properties["ThermalExpansionCoefficient"])
         print("AmbientColor " + properties["AmbientColor"])
         print("DiffuseColor " + properties["DiffuseColor"])
         print("EmissiveColor " + properties["EmissiveColor"])
@@ -210,8 +210,8 @@ class MaterialTestCases(unittest.TestCase):
         # print("ShearModulus " + properties["ShearModulus"])
         print("SpecificHeat " + steel.getPhysicalValue("SpecificHeat").UserString)
         print("ThermalConductivity " + steel.getPhysicalValue("ThermalConductivity").UserString)
-        print("ThermalExpansionCoefficient " + \
-              steel.getPhysicalValue("ThermalExpansionCoefficient").UserString)
+        # print("ThermalExpansionCoefficient " + \
+        #       steel.getPhysicalValue("ThermalExpansionCoefficient").UserString)
         print("AmbientColor " + steel.getAppearanceValue("AmbientColor"))
         print("DiffuseColor " + steel.getAppearanceValue("DiffuseColor"))
         print("EmissiveColor " + steel.getAppearanceValue("EmissiveColor"))
