@@ -1038,7 +1038,7 @@ double DrawBrokenView::shiftAmountShrink(double pointCoord, Base::Vector3d direc
             }
 
             if (pointCoord > breakItem.highLimit ||
-                DU::fpCompare(pointCoord, breakItem.highLimit, Precision::Confusion()) ) {
+                DU::fpCompare(pointCoord, breakItem.highLimit, EWTOLERANCE) ) {
                 //        h--------l      -ve
                 //    p
                 // point is left/below break
@@ -1068,7 +1068,7 @@ double DrawBrokenView::shiftAmountShrink(double pointCoord, Base::Vector3d direc
             }
 
             if (pointCoord < breakItem.lowLimit  ||
-                DU::fpCompare(pointCoord, breakItem.lowLimit, Precision::Confusion()) ) {
+                DU::fpCompare(pointCoord, breakItem.lowLimit, EWTOLERANCE) ) {
                 //        l--------h      +ve
                 //    p
                 // move right/up by the removed area less the gap
@@ -1113,7 +1113,7 @@ double DrawBrokenView::shiftAmountShrink(double pointCoord, Base::Vector3d direc
 //             }
 
 //             if (pointCoord > breakItem.highLimit  ||
-//                 DU::fpCompare(pointCoord, breakItem.highLimit, Precision::Confusion()) ) {
+//                 DU::fpCompare(pointCoord, breakItem.highLimit, EWTOLERANCE) ) {
 //                 //        h--------l      -ve
 //                 //    p
 
@@ -1146,7 +1146,7 @@ double DrawBrokenView::shiftAmountShrink(double pointCoord, Base::Vector3d direc
 //             }
 
 //             if (pointCoord < breakItem.lowLimit  ||
-//                 DU::fpCompare(pointCoord, breakItem.lowLimit, Precision::Confusion()) ) {
+//                 DU::fpCompare(pointCoord, breakItem.lowLimit, EWTOLERANCE) ) {
 //                 //        l--------h      +ve
 //                 //    p
 //                 // move by the whole removed area
@@ -1198,7 +1198,7 @@ double  DrawBrokenView::getExpandGaps (double pointCoord,
                 continue;
             }
             if (pointCoord > gap.highLimit ||
-                DU::fpCompare(pointCoord, gap.highLimit, Precision::Confusion()) ) {
+                DU::fpCompare(pointCoord, gap.highLimit, EWTOLERANCE) ) {
                 // need to move by full length of associated break
                 fullGaps.push_back(iBreak);
                 iBreak++;
@@ -1217,7 +1217,7 @@ double  DrawBrokenView::getExpandGaps (double pointCoord,
                 continue;
             }
             if (pointCoord < gap.lowLimit ||
-                DU::fpCompare(pointCoord, gap.lowLimit, Precision::Confusion()) ) {
+                DU::fpCompare(pointCoord, gap.lowLimit, EWTOLERANCE) ) {
                 // need to move by full length of associated break
                 fullGaps.push_back(iBreak);
                 iBreak++;
@@ -1262,13 +1262,13 @@ bool DrawBrokenView::moveThisPiece(PieceLimitEntry piece,
     if (isDirectionReversed(moveDirection)) {
         // -ve direction
         if (piece.lowLimit > breakItem.highLimit  ||
-            DU::fpCompare(piece.lowLimit, breakItem.highLimit, Precision::Confusion()) ) {
+            DU::fpCompare(piece.lowLimit, breakItem.highLimit, EWTOLERANCE) ) {
             return true;
         }
     } else {
         // +ve direction
         if (piece.highLimit < breakItem.lowLimit  ||
-            DU::fpCompare(piece.highLimit, breakItem.lowLimit, Precision::Confusion()) ) {
+            DU::fpCompare(piece.highLimit, breakItem.lowLimit, EWTOLERANCE) ) {
             return true;
         }
     }
