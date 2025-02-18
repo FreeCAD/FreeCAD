@@ -272,6 +272,8 @@ SET(TechDrawGuiView_SRCS
     QGIView.h
     QGIArrow.cpp
     QGIArrow.h
+    QGIDatumLabel.cpp
+    QGIDatumLabel.h
     QGIEdge.cpp
     QGIEdge.h
     QGIFace.cpp
