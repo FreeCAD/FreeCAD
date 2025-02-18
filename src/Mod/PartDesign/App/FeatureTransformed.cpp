@@ -35,9 +35,11 @@
 
 #include <array>
 
+#include <App/DynamicProperty.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
+#include <Base/Writer.h>
 #include <Mod/Part/App/modelRefine.h>
 
 #include "FeatureTransformed.h"
@@ -50,6 +52,10 @@
 #include "FeatureSketchBased.h"
 #include "Mod/Part/App/TopoShapeOpCode.h"
 
+#include <sys/wait.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sstream>
 
 using namespace PartDesign;
 
@@ -63,7 +69,7 @@ std::array<char const*, 3> transformModeEnums = {"Transform tool shapes",
                                                  "Transform body",
                                                  nullptr};
 
-Transformed::Transformed()
+Transformed::Transformed() : child_pid(0)
 {
     ADD_PROPERTY(Originals, (nullptr));
     Originals.setSize(0);
@@ -196,6 +202,13 @@ short Transformed::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
+void Transformed::abort()
+{
+    if (child_pid.load() > 0) {
+        kill(child_pid.load(), SIGTERM);
+    }
+}
+
 App::DocumentObjectExecReturn* Transformed::execute()
 {
     if (isMultiTransformChild()) {
@@ -252,7 +265,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
     // Get the support
     Part::Feature* supportFeature = nullptr;
 
-    try {
+    try {    
         supportFeature = getBaseObject();
     }
     catch (Base::Exception& e) {
@@ -272,75 +285,136 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     supportShape.setTransform(Base::Matrix4D());
 
-    auto getTransformedCompShape = [&](const auto& supportShape, const auto& origShape) {
-        std::vector<TopoShape> shapes = {supportShape};
-        TopoShape shape (origShape);
-        int idx=1;
-        auto transformIter = transformations.cbegin();
-        transformIter++;
-        for ( ; transformIter != transformations.end(); transformIter++) {
-            auto opName = Data::indexSuffix(idx++);
-            shapes.emplace_back(shape.makeElementTransform(*transformIter, opName.c_str()));
-        }
-        return shapes;
-    };
+    // Setup pipe for IPC
+    int pipefd[2];
+    if (pipe(pipefd) == -1) {
+        return new App::DocumentObjectExecReturn("Failed to create pipe");
+    }
 
-    switch (mode) {
-        case Mode::TransformToolShapes:
-            // NOTE: It would be possible to build a compound from all original addShapes/subShapes
-            // and then transform the compounds as a whole. But we choose to apply the
-            // transformations to each Original separately. This way it is easier to discover what
-            // feature causes a fuse/cut to fail. The downside is that performance suffers when
-            // there are many originals. But it seems safe to assume that in most cases there are
-            // few originals and many transformations
-            for (auto original : originals) {
-                // Extract the original shape and determine whether to cut or to fuse
-                Part::TopoShape fuseShape;
-                Part::TopoShape cutShape;
+    pid_t pid = fork();
+    if (pid == -1) {
+        close(pipefd[0]);
+        close(pipefd[1]);
+        return new App::DocumentObjectExecReturn("Failed to fork process");
+    }
 
-                auto feature = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(original);
-                if (!feature) {
-                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                        "Exception",
-                        "Only additive and subtractive features can be transformed"));
-                }
+    if (pid == 0) {  // Child process
+        close(pipefd[0]); // Close read end
 
-                feature->getAddSubShape(fuseShape, cutShape);
-                if (fuseShape.isNull() && cutShape.isNull()) {
-                    return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP("Exception",
-                                          "Shape of additive/subtractive feature is empty"));
+        // Move all the heavy computation into try-catch block
+        try {
+            auto getTransformedCompShape = [&](const auto& supportShape, const auto& origShape) {
+                std::vector<TopoShape> shapes = {supportShape};
+                TopoShape shape (origShape);
+                int idx=1;
+                auto transformIter = transformations.cbegin();
+                transformIter++;
+                for ( ; transformIter != transformations.end(); transformIter++) {
+                    auto opName = Data::indexSuffix(idx++);
+                    shapes.emplace_back(shape.makeElementTransform(*transformIter, opName.c_str()));
                 }
-                gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
-                if (!fuseShape.isNull()) {
-                    fuseShape = fuseShape.makeElementTransform(trsf);
-                }
-                if (!cutShape.isNull()) {
-                    cutShape = cutShape.makeElementTransform(trsf);
-                }
-                if (!fuseShape.isNull()) {
-                    supportShape.makeElementFuse(getTransformedCompShape(supportShape, fuseShape));
-                }
-                if (!cutShape.isNull()) {
-                    supportShape.makeElementCut(getTransformedCompShape(supportShape, cutShape));
+                return shapes;
+            };
+
+            switch (mode) {
+                case Mode::TransformToolShapes:
+                    // NOTE: It would be possible to build a compound from all original addShapes/subShapes
+                    // and then transform the compounds as a whole. But we choose to apply the
+                    // transformations to each Original separately. This way it is easier to discover what
+                    // feature causes a fuse/cut to fail. The downside is that performance suffers when
+                    // there are many originals. But it seems safe to assume that in most cases there are
+                    // few originals and many transformations
+                    for (auto original : originals) {
+                        // Extract the original shape and determine whether to cut or to fuse
+                        Part::TopoShape fuseShape;
+                        Part::TopoShape cutShape;
+
+                        auto feature = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(original);
+                        if (!feature) {
+                            close(pipefd[1]);
+                            _exit(1);
+                        }
+
+                        feature->getAddSubShape(fuseShape, cutShape);
+                        if (fuseShape.isNull() && cutShape.isNull()) {
+                            close(pipefd[1]);
+                            _exit(1);
+                        }
+                        gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
+                        if (!fuseShape.isNull()) {
+                            fuseShape = fuseShape.makeElementTransform(trsf);
+                        }
+                        if (!cutShape.isNull()) {
+                            cutShape = cutShape.makeElementTransform(trsf);
+                        }
+                        if (!fuseShape.isNull()) {
+                            supportShape.makeElementFuse(getTransformedCompShape(supportShape, fuseShape));
+                        }
+                        if (!cutShape.isNull()) {
+                            supportShape.makeElementCut(getTransformedCompShape(supportShape, cutShape));
+                        }
+                    }
+                    break;
+                case Mode::TransformBody: {
+                    supportShape.makeElementFuse(getTransformedCompShape(supportShape, supportShape));
+                    break;
                 }
             }
-            break;
-        case Mode::TransformBody: {
-            supportShape.makeElementFuse(getTransformedCompShape(supportShape, supportShape));
-            break;
+
+            supportShape = refineShapeIfActive(supportShape);
+            
+            // Write shape to binary format
+            std::ostringstream str;
+            supportShape.exportBinary(str);
+            std::string dump = str.str();
+            
+            write(pipefd[1], dump.c_str(), dump.size());
+            close(pipefd[1]);
+            _exit(0);  // Exit child process
+        }
+        catch (...) {
+            close(pipefd[1]);
+            _exit(1);  // Exit with error
         }
     }
 
-    supportShape = refineShapeIfActive((supportShape));
-    if (!isSingleSolidRuleSatisfied(supportShape.getShape())) {
-        Base::Console().Warning("Transformed: Result has multiple solids. Only keeping the first.\n");
+    // Parent process
+    close(pipefd[1]); // Close write end
+    child_pid.store(pid);
+    
+    // Read result from pipe
+    std::string result;
+    char buffer[4096];
+    ssize_t count;
+    while ((count = read(pipefd[0], buffer, sizeof(buffer))) > 0) {
+        result.append(buffer, count);
     }
+    close(pipefd[0]);
 
-    this->Shape.setValue(getSolid(supportShape));  // picking the first solid
-    rejected = getRemainingSolids(supportShape.getShape());
+    // Wait for child process
+    int status;
+    waitpid(pid, &status, 0);
 
-    return App::DocumentObject::StdReturn;
+    child_pid.store(-1);
+
+    if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
+        // Process result
+        std::istringstream str(result);
+        Part::TopoShape supportShape;
+        supportShape.importBinary(str);
+
+        if (!isSingleSolidRuleSatisfied(supportShape.getShape())) {
+            Base::Console().Warning("Transformed: Result has multiple solids. Only keeping the first.\n");
+        }
+
+        this->Shape.setValue(getSolid(supportShape));  // picking the first solid
+        rejected = getRemainingSolids(supportShape.getShape());
+        
+        return App::DocumentObject::StdReturn;
+    }
+    else {
+        return new App::DocumentObjectExecReturn("Child process failed");
+    }
 }
 
 TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)

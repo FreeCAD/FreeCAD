@@ -29,6 +29,8 @@
 #include <App/PropertyStandard.h>
 #include "FeatureRefine.h"
 
+#include <atomic>
+
 
 namespace PartDesign
 {
@@ -81,6 +83,10 @@ public:
         return std::list<gp_Trsf>();  // Default method
     }
 
+    /** This is used to abort an ongoing transformation
+     */
+    void abort();
+
     /** @name methods override feature */
     //@{
     /** Recalculate the feature
@@ -99,6 +105,7 @@ public:
      */
     TopoDS_Shape rejected;
 
+
 protected:
     void Restore(Base::XMLReader& reader) override;
     void handleChangedPropertyType(Base::XMLReader& reader,
@@ -109,6 +116,7 @@ protected:
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
 
 private:
+    std::atomic<pid_t> child_pid;
 };
 
 }  // namespace PartDesign
