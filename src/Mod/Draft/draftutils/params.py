@@ -102,7 +102,8 @@ def _param_observer_callback_scalemultiplier(value):
         return
     mw = Gui.getMainWindow()
     sb = mw.statusBar()
-    scale_widget = sb.findChild(QtWidgets.QToolBar,"draft_scale_widget")
+    scale_widget = sb.findChild(QtWidgets.QToolBar,
+                                translate("draftStatusBar", "Draft scale widget"))
     if scale_widget is not None:
         scale_label = init_draft_statusbar.scale_to_label(1 / value)
         scale_widget.scaleLabel.setText(scale_label)
