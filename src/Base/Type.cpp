@@ -72,15 +72,25 @@ std::set<std::string> Type::loadModuleSet;
 
 const Type Type::BadType;
 
+Type::instantiationMethod Type::getInstantiationMethod() const
+{
+    assert(typedata.size() >= 1 && "Type::init() must be called before creating instances");
+    assert(typedata.size() > index && "Type index out of bounds");
+    if (isBad() || typedata.size() <= index) {
+        return nullptr;
+    }
+    return typedata[index]->instMethod;
+}
+
 void* Type::createInstance() const
 {
-    instantiationMethod method = typedata[index]->instMethod;
+    const auto method = getInstantiationMethod();
     return method ? (*method)() : nullptr;
 }
 
 bool Type::canInstantiate() const
 {
-    instantiationMethod method = typedata[index]->instMethod;
+    const auto method = getInstantiationMethod();
     return method != nullptr;
 }
 
@@ -183,11 +193,15 @@ const Type Type::fromKey(TypeId key)
 
 const char* Type::getName() const
 {
+    assert(typedata.size() >= 1
+           && "Type::init() must be called before fetching names, even for bad types");
     return typedata[index]->name.c_str();
 }
 
 const Type Type::getParent() const
 {
+    assert(typedata.size() >= 1
+           && "Type::init() must be called before fetching parents, even for bad types");
     return typedata[index]->parent;
 }
 

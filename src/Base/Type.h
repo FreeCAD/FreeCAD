@@ -134,6 +134,8 @@ public:
     static const std::string getModuleName(const char* className);
 
 private:
+    [[nodiscard]] instantiationMethod getInstantiationMethod() const;
+
     TypeId index {BadTypeIndex};
 
     static std::map<std::string, TypeId> typemap;
