@@ -776,7 +776,8 @@ class BIM_ProjectManager:
             mw = FreeCADGui.getMainWindow()
             if mw:
                 st = mw.statusBar()
-                statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
+                statuswidget = st.findChild(QtGui.QToolBar,
+                                            translate("bimStatusBar", "BIM status widget"))
                 if statuswidget:
                     statuswidget.unitLabel.setText(statuswidget.unitsList[bimunit])
                     # change the unit of the nudge button

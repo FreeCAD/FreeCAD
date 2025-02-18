@@ -258,7 +258,8 @@ def on_activate():
     else:
         checked = False
     mw = FreeCADGui.getMainWindow()
-    statuswidget = mw.findChild(QtGui.QToolBar, "BIMStatusWidget")
+    statuswidget = mw.findChild(QtGui.QToolBar,
+                                translate("bimStatusBar", "BIM status widget"))
     if hasattr(statuswidget, "lock_button"):
         statuswidget.lock_button.setChecked(checked)
     on_toggle_lock(checked, noconvert=True)
@@ -304,7 +305,8 @@ def set_button(checked=False, setchecked=False):
     from PySide import QtGui  # lazy loading
 
     mw = FreeCADGui.getMainWindow()
-    statuswidget = mw.findChild(QtGui.QToolBar, "BIMStatusWidget")
+    statuswidget = mw.findChild(QtGui.QToolBar,
+                                translate("bimStatusBar", "BIM status widget"))
     if hasattr(statuswidget, "lock_button"):
         lock_button = statuswidget.lock_button
         if checked:
@@ -505,7 +507,8 @@ def get_lock_status():
         return PARAMS.GetBool("SingleDoc")
     from PySide import QtGui
     mw = FreeCADGui.getMainWindow()
-    statuswidget = mw.findChild(QtGui.QToolBar, "BIMStatusWidget")
+    statuswidget = mw.findChild(QtGui.QToolBar,
+                                translate("bimStatusBar", "BIM status widget"))
     if hasattr(statuswidget, "lock_button"):
         return statuswidget.lock_button.isChecked()
     else:

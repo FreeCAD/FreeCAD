@@ -41,7 +41,8 @@ class BIM_Nudge:
         mw = FreeCADGui.getMainWindow()
         if mw:
             st = mw.statusBar()
-            statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
+            statuswidget = st.findChild(QtGui.QToolBar,
+                                        translate("bimStatusBar", "BIM status widget"))
             if statuswidget:
                 nudgeValue = statuswidget.nudge.text().replace("&", "")
                 dist = 0
@@ -141,7 +142,8 @@ class BIM_Nudge_Switch(BIM_Nudge):
         mw = FreeCADGui.getMainWindow()
         if mw:
             st = mw.statusBar()
-            statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
+            statuswidget = st.findChild(QtGui.QToolBar,
+                                        translate("bimStatusBar", "BIM status widget"))
             if statuswidget:
                 nudgeValue = statuswidget.nudge.text()
                 nudge = self.getNudgeValue("dist")
