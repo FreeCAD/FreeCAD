@@ -126,7 +126,7 @@ private:
 
     bool isVertical(const TopoDS_Edge& edge, const bool projected = false) const;
     bool isVertical(std::pair<Base::Vector3d, Base::Vector3d>, bool projected = false) const;
-    bool isHorizontal(const TopoDS_Edge& edge,  bool projected = false) const;
+    bool isHorizontal(const TopoDS_Edge& edge, const bool projected = false) const;
 
     TopoDS_Shape compressHorizontal(const TopoDS_Shape& inShape) const;
     TopoDS_Shape compressVertical(const TopoDS_Shape& inShape) const;
