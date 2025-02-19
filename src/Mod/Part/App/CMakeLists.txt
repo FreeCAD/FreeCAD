@@ -564,6 +564,10 @@ SET(Part_SRCS
     TopoShapeMapper.h
     TopoShapeMapper.cpp
     TopoShapeOpCode.h
+    BooleanOperation.cpp
+    BooleanOperation.h
+    AsyncProcessHandle.cpp
+    AsyncProcessHandle.h
     edgecluster.cpp
     edgecluster.h
     MeasureClient.cpp
@@ -607,7 +611,15 @@ if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Part)
 endif()
 
+# Add BooleanWorker executable
+add_executable(BooleanWorker BooleanWorker.cpp ${Part_SRCS} ${FCBRepAlgoAPI_SRCS})
+target_link_libraries(BooleanWorker ${Part_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(BooleanWorker)
+endif()
+
 SET_BIN_DIR(Part Part /Mod/Part)
+SET_BIN_DIR(BooleanWorker BooleanWorker /Mod/Part)
 SET_PYTHON_PREFIX_SUFFIX(Part)
 
-INSTALL(TARGETS Part DESTINATION ${CMAKE_INSTALL_LIBDIR})
+INSTALL(TARGETS Part BooleanWorker DESTINATION ${CMAKE_INSTALL_LIBDIR})
