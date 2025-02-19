@@ -634,7 +634,7 @@ double DrawBrokenView::breaklineLengthFromEdge(const App::DocumentObject& breakO
 }
 
 //! return true if the edge is vertical.
-bool DrawBrokenView::isVertical(const TopoDS_Edge& edge, bool projected) const
+bool DrawBrokenView::isVertical(const TopoDS_Edge& edge, const bool projected) const
 {
     Base::Vector3d stdY{0.0, 1.0, 0.0};
     auto ends = SU::getEdgeEnds(edge);
