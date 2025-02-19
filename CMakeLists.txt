@@ -11,13 +11,6 @@ if(POLICY CMP0175)
     cmake_policy(SET CMP0175 NEW)
 endif()
 
-# policy CMP0072 was introduced with CMake 3.11
-# relates to FindOpenGL module
-# and cache variables OPENGL_gl_LIBRARY, OPENGL_glu_LIBRARY
-if (POLICY CMP0072)
-    set(OpenGL_GL_PREFERENCE LEGACY)
-endif(POLICY CMP0072)
-
 # FindPythonInterp and FindPythonLibs modules are deprecated.
 # Currently, they are still used by shiboken's CMake files
 if (POLICY CMP0148)
