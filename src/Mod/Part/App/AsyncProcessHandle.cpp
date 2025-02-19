@@ -81,7 +81,7 @@ TopoShape AsyncProcessHandle::join()
 
     // Check exit status before processing any data
     if (!WIFEXITED(status) || WEXITSTATUS(status) != 0) {
-        throw Base::RuntimeError("Child process failed");
+        throw Base::RuntimeError("Child process failed, exit status: " + std::to_string(WEXITSTATUS(status)));
     }
 
     // Read result using BooleanOperation's protocol

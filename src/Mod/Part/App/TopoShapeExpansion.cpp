@@ -5643,11 +5643,11 @@ AsyncProcessHandle TopoShape::makeElementBooleanAsync(const char* maker,
         close(stdout_pipe[1]);
 
         // Execute the boolean worker with full path
-        execl("./src/Mod/Part/BooleanWorker", "BooleanWorker", nullptr);
+        execl("./Mod/Part/BooleanWorker", "BooleanWorker", nullptr);
         
         // If we get here, exec failed
         std::cerr << "Failed to execute BooleanWorker" << std::endl;
-        exit(1);
+        exit(2);
     }
 
     // Parent process
