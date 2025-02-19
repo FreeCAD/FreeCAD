@@ -1,11 +1,14 @@
-# As of January 2023 we require CMake 3.16.3
-# see https://forum.freecad.org/viewtopic.php?f=10&t=72173
-# for further info why
-cmake_minimum_required(VERSION 3.16.3 FATAL_ERROR)
+# As of February 2025 we require CMake 3.22.0
+cmake_minimum_required(VERSION 3.22.0 FATAL_ERROR)
 
 # Suppress 'FindBoost module is removed' warning. Will use BoostConfig.cmake instead
 if(POLICY CMP0167)
     cmake_policy(SET CMP0167 NEW)
+endif()
+
+# As of cMake 3.31 add_custom_command() rejects invalid arguments
+if(POLICY CMP0175)
+    cmake_policy(SET CMP0175 NEW)
 endif()
 
 # policy CMP0072 was introduced with CMake 3.11
