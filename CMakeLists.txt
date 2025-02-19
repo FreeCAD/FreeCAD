@@ -11,8 +11,9 @@ if(POLICY CMP0175)
     cmake_policy(SET CMP0175 NEW)
 endif()
 
-# FindPythonInterp and FindPythonLibs modules are deprecated.
-# Currently, they are still used by shiboken's CMake files
+# FindPythonInterp and FindPythonLibs modules are deprecated, but are still in use by
+# all versions of Shiboken2. This policy must be kept at OLD until Shiboken2 is no longer
+# supported
 if (POLICY CMP0148)
     cmake_policy(SET CMP0148 OLD)
 endif()
