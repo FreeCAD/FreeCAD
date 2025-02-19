@@ -124,7 +124,7 @@ private:
     double          breaklineLengthFromEdge(const App::DocumentObject& breakObj) const;
 
 
-    bool isVertical(const TopoDS_Edge& edge,  bool projected = false) const;
+    bool isVertical(const TopoDS_Edge& edge, const bool projected = false) const;
     bool isVertical(std::pair<Base::Vector3d, Base::Vector3d>, bool projected = false) const;
     bool isHorizontal(const TopoDS_Edge& edge,  bool projected = false) const;
 
