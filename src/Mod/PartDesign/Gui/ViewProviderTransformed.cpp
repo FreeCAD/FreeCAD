@@ -207,8 +207,8 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
             cv.notify_one();
         });
 
-        // Wait for a brief moment to see if computation completes quickly
-        {
+        while (!computationDone.load()) {
+            // Wait for a brief moment to see if computation completes quickly
             std::unique_lock<std::mutex> lock(mutex);  // Fixed: std::lock -> std::mutex
             if (!cv.wait_for(lock, std::chrono::milliseconds(3000), 
                 [&]{ return computationDone.load(); }))  // Atomic load
@@ -218,7 +218,6 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
                 
                 if (dialog.exec() == QDialog::Rejected) {
                     pcTransformed->abort();
-                    Base::Console().Warning("Aborting transformation computation\n");
                 }
             }
         }

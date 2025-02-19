@@ -117,6 +117,7 @@ protected:
 
 private:
     Part::AsyncProcessHandle processHandle;
+    std::atomic<bool> wantAbort;
 };
 
 }  // namespace PartDesign

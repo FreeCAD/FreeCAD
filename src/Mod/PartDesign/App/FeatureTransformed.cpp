@@ -198,11 +198,12 @@ short Transformed::mustExecute() const
 
 void Transformed::abort()
 {
-    Base::Console().Error("Aborting transformation: maybe\n");
+    //Base::Console().Error("Aborting transformation: maybe\n");
     if (processHandle.isValid()) {
-        Base::Console().Error("Aborting transformation: yes\n");
+        //Base::Console().Error("Aborting transformation: yes\n");
         processHandle.abort();
     }
+    wantAbort.store(true);
 }
 
 App::DocumentObjectExecReturn* Transformed::execute()
@@ -294,6 +295,8 @@ App::DocumentObjectExecReturn* Transformed::execute()
         return shapes;
     };
 
+    wantAbort.store(false);
+
     switch (mode) {
         case Mode::TransformToolShapes:
             // NOTE: It would be possible to build a compound from all original addShapes/subShapes
@@ -306,6 +309,12 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 // Extract the original shape and determine whether to cut or to fuse
                 Part::TopoShape fuseShape;
                 Part::TopoShape cutShape;
+
+                if (wantAbort.load()) {
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                        "Exception",
+                        "Transformation aborted"));
+                }
 
                 auto feature = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(original);
                 if (!feature) {
@@ -328,17 +337,17 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     cutShape = cutShape.makeElementTransform(trsf);
                 }
                 if (!fuseShape.isNull()) {
-                    processHandle = supportShape.makeElementFuseAsync(getTransformedCompShape(supportShape, fuseShape));
+                    supportShape.makeElementFuseAsync(&processHandle, getTransformedCompShape(supportShape, fuseShape));
                     supportShape = processHandle.join();
                 }
                 if (!cutShape.isNull()) {
-                    processHandle = supportShape.makeElementCutAsync(getTransformedCompShape(supportShape, cutShape));
+                    supportShape.makeElementCutAsync(&processHandle, getTransformedCompShape(supportShape, cutShape));
                     supportShape = processHandle.join();
                 }
             }
             break;
         case Mode::TransformBody: {
-            processHandle = supportShape.makeElementFuseAsync(getTransformedCompShape(supportShape, supportShape));
+            supportShape.makeElementFuseAsync(&processHandle, getTransformedCompShape(supportShape, supportShape));
             supportShape = processHandle.join();
             break;
         }

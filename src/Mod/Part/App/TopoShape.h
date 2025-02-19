@@ -1422,11 +1422,17 @@ public:
         return TopoShape(0, Hasher).makeElementCut({*this, source}, op, tol);
     }
 
-    AsyncProcessHandle
-    makeElementFuseAsync(const std::vector<TopoShape>& shapes, const char* op = nullptr, double tol = -1.0);
+    void
+    makeElementFuseAsync(AsyncProcessHandle* handle,
+                         const std::vector<TopoShape>& shapes,
+                         const char* op = nullptr,
+                         double tol = -1.0);
 
-    AsyncProcessHandle
-    makeElementCutAsync(const std::vector<TopoShape>& shapes, const char* op = nullptr, double tol = -1.0);
+    void
+    makeElementCutAsync(AsyncProcessHandle* handle,
+                        const std::vector<TopoShape>& shapes,
+                        const char* op = nullptr,
+                        double tol = -1.0);
 
     /** Try to simplify geometry of any linear/planar subshape to line/plane
      *
@@ -1869,8 +1875,9 @@ public:
         return TopoShape(Tag, Hasher).makeElementCopy(*this, op, copyGeom, copyMesh);
     }
 
-    AsyncProcessHandle
-    makeElementBooleanAsync(const char* maker,
+    void
+    makeElementBooleanAsync(AsyncProcessHandle* handle,
+                            const char* maker,
                             const std::vector<TopoShape>& shapes,
                             const char* op,
                             double tolerance);

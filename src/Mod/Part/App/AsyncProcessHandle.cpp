@@ -16,38 +16,11 @@
 
 using namespace Part;
 
-AsyncProcessHandle::AsyncProcessHandle(pid_t childPid, int resultFd)
-    : pid(childPid)
-    , fd(resultFd)
+void AsyncProcessHandle::setup(pid_t childPid, int resultFd)
 {
+    pid = childPid;
+    fd = resultFd;
     valid.store(true);
-}
-
-AsyncProcessHandle::AsyncProcessHandle(AsyncProcessHandle&& other) noexcept
-    : pid(other.pid)
-    , fd(other.fd)
-    , valid(other.valid.load())
-{
-    // Invalidate the other object
-    other.pid = -1;
-    other.fd = -1;
-    other.valid.store(false);
-}
-
-AsyncProcessHandle& AsyncProcessHandle::operator=(AsyncProcessHandle&& other) noexcept
-{
-    if (this != &other) {
-        // Transfer ownership
-        pid = other.pid;
-        fd = other.fd;
-        valid = other.valid.load();
-
-        // Invalidate the other object
-        other.pid = -1;
-        other.fd = -1;
-        other.valid.store(false);
-    }
-    return *this;
 }
 
 AsyncProcessHandle::~AsyncProcessHandle()
@@ -75,14 +48,14 @@ bool AsyncProcessHandle::isValid()
 void AsyncProcessHandle::abort()
 {
     if (!isValid()) {
-        Base::Console().Error("Aborting process: not valid\n");
+        //Base::Console().Error("Aborting process: not valid\n");
         return;
     }
 
-    Base::Console().Error("Aborting process: valid\n");
+    //Base::Console().Error("Aborting process: valid\n");
 
     if (pid > 0) {
-        Base::Console().Error("Aborting process: pid > 0 (%d)\n", pid);
+        //Base::Console().Error("Aborting process: pid > 0 (%d)\n", pid);
         kill(pid, SIGTERM);
         // Give it a moment to terminate gracefully
         usleep(100000);  // 100ms

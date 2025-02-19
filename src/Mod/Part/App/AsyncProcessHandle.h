@@ -13,13 +13,10 @@ class TopoShape;
 
 class PartExport AsyncProcessHandle {
 public:
-    AsyncProcessHandle(pid_t childPid, int resultFd);
     AsyncProcessHandle() = default;
-    AsyncProcessHandle(AsyncProcessHandle&& other) noexcept;
-    AsyncProcessHandle& operator=(AsyncProcessHandle&& other) noexcept;
-    AsyncProcessHandle(const AsyncProcessHandle&) = delete;
-    AsyncProcessHandle& operator=(const AsyncProcessHandle&) = delete;
     ~AsyncProcessHandle();
+
+    void setup(pid_t childPid, int resultFd);
 
     // Abort the child process
     void abort();

@@ -62,8 +62,8 @@ BooleanOperation BooleanOperation::readInput(int fd) {
     op_data.op = std::string(op_buffer.begin(), op_buffer.end());
 
     // Read number of shapes
-    uint8_t numShapes;
-    if (!readExact(fd, &numShapes, 1)) {
+    uint64_t numShapes;
+    if (!readExact(fd, &numShapes, sizeof(numShapes))) {
         throw std::runtime_error("Failed to read shape count");
     }
 
@@ -72,9 +72,9 @@ BooleanOperation BooleanOperation::readInput(int fd) {
     }
 
     // Read shapes
-    for (uint8_t i = 0; i < numShapes; i++) {
-        uint32_t size;
-        if (!readExact(fd, &size, 4)) {
+    for (uint64_t i = 0; i < numShapes; i++) {
+        uint64_t size;
+        if (!readExact(fd, &size, sizeof(size))) {
             throw std::runtime_error("Failed to read shape size");
         }
 
@@ -127,19 +127,23 @@ void BooleanOperation::writeInput(int fd) const {
     }
 
     // Write number of shapes
-    uint8_t numShapes = static_cast<uint8_t>(shapes.size());
-    if (!writeExact(fd, &numShapes, 1)) {
+    uint64_t numShapes = static_cast<uint64_t>(shapes.size());
+    if (!writeExact(fd, &numShapes, sizeof(numShapes))) {
         throw std::runtime_error("Failed to write shape count");
     }
 
     // Write shapes
     for (const auto& shape : shapes) {
-        std::ostringstream shape_os;
-        shape.exportBinary(shape_os);
-        std::string brep_data = shape_os.str();
+        // Use a direct buffer approach
+        std::stringbuf buffer;
+        std::ostream os(&buffer);
+        shape.exportBinary(os);
         
-        uint32_t size = brep_data.size();
-        if (!writeExact(fd, &size, 4) ||
+        // Get the buffer view to avoid extra copying
+        std::string brep_data = buffer.str();
+        uint64_t size = brep_data.size();
+
+        if (!writeExact(fd, &size, sizeof(size)) ||
             !writeExact(fd, brep_data.data(), size)) {
             throw std::runtime_error("Failed to write shape data");
         }
@@ -147,9 +151,9 @@ void BooleanOperation::writeInput(int fd) const {
 }
 
 void BooleanOperation::writeResult(int fd, const std::string& data, bool isError) const {
-    uint32_t size = data.size();
+    uint64_t size = data.size();
     
-    if (!writeExact(fd, &size, 4) ||
+    if (!writeExact(fd, &size, sizeof(size)) ||
         !writeExact(fd, &isError, 1) ||
         !writeExact(fd, data.data(), size)) {
         throw std::runtime_error("Failed to write output");
@@ -158,26 +162,26 @@ void BooleanOperation::writeResult(int fd, const std::string& data, bool isError
 
 std::string BooleanOperation::readResult(int fd, bool& isError) {
     // Read size
-    uint32_t size;
-    Base::Console().Error("Reading result size\n");
-    if (!readExact(fd, &size, 4)) {
+    uint64_t size;
+    //Base::Console().Error("Reading result size\n");
+    if (!readExact(fd, &size, sizeof(size))) {
         throw std::runtime_error("Failed to read result size");
     }
-    Base::Console().Error("Result size read: %d\n", size);
+    //Base::Console().Error("Result size read: %d\n", size);
 
     // Read error flag
-    Base::Console().Error("Reading error flag\n");
+    //Base::Console().Error("Reading error flag\n");
     if (!readExact(fd, &isError, 1)) {
         throw std::runtime_error("Failed to read error flag");
     }
-    Base::Console().Error("Error flag read: %d\n", isError);
+    //Base::Console().Error("Error flag read: %d\n", isError);
 
     // Read data
     std::string data(size, '\0');
-    Base::Console().Error("Reading result data\n");
+    //Base::Console().Error("Reading result data\n");
     if (!readExact(fd, data.data(), size)) {
         throw std::runtime_error("Failed to read result data");
     }
-    Base::Console().Error("Result data read\n");
+    //Base::Console().Error("Result data read\n");
     return data;
 }

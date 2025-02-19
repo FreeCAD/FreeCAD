@@ -4131,16 +4131,22 @@ TopoShape::makeElementCut(const std::vector<TopoShape>& shapes, const char* op, 
     return makeElementBoolean(Part::OpCodes::Cut, shapes, op, tol);
 }
 
-AsyncProcessHandle
-TopoShape::makeElementFuseAsync(const std::vector<TopoShape>& shapes, const char* op, double tol)
+void
+TopoShape::makeElementFuseAsync(AsyncProcessHandle* handle,
+                               const std::vector<TopoShape>& shapes,
+                               const char* op,
+                               double tol)
 {
-    return makeElementBooleanAsync(Part::OpCodes::Fuse, shapes, op, tol);
+    return makeElementBooleanAsync(handle, Part::OpCodes::Fuse, shapes, op, tol);
 }
 
-AsyncProcessHandle
-TopoShape::makeElementCutAsync(const std::vector<TopoShape>& shapes, const char* op, double tol)
+void
+TopoShape::makeElementCutAsync(AsyncProcessHandle* handle,
+                              const std::vector<TopoShape>& shapes,
+                              const char* op,
+                              double tol)
 {
-    return makeElementBooleanAsync(Part::OpCodes::Cut, shapes, op, tol);
+    return makeElementBooleanAsync(handle, Part::OpCodes::Cut, shapes, op, tol);
 }
 
 TopoShape& TopoShape::makeElementShape(BRepBuilderAPI_MakeShape& mkShape,
@@ -5581,10 +5587,11 @@ bool TopoShape::fixSolidOrientation()
     return false;
 }
 
-AsyncProcessHandle TopoShape::makeElementBooleanAsync(const char* maker,
-                                         const std::vector<TopoShape>& shapes,
-                                         const char* op,
-                                         double tolerance)
+void TopoShape::makeElementBooleanAsync(AsyncProcessHandle* handle,
+                                        const char* maker,
+                                        const std::vector<TopoShape>& shapes,
+                                        const char* op,
+                                        double tolerance)
 {
     if (!maker) {
         FC_THROWM(Base::CADKernelError, "No maker specified");
@@ -5606,7 +5613,7 @@ AsyncProcessHandle TopoShape::makeElementBooleanAsync(const char* maker,
     // Create pipes for stdin and stdout
     int stdin_pipe[2];  // Parent writes to child's stdin
     int stdout_pipe[2]; // Parent reads from child's stdout
-    
+
     if (pipe(stdin_pipe) == -1 || pipe(stdout_pipe) == -1) {
         // Clean up if second pipe failed
         if (stdin_pipe[0] >= 0) {
@@ -5654,6 +5661,8 @@ AsyncProcessHandle TopoShape::makeElementBooleanAsync(const char* maker,
     // Close unused pipe ends
     close(stdin_pipe[0]);  // Close read end of stdin pipe
     close(stdout_pipe[1]); // Close write end of stdout pipe
+
+    handle->setup(pid, stdout_pipe[0]);
     
     // Create BooleanOperation object and write input
     try {
@@ -5675,9 +5684,6 @@ AsyncProcessHandle TopoShape::makeElementBooleanAsync(const char* maker,
     
     // Close write end of stdin pipe since we're done writing
     close(stdin_pipe[1]);
-    
-    // Return handle with read end of stdout pipe
-    return AsyncProcessHandle(pid, stdout_pipe[0]);
 }
 
 TopoShape& TopoShape::makeElementBoolean(const char* maker,
