@@ -95,7 +95,7 @@ DlgSettingsLightSources::DlgSettingsLightSources(QWidget* parent)
                                  QCheckBox* enabledCheckbox,
                                  std::function<void(bool)> setLightEnabled) {
         light->color = Base::convertTo<SbColor>(colorButton->color());
-        light->intensity = intensitySpinBox->value() / 100.F;
+        light->intensity = Base::fromPercent(intensitySpinBox->value());
         light->direction =
             Base::convertTo<SbVec3f>(azimuthElevationToDirection(horizontalAngleSpinBox->rawValue(),
                                                                  verticalAngleSpinBox->rawValue()));
@@ -161,7 +161,7 @@ DlgSettingsLightSources::DlgSettingsLightSources(QWidget* parent)
         view->getEnvironment()->ambientColor =
             Base::convertTo<SbColor>(ui->ambientLightColor->color());
         view->getEnvironment()->ambientIntensity =
-            ui->ambientLightIntensitySpinBox->value() / 100.F;
+            Base::fromPercent(ui->ambientLightIntensitySpinBox->value());
     };
 
     connect(ui->ambientLightIntensitySpinBox,
