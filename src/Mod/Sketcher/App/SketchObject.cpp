@@ -8368,7 +8368,7 @@ void adjustParameterRange(const TopoDS_Edge &edge,
     double m = (l - f) * 0.5 + f;
     GeomLProp_CLProps prop(origCurve,m,0,Precision::Confusion());
     gp_Pnt midPoint = prop.Value();
-    
+
     // Transform all three points to the world coordinate
     auto trsf = edge.Location().Transformation();
     midPoint.Transform(trsf);
@@ -8750,7 +8750,7 @@ void processEdge(const TopoDS_Edge& edge,
                 Handle(Geom_Ellipse) projCurve = new Geom_Ellipse(elipsDest);
 
                 if (beg.SquareDistance(end) < Precision::Confusion()) {
-                    // projection is an ellipse                    
+                    // projection is an ellipse
                     auto* ellipse = new Part::GeomEllipse();
                     ellipse->setHandle(projCurve);
                     GeometryFacade::setConstruction(ellipse, true);
@@ -8874,7 +8874,7 @@ void processEdge(const TopoDS_Edge& edge,
 
                 Handle(Geom_Ellipse) projCurve = new Geom_Ellipse(elipsDest);
 
-                if (P1.SquareDistance(P2) < Precision::Confusion()) {                    
+                if (P1.SquareDistance(P2) < Precision::Confusion()) {
                     auto* ellipse = new Part::GeomEllipse();
                     ellipse->setHandle(projCurve);
                     GeometryFacade::setConstruction(ellipse, true);
@@ -8911,7 +8911,7 @@ void processEdge(const TopoDS_Edge& edge,
 
             // First, transform the shape to the projection plane local coordinates.
             shape.setPlacement(invPlm * shape.getPlacement());
-            
+
             // Align the z axis of the edge plane to the y axis of the projection
             // plane,  so that the extreme bound will be a line in the x axis direction
             // of the projection plane.
@@ -8926,7 +8926,7 @@ void processEdge(const TopoDS_Edge& edge,
             // Make a copy to work around OCC circular edge transformation bug
             shape = shape.makeElementCopy();
 
-            // Obtain the bounding box (precise version!) and move the extreme points back 
+            // Obtain the bounding box (precise version!) and move the extreme points back
             // to the original location
             auto bbox = shape.getBoundBoxOptimal();
             if (!bbox.IsValid()){
@@ -8973,7 +8973,7 @@ void processEdge(const TopoDS_Edge& edge,
                     }
                 }
 
-            
+
             }
             catch (Standard_Failure& e) {
                 throw Base::CADKernelError(e.GetMessageString());
