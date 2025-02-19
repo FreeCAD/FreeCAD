@@ -146,32 +146,8 @@ else(MSVC)
 endif(MSVC)
 
 
-#SET(CMAKE_BUILD_TYPE "Release") # By default, build in release mode
-#SET(BUILD_SHARED_LIBS ON)
-#SET(LIBRARY_OUTPUT_PATH cmake-build)
 SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
-#INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
-#INCLUDE_DIRECTORIES(inc)
 
-#############
-# FindBoost #
-#############
-#FIND_PACKAGE(Boost REQUIRED)
-#MESSAGE("-- Boost found: ${Boost_FOUND}")
-#INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
-#MESSAGE("Popo: ${Boost_INCLUDE_DIR}")
-
-
-########################################
-# OpenCASCADE include and lib location #
-########################################
-# Find OpenCASCADE library, set include and lib path
-#SET(OCC_INCLUDE_PATH ${OCC_INCLUDE_DIR})
-#SET(OCC_LIB_PATH ${OCC_LIBRARY_DIR})
-
-# Tells CMake where are the required headers
-#INCLUDE_DIRECTORIES(${OCC_INCLUDE_PATH})
-#LINK_DIRECTORIES(${OCC_LIB_PATH})
 
 
 ############################
@@ -179,9 +155,6 @@ SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 ############################
 IF (${CMAKE_SIZEOF_VOID_P} MATCHES "8") # It is 64bit, 32 bit systems returns 4
     ADD_DEFINITIONS(-D_OCC64)
-    IF(CMAKE_COMPILER_IS_GNUCXX)
-    # 0001715: Mefisto Mesh Fails since translated by f2c
-    #    ADD_DEFINITIONS(-DPCLINUX64)
     ENDIF(CMAKE_COMPILER_IS_GNUCXX)
     #MESSAGE("-- Build 64bit")
 ELSE (${CMAKE_SIZEOF_VOID_P} MATCHES "8")
@@ -234,13 +207,6 @@ if(WIN32)
 endif(WIN32)
 
 
-#IF(WIN32)
-#  SET_TARGET_PROPERTIES(Driver PROPERTIES COMPILE_FLAGS "-DMESHDRIVER_EXPORTS")
-#ENDIF(WIN32)
-#IF(MINGW)
-#  SET_TARGET_PROPERTIES(Driver PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-#ENDIF(MINGW)
-
 #############
 # DriverSTL #
 #############
@@ -254,14 +220,6 @@ if(WIN32)
 endif(WIN32)
 
 
-#TARGET_LINK_LIBRARIES(DriverSTL TKernel TKMath Driver SMDS)
-#IF(WIN32)
-#  SET_TARGET_PROPERTIES(DriverSTL PROPERTIES COMPILE_FLAGS "-DMESHDRIVERSTL_EXPORTS")
-#ENDIF(WIN32)
-#IF(MINGW)
-#  SET_TARGET_PROPERTIES(DriverSTL PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-#ENDIF(MINGW)
-
 #############
 # DriverDAT #
 #############
@@ -273,14 +231,6 @@ SET_BIN_DIR(DriverDAT DriverDAT)
 if(WIN32)
     set_target_properties(DriverDAT PROPERTIES COMPILE_FLAGS "-DMESHDRIVERDAT_EXPORTS")
 endif(WIN32)
-
-
-#IF(WIN32)
-# SET_TARGET_PROPERTIES(DriverDAT PROPERTIES COMPILE_FLAGS "-DMESHDRIVERDAT_EXPORTS")
-#ENDIF(WIN32)
-#IF(MINGW)
-#  SET_TARGET_PROPERTIES(DriverDAT PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-#ENDIF(MINGW)
 
 #############
 # DriverUNV #
@@ -295,13 +245,6 @@ if(WIN32)
 endif(WIN32)
 
 
-#IF(WIN32)
-#  SET_TARGET_PROPERTIES(DriverUNV PROPERTIES COMPILE_FLAGS "-DMESHDRIVERUNV_EXPORTS")
-#ENDIF(WIN32)
-#IF(MINGW)
-#  SET_TARGET_PROPERTIES(DriverUNV PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-#ENDIF(MINGW)
-
 ###########
 # SMESHDS #
 ###########
@@ -311,10 +254,6 @@ TARGET_LINK_LIBRARIES(SMESHDS ${SMESH_LIBS} SMDS ${Boost_LIBRARIES} )
 
 SET_BIN_DIR(SMESHDS SMESHDS)
 
-
-#IF(MINGW)
-#  SET_TARGET_PROPERTIES(SMESHDS PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-#ENDIF(MINGW)
 
 #########
 # SMESH #
@@ -329,70 +268,25 @@ if(WIN32)
 endif(WIN32)
  
 
- #IF(WIN32)
-#  SET_TARGET_PROPERTIES(SMESH PROPERTIES COMPILE_FLAGS "-DSMESHimpl_EXPORTS -DSMESHCONTROLS_EXPORTS")
-#ENDIF(WIN32)
-#IF(MINGW)
-#  SET_TARGET_PROPERTIES(SMESH PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-#ENDIF(MINGW)
-
 
 ##############
 # MEFISTO2   #
 ##############
-#if (MSVC)
-    #IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    #    # Mefisto2f.lib was built using f2c which created
-    #    # all function names with an '_' at the end.
-    #    FILE(GLOB MEFISTO2_source_files
-    #        src/MEFISTO2/*.cpp
-    #        inc/Rn.h
-    #        inc/aptrte.h
-    #    )
-    #ELSE(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    #    FILE(GLOB MEFISTO2_source_files
-    #        src/MEFISTO2/*.cpp
-    #        src/MEFISTO2/MEFISTO2F.def
-    #        inc/Rn.h
-    #        inc/aptrte.h
-    #    )
-    #ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
 
-        set(MEFISTO2_source_files
-            src/MEFISTO2/aptrte.cpp
-            src/MEFISTO2/trte.c
-            inc/Rn.h
-            inc/aptrte.h
-        )        
+set(MEFISTO2_source_files
+    src/MEFISTO2/aptrte.cpp
+    src/MEFISTO2/trte.c
+    inc/Rn.h
+    inc/aptrte.h
+)        
     
-#else(MSVC)
-#    FILE(GLOB MEFISTO2_source_files
-#        src/MEFISTO2/*.cpp
-#        src/MEFISTO2/trte.f
-#        inc/Rn.h
-#        inc/aptrte.h
-#    )
-#endif(MSVC)
 
 ADD_LIBRARY(MEFISTO2 SHARED ${MEFISTO2_source_files})
 
 SET_BIN_DIR(MEFISTO2 MEFISTO2)
-#if(MSVC)
-    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS}) # in case of Windows link the prebuild Fortran lib
-    set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS")
-#    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-#        set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS")
-#    else(CMAKE_SIZEOF_VOID_P EQUAL 8)
-#        set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS -D__WATCOM__")
-#    endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
-#elseif(MINGW)
-#    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS} gfortran)
-#    set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS")
-#else(MSVC)
-#    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS} gfortran)
-#    set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "${MEFISTO2_CFLAGS}")
-#endif(MSVC)
 
+TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS}) # in case of Windows link the prebuild Fortran lib
+set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS")
 
 ##############
 # StdMeshers #
@@ -408,14 +302,6 @@ else(WIN32)
     set_target_properties(StdMeshers PROPERTIES COMPILE_FLAGS "${StdMeshers_CFLAGS}")
 endif(WIN32)
 
-
-#SET(StdMeshers_CFLAGS "")
-#IF(WIN32)
-#  SET(StdMeshers_CFLAGS "-DSTDMESHERS_EXPORTS -DMEFISTO2D_EXPORTS")
-#ENDIF(WIN32)
-#IF(MINGW)
-#  SET_TARGET_PROPERTIES(StdMeshers PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-#ENDIF(MINGW)
 
 # Disable for all other compilers but MSVC
 if (BUILD_FEM_NETGEN)
@@ -442,13 +328,6 @@ ELSEIF(NOT NETGEN_VERSION_C LESS NETGEN_VERSION_62) # Version >= 6.2
 ENDIF()
 
 endif (BUILD_FEM_NETGEN)
-
-#IF(WIN32)
-#  SET_TARGET_PROPERTIES(SMESH PROPERTIES COMPILE_FLAGS "-DNETGENPluginimpl_EXPORTS ")
-#ENDIF(WIN32)
-#IF(MINGW)
-#  SET_TARGET_PROPERTIES(SMESH PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-#ENDIF(MINGW)
 
 
 if(WIN32)
