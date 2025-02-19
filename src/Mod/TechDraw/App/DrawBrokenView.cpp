@@ -319,9 +319,9 @@ TopoDS_Shape  DrawBrokenView::compressVertical(const TopoDS_Shape& shapeToCompre
 
 //! returns a half space.  The half space is defined by a plane created by (planePoint,
 //! plane normal) and a point inside the half space (pointInSpace).
-TopoDS_Shape DrawBrokenView::makeHalfSpace(Base::Vector3d planePoint,
-                                           Base::Vector3d planeNormal,
-                                           Base::Vector3d pointInSpace) const
+TopoDS_Shape DrawBrokenView::makeHalfSpace(const Base::Vector3d& planePoint,
+                                           const Base::Vector3d& planeNormal,
+                                           const Base::Vector3d& pointInSpace) const
 {
     auto origin = DU::to<gp_Pnt>(planePoint);
     auto axis   = DU::to<gp_Dir>(planeNormal);
