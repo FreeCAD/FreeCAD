@@ -803,7 +803,8 @@ BreakList DrawBrokenView::makeSortedBreakList(const std::vector<App::DocumentObj
 
 //! find the compressed location of the breaks, and sort the result by lower limit
 BreakList DrawBrokenView::makeSortedBreakListCompressed(const std::vector<App::DocumentObject*>& breaks,
-                                                        Base::Vector3d moveDirection, bool descend) const
+                                                        const Base::Vector3d& moveDirection,
+                                                        const bool descend) const
 {
     // sortedBreaks is in lowLimit order
     auto sortedBreaks = makeSortedBreakList(breaks, moveDirection, descend);
