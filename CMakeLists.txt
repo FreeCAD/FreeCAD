@@ -18,6 +18,12 @@ if(POLICY CMP0148)
     cmake_policy(SET CMP0148 OLD)
 endif()
 
+# As of cMake 3.27, find_package() will look for both case-sensitive and all-uppercase versions
+# of the package. This seems to affect FLANN as included by Pixi
+if(POLICY CMP0144)
+    cmake_policy(SET CMP0144 NEW)
+endif()
+
 # The exec_program command was deprecated in cMake 3.0, and policy CMP0153 was added in cMake
 # 3.28 to control whether this gives a warning (the OLD behavior) or a fatal error (NEW)
 if(POLICY CMP0153)
