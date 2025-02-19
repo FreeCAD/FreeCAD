@@ -5660,7 +5660,7 @@ AsyncProcessHandle TopoShape::makeElementBooleanAsync(const char* maker,
         BooleanOperation op_data;
         op_data.maker = maker_type;
         op_data.shapes = shapes;
-        op_data.op = op;
+        op_data.op = op ? op : ""; // TODO: we really need to be able to pass a null ptr into the child process in order to keep the old behaviour unchanged
         op_data.tolerance = tolerance;
         
         // Write operation data to child's stdin
