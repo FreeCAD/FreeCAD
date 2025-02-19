@@ -14,8 +14,14 @@ endif()
 # FindPythonInterp and FindPythonLibs modules are deprecated, but are still in use by
 # all versions of Shiboken2. This policy must be kept at OLD until Shiboken2 is no longer
 # supported
-if (POLICY CMP0148)
+if(POLICY CMP0148)
     cmake_policy(SET CMP0148 OLD)
+endif()
+
+# The exec_program command was deprecated in cMake 3.0, and policy CMP0153 was added in cMake
+# 3.28 to control whether this gives a warning (the OLD behavior) or a fatal error (NEW)
+if(POLICY CMP0153)
+    cmake_policy(SET CMP0153 NEW)
 endif()
 
 option(FREECAD_USE_CCACHE "Auto detect and use ccache during compilation" ON)
