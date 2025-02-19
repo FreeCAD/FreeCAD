@@ -155,10 +155,6 @@ SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 ############################
 IF (${CMAKE_SIZEOF_VOID_P} MATCHES "8") # It is 64bit, 32 bit systems returns 4
     ADD_DEFINITIONS(-D_OCC64)
-    ENDIF(CMAKE_COMPILER_IS_GNUCXX)
-    #MESSAGE("-- Build 64bit")
-ELSE (${CMAKE_SIZEOF_VOID_P} MATCHES "8")
-    #MESSAGE("-- Build 32bit")
 ENDIF(${CMAKE_SIZEOF_VOID_P} MATCHES "8")
 
 ######################################################
