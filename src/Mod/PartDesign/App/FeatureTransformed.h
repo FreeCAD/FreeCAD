@@ -29,8 +29,8 @@
 #include <App/PropertyStandard.h>
 #include "FeatureRefine.h"
 
-#include <atomic>
-
+// Add include for AsyncProcessHandle
+#include <Mod/Part/App/AsyncProcessHandle.h>
 
 namespace PartDesign
 {
@@ -116,7 +116,7 @@ protected:
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
 
 private:
-    std::atomic<pid_t> child_pid;
+    Part::AsyncProcessHandle processHandle;
 };
 
 }  // namespace PartDesign

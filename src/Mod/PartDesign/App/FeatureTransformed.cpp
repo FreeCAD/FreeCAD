@@ -198,7 +198,11 @@ short Transformed::mustExecute() const
 
 void Transformed::abort()
 {
-    Base::Console().Log("Aborting transformation\n");
+    Base::Console().Error("Aborting transformation: maybe\n");
+    if (processHandle.isValid()) {
+        Base::Console().Error("Aborting transformation: yes\n");
+        processHandle.abort();
+    }
 }
 
 App::DocumentObjectExecReturn* Transformed::execute()
@@ -324,18 +328,18 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     cutShape = cutShape.makeElementTransform(trsf);
                 }
                 if (!fuseShape.isNull()) {
-                    auto handle = supportShape.makeElementFuseAsync(getTransformedCompShape(supportShape, fuseShape));
-                    supportShape = handle.join();
+                    processHandle = supportShape.makeElementFuseAsync(getTransformedCompShape(supportShape, fuseShape));
+                    supportShape = processHandle.join();
                 }
                 if (!cutShape.isNull()) {
-                    auto handle = supportShape.makeElementCutAsync(getTransformedCompShape(supportShape, cutShape));
-                    supportShape = handle.join();
+                    processHandle = supportShape.makeElementCutAsync(getTransformedCompShape(supportShape, cutShape));
+                    supportShape = processHandle.join();
                 }
             }
             break;
         case Mode::TransformBody: {
-            auto handle = supportShape.makeElementFuseAsync(getTransformedCompShape(supportShape, supportShape));
-            supportShape = handle.join();
+            processHandle = supportShape.makeElementFuseAsync(getTransformedCompShape(supportShape, supportShape));
+            supportShape = processHandle.join();
             break;
         }
     }

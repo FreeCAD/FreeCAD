@@ -159,20 +159,25 @@ void BooleanOperation::writeResult(int fd, const std::string& data, bool isError
 std::string BooleanOperation::readResult(int fd, bool& isError) {
     // Read size
     uint32_t size;
+    Base::Console().Error("Reading result size\n");
     if (!readExact(fd, &size, 4)) {
         throw std::runtime_error("Failed to read result size");
     }
+    Base::Console().Error("Result size read: %d\n", size);
 
     // Read error flag
+    Base::Console().Error("Reading error flag\n");
     if (!readExact(fd, &isError, 1)) {
         throw std::runtime_error("Failed to read error flag");
     }
+    Base::Console().Error("Error flag read: %d\n", isError);
 
     // Read data
     std::string data(size, '\0');
+    Base::Console().Error("Reading result data\n");
     if (!readExact(fd, data.data(), size)) {
         throw std::runtime_error("Failed to read result data");
     }
-
+    Base::Console().Error("Result data read\n");
     return data;
 }
