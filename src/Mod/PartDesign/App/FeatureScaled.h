@@ -24,7 +24,9 @@
 #ifndef PARTDESIGN_FeatureScaled_H
 #define PARTDESIGN_FeatureScaled_H
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyFloat.h>
+#include <App/PropertyInteger.h>
+
 #include "FeatureTransformed.h"
 
 

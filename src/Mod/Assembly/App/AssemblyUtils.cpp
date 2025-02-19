@@ -36,7 +36,9 @@
 #include <App/Datums.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
+#include <App/PropertyEnumeration.h>
+#include <App/PropertyFloat.h>
 // #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
 // #include <Base/Console.h>

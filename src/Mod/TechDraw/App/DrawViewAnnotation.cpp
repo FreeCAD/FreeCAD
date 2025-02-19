@@ -23,8 +23,7 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/PropertyPercent.h>
 
 #include "DrawViewAnnotation.h"
 #include "Preferences.h"

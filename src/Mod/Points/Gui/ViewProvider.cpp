@@ -38,6 +38,7 @@
 #endif
 
 #include <App/Document.h>
+#include <App/PropertyColor.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>

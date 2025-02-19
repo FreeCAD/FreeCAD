@@ -45,8 +45,14 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Expression.h>
-#include <App/PropertyGeo.h>
 #include <App/PropertyFile.h>
+#include <App/PropertyColor.h>
+#include <App/PropertyFloatList.h>
+#include <App/PropertyGeo.h>
+#include <App/PropertyIntegerList.h>
+#include <App/PropertyMaterial.h>
+#include <App/PropertyPath.h>
+#include <App/PropertyStringList.h>
 #include <App/PropertyUnits.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>

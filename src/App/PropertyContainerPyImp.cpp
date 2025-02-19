@@ -27,9 +27,11 @@
 #include <sstream>
 #endif
 
-#include "PropertyContainer.h"
-#include "Property.h"
 #include "DocumentObject.h"
+#include "Property.h"
+#include "PropertyContainer.h"
+#include "PropertyEnumeration.h"
+
 #include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include <boost/iostreams/device/array.hpp>

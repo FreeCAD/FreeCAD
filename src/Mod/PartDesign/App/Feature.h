@@ -24,7 +24,6 @@
 #ifndef PARTDESIGN_Feature_H
 #define PARTDESIGN_Feature_H
 
-#include <App/PropertyStandard.h>
 #include <App/SuppressibleExtension.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>

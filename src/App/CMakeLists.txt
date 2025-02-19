@@ -237,19 +237,38 @@ SET(Properties_CPP_SRCS
     DynamicProperty.cpp
     ObjectIdentifier.cpp
     Property.cpp
+    PropertyBool.cpp
+    PropertyBoolList.cpp
+    PropertyColor.cpp
     PropertyContainer.cpp
     PropertyContainerPyImp.cpp
+    PropertyEnumeration.cpp
     PropertyExpressionEngine.cpp
     PropertyFile.cpp
+    PropertyFloat.cpp
+    PropertyFloatConstraint.cpp
+    PropertyFloatList.cpp
+    PropertyFont.cpp
     PropertyGeo.cpp
+    PropertyInteger.cpp
+    PropertyIntegerConstraint.cpp
+    PropertyIntegerList.cpp
+    PropertyIntegerSet.cpp
     PropertyLink.cpp
     PropertyLinkBase.cpp
     PropertyLinkList.cpp
     PropertyLinkSub.cpp
     PropertyLinkSubList.cpp
+    PropertyMap.cpp
+    PropertyMaterial.cpp
+    PropertyPath.cpp
+    PropertyPercent.cpp
+    PropertyPersistentObject.cpp
     PropertyPythonObject.cpp
-    PropertyStandard.cpp
+    PropertyString.cpp
+    PropertyStringList.cpp
     PropertyUnits.cpp
+    PropertyUUID.cpp
     PropertyXLink.cpp
 )
 SET(Properties_HPP_SRCS
@@ -257,18 +276,37 @@ SET(Properties_HPP_SRCS
     DynamicProperty.h
     ObjectIdentifier.h
     Property.h
+    PropertyBool.h
+    PropertyBoolList.h
+    PropertyColor.h
     PropertyContainer.h
+    PropertyEnumeration.h
     PropertyExpressionEngine.h
     PropertyFile.h
+    PropertyFloat.h
+    PropertyFloatConstraint.h
+    PropertyFloatList.h
+    PropertyFont.h
     PropertyGeo.h
+    PropertyInteger.h
+    PropertyIntegerConstraint.h
+    PropertyIntegerList.h
+    PropertyIntegerSet.h
     PropertyLink.h
     PropertyLinkBase.h
     PropertyLinkList.h
     PropertyLinkSub.h
     PropertyLinkSubList.h
+    PropertyMap.h
+    PropertyMaterial.h
+    PropertyPath.h
+    PropertyPercent.h
+    PropertyPersistentObject.h
     PropertyPythonObject.h
-    PropertyStandard.h
+    PropertyString.h
+    PropertyStringList.h
     PropertyUnits.h
+    PropertyUUID.h
     PropertyXLink.h
 )
 SET(Properties_SRCS

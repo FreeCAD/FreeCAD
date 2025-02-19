@@ -25,6 +25,7 @@
 
 #include <map>
 
+#include <App/PropertyColor.h>
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderTextureExtension.h>

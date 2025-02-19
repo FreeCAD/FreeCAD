@@ -27,6 +27,7 @@
 #include <vector>
 
 #include <App/PropertyGeo.h>
+#include <App/PropertyStringList.h>
 
 #include "TopoShape.h"
 #include <TopAbs_ShapeEnum.hxx>

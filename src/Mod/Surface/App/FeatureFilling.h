@@ -23,6 +23,9 @@
 #ifndef SURFACE_FEATUREFILLING_H
 #define SURFACE_FEATUREFILLING_H
 
+#include <App/PropertyFloat.h>
+#include <App/PropertyInteger.h>
+#include <App/PropertyIntegerList.h>
 #include <App/PropertyLinkSubList.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
 #include <Mod/Surface/SurfaceGlobal.h>

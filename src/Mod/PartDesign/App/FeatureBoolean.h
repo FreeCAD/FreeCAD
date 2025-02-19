@@ -25,7 +25,8 @@
 #define PARTDESIGN_FeatureBoolean_H
 
 #include <App/GeoFeatureGroupExtension.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
+#include <App/PropertyEnumeration.h>
 #include "FeatureRefine.h"
 
 

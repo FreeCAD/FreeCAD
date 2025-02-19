@@ -25,13 +25,35 @@
 #define APP_FEATURETEST_H
 
 #include "DocumentObject.h"
+#include "PropertyBool.h"
+#include "PropertyBoolList.h"
+#include "PropertyColor.h"
+#include "PropertyEnumeration.h"
+#include "PropertyFile.h"
+#include "PropertyFloat.h"
+#include "PropertyFloatConstraint.h"
+#include "PropertyFloatList.h"
+#include "PropertyFont.h"
 #include "PropertyGeo.h"
+#include "PropertyInteger.h"
+#include "PropertyIntegerConstraint.h"
+#include "PropertyIntegerList.h"
+#include "PropertyIntegerSet.h"
 #include "PropertyLink.h"
 #include "PropertyLinkList.h"
 #include "PropertyLinkSub.h"
 #include "PropertyLinkSubList.h"
+#include "PropertyMap.h"
+#include "PropertyMaterial.h"
+#include "PropertyPath.h"
+#include "PropertyPath.h"
+#include "PropertyPercent.h"
+#include "PropertyPersistentObject.h"
 #include "PropertyPythonObject.h"
+#include "PropertyString.h"
+#include "PropertyStringList.h"
 #include "PropertyUnits.h"
+#include "PropertyUUID.h"
 
 
 namespace App
@@ -47,7 +69,6 @@ public:
 
     ~FeatureTest() override;
 
-    // Standard Properties (PropertyStandard.h)
     App::PropertyInteger Integer;
     App::PropertyFloat Float;
     App::PropertyBool Bool;
@@ -151,7 +172,6 @@ class FeatureTestColumn: public DocumentObject
 public:
     FeatureTestColumn();
 
-    // Standard Properties (PropertyStandard.h)
     App::PropertyString Column;
     App::PropertyBool Silent;
     App::PropertyInteger Value;
@@ -169,7 +189,6 @@ class FeatureTestRow: public DocumentObject
 public:
     FeatureTestRow();
 
-    // Standard Properties (PropertyStandard.h)
     App::PropertyString Row;
     App::PropertyBool Silent;
     App::PropertyInteger Value;
@@ -199,7 +218,6 @@ class FeatureTestPlacement: public DocumentObject
 public:
     FeatureTestPlacement();
 
-    // Standard Properties (PropertyStandard.h)
     App::PropertyPlacement Input1;
     App::PropertyPlacement Input2;
     App::PropertyPlacement MultLeft;

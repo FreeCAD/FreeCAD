@@ -26,6 +26,7 @@
 #endif
 
 #include <App/Document.h>
+#include <App/PropertyMaterial.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>

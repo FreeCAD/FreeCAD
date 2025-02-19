@@ -23,6 +23,7 @@
 #ifndef FEM_VIEWPROVIDERFEMPOSTOBJECT_H
 #define FEM_VIEWPROVIDERFEMPOSTOBJECT_H
 
+#include <App/PropertyColor.h>
 #include <Base/Observer.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Mod/Fem/FemGlobal.h>

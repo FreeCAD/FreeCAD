@@ -25,7 +25,8 @@
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyString.h>
+#include <App/PropertyStringList.h>
 
 #include "FeatureView.h"
 

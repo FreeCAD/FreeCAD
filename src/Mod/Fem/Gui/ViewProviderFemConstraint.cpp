@@ -36,6 +36,7 @@
 #endif
 
 #include "App/Application.h"
+#include "App/PropertyColor.h"
 #include "Gui/Command.h"
 #include "Gui/Control.h"
 #include "Gui/Document.h"

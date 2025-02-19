@@ -23,6 +23,8 @@
 #ifndef PART_PRIMITIVEFEATURE_H
 #define PART_PRIMITIVEFEATURE_H
 
+#include <App/PropertyIntegerConstraint.h>
+
 #include "AttachExtension.h"
 #include "PrismExtension.h"
 

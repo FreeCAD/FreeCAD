@@ -23,6 +23,8 @@
 #ifndef GUI_VIEWPROVIDER_FEATURE_H
 #define GUI_VIEWPROVIDER_FEATURE_H
 
+#include <App/PropertyColor.h>
+
 #include "ViewProviderDocumentObject.h"
 
 

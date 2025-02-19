@@ -26,6 +26,10 @@
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyColor.h>
+#include <App/PropertyFont.h>
+#include <App/PropertyInteger.h>
+#include <App/PropertyStringList.h>
 #include <App/PropertyUnits.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

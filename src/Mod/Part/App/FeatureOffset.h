@@ -23,7 +23,9 @@
 #ifndef PART_FEATUREOFFSET_H
 #define PART_FEATUREOFFSET_H
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
+#include <App/PropertyEnumeration.h>
+#include <App/PropertyFloat.h>
 
 #include "PartFeature.h"
 

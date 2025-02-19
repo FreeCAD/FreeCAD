@@ -25,6 +25,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/PropertyFloat.h>
 
 #include <Mod/Inspection/InspectionGlobal.h>
 #include <Mod/Points/App/Points.h>

@@ -26,6 +26,7 @@
 
 #include "DocumentObject.h"
 #include "FeaturePython.h"
+#include "PropertyMap.h"
 
 
 namespace App

@@ -29,6 +29,8 @@
 #include "DocumentObjectPy.h"
 #include "LinkBaseExtensionPy.h"
 #include "LinkBaseExtensionPy.cpp"
+#include "PropertyStringList.h"
+
 
 using namespace App;
 

@@ -24,8 +24,10 @@
 #ifndef POINTS_TOOLS_H
 #define POINTS_TOOLS_H
 
-#include <App/DocumentObject.h>
 #include <algorithm>
+
+#include <App/PropertyColor.h>
+#include <App/DocumentObject.h>
 
 namespace Points
 {

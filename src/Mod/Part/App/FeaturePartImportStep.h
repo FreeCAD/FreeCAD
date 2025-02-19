@@ -23,7 +23,7 @@
 #ifndef PART_FEATUREPARTIMPORTSTEP_H
 #define PART_FEATUREPARTIMPORTSTEP_H
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyString.h>
 
 #include "PartFeature.h"
 

@@ -39,6 +39,7 @@
 #endif
 
 #include <App/GeoFeature.h>
+#include <App/PropertyColor.h>
 #include <App/PropertyGeo.h>
 
 #include "Application.h"

@@ -33,6 +33,7 @@
 #endif
 
 #include <App/Datums.h>
+#include <App/PropertyInteger.h>
 #include <Base/Axis.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>

@@ -27,6 +27,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <App/PropertyColor.h>
+#include <App/PropertyIntegerConstraint.h>
 #include <App/PropertyUnits.h>
 
 #include <Mod/TechDraw/App/DrawLeaderLine.h>

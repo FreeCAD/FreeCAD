@@ -35,6 +35,7 @@
 # include <Standard_Version.hxx>
 #endif
 
+#include <App/PropertyFloatConstraint.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>

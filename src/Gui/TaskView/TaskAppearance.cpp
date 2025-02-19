@@ -23,6 +23,9 @@
 
 #include "PreCompiled.h"
 
+#include <App/PropertyEnumeration.h>
+#include <App/PropertyFloat.h>
+#include <App/PropertyInteger.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>

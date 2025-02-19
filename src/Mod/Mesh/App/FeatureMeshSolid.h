@@ -25,6 +25,8 @@
 
 #include "MeshFeature.h"
 
+#include <App/PropertyFloatConstraint.h>
+#include <App/PropertyIntegerConstraint.h>
 #include <App/PropertyUnits.h>
 
 

@@ -24,6 +24,8 @@
 #ifndef FEATUREGEOMFILLSURFACE_H
 #define FEATUREGEOMFILLSURFACE_H
 
+#include <App/PropertyBoolList.h>
+#include <App/PropertyEnumeration.h>
 #include <App/PropertyLinkSubList.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
 #include <Mod/Surface/SurfaceGlobal.h>

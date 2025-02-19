@@ -35,6 +35,7 @@
 #include <Inventor/events/SoKeyboardEvent.h>
 #endif
 
+#include <App/PropertyInteger.h>
 #include <Base/Console.h>
 #include <Base/Precision.h>
 #include <Base/Quantity.h>

@@ -25,7 +25,7 @@
 
 #include <vector>
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyFloat.h>
 #include <Base/Matrix.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>

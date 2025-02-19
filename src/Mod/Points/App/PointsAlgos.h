@@ -25,6 +25,8 @@
 
 #include <Eigen/Core>
 
+#include <App/Color.h>
+
 #include "Points.h"
 #include "Properties.h"
 

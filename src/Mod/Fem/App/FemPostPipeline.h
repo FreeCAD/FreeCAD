@@ -23,6 +23,8 @@
 #ifndef Fem_FemPostPipeline_H
 #define Fem_FemPostPipeline_H
 
+#include <App/PropertyEnumeration.h>
+
 #include "FemPostFunction.h"
 #include "FemPostObject.h"
 #include "FemResultObject.h"

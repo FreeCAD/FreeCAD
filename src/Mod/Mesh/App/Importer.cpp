@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include <App/Document.h>
+#include <App/PropertyColor.h>
 
 #include "Importer.h"
 #include "MeshFeature.h"

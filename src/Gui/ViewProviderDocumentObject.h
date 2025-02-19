@@ -26,8 +26,11 @@
 
 #include <Inventor/SoType.h>
 
-#include "ViewProvider.h"
 #include <App/DocumentObject.h>
+#include <App/PropertyEnumeration.h>
+
+#include "ViewProvider.h"
+
 
 class SoMaterial;
 class SoDrawStyle;

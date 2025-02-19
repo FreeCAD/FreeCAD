@@ -31,6 +31,8 @@
 # include <QDataStream>
 #endif
 
+#include <App/PropertyColor.h>
+#include <App/PropertyStringList.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 

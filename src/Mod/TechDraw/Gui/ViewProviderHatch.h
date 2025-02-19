@@ -27,6 +27,7 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 #include <App/PropertyGeo.h>
+#include <App/PropertyColor.h>
 
 #include <Gui/ViewProviderDocumentObject.h>
 

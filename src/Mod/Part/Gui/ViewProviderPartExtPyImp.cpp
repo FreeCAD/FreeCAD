@@ -28,7 +28,7 @@
 #endif
 
 #include <App/GeoFeature.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyColor.h>
 
 #include "ViewProviderPartExtPy.h"
 #include "ViewProviderPartExtPy.cpp"

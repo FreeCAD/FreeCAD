@@ -31,6 +31,7 @@
 #endif
 
 #include <App/ExpressionParser.h>
+#include <App/PropertyInteger.h>
 #include <Base/Console.h>
 #include <Base/Quantity.h>
 #include <Base/Reader.h>

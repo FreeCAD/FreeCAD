@@ -23,7 +23,9 @@
 #ifndef PART_FEATUREREVOLUTION_H
 #define PART_FEATUREREVOLUTION_H
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
+#include <App/PropertyFloatConstraint.h>
+#include <App/PropertyString.h>
 #include <Base/Vector3D.h>
 
 #include "PartFeature.h"

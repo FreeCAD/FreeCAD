@@ -26,13 +26,14 @@
 
 #include "TaskView.h"
 #include <Gui/Selection/Selection.h>
-#include <App/PropertyLinks.h>
 
 
 class Ui_TaskSelectLinkProperty;
 
 namespace App {
 class Property;
+class PropertyLinkList;
+class PropertyLinkSub;
 }
 
 namespace Gui {

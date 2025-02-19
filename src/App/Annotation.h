@@ -26,7 +26,7 @@
 
 #include "DocumentObject.h"
 #include "PropertyGeo.h"
-#include "PropertyStandard.h"
+#include "PropertyStringList.h"
 
 
 namespace App

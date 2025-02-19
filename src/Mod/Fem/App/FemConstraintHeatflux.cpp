@@ -24,6 +24,8 @@
 
 #include "PreCompiled.h"
 
+#include <App/PropertyEnumeration.h>
+
 #include "FemConstraintHeatflux.h"
 
 

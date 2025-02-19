@@ -36,8 +36,12 @@
 #include <vtkVectorNorm.h>
 #include <vtkWarpVector.h>
 
-#include <App/PropertyUnits.h>
 #include <App/DocumentObjectExtension.h>
+#include <App/PropertyEnumeration.h>
+#include <App/PropertyFloatConstraint.h>
+#include <App/PropertyFloatList.h>
+#include <App/PropertyIntegerConstraint.h>
+#include <App/PropertyUnits.h>
 
 #include "FemPostObject.h"
 

@@ -23,6 +23,7 @@
 #ifndef FEATURE_MESH_TRANSFORM_DEMOLDING_H
 #define FEATURE_MESH_TRANSFORM_DEMOLDING_H
 
+#include <App/PropertyFloat.h>
 #include <App/PropertyLink.h>
 
 #include "FeatureMeshTransform.h"

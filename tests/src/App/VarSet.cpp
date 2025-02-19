@@ -25,6 +25,7 @@
 
 #include <App/Application.h>
 #include "App/Document.h"
+#include <App/PropertyInteger.h>
 #include <App/VarSet.h>
 #include <src/App/InitApplication.h>
 

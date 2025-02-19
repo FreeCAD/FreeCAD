@@ -24,6 +24,7 @@
 
 #include <App/Application.h>
 #include <App/MeasureManager.h>
+#include <App/PropertyFloat.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 

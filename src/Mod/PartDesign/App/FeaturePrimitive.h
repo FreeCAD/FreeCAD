@@ -24,9 +24,12 @@
 #ifndef PARTDESIGN_FeaturePrimitive_H
 #define PARTDESIGN_FeaturePrimitive_H
 
-#include "FeatureAddSub.h"
+#include <App/PropertyIntegerConstraint.h>
 #include <Mod/Part/App/AttachExtension.h>
 #include <Mod/Part/App/PrismExtension.h>
+
+#include "FeatureAddSub.h"
+
 
 namespace PartDesign
 {

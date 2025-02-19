@@ -25,7 +25,7 @@
 #ifndef PARTDESIGN_FEATUREDRAFT_H
 #define PARTDESIGN_FEATUREDRAFT_H
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
 #include <App/PropertyUnits.h>
 #include <App/PropertyLink.h>
 #include "FeatureDressUp.h"

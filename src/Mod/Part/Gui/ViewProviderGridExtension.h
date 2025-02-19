@@ -27,7 +27,7 @@
 #include <Base/Vector3D.h>
 #include <Base/Rotation.h>
 #include <App/Material.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderExtensionPython.h>
 

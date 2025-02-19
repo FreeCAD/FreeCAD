@@ -24,6 +24,10 @@
 #define GUI_ViewProviderTextDocument_H
 
 #include <QPointer>
+
+#include <App/PropertyFloat.h>
+#include <App/PropertyFont.h>
+
 #include "ViewProviderDocumentObject.h"
 
 

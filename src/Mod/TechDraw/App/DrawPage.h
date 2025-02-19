@@ -26,7 +26,10 @@
 #include <boost/signals2.hpp>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
+#include <App/PropertyEnumeration.h>
+#include <App/PropertyFloatConstraint.h>
+#include <App/PropertyInteger.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewPart.h"

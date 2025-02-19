@@ -24,8 +24,14 @@
 #ifndef GUI_VIEWPROVIDER_GEOMETRYOBJECT_H
 #define GUI_VIEWPROVIDER_GEOMETRYOBJECT_H
 
-#include "ViewProviderDragger.h"
 #include <Inventor/lists/SoPickedPointList.h>
+
+#include <App/PropertyBool.h>
+#include <App/PropertyFloatConstraint.h>
+#include <App/PropertyMaterial.h>
+#include <App/PropertyPercent.h>
+
+#include "ViewProviderDragger.h"
 
 class SoPickedPointList;
 class SoPickStyle;

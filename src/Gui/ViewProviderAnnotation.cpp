@@ -46,7 +46,8 @@
 
 #include <App/Annotation.h>
 #include <App/Document.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyColor.h>
+#include <App/PropertyStringList.h>
 #include <Base/Parameter.h>
 
 #include "ViewProviderAnnotation.h"

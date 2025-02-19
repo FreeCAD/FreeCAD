@@ -28,6 +28,7 @@
 
 #include <boost/signals2.hpp>
 
+#include <App/PropertyInteger.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawView.h>
 

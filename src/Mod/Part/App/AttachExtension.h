@@ -29,9 +29,12 @@
 
 #include <App/DocumentObjectExtension.h>
 #include <App/ExtensionPython.h>
+#include <App/PropertyEnumeration.h>
+#include <App/PropertyFloat.h>
+#include <App/PropertyGeo.h>
 #include <App/PropertyLink.h>
 #include <App/PropertyLinkSubList.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyString.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 

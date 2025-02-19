@@ -25,7 +25,7 @@
 #define APP_INVENTOROBJECT_H
 
 #include "GeoFeature.h"
-#include "PropertyStandard.h"
+#include "PropertyString.h"
 
 
 namespace App

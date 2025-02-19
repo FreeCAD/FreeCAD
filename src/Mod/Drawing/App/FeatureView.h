@@ -25,7 +25,9 @@
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
+#include <App/PropertyFloat.h>
+#include <App/PropertyString.h>
 #include <Mod/Drawing/DrawingGlobal.h>
 
 

@@ -23,7 +23,7 @@
 #ifndef PART_PART2DOBJECT_H
 #define PART_PART2DOBJECT_H
 
-#include <App/PropertyStandard.h>
+#include <App/Property.h>
 #include <Base/Axis.h>
 
 #include "AttachExtension.h"

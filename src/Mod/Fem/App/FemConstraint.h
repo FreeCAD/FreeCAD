@@ -26,6 +26,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyFloatConstraint.h>
 #include <App/PropertyLink.h>
 #include <App/PropertyLinkSubList.h>
 #include <App/PropertyUnits.h>

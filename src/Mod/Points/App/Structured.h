@@ -24,6 +24,8 @@
 #ifndef POINTS_VIEW_FEATURE_H
 #define POINTS_VIEW_FEATURE_H
 
+#include <App/PropertyInteger.h>
+
 #include "PointsFeature.h"
 
 

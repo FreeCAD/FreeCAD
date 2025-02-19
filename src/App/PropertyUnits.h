@@ -26,7 +26,7 @@
 #include <Base/Quantity.h>
 #include <Base/Unit.h>
 
-#include "PropertyStandard.h"
+#include "PropertyFloat.h"
 
 
 namespace Base

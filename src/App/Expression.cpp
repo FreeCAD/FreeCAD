@@ -33,6 +33,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/math/special_functions/round.hpp>
 #include <boost/math/special_functions/trunc.hpp>
+#include <boost/io/ios_state.hpp>
 
 #include <sstream>
 #include <stack>
@@ -41,6 +42,7 @@
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <App/ObjectIdentifier.h>
+#include <App/PropertyInteger.h>
 #include <App/PropertyUnits.h>
 #include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>

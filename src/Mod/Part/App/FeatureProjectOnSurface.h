@@ -25,9 +25,12 @@
 #ifndef PART_FEATUREPROJECTONSURFACE_H
 #define PART_FEATUREPROJECTONSURFACE_H
 
+#include <App/PropertyEnumeration.h>
 #include <App/PropertyLink.h>
 #include <App/PropertyLinkSubList.h>
 #include <App/PropertyUnits.h>
+
+#include "PartFeature.h"
 
 
 namespace Part

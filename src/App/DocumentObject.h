@@ -27,8 +27,9 @@
 
 #include <App/TransactionalObject.h>
 #include <App/PropertyExpressionEngine.h>
+#include <App/PropertyBool.h>
 #include <App/PropertyLinkSub.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyString.h>
 #include <Base/SmartPtrPy.h>
 
 #include <bitset>

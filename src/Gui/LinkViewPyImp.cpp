@@ -26,6 +26,7 @@
 #include <Base/MatrixPy.h>
 #include <App/DocumentObjectPy.h>
 #include <App/MaterialPy.h>
+#include <App/PropertyStringList.h>
 
 #include "LinkViewPy.h"
 #include "LinkViewPy.cpp"

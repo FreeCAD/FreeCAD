@@ -27,7 +27,8 @@
 #include <QString>
 
 #include <App/Application.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyColor.h>
+#include <App/PropertyInteger.h>
 #include <Base/Parameter.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/SoTextLabel.h>

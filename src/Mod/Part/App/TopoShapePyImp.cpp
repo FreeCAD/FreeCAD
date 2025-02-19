@@ -66,7 +66,7 @@
 # include <TopTools_ListOfShape.hxx>
 #endif
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyColor.h>
 #include <App/StringHasherPy.h>
 #include <Base/FileInfo.h>
 #include <Base/GeometryPyCXX.h>
