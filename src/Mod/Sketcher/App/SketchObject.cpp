@@ -8398,8 +8398,9 @@ void adjustParameterRange(const TopoDS_Edge &edge,
     adjustPeriodic(curve, f2, m2);
     // If the middle point is out of range, it means we need to choose the
     // other half of the arc.
-    if (m2 > l2)
+    if (m2 > l2){
         std::swap(firstParameter, lastParameter);
+    }
 }
 
 void processEdge2(TopoDS_Edge& projEdge, std::vector<std::unique_ptr<Part::Geometry>>& geos)
@@ -8931,7 +8932,7 @@ void processEdge(const TopoDS_Edge& edge,
             auto bbox = shape.getBoundBoxOptimal();
             if (!bbox.IsValid()){
                 throw Base::CADKernelError("Invalid bounding box");
-                }
+            }
 
             gp_Pnt p1(bbox.MinX, bbox.MinY, 0);
             gp_Pnt p2(bbox.MaxX, bbox.MaxY, 0);
@@ -8972,8 +8973,6 @@ void processEdge(const TopoDS_Edge& edge,
                         processEdge2(projEdge, geos);
                     }
                 }
-
-
             }
             catch (Standard_Failure& e) {
                 throw Base::CADKernelError(e.GetMessageString());
