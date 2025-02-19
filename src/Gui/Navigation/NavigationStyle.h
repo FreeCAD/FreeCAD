@@ -150,8 +150,8 @@ public:
     SbVec3f getFocalPoint() const;
 
     SoCamera* getCamera() const;
-    void setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter = false);
-    void translateCamera(const SbVec3f& translation);
+    std::shared_ptr<NavigationAnimation> setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter = false) const;
+    std::shared_ptr<NavigationAnimation> translateCamera(const SbVec3f& translation) const;
 
 #if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
     void findBoundingSphere();

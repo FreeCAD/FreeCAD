@@ -3166,9 +3166,9 @@ void View3DInventorViewer::pubSeekToPoint(const SbVec3f& pos)
     this->seekToPoint(pos);
 }
 
-void View3DInventorViewer::setCameraOrientation(const SbRotation& orientation, bool moveToCenter)
+std::shared_ptr<NavigationAnimation> View3DInventorViewer::setCameraOrientation(const SbRotation& orientation, const bool moveToCenter) const
 {
-    navigation->setCameraOrientation(orientation, moveToCenter);
+    return navigation->setCameraOrientation(orientation, moveToCenter);
 }
 
 void View3DInventorViewer::setCameraType(SoType type)
@@ -3575,12 +3575,14 @@ bool View3DInventorViewer::isSpinning() const
  * @param translation An additional translation on top of the translation caused by the rotation around the rotation center
  * @param duration The duration in milliseconds
  * @param wait When false, start the animation and continue (asynchronous). When true, start the animation and wait for the animation to finish (synchronous)
+ *
+ * @return The started @class NavigationAnimation
  */
-void View3DInventorViewer::startAnimation(const SbRotation& orientation,
+std::shared_ptr<NavigationAnimation> View3DInventorViewer::startAnimation(const SbRotation& orientation,
                                           const SbVec3f& rotationCenter,
                                           const SbVec3f& translation,
                                           int duration,
-                                          bool wait)
+                                          const bool wait) const
 {
     // Currently starts a FixedTimeAnimation. If there is going to be an additional animation like
     // FixedVelocityAnimation, check the animation type from a parameter and start the right animation
@@ -3600,6 +3602,8 @@ void View3DInventorViewer::startAnimation(const SbRotation& orientation,
         navigation, orientation, rotationCenter, translation, duration, easingCurve);
 
     navigation->startAnimating(animation, wait);
+
+    return animation;
 }
 
 /**
