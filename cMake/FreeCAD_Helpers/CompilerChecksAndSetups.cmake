@@ -29,11 +29,11 @@ macro(CompilerChecksAndSetups)
     endif(CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_CXX_COMPILER_VERSION)
 
     # Enabled C++20 for Freecad 1.1 and later
-        set(BUILD_ENABLE_CXX_STD "C++20"  CACHE STRING  "Enable C++ standard")
-        set_property(CACHE BUILD_ENABLE_CXX_STD PROPERTY STRINGS
-                     "C++20"
-                     "C++23"
-        )
+    set(BUILD_ENABLE_CXX_STD "C++20"  CACHE STRING  "Enable C++ standard")
+    set_property(CACHE BUILD_ENABLE_CXX_STD PROPERTY STRINGS
+                 "C++20"
+                 "C++23"
+    )
 
     if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.2)
         message(FATAL_ERROR "FreeCAD 1.1 and later requires C++20.  G++ must be 11.2 or later, the used version is ${CMAKE_CXX_COMPILER_VERSION}")
@@ -105,7 +105,9 @@ macro(CompilerChecksAndSetups)
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
         endif()
 
-        # older boost.preprocessor turn off variadics for clang
+        # boost.preprocessor 1.74 and earlier turns off variadics for clang regardless of version, even though they
+        # work in all versions of clang that we support. Manually force variadic macro support until our oldest
+        # supported version of boost is 1.75 or higher.
         add_definitions(-DBOOST_PP_VARIADICS=1)
         message(STATUS "Force BOOST_PP_VARIADICS=1 for clang")
     endif()
