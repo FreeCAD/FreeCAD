@@ -9,14 +9,6 @@ macro(CompilerChecksAndSetups)
 
     # ================================================================================
 
-    # Needed for boost1.69
-    # Avoid that Python (pyerrors.h) defines snprintf and vsnprintf
-    if (MSVC AND NOT MSVC_VERSION VERSION_LESS 1900)
-        add_definitions(-DHAVE_SNPRINTF)
-    elseif (MINGW)
-        add_definitions(-DHAVE_SNPRINTF)
-    endif()
-
     # Allow developers to use Boost < 1.74
     if (NOT BOOST_MIN_VERSION)
         set(BOOST_MIN_VERSION 1.74)
@@ -97,9 +89,7 @@ macro(CompilerChecksAndSetups)
         #
         # https://en.wikipedia.org/wiki/Xcode#Latest_versions
         if (APPLE)
-            if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
-                set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
-            endif()
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
             add_definitions(-DGL_SILENCE_DEPRECATION)
         elseif (UNIX)
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
