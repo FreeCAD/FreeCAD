@@ -35,6 +35,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -69,7 +70,7 @@ namespace PartGui {
         {
             if (!obj || !obj->isDerivedFrom<Part::Feature>())
                 return false;
-            if (!sSubName || sSubName[0] == '\0')
+            if (Base::Tools::isNullOrEmpty(sSubName))
                 return (mode == ALL);
             std::string element(sSubName);
             switch (mode) {

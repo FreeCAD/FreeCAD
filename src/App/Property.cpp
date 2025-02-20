@@ -71,7 +71,7 @@ bool Property::hasName() const
 
 bool Property::isValidName(const char* name)
 {
-    return name && name[0] != '\0';
+    return !Base::Tools::isNullOrEmpty(name);
 }
 
 std::string Property::getFullName() const

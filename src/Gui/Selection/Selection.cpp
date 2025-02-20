@@ -838,7 +838,7 @@ void SelectionSingleton::rmvSelectionGate()
 
 App::Document* SelectionSingleton::getDocument(const char* pDocName) const
 {
-    if (pDocName && pDocName[0])
+    if (!Base::Tools::isNullOrEmpty(pDocName))
         return App::GetApplication().getDocument(pDocName);
     else
         return App::GetApplication().getActiveDocument();

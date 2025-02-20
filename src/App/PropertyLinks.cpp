@@ -31,6 +31,7 @@
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <Base/Tools.h>
 
 #include "PropertyLinks.h"
 #include "Application.h"
@@ -3800,7 +3801,7 @@ void PropertyXLink::hasSetValue()
 void PropertyXLink::setSubName(const char* subname)
 {
     std::vector<std::string> subs;
-    if (subname && subname[0]) {
+    if (!Base::Tools::isNullOrEmpty(subname)) {
         subs.emplace_back(subname);
     }
     aboutToSetValue();
@@ -3830,7 +3831,7 @@ void PropertyXLink::setValue(App::DocumentObject* lValue)
 void PropertyXLink::setValue(App::DocumentObject* lValue, const char* subname)
 {
     std::vector<std::string> subs;
-    if (subname && subname[0]) {
+    if (!Base::Tools::isNullOrEmpty(subname)) {
         subs.emplace_back(subname);
     }
     setValue(lValue, std::move(subs));
@@ -4147,7 +4148,7 @@ void PropertyXLink::Save(Base::Writer& writer) const
             else {
                 auto pDoc = owner->getDocument();
                 const char* docPath = pDoc->getFileName();
-                if (docPath && docPath[0]) {
+                if (!Base::Tools::isNullOrEmpty(docPath)) {
                     if (!filePath.empty()) {
                         _path = DocInfo::getDocPath(filePath.c_str(), pDoc, false);
                     }

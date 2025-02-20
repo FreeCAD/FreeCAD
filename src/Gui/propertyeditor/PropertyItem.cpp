@@ -4705,7 +4705,7 @@ QVariant PropertyLinkItem::data(int column, int role) const
             if (role == Qt::ToolTipRole) {
                 if (auto xlink = dynamic_cast<const App::PropertyXLink*>(propertyItems[0])) {
                     const char* filePath = xlink->getFilePath();
-                    if (filePath && filePath[0]) {
+                    if (!Base::Tools::isNullOrEmpty(filePath)) {
                         return QVariant::fromValue(QString::fromUtf8(filePath));
                     }
                 }

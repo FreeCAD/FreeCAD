@@ -457,19 +457,19 @@ void Application::renameDocument(const char *OldName, const char *NewName)
 Document* Application::newDocument(const char * Name, const char * UserName, DocumentCreateFlags CreateFlags)
 {
     auto getNameAndLabel = [this](const char * Name, const char * UserName) -> std::tuple<std::string, std::string> {
-        bool defaultName = (!Name || Name[0] == '\0');
+        bool isDefaultName = Base::Tools::isNullOrEmpty(Name);
 
         // get a valid name anyway!
-        if (defaultName) {
+        if (isDefaultName) {
             Name = "Unnamed";
         }
 
         std::string userName;
-        if (UserName && UserName[0] != '\0') {
+        if (!Base::Tools::isNullOrEmpty(UserName)) {
             userName = UserName;
         }
         else {
-            userName = defaultName ? QObject::tr("Unnamed").toStdString() : Name;
+            userName = isDefaultName ? QObject::tr("Unnamed").toStdString() : Name;
 
             std::vector<std::string> names;
             names.reserve(DocMap.size());
@@ -649,8 +649,8 @@ int Application::addPendingDocument(const char *FileName, const char *objName, b
         return 0;
     if(allowPartial && _allowPartial)
         return -1;
-    assert(FileName && FileName[0]);
-    assert(objName && objName[0]);
+    assert(!Base::Tools::isNullOrEmpty(FileName));
+    assert(!Base::Tools::isNullOrEmpty(objName));
     if(!_docReloadAttempts[FileName].emplace(objName).second)
         return -1;
     auto ret =  _pendingDocMap.emplace(FileName,std::vector<std::string>());

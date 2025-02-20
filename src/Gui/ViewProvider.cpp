@@ -40,6 +40,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
+#include <Base/Tools.h>
 
 #include "Inventor/SoMouseWheelEvent.h"
 #include "Inventor/SoFCTransform.h"
@@ -1032,7 +1033,7 @@ Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transfor
 
     SoTempPath path(20);
     path.ref();
-    if(subname && subname[0]) {
+    if(!Base::Tools::isNullOrEmpty(subname)) {
         SoDetail *det=nullptr;
         if(!getDetailPath(subname,&path,true,det)) {
             if(mode < 0)

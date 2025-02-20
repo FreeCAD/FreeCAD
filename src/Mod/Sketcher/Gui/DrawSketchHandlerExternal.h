@@ -97,7 +97,7 @@ public:
         // return false;
         //}
 
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
         std::string element(sSubName);

@@ -57,7 +57,7 @@ public:
         if (pObj != this->object) {
             return false;
         }
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
         if (disabled) {

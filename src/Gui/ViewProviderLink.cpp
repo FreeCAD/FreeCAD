@@ -2342,7 +2342,7 @@ bool ViewProviderLink::getDetailPath(
         return false;
     }
     std::string _subname;
-    if(subname && subname[0]) {
+    if(!Base::Tools::isNullOrEmpty(subname)) {
         if (auto linked = ext->getLinkedObjectValue()) {
             if (const char *dot = strchr(subname,'.')) {
                 if(subname[0]=='$') {

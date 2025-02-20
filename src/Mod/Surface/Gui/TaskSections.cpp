@@ -32,6 +32,7 @@
 #endif
 
 #include <App/Document.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -41,6 +42,7 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskSections.h"
+
 #include "ui_TaskSections.h"
 
 
@@ -216,7 +218,7 @@ public:
             return false;
         }
 
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
 

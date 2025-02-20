@@ -35,6 +35,7 @@
 
 #include "ConsoleObserver.h"
 #include "Interpreter.h"
+#include "Tools.h"
 
 
 using namespace Base;
@@ -343,7 +344,7 @@ std::stringstream& LogLevel::prefix(std::stringstream& str, const char* src, int
 #endif
         }
     }
-    if (print_src && src && src[0]) {
+    if (print_src && !Base::Tools::isNullOrEmpty(src)) {
 #ifdef FC_OS_WIN32
         const char* _f = std::strrchr(src, '\\');
 #else

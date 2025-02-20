@@ -27,6 +27,7 @@
 #endif
 
 #include <App/Document.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -36,6 +37,7 @@
 
 #include "TaskFilling.h"
 #include "TaskFillingVertex.h"
+
 #include "ui_TaskFillingVertex.h"
 
 
@@ -69,7 +71,7 @@ public:
             return false;
         }
 
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
 
