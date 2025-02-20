@@ -92,7 +92,7 @@ class Wire(DraftObject):
                 "The area of this object")
         obj.addProperty("App::PropertyArea","Area", "Draft",_tip)
 
-        obj.MakeFace = params.get_param("fillmode")
+        obj.MakeFace = params.get_param("MakeFaceMode")
         obj.Closed = False
 
     def onDocumentRestored(self, obj):
