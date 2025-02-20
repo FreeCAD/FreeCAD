@@ -106,6 +106,8 @@
 
 #include "Tools.h"
 
+#include <App/Application.h>
+
 #include "AsyncProcessHandle.h"
 #include "BooleanOperation.h"
 
@@ -5642,19 +5644,20 @@ void TopoShape::makeElementBooleanAsync(AsyncProcessHandle* handle,
         if (dup2(stdin_pipe[0], STDIN_FILENO) == -1 || 
             dup2(stdout_pipe[1], STDOUT_FILENO) == -1) {
             std::cerr << "Failed to redirect stdin/stdout" << std::endl;
-            exit(1);
+            _exit(2);
         }
 
         // Close original file descriptors
         close(stdin_pipe[0]);
         close(stdout_pipe[1]);
 
-        // Execute the boolean worker with full path
-        execl("./Mod/Part/BooleanWorker", "BooleanWorker", nullptr);
-        
+        // Construct path to worker executable
+        std::string workerExe = App::GetApplication().getHomePath() + "/Mod/Part/BooleanWorker";
+        execl(workerExe.c_str(), "BooleanWorker", nullptr);
+
         // If we get here, exec failed
-        std::cerr << "Failed to execute BooleanWorker" << std::endl;
-        exit(2);
+        std::cerr << "Failed to execute BooleanWorker at " << workerExe << std::endl;
+        _exit(3);
     }
 
     // Parent process
