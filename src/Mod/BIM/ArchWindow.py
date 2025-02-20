@@ -274,6 +274,17 @@ class _Window(ArchComponent.Component):
                     "App::Property", "Show elevation opening symbols if available"
                 ),
             )
+        if "SymbolAnnotations" not in lp:
+            obj.addProperty(
+                "App::PropertyLinkList",
+                "SymbolAnnotations",
+                "Window",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "A list of shapes or texts that represent additional"
+                    "symbols to be added to this window"
+                ),
+            )
         obj.setEditorMode("VerticalArea", 2)
         obj.setEditorMode("HorizontalArea", 2)
         obj.setEditorMode("PerimeterLength", 2)
@@ -569,6 +580,7 @@ class _Window(ArchComponent.Component):
                 if rotdata:
                     shape.rotate(rotdata[0], rotdata[1], rotdata[2])
                 shapes.append(shape)
+                shapes.extend(self.add_annotations(obj))
                 self.sshapes.extend(ssymbols)
                 self.vshapes.extend(vsymbols)
         return shapes
@@ -795,6 +807,24 @@ class _Window(ArchComponent.Component):
 
     def computeAreas(self, obj):
         return
+
+    def add_annotations(self, obj):
+        """Adds annotation shapes to this object"""
+
+         shapes = []
+         if hasattr(obj.ViewObject, "Annotation"):
+            obj.ViewObject.Annotation.removeAllChildren()
+         for ann in getattr(obj, "SymbolAnnotations", []):
+             shape = getattr(ann, "Shape", None)
+             if shape:
+                 shape = shape.copy()
+                 shape.Placement = shape.Placement.multiply(obj.Placement)
+                 shapes.append(shape)
+            elif hasattr(ann, "Text"):
+                if hasattr(ann.ViewObject, "RootNode"):
+                    node = ann.ViewObject.RootNode.copy()
+                    obj.ViewObject.Annotation.addChild(node)
+        return shapes
 
 
 class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
