@@ -289,6 +289,9 @@ App::DocumentObjectExecReturn* Transformed::execute()
         auto transformIter = transformations.cbegin();
         transformIter++;
         for ( ; transformIter != transformations.end(); transformIter++) {
+            if (wantAbort.load()) {
+                return std::vector<TopoShape>();
+            }
             auto opName = Data::indexSuffix(idx++);
             shapes.emplace_back(shape.makeElementTransform(*transformIter, opName.c_str()));
         }
@@ -337,17 +340,35 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     cutShape = cutShape.makeElementTransform(trsf);
                 }
                 if (!fuseShape.isNull()) {
-                    supportShape.makeElementFuseAsync(&processHandle, getTransformedCompShape(supportShape, fuseShape));
+                    auto shapes = getTransformedCompShape(supportShape, fuseShape);
+                    if (wantAbort.load()) {
+                        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                            "Exception",
+                            "Transformation aborted"));
+                    }
+                    supportShape.makeElementFuseAsync(&processHandle, shapes);
                     supportShape = processHandle.join();
                 }
                 if (!cutShape.isNull()) {
-                    supportShape.makeElementCutAsync(&processHandle, getTransformedCompShape(supportShape, cutShape));
+                    auto shapes = getTransformedCompShape(supportShape, cutShape);
+                    if (wantAbort.load()) {
+                        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                            "Exception",
+                            "Transformation aborted"));
+                    }
+                    supportShape.makeElementCutAsync(&processHandle, shapes);
                     supportShape = processHandle.join();
                 }
             }
             break;
         case Mode::TransformBody: {
-            supportShape.makeElementFuseAsync(&processHandle, getTransformedCompShape(supportShape, supportShape));
+            auto shapes = getTransformedCompShape(supportShape, supportShape);
+            if (wantAbort.load()) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Transformation aborted"));
+            }
+            supportShape.makeElementFuseAsync(&processHandle, shapes);
             supportShape = processHandle.join();
             break;
         }
