@@ -26,7 +26,7 @@
 #include <map>
 #include <vector>
 
-#include <App/PropertyGeo.h>
+#include <App/PropertyComplexGeoData.h>
 #include <App/PropertyStringList.h>
 
 #include "TopoShape.h"

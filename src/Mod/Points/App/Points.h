@@ -28,7 +28,6 @@
 #include <vector>
 
 #include <App/ComplexGeoData.h>
-#include <App/PropertyGeo.h>
 #include <Base/Matrix.h>
 #include <Base/Reader.h>
 #include <Base/Vector3D.h>

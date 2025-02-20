@@ -25,6 +25,7 @@
 
 #include <App/PropertyFloat.h>
 #include <App/PropertyLink.h>
+#include <App/PropertyVector.h>
 
 #include "FeatureMeshTransform.h"
 

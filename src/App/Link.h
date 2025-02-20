@@ -42,6 +42,9 @@
 #include "PropertyLink.h"
 #include "PropertyLinkList.h"
 #include "PropertyLinkSub.h"
+#include "PropertyPlacementList.h"
+#include "PropertyVector.h"
+#include "PropertyVectorList.h"
 
 
 // FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro

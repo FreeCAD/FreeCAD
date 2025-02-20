@@ -29,6 +29,7 @@
 #include <string>
 #include <vector>
 
+#include <App/PropertyComplexGeoData.h>
 #include <Base/Handle.h>
 #include <Base/Matrix.h>
 

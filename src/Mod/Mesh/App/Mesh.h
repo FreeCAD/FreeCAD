@@ -30,7 +30,6 @@
 #include <vector>
 
 #include <App/ComplexGeoData.h>
-#include <App/PropertyGeo.h>
 
 #include <Base/Matrix.h>
 #include <Base/Tools3D.h>

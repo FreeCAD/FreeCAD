@@ -37,7 +37,7 @@
 #include <App/DocumentObject.h>
 #include <App/Expression.h>
 #include <App/ObjectIdentifier.h>
-#include <App/PropertyGeo.h>
+#include <App/PropertyPlacement.h>
 #include <Base/Tools.h>
 
 

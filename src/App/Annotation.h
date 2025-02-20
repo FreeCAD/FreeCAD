@@ -25,7 +25,7 @@
 #define APP_ANNOTATION_H
 
 #include "DocumentObject.h"
-#include "PropertyGeo.h"
+#include "PropertyVector.h"
 #include "PropertyStringList.h"
 
 

@@ -23,8 +23,6 @@
 #ifndef ROBOT_Edge2TracObject_H
 #define ROBOT_Edge2TracObject_H
 
-#include <App/PropertyGeo.h>
-
 #include "TrajectoryObject.h"
 
 

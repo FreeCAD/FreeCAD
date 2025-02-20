@@ -24,7 +24,7 @@
 #define ROBOT_TrajectoryObject_H
 
 #include <App/GeoFeature.h>
-#include <App/PropertyGeo.h>
+#include <App/PropertyPlacement.h>
 
 #include "PropertyTrajectory.h"
 #include "Trajectory.h"

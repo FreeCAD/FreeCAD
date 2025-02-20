@@ -26,6 +26,7 @@
 #include <App/PropertyBool.h>
 #include <App/PropertyFloatConstraint.h>
 #include <App/PropertyString.h>
+#include <App/PropertyVector.h>
 #include <Base/Vector3D.h>
 
 #include "PartFeature.h"

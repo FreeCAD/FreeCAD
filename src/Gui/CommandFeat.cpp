@@ -28,6 +28,8 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/GroupExtension.h>
 #include <App/Part.h>
+#include <App/PropertyComplexGeoData.h>
+
 #include "Application.h"
 #include "CommandT.h"
 #include "DockWindowManager.h"

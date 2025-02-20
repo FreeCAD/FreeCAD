@@ -33,6 +33,7 @@
 #include "GeoFeatureGroupExtension.h"
 #include "ElementNamingUtils.h"
 #include "Link.h"
+#include "PropertyComplexGeoData.h"
 
 
 using namespace App;

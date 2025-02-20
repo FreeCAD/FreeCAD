@@ -28,6 +28,7 @@
 #include <iostream>
 #endif
 
+#include <Base/BoundBox.h>
 #include <Base/Matrix.h>
 #include <Base/Stream.h>
 #include <Base/Writer.h>

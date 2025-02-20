@@ -28,7 +28,7 @@
 #include <Geom_Circle.hxx>
 #include <TopoDS_Shape.hxx>
 
-#include <App/PropertyGeo.h>
+#include <App/PropertyVector.h>
 #include <App/PropertyLink.h>
 #include <App/PropertyUnits.h>
 

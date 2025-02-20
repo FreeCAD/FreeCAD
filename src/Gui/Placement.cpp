@@ -34,6 +34,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
+#include <App/PropertyComplexGeoData.h>
 #include <Base/Console.h>
 #include <Base/PlacementPy.h>
 #include <Base/Tools.h>

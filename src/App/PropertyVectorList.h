@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,82 +20,64 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef APP_PROPERTYVECTORLIST_H
+#define APP_PROPERTYVECTORLIST_H
 
-#ifndef Fem_PropertyFemMesh_H
-#define Fem_PropertyFemMesh_H
+#include <Base/Vector3D.h>
 
-#include "FemMesh.h"
-#include <App/PropertyComplexGeoData.h>
-#include <Base/BoundBox.h>
+#include "Property.h"
 
-namespace Fem
+namespace Base
 {
+class Writer;
+class XMLReader;
+}
 
+namespace App {
 
-/** The part shape property class.
- * @author Werner Mayer
- */
-class FemExport PropertyFemMesh: public App::PropertyComplexGeoData
+class AppExport PropertyVectorList: public PropertyListsT<Base::Vector3d>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
+    using inherited = PropertyListsT<Base::Vector3d>;
+
 public:
-    PropertyFemMesh();
-    ~PropertyFemMesh() override;
+    /**
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
+    PropertyVectorList();
 
-    /** @name Getter/setter */
-    //@{
-    void setValuePtr(FemMesh* mesh);
-    /// set the FemMesh shape
-    void setValue(const FemMesh&);
-    /// does nothing, for add property macro
-    void setValue()
-    {}
-    /// get the FemMesh shape
-    const FemMesh& getValue() const;
-    const Data::ComplexGeoData* getComplexData() const override;
-    //@}
+    /**
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
+    ~PropertyVectorList() override;
 
+    void setValue(double x, double y, double z);
+    using inherited::setValue;
 
-    /** @name Getting basic geometric entities */
-    //@{
-    /** Returns the bounding box around the underlying mesh kernel */
-    Base::BoundBox3d getBoundingBox() const override;
-    /// Set the placement of the geometry
-    void setTransform(const Base::Matrix4D& rclTrf) override;
-    /// Get the placement of the geometry
-    Base::Matrix4D getTransform() const override;
-    void transformGeometry(const Base::Matrix4D& rclMat) override;
-    //@}
-
-    /** @name Python interface */
-    //@{
     PyObject* getPyObject() override;
-    void setPyObject(PyObject* value) override;
-    //@}
 
-    /** @name Save/restore */
-    //@{
     void Save(Base::Writer& writer) const override;
     void Restore(Base::XMLReader& reader) override;
+
     void SaveDocFile(Base::Writer& writer) const override;
     void RestoreDocFile(Base::Reader& reader) override;
 
-    App::Property* Copy() const override;
-    void Paste(const App::Property& from) override;
+    Property* Copy() const override;
+    void Paste(const Property& from) override;
+
     unsigned int getMemSize() const override;
     const char* getEditorName() const override
     {
-        return "FemGui::PropertyFemMeshItem";
+        return "Gui::PropertyEditor::PropertyVectorListItem";
     }
-    //@}
 
-private:
-    Base::Reference<FemMesh> _FemMesh;
+protected:
+    Base::Vector3d getPyValue(PyObject*) const override;
 };
 
+}  // namespace App
 
-}  // namespace Fem
-
-
-#endif  // PROPERTYTOPOSHAPE_H
+#endif  // APP_PROPERTYGEO_H

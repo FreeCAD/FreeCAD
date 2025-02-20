@@ -25,35 +25,46 @@
 #define APP_FEATURETEST_H
 
 #include "DocumentObject.h"
+
+#include "Property.h"
 #include "PropertyBool.h"
 #include "PropertyBoolList.h"
 #include "PropertyColor.h"
+#include "PropertyComplexGeoData.h"
+#include "PropertyContainer.h"
 #include "PropertyEnumeration.h"
+#include "PropertyExpressionEngine.h"
 #include "PropertyFile.h"
 #include "PropertyFloat.h"
 #include "PropertyFloatConstraint.h"
 #include "PropertyFloatList.h"
 #include "PropertyFont.h"
-#include "PropertyGeo.h"
 #include "PropertyInteger.h"
 #include "PropertyIntegerConstraint.h"
 #include "PropertyIntegerList.h"
 #include "PropertyIntegerSet.h"
 #include "PropertyLink.h"
+#include "PropertyLinkBase.h"
 #include "PropertyLinkList.h"
 #include "PropertyLinkSub.h"
 #include "PropertyLinkSubList.h"
 #include "PropertyMap.h"
 #include "PropertyMaterial.h"
+#include "PropertyMatrix.h"
 #include "PropertyPath.h"
-#include "PropertyPath.h"
+#include "PropertyPlacement.h"
+#include "PropertyPlacementList.h"
 #include "PropertyPercent.h"
 #include "PropertyPersistentObject.h"
 #include "PropertyPythonObject.h"
+#include "PropertyRotation.h"
 #include "PropertyString.h"
 #include "PropertyStringList.h"
 #include "PropertyUnits.h"
 #include "PropertyUUID.h"
+#include "PropertyVector.h"
+#include "PropertyVectorList.h"
+#include "PropertyXLink.h"
 
 
 namespace App
@@ -104,7 +115,6 @@ public:
     App::PropertyLinkList LinkList;
     App::PropertyLinkSubList LinkSubList;
 
-    // Standard Properties (PropertyGeo.h)
     App::PropertyMatrix Matrix;
     App::PropertyVector Vector;
     App::PropertyVectorList VectorList;

@@ -42,6 +42,7 @@
 #include "GeoFeatureGroupExtension.h"
 #include "Link.h"
 #include "ObjectIdentifier.h"
+#include "PropertyComplexGeoData.h"
 #include "PropertyExpressionEngine.h"
 #include "PropertyLinkBase.h"
 #include "PropertyLinkSub.h"

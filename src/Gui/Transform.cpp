@@ -27,7 +27,8 @@
 #include <QSignalMapper>
 
 #include <App/GeoFeature.h>
-#include <App/PropertyGeo.h>
+#include <App/PropertyComplexGeoData.h>
+#include <App/PropertyPlacement.h>
 
 #include "Transform.h"
 #include "Application.h"

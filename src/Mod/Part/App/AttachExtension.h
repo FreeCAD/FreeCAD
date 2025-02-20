@@ -31,7 +31,7 @@
 #include <App/ExtensionPython.h>
 #include <App/PropertyEnumeration.h>
 #include <App/PropertyFloat.h>
-#include <App/PropertyGeo.h>
+#include <App/PropertyPlacement.h>
 #include <App/PropertyLink.h>
 #include <App/PropertyLinkSubList.h>
 #include <App/PropertyString.h>

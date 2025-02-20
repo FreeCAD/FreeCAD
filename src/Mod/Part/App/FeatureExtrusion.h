@@ -27,6 +27,7 @@
 #include <App/PropertyEnumeration.h>
 #include <App/PropertyString.h>
 #include <App/PropertyUnits.h>
+#include <App/PropertyVector.h>
 
 #include "FaceMakerCheese.h"
 #include "PartFeature.h"

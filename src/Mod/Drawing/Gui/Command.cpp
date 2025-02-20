@@ -23,7 +23,7 @@
 #endif
 
 #include <App/Document.h>
-#include <App/PropertyGeo.h>
+#include <App/PropertyVector.h>
 #include <Base/Tools.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>

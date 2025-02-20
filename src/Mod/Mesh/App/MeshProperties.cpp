@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 
+#include <App/PropertyVector.h>
 #include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>

@@ -240,6 +240,7 @@ SET(Properties_CPP_SRCS
     PropertyBool.cpp
     PropertyBoolList.cpp
     PropertyColor.cpp
+    PropertyComplexGeoData.cpp
     PropertyContainer.cpp
     PropertyContainerPyImp.cpp
     PropertyEnumeration.cpp
@@ -249,7 +250,6 @@ SET(Properties_CPP_SRCS
     PropertyFloatConstraint.cpp
     PropertyFloatList.cpp
     PropertyFont.cpp
-    PropertyGeo.cpp
     PropertyInteger.cpp
     PropertyIntegerConstraint.cpp
     PropertyIntegerList.cpp
@@ -261,14 +261,20 @@ SET(Properties_CPP_SRCS
     PropertyLinkSubList.cpp
     PropertyMap.cpp
     PropertyMaterial.cpp
+    PropertyMatrix.cpp
     PropertyPath.cpp
     PropertyPercent.cpp
     PropertyPersistentObject.cpp
+    PropertyPlacement.cpp
+    PropertyPlacementList.cpp
     PropertyPythonObject.cpp
+    PropertyRotation.cpp
     PropertyString.cpp
     PropertyStringList.cpp
     PropertyUnits.cpp
     PropertyUUID.cpp
+    PropertyVector.cpp
+    PropertyVectorList.cpp
     PropertyXLink.cpp
 )
 SET(Properties_HPP_SRCS
@@ -279,6 +285,7 @@ SET(Properties_HPP_SRCS
     PropertyBool.h
     PropertyBoolList.h
     PropertyColor.h
+    PropertyComplexGeoData.h
     PropertyContainer.h
     PropertyEnumeration.h
     PropertyExpressionEngine.h
@@ -287,7 +294,6 @@ SET(Properties_HPP_SRCS
     PropertyFloatConstraint.h
     PropertyFloatList.h
     PropertyFont.h
-    PropertyGeo.h
     PropertyInteger.h
     PropertyIntegerConstraint.h
     PropertyIntegerList.h
@@ -299,14 +305,20 @@ SET(Properties_HPP_SRCS
     PropertyLinkSubList.h
     PropertyMap.h
     PropertyMaterial.h
+    PropertyMatrix.h
     PropertyPath.h
+    PropertyPlacement.h
+    PropertyPlacementList.h
     PropertyPercent.h
     PropertyPersistentObject.h
     PropertyPythonObject.h
+    PropertyRotation.h
     PropertyString.h
     PropertyStringList.h
     PropertyUnits.h
     PropertyUUID.h
+    PropertyVector.h
+    PropertyVectorList.h
     PropertyXLink.h
 )
 SET(Properties_SRCS

@@ -48,12 +48,16 @@
 #include <App/PropertyFile.h>
 #include <App/PropertyColor.h>
 #include <App/PropertyFloatList.h>
-#include <App/PropertyGeo.h>
 #include <App/PropertyIntegerList.h>
 #include <App/PropertyMaterial.h>
+#include <App/PropertyMatrix.h>
 #include <App/PropertyPath.h>
+#include <App/PropertyPlacement.h>
+#include <App/PropertyRotation.h>
 #include <App/PropertyStringList.h>
 #include <App/PropertyUnits.h>
+#include <App/PropertyVector.h>
+#include <App/PropertyVectorList.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>

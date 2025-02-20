@@ -28,7 +28,6 @@
 #include <QTextStream>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyGeo.h>
 #include <App/PropertyUnits.h>
 
 #include <Mod/Part/App/MeasureInfo.h>

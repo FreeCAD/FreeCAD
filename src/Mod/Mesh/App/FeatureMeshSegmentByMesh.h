@@ -24,6 +24,7 @@
 #define FEATURE_MESH_SEGMENTBYMESH_H
 
 #include <App/PropertyLink.h>
+#include <App/PropertyVector.h>
 
 #include "MeshFeature.h"
 
