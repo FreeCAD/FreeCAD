@@ -54,6 +54,7 @@
 # include <Gui/MainWindow.h>
 # include <mutex>
 # include <condition_variable>
+# include <QProgressBar>
 #endif
 
 #include <App/Document.h>
@@ -179,6 +180,12 @@ public:
         auto label = new QLabel(tr("This operation may take a while.\nPlease wait or press 'Abort' to cancel."), this);
         label->setAlignment(Qt::AlignCenter);
         layout->addWidget(label);
+        
+        // Add progress bar in indeterminate mode
+        auto progressBar = new QProgressBar(this);
+        progressBar->setMinimum(0);
+        progressBar->setMaximum(0); // This makes it indeterminate
+        layout->addWidget(progressBar);
         
         auto abortButton = new QPushButton(tr("Abort"), this);
         layout->addWidget(abortButton);
