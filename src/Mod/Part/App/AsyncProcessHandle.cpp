@@ -75,9 +75,19 @@ TopoShape AsyncProcessHandle::join()
 
     // Read result using BooleanOperation's protocol
     bool isError;
-    std::string result = BooleanOperation::readResult(fd, isError);
+    std::string result;
+    try {
+        result = BooleanOperation::readResult(fd, isError);
+    }
+    catch (...) {
+        // Wait for child process even if readResult fails
+        int status;
+        waitpid(pid, &status, 0);
+        valid.store(false);
+        throw; // Re-throw the original exception
+    }
 
-    // Wait for child process first to ensure clean exit
+    // Wait for child process to ensure clean exit
     int status;
     if (waitpid(pid, &status, 0) == -1) {
         throw Base::RuntimeError("Error waiting for child process");
