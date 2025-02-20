@@ -33,7 +33,8 @@
 #include "dxf.h"
 
 
-namespace App {
+namespace App
+{
 class PropertyLinkListHidden;
 }
 

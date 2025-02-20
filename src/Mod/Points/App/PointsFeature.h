@@ -40,7 +40,7 @@ namespace App
 {
 class Color;
 class PropertyComplexGeoData;
-}
+}  // namespace App
 
 namespace Points
 {

@@ -34,7 +34,8 @@
 #include <Geom_BoundedSurface.hxx>
 #include <ShapeExtend_WireData.hxx>
 
-namespace App {
+namespace App
+{
 using SubSet = std::pair<DocumentObject*, std::vector<std::string>>;
 }
 
