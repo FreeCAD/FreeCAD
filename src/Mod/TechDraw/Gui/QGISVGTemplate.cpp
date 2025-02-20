@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"   //NOLINT
+#include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QDomDocument>
 # include <QFile>
@@ -196,10 +196,10 @@ void QGISVGTemplate::createClickHandles()
 
         QDomElement textElement = tspan.parentNode().toElement();
 
-        double x = Rez::guiX(
-            textElement.attribute(QString::fromUtf8("x"), QString::fromUtf8("0.0")).toDouble());
-        double y = Rez::guiX(
-            textElement.attribute(QString::fromUtf8("y"), QString::fromUtf8("0.0")).toDouble());
+        QString xString = textElement.attribute(QStringLiteral("x"), QStringLiteral("0.0"));
+        double x = Rez::guiX(xString.toDouble());
+        QString yString = textElement.attribute(QStringLiteral("y"), QStringLiteral("0.0"));
+        double y = Rez::guiX(yString.toDouble());
 
         QString name = textElement.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
         if (name.isEmpty()) {
@@ -223,8 +223,8 @@ void QGISVGTemplate::createClickHandles()
         auto clickWidth  = clickRectSize.width();
         auto clickHeight = clickRectSize.height();
 
-        const QString middleAnchorToken{QString::fromUtf8("middle")};
-        const QString endAnchorToken{QString::fromUtf8("end")};
+        const QString middleAnchorToken{QStringLiteral("middle")};
+        const QString endAnchorToken{QStringLiteral("end")};
 
         constexpr double hPad{2.0};
         if (attributes.anchor() == middleAnchorToken) {
@@ -273,16 +273,17 @@ void QGISVGTemplate::createClickHandles()
 QSizeF QGISVGTemplate::calculateClickboxSize(const QString& editableValue,
                                              const TechDraw::SvgTextAttributes& attributes) const
 {
-    constexpr double PixelsPerMM{3.78};     // based on CSS 96px / inch
     constexpr double StdCSSDpi{96};
+    constexpr double MMPerInch{25.4};
+    constexpr double PixelsPerMM{StdCSSDpi / MMPerInch};
 
-    auto family = attributes.family().isEmpty() ? QString::fromUtf8("Sans") : attributes.family();
+    auto family = attributes.family().isEmpty() ? QStringLiteral("Sans") : attributes.family();
 
     double textHeight{0};
-    if (attributes.size() == 0) {
+    if (attributes.fontSize() == 0) {
         textHeight = Preferences::labelFontSizeMM() * PixelsPerMM;  // pixels
     } else {
-        textHeight = QGIView::exactFontSize(family.toStdString(), attributes.size());  // pixels
+        textHeight = QGIView::exactFontSize(family.toStdString(), attributes.fontSize());  // pixels
     }
 
     QFont fontForLength(family);

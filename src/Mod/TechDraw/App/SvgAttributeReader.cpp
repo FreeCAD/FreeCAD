@@ -48,10 +48,10 @@ void SvgAttributeReader::findTextAttributesForElement(SvgTextAttributes& attribu
         return;
     }
 
-    const QString StyleAttrName{QString::fromUtf8("style")};
-    const QString SizeAttrName{QString::fromUtf8("font-size")};
-    const QString FamilyAttrName{QString::fromUtf8("font-family")};
-    const QString AnchorAttrName{QString::fromUtf8("text-anchor")};
+    const QString StyleAttrName{QStringLiteral("style")};
+    const QString SizeAttrName{QStringLiteral("font-size")};
+    const QString FamilyAttrName{QStringLiteral("font-family")};
+    const QString AnchorAttrName{QStringLiteral("text-anchor")};
 
     QString styleValue = element.attribute(StyleAttrName);
     if (!styleValue.isEmpty()) {
@@ -63,8 +63,8 @@ void SvgAttributeReader::findTextAttributesForElement(SvgTextAttributes& attribu
 
         double styleSize = findFontSizeInStyle(styleValue);
         if (styleSize != 0  &&
-            attributes.size() == 0) {
-            attributes.setSize(styleSize);
+            attributes.fontSize() == 0) {
+            attributes.setFontSize(styleSize);
         }
 
         QString styleAnchor = findAnchorInStyle(styleValue);
@@ -79,13 +79,13 @@ void SvgAttributeReader::findTextAttributesForElement(SvgTextAttributes& attribu
     }
 
     // check for a font-size attribute for element
-    if (attributes.size() == 0) {
+    if (attributes.fontSize() == 0) {
         QString sizeValue = element.attribute(SizeAttrName);
         if (!sizeValue.isEmpty()) {
             auto newSize = findFontSizeInAttribute(sizeValue);
             if (newSize != 0 &&
-                attributes.size() == 0) {
-                attributes.setSize(newSize);
+                attributes.fontSize() == 0) {
+                attributes.setFontSize(newSize);
             }
         }
     }
@@ -115,7 +115,7 @@ void SvgAttributeReader::findTextAttributesForElement(SvgTextAttributes& attribu
     }
 }
 
-QString SvgAttributeReader::findRegexInString(QRegularExpression rx, QString searchThis)
+QString SvgAttributeReader::findRegexInString(const QRegularExpression& rx, const QString& searchThis)
 {
     if (searchThis.isEmpty()) {
         return {};
@@ -125,15 +125,15 @@ QString SvgAttributeReader::findRegexInString(QRegularExpression rx, QString sea
 
     int pos{0};
     pos = searchThis.indexOf(rx, 0, &match);
-    if (pos != -1) {
-        return match.captured(match.lastCapturedIndex());
+    if (pos == -1) {
+        return {};
     }
 
-    return {};
+    return match.captured(match.lastCapturedIndex());
 }
 
 //! find the font-family hidden in a style string
-QString SvgAttributeReader::findFamilyInStyle(QString style)
+QString SvgAttributeReader::findFamilyInStyle(const QString& style)
 {
     // /font-family:([^;]+);/gm
     //                                          style="font-family:Arial;...
@@ -143,7 +143,7 @@ QString SvgAttributeReader::findFamilyInStyle(QString style)
 
 
 //! find the font-family hidden in a style string
-QString SvgAttributeReader::findAnchorInStyle(QString style)
+QString SvgAttributeReader::findAnchorInStyle(const QString& style)
 {
     //                                          style="text-anchor:middle;">
     QRegularExpression rxTextAnchor(QString::fromUtf8(R"(text-anchor:([^;]+)[;"]*)"));
@@ -152,7 +152,7 @@ QString SvgAttributeReader::findAnchorInStyle(QString style)
 
 
 //! find the font size hidden in a style string
-double SvgAttributeReader::findFontSizeInStyle(QString style)
+double SvgAttributeReader::findFontSizeInStyle(const QString& style)
 {
     //                                          style="font-size:2.82222px;">
     QRegularExpression rxFontSize(QString::fromUtf8(R"(font-size:([0-9]*\.?[0-9]*)\D)"));
@@ -165,7 +165,7 @@ double SvgAttributeReader::findFontSizeInStyle(QString style)
 
 
 //! find the numbers in a font-size attribute text
-double SvgAttributeReader::findFontSizeInAttribute(QString attrText)
+double SvgAttributeReader::findFontSizeInAttribute(const QString &attrText)
 {
     //                                                 "3.95px"
     QRegularExpression rxFontSize(QString::fromUtf8(R"(([0-9]*\.?[0-9]*)\D)"));
@@ -179,6 +179,6 @@ double SvgAttributeReader::findFontSizeInAttribute(QString attrText)
 
 bool SvgTextAttributes::finished() const
 {
-    return !(family().isNull() || anchor().isNull() || size() == 0);
+    return (!family().isNull() && !anchor().isNull() && fontSize() != 0);
 }
 

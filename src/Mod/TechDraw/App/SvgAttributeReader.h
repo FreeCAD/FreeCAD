@@ -39,24 +39,24 @@ namespace TechDraw
 class SvgTextAttributes
 {
 public:
-    SvgTextAttributes() : m_size(0)  {}
+    SvgTextAttributes() : m_fontSize(0)  {}
 
-    SvgTextAttributes(QString  family, const double& size, QString  anchor) :
-        m_family(std::move(family)), m_size(size), m_anchor(std::move(anchor))  {}
+    SvgTextAttributes(QString  family, const double& fontSize, QString  anchor) :
+        m_family(std::move(family)), m_fontSize(fontSize), m_anchor(std::move(anchor))  {}
 
     QString family() const  { return m_family; }
-    double size() const { return m_size; }
+    double fontSize() const { return m_fontSize; }
     QString anchor() const { return m_anchor; }
 
     void setFamily(const QString& newFamily)  { m_family = newFamily; }
-    void setSize(double newSize)  { m_size = newSize; }
+    void setFontSize(double newFontSize)  { m_fontSize = newFontSize; }
     void setAnchor(const QString& newAnchor)  { m_anchor = newAnchor;}
 
     bool finished() const;
 
 private:
     QString m_family;
-    double m_size;
+    double m_fontSize;
     QString m_anchor;
 };
 
@@ -68,11 +68,11 @@ public:
                                              QDomElement element,
                                              int maxlevels,
                                              int thislevel = 0);
-    static QString findRegexInString(QRegularExpression rx, QString searchThis);
-    static QString findFamilyInStyle(QString styleValue);
-    static QString findAnchorInStyle(QString styleValue);
-    static double findFontSizeInStyle(QString style);
-    static double findFontSizeInAttribute(QString attrText);
+    static QString findRegexInString(const QRegularExpression& rx, const QString &searchThis);
+    static QString findFamilyInStyle(const QString& styleValue);
+    static QString findAnchorInStyle(const QString& styleValue);
+    static double findFontSizeInStyle(const QString& style);
+    static double findFontSizeInAttribute(const QString& attrText);
 
 };// class SvgAttributeReader
 
