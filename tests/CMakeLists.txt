@@ -46,7 +46,7 @@ endif(WIN32)
 
 if(NOT BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND Google_Tests_LIBS
-        ${PYTHON_LIBRARIES}
+        ${Python3_LIBRARIES}
     )
 endif()
 
@@ -63,7 +63,7 @@ function(setup_qt_test)
 
         if(NOT BUILD_DYNAMIC_LINK_PYTHON)
             list(APPEND ${_testname}_LIBS
-                ${PYTHON_LIBRARIES}
+                ${Python3_LIBRARIES}
             )
         endif()
 

@@ -151,12 +151,12 @@ void ModelLoader::dereference(const QString& uuid,
     auto childBase = child->getBase().toStdString();
 
     std::set<QString> exclude;
-    exclude.insert(QString::fromStdString("Name"));
-    exclude.insert(QString::fromStdString("UUID"));
-    exclude.insert(QString::fromStdString("URL"));
-    exclude.insert(QString::fromStdString("Description"));
-    exclude.insert(QString::fromStdString("DOI"));
-    exclude.insert(QString::fromStdString("Inherits"));
+    exclude.insert(QStringLiteral("Name"));
+    exclude.insert(QStringLiteral("UUID"));
+    exclude.insert(QStringLiteral("URL"));
+    exclude.insert(QStringLiteral("Description"));
+    exclude.insert(QStringLiteral("DOI"));
+    exclude.insert(QStringLiteral("Inherits"));
 
     auto parentProperties = (*parentPtr)[parentBase];
     auto childProperties = childYaml[childBase];
@@ -220,12 +220,12 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
                             std::map<std::pair<QString, QString>, QString>* inheritances)
 {
     std::set<QString> exclude;
-    exclude.insert(QString::fromStdString("Name"));
-    exclude.insert(QString::fromStdString("UUID"));
-    exclude.insert(QString::fromStdString("URL"));
-    exclude.insert(QString::fromStdString("Description"));
-    exclude.insert(QString::fromStdString("DOI"));
-    exclude.insert(QString::fromStdString("Inherits"));
+    exclude.insert(QStringLiteral("Name"));
+    exclude.insert(QStringLiteral("UUID"));
+    exclude.insert(QStringLiteral("URL"));
+    exclude.insert(QStringLiteral("Description"));
+    exclude.insert(QStringLiteral("DOI"));
+    exclude.insert(QStringLiteral("Inherits"));
 
     auto yamlModel = model->getModel();
     auto library = model->getLibrary();
@@ -274,8 +274,8 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
                                    propURL,
                                    propDescription);
 
-            if (propType == QString::fromStdString("2DArray")
-                || propType == QString::fromStdString("3DArray")) {
+            if (propType == QStringLiteral("2DArray")
+                || propType == QStringLiteral("3DArray")) {
                 // Base::Console().Log("Reading columns\n");
                 // Read the columns
                 auto cols = yamlProp["Columns"];
@@ -369,9 +369,9 @@ void ModelLoader::getModelLibraries()
         QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
                                                      + "/Mod/Material/Resources/Models");
         auto libData =
-            std::make_shared<ModelLibrary>(QString::fromStdString("System"),
+            std::make_shared<ModelLibrary>(QStringLiteral("System"),
                                            resourceDir,
-                                           QString::fromStdString(":/icons/freecad.svg"));
+                                           QStringLiteral(":/icons/freecad.svg"));
         _libraryList->push_back(libData);
     }
 
@@ -401,9 +401,9 @@ void ModelLoader::getModelLibraries()
             QDir materialDir(resourceDir);
             if (materialDir.exists()) {
                 auto libData = std::make_shared<ModelLibrary>(
-                    QString::fromStdString("User"),
+                    QStringLiteral("User"),
                     resourceDir,
-                    QString::fromStdString(":/icons/preferences-general.svg"));
+                    QStringLiteral(":/icons/preferences-general.svg"));
                 _libraryList->push_back(libData);
             }
         }
@@ -415,9 +415,9 @@ void ModelLoader::getModelLibraries()
             QDir materialDir(resourceDir);
             if (materialDir.exists()) {
                 auto libData =
-                    std::make_shared<ModelLibrary>(QString::fromStdString("Custom"),
+                    std::make_shared<ModelLibrary>(QStringLiteral("Custom"),
                                                    resourceDir,
-                                                   QString::fromStdString(":/icons/user.svg"));
+                                                   QStringLiteral(":/icons/user.svg"));
                 _libraryList->push_back(libData);
             }
         }

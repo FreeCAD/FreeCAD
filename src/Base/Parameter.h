@@ -45,10 +45,6 @@ using PyObject = struct _object;
 #undef isalnum
 #endif
 
-#ifdef FC_OS_LINUX
-#include <sstream>
-#endif
-
 #include <map>
 #include <vector>
 #include <boost/signals2.hpp>
@@ -67,7 +63,6 @@ using PyObject = struct _object;
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER
-using namespace XERCES_CPP_NAMESPACE;
 namespace XERCES_CPP_NAMESPACE
 {
 class DOMNode;
@@ -131,27 +126,67 @@ public:
 
     /** @name methods for group handling */
     //@{
-    /// get a handle to a sub group or create one
+
+    /**
+     *  Returns or creates a sub-group with the given name.
+     *
+     *  @param[in] Name Name of the sub-group.
+     *  @returns A handle to the sub-group.
+     */
     Base::Reference<ParameterGrp> GetGroup(const char* Name);
-    /// get a vector of all sub groups in this group
+
+    /**
+     *  Returns all sub-groups.
+     *
+     *  @returns A vector of handles to the sub-groups.
+     */
     std::vector<Base::Reference<ParameterGrp>> GetGroups();
-    /// test if this group is empty
+
+    /**
+     *  Tests if this group is empty.
+     */
     bool IsEmpty() const;
-    /// test if a special sub group is in this group
+
+    /**
+     *  Tests if a sub-group exists.
+     *
+     *  @param[in] Name Name of the sub-group.
+     */
     bool HasGroup(const char* Name) const;
+
     /// type of the handle
     using handle = Base::Reference<ParameterGrp>;
-    /// remove a sub group from this group
+
+    /**
+     *  Removes a sub-group.
+     *
+     *  @param[in] Name Name of the sub-group.
+     */
     void RemoveGrp(const char* Name);
-    /// rename a sub group from this group
+
+    /**
+     *  Renames a sub-group.
+     *
+     *  @param[in] OldName The current name of the sub-group.
+     *  @param[in] NewName The new name the sub-group will have.
+     *  @returns Whether or not the renaming succeeded.
+     *
+     *  @note Does nothing if a sub-group with the new name already exists.
+     */
     bool RenameGrp(const char* OldName, const char* NewName);
-    /// clears everything in this group (all types)
-    /// @param notify: whether to notify on deleted parameters using the Observer interface.
+
+    /**
+     *  Empties this group.
+     *
+     *  @param[in] notify Whether to notify on deleted parameters using the Observer interface.
+     */
     void Clear(bool notify = false);
+
     //@}
 
     /** @name methods for generic attribute handling */
     //@{
+
     enum class ParamType
     {
         FCInvalid = 0,

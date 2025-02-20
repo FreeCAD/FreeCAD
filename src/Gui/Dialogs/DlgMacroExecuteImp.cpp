@@ -471,7 +471,7 @@ void DlgMacroExecuteImp::onCreateButtonClicked()
                                        Qt::MSWindowsFixedSizeDialogHint);
 
     if (replaceSpaces) {
-        fn = fn.replace(QString::fromStdString(" "), QString::fromStdString("_"));
+        fn = fn.replace(QStringLiteral(" "), QStringLiteral("_"));
     }
 
     if (!fn.isEmpty()) {
@@ -867,7 +867,7 @@ void DlgMacroExecuteImp::onRenameButtonClicked()
                                        Qt::MSWindowsFixedSizeDialogHint);
 
     if (replaceSpaces) {
-        fn = fn.replace(QString::fromStdString(" "), QString::fromStdString("_"));
+        fn = fn.replace(QStringLiteral(" "), QStringLiteral("_"));
     }
 
     if (!fn.isEmpty() && fn != oldName) {
@@ -957,11 +957,11 @@ void DlgMacroExecuteImp::onDuplicateButtonClicked()
     QString completeSuffix = oldfi.completeSuffix();  // everything after the first "."
     QString extraNote = completeSuffix.left(completeSuffix.size() - oldfi.suffix().size());
     QString baseName = oldfi.baseName();  // everything before first "."
-    QString neutralSymbol = QString::fromStdString("@");
+    QString neutralSymbol = QStringLiteral("@");
     QString last3 = baseName.right(3);
     bool ok = true;  // was conversion to int successful?
     int nLast3 = last3.toInt(&ok);
-    last3 = QString::fromStdString("001");  // increment beginning with 001 unless from001 = false
+    last3 = QStringLiteral("001");  // increment beginning with 001 unless from001 = false
     if (ok) {
         // last3 were all digits, so we strip them from the base name
         if (baseName.size() > 3) {  // if <= 3 leave be (e.g. 2.py becomes 2@001.py)
@@ -987,13 +987,13 @@ void DlgMacroExecuteImp::onDuplicateButtonClicked()
         nLast3++;
         last3 = QString::number(nLast3);
         while (last3.size() < 3) {
-            last3.prepend(QString::fromStdString("0"));  // pad 0's if needed
+            last3.prepend(QStringLiteral("0"));  // pad 0's if needed
         }
     }
 
 
     QString oldNameDigitized =
-        baseName + neutralSymbol + last3 + QString::fromStdString(".") + completeSuffix;
+        baseName + neutralSymbol + last3 + QStringLiteral(".") + completeSuffix;
     QFileInfo fi(dir, oldNameDigitized);
 
 
@@ -1007,10 +1007,10 @@ void DlgMacroExecuteImp::onDuplicateButtonClicked()
         }
         last3 = QString::number(nLast3);
         while (last3.size() < 3) {
-            last3.prepend(QString::fromStdString("0"));  // pad 0's if needed
+            last3.prepend(QStringLiteral("0"));  // pad 0's if needed
         }
         oldNameDigitized =
-            baseName + neutralSymbol + last3 + QString::fromStdString(".") + completeSuffix;
+            baseName + neutralSymbol + last3 + QStringLiteral(".") + completeSuffix;
         fi = QFileInfo(dir, oldNameDigitized);
     }
 
@@ -1027,7 +1027,7 @@ void DlgMacroExecuteImp::onDuplicateButtonClicked()
                                        nullptr,
                                        Qt::MSWindowsFixedSizeDialogHint);
     if (replaceSpaces) {
-        fn = fn.replace(QString::fromStdString(" "), QString::fromStdString("_"));
+        fn = fn.replace(QStringLiteral(" "), QStringLiteral("_"));
     }
     if (!fn.isEmpty() && fn != oldName) {
         QString suffix = QFileInfo(fn).suffix().toLower();

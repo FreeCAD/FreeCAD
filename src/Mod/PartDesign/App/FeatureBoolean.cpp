@@ -53,9 +53,6 @@ Boolean::Boolean()
     ADD_PROPERTY(Type,((long)0));
     Type.setEnums(TypeEnums);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
-    this->Refine.setValue(getPDRefineModelParameter());
-
     ADD_PROPERTY_TYPE(UsePlacement,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Apply the placement of the second ( tool ) object");
     this->UsePlacement.setValue(false);
 
@@ -185,27 +182,6 @@ void Boolean::handleChangedPropertyName(Base::XMLReader &reader, const char * Ty
     if (Group.getClassTypeId() == type && strcmp(PropName, "Bodies") == 0) {
         Group.Restore(reader);
     }
-}
-
-
-// FIXME:  This method ( and the Refine property it depends on ) is redundant with the exact same
-//  thing in FeatureAddSub, but cannot reasonably be moved up an inheritance level to Feature as
-//  there are inheritors like FeatureBox for which a refine Property does not make sense.  A
-//  solution like moving Refine and refineShapeIfActive to a new FeatureRefine class that sits
-//  between Feature and FeatureBoolean / FeatureAddSub is a possibility, or maybe [ew!] hiding the
-//  property in Feature and only enabling it in the places it is relevant.
-TopoShape Boolean::refineShapeIfActive(const TopoShape& oldShape) const
-{
-    if (this->Refine.getValue()) {
-        try {
-            return oldShape.makeElementRefine();
-        }
-        catch (Standard_Failure&) {
-            return oldShape;
-        }
-    }
-
-    return oldShape;
 }
 
 }

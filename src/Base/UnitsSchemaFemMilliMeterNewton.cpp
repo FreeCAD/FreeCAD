@@ -26,9 +26,10 @@
 #ifndef _PreComp_
 #include <algorithm>
 #include <array>
-#include <utility>
 #endif
 
+#include "Quantity.h"
+#include "Unit.h"
 #include "UnitsSchemaFemMilliMeterNewton.h"
 
 using namespace Base;

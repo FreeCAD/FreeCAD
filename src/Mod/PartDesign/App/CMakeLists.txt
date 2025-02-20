@@ -8,7 +8,7 @@ include_directories(
     ${QT_INCLUDE_DIR}
     ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
@@ -95,6 +95,8 @@ SET(FeaturesSketchBased_SRCS
     FeatureRevolution.h
     FeatureGroove.cpp
     FeatureGroove.h
+    FeatureRefine.cpp
+    FeatureRefine.h
     FeatureAddSub.cpp
     FeatureAddSub.h
     FeatureHole.h

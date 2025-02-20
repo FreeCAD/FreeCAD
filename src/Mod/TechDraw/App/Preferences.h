@@ -29,6 +29,7 @@
 #include <Base/Parameter.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "DrawBrokenView.h"
 
 class QColor;
 class QString;
@@ -136,7 +137,7 @@ public:
     static bool showSectionLine();
     static bool includeCutLine();
 
-    static int BreakType();
+    static DrawBrokenView::BreakType BreakType();
 
     static bool useExactMatchOnDims();
 

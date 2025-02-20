@@ -26,7 +26,7 @@
 
 #ifndef _PreComp_
 #include <algorithm>
-#include <cassert>
+#include <iostream>
 #include <memory>
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>

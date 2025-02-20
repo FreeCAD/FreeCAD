@@ -1074,7 +1074,7 @@ void execLine2Points(Gui::Command* cmd)
     //check if editing existing edge
     if (!edgeNames.empty() && (edgeNames.size() == 1)) {
         TechDraw::CosmeticEdge* ce = baseFeat->getCosmeticEdgeBySelection(edgeNames.front());
-        if (!ce || ce->m_geometry->getGeomType() != TechDraw::GeomType::GENERIC) {
+        if (!ce || ce->m_geometry->getGeomType() != GeomType::GENERIC) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("Selection is not a Cosmetic Line."));
             return;
@@ -1218,8 +1218,8 @@ void execCosmeticCircle(Gui::Command* cmd)
     if (!edgeNames.empty() && (edgeNames.size() == 1)) {
         TechDraw::CosmeticEdge* ce = baseFeat->getCosmeticEdgeBySelection(edgeNames.front());
         if (!ce
-            || !(ce->m_geometry->getGeomType() == TechDraw::GeomType::CIRCLE
-                || ce->m_geometry->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE)) {
+            || !(ce->m_geometry->getGeomType() == GeomType::CIRCLE
+                || ce->m_geometry->getGeomType() == GeomType::ARCOFCIRCLE)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle."));
             return;
@@ -1274,10 +1274,6 @@ void execCosmeticCircle(Gui::Command* cmd)
 //===========================================================================
 // TechDraw_CosmeticEraser
 //===========================================================================
-
-#define GEOMETRYEDGE 0
-#define COSMETICEDGE 1
-#define CENTERLINE 2
 
 DEF_STD_CMD_A(CmdTechDrawCosmeticEraser)
 
@@ -1345,15 +1341,15 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             if (geomType == "Edge") {
                 TechDraw::BaseGeomPtr bg = objFeat->getGeomByIndex(idx);
                 if (bg && bg->getCosmetic()) {
-                    int source = bg->source();
+                    SourceType source = bg->source();
                     std::string tag = bg->getCosmeticTag();
-                    if (source == COSMETICEDGE) {
+                    if (source == SourceType::COSMETICEDGE) {
                         ce2Delete.push_back(tag);
-                    } else if (source == CENTERLINE) {
+                    } else if (source == SourceType::CENTERLINE) {
                         cl2Delete.push_back(tag);
                     } else {
                         Base::Console().Message(
-                            "CMD::CosmeticEraser - edge: %d is confused - source: %d\n", idx, source);
+                            "CMD::CosmeticEraser - edge: %d is confused - source: %d\n", idx, static_cast<int>(source));
                     }
                 }
             } else if (geomType == "Vertex") {

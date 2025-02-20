@@ -11,7 +11,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${PYCXX_INCLUDE_DIR}
@@ -65,7 +65,7 @@ list(APPEND FreeCADBase_LIBS ${QtCore_LIBRARIES})
 list(APPEND FreeCADBase_LIBS fmt::fmt)
 
 if (BUILD_DYNAMIC_LINK_PYTHON)
-    list(APPEND FreeCADBase_LIBS ${PYTHON_LIBRARIES})
+    list(APPEND FreeCADBase_LIBS ${Python3_LIBRARIES})
 endif (BUILD_DYNAMIC_LINK_PYTHON)
 
 # needed for OpenSUSE

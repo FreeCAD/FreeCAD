@@ -71,10 +71,6 @@ using namespace TechDrawGui;
 using namespace std;
 using DU = DrawUtil;
 
-#define GEOMETRYEDGE 0
-#define COSMETICEDGE 1
-#define CENTERLINE 2
-
 const float lineScaleFactor = Rez::guiX(1.);// temp fiddle for devel
 
 QGIViewPart::QGIViewPart()
@@ -365,18 +361,18 @@ void QGIViewPart::drawAllEdges()
         item->setNormalColor(PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor()));
         if ((*itGeom)->getCosmetic()) {
             // cosmetic edge - format appropriately
-            int source = (*itGeom)->source();
-            if (source == COSMETICEDGE) {
+            TechDraw::SourceType source = (*itGeom)->source();
+            if (source == TechDraw::SourceType::COSMETICEDGE) {
                 std::string cTag = (*itGeom)->getCosmeticTag();
                 showItem = formatGeomFromCosmetic(cTag, item);
             }
-            else if (source == CENTERLINE) {
+            else if (source == TechDraw::SourceType::CENTERLINE) {
                 std::string cTag = (*itGeom)->getCosmeticTag();
                 showItem = formatGeomFromCenterLine(cTag, item);
             }
             else {
                 Base::Console().Message("QGIVP::drawVP - cosmetic edge: %d is confused - source: %d\n",
-                                        iEdge, source);
+                                        iEdge, static_cast<int>(source));
             }
         } else {
             // geometry edge - apply format if applicable
@@ -407,7 +403,7 @@ void QGIViewPart::drawAllEdges()
             }
         }
 
-        if ((*itGeom)->getClassOfEdge()  == ecUVISO) {
+        if ((*itGeom)->getClassOfEdge() == EdgeClass::UVISO) {
             // we don't have a style option for iso-parametric lines so draw continuous
             item->setLinePen(m_dashedLineGenerator->getLinePen(1, vp->IsoWidth.getValue()));
             item->setWidth(Rez::guiX(vp->IsoWidth.getValue()));   //graphic
@@ -475,18 +471,18 @@ bool QGIViewPart::showThisEdge(BaseGeomPtr geom)
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
 
     if (geom->getHlrVisible()) {
-        if ((geom->getClassOfEdge()  == ecHARD) || (geom->getClassOfEdge()  == ecOUTLINE)
-            || ((geom->getClassOfEdge()  == ecSMOOTH) && dvp->SmoothVisible.getValue())
-            || ((geom->getClassOfEdge()  == ecSEAM) && dvp->SeamVisible.getValue())
-            || ((geom->getClassOfEdge()  == ecUVISO) && dvp->IsoVisible.getValue())) {
+        if ((geom->getClassOfEdge() == EdgeClass::HARD) || (geom->getClassOfEdge() == EdgeClass::OUTLINE)
+            || ((geom->getClassOfEdge() == EdgeClass::SMOOTH) && dvp->SmoothVisible.getValue())
+            || ((geom->getClassOfEdge() == EdgeClass::SEAM) && dvp->SeamVisible.getValue())
+            || ((geom->getClassOfEdge() == EdgeClass::UVISO) && dvp->IsoVisible.getValue())) {
             return true;
         }
     } else {
-        if (((geom->getClassOfEdge()  == ecHARD) && (dvp->HardHidden.getValue()))
-            || ((geom->getClassOfEdge()  == ecOUTLINE) && (dvp->HardHidden.getValue()))
-            || ((geom->getClassOfEdge()  == ecSMOOTH) && (dvp->SmoothHidden.getValue()))
-            || ((geom->getClassOfEdge()  == ecSEAM) && (dvp->SeamHidden.getValue()))
-            || ((geom->getClassOfEdge()  == ecUVISO) && (dvp->IsoHidden.getValue()))) {
+        if (((geom->getClassOfEdge() == EdgeClass::HARD) && (dvp->HardHidden.getValue()))
+            || ((geom->getClassOfEdge() == EdgeClass::OUTLINE) && (dvp->HardHidden.getValue()))
+            || ((geom->getClassOfEdge() == EdgeClass::SMOOTH) && (dvp->SmoothHidden.getValue()))
+            || ((geom->getClassOfEdge() == EdgeClass::SEAM) && (dvp->SeamHidden.getValue()))
+            || ((geom->getClassOfEdge() == EdgeClass::UVISO) && (dvp->IsoHidden.getValue()))) {
             return true;
         }
     }
@@ -1047,7 +1043,7 @@ void QGIViewPart::drawBreakLines()
         return;
     }
 
-    auto breakType = vp->BreakLineType.getValue();
+    DrawBrokenView::BreakType breakType = static_cast<DrawBrokenView::BreakType>(vp->BreakLineType.getValue());
     auto breaks = dbv->Breaks.getValues();
     for (auto& breakObj : breaks) {
         QGIBreakLine* breakLine = new QGIBreakLine();

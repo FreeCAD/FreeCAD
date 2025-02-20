@@ -1859,7 +1859,7 @@ bool DrawUtil::isCosmeticEdge(App::DocumentObject* owner, std::string element)
 {
     auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
     auto edge = ownerView->getEdge(element);
-    if (edge && edge->source() == 1 && edge->getCosmetic()) {
+    if (edge && edge->source() == SourceType::COSMETICEDGE && edge->getCosmetic()) {
         return true;
     }
     return false;
@@ -1870,7 +1870,7 @@ bool DrawUtil::isCenterLine(App::DocumentObject* owner, std::string element)
 {
     auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
     auto edge = ownerView->getEdge(element);
-    if (edge && edge->source() == 2 && edge->getCosmetic()) {
+    if (edge && edge->source() == SourceType::CENTERLINE && edge->getCosmetic()) {
         return true;
     }
     return false;

@@ -46,10 +46,6 @@ using namespace TechDraw;
 using namespace std;
 using DU = DrawUtil;
 
-#define GEOMETRYEDGE 0
-#define COSMETICEDGE 1
-#define CENTERLINE   2
-
 TYPESYSTEM_SOURCE(TechDraw::CosmeticEdge, Base::Persistence)
 
 //note this ctor has no occEdge or first/last point for geometry!
@@ -89,13 +85,13 @@ CosmeticEdge::CosmeticEdge(const TechDraw::BaseGeomPtr g)
     //we assume input edge is already in Yinverted coordinates
     permaStart = m_geometry->getStartPoint();
     permaEnd   = m_geometry->getEndPoint();
-    if ((g->getGeomType() == TechDraw::GeomType::CIRCLE) ||
-       (g->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE)) {
+    if ((g->getGeomType() == GeomType::CIRCLE) ||
+       (g->getGeomType() == GeomType::ARCOFCIRCLE)) {
        TechDraw::CirclePtr circ = std::static_pointer_cast<TechDraw::Circle>(g);
        permaStart  = circ->center;
        permaEnd    = circ->center;
        permaRadius = circ->radius;
-       if (g->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
+       if (g->getGeomType() == GeomType::ARCOFCIRCLE) {
            TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(circ);
            aoc->clockwiseAngle(g->clockwiseAngle());
            aoc->startPnt = g->getStartPoint();
@@ -115,10 +111,10 @@ CosmeticEdge::~CosmeticEdge()
 
 void CosmeticEdge::initialize()
 {
-    m_geometry->setClassOfEdge(ecHARD);
+    m_geometry->setClassOfEdge(EdgeClass::HARD);
     m_geometry->setHlrVisible( true);
     m_geometry->setCosmetic(true);
-    m_geometry->source(COSMETICEDGE);
+    m_geometry->source(SourceType::COSMETICEDGE);
 
     createNewTag();
     m_geometry->setCosmeticTag(getTagAsString());
@@ -137,10 +133,10 @@ TechDraw::BaseGeomPtr CosmeticEdge::scaledGeometry(const double scale)
     TopoDS_Shape s = ShapeUtils::scaleShape(e, scale);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
     TechDraw::BaseGeomPtr newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
-    newGeom->setClassOfEdge(ecHARD);
+    newGeom->setClassOfEdge(EdgeClass::HARD);
     newGeom->setHlrVisible( true);
     newGeom->setCosmetic(true);
-    newGeom->source(COSMETICEDGE);
+    newGeom->source(SourceType::COSMETICEDGE);
     newGeom->setCosmeticTag(getTagAsString());
     return newGeom;
 }
@@ -156,10 +152,10 @@ TechDraw::BaseGeomPtr CosmeticEdge::scaledAndRotatedGeometry(const double scale,
     s = ShapeUtils::mirrorShape(s);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
     TechDraw::BaseGeomPtr newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
-    newGeom->setClassOfEdge(ecHARD);
+    newGeom->setClassOfEdge(EdgeClass::HARD);
     newGeom->setHlrVisible( true);
     newGeom->setCosmetic(true);
-    newGeom->source(COSMETICEDGE);
+    newGeom->source(SourceType::COSMETICEDGE);
     newGeom->setCosmeticTag(getTagAsString());
     newGeom->clockwiseAngle(saveCW);
     return newGeom;
@@ -223,13 +219,13 @@ void CosmeticEdge::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
 
     writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->getGeomType() <<"\"/>" << endl;
-    if (m_geometry->getGeomType() == TechDraw::GeomType::GENERIC) {
+    if (m_geometry->getGeomType() == GeomType::GENERIC) {
         GenericPtr gen = std::static_pointer_cast<Generic>(m_geometry);
         gen->Save(writer);
-    } else if (m_geometry->getGeomType() == TechDraw::GeomType::CIRCLE) {
+    } else if (m_geometry->getGeomType() == GeomType::CIRCLE) {
         TechDraw::CirclePtr circ = std::static_pointer_cast<TechDraw::Circle>(m_geometry);
         circ->Save(writer);
-    } else if (m_geometry->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
+    } else if (m_geometry->getGeomType() == GeomType::ARCOFCIRCLE) {
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(m_geometry);
         aoc->inverted()->Save(writer);
     } else {
@@ -259,16 +255,16 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     m_format.setVisible(reader.getAttributeAsInteger("value") != 0);
 
     reader.readElement("GeometryType");
-    TechDraw::GeomType gType = static_cast<TechDraw::GeomType>(reader.getAttributeAsInteger("value"));
+    GeomType gType = static_cast<GeomType>(reader.getAttributeAsInteger("value"));
 
-    if (gType == TechDraw::GeomType::GENERIC) {
+    if (gType == GeomType::GENERIC) {
         TechDraw::GenericPtr gen = std::make_shared<TechDraw::Generic> ();
         gen->Restore(reader);
         gen->setOCCEdge(GeometryUtils::edgeFromGeneric(gen));
         m_geometry = gen;
         permaStart = gen->getStartPoint();
         permaEnd   = gen->getEndPoint();
-    } else if (gType == TechDraw::GeomType::CIRCLE) {
+    } else if (gType == GeomType::CIRCLE) {
         TechDraw::CirclePtr circ = std::make_shared<TechDraw::Circle> ();
         circ->Restore(reader);
         circ->setOCCEdge(GeometryUtils::edgeFromCircle(circ));
@@ -276,7 +272,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         permaRadius = circ->radius;
         permaStart  = circ->center;
         permaEnd    = circ->center;
-    } else if (gType == TechDraw::GeomType::ARCOFCIRCLE) {
+    } else if (gType == GeomType::ARCOFCIRCLE) {
         TechDraw::AOCPtr aoc = std::make_shared<TechDraw::AOC> ();
         aoc->Restore(reader);
         aoc->setOCCEdge(GeometryUtils::edgeFromCircleArc(aoc));

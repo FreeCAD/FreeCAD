@@ -112,11 +112,7 @@ Loft::getSectionShape(const char *name,
 
 App::DocumentObjectExecReturn *Loft::execute()
 {
-    if (onlyHasToRefine()){
-        TopoShape result = refineShapeIfActive(rawShape);
-        Shape.setValue(result);
-        return App::DocumentObject::StdReturn;
-    }
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     std::vector<TopoShape> wires;
     try {

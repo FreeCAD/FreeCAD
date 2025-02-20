@@ -2,6 +2,7 @@
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2025 The FreeCAD Project Association                    *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -28,20 +29,20 @@ See also the `downgrade` function.
 # \ingroup draftfunctions
 # \brief Provides functions to upgrade objects by different methods.
 
+import math
 import re
 import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
 from draftfunctions import draftify
-from draftfunctions import fuse
 from draftgeoutils.geometry import is_straight_line
 from draftmake import make_block
-from draftmake import make_line
 from draftmake import make_wire
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
-from draftutils.messages import _msg, _err
+from draftutils.groups import is_group
+from draftutils.messages import _msg
 from draftutils.translate import translate
 
 # Delay import of module until first use because it is heavy
@@ -85,470 +86,550 @@ def upgrade(objects, delete=False, force=None):
         A tuple containing two lists, a list of new objects
         and a list of objects to be deleted.
 
-    None
-        If there is a problem it will return `None`.
-
     See Also
     --------
     downgrade
     """
-    _name = "upgrade"
-
-    if not isinstance(objects, list):
-        objects = [objects]
-
-    delete_list = []
-    add_list = []
-    doc = App.ActiveDocument
 
     # definitions of actions to perform
-    def turnToLine(obj):
-        """Turn an edge into a Draft Line."""
-        p1 = obj.Shape.Vertexes[0].Point
-        p2 = obj.Shape.Vertexes[-1].Point
-        newobj = make_line.make_line(p1, p2)
-        add_list.append(newobj)
-        delete_list.append(obj)
-        return newobj
 
-    def makeCompound(objectslist):
+    def makeCompound(objects):
         """Return a compound object made from the given objects."""
-        newobj = make_block.make_block(objectslist)
+        newobj = make_block.make_block(objects)
+        format(objects[0], [newobj])
+        add_to_parent(objects[0], [newobj])
         add_list.append(newobj)
-        return newobj
+        return True
 
-    def closeGroupWires(groupslist):
+    def closeGroupWires(groups):
         """Close every open wire in the given groups."""
         result = False
-        for grp in groupslist:
-            for obj in grp.Group:
-                newobj = closeWire(obj)
-                # add new objects to their respective groups
-                if newobj:
-                    result = True
-                    grp.addObject(newobj)
+        for grp in groups:
+            if any([closeWire(obj) for obj in grp.Group]):
+                result = True
         return result
 
     def makeSolid(obj):
         """Turn an object into a solid, if possible."""
         if obj.Shape.Solids:
-            return None
-        sol = None
+            return False
         try:
-            sol = Part.makeSolid(obj.Shape)
+            solid = Part.makeSolid(obj.Shape)
         except Part.OCCError:
-            return None
-        else:
-            if sol:
-                if sol.isClosed():
-                    newobj = doc.addObject("Part::Feature", "Solid")
-                    newobj.Shape = sol
-                    add_list.append(newobj)
-                    delete_list.append(obj)
-                    return newobj
-                else:
-                    _err(translate("draft","Object must be a closed shape"))
-            else:
-                _err(translate("draft","No solid object created"))
-        return None
+            return False
+        if not solid.isClosed():
+            return False
+        newobj = doc.addObject("Part::Feature", "Solid")
+        newobj.Shape = solid
+        format(obj, [newobj])
+        add_to_parent(obj, [newobj])
+        add_list.append(newobj)
+        delete_list.append(obj)
+        return True
 
     def closeWire(obj):
         """Close a wire object, if possible."""
         if obj.Shape.Faces:
-            return None
+            return False
         if len(obj.Shape.Wires) != 1:
-            return None
+            return False
         if len(obj.Shape.Edges) == 1:
-            return None
+            return False
         if is_straight_line(obj.Shape):
-            return None
+            return False
         if utils.get_type(obj) == "Wire":
             obj.Closed = True
             return True
-        else:
-            w = obj.Shape.Wires[0]
-            if not w.isClosed():
-                edges = w.Edges
-                p0 = w.Vertexes[0].Point
-                p1 = w.Vertexes[-1].Point
-                if p0 == p1:
-                    # sometimes an open wire can have the same start
-                    # and end points (OCCT bug); in this case,
-                    # although it is not closed, the face works.
-                    f = Part.Face(w)
-                    newobj = doc.addObject("Part::Feature", "Face")
-                    newobj.Shape = f
-                else:
-                    edges.append(Part.LineSegment(p1, p0).toShape())
-                    w = Part.Wire(Part.__sortEdges__(edges))
-                    newobj = doc.addObject("Part::Feature", "Wire")
-                    newobj.Shape = w
-                add_list.append(newobj)
-                delete_list.append(obj)
-                return newobj
-            else:
-                return None
+        wire = obj.Shape.Wires[0]
+        if wire.isClosed():
+            return False
+        verts = wire.OrderedVertexes
+        p0 = verts[0].Point
+        p1 = verts[-1].Point
+        edges = wire.Edges
+        edges.append(Part.LineSegment(p1, p0).toShape())
+        wire = Part.Wire(Part.__sortEdges__(edges))
+        newobj = doc.addObject("Part::Feature", "Wire")
+        newobj.Shape = wire
+        format(obj, [newobj])
+        add_to_parent(obj, [newobj])
+        add_list.append(newobj)
+        delete_list.append(obj)
+        return True
 
     def turnToParts(meshes):
         """Turn given meshes to parts."""
         result = False
         for mesh in meshes:
-            sh = Arch.getShapeFromMesh(mesh.Mesh)
-            if sh:
-                newobj = doc.addObject("Part::Feature", "Shell")
-                newobj.Shape = sh
+            shp = Arch.getShapeFromMesh(mesh.Mesh)
+            if shp:
+                newobj = doc.addObject("Part::Feature", shp.ShapeType)
+                newobj.Shape = shp
+                format(mesh, [newobj])
+                add_to_parent(mesh, [newobj])
                 add_list.append(newobj)
                 delete_list.append(mesh)
                 result = True
         return result
 
-    def makeFusion(obj1, obj2=None):
+    def makeFusion(objects):
         """Make a Draft or Part fusion between 2 given objects."""
-        if not obj2 and isinstance(obj1, (list, tuple)):
-            obj1, obj2 = obj1[0], obj1[1]
+        newobj = doc.addObject("Part::Fuse", "Fusion")
+        newobj.Base = objects[0]
+        newobj.Tool = objects[1]
+        format(objects[0], [newobj])
+        add_to_parent(objects[0], [newobj])
+        add_list.append(newobj)
+        return True
 
-        newobj = fuse.fuse(obj1, obj2)
-        if newobj:
-            add_list.append(newobj)
-            return newobj
-        return None
-
-    def makeShell(objectslist):
+    def makeShell(objects):
         """Make a shell or compound with the given objects."""
-        preserveFaceColor = params.get_param("preserveFaceColor")
-        preserveFaceNames = params.get_param("preserveFaceNames")
         faces = []
-        facecolors = [[], []] if preserveFaceColor else None
-        for obj in objectslist:
-            faces.extend(obj.Shape.Faces)
-            if App.GuiUp and preserveFaceColor:
-                # at this point, obj.Shape.Faces are not in same order as the
-                # original faces we might have gotten as a result
-                # of downgrade, nor do they have the same hashCode().
-                # Nevertheless, they still keep reference to their original
-                # colors, capture that in facecolors.
-                # Also, cannot use ShapeColor here, we need a whole array
-                # matching the colors of the array of faces per object,
-                # only DiffuseColor has that
-                facecolors[0].extend(obj.ViewObject.DiffuseColor)
-                facecolors[1] = faces
-        sh = Part.makeShell(faces)
-        if sh:
-            if sh.Faces:
-                newobj = doc.addObject("Part::Feature", str(sh.ShapeType))
-                newobj.Shape = sh
-                if preserveFaceNames:
-                    firstName = objectslist[0].Label
-                    nameNoTrailNumbers = re.sub(r"\d+$", "", firstName)
-                    newobj.Label = "{} {}".format(newobj.Label,
-                                                  nameNoTrailNumbers)
-                if App.GuiUp and preserveFaceColor:
-                    # At this point, sh.Faces are completely new,
-                    # with different hashCodes and different ordering
-                    # from obj.Shape.Faces. Since we cannot compare
-                    # via hashCode(), we have to iterate and use a different
-                    # criteria to find the original matching color
-                    colarray = []
-                    for ind, face in enumerate(newobj.Shape.Faces):
-                        for fcind, fcface in enumerate(facecolors[1]):
-                            if (face.Area == fcface.Area
-                                    and face.CenterOfMass == fcface.CenterOfMass):
-                                colarray.append(facecolors[0][fcind])
-                                break
-                    newobj.ViewObject.DiffuseColor = colarray
-                add_list.append(newobj)
-                delete_list.extend(objectslist)
-                return newobj
-        return None
-
-    def joinFaces(objectslist, coplanarity=False, checked=False):
-        """Make one big face from selected objects, if possible."""
-        faces = []
-        for obj in objectslist:
-            faces.extend(obj.Shape.Faces)
-
-        # check coplanarity if needed
-        if not checked:
-            coplanarity = DraftGeomUtils.is_coplanar(faces, 1e-3)
-        if not coplanarity:
-            _err(translate("draft","Faces must be coplanar to be refined"))
+        done_list = []
+        for obj in objects:
+            if obj.Shape.Faces:
+                faces.extend(obj.Shape.Faces)
+                done_list.append(obj)
+        if not faces:
             return None
+        shp = Part.makeShell(faces)
+        if shp.isNull():
+            return None
+        newobj = doc.addObject("Part::Feature", shp.ShapeType)
+        newobj.Shape = shp
+        # Format before applying diffuse color:
+        format(done_list[0], [newobj])
+        add_to_parent(done_list[0], [newobj])
+        add_list.append(newobj)
+        delete_list.extend(done_list)
 
-        # fuse faces
+        if App.GuiUp and params.get_param("preserveFaceColor"):
+            # Must happen after add_to_parent for correct CenterOfMass.
+            colors = gui_utils.get_diffuse_color(done_list)
+            if len(faces) != len(colors):
+                newobj.ViewObject.DiffuseColor = [colors[0]]
+            else:
+                # The ordering of shp.Faces may be different. Since we cannot
+                # compare via hashCode(), we have to iterate and use different
+                # criteria to find the correct color.
+                old_data = []
+                for face, color in zip(faces, colors):
+                    old_data.append([face.Area, face.CenterOfMass, color])
+                new_colors = []
+                for new_face in shp.Faces:
+                    new_area = new_face.Area
+                    new_cen = new_face.CenterOfMass
+                    for old_area, old_cen, old_color in old_data:
+                        if math.isclose(new_area, old_area, abs_tol=1e-7) \
+                                and new_cen.isEqual(old_cen, 1e-7):
+                            new_colors.append(old_color)
+                            break
+                newobj.ViewObject.DiffuseColor = new_colors
+
+        if params.get_param("preserveFaceNames"):
+            firstName = done_list[0].Label
+            nameNoTrailNumbers = re.sub(r"\d+$", "", firstName)
+            newobj.Label = "{} {}".format(newobj.Label, nameNoTrailNumbers)
+
+        return newobj
+
+    def joinFaces(objects):
+        """Make one big face from the given objects, if possible."""
+        faces = []
+        done_list = []
+        for obj in objects:
+            if obj.Shape.Faces:
+                faces.extend(obj.Shape.Faces)
+                done_list.append(obj)
+        if not faces:
+            return False
+        if not DraftGeomUtils.is_coplanar(faces, 1e-3):
+            return False
         fuse_face = faces.pop(0)
         for face in faces:
             fuse_face = fuse_face.fuse(face)
-
         face = DraftGeomUtils.concatenate(fuse_face)
-        # to prevent create new object if concatenate fails
+        # check if concatenate failed
         if face.isEqual(fuse_face):
-            face = None
-
-        if face:
-            # several coplanar and non-curved faces,
-            # they can become a Draft Wire
-            if (not DraftGeomUtils.hasCurves(face)
-                and len(face.Wires) == 1):
-                newobj = make_wire.make_wire(face.Wires[0],
-                                             closed=True, face=True)
-            # if not possible, we do a non-parametric union
-            else:
-                newobj = doc.addObject("Part::Feature", "Union")
-                newobj.Shape = face
-            add_list.append(newobj)
-            delete_list.extend(objectslist)
-            return newobj
-        return None
+            return False
+        # several coplanar and non-curved faces, they can become a Draft Wire
+        if len(face.Wires) == 1 and not DraftGeomUtils.hasCurves(face):
+            newobj = make_wire.make_wire(face.Wires[0], closed=True, face=True)
+        # if not possible, we do a non-parametric union
+        else:
+            newobj = doc.addObject("Part::Feature", "Union")
+            newobj.Shape = face
+        format(done_list[0], [newobj])
+        add_to_parent(done_list[0], [newobj])
+        add_list.append(newobj)
+        delete_list.extend(done_list)
+        return True
 
     def makeSketchFace(obj):
         """Make a face from a sketch."""
         face = Part.makeFace(obj.Shape.Wires, "Part::FaceMakerBullseye")
-        if face:
-            newobj = doc.addObject("Part::Feature", "Face")
-            newobj.Shape = face
+        if not face:
+            return False
+        newobj = doc.addObject("Part::Feature", "Face")
+        newobj.Shape = face
+        format(obj, [newobj])
+        add_to_parent(obj, [newobj])
+        add_list.append(newobj)
+        delete_list.append(obj)
+        return True
 
-            add_list.append(newobj)
-            if App.GuiUp:
-                obj.ViewObject.Visibility = False
-            return newobj
-        return None
-
-    def makeFaces(objectslist):
-        """Make a face from every closed wire in the list."""
+    def makeFaces(objects):
+        """Make a face from every closed wire in the given objects."""
         result = False
-        for o in objectslist:
-            for w in o.Shape.Wires:
+        for obj in objects:
+            new_list = []
+            for wire in obj.Shape.Wires:
                 try:
-                    f = Part.Face(w)
+                    face = Part.Face(wire)
                 except Part.OCCError:
-                    pass
-                else:
-                    newobj = doc.addObject("Part::Feature", "Face")
-                    newobj.Shape = f
-                    add_list.append(newobj)
-                    result = True
-                    if o not in delete_list:
-                        delete_list.append(o)
+                    continue
+                newobj = doc.addObject("Part::Feature", "Face")
+                newobj.Shape = face
+                new_list.append(newobj)
+            if not new_list:
+                continue
+            format(obj, new_list)
+            add_to_parent(obj, new_list)
+            add_list.extend(new_list)
+            delete_list.append(obj)
+            result = True
         return result
 
-    def makeWires(objectslist):
-        """Join edges in the given objects list into wires."""
+    def makeWires(objects):
+        """Join edges in the given objects into wires."""
         edges = []
-        for object in objectslist:
-            for edge in object.Shape.Edges:
-                edges.append(edge)
-
+        done_list = []
+        for obj in objects:
+            if obj.Shape.Edges:
+                edges.extend(obj.Shape.Edges)
+                done_list.append(obj)
+        if not edges:
+            return False
         try:
             sorted_edges = Part.sortEdges(edges)
             if _DEBUG:
-                for item_sorted_edges in sorted_edges:
-                    for e in item_sorted_edges:
-                        print("Curve: {}".format(e.Curve))
-                        print("first: {}, last: {}".format(e.Vertexes[0].Point,
-                                                       e.Vertexes[-1].Point))
-            wires = [Part.Wire(e) for e in sorted_edges]
+                for cluster in sorted_edges:
+                    for edge in cluster:
+                        print("Curve: {}".format(edge.Curve))
+                        print("first: {}, last: {}".format(edge.Vertexes[0].Point,
+                                                           edge.Vertexes[-1].Point))
+            wires = [Part.Wire(cluster) for cluster in sorted_edges]
         except Part.OCCError:
-            return None
-        else:
-            if (len(objectslist) > 1) and (len(wires) == len(objectslist)):
-                # we still have the same number of objects, we actually didn't join anything!
-                return makeCompound(objectslist)
-            for wire in wires:
-                newobj = doc.addObject("Part::Feature", "Wire")
-                newobj.Shape = wire
-                add_list.append(newobj)
-            # delete object only if there are no links to it
-            # TODO: A more refined criteria to delete object
-            for object in objectslist:
-                if object.InList:
-                    if App.GuiUp:
-                        object.ViewObject.Visibility = False
-                else:
-                    delete_list.append(object)
-            return True
-        return None
+            return False
+        if len(objects) > 1 and len(wires) == len(objects):
+            # we still have the same number of objects, we actually didn't join anything!
+            return False
+        new_list = []
+        for wire in wires:
+            newobj = doc.addObject("Part::Feature", "Wire")
+            newobj.Shape = wire
+            new_list.append(newobj)
+        # We don't know which wire came from which obj, we format them the same:
+        format(done_list[0], new_list)
+        add_to_parent(done_list[0], new_list)
+        add_list.extend(new_list)
+        delete_list.extend(done_list)
+        return True
 
-    # analyzing what we have in our selection
-    edges = []
+    def _draftify(obj):
+        """Wrapper for draftify."""
+        new_list = draftify.draftify(obj, delete=False)
+        if not new_list:
+            return False
+        if not isinstance(new_list, list):
+            new_list = [new_list]
+        format(obj, new_list)
+        add_to_parent(obj, new_list)
+        add_list.extend(new_list)
+        delete_list.append(obj)
+        return True
+
+
+    # helper functions (same as in downgrade.py)
+
+    def get_parent(obj):
+        # Problem with obj.getParent():
+        # https://github.com/FreeCAD/FreeCAD/issues/19600
+        parent = obj.getParentGroup()
+        if parent is not None:
+            return parent
+        return obj.getParentGeoFeatureGroup()
+
+    def can_be_deleted(obj):
+        if not obj.InList:
+            return True
+        for other in obj.InList:
+            if is_group(other):
+                continue
+            if other.TypeId == "App::Part":
+                continue
+            return False
+        return True
+
+    def delete_object(obj):
+        if utils.is_deleted(obj):
+            return
+        parent = get_parent(obj)
+        if parent is not None and parent.TypeId == "PartDesign::Body":
+            obj = parent
+        if not can_be_deleted(obj):
+            # Make obj invisible instead:
+            obj.Visibility = False
+            return
+        if obj.TypeId == "PartDesign::Body":
+            obj.removeObjectsFromDocument()
+        doc.removeObject(obj.Name)
+
+    def add_to_parent(obj, new_list):
+        parent = get_parent(obj)
+        if parent is None:
+            if doc.getObject("Draft_Construction"):
+                # This cludge is required because the make_* commands may
+                # put new objects in the construction group.
+                constr_group = doc.getObject("Draft_Construction")
+                for newobj in new_list:
+                    constr_group.removeObject(newobj)
+            return
+        if parent.TypeId == "PartDesign::Body":
+            # We don't add to a PD Body. We process its placement and
+            # add to its parent instead.
+            for newobj in new_list:
+                newobj.Placement = parent.Placement.multiply(newobj.Placement)
+            add_to_parent(parent, new_list)
+            return
+        for newobj in new_list:
+            # Using addObject is different from just changing the Group property.
+            # With addObject the object will be added to the parent group, but if
+            # that is a normal group, also to that group's parent GeoFeatureGroup,
+            # if available.
+            parent.addObject(newobj)
+
+    def format(obj, new_list):
+        for newobj in new_list:
+            gui_utils.format_object(newobj, obj, ignore_construction=True)
+
+
+    doc = App.ActiveDocument
+    add_list = []
+    delete_list = []
+    result = False
+
+    if not isinstance(objects, list):
+        objects = [objects]
+    if not objects:
+        return add_list, delete_list
+
+    # analyzing objects
+    faces = []
     wires = []
     openwires = []
-    faces = []
-    groups = []
-    parts = []
-    curves = []
     facewires = []
+    edges = []
     loneedges = []
+    groups = []
     meshes = []
+    parts = []
 
-    for ob in objects:
-        if ob.TypeId == "App::DocumentObjectGroup":
-            groups.append(ob)
-        elif hasattr(ob, 'Shape'):
-            parts.append(ob)
-            faces.extend(ob.Shape.Faces)
-            wires.extend(ob.Shape.Wires)
-            edges.extend(ob.Shape.Edges)
-            for f in ob.Shape.Faces:
-                facewires.extend(f.Wires)
+    for obj in objects:
+        if obj.TypeId == "App::DocumentObjectGroup":
+            groups.append(obj)
+        elif hasattr(obj, "Shape"):
+            parts.append(obj)
+            faces.extend(obj.Shape.Faces)
+            wires.extend(obj.Shape.Wires)
+            edges.extend(obj.Shape.Edges)
+            for face in obj.Shape.Faces:
+                facewires.extend(face.Wires)
             wirededges = []
-            for w in ob.Shape.Wires:
-                if len(w.Edges) > 1:
-                    for e in w.Edges:
-                        wirededges.append(e.hashCode())
-                if not w.isClosed():
-                    openwires.append(w)
-            for e in ob.Shape.Edges:
-                if DraftGeomUtils.geomType(e) != "Line":
-                    curves.append(e)
-                if not e.hashCode() in wirededges and not e.isClosed():
-                    loneedges.append(e)
-        elif ob.isDerivedFrom("Mesh::Feature"):
-            meshes.append(ob)
+            for wire in obj.Shape.Wires:
+                if len(wire.Edges) > 1:
+                    for edge in wire.Edges:
+                        wirededges.append(edge.hashCode())
+                if not wire.isClosed():
+                    openwires.append(wire)
+            for edge in obj.Shape.Edges:
+                if not edge.hashCode() in wirededges and not edge.isClosed():
+                    loneedges.append(edge)
+        elif obj.isDerivedFrom("Mesh::Feature"):
+            meshes.append(obj)
     objects = parts
 
     if _DEBUG:
         print("objects: {}, edges: {}".format(objects, edges))
         print("wires: {}, openwires: {}".format(wires, openwires))
         print("faces: {}".format(faces))
-        print("groups: {}, curves: {}".format(groups, curves))
+        print("groups: {}".format(groups))
         print("facewires: {}, loneedges: {}".format(facewires, loneedges))
 
-    if force:
-        all_func = {"makeCompound" : makeCompound,
-                    "closeGroupWires" : closeGroupWires,
-                    "makeSolid" : makeSolid,
-                    "closeWire" : closeWire,
-                    "turnToParts" : turnToParts,
-                    "makeFusion" : makeFusion,
-                    "makeShell" : makeShell,
-                    "makeFaces" : makeFaces,
-                    "draftify" : draftify.draftify,
-                    "joinFaces" : joinFaces,
-                    "makeSketchFace" : makeSketchFace,
-                    "makeWires" : makeWires,
-                    "turnToLine" : turnToLine}
-        if force in all_func:
-            result = all_func[force](objects)
+    if not (groups or objects or meshes):
+        result = False
+
+    elif force:
+        if force == "closeGroupWires":
+            result = closeGroupWires(groups)
+        elif force == "turnToParts":
+            result = turnToParts(meshes)
         else:
-            _msg(translate("draft","Upgrade: Unknown force method:") + " " + force)
-            result = None
+            # functions that work on a single object:
+            single_funcs = {"closeWire": closeWire,
+                            "draftify": _draftify,
+                            "makeSketchFace": makeSketchFace,
+                            "makeSolid": makeSolid}
+            # functions that work on multiple objects:
+            multi_funcs = {"joinFaces": joinFaces,
+                           "makeCompound": makeCompound,
+                           "makeFaces": makeFaces,
+                           "makeFusion": makeFusion,
+                           "makeShell": makeShell,
+                           "makeWires": makeWires}
+            if force in single_funcs:
+                result = any([single_funcs[force](obj) for obj in objects])
+            elif force in multi_funcs:
+                result = multi_funcs[force](objects)
+            else:
+                _msg(translate("draft", "Upgrade: Unknown force method:") + " " + force)
+                result = False
+
+    # if we have a group: close each wire inside
+    elif groups:
+        result = closeGroupWires(groups)
+        if result:
+            _msg(translate("draft", "Found groups: closing open wires inside"))
+
+    # if we have meshes, we try to turn them into shapes
+    elif meshes:
+        result = turnToParts(meshes)
+        if result:
+            _msg(translate("draft", "Found meshes: turning them into Part shapes"))
 
     else:
         # checking faces coplanarity
         # The precision needed in Part.makeFace is 1e-7. Here we use a
         # higher value to let that function throw the exception when
-        # joinFaces is called if the precision is insufficient
+        # joinFaces is called if the precision is insufficient.
         if faces:
             faces_coplanarity = DraftGeomUtils.is_coplanar(faces, 1e-3)
 
-        # applying transformations automatically
-        result = None
+        parent = get_parent(objects[0])
+        same_parent = True
+        same_parent_type = getattr(parent, "TypeId", "")  # "" for global space.
+        if len(objects) > 1:
+            for obj in objects[1:]:
+                if get_parent(obj) != parent:
+                    same_parent = False
+                    same_parent_type = None
+                    break
 
-        # if we have a group: turn each closed wire inside into a face
-        if groups:
-            result = closeGroupWires(groups)
-            if result:
-                _msg(translate("draft","Found groups: closing each open object inside"))
+        # we have only faces
+        if faces and len(facewires) == len(wires) and not openwires and not loneedges:
 
-        # if we have meshes, we try to turn them into shapes
-        elif meshes:
-            result = turnToParts(meshes)
-            if result:
-                _msg(translate("draft","Found meshes: turning into Part shapes"))
-
-        # we have only faces here, no lone edges
-        elif faces and (len(wires) + len(openwires) == len(facewires)):
             # we have one shell: we try to make a solid
+            # this also handles PD Bodies and PD features with solids (result will be False)
             if len(objects) == 1 and len(faces) > 3 and not faces_coplanarity:
                 result = makeSolid(objects[0])
                 if result:
-                    _msg(translate("draft","Found 1 solidifiable object: solidifying it"))
+                    _msg(translate("draft", "Found 1 solidifiable object: solidifying it"))
+
             # we have exactly 2 objects: we fuse them
-            elif len(objects) == 2 and not curves and not faces_coplanarity:
-                result = makeFusion(objects[0], objects[1])
+            elif len(objects) == 2 \
+                    and not faces_coplanarity \
+                    and same_parent \
+                    and same_parent_type != "PartDesign::Body":
+                result = makeFusion(objects)
                 if result:
-                    _msg(translate("draft","Found 2 objects: fusing them"))
+                    _msg(translate("draft", "Found 2 objects: fusing them"))
+
             # we have many separate faces: we try to make a shell or compound
-            elif len(objects) >= 2 and len(faces) > 1 and not loneedges:
+            elif len(objects) > 1 \
+                    and len(faces) > 1 \
+                    and same_parent \
+                    and same_parent_type != "PartDesign::Body":
                 result = makeShell(objects)
                 if result:
-                    _msg(translate("draft","Found several objects: creating a "
-                             + str(result.Shape.ShapeType)))
+                    _msg(translate(
+                        "draft",
+                        "Found several objects: creating a " + result.Shape.ShapeType
+                    ))
+
             # we have faces: we try to join them if they are coplanar
-            elif len(objects) == 1 and len(faces) > 1:
-                result = joinFaces(objects, faces_coplanarity, True)
+            elif len(objects) == 1 and len(faces) > 1 and faces_coplanarity:
+                result = joinFaces(objects)
                 if result:
-                    _msg(translate("draft","Found object with several coplanar faces: refine them"))
+                    _msg(translate("draft", "Found object with several coplanar faces: refining them"))
+
             # only one object: if not parametric, we "draftify" it
-            elif (len(objects) == 1
-                  and not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
-                result = draftify.draftify(objects[0], delete=False)
+            elif len(objects) == 1 and not objects[0].isDerivedFrom("Part::Part2DObjectPython"):
+                result = _draftify(objects[0])
                 if result:
-                    add_list.append(result)
-                    delete_list.append(objects[0])
-                    _msg(translate("draft","Found 1 non-parametric objects: draftifying it"))
+                    _msg(translate("draft", "Found 1 non-parametric object: draftifying it"))
 
         # in the following cases there are no faces
         elif not faces:
+
             # we have only closed wires
             if wires and not openwires and not loneedges:
                 # we have a sketch: extract a face
-                if (len(objects) == 1
-                    and objects[0].isDerivedFrom("Sketcher::SketchObject")):
+                if len(objects) == 1 and objects[0].isDerivedFrom("Sketcher::SketchObject"):
                     result = makeSketchFace(objects[0])
                     if result:
-                        _msg(translate("draft","Found 1 closed sketch object: creating a face from it"))
+                        _msg(translate("draft", "Found 1 closed sketch object: creating a face from it"))
                 # only closed wires
                 else:
                     result = makeFaces(objects)
                     if result:
-                        _msg(translate("draft","Found closed wires: creating faces"))
+                        _msg(translate("draft", "Found closed wires: creating faces"))
+
             # wires or edges: we try to join them
-            elif len(objects) > 1 and len(edges) > 1:
+            elif len(objects) > 1 and len(edges) > 1 and same_parent:
                 result = makeWires(objects)
                 if result:
-                    _msg(translate("draft","Found several wires or edges: wiring them"))
+                    _msg(translate("draft", "Found several wires or edges: wiring them"))
                 else:
-                    _msg(translate("draft","Found several non-treatable objects: creating compound"))
-            # special case, we have only one open wire. We close it,
-            # unless it has only 1 edge!
+                    result = makeCompound(objects)
+                    if result:
+                        _msg(translate("draft", "Found several non-treatable objects: creating compound"))
+
+            # special case, we have only one open wire. We close it, unless it has only 1 edge!
             elif len(objects) == 1 and len(openwires) == 1:
                 result = closeWire(objects[0])
-                _msg(translate("draft","trying: closing it"))
                 if result:
-                    _msg(translate("draft","Found 1 open wire: closing it"))
-            elif (len(objects) == 1 and len(edges) == 1
-                  and not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
-                e = objects[0].Shape.Edges[0]
-                edge_type = DraftGeomUtils.geomType(e)
+                    _msg(translate("draft", "Found 1 open wire: closing it"))
+
+            # only one object: if not parametric, we "draftify" it
+            elif len(objects) == 1 \
+                    and len(edges) == 1 \
+                    and not objects[0].isDerivedFrom("Part::Part2DObjectPython"):
+                edge_type = DraftGeomUtils.geomType(objects[0].Shape.Edges[0])
                 # currently only support Line and Circle
                 if edge_type in ("Line", "Circle"):
-                    result = draftify.draftify(objects[0], delete=False)
+                    result = _draftify(objects[0])
                     if result:
-                        add_list.append(result)
-                        delete_list.append(objects[0])
-                        _msg(translate("draft","Found 1 object: draftifying it"))
+                        _msg(translate("draft", "Found 1 non-parametric object: draftifying it"))
+
             # only points, no edges
             elif not edges and len(objects) > 1:
                 result = makeCompound(objects)
                 if result:
-                    _msg(translate("draft","Found points: creating compound"))
+                    _msg(translate("draft", "Found points: creating compound"))
+
         # all other cases, if more than 1 object, make a compound
         elif len(objects) > 1:
             result = makeCompound(objects)
             if result:
-                _msg(translate("draft","Found several non-treatable objects: creating compound"))
-        # no result has been obtained
-        if not result:
-            _msg(translate("draft","Unable to upgrade these objects."))
+                _msg(translate("draft", "Found several non-treatable objects: creating compound"))
+
+    # no result has been obtained
+    if not result:
+        _msg(translate("draft", "Unable to upgrade these objects"))
 
     if delete:
-        names = []
-        for o in delete_list:
-            names.append(o.Name)
-        delete_list = []
-        for n in names:
-            doc.removeObject(n)
+        for obj in delete_list:
+            delete_object(obj)
 
     gui_utils.select(add_list)
     return add_list, delete_list

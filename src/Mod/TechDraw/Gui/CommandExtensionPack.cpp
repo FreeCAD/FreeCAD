@@ -113,7 +113,7 @@ void execHoleCircle(Gui::Command* cmd)
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
         TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
         if (GeoType == "Edge") {
-            if (geom->getGeomType() == TechDraw::CIRCLE || geom->getGeomType() == TechDraw::ARCOFCIRCLE) {
+            if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
                 TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
                 Circles.push_back(cgen);
             }
@@ -212,7 +212,7 @@ void execCircleCenterLines(Gui::Command* cmd)
         TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
         if (GeoType == "Edge") {
-            if (geom->getGeomType() == TechDraw::CIRCLE || geom->getGeomType() == TechDraw::ARCOFCIRCLE) {
+            if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
                 TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
                 // cgen->center is a scaled, rotated and inverted point
                 Base::Vector3d center = CosmeticVertex::makeCanonicalPointInverted(objFeat, cgen->center);
@@ -803,11 +803,11 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg)
         BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
         if (baseGeo) {
             if (baseGeo->getCosmetic()) {
-                if (baseGeo->source() == 1) {
+                if (baseGeo->source() == SourceType::COSMETICEDGE) {
                     TechDraw::CosmeticEdge* cosEdgeTag = objFeat->getCosmeticEdgeBySelection(name);
                     _setLineAttributes(cosEdgeTag);
                 }
-                else if (baseGeo->source() == 2) {
+                else if (baseGeo->source() == SourceType::CENTERLINE) {
                     TechDraw::CenterLine* centerLineTag = objFeat->getCenterLineBySelection(name);
                     _setLineAttributes(centerLineTag);
                 }
@@ -1516,7 +1516,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
         if (geoType == "Edge") {
             TechDraw::BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
             if (baseGeo) {
-                if (baseGeo->getGeomType() == TechDraw::GENERIC) {
+                if (baseGeo->getGeomType() == GeomType::GENERIC) {
                     // start and end points are geometry points and are scaled, rotated and inverted
                     // convert start and end to unscaled, unrotated.
                     Base::Vector3d P0 = CosmeticVertex::makeCanonicalPointInverted(objFeat, baseGeo->getStartPoint());
@@ -1530,7 +1530,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                         App::Color oldColor;
                         std::vector<std::string> toDelete;
                         toDelete.push_back(uniTag);
-                        if (baseGeo->source() == 1) {
+                        if (baseGeo->source() == SourceType::COSMETICEDGE) {
                             // cosmetic edge
                             auto cosEdge = objFeat->getCosmeticEdge(uniTag);
                             oldStyle = cosEdge->m_format.getLineNumber();
@@ -1538,7 +1538,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                             oldColor = cosEdge->m_format.getColor();
                             objFeat->removeCosmeticEdge(toDelete);
                         }
-                        else if (baseGeo->source() == 2) {
+                        else if (baseGeo->source() == SourceType::CENTERLINE) {
                             // centerline
                             isCenterLine = true;
                             centerEdge = objFeat->getCenterLine(uniTag);
@@ -1981,9 +1981,10 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
 
     // Use virtual dimension view helper to format resulting value
     TechDraw::DrawViewDimension helperDim;
+    using Format = DimensionFormatter::Format;
     std::string valueStr = helperDim.formatValue(totalLength,
                                                  QString::fromUtf8(helperDim.FormatSpec.getStrValue().data()),
-                                                 helperDim.isMultiValueSchema() ? 0 : 1);
+                                                 helperDim.isMultiValueSchema() ? Format::UNALTERED : Format::FORMATTED);
     balloon->Text.setValue("◠ " + valueStr);
 
     // Set balloon format to be referencing dimension-like
@@ -2121,7 +2122,7 @@ void _createThreadCircle(const std::string Name, TechDraw::DrawViewPart* objFeat
     TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
     std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
 
-    if (GeoType == "Edge" && geom->getGeomType() == TechDraw::CIRCLE) {
+    if (GeoType == "Edge" && geom->getGeomType() == GeomType::CIRCLE) {
         TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
         // center is rotated and scaled
         Base::Vector3d center = CosmeticVertex::makeCanonicalPointInverted(objFeat, cgen->center);
@@ -2146,7 +2147,7 @@ void _createThreadLines(const std::vector<std::string>& SubNames, TechDraw::Draw
         int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
         TechDraw::BaseGeomPtr geom0 = objFeat->getGeomByIndex(GeoId0);
         TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
-        if (geom0->getGeomType() != TechDraw::GENERIC || geom1->getGeomType() != TechDraw::GENERIC) {
+        if (geom0->getGeomType() != GeomType::GENERIC || geom1->getGeomType() != GeomType::GENERIC) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw Thread Hole Side"),
                                  QObject::tr("Please select two straight lines"));
             return;

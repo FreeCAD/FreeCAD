@@ -128,7 +128,7 @@ macro(SetupShibokenAndPyside)
 
     # Now try to import the shiboken Python module and print a warning if it can't be loaded
     execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} -c "import shiboken${SHIBOKEN_MAJOR_VERSION}"
+        COMMAND ${Python3_EXECUTABLE} -c "import shiboken${SHIBOKEN_MAJOR_VERSION}"
         RESULT_VARIABLE FAILURE
         OUTPUT_VARIABLE PRINT_OUTPUT
     )
@@ -140,7 +140,7 @@ macro(SetupShibokenAndPyside)
                 "==================================\n")
     else()
         execute_process(
-            COMMAND ${PYTHON_EXECUTABLE} -c "import shiboken${SHIBOKEN_MAJOR_VERSION};print(shiboken${SHIBOKEN_MAJOR_VERSION}.__version__, end='')"
+            COMMAND ${Python3_EXECUTABLE} -c "import shiboken${SHIBOKEN_MAJOR_VERSION};print(shiboken${SHIBOKEN_MAJOR_VERSION}.__version__, end='')"
             RESULT_VARIABLE FAILURE
             OUTPUT_VARIABLE Shiboken_VERSION
         )
@@ -154,7 +154,7 @@ macro(SetupShibokenAndPyside)
 
     # Independent of the build option PySide modules must be loaded at runtime. Print a warning if it fails.
     execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} -c "import PySide${PYSIDE_MAJOR_VERSION};import os;print(os.path.dirname(PySide${PYSIDE_MAJOR_VERSION}.__file__), end='')"
+        COMMAND ${Python3_EXECUTABLE} -c "import PySide${PYSIDE_MAJOR_VERSION};import os;print(os.path.dirname(PySide${PYSIDE_MAJOR_VERSION}.__file__), end='')"
         RESULT_VARIABLE FAILURE
         OUTPUT_VARIABLE PRINT_OUTPUT
     )
@@ -165,7 +165,7 @@ macro(SetupShibokenAndPyside)
                 "================================\n")
     else()
         execute_process(
-            COMMAND ${PYTHON_EXECUTABLE} -c "import PySide${PYSIDE_MAJOR_VERSION};print(PySide${PYSIDE_MAJOR_VERSION}.__version__, end='')"
+            COMMAND ${Python3_EXECUTABLE} -c "import PySide${PYSIDE_MAJOR_VERSION};print(PySide${PYSIDE_MAJOR_VERSION}.__version__, end='')"
             RESULT_VARIABLE FAILURE
             OUTPUT_VARIABLE PySide_VERSION
         )

@@ -101,10 +101,6 @@ using DU = DrawUtil;
 using BRepAdaptor_HCurve = BRepAdaptor_Curve;
 #endif
 
-#define GEOMETRYEDGE 0
-#define COSMETICEDGE 1
-#define CENTERLINE   2
-
 // Collection of Geometric Features
 Wire::Wire()
 {
@@ -195,14 +191,14 @@ Face::~Face()
 }
 
 BaseGeom::BaseGeom() :
-    geomType(NOTDEF),
-    extractType(Plain),             //obs
-    classOfEdge(ecNONE),
+    geomType(GeomType::NOTDEF),
+    extractType(ExtractionType::Plain),             //obs
+    classOfEdge(EdgeClass::NONE),
     hlrVisible(true),
     reversed(false),
     ref3D(-1),                      //obs?
     cosmetic(false),
-    m_source(0),
+    m_source(SourceType::GEOMETRY),
     m_sourceIndex(-1)
 {
     occEdge = TopoDS_Edge();
@@ -270,7 +266,7 @@ void BaseGeom::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Ref3D value=\"" << ref3D << "\"/>" << endl;
     const char c = cosmetic?'1':'0';
     writer.Stream() << writer.ind() << "<Cosmetic value=\"" << c << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Source value=\"" << m_source << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Source value=\"" << m_source << "\"/>" << endl; // Should this save as text and not number?
     writer.Stream() << writer.ind() << "<SourceIndex value=\"" << m_sourceIndex << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << endl;
 //    writer.Stream() << writer.ind() << "<Tag value=\"" <<  getTagAsString() << "\"/>" << endl;
@@ -279,11 +275,11 @@ void BaseGeom::Save(Base::Writer &writer) const
 void BaseGeom::Restore(Base::XMLReader &reader)
 {
     reader.readElement("GeomType");
-    geomType = static_cast<TechDraw::GeomType>(reader.getAttributeAsInteger("value"));
+    geomType = static_cast<GeomType>(reader.getAttributeAsInteger("value"));
     reader.readElement("ExtractType");
-    extractType = static_cast<TechDraw::ExtractionType>(reader.getAttributeAsInteger("value"));
+    extractType = static_cast<ExtractionType>(reader.getAttributeAsInteger("value"));
     reader.readElement("EdgeClass");
-    classOfEdge = static_cast<TechDraw::edgeClass>(reader.getAttributeAsInteger("value"));
+    classOfEdge = static_cast<EdgeClass>(reader.getAttributeAsInteger("value"));
     reader.readElement("HLRVisible");
     hlrVisible = reader.getAttributeAsInteger("value") != 0;
     reader.readElement("Reversed");
@@ -293,7 +289,7 @@ void BaseGeom::Restore(Base::XMLReader &reader)
     reader.readElement("Cosmetic");
     cosmetic = reader.getAttributeAsInteger("value") != 0;
     reader.readElement("Source");
-    m_source = reader.getAttributeAsInteger("value");
+    m_source = static_cast<SourceType>(reader.getAttributeAsInteger("value"));
     reader.readElement("SourceIndex");
     m_sourceIndex = reader.getAttributeAsInteger("value");
     reader.readElement("CosmeticTag");
@@ -470,11 +466,8 @@ std::string BaseGeom::geomTypeName()
         "Bezier",
         "BSpline",
         "Line",         //why was this ever called "Generic"?
-        "Unknown" } ;
-    if (geomType >= typeNames.size()) {
-        return "Unknown";
-    }
-    return typeNames.at(geomType);
+    };
+    return typeNames.at(static_cast<int>(geomType));
 }
 
 //! Convert 1 OCC edge into 1 BaseGeom (static factory method)
@@ -651,7 +644,7 @@ TopoShape BaseGeom::asTopoShape(double scale)
 
 Ellipse::Ellipse(const TopoDS_Edge &e)
 {
-    geomType = ELLIPSE;
+    geomType = GeomType::ELLIPSE;
     BRepAdaptor_Curve c(e);
     occEdge = e;
     gp_Elips ellp = c.Ellipse();
@@ -668,7 +661,7 @@ Ellipse::Ellipse(const TopoDS_Edge &e)
 
 Ellipse::Ellipse(Base::Vector3d c, double mnr, double mjr)
 {
-    geomType = ELLIPSE;
+    geomType = GeomType::ELLIPSE;
     center = c;
     major = mjr;
     minor = mnr;
@@ -688,7 +681,7 @@ Ellipse::Ellipse(Base::Vector3d c, double mnr, double mjr)
 
 AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
 {
-    geomType = ARCOFELLIPSE;
+    geomType = GeomType::ARCOFELLIPSE;
 
     BRepAdaptor_Curve c(e);
     double f = c.FirstParameter();
@@ -725,14 +718,14 @@ AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
 
 Circle::Circle()
 {
-    geomType = CIRCLE;
+    geomType = GeomType::CIRCLE;
     radius = 0.0;
     center = Base::Vector3d(0.0, 0.0, 0.0);
 }
 
 Circle::Circle(Base::Vector3d c, double r)
 {
-    geomType = CIRCLE;
+    geomType = GeomType::CIRCLE;
     radius = r;
     center = c;
     gp_Pnt loc(c.x, c.y, c.z);
@@ -753,7 +746,7 @@ Circle::Circle(Base::Vector3d c, double r)
 
 Circle::Circle(const TopoDS_Edge &e)
 {
-    geomType = CIRCLE;             //center, radius
+    geomType = GeomType::CIRCLE;             //center, radius
     BRepAdaptor_Curve c(e);
     occEdge = e;
 
@@ -802,7 +795,7 @@ void Circle::Restore(Base::XMLReader &reader)
 
 AOC::AOC(const TopoDS_Edge &e) : Circle(e)
 {
-    geomType = ARCOFCIRCLE;
+    geomType = GeomType::ARCOFCIRCLE;
     BRepAdaptor_Curve c(e);
 
     double f = c.FirstParameter();
@@ -834,7 +827,7 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
 
 AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
 {
-    geomType = ARCOFCIRCLE;
+    geomType = GeomType::ARCOFCIRCLE;
 
     radius = r;
     center = c;
@@ -883,7 +876,7 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
 
 AOC::AOC() : Circle()
 {
-    geomType = ARCOFCIRCLE;
+    geomType = GeomType::ARCOFCIRCLE;
 
     startPnt = Base::Vector3d(0.0, 0.0, 0.0);
     endPnt = Base::Vector3d(0.0, 0.0, 0.0);
@@ -1028,7 +1021,7 @@ void AOC::Restore(Base::XMLReader &reader)
 //! Generic is a multiline
 Generic::Generic(const TopoDS_Edge &e)
 {
-    geomType = GENERIC;
+    geomType = GeomType::GENERIC;
     occEdge = e;
     BRepLib::BuildCurve3d(occEdge);
 
@@ -1055,7 +1048,7 @@ Generic::Generic(const TopoDS_Edge &e)
 
 Generic::Generic()
 {
-    geomType = GENERIC;
+    geomType = GeomType::GENERIC;
 }
 
 std::string Generic::toString() const
@@ -1145,7 +1138,7 @@ Base::Vector3d Generic::apparentInter(GenericPtr g)
 
 BSpline::BSpline(const TopoDS_Edge &e)
 {
-    geomType = BSPLINE;
+    geomType = GeomType::BSPLINE;
     BRepAdaptor_Curve c(e);
     isArc = !c.IsClosed();
     Handle(Geom_BSplineCurve) cSpline = c.BSpline();
@@ -1260,7 +1253,7 @@ bool BSpline::intersectsArc(Base::Vector3d p1, Base::Vector3d p2)
 
 BezierSegment::BezierSegment(const TopoDS_Edge &e)
 {
-    geomType = BEZIER;
+    geomType = GeomType::BEZIER;
     occEdge = e;
     BRepAdaptor_Curve c(e);
     Handle(Geom_BezierCurve) bez = c.Bezier();

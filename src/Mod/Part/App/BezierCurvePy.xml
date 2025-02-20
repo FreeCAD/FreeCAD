@@ -14,20 +14,21 @@
         <Documentation>
             <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net"/>
             <UserDocu>Describes a rational or non-rational Bezier curve:
-                -- a non-rational Bezier curve is defined by a table of poles (also called control points)
-                -- a rational Bezier curve is defined by a table of poles with varying weights
+-- a non-rational Bezier curve is defined by a table of poles (also called control points)
+-- a rational Bezier curve is defined by a table of poles with varying weights
 
-                Constructor takes no arguments.
+Constructor takes no arguments.
 
-                Example usage:
-                    p1 = Base.Vector(-1, 0, 0)
-                    p2 = Base.Vector(0, 1, 0.2)
-                    p3 = Base.Vector(1, 0, 0.4)
-                    p4 = Base.Vector(0, -1, 1)
+Example usage:
+    p1 = Base.Vector(-1, 0, 0)
+    p2 = Base.Vector(0, 1, 0.2)
+    p3 = Base.Vector(1, 0, 0.4)
+    p4 = Base.Vector(0, -1, 1)
 
-                    bc = BezierCurve()
-                    bc.setPoles([p1, p2, p3, p4])
-                    curveShape = bc.toShape()</UserDocu>
+    bc = BezierCurve()
+    bc.setPoles([p1, p2, p3, p4])
+    curveShape = bc.toShape()
+            </UserDocu>
         </Documentation>
         <Attribute Name="Degree" ReadOnly="true">
             <Documentation>
@@ -74,13 +75,12 @@ Bezier curve curve. This value is 25.</UserDocu>
         <Methode Name="isClosed" Const="true">
             <Documentation>
                 <UserDocu>Returns true if the distance between the start point and end point of
-                    this Bezier curve is less than or equal to gp::Resolution().</UserDocu>
+this Bezier curve is less than or equal to gp::Resolution().</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="increase">
             <Documentation>
-                <UserDocu>increase(Int=Degree)
-Increases the degree of this Bezier curve to Degree.
+                <UserDocu>Increases the degree of this Bezier curve to Degree.
 As a result, the poles and weights tables are modified.</UserDocu>
             </Documentation>
         </Methode>
@@ -124,7 +124,7 @@ If this Bezier curve is rational, it can become non-rational.</UserDocu>
             <Documentation>
                 <UserDocu>Set the poles of the Bezier curve.
 
-                Takes a list of 3D Base.Vector objects.</UserDocu>
+Takes a list of 3D Base.Vector objects.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="setWeight">
@@ -154,11 +154,11 @@ ensures that:
         <Methode Name="interpolate">
             <Documentation>
                 <UserDocu>Interpolates a list of constraints.
-                Each constraint is a list of a point and some optional derivatives
-                An optional list of parameters can be passed. It must be of same size as constraint list.
-                Otherwise, a simple uniform parametrization is used.
-                Example :
-                bezier.interpolate([[pt1, deriv11, deriv12], [pt2,], [pt3, deriv31]], [0, 0.4, 1.0])</UserDocu>
+Each constraint is a list of a point and some optional derivatives
+An optional list of parameters can be passed. It must be of same size as constraint list.
+Otherwise, a simple uniform parametrization is used.
+Example :
+bezier.interpolate([[pt1, deriv11, deriv12], [pt2,], [pt3, deriv31]], [0, 0.4, 1.0])</UserDocu>
             </Documentation>
         </Methode>
     </PythonExport>

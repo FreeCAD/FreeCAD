@@ -26,14 +26,12 @@
 #include <bitset>
 #include <map>
 #include <memory>
-#include <sstream>
 #include <string>
 
 #include <xercesc/framework/XMLPScanToken.hpp>
-#include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
 
-#include <boost/iostreams/concepts.hpp>
+#include <boost/iostreams/categories.hpp>
 
 #include "FileInfo.h"
 
@@ -44,14 +42,15 @@ class ZipInputStream;
 }
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER
-using namespace XERCES_CPP_NAMESPACE;
 namespace XERCES_CPP_NAMESPACE
 {
+class Attributes;
 class DefaultHandler;
 class SAX2XMLReader;
 }  // namespace XERCES_CPP_NAMESPACE
 #else
 XERCES_CPP_NAMESPACE_BEGIN
+class Attributes;
 class DefaultHandler;
 class SAX2XMLReader;
 XERCES_CPP_NAMESPACE_END
