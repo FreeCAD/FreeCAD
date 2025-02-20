@@ -241,6 +241,36 @@ class PlaneBase:
         self.position = pos + (self.axis * offset)
         return True
 
+    def align_to_face_and_edge(self, face, edge, offset=0):
+        """Align the WP to a face and an edge.
+
+        The edge must be a border of the face, and the face must be planar.
+
+        The WP will lie on the face, but its `position` will be the
+        first vertex of the edge, and its `u` vector will be aligned
+        with the edge.
+
+        Parameters
+        ----------
+
+        face: Part.Face
+            The given face
+        edge: Part.Edge
+            A border of the face
+        offset: float, optional
+            Defaults to zero
+            Offset along the WP `axis`
+
+        Returns
+        -------
+        `True`/`False`
+            `True` if successful
+        """
+        if face.Surface.isPlanar() is False:
+            return False
+        vertex = Part.Vertex(face.CenterOfMass)
+        return self.align_to_edges_vertexes([edge, vertex], offset)
+
     def align_to_face(self, shape, offset=0):
         """Align the WP to a face with an optional offset.
 
@@ -860,6 +890,15 @@ class Plane(PlaneBase):
             _wrn(translate(
                 "draft", "Selected Shapes must define a plane") + "\n")
             return False
+
+        # check for face + edge
+        if len(names) == 2:
+            if  any(["Face" in n for n in names]) and any(["Edge" in n for n in names]):
+                edge = shapes[[names.index(n) for n in names if n.startswith("Edge")][0]]
+                face = shapes[[names.index(n) for n in names if n.startswith("Face")][0]]
+                if edge.hashCode() in [e.hashCode() for e in face.Edges]:
+                    if super().align_to_face_and_edge(face, edge, offset):
+                        return True
 
         # set center of mass
         ctr_mass = Vector(0,0,0)
