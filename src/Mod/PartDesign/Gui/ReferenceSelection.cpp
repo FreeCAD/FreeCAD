@@ -61,13 +61,7 @@ using namespace Gui;
 
 bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
-    Base::Console().Log("ReferenceSelection::allow called.\n");
-    if (pObj) {
-        Base::Console().Log("  Object: %s, Type: %s, SubName: %s\n",
-                            pObj->getNameInDocument(), pObj->getTypeId().getName(), sSubName ? sSubName : "(none)");
-    }
-    else {
-        Base::Console().Log("  pObj is NULL\n");
+    if (! pObj) {
         return false;
     }
 
@@ -101,8 +95,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 #endif
     if (!sSubName || sSubName[0] == '\0'){
         if (pObj->isDerivedFrom<Sketcher::SketchObject>()) {
-            bool allowed = type.testFlag(AllowSelection::SKETCH);
-            return allowed;
+             return type.testFlag(AllowSelection::SKETCH);
         }
         return type.testFlag(AllowSelection::WHOLE);
     }
@@ -110,11 +103,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     // resolve links if needed
     if (!pObj->isDerivedFrom<Part::Feature>()) {
         pObj = Part::Feature::getShapeOwner(pObj, sSubName);
-        if (pObj) {
-            Base::Console().Log("  Resolved Link Object: %s, Type: %s\n",
-                                pObj->getNameInDocument(), pObj->getTypeId().getName());
-        } else {
-            Base::Console().Log("  Failed to resolve link.\n");
+        if (!pObj) {
             return false;
         }
     }

@@ -172,6 +172,7 @@ set(PartDesignHoleDefines
 )
 target_link_libraries(PartDesign
         Sketcher
+        Eigen
 )
 add_custom_target(PartDesignHole ALL SOURCES
     ${PartDesignHoleDefines}
