@@ -30,6 +30,12 @@
 namespace Fem
 {
 
+enum PostGroupMode
+{
+    Serial,
+    Parallel
+};
+
 // object grouping FEM filters and building the structure of the pipeline
 class FemExport FemPostGroupExtension : public App::GroupExtension {
 

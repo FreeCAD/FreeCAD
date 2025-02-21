@@ -25,8 +25,6 @@
 #include <Python.h>
 #endif
 
-#include <Base/FileInfo.h>
-
 // clang-format off
 #include "FemPostBranchFilter.h"
 #include "FemPostBranchFilterPy.h"

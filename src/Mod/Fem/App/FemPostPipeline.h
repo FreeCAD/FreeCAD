@@ -33,8 +33,9 @@
 
 #include <vtkSmartPointer.h>
 #include <vtkUnstructuredGridAlgorithm.h>
-#include <vtkInformation.h>
-#include <vtkInformationVector.h>
+
+class vtkInformation;
+class vtkInformationVector;
 
 
 namespace Fem
@@ -93,7 +94,7 @@ public:
 
     // load from results
     void load(FemResultObject* res);
-    void load(std::vector<FemResultObject*> res, std::vector<double> values, Base::Unit unit, std::string frame_type);
+    void load(std::vector<FemResultObject*>& res, std::vector<double>& values, Base::Unit unit, std::string& frame_type);
 
     // Group pipeline handling
     void filterChanged(FemPostFilter* filter) override;

@@ -41,7 +41,7 @@ FemPostFunctionProvider::~FemPostFunctionProvider() = default;
 
 bool FemPostFunctionProvider::allowObject(App::DocumentObject* obj)
 {
-    return obj->isDerivedFrom(FemPostFunction::getClassTypeId());
+    return obj->isDerivedFrom<FemPostFunction>();
 }
 
 void FemPostFunctionProvider::unsetupObject()
@@ -60,11 +60,8 @@ void FemPostFunctionProvider::handleChangedPropertyName(Base::XMLReader& reader,
     if (strcmp(propName, "Functions") == 0
         && Base::Type::fromName(typeName) == App::PropertyLinkList::getClassTypeId()) {
 
-        // add the formerly Functions values to the group
-        App::PropertyLinkList functions;
-        functions.setContainer(this);
-        functions.Restore(reader);
-        Group.setValues(functions.getValues());
+        // restore the property into Group, instead of the old Functions property
+        Group.Restore(reader);
     }
     else {
         App::DocumentObject::handleChangedPropertyName(reader, typeName, propName);

@@ -53,7 +53,7 @@ FemPostGroupExtension::~FemPostGroupExtension() {
 void FemPostGroupExtension::initExtension(App::ExtensionContainer* obj)
 {
 
-    if (!obj->isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
+    if (!obj->isDerivedFrom<FemPostObject>()) {
         throw Base::RuntimeError("FemPostGroupExtension can only be applied to FemPostObject");
     }
 
@@ -68,8 +68,8 @@ void FemPostGroupExtension::extensionOnChanged(const App::Property* p)
             auto objs = Group.getValues();
             std::sort( objs.begin( ), objs.end( ), [ ]( const App::DocumentObject* lhs, const App::DocumentObject* rhs ){
 
-                int l = lhs->isDerivedFrom(FemPostFilter::getClassTypeId()) ? 0 : 1;
-                int r = rhs->isDerivedFrom(FemPostFilter::getClassTypeId()) ? 0 : 1;
+                int l = lhs->isDerivedFrom<FemPostFilter>() ? 0 : 1;
+                int r = rhs->isDerivedFrom<FemPostFilter>() ? 0 : 1;
                 return r<l;
             });
             m_blockChange = true;
@@ -84,8 +84,8 @@ std::vector<Fem::FemPostFilter*> FemPostGroupExtension::getFilter()
 {
     //collect all other items that are not filters
     std::vector<Fem::FemPostFilter*> filters;
-    for (auto obj : Group.getValues()) {
-        if (obj->isDerivedFrom(Fem::FemPostFilter::getClassTypeId())) {
+    for (auto& obj : Group.getValues()) {
+        if (obj->isDerivedFrom<FemPostFilter>()) {
             filters.push_back(static_cast<FemPostFilter*>(obj));
         }
     }
@@ -115,7 +115,7 @@ void FemPostGroupExtension::onExtendedUnsetupObject()
 bool FemPostGroupExtension::allowObject(App::DocumentObject* obj)
 {
     // only filters may be added
-    return obj->isDerivedFrom(Fem::FemPostFilter::getClassTypeId());
+    return obj->isDerivedFrom<FemPostFilter>();
 }
 
 
@@ -142,11 +142,9 @@ FemPostObject* FemPostGroupExtension::getLastPostObject()
 
 bool FemPostGroupExtension::holdsPostObject(FemPostObject* obj)
 {
+    for (const auto& group_obj : Group.getValues()) {
 
-    std::vector<App::DocumentObject*>::const_iterator it = Group.getValues().begin();
-    for (; it != Group.getValues().end(); ++it) {
-
-        if (*it == obj) {
+        if (group_obj == obj) {
             return true;
         }
     }

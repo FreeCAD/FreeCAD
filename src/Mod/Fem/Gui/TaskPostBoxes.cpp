@@ -330,9 +330,8 @@ void TaskDlgPost::clicked(int button)
 bool TaskDlgPost::accept()
 {
     try {
-        std::vector<TaskPostBox*>::iterator it = m_boxes.begin();
-        for (; it != m_boxes.end(); ++it) {
-            (*it)->applyPythonCode();
+        for (auto& box : m_boxes) {
+            box->applyPythonCode();
         }
     }
     catch (const Base::Exception& e) {
