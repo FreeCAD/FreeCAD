@@ -24,27 +24,10 @@
 
 #ifndef _PreComp_
 #include <Python.h>
-#include <vtkDataSetReader.h>
-#include <vtkImageData.h>
-#include <vtkRectilinearGrid.h>
-#include <vtkStructuredGrid.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkXMLImageDataReader.h>
-#include <vtkXMLPUnstructuredGridReader.h>
-#include <vtkXMLPolyDataReader.h>
-#include <vtkXMLRectilinearGridReader.h>
-#include <vtkXMLStructuredGridReader.h>
-#include <vtkXMLUnstructuredGridReader.h>
 #endif
 
-#include <Base/Console.h>
-
-#include "FemMesh.h"
-#include "FemMeshObject.h"
 #include "FemPostBranchFilter.h"
 #include "FemPostBranchFilterPy.h"
-#include "FemVTKTools.h"
-
 
 using namespace Fem;
 using namespace App;
@@ -120,15 +103,14 @@ void FemPostBranchFilter::setupPipeline()
     m_append->RemoveAllInputConnections(0);
 
     FemPostFilter* filter = NULL;
-    std::vector<App::DocumentObject*>::iterator it = objs.begin();
-    for (; it != objs.end(); ++it) {
+    for (auto& obj : objs) {
 
         // prepare the filter: make all connections new
-        FemPostFilter* nextFilter = static_cast<FemPostFilter*>(*it);
+        FemPostFilter* nextFilter = static_cast<FemPostFilter*>(obj);
         nextFilter->getFilterInput()->RemoveAllInputConnections(0);
 
         // handle input modes
-        if (Mode.getValue() == 0) {
+        if (Mode.getValue() == Fem::PostGroupMode::Serial) {
             // serial: the next filter gets the previous output, the first one gets our input
             if (filter == NULL) {
                 nextFilter->getFilterInput()->SetInputConnection(m_passthrough->GetOutputPort());
@@ -137,7 +119,7 @@ void FemPostBranchFilter::setupPipeline()
             }
 
         }
-        else if (Mode.getValue() == 1) {
+        else if (Mode.getValue() == Fem::PostGroupMode::Parallel) {
             // parallel: all filters get out input
             nextFilter->getFilterInput()->SetInputConnection(m_passthrough->GetOutputPort());
         }
@@ -162,7 +144,7 @@ void FemPostBranchFilter::onChanged(const Property* prop)
     if (prop == &Frame) {
         //Update all children with the new step
         for (const auto& obj : Group.getValues()) {
-            if (obj->isDerivedFrom(FemPostFilter::getClassTypeId())) {
+            if (obj->isDerivedFrom<FemPostFilter>()) {
                 static_cast<Fem::FemPostFilter*>(obj)->Frame.setValue(Frame.getValue());
             }
         }
@@ -193,7 +175,7 @@ void FemPostBranchFilter::filterChanged(FemPostFilter* filter)
 {
 
     //we only need to update the following children if we are in serial mode
-    if (Mode.getValue() == 0) {
+    if (Mode.getValue() == Fem::PostGroupMode::Serial) {
 
         std::vector<App::DocumentObject*> objs = Group.getValues();
 
@@ -201,14 +183,13 @@ void FemPostBranchFilter::filterChanged(FemPostFilter* filter)
             return;
         }
         bool started = false;
-        std::vector<App::DocumentObject*>::iterator it = objs.begin();
-        for (; it != objs.end(); ++it) {
+        for (auto& obj : objs) {
 
             if (started) {
-                (*it)->touch();
+                obj->touch();
             }
 
-            if (*it == filter) {
+            if (obj == filter) {
                 started = true;
             }
         }

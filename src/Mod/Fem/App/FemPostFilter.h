@@ -45,7 +45,11 @@
 namespace Fem
 {
 
-enum TransformLocation { input, output };
+enum class TransformLocation : size_t
+{
+    input,
+    output
+};
 
 class FemExport FemPostFilter: public Fem::FemPostObject
 {

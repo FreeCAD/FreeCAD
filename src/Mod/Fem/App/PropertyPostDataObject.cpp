@@ -56,6 +56,7 @@
 #include <zipios++/zipios-config.h>
 #endif
 #include <zipios++/zipoutputstream.h>
+#include <zipios++/zipinputstream.h>
 
 #include "PropertyPostDataObject.h"
 
