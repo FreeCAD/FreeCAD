@@ -9083,7 +9083,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
 
                 TopoDS_Vertex v = TopoDS::Vertex(eBuilder.Shape());
                 refSubShape = v;
-            }           
+            }
             else {
                 throw Base::TypeError(
                     "Datum feature type is not yet supported as external geometry for a sketch");

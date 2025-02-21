@@ -116,7 +116,7 @@ public:
             || (element.size() > 4 && element.substr(0, 4) == "Face")) {
             return true;
         }
-        
+
         return false;
     }
 };
@@ -167,7 +167,7 @@ public:
             }
             std::string subName(msg.pSubName);
             if (obj->isDerivedFrom<App::Plane>() || obj->isDerivedFrom<Part::Datum>()
-                || obj->isDerivedFrom<Part::DatumLine>() || obj->isDerivedFrom<Part::DatumPoint>()                
+                || obj->isDerivedFrom<Part::DatumLine>() || obj->isDerivedFrom<Part::DatumPoint>()
                 || (subName.size() > 4 && subName.substr(0, 4) == "Edge")
                 || (subName.size() > 6 && subName.substr(0, 6) == "Vertex")
                 || (subName.size() > 4 && subName.substr(0, 4) == "Face")) {
