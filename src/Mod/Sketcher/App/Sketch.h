@@ -227,6 +227,8 @@ public:
     int addArcOfParabola(const Part::GeomArcOfParabola& parabolaSegment, bool fixed = false);
     /// add a BSpline
     int addBSpline(const Part::GeomBSplineCurve& spline, bool fixed = false);
+    /// add a Bezier
+    int addBezierCurve(const Part::GeomBezierCurve& bezier, bool fixed = false);
     //@}
 
 
@@ -483,6 +485,7 @@ public:
     int addInternalAlignmentParabolaFocus(int geoId1, int geoId2);
     int addInternalAlignmentParabolaFocalDistance(int geoId1, int geoId2);
     int addInternalAlignmentBSplineControlPoint(int geoId1, int geoId2, int poleindex);
+    int addInternalAlignmentBezierControlPoint(int geoId1, int geoId2, int poleindex);
     int addInternalAlignmentKnotPoint(int geoId1, int geoId2, int knotindex);
     //@}
 public:
@@ -522,7 +525,8 @@ public:
         ArcOfEllipse = 6,
         ArcOfHyperbola = 7,
         ArcOfParabola = 8,
-        BSpline = 9
+        BSpline = 9,
+        BezierCurve = 10
     };
 
 private:
@@ -609,6 +613,7 @@ private:
     std::vector<GCS::ArcOfHyperbola> ArcsOfHyperbola;
     std::vector<GCS::ArcOfParabola> ArcsOfParabola;
     std::vector<GCS::BSpline> BSplines;
+    std::vector<GCS::BezierCurve> Beziers;
 
     bool isInitMove;
     bool isFine;
