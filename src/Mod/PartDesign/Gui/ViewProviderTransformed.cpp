@@ -259,17 +259,29 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
 
         // Start computation thread
         std::thread computeThread([&]() {
-            pcTransformed->recomputeFeature(true);
-            computationDone.store(true);  // Atomic store
-            
-            // Only try to close the dialog if it's still active
-            if (dialog.isVisible()) {
-                QMetaObject::invokeMethod(&dialog, "accept", Qt::QueuedConnection);
+            try {
+                #if defined(__linux__) || defined(__FreeBSD__)
+                pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, nullptr);
+                pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, nullptr);
+                #endif
+                
+                pcTransformed->recomputeFeature(true);
+                computationDone.store(true);  // Atomic store
+                
+                // Only try to close the dialog if it's still active
+                if (dialog.isVisible()) {
+                    QMetaObject::invokeMethod(&dialog, "accept", Qt::QueuedConnection);
+                }
+                cv.notify_one();
             }
-            cv.notify_one();
+            catch (...) {
+                // Ensure we notify even if cancelled
+                computationDone.store(true);
+                cv.notify_one();
+            }
         });
 
-        while (!computationDone.load()) {
+        {
             // Wait for a brief moment to see if computation completes quickly
             std::unique_lock<std::mutex> lock(mutex);  // Fixed: std::lock -> std::mutex
             if (!cv.wait_for(lock, std::chrono::milliseconds(3000), 
@@ -282,7 +294,29 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
             }
         }
 
-        computeThread.join();
+        // Wait for up to a second for the thread to finish
+        if (computationDone.load()) {
+            computeThread.join();
+        } else {
+            std::unique_lock<std::mutex> lock(mutex);
+            if (!cv.wait_for(lock, std::chrono::seconds(1), 
+                [&]{ return computationDone.load(); }))
+            {
+                Base::Console().Error("Danger: Computation did not abort within 1 second, cancelling thread\n");
+                #if defined(__linux__) || defined(__FreeBSD__)
+                pthread_cancel(computeThread.native_handle());
+                #elif defined(_WIN32)
+                TerminateThread(computeThread.native_handle(), 1);
+                #elif defined(__APPLE__)
+                pthread_kill(computeThread.native_handle(), SIGTERM);
+                #endif
+                // detach the thread to avoid the destructor calling "terminate()" because
+                // it thinks we left it running and lost the handle to it
+                computeThread.detach();
+            } else {
+                computeThread.join();
+            }
+        }
     }
 
     unsigned rejected = 0;
