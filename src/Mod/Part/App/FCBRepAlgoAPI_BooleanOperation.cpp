@@ -147,17 +147,26 @@ void FCBRepAlgoAPI_BooleanOperation::Build(Message_ProgressRange& progressRange)
         if (!myTools.IsEmpty()) {
             myOperation = BOPAlgo_FUSE; // fuse tools together
             Build(progressRange);
+            if (progressRange.UserBreak()) {
+                Standard_ConstructionError::Raise("User aborted");
+            }
             myOperation = BOPAlgo_CUT; // restore
             myArguments = myOriginalArguments;
             if (IsDone()) {
                 myTools.Append(myShape);
                 Build(progressRange); // cut with fused tools
+                if (progressRange.UserBreak()) {
+                    Standard_ConstructionError::Raise("User aborted");
+                }
             }
             myTools = myOriginalTools; //restore
         } else { // there was less than 2 shapes in the compound
             myArguments = myOriginalArguments;
             myTools = myOriginalTools; //restore
             Build(progressRange);
+            if (progressRange.UserBreak()) {
+                Standard_ConstructionError::Raise("User aborted");
+            }
         }
     } else if (myOperation==BOPAlgo_CUT && myArguments.Size()==1 && myArguments.First().ShapeType() == TopAbs_COMPOUND) {
         TopTools_ListOfShape myOriginalArguments = myArguments;
