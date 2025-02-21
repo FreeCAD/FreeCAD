@@ -55,6 +55,7 @@
 # include <mutex>
 # include <condition_variable>
 # include <QProgressBar>
+# include <QMessageBox>
 #endif
 
 #include <App/Document.h>
@@ -254,68 +255,84 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
 
         ComputationDialog dialog(Gui::MainWindow::getInstance());
 
+        QMessageBox forceAbortBox(
+            QMessageBox::Warning,
+            QObject::tr("Operation not responding"),
+            QObject::tr("The abort operation is taking longer than expected.\nDo you want to forcibly cancel the thread? This will probably crash FreeCAD.");
+            QMessageBox::Yes | QMessageBox::No,
+            Gui::MainWindow::getInstance());
+        forceAbortBox.setDefaultButton(QMessageBox::No);
+
         Message_ProgressRange progressRange = dialog.Start();
         pcTransformed->setProgressRange(progressRange);
 
         // Start computation thread
         std::thread computeThread([&]() {
+            #if defined(__linux__) || defined(__FreeBSD__)
+            pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, nullptr);
+            pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, nullptr);
+            #endif
+            
             try {
-                #if defined(__linux__) || defined(__FreeBSD__)
-                pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, nullptr);
-                pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, nullptr);
-                #endif
-                
                 pcTransformed->recomputeFeature(true);
-                computationDone.store(true);  // Atomic store
-                
-                // Only try to close the dialog if it's still active
-                if (dialog.isVisible()) {
-                    QMetaObject::invokeMethod(&dialog, "accept", Qt::QueuedConnection);
-                }
-                cv.notify_one();
+            } catch (const std::exception& e) {
+                Base::Console().Error("Computation thread caught exception: %s\n", e.what());
+            } catch (...) {
+                Base::Console().Error("Computation thread caught unknown exception\n");
             }
-            catch (...) {
-                // Ensure we notify even if cancelled
-                computationDone.store(true);
-                cv.notify_one();
+
+            computationDone.store(true);
+
+            if (dialog.isVisible()) {
+                QMetaObject::invokeMethod(&dialog, "accept", Qt::QueuedConnection);
             }
+            if (forceAbortBox.isVisible()) {
+                QMetaObject::invokeMethod(&forceAbortBox, "accept", Qt::QueuedConnection);
+            }
+
+            cv.notify_one();
         });
 
         {
             // Wait for a brief moment to see if computation completes quickly
             std::unique_lock<std::mutex> lock(mutex);  // Fixed: std::lock -> std::mutex
-            if (!cv.wait_for(lock, std::chrono::milliseconds(3000), 
+            if (!cv.wait_for(lock, std::chrono::seconds(3), 
                 [&]{ return computationDone.load(); }))  // Atomic load
             {
                 // Computation didn't finish quickly, show dialog
-                if (dialog.exec() == QDialog::Rejected) {
-                    dialog.abort();
+                dialog.exec();
+            }
+        }
+
+        while (!computationDone.load()) {
+            // Wait for up to 3 seconds for the thread to finish
+            std::unique_lock<std::mutex> lock(mutex);
+            if (!cv.wait_for(lock, std::chrono::seconds(3),
+                [&]{ return computationDone.load(); }))
+            {
+                if (forceAbortBox.exec() == QMessageBox::Yes) {
+                    // check computationDone again just in case the thread completed while the dialog was open
+                    if (!computationDone.load()) {
+                        Base::Console().Error("Force aborting computation thread\n");
+
+                        // TODO: save the backup document now!
+
+                        #if defined(__linux__) || defined(__FreeBSD__)
+                        pthread_cancel(computeThread.native_handle());
+                        #elif defined(_WIN32)
+                        TerminateThread(computeThread.native_handle(), 1);
+                        #elif defined(__APPLE__)
+                        pthread_kill(computeThread.native_handle(), SIGTERM);
+                        #endif
+                        computeThread.detach();
+                        break; // Break out of the while loop
+                    }
                 }
             }
         }
 
-        // Wait for up to a second for the thread to finish
-        if (computationDone.load()) {
+        if (computeThread.joinable()) {
             computeThread.join();
-        } else {
-            std::unique_lock<std::mutex> lock(mutex);
-            if (!cv.wait_for(lock, std::chrono::seconds(1), 
-                [&]{ return computationDone.load(); }))
-            {
-                Base::Console().Error("Danger: Computation did not abort within 1 second, cancelling thread\n");
-                #if defined(__linux__) || defined(__FreeBSD__)
-                pthread_cancel(computeThread.native_handle());
-                #elif defined(_WIN32)
-                TerminateThread(computeThread.native_handle(), 1);
-                #elif defined(__APPLE__)
-                pthread_kill(computeThread.native_handle(), SIGTERM);
-                #endif
-                // detach the thread to avoid the destructor calling "terminate()" because
-                // it thinks we left it running and lost the handle to it
-                computeThread.detach();
-            } else {
-                computeThread.join();
-            }
         }
     }
 
