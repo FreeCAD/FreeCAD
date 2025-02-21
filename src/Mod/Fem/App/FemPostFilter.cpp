@@ -1212,7 +1212,7 @@ FemPostWarpVectorFilter::~FemPostWarpVectorFilter() = default;
 DocumentObjectExecReturn* FemPostWarpVectorFilter::execute()
 {
 
-    std::string val;
+    const char* val;
     if (Vector.getValue() >= 0) {
         val = Vector.getValueAsString();
     }
@@ -1226,8 +1226,8 @@ DocumentObjectExecReturn* FemPostWarpVectorFilter::execute()
 
     // search if the current field is in the available ones and set it
     std::vector<std::string>::iterator it = std::find(VectorArray.begin(), VectorArray.end(), val);
-    if (!val.empty() && it != VectorArray.end()) {
-        Vector.setValue(val.c_str());
+    if (!val && it != VectorArray.end()) {
+        Vector.setValue(val);
     }
 
     // recalculate the filter

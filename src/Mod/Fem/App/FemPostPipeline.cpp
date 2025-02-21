@@ -39,9 +39,10 @@
 #include <vtkXMLMultiBlockDataReader.h>
 #include <vtkMultiBlockDataSet.h>
 #include <vtkStreamingDemandDrivenPipeline.h>
-#include <vtkPointData.h>
 #include <vtkFloatArray.h>
 #include <vtkStringArray.h>
+#include <vtkInformation.h>
+#include <vtkInformationVector.h>
 #endif
 
 #include <Base/Console.h>
@@ -102,21 +103,18 @@ std::vector<double> FemFrameSourceAlgorithm::getFrameValues()
         vtkDataObject* block = multiblock->GetBlock(i);
         // check if the TimeValue field is available
         if (!block->GetFieldData()->HasArray("TimeValue")) {
-            break;
+            // a frame with no valid value is a undefined state
+            return std::vector<double>();
         }
 
         // store the time value!
         vtkDataArray* TimeValue = block->GetFieldData()->GetArray("TimeValue");
         if (!TimeValue->IsA("vtkFloatArray") || TimeValue->GetNumberOfTuples() < 1) {
-            break;
+            // a frame with no valid value is a undefined state
+            return std::vector<double>();
         }
 
         tFrames[i] = vtkFloatArray::SafeDownCast(TimeValue)->GetValue(0);
-    }
-
-    if (tFrames.size() != nblocks) {
-        // not every block had time data
-        return std::vector<double>();
     }
 
     return tFrames;
@@ -189,7 +187,6 @@ int FemFrameSourceAlgorithm::RequestData(vtkInformation*,
     return 1;
 }
 
-
 PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostPipeline, Fem::FemPostObject)
 
 FemPostPipeline::FemPostPipeline()
@@ -237,7 +234,7 @@ Fem::FemPostFunctionProvider* FemPostPipeline::getFunctionProvider()
 
     // see if we have one
     for (auto obj : Group.getValues()) {
-        if (obj->isDerivedFrom(FemPostFunctionProvider::getClassTypeId())) {
+        if (obj->isDerivedFrom<FemPostFunctionProvider>()) {
             return static_cast<FemPostFunctionProvider*>(obj);
         }
     }
@@ -247,7 +244,7 @@ Fem::FemPostFunctionProvider* FemPostPipeline::getFunctionProvider()
 bool FemPostPipeline::allowObject(App::DocumentObject* obj)
 {
     // we additionally allow FunctionPRoviders to be added
-    if (obj->isDerivedFrom(FemPostFunctionProvider::getClassTypeId())) {
+    if (obj->isDerivedFrom<FemPostFunctionProvider>()) {
         return true;
     }
 
@@ -406,7 +403,7 @@ void FemPostPipeline::onChanged(const Property* prop)
             value = frames[Frame.getValue()];
         }
         for (const auto& obj : Group.getValues()) {
-            if (obj->isDerivedFrom(FemPostFilter::getClassTypeId())) {
+            if (obj->isDerivedFrom<FemPostFilter>()) {
                 static_cast<Fem::FemPostFilter*>(obj)->Frame.setValue(value);
             }
         }
@@ -427,16 +424,15 @@ void FemPostPipeline::onChanged(const Property* prop)
         }
 
         FemPostFilter* filter = NULL;
-        std::vector<FemPostFilter*>::iterator it = objs.begin();
-        for (; it != objs.end(); ++it) {
+        for (auto& obj : objs) {
 
             // prepare the filter: make all connections new
-            FemPostFilter* nextFilter = *it;
+            FemPostFilter* nextFilter = obj;
             nextFilter->getFilterInput()->RemoveAllInputConnections(0);
 
             // handle input modes (Parallel is seperated, alll other settings are serial, just in
             // case an old document is loaded with "custom" mode, idx 2)
-            if (Mode.getValue() == 1) {
+            if (Mode.getValue() == Fem::PostGroupMode::Parallel) {
                 // parallel: all filters get out input
                 nextFilter->getFilterInput()->SetInputConnection(
                     m_transform_filter->GetOutputPort(0));
@@ -464,7 +460,7 @@ void FemPostPipeline::onChanged(const Property* prop)
 void FemPostPipeline::filterChanged(FemPostFilter* filter)
 {
     // we only need to update the following children if we are in serial mode
-    if (Mode.getValue() == 0) {
+    if (Mode.getValue() == Fem::PostGroupMode::Serial) {
 
         std::vector<App::DocumentObject*> objs = Group.getValues();
 
@@ -472,17 +468,16 @@ void FemPostPipeline::filterChanged(FemPostFilter* filter)
             return;
         }
         bool started = false;
-        std::vector<App::DocumentObject*>::iterator it = objs.begin();
-        for (; it != objs.end(); ++it) {
+        for (auto& obj : objs) {
 
             if (started) {
-                (*it)->touch();
-                if((*it)->hasExtension(Fem::FemPostGroupExtension::getExtensionClassTypeId())) {
-                    (*it)->getExtension<FemPostGroupExtension>()->recomputeChildren();
+                obj->touch();
+                if(obj->hasExtension(Fem::FemPostGroupExtension::getExtensionClassTypeId())) {
+                    obj->getExtension<FemPostGroupExtension>()->recomputeChildren();
                 }
             }
 
-            if (*it == filter) {
+            if (obj == filter) {
                 started = true;
             }
         }
@@ -592,10 +587,10 @@ void FemPostPipeline::load(FemResultObject* res)
 // set multiple result objects as frames for one pipeline
 // Notes:
 //      1. values vector must contain growing value, smallest first
-void FemPostPipeline::load(std::vector<FemResultObject*> res,
-                           std::vector<double> values,
+void FemPostPipeline::load(std::vector<FemResultObject*>& res,
+                           std::vector<double>& values,
                            Base::Unit unit,
-                           std::string frame_type)
+                           std::string& frame_type)
 {
 
     if (res.size() != values.size()) {
@@ -612,7 +607,7 @@ void FemPostPipeline::load(std::vector<FemResultObject*> res,
     auto multiblock = vtkSmartPointer<vtkMultiBlockDataSet>::New();
     for (ulong i = 0; i < res.size(); i++) {
 
-        if (!res[i]->Mesh.getValue()->isDerivedFrom(Fem::FemMeshObject::getClassTypeId())) {
+        if (!res[i]->Mesh.getValue()->isDerivedFrom<FemMeshObject>()) {
             Base::Console().Error("Result mesh object is not derived from Fem::FemMeshObject.\n");
             return;
         }
@@ -679,8 +674,8 @@ void FemPostPipeline::onDocumentRestored()
 {
     // if a old document was loaded with "custom" mode setting, the current value
     // would be out of range. Reset it to "serial"
-    if (Mode.getValue() > 1 || Mode.getValue() < 0) {
-        Mode.setValue(long(0));
+    if (Mode.getValue() > Fem::PostGroupMode::Parallel || Mode.getValue() < Fem::PostGroupMode::Serial) {
+        Mode.setValue(Fem::PostGroupMode::Serial);
     }
 }
 
