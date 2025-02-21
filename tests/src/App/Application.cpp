@@ -1,44 +1,82 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <gtest/gtest.h>
-#define FC_OS_MACOSX 1
-#include "App/ProgramOptionsUtilities.h"
+#include <src/App/InitApplication.h>
 
-using namespace App::Util;
+#include "App/Application.h"
 
-using Spr = std::pair<std::string, std::string>;
-
-TEST(ApplicationTest, fCustomSyntaxLookup)
+class ApplicationTest: public ::testing::Test
 {
-    Spr res {customSyntax("-display")};
-    Spr exp {"display", "null"};
-    EXPECT_EQ(res, exp);
+protected:
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+    }
+
+    void SetUp() override
+    {}
+
+    void TearDown() override
+    {}
+
+    /// A unique integer value, incremented every time this method is called, throughout the entire
+    /// test suite. Guaranteed to never give the same value twice as long as the number of calls
+    /// never overflows. Used to ensure unique names when testing, even if this part of the test
+    /// suite is run many times in a single application instantiation.
+    int counter() const
+    {
+        ++_counter;
+        return _counter;
+    }
+
+private:
+    static int _counter;
 };
-TEST(ApplicationTest, fCustomSyntaxMac)
+
+int ApplicationTest::_counter = 0;
+
+TEST_F(ApplicationTest, testAddTranslatableExportTypeWithCorrectExtension)
 {
-    Spr res {customSyntax("-psn_stuff")};
-    Spr exp {"psn", "stuff"};
-    EXPECT_EQ(res, exp);
-};
-TEST(ApplicationTest, fCustomSyntaxWidgetCount)
-{
-    Spr res {customSyntax("-widgetcount")};
-    Spr exp {"widgetcount", ""};
-    EXPECT_EQ(res, exp);
+    auto moduleName = fmt::format("SomeModule{}", counter());
+    const char* extension = "notARealType";
+    const char* typeString = "Some type (*.notARealType)";
+    App::GetApplication().addTranslatableExportType(typeString, {extension}, moduleName.c_str());
+    auto types = App::GetApplication().getExportTypes(moduleName.c_str());
+    ASSERT_EQ(1, types.size());
+    EXPECT_EQ(types[0], extension);
 }
-TEST(ApplicationTest, fCustomSyntaxNotFound)
+
+TEST_F(ApplicationTest, testAddTranslatableExportTypeWithNonMatchingExtension)
 {
-    Spr res {customSyntax("-displayx")};
-    Spr exp {"", ""};
-    EXPECT_EQ(res, exp);
-};
-TEST(ApplicationTest, fCustomSyntaxAmpersand)
+    auto moduleName = fmt::format("SomeModule{}", counter());
+    const char* extension = "notARealType";
+    const char* typeString = "Some type (*.alsoNotARealType)";
+    App::GetApplication().addTranslatableExportType(typeString, {extension}, moduleName.c_str());
+    auto types = App::GetApplication().getExportTypes(moduleName.c_str());
+    ASSERT_EQ(1, types.size());
+    EXPECT_EQ(types[0], extension);
+}
+
+TEST_F(ApplicationTest, testAddTranslatableExportTypeNoParens)
 {
-    Spr res {customSyntax("@freddie")};
-    Spr exp {"response-file", "freddie"};
-    EXPECT_EQ(res, exp);
-};
-TEST(ApplicationTest, fCustomSyntaxEmptyIn)
+    auto moduleName = fmt::format("SomeModule{}", counter());
+    const char* extension = "notARealType";
+    const char* typeString = "Some type description without any ending parentheses";
+    App::GetApplication().addTranslatableExportType(typeString, {extension}, moduleName.c_str());
+    auto types = App::GetApplication().getExportTypes(moduleName.c_str());
+    ASSERT_EQ(1, types.size());
+    EXPECT_EQ(types[0], extension);
+}
+
+TEST_F(ApplicationTest, testAddTranslatableExportTypeMultipleExtensions)
 {
-    Spr res {customSyntax("")};
-    Spr exp {"", ""};
-    EXPECT_EQ(res, exp);
-};
+    auto moduleName = fmt::format("SomeModule{}", counter());
+    std::vector<std::string> extensions = {"notARealType", "alsoNotARealType", "stillNotARealType"};
+    const char* typeString = "Some type description without any ending parentheses";
+    App::GetApplication().addTranslatableExportType(typeString, extensions, moduleName.c_str());
+    auto types = App::GetApplication().getExportTypes(moduleName.c_str());
+    ASSERT_EQ(extensions.size(), types.size());
+    for (const auto& expectedExtension : extensions) {
+        EXPECT_TRUE(std::find(types.begin(), types.end(), expectedExtension) != types.end());
+    }
+}

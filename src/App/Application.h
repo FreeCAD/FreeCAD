@@ -376,6 +376,9 @@ public:
     //@{
     /// Register an export filetype and a module name
     void addExportType(const char* Type, const char* ModuleName);
+    void addTranslatableExportType(const char *description,
+                                   const std::vector<std::string> &extensions,
+                                   const char *ModuleName);
     /// Change the module name of a registered filetype
     void changeExportModule(const char* Type, const char* OldModuleName, const char* NewModuleName);
     /// Return a list of modules that support the given filetype.
