@@ -3678,7 +3678,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     dxf.layers.append(dxfLibrary.Layer(name=ob.Label,
                                                        color=getACI(ob),
                                                        lineType=ltype))
-
+            base_sketch_pla = None  # Placement of the 1st sketch.
             for ob in exportList:
                 obtype = Draft.getType(ob)
                 # print("processing " + str(ob.Name))
@@ -3792,10 +3792,16 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
 
                 elif ob.isDerivedFrom("Part::Feature"):
                     tess = None
-                    if hasattr(ob, "Tessellation"):
-                        if ob.Tessellation:
-                            tess = [ob.Tessellation, ob.SegmentLength]
-                    if params.get_param("dxfmesh"):
+                    if getattr(ob, "Tessellation", False):
+                        tess = [ob.Tessellation, ob.SegmentLength]
+                    if ob.isDerivedFrom("Sketcher::SketchObject"):
+                        if base_sketch_pla is None:
+                            base_sketch_pla = ob.Placement
+                        sh = Part.Compound()
+                        sh.Placement = base_sketch_pla
+                        sh.add(ob.Shape.copy())
+                        sh.transformShape(base_sketch_pla.inverse().Matrix)
+                    elif params.get_param("dxfmesh"):
                         sh = None
                         if not ob.Shape.isNull():
                             writeMesh(ob, dxf)
@@ -3803,11 +3809,10 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                         _view = FreeCADGui.ActiveDocument.ActiveView
                         direction = _view.getViewDirection().multiply(-1)
                         sh = projectShape(ob.Shape, direction, tess)
+                    elif ob.Shape.Volume > 0:
+                        sh = projectShape(ob.Shape, Vector(0, 0, 1), tess)
                     else:
-                        if ob.Shape.Volume > 0:
-                            sh = projectShape(ob.Shape, Vector(0, 0, 1), tess)
-                        else:
-                            sh = ob.Shape
+                        sh = ob.Shape
                     if sh:
                         if not sh.isNull():
                             if sh.ShapeType == 'Compound':
