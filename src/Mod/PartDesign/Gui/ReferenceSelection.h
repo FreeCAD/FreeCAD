@@ -27,6 +27,9 @@
 #include <Gui/Selection/SelectionFilter.h>
 #include <Mod/PartDesign/Gui/EnumFlags.h>
 
+#include <Gui/Selection/Selection.h>
+#include <App/DocumentObject.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 namespace App {
 class OriginGroupExtension;
 }
@@ -41,12 +44,17 @@ class ReferenceSelection : public Gui::SelectionFilterGate
     AllowSelectionFlags type;
 
 public:
-    ReferenceSelection(const App::DocumentObject* support_,
-                       AllowSelectionFlags type)
+    ReferenceSelection(App::DocumentObject* support_, unsigned int allowedTypes)
         : Gui::SelectionFilterGate(nullPointer())
         , support(support_)
-        , type(type)
+        , type(static_cast<AllowSelectionFlags>(allowedTypes))
     {
+        Base::Console().Log("ReferenceSelection constructor (NEW). Allowed types (numerical): %u\n", static_cast<unsigned int>(type));
+        if (type & AllowSelection::SKETCH) {
+            Base::Console().Log("ReferenceSelection: SKETCH is allowed.\n");
+        } else {
+            Base::Console().Log("ReferenceSelection: SKETCH is NOT allowed.\n");
+        }
     }
     /**
       * Allow the user to pick only edges or faces (or both) from the defined support

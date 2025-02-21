@@ -29,6 +29,7 @@
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
 # include <QDialog>
+# include <Mod/Sketcher/App/SketchObject.h>
 #endif
 
 #include <App/Document.h>
@@ -60,11 +61,23 @@ using namespace Gui;
 
 bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
+    Base::Console().Log("ReferenceSelection::allow called.\n");
+    if (pObj) {
+        Base::Console().Log("  Object: %s, Type: %s, SubName: %s\n",
+                            pObj->getNameInDocument(), pObj->getTypeId().getName(), sSubName ? sSubName : "(none)");
+    }
+    else {
+        Base::Console().Log("  pObj is NULL\n");
+        return false;
+    }
+
+
     PartDesign::Body *body = getBody();
     App::OriginGroupExtension* originGroup = getOriginGroupExtension(body);
 
     // Don't allow selection in other document
     if (support && pDoc != support->getDocument()) {
+        Base::Console().Log("  Rejecting: Object in different document.\n");
         return false;
     }
 
@@ -86,13 +99,23 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
             return false;
     }
 #endif
-    // Handle selection of geometry elements
-    if (Base::Tools::isNullOrEmpty(sSubName))
+    if (!sSubName || sSubName[0] == '\0'){
+        if (pObj->isDerivedFrom<Sketcher::SketchObject>()) {
+            bool allowed = type.testFlag(AllowSelection::SKETCH);
+            return allowed;
+        }
         return type.testFlag(AllowSelection::WHOLE);
 
     // resolve links if needed
     if (!pObj->isDerivedFrom<Part::Feature>()) {
         pObj = Part::Feature::getShapeOwner(pObj, sSubName);
+        if (pObj) {
+            Base::Console().Log("  Resolved Link Object: %s, Type: %s\n",
+                                pObj->getNameInDocument(), pObj->getTypeId().getName());
+        } else {
+            Base::Console().Log("  Failed to resolve link.\n");
+            return false;
+        }
     }
 
     if (pObj && pObj->isDerivedFrom<Part::Feature>()) {
@@ -104,7 +127,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
 PartDesign::Body* ReferenceSelection::getBody() const
 {
-    PartDesign::Body *body;
+    PartDesign::Body *body = nullptr;
     if (support) {
         body = PartDesign::Body::findBodyOf (support);
     }
@@ -295,6 +318,11 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     selObj = thisObj->getDocument()->getObject(msg.pObjectName);
     if (selObj == thisObj)
         return false;
+     if (selObj) {
+        Base::Console().Log("  Selected object in getReferencedSelection: %s, Type: %s\n",
+                            selObj->getNameInDocument(), selObj->getTypeId().getName());
+    }
+
 
     std::string subname = msg.pSubName;
 
@@ -344,15 +372,17 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
     if (!obj) {
         return {};
     }
-
-    if (PartDesign::Feature::isDatum(obj)) {
+    Base::Console().Log("getRefStr called. Object: %s\n", obj->getNameInDocument());
+    if (PartDesign::Feature::isDatum(obj) || obj->isDerivedFrom<Sketcher::SketchObject>()) {
+        Base::Console().Log("  Object is a Datum or Sketch. Returning name.\n");
         return QString::fromLatin1(obj->getNameInDocument());
     }
-    else if (!sub.empty()) {
+    else if (!sub.empty() && !sub[0].empty()) {
+        Base::Console().Log("  Object has subname. Returning name:subname.\n");
         return QString::fromLatin1(obj->getNameInDocument()) + QStringLiteral(":") +
                QString::fromLatin1(sub.front().c_str());
     }
-
+    Base::Console().Log("  Returning empty string.\n");
     return {};
 }
 
@@ -398,7 +428,7 @@ std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & obj
 }
 
 std::string buildLinkSubListPythonStr(const std::vector<App::DocumentObject*> & objs,
-        const std::vector<std::string>& subs)
+                                      const std::vector<std::string>& subs)
 {
     if ( objs.empty() ) {
         return "None";

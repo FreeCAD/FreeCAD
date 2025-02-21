@@ -51,6 +51,8 @@
 #include "FeatureDraft.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
+#include "Mod/Sketcher/App/SketchObject.h"
+#include "App/Placement.h"
 
 
 using namespace PartDesign;
@@ -216,6 +218,9 @@ App::DocumentObjectExecReturn *Draft::execute()
             neutralPlane = gp_Pln(gp_Pnt(b.x, b.y, b.z), gp_Dir(n.x, n.y, n.z));
         } else if (refPlane->isDerivedFrom<App::Plane>()) {
             neutralPlane = Feature::makePlnFromPlane(refPlane);
+        }
+        else if (refPlane->isDerivedFrom<Sketcher::SketchObject>()) {
+            Base::Console().Log("Neutral Plane is Sketcher::SketchObject\n");
         } else if (refPlane->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subStrings = NeutralPlane.getSubValues();
             if (subStrings.empty() || subStrings[0].empty())

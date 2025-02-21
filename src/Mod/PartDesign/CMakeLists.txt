@@ -170,7 +170,9 @@ set(PartDesignHoleDefines
     Resources/Hole/iso4762-fine.json
     Resources/Hole/iso7046.json
 )
-
+target_link_libraries(PartDesign
+        Sketcher
+)
 add_custom_target(PartDesignHole ALL SOURCES
     ${PartDesignHoleDefines}
 )
