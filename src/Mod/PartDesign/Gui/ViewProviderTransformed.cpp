@@ -176,7 +176,8 @@ public:
         , aborted(false) 
     {
         setWindowTitle(tr("Computing"));
-        setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+        setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowStaysOnTopHint);
+        
         auto layout = new QVBoxLayout(this);
         
         // Add informative label
@@ -197,6 +198,10 @@ public:
         auto abortButton = new QPushButton(tr("Abort"), this);
         layout->addWidget(abortButton);
         connect(abortButton, &QPushButton::clicked, this, &ComputationDialog::onAbort);
+
+        setMinimumSize(300, 150);  // Set reasonable minimum dimensions
+        adjustSize();  // Adjust to content
+        setFixedSize(size());  // Lock the size
     }
 
     // Message_ProgressIndicator interface implementation
