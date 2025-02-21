@@ -457,7 +457,7 @@ void Application::renameDocument(const char *OldName, const char *NewName)
 Document* Application::newDocument(const char * Name, const char * UserName, DocumentCreateFlags CreateFlags)
 {
     auto getNameAndLabel = [this](const char * Name, const char * UserName) -> std::tuple<std::string, std::string> {
-        bool isDefaultName = Base::Tools::isNullOrEmpty(Name);
+        bool isDefaultName = Tools::isNullOrEmpty(Name);
 
         // get a valid name anyway!
         if (isDefaultName) {
