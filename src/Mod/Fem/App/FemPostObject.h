@@ -27,11 +27,12 @@
 #include "PropertyPostDataObject.h"
 #include <App/GeoFeature.h>
 #include <App/PropertyStandard.h>
+
 #include <vtkBoundingBox.h>
-#include <vtkDataSet.h>
 #include <vtkTransformFilter.h>
 #include <vtkSmartPointer.h>
 
+class vtkDataSet;
 
 namespace Fem
 {
