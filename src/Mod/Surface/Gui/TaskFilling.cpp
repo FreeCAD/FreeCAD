@@ -35,6 +35,7 @@
 #endif
 
 #include <App/Document.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -47,6 +48,7 @@
 #include "TaskFilling.h"
 #include "TaskFillingEdge.h"
 #include "TaskFillingVertex.h"
+
 #include "ui_TaskFilling.h"
 
 
@@ -216,7 +218,7 @@ public:
             return false;
         }
 
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
 

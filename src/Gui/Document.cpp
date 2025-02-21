@@ -1701,7 +1701,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
         localreader->readElement("Camera");
         const char* ppReturn = localreader->getAttribute("settings");
         cameraSettings.clear();
-        if(ppReturn && ppReturn[0]) {
+        if(!Base::Tools::isNullOrEmpty(ppReturn)) {
             saveCameraSettings(ppReturn);
             try {
                 const char** pReturnIgnore=nullptr;

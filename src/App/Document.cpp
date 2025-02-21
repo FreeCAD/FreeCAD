@@ -1457,7 +1457,7 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
             for (int j = 0; j < dcount; ++j) {
                 reader.readElement(FC_ELEMENT_OBJECT_DEP);
                 const char* name = reader.getAttribute(FC_ATTR_DEP_OBJ_NAME);
-                if (name && name[0]) {
+                if (!Base::Tools::isNullOrEmpty(name)) {
                     info.deps.insert(name);
                 }
             }
@@ -3570,7 +3570,7 @@ DocumentObject* Document::addObject(const char* sType,
     }
 
     // get Unique name
-    const bool hasName = pObjectName && pObjectName[0] != '\0';
+    const bool hasName = !Base::Tools::isNullOrEmpty(pObjectName);
     const string ObjectName = getUniqueObjectName(hasName ? pObjectName : type.getName());
 
     d->activeObject = pcObject;
@@ -3602,11 +3602,11 @@ DocumentObject* Document::addObject(const char* sType,
 
     pcObject->setStatus(ObjectStatus::PartialObject, isPartial);
 
-    if (!viewType || viewType[0] == '\0') {
+    if (Base::Tools::isNullOrEmpty(viewType)) {
         viewType = pcObject->getViewProviderNameOverride();
     }
 
-    if (viewType && viewType[0] != '\0') {
+    if (!Base::Tools::isNullOrEmpty(viewType)) {
         pcObject->_pcViewProviderName = viewType;
     }
 
@@ -3746,7 +3746,7 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 
     // get unique name
     string ObjectName;
-    if (pObjectName && pObjectName[0] != '\0') {
+    if (!Base::Tools::isNullOrEmpty(pObjectName)) {
         ObjectName = getUniqueObjectName(pObjectName);
     }
     else {

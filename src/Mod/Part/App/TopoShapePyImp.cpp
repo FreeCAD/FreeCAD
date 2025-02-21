@@ -2555,7 +2555,7 @@ PyObject* TopoShapePy::getChildShapes(PyObject* args)
         return Py::new_reference_to(
             getElements(*getTopoShapePtr(),
                         TopoShape::shapeType(type),
-                        avoid && avoid[0] ? TopoShape::shapeType(avoid) : TopAbs_SHAPE));
+                        !Base::Tools::isNullOrEmpty(avoid) ? TopoShape::shapeType(avoid) : TopAbs_SHAPE));
     }
     PY_CATCH_OCC;
 }
