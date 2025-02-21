@@ -44,6 +44,17 @@
 # include <Inventor/nodes/SoTransparencyType.h>
 # include <QAction>
 # include <QMenu>
+# include <QDialog>
+# include <QPushButton>
+# include <QVBoxLayout>
+# include <QCloseEvent>
+# include <thread>
+# include <atomic>
+# include <QApplication>
+# include <Gui/MainWindow.h>
+# include <mutex>
+# include <condition_variable>
+# include <QProgressBar>
 #endif
 
 #include <App/Document.h>
@@ -158,11 +169,116 @@ bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
     return ViewProvider::onDelete(s);
 }
 
+class ComputationDialog : public QDialog, public Message_ProgressIndicator {
+public:
+    ComputationDialog(QWidget* parent = nullptr) 
+        : QDialog(parent)
+        , aborted(false) 
+    {
+        setWindowTitle(tr("Computing"));
+        setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+        auto layout = new QVBoxLayout(this);
+        
+        // Add informative label
+        auto label = new QLabel(tr("This operation may take a while.\nPlease wait or press 'Abort' to cancel."), this);
+        label->setAlignment(Qt::AlignCenter);
+        layout->addWidget(label);
+        
+        progressBar = new QProgressBar(this);
+        progressBar->setMinimum(0);
+        progressBar->setMaximum(0); // This makes it indeterminate
+        layout->addWidget(progressBar);
+
+        // Add status label below progress bar
+        statusLabel = new QLabel(this);
+        statusLabel->setAlignment(Qt::AlignCenter);
+        layout->addWidget(statusLabel);
+        
+        auto abortButton = new QPushButton(tr("Abort"), this);
+        layout->addWidget(abortButton);
+        connect(abortButton, &QPushButton::clicked, this, &ComputationDialog::onAbort);
+    }
+
+    // Message_ProgressIndicator interface implementation
+    bool UserBreak() override {
+        return aborted;
+    }
+
+    void Show(const Message_ProgressScope& scope, bool foo) override {
+        auto pct = GetPosition() * 100;
+        
+        // Update both the status label and progress bar using invokeMethod
+        QString status = tr("Progress: %1%").arg(pct);
+        QMetaObject::invokeMethod(statusLabel, "setText", Qt::QueuedConnection,
+                                Q_ARG(QString, status));
+
+        QMetaObject::invokeMethod(progressBar, "setValue", Qt::QueuedConnection,
+                                Q_ARG(int, pct));
+        QMetaObject::invokeMethod(progressBar, "setMaximum", Qt::QueuedConnection,
+                                Q_ARG(int, 100));
+    }
+
+    void abort() {
+        Base::Console().Error("ComputationDialog::abort called\n");
+        aborted = true;
+        reject();
+    }
+
+protected:
+    void closeEvent(QCloseEvent* event) override {
+        event->ignore();
+    }
+
+private:
+    void onAbort() {
+        abort();
+    }
+
+    std::atomic<bool> aborted;
+    QProgressBar* progressBar;
+    QLabel* statusLabel;
+};
+
 void ViewProviderTransformed::recomputeFeature(bool recompute)
 {
     PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
-    if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute()))
-        pcTransformed->recomputeFeature(true);
+    if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute())) {
+        std::atomic<bool> computationDone(false);
+        std::mutex mutex;  // Still needed for the condition variable
+        std::condition_variable cv;
+
+        ComputationDialog dialog(Gui::MainWindow::getInstance());
+
+        Message_ProgressRange progressRange = dialog.Start();
+        pcTransformed->setProgressRange(progressRange);
+
+        // Start computation thread
+        std::thread computeThread([&]() {
+            pcTransformed->recomputeFeature(true);
+            computationDone.store(true);  // Atomic store
+            
+            // Only try to close the dialog if it's still active
+            if (dialog.isVisible()) {
+                QMetaObject::invokeMethod(&dialog, "accept", Qt::QueuedConnection);
+            }
+            cv.notify_one();
+        });
+
+        while (!computationDone.load()) {
+            // Wait for a brief moment to see if computation completes quickly
+            std::unique_lock<std::mutex> lock(mutex);  // Fixed: std::lock -> std::mutex
+            if (!cv.wait_for(lock, std::chrono::milliseconds(3000), 
+                [&]{ return computationDone.load(); }))  // Atomic load
+            {
+                // Computation didn't finish quickly, show dialog
+                if (dialog.exec() == QDialog::Rejected) {
+                    dialog.abort();
+                }
+            }
+        }
+
+        computeThread.join();
+    }
 
     unsigned rejected = 0;
     TopoDS_Shape cShape = pcTransformed->rejected;

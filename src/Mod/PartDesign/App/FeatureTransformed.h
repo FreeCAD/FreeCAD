@@ -98,6 +98,10 @@ public:
      * because they did not overlap with the support
      */
     TopoDS_Shape rejected;
+    void setProgressRange(const Message_ProgressRange& progressRange) {
+        this->progressRange = progressRange;
+    }
+
 
 protected:
     void Restore(Base::XMLReader& reader) override;
@@ -109,6 +113,7 @@ protected:
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
 
 private:
+    Message_ProgressRange progressRange;
 };
 
 }  // namespace PartDesign

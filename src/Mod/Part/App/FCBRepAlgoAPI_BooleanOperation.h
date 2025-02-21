@@ -51,6 +51,7 @@ public:
 
     // not an override - real Build() has optionals, sadly type of those optionals that are differs between OCCT versions
     Standard_EXPORT virtual void Build(); // NOLINT(clang-diagnostic-overloaded-virtual, -Woverloaded-virtual)
+    Standard_EXPORT virtual void Build(Message_ProgressRange& progressRange);
 
 protected: //! @name Constructors
 

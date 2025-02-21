@@ -1376,6 +1376,7 @@ public:
     TopoShape& makeElementFuse(const std::vector<TopoShape>& sources,
                                const char* op = nullptr,
                                double tol = -1.0);
+    TopoShape& makeElementFuseProgress(Message_ProgressRange& progressRange, const std::vector<TopoShape>& shapes, const char* op = nullptr, double tol = -1.0);
     /** Make a fusion of this shape and an input shape
      *
      * @param source: the source shape
@@ -1405,6 +1406,7 @@ public:
      */
     TopoShape&
     makeElementCut(const std::vector<TopoShape>& sources, const char* op = nullptr, double tol = -1.0);
+    TopoShape& makeElementCutProgress(Message_ProgressRange& progressRange, const std::vector<TopoShape>& shapes, const char* op = nullptr, double tol = -1.0);
     /** Make a boolean cut of this shape with an input shape
      *
      * @param source: the source shape
@@ -1880,6 +1882,10 @@ public:
                                   const std::vector<TopoShape>& sources,
                                   const char* op = nullptr,
                                   double tol = -1.0);
+    TopoShape& makeElementBooleanProgress(Message_ProgressRange& progressRange, const char* maker,
+                                         const std::vector<TopoShape>& shapes,
+                                         const char* op = nullptr,
+                                         double tolerance = -1.0);
     /** Generalized shape making with mapped element name from shape history
      *
      * @param maker: op code from TopoShapeOpCodes
