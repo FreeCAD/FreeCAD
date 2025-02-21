@@ -5780,6 +5780,9 @@ TopoShape& TopoShape::makeElementBooleanProgress(Message_ProgressRange& progress
         FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
     }
     mk->Build(progressRange);
+    if (progressRange.UserBreak()) {
+        FC_THROWM(Base::CADKernelError, "User aborted");
+    }
     makeElementShape(*mk, inputs, op);
 
     if (buildShell) {

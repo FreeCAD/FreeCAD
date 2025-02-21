@@ -98,37 +98,8 @@ void FCBRepAlgoAPI_BooleanOperation::RecursiveAddArguments(const TopoDS_Shape& t
 }
 
 void FCBRepAlgoAPI_BooleanOperation::Build() {
-
-    if (myOperation == BOPAlgo_CUT && myArguments.Size() == 1 && myTools.Size() == 1 && myTools.First().ShapeType() == TopAbs_COMPOUND) {
-        TopTools_ListOfShape myOriginalArguments = myArguments;
-        TopTools_ListOfShape myOriginalTools = myTools;
-        TopTools_ListOfShape currentTools;
-        TopTools_ListOfShape currentArguments;
-        myArguments = currentArguments;
-        myTools = currentTools;
-        RecursiveAddArguments(myOriginalTools.First());
-        if (!myTools.IsEmpty()) {
-            myOperation = BOPAlgo_FUSE; // fuse tools together
-            Build();
-            myOperation = BOPAlgo_CUT; // restore
-            myArguments = myOriginalArguments;
-            if (IsDone()) {
-                myTools.Append(myShape);
-                Build(); // cut with fused tools
-            }
-            myTools = myOriginalTools; //restore
-        } else { // there was less than 2 shapes in the compound
-            myArguments = myOriginalArguments;
-            myTools = myOriginalTools; //restore
-            Build();
-        }
-    } else if (myOperation==BOPAlgo_CUT && myArguments.Size()==1 && myArguments.First().ShapeType() == TopAbs_COMPOUND) {
-        TopTools_ListOfShape myOriginalArguments = myArguments;
-        myShape = RecursiveCutCompound(myOriginalArguments.First());
-        myArguments = myOriginalArguments;
-    } else {
-        BRepAlgoAPI_BooleanOperation::Build();
-    }
+    Message_ProgressRange progressRange;
+    FCBRepAlgoAPI_BooleanOperation::Build(progressRange);
 }
 
 void FCBRepAlgoAPI_BooleanOperation::Build(Message_ProgressRange& progressRange) {
