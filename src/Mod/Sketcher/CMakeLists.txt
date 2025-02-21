@@ -18,7 +18,9 @@ set(Sketcher_TestScripts
     SketcherTests/TestSketchExpression.py
     SketcherTests/TestSketchValidateCoincidents.py
 )
-
+target_link_libraries(Sketcher
+        Eigen
+)
 if(BUILD_GUI)
     list (APPEND Sketcher_Scripts
           InitGui.py
@@ -35,7 +37,9 @@ set(Sketcher_Profiles
 add_custom_target(SketcherScripts ALL
     SOURCES ${Sketcher_Scripts} ${Sketcher_Profiles} ${Sketcher_TestScripts}
 )
-
+include_directories(
+        ${EIGEN3_INCLUDE_DIR}
+)
 fc_target_copy_resource(SketcherScripts
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Sketcher
