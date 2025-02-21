@@ -44,7 +44,7 @@ class ReferenceSelection : public Gui::SelectionFilterGate
     AllowSelectionFlags type;
 
 public:
-    ReferenceSelection(App::DocumentObject* support_, unsigned int allowedTypes)
+    ReferenceSelection(App::DocumentObject* support_, AllowSelectionFlags allowedTypes)
         : Gui::SelectionFilterGate(nullPointer())
         , support(support_)
         , type(static_cast<AllowSelectionFlags>(allowedTypes))

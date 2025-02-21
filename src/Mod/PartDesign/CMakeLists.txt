@@ -172,7 +172,9 @@ set(PartDesignHoleDefines
 )
 target_link_libraries(PartDesign
         Sketcher
-        Eigen
+)
+include_directories(
+        ${EIGEN3_INCLUDE_DIR}
 )
 add_custom_target(PartDesignHole ALL SOURCES
     ${PartDesignHoleDefines}
