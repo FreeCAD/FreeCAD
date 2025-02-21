@@ -105,6 +105,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
             return allowed;
         }
         return type.testFlag(AllowSelection::WHOLE);
+    }
 
     // resolve links if needed
     if (!pObj->isDerivedFrom<Part::Feature>()) {
