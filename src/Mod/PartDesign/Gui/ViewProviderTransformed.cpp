@@ -258,7 +258,7 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
         QMessageBox forceAbortBox(
             QMessageBox::Warning,
             QObject::tr("Operation not responding"),
-            QObject::tr("The abort operation is taking longer than expected.\nDo you want to forcibly cancel the thread? This will probably crash FreeCAD.");
+            QObject::tr("The abort operation is taking longer than expected.\nDo you want to forcibly cancel the thread? This will probably crash FreeCAD."),
             QMessageBox::Yes | QMessageBox::No,
             Gui::MainWindow::getInstance());
         forceAbortBox.setDefaultButton(QMessageBox::No);
