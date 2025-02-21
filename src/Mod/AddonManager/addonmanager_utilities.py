@@ -552,13 +552,30 @@ def get_main_am_window():
     return None
 
 
+def remove_target_option(args: List[str]) -> List[str]:
+    # The Snap pip automatically adds the --user option, which is not compatible with the
+    # --target option, so we have to remove --target and its argument, if present
+    try:
+        index = args.index("--target")
+        del args[index : index + 2]  # The --target option and its argument
+    except ValueError:
+        pass
+    return args
+
+
 def create_pip_call(args: List[str]) -> List[str]:
     """Choose the correct mechanism for calling pip on each platform. It currently supports
-    either `python -m pip` (most environments) or `freecad.pip` (Snap packages). Returns a list
+    either `python -m pip` (most environments) or `pip` (Snap packages). Returns a list
     of arguments suitable for passing directly to subprocess.Popen and related functions."""
     snap_package = os.getenv("SNAP_REVISION")
+    appimage = os.getenv("APPIMAGE")
     if snap_package:
-        call_args = ["freecad.pip", "--disable-pip-version-check"]
+        args = remove_target_option(args)
+        call_args = ["pip", "--disable-pip-version-check"]
+        call_args.extend(args)
+    elif appimage:
+        python_exe = fci.DataPaths.home_dir + "bin/python"
+        call_args = [python_exe, "-m", "pip", "--disable-pip-version-check"]
         call_args.extend(args)
     else:
         python_exe = get_python_exe()
