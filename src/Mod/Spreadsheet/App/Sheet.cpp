@@ -34,6 +34,7 @@
 #include <App/DynamicProperty.h>
 #include <App/ExpressionParser.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/PropertyInteger.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Reader.h>

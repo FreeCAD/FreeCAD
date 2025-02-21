@@ -25,7 +25,7 @@
 #define FEM_CONSTRAINTBEARING_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 
 #include "FemConstraint.h"
 

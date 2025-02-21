@@ -24,6 +24,8 @@
 #ifndef FEM_FLUIDBOUNDARY_H
 #define FEM_FLUIDBOUNDARY_H
 
+#include <App/PropertyEnumeration.h>
+
 #include "FemConstraint.h"
 
 

@@ -23,7 +23,7 @@
 #ifndef PATH_FeatureCompound_H
 #define PATH_FeatureCompound_H
 
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 
 #include "FeaturePath.h"
 

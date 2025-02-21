@@ -23,7 +23,7 @@
 #ifndef PART_FEATUREPARTSECTION_H
 #define PART_FEATUREPARTSECTION_H
 
-#include <App/PropertyStandard.h>
+#include <App/Property.h>
 
 #include "FeaturePartBoolean.h"
 

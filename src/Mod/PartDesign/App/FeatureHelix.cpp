@@ -44,6 +44,7 @@
 #endif
 
 # include <Standard_Version.hxx>
+# include <App/PropertyFloatConstraint.h>
 # include <Base/Axis.h>
 # include <Base/Exception.h>
 # include <Base/Placement.h>

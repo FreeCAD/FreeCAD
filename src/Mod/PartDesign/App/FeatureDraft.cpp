@@ -43,6 +43,7 @@
 #endif
 
 #include <App/Datums.h>
+#include <App/PropertyFloatConstraint.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>

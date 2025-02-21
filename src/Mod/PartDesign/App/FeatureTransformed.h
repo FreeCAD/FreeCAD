@@ -26,7 +26,9 @@
 
 #include <gp_Trsf.hxx>
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
+#include <App/PropertyEnumeration.h>
+#include <App/PropertyLinkList.h>
 #include "FeatureRefine.h"
 
 

@@ -418,7 +418,7 @@ void FillingPanel::open()
                                   true);
 
     // highlight the referenced face
-    std::vector<App::PropertyLinkSubList::SubSet> links;
+    std::vector<App::SubSet> links;
     links.emplace_back(editedObject->InitialFace.getValue(),
                        editedObject->InitialFace.getSubValues());
     this->vp->highlightReferences(ViewProviderFilling::Face, links, true);
@@ -466,7 +466,7 @@ void FillingPanel::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
                                       false);
 
         // unhighlight the referenced face
-        std::vector<App::PropertyLinkSubList::SubSet> links;
+        std::vector<App::SubSet> links;
         links.emplace_back(editedObject->InitialFace.getValue(),
                            editedObject->InitialFace.getSubValues());
         this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
@@ -493,7 +493,7 @@ bool FillingPanel::accept()
                                   false);
 
     // unhighlight the referenced face
-    std::vector<App::PropertyLinkSubList::SubSet> links;
+    std::vector<App::SubSet> links;
     links.emplace_back(editedObject->InitialFace.getValue(),
                        editedObject->InitialFace.getSubValues());
     this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
@@ -509,7 +509,7 @@ bool FillingPanel::reject()
                                       false);
 
         // unhighlight the referenced face
-        std::vector<App::PropertyLinkSubList::SubSet> links;
+        std::vector<App::SubSet> links;
         links.emplace_back(editedObject->InitialFace.getValue(),
                            editedObject->InitialFace.getSubValues());
         this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
@@ -527,7 +527,7 @@ void FillingPanel::onLineInitFaceNameTextChanged(const QString& text)
         checkOpenCommand();
 
         // unhighlight the referenced face
-        std::vector<App::PropertyLinkSubList::SubSet> links;
+        std::vector<App::SubSet> links;
         links.emplace_back(editedObject->InitialFace.getValue(),
                            editedObject->InitialFace.getSubValues());
         this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
@@ -657,7 +657,7 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             editedObject->InitialFace.setValue(sel.getObject(), subList);
 
             // highlight the referenced face
-            std::vector<App::PropertyLinkSubList::SubSet> links;
+            std::vector<App::SubSet> links;
             links.emplace_back(sel.getObject(), subList);
             this->vp->highlightReferences(ViewProviderFilling::Face, links, true);
 

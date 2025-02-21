@@ -25,6 +25,7 @@
 
 #include <vector>
 
+#include <App/PropertyColor.h>
 #include <Gui/ViewProviderBuilder.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Mod/Mesh/App/Core/Elements.h>

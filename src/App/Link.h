@@ -23,14 +23,28 @@
 #ifndef APP_LINK_H
 #define APP_LINK_H
 
+#include <boost/dynamic_bitset.hpp>
 #include <unordered_set>
+
 #include <Base/Parameter.h>
 #include <Base/Bitmask.h>
+
 #include "DocumentObject.h"
 #include "DocumentObjectExtension.h"
 #include "FeaturePython.h"
 #include "GroupExtension.h"
-#include "PropertyLinks.h"
+#include "PropertyBool.h"
+#include "PropertyBoolList.h"
+#include "PropertyEnumeration.h"
+#include "PropertyFloat.h"
+#include "PropertyInteger.h"
+#include "PropertyIntegerConstraint.h"
+#include "PropertyLink.h"
+#include "PropertyLinkList.h"
+#include "PropertyLinkSub.h"
+#include "PropertyPlacementList.h"
+#include "PropertyVector.h"
+#include "PropertyVectorList.h"
 
 
 // FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro

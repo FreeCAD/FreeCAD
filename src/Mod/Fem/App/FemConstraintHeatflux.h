@@ -27,6 +27,8 @@
 #ifndef FEM_CONSTRAINTHEATFLUX_H
 #define FEM_CONSTRAINTHEATFLUX_H
 
+#include <App/PropertyEnumeration.h>
+
 #include "FemConstraint.h"
 
 namespace Fem

@@ -23,6 +23,8 @@
 #ifndef PART_FEATUREPARTFUSE_H
 #define PART_FEATUREPARTFUSE_H
 
+#include <App/PropertyLinkList.h>
+
 #include "FeaturePartBoolean.h"
 
 

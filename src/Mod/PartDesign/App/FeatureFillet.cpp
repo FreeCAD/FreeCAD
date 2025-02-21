@@ -32,6 +32,7 @@
 # include <ShapeFix_ShapeTolerance.hxx>
 #endif
 
+#include <App/PropertyFloatConstraint.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/TopoShape.h>

@@ -40,7 +40,7 @@
 #endif
 
 #include <App/FeaturePythonPyImp.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 #include <Base/Reader.h>
 
 #include "Part2DObject.h"

@@ -28,6 +28,8 @@
 #include <iostream>
 #endif
 
+#include <App/PropertyVector.h>
+#include <Base/BoundBox.h>
 #include <Base/Converter.h>
 #include <Base/Matrix.h>
 #include <Base/Persistence.h>

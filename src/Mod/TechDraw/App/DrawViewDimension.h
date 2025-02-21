@@ -24,6 +24,7 @@
 #define TechDraw_DrawViewDimension_h_
 
 #include <App/DocumentObject.h>
+#include <App/PropertyLinkSubList.h>
 #include <Base/UnitsApi.h>
 #include <Mod/Part/App/PropertyTopoShapeList.h>
 

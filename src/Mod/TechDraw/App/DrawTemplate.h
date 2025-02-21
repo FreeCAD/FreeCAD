@@ -25,6 +25,8 @@
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyEnumeration.h>
+#include <App/PropertyMap.h>
 #include <App/PropertyUnits.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

@@ -30,6 +30,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/GeoFeatureGroupExtension.h>
+#include <App/PropertyPlacement.h>
 
 #include "ViewProviderGeoFeatureGroupExtension.h"
 #include "ViewProviderDocumentObject.h"

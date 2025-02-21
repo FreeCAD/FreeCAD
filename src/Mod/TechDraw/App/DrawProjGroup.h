@@ -27,7 +27,8 @@
 #include <QRectF>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyColor.h>
+#include <App/PropertyLink.h>
 #include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>

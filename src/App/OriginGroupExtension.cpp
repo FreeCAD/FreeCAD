@@ -27,9 +27,12 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 
-#include "OriginGroupExtension.h"
 #include "GeoFeature.h"
+#include "OriginGroupExtension.h"
 #include "Origin.h"
+#include "PropertyLinkSub.h"
+#include "PropertyLinkSubList.h"
+
 
 
 FC_LOG_LEVEL_INIT("App", true, true)

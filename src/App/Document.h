@@ -29,9 +29,13 @@
 #include <Base/Type.h>
 #include <Base/Handle.h>
 
+#include "PropertyBool.h"
 #include "PropertyContainer.h"
-#include "PropertyLinks.h"
-#include "PropertyStandard.h"
+#include "PropertyEnumeration.h"
+#include "PropertyLink.h"
+#include "PropertyMap.h"
+#include "PropertyString.h"
+#include "PropertyUUID.h"
 
 #include <map>
 #include <vector>

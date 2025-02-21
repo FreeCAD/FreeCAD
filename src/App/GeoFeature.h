@@ -25,14 +25,14 @@
 #define APP_GEOFEATURE_H
 
 #include "DocumentObject.h"
-#include "PropertyGeo.h"
+#include "PropertyPlacement.h"
 #include "MappedElement.h"
 #include "Material.h"
 #include "ComplexGeoData.h"
 
 namespace App
 {
-
+class PropertyComplexGeoData;
 
 /** Base class of all geometric document objects.
  */

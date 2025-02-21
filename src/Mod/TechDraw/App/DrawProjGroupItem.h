@@ -26,7 +26,7 @@
 #include <gp_Ax2.hxx>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyEnumeration.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewPart.h"

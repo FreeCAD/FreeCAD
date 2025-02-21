@@ -46,6 +46,7 @@
 
 #include <App/Document.h>
 #include <App/GeoFeature.h>
+#include <App/PropertyComplexGeoData.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>

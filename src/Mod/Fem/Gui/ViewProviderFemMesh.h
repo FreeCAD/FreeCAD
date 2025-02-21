@@ -23,6 +23,7 @@
 #ifndef FEM_VIEWPROVIDERFEMMESH_H
 #define FEM_VIEWPROVIDERFEMMESH_H
 
+#include <App/PropertyColor.h>
 #include <Gui/ViewProviderBuilder.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderFeaturePython.h>

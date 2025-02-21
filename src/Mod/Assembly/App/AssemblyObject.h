@@ -30,7 +30,7 @@
 
 #include <App/FeaturePython.h>
 #include <App/Part.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 #include "SimulationGroup.h"
 
 #include <OndselSolver/enum.h>

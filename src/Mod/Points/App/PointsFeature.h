@@ -26,7 +26,6 @@
 #include <App/FeatureCustom.h>
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
-#include <App/PropertyGeo.h>
 
 #include "Points.h"
 #include "PropertyPointKernel.h"
@@ -40,7 +39,8 @@ class Writer;
 namespace App
 {
 class Color;
-}
+class PropertyComplexGeoData;
+}  // namespace App
 
 namespace Points
 {

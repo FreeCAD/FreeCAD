@@ -32,6 +32,8 @@
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
 #include <App/ObjectIdentifier.h>
+#include <App/PropertyLinkList.h>
+#include <App/PropertyLinkSubList.h>
 #include <App/PropertyPythonObject.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>

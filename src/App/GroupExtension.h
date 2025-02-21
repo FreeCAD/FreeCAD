@@ -24,10 +24,12 @@
 #ifndef APP_GROUPEXTENSION_H
 #define APP_GROUPEXTENSION_H
 
+#include <vector>
+
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectExtension.h>
 #include <App/ExtensionPython.h>
-#include <vector>
+#include <App/PropertyLinkList.h>
 
 
 namespace App

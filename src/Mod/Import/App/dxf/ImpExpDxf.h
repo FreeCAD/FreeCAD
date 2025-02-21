@@ -33,6 +33,11 @@
 #include "dxf.h"
 
 
+namespace App
+{
+class PropertyLinkListHidden;
+}
+
 class BRepAdaptor_Curve;
 
 namespace Import

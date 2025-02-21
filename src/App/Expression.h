@@ -27,12 +27,12 @@
 #include <set>
 #include <string>
 
-#include <App/PropertyLinks.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Range.h>
+#include <App/Property.h>
+
 #include <Base/Exception.h>
 #include <Base/BaseClass.h>
-
 
 namespace Base
 {
@@ -44,6 +44,7 @@ namespace App  {
 class DocumentObject;
 class Expression;
 class Document;
+class PropertyLinkBase;
 
 using ExpressionPtr = std::unique_ptr<Expression>;
 

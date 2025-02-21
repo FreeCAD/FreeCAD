@@ -25,7 +25,7 @@
 #define APP_TEXTDOCUMENT_H
 
 #include "DocumentObject.h"
-#include "PropertyStandard.h"
+#include "PropertyString.h"
 
 
 namespace App

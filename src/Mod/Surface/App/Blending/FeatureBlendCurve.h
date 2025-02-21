@@ -23,8 +23,9 @@
 #ifndef FEATURE_BLEND_CURVE_H
 #define FEATURE_BLEND_CURVE_H
 
-#include <App/PropertyLinks.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyFloatConstraint.h>
+#include <App/PropertyIntegerConstraint.h>
+#include <App/PropertyLink.h>
 #include <App/PropertyUnits.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
 #include <Mod/Surface/App/Blending/BlendPoint.h>

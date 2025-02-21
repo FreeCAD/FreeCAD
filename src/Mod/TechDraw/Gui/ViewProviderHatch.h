@@ -26,7 +26,8 @@
 #define DRAWINGGUI_VIEWPROVIDERHATCH_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
-#include <App/PropertyGeo.h>
+#include <App/PropertyColor.h>
+#include <App/PropertyVector.h>
 
 #include <Gui/ViewProviderDocumentObject.h>
 

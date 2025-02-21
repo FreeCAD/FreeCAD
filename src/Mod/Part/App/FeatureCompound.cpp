@@ -29,6 +29,8 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
+#include <App/PropertyLinkList.h>
+
 #include "FeatureCompound.h"
 
 

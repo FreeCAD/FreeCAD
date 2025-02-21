@@ -39,7 +39,7 @@
 #include "TaskLoftParameters.h"
 #include "TaskSketchBasedParameters.h"
 
-Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet)
+Q_DECLARE_METATYPE(App::SubSet)
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -261,7 +261,7 @@ void TaskLoftParameters::onDeleteSection()
     QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
     if (item) {
         QByteArray data(item->data(Qt::UserRole)
-                            .value<App::PropertyLinkSubList::SubSet>()
+                            .value<App::SubSet>()
                             .first->getNameInDocument());
         delete item;
 
@@ -294,7 +294,7 @@ void TaskLoftParameters::indexesMoved()
         int rows = model->rowCount();
         for (int i = 0; i < rows; i++) {
             QModelIndex index = model->index(i, 0);
-            originals[i] = index.data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>();
+            originals[i] = index.data(Qt::UserRole).value<App::SubSet>();
         }
 
         loft->Sections.setSubListValues(originals);

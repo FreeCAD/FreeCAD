@@ -25,7 +25,7 @@
 #define Fem_FemSetObject_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 #include <Mod/Fem/FemGlobal.h>
 
 namespace Fem

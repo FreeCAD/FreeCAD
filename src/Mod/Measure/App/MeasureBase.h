@@ -31,7 +31,8 @@
 #include <App/DocumentObject.h>
 #include <App/MeasureManager.h>
 #include <App/DocumentObserver.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyLinkSubList.h>
+#include <App/PropertyPlacement.h>
 #include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
 #include <App/Link.h>

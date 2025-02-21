@@ -26,6 +26,9 @@
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
+#include <App/PropertyFloat.h>
+#include <App/PropertyFloatConstraint.h>
+#include <App/PropertyLinkList.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "HatchLine.h"

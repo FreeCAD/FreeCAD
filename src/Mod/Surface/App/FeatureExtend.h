@@ -23,7 +23,9 @@
 #ifndef SURFACE_FEATUREEXTEND_H
 #define SURFACE_FEATUREEXTEND_H
 
-#include <App/PropertyLinks.h>
+#include <App/PropertyFloatConstraint.h>
+#include <App/PropertyIntegerConstraint.h>
+#include <App/PropertyLink.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
 #include <Mod/Surface/SurfaceGlobal.h>
 

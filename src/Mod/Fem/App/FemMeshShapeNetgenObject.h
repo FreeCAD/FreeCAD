@@ -24,7 +24,10 @@
 #define Fem_FemMeshShapeNetgenObject_H
 
 #include "FemMeshShapeObject.h"
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
+#include <App/PropertyEnumeration.h>
+#include <App/PropertyFloat.h>
+#include <App/PropertyInteger.h>
 
 namespace Fem
 {

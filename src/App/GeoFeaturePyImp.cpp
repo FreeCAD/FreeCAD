@@ -26,6 +26,7 @@
 // inclusion of the generated files (generated out of GeoFeaturePy.xml)
 #include "GeoFeaturePy.h"
 #include "GeoFeaturePy.cpp"
+#include "PropertyComplexGeoData.h"
 #include <Base/PlacementPy.h>
 #include <CXX/Objects.hxx>
 

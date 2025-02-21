@@ -27,7 +27,7 @@
 
 #include <string>
 
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 #include <App/PropertyUnits.h>
 #include <App/GeoFeature.h>
 

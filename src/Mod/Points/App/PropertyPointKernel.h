@@ -24,6 +24,9 @@
 #ifndef POINTS_PROPERTYPOINTKERNEL_H
 #define POINTS_PROPERTYPOINTKERNEL_H
 
+#include <App/PropertyComplexGeoData.h>
+#include <Base/BoundBox.h>
+
 #include "Points.h"
 
 namespace Points

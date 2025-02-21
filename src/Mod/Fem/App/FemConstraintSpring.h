@@ -25,6 +25,8 @@
 #ifndef FEM_CONSTRAINTPSPRING_H
 #define FEM_CONSTRAINTPSPRING_H
 
+#include <App/PropertyEnumeration.h>
+
 #include "FemConstraint.h"
 
 namespace Fem

@@ -27,7 +27,7 @@
 #include "ViewProviderDocumentObject.h"
 #include "SoFCCSysDragger.h"
 #include <Base/Placement.h>
-#include <App/PropertyGeo.h>
+#include <App/PropertyPlacement.h>
 
 class SoDragger;
 class SoTransform;

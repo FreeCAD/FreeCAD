@@ -42,8 +42,11 @@
 #include "GeoFeatureGroupExtension.h"
 #include "Link.h"
 #include "ObjectIdentifier.h"
+#include "PropertyComplexGeoData.h"
 #include "PropertyExpressionEngine.h"
-#include "PropertyLinks.h"
+#include "PropertyLinkBase.h"
+#include "PropertyLinkSub.h"
+#include "PropertyLinkSubList.h"
 
 
 FC_LOG_LEVEL_INIT("App", true, true)

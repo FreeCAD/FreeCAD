@@ -25,7 +25,7 @@
 
 #include <App/DocumentObjectGroup.h>
 #include <App/FeaturePython.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyUUID.h>
 #include <Mod/Fem/FemGlobal.h>
 
 

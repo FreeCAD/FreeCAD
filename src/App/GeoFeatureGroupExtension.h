@@ -26,13 +26,19 @@
 #define APP_GeoFeatureGroup_H
 
 #include <unordered_set>
+
 #include "DocumentObject.h"
 #include "GroupExtension.h"
-#include "PropertyGeo.h"
 
+
+namespace Base {
+class Placement;
+}
 
 namespace App
 {
+class Property;
+class PropertyPlacement;
 
 /**
  * @brief The base class for placeable group of DocumentObjects. It represents a local coordnate

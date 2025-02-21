@@ -25,7 +25,9 @@
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyColor.h>
+#include <App/PropertyFont.h>
+#include <App/PropertyLink.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewSymbol.h"

@@ -26,7 +26,10 @@
 
 #include "GeoFeature.h"
 #include "OriginGroupExtension.h"
-#include "PropertyLinks.h"
+#include "PropertyColor.h"
+#include "PropertyLink.h"
+#include "PropertyMap.h"
+#include "PropertyUUID.h"
 
 
 namespace App

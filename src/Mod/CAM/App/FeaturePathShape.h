@@ -26,7 +26,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
-#include <App/PropertyGeo.h>
+#include <App/PropertyVector.h>
 
 #include "FeatureArea.h"
 #include "FeaturePath.h"

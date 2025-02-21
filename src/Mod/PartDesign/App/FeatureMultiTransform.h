@@ -24,6 +24,8 @@
 #ifndef PARTDESIGN_FeatureMultiTransform_H
 #define PARTDESIGN_FeatureMultiTransform_H
 
+#include <App/PropertyLinkList.h>
+
 #include "FeatureTransformed.h"
 
 

@@ -23,7 +23,7 @@
 #ifndef ROBOT_TrajectoryDressUpObject_H
 #define ROBOT_TrajectoryDressUpObject_H
 
-#include <App/PropertyGeo.h>
+#include <App/PropertyPlacement.h>
 #include <App/PropertyUnits.h>
 
 #include "TrajectoryObject.h"

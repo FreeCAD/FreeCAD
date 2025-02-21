@@ -27,6 +27,7 @@
 #include <boost/signals2.hpp>
 #endif
 
+#include <App/PropertyColor.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Dialogs/DlgMaterialPropertiesImp.h>

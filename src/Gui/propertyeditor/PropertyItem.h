@@ -31,7 +31,11 @@
 #include <QItemEditorFactory>
 #include <vector>
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyFloat.h>
+#include <App/PropertyFloatConstraint.h>
+#include <App/PropertyFont.h>
+#include <App/PropertyInteger.h>
+#include <App/PropertyIntegerConstraint.h>
 #include <Base/Factory.h>
 #include <Base/Matrix.h>
 #include <Base/Placement.h>

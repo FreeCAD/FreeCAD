@@ -26,7 +26,7 @@
 #include <map>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 
 #include "Cell.h"
 

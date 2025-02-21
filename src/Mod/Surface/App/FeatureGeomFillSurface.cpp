@@ -208,7 +208,7 @@ bool GeomFillSurface::getWire(TopoDS_Wire& aWire)
     Handle(ShapeFix_Wire) aShFW = new ShapeFix_Wire;
     Handle(ShapeExtend_WireData) aWD = new ShapeExtend_WireData;
 
-    std::vector<App::PropertyLinkSubList::SubSet> boundary = BoundaryList.getSubListValues();
+    std::vector<App::SubSet> boundary = BoundaryList.getSubListValues();
     if (boundary.size() > 4) {  // if too many not even try
         Standard_Failure::Raise("Only 2-4 curves are allowed\n");
     }

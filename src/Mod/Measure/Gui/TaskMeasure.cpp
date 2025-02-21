@@ -33,7 +33,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
 #include <Mod/Measure/App/MeasureDistance.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>

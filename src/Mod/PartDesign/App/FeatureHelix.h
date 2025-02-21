@@ -24,9 +24,12 @@
 #ifndef PARTDESIGN_Helix_H
 #define PARTDESIGN_Helix_H
 
-#include <App/PropertyUnits.h>
-#include "FeatureSketchBased.h"
 #include <TopoDS_Shape.hxx>
+
+#include <App/PropertyUnits.h>
+#include <App/PropertyFloatConstraint.h>
+
+#include "FeatureSketchBased.h"
 
 namespace PartDesign
 {

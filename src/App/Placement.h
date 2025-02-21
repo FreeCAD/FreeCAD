@@ -25,6 +25,7 @@
 #define _AppPlacement_h_
 
 #include "FeaturePython.h"
+#include "GeoFeature.h"
 
 namespace App
 {

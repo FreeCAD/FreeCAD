@@ -22,8 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include <App/PropertyStandard.h>
-
 #include "Dialogs/DlgMaterialPropertiesImp.h"
 #include "ui_DlgMaterialProperties.h"
 #include "ViewProvider.h"

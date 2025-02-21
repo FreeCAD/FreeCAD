@@ -25,6 +25,7 @@
 #include <Python.h>
 #endif
 
+#include <App/PropertyEnumeration.h>
 #include <Base/FileInfo.h>
 
 // clang-format off

@@ -31,6 +31,7 @@
 
 #include <FCGlobal.h>
 
+#include <FCGlobal.h>
 
 namespace Base
 {

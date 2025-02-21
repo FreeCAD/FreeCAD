@@ -26,7 +26,7 @@
 # include <Inventor/nodes/SoMaterial.h>
 #endif
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyColor.h>
 
 #include "ViewProviderBuilder.h"
 #include "SoFCSelection.h"

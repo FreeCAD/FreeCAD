@@ -25,7 +25,7 @@
 #define TECHDRAW_FEATUREVIEWCOLLECTION_h_
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLinkList.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawView.h"

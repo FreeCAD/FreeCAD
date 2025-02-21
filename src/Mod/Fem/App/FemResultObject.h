@@ -25,6 +25,9 @@
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyFloat.h>
+#include <App/PropertyFloatList.h>
+#include <App/PropertyIntegerList.h>
 #include <Mod/Fem/FemGlobal.h>
 
 

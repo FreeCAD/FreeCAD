@@ -26,10 +26,13 @@
 
 #include <functional>
 #include <Base/Bitmask.h>
-#include <App/PropertyGeo.h>
 
 #include "ViewProviderGeoFeatureGroup.h"
 
+
+namespace App {
+class Property;
+}
 
 namespace Gui {
 

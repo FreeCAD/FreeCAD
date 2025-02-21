@@ -29,7 +29,7 @@
 
 #include <App/GeoFeature.h>
 #include <App/MaterialPy.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyColor.h>
 
 #include "ViewProviderGeometryObjectPy.h"
 

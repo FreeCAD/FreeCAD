@@ -24,7 +24,9 @@
 #ifndef FEATUREGEOMFILLSURFACE_H
 #define FEATUREGEOMFILLSURFACE_H
 
-#include <App/PropertyLinks.h>
+#include <App/PropertyBoolList.h>
+#include <App/PropertyEnumeration.h>
+#include <App/PropertyLinkSubList.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
 #include <Mod/Surface/SurfaceGlobal.h>
 
@@ -32,6 +34,10 @@
 #include <Geom_BoundedSurface.hxx>
 #include <ShapeExtend_WireData.hxx>
 
+namespace App
+{
+using SubSet = std::pair<DocumentObject*, std::vector<std::string>>;
+}
 
 namespace Surface
 {

@@ -26,7 +26,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyColor.h>
+#include <App/PropertyFloat.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
 namespace App {

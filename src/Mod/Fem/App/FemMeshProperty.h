@@ -25,7 +25,7 @@
 #define Fem_PropertyFemMesh_H
 
 #include "FemMesh.h"
-#include <App/PropertyGeo.h>
+#include <App/PropertyComplexGeoData.h>
 #include <Base/BoundBox.h>
 
 namespace Fem

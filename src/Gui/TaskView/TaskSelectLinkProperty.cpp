@@ -24,6 +24,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/PropertyLinkList.h>
 #include <Base/Console.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Selection/SelectionFilter.h>

@@ -58,6 +58,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/PropertyLinkList.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Matrix.h>

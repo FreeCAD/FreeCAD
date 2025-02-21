@@ -26,6 +26,9 @@
 #include <App/FeaturePython.h>
 #include <App/IndexedName.h>
 #include <App/PropertyFile.h>
+#include <App/PropertyFloatConstraint.h>
+#include <App/PropertyIntegerList.h>
+#include <App/PropertyLinkList.h>
 #include <Base/Axis.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/PropertyGeometryList.h>

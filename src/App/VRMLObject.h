@@ -26,6 +26,7 @@
 
 #include "GeoFeature.h"
 #include "PropertyFile.h"
+#include "PropertyStringList.h"
 
 
 namespace App

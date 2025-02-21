@@ -23,7 +23,7 @@
 #ifndef FEATURE_MESH_SETOPERATIONS_H
 #define FEATURE_MESH_SETOPERATIONS_H
 
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 
 #include "MeshFeature.h"
 

@@ -23,7 +23,7 @@
 #ifndef PATH_ViewProviderPath_H
 #define PATH_ViewProviderPath_H
 
-#include <App/PropertyGeo.h>
+#include <App/PropertyVector.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderFeaturePython.h>

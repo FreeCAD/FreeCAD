@@ -24,6 +24,10 @@
 #ifndef PARTDESIGN_FeatureLinearPattern_H
 #define PARTDESIGN_FeatureLinearPattern_H
 
+#include <App/PropertyBool.h>
+#include <App/PropertyEnumeration.h>
+#include <App/PropertyIntegerConstraint.h>
+#include <App/PropertyLinkSub.h>
 #include <App/PropertyUnits.h>
 #include "FeatureTransformed.h"
 

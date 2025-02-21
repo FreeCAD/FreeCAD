@@ -23,6 +23,8 @@
 #ifndef FEM_CONSTRAINTRIGIDBODY_H
 #define FEM_CONSTRAINTRIGIDBODY_H
 
+#include <App/PropertyEnumeration.h>
+
 #include "FemConstraint.h"
 
 

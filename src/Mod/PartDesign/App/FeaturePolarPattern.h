@@ -24,7 +24,9 @@
 #ifndef PARTDESIGN_FeaturePolarPattern_H
 #define PARTDESIGN_FeaturePolarPattern_H
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
+#include <App/PropertyEnumeration.h>
+#include <App/PropertyIntegerConstraint.h>
 #include <App/PropertyUnits.h>
 #include "FeatureTransformed.h"
 

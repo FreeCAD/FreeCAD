@@ -233,31 +233,93 @@ SOURCE_GROUP("Document" FILES ${Document_SRCS})
 
 # The property stuff
 SET(Properties_CPP_SRCS
+    DocInfo.cpp
     DynamicProperty.cpp
     ObjectIdentifier.cpp
     Property.cpp
+    PropertyBool.cpp
+    PropertyBoolList.cpp
+    PropertyColor.cpp
+    PropertyComplexGeoData.cpp
     PropertyContainer.cpp
     PropertyContainerPyImp.cpp
-    PropertyFile.cpp
-    PropertyGeo.cpp
-    PropertyLinks.cpp
-    PropertyPythonObject.cpp
-    PropertyStandard.cpp
-    PropertyUnits.cpp
+    PropertyEnumeration.cpp
     PropertyExpressionEngine.cpp
+    PropertyFile.cpp
+    PropertyFloat.cpp
+    PropertyFloatConstraint.cpp
+    PropertyFloatList.cpp
+    PropertyFont.cpp
+    PropertyInteger.cpp
+    PropertyIntegerConstraint.cpp
+    PropertyIntegerList.cpp
+    PropertyIntegerSet.cpp
+    PropertyLink.cpp
+    PropertyLinkBase.cpp
+    PropertyLinkList.cpp
+    PropertyLinkSub.cpp
+    PropertyLinkSubList.cpp
+    PropertyMap.cpp
+    PropertyMaterial.cpp
+    PropertyMatrix.cpp
+    PropertyPath.cpp
+    PropertyPercent.cpp
+    PropertyPersistentObject.cpp
+    PropertyPlacement.cpp
+    PropertyPlacementList.cpp
+    PropertyPythonObject.cpp
+    PropertyRotation.cpp
+    PropertyString.cpp
+    PropertyStringList.cpp
+    PropertyUnits.cpp
+    PropertyUUID.cpp
+    PropertyVector.cpp
+    PropertyVectorList.cpp
+    PropertyXLink.cpp
 )
 SET(Properties_HPP_SRCS
+    DocInfo.h
     DynamicProperty.h
     ObjectIdentifier.h
     Property.h
+    PropertyBool.h
+    PropertyBoolList.h
+    PropertyColor.h
+    PropertyComplexGeoData.h
     PropertyContainer.h
-    PropertyFile.h
-    PropertyGeo.h
-    PropertyLinks.h
-    PropertyPythonObject.h
-    PropertyStandard.h
-    PropertyUnits.h
+    PropertyEnumeration.h
     PropertyExpressionEngine.h
+    PropertyFile.h
+    PropertyFloat.h
+    PropertyFloatConstraint.h
+    PropertyFloatList.h
+    PropertyFont.h
+    PropertyInteger.h
+    PropertyIntegerConstraint.h
+    PropertyIntegerList.h
+    PropertyIntegerSet.h
+    PropertyLink.h
+    PropertyLinkBase.h
+    PropertyLinkList.h
+    PropertyLinkSub.h
+    PropertyLinkSubList.h
+    PropertyMap.h
+    PropertyMaterial.h
+    PropertyMatrix.h
+    PropertyPath.h
+    PropertyPlacement.h
+    PropertyPlacementList.h
+    PropertyPercent.h
+    PropertyPersistentObject.h
+    PropertyPythonObject.h
+    PropertyRotation.h
+    PropertyString.h
+    PropertyStringList.h
+    PropertyUnits.h
+    PropertyUUID.h
+    PropertyVector.h
+    PropertyVectorList.h
+    PropertyXLink.h
 )
 SET(Properties_SRCS
     ${Properties_CPP_SRCS}

@@ -51,7 +51,7 @@
 #include "Utils.h"
 
 
-Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet)
+Q_DECLARE_METATYPE(App::SubSet)
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -517,7 +517,7 @@ bool TaskPipeParameters::accept()
                 copies.push_back(pipe->AuxillerySpine.getValue());
             }
 
-            std::vector<App::PropertyLinkSubList::SubSet> subSets;
+            std::vector<App::SubSet> subSets;
             for (auto& subSet : pipe->Sections.getSubListValues()) {
                 if (!pcActiveBody->hasObject(subSet.first)
                     && !pcActiveBody->getOrigin()->hasObject(subSet.first)) {
@@ -966,7 +966,7 @@ void TaskPipeScaling::indexesMoved()
         int rows = model->rowCount();
         for (int i = 0; i < rows; i++) {
             QModelIndex index = model->index(i, 0);
-            originals[i] = index.data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>();
+            originals[i] = index.data(Qt::UserRole).value<App::SubSet>();
         }
 
         pipe->Sections.setSubListValues(originals);
@@ -1096,7 +1096,7 @@ void TaskPipeScaling::onDeleteSection()
     QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
     if (item) {
         QByteArray data(item->data(Qt::UserRole)
-                            .value<App::PropertyLinkSubList::SubSet>()
+                            .value<App::SubSet>()
                             .first->getNameInDocument());
         delete item;
 

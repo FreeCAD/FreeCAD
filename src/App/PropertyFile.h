@@ -26,7 +26,7 @@
 
 #include <string>
 
-#include "PropertyStandard.h"
+#include "PropertyString.h"
 
 
 namespace Base

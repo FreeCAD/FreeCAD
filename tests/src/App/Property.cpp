@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "App/PropertyLinks.h"
-#include <App/PropertyStandard.h>
+#include <App/PropertyFloat.h>
+#include "App/PropertyLink.h"
+#include <App/PropertyLinkSubList.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <xercesc/util/PlatformUtils.hpp>

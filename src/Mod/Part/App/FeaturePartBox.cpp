@@ -26,6 +26,7 @@
 # include <Precision.hxx>
 #endif
 
+#include <App/PropertyVector.h>
 #include <Base/Reader.h>
 
 #include "FeaturePartBox.h"

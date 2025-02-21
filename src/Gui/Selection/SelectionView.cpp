@@ -36,6 +36,7 @@
 #include <App/ComplexGeoData.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
+#include <App/PropertyComplexGeoData.h>
 
 #include "SelectionView.h"
 #include "Application.h"

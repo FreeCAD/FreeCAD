@@ -24,7 +24,7 @@
 #ifndef PARTDESIGN_FEATUREFILLET_H
 #define PARTDESIGN_FEATUREFILLET_H
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
 #include <App/PropertyUnits.h>
 #include "FeatureDressUp.h"
 

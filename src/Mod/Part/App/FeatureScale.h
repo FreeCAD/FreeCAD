@@ -23,7 +23,8 @@
 #ifndef PART_FEATURESCALE_H
 #define PART_FEATURESCALE_H
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
+#include <App/PropertyFloat.h>
 #include <App/PropertyUnits.h>
 
 #include "FaceMakerCheese.h"

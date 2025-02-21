@@ -23,8 +23,6 @@
 #ifndef PART_FEATUREMIRRORING_H
 #define PART_FEATUREMIRRORING_H
 
-#include <App/PropertyStandard.h>
-
 #include "PartFeature.h"
 
 

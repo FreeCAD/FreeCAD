@@ -27,8 +27,9 @@
 
 #include <App/TransactionalObject.h>
 #include <App/PropertyExpressionEngine.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
+#include <App/PropertyLinkSub.h>
+#include <App/PropertyString.h>
 #include <Base/SmartPtrPy.h>
 
 #include <bitset>
@@ -45,6 +46,8 @@ class Document;
 class DocumentObjectGroup;
 class DocumentObjectPy;
 class Expression;
+class PropertyLinkSubList;
+class PropertyLinkSub;
 
 // clang-format off
 enum ObjectStatus

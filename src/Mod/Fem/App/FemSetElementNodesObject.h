@@ -26,7 +26,7 @@
 
 #include "FemSetObject.h"
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyIntegerSet.h>
 
 namespace Fem
 {

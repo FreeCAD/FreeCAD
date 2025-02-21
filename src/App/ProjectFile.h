@@ -24,6 +24,7 @@
 #ifndef APP_PROJECTFILE_H
 #define APP_PROJECTFILE_H
 
+#include <Base/Uuid.h>
 #include <Base/Type.h>
 #include <zipios++/zipfile.h>
 #include <sstream>

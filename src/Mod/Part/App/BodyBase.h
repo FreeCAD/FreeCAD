@@ -23,7 +23,7 @@
 #ifndef PART_BodyBase_H
 #define PART_BodyBase_H
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyLink.h>
 #include <App/OriginGroupExtension.h>
 
 #include "PartFeature.h"

@@ -23,8 +23,11 @@
 #ifndef PART_FEATUREEXTRUSION_H
 #define PART_FEATUREEXTRUSION_H
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyBool.h>
+#include <App/PropertyEnumeration.h>
+#include <App/PropertyString.h>
 #include <App/PropertyUnits.h>
+#include <App/PropertyVector.h>
 
 #include "FaceMakerCheese.h"
 #include "PartFeature.h"

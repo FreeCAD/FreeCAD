@@ -23,7 +23,8 @@
 #ifndef FEATURE_MESH_TRANSFORM_H
 #define FEATURE_MESH_TRANSFORM_H
 
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
+#include <App/PropertyMatrix.h>
 
 #include "MeshFeature.h"
 

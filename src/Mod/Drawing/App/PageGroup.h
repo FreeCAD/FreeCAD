@@ -24,7 +24,7 @@
 #define _PageGroup_h_
 
 #include <App/DocumentObjectGroup.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 #include <Mod/Drawing/DrawingGlobal.h>
 
 

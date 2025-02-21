@@ -27,8 +27,7 @@
 
 #include <gp_Vec.hxx>
 
-#include <App/PropertyGeo.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyLink.h>
 #include <App/PropertyUnits.h>
 #include <Base/Vector3D.h>
 

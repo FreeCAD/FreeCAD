@@ -34,6 +34,8 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
+#include <App/PropertyFloat.h>
+#include <App/PropertyInteger.h>
 #include <App/VarSet.h>
 #include <Base/Tools.h>
 

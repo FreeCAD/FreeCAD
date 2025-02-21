@@ -23,7 +23,7 @@
 #ifndef PART_FEATUREPARTPOLYGON_H
 #define PART_FEATUREPARTPOLYGON_H
 
-#include <App/PropertyGeo.h>
+#include <App/PropertyVectorList.h>
 
 #include "PartFeature.h"
 

@@ -28,6 +28,7 @@
 #endif
 
 #include <App/Document.h>
+#include <App/PropertyInteger.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>

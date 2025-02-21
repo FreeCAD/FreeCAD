@@ -23,7 +23,9 @@
 #ifndef MESH_FEATURE_MESH_DEFECTS_H
 #define MESH_FEATURE_MESH_DEFECTS_H
 
-#include <App/PropertyLinks.h>
+#include <App/PropertyFloat.h>
+#include <App/PropertyInteger.h>
+#include <App/PropertyLink.h>
 
 #include "MeshFeature.h"
 

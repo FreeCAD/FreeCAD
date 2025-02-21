@@ -23,7 +23,9 @@
 #ifndef PART_FEATURES_H
 #define PART_FEATURES_H
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyEnumeration.h>
+#include <App/PropertyIntegerConstraint.h>
+#include <App/PropertyLinkList.h>
 #include <App/PropertyUnits.h>
 
 #include "PartFeature.h"

@@ -26,6 +26,7 @@
 #include <QDomDocument>
 
 #include <App/DocumentObject.h>
+#include <App/PropertyStringList.h>
 #include <App/FeaturePython.h>
 #include <Base/BoundBox.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>

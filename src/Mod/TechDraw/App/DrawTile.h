@@ -25,6 +25,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyIntegerConstraint.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawView.h"

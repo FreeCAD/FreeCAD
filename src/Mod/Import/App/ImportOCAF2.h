@@ -30,6 +30,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include <boost/dynamic_bitset_fwd.hpp>
 #include <TDocStd_Document.hxx>
 #include <TopoDS_Shape.hxx>
 #include <XCAFDoc_ColorTool.hxx>

@@ -24,6 +24,8 @@
 #define GUI_VIEWPROVIDER_LINK_H
 
 #include <App/Link.h>
+#include <App/PropertyColor.h>
+#include <App/PropertyPersistentObject.h>
 
 #include "Selection/SoFCUnifiedSelection.h"
 #include "ViewProviderDocumentObject.h"

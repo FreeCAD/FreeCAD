@@ -33,7 +33,8 @@
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyInteger.h>
+#include <App/PropertyLinkList.h>
 #include <Base/BoundBox.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
