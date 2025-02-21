@@ -5652,11 +5652,11 @@ void TopoShape::makeElementBooleanAsync(AsyncProcessHandle* handle,
         close(stdout_pipe[1]);
 
         // Construct path to worker executable
-        std::string workerExe = App::GetApplication().getHomePath() + "/Mod/Part/BooleanWorker";
-        execl(workerExe.c_str(), "BooleanWorker", nullptr);
+        std::string workerExe = App::GetApplication().getHomePath() + "/bin/" + App::GetApplication().getExecutableName();
+        execl(workerExe.c_str(), App::GetApplication().getExecutableName().c_str(), "--boolean-worker", nullptr);
 
         // If we get here, exec failed
-        std::cerr << "Failed to execute BooleanWorker at " << workerExe << std::endl;
+        std::cerr << "Failed to execute FreeCAD BooleanWorker at " << workerExe << std::endl;
         _exit(3);
     }
 
