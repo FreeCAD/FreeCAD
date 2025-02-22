@@ -396,8 +396,107 @@ class TestPathAdaptive(PathTestBase):
                 break
         self.assertTrue(isInBox, "No paths originating within the inner hole.")
 
+    def test08(self):
+        """test08() Tests stock awareness- avoids cutting into the model regardless
+        of bounding box selected."""
+        # Instantiate a Adaptive operation and set Base Geometry
+        adaptive = PathAdaptive.Create("Adaptive")
+        adaptive.Base = [(self.doc.Fusion, ["Face3", "Face10"])]  # (base, subs_list)
+        adaptive.Label = "test08+"
+        adaptive.Comment = "test08() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different. Result should be the combination at Z=10 (faces from (0,0) to (40,25), minus tool radius), and only the lower face at Z=5: (15,0) to (40,25)."
+
+        # Set additional operation properties
+        setDepthsAndHeights(adaptive, 15, 0)
+        adaptive.FinishingProfile = False
+        adaptive.HelixAngle = 75.0
+        adaptive.HelixDiameterLimit.Value = 1.0
+        adaptive.LiftDistance.Value = 1.0
+        adaptive.StepOver = 75
+        adaptive.UseOutline = False
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            5.0  # Have to set expression to None before numerical value assignment
+        )
+
+        _addViewProvider(adaptive)
+        self.doc.recompute()
+
+        # Check:
+        # - Bounding box at Z=10 stays within Face3 and Face10- so -X for Face3,
+        # +X and +/-Y for Face10
+        # - bounding box at Z=5 stays within Face10
+        # - No toolpaths at Z=0
+
+        paths = [c for c in adaptive.Path.Commands if c.Name in ["G0", "G00", "G1", "G01"]]
+        toolr = adaptive.OpToolDiameter.Value / 2
+        tol = adaptive.Tolerance
+
+        # Make clean up math below- combine tool radius and tolerance into a
+        # single field that can be added/subtracted to/from bounding boxes
+        moffset = toolr - tol
+
+        zDict = {10: None, 5: None, 0: None}
+
+        getPathBoundaries(paths, zDict)
+
+        # NOTE: Face3 is at Z=10, Face10 is at Z=5
+        bbf3 = self.doc.Fusion.Shape.getElement("Face3").BoundBox
+        bbf10 = self.doc.Fusion.Shape.getElement("Face10").BoundBox
+
+        okAt10 = (
+            zDict[10] is not None
+            and zDict[10]["min"][0] >= bbf3.XMin + moffset
+            and zDict[10]["min"][1] >= bbf10.YMin + moffset
+            and zDict[10]["max"][0] <= bbf10.XMax - moffset
+            and zDict[10]["max"][1] <= bbf10.YMax - moffset
+        )
+
+        okAt5 = (
+            zDict[5] is not None
+            and zDict[5]["min"][0] >= bbf10.XMin + moffset
+            and zDict[5]["min"][1] >= bbf10.YMin + moffset
+            and zDict[5]["max"][0] < bbf10.XMax - moffset
+            and zDict[5]["max"][1] < bbf10.YMax - moffset
+        )
+
+        okAt0 = not zDict[0]
+
+        self.assertTrue(okAt10 and okAt5 and okAt0, "Path boundaries outside of expected regions")
+
 
 # Eclass
+
+
+def getPathBoundaries(paths, zDict):
+    """getPathBoundaries(paths, zDict): Takes the list of paths and dictionary
+    of Z depths of interest, and finds the bounding box of the paths at each
+    depth.
+
+    NOTE: You'd think that using Path.BoundBox would give us what we want,
+    but... no, for whatever reason it appears to always extend to (0,0,0)
+    """
+    last = FreeCAD.Vector(0.0, 0.0, 0.0)
+    # First make sure each element has X, Y, and Z coordinates
+    for p in paths:
+        params = p.Parameters
+        last.x = p.X if "X" in params else last.x
+        last.y = p.Y if "Y" in params else last.y
+        last.z = p.Z if "Z" in params else last.z
+
+        p.X = last.x
+        p.Y = last.y
+        p.Z = last.z
+
+    for z in zDict:
+        zpaths = [k for k in paths if k.Z == z]
+        if not zpaths:
+            zDict[z] = None
+            continue
+        xmin = min([k.X for k in zpaths])
+        xmax = max([k.X for k in zpaths])
+        ymin = min([k.Y for k in zpaths])
+        ymax = max([k.Y for k in zpaths])
+        zDict[z] = {"min": (xmin, ymin), "max": (xmax, ymax)}
 
 
 def setDepthsAndHeights(op, strDep=20.0, finDep=0.0):
@@ -421,43 +520,29 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
     """getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=True)...
     Accepts command dict and returns point string coordinate.
     """
+
+    # NOTE: Can NOT just check "if p.get("X")" or similar- that chokes when X is
+    # zero. That becomes especially obvious when Z=0, and moves end up on the
+    # wrong depth
     gcode_list = list()
     last = FreeCAD.Vector(0.0, 0.0, 0.0)
     for c in cmdList:
         p = c.Parameters
         name = c.Name
-        if includeRapids and name in ["G0", "G00"]:
+        if (includeRapids and name in ["G0", "G00"]) or (includeLines and name in ["G1", "G01"]):
             gcode = name
             x = last.x
             y = last.y
             z = last.z
-            if p.get("X"):
+            if "X" in p:
                 x = round(p["X"], 2)
-                gcode += " X" + str(x)
-            if p.get("Y"):
+            gcode += " X" + str(x)
+            if "Y" in p:
                 y = round(p["Y"], 2)
-                gcode += " Y" + str(y)
-            if p.get("Z"):
+            gcode += " Y" + str(y)
+            if "Z" in p:
                 z = round(p["Z"], 2)
-                gcode += " Z" + str(z)
-            last.x = x
-            last.y = y
-            last.z = z
-            gcode_list.append(gcode)
-        elif includeLines and name in ["G1", "G01"]:
-            gcode = name
-            x = last.x
-            y = last.y
-            z = last.z
-            if p.get("X"):
-                x = round(p["X"], 2)
-                gcode += " X" + str(x)
-            if p.get("Y"):
-                y = round(p["Y"], 2)
-                gcode += " Y" + str(y)
-            if p.get("Z"):
-                z = round(p["Z"], 2)
-                gcode += " Z" + str(z)
+            gcode += " Z" + str(z)
             last.x = x
             last.y = y
             last.z = z
@@ -470,23 +555,23 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
             i = 0.0
             j = 0.0
             k = 0.0
-            if p.get("I"):
+            if "I" in p:
                 i = round(p["I"], 2)
             gcode += " I" + str(i)
-            if p.get("J"):
+            if "J" in p:
                 j = round(p["J"], 2)
             gcode += " J" + str(j)
-            if p.get("K"):
+            if "K" in p:
                 k = round(p["K"], 2)
             gcode += " K" + str(k)
 
-            if p.get("X"):
+            if "X" in p:
                 x = round(p["X"], 2)
             gcode += " X" + str(x)
-            if p.get("Y"):
+            if "Y" in p:
                 y = round(p["Y"], 2)
             gcode += " Y" + str(y)
-            if p.get("Z"):
+            if "Z" in p:
                 z = round(p["Z"], 2)
             gcode += " Z" + str(z)
 
@@ -501,7 +586,7 @@ def pathOriginatesInBox(cmd, minPoint, maxPoint):
     p = cmd.Parameters
     name = cmd.Name
     if name in ["G0", "G00", "G1", "G01"]:
-        if p.get("X") and p.get("Y"):
+        if "X" in p and "Y" in p:
             x = p.get("X")
             y = p.get("Y")
             if x > minPoint.x and y > minPoint.y and x < maxPoint.x and y < maxPoint.y:
