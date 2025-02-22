@@ -26,10 +26,6 @@ MACRO (fc_copy_sources target_name outpath)
 			MAIN_DEPENDENCY "${infile}"
 		)
 	endforeach(it)
-	ADD_CUSTOM_COMMAND(
-		TARGET    ${target_name}
-		DEPENDS   ${ARGN}
-	)
 ENDMACRO(fc_copy_sources)
 
 MACRO (fc_copy_file_if_different inputfile outputfile)
@@ -82,10 +78,6 @@ MACRO (fc_target_copy_resource target_name inpath outpath)
 			MAIN_DEPENDENCY "${infile}"
 		)
 	endforeach(it)
-	ADD_CUSTOM_COMMAND(
-		TARGET    ${target_name}
-		DEPENDS   ${ARGN}
-	)
 ENDMACRO(fc_target_copy_resource)
 
 MACRO (fc_target_copy_resource_flat target_name inpath outpath)
@@ -117,10 +109,6 @@ MACRO (fc_target_copy_resource_flat target_name inpath outpath)
 			MAIN_DEPENDENCY "${infile}"
 		)
 	endforeach(it)
-	ADD_CUSTOM_COMMAND(
-		TARGET    ${target_name}
-		DEPENDS   ${ARGN}
-	)
 ENDMACRO(fc_target_copy_resource_flat)
 
 # It would be a bit cleaner to generate these files in ${CMAKE_CURRENT_BINARY_DIR}
