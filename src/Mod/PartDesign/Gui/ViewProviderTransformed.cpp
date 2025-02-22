@@ -178,6 +178,7 @@ public:
     {
         setWindowTitle(tr("Computing"));
         setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowStaysOnTopHint);
+        setWindowModality(Qt::ApplicationModal); // Make sure dialog is modal but doesn't block event processing
         
         auto layout = new QVBoxLayout(this);
         
@@ -222,6 +223,9 @@ public:
                                 Q_ARG(int, pct));
         QMetaObject::invokeMethod(progressBar, "setMaximum", Qt::QueuedConnection,
                                 Q_ARG(int, 100));
+                                
+        // Process events to keep UI responsive
+        QApplication::processEvents();
     }
 
     void abort() {
