@@ -41,78 +41,25 @@ v = Base.Vector
 
 #############################################################################################
 class SpreadsheetAggregates(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.doc = FreeCAD.newDocument()
-        cls.TempPath = tempfile.gettempdir()
-        FreeCAD.Console.PrintLog("  Using temp path: " + cls.TempPath + "\n")
-        cls.sheet = cls.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+    def setUp(self):
+        self.doc = FreeCAD.newDocument()
+        self.sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
 
-        cls.sheet.set("B13", "4")
-        cls.sheet.set("B14", "5")
-        cls.sheet.set("B15", "6")
-        cls.sheet.set("C13", "4mm")
-        cls.sheet.set("C14", "5mm")
-        cls.sheet.set("C15", "6mm")
-        cls.sheet.set("C16", "6")
-
-        cls.sheet.set("A1", "=sum(1)")
-        cls.sheet.set("A2", "=sum(1;2)")
-        cls.sheet.set("A3", "=sum(1;2;3)")
-        cls.sheet.set("A4", "=sum(1;2;3;B13)")
-        cls.sheet.set("A5", "=sum(1;2;3;B13:B15)")
-
-        cls.sheet.set("B1", "=min(1)")
-        cls.sheet.set("B2", "=min(1;2)")
-        cls.sheet.set("B3", "=min(1;2;3)")
-        cls.sheet.set("B4", "=min(1;2;3;B13)")
-        cls.sheet.set("B5", "=min(1;2;3;B13:B15)")
-
-        cls.sheet.set("C1", "=max(1)")
-        cls.sheet.set("C2", "=max(1;2)")
-        cls.sheet.set("C3", "=max(1;2;3)")
-        cls.sheet.set("C4", "=max(1;2;3;B13)")
-        cls.sheet.set("C5", "=max(1;2;3;B13:B15)")
-
-        cls.sheet.set("D1", "=stddev(1)")
-        cls.sheet.set("D2", "=stddev(1;2)")
-        cls.sheet.set("D3", "=stddev(1;2;3)")
-        cls.sheet.set("D4", "=stddev(1;2;3;B13)")
-        cls.sheet.set("D5", "=stddev(1;2;3;B13:B15)")
-
-        cls.sheet.set("E1", "=count(1)")
-        cls.sheet.set("E2", "=count(1;2)")
-        cls.sheet.set("E3", "=count(1;2;3)")
-        cls.sheet.set("E4", "=count(1;2;3;B13)")
-        cls.sheet.set("E5", "=count(1;2;3;B13:B15)")
-
-        cls.sheet.set("F1", "=average(1)")
-        cls.sheet.set("F2", "=average(1;2)")
-        cls.sheet.set("F3", "=average(1;2;3)")
-        cls.sheet.set("F4", "=average(1;2;3;B13)")
-        cls.sheet.set("F5", "=average(1;2;3;B13:B15)")
-
-        cls.sheet.set("G1", "=average(C13:C15)")
-        cls.sheet.set("G2", "=min(C13:C15)")
-        cls.sheet.set("G3", "=max(C13:C15)")
-        cls.sheet.set("G4", "=count(C13:C15)")
-        cls.sheet.set("G5", "=stddev(C13:C15)")
-        cls.sheet.set("G6", "=sum(C13:C15)")
-
-        cls.sheet.set("H1", "=average(C13:C16)")
-        cls.sheet.set("H2", "=min(C13:C16)")
-        cls.sheet.set("H3", "=max(C13:C16)")
-        cls.sheet.set("H4", "=count(C13:C16)")
-        cls.sheet.set("H5", "=stddev(C13:C16)")
-        cls.sheet.set("H6", "=sum(C13:C16)")
-
-        cls.doc.recompute()
-
-    @classmethod
-    def tearDownClass(cls):
-        FreeCAD.closeDocument(cls.doc.Name)
+    def tearDown(self):
+        FreeCAD.closeDocument(self.doc.Name)
 
     def test_sum(self):
+        self.sheet.set("B13", "4")
+        self.sheet.set("B14", "5")
+        self.sheet.set("B15", "6")
+        self.sheet.set("A1", "=sum(1)")
+        self.sheet.set("A2", "=sum(1;2)")
+        self.sheet.set("A3", "=sum(1;2;3)")
+        self.sheet.set("A4", "=sum(1;2;3;B13)")
+        self.sheet.set("A5", "=sum(1;2;3;B13:B15)")
+
+        self.doc.recompute()
+
         self.assertEqual(self.sheet.A1, 1)
         self.assertEqual(self.sheet.A2, 3)
         self.assertEqual(self.sheet.A3, 6)
@@ -120,6 +67,17 @@ class SpreadsheetAggregates(unittest.TestCase):
         self.assertEqual(self.sheet.A5, 21)
 
     def test_min(self):
+        self.sheet.set("B13", "4")
+        self.sheet.set("B14", "5")
+        self.sheet.set("B15", "6")
+        self.sheet.set("B1", "=min(1)")
+        self.sheet.set("B2", "=min(1;2)")
+        self.sheet.set("B3", "=min(1;2;3)")
+        self.sheet.set("B4", "=min(1;2;3;B13)")
+        self.sheet.set("B5", "=min(1;2;3;B13:B15)")
+
+        self.doc.recompute()
+
         self.assertEqual(self.sheet.B1, 1)
         self.assertEqual(self.sheet.B2, 1)
         self.assertEqual(self.sheet.B3, 1)
@@ -127,6 +85,17 @@ class SpreadsheetAggregates(unittest.TestCase):
         self.assertEqual(self.sheet.B5, 1)
 
     def test_max(self):
+        self.sheet.set("B13", "4")
+        self.sheet.set("B14", "5")
+        self.sheet.set("B15", "6")
+        self.sheet.set("C1", "=max(1)")
+        self.sheet.set("C2", "=max(1;2)")
+        self.sheet.set("C3", "=max(1;2;3)")
+        self.sheet.set("C4", "=max(1;2;3;B13)")
+        self.sheet.set("C5", "=max(1;2;3;B13:B15)")
+
+        self.doc.recompute()
+
         self.assertEqual(self.sheet.C1, 1)
         self.assertEqual(self.sheet.C2, 2)
         self.assertEqual(self.sheet.C3, 3)
@@ -134,6 +103,17 @@ class SpreadsheetAggregates(unittest.TestCase):
         self.assertEqual(self.sheet.C5, 6)
 
     def test_stddev(self):
+        self.sheet.set("B13", "4")
+        self.sheet.set("B14", "5")
+        self.sheet.set("B15", "6")
+        self.sheet.set("D1", "=stddev(1)")
+        self.sheet.set("D2", "=stddev(1;2)")
+        self.sheet.set("D3", "=stddev(1;2;3)")
+        self.sheet.set("D4", "=stddev(1;2;3;B13)")
+        self.sheet.set("D5", "=stddev(1;2;3;B13:B15)")
+
+        self.doc.recompute()
+
         self.assertTrue(
             self.sheet.D1.startswith("ERR: Invalid number of entries: at least two required.")
         )
@@ -143,6 +123,17 @@ class SpreadsheetAggregates(unittest.TestCase):
         self.assertEqual(self.sheet.D5, 1.8708286933869707)
 
     def test_count(self):
+        self.sheet.set("B13", "4")
+        self.sheet.set("B14", "5")
+        self.sheet.set("B15", "6")
+        self.sheet.set("E1", "=count(1)")
+        self.sheet.set("E2", "=count(1;2)")
+        self.sheet.set("E3", "=count(1;2;3)")
+        self.sheet.set("E4", "=count(1;2;3;B13)")
+        self.sheet.set("E5", "=count(1;2;3;B13:B15)")
+
+        self.doc.recompute()
+
         self.assertEqual(self.sheet.E1, 1)
         self.assertEqual(self.sheet.E2, 2)
         self.assertEqual(self.sheet.E3, 3)
@@ -150,6 +141,17 @@ class SpreadsheetAggregates(unittest.TestCase):
         self.assertEqual(self.sheet.E5, 6)
 
     def test_average(self):
+        self.sheet.set("B13", "4")
+        self.sheet.set("B14", "5")
+        self.sheet.set("B15", "6")
+        self.sheet.set("F1", "=average(1)")
+        self.sheet.set("F2", "=average(1;2)")
+        self.sheet.set("F3", "=average(1;2;3)")
+        self.sheet.set("F4", "=average(1;2;3;B13)")
+        self.sheet.set("F5", "=average(1;2;3;B13:B15)")
+
+        self.doc.recompute()
+
         self.assertEqual(self.sheet.F1, 1)
         self.assertEqual(self.sheet.F2, (1.0 + 2.0) / 2.0)
         self.assertEqual(self.sheet.F3, (1.0 + 2 + 3) / 3)
@@ -157,6 +159,18 @@ class SpreadsheetAggregates(unittest.TestCase):
         self.assertEqual(self.sheet.F5, (1.0 + 2 + 3 + 4 + 5 + 6) / 6)
 
     def test_range(self):
+        self.sheet.set("C13", "4mm")
+        self.sheet.set("C14", "5mm")
+        self.sheet.set("C15", "6mm")
+        self.sheet.set("G1", "=average(C13:C15)")
+        self.sheet.set("G2", "=min(C13:C15)")
+        self.sheet.set("G3", "=max(C13:C15)")
+        self.sheet.set("G4", "=count(C13:C15)")
+        self.sheet.set("G5", "=stddev(C13:C15)")
+        self.sheet.set("G6", "=sum(C13:C15)")
+
+        self.doc.recompute()
+
         self.assertEqual(self.sheet.G1, Units.Quantity("5 mm"))
         self.assertEqual(self.sheet.G2, Units.Quantity("4 mm"))
         self.assertEqual(self.sheet.G3, Units.Quantity("6 mm"))
@@ -165,6 +179,19 @@ class SpreadsheetAggregates(unittest.TestCase):
         self.assertEqual(self.sheet.G6, Units.Quantity("15 mm"))
 
     def test_range_invalid(self):
+        self.sheet.set("C13", "4mm")
+        self.sheet.set("C14", "5mm")
+        self.sheet.set("C15", "6mm")
+        self.sheet.set("C16", "6")
+        self.sheet.set("H1", "=average(C13:C16)")
+        self.sheet.set("H2", "=min(C13:C16)")
+        self.sheet.set("H3", "=max(C13:C16)")
+        self.sheet.set("H4", "=count(C13:C16)")
+        self.sheet.set("H5", "=stddev(C13:C16)")
+        self.sheet.set("H6", "=sum(C13:C16)")
+
+        self.doc.recompute()
+
         self.assertTrue(
             self.sheet.H1.startswith(
                 "ERR: Quantity::operator +=(): Unit mismatch in plus operation"
@@ -195,114 +222,12 @@ class SpreadsheetAggregates(unittest.TestCase):
 
 #############################################################################################
 class SpreadsheetFunction(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.doc = FreeCAD.newDocument()
-        cls.sheet = cls.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+    def setUp(self):
+        self.doc = FreeCAD.newDocument()
+        self.sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
 
-        cls.sheet.set("A1", "=cos(60)")  # Cos
-        cls.sheet.set("B1", "=cos(60deg)")
-        cls.sheet.set("C1", "=cos(pi / 2 * 1rad)")
-        cls.sheet.set("A2", "=sin(30)")  # Sin
-        cls.sheet.set("B2", "=sin(30deg)")
-        cls.sheet.set("C2", "=sin(pi / 6 * 1rad)")
-        cls.sheet.set("A3", "=tan(45)")  # Tan
-        cls.sheet.set("B3", "=tan(45deg)")
-        cls.sheet.set("C3", "=tan(pi / 4 * 1rad)")
-        cls.sheet.set("A4", "=abs(3)")  # Abs
-        cls.sheet.set("B4", "=abs(-3)")
-        cls.sheet.set("C4", "=abs(-3mm)")
-        cls.sheet.set("A5", "=exp(3)")  # Exp
-        cls.sheet.set("B5", "=exp(-3)")
-        cls.sheet.set("C5", "=exp(-3mm)")
-        cls.sheet.set("A6", "=log(3)")  # Log
-        cls.sheet.set("B6", "=log(-3)")
-        cls.sheet.set("C6", "=log(-3mm)")
-        cls.sheet.set("A7", "=log10(10)")  # Log10
-        cls.sheet.set("B7", "=log10(-3)")
-        cls.sheet.set("C7", "=log10(-3mm)")
-        cls.sheet.set("A8", "=round(3.4)")  # Round
-        cls.sheet.set("B8", "=round(3.6)")
-        cls.sheet.set("C8", "=round(-3.4)")
-        cls.sheet.set("D8", "=round(-3.6)")
-        cls.sheet.set("E8", "=round(3.4mm)")
-        cls.sheet.set("F8", "=round(3.6mm)")
-        cls.sheet.set("G8", "=round(-3.4mm)")
-        cls.sheet.set("H8", "=round(-3.6mm)")
-        cls.sheet.set("A9", "=trunc(3.4)")  # Trunc
-        cls.sheet.set("B9", "=trunc(3.6)")
-        cls.sheet.set("C9", "=trunc(-3.4)")
-        cls.sheet.set("D9", "=trunc(-3.6)")
-        cls.sheet.set("E9", "=trunc(3.4mm)")
-        cls.sheet.set("F9", "=trunc(3.6mm)")
-        cls.sheet.set("G9", "=trunc(-3.4mm)")
-        cls.sheet.set("H9", "=trunc(-3.6mm)")
-        cls.sheet.set("A10", "=ceil(3.4)")  # Ceil
-        cls.sheet.set("B10", "=ceil(3.6)")
-        cls.sheet.set("C10", "=ceil(-3.4)")
-        cls.sheet.set("D10", "=ceil(-3.6)")
-        cls.sheet.set("E10", "=ceil(3.4mm)")
-        cls.sheet.set("F10", "=ceil(3.6mm)")
-        cls.sheet.set("G10", "=ceil(-3.4mm)")
-        cls.sheet.set("H10", "=ceil(-3.6mm)")
-        cls.sheet.set("A11", "=floor(3.4)")  # Floor
-        cls.sheet.set("B11", "=floor(3.6)")
-        cls.sheet.set("C11", "=floor(-3.4)")
-        cls.sheet.set("D11", "=floor(-3.6)")
-        cls.sheet.set("E11", "=floor(3.4mm)")
-        cls.sheet.set("F11", "=floor(3.6mm)")
-        cls.sheet.set("G11", "=floor(-3.4mm)")
-        cls.sheet.set("H11", "=floor(-3.6mm)")
-        cls.sheet.set("A12", "=asin(0.5)")  # Asin
-        cls.sheet.set("B12", "=asin(0.5mm)")
-        cls.sheet.set("A13", "=acos(0.5)")  # Acos
-        cls.sheet.set("B13", "=acos(0.5mm)")
-        cls.sheet.set("A14", "=atan(sqrt(3))")  # Atan
-        cls.sheet.set("B14", "=atan(0.5mm)")
-        cls.sheet.set("A15", "=sinh(0.5)")  # Sinh
-        cls.sheet.set("B15", "=sinh(0.5mm)")
-        cls.sheet.set("A16", "=cosh(0.5)")  # Cosh
-        cls.sheet.set("B16", "=cosh(0.5mm)")
-        cls.sheet.set("A17", "=tanh(0.5)")  # Tanh
-        cls.sheet.set("B17", "=tanh(0.5mm)")
-        cls.sheet.set("A18", "=sqrt(4)")  # Sqrt
-        cls.sheet.set("B18", "=sqrt(4mm^2)")
-        cls.sheet.set("A19", "=mod(7; 4)")  # Mod
-        cls.sheet.set("B19", "=mod(-7; 4)")
-        cls.sheet.set("C19", "=mod(7mm; 4)")
-        cls.sheet.set("D19", "=mod(7mm; 4mm)")
-        cls.sheet.set("A20", "=atan2(3; 3)")  # Atan2
-        cls.sheet.set("B20", "=atan2(-3; 3)")
-        cls.sheet.set("C20", "=atan2(3mm; 3)")
-        cls.sheet.set("D20", "=atan2(3mm; 3mm)")
-        cls.sheet.set("A21", "=pow(7; 4)")  # Pow
-        cls.sheet.set("B21", "=pow(-7; 4)")
-        cls.sheet.set("C21", "=pow(7mm; 4)")
-        cls.sheet.set("D21", "=pow(7mm; 4mm)")
-        cls.sheet.set("A23", "=hypot(3; 4)")  # Hypot
-        cls.sheet.set("B23", "=hypot(-3; 4)")
-        cls.sheet.set("C23", "=hypot(3mm; 4)")
-        cls.sheet.set("D23", "=hypot(3mm; 4mm)")
-        cls.sheet.set("A24", "=hypot(3; 4; 5)")  # Hypot
-        cls.sheet.set("B24", "=hypot(-3; 4; 5)")
-        cls.sheet.set("C24", "=hypot(3mm; 4; 5)")
-        cls.sheet.set("D24", "=hypot(3mm; 4mm; 5mm)")
-        cls.sheet.set("A26", "=cath(5; 3)")  # Cath
-        cls.sheet.set("B26", "=cath(-5; 3)")
-        cls.sheet.set("C26", "=cath(5mm; 3)")
-        cls.sheet.set("D26", "=cath(5mm; 3mm)")
-
-        l = math.sqrt(5 * 5 + 4 * 4 + 3 * 3)
-        cls.sheet.set("A27", "=cath(%0.15f; 5; 4)" % l)  # Cath
-        cls.sheet.set("B27", "=cath(%0.15f; -5; 4)" % l)
-        cls.sheet.set("C27", "=cath(%0.15f mm; 5mm; 4)" % l)
-        cls.sheet.set("D27", "=cath(%0.15f mm; 5mm; 4mm)" % l)
-
-        cls.doc.recompute()
-
-    @classmethod
-    def tearDownClass(cls):
-        FreeCAD.closeDocument(cls.doc.Name)
+    def tearDown(self):
+        FreeCAD.closeDocument(self.doc.Name)
 
     def assertMostlyEqual(self, a, b):
         if type(a) is Units.Quantity:
@@ -316,263 +241,310 @@ class SpreadsheetFunction(unittest.TestCase):
                 "Values are not 'Mostly Equal': %s != %s" % (a, b),
             )
 
-    def test_cos_num(self):
+    def test_cos(self):
+        self.sheet.set("A1", "=cos(60)")
+        self.sheet.set("B1", "=cos(60deg)")
+        self.sheet.set("C1", "=cos(pi / 2 * 1rad)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A1, 0.5)
-
-    def test_cos_str(self):
         self.assertMostlyEqual(self.sheet.B1, 0.5)
-
-    def test_cos_form(self):
         self.assertMostlyEqual(self.sheet.C1, 0)
 
-    def test_sin_num(self):
+    def test_sin(self):
+        self.sheet.set("A2", "=sin(30)")
+        self.sheet.set("B2", "=sin(30deg)")
+        self.sheet.set("C2", "=sin(pi / 6 * 1rad)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A2, 0.5)
-
-    def test_sin_str(self):
         self.assertMostlyEqual(self.sheet.B2, 0.5)
-
-    def test_sin_form(self):
         self.assertMostlyEqual(self.sheet.C2, 0.5)
 
-    def test_tan_num(self):
+    def test_tan(self):
+        self.sheet.set("A3", "=tan(45)")
+        self.sheet.set("B3", "=tan(45deg)")
+        self.sheet.set("C3", "=tan(pi / 4 * 1rad)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A3, 1)
-
-    def test_tan_str(self):
         self.assertMostlyEqual(self.sheet.B3, 1)
-
-    def test_tan_form(self):
         self.assertMostlyEqual(self.sheet.C3, 1)
 
-    def test_abs_pos(self):
+    def test_abs(self):
+        self.sheet.set("A4", "=abs(3)")
+        self.sheet.set("B4", "=abs(-3)")
+        self.sheet.set("C4", "=abs(-3mm)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A4, 3)
-
-    def test_abs_neg(self):
         self.assertMostlyEqual(self.sheet.B4, 3)
-
-    def test_abs_quant(self):
         self.assertMostlyEqual(self.sheet.C4, Units.Quantity("3 mm"))
 
-    def test_exp_pos(self):
+    def test_exp(self):
+        self.sheet.set("A5", "=exp(3)")
+        self.sheet.set("B5", "=exp(-3)")
+        self.sheet.set("C5", "=exp(-3mm)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A5, math.exp(3))
-
-    def test_exp_neg(self):
         self.assertMostlyEqual(self.sheet.B5, math.exp(-3))
-
-    def test_exp_error(self):
         self.assertTrue(self.sheet.C5.startswith("ERR: Unit must be empty."))
 
     def test_log(self):
+        self.sheet.set("A6", "=log(3)")
+        self.sheet.set("B6", "=log(-3)")
+        self.sheet.set("C6", "=log(-3mm)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A6, math.log(3))
-
-    def test_log_nan(self):
         self.assertTrue(math.isnan(self.sheet.B6))
-
-    def test_log_error(self):
         self.assertTrue(self.sheet.C6.startswith("ERR: Unit must be empty."))
 
     def test_log10(self):
+        self.sheet.set("A7", "=log10(10)")
+        self.sheet.set("B7", "=log10(-3)")
+        self.sheet.set("C7", "=log10(-3mm)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A7, math.log10(10))
-
-    def test_log10_nan(self):
         self.assertTrue(math.isnan(self.sheet.B7))
-
-    def test_log10_error(self):
         self.assertTrue(self.sheet.C7.startswith("ERR: Unit must be empty."))
 
-    def test_round_pos_num(self):
+    def test_round(self):
+        self.sheet.set("A8", "=round(3.4)")
+        self.sheet.set("B8", "=round(3.6)")
+        self.sheet.set("C8", "=round(-3.4)")
+        self.sheet.set("D8", "=round(-3.6)")
+        self.sheet.set("E8", "=round(3.4mm)")
+        self.sheet.set("F8", "=round(3.6mm)")
+        self.sheet.set("G8", "=round(-3.4mm)")
+        self.sheet.set("H8", "=round(-3.6mm)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A8, 3)
         self.assertMostlyEqual(self.sheet.B8, 4)
-
-    def test_round_neg_num(self):
         self.assertMostlyEqual(self.sheet.C8, -3)
         self.assertMostlyEqual(self.sheet.D8, -4)
-
-    def test_round_pos_quant(self):
         self.assertEqual(self.sheet.E8, Units.Quantity("3 mm"))
         self.assertEqual(self.sheet.F8, Units.Quantity("4 mm"))
-
-    def test_round_neg_quant(self):
         self.assertEqual(self.sheet.G8, Units.Quantity("-3 mm"))
         self.assertEqual(self.sheet.H8, Units.Quantity("-4 mm"))
 
-    def test_trunc_pos_num(self):
+    def test_trunc(self):
+        self.sheet.set("A9", "=trunc(3.4)")
+        self.sheet.set("B9", "=trunc(3.6)")
+        self.sheet.set("C9", "=trunc(-3.4)")
+        self.sheet.set("D9", "=trunc(-3.6)")
+        self.sheet.set("E9", "=trunc(3.4mm)")
+        self.sheet.set("F9", "=trunc(3.6mm)")
+        self.sheet.set("G9", "=trunc(-3.4mm)")
+        self.sheet.set("H9", "=trunc(-3.6mm)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A9, 3)
         self.assertMostlyEqual(self.sheet.B9, 3)
-
-    def test_trunc_neg_num(self):
         self.assertMostlyEqual(self.sheet.C9, -3)
         self.assertMostlyEqual(self.sheet.D9, -3)
-
-    def test_trunc_pos_quant(self):
         self.assertEqual(self.sheet.E9, Units.Quantity("3 mm"))
         self.assertEqual(self.sheet.F9, Units.Quantity("3 mm"))
-
-    def test_trunc_neg_quant(self):
         self.assertEqual(self.sheet.G9, Units.Quantity("-3 mm"))
         self.assertEqual(self.sheet.H9, Units.Quantity("-3 mm"))
 
-    def test_ceil_pos(self):
+    def test_ceil(self):
+        self.sheet.set("A10", "=ceil(3.4)")
+        self.sheet.set("B10", "=ceil(3.6)")
+        self.sheet.set("C10", "=ceil(-3.4)")
+        self.sheet.set("D10", "=ceil(-3.6)")
+        self.sheet.set("E10", "=ceil(3.4mm)")
+        self.sheet.set("F10", "=ceil(3.6mm)")
+        self.sheet.set("G10", "=ceil(-3.4mm)")
+        self.sheet.set("H10", "=ceil(-3.6mm)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A10, 4)
         self.assertMostlyEqual(self.sheet.B10, 4)
-
-    def test_ceil_neg(self):
         self.assertMostlyEqual(self.sheet.C10, -3)
         self.assertMostlyEqual(self.sheet.D10, -3)
-
-    def test_ceil_quant_pos(self):
         self.assertMostlyEqual(self.sheet.E10, Units.Quantity("4 mm"))
         self.assertMostlyEqual(self.sheet.F10, Units.Quantity("4 mm"))
-
-    def test_ceil_quant_neg(self):
         self.assertMostlyEqual(self.sheet.G10, Units.Quantity("-3 mm"))
         self.assertMostlyEqual(self.sheet.H10, Units.Quantity("-3 mm"))
 
-    def test_floor_pos_num(self):
+    def test_floor(self):
+        self.sheet.set("A11", "=floor(3.4)")
+        self.sheet.set("B11", "=floor(3.6)")
+        self.sheet.set("C11", "=floor(-3.4)")
+        self.sheet.set("D11", "=floor(-3.6)")
+        self.sheet.set("E11", "=floor(3.4mm)")
+        self.sheet.set("F11", "=floor(3.6mm)")
+        self.sheet.set("G11", "=floor(-3.4mm)")
+        self.sheet.set("H11", "=floor(-3.6mm)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A11, 3)
         self.assertMostlyEqual(self.sheet.B11, 3)
-
-    def test_floor_neg_num(self):
         self.assertMostlyEqual(self.sheet.C11, -4)
         self.assertMostlyEqual(self.sheet.D11, -4)
-
-    def test_floor_pos_quant(self):
         self.assertMostlyEqual(self.sheet.E11, Units.Quantity("3 mm"))
         self.assertMostlyEqual(self.sheet.F11, Units.Quantity("3 mm"))
-
-    def test_floor_neg_quant(self):
         self.assertMostlyEqual(self.sheet.G11, Units.Quantity("-4 mm"))
         self.assertMostlyEqual(self.sheet.H11, Units.Quantity("-4 mm"))
 
     def test_asin(self):
-        self.assertMostlyEqual(self.sheet.A12, Units.Quantity("30 deg"))
+        self.sheet.set("A12", "=asin(0.5)")
+        self.sheet.set("B12", "=asin(0.5mm)")
 
-    def test_asin_error(self):
+        self.doc.recompute()
+
+        self.assertMostlyEqual(self.sheet.A12, Units.Quantity("30 deg"))
         self.assertTrue(self.sheet.B12.startswith("ERR: Unit must be empty."))
 
     def test_acos(self):
-        self.assertMostlyEqual(self.sheet.A13, Units.Quantity("60 deg"))
+        self.sheet.set("A13", "=acos(0.5)")
+        self.sheet.set("B13", "=acos(0.5mm)")
 
-    def test_acos_error(self):
+        self.doc.recompute()
+
+        self.assertMostlyEqual(self.sheet.A13, Units.Quantity("60 deg"))
         self.assertTrue(self.sheet.B13.startswith("ERR: Unit must be empty."))
 
     def test_atan(self):
-        self.assertMostlyEqual(self.sheet.A14, Units.Quantity("60 deg"))
+        self.sheet.set("A14", "=atan(sqrt(3))")
+        self.sheet.set("B14", "=atan(0.5mm)")
 
-    def test_atan_error(self):
+        self.doc.recompute()
+
+        self.assertMostlyEqual(self.sheet.A14, Units.Quantity("60 deg"))
         self.assertTrue(self.sheet.B14.startswith("ERR: Unit must be empty."))
 
-    def test_sinh(self):
-        self.assertMostlyEqual(self.sheet.A15, math.sinh(0.5))
+    def test_asinh(self):
+        self.sheet.set("A15", "=sinh(0.5)")
+        self.sheet.set("B15", "=sinh(0.5mm)")
 
-    def test_sinh_error(self):
+        self.doc.recompute()
+
+        self.assertMostlyEqual(self.sheet.A15, math.sinh(0.5))
         self.assertTrue(self.sheet.B15.startswith("ERR: Unit must be empty."))
 
     def test_cosh(self):
-        self.assertMostlyEqual(self.sheet.A16, math.cosh(0.5))
+        self.sheet.set("A16", "=cosh(0.5)")
+        self.sheet.set("B16", "=cosh(0.5mm)")
 
-    def test_cosh_error(self):
+        self.doc.recompute()
+
+        self.assertMostlyEqual(self.sheet.A16, math.cosh(0.5))
         self.assertTrue(self.sheet.B16.startswith("ERR: Unit must be empty."))
 
     def test_tanh(self):
-        self.assertMostlyEqual(self.sheet.A17, math.tanh(0.5))
+        self.sheet.set("A17", "=tanh(0.5)")
+        self.sheet.set("B17", "=tanh(0.5mm)")
 
-    def test_tanh_error(self):
+        self.doc.recompute()
+
+        self.assertMostlyEqual(self.sheet.A17, math.tanh(0.5))
         self.assertTrue(self.sheet.B17.startswith("ERR: Unit must be empty."))
 
-    def test_sqrt_number(self):
-        self.assertMostlyEqual(self.sheet.A18, 2)
+    def test_sqrt(self):
+        self.sheet.set("A18", "=sqrt(4)")
+        self.sheet.set("B18", "=sqrt(4mm^2)")
 
-    def test_sqrt_quantity(self):
+        self.doc.recompute()
+
+        self.assertMostlyEqual(self.sheet.A18, 2)
         self.assertMostlyEqual(self.sheet.B18, Units.Quantity("2 mm"))
 
-    def test_mod_pos(self):
+    def test_mod(self):
+        self.sheet.set("A19", "=mod(7; 4)")
+        self.sheet.set("B19", "=mod(-7; 4)")
+        self.sheet.set("C19", "=mod(7mm; 4)")
+        self.sheet.set("D19", "=mod(7mm; 4mm)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A19, 3)
-
-    def test_mod_neg(self):
         self.assertMostlyEqual(self.sheet.B19, -3)
-
-    def test_mod_error(self):
         self.assertMostlyEqual(self.sheet.C19, Units.Quantity("3 mm"))
-
-    def test_mod_(self):
         self.assertEqual(self.sheet.D19, 3)
 
-    def test_atan2_pos(self):
+    def test_atan2(self):
+        self.sheet.set("A20", "=atan2(3; 3)")
+        self.sheet.set("B20", "=atan2(-3; 3)")
+        self.sheet.set("C20", "=atan2(3mm; 3)")
+        self.sheet.set("D20", "=atan2(3mm; 3mm)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A20, Units.Quantity("45 deg"))
-
-    def test_atan2_neg(self):
         self.assertMostlyEqual(self.sheet.B20, Units.Quantity("-45 deg"))
-
-    def test_atan2_error(self):
         self.assertTrue(self.sheet.C20.startswith("ERR: Units must be equal"))
-
-    def test_atan2_quant(self):
         self.assertMostlyEqual(self.sheet.D20, Units.Quantity("45 deg"))
 
-    def test_pow_pos(self):
+    def test_pow(self):
+        self.sheet.set("A21", "=pow(7; 4)")
+        self.sheet.set("B21", "=pow(-7; 4)")
+        self.sheet.set("C21", "=pow(7mm; 4)")
+        self.sheet.set("D21", "=pow(7mm; 4mm)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A21, 2401)
-
-    def test_pow_neg(self):
         self.assertMostlyEqual(self.sheet.B21, 2401)
-
-    def test_pow_error(self):
         self.assertMostlyEqual(self.sheet.C21, Units.Quantity("2401mm^4"))
-
-    def test_pow_quant(self):
         self.assertTrue(self.sheet.D21.startswith("ERR: Exponent is not allowed to have a unit."))
 
-    def test_hypot_pos(self):
+    def test_hypot(self):
+        self.sheet.set("A23", "=hypot(3; 4)")
+        self.sheet.set("B23", "=hypot(-3; 4)")
+        self.sheet.set("C23", "=hypot(3mm; 4)")
+        self.sheet.set("D23", "=hypot(3mm; 4mm)")
+        self.sheet.set("A24", "=hypot(3; 4; 5)")
+        self.sheet.set("B24", "=hypot(-3; 4; 5)")
+        self.sheet.set("C24", "=hypot(3mm; 4; 5)")
+        self.sheet.set("D24", "=hypot(3mm; 4mm; 5mm)")
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A23, 5)
-
-    def test_hypot_neg(self):
         self.assertMostlyEqual(self.sheet.B23, 5)
-
-    def test_hypot_error(self):
         self.assertTrue(self.sheet.C23.startswith("ERR: Units must be equal"))
-
-    def test_hypot_quant(self):
         self.assertMostlyEqual(self.sheet.D23, Units.Quantity("5mm"))
-
-    def test_hypot2_pos(self):
-        l = math.sqrt(3 * 3 + 4 * 4 + 5 * 5)
-        self.assertMostlyEqual(self.sheet.A24, l)
-
-    def test_hypot2_neg(self):
-        l = math.sqrt(3 * 3 + 4 * 4 + 5 * 5)
-        self.assertMostlyEqual(self.sheet.B24, l)
-
-    def test_hypot2_error(self):
+        self.assertMostlyEqual(self.sheet.A24, math.sqrt(3 * 3 + 4 * 4 + 5 * 5))
+        self.assertMostlyEqual(self.sheet.B24, math.sqrt(3 * 3 + 4 * 4 + 5 * 5))
         self.assertTrue(self.sheet.C24.startswith("ERR: Units must be equal"))
-
-    def test_hypot2_quant(self):
         self.assertMostlyEqual(self.sheet.D24, Units.Quantity("7.07106781186548 mm"))
 
-    def test_cath_pos(self):
+    def test_cath(self):
+        self.sheet.set("A26", "=cath(5; 3)")
+        self.sheet.set("B26", "=cath(-5; 3)")
+        self.sheet.set("C26", "=cath(5mm; 3)")
+        self.sheet.set("D26", "=cath(5mm; 3mm)")
+        l = math.sqrt(5 * 5 + 4 * 4 + 3 * 3)
+        self.sheet.set("A27", "=cath(%0.15f; 5; 4)" % l)
+        self.sheet.set("B27", "=cath(%0.15f; -5; 4)" % l)
+        self.sheet.set("C27", "=cath(%0.15f mm; 5mm; 4)" % l)
+        self.sheet.set("D27", "=cath(%0.15f mm; 5mm; 4mm)" % l)
+
+        self.doc.recompute()
+
         self.assertMostlyEqual(self.sheet.A26, 4)
-
-    def test_cath_neg(self):
         self.assertMostlyEqual(self.sheet.B26, 4)
-
-    def test_cath_error(self):
         self.assertTrue(self.sheet.C26.startswith("ERR: Units must be equal"))
-
-    def test_cath_quant(self):
         self.assertMostlyEqual(self.sheet.D26, Units.Quantity("4mm"))
-
-    def test_cath2_pos(self):
-        l = math.sqrt(5 * 5 + 4 * 4 + 3 * 3)
-        ll = math.sqrt(l * l - 5 * 5 - 4 * 4)
-        self.assertMostlyEqual(self.sheet.A27, ll)
-
-    def test_cath2_neg(self):
-        l = math.sqrt(5 * 5 + 4 * 4 + 3 * 3)
-        ll = math.sqrt(l * l - 5 * 5 - 4 * 4)
-        self.assertMostlyEqual(self.sheet.B27, ll)
-
-    def test_cath2_error(self):
+        self.assertMostlyEqual(self.sheet.A27, math.sqrt(l * l - 5 * 5 - 4 * 4))
+        self.assertMostlyEqual(self.sheet.B27, math.sqrt(l * l - 5 * 5 - 4 * 4))
         self.assertTrue(self.sheet.C27.startswith("ERR: Units must be equal"))
-
-    def test_cath2_quant(self):
         self.assertMostlyEqual(self.sheet.D27, Units.Quantity("3 mm"))
 
 
