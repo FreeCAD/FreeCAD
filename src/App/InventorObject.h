@@ -26,7 +26,7 @@
 
 #include "GeoFeature.h"
 #include "PropertyStandard.h"
-
+#include <Base/ProgressRange.h>
 
 namespace App
 {
@@ -45,8 +45,9 @@ public:
     {
         return "Gui::ViewProviderInventorObject";
     }
-    DocumentObjectExecReturn* execute() override
+    DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override
     {
+        (void)progressRange;
         return DocumentObject::StdReturn;
     }
     short mustExecute() const override;

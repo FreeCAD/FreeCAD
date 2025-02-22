@@ -175,8 +175,9 @@ BlendPoint FeatureBlendCurve::GetBlendPoint(App::PropertyLinkSub& link,
     return bp;
 }
 
-App::DocumentObjectExecReturn* FeatureBlendCurve::execute()
+App::DocumentObjectExecReturn* FeatureBlendCurve::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     BlendPoint bp1 = GetBlendPoint(StartEdge, StartParameter, StartContinuity);
     BlendPoint bp2 = GetBlendPoint(EndEdge, EndParameter, EndContinuity);
 
@@ -220,7 +221,8 @@ void FeatureBlendCurve::onChanged(const App::Property* prop)
     if (prop == &StartContinuity || prop == &StartParameter || prop == &StartSize
         || prop == &EndContinuity || prop == &EndParameter || prop == &EndSize) {
         if (!isRestoring()) {
-            App::DocumentObjectExecReturn* ret = recompute();
+            Base::NullProgressRange progressRange;
+            App::DocumentObjectExecReturn* ret = recompute(progressRange);
             delete ret;
         }
     }

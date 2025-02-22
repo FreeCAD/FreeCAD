@@ -156,8 +156,9 @@ short FeatureTest::mustExecute() const
     return DocumentObject::mustExecute();
 }
 
-DocumentObjectExecReturn* FeatureTest::execute()
+DocumentObjectExecReturn* FeatureTest::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     // Enum handling
     Enumeration enumObj1 = Enum.getEnum();
     enumObj1.setValue(7, false);
@@ -232,8 +233,9 @@ FeatureTestException::FeatureTestException()
     ADD_PROPERTY(ExceptionType, (Base::Exception::getClassTypeId().getKey()));
 }
 
-DocumentObjectExecReturn* FeatureTestException::execute()
+DocumentObjectExecReturn* FeatureTestException::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     // ExceptionType;
     throw Base::RuntimeError("FeatureTestException::execute(): Testexception  ;-)");
 
@@ -252,8 +254,9 @@ FeatureTestColumn::FeatureTestColumn()
     ADD_PROPERTY_TYPE(Value, (0L), "Test", App::Prop_Output, "");
 }
 
-DocumentObjectExecReturn* FeatureTestColumn::execute()
+DocumentObjectExecReturn* FeatureTestColumn::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     Value.setValue(decodeColumn(Column.getStrValue(), Silent.getValue()));
     return nullptr;
 }
@@ -270,8 +273,9 @@ FeatureTestRow::FeatureTestRow()
     ADD_PROPERTY_TYPE(Value, (0L), "Test", App::Prop_Output, "");
 }
 
-DocumentObjectExecReturn* FeatureTestRow::execute()
+DocumentObjectExecReturn* FeatureTestRow::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     Value.setValue(decodeRow(Row.getStrValue(), Silent.getValue()));
     return nullptr;
 }
@@ -287,8 +291,9 @@ FeatureTestAbsAddress::FeatureTestAbsAddress()
     ADD_PROPERTY_TYPE(Valid, (false), "Test", PropertyType(Prop_Output | Prop_ReadOnly), "");
 }
 
-DocumentObjectExecReturn* FeatureTestAbsAddress::execute()
+DocumentObjectExecReturn* FeatureTestAbsAddress::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     CellAddress address;
     Valid.setValue(address.parseAbsoluteAddress(Address.getValue()));
     return StdReturn;
@@ -307,8 +312,9 @@ FeatureTestPlacement::FeatureTestPlacement()
     ADD_PROPERTY_TYPE(MultRight, (Base::Placement()), "Test", Prop_Output, "");
 }
 
-DocumentObjectExecReturn* FeatureTestPlacement::execute()
+DocumentObjectExecReturn* FeatureTestPlacement::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     Base::Placement p1 = Input1.getValue();
     Base::Placement q1 = Input1.getValue();
     Base::Placement p2 = Input2.getValue();
@@ -350,8 +356,9 @@ FeatureTestAttribute::~FeatureTestAttribute()
     }
 }
 
-DocumentObjectExecReturn* FeatureTestAttribute::execute()
+DocumentObjectExecReturn* FeatureTestAttribute::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     Base::PyGILStateLocker lock;
     try {
         Object.getValue().getAttr(Attribute.getValue());

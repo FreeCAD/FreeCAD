@@ -56,8 +56,9 @@ short int FeatureBase::mustExecute() const {
 }
 
 
-App::DocumentObjectExecReturn* FeatureBase::execute()
+App::DocumentObjectExecReturn* FeatureBase::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
 
     if (!BaseFeature.getValue()) {
         return new App::DocumentObjectExecReturn(

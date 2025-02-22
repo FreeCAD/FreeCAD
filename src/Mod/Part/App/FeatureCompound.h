@@ -44,7 +44,7 @@ public:
     //@{
     short mustExecute() const override;
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     /// returns the type name of the view provider
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderCompound";

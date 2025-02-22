@@ -49,7 +49,7 @@ public:
     App::PropertyLinkSubList Elements;
     App::PropertyDistance Length;
 
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
     const char* getViewProviderName() const override
     {

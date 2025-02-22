@@ -74,8 +74,9 @@ short Offset::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Offset::execute()
+App::DocumentObjectExecReturn *Offset::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* source = Source.getValue();
     if (!source)
         return new App::DocumentObjectExecReturn("No source shape linked.");
@@ -125,8 +126,9 @@ short Offset2D::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Offset2D::execute()
+App::DocumentObjectExecReturn *Offset2D::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* source = Source.getValue();
 
     if (!source) {

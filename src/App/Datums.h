@@ -218,7 +218,7 @@ public:
 
 protected:
     /// Checks integrity of the LCS
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     /// Creates all corresponding Axes and Planes objects for the LCS if they aren't linked yet
     void setupObject() override;
     /// Removes all planes and axis if they are still linked to the document

@@ -27,7 +27,7 @@
 #endif
 
 #include "PointsFeature.h"
-
+#include <Base/ProgressRange.h>
 
 using namespace Points;
 
@@ -47,8 +47,9 @@ short Feature::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn* Feature::execute()
+App::DocumentObjectExecReturn* Feature::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     this->Points.touch();
     return App::DocumentObject::StdReturn;
 }

@@ -37,8 +37,9 @@ FeatureGeometrySet::FeatureGeometrySet()
 }
 
 
-App::DocumentObjectExecReturn *FeatureGeometrySet::execute()
+App::DocumentObjectExecReturn *FeatureGeometrySet::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     TopoShape result;
 
     const std::vector<Geometry*> &Geoms = GeometrySet.getValues();

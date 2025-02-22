@@ -1261,7 +1261,8 @@ void TreeWidget::onFinishEditing()
         Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
         doc->commitCommand();
         doc->resetEdit();
-        doc->getDocument()->recompute();
+        Base::NullProgressRange progressRange;
+        doc->getDocument()->recompute(progressRange);
     }
 }
 
@@ -1388,7 +1389,8 @@ void TreeWidget::onRecomputeObject() {
     if (objs.empty())
         return;
     App::AutoTransaction committer("Recompute object");
-    objs.front()->getDocument()->recompute(objs, true);
+    Base::NullProgressRange progressRange;
+    objs.front()->getDocument()->recompute(progressRange, objs, true);
 }
 
 
@@ -2736,7 +2738,8 @@ void TreeWidget::dropEvent(QDropEvent* event)
     }
 
     if (touched && TreeParams::getRecomputeOnDrop()) {
-        targetInfo.targetDoc->recompute();
+        Base::NullProgressRange progressRange;
+        targetInfo.targetDoc->recompute(progressRange);
     }
     if (touched && TreeParams::getSyncView()) {
         auto gdoc = Application::Instance->getDocument(targetInfo.targetDoc);

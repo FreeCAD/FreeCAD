@@ -150,9 +150,9 @@ ConstraintDisplacement::ConstraintDisplacement()
                       "Rotation in local Z direction");
 }
 
-App::DocumentObjectExecReturn* ConstraintDisplacement::execute()
+App::DocumentObjectExecReturn* ConstraintDisplacement::execute(Base::ProgressRange& progressRange)
 {
-    return Constraint::execute();
+    return Constraint::execute(progressRange);
 }
 
 const char* ConstraintDisplacement::getViewProviderName() const

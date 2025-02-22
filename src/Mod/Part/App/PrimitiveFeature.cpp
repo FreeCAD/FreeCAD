@@ -78,8 +78,8 @@ short Primitive::mustExecute() const
     return Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn* Primitive::execute() {
-    return Part::Feature::execute();
+App::DocumentObjectExecReturn* Primitive::execute(Base::ProgressRange& progressRange) {
+    return Part::Feature::execute(progressRange);
 }
 
 // suppress warning about tp_print for Py3.8
@@ -140,7 +140,8 @@ void Primitive::onChanged(const App::Property* prop)
         std::string grp = (prop->getGroup() ? prop->getGroup() : "");
         if (grp == "Plane" || grp == "Cylinder" || grp == "Cone") {
             try {
-                App::DocumentObjectExecReturn *ret = recompute();
+                Base::NullProgressRange progressRange;
+                App::DocumentObjectExecReturn *ret = recompute(progressRange);
                 delete ret;
             }
             catch (...) {
@@ -170,7 +171,7 @@ short Vertex::mustExecute() const
     return Part::Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Vertex::execute()
+App::DocumentObjectExecReturn *Vertex::execute(Base::ProgressRange& progressRange)
 {
     gp_Pnt point;
     point.SetX(this->X.getValue());
@@ -181,7 +182,7 @@ App::DocumentObjectExecReturn *Vertex::execute()
     const TopoDS_Vertex& vertex = MakeVertex.Vertex();
     this->Shape.setValue(vertex);
 
-    return Primitive::execute();
+    return Primitive::execute(progressRange);
 }
 
 
@@ -190,7 +191,8 @@ void Vertex::onChanged(const App::Property* prop)
     if (!isRestoring()) {
         if (prop == &X || prop == &Y || prop == &Z){
             try {
-                App::DocumentObjectExecReturn *ret = recompute();
+                Base::NullProgressRange progressRange;
+                App::DocumentObjectExecReturn *ret = recompute(progressRange);
                 delete ret;
             }
             catch (...) {
@@ -226,7 +228,7 @@ short Line::mustExecute() const
     return Part::Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Line::execute()
+App::DocumentObjectExecReturn *Line::execute(Base::ProgressRange& progressRange)
 {
     gp_Pnt point1;
     point1.SetX(this->X1.getValue());
@@ -244,7 +246,7 @@ App::DocumentObjectExecReturn *Line::execute()
     const TopoDS_Edge& edge = mkEdge.Edge();
     this->Shape.setValue(edge);
 
-    return Primitive::execute();
+    return Primitive::execute(progressRange);
 }
 
 void Line::onChanged(const App::Property* prop)
@@ -252,7 +254,8 @@ void Line::onChanged(const App::Property* prop)
     if (!isRestoring()) {
         if (prop == &X1 || prop == &Y1 || prop == &Z1 || prop == &X2 || prop == &Y2 || prop == &Z2){
             try {
-                App::DocumentObjectExecReturn *ret = recompute();
+                Base::NullProgressRange progressRange;
+                App::DocumentObjectExecReturn *ret = recompute(progressRange);
                 delete ret;
             }
             catch (...) {
@@ -278,7 +281,7 @@ short Plane::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Plane::execute()
+App::DocumentObjectExecReturn *Plane::execute(Base::ProgressRange& progressRange)
 {
     double L = this->Length.getValue();
     double W = this->Width.getValue();
@@ -321,7 +324,7 @@ App::DocumentObjectExecReturn *Plane::execute()
     TopoDS_Shape ResultShape = mkFace.Shape();
     this->Shape.setValue(ResultShape);
 
-    return Primitive::execute();
+    return Primitive::execute(progressRange);
 }
 
 PROPERTY_SOURCE(Part::Sphere, Part::Primitive)
@@ -351,7 +354,7 @@ short Sphere::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Sphere::execute()
+App::DocumentObjectExecReturn *Sphere::execute(Base::ProgressRange& progressRange)
 {
     // Build a sphere
     if (Radius.getValue() < Precision::Confusion())
@@ -369,7 +372,7 @@ App::DocumentObjectExecReturn *Sphere::execute()
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
-    return Primitive::execute();
+    return Primitive::execute(progressRange);
 }
 
 PROPERTY_SOURCE(Part::Ellipsoid, Part::Primitive)
@@ -407,7 +410,7 @@ short Ellipsoid::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Ellipsoid::execute()
+App::DocumentObjectExecReturn *Ellipsoid::execute(Base::ProgressRange& progressRange)
 {
     // Build a sphere
     if (Radius1.getValue() < Precision::Confusion())
@@ -451,7 +454,7 @@ App::DocumentObjectExecReturn *Ellipsoid::execute()
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
-    return Primitive::execute();
+    return Primitive::execute(progressRange);
 }
 
 PROPERTY_SOURCE(Part::Cylinder, Part::Primitive)
@@ -477,7 +480,7 @@ short Cylinder::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Cylinder::execute()
+App::DocumentObjectExecReturn *Cylinder::execute(Base::ProgressRange& progressRange)
 {
     // Build a cylinder
     if (Radius.getValue() < Precision::Confusion())
@@ -500,7 +503,7 @@ App::DocumentObjectExecReturn *Cylinder::execute()
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
-    return Primitive::execute();
+    return Primitive::execute(progressRange);
 }
 
 App::PropertyIntegerConstraint::Constraints Prism::polygonRange = {3,INT_MAX,1};
@@ -528,7 +531,7 @@ short Prism::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Prism::execute()
+App::DocumentObjectExecReturn *Prism::execute(Base::ProgressRange& progressRange)
 {
     // Build a prism
     if (Polygon.getValue() < 3)
@@ -559,7 +562,7 @@ App::DocumentObjectExecReturn *Prism::execute()
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
-    return Primitive::execute();
+    return Primitive::execute(progressRange);
 }
 
 App::PropertyIntegerConstraint::Constraints RegularPolygon::polygon = {3,INT_MAX,1};
@@ -582,7 +585,7 @@ short RegularPolygon::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *RegularPolygon::execute()
+App::DocumentObjectExecReturn *RegularPolygon::execute(Base::ProgressRange& progressRange)
 {
     // Build a regular polygon
     if (Polygon.getValue() < 3)
@@ -611,7 +614,7 @@ App::DocumentObjectExecReturn *RegularPolygon::execute()
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
-    return Primitive::execute();
+    return Primitive::execute(progressRange);
 }
 
 
@@ -639,7 +642,7 @@ short Cone::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Cone::execute()
+App::DocumentObjectExecReturn *Cone::execute(Base::ProgressRange& progressRange)
 {
     if (Radius1.getValue() < 0)
         return new App::DocumentObjectExecReturn("Radius of cone too small");
@@ -670,7 +673,7 @@ App::DocumentObjectExecReturn *Cone::execute()
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
-    return Primitive::execute();
+    return Primitive::execute(progressRange);
 }
 
 PROPERTY_SOURCE(Part::Torus, Part::Primitive)
@@ -704,7 +707,7 @@ short Torus::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Torus::execute()
+App::DocumentObjectExecReturn *Torus::execute(Base::ProgressRange& progressRange)
 {
     if (Radius1.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Radius of torus too small");
@@ -722,7 +725,7 @@ App::DocumentObjectExecReturn *Torus::execute()
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
-    return Primitive::execute();
+    return Primitive::execute(progressRange);
 }
 
 PROPERTY_SOURCE(Part::Helix, Part::Primitive)
@@ -757,7 +760,8 @@ void Helix::onChanged(const App::Property* prop)
             prop == &Angle || prop == &LocalCoord || prop == &Style ||
             prop == &SegmentLength) {
             try {
-                App::DocumentObjectExecReturn *ret = recompute();
+                Base::NullProgressRange progressRange;
+                App::DocumentObjectExecReturn *ret = recompute(progressRange);
                 delete ret;
             }
             catch (...) {
@@ -784,7 +788,7 @@ short Helix::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Helix::execute()
+App::DocumentObjectExecReturn *Helix::execute(Base::ProgressRange& progressRange)
 {
     try {
         Standard_Real myPitch  = Pitch.getValue();
@@ -813,7 +817,7 @@ App::DocumentObjectExecReturn *Helix::execute()
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
-    return Primitive::execute();
+    return Primitive::execute(progressRange);
 }
 
 PROPERTY_SOURCE(Part::Spiral, Part::Primitive)
@@ -838,7 +842,8 @@ void Spiral::onChanged(const App::Property* prop)
         if (prop == &Growth || prop == &Rotations || prop == &Radius ||
             prop == &SegmentLength) {
             try {
-                App::DocumentObjectExecReturn *ret = recompute();
+                Base::NullProgressRange progressRange;
+                App::DocumentObjectExecReturn *ret = recompute(progressRange);
                 delete ret;
             }
             catch (...) {
@@ -859,7 +864,7 @@ short Spiral::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Spiral::execute()
+App::DocumentObjectExecReturn *Spiral::execute(Base::ProgressRange& progressRange)
 {
     try {
         Standard_Real myNumRot = Rotations.getValue();
@@ -875,7 +880,7 @@ App::DocumentObjectExecReturn *Spiral::execute()
         GProp_GProps props;
         BRepGProp::LinearProperties(Shape.getShape().getShape(), props);
         Length.setValue(props.Mass());
-        return Primitive::execute();
+        return Primitive::execute(progressRange);
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -914,7 +919,7 @@ short Wedge::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Wedge::execute()
+App::DocumentObjectExecReturn *Wedge::execute(Base::ProgressRange& progressRange)
 {
     double xmin = Xmin.getValue();
     double ymin = Ymin.getValue();
@@ -963,7 +968,7 @@ App::DocumentObjectExecReturn *Wedge::execute()
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
-    return Primitive::execute();
+    return Primitive::execute(progressRange);
 }
 
 void Wedge::onChanged(const App::Property* prop)
@@ -973,7 +978,8 @@ void Wedge::onChanged(const App::Property* prop)
         prop == &Xmax || prop == &Ymax || prop == &Zmax ||
         prop == &X2max || prop == &Z2max) {
         if (!isRestoring()) {
-            App::DocumentObjectExecReturn *ret = recompute();
+            Base::NullProgressRange progressRange;
+            App::DocumentObjectExecReturn *ret = recompute(progressRange);
             delete ret;
         }
     }
@@ -1007,7 +1013,7 @@ short Ellipse::mustExecute() const
     return Part::Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Ellipse::execute()
+App::DocumentObjectExecReturn *Ellipse::execute(Base::ProgressRange& progressRange)
 {
     if (this->MinorRadius.getValue() > this->MajorRadius.getValue())
         return new App::DocumentObjectExecReturn("Minor radius greater than major radius");
@@ -1023,7 +1029,7 @@ App::DocumentObjectExecReturn *Ellipse::execute()
     const TopoDS_Edge& edge = clMakeEdge.Edge();
     this->Shape.setValue(edge);
 
-    return Primitive::execute();
+    return Primitive::execute(progressRange);
 }
 
 void Ellipse::onChanged(const App::Property* prop)
@@ -1031,7 +1037,8 @@ void Ellipse::onChanged(const App::Property* prop)
     if (!isRestoring()) {
         if (prop == &MajorRadius || prop == &MinorRadius || prop == &Angle1 || prop == &Angle2){
             try {
-                App::DocumentObjectExecReturn *ret = recompute();
+                Base::NullProgressRange progressRange;
+                App::DocumentObjectExecReturn *ret = recompute(progressRange);
                 delete ret;
             }
             catch (...) {

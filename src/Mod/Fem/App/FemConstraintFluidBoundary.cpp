@@ -102,9 +102,9 @@ ConstraintFluidBoundary::ConstraintFluidBoundary()
     // clang-format on
 }
 
-App::DocumentObjectExecReturn* ConstraintFluidBoundary::execute()
+App::DocumentObjectExecReturn* ConstraintFluidBoundary::execute(Base::ProgressRange& progressRange)
 {
-    return Constraint::execute();
+    return Constraint::execute(progressRange);
 }
 
 void ConstraintFluidBoundary::onChanged(const App::Property* prop)

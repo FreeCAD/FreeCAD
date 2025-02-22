@@ -88,9 +88,9 @@ short FemPostPipeline::mustExecute() const
     return FemPostObject::mustExecute();
 }
 
-DocumentObjectExecReturn* FemPostPipeline::execute()
+DocumentObjectExecReturn* FemPostPipeline::execute(Base::ProgressRange& progressRange)
 {
-    return Fem::FemPostObject::execute();
+    return Fem::FemPostObject::execute(progressRange);
 }
 
 

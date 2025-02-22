@@ -78,8 +78,9 @@ short Revolution::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
-App::DocumentObjectExecReturn* Revolution::execute()
+App::DocumentObjectExecReturn* Revolution::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
 

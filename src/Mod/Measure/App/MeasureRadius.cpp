@@ -117,8 +117,10 @@ void MeasureRadius::parseSelection(const App::MeasureSelection& selection)
 }
 
 
-App::DocumentObjectExecReturn* MeasureRadius::execute()
+App::DocumentObjectExecReturn* MeasureRadius::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
+
     auto info = getMeasureInfoFirst();
     if (!info || !info->valid) {
         return new App::DocumentObjectExecReturn("Cannot calculate radius");
@@ -136,7 +138,8 @@ void MeasureRadius::onChanged(const App::Property* prop)
     }
 
     if (prop == &Element) {
-        auto ret = recompute();
+        Base::NullProgressRange progressRange;
+        auto ret = recompute(progressRange);
         delete ret;
     }
 

@@ -53,7 +53,7 @@ public:
         return "FemGui::ViewProviderFemPostFunction";
     }
 
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
     // bound box handling
     void setBoundingBox(vtkBoundingBox b)

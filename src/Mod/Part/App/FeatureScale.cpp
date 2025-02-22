@@ -142,8 +142,9 @@ TopoShape Scale::nonuniformScale(const TopoShape& source, const Scale::ScalePara
     return transTopo;
 }
 
-App::DocumentObjectExecReturn* Scale::execute()
+App::DocumentObjectExecReturn* Scale::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
 //    Base::Console().Message("FS::execute()\n");
     App::DocumentObject* link = Base.getValue();
     if (!link)

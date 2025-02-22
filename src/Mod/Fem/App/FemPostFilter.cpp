@@ -64,8 +64,9 @@ void FemPostFilter::setActiveFilterPipeline(std::string name)
     }
 }
 
-DocumentObjectExecReturn* FemPostFilter::execute()
+DocumentObjectExecReturn* FemPostFilter::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     if (!m_pipelines.empty() && !m_activePipeline.empty()) {
         FemPostFilter::FilterPipeline& pipe = m_pipelines[m_activePipeline];
         vtkSmartPointer<vtkDataObject> data = getInputData();
@@ -192,10 +193,10 @@ FemPostDataAlongLineFilter::FemPostDataAlongLineFilter()
 
 FemPostDataAlongLineFilter::~FemPostDataAlongLineFilter() = default;
 
-DocumentObjectExecReturn* FemPostDataAlongLineFilter::execute()
+DocumentObjectExecReturn* FemPostDataAlongLineFilter::execute(Base::ProgressRange& progressRange)
 {
     // recalculate the filter
-    return Fem::FemPostFilter::execute();
+    return Fem::FemPostFilter::execute(progressRange);
 }
 
 void FemPostDataAlongLineFilter::handleChangedPropertyType(Base::XMLReader& reader,
@@ -363,10 +364,10 @@ FemPostDataAtPointFilter::FemPostDataAtPointFilter()
 
 FemPostDataAtPointFilter::~FemPostDataAtPointFilter() = default;
 
-DocumentObjectExecReturn* FemPostDataAtPointFilter::execute()
+DocumentObjectExecReturn* FemPostDataAtPointFilter::execute(Base::ProgressRange& progressRange)
 {
     // recalculate the filter
-    return Fem::FemPostFilter::execute();
+    return Fem::FemPostFilter::execute(progressRange);
 }
 
 void FemPostDataAtPointFilter::onChanged(const Property* prop)
@@ -502,13 +503,13 @@ short int FemPostClipFilter::mustExecute() const
     }
 }
 
-DocumentObjectExecReturn* FemPostClipFilter::execute()
+DocumentObjectExecReturn* FemPostClipFilter::execute(Base::ProgressRange& progressRange)
 {
     if (!m_extractor->GetImplicitFunction()) {
         return StdReturn;
     }
 
-    return Fem::FemPostFilter::execute();
+    return Fem::FemPostFilter::execute(progressRange);
 }
 
 // ***************************************************************************
@@ -648,7 +649,7 @@ FemPostContoursFilter::FemPostContoursFilter()
 
 FemPostContoursFilter::~FemPostContoursFilter() = default;
 
-DocumentObjectExecReturn* FemPostContoursFilter::execute()
+DocumentObjectExecReturn* FemPostContoursFilter::execute(Base::ProgressRange& progressRange)
 {
     // update list of available fields and their vectors
     if (!m_blockPropertyChanges) {
@@ -657,7 +658,7 @@ DocumentObjectExecReturn* FemPostContoursFilter::execute()
     }
 
     // recalculate the filter
-    auto returnObject = Fem::FemPostFilter::execute();
+    auto returnObject = Fem::FemPostFilter::execute(progressRange);
 
     // delete contour field
     vtkSmartPointer<vtkDataObject> data = getInputData();
@@ -937,13 +938,13 @@ short int FemPostCutFilter::mustExecute() const
     }
 }
 
-DocumentObjectExecReturn* FemPostCutFilter::execute()
+DocumentObjectExecReturn* FemPostCutFilter::execute(Base::ProgressRange& progressRange)
 {
     if (!m_cutter->GetCutFunction()) {
         return StdReturn;
     }
 
-    return Fem::FemPostFilter::execute();
+    return Fem::FemPostFilter::execute(progressRange);
 }
 
 
@@ -975,7 +976,7 @@ FemPostScalarClipFilter::FemPostScalarClipFilter()
 
 FemPostScalarClipFilter::~FemPostScalarClipFilter() = default;
 
-DocumentObjectExecReturn* FemPostScalarClipFilter::execute()
+DocumentObjectExecReturn* FemPostScalarClipFilter::execute(Base::ProgressRange& progressRange)
 {
     std::string val;
     if (Scalars.getValue() >= 0) {
@@ -1011,7 +1012,7 @@ DocumentObjectExecReturn* FemPostScalarClipFilter::execute()
     }
 
     // recalculate the filter
-    return Fem::FemPostFilter::execute();
+    return Fem::FemPostFilter::execute(progressRange);
 }
 
 void FemPostScalarClipFilter::onChanged(const Property* prop)
@@ -1094,7 +1095,7 @@ FemPostWarpVectorFilter::FemPostWarpVectorFilter()
 
 FemPostWarpVectorFilter::~FemPostWarpVectorFilter() = default;
 
-DocumentObjectExecReturn* FemPostWarpVectorFilter::execute()
+DocumentObjectExecReturn* FemPostWarpVectorFilter::execute(Base::ProgressRange& progressRange)
 {
     std::string val;
     if (Vector.getValue() >= 0) {
@@ -1129,7 +1130,7 @@ DocumentObjectExecReturn* FemPostWarpVectorFilter::execute()
     }
 
     // recalculate the filter
-    return Fem::FemPostFilter::execute();
+    return Fem::FemPostFilter::execute(progressRange);
 }
 
 void FemPostWarpVectorFilter::onChanged(const Property* prop)

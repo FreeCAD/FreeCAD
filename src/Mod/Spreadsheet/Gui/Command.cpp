@@ -209,7 +209,8 @@ void CmdSpreadsheetImport::activated(int iMsg)
 
             if (isValid) {
                 sheet->importFromFile(fileName.toStdString(), delim, quote, escape);
-                sheet->execute();
+                Base::NullProgressRange progressRange;
+                sheet->execute(progressRange);
             }
             else {
                 Base::Console().Error(errMsg.c_str());

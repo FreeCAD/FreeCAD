@@ -44,8 +44,9 @@ short Mesh::Import::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn* Mesh::Import::execute()
+App::DocumentObjectExecReturn* Mesh::Import::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     std::unique_ptr<MeshObject> apcKernel(new MeshObject());
     apcKernel->load(FileName.getValue());
     Mesh.setValuePtr(apcKernel.release());

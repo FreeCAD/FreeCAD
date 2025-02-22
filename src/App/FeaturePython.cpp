@@ -72,8 +72,9 @@ void FeaturePythonImp::init(PyObject* pyobj)
  Calls the execute() method of the Python feature class. If the Python feature class doesn't have an
  execute() method or if it returns False this method also return false and true otherwise.
  */
-bool FeaturePythonImp::execute()
+bool FeaturePythonImp::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     FC_PY_CALL_CHECK(execute)
     Base::PyGILStateLocker lock;
     try {

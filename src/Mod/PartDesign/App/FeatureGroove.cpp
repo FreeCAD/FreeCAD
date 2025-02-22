@@ -79,8 +79,9 @@ short Groove::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Groove::execute()
+App::DocumentObjectExecReturn *Groove::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     // Validate parameters

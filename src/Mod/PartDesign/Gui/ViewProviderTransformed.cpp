@@ -278,7 +278,7 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
             #endif
             
             try {
-                pcTransformed->recomputeFeature(true);
+                pcTransformed->recomputeFeature(progressRange, true);
             } catch (const std::exception& e) {
                 Base::Console().Error("Computation thread caught exception: %s\n", e.what());
             } catch (...) {

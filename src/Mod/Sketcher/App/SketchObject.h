@@ -95,7 +95,7 @@ public:
     short mustExecute() const override;
     /// recalculate the Feature (if no recompute is needed see also solve() and solverNeedsUpdate
     /// boolean)
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override

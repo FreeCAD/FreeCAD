@@ -81,7 +81,7 @@ public:
 
 protected:
     /// Checks integrity of the Origin
-    App::DocumentObjectExecReturn* extensionExecute() override;
+    App::DocumentObjectExecReturn* extensionExecute(Base::ProgressRange& progressRange) override;
     /// Creates the corresponding Origin object
     void onExtendedSetupObject() override;
     /// Removes all planes and axis if they are still linked to the document

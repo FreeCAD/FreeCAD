@@ -25,6 +25,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
+#include <Base/ProgressRange.h>
 
 #include "MeshProperties.h"
 
@@ -49,7 +50,7 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override

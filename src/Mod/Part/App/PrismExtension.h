@@ -47,7 +47,7 @@ public:
     TopoDS_Shape makePrism(double height, const TopoDS_Face& face) const;
 
     short int extensionMustExecute() override;
-    App::DocumentObjectExecReturn *extensionExecute() override;
+    App::DocumentObjectExecReturn *extensionExecute(Base::ProgressRange& progressRange) override;
 
 protected:
     void extensionOnChanged(const App::Property* /*prop*/) override;

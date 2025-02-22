@@ -95,8 +95,9 @@ short Draft::mustExecute() const
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Draft::execute()
+App::DocumentObjectExecReturn *Draft::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     // Get parameters
     // Base shape
     Part::TopoShape TopShape;

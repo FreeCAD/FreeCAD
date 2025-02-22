@@ -69,8 +69,9 @@ Pocket::Pocket()
     Length2.setConstraints(nullptr);
 }
 
-App::DocumentObjectExecReturn *Pocket::execute()
+App::DocumentObjectExecReturn *Pocket::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     // MakeFace|MakeFuse: because we want a solid.
     // InverseDirection: to inverse the auto detected extrusion direction for
     // backward compatibility to upstream

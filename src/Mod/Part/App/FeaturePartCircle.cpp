@@ -59,7 +59,7 @@ short Circle::mustExecute() const
     return Part::Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Circle::execute()
+App::DocumentObjectExecReturn *Circle::execute(Base::ProgressRange& progressRange)
 {
     gp_Circ circle;
     circle.SetRadius(this->Radius.getValue());
@@ -68,7 +68,7 @@ App::DocumentObjectExecReturn *Circle::execute()
                                                Base::toRadians<double>(this->Angle2.getValue()));
     const TopoDS_Edge& edge = clMakeEdge.Edge();
     this->Shape.setValue(edge);
-    return Primitive::execute();
+    return Primitive::execute(progressRange);
 }
 
 void Circle::onChanged(const App::Property* prop)
@@ -76,7 +76,8 @@ void Circle::onChanged(const App::Property* prop)
     if (!isRestoring()) {
         if (prop == &Radius || prop == &Angle1 || prop == &Angle2){
             try {
-                App::DocumentObjectExecReturn *ret = recompute();
+                Base::NullProgressRange progressRange;
+                App::DocumentObjectExecReturn *ret = recompute(progressRange);
                 delete ret;
             }
             catch (...) {

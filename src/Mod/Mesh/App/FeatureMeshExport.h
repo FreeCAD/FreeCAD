@@ -25,6 +25,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
+#include <Base/ProgressRange.h>
 
 #ifndef MESH_GLOBAL_H
 #include <Mod/Mesh/MeshGlobal.h>
@@ -55,7 +56,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     //@}
 };

@@ -48,8 +48,9 @@ short ImportStep::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *ImportStep::execute()
+App::DocumentObjectExecReturn *ImportStep::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     Base::FileInfo fi(FileName.getValue());
     if (!fi.isReadable()) {
         Base::Console().Log("ImportStep::execute() not able to open %s!\n",FileName.getValue());

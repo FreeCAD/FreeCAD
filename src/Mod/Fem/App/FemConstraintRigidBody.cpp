@@ -117,9 +117,9 @@ ConstraintRigidBody::ConstraintRigidBody()
     RotationalModeZ.setEnums(boundaryModeEnum);
 }
 
-App::DocumentObjectExecReturn* ConstraintRigidBody::execute()
+App::DocumentObjectExecReturn* ConstraintRigidBody::execute(Base::ProgressRange& progressRange)
 {
-    return Constraint::execute();
+    return Constraint::execute(progressRange);
 }
 
 void ConstraintRigidBody::onChanged(const App::Property* prop)

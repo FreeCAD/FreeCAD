@@ -53,7 +53,7 @@ public:
     {
         return "RobotGui::ViewProviderEdge2TracObject";
     }
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
 protected:
     /// get called by the container when a property has changed

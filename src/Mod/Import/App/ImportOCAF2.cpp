@@ -560,7 +560,8 @@ App::DocumentObject* ImportOCAF2::loadShapes()
         }
     }
     if (ret) {
-        ret->recomputeFeature(true);
+        Base::NullProgressRange progressRange;
+        ret->recomputeFeature(progressRange);
     }
     if (options.merge && ret && !ret->isDerivedFrom<Part::Feature>()) {
         auto shape = Part::Feature::getTopoShape(ret);
@@ -578,7 +579,8 @@ App::DocumentObject* ImportOCAF2::loadShapes()
             v.first->removeObject(v.second.c_str());
         }
         ret = feature;
-        ret->recomputeFeature(true);
+        Base::NullProgressRange progressRange;
+        ret->recomputeFeature(progressRange);
     }
     sequencer = nullptr;
     return ret;

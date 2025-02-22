@@ -143,7 +143,7 @@ short OriginGroupExtension::extensionMustExecute()
     }
 }
 
-App::DocumentObjectExecReturn* OriginGroupExtension::extensionExecute()
+App::DocumentObjectExecReturn* OriginGroupExtension::extensionExecute(Base::ProgressRange& progressRange)
 {
     try {  // try to find all base axis and planes in the origin
         getOrigin();
@@ -153,7 +153,7 @@ App::DocumentObjectExecReturn* OriginGroupExtension::extensionExecute()
         return new App::DocumentObjectExecReturn(ex.what());
     }
 
-    return GeoFeatureGroupExtension::extensionExecute();
+    return GeoFeatureGroupExtension::extensionExecute(progressRange);
 }
 
 App::DocumentObject* OriginGroupExtension::getLocalizedOrigin(App::Document* doc)

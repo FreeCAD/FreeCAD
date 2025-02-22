@@ -121,7 +121,7 @@ bool Revolution::fetchAxisLink(const App::PropertyLinkSub &axisLink,
     return true;
 }
 
-App::DocumentObjectExecReturn *Revolution::execute()
+App::DocumentObjectExecReturn *Revolution::execute(Base::ProgressRange& progressRange)
 {
     App::DocumentObject* link = Source.getValue();
     if (!link)
@@ -165,7 +165,7 @@ App::DocumentObjectExecReturn *Revolution::execute()
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         }
         this->Shape.setValue(revolve);
-        return Part::Feature::execute();
+        return Part::Feature::execute(progressRange);
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

@@ -51,9 +51,9 @@ FemPostFunction::FemPostFunction() = default;
 
 FemPostFunction::~FemPostFunction() = default;
 
-DocumentObjectExecReturn* FemPostFunction::execute()
+DocumentObjectExecReturn* FemPostFunction::execute(Base::ProgressRange& progressRange)
 {
-
+    (void)progressRange;
     return DocumentObject::StdReturn;
 }
 

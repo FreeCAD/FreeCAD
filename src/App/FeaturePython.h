@@ -26,7 +26,7 @@
 
 #include <App/GeoFeature.h>
 #include <App/PropertyPythonObject.h>
-
+#include <Base/ProgressRange.h>
 
 namespace App
 {
@@ -47,7 +47,7 @@ public:
     explicit FeaturePythonImp(App::DocumentObject*);
     ~FeaturePythonImp();
 
-    bool execute();
+    bool execute(Base::ProgressRange& progressRange);
     bool mustExecute() const;
     void onBeforeChange(const Property* prop);
     bool onBeforeChangeLabel(std::string& newLabel);
@@ -197,12 +197,12 @@ public:
         return imp->mustExecute() ? 1 : 0;
     }
     /// recalculate the Feature
-    DocumentObjectExecReturn* execute() override
+    DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override
     {
         try {
-            bool handled = imp->execute();
+            bool handled = imp->execute(progressRange);
             if (!handled) {
-                return FeatureT::execute();
+                return FeatureT::execute(progressRange);
             }
         }
         catch (const Base::Exception& e) {

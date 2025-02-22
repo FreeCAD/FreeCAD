@@ -48,8 +48,9 @@ short ImportBrep::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *ImportBrep::execute()
+App::DocumentObjectExecReturn *ImportBrep::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     Base::FileInfo fi(FileName.getValue());
     if (!fi.isReadable()) {
         Base::Console().Log("ImportBrep::execute() not able to open %s!\n",FileName.getValue());

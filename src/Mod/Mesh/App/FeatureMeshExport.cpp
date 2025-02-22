@@ -54,8 +54,9 @@ short Export::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn* Export::execute()
+App::DocumentObjectExecReturn* Export::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     Mesh::Feature* pcFeat = dynamic_cast<Mesh::Feature*>(Source.getValue());
     if (!pcFeat || pcFeat->isError()) {
         return new App::DocumentObjectExecReturn("Cannot export invalid mesh feature");

@@ -52,7 +52,7 @@ public:
     App::PropertyLinkSub Element;
     App::PropertyDistance Radius;
 
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     const char* getViewProviderName() const override
     {
         return "MeasureGui::ViewProviderMeasureRadius";

@@ -38,8 +38,10 @@ TrajectoryCompound::TrajectoryCompound()
     ADD_PROPERTY_TYPE(Source, (nullptr), "Compound", Prop_None, "list of trajectories to combine");
 }
 
-App::DocumentObjectExecReturn* TrajectoryCompound::execute()
+App::DocumentObjectExecReturn* TrajectoryCompound::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
+
     const std::vector<DocumentObject*>& Tracs = Source.getValues();
     Robot::Trajectory result;
 

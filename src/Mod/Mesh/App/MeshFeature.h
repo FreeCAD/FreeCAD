@@ -26,6 +26,7 @@
 #include <App/FeatureCustom.h>
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>  // must be before FeatureCustom.h
+#include <Base/ProgressRange.h>
 
 #include "Core/MeshKernel.h"
 
@@ -70,7 +71,7 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     void onChanged(const App::Property* prop) override;
     //@}
 

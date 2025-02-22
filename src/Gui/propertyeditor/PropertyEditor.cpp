@@ -371,7 +371,8 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
             // Between opening and committing a transaction a recompute
             // could already have been done
             if (doc->isTouched()) {
-                doc->recompute();
+                Base::NullProgressRange progressRange;
+                doc->recompute(progressRange);
             }
         }
     }

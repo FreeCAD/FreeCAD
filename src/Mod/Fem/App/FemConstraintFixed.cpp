@@ -33,9 +33,9 @@ PROPERTY_SOURCE(Fem::ConstraintFixed, Fem::Constraint)
 ConstraintFixed::ConstraintFixed()
 {}
 
-App::DocumentObjectExecReturn* ConstraintFixed::execute()
+App::DocumentObjectExecReturn* ConstraintFixed::execute(Base::ProgressRange& progressRange)
 {
-    return Constraint::execute();
+    return Constraint::execute(progressRange);
 }
 
 void ConstraintFixed::onChanged(const App::Property* prop)

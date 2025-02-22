@@ -80,8 +80,9 @@ FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
 
 FemMeshShapeNetgenObject::~FemMeshShapeNetgenObject() = default;
 
-App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
+App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
 #ifdef FCWithNetgen
 
     Fem::FemMesh newMesh;

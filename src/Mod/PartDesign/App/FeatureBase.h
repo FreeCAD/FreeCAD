@@ -46,7 +46,7 @@ public:
     }
 
     void onChanged(const App::Property* prop) override;
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     void onDocumentRestored() override;
 
 private:

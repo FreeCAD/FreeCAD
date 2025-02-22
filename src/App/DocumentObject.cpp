@@ -151,7 +151,7 @@ void DocumentObject::printInvalidLinks() const
     }
 }
 
-App::DocumentObjectExecReturn* DocumentObject::recompute()
+App::DocumentObjectExecReturn* DocumentObject::recompute(Base::ProgressRange& progressRange)
 {
     // check if the links are valid before making the recompute
     if (!GeoFeatureGroupExtension::areLinksValid(this)) {
@@ -164,30 +164,30 @@ App::DocumentObjectExecReturn* DocumentObject::recompute()
     // mark the object to recompute its extensions
     this->setStatus(App::RecomputeExtension, true);
 
-    auto ret = this->execute();
+    auto ret = this->execute(progressRange);
     if (ret == StdReturn) {
         // most feature classes don't call the execute() method of its base class
         // so execute the extensions now
         if (this->testStatus(App::RecomputeExtension)) {
-            ret = executeExtensions();
+            ret = executeExtensions(progressRange);
         }
     }
 
     return ret;
 }
 
-DocumentObjectExecReturn* DocumentObject::execute()
+DocumentObjectExecReturn* DocumentObject::execute(Base::ProgressRange& progressRange)
 {
-    return executeExtensions();
+    return executeExtensions(progressRange);
 }
 
-App::DocumentObjectExecReturn* DocumentObject::executeExtensions()
+App::DocumentObjectExecReturn* DocumentObject::executeExtensions(Base::ProgressRange& progressRange)
 {
     // execute extensions but stop on error
     this->setStatus(App::RecomputeExtension, false);  // reset the flag
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for (auto ext : vector) {
-        auto ret = ext->extensionExecute();
+        auto ret = ext->extensionExecute(progressRange);
         if (ret != StdReturn) {
             return ret;
         }
@@ -196,11 +196,11 @@ App::DocumentObjectExecReturn* DocumentObject::executeExtensions()
     return StdReturn;
 }
 
-bool DocumentObject::recomputeFeature(bool recursive)
+bool DocumentObject::recomputeFeature(Base::ProgressRange& progressRange, bool recursive)
 {
     Document* doc = this->getDocument();
     if (doc) {
-        return doc->recomputeFeature(this, recursive);
+        return doc->recomputeFeature(progressRange, this, recursive);
     }
     return isValid();
 }

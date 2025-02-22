@@ -40,9 +40,10 @@ ConstraintInitialTemperature::ConstraintInitialTemperature()
     References.setStatus(App::Property::Hidden, true);
 }
 
-App::DocumentObjectExecReturn* ConstraintInitialTemperature::execute()
+App::DocumentObjectExecReturn*
+ConstraintInitialTemperature::execute(Base::ProgressRange& progressRange)
 {
-    return Constraint::execute();
+    return Constraint::execute(progressRange);
 }
 
 const char* ConstraintInitialTemperature::getViewProviderName() const

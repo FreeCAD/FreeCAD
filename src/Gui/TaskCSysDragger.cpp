@@ -740,7 +740,8 @@ bool TaskCSysDragger::accept()
         assert(document);
         document->commitCommand();
         document->resetEdit();
-        document->getDocument()->recompute();
+        Base::NullProgressRange progressRange;
+        document->getDocument()->recompute(progressRange);
     }
 
     return Gui::TaskView::TaskDialog::accept();
@@ -754,7 +755,8 @@ bool TaskCSysDragger::reject()
         assert(document);
         document->abortCommand();
         document->resetEdit();
-        document->getDocument()->recompute();
+        Base::NullProgressRange progressRange;
+        document->getDocument()->recompute(progressRange);
     }
 
     return Gui::TaskView::TaskDialog::reject();

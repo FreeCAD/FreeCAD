@@ -51,7 +51,7 @@ short Compound::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Compound::execute()
+App::DocumentObjectExecReturn *Compound::execute(Base::ProgressRange& progressRange)
 {
     try {
         // avoid duplicates without changing the order
@@ -73,7 +73,7 @@ App::DocumentObjectExecReturn *Compound::execute()
             App::DocumentObject* link = Links.getValues()[0];
             copyMaterial(link);
         }
-        return Part::Feature::execute();
+        return Part::Feature::execute(progressRange);
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -90,7 +90,8 @@ Compound2::Compound2() {
 
 void Compound2::onDocumentRestored() {
     Base::Placement pla = Placement.getValue();
-    auto res = execute();
+    Base::NullProgressRange progressRange;
+    auto res = execute(progressRange);
     delete res;
     Placement.setValue(pla);
 }

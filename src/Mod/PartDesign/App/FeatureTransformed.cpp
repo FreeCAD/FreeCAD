@@ -196,7 +196,7 @@ short Transformed::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn* Transformed::execute()
+App::DocumentObjectExecReturn* Transformed::execute(Base::ProgressRange& progressRange)
 {
     if (isMultiTransformChild()) {
         return App::DocumentObject::StdReturn;

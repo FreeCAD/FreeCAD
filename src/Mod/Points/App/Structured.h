@@ -25,7 +25,7 @@
 #define POINTS_VIEW_FEATURE_H
 
 #include "PointsFeature.h"
-
+#include <Base/ProgressRange.h>
 
 namespace Points
 {
@@ -48,7 +48,7 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override
     {

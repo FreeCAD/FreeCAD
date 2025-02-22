@@ -798,7 +798,8 @@ void SheetTableView::pasteClipboard()
             sheet->getCells()->pasteCells(reader, range);
         }
 
-        GetApplication().getActiveDocument()->recompute();
+        Base::NullProgressRange progressRange;
+        GetApplication().getActiveDocument()->recompute(progressRange);
     }
     catch (Base::Exception& e) {
         e.ReportException();

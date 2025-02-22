@@ -43,7 +43,7 @@ PROPERTY_SOURCE(Part::Fillet, Part::FilletBase)
 
 Fillet::Fillet() = default;
 
-App::DocumentObjectExecReturn *Fillet::execute()
+App::DocumentObjectExecReturn *Fillet::execute(Base::ProgressRange& progressRange)
 {
     App::DocumentObject* link = Base.getValue();
     if (!link)
@@ -90,7 +90,7 @@ App::DocumentObjectExecReturn *Fillet::execute()
 
         TopoShape res(0);
         this->Shape.setValue(res.makeElementShape(mkFillet,baseTopoShape,Part::OpCodes::Fillet));
-        return Part::FilletBase::execute();
+        return Part::FilletBase::execute(progressRange);
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

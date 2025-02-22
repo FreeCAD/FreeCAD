@@ -55,7 +55,7 @@ public:
     {
         return "RobotGui::ViewProviderTrajectoryDressUp";
     }
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
     static const char* ContTypeEnums[];
     static const char* AddTypeEnums[];

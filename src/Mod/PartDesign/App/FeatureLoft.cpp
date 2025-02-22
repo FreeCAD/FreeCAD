@@ -110,8 +110,9 @@ Loft::getSectionShape(const char *name,
     return vertices;
 }
 
-App::DocumentObjectExecReturn *Loft::execute()
+App::DocumentObjectExecReturn *Loft::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     std::vector<TopoShape> wires;

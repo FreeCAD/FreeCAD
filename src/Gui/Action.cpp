@@ -1136,7 +1136,8 @@ void RecentMacrosAction::activateFile(int id)
                 Application::Instance->macroManager()->run(Gui::MacroManager::File, fi.filePath().toUtf8());
                 // after macro run recalculate the document
                 if (Application::Instance->activeDocument()) {
-                    Application::Instance->activeDocument()->getDocument()->recompute();
+                    Base::NullProgressRange progressRange;
+                    Application::Instance->activeDocument()->getDocument()->recompute(progressRange);
                 }
             }
             catch (const Base::SystemExitException&) {

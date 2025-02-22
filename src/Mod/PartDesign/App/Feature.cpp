@@ -72,19 +72,19 @@ Feature::Feature()
     App::SuppressibleExtension::initExtension(this);
 }
 
-App::DocumentObjectExecReturn* Feature::recompute()
+App::DocumentObjectExecReturn* Feature::recompute(Base::ProgressRange& progressRange)
 {
     setMaterialToBodyMaterial();
 
     SuppressedShape.setValue(TopoShape());
 
     if (!Suppressed.getValue()) {
-        return Part::Feature::recompute();
+        return Part::Feature::recompute(progressRange);
     }
 
     bool failed = false;
     try {
-        std::unique_ptr<App::DocumentObjectExecReturn> ret(Part::Feature::recompute());
+        std::unique_ptr<App::DocumentObjectExecReturn> ret(Part::Feature::recompute(progressRange));
         if (ret) {
             throw Base::RuntimeError(ret->Why);
         }

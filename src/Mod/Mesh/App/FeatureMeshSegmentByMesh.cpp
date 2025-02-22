@@ -58,8 +58,9 @@ short SegmentByMesh::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn* SegmentByMesh::execute()
+App::DocumentObjectExecReturn* SegmentByMesh::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     Mesh::PropertyMeshKernel* kernel = nullptr;
     App::DocumentObject* mesh = Source.getValue();
     if (mesh) {

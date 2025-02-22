@@ -379,7 +379,7 @@ short int AttachExtension::extensionMustExecute()
 }
 
 
-App::DocumentObjectExecReturn* AttachExtension::extensionExecute()
+App::DocumentObjectExecReturn* AttachExtension::extensionExecute(Base::ProgressRange& progressRange)
 {
     if (this->isTouched_Mapping()) {
         try {
@@ -395,7 +395,7 @@ App::DocumentObjectExecReturn* AttachExtension::extensionExecute()
             //            return new App::DocumentObjectExecReturn(e.GetMessageString());
         }
     }
-    return App::DocumentObjectExtension::extensionExecute();
+    return App::DocumentObjectExtension::extensionExecute(progressRange);
 }
 
 void AttachExtension::extensionOnChanged(const App::Property* prop)

@@ -44,8 +44,9 @@ public:
     {
         return "FemGui::ViewProviderSetFaces";
     }
-    App::DocumentObjectExecReturn* execute() override
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override
     {
+        (void)progressRange;
         return App::DocumentObject::StdReturn;
     }
     short mustExecute() const override;

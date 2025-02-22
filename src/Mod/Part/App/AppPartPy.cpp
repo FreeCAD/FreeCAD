@@ -732,12 +732,15 @@ private:
             App::Document *pcDoc = App::GetApplication().newDocument();
             ImportStepParts(pcDoc,EncodedName.c_str());
 
-            pcDoc->recompute();
+            Base::NullProgressRange progressRange;
+            pcDoc->recompute(progressRange);
         }
         else if (file.hasExtension({"igs", "iges"})) {
             App::Document *pcDoc = App::GetApplication().newDocument();
             ImportIgesParts(pcDoc,EncodedName.c_str());
-            pcDoc->recompute();
+
+            Base::NullProgressRange progressRange;
+            pcDoc->recompute(progressRange);
         }
         else {
             TopoShape shape;
@@ -748,7 +751,9 @@ private:
             Part::Feature *object = static_cast<Part::Feature *>(pcDoc->addObject
                 ("Part::Feature",file.fileNamePure().c_str()));
             object->Shape.setValue(shape);
-            pcDoc->recompute();
+
+            Base::NullProgressRange progressRange;
+            pcDoc->recompute(progressRange);
         }
 
         return Py::None();
@@ -778,11 +783,14 @@ private:
         if (file.hasExtension({"stp", "step"})) {
             ImportStepParts(pcDoc,EncodedName.c_str());
 
-            pcDoc->recompute();
+            Base::NullProgressRange progressRange;
+            pcDoc->recompute(progressRange);
         }
         else if (file.hasExtension({"igs", "iges"})) {
             ImportIgesParts(pcDoc,EncodedName.c_str());
-            pcDoc->recompute();
+
+            Base::NullProgressRange progressRange;
+            pcDoc->recompute(progressRange);
         }
         else {
             TopoShape shape;
@@ -791,7 +799,8 @@ private:
             Part::Feature *object = static_cast<Part::Feature *>(pcDoc->addObject
                 ("Part::Feature",file.fileNamePure().c_str()));
             object->Shape.setValue(shape);
-            pcDoc->recompute();
+            Base::NullProgressRange progressRange;
+            pcDoc->recompute(progressRange);
         }
 
         return Py::None();

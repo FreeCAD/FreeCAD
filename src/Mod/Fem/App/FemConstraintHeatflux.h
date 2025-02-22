@@ -47,7 +47,7 @@ public:
     App::PropertyEnumeration ConstraintType;
 
     /// recalculate the object
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override;

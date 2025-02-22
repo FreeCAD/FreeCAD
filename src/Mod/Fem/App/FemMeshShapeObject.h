@@ -62,7 +62,7 @@ public:
     {
         return "FemGui::ViewProviderFemMeshShape";
     }
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
     // virtual short mustExecute(void) const;
     // virtual PyObject *getPyObject(void);
