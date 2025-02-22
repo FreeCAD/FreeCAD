@@ -66,8 +66,6 @@ QGIFace::QGIFace(int index) :
     setStyle(Qt::NoPen);    //don't draw face lines, just fill for debugging
     //setStyle(Qt::DashLine);
     m_geomColor = PreferencesGui::getAccessibleQColor(QColor(Qt::black));
-    m_styleCurrent = Qt::NoPen;
-    m_pen.setStyle(m_styleCurrent);
     setLineWeight(0.0);                   //0 = cosmetic
 
     m_texture = QPixmap();                      //empty texture
@@ -79,19 +77,11 @@ QGIFace::QGIFace(int index) :
 
     getParameters();
 
-    // set up style & colour defaults
-    m_colDefFill = Base::Color(static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", COLWHITE)))
-                   .asValue<QColor>();
-    m_colDefFill.setAlpha(Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false) ? ALPHALOW : ALPHAHIGH);
-
-    m_fillDef = Qt::SolidPattern;
-    m_fillSelect = Qt::SolidPattern;
-
     setFillMode(FillMode::NoFill);
-    if (m_colDefFill.alpha() > 0) {
+    if (getDefaultFillColor().alpha() > 0) {
         setFillMode(FillMode::PlainFill);
     }
-    setFill(m_colDefFill, m_fillDef);
+    setFill(getDefaultFillColor(), getDefaultFillStyle());
 
     m_sharedRender = new QSvgRenderer();
     m_patMaker = new PATPathMaker(this, 1.0, 1.0);
@@ -101,6 +91,14 @@ QGIFace::~QGIFace()
 {
     delete m_sharedRender;
     delete m_patMaker;
+}
+
+QColor QGIFace::getDefaultFillColor()
+{
+    QColor color = Base::Color(static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", COLWHITE)))
+                   .asValue<QColor>();
+    color.setAlpha(Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false) ? ALPHALOW : ALPHAHIGH);
+    return color;
 }
 
 /// redraw this face
@@ -118,16 +116,16 @@ void QGIFace::draw()
             setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);
             if (!m_lineSets.empty()) {
                 m_brush.setTexture(QPixmap());
-                m_fillStyleCurrent = m_fillDef;
-                m_fillNormal = m_fillStyleCurrent;
+                m_fillNormal = getDefaultFillStyle();
+                m_brush.setStyle(m_fillNormal);
                 for (auto& ls: m_lineSets) {
                     lineSetToFillItems(ls);
                 }
             }
         } else if (m_mode == FillMode::SvgFill) {
             m_brush.setTexture(QPixmap());
-            m_fillNormal = m_fillDef;
-            m_fillStyleCurrent = m_fillNormal;
+            m_fillNormal = getDefaultFillStyle();
+            m_brush.setStyle(m_fillNormal);
             setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
             loadSvgHatch(m_fileSpec);
             if (exporting()) {
@@ -138,7 +136,7 @@ void QGIFace::draw()
                 m_svgHatchArea->show();
             }
         } else if (m_mode == FillMode::BitmapFill) {
-            m_fillStyleCurrent = Qt::TexturePattern;
+            m_brush.setStyle(Qt::TexturePattern);
             m_texture = textureFromBitmap(m_fileSpec);
             m_brush.setTexture(m_texture);
         } else if (m_mode == FillMode::PlainFill) {
@@ -154,7 +152,7 @@ void QGIFace::setPrettyNormal() {
 //    Base::Console().Message("QGIF::setPrettyNormal() - hatched: %d\n", isHatched());
     if (isHatched()  &&
         (m_mode == FillMode::BitmapFill) ) {                               //hatch with bitmap fill
-        m_fillStyleCurrent = Qt::TexturePattern;
+        m_brush.setStyle(Qt::TexturePattern);
         m_brush.setTexture(m_texture);
     } else {
         m_brush.setTexture(QPixmap());
@@ -165,16 +163,14 @@ void QGIFace::setPrettyNormal() {
 /// show the face style & colour in pre-select configuration
 void QGIFace::setPrettyPre() {
 //    Base::Console().Message("QGIF::setPrettyPre()\n");
-    m_fillStyleCurrent = Qt::SolidPattern;
-    m_brush.setTexture(QPixmap());
+    m_brush.setStyle(Qt::SolidPattern);
     QGIPrimPath::setPrettyPre();
 }
 
 /// show the face style & colour in selected configuration
 void QGIFace::setPrettySel() {
 //    Base::Console().Message("QGIF::setPrettySel()\n");
-    m_fillStyleCurrent = Qt::SolidPattern;
-    m_brush.setTexture(QPixmap());
+    m_brush.setStyle(Qt::SolidPattern);
     QGIPrimPath::setPrettySel();
 }
 

@@ -82,6 +82,11 @@ public:
     void setDrawEdges(bool state);
     virtual void setOutline(const QPainterPath& path);
 
+    QColor getDefaultFillColor() override;
+    Qt::BrushStyle getDefaultFillStyle() override {
+        return Qt::SolidPattern;
+    }
+
     //shared fill parms
     void isHatched(bool state) {m_isHatched = state; }
     bool isHatched() {return m_isHatched;}
@@ -122,6 +127,10 @@ public:
 
     void setHatchOffset(Base::Vector3d offset) { m_hatchOffset = offset; }
     Base::Vector3d getHatchOffset() { return m_hatchOffset; }
+
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override {
+        QGIPrimPath::paint(painter, option, widget);
+    }
 
 protected:
     void makeMark(double x, double y);  // NOLINT readability-identifier-length
