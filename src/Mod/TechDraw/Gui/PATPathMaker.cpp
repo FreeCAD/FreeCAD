@@ -44,6 +44,7 @@ using namespace TechDraw;
 
 PATPathMaker::PATPathMaker(QGraphicsItem* parent, double lineWidth, double fillScale) :
     m_parent(parent),
+    m_pen(),
     m_fillScale(fillScale),
     m_lineWidth(lineWidth)
 {
