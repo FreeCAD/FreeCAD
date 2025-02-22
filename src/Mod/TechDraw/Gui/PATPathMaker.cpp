@@ -213,6 +213,11 @@ QPainterPath PATPathMaker::dashedPPath(const std::vector<double> dashPattern, co
       return result;
 }
 
+void PATPathMaker::setLineWidth(double width)
+{
+    m_lineWidth = width;
+    m_pen.setWidthF(width);
+}
 
 //! convert a dash pattern to an offset dash pattern  (ie offset -> end)
 // dashPattern & offset are already scaled.
