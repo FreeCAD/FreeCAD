@@ -463,6 +463,67 @@ class TestPathAdaptive(PathTestBase):
 
         self.assertTrue(okAt10 and okAt5 and okAt0, "Path boundaries outside of expected regions")
 
+    def test09(self):
+        """test09() Tests Z stock to leave- with 1mm Z stock to leave, machining
+        at the top of the model should not touch the top model face"""
+        # Instantiate a Adaptive operation and set Base Geometry
+        adaptive = PathAdaptive.Create("Adaptive")
+        adaptive.Base = [(self.doc.Fusion, ["Face3", "Face10"])]  # (base, subs_list)
+        adaptive.Label = "test09+"
+        adaptive.Comment = "test09() Verify Z stock is left as requested"
+
+        # Set additional operation properties
+        setDepthsAndHeights(adaptive, 15, 10)
+        adaptive.FinishingProfile = False
+        adaptive.HelixAngle = 75.0
+        adaptive.HelixDiameterLimit.Value = 1.0
+        adaptive.LiftDistance.Value = 1.0
+        adaptive.StepOver = 75
+        adaptive.UseOutline = False
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            5.0  # Have to set expression to None before numerical value assignment
+        )
+        # Add some Z stock to leave so we avoid Face3 in this stepdown at Z=10
+        adaptive.setExpression("ZStockToLeave", None)
+        adaptive.ZStockToLeave.Value = 1
+
+        _addViewProvider(adaptive)
+        self.doc.recompute()
+
+        # Check:
+        # - No feed path at depth Z=10 touchs Face3
+        toolr = adaptive.OpToolDiameter.Value / 2
+        tol = adaptive.Tolerance
+
+        # Make clean up math below- combine tool radius and tolerance into a
+        # single field that can be added/subtracted to/from bounding boxes
+        moffset = toolr - tol
+
+        # Offset the face we don't expect to touch, verify no move is within
+        # that boundary
+        # NOTE: This isn't a perfect test (won't catch moves that start and end
+        # outside of our face, but cut through/across it), but combined with
+        # other tests should be sufficient.
+        noPathTouchesFace3 = True
+        foffset = self.doc.Fusion.Shape.getElement("Face3").makeOffset2D(moffset)
+        # NOTE: Face3 is at Z=10, and the only feed moves will be at Z=10
+        lastpt = FreeCAD.Vector(0, 0, 10)
+        for p in [c.Parameters for c in adaptive.Path.Commands if c.Name in ["G1", "G01"]]:
+            pt = FreeCAD.Vector(lastpt)
+            if "X" in p:
+                pt.x = p.get("X")
+            if "Y" in p:
+                pt.x = p.get("Y")
+
+            if foffset.isInside(pt, 0.001, True):
+                noPathTouchesFace3 = False
+                break
+
+            lastpt = pt
+
+        self.assertTrue(noPathTouchesFace3, "No feed moves within the top face.")
+
 
 # Eclass
 
