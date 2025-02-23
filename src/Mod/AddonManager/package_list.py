@@ -569,7 +569,7 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
 
     def setPackageFilter(
         self, package_type: int
-    ) -> None:  # 0=All, 1=Workbenches, 2=Macros, 3=Preference Packs
+    ) -> None:  # 0=All, 1=Workbenches, 2=Macros, 3=Preference Packs, 4=Bundles, 5=Other
         """Set the package filter to package_type and refreshes."""
         self.package_type = package_type
         self.invalidateFilter()
@@ -633,6 +633,12 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
                 return False
         elif self.package_type == 3:
             if not data.contains_preference_pack():
+                return False
+        elif self.package_type == 4:
+            if not data.contains_bundle():
+                return False
+        elif self.package_type == 5:
+            if not data.contains_other():
                 return False
 
         if self.status == StatusFilter.INSTALLED:
