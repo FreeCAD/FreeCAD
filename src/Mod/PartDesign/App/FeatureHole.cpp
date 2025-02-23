@@ -67,7 +67,7 @@ namespace PartDesign {
 
 const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ nullptr };
 const char* Hole::ThreadDepthTypeEnums[]             = { "Hole Depth", "Dimension", "Tapped (DIN76)",  nullptr };
-const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "NPT", "BSP", "BSW", "BSF", nullptr};
+const char* Hole::ThreadTypeEnums[]                  = { "Custom", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "NPT", "BSP", "BSW", "BSF", nullptr};
 const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", nullptr};
 const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", nullptr };
 const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullptr};
@@ -759,8 +759,9 @@ Hole::Hole()
     ADD_PROPERTY_TYPE(Diameter, (6.0), "Hole", App::Prop_None, "Diameter");
     Diameter.setConstraints(&diameterRange);
 
+    ADD_PROPERTY_TYPE(ThreadPitch, (0.0), "Hole", App::Prop_None, "Thread pitch");
+
     ADD_PROPERTY_TYPE(ThreadDiameter, (0.0), "Hole", App::Prop_None, "Thread major diameter");
-    ThreadDiameter.setReadOnly(true);
 
     ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Hole", App::Prop_None, "Thread direction");
     ThreadDirection.setEnums(ThreadDirectionEnums);
@@ -1055,7 +1056,7 @@ double Hole::getCountersinkAngle() const
 
 double Hole::getThreadClassClearance() const
 {
-    double pitch = getThreadPitch();
+    double pitch = ThreadPitch.getValue();
 
     // Calculate how much clearance to add based on Thread tolerance class and pitch
     if (ThreadClass.getValueAsString()[1] == 'G') {
@@ -1077,7 +1078,7 @@ double Hole::getThreadClassClearance() const
 // mode=3, In cases where longer thread runout is necessary
 double Hole::getThreadRunout(int mode) const
 {
-    double pitch = getThreadPitch();
+    double pitch = ThreadPitch.getValue();
 
     double sf = 1.0;  // scale factor
     switch (mode) {
@@ -1102,19 +1103,6 @@ double Hole::getThreadRunout(int mode) const
 
     // For non-standard pitch we fall back on general engineering rule of thumb of 4*pitch.
     return 4 * pitch;
-}
-
-double Hole::getThreadPitch() const
-{
-    int threadType = ThreadType.getValue();
-    int threadSize = ThreadSize.getValue();
-    if (threadType < 0) {
-        throw Base::IndexError("Thread type out of range");
-    }
-    if (threadSize < 0) {
-        throw Base::IndexError("Thread size out of range");
-    }
-    return threadDescription[threadType][threadSize].pitch;
 }
 
 void Hole::updateThreadDepthParam()
@@ -1253,10 +1241,8 @@ std::optional<double> Hole::determineDiameter() const
     if (ThreadType.getValue() == 0)
         return std::nullopt;
 
-    int threadType = ThreadType.getValue(); 
-    int threadSize = ThreadSize.getValue(); 
-    double diameter = threadDescription[threadType][threadSize].diameter;
-    double pitch = threadDescription[threadType][threadSize].pitch;
+    double diameter = ThreadDiameter.getValue();
+    double pitch = ThreadPitch.getValue();
     double clearance = 0.0;
 
     if (Threaded.getValue()) {
@@ -1367,17 +1353,14 @@ void Hole::onChanged(const App::Property* prop)
         if (ThreadType.isValid()) {
             type = ThreadType.getValueAsString();
             ThreadSize.setEnums(getThreadDesignations(ThreadType.getValue()));
-            if (type != "None") {
+            if (type != "Custom") {
                 findClosestDesignation();
             }
         }
 
-        if (type == "None") {
+        if (type == "Custom") {
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_None_Enums);
-            Threaded.setValue(false);
-            ModelThread.setValue(false);
-            UseCustomThreadClearance.setValue(false);
         }
         else if (type == "ISOMetricProfile") {
             ThreadClass.setEnums(ThreadClass_ISOmetric_Enums);
@@ -1421,18 +1404,19 @@ void Hole::onChanged(const App::Property* prop)
             HoleCutType.setEnums(HoleCutType_BSF_Enums);
         }
 
-        bool isNone = type == "None";
+        bool isCustom = type == "Custom";
         bool isThreaded = Threaded.getValue();
 
-        Diameter.setReadOnly(!isNone);
-        Threaded.setReadOnly(isNone);
-        ThreadSize.setReadOnly(isNone);
-        ThreadFit.setReadOnly(isNone || isThreaded);
-        ThreadClass.setReadOnly(isNone || !isThreaded);
-        ThreadDepthType.setReadOnly(isNone || !isThreaded);
-        ThreadDepth.setReadOnly(isNone || !isThreaded);
-        ModelThread.setReadOnly(!isNone && isThreaded);
-        UseCustomThreadClearance.setReadOnly(isNone || !isThreaded || !ModelThread.getValue());
+        ThreadPitch.setReadOnly(!isCustom);
+        ThreadDiameter.setReadOnly(!isCustom);
+        Diameter.setReadOnly(!isCustom);
+        ThreadSize.setReadOnly(isCustom);
+        ThreadFit.setReadOnly(isCustom || isThreaded);
+        ThreadClass.setReadOnly(isCustom || !isThreaded);
+        ThreadDepthType.setReadOnly(isCustom || !isThreaded);
+        ThreadDepth.setReadOnly(isCustom || !isThreaded);
+        ModelThread.setReadOnly(!isCustom && isThreaded);
+        UseCustomThreadClearance.setReadOnly(isCustom || !isThreaded || !ModelThread.getValue());
         CustomThreadClearance.setReadOnly(
             !UseCustomThreadClearance.getValue()
             || UseCustomThreadClearance.isReadOnly()
@@ -1483,7 +1467,7 @@ void Hole::onChanged(const App::Property* prop)
         ProfileBased::onChanged(&Threaded);
 
         // Diameter parameter depends on this
-        if (type != "None")
+        if (type != "Custom")
             updateDiameterParam();
     }
     else if (prop == &Threaded) {
@@ -1515,6 +1499,15 @@ void Hole::onChanged(const App::Property* prop)
             CustomThreadClearance.setReadOnly(true);
             ThreadDepthType.setReadOnly(true);
             ThreadDepth.setReadOnly(true);
+        }
+        
+        std::string threadType(ThreadType.getValueAsString());
+        if (threadType == "Custom") {
+            // Profile is Custom but this is needed to find the closest
+            // designation if the user switch to threaded
+            if(ThreadDiameter.getValue() < Diameter.getValue()) {
+                ThreadDiameter.setValue(Diameter.getValue());
+            }
         }
 
         // Diameter parameter depends on this
@@ -1558,11 +1551,6 @@ void Hole::onChanged(const App::Property* prop)
         // a changed diameter means we also need to check the hole cut
         // because the hole cut diameter must not be <= than the diameter
         updateHoleCutParams();
-        if (ThreadType.getValue() == 0) {
-            // Profile is None but this is needed to find the closest
-            // designation if the user switch to threaded
-            ThreadDiameter.setValue(Diameter.getValue());
-        }
     }
     else if (prop == &HoleCutType) {
         ProfileBased::onChanged(&HoleCutDiameter);
@@ -2181,8 +2169,8 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
     // this is the same for all metric and UTS threads as stated here:
     // https://en.wikipedia.org/wiki/File:ISO_and_UTS_Thread_Dimensions.svg
     // Rmaj is half of the major diameter
-    double Rmaj = threadDescription[threadType][threadSize].diameter / 2;
-    double Pitch = getThreadPitch();
+    double Rmaj = ThreadDiameter.getValue() / 2;
+    double Pitch = ThreadPitch.getValue();
 
     double clearance; // clearance to be added on the diameter
     if (UseCustomThreadClearance.getValue())
