@@ -26,4 +26,9 @@ void ProgressIndicator::resetInstance()
     instance = defaultInstance;
 }
 
+bool ProgressIndicator::isDefaultInstance()
+{
+    return instance == defaultInstance;
+}
+
 }  // namespace Base

@@ -26,6 +26,7 @@ public:
     static ProgressIndicator& getInstance();
     static void setInstance(ProgressIndicator* newInstance);
     static void resetInstance();
+    static bool isDefaultInstance();
 
 private:
     static ProgressIndicator* instance;
