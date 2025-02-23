@@ -26,31 +26,62 @@
 #ifndef TECHDRAW_SVGATTRIBUTEREADER_H
 #define TECHDRAW_SVGATTRIBUTEREADER_H
 
-#include <utility>
-
 #include <QString>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 class QDomElement;
+class QTransform;
 
 namespace TechDraw
 {
 
-class SvgTextAttributes
+struct RotateParameters {
+    double degrees{0};
+    double xCenter{0};
+    double yCenter{0};
+    bool isSet{false};
+};
+
+struct TranslateParameters {
+    double dx{0};
+    double dy{0};
+    bool isSet{false};
+};
+
+class TechDrawExport SvgTextAttributes
 {
 public:
     SvgTextAttributes() : m_fontSize(0)  {}
 
-    SvgTextAttributes(QString  family, const double& fontSize, QString  anchor) :
-        m_family(std::move(family)), m_fontSize(fontSize), m_anchor(std::move(anchor))  {}
+// lint will complain about not using std::move, then complain that std::move has no effect
+// since the parameters are const
+//NOLINTBEGIN
+    SvgTextAttributes(const QString&  family,
+                      const double& fontSize,
+                      const QString&  anchor) :
+        m_family(family),
+        m_fontSize(fontSize),
+        m_anchor(anchor)  {}
+//NOLINTEND
 
     QString family() const  { return m_family; }
     double fontSize() const { return m_fontSize; }
     QString anchor() const { return m_anchor; }
 
+    TranslateParameters translateParameters() const { return m_translate; }
+    RotateParameters rotateParameters() const { return m_rotate; }
+
     void setFamily(const QString& newFamily)  { m_family = newFamily; }
     void setFontSize(double newFontSize)  { m_fontSize = newFontSize; }
     void setAnchor(const QString& newAnchor)  { m_anchor = newAnchor;}
+
+    void setTranslateParameters(double newDx, double newDy);
+    void setTranslateParameters(const TranslateParameters& newParms);
+
+    void setRotateParameters(double newAngle,
+                             double newXCenter,
+                             double newYCenter);
+    void setRotateParameters(const RotateParameters& newParms);
 
     bool finished() const;
 
@@ -58,21 +89,36 @@ private:
     QString m_family;
     double m_fontSize;
     QString m_anchor;
+    TranslateParameters m_translate;
+    RotateParameters m_rotate;
 };
 
 
-class TechDrawGuiExport SvgAttributeReader
+class TechDrawExport SvgAttributeReader
 {
 public:
     static void findTextAttributesForElement(SvgTextAttributes& attributes,
-                                             QDomElement element,
+                                             const QDomElement& element,
                                              int maxlevels,
                                              int thislevel = 0);
-    static QString findRegexInString(const QRegularExpression& rx, const QString &searchThis);
+
+    static void findAttributesInStyle(const QString& style, SvgTextAttributes& attributes);
     static QString findFamilyInStyle(const QString& styleValue);
     static QString findAnchorInStyle(const QString& styleValue);
     static double findFontSizeInStyle(const QString& style);
-    static double findFontSizeInAttribute(const QString& attrText);
+
+    static void lookForFontSizeAttribute(const QDomElement& element, SvgTextAttributes& attributes);
+    static double findFontSizeInAttribute(const QString& fontSizeAttributeText);
+
+    static void lookForTransformAttribute(const QDomElement& element, SvgTextAttributes& attributes);
+    static RotateParameters findRotateInTransform(const QString& transformValue);
+    static TranslateParameters findTranslateInTransform(const QString& transformValue);
+
+    static QString findRegexInString(const QRegularExpression& rx, const QString &searchThis);
+    static QStringList findMultiRegexInString(const QRegularExpression& rx,
+                                              const QString& searchThis,
+                                              const int maxResults = 1);
+
 
 };// class SvgAttributeReader
 

@@ -137,6 +137,7 @@ void QGISVGTemplate::updateView(bool update)
 
 void QGISVGTemplate::clearClickHandles()
 {
+    prepareGeometryChange();
     constexpr int TemplateTextFieldType{QGraphicsItem::UserType + 160};
     auto templateChildren = childItems();
     for (auto& child : templateChildren) {
@@ -150,6 +151,7 @@ void QGISVGTemplate::clearClickHandles()
 
 void QGISVGTemplate::createClickHandles()
 {
+    prepareGeometryChange();
     TechDraw::DrawSVGTemplate* svgTemplate = getSVGTemplate();
     if (svgTemplate->isRestoring()) {
         //the embedded file is not available yet, so just return
@@ -201,24 +203,23 @@ void QGISVGTemplate::createClickHandles()
         QString yString = textElement.attribute(QStringLiteral("y"), QStringLiteral("0.0"));
         double y = Rez::guiX(yString.toDouble());
 
-        QString name = textElement.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
+        QString name = textElement.attribute(QStringLiteral(FREECAD_ATTR_EDITABLE));
         if (name.isEmpty()) {
             Base::Console().Warning(
                 "QGISVGTemplate::createClickHandles - no name for editable text at %f, %f\n", x, y);
             return true;
         }
 
-        std::string editableValue = textMap[name.toStdString()];
-        if (editableValue.empty()) {
-            editableValue = " ";
+        QString qEditableValue = QString::fromStdString(textMap[name.toStdString()]);
+        if (qEditableValue.isEmpty()) {
+            qEditableValue = QStringLiteral(" ");
         }
 
         constexpr int MaxLevels{4};
         SvgTextAttributes attributes;
         findTextAttributesForElement(attributes, tspan, MaxLevels);
 
-        auto clickRectSize = calculateClickboxSize(QString::fromStdString(editableValue),
-                                                   attributes);
+        auto clickRectSize = calculateClickboxSize(qEditableValue, attributes);
 
         auto clickWidth  = clickRectSize.width();
         auto clickHeight = clickRectSize.height();
@@ -226,12 +227,12 @@ void QGISVGTemplate::createClickHandles()
         const QString middleAnchorToken{QStringLiteral("middle")};
         const QString endAnchorToken{QStringLiteral("end")};
 
-        constexpr double hPad{2.0};
+        constexpr double hPad{3.0};
         if (attributes.anchor() == middleAnchorToken) {
             x = x - (clickWidth / static_cast<double>(2)) ;
-            x -= (hPad + hPad + hPad);
+            x -= (hPad + hPad);
         } else if (attributes.anchor() == endAnchorToken) {
-            x = x - clickWidth;
+            x = x - clickWidth - hPad;
         } else {
             x -= hPad;
         }
@@ -261,6 +262,21 @@ void QGISVGTemplate::createClickHandles()
         item->setLineColor(editClickBoxColor);
 
         item->setZValue(ZVALUE::SVGTEMPLATE + 1);
+
+        QPointF sceneRotationCenter{attributes.rotateParameters().xCenter,     // mm
+                    yOnTemplate(attributes.rotateParameters().yCenter)};
+        sceneRotationCenter = Rez::guiX(sceneRotationCenter);                     // scene units
+        auto itemRotationCenter = item->mapFromScene(sceneRotationCenter);        // item coords
+        item->setTransformOriginPoint(itemRotationCenter);
+
+        if (attributes.rotateParameters().isSet)  {
+            item->setRotation(attributes.rotateParameters().degrees);
+        }
+        if (attributes.translateParameters().isSet) {
+            item->moveBy(Rez::guiX(attributes.translateParameters().dx),
+                         Rez::guiX(attributes.translateParameters().dy));
+        }
+
         addToGroup(item);
 
         textFields.push_back(item);
@@ -292,12 +308,23 @@ QSizeF QGISVGTemplate::calculateClickboxSize(const QString& editableValue,
     auto trect = qfm.tightBoundingRect(editableValue);  // pixels
 
     auto dpiFont = qfm.fontDpi();
-    auto clickWidth  = trect.width() * StdCSSDpi / dpiFont;    // pixels
+
+    // there seems to be a missing factor in the conversion of QFontMetrics numbers to
+    // QGraphicsItem coordinates.  The numbers from QFontMetrics are just a bit too high.
+    constexpr double MysteryFactor{0.95};
+    auto clickWidth  = MysteryFactor * trect.width() * StdCSSDpi / dpiFont;    // pixels
     auto clickHeight = trect.height() * StdCSSDpi / dpiFont;
 
     return { clickWidth, clickHeight };
 }
 
+// handles the irritating geometry conversions
+double QGISVGTemplate::yOnTemplate(double y)
+{
+    auto svgTemplate = getSVGTemplate();
+    return -svgTemplate->getHeight() + y;
+    // return y;
+}
 
 //NOLINTNEXTLINE
 #include <Mod/TechDraw/Gui/moc_QGISVGTemplate.cpp>

@@ -73,9 +73,10 @@ protected:
     QSizeF calculateClickboxSize(const QString &editableValue,
                                  const TechDraw::SvgTextAttributes& attributes) const;
 
-
     void createClickHandles();
     void clearClickHandles();
+
+    double yOnTemplate(double y);
 
 private:
     QGraphicsSvgItem* m_svgItem;
