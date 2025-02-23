@@ -5,6 +5,11 @@
 #include <atomic>
 #include <thread>
 #include <chrono>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <Base/ProgressIndicator.h>
@@ -135,6 +140,7 @@ void ComputationDialog::run(std::function<void()> func) {
                     pthread_cancel(computeThread.native_handle());
                     #elif defined(_WIN32)
                     TerminateThread(computeThread.native_handle(), 1);
+                    CloseHandle(computeThread.native_handle());
                     #elif defined(__APPLE__)
                     pthread_kill(computeThread.native_handle(), SIGTERM);
                     #endif
