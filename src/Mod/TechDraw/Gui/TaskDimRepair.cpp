@@ -107,8 +107,8 @@ void TaskDimRepair::restoreDimState()
 //use the current selection to replace the references in dim
 void TaskDimRepair::slotUseSelection()
 {
-    const std::vector<App::DocumentObject*> dimObjects =
-        Gui::Selection().getObjectsOfType(TechDraw::DrawViewDimension::getClassTypeId());
+    const std::vector<TechDraw::DrawViewDimension*> dimObjects =
+        Gui::Selection().getObjectsOfType<TechDraw::DrawViewDimension>();
     if (dimObjects.empty()) {
         //selection does not include a dimension, so we need to add our dimension to keep the
         //validators happy

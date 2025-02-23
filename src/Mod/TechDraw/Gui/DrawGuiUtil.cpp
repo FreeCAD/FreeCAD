@@ -299,7 +299,7 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
         // open documents for a page.
         auto docsAll = App::GetApplication().getDocuments();
         for (auto& doc : docsAll) {
-            auto docPages = doc->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+            auto docPages = doc->getObjectsOfType<TechDraw::DrawPage>();
             if (docPages.empty()) {
                 // this open document has no TD pages
                 continue;
@@ -334,11 +334,11 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
     }
 
     // check Selection for a page
-    std::vector<App::DocumentObject*> selPages =
-        cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    std::vector<TechDraw::DrawPage*> selPages =
+        cmd->getSelection().getObjectsOfType<TechDraw::DrawPage>();
     if (selPages.empty()) {
         // no page in selection, try this document
-        auto docPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+        auto docPages = cmd->getDocument()->getObjectsOfType<TechDraw::DrawPage>();
         if (docPages.empty()) {
             // we are only to look in this document, and there is no page in this document
             QMessageBox::warning(Gui::getMainWindow(),
@@ -394,7 +394,7 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
     }
     else {
         // exactly 1 page in selection, use it
-        return static_cast<TechDraw::DrawPage*>(selPages.front());
+        return selPages.front();
     }
 
     // we can not actually reach this point.
@@ -502,7 +502,7 @@ bool DrawGuiUtil::needPage(Gui::Command* cmd, bool findAny)
         // look for any page in any open document
         auto docsAll = App::GetApplication().getDocuments();
         for (auto& doc : docsAll) {
-            auto docPages = doc->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+            auto docPages = doc->getObjectsOfType<TechDraw::DrawPage>();
             if (docPages.empty()) {
                 // this open document has no TD pages
                 continue;
@@ -518,8 +518,7 @@ bool DrawGuiUtil::needPage(Gui::Command* cmd, bool findAny)
 
     // need a Document and a Page
     if (cmd->hasActiveDocument()) {
-        auto drawPageType(TechDraw::DrawPage::getClassTypeId());
-        auto selPages = cmd->getDocument()->getObjectsOfType(drawPageType);
+        auto selPages = cmd->getDocument()->getObjectsOfType<TechDraw::DrawPage>();
         return !selPages.empty();
     }
     return false;
@@ -530,15 +529,13 @@ bool DrawGuiUtil::needView(Gui::Command* cmd, bool partOnly)
     bool haveView = false;
     if (cmd->hasActiveDocument()) {
         if (partOnly) {
-            auto drawPartType(TechDraw::DrawViewPart::getClassTypeId());
-            auto selParts = cmd->getDocument()->getObjectsOfType(drawPartType);
+            auto selParts = cmd->getDocument()->getObjectsOfType<TechDraw::DrawViewPart>();
             if (!selParts.empty()) {
                 haveView = true;
             }
         }
         else {
-            auto drawViewType(TechDraw::DrawView::getClassTypeId());
-            auto selParts = cmd->getDocument()->getObjectsOfType(drawViewType);
+            auto selParts = cmd->getDocument()->getObjectsOfType<TechDraw::DrawView>();
             if (!selParts.empty()) {
                 haveView = true;
             }

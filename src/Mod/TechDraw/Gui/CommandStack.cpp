@@ -210,7 +210,7 @@ void execStackTop(Gui::Command* cmd)
         return;
     }
 
-    std::vector<App::DocumentObject*> views = cmd->getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId());
+    std::vector<TechDraw::DrawView*> views = cmd->getSelection().getObjectsOfType<TechDraw::DrawView>();
     if (!views.empty()) {
         for (auto& v: views) {
             TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(v);
@@ -270,7 +270,7 @@ void execStackBottom(Gui::Command* cmd)
         return;
     }
 
-    std::vector<App::DocumentObject*> views = cmd->getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId());
+    std::vector<TechDraw::DrawView*> views = cmd->getSelection().getObjectsOfType<TechDraw::DrawView>();
     if (!views.empty()) {
         for (auto& v: views) {
             TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(v);
@@ -330,7 +330,7 @@ void execStackUp(Gui::Command* cmd)
         return;
     }
 
-    std::vector<App::DocumentObject*> views = cmd->getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId());
+    std::vector<TechDraw::DrawView*> views = cmd->getSelection().getObjectsOfType<TechDraw::DrawView>();
     if (!views.empty()) {
         for (auto& v: views) {
             TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(v);
@@ -390,7 +390,7 @@ void execStackDown(Gui::Command* cmd)
         return;
     }
 
-    std::vector<App::DocumentObject*> views = cmd->getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId());
+    std::vector<TechDraw::DrawView*> views = cmd->getSelection().getObjectsOfType<TechDraw::DrawView>();
     if (!views.empty()) {
         for (auto& v: views) {
             TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(v);
