@@ -74,6 +74,7 @@ jobs:
           channels: conda-forge
           channel-priority: true
           miniforge-version: latest
+          conda-remove-defaults: "true"
       - name: Install FreeCAD dependencies
         env:
           CONDA_VERBOSITY: 2
