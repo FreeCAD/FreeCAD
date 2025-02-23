@@ -10,14 +10,12 @@
 # we first try to find opencascade directly:
 if (NOT OCCT_CMAKE_FALLBACK)
     find_package(OpenCASCADE CONFIG QUIET)
-    if (NOT (CMAKE_VERSION VERSION_LESS 3.6.0))
-        get_property(flags DIRECTORY PROPERTY COMPILE_DEFINITIONS)
-        # OCCT 7.5 adds this define that causes hundreds of compiler warnings with Qt5.x, so remove it again
-        list(FILTER flags EXCLUDE REGEX [[GL_GLEXT_LEGACY]])
-        set_property(DIRECTORY PROPERTY COMPILE_DEFINITIONS ${flags})
-    endif ()
-endif ()
-if (OpenCASCADE_FOUND)
+    get_property(flags DIRECTORY PROPERTY COMPILE_DEFINITIONS)
+    # OCCT 7.5 adds this define that causes hundreds of compiler warnings with Qt5.x, so remove it again
+    list(FILTER flags EXCLUDE REGEX [[GL_GLEXT_LEGACY]])
+    set_property(DIRECTORY PROPERTY COMPILE_DEFINITIONS ${flags})
+endif(NOT OCCT_CMAKE_FALLBACK)
+if(OpenCASCADE_FOUND)
     set(OCC_FOUND ${OpenCASCADE_FOUND})
     set(OCC_INCLUDE_DIR ${OpenCASCADE_INCLUDE_DIR})
     set(OCC_LIBRARY_DIR ${OpenCASCADE_LIBRARY_DIR})
