@@ -13,11 +13,6 @@
 
 # There's no standard location for PyCXX.
 #
-# The authors' example is to put it in "~\" [sic].
-#
-# Ubuntu puts the includes into /usr/include/python2.7/CXX and sources into
-# /usr/share/python2.7/CXX.
-#
 # The Zultron Fedora RPM does the same as Ubuntu.
 
 set(PYCXX_FOUND "YES")
@@ -120,7 +115,7 @@ if(PYCXX_FOUND)
 
     #set old 6.2 pycxx compatibility
     list(APPEND PYCXX_SOURCES ${PYCXX_SOURCE_DIR}/cxx_exceptions.cxx)
-    add_definitions(-DPYCXX_6_2_COMPATIBILITY)
+    add_definitions(-DPYCXX_6_2_COMPATIBILITY -Wno-deprecated-declarations)
     #end old compatibility
 else(PYCXX_FOUND)
     MESSAGE(STATUS "PyCXX not found")
