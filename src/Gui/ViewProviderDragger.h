@@ -56,10 +56,16 @@ public:
     /// destructor.
     ~ViewProviderDragger() override;
 
+    /// Property controlling visibility of the placement indicator, useful for displaying origin
+    /// position of attached Document Object.
+    App::PropertyBool ShowPlacement;
+
     /// Origin used when object is transformed. It temporarily changes the origin of object.
     /// Dragger is normally placed at the transform origin, unless explicitly overridden via
     /// ViewProviderDragger#setDraggerPlacement() method.
     App::PropertyPlacement TransformOrigin;
+
+    void attach(App::DocumentObject* pcObject) override;
 
     /// Convenience method to obtain the transform origin
     Base::Placement getTransformOrigin() const { return TransformOrigin.getValue(); }
@@ -114,6 +120,7 @@ protected:
     CoinPtr<SoFCCSysDragger> csysDragger = nullptr;
     ViewProvider *forwardedViewProvider = nullptr;
 
+    CoinPtr<SoSwitch> pcPlacement;
 private:
     static void dragStartCallback(void *data, SoDragger *d);
     static void dragFinishCallback(void *data, SoDragger *d);
