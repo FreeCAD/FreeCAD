@@ -10,6 +10,7 @@
 #include <windows.h>
 #endif
 
+#include <QApplication>
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <Base/ProgressIndicator.h>
@@ -17,32 +18,23 @@
 namespace Gui {
 
 ComputationDialog::ComputationDialog(QWidget* parent)
-    : QDialog(parent)
+    : QProgressDialog(parent)
     , aborted(false)
 {
     setWindowTitle(tr("Computing"));
     setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowStaysOnTopHint);
-    setWindowModality(Qt::ApplicationModal); // Make sure dialog is modal but doesn't block event processing
+    setWindowModality(Qt::ApplicationModal);
     
-    auto layout = new QVBoxLayout(this);
+    setLabelText(tr("This operation may take a while.\nPlease wait or press 'Cancel' to abort."));
+    setMinimum(0);
+    setMaximum(0); // Makes it indeterminate
     
-    // Add informative label
-    auto label = new QLabel(tr("This operation may take a while.\nPlease wait or press 'Abort' to cancel."), this);
-    label->setAlignment(Qt::AlignCenter);
-    layout->addWidget(label);
-    
-    progressBar = new QProgressBar(this);
-    progressBar->setMinimum(0);
-    progressBar->setMaximum(0); // This makes it indeterminate
-    layout->addWidget(progressBar);
+    setMinimumDuration(0); // Show immediately
+    setMinimumSize(300, 150);
+    adjustSize();
+    setFixedSize(size());
 
-    auto abortButton = new QPushButton(tr("Abort"), this);
-    layout->addWidget(abortButton);
-    connect(abortButton, &QPushButton::clicked, this, &ComputationDialog::onAbort);
-
-    setMinimumSize(300, 150);  // Set reasonable minimum dimensions
-    adjustSize();  // Adjust to content
-    setFixedSize(size());  // Lock the size
+    connect(this, &QProgressDialog::canceled, this, &ComputationDialog::abort);
 }
 
 void ComputationDialog::Show(float position, bool isForce) {
@@ -50,19 +42,14 @@ void ComputationDialog::Show(float position, bool isForce) {
 
     if (position < 0) {
         // set as "indeterminate"
-        QMetaObject::invokeMethod(progressBar, "setValue", Qt::QueuedConnection,
-                                Q_ARG(int, 0));
-        QMetaObject::invokeMethod(progressBar, "setMaximum", Qt::QueuedConnection,
-                                Q_ARG(int, 0));
+        setMaximum(0);
+        setValue(0);
     } else {
         int pct = std::clamp(static_cast<int>(position * 100), 0, 100);
-        QMetaObject::invokeMethod(progressBar, "setValue", Qt::QueuedConnection,
-                                Q_ARG(int, pct));
-        QMetaObject::invokeMethod(progressBar, "setMaximum", Qt::QueuedConnection,
-                                Q_ARG(int, 100));
+        setMaximum(100);
+        setValue(pct);
     }
 
-    // Process events to keep UI responsive
     QApplication::processEvents();
 }
 
@@ -169,10 +156,6 @@ bool ComputationDialog::UserBreak() {
 
 void ComputationDialog::closeEvent(QCloseEvent* event) {
     event->ignore();
-}
-
-void ComputationDialog::onAbort() {
-    abort();
 }
 
 } // namespace Gui
