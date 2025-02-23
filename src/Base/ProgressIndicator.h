@@ -3,25 +3,34 @@
 
 #include <memory>
 
-namespace Base {
+namespace Base
+{
 
-class ProgressIndicator {
+class ProgressIndicator
+{
 public:
     virtual ~ProgressIndicator() = default;
-    
+
     // Core interface matching Message_ProgressIndicator
-    virtual bool UserBreak() { return false; } // true if user requests break
-    virtual void Show(float position, bool isForce) { (void)position; (void)isForce; } // show the progress
+    virtual bool UserBreak()
+    {
+        return false;
+    }  // true if user requests break
+    virtual void Show(float position, bool isForce)
+    {
+        (void)position;
+        (void)isForce;
+    }  // show the progress
 
     // Singleton management
     static ProgressIndicator& getInstance();
-    static void setInstance(ProgressIndicator *newInstance);
+    static void setInstance(ProgressIndicator* newInstance);
     static void resetInstance();
 
 private:
-    static ProgressIndicator *instance;
-    static ProgressIndicator *defaultInstance;
+    static ProgressIndicator* instance;
+    static ProgressIndicator* defaultInstance;
 };
 
-} // namespace Base
+}  // namespace Base
 #endif
