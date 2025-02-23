@@ -110,7 +110,9 @@ private:
     TopoDS_Shape    breakShape(const TopoDS_Shape& shapeToBreak) const;
     TopoDS_Shape    compressShape(const TopoDS_Shape& shapeToCompress) const;
     TopoDS_Shape    apply1Break(const App::DocumentObject& breakObj, const TopoDS_Shape& inShape) const;
-    TopoDS_Shape    makeHalfSpace(Base::Vector3d point, Base::Vector3d direction, Base::Vector3d pointInSpace) const;
+    TopoDS_Shape    makeHalfSpace(const Base::Vector3d& point,
+                                  const Base::Vector3d& direction,
+                                  const Base::Vector3d& pointInSpace) const;
     std::pair<Base::Vector3d, Base::Vector3d>
                     breakPointsFromSketch(const App::DocumentObject& breakObj) const;
     std::pair<Base::Vector3d, Base::Vector3d>
@@ -139,8 +141,14 @@ private:
                          std::vector<size_t>& fullGaps,
                          int& partialGapIndex) const;
 
-    BreakList makeSortedBreakList(const std::vector<App::DocumentObject*>& breaks, Base::Vector3d direction, bool descend = false) const;
-    BreakList makeSortedBreakListCompressed(const std::vector<App::DocumentObject*>& breaks, Base::Vector3d moveDirection, bool descend = false) const;
+    BreakList makeSortedBreakList(const std::vector<App::DocumentObject*>& breaks,
+                                  const Base::Vector3d& direction,
+                                  const bool descend = false) const;
+
+    BreakList makeSortedBreakListCompressed(const std::vector<App::DocumentObject*>& breaks,
+                                            const Base::Vector3d& moveDirection,
+                                            const bool descend = false) const;
+
     static std::vector<TopoDS_Shape> getPieces(const TopoDS_Shape& brokenShape);
     static BreakList sortBreaks(BreakList& inList, bool descend = false);
     static bool breakLess(const BreakListEntry& entry0, const BreakListEntry& entry1);

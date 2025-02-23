@@ -767,7 +767,8 @@ std::vector<TopoDS_Shape> DrawBrokenView::getPieces(const TopoDS_Shape& brokenSh
 
 //! sort the breaks that match direction by their minimum limit
 BreakList DrawBrokenView::makeSortedBreakList(const std::vector<App::DocumentObject*>& breaks,
-                                              Base::Vector3d direction, bool descend) const
+                                              const Base::Vector3d& direction,
+                                              const bool descend) const
 {
     Base::Vector3d stdX{1.0, 0.0, 0.0};
     Base::Vector3d stdY{0.0, 1.0, 0.0};
