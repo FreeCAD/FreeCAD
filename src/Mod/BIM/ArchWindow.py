@@ -556,7 +556,7 @@ class _Window(ArchComponent.Component):
         if not width:
             if host and Draft.getType(host) == "Wall":
                 # TODO More robust approach :  With ArchSketch, on which wall segment an ArchObject is attached to is declared by user and saved.
-                #      The extrusion of each wall segment could be done per segment, and punch hole in the exact wall segment before fusing them all. No need to care about each wall segement thickness.
+                #      The extrusion of each wall segment could be done per segment, and punch hole in the exact wall segment before fusing them all. No need to care about each wall segment thickness.
                 # TODO Consider to turn below codes to getWidths/getSortedWidths() in ArchWall (below codes copied and modified from ArchWall)
                 propSetUuid = host.Proxy.ArchSkPropSetPickedUuid
                 widths = []  # [] or None are both False
@@ -585,7 +585,7 @@ class _Window(ArchComponent.Component):
 
         # setup base
         if orig:
-            base = orig.Base  # always use original's base; clone's base should not be used to supercede original's base
+            base = orig.Base  # always use original's base; clone's base should not be used to supersede original's base
         else:
             base = obj.Base
 
