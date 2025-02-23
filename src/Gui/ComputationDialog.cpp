@@ -31,11 +31,6 @@ ComputationDialog::ComputationDialog(QWidget* parent)
     progressBar->setMaximum(0); // This makes it indeterminate
     layout->addWidget(progressBar);
 
-    // Add status label below progress bar
-    statusLabel = new QLabel(this);
-    statusLabel->setAlignment(Qt::AlignCenter);
-    layout->addWidget(statusLabel);
-    
     auto abortButton = new QPushButton(tr("Abort"), this);
     layout->addWidget(abortButton);
     connect(abortButton, &QPushButton::clicked, this, &ComputationDialog::onAbort);
@@ -54,18 +49,12 @@ void ComputationDialog::Show(float position, bool isForce) {
                                 Q_ARG(int, 0));
         QMetaObject::invokeMethod(progressBar, "setMaximum", Qt::QueuedConnection,
                                 Q_ARG(int, 0));
-        QString status = tr("Progress: ...");
-        QMetaObject::invokeMethod(statusLabel, "setText", Qt::QueuedConnection,
-                                Q_ARG(QString, status));
     } else {
         int pct = std::clamp(static_cast<int>(position * 100), 0, 100);
         QMetaObject::invokeMethod(progressBar, "setValue", Qt::QueuedConnection,
                                 Q_ARG(int, pct));
         QMetaObject::invokeMethod(progressBar, "setMaximum", Qt::QueuedConnection,
                                 Q_ARG(int, 100));
-        QString status = tr("Progress: %1%").arg(pct);
-        QMetaObject::invokeMethod(statusLabel, "setText", Qt::QueuedConnection,
-                                Q_ARG(QString, status));
     }
 
     // Process events to keep UI responsive

@@ -30,7 +30,6 @@ private:
 
     std::atomic<bool> aborted;
     QProgressBar* progressBar;
-    QLabel* statusLabel;
 };
 
 } // namespace Gui
