@@ -56,6 +56,7 @@
 #include "Tree.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "ComputationDialog.h"
 #include "Document.h"
 #include "ExpressionCompleter.h"
 #include "Macro.h"
@@ -1387,8 +1388,11 @@ void TreeWidget::onRecomputeObject() {
     }
     if (objs.empty())
         return;
-    App::AutoTransaction committer("Recompute object");
-    objs.front()->getDocument()->recompute(objs, true);
+    ComputationDialog computationDialog;
+    computationDialog.run([&]() {
+        App::AutoTransaction committer("Recompute object");
+        objs.front()->getDocument()->recompute(objs, true);
+    });
 }
 
 

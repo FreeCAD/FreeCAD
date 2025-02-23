@@ -50,6 +50,7 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "ComputationDialog.h"
 #include "Control.h"
 #include "DockWindowManager.h"
 #include "FileDialog.h"
@@ -1513,7 +1514,10 @@ void StdCmdRefresh::activated(int iMsg)
     if (getActiveGuiDocument()) {
         App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
         try {
-            doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
+            ComputationDialog computationDialog;
+            computationDialog.run([&]() {
+                doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
+            });
         }
         catch (Base::Exception& /*e*/) {
             auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
