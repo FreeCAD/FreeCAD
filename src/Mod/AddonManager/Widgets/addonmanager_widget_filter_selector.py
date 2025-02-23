@@ -69,6 +69,8 @@ class ContentFilter(IntEnum):
     WORKBENCH = 1
     MACRO = 2
     PREFERENCE_PACK = 3
+    BUNDLE = 4
+    OTHER = 5
 
 
 class Filter:
@@ -115,6 +117,14 @@ class WidgetFilterSelector(QtWidgets.QComboBox):
         self.addItem(
             translate("AddonsInstaller", "Preference Pack"),
             (FilterType.PACKAGE_CONTENTS, ContentFilter.PREFERENCE_PACK),
+        )
+        self.addItem(
+            translate("AddonsInstaller", "Bundle"),
+            (FilterType.PACKAGE_CONTENTS, ContentFilter.BUNDLE),
+        )
+        self.addItem(
+            translate("AddonsInstaller", "Other"),
+            (FilterType.PACKAGE_CONTENTS, ContentFilter.OTHER),
         )
         self.insertSeparator(self.count())
         self.addItem(translate("AddonsInstaller", "Installation Status"))
