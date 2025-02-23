@@ -5767,6 +5767,9 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
     }
     mk->Build(OCCTProgressIndicator().Start());
+    if (Base::ProgressIndicator::getInstance().UserBreak()) {
+        FC_THROWM(Base::CADKernelError, "User aborted");
+    }
     makeElementShape(*mk, inputs, op);
 
     if (buildShell) {
