@@ -49,6 +49,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
+#include <Gui/ComputationDialog.h>
 #include <Mod/Part/App/Tools.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
@@ -161,8 +162,12 @@ bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
 void ViewProviderTransformed::recomputeFeature(bool recompute)
 {
     PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
-    if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute()))
-        pcTransformed->recomputeFeature(true);
+    if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute())) {
+        Gui::ComputationDialog dialog;
+        dialog.run([&]() {
+            pcTransformed->recomputeFeature(true);
+        });
+    }
 
     unsigned rejected = 0;
     TopoDS_Shape cShape = pcTransformed->rejected;

@@ -1,0 +1,27 @@
+#ifndef PART_OCCTPROGRESSINDICATOR_H
+#define PART_OCCTPROGRESSINDICATOR_H
+
+#include <Base/ProgressIndicator.h>
+#include <Message_ProgressIndicator.hxx>
+
+namespace Part {
+
+class OCCTProgressIndicator : public Message_ProgressIndicator
+{
+public:
+    OCCTProgressIndicator() 
+        : Message_ProgressIndicator()
+    {}
+
+    Standard_Boolean UserBreak() override { 
+        return Base::ProgressIndicator::getInstance().UserBreak(); 
+    }
+
+    void Show(const Message_ProgressScope& scope, const Standard_Boolean isForce) override {
+        Base::ProgressIndicator::getInstance().Show(scope.GetPortion(), isForce);
+    }
+};
+
+} // namespace Part
+
+#endif // PART_OCCTPROGRESSINDICATOR_H
