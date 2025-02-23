@@ -1156,20 +1156,93 @@ void Hole::updateThreadDepthParam()
     }
 }
 
+
+double Hole::getFitDiameter(int fit, double diameter) const
+{
+    switch (fit) {
+        case 0 : return diameter * 1.1;
+        case 1    : return diameter * 1.05;
+        case 2     : return diameter * 1.15;
+        default:
+            throw Base::IndexError("Thread fit out of range");
+    }
+}
+
+double Hole::getFitDiameterUN(int fit, double diameter, std::string threadSize) const
+{
+    int MatrixRowSizeUTS = sizeof(UTSHoleDiameters) / sizeof(UTSHoleDiameters[0]);
+    switch (fit) {
+        case 0:
+            for (int i = 0; i < MatrixRowSizeUTS; i++) {
+                if (UTSHoleDiameters[i].designation == threadSize) {
+                    return UTSHoleDiameters[i].normal;
+                }
+            }
+            // if nothing was found (if "#12" or "9/16"), we must calculate
+            // we use the factors defined for "3/8" in the UTSHoleDiameters list
+            return diameter * 1.08;
+        case 1:
+            for (int i = 0; i < MatrixRowSizeUTS; i++) {
+                if (UTSHoleDiameters[i].designation == threadSize) {
+                    return UTSHoleDiameters[i].close;
+                }
+            }
+            return diameter * 1.04;
+        case 2:
+            for (int i = 0; i < MatrixRowSizeUTS; i++) {
+                if (UTSHoleDiameters[i].designation == threadSize) {
+                    return UTSHoleDiameters[i].loose;
+                }
+            }
+            return diameter * 1.12;
+        default:
+            throw Base::IndexError("Thread fit out of range");
+    }
+}
+
+double Hole::getFitDiameterISO(int fit, double diameter) const
+{
+    int MatrixRowSizeMetric = sizeof(metricHoleDiameters) / sizeof(metricHoleDiameters[0]);
+    switch (fit) {
+        case 0:
+            for (int i = 0; i < MatrixRowSizeMetric; i++) {
+                if (metricHoleDiameters[i][0] == diameter) {
+                    return metricHoleDiameters[i][2];
+                }
+            }
+            // if nothing is defined (e.g. for M2.2, M9 and M11), we must calculate
+            // we use the factors defined for M5 in the metricHoleDiameters list
+            return diameter * 1.10;
+        case 1:
+            for (int i = 0; i < MatrixRowSizeMetric; i++) {
+                if (metricHoleDiameters[i][0] == diameter) {
+                    return metricHoleDiameters[i][1];
+                }
+            }
+            return diameter * 1.06;
+        case 2:
+            for (int i = 0; i < MatrixRowSizeMetric; i++) {
+                if (metricHoleDiameters[i][0] == diameter) {
+                    return metricHoleDiameters[i][3];
+                }
+            }
+            return diameter * 1.16;
+        default:
+            throw Base::IndexError("Thread fit out of range");
+    }
+}
+
+
 std::optional<double> Hole::determineDiameter() const
 {
-    // Diameter parameter depends on Threaded, ThreadType, ThreadSize, and ThreadFit
-
-    int threadType = ThreadType.getValue();
-    int threadSize = ThreadSize.getValue();
-    if (threadType < 0) {
+    if (!ThreadType.isValid()) {
         // When restoring the feature it might be in an inconsistent state.
         // So, just silently ignore it instead of throwing an exception.
         if (isRestoring())
             return std::nullopt;
         throw Base::IndexError("Thread type out of range");
     }
-    if (threadSize < 0) {
+    if (!ThreadSize.isValid()) {
         // When restoring the feature it might be in an inconsistent state.
         // So, just silently ignore it instead of throwing an exception.
         if (isRestoring())
@@ -1177,9 +1250,11 @@ std::optional<double> Hole::determineDiameter() const
         throw Base::IndexError("Thread size out of range");
     }
 
-    if (threadType == 0)
+    if (ThreadType.getValue() == 0)
         return std::nullopt;
 
+    int threadType = ThreadType.getValue(); 
+    int threadSize = ThreadSize.getValue(); 
     double diameter = threadDescription[threadType][threadSize].diameter;
     double pitch = threadDescription[threadType][threadSize].pitch;
     double clearance = 0.0;
@@ -1193,6 +1268,8 @@ std::optional<double> Hole::determineDiameter() const
                 clearance = getThreadClassClearance();
         }
 
+        int threadType = ThreadType.getValue();
+        int threadSize = ThreadSize.getValue();
         // use normed diameters if possible
         std::string threadTypeStr = ThreadType.getValueAsString();
         if (threadDescription[threadType][threadSize].TapDrill > 0) {
@@ -1217,131 +1294,17 @@ std::optional<double> Hole::determineDiameter() const
         }
     }
     else { // we have a clearance hole
-        bool found = false;
         std::string threadTypeStr = ThreadType.getValueAsString();
         // UTS and metric have a different clearance hole set
         if (threadTypeStr == "ISOMetricProfile" || threadTypeStr == "ISOMetricFineProfile") {
-            int MatrixRowSizeMetric = sizeof(metricHoleDiameters) / sizeof(metricHoleDiameters[0]);
-            switch (ThreadFit.getValue()) {
-            case 0: /* standard fit */
-                // read diameter out of matrix
-                for (int i = 0; i < MatrixRowSizeMetric; i++) {
-                    if (metricHoleDiameters[i][0] == diameter) {
-                        diameter = metricHoleDiameters[i][2];
-                        found = true;
-                        break;
-                    }
-                }
-                // if nothing is defined (e.g. for M2.2, M9 and M11), we must calculate
-                // we use the factors defined for M5 in the metricHoleDiameters list
-                if (!found) {
-                    diameter = diameter * 1.10;
-                }
-                break;
-            case 1: /* close fit */
-                // read diameter out of matrix
-                for (int i = 0; i < MatrixRowSizeMetric; i++) {
-                    if (metricHoleDiameters[i][0] == diameter) {
-                        diameter = metricHoleDiameters[i][1];
-                        found = true;
-                        break;
-                    }
-                }
-                // if nothing was found, we must calculate
-                if (!found) {
-                    diameter = diameter * 1.06;
-                }
-                break;
-            case 2: /* wide fit */
-                // read diameter out of matrix
-                for (int i = 0; i < MatrixRowSizeMetric; i++) {
-                    if (metricHoleDiameters[i][0] == diameter) {
-                        diameter = metricHoleDiameters[i][3];
-                        found = true;
-                        break;
-                    }
-                }
-                // if nothing was found, we must calculate
-                if (!found) {
-                    diameter = diameter * 1.16;
-                }
-                break;
-            default:
-                throw Base::IndexError("Thread fit out of range");
-            }
+            diameter = getFitDiameterISO(ThreadFit.getValue(), diameter);
         }
         else if (threadTypeStr == "UNC" || threadTypeStr == "UNF" || threadTypeStr == "UNEF") {
             std::string ThreadSizeString = ThreadSize.getValueAsString();
-            int MatrixRowSizeUTS = sizeof(UTSHoleDiameters) / sizeof(UTSHoleDiameters[0]);
-            switch (ThreadFit.getValue()) {
-            case 0: /* normal fit */
-                // read diameter out of matrix
-                for (int i = 0; i < MatrixRowSizeUTS; i++) {
-                    if (UTSHoleDiameters[i].designation == ThreadSizeString) {
-                        diameter = UTSHoleDiameters[i].normal;
-                        found = true;
-                        break;
-                    }
-                }
-                // if nothing was found (if "#12" or "9/16"), we must calculate
-                // // we use the factors defined for "3/8" in the UTSHoleDiameters list
-                if (!found) {
-                    diameter = diameter * 1.08;
-                }
-                break;
-            case 1: /* close fit */
-                // read diameter out of matrix
-                for (int i = 0; i < MatrixRowSizeUTS; i++) {
-                    if (UTSHoleDiameters[i].designation == ThreadSizeString) {
-                        diameter = UTSHoleDiameters[i].close;
-                        found = true;
-                        break;
-                    }
-                }
-                // if nothing was found, we must calculate
-                if (!found) {
-                    diameter = diameter * 1.04;
-                }
-                break;
-            case 2: /* loose fit */
-                // read diameter out of matrix
-                for (int i = 0; i < MatrixRowSizeUTS; i++) {
-                    if (UTSHoleDiameters[i].designation == ThreadSizeString) {
-                        diameter = UTSHoleDiameters[i].loose;
-                        found = true;
-                        break;
-                    }
-                }
-                // if nothing was found, we must calculate
-                if (!found) {
-                    diameter = diameter * 1.12;
-                }
-                break;
-            default:
-                throw Base::IndexError("Thread fit out of range");
-            }
+            diameter = getFitDiameterUN(ThreadFit.getValue(), diameter, ThreadSizeString);
         }
         else {
-            switch (ThreadFit.getValue()) {
-            case 0: /* normal fit */
-                // we must calculate
-                if (!found) {
-                    diameter = diameter * 1.1;
-                }
-                break;
-            case 1: /* close fit */
-                if (!found) {
-                    diameter = diameter * 1.05;
-                }
-                break;
-            case 2: /* loose fit */
-                if (!found) {
-                    diameter = diameter * 1.15;
-                }
-                break;
-            default:
-                throw Base::IndexError("Thread fit out of range");
-            }
+            diameter = getFitDiameter(ThreadFit.getValue(), diameter);
         }
     }
 
@@ -1352,10 +1315,14 @@ void Hole::updateDiameterParam()
 {
     int threadType = ThreadType.getValue();
     int threadSize = ThreadSize.getValue();
-    if (threadType > 0 && threadSize > 0)
+    if (threadType > 0 && threadSize > 0) {
         ThreadDiameter.setValue(
             threadDescription[threadType][threadSize].diameter
         );
+        ThreadPitch.setValue(
+            threadDescription[threadType][threadSize].pitch
+        );
+    }
     if (auto opt = determineDiameter())
         Diameter.setValue(opt.value());
 }
@@ -1583,7 +1550,6 @@ void Hole::onChanged(const App::Property* prop)
         updateDiameterParam();
         if (!isRestoring())
             updateThreadDepthParam();
-        // updateHoleCutParams() will later automatically be called because
     }
     else if (prop == &ThreadFit) {
         updateDiameterParam();
