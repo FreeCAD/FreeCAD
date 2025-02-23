@@ -3277,7 +3277,7 @@ void StdCmdFlightMode::activated(int iMsg)
             dlg = new Gui::Dialog::FlightMode(getMainWindow());
             dlg->setAttribute(Qt::WA_DeleteOnClose);
 
-            viewLayout->addWidget(dlg, 0, 0, Qt::AlignLeft | Qt::AlignTop);
+            viewLayout->addWidget(dlg, 0, 0, Qt::AlignCenter | Qt::AlignTop);
             viewer->setLayout(viewLayout);
             dlg->show();
         }

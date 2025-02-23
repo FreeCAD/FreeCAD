@@ -523,6 +523,7 @@ SET(Dialog_HPP_SRCS
     Clipping.h
     DemoMode.h
     FlightMode.h
+    Dialogs/DlgAbout.h
     Dialogs/DlgActivateWindowImp.h
     Dialogs/DlgCreateNewPreferencePackImp.h
     Dialogs/DlgUnitsCalculatorImp.h
