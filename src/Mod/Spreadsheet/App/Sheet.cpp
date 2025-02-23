@@ -108,7 +108,7 @@ Sheet::~Sheet()
     try {
         clearAll();
     }
-    catch (boost::regex_error&) {
+    catch (...) {
         // Don't let an exception propagate out of a destructor (calls terminate())
         Base::Console().Error(
             "clearAll() resulted in an exception when deleting the spreadsheet : %s\n",
