@@ -40,17 +40,20 @@ ComputationDialog::ComputationDialog(QWidget* parent)
 void ComputationDialog::Show(float position, bool isForce) {
     (void)isForce;
 
-    if (position < 0) {
-        // set as "indeterminate"
-        setMaximum(0);
-        setValue(0);
-    } else {
-        int pct = std::clamp(static_cast<int>(position * 100), 0, 100);
-        setMaximum(100);
-        setValue(pct);
-    }
-
-    QApplication::processEvents();
+    // Ensure UI updates happen on the main thread
+    QMetaObject::invokeMethod(this, [this, position]() {
+        if (position < 0) {
+            // set as "indeterminate"
+            setMaximum(0);
+            setValue(0);
+        } else {
+            int pct = std::clamp(static_cast<int>(position * 100), 0, 100);
+            setMaximum(100);
+            setValue(pct);
+        }
+        
+        QApplication::processEvents();
+    }, Qt::QueuedConnection);
 }
 
 void ComputationDialog::abort() {
