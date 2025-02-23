@@ -18,7 +18,11 @@ public:
     }
 
     void Show(const Message_ProgressScope& scope, const Standard_Boolean isForce) override {
-        Base::ProgressIndicator::getInstance().Show(scope.GetPortion(), isForce);
+        float pos = -1; // negative means indeterminate
+        if (!scope.IsInfinite()) {
+            pos = GetPosition();
+        }
+        Base::ProgressIndicator::getInstance().Show(pos, isForce);
     }
 };
 

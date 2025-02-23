@@ -47,17 +47,26 @@ ComputationDialog::ComputationDialog(QWidget* parent)
 
 void ComputationDialog::Show(float position, bool isForce) {
     (void)isForce;
-    int pct = std::clamp(static_cast<int>(position * 100), 0, 100);
 
-    // Update both the status label and progress bar using invokeMethod
-    QString status = tr("Progress: %1%").arg(pct);
-    QMetaObject::invokeMethod(statusLabel, "setText", Qt::QueuedConnection,
-                            Q_ARG(QString, status));
-
-    QMetaObject::invokeMethod(progressBar, "setValue", Qt::QueuedConnection,
-                            Q_ARG(int, pct));
-    QMetaObject::invokeMethod(progressBar, "setMaximum", Qt::QueuedConnection,
-                            Q_ARG(int, 100));
+    if (position < 0) {
+        // set as "indeterminate"
+        QMetaObject::invokeMethod(progressBar, "setValue", Qt::QueuedConnection,
+                                Q_ARG(int, 0));
+        QMetaObject::invokeMethod(progressBar, "setMaximum", Qt::QueuedConnection,
+                                Q_ARG(int, 0));
+        QString status = tr("Progress: ...");
+        QMetaObject::invokeMethod(statusLabel, "setText", Qt::QueuedConnection,
+                                Q_ARG(QString, status));
+    } else {
+        int pct = std::clamp(static_cast<int>(position * 100), 0, 100);
+        QMetaObject::invokeMethod(progressBar, "setValue", Qt::QueuedConnection,
+                                Q_ARG(int, pct));
+        QMetaObject::invokeMethod(progressBar, "setMaximum", Qt::QueuedConnection,
+                                Q_ARG(int, 100));
+        QString status = tr("Progress: %1%").arg(pct);
+        QMetaObject::invokeMethod(statusLabel, "setText", Qt::QueuedConnection,
+                                Q_ARG(QString, status));
+    }
 
     // Process events to keep UI responsive
     QApplication::processEvents();
@@ -79,7 +88,7 @@ void ComputationDialog::run(std::function<void()> func) {
     QMessageBox forceAbortBox(
         QMessageBox::Warning,
         QObject::tr("Operation not responding"),
-        QObject::tr("The abort operation is taking longer than expected.\nDo you want to forcibly cancel the thread? This will probably crash FreeCAD."),
+        QObject::tr("Aborting the operation is taking longer than expected.\nDo you want to forcibly cancel the thread? This will probably crash FreeCAD."),
         QMessageBox::Yes | QMessageBox::No,
         Gui::MainWindow::getInstance());
     forceAbortBox.setDefaultButton(QMessageBox::No);
@@ -111,8 +120,8 @@ void ComputationDialog::run(std::function<void()> func) {
 
     {
         // Wait for a brief moment to see if computation completes quickly
-        std::unique_lock<std::mutex> lock(mutex);  // Fixed: std::lock -> std::mutex
-        if (!cv.wait_for(lock, std::chrono::seconds(3),
+        std::unique_lock<std::mutex> lock(mutex);
+        if (!cv.wait_for(lock, std::chrono::seconds(1),
             [&]{ return computationDone.load(); }))  // Atomic load
         {
             // Computation didn't finish quickly, show dialog
