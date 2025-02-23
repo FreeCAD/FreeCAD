@@ -51,8 +51,6 @@ void ComputationDialog::Show(float position, bool isForce) {
             setMaximum(100);
             setValue(pct);
         }
-        
-        QApplication::processEvents();
     }, Qt::QueuedConnection);
 }
 
