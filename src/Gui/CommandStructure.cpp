@@ -71,12 +71,18 @@ void StdCmdPart::activated(int iMsg)
     // TODO We really must set label ourselves? (2015-08-17, Fat-Zer)
     doCommand(Doc,"App.activeDocument().%s.Label = '%s'", PartName.c_str(),
             QObject::tr(PartName.c_str()).toUtf8().data());
-    doCommand(Doc,
-              "selected_objects = Gui.Selection.getSelection()\n"
-              "if len(selected_objects) > 1:\n"
-              "    for obj in selected_objects:\n"
-              "        App.activeDocument().%s.addObject(obj)\n",
-              PartName.c_str());
+            
+    doCommand(Doc, 
+    "selected_objects = Gui.Selection.getSelection()\n"
+    "if len(selected_objects) > 1:\n"
+    "    for obj in selected_objects:\n"
+    "        App.activeDocument().%s.addObject(obj)", 
+    PartName.c_str());
+    
+    doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)\n"
+                                 "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
+            PARTKEY, PartName.c_str());
+
     updateActive();
 }
 
