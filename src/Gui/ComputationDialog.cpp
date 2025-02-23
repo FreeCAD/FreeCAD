@@ -70,8 +70,9 @@ void ComputationDialog::abort() {
 
 void ComputationDialog::run(std::function<void()> func) {
     std::atomic<bool> computationDone(false);
-    std::mutex mutex;  // Still needed for the condition variable
+    std::mutex mutex;
     std::condition_variable cv;
+    std::exception_ptr threadException;
 
     Base::ProgressIndicator::setInstance(this);
 
@@ -92,10 +93,8 @@ void ComputationDialog::run(std::function<void()> func) {
 
         try {
             func();
-        } catch (const std::exception& e) {
-            Base::Console().Error("Computation thread caught exception: %s\n", e.what());
         } catch (...) {
-            Base::Console().Error("Computation thread caught unknown exception\n");
+            threadException = std::current_exception();
         }
 
         computationDone.store(true);
@@ -153,6 +152,11 @@ void ComputationDialog::run(std::function<void()> func) {
     }
 
     Base::ProgressIndicator::resetInstance();
+
+    // Re-throw any exception that occurred in the thread
+    if (threadException) {
+        std::rethrow_exception(threadException);
+    }
 }
 
 bool ComputationDialog::UserBreak() {
