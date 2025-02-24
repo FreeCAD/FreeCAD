@@ -415,15 +415,12 @@ def get_pip_target_directory():
     """Get the default location to install new pip packages"""
     major, minor, _ = platform.python_version_tuple()
     snap_package = os.getenv("SNAP_REVISION")
-    
+
     if snap_package:
-        target_dir = os.path.join(
-            ".local", "lib", f"python{major}.{minor}", "site-packages")
+        target_dir = os.path.join(".local", "lib", f"python{major}.{minor}", "site-packages")
     else:
         target_dir = os.path.join("AdditionalPythonPackages", f"py{major}{minor}")
-    vendor_path = os.path.join(
-        fci.DataPaths().mod_dir, "..", target_dir
-    )
+    vendor_path = os.path.join(fci.DataPaths().mod_dir, "..", target_dir)
     return vendor_path
 
 
