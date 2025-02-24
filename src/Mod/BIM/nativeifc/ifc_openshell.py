@@ -26,6 +26,7 @@
 
 import FreeCAD
 import FreeCADGui
+from packaging.version import Version
 
 translate = FreeCAD.Qt.translate
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -49,8 +50,7 @@ class IFC_UpdateIOS:
         avail = self.get_avail_version()
         if avail:
             if version:
-                comp = self.compare_versions(avail, version)
-                if comp > 0:
+                if Version(version) < Version(avail):
                     self.show_dialog("update", avail)
                 else:
                     self.show_dialog("uptodate")
@@ -130,19 +130,29 @@ class IFC_UpdateIOS:
         """Retrieves the current ifcopenshell version"""
 
         import addonmanager_utilities as utils
+        from packaging.version import InvalidVersion
+
         try:
             import ifcopenshell
             version = ifcopenshell.version
+            
+            # Workaround for upstream bug
+            # Characters '\' or '-' have been seen instead of the major version
+            # TODO(furgo16): Remove when fixed
+            if not version[0].isdigit():
+                FreeCAD.Console.PrintWarning(f"Invalid IfcOpenShell version detected: {version}\n")
+                version = version[:0] + "0" + version[1:]
+                FreeCAD.Console.PrintWarning(f"Invalid IfcOpenShell version corrected to: {version}\n")
+            # End of workaround
+            
+            try:
+                Version(version)
+            except InvalidVersion:
+                FreeCAD.Console.PrintWarning(f"Invalid IfcOpenShell version: {version}\n")
+                version = ""
         except:
             version = ""
-        if version.startswith("v"):
-            # this is a pip version
-            vendor_path = utils.get_pip_target_directory()
-            result = self.run_pip(["list", "--path", vendor_path])
-            if result:
-                result = result.stdout.split()
-                if "ifcopenshell" in result:
-                    version = result[result.index("ifcopenshell")+1]
+
         return version
 
 
@@ -157,31 +167,6 @@ class IFC_UpdateIOS:
                 result = [r.strip(",") for r in result]
                 return result[0]  # we return the biggest
         return None
-
-
-    def compare_versions(self, v1, v2):
-        """Compare two version strings in the form '0.7.0' or v0.7.0"""
-
-        # code from https://www.geeksforgeeks.org/compare-two-version-numbers
-
-        arr1 = v1.replace("v","").split(".")
-        arr2 = v2.replace("v","").split(".")
-        n = len(arr1)
-        m = len(arr2)
-        arr1 = [int(i) for i in arr1]
-        arr2 = [int(i) for i in arr2]
-        if n > m:
-          for i in range(m, n):
-             arr2.append(0)
-        elif m > n:
-          for i in range(n, m):
-             arr1.append(0)
-        for i in range(len(arr1)):
-          if arr1[i] > arr2[i]:
-             return 1
-          elif arr2[i] > arr1[i]:
-             return -1
-        return 0
 
 
 FreeCADGui.addCommand("IFC_UpdateIOS", IFC_UpdateIOS())
