@@ -167,7 +167,7 @@ public:
 };
 
 QGVPage::QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent)
-    : QGraphicsView(parent), m_renderer(Native), drawBkg(true), m_vpPage(nullptr),
+    : QGraphicsView(parent), m_renderer(RendererType::Native), drawBkg(true), m_vpPage(nullptr),
       m_scene(scenePage), balloonPlacing(false), m_showGrid(false),
       m_navStyle(nullptr), d(new Private(this)), toolHandler(nullptr)
 {
@@ -184,7 +184,7 @@ QGVPage::QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent)
     m_saveContextEvent = nullptr;
 
     setCacheMode(QGraphicsView::CacheBackground);
-    setRenderer(Native);
+    setRenderer(RendererType::Native);
     //    setRenderer(OpenGL);  //gives rotten quality, don't use this
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
@@ -374,7 +374,7 @@ void QGVPage::setRenderer(RendererType type)
 {
     m_renderer = type;
 
-    if (m_renderer == OpenGL) {
+    if (m_renderer == RendererType::OpenGL) {
 #ifndef QT_NO_OPENGL
         setViewport(new QOpenGLWidget);
         setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
@@ -397,7 +397,7 @@ void QGVPage::setHighQualityAntialiasing(bool highQualityAntialiasing)
 
 void QGVPage::paintEvent(QPaintEvent* event)
 {
-    if (m_renderer == Image) {
+    if (m_renderer == RendererType::Image) {
         if (m_image.size() != viewport()->size()) {
             m_image = QImage(viewport()->size(), QImage::Format_ARGB32_Premultiplied);
         }

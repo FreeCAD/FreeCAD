@@ -50,6 +50,7 @@
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
 
+#include "Enums.h"
 #include "QGIViewDimension.h"
 #include "PreferencesGui.h"
 #include "QGIArrow.h"
@@ -72,22 +73,15 @@ using namespace TechDraw;
 using namespace TechDrawGui;
 using Format = DimensionFormatter::Format;
 
-enum SnapMode
+enum class SnapMode
 {
     NoSnap,
     VerticalSnap,
     HorizontalSnap
 };
 
-enum DragState
-{
-    NoDrag,
-    DragStarted,
-    Dragging
-};
 
-
-QGIDatumLabel::QGIDatumLabel() : m_dragState(NoDrag)
+QGIDatumLabel::QGIDatumLabel() : m_dragState(DragState::NoDrag)
 {
     verticalSep = false;
     posX = 0;
@@ -146,9 +140,9 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant& va
         }
         else {
             setPrettyNormal();
-            if (m_dragState == Dragging) {
+            if (m_dragState == DragState::Dragging) {
                 //stop the drag if we are no longer selected.
-                m_dragState = NoDrag;
+                m_dragState = DragState::NoDrag;
                 Q_EMIT dragFinished();
             }
         }
@@ -160,7 +154,7 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant& va
         }
 
         setLabelCenter();
-        m_dragState = Dragging;
+        m_dragState = DragState::Dragging;
         Q_EMIT dragging(m_ctrl);
     }
 
@@ -299,8 +293,8 @@ void QGIDatumLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
     //    Base::Console().Message("QGIDL::mouseReleaseEvent()\n");
     m_ctrl = false;
-    if (m_dragState == Dragging) {
-        m_dragState = NoDrag;
+    if (m_dragState == DragState::Dragging) {
+        m_dragState = DragState::NoDrag;
         Q_EMIT dragFinished();
     }
 
