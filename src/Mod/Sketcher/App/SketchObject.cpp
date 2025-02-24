@@ -9064,9 +9064,10 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                 Base::Vector3d dir = line->getDirection();
                 gp_Lin l(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
                 BRepBuilderAPI_MakeEdge eBuilder(l);
-                if(!eBuilder.IsDone())
+                if (!eBuilder.IsDone()) {
                     throw Base::RuntimeError(
                         "Sketcher: addExternal(): Failed to build edge from Part::DatumLine");
+                }
 
                 TopoDS_Edge e = TopoDS::Edge(eBuilder.Shape());
                 refSubShape = e;
@@ -9077,9 +9078,10 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                 Base::Vector3d base = plm.getPosition();
                 gp_Pnt p(base.x, base.y, base.z);
                 BRepBuilderAPI_MakeVertex eBuilder(p);
-                if(!eBuilder.IsDone())
+                if (!eBuilder.IsDone()) {
                     throw Base::RuntimeError(
                         "Sketcher: addExternal(): Failed to build vertex from Part::DatumPoint");
+                }
 
                 TopoDS_Vertex v = TopoDS::Vertex(eBuilder.Shape());
                 refSubShape = v;
