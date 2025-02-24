@@ -210,7 +210,10 @@ QStringList SvgAttributeReader::findMultiRegexInString(const QRegularExpression&
 
     auto strings = match.capturedTexts();
 
-    int availableResults = std::min(strings.size(), maxResults);
+    // CI does not like this line
+    //int availableResults = std::min(strings.size(), maxResults);
+    int availableResults = (strings.size() < maxResults) ? strings.size() : maxResults;
+
     auto itrString = strings.end() - availableResults;
     QStringList results;
     for (; itrString != strings.end(); itrString++) {
