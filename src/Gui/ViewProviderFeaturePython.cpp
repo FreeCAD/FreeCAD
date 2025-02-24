@@ -36,6 +36,7 @@
 #include <App/DocumentObjectPy.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
+#include <CXX/Python3/Objects.hxx>
 
 #include "ViewProviderFeaturePython.h"
 #include "Application.h"
@@ -44,6 +45,7 @@
 #include "PythonWrapper.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObjectPy.h"
+#include "Selection.h"
 
 
 FC_LOG_LEVEL_INIT("ViewProviderFeaturePython", true, true)
@@ -74,6 +76,8 @@ ViewProviderFeaturePythonImp::~ViewProviderFeaturePythonImp()
     catch (Py::Exception& e) {
         e.clear();
     }
+
+    this->selectionObserver.~SelectionObserverPythonHandler();
 }
 
 void ViewProviderFeaturePythonImp::init(PyObject *pyobj) {
@@ -84,6 +88,8 @@ void ViewProviderFeaturePythonImp::init(PyObject *pyobj) {
 #define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_INIT(_name)
 
     FC_PY_VIEW_OBJECT
+
+    this->selectionObserver.init(pyobj);
 }
 
 #define FC_PY_CALL_CHECK(_name) _FC_PY_CALL_CHECK(_name,return(NotImplemented))
@@ -200,6 +206,10 @@ ViewProviderFeaturePythonImp::useNewSelectionModel() const
     }
 
     return Accepted;
+}
+
+void ViewProviderFeaturePythonImp::onSelectionChanged(const SelectionChanges& changes) {
+    this->selectionObserver.handleSelectionChanged(changes);
 }
 
 bool ViewProviderFeaturePythonImp::getElement(const SoDetail *det, std::string &res) const
