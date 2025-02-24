@@ -559,15 +559,19 @@ def get_main_am_window():
     return None
 
 
-def remove_target_option(args: List[str]) -> List[str]:
-    # The Snap pip automatically adds the --user option, which is not compatible with the
-    # --target option, so we have to remove --target and its argument, if present
-    try:
-        index = args.index("--target")
-        del args[index : index + 2]  # The --target option and its argument
-    except ValueError:
-        pass
-    return args
+def remove_options_and_arg(call_args: List[str], deny_args: List[str]) -> List[str]:
+    """Removes a set of options and their only argument from a pip call.
+    This is necessary as the pip binary in the snap package is called with
+    the --user option, which is not compatible with some other options such
+    as --target and --path. We then have to remove e.g. target --path and
+    its argument, if present."""
+    for deny_arg in deny_args:
+        try:
+            index = call_args.index(deny_arg)
+            del call_args[index : index + 2]  # The option and its argument
+        except ValueError:
+            pass
+    return call_args
 
 
 def create_pip_call(args: List[str]) -> List[str]:
@@ -577,7 +581,7 @@ def create_pip_call(args: List[str]) -> List[str]:
     snap_package = os.getenv("SNAP_REVISION")
     appimage = os.getenv("APPIMAGE")
     if snap_package:
-        args = remove_target_option(args)
+        args = remove_options_and_arg(args, ["--target", "--path"])
         call_args = ["pip", "--disable-pip-version-check"]
         call_args.extend(args)
     elif appimage:
