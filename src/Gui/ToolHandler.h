@@ -35,7 +35,7 @@
 namespace Gui
 {
 class View3DInventorViewer;
-
+class InputHint;
 
 class GuiExport ToolHandler
 {
@@ -53,7 +53,7 @@ public:
     /// enabling to set data member dependent icons (i.e. for different construction methods)
     void updateCursor();
 
-    virtual QString getToolHintText() const;
+    virtual std::list<InputHint> getToolHints() const;
     void updateHint() const;
 
 private:  // NVI

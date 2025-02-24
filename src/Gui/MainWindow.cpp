@@ -115,6 +115,8 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "Dialogs/DlgObjectSelection.h"
+
+#include <QBuffer>
 #include <App/Color.h>
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
@@ -2231,9 +2233,74 @@ void MainWindow::showStatus(int type, const QString& message)
     statusBar()->showMessage(msg.simplified(), timeout);
 }
 
-void MainWindow::showHint(const QString& hint)
+void MainWindow::showHint(InputHint hint)
 {
-    d->hintLabel->setText(hint);
+    showHints({ hint });
+}
+
+void MainWindow::showHints(const std::list<InputHint>& hints)
+{
+    if (hints.size() == 0) {
+        hideHint();
+        return;
+    }
+
+    static const auto iconPath = [](InputHint::Key key) {
+        switch (key) {
+            case InputHint::Key::F:
+                return ":/icons/keys/F.svg";
+            case InputHint::Key::U:
+                return ":/icons/keys/U.svg";
+            case InputHint::Key::J:
+                return ":/icons/keys/J.svg";
+            case InputHint::Key::M:
+                return ":/icons/keys/M.svg";
+            case InputHint::Key::MouseLeft:
+                return ":/icons/keys/mouse-left.svg";
+            case InputHint::Key::MouseRight:
+                return ":/icons/keys/mouse-right.svg";
+            case InputHint::Key::MouseMove:
+                return ":/icons/keys/mouse-move.svg";
+        }
+    };
+
+    const auto getKeyImage = [this](InputHint::Key key) {
+        const auto& factory = BitmapFactory();
+
+        QPixmap image = factory.pixmapFromSvg(
+            iconPath(key),
+            QSize(24, 24),
+            {
+                {0xFFFFFF, d->hintLabel->palette().text().color().rgb() & RGB_MASK},
+            });
+        QBuffer buffer;
+
+        image.save(&buffer, "png");
+
+        return QStringLiteral("<img src=\"data:image/png;base64,%1\" width=24 height=24 />")
+            .arg(QString::fromLatin1(buffer.data().toBase64()));
+    };
+
+    const auto getHintHTML = [&](InputHint hint) {
+        QString message = QStringLiteral("<td valign=bottom>%1</td>").arg(tr(hint.message));
+
+        for (const auto key : hint.keys) {
+            message = message.arg(getKeyImage(key));
+        }
+
+        return message;
+    };
+
+    QStringList messages;
+    for (const auto& hint : hints) {
+        messages.append(getHintHTML(hint));
+    }
+
+    QString html = QStringLiteral("<table style=\"line-height: 28px\" height=28>"
+                                     "<tr>%1</tr>"
+                                     "</table>");
+
+    d->hintLabel->setText(html.arg(messages.join(QStringLiteral("<td width=10></td>"))));
 }
 
 void MainWindow::hideHint()

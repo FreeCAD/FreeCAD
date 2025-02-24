@@ -63,6 +63,24 @@ public:
     }
 };
 
+
+struct InputHint
+{
+    enum class Key {
+        M,
+        F,
+        U,
+        J,
+        MouseLeft,
+        MouseRight,
+        MouseMiddle,
+        MouseMove,
+    };
+
+    const char* message;
+    std::list<Key> keys;
+};
+
 /**
  * The MainWindow class provides a main window with menu bar, toolbars, dockable windows,
  * a status bar and mainly a workspace for the MDI windows.
@@ -203,7 +221,8 @@ public:
     enum StatusType {None, Err, Wrn, Pane, Msg, Log, Tmp, Critical};
     void showStatus(int type, const QString& message);
 
-    void showHint(const QString& hint);
+    void showHint(InputHint hint);
+    void showHints(const std::list<InputHint>& hints = {});
     void hideHint();
 
     void initDockWindows(bool show);

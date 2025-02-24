@@ -74,16 +74,22 @@ public:
     {}
     ~DrawSketchHandlerPolygon() override = default;
 
-    QString getToolHintText() const override
+    std::list<Gui::InputHint> getToolHints() const override
     {
         switch (state()) {
             case SelectMode::SeekFirst:
-                return QWidget::tr("Use <b>left click</b> to pick polygon center, "
-                                   "<b>U</b>/<b>J</b> to increase/decrease number of sides");
+                return {
+                    {"%1 pick polygon center", {Gui::InputHint::Key::MouseLeft}},
+                    {"%1/%2 increase / decrease number of sides",
+                     {Gui::InputHint::Key::U, Gui::InputHint::Key::J}},
+                };
             case SelectMode::SeekSecond:
-                return QWidget::tr(
-                    "Use mouse to pick rotation and size, <b>left click</b> to confirm, "
-                    "<b>U</b>/<b>J</b> to increase/decrease number of sides");
+                return {
+                    {"%1 pick rotation and size", {Gui::InputHint::Key::MouseMove}},
+                    {"%1 confirm", {Gui::InputHint::Key::MouseLeft}},
+                    {"%1/%2 increase / decrease number of sides",
+                     {Gui::InputHint::Key::U, Gui::InputHint::Key::J}},
+                };
             default:
                 return {};
         }

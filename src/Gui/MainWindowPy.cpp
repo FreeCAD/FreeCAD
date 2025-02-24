@@ -233,7 +233,7 @@ Py::Object MainWindowPy::showHint(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    _mw->showHint(QString::fromUtf8(hint));
+    // _mw->showHint(QString::fromUtf8(hint));
 
     return Py::None();
 }

@@ -237,14 +237,15 @@ void ToolHandler::updateCursor()
         setCrosshairCursor(cursorstring);
     }
 }
-QString ToolHandler::getToolHintText() const
+
+std::list<InputHint> ToolHandler::getToolHints() const
 {
-    return QString();
+    return {};
 }
 
 void ToolHandler::updateHint() const
 {
-    Gui::getMainWindow()->showHint(getToolHintText());
+    Gui::getMainWindow()->showHints(getToolHints());
 }
 
 void ToolHandler::applyCursor()
