@@ -553,10 +553,10 @@ def get_main_am_window():
 
 
 def remove_options_and_arg(call_args: List[str], deny_args: List[str]) -> List[str]:
-    """ Removes a set of options and their only argument from a pip call.
+    """Removes a set of options and their only argument from a pip call.
     This is necessary as the pip binary in the snap package is called with
-    the --user option, which is not compatible with some other options such 
-    as --target and --path. We then have to remove e.g. target --path and 
+    the --user option, which is not compatible with some other options such
+    as --target and --path. We then have to remove e.g. target --path and
     its argument, if present."""
     for deny_arg in deny_args:
         try:
