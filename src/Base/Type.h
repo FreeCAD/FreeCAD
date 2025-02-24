@@ -94,7 +94,6 @@ public:
     [[nodiscard]] bool canInstantiate() const;
     /// Creates an instance of the named type
     [[nodiscard]] static void* createInstanceByName(const char* typeName, bool loadModule = false);
-    static void importModule(const char* TypeName);
 
     using instantiationMethod = void* (*)();
 
@@ -142,6 +141,7 @@ public:
 
 private:
     [[nodiscard]] instantiationMethod getInstantiationMethod() const;
+    static void importModule(const char* TypeName);
 
     TypeId index {BadTypeIndex};
 
