@@ -59,6 +59,7 @@
 #include "QGVNavStyleOCC.h"
 #include "QGVNavStyleOpenSCAD.h"
 #include "QGVNavStyleRevit.h"
+#include "QGVNavStyleSolidWorks.h"
 #include "QGVNavStyleTinkerCAD.h"
 #include "QGVNavStyleTouchpad.h"
 #include "QGVPage.h"
@@ -246,6 +247,7 @@ void QGVPage::setNavigationStyle(std::string navParm)
     std::size_t foundOCC = navParm.find("OpenCascade");
     std::size_t foundOpenSCAD = navParm.find("OpenSCAD");
     std::size_t foundRevit = navParm.find("Revit");
+    std::size_t foundSolidWorks = navParm.find("SolidWorks");
 
     if (foundBlender != std::string::npos) {
         m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleBlender(this));
@@ -276,6 +278,9 @@ void QGVPage::setNavigationStyle(std::string navParm)
     }
     else if (foundRevit != std::string::npos) {
         m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleRevit(this));
+    }
+    else if (foundSolidWorks != std::string::npos) {
+        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleSolidWorks(this));
     }
     else {
         m_navStyle = new QGVNavStyle(this);
