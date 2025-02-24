@@ -375,7 +375,7 @@ bool Translator::eventFilter(QObject* obj, QEvent* ev)
         int key = kev->key();
         if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma)) {
             if (ev->spontaneous()) {
-                auto dp = QString(QLocale().decimalPoint());
+                auto dp = QLocale().decimalPoint();
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
                 int dpcode = QKeySequence(dp)[0];
 #else

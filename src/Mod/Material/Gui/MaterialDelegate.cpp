@@ -276,7 +276,7 @@ void MaterialDelegate::showColorModal(const QString& propertyName, QStandardItem
         if (result == QDialog::Accepted) {
             QColor color = dlg->selectedColor();
             if (color.isValid()) {
-                QString colorText = QString(QStringLiteral("(%1,%2,%3,%4)"))
+                QString colorText = QStringLiteral("(%1,%2,%3,%4)")
                                         .arg(color.red() / 255.0)
                                         .arg(color.green() / 255.0)
                                         .arg(color.blue() / 255.0)

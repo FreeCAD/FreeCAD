@@ -62,7 +62,7 @@ MaterialSave::MaterialSave(const std::shared_ptr<Materials::Material>& material,
     else {
         ui->editFilename->setText(QStringLiteral("NewMaterial.FCMat"));
     }
-    _filename = QString(ui->editFilename->text());  // No filename by default
+    _filename = ui->editFilename->text();  // No filename by default
 
     ui->checkDerived->setChecked(_saveInherited);
     connect(ui->checkDerived, &QCheckBox::stateChanged, this, &MaterialSave::onInherited);
@@ -399,7 +399,7 @@ void MaterialSave::onSelectModel(const QItemSelection& selected, const QItemSele
     // Q_UNUSED(selected);
     Q_UNUSED(deselected);
 
-    _filename = QString(ui->editFilename->text());  // No filename by default
+    _filename = ui->editFilename->text();  // No filename by default
     auto model = static_cast<QStandardItemModel*>(ui->treeMaterials->model());
     QModelIndexList indexes = selected.indexes();
     if (indexes.isEmpty()) {

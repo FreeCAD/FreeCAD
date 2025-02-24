@@ -175,7 +175,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Rotate parameters"));
+        return QObject::tr("Rotate parameters");
     }
 
     void activated() override

@@ -132,7 +132,7 @@ QString MaterialProperty::getString() const
         if (value.isNull()) {
             return {};
         }
-        return QString(QStringLiteral("%L1")).arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
+        return QStringLiteral("%L1").arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
     }
     return getValue().toString();
 }
@@ -177,7 +177,7 @@ QString MaterialProperty::getDictionaryString() const
     }
     if (getType() == MaterialValue::Quantity) {
         auto quantity = getValue().value<Base::Quantity>();
-        auto string = QString(QStringLiteral("%1 %2"))
+        auto string = QStringLiteral("%1 %2")
                           .arg(quantity.getValue(), 0, 'g', MaterialValue::PRECISION)
                           .arg(QString::fromStdString(quantity.getUnit().getString()));
         return string;
@@ -187,7 +187,7 @@ QString MaterialProperty::getDictionaryString() const
         if (value.isNull()) {
             return {};
         }
-        return QString(QStringLiteral("%1")).arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
+        return QStringLiteral("%1").arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
     }
     return getValue().toString();
 }
@@ -1125,7 +1125,7 @@ Material::getValueString(const std::map<QString, std::shared_ptr<MaterialPropert
             if (value.isNull()) {
                 return {};
             }
-            return QString(QStringLiteral("%L1"))
+            return QStringLiteral("%L1")
                 .arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
         }
         return property->getValue().toString();

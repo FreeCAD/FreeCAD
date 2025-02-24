@@ -141,7 +141,7 @@ QString checkStatusToString(const int &index)
     static QVector<QString> names = buildCheckStatusStringVector();
     if (index == -1)
     {
-        return QString(QObject::tr("No Result"));
+        return QObject::tr("No Result");
     }
     if (index > 33 || index < 0)
     {
@@ -338,11 +338,11 @@ QVariant ResultModel::headerData(int section, Qt::Orientation orientation, int r
     switch (section)
     {
     case 0:
-        return QVariant(QString(tr("Name")));
+        return QVariant(tr("Name"));
     case 1:
-        return QVariant(QString(tr("Type")));
+        return QVariant(tr("Type"));
     case 2:
-        return QVariant(QString(tr("Error")));
+        return QVariant(tr("Error"));
     }
     return {};
 }
