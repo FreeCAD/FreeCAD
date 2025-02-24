@@ -104,7 +104,7 @@ void QGICenterLine::setIntersection(bool isIntersecting) {
 
 void QGICenterLine::setTools()
 {
-    if (m_styleCurrent == Qt::DashDotLine) {
+    if (m_pen.style() == Qt::DashDotLine) {
         QVector<qreal> dashes;
         qreal space = 4;  // in unit width
         qreal dash = 16;
@@ -116,7 +116,7 @@ void QGICenterLine::setTools()
         qreal dashlen = dot + 2 * space + dash;
         qreal l_len = sqrt(pow(m_start.x() - m_end.x(), 2) + pow(m_start.y() - m_end.y(), 2)) / 2.0;
         // convert from pixelunits to width units
-        l_len = l_len / m_width;
+        l_len = l_len / m_pen.widthF();
         // note that the additional length using RoundCap or SquareCap does not
         // count here!
         if (m_isintersection) {
@@ -127,12 +127,7 @@ void QGICenterLine::setTools()
 
         m_pen.setDashPattern(dashes);
     }
-    else {
-        m_pen.setStyle(m_styleCurrent);
-    }
     m_pen.setCapStyle(Qt::RoundCap);
-    m_pen.setWidthF(m_width);
-    m_pen.setColor(m_colCurrent);
     m_line->setPen(m_pen);
 }
 
