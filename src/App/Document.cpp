@@ -162,7 +162,7 @@ bool Document::testStatus(const Status pos) const
     return d->StatusBits.test(static_cast<size_t>(pos));
 }
 
-void Document::setStatus(const Status pos, const bool on) const
+void Document::setStatus(const Status pos, const bool on) // NOLINT
 {
     d->StatusBits.set(static_cast<size_t>(pos), on);
 }
@@ -342,7 +342,7 @@ std::vector<std::string> Document::getAvailableRedoNames() const
     return vList;
 }
 
-void Document::openTransaction(const char* name) const
+void Document::openTransaction(const char* name) // NOLINT
 {
     if (isPerformingTransaction() || d->committing) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
@@ -476,7 +476,7 @@ void Document::_clearRedos()
     }
 }
 
-void Document::commitTransaction() const
+void Document::commitTransaction() // NOLINT
 {
     if (isPerformingTransaction() || d->committing) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
@@ -601,7 +601,7 @@ bool Document::isTransactionEmpty() const
 
 }
 
-void Document::clearDocument() const
+void Document::clearDocument() // NOLINT
 {
     d->activeObject = nullptr;
 
@@ -717,12 +717,12 @@ unsigned int Document::getUndoMemSize() const
     return d->UndoMemSize;
 }
 
-void Document::setUndoLimit(const unsigned int UndoMemSize) const
+void Document::setUndoLimit(const unsigned int UndoMemSize) // NOLINT
 {
     d->UndoMemSize = UndoMemSize;
 }
 
-void Document::setMaxUndoStackSize(const unsigned int UndoMaxStackSize) const
+void Document::setMaxUndoStackSize(const unsigned int UndoMaxStackSize) // NOLINT
 {
     d->UndoMaxStackSize = UndoMaxStackSize;
 }
@@ -820,7 +820,7 @@ void Document::onChangedProperty(const DocumentObject* Who, const Property* What
     signalChangedObject(*Who, *What);
 }
 
-void Document::setTransactionMode(const int iMode) const
+void Document::setTransactionMode(const int iMode) // NOLINT
 {
     d->iTransactionMode = iMode;
 }
@@ -1587,7 +1587,7 @@ std::vector<DocumentObject*> Document::readObjects(Base::XMLReader& reader)
     return objs;
 }
 
-void Document::addRecomputeObject(DocumentObject* obj) const
+void Document::addRecomputeObject(DocumentObject* obj) // NOLINT
 {
     if (testStatus(Status::Restoring) && obj) {
         setStatus(Status::RecomputeOnRestore, true);
@@ -2465,7 +2465,7 @@ const char* Document::getFileName() const
 }
 
 /// Remove all modifications. After this call The document becomes valid again.
-void Document::purgeTouched() const
+void Document::purgeTouched() // NOLINT
 {
     for (const auto It : d->objectArray) {
         It->purgeTouched();
@@ -2495,7 +2495,7 @@ vector<DocumentObject*> Document::getTouched() const
     return result;
 }
 
-void Document::setClosable(const bool c) const
+void Document::setClosable(const bool c) // NOLINT
 {
     setStatus(Document::Closable, c);
 }
@@ -2863,7 +2863,7 @@ void Document::_rebuildDependencyList(const std::vector<DocumentObject*>& objs)
 
 void Document::renameObjectIdentifiers(
     const std::map<ObjectIdentifier, ObjectIdentifier>& paths,
-    const std::function<bool(const DocumentObject*)>& selector) const
+    const std::function<bool(const DocumentObject*)>& selector) // NOLINT
 {
     std::map<ObjectIdentifier, ObjectIdentifier> extendedPaths;
 
@@ -3408,7 +3408,7 @@ const char* Document::getErrorDescription(const DocumentObject* Obj) const
 }
 
 // call the recompute of the Feature and handle the exceptions and errors.
-int Document::_recomputeFeature(DocumentObject* Feat) const
+int Document::_recomputeFeature(DocumentObject* Feat) // NOLINT
 {
     FC_LOG("Recomputing " << Feat->getFullName());
 
@@ -3957,7 +3957,7 @@ void Document::_removeObject(DocumentObject* pcObject)
     }
 }
 
-void Document::breakDependency(DocumentObject* pcObject, const bool clear) const
+void Document::breakDependency(DocumentObject* pcObject, const bool clear) // NOLINT
 {
     // Nullify all dependent objects
     PropertyLinkBase::breakLinks(pcObject, d->objectArray, clear);

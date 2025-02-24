@@ -187,7 +187,7 @@ public:
     // NOLINTEND
 
 
-    void clearDocument() const;
+    void clearDocument();
 
     /** @name File handling of the document */
     //@{
@@ -364,7 +364,7 @@ public:
      */
     //@{
     /// Remove all modifications. After this call The document becomes Valid again.
-    void purgeTouched() const;
+    void purgeTouched();
     /// check if there is any touched object in this document
     bool isTouched() const;
     /// check if there is any object must execute in this document
@@ -372,7 +372,7 @@ public:
     /// returns all touched objects
     std::vector<DocumentObject*> getTouched() const;
     /// set the document to be closable, this is on by default.
-    void setClosable(bool) const;
+    void setClosable(bool);
     /// check whether the document can be closed
     bool isClosable() const;
     /** Recompute touched features and return the number of recalculated features
@@ -394,7 +394,7 @@ public:
     /// return the status bits
     bool testStatus(Status pos) const;
     /// set the status bits
-    void setStatus(Status pos, bool on) const;
+    void setStatus(Status pos, bool on);
     //@}
 
 
@@ -420,7 +420,7 @@ public:
     /// switch the level of Undo/Redo
     int getUndoMode() const;
     /// switch the transaction mode
-    void setTransactionMode(int iMode) const;
+    void setTransactionMode(int iMode);
     /** Open a new command Undo/Redo, an UTF-8 name can be specified
      *
      * @param name: transaction name
@@ -429,11 +429,11 @@ public:
      * to setup a potential transaction which will only be created if there is
      * actual changes.
      */
-    void openTransaction(const char* name = nullptr) const;
+    void openTransaction(const char* name = nullptr);
     /// Rename the current transaction if the id matches
     void renameTransaction(const char* name, int id) const;
     /// Commit the Command transaction. Do nothing If there is no Command transaction open.
-    void commitTransaction() const;
+    void commitTransaction();
     /// Abort the actually running transaction.
     void abortTransaction() const;
     /// Check if a transaction is open
@@ -444,11 +444,11 @@ public:
     /// If no transaction is open true is returned.
     bool isTransactionEmpty() const;
     /// Set the Undo limit in Byte!
-    void setUndoLimit(unsigned int UndoMemSize = 0) const;
+    void setUndoLimit(unsigned int UndoMemSize = 0);
     /// Returns the actual memory consumption of the Undo redo stuff.
     unsigned int getUndoMemSize() const;
     /// Set the Undo limit as stack size
-    void setMaxUndoStackSize(unsigned int UndoMaxStackSize = 20) const;  // NOLINT
+    void setMaxUndoStackSize(unsigned int UndoMaxStackSize = 20);  // NOLINT
     /// Set the Undo limit as stack size
     unsigned int getMaxUndoStackSize() const;
     /// Remove all stored Undos and Redos
@@ -566,7 +566,7 @@ public:
     bool hasLinksTo(const DocumentObject* obj) const;
 
     /// Called by objects during restore to ask for recompute
-    void addRecomputeObject(DocumentObject* obj) const;
+    void addRecomputeObject(DocumentObject* obj);
 
     const std::string& getOldLabel() const
     {
@@ -579,7 +579,7 @@ public:
         const std::function<bool(const DocumentObject*)>& selector =
             [](const DocumentObject*) {
                 return true;
-            }) const;
+            });
 
     PyObject* getPyObject() override;
 
@@ -606,7 +606,7 @@ protected:
     void _addObject(DocumentObject* pcObject, const char* pObjectName);
     /// checks if a valid transaction is open
     void _checkTransaction(DocumentObject* pcDelObj, const Property* What, int line);
-    void breakDependency(DocumentObject* pcObject, bool clear) const;
+    void breakDependency(DocumentObject* pcObject, bool clear);
     std::vector<DocumentObject*> readObjects(Base::XMLReader& reader);
     void writeObjects(const std::vector<DocumentObject*>&, Base::Writer& writer) const;
     bool saveToFile(const char* filename) const;
@@ -620,7 +620,7 @@ protected:
     void onChangedProperty(const DocumentObject* Who, const Property* What);
     /// helper which Recompute only this feature
     /// @return 0 if succeeded, 1 if failed, -1 if aborted by user.
-    int _recomputeFeature(DocumentObject* Feat) const;
+    int _recomputeFeature(DocumentObject* Feat);
     void _clearRedos();
 
     /// refresh the internal dependency graph
