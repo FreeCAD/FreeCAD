@@ -414,9 +414,16 @@ def is_float(element: Any) -> bool:
 def get_pip_target_directory():
     """Get the default location to install new pip packages"""
     major, minor, _ = platform.python_version_tuple()
-    vendor_path = os.path.join(
-        fci.DataPaths().mod_dir, "..", "AdditionalPythonPackages", f"py{major}{minor}"
-    )
+    snap_package = os.getenv("SNAP_REVISION")
+
+    if snap_package:
+        import site
+
+        vendor_path = site.getusersitepackages()
+    else:
+        vendor_path = os.path.join(
+            fci.DataPaths().mod_dir, "..", "AdditionalPythonPackages", f"py{major}{minor}"
+        )
     return vendor_path
 
 
