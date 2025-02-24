@@ -11,7 +11,7 @@
 
 namespace Part {
 
-class OCCTProgressIndicator : public Message_ProgressIndicator
+class PartExport OCCTProgressIndicator : public Message_ProgressIndicator
 {
 public:
     OCCTProgressIndicator() 

@@ -6,7 +6,7 @@
 namespace Base
 {
 
-class ProgressIndicator
+class BaseExport ProgressIndicator
 {
 public:
     virtual ~ProgressIndicator() = default;

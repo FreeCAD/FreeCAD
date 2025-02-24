@@ -9,7 +9,7 @@
 
 namespace Gui {
 
-class ComputationDialog : public QProgressDialog, public Base::ProgressIndicator {
+class GuiExport ComputationDialog : public QProgressDialog, public Base::ProgressIndicator {
     Q_OBJECT
 public:
     ComputationDialog(QWidget* parent = Gui::MainWindow::getInstance());
