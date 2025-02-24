@@ -39,10 +39,12 @@
 #include <QColor>
 #include <QGraphicsView>
 #include <QUrl>
-#include <QtOpenGL.h>
 
 #include "Basic.h"
 
+class QOpenGLContext;
+class QOpenGLWidget;
+class QSurfaceFormat;
 
 class QMenu;
 class SoNode;

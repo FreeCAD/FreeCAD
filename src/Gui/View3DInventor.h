@@ -26,7 +26,6 @@
 #include <memory>
 #include <optional>
 #include <QImage>
-#include <QtOpenGL.h>
 
 #include <Base/Parameter.h>
 
@@ -35,6 +34,7 @@
 #include "Base/Vector3D.h"
 
 class QPrinter;
+class QOpenGLWidget;
 class QStackedWidget;
 
 namespace Gui {

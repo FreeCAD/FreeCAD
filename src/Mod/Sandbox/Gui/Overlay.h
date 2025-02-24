@@ -24,7 +24,6 @@
 #ifndef SANDBOXGUI_OVERLAY_H
 #define SANDBOXGUI_OVERLAY_H
 
-#include <QtOpenGL.h>
 #include <Gui/MouseSelection.h>
 #include <QColor>
 #include <QPoint>

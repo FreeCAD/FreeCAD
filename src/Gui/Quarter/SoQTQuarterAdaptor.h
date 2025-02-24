@@ -31,6 +31,9 @@
 
 #include "QuarterWidget.h"
 
+class QOpenGLContext;
+class QOpenGLWidget;
+class QSurfaceFormat;
 
 class SbViewportRegion;
 class SoCamera;

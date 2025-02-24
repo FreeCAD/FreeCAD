@@ -25,6 +25,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <QOpenGLWidget>
+
 #include "GLPainter.h"
 #include "View3DInventorViewer.h"
 

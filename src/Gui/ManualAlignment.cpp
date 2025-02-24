@@ -30,6 +30,7 @@
 # include <QMessageBox>
 # include <QPainter>
 # include <QSplitter>
+# include <QSurfaceFormat>
 # include <QTimer>
 # include <QVBoxLayout>
 # include <Inventor/SoPickedPoint.h>

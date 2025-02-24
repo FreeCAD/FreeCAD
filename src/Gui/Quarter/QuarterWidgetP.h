@@ -36,8 +36,8 @@
 #include <Inventor/SbBasic.h>
 #include <QList>
 #include <QUrl>
-#include <QtOpenGL.h>
 
+class QOpenGLWidget;
 
 class SoNode;
 class SoCamera;

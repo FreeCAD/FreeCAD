@@ -70,6 +70,8 @@
 # include <GL/gl.h>
 #endif
 
+#include <QOpenGLWidget>
+
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/ElementNamingUtils.h>

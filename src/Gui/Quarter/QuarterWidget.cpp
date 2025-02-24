@@ -70,6 +70,7 @@
 #include <QMetaObject>
 #include <QOpenGLDebugLogger>
 #include <QOpenGLDebugMessage>
+#include <QOpenGLWidget>
 #include <QPaintEvent>
 #include <QResizeEvent>
 #include <QWindow>

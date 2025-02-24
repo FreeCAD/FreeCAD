@@ -34,11 +34,16 @@
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoSeparator.h>
 
-#if !defined(FC_OS_MACOSX)
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+# endif
+# ifdef FC_OS_MACOSX
+# include <OpenGL/gl.h>
+# else
 # include <GL/gl.h>
-# include <GL/glu.h>
 # include <GL/glext.h>
-#endif
+# include <GL/glu.h>
+# endif
 
 #include "SoQTQuarterAdaptor.h"
 

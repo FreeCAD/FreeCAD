@@ -41,7 +41,9 @@
 # include <QCursor>
 # include <QImage>
 # include <QMenu>
+# include <QOpenGLFramebufferObject>
 # include <QOpenGLTexture>
+# include <QOpenGLWidget>
 # include <QPainterPath>
 #endif
 
@@ -705,7 +707,7 @@ void NaviCubeImplementation::prepare()
         delete m_PickingFramebuffer;
     m_PickingFramebuffer =
         new QOpenGLFramebufferObject(2 * m_CubeWidgetSize, 2 * m_CubeWidgetSize,
-                                  QOpenGLFramebufferObject::CombinedDepthStencil);
+                                     QOpenGLFramebufferObject::CombinedDepthStencil);
     m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
 }
 

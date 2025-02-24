@@ -27,12 +27,21 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SoOffscreenRenderer.h>
 
+#ifdef FC_OS_MACOSX
+# include <OpenGL/gl.h>
+#else
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+# endif  // FC_OS_WIN32
+# include <GL/gl.h>
+#endif  // FC_OS_MACOSX
+
 #include <QImage>
 #include <QStringList>
-#include <QtOpenGL.h>
 
 #include <FCGlobal.h>
 
+class QOpenGLFramebufferObject;
 
 namespace Gui {
 

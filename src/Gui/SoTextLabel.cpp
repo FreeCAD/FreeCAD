@@ -58,8 +58,6 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #endif
 
-#include <QtOpenGL.h>
-
 #include "SoTextLabel.h"
 #include "SoFCInteractiveElement.h"
 #include "Tools.h"

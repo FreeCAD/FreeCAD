@@ -43,6 +43,8 @@
 # include <GL/glext.h>
 #endif
 
+#include <QOpenGLFramebufferObject>
+#include <QOpenGLContext>
 #include <QOffscreenSurface>
 
 #include <App/Application.h>

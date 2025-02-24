@@ -40,6 +40,7 @@
 # include <QMenuBar>
 # include <QMessageBox>
 # include <QMimeData>
+# include <QOpenGLWidget>
 # include <QPainter>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>

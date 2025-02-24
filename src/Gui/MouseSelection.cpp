@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <QOpenGLFramebufferObject>
 #include <QPixmap>
 #include <QMenu>
 #include <Inventor/SbBox.h>

@@ -24,18 +24,24 @@
 #ifndef GUI_GLPAINTER_H
 #define GUI_GLPAINTER_H
 
+#ifdef FC_OS_WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#endif
+#ifdef FC_OS_MACOSX
+#include <OpenGL/gl.h>
+#else
+#include <GL/gl.h>
+#endif
+
 #include <Base/BaseClass.h>
 #include <FCGlobal.h>
 #include <QPoint>
 
 class QPaintDevice;
 class QOpenGLWidget;
-
-using GLenum = unsigned int;
-using GLint = int;
-using GLushort = unsigned short;
-using GLfloat = float;
-using GLdouble = double;
 
 namespace Gui {
 class View3DInventorViewer;

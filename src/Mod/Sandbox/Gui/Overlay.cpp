@@ -30,8 +30,6 @@
 # include <Inventor/nodes/SoImage.h>
 #endif
 
-#include <QtOpenGL.h>
-
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
@@ -107,7 +105,7 @@ Teapots(Gui::View3DInventorViewer* v) :view(v)
 
     rubberBandIsShown = false;
     fbObject = new QOpenGLFramebufferObject(size[0],size[1],
-                                         QOpenGLFramebufferObject::Depth);
+                                            QOpenGLFramebufferObject::Depth);
     resizeGL(size[0],size[1]);
 
     rubberBandIsShown = true;

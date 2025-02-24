@@ -81,6 +81,9 @@
 # include <QKeyEvent>
 # include <QMessageBox>
 # include <QMimeData>
+# include <QOpenGLFramebufferObject>
+# include <QOpenGLWidget>
+# include <QSurfaceFormat>
 # include <QTimer>
 # include <QVariantAnimation>
 # include <QWheelEvent>

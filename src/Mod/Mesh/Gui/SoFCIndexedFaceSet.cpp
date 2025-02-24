@@ -411,10 +411,9 @@ bool MeshRenderer::matchMaterial(SoState* state) const
     return p->pcolors == pcolors;
 }
 
-bool MeshRenderer::shouldRenderDirectly(bool direct)
+bool MeshRenderer::shouldRenderDirectly([[maybe_unused]] bool direct)
 {
 #ifdef RENDER_GL_VAO
-    (void)direct;
     return false;
 #else
     return direct;

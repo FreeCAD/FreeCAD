@@ -42,6 +42,8 @@
 #include <QApplication>
 #include <QCursor>
 #include <QMenu>
+#include <QOpenGLContext>
+#include <QOpenGLWidget>
 
 #include <Inventor/SoEventManager.h>
 #include <Inventor/actions/SoSearchAction.h>

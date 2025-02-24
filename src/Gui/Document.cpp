@@ -36,6 +36,7 @@
 # include <QApplication>
 # include <QFileInfo>
 # include <QMessageBox>
+# include <QOpenGLWidget>
 # include <QTextStream>
 # include <QTimer>
 # include <QStatusBar>
