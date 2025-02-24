@@ -4042,9 +4042,9 @@ Document::importLinks(const std::vector<DocumentObject*>& objs)
     std::set<DocumentObject*> links;
     getLinksTo(links, nullptr, GetLinkExternal, 0, objs);
 
-    std::vector<DocumentObject*> vecobjs;
-    vecobjs.insert(vecobjs.end(), links.begin(), links.end());
-    std::vector<DocumentObject*> depObjs = Document::getDependencyList(depObjs);
+    std::vector<DocumentObject*> vecObjs;
+    vecObjs.insert(vecObjs.end(), links.begin(), links.end());
+    std::vector<DocumentObject*> depObjs = getDependencyList(vecObjs);
     if (depObjs.empty()) {
         FC_ERR("nothing to import");
         return depObjs;
