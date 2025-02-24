@@ -3303,7 +3303,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
             // Resets the override draw style mode when leaving the sketch edit mode.
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-            auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
+            auto disableShadedView = hGrp->GetBool("DisableShadedView", false);
             if (disableShadedView) {
                 Gui::View3DInventorViewer* viewer =
                     static_cast<Gui::View3DInventor*>(mdi)->getViewer();
@@ -3400,7 +3400,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     // Sets the view mode to no shading to prevent visibility issues against parallel surfaces with shininess when entering the sketch mode.
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
+    auto disableShadedView = hGrp->GetBool("DisableShadedView", false);
 
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");

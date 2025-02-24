@@ -60,6 +60,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/DAGView
     ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
+    ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
@@ -265,7 +266,7 @@ generate_from_xml(AxisOriginPy)
 generate_from_xml(CommandPy)
 generate_from_xml(Navigation/NavigationStylePy)
 
-generate_from_py(FreeCADGuiInit GuiInitScript.h)
+generate_embed_from_py(FreeCADGuiInit GuiInitScript.h)
 
 # The XML files
 SET(FreeCADGui_XML_SRCS
@@ -939,6 +940,7 @@ SET(Navigation_CPP_SRCS
     Navigation/CADNavigationStyle.cpp
     Navigation/RevitNavigationStyle.cpp
     Navigation/BlenderNavigationStyle.cpp
+    Navigation/SolidWorksNavigationStyle.cpp
     Navigation/MayaGestureNavigationStyle.cpp
     Navigation/OpenCascadeNavigationStyle.cpp
     Navigation/OpenSCADNavigationStyle.cpp

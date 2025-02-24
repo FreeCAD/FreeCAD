@@ -21,11 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYCONTAINER_H
-#define APP_PROPERTYCONTAINER_H
+#ifndef SRC_APP_PROPERTYCONTAINER_H_
+#define SRC_APP_PROPERTYCONTAINER_H_
 
 #include <map>
 #include <cstring>
+#include <vector>
+#include <string>
 #include <Base/Persistence.h>
 
 #include "DynamicProperty.h"
@@ -75,8 +77,12 @@ struct AppExport PropertyData
   //accepting void*
   struct OffsetBase
   {
-      OffsetBase(const App::PropertyContainer* container) : m_container(container) {}//explicit bombs
-      OffsetBase(const App::Extension* container) : m_container(container) {}//explicit bombs
+      // Lint wants these marked explicit, but they are currently used implicitly in enough
+      // places that I don't wnt to fix it. Instead we disable the Lint message.
+      // NOLINTNEXTLINE(runtime/explicit)
+      OffsetBase(const App::PropertyContainer* container) : m_container(container) {}
+      // NOLINTNEXTLINE(runtime/explicit)
+      OffsetBase(const App::Extension* container) : m_container(container) {}
 
       short int getOffsetTo(const App::Property* prop) const {
             auto *pt = (const char*)prop;
@@ -134,6 +140,8 @@ struct AppExport PropertyData
   void getPropertyMap(OffsetBase offsetBase,std::map<std::string,Property*> &Map) const;
   void getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const;
   void getPropertyNamedList(OffsetBase offsetBase, std::vector<std::pair<const char*,Property*> > &List) const;
+  /// See PropertyContainer::visitProperties for semantics
+  void visitProperties(OffsetBase offsetBase, const std::function<void(Property*)>& visitor) const;
 
   void merge(PropertyData *other=nullptr) const;
   void split(PropertyData *other);
@@ -172,6 +180,11 @@ public:
   virtual void getPropertyMap(std::map<std::string,Property*> &Map) const;
   /// get all properties of the class (including properties of the parent)
   virtual void getPropertyList(std::vector<Property*> &List) const;
+  /// Call the given visitor for each property. The visiting order is undefined.
+  /// This method is necessary because PropertyContainer has no begin and end methods
+  /// and it is not practical to implement these.
+  /// What gets visited is undefined if the collection of Properties is changed during this call.
+  virtual void visitProperties(const std::function<void(Property*)>& visitor) const;
   /// get all properties with their names, may contain duplicates and aliases
   virtual void getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const;
   /// set the Status bit of all properties at once
@@ -395,4 +408,4 @@ template<> void _class_::init(void){\
 
 } // namespace App
 
-#endif // APP_PROPERTYCONTAINER_H
+#endif // SRC_APP_PROPERTYCONTAINER_H_

@@ -1136,6 +1136,30 @@ Base::BoundBox3d TopoShape::getBoundBox() const
     return box;
 }
 
+Base::BoundBox3d TopoShape::getBoundBoxOptimal() const
+{
+    Base::BoundBox3d box;
+    try {
+        // If the shape is empty an exception may be thrown
+        Bnd_Box bounds;
+        BRepBndLib::AddOptimal(_Shape, bounds, false, false);
+        bounds.SetGap(0.0);
+        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+        box.MinX = xMin;
+        box.MaxX = xMax;
+        box.MinY = yMin;
+        box.MaxY = yMax;
+        box.MinZ = zMin;
+        box.MaxZ = zMax;
+    }
+    catch (Standard_Failure&) {
+    }
+
+    return box;
+}
+
 namespace {
 bool getShapeProperties(const TopoDS_Shape& shape, GProp_GProps& prop)
 {

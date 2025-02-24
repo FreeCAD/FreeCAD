@@ -14,7 +14,7 @@ macro(PrintFinalReport)
 
     # just a value
     macro(value)
-    unset(val)
+        unset(val)
         set(name ${ARGV0})
         if(${name})
             set(val ${${name}}) # name has a value

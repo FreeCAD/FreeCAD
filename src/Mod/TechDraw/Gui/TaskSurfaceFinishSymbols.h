@@ -93,9 +93,16 @@ protected:
     Base::Vector3d placement;
 
 private:
-    enum symbolType {anyMethod=0, removeProhibit, removeRequired,
-                     anyMethodAll, removeProhibitAll, removeRequiredAll};
-    QPixmap baseSymbol(symbolType type);
+    enum class SymbolType {
+        AnyMethod=0,
+        RemoveProhibit,
+        RemoveRequired,
+        AnyMethodAll,
+        RemoveProhibitAll,
+        RemoveRequiredAll
+    };
+
+    QPixmap baseSymbol(SymbolType type);
     std::string completeSymbol();
     QGraphicsScene* symbolScene;     //note this is not QGSPage, but another scene only used to
                                      //display symbols in this task's ui
@@ -103,7 +110,7 @@ private:
     QGraphicsProxyWidget *proxyRA, *proxySamLength, *proxyMinRough, *proxyMaxRough;
     QLineEdit *leMethod, *leSamLength, *leAddition;
     QComboBox *cbRA, *cbMinRought, *cbMaxRought, *cbLay;
-    symbolType activeIcon;
+    SymbolType activeIcon;
     bool isISO;
     QGraphicsPixmapItem* currentIcon;
     std::unique_ptr<Ui_TaskSurfaceFinishSymbols> ui;

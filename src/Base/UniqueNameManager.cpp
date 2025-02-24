@@ -136,8 +136,8 @@ Base::UniqueNameManager::decomposeName(const std::string& name) const
         digitCount,
         digitCount == 0 ? 0U : std::stoul(name.substr(name.crend() - digitsStart, digitCount))};
 }
-bool Base::UniqueNameManager::sameBaseName(const std::string& first,
-                                           const std::string& second) const
+bool Base::UniqueNameManager::haveSameBaseName(const std::string& first,
+                                               const std::string& second) const
 {
     auto firstSuffixStart = getNameSuffixStartPosition(first);
     auto secondSuffixStart = getNameSuffixStartPosition(second);

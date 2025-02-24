@@ -9,6 +9,7 @@ if(MSVC)
 endif(MSVC)
 
 include_directories(
+    ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
