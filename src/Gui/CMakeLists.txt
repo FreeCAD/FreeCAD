@@ -266,7 +266,7 @@ generate_from_xml(AxisOriginPy)
 generate_from_xml(CommandPy)
 generate_from_xml(Navigation/NavigationStylePy)
 
-generate_from_py(FreeCADGuiInit GuiInitScript.h)
+generate_embed_from_py(FreeCADGuiInit GuiInitScript.h)
 
 # The XML files
 SET(FreeCADGui_XML_SRCS
