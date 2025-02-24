@@ -418,6 +418,7 @@ def get_pip_target_directory():
 
     if snap_package:
         import site
+
         vendor_path = site.getusersitepackages()
     else:
         vendor_path = os.path.join(
