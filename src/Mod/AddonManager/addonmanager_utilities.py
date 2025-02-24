@@ -421,8 +421,10 @@ def get_pip_target_directory():
 
         vendor_path = site.getusersitepackages()
     else:
-        vendor_path = os.path.join(
-            fci.DataPaths().mod_dir, "..", "AdditionalPythonPackages", f"py{major}{minor}"
+        vendor_path = os.path.normpath(
+            os.path.join(
+                fci.DataPaths().mod_dir, "..", "AdditionalPythonPackages", f"py{major}{minor}"
+            )
         )
     return vendor_path
 
