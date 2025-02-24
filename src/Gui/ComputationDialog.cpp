@@ -5,8 +5,9 @@
 #include <atomic>
 #include <thread>
 #include <chrono>
+#include <FCConfig.h>
 
-#ifdef _WIN32
+#ifdef FC_OS_WIN32
 #include <windows.h>
 #endif
 
@@ -77,10 +78,10 @@ void ComputationDialog::run(std::function<void()> func) {
 
     // Start computation thread
     std::thread computeThread([&]() {
-        #if defined(__linux__) || defined(__FreeBSD__)
+#if !defined(FC_OS_WIN32)
         pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, nullptr);
         pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, nullptr);
-        #endif
+#endif
 
         try {
             func();
@@ -124,14 +125,12 @@ void ComputationDialog::run(std::function<void()> func) {
 
                     // TODO: save the backup document now!
 
-                    #if defined(__linux__) || defined(__FreeBSD__)
-                    pthread_cancel(computeThread.native_handle());
-                    #elif defined(_WIN32)
+#if defined(FC_OS_WIN32)
                     TerminateThread(computeThread.native_handle(), 1);
                     CloseHandle(computeThread.native_handle());
-                    #elif defined(__APPLE__)
-                    pthread_kill(computeThread.native_handle(), SIGTERM);
-                    #endif
+#else
+                    pthread_cancel(computeThread.native_handle());
+#endif
                     computeThread.detach();
                     break; // Break out of the while loop
                 }
