@@ -143,6 +143,16 @@ inline T toDegrees(T r)
     return static_cast<T>((r / M_PI) * 180.0);
 }
 
+inline float fromPercent(const long value)
+{
+    return std::roundf(value) / 100.0F;
+}
+
+inline long toPercent(float value)
+{
+    return std::lround(100.0 * value);
+}
+
 template<class T>
 inline T fmod(T numerator, T denominator)
 {

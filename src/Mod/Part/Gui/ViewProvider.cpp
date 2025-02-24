@@ -33,6 +33,8 @@
 
 #include "ViewProvider.h"
 
+#include <Base/Tools.h>
+
 
 using namespace PartGui;
 
@@ -88,7 +90,7 @@ void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Co
         for (auto& j : colors) {
             // transparency hasn't been set for this face
             if (j.a == 0.0) {
-                j.setTransparency(transparency/100.0F);  // transparency comes in percent
+                j.setTransparency(Base::fromPercent(transparency));  // transparency comes in percent
             }
         }
     }
@@ -101,7 +103,7 @@ void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Ma
         for (auto& j : colors) {
             // transparency hasn't been set for this face
             if (j.transparency == 0.0) {
-                j.transparency = transparency / 100.0F;  // transparency comes in percent
+                j.transparency = Base::fromPercent(transparency);  // transparency comes in percent
             }
         }
     }
