@@ -90,7 +90,6 @@ void StartupProcess::setupApplication()
     if (useSoftwareOpenGL) {
         QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     }
-    
     // By default (on platforms that support it, see docs for
     // Qt::AA_CompressHighFrequencyEvents) QT applies compression
     // for high frequency events (mouse move, touch, window resizes)
