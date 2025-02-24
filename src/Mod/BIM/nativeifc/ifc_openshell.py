@@ -136,8 +136,8 @@ class IFC_UpdateIOS:
             import ifcopenshell
             version = ifcopenshell.version
             
-            # Workaround for upstream bug
-            # Characters '\' or '-' have been seen instead of the major version
+            # Workaround for https://github.com/FreeCAD/FreeCAD/issues/19829
+            # Characters '\', '.', or '-' have been seen instead of the major version
             # TODO(furgo16): Remove when fixed
             if not version[0].isdigit():
                 FreeCAD.Console.PrintWarning(f"Invalid IfcOpenShell version detected: {version}\n")
