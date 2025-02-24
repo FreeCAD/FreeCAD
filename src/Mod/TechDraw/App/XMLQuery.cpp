@@ -47,12 +47,12 @@ static bool processElements(const QDomElement& element, const QString& queryStr,
                             const std::function<bool(QDomElement&)>& process)
 {
     bool find_tspan = queryStr.contains(QLatin1String("tspan"));
-    QDomNodeList editable = element.elementsByTagName(QString(QLatin1String("text")));
+    QDomNodeList editable = element.elementsByTagName(QStringLiteral("text"));
     if (editable.count() > 0) {
         for(int i = 0; i < editable.count(); i++) {
             QDomNode node = editable.item(i);
             QDomElement element = node.toElement();
-            if (element.hasAttribute(QString(QLatin1String(FREECAD_ATTR_EDITABLE)))) {
+            if (element.hasAttribute(QStringLiteral(FREECAD_ATTR_EDITABLE))) {
                 if (find_tspan) {
                     element = element.firstChildElement();
                 }

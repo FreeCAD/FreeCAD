@@ -199,7 +199,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Polygon parameters"));
+        return QObject::tr("Polygon parameters");
     }
 
     bool canGoToNextMode() override

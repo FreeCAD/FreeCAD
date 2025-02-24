@@ -229,18 +229,18 @@ void DownloadManager::save() const
         return;
 
     for (int i = 0; i < m_downloads.count(); ++i) {
-        QString key = QString(QLatin1String("download_%1_")).arg(i);
+        QString key = QStringLiteral("download_%1_").arg(i);
         settings.setValue(key + QLatin1String("url"), m_downloads[i]->m_url);
         settings.setValue(key + QLatin1String("location"), QFileInfo(m_downloads[i]->m_output).filePath());
         settings.setValue(key + QLatin1String("done"), m_downloads[i]->downloadedSuccessfully());
     }
     int i = m_downloads.count();
-    QString key = QString(QLatin1String("download_%1_")).arg(i);
+    QString key = QStringLiteral("download_%1_").arg(i);
     while (settings.contains(key + QLatin1String("url"))) {
         settings.remove(key + QLatin1String("url"));
         settings.remove(key + QLatin1String("location"));
         settings.remove(key + QLatin1String("done"));
-        key = QString(QLatin1String("download_%1_")).arg(++i);
+        key = QStringLiteral("download_%1_").arg(++i);
     }
 }
 
@@ -258,7 +258,7 @@ void DownloadManager::load()
                         static_cast<RemovePolicy>(removePolicyEnum.keyToValue(value));
 
     int i = 0;
-    QString key = QString(QLatin1String("download_%1_")).arg(i);
+    QString key = QStringLiteral("download_%1_").arg(i);
     while (settings.contains(key + QLatin1String("url"))) {
         QUrl url = settings.value(key + QLatin1String("url")).toUrl();
         QString fileName = settings.value(key + QLatin1String("location")).toString();
@@ -275,7 +275,7 @@ void DownloadManager::load()
             item->progressBar->setVisible(!done);
             addItem(item);
         }
-        key = QString(QLatin1String("download_%1_")).arg(++i);
+        key = QStringLiteral("download_%1_").arg(++i);
     }
     ui->cleanupButton->setEnabled(m_downloads.count() - activeDownloads() > 0);
 }

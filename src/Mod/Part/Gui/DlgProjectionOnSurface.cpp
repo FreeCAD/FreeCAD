@@ -161,15 +161,15 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget* parent)
 
     m_partDocument = App::GetApplication().getActiveDocument();
     if (!m_partDocument) {
-        throw Base::ValueError(QString(tr("Have no active document!!!")).toUtf8());
+        throw Base::ValueError(tr("Have no active document!!!").toUtf8());
     }
     this->attachDocument(m_partDocument);
     m_partDocument->openTransaction("Project on surface");
     m_projectionObject = m_partDocument->addObject<Part::Feature>("Projection Object");
     if (!m_projectionObject) {
-        throw Base::ValueError(QString(tr("Can not create a projection object!!!")).toUtf8());
+        throw Base::ValueError(tr("Can not create a projection object!!!").toUtf8());
     }
-    m_projectionObject->Label.setValue(std::string(m_projectionObjectName.toUtf8()).c_str());
+    m_projectionObject->Label.setValue(m_projectionObjectName.toUtf8().constData());
     onRadioButtonShowAllClicked();
     m_lastDepthVal = ui->doubleSpinBoxSolidDepth->value();
 }
