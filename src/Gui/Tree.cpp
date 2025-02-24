@@ -29,6 +29,7 @@
 # include <QApplication>
 # include <QContextMenuEvent>
 # include <QCursor>
+# include <QDir>
 # include <QFileInfo>
 # include <QHeaderView>
 # include <QMenu>
@@ -36,6 +37,7 @@
 # include <QPainter>
 # include <QPixmap>
 # include <QProcess>
+# include <QSysInfo>
 # include <QThread>
 # include <QTimer>
 # include <QToolTip>
@@ -2890,15 +2892,30 @@ void TreeWidget::onOpenFileLocation()
     std::string name = doc->FileName.getValue();
 
     const QFileInfo fileInfo(QString::fromStdString(name));
-
-    if (fileInfo.exists()) {
-        if (QProcess::startDetached(QStringLiteral("xdg-open"), {fileInfo.absolutePath()})) {
-            return;
-        } else {
-            QMessageBox::warning(this, tr("Error"), tr("Failed to open directory."));
-        }
-    } else {
+    if (!fileInfo.exists()) {
         QMessageBox::warning(this, tr("Error"), tr("File does not exist."));
+        return;
+    }
+
+    QString filePath = fileInfo.canonicalPath();
+    QString osType = QSysInfo::productType();
+    bool success = false;
+    if(osType == QStringLiteral("macos"))
+        success = QProcess::startDetached(QStringLiteral("open"), {filePath});
+
+    else if(osType == QStringLiteral("windows")) {
+        QStringList param;
+        if (!fileInfo.isDir())
+            param += QStringLiteral("/select,");
+        param += QDir::toNativeSeparators(filePath);
+        success = QProcess::startDetached(QStringLiteral("explorer.exe"), param);
+    }
+
+    else 
+        success = QProcess::startDetached(QStringLiteral("xdg-open"), {filePath});
+
+    if (!success) {
+        QMessageBox::warning(this, tr("Error"), tr("Failed to open directory."));
     }
 }
 
@@ -3356,8 +3373,13 @@ void TreeWidget::setupText()
     this->closeDocAction->setText(tr("Close document"));
     this->closeDocAction->setStatusTip(tr("Close the document"));
 
+#ifdef Q_OS_MAC
+    this->openFileLocationAction->setText(tr("Reveal in Finder"));
+    this->openFileLocationAction->setStatusTip(tr("Reveal the current file location in Finder"));
+#else
     this->openFileLocationAction->setText(tr("Open File Location"));
     this->openFileLocationAction->setStatusTip(tr("Open the current file location"));
+#endif
 
     this->reloadDocAction->setText(tr("Reload document"));
     this->reloadDocAction->setStatusTip(tr("Reload a partially loaded document"));
