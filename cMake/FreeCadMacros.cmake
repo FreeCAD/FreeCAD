@@ -266,6 +266,8 @@ ENDMACRO(SET_PYTHON_PREFIX_SUFFIX)
 # Locate the include directory for a pip-installed package -- uses pip show to find the base pip
 # install directory, and then appends the package name and  "/include" to the end
 macro(find_pip_package PACKAGE)
+	unset(${PACKAGE}_FOUND)  # Remove from local scope
+	unset(${PACKAGE}_FOUND CACHE)  # Remove from CMake cache (if it exists)
 	execute_process(
 			COMMAND ${Python3_EXECUTABLE} -m pip show ${PACKAGE}
 			RESULT_VARIABLE FAILURE
@@ -300,15 +302,18 @@ macro(find_pip_package PACKAGE)
 			file(GLOB OPT_LIBRARIES "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/*${PIP_LIB_NAME}*.so.*")
 		endif()
 		if (OPT_LIBRARIES AND DEBUG_LIBRARIES)
-			set(${PACKAGE}_LIBRARIES optimized ${OPT_LIBRARIES} debug ${DEBUG_LIBRARIES} CACHE PATH "")
+			set(${PACKAGE}_LIBRARIES optimized ${OPT_LIBRARIES} debug ${DEBUG_LIBRARIES} CACHE PATH "Location of the ${PACKAGE} libraries")
 		elseif(OPT_LIBRARIES)
-			set(${PACKAGE}_LIBRARIES ${OPT_LIBRARIES} CACHE PATH "")
+			set(${PACKAGE}_LIBRARIES ${OPT_LIBRARIES} CACHE PATH "Location of the ${PACKAGE} optimized libraries")
 		elseif(DEBUG_LIBRARIES)
-			set(${PACKAGE}_LIBRARIES ${DEBUG_LIBRARIES} CACHE PATH "")
+			set(${PACKAGE}_LIBRARIES ${DEBUG_LIBRARIES} CACHE PATH "Location of the ${PACKAGE} debug libraries")
 		endif()
-		set(${PACKAGE}_INCLUDE_DIRS ${INCLUDE_DIR} CACHE PATH "")
-		set(${PACKAGE}_FOUND ON CACHE BOOL OFF)
+		set(${PACKAGE}_INCLUDE_DIRS ${INCLUDE_DIR} CACHE PATH "Location of the ${PACKAGE} includes")
+		set(${PACKAGE}_FOUND ON)
 		message(STATUS "Found pip-installed ${PACKAGE} in ${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}")
+		if(${PACKAGE}_INCLUDE_DIRS)
+			message(STATUS "  --> with includes in ${${PACKAGE}_INCLUDE_DIRS}")
+		endif()
 	endif()
 endmacro()
 
