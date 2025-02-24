@@ -2899,9 +2899,9 @@ void TreeWidget::onOpenFileLocation()
     const QString filePath = fileInfo.canonicalPath();
     bool success = false;
 
-#ifdef Q_OS_MAC
+#if defined(Q_OS_MAC)
     success = QProcess::startDetached(QStringLiteral("open"), {filePath});
-#elif Q_OS_WIN
+#elif defined(Q_OS_WIN)
     QStringList param;
     if (!fileInfo.isDir()) {
         param += QStringLiteral("/select,");
