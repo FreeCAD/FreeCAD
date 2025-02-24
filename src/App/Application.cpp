@@ -179,6 +179,8 @@ Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
 AppExport std::map<std::string, std::string> Application::mConfig;
 
+std::function<void(const std::function<void()>&)> Application::_taskRunner;
+std::atomic<bool> Application::_inTaskRunner = false;
 
 //**************************************************************************
 // Construction and destruction

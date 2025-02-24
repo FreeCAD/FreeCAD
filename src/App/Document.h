@@ -384,6 +384,11 @@ public:
                   bool force = false,
                   bool* hasError = nullptr,
                   int options = 0);
+
+    int _recompute(const std::vector<App::DocumentObject*>& objs = {},
+                  bool force = false,
+                  bool* hasError = nullptr,
+                  int options = 0);
     /// Recompute only one feature
     bool recomputeFeature(DocumentObject* Feat, bool recursive = false);
     /// get the text of the error of a specified object

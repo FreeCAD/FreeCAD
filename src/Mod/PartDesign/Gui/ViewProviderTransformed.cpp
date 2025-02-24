@@ -49,7 +49,6 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
-#include <Gui/ComputationDialog.h>
 #include <Mod/Part/App/Tools.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
@@ -163,8 +162,7 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
 {
     PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
     if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute())) {
-        Gui::ComputationDialog dialog;
-        dialog.run([&]() {
+        App::Application::runTask([&]() {
             pcTransformed->recomputeFeature(true);
         });
     }

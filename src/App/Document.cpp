@@ -3085,6 +3085,19 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
                         bool* hasError,
                         int options)
 {
+    // runTask allows the Gui to pop up the abort dialog
+    int rc = 0;
+    Application::runTask([this, objs, force, hasError, options, &rc]() {
+        rc = _recompute(objs, force, hasError, options);
+    });
+    return rc;
+}
+
+int Document::_recompute(const std::vector<App::DocumentObject*>& objs,
+                        bool force,
+                        bool* hasError,
+                        int options)
+{
     if (d->undoing || d->rollback) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Ignore document recompute on undo/redo");

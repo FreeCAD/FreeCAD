@@ -5,6 +5,7 @@
 #include <atomic>
 #include <thread>
 #include <chrono>
+#include <Python.h>
 #include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
@@ -14,6 +15,7 @@
 #include <QApplication>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QThread>
 #include <Base/ProgressIndicator.h>
 
 namespace Gui {
@@ -65,6 +67,18 @@ void ComputationDialog::run(std::function<void()> func) {
     std::mutex mutex;
     std::condition_variable cv;
     std::exception_ptr threadException;
+
+    // If we already hold the GIL, just run directly to avoid deadlock
+    // TODO: Can we find a way to transfer GIL ownership to the thread?
+    // I found that when I tried to transfer GIL ownership to the thread
+    // by releasing it in the main thread and acquiring it in the computation
+    // thread, it caused a segfault which I could reproduce by opening up
+    // a new spreadsheet, typing a number into the A1 cell, and then trying
+    // to assign an alias to the cell. Don't know why.
+    if (PyGILState_Check()) {
+        func();
+        return;
+    }
 
     Base::ProgressIndicator::setInstance(this);
 

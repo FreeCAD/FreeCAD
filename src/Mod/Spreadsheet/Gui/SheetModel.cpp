@@ -33,7 +33,6 @@
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/ComputationDialog.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
 #include "SheetModel.h"
@@ -551,10 +550,7 @@ void SheetModel::setCellData(QModelIndex index, QString str)
 
         sheet->setContent(address, str.toUtf8().constData());
         Gui::Command::commitCommand();
-        Gui::ComputationDialog computationDialog;
-        computationDialog.run([&]() {
-            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        });
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     }
     catch (const Base::Exception& e) {
         e.ReportException();

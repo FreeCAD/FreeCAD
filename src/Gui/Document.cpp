@@ -52,7 +52,6 @@
 #include "DocumentPy.h"
 #include "Application.h"
 #include "Command.h"
-#include "ComputationDialog.h"
 #include "Control.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
@@ -1172,8 +1171,7 @@ void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App
         obj = doc.getActiveObject();
     if(!obj || !obj->isAttachedToDocument() || (!objs.empty() && objs.front()!=obj))
         return;
-    ComputationDialog computationDialog;
-    computationDialog.run([&]() {
+    App::Application::runTask([&]() {
         obj->recomputeFeature(true);
     });
 }
@@ -1424,11 +1422,8 @@ bool Document::save()
             for (auto doc : docs) {
                 // Changed 'mustExecute' status may be triggered by saving external document
                 if (!dmap[doc] && doc->mustExecute()) {
-                    ComputationDialog computationDialog;
-                    computationDialog.run([&]() {
-                        App::AutoTransaction trans("Recompute");
-                        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").recompute()",doc->getName());
-                    });
+                    App::AutoTransaction trans("Recompute");
+                    Command::doCommand(Command::Doc,"App.getDocument(\"%s\").recompute()",doc->getName());
                 }
 
                 Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()",doc->getName());
@@ -1542,11 +1537,8 @@ void Document::saveAll()
         try {
             // Changed 'mustExecute' status may be triggered by saving external document
             if(!dmap[doc] && doc->mustExecute()) {
-                ComputationDialog computationDialog;
-                computationDialog.run([&]() {
-                    App::AutoTransaction trans("Recompute");
-                    Command::doCommand(Command::Doc,"App.getDocument('%s').recompute()",doc->getName());
-                });
+                App::AutoTransaction trans("Recompute");
+                Command::doCommand(Command::Doc,"App.getDocument('%s').recompute()",doc->getName());
             }
             Command::doCommand(Command::Doc,"App.getDocument('%s').save()",doc->getName());
             gdoc->setModified(false);

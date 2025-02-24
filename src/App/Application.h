@@ -28,6 +28,8 @@
 
 #include <deque>
 #include <vector>
+#include <functional>
+#include <atomic>
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
@@ -644,6 +646,45 @@ private:
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;
+
+    // RAII guard for task runner state with thread safety
+    class TaskRunnerGuard {
+    public:
+        explicit TaskRunnerGuard(std::atomic<bool>& flag) : _flag(flag) {
+            // Try to set flag to true, but only proceed if it was previously false
+            bool expected = false;
+            _acquired = _flag.compare_exchange_strong(expected, true);
+        }
+        ~TaskRunnerGuard() {
+            if (_acquired) {
+                _flag = false;
+            }
+        }
+        bool acquired() const { return _acquired; }
+    private:
+        std::atomic<bool>& _flag;
+        bool _acquired;
+    };
+
+public:
+    static void setTaskRunner(std::function<void(const std::function<void()>&)> runner) {
+        _taskRunner = std::move(runner);
+    }
+
+    static void runTask(const std::function<void()>& task) {
+        // Only use task runner if we have one configured and we're not already in a task
+        TaskRunnerGuard guard(_inTaskRunner);
+        if (_taskRunner && guard.acquired()) {
+            _taskRunner(task);
+            return;
+        }
+        // Run directly if no task runner or already in task runner
+        task();
+    }
+
+private:
+    static std::function<void(const std::function<void()>&)> _taskRunner;
+    static std::atomic<bool> _inTaskRunner;  // Atomic flag for thread safety
 };
 
 /// Singleton getter of the Application
