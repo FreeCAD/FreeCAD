@@ -75,7 +75,7 @@ namespace Base {
 }
 
 namespace Gui {
-
+class NavigationAnimation;
 class ViewProvider;
 class SoFCBackgroundGradient;
 class NavigationStyle;
@@ -165,8 +165,8 @@ public:
     bool isSpinningAnimationEnabled() const;
     bool isAnimating() const;
     bool isSpinning() const;
-    void startAnimation(const SbRotation& orientation, const SbVec3f& rotationCenter,
-                        const SbVec3f& translation, int duration = -1, bool wait = false);
+    std::shared_ptr<NavigationAnimation> startAnimation(const SbRotation& orientation, const SbVec3f& rotationCenter,
+                        const SbVec3f& translation, int duration = -1, bool wait = false) const;
     void startSpinningAnimation(const SbVec3f& axis, float velocity);
     void stopAnimating();
 
@@ -386,10 +386,10 @@ public:
 
     /**
      * Set the camera's orientation. If isAnimationEnabled() returns
-     * \a true the reorientation is animated, otherwise its directly
+     * \a true the reorientation is animated and the animation is returned, otherwise its directly
      * set.
      */
-    void setCameraOrientation(const SbRotation& orientation, bool moveToCenter = false);
+    std::shared_ptr<NavigationAnimation> setCameraOrientation(const SbRotation& orientation, bool moveToCenter = false) const;
     void setCameraType(SoType type) override;
     void moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration = -1);
     /**

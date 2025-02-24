@@ -33,7 +33,7 @@ NavigationAnimation::NavigationAnimation(NavigationStyle* navigation)
 
 void NavigationAnimation::updateCurrentValue(const QVariant& value)
 {
-    if (state() == QAbstractAnimation::State::Stopped) {
+    if (state() != QAbstractAnimation::State::Running) {
         return;
     }
     update(value);
