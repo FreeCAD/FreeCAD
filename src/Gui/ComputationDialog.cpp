@@ -95,7 +95,7 @@ void ComputationDialog::run(std::function<void()> func) {
             QMetaObject::invokeMethod(this, "accept", Qt::QueuedConnection);
         }
         if (forceAbortBox.isVisible()) {
-            QMetaObject::invokeMethod(&forceAbortBox, "accept", Qt::QueuedConnection);
+            QMetaObject::invokeMethod(&forceAbortBox, "reject", Qt::QueuedConnection);
         }
 
         cv.notify_one();
