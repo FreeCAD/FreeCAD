@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "FCGlobal.h"
+
 namespace Base
 {
 

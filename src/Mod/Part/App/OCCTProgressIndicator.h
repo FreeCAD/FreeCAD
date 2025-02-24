@@ -9,6 +9,8 @@
 #include <execinfo.h>
 #endif
 
+#include <Mod/Part/PartGlobal.h>
+
 namespace Part {
 
 class PartExport OCCTProgressIndicator : public Message_ProgressIndicator

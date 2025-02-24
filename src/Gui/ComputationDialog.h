@@ -7,6 +7,8 @@
 #include "MainWindow.h"
 #include "Base/ProgressIndicator.h"
 
+#include "FCGlobal.h"
+
 namespace Gui {
 
 class GuiExport ComputationDialog : public QProgressDialog, public Base::ProgressIndicator {
