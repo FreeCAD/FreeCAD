@@ -2368,12 +2368,12 @@ private:
         std::string subname(sub);
         if (!subname.empty() && subname[subname.size()-1]!='.')
             subname += '.';
-        if (mapped && mapped[0]) {
+        if (!Base::Tools::isNullOrEmpty(mapped)) {
             if (!Data::isMappedElement(mapped))
                 subname += Data::ELEMENT_MAP_PREFIX;
             subname += mapped;
         }
-        if (element && element[0]) {
+        if (!Base::Tools::isNullOrEmpty(element)) {
             if (!subname.empty() && subname[subname.size()-1]!='.')
                 subname += '.';
             subname += element;

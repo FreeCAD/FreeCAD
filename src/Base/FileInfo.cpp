@@ -45,6 +45,7 @@
 #include "Exception.h"
 #include "Stream.h"
 #include "TimeInfo.h"
+#include "Tools.h"
 
 
 using namespace Base;
@@ -119,7 +120,7 @@ const std::string& FileInfo::getTempPath()
         delete[] dest;
 #else
         const char* tmp = getenv("TMPDIR");
-        if (tmp && tmp[0] != '\0') {
+        if (!Base::Tools::isNullOrEmpty(tmp)) {
             tempPath = tmp;
             FileInfo fi(tempPath);
             if (tempPath.empty() || !fi.isDir()) {  // still empty or non-existent

@@ -25,6 +25,16 @@
 #ifndef _PreComp_
 # include <atomic>
 # include <cctype>
+# include <unordered_set>
+# include <unordered_map>
+# include <utility>
+# include <deque>
+# include <memory>
+# include <algorithm>
+# include <vector>
+# include <set>
+# include <map>
+# include <string>
 # include <boost/algorithm/string/predicate.hpp>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -41,7 +51,6 @@
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/sensors/SoNodeSensor.h>
-# include <Inventor/SoPickedPoint.h>
 # include <QApplication>
 # include <QMenu>
 # include <QCheckBox>
@@ -191,7 +200,7 @@ public:
         }
     }
 
-    LinkInfo(ViewProviderDocumentObject *vp)
+    explicit LinkInfo(ViewProviderDocumentObject *vp)
         :ref(0),pcLinked(vp)
     {
         FC_LOG("new link to " << pcLinked->getObject()->getFullName());
@@ -697,7 +706,7 @@ namespace Gui
     {
         px->release();
     }
-}
+} // namespace Gui
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -2342,7 +2351,7 @@ bool ViewProviderLink::getDetailPath(
         return false;
     }
     std::string _subname;
-    if(subname && subname[0]) {
+    if(!Base::Tools::isNullOrEmpty(subname)) {
         if (auto linked = ext->getLinkedObjectValue()) {
             if (const char *dot = strchr(subname,'.')) {
                 if(subname[0]=='$') {
@@ -3286,7 +3295,16 @@ void ViewProviderLink::getPropertyMap(std::map<std::string,App::Property*> &Map)
     }
 }
 
-void ViewProviderLink::getPropertyList(std::vector<App::Property*> &List) const {
+void ViewProviderLink::visitProperties(const std::function<void(App::Property*)>& visitor) const
+{
+    inherited::visitProperties(visitor);
+    if (childVp != nullptr) {
+        childVp->visitProperties(visitor);
+    }
+}
+
+void ViewProviderLink::getPropertyList(std::vector<App::Property*>& List) const
+{
     std::map<std::string,App::Property*> Map;
     getPropertyMap(Map);
     List.reserve(List.size()+Map.size());

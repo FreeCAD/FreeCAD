@@ -36,6 +36,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
@@ -60,7 +61,7 @@ public:
     ~FaceSelectionGate() override = default;
     bool allow(App::Document*, App::DocumentObject*, const char*sSubName) override
     {
-        if (!sSubName || sSubName[0] == '\0')
+        if (Base::Tools::isNullOrEmpty(sSubName))
             return false;
         std::string element(sSubName);
         return element.substr(0,4) == "Face";
