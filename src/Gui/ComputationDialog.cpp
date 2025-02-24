@@ -62,6 +62,16 @@ void ComputationDialog::abort() {
     reject();
 }
 
+void forceTerminate(std::thread& thread) {
+#if defined(FC_OS_WIN32)
+    TerminateThread(thread.native_handle(), 1);
+    CloseHandle(thread.native_handle());
+#else
+    pthread_cancel(thread.native_handle());
+#endif
+    thread.detach();
+}
+
 void ComputationDialog::run(std::function<void()> func) {
     std::atomic<bool> computationDone(false);
     std::mutex mutex;
@@ -127,29 +137,19 @@ void ComputationDialog::run(std::function<void()> func) {
     }
 
     while (!computationDone.load()) {
-        // Wait for up to 3 seconds for the thread to finish
+        const int waitForThread = 3;  // seconds
         std::unique_lock<std::mutex> lock(mutex);
-        if (!cv.wait_for(lock, std::chrono::seconds(3),
-            [&]{ return computationDone.load(); }))
-        {
-            if (forceAbortBox.exec() == QMessageBox::Yes) {
-                // check computationDone again just in case the thread completed while the dialog was open
-                if (!computationDone.load()) {
-                    Base::Console().Error("Force aborting computation thread\n");
-
-                    // TODO: save the backup document now!
-
-#if defined(FC_OS_WIN32)
-                    TerminateThread(computeThread.native_handle(), 1);
-                    CloseHandle(computeThread.native_handle());
-#else
-                    pthread_cancel(computeThread.native_handle());
-#endif
-                    computeThread.detach();
-                    break; // Break out of the while loop
-                }
-            }
+        const bool waited = cv.wait_for(lock, std::chrono::seconds(waitForThread),
+            [&]{ return computationDone.load(); });
+        if (waited || forceAbortBox.exec() != QMessageBox::Yes || computationDone.load()) {
+            continue;
         }
+        Base::Console().Error("Force aborting computation thread\n");
+
+        // TODO: save the backup document now!
+
+        forceTerminate(computeThread);
+        break;
     }
 
     if (computeThread.joinable()) {
