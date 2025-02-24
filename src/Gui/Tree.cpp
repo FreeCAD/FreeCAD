@@ -37,7 +37,6 @@
 # include <QPainter>
 # include <QPixmap>
 # include <QProcess>
-# include <QSysInfo>
 # include <QThread>
 # include <QTimer>
 # include <QToolTip>
@@ -2897,22 +2896,21 @@ void TreeWidget::onOpenFileLocation()
         return;
     }
 
-    QString filePath = fileInfo.canonicalPath();
-    QString osType = QSysInfo::productType();
+    const QString filePath = fileInfo.canonicalPath();
     bool success = false;
-    if(osType == QStringLiteral("macos"))
-        success = QProcess::startDetached(QStringLiteral("open"), {filePath});
 
-    else if(osType == QStringLiteral("windows")) {
-        QStringList param;
-        if (!fileInfo.isDir())
-            param += QStringLiteral("/select,");
-        param += QDir::toNativeSeparators(filePath);
-        success = QProcess::startDetached(QStringLiteral("explorer.exe"), param);
+#ifdef Q_OS_MAC
+    success = QProcess::startDetached(QStringLiteral("open"), {filePath});
+#elif Q_OS_WIN
+    QStringList param;
+    if (!fileInfo.isDir()) {
+        param += QStringLiteral("/select,");
     }
-
-    else 
-        success = QProcess::startDetached(QStringLiteral("xdg-open"), {filePath});
+    param += QDir::toNativeSeparators(filePath);
+    success = QProcess::startDetached(QStringLiteral("explorer.exe"), param);
+#else 
+    success = QProcess::startDetached(QStringLiteral("xdg-open"), {filePath});
+#endif
 
     if (!success) {
         QMessageBox::warning(this, tr("Error"), tr("Failed to open directory."));
