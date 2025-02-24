@@ -34,7 +34,9 @@
 #include <QImage>
 
 #include <Inventor/SbRotation.h>
+#include <Inventor/nodes/SoEnvironment.h>
 #include <Inventor/nodes/SoEventCallback.h>
+#include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSwitch.h>
 
 #ifdef FC_OS_MACOSX
@@ -54,9 +56,6 @@
 #include "CornerCrossLetters.h"
 #include "View3DInventorSelection.h"
 #include "Quarter/SoQTQuarterAdaptor.h"
-
-#include <Inventor/nodes/SoEnvironment.h>
-#include <Inventor/nodes/SoRotation.h>
 
 class QOpenGLFramebufferObject;
 class QOpenGLWidget;
