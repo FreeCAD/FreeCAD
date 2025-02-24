@@ -466,11 +466,19 @@ void Application::renameDocument(const char *OldName, const char *NewName)
 
 Document* Application::newDocument(const char * proposedName, const char * proposedLabel, DocumentCreateFlags CreateFlags)
 {
-    std::string name;
     bool isUsingDefaultName = Tools::isNullOrEmpty(proposedName);
     // get a valid name anyway!
     if (isUsingDefaultName) {
         proposedName = "Unnamed";
+    }
+    std::string name(getUniqueDocumentName(proposedName, CreateFlags.temporary));
+
+    // return the temporary document if it exists
+    if (CreateFlags.temporary) {
+        auto it = DocMap.find(name);
+        if (it != DocMap.end() && it->second->testStatus(Document::TempDoc)) {
+            return it->second;
+        }
     }
 
     // Determine the document's Label
