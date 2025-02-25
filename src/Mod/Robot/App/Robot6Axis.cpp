@@ -188,32 +188,32 @@ void Robot6Axis::Restore(XMLReader& reader)
         // read my Element
         reader.readElement("Axis");
         // get the value of the placement
-        Tip = Base::Placement(Base::Vector3d(reader.getAttributeAsFloat("Px"),
-                                             reader.getAttributeAsFloat("Py"),
-                                             reader.getAttributeAsFloat("Pz")),
-                              Base::Rotation(reader.getAttributeAsFloat("Q0"),
-                                             reader.getAttributeAsFloat("Q1"),
-                                             reader.getAttributeAsFloat("Q2"),
-                                             reader.getAttributeAsFloat("Q3")));
+        Tip = Base::Placement(Base::Vector3d(reader.getAttribute<double>("Px"),
+                                             reader.getAttribute<double>("Py"),
+                                             reader.getAttribute<double>("Pz")),
+                              Base::Rotation(reader.getAttribute<double>("Q0"),
+                                             reader.getAttribute<double>("Q1"),
+                                             reader.getAttribute<double>("Q2"),
+                                             reader.getAttribute<double>("Q3")));
         Temp.addSegment(Segment(Joint(Joint::RotZ), toFrame(Tip)));
 
 
         if (reader.hasAttribute("rotDir")) {
-            Velocity[i] = reader.getAttributeAsFloat("rotDir");
+            Velocity[i] = reader.getAttribute<double>("rotDir");
         }
         else {
             Velocity[i] = 1.0;
         }
         // read the axis constraints
-        Min(i) = Base::toRadians<double>(reader.getAttributeAsFloat("maxAngle"));
-        Max(i) = Base::toRadians<double>(reader.getAttributeAsFloat("minAngle"));
+        Min(i) = Base::toRadians<double>(reader.getAttribute<double>("maxAngle"));
+        Max(i) = Base::toRadians<double>(reader.getAttribute<double>("minAngle"));
         if (reader.hasAttribute("AxisVelocity")) {
-            Velocity[i] = reader.getAttributeAsFloat("AxisVelocity");
+            Velocity[i] = reader.getAttribute<double>("AxisVelocity");
         }
         else {
             Velocity[i] = 156.0;
         }
-        Actual(i) = reader.getAttributeAsFloat("Pos");
+        Actual(i) = reader.getAttribute<double>("Pos");
     }
     Kinematic = Temp;
 

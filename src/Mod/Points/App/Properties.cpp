@@ -137,7 +137,7 @@ void PropertyGreyValueList::Save(Base::Writer& writer) const
 void PropertyGreyValueList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("FloatList");
-    string file(reader.getAttribute("file"));
+    string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
@@ -309,7 +309,7 @@ void PropertyNormalList::Save(Base::Writer& writer) const
 void PropertyNormalList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("VectorList");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
@@ -584,7 +584,7 @@ void PropertyCurvatureList::Save(Base::Writer& writer) const
 void PropertyCurvatureList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("CurvatureList");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read

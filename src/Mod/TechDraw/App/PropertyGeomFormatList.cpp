@@ -161,12 +161,12 @@ void PropertyGeomFormatList::Restore(Base::XMLReader &reader)
     reader.clearPartialRestoreObject();
     reader.readElement("GeomFormatList");
     // get the value of my attribute
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
     std::vector<GeomFormat*> values;
     values.reserve(count);
     for (int i = 0; i < count; i++) {
         reader.readElement("GeomFormat");
-        const char* TypeName = reader.getAttribute("type");
+        const char* TypeName = reader.getAttribute<const char*>("type");
         GeomFormat *newG = static_cast<GeomFormat *>(Base::Type::fromName(TypeName).createInstance());
         newG->Restore(reader);
 

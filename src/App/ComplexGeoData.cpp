@@ -479,7 +479,7 @@ void ComplexGeoData::Restore(Base::XMLReader& reader)
 
     reader.readElement("ElementMap");
     bool newTag = false;
-    if (reader.hasAttribute("new") && reader.getAttributeAsInteger("new") > 0) {
+    if (reader.hasAttribute("new") && reader.getAttribute<long>("new") > 0) {
         reader.readEndElement("ElementMap");
         reader.readElement("ElementMap2");
         newTag = true;
@@ -487,7 +487,7 @@ void ComplexGeoData::Restore(Base::XMLReader& reader)
 
     const char* file = "";
     if (reader.hasAttribute("file")) {
-        file = reader.getAttribute("file");
+        file = reader.getAttribute<const char*>("file");
     }
     if (*file != 0) {
         reader.addFile(file, this);
@@ -496,7 +496,7 @@ void ComplexGeoData::Restore(Base::XMLReader& reader)
 
     std::size_t count = 0;
     if (reader.hasAttribute("count")) {
-        count = reader.getAttributeAsUnsigned("count");
+        count = reader.getAttribute<unsigned long>("count");
     }
     if (count == 0) {
         return;
@@ -538,7 +538,7 @@ void ComplexGeoData::readElements(Base::XMLReader& reader, size_t count)
                 }
             }
             else {
-                const char* attr = reader.getAttribute("sid");
+                const char* attr = reader.getAttribute<const char*>("sid");
                 bio::stream<bio::array_source> iss(attr, std::strlen(attr));
                 long id {};
                 while ((iss >> id)) {
@@ -557,8 +557,8 @@ void ComplexGeoData::readElements(Base::XMLReader& reader, size_t count)
                 }
             }
         }
-        ensureElementMap()->setElementName(IndexedName(reader.getAttribute("value"), types),
-                                           MappedName(reader.getAttribute("key")),
+        ensureElementMap()->setElementName(IndexedName(reader.getAttribute<const char*>("value"), types),
+                                           MappedName(reader.getAttribute<const char*>("key")),
                                            Tag,
                                            &sids);
     }
