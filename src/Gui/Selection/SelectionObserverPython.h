@@ -52,8 +52,6 @@ protected:
 
 private:
 
-    PyObject* inst{nullptr};
-
 #define FC_PY_SEL_OBSERVER \
     FC_PY_ELEMENT(onSelectionChanged) \
     FC_PY_ELEMENT(addSelection) \
