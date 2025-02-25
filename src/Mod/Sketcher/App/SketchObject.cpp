@@ -9021,7 +9021,7 @@ void processEdge(const TopoDS_Edge& edge,
                     BRepOffsetAPI_NormalProjection mkProj(aProjFace);
                     mkProj.Add(edge);
                     mkProj.Build();
-                
+
                     projShape.setShape(mkProj.Projection());
                 }
                 if (!projShape.isNull() && projShape.hasSubShape(TopAbs_EDGE)) {
