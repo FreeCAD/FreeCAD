@@ -141,9 +141,9 @@ class IFC_UpdateIOS:
             # Characters '\', '.', or '-' have been seen instead of the major version
             # TODO(furgo16): Remove when fixed
             if not version[0].isdigit():
-                FreeCAD.Console.PrintWarning(f"Invalid IfcOpenShell version detected: {version}\n")
+                FreeCAD.Console.PrintLog(f"Invalid IfcOpenShell version detected: {version}\n")
                 version = version[:0] + "0" + version[1:]
-                FreeCAD.Console.PrintWarning(f"Invalid IfcOpenShell version corrected to: {version}\n")
+                FreeCAD.Console.PrintLog(f"Invalid IfcOpenShell version corrected to: {version}\n")
             # End of workaround
             
             try:
