@@ -8973,7 +8973,7 @@ void processEdge(const TopoDS_Edge& edge,
                     double d = (aDir.X() * (aP.X() - aLoc.X()) +
                             aDir.Y() * (aP.Y() - aLoc.Y()) +
                             aDir.Z() * (aP.Z() - aLoc.Z()));
-                                        
+
                     gp_Trsf trsf;
                     trsf.SetTranslation(gp_Vec(aDir) * d);
                     projShape.setShape(edge);
@@ -8985,7 +8985,7 @@ void processEdge(const TopoDS_Edge& edge,
                     BRepOffsetAPI_NormalProjection mkProj(aProjFace);
                     mkProj.Add(edge);
                     mkProj.Build();
-                
+
                     projShape.setShape(mkProj.Projection());
                 }
                 if (!projShape.isNull() && projShape.hasSubShape(TopAbs_EDGE)) {
