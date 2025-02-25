@@ -143,6 +143,7 @@ class IFC_UpdateIOS:
             if not version[0].isdigit():
                 FreeCAD.Console.PrintLog(f"Invalid IfcOpenShell version detected: {version}\n")
                 version = version[:0] + "0" + version[1:]
+                ifcopenshell.version = version
                 FreeCAD.Console.PrintLog(f"Invalid IfcOpenShell version corrected to: {version}\n")
             # End of workaround
             
