@@ -87,16 +87,16 @@ App::DocumentObjectExecReturn *Box::execute()
 void Box::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
+    int Cnt = reader.getAttribute<long>("Count");
     int transientCount = 0;
     if(reader.hasAttribute("TransientCount"))
-        transientCount = reader.getAttributeAsUnsigned("TransientCount");
+        transientCount = reader.getAttribute<unsigned long>("TransientCount");
 
     for (int i=0;i<transientCount; ++i) {
         reader.readElement("_Property");
-        App::Property* prop = getPropertyByName(reader.getAttribute("name"));
+        App::Property* prop = getPropertyByName(reader.getAttribute<const char*>("name"));
         if(prop && reader.hasAttribute("status"))
-            prop->setStatusValue(reader.getAttributeAsUnsigned("status"));
+            prop->setStatusValue(reader.getAttribute<unsigned long>("status"));
     }
 
     bool location_xyz = false;
@@ -109,15 +109,15 @@ void Box::Restore(Base::XMLReader &reader)
     Axis.setValue(0.0f,0.0f,1.0f);
     for (int i=0 ;i<Cnt;i++) {
         reader.readElement("Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
+        const char* PropName = reader.getAttribute<const char*>("name");
+        const char* TypeName = reader.getAttribute<const char*>("type");
         auto prop = dynamicProps.restore(*this,PropName,TypeName,reader);
         if(!prop)
             prop = getPropertyByName(PropName);
 
         std::bitset<32> status;
         if(reader.hasAttribute("status")) {
-            status = reader.getAttributeAsUnsigned("status");
+            status = reader.getAttribute<unsigned long>("status");
             if(prop)
                 prop->setStatusValue(status.to_ulong());
         }

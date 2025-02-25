@@ -69,7 +69,7 @@ void ViewProviderSketchGeometryExtension::restoreAttributes(Base::XMLReader& rea
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
     if (reader.hasAttribute("visualLayerId")) {
-        VisualLayerId = reader.getAttributeAsInteger("visualLayerId");
+        VisualLayerId = reader.getAttribute<long>("visualLayerId");
     }
 }
 
