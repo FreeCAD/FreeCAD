@@ -34,6 +34,7 @@
 #include <Base/Parameter.h>
 
 #include "Preferences.h"
+#include "DrawBrokenView.h"
 #include "LineGenerator.h"
 
 //getters for parameters used in multiple places.
@@ -268,7 +269,7 @@ bool Preferences::showDetailHighlight()
 //! returns the default or preferred directory to search for svg symbols
 QString Preferences::defaultSymbolDir()
 {
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates";
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Symbols";
     std::string prefSymbolDir = getPreferenceGroup("Files")->GetASCII("DirSymbol", defaultDir.c_str());
     if (prefSymbolDir.empty()) {
         prefSymbolDir = defaultDir;
@@ -593,9 +594,10 @@ bool Preferences::useExactMatchOnDims()
     return getPreferenceGroup("Dimensions")->GetBool("UseMatcher", true);
 }
 
-int Preferences::BreakType()
+DrawBrokenView::BreakType Preferences::BreakType()
 {
-    return getPreferenceGroup("Decorations")->GetInt("BreakType", 2);
+    int temp = getPreferenceGroup("Decorations")->GetInt("BreakType", 2);
+    return static_cast<DrawBrokenView::BreakType>(temp);
 }
 
 

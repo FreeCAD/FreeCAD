@@ -101,6 +101,16 @@ using namespace TechDraw;
     }
 }
 
+/*static*/ std::vector<int> DrawUtil::getIndexFromName(const std::vector<std::string>& geomNames)
+{
+    std::vector<int> result;
+    result.reserve(200);
+    for (const std::string& geomName : geomNames) {
+        result.push_back(getIndexFromName(geomName));
+    }
+    return result;
+}
+
 std::string DrawUtil::getGeomTypeFromName(const std::string& geomName)
 {
     if (geomName.empty()) {
@@ -124,6 +134,20 @@ std::string DrawUtil::getGeomTypeFromName(const std::string& geomName)
         ErrorMsg << "In getGeomTypeFromName: malformed geometry name - " << geomName;
         throw Base::ValueError(ErrorMsg.str());
     }
+}
+
+//! Check if all geomNames are of same geomType
+//! Edge1, Edge2, Edge3 -> true
+//! Edge1, Edge2, Vertex7 -> false
+bool DrawUtil::isGeomTypeConsistent(const std::vector<std::string>& geomNames)
+{
+    std::string reference = getGeomTypeFromName(geomNames.at(0));
+    for (std::string geomName : geomNames) {
+        if (reference != getGeomTypeFromName(geomName)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 std::string DrawUtil::makeGeomName(const std::string& geomType, int index)
@@ -485,7 +509,8 @@ Base::Vector3d DrawUtil::vertex2Vector(const TopoDS_Vertex& v)
     return Base::Vector3d(gp.X(), gp.Y(), gp.Z());
 }
 
-//TODO: make formatVector using toVector3d
+// template specialization
+//template <>  // GCC BUG 85282, wanting this to be outside class body
 std::string DrawUtil::formatVector(const Base::Vector3d& v)
 {
     std::stringstream builder;
@@ -493,53 +518,7 @@ std::string DrawUtil::formatVector(const Base::Vector3d& v)
     builder << " (" << v.x << ", " << v.y << ", " << v.z << ") ";
     return builder.str();
 }
-
-std::string DrawUtil::formatVector(const gp_Dir& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ", " << v.Z() << ") ";
-    return builder.str();
-}
-
-std::string DrawUtil::formatVector(const gp_Dir2d& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ") ";
-    return builder.str();
-}
-std::string DrawUtil::formatVector(const gp_Vec& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ", " << v.Z() << ") ";
-    return builder.str();
-}
-
-std::string DrawUtil::formatVector(const gp_Pnt& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ", " << v.Z() << ") ";
-    return builder.str();
-}
-
-std::string DrawUtil::formatVector(const gp_Pnt2d& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ") ";
-    return builder.str();
-}
-
-std::string DrawUtil::formatVector(const QPointF& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.x() << ", " << v.y() << ") ";
-    return builder.str();
-}
+//template std::string DrawUtil::formatVector<Base::Vector3d>(const Base::Vector3d &v);
 
 //! compare 2 vectors for sorting - true if v1 < v2
 //! precision::Confusion() is too strict for vertex - vertex comparisons
@@ -669,7 +648,7 @@ Base::Vector3d DrawUtil::vecRotate(Base::Vector3d vec, double angle, Base::Vecto
 
 gp_Vec DrawUtil::closestBasis(gp_Vec inVec)
 {
-    return gp_Vec(togp_Dir(closestBasis(toVector3d(inVec))));
+    return gp_Vec(to<gp_Dir>(closestBasis(toVector3d(inVec))));
 }
 
 //! returns stdX, stdY or stdZ.
@@ -909,7 +888,7 @@ gp_Vec DrawUtil::maskDirection(gp_Vec inVec, gp_Dir directionToMask)
 
 Base::Vector3d DrawUtil::maskDirection(Base::Vector3d inVec, Base::Vector3d directionToMask)
 {
-    return toVector3d(maskDirection(togp_Vec(inVec), togp_Vec(directionToMask)));
+    return toVector3d(maskDirection(to<gp_Vec>(inVec), to<gp_Vec>(directionToMask)));
 }
 
 //! get the coordinate of inPoint for the cardinal unit direction.
@@ -1880,7 +1859,7 @@ bool DrawUtil::isCosmeticEdge(App::DocumentObject* owner, std::string element)
 {
     auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
     auto edge = ownerView->getEdge(element);
-    if (edge && edge->source() == 1 && edge->getCosmetic()) {
+    if (edge && edge->source() == SourceType::COSMETICEDGE && edge->getCosmetic()) {
         return true;
     }
     return false;
@@ -1891,7 +1870,7 @@ bool DrawUtil::isCenterLine(App::DocumentObject* owner, std::string element)
 {
     auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
     auto edge = ownerView->getEdge(element);
-    if (edge && edge->source() == 2 && edge->getCosmetic()) {
+    if (edge && edge->source() == SourceType::CENTERLINE && edge->getCosmetic()) {
         return true;
     }
     return false;
@@ -2009,7 +1988,7 @@ QString DrawUtil::qbaToDebug(const QByteArray& line)
         if ((c >= 0x20) && (c <= 126)) {
             s.append(QChar::fromLatin1(c));
         } else {
-            s.append(QString::fromUtf8("<%1>").arg(c, 2, 16, QChar::fromLatin1('0')));
+            s.append(QStringLiteral("<%1>").arg(c, 2, 16, QChar::fromLatin1('0')));
         }
     }
     return s;

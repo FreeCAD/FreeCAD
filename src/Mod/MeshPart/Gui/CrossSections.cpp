@@ -327,8 +327,7 @@ void CrossSections::apply()
         App::Document* doc = it->getDocument();
         std::string s = it->getNameInDocument();
         s += "_cs";
-        Part::Feature* section =
-            static_cast<Part::Feature*>(doc->addObject("Part::Feature", s.c_str()));
+        Part::Feature* section = doc->addObject<Part::Feature>(s.c_str());
         section->Shape.setValue(comp);
         section->purgeTouched();
     }
@@ -355,7 +354,7 @@ void CrossSections::apply()
             s += "_cs";
             Gui::Command::runCommand(
                 Gui::Command::App,
-                QString::fromLatin1(
+                QStringLiteral(
                     "points=FreeCAD.getDocument(\"%1\").%2.Mesh.crossSections(%3, %4, %5)\n"
                     "wires=[]\n"
                     "for i in points:\n"
@@ -369,7 +368,7 @@ void CrossSections::apply()
 
             Gui::Command::runCommand(
                 Gui::Command::App,
-                QString::fromLatin1(
+                QStringLiteral(
                     "comp=Part.Compound(wires)\n"
                     "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
                     "slice.Shape=comp\n"

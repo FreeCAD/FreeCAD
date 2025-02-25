@@ -117,7 +117,7 @@ void execInsertPrefixChar(Gui::Command* cmd, std::string prefixFormat, const QAc
         const int MAX_PREFIX_LENGTH = 31;
 
         if (action) {
-            if (action->objectName() == QString::fromUtf8("TechDraw_ExtensionInsertRepetition")) {
+            if (action->objectName() == QStringLiteral("TechDraw_ExtensionInsertRepetition")) {
                 ui.setFieldName(QT_TR_NOOP("Repeat Count"));
             }
         }
@@ -357,20 +357,20 @@ Gui::Action* CmdTechDrawExtensionInsertPrefixGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionInsertDiameter"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionInsertDiameter"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionInsertDiameter"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionInsertDiameter"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionInsertDiameter"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionInsertSquare"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionInsertSquare"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionInsertSquare"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionInsertSquare"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionInsertSquare"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionInsertRepetition"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionInsertRepetition"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionInsertRepetition"));
+    p3->setObjectName(QStringLiteral("TechDraw_ExtensionInsertRepetition"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_ExtensionInsertRepetition"));
     QAction* p4 = pcAction->addAction(QString());
     p4->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionRemovePrefixChar"));
-    p4->setObjectName(QString::fromLatin1("TechDraw_ExtensionRemovePrefixChar"));
-    p4->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionRemovePrefixChar"));
+    p4->setObjectName(QStringLiteral("TechDraw_ExtensionRemovePrefixChar"));
+    p4->setWhatsThis(QStringLiteral("TechDraw_ExtensionRemovePrefixChar"));
 
     _pcAction = pcAction;
     languageChange();
@@ -574,12 +574,12 @@ Gui::Action* CmdTechDrawExtensionIncreaseDecreaseGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionIncreaseDecimal"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionIncreaseDecimal"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionIncreaseDecimal"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionIncreaseDecimal"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionIncreaseDecimal"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionDecreaseDecimal"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionDecreaseDecimal"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionDecreaseDecimal"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionDecreaseDecimal"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionDecreaseDecimal"));
 
     _pcAction = pcAction;
     languageChange();
@@ -869,16 +869,16 @@ Gui::Action* CmdTechDrawExtensionPosChainDimensionGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionPosHorizChainDimension"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionPosHorizChainDimension"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionPosHorizChainDimension"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionPosHorizChainDimension"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionPosHorizChainDimension"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionPosVertChainDimension"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionPosVertChainDimension"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionPosVertChainDimension"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionPosVertChainDimension"));
+    p2->setWhatsThis(QStringLiteral("sion"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionPosObliqueChainDimension"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionPosObliqueChainDimension"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionPosObliqueChainDimension"));
+    p3->setObjectName(QStringLiteral("TechDraw_ExtensionPosObliqueChainDimension"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_ExtensionPosObliqueChainDimension"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1197,16 +1197,16 @@ Gui::Action* CmdTechDrawExtensionCascadeDimensionGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCascadeHorizDimension"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionCascadeHorizDimension"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCascadeHorizDimension"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionCascadeHorizDimension"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionCascadeHorizDimension"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCascadeVertDimension"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionCascadeVertDimension"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCascadeVertDimension"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionCascadeVertDimension"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionCascadeVertDimension"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCascadeObliqueDimension"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionCascadeObliqueDimension"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCascadeObliqueDimension"));
+    p3->setObjectName(QStringLiteral("TechDraw_ExtensionCascadeObliqueDimension"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_ExtensionCascadeObliqueDimension"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1573,16 +1573,16 @@ Gui::Action* CmdTechDrawExtensionCreateChainDimensionGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateHorizChainDimension"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateHorizChainDimension"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateHorizChainDimension"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionCreateHorizChainDimension"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateHorizChainDimension"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateVertChainDimension"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateVertChainDimension"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateVertChainDimension"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionCreateVertChainDimension"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateVertChainDimension"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateObliqueChainDimension"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateObliqueChainDimension"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateObliqueChainDimension"));
+    p3->setObjectName(QStringLiteral("TechDraw_ExtensionCreateObliqueChainDimension"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateObliqueChainDimension"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1966,16 +1966,16 @@ Gui::Action* CmdTechDrawExtensionCreateCoordDimensionGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateHorizCoordDimension"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateHorizCoordDimension"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateHorizCoordDimension"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionCreateHorizCoordDimension"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateHorizCoordDimension"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateVertCoordDimension"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateVertCoordDimension"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateVertCoordDimension"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionCreateVertCoordDimension"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateVertCoordDimension"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateObliqueCoordDimension"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateObliqueCoordDimension"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateObliqueCoordDimension"));
+    p3->setObjectName(QStringLiteral("TechDraw_ExtensionCreateObliqueCoordDimension"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateObliqueCoordDimension"));
 
     _pcAction = pcAction;
     languageChange();
@@ -2222,12 +2222,12 @@ Gui::Action* CmdTechDrawExtensionChamferDimensionGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateHorizChamferDimension"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateHorizChamferDimension"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateHorizChamferDimension"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionCreateHorizChamferDimension"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateHorizChamferDimension"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateVertChamferDimension"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateVertChamferDimension"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateVertChamferDimension"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionCreateVertChamferDimension"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateVertChamferDimension"));
 
     _pcAction = pcAction;
     languageChange();

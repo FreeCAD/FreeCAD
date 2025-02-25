@@ -69,7 +69,7 @@ class BezCurve(DraftObject):
                 "The area of this object")
         obj.addProperty("App::PropertyArea", "Area", "Draft", _tip)
 
-        obj.MakeFace = params.get_param("fillmode")
+        obj.MakeFace = params.get_param("MakeFaceMode")
         obj.Closed = False
         obj.Degree = 3
         obj.Continuity = []

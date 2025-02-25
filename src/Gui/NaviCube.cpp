@@ -54,6 +54,7 @@
 #include "Command.h"
 #include "Action.h"
 #include "MainWindow.h"
+#include "Navigation/NavigationAnimation.h"
 #include "View3DInventorViewer.h"
 #include "View3DInventor.h"
 #include "ViewParams.h"
@@ -62,10 +63,6 @@
 using namespace Eigen;
 using namespace std;
 using namespace Gui;
-
-
-
-
 
 class NaviCubeImplementation {
 public:
@@ -206,6 +203,9 @@ private:
     map<PickId, LabelTexture> m_LabelTextures;
 
     QMenu* m_Menu;
+
+    std::shared_ptr<NavigationAnimation> m_flatButtonAnimation;
+    SbRotation m_flatButtonTargetOrientation;
 };
 
 int NaviCubeImplementation::m_CubeWidgetSize = 132;
@@ -1102,7 +1102,17 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
             else {
                 rotation.scaleAngle(rotStepAngle);
             }
-            m_View3DInventorViewer->setCameraOrientation(rotation * m_View3DInventorViewer->getCameraOrientation());
+
+            // If the previous flat button animation is still active then apply the rotation to the
+            // previous target orientation, otherwise apply the rotation to the current camera orientation
+            if (m_flatButtonAnimation != nullptr && m_flatButtonAnimation->state() == QAbstractAnimation::Running) {
+                m_flatButtonTargetOrientation = rotation * m_flatButtonTargetOrientation;
+            }
+            else {
+                m_flatButtonTargetOrientation = rotation * m_View3DInventorViewer->getCameraOrientation();
+            }
+
+            m_flatButtonAnimation = m_View3DInventorViewer->setCameraOrientation(m_flatButtonTargetOrientation);
         }
         else {
             return false;

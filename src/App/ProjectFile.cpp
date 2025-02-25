@@ -84,12 +84,12 @@ public:
 
         std::map<std::string, std::string> propMap = initMap();
 
-        DOMNodeList* nodes = xmlDocument->getElementsByTagName(XStr("Properties").unicodeForm());
+        DOMNodeList* nodes = xmlDocument->getElementsByTagName(XStrLiteral("Properties").unicodeForm());
         for (XMLSize_t i = 0; i < nodes->getLength(); i++) {
             DOMNode* node = nodes->item(i);
             if (node->getNodeType() == DOMNode::ELEMENT_NODE) {
                 auto elem = static_cast<DOMElement*>(node);  // NOLINT
-                DOMNodeList* propList = elem->getElementsByTagName(XStr("Property").unicodeForm());
+                DOMNodeList* propList = elem->getElementsByTagName(XStrLiteral("Property").unicodeForm());
                 for (XMLSize_t j = 0; j < propList->getLength(); j++) {
                     DOMNode* propNode = propList->item(j);
                     readProperty(propNode, propMap);
@@ -105,12 +105,12 @@ private:
     void readProgramVersion()
     {
         if (DOMNodeList* nodes =
-                xmlDocument->getElementsByTagName(XStr("Document").unicodeForm())) {
+                xmlDocument->getElementsByTagName(XStrLiteral("Document").unicodeForm())) {
             for (XMLSize_t i = 0; i < nodes->getLength(); i++) {
                 DOMNode* node = nodes->item(i);
                 if (node->getNodeType() == DOMNode::ELEMENT_NODE) {
                     DOMNode* nameAttr =
-                        node->getAttributes()->getNamedItem(XStr("ProgramVersion").unicodeForm());
+                        node->getAttributes()->getNamedItem(XStrLiteral("ProgramVersion").unicodeForm());
                     if (nameAttr) {
                         std::string value = StrX(nameAttr->getNodeValue()).c_str();
                         metadata.programVersion = value;
@@ -153,7 +153,7 @@ private:
 
     static void readProperty(DOMNode* propNode, std::map<std::string, std::string>& propMap)
     {
-        DOMNode* nameAttr = propNode->getAttributes()->getNamedItem(XStr("name").unicodeForm());
+        DOMNode* nameAttr = propNode->getAttributes()->getNamedItem(XStrLiteral("name").unicodeForm());
         if (nameAttr) {
             std::string name = StrX(nameAttr->getNodeValue()).c_str();
             auto it = propMap.find(name);
@@ -169,7 +169,7 @@ private:
             if (DOMElement* child =
                     static_cast<DOMElement*>(node)->getFirstElementChild()) {  // NOLINT
                 if (DOMNode* nameAttr =
-                        child->getAttributes()->getNamedItem(XStr("value").unicodeForm())) {
+                        child->getAttributes()->getNamedItem(XStrLiteral("value").unicodeForm())) {
                     std::string value = StrX(nameAttr->getNodeValue()).c_str();
                     return value;
                 }
@@ -260,18 +260,18 @@ std::list<ProjectFile::Object> ProjectFile::getObjects() const
         return names;
     }
 
-    DOMNodeList* nodes = xmlDocument->getElementsByTagName(XStr("Objects").unicodeForm());
+    DOMNodeList* nodes = xmlDocument->getElementsByTagName(XStrLiteral("Objects").unicodeForm());
     for (XMLSize_t i = 0; i < nodes->getLength(); i++) {
         DOMNode* node = nodes->item(i);
         if (node->getNodeType() == DOMNode::ELEMENT_NODE) {
             DOMNodeList* objectList = static_cast<DOMElement*>(node)->getElementsByTagName(
-                XStr("Object").unicodeForm());  // NOLINT
+                XStrLiteral("Object").unicodeForm());  // NOLINT
             for (XMLSize_t j = 0; j < objectList->getLength(); j++) {
                 DOMNode* objectNode = objectList->item(j);
                 DOMNode* typeAttr =
-                    objectNode->getAttributes()->getNamedItem(XStr("type").unicodeForm());
+                    objectNode->getAttributes()->getNamedItem(XStrLiteral("type").unicodeForm());
                 DOMNode* nameAttr =
-                    objectNode->getAttributes()->getNamedItem(XStr("name").unicodeForm());
+                    objectNode->getAttributes()->getNamedItem(XStrLiteral("name").unicodeForm());
                 if (typeAttr && nameAttr) {
                     Object obj;
                     obj.name = StrX(nameAttr->getNodeValue()).c_str();
@@ -292,18 +292,18 @@ std::list<std::string> ProjectFile::getObjectsOfType(const Base::Type& typeId) c
         return names;
     }
 
-    DOMNodeList* nodes = xmlDocument->getElementsByTagName(XStr("Objects").unicodeForm());
+    DOMNodeList* nodes = xmlDocument->getElementsByTagName(XStrLiteral("Objects").unicodeForm());
     for (XMLSize_t i = 0; i < nodes->getLength(); i++) {
         DOMNode* node = nodes->item(i);
         if (node->getNodeType() == DOMNode::ELEMENT_NODE) {
             DOMNodeList* objectList = static_cast<DOMElement*>(node)->getElementsByTagName(
-                XStr("Object").unicodeForm());  // NOLINT
+                XStrLiteral("Object").unicodeForm());  // NOLINT
             for (XMLSize_t j = 0; j < objectList->getLength(); j++) {
                 DOMNode* objectNode = objectList->item(j);
                 DOMNode* typeAttr =
-                    objectNode->getAttributes()->getNamedItem(XStr("type").unicodeForm());
+                    objectNode->getAttributes()->getNamedItem(XStrLiteral("type").unicodeForm());
                 DOMNode* nameAttr =
-                    objectNode->getAttributes()->getNamedItem(XStr("name").unicodeForm());
+                    objectNode->getAttributes()->getNamedItem(XStrLiteral("name").unicodeForm());
                 if (typeAttr && nameAttr) {
                     if (Base::Type::fromName(StrX(typeAttr->getNodeValue()).c_str()) == typeId) {
                         names.emplace_back(StrX(nameAttr->getNodeValue()).c_str());
@@ -366,18 +366,18 @@ Base::Type ProjectFile::getTypeId(const std::string& name) const
         return Base::Type::badType();
     }
 
-    DOMNodeList* nodes = xmlDocument->getElementsByTagName(XStr("Objects").unicodeForm());
+    DOMNodeList* nodes = xmlDocument->getElementsByTagName(XStrLiteral("Objects").unicodeForm());
     for (XMLSize_t i = 0; i < nodes->getLength(); i++) {
         DOMNode* node = nodes->item(i);
         if (node->getNodeType() == DOMNode::ELEMENT_NODE) {
             DOMNodeList* objectList = static_cast<DOMElement*>(node)->getElementsByTagName(
-                XStr("Object").unicodeForm());  // NOLINT
+                XStrLiteral("Object").unicodeForm());  // NOLINT
             for (XMLSize_t j = 0; j < objectList->getLength(); j++) {
                 DOMNode* objectNode = objectList->item(j);
                 DOMNode* typeAttr =
-                    objectNode->getAttributes()->getNamedItem(XStr("type").unicodeForm());
+                    objectNode->getAttributes()->getNamedItem(XStrLiteral("type").unicodeForm());
                 DOMNode* nameAttr =
-                    objectNode->getAttributes()->getNamedItem(XStr("name").unicodeForm());
+                    objectNode->getAttributes()->getNamedItem(XStrLiteral("name").unicodeForm());
                 if (typeAttr && nameAttr) {
                     if (strcmp(name.c_str(), StrX(nameAttr->getNodeValue()).c_str()) == 0) {
                         std::string typeId = StrX(typeAttr->getNodeValue()).c_str();
@@ -407,16 +407,16 @@ std::list<ProjectFile::PropertyFile> ProjectFile::getPropertyFiles(const std::st
     }
 
     std::list<PropertyFile> files;
-    DOMNodeList* nodes = xmlDocument->getElementsByTagName(XStr("ObjectData").unicodeForm());
+    DOMNodeList* nodes = xmlDocument->getElementsByTagName(XStrLiteral("ObjectData").unicodeForm());
     for (XMLSize_t i = 0; i < nodes->getLength(); i++) {
         DOMNode* node = nodes->item(i);
         if (node->getNodeType() == DOMNode::ELEMENT_NODE) {
             DOMNodeList* objectList = static_cast<DOMElement*>(node)->getElementsByTagName(
-                XStr("Object").unicodeForm());  // NOLINT
+                XStrLiteral("Object").unicodeForm());  // NOLINT
             for (XMLSize_t j = 0; j < objectList->getLength(); j++) {
                 DOMNode* objectNode = objectList->item(j);
                 DOMNode* nameAttr =
-                    objectNode->getAttributes()->getNamedItem(XStr("name").unicodeForm());
+                    objectNode->getAttributes()->getNamedItem(XStrLiteral("name").unicodeForm());
                 if (nameAttr && strcmp(name.c_str(), StrX(nameAttr->getNodeValue()).c_str()) == 0) {
                     // now go recursively through the sub-tree (i.e. the properties) and collect
                     // every file attribute
@@ -434,18 +434,18 @@ void ProjectFile::findFiles(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* node,
 {
     if (node->hasAttributes()) {
         ProjectFile::PropertyFile prop;
-        DOMNode* fileAttr = node->getAttributes()->getNamedItem(XStr("file").unicodeForm());
+        DOMNode* fileAttr = node->getAttributes()->getNamedItem(XStrLiteral("file").unicodeForm());
         if (fileAttr) {
             DOMNode* parentNode = node->getParentNode();
             if (parentNode) {
                 DOMNode* nameAttr =
-                    parentNode->getAttributes()->getNamedItem(XStr("name").unicodeForm());
+                    parentNode->getAttributes()->getNamedItem(XStrLiteral("name").unicodeForm());
                 if (nameAttr) {
                     prop.name = StrX(nameAttr->getNodeValue()).c_str();
                 }
 
                 DOMNode* typeAttr =
-                    parentNode->getAttributes()->getNamedItem(XStr("type").unicodeForm());
+                    parentNode->getAttributes()->getNamedItem(XStrLiteral("type").unicodeForm());
                 if (typeAttr) {
                     prop.type = Base::Type::fromName(StrX(typeAttr->getNodeValue()).c_str());
                 }
@@ -486,16 +486,16 @@ std::list<std::string> ProjectFile::getInputFiles(const std::string& name) const
     }
 
     std::list<std::string> files;
-    DOMNodeList* nodes = xmlDocument->getElementsByTagName(XStr("ObjectData").unicodeForm());
+    DOMNodeList* nodes = xmlDocument->getElementsByTagName(XStrLiteral("ObjectData").unicodeForm());
     for (XMLSize_t i = 0; i < nodes->getLength(); i++) {
         DOMNode* node = nodes->item(i);
         if (node->getNodeType() == DOMNode::ELEMENT_NODE) {
             DOMNodeList* objectList = static_cast<DOMElement*>(node)->getElementsByTagName(
-                XStr("Object").unicodeForm());  // NOLINT
+                XStrLiteral("Object").unicodeForm());  // NOLINT
             for (XMLSize_t j = 0; j < objectList->getLength(); j++) {
                 DOMNode* objectNode = objectList->item(j);
                 DOMNode* nameAttr =
-                    objectNode->getAttributes()->getNamedItem(XStr("name").unicodeForm());
+                    objectNode->getAttributes()->getNamedItem(XStrLiteral("name").unicodeForm());
                 if (nameAttr && strcmp(name.c_str(), StrX(nameAttr->getNodeValue()).c_str()) == 0) {
                     // now go recursively through the sub-tree (i.e. the properties) and collect
                     // every file attribute
@@ -512,7 +512,7 @@ void ProjectFile::findFiles(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* node,
                             std::list<std::string>& files) const
 {
     if (node->hasAttributes()) {
-        DOMNode* fileAttr = node->getAttributes()->getNamedItem(XStr("file").unicodeForm());
+        DOMNode* fileAttr = node->getAttributes()->getNamedItem(XStrLiteral("file").unicodeForm());
         if (fileAttr) {
             files.emplace_back(StrX(fileAttr->getNodeValue()).c_str());
         }

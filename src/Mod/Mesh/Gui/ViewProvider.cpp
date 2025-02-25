@@ -329,7 +329,7 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
         pcMatBinding->value = SoMaterialBinding::OVERALL;
     }
     if (prop == &LineTransparency) {
-        float trans = LineTransparency.getValue() / 100.0F;
+        float trans = Base::fromPercent(LineTransparency.getValue());
         pLineColor->transparency = trans;
     }
     else if (prop == &LineWidth) {
@@ -590,7 +590,7 @@ void ViewProviderMesh::tryColorPerVertexOrFace(bool on)
         pcMatBinding->value = SoMaterialBinding::OVERALL;
         const App::Color& c = ShapeAppearance.getDiffuseColor();
         pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
-        pcShapeMaterial->transparency.setValue(Transparency.getValue() / 100.0F);
+        pcShapeMaterial->transparency.setValue(Base::fromPercent(Transparency.getValue()));
     }
 }
 
@@ -975,7 +975,7 @@ public:
         Gui::Document* gui = mesh->getDocument();
         App::Document* doc = gui->getDocument();
 
-        auto cpy = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature"));
+        auto cpy = doc->addObject<Mesh::Feature>();
         auto org = mesh->getObject<Mesh::Feature>();
         cpy->Label.setValue(org->Label.getValue());
         cpy->Mesh.setValue(org->Mesh.getValue());
@@ -1630,7 +1630,7 @@ void ViewProviderMesh::splitMesh(const MeshCore::MeshKernel& toolMesh,
     removeFacets(indices);
     auto doc = App::GetApplication().getActiveDocument();
     const char* name = pcObject->getNameInDocument();
-    auto splitMesh = dynamic_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature", name));
+    auto splitMesh = doc->addObject<Mesh::Feature>(name);
     // Note: deletes also kernel
     splitMesh->Mesh.setValuePtr(kernel);
     getObject()->purgeTouched();
@@ -1746,8 +1746,8 @@ void ViewProviderMesh::faceInfoCallback(void* ud, SoEventCallback* cb)
                 static_cast<const SoPointDetail*>(faceDetail->getPoint(2))->getCoordinateIndex();
             auto flag = new Gui::Flag;
             flag->setText(QObject::tr("Index: %1").arg(uFacet));
-            QString toolTip = QString::fromLatin1("Facet index: %1\n"
-                                                  "Points: <%2, %3, %4>")
+            QString toolTip = QStringLiteral("Facet index: %1\n"
+                                             "Points: <%2, %3, %4>")
                                   .arg(uFacet)
                                   .arg(point1)
                                   .arg(point2)

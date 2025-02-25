@@ -21,8 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef APP_EXTENSIONCONTAINER_H
-#define APP_EXTENSIONCONTAINER_H
+#ifndef SRC_APP_EXTENSIONCONTAINER_H_
+#define SRC_APP_EXTENSIONCONTAINER_H_
+
+#include <vector>
+#include <string>
+#include <map>
 
 #include "PropertyContainer.h"
 
@@ -182,6 +186,8 @@ public:
     const char* getPropertyName(const Property* prop) const override;
     /// get all properties of the class (including properties of the parent)
     void getPropertyMap(std::map<std::string, Property*>& Map) const override;
+    /// See PropertyContainer::visitProperties for semantics
+    void visitProperties(const std::function<void(Property*)>& visitor) const override;
     /// get all properties of the class (including properties of the parent)
     void getPropertyList(std::vector<Property*>& List) const override;
 
@@ -239,7 +245,7 @@ private:
     std::map<Base::Type, App::Extension*> _extensions;
 };
 
-#define PROPERTY_HEADER_WITH_EXTENSIONS(_class_) PROPERTY_HEADER_WITH_OVERRIDE(_class)
+#define PROPERTY_HEADER_WITH_EXTENSIONS(_class_) PROPERTY_HEADER_WITH_OVERRIDE(_class_)
 
 /// We make sure that the PropertyData of the container is not connected to the one of the extension
 #define PROPERTY_SOURCE_WITH_EXTENSIONS(_class_, _parentclass_)                                    \
@@ -250,4 +256,4 @@ private:
 
 }  // namespace App
 
-#endif  // APP_EXTENSIONCONTAINER_H
+#endif  // SRC_APP_EXTENSIONCONTAINER_H_

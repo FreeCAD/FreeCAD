@@ -48,7 +48,9 @@
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
 
+#include "Enums.h"
 #include "QGIViewDimension.h"
 #include "PreferencesGui.h"
 #include "QGIArrow.h"
@@ -69,23 +71,17 @@
 
 using namespace TechDraw;
 using namespace TechDrawGui;
+using Format = DimensionFormatter::Format;
 
-enum SnapMode
+enum class SnapMode
 {
     NoSnap,
     VerticalSnap,
     HorizontalSnap
 };
 
-enum DragState
-{
-    NoDrag,
-    DragStarted,
-    Dragging
-};
 
-
-QGIDatumLabel::QGIDatumLabel() : m_dragState(NoDrag)
+QGIDatumLabel::QGIDatumLabel() : m_dragState(DragState::NoDrag)
 {
     verticalSep = false;
     posX = 0;
@@ -144,9 +140,9 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant& va
         }
         else {
             setPrettyNormal();
-            if (m_dragState == Dragging) {
+            if (m_dragState == DragState::Dragging) {
                 //stop the drag if we are no longer selected.
-                m_dragState = NoDrag;
+                m_dragState = DragState::NoDrag;
                 Q_EMIT dragFinished();
             }
         }
@@ -158,7 +154,7 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant& va
         }
 
         setLabelCenter();
-        m_dragState = Dragging;
+        m_dragState = DragState::Dragging;
         Q_EMIT dragging(m_ctrl);
     }
 
@@ -297,8 +293,8 @@ void QGIDatumLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
     //    Base::Console().Message("QGIDL::mouseReleaseEvent()\n");
     m_ctrl = false;
-    if (m_dragState == Dragging) {
-        m_dragState = NoDrag;
+    if (m_dragState == DragState::Dragging) {
+        m_dragState = DragState::NoDrag;
         Q_EMIT dragFinished();
     }
 
@@ -522,19 +518,19 @@ void QGIDatumLabel::setToleranceString()
     std::pair<std::string, std::string> labelTexts, unitTexts;
 
     if (dim->ArbitraryTolerances.getValue()) {
-        labelTexts = dim->getFormattedToleranceValues(1);//copy tolerance spec
+        labelTexts = dim->getFormattedToleranceValues(Format::FORMATTED);//copy tolerance spec
         unitTexts.first = "";
         unitTexts.second = "";
     }
     else {
         if (dim->isMultiValueSchema()) {
-            labelTexts = dim->getFormattedToleranceValues(0);//don't format multis
+            labelTexts = dim->getFormattedToleranceValues(Format::UNALTERED);//don't format multis
             unitTexts.first = "";
             unitTexts.second = "";
         }
         else {
-            labelTexts = dim->getFormattedToleranceValues(1);// prefix value [unit] postfix
-            unitTexts = dim->getFormattedToleranceValues(2); //just the unit
+            labelTexts = dim->getFormattedToleranceValues(Format::FORMATTED);// prefix value [unit] postfix
+            unitTexts = dim->getFormattedToleranceValues(Format::UNIT); //just the unit
         }
     }
 
@@ -669,7 +665,7 @@ QGIViewDimension::QGIViewDimension() : dvDimension(nullptr), hasHover(false), m_
     // needs phase 2 of autocorrect to be useful
     // m_refFlag = new QGCustomSvg();
     // m_refFlag->setParentItem(this);
-    // m_refFlag->load(QString::fromUtf8(":/icons/TechDraw_RefError.svg"));
+    // m_refFlag->load(QStringLiteral(":/icons/TechDraw_RefError.svg"));
     // m_refFlag->setZValue(ZVALUE::LOCK);
     // m_refFlag->hide();
 }
@@ -831,10 +827,11 @@ void QGIViewDimension::updateDim()
     }
 
     QString labelText =
-        QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str());// pre value [unit] post
+        // what about fromStdString?
+        QString::fromUtf8(dim->getFormattedDimensionValue(Format::FORMATTED).c_str());// pre value [unit] post
     if (dim->isMultiValueSchema()) {
         labelText =
-            QString::fromUtf8(dim->getFormattedDimensionValue(0).c_str());//don't format multis
+            QString::fromUtf8(dim->getFormattedDimensionValue(Format::UNALTERED).c_str());//don't format multis
     }
 
     QFont font = datumLabel->getFont();
@@ -1436,20 +1433,20 @@ void QGIViewDimension::resetArrows() const
     aHead2->setFlipped(false);
 }
 
+// NOLINTNEXTLINE
 void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], double angles[],
                                   bool flipped, bool forcePoint) const
 {
-    const int arrowCount = 2;
-    QGIArrow* arrows[arrowCount] = {aHead1, aHead2};
-
+    constexpr int arrowCount{2};
+    QGIArrow* arrows[arrowCount] = {aHead1, aHead2};    // NOLINT
     arrowPositionsToFeature(positions);
 
     for (int i = 0; i < arrowCount; ++i) {
-        QGIArrow* arrow = arrows[i];
+        QGIArrow* arrow = arrows[i];                    // NOLINT
 
         if (positions && angles) {
-            arrow->setPos(toQtGui(positions[i]));
-            arrow->setDirection(toQtRad(angles[i]));
+            arrow->setPos(toQtGui(positions[i]));       // NOLINT
+            arrow->setDirection(toQtRad(angles[i]));    // NOLINT
         }
 
         if (i >= count) {
@@ -1457,14 +1454,17 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
             continue;
         }
 
-        // some dimensions must use point ends (area). The point style is 3.
-        arrow->setStyle(forcePoint ? 3 : QGIArrow::getPrefArrowStyle());
         auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
+        if (!vp) {
+            return;
+        }
+
+        arrow->setStyle(forcePoint ? ArrowType::DOT : static_cast<ArrowType>(vp->ArrowStyle.getValue()));
         auto arrowSize = vp->Arrowsize.getValue();
         arrow->setSize(arrowSize);
         arrow->setFlipped(flipped);
 
-        if (QGIArrow::getPrefArrowStyle() != 7) {// if not "None"
+        if (vp->ArrowStyle.getValue() != ArrowType::NONE) {
             arrow->draw();
             arrow->show();
         }

@@ -349,7 +349,7 @@ bool TaskDlgFemConstraintBearing::accept()
         std::string locobj = parameterBearing->getLocationObject().data();
 
         if (!locname.empty()) {
-            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+            QString buf = QStringLiteral("(App.ActiveDocument.%1,[\"%2\"])");
             buf = buf.arg(QString::fromStdString(locname));
             buf = buf.arg(QString::fromStdString(locobj));
             Gui::Command::doCommand(Gui::Command::Doc,

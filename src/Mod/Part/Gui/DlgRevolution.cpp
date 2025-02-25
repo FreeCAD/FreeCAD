@@ -38,6 +38,7 @@
 #include <App/DocumentObject.h>
 #include <App/Link.h>
 #include <App/Part.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -67,7 +68,7 @@ public:
     {
         this->canSelect = false;
 
-        if (!sSubName || sSubName[0] == '\0')
+        if (Base::Tools::isNullOrEmpty(sSubName))
             return false;
         std::string element(sSubName);
         if (element.substr(0,4) != "Edge")
@@ -233,7 +234,7 @@ void DlgRevolution::setAxisLink(const char* objname, const char* subname)
     if(objname && strlen(objname) > 0){
         QString txt = QString::fromLatin1(objname);
         if (subname && strlen(subname) > 0){
-            txt = txt + QString::fromLatin1(":") + QString::fromLatin1(subname);
+            txt = txt + QStringLiteral(":") + QString::fromLatin1(subname);
         }
         ui->txtAxisLink->setText(txt);
     } else {
@@ -377,38 +378,38 @@ void DlgRevolution::accept()
         QString shape, type, name, solid;
         QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
         if (ui->checkSolid->isChecked()) {
-            solid = QString::fromLatin1("True");}
+            solid = QStringLiteral("True");}
         else {
-            solid = QString::fromLatin1("False");}
+            solid = QStringLiteral("False");}
 
         App::PropertyLinkSub axisLink;
         this->getAxisLink(axisLink);
         QString strAxisLink;
         if (axisLink.getValue()){
-            strAxisLink = QString::fromLatin1("(App.ActiveDocument.%1, %2)")
+            strAxisLink = QStringLiteral("(App.ActiveDocument.%1, %2)")
                     .arg(QString::fromLatin1(axisLink.getValue()->getNameInDocument()),
                          axisLink.getSubValues().size() ==  1 ?
-                             QString::fromLatin1("\"%1\"").arg(QString::fromLatin1(axisLink.getSubValues()[0].c_str()))
+                             QStringLiteral("\"%1\"").arg(QString::fromLatin1(axisLink.getSubValues()[0].c_str()))
                              : QString() );
         } else {
-            strAxisLink = QString::fromLatin1("None");
+            strAxisLink = QStringLiteral("None");
         }
 
         QString symmetric;
         if (ui->checkSymmetric->isChecked()) {
-            symmetric = QString::fromLatin1("True");}
+            symmetric = QStringLiteral("True");}
         else {
-            symmetric = QString::fromLatin1("False");}
+            symmetric = QStringLiteral("False");}
 
         for (auto item : items) {
             shape = item->data(0, Qt::UserRole).toString();
-            type = QString::fromLatin1("Part::Revolution");
+            type = QStringLiteral("Part::Revolution");
             name = QString::fromLatin1(activeDoc->getUniqueObjectName("Revolve").c_str());
             Base::Vector3d axis = this->getDirection();
             Base::Vector3d pos = this->getPosition();
 
 
-            QString code = QString::fromLatin1(
+            QString code = QStringLiteral(
                 "FreeCAD.ActiveDocument.addObject(\"%1\",\"%2\")\n"
                 "FreeCAD.ActiveDocument.%2.Source = FreeCAD.ActiveDocument.%3\n"
                 "FreeCAD.ActiveDocument.%2.Axis = (%4,%5,%6)\n"
@@ -446,7 +447,7 @@ void DlgRevolution::accept()
         return;
     } catch (...){
         QMessageBox::critical(this, windowTitle(),
-            tr("Creating Revolve failed.\n\n%1").arg(QString::fromUtf8("Unknown error")));
+            tr("Creating Revolve failed.\n\n%1").arg(QStringLiteral("Unknown error")));
         return;
     }
 

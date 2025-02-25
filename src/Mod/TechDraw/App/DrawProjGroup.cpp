@@ -463,43 +463,39 @@ App::DocumentObject* DrawProjGroup::addProjection(const char* viewProjType)
 
     if (checkViewProjType(viewProjType) && !hasProjection(viewProjType)) {
         std::string FeatName = getDocument()->getUniqueObjectName("ProjItem");
-        auto docObj(getDocument()->addObject("TechDraw::DrawProjGroupItem",//add to Document
-                                             FeatName.c_str()));
-        view = dynamic_cast<TechDraw::DrawProjGroupItem*>(docObj);
-        if (!view && docObj) {
+        view = getDocument()->addObject<TechDraw::DrawProjGroupItem>(FeatName.c_str());
+        if (!view) {
             //should never happen that we create a DPGI that isn't a DPGI!!
             Base::Console().Error("PROBLEM - DPG::addProjection - created a non DPGI! %s / %s\n",
                                   getNameInDocument(), viewProjType);
             throw Base::TypeError("Error: new projection is not a DPGI!");
         }
-        if (view) {//coverity CID 151722
-            // the label must be set before the view is added
-            view->Label.setValue(viewProjType);
-            // somewhere deep in DocumentObject, duplicate Labels have a numeric suffix applied,
-            // so we need to wait until that happens before building the translated label
-            view->translateLabel("DrawProjGroupItem", viewProjType, view->Label.getValue());
-            addView(view);//from DrawViewCollection
-            view->Source.setValues(Source.getValues());
-            view->XSource.setValues(XSource.getValues());
+        // the label must be set before the view is added
+        view->Label.setValue(viewProjType);
+        // somewhere deep in DocumentObject, duplicate Labels have a numeric suffix applied,
+        // so we need to wait until that happens before building the translated label
+        view->translateLabel("DrawProjGroupItem", viewProjType, view->Label.getValue());
+        addView(view);//from DrawViewCollection
+        view->Source.setValues(Source.getValues());
+        view->XSource.setValues(XSource.getValues());
 
-            // the Scale is already set by DrawView
-            view->Type.setValue(viewProjType);
-            if (strcmp(viewProjType, "Front") != 0) {//not Front!
-                vecs = getDirsFromFront(view);
-                view->Direction.setValue(vecs.first);
-                view->XDirection.setValue(vecs.second);
-                view->recomputeFeature();
-            }
-            else {//Front
-                Anchor.setValue(view);
-                Anchor.purgeTouched();
-                requestPaint();//make sure the group object is on the Gui page
-                view->LockPosition.setValue(
-                    true);//lock "Front" position within DPG (note not Page!).
-                view->LockPosition.setStatus(App::Property::ReadOnly,
-                                             true);//Front should stay locked.
-                view->LockPosition.purgeTouched();
-            }
+        // the Scale is already set by DrawView
+        view->Type.setValue(viewProjType);
+        if (strcmp(viewProjType, "Front") != 0) {//not Front!
+            vecs = getDirsFromFront(view);
+            view->Direction.setValue(vecs.first);
+            view->XDirection.setValue(vecs.second);
+            view->recomputeFeature();
+        }
+        else {//Front
+            Anchor.setValue(view);
+            Anchor.purgeTouched();
+            requestPaint();//make sure the group object is on the Gui page
+            view->LockPosition.setValue(
+                true);//lock "Front" position within DPG (note not Page!).
+            view->LockPosition.setStatus(App::Property::ReadOnly,
+                                            true);//Front should stay locked.
+            view->LockPosition.purgeTouched();
         }
     }
     return view;

@@ -253,7 +253,7 @@ void DlgSettingsEditor::loadSettings()
     ui->radioSpaces->onRestore();
 
     setEditorTabWidth(ui->tabSize->value());
-    ui->textEdit1->setPlainText(QString::fromLatin1("# Short Python sample\n"
+    ui->textEdit1->setPlainText(QStringLiteral("# Short Python sample\n"
                                                     "import sys\n"
                                                     "\n"
                                                     "def foo(begin, end):\n"

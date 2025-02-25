@@ -390,7 +390,7 @@ TaskPostDisplay::TaskPostDisplay(ViewProviderFemPostObject* view, QWidget* paren
     int trans = getTypedView<ViewProviderFemPostObject>()->Transparency.getValue();
     // sync the trancparency slider
     ui->Transparency->setValue(trans);
-    ui->Transparency->setToolTip(QString::number(trans) + QString::fromLatin1(" %"));
+    ui->Transparency->setToolTip(QString::number(trans) + QStringLiteral(" %"));
 }
 
 TaskPostDisplay::~TaskPostDisplay() = default;
@@ -441,9 +441,9 @@ void TaskPostDisplay::onVectorModeActivated(int i)
 void TaskPostDisplay::onTransparencyValueChanged(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->Transparency.setValue(i);
-    ui->Transparency->setToolTip(QString::number(i) + QString::fromLatin1(" %"));
+    ui->Transparency->setToolTip(QString::number(i) + QStringLiteral(" %"));
     // highlight the tooltip
-    QToolTip::showText(QCursor::pos(), QString::number(i) + QString::fromLatin1(" %"), nullptr);
+    QToolTip::showText(QCursor::pos(), QString::number(i) + QStringLiteral(" %"), nullptr);
 }
 
 void TaskPostDisplay::applyPythonCode()
@@ -1228,7 +1228,7 @@ void TaskPostDataAtPoint::showValue(double pointValue, const char* unitStr)
     QString value = QString::fromStdString(toString(pointValue));
     QString unit = QString::fromUtf8(unitStr);
 
-    ui->ValueAtPoint->setText(QString::fromLatin1("%1 %2").arg(value, unit));
+    ui->ValueAtPoint->setText(QStringLiteral("%1 %2").arg(value, unit));
 
     QString field = ui->Field->currentText();
     QString posX = ui->centerX->text();

@@ -28,7 +28,7 @@
 #include <string>
 #include <vector>
 #include <QIcon>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <boost/intrusive_ptr.hpp>
 
 #include <App/Material.h>
@@ -74,6 +74,7 @@ class View3DInventorViewer;
 class ViewProviderPy;
 class ObjectItem;
 class MDIView;
+class SelectionChanges;
 
 enum ViewStatus {
     UpdateData = 0,
@@ -164,6 +165,8 @@ public:
     /// indicates if the ViewProvider use the new Selection model
     virtual bool useNewSelectionModel() const;
     virtual bool isSelectable() const {return true;}
+    /// called when the selection changes for the view provider
+    virtual void onSelectionChanged(const SelectionChanges&) {}
     /// return a hit element given the picked point which contains the full node path
     virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const;
     /// return a hit element to the selection path or 0
@@ -178,7 +181,7 @@ public:
      * @param append: If true, pPath will be first appended with the root node and
      * the mode switch node of this view provider.
      *
-     * @return the coint detail of the subelement
+     * @return the coin detail of the subelement
      *
      * If this view provider links to other view provider, then the
      * implementation of getDetailPath() shall also append all intermediate

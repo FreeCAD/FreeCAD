@@ -84,7 +84,7 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     workbenches.sort();
     int index = 1;
     ui->workbenchBox->addItem(QApplication::windowIcon(), tr("Global"));
-    ui->workbenchBox->setItemData(0, QVariant(QString::fromLatin1("Global")), Qt::UserRole);
+    ui->workbenchBox->setItemData(0, QVariant(QStringLiteral("Global")), Qt::UserRole);
     for (const auto& workbench : workbenches) {
         QPixmap px = Application::Instance->workbenchIcon(workbench);
         QString mt = Application::Instance->workbenchMenuText(workbench);
@@ -265,7 +265,7 @@ void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
     CommandManager& rMgr = Application::Instance->commandManager();
     for (int i = 0; i < ui->toolbarTreeWidget->topLevelItemCount(); i++) {
         QTreeWidgetItem* toplevel = ui->toolbarTreeWidget->topLevelItem(i);
-        QString groupName = QString::fromLatin1("Custom_%1").arg(i + 1);
+        QString groupName = QStringLiteral("Custom_%1").arg(i + 1);
         QByteArray toolbarName = toplevel->text(0).toUtf8();
         ParameterGrp::handle hToolGrp = hGrp->GetGroup(groupName.toLatin1());
         hToolGrp->SetASCII("Name", toolbarName.constData());
@@ -439,7 +439,7 @@ void DlgCustomToolbars::onNewButtonClicked()
 {
     bool ok;
     QString text =
-        QString::fromLatin1("Custom%1").arg(ui->toolbarTreeWidget->topLevelItemCount() + 1);
+        QStringLiteral("Custom%1").arg(ui->toolbarTreeWidget->topLevelItemCount() + 1);
     text = QInputDialog::getText(this,
                                  tr("New toolbar"),
                                  tr("Toolbar name:"),
@@ -678,7 +678,7 @@ void DlgCustomToolbarsImp::setActionGroup(QAction* action, const QList<QAction*>
             QMenu* menu = tb->menu();
             if (!menu) {
                 tb->setPopupMode(QToolButton::MenuButtonPopup);
-                tb->setObjectName(QString::fromLatin1("qt_toolbutton_menubutton"));
+                tb->setObjectName(QStringLiteral("qt_toolbutton_menubutton"));
                 auto menu = new QMenu(tb);
                 menu->addActions(group);
                 tb->setMenu(menu);

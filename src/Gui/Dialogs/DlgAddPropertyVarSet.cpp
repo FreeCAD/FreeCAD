@@ -69,7 +69,7 @@ DlgAddPropertyVarSet::~DlgAddPropertyVarSet() = default;
 
 void DlgAddPropertyVarSet::initializeGroup()
 {
-    comboBoxGroup.setObjectName(QString::fromUtf8("comboBoxGroup"));
+    comboBoxGroup.setObjectName(QStringLiteral("comboBoxGroup"));
     comboBoxGroup.setInsertPolicy(QComboBox::InsertAtTop);
     comboBoxGroup.setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     auto formLayout = qobject_cast<QFormLayout*>(layout());
@@ -253,7 +253,7 @@ void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem,
     }));
     propertyItem->setEditorData(editor.get(), QVariant());
     editor->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    editor->setObjectName(QString::fromUtf8("editor"));
+    editor->setObjectName(QStringLiteral("editor"));
     auto formLayout = qobject_cast<QFormLayout*>(layout());
     formLayout->setWidget(3, QFormLayout::FieldRole, editor.get());
 
@@ -433,7 +433,7 @@ void DlgAddPropertyVarSet::checkGroup() {
         critical(QObject::tr("Invalid name"),
                  QObject::tr("The group name must only contain alpha numericals,\n"
                              "underscore, and must not start with a digit."));
-        comboBoxGroup.setEditText(QString::fromUtf8("Base"));
+        comboBoxGroup.setEditText(QStringLiteral("Base"));
         throw CreatePropertyException("Invalid name");
     }
 }

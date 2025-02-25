@@ -21,13 +21,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_APPLICATION_H
-#define APP_APPLICATION_H
+#ifndef SRC_APP_APPLICATION_H_
+#define SRC_APP_APPLICATION_H_
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <deque>
 #include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <string>
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
@@ -89,15 +93,15 @@ public:
     /** @name methods for document handling */
     //@{
     /** Creates a new document
-     * The first name is a the identifier and some kind of an internal (english)
-     * name. It has to be like an identifier in a programming language, with no
-     * spaces and not starting with a number. This name gets also forced to be unique
-     * in this Application. You can avoid the renaming by using getUniqueDocumentName()
-     * to get a unique name before calling newDoucument().
-     * The second name is a UTF8 name of any kind. It's that name normally shown to
-     * the user and stored in the App::Document::Name property.
+     * @param proposedName: a prototype name used to create the permanent Name for the document.
+     * It is converted to be like an identifier in a programming language,
+     * with no spaces and not starting with a number. This name gets also forced to be unique
+     * in this Application. You can obtain the unique name using doc.getDocumentName
+     * on the returned document.
+     * @param proposedLabel: a UTF8 name of any kind. It's that name normally shown to
+     * the user and stored in the App::Document::Label property.
      */
-    App::Document* newDocument(const char * Name=nullptr, const char * UserName=nullptr,
+    App::Document* newDocument(const char * proposedName=nullptr, const char * proposedLabel=nullptr,
             DocumentCreateFlags CreateFlags=DocumentCreateFlags());
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
@@ -164,7 +168,7 @@ public:
     std::vector<App::Document*> getDocuments() const;
     /// Set the active document
     void setActiveDocument(App::Document* pDoc);
-    void setActiveDocument(const char *Name);
+    void setActiveDocument(const char* Name);
     /// close all documents (without saving)
     void closeAllDocuments();
     /// Add pending document to open together with the current opening document
@@ -503,12 +507,15 @@ protected:
     };
 
 private:
-    /// Constructor
+    /// Constructor. The passed configuration must last for the lifetime of the constructed Application
+    // NOLINTNEXTLINE(runtime/references)
     explicit Application(std::map<std::string, std::string> &mConfig);
     /// Destructor
     virtual ~Application();
 
     static void cleanupUnits();
+
+    void setActiveDocumentNoSignal(App::Document* pDoc);
 
     /** @name member for parameter */
     //@{
@@ -654,4 +661,4 @@ inline App::Application &GetApplication(){
 } // namespace App
 
 
-#endif // APP_APPLICATION_H
+#endif // SRC_APP_APPLICATION_H_

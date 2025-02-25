@@ -1813,6 +1813,29 @@ def export(exportList, filename):
                        "Unknown SVG export style, switching to Translated"))
         svg_export_style = 0
 
+    tmp = []
+    hidden_doc = None
+    base_sketch_pla = None  # Placement of the 1st sketch.
+    for obj in exportList:
+        if obj.isDerivedFrom("Sketcher::SketchObject"):
+            if hidden_doc is None:
+                hidden_doc = FreeCAD.newDocument(name="hidden", hidden=True, temp=True)
+                base_sketch_pla = obj.Placement
+            import Part
+            sh = Part.Compound()
+            sh.Placement = base_sketch_pla
+            sh.add(obj.Shape.copy())
+            sh.transformShape(base_sketch_pla.inverse().Matrix)
+            new = hidden_doc.addObject("Part::Part2DObjectPython")
+            new.Shape = sh
+            if FreeCAD.GuiUp:
+                for attr in ("DrawStyle", "LineColor", "LineWidth"):
+                    setattr(new.ViewObject, attr, getattr(obj.ViewObject, attr))
+            tmp.append(new)
+        else:
+            tmp.append(obj)
+    exportList = tmp
+
     # Determine the size of the page by adding the bounding boxes
     # of all shapes
     bb = FreeCAD.BoundBox()
@@ -1900,3 +1923,8 @@ def export(exportList, filename):
     # Close the file
     svg.write('</svg>')
     svg.close()
+    if hidden_doc is not None:
+        try:
+            App.closeDocument(hidden_doc.Name)
+        except:
+            pass

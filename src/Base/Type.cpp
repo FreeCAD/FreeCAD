@@ -26,15 +26,12 @@
 #include <cassert>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Type.h"
-#include "Exception.h"
 #include "Interpreter.h"
 #include "Console.h"
 
 
 using namespace Base;
-using namespace std;
 
 
 struct Base::TypeData
@@ -55,11 +52,11 @@ struct Base::TypeData
     Type::instantiationMethod instMethod;
 };
 
-map<string, unsigned int> Type::typemap;
-vector<TypeData*> Type::typedata;
-set<string> Type::loadModuleSet;
+std::map<std::string, unsigned int> Type::typemap;
+std::vector<TypeData*> Type::typedata;
+std::set<std::string> Type::loadModuleSet;
 
-void* Type::createInstance()
+void* Type::createInstance() const
 {
     instantiationMethod method = typedata[index]->instMethod;
     return method ? (*method)() : nullptr;
@@ -90,30 +87,34 @@ void* Type::createInstanceByName(const char* TypeName, bool bLoadModule)
 void Type::importModule(const char* TypeName)
 {
     // cut out the module name
-    string Mod = getModuleName(TypeName);
+    const std::string mod = getModuleName(TypeName);
+
     // ignore base modules
-    if (Mod != "App" && Mod != "Gui" && Mod != "Base") {
-        // remember already loaded modules
-        set<string>::const_iterator pos = loadModuleSet.find(Mod);
-        if (pos == loadModuleSet.end()) {
-            Interpreter().loadModule(Mod.c_str());
-#ifdef FC_LOGLOADMODULE
-            Console().Log("Act: Module %s loaded through class %s \n", Mod.c_str(), TypeName);
-#endif
-            loadModuleSet.insert(Mod);
-        }
+    if (mod == "App" || mod == "Gui" || mod == "Base") {
+        return;
     }
+
+    // remember already loaded modules
+    const auto pos = loadModuleSet.find(mod);
+    if (pos != loadModuleSet.end()) {
+        return;
+    }
+
+    // lets load the module
+    Interpreter().loadModule(mod.c_str());
+#ifdef FC_LOGLOADMODULE
+    Console().Log("Act: Module %s loaded through class %s \n", Mod.c_str(), TypeName);
+#endif
+    loadModuleSet.insert(mod);
 }
 
-string Type::getModuleName(const char* ClassName)
+std::string Type::getModuleName(const char* ClassName)
 {
-    string temp(ClassName);
-    std::string::size_type pos = temp.find_first_of("::");
+    std::string_view classNameView(ClassName);
+    auto pos = classNameView.find("::");
 
-    if (pos != std::string::npos) {
-        return {temp, 0, pos};
-    }
-    return {};
+    return pos != std::string_view::npos ? std::string(classNameView.substr(0, pos))
+                                         : std::string();
 }
 
 Type Type::badType()

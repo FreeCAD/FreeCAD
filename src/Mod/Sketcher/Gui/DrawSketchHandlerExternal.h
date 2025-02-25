@@ -97,7 +97,7 @@ public:
         // return false;
         //}
 
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
         std::string element(sSubName);
@@ -219,10 +219,10 @@ private:
     QString getCrosshairCursorSVGName() const override
     {
         if (intersection) {
-            return QString::fromLatin1("Sketcher_Pointer_External_Intersection");
+            return QStringLiteral("Sketcher_Pointer_External_Intersection");
         }
 
-        return QString::fromLatin1("Sketcher_Pointer_External");
+        return QStringLiteral("Sketcher_Pointer_External");
     }
 
     void deactivated() override

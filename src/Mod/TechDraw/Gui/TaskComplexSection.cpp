@@ -205,7 +205,7 @@ void TaskComplexSection::setUiCommon()
 {
     ui->leSectionObjects->setText(sourcesToString());
     ui->leProfileObject->setText(QString::fromStdString(m_profileObject->getNameInDocument())
-                                 + QString::fromUtf8(" / ")
+                                 + QStringLiteral(" / ")
                                  + QString::fromStdString(m_profileObject->Label.getValue()));
 
     m_compass = new CompassWidget(this);
@@ -383,7 +383,7 @@ void TaskComplexSection::onProfileObjectsUseSelectionClicked()
         m_profileObject = selection.front().getObject();
         ui->leProfileObject->setText(
             QString::fromStdString(m_profileObject->getNameInDocument())
-            + QString::fromUtf8(" / ")
+            + QStringLiteral(" / ")
             + QString::fromStdString(m_profileObject->Label.getValue()));
     }
 }
@@ -432,7 +432,7 @@ void TaskComplexSection::enableAll(bool enable)
     ui->cmbScaleType->setEnabled(enable);
     QString qScaleType = ui->cmbScaleType->currentText();
     //Allow or prevent scale changing initially
-    if (qScaleType == QString::fromUtf8("Custom")) {
+    if (qScaleType == QStringLiteral("Custom")) {
         ui->sbScale->setEnabled(true);
     }
     else {
@@ -447,29 +447,29 @@ void TaskComplexSection::updateNowClicked() { apply(true); }
 QString TaskComplexSection::sourcesToString()
 {
     QString result;
-    QString separator(QString::fromUtf8(", "));
+    QString separator(QStringLiteral(", "));
     QString currentSeparator;
     if (m_baseView) {
         for (auto& obj : m_baseView->Source.getValues()) {
             result += currentSeparator + QString::fromStdString(obj->getNameInDocument())
-                + QString::fromUtf8(" / ") + QString::fromStdString(obj->Label.getValue());
+                + QStringLiteral(" / ") + QString::fromStdString(obj->Label.getValue());
             currentSeparator = separator;
         }
         currentSeparator = QString();
         for (auto& obj : m_baseView->XSource.getValues()) {
             result += currentSeparator + QString::fromStdString(obj->getNameInDocument())
-                + QString::fromUtf8(" / ") + QString::fromStdString(obj->Label.getValue());
+                + QStringLiteral(" / ") + QString::fromStdString(obj->Label.getValue());
         }
     }
     else {
         for (auto& obj : m_shapes) {
             result += currentSeparator + QString::fromStdString(obj->getNameInDocument())
-                + QString::fromUtf8(" / ") + QString::fromStdString(obj->Label.getValue());
+                + QStringLiteral(" / ") + QString::fromStdString(obj->Label.getValue());
         }
         currentSeparator = QString();
         for (auto& obj : m_xShapes) {
             result += currentSeparator + QString::fromStdString(obj->getNameInDocument())
-                + QString::fromUtf8(" / ") + QString::fromStdString(obj->Label.getValue());
+                + QStringLiteral(" / ") + QString::fromStdString(obj->Label.getValue());
         }
     }
     return result;
@@ -501,8 +501,8 @@ bool TaskComplexSection::apply(bool forceUpdate)
     }
     else {
         gp_Pnt stdOrigin(0.0, 0.0, 0.0);
-        gp_Ax2 sectionCS(stdOrigin, DrawUtil::togp_Dir(m_saveNormal),
-                         DrawUtil::togp_Dir(m_saveXDir));
+        gp_Ax2 sectionCS(stdOrigin, DrawUtil::to<gp_Dir>(m_saveNormal),
+                         DrawUtil::to<gp_Dir>(m_saveXDir));
         if (!DrawComplexSection::canBuild(sectionCS, m_profileObject)) {
             Base::Console().Error(
                 "Can not build Complex Section with this profile and direction (2)\n");

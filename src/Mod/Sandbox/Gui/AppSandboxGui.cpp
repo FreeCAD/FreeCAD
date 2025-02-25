@@ -114,7 +114,7 @@ private:
                 args.setItem(3,vector.apply(xyz));
 
                 args.setItem(4,Py::Float(radius));
-                args.setItem(5,Py::Int((int)0));
+                args.setItem(5,Py::Long((int)0));
                 Py::Tuple ret(method.apply(args));
                 Py::Object S1(ret.getItem(0));
                 Py::Object S2(ret.getItem(1));
@@ -154,7 +154,7 @@ private:
                 args.setItem(2,Py::Vector(l2));
                 args.setItem(3,Py::Vector(Base::Vector3d(0,0,1)));
                 args.setItem(4,Py::Float(radius));
-              //args.setItem(5,Py::Int((int)0));
+              //args.setItem(5,Py::Long((int)0));
                 args.setItem(5,Py::Long((long)1));
                 Py::Tuple ret(method.apply(args));
                 Py::Vector S1(ret.getItem(0));

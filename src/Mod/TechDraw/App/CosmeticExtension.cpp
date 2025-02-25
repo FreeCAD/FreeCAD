@@ -328,7 +328,7 @@ void CosmeticExtension::refreshCEGeoms()
     std::vector<TechDraw::BaseGeomPtr> gEdges = getOwner()->getEdgeGeometry();
     std::vector<TechDraw::BaseGeomPtr> oldGEdges;
     for (auto& ge : gEdges) {
-        if (ge->source() != SourceType::COSEDGE) {
+        if (ge->source() != SourceType::COSMETICEDGE) {
             oldGEdges.push_back(ge);
         }
     }

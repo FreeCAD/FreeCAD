@@ -35,6 +35,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -69,7 +70,7 @@ namespace PartGui {
         {
             if (!obj || !obj->isDerivedFrom<Part::Feature>())
                 return false;
-            if (!sSubName || sSubName[0] == '\0')
+            if (Base::Tools::isNullOrEmpty(sSubName))
                 return (mode == ALL);
             std::string element(sSubName);
             switch (mode) {
@@ -252,7 +253,7 @@ void ShapeBuilderWidget::createEdgeFromVertex()
     }
 
     QString cmd;
-    cmd = QString::fromLatin1(
+    cmd = QStringLiteral(
         "_=Part.makeLine(%1, %2)\n"
         "if _.isNull(): raise RuntimeError('Failed to create edge')\n"
         "App.ActiveDocument.addObject('Part::Feature','Edge').Shape=_\n"
@@ -294,7 +295,7 @@ void ShapeBuilderWidget::createWireFromEdge()
     str << "]";
 
     QString cmd;
-    cmd = QString::fromLatin1(
+    cmd = QStringLiteral(
         "_=Part.Wire(Part.__sortEdges__(%1))\n"
         "if _.isNull(): raise RuntimeError('Failed to create a wire')\n"
         "App.ActiveDocument.addObject('Part::Feature','Wire').Shape=_\n"
@@ -336,7 +337,7 @@ void ShapeBuilderWidget::createFaceFromVertex()
 
     QString cmd;
     if (d->ui.checkPlanar->isChecked()) {
-        cmd = QString::fromLatin1(
+        cmd = QStringLiteral(
             "_=Part.Face(Part.makePolygon(%1, True))\n"
             "if _.isNull(): raise RuntimeError('Failed to create face')\n"
             "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
@@ -344,7 +345,7 @@ void ShapeBuilderWidget::createFaceFromVertex()
         ).arg(list);
     }
     else {
-        cmd = QString::fromLatin1(
+        cmd = QStringLiteral(
             "_=Part.makeFilledFace(Part.makePolygon(%1, True).Edges)\n"
             "if _.isNull(): raise RuntimeError('Failed to create face')\n"
             "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
@@ -388,7 +389,7 @@ void ShapeBuilderWidget::createFaceFromEdge()
 
     QString cmd;
     if (d->ui.checkPlanar->isChecked()) {
-        cmd = QString::fromLatin1(
+        cmd = QStringLiteral(
             "_=Part.Face(Part.Wire(Part.__sortEdges__(%1)))\n"
             "if _.isNull(): raise RuntimeError('Failed to create face')\n"
             "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
@@ -396,7 +397,7 @@ void ShapeBuilderWidget::createFaceFromEdge()
         ).arg(list);
     }
     else {
-        cmd = QString::fromLatin1(
+        cmd = QStringLiteral(
             "_=Part.makeFilledFace(Part.__sortEdges__(%1))\n"
             "if _.isNull(): raise RuntimeError('Failed to create face')\n"
             "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
@@ -449,7 +450,7 @@ void ShapeBuilderWidget::createShellFromFace()
 
     QString cmd;
     if (d->ui.checkRefine->isEnabled() && d->ui.checkRefine->isChecked()) {
-        cmd = QString::fromLatin1(
+        cmd = QStringLiteral(
             "_=Part.Shell(%1)\n"
             "if _.isNull(): raise RuntimeError('Failed to create shell')\n"
             "App.ActiveDocument.addObject('Part::Feature','Shell').Shape=_.removeSplitter()\n"
@@ -457,7 +458,7 @@ void ShapeBuilderWidget::createShellFromFace()
         ).arg(list);
     }
     else {
-        cmd = QString::fromLatin1(
+        cmd = QStringLiteral(
             "_=Part.Shell(%1)\n"
             "if _.isNull(): raise RuntimeError('Failed to create shell')\n"
             "App.ActiveDocument.addObject('Part::Feature','Shell').Shape=_\n"
@@ -497,7 +498,7 @@ void ShapeBuilderWidget::createSolidFromShell()
 
     QString cmd;
     if (d->ui.checkRefine->isEnabled() && d->ui.checkRefine->isChecked()) {
-        cmd = QString::fromLatin1(
+        cmd = QStringLiteral(
             "shell=%1\n"
             "if shell.ShapeType != 'Shell': raise RuntimeError('Part object is not a shell')\n"
             "_=Part.Solid(shell)\n"
@@ -507,7 +508,7 @@ void ShapeBuilderWidget::createSolidFromShell()
         ).arg(line);
     }
     else {
-        cmd = QString::fromLatin1(
+        cmd = QStringLiteral(
             "shell=%1\n"
             "if shell.ShapeType != 'Shell': raise RuntimeError('Part object is not a shell')\n"
             "_=Part.Solid(shell)\n"

@@ -25,11 +25,8 @@
 
 #ifndef _PreComp_
 #include <algorithm>
-#include <cassert>
-#include <exception>
 #include <string>
 #include <string_view>
-#include <fstream>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/lexical_cast.hpp>
@@ -40,9 +37,7 @@
 #include "Console.h"
 #include "Exception.h"
 #include "FileInfo.h"
-#include "Matrix.h"
 #include "Stream.h"
-#include "Tools.h"
 
 
 using namespace Base;
@@ -1258,7 +1253,7 @@ bool InventorLoader::isValid() const
 
 namespace Base
 {
-BaseExport Vector3f to_vector(std::string str)
+BaseExport Vector3f stringToVector(std::string str)
 {
     std::string_view view = str;
     if (!boost::starts_with(view, "(") || !boost::ends_with(str, ")")) {
@@ -1285,6 +1280,11 @@ BaseExport Vector3f to_vector(std::string str)
     vec.z = boost::lexical_cast<float>(token_results.at(2));
 
     return vec;
+}
+
+BaseExport std::string vectorToString(Vector3f vec)
+{
+    return fmt::format("({},{},{})", vec.x, vec.y, vec.z);
 }
 
 }  // namespace Base

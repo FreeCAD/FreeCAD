@@ -606,7 +606,7 @@ def process_shared_arguments(
     argstring: str,
     all_visible: Parser,
     filename: str,
-) -> Tuple[bool, Union[str, argparse.Namespace]]:
+) -> Tuple[bool, Union[None, str, argparse.Namespace]]:
     """Process the arguments to the postprocessor."""
     args: argparse.Namespace
     argument_text: str
@@ -725,7 +725,7 @@ def process_shared_arguments(
             values["SPINDLE_WAIT"] = args.wait_for_spindle
 
     except (ArithmeticError, LookupError):
-        return (False, "")
+        return (False, None)
 
     return (True, args)
 

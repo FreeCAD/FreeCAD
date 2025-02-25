@@ -49,9 +49,13 @@ namespace Gui
 {
 
 enum class ResolveMode {
+    /// No resolve
     NoResolve,
+    /// Sub-object with old style element name
     OldStyleElement,
+    /// Sub-object with new style element name
     NewStyleElement,
+    /// Resolve sub-object and follow link
     FollowLink
 };
 
@@ -185,33 +189,7 @@ public:
     const SelectionChanges *pOriginalMsg = nullptr;
 };
 
-} //namespace Gui
-
-
-
-// Export an instance of the base class (to avoid warning C4275, see also
-// C++ Language Reference/General Rules and Limitations on MSDN for more details.)
-//
-// For compiler gcc4.1 we need to define the template class outside namespace 'Gui'
-// otherwise we get the compiler error:
-// 'explicit instantiation of 'class Base::Subject<const Gui::SelectionChanges&>'
-// in namespace 'Gui' (which does not enclose namespace 'Base')
-//
-// It seems that this construct is not longer needed for gcc4.4 and even leads to
-// errors under Mac OS X. Thus, we check for version between 4.1 and 4.4.
-// It seems that for Mac OS X this can be completely ignored
-
-#if defined(__GNUC__) && defined(__GNUC_MINOR__) && !defined(FC_OS_MACOSX)
-#define GNUC_VERSION (((__GNUC__)<<16)+((__GNUC_MINOR__)<<8))
-#if GNUC_VERSION >= 0x040100 && GNUC_VERSION < 0x040400
-template class GuiExport Base::Subject<const Gui::SelectionChanges&>;
-#endif
-#undef GNUC_VERSION
-#endif
-
-namespace Gui
-{
-    class ViewProviderDocumentObject;
+class ViewProviderDocumentObject;
 
 /**
  * The SelectionObserver class simplifies the step to write classes that listen
@@ -227,9 +205,6 @@ public:
      *
      * @param attach: whether to attach this observer on construction
      * @param resolve: sub-object resolving mode.
-     *                 0 no resolve,
-     *                 1 resolve sub-object with old style element name
-     *                 2 resolve sub-object with new style element name
      */
     explicit SelectionObserver(bool attach = true, ResolveMode resolve = ResolveMode::OldStyleElement);
     /** Constructor
@@ -237,9 +212,6 @@ public:
      * @param vp: filtering view object.
      * @param attach: whether to attach this observer on construction
      * @param resolve: sub-object resolving mode.
-     *                 0 no resolve,
-     *                 1 resolve sub-object with old style element name
-     *                 2 resolve sub-object with new style element name
      *
      * Constructs an selection observer that receives only selection event of
      * objects within the same document as the input view object.
@@ -452,9 +424,6 @@ public:
      * empty vector is returned. If document name is "*", then all document is
      * considered.
      * @param resolve: sub-object resolving mode
-     *                 0 no resolve,
-     *                 1 resolve sub-object with old style element name
-     *                 2 resolve sub-object with new style element name
      * @param single: if set to true, then it will return an empty vector if
      * there is more than one selections.
      *
@@ -465,15 +434,12 @@ public:
      *
      * @param pDocName: document name. If no document name is given the objects
      * of the active are returned. If nothing for this Document is selected an
-     * empty vector is returned. If document name is "*", then all document is
+     * empty vector is returned. If document name is "*", then all documents are
      * considered.
      * @param typeId: specify the type of object to be returned.
      * @param resolve: sub-object resolving mode.
-     *                 0 no resolve,
-     *                 1 resolve sub-object with old style element name
-     *                 2 resolve sub-object with new style element name
      * @param single: if set to true, then it will return an empty vector if
-     * there is more than one selections.
+     * there is more than one selection.
      *
      * @return The returned vector reflects the sequence of selection.
      */
@@ -549,9 +515,6 @@ public:
      * @param pDocName: optional filtering document, NULL for current active
      *                  document
      * @param resolve: sub-object resolving mode.
-     *                 0 no resolve,
-     *                 1 resolve sub-object with old style element name
-     *                 2 resolve sub-object with new style element name
      * @param index: optional position in the stack
      */
     std::vector<Gui::SelectionObject> selStackGet(const char* pDocName=nullptr, ResolveMode resolve = ResolveMode::OldStyleElement, int index=0) const;

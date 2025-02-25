@@ -3,7 +3,8 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${COIN3D_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
 )
 link_directories(${OCC_LIBRARY_DIR})
 

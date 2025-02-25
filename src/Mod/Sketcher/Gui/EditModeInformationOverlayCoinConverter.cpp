@@ -296,10 +296,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* ge
                 poleWeights.positions.emplace_back(poles[i]);
 
                 QString WeightString =
-                    QString::fromLatin1("[%1]").arg(weights[i],
-                                                    0,
-                                                    'f',
-                                                    Base::UnitsApi::getDecimals());
+                    QStringLiteral("[%1]").arg(weights[i], 0, 'f', Base::UnitsApi::getDecimals());
 
                 poleWeights.strings.emplace_back(WeightString.toStdString());
             }

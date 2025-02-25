@@ -74,13 +74,13 @@ PythonEditor::PythonEditor(QWidget* parent)
 
     // set accelerators
     auto comment = new QShortcut(this);
-    comment->setKey(QKeySequence(QString::fromLatin1("ALT+C")));
+    comment->setKey(QKeySequence(QStringLiteral("ALT+C")));
 
     auto uncomment = new QShortcut(this);
-    uncomment->setKey(QKeySequence(QString::fromLatin1("ALT+U")));
+    uncomment->setKey(QKeySequence(QStringLiteral("ALT+U")));
 
     auto execInConsole = new QShortcut(this);
-    execInConsole->setKey(QKeySequence(QString::fromLatin1("ALT+SHIFT+P")));
+    execInConsole->setKey(QKeySequence(QStringLiteral("ALT+SHIFT+P")));
 
     connect(comment, &QShortcut::activated, this, &PythonEditor::onComment);
     connect(uncomment, &QShortcut::activated, this, &PythonEditor::onUncomment);
@@ -175,12 +175,12 @@ void PythonEditor::contextMenuEvent ( QContextMenuEvent * e )
     if (!isReadOnly()) {
         menu->addSeparator();
         QAction* comment = menu->addAction( tr("Comment"), this, &PythonEditor::onComment);
-        comment->setShortcut(QKeySequence(QString::fromLatin1("ALT+C")));
+        comment->setShortcut(QKeySequence(QStringLiteral("ALT+C")));
         QAction* uncomment = menu->addAction( tr("Uncomment"), this, &PythonEditor::onUncomment);
-        uncomment->setShortcut(QKeySequence(QString::fromLatin1("ALT+U")));
+        uncomment->setShortcut(QKeySequence(QStringLiteral("ALT+U")));
         QAction* execInConsole = menu->addAction( tr("Execute in console"),
                                                   this, &PythonEditor::onExecuteInConsole);
-        execInConsole->setShortcut(QKeySequence(QString::fromLatin1("ALT+Shift+P")));
+        execInConsole->setShortcut(QKeySequence(QStringLiteral("ALT+Shift+P")));
     }
 
     menu->exec(e->globalPos());
@@ -199,8 +199,8 @@ void PythonEditor::keyPressEvent(QKeyEvent* e)
         ParameterGrp::handle hPrefGrp = getWindowParameter();
         int indent = hPrefGrp->GetInt( "IndentSize", 4 );
         bool space = hPrefGrp->GetBool( "Spaces", true );
-        QString ch = space ? QString::fromLatin1(" ")
-                           : QString::fromLatin1("\t");
+        QString ch = space ? QStringLiteral(" ")
+                           : QStringLiteral("\t");
 
         QTextCursor cursor = textCursor();
         QString currentLineText = cursor.block().text();

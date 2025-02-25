@@ -21,22 +21,29 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TOOLS_H
-#define BASE_TOOLS_H
+#ifndef SRC_BASE_TOOLS_H_
+#define SRC_BASE_TOOLS_H_
 
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
-#include <functional>
-#include <algorithm>
 #include <cmath>
-#include <iostream>
-#include <vector>
+#include <ostream>
 #include <string>
-#include <boost_signals2.hpp>
-#include <QString>
+#include <vector>
 
-// ----------------------------------------------------------------------------
+#include <boost/signals2/shared_connection_block.hpp>
+
+namespace boost
+{
+namespace signals2
+{
+class connection;
+}
+}  // namespace boost
+
+
+class QString;
 
 namespace Base
 {
@@ -134,6 +141,16 @@ template<class T>
 inline T toDegrees(T r)
 {
     return static_cast<T>((r / M_PI) * 180.0);
+}
+
+inline float fromPercent(const long value)
+{
+    return std::roundf(value) / 100.0F;
+}
+
+inline long toPercent(float value)
+{
+    return std::lround(100.0 * value);
 }
 
 template<class T>
@@ -266,9 +283,6 @@ public:
 
 struct BaseExport Tools
 {
-    static std::string
-    getUniqueName(const std::string&, const std::vector<std::string>&, int d = 0);
-    static std::string addNumber(const std::string&, unsigned int, int d = 0);
     static std::string getIdentifier(const std::string&);
     static std::wstring widen(const std::string& str);
     static std::string narrow(const std::wstring& str);
@@ -293,6 +307,11 @@ struct BaseExport Tools
      * @return A quoted std::string.
      */
     static std::string quoted(const std::string&);
+
+    static constexpr bool isNullOrEmpty(const char* str)
+    {
+        return !str || str[0] == '\0';
+    }
 
     /**
      * @brief joinList
@@ -319,4 +338,4 @@ struct BaseExport ZipTools
 
 }  // namespace Base
 
-#endif  // BASE_TOOLS_H
+#endif  // SRC_BASE_TOOLS_H_

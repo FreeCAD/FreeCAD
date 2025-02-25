@@ -22,6 +22,12 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <memory>
+#include <set>
+#include <vector>
+#include <string>
+#endif
 
 #include <limits>
 #include <locale>
@@ -37,10 +43,9 @@
 #include "Tools.h"
 
 #include <boost/iostreams/filtering_stream.hpp>
+#include <zipios++/zipinputstream.h>
 
 using namespace Base;
-using namespace std;
-using namespace zipios;
 
 // boost iostream filter to escape ']]>' in text file saved into CDATA section.
 // It does not check if the character is valid utf8 or not.
@@ -146,7 +151,7 @@ void Writer::insertAsciiFile(const char* FileName)
     while (from.get(ch)) {
         Stream().put(ch);
     }
-    Stream() << "]]>" << endl;
+    Stream() << "]]>" << std::endl;
 }
 
 void Writer::insertBinFile(const char* FileName)
@@ -164,7 +169,7 @@ void Writer::insertBinFile(const char* FileName)
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
     from.read(reinterpret_cast<char*>(bytes.data()), fileSize);
     Stream() << Base::base64_encode(bytes.data(), static_cast<unsigned int>(fileSize));
-    Stream() << "]]>" << endl;
+    Stream() << "]]>" << std::endl;
 }
 
 void Writer::setForceXML(bool on)
@@ -247,54 +252,17 @@ std::string Writer::addFile(const char* Name, const Base::Persistence* Object)
     assert(!isForceXML());
 
     FileEntry temp;
-    temp.FileName = getUniqueFileName(Name);
+    temp.FileName = Name ? Name : "";
+    if (FileNameManager.containsName(temp.FileName)) {
+        temp.FileName = FileNameManager.makeUniqueName(temp.FileName);
+    }
     temp.Object = Object;
 
     FileList.push_back(temp);
-
-    FileNames.push_back(temp.FileName);
+    FileNameManager.addExactName(temp.FileName);
 
     // return the unique file name
     return temp.FileName;
-}
-
-std::string Writer::getUniqueFileName(const char* Name)
-{
-    // name in use?
-    std::string CleanName = (Name ? Name : "");
-    std::vector<std::string>::const_iterator pos;
-    pos = find(FileNames.begin(), FileNames.end(), CleanName);
-
-    if (pos == FileNames.end()) {
-        // if not, name is OK
-        return CleanName;
-    }
-
-    std::vector<std::string> names;
-    names.reserve(FileNames.size());
-    FileInfo fi(CleanName);
-    CleanName = fi.fileNamePure();
-    std::string ext = fi.extension();
-    for (pos = FileNames.begin(); pos != FileNames.end(); ++pos) {
-        fi.setFile(*pos);
-        std::string FileName = fi.fileNamePure();
-        if (fi.extension() == ext) {
-            names.push_back(FileName);
-        }
-    }
-
-    std::stringstream str;
-    str << Base::Tools::getUniqueName(CleanName, names);
-    if (!ext.empty()) {
-        str << "." << ext;
-    }
-
-    return str.str();
-}
-
-const std::vector<std::string>& Writer::getFilenames() const
-{
-    return FileNames;
 }
 
 void Writer::incInd()
@@ -336,7 +304,7 @@ ZipWriter::ZipWriter(const char* FileName)
     ZipStream.imbue(std::locale::classic());
 #endif
     ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
-    ZipStream.setf(ios::fixed, ios::floatfield);
+    ZipStream.setf(std::ios::fixed, std::ios::floatfield);
 }
 
 ZipWriter::ZipWriter(std::ostream& os)
@@ -348,7 +316,7 @@ ZipWriter::ZipWriter(std::ostream& os)
     ZipStream.imbue(std::locale::classic());
 #endif
     ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
-    ZipStream.setf(ios::fixed, ios::floatfield);
+    ZipStream.setf(std::ios::fixed, std::ios::floatfield);
 }
 
 void ZipWriter::putNextEntry(const char* file, const char* obj)

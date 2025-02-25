@@ -18,7 +18,7 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _cut = dynamic_cast<Part::Cut*>(_doc->addObject("Part::Cut"));
+        _cut = _doc->addObject<Part::Cut>();
     }
 
     void TearDown() override

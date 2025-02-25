@@ -83,7 +83,7 @@ void PropertyConstraintListItem::initialize()
             PropertyUnitItem* item = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
 
             // Get the name
-            QString internalName = QString::fromLatin1("Constraint%1").arg(id);
+            QString internalName = QStringLiteral("Constraint%1").arg(id);
             QString name = QString::fromUtf8((*it)->Name.c_str());
             if (name.isEmpty()) {
                 name = internalName;
@@ -214,7 +214,7 @@ void PropertyConstraintListItem::assignProperty(const App::Property* prop)
             }
 
             // Get the name
-            QString internalName = QString::fromLatin1("Constraint%1").arg(id);
+            QString internalName = QStringLiteral("Constraint%1").arg(id);
             QString name = QString::fromUtf8((*it)->Name.c_str());
             if (name.isEmpty()) {
                 name = internalName;
@@ -273,7 +273,7 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
 
             // Use a 7-bit ASCII string for the internal name.
             // See also comment in PropertyConstraintListItem::initialize()
-            QString internalName = QString::fromLatin1("Constraint%1").arg(id);
+            QString internalName = QStringLiteral("Constraint%1").arg(id);
 
             if ((*it)->Name.empty() && !onlyUnnamed) {
                 onlyNamed = false;
@@ -342,7 +342,7 @@ bool PropertyConstraintListItem::event(QEvent* ev)
                     || (*it)->Type == Sketcher::Angle) {
 
                     // Get the internal name
-                    QString internalName = QString::fromLatin1("Constraint%1").arg(id + 1);
+                    QString internalName = QStringLiteral("Constraint%1").arg(id + 1);
                     if (internalName == propName) {
                         double datum = quant.getValue();
                         if ((*it)->Type == Sketcher::Angle) {

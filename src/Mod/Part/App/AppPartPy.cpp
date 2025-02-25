@@ -866,7 +866,7 @@ private:
         } else {
             throw Py::TypeError("Expects argument of type DocumentObject, Shape, or Geometry");
         }
-        Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name));
+        Part::Feature *pcFeature = pcDoc->addObject<Part::Feature>(name);
         // copy the data
         pcFeature->Shape.setValue(shape);
         pcFeature->purgeTouched();
@@ -1054,7 +1054,7 @@ private:
                           if (!PyLong_Check(value)) {
                               throw Py::ValueError(err);
                           }
-                          int order = Py::Int(value);
+                          int order = Py::Long(value);
                           params.orders[s] = static_cast<TopoShape::Continuity>(order);
                           return;
                       });
@@ -1131,7 +1131,7 @@ private:
                           if (!PyLong_Check(value)) {
                               throw Py::ValueError(err);
                           }
-                          int order = Py::Int(value);
+                          int order = Py::Long(value);
                           params.orders[s] = static_cast<TopoShape::Continuity>(order);
                           return;
                       });
@@ -2368,12 +2368,12 @@ private:
         std::string subname(sub);
         if (!subname.empty() && subname[subname.size()-1]!='.')
             subname += '.';
-        if (mapped && mapped[0]) {
+        if (!Base::Tools::isNullOrEmpty(mapped)) {
             if (!Data::isMappedElement(mapped))
                 subname += Data::ELEMENT_MAP_PREFIX;
             subname += mapped;
         }
-        if (element && element[0]) {
+        if (!Base::Tools::isNullOrEmpty(element)) {
             if (!subname.empty() && subname[subname.size()-1]!='.')
                 subname += '.';
             subname += element;

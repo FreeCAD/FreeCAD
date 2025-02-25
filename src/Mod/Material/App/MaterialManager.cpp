@@ -38,6 +38,8 @@
 #include "ModelManager.h"
 #include "ModelUuids.h"
 
+#include <Base/Tools.h>
+
 
 using namespace Materials;
 
@@ -132,7 +134,7 @@ bool MaterialManager::isMaterial(const QFileInfo& file) const
         return false;
     }
     // check file extension
-    if (file.suffix() == QString::fromStdString("FCMat")) {
+    if (file.suffix() == QStringLiteral("FCMat")) {
         return true;
     }
     return false;
@@ -174,8 +176,8 @@ std::shared_ptr<App::Material> MaterialManager::defaultAppearance()
 
     long initialTransparency = hGrp->GetInt("DefaultShapeTransparency", 0);
     long initialShininess = hGrp->GetInt("DefaultShapeShininess", 90);
-    mat.shininess = ((float)initialShininess / 100.0F);
-    mat.transparency = ((float)initialTransparency / 100.0F);
+    mat.shininess = Base::fromPercent(initialShininess);
+    mat.transparency = Base::fromPercent(initialTransparency);
 
     return std::make_shared<App::Material>(mat);
 }
@@ -190,17 +192,17 @@ std::shared_ptr<Material> MaterialManager::defaultMaterial()
         material = manager.getMaterial(QLatin1String("7f9fd73b-50c9-41d8-b7b2-575a030c1eeb"));
     }
     if (material->hasAppearanceModel(ModelUUIDs::ModelUUID_Rendering_Basic)) {
-        material->getAppearanceProperty(QString::fromLatin1("DiffuseColor"))
+        material->getAppearanceProperty(QStringLiteral("DiffuseColor"))
             ->setColor(mat->diffuseColor);
-        material->getAppearanceProperty(QString::fromLatin1("AmbientColor"))
+        material->getAppearanceProperty(QStringLiteral("AmbientColor"))
             ->setColor(mat->ambientColor);
-        material->getAppearanceProperty(QString::fromLatin1("EmissiveColor"))
+        material->getAppearanceProperty(QStringLiteral("EmissiveColor"))
             ->setColor(mat->emissiveColor);
-        material->getAppearanceProperty(QString::fromLatin1("SpecularColor"))
+        material->getAppearanceProperty(QStringLiteral("SpecularColor"))
             ->setColor(mat->specularColor);
-        material->getAppearanceProperty(QString::fromLatin1("Transparency"))
+        material->getAppearanceProperty(QStringLiteral("Transparency"))
             ->setFloat(mat->transparency);
-        material->getAppearanceProperty(QString::fromLatin1("Shininess"))
+        material->getAppearanceProperty(QStringLiteral("Shininess"))
             ->setFloat(mat->shininess);
     }
 

@@ -45,9 +45,9 @@ using namespace TechDraw;
 using DU = DrawUtil;
 
 QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
-    m_textL(QString::fromUtf8(" ")),
-    m_textR(QString::fromUtf8(" ")),
-    m_textC(QString::fromUtf8(" ")),
+    m_textL(QStringLiteral(" ")),
+    m_textR(QStringLiteral(" ")),
+    m_textC(QStringLiteral(" ")),
     m_scale(1.0),
     m_row(0),
     m_col(0),

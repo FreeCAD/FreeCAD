@@ -25,6 +25,16 @@
 #ifndef _PreComp_
 # include <atomic>
 # include <cctype>
+# include <unordered_set>
+# include <unordered_map>
+# include <utility>
+# include <deque>
+# include <memory>
+# include <algorithm>
+# include <vector>
+# include <set>
+# include <map>
+# include <string>
 # include <boost/algorithm/string/predicate.hpp>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -41,7 +51,6 @@
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/sensors/SoNodeSensor.h>
-# include <Inventor/SoPickedPoint.h>
 # include <QApplication>
 # include <QMenu>
 # include <QCheckBox>
@@ -191,7 +200,7 @@ public:
         }
     }
 
-    LinkInfo(ViewProviderDocumentObject *vp)
+    explicit LinkInfo(ViewProviderDocumentObject *vp)
         :ref(0),pcLinked(vp)
     {
         FC_LOG("new link to " << pcLinked->getObject()->getFullName());
@@ -283,7 +292,7 @@ public:
                 continue;
             int count = pcSwitches[i]->getNumChildren();
             if((index<0 && i==LinkView::SnapshotChild) || !count)
-                pcSwitches[i]->whichChild = -1;
+                pcSwitches[i]->whichChild = SO_SWITCH_NONE;
             else if(count>pcLinked->getDefaultMode())
                 pcSwitches[i]->whichChild = pcLinked->getDefaultMode();
             else
@@ -313,12 +322,8 @@ public:
         }
     }
 
-    // VC2013 has trouble with template argument dependent lookup in
+    // MSVC has trouble with template argument dependent lookup in
     // namespace. Have to put the below functions in global namespace.
-    //
-    // However, gcc seems to behave the opposite, hence the conditional
-    // compilation  here.
-    //
 #if defined(_MSC_VER)
     friend void Gui::intrusive_ptr_add_ref(LinkInfo *px);
     friend void Gui::intrusive_ptr_release(LinkInfo *px);
@@ -334,7 +339,7 @@ public:
         for(int idx : indices) {
             if(!pcSwitches[idx])
                 continue;
-            if(pcSwitches[idx]->whichChild.getValue()==-1)
+            if(pcSwitches[idx]->whichChild.getValue()==SO_SWITCH_NONE)
                 return false;
         }
         return true;
@@ -348,7 +353,7 @@ public:
             if(!pcSwitches[idx])
                 continue;
             if(!visible)
-                pcSwitches[idx]->whichChild = -1;
+                pcSwitches[idx]->whichChild = SO_SWITCH_NONE;
             else if(pcSwitches[idx]->getNumChildren()>pcLinked->getDefaultMode())
                 pcSwitches[idx]->whichChild = pcLinked->getDefaultMode();
         }
@@ -389,7 +394,7 @@ public:
         pcLinkedSwitch.reset();
 
         coinRemoveAllChildren(pcSnapshot);
-        pcModeSwitch->whichChild = -1;
+        pcModeSwitch->whichChild = SO_SWITCH_NONE;
         coinRemoveAllChildren(pcModeSwitch);
 
         SoSwitch *pcUpdateSwitch = pcModeSwitch;
@@ -701,7 +706,7 @@ namespace Gui
     {
         px->release();
     }
-}
+} // namespace Gui
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -1142,7 +1147,7 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
         auto &info = *nodeArray[i];
         info.isGroup = false;
         info.groupIndex = -1;
-        info.pcSwitch->whichChild = (vis.size()<=i||vis[i])?0:-1;
+        info.pcSwitch->whichChild = (vis.size()<=i||vis[i])?0:SO_SWITCH_NONE;
         info.link(obj);
         if(obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false)) {
             info.isGroup = true;
@@ -1193,7 +1198,7 @@ void LinkView::setTransform(int index, const Base::Matrix4D &mat) {
 
 void LinkView::setElementVisible(int idx, bool visible) {
     if(idx>=0 && idx<(int)nodeArray.size())
-        nodeArray[idx]->pcSwitch->whichChild = visible?0:-1;
+        nodeArray[idx]->pcSwitch->whichChild = visible?0:SO_SWITCH_NONE;
 }
 
 bool LinkView::isElementVisible(int idx) const {
@@ -2346,7 +2351,7 @@ bool ViewProviderLink::getDetailPath(
         return false;
     }
     std::string _subname;
-    if(subname && subname[0]) {
+    if(!Base::Tools::isNullOrEmpty(subname)) {
         if (auto linked = ext->getLinkedObjectValue()) {
             if (const char *dot = strchr(subname,'.')) {
                 if(subname[0]=='$') {
@@ -3290,7 +3295,16 @@ void ViewProviderLink::getPropertyMap(std::map<std::string,App::Property*> &Map)
     }
 }
 
-void ViewProviderLink::getPropertyList(std::vector<App::Property*> &List) const {
+void ViewProviderLink::visitProperties(const std::function<void(App::Property*)>& visitor) const
+{
+    inherited::visitProperties(visitor);
+    if (childVp != nullptr) {
+        childVp->visitProperties(visitor);
+    }
+}
+
+void ViewProviderLink::getPropertyList(std::vector<App::Property*>& List) const
+{
     std::map<std::string,App::Property*> Map;
     getPropertyMap(Map);
     List.reserve(List.size()+Map.size());

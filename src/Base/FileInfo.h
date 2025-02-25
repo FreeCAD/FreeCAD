@@ -25,19 +25,21 @@
 #ifndef BASE_FILEINFO_H
 #define BASE_FILEINFO_H
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <string>
 #include <vector>
-#include <Base/TimeInfo.h>
+
+#include <FCGlobal.h>
 
 
 namespace Base
 {
+class TimeInfo;
 
 /// When reading and writing a character stream, the incoming data can be dumped into the stream
 /// unaltered (if it contains only data that is valid in the current XML character set), or it can
 /// be Base64-encoded. This enum is used by Reader and Writer to distinguish the two cases.
-enum class CharStreamFormat
+enum class CharStreamFormat : size_t
 {
     Raw,
     Base64Encoded
@@ -158,9 +160,9 @@ public:
     /// Get the path to the dir which is considered to temp files
     static const std::string& getTempPath();
     /// Convert from filesystem path to string
-    static std::string pathToString(const boost::filesystem::path& path);
+    static std::string pathToString(const std::filesystem::path& path);
     /// Convert from string to filesystem path
-    static boost::filesystem::path stringToPath(const std::string& str);
+    static std::filesystem::path stringToPath(const std::string& str);
     //@}
 
 private:

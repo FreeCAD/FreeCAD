@@ -30,9 +30,7 @@
 #include <string>
 #include <set>
 #include <map>
-#include <algorithm>
-#include <utility>
-#include <tuple>
+#include <utility>  // Forward declares std::tuple
 
 // ----------------------------------------------------------------------------
 
@@ -126,7 +124,7 @@ public:
     virtual ~UniqueNameManager() = default;
 
     /// Check if two names are unique forms of the same base name
-    bool sameBaseName(const std::string& first, const std::string& second) const;
+    bool haveSameBaseName(const std::string& first, const std::string& second) const;
 
     /// Register a name in the collection.
     /// This collection acts as a multiset, so multiple registrations of the same

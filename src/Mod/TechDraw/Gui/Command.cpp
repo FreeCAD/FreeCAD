@@ -124,15 +124,13 @@ void CmdTechDrawPageDefault::activated(int iMsg)
         Gui::WaitCursor wc;
         openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
 
-        auto page = dynamic_cast<TechDraw::DrawPage *>
-                        (getDocument()->addObject("TechDraw::DrawPage", "Page"));
+        auto page = getDocument()->addObject<TechDraw::DrawPage>("Page");
         if (!page) {
             throw Base::TypeError("CmdTechDrawPageDefault - page not created");
         }
         page->translateLabel("DrawPage", "Page", page->getNameInDocument());
 
-        auto svgTemplate = dynamic_cast<TechDraw::DrawSVGTemplate *>
-                               (getDocument()->addObject("TechDraw::DrawSVGTemplate", "Template"));
+        auto svgTemplate = getDocument()->addObject<TechDraw::DrawSVGTemplate>("Template");
         if (!svgTemplate) {
             throw Base::TypeError("CmdTechDrawPageDefault - template not created");
         }
@@ -195,15 +193,13 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
         Gui::WaitCursor wc;
         openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
 
-        auto page = dynamic_cast<TechDraw::DrawPage *>
-                        (getDocument()->addObject("TechDraw::DrawPage", "Page"));
+        auto page = getDocument()->addObject<TechDraw::DrawPage>("Page");
         if (!page) {
             throw Base::TypeError("CmdTechDrawPageTemplate - page not created");
         }
         page->translateLabel("DrawPage", "Page", page->getNameInDocument());
 
-        auto svgTemplate = dynamic_cast<TechDraw::DrawSVGTemplate *>
-                               (getDocument()->addObject("TechDraw::DrawSVGTemplate", "Template"));
+        auto svgTemplate = getDocument()->addObject<TechDraw::DrawSVGTemplate>("Template");
         if (!svgTemplate) {
             throw Base::TypeError("CmdTechDrawPageTemplate - template not created");
         }
@@ -446,12 +442,12 @@ void CmdTechDrawView::activated(int iMsg)
             QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
                 QObject::tr("Select a SVG or Image file to open"),
                 Preferences::defaultSymbolDir(),
-                QString::fromLatin1("%1 (*.svg *.svgz *.jpg *.jpeg *.png *.bmp);;%2 (*.*)")
+                QStringLiteral("%1 (*.svg *.svgz *.jpg *.jpeg *.png *.bmp);;%2 (*.*)")
                 .arg(QObject::tr("SVG or Image files"), QObject::tr("All Files")));
 
             if (!filename.isEmpty()) {
-                if (filename.endsWith(QString::fromLatin1(".svg"), Qt::CaseInsensitive)
-                    || filename.endsWith(QString::fromLatin1(".svgz"), Qt::CaseInsensitive)) {
+                if (filename.endsWith(QStringLiteral(".svg"), Qt::CaseInsensitive)
+                    || filename.endsWith(QStringLiteral(".svgz"), Qt::CaseInsensitive)) {
                     std::string FeatName = getUniqueObjectName("Symbol");
                     filename = Base::Tools::escapeEncodeFilename(filename);
                     auto filespec = DU::cleanFilespecBackslash(filename.toStdString());
@@ -765,12 +761,12 @@ Gui::Action* CmdTechDrawSectionGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_SectionView"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_SectionView"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_SectionView"));
+    p1->setObjectName(QStringLiteral("TechDraw_SectionView"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_SectionView"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_ComplexSection"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ComplexSection"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ComplexSection"));
+    p2->setObjectName(QStringLiteral("TechDraw_ComplexSection"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ComplexSection"));
 
     _pcAction = pcAction;
     languageChange();
@@ -913,8 +909,8 @@ void execComplexSection(Gui::Command* cmd)
     std::vector<App::DocumentObject*> xShapes;
     App::DocumentObject* profileObject(nullptr);
     std::vector<std::string> profileSubs;
-    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
-    bool single = false;                                         //mystery
+    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;
+    bool single = false;
     auto selection = cmd->getSelection().getSelectionEx(
         nullptr, App::DocumentObject::getClassTypeId(), resolve, single);
     for (auto& sel : selection) {
@@ -1069,8 +1065,8 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     std::vector<App::DocumentObject*> xShapes;
     App::DocumentObject* partObj = nullptr;
     std::string faceName;
-    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
-    bool single = false;                                         //mystery
+    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;
+    bool single = false;
     auto selection = getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
                                                    resolve, single);
     for (auto& sel : selection) {
@@ -1552,7 +1548,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
     QString filename = Gui::FileDialog::getOpenFileName(
         Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"),
         Preferences::defaultSymbolDir(),
-        QString::fromLatin1("%1 (*.svg *.svgz);;%2 (*.*)")
+        QStringLiteral("%1 (*.svg *.svgz);;%2 (*.*)")
             .arg(QObject::tr("Scalable Vector Graphic"), QObject::tr("All Files")));
 
     if (!filename.isEmpty()) {
@@ -1882,7 +1878,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save DXF file")), defaultDir,
-        QString::fromUtf8("DXF (*.dxf)"));
+        QStringLiteral("DXF (*.dxf)"));
 
     if (fileName.isEmpty()) {
         return;
@@ -1970,8 +1966,8 @@ void getSelectedShapes(Gui::Command* cmd,
                       App::DocumentObject* faceObj,
                       std::string& faceName)
 {
-    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
-    bool single = false;                                         //mystery
+    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;
+    bool single = false;
     auto selection = cmd->getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
                                                    resolve, single);
     for (auto& sel : selection) {

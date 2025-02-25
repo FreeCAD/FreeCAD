@@ -25,9 +25,9 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <cstring>
 #include <limits>
 #include <sstream>
-#include <utility>
 #endif
 
 #include "Unit.h"

@@ -17,7 +17,7 @@
             <Documentation>
                 <UserDocu>getUserDefinedMaterial() -> object
 
-    Get a material object with the user-defined colors.
+Get a material object with the user-defined colors.
                 </UserDocu>
             </Documentation>
         </Methode>

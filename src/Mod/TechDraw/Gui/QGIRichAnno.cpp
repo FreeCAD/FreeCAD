@@ -238,7 +238,7 @@ QString QGIRichAnno::convertTextSizes(const QString& inHtml)  const
     constexpr double cssPxPerPoint{1.333333};            // CSS says 12 pt text is 16 px high
     double sceneUnitsPerPoint = Rez::getRezFactor() * mmPerPoint;      // scene units per point: 3.53
 
-    QRegularExpression rxFontSize(QString::fromUtf8("font-size:([0-9]*)pt;"));
+    QRegularExpression rxFontSize(QStringLiteral("font-size:([0-9]*)pt;"));
     QRegularExpressionMatch match;
     QStringList findList;
     QStringList replList;

@@ -40,6 +40,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
+#include <Base/Tools.h>
 
 #include "Inventor/SoMouseWheelEvent.h"
 #include "Inventor/SoFCTransform.h"
@@ -96,10 +97,10 @@ ViewProvider::ViewProvider()
     setStatus(UpdateData, true);
 
 
-    // SoFCSeparater and SoFCSelectionRoot can both track render cache setting.
+    // SoFCSeparator and SoFCSelectionRoot can both track render cache setting.
     // We change to SoFCSelectionRoot so that we can dynamically change full
     // selection mode (full highlight vs. boundbox). Note that comparing to
-    // SoFCSeparater, there are some small overhead with SoFCSelectionRoot for
+    // SoFCSeparator, there are some small overhead with SoFCSelectionRoot for
     // selection context tracking.
     //
     // pcRoot = new SoFCSeparator(true);
@@ -906,6 +907,7 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren3D() const
     }
     return vec;
 }
+
 bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
     if(!isSelectable())
         return false;
@@ -1031,7 +1033,7 @@ Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transfor
 
     SoTempPath path(20);
     path.ref();
-    if(subname && subname[0]) {
+    if(!Base::Tools::isNullOrEmpty(subname)) {
         SoDetail *det=nullptr;
         if(!getDetailPath(subname,&path,true,det)) {
             if(mode < 0)
