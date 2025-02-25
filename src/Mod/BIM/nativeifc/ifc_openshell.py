@@ -117,10 +117,14 @@ class IFC_UpdateIOS:
 
         import addonmanager_utilities as utils
         import freecad.utils
+        from subprocess import CalledProcessError
+
         cmd = create_pip_call(args)
         result = None
         try:
             result = utils.run_interruptable_subprocess(cmd)
+        except CalledProcessError as pe:
+            FreeCAD.Console.PrintError(pe.stderr)
         except:
             text = translate("BIM","Unable to run pip. Please ensure pip is installed on your system.")
             FreeCAD.Console.PrintError(text + "\n")
