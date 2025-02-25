@@ -76,14 +76,14 @@ class TestObjectCreate(unittest.TestCase):
         # thus they are not added to the analysis group ATM
         # https://forum.freecad.org/viewtopic.php?t=25283
         # thus they should not be counted
-        # solver children: equations --> 9
+        # solver children: equations --> 10
         # gmsh mesh children: group, region, boundary layer --> 3
         # result children: mesh result --> 1
         # post pipeline children: region, scalar, cut, wrap --> 5
         # analysis itself is not in analysis group --> 1
-        # thus: -19
+        # thus: -20
 
-        self.assertEqual(len(doc.Analysis.Group), count_defmake - 19)
+        self.assertEqual(len(doc.Analysis.Group), count_defmake - 20)
         self.assertEqual(len(doc.Objects), count_defmake)
 
         fcc_print(
@@ -287,6 +287,10 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerMagnetodynamic",
             type_of_obj(ObjectsFem.makeEquationMagnetodynamic(doc, solverelmer)),
         )
+        self.assertEqual(
+            "Fem::EquationElmerStaticCurrent",
+            type_of_obj(ObjectsFem.makeEquationStaticCurrent(doc, solverelmer)),
+        )
 
         fcc_print(
             "doc objects count: {}, method: {}".format(
@@ -466,6 +470,12 @@ class TestObjectType(unittest.TestCase):
             is_of_type(
                 ObjectsFem.makeEquationMagnetodynamic(doc, solverelmer),
                 "Fem::EquationElmerMagnetodynamic",
+            )
+        )
+        self.assertTrue(
+            is_of_type(
+                ObjectsFem.makeEquationStaticCurrent(doc, solverelmer),
+                "Fem::EquationElmerStaticCurrent",
             )
         )
 
@@ -859,6 +869,12 @@ class TestObjectType(unittest.TestCase):
             is_derived_from(equation_magnetodynamic, "Fem::EquationElmerMagnetodynamic")
         )
 
+        # EquationElmerStaticCurrent
+        equation_staticcurrent = ObjectsFem.makeEquationStaticCurrent(doc, solver_elmer)
+        self.assertTrue(is_derived_from(equation_staticcurrent, "App::DocumentObject"))
+        self.assertTrue(is_derived_from(equation_staticcurrent, "App::FeaturePython"))
+        self.assertTrue(is_derived_from(equation_staticcurrent, "Fem::EquationElmerStaticCurrent"))
+
         fcc_print(
             "doc objects count: {}, method: {}".format(
                 len(doc.Objects), sys._getframe().f_code.co_name
@@ -1035,6 +1051,11 @@ class TestObjectType(unittest.TestCase):
                 "App::FeaturePython"
             )
         )
+        self.assertTrue(
+            ObjectsFem.makeEquationStaticCurrent(doc, solverelmer).isDerivedFrom(
+                "App::FeaturePython"
+            )
+        )
 
         fcc_print(
             "doc objects count: {}, method: {}".format(
@@ -1121,6 +1142,7 @@ def create_all_fem_objects_doc(doc):
     ObjectsFem.makeEquationHeat(doc, sol)
     ObjectsFem.makeEquationMagnetodynamic2D(doc, sol)
     ObjectsFem.makeEquationMagnetodynamic(doc, sol)
+    ObjectsFem.makeEquationStaticCurrent(doc, sol)
 
     doc.recompute()
 
