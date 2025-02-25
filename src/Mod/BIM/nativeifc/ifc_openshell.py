@@ -106,7 +106,7 @@ class IFC_UpdateIOS:
         from PySide import QtCore, QtGui
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         vendor_path = utils.get_pip_target_directory()
-        args = ["install", "--disable-pip-version-check", "--target", vendor_path, "ifcopenshell"]
+        args = ["install", "--upgrade", "--disable-pip-version-check", "--target", vendor_path, "ifcopenshell"]
         result = self.run_pip(args)
         QtGui.QApplication.restoreOverrideCursor()
         return result
