@@ -41,7 +41,7 @@ QGIDecoration::QGIDecoration() :
     m_colCurrent(Qt::black),
     m_styleCurrent(Qt::SolidLine),
     m_brushCurrent(Qt::SolidPattern),
-    m_dragState(DECORNODRAG)
+    m_dragState(DragState::NoDrag)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
@@ -125,15 +125,15 @@ void QGIDecoration::makeMark(Base::Vector3d v)
 void QGIDecoration::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGID::mousePressEvent() - %s\n", getViewName());
-    m_dragState = DECORDRAGSTARTED;
+    m_dragState = DragState::DragStarted;
 
     QGraphicsItem::mousePressEvent(event);
 }
 
 void QGIDecoration::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
-    if (m_dragState == DECORDRAGSTARTED) {
-        m_dragState = DECORDRAGGING;
+    if (m_dragState == DragState::DragStarted) {
+        m_dragState = DragState::Dragging;
     }
     QGraphicsItem::mouseMoveEvent(event);
 }
@@ -141,10 +141,10 @@ void QGIDecoration::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 void QGIDecoration::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGID::mouseReleaseEvent() - %s\n", getViewName());
-    if (m_dragState == DECORDRAGGING) {
+    if (m_dragState == DragState::Dragging) {
         onDragFinished();
     }
-    m_dragState = DECORNODRAG;
+    m_dragState = DragState::NoDrag;
 
     QGraphicsItem::mouseReleaseEvent(event);
 }

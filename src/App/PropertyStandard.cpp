@@ -22,6 +22,16 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <algorithm>
+#include <set>
+#include <limits>
+#include <memory>
+#include <list>
+#include <map>
+#include <string>
+#include <vector>
+#endif
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/math/special_functions/round.hpp>
@@ -1425,101 +1435,13 @@ void PropertyString::setValue(const char* newLabel)
         return;
     }
 
-    std::string _newLabel;
-
     std::vector<std::pair<Property*, std::unique_ptr<Property>>> propChanges;
-    std::string label;
+    std::string label = newLabel;
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
     bool commit = false;
 
-    if (obj && obj->isAttachedToDocument() && this == &obj->Label
-        && (!obj->getDocument()->testStatus(App::Document::Restoring)
-            || obj->getDocument()->testStatus(App::Document::Importing))
-        && !obj->getDocument()->isPerformingTransaction()) {
-        // allow object to control label change
-
-        static ParameterGrp::handle _hPGrp;
-        if (!_hPGrp) {
-            _hPGrp = GetApplication().GetUserParameter().GetGroup("BaseApp");
-            _hPGrp = _hPGrp->GetGroup("Preferences")->GetGroup("Document");
-        }
-        App::Document* doc = obj->getDocument();
-        if (doc && !_hPGrp->GetBool("DuplicateLabels") && !obj->allowDuplicateLabel()) {
-            std::vector<std::string> objectLabels;
-            std::vector<App::DocumentObject*>::const_iterator it;
-            std::vector<App::DocumentObject*> objs = doc->getObjects();
-            bool match = false;
-            for (it = objs.begin(); it != objs.end(); ++it) {
-                if (*it == obj) {
-                    continue;  // don't compare object with itself
-                }
-                std::string objLabel = (*it)->Label.getValue();
-                if (!match && objLabel == newLabel) {
-                    match = true;
-                }
-                objectLabels.push_back(objLabel);
-            }
-
-            // make sure that there is a name conflict otherwise we don't have to do anything
-            if (match && *newLabel) {
-                label = newLabel;
-                // remove number from end to avoid lengthy names
-                size_t lastpos = label.length() - 1;
-                while (label[lastpos] >= 48 && label[lastpos] <= 57) {
-                    // if 'lastpos' becomes 0 then all characters are digits. In this case we use
-                    // the complete label again
-                    if (lastpos == 0) {
-                        lastpos = label.length() - 1;
-                        break;
-                    }
-                    lastpos--;
-                }
-
-                bool changed = false;
-                label = label.substr(0, lastpos + 1);
-                if (label != obj->getNameInDocument()
-                    && boost::starts_with(obj->getNameInDocument(), label)) {
-                    // In case the label has the same base name as object's
-                    // internal name, use it as the label instead.
-                    const char* objName = obj->getNameInDocument();
-                    const char* c = &objName[lastpos + 1];
-                    for (; *c; ++c) {
-                        if (*c < 48 || *c > 57) {
-                            break;
-                        }
-                    }
-                    if (*c == 0
-                        && std::find(objectLabels.begin(),
-                                     objectLabels.end(),
-                                     obj->getNameInDocument())
-                            == objectLabels.end()) {
-                        label = obj->getNameInDocument();
-                        changed = true;
-                    }
-                }
-                if (!changed) {
-                    label = Base::Tools::getUniqueName(label, objectLabels, 3);
-                }
-            }
-        }
-
-        if (label.empty()) {
-            label = newLabel;
-        }
-        obj->onBeforeChangeLabel(label);
-        newLabel = label.c_str();
-
-        if (!obj->getDocument()->testStatus(App::Document::Restoring)) {
-            // Only update label reference if we are not restoring. When
-            // importing (which also counts as restoring), it is possible the
-            // new object changes its label. However, we cannot update label
-            // references here, because object restoring is not based on
-            // dependency order. It can only be done in afterRestore().
-            //
-            // See PropertyLinkBase::restoreLabelReference() for more details.
-            propChanges = PropertyLinkBase::updateLabelReferences(obj, newLabel);
-        }
-
+    if (obj && this == &obj->Label) {
+        propChanges = obj->onProposedLabelChange(label);
         if (!propChanges.empty() && !GetApplication().getActiveTransaction()) {
             commit = true;
             std::ostringstream str;
@@ -1529,11 +1451,11 @@ void PropertyString::setValue(const char* newLabel)
     }
 
     aboutToSetValue();
-    _cValue = newLabel;
+    _cValue = label;
     hasSetValue();
 
     for (auto& change : propChanges) {
-        change.first->Paste(*change.second.get());
+        change.first->Paste(*change.second);
     }
 
     if (commit) {

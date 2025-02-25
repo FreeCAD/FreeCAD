@@ -14,7 +14,7 @@ macro(PrintFinalReport)
 
     # just a value
     macro(value)
-    unset(val)
+        unset(val)
         set(name ${ARGV0})
         if(${name})
             set(val ${${name}}) # name has a value
@@ -149,7 +149,6 @@ macro(PrintFinalReport)
             simple(SMESH "${SMESH_VERSION_MAJOR}.${SMESH_VERSION_MINOR}.${SMESH_VERSION_PATCH}.${SMESH_VERSION_TWEAK} build internal")
             simple(MEDFile "${MEDFILE_VERSION} [${MEDFILE_LIBRARIES}] [${MEDFILE_INCLUDE_DIRS}]")
             simple(HDF5 ${HDF5_VERSION})
-            simple(VTK ${VTK_VERSION})
         endif()
     else()
         simple(SMESH "not enabled")

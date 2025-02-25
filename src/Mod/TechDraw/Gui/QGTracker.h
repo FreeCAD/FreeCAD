@@ -44,7 +44,7 @@ namespace TechDrawGui
 class QGSPage;
 class QGIView;
 
-enum TrackerAction
+enum class TrackerAction
 {
     PICK = 0,
     EDIT = 1,
@@ -58,9 +58,15 @@ class TechDrawGuiExport QGTracker : public QObject, public QGIPrimPath
 {
     Q_OBJECT
 public:
-    enum TrackerMode { None, Line, Circle, Rectangle, Point };
+    enum class TrackerMode {
+        None,
+        Line,
+        Circle,
+        Rectangle,
+        Point
+    };
 
-    explicit QGTracker(QGSPage* scene = nullptr, QGTracker::TrackerMode m = QGTracker::TrackerMode::None);
+    explicit QGTracker(QGSPage* scene = nullptr, TrackerMode m = TrackerMode::None);
     ~QGTracker() override;
 
 
