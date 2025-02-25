@@ -2293,6 +2293,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("input-file", boost::program_options::value< vector<string> >(), "input file")
     ("output",     boost::program_options::value<string>(),"output file")
     ("hidden",                                             "don't show the main window")
+    ("computation-dialog", "run the computation dialog as a separate process")
     // this are to ignore for the window system (QApplication)
     ("style",      boost::program_options::value< string >(), "set the application GUI style")
     ("stylesheet", boost::program_options::value< string >(), "set the application stylesheet")
@@ -2532,6 +2533,10 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["ExitTests"] = vm.count("run-open") == 0  ? "yes" : "no";
     }
 
+    if (vm.count("computation-dialog")) {
+        mConfig["RunMode"] = "ComputationDialog";
+    }
+
     if (vm.count("single-instance")) {
         mConfig["SingleInstance"] = "1";
     }
@@ -2703,7 +2708,7 @@ void Application::initConfig(int argc, char ** argv)
         _pConsoleObserverFile = nullptr;
 
     // Banner ===========================================================
-    if (!(mConfig["RunMode"] == "Cmd")) {
+    if (!(mConfig["RunMode"] == "Cmd" || mConfig["RunMode"] == "ComputationDialog")) {
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (!(mConfig["Verbose"] == "Strict"))
@@ -3012,6 +3017,10 @@ void Application::runApplication()
         // run internal script
         Base::Console().Log("Running internal script:\n");
         Base::Interpreter().runString(Base::ScriptFactory().ProduceScript(mConfig["ScriptFileName"].c_str()));
+    }
+    else if (mConfig["RunMode"] == "ComputationDialog") {
+        Base::Console().Log("--computation-dialog outside the Gui process is a no-op\n");
+        _exit(1);
     }
     else if (mConfig["RunMode"] == "Exit") {
         // getting out

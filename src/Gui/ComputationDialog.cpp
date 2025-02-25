@@ -7,69 +7,57 @@
 #include <chrono>
 #include <Python.h>
 #include <FCConfig.h>
-
-#ifdef FC_OS_WIN32
-#include <windows.h>
-#endif
+#include <sys/wait.h>
 
 #include <QApplication>
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QThread>
 #include <Base/ProgressIndicator.h>
+#include <App/Application.h>
 
 namespace Gui {
 
-ComputationDialog::ComputationDialog(QWidget* parent)
-    : QProgressDialog(parent)
-    , aborted(false)
-{
-    setWindowTitle(tr("Computing"));
-    setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowStaysOnTopHint);
-    setWindowModality(Qt::ApplicationModal);
-    
-    setLabelText(tr("This operation may take a while.\nPlease wait or press 'Cancel' to abort."));
-    setMinimum(0);
-    setMaximum(0); // Makes it indeterminate
-    
-    setMinimumDuration(0); // Show immediately
-    setMinimumSize(300, 150);
-    adjustSize();
-    setFixedSize(size());
-
-    connect(this, &QProgressDialog::canceled, this, &ComputationDialog::abort);
+// Add these helper functions at the beginning of the namespace
+namespace {
+    // Helper function to ensure complete writes
+    bool writeExact(int fd, const void* buffer, size_t size) {
+        size_t bytesWritten = 0;
+        const char* buf = static_cast<const char*>(buffer);
+        
+        while (bytesWritten < size) {
+            ssize_t result = write(fd, buf + bytesWritten, size - bytesWritten);
+            
+            if (result < 0) {
+                // Error occurred
+                if (errno == EINTR) {
+                    // Interrupted by signal, retry
+                    continue;
+                }
+                return false;
+            }
+            
+            bytesWritten += result;
+        }
+        
+        return true;
+    }
 }
+
+// Static member declaration
+ComputationDialog* ComputationDialog::currentDialog = nullptr;
 
 void ComputationDialog::Show(float position, bool isForce) {
     (void)isForce;
 
-    // Ensure UI updates happen on the main thread
-    QMetaObject::invokeMethod(this, [this, position]() {
-        if (position < 0) {
-            // set as "indeterminate"
-            setMaximum(0);
-            setValue(0);
-        } else {
-            int pct = std::clamp(static_cast<int>(position * 100), 0, 100);
-            setMaximum(100);
-            setValue(pct);
-        }
-    }, Qt::QueuedConnection);
+    // write current position to the pipe as binary data, handle partial writes
+    if (fd > 0) {
+        writeExact(fd, &position, sizeof(float));
+    }
 }
 
-void ComputationDialog::abort() {
-    aborted.store(true);
-    reject();
-}
-
-void forceTerminate(std::thread& thread) {
-#if defined(FC_OS_WIN32)
-    TerminateThread(thread.native_handle(), 1);
-    CloseHandle(thread.native_handle());
-#else
-    pthread_cancel(thread.native_handle());
-#endif
-    thread.detach();
+bool ComputationDialog::UserBreak() {
+    return aborted.load();
 }
 
 void ComputationDialog::run(std::function<void()> func) {
@@ -78,83 +66,22 @@ void ComputationDialog::run(std::function<void()> func) {
     std::condition_variable cv;
     std::exception_ptr threadException;
 
-    // If we already hold the GIL, just run directly to avoid deadlock
-    // TODO: Can we find a way to transfer GIL ownership to the thread?
-    // I found that when I tried to transfer GIL ownership to the thread
-    // by releasing it in the main thread and acquiring it in the computation
-    // thread, it caused a segfault which I could reproduce by opening up
-    // a new spreadsheet, typing a number into the A1 cell, and then trying
-    // to assign an alias to the cell. Don't know why.
-    if (PyGILState_Check()) {
-        func();
-        return;
-    }
-
     Base::ProgressIndicator::setInstance(this);
 
-    QMessageBox forceAbortBox(
-        QMessageBox::Warning,
-        QObject::tr("Operation not responding"),
-        QObject::tr("Aborting the operation is taking longer than expected.\nDo you want to forcibly cancel the thread? This will probably crash FreeCAD."),
-        QMessageBox::Yes | QMessageBox::No,
-        Gui::MainWindow::getInstance());
-    forceAbortBox.setDefaultButton(QMessageBox::No);
+    // we launch a child process that will run the computation dialog so that all
+    // of the FreeCAD code can run on the main thread, this works around issues
+    // with code that needs to use the Python GIL or interact with Qt
+    launchChildProcess();
 
-    // Start computation thread
-    std::thread computeThread([&]() {
-#if !defined(FC_OS_WIN32)
-        pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, nullptr);
-        pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, nullptr);
-#endif
-
-        try {
-            func();
-        } catch (...) {
-            threadException = std::current_exception();
-        }
-
-        computationDone.store(true);
-
-        if (isVisible()) {
-            QMetaObject::invokeMethod(this, "accept", Qt::QueuedConnection);
-        }
-        if (forceAbortBox.isVisible()) {
-            QMetaObject::invokeMethod(&forceAbortBox, "reject", Qt::QueuedConnection);
-        }
-
-        cv.notify_one();
-    });
-
-    {
-        // Wait for a brief moment to see if computation completes quickly
-        std::unique_lock<std::mutex> lock(mutex);
-        if (!cv.wait_for(lock, std::chrono::seconds(1),
-            [&]{ return computationDone.load(); }))  // Atomic load
-        {
-            // Computation didn't finish quickly, show dialog
-            exec();
-        }
+    // run the actual computation
+    try {
+        func();
+    } catch (...) {
+        threadException = std::current_exception();
     }
 
-    while (!computationDone.load()) {
-        const int waitForThread = 3;  // seconds
-        std::unique_lock<std::mutex> lock(mutex);
-        const bool waited = cv.wait_for(lock, std::chrono::seconds(waitForThread),
-            [&]{ return computationDone.load(); });
-        if (waited || forceAbortBox.exec() != QMessageBox::Yes || computationDone.load()) {
-            continue;
-        }
-        Base::Console().Error("Force aborting computation thread\n");
-
-        // TODO: save the backup document now!
-
-        forceTerminate(computeThread);
-        break;
-    }
-
-    if (computeThread.joinable()) {
-        computeThread.join();
-    }
+    // Clean up child process
+    stopChildProcess();
 
     Base::ProgressIndicator::resetInstance();
 
@@ -164,12 +91,93 @@ void ComputationDialog::run(std::function<void()> func) {
     }
 }
 
-bool ComputationDialog::UserBreak() {
-    return aborted.load();
+void ComputationDialog::launchChildProcess() {
+    int pipefd[2];
+
+    // Store "this" pointer in the static class member
+    currentDialog = this;
+
+    // Ignore SIGPIPE to prevent termination when writing to a closed pipe
+    signal(SIGPIPE, SIG_IGN);
+
+    // Install SIGHUP handler - the child process will send a SIGHUP to the parent when
+    // the "Cancel" button is clicked
+    memset(&oldSa, 0, sizeof(oldSa));
+    struct sigaction sa;
+    memset(&sa, 0, sizeof(sa));
+    sa.sa_handler = [](int) { 
+        // Use the stored pointer instead of static_cast from ProgressIndicator
+        if (currentDialog) {
+            currentDialog->aborted.store(true);
+        }
+    };
+    sigaction(SIGHUP, &sa, &oldSa);
+    
+    // Create pipe for communication
+    if (pipe(pipefd) == -1) {
+        throw std::runtime_error("Failed to create pipe");
+    }
+    
+    // Fork process
+    childPid = fork();
+    
+    if (childPid == -1) {
+        // Fork failed
+        close(pipefd[0]);
+        close(pipefd[1]);
+        throw std::runtime_error("Failed to fork process");
+    }
+    
+    if (childPid == 0) {
+        // Child process
+        close(pipefd[1]); // Close write end of pipe
+        
+        // Redirect pipe to stdin
+        if (dup2(pipefd[0], STDIN_FILENO) == -1) {
+            fprintf(stderr, "Failed to redirect pipe to stdin\n");
+            _exit(2);
+        }
+        close(pipefd[0]);
+        
+        // Launch FreeCAD binary
+        std::string freecadExe = App::GetApplication().getHomePath() + "/bin/" + App::GetApplication().getExecutableName();
+        execl(freecadExe.c_str(), App::GetApplication().getExecutableName().c_str(), "--computation-dialog", nullptr);
+        
+        // If execl returns, it failed
+        fprintf(stderr, "Failed to launch FreeCAD binary %s\n", freecadExe.c_str());
+        _exit(2);
+    } else {
+        // Parent process
+        close(pipefd[0]); // Close read end of pipe
+        fd = pipefd[1];   // Store write end for later use
+        
+    }
 }
 
-void ComputationDialog::closeEvent(QCloseEvent* event) {
-    event->ignore();
+void ComputationDialog::stopChildProcess() {
+    // Restore original signal handler
+    sigaction(SIGHUP, &oldSa, nullptr);
+
+    // Reset the static pointer
+    currentDialog = nullptr;
+
+    // Send SIGTERM to child process before waiting
+    if (childPid > 0) {
+        kill(childPid, SIGTERM);
+    }
+
+    // Clean up child process
+    if (childPid > 0) {
+        int status;
+        waitpid(childPid, &status, 0);
+        childPid = -1;
+    }
+
+    // Close pipe if open
+    if (fd > 0) {
+        close(fd);
+        fd = -1;
+    }
 }
 
 } // namespace Gui
