@@ -130,14 +130,14 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     ui->qsb_rot_angle->bind(
         App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Angle")));
 
-    ui->spb_rot_axis_x->setMinimum(-FLOAT_MAX);
-    ui->spb_rot_axis_x->setMaximum(FLOAT_MAX);
-    ui->spb_rot_axis_y->setMinimum(-FLOAT_MAX);
-    ui->spb_rot_axis_y->setMaximum(FLOAT_MAX);
-    ui->spb_rot_axis_z->setMinimum(-FLOAT_MAX);
-    ui->spb_rot_axis_z->setMaximum(FLOAT_MAX);
-    ui->qsb_rot_angle->setMinimum(-FLOAT_MAX);
-    ui->qsb_rot_angle->setMaximum(FLOAT_MAX);
+    ui->spb_rot_axis_x->setMinimum(FLT_MIN);
+    ui->spb_rot_axis_x->setMaximum(FLT_MAX);
+    ui->spb_rot_axis_y->setMinimum(FLT_MIN);
+    ui->spb_rot_axis_y->setMaximum(FLT_MAX);
+    ui->spb_rot_axis_z->setMinimum(FLT_MIN);
+    ui->spb_rot_axis_z->setMaximum(FLT_MAX);
+    ui->qsb_rot_angle->setMinimum(FLT_MIN);
+    ui->qsb_rot_angle->setMaximum(FLT_MAX);
 
     std::string transform_type = pcConstraint->TransformType.getValueAsString();
     if (transform_type == "Rectangular") {

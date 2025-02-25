@@ -87,10 +87,10 @@ TaskFemConstraintGear::TaskFemConstraintGear(ViewProviderFemConstraint* Constrai
 
     // Fill data into dialog elements
     ui->spinDiameter->setMinimum(0);
-    ui->spinDiameter->setMaximum(FLOAT_MAX);
+    ui->spinDiameter->setMaximum(FLT_MAX);
     ui->spinDiameter->setValue(dia);
     ui->spinForce->setMinimum(0);
-    ui->spinForce->setMaximum(FLOAT_MAX);
+    ui->spinForce->setMaximum(FLT_MAX);
     ui->spinForce->setValue(force);
     ui->spinForceAngle->setMinimum(-360);
     ui->spinForceAngle->setMaximum(360);
@@ -293,7 +293,6 @@ bool TaskDlgFemConstraintGear::accept()
         static_cast<const TaskFemConstraintGear*>(parameter);
 
     try {
-        // Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "FEM force constraint changed"));
         std::string dirname = parameterGear->getDirectionName().data();
         std::string dirobj = parameterGear->getDirectionObject().data();
 

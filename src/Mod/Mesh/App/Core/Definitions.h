@@ -27,7 +27,7 @@
 #include <Mod/Mesh/MeshGlobal.h>
 #endif
 
-#include <climits>
+#include <limits.h>
 
 // default values
 #define MESH_MIN_PT_DIST 1.0e-6F
@@ -36,22 +36,6 @@
 #define MESH_REMOVE_MIN_LEN true
 #define MESH_REMOVE_G3_EDGES true
 
-/*
- * general constant definitions
- */
-#define FLOAT_EPS 1.0e-4F
-
-#ifndef FLOAT_MAX
-#define FLOAT_MAX 1e30F
-#endif
-
-#ifndef DOUBLE_MAX
-#define DOUBLE_MAX 1.7976931348623157E+308 /* max decimal value of a "double"*/
-#endif
-
-#ifndef DOUBLE_MIN
-#define DOUBLE_MIN 2.2250738585072014E-308 /* min decimal value of a "double"*/
-#endif
 
 namespace MeshCore
 {

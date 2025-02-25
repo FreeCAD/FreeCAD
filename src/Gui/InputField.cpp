@@ -71,8 +71,8 @@ InputField::InputField(QWidget * parent)
     ExpressionWidget(),
     validInput(true),
     actUnitValue(0),
-    Maximum(DOUBLE_MAX),
-    Minimum(-DOUBLE_MAX),
+    Maximum(DBL_MAX),
+    Minimum(DBL_MIN),
     StepSize(1.0),
     HistorySize(5),
     SaveSize(5)

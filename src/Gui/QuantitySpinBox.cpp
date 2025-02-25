@@ -66,8 +66,8 @@ public:
       pendingEmit(false),
       checkRangeInExpression(false),
       unitValue(0),
-      maximum(DOUBLE_MAX),
-      minimum(-DOUBLE_MAX),
+      maximum(DBL_MAX),
+      minimum(DBL_MIN),
       singleStep(1.0),
       q_ptr(q)
     {
