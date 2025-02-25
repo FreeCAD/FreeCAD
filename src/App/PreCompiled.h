@@ -51,6 +51,7 @@
 #include <cstdio>
 #include <ctime>
 #include <cfloat>
+#include <numbers>
 
 #ifdef FC_OS_WIN32
 #include <crtdbg.h>
