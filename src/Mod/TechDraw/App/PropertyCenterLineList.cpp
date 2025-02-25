@@ -147,12 +147,12 @@ void PropertyCenterLineList::Restore(Base::XMLReader &reader)
     reader.clearPartialRestoreObject();
     reader.readElement("CenterLineList");
     // get the value of my attribute
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
     std::vector<CenterLine*> values;
     values.reserve(count);
     for (int i = 0; i < count; i++) {
         reader.readElement("CenterLine");
-        const char* TypeName = reader.getAttribute("type");
+        const char* TypeName = reader.getAttribute<const char*>("type");
         CenterLine *newG = static_cast<CenterLine *>(Base::Type::fromName(TypeName).createInstance());
         newG->Restore(reader);
 

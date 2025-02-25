@@ -867,29 +867,29 @@ void MeshInput::LoadXML(Base::XMLReader& reader)
     //  reader.readElement("Mesh");
 
     reader.readElement("Points");
-    int Cnt = reader.getAttributeAsInteger("Count");
+    int Cnt = reader.getAttribute<long>("Count");
 
     cPoints.resize(Cnt);
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("P");
-        cPoints[i].x = (float)reader.getAttributeAsFloat("x");
-        cPoints[i].y = (float)reader.getAttributeAsFloat("y");
-        cPoints[i].z = (float)reader.getAttributeAsFloat("z");
+        cPoints[i].x = (float)reader.getAttribute<double>("x");
+        cPoints[i].y = (float)reader.getAttribute<double>("y");
+        cPoints[i].z = (float)reader.getAttribute<double>("z");
     }
     reader.readEndElement("Points");
 
     reader.readElement("Faces");
-    Cnt = reader.getAttributeAsInteger("Count");
+    Cnt = reader.getAttribute<long>("Count");
 
     cFacets.resize(Cnt);
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("F");
-        cFacets[i]._aulPoints[0] = reader.getAttributeAsInteger("p0");
-        cFacets[i]._aulPoints[1] = reader.getAttributeAsInteger("p1");
-        cFacets[i]._aulPoints[2] = reader.getAttributeAsInteger("p2");
-        cFacets[i]._aulNeighbours[0] = reader.getAttributeAsInteger("n0");
-        cFacets[i]._aulNeighbours[1] = reader.getAttributeAsInteger("n1");
-        cFacets[i]._aulNeighbours[2] = reader.getAttributeAsInteger("n2");
+        cFacets[i]._aulPoints[0] = reader.getAttribute<long>("p0");
+        cFacets[i]._aulPoints[1] = reader.getAttribute<long>("p1");
+        cFacets[i]._aulPoints[2] = reader.getAttribute<long>("p2");
+        cFacets[i]._aulNeighbours[0] = reader.getAttribute<long>("n0");
+        cFacets[i]._aulNeighbours[1] = reader.getAttribute<long>("n1");
+        cFacets[i]._aulNeighbours[2] = reader.getAttribute<long>("n2");
     }
 
     reader.readEndElement("Faces");

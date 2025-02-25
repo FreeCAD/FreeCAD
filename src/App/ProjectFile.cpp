@@ -338,10 +338,10 @@ bool ProjectFile::restoreObject(const std::string& name, App::PropertyContainer*
     reader.readEndElement("Objects");
 
     reader.readElement("ObjectData");
-    long Cnt = reader.getAttributeAsInteger("Count");
+    long Cnt = reader.getAttribute<long>("Count");
     for (long i = 0; i < Cnt; i++) {
         reader.readElement("Object");
-        std::string nameAttr = reader.getAttribute("name");
+        std::string nameAttr = reader.getAttribute<const char*>("name");
 
         if (nameAttr == name) {
             // obj->StatusBits.set(4);
