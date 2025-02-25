@@ -18,9 +18,7 @@ set(Sketcher_TestScripts
     SketcherTests/TestSketchExpression.py
     SketcherTests/TestSketchValidateCoincidents.py
 )
-target_link_libraries(Sketcher
-        Eigen
-)
+
 if(BUILD_GUI)
     list (APPEND Sketcher_Scripts
           InitGui.py
