@@ -8977,16 +8977,39 @@ void processEdge(const TopoDS_Edge& edge,
         }
         else {
             try {
-                BRepOffsetAPI_NormalProjection mkProj(aProjFace);
-                mkProj.Add(edge);
-                mkProj.Build();
-                const TopoDS_Shape& projShape = mkProj.Projection();
-                if (!projShape.IsNull()) {
-                    TopExp_Explorer xp;
-                    for (xp.Init(projShape, TopAbs_EDGE); xp.More(); xp.Next()) {
-                        TopoDS_Edge projEdge = TopoDS::Edge(xp.Current());
-                        TopLoc_Location loc(mov);
-                        projEdge.Location(loc);
+                Part::TopoShape projShape;
+                // Projection of the edge on parallel plane to the sketch plane is edge itself
+                // all we need to do is match coordinate systems
+                // for some reason OCC doesn't like to project a planar B-Spline to a plane parallel to it
+                if (planar && plane.Axis().Direction().IsParallel(sketchPlane.Axis().Direction(), Precision::Confusion())) {
+                    // We can't use gp_Pln::Distance() because we need to
+                    // know which side the plane is regarding the sketch
+                    const gp_Pnt& aP = sketchPlane.Location();
+                    const gp_Pnt& aLoc = plane.Location ();
+                    const gp_Dir& aDir = plane.Axis().Direction();
+                    double d = (aDir.X() * (aP.X() - aLoc.X()) +
+                            aDir.Y() * (aP.Y() - aLoc.Y()) +
+                            aDir.Z() * (aP.Z() - aLoc.Z()));
+                                        
+                    gp_Trsf trsf;
+                    trsf.SetTranslation(gp_Vec(aDir) * d);
+                    projShape.setShape(edge);
+                    projShape.transformShape(Part::TopoShape::convert(trsf), /*copy*/false);
+
+                } else {
+                    // When planes not parallel or perpendicular, or edge is not planar
+                    // normal projection is working just fine
+                    BRepOffsetAPI_NormalProjection mkProj(aProjFace);
+                    mkProj.Add(edge);
+                    mkProj.Build();
+                
+                    projShape.setShape(mkProj.Projection());
+                }
+                if (!projShape.isNull() && projShape.hasSubShape(TopAbs_EDGE)) {
+                    for (auto &e : projShape.getSubTopoShapes(TopAbs_EDGE)) {
+                        // Transform copy of the edge to the sketch plane local coordinates
+                        e.transformShape(invPlm.toMatrix(), /*copy*/true, /*checkScale*/true);
+                        TopoDS_Edge projEdge = TopoDS::Edge(e.getShape());
                         processEdge2(projEdge, geos);
                     }
                 }
