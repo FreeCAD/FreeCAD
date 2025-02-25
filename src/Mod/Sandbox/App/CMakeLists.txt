@@ -5,6 +5,10 @@ endif(WIN32)
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
@@ -14,10 +18,12 @@ include_directories(
 
 if (BUILD_QT5)
     include_directories(
+        SYSTEM
         ${Qt5Core_INCLUDE_DIRS}
     )
 else()
     include_directories(
+        SYSTEM
         ${QT_INCLUDE_DIR}
     )
 endif()

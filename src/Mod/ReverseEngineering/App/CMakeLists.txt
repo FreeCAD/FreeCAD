@@ -20,6 +20,10 @@ endif ()
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${PYCXX_INCLUDE_DIR}

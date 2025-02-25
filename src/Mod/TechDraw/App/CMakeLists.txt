@@ -5,6 +5,10 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZIPIOS_INCLUDES}
@@ -26,6 +30,7 @@ if (BUILD_IMPORT)
 endif ()
 
 include_directories(
+    SYSTEM
     ${QtConcurrent_INCLUDE_DIRS}
     ${QtCore_INCLUDE_DIR}
     ${QtGui_INCLUDE_DIR}

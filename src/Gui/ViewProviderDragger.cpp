@@ -43,6 +43,7 @@
 #include "Control.h"
 #include "Document.h"
 #include "SoFCCSysDragger.h"
+#include "Inventor/SoFCPlacementIndicatorKit.h"
 #include "SoFCUnifiedSelection.h"
 #include "TaskCSysDragger.h"
 #include "View3DInventorViewer.h"
@@ -60,6 +61,14 @@ PROPERTY_SOURCE(Gui::ViewProviderDragger, Gui::ViewProviderDocumentObject)
 ViewProviderDragger::ViewProviderDragger()
 {
     ADD_PROPERTY_TYPE(TransformOrigin, ({}), nullptr, App::Prop_Hidden, nullptr);
+    ADD_PROPERTY_TYPE(ShowPlacement,
+                      (false),
+                      "Display Options",
+                      App::Prop_None,
+                      "If true, placement of object is additionally rendered.");
+
+    pcPlacement = new SoSwitch;
+    pcPlacement->whichChild = SO_SWITCH_NONE;
 };
 
 ViewProviderDragger::~ViewProviderDragger() = default;
@@ -97,6 +106,9 @@ void ViewProviderDragger::onChanged(const App::Property* property)
 {
     if (property == &TransformOrigin) {
         updateDraggerPosition();
+    }
+    else if (property == &ShowPlacement) {
+        pcPlacement->whichChild = ShowPlacement.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
     }
 
     ViewProviderDocumentObject::onChanged(property);
@@ -320,6 +332,16 @@ void ViewProviderDragger::setDraggerPlacement(const Base::Placement& placement)
 
     draggerPlacement = placement;
     csysDragger->clearIncrementCounts();
+}
+
+void ViewProviderDragger::attach(App::DocumentObject* pcObject)
+{
+    ViewProviderDocumentObject::attach(pcObject);
+
+    getAnnotation()->addChild(pcPlacement);
+
+    auto* pcAxisCrossKit = new Gui::SoFCPlacementIndicatorKit();
+    pcPlacement->addChild(pcAxisCrossKit);
 }
 
 void ViewProviderDragger::updateDraggerPosition()
