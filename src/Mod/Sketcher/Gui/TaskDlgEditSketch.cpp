@@ -146,6 +146,13 @@ bool TaskDlgEditSketch::reject()
     return true;
 }
 
+QDialogButtonBox::StandardButtons TaskDlgEditSketch::getStandardButtons() const
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool closeButton = hGrp->GetBool("ShowCloseButton", true);
+    return closeButton ? QDialogButtonBox::Close : QDialogButtonBox::NoButton;
+}
 
 void TaskDlgEditSketch::autoClosedOnClosedView()
 {
