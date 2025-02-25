@@ -35,7 +35,7 @@
 
 
 using namespace App;
-using namespace std::numbers;
+using pi = std::numbers::pi;
 
 PROPERTY_SOURCE(App::DatumElement, App::GeoFeature)
 PROPERTY_SOURCE(App::Plane, App::DatumElement)
