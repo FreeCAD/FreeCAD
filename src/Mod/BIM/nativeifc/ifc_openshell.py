@@ -27,6 +27,7 @@
 import FreeCAD
 import FreeCADGui
 from packaging.version import Version
+from addonmanager_utilities import create_pip_call
 
 translate = FreeCAD.Qt.translate
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -92,6 +93,7 @@ class IFC_UpdateIOS:
             if mode in ["update", "install"]:
                 result = self.install()
                 if result:
+                    FreeCAD.Console.PrintLog(f"{result.stdout}\n")
                     text = translate("BIM", "IfcOpenShell update successfully installed.")
                     buttons = QtGui.QMessageBox.Ok
                     reply = QtGui.QMessageBox.information(None, title, text, buttons)
@@ -115,8 +117,7 @@ class IFC_UpdateIOS:
 
         import addonmanager_utilities as utils
         import freecad.utils
-        cmd = [freecad.utils.get_python_exe(), "-m", "pip"]
-        cmd.extend(args)
+        cmd = create_pip_call(args)
         result = None
         try:
             result = utils.run_interruptable_subprocess(cmd)
