@@ -125,7 +125,7 @@ class IFC_UpdateIOS:
             result = utils.run_interruptable_subprocess(cmd)
         except CalledProcessError as pe:
             FreeCAD.Console.PrintError(pe.stderr)
-        except:
+        except Exception as e:
             text = translate("BIM","Unable to run pip. Please ensure pip is installed on your system.")
             FreeCAD.Console.PrintError(f"{text} {str(e)}\n")
         return result
