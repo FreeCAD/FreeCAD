@@ -20,8 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QApplication>
 #include <QGraphicsSceneMouseEvent>
+#endif
 
 #include <Gui/Application.h>
 #include <Mod/TechDraw/App/DimensionFormatter.h>
