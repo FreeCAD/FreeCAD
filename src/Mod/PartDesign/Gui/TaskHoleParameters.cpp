@@ -71,9 +71,9 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->ThreadType->addItem(tr("BSW whitworth"));
     ui->ThreadType->addItem(tr("BSF whitworth fine"));
 
-    ui->ThreadFit->setItemText(0, tr("Standard / Normal"));
-    ui->ThreadFit->setItemText(1, tr("Tight / Close"));
-    ui->ThreadFit->setItemText(2, tr("Loose / Wide"));
+    ui->ThreadFit->setItemText(0, tr("Standard / Normal", "Normal distance from threads to the hole wall"));
+    ui->ThreadFit->setItemText(1, tr("Tight / Close", "Short distance from threads to the hole wall"));
+    ui->ThreadFit->setItemText(2, tr("Loose / Wide", "Long distance from threads to the hole wall"));
 
     // read values from the hole properties
     auto pcHole = getObject<PartDesign::Hole>();
