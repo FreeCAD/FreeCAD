@@ -127,7 +127,7 @@ class IFC_UpdateIOS:
             FreeCAD.Console.PrintError(pe.stderr)
         except:
             text = translate("BIM","Unable to run pip. Please ensure pip is installed on your system.")
-            FreeCAD.Console.PrintError(text + "\n")
+            FreeCAD.Console.PrintError(f"{text} {str(e)}\n")
         return result
 
 
