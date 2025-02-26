@@ -26,6 +26,9 @@
 #ifndef _PreComp_
 #endif
 
+#include <Base/Writer.h>
+#include <Base/Reader.h>
+
 #include "LineGroup.h"
 #include "LineGenerator.h"
 #include "Preferences.h"
@@ -43,6 +46,11 @@ LineFormat::LineFormat()
     m_color= getDefEdgeColor();
     m_visible = true;
     m_lineNumber = LineGenerator::fromQtStyle((Qt::PenStyle)m_style);
+}
+
+LineFormat::LineFormat(Base::XMLReader &reader)
+{
+    Restore(reader);
 }
 
 // static loader of default format
@@ -114,4 +122,28 @@ int LineFormat::getDefEdgeStyle()
     return Preferences::getPreferenceGroup("Decorations")->GetInt("CenterLineStyle", 2);   //dashed
 }
 
+void LineFormat::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("Style");
+    setStyle(reader.getAttributeAsInteger("value"));
+    reader.readElement("Weight");
+    setWidth(reader.getAttributeAsFloat("value"));
+    reader.readElement("Color");
+    std::string tempHex = reader.getAttribute("value");
+    App::Color tempColor;
+    tempColor.fromHexString(tempHex);
+    setColor(tempColor);
+    reader.readElement("Visible");
+    setVisible(reader.getAttributeAsInteger("value") != 0);
+}
 
+void LineFormat::Save(Base::Writer &writer) const
+{
+    // <Style value="" /> is deprecated in favour of line number, but we still save and restore it
+    // to avoid problems with old documents.
+    writer.Stream() << writer.ind() << "<Style value=\"" << m_style << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Weight value=\"" << m_weight << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Color value=\"" << m_color.asHexString() << "\"/>" << std::endl;
+    const char v = m_visible ? '1' : '0';
+    writer.Stream() << writer.ind() << "<Visible value=\"" << v << "\"/>" << std::endl;
+}

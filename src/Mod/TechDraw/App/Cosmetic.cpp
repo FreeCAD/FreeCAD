@@ -210,28 +210,13 @@ unsigned int CosmeticEdge::getMemSize () const
 
 void CosmeticEdge::Save(Base::Writer &writer) const
 {
-    // TODO: this should be using m_format->Save(writer) instead of saving the individual
-    // fields.
-    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.getStyle() << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.getWidth() << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.getColor().asHexString() << "\"/>" << endl;
-    const char v = m_format.getVisible() ? '1' : '0';
-    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+    m_format.Save(writer);
 
     writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->getGeomType() <<"\"/>" << endl;
-    if (m_geometry->getGeomType() == GeomType::GENERIC) {
-        GenericPtr gen = std::static_pointer_cast<Generic>(m_geometry);
-        gen->Save(writer);
-    } else if (m_geometry->getGeomType() == GeomType::CIRCLE) {
-        TechDraw::CirclePtr circ = std::static_pointer_cast<TechDraw::Circle>(m_geometry);
-        circ->Save(writer);
-    } else if (m_geometry->getGeomType() == GeomType::ARCOFCIRCLE) {
-        TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(m_geometry);
-        aoc->inverted()->Save(writer);
-    } else {
-        Base::Console().Warning("CE::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
-    }
+    m_geometry->Save(writer);
 
+    // TODO: this should be in LineFormat::Save, but it wasn't saved in extension
+    // of other LineFormat properties.
     writer.Stream() << writer.ind() << "<LineNumber value=\"" <<  m_format.getLineNumber() << "\"/>" << endl;
 
 }
@@ -242,17 +227,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         return;
     }
 //    Base::Console().Message("CE::Restore - reading elements\n");
-    reader.readElement("Style");
-    m_format.setStyle(reader.getAttributeAsInteger("value"));
-    reader.readElement("Weight");
-    m_format.setWidth(reader.getAttributeAsFloat("value"));
-    reader.readElement("Color");
-    std::string tempHex = reader.getAttribute("value");
-    App::Color tempColor;
-    tempColor.fromHexString(tempHex);
-    m_format.setColor(tempColor);
-    reader.readElement("Visible");
-    m_format.setVisible(reader.getAttributeAsInteger("value") != 0);
+    m_format = LineFormat(reader);
 
     reader.readElement("GeometryType");
     GeomType gType = static_cast<GeomType>(reader.getAttributeAsInteger("value"));
@@ -283,6 +258,9 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     } else {
         Base::Console().Warning("CE::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
     }
+
+    // TODO: this should be in LineFormat::Restore, but it wasn't saved in extension
+    // of other LineFormat properties.
     // older documents may not have the LineNumber element, so we need to check the
     // next entry.  if it is a start element, then we check if it is a start element
     // for LineNumber.
@@ -422,15 +400,8 @@ unsigned int GeomFormat::getMemSize () const
 
 void GeomFormat::Save(Base::Writer &writer) const
 {
-    const char v = m_format.getVisible() ? '1' : '0';
     writer.Stream() << writer.ind() << "<GeomIndex value=\"" <<  m_geomIndex << "\"/>" << endl;
-    // style is deprecated in favour of line number, but we still save and restore it
-    // to avoid problems with old documents.
-    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.getStyle() << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.getWidth() << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.getColor().asHexString() << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<LineNumber value=\"" <<  m_format.getLineNumber() << "\"/>" << endl;
+    m_format.Save(writer);
 }
 
 void GeomFormat::Restore(Base::XMLReader &reader)
@@ -445,17 +416,10 @@ void GeomFormat::Restore(Base::XMLReader &reader)
 
     // style is deprecated in favour of line number, but we still save and restore it
     // to avoid problems with old documents.
-    reader.readElement("Style");
-    m_format.setStyle(reader.getAttributeAsInteger("value"));
-    reader.readElement("Weight");
-    m_format.setWidth(reader.getAttributeAsFloat("value"));
-    reader.readElement("Color");
-    std::string tempHex = reader.getAttribute("value");
-    App::Color tempColor;
-    tempColor.fromHexString(tempHex);
-    m_format.setColor(tempColor);
-    reader.readElement("Visible");
-    m_format.setVisible((int)reader.getAttributeAsInteger("value") == 0 ? false : true);
+    m_format = LineFormat(reader);
+    
+    // TODO: this should be in LineFormat::Restore, but it wasn't saved in extension
+    // of other LineFormat in other objects.
     // older documents may not have the LineNumber element, so we need to check the
     // next entry.  if it is a start element, then we check if it is a start element
     // for LineNumber.
