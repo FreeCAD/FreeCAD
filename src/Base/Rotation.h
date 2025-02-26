@@ -172,15 +172,20 @@ public:
      * @brief makeRotationByAxes(xdir, ydir, zdir, priorityOrder): creates a rotation
      * that converts a vector in local cs with axes given as arguments, into a
      * vector in global cs.
-     * @param xdir is wanted direction of local X axis
-     * @param ydir ...
-     * @param zdir
+     * @param xdir is the wanted direction of local X axis.
+     * @param ydir is the wanted direction of local Y axis.
+     * @param zdir is the wanted direction of local Z axis.
      * @param priorityOrder sets which directions are followed. It is a string
-     * like "ZXY". This means, Z direction is followed precisely; X direction is
-     * corrected to be perpendicular to Z direction, and used; Y direction
-     * argument is ignored altogether (Y direction is generated from Z and X).
+     * like "ZXY". This means, Z is the main direction which means Z axis will
+     * follow zdir precisely; X direction is the hint diraction which means
+     * X axis will be as close as possible to xdir still perpendicular to Z direction;
+     * xdir is in general not used but if in this example zdir and xdir are parallel
+     * ydir is used as hint direction for Y axis.
      *
-     * If only one vector provided is nonzero, the other two directions are picked automatically.
+     * If any needed vector is a null vector (0,0,0) the corresponding axis
+     * is used. For example (0,1,0) for ydir
+     * If all vectors are parallel the shortest possible rotation of the first axis
+     * in priorityOrder is given.
      */
     static Rotation makeRotationByAxes(Vector3d xdir,
                                        Vector3d ydir,
