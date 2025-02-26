@@ -59,7 +59,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def initPocketOp(self, obj):
         """initPocketOp(obj) ... setup receiver"""
         if not hasattr(obj, "UseOutline"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool",
                 "UseOutline",
                 "Pocket",

@@ -64,7 +64,7 @@ class ViewProviderLayer:
                                      "If it is true, the objects contained "
                                      "within this layer will adopt "
                                      "the line color of the layer")
-            vobj.addProperty("App::PropertyBool",
+            vobj.addLockedProperty("App::PropertyBool",
                              "OverrideLineColorChildren",
                              "Layer",
                              _tip)
@@ -75,7 +75,7 @@ class ViewProviderLayer:
                                      "If it is true, the objects contained "
                                      "within this layer will adopt "
                                      "the shape appearance of the layer")
-            vobj.addProperty("App::PropertyBool",
+            vobj.addLockedProperty("App::PropertyBool",
                              "OverrideShapeAppearanceChildren",
                              "Layer",
                              _tip)
@@ -86,7 +86,7 @@ class ViewProviderLayer:
                                      "If it is true, the print color "
                                      "will be used when objects in this "
                                      "layer are placed on a TechDraw page")
-            vobj.addProperty("App::PropertyBool",
+            vobj.addLockedProperty("App::PropertyBool",
                              "UsePrintColor",
                              "Print",
                              _tip)
@@ -97,7 +97,7 @@ class ViewProviderLayer:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The line color of the objects "
                                      "contained within this layer")
-            vobj.addProperty("App::PropertyColor",
+            vobj.addLockedProperty("App::PropertyColor",
                              "LineColor",
                              "Layer",
                              _tip)
@@ -107,7 +107,7 @@ class ViewProviderLayer:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The shape color of the objects "
                                      "contained within this layer")
-            vobj.addProperty("App::PropertyColor",
+            vobj.addLockedProperty("App::PropertyColor",
                              "ShapeColor",
                              "Layer",
                              _tip,
@@ -118,7 +118,7 @@ class ViewProviderLayer:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The shape appearance of the objects "
                                      "contained within this layer")
-            vobj.addProperty("App::PropertyMaterialList",
+            vobj.addLockedProperty("App::PropertyMaterialList",
                              "ShapeAppearance",
                              "Layer",
                              _tip)
@@ -130,7 +130,7 @@ class ViewProviderLayer:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The line width of the objects contained "
                                      "within this layer")
-            vobj.addProperty("App::PropertyFloat",
+            vobj.addLockedProperty("App::PropertyFloat",
                              "LineWidth",
                              "Layer",
                              _tip)
@@ -140,7 +140,7 @@ class ViewProviderLayer:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The draw style of the objects contained "
                                      "within this layer")
-            vobj.addProperty("App::PropertyEnumeration",
+            vobj.addLockedProperty("App::PropertyEnumeration",
                              "DrawStyle",
                              "Layer",
                              _tip)
@@ -151,7 +151,7 @@ class ViewProviderLayer:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The transparency of the objects "
                                      "contained within this layer")
-            vobj.addProperty("App::PropertyPercent",
+            vobj.addLockedProperty("App::PropertyPercent",
                              "Transparency",
                              "Layer",
                              _tip)
@@ -162,7 +162,7 @@ class ViewProviderLayer:
                                      "The line color of the objects "
                                      "contained within this layer, "
                                      "when used on a TechDraw page")
-            vobj.addProperty("App::PropertyColor",
+            vobj.addLockedProperty("App::PropertyColor",
                              "LinePrintColor",
                              "Print",
                              _tip)

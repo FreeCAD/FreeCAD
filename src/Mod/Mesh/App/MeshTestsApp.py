@@ -728,7 +728,7 @@ class MeshProperty(unittest.TestCase):
         material["emissiveColor"] = [(1, 1, 1)] * (len1 + len2)
         material["shininess"] = [0.3] * (len1 + len2)
 
-        mesh.addProperty("Mesh::PropertyMaterial", "Material")
+        mesh.addLockedProperty("Mesh::PropertyMaterial", "Material")
         mesh.Material = material
 
         TempPath = tempfile.gettempdir()

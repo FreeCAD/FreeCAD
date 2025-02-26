@@ -44,19 +44,19 @@ class Proxy(nonlinear.Proxy, equationbase.MagnetodynamicProxy):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "IsHarmonic",
             "Magnetodynamic",
             "If the magnetic source is harmonically driven",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFrequency",
             "AngularFrequency",
             "Magnetodynamic",
             "Frequency of the driving current",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "UsePiolaTransform",
             "Magnetodynamic",
@@ -64,66 +64,66 @@ class Proxy(nonlinear.Proxy, equationbase.MagnetodynamicProxy):
             "are selected to be members of optimal edge element family\n"
             "or if second-order approximation is used.",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "QuadraticApproximation",
             "Magnetodynamic",
             "Enables second-order approximation of driving current",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "StaticConductivity",
             "Magnetodynamic",
             "See Elmer models manual for info",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "FixInputCurrentDensity",
             "Magnetodynamic",
             "Ensures divergence-freeness of current density",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "AutomatedSourceProjectionBCs",
             "Magnetodynamic",
             "See Elmer models manual for info",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "UseLagrangeGauge",
             "Magnetodynamic",
             "See Elmer models manual for info",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "LagrangeGaugePenalizationCoefficient",
             "Magnetodynamic",
             "See Elmer models manual for info",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "UseTreeGauge",
             "Magnetodynamic",
             "See Elmer models manual for info\nWill be ignored if 'UsePiolaTransform' is True",
         )
-        obj.addProperty("App::PropertyBool", "LinearSystemRefactorize", "Linear System", "")
+        obj.addLockedProperty("App::PropertyBool", "LinearSystemRefactorize", "Linear System", "")
 
         obj.IsHarmonic = False
         obj.AngularFrequency = 0
         obj.Priority = 10
 
         # the post processor options
-        obj.addProperty("App::PropertyBool", "CalculateCurrentDensity", "Results", "")
-        obj.addProperty("App::PropertyBool", "CalculateElectricField", "Results", "")
-        obj.addProperty("App::PropertyBool", "CalculateElementalFields", "Results", "")
-        obj.addProperty("App::PropertyBool", "CalculateHarmonicLoss", "Results", "")
-        obj.addProperty("App::PropertyBool", "CalculateJouleHeating", "Results", "")
-        obj.addProperty("App::PropertyBool", "CalculateMagneticFieldStrength", "Results", "")
-        obj.addProperty("App::PropertyBool", "CalculateMaxwellStress", "Results", "")
-        obj.addProperty("App::PropertyBool", "CalculateNodalFields", "Results", "")
-        obj.addProperty("App::PropertyBool", "CalculateNodalForces", "Results", "")
-        obj.addProperty("App::PropertyBool", "CalculateNodalHeating", "Results", "")
-        obj.addProperty("App::PropertyBool", "DiscontinuousBodies", "Results", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateCurrentDensity", "Results", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateElectricField", "Results", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateElementalFields", "Results", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateHarmonicLoss", "Results", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateJouleHeating", "Results", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateMagneticFieldStrength", "Results", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateMaxwellStress", "Results", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateNodalFields", "Results", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateNodalForces", "Results", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateNodalHeating", "Results", "")
+        obj.addLockedProperty("App::PropertyBool", "DiscontinuousBodies", "Results", "")
         obj.CalculateCurrentDensity = False
         obj.CalculateElectricField = False
         # FIXME: at the moment FreeCAD's post processor cannot display elementary field

@@ -89,13 +89,13 @@ class ObjectFace(PathPocketBase.ObjectPocket):
     def initPocketOp(self, obj):
         Path.Log.track()
         """initPocketOp(obj) ... create facing specific properties"""
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "BoundaryShape",
             "Face",
             QT_TRANSLATE_NOOP("App::Property", "Shape to use for calculating Boundary"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "ClearEdges",
             "Face",
@@ -104,7 +104,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             ),
         )
         if not hasattr(obj, "ExcludeRaisedAreas"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool",
                 "ExcludeRaisedAreas",
                 "Face",

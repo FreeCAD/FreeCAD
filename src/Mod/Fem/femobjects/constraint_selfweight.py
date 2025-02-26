@@ -44,7 +44,7 @@ class ConstraintSelfWeight(base_fempythonobject.BaseFemPythonObject):
     def __init__(self, obj):
         super().__init__(obj)
 
-        self.addProperty(obj)
+        self.addLockedProperty(obj)
 
         # https://wiki.freecad.org/Scripted_objects#Property_Type
         # https://forum.freecad.org/viewtopic.php?f=18&t=13460&start=20#p109709
@@ -52,17 +52,17 @@ class ConstraintSelfWeight(base_fempythonobject.BaseFemPythonObject):
         # obj.setEditorMode("References", 1)  # read only in PropertyEditor, but writeable by Python
         obj.setEditorMode("References", 2)  # do not show in Editor
 
-    def addProperty(self, obj):
-        obj.addProperty(
+    def addLockedProperty(self, obj):
+        obj.addLockedProperty(
             "App::PropertyAcceleration", "GravityAcceleration", "Gravity", "Gravity acceleration"
         )
-        obj.setPropertyStatus("GravityAcceleration", "LockDynamic")
+
         obj.GravityAcceleration = constants.gravity()
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyVector", "GravityDirection", "Gravity", "Normalized gravity direction"
         )
-        obj.setPropertyStatus("GravityDirection", "LockDynamic")
+
         obj.GravityDirection = FreeCAD.Vector(0, 0, -1)
 
         obj.setPropertyStatus("NormalDirection", "Hidden")
@@ -75,7 +75,7 @@ class ConstraintSelfWeight(base_fempythonobject.BaseFemPythonObject):
             grav_z = obj.getPropertyByName("Gravity_z")
             grav = FreeCAD.Vector(grav_x, grav_y, grav_z)
 
-            self.addProperty(obj)
+            self.addLockedProperty(obj)
             obj.GravityAcceleration = constants.gravity()
             obj.GravityAcceleration *= grav.Length
             obj.GravityDirection = grav.normalize()

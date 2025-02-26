@@ -408,13 +408,13 @@ class Bone(object):
 class ObjectDressup(object):
     def __init__(self, obj, base):
         # Tool Properties
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "Base",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Side",
             "Dressup",
@@ -422,7 +422,7 @@ class ObjectDressup(object):
         )
         obj.Side = [Side.Left, Side.Right]
         obj.Side = Side.Right
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Style",
             "Dressup",
@@ -430,7 +430,7 @@ class ObjectDressup(object):
         )
         obj.Style = Style.All
         obj.Style = Style.Dogbone
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyIntegerList",
             "BoneBlacklist",
             "Dressup",
@@ -438,7 +438,7 @@ class ObjectDressup(object):
         )
         obj.BoneBlacklist = []
         obj.setEditorMode("BoneBlacklist", 2)  # hide this one
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Incision",
             "Dressup",
@@ -446,7 +446,7 @@ class ObjectDressup(object):
         )
         obj.Incision = Incision.All
         obj.Incision = Incision.Adaptive
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "Custom",
             "Dressup",

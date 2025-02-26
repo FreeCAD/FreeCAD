@@ -901,49 +901,49 @@ class PathData:
 class ObjectTagDressup:
     def __init__(self, obj, base):
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "Base",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "Width",
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "Width of tags."),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "Height",
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "Height of tags."),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyAngle",
             "Angle",
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "Angle of tag plunge and ascent."),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "Radius",
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "Radius of the fillet for the tag."),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyVectorList",
             "Positions",
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "Locations of inserted holding tags"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyIntegerList",
             "Disabled",
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "IDs of disabled holding tags"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "SegmentationFactor",
             "Tag",

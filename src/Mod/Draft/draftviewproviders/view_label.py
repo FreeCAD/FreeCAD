@@ -55,7 +55,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         if "TextAlignment" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Vertical alignment")
-            vobj.addProperty("App::PropertyEnumeration",
+            vobj.addLockedProperty("App::PropertyEnumeration",
                              "TextAlignment",
                              "Text",
                              _tip)
@@ -66,7 +66,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Maximum number of characters "
                                      "on each line of the text box")
-            vobj.addProperty("App::PropertyInteger",
+            vobj.addLockedProperty("App::PropertyInteger",
                              "MaxChars",
                              "Text",
                              _tip)
@@ -74,7 +74,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         if "Justification" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Horizontal alignment")
-            vobj.addProperty("App::PropertyEnumeration",
+            vobj.addLockedProperty("App::PropertyEnumeration",
                              "Justification",
                              "Text",
                              _tip)
@@ -83,7 +83,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         if "LineSpacing" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Line spacing (relative to font size)")
-            vobj.addProperty("App::PropertyFloat",
+            vobj.addLockedProperty("App::PropertyFloat",
                              "LineSpacing",
                              "Text",
                              _tip)
@@ -96,7 +96,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         if "ArrowSize" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Arrow size")
-            vobj.addProperty("App::PropertyLength",
+            vobj.addLockedProperty("App::PropertyLength",
                              "ArrowSize",
                              "Graphics",
                              _tip)
@@ -105,7 +105,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         if "ArrowType" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Arrow type")
-            vobj.addProperty("App::PropertyEnumeration",
+            vobj.addLockedProperty("App::PropertyEnumeration",
                              "ArrowType",
                              "Graphics",
                              _tip)
@@ -116,7 +116,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The type of frame around the text "
                                      "of this object")
-            vobj.addProperty("App::PropertyEnumeration",
+            vobj.addLockedProperty("App::PropertyEnumeration",
                              "Frame",
                              "Graphics",
                              _tip)
@@ -125,7 +125,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         if "Line" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Display a leader line or not")
-            vobj.addProperty("App::PropertyBool",
+            vobj.addLockedProperty("App::PropertyBool",
                              "Line",
                              "Graphics",
                              _tip)

@@ -38,19 +38,19 @@ translate = FreeCAD.Qt.translate
 
 class ObjectArray:
     def __init__(self, obj):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLinkList",
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The toolpath(s) to array"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Type",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Pattern method"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyVectorDistance",
             "Offset",
             "Path",
@@ -59,7 +59,7 @@ class ObjectArray:
                 "The spacing between the array copies in Linear pattern",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "CopiesX",
             "Path",
@@ -67,7 +67,7 @@ class ObjectArray:
                 "App::Property", "The number of copies in X direction in Linear pattern"
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "CopiesY",
             "Path",
@@ -75,13 +75,13 @@ class ObjectArray:
                 "App::Property", "The number of copies in Y direction in Linear pattern"
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyAngle",
             "Angle",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Total angle in Polar pattern"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "Copies",
             "Path",
@@ -89,13 +89,13 @@ class ObjectArray:
                 "App::Property", "The number of copies in Linear 1D and Polar pattern"
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyVector",
             "Centre",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in Polar pattern"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "SwapDirection",
             "Path",
@@ -104,25 +104,25 @@ class ObjectArray:
                 "Make copies in X direction before Y in Linear 2D pattern",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "JitterPercent",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Percent of copies to randomly offset"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyVectorDistance",
             "JitterMagnitude",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Maximum random offset of copies"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "JitterSeed",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "ToolController",
             "Path",
@@ -131,7 +131,7 @@ class ObjectArray:
                 "The tool controller that will be used to calculate the toolpath",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "Active",
             "Path",
@@ -162,7 +162,7 @@ class ObjectArray:
             copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 2
 
         if not hasattr(obj, "JitterSeed"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyInteger",
                 "JitterSeed",
                 "Path",
@@ -190,7 +190,7 @@ class ObjectArray:
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
 
         if not hasattr(obj, "Active"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool",
                 "Active",
                 "Path",

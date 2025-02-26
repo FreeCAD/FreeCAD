@@ -118,19 +118,19 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
     def initOperation(self, obj):
         Path.Log.track(obj.Label)
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "Width",
             "Deburr",
             QT_TRANSLATE_NOOP("App::Property", "The desired width of the chamfer"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "ExtraDepth",
             "Deburr",
             QT_TRANSLATE_NOOP("App::Property", "The additional depth of the toolpath"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Join",
             "Deburr",
@@ -138,14 +138,14 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         )
         # obj.Join = ["Round", "Miter"]
         obj.setEditorMode("Join", 2)  # hide for now
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Direction",
             "Deburr",
             QT_TRANSLATE_NOOP("App::Property", "Direction of toolpath"),
         )
         # obj.Direction = ["CW", "CCW"]
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Side",
             "Deburr",
@@ -153,7 +153,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         )
         obj.Side = ["Outside", "Inside"]
         obj.setEditorMode("Side", 2)  # Hide property, it's calculated by op
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "EntryPoint",
             "Deburr",

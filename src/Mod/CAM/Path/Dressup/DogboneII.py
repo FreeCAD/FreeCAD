@@ -196,7 +196,7 @@ class BoneState(object):
 
 class Proxy(object):
     def __init__(self, obj, base):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "Base",
             "Base",
@@ -204,7 +204,7 @@ class Proxy(object):
         )
         obj.Base = base
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Side",
             "Dressup",
@@ -221,7 +221,7 @@ class Proxy(object):
                 side = Side.oppositeOf(side)
             obj.Side = side
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Style",
             "Dressup",
@@ -230,7 +230,7 @@ class Proxy(object):
         obj.Style = Style.All
         obj.Style = Style.Dogbone
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Incision",
             "Dressup",
@@ -239,7 +239,7 @@ class Proxy(object):
         obj.Incision = Incision.All
         obj.Incision = Incision.Adaptive
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "Custom",
             "Dressup",
@@ -247,7 +247,7 @@ class Proxy(object):
         )
         obj.Custom = 0.0
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyIntegerList",
             "BoneBlacklist",
             "Dressup",

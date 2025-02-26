@@ -54,75 +54,75 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Perpendicular"),
         ]
         self.obj = obj
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The base toolpath to modify"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "LeadIn",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Calculate roll-on to toolpath"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "LeadOut",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Calculate roll-off from toolpath"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "KeepToolDown",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Keep the Tool Down in toolpath"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "Length",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Length or Radius of the approach"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "LengthOut",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Length or Radius of the exit"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "StyleOn",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The Style of motion into the toolpath"),
         )
         obj.StyleOn = lead_styles
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "StyleOff",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The Style of motion out of the toolpath"),
         )
         obj.StyleOff = lead_styles
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "ExtendLeadIn",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Extends LeadIn distance"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "ExtendLeadOut",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Extends LeadOut distance"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "RapidPlunge",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Perform plunges with G0"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "IncludeLayers",
             "Path",

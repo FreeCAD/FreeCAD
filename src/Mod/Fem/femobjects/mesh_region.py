@@ -42,10 +42,9 @@ class MeshRegion(base_femmeshelement.BaseFemMeshElement):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "CharacteristicLength",
             "MeshRegionProperties",
             "set characteristic length of FEM elements for this refinement",
         )
-        obj.setPropertyStatus("CharacteristicLength", "LockDynamic")

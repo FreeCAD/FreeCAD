@@ -174,7 +174,7 @@ class Joint:
     def __init__(self, joint, type_index):
         joint.Proxy = self
 
-        joint.addProperty(
+        joint.addLockedProperty(
             "App::PropertyEnumeration",
             "JointType",
             "Joint",
@@ -198,7 +198,7 @@ class Joint:
 
         # First Joint Connector
         if not hasattr(joint, "Reference1"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyXLinkSubHidden",
                 "Reference1",
                 "Joint Connector 1",
@@ -206,7 +206,7 @@ class Joint:
             )
 
         if not hasattr(joint, "Placement1"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyPlacement",
                 "Placement1",
                 "Joint Connector 1",
@@ -217,7 +217,7 @@ class Joint:
             )
 
         if not hasattr(joint, "Detach1"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyBool",
                 "Detach1",
                 "Joint Connector 1",
@@ -228,7 +228,7 @@ class Joint:
             )
 
         if not hasattr(joint, "Offset1"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyPlacement",
                 "Offset1",
                 "Joint Connector 1",
@@ -240,7 +240,7 @@ class Joint:
 
         # Second Joint Connector
         if not hasattr(joint, "Reference2"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyXLinkSubHidden",
                 "Reference2",
                 "Joint Connector 2",
@@ -248,7 +248,7 @@ class Joint:
             )
 
         if not hasattr(joint, "Placement2"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyPlacement",
                 "Placement2",
                 "Joint Connector 2",
@@ -259,7 +259,7 @@ class Joint:
             )
 
         if not hasattr(joint, "Detach2"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyBool",
                 "Detach2",
                 "Joint Connector 2",
@@ -270,7 +270,7 @@ class Joint:
             )
 
         if not hasattr(joint, "Offset2"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyPlacement",
                 "Offset2",
                 "Joint Connector 2",
@@ -282,7 +282,7 @@ class Joint:
 
         # Other properties
         if not hasattr(joint, "Distance"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyFloat",
                 "Distance",
                 "Joint",
@@ -293,7 +293,7 @@ class Joint:
             )
 
         if not hasattr(joint, "Distance2"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyFloat",
                 "Distance2",
                 "Joint",
@@ -304,7 +304,7 @@ class Joint:
             )
 
         if not hasattr(joint, "Activated"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyBool",
                 "Activated",
                 "Joint",
@@ -316,7 +316,7 @@ class Joint:
             joint.Activated = True
 
         if not hasattr(joint, "EnableLengthMin"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyBool",
                 "EnableLengthMin",
                 "Limits",
@@ -328,7 +328,7 @@ class Joint:
             joint.EnableLengthMin = False
 
         if not hasattr(joint, "EnableLengthMax"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyBool",
                 "EnableLengthMax",
                 "Limits",
@@ -340,7 +340,7 @@ class Joint:
             joint.EnableLengthMax = False
 
         if not hasattr(joint, "EnableAngleMin"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyBool",
                 "EnableAngleMin",
                 "Limits",
@@ -352,7 +352,7 @@ class Joint:
             joint.EnableAngleMin = False
 
         if not hasattr(joint, "EnableAngleMax"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyBool",
                 "EnableAngleMax",
                 "Limits",
@@ -364,7 +364,7 @@ class Joint:
             joint.EnableAngleMax = False
 
         if not hasattr(joint, "LengthMin"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyFloat",
                 "LengthMin",
                 "Limits",
@@ -375,7 +375,7 @@ class Joint:
             )
 
         if not hasattr(joint, "LengthMax"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyFloat",
                 "LengthMax",
                 "Limits",
@@ -386,7 +386,7 @@ class Joint:
             )
 
         if not hasattr(joint, "AngleMin"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyFloat",
                 "AngleMin",
                 "Limits",
@@ -397,7 +397,7 @@ class Joint:
             )
 
         if not hasattr(joint, "AngleMax"):
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyFloat",
                 "AngleMax",
                 "Limits",
@@ -418,7 +418,7 @@ class Joint:
             joint.removeProperty("Element1")
             joint.removeProperty("Vertex1")
 
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyXLinkSub",
                 "Object1",
                 "Joint Connector 1",
@@ -437,7 +437,7 @@ class Joint:
             joint.removeProperty("Element2")
             joint.removeProperty("Vertex2")
 
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyXLinkSub",
                 "Object2",
                 "Joint Connector 2",
@@ -450,7 +450,7 @@ class Joint:
         def processObject(object_attr, reference_attr, part_attr, connector_label, order):
             try:
                 if hasattr(joint, object_attr):
-                    joint.addProperty(
+                    joint.addLockedProperty(
                         "App::PropertyXLinkSubHidden",
                         reference_attr,
                         connector_label,
@@ -493,7 +493,7 @@ class Joint:
             joint.removeProperty("Offset")
             joint.removeProperty("Rotation")
 
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyPlacement",
                 "Offset1",
                 "Joint Connector 1",
@@ -503,7 +503,7 @@ class Joint:
                 ),
             )
 
-            joint.addProperty(
+            joint.addLockedProperty(
                 "App::PropertyPlacement",
                 "Offset2",
                 "Joint Connector 2",
@@ -947,7 +947,7 @@ class GroundedJoint:
         joint.Proxy = self
         self.joint = joint
 
-        joint.addProperty(
+        joint.addLockedProperty(
             "App::PropertyLink",
             "ObjectToGround",
             "Ground",

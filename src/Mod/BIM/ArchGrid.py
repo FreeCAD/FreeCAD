@@ -60,30 +60,30 @@ class ArchGrid:
 
         pl = obj.PropertiesList
         if not "Rows" in pl:
-            obj.addProperty("App::PropertyInteger","Rows","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The number of rows'))
+            obj.addLockedProperty("App::PropertyInteger","Rows","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The number of rows'))
         if not "Columns" in pl:
-            obj.addProperty("App::PropertyInteger","Columns","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The number of columns'))
+            obj.addLockedProperty("App::PropertyInteger","Columns","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The number of columns'))
         if not "RowSize" in pl:
-            obj.addProperty("App::PropertyFloatList","RowSize","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The sizes of rows'))
+            obj.addLockedProperty("App::PropertyFloatList","RowSize","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The sizes of rows'))
         if not "ColumnSize" in pl:
-            obj.addProperty("App::PropertyFloatList","ColumnSize","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The sizes of columns'))
+            obj.addLockedProperty("App::PropertyFloatList","ColumnSize","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The sizes of columns'))
         if not "Spans" in pl:
-            obj.addProperty("App::PropertyStringList","Spans","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The span ranges of cells that are merged together'))
+            obj.addLockedProperty("App::PropertyStringList","Spans","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The span ranges of cells that are merged together'))
         if not "PointsOutput" in pl:
-            obj.addProperty("App::PropertyEnumeration","PointsOutput","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The type of 3D points produced by this grid object'))
+            obj.addLockedProperty("App::PropertyEnumeration","PointsOutput","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The type of 3D points produced by this grid object'))
             obj.PointsOutput = ["Vertices","Edges","Vertical Edges","Horizontal Edges","Faces"]
         if not "Width" in pl:
-            obj.addProperty("App::PropertyLength","Width","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The total width of this grid'))
+            obj.addLockedProperty("App::PropertyLength","Width","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The total width of this grid'))
         if not "Height" in pl:
-            obj.addProperty("App::PropertyLength","Height","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The total height of this grid'))
+            obj.addLockedProperty("App::PropertyLength","Height","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The total height of this grid'))
         if not "AutoWidth" in pl:
-            obj.addProperty("App::PropertyLength","AutoWidth","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'Creates automatic column divisions (set to 0 to disable)'))
+            obj.addLockedProperty("App::PropertyLength","AutoWidth","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'Creates automatic column divisions (set to 0 to disable)'))
         if not "AutoHeight" in pl:
-            obj.addProperty("App::PropertyLength","AutoHeight","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'Creates automatic row divisions (set to 0 to disable)'))
+            obj.addLockedProperty("App::PropertyLength","AutoHeight","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'Creates automatic row divisions (set to 0 to disable)'))
         if not "Reorient" in pl:
-            obj.addProperty("App::PropertyBool","Reorient","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'When in edge midpoint mode, if this grid must reorient its children along edge normals or not'))
+            obj.addLockedProperty("App::PropertyBool","Reorient","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'When in edge midpoint mode, if this grid must reorient its children along edge normals or not'))
         if not "HiddenFaces" in pl:
-            obj.addProperty("App::PropertyIntegerList","HiddenFaces","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The indices of faces to hide'))
+            obj.addLockedProperty("App::PropertyIntegerList","HiddenFaces","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The indices of faces to hide'))
         self.Type = "Grid"
 
     def onDocumentRestored(self,obj):

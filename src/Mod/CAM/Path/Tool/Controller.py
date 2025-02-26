@@ -61,44 +61,44 @@ class ToolController:
     def __init__(self, obj, createTool=True):
         Path.Log.track("tool: ")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyIntegerConstraint",
             "ToolNumber",
             "Tool",
             QT_TRANSLATE_NOOP("App::Property", "The active tool"),
         )
         obj.ToolNumber = (0, 0, 10000, 1)
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "SpindleSpeed",
             "Tool",
             QT_TRANSLATE_NOOP("App::Property", "The speed of the cutting spindle in RPM"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "SpindleDir",
             "Tool",
             QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertySpeed",
             "VertFeed",
             "Feed",
             QT_TRANSLATE_NOOP("App::Property", "Feed rate for vertical moves in Z"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertySpeed",
             "HorizFeed",
             "Feed",
             QT_TRANSLATE_NOOP("App::Property", "Feed rate for horizontal moves"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertySpeed",
             "VertRapid",
             "Rapid",
             QT_TRANSLATE_NOOP("App::Property", "Rapid rate for vertical moves in Z"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertySpeed",
             "HorizRapid",
             "Rapid",
@@ -285,7 +285,7 @@ class ToolController:
 
     def ensureToolBit(self, obj):
         if not hasattr(obj, "Tool"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyLink",
                 "Tool",
                 "Base",

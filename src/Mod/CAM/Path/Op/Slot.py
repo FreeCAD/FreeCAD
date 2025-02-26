@@ -90,7 +90,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         for prtyp, nm, grp, tt in self.opPropertyDefinitions():
             if not hasattr(obj, nm):
-                obj.addProperty(prtyp, nm, grp, tt)
+                obj.addLockedProperty(prtyp, nm, grp, tt)
                 self.addNewProps.append(nm)
 
         # Set enumeration lists for enumeration properties

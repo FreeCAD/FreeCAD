@@ -102,7 +102,7 @@ class ElasticityWriter:
     def _updateElasticitySolver(self, equation):
         # updates older Elasticity equations
         if not hasattr(equation, "Variable"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyString",
                 "Variable",
                 "Elasticity",
@@ -116,11 +116,11 @@ class ElasticityWriter:
             # Bubbles was removed because it is unused by Elmer for the stress solver
             equation.removeProperty("Bubbles")
         if not hasattr(equation, "ConstantBulkSystem"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool", "ConstantBulkSystem", "Elasticity", "See Elmer manual for info"
             )
         if not hasattr(equation, "DisplaceMesh"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "DisplaceMesh",
                 "Elasticity",
@@ -137,14 +137,14 @@ class ElasticityWriter:
         if not hasattr(equation, "EigenAnalysis"):
             # DoFrequencyAnalysis was renamed to EigenAnalysis
             # to follow the Elmer manual
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool", "EigenAnalysis", "Eigen Values", "If true, modal analysis"
             )
             if hasattr(equation, "DoFrequencyAnalysis"):
                 equation.EigenAnalysis = equation.DoFrequencyAnalysis
                 equation.removeProperty("DoFrequencyAnalysis")
         if not hasattr(equation, "EigenSystemComplex"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "EigenSystemComplex",
                 "Eigen Values",
@@ -155,14 +155,14 @@ class ElasticityWriter:
             )
             equation.EigenSystemComplex = True
         if not hasattr(equation, "EigenSystemComputeResiduals"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "EigenSystemComputeResiduals",
                 "Eigen Values",
                 "Computes residuals of eigen value system",
             )
         if not hasattr(equation, "EigenSystemDamped"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "EigenSystemDamped",
                 "Eigen Values",
@@ -172,7 +172,7 @@ class ElasticityWriter:
                 ),
             )
         if not hasattr(equation, "EigenSystemMaxIterations"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyIntegerConstraint",
                 "EigenSystemMaxIterations",
                 "Eigen Values",
@@ -180,7 +180,7 @@ class ElasticityWriter:
             )
             equation.EigenSystemMaxIterations = (300, 1, int(1e8), 1)
         if not hasattr(equation, "EigenSystemSelect"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyEnumeration",
                 "EigenSystemSelect",
                 "Eigen Values",
@@ -189,7 +189,7 @@ class ElasticityWriter:
             equation.EigenSystemSelect = elasticity.EIGEN_SYSTEM_SELECT
             equation.EigenSystemSelect = "Smallest Magnitude"
         if not hasattr(equation, "EigenSystemTolerance"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyFloat",
                 "EigenSystemTolerance",
                 "Eigen Values",
@@ -202,7 +202,7 @@ class ElasticityWriter:
         if not hasattr(equation, "EigenSystemValues"):
             # EigenmodesCount was renamed to EigenSystemValues
             # to follow the Elmer manual
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyInteger",
                 "EigenSystemValues",
                 "Eigen Values",
@@ -212,21 +212,21 @@ class ElasticityWriter:
                 equation.EigenSystemValues = equation.EigenmodesCount
                 equation.removeProperty("EigenmodesCount")
         if not hasattr(equation, "FixDisplacement"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "FixDisplacement",
                 "Elasticity",
                 "If displacements or forces are set,\nthereby model lumping is used",
             )
         if not hasattr(equation, "GeometricStiffness"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "GeometricStiffness",
                 "Elasticity",
                 "Consider geometric stiffness",
             )
         if not hasattr(equation, "Incompressible"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "Incompressible",
                 "Elasticity",
@@ -236,25 +236,25 @@ class ElasticityWriter:
                 ),
             )
         if not hasattr(equation, "MaxwellMaterial"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "MaxwellMaterial",
                 "Elasticity",
                 "Compute viscoelastic material model",
             )
         if not hasattr(equation, "ModelLumping"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool", "ModelLumping", "Elasticity", "Use model lumping"
             )
         if not hasattr(equation, "ModelLumpingFilename"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyFile",
                 "ModelLumpingFilename",
                 "Elasticity",
                 "File to save results from model lumping to",
             )
         if not hasattr(equation, "PlaneStress"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "PlaneStress",
                 "Equation",
@@ -264,7 +264,7 @@ class ElasticityWriter:
                 ),
             )
         if not hasattr(equation, "StabilityAnalysis"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "StabilityAnalysis",
                 "Elasticity",
@@ -274,7 +274,7 @@ class ElasticityWriter:
                 ),
             )
         if not hasattr(equation, "UpdateTransientSystem"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "UpdateTransientSystem",
                 "Elasticity",

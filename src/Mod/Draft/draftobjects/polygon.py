@@ -45,31 +45,31 @@ class Polygon(DraftObject):
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Number of faces")
-        obj.addProperty("App::PropertyInteger", "FacesNumber", "Draft", _tip)
+        obj.addLockedProperty("App::PropertyInteger", "FacesNumber", "Draft", _tip)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Radius of the control circle")
-        obj.addProperty("App::PropertyLength", "Radius", "Draft", _tip)
+        obj.addLockedProperty("App::PropertyLength", "Radius", "Draft", _tip)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "How the polygon must be drawn from the control circle")
-        obj.addProperty("App::PropertyEnumeration", "DrawMode", "Draft", _tip)
+        obj.addLockedProperty("App::PropertyEnumeration", "DrawMode", "Draft", _tip)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Radius to use to fillet the corners")
-        obj.addProperty("App::PropertyLength", "FilletRadius", "Draft", _tip)
+        obj.addLockedProperty("App::PropertyLength", "FilletRadius", "Draft", _tip)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Size of the chamfer to give to the corners")
-        obj.addProperty("App::PropertyLength", "ChamferSize", "Draft", _tip)
+        obj.addLockedProperty("App::PropertyLength", "ChamferSize", "Draft", _tip)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Create a face")
-        obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip)
+        obj.addLockedProperty("App::PropertyBool", "MakeFace", "Draft", _tip)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The area of this object")
-        obj.addProperty("App::PropertyArea", "Area", "Draft", _tip)
+        obj.addLockedProperty("App::PropertyArea", "Area", "Draft", _tip)
 
         obj.MakeFace = params.get_param("MakeFaceMode")
         obj.DrawMode = ['inscribed','circumscribed']

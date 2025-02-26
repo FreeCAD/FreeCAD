@@ -45,12 +45,12 @@ def add_geom_properties(obj):
                 if rep.Items[0].is_a("IfcExtrudedAreaSolid"):
                     ext = rep.Items[0]
                     if "ExtrusionDepth" not in obj.PropertiesList:
-                        obj.addProperty(
+                        obj.addLockedProperty(
                             "App::PropertyLength", "ExtrusionDepth", "Geometry"
                         )
                     obj.ExtrusionDepth = ext.Depth * scaling
                     if "ExtrusionDirection" not in obj.PropertiesList:
-                        obj.addProperty(
+                        obj.addLockedProperty(
                             "App::PropertyVector", "ExtrusionDirection", "Geometry"
                         )
                     obj.ExtrusionDirection = FreeCAD.Vector(
@@ -60,12 +60,12 @@ def add_geom_properties(obj):
                     # Extrusion of a rectangle
                     if ext.SweptArea.is_a("IfcRectangleProfileDef"):
                         if "RectangleLength" not in obj.PropertiesList:
-                            obj.addProperty(
+                            obj.addLockedProperty(
                                 "App::PropertyLength", "RectangleLength", "Geometry"
                             )
                         obj.RectangleLength = ext.SweptArea.XDim * scaling
                         if "RectangleWidth" not in obj.PropertiesList:
-                            obj.addProperty(
+                            obj.addLockedProperty(
                                 "App::PropertyLength", "RectangleWidth", "Geometry"
                             )
                         obj.RectangleWidth = ext.SweptArea.YDim * scaling
@@ -74,7 +74,7 @@ def add_geom_properties(obj):
                     elif ext.SweptArea.is_a("IfcArbitraryClosedProfileDef"):
                         if ext.SweptArea.OuterCurve.is_a("IfcPolyline"):
                             if "PolylinePoints" not in obj.PropertiesList:
-                                obj.addProperty(
+                                obj.addLockedProperty(
                                     "App::PropertyVectorList",
                                     "PolylinePoints",
                                     "Geometry",
@@ -100,13 +100,13 @@ def add_geom_properties(obj):
                             "WebThickness",
                         ]:
                             if hasattr(ext.SweptArea, p):
-                                obj.addProperty("App::PropertyLength", p, "Geometry")
+                                obj.addLockedProperty("App::PropertyLength", p, "Geometry")
                                 value = getattr(ext.SweptArea, p)
                                 if not value:
                                     value = 0
                                 value = value * scaling
                                 setattr(obj, p, value)
-                            obj.addProperty(
+                            obj.addLockedProperty(
                                 "App::PropertyString", "ProfileName", "Geometry"
                             )
                             obj.ProfileName = ext.SweptArea.ProfileName
@@ -122,7 +122,7 @@ def add_geom_properties(obj):
                                 pol = rep.Items[0].Segments[0].ParentCurve
                                 if len(pol.Points) == 2:
                                     if "AxisStart" not in obj.PropertiesList:
-                                        obj.addProperty(
+                                        obj.addLockedProperty(
                                             "App::PropertyPosition",
                                             "AxisStart",
                                             "Geometry",
@@ -131,7 +131,7 @@ def add_geom_properties(obj):
                                         pol.Points[0].Coordinates
                                     ).multiply(scaling)
                                     if "AxisEnd" not in obj.PropertiesList:
-                                        obj.addProperty(
+                                        obj.addLockedProperty(
                                             "App::PropertyPosition",
                                             "AxisEnd",
                                             "Geometry",

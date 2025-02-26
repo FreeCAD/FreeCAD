@@ -95,7 +95,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
     def onDocumentRestored(self, obj):
         if not hasattr(obj, "chipBreakEnabled"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool",
                 "chipBreakEnabled",
                 "Drill",
@@ -103,7 +103,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             )
 
         if not hasattr(obj, "feedRetractEnabled"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool",
                 "feedRetractEnabled",
                 "Drill",
@@ -112,7 +112,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... add drilling specific properties to obj."""
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "PeckDepth",
             "Drill",
@@ -121,31 +121,31 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "Incremental Drill depth before retracting to clear chips",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "PeckEnabled",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "Enable pecking"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "chipBreakEnabled",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "DwellTime",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "DwellEnabled",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "Enable dwell"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "AddTipLength",
             "Drill",
@@ -154,7 +154,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "Calculate the tip length and subtract from final depth",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "RetractMode",
             "Drill",
@@ -163,7 +163,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "Controls tool retract height between holes in same op, Default=G98: safety height",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "RetractHeight",
             "Drill",
@@ -172,13 +172,13 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "The height where cutting feed rate starts and retract height for peck operation",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "ExtraOffset",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "How far the drilling depth is extended"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "KeepToolDown",
             "Drill",
@@ -187,7 +187,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "feedRetractEnabled",
             "Drill",
@@ -219,7 +219,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             endoffset = PathUtils.drillTipLength(self.tool) * 2
 
         if not hasattr(obj, "KeepToolDown"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool",
                 "KeepToolDown",
                 "Drill",
@@ -230,7 +230,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             )
 
         if not hasattr(obj, "RetractMode"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyEnumeration",
                 "RetractMode",
                 "Drill",

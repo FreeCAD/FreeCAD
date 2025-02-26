@@ -48,24 +48,30 @@ class Proxy(equation.Proxy):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyIntegerConstraint",
             "BiCGstablDegree",
             "Linear System",
             "Polynom degree for iterative method 'BiCGstabl'",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyIntegerConstraint",
             "IdrsParameter",
             "Linear System",
             "Parameter for iterative method 'Idrs'",
         )
-        obj.addProperty("App::PropertyEnumeration", "LinearDirectMethod", "Linear System", "")
-        obj.addProperty("App::PropertyIntegerConstraint", "LinearIterations", "Linear System", "")
-        obj.addProperty("App::PropertyEnumeration", "LinearIterativeMethod", "Linear System", "")
-        obj.addProperty("App::PropertyEnumeration", "LinearPreconditioning", "Linear System", "")
-        obj.addProperty("App::PropertyEnumeration", "LinearSolverType", "Linear System", "")
-        obj.addProperty(
+        obj.addLockedProperty("App::PropertyEnumeration", "LinearDirectMethod", "Linear System", "")
+        obj.addLockedProperty(
+            "App::PropertyIntegerConstraint", "LinearIterations", "Linear System", ""
+        )
+        obj.addLockedProperty(
+            "App::PropertyEnumeration", "LinearIterativeMethod", "Linear System", ""
+        )
+        obj.addLockedProperty(
+            "App::PropertyEnumeration", "LinearPreconditioning", "Linear System", ""
+        )
+        obj.addLockedProperty("App::PropertyEnumeration", "LinearSolverType", "Linear System", "")
+        obj.addLockedProperty(
             "App::PropertyBool",
             "LinearSystemSolverDisabled",
             "Linear System",
@@ -75,14 +81,14 @@ class Proxy(equation.Proxy):
                 "and consult the Elmer docs."
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "LinearTolerance",
             "Linear System",
             "Linear preconditioning method",
         )
-        obj.addProperty("App::PropertyBool", "Stabilize", "Base", "")
-        obj.addProperty("App::PropertyFloat", "SteadyStateTolerance", "Steady State", "")
+        obj.addLockedProperty("App::PropertyBool", "Stabilize", "Base", "")
+        obj.addLockedProperty("App::PropertyFloat", "SteadyStateTolerance", "Steady State", "")
 
         obj.BiCGstablDegree = (2, 2, 10, 1)
         obj.IdrsParameter = (2, 1, 10, 1)

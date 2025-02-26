@@ -48,7 +48,7 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "DivDiscretization",
             "Flow",
@@ -57,8 +57,10 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
                 "discretization when Reynolds number increases"
             ),
         )
-        obj.addProperty("App::PropertyEnumeration", "FlowModel", "Flow", "Flow model to be used")
-        obj.addProperty(
+        obj.addLockedProperty(
+            "App::PropertyEnumeration", "FlowModel", "Flow", "Flow model to be used"
+        )
+        obj.addLockedProperty(
             "App::PropertyBool",
             "GradpDiscretization",
             "Flow",
@@ -67,14 +69,14 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
                 "Also mass flux is available as a natural boundary condition."
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString", "Variable", "Flow", "Only for a 2D model change the '3' to '2'"
         )
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration", "Convection", "Equation", "Type of convection to be used"
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "MagneticInduction",
             "Equation",

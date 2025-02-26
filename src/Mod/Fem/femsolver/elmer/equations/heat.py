@@ -50,11 +50,11 @@ class Proxy(nonlinear.Proxy, equationbase.HeatProxy):
 
         # according to the Elmer models manual Bubbles is by default True
         # and Stabilize is False (Stabilize is added in linear.py)
-        obj.addProperty("App::PropertyBool", "Bubbles", "Heat", "")
-        obj.addProperty(
+        obj.addLockedProperty("App::PropertyBool", "Bubbles", "Heat", "")
+        obj.addLockedProperty(
             "App::PropertyEnumeration", "Convection", "Equation", "Type of convection to be used"
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration", "PhaseChangeModel", "Equation", "Model for phase change"
         )
 

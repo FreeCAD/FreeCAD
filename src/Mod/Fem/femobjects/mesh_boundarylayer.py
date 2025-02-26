@@ -42,29 +42,29 @@ class MeshBoundaryLayer(base_femmeshelement.BaseFemMeshElement):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "NumberOfLayers",
             "MeshBoundaryLayerProperties",
             "set number of inflation layers for this boundary",
         )
-        obj.setPropertyStatus("NumberOfLayers", "LockDynamic")
+
         obj.NumberOfLayers = 3
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "MinimumThickness",
             "MeshBoundaryLayerProperties",
             "set minimum thickness,usually the first inflation layer",
         )
-        obj.setPropertyStatus("MinimumThickness", "LockDynamic")
+
         # default to zero, user must specify a proper value for this property
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "GrowthRate",
             "MeshBoundaryLayerProperties",
             "set growth rate of inflation layers for smooth transition",
         )
-        obj.setPropertyStatus("GrowthRate", "LockDynamic")
+
         obj.GrowthRate = 1.5

@@ -26,9 +26,9 @@ def makeCopy(shape, radius, angle):
 
 class RadialCopy:
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLength","Radius","","Radius").Radius=10.0
-        obj.addProperty("App::PropertyLength","Angle" ,"","Angle").Angle=20.0
-        obj.addProperty("App::PropertyLink","Source" ,"","Source shape").Source=None
+        obj.addLockedProperty("App::PropertyLength","Radius","","Radius").Radius=10.0
+        obj.addLockedProperty("App::PropertyLength","Angle" ,"","Angle").Angle=20.0
+        obj.addLockedProperty("App::PropertyLink","Source" ,"","Source shape").Source=None
         obj.Proxy = self
 
 #   def onChanged(self, fp, prop):

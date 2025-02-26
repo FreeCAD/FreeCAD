@@ -97,7 +97,7 @@ class DraftLink(DraftObject):
         if not hasattr(obj, 'AlwaysSyncPlacement'):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                 'Force sync pattern placements even when array elements are expanded')
-            obj.addProperty("App::PropertyBool",
+            obj.addLockedProperty("App::PropertyBool",
                             "AlwaysSyncPlacement",
                             "Draft",
                             _tip)
@@ -110,7 +110,7 @@ class DraftLink(DraftObject):
 
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Show the individual array elements")
-            obj.addProperty("App::PropertyBool",
+            obj.addLockedProperty("App::PropertyBool",
                             "ExpandArray",
                             "Draft",
                             _tip)
@@ -127,18 +127,18 @@ class DraftLink(DraftObject):
             obj.setPropertyStatus('PlacementList', '-Immutable')
 
         if not hasattr(obj, 'LinkTransform'):
-            obj.addProperty('App::PropertyBool',
+            obj.addLockedProperty('App::PropertyBool',
                             'LinkTransform',
                             ' Link')
 
         if not hasattr(obj, 'ColoredElements'):
-            obj.addProperty('App::PropertyLinkSubHidden',
+            obj.addLockedProperty('App::PropertyLinkSubHidden',
                             'ColoredElements',
                             ' Link')
             obj.setPropertyStatus('ColoredElements', 'Hidden')
 
         if not hasattr(obj,'LinkCopyOnChange'):
-            obj.addProperty("App::PropertyEnumeration","LinkCopyOnChange"," Link")
+            obj.addLockedProperty("App::PropertyEnumeration","LinkCopyOnChange"," Link")
 
         obj.configLinkProperty('LinkCopyOnChange','LinkTransform','ColoredElements')
 

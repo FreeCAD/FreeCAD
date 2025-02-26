@@ -51,13 +51,13 @@ currLocation = {}
 
 class ObjectDressup:
     def __init__(self, obj):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The base toolpath to modify"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyAngle",
             "filterAngle",
             "Path",
@@ -66,13 +66,13 @@ class ObjectDressup:
                 "Angles less than filter angle will not receive corner actions",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "offset",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Distance the point trails behind the spindle"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "pivotheight",
             "Path",

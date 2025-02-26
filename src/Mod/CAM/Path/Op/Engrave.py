@@ -62,7 +62,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
     def setupAdditionalProperties(self, obj):
         if not hasattr(obj, "BaseShapes"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyLinkList",
                 "BaseShapes",
                 "Path",
@@ -70,7 +70,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
         if not hasattr(obj, "BaseObject"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyLink",
                 "BaseObject",
                 "Path",
@@ -80,7 +80,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
     def initOperation(self, obj):
         """initOperation(obj) ... create engraving specific properties."""
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "StartVertex",
             "Path",

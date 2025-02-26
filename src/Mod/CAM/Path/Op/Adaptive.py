@@ -889,7 +889,7 @@ class PathAdaptive(PathOp.ObjectOp):
     def initOperation(self, obj):
         """initOperation(obj) ... implement to create additional properties.
         Should be overwritten by subclasses."""
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Side",
             "Adaptive",
@@ -903,7 +903,7 @@ class PathAdaptive(PathOp.ObjectOp):
         #     "Inside",
         # ]  # side of profile that cutter is on in relation to direction of profile
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "OperationType",
             "Adaptive",
@@ -917,7 +917,7 @@ class PathAdaptive(PathOp.ObjectOp):
         #     "Profiling",
         # ]  # side of profile that cutter is on in relation to direction of profile
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "Tolerance",
             "Adaptive",
@@ -926,7 +926,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Influences accuracy and performance",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyPercent",
             "StepOver",
             "Adaptive",
@@ -935,7 +935,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Percent of cutter diameter to step over on each pass",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "LiftDistance",
             "Adaptive",
@@ -944,7 +944,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Lift distance for rapid moves",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "KeepToolDownRatio",
             "Adaptive",
@@ -953,7 +953,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Max length of keep tool down path compared to direct distance between points",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "StockToLeave",
             "Adaptive",
@@ -962,7 +962,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "How much stock to leave (i.e. for finishing operation)",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "ForceInsideOut",
             "Adaptive",
@@ -971,7 +971,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Force plunging into material inside and clearing towards the edges",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "FinishingProfile",
             "Adaptive",
@@ -980,7 +980,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "To take a finishing profile path at the end",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "Stopped",
             "Adaptive",
@@ -988,7 +988,7 @@ class PathAdaptive(PathOp.ObjectOp):
         )
         obj.setEditorMode("Stopped", 2)  # hide this property
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "StopProcessing",
             "Adaptive",
@@ -999,7 +999,7 @@ class PathAdaptive(PathOp.ObjectOp):
         )
         obj.setEditorMode("StopProcessing", 2)  # hide this property
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "UseHelixArcs",
             "Adaptive",
@@ -1009,7 +1009,7 @@ class PathAdaptive(PathOp.ObjectOp):
             ),
         )
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyPythonObject",
             "AdaptiveInputState",
             "Adaptive",
@@ -1018,7 +1018,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Internal input state",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyPythonObject",
             "AdaptiveOutputState",
             "Adaptive",
@@ -1029,7 +1029,7 @@ class PathAdaptive(PathOp.ObjectOp):
         )
         obj.setEditorMode("AdaptiveInputState", 2)  # hide this property
         obj.setEditorMode("AdaptiveOutputState", 2)  # hide this property
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyAngle",
             "HelixAngle",
             "Adaptive",
@@ -1038,7 +1038,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Helix ramp entry angle (degrees)",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyAngle",
             "HelixConeAngle",
             "Adaptive",
@@ -1047,7 +1047,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Helix cone angle (degrees)",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "HelixDiameterLimit",
             "Adaptive",
@@ -1057,7 +1057,7 @@ class PathAdaptive(PathOp.ObjectOp):
             ),
         )
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "UseOutline",
             "Adaptive",
@@ -1067,7 +1067,7 @@ class PathAdaptive(PathOp.ObjectOp):
             ),
         )
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "Part::PropertyPartShape",
             "removalshape",
             "Path",
@@ -1113,7 +1113,7 @@ class PathAdaptive(PathOp.ObjectOp):
 
     def opOnDocumentRestored(self, obj):
         if not hasattr(obj, "HelixConeAngle"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyAngle",
                 "HelixConeAngle",
                 "Adaptive",
@@ -1121,7 +1121,7 @@ class PathAdaptive(PathOp.ObjectOp):
             )
 
         if not hasattr(obj, "UseOutline"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool",
                 "UseOutline",
                 "Adaptive",
@@ -1129,7 +1129,7 @@ class PathAdaptive(PathOp.ObjectOp):
             )
 
         if not hasattr(obj, "removalshape"):
-            obj.addProperty("Part::PropertyPartShape", "removalshape", "Path", "")
+            obj.addLockedProperty("Part::PropertyPartShape", "removalshape", "Path", "")
         obj.setEditorMode("removalshape", 2)  # hide
 
         FeatureExtensions.initialize_properties(obj)

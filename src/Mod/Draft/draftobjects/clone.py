@@ -49,19 +49,19 @@ class Clone(DraftObject):
         pl = obj.PropertiesList
         if not "Objects" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property", "The objects included in this clone")
-            obj.addProperty("App::PropertyLinkListGlobal", "Objects", "Draft", _tip)
+            obj.addLockedProperty("App::PropertyLinkListGlobal", "Objects", "Draft", _tip)
         if not "Scale" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property", "The scale factor of this clone")
-            obj.addProperty("App::PropertyVector", "Scale", "Draft", _tip)
+            obj.addLockedProperty("App::PropertyVector", "Scale", "Draft", _tip)
             obj.Scale = App.Vector(1, 1, 1)
         if not "Fuse" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "If Clones includes several objects,\n"
                                      "set True for fusion or False for compound")
-            obj.addProperty("App::PropertyBool", "Fuse", "Draft", _tip)
+            obj.addLockedProperty("App::PropertyBool", "Fuse", "Draft", _tip)
         if not "ForceCompound" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Always create a compound")
-            obj.addProperty("App::PropertyBool", "ForceCompound", "Draft", _tip)
+            obj.addLockedProperty("App::PropertyBool", "ForceCompound", "Draft", _tip)
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)

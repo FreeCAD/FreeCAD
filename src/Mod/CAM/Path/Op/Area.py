@@ -83,14 +83,14 @@ class ObjectOp(PathOp.ObjectOp):
         Path.Log.track()
 
         # Debugging
-        obj.addProperty("App::PropertyString", "AreaParams", "Path")
+        obj.addLockedProperty("App::PropertyString", "AreaParams", "Path")
         obj.setEditorMode("AreaParams", 2)  # hide
-        obj.addProperty("App::PropertyString", "PathParams", "Path")
+        obj.addLockedProperty("App::PropertyString", "PathParams", "Path")
         obj.setEditorMode("PathParams", 2)  # hide
-        obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
+        obj.addLockedProperty("Part::PropertyPartShape", "removalshape", "Path")
         obj.setEditorMode("removalshape", 2)  # hide
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "SplitArcs",
             "Path",
@@ -151,7 +151,7 @@ class ObjectOp(PathOp.ObjectOp):
             if hasattr(obj, prop):
                 obj.setEditorMode(prop, 2)
         if not hasattr(obj, "SplitArcs"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool",
                 "SplitArcs",
                 "Path",

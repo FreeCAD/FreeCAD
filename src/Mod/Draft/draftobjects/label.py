@@ -64,7 +64,7 @@ class Label(DraftAnnotation):
                                      "line.\n"
                                      "This point can be decorated "
                                      "with an arrow or another symbol.")
-            obj.addProperty("App::PropertyVector",
+            obj.addLockedProperty("App::PropertyVector",
                             "TargetPoint",
                             "Target",
                             _tip)
@@ -78,7 +78,7 @@ class Label(DraftAnnotation):
                                      "\n"
                                      "'Target' won't be used "
                                      "if 'Label Type' is set to 'Custom'.")
-            obj.addProperty("App::PropertyLinkSub",
+            obj.addLockedProperty("App::PropertyLinkSub",
                             "Target",
                             "Target",
                             _tip)
@@ -108,7 +108,7 @@ class Label(DraftAnnotation):
                                      "'Custom', the 'Points' property\n"
                                      "can be set as a list "
                                      "of arbitrary points.")
-            obj.addProperty("App::PropertyVectorList",
+            obj.addLockedProperty("App::PropertyVectorList",
                             "Points",
                             "Leader",
                             _tip)
@@ -123,7 +123,7 @@ class Label(DraftAnnotation):
                                      "of the leader can be specified by\n"
                                      "assigning a custom list "
                                      "to the 'Points' attribute.")
-            obj.addProperty("App::PropertyEnumeration",
+            obj.addLockedProperty("App::PropertyEnumeration",
                             "StraightDirection",
                             "Leader",
                             _tip)
@@ -141,7 +141,7 @@ class Label(DraftAnnotation):
                                      "otherwise to the right or above it,\n"
                                      "depending on the value of "
                                      "'Straight Direction'.")
-            obj.addProperty("App::PropertyDistance",
+            obj.addLockedProperty("App::PropertyDistance",
                             "StraightDistance",
                             "Leader",
                             _tip)
@@ -155,7 +155,7 @@ class Label(DraftAnnotation):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The placement of the 'Text' element "
                                      "in 3D space")
-            obj.addProperty("App::PropertyPlacement",
+            obj.addLockedProperty("App::PropertyPlacement",
                             "Placement",
                             "Label",
                             _tip)
@@ -165,7 +165,7 @@ class Label(DraftAnnotation):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The text to display when 'Label Type' "
                                      "is set to 'Custom'")
-            obj.addProperty("App::PropertyStringList",
+            obj.addLockedProperty("App::PropertyStringList",
                             "CustomText",
                             "Label",
                             _tip)
@@ -180,7 +180,7 @@ class Label(DraftAnnotation):
                                      "and the object defined in 'Target'.\n"
                                      "The 'Custom Text' is displayed only "
                                      "if 'Label Type' is set to 'Custom'.")
-            obj.addProperty("App::PropertyStringList",
+            obj.addLockedProperty("App::PropertyStringList",
                             "Text",
                             "Label",
                             _tip)
@@ -215,7 +215,7 @@ class Label(DraftAnnotation):
                                      "or from the subelement "
                                      "'VertexN', 'EdgeN', or 'FaceN', "
                                      "respectively, if it is specified.")
-            obj.addProperty("App::PropertyEnumeration",
+            obj.addLockedProperty("App::PropertyEnumeration",
                             "LabelType",
                             "Label",
                             _tip)

@@ -65,13 +65,13 @@ class FeatureBooleanFragments:
     """The BooleanFragments feature object."""
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkList","Objects","BooleanFragments","Object to compute intersections between.")
-        obj.addProperty("App::PropertyEnumeration","Mode","BooleanFragments",
+        obj.addLockedProperty("App::PropertyLinkList","Objects","BooleanFragments","Object to compute intersections between.")
+        obj.addLockedProperty("App::PropertyEnumeration","Mode","BooleanFragments",
                         "- Standard: wires, shells, compsolids remain in one piece.\n"
                         "- Split: wires, shells, compsolids are split.\n"
                         "- CompSolid: make compsolid from solid fragments.")
         obj.Mode = ["Standard", "Split", "CompSolid"]
-        obj.addProperty("App::PropertyLength","Tolerance","BooleanFragments",
+        obj.addLockedProperty("App::PropertyLength","Tolerance","BooleanFragments",
                         "Tolerance when intersecting (fuzzy value). "
                         "In addition to tolerances of the shapes.")
 
@@ -222,14 +222,14 @@ class FeatureSlice:
     """The Slice feature object."""
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Slice","Object to be sliced.")
-        obj.addProperty("App::PropertyLinkList","Tools","Slice","Objects that slice.")
-        obj.addProperty("App::PropertyEnumeration","Mode","Slice",
+        obj.addLockedProperty("App::PropertyLink","Base","Slice","Object to be sliced.")
+        obj.addLockedProperty("App::PropertyLinkList","Tools","Slice","Objects that slice.")
+        obj.addLockedProperty("App::PropertyEnumeration","Mode","Slice",
                         "- Standard: wires, shells, compsolids remain in one piece.\n"
                         "- Split: wires, shells, compsolids are split.\n"
                         "- CompSolid: make compsolid from solid fragments.")
         obj.Mode = ["Standard", "Split", "CompSolid"]
-        obj.addProperty("App::PropertyLength","Tolerance","Slice",
+        obj.addLockedProperty("App::PropertyLength","Tolerance","Slice",
                         "Tolerance when intersecting (fuzzy value). "
                         "In addition to tolerances of the shapes.")
 
@@ -408,8 +408,8 @@ class FeatureXOR:
     """The XOR feature object."""
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkList","Objects","XOR","Object to compute intersections between.")
-        obj.addProperty("App::PropertyLength","Tolerance","XOR",
+        obj.addLockedProperty("App::PropertyLinkList","Objects","XOR","Object to compute intersections between.")
+        obj.addLockedProperty("App::PropertyLength","Tolerance","XOR",
                         "Tolerance when intersecting (fuzzy value). "
                         "In addition to tolerances of the shapes.")
 

@@ -43,189 +43,184 @@ class ResultMechanical(base_fempythonobject.BaseFemPythonObject):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "ResultType",
             "Base",
             "Type of the result",
             1,  # the 1 set the property to ReadOnly
         )
-        obj.setPropertyStatus("ResultType", "LockDynamic")
+
         obj.ResultType = str(self.Type)
 
         # for frequency analysis
-        obj.addProperty("App::PropertyInteger", "Eigenmode", "Data", "", True)
-        obj.setPropertyStatus("Eigenmode", "LockDynamic")
-        obj.addProperty(
+        obj.addLockedProperty("App::PropertyInteger", "Eigenmode", "Data", "", True)
+
+        obj.addLockedProperty(
             "App::PropertyFloat", "EigenmodeFrequency", "Data", "User Defined Results", True
         )
-        obj.setPropertyStatus("EigenmodeFrequency", "LockDynamic")
 
         # node results
         # set read only or hide a property:
         # https://forum.freecad.org/viewtopic.php?f=18&t=13460&start=10#p108072
         # do not show up in propertyEditor of comboView
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyVectorList",
             "DisplacementVectors",
             "NodeData",
             "List of displacement vectors",
             True,
         )
-        obj.setPropertyStatus("DisplacementVectors", "LockDynamic")
-        obj.addProperty(
+
+        obj.addLockedProperty(
             "App::PropertyFloatList",
             "Peeq",
             "NodeData",
             "List of equivalent plastic strain values",
             True,
         )
-        obj.setPropertyStatus("Peeq", "LockDynamic")
-        obj.addProperty(
+
+        obj.addLockedProperty(
             "App::PropertyFloatList",
             "MohrCoulomb",
             "NodeData",
             "List of Mohr Coulomb stress values",
             True,
         )
-        obj.setPropertyStatus("MohrCoulomb", "LockDynamic")
-        obj.addProperty(
+
+        obj.addLockedProperty(
             "App::PropertyFloatList",
             "ReinforcementRatio_x",
             "NodeData",
             "Reinforcement ratio x-direction",
             True,
         )
-        obj.setPropertyStatus("ReinforcementRatio_x", "LockDynamic")
-        obj.addProperty(
+
+        obj.addLockedProperty(
             "App::PropertyFloatList",
             "ReinforcementRatio_y",
             "NodeData",
             "Reinforcement ratio y-direction",
             True,
         )
-        obj.setPropertyStatus("ReinforcementRatio_y", "LockDynamic")
-        obj.addProperty(
+
+        obj.addLockedProperty(
             "App::PropertyFloatList",
             "ReinforcementRatio_z",
             "NodeData",
             "Reinforcement ratio z-direction",
             True,
         )
-        obj.setPropertyStatus("ReinforcementRatio_z", "LockDynamic")
+
         # these three principal vectors are used only if there is a reinforced mat obj
         # https://forum.freecad.org/viewtopic.php?f=18&t=33106&p=416006#p416006
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyVectorList",
             "PS1Vector",
             "NodeData",
             "List of 1st Principal Stress Vectors",
             True,
         )
-        obj.setPropertyStatus("PS1Vector", "LockDynamic")
-        obj.addProperty(
+
+        obj.addLockedProperty(
             "App::PropertyVectorList",
             "PS2Vector",
             "NodeData",
             "List of 2nd Principal Stress Vectors",
             True,
         )
-        obj.setPropertyStatus("PS2Vector", "LockDynamic")
-        obj.addProperty(
+
+        obj.addLockedProperty(
             "App::PropertyVectorList",
             "PS3Vector",
             "NodeData",
             "List of 3rd Principal Stress Vectors",
             True,
         )
-        obj.setPropertyStatus("PS3Vector", "LockDynamic")
 
         # readonly in propertyEditor of comboView
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloatList",
             "DisplacementLengths",
             "NodeData",
             "List of displacement lengths",
             True,
         )
-        obj.setPropertyStatus("DisplacementLengths", "LockDynamic")
-        obj.addProperty(
+
+        obj.addLockedProperty(
             "App::PropertyFloatList",
             "vonMises",
             "NodeData",
             "List of von Mises equivalent stresses",
             True,
         )
-        obj.setPropertyStatus("vonMises", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "PrincipalMax", "NodeData", "", True)
-        obj.setPropertyStatus("PrincipalMax", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "PrincipalMed", "NodeData", "", True)
-        obj.setPropertyStatus("PrincipalMed", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "PrincipalMin", "NodeData", "", True)
-        obj.setPropertyStatus("PrincipalMin", "LockDynamic")
-        obj.addProperty(
+
+        obj.addLockedProperty("App::PropertyFloatList", "PrincipalMax", "NodeData", "", True)
+
+        obj.addLockedProperty("App::PropertyFloatList", "PrincipalMed", "NodeData", "", True)
+
+        obj.addLockedProperty("App::PropertyFloatList", "PrincipalMin", "NodeData", "", True)
+
+        obj.addLockedProperty(
             "App::PropertyFloatList",
             "MaxShear",
             "NodeData",
             "List of Maximum Shear stress values",
             True,
         )
-        obj.setPropertyStatus("MaxShear", "LockDynamic")
-        obj.addProperty(
+
+        obj.addLockedProperty(
             "App::PropertyFloatList",
             "MassFlowRate",
             "NodeData",
             "List of mass flow rate values",
             True,
         )
-        obj.setPropertyStatus("MassFlowRate", "LockDynamic")
-        obj.addProperty(
+
+        obj.addLockedProperty(
             "App::PropertyFloatList",
             "NetworkPressure",
             "NodeData",
             "List of network pressure values",
             True,
         )
-        obj.setPropertyStatus("NetworkPressure", "LockDynamic")
-        obj.addProperty(
+
+        obj.addLockedProperty(
             "App::PropertyFloatList", "UserDefined", "NodeData", "User Defined Results", True
         )
-        obj.setPropertyStatus("UserDefined", "LockDynamic")
-        obj.addProperty(
+
+        obj.addLockedProperty(
             "App::PropertyFloatList", "Temperature", "NodeData", "Temperature field", True
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyVectorList", "HeatFlux", "NodeData", "List of heat flux vectors", True
         )
-        obj.setPropertyStatus("HeatFlux", "LockDynamic")
 
-        obj.setPropertyStatus("Temperature", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "NodeStressXX", "NodeData", "", True)
-        obj.setPropertyStatus("NodeStressXX", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "NodeStressYY", "NodeData", "", True)
-        obj.setPropertyStatus("NodeStressYY", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "NodeStressZZ", "NodeData", "", True)
-        obj.setPropertyStatus("NodeStressZZ", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "NodeStressXY", "NodeData", "", True)
-        obj.setPropertyStatus("NodeStressXY", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "NodeStressXZ", "NodeData", "", True)
-        obj.setPropertyStatus("NodeStressXZ", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "NodeStressYZ", "NodeData", "", True)
-        obj.setPropertyStatus("NodeStressYZ", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "NodeStrainXX", "NodeData", "", True)
-        obj.setPropertyStatus("NodeStrainXX", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "NodeStrainYY", "NodeData", "", True)
-        obj.setPropertyStatus("NodeStrainYY", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "NodeStrainZZ", "NodeData", "", True)
-        obj.setPropertyStatus("NodeStrainZZ", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "NodeStrainXY", "NodeData", "", True)
-        obj.setPropertyStatus("NodeStrainXY", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "NodeStrainXZ", "NodeData", "", True)
-        obj.setPropertyStatus("NodeStrainXZ", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "NodeStrainYZ", "NodeData", "", True)
-        obj.setPropertyStatus("NodeStrainYZ", "LockDynamic")
-        obj.addProperty("App::PropertyFloatList", "CriticalStrainRatio", "NodeData", "", True)
-        obj.setPropertyStatus("CriticalStrainRatio", "LockDynamic")
+        obj.addLockedProperty("App::PropertyFloatList", "NodeStressXX", "NodeData", "", True)
+
+        obj.addLockedProperty("App::PropertyFloatList", "NodeStressYY", "NodeData", "", True)
+
+        obj.addLockedProperty("App::PropertyFloatList", "NodeStressZZ", "NodeData", "", True)
+
+        obj.addLockedProperty("App::PropertyFloatList", "NodeStressXY", "NodeData", "", True)
+
+        obj.addLockedProperty("App::PropertyFloatList", "NodeStressXZ", "NodeData", "", True)
+
+        obj.addLockedProperty("App::PropertyFloatList", "NodeStressYZ", "NodeData", "", True)
+
+        obj.addLockedProperty("App::PropertyFloatList", "NodeStrainXX", "NodeData", "", True)
+
+        obj.addLockedProperty("App::PropertyFloatList", "NodeStrainYY", "NodeData", "", True)
+
+        obj.addLockedProperty("App::PropertyFloatList", "NodeStrainZZ", "NodeData", "", True)
+
+        obj.addLockedProperty("App::PropertyFloatList", "NodeStrainXY", "NodeData", "", True)
+
+        obj.addLockedProperty("App::PropertyFloatList", "NodeStrainXZ", "NodeData", "", True)
+
+        obj.addLockedProperty("App::PropertyFloatList", "NodeStrainYZ", "NodeData", "", True)
+
+        obj.addLockedProperty("App::PropertyFloatList", "CriticalStrainRatio", "NodeData", "", True)
 
         # initialize the Stats with the appropriate count of items
         # see fill_femresult_stats in femresult/resulttools.py
@@ -236,14 +231,14 @@ class ResultMechanical(base_fempythonobject.BaseFemPythonObject):
         # migrate old result objects, because property "StressValues"
         # was renamed to "vonMises" in commit 8b68ab7
         if hasattr(obj, "StressValues") is True:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyFloatList",
                 "vonMises",
                 "NodeData",
                 "List of von Mises equivalent stresses",
                 True,
             )
-            obj.setPropertyStatus("vonMises", "LockDynamic")
+
             obj.vonMises = obj.StressValues
             obj.setPropertyStatus("StressValues", "-LockDynamic")
             obj.removeProperty("StressValues")

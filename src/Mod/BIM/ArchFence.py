@@ -58,24 +58,24 @@ class _Fence(ArchComponent.Component):
         pl = obj.PropertiesList
 
         if not "Section" in pl:
-            obj.addProperty("App::PropertyLink", "Section", "Fence", QT_TRANSLATE_NOOP(
+            obj.addLockedProperty("App::PropertyLink", "Section", "Fence", QT_TRANSLATE_NOOP(
                 "App::Property", "A single section of the fence"))
 
         if not "Post" in pl:
-            obj.addProperty("App::PropertyLink", "Post", "Fence", QT_TRANSLATE_NOOP(
+            obj.addLockedProperty("App::PropertyLink", "Post", "Fence", QT_TRANSLATE_NOOP(
                 "App::Property", "A single fence post"))
 
         if not "Path" in pl:
-            obj.addProperty("App::PropertyLink", "Path", "Fence", QT_TRANSLATE_NOOP(
+            obj.addLockedProperty("App::PropertyLink", "Path", "Fence", QT_TRANSLATE_NOOP(
                 "App::Property", "The Path the fence should follow"))
 
         if not "NumberOfSections" in pl:
-            obj.addProperty("App::PropertyInteger", "NumberOfSections", "Fence", QT_TRANSLATE_NOOP(
+            obj.addLockedProperty("App::PropertyInteger", "NumberOfSections", "Fence", QT_TRANSLATE_NOOP(
                 "App::Property", "The number of sections the fence is built of"))
             obj.setEditorMode("NumberOfSections", 1)
 
         if not "NumberOfPosts" in pl:
-            obj.addProperty("App::PropertyInteger", "NumberOfPosts", "Fence", QT_TRANSLATE_NOOP(
+            obj.addLockedProperty("App::PropertyInteger", "NumberOfPosts", "Fence", QT_TRANSLATE_NOOP(
                 "App::Property", "The number of posts used to build the fence"))
             obj.setEditorMode("NumberOfPosts", 1)
 
@@ -259,7 +259,7 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
         pl = vobj.PropertiesList
 
         if not "UseOriginalColors" in pl:
-            vobj.addProperty("App::PropertyBool", "UseOriginalColors", "Fence", QT_TRANSLATE_NOOP(
+            vobj.addLockedProperty("App::PropertyBool", "UseOriginalColors", "Fence", QT_TRANSLATE_NOOP(
                 "App::Property", "When true, the fence will be colored like the original post and section."))
 
     def attach(self, vobj):

@@ -320,45 +320,45 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
 
     def initCircularHoleOperation(self, obj):
         Path.Log.track()
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "ThreadOrientation",
             "Thread",
             QT_TRANSLATE_NOOP("App::Property", "Set thread orientation"),
         )
         # obj.ThreadOrientation = ThreadOrientations
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "ThreadType",
             "Thread",
             QT_TRANSLATE_NOOP("App::Property", "Currently only internal"),
         )
         # obj.ThreadType = ThreadTypes
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "ThreadName",
             "Thread",
             QT_TRANSLATE_NOOP("App::Property", "Defines which standard thread was chosen"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "MajorDiameter",
             "Thread",
             QT_TRANSLATE_NOOP("App::Property", "Set thread's major diameter"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "MinorDiameter",
             "Thread",
             QT_TRANSLATE_NOOP("App::Property", "Set thread's minor diameter"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "Pitch",
             "Thread",
             QT_TRANSLATE_NOOP("App::Property", "Set thread's pitch - used for metric threads"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "TPI",
             "Thread",
@@ -367,7 +367,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
                 "Set thread's TPI (turns per inch) - used for imperial threads",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "ThreadFit",
             "Thread",
@@ -376,19 +376,19 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
                 "Override to control how loose or tight the threads are milled",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "Passes",
             "Operation",
             QT_TRANSLATE_NOOP("App::Property", "Set how many passes are used to cut the thread"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Direction",
             "Operation",
             QT_TRANSLATE_NOOP("App::Property", "Direction of thread cutting operation"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "LeadInOut",
             "Operation",
@@ -397,7 +397,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
                 "Set to True to get lead in and lead out arcs at the start and end of the thread cut",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "ClearanceOp",
             "Operation",

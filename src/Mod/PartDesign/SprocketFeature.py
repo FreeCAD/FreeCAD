@@ -132,7 +132,7 @@ class Sprocket:
             self.sprockRef.append(tempForm.comboBox_SprocketReference.currentText())
             self.indx += 1
         self._ensure_properties(obj, is_restore=False)
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "SprocketReference",
             "Sprocket",
@@ -148,7 +148,7 @@ class Sprocket:
     def _ensure_properties(self, obj, is_restore):
         def ensure_property(type_, name, doc, default):
             if not hasattr(obj, name):
-                obj.addProperty(type_, name, "Sprocket")
+                obj.addLockedProperty(type_, name, "Sprocket")
                 if callable(default):
                     setattr(obj, name, default())
                 else:

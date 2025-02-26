@@ -108,13 +108,13 @@ class Stock(object):
 class StockFromBase(Stock):
     def __init__(self, obj, base):
         "Make stock"
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "Base",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The base object this stock is derived from"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "ExtXneg",
             "Stock",
@@ -123,7 +123,7 @@ class StockFromBase(Stock):
                 "Extra allowance from part bound box in negative X direction",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "ExtXpos",
             "Stock",
@@ -132,7 +132,7 @@ class StockFromBase(Stock):
                 "Extra allowance from part bound box in positive X direction",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "ExtYneg",
             "Stock",
@@ -141,7 +141,7 @@ class StockFromBase(Stock):
                 "Extra allowance from part bound box in negative Y direction",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "ExtYpos",
             "Stock",
@@ -150,7 +150,7 @@ class StockFromBase(Stock):
                 "Extra allowance from part bound box in positive Y direction",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "ExtZneg",
             "Stock",
@@ -159,7 +159,7 @@ class StockFromBase(Stock):
                 "Extra allowance from part bound box in negative Z direction",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "ExtZpos",
             "Stock",
@@ -228,19 +228,19 @@ class StockCreateBox(Stock):
     MinExtent = 0.001
 
     def __init__(self, obj):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "Length",
             "Stock",
             QT_TRANSLATE_NOOP("App::Property", "Length of this stock box"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "Width",
             "Stock",
             QT_TRANSLATE_NOOP("App::Property", "Width of this stock box"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "Height",
             "Stock",
@@ -280,13 +280,13 @@ class StockCreateCylinder(Stock):
     MinExtent = 0.001
 
     def __init__(self, obj):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "Radius",
             "Stock",
             QT_TRANSLATE_NOOP("App::Property", "Radius of this stock cylinder"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "Height",
             "Stock",
@@ -322,7 +322,7 @@ class StockCreateCylinder(Stock):
 def SetupStockObject(obj, stockType):
     Path.Log.track(obj.Label, stockType)
     if FreeCAD.GuiUp and obj.ViewObject:
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "StockType",
             "Stock",

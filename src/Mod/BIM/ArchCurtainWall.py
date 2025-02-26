@@ -87,20 +87,20 @@ class CurtainWall(ArchComponent.Component):
         vsize = 50
         hsize = 50
         if not "Host" in pl:
-            obj.addProperty("App::PropertyLink","Host","CurtainWall",QT_TRANSLATE_NOOP("App::Property","An optional host object for this curtain wall"))
+            obj.addLockedProperty("App::PropertyLink","Host","CurtainWall",QT_TRANSLATE_NOOP("App::Property","An optional host object for this curtain wall"))
         if not "Height" in pl:
-            obj.addProperty("App::PropertyLength","Height","CurtainWall",
+            obj.addLockedProperty("App::PropertyLength","Height","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The height of the curtain wall, if based on an edge"))
             obj.Height = params.get_param_arch("WallHeight")
         if not "VerticalMullionNumber" in pl:
-            obj.addProperty("App::PropertyInteger","VerticalMullionNumber","CurtainWall",
+            obj.addLockedProperty("App::PropertyInteger","VerticalMullionNumber","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The number of vertical mullions"))
             obj.setEditorMode("VerticalMullionNumber",1)
         if not "VerticalMullionAlignment" in pl:
-            obj.addProperty("App::PropertyBool","VerticalMullionAlignment","CurtainWall",
+            obj.addLockedProperty("App::PropertyBool","VerticalMullionAlignment","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","If the profile of the vertical mullions get aligned with the surface or not"))
         if not "VerticalSections" in pl:
-            obj.addProperty("App::PropertyInteger","VerticalSections","CurtainWall",
+            obj.addLockedProperty("App::PropertyInteger","VerticalSections","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The number of vertical sections of this curtain wall"))
             obj.VerticalSections = 1
         if "VerticalMullionSize" in pl:
@@ -108,25 +108,25 @@ class CurtainWall(ArchComponent.Component):
             vsize = obj.VerticalMullionSize.Value
             obj.removeProperty("VerticalMullionSize")
         if not "VerticalMullionHeight" in pl:
-            obj.addProperty("App::PropertyLength","VerticalMullionHeight","CurtainWall",
+            obj.addLockedProperty("App::PropertyLength","VerticalMullionHeight","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The height of the vertical mullions profile, if no profile is used"))
             obj.VerticalMullionHeight = vsize
         if not "VerticalMullionWidth" in pl:
-            obj.addProperty("App::PropertyLength","VerticalMullionWidth","CurtainWall",
+            obj.addLockedProperty("App::PropertyLength","VerticalMullionWidth","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The width of the vertical mullions profile, if no profile is used"))
             obj.VerticalMullionWidth = vsize
         if not "VerticalMullionProfile" in pl:
-            obj.addProperty("App::PropertyLink","VerticalMullionProfile","CurtainWall",
+            obj.addLockedProperty("App::PropertyLink","VerticalMullionProfile","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","A profile for vertical mullions (disables vertical mullion size)"))
         if not "HorizontalMullionNumber" in pl:
-            obj.addProperty("App::PropertyInteger","HorizontalMullionNumber","CurtainWall",
+            obj.addLockedProperty("App::PropertyInteger","HorizontalMullionNumber","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The number of horizontal mullions"))
             obj.setEditorMode("HorizontalMullionNumber",1)
         if not "HorizontalMullionAlignment" in pl:
-            obj.addProperty("App::PropertyBool","HorizontalMullionAlignment","CurtainWall",
+            obj.addLockedProperty("App::PropertyBool","HorizontalMullionAlignment","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","If the profile of the horizontal mullions gets aligned with the surface or not"))
         if not "HorizontalSections" in pl:
-            obj.addProperty("App::PropertyInteger","HorizontalSections","CurtainWall",
+            obj.addLockedProperty("App::PropertyInteger","HorizontalSections","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The number of horizontal sections of this curtain wall"))
             obj.HorizontalSections = 1
         if "HorizontalMullionSize" in pl:
@@ -134,51 +134,51 @@ class CurtainWall(ArchComponent.Component):
             hsize = obj.HorizontalMullionSize.Value
             obj.removeProperty("HorizontalMullionSize")
         if not "HorizontalMullionHeight" in pl:
-            obj.addProperty("App::PropertyLength","HorizontalMullionHeight","CurtainWall",
+            obj.addLockedProperty("App::PropertyLength","HorizontalMullionHeight","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The height of the horizontal mullions profile, if no profile is used"))
             obj.HorizontalMullionHeight = hsize
         if not "HorizontalMullionWidth" in pl:
-            obj.addProperty("App::PropertyLength","HorizontalMullionWidth","CurtainWall",
+            obj.addLockedProperty("App::PropertyLength","HorizontalMullionWidth","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The width of the horizontal mullions profile, if no profile is used"))
             obj.HorizontalMullionWidth = hsize
         if not "HorizontalMullionProfile" in pl:
-            obj.addProperty("App::PropertyLink","HorizontalMullionProfile","CurtainWall",
+            obj.addLockedProperty("App::PropertyLink","HorizontalMullionProfile","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","A profile for horizontal mullions (disables horizontal mullion size)"))
         if not "DiagonalMullionNumber" in pl:
-            obj.addProperty("App::PropertyInteger","DiagonalMullionNumber","CurtainWall",
+            obj.addLockedProperty("App::PropertyInteger","DiagonalMullionNumber","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The number of diagonal mullions"))
             obj.setEditorMode("DiagonalMullionNumber",1)
         if not "DiagonalMullionSize" in pl:
-            obj.addProperty("App::PropertyLength","DiagonalMullionSize","CurtainWall",
+            obj.addLockedProperty("App::PropertyLength","DiagonalMullionSize","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The size of the diagonal mullions, if any, if no profile is used"))
             obj.DiagonalMullionSize = 50
         if not "DiagonalMullionProfile" in pl:
-            obj.addProperty("App::PropertyLink","DiagonalMullionProfile","CurtainWall",
+            obj.addLockedProperty("App::PropertyLink","DiagonalMullionProfile","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","A profile for diagonal mullions, if any (disables horizontal mullion size)"))
         if not "PanelNumber" in pl:
-            obj.addProperty("App::PropertyInteger","PanelNumber","CurtainWall",
+            obj.addLockedProperty("App::PropertyInteger","PanelNumber","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The number of panels"))
             obj.setEditorMode("PanelNumber",1)
         if not "PanelThickness" in pl:
-            obj.addProperty("App::PropertyLength","PanelThickness","CurtainWall",
+            obj.addLockedProperty("App::PropertyLength","PanelThickness","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The thickness of the panels"))
             obj.PanelThickness = 20
         if not "SwapHorizontalVertical" in pl:
-            obj.addProperty("App::PropertyBool","SwapHorizontalVertical","CurtainWall",
+            obj.addLockedProperty("App::PropertyBool","SwapHorizontalVertical","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","Swaps horizontal and vertical lines"))
         if not "Refine" in pl:
-            obj.addProperty("App::PropertyBool","Refine","CurtainWall",
+            obj.addLockedProperty("App::PropertyBool","Refine","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","Perform subtractions between components so none overlap"))
         if not "CenterProfiles" in pl:
-            obj.addProperty("App::PropertyBool","CenterProfiles","CurtainWall",
+            obj.addLockedProperty("App::PropertyBool","CenterProfiles","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","Centers the profile over the edges or not"))
             obj.CenterProfiles = True
         if not "VerticalDirection" in pl:
-            obj.addProperty("App::PropertyVector","VerticalDirection","CurtainWall",
+            obj.addLockedProperty("App::PropertyVector","VerticalDirection","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall"))
             obj.VerticalDirection = FreeCAD.Vector(0,0,1)
         if not "OverrideEdges" in pl:  # PropertyStringList
-            obj.addProperty("App::PropertyStringList","OverrideEdges","CurtainWall",QT_TRANSLATE_NOOP("App::Property","Input are index numbers of edges of Base ArchSketch/Sketch geometries (in Edit mode).  Selected edges are used to create the shape of this Arch Curtain Wall (instead of using all edges by default).  [ENHANCED by ArchSketch] GUI 'Edit Curtain Wall' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges."))
+            obj.addLockedProperty("App::PropertyStringList","OverrideEdges","CurtainWall",QT_TRANSLATE_NOOP("App::Property","Input are index numbers of edges of Base ArchSketch/Sketch geometries (in Edit mode).  Selected edges are used to create the shape of this Arch Curtain Wall (instead of using all edges by default).  [ENHANCED by ArchSketch] GUI 'Edit Curtain Wall' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges."))
 
         self.Type = "CurtainWall"
 

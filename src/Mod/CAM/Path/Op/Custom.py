@@ -83,21 +83,21 @@ class ObjectCustom(PathOp.ObjectOp):
         return PathOp.FeatureTool | PathOp.FeatureCoolant
 
     def initOperation(self, obj):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Source",
             "Path",
             "Source of gcode (text, file, ...)",
         )
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFile",
             "GcodeFile",
             "Path",
             "File containing gcode to be inserted",
         )
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyStringList",
             "Gcode",
             "Path",
@@ -117,7 +117,7 @@ class ObjectCustom(PathOp.ObjectOp):
 
     def opOnDocumentRestored(self, obj):
         if not hasattr(obj, "Source"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyEnumeration",
                 "Source",
                 "Path",
@@ -125,7 +125,7 @@ class ObjectCustom(PathOp.ObjectOp):
             )
 
         if not hasattr(obj, "GcodeFile"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyFile",
                 "GcodeFile",
                 "Path",

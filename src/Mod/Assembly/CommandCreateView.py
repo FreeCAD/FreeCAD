@@ -248,7 +248,7 @@ class ExplodedViewStep:
         self.migrationScript(evStep)
 
         if not hasattr(evStep, "References"):
-            evStep.addProperty(
+            evStep.addLockedProperty(
                 "App::PropertyXLinkSubHidden",
                 "References",
                 "Exploded Move",
@@ -256,7 +256,7 @@ class ExplodedViewStep:
             )
 
         if not hasattr(evStep, "MovementTransform"):
-            evStep.addProperty(
+            evStep.addLockedProperty(
                 "App::PropertyPlacement",
                 "MovementTransform",
                 "Exploded Move",
@@ -267,7 +267,7 @@ class ExplodedViewStep:
             )
 
         if not hasattr(evStep, "MoveType"):
-            evStep.addProperty(
+            evStep.addLockedProperty(
                 "App::PropertyEnumeration",
                 "MoveType",
                 "Exploded Move",
@@ -282,7 +282,7 @@ class ExplodedViewStep:
             evStep.removeProperty("ObjNames")
             evStep.removeProperty("Parts")
 
-            evStep.addProperty(
+            evStep.addLockedProperty(
                 "App::PropertyXLinkSubHidden",
                 "References",
                 "Exploded Move",

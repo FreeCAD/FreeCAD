@@ -208,7 +208,7 @@ class BIM_IfcQuantities:
             qname = val[i]
             qtype = QTO_TYPES[val[i+1]]
             if not qname in obj.PropertiesList:
-                obj.addProperty(qtype, qname, "Quantities", val[i+1])
+                obj.addLockedProperty(qtype, qname, "Quantities", val[i+1])
                 qval = 0
                 i = self.get_row(obj.Name)
                 if i > -1:

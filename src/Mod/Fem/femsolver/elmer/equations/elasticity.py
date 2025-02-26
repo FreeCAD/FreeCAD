@@ -54,37 +54,37 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool", "CalculatePangle", "Elasticity", "Compute principal stress angles"
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "CalculatePrincipal",
             "Elasticity",
             "Compute principal stress components",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool", "CalculateStrains", "Elasticity", "Compute the strain tensor"
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "CalculateStresses",
             "Elasticity",
             "Compute stress tensor and vanMises",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool", "ConstantBulkSystem", "Elasticity", "See Elmer manual for info"
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "DisplaceMesh",
             "Elasticity",
             ("If mesh is deformed by displacement field.\nSet to False for 'Eigen Analysis'."),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool", "EigenAnalysis", "Eigen Values", "If true, modal analysis"
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "EigenSystemComplex",
             "Eigen Values",
@@ -93,13 +93,13 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
                 "Must be false for a damped eigen value analysis."
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "EigenSystemComputeResiduals",
             "Eigen Values",
             "Computes residuals of eigen value system",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "EigenSystemDamped",
             "Eigen Values",
@@ -108,19 +108,19 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
                 "used if 'Linear Solver Type' is 'Iterative'."
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyIntegerConstraint",
             "EigenSystemMaxIterations",
             "Eigen Values",
             "Max iterations for iterative eigensystem solver",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "EigenSystemSelect",
             "Eigen Values",
             "Which eigenvalues are computed",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "EigenSystemTolerance",
             "Eigen Values",
@@ -129,22 +129,22 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
                 "Default is 100 times the 'Linear Tolerance'"
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "EigenSystemValues",
             "Eigen Values",
             "Number of lowest eigen modes",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "FixDisplacement",
             "Elasticity",
             "If displacements or forces are set,\nthereby model lumping is used",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool", "GeometricStiffness", "Elasticity", "Consider geometric stiffness"
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "Incompressible",
             "Elasticity",
@@ -153,20 +153,22 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
                 "with viscoelastic Maxwell material and a custom 'Variable'"
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "MaxwellMaterial",
             "Elasticity",
             "Compute viscoelastic material model",
         )
-        obj.addProperty("App::PropertyBool", "ModelLumping", "Elasticity", "Use model lumping")
-        obj.addProperty(
+        obj.addLockedProperty(
+            "App::PropertyBool", "ModelLumping", "Elasticity", "Use model lumping"
+        )
+        obj.addLockedProperty(
             "App::PropertyFile",
             "ModelLumpingFilename",
             "Elasticity",
             "File to save results from model lumping to",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "StabilityAnalysis",
             "Elasticity",
@@ -175,10 +177,10 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
                 "Otherwise modal analysis is performed."
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool", "UpdateTransientSystem", "Elasticity", "See Elmer manual for info"
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "Variable",
             "Elasticity",
@@ -188,7 +190,7 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
             ),
         )
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "PlaneStress",
             "Equation",

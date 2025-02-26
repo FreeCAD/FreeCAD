@@ -76,7 +76,7 @@ class Heatwriter:
     def _updateHeatSolver(self, equation):
         # updates older Heat equations
         if not hasattr(equation, "Convection"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyEnumeration",
                 "Convection",
                 "Equation",
@@ -85,7 +85,7 @@ class Heatwriter:
             equation.Convection = heat.CONVECTION_TYPE
             equation.Convection = "None"
         if not hasattr(equation, "PhaseChangeModel"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyEnumeration", "PhaseChangeModel", "Equation", "Model for phase change"
             )
             equation.PhaseChangeModel = heat.PHASE_CHANGE_MODEL

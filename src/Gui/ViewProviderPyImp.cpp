@@ -92,6 +92,33 @@ PyObject*  ViewProviderPy::addProperty(PyObject *args)
     return Py::new_reference_to(this);
 }
 
+PyObject*  ViewProviderPy::addLockedProperty(PyObject *args)
+{
+    char *sType,*sName=nullptr,*sGroup=nullptr,*sDoc=nullptr;
+    short attr=0;
+    PyObject *ro = Py_False, *hd = Py_False;
+    if (!PyArg_ParseTuple(args, "s|ssethO!O!", &sType,&sName,&sGroup,"utf-8",&sDoc,&attr,
+                          &PyBool_Type, &ro, &PyBool_Type, &hd))
+        return nullptr;
+
+    App::Property* prop=nullptr;
+    try {
+        prop = getViewProviderPtr()->addDynamicProperty(sType,sName,sGroup,sDoc,attr,
+                                                        Base::asBoolean(ro), Base::asBoolean(hd));
+        prop->setStatus(App::Property::Status::LockDynamic, true);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    if (!prop) {
+        std::stringstream str;
+        str << "No property found of type '" << sType << "'" << std::ends;
+        throw Py::TypeError(str.str());
+    }
+
+    return Py::new_reference_to(this);
+}
+
 PyObject*  ViewProviderPy::removeProperty(PyObject *args)
 {
     char *sName;

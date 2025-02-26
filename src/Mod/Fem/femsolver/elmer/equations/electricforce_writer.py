@@ -53,7 +53,7 @@ class EFwriter:
     def _updateElectricforceSolver(self, equation):
         # updates older Electricforce equations
         if not hasattr(equation, "ExecSolver"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyEnumeration",
                 "ExecSolver",
                 "Electric Force",

@@ -42,7 +42,6 @@ class ElementRotation1D(base_femelement.BaseFemElement):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyAngle", "Rotation", "BeamRotation", "Set the rotation of beam elements"
         )
-        obj.setPropertyStatus("Rotation", "LockDynamic")

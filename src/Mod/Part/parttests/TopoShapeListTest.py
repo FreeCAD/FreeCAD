@@ -20,7 +20,7 @@ class TopoShapeListTest(unittest.TestCase):
         App.setActiveDocument("TopoShapeList")
         doc = App.newDocument()
         obj = doc.addObject("App::FeaturePython", self.objName)
-        obj.addProperty("Part::PropertyTopoShapeList", "Shapes")
+        obj.addLockedProperty("Part::PropertyTopoShapeList", "Shapes")
         box = Part.makeBox(1,1,1)
         box2 = Part.makeBox(1,1,2)
         box3 = Part.makeBox(1,1,3)

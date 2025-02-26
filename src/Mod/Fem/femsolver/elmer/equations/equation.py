@@ -41,7 +41,7 @@ class Proxy(equationbase.BaseProxy):
 
     def __init__(self, obj):
         super().__init__(obj)
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "Priority",
             "Base",

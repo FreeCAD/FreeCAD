@@ -45,20 +45,22 @@ class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty("App::PropertyBool", "CalculateCapacitanceMatrix", "Electrostatic", "")
-        obj.addProperty("App::PropertyBool", "CalculateElectricEnergy", "Electrostatic", "")
-        obj.addProperty("App::PropertyBool", "CalculateElectricField", "Electrostatic", "")
-        obj.addProperty("App::PropertyBool", "CalculateElectricFlux", "Electrostatic", "")
-        obj.addProperty("App::PropertyBool", "CalculateSurfaceCharge", "Electrostatic", "")
+        obj.addLockedProperty(
+            "App::PropertyBool", "CalculateCapacitanceMatrix", "Electrostatic", ""
+        )
+        obj.addLockedProperty("App::PropertyBool", "CalculateElectricEnergy", "Electrostatic", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateElectricField", "Electrostatic", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateElectricFlux", "Electrostatic", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateSurfaceCharge", "Electrostatic", "")
         """
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "CapacitanceBodies",
             "Electrostatic",
             ""
         )
         """
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFile",
             "CapacitanceMatrixFilename",
             "Electrostatic",
@@ -67,13 +69,13 @@ class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
                 "Only used if 'CalculateCapacitanceMatrix' is true"
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "ConstantWeights",
             "Electrostatic",
             "Use constant weighting for results",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "PotentialDifference",
             "Electrostatic",

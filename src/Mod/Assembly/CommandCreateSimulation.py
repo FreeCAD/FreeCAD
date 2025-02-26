@@ -97,7 +97,7 @@ class Simulation:
         feaPy.addExtension("App::GroupExtensionPython")
 
         if not hasattr(feaPy, "aTimeStart"):
-            feaPy.addProperty(
+            feaPy.addLockedProperty(
                 "App::PropertyTime",
                 "aTimeStart",
                 "Simulation",
@@ -108,7 +108,7 @@ class Simulation:
             )
 
         if not hasattr(feaPy, "bTimeEnd"):
-            feaPy.addProperty(
+            feaPy.addLockedProperty(
                 "App::PropertyTime",
                 "bTimeEnd",
                 "Simulation",
@@ -119,7 +119,7 @@ class Simulation:
             )
 
         if not hasattr(feaPy, "cTimeStepOutput"):
-            feaPy.addProperty(
+            feaPy.addLockedProperty(
                 "App::PropertyTime",
                 "cTimeStepOutput",
                 "Simulation",
@@ -130,7 +130,7 @@ class Simulation:
             )
 
         if not hasattr(feaPy, "fGlobalErrorTolerance"):
-            feaPy.addProperty(
+            feaPy.addLockedProperty(
                 "App::PropertyFloat",
                 "fGlobalErrorTolerance",
                 "Simulation",
@@ -141,7 +141,7 @@ class Simulation:
             )
 
         if not hasattr(feaPy, "jFramesPerSecond"):
-            feaPy.addProperty(
+            feaPy.addLockedProperty(
                 "App::PropertyInteger",
                 "jFramesPerSecond",
                 "Simulation",
@@ -194,7 +194,7 @@ class ViewProviderSimulation:
 
     def setProperties(self, vpDoc):
         if not hasattr(vpDoc, "Decimals"):
-            vpDoc.addProperty(
+            vpDoc.addLockedProperty(
                 "App::PropertyInteger",
                 "Decimals",
                 "Space",
@@ -292,7 +292,7 @@ class Motion:
 
     def createProperties(self, feaPy):
         if not hasattr(feaPy, "Joint"):
-            feaPy.addProperty(
+            feaPy.addLockedProperty(
                 "App::PropertyXLinkSubHidden",
                 "Joint",
                 "Motion",
@@ -300,7 +300,7 @@ class Motion:
             )
 
         if not hasattr(feaPy, "Formula"):
-            feaPy.addProperty(
+            feaPy.addLockedProperty(
                 "App::PropertyString",
                 "Formula",
                 "Motion",
@@ -311,7 +311,7 @@ class Motion:
             )
 
         if not hasattr(feaPy, "MotionType"):
-            feaPy.addProperty(
+            feaPy.addLockedProperty(
                 "App::PropertyEnumeration",
                 "MotionType",
                 "Motion",

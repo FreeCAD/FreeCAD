@@ -370,7 +370,7 @@ class PathDressupTagViewProvider:
     def debugDisplay(self):
         # if False and addDebugDisplay():
         #    if not hasattr(self.vobj, 'Debug'):
-        #        self.vobj.addProperty('App::PropertyLink', 'Debug', 'Debug', QT_TRANSLATE_NOOP('CAM_DressupTag', 'Some elements for debugging'))
+        #        self.vobj.addLockedProperty('App::PropertyLink', 'Debug', 'Debug', QT_TRANSLATE_NOOP('CAM_DressupTag', 'Some elements for debugging'))
         #        dbg = self.vobj.Object.Document.addObject('App::DocumentObjectGroup', 'TagDebug')
         #        self.vobj.Debug = dbg
         #    return True

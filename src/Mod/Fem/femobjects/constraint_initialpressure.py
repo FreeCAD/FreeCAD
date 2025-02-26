@@ -45,7 +45,9 @@ class ConstraintInitialPressure(base_fempythonobject.BaseFemPythonObject):
 
     def add_properties(self, obj):
         if not hasattr(obj, "Pressure"):
-            obj.addProperty("App::PropertyPressure", "Pressure", "Parameter", "Initial Pressure")
-            obj.setPropertyStatus("Pressure", "LockDynamic")
+            obj.addLockedProperty(
+                "App::PropertyPressure", "Pressure", "Parameter", "Initial Pressure"
+            )
+
             # we initialize 1 bar
             obj.Pressure = "100 kPa"

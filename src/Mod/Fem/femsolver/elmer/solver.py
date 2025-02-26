@@ -88,11 +88,13 @@ class Proxy(solverbase.Proxy):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty("App::PropertyEnumeration", "CoordinateSystem", "Coordinate System", "")
+        obj.addLockedProperty(
+            "App::PropertyEnumeration", "CoordinateSystem", "Coordinate System", ""
+        )
         obj.CoordinateSystem = COORDINATE_SYSTEM
         obj.CoordinateSystem = "Cartesian"
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyIntegerConstraint",
             "BDFOrder",
             "Timestepping",
@@ -102,7 +104,7 @@ class Proxy(solverbase.Proxy):
         # possible range is 1 - 5
         obj.BDFOrder = (2, 1, 5, 1)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyIntegerList",
             "OutputIntervals",
             "Timestepping",
@@ -110,13 +112,13 @@ class Proxy(solverbase.Proxy):
         )
         obj.OutputIntervals = [1]
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyIntegerList",
             "TimestepIntervals",
             "Timestepping",
             ("List of times if 'Simulation Type'\nis either 'Scanning' or 'Transient'"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloatList",
             "TimestepSizes",
             "Timestepping",
@@ -130,11 +132,11 @@ class Proxy(solverbase.Proxy):
         obj.TimestepIntervals = [100]
         obj.TimestepSizes = [0.1]
 
-        obj.addProperty("App::PropertyEnumeration", "SimulationType", "Type", "")
+        obj.addLockedProperty("App::PropertyEnumeration", "SimulationType", "Type", "")
         obj.SimulationType = SIMULATION_TYPE
         obj.SimulationType = "Steady State"
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "SteadyStateMaxIterations",
             "Type",
@@ -142,7 +144,7 @@ class Proxy(solverbase.Proxy):
         )
         obj.SteadyStateMaxIterations = 1
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "SteadyStateMinIterations",
             "Type",
@@ -150,18 +152,18 @@ class Proxy(solverbase.Proxy):
         )
         obj.SteadyStateMinIterations = 0
 
-        obj.addProperty("App::PropertyLink", "ElmerResult", "Base", "", 4 | 8)
+        obj.addLockedProperty("App::PropertyLink", "ElmerResult", "Base", "", 4 | 8)
 
-        obj.addProperty("App::PropertyLinkList", "ElmerTimeResults", "Base", "", 4 | 8)
+        obj.addLockedProperty("App::PropertyLinkList", "ElmerTimeResults", "Base", "", 4 | 8)
 
-        obj.addProperty("App::PropertyLink", "ElmerOutput", "Base", "", 4 | 8)
+        obj.addLockedProperty("App::PropertyLink", "ElmerOutput", "Base", "", 4 | 8)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool", "BinaryOutput", "Result File", "Save result in binary format"
         )
         obj.BinaryOutput = False
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool", "SaveGeometryIndex", "Result File", "Save geometry IDs"
         )
         obj.SaveGeometryIndex = False
@@ -171,14 +173,14 @@ class Proxy(solverbase.Proxy):
         try:
             obj.getPropertyByName("BinaryOutput")
         except FreeCAD.Base.PropertyError:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool", "BinaryOutput", "Result File", "Save result in binary format"
             )
             obj.BinaryOutput = False
         try:
             obj.getPropertyByName("SaveGeometryIndex")
         except FreeCAD.Base.PropertyError:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool", "SaveGeometryIndex", "Result File", "Save geometry IDs"
             )
             obj.SaveGeometryIndex = False

@@ -38,7 +38,7 @@ class ViewProviderRectangle(ViewProviderDraft):
         super(ViewProviderRectangle, self).__init__(vobj)
 
         _tip = "Defines a texture image (overrides hatch patterns)"
-        vobj.addProperty("App::PropertyFile","TextureImage",
+        vobj.addLockedProperty("App::PropertyFile","TextureImage",
                          "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
 
 

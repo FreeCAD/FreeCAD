@@ -113,21 +113,21 @@ class _ArchSchedule:
     def setProperties(self,obj):
 
         if not "Operation" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Operation",         "Schedule",QT_TRANSLATE_NOOP("App::Property","The operation column"))
+            obj.addLockedProperty("App::PropertyStringList","Operation",         "Schedule",QT_TRANSLATE_NOOP("App::Property","The operation column"))
         if not "Value" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Value",             "Schedule",QT_TRANSLATE_NOOP("App::Property","The values column"))
+            obj.addLockedProperty("App::PropertyStringList","Value",             "Schedule",QT_TRANSLATE_NOOP("App::Property","The values column"))
         if not "Unit" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Unit",              "Schedule",QT_TRANSLATE_NOOP("App::Property","The units column"))
+            obj.addLockedProperty("App::PropertyStringList","Unit",              "Schedule",QT_TRANSLATE_NOOP("App::Property","The units column"))
         if not "Objects" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Objects",           "Schedule",QT_TRANSLATE_NOOP("App::Property","The objects column"))
+            obj.addLockedProperty("App::PropertyStringList","Objects",           "Schedule",QT_TRANSLATE_NOOP("App::Property","The objects column"))
         if not "Filter" in obj.PropertiesList:
-            obj.addProperty("App::PropertyStringList","Filter",            "Schedule",QT_TRANSLATE_NOOP("App::Property","The filter column"))
+            obj.addLockedProperty("App::PropertyStringList","Filter",            "Schedule",QT_TRANSLATE_NOOP("App::Property","The filter column"))
         if not "CreateSpreadsheet" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool",      "CreateSpreadsheet", "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, a spreadsheet containing the results is recreated when needed"))
+            obj.addLockedProperty("App::PropertyBool",      "CreateSpreadsheet", "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, a spreadsheet containing the results is recreated when needed"))
         if not "DetailedResults" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool",      "DetailedResults",   "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, additional lines with each individual object are added to the results"))
+            obj.addLockedProperty("App::PropertyBool",      "DetailedResults",   "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, additional lines with each individual object are added to the results"))
         if not "AutoUpdate" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool",      "AutoUpdate",        "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed"))
+            obj.addLockedProperty("App::PropertyBool",      "AutoUpdate",        "Schedule",QT_TRANSLATE_NOOP("App::Property","If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed"))
             obj.AutoUpdate = True
 
         # To add the doc observer:
@@ -135,7 +135,7 @@ class _ArchSchedule:
 
     def setSchedulePropertySpreadsheet(self, sp, obj):
         if not hasattr(sp, "Schedule"):
-            sp.addProperty(
+            sp.addLockedProperty(
                 "App::PropertyLink",
                 "Schedule",
                 "Arch",

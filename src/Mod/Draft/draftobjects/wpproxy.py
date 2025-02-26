@@ -40,9 +40,9 @@ class WorkingPlaneProxy:
         obj.Proxy = self
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "The placement of this object")
-        obj.addProperty("App::PropertyPlacement", "Placement", "Base", _tip)
+        obj.addLockedProperty("App::PropertyPlacement", "Placement", "Base", _tip)
 
-        obj.addProperty("Part::PropertyPartShape","Shape","Base","")
+        obj.addLockedProperty("Part::PropertyPartShape","Shape","Base","")
 
         obj.addExtension("Part::AttachExtensionPython")
         obj.changeAttacherType("Attacher::AttachEnginePlane")

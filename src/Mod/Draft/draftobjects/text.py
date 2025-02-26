@@ -53,7 +53,7 @@ class Text(DraftAnnotation):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The placement of the base point "
                                      "of the first line")
-            obj.addProperty("App::PropertyPlacement",
+            obj.addLockedProperty("App::PropertyPlacement",
                             "Placement",
                             "Base",
                             _tip)
@@ -65,7 +65,7 @@ class Text(DraftAnnotation):
                                      "It is a list of strings; each element "
                                      "in the list will be displayed "
                                      "in its own line.")
-            obj.addProperty("App::PropertyStringList",
+            obj.addLockedProperty("App::PropertyStringList",
                             "Text",
                             "Base",
                             _tip)

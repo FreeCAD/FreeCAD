@@ -108,7 +108,7 @@ class ObjectOp(object):
     """
 
     def addBaseProperty(self, obj):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLinkSubListGlobal",
             "Base",
             "Path",
@@ -117,7 +117,7 @@ class ObjectOp(object):
 
     def addOpValues(self, obj, values):
         if "start" in values:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "OpStartDepth",
                 "Op Values",
@@ -125,7 +125,7 @@ class ObjectOp(object):
             )
             obj.setEditorMode("OpStartDepth", 1)  # read-only
         if "final" in values:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "OpFinalDepth",
                 "Op Values",
@@ -133,7 +133,7 @@ class ObjectOp(object):
             )
             obj.setEditorMode("OpFinalDepth", 1)  # read-only
         if "tooldia" in values:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "OpToolDiameter",
                 "Op Values",
@@ -141,14 +141,14 @@ class ObjectOp(object):
             )
             obj.setEditorMode("OpToolDiameter", 1)  # read-only
         if "stockz" in values:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "OpStockZMax",
                 "Op Values",
                 QT_TRANSLATE_NOOP("App::Property", "Holds the max Z value of Stock"),
             )
             obj.setEditorMode("OpStockZMax", 1)  # read-only
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "OpStockZMin",
                 "Op Values",
@@ -159,7 +159,7 @@ class ObjectOp(object):
     def __init__(self, obj, name, parentJob=None):
         Path.Log.track()
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "Active",
             "Path",
@@ -167,19 +167,19 @@ class ObjectOp(object):
                 "App::Property", "Make False, to prevent operation from generating code"
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "Comment",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Operation"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "UserLabel",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "CycleTime",
             "Path",
@@ -193,7 +193,7 @@ class ObjectOp(object):
             self.addBaseProperty(obj)
 
         if FeatureLocations & features:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyVectorList",
                 "Locations",
                 "Path",
@@ -201,7 +201,7 @@ class ObjectOp(object):
             )
 
         if FeatureTool & features:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyLink",
                 "ToolController",
                 "Path",
@@ -213,7 +213,7 @@ class ObjectOp(object):
             self.addOpValues(obj, ["tooldia"])
 
         if FeatureCoolant & features:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyEnumeration",
                 "CoolantMode",
                 "Path",
@@ -221,13 +221,13 @@ class ObjectOp(object):
             )
 
         if FeatureDepths & features:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "StartDepth",
                 "Depth",
                 QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"),
             )
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "FinalDepth",
                 "Depth",
@@ -238,7 +238,7 @@ class ObjectOp(object):
             self.addOpValues(obj, ["start", "final"])
         else:
             # StartDepth has become necessary for expressions on other properties
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "StartDepth",
                 "Depth",
@@ -252,7 +252,7 @@ class ObjectOp(object):
         self.addOpValues(obj, ["stockz"])
 
         if FeatureStepDown & features:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "StepDown",
                 "Depth",
@@ -260,7 +260,7 @@ class ObjectOp(object):
             )
 
         if FeatureFinishDepth & features:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "FinishDepth",
                 "Depth",
@@ -268,7 +268,7 @@ class ObjectOp(object):
             )
 
         if FeatureHeights & features:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "ClearanceHeight",
                 "Depth",
@@ -277,7 +277,7 @@ class ObjectOp(object):
                     "The height needed to clear clamps and obstructions",
                 ),
             )
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "SafeHeight",
                 "Depth",
@@ -285,13 +285,13 @@ class ObjectOp(object):
             )
 
         if FeatureStartPoint & features:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyVectorDistance",
                 "StartPoint",
                 "Start Point",
                 QT_TRANSLATE_NOOP("App::Property", "The start point of this path"),
             )
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool",
                 "UseStartPoint",
                 "Start Point",
@@ -299,13 +299,13 @@ class ObjectOp(object):
             )
 
         if FeatureDiameters & features:
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "MinDiameter",
                 "Diameter",
                 QT_TRANSLATE_NOOP("App::Property", "Lower limit of the turning diameter"),
             )
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "MaxDiameter",
                 "Diameter",
@@ -413,7 +413,7 @@ class ObjectOp(object):
                 obj.removeProperty("CoolantMode")
 
             if not hasattr(obj, "CoolantMode"):
-                obj.addProperty(
+                obj.addLockedProperty(
                     "App::PropertyEnumeration",
                     "CoolantMode",
                     "Path",
@@ -433,7 +433,7 @@ class ObjectOp(object):
             self.addOpValues(obj, ["stockz"])
 
         if not hasattr(obj, "CycleTime"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyString",
                 "CycleTime",
                 "Path",
@@ -441,7 +441,7 @@ class ObjectOp(object):
             )
 
         if FeatureStepDown & features and not hasattr(obj, "StepDown"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "StepDown",
                 "Depth",

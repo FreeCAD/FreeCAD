@@ -34,13 +34,13 @@ translate = FreeCAD.Qt.translate
 
 class ObjectPathCopy:
     def __init__(self, obj):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The toolpath to be copied"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "ToolController",
             "Path",

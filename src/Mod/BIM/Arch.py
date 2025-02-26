@@ -142,7 +142,7 @@ def makeBuilding(objectslist=None,baseobj=None,name=None):
     obj.IfcType = "Building"
     obj.CompositionType = "ELEMENT"
     t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
-    obj.addProperty("App::PropertyEnumeration","BuildingType","Building",t)
+    obj.addLockedProperty("App::PropertyEnumeration","BuildingType","Building",t)
     obj.BuildingType = ArchBuildingPart.BuildingTypes
     if FreeCAD.GuiUp:
         obj.ViewObject.ShowLevel = False
@@ -191,7 +191,7 @@ def convertFloors(floor=None):
                 nobj.IfcType = "Building"
                 nobj.CompositionType = "ELEMENT"
                 t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
-                nobj.addProperty("App::PropertyEnumeration","BuildingType","Building",t)
+                nobj.addLockedProperty("App::PropertyEnumeration","BuildingType","Building",t)
                 nobj.BuildingType = ArchBuildingPart.BuildingTypes
             label = obj.Label
             for parent in obj.InList:

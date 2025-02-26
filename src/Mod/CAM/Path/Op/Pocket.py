@@ -56,7 +56,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def initPocketOp(self, obj):
         """initPocketOp(obj) ... setup receiver"""
         if not hasattr(obj, "HandleMultipleFeatures"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyEnumeration",
                 "HandleMultipleFeatures",
                 "Pocket",
@@ -67,7 +67,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             )
 
         if not hasattr(obj, "AdaptivePocketStart"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool",
                 "AdaptivePocketStart",
                 "Pocket",
@@ -77,7 +77,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 ),
             )
         if not hasattr(obj, "AdaptivePocketFinish"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool",
                 "AdaptivePocketFinish",
                 "Pocket",
@@ -87,7 +87,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 ),
             )
         if not hasattr(obj, "ProcessStockArea"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool",
                 "ProcessStockArea",
                 "Pocket",

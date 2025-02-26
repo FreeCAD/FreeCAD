@@ -50,37 +50,37 @@ else:
 class ObjectDressup:
     def __init__(self, obj):
         self.obj = obj
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The base toolpath to modify"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyAngle",
             "Angle",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Angle of ramp."),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Method",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Ramping Method"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "RampFeedRate",
             "FeedRate",
             QT_TRANSLATE_NOOP("App::Property", "Which feed rate to use for ramping"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertySpeed",
             "CustomFeedRate",
             "FeedRate",
             QT_TRANSLATE_NOOP("App::Property", "Custom feed rate"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "UseStartDepth",
             "StartDepth",
@@ -89,7 +89,7 @@ class ObjectDressup:
                 "Should the dressup ignore motion commands above DressupStartDepth",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "DressupStartDepth",
             "StartDepth",

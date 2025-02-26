@@ -102,7 +102,7 @@ class ViewProviderDraft(object):
     def _set_properties(self, vobj):
         """Set the properties of objects if they don't exist."""
         if not hasattr(vobj, "Pattern"):
-            vobj.addProperty("App::PropertyEnumeration",
+            vobj.addLockedProperty("App::PropertyEnumeration",
                              "Pattern",
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property",
@@ -112,7 +112,7 @@ class ViewProviderDraft(object):
             vobj.Pattern = ["None"] + patterns
 
         if not hasattr(vobj, "PatternSize"):
-            vobj.addProperty("App::PropertyFloat",
+            vobj.addLockedProperty("App::PropertyFloat",
                              "PatternSize",
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property",

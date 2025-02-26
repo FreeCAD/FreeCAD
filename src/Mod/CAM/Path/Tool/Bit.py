@@ -137,31 +137,31 @@ class ToolBit(object):
     def __init__(self, obj, shapeFile, path=None):
         Path.Log.track(obj.Label, shapeFile, path)
         self.obj = obj
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFile",
             "BitShape",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "Shape for bit shape"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "BitBody",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The parametrized body representing the tool bit"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFile",
             "File",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The file of the tool"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "ShapeName",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The name of the shape file"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyStringList",
             "BitPropertyNames",
             "Base",
@@ -197,7 +197,7 @@ class ToolBit(object):
         obj.setEditorMode("File", 1)
         obj.setEditorMode("Shape", 2)
         if not hasattr(obj, "BitPropertyNames"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyStringList",
                 "BitPropertyNames",
                 "Base",
@@ -211,7 +211,7 @@ class ToolBit(object):
                     dsc = obj.getDocumentationOfProperty(prop)
 
                     obj.removeProperty(prop)
-                    obj.addProperty(typ, prop, PropertyGroupShape, dsc)
+                    obj.addLockedProperty(typ, prop, PropertyGroupShape, dsc)
 
                     PathUtil.setProperty(obj, prop, val)
                     propNames.append(prop)
@@ -327,7 +327,7 @@ class ToolBit(object):
         grp = orig.getGroupOfProperty(prop)
         dsc = orig.getDocumentationOfProperty(prop)
 
-        obj.addProperty(typ, prop, grp, dsc)
+        obj.addLockedProperty(typ, prop, grp, dsc)
         if "App::PropertyEnumeration" == typ:
             setattr(obj, prop, orig.getEnumerationsOfProperty(prop))
 

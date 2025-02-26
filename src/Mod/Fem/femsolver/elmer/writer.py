@@ -347,13 +347,13 @@ class Writer:
     def _updateSimulation(self, solver):
         # updates older simulations
         if not hasattr(self.solver, "CoordinateSystem"):
-            solver.addProperty(
+            solver.addLockedProperty(
                 "App::PropertyEnumeration", "CoordinateSystem", "Coordinate System", ""
             )
             solver.CoordinateSystem = solverClass.COORDINATE_SYSTEM
             solver.CoordinateSystem = "Cartesian"
         if not hasattr(self.solver, "BDFOrder"):
-            solver.addProperty(
+            solver.addLockedProperty(
                 "App::PropertyIntegerConstraint",
                 "BDFOrder",
                 "Timestepping",
@@ -361,9 +361,9 @@ class Writer:
             )
             solver.BDFOrder = (2, 1, 5, 1)
         if not hasattr(self.solver, "ElmerTimeResults"):
-            solver.addProperty("App::PropertyLinkList", "ElmerTimeResults", "Base", "", 4 | 8)
+            solver.addLockedProperty("App::PropertyLinkList", "ElmerTimeResults", "Base", "", 4 | 8)
         if not hasattr(self.solver, "OutputIntervals"):
-            solver.addProperty(
+            solver.addLockedProperty(
                 "App::PropertyIntegerList",
                 "OutputIntervals",
                 "Timestepping",
@@ -371,11 +371,11 @@ class Writer:
             )
             solver.OutputIntervals = [1]
         if not hasattr(self.solver, "SimulationType"):
-            solver.addProperty("App::PropertyEnumeration", "SimulationType", "Type", "")
+            solver.addLockedProperty("App::PropertyEnumeration", "SimulationType", "Type", "")
             solver.SimulationType = solverClass.SIMULATION_TYPE
             solver.SimulationType = "Steady State"
         if not hasattr(self.solver, "TimestepIntervals"):
-            solver.addProperty(
+            solver.addLockedProperty(
                 "App::PropertyIntegerList",
                 "TimestepIntervals",
                 "Timestepping",
@@ -386,7 +386,7 @@ class Writer:
             )
             solver.TimestepIntervals = [100]
         if not hasattr(self.solver, "TimestepSizes"):
-            solver.addProperty(
+            solver.addLockedProperty(
                 "App::PropertyFloatList",
                 "TimestepSizes",
                 "Timestepping",
@@ -629,7 +629,7 @@ class Writer:
         if equation.BiCGstablDegree == 0:
             equation.BiCGstablDegree = 2
         if not hasattr(equation, "LinearSystemSolverDisabled"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "LinearSystemSolverDisabled",
                 "Linear System",
@@ -640,7 +640,7 @@ class Writer:
                 ),
             )
         if not hasattr(equation, "IdrsParameter"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyIntegerConstraint",
                 "IdrsParameter",
                 "Linear System",

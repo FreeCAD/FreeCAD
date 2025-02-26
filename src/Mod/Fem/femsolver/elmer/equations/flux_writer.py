@@ -71,7 +71,7 @@ class Fluxwriter:
     def _updateFluxSolver(self, equation):
         # updates older Flux equations
         if not hasattr(equation, "AverageWithinMaterials"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "AverageWithinMaterials",
                 "Flux",
@@ -84,32 +84,32 @@ class Fluxwriter:
             # Bubbles was removed because it is unused by Elmer for the flux solver
             equation.removeProperty("Bubbles")
         if not hasattr(equation, "CalculateFluxAbs"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool", "CalculateFluxAbs", "Flux", "Computes absolute of flux vector"
             )
         if not hasattr(equation, "CalculateFluxMagnitude"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "CalculateFluxMagnitude",
                 "Flux",
                 "Computes magnitude of flux vector field",
             )
         if not hasattr(equation, "CalculateGradAbs"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "CalculateGradAbs",
                 "Flux",
                 "Computes absolute of gradient field",
             )
         if not hasattr(equation, "CalculateGradMagnitude"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "CalculateGradMagnitude",
                 "Flux",
                 "Computes magnitude of gradient field",
             )
         if not hasattr(equation, "DiscontinuousGalerkin"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "DiscontinuousGalerkin",
                 "Flux",
@@ -119,7 +119,7 @@ class Fluxwriter:
                 ),
             )
         if not hasattr(equation, "EnforcePositiveMagnitude"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "EnforcePositiveMagnitude",
                 "Flux",
@@ -136,7 +136,7 @@ class Fluxwriter:
                 tempFluxCoefficient = equation.FluxCoefficient
                 equation.removeProperty("FluxCoefficient")
         if not hasattr(equation, "FluxCoefficient"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyEnumeration",
                 "FluxCoefficient",
                 "Flux",
@@ -154,7 +154,7 @@ class Fluxwriter:
                 # App::PropertyEnumeration
                 tempFluxVariable = equation.FluxVariable
                 equation.removeProperty("FluxVariable")
-                equation.addProperty(
+                equation.addLockedProperty(
                     "App::PropertyEnumeration",
                     "FluxVariable",
                     "Flux",

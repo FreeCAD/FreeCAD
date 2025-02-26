@@ -47,19 +47,19 @@ translate = FreeCAD.Qt.translate
 class ObjectDressup:
     def __init__(self, obj):
         maplist = ["X->A", "Y->A", "X->B", "Y->B", "X->C", "Y->C"]
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "AxisMap",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The input mapping axis"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "Radius",
             "Path",

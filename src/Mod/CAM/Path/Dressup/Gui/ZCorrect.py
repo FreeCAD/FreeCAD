@@ -55,27 +55,27 @@ translate = FreeCAD.Qt.translate
 
 class ObjectDressup:
     def __init__(self, obj):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The base toolpath to modify"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFile",
             "probefile",
             "ProbeData",
             QT_TRANSLATE_NOOP("App::Property", "The point file from the surface probing."),
         )
         obj.Proxy = self
-        obj.addProperty("Part::PropertyPartShape", "interpSurface", "Path")
-        obj.addProperty(
+        obj.addLockedProperty("Part::PropertyPartShape", "interpSurface", "Path")
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "ArcInterpolate",
             "Interpolate",
             QT_TRANSLATE_NOOP("App::Property", "Deflection distance for arc interpolation"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "SegInterpolate",
             "Interpolate",

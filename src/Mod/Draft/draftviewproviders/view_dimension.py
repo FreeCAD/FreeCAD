@@ -121,7 +121,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         if "TextSpacing" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Spacing between text and dimension line")
-            vobj.addProperty("App::PropertyLength",
+            vobj.addLockedProperty("App::PropertyLength",
                              "TextSpacing",
                              "Text",
                              _tip)
@@ -130,7 +130,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         if "FlipText" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Rotate the dimension text 180 degrees")
-            vobj.addProperty("App::PropertyBool",
+            vobj.addLockedProperty("App::PropertyBool",
                              "FlipText",
                              "Text",
                              _tip)
@@ -140,7 +140,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Text Position.\n"
                                      "Leave '(0,0,0)' for automatic position")
-            vobj.addProperty("App::PropertyVectorDistance",
+            vobj.addLockedProperty("App::PropertyVectorDistance",
                              "TextPosition",
                              "Text",
                              _tip)
@@ -151,7 +151,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                                      "Text override.\n"
                                      "Write '$dim' so that it is replaced by "
                                      "the dimension length.")
-            vobj.addProperty("App::PropertyString",
+            vobj.addLockedProperty("App::PropertyString",
                              "Override",
                              "Text",
                              _tip)
@@ -164,7 +164,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         if "Decimals" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The number of decimals to show")
-            vobj.addProperty("App::PropertyInteger",
+            vobj.addLockedProperty("App::PropertyInteger",
                              "Decimals",
                              "Units",
                              _tip)
@@ -173,7 +173,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         if "ShowUnit" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Show the unit suffix")
-            vobj.addProperty("App::PropertyBool",
+            vobj.addLockedProperty("App::PropertyBool",
                              "ShowUnit",
                              "Units",
                              _tip)
@@ -184,7 +184,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                                      "A unit to express the measurement.\n"
                                      "Leave blank for system default.\n"
                                      "Use 'arch' to force US arch notation")
-            vobj.addProperty("App::PropertyString",
+            vobj.addLockedProperty("App::PropertyString",
                              "UnitOverride",
                              "Units",
                              _tip)
@@ -197,7 +197,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         if "ArrowSize" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Arrow size")
-            vobj.addProperty("App::PropertyLength",
+            vobj.addLockedProperty("App::PropertyLength",
                              "ArrowSize",
                              "Graphics",
                              _tip)
@@ -206,7 +206,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         if "ArrowType" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Arrow type")
-            vobj.addProperty("App::PropertyEnumeration",
+            vobj.addLockedProperty("App::PropertyEnumeration",
                              "ArrowType",
                              "Graphics",
                              _tip)
@@ -216,7 +216,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         if "FlipArrows" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Rotate the dimension arrows 180 degrees")
-            vobj.addProperty("App::PropertyBool",
+            vobj.addLockedProperty("App::PropertyBool",
                              "FlipArrows",
                              "Graphics",
                              _tip)
@@ -227,7 +227,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                                      "The distance the dimension line "
                                      "is extended\n"
                                      "past the extension lines")
-            vobj.addProperty("App::PropertyDistance",
+            vobj.addLockedProperty("App::PropertyDistance",
                              "DimOvershoot",
                              "Graphics",
                              _tip)
@@ -236,7 +236,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         if "ExtLines" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Length of the extension lines")
-            vobj.addProperty("App::PropertyDistance",
+            vobj.addLockedProperty("App::PropertyDistance",
                              "ExtLines",
                              "Graphics",
                              _tip)
@@ -246,7 +246,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Length of the extension line\n"
                                      "beyond the dimension line")
-            vobj.addProperty("App::PropertyDistance",
+            vobj.addLockedProperty("App::PropertyDistance",
                              "ExtOvershoot",
                              "Graphics",
                              _tip)
@@ -255,7 +255,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         if "ShowLine" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Shows the dimension line and arrows")
-            vobj.addProperty("App::PropertyBool",
+            vobj.addLockedProperty("App::PropertyBool",
                              "ShowLine",
                              "Graphics",
                              _tip)

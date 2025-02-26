@@ -73,7 +73,7 @@ class ObjectOp(PathOp.ObjectOp):
     def initOperation(self, obj):
         """initOperation(obj) ... adds Disabled properties and calls initCircularHoleOperation(obj).
         Do not overwrite, implement initCircularHoleOperation(obj) instead."""
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyStringList",
             "Disabled",
             "Base",

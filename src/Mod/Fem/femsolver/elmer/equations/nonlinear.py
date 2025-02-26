@@ -42,23 +42,23 @@ class Proxy(linear.Proxy):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyIntegerConstraint",
             "NonlinearIterations",
             "Nonlinear System",
             "Maximum number of iterations",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyIntegerConstraint",
             "NonlinearNewtonAfterIterations",
             "Nonlinear System",
             "",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat", "NonlinearNewtonAfterTolerance", "Nonlinear System", ""
         )
-        obj.addProperty("App::PropertyFloat", "NonlinearTolerance", "Nonlinear System", "")
-        obj.addProperty(
+        obj.addLockedProperty("App::PropertyFloat", "NonlinearTolerance", "Nonlinear System", "")
+        obj.addLockedProperty(
             "App::PropertyFloatConstraint",
             "RelaxationFactor",
             "Nonlinear System",

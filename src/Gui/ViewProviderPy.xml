@@ -33,6 +33,26 @@ hd : bool
     Hidden property.</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="addLockedProperty">
+            <Documentation>
+                <UserDocu>addLockedProperty(type, name, group, doc, attr=0, ro=False, hd=False) -> ViewProvider
+
+Add an unremovable property.
+
+type : str
+    Property type.
+name : str
+    Property name. Optional.
+group : str
+    Property group. Optional.
+attr : int
+    Property attributes.
+ro : bool
+    Read only property.
+hd : bool
+    Hidden property.</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="removeProperty">
             <Documentation>
                 <UserDocu>removeProperty(name) -> bool

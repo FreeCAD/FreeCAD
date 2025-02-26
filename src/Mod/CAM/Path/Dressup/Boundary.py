@@ -46,14 +46,14 @@ def _vstr(v):
 
 class DressupPathBoundary(object):
     def __init__(self, obj, base, job):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "Base",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
         )
         obj.Base = base
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "Stock",
             "Boundary",
@@ -63,7 +63,7 @@ class DressupPathBoundary(object):
             ),
         )
         obj.Stock = PathStock.CreateFromBase(job)
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "Inside",
             "Boundary",

@@ -47,7 +47,7 @@ class Fillet(DraftObject):
         """Set the properties of objects if they don't exist."""
         if not hasattr(obj, "Start"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "The start point of this line.")
-            obj.addProperty("App::PropertyVectorDistance",
+            obj.addLockedProperty("App::PropertyVectorDistance",
                             "Start",
                             "Draft",
                             _tip)
@@ -55,7 +55,7 @@ class Fillet(DraftObject):
 
         if not hasattr(obj, "End"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "The end point of this line.")
-            obj.addProperty("App::PropertyVectorDistance",
+            obj.addLockedProperty("App::PropertyVectorDistance",
                             "End",
                             "Draft",
                             _tip)
@@ -63,7 +63,7 @@ class Fillet(DraftObject):
 
         if not hasattr(obj, "Length"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "The length of this line.")
-            obj.addProperty("App::PropertyLength",
+            obj.addLockedProperty("App::PropertyLength",
                             "Length",
                             "Draft",
                             _tip)
@@ -71,7 +71,7 @@ class Fillet(DraftObject):
 
         if not hasattr(obj, "FilletRadius"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "Radius to use to fillet the corner.")
-            obj.addProperty("App::PropertyLength",
+            obj.addLockedProperty("App::PropertyLength",
                             "FilletRadius",
                             "Draft",
                             _tip)
@@ -81,14 +81,14 @@ class Fillet(DraftObject):
         # or edges so we can use them to build a fillet from them.
         # if not hasattr(obj, "Edge1"):
         #    _tip = "First line used as reference."
-        #    obj.addProperty("App::PropertyLinkGlobal",
+        #    obj.addLockedProperty("App::PropertyLinkGlobal",
         #                    "Edge1",
         #                    "Draft",
         #                    _tip))
 
         # if not hasattr(obj, "Edge2"):
         #    _tip = "Second line used as reference."
-        #    obj.addProperty("App::PropertyLinkGlobal",
+        #    obj.addLockedProperty("App::PropertyLinkGlobal",
         #                    "Edge2",
         #                    "Draft",
         #                    _tip))

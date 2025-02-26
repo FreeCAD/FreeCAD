@@ -42,10 +42,9 @@ class ElementGeometry2D(base_femelement.BaseFemElement):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "Thickness",
             "ShellThickness",
             "set thickness of the shell elements",
         )
-        obj.setPropertyStatus("Thickness", "LockDynamic")

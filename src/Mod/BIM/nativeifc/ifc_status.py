@@ -144,7 +144,7 @@ def on_add_property():
     fctype = ifc_psets.get_freecad_type(ptype)
     FreeCAD.ActiveDocument.openTransaction(translate("BIM","add property"))
     for obj in sel:
-        obj.addProperty(fctype, pname, pset, ptype+":"+pname)
+        obj.addLockedProperty(fctype, pname, pset, ptype+":"+pname)
         ifc_psets.edit_pset(obj, pname, force=True)
     FreeCAD.ActiveDocument.commitTransaction()
 
@@ -219,7 +219,7 @@ def on_add_pset():
                 t = translate("BIM","Property already exists")
                 FreeCAD.Console.PrintWarning(t+": "+obj.Label+","+prop[0]+"\n")
             else:
-                obj.addProperty(get_fcprop(prop[1]),prop[0],pset,prop[1]+":"+prop[0])
+                obj.addLockedProperty(get_fcprop(prop[1]),prop[0],pset,prop[1]+":"+prop[0])
     FreeCAD.ActiveDocument.commitTransaction()
 
 

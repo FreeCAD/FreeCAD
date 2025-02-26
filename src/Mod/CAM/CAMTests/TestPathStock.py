@@ -42,7 +42,7 @@ class TestPathStock(PathTestBase):
         self.base.Width = 200
         self.base.Height = 300
         self.job = self.doc.addObject("App::FeaturePython", "Job")
-        self.job.addProperty("App::PropertyLink", "Model")
+        self.job.addLockedProperty("App::PropertyLink", "Model")
         model = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Model")
         model.addObject(self.base)
         self.job.Model = model

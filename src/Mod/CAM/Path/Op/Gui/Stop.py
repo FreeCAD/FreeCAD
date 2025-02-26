@@ -33,7 +33,7 @@ translate = FreeCAD.Qt.translate
 
 class Stop:
     def __init__(self, obj):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Stop",
             "Path",

@@ -71,7 +71,7 @@ class ESwriter:
     def _updateElectrostaticSolver(self, equation):
         # updates older Electrostatic equations
         if not hasattr(equation, "CapacitanceMatrixFilename"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyFile",
                 "CapacitanceMatrixFilename",
                 "Electrostatic",
@@ -82,14 +82,14 @@ class ESwriter:
             )
             equation.CapacitanceMatrixFilename = "cmatrix.dat"
         if not hasattr(equation, "ConstantWeights"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "ConstantWeights",
                 "Electrostatic",
                 "Use constant weighting for results",
             )
         if not hasattr(equation, "PotentialDifference"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyFloat",
                 "PotentialDifference",
                 "Electrostatic",

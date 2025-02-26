@@ -44,40 +44,40 @@ class Proxy(nonlinear.Proxy, equationbase.DeformationProxy):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool", "CalculatePangle", "Deformation", "Compute principal stress angles"
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "CalculatePrincipal",
             "Deformation",
             "Compute principal stress components",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool", "CalculateStrains", "Deformation", "Compute the strain tensor"
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "CalculateStresses",
             "Deformation",
             "Compute stress tensor and vanMises",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "InitializeStateVariables",
             "Deformation",
             "See Elmer manual for info",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool", "MixedFormulation", "Deformation", "See Elmer manual for info"
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "NeoHookeanMaterial",
             "Deformation",
             ("Uses the neo-Hookean material model"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "PlaneStress",
             "Equation",
@@ -86,7 +86,7 @@ class Proxy(nonlinear.Proxy, equationbase.DeformationProxy):
                 "Applies only for 2D geometry."
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "Variable",
             "Deformation",

@@ -46,7 +46,7 @@ class Proxy(linear.Proxy, equationbase.ElectricforceProxy):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "ExecSolver",
             "Electric Force",

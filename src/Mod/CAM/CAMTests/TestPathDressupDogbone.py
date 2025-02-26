@@ -42,7 +42,7 @@ class TestFeature:
     def __init__(self):
         self.Path = Path.Path()
 
-    def addProperty(self, typ, name, category, tip):
+    def addLockedProperty(self, typ, name, category, tip):
         setattr(self, name, None)
 
     def setEditorMode(self, prop, mode):

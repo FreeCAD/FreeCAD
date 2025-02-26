@@ -53,19 +53,19 @@ class ShapeString(DraftObject):
 
         if "String" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Text string")
-            obj.addProperty("App::PropertyString", "String", "Draft", _tip)
+            obj.addLockedProperty("App::PropertyString", "String", "Draft", _tip)
 
         if "FontFile" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Font file name")
-            obj.addProperty("App::PropertyFile", "FontFile", "Draft", _tip)
+            obj.addLockedProperty("App::PropertyFile", "FontFile", "Draft", _tip)
 
         if "Size" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Height of text")
-            obj.addProperty("App::PropertyLength", "Size", "Draft", _tip)
+            obj.addLockedProperty("App::PropertyLength", "Size", "Draft", _tip)
 
         if "Justification" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Horizontal and vertical alignment")
-            obj.addProperty("App::PropertyEnumeration", "Justification", "Draft", _tip)
+            obj.addLockedProperty("App::PropertyEnumeration", "Justification", "Draft", _tip)
             obj.Justification = ["Top-Left", "Top-Center", "Top-Right",
                                  "Middle-Left", "Middle-Center", "Middle-Right",
                                  "Bottom-Left", "Bottom-Center", "Bottom-Right"]
@@ -73,33 +73,33 @@ class ShapeString(DraftObject):
 
         if "JustificationReference" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Height reference used for justification")
-            obj.addProperty("App::PropertyEnumeration", "JustificationReference", "Draft", _tip)
+            obj.addLockedProperty("App::PropertyEnumeration", "JustificationReference", "Draft", _tip)
             obj.JustificationReference = ["Cap Height", "Shape Height"]
             obj.JustificationReference = "Cap Height"
 
         if "KeepLeftMargin" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Keep left margin and leading white space when justification is left")
-            obj.addProperty("App::PropertyBool", "KeepLeftMargin", "Draft", _tip).KeepLeftMargin = False
+            obj.addLockedProperty("App::PropertyBool", "KeepLeftMargin", "Draft", _tip).KeepLeftMargin = False
 
         if "ScaleToSize" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Scale to ensure cap height is equal to size")
-            obj.addProperty("App::PropertyBool", "ScaleToSize", "Draft", _tip).ScaleToSize = True
+            obj.addLockedProperty("App::PropertyBool", "ScaleToSize", "Draft", _tip).ScaleToSize = True
 
         if "Tracking" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Inter-character spacing")
-            obj.addProperty("App::PropertyDistance", "Tracking", "Draft", _tip)
+            obj.addLockedProperty("App::PropertyDistance", "Tracking", "Draft", _tip)
 
         if "ObliqueAngle" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Oblique (slant) angle")
-            obj.addProperty("App::PropertyAngle", "ObliqueAngle", "Draft", _tip)
+            obj.addLockedProperty("App::PropertyAngle", "ObliqueAngle", "Draft", _tip)
 
         if "MakeFace" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Fill letters with faces")
-            obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip).MakeFace = True
+            obj.addLockedProperty("App::PropertyBool", "MakeFace", "Draft", _tip).MakeFace = True
 
         if "Fuse" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Fuse faces if faces overlap, usually not required (can be very slow)")
-            obj.addProperty("App::PropertyBool", "Fuse", "Draft", _tip).Fuse = False
+            obj.addLockedProperty("App::PropertyBool", "Fuse", "Draft", _tip).Fuse = False
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)

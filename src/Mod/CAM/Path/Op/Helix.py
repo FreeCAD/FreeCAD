@@ -131,7 +131,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... create helix specific properties."""
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Direction",
             "Helix Drill",
@@ -143,7 +143,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.setEditorMode("Direction", ["ReadOnly", "Hidden"])
         obj.setPropertyStatus("Direction", ["ReadOnly", "Output"])
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "StartSide",
             "Helix Drill",
@@ -151,7 +151,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         )
 
         # TODO: revise property description once v1.0 release string freeze is lifted
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "CutMode",
             "Helix Drill",
@@ -161,7 +161,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             ),
         )
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyPercent",
             "StepOver",
             "Helix Drill",
@@ -169,13 +169,13 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "App::Property", "Percent of cutter diameter to step over on each pass"
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "StartRadius",
             "Helix Drill",
             QT_TRANSLATE_NOOP("App::Property", "Starting Radius"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "OffsetExtra",
             "Helix Drill",
@@ -192,7 +192,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
     def opOnDocumentRestored(self, obj):
         if not hasattr(obj, "StartRadius"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyLength",
                 "StartRadius",
                 "Helix Drill",
@@ -200,7 +200,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             )
 
         if not hasattr(obj, "OffsetExtra"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "OffsetExtra",
                 "Helix Drill",
@@ -213,7 +213,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         if not hasattr(obj, "CutMode"):
             # TODO: consolidate the duplicate definitions from opOnDocumentRestored and
             # initCircularHoleOperation once back on the main line
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyEnumeration",
                 "CutMode",
                 "Helix Drill",

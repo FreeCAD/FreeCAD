@@ -96,19 +96,19 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... add tapping specific properties to obj."""
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "DwellTime",
             "Tap",
             QT_TRANSLATE_NOOP("App::Property", "The time to dwell at bottom of tapping cycle"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "DwellEnabled",
             "Tap",
             QT_TRANSLATE_NOOP("App::Property", "Enable dwell"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "AddTipLength",
             "Tap",
@@ -117,13 +117,13 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
                 "Calculate the tip length and subtract from final depth",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "ReturnLevel",
             "Tap",
             QT_TRANSLATE_NOOP("App::Property", "Controls how tool retracts Default=G98"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "RetractHeight",
             "Tap",
@@ -132,7 +132,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
                 "The height where feed starts and height during retract tool when path is finished while in a peck operation",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "ExtraOffset",
             "Tap",

@@ -68,7 +68,7 @@ class Flowwriter:
     def _updateFlowSolver(self, equation):
         # updates older Flow equations
         if not hasattr(equation, "Convection"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyEnumeration",
                 "Convection",
                 "Equation",
@@ -77,7 +77,7 @@ class Flowwriter:
             equation.Convection = flow.CONVECTION_TYPE
             equation.Convection = "Computed"
         if not hasattr(equation, "DivDiscretization"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "DivDiscretization",
                 "Flow",
@@ -87,13 +87,13 @@ class Flowwriter:
                 ),
             )
         if not hasattr(equation, "FlowModel"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyEnumeration", "FlowModel", "Flow", "Flow model to be used"
             )
             equation.FlowModel = flow.FLOW_MODEL
             equation.FlowModel = "Full"
         if not hasattr(equation, "GradpDiscretization"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "GradpDiscretization",
                 "Flow",
@@ -103,7 +103,7 @@ class Flowwriter:
                 ),
             )
         if not hasattr(equation, "MagneticInduction"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyBool",
                 "MagneticInduction",
                 "Equation",
@@ -113,7 +113,7 @@ class Flowwriter:
                 ),
             )
         if not hasattr(equation, "Variable"):
-            equation.addProperty(
+            equation.addLockedProperty(
                 "App::PropertyString",
                 "Variable",
                 "Flow",

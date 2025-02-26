@@ -68,7 +68,7 @@ class PropertyBag(object):
     CustomPropertyGroupDefault = "User"
 
     def __init__(self, obj):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyStringList",
             self.CustomPropertyGroups,
             "Base",

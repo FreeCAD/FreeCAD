@@ -66,7 +66,7 @@ class Property(object):
         created = False
         if not hasattr(obj, name):
             Path.Log.track("add", obj.Name, name, self.propType)
-            obj.addProperty(self.propType, name, category, self.info)
+            obj.addLockedProperty(self.propType, name, category, self.info)
             self.initProperty(obj, name)
             created = True
         Path.Log.track("set", obj.Name, name, value, type(value))
@@ -216,7 +216,7 @@ class OpPrototype(object):
             return super(OpPrototype, self).__setattr__(name, val)
         self.properties[name].setValue(val)
 
-    def addProperty(self, typeString, name, category, info=None):
+    def addLockedProperty(self, typeString, name, category, info=None):
         prop = self.PropertyType[typeString](name, typeString, category, info)
         self.properties[name] = prop
         return self

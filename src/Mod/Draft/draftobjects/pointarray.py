@@ -64,7 +64,7 @@ class PointArray(DraftLink):
 
         if "Base" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Base object that will be duplicated")
-            obj.addProperty("App::PropertyLink",
+            obj.addLockedProperty("App::PropertyLink",
                             "Base",
                             "Objects",
                             _tip)
@@ -72,7 +72,7 @@ class PointArray(DraftLink):
 
         if "PointObject" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Object containing points used to distribute the copies.")
-            obj.addProperty("App::PropertyLink",
+            obj.addLockedProperty("App::PropertyLink",
                             "PointObject",
                             "Objects",
                             _tip)
@@ -83,7 +83,7 @@ class PointArray(DraftLink):
                                      "Specifies if the copies "
                                      "should be fused together "
                                      "if they touch each other (slower)")
-            obj.addProperty("App::PropertyBool",
+            obj.addLockedProperty("App::PropertyBool",
                             "Fuse",
                             "Objects",
                             _tip)
@@ -91,7 +91,7 @@ class PointArray(DraftLink):
 
         if "Count" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Number of copies in the array.\nThis property is read-only, as the number depends on the points in 'Point Object'.")
-            obj.addProperty("App::PropertyInteger",
+            obj.addLockedProperty("App::PropertyInteger",
                             "Count",
                             "Objects",
                             _tip)
@@ -100,7 +100,7 @@ class PointArray(DraftLink):
 
         if "ExtraPlacement" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Additional placement, shift and rotation, that will be applied to each copy")
-            obj.addProperty("App::PropertyPlacement",
+            obj.addLockedProperty("App::PropertyPlacement",
                             "ExtraPlacement",
                             "Objects",
                             _tip)
@@ -108,7 +108,7 @@ class PointArray(DraftLink):
 
         if self.use_link and "ExpandArray" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Show the individual array elements (only for Link arrays)")
-            obj.addProperty("App::PropertyBool",
+            obj.addLockedProperty("App::PropertyBool",
                             "ExpandArray",
                             "Objects",
                             _tip)
@@ -118,7 +118,7 @@ class PointArray(DraftLink):
             if "PlacementList" not in properties:
                 _tip = QT_TRANSLATE_NOOP("App::Property",
                                          "The placement for each array element")
-                obj.addProperty("App::PropertyPlacementList",
+                obj.addLockedProperty("App::PropertyPlacementList",
                                 "PlacementList",
                                 "Objects",
                                 _tip)

@@ -140,7 +140,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.updateQuantitySpinBoxes()
 
         if not hasattr(obj, "KeepToolDown"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool",
                 "KeepToolDown",
                 "Drill",

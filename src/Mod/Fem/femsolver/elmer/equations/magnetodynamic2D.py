@@ -44,13 +44,13 @@ class Proxy(nonlinear.Proxy, equationbase.Magnetodynamic2DProxy):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "IsHarmonic",
             "Magnetodynamic2D",
             "If the magnetic source is harmonically driven",
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFrequency",
             "AngularFrequency",
             "Magnetodynamic2D",
@@ -61,18 +61,22 @@ class Proxy(nonlinear.Proxy, equationbase.Magnetodynamic2DProxy):
         obj.Priority = 10
 
         # the post processor options
-        obj.addProperty("App::PropertyBool", "CalculateCurrentDensity", "Magnetodynamic2D", "")
-        obj.addProperty("App::PropertyBool", "CalculateElectricField", "Magnetodynamic2D", "")
-        obj.addProperty("App::PropertyBool", "CalculateElementalFields", "Magnetodynamic2D", "")
-        obj.addProperty("App::PropertyBool", "CalculateHarmonicLoss", "Magnetodynamic2D", "")
-        obj.addProperty("App::PropertyBool", "CalculateJouleHeating", "Magnetodynamic2D", "")
-        obj.addProperty(
+        obj.addLockedProperty(
+            "App::PropertyBool", "CalculateCurrentDensity", "Magnetodynamic2D", ""
+        )
+        obj.addLockedProperty("App::PropertyBool", "CalculateElectricField", "Magnetodynamic2D", "")
+        obj.addLockedProperty(
+            "App::PropertyBool", "CalculateElementalFields", "Magnetodynamic2D", ""
+        )
+        obj.addLockedProperty("App::PropertyBool", "CalculateHarmonicLoss", "Magnetodynamic2D", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateJouleHeating", "Magnetodynamic2D", "")
+        obj.addLockedProperty(
             "App::PropertyBool", "CalculateMagneticFieldStrength", "Magnetodynamic2D", ""
         )
-        obj.addProperty("App::PropertyBool", "CalculateMaxwellStress", "Magnetodynamic2D", "")
-        obj.addProperty("App::PropertyBool", "CalculateNodalFields", "Magnetodynamic2D", "")
-        obj.addProperty("App::PropertyBool", "CalculateNodalForces", "Magnetodynamic2D", "")
-        obj.addProperty("App::PropertyBool", "CalculateNodalHeating", "Magnetodynamic2D", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateMaxwellStress", "Magnetodynamic2D", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateNodalFields", "Magnetodynamic2D", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateNodalForces", "Magnetodynamic2D", "")
+        obj.addLockedProperty("App::PropertyBool", "CalculateNodalHeating", "Magnetodynamic2D", "")
         obj.CalculateCurrentDensity = False
         obj.CalculateElectricField = False
         # FIXME: at the moment FreeCAD's post processor cannot display elementary field

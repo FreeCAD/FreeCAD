@@ -46,13 +46,13 @@ class SolverCcxTools(base_fempythonobject.BaseFemPythonObject, _BaseSolverCalcul
         # implemented in framework calculix solver module
         self.add_attributes(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyPath",
             "WorkingDir",
             "Fem",
             "Working directory for calculations, will only be used it is left blank in preferences",
         )
-        obj.setPropertyStatus("WorkingDir", "LockDynamic")
+
         # the working directory is not set, the solver working directory is
         # only used if the preferences working directory is left blank
 

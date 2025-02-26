@@ -51,7 +51,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         if "Justification" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Horizontal alignment")
-            vobj.addProperty("App::PropertyEnumeration",
+            vobj.addLockedProperty("App::PropertyEnumeration",
                              "Justification",
                              "Text",
                              _tip)
@@ -60,7 +60,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         if "LineSpacing" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Line spacing (relative to font size)")
-            vobj.addProperty("App::PropertyFloat",
+            vobj.addLockedProperty("App::PropertyFloat",
                              "LineSpacing",
                              "Text",
                              _tip)

@@ -86,7 +86,7 @@ class _InvoluteGear:
     def _ensure_properties(self, obj, is_restore):
         def ensure_property(type_, name, doc, default):
             if not hasattr(obj, name):
-                obj.addProperty(type_, name, "Gear", doc)
+                obj.addLockedProperty(type_, name, "Gear", doc)
                 if callable(default):
                     setattr(obj, name, default())
                 else:

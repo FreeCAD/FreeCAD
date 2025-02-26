@@ -213,7 +213,7 @@ class PathArray(DraftLink):
         """Set general properties only if they don't exist."""
         if "Base" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","The base object that will be duplicated")
-            obj.addProperty("App::PropertyLinkGlobal",
+            obj.addLockedProperty("App::PropertyLinkGlobal",
                             "Base",
                             "Objects",
                             _tip)
@@ -221,7 +221,7 @@ class PathArray(DraftLink):
 
         if "PathObject" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","The object along which the copies will be distributed. It must contain 'Edges'.")
-            obj.addProperty("App::PropertyLinkGlobal",
+            obj.addLockedProperty("App::PropertyLinkGlobal",
                             "PathObject",
                             "Objects",
                             _tip)
@@ -236,7 +236,7 @@ class PathArray(DraftLink):
         # or a single object with its subelements.
         if "PathSubelements" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","List of connected edges in the 'Path Object'.\nIf these are present, the copies will be created along these subelements only.\nLeave this property empty to create copies along the entire 'Path Object'.")
-            obj.addProperty("App::PropertyLinkSubListGlobal",
+            obj.addLockedProperty("App::PropertyLinkSubListGlobal",
                             "PathSubelements",
                             "Objects",
                             _tip)
@@ -247,7 +247,7 @@ class PathArray(DraftLink):
                                      "Specifies if the copies "
                                      "should be fused together "
                                      "if they touch each other (slower)")
-            obj.addProperty("App::PropertyBool",
+            obj.addLockedProperty("App::PropertyBool",
                             "Fuse",
                             "Objects",
                             _tip)
@@ -255,7 +255,7 @@ class PathArray(DraftLink):
 
         if self.use_link and "ExpandArray" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Show the individual array elements (only for Link arrays)")
-            obj.addProperty("App::PropertyBool",
+            obj.addLockedProperty("App::PropertyBool",
                             "ExpandArray",
                             "Objects",
                             _tip)
@@ -266,7 +266,7 @@ class PathArray(DraftLink):
             if "PlacementList" not in properties:
                 _tip = QT_TRANSLATE_NOOP("App::Property",
                                          "The placement for each array element")
-                obj.addProperty("App::PropertyPlacementList",
+                obj.addLockedProperty("App::PropertyPlacementList",
                                 "PlacementList",
                                 "Objects",
                                 _tip)
@@ -276,7 +276,7 @@ class PathArray(DraftLink):
         """Set general properties only if they don't exist."""
         if "ExtraTranslation" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Additional translation that will be applied to each copy.\nThis is useful to adjust for the difference between shape centre and shape reference point.")
-            obj.addProperty("App::PropertyVectorDistance",
+            obj.addLockedProperty("App::PropertyVectorDistance",
                             "ExtraTranslation",
                             "Alignment",
                             _tip)
@@ -284,7 +284,7 @@ class PathArray(DraftLink):
 
         if "TangentVector" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Alignment vector for 'Tangent' mode")
-            obj.addProperty("App::PropertyVector",
+            obj.addLockedProperty("App::PropertyVector",
                             "TangentVector",
                             "Alignment",
                             _tip)
@@ -292,7 +292,7 @@ class PathArray(DraftLink):
 
         if "ForceVertical" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode")
-            obj.addProperty("App::PropertyBool",
+            obj.addLockedProperty("App::PropertyBool",
                             "ForceVertical",
                             "Alignment",
                             _tip)
@@ -300,7 +300,7 @@ class PathArray(DraftLink):
 
         if "VerticalVector" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Direction of the local Z axis when 'Force Vertical' is true")
-            obj.addProperty("App::PropertyVector",
+            obj.addLockedProperty("App::PropertyVector",
                             "VerticalVector",
                             "Alignment",
                             _tip)
@@ -308,7 +308,7 @@ class PathArray(DraftLink):
 
         if "AlignMode" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Method to orient the copies along the path.\n- Original: X is curve tangent, Y is normal, and Z is the cross product.\n- Frenet: aligns the object following the local coordinate system along the path.\n- Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.\n\nTo get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.")
-            obj.addProperty("App::PropertyEnumeration",
+            obj.addLockedProperty("App::PropertyEnumeration",
                             "AlignMode",
                             "Alignment",
                             _tip)
@@ -317,7 +317,7 @@ class PathArray(DraftLink):
 
         if "ReversePath" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Walk the path backwards.")
-            obj.addProperty("App::PropertyBool",
+            obj.addLockedProperty("App::PropertyBool",
                             "ReversePath",
                             "Alignment",
                             _tip)
@@ -327,7 +327,7 @@ class PathArray(DraftLink):
         # so that onChanged works properly
         if "Align" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Orient the copies along the path depending on the 'Align Mode'.\nOtherwise the copies will have the same orientation as the original Base object.")
-            obj.addProperty("App::PropertyBool",
+            obj.addLockedProperty("App::PropertyBool",
                             "Align",
                             "Alignment",
                             _tip)
@@ -337,7 +337,7 @@ class PathArray(DraftLink):
 
         if "Count" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Number of copies to create")
-            obj.addProperty("App::PropertyInteger",
+            obj.addLockedProperty("App::PropertyInteger",
                             "Count",
                             "Spacing",
                             _tip)
@@ -351,7 +351,7 @@ class PathArray(DraftLink):
                 " - Fixed spacing: start at \"Start offset\" and place new copies after traveling a fixed distance along the path.\n" +
                 " - Fixed count and spacing: same as \"Fixed spacing\", but also stop at given number of copies."
                 )
-            obj.addProperty("App::PropertyEnumeration",
+            obj.addLockedProperty("App::PropertyEnumeration",
                             "SpacingMode",
                             "Spacing",
                             _tip)
@@ -360,7 +360,7 @@ class PathArray(DraftLink):
 
         if "SpacingUnit" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Base fixed distance between elements.")
-            obj.addProperty("App::PropertyLength",
+            obj.addLockedProperty("App::PropertyLength",
                             "SpacingUnit",
                             "Spacing",
                             _tip)
@@ -369,7 +369,7 @@ class PathArray(DraftLink):
 
         if "UseSpacingPattern" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Use repeating spacing patterns instead of uniform spacing.")
-            obj.addProperty("App::PropertyBool",
+            obj.addLockedProperty("App::PropertyBool",
                             "UseSpacingPattern",
                             "Spacing",
                             _tip)
@@ -377,7 +377,7 @@ class PathArray(DraftLink):
 
         if "SpacingPattern" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Spacing is multiplied by a corresponding number in this sequence.")
-            obj.addProperty("App::PropertyFloatList",
+            obj.addLockedProperty("App::PropertyFloatList",
                             "SpacingPattern",
                             "Spacing",
                             _tip)
@@ -386,7 +386,7 @@ class PathArray(DraftLink):
 
         if "StartOffset" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Length from the start of the path to the first copy.")
-            obj.addProperty("App::PropertyLength",
+            obj.addLockedProperty("App::PropertyLength",
                             "StartOffset",
                             "Spacing",
                             _tip)
@@ -394,7 +394,7 @@ class PathArray(DraftLink):
 
         if "EndOffset" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property","Length from the end of the path to the last copy.")
-            obj.addProperty("App::PropertyLength",
+            obj.addLockedProperty("App::PropertyLength",
                             "EndOffset",
                             "Spacing",
                             _tip)

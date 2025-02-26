@@ -62,8 +62,7 @@ class _PropHelper:
         self.name = kwds["name"]
 
     def add_to_object(self, obj):
-        obj.addProperty(**self.info)
-        obj.setPropertyStatus(self.name, "LockDynamic")
+        obj.addLockedProperty(**self.info)
         setattr(obj, self.name, self.value)
 
     def handle_change_type(self, obj, old_type, convert_old_value=lambda x: x):

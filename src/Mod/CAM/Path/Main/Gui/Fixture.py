@@ -31,7 +31,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 class Fixture:
     def __init__(self, obj):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Fixture",
             "Path",
@@ -54,7 +54,7 @@ class Fixture:
             "G59.8",
             "G59.9",
         ]
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "Active",
             "Path",
@@ -99,7 +99,7 @@ class Fixture:
 
 class _ViewProviderFixture:
     def __init__(self, vobj):  # mandatory
-        #        obj.addProperty("App::PropertyFloat","SomePropertyName","PropertyGroup","Description of this property")
+        #        obj.addLockedProperty("App::PropertyFloat","SomePropertyName","PropertyGroup","Description of this property")
         vobj.Proxy = self
         mode = 2
         vobj.setEditorMode("LineWidth", mode)

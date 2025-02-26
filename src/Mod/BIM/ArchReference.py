@@ -69,13 +69,13 @@ class ArchReference:
         pl = obj.PropertiesList
         if not "File" in pl:
             t = QT_TRANSLATE_NOOP("App::Property","The base file this component is built upon")
-            obj.addProperty("App::PropertyFile","File","Reference",t)
+            obj.addLockedProperty("App::PropertyFile","File","Reference",t)
         if not "Part" in pl:
             t = QT_TRANSLATE_NOOP("App::Property","The part to use from the base file")
-            obj.addProperty("App::PropertyString","Part","Reference",t)
+            obj.addLockedProperty("App::PropertyString","Part","Reference",t)
         if not "ReferenceMode" in pl:
             t = QT_TRANSLATE_NOOP("App::Property","The way the referenced objects are included in the current document. 'Normal' includes the shape, 'Transient' discards the shape when the object is switched off (smaller filesize), 'Lightweight' does not import the shape but only the OpenInventor representation")
-            obj.addProperty("App::PropertyEnumeration","ReferenceMode","Reference",t)
+            obj.addLockedProperty("App::PropertyEnumeration","ReferenceMode","Reference",t)
             obj.ReferenceMode = ["Normal","Transient","Lightweight"]
             if "TransientReference" in pl:
                 if obj.TransientReference:
@@ -85,7 +85,7 @@ class ArchReference:
                 FreeCAD.Console.PrintMessage(translate("Arch","Upgrading")+" "+obj.Label+" "+t+"\n")
         if not "FuseArch" in pl:
             t = QT_TRANSLATE_NOOP("App::Property","Fuse objects of same material")
-            obj.addProperty("App::PropertyBool","FuseArch", "Reference", t)
+            obj.addLockedProperty("App::PropertyBool","FuseArch", "Reference", t)
         self.Type = "Reference"
 
 
@@ -522,11 +522,11 @@ class ViewProviderArchReference:
         pl = vobj.PropertiesList
         if not "TimeStamp" in pl:
             t = QT_TRANSLATE_NOOP("App::Property","The latest time stamp of the linked file")
-            vobj.addProperty("App::PropertyFloat","TimeStamp","Reference",t)
+            vobj.addLockedProperty("App::PropertyFloat","TimeStamp","Reference",t)
             vobj.setEditorMode("TimeStamp",2)
         if not "UpdateColors" in pl:
             t = QT_TRANSLATE_NOOP("App::Property","If true, the colors from the linked file will be kept updated")
-            vobj.addProperty("App::PropertyBool","UpdateColors","Reference",t)
+            vobj.addLockedProperty("App::PropertyBool","UpdateColors","Reference",t)
             vobj.UpdateColors = True
 
 

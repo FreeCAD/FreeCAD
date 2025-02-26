@@ -114,11 +114,11 @@ class FeatureConnect:
     """The PartJoinFeature object."""
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkList","Objects","Connect","Object to be connected.")
-        obj.addProperty("App::PropertyBool","Refine","Connect",
+        obj.addLockedProperty("App::PropertyLinkList","Objects","Connect","Object to be connected.")
+        obj.addLockedProperty("App::PropertyBool","Refine","Connect",
                         "True = refine resulting shape. False = output as is.")
         obj.Refine = getParamRefine()
-        obj.addProperty("App::PropertyLength","Tolerance","Connect",
+        obj.addLockedProperty("App::PropertyLength","Tolerance","Connect",
                         "Tolerance when intersecting (fuzzy value). "
                         "In addition to tolerances of the shapes.")
 
@@ -224,12 +224,12 @@ class FeatureEmbed:
     """The Part Embed object."""
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Embed","Object to embed into.")
-        obj.addProperty("App::PropertyLink","Tool","Embed","Object to be embedded.")
-        obj.addProperty("App::PropertyBool","Refine","Embed",
+        obj.addLockedProperty("App::PropertyLink","Base","Embed","Object to embed into.")
+        obj.addLockedProperty("App::PropertyLink","Tool","Embed","Object to be embedded.")
+        obj.addLockedProperty("App::PropertyBool","Refine","Embed",
                         "True = refine resulting shape. False = output as is.")
         obj.Refine = getParamRefine()
-        obj.addProperty("App::PropertyLength","Tolerance","Embed",
+        obj.addLockedProperty("App::PropertyLength","Tolerance","Embed",
                         "Tolerance when intersecting (fuzzy value). "
                         "In addition to tolerances of the shapes.")
 
@@ -319,12 +319,12 @@ class FeatureCutout:
     """The Part Cutout object."""
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Cutout","Object to be cut.")
-        obj.addProperty("App::PropertyLink","Tool","Cutout","Object to make cutout for.")
-        obj.addProperty("App::PropertyBool","Refine","Cutout",
+        obj.addLockedProperty("App::PropertyLink","Base","Cutout","Object to be cut.")
+        obj.addLockedProperty("App::PropertyLink","Tool","Cutout","Object to make cutout for.")
+        obj.addLockedProperty("App::PropertyBool","Refine","Cutout",
                         "True = refine resulting shape. False = output as is.")
         obj.Refine = getParamRefine()
-        obj.addProperty("App::PropertyLength","Tolerance","Cutout",
+        obj.addLockedProperty("App::PropertyLength","Tolerance","Cutout",
                         "Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
 
         obj.Proxy = self

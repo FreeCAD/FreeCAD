@@ -82,7 +82,7 @@ class ViewProviderDraftAnnotation(object):
                                      "because it scales the text, "
                                      "and the line decorations, if any,\n"
                                      "in the same proportion.")
-            vobj.addProperty("App::PropertyFloat",
+            vobj.addLockedProperty("App::PropertyFloat",
                              "ScaleMultiplier",
                              "Annotation",
                              _tip)
@@ -98,7 +98,7 @@ class ViewProviderDraftAnnotation(object):
                                      "they will only be editable by changing "
                                      "the style through "
                                      "the 'Annotation style editor' tool.")
-            vobj.addProperty("App::PropertyEnumeration",
+            vobj.addLockedProperty("App::PropertyEnumeration",
                              "AnnotationStyle",
                              "Annotation",
                              _tip)
@@ -114,7 +114,7 @@ class ViewProviderDraftAnnotation(object):
         if "FontName" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Font name")
-            vobj.addProperty("App::PropertyFont",
+            vobj.addLockedProperty("App::PropertyFont",
                              "FontName",
                              "Text",
                              _tip)
@@ -123,7 +123,7 @@ class ViewProviderDraftAnnotation(object):
         if "FontSize" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Font size")
-            vobj.addProperty("App::PropertyLength",
+            vobj.addLockedProperty("App::PropertyLength",
                              "FontSize",
                              "Text",
                              _tip)
@@ -132,7 +132,7 @@ class ViewProviderDraftAnnotation(object):
         if "TextColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Text color")
-            vobj.addProperty("App::PropertyColor",
+            vobj.addLockedProperty("App::PropertyColor",
                              "TextColor",
                              "Text",
                              _tip)
@@ -145,7 +145,7 @@ class ViewProviderDraftAnnotation(object):
         """Set graphics properties only if they don't already exist."""
         if "LineWidth" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Line width")
-            vobj.addProperty("App::PropertyFloat",
+            vobj.addLockedProperty("App::PropertyFloat",
                              "LineWidth",
                              "Graphics",
                              _tip)
@@ -153,7 +153,7 @@ class ViewProviderDraftAnnotation(object):
 
         if "LineColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Line color")
-            vobj.addProperty("App::PropertyColor",
+            vobj.addLockedProperty("App::PropertyColor",
                              "LineColor",
                              "Graphics",
                              _tip)

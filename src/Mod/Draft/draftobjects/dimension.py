@@ -132,7 +132,7 @@ class DimensionBase(DraftAnnotation):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The normal direction of the text "
                                      "of the dimension")
-            obj.addProperty("App::PropertyVector",
+            obj.addLockedProperty("App::PropertyVector",
                             "Normal",
                             "Dimension",
                             _tip)
@@ -145,7 +145,7 @@ class DimensionBase(DraftAnnotation):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The object measured by this dimension "
                                      "object")
-            obj.addProperty("App::PropertyLink",
+            obj.addLockedProperty("App::PropertyLink",
                             "Support",
                             "Dimension",
                             _tip)
@@ -162,7 +162,7 @@ class DimensionBase(DraftAnnotation):
                                      "- An object, and one of its edges.\n"
                                      "- An object, and two of its vertices.\n"
                                      "- An arc object, and its edge.")
-            obj.addProperty("App::PropertyLinkSubList",
+            obj.addLockedProperty("App::PropertyLinkSubList",
                             "LinkedGeometry",
                             "Dimension",
                             _tip)
@@ -185,7 +185,7 @@ class DimensionBase(DraftAnnotation):
                                      "this controls the radius of the "
                                      "dimension arc\n"
                                      "that displays the measured angle.")
-            obj.addProperty("App::PropertyVectorDistance",
+            obj.addLockedProperty("App::PropertyVectorDistance",
                             "Dimline",
                             "Dimension",
                             _tip)
@@ -231,7 +231,7 @@ class LinearDimension(DimensionBase):
                                      "If it is a diameter dimension "
                                      "it will be a point that lies "
                                      "on the arc.")
-            obj.addProperty("App::PropertyVectorDistance",
+            obj.addLockedProperty("App::PropertyVectorDistance",
                             "Start",
                             "Linear/radial dimension",
                             _tip)
@@ -245,7 +245,7 @@ class LinearDimension(DimensionBase):
                                      "dimension\n"
                                      "it will be a point that lies "
                                      "on the arc.")
-            obj.addProperty("App::PropertyVectorDistance",
+            obj.addLockedProperty("App::PropertyVectorDistance",
                             "End",
                             "Linear/radial dimension",
                             _tip)
@@ -257,7 +257,7 @@ class LinearDimension(DimensionBase):
                                      "If this remains '(0,0,0)', "
                                      "the direction will be calculated "
                                      "automatically.")
-            obj.addProperty("App::PropertyVector",
+            obj.addLockedProperty("App::PropertyVector",
                             "Direction",
                             "Linear/radial dimension",
                             _tip)
@@ -274,7 +274,7 @@ class LinearDimension(DimensionBase):
                                      "is an arc or circle, this 'Distance'\n"
                                      "is the radius or diameter, depending "
                                      "on the 'Diameter' property.")
-            obj.addProperty("App::PropertyLength",
+            obj.addLockedProperty("App::PropertyLength",
                             "Distance",
                             "Linear/radial dimension",
                             _tip)
@@ -285,7 +285,7 @@ class LinearDimension(DimensionBase):
                                      "When measuring circular arcs, "
                                      "it determines whether to display\n"
                                      "the radius or the diameter value")
-            obj.addProperty("App::PropertyBool",
+            obj.addLockedProperty("App::PropertyBool",
                             "Diameter",
                             "Radial dimension",
                             _tip)
@@ -518,7 +518,7 @@ class AngularDimension(DimensionBase):
                                      "Starting angle of the dimension line "
                                      "(circular arc).\n"
                                      "The arc is drawn counter-clockwise.")
-            obj.addProperty("App::PropertyAngle",
+            obj.addLockedProperty("App::PropertyAngle",
                             "FirstAngle",
                             "Angular dimension",
                             _tip)
@@ -529,7 +529,7 @@ class AngularDimension(DimensionBase):
                                      "Ending angle of the dimension line "
                                      "(circular arc).\n"
                                      "The arc is drawn counter-clockwise.")
-            obj.addProperty("App::PropertyAngle",
+            obj.addLockedProperty("App::PropertyAngle",
                             "LastAngle",
                             "Angular dimension",
                             _tip)
@@ -544,7 +544,7 @@ class AngularDimension(DimensionBase):
                                      "line segments, or their extensions\n"
                                      "intersect, resulting in the "
                                      "measured 'Angle' between them.")
-            obj.addProperty("App::PropertyVectorDistance",
+            obj.addLockedProperty("App::PropertyVectorDistance",
                             "Center",
                             "Angular dimension",
                             _tip)
@@ -558,7 +558,7 @@ class AngularDimension(DimensionBase):
                                      "the value is calculated from\n"
                                      "the 'First Angle' and "
                                      "'Last Angle' properties.")
-            obj.addProperty("App::PropertyAngle",
+            obj.addLockedProperty("App::PropertyAngle",
                             "Angle",
                             "Angular dimension",
                             _tip)

@@ -61,7 +61,7 @@ class ViewProviderWire(ViewProviderDraft):
 
         if not hasattr(vobj, "EndArrow"):
             _tip = "Displays a Dimension symbol at the end of the wire."
-            vobj.addProperty("App::PropertyBool",
+            vobj.addLockedProperty("App::PropertyBool",
                              "EndArrow",
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property", _tip))
@@ -69,7 +69,7 @@ class ViewProviderWire(ViewProviderDraft):
 
         if not hasattr(vobj, "ArrowSize"):
             _tip = "Arrow size"
-            vobj.addProperty("App::PropertyLength",
+            vobj.addLockedProperty("App::PropertyLength",
                              "ArrowSize",
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property", _tip))
@@ -77,7 +77,7 @@ class ViewProviderWire(ViewProviderDraft):
 
         if not hasattr(vobj, "ArrowType"):
             _tip = "Arrow type"
-            vobj.addProperty("App::PropertyEnumeration",
+            vobj.addLockedProperty("App::PropertyEnumeration",
                              "ArrowType",
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property", _tip))

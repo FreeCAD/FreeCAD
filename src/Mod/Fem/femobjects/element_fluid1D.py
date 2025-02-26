@@ -63,278 +63,244 @@ class ElementFluid1D(base_femelement.BaseFemElement):
     def __init__(self, obj):
         super().__init__(obj)
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration", "SectionType", "FluidSection", "select fluid section type"
         )
-        obj.setPropertyStatus("SectionType", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "LiquidSectionType",
             "LiquidSection",
             "select liquid section type",
         )
-        obj.setPropertyStatus("LiquidSectionType", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyArea",
             "ManningArea",
             "LiquidManning",
             "set area of the manning fluid section",
         )
-        obj.setPropertyStatus("ManningArea", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "ManningRadius",
             "LiquidManning",
             "set hydraulic radius of manning fluid section",
         )
-        obj.setPropertyStatus("ManningRadius", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "ManningCoefficient",
             "LiquidManning",
             "set coefficient of manning fluid section",
         )
-        obj.setPropertyStatus("ManningCoefficient", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyArea",
             "EnlargeArea1",
             "LiquidEnlargement",
             "set initial area of the enlargement fluid section",
         )
-        obj.setPropertyStatus("EnlargeArea1", "LockDynamic")
-        obj.addProperty(
+
+        obj.addLockedProperty(
             "App::PropertyArea",
             "EnlargeArea2",
             "LiquidEnlargement",
             "set enlarged area of enlargement fluid section",
         )
-        obj.setPropertyStatus("EnlargeArea2", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyArea",
             "ContractArea1",
             "LiquidContraction",
             "set initial area of the contraction fluid section",
         )
-        obj.setPropertyStatus("ContractArea1", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyArea",
             "ContractArea2",
             "LiquidContraction",
             "set contracted area of contraction fluid section",
         )
-        obj.setPropertyStatus("ContractArea2", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "InletPressure",
             "LiquidInlet",
             "set inlet pressure for fluid section",
         )
-        obj.setPropertyStatus("InletPressure", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "OutletPressure",
             "LiquidOutlet",
             "set outlet pressure for fluid section",
         )
-        obj.setPropertyStatus("OutletPressure", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "InletFlowRate",
             "LiquidInlet",
             "set inlet mass flow rate for fluid section",
         )
-        obj.setPropertyStatus("InletFlowRate", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "OutletFlowRate",
             "LiquidOutlet",
             "set outlet mass flow rate for fluid section",
         )
-        obj.setPropertyStatus("OutletFlowRate", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "InletPressureActive",
             "LiquidInlet",
             "activates or deactivates inlet pressure for fluid section",
         )
-        obj.setPropertyStatus("InletPressureActive", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "OutletPressureActive",
             "LiquidOutlet",
             "activates or deactivates outlet pressure for fluid section",
         )
-        obj.setPropertyStatus("OutletPressureActive", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "InletFlowRateActive",
             "LiquidInlet",
             "activates or deactivates inlet flow rate for fluid section",
         )
-        obj.setPropertyStatus("InletFlowRateActive", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "OutletFlowRateActive",
             "LiquidOutlet",
             "activates or deactivates outlet flow rate for fluid section",
         )
-        obj.setPropertyStatus("OutletFlowRateActive", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyArea",
             "EntrancePipeArea",
             "LiquidEntrance",
             "set the pipe area of the entrance fluid section",
         )
-        obj.setPropertyStatus("EntrancePipeArea", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyArea",
             "EntranceArea",
             "LiquidEntrance",
             "set the entrance area of the entrance fluid section",
         )
-        obj.setPropertyStatus("EntranceArea", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyArea",
             "DiaphragmPipeArea",
             "LiquidDiaphragm",
             "set the pipe area of the diaphragm fluid section",
         )
-        obj.setPropertyStatus("DiaphragmPipeArea", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyArea",
             "DiaphragmArea",
             "LiquidDiaphragm",
             "set the diaphragm area of the diaphragm fluid section",
         )
-        obj.setPropertyStatus("DiaphragmArea", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyArea",
             "BendPipeArea",
             "LiquidBend",
             "set pipe area of the bend fluid section",
         )
-        obj.setPropertyStatus("BendPipeArea", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "BendRadiusDiameter",
             "LiquidBend",
             "set ratio of bend radius over pipe diameter of the bend fluid section",
         )
-        obj.setPropertyStatus("BendRadiusDiameter", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "BendAngle",
             "LiquidBend",
             "set bend angle of the bend fluid section",
         )
-        obj.setPropertyStatus("BendAngle", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "BendLossCoefficient",
             "LiquidBend",
             "set loss coefficient of the bend fluid section",
         )
-        obj.setPropertyStatus("BendLossCoefficient", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyArea",
             "GateValvePipeArea",
             "LiquidGateValve",
             "set pipe area of the gate valve fluid section",
         )
-        obj.setPropertyStatus("GateValvePipeArea", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "GateValveClosingCoeff",
             "LiquidGateValve",
             "set closing coefficient of the gate valve fluid section",
         )
-        obj.setPropertyStatus("GateValveClosingCoeff", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloatList",
             "PumpFlowRate",
             "LiquidPump",
             "set the pump characteristic flow rate of the pump fluid section",
         )
-        obj.setPropertyStatus("PumpFlowRate", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloatList",
             "PumpHeadLoss",
             "LiquidPump",
             "set the pump characteristic head loss of the pump fluid section",
         )
-        obj.setPropertyStatus("PumpHeadLoss", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyArea",
             "ColebrookeArea",
             "LiquidColebrooke",
             "set pipe area of the colebrooke fluid section",
         )
-        obj.setPropertyStatus("ColebrookeArea", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "ColebrookeRadius",
             "LiquidColebrooke",
             "set hydraulic radius of the colebrooke fluid section",
         )
-        obj.setPropertyStatus("ColebrookeRadius", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "ColebrookeGrainDiameter",
             "LiquidColebrooke",
             "set grain diameter of the colebrooke fluid section",
         )
-        obj.setPropertyStatus("ColebrookeGrainDiameter", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "ColebrookeFormFactor",
             "LiquidColebrooke",
             "set coefficient of the colebrooke fluid section",
         )
-        obj.setPropertyStatus("ColebrookeFormFactor", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration", "GasSectionType", "GasSection", "select gas section type"
         )
-        obj.setPropertyStatus("GasSectionType", "LockDynamic")
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "ChannelSectionType",
             "ChannelSection",
             "select channel section type",
         )
-        obj.setPropertyStatus("ChannelSectionType", "LockDynamic")
 
         # set property default values
         obj.SectionType = ElementFluid1D.known_fluid_types

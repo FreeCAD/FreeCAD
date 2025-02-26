@@ -74,7 +74,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         for propertytype, propertyname, grp, tt in self.areaOpProperties():
             if not hasattr(obj, propertyname):
-                obj.addProperty(propertytype, propertyname, grp, tt)
+                obj.addLockedProperty(propertytype, propertyname, grp, tt)
                 self.addNewProps.append(propertyname)
 
         if len(self.addNewProps) > 0:
@@ -316,7 +316,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         self.areaOpSetDefaultValues(obj, PathUtils.findParentJob(obj))
         self.setOpEditorProperties(obj)
         if not hasattr(obj, "NumPasses"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyInteger",
                 "NumPasses",
                 "Profile",
@@ -326,7 +326,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 ),
             )
         if not hasattr(obj, "Stepover"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyDistance",
                 "Stepover",
                 "Profile",

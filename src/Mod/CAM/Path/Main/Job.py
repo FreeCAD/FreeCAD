@@ -78,7 +78,7 @@ def isResourceClone(obj, propLink, resourceName):
 def createResourceClone(obj, orig, name, icon):
     clone = Draft.clone(orig)
     clone.Label = "%s-%s" % (name, orig.Label)
-    clone.addProperty("App::PropertyString", "PathResource")
+    clone.addLockedProperty("App::PropertyString", "PathResource")
     clone.PathResource = name
     if clone.ViewObject:
         import Path.Base.Gui.IconViewProvider
@@ -108,19 +108,19 @@ class ObjectJob:
         self.tooltipArgs = None
         obj.Proxy = self
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFile",
             "PostProcessorOutputFile",
             "Output",
             QT_TRANSLATE_NOOP("App::Property", "The G-code output file for this project"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "PostProcessor",
             "Output",
             QT_TRANSLATE_NOOP("App::Property", "Select the Post Processor"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "PostProcessorArgs",
             "Output",
@@ -129,14 +129,14 @@ class ObjectJob:
                 "Arguments for the Post Processor (specific to the script)",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "LastPostProcessDate",
             "Output",
             QT_TRANSLATE_NOOP("App::Property", "Last Time the Job was post processed"),
         )
         obj.setEditorMode("LastPostProcessDate", 2)  # Hide
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "LastPostProcessOutput",
             "Output",
@@ -144,20 +144,20 @@ class ObjectJob:
         )
         obj.setEditorMode("LastPostProcessOutput", 2)  # Hide
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "Description",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "An optional description for this job"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "CycleTime",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Job Cycle Time Estimation"),
         )
         obj.setEditorMode("CycleTime", 1)  # read-only
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "GeometryTolerance",
             "Geometry",
@@ -167,13 +167,13 @@ class ObjectJob:
             ),
         )
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "Stock",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "Solid object to be used as stock."),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLink",
             "Operations",
             "Base",
@@ -183,7 +183,7 @@ class ObjectJob:
             ),
         )
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "JobType",
             "Base",
@@ -191,19 +191,19 @@ class ObjectJob:
         )
         obj.setEditorMode("JobType", 2)  # Hide
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "SplitOutput",
             "Output",
             QT_TRANSLATE_NOOP("App::Property", "Split output into multiple G-code files"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "OrderOutputBy",
             "WCS",
             QT_TRANSLATE_NOOP("App::Property", "If multiple WCS, order the output this way"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyStringList",
             "Fixtures",
             "WCS",
@@ -289,7 +289,7 @@ class ObjectJob:
     def setupSetupSheet(self, obj):
         if not getattr(obj, "SetupSheet", None):
             if not hasattr(obj, "SetupSheet"):
-                obj.addProperty(
+                obj.addLockedProperty(
                     "App::PropertyLink",
                     "SetupSheet",
                     "Base",
@@ -310,7 +310,7 @@ class ObjectJob:
         addModels = False
 
         if not hasattr(obj, "Model"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyLink",
                 "Model",
                 "Base",
@@ -338,7 +338,7 @@ class ObjectJob:
     def setupToolTable(self, obj):
         addTable = False
         if not hasattr(obj, "Tools"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyLink",
                 "Tools",
                 "Base",
@@ -472,7 +472,7 @@ class ObjectJob:
             obj.Path = Path.Path()
 
         if not hasattr(obj, "CycleTime"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyString",
                 "CycleTime",
                 "Path",
@@ -481,7 +481,7 @@ class ObjectJob:
             obj.setEditorMode("CycleTime", 1)  # read-only
 
         if not hasattr(obj, "Fixtures"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyStringList",
                 "Fixtures",
                 "WCS",
@@ -490,7 +490,7 @@ class ObjectJob:
             obj.Fixtures = ["G54"]
 
         if not hasattr(obj, "OrderOutputBy"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyEnumeration",
                 "OrderOutputBy",
                 "WCS",
@@ -499,7 +499,7 @@ class ObjectJob:
             obj.OrderOutputBy = ["Fixture", "Tool", "Operation"]
 
         if not hasattr(obj, "SplitOutput"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyBool",
                 "SplitOutput",
                 "Output",
@@ -508,7 +508,7 @@ class ObjectJob:
             obj.SplitOutput = False
 
         if not hasattr(obj, "JobType"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyEnumeration",
                 "JobType",
                 "Base",

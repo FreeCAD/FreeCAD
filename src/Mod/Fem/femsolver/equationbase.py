@@ -40,7 +40,7 @@ class BaseProxy:
 
     def __init__(self, obj):
         obj.Proxy = self
-        obj.addProperty("App::PropertyLinkSubList", "References", "Base", "")
+        obj.addLockedProperty("App::PropertyLinkSubList", "References", "Base", "")
 
     def execute(self, obj):
         return True

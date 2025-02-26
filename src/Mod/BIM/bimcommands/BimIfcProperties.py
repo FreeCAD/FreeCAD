@@ -143,7 +143,7 @@ class BIM_IfcProperties:
         self.form.onlyMatches.stateChanged.connect(self.update)
         self.form.searchField.currentIndexChanged.connect(self.update)
         self.form.searchField.editTextChanged.connect(self.update)
-        self.form.comboProperty.currentIndexChanged.connect(self.addProperty)
+        self.form.comboProperty.currentIndexChanged.connect(self.addLockedProperty)
         self.form.comboPset.currentIndexChanged.connect(self.addPset)
         self.form.buttonDelete.clicked.connect(self.removeProperty)
         self.form.treeProperties.setSortingEnabled(True)
@@ -401,12 +401,12 @@ class BIM_IfcProperties:
                                 from nativeifc import ifc_psets  # lazy loading
                                 fctype = ifc_psets.get_freecad_type(ptype)
                                 if not pname in obj.PropertiesList:
-                                    obj.addProperty(fctype, pname, pset, ptype+":"+pname)
+                                    obj.addLockedProperty(fctype, pname, pset, ptype+":"+pname)
                                     ifc_psets.edit_pset(obj, pname, force=True)
                                 if pvalue:
                                     setattr(obj, pname, pvalue)
                     elif not hasattr(obj, "IfcProperties"):
-                        obj.addProperty(
+                        obj.addLockedProperty(
                             "App::PropertyMap",
                             "IfcPRoperties",
                             "IFC",
@@ -627,7 +627,7 @@ class BIM_IfcProperties:
                                 # print("deleting",prop)
                                 del self.objectslist[name][1][prop]
 
-    def addProperty(self, idx=0, pset=None, prop=None, ptype=None):
+    def addLockedProperty(self, idx=0, pset=None, prop=None, ptype=None):
         from PySide import QtCore, QtGui
 
         if not self.form.tree.selectedIndexes():
@@ -717,7 +717,7 @@ class BIM_IfcProperties:
                     [top, QtGui.QStandardItem(), QtGui.QStandardItem()]
                 )
                 for i in range(0, len(self.psetdefs[psetdef]), 2):
-                    self.addProperty(
+                    self.addLockedProperty(
                         pset=top,
                         prop=self.psetdefs[psetdef][i],
                         ptype=self.psetdefs[psetdef][i + 1],

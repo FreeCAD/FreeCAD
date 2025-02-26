@@ -53,13 +53,13 @@ class MeasureCOM(MeasureBasePython):
     def __init__(self, obj):
         obj.Proxy = self
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLinkSubGlobal",
             "Element",
             "",
             QT_TRANSLATE_NOOP("App::Property", "Element to measure"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyPosition",
             "Result",
             "",

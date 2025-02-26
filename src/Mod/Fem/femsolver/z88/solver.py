@@ -59,7 +59,9 @@ class Proxy(solverbase.Proxy):
 
         # z88_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
 
-        obj.addProperty("App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis")
+        obj.addLockedProperty(
+            "App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis"
+        )
         obj.AnalysisType = ANALYSIS_TYPES
         obj.AnalysisType = ANALYSIS_TYPES[0]
 

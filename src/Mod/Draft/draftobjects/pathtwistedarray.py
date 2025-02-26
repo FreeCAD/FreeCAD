@@ -81,14 +81,14 @@ class PathTwistedArray(DraftLink):
             properties = []
 
         if "Base" not in properties:
-            obj.addProperty("App::PropertyLink",
+            obj.addLockedProperty("App::PropertyLink",
                             "Base",
                             "Objects",
                             QT_TRANSLATE_NOOP("App::Property","The base object that will be duplicated."))
             obj.Base = None
 
         if "PathObject" not in properties:
-            obj.addProperty("App::PropertyLink",
+            obj.addLockedProperty("App::PropertyLink",
                             "PathObject",
                             "Objects",
                             QT_TRANSLATE_NOOP("App::Property","The object along which the copies will be distributed. It must contain 'Edges'."))
@@ -99,28 +99,28 @@ class PathTwistedArray(DraftLink):
                                      "Specifies if the copies "
                                      "should be fused together "
                                      "if they touch each other (slower)")
-            obj.addProperty("App::PropertyBool",
+            obj.addLockedProperty("App::PropertyBool",
                             "Fuse",
                             "Objects",
                             _tip)
             obj.Fuse = False
 
         if "Count" not in properties:
-            obj.addProperty("App::PropertyInteger",
+            obj.addLockedProperty("App::PropertyInteger",
                             "Count",
                             "Objects",
                             QT_TRANSLATE_NOOP("App::Property","Number of copies to create."))
             obj.Count = 15
 
         if "RotationFactor" not in properties:
-            obj.addProperty("App::PropertyFloat",
+            obj.addLockedProperty("App::PropertyFloat",
                             "RotationFactor",
                             "Objects",
                             QT_TRANSLATE_NOOP("App::Property","Rotation factor of the twisted array."))
             obj.RotationFactor = 0.25
 
         if self.use_link and "ExpandArray" not in properties:
-            obj.addProperty("App::PropertyBool",
+            obj.addLockedProperty("App::PropertyBool",
                             "ExpandArray",
                             "Objects",
                             QT_TRANSLATE_NOOP("App::Property","Show the individual array elements (only for Link arrays)"))
@@ -131,7 +131,7 @@ class PathTwistedArray(DraftLink):
             if "PlacementList" not in properties:
                 _tip = QT_TRANSLATE_NOOP("App::Property",
                                          "The placement for each array element")
-                obj.addProperty("App::PropertyPlacementList",
+                obj.addLockedProperty("App::PropertyPlacementList",
                                 "PlacementList",
                                 "Objects",
                                 _tip)

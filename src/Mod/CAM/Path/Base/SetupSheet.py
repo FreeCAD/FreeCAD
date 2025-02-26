@@ -108,31 +108,31 @@ class SetupSheet:
 
     def __init__(self, obj):
         self.obj = obj
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertySpeed",
             "VertRapid",
             "ToolController",
             QT_TRANSLATE_NOOP("App::Property", "Default speed for horizontal rapid moves."),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertySpeed",
             "HorizRapid",
             "ToolController",
             QT_TRANSLATE_NOOP("App::Property", "Default speed for vertical rapid moves."),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyStringList",
             "CoolantModes",
             "CoolantMode",
             QT_TRANSLATE_NOOP("App::Property", "Coolant Modes"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "CoolantMode",
             "CoolantMode",
             QT_TRANSLATE_NOOP("App::Property", "Default coolant mode."),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "SafeHeightOffset",
             "OperationHeights",
@@ -141,13 +141,13 @@ class SetupSheet:
                 "The usage of this field depends on SafeHeightExpression - by default its value is added to the start depth and used for the safe height of an operation.",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "SafeHeightExpression",
             "OperationHeights",
             QT_TRANSLATE_NOOP("App::Property", "Expression for the safe height of new operations."),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "ClearanceHeightOffset",
             "OperationHeights",
@@ -156,7 +156,7 @@ class SetupSheet:
                 "The usage of this field depends on ClearanceHeightExpression - by default is value is added to the start depth and used for the clearance height of an operation.",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "ClearanceHeightExpression",
             "OperationHeights",
@@ -165,7 +165,7 @@ class SetupSheet:
                 "Expression for the clearance height of new operations.",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "StartDepthExpression",
             "OperationDepths",
@@ -173,7 +173,7 @@ class SetupSheet:
                 "App::Property", "Expression used for the start depth of new operations."
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "FinalDepthExpression",
             "OperationDepths",
@@ -181,7 +181,7 @@ class SetupSheet:
                 "App::Property", "Expression used for the final depth of new operations."
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "StepDownExpression",
             "OperationDepths",
@@ -378,7 +378,7 @@ class SetupSheet:
     def onDocumentRestored(self, obj):
 
         if not hasattr(obj, "CoolantModes"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyStringList",
                 "CoolantModes",
                 "CoolantMode",
@@ -387,7 +387,7 @@ class SetupSheet:
             obj.CoolantModes = self.DefaultCoolantModes
 
         if not hasattr(obj, "CoolantMode"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyEnumeration",
                 "CoolantMode",
                 "CoolantMode",

@@ -45,26 +45,26 @@ class ViewProviderWorkingPlaneProxy:
         # 10: focal dist; 11: height (ortho) or height angle (persp); 12: ortho (0) or persp (1)
 
         _tip = "The display length of this section plane"
-        vobj.addProperty("App::PropertyLength", "DisplaySize",
+        vobj.addLockedProperty("App::PropertyLength", "DisplaySize",
                          "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
 
         _tip = "The size of the arrows of this section plane"
-        vobj.addProperty("App::PropertyLength", "ArrowSize",
+        vobj.addLockedProperty("App::PropertyLength", "ArrowSize",
                          "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
 
-        vobj.addProperty("App::PropertyPercent","Transparency","Base","")
+        vobj.addLockedProperty("App::PropertyPercent","Transparency","Base","")
 
-        vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
+        vobj.addLockedProperty("App::PropertyFloat","LineWidth","Base","")
 
-        vobj.addProperty("App::PropertyColor","LineColor","Base","")
+        vobj.addLockedProperty("App::PropertyColor","LineColor","Base","")
 
-        vobj.addProperty("App::PropertyFloatList","ViewData","Base","")
+        vobj.addLockedProperty("App::PropertyFloatList","ViewData","Base","")
 
-        vobj.addProperty("App::PropertyBool","RestoreView","Base","")
+        vobj.addLockedProperty("App::PropertyBool","RestoreView","Base","")
 
-        vobj.addProperty("App::PropertyMap","VisibilityMap","Base","")
+        vobj.addLockedProperty("App::PropertyMap","VisibilityMap","Base","")
 
-        vobj.addProperty("App::PropertyBool","RestoreState","Base","")
+        vobj.addLockedProperty("App::PropertyBool","RestoreState","Base","")
 
         vobj.DisplaySize = 100
         vobj.ArrowSize = 5

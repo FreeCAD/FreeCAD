@@ -61,16 +61,16 @@ class _PartJoinFeature:
 
     def __init__(self, obj):
         self.Type = "PartJoinFeature"
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyEnumeration",
             "Mode",
             "Join",
             "The mode of operation. bypass = make compound (fast)",
         )
         obj.Mode = ["bypass", "Connect", "Embed", "Cutout"]
-        obj.addProperty("App::PropertyLink", "Base", "Join", "First object")
-        obj.addProperty("App::PropertyLink", "Tool", "Join", "Second object")
-        obj.addProperty(
+        obj.addLockedProperty("App::PropertyLink", "Base", "Join", "First object")
+        obj.addLockedProperty("App::PropertyLink", "Tool", "Join", "Second object")
+        obj.addLockedProperty(
             "App::PropertyBool",
             "Refine",
             "Join",

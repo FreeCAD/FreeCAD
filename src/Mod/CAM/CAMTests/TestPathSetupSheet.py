@@ -38,7 +38,7 @@ def refstring(string):
 class SomeOp(object):
     def __init__(self, obj):
         Path.Log.track(obj, type(obj))
-        obj.addProperty("App::PropertyPercent", "StepOver", "Base", "Some help you are")
+        obj.addLockedProperty("App::PropertyPercent", "StepOver", "Base", "Some help you are")
 
     @classmethod
     def SetupProperties(cls):

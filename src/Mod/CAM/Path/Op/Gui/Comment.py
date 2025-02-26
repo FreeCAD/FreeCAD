@@ -34,7 +34,7 @@ translate = FreeCAD.Qt.translate
 
 class Comment:
     def __init__(self, obj):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyString",
             "Comment",
             "Path",

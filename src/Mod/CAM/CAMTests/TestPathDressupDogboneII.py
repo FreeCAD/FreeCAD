@@ -56,12 +56,12 @@ class MockOp(object):
 class MockFeaturePython(object):
     def __init__(self, name):
         self.prop = {}
-        self.addProperty("App::PropertyString", "Name", val=name)
-        self.addProperty("App::PropertyString", "Label", val=name)
-        self.addProperty("App::PropertyLink", "Proxy")
-        self.addProperty("Path::Path", "Path", val=Path.Path())
+        self.addLockedProperty("App::PropertyString", "Name", val=name)
+        self.addLockedProperty("App::PropertyString", "Label", val=name)
+        self.addLockedProperty("App::PropertyLink", "Proxy")
+        self.addLockedProperty("Path::Path", "Path", val=Path.Path())
 
-    def addProperty(self, typ, name, grp=None, desc=None, val=None):
+    def addLockedProperty(self, typ, name, grp=None, desc=None, val=None):
         self.prop[name] = (typ, val)
 
     def setEditorMode(self, name, mode):

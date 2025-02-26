@@ -48,31 +48,31 @@ class ObjectProbing(PathOp.ObjectOp):
         return PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureTool
 
     def initOperation(self, obj):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "Xoffset",
             "Probe",
             QT_TRANSLATE_NOOP("App::Property", "X offset between tool and probe"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLength",
             "Yoffset",
             "Probe",
             QT_TRANSLATE_NOOP("App::Property", "Y offset between tool and probe"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "PointCountX",
             "Probe",
             QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in X direction"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyInteger",
             "PointCountY",
             "Probe",
             QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in Y direction"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFile",
             "OutputFileName",
             "Path",

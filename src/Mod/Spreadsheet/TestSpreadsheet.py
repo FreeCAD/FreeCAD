@@ -1308,13 +1308,13 @@ class SpreadsheetCases(unittest.TestCase):
 
     def testIssue6844(self):
         body = self.doc.addObject("App::FeaturePython", "Body")
-        body.addProperty("App::PropertyEnumeration", "Configuration")
+        body.addLockedProperty("App::PropertyEnumeration", "Configuration")
         body.Configuration = ["Item1", "Item2", "Item3"]
 
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
-        sheet.addProperty("App::PropertyString", "A2")
+        sheet.addLockedProperty("App::PropertyString", "A2")
         sheet.A2 = "Item2"
-        sheet.addProperty("App::PropertyEnumeration", "body")
+        sheet.addLockedProperty("App::PropertyEnumeration", "body")
         sheet.body = ["Item1", "Item2", "Item3"]
 
         sheet.setExpression(".body.Enum", "cells[<<A2:|>>]")
@@ -1330,13 +1330,13 @@ class SpreadsheetCases(unittest.TestCase):
 
     def testIssue6840(self):
         body = self.doc.addObject("App::FeaturePython", "Body")
-        body.addProperty("App::PropertyEnumeration", "Configuration")
+        body.addLockedProperty("App::PropertyEnumeration", "Configuration")
         body.Configuration = ["Item1", "Item2", "Item3"]
 
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
-        sheet.addProperty("App::PropertyString", "A2")
+        sheet.addLockedProperty("App::PropertyString", "A2")
         sheet.A2 = "Item2"
-        sheet.addProperty("App::PropertyEnumeration", "body")
+        sheet.addLockedProperty("App::PropertyEnumeration", "body")
         sheet.body = ["Item1", "Item2", "Item3"]
 
         sheet.setExpression(".body.Enum", "cells[<<A2:|>>]")

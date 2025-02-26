@@ -64,14 +64,14 @@ class IfcRoot:
         """
 
         if not "IfcData" in obj.PropertiesList:
-            obj.addProperty("App::PropertyMap","IfcData","IFC",QT_TRANSLATE_NOOP("App::Property","IFC data"))
+            obj.addLockedProperty("App::PropertyMap","IfcData","IFC",QT_TRANSLATE_NOOP("App::Property","IFC data"))
 
         if not "IfcType" in obj.PropertiesList:
-            obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
+            obj.addLockedProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
             obj.IfcType = self.getCanonicalisedIfcTypes()
 
         if not "IfcProperties" in obj.PropertiesList:
-            obj.addProperty("App::PropertyMap","IfcProperties","IFC",QT_TRANSLATE_NOOP("App::Property","IFC properties of this object"))
+            obj.addLockedProperty("App::PropertyMap","IfcProperties","IFC",QT_TRANSLATE_NOOP("App::Property","IFC properties of this object"))
 
         self.migrateDeprecatedAttributes(obj)
 
@@ -284,14 +284,14 @@ class IfcRoot:
 
         obj.IfcData = IfcData
         if attribute["is_enum"]:
-            obj.addProperty("App::PropertyEnumeration",
+            obj.addLockedProperty("App::PropertyEnumeration",
                             attribute["name"],
                             "IFC Attributes",
                             QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
             setattr(obj, attribute["name"], attribute["enum_values"])
         else:
             propertyType = "App::" + ArchIFCSchema.IfcTypes[attribute["type"]]["property"]
-            obj.addProperty(propertyType,
+            obj.addLockedProperty(propertyType,
                             attribute["name"],
                             "IFC Attributes",
                             QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))

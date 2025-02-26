@@ -58,7 +58,7 @@ class Layer:
             # "App::PropertyLinkListHidden" instead of "App::PropertyLinkList" has 2 advantages:
             # 1. No 'might break' warning when deleting an object nested in a layer.
             # 2. No 'out of scope' warning for objects also nested in f.e. a Std_Part.
-            obj.addProperty("App::PropertyLinkListHidden",
+            obj.addLockedProperty("App::PropertyLinkListHidden",
                             "Group",
                             "Layer",
                             _tip)

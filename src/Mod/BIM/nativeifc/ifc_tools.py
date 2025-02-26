@@ -135,7 +135,7 @@ def convert_document(document, filename=None, shapemode=0, strategy=0, silent=Fa
     """
 
     if not "Proxy" in document.PropertiesList:
-        document.addProperty("App::PropertyPythonObject", "Proxy")
+        document.addLockedProperty("App::PropertyPythonObject", "Proxy")
     document.setPropertyStatus("Proxy", "Transient")
     document.Proxy = ifc_objects.document_object()
     ifcfile, project, full = setup_project(document, filename, shapemode, silent)
@@ -162,9 +162,9 @@ def setup_project(proj, filename, shapemode, silent):
     full = False
     d = "The path to the linked IFC file"
     if not "IfcFilePath" in proj.PropertiesList:
-        proj.addProperty("App::PropertyFile", "IfcFilePath", "Base", d)
+        proj.addLockedProperty("App::PropertyFile", "IfcFilePath", "Base", d)
     if not "Modified" in proj.PropertiesList:
-        proj.addProperty("App::PropertyBool", "Modified", "Base")
+        proj.addLockedProperty("App::PropertyBool", "Modified", "Base")
     proj.setPropertyStatus("Modified", "Hidden")
     if filename:
         # opening existing file
@@ -182,7 +182,7 @@ def setup_project(proj, filename, shapemode, silent):
     proj.Proxy.ifcfile = ifcfile
     add_properties(proj, ifcfile, project, shapemode=shapemode)
     if not "Schema" in proj.PropertiesList:
-        proj.addProperty("App::PropertyEnumeration", "Schema", "Base")
+        proj.addLockedProperty("App::PropertyEnumeration", "Schema", "Base")
     # bug in FreeCAD - to avoid a crash, pre-populate the enum with one value
     proj.Schema = [ifcfile.wrapped_data.schema_name()]
     proj.Schema = ifcfile.wrapped_data.schema_name()
@@ -561,7 +561,7 @@ def add_object(document, otype=None, oname="IfcObject"):
         obj = document.addObject("App::FeaturePython", oname, proxy, None, False)
         if obj.ViewObject:
             view_layer.ViewProviderLayer(obj.ViewObject)
-            obj.ViewObject.addProperty("App::PropertyBool", "HideChildren", "Layer")
+            obj.ViewObject.addLockedProperty("App::PropertyBool", "HideChildren", "Layer")
             obj.ViewObject.HideChildren = True
     elif otype == "group":
         vproxy = ifc_viewproviders.ifc_vp_group()
@@ -607,9 +607,9 @@ def add_properties(
     else:
         obj.Label = "_" + ifcentity.is_a()
     if isinstance(obj, FreeCAD.DocumentObject) and "Group" not in obj.PropertiesList:
-        obj.addProperty("App::PropertyLinkList", "Group", "Base")
+        obj.addLockedProperty("App::PropertyLinkList", "Group", "Base")
     if "ShapeMode" not in obj.PropertiesList:
-        obj.addProperty("App::PropertyEnumeration", "ShapeMode", "Base")
+        obj.addLockedProperty("App::PropertyEnumeration", "ShapeMode", "Base")
         shapemodes = [
             "Shape",
             "Coin",
@@ -622,7 +622,7 @@ def add_properties(
         if not obj.isDerivedFrom("Part::Feature"):
             obj.setPropertyStatus("ShapeMode", "Hidden")
     if ifcentity.is_a("IfcProduct"):
-        obj.addProperty("App::PropertyLink", "Type", "IFC")
+        obj.addLockedProperty("App::PropertyLink", "Type", "IFC")
     attr_defs = ifcentity.wrapped_data.declaration().as_entity().all_attributes()
     try:
         info_ifcentity = ifcentity.get_info()
@@ -647,7 +647,7 @@ def add_properties(
         if attr == "Class":
             # main enum property, not saved to file
             if attr not in obj.PropertiesList:
-                obj.addProperty("App::PropertyEnumeration", attr, "IFC")
+                obj.addLockedProperty("App::PropertyEnumeration", attr, "IFC")
                 obj.setPropertyStatus(attr, "Transient")
             # to avoid bug/crash: we populate first the property with only the
             # class, then we add the sibling classes
@@ -656,26 +656,26 @@ def add_properties(
             setattr(obj, attr, get_ifc_classes(obj, value))
             # companion hidden propertym that gets saved to file
             if "IfcClass" not in obj.PropertiesList:
-                obj.addProperty("App::PropertyString", "IfcClass", "IFC")
+                obj.addLockedProperty("App::PropertyString", "IfcClass", "IFC")
                 obj.setPropertyStatus("IfcClass", "Hidden")
             setattr(obj, "IfcClass", value)
         elif attr_def and "IfcLengthMeasure" in str(attr_def.type_of_attribute()):
-            obj.addProperty("App::PropertyDistance", attr, "IFC")
+            obj.addLockedProperty("App::PropertyDistance", attr, "IFC")
             if value:
                 setattr(obj, attr, value * (1 / get_scale(ifcfile)))
         elif isinstance(value, int):
             if attr not in obj.PropertiesList:
-                obj.addProperty("App::PropertyInteger", attr, "IFC")
+                obj.addLockedProperty("App::PropertyInteger", attr, "IFC")
                 if attr == "StepId":
                     obj.setPropertyStatus(attr, "ReadOnly")
             setattr(obj, attr, value)
         elif isinstance(value, float):
             if attr not in obj.PropertiesList:
-                obj.addProperty("App::PropertyFloat", attr, "IFC")
+                obj.addLockedProperty("App::PropertyFloat", attr, "IFC")
             setattr(obj, attr, value)
         elif data_type == "boolean":
             if attr not in obj.PropertiesList:
-                obj.addProperty("App::PropertyBool", attr, "IFC")
+                obj.addLockedProperty("App::PropertyBool", attr, "IFC")
             if not value or value in ["UNKNOWN", "FALSE"]:
                 value = False
             elif not isinstance(value, bool):
@@ -686,7 +686,7 @@ def add_properties(
             if links:
                 if attr not in obj.PropertiesList:
                     # value = create_object(value, obj.Document)
-                    obj.addProperty("App::PropertyLink", attr, "IFC")
+                    obj.addLockedProperty("App::PropertyLink", attr, "IFC")
                 # setattr(obj, attr, value)
         elif isinstance(value, (list, tuple)) and value:
             if isinstance(value[0], ifcopenshell.entity_instance):
@@ -695,11 +695,11 @@ def add_properties(
                         # nvalue = []
                         # for elt in value:
                         #    nvalue.append(create_object(elt, obj.Document))
-                        obj.addProperty("App::PropertyLinkList", attr, "IFC")
+                        obj.addLockedProperty("App::PropertyLinkList", attr, "IFC")
                     # setattr(obj, attr, nvalue)
         elif data_type == "enum":
             if attr not in obj.PropertiesList:
-                obj.addProperty("App::PropertyEnumeration", attr, "IFC")
+                obj.addLockedProperty("App::PropertyEnumeration", attr, "IFC")
             items = ifcopenshell.util.attribute.get_enum_items(attr_def)
             if value not in items:
                 for v in ("UNDEFINED", "NOTDEFINED", "USERDEFINED"):
@@ -714,14 +714,14 @@ def add_properties(
                 setattr(obj, attr, value)
                 setattr(obj, attr, items)
         elif attr in ["RefLongitude", "RefLatitude"]:
-            obj.addProperty("App::PropertyFloat", attr, "IFC")
+            obj.addLockedProperty("App::PropertyFloat", attr, "IFC")
             if value is not None:
                 # convert from list of 4 ints
                 value = value[0] + value[1]/60. + value[2]/3600. + value[3]/3600.e6
                 setattr(obj, attr, value)
         else:
             if attr not in obj.PropertiesList:
-                obj.addProperty("App::PropertyString", attr, "IFC")
+                obj.addLockedProperty("App::PropertyString", attr, "IFC")
             if value is not None:
                 setattr(obj, attr, str(value))
     # annotation properties
@@ -729,12 +729,12 @@ def add_properties(
         axisdata = ifc_export.get_axis(ifcentity)
         if axisdata:
             if "Placement" not in obj.PropertiesList:
-                obj.addProperty("App::PropertyPlacement", "Placement", "Base")
+                obj.addLockedProperty("App::PropertyPlacement", "Placement", "Base")
             if "CustomText" in obj.PropertiesList:
                 obj.setPropertyStatus("CustomText", "Hidden")
                 obj.setExpression("CustomText", "AxisTag")
             if "Length" not in obj.PropertiesList:
-                obj.addProperty("App::PropertyLength","Length","Axis")
+                obj.addLockedProperty("App::PropertyLength","Length","Axis")
             if "Text" not in obj.PropertiesList:
                 obj.addProperty("App::PropertyStringList", "Text", "Base")
             obj.Text = [text.Literal]
@@ -744,18 +744,18 @@ def add_properties(
         sectionplane = ifc_export.get_sectionplane(ifcentity)
         if sectionplane:
             if "Placement" not in obj.PropertiesList:
-                obj.addProperty("App::PropertyPlacement", "Placement", "Base")
+                obj.addLockedProperty("App::PropertyPlacement", "Placement", "Base")
             if "Depth" not in obj.PropertiesList:
-                obj.addProperty("App::PropertyLength","Depth","SectionPlane")
+                obj.addLockedProperty("App::PropertyLength","Depth","SectionPlane")
             obj.Placement = sectionplane[0]
             if len(sectionplane) > 3:
                 obj.Depth = sectionplane[3]
             vobj = obj.ViewObject
             if vobj:
                 if "DisplayLength" not in vobj.PropertiesList:
-                    vobj.addProperty("App::PropertyLength","DisplayLength","SectionPlane")
+                    vobj.addLockedProperty("App::PropertyLength","DisplayLength","SectionPlane")
                 if "DisplayHeight" not in vobj.PropertiesList:
-                    vobj.addProperty("App::PropertyLength","DisplayHeight","SectionPlane")
+                    vobj.addLockedProperty("App::PropertyLength","DisplayHeight","SectionPlane")
                 if len(sectionplane) > 1:
                     vobj.DisplayLength = sectionplane[1]
                 if len(sectionplane) > 2:
@@ -764,11 +764,11 @@ def add_properties(
             dim = ifc_export.get_dimension(ifcentity)
             if dim and len(dim) >= 3:
                 if "Start" not in obj.PropertiesList:
-                    obj.addProperty("App::PropertyVectorDistance", "Start", "Base")
+                    obj.addLockedProperty("App::PropertyVectorDistance", "Start", "Base")
                 if "End" not in obj.PropertiesList:
-                    obj.addProperty("App::PropertyVectorDistance", "End", "Base")
+                    obj.addLockedProperty("App::PropertyVectorDistance", "End", "Base")
                 if "Dimline" not in obj.PropertiesList:
-                    obj.addProperty("App::PropertyVectorDistance", "Dimline", "Base")
+                    obj.addLockedProperty("App::PropertyVectorDistance", "Dimline", "Base")
                 obj.Start = dim[1]
                 obj.End = dim[2]
                 if len(dim) > 3:
@@ -781,9 +781,9 @@ def add_properties(
                 text = ifc_export.get_text(ifcentity)
                 if text:
                     if "Placement" not in obj.PropertiesList:
-                        obj.addProperty("App::PropertyPlacement", "Placement", "Base")
+                        obj.addLockedProperty("App::PropertyPlacement", "Placement", "Base")
                     if "Text" not in obj.PropertiesList:
-                        obj.addProperty("App::PropertyStringList", "Text", "Base")
+                        obj.addLockedProperty("App::PropertyStringList", "Text", "Base")
                     obj.Text = [text.Literal]
                     obj.Placement = ifc_export.get_placement(ifcentity.ObjectPlacement, ifcfile)
     elif ifcentity.is_a("IfcControl"):

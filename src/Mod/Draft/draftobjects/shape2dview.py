@@ -60,85 +60,85 @@ class Shape2DView(DraftObject):
         if not "Base" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "The base object this 2D view must represent")
-            obj.addProperty("App::PropertyLink", "Base",
+            obj.addLockedProperty("App::PropertyLink", "Base",
                             "Draft", _tip)
         if not "Projection" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "The projection vector of this object")
-            obj.addProperty("App::PropertyVector", "Projection",
+            obj.addLockedProperty("App::PropertyVector", "Projection",
                             "Draft", _tip)
             obj.Projection = App.Vector(0,0,1)
         if not "ProjectionMode" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "The way the viewed object must be projected")
-            obj.addProperty("App::PropertyEnumeration", "ProjectionMode",
+            obj.addLockedProperty("App::PropertyEnumeration", "ProjectionMode",
                             "Draft", _tip)
             obj.ProjectionMode = ["Solid", "Individual Faces",
                                   "Cutlines", "Cutfaces","Solid faces"]
         if not "FaceNumbers" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "The indices of the faces to be projected in Individual Faces mode")
-            obj.addProperty("App::PropertyIntegerList", "FaceNumbers",
+            obj.addLockedProperty("App::PropertyIntegerList", "FaceNumbers",
                             "Draft", _tip)
         if not "HiddenLines" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "Show hidden lines")
-            obj.addProperty("App::PropertyBool", "HiddenLines",
+            obj.addLockedProperty("App::PropertyBool", "HiddenLines",
                             "Draft", _tip)
             obj.HiddenLines = False
         if not "FuseArch" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "Fuse wall and structure objects of same type and material")
-            obj.addProperty("App::PropertyBool", "FuseArch",
+            obj.addLockedProperty("App::PropertyBool", "FuseArch",
                             "Draft", _tip)
         if not "Tessellation" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "Tessellate Ellipses and B-splines into line segments")
-            obj.addProperty("App::PropertyBool", "Tessellation",
+            obj.addLockedProperty("App::PropertyBool", "Tessellation",
                             "Draft", _tip)
             obj.Tessellation = False
         if not "InPlace" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "For Cutlines and Cutfaces modes, this leaves the faces at the cut location")
-            obj.addProperty("App::PropertyBool", "InPlace",
+            obj.addLockedProperty("App::PropertyBool", "InPlace",
                             "Draft", _tip)
             obj.InPlace = True
         if not "SegmentLength" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "Length of line segments if tessellating Ellipses or B-splines into line segments")
-            obj.addProperty("App::PropertyFloat", "SegmentLength",
+            obj.addLockedProperty("App::PropertyFloat", "SegmentLength",
                             "Draft", _tip)
             obj.SegmentLength = .05
         if not "VisibleOnly" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "If this is True, this object will include only visible objects")
-            obj.addProperty("App::PropertyBool", "VisibleOnly",
+            obj.addLockedProperty("App::PropertyBool", "VisibleOnly",
                             "Draft", _tip)
             obj.VisibleOnly = False
         if not "ExclusionPoints" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "A list of exclusion points. Any edge touching any of those points will not be drawn.")
-            obj.addProperty("App::PropertyVectorList", "ExclusionPoints",
+            obj.addLockedProperty("App::PropertyVectorList", "ExclusionPoints",
                             "Draft", _tip)
         if not "ExclusionNames" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "A list of exclusion object names. Any object viewed that matches a name from the list will not be drawn.")
-            obj.addProperty("App::PropertyStringList", "ExclusionNames",
+            obj.addLockedProperty("App::PropertyStringList", "ExclusionNames",
                             "Draft", _tip)
         if not "OnlySolids" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "If this is True, only solid geometry is handled. This overrides the base object's Only Solids property")
-            obj.addProperty("App::PropertyBool", "OnlySolids",
+            obj.addLockedProperty("App::PropertyBool", "OnlySolids",
                             "Draft", _tip)
         if not "Clip" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property")
-            obj.addProperty("App::PropertyBool", "Clip",
+            obj.addLockedProperty("App::PropertyBool", "Clip",
                             "Draft", _tip)
         if not "AutoUpdate" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "This object will be recomputed only if this is True.")
-            obj.addProperty("App::PropertyBool", "AutoUpdate",
+            obj.addLockedProperty("App::PropertyBool", "AutoUpdate",
                             "Draft", _tip)
             obj.AutoUpdate = True
 

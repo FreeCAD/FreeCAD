@@ -276,7 +276,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
     def setupAdditionalProperties(self, obj):
         if not hasattr(obj, "BaseShapes"):
-            obj.addProperty(
+            obj.addLockedProperty(
                 "App::PropertyLinkList",
                 "BaseShapes",
                 "Path",
@@ -284,21 +284,21 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "OptimizeMovements",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Optimize movements"),
         )
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "FinishingPass",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Add finishing pass"),
         )
 
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "FinishingPassZOffset",
             "Path",
@@ -310,13 +310,13 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
     def initOperation(self, obj):
         """initOperation(obj) ... create vcarve specific properties."""
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "Discretize",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The deflection value for discretizing arcs"),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "Colinear",
             "Path",
@@ -326,7 +326,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                         default=10.0.",
             ),
         )
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyFloat",
             "Tolerance",
             "Path",

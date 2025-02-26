@@ -470,21 +470,21 @@ class Extension(object):
 def initialize_properties(obj):
     """initialize_properties(obj)... Adds feature properties to object argument"""
     if not hasattr(obj, "ExtensionLengthDefault"):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyDistance",
             "ExtensionLengthDefault",
             "Extension",
             QT_TRANSLATE_NOOP("App::Property", "Default length of extensions."),
         )
     if not hasattr(obj, "ExtensionFeature"):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyLinkSubListGlobal",
             "ExtensionFeature",
             "Extension",
             QT_TRANSLATE_NOOP("App::Property", "List of features to extend."),
         )
     if not hasattr(obj, "ExtensionCorners"):
-        obj.addProperty(
+        obj.addLockedProperty(
             "App::PropertyBool",
             "ExtensionCorners",
             "Extension",
