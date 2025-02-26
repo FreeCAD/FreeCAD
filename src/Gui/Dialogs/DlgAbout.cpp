@@ -670,7 +670,6 @@ void AboutDialog::copyToClipboard()
 
         if (ifcopenshellVerAsStr) {
             str << "IfcOpenShell " << ifcopenshellVerAsStr << ", ";
-            Py_DECREF(ifcopenshellVerAsStr);
         }
         Py_DECREF(ifcopenshellVer);
     }
