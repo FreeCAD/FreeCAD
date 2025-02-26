@@ -179,16 +179,15 @@ void Constraint::Restore(XMLReader& reader)
 {
     reader.readElement("Constrain");
     Name = reader.getAttribute<const char*>("Name");
-    Type = static_cast<ConstraintType>(reader.getAttribute<long>("Type"));
+    Type = reader.getAttribute<ConstraintType>("Type");
     Value = reader.getAttribute<double>("Value");
     First = reader.getAttribute<long>("First");
-    FirstPos = static_cast<PointPos>(reader.getAttribute<long>("FirstPos"));
+    FirstPos = reader.getAttribute<PointPos>("FirstPos");
     Second = reader.getAttribute<long>("Second");
     SecondPos = reader.getAttribute<PointPos>("SecondPos");
 
     if (this->Type == InternalAlignment) {
-        AlignmentType = static_cast<InternalAlignmentType>(
-            reader.getAttribute<long>("InternalAlignmentType"));
+        AlignmentType = reader.getAttribute<InternalAlignmentType>("InternalAlignmentType");
 
         if (reader.hasAttribute("InternalAlignmentIndex")) {
             InternalAlignmentIndex = reader.getAttribute<long>("InternalAlignmentIndex");
@@ -201,7 +200,7 @@ void Constraint::Restore(XMLReader& reader)
     // read the third geo group if present
     if (reader.hasAttribute("Third")) {
         Third = reader.getAttribute<long>("Third");
-        ThirdPos = static_cast<PointPos>(reader.getAttribute<long>("ThirdPos"));
+        ThirdPos = reader.getAttribute<PointPos>("ThirdPos");
     }
 
     // Read the distance a constraint label has been moved
@@ -214,15 +213,15 @@ void Constraint::Restore(XMLReader& reader)
     }
 
     if (reader.hasAttribute("IsDriving")) {
-        isDriving = reader.getAttribute<long>("IsDriving") ? true : false;
+        isDriving = reader.getAttribute<bool>("IsDriving");
     }
 
     if (reader.hasAttribute("IsInVirtualSpace")) {
-        isInVirtualSpace = reader.getAttribute<long>("IsInVirtualSpace") ? true : false;
+        isInVirtualSpace = reader.getAttribute<bool>("IsInVirtualSpace");
     }
 
     if (reader.hasAttribute("IsActive")) {
-        isActive = reader.getAttribute<long>("IsActive") ? true : false;
+        isActive = reader.getAttribute<bool>("IsActive");
     }
 }
 

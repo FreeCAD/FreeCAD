@@ -425,7 +425,7 @@ void PropertySheet::Restore(Base::XMLReader& reader)
     reader.readElement("Cells");
     Cnt = reader.getAttribute<long>("Count");
 
-    if (reader.hasAttribute("xlink") && reader.getAttribute<long>("xlink")) {
+    if (reader.hasAttribute("xlink") && reader.getAttribute<bool>("xlink")) {
         PropertyExpressionContainer::Restore(reader);
     }
 

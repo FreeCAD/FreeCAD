@@ -794,7 +794,7 @@ void StringHasher::Restore(Base::XMLReader& reader)
     _hashes->Threshold = static_cast<int>(reader.getAttribute<long>("threshold"));
 
     bool newTag = false;
-    if (reader.hasAttribute("new") && reader.getAttribute<long>("new") > 0) {
+    if (reader.hasAttribute("new") && reader.getAttribute<bool>("new")) {
         reader.readElement("StringHasher2");
         newTag = true;
     }

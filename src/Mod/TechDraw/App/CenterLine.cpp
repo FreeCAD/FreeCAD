@@ -949,7 +949,7 @@ void CenterLine::Restore(Base::XMLReader &reader)
     reader.readElement("Type");
     m_type = static_cast<Type>(reader.getAttribute<long>("value"));
     reader.readElement("Flip");
-    m_flip2Line = (bool)reader.getAttribute<long>("value")==0?false:true;
+    m_flip2Line = reader.getAttribute<bool>("value") == 0;
 
     reader.readElement("Faces");
     int count = reader.getAttribute<long>("FaceCount");
@@ -996,11 +996,11 @@ void CenterLine::Restore(Base::XMLReader &reader)
     tempColor.fromHexString(tempHex);
     m_format.setColor(tempColor);
     reader.readElement("Visible");
-    m_format.setVisible( (int)reader.getAttribute<long>("value")==0 ? false : true);
+    m_format.setVisible(reader.getAttribute<bool>("value"));
 
 //stored geometry
     reader.readElement("GeometryType");
-    GeomType gType = static_cast<GeomType>(reader.getAttribute<long>("value"));
+    GeomType gType = reader.getAttribute<GeomType>("value");
     if (gType == GeomType::GENERIC) {
         TechDraw::GenericPtr gen = std::make_shared<TechDraw::Generic> ();
         gen->Restore(reader);

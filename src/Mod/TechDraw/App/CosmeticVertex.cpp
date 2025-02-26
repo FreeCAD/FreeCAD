@@ -163,7 +163,7 @@ void CosmeticVertex::Restore(Base::XMLReader &reader)
     reader.readElement("Style");
     style = reader.getAttribute<long>("value");
     reader.readElement("Visible");
-    visible = (int)reader.getAttribute<long>("value")==0?false:true;
+    visible = reader.getAttribute<bool>("value");
     reader.readElement("Tag");
     temp = reader.getAttribute<const char*>("value");
     boost::uuids::string_generator gen;

@@ -126,7 +126,7 @@ void GeometryDefaultExtension<bool>::restoreAttributes(Base::XMLReader &reader)
 {
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
-    value = (bool)reader.getAttribute<long>("value");
+    value = reader.getAttribute<bool>("value");
 }
 
 // ---------- GeometryDoubleExtension ----------
