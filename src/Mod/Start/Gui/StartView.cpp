@@ -83,6 +83,7 @@ public:
             static_cast<int>(hGrp->GetInt("FileCardLabelWith", 180));  // NOLINT
 
         auto mainLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(this));
+        mainLayout->setAlignment(Qt::AlignVCenter);
         auto iconLabel = gsl::owner<QLabel*>(new QLabel(this));
         mainLayout->addWidget(iconLabel);
         QIcon baseIcon(newButton.iconPath);
@@ -105,8 +106,16 @@ public:
 
         mainLayout->addStretch();
 
-        this->setMinimumHeight(newFileIconSize + cardSpacing);
-        this->setMinimumWidth(newFileIconSize + cardLabelWith);
+        textLabelLine1->adjustSize();
+        textLabelLine2->adjustSize();
+        int textHeight =
+            textLabelLine1->height() + textLabelLine2->height() + textLayout->spacing();
+
+        int minWidth = newFileIconSize + cardLabelWith + cardSpacing;
+        int minHeight = std::max(newFileIconSize, textHeight) + cardSpacing;
+
+        this->setMinimumHeight(minHeight);
+        this->setMinimumWidth(minWidth);
     }
 };
 
