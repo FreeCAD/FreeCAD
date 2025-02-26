@@ -5,6 +5,10 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src/3rdParty/OndselSolver
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
 )

@@ -1,5 +1,6 @@
 
 include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}

@@ -13,6 +13,7 @@ if (NOT IS_SUB_PROJECT)
 endif()
 
 include_directories(
+    SYSTEM
     ${Qt${FREECAD_QT_MAJOR_VERSION}Core_INCLUDE_DIRS}
     ${Qt${FREECAD_QT_MAJOR_VERSION}Widgets_INCLUDE_DIRS}
     ${Qt${FREECAD_QT_MAJOR_VERSION}Designer_INCLUDE_DIRS}
