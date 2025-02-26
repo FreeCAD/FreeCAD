@@ -260,21 +260,21 @@ void BaseGeom::Save(Base::Writer &writer) const
 void BaseGeom::Restore(Base::XMLReader &reader)
 {
     reader.readElement("GeomType");
-    geomType = static_cast<GeomType>(reader.getAttribute<long>("value"));
+    geomType = reader.getAttribute<GeomType>("value");
     reader.readElement("ExtractType");
-    extractType = static_cast<ExtractionType>(reader.getAttribute<long>("value"));
+    extractType = reader.getAttribute<ExtractionType>("value");
     reader.readElement("EdgeClass");
-    classOfEdge = static_cast<EdgeClass>(reader.getAttribute<long>("value"));
+    classOfEdge = reader.getAttribute<EdgeClass>("value");
     reader.readElement("HLRVisible");
-    hlrVisible = reader.getAttribute<long>("value") != 0;
+    hlrVisible = reader.getAttribute<bool>("value");
     reader.readElement("Reversed");
-    reversed = reader.getAttribute<long>("value") != 0;
+    reversed = reader.getAttribute<bool>("value");
     reader.readElement("Ref3D");
     ref3D = reader.getAttribute<long>("value");
     reader.readElement("Cosmetic");
-    cosmetic = reader.getAttribute<long>("value") != 0;
+    cosmetic = reader.getAttribute<bool>("value");
     reader.readElement("Source");
-    m_source = static_cast<SourceType>(reader.getAttribute<long>("value"));
+    m_source = reader.getAttribute<SourceType>("value");
     reader.readElement("SourceIndex");
     m_sourceIndex = reader.getAttribute<long>("value");
     reader.readElement("CosmeticTag");
@@ -996,9 +996,9 @@ void AOC::Restore(Base::XMLReader &reader)
     reader.readElement("EndAngle");
     endAngle = reader.getAttribute<double>("value");
     reader.readElement("Clockwise");
-    cw = (int)reader.getAttribute<long>("value")==0?false:true;
+    cw = reader.getAttribute<bool>("value");
     reader.readElement("Large");
-    largeArc = (int)reader.getAttribute<long>("value")==0?false:true;
+    largeArc = reader.getAttribute<bool>("value");
 }
 
 //! Generic is a multiline
@@ -1346,15 +1346,15 @@ void Vertex::Restore(Base::XMLReader &reader)
     pnt.z = reader.getAttribute<double>("Z");
 
     reader.readElement("Extract");
-    extractType = static_cast<ExtractionType>(reader.getAttribute<long>("value"));
+    extractType = reader.getAttribute<ExtractionType>("value");
 //    reader.readElement("Visible");
-//    hlrVisible = (bool)reader.getAttribute<long>("value")==0?false:true;
+//    hlrVisible = reader.getAttribute<bool>("value");
     reader.readElement("Ref3D");
     ref3D = reader.getAttribute<long>("value");
     reader.readElement("IsCenter");
-    hlrVisible = reader.getAttribute<long>("value") != 0;
+    hlrVisible = reader.getAttribute<bool>("value");
     reader.readElement("Cosmetic");
-    cosmetic = reader.getAttribute<long>("value") != 0;
+    cosmetic = reader.getAttribute<bool>("value");
     reader.readElement("CosmeticLink");
     cosmeticLink = reader.getAttribute<long>("value");
     reader.readElement("CosmeticTag");
@@ -1362,7 +1362,7 @@ void Vertex::Restore(Base::XMLReader &reader)
 
     //will restore read to eof looking for "Reference" in old docs??  YES!!
 //    reader.readElement("Reference");
-//    m_reference = (bool)reader.getAttribute<long>("value")==0?false:true;
+//    m_reference = reader.getAttribute<bool>("value");
 
     Tag::Restore(reader, "VertexTag");
 

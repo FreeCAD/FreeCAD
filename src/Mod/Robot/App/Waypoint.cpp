@@ -123,7 +123,7 @@ void Waypoint::Restore(XMLReader& reader)
 
     Velocity = (float)reader.getAttribute<double>("vel");
     Acceleration = (float)reader.getAttribute<double>("acc");
-    Cont = (reader.getAttribute<long>("cont") != 0) ? true : false;
+    Cont = reader.getAttribute<bool>("cont");
     Tool = reader.getAttribute<long>("tool");
     Base = reader.getAttribute<long>("base");
 

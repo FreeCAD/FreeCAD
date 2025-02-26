@@ -2009,7 +2009,7 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
     int polescount = reader.getAttribute<long>("PolesCount");
     int knotscount = reader.getAttribute<long>("KnotsCount");
     int degree = reader.getAttribute<long>("Degree");
-    bool isperiodic = (bool) reader.getAttribute<long>("IsPeriodic");
+    bool isperiodic = reader.getAttribute<bool>("IsPeriodic");
 
     // Handle(Geom_BSplineCurve) spline = new
     // Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,

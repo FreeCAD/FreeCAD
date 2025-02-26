@@ -4239,7 +4239,7 @@ void PropertyXLink::Restore(Base::XMLReader& reader)
     }
 
     setFlag(LinkAllowPartial,
-            reader.hasAttribute("partial") && reader.getAttribute<long>("partial"));
+            reader.hasAttribute("partial") && reader.getAttribute<bool>("partial"));
     std::string name;
     if (file.empty()) {
         name = reader.getName(reader.getAttribute<const char*>("name"));
@@ -5128,7 +5128,7 @@ void PropertyXLinkSubList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("XLinkSubList");
     setFlag(LinkAllowPartial,
-            reader.hasAttribute("partial") && reader.getAttribute<long>("partial"));
+            reader.hasAttribute("partial") && reader.getAttribute<bool>("partial"));
     int count = reader.getAttribute<long>("count");
     atomic_change guard(*this, false);
     _Links.clear();

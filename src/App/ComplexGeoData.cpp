@@ -480,7 +480,7 @@ void ComplexGeoData::Restore(Base::XMLReader& reader)
 
     reader.readElement("ElementMap");
     bool newTag = false;
-    if (reader.hasAttribute("new") && reader.getAttribute<long>("new") > 0) {
+    if (reader.hasAttribute("new") && reader.getAttribute<bool>("new")) {
         reader.readEndElement("ElementMap");
         reader.readElement("ElementMap2");
         newTag = true;

@@ -1524,7 +1524,7 @@ std::vector<App::DocumentObject*> Document::readObjects(Base::XMLReader& reader)
                 }
                 if (reader.hasAttribute("Invalid")) {
                     obj->setStatus(ObjectStatus::Error,
-                                   reader.getAttribute<long>("Invalid") != 0);
+                                   reader.getAttribute<bool>("Invalid"));
                     if (obj->isError() && reader.hasAttribute("Error")) {
                         d->addRecomputeLog(reader.getAttribute<const char*>("Error"), obj);
                     }

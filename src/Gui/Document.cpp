@@ -1687,7 +1687,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
 
             int treeRank = -1;
             if (localreader->hasAttribute("treeRank")) {
-                treeRank = int(localreader->getAttribute<long>("treeRank"));
+                treeRank = localreader->getAttribute<int>("treeRank");
             }
 
             auto pObj = dynamic_cast<ViewProviderDocumentObject*>(getViewProviderByName(name.c_str()));

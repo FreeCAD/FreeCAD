@@ -329,7 +329,7 @@ void PropertyExpressionEngine::Restore(Base::XMLReader& reader)
     reader.readElement("ExpressionEngine");
     int count = reader.getAttribute<double>("count");
 
-    if (reader.hasAttribute("xlink") && reader.getAttribute<long>("xlink")) {
+    if (reader.hasAttribute("xlink") && reader.getAttribute<bool>("xlink")) {
         PropertyExpressionContainer::Restore(reader);
     }
 
