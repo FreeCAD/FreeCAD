@@ -212,7 +212,11 @@ class Shape2DView(DraftObject):
         import Part
         import DraftGeomUtils
         pl = obj.Placement
+        reflected = False
+        final_shape = None
         if obj.Base:
+            if getattr(obj.Base, "Reflected", False):
+                reflected = True
             if utils.get_type(obj.Base) in ["BuildingPart","SectionPlane","IfcAnnotation"]:
                 objs = []
                 if utils.get_type(obj.Base) == "SectionPlane":
@@ -316,7 +320,7 @@ class Shape2DView(DraftObject):
                             else:
                                 cuts.extend(self._get_shapes(sh, onlysolids))
                         comp = Part.makeCompound(cuts)
-                        obj.Shape = self.getProjected(obj,comp,proj)
+                        final_shape = self.getProjected(obj,comp,proj)
                     elif obj.ProjectionMode in ["Cutlines", "Cutfaces"]:
                         if not cutp:  # Cutfaces and Cutlines needs cutp
                             obj.Shape = Part.Shape()
@@ -377,7 +381,7 @@ class Shape2DView(DraftObject):
                         opl = App.Placement(obj.Base.Placement)
                         comp.Placement = opl.inverse()
                         if comp:
-                            obj.Shape = comp
+                            final_shape = comp
 
             elif obj.Base.isDerivedFrom("App::DocumentObjectGroup"):
                 shapes = []
@@ -388,7 +392,7 @@ class Shape2DView(DraftObject):
                 if shapes:
                     import Part
                     comp = Part.makeCompound(shapes)
-                    obj.Shape = self.getProjected(obj,comp,obj.Projection)
+                    final_shape = self.getProjected(obj,comp,obj.Projection)
 
             elif hasattr(obj.Base, "Shape"):
                 if not DraftVecUtils.isNull(obj.Projection):
@@ -405,10 +409,13 @@ class Shape2DView(DraftObject):
                             for f in faces:
                                 views.append(self.getProjected(obj,f,obj.Projection))
                             if views:
-                                obj.Shape = Part.makeCompound(views)
+                                final_shape = Part.makeCompound(views)
                     else:
                         App.Console.PrintWarning(obj.ProjectionMode+" mode not implemented\n")
-
+        if final_shape:
+            if reflected:
+                final.shape.scale(-1)
+            obj.Shape = final_shape
         obj.Placement = pl
         obj.positionBySupport()
         self.props_changed_clear()

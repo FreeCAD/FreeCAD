@@ -87,6 +87,7 @@ class Renderer:
         self.sorted = False
         self.iscut = False
         self.joined = False
+        self.reflected = False
         self.sections = []
         self.hiddenEdges = []
 
@@ -580,6 +581,9 @@ class Renderer:
 
     def getPathData(self,w):
         "Returns a SVG path data string from a 2D wire"
+        if self.reflected:
+            w = w.copy()
+            w.scale(-1)
         def tostr(val):
             return str(round(val,DraftVecUtils.precision()))
         edges = Part.__sortEdges__(w.Edges)

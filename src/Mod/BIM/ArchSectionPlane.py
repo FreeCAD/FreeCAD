@@ -87,7 +87,7 @@ def getSectionData(source):
     return objs,cutplane,onlySolids,clip,direction
 
 
-def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesByObject=False):
+def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesByObject=False,reflected=False):
 
     """
     returns a list of shapes (visible, hidden, cut lines...)
@@ -176,6 +176,13 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
 
                 if groupSshapesByObject:
                     objectSshapes.append((o, tmpSshapes))
+    if reflected:
+        for s in shapes:
+            s.scale(-1)
+        for s in hshapes:
+            s.scale(-1)
+        for s in sshapes:
+            s.scale(-1)
 
     if groupSshapesByObject:
         return shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes
@@ -348,6 +355,10 @@ def getSVG(source,
     if showFill or not svgcache:
         should_update_svg_cache = True
 
+    reflected = False
+    if getattr(source, "Reflected", False):
+        reflected = True
+
     # generating SVG
     if renderMode in ["Coin",2,"Coin mono",3]:
         # render using a coin viewer
@@ -376,6 +387,7 @@ def getSVG(source,
             render = ArchVRM.Renderer()
             render.setWorkingPlane(wp)
             render.addObjects(objs)
+            render.reflected = reflected
             if showHidden:
                 render.cut(cutplane,showHidden)
             else:
@@ -407,9 +419,9 @@ def getSVG(source,
             objectSshapes = source.Proxy.shapecache[6]
         else:
             if showFill:
-                vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes = getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,True)
+                vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes = getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,True, reflected=reflected)
             else:
-                vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden)
+                vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden, reflected=reflected)
                 objectSshapes = []
             source.Proxy.shapecache = [vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes]
 
@@ -824,6 +836,8 @@ class _SectionPlane:
             obj.UseMaterialColorForFill = False
         if not "Depth" in pl:
             obj.addProperty("App::PropertyLength","Depth","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Geometry further than this value will be cut off. Keep zero for unlimited."))
+        if not "Reflected" in pl:
+            obj.addProperty("App::PropertyBool","Reflected","SectionPlane",QT_TRANSLATE_NOOP("App::Property","This indicates to views created from this plane that they need to be inverted."))
         self.Type = "SectionPlane"
 
     def onDocumentRestored(self,obj):

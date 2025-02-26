@@ -80,4 +80,26 @@ class BIM_DrawingView:
         FreeCAD.ActiveDocument.recompute()
 
 
+class BIM_RCP(BIM_DrawingView):
+
+    def GetResources(self):
+        tt = QT_TRANSLATE_NOOP("BIM_RCP", "Creates a Reflected Ceiling Plan (RCP)"
+        "from a selected section plane.")
+        d = {}
+        d["Pixmap"] = "BIM_RCP"
+        d["MenuText"] = QT_TRANSLATE_NOOP("BIM_RCP", "Reflected Ceiling Plan")
+        d['ToolTip'] = tt
+        d['Accel'] = "V, R"
+        return d
+
+    def Activated(self):
+        s = FreeCADGui.Selection.getSelection()
+        if len(s) == 1:
+            s = s[0]
+            if Draft.getType(s) == "SectionPlane":
+                FreeCADGui.doCommand("FreeCAD.ActiveDocument."+s.Name+".Reversed = True")
+                super().Activated()
+
+
+FreeCADGui.addCommand("BIM_RCP", BIM_RCP())
 FreeCADGui.addCommand('BIM_DrawingView', BIM_DrawingView())
