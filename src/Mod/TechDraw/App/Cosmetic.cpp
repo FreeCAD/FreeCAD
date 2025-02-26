@@ -249,7 +249,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     m_format.setVisible(reader.getAttribute<long>("value") != 0);
 
     reader.readElement("GeometryType");
-    GeomType gType = static_cast<GeomType>(reader.getAttribute<long>("value"));
+    GeomType gType = reader.getAttribute<GeomType>("value");
 
     if (gType == GeomType::GENERIC) {
         TechDraw::GenericPtr gen = std::make_shared<TechDraw::Generic> ();
@@ -405,7 +405,7 @@ void GeomFormat::Restore(Base::XMLReader &reader)
     tempColor.fromHexString(tempHex);
     m_format.setColor(tempColor);
     reader.readElement("Visible");
-    m_format.setVisible((int)reader.getAttribute<long>("value") == 0 ? false : true);
+    m_format.setVisible(reader.getAttribute<bool>("value"));
     // older documents may not have the LineNumber element, so we need to check the
     // next entry.  if it is a start element, then we check if it is a start element
     // for LineNumber.

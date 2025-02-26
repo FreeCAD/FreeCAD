@@ -222,10 +222,10 @@ void PropertyTopoShapeList::Restore(Base::XMLReader& reader)
         if (!file.empty()) {
             reader.addFile(file.c_str(), this);
         }
-        else if (reader.hasAttribute("binary") && reader.getAttribute<long>("binary")) {
+        else if (reader.hasAttribute("binary") && reader.getAttribute<bool>("binary")) {
             newShape->importBinary(reader.beginCharStream());
         }
-        else if (reader.hasAttribute("brep") && reader.getAttribute<long>("brep")) {
+        else if (reader.hasAttribute("brep") && reader.getAttribute<bool>("brep")) {
             newShape->importBrep(reader.beginCharStream());
         }
         m_restorePointers.push_back(newShape);

@@ -149,7 +149,7 @@ void CosmeticVertex::Restore(Base::XMLReader &reader)
     reader.readElement("Style");
     style = reader.getAttribute<long>("value");
     reader.readElement("Visible");
-    visible = (int)reader.getAttribute<long>("value")==0?false:true;
+    visible = reader.getAttribute<bool>("value");
     Tag::Restore(reader);
 }
 
