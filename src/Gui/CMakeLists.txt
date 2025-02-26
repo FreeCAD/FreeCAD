@@ -56,6 +56,10 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/TaskView
     ${CMAKE_CURRENT_BINARY_DIR}/Quarter
     ${CMAKE_CURRENT_BINARY_DIR}/DAGView
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
     ${COIN3D_INCLUDE_DIRS}
@@ -103,6 +107,7 @@ if (WIN32)
 endif()
 
 include_directories(
+    SYSTEM
     ${QtCore_INCLUDE_DIRS}
     ${QtWidgets_INCLUDE_DIRS}
     ${QtOpenGL_INCLUDE_DIRS}
@@ -126,6 +131,7 @@ list(APPEND FreeCADGui_LIBS
 
 if(${Qt5WinExtras_FOUND})
     include_directories(
+        SYSTEM
         ${Qt5WinExtras_INCLUDE_DIRS}
     )
     list(APPEND FreeCADGui_LIBS
@@ -138,7 +144,7 @@ IF(SPNAV_FOUND)
         add_definitions(-DSPNAV_USE_X11)
         if (FREECAD_QT_MAJOR_VERSION EQUAL 5 AND UNIX AND NOT APPLE)
             find_package(Qt5X11Extras REQUIRED)
-            include_directories(${Qt5X11Extras_INCLUDE_DIRS})
+            include_directories(SYSTEM ${Qt5X11Extras_INCLUDE_DIRS})
             list(APPEND FreeCADGui_LIBS ${Qt5X11Extras_LIBRARIES})
             # Note that Qt6 has removed the QtX11Extras files
         endif()
@@ -176,6 +182,7 @@ IF(SPNAV_FOUND)
 
     add_definitions(-DSPNAV_FOUND)
     include_directories(
+        SYSTEM
         ${SPNAV_INCLUDE_DIR}
     )
     list(APPEND FreeCADGui_LIBS
@@ -186,6 +193,7 @@ ENDIF(SPNAV_FOUND)
 IF(OCULUS_FOUND)
     add_definitions(-DOCULUS_FOUND)
     include_directories(
+        SYSTEM
         ${OCULUS_INCLUDE_DIRS}
     )
     list(APPEND FreeCADGui_LIBS
@@ -196,6 +204,7 @@ ENDIF(OCULUS_FOUND)
 if(FREECAD_USE_SHIBOKEN)
     add_definitions(-DHAVE_SHIBOKEN${PYSIDE_MAJOR_VERSION})
     include_directories(
+        SYSTEM
         ${SHIBOKEN_INCLUDE_DIR}
     )
     if (SHIBOKEN_LIBRARY)
@@ -217,6 +226,7 @@ endif(FREECAD_USE_SHIBOKEN)
 
 if(FREECAD_USE_PYSIDE)
     include_directories(
+        SYSTEM
         ${PYSIDE_INCLUDE_DIR}
         ${PYSIDE_INCLUDE_DIR}/QtCore
         ${PYSIDE_INCLUDE_DIR}/QtGui
@@ -237,6 +247,7 @@ if(FREECAD_USE_PYSIDE)
         endif ()
     endif (PYSIDE_LIBRARY)
     include_directories(
+        SYSTEM
         ${PYSIDE_INCLUDE_DIR}/QtWidgets
     )
     add_definitions(-DHAVE_PYSIDE${PYSIDE_MAJOR_VERSION})
