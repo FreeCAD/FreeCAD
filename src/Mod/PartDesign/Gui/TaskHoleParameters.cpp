@@ -60,16 +60,20 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    ui->ThreadType->addItem(tr("None"), QByteArray("None"));
-    ui->ThreadType->addItem(tr("ISO metric regular"), QByteArray("ISO"));
-    ui->ThreadType->addItem(tr("ISO metric fine"), QByteArray("ISO"));
-    ui->ThreadType->addItem(tr("UTS coarse"), QByteArray("UTS"));
-    ui->ThreadType->addItem(tr("UTS fine"), QByteArray("UTS"));
-    ui->ThreadType->addItem(tr("UTS extra fine"), QByteArray("UTS"));
-    ui->ThreadType->addItem(tr("ANSI pipes"), QByteArray("None"));
-    ui->ThreadType->addItem(tr("ISO/BSP pipes"), QByteArray("None"));
-    ui->ThreadType->addItem(tr("BSW whitworth"), QByteArray("None"));
-    ui->ThreadType->addItem(tr("BSF whitworth fine"), QByteArray("None"));
+    ui->ThreadType->addItem(tr("None"));
+    ui->ThreadType->addItem(tr("ISO metric regular"));
+    ui->ThreadType->addItem(tr("ISO metric fine"));
+    ui->ThreadType->addItem(tr("UTS coarse"));
+    ui->ThreadType->addItem(tr("UTS fine"));
+    ui->ThreadType->addItem(tr("UTS extra fine"));
+    ui->ThreadType->addItem(tr("ANSI pipes"));
+    ui->ThreadType->addItem(tr("ISO/BSP pipes"));
+    ui->ThreadType->addItem(tr("BSW whitworth"));
+    ui->ThreadType->addItem(tr("BSF whitworth fine"));
+
+    ui->ThreadFit->setItemText(0, tr("Standard / Normal"));
+    ui->ThreadFit->setItemText(1, tr("Tight / Close"));
+    ui->ThreadFit->setItemText(2, tr("Loose / Wide"));
 
     // read values from the hole properties
     auto pcHole = getObject<PartDesign::Hole>();
@@ -628,14 +632,6 @@ void TaskHoleParameters::threadTypeChanged(int index)
         return;
     }
 
-    // A typical case is that users change from an ISO profile to another one.
-    // When they had e.g. the size "M3" in one profile they expect
-    // the same size in the other profile if it exists there.
-    // Besides the size also the thread class" and hole cut type are affected.
-
-    // at first check what type class is used
-    QByteArray TypeClass = ui->ThreadType->itemData(index).toByteArray();
-
     // store the current size
     QString ThreadSizeString = ui->ThreadSize->currentText();
     // store the current class
@@ -655,33 +651,7 @@ void TaskHoleParameters::threadTypeChanged(int index)
     ui->labelSize->setHidden(isNone);
     ui->ClearanceWidget->setHidden(isNone || isThreaded);
 
-    if (TypeClass == QByteArray("ISO")) {
-        // the names of the clearance types are different in ISO and UTS
-        ui->ThreadFit->setItemText(
-            0,
-            QCoreApplication::translate("TaskHoleParameters", "Standard", nullptr));
-        ui->ThreadFit->setItemText(
-            1,
-            QCoreApplication::translate("TaskHoleParameters", "Close", nullptr));
-        ui->ThreadFit->setItemText(
-            2,
-            QCoreApplication::translate("TaskHoleParameters", "Wide", nullptr));
-    }
-    else if (TypeClass == QByteArray("UTS")) {
-        // the names of the clearance types are different in ISO and UTS
-        ui->ThreadFit->setItemText(
-            0,
-            QCoreApplication::translate("TaskHoleParameters", "Normal", nullptr));
-        ui->ThreadFit->setItemText(
-            1,
-            QCoreApplication::translate("TaskHoleParameters", "Close", nullptr));
-        ui->ThreadFit->setItemText(
-            2,
-            QCoreApplication::translate("TaskHoleParameters", "Loose", nullptr));
-    }
-
     // Class and cut type
-    // the class and cut types are the same for both TypeClass so we don't need to distinguish
     // between ISO and UTS
     int threadClassIndex = ui->ThreadClass->findText(ThreadClassString, Qt::MatchContains);
     if (threadClassIndex > -1) {
