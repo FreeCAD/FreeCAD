@@ -68,6 +68,7 @@ function(setup_qt_test)
         endif()
 
         target_include_directories(${_testname}_Tests_run PUBLIC
+            SYSTEM
             ${Python3_INCLUDE_DIRS}
             ${XercesC_INCLUDE_DIRS}
             ${QtGui_INCLUDE_DIRS}
@@ -129,7 +130,7 @@ if ( EXISTS "${CMAKE_SOURCE_DIR}/tests/lib/googletest" )
 endif()
 add_subdirectory(src)
 
-target_include_directories(Tests_run PUBLIC
+target_include_directories(Tests_run SYSTEM PUBLIC
     ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )
