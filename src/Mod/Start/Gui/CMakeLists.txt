@@ -25,20 +25,6 @@ include_directories(
         ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-include_directories(
-        SYSTEM
-        ${Boost_INCLUDE_DIRS}
-        ${COIN3D_INCLUDE_DIRS}
-        ${PYCXX_INCLUDE_DIR}
-        ${Python3_INCLUDE_DIRS}
-        ${QtCore_INCLUDE_DIRS}
-        ${QtSvg_INCLUDE_DIRS}
-        ${QtUiTools_INCLUDE_DIRS}
-        ${QtWidgets_INCLUDE_DIRS}
-        ${XercesC_INCLUDE_DIRS}
-        ${ZLIB_INCLUDE_DIR}
-)
-
 set(StartGui_LIBS
         Start
         FreeCADGui

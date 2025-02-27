@@ -7,7 +7,6 @@
 #include "BRepBuilderAPI_MakeEdge.hxx"
 
 #include "PartTestHelpers.h"
-#include "Mod/Sketcher/App/SketchObject.h"
 
 class FeatureExtrusionTest: public ::testing::Test, public PartTestHelpers::PartTestHelperClass
 {

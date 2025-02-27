@@ -3,14 +3,6 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
 )
 
-include_directories(
-    SYSTEM
-    ${Boost_INCLUDE_DIRS}
-    ${PYCXX_INCLUDE_DIR}
-    ${Python3_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-)
-
 set(TestGui_LIBS
     FreeCADGui
 )

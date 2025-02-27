@@ -4,13 +4,6 @@ endif()
 
 include_directories(
     SYSTEM
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${PYCXX_INCLUDE_DIR}
-    ${Python3_INCLUDE_DIRS}
-    ${ZIPIOS_INCLUDES}
-    ${ZLIB_INCLUDE_DIR}
-    ${XercesC_INCLUDE_DIRS}
     ${OPENSSL_INCLUDE_DIR}
     ${CURL_INCLUDE_DIR}
 )

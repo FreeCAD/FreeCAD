@@ -24,19 +24,12 @@ include_directories(
 
 include_directories(
     SYSTEM
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${PYCXX_INCLUDE_DIR}
-    ${Python3_INCLUDE_DIRS}
-    ${ZIPIOS_INCLUDES}
-    ${ZLIB_INCLUDE_DIR}
     ${SMESH_INCLUDE_DIR}
     ${NETGEN_INCLUDE_DIRS}
     ${VTK_INCLUDE_DIRS}
 )
 
 
-link_directories(${OCC_LIBRARY_DIR})
 link_directories(${SMESH_LIB_PATH})
 
 

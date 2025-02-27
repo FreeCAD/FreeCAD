@@ -5,20 +5,6 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-include_directories(
-    SYSTEM
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${COIN3D_INCLUDE_DIRS}
-    ${PYCXX_INCLUDE_DIR}
-    ${Python3_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${XercesC_INCLUDE_DIRS}
-    ${EIGEN3_INCLUDE_DIR}
-    ${ZIPIOS_INCLUDES}
-)
-link_directories(${OCC_LIBRARY_DIR})
-
 set(SketcherGui_LIBS
     Sketcher
     PartGui
