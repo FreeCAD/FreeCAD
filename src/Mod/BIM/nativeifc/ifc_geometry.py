@@ -22,11 +22,12 @@
 
 """This module contains geometry editing and geometry properties-related tools"""
 
-
 import FreeCAD
+
 import ifcopenshell
-from ifcopenshell.util import unit
-from nativeifc import ifc_tools
+import ifcopenshell.util.unit
+
+from . import ifc_tools
 
 
 def add_geom_properties(obj):

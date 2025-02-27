@@ -63,6 +63,7 @@
 #include "CommandExtensionDims.h"
 #include "DimensionValidators.h"
 #include "DrawGuiUtil.h"
+#include "QGIDatumLabel.h"
 #include "QGIViewDimension.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"

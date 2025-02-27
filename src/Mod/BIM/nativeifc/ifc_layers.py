@@ -23,11 +23,10 @@
 """This NativeIFC module deals with layers"""
 
 
-from nativeifc import ifc_tools
 import ifcopenshell
-from ifcopenshell import util
-from ifcopenshell.util import element
+import ifcopenshell.util.element
 
+from . import ifc_tools
 
 def load_layers(obj):
     """Loads all the layers of an IFC file"""
