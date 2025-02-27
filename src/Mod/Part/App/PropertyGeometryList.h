@@ -68,11 +68,24 @@ public:
 
     /// index operator
     Geometry *operator[] (const int idx) const {
-        return _lValueList[idx];
+        try {
+            using FuncType = Geometry* (PropertyGeometryList::*)(const int) const;
+            FuncType func = &PropertyGeometryList::operator[];
+            return getFromContext<PropertyGeometryList, Geometry*>(func, idx);
+        }
+        catch (const App::NoContextException& e) {
+            return _lValueList[idx];
+        }
     }
 
     const std::vector<Geometry*> &getValues() const {
-        return _lValueList;
+        try {
+            return getFromContext<PropertyGeometryList, const std::vector<Geometry*>&>
+                (&PropertyGeometryList::getValues);
+        }
+        catch (const App::NoContextException& e) {
+            return _lValueList;
+        }
     }
 
     void set1Value(int idx, std::unique_ptr<Geometry> &&);

@@ -30,6 +30,7 @@
 #include <boost/signals2.hpp>
 #include <bitset>
 #include <string>
+#include <utility>
 #include <FCGlobal.h>
 
 #include "ElementNamingUtils.h"
@@ -43,6 +44,26 @@ namespace App
 
 class PropertyContainer;
 class ObjectIdentifier;
+class DocumentObject;
+
+class NoContextException : public std::exception
+{
+private:
+    std::string message;
+
+public:
+    explicit NoContextException(std::string  msg = "No context available")
+        : message(std::move(msg)) {}
+
+    const char* what() const noexcept override {
+        return message.c_str();
+    }
+};
+
+enum class CreatePropOption {
+    Create,
+    DoNotCreate
+};
 
 /** Base class of all properties
  * This is the father of all properties. Properties are objects which are used
@@ -97,10 +118,11 @@ public:
         PropOutput = 27,       // corresponding to Prop_Output
         PropStaticEnd = 28,
 
-        User1 = 28,  // user-defined status
-        User2 = 29,  // user-defined status
-        User3 = 30,  // user-defined status
-        User4 = 31   // user-defined status
+        User1 = 28,    // user-defined status
+        User2 = 29,    // user-defined status
+        User3 = 30,    // user-defined status
+        Exposed = 31,  // user-defined status
+
     };
 
     Property();
@@ -317,6 +339,8 @@ protected:
     /// Return a file name suitable for saving this property
     std::string getFileName(const char* postfix = 0, const char* prefix = 0) const;
 
+    App::Property* getContextProperty(CreatePropOption option = CreatePropOption::DoNotCreate) const;
+
 public:
     // forbidden
     Property(const Property&) = delete;
@@ -333,6 +357,50 @@ private:
 
 public:
     boost::signals2::signal<void(const App::Property&)> signalChanged;
+
+    template<typename DerivedType, typename ReturnType, typename FuncType, typename... ArgTypes>
+        ReturnType getFromContext(FuncType func, ArgTypes&&... args) const
+    {
+        static_assert(std::is_member_function_pointer_v<FuncType>,
+                      "Func must be a member function pointer.");
+
+        App::Property* prop = getContextProperty();
+        if (prop == nullptr) {
+            throw NoContextException();
+        }
+
+        auto derivedProp = dynamic_cast<const DerivedType*>(prop);
+        if (derivedProp == nullptr) {
+            throw Base::RuntimeError("Cannot get value from context");
+        }
+
+        static_assert(std::is_same_v<ReturnType,
+                      decltype(std::invoke(func, std::declval<DerivedType>(), std::forward<ArgTypes>(args)...))>,
+                      "ReturnType must match the return type of the provided function");
+        return std::invoke(func, *derivedProp, std::forward<ArgTypes>(args)...);
+    }
+
+    template<typename DerivedType, typename FuncType, typename... ArgTypes>
+        bool setInContext(FuncType func, ArgTypes&&... args) const
+    {
+        static_assert(std::is_member_function_pointer_v<FuncType>,
+                      "Func must be a member function pointer.");
+
+        auto* derivedProp = dynamic_cast<DerivedType*>(getContextProperty(CreatePropOption::Create));
+        if (derivedProp == nullptr) {
+            return false;
+        }
+
+        if constexpr (std::is_same_v<void,
+                      decltype(std::invoke(func,
+                                           *derivedProp,
+                                           std::forward<ArgTypes>(args)...))>) {
+            std::invoke(func, *derivedProp, std::forward<ArgTypes>(args)...);
+            return true;
+        }
+
+        return false;
+    }
 };
 
 
@@ -539,18 +607,43 @@ public:
 
     friend atomic_change;
 
+    PropertyListsT<T, ListT, ParentT>* getContextProp(CreatePropOption option = CreatePropOption::DoNotCreate) const
+    {
+        Property* prop = this->getContextProperty(option);
+        if (prop) {
+            return dynamic_cast<PropertyListsT<T, ListT, ParentT>*>(prop);
+        }
+        return nullptr;
+    }
+
     virtual void setSize(int newSize, const_reference def)
     {
-        _lValueList.resize(newSize, def);
+        auto prop = this->getContextProp(CreatePropOption::Create);
+        if (prop) {
+            prop->setSize(newSize, def);
+        }
+        else {
+            _lValueList.resize(newSize, def);
+        }
     }
 
     void setSize(int newSize) override
     {
-        _lValueList.resize(newSize);
+        auto prop = this->getContextProp(CreatePropOption::Create);
+        if (prop) {
+            prop->setSize(newSize);
+        }
+        else {
+            _lValueList.resize(newSize);
+        }
     }
 
     int getSize() const override
     {
+        auto prop = this->getContextProp();
+        if (prop) {
+            return prop->getSize();
+        }
         return static_cast<int>(_lValueList.size());
     }
 
@@ -563,10 +656,16 @@ public:
 
     virtual void setValues(const ListT& newValues = ListT())
     {
-        atomic_change guard(*this);
-        this->_touchList.clear();
-        this->_lValueList = newValues;
-        guard.tryInvoke();
+        auto prop = getContextProp(CreatePropOption::Create);
+        if (prop) {
+            prop->setValues(newValues);
+        }
+        else {
+            atomic_change guard(*this);
+            this->_touchList.clear();
+            this->_lValueList = newValues;
+            guard.tryInvoke();
+        }
     }
 
     void setValue(const ListT& newValues = ListT())
@@ -576,6 +675,10 @@ public:
 
     const ListT& getValues() const
     {
+        auto prop = getContextProp();
+        if (prop) {
+            return prop->getValues();
+        }
         return _lValueList;
     }
 
@@ -587,6 +690,10 @@ public:
 
     const_reference operator[](int idx) const
     {
+        auto prop = getContextProp();
+        if (prop) {
+            return (*prop)[idx];
+        }
         return _lValueList[idx];
     }
 

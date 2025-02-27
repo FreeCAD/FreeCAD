@@ -118,22 +118,29 @@ void PropertyQuantity::setPyObject(PyObject* value)
     }
 }
 
-void PropertyQuantity::setPathValue(const ObjectIdentifier& /*path*/, const boost::any& value)
+void PropertyQuantity::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
-    auto q = App::anyToQuantity(value);
-    aboutToSetValue();
-    if (!q.getUnit().isEmpty()) {
-        _Unit = q.getUnit();
+    if (!setInContext<PropertyQuantity>(&PropertyQuantity::setPathValue, path, value)) {
+        auto q = App::anyToQuantity(value);
+        aboutToSetValue();
+        if (!q.getUnit().isEmpty()) {
+            _Unit = q.getUnit();
+        }
+        _dValue = q.getValue();
+        setValue(q.getValue());
     }
-    _dValue = q.getValue();
-    setValue(q.getValue());
 }
 
-const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier& /*path*/) const
+const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier& path) const
 {
-    Quantity quantity(_dValue, _Unit);
-    quantity.setFormat(_Format);
-    return quantity;
+    try {
+        return getFromContext<PropertyQuantity, const boost::any>(&PropertyQuantity::getPathValue, path);
+    }
+    catch (const NoContextException& e) {
+        Quantity quantity(_dValue, _Unit);
+        quantity.setFormat(_Format);
+        return quantity;
+    }
 }
 
 //**************************************************************************

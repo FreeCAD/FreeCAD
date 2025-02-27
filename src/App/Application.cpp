@@ -118,6 +118,7 @@
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
 #include "VarSet.h"
+#include "VariantExtension.h"
 #include "MaterialObject.h"
 #include "MeasureManagerPy.h"
 #include "Origin.h"
@@ -2182,6 +2183,7 @@ void Application::initTypes()
     App::LinkElementPython         ::init();
     App::LinkGroup                 ::init();
     App::LinkGroupPython           ::init();
+    App::VariantExtension          ::init();
     App::VarSet                    ::init();
 
     // Expression classes

@@ -32,6 +32,7 @@
 #include <Base/SmartPtrPy.h>
 
 #include <bitset>
+#include <stack>
 #include <unordered_map>
 #include <memory>
 #include <map>
@@ -264,6 +265,8 @@ public:
     virtual bool hasChildElement() const;
     //@}
 
+    void pushContext(DocumentObject* context);
+    void popContext();
 
     /** DAG handling
         This part of the interface deals with viewing the document as
@@ -316,6 +319,7 @@ public:
      * @param recursive [in]: whether to obtain recursive in list
      */
     std::set<App::DocumentObject*> getInListEx(bool recursive) const;
+    std::set<App::DocumentObject*> getInListWithoutExposed() const;
 
     /// get group if object is part of a group, otherwise 0 is returned
     DocumentObjectGroup* getGroup() const;
@@ -349,6 +353,15 @@ public:
     bool testIfLinkDAGCompatible(App::PropertyLinkSubList& linksTo) const;
     bool testIfLinkDAGCompatible(App::PropertyLinkSub& linkTo) const;
 
+    /// check if the property is exposed
+    bool isExposed(const char* name) const;
+    /// check if the property is exposed
+    bool isExposed(const Property* prop) const;
+    /// check whether any of the properties in the container are exposed
+    bool isExposed() const;
+    void getExposedPropertyList(std::vector<Property*>& props) const;
+
+
     /** Return the element map version of the geometry data stored in the given property
      *
      * @param prop: the geometry property to query for element map version
@@ -377,6 +390,9 @@ public:
      * objects that link it (i.e. its InList) will be recomputed.
      */
     virtual short mustExecute() const;
+
+    DocumentObject* getContext();
+    App::DocumentObjectExecReturn* executeWithContext(DocumentObject* context);
 
     /** Recompute only this feature
      *
@@ -767,6 +783,7 @@ protected:
 
 private:
     void printInvalidLinks() const;
+    bool onlyReferencedByExposedIn(const App::DocumentObject* obj) const;
 
     /// python object of this class and all descendent
 protected:  // attributes
@@ -795,6 +812,8 @@ private:
     mutable std::unordered_map<const char*, App::DocumentObject*, CStringHasher, CStringHasher>
         _outListMap;
     mutable bool _outListCached = false;
+
+    std::stack<DocumentObject*> context;
 };
 
 }  // namespace App

@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 
+#include "App/DocumentObject.h"
+#include "App/Expression.h"
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -35,6 +37,7 @@
 #include "Property.h"
 #include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
+#include "VariantExtension.h"
 
 
 using namespace App;
@@ -164,6 +167,27 @@ void Property::setContainer(PropertyContainer* Father)
     father = Father;
 }
 
+Property* Property::getContextProperty(CreatePropOption option) const
+{
+    PropertyContainer* container = getContainer();
+    if (container == nullptr) { return nullptr; }
+
+    auto obj = dynamic_cast<DocumentObject*>(container);
+    if (obj == nullptr) {return nullptr; }
+
+    DocumentObject* objContext = obj->getContext();
+    if (objContext == nullptr) { return nullptr; }
+
+    const char* name = getName();
+    Property* prop = objContext->getPropertyByName(name);
+
+    if (prop == nullptr && option == CreatePropOption::Create) {
+        return VariantExtension::createPropertyContext(objContext, obj, name);
+    }
+
+    return prop;
+}
+
 void Property::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
     path.setValue(value);
@@ -254,12 +278,18 @@ void Property::destroy(Property* p)
 
 void Property::touch()
 {
-    PropertyCleaner guard(this);
-    if (father) {
-        father->onEarlyChange(this);
-        father->onChanged(this);
+    Property* contextProperty = getContextProperty(CreatePropOption::Create);
+    if (contextProperty) {
+        contextProperty->touch();
     }
-    StatusBits.set(Touched);
+    else {
+        PropertyCleaner guard(this);
+        if (father) {
+            father->onEarlyChange(this);
+            father->onChanged(this);
+        }
+        StatusBits.set(Touched);
+    }
 }
 
 void Property::setReadOnly(bool readOnly)
