@@ -1212,7 +1212,7 @@ FemPostWarpVectorFilter::~FemPostWarpVectorFilter() = default;
 DocumentObjectExecReturn* FemPostWarpVectorFilter::execute()
 {
 
-    const char* val;
+    const char* val = "";
     if (Vector.getValue() >= 0) {
         val = Vector.getValueAsString();
     }
