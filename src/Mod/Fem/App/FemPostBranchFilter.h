@@ -50,7 +50,7 @@ public:
     short mustExecute() const override;
     PyObject* getPyObject() override;
 
-    constexpr const char* getViewProviderName() const override
+    const char* getViewProviderName() const override
     {
         return "FemGui::ViewProviderFemPostBranchFilter";
     }

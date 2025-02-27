@@ -149,7 +149,6 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
                 else:
                     results_name = f"{result_name_prefix}Results"
 
-                multistep_value.append(step_time)
                 res_obj = make_result_mesh(results_name)
                 res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
                 if analysis:
@@ -218,16 +217,29 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
                 res_obj = resulttools.fill_femresult_stats(res_obj)
 
                 # if we have multiple results we delay the pipeline creation
-                if len(m["Results"]) == 1:
+                if number_of_increments == 1:
                     setupPipeline(doc, analysis, results_name, [res_obj])
                 else:
+                    multistep_value.append(step_time)
                     multistep_result.append(res_obj)
 
 
             # we have collected all result objects, lets create the multistep result pipeline
-            if len(m["Results"]) > 1:
-                unit = FreeCAD.Units.Frequency
-                description = "Eigenmodes"
+            if number_of_increments > 1:
+                # figure out type and unit
+                unit = FreeCAD.Units.Unit("")
+                description = "Unknown"
+                if result_analysis_type == "frequency":
+                    unit = FreeCAD.Units.Frequency
+                    description = "Eigenmode"
+                elif result_analysis_type == "buckling":
+                    description = "Buckling factor"
+                elif result_analysis_type == "thermomech":
+                    unit = FreeCAD.Units.TimeSpan
+                    description = "Timesteps"
+                elif result_analysis_type == "static":
+                    description = "Load factor"
+
                 setupPipeline(doc, analysis, results_name, [multistep_result, multistep_value, unit, description])
 
 
