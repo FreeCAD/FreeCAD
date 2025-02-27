@@ -1507,24 +1507,25 @@ StdCmdRefresh::StdCmdRefresh()
         eType = eType | NoTransaction;
 }
 
-void StdCmdRefresh::activated(int iMsg)
+void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
 {
-    Q_UNUSED(iMsg);
-    if (getActiveGuiDocument()) {
-        App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
-        try {
-            doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
-        }
-        catch (Base::Exception& /*e*/) {
-            auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
-                qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
-                            "Please check the Report View for more details.\n\n"
-                            "Do you still want to proceed?"),
-                    QMessageBox::Yes, QMessageBox::No);
-            if(ret == QMessageBox::No)
-                return;
-            doCommand(Doc,"App.activeDocument().recompute(None,True)");
-        }
+    if (!getActiveGuiDocument()) {
+        return;
+    }
+
+    App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
+    try {
+        doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
+    }
+    catch (Base::Exception& /*e*/) {
+        auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
+            qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
+                        "Please check the Report View for more details.\n\n"
+                        "Do you still want to proceed?"),
+                QMessageBox::Yes, QMessageBox::No);
+        if(ret == QMessageBox::No)
+            return;
+        doCommand(Doc,"App.activeDocument().recompute(None,True)");
     }
 }
 
