@@ -36,6 +36,7 @@ add_custom_target(SketcherScripts ALL
     SOURCES ${Sketcher_Scripts} ${Sketcher_Profiles} ${Sketcher_TestScripts}
 )
 include_directories(
+        SYSTEM
         ${EIGEN3_INCLUDE_DIR}
 )
 fc_target_copy_resource(SketcherScripts
