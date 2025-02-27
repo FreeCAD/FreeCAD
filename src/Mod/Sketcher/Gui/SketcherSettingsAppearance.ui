@@ -555,7 +555,40 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="0">
+	  <item row="10" column="0">
+       <widget class="QLabel" name="label_21">
+        <property name="text">
+         <string>External defining geometry</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="Gui::PrefColorButton" name="ExternalDefiningColor">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Color of external defining geometry in edit mode</string>
+        </property>
+        <property name="color" stdset="0">
+         <color>
+          <red>255</red>
+          <green>114</green>
+          <blue>243</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ExternalDefiningColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="0">
        <widget class="QLabel" name="label_45">
         <property name="minimumSize">
          <size>
@@ -568,7 +601,7 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="1">
+      <item row="11" column="1">
        <widget class="Gui::PrefColorButton" name="FullyConstrainedColor">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -594,14 +627,14 @@
         </property>
        </widget>
       </item>
-      <item row="11" column="0">
+      <item row="12" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Invalid sketch</string>
         </property>
        </widget>
       </item>
-      <item row="11" column="1">
+      <item row="12" column="1">
        <widget class="Gui::PrefColorButton" name="InvalidSketchColor">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">

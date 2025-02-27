@@ -241,6 +241,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
              updateColor(drawingParameters.CurveExternalColor, param);
          }},
+        {"ExternalDefiningColor",
+         [this, drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateColor(drawingParameters.CurveExternalDefiningColor, param);
+         }},
         {"HighlightColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
              updateColor(drawingParameters.PreselectColor, param);
