@@ -514,10 +514,10 @@ class _Window(ArchComponent.Component):
         # Execute features in the SketchArch External Add-on
         self.executeSketchArchFeatures(obj, linkObj)
 
-    def getSubFace():
+    def getSubFace(self):
         "returns a subface for creation of subvolume for cutting in a base object"
         # creation of subface from HoleWire (getSubWire)
-        pass
+        raise NotImplementedError
 
     def getSubVolume(self,obj,plac=None, host=None):
 
