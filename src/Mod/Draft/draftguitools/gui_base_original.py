@@ -236,7 +236,7 @@ class DraftTool:
 
         # Make face
         if self.ui:
-            make_face = str(bool(self.ui.makeFace))
+            make_face = str(self.ui.makeFaceMode)
         else:
             make_face = "True"
 
