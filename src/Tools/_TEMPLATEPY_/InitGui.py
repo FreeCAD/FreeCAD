@@ -6,6 +6,7 @@
 
 class _TEMPLATEPY_Workbench(Workbench):
     "_TEMPLATEPY_ workbench object"
+
     Icon = FreeCAD.getResourceDir() + "Mod/_TEMPLATEPY_/Resources/icons/_TEMPLATEPY_Workbench.svg"
     MenuText = "_TEMPLATEPY_"
     ToolTip = "_TEMPLATEPY_ workbench"

@@ -71,7 +71,7 @@ class BIM_Windows_TaskPanel:
     def getStandardButtons(self):
         from PySide import QtGui
 
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def reject(self):
         FreeCADGui.Control.closeDialog()

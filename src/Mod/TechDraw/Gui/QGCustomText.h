@@ -49,9 +49,11 @@ public:
     enum {Type = QGraphicsItem::UserType + 130};
     int type() const override { return Type;}
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
-    QRectF boundingRect() const override;
+
     QRectF tightBoundingRect() const;
+    QRectF alignmentRect() const;
     QPointF tightBoundingAdjust() const;
+
 
     void setHighlighted(bool state);
     virtual void setPrettyNormal();

@@ -25,7 +25,8 @@
 
 #include <Gui/ViewProviderBuilder.h>
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
+#include <Gui/ViewProviderSuppressibleExtension.h>
 #include <Mod/Fem/FemGlobal.h>
 
 class SoCoordinate3;
@@ -144,8 +145,7 @@ public:
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;
     static const char* colorModeEnum[];
-
-    Py::Object PythonObject;
+    Gui::ViewProviderSuppressibleExtension suppressibleExt;
 
 protected:
     /// get called by the container whenever a property has been changed
@@ -185,7 +185,7 @@ private:
     class Private;
 };
 
-using ViewProviderFemMeshPython = Gui::ViewProviderPythonFeatureT<ViewProviderFemMesh>;
+using ViewProviderFemMeshPython = Gui::ViewProviderFeaturePythonT<ViewProviderFemMesh>;
 
 
 }  // namespace FemGui

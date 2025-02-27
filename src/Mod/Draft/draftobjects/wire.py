@@ -34,6 +34,7 @@ import FreeCAD as App
 import DraftGeomUtils
 import DraftVecUtils
 from draftobjects.base import DraftObject
+from draftutils import gui_utils
 from draftutils import params
 
 
@@ -41,7 +42,7 @@ class Wire(DraftObject):
     """The Wire object"""
 
     def __init__(self, obj):
-        super(Wire, self).__init__(obj, "Wire")
+        super().__init__(obj, "Wire")
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The vertices of the wire")
@@ -91,8 +92,12 @@ class Wire(DraftObject):
                 "The area of this object")
         obj.addProperty("App::PropertyArea","Area", "Draft",_tip)
 
-        obj.MakeFace = params.get_param("fillmode")
+        obj.MakeFace = params.get_param("MakeFaceMode")
         obj.Closed = False
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(obj, vp_module="view_wire", vp_class="ViewProviderWire")
 
     def execute(self, obj):
         if self.props_changed_placement_only(obj): # Supplying obj is required because of `Base` and `Tool`.
@@ -226,14 +231,11 @@ class Wire(DraftObject):
                     obj.Points = pts
 
         elif prop == "Length":
-            if (len(obj.Points) == 2
-                    and obj.Length.Value > tol
-                    and obj.Shape
-                    and (not obj.Shape.isNull())
-                    and abs(obj.Length.Value - obj.Shape.Length) > tol):
-                v = obj.Points[-1].sub(obj.Points[0])
-                v = DraftVecUtils.scaleTo(v, obj.Length.Value)
-                obj.Points = [obj.Points[0], obj.Points[0].add(v)]
+            if len(obj.Points) == 2 and obj.Length.Value > tol:
+                vec = obj.Points[-1].sub(obj.Points[0])
+                if abs(obj.Length.Value - vec.Length) > tol:
+                    vec = DraftVecUtils.scaleTo(vec, obj.Length.Value)
+                    obj.Points = [obj.Points[0], obj.Points[0].add(vec)]
 
     def update_start_end(self, obj):
         tol = 1e-7

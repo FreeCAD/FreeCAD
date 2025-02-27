@@ -23,9 +23,14 @@
 
 include_directories(
         ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+        SYSTEM
         ${Boost_INCLUDE_DIRS}
         ${COIN3D_INCLUDE_DIRS}
-        ${PYTHON_INCLUDE_DIRS}
+        ${PYCXX_INCLUDE_DIR}
+        ${Python3_INCLUDE_DIRS}
         ${QtCore_INCLUDE_DIRS}
         ${QtSvg_INCLUDE_DIRS}
         ${QtUiTools_INCLUDE_DIRS}
@@ -76,9 +81,9 @@ SET(StartGuiIcon_SVG
         )
 
 SET(StartGuiThumbnail_PNG
-        Resources/thumbnails/Classic512.png
-        Resources/thumbnails/OpenDark512.png
-        Resources/thumbnails/OpenLight512.png
+        Resources/thumbnails/Theme_thumbnail_classic.png
+        Resources/thumbnails/Theme_thumbnail_dark.png
+        Resources/thumbnails/Theme_thumbnail_light.png
         )
 
 # TODO: Evaluate PCH use with Qt6/QtQuick/Qml
@@ -87,6 +92,16 @@ if (FREECAD_USE_PCH)
     GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${StartGui_SRCS})
     ADD_MSVC_PRECOMPILED_HEADER(StartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif (FREECAD_USE_PCH)
+
+# Add CoreFoundation to StartGui_LIBS on macOS
+if (APPLE)
+    find_library(COREFOUNDATION_LIBRARY CoreFoundation)
+    if (COREFOUNDATION_LIBRARY)
+        list(APPEND StartGui_LIBS ${COREFOUNDATION_LIBRARY})
+    else()
+        message(SEND_ERROR "CoreFoundation not found. Please ensure you're building on macOS.")
+    endif()
+endif()
 
 add_library(StartGui SHARED ${StartGui_SRCS} ${StartGuiIcon_SVG} ${StartGuiThumbnail_PNG})
 # target_link_libraries(StartGui ${StartGui_LIBS} Qt::Quick Qt::Qml Qt::QuickWidgets)

@@ -24,11 +24,13 @@
 """This module contains FreeCAD commands for the Draft workbench"""
 
 import os
-import FreeCAD as App
-from draftutils.translate import translate, QT_TRANSLATE_NOOP
-from draftgeoutils.general import geomType
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import FreeCAD as App
+from draftgeoutils.general import geomType
 from draftobjects.base import DraftObject
+from draftutils import gui_utils
+from draftutils.translate import translate
 
 
 class Hatch(DraftObject):
@@ -64,8 +66,11 @@ class Hatch(DraftObject):
         self.Type = "Hatch"
 
     def onDocumentRestored(self,obj):
-
         self.setProperties(obj)
+        super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(
+            obj, vp_module="view_hatch", vp_class="ViewProviderDraftHatch"
+        )
 
     def dumps(self):
 
@@ -90,6 +95,15 @@ class Hatch(DraftObject):
 
         import Part
         import TechDraw
+
+        # In TechDraw edges longer than 9999.9 (ca. 10m) are considered 'crazy'.
+        # Lines in hatch patterns are also checked. We need to change a parameter:
+        param_grp = App.ParamGet("User parameter:BaseApp/Preferences/Mod/TechDraw/debug")
+        if "allowCrazyEdge" not in param_grp.GetBools():
+            old_allow_crazy_edge = None
+        else:
+            old_allow_crazy_edge = param_grp.GetBool("allowCrazyEdge")
+        param_grp.SetBool("allowCrazyEdge", True)
 
         shapes = []
         for face in obj.Base.Shape.Faces:
@@ -119,26 +133,22 @@ class Hatch(DraftObject):
                         rot = App.Rotation(App.Vector(0, 0, 1), w)
                         mtx = App.Placement(cen, rot).Matrix
                     face = face.transformShape(mtx.inverse()).Faces[0]
-
-                    # In TechDraw edges longer than 9999.9 (ca. 10m) are considered 'crazy'.
-                    # Lines in a hatch pattern are also checked. In the code below 9999 is
-                    # used. With extra scaling based on that value a 1000m x 1000m rectangle
-                    # can be hatched. Tested with pattern: Diagonal4, and pattern scale: 1000.
-                    # With a limit of 9999.9 the same test fails.
-                    if face.BoundBox.DiagonalLength > 9999:
-                        extra_scale = 9999 / face.BoundBox.DiagonalLength
-                    else:
-                        extra_scale = 1.0
-                    face.scale(extra_scale)
                 if obj.Rotation.Value:
                     face.rotate(App.Vector(), App.Vector(0, 0, 1), -obj.Rotation)
-                shape = TechDraw.makeGeomHatch(face, obj.Scale * extra_scale, obj.Pattern, obj.File)
-                shape.scale(1 / extra_scale)
+
+                shape = TechDraw.makeGeomHatch(face, obj.Scale, obj.Pattern, obj.File)
+
                 if obj.Rotation.Value:
                     shape.rotate(App.Vector(), App.Vector(0, 0, 1), obj.Rotation)
                 if obj.Translate:
                     shape = shape.transformShape(mtx)
                 shapes.append(shape)
+
+        if old_allow_crazy_edge is None:
+            param_grp.RemBool("allowCrazyEdge")
+        else:
+            param_grp.SetBool("allowCrazyEdge", old_allow_crazy_edge)
+
         if shapes:
             obj.Shape = Part.makeCompound(shapes)
         self.props_changed_clear()

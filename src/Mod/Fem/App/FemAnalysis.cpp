@@ -97,7 +97,7 @@ PROPERTY_SOURCE_TEMPLATE(Fem::FeaturePython, Fem::DocumentObject)
 template<>
 const char* Fem::FeaturePython::getViewProviderName() const
 {
-    return "Gui::ViewProviderPythonFeature";
+    return "Gui::ViewProviderFeaturePython";
 }
 template<>
 PyObject* Fem::FeaturePython::getPyObject()

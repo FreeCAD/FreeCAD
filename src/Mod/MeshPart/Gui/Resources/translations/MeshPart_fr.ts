@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="280"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>MeshPart</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>Cross-sections...</source>
       <translation>Coupes...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="283"/>
       <source>Cross-sections</source>
       <translation>Coupes</translation>
     </message>
@@ -22,20 +22,20 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="316"/>
+      <location filename="../../Command.cpp" line="317"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Curve on mesh...</source>
       <translation>Courbe sur un maillage...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="319"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
-      <translation>Crée rune courbe approximative au-dessus d'un maillage.
+      <translation>Créer rune courbe approximative au-dessus d'un maillage.
 Cette commande ne fonctionne qu'avec un objet "mesh".</translation>
     </message>
   </context>
@@ -310,7 +310,7 @@ Cette commande ne fonctionne qu'avec un objet "Mesh", pas avec une face ou une s
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
-      <translation>Déflexion angulaire maximale d'une section de maillage à la section suivante</translation>
+      <translation>Déviation angulaire maximale d'une section de maillage à la section suivante</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>

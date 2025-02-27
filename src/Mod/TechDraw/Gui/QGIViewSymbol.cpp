@@ -24,11 +24,12 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cmath>
-# include <sstream>
 
 # include <QGraphicsColorizeEffect>
 # include <QGraphicsItem>
 # include <QRectF>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 #endif
 
 #include <Base/Console.h>
@@ -41,6 +42,7 @@
 #include "QGCustomSvg.h"
 #include "QGDisplayArea.h"
 #include "Rez.h"
+#include "ViewProviderSymbol.h"
 
 
 using namespace TechDrawGui;
@@ -105,22 +107,23 @@ void QGIViewSymbol::draw()
 void QGIViewSymbol::drawSvg()
 {
     auto viewSymbol(dynamic_cast<TechDraw::DrawViewSymbol*>(getViewObject()));
-    if (!viewSymbol)
+    if (!viewSymbol) {
         return;
+    }
 
-    double rezfactor = Rez::getRezFactor();
-    double scaling = viewSymbol->getScale();
-    double pxMm = 3.78;//96px/25.4mm ( CSS/SVG defined value of 96 pixels per inch)
-    //    double pxMm = 3.54;                 //90px/25.4mm ( inkscape value version <= 0.91)
-    //some software uses different px/in, so symbol will need Scale adjusted.
-    //Arch/Draft views are in px and need to be scaled @ rezfactor px/mm to ensure proper representation
-    if (viewSymbol->isDerivedFrom(TechDraw::DrawViewArch::getClassTypeId())
-        || viewSymbol->isDerivedFrom(TechDraw::DrawViewDraft::getClassTypeId())) {
-        scaling = scaling * rezfactor;
+    auto vp = getViewProvider(viewSymbol);
+    auto vps = dynamic_cast<ViewProviderSymbol*>(vp);
+    if (!vp || !vps) {
+        return;
     }
-    else {
-        scaling = scaling * rezfactor / pxMm;
+
+    double scaling{1};
+    if (vps->LegacyScaling.getValue()) {
+        scaling = legacyScaler(viewSymbol);
+    } else {
+        scaling = symbolScaler(viewSymbol);
     }
+
     m_svgItem->setScale(scaling);
 
     QByteArray qba(viewSymbol->Symbol.getValue(), strlen(viewSymbol->Symbol.getValue()));
@@ -162,3 +165,66 @@ void QGIViewSymbol::rotateView()
     double rot = getViewObject()->Rotation.getValue();
     m_displayArea->setRotation(-rot);
 }
+
+//! this is the original scaling logic as used in versions <= 1.0
+//! it does not scale correctly for svg files that use mm units, but is available for
+//! backwards compatibility.  Set General/LegacySvgScaling to true to use this method.
+double QGIViewSymbol::legacyScaler(TechDraw::DrawViewSymbol* feature) const
+{
+    double rezfactor = Rez::getRezFactor();
+    double scaling = feature->getScale();
+    double pxMm = 3.78;//96px/25.4mm ( CSS/SVG defined value of 96 pixels per inch)
+    //    double pxMm = 3.54;                 //90px/25.4mm ( inkscape value version <= 0.91)
+    //some software uses different px/in, so symbol will need Scale adjusted.
+    //Arch/Draft views are in px and need to be scaled @ rezfactor px/mm to ensure proper representation
+    if (feature->isDerivedFrom<TechDraw::DrawViewArch>()
+        || feature->isDerivedFrom<TechDraw::DrawViewDraft>()) {
+        scaling = scaling * rezfactor;
+    }
+    else {
+        scaling = scaling * rezfactor / pxMm;
+    }
+
+    return scaling;
+}
+
+//! new symbol scaling logic as of v1.1
+//! svg in mm scales correctly.  svg in px will be drawn using scene units (0.1 mm)
+//! as pixels.
+double QGIViewSymbol::symbolScaler(TechDraw::DrawViewSymbol* feature) const
+{
+    double scaling = feature->getScale();
+    double rezfactor = Rez::getRezFactor();
+
+    QByteArray qba(feature->Symbol.getValue(), strlen(feature->Symbol.getValue()));
+    QString qSymbolString = QString::fromUtf8(qba);
+
+    const QString pxToken{QStringLiteral("px")};
+    const QString mmToken{QStringLiteral("mm")};
+
+    // heightRegex finds (height="51.8309mm") in the svg text and returns the mm if present
+    QString heightRegex = QStringLiteral(R"(height=\"\d*\.?\d+([a-zA-Z]+)\")");
+    QRegularExpression reHeight(heightRegex);
+    QRegularExpressionMatch matchHeight = reHeight.match(qSymbolString);
+
+    QString matchUnits;
+    if (matchHeight.hasMatch()) {
+        auto capture0 = matchHeight.captured(0);
+        matchUnits = matchHeight.captured(1);
+    }
+
+    // if there are no units specified, or the units are px, we just draw the symbol
+
+    if (matchUnits == mmToken) {
+        auto svgSize = m_svgItem->renderer()->defaultSize();
+        auto vportSize = m_svgItem->renderer()->viewBox();
+        // wf: this calculation works, but I don't know why. :(
+        // hints here: https://stackoverflow.com/questions/49866474/get-svg-size-from-qsvgrenderer
+        // and here: https://stackoverflow.com/questions/7544921/qt-qgraphicssvgitem-renders-too-big-0-5-unit-on-each-side
+        scaling *= rezfactor * vportSize.width() / svgSize.width();
+    }
+
+    return scaling;
+}
+
+

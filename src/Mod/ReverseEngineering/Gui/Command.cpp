@@ -40,7 +40,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/MeshFeature.h>
@@ -77,7 +77,7 @@ void CmdApproxCurve::activated(int)
 {
     App::DocumentObjectT objT;
     auto obj = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
-    if (obj.size() != 1 || !(obj.at(0)->isDerivedFrom(Points::Feature::getClassTypeId()))) {
+    if (obj.size() != 1 || !(obj.at(0)->isDerivedFrom<Points::Feature>())) {
         QMessageBox::warning(Gui::getMainWindow(),
                              qApp->translate("Reen_ApproxSurface", "Wrong selection"),
                              qApp->translate("Reen_ApproxSurface", "Please select a point cloud."));
@@ -113,8 +113,8 @@ void CmdApproxSurface::activated(int)
     std::vector<App::DocumentObject*> obj =
         Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
     if (obj.size() != 1
-        || !(obj.at(0)->isDerivedFrom(Points::Feature::getClassTypeId())
-             || obj.at(0)->isDerivedFrom(Mesh::Feature::getClassTypeId()))) {
+        || !(obj.at(0)->isDerivedFrom<Points::Feature>()
+             || obj.at(0)->isDerivedFrom<Mesh::Feature>())) {
         QMessageBox::warning(
             Gui::getMainWindow(),
             qApp->translate("Reen_ApproxSurface", "Wrong selection"),
@@ -233,7 +233,7 @@ void CmdApproxPlane::activated(int)
 
 bool CmdApproxPlane::isActive()
 {
-    if (getSelection().countObjectsOfType(App::GeoFeature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<App::GeoFeature>() > 0) {
         return true;
     }
     return false;
@@ -301,7 +301,7 @@ void CmdApproxCylinder::activated(int)
 
 bool CmdApproxCylinder::isActive()
 {
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() > 0) {
         return true;
     }
     return false;
@@ -349,7 +349,7 @@ void CmdApproxSphere::activated(int)
 
 bool CmdApproxSphere::isActive()
 {
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() > 0) {
         return true;
     }
     return false;
@@ -407,7 +407,7 @@ void CmdApproxPolynomial::activated(int)
 
 bool CmdApproxPolynomial::isActive()
 {
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() > 0) {
         return true;
     }
     return false;
@@ -442,7 +442,7 @@ bool CmdSegmentation::isActive()
     if (Gui::Control().activeDialog()) {
         return false;
     }
-    return Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Mesh::Feature>() == 1;
 }
 
 DEF_STD_CMD_A(CmdSegmentationManual)
@@ -497,8 +497,7 @@ void CmdSegmentationFromComponents::activated(int)
     for (auto it : sel) {
         std::string internalname = "Segments_";
         internalname += it->getNameInDocument();
-        App::DocumentObjectGroup* group = static_cast<App::DocumentObjectGroup*>(
-            doc->addObject("App::DocumentObjectGroup", internalname.c_str()));
+        auto* group = doc->addObject<App::DocumentObjectGroup>(internalname.c_str());
         std::string labelname = "Segments ";
         labelname += it->Label.getValue();
         group->Label.setValue(labelname);
@@ -507,8 +506,7 @@ void CmdSegmentationFromComponents::activated(int)
         std::vector<std::vector<MeshCore::FacetIndex>> comps = mesh.getComponents();
         for (const auto& jt : comps) {
             std::unique_ptr<Mesh::MeshObject> segment(mesh.meshFromSegment(jt));
-            Mesh::Feature* feaSegm =
-                static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
+            auto* feaSegm = group->addObject<Mesh::Feature>("Segment");
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
             feaSegm->Mesh.finishEditing();
@@ -521,7 +519,7 @@ void CmdSegmentationFromComponents::activated(int)
 
 bool CmdSegmentationFromComponents::isActive()
 {
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() > 0) {
         return true;
     }
     return false;
@@ -576,13 +574,11 @@ void CmdMeshBoundary::activated(int)
         }
 
         if (!shape.IsNull()) {
-            Part::Feature* shapeFea =
-                static_cast<Part::Feature*>(document->addObject("Part::Feature", "Face from mesh"));
+            Part::Feature* shapeFea = document->addObject<Part::Feature>("Face from mesh");
             shapeFea->Shape.setValue(shape);
         }
         else {
-            Part::Feature* shapeFea =
-                static_cast<Part::Feature*>(document->addObject("Part::Feature", "Wire from mesh"));
+            Part::Feature* shapeFea = document->addObject<Part::Feature>("Wire from mesh");
             shapeFea->Shape.setValue(compound);
         }
     }
@@ -591,7 +587,7 @@ void CmdMeshBoundary::activated(int)
 
 bool CmdMeshBoundary::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
+    return Gui::Selection().countObjectsOfType<Mesh::Feature>() > 0;
 }
 
 DEF_STD_CMD_A(CmdPoissonReconstruction)
@@ -654,11 +650,11 @@ void CmdViewTriangulation::activated(int)
             QString document = QString::fromStdString(objT.getDocumentPython());
             QString object = QString::fromStdString(objT.getObjectPython());
 
-            QString command = QString::fromLatin1("%1.addObject('Mesh::Feature', 'View mesh').Mesh "
-                                                  "= ReverseEngineering.viewTriangulation("
-                                                  "Points=%2.Points,"
-                                                  "Width=%2.Width,"
-                                                  "Height=%2.Height)")
+            QString command = QStringLiteral("%1.addObject('Mesh::Feature', 'View mesh').Mesh "
+                                             "= ReverseEngineering.viewTriangulation("
+                                             "Points=%2.Points,"
+                                             "Width=%2.Width,"
+                                             "Height=%2.Height)")
                                   .arg(document, object);
             runCommand(Doc, command.toLatin1());
         }
@@ -676,7 +672,7 @@ void CmdViewTriangulation::activated(int)
 
 bool CmdViewTriangulation::isActive()
 {
-    return (Gui::Selection().countObjectsOfType(Points::Structured::getClassTypeId()) > 0);
+    return (Gui::Selection().countObjectsOfType<Points::Structured>() > 0);
 }
 
 void CreateReverseEngineeringCommands()

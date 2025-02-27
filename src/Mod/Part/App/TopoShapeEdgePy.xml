@@ -340,7 +340,6 @@ p=e.discretize(Number=50,First=3.14)
 s=Part.Compound([Part.Vertex(i) for i in p])
 Part.show(s)
 
-
 p=e.discretize(Angular=0.09,Curvature=0.01,Last=3.14,Minimum=100)
 s=Part.Compound([Part.Vertex(i) for i in p])
 Part.show(s)
@@ -515,22 +514,22 @@ coordinate system.</UserDocu>
       <Attribute Name="StaticMoments" ReadOnly="true">
         <Documentation>
           <UserDocu>Returns Ix, Iy, Iz, the static moments of inertia of the
- current system; i.e. the moments of inertia about the
- three axes of the Cartesian coordinate system.</UserDocu>
+current system; i.e. the moments of inertia about the
+three axes of the Cartesian coordinate system.</UserDocu>
         </Documentation>
         <Parameter Name="StaticMoments" Type="Object"/>
       </Attribute>
       <Attribute Name="PrincipalProperties" ReadOnly="true">
         <Documentation>
           <UserDocu>Computes the principal properties of inertia of the current system.
- There is always a set of axes for which the products
- of inertia of a geometric system are equal to 0; i.e. the
- matrix of inertia of the system is diagonal. These axes
- are the principal axes of inertia. Their origin is
- coincident with the center of mass of the system. The
- associated moments are called the principal moments of inertia.
- This function computes the eigen values and the
- eigen vectors of the matrix of inertia of the system.</UserDocu>
+There is always a set of axes for which the products
+of inertia of a geometric system are equal to 0; i.e. the
+matrix of inertia of the system is diagonal. These axes
+are the principal axes of inertia. Their origin is
+coincident with the center of mass of the system. The
+associated moments are called the principal moments of inertia.
+This function computes the eigen values and the
+eigen vectors of the matrix of inertia of the system.</UserDocu>
         </Documentation>
         <Parameter Name="PrincipalProperties" Type="Dict"/>
       </Attribute>
@@ -540,7 +539,5 @@ coordinate system.</UserDocu>
         </Documentation>
         <Parameter Name="Continuity" Type="String"/>
       </Attribute>
-      <ClassDeclarations>
-      </ClassDeclarations>
     </PythonExport>
 </GenerateModel>

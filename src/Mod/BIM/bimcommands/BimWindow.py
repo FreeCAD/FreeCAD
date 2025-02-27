@@ -155,6 +155,7 @@ class Arch_Window:
 
         import Draft
         from draftutils import gui_utils
+        from draftutils.messages import _wrn
         from ArchWindowPresets import WindowPresets
         self.tracker.off()
         if point is None:
@@ -224,7 +225,7 @@ class Arch_Window:
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        gui_utils.end_all_events()
+        # gui_utils.end_all_events()  # Causes a crash on Linux.
         self.tracker.finalize()
         return
 
@@ -258,7 +259,7 @@ class Arch_Window:
         "sets up a taskbox widget"
 
         from draftutils import params
-        from PySide import QtCore, QtGui, QtSvg
+        from PySide import QtCore, QtGui, QtSvgWidgets
         from ArchWindowPresets import WindowPresets
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
@@ -322,7 +323,7 @@ class Arch_Window:
         self.pic.hide()
 
         # SVG display
-        self.im = QtSvg.QSvgWidget(":/ui/ParametersWindowFixed.svg")
+        self.im = QtSvgWidgets.QSvgWidget(":/ui/ParametersWindowFixed.svg")
         self.im.setMaximumWidth(200)
         self.im.setMinimumHeight(120)
         grid.addWidget(self.im,4,0,1,2)
@@ -393,6 +394,7 @@ class Arch_Window:
 
     def setPreset(self,i):
 
+        from PySide import QtGui
         from draftutils import params
         from ArchWindowPresets import WindowPresets
         self.Preset = i

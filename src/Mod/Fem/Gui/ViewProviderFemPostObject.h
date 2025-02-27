@@ -133,7 +133,7 @@ protected:
     virtual void setupTaskDialog(TaskDlgPost* dlg);
     bool setupPipeline();
     void updateVtk();
-    void setRangeOfColorBar(double min, double max);
+    void setRangeOfColorBar(float min, float max);
 
     SoCoordinate3* m_coordinates;
     SoIndexedPointSet* m_markers;
@@ -171,6 +171,7 @@ private:
     void WriteColorData(bool ResetColorBarRange);
     void WriteTransparency();
     void addAbsoluteField(vtkDataSet* dset, std::string FieldName);
+    void deleteColorBar();
 
     App::Enumeration m_coloringEnum, m_vectorEnum;
     bool m_blockPropertyChanges {false};

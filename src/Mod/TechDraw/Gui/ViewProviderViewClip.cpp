@@ -111,7 +111,7 @@ TechDraw::DrawViewClip* ViewProviderViewClip::getObject() const
 
 void ViewProviderViewClip::dragObject(App::DocumentObject* docObj)
 {
-    if (!docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+    if (!docObj->isDerivedFrom<TechDraw::DrawView>()) {
         return;
     }
 
@@ -122,14 +122,14 @@ void ViewProviderViewClip::dragObject(App::DocumentObject* docObj)
 
 void ViewProviderViewClip::dropObject(App::DocumentObject* docObj)
 {
-    if (docObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+    if (docObj->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
         //DPGI can not be dropped onto the Page if it belongs to DPG
         auto* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(docObj);
         if (dpgi->getPGroup()) {
             return;
         }
     }
-    if (!docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+    if (!docObj->isDerivedFrom<TechDraw::DrawView>()) {
         return;
     }
 

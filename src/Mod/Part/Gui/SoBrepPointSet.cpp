@@ -43,7 +43,7 @@
 # include <Inventor/misc/SoState.h>
 #endif
 
-#include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Selection/SoFCUnifiedSelection.h>
 
 #include "SoBrepPointSet.h"
 

@@ -54,6 +54,7 @@
 
 #include <Python.h>
 #include <QFileInfo>
+#include <QStandardPaths>
 
 // Salomesh
 #include <SMDSAbs_ElementType.hxx>
@@ -125,6 +126,7 @@
 #include <GCPnts_AbscissaPoint.hxx>
 #include <GProp_GProps.hxx>
 #include <GeomAPI_IntCS.hxx>
+#include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BSplineSurface.hxx>
@@ -161,18 +163,23 @@
 #include <vtkHexahedron.h>
 #include <vtkIdList.h>
 #include <vtkImageData.h>
+#include <vtkLine.h>
 #include <vtkMultiBlockDataSet.h>
 #include <vtkMultiPieceDataSet.h>
 #include <vtkPointData.h>
 #include <vtkPolyData.h>
 #include <vtkPyramid.h>
 #include <vtkQuad.h>
+#include <vtkQuadraticEdge.h>
 #include <vtkQuadraticHexahedron.h>
 #include <vtkQuadraticPyramid.h>
 #include <vtkQuadraticQuad.h>
 #include <vtkQuadraticTetra.h>
 #include <vtkQuadraticTriangle.h>
 #include <vtkQuadraticWedge.h>
+#include <vtkStringArray.h>
+#include <vtkFloatArray.h>
+#include <vtkXMLMultiBlockDataWriter.h>
 #include <vtkRectilinearGrid.h>
 #include <vtkStructuredGrid.h>
 #include <vtkTetra.h>

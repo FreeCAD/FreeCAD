@@ -33,6 +33,7 @@
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <App/Part.h>
+#include <App/VarSet.h>
 #include <Base/Console.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
@@ -41,8 +42,8 @@
 #include <Gui/MDIView.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/ViewProviderOrigin.h>
-#include <Gui/ViewProviderOriginFeature.h>
+#include <Gui/ViewProviderCoordinateSystem.h>
+#include <Gui/ViewProviderDatum.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
@@ -73,8 +74,6 @@ ViewProviderBody::ViewProviderBody()
 
 ViewProviderBody::~ViewProviderBody()
 {
-    connectChangedObjectApp.disconnect();
-    connectChangedObjectGui.disconnect();
 }
 
 void ViewProviderBody::attach(App::DocumentObject *pcFeat)
@@ -84,20 +83,6 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
 
     //set default display mode
     onChanged(&DisplayModeBody);
-
-    App::Document *adoc  = pcObject->getDocument ();
-    Gui::Document *gdoc = Gui::Application::Instance->getDocument ( adoc ) ;
-
-    assert ( adoc );
-    assert ( gdoc );
-
-    //NOLINTBEGIN
-    connectChangedObjectApp = adoc->signalChangedObject.connect (
-            std::bind ( &ViewProviderBody::slotChangedObjectApp, this, sp::_1, sp::_2) );
-
-    connectChangedObjectGui = gdoc->signalChangedObject.connect (
-            std::bind ( &ViewProviderBody::slotChangedObjectGui, this, sp::_1, sp::_2) );
-    //NOLINTEND
 }
 
 // TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)
@@ -199,7 +184,7 @@ bool ViewProviderBody::doubleClicked()
 //
 //    // Highlight active body and all its features
 //    //Base::Console().Error("ViewProviderBody::updateTree()\n");
-//    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+//    PartDesign::Body* body = getObject<PartDesign::Body>();
 //    bool active = body->IsActive.getValue();
 //    //Base::Console().Error("Body is %s\n", active ? "active" : "inactive");
 //    ActiveGuiDoc->signalHighlightObject(*this, Gui::Blue, active);
@@ -224,11 +209,9 @@ bool ViewProviderBody::onDelete ( const std::vector<std::string> &) {
 
 void ViewProviderBody::updateData(const App::Property* prop)
 {
-    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+    PartDesign::Body* body = getObject<PartDesign::Body>();
 
     if (prop == &body->Group || prop == &body->BaseFeature) {
-        // update sizes of origins and datums
-        updateOriginDatumSize ();
         //ensure all model features are in visual body mode
         setVisualBodyMode(true);
     }
@@ -242,147 +225,19 @@ void ViewProviderBody::updateData(const App::Property* prop)
         // restore icons
         for (auto feature : features) {
             Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(feature);
-            if (vp && vp->isDerivedFrom(PartDesignGui::ViewProvider::getClassTypeId())) {
+            if (vp && vp->isDerivedFrom<PartDesignGui::ViewProvider>()) {
                 static_cast<PartDesignGui::ViewProvider*>(vp)->setTipIcon(feature == tip);
             }
         }
-
-        if (tip)
-            copyColorsfromTip(tip);
     }
 
     PartGui::ViewProviderPart::updateData(prop);
 }
 
-void ViewProviderBody::copyColorsfromTip(App::DocumentObject* tip) {
-    // update DiffuseColor
-    Gui::ViewProvider* vptip = Gui::Application::Instance->getViewProvider(tip);
-    if (vptip && vptip->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-        auto colors = static_cast<PartGui::ViewProviderPartExt*>(vptip)->DiffuseColor.getValues();
-        this->DiffuseColor.setValues(colors);
-    }
-}
-
-void ViewProviderBody::slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop ) {
-
-    if(App::GetApplication().isRestoring())
-        return;
-
-    if (!obj.isDerivedFrom ( Part::Feature::getClassTypeId () ) ||
-        obj.isDerivedFrom ( Part::BodyBase::getClassTypeId () )    ) { // we are interested only in Part::Features, not in bodies
-        return;
-    }
-
-    const Part::Feature *feat = static_cast <const Part::Feature *>(&obj);
-
-    if ( &feat->Shape != &prop && &feat->Placement != &prop) { // react only on changes in shapes and placement
-        return;
-    }
-
-    PartDesign::Body *body = static_cast<PartDesign::Body*> ( getObject() );
-    if ( body && body->hasObject (&obj ) ) {
-        updateOriginDatumSize ();
-    }
-}
-
-void ViewProviderBody::slotChangedObjectGui (
-        const Gui::ViewProviderDocumentObject& vp, const App::Property& prop )
-{
-    if (&vp.Visibility != &prop) { // react only on visibility changes
-        return;
-    }
-
-    if ( !vp.isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) &&
-         !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () ) ) {
-        // Ignore origins to avoid infinite recursion (not likely in a well-formed document,
-        //          but may happen in documents designed in old versions of assembly branch )
-        return;
-    }
-
-    PartDesign::Body *body = static_cast<PartDesign::Body*> ( getObject() );
-    App::DocumentObject *obj = vp.getObject ();
-
-    if ( body && obj && body->hasObject ( obj ) ) {
-        updateOriginDatumSize ();
-    }
-}
-
-void ViewProviderBody::updateOriginDatumSize () {
-    PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
-
-    // Use different bounding boxes for datums and for origins:
-    Gui::Document* gdoc = Gui::Application::Instance->getDocument(getObject()->getDocument());
-    if(!gdoc)
-        return;
-
-    Gui::MDIView* view = gdoc->getViewOfViewProvider(this);
-    if(!view)
-        return;
-
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
-
-    const auto & model = body->getFullModel ();
-
-    // BBox for Datums is calculated from all visible objects but treating datums as their basepoints only
-    SbBox3f bboxDatums = ViewProviderDatum::getRelevantBoundBox ( bboxAction, model );
-    // BBox for origin should take into account datums size also
-    SbBox3f bboxOrigins = bboxDatums;
-
-    for(App::DocumentObject* obj : model) {
-        if ( obj->isDerivedFrom ( Part::Datum::getClassTypeId () ) ) {
-            ViewProvider *vp = Gui::Application::Instance->getViewProvider(obj);
-            if (!vp) { continue; }
-
-            ViewProviderDatum *vpDatum = static_cast <ViewProviderDatum *> (vp) ;
-
-            vpDatum->setExtents ( bboxDatums );
-
-            bboxAction.apply ( vp->getRoot () );
-            bboxOrigins.extendBy ( bboxAction.getBoundingBox () );
-        }
-    }
-
-    // get the bounding box values
-    SbVec3f max = bboxOrigins.getMax();
-    SbVec3f min = bboxOrigins.getMin();
-
-    // obtain an Origin and it's ViewProvider
-    App::Origin* origin = nullptr;
-    Gui::ViewProviderOrigin* vpOrigin = nullptr;
-    try {
-        origin = body->getOrigin ();
-        assert (origin);
-
-        Gui::ViewProvider *vp = Gui::Application::Instance->getViewProvider(origin);
-        if (!vp) {
-            throw Base::ValueError ("No view provider linked to the Origin");
-        }
-        assert ( vp->isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) );
-        vpOrigin = static_cast <Gui::ViewProviderOrigin *> ( vp );
-    } catch (const Base::Exception &ex) {
-        if(!getExtendedViewProvider()->getDocument()->getDocument()->testStatus(App::Document::Restoring))
-            Base::Console().Error ("%s\n", ex.what() );
-        return;
-    }
-
-    // calculate the desired origin size
-    Base::Vector3d size;
-
-    for (uint_fast8_t i=0; i<3; i++) {
-        size[i] = std::max ( fabs ( max[i] ), fabs ( min[i] ) );
-        if (size[i] < Precision::Confusion() ) {
-            size[i] = Gui::ViewProviderOrigin::defaultSize();
-        }
-    }
-
-    vpOrigin->Size.setValue ( size*1.2 );
-}
-
 void ViewProviderBody::onChanged(const App::Property* prop) {
 
     if(prop == &DisplayModeBody) {
-        auto body = dynamic_cast<PartDesign::Body*>(getObject());
+        auto body = getObject<PartDesign::Body>();
 
         if ( DisplayModeBody.getValue() == 0 )  {
             //if we are in an override mode we need to make sure to come out, because
@@ -426,7 +281,6 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
     if (prop == &Visibility ||
         prop == &Selectable ||
         prop == &DisplayModeBody ||
-        prop == &DiffuseColor ||
         prop == &PointColorArray ||
         prop == &LineColorArray) {
         return;
@@ -446,13 +300,16 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
     auto features = body->Group.getValues();
     for (auto feature : features) {
 
-        if (!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        if (!feature->isDerivedFrom<PartDesign::Feature>()) {
             continue;
         }
 
         //copy over the properties data
-        auto fprop = gdoc->getViewProvider(feature)->getPropertyByName(prop->getName());
-        fprop->Paste(*prop);
+        if (Gui::ViewProvider* vp = gdoc->getViewProvider(feature)) {
+            if (auto fprop = vp->getPropertyByName(prop->getName())) {
+                fprop->Paste(*prop);
+            }
+        }
     }
 }
 
@@ -464,7 +321,7 @@ void ViewProviderBody::setVisualBodyMode(bool bodymode) {
     auto features = body->Group.getValues();
     for(auto feature : features) {
 
-        if(!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        if(!feature->isDerivedFrom<PartDesign::Feature>())
             continue;
 
         auto* vp = static_cast<PartDesignGui::ViewProvider*>(gdoc->getViewProvider(feature));
@@ -485,17 +342,28 @@ bool ViewProviderBody::canDropObjects() const
 {
     // if the BaseFeature property is marked as hidden or read-only then
     // it's not allowed to modify it.
-    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
-    if (body->BaseFeature.testStatus(App::Property::Status::Hidden))
+    auto* body = getObject<PartDesign::Body>();
+    if (body->BaseFeature.testStatus(App::Property::Status::Hidden)
+        || body->BaseFeature.testStatus(App::Property::Status::ReadOnly)) {
         return false;
-    if (body->BaseFeature.testStatus(App::Property::Status::ReadOnly))
-        return false;
+    }
     return true;
 }
 
 bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 {
-    if (!obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::VarSet>()) {
+        return true;
+    }
+    else if (obj->isDerivedFrom<App::DatumElement>()) {
+        // accept only datums that are not part of a LCS.
+        auto* lcs = static_cast<App::DatumElement*>(obj)->getLCS();
+        return !lcs;
+    }
+    else if (obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
+        return !obj->isDerivedFrom<App::Origin>();
+    }
+    else if (!obj->isDerivedFrom<Part::Feature>()) {
         return false;
     }
     else if (PartDesign::Body::findBodyOf(obj)) {
@@ -515,8 +383,10 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 
 void ViewProviderBody::dropObject(App::DocumentObject* obj)
 {
-    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
-    if (obj->isDerivedFrom<Part::Part2DObject>()) {
+    auto* body = getObject<PartDesign::Body>();
+    if (obj->isDerivedFrom<Part::Part2DObject>()
+        || obj->isDerivedFrom<App::DatumElement>()
+        || obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
         body->addObject(obj);
     }
     else if (PartDesign::Body::isAllowed(obj) && PartDesignGui::isFeatureMovable(obj)) {

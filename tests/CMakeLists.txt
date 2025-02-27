@@ -1,3 +1,15 @@
+if ( EXISTS "${CMAKE_SOURCE_DIR}/tests/lib/googletest" )
+    include_directories( ${CMAKE_SOURCE_DIR}/tests/lib/googletest/include/ )
+    include_directories( ${CMAKE_SOURCE_DIR}/tests/lib/googlemock/include/ )
+else()
+    find_package(GTest)
+    if( GTest_FOUND )
+        message( STATUS "Found Google Test: version ${GTest_VERSION}" )
+    else()
+        message( SEND_ERROR "The Google Test submodule is not available. Please run git submodule update --init" )
+    endif()
+endif()
+
 if(MSVC)
     add_compile_options(/wd4251)
 
@@ -28,15 +40,13 @@ if(MSVC)
     endif()
 endif()
 
-add_compile_options("-DFC_USE_TNP_FIX")
-
 if(WIN32)
     add_definitions(-DCOIN_DLL -D_USE_MATH_DEFINES)
 endif(WIN32)
 
 if(NOT BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND Google_Tests_LIBS
-        ${PYTHON_LIBRARIES}
+        ${Python3_LIBRARIES}
     )
 endif()
 
@@ -53,13 +63,16 @@ function(setup_qt_test)
 
         if(NOT BUILD_DYNAMIC_LINK_PYTHON)
             list(APPEND ${_testname}_LIBS
-                ${PYTHON_LIBRARIES}
+                ${Python3_LIBRARIES}
             )
         endif()
 
         target_include_directories(${_testname}_Tests_run PUBLIC
+            SYSTEM
+            ${PYCXX_INCLUDE_DIR}
             ${Python3_INCLUDE_DIRS}
             ${XercesC_INCLUDE_DIRS}
+            ${ZIPIOS_INCLUDES}
             ${QtGui_INCLUDE_DIRS}
             ${QtWidgets_INCLUDE_DIRS}
             ${QtTest_INCLUDE_DIRS}
@@ -86,9 +99,15 @@ endif(BUILD_ASSEMBLY)
 if(BUILD_MATERIAL)
   list (APPEND TestExecutables Material_tests_run)
 endif(BUILD_MATERIAL)
+if(BUILD_MEASURE)
+  list (APPEND TestExecutables Measure_tests_run)
+endif(BUILD_MEASURE)
 if(BUILD_MESH)
   list (APPEND TestExecutables Mesh_tests_run)
 endif(BUILD_MESH)
+if(BUILD_MESH_PART)
+  list (APPEND TestExecutables MeshPart_tests_run)
+endif(BUILD_MESH_PART)
 if(BUILD_PART)
   list (APPEND TestExecutables Part_tests_run)
 endif(BUILD_PART)
@@ -101,6 +120,9 @@ endif(BUILD_POINTS)
 if(BUILD_SKETCHER)
   list (APPEND TestExecutables Sketcher_tests_run)
 endif(BUILD_SKETCHER)
+if(BUILD_SPREADSHEET)
+  list (APPEND TestExecutables Spreadsheet_tests_run)
+endif()
 
 # -------------------------
 
@@ -108,12 +130,16 @@ foreach (exe ${TestExecutables})
     add_executable(${exe})
 endforeach()
 
-add_subdirectory(lib)
+if ( EXISTS "${CMAKE_SOURCE_DIR}/tests/lib/googletest" )
+    add_subdirectory(lib)
+endif()
 add_subdirectory(src)
 
-target_include_directories(Tests_run PUBLIC
+target_include_directories(Tests_run SYSTEM PUBLIC
+    ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
 )
 target_link_libraries(Tests_run
     gtest_main

@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2023 Peter McB                                          *
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,6 +53,7 @@
 #include "FemMeshShapeNetgenObject.h"
 #include "FemMeshShapeObject.h"
 #include "FemResultObject.h"
+#include "FemSetElementNodesObject.h"
 #include "FemSetElementsObject.h"
 #include "FemSetFacesObject.h"
 #include "FemSetGeometryObject.h"
@@ -159,6 +161,8 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemMesh                              ::init();
     Fem::FemMeshObject                        ::init();
     Fem::FemMeshObjectPython                  ::init();
+    Fem::FemMeshShapeBaseObject               ::init();
+    Fem::FemMeshShapeBaseObjectPython         ::init();
     Fem::FemMeshShapeObject                   ::init();
     Fem::FemMeshShapeNetgenObject             ::init();
     Fem::PropertyFemMesh                      ::init();
@@ -167,6 +171,7 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemResultObjectPython                ::init();
 
     Fem::FemSetObject                         ::init();
+    Fem::FemSetElementNodesObject             ::init();
     Fem::FemSetElementsObject                 ::init();
     Fem::FemSetFacesObject                    ::init();
     Fem::FemSetGeometryObject                 ::init();
@@ -176,6 +181,8 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemSolverObjectPython                ::init();
 
 #ifdef FC_USE_VTK
+    Fem::FemPostSmoothFilterExtension         ::init();
+
     Fem::FemPostObject                        ::init();
     Fem::FemPostPipeline                      ::init();
     Fem::FemPostFilter                        ::init();

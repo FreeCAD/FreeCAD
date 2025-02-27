@@ -12,9 +12,15 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
     ${YAML_CPP_INCLUDE_DIR}
 )
@@ -26,6 +32,7 @@ set(Materials_LIBS
 )
 
 include_directories(
+    SYSTEM
     ${QtConcurrent_INCLUDE_DIRS}
 )
 list(APPEND Materials_LIBS
@@ -55,23 +62,23 @@ generate_from_xml(UUIDsPy)
 SET(Python_SRCS
     Exceptions.h
     Array2DPy.xml
-    Array2DPyImpl.cpp
+    Array2DPyImp.cpp
     Array3DPy.xml
-    Array3DPyImpl.cpp
+    Array3DPyImp.cpp
     MaterialManagerPy.xml
-    MaterialManagerPyImpl.cpp
+    MaterialManagerPyImp.cpp
     MaterialPy.xml
-    MaterialPyImpl.cpp
+    MaterialPyImp.cpp
     MaterialFilterPy.xml
-    MaterialFilterPyImpl.cpp
+    MaterialFilterPyImp.cpp
     ModelManagerPy.xml
-    ModelManagerPyImpl.cpp
+    ModelManagerPyImp.cpp
     ModelPropertyPy.xml
-    ModelPropertyPyImpl.cpp
+    ModelPropertyPyImp.cpp
     ModelPy.xml
-    ModelPyImpl.cpp
+    ModelPyImp.cpp
     UUIDsPy.xml
-    UUIDsPyImpl.cpp
+    UUIDsPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 

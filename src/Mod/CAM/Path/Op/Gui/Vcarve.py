@@ -63,17 +63,12 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             base = job.Proxy.resourceClone(job, sel.Object)
             if not base:
                 Path.Log.notice(
-                    (
-                        translate("CAM", "%s is not a Base Model object of the job %s")
-                        + "\n"
-                    )
+                    (translate("CAM", "%s is not a Base Model object of the job %s") + "\n")
                     % (sel.Object.Label, job.Label)
                 )
                 continue
             if base in shapes:
-                Path.Log.notice(
-                    "Base shape %s already in the list".format(sel.Object.Label)
-                )
+                Path.Log.notice("Base shape %s already in the list".format(sel.Object.Label))
                 continue
             if base.isDerivedFrom("Part::Part2DObject"):
                 if sel.HasSubObjects:
@@ -117,9 +112,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             sub = item.data(self.super().DataObjectSub)
             if not sub:
                 shapes.append(obj)
-        Path.Log.debug(
-            "Setting new base shapes: %s -> %s" % (self.obj.BaseShapes, shapes)
-        )
+        Path.Log.debug("Setting new base shapes: %s -> %s" % (self.obj.BaseShapes, shapes))
         self.obj.BaseShapes = shapes
         return self.super().updateBase()
 
@@ -170,12 +163,22 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.FinishingPass = self.form.finishingPassEnabled.isChecked()
 
         if obj.OptimizeMovements != self.form.optimizeMovementsEnabled.isChecked():
-             obj.OptimizeMovements = self.form.optimizeMovementsEnabled.isChecked()
+            obj.OptimizeMovements = self.form.optimizeMovementsEnabled.isChecked()
 
         self.finishingPassZOffsetSpinBox.updateProperty()
 
-        self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
+
+        try:
+            self.updateToolController(obj, self.form.toolController)
+        except PathUtils.PathNoTCExistsException:
+            title = translate("CAM", "No valid toolcontroller")
+            message = translate(
+                "CAM",
+                "This operation requires a tool controller with a v-bit tool",
+            )
+
+            self.show_error_message(title, message)
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
@@ -200,7 +203,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.finishingPassZOffset.editingFinished)
 
         signals.append(self.form.optimizeMovementsEnabled.stateChanged)
-
 
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)

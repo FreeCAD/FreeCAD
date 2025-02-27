@@ -42,9 +42,11 @@ public:
     // data
     static void importVTKMesh(vtkSmartPointer<vtkDataSet> grid, FemMesh* mesh, float scale = 1.0);
 
-    // extract data from FreCAD FEM mesh and fill a vtkUnstructuredGrid instance with that data
+    // extract data from FreCAD FEM mesh and fill a vtkUnstructuredGrid instance with that data. Set
+    // `highest` to false to export all elements levels.
     static void exportVTKMesh(const FemMesh* mesh,
                               vtkSmartPointer<vtkUnstructuredGrid> grid,
+                              bool highest = true,
                               float scale = 1.0);
 
     // extract data from vtkUnstructuredGrid object and fill a FreeCAD FEM result object with that
@@ -61,7 +63,7 @@ public:
     static FemMesh* readVTKMesh(const char* filename, FemMesh* mesh);
 
     // FemMesh write to vtkUnstructuredGrid data file
-    static void writeVTKMesh(const char* Filename, const FemMesh* mesh);
+    static void writeVTKMesh(const char* Filename, const FemMesh* mesh, bool highest = true);
 
     // FemResult (activeObject or created if res= NULL) read from vtkUnstructuredGrid dataset file
     static App::DocumentObject* readResult(const char* Filename,
@@ -69,6 +71,8 @@ public:
 
     // write FemResult (activeObject if res= NULL) to vtkUnstructuredGrid dataset file
     static void writeResult(const char* filename, const App::DocumentObject* res = nullptr);
+
+    static void frdToVTK(const char* filename);
 };
 }  // namespace Fem
 

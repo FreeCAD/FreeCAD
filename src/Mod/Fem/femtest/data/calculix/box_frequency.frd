@@ -1,14 +1,14 @@
     1C
-    1UUSER                                                              
-    1UDATE              07.february.2018                                
-    1UTIME              13:19:12                                        
-    1UHOST                                                              
-    1UPGM               CalculiX                                        
-    1UVERSION           Version 2.11                             
-    1UCOMPILETIME       So 31. Jul 13:26:31 CEST 2016                    
-    1UDIR                                                               
-    1UDBN                                                               
-    1UMAT    1MECHANICALMATERIAL                                        
+    1UUSER
+    1UDATE              07.february.2018
+    1UTIME              13:19:12
+    1UHOST
+    1UPGM               CalculiX
+    1UVERSION           Version 2.11
+    1UCOMPILETIME       So 31. Jul 13:26:31 CEST 2016
+    1UDIR
+    1UDBN
+    1UMAT    1MECHANICALMATERIAL
     2C                           280                                     1
  -1         1 0.00000E+00 0.00000E+00 0.00000E+00
  -1         2 0.00000E+00 0.00000E+00 1.00000E+01
@@ -551,12 +551,12 @@
  -1       129    6    0    1
  -2        45        15       122        49        67       138       280        61        69       260
  -3
-    1PSTEP                         1           1           1          
-    1PGM                1.000000E+00                                  
-    1PGK                1.483748E-02                                  
-    1PHID                         -1                                  
-    1PSUBC                         0                                  
-    1PMODE                         1                                  
+    1PSTEP                         1           1           1
+    1PGM                1.000000E+00
+    1PGK                1.483748E-02
+    1PHID                         -1
+    1PSUBC                         0
+    1PMODE                         1
   100CL  101 1.93865E-02         280                     2    1MODAL      1
  -4  DISP        4    1
  -5  D1          1    2    1    0
@@ -844,12 +844,12 @@
  -1       279 1.91139E+01 3.65645E+02-3.20043E+01
  -1       280 2.39365E+02 4.59527E+02-1.66365E+01
  -3
-    1PSTEP                         2           1           1          
-    1PGM                1.000000E+00                                  
-    1PGK                1.483748E-02                                  
-    1PHID                         -1                                  
-    1PSUBC                         0                                  
-    1PMODE                         1                                  
+    1PSTEP                         2           1           1
+    1PGM                1.000000E+00
+    1PGK                1.483748E-02
+    1PHID                         -1
+    1PSUBC                         0
+    1PMODE                         1
   100CL  101 1.93865E-02         280                     2    1MODAL      1
  -4  STRESS      6    1
  -5  SXX         1    4    1    1
@@ -1139,12 +1139,12 @@
  -1       279 6.24174E+02 2.07621E+02 8.82868E+02 7.06900E+02 2.04411E+02-6.63187E+02
  -1       280-6.65154E+02-2.38160E+02-7.50590E+01-2.70282E+02 5.57057E+02-4.57540E+02
  -3
-    1PSTEP                         3           1           1          
-    1PGM                1.000000E+00                                  
-    1PGK                1.483748E-02                                  
-    1PHID                         -1                                  
-    1PSUBC                         0                                  
-    1PMODE                         1                                  
+    1PSTEP                         3           1           1
+    1PGM                1.000000E+00
+    1PGK                1.483748E-02
+    1PHID                         -1
+    1PSUBC                         0
+    1PMODE                         1
   100CL  101 1.93865E-02         280                     2    1MODAL      1
  -4  TOSTRAIN    6    1
  -5  EXX         1    4    1    1

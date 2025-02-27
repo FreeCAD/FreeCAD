@@ -78,6 +78,11 @@ public:
 
     void Restore(Base::XMLReader& reader) override;
 
+    void getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
+                    App::DocumentObject* obj,
+                    const char* subname = nullptr,
+                    bool all = false) const override;
+
     void copyCells(Base::Writer& writer, const std::vector<App::Range>& ranges) const;
 
     void pasteCells(Base::XMLReader& reader, App::Range dstRange);
@@ -118,6 +123,9 @@ public:
     const Cell* getValueFromAlias(const std::string& alias) const;
 
     bool isValidAlias(const std::string& candidate);
+
+    // checks whether candidate is of form A1, C4, etc.
+    bool isValidCellAddressName(const std::string& candidate);
 
     std::vector<App::CellAddress> getUsedCells() const;
 

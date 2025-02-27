@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="612"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mreža</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="613"/>
@@ -1558,7 +1558,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Adaptive</source>
-      <translation>Prilagodljiv</translation>
+      <translation type="unfinished">Adaptive</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="101"/>
@@ -1756,7 +1756,7 @@ to a smoother appearance.
       <location filename="../../RemoveComponents.ui" line="52"/>
       <location filename="../../RemoveComponents.ui" line="138"/>
       <source>All</source>
-      <translation>Sva</translation>
+      <translation>Svi</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="72"/>

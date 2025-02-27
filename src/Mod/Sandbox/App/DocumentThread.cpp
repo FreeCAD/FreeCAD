@@ -218,7 +218,7 @@ void DocumentTestThread::run()
     Base::Console().Message("DocumentTestThread::run()\n");
     App::Document* doc = App::GetApplication().getActiveDocument();
     DocumentProtector dp(doc);
-    SandboxObject* obj = static_cast<SandboxObject*>(dp.addObject("Sandbox::SandboxObject"));
+    SandboxObject* obj = dp.addObject<SandboxObject>();
 
     DocumentObjectProtector op(obj);
     App::PropertyString Name;Name.setValue("MyLabel");

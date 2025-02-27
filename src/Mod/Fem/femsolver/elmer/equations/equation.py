@@ -40,7 +40,7 @@ if App.GuiUp:
 class Proxy(equationbase.BaseProxy):
 
     def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
+        super().__init__(obj)
         obj.addProperty(
             "App::PropertyInteger",
             "Priority",
@@ -49,7 +49,7 @@ class Proxy(equationbase.BaseProxy):
                 "Number of your choice\n"
                 "The equation with highest number\n"
                 "will be solved first."
-            )
+            ),
         )
 
 
@@ -72,21 +72,20 @@ class ViewProxy(equationbase.BaseViewProxy):
         return None
 
 
-class _TaskPanel(object):
+class _TaskPanel:
 
     def __init__(self, obj):
         self._obj = obj
         self._refWidget = selection_widgets.SolidSelector()
         self._refWidget.setReferences(obj.References)
-        propWidget = obj.ViewObject.Proxy.getTaskWidget(
-            obj.ViewObject)
+        propWidget = obj.ViewObject.Proxy.getTaskWidget(obj.ViewObject)
         if propWidget is None:
             self.form = self._refWidget
         else:
             self.form = [self.refWidget, propWidget]
         analysis = obj.getParentGroup()
         self._mesh = membertools.get_single_member(analysis, "Fem::FemMeshObject")
-        self._part = self._mesh.Part if self._mesh is not None else None
+        self._part = self._mesh.Shape if self._mesh is not None else None
         self._partVisible = None
         self._meshVisible = None
 

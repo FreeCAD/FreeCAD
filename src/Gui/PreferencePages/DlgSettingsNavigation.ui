@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
-    <height>687</height>
+    <width>548</width>
+    <height>795</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -65,7 +65,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>91</width>
+          <width>20</width>
           <height>20</height>
          </size>
         </property>
@@ -142,6 +142,12 @@
       </item>
       <item row="1" column="4">
        <widget class="Gui::PrefComboBox" name="naviCubeFontName">
+        <property name="maximumSize">
+         <size>
+          <width>240</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="toolTip">
          <string>Font name of the navigation cube</string>
         </property>
@@ -175,6 +181,9 @@
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="suffix">
+         <string notr="true"> px</string>
         </property>
         <property name="minimum">
          <number>10</number>
@@ -217,6 +226,9 @@
         <property name="toolTip">
          <string>Opacity of the navigation cube when not focused</string>
         </property>
+        <property name="suffix">
+         <string notr="true">%</string>
+        </property>
         <property name="minimum">
          <number>1</number>
         </property>
@@ -225,9 +237,6 @@
         </property>
         <property name="value">
          <number>50</number>
-        </property>
-        <property name="suffix">
-         <string notr="true">%</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>InactiveOpacity</cstring>
@@ -305,16 +314,16 @@
          <number>1</number>
         </property>
         <property name="minimum">
-         <double>1.0</double>
+         <double>1.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>100.0</double>
+         <double>100.000000000000000</double>
         </property>
         <property name="singleStep">
-         <double>0.5</double>
+         <double>0.500000000000000</double>
         </property>
         <property name="value">
-         <double>5.0</double>
+         <double>5.000000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>RotationCenterSize</cstring>
@@ -329,7 +338,7 @@
         <property name="toolTip">
          <string>The color of the rotation center indicator</string>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color alpha="51">
           <red>255</red>
           <green>0</green>
@@ -566,40 +575,28 @@ Free Turntable: the part will be rotated around the z-axis.</string>
        </widget>
       </item>
       <item row="4" column="2">
-       <widget class="PrefUnitSpinBox" name="qspinNewDocScale" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>120</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
+       <widget class="Gui::PrefUnitSpinBox" name="qspinNewDocScale">
         <property name="toolTip">
          <string>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</string>
         </property>
         <property name="unit" stdset="0">
-         <string>mm</string>
+         <string notr="true">mm</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.000010000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>10000000.000000000000000</double>
+        </property>
+        <property name="rawValue" stdset="0">
+         <double>100.000000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>NewDocumentCameraScale</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>View</cstring>
-        </property>
-        <property name="rawValue" stdset="0">
-         <double>100.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -728,6 +725,28 @@ Mouse tilting is not disabled by this setting.</string>
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="spaceMouseDevice">
+     <property name="title">
+      <string>Space mouse</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="legacySpaceMouseDevices">
+        <property name="text">
+         <string>Enable support of legacy space mouse devices</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LegacySpaceMouseDevices</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBoxAnimations">
      <property name="title">
       <string>Animations</string>
@@ -749,6 +768,25 @@ Mouse tilting is not disabled by this setting.</string>
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxSpinningAnimations">
+        <property name="toolTip">
+         <string>Enable spinning animations that are used in some navigation styles after dragging</string>
+        </property>
+        <property name="text">
+         <string>Enable spinning animations</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseSpinningAnimations</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="1">
        <widget class="Gui::PrefSpinBox" name="spinBoxAnimationDuration">
         <property name="maximumSize">
@@ -759,6 +797,9 @@ Mouse tilting is not disabled by this setting.</string>
         </property>
         <property name="toolTip">
          <string>The duration of navigation animations in milliseconds</string>
+        </property>
+        <property name="suffix">
+         <string notr="true"> ms</string>
         </property>
         <property name="minimum">
          <number>100</number>
@@ -793,25 +834,6 @@ Mouse tilting is not disabled by this setting.</string>
         </property>
        </spacer>
       </item>
-      <item row="2" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxSpinningAnimations">
-        <property name="toolTip">
-         <string>Enable spinning animations that are used in some navigation styles after dragging</string>
-        </property>
-        <property name="text">
-         <string>Enable spinning animations</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>UseSpinningAnimations</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -831,6 +853,11 @@ Mouse tilting is not disabled by this setting.</string>
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
   <customwidget>
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>
@@ -862,10 +889,9 @@ Mouse tilting is not disabled by this setting.</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>PrefUnitSpinBox</class>
-   <extends>QWidget</extends>
+   <class>Gui::PrefUnitSpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

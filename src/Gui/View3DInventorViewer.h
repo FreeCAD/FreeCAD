@@ -40,11 +40,14 @@
 #include <Base/Placement.h>
 
 #include "Namespace.h"
-#include "Selection.h"
+#include "Selection/Selection.h"
 
 #include "CornerCrossLetters.h"
 #include "View3DInventorSelection.h"
 #include "Quarter/SoQTQuarterAdaptor.h"
+
+#include <Inventor/nodes/SoEnvironment.h>
+#include <Inventor/nodes/SoRotation.h>
 
 
 class SoTranslation;
@@ -67,8 +70,12 @@ class SoClipPlane;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
-namespace Gui {
+namespace Base {
+    class BoundBox2d;
+}
 
+namespace Gui {
+class NavigationAnimation;
 class ViewProvider;
 class SoFCBackgroundGradient;
 class NavigationStyle;
@@ -110,22 +117,6 @@ public:
     };
     //@}
 
-    /** @name Anti-Aliasing modes of the rendered 3D scene
-      * Specifies Anti-Aliasing (AA) method
-      * - Smoothing enables OpenGL line and vertex smoothing (basically deprecated)
-      * - MSAA is hardware multi sampling (with 2, 4 or 8 passes), a quite common and efficient AA technique
-      */
-    //@{
-    enum AntiAliasing {
-        None = 0,
-        Smoothing = 1,
-        MSAA2x = 2,
-        MSAA4x = 3,
-        MSAA6x = 5,
-        MSAA8x = 4
-    };
-    //@}
-
     /** @name Render mode
       */
     //@{
@@ -158,6 +149,13 @@ public:
     SoDirectionalLight* getBacklight() const;
     void setBacklightEnabled(bool on);
     bool isBacklightEnabled() const;
+
+    SoDirectionalLight* getFillLight() const;
+    void setFillLightEnabled(bool on);
+    bool isFillLightEnabled() const;
+
+    SoEnvironment* getEnvironment() const;
+
     void setSceneGraph (SoNode *root) override;
     bool searchNode(SoNode*) const;
 
@@ -167,8 +165,8 @@ public:
     bool isSpinningAnimationEnabled() const;
     bool isAnimating() const;
     bool isSpinning() const;
-    void startAnimation(const SbRotation& orientation, const SbVec3f& rotationCenter,
-                        const SbVec3f& translation, int duration = -1, bool wait = false);
+    std::shared_ptr<NavigationAnimation> startAnimation(const SbRotation& orientation, const SbVec3f& rotationCenter,
+                        const SbVec3f& translation, int duration = -1, bool wait = false) const;
     void startSpinningAnimation(const SbVec3f& axis, float velocity);
     void stopAnimating();
 
@@ -325,7 +323,10 @@ public:
     SbVec3f getPointOnLine(const SbVec2s&, const SbVec3f& axisCenter, const SbVec3f& axis) const;
 
     /** Returns the 3d point on the XY plane of a placement to the given 2d point. */
-    SbVec3f getPointOnXYPlaneOfPlacement(const SbVec2s&, Base::Placement&) const;
+    SbVec3f getPointOnXYPlaneOfPlacement(const SbVec2s&, const Base::Placement&) const;
+
+    /** Returns the bounding box on the XY plane of a placement to the given 2d point. */
+    Base::BoundBox2d getViewportOnXYPlaneOfPlacement(Base::Placement plc) const;
 
     /** Returns the 2d coordinates on the viewport to the given 3d point. */
     SbVec2s getPointOnViewport(const SbVec3f&) const;
@@ -385,10 +386,10 @@ public:
 
     /**
      * Set the camera's orientation. If isAnimationEnabled() returns
-     * \a true the reorientation is animated, otherwise its directly
+     * \a true the reorientation is animated and the animation is returned, otherwise its directly
      * set.
      */
-    void setCameraOrientation(const SbRotation& orientation, bool moveToCenter = false);
+    std::shared_ptr<NavigationAnimation> setCameraOrientation(const SbRotation& orientation, bool moveToCenter = false) const;
     void setCameraType(SoType type) override;
     void moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration = -1);
     /**
@@ -443,6 +444,9 @@ public:
     bool isEnabledVBO() const;
     void setRenderCache(int);
 
+    //! Update colors of axis in corner to match preferences
+    void updateColors();
+
     void getDimensions(float& fHeight, float& fWidth) const;
     float getMaxDimension() const;
     SbVec3f getCenterPointOnFocalPlane() const;
@@ -490,7 +494,7 @@ private:
     static void drawArrow();
     static void drawSingleBackground(const QColor&);
     void setCursorRepresentation(int mode);
-    void aboutToDestroyGLContext() override;
+    void aboutToDestroyGLContext();
     void createStandardCursors(double);
 
 private:
@@ -502,7 +506,12 @@ private:
     SoFCBackgroundGradient *pcBackGround;
     SoSeparator * backgroundroot;
     SoSeparator * foregroundroot;
+
     SoDirectionalLight* backlight;
+    SoDirectionalLight* fillLight;
+    SoEnvironment* environment;
+
+    SoRotation* lightRotation;
 
     // Scene graph root
     SoSeparator * pcViewProviderRoot;
@@ -539,6 +548,10 @@ private:
     bool fpsEnabled;
     bool vboEnabled;
     bool naviCubeEnabled;
+
+    App::Color m_xColor;
+    App::Color m_yColor;
+    App::Color m_zColor;
 
     bool editing;
     QCursor editCursor, zoomCursor, panCursor, spinCursor;

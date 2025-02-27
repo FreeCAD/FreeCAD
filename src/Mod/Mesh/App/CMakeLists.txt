@@ -6,9 +6,15 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/src/3rdParty/libkdtree
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
 )
@@ -20,6 +26,7 @@ set(Mesh_LIBS
 )
 
 include_directories(
+    SYSTEM
     ${QtConcurrent_INCLUDE_DIRS}
 )
 list(APPEND Mesh_LIBS
@@ -102,6 +109,8 @@ SET(Core_SRCS
     Core/IO/Reader3MF.h
     Core/IO/ReaderOBJ.cpp
     Core/IO/ReaderOBJ.h
+    Core/IO/ReaderPLY.cpp
+    Core/IO/ReaderPLY.h
     Core/IO/Writer3MF.cpp
     Core/IO/Writer3MF.h
     Core/IO/WriterInventor.cpp
@@ -410,8 +419,6 @@ endif ()
 
 add_library(Mesh SHARED ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
 target_link_libraries(Mesh ${Mesh_LIBS})
-set_target_properties(Mesh PROPERTIES CXX_STANDARD_REQUIRED ON)
-set_target_properties(Mesh PROPERTIES CXX_STANDARD 17)
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Mesh)
 endif()

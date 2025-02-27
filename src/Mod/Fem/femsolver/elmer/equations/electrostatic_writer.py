@@ -63,10 +63,7 @@ class ESwriter:
             s["Constant Weights"] = equation.ConstantWeights
         s["Exec Solver"] = "Always"
         s["Optimize Bandwidth"] = True
-        if (
-            equation.CalculateCapacitanceMatrix is False
-            and (equation.PotentialDifference != 0.0)
-        ):
+        if equation.CalculateCapacitanceMatrix is False and (equation.PotentialDifference != 0.0):
             s["Potential Difference"] = equation.PotentialDifference
         s["Stabilize"] = equation.Stabilize
         return s
@@ -81,7 +78,7 @@ class ESwriter:
                 (
                     "File where capacitance matrix is being saved\n"
                     "Only used if 'CalculateCapacitanceMatrix' is true"
-                )
+                ),
             )
             equation.CapacitanceMatrixFilename = "cmatrix.dat"
         if not hasattr(equation, "ConstantWeights"):
@@ -89,7 +86,7 @@ class ESwriter:
                 "App::PropertyBool",
                 "ConstantWeights",
                 "Electrostatic",
-                "Use constant weighting for results"
+                "Use constant weighting for results",
             )
         if not hasattr(equation, "PotentialDifference"):
             equation.addProperty(
@@ -99,14 +96,13 @@ class ESwriter:
                 (
                     "Potential difference in Volt for which capacitance is\n"
                     "calculated if 'CalculateCapacitanceMatrix' is false"
-                )
+                ),
             )
             equation.PotentialDifference = 0.0
 
     def handleElectrostaticConstants(self):
         permittivity = self.write.convert(
-            self.write.constsdef["PermittivityOfVacuum"],
-            "T^4*I^2/(L^3*M)"
+            self.write.constsdef["PermittivityOfVacuum"], "T^4*I^2/(L^3*M)"
         )
         permittivity = round(permittivity, 20)  # to get rid of numerical artifacts
         self.write.constant("Permittivity Of Vacuum", permittivity)
@@ -114,16 +110,12 @@ class ESwriter:
     def handleElectrostaticMaterial(self, bodies):
         for obj in self.write.getMember("App::MaterialObject"):
             m = obj.Material
-            refs = (
-                obj.References[0][1]
-                if obj.References
-                else self.write.getAllBodies())
+            refs = obj.References[0][1] if obj.References else self.write.getAllBodies()
             for name in (n for n in refs if n in bodies):
                 self.write.material(name, "Name", m["Name"])
                 if "RelativePermittivity" in m:
                     self.write.material(
-                        name, "Relative Permittivity",
-                        float(m["RelativePermittivity"])
+                        name, "Relative Permittivity", float(m["RelativePermittivity"])
                     )
 
     def handleElectrostaticBndConditions(self):
@@ -133,22 +125,17 @@ class ESwriter:
                     # output the FreeCAD label as comment
                     if obj.Label:
                         self.write.boundary(name, "! FreeCAD Name", obj.Label)
-                    if obj.PotentialEnabled:
-                        if hasattr(obj, "Potential"):
-                            # Potential was once a float and scaled not fitting SI units
-                            if isinstance(obj.Potential, float):
-                                savePotential = obj.Potential
-                                obj.removeProperty("Potential")
-                                obj.addProperty(
-                                    "App::PropertyElectricPotential",
-                                    "Potential",
-                                    "Parameter",
-                                    "Electric Potential"
-                                )
-                                # scale to match SI units
-                                obj.Potential = savePotential * 1e6
-                            potential = float(obj.Potential.getValueAs("V"))
-                            self.write.boundary(name, "Potential", potential)
+                    if obj.BoundaryCondition == "Dirichlet":
+                        if obj.PotentialEnabled:
+                            self.write.boundary(
+                                name, "Potential", obj.Potential.getValueAs("V").Value
+                            )
+                    elif obj.BoundaryCondition == "Neumann":
+                        self.write.boundary(
+                            name,
+                            "Surface Charge Density",
+                            obj.SurfaceChargeDensity.getValueAs("C/m^2").Value,
+                        )
                     if obj.PotentialConstant:
                         self.write.boundary(name, "Potential Constant", True)
                     if obj.ElectricInfinity:
@@ -156,8 +143,8 @@ class ESwriter:
                     if obj.ElectricForcecalculation:
                         self.write.boundary(name, "Calculate Electric Force", True)
                     if obj.CapacitanceBodyEnabled:
-                        if hasattr(obj, "CapacitanceBody"):
-                            self.write.boundary(name, "Capacitance Body", obj.CapacitanceBody)
+                        self.write.boundary(name, "Capacitance Body", obj.CapacitanceBody)
                 self.write.handled(obj)
+
 
 ##  @}

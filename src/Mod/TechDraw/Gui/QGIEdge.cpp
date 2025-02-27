@@ -125,7 +125,7 @@ void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event)
     QGIView *parent = dynamic_cast<QGIView *>(parentItem());
-    if (parent && parent->getViewObject() && parent->getViewObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    if (parent && parent->getViewObject() && parent->getViewObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
         TechDraw::DrawViewPart *baseFeat = static_cast<TechDraw::DrawViewPart *>(parent->getViewObject());
         std::vector<std::string> edgeName(1, DrawUtil::makeGeomName("Edge", getProjIndex()));
 
@@ -133,9 +133,13 @@ void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
-
-
 void QGIEdge::setLinePen(QPen linePen)
 {
     m_pen = linePen;
+}
+
+void QGIEdge::setCurrentPen()
+{
+    m_pen.setWidthF(m_width);
+    m_pen.setColor(m_colCurrent);
 }

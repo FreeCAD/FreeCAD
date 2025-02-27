@@ -27,6 +27,8 @@
 #include <cassert>
 #endif
 
+#include <zipios++/zipinputstream.h>
+
 #include "Exception.h"
 #include "Reader.h"
 #include "Writer.h"

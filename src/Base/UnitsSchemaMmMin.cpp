@@ -22,36 +22,36 @@
 
 
 #include "PreCompiled.h"
-#ifdef __GNUC__
-#include <unistd.h>
+#ifndef _PreComp_
+#include <algorithm>
+#include <array>
 #endif
 
-#include <QString>
-
+#include "Quantity.h"
+#include "Unit.h"
 #include "UnitsSchemaMmMin.h"
-
 
 using namespace Base;
 
-
-QString
-UnitsSchemaMmMin::schemaTranslate(const Quantity& quant, double& factor, QString& unitString)
+std::string
+UnitsSchemaMmMin::schemaTranslate(const Quantity& quant, double& factor, std::string& unitString)
 {
-    Unit unit = quant.getUnit();
-    if (unit == Unit::Length) {
-        unitString = QString::fromLatin1("mm");
-        factor = 1.0;
-    }
-    else if (unit == Unit::Angle) {
-        unitString = QString::fromUtf8("\xC2\xB0");
-        factor = 1.0;
-    }
-    else if (unit == Unit::Velocity) {
-        unitString = QString::fromLatin1("mm/min");
-        factor = 1. / 60.;
+    static std::array<std::pair<Unit, std::pair<std::string, double>>, 3> unitSpecs {{
+        {Unit::Length, {"mm", 1.0}},
+        {Unit::Angle, {"\xC2\xB0", 1.0}},
+        {Unit::Velocity, {"mm/min", 1.0 / 60.0}},
+    }};
+
+    const auto unit = quant.getUnit();
+    const auto spec = std::find_if(unitSpecs.begin(), unitSpecs.end(), [&](const auto& pair) {
+        return pair.first == unit;
+    });
+
+    if (spec != std::end(unitSpecs)) {
+        unitString = spec->second.first;
+        factor = spec->second.second;
     }
     else {
-        // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
         factor = 1.0;
     }

@@ -65,13 +65,13 @@ private:
     void setWheelEventFilter();
     void setLocale();
     void setCursorFlashing();
+    void setQtStyle();
     void checkOpenGL();
     void loadOpenInventor();
     void setBranding();
     void setStyleSheet();
     void autoloadModules(const QStringList& wb);
     void setImportImageFormats();
-    bool hiddenMainWindow() const;
     void showMainWindow();
     void activateWorkbench();
     void checkParameters();

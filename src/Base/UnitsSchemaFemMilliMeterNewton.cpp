@@ -23,37 +23,39 @@
 
 
 #include "PreCompiled.h"
-#ifdef __GNUC__
-#include <unistd.h>
+#ifndef _PreComp_
+#include <algorithm>
+#include <array>
 #endif
 
-#include <QString>
-
+#include "Quantity.h"
+#include "Unit.h"
 #include "UnitsSchemaFemMilliMeterNewton.h"
-
 
 using namespace Base;
 
-
-QString UnitsSchemaFemMilliMeterNewton::schemaTranslate(const Quantity& quant,
-                                                        double& factor,
-                                                        QString& unitString)
+std::string UnitsSchemaFemMilliMeterNewton::schemaTranslate(const Quantity& quant,
+                                                            double& factor,
+                                                            std::string& unitString)
 {
-    Unit unit = quant.getUnit();
-    if (unit == Unit::Length) {
-        // all length units in millimeters
-        unitString = QString::fromLatin1("mm");
-        factor = 1.0;
-    }
-    else if (unit == Unit::Mass) {
-        // all mass units in t
-        unitString = QString::fromUtf8("t");
-        factor = 1e3;
+    static std::array<std::pair<Unit, std::pair<std::string, double>>, 2> unitSpecs {{
+        {Unit::Length, {"mm", 1.0}},
+        {Unit::Mass, {"t", 1e3}},
+    }};
+
+    const auto unit = quant.getUnit();
+    const auto spec = std::find_if(unitSpecs.begin(), unitSpecs.end(), [&](const auto& pair) {
+        return pair.first == unit;
+    });
+
+    if (spec != std::end(unitSpecs)) {
+        unitString = spec->second.first;
+        factor = spec->second.second;
     }
     else {
-        // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
         factor = 1.0;
     }
+
     return toLocale(quant, factor, unitString);
 }

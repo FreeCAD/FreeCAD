@@ -57,6 +57,7 @@ class Split(gui_base_original.Modifier):
         if not self.ui:
             return
         _toolmsg(translate("draft", "Click anywhere on a line to split it."))
+        self.view.graphicsView().setFocus()  # Make sure using Esc works.
         self.call = self.view.addEventCallback("SoEvent", self.action)
 
     def action(self, arg):
@@ -86,22 +87,19 @@ class Split(gui_base_original.Modifier):
     def proceed(self, info):
         """Proceed with execution of the command after click on an edge."""
         self.end_callbacks(self.call)
-        wire = App.ActiveDocument.getObject(info["Object"])
-        edge_index = int(info["Component"][4:])
+        wire = info["Object"]
+        index = info["Component"][4:]
+        point = DraftVecUtils.toString(self.point)
 
         Gui.addModule("Draft")
-        _cmd = "Draft.split"
-        _cmd += "("
-        _cmd += "FreeCAD.ActiveDocument." + wire.Name + ", "
-        _cmd += DraftVecUtils.toString(self.point) + ", "
-        _cmd += str(edge_index)
-        _cmd += ")"
-        _cmd_list = ["s = " + _cmd,
-                     "FreeCAD.ActiveDocument.recompute()"]
+        cmd_list = [
+            "obj = FreeCAD.ActiveDocument." + wire,
+            "new = Draft.split(obj, " + point + ", " + index + ")",
+            "Draft.format_object(new, obj)",
+            "FreeCAD.ActiveDocument.recompute()"
+        ]
 
-        self.commit(translate("draft", "Split line"),
-                    _cmd_list)
-
+        self.commit(translate("draft", "Split line"), cmd_list)
         self.finish()
 
     def finish(self, cont=False):

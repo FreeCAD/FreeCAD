@@ -34,7 +34,6 @@
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Quantity.h>
-#include <Base/Tools.h>
 
 #include "DrawPage.h"
 #include "DrawSVGTemplate.h"
@@ -78,7 +77,7 @@ PyObject *DrawSVGTemplate::getPyObject()
 void DrawSVGTemplate::onChanged(const App::Property* prop)
 {
     if (prop == &Template && !isRestoring()) {
-        //if we are restoring an existing file we just want the properties set as they were save,
+        //if we are restoring an existing file we just want the properties set as they were saved,
         //but if we are not restoring, we need to replace the embedded file and extract the new
         //EditableTexts.
         //We could try to find matching field names are preserve the values from
@@ -86,11 +85,9 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
         replaceFileIncluded(Template.getValue());
         EditableTexts.setValues(getEditableTextsFromTemplate());
         QDomDocument templateDocument;
-        if (getTemplateDocument(Template.getValue(), templateDocument)) {
+        if (getTemplateDocument(PageResult.getValue(), templateDocument)) {
             extractTemplateAttributes(templateDocument);
         }
-    } else if (prop == &EditableTexts) {
-        //handled by ViewProvider
     }
 
     TechDraw::DrawTemplate::onChanged(prop);
@@ -106,7 +103,7 @@ void DrawSVGTemplate::onSettingDocument()
 void DrawSVGTemplate::slotCreatedObject(const App::DocumentObject& obj)
 {
     // Base::Console().Message("DSVGT::slotCreatedObject()\n");
-    if (!obj.isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+    if (!obj.isDerivedFrom<TechDraw::DrawPage>()) {
         // we don't care
         return;
     }
@@ -116,21 +113,17 @@ void DrawSVGTemplate::slotCreatedObject(const App::DocumentObject& obj)
 void DrawSVGTemplate::slotDeletedObject(const App::DocumentObject& obj)
 {
     // Base::Console().Message("DSVGT::slotDeletedObject()\n");
-    if (!obj.isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+    if (!obj.isDerivedFrom<TechDraw::DrawPage>()) {
         // we don't care
         return;
     }
     EditableTexts.touch();
 }
 
-
-
-
 //parse the Svg code, inserting current EditableTexts values, and return the result as a QString.
 //While parsing, note the Orientation, Width and Height values in the Svg code.
 QString DrawSVGTemplate::processTemplate()
 {
-    // Base::Console().Message("DSVGT::processTemplate() - isRestoring: %d\n", isRestoring());
     if (isRestoring()) {
         //until everything is fully restored, the embedded file is not available, so we
         //can't do anything
@@ -144,32 +137,28 @@ QString DrawSVGTemplate::processTemplate()
 
     XMLQuery query(templateDocument);
     std::map<std::string, std::string> substitutions = EditableTexts.getValues();
+    // auto captureTextValues = m_initialTextValues;
 
     // XPath query to select all <tspan> nodes whose <text> parent
     // has "freecad:editable" attribute
-    query.processItems(QString::fromUtf8(
+    query.processItems(QStringLiteral(
         "declare default element namespace \"" SVG_NS_URI "\"; "
         "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
         "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
-        [this, &substitutions, &templateDocument](QDomElement& tspan) -> bool {
+        // [this, &substitutions, &templateDocument, &captureTextValues](QDomElement& tspan) -> bool {
+        [&substitutions, &templateDocument](QDomElement& tspan) -> bool {
         // Replace the editable text spans with new nodes holding actual values
+
         QString editableName = tspan.parentNode().toElement().attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
         std::map<std::string, std::string>::iterator item =
             substitutions.find(editableName.toStdString());
         if (item != substitutions.end()) {
-            // we have an editable text, is it autofill? autofill values may have
-            // changed.
+            // we have an editable text
             QDomElement parent = tspan.parentNode().toElement();
             QString editableValue = QString::fromUtf8(item->second.c_str());
-            if (parent.hasAttribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL))) {
-                QString autofillValue = getAutofillValue(parent.attribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL)));
-                if (!autofillValue.isNull()) {
-                    editableValue = autofillValue;
-                }
-            }
 
             // Keep all spaces in the text node
-            tspan.setAttribute(QString::fromUtf8("xml:space"), QString::fromUtf8("preserve"));
+            tspan.setAttribute(QStringLiteral("xml:space"), QStringLiteral("preserve"));
 
             // Remove all child nodes and append text node with editable replacement as the only descendant
             while (!tspan.lastChild().isNull()) {
@@ -192,14 +181,14 @@ void DrawSVGTemplate::extractTemplateAttributes(QDomDocument& templateDocument)
     Base::Quantity quantity;
 
     // Obtain the width
-    QString str = docElement.attribute(QString::fromLatin1("width"));
-    quantity = Base::Quantity::parse(str);
+    QString str = docElement.attribute(QStringLiteral("width"));
+    quantity = Base::Quantity::parse(str.toStdString());
     quantity.setUnit(Base::Unit::Length);
 
     Width.setValue(quantity.getValue());
 
-    str = docElement.attribute(QString::fromLatin1("height"));
-    quantity = Base::Quantity::parse(str);
+    str = docElement.attribute(QStringLiteral("height"));
+    quantity = Base::Quantity::parse(str.toStdString());
     quantity.setUnit(Base::Unit::Length);
 
     Height.setValue(quantity.getValue());
@@ -215,7 +204,7 @@ bool DrawSVGTemplate::getTemplateDocument(std::string sourceFile, QDomDocument& 
     if (sourceFile.empty()) {
         return false;
     }
-    QFile templateFile(Base::Tools::fromStdString(sourceFile));
+    QFile templateFile(QString::fromStdString(sourceFile));
     if (!templateFile.open(QIODevice::ReadOnly)) {
         Base::Console().Error("DrawSVGTemplate::processTemplate can't read embedded template %s!\n", PageResult.getValue());
         return false;
@@ -242,7 +231,6 @@ double DrawSVGTemplate::getHeight() const
 
 void DrawSVGTemplate::replaceFileIncluded(std::string newTemplateFileName)
 {
-//    Base::Console().Message("DSVGT::replaceFileIncluded(%s)\n", newTemplateFileName.c_str());
     if (newTemplateFileName.empty()) {
         return;
     }
@@ -255,40 +243,39 @@ void DrawSVGTemplate::replaceFileIncluded(std::string newTemplateFileName)
     }
 }
 
+
+//! find the special fields in the template (freecad:editable or freecad:autofill)
 std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate()
 {
-    // Base::Console().Message("DSVGT::getEditableTextsFromTemplate()\n");
     std::map<std::string, std::string> editables;
 
-// if we pass the filename we can reuse getTemplateDocument here
     QDomDocument templateDocument;
-    if (!getTemplateDocument(Template.getValue(), templateDocument)) {
+    if (!getTemplateDocument(PageResult.getValue(), templateDocument)) {
         return editables;
     }
-
 
     XMLQuery query(templateDocument);
 
     // XPath query to select all <tspan> nodes whose <text> parent
     // has "freecad:editable" attribute
-    query.processItems(QString::fromUtf8(
+    query.processItems(QStringLiteral(
         "declare default element namespace \"" SVG_NS_URI "\"; "
         "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
         "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
         [this, &editables](QDomElement& tspan) -> bool {
             QDomElement parent = tspan.parentNode().toElement();
             QString editableName = parent.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
-
             QString editableValue;
             if (parent.hasAttribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL))) {
-                QString autofillValue = getAutofillValue(parent.attribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL)));
-                if (!autofillValue.isNull()) {
+                QString autofillName = parent.attribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL));
+                QString autofillValue = getAutofillValue(autofillName);
+                if (!autofillValue.isEmpty()) {
                     editableValue = autofillValue;
                 }
             }
 
             // If the autofill value is not specified or unsupported, use the default text value
-            if (editableValue.isNull()) {
+            if (editableValue.isEmpty()) {
                 editableValue = tspan.firstChild().nodeValue();
             }
 
@@ -299,6 +286,41 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
 
     return editables;
 }
+
+QString  DrawSVGTemplate::getAutofillByEditableName(QString nameToMatch)
+{
+    QString result;
+    QString nameCapture{nameToMatch};
+
+    QDomDocument templateDocument;
+    if (!getTemplateDocument(PageResult.getValue(), templateDocument)) {
+        return {};
+    }
+
+    XMLQuery query(templateDocument);
+
+    // XPath query to select all <tspan> nodes whose <text> parent
+    // has "freecad:editable" attribute
+    query.processItems(QStringLiteral(
+        "declare default element namespace \"" SVG_NS_URI "\"; "
+        "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
+        "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
+        [this, &nameCapture, &result](QDomElement& tspan) -> bool {
+            QDomElement parent = tspan.parentNode().toElement();
+            QString editableName = parent.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
+            if (editableName == nameCapture  &&
+                parent.hasAttribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL))) {
+                QString autofillName = parent.attribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL));
+                QString autofillValue = getAutofillValue(autofillName);
+                if (!autofillValue.isEmpty()) {
+                    result = autofillValue;
+                }
+            }
+            return true;
+        });
+    return result;
+}
+
 
 //! get a translated label string from the context (ex TaskActiveView), the base name (ex ActiveView) and
 //! the unique name within the document (ex ActiveView001), and use it to update the Label property.

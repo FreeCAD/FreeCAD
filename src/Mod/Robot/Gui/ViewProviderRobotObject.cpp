@@ -53,13 +53,13 @@ ViewProviderRobotObject::ViewProviderRobotObject()
     ADD_PROPERTY(Manipulator, (0));
 
     pcRobotRoot = new Gui::SoFCSelection();
-    pcRobotRoot->highlightMode = Gui::SoFCSelection::OFF;
+    pcRobotRoot->preselectionMode = Gui::SoFCSelection::OFF;
     // pcRobotRoot->selectionMode = Gui::SoFCSelection::SEL_OFF;
     // pcRobotRoot->style = Gui::SoFCSelection::BOX;
     pcRobotRoot->ref();
 
     pcSimpleRoot = new Gui::SoFCSelection();
-    pcSimpleRoot->highlightMode = Gui::SoFCSelection::OFF;
+    pcSimpleRoot->preselectionMode = Gui::SoFCSelection::OFF;
     // pcSimpleRoot->selectionMode = Gui::SoFCSelection::SEL_OFF;
     pcSimpleRoot->ref();
 
@@ -376,9 +376,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
     else if (prop == &robObj->ToolShape) {
         App::DocumentObject* o = robObj->ToolShape.getValue<App::DocumentObject*>();
 
-        if (o
-            && (o->isDerivedFrom(Part::Feature::getClassTypeId())
-                || o->isDerivedFrom(App::VRMLObject::getClassTypeId()))) {
+        if (o && (o->isDerivedFrom<Part::Feature>() || o->isDerivedFrom<App::VRMLObject>())) {
             // Part::Feature *p = dynamic_cast<Part::Feature *>(o);
             toolShape = Gui::Application::Instance->getViewProvider(o);
             toolShape->setTransformation(

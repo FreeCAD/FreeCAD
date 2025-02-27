@@ -55,6 +55,7 @@
 #include <Mod/Part/App/ShapeMapHasher.h>
 
 #include "ImportOCAF.h"
+#include "Tools.h"
 
 
 #ifdef HAVE_TBB
@@ -64,23 +65,6 @@
 #endif
 
 using namespace Import;
-
-#if OCC_VERSION_HEX >= 0x070500
-// See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
-#define OCC_COLOR_SPACE Quantity_TOC_sRGB
-#else
-#define OCC_COLOR_SPACE Quantity_TOC_RGB
-#endif
-
-static inline App::Color convertColor(const Quantity_ColorRGBA& c)
-{
-    Standard_Real r, g, b;
-    c.GetRGB().Values(r, g, b, OCC_COLOR_SPACE);
-    return App::Color(static_cast<float>(r),
-                      static_cast<float>(g),
-                      static_cast<float>(b),
-                      1.0f - static_cast<float>(c.Alpha()));
-}
 
 #define OCAF_KEEP_PLACEMENT
 
@@ -266,7 +250,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label,
             if (!localValue.empty()) {
                 if (aShapeTool->IsAssembly(label)) {
                     App::Part* pcPart = nullptr;
-                    pcPart = static_cast<App::Part*>(doc->addObject("App::Part", asm_name.c_str()));
+                    pcPart = doc->addObject<App::Part>(asm_name.c_str());
                     pcPart->Label.setValue(asm_name);
                     pcPart->addObjects(localValue);
 
@@ -342,7 +326,7 @@ void ImportOCAF::createShape(const TDF_Label& label,
             // Ok we got a Compound which is computed
             // Just need to add it to a Part::Feature and push it to lValue
             if (!comp.IsNull() && (ctSolids || ctShells || ctEdges || ctVertices)) {
-                Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
+                Part::Feature* part = doc->addObject<Part::Feature>();
                 // Let's allocate the relative placement of the Compound from the STEP file
                 tryPlacementFromLoc(part, loc);
                 if (!loc.IsIdentity()) {
@@ -368,7 +352,7 @@ void ImportOCAF::createShape(const TDF_Label& label,
         }
 
         if (!localValue.empty() && !mergeShape) {
-            pcPart = static_cast<App::Part*>(doc->addObject("App::Part", name.c_str()));
+            pcPart = doc->addObject<App::Part>(name.c_str());
             pcPart->Label.setValue(name);
 
             // localValue contain the objects that  must added to the local Part
@@ -392,7 +376,7 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape,
                              const std::string& name,
                              std::vector<App::DocumentObject*>& lvalue)
 {
-    Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
+    Part::Feature* part = doc->addObject<Part::Feature>();
 
     if (!loc.IsIdentity()) {
         part->Shape.setValue(aShape.Moved(loc));
@@ -414,7 +398,7 @@ void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
     if (aColorTool->GetColor(aShape, XCAFDoc_ColorGen, aColor)
         || aColorTool->GetColor(aShape, XCAFDoc_ColorSurf, aColor)
         || aColorTool->GetColor(aShape, XCAFDoc_ColorCurv, aColor)) {
-        color = convertColor(aColor);
+        color = Tools::convertColor(aColor);
         std::vector<App::Color> colors;
         colors.push_back(color);
         applyColors(part, colors);
@@ -436,7 +420,7 @@ void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
             || aColorTool->GetColor(xp.Current(), XCAFDoc_ColorSurf, aColor)
             || aColorTool->GetColor(xp.Current(), XCAFDoc_ColorCurv, aColor)) {
             int index = faces.FindIndex(xp.Current());
-            color = convertColor(aColor);
+            color = Tools::convertColor(aColor);
             faceColors[index - 1] = color;
             found_face_color = true;
         }
@@ -513,7 +497,7 @@ void ImportXCAF::loadShapes()
 void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setname) const
 {
     Part::Feature* part;
-    part = static_cast<Part::Feature*>(doc->addObject("Part::Feature", default_name.c_str()));
+    part = doc->addObject<Part::Feature>(default_name.c_str());
     part->Label.setValue(default_name);
     part->Shape.setValue(shape);
     std::map<Standard_Integer, Quantity_ColorRGBA>::const_iterator jt;
@@ -547,7 +531,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
             jt = myColorMap.find(Part::ShapeMapHasher {}(xp.Current()));
             if (jt != myColorMap.end()) {
                 int index = faces.FindIndex(xp.Current());
-                faceColors[index - 1] = convertColor(jt->second);
+                faceColors[index - 1] = Tools::convertColor(jt->second);
             }
             xp.Next();
         }

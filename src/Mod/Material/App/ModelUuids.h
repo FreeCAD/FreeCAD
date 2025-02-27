@@ -45,6 +45,8 @@ public:
     static const QString ModelUUID_Legacy_Father;
     static const QString ModelUUID_Legacy_MaterialStandard;
 
+    static const QString ModelUUID_Machining_Machinability;
+
     static const QString ModelUUID_Mechanical_ArrudaBoyce;
     static const QString ModelUUID_Mechanical_Density;
     static const QString ModelUUID_Mechanical_Hardness;

@@ -34,47 +34,48 @@ import tempfile
 from PySide import QtGui, QtCore
 from PySide.QtGui import QApplication
 
+from PartDesignTests.TestMaterial import TestMaterial
+from PartDesignTests.TestActiveObject import TestActiveObject
+
 #timer runs this class in order to access modal dialog
 class CallableCheckWorkflow:
     def __init__(self, test):
         self.test = test
     def __call__(self):
-        diag = QApplication.activeModalWidget()
-        self.test.assertIsNotNone(diag, "Dialog box could not be found")
-        if (diag is not None):
-            cbuttons = diag.findChildren(QtGui.QPushButton)
-            cbutton = cbuttons[1]
-            dialogcheck = CallableCheckDialog(self.test)
+        dialog = QApplication.activeModalWidget()
+        self.test.assertIsNotNone(dialog, "Dialog box could not be found")
+        if (dialog is not None):
+            dialogcheck = CallableCheckDialogWasClosed(self.test)
             QtCore.QTimer.singleShot(500, dialogcheck)
-            QtCore.QTimer.singleShot(0, cbutton, QtCore.SLOT('click()'))
+            QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT('accept()'))
 
-class CallableCheckDialog:
+class CallableCheckDialogWasClosed:
     def __init__(self, test):
         self.test = test
     def __call__(self):
-        diag = QApplication.activeModalWidget()
-        self.test.assertIsNone(diag, "Dialog box could not be found")
+        dialog = QApplication.activeModalWidget()
+        self.test.assertIsNone(dialog, "Dialog box was not closed by accept()")
 
 class CallableCheckWarning:
     def __init__(self, test):
         self.test = test
     def __call__(self):
-        diag = QApplication.activeModalWidget()
-        self.test.assertIsNotNone(diag, "Input dialog box could not be found")
-        if (diag is not None):
-            QtCore.QTimer.singleShot(0, diag, QtCore.SLOT('accept()'))
+        dialog = QApplication.activeModalWidget()
+        self.test.assertIsNotNone(dialog, "Input dialog box could not be found")
+        if (dialog is not None):
+            QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT('accept()'))
 
 class CallableComboBox:
     def __init__(self, test):
         self.test = test
     def __call__(self):
-        diag = QApplication.activeModalWidget()
-        self.test.assertIsNotNone(diag, "Warning dialog box could not be found")
-        if (diag is not None):
-            cbox = diag.findChild(QtGui.QComboBox)
+        dialog = QApplication.activeModalWidget()
+        self.test.assertIsNotNone(dialog, "Warning dialog box could not be found")
+        if (dialog is not None):
+            cbox = dialog.findChild(QtGui.QComboBox)
             self.test.assertIsNotNone(cbox, "ComboBox widget could not be found")
             if (cbox is not None):
-                QtCore.QTimer.singleShot(0, diag, QtCore.SLOT('accept()'))
+                QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT('accept()'))
 
 App = FreeCAD
 Gui = FreeCADGui

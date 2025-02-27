@@ -99,12 +99,12 @@ void CmdInspectElement::activated(int)
 bool CmdInspectElement::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Inspection::Feature::getClassTypeId()) == 0) {
+    if (!doc || doc->countObjectsOfType<Inspection::Feature>() == 0) {
         return false;
     }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }

@@ -145,6 +145,12 @@ ConditioningTypes = [
 "NaturallyVentedOnly"
 ]
 
+AreaCalculationType = [
+    "XY-plane projection",
+    "At Center of Mass"
+]
+
+
 import FreeCAD
 import ArchComponent
 import ArchCommands
@@ -206,6 +212,7 @@ class _Space(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
         obj.IfcType = "Space"
+        obj.CompositionType = "ELEMENT"
 
     def setProperties(self,obj):
 
@@ -213,7 +220,7 @@ class _Space(ArchComponent.Component):
         if not "Boundaries" in pl:
             obj.addProperty("App::PropertyLinkSubList","Boundaries",    "Space",QT_TRANSLATE_NOOP("App::Property","The objects that make the boundaries of this space object"))
         if not "Area" in pl:
-            obj.addProperty("App::PropertyArea",       "Area",          "Space",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this space"))
+            obj.addProperty("App::PropertyArea",       "Area",          "Space",QT_TRANSLATE_NOOP("App::Property","Identical to Horizontal Area"))
         if not "FinishFloor" in pl:
             obj.addProperty("App::PropertyString",     "FinishFloor",   "Space",QT_TRANSLATE_NOOP("App::Property","The finishing of the floor of this space"))
         if not "FinishWalls" in pl:
@@ -239,10 +246,12 @@ class _Space(ArchComponent.Component):
             obj.addProperty("App::PropertyEnumeration","Conditioning",  "Space",QT_TRANSLATE_NOOP("App::Property","The type of air conditioning of this space"))
             obj.Conditioning = ConditioningTypes
         if not "Internal" in pl:
-            obj.addProperty("App::PropertyBool",       "Internal",     "Space",QT_TRANSLATE_NOOP("App::Property","Specifies if this space is internal or external"))
+            obj.addProperty("App::PropertyBool",       "Internal",      "Space",QT_TRANSLATE_NOOP("App::Property","Specifies if this space is internal or external"))
             obj.Internal = True
+        if not "AreaCalculationType" in pl:
+            obj.addProperty("App::PropertyEnumeration", "AreaCalculationType",  "Space",QT_TRANSLATE_NOOP("App::Property","Defines the calculation type for the horizontal area and its perimeter length"))
+            obj.AreaCalculationType = AreaCalculationType
         self.Type = "Space"
-        obj.setEditorMode("HorizontalArea",2)
 
     def onDocumentRestored(self,obj):
 
@@ -253,6 +262,11 @@ class _Space(ArchComponent.Component):
 
         if self.clone(obj):
             return
+
+        # Space can do without Base.  Base validity is tested in getShape() code below.
+        # Remarked out ensureBase() below
+        #if not self.ensureBase(obj):
+        #    return
         self.getShape(obj)
 
     def onChanged(self,obj,prop):
@@ -313,11 +327,11 @@ class _Space(ArchComponent.Component):
         #print("starting compute")
 
         # 1: if we have a base shape, we use it
-        if obj.Base:
-            if hasattr(obj.Base,'Shape'):
-                if obj.Base.Shape.Solids:
-                    shape = obj.Base.Shape.copy()
-                    shape = shape.removeSplitter()
+        # Check if there is obj.Base and its validity to proceed
+        if self.ensureBase(obj):
+            if obj.Base.Shape.Solids:
+                shape = obj.Base.Shape.copy()
+                shape = shape.removeSplitter()
 
         # 2: if not, add all bounding boxes of considered objects and build a first shape
         if shape:
@@ -374,10 +388,14 @@ class _Space(ArchComponent.Component):
                 #print("setting objects shape")
                 shape = shape.Solids[0]
                 self.applyShape(obj,shape,pl)
-                if hasattr(obj.Area,"Value"):
-                    a = self.getArea(obj)
-                    if obj.Area.Value != a:
-                        obj.Area = a
+                if hasattr(obj.HorizontalArea,"Value"):
+                    if hasattr(obj,"AreaCalculationType"):
+                        if obj.AreaCalculationType == "At Center of Mass":
+                            a = self.getArea(obj)
+                            obj.HorizontalArea = a
+                    if hasattr(obj,"Area"):
+                        obj.Area = obj.HorizontalArea
+
                 return
 
         print("Arch: error computing space boundary for",obj.Label)
@@ -392,22 +410,13 @@ class _Space(ArchComponent.Component):
                 if hasattr(obj,"PerimeterLength"):
                     if self.face.OuterWire.Length != obj.PerimeterLength.Value:
                         obj.PerimeterLength = self.face.OuterWire.Length
-                if hasattr(obj,"VerticalArea"):
-                    a = 0
-                    for f in obj.Shape.Faces:
-                        ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
-                        if (ang > 1.57) and (ang < 1.571):
-                            a += f.Area
-                        if a != obj.VerticalArea.Value:
-                            obj.VerticalArea = a
-            #print "area of ",obj.Label," : ",f.Area
             return self.face.Area
         else:
             return 0
 
     def getFootprint(self,obj):
 
-        "returns a face that represents the footprint of this space"
+        "returns a face that represents the footprint of this space at the center of mass"
 
         import Part
         import DraftGeomUtils
@@ -440,8 +449,6 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.LineWidth = params.get_param_view("DefaultShapeLineWidth")
         vobj.LineColor = ArchCommands.getDefaultColor("Space")
         vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"][params.get_param_arch("defaultSpaceStyle")]
-        if vobj.Transparency == 100:
-            vobj.DisplayMode = "Wireframe"
 
     def setProperties(self,vobj):
 
@@ -663,13 +670,9 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             else:
                 self.label.whichChild = -1
 
-        elif prop == "ShapeColor":
-            if hasattr(vobj,"ShapeColor"):
-                self.fmat = vobj.ShapeColor.getValue()
-
         elif prop == "Transparency":
-            if hasattr(vobj,"Transparency"):
-                self.fmat.transparency.setValue(vobj.Transparency/100.0)
+            if hasattr(vobj,"DisplayMode"):
+                vobj.DisplayMode = "Wireframe" if vobj.Transparency == 100 else "Flat Lines"
 
     def setEdit(self, vobj, mode):
         if mode != 0:

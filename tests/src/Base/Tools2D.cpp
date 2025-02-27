@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <Base/Tools2D.h>
 
 class Line2D: public ::testing::Test

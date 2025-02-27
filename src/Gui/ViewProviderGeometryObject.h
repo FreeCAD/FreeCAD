@@ -28,6 +28,7 @@
 #include <Inventor/lists/SoPickedPointList.h>
 
 class SoPickedPointList;
+class SoPickStyle;
 class SoSwitch;
 class SoSensor;
 class SbVec2s;
@@ -58,7 +59,6 @@ public:
 
     // Display properties
     App::PropertyPercent Transparency;
-    // App::PropertyMaterial ShapeMaterial;        // Default appearance and physical properties
     App::PropertyMaterialList ShapeAppearance;  // May be different from material
     App::PropertyBool BoundingBox;
     App::PropertyBool Selectable;
@@ -96,7 +96,6 @@ public:
 
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
-    static App::Material getUserDefinedMaterial();
 
 protected:
     /// get called by the container whenever a property has been changed
@@ -108,9 +107,9 @@ protected:
     void handleChangedPropertyName(Base::XMLReader& reader,
                                    const char* TypeName,
                                    const char* PropName) override;
+    void setCoinAppearance(const App::Material& source);
 
 private:
-    void setSoMaterial(const App::Material& source);
     bool isSelectionEnabled() const;
 
 protected:
@@ -118,6 +117,9 @@ protected:
     SoFCBoundingBox* pcBoundingBox {nullptr};
     SoSwitch* pcBoundSwitch {nullptr};
     SoBaseColor* pcBoundColor {nullptr};
+    SoPickStyle* pickStyle {nullptr};
+
+    App::Material materialAppearance;
 };
 
 }  // namespace Gui

@@ -37,6 +37,7 @@ import Path.Main.Sanity.ImageBuilder as ImageBuilder
 import Path.Main.Sanity.ReportGenerator as ReportGenerator
 import os
 import tempfile
+import Path.Dressup.Utils as PathDressup
 
 translate = FreeCAD.Qt.translate
 
@@ -67,9 +68,7 @@ class CAMSanity:
                 )
             )
 
-        self.image_builder = ImageBuilder.ImageBuilderFactory.get_image_builder(
-            self.filelocation
-        )
+        self.image_builder = ImageBuilder.ImageBuilderFactory.get_image_builder(self.filelocation)
         self.data = self.summarize()
 
     def summarize(self):
@@ -90,11 +89,7 @@ class CAMSanity:
         return data
 
     def squawk(self, operator, note, date=datetime.now(), squawkType="NOTE"):
-        squawkType = (
-            squawkType
-            if squawkType in ("NOTE", "WARNING", "CAUTION", "TIP")
-            else "NOTE"
-        )
+        squawkType = squawkType if squawkType in ("NOTE", "WARNING", "CAUTION", "TIP") else "NOTE"
 
         if squawkType == "TIP":
             squawk_icon = "Sanity_Bulb"
@@ -307,27 +302,33 @@ class CAMSanity:
             "yLen": "",
             "zLen": "",
             "material": "",
+            "surfaceSpeedCarbide": "",
+            "surfaceSpeedHSS": "",
             "stockImage": "",
             "squawkData": [],
         }
 
         bb = obj.Stock.Shape.BoundBox
-        data["xLen"] = FreeCAD.Units.Quantity(
-            bb.XLength, FreeCAD.Units.Length
-        ).UserString
-        data["yLen"] = FreeCAD.Units.Quantity(
-            bb.YLength, FreeCAD.Units.Length
-        ).UserString
-        data["zLen"] = FreeCAD.Units.Quantity(
-            bb.ZLength, FreeCAD.Units.Length
-        ).UserString
+        data["xLen"] = FreeCAD.Units.Quantity(bb.XLength, FreeCAD.Units.Length).UserString
+        data["yLen"] = FreeCAD.Units.Quantity(bb.YLength, FreeCAD.Units.Length).UserString
+        data["zLen"] = FreeCAD.Units.Quantity(bb.ZLength, FreeCAD.Units.Length).UserString
 
         data["material"] = "Not Specified"
-        if hasattr(obj.Stock, "Material"):
-            if obj.Stock.Material is not None:
-                data["material"] = obj.Stock.Material.Material["Name"]
+        if hasattr(obj.Stock, "ShapeMaterial"):
+            if obj.Stock.ShapeMaterial is not None:
+                data["material"] = obj.Stock.ShapeMaterial.Name
 
-        if data["material"] == "Not Specified":
+            props = obj.Stock.ShapeMaterial.PhysicalProperties
+            if "SurfaceSpeedCarbide" in props:
+                data["surfaceSpeedCarbide"] = FreeCAD.Units.Quantity(
+                    props["SurfaceSpeedCarbide"]
+                ).UserString
+            if "SurfaceSpeedHSS" in props:
+                data["surfaceSpeedHSS"] = FreeCAD.Units.Quantity(
+                    props["SurfaceSpeedHSS"]
+                ).UserString
+
+        if data["material"] in ["Default", "Not Specified"]:
             data["squawkData"].append(
                 self.squawk(
                     "CAMSanity",
@@ -372,9 +373,9 @@ class CAMSanity:
                 data["squawkData"].append(
                     self.squawk(
                         "CAMSanity",
-                        translate(
-                            "CAM_Sanity", "Tool number {} used by multiple tools"
-                        ).format(TC.ToolNumber),
+                        translate("CAM_Sanity", "Tool number {} used by multiple tools").format(
+                            TC.ToolNumber
+                        ),
                         squawkType="CAUTION",
                     )
                 )
@@ -395,9 +396,9 @@ class CAMSanity:
                 data["squawkData"].append(
                     self.squawk(
                         "CAMSanity",
-                        translate(
-                            "CAM_Sanity", "Toolbit Shape for TC: {} not found"
-                        ).format(TC.ToolNumber),
+                        translate("CAM_Sanity", "Toolbit Shape for TC: {} not found").format(
+                            TC.ToolNumber
+                        ),
                         squawkType="WARNING",
                     )
                 )
@@ -415,9 +416,9 @@ class CAMSanity:
                 data["squawkData"].append(
                     self.squawk(
                         "CAMSanity",
-                        translate(
-                            "CAM_Sanity", "Tool Controller '{}' has no feedrate"
-                        ).format(TC.Label),
+                        translate("CAM_Sanity", "Tool Controller '{}' has no feedrate").format(
+                            TC.Label
+                        ),
                         squawkType="WARNING",
                     )
                 )
@@ -427,20 +428,21 @@ class CAMSanity:
                 data["squawkData"].append(
                     self.squawk(
                         "CAMSanity",
-                        translate(
-                            "CAM_Sanity", "Tool Controller '{}' has no spindlespeed"
-                        ).format(TC.Label),
+                        translate("CAM_Sanity", "Tool Controller '{}' has no spindlespeed").format(
+                            TC.Label
+                        ),
                         squawkType="WARNING",
                     )
                 )
 
             used = False
             for op in obj.Operations.Group:
-                if hasattr(op, "ToolController") and op.ToolController is TC:
+                base_op = PathDressup.baseOp(op)
+                if hasattr(base_op, "ToolController") and base_op.ToolController is TC:
                     used = True
                     tooldata.setdefault("ops", []).append(
                         {
-                            "Operation": op.Label,
+                            "Operation": base_op.Label,
                             "ToolController": TC.Label,
                             "Feed": str(TC.HorizFeed),
                             "Speed": str(TC.SpindleSpeed),
@@ -452,9 +454,9 @@ class CAMSanity:
                 data["squawkData"].append(
                     self.squawk(
                         "CAMSanity",
-                        translate(
-                            "CAM_Sanity", "Tool Controller '{}' is not used"
-                        ).format(TC.Label),
+                        translate("CAM_Sanity", "Tool Controller '{}' is not used").format(
+                            TC.Label
+                        ),
                         squawkType="WARNING",
                     )
                 )
@@ -467,9 +469,7 @@ class CAMSanity:
             # Convert an exception to its string representation
             return str(obj)
         # You might need to handle more types depending on your needs
-        return str(
-            obj
-        )  # Fallback to convert any other non-serializable types to string
+        return str(obj)  # Fallback to convert any other non-serializable types to string
 
     def get_output_report(self):
         Path.Log.debug("get_output_url")

@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="612"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Мрежа</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="613"/>
@@ -1558,7 +1558,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Adaptive</source>
-      <translation>Прилагодљив</translation>
+      <translation type="unfinished">Adaptive</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="101"/>
@@ -1756,7 +1756,7 @@ to a smoother appearance.
       <location filename="../../RemoveComponents.ui" line="52"/>
       <location filename="../../RemoveComponents.ui" line="138"/>
       <source>All</source>
-      <translation>Сва</translation>
+      <translation>Сви</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="72"/>
@@ -2183,17 +2183,17 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="405"/>
       <source>X3D Extensible 3D</source>
-      <translation>X3Д Extensible 3Д</translation>
+      <translation>X3D Extensible 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="406"/>
       <source>Compressed X3D</source>
-      <translation>Compressed X3Д</translation>
+      <translation>Compressed X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="407"/>
       <source>WebGL/X3D</source>
-      <translation>WebGL/X3Д</translation>
+      <translation>WebGL/X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="409"/>
@@ -2223,7 +2223,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="414"/>
       <source>3D Manufacturing Format</source>
-      <translation>3Д Manufacturing Format</translation>
+      <translation>3D Manufacturing Format</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="424"/>

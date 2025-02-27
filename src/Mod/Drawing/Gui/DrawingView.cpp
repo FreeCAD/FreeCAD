@@ -461,6 +461,9 @@ bool DrawingView::onHasMsg(const char* pMsg) const
     else if (strcmp("PrintPdf", pMsg) == 0) {
         return true;
     }
+    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
+        return true;
+    }
     return false;
 }
 
@@ -526,6 +529,7 @@ void DrawingView::printPdf()
         printer.setFullPage(true);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
+        printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
         printer.setPageOrientation(m_orientation);
         QList<QListWidgetItem*> items = listWidget->selectedItems();
         if (items.size() == 1) {

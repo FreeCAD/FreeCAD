@@ -38,7 +38,7 @@ namespace PartDesign
 
 class PartDesignExport ProfileBased : public PartDesign::FeatureAddSub
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SketchBased);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::ProfileBased);
 
 public:
     enum class ForbiddenAxis {
@@ -57,6 +57,8 @@ public:
     App::PropertyBool    Midplane;
     /// Face to extrude up to
     App::PropertyLinkSub UpToFace;
+    /// Shape to extrude up to
+    App::PropertyLinkSubList UpToShape;
 
     App::PropertyBool AllowMultiFace;
 
@@ -164,10 +166,13 @@ protected:
     /// Extract a face from a given LinkSub
     static void getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace);
 
+    /// Create a shape with shapes and faces from a given LinkSubList
+    /// return 0 if almost one full shape is selected else the face count
+    static int getUpToShapeFromLinkSubList(TopoShape& upToShape, const App::PropertyLinkSubList& refShape);
+
     /// Find a valid face to extrude up to
     static void getUpToFace(TopoShape& upToFace,
                             const TopoShape& support,
-                            const TopoShape& supportface,
                             const TopoShape& sketchshape,
                             const std::string& method,
                             gp_Dir& dir);

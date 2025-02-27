@@ -26,7 +26,7 @@
 #include <list>
 #include <map>
 #include <string>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <QString>
 
 #include <Base/Persistence.h>
@@ -51,6 +51,7 @@ namespace Gui {
 
 class BaseView;
 class MDIView;
+class View3DInventor;
 class ViewProvider;
 class ViewProviderDocumentObject;
 class Application;
@@ -95,9 +96,9 @@ protected:
     void slotChangePropertyEditor(const App::Document&, const App::Property &);
     //@}
 
+public:
     void addViewProvider(Gui::ViewProviderDocumentObject*);
 
-public:
     /** @name Signals of the document */
     //@{
     /// signal on new Object
@@ -169,6 +170,9 @@ public:
     void setModified(bool);
     bool isModified() const;
 
+    /// Returns true if the document is about to be closed, false otherwise
+    bool isAboutToClose() const;
+
     /// Getter for the App Document
     App::Document*  getDocument() const;
 
@@ -214,9 +218,10 @@ public:
     std::list<MDIView*> getMDIViews() const;
     /// returns a list of all MDI views of a certain type
     std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
+    MDIView *setActiveView(const ViewProviderDocumentObject* vp = nullptr, Base::Type typeId = Base::Type());
+    View3DInventor* openEditingView3D(const ViewProviderDocumentObject* vp);
+    View3DInventor* openEditingView3D(const App::DocumentObject* obj);
     //@}
-
-    MDIView *setActiveView(ViewProviderDocumentObject *vp=nullptr, Base::Type typeId = Base::Type());
 
     /** @name View provider handling  */
     //@{
@@ -227,7 +232,11 @@ public:
     void setAnnotationViewProvider(const char* name, ViewProvider *pcProvider);
     /// get an annotation view provider
     ViewProvider * getAnnotationViewProvider(const char* name) const;
-    /// remove an annotation view provider
+    /// return true if the view provider is added as an annotation view provider
+    bool isAnnotationViewProvider(const ViewProvider* vp) const;
+    /// remove an annotation view provider from the document and return it
+    ViewProvider* takeAnnotationViewProvider(const char* name);
+    /// remove and delete an annotation view provider
     void removeAnnotationViewProvider(const char* name);
     /// test if the feature is in show
     bool isShow(const char* name);
@@ -247,6 +256,8 @@ public:
     void resetEdit();
     /// reset edit of this document
     void _resetEdit();
+    /// set if the edit asks for restore or not.
+    void setEditRestore(bool val);
     /// get the in edit ViewProvider or NULL
     ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=nullptr,
             std::string *subname=nullptr, int *mode=nullptr, std::string *subElement=nullptr) const;
@@ -298,11 +309,16 @@ public:
     const char *getCameraSettings() const;
     bool saveCameraSettings(const char *) const;
 
+    /// get all tree root objects (objects that are at the root of the object tree)
+    std::vector<App::DocumentObject*> getTreeRootObjects() const;
+
 protected:
     // pointer to the python class
     Gui::DocumentPy *_pcDocPy;
 
 private:
+    bool trySetEdit(Gui::ViewProvider* p, int ModNum, const char *subname);
+    void resetIfEditing();
     //handles the scene graph nodes to correctly group child and parents
     void handleChildren3D(ViewProvider* viewProvider, bool deleting=false);
 

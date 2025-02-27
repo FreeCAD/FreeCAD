@@ -67,10 +67,9 @@ private:
 
                 editPoint = onSketchPos;
 
-                if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[0]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[0],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             default:
                 break;
@@ -82,15 +81,10 @@ private:
         try {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch point"));
             Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                  "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                                  "addGeometry(Part.Point(App.Vector(%f,%f,0)), %s)",
                                   editPoint.x,
-                                  editPoint.y);
-
-            if (!isConstructionMode()) {
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "toggleConstruction(%d)",
-                                      getHighestCurveIndex());
-            }
+                                  editPoint.y,
+                                  isConstructionMode() ? "True" : "False");
 
             Gui::Command::commitCommand();
         }
@@ -121,7 +115,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Point");
+        return QStringLiteral("Sketcher_Pointer_Create_Point");
     }
 
     std::unique_ptr<QWidget> createWidget() const override

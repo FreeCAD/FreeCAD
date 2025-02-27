@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 """Post Process command that will make use of the Output File and Post
-Processor entries in PathJob """
+Processor entries in PathJob"""
 
 
 import FreeCAD
@@ -54,9 +54,7 @@ def _resolve_post_processor_name(job):
     elif Path.Preferences.defaultPostProcessor():
         valid_name = Path.Preferences.defaultPostProcessor()
     elif FreeCAD.GuiUp:
-        valid_name = (
-            DlgSelectPostProcessor().exec_()
-        )  # Ensure DlgSelectPostProcessor is defined
+        valid_name = DlgSelectPostProcessor().exec_()  # Ensure DlgSelectPostProcessor is defined
     else:
         valid_name = None
 
@@ -75,9 +73,7 @@ class DlgSelectPostProcessor:
         firstItem = None
         for post in Path.Preferences.allEnabledPostProcessors():
             item = QtGui.QListWidgetItem(post)
-            item.setFlags(
-                QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
-            )
+            item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
             self.dialog.lwPostProcessor.addItem(item)
             if not firstItem:
                 firstItem = item
@@ -137,6 +133,8 @@ class CommandPathPost:
                 Path.Log.debug(filename)
                 with open(filename, "w") as f:
                     f.write(gcode)
+            else:
+                return
 
         elif policy == "Append Unique ID on conflict":
             while os.path.isfile(filename):
@@ -157,12 +155,16 @@ class CommandPathPost:
                     Path.Log.debug(filename)
                     with open(filename, "w") as f:
                         f.write(gcode)
+                else:
+                    return
             else:
                 with open(filename, "w") as f:
                     f.write(gcode)
+
         else:  # Overwrite
             with open(filename, "w") as f:
                 f.write(gcode)
+
         FreeCAD.Console.PrintMessage(f"File written to {filename}\n")
 
     def Activated(self):
@@ -181,11 +183,11 @@ class CommandPathPost:
             return
 
         # get a postprocessor
-        postprocessor = PostProcessorFactory.get_post_processor(
-            self.candidate, postprocessor_name
-        )
+        postprocessor = PostProcessorFactory.get_post_processor(self.candidate, postprocessor_name)
 
         post_data = postprocessor.export()
+        # None is returned if there was an error during argument processing
+        # otherwise the "usual" post_data data structure is returned.
         if not post_data:
             FreeCAD.ActiveDocument.abortTransaction()
             return
@@ -203,8 +205,26 @@ class CommandPathPost:
             generator.set_subpartname(subpart)
             fname = next(generated_filename)
 
-            # write the results to the file
-            self._write_file(fname, gcode, policy)
+            #
+            # It is useful for a postprocessor to be able to either skip writing out
+            # a file or write out a zero-length file to indicate that something unusual
+            # has happened.  The "gcode" variable is usually a string containing gcode
+            # formatted for output.  If the gcode string is zero length then a zero
+            # length file will be written out.  If the "gcode" variable contains None
+            # instead, that indicates that the postprocessor doesn't want a file to be
+            # written at all.
+            #
+            # There is at least one old-style postprocessor that currently puts the
+            # gcode file out to a file server and doesn't need to write out a file to
+            # the system where FreeCAD is running.  In the old-style postprocessors the
+            # postprocessor code decided whether to write out a file.  Eventually a
+            # newer (more object-oriented) version of that postprocessor will return
+            # None for the "gcode" variable value to tell this code not to write out
+            # a file.  There may be other uses found for this capability over time.
+            #
+            if gcode is not None:
+                # write the results to the file
+                self._write_file(fname, gcode, policy)
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

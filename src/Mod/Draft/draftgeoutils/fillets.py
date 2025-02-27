@@ -79,7 +79,19 @@ def fillet(lEdges, r, chamfer=False):
     curveType = getCurveType(rndEdges[0])
     curveType = getCurveType(rndEdges[1], curveType)
 
-    lVertexes = rndEdges[0].Vertexes + [rndEdges[1].Vertexes[-1]]
+    # Part.__sortEdges__() does not reverse edges. There is no guarantee that
+    # the endpoint of the 1st edge is the corner point.
+    edge1_sta, edge1_end = [rndEdges[0].Vertexes[i].Point for i in [0, -1]]
+    edge2_sta, edge2_end = [rndEdges[1].Vertexes[i].Point for i in [0, -1]]
+    tol = 1e-7
+    if edge1_sta.isEqual(edge2_sta, tol):
+        lVertexes = [rndEdges[0].Vertexes[-1], rndEdges[0].Vertexes[0], rndEdges[1].Vertexes[-1]]
+    elif edge1_sta.isEqual(edge2_end, tol):
+        lVertexes = [rndEdges[0].Vertexes[-1], rndEdges[0].Vertexes[0], rndEdges[1].Vertexes[0]]
+    elif edge1_end.isEqual(edge2_sta, tol):
+        lVertexes = [rndEdges[0].Vertexes[0], rndEdges[0].Vertexes[-1], rndEdges[1].Vertexes[-1]]
+    else:
+        lVertexes = [rndEdges[0].Vertexes[0], rndEdges[0].Vertexes[-1], rndEdges[1].Vertexes[0]]
 
     if len(curveType['Line']) == 2:
         # Deals with 2-line-edges lists
@@ -90,11 +102,6 @@ def fillet(lEdges, r, chamfer=False):
         U2.normalize()
 
         alpha = U1.getAngle(U2)
-
-        if chamfer:
-            # correcting r value so the size of the chamfer = r
-            beta = math.pi - alpha/2
-            r = (r/2)/math.cos(beta)
 
         # Edges have same direction
         if (round(alpha, precision()) == 0
@@ -118,7 +125,7 @@ def fillet(lEdges, r, chamfer=False):
         dirVect.scale(dToTangent, dToTangent, dToTangent)
         arcPt3 = lVertexes[1].Point.add(dirVect)
 
-        if (dToTangent > lEdges[0].Length) or (dToTangent > lEdges[1].Length):
+        if (dToTangent > rndEdges[0].Length) or (dToTangent > rndEdges[1].Length):
             print("DraftGeomUtils.fillet: Error: radius value ", r,
                   " is too high")
             return rndEdges
@@ -144,7 +151,7 @@ def fillet(lEdges, r, chamfer=False):
 
     elif len(curveType['Arc']) == 1:
         # Deals with lists containing an arc and a line
-        if lEdges[0] in curveType['Arc']:
+        if rndEdges[0] in curveType['Arc']:
             lineEnd = lVertexes[2]
             arcEnd = lVertexes[0]
             arcFirst = True

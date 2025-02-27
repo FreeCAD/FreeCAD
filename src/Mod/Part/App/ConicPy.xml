@@ -29,12 +29,11 @@
     </Attribute>
     <Attribute Name="Eccentricity" ReadOnly="true">
         <Documentation>
-            <UserDocu>
-            returns the eccentricity value of the conic e.
-            e = 0 for a circle
-            0 &lt; e &lt; 1 for an ellipse  (e = 0 if MajorRadius = MinorRadius)
-            e > 1 for a hyperbola
-            e = 1 for a parabola
+            <UserDocu>Returns the eccentricity value of the conic e.
+e = 0 for a circle
+0 &lt; e &lt; 1 for an ellipse  (e = 0 if MajorRadius = MinorRadius)
+e > 1 for a hyperbola
+e = 1 for a parabola
             </UserDocu>
         </Documentation>
         <Parameter Name="Eccentricity" Type="Float"/>

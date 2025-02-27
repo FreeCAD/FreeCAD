@@ -24,7 +24,6 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Tools.h>
 #include <App/Application.h>
 
 #include "DlgPrefsTechDrawDimensionsImp.h"
@@ -150,7 +149,7 @@ void DlgPrefsTechDrawDimensionsImp::loadSettings()
     DrawGuiUtil::loadArrowBox(ui->pcbArrow);
     ui->pcbArrow->setCurrentIndex(prefArrowStyle());
 
-    ui->leFormatSpec->setText(Base::Tools::fromStdString(Preferences::formatSpec()));
+    ui->leFormatSpec->setText(QString::fromStdString(Preferences::formatSpec()));
     ui->leFormatSpec->onRestore();
 
     ui->pdsbGapISO->onRestore();
@@ -206,6 +205,24 @@ void DlgPrefsTechDrawDimensionsImp::changeEvent(QEvent *e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+void DlgPrefsTechDrawDimensionsImp::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/TechDraw/dimensioning");
+    // reset "Dimension tools" parameters
+    hGrp->RemoveBool("SingleDimensioningTool");
+    hGrp->RemoveBool("SeparatedDimensioningTools");
+
+    // reset "radius/diameter mode for dimensioning" parameter
+    hGrp->RemoveBool("DimensioningDiameter");
+    hGrp->RemoveBool("DimensioningRadius");
+
+    // finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
 }
 
 int DlgPrefsTechDrawDimensionsImp::prefArrowStyle() const

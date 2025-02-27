@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Utilities for working with licenses. Based on SPDX info downloaded from
+"""Utilities for working with licenses. Based on SPDX info downloaded from
 https://github.com/spdx/license-list-data and stored as part of the FreeCAD repo, loaded into a Qt
-resource. """
+resource."""
 
 import json
 

@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="537"/>
       <source>Wire from mesh boundary...</source>
-      <translation>Жица од ивица мреже...</translation>
+      <translation>Жичани рам од ивица мреже...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="538"/>
       <source>Create wire from mesh boundaries</source>
-      <translation>Направи жицу од ивица мреже</translation>
+      <translation>Направи жичани рам од ивица мреже</translation>
     </message>
   </context>
   <context>
@@ -233,9 +233,9 @@
       <translation>Положај</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
-      <source>Fit B-Spline</source>
+      <location filename="../../FitBSplineCurve.cpp" line="139"/>
+      <source>Fit B-spline</source>
       <translation>Уклопи Б-Сплајн</translation>
     </message>
     <message>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>
       <source>User-defined u/v directions</source>
-      <translation>Кириснички дефинисани u/v смерови</translation>
+      <translation>Кориснички дефинисани u/v смерови</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
@@ -477,7 +477,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="61"/>
       <source>All</source>
-      <translation>Сва</translation>
+      <translation>Сви</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="81"/>
@@ -591,8 +591,8 @@
     <name>ReenGui::FitBSplineCurve</name>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
-      <source>Fit B-spline surface</source>
-      <translation>Уклопи Б-Сплајн површину</translation>
+      <source>Fit B-spline curve</source>
+      <translation type="unfinished">Fit B-spline curve</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>

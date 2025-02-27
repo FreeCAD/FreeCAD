@@ -48,6 +48,7 @@
 #include <App/DocumentObject.h>
 #include <App/MeasureManager.h>
 #include <App/DocumentObserver.h>
+#include <App/GeoFeature.h>
 #include <Base/Console.h>
 #include <Base/Matrix.h>
 #include <Base/Rotation.h>
@@ -60,7 +61,8 @@
 
 using namespace Part;
 
-// From: https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/SelectionSummary.cpp
+
+// From: https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/Selection/SelectionSummary.cpp
 
 // Should work with edges and wires
 static float getLength(TopoDS_Shape& wire){
@@ -89,23 +91,24 @@ static float getRadius(TopoDS_Shape& edge){
     return 0.0;
 }
 
-TopoDS_Shape getLocatedShape(const App::SubObjectT& subject)
+TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat = nullptr)
 {
-    App::DocumentObject* obj = subject.getObject();
+    App::DocumentObject* obj = subject.getSubObjectList().back();
     if (!obj) {
         return {};
     }
-    Part::TopoShape shape = Part::Feature::getTopoShape(obj);
+
+    Part::TopoShape shape = Part::Feature::getTopoShape(obj, subject.getElementName(), false, mat, nullptr, true);
     if (shape.isNull()) {
+        Base::Console().Log("Part::MeasureClient::getLocatedShape: Did not retrieve shape for %s, %s\n", obj->getNameInDocument(), subject.getElementName());
         return {};
     }
-    auto geoFeat = dynamic_cast<App::GeoFeature*>(obj);
-    if (geoFeat) {
-        shape.setPlacement(geoFeat->globalPlacement());
-    }
+
+    auto placement = App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName());
+    shape.setPlacement(placement);
 
     // Don't get the subShape from datum elements
-    if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+    if (obj->isDerivedFrom<Part::Datum>()) {
         return shape.getShape();
     }
 
@@ -136,10 +139,8 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
 
             switch (curve.GetType()) {
                 case GeomAbs_Line: {
-                    if (ob->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Datum"))) {
-                        return App::MeasureElementType::LINE;
-                    }
-                    return App::MeasureElementType::LINESEGMENT;
+                    return ob->isDerivedFrom<Part::Datum>() ? App::MeasureElementType::LINE
+                                                            : App::MeasureElementType::LINESEGMENT;
                 }
                 case GeomAbs_Circle: { return App::MeasureElementType::CIRCLE; }
                 case GeomAbs_BezierCurve:
@@ -180,31 +181,22 @@ bool getShapeFromStrings(TopoDS_Shape &shapeOut, const App::SubObjectT& subject,
 }
 
 
-
 Part::VectorAdapter buildAdapter(const App::SubObjectT& subject)
 {
-    if (!subject.getObject()) {
-        return Part::VectorAdapter();
-    }
     Base::Matrix4D mat;
-    TopoDS_Shape shape = Part::Feature::getShape(subject.getObject(), subject.getElementName(), true);
+    TopoDS_Shape shape = getLocatedShape(subject, &mat);
+
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().Message("Part::buildAdapter did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return Part::VectorAdapter();
     }
-
     TopAbs_ShapeEnum shapeType = shape.ShapeType();
-
 
     if (shapeType == TopAbs_EDGE)
     {
-      TopoDS_Shape edgeShape;
-      if (!getShapeFromStrings(edgeShape, subject, &mat)) {
-        return {};
-      }
-      TopoDS_Edge edge = TopoDS::Edge(edgeShape);
+      TopoDS_Edge edge = TopoDS::Edge(shape);
       // make edge orientation so that end of edge closest to pick is head of vector.
       TopoDS_Vertex firstVertex = TopExp::FirstVertex(edge, Standard_True);
       TopoDS_Vertex lastVertex = TopExp::LastVertex(edge, Standard_True);
@@ -231,12 +223,7 @@ Part::VectorAdapter buildAdapter(const App::SubObjectT& subject)
     }
     if (shapeType == TopAbs_FACE)
     {
-      TopoDS_Shape faceShape;
-      if (!getShapeFromStrings(faceShape, subject, &mat)) {
-        return {};
-      }
-
-      TopoDS_Face face = TopoDS::Face(faceShape);
+      TopoDS_Face face = TopoDS::Face(shape);
       Base::Vector3d vTemp(0.0, 0.0, 0.0); //v(current.x, current.y, current.z);
       vTemp = mat*vTemp;
       gp_Vec pickPoint(vTemp.x, vTemp.y, vTemp.z);
@@ -268,17 +255,7 @@ MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
     BRepGProp::LinearProperties(shape, gprops);
     auto origin = gprops.CentreOfMass();
 
-    // Get rotation of line
-    auto edge = TopoDS::Edge(shape);
-    ShapeAnalysis_Edge edgeAnalyzer;
-    gp_Pnt firstPoint = BRep_Tool::Pnt(edgeAnalyzer.FirstVertex(edge));
-    gp_Pnt lastPoint = BRep_Tool::Pnt(edgeAnalyzer.LastVertex(edge));
-    auto dir = (lastPoint.XYZ() - firstPoint.XYZ()).Normalized();
-    Base::Vector3d elementDirection(dir.X(), dir.Y(), dir.Z());
-    Base::Vector3d axisUp(0.0, 0.0, 1.0);
-    Base::Rotation rot(axisUp, elementDirection);
-
-    Base::Placement placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), rot);
+    Base::Placement placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), Base::Rotation());
     return std::make_shared<MeasureLengthInfo>(true, getLength(shape), placement);
 }
 
@@ -324,7 +301,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("MeasureLengthHandler did not retrieve shape for %s, %s\n",
+        Base::Console().Message("MeasureAreaHandler did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return std::make_shared<MeasureAreaInfo>(false, 0.0, Base::Matrix4D());
     }
@@ -339,7 +316,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
     BRepGProp::SurfaceProperties(shape, gprops);
     auto origin = gprops.CentreOfMass();
 
-    // TODO: Center of Mass might not lie on the surface, somehow snap to the closest point on the surface? 
+    // TODO: Center of Mass might not lie on the surface, somehow snap to the closest point on the surface?
 
     Base::Placement placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), Base::Rotation());
     return std::make_shared<MeasureAreaInfo>(true, getFaceArea(shape), placement);
@@ -361,7 +338,7 @@ MeasurePositionInfoPtr MeasurePositionHandler(const App::SubObjectT& subject)
         return std::make_shared<MeasurePositionInfo>(false, Base::Vector3d());
     }
 
-    TopoDS_Vertex vertex = TopoDS::Vertex(shape);    
+    TopoDS_Vertex vertex = TopoDS::Vertex(shape);
     auto point = BRep_Tool::Pnt(vertex);
     return std::make_shared<MeasurePositionInfo>( true, Base::Vector3d(point.X(), point.Y(), point.Z()));
 }
@@ -386,11 +363,11 @@ MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
     Base::Vector3d position;
     if (sType == TopAbs_FACE) {
         TopoDS_Face face = TopoDS::Face(shape);
-        
+
         GProp_GProps gprops;
         BRepGProp::SurfaceProperties(face, gprops);
         vec = gprops.CentreOfMass();
-        
+
     } else if (sType == TopAbs_EDGE) {
         TopoDS_Edge edge = TopoDS::Edge(shape);
 
@@ -419,8 +396,7 @@ MeasureDistanceInfoPtr MeasureDistanceHandler(const App::SubObjectT& subject)
 
     // return a persistent copy of the TopoDS_Shape here as shape will go out of scope at end
     BRepBuilderAPI_Copy copy(shape);
-    const TopoDS_Shape* newShape = new TopoDS_Shape(copy.Shape());
-    return std::make_shared<MeasureDistanceInfo>(true, newShape);
+    return std::make_shared<MeasureDistanceInfo>(true, copy.Shape());
 }
 
 

@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <boost/signals2/connection.hpp>
 #endif
 
@@ -32,7 +32,6 @@
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -40,6 +39,7 @@
 
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderDrawingViewExtension.h"
@@ -49,6 +49,7 @@
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 namespace sp = std::placeholders;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentObject)
@@ -62,7 +63,8 @@ ViewProviderDrawingView::ViewProviderDrawingView() :
     sPixmap = "TechDraw_TreeView";
     static const char *group = "Base";
 
-    ADD_PROPERTY_TYPE(KeepLabel ,(false), group, App::Prop_None, "Keep Label on Page even if toggled off");
+    auto showLabel = Preferences::alwaysShowLabel();
+    ADD_PROPERTY_TYPE(KeepLabel ,(showLabel), group, App::Prop_None, "Keep Label on Page even if toggled off");
     ADD_PROPERTY_TYPE(StackOrder,(0),group,App::Prop_None,"Over or under lap relative to other views");
 
     // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
@@ -360,9 +362,9 @@ void ViewProviderDrawingView::onProgressMessage(const TechDraw::DrawView* dv,
 
 void ViewProviderDrawingView::showProgressMessage(const std::string featureName, const std::string text) const
 {
-    QString msg = QString::fromUtf8("%1 %2")
-            .arg(Base::Tools::fromStdString(featureName),
-                 Base::Tools::fromStdString(text));
+    QString msg = QStringLiteral("%1 %2")
+            .arg(QString::fromStdString(featureName),
+                 QString::fromStdString(text));
     if (Gui::getMainWindow()) {
         //neither of these work! Base::Console().Message() output preempts these messages??
 //        Gui::getMainWindow()->showMessage(msg, 3000);

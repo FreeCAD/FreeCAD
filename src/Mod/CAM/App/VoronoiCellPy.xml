@@ -39,7 +39,7 @@
             <Documentation>
                 <UserDocu>Returns the cell's category as an integer</UserDocu>
             </Documentation>
-            <Parameter Name="SourceCategory" Type="Int"/>
+            <Parameter Name="SourceCategory" Type="Long"/>
         </Attribute>
         <Attribute Name="SourceCategoryName" ReadOnly="true">
             <Documentation>

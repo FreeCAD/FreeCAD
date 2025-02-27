@@ -25,6 +25,11 @@
         <UserDocu>Get a material object by specifying its path and library name</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="inheritMaterial">
+      <Documentation>
+        <UserDocu>Create a new material object by specifying the UUID of its parent</UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="MaterialLibraries" ReadOnly="true">
       <Documentation>
         <UserDocu>List of Material libraries.</UserDocu>

@@ -29,38 +29,36 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
     </Documentation>
     <Methode Name="toStr" Const="true">
       <Documentation>
-        <UserDocu>
-          toStr([decimals])
-          returns a string representation rounded to number of decimals. If no decimals are specified then
-          the internal precision is used
+        <UserDocu>toStr([decimals])
+
+Returns a string representation rounded to number of decimals. If no decimals are specified then
+the internal precision is used
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getUserPreferred" Const="true">
       <Documentation>
         <UserDocu>
-          returns a quantity with the translation factor and a string with the prevered unit
+          Returns a quantity with the translation factor and a string with the prevered unit
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getValueAs" Const="true">
       <Documentation>
-        <UserDocu>
-          returns a floating point value as the provided unit
+        <UserDocu>Returns a floating point value as the provided unit
 
-          Following parameters are allowed:
-          getValueAs('m/s')  # unit string to parse
-          getValueAs(2.45,1) # translation value and unit signature
-          getValueAs(FreeCAD.Units.Pascal) # predefined standard units
-          getValueAs(Qantity('N/m^2')) # a quantity
-          getValueAs(Unit(0,1,0,0,0,0,0,0)) # a unit
+Following parameters are allowed:
+getValueAs('m/s')  # unit string to parse
+getValueAs(2.45,1) # translation value and unit signature
+getValueAs(FreeCAD.Units.Pascal) # predefined standard units
+getValueAs(Qantity('N/m^2')) # a quantity
+getValueAs(Unit(0,1,0,0,0,0,0,0)) # a unit
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="__round__" Const="true">
       <Documentation>
-        <UserDocu>
-Return the Integral closest to x, rounding half toward even.
+        <UserDocu>Returns the Integral closest to x, rounding half toward even.
 When an argument is passed, work like built-in round(x, ndigits).
         </UserDocu>
       </Documentation>

@@ -20,6 +20,7 @@
 #***************************************************************************
 
 import unittest
+import math
 
 import FreeCAD
 from FreeCAD import Base
@@ -132,3 +133,41 @@ class TestSubShapeBinder(unittest.TestCase):
         nor1 = binder1.Shape.Face1.normalAt(0,0)
         nor2 = binder2.Shape.Face1.normalAt(0,0)
         self.assertAlmostEqual(nor1.getAngle(nor2), 0.0, 2)
+
+    def testBinderWithRevolution(self):
+        doc = self.Doc
+        body = doc.addObject('PartDesign::Body', 'Body')
+        doc.recompute()
+        sketch = body.newObject('Sketcher::SketchObject', 'Sketch')
+        geoList = []
+        geoList.append(Part.LineSegment(Base.Vector(10, 10, 0), Base.Vector(30, 10, 0)))
+        geoList.append(Part.LineSegment(Base.Vector(30, 10, 0), Base.Vector(30, 15, 0)))
+        geoList.append(Part.LineSegment(Base.Vector(30, 15, 0), Base.Vector(10, 15, 0)))
+        geoList.append(Part.LineSegment(Base.Vector(10, 15, 0), Base.Vector(10, 10, 0)))
+        sketch.addGeometry(geoList, False)
+        del geoList
+        constraintList = []
+        constraintList.append(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
+        constraintList.append(Sketcher.Constraint('Horizontal', 0))
+        constraintList.append(Sketcher.Constraint('Horizontal', 2))
+        constraintList.append(Sketcher.Constraint('Vertical', 1))
+        constraintList.append(Sketcher.Constraint('Vertical', 3))
+        sketch.addConstraint(constraintList)
+        del constraintList
+        doc.recompute()
+        binder = body.newObject('PartDesign::SubShapeBinder', 'Binder')
+        binder.Support = sketch
+        revolution = body.newObject('PartDesign::Revolution', 'Revolution')
+        revolution.Profile = (binder, ['', ])
+        revolution.ReferenceAxis = (doc.getObject('Y_Axis'), [''])
+        revolution.Angle = 360.0
+        revolution.Reversed = 1
+        doc.recompute()
+        revolution.Angle2 = 60.0
+        doc.recompute()
+        self.assertAlmostEqual(binder.Shape.Area, 100)
+        volume = 100 * math.pi * 2 * 20
+        self.assertAlmostEqual(revolution.Shape.Volume, volume)

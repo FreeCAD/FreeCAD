@@ -39,6 +39,15 @@ namespace Sketcher
 
 class SketchObject;
 
+
+enum class Solver
+{
+    RedundantConstraints = -2,
+    ConflictingConstraints = -3,
+    OverConstrained = -4,
+};
+
+
 class SketcherExport SketchAnalysis
 {
 public:
@@ -97,9 +106,11 @@ public:
         vertexConstraints = cl;
     }
     /// Point on Point constraint simple routine Make step (see constructor)
-    /// if onebyone, then the sketch is solved after each individual constraint addition and any
+    void makeMissingPointOnPointCoincident();
+    /// Point on Point constraint simple routine Make step (see constructor)
+    /// The sketch is solved after each individual constraint addition and any
     /// redundancy removed.
-    void makeMissingPointOnPointCoincident(bool onebyone = false);
+    void makeMissingPointOnPointCoincidentOneByOne();
 
     /// Vertical/Horizontal constraints simple routine Detect step (see constructor)
     int detectMissingVerticalHorizontalConstraints(double angleprecision = M_PI / 8);
@@ -114,7 +125,8 @@ public:
         verthorizConstraints = cl;
     }
     /// Vertical/Horizontal constraints simple routine Make step (see constructor)
-    void makeMissingVerticalHorizontal(bool onebyone = false);
+    void makeMissingVerticalHorizontal();
+    void makeMissingVerticalHorizontalOneByOne();
 
     /// Equality constraints simple routine Detect step (see constructor)
     int detectMissingEqualityConstraints(double precision);
@@ -139,7 +151,8 @@ public:
         radiusequalityConstraints = cl;
     }
     /// Equality constraints simple routine Make step (see constructor)
-    void makeMissingEquality(bool onebyone = true);
+    void makeMissingEquality();
+    void makeMissingEqualityOneByOne();
 
     /// Detect degenerated geometries
     int detectDegeneratedGeometries(double tolerance) const;
@@ -172,22 +185,23 @@ public:
 private:
     Sketcher::SketchObject* sketch;
 
-    struct VertexIds;
-    struct Vertex_Less;
-    struct VertexID_Less;
-    struct Vertex_EqualTo;
-    struct EdgeIds;
-    struct Edge_Less;
-    struct Edge_EqualTo;
     std::vector<ConstraintIds> vertexConstraints;
     std::vector<ConstraintIds> verthorizConstraints;
     std::vector<ConstraintIds> lineequalityConstraints;
     std::vector<ConstraintIds> radiusequalityConstraints;
 
 private:
+    void autoDeleteAllConstraints();
+    void autoHorizontalVerticalConstraints();
+    void autoPointOnPointCoincident();
+    void autoMissingEquality();
     bool checkHorizontal(Base::Vector3d dir, double angleprecision);
     bool checkVertical(Base::Vector3d dir, double angleprecision);
+    void makeConstraints(std::vector<ConstraintIds>&);
+    void makeConstraintsOneByOne(std::vector<ConstraintIds>&, const char* errorText);
     std::set<int> getDegeneratedGeometries(double tolerance) const;
+    void solveSketch(const char* errorText);
+    static Sketcher::Constraint* create(const ConstraintIds& id);
 };
 
 }  // namespace Sketcher

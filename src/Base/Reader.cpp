@@ -24,8 +24,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <memory>
+#include <map>
+#include <vector>
+#include <iostream>
+#include <string>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
+#include <xercesc/sax2/Attributes.hpp>
 #endif
 
 #include <locale>
@@ -34,6 +38,7 @@
 #include "Base64.h"
 #include "Base64Filter.h"
 #include "Console.h"
+#include "Exception.h"
 #include "InputSource.h"
 #include "Persistence.h"
 #include "Sequencer.h"
@@ -46,8 +51,12 @@
 #include <zipios++/zipinputstream.h>
 #include <boost/iostreams/filtering_stream.hpp>
 
-
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+#else
 XERCES_CPP_NAMESPACE_USE
+#endif
 
 using namespace std;
 
@@ -109,51 +118,32 @@ unsigned int Base::XMLReader::getAttributeCount() const
     return static_cast<unsigned int>(AttrMap.size());
 }
 
-long Base::XMLReader::getAttributeAsInteger(const char* AttrName) const
+long Base::XMLReader::getAttributeAsInteger(const char* AttrName, const char* defaultValue) const
 {
-    AttrMapType::const_iterator pos = AttrMap.find(AttrName);
-
-    if (pos != AttrMap.end()) {
-        return atol(pos->second.c_str());
-    }
-    // wrong name, use hasAttribute if not sure!
-    std::ostringstream msg;
-    msg << "XML Attribute: \"" << AttrName << "\" not found";
-    throw Base::XMLAttributeError(msg.str());
+    return stol(getAttribute(AttrName, defaultValue));
 }
 
-unsigned long Base::XMLReader::getAttributeAsUnsigned(const char* AttrName) const
+unsigned long Base::XMLReader::getAttributeAsUnsigned(const char* AttrName,
+                                                      const char* defaultValue) const
 {
-    AttrMapType::const_iterator pos = AttrMap.find(AttrName);
-
-    if (pos != AttrMap.end()) {
-        return strtoul(pos->second.c_str(), nullptr, 10);
-    }
-    // wrong name, use hasAttribute if not sure!
-    std::ostringstream msg;
-    msg << "XML Attribute: \"" << AttrName << "\" not found";
-    throw Base::XMLAttributeError(msg.str());
+    return stoul(getAttribute(AttrName, defaultValue), nullptr);
 }
 
-double Base::XMLReader::getAttributeAsFloat(const char* AttrName) const
+double Base::XMLReader::getAttributeAsFloat(const char* AttrName, const char* defaultValue) const
 {
-    AttrMapType::const_iterator pos = AttrMap.find(AttrName);
-
-    if (pos != AttrMap.end()) {
-        return atof(pos->second.c_str());
-    }
-    // wrong name, use hasAttribute if not sure!
-    std::ostringstream msg;
-    msg << "XML Attribute: \"" << AttrName << "\" not found";
-    throw Base::XMLAttributeError(msg.str());
+    return stod(getAttribute(AttrName, defaultValue), nullptr);
 }
 
-const char* Base::XMLReader::getAttribute(const char* AttrName) const
+const char* Base::XMLReader::getAttribute(const char* AttrName,            // NOLINT
+                                          const char* defaultValue) const  // NOLINT
 {
-    AttrMapType::const_iterator pos = AttrMap.find(AttrName);
+    auto pos = AttrMap.find(AttrName);
 
     if (pos != AttrMap.end()) {
         return pos->second.c_str();
+    }
+    if (defaultValue) {
+        return defaultValue;
     }
     // wrong name, use hasAttribute if not sure!
     std::ostringstream msg;
@@ -196,6 +186,8 @@ bool Base::XMLReader::read()
 void Base::XMLReader::readElement(const char* ElementName)
 {
     bool ok {};
+
+    endCharStream();
     int currentLevel = Level;
     std::string currentName = LocalName;
     do {
@@ -263,9 +255,11 @@ bool Base::XMLReader::isEndOfDocument() const
 
 void Base::XMLReader::readEndElement(const char* ElementName, int level)
 {
+    endCharStream();
+
     // if we are already at the end of the current element
-    if (ReadType == EndElement && ElementName && LocalName == ElementName
-        && (level < 0 || level == Level)) {
+    if ((ReadType == EndElement || ReadType == StartEndElement) && ElementName
+        && LocalName == ElementName && (level < 0 || level == Level)) {
         return;
     }
     if (ReadType == EndDocument) {
@@ -448,6 +442,7 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream& zipstream) const
                 // failure.
                 Base::Console().Error("Reading failed from embedded file: %s\n",
                                       entry->toString().c_str());
+                FailedFiles.push_back(jt->FileName);
             }
             // Go to the next registered file name
             it = jt + 1;
@@ -473,14 +468,19 @@ const char* Base::XMLReader::addFile(const char* Name, Base::Persistence* Object
     temp.Object = Object;
 
     FileList.push_back(temp);
-    FileNames.push_back(temp.FileName);
 
     return Name;
 }
 
-const std::vector<std::string>& Base::XMLReader::getFilenames() const
+bool Base::XMLReader::hasFilenames() const
 {
-    return FileNames;
+    return !FileList.empty();
+}
+
+bool Base::XMLReader::hasReadFailed(const std::string& filename) const
+{
+    auto it = std::find(FailedFiles.begin(), FailedFiles.end(), filename);
+    return (it != FailedFiles.end());
 }
 
 bool Base::XMLReader::isRegistered(Base::Persistence* Object) const

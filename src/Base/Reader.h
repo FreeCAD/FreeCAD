@@ -20,20 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_READER_H
-#define BASE_READER_H
+#ifndef SRC_BASE_READER_H_
+#define SRC_BASE_READER_H_
 
 #include <bitset>
 #include <map>
 #include <memory>
-#include <sstream>
 #include <string>
+#include <vector>
 
 #include <xercesc/framework/XMLPScanToken.hpp>
-#include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
 
-#include <boost/iostreams/concepts.hpp>
+#include <boost/iostreams/categories.hpp>
 
 #include "FileInfo.h"
 
@@ -42,11 +41,21 @@ namespace zipios
 {
 class ZipInputStream;
 }
-
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+namespace XERCES_CPP_NAMESPACE
+{
+class Attributes;
+class DefaultHandler;
+class SAX2XMLReader;
+}  // namespace XERCES_CPP_NAMESPACE
+#else
 XERCES_CPP_NAMESPACE_BEGIN
+class Attributes;
 class DefaultHandler;
 class SAX2XMLReader;
 XERCES_CPP_NAMESPACE_END
+#endif
 
 namespace Base
 {
@@ -217,13 +226,23 @@ public:
     unsigned int getAttributeCount() const;
     /// check if the read element has a special attribute
     bool hasAttribute(const char* AttrName) const;
-    /// return the named attribute as an integer (does type checking)
-    long getAttributeAsInteger(const char* AttrName) const;
-    unsigned long getAttributeAsUnsigned(const char* AttrName) const;
-    /// return the named attribute as a double floating point (does type checking)
-    double getAttributeAsFloat(const char* AttrName) const;
-    /// return the named attribute as a double floating point (does type checking)
-    const char* getAttribute(const char* AttrName) const;
+
+    /// return the named attribute as an integer (does type checking); if missing return
+    /// defaultValue
+    long getAttributeAsInteger(const char* AttrName, const char* defaultValue = nullptr) const;
+
+    /// return the named attribute as unsigned integer (does type checking); if missing return
+    /// defaultValue
+    unsigned long getAttributeAsUnsigned(const char* AttrName,
+                                         const char* defaultValue = nullptr) const;
+
+    /// return the named attribute as a double floating point (does type checking); if missing
+    /// return defaultValue
+    double getAttributeAsFloat(const char* AttrName, const char* defaultValue = nullptr) const;
+
+    /// return the named attribute as a double floating point (does type checking); if missing
+    /// return defaultValue
+    const char* getAttribute(const char* AttrName, const char* defaultValue = nullptr) const;
     //@}
 
     /** @name additional file reading */
@@ -232,8 +251,10 @@ public:
     const char* addFile(const char* Name, Base::Persistence* Object);
     /// process the requested file writes
     void readFiles(zipios::ZipInputStream& zipstream) const;
-    /// get all registered file names
-    const std::vector<std::string>& getFilenames() const;
+    /// Returns whether reader has any registered filenames
+    bool hasFilenames() const;
+    /// returns true if reading the file \a filename has failed
+    bool hasReadFailed(const std::string& filename) const;
     bool isRegistered(Base::Persistence* Object) const;
     virtual void addName(const char*, const char*);
     virtual const char* getName(const char*) const;
@@ -343,7 +364,7 @@ public:
     std::vector<FileEntry> FileList;
 
 private:
-    std::vector<std::string> FileNames;
+    mutable std::vector<std::string> FailedFiles;
 
     std::bitset<32> StatusBits;
 
@@ -370,4 +391,4 @@ private:
 }  // namespace Base
 
 
-#endif
+#endif  // SRC_BASE_READER_H_

@@ -1550,7 +1550,7 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
     <message>
       <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
-      <translation>Automatico</translation>
+      <translation>Automático</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="99"/>
@@ -2096,7 +2096,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../AppMeshGui.cpp" line="157"/>
       <source>Display</source>
-      <translation>Mostrar</translation>
+      <translation>Visualización</translation>
     </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>

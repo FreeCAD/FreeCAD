@@ -55,14 +55,8 @@ void Grabber3d::quickView(View3DInventor* view3d,
         Base::Console().Warning("G3d::quickView - could not create viewer - returning\n");
         return;
     }
-    //figure out the size of the active MdiView
-    SbViewportRegion vport(viewer->getSoRenderManager()->getViewportRegion());
-    SbVec2s vpSize = vport.getViewportSizePixels();
-    short width;
-    short height;
-    vpSize.getValue(width, height);
 
     int samples = 8;  //magic number from Gui::View3DInventorViewer
-    viewer->savePicture(width, height, samples, bgColor, image);
+    viewer->savePicture(image.width(), image.height(), samples, bgColor, image);
 }
 

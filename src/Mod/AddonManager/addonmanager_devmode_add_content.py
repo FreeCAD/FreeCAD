@@ -21,8 +21,8 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Contains a class for adding a single content item, as well as auxiliary classes for
-its dependent dialog boxes. """
+"""Contains a class for adding a single content item, as well as auxiliary classes for
+its dependent dialog boxes."""
 
 import os
 from typing import Optional, Tuple, List
@@ -71,6 +71,8 @@ class AddContent:
         self.dialog.addonKindComboBox.setItemData(0, "macro")
         self.dialog.addonKindComboBox.setItemData(1, "preferencepack")
         self.dialog.addonKindComboBox.setItemData(2, "workbench")
+        self.dialog.addonKindComboBox.setItemData(3, "bundle")
+        self.dialog.addonKindComboBox.setItemData(4, "other")
 
         self.people_table = PeopleTable()
         self.licenses_table = LicensesTable()
@@ -148,6 +150,8 @@ class AddContent:
                 self.dialog.macroFileLineEdit.setText(files[0])
         elif addon_kind == "preferencepack":
             self.dialog.prefPackNameLineEdit.setText(self.metadata.Name)
+        elif addon_kind == "bundle" or addon_kind == "other":
+            pass
         else:
             raise RuntimeError("Invalid data found for selection")
 

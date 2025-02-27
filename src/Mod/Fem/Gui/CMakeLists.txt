@@ -17,11 +17,16 @@ include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
     ${VTK_INCLUDE_DIRS}
 )
@@ -49,6 +54,7 @@ SET(Python_SRCS
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
+
 set(FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
     DlgSettingsFemElmer.ui
@@ -58,6 +64,7 @@ set(FemGui_UIC_SRCS
     DlgSettingsFemInOutVtk.ui
     DlgSettingsFemMystran.ui
     DlgSettingsFemZ88.ui
+    TaskCreateElementSet.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
     TaskFemConstraint.ui
@@ -198,6 +205,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderSolver.h
     ViewProviderSetNodes.cpp
     ViewProviderSetNodes.h
+    ViewProviderSetElementNodes.cpp
+    ViewProviderSetElementNodes.h
     ViewProviderSetElements.cpp
     ViewProviderSetElements.h
     ViewProviderSetFaces.cpp
@@ -251,6 +260,9 @@ SET(FemGui_SRCS_TaskBoxes
     TaskObjectName.ui
     TaskObjectName.cpp
     TaskObjectName.h
+    TaskCreateElementSet.ui
+    TaskCreateElementSet.cpp
+    TaskCreateElementSet.h
     TaskCreateNodeSet.ui
     TaskCreateNodeSet.cpp
     TaskCreateNodeSet.h
@@ -288,6 +300,8 @@ endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Task_Boxes" FILES ${FemGui_SRCS_TaskBoxes})
 
 SET(FemGui_SRCS_TaskDlg
+    TaskDlgCreateElementSet.h
+    TaskDlgCreateElementSet.cpp
     TaskDlgCreateNodeSet.h
     TaskDlgCreateNodeSet.cpp
     TaskDlgMeshShapeNetgen.h
@@ -305,6 +319,8 @@ SET(FemGui_SRCS_Module
     ActiveAnalysisObserver.cpp
     ActiveAnalysisObserver.h
     Command.cpp
+    FemGuiTools.cpp
+    FemGuiTools.h
     FemSettings.cpp
     FemSettings.h
     Resources/Fem.qrc
@@ -316,6 +332,7 @@ SET(FemGui_SRCS_Module
     Workbench.h
 )
 SOURCE_GROUP("Module" FILES ${FemGui_SRCS_Module})
+
 
 if(BUILD_FEM_VTK)
     SET(FemGui_SRCS_Post
@@ -355,6 +372,7 @@ SET(FemGuiIcon_SVG
 SET(FemGuiSymbol_IV
     Resources/symbols/ConstraintContact.iv
     Resources/symbols/ConstraintDisplacement.iv
+    Resources/symbols/ConstraintElectrostaticPotential.iv
     Resources/symbols/ConstraintFixed.iv
     Resources/symbols/ConstraintForce.iv
     Resources/symbols/ConstraintHeatFlux.iv
@@ -364,6 +382,7 @@ SET(FemGuiSymbol_IV
     Resources/symbols/ConstraintSectionPrint.iv
     Resources/symbols/ConstraintSpring.iv
     Resources/symbols/ConstraintTemperature.iv
+    Resources/symbols/ConstraintTransform.iv
     Resources/symbols/ConstraintTie.iv
 )
 
@@ -387,6 +406,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/ConstraintTie.ui
     Resources/ui/ConstraintSectionPrint.ui
     Resources/ui/CurrentDensity.ui
+    Resources/ui/DlgSettingsNetgen.ui
     Resources/ui/ElectrostaticPotential.ui
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui
@@ -402,6 +422,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/MeshGmsh.ui
     Resources/ui/MeshGroup.ui
     Resources/ui/MeshGroupXDMFExport.ui
+    Resources/ui/MeshNetgen.ui
     Resources/ui/MeshRegion.ui
     Resources/ui/ResultHints.ui
     Resources/ui/ResultShow.ui

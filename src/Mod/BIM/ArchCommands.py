@@ -64,14 +64,14 @@ def getStringList(objects):
 def getDefaultColor(objectType):
     '''getDefaultColor(string): returns a color value for the given object
     type (Wall, Structure, Window, WindowGlass)'''
-    transparency = 0.0
+    alpha = 1.0
     if objectType == "Wall":
         c = params.get_param_arch("WallColor")
     elif objectType == "Structure":
         c = params.get_param_arch("StructureColor")
     elif objectType == "WindowGlass":
         c = params.get_param_arch("WindowGlassColor")
-        transparency = params.get_param_arch("WindowTransparency") / 100.0
+        alpha = 1.0 - params.get_param_arch("WindowTransparency") / 100.0
     elif objectType == "Rebar":
         c = params.get_param_arch("RebarColor")
     elif objectType == "Panel":
@@ -82,11 +82,11 @@ def getDefaultColor(objectType):
         c = params.get_param_arch("ColorHelpers")
     elif objectType == "Construction":
         c = params.get_param("constructioncolor")
-        transparency = 0.80
+        alpha = 0.2
     else:
         c = params.get_param_view("DefaultShapeColor")
     r, g, b, _ = Draft.get_rgba_tuple(c)
-    return (r, g, b, transparency)
+    return (r, g, b, alpha)
 
 def addComponents(objectsList,host):
     '''addComponents(objectsList,hostObject): adds the given object or the objects
@@ -165,6 +165,32 @@ def removeComponents(objectsList,host=None):
                     if FreeCAD.GuiUp:
                         if not Draft.getType(o) in ["Window","Roof"]:
                             setAsSubcomponent(o)
+                    # Making reference to BimWindow.Arch_Window:
+                    # Check if o and o.Base has Attachment Support, and
+                    # if the support is the host object itself - thus a cyclic
+                    # dependency and probably creating TNP.
+                    # If above is positive, remove its AttachmentSupport:
+                    if hasattr(o,"Base") and o.Base:
+                        objList = [o, o.Base]
+                    else:
+                        objList = [o]
+                    for i in objList:
+                        objHost = None
+                        if hasattr(i,"AttachmentSupport"):
+                            if i.AttachmentSupport:
+                                if isinstance(i.AttachmentSupport,tuple):
+                                    objHost = i.AttachmentSupport[0]
+                                elif isinstance(i.AttachmentSupport,list):
+                                    objHost = i.AttachmentSupport[0][0]
+                                else:
+                                    objHost = i.AttachmentSupport
+                            if objHost == host:
+                                msg = FreeCAD.Console.PrintMessage
+                                msg(i.Label + " is mapped to " + host.Label +
+                                    ", removing the former's Attachment " +
+                                    "Support to avoid cyclic dependency and " +
+                                    "TNP." + "\n")
+                                i.AttachmentSupport = None # remove
             host.Subtractions = s
         elif Draft.getType(host) in ["SectionPlane"]:
             a = host.Objects
@@ -204,7 +230,7 @@ def removeComponents(objectsList,host=None):
                         h.Objects = a
 
 def makeComponent(baseobj=None,name=None,delete=False):
-    '''makeComponent([baseobj],[name],[delete]): creates an undefined, non-parametric Arch
+    '''makeComponent([baseobj],[name],[delete]): creates an undefined, non-parametric BIM
     component from the given base object'''
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -405,7 +431,7 @@ def getCutVolume(cutplane,shapes,clip=False,depth=None):
         else:
             p = cutplane.copy().Faces[0]
     except Part.OCCError:
-        FreeCAD.Console.PrintMessage(translate("Arch","Invalid cutplane")+"\n")
+        FreeCAD.Console.PrintMessage(translate("Arch","Invalid cut plane")+"\n")
         return None,None,None
     ce = p.CenterOfMass
     ax = p.normalAt(0,0)
@@ -532,7 +558,10 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
             print("getShapeFromMesh: error creating solid")
             return se
         else:
-            return solid
+            if solid.isClosed():
+                return solid
+            else:
+                return se
 
 def projectToVector(shape,vector):
     '''projectToVector(shape,vector): projects the given shape on the given
@@ -582,7 +611,7 @@ def removeCurves(shape,dae=False,tolerance=5):
     with faceted segments. If dae is True, DAE triangulation options are used'''
     import Mesh
     if dae:
-        import importDAE
+        from importers import importDAE
         t = importDAE.triangulate(shape.cleaned())
     else:
         t = shape.cleaned().tessellate(tolerance)
@@ -720,7 +749,7 @@ def getHost(obj,strict=True):
                 return par
     return None
 
-def pruneIncluded(objectslist,strict=False):
+def pruneIncluded(objectslist,strict=False,silent=False):
     """pruneIncluded(objectslist,[strict]): removes from a list of Arch objects, those that are subcomponents of
     another shape-based object, leaving only the top-level shapes. If strict is True, the object
     is removed only if the parent is also part of the selection."""
@@ -744,6 +773,9 @@ def pruneIncluded(objectslist,strict=False):
                     elif parent.isDerivedFrom("PartDesign::Body") and obj == parent.BaseFeature:
                         # don't consider a PartDesign_Body with a PartDesign_Clone that references obj
                         pass
+                    elif parent.isDerivedFrom("PartDesign::SubShapeBinder") or (hasattr(parent, "TypeId") and parent.TypeId == "PartDesign::ShapeBinder"):
+                        # don't consider a PartDesign_SubShapeBinder or PartDesign_ShapeBinder referencing this object from another object
+                        pass
                     elif hasattr(parent,"Host") and parent.Host == obj:
                         pass
                     elif hasattr(parent,"Hosts") and obj in parent.Hosts:
@@ -764,8 +796,8 @@ def pruneIncluded(objectslist,strict=False):
                             toplevel = True
         if toplevel:
             newlist.append(obj)
-        else:
-            FreeCAD.Console.PrintLog("pruning "+obj.Label+"\n")
+        elif not silent:
+            FreeCAD.Console.PrintWarning("pruning "+obj.Label+"\n")
     return newlist
 
 def getAllChildren(objectlist):
@@ -870,7 +902,6 @@ def survey(callback=False):
                                 else:
                                     u = FreeCAD.Units.Quantity(o.Object.Shape.Length,FreeCAD.Units.Length)
                                     t = u.getUserPreferred()[0]
-                                    t = t.encode("utf8")
                                     anno.LabelText = "l " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Length: " + t + "\n")
                                     FreeCAD.SurveyObserver.totalLength += u.Value
@@ -1134,19 +1165,19 @@ def toggleIfcBrepFlag(obj):
     """toggleIfcBrepFlag(obj): toggles the IFC brep flag of the given object, forcing it
     to be exported as brep geometry or not."""
     if not hasattr(obj,"IfcData"):
-        FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFCData"))
+        FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFC attributes"))
     else:
         d = obj.IfcData
         if "FlagForceBrep" in d:
             if d["FlagForceBrep"] == "True":
                 d["FlagForceBrep"] = "False"
-                FreeCAD.Console.PrintMessage(translate("Arch","Disabling Brep force flag of object")+" "+obj.Label+"\n")
+                FreeCAD.Console.PrintMessage(translate("Arch","Disabling B-rep force flag of object")+" "+obj.Label+"\n")
             else:
                 d["FlagForceBrep"] = "True"
-                FreeCAD.Console.PrintMessage(translate("Arch","Enabling Brep force flag of object")+" "+obj.Label+"\n")
+                FreeCAD.Console.PrintMessage(translate("Arch","Enabling B-rep force flag of object")+" "+obj.Label+"\n")
         else:
             d["FlagForceBrep"] = "True"
-            FreeCAD.Console.PrintMessage(translate("Arch","Enabling Brep force flag of object")+" "+obj.Label+"\n")
+            FreeCAD.Console.PrintMessage(translate("Arch","Enabling B-rep force flag of object")+" "+obj.Label+"\n")
         obj.IfcData = d
 
 

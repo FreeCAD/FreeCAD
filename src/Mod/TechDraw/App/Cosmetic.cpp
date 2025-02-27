@@ -24,9 +24,12 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge.hxx>
+# include <boost/random.hpp>
 # include <boost/uuid/uuid_generators.hpp>
 # include <boost/uuid/uuid_io.hpp>
 #endif
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/thread.hpp>
 
 #include <App/Application.h>
 #include <Base/Vector3D.h>
@@ -42,10 +45,6 @@
 using namespace TechDraw;
 using namespace std;
 using DU = DrawUtil;
-
-#define GEOMETRYEDGE 0
-#define COSMETICEDGE 1
-#define CENTERLINE   2
 
 TYPESYSTEM_SOURCE(TechDraw::CosmeticEdge, Base::Persistence)
 
@@ -75,7 +74,7 @@ CosmeticEdge::CosmeticEdge(const Base::Vector3d& pt1, const Base::Vector3d& pt2)
 }
 
 CosmeticEdge::CosmeticEdge(const TopoDS_Edge& e) :
-        CosmeticEdge(TechDraw::BaseGeom::baseFactory(e))
+        CosmeticEdge(TechDraw::BaseGeom::baseFactory(e, true))
 {
 }
 
@@ -86,13 +85,13 @@ CosmeticEdge::CosmeticEdge(const TechDraw::BaseGeomPtr g)
     //we assume input edge is already in Yinverted coordinates
     permaStart = m_geometry->getStartPoint();
     permaEnd   = m_geometry->getEndPoint();
-    if ((g->getGeomType() == TechDraw::GeomType::CIRCLE) ||
-       (g->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE)) {
+    if ((g->getGeomType() == GeomType::CIRCLE) ||
+       (g->getGeomType() == GeomType::ARCOFCIRCLE)) {
        TechDraw::CirclePtr circ = std::static_pointer_cast<TechDraw::Circle>(g);
        permaStart  = circ->center;
        permaEnd    = circ->center;
        permaRadius = circ->radius;
-       if (g->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
+       if (g->getGeomType() == GeomType::ARCOFCIRCLE) {
            TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(circ);
            aoc->clockwiseAngle(g->clockwiseAngle());
            aoc->startPnt = g->getStartPoint();
@@ -112,10 +111,10 @@ CosmeticEdge::~CosmeticEdge()
 
 void CosmeticEdge::initialize()
 {
-    m_geometry->setClassOfEdge(ecHARD);
+    m_geometry->setClassOfEdge(EdgeClass::HARD);
     m_geometry->setHlrVisible( true);
     m_geometry->setCosmetic(true);
-    m_geometry->source(COSMETICEDGE);
+    m_geometry->source(SourceType::COSMETICEDGE);
 
     createNewTag();
     m_geometry->setCosmeticTag(getTagAsString());
@@ -134,10 +133,10 @@ TechDraw::BaseGeomPtr CosmeticEdge::scaledGeometry(const double scale)
     TopoDS_Shape s = ShapeUtils::scaleShape(e, scale);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
     TechDraw::BaseGeomPtr newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
-    newGeom->setClassOfEdge(ecHARD);
+    newGeom->setClassOfEdge(EdgeClass::HARD);
     newGeom->setHlrVisible( true);
     newGeom->setCosmetic(true);
-    newGeom->source(COSMETICEDGE);
+    newGeom->source(SourceType::COSMETICEDGE);
     newGeom->setCosmeticTag(getTagAsString());
     return newGeom;
 }
@@ -153,10 +152,10 @@ TechDraw::BaseGeomPtr CosmeticEdge::scaledAndRotatedGeometry(const double scale,
     s = ShapeUtils::mirrorShape(s);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
     TechDraw::BaseGeomPtr newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
-    newGeom->setClassOfEdge(ecHARD);
+    newGeom->setClassOfEdge(EdgeClass::HARD);
     newGeom->setHlrVisible( true);
     newGeom->setCosmetic(true);
-    newGeom->source(COSMETICEDGE);
+    newGeom->source(SourceType::COSMETICEDGE);
     newGeom->setCosmeticTag(getTagAsString());
     newGeom->clockwiseAngle(saveCW);
     return newGeom;
@@ -168,8 +167,8 @@ TechDraw::BaseGeomPtr CosmeticEdge::makeCanonicalLine(DrawViewPart* dvp, Base::V
 {
     Base::Vector3d cStart = CosmeticVertex::makeCanonicalPoint(dvp, start);
     Base::Vector3d cEnd   = CosmeticVertex::makeCanonicalPoint(dvp, end);
-    gp_Pnt gStart  = DU::togp_Pnt(cStart);
-    gp_Pnt gEnd    = DU::togp_Pnt(cEnd);
+    gp_Pnt gStart  = DU::to<gp_Pnt>(cStart);
+    gp_Pnt gEnd    = DU::to<gp_Pnt>(cEnd);
     TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(gStart, gEnd);
     return TechDraw::BaseGeom::baseFactory(edge);
 }
@@ -177,8 +176,8 @@ TechDraw::BaseGeomPtr CosmeticEdge::makeCanonicalLine(DrawViewPart* dvp, Base::V
 //! makes an unscaled, unrotated line from two canonical points.
 TechDraw::BaseGeomPtr CosmeticEdge::makeLineFromCanonicalPoints(Base::Vector3d start, Base::Vector3d end)
 {
-    gp_Pnt gStart  = DU::togp_Pnt(start);
-    gp_Pnt gEnd    = DU::togp_Pnt(end);
+    gp_Pnt gStart  = DU::to<gp_Pnt>(start);
+    gp_Pnt gEnd    = DU::to<gp_Pnt>(end);
     TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(gStart, gEnd);
     return TechDraw::BaseGeom::baseFactory(edge);
 }
@@ -220,13 +219,13 @@ void CosmeticEdge::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
 
     writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->getGeomType() <<"\"/>" << endl;
-    if (m_geometry->getGeomType() == TechDraw::GeomType::GENERIC) {
+    if (m_geometry->getGeomType() == GeomType::GENERIC) {
         GenericPtr gen = std::static_pointer_cast<Generic>(m_geometry);
         gen->Save(writer);
-    } else if (m_geometry->getGeomType() == TechDraw::GeomType::CIRCLE) {
+    } else if (m_geometry->getGeomType() == GeomType::CIRCLE) {
         TechDraw::CirclePtr circ = std::static_pointer_cast<TechDraw::Circle>(m_geometry);
         circ->Save(writer);
-    } else if (m_geometry->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
+    } else if (m_geometry->getGeomType() == GeomType::ARCOFCIRCLE) {
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(m_geometry);
         aoc->inverted()->Save(writer);
     } else {
@@ -256,16 +255,16 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     m_format.setVisible(reader.getAttributeAsInteger("value") != 0);
 
     reader.readElement("GeometryType");
-    TechDraw::GeomType gType = static_cast<TechDraw::GeomType>(reader.getAttributeAsInteger("value"));
+    GeomType gType = static_cast<GeomType>(reader.getAttributeAsInteger("value"));
 
-    if (gType == TechDraw::GeomType::GENERIC) {
+    if (gType == GeomType::GENERIC) {
         TechDraw::GenericPtr gen = std::make_shared<TechDraw::Generic> ();
         gen->Restore(reader);
         gen->setOCCEdge(GeometryUtils::edgeFromGeneric(gen));
         m_geometry = gen;
         permaStart = gen->getStartPoint();
         permaEnd   = gen->getEndPoint();
-    } else if (gType == TechDraw::GeomType::CIRCLE) {
+    } else if (gType == GeomType::CIRCLE) {
         TechDraw::CirclePtr circ = std::make_shared<TechDraw::Circle> ();
         circ->Restore(reader);
         circ->setOCCEdge(GeometryUtils::edgeFromCircle(circ));
@@ -273,7 +272,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         permaRadius = circ->radius;
         permaStart  = circ->center;
         permaEnd    = circ->center;
-    } else if (gType == TechDraw::GeomType::ARCOFCIRCLE) {
+    } else if (gType == GeomType::ARCOFCIRCLE) {
         TechDraw::AOCPtr aoc = std::make_shared<TechDraw::AOC> ();
         aoc->Restore(reader);
         aoc->setOCCEdge(GeometryUtils::edgeFromCircleArc(aoc));
@@ -312,8 +311,13 @@ std::string CosmeticEdge::getTagAsString() const
 void CosmeticEdge::createNewTag()
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
+    // The random number generator is not threadsafe so we guard it.  See
+    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
     static boost::mt19937 ran;
     static bool seeded = false;
+    static boost::mutex random_number_mutex;
+
+    boost::lock_guard<boost::mutex> guard(random_number_mutex);
 
     if (!seeded) {
         ran.seed(static_cast<unsigned int>(std::time(nullptr)));
@@ -483,8 +487,13 @@ std::string GeomFormat::getTagAsString() const
 void GeomFormat::createNewTag()
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
+    // The random number generator is not threadsafe so we guard it.  See
+    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
     static boost::mt19937 ran;
     static bool seeded = false;
+    static boost::mutex random_number_mutex;
+
+    boost::lock_guard<boost::mutex> guard(random_number_mutex);
 
     if (!seeded) {
         ran.seed(static_cast<unsigned int>(std::time(nullptr)));

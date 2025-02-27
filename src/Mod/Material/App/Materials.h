@@ -116,6 +116,7 @@ public:
     void setValue(const QString& value);
     void setValue(const std::shared_ptr<MaterialValue>& value);
     void setString(const QString& value);
+    void setString(const std::string& value);
     void setBoolean(bool value);
     void setBoolean(int value);
     void setBoolean(const QString& value);
@@ -138,11 +139,6 @@ public:
     {
         return !operator==(other);
     }
-
-    // void save(QTextStream& stream);
-
-    // Define precision for displaying floating point values
-    static int const PRECISION;
 
 protected:
     void setType(const QString& type);
@@ -312,7 +308,7 @@ public:
      * Legacy values are thosed contained in old format files that don't fit in the new
      * property format. It should not be used as a catch all for defining a property with
      * no model.
-     * 
+     *
      * These values are transient and will not be saved.
      */
     void setLegacyValue(const QString& name, const QString& value);
@@ -334,6 +330,8 @@ public:
     bool hasNonLegacyProperty(const QString& name) const;
     bool hasLegacyProperty(const QString& name) const;
     bool hasLegacyProperties() const;
+    bool hasPhysicalProperties() const;
+    bool hasAppearanceProperties() const;
 
     // Test if the model is defined, and if values are provided for all properties
     bool hasModel(const QString& uuid) const;

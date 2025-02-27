@@ -23,7 +23,7 @@
 #ifndef SKETCHERGUI_TaskDlgEditSketch_H
 #define SKETCHERGUI_TaskDlgEditSketch_H
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <Gui/TaskView/TaskDialog.h>
 
@@ -67,6 +67,7 @@ public:
     {
         return false;
     }
+    void autoClosedOnClosedView() override;
 
     /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons() const override

@@ -173,6 +173,18 @@ class BIM_Setup:
         FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").SetInt(
             "UserSchema", unit
         )
+        if FreeCAD.ActiveDocument is not None:
+            docs_dict = FreeCAD.listDocuments()
+            for doc in docs_dict.values():
+                doc.UnitSystem = unit
+            if len(docs_dict) == 1:
+                FreeCAD.Console.PrintWarning(
+                    translate("BIM", "Unit system updated for active document") + "\n"
+                )
+            else:
+                FreeCAD.Console.PrintWarning(
+                    translate("BIM", "Unit system updated for all opened documents") + "\n"
+                )
         if hasattr(FreeCAD.Units, "setSchema"):
             FreeCAD.Units.setSchema(unit)
         decimals = self.form.settingDecimals.value()
@@ -365,12 +377,6 @@ class BIM_Setup:
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool(
             "FirstTime", True
         ):
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").SetInt(
-                "OrbitStyle", 0
-            )
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document").SetBool(
-                "SaveThumbnail", True
-            )
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetString(
                 "svgDashedLine", "3,1"
             )
@@ -382,9 +388,6 @@ class BIM_Setup:
             )
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetFloat(
                 "HatchPatternSize", 0.025
-            )
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat(
-                "WallSketches", False
             )
 
         # finish
@@ -474,7 +477,7 @@ class BIM_Setup:
             unit = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
                 "UserSchema", 0
             )
-            unit = [0, 2, 3, 3, 1, 5, 0, 4][
+            unit = [0, 2, 3, 3, 1, 5, 0, 4, 0, 2][
                 unit
             ]  # less choices in our simplified dialog
             decimals = FreeCAD.ParamGet(
@@ -516,7 +519,10 @@ class BIM_Setup:
             lic = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Document"
             ).GetInt("prefLicenseType", 0)
-            lic = [0, 1, 2, 1, 3, 4, 1, 0, 0, 0][
+            lic = [0,
+                   1, 2, 1, 3, 4, 1,
+                   1, 2, 1, 3, 4, 1,
+                   0, 0, 0, 0, 0, 0][
                 lic
             ]  # less choices in our simplified dialog
             newdoc = FreeCAD.ParamGet(
@@ -620,16 +626,16 @@ class BIM_Setup:
         g = ((color >> 16) & 0xFF) / 255.0
         b = ((color >> 8) & 0xFF) / 255.0
         from PySide import QtGui
-    
+
         return QtGui.QColor.fromRgbF(r, g, b)
-    
-    
+
+
     def getIfcOpenShell(self,force=False):
         """downloads and installs IfcOpenShell"""
-        
+
         # TODO WARNING the IfcOpenBot repo below is not actively kept updated.
         # We need to use PIP
-    
+
         ifcok = False
         if not force:
             try:
@@ -649,7 +655,7 @@ class BIM_Setup:
             from PySide import QtGui
             import zipfile
             from urllib import request
-    
+
             if not FreeCAD.GuiUp:
                 reply = QtGui.QMessageBox.Yes
             else:
@@ -674,7 +680,7 @@ class BIM_Setup:
                     u.close()
                     d = json.loads(r)
                     l = d[-1]["body"]
-                    links = re.findall("http.*?zip", l)
+                    links = re.findall(r"http.*?zip", l)
                     pyv = (
                         "python-"
                         + str(sys.version_info.major)
@@ -687,7 +693,7 @@ class BIM_Setup:
                     elif sys.platform.startswith("darwin"):
                         plat = "macos"
                     else:
-                        print("Error - unknown platform")
+                        FreeCAD.Console.PrintError("Error - unknown platform")
                         return
                     if sys.maxsize > 2**32:
                         plat += "64"
@@ -706,11 +712,11 @@ class BIM_Setup:
                             if u:
                                 if sys.version_info.major < 3:
                                     import StringIO as io
-    
+
                                     _stringio = io.StringIO
                                 else:
                                     import io
-    
+
                                     _stringio = io.BytesIO
                                 zfile = _stringio()
                                 zfile.write(u.read())
@@ -721,7 +727,19 @@ class BIM_Setup:
                                 print("Successfully installed IfcOpenShell to", fp)
                                 break
                     else:
-                        print("Unable to find a build for your version")
-    
+                        FreeCAD.Console.PrintWarning(
+                            "Unable to find a build for your version therefore falling back to a pip install"
+                        )
+                        try:
+                            import pip
+                        except ModuleNotFoundError:
+                            FreeCAD.Console.PrintError(
+                                "Please install pip on your system, restart FreeCAD,"
+                                " change to BIM Wb and use Utils menu > ifcOpenShell update"
+                            )
+                            return
+                        from nativeifc import ifc_openshell
+
+                        FreeCADGui.runCommand('IFC_UpdateIOS',1)
 
 FreeCADGui.addCommand("BIM_Setup", BIM_Setup())

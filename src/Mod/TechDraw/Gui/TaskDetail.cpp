@@ -24,13 +24,12 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
@@ -242,14 +241,14 @@ void TaskDetail::setUiFromFeat()
 //    Base::Console().Message("TD::setUIFromFeat()\n");
     if (m_baseFeat) {
         std::string baseName = getBaseFeat()->getNameInDocument();
-        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->leBaseView->setText(QString::fromStdString(baseName));
     }
 
     Base::Vector3d anchor;
 
     TechDraw::DrawViewDetail* detailFeat = getDetailFeat();
     QString detailDisplay = QString::fromUtf8(detailFeat->getNameInDocument()) +
-                            QString::fromUtf8(" / ") +
+                            QStringLiteral(" / ") +
                             QString::fromUtf8(detailFeat->Label.getValue());
     ui->leDetailView->setText(detailDisplay);
     anchor = detailFeat->AnchorPoint.getValue();
@@ -485,7 +484,7 @@ void TaskDetail::updateDetail()
         double radius = ui->qsbRadius->rawValue();
         detailFeat->Radius.setValue(radius);
         QString qRef = ui->leReference->text();
-        std::string ref = Base::Tools::toStdString(qRef);
+        std::string ref = qRef.toStdString();
         detailFeat->Reference.setValue(ref);
 
         detailFeat->recomputeFeature();

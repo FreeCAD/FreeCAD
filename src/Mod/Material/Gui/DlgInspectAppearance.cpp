@@ -29,7 +29,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
@@ -242,6 +242,16 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
 
     grid->addWidget(labelShininess, row, 0);
     grid->addWidget(editShininess, row, 1);
+    row += 1;
+
+    auto* labelTransparency = new QLabel();
+    labelTransparency->setText(tr("Transparency"));
+    auto* editTransparency = new QLineEdit();
+    editTransparency->setText(QString::number(material.transparency));
+    editTransparency->setEnabled(false);
+
+    grid->addWidget(labelTransparency, row, 0);
+    grid->addWidget(editTransparency, row, 1);
 
     return tab;
 }

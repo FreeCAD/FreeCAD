@@ -138,8 +138,8 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
     App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
 
-    if (getObject()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
-        PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(getObject())->Support, obj, subs);
+    if (getObject()->isDerivedFrom<PartDesign::ShapeBinder>())
+        PartDesign::ShapeBinder::getFilteredReferences(&getObject<PartDesign::ShapeBinder>()->Support, obj, subs);
     else
         return;
 
@@ -161,9 +161,9 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
             lcolors.resize(eMap.Extent(), svp->LineColor.getValue());
 
             TopExp::MapShapes(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_FACE, eMap);
-            originalFaceColors = svp->DiffuseColor.getValues();
-            std::vector<App::Color> fcolors = originalFaceColors;
-            fcolors.resize(eMap.Extent(), svp->ShapeAppearance.getDiffuseColor());
+            originalFaceAppearance = svp->ShapeAppearance.getValues();
+            std::vector<App::Material> fcolors = originalFaceAppearance;
+            fcolors.resize(eMap.Extent(), svp->ShapeAppearance[0]);
 
             for (const std::string& e : subs) {
                 // Note: stoi may throw, but it strictly shouldn't happen
@@ -177,11 +177,11 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
                     int idx = std::stoi(e.substr(4)) - 1;
                     assert(idx >= 0);
                     if (idx < static_cast<int>(fcolors.size()))
-                        fcolors[idx] = App::Color(1.0, 0.0, 1.0); // magenta
+                        fcolors[idx].diffuseColor = App::Color(1.0, 0.0, 1.0); // magenta
                 }
             }
             svp->LineColorArray.setValues(lcolors);
-            svp->DiffuseColor.setValues(fcolors);
+            svp->ShapeAppearance.setValues(fcolors);
         }
     }
     else {
@@ -189,8 +189,8 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
             svp->LineColorArray.setValues(originalLineColors);
             originalLineColors.clear();
 
-            svp->DiffuseColor.setValues(originalFaceColors);
-            originalFaceColors.clear();
+            svp->ShapeAppearance.setValues(originalFaceAppearance);
+            originalFaceAppearance.clear();
         }
     }
 }
@@ -278,7 +278,7 @@ bool ViewProviderSubShapeBinder::canDropObjectEx(App::DocumentObject*,
 std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject* obj, App::DocumentObject* owner,
     const char* subname, const std::vector<std::string>& elements)
 {
-    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    auto self = getObject<PartDesign::SubShapeBinder>();
     if (!self)
         return {};
     std::map<App::DocumentObject*, std::vector<std::string> > values;
@@ -327,7 +327,7 @@ bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
         updatePlacement(true);
         break;
     case SelectObject: {
-        auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+        auto self = getObject<PartDesign::SubShapeBinder>();
         if (!self || !self->Support.getValue())
             break;
 
@@ -355,7 +355,7 @@ bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
 }
 
 void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
-    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    auto self = getObject<PartDesign::SubShapeBinder>();
     if (!self || !self->Support.getValue())
         return;
 
@@ -440,5 +440,5 @@ std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren() co
 namespace Gui {
 PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderSubShapeBinderPython,
                          PartDesignGui::ViewProviderSubShapeBinder)
-template class PartDesignGuiExport ViewProviderPythonFeatureT<ViewProviderSubShapeBinder>;
+template class PartDesignGuiExport ViewProviderFeaturePythonT<ViewProviderSubShapeBinder>;
 }

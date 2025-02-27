@@ -4765,305 +4765,258 @@ int Sketch::internalSolve(std::string& solvername, int level)
     return ret;
 }
 
-int Sketch::initMove(int geoId, PointPos pos, bool fine)
+int Sketch::initMove(std::vector<GeoElementId> geoEltIds, bool fine)
 {
-    isFine = fine;
-
-    geoId = checkGeoId(geoId);
-
-    clearTemporaryConstraints();
-
-    // don't try to move sketches that contain conflicting constraints
     if (hasConflicts()) {
+        // don't try to move sketches that contain conflicting constraints
         isInitMove = false;
         return -1;
     }
+    isFine = fine;
 
-    if (Geoms[geoId].type == Point) {
-        if (pos == PointPos::start) {
-            GCS::Point& point = Points[Geoms[geoId].startPointId];
-            GCS::Point p0;
-            MoveParameters.resize(2);  // px,py
-            p0.x = &MoveParameters[0];
-            p0.y = &MoveParameters[1];
-            *p0.x = *point.x;
-            *p0.y = *point.y;
-            GCSsys.addConstraintP2PCoincident(p0, point, GCS::DefaultTemporaryConstraint);
-        }
-    }
-    else if (Geoms[geoId].type == Line) {
-        if (pos == PointPos::start || pos == PointPos::end) {
-            MoveParameters.resize(2);  // x,y
-            GCS::Point p0;
-            p0.x = &MoveParameters[0];
-            p0.y = &MoveParameters[1];
-            if (pos == PointPos::start) {
-                GCS::Point& p = Points[Geoms[geoId].startPointId];
-                *p0.x = *p.x;
-                *p0.y = *p.y;
-                GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
-            }
-            else if (pos == PointPos::end) {
-                GCS::Point& p = Points[Geoms[geoId].endPointId];
-                *p0.x = *p.x;
-                *p0.y = *p.y;
-                GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
-            }
-        }
-        else if (pos == PointPos::none || pos == PointPos::mid) {
-            MoveParameters.resize(4);  // x1,y1,x2,y2
-            GCS::Point p1, p2;
-            p1.x = &MoveParameters[0];
-            p1.y = &MoveParameters[1];
-            p2.x = &MoveParameters[2];
-            p2.y = &MoveParameters[3];
-            GCS::Line& l = Lines[Geoms[geoId].index];
-            *p1.x = *l.p1.x;
-            *p1.y = *l.p1.y;
-            *p2.x = *l.p2.x;
-            *p2.y = *l.p2.y;
-            GCSsys.addConstraintP2PCoincident(p1, l.p1, GCS::DefaultTemporaryConstraint);
-            GCSsys.addConstraintP2PCoincident(p2, l.p2, GCS::DefaultTemporaryConstraint);
-        }
-    }
-    else if (Geoms[geoId].type == Circle) {
-        GCS::Point& center = Points[Geoms[geoId].midPointId];
-        GCS::Point p0, p1;
-        if (pos == PointPos::mid) {
-            MoveParameters.resize(2);  // cx,cy
-            p0.x = &MoveParameters[0];
-            p0.y = &MoveParameters[1];
-            *p0.x = *center.x;
-            *p0.y = *center.y;
-            GCSsys.addConstraintP2PCoincident(p0, center, GCS::DefaultTemporaryConstraint);
-        }
-        else if (pos == PointPos::none) {
-            // bool pole = GeometryFacade::isInternalType(Geoms[geoId].geo,
-            // InternalType::BSplineControlPoint);
-            MoveParameters.resize(4);  // x,y,cx,cy - For poles blocking the center
-            GCS::Circle& c = Circles[Geoms[geoId].index];
-            p0.x = &MoveParameters[0];
-            p0.y = &MoveParameters[1];
-            *p0.x = *center.x;
-            *p0.y = *center.y + *c.rad;
-            GCSsys.addConstraintPointOnCircle(p0, c, GCS::DefaultTemporaryConstraint);
-            p1.x = &MoveParameters[2];
-            p1.y = &MoveParameters[3];
-            *p1.x = *center.x;
-            *p1.y = *center.y;
-            int i = GCSsys.addConstraintP2PCoincident(p1, center, GCS::DefaultTemporaryConstraint);
-            GCSsys.rescaleConstraint(i - 1, 0.01);
-            GCSsys.rescaleConstraint(i, 0.01);
-        }
-    }
-    else if (Geoms[geoId].type == Ellipse) {
+    clearTemporaryConstraints();
 
-        GCS::Point& center = Points[Geoms[geoId].midPointId];
-        GCS::Point p0, p1;
-        if (pos == PointPos::mid || pos == PointPos::none) {
-            MoveParameters.resize(2);  // cx,cy
-            p0.x = &MoveParameters[0];
-            p0.y = &MoveParameters[1];
-            *p0.x = *center.x;
-            *p0.y = *center.y;
+    MoveParameters.clear();
 
-            GCSsys.addConstraintP2PCoincident(p0, center, GCS::DefaultTemporaryConstraint);
-        }
-    }
-    else if (Geoms[geoId].type == ArcOfEllipse) {
-
-        GCS::Point& center = Points[Geoms[geoId].midPointId];
-        GCS::Point p0, p1;
-        if (pos == PointPos::mid || pos == PointPos::none) {
-            MoveParameters.resize(2);  // cx,cy
-            p0.x = &MoveParameters[0];
-            p0.y = &MoveParameters[1];
-            *p0.x = *center.x;
-            *p0.y = *center.y;
-            GCSsys.addConstraintP2PCoincident(p0, center, GCS::DefaultTemporaryConstraint);
-        }
-        else if (pos == PointPos::start || pos == PointPos::end) {
-
-            MoveParameters.resize(4);  // x,y,cx,cy
-            if (pos == PointPos::start || pos == PointPos::end) {
-                GCS::Point& p = (pos == PointPos::start) ? Points[Geoms[geoId].startPointId]
-                                                         : Points[Geoms[geoId].endPointId];
-                ;
-                p0.x = &MoveParameters[0];
-                p0.y = &MoveParameters[1];
-                *p0.x = *p.x;
-                *p0.y = *p.y;
-
-                GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
-            }
-
-            p1.x = &MoveParameters[2];
-            p1.y = &MoveParameters[3];
-            *p1.x = *center.x;
-            *p1.y = *center.y;
-
-            int i = GCSsys.addConstraintP2PCoincident(p1, center, GCS::DefaultTemporaryConstraint);
-            GCSsys.rescaleConstraint(i - 1, 0.01);
-            GCSsys.rescaleConstraint(i, 0.01);
-        }
-    }
-    else if (Geoms[geoId].type == ArcOfHyperbola) {
-
-        GCS::Point& center = Points[Geoms[geoId].midPointId];
-        GCS::Point p0, p1;
-        if (pos == PointPos::mid || pos == PointPos::none) {
-            MoveParameters.resize(2);  // cx,cy
-            p0.x = &MoveParameters[0];
-            p0.y = &MoveParameters[1];
-            *p0.x = *center.x;
-            *p0.y = *center.y;
-
-            GCSsys.addConstraintP2PCoincident(p0, center, GCS::DefaultTemporaryConstraint);
-        }
-        else if (pos == PointPos::start || pos == PointPos::end) {
-
-            MoveParameters.resize(4);  // x,y,cx,cy
-            if (pos == PointPos::start || pos == PointPos::end) {
-                GCS::Point& p = (pos == PointPos::start) ? Points[Geoms[geoId].startPointId]
-                                                         : Points[Geoms[geoId].endPointId];
-                ;
-                p0.x = &MoveParameters[0];
-                p0.y = &MoveParameters[1];
-                *p0.x = *p.x;
-                *p0.y = *p.y;
-
-                GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
-            }
-            p1.x = &MoveParameters[2];
-            p1.y = &MoveParameters[3];
-            *p1.x = *center.x;
-            *p1.y = *center.y;
-
-            int i = GCSsys.addConstraintP2PCoincident(p1, center, GCS::DefaultTemporaryConstraint);
-            GCSsys.rescaleConstraint(i - 1, 0.01);
-            GCSsys.rescaleConstraint(i, 0.01);
-        }
-    }
-    else if (Geoms[geoId].type == ArcOfParabola) {
-
-        GCS::Point& center = Points[Geoms[geoId].midPointId];
-        GCS::Point p0, p1;
-        if (pos == PointPos::mid || pos == PointPos::none) {
-            MoveParameters.resize(2);  // cx,cy
-            p0.x = &MoveParameters[0];
-            p0.y = &MoveParameters[1];
-            *p0.x = *center.x;
-            *p0.y = *center.y;
-
-            GCSsys.addConstraintP2PCoincident(p0, center, GCS::DefaultTemporaryConstraint);
-        }
-        else if (pos == PointPos::start || pos == PointPos::end) {
-
-            MoveParameters.resize(4);  // x,y,cx,cy
-            if (pos == PointPos::start || pos == PointPos::end) {
-                GCS::Point& p = (pos == PointPos::start) ? Points[Geoms[geoId].startPointId]
-                                                         : Points[Geoms[geoId].endPointId];
-                ;
-                p0.x = &MoveParameters[0];
-                p0.y = &MoveParameters[1];
-                *p0.x = *p.x;
-                *p0.y = *p.y;
-
-                GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
-            }
-            p1.x = &MoveParameters[2];
-            p1.y = &MoveParameters[3];
-            *p1.x = *center.x;
-            *p1.y = *center.y;
-
-            int i = GCSsys.addConstraintP2PCoincident(p1, center, GCS::DefaultTemporaryConstraint);
-            GCSsys.rescaleConstraint(i - 1, 0.01);
-            GCSsys.rescaleConstraint(i, 0.01);
-        }
-    }
-    else if (Geoms[geoId].type == BSpline) {
-        if (pos == PointPos::start || pos == PointPos::end) {
-            MoveParameters.resize(2);  // x,y
-            GCS::Point p0;
-            p0.x = &MoveParameters[0];
-            p0.y = &MoveParameters[1];
-            if (pos == PointPos::start) {
-                GCS::Point& p = Points[Geoms[geoId].startPointId];
-                *p0.x = *p.x;
-                *p0.y = *p.y;
-                GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
-            }
-            else if (pos == PointPos::end) {
-                GCS::Point& p = Points[Geoms[geoId].endPointId];
-                *p0.x = *p.x;
-                *p0.y = *p.y;
-                GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
-            }
-        }
-        else if (pos == PointPos::none || pos == PointPos::mid) {
+    // We need to reserve enough size in the vec or the dynamic resizing
+    // (emplace_back in the for loop below) will trigger reallocation.
+    // Which will corrupt pointers we're storing.
+    size_t reserveSize = 0;
+    for (auto& pair : geoEltIds) {
+        int geoId = checkGeoId(pair.GeoId);
+        Sketcher::PointPos pos = pair.Pos;
+        if (Geoms[geoId].type == BSpline && (pos == PointPos::none || pos == PointPos::mid)) {
             GCS::BSpline& bsp = BSplines[Geoms[geoId].index];
-            MoveParameters.resize(bsp.poles.size() * 2);  // x0,y0,x1,y1,....xp,yp
-
-            int mvindex = 0;
-            for (std::vector<GCS::Point>::iterator it = bsp.poles.begin(); it != bsp.poles.end();
-                 it++, mvindex++) {
-                GCS::Point p1;
-                p1.x = &MoveParameters[mvindex];
-                mvindex++;
-                p1.y = &MoveParameters[mvindex];
-
-                *p1.x = *(*it).x;
-                *p1.y = *(*it).y;
-
-                GCSsys.addConstraintP2PCoincident(p1, (*it), GCS::DefaultTemporaryConstraint);
-            }
+            reserveSize += bsp.poles.size() * 2;
+        }
+        else {
+            reserveSize += 6;  // 6 is the max case for all other cases.
         }
     }
-    else if (Geoms[geoId].type == Arc) {
-        GCS::Point& center = Points[Geoms[geoId].midPointId];
-        GCS::Point p0, p1;
-        if (pos == PointPos::mid) {
-            MoveParameters.resize(2);  // cx,cy
-            p0.x = &MoveParameters[0];
-            p0.y = &MoveParameters[1];
-            *p0.x = *center.x;
-            *p0.y = *center.y;
-            GCSsys.addConstraintP2PCoincident(p0, center, GCS::DefaultTemporaryConstraint);
+    MoveParameters.reserve(reserveSize);
+
+    for (auto& pair : geoEltIds) {
+        int geoId = checkGeoId(pair.GeoId);
+        Sketcher::PointPos pos = pair.Pos;
+
+        if (Geoms[geoId].type == Point) {
+            if (pos == PointPos::start) {
+                GCS::Point& point = Points[Geoms[geoId].startPointId];
+                GCS::Point p0;
+                p0.x = &MoveParameters.emplace_back(*point.x);
+                p0.y = &MoveParameters.emplace_back(*point.y);
+                GCSsys.addConstraintP2PCoincident(p0, point, GCS::DefaultTemporaryConstraint);
+            }
         }
-        else if (pos == PointPos::start || pos == PointPos::end || pos == PointPos::none) {
-            MoveParameters.resize(4);  // x,y,cx,cy
+        else if (Geoms[geoId].type == Line) {
             if (pos == PointPos::start || pos == PointPos::end) {
-                GCS::Point& p = (pos == PointPos::start) ? Points[Geoms[geoId].startPointId]
-                                                         : Points[Geoms[geoId].endPointId];
-                ;
-                p0.x = &MoveParameters[0];
-                p0.y = &MoveParameters[1];
-                *p0.x = *p.x;
-                *p0.y = *p.y;
+                GCS::Point p0;
+                GCS::Point& p = pos == PointPos::start ? Points[Geoms[geoId].startPointId]
+                                                       : Points[Geoms[geoId].endPointId];
+                p0.x = &MoveParameters.emplace_back(*p.x);
+                p0.y = &MoveParameters.emplace_back(*p.y);
                 GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
+            }
+            else if (pos == PointPos::none || pos == PointPos::mid) {
+                GCS::Point p1, p2;
+                GCS::Line& l = Lines[Geoms[geoId].index];
+                p1.x = &MoveParameters.emplace_back(*l.p1.x);
+                p1.y = &MoveParameters.emplace_back(*l.p1.y);
+                p2.x = &MoveParameters.emplace_back(*l.p2.x);
+                p2.y = &MoveParameters.emplace_back(*l.p2.y);
+                GCSsys.addConstraintP2PCoincident(p1, l.p1, GCS::DefaultTemporaryConstraint);
+                GCSsys.addConstraintP2PCoincident(p2, l.p2, GCS::DefaultTemporaryConstraint);
+            }
+        }
+        else if (Geoms[geoId].type == Circle) {
+            GCS::Point& center = Points[Geoms[geoId].midPointId];
+            GCS::Point p0, p1;
+            if (pos == PointPos::mid) {
+                p0.x = &MoveParameters.emplace_back(*center.x);
+                p0.y = &MoveParameters.emplace_back(*center.y);
+                GCSsys.addConstraintP2PCoincident(p0, center, GCS::DefaultTemporaryConstraint);
             }
             else if (pos == PointPos::none) {
-                GCS::Arc& a = Arcs[Geoms[geoId].index];
-                p0.x = &MoveParameters[0];
-                p0.y = &MoveParameters[1];
-                *p0.x = *center.x;
-                *p0.y = *center.y + *a.rad;
-                GCSsys.addConstraintPointOnArc(p0, a, GCS::DefaultTemporaryConstraint);
+                // bool pole = GeometryFacade::isInternalType(Geoms[geoId].geo,
+                // InternalType::BSplineControlPoint);
+                GCS::Circle& c = Circles[Geoms[geoId].index];
+                p0.x = &MoveParameters.emplace_back(*center.x);
+                p0.y = &MoveParameters.emplace_back(*center.y + *c.rad);
+                GCSsys.addConstraintPointOnCircle(p0, c, GCS::DefaultTemporaryConstraint);
+                p1.x = &MoveParameters.emplace_back(*center.x);
+                p1.y = &MoveParameters.emplace_back(*center.y);
+                int i =
+                    GCSsys.addConstraintP2PCoincident(p1, center, GCS::DefaultTemporaryConstraint);
+                GCSsys.rescaleConstraint(i - 1, 0.01);
+                GCSsys.rescaleConstraint(i, 0.01);
             }
-            p1.x = &MoveParameters[2];
-            p1.y = &MoveParameters[3];
-            *p1.x = *center.x;
-            *p1.y = *center.y;
-            int i = GCSsys.addConstraintP2PCoincident(p1, center, GCS::DefaultTemporaryConstraint);
-            GCSsys.rescaleConstraint(i - 1, 0.01);
-            GCSsys.rescaleConstraint(i, 0.01);
+        }
+        else if (Geoms[geoId].type == Ellipse) {
+            if (pos == PointPos::mid || pos == PointPos::none) {
+                GCS::Point& center = Points[Geoms[geoId].midPointId];
+                GCS::Point p0;
+                p0.x = &MoveParameters.emplace_back(*center.x);
+                p0.y = &MoveParameters.emplace_back(*center.y);
+                GCSsys.addConstraintP2PCoincident(p0, center, GCS::DefaultTemporaryConstraint);
+            }
+        }
+        else if (Geoms[geoId].type == ArcOfEllipse) {
+
+            GCS::Point& center = Points[Geoms[geoId].midPointId];
+            GCS::Point p0, p1;
+            if (pos == PointPos::mid || pos == PointPos::none) {
+                p0.x = &MoveParameters.emplace_back(*center.x);
+                p0.y = &MoveParameters.emplace_back(*center.y);
+                GCSsys.addConstraintP2PCoincident(p0, center, GCS::DefaultTemporaryConstraint);
+            }
+            else if (pos == PointPos::start || pos == PointPos::end) {
+                if (pos == PointPos::start || pos == PointPos::end) {
+                    GCS::Point& p = (pos == PointPos::start) ? Points[Geoms[geoId].startPointId]
+                                                             : Points[Geoms[geoId].endPointId];
+
+                    p0.x = &MoveParameters.emplace_back(*p.x);
+                    p0.y = &MoveParameters.emplace_back(*p.y);
+                    GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
+                }
+
+                p1.x = &MoveParameters.emplace_back(*center.x);
+                p1.y = &MoveParameters.emplace_back(*center.y);
+
+                int i =
+                    GCSsys.addConstraintP2PCoincident(p1, center, GCS::DefaultTemporaryConstraint);
+                GCSsys.rescaleConstraint(i - 1, 0.01);
+                GCSsys.rescaleConstraint(i, 0.01);
+            }
+        }
+        else if (Geoms[geoId].type == ArcOfHyperbola) {
+            GCS::Point& center = Points[Geoms[geoId].midPointId];
+            GCS::Point p0, p1;
+            if (pos == PointPos::mid || pos == PointPos::none) {
+                p0.x = &MoveParameters.emplace_back(*center.x);
+                p0.y = &MoveParameters.emplace_back(*center.y);
+                GCSsys.addConstraintP2PCoincident(p0, center, GCS::DefaultTemporaryConstraint);
+            }
+            else if (pos == PointPos::start || pos == PointPos::end) {
+                GCS::Point& p = (pos == PointPos::start) ? Points[Geoms[geoId].startPointId]
+                                                         : Points[Geoms[geoId].endPointId];
+                p0.x = &MoveParameters.emplace_back(*p.x);
+                p0.y = &MoveParameters.emplace_back(*p.y);
+                GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
+                p1.x = &MoveParameters.emplace_back(*center.x);
+                p1.y = &MoveParameters.emplace_back(*center.y);
+                int i =
+                    GCSsys.addConstraintP2PCoincident(p1, center, GCS::DefaultTemporaryConstraint);
+                GCSsys.rescaleConstraint(i - 1, 0.01);
+                GCSsys.rescaleConstraint(i, 0.01);
+            }
+        }
+        else if (Geoms[geoId].type == ArcOfParabola) {
+            GCS::Point& center = Points[Geoms[geoId].midPointId];
+            GCS::Point p0, p1;
+            if (pos == PointPos::mid || pos == PointPos::none) {
+                p0.x = &MoveParameters.emplace_back(*center.x);
+                p0.y = &MoveParameters.emplace_back(*center.y);
+                GCSsys.addConstraintP2PCoincident(p0, center, GCS::DefaultTemporaryConstraint);
+            }
+            else if (pos == PointPos::start || pos == PointPos::end) {
+                GCS::Point& p = (pos == PointPos::start) ? Points[Geoms[geoId].startPointId]
+                                                         : Points[Geoms[geoId].endPointId];
+                p0.x = &MoveParameters.emplace_back(*p.x);
+                p0.y = &MoveParameters.emplace_back(*p.y);
+                GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
+                p1.x = &MoveParameters.emplace_back(*center.x);
+                p1.y = &MoveParameters.emplace_back(*center.y);
+                int i =
+                    GCSsys.addConstraintP2PCoincident(p1, center, GCS::DefaultTemporaryConstraint);
+                GCSsys.rescaleConstraint(i - 1, 0.01);
+                GCSsys.rescaleConstraint(i, 0.01);
+            }
+        }
+        else if (Geoms[geoId].type == BSpline) {
+            if (pos == PointPos::start || pos == PointPos::end) {
+                GCS::Point p0;
+                GCS::Point& p = pos == PointPos::start ? Points[Geoms[geoId].startPointId]
+                                                       : Points[Geoms[geoId].endPointId];
+                p0.x = &MoveParameters.emplace_back(*p.x);
+                p0.y = &MoveParameters.emplace_back(*p.y);
+                GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
+            }
+            else if (pos == PointPos::none || pos == PointPos::mid) {
+                GCS::BSpline& bsp = BSplines[Geoms[geoId].index];
+                for (auto pole : bsp.poles) {
+                    GCS::Point p1;
+                    p1.x = &MoveParameters.emplace_back(*pole.x);
+                    p1.y = &MoveParameters.emplace_back(*pole.y);
+                    GCSsys.addConstraintP2PCoincident(p1, pole, GCS::DefaultTemporaryConstraint);
+                }
+            }
+        }
+        else if (Geoms[geoId].type == Arc) {
+            GCS::Point& center = Points[Geoms[geoId].midPointId];
+            GCS::Point p0, p1;
+            if (pos == PointPos::mid) {
+                p0.x = &MoveParameters.emplace_back(*center.x);
+                p0.y = &MoveParameters.emplace_back(*center.y);
+                GCSsys.addConstraintP2PCoincident(p0, center, GCS::DefaultTemporaryConstraint);
+            }
+            else if (pos == PointPos::none && geoEltIds.size() > 1) {
+                // When group dragging, arcs should move without modification.
+                GCS::Point p2;
+                GCS::Point& sp = Points[Geoms[geoId].startPointId];
+                GCS::Point& ep = Points[Geoms[geoId].endPointId];
+                p0.x = &MoveParameters.emplace_back(*sp.x);
+                p0.y = &MoveParameters.emplace_back(*sp.y);
+                GCSsys.addConstraintP2PCoincident(p0, sp, GCS::DefaultTemporaryConstraint);
+
+                p2.x = &MoveParameters.emplace_back(*ep.x);
+                p2.y = &MoveParameters.emplace_back(*ep.y);
+                GCSsys.addConstraintP2PCoincident(p2, ep, GCS::DefaultTemporaryConstraint);
+
+                p1.x = &MoveParameters.emplace_back(*center.x);
+                p1.y = &MoveParameters.emplace_back(*center.y);
+                int i =
+                    GCSsys.addConstraintP2PCoincident(p1, center, GCS::DefaultTemporaryConstraint);
+                GCSsys.rescaleConstraint(i - 2, 0.01);
+                GCSsys.rescaleConstraint(i - 1, 0.01);
+                GCSsys.rescaleConstraint(i, 0.01);
+            }
+            else if (pos == PointPos::start || pos == PointPos::end || pos == PointPos::none) {
+                if (pos == PointPos::start || pos == PointPos::end) {
+                    GCS::Point& p = (pos == PointPos::start) ? Points[Geoms[geoId].startPointId]
+                                                             : Points[Geoms[geoId].endPointId];
+                    p0.x = &MoveParameters.emplace_back(*p.x);
+                    p0.y = &MoveParameters.emplace_back(*p.y);
+                    GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
+                }
+                else if (pos == PointPos::none) {
+                    GCS::Arc& a = Arcs[Geoms[geoId].index];
+                    p0.x = &MoveParameters.emplace_back(*center.x);
+                    p0.y = &MoveParameters.emplace_back(*center.y + *a.rad);
+                    GCSsys.addConstraintPointOnArc(p0, a, GCS::DefaultTemporaryConstraint);
+                }
+
+                p1.x = &MoveParameters.emplace_back(*center.x);
+                p1.y = &MoveParameters.emplace_back(*center.y);
+                int i =
+                    GCSsys.addConstraintP2PCoincident(p1, center, GCS::DefaultTemporaryConstraint);
+                GCSsys.rescaleConstraint(i - 1, 0.01);
+                GCSsys.rescaleConstraint(i, 0.01);
+            }
         }
     }
+
     InitParameters = MoveParameters;
 
     GCSsys.initSolution();
     isInitMove = true;
+
     return 0;
+}
+
+int Sketch::initMove(int geoId, PointPos pos, bool fine)
+{
+    std::vector<GeoElementId> geoEltIds = {GeoElementId(geoId, pos)};
+    return initMove(geoEltIds, fine);
 }
 
 void Sketch::resetInitMove()
@@ -5140,17 +5093,17 @@ int Sketch::initBSplinePieceMove(int geoId,
     return 0;
 }
 
-int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative)
+int Sketch::moveGeometries(std::vector<GeoElementId> geoEltIds,
+                           Base::Vector3d toPoint,
+                           bool relative)
 {
-    geoId = checkGeoId(geoId);
-
-    // don't try to move sketches that contain conflicting constraints
     if (hasConflicts()) {
+        // don't try to move sketches that contain conflicting constraints
         return -1;
     }
 
     if (!isInitMove) {
-        initMove(geoId, pos);
+        initMove(geoEltIds);
         initToPoint = toPoint;
         moveStep = 0;
     }
@@ -5162,7 +5115,7 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
             else {
                 // I am getting too far away from the original solution so reinit the solution
                 if ((toPoint - initToPoint).Length() > 20 * moveStep) {
-                    initMove(geoId, pos);
+                    initMove(geoEltIds);
                     initToPoint = toPoint;
                 }
             }
@@ -5170,97 +5123,93 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
     }
 
     if (relative) {
-        for (int i = 0; i < int(MoveParameters.size() - 1); i += 2) {
+        for (size_t i = 0; i < MoveParameters.size() - 1; i += 2) {
             MoveParameters[i] = InitParameters[i] + toPoint.x;
             MoveParameters[i + 1] = InitParameters[i + 1] + toPoint.y;
         }
     }
-    else if (Geoms[geoId].type == Point) {
-        if (pos == PointPos::start) {
-            MoveParameters[0] = toPoint.x;
-            MoveParameters[1] = toPoint.y;
-        }
-    }
-    else if (Geoms[geoId].type == Line) {
-        if (pos == PointPos::start || pos == PointPos::end) {
-            MoveParameters[0] = toPoint.x;
-            MoveParameters[1] = toPoint.y;
-        }
-        else if (pos == PointPos::none || pos == PointPos::mid) {
-            double dx = (InitParameters[2] - InitParameters[0]) / 2;
-            double dy = (InitParameters[3] - InitParameters[1]) / 2;
-            MoveParameters[0] = toPoint.x - dx;
-            MoveParameters[1] = toPoint.y - dy;
-            MoveParameters[2] = toPoint.x + dx;
-            MoveParameters[3] = toPoint.y + dy;
-        }
-    }
-    else if (Geoms[geoId].type == Circle) {
-        if (pos == PointPos::mid || pos == PointPos::none) {
-            MoveParameters[0] = toPoint.x;
-            MoveParameters[1] = toPoint.y;
-        }
-    }
-    else if (Geoms[geoId].type == Arc) {
-        if (pos == PointPos::start || pos == PointPos::end || pos == PointPos::mid
-            || pos == PointPos::none) {
-            MoveParameters[0] = toPoint.x;
-            MoveParameters[1] = toPoint.y;
-        }
-    }
-    else if (Geoms[geoId].type == Ellipse) {
-        if (pos == PointPos::mid || pos == PointPos::none) {
-            MoveParameters[0] = toPoint.x;
-            MoveParameters[1] = toPoint.y;
-        }
-    }
-    else if (Geoms[geoId].type == ArcOfEllipse) {
-        if (pos == PointPos::start || pos == PointPos::end || pos == PointPos::mid
-            || pos == PointPos::none) {
-            MoveParameters[0] = toPoint.x;
-            MoveParameters[1] = toPoint.y;
-        }
-    }
-    else if (Geoms[geoId].type == ArcOfHyperbola) {
-        if (pos == PointPos::start || pos == PointPos::end || pos == PointPos::mid
-            || pos == PointPos::none) {
-            MoveParameters[0] = toPoint.x;
-            MoveParameters[1] = toPoint.y;
-        }
-    }
-    else if (Geoms[geoId].type == ArcOfParabola) {
-        if (pos == PointPos::start || pos == PointPos::end || pos == PointPos::mid
-            || pos == PointPos::none) {
-            MoveParameters[0] = toPoint.x;
-            MoveParameters[1] = toPoint.y;
-        }
-    }
-    else if (Geoms[geoId].type == BSpline) {
-        if (pos == PointPos::start || pos == PointPos::end) {
-            MoveParameters[0] = toPoint.x;
-            MoveParameters[1] = toPoint.y;
-        }
-        else if (pos == PointPos::none || pos == PointPos::mid) {
-            GCS::BSpline& bsp = BSplines[Geoms[geoId].index];
-
-            double cx = 0, cy = 0;  // geometric center
-            for (int i = 0; i < int(InitParameters.size() - 1); i += 2) {
-                cx += InitParameters[i];
-                cy += InitParameters[i + 1];
+    else {
+        size_t i = 0;
+        for (auto& pair : geoEltIds) {
+            if (i >= MoveParameters.size()) {
+                break;
             }
+            int geoId = checkGeoId(pair.GeoId);
+            Sketcher::PointPos pos = pair.Pos;
 
-            cx /= bsp.poles.size();
-            cy /= bsp.poles.size();
+            if (Geoms[geoId].type == Point) {
+                if (pos == PointPos::start) {
+                    MoveParameters[i] = toPoint.x;
+                    MoveParameters[i + 1] = toPoint.y;
+                    i += 2;
+                }
+            }
+            else if (Geoms[geoId].type == Line) {
+                if (pos == PointPos::start || pos == PointPos::end) {
+                    MoveParameters[i] = toPoint.x;
+                    MoveParameters[i + 1] = toPoint.y;
+                    i += 2;
+                }
+                else if (pos == PointPos::none || pos == PointPos::mid) {
+                    double dx = (InitParameters[i + 2] - InitParameters[i]) * 0.5;
+                    double dy = (InitParameters[i + 3] - InitParameters[i + 1]) * 0.5;
+                    MoveParameters[i] = toPoint.x - dx;
+                    MoveParameters[i + 1] = toPoint.y - dy;
+                    MoveParameters[i + 2] = toPoint.x + dx;
+                    MoveParameters[i + 3] = toPoint.y + dy;
+                    i += 4;
+                }
+            }
+            else if (Geoms[geoId].type == Circle || Geoms[geoId].type == Ellipse) {
+                if (pos == PointPos::mid || pos == PointPos::none) {
+                    MoveParameters[i] = toPoint.x;
+                    MoveParameters[i + 1] = toPoint.y;
+                    i += 2;
+                }
+            }
+            else if (Geoms[geoId].type == Arc || Geoms[geoId].type == ArcOfEllipse
+                     || Geoms[geoId].type == ArcOfHyperbola || Geoms[geoId].type == ArcOfParabola) {
+                MoveParameters[i] = toPoint.x;
+                MoveParameters[i + 1] = toPoint.y;
+                i += 2;
+            }
+            else if (Geoms[geoId].type == BSpline) {
+                if (pos == PointPos::start || pos == PointPos::end) {
+                    MoveParameters[i] = toPoint.x;
+                    MoveParameters[i + 1] = toPoint.y;
+                    i += 2;
+                }
+                else if (pos == PointPos::none || pos == PointPos::mid) {
+                    GCS::BSpline& bsp = BSplines[Geoms[geoId].index];
 
-            for (int i = 0; i < int(MoveParameters.size() - 1); i += 2) {
+                    double cx = 0, cy = 0;  // geometric center
+                    for (size_t j = 0; j < bsp.poles.size() * 2; j += 2) {
+                        cx += InitParameters[i + j];
+                        cy += InitParameters[i + j + 1];
+                        j += 2;
+                    }
 
-                MoveParameters[i] = toPoint.x + InitParameters[i] - cx;
-                MoveParameters[i + 1] = toPoint.y + InitParameters[i + 1] - cy;
+                    cx /= bsp.poles.size();
+                    cy /= bsp.poles.size();
+
+                    for (size_t j = 0; j < bsp.poles.size() * 2; j += 2) {
+                        MoveParameters[i + j] = toPoint.x + InitParameters[i + j] - cx;
+                        MoveParameters[i + j + 1] = toPoint.y + InitParameters[i + j + 1] - cy;
+                        j += 2;
+                    }
+                    i += bsp.poles.size() * 2;
+                }
             }
         }
     }
 
     return solve();
+}
+
+int Sketch::moveGeometry(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative)
+{
+    std::vector<GeoElementId> geoEltIds = {GeoElementId(geoId, pos)};
+    return moveGeometries(geoEltIds, toPoint, relative);
 }
 
 int Sketch::setDatum(int /*constrId*/, double /*value*/)

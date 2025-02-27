@@ -32,11 +32,11 @@
 # include <TopoDS.hxx>
 #endif
 
+#include "App/Datums.h"
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/FeaturePythonPyImp.h>
 #include <App/ElementNamingUtils.h>
-#include "App/OriginFeature.h"
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Console.h>
 
 #include "Feature.h"
@@ -49,6 +49,14 @@ FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 namespace PartDesign {
 
+bool getPDRefineModelParameter()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    return hGrp->GetBool("RefineModel", true);
+}
+
+// ------------------------------------------------------------------------------------------------
 
 PROPERTY_SOURCE(PartDesign::Feature,Part::Feature)
 
@@ -57,30 +65,82 @@ Feature::Feature()
     ADD_PROPERTY(BaseFeature,(nullptr));
     ADD_PROPERTY_TYPE(_Body,(nullptr),"Base",(App::PropertyType)(
                 App::Prop_ReadOnly|App::Prop_Hidden|App::Prop_Output|App::Prop_Transient),0);
+    ADD_PROPERTY(SuppressedShape,(TopoShape()));
     Placement.setStatus(App::Property::Hidden, true);
     BaseFeature.setStatus(App::Property::Hidden, true);
 
     App::SuppressibleExtension::initExtension(this);
-#ifndef FC_USE_TNP_FIX
-    Suppressed.setStatus(App::Property::Status::Hidden, true);
-#endif
 }
 
 App::DocumentObjectExecReturn* Feature::recompute()
 {
-    try {
-        auto baseShape = getBaseTopoShape();
-        if (Suppressed.getValue()) {
-            this->Shape.setValue(baseShape.getShape());
-            return StdReturn;
-        }
-    }
-    catch (Base::Exception&) {
-        //invalid BaseShape
-        Suppressed.setValue(false);
+    setMaterialToBodyMaterial();
+
+    SuppressedShape.setValue(TopoShape());
+
+    if (!Suppressed.getValue()) {
+        return Part::Feature::recompute();
     }
 
-    return DocumentObject::recompute();
+    bool failed = false;
+    try {
+        std::unique_ptr<App::DocumentObjectExecReturn> ret(Part::Feature::recompute());
+        if (ret) {
+            throw Base::RuntimeError(ret->Why);
+        }
+    }
+    catch (Base::AbortException&) {
+        throw;
+    }
+    catch (Base::Exception& e) {
+        failed = true;
+        e.ReportException();
+        FC_ERR("Failed to recompute suppressed feature " << getFullName());
+    }
+
+    if (!failed) {
+        updateSuppressedShape();
+    }
+    else {
+        Shape.setValue(getBaseTopoShape(true));
+    }
+    return App::DocumentObject::StdReturn;
+}
+
+void Feature::setMaterialToBodyMaterial()
+{
+    auto body = getFeatureBody();
+    if (body) {
+        // Ensure the part has the same material as the body
+        auto feature = dynamic_cast<Part::Feature*>(body);
+        if (feature) {
+            copyMaterial(feature);
+        }
+    }
+}
+
+void Feature::updateSuppressedShape()
+{
+    auto baseShape = getBaseTopoShape(true);
+    TopoShape res(getID());
+    TopoShape shape = Shape.getShape();
+    shape.setPlacement(Base::Placement());
+    std::vector<TopoShape> generated;
+    if(!shape.isNull()) {
+        unsigned count = shape.countSubShapes(TopAbs_FACE);
+        for(unsigned i=1; i<=count; ++i) {
+            Data::MappedName mapped = shape.getMappedName(
+                    Data::IndexedName::fromConst("Face", i));
+            if(mapped && shape.isElementGenerated(mapped))
+                generated.push_back(shape.getSubTopoShape(TopAbs_FACE, i));
+        }
+    }
+    if(!generated.empty()) {
+        res.makeElementCompound(generated);
+        res.setPlacement(Placement.getValue());
+    }
+    Shape.setValue(baseShape);
+    SuppressedShape.setValue(res);
 }
 
 short Feature::mustExecute() const
@@ -90,28 +150,7 @@ short Feature::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
-// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
-{
-    if (shape.IsNull()) {
-        Standard_Failure::Raise("Shape is null");
-    }
-
-    // If single solid rule is not enforced  we simply return the shape as is
-    if (singleSolidRuleMode() != Feature::SingleSolidRuleMode::Enforced) {
-        return shape;
-    }
-
-    TopExp_Explorer xp;
-    xp.Init(shape, TopAbs_SOLID);
-    if (xp.More()) {
-        return xp.Current();
-    }
-
-    return {};
-}
-
-TopoShape Feature::getSolid(const TopoShape& shape)
+TopoShape Feature::getSolid(const TopoShape& shape) const
 {
     if (shape.isNull()) {
         throw Part::NullShapeException("Null shape");
@@ -149,6 +188,14 @@ void Feature::onChanged(const App::Property *prop)
                         body->insertObject(BaseFeature.getValue(), this);
                 }
             }
+        } else if (prop == &ShapeMaterial) {
+            auto body = Body::findBodyOf(this);
+            if (body) {
+                if (body->ShapeMaterial.getValue().getUUID()
+                    != ShapeMaterial.getValue().getUUID()) {
+                    body->ShapeMaterial.setValue(ShapeMaterial.getValue());
+                }
+            }
         }
     }
     Part::Feature::onChanged(prop);
@@ -179,7 +226,7 @@ bool Feature::isSingleSolidRuleSatisfied(const TopoDS_Shape& shape, TopAbs_Shape
 }
 
 
-Feature::SingleSolidRuleMode Feature::singleSolidRuleMode()
+Feature::SingleSolidRuleMode Feature::singleSolidRuleMode() const
 {
     auto body = getFeatureBody();
 
@@ -238,8 +285,8 @@ const TopoDS_Shape& Feature::getBaseShape() const {
     if (!BaseObject)
         throw Base::ValueError("Base feature's shape is not defined");
 
-    if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())||
-        BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
+    if (BaseObject->isDerivedFrom<PartDesign::ShapeBinder>()||
+        BaseObject->isDerivedFrom<PartDesign::SubShapeBinder>())
     {
         throw Base::ValueError("Base shape of shape binder cannot be used");
     }
@@ -271,8 +318,8 @@ Part::TopoShape Feature::getBaseTopoShape(bool silent) const
             }
             throw Base::RuntimeError("Missing container body");
         }
-        if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
-            || BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())) {
+        if (BaseObject->isDerivedFrom<PartDesign::ShapeBinder>()
+            || BaseObject->isDerivedFrom<PartDesign::SubShapeBinder>()) {
             if (silent) {
                 return result;
             }
@@ -303,7 +350,7 @@ PyObject* Feature::getPyObject()
 
 bool Feature::isDatum(const App::DocumentObject* feature)
 {
-    return feature->isDerivedFrom<App::OriginFeature>() ||
+    return feature->isDerivedFrom<App::DatumElement>() ||
            feature->isDerivedFrom<Part::Datum>();
 }
 
@@ -348,7 +395,7 @@ Body* Feature::getFeatureBody() const {
 
     auto list = getInList();
     for (auto in : list) {
-        if(in->isDerivedFrom(Body::getClassTypeId()) && //is Body?
+        if(in->isDerivedFrom<Body>() && //is Body?
            static_cast<Body*>(in)->hasObject(this)) {    //is part of this Body?
 
                return static_cast<Body*>(in);
@@ -358,7 +405,7 @@ Body* Feature::getFeatureBody() const {
     return nullptr;
 }
 
-App::DocumentObject *Feature::getSubObject(const char *subname, 
+App::DocumentObject *Feature::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
     if (subname && subname != Data::findElementName(subname)) {
@@ -366,7 +413,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         if (dot) {
             auto body = PartDesign::Body::findBodyOf(this);
             if (body) {
-                auto feat = body->Group.find(std::string(subname, dot));
+                auto feat = body->Group.findUsingMap(std::string(subname, dot));
                 if (feat) {
                     Base::Matrix4D _mat;
                     if (!transform) {
@@ -383,7 +430,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
                         // an inverse transform.
                         _mat = Placement.getValue().inverse().toMatrix();
                         if (pmat)
-                            *pmat *= _mat; 
+                            *pmat *= _mat;
                         else
                             pmat = &_mat;
                     }

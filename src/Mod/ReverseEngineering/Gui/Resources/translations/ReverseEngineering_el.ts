@@ -233,9 +233,9 @@
       <translation>Τοποθέτηση</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
-      <source>Fit B-Spline</source>
+      <location filename="../../FitBSplineCurve.cpp" line="139"/>
+      <source>Fit B-spline</source>
       <translation>Προσαρμογή B-Spline</translation>
     </message>
     <message>
@@ -393,7 +393,7 @@
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Please select a point cloud.</source>
-      <translation type="unfinished">Please select a point cloud.</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../Command.cpp" line="121"/>
@@ -591,8 +591,8 @@
     <name>ReenGui::FitBSplineCurve</name>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
-      <source>Fit B-spline surface</source>
-      <translation>Προσαρμογή στην επιφάνεια B-spline</translation>
+      <source>Fit B-spline curve</source>
+      <translation type="unfinished">Fit B-spline curve</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>
@@ -607,12 +607,12 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="37"/>
       <source>Chord length</source>
-      <translation type="unfinished">Chord length</translation>
+      <translation>Μήκος Χορδής</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="42"/>
       <source>Centripetal</source>
-      <translation type="unfinished">Centripetal</translation>
+      <translation>Κεντρομόλος</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>

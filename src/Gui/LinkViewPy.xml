@@ -7,7 +7,7 @@
         TwinPointer="LinkView"
         Include="Gui/ViewProviderLink.h"
         Namespace="Gui"
-        FatherInclude="Base/BaseClass.h"
+        FatherInclude="Base/BaseClassPy.h"
         FatherNamespace="Base"
         Constructor="true"
         Delete="true">
@@ -154,7 +154,7 @@ Return a tuple(path,detail) for the coin3D SoPath and SoDetail of the element
             <Documentation>
                 <UserDocu>Set the element size to create an array of linked object</UserDocu>
             </Documentation>
-            <Parameter Name="Count" Type="Int" />
+            <Parameter Name="Count" Type="Long" />
         </Attribute>
         <Methode Name="getChildren" Const="true">
             <Documentation>

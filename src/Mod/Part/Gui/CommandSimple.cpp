@@ -34,8 +34,8 @@
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/WaitCursor.h>
 
 #include "DlgPartCylinderImp.h"
@@ -119,8 +119,7 @@ void CmdPartShapeFromMesh::activated(int iMsg)
 
 bool CmdPartShapeFromMesh::isActive()
 {
-    Base::Type meshid = Base::Type::fromName("Mesh::Feature");
-    return Gui::Selection().countObjectsOfType(meshid) > 0;
+    return Gui::Selection().countObjectsOfType("Mesh::Feature") > 0;
 }
 //===========================================================================
 // Part_PointsFromMesh
@@ -205,8 +204,7 @@ void CmdPartPointsFromMesh::activated(int iMsg)
 
 bool CmdPartPointsFromMesh::isActive()
 {
-    Base::Type meshid = Base::Type::fromName("App::GeoFeature");
-    return Gui::Selection().countObjectsOfType(meshid) > 0;
+    return Gui::Selection().countObjectsOfType<App::GeoFeature>() > 0;
 }
 
 //===========================================================================

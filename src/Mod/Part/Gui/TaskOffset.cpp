@@ -67,7 +67,7 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
     d->ui.spinOffset->setSingleStep(0.1);
     d->ui.facesButton->hide();
 
-    bool is_2d = d->offset->isDerivedFrom(Part::Offset2D::getClassTypeId());
+    bool is_2d = d->offset->isDerivedFrom<Part::Offset2D>();
     d->ui.selfIntersection->setVisible(!is_2d);
     if(is_2d)
         d->ui.modeType->removeItem(2);//remove Recto-Verso mode, not supported by 2d offset
@@ -112,6 +112,7 @@ OffsetWidget::~OffsetWidget()
 
 void OffsetWidget::setupConnections()
 {
+    // clang-format off
     connect(d->ui.spinOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &OffsetWidget::onSpinOffsetValueChanged);
     connect(d->ui.modeType, qOverload<int>(&QComboBox::activated),
@@ -126,6 +127,7 @@ void OffsetWidget::setupConnections()
             this, &OffsetWidget::onFillOffsetToggled);
     connect(d->ui.updateView, &QCheckBox::toggled,
             this, &OffsetWidget::onUpdateViewToggled);
+    // clang-format on
 }
 
 Part::Offset* OffsetWidget::getObject() const

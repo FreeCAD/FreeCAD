@@ -23,6 +23,7 @@
 #ifndef SKETCHERGUI_DrawSketchController_H
 #define SKETCHERGUI_DrawSketchController_H
 
+#include <Base/Console.h>
 #include <Base/Tools2D.h>
 #include <Gui/EditableDatumLabel.h>
 
@@ -38,7 +39,7 @@ namespace SketcherGui
     the possible construction modes supported by the tool.
 
     @details Different construction modes of a DSH may use different types of controls. This class
-    allows to instantiate a handler template class to provide such construction mode specific
+    allows one to instantiate a handler template class to provide such construction mode specific
     controls.
 
     Each different type of control is a template class deriving from this.
@@ -168,7 +169,7 @@ private:
                 "User parameter:BaseApp/Preferences/View");
 
             dimConstrColor = SbColor(1.0f, 0.149f, 0.0f);           // NOLINT
-            dimConstrDeactivatedColor = SbColor(0.8f, 0.8f, 0.8f);  // NOLINT
+            dimConstrDeactivatedColor = SbColor(0.5f, 0.5f, 0.5f);  // NOLINT
 
             float transparency = 0.f;
             unsigned long color = (unsigned long)(dimConstrColor.getPackedValue());
@@ -323,9 +324,18 @@ public:
 
         handler->updateCursor();
 
-        handler->reset();  // reset of handler to restart.
+        if (resetOnConstructionMethodeChanged()) {
+            handler->reset();  // reset of handler to restart.
+        }
 
         handler->mouseMove(prevCursorPosition);
+    }
+    //@}
+
+    /** function that define if the handler should be reset on construction methode change */
+    virtual bool resetOnConstructionMethodeChanged()
+    {
+        return true;
     }
     //@}
 
@@ -341,6 +351,21 @@ public:
      * It is intended to remote control the DrawSketchDefaultWidgetHandler
      */
     void onViewValueChanged(int onviewparameterindex, double value)
+    {
+        // Since this method is used as a Qt slot we must handle
+        // all exceptions here
+        try {
+            tryViewValueChanged(onviewparameterindex, value);
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
+        catch (const std::exception& e) {
+            Base::Console().Error("C++ exception in onViewValueChanged: %s\n", e.what());
+        }
+    }
+
+    void tryViewValueChanged(int onviewparameterindex, double value)
     {
         int nextindex = onviewparameterindex + 1;
         if (isOnViewParameterOfCurrentMode(nextindex)) {
@@ -556,6 +581,9 @@ protected:
         auto currentstate = handler->state();
         // ensure that object at point is preselected, so that autoconstraints are generated
         handler->preselectAtPoint(lastControlEnforcedPosition);
+        // We have to redo an update to regenerate the correct autoconstraints after the
+        // preselectAtPoint.
+        handler->updateDataAndDrawToPosition(lastControlEnforcedPosition);
 
         doChangeDrawSketchHandlerMode();
 
@@ -571,7 +599,9 @@ protected:
     void initNOnViewParameters(int n)
     {
         Gui::View3DInventorViewer* viewer = handler->getViewer();
-        Base::Placement placement = handler->sketchgui->getSketchObject()->globalPlacement();
+
+        auto doc = Gui::Application::Instance->editDocument();
+        auto placement = Base::Placement(doc->getEditingTransform());
 
         onViewParameters.clear();
 

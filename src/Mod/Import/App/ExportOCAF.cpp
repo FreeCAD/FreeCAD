@@ -50,19 +50,8 @@
 #include <Mod/Part/App/PartFeature.h>
 
 #include "ExportOCAF.h"
+#include "Tools.h"
 
-
-#if OCC_VERSION_HEX >= 0x070500
-// See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
-#define OCC_COLOR_SPACE Quantity_TOC_sRGB
-#else
-#define OCC_COLOR_SPACE Quantity_TOC_RGB
-#endif
-
-static inline Quantity_ColorRGBA convertColor(const App::Color& c)
-{
-    return Quantity_ColorRGBA(Quantity_Color(c.r, c.g, c.b, OCC_COLOR_SPACE), 1.0 - c.a);
-}
 
 using namespace Import;
 
@@ -313,7 +302,7 @@ int ExportOCAF::saveShape(Part::Feature* part,
 
                 if (!faceLabel.IsNull()) {
                     const App::Color& color = colors[index - 1];
-                    col = convertColor(color);
+                    col = Tools::convertColor(color);
                     aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
                 }
             }
@@ -322,7 +311,7 @@ int ExportOCAF::saveShape(Part::Feature* part,
     }
     else if (!colors.empty()) {
         App::Color color = colors.front();
-        col = convertColor(color);
+        col = Tools::convertColor(color);
         aColorTool->SetColor(shapeLabel, col, XCAFDoc_ColorGen);
     }
 
@@ -379,9 +368,7 @@ void ExportOCAF::reallocateFreeShape(std::vector<App::DocumentObject*> hierarchi
     for (std::size_t i = 0; i < n; i++) {
         TDF_Label label = FreeLabels.at(i);
         // hierarchical part does contain only part currently and not node I should add node
-        if (hierarchical_part.at(part_id.at(i))
-                ->getTypeId()
-                .isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (hierarchical_part.at(part_id.at(i))->isDerivedFrom<Part::Feature>()) {
             Part::Feature* part = static_cast<Part::Feature*>(hierarchical_part.at(part_id.at(i)));
             aShapeTool->SetShape(label, part->Shape.getValue());
             // Add color information
@@ -423,7 +410,7 @@ void ExportOCAF::reallocateFreeShape(std::vector<App::DocumentObject*> hierarchi
 
                         if (!faceLabel.IsNull()) {
                             const App::Color& color = colors[index - 1];
-                            col = convertColor(color);
+                            col = Tools::convertColor(color);
                             aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
                         }
                     }
@@ -433,7 +420,7 @@ void ExportOCAF::reallocateFreeShape(std::vector<App::DocumentObject*> hierarchi
             }
             else if (!colors.empty()) {
                 App::Color color = colors.front();
-                col = convertColor(color);
+                col = Tools::convertColor(color);
                 aColorTool->SetColor(label, col, XCAFDoc_ColorGen);
             }
         }
@@ -446,14 +433,28 @@ void ExportOCAF::pushNode(int root_id,
                           std::vector<TDF_Label>& hierarchical_label,
                           std::vector<TopLoc_Location>& hierarchical_loc)
 {
-    TDF_Label root;
-    TDF_Label node;
-    root = hierarchical_label.at(root_id - 1);
-    node = hierarchical_label.at(node_id - 1);
+    auto isValidIndex = [&](std::size_t root, std::size_t node) {
+        // NOLINTBEGIN
+        if (root >= hierarchical_label.size()) {
+            return false;
+        }
+        if (node >= hierarchical_label.size() || node >= hierarchical_loc.size()) {
+            return false;
+        }
 
-    XCAFDoc_DocumentTool::ShapeTool(root)->AddComponent(root,
-                                                        node,
-                                                        hierarchical_loc.at(node_id - 1));
+        return true;
+        // NOLINTEND
+    };
+    if (isValidIndex(root_id - 1, node_id - 1)) {
+        TDF_Label root;
+        TDF_Label node;
+        TopLoc_Location locn;
+        root = hierarchical_label.at(root_id - 1);
+        node = hierarchical_label.at(node_id - 1);
+        locn = hierarchical_loc.at(node_id - 1);
+
+        XCAFDoc_DocumentTool::ShapeTool(root)->AddComponent(root, node, locn);
+    }
 }
 
 // ----------------------------------------------------------------------------

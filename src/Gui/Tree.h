@@ -34,7 +34,7 @@
 #include <Base/Parameter.h>
 #include <Base/Persistence.h>
 #include <Gui/DockWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/TreeItemMode.h>
 
 class QLineEdit;
@@ -155,6 +155,7 @@ private:
     using ObjectItemSubname = std::pair<DocumentObjectItem*, std::vector<std::string>>;
     bool dropInObject(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<ObjectItemSubname> items);
     bool dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<ObjectItemSubname> items);
+    bool canDragFromParents(DocumentObjectItem* parentItem, App::DocumentObject* obj, App::DocumentObject* target);
     void sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App::DocumentObject*> draggedObjects);
     //@}
 
@@ -189,6 +190,7 @@ protected Q_SLOTS:
     void onShowHidden();
     void onToggleVisibilityInTree();
     void onSearchObjects();
+    void onOpenFileLocation();
 
 private Q_SLOTS:
     void onItemSelectionChanged();
@@ -239,6 +241,7 @@ private:
     QAction* reloadDocAction;
     QAction* closeDocAction;
     QAction* searchObjectsAction;
+    QAction* openFileLocationAction;
     QTreeWidgetItem *contextItem;
     App::DocumentObject *searchObject;
     Gui::Document *searchDoc;

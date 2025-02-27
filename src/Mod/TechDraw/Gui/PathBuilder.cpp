@@ -43,7 +43,7 @@ QPainterPath PathBuilder::geomToPainterPath(BaseGeomPtr baseGeom, double rot) co
         return path;
 
     switch (baseGeom->getGeomType()) {
-        case CIRCLE: {
+        case GeomType::CIRCLE: {
             TechDraw::CirclePtr geom = std::static_pointer_cast<TechDraw::Circle>(baseGeom);
 
             double x = geom->center.x - geom->radius;
@@ -52,7 +52,7 @@ QPainterPath PathBuilder::geomToPainterPath(BaseGeomPtr baseGeom, double rot) co
             path.addEllipse(Rez::guiX(x), Rez::guiX(y), Rez::guiX(geom->radius * 2),
                             Rez::guiX(geom->radius * 2));//topleft@(x, y) radx, rady
         } break;
-        case ARCOFCIRCLE: {
+        case GeomType::ARCOFCIRCLE: {
             TechDraw::AOCPtr geom = std::static_pointer_cast<TechDraw::AOC>(baseGeom);
             if (baseGeom->getReversed()) {      // OCC reversed flag
                 path.moveTo(Rez::guiX(geom->endPnt.x), Rez::guiX(geom->endPnt.y));
@@ -69,7 +69,7 @@ QPainterPath PathBuilder::geomToPainterPath(BaseGeomPtr baseGeom, double rot) co
                         Rez::guiX(geom->startPnt.x), Rez::guiX(geom->startPnt.y));
             }
         } break;
-        case TechDraw::ELLIPSE: {
+        case GeomType::ELLIPSE: {
             TechDraw::AOEPtr geom = std::static_pointer_cast<TechDraw::AOE>(baseGeom);
 
             // Calculate start and end points as ellipse with theta = 0 and pi
@@ -84,7 +84,7 @@ QPainterPath PathBuilder::geomToPainterPath(BaseGeomPtr baseGeom, double rot) co
             pathArc(path, Rez::guiX(geom->major), Rez::guiX(geom->minor), geom->angle, false, false,
                     Rez::guiX(startX), Rez::guiX(startY), Rez::guiX(endX), Rez::guiX(endY));
         } break;
-        case TechDraw::ARCOFELLIPSE: {
+        case GeomType::ARCOFELLIPSE: {
             TechDraw::AOEPtr geom = std::static_pointer_cast<TechDraw::AOE>(baseGeom);
             if (baseGeom->getReversed()) {
                 path.moveTo(Rez::guiX(geom->endPnt.x), Rez::guiX(geom->endPnt.y));
@@ -101,7 +101,7 @@ QPainterPath PathBuilder::geomToPainterPath(BaseGeomPtr baseGeom, double rot) co
                         Rez::guiX(geom->startPnt.y));
             }
         } break;
-        case TechDraw::BEZIER: {
+        case GeomType::BEZIER: {
             TechDraw::BezierSegmentPtr geom =
                 std::static_pointer_cast<TechDraw::BezierSegment>(baseGeom);
             if (baseGeom->getReversed()) {
@@ -158,7 +158,7 @@ QPainterPath PathBuilder::geomToPainterPath(BaseGeomPtr baseGeom, double rot) co
                 }
             }
         } break;
-        case TechDraw::BSPLINE: {
+        case GeomType::BSPLINE: {
             TechDraw::BSplinePtr geom = std::static_pointer_cast<TechDraw::BSpline>(baseGeom);
             if (baseGeom->getReversed()) {
                 // Move painter to the end of our last segment
@@ -221,7 +221,7 @@ QPainterPath PathBuilder::geomToPainterPath(BaseGeomPtr baseGeom, double rot) co
                 }
             }
         } break;
-        case TechDraw::GENERIC: {
+        case GeomType::GENERIC: {
             TechDraw::GenericPtr geom = std::static_pointer_cast<TechDraw::Generic>(baseGeom);
             if (baseGeom->getReversed()) {
                 if (!geom->points.empty()) {

@@ -90,11 +90,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
     def areaOpFeatures(self, obj):
         """areaOpFeatures(obj) ... Pockets have a FinishDepth and work on Faces"""
-        return (
-            PathOp.FeatureBaseFaces
-            | PathOp.FeatureFinishDepth
-            | self.pocketOpFeatures(obj)
-        )
+        return PathOp.FeatureBaseFaces | PathOp.FeatureFinishDepth | self.pocketOpFeatures(obj)
 
     def pocketOpFeatures(self, obj):
         return 0
@@ -103,6 +99,11 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         """initPocketOp(obj) ... overwrite to initialize subclass.
         Can safely be overwritten by subclass."""
         pass
+
+    def opExecute(self, obj):
+        if len(obj.Base) == 0:
+            return
+        super().opExecute(obj)
 
     def areaOpSetDefaultValues(self, obj, job):
         obj.PocketLastStepOver = 0
@@ -172,9 +173,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "App::PropertyBool",
             "KeepToolDown",
             "Pocket",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Attempts to avoid unnecessary retractions."
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Attempts to avoid unnecessary retractions."),
         )
         obj.addProperty(
             "App::PropertyPercent",

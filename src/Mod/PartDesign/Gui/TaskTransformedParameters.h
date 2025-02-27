@@ -27,7 +27,7 @@
 #include <QComboBox>
 
 #include <Gui/DocumentObserver.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/PartDesign/Gui/EnumFlags.h>
@@ -163,6 +163,8 @@ public:
     /// Exit the selection mode of the associated task panel
     void exitSelectionMode();
 
+    static void removeItemFromListWidget(QListWidget* widget, const QString& itemstr);
+
 protected:
     /** Setup the standalone UI.
      * Call this in the derived destructor with ViewProvider.
@@ -175,6 +177,9 @@ protected:
      * For features inside MultiTransform it will be the parent MultiTransform's sub feature object
      */
     PartDesign::Transformed* getObject() const;
+
+    template <class T>
+    T* getObject() const { return dynamic_cast<T*>(getObject()); }
 
     /// Get the sketch object of the first original either of the object associated with this
     /// feature or with the parent feature (MultiTransform mode)
@@ -212,7 +217,7 @@ protected:
     void fillPlanesCombo(ComboLinks& combolinks, Part::Part2DObject* sketch);
 
     /**
-     * Returns the base transformed object
+     * Returns the base transformed objectfromStdString
      * For stand alone features it will be objects associated with this object
      * For features inside multitransform it will be the base multitransform object
      */
@@ -228,6 +233,7 @@ private Q_SLOTS:
     void onButtonRemoveFeature(bool checked);
     void onFeatureDeleted();
     void indexesMoved();
+    void onModeChanged(int mode_id);
 
 private:
     /** Setup the parameter UI.
@@ -256,8 +262,6 @@ private:
     PartDesignGui::ViewProviderTransformed* getTopTransformedView() const;
 
     void changeEvent(QEvent* event) override;
-
-    static void removeItemFromListWidget(QListWidget* widget, const QString& itemstr);
 
 protected:
     enum class SelectionMode
@@ -293,11 +297,6 @@ class TaskDlgTransformedParameters: public PartDesignGui::TaskDlgFeatureParamete
 
 public:
     explicit TaskDlgTransformedParameters(ViewProviderTransformed* TransformedView);
-
-    ViewProviderTransformed* getTransformedView() const
-    {
-        return static_cast<ViewProviderTransformed*>(vp);
-    }
 
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;

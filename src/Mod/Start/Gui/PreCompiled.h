@@ -57,13 +57,16 @@
 #include <QImageReader>
 #include <QLabel>
 #include <QListView>
+#include <QMessageBox>
 #include <QModelIndex>
 #include <QPainter>
 #include <QPushButton>
 #include <QResizeEvent>
 #include <QScrollArea>
 #include <QSpacerItem>
+#include <QStackedWidget>
 #include <QString>
+#include <QStyleHints>
 #include <QStyleOptionViewItem>
 #include <QTimer>
 #include <QToolButton>

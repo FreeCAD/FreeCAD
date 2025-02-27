@@ -18,6 +18,10 @@ find_package(ZLIB REQUIRED)
 include_directories(
     .
     ../../../
+)
+
+include_directories(
+    SYSTEM
     ${ZLIB_INCLUDE_DIR}
 )
 

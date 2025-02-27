@@ -23,7 +23,9 @@
         <Methode Name="discretize" Const="true" Keyword="true">
             <Documentation>
                 <UserDocu>Discretizes the curve and returns a list of points.
+
 The function accepts keywords as argument:
+
 discretize(Number=n) =&gt; gives a list of 'n' equidistant points
 discretize(QuasiNumber=n) =&gt; gives a list of 'n' quasi equidistant points (is faster than the method above)
 discretize(Distance=d) =&gt; gives a list of equidistant points with distance 'd'
@@ -83,13 +85,13 @@ Part.show(s)</UserDocu>
         <Methode Name="length" Const="true">
             <Documentation>
                 <UserDocu>Computes the length of a curve
-length([uMin,uMax,Tol]) -&gt; Float</UserDocu>
+length([uMin, uMax, Tol]) -&gt; float</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="parameterAtDistance" Const="true">
             <Documentation>
                 <UserDocu>Returns the parameter on the curve of a point at the given distance from a starting parameter.
-parameterAtDistance([abscissa, startingParameter]) -&gt; Float the</UserDocu>
+parameterAtDistance([abscissa, startingParameter]) -&gt; float</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="value" Const="true">
@@ -119,8 +121,7 @@ parameterAtDistance([abscissa, startingParameter]) -&gt; Float the</UserDocu>
         </Methode>
         <Methode Name="parameter" Const="true">
             <Documentation>
-                <UserDocu>Returns the parameter on the curve
-of the nearest orthogonal projection of the point.</UserDocu>
+                <UserDocu>Returns the parameter on the curve of the nearest orthogonal projection of the point.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="normal" Const="true">
@@ -155,7 +156,7 @@ projectPoint(Vector,&quot;Point&quot;) -&gt; list of points</UserDocu>
             <Documentation>
                 <UserDocu>Returns all intersection points and curve segments between the curve and the curve/surface.
 
-                  arguments: curve/surface (for the intersection), precision (float)</UserDocu>
+arguments: curve/surface (for the intersection), precision (float)</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="intersectCS" Const="true">
@@ -170,26 +171,26 @@ projectPoint(Vector,&quot;Point&quot;) -&gt; list of points</UserDocu>
         </Methode>
         <Methode Name="toBSpline" Const="true">
             <Documentation>
-                <UserDocu>Converts a curve of any type (only part from First to Last)
-                    toBSpline([Float=First, Float=Last]) -&gt; B-Spline curve</UserDocu>
+                <UserDocu>Converts a curve of any type (only part from First to Last) to BSpline curve.
+toBSpline((first: float, last: float)) -&gt; BSplineCurve</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="toNurbs" Const="true">
             <Documentation>
-                <UserDocu>Converts a curve of any type (only part from First to Last)
-                    toNurbs([Float=First, Float=Last]) -&gt; NURBS curve</UserDocu>
+                <UserDocu>Converts a curve of any type (only part from First to Last) to NURBS curve.
+toNurbs((first: float, last: float)) -&gt; NurbsCurve</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="trim" Const="true">
             <Documentation>
-                <UserDocu>Returns a trimmed curve defined in the given parameter range
-                    trim([Float=First, Float=Last]) -&gt; trimmed curve</UserDocu>
+                <UserDocu>Returns a trimmed curve defined in the given parameter range.
+trim((first: float, last: float)) -&gt; TrimmedCurve</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="approximateBSpline" Const="true">
             <Documentation>
-                <UserDocu>Approximates a curve of any type to a B-Spline curve
-                    approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -&gt; B-Spline curve</UserDocu>
+                <UserDocu>Approximates a curve of any type to a B-Spline curve.
+approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -&gt; BSplineCurve</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="reverse">
@@ -199,8 +200,7 @@ projectPoint(Vector,&quot;Point&quot;) -&gt; list of points</UserDocu>
         </Methode>
         <Methode Name="reversedParameter" Const="true">
             <Documentation>
-                <UserDocu>Returns the parameter on the reversed curve for
-the point of parameter U on this curve.</UserDocu>
+                <UserDocu>Returns the parameter on the reversed curve for the point of parameter U on this curve.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="isPeriodic" Const="true">
@@ -210,8 +210,7 @@ the point of parameter U on this curve.</UserDocu>
         </Methode>
         <Methode Name="period" Const="true">
             <Documentation>
-                <UserDocu>Returns the period of this curve
-or raises an exception if it is not periodic.</UserDocu>
+                <UserDocu>Returns the period of this curve or raises an exception if it is not periodic.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="isClosed" Const="true">

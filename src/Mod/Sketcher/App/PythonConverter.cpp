@@ -46,15 +46,16 @@ std::string PythonConverter::convert(const Part::Geometry* geo, Mode mode)
     command = boost::str(boost::format("addGeometry(%s,%s)\n") % sg.creation
                          % (sg.construction ? "True" : "False"));
 
-    if ((geo->getTypeId() != Part::GeomEllipse::getClassTypeId()
-         || geo->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId()
-         || geo->getTypeId() != Part::GeomArcOfHyperbola::getClassTypeId()
-         || geo->getTypeId() != Part::GeomArcOfParabola::getClassTypeId()
-         || geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
-        && mode == Mode::CreateInternalGeometry) {
+    // clang-format off: keep line breaks for readability
+    if ((!geo->is<Part::GeomEllipse>()
+         || !geo->is<Part::GeomArcOfEllipse>()
+         || !geo->is<Part::GeomArcOfHyperbola>()
+         || !geo->is<Part::GeomArcOfParabola>()
+         || !geo->is<Part::GeomBSplineCurve>()) && mode == Mode::CreateInternalGeometry) {
         command +=
             boost::str(boost::format("exposeInternalGeometry(len(ActiveSketch.Geometry))\n"));
     }
+    // clang-format on
 
     return command;
 }
@@ -149,15 +150,17 @@ std::string PythonConverter::convert(const std::string& doc,
     if (mode == Mode::CreateInternalGeometry) {
         for (auto geo : geos) {
             index++;
-            if (geo->getTypeId() != Part::GeomEllipse::getClassTypeId()
-                || geo->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId()
-                || geo->getTypeId() != Part::GeomArcOfHyperbola::getClassTypeId()
-                || geo->getTypeId() != Part::GeomArcOfParabola::getClassTypeId()
-                || geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
+            // clang-format off: keep line breaks for readability
+            if (!geo->is<Part::GeomEllipse>()
+                || !geo->is<Part::GeomArcOfEllipse>()
+                || !geo->is<Part::GeomArcOfHyperbola>()
+                || !geo->is<Part::GeomArcOfParabola>()
+                || !geo->is<Part::GeomBSplineCurve>()) {
                 std::string newcommand =
                     boost::str(boost::format("exposeInternalGeometry(lastGeoId + %d)\n") % (index));
                 command += newcommand;
             }
+            // clang-format on
         }
     }
 
@@ -211,14 +214,15 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
             {Part::GeomArcOfCircle::getClassTypeId(),
              [](const Part::Geometry* geo) {
                  auto arc = static_cast<const Part::GeomArcOfCircle*>(geo);
+                 double startAngle, endAngle;
+                 arc->getRange(startAngle, endAngle, /*emulateCCWXY=*/true);
                  SingleGeometry sg;
-                 sg.creation =
-                     boost::str(boost::format("Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, "
-                                              "%f), App.Vector(%f, %f, %f), %f), %f, %f)")
-                                % arc->getCenter().x % arc->getCenter().y % arc->getCenter().z
-                                % arc->getAxisDirection().x % arc->getAxisDirection().y
-                                % arc->getAxisDirection().z % arc->getRadius()
-                                % arc->getFirstParameter() % arc->getLastParameter());
+                 sg.creation = boost::str(
+                     boost::format("Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, "
+                                   "%f), App.Vector(%f, %f, %f), %f), %f, %f)")
+                     % arc->getCenter().x % arc->getCenter().y % arc->getCenter().z
+                     % arc->getAxisDirection().x % arc->getAxisDirection().y
+                     % arc->getAxisDirection().z % arc->getRadius() % startAngle % endAngle);
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
@@ -250,6 +254,8 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
             {Part::GeomArcOfEllipse::getClassTypeId(),
              [](const Part::Geometry* geo) {
                  auto aoe = static_cast<const Part::GeomArcOfEllipse*>(geo);
+                 double startAngle, endAngle;
+                 aoe->getRange(startAngle, endAngle, /*emulateCCWXY=*/true);
                  SingleGeometry sg;
                  auto center = aoe->getCenter();
                  auto periapsis = center + aoe->getMajorAxisDir() * aoe->getMajorRadius();
@@ -259,14 +265,15 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                          "Part.ArcOfEllipse(Part.Ellipse(App.Vector(%f, %f, %f), App.Vector(%f, "
                          "%f, %f), App.Vector(%f, %f, %f)), %f, %f)")
                      % periapsis.x % periapsis.y % periapsis.z % positiveB.x % positiveB.y
-                     % positiveB.z % center.x % center.y % center.z % aoe->getFirstParameter()
-                     % aoe->getLastParameter());
+                     % positiveB.z % center.x % center.y % center.z % startAngle % endAngle);
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
             {Part::GeomArcOfHyperbola::getClassTypeId(),
              [](const Part::Geometry* geo) {
                  auto aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo);
+                 double startAngle, endAngle;
+                 aoh->getRange(startAngle, endAngle, /*emulateCCWXY=*/true);
                  SingleGeometry sg;
                  auto center = aoh->getCenter();
                  auto majAxisPoint = center + aoh->getMajorAxisDir() * aoh->getMajorRadius();
@@ -275,14 +282,16 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                      boost::format("Part.ArcOfHyperbola(Part.Hyperbola(App.Vector(%f, %f, %f), "
                                    "App.Vector(%f, %f, %f), App.Vector(%f, %f, %f)), %f, %f)")
                      % majAxisPoint.x % majAxisPoint.y % majAxisPoint.z % minAxisPoint.x
-                     % minAxisPoint.y % minAxisPoint.z % center.x % center.y % center.z
-                     % aoh->getFirstParameter() % aoh->getLastParameter());
+                     % minAxisPoint.y % minAxisPoint.z % center.x % center.y % center.z % startAngle
+                     % endAngle);
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
             {Part::GeomArcOfParabola::getClassTypeId(),
              [](const Part::Geometry* geo) {
                  auto aop = static_cast<const Part::GeomArcOfParabola*>(geo);
+                 double startAngle, endAngle;
+                 aop->getRange(startAngle, endAngle, /*emulateCCWXY=*/true);
                  SingleGeometry sg;
                  auto focus = aop->getFocus();
                  auto axisPoint = aop->getCenter();
@@ -290,7 +299,7 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
                      boost::format("Part.ArcOfParabola(Part.Parabola(App.Vector(%f, %f, %f), "
                                    "App.Vector(%f, %f, %f), App.Vector(0, 0, 1)), %f, %f)")
                      % focus.x % focus.y % focus.z % axisPoint.x % axisPoint.y % axisPoint.z
-                     % aop->getFirstParameter() % aop->getLastParameter());
+                     % startAngle % endAngle);
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},
@@ -355,6 +364,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
     std::string geoId2 = (addLastIdVar2 ? "lastGeoId + " : "") + std::to_string(constraint->Second);
     std::string geoId3 = (addLastIdVar3 ? "lastGeoId + " : "") + std::to_string(constraint->Third);
 
+
     static std::map<
         const Sketcher::ConstraintType,
         std::function<
@@ -365,10 +375,9 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(
-                     boost::format("Sketcher.Constraint('Coincident', %s, %i, %s, %i)") % geoId1
-                     % static_cast<int>(constr->FirstPos) % geoId2
-                     % static_cast<int>(constr->SecondPos));
+                 return boost::str(boost::format("Sketcher.Constraint('Coincident', %s, %i, %s, %i")
+                                   % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
+                                   % static_cast<int>(constr->SecondPos));
              }},
             {Sketcher::Horizontal,
              [](const Sketcher::Constraint* constr,
@@ -376,12 +385,12 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
                  if (constr->Second == GeoEnum::GeoUndef) {
-                     return boost::str(boost::format("Sketcher.Constraint('Horizontal', %s)")
+                     return boost::str(boost::format("Sketcher.Constraint('Horizontal', %s")
                                        % geoId1);
                  }
                  else {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('Horizontal', %s, %i, %s, %i)") % geoId1
+                         boost::format("Sketcher.Constraint('Horizontal', %s, %i, %s, %i") % geoId1
                          % static_cast<int>(constr->FirstPos) % geoId2
                          % static_cast<int>(constr->SecondPos));
                  }
@@ -392,12 +401,12 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
                  if (constr->Second == GeoEnum::GeoUndef) {
-                     return boost::str(boost::format("Sketcher.Constraint('Vertical', %s)")
+                     return boost::str(boost::format("Sketcher.Constraint('Vertical', %s")
                                        % geoId1);
                  }
                  else {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('Vertical', %s, %i, %s, %i)") % geoId1
+                         boost::format("Sketcher.Constraint('Vertical', %s, %i, %s, %i") % geoId1
                          % static_cast<int>(constr->FirstPos) % geoId2
                          % static_cast<int>(constr->SecondPos));
                  }
@@ -407,7 +416,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 [[maybe_unused]] std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('Block', %s)") % geoId1);
+                 return boost::str(boost::format("Sketcher.Constraint('Block', %s") % geoId1);
              }},
             {Sketcher::Tangent,
              [](const Sketcher::Constraint* constr,
@@ -415,16 +424,16 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
                  if (constr->FirstPos == Sketcher::PointPos::none) {
-                     return boost::str(boost::format("Sketcher.Constraint('Tangent', %s, %s)")
+                     return boost::str(boost::format("Sketcher.Constraint('Tangent', %s, %s")
                                        % geoId1 % geoId2);
                  }
                  else if (constr->SecondPos == Sketcher::PointPos::none) {
-                     return boost::str(boost::format("Sketcher.Constraint('Tangent', %s, %i, %s)")
+                     return boost::str(boost::format("Sketcher.Constraint('Tangent', %s, %i, %s")
                                        % geoId1 % static_cast<int>(constr->FirstPos) % geoId2);
                  }
                  else {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('Tangent', %s, %i, %s, %i)") % geoId1
+                         boost::format("Sketcher.Constraint('Tangent', %s, %i, %s, %i") % geoId1
                          % static_cast<int>(constr->FirstPos) % geoId2
                          % static_cast<int>(constr->SecondPos));
                  }
@@ -434,7 +443,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('Parallel', %s, %s)") % geoId1
+                 return boost::str(boost::format("Sketcher.Constraint('Parallel', %s, %s") % geoId1
                                    % geoId2);
              }},
             {Sketcher::Perpendicular,
@@ -443,17 +452,17 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
                  if (constr->FirstPos == Sketcher::PointPos::none) {
-                     return boost::str(boost::format("Sketcher.Constraint('Perpendicular', %s, %s)")
+                     return boost::str(boost::format("Sketcher.Constraint('Perpendicular', %s, %s")
                                        % geoId1 % geoId2);
                  }
                  else if (constr->SecondPos == Sketcher::PointPos::none) {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('Perpendicular', %s, %i, %s)") % geoId1
+                         boost::format("Sketcher.Constraint('Perpendicular', %s, %i, %s") % geoId1
                          % static_cast<int>(constr->FirstPos) % geoId2);
                  }
                  else {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('Perpendicular', %s, %i, %s, %i)")
+                         boost::format("Sketcher.Constraint('Perpendicular', %s, %i, %s, %i")
                          % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
                          % static_cast<int>(constr->SecondPos));
                  }
@@ -463,7 +472,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('Equal', %s, %s)") % geoId1
+                 return boost::str(boost::format("Sketcher.Constraint('Equal', %s, %s") % geoId1
                                    % geoId2);
              }},
             {Sketcher::InternalAlignment,
@@ -477,7 +486,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                      || constr->AlignmentType == HyperbolaMinor
                      || constr->AlignmentType == ParabolaFocalAxis) {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('InternalAlignment:%s', %s, %s)")
+                         boost::format("Sketcher.Constraint('InternalAlignment:%s', %s, %s")
                          % constr->internalAlignmentTypeToString() % geoId1 % geoId2);
                  }
                  else if (constr->AlignmentType == EllipseFocus1
@@ -485,21 +494,20 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                           || constr->AlignmentType == HyperbolaFocus
                           || constr->AlignmentType == ParabolaFocus) {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('InternalAlignment:%s', %s, %i, %s)")
+                         boost::format("Sketcher.Constraint('InternalAlignment:%s', %s, %i, %s")
                          % constr->internalAlignmentTypeToString() % geoId1
                          % static_cast<int>(constr->FirstPos) % geoId2);
                  }
                  else if (constr->AlignmentType == BSplineControlPoint) {
                      return boost::str(
-                         boost::format(
-                             "Sketcher.Constraint('InternalAlignment:%s', %s, %i, %s, %i)")
+                         boost::format("Sketcher.Constraint('InternalAlignment:%s', %s, %i, %s, %i")
                          % constr->internalAlignmentTypeToString() % geoId1
                          % static_cast<int>(constr->FirstPos) % geoId2
                          % constr->InternalAlignmentIndex);
                  }
                  else if (constr->AlignmentType == BSplineKnotPoint) {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('InternalAlignment:%s', %s, 1, %s, %i)")
+                         boost::format("Sketcher.Constraint('InternalAlignment:%s', %s, 1, %s, %i")
                          % constr->internalAlignmentTypeToString() % geoId1 % geoId2
                          % constr->InternalAlignmentIndex);
                  }
@@ -513,21 +521,21 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
                  if (constr->Second == GeoEnum::GeoUndef) {
-                     return boost::str(boost::format("Sketcher.Constraint('Distance', %s, %f)")
+                     return boost::str(boost::format("Sketcher.Constraint('Distance', %s, %f")
                                        % geoId1 % constr->getValue());
                  }
                  else if (constr->FirstPos == Sketcher::PointPos::none) {
-                     return boost::str(boost::format("Sketcher.Constraint('Distance', %s, %s, %f)")
+                     return boost::str(boost::format("Sketcher.Constraint('Distance', %s, %s, %f")
                                        % geoId1 % geoId2 % constr->getValue());
                  }
                  else if (constr->SecondPos == Sketcher::PointPos::none) {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('Distance', %s, %i, %s, %f)") % geoId1
+                         boost::format("Sketcher.Constraint('Distance', %s, %i, %s, %f") % geoId1
                          % static_cast<int>(constr->FirstPos) % geoId2 % constr->getValue());
                  }
                  else {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('Distance', %s, %i, %s, %i, %f)")
+                         boost::format("Sketcher.Constraint('Distance', %s, %i, %s, %i, %f")
                          % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
                          % static_cast<int>(constr->SecondPos) % constr->getValue());
                  }
@@ -538,24 +546,24 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId2,
                 std::string& geoId3) {
                  if (constr->Second == GeoEnum::GeoUndef) {
-                     return boost::str(boost::format("Sketcher.Constraint('Angle', %s, %f)")
-                                       % geoId1 % constr->getValue());
+                     return boost::str(boost::format("Sketcher.Constraint('Angle', %s, %f") % geoId1
+                                       % constr->getValue());
                  }
                  else if (constr->Third == GeoEnum::GeoUndef) {
                      if (constr->SecondPos == Sketcher::PointPos::none) {
-                         return boost::str(boost::format("Sketcher.Constraint('Angle', %s, %s, %f)")
+                         return boost::str(boost::format("Sketcher.Constraint('Angle', %s, %s, %f")
                                            % geoId1 % geoId2 % constr->getValue());
                      }
                      else {
                          return boost::str(
-                             boost::format("Sketcher.Constraint('Angle', %s, %i, %s, %i, %f)")
+                             boost::format("Sketcher.Constraint('Angle', %s, %i, %s, %i, %f")
                              % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
                              % static_cast<int>(constr->SecondPos) % constr->getValue());
                      }
                  }
                  else {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('AngleViaPoint', %s, %s, %s, %i, %f)")
+                         boost::format("Sketcher.Constraint('AngleViaPoint', %s, %s, %s, %i, %f")
                          % geoId1 % geoId2 % geoId3 % static_cast<int>(constr->ThirdPos)
                          % constr->getValue());
                  }
@@ -566,17 +574,17 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
                  if (constr->Second == GeoEnum::GeoUndef) {
-                     return boost::str(boost::format("Sketcher.Constraint('DistanceX', %s, %f)")
+                     return boost::str(boost::format("Sketcher.Constraint('DistanceX', %s, %f")
                                        % geoId1 % constr->getValue());
                  }
                  else if (constr->SecondPos == Sketcher::PointPos::none) {
-                     return boost::str(boost::format("Sketcher.Constraint('DistanceX', %s, %i, %f)")
+                     return boost::str(boost::format("Sketcher.Constraint('DistanceX', %s, %i, %f")
                                        % geoId1 % static_cast<int>(constr->FirstPos)
                                        % constr->getValue());
                  }
                  else {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('DistanceX', %s, %i, %s, %i, %f)")
+                         boost::format("Sketcher.Constraint('DistanceX', %s, %i, %s, %i, %f")
                          % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
                          % static_cast<int>(constr->SecondPos) % constr->getValue());
                  }
@@ -587,17 +595,17 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
                  if (constr->Second == GeoEnum::GeoUndef) {
-                     return boost::str(boost::format("Sketcher.Constraint('DistanceY', %s, %f)")
+                     return boost::str(boost::format("Sketcher.Constraint('DistanceY', %s, %f")
                                        % geoId1 % constr->getValue());
                  }
                  else if (constr->SecondPos == Sketcher::PointPos::none) {
-                     return boost::str(boost::format("Sketcher.Constraint('DistanceY', %s, %i, %f)")
+                     return boost::str(boost::format("Sketcher.Constraint('DistanceY', %s, %i, %f")
                                        % geoId1 % static_cast<int>(constr->FirstPos)
                                        % constr->getValue());
                  }
                  else {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('DistanceY', %s, %i, %s, %i, %f)")
+                         boost::format("Sketcher.Constraint('DistanceY', %s, %i, %s, %i, %f")
                          % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
                          % static_cast<int>(constr->SecondPos) % constr->getValue());
                  }
@@ -607,7 +615,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 [[maybe_unused]] std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('Radius', %s, %f)") % geoId1
+                 return boost::str(boost::format("Sketcher.Constraint('Radius', %s, %f") % geoId1
                                    % constr->getValue());
              }},
             {Sketcher::Diameter,
@@ -615,7 +623,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 [[maybe_unused]] std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('Diameter', %s, %f)") % geoId1
+                 return boost::str(boost::format("Sketcher.Constraint('Diameter', %s, %f") % geoId1
                                    % constr->getValue());
              }},
             {Sketcher::Weight,
@@ -623,7 +631,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 [[maybe_unused]] std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('Weight', %s, %f)") % geoId1
+                 return boost::str(boost::format("Sketcher.Constraint('Weight', %s, %f") % geoId1
                                    % constr->getValue());
              }},
             {Sketcher::PointOnObject,
@@ -631,7 +639,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 return boost::str(boost::format("Sketcher.Constraint('PointOnObject', %s, %i, %s)")
+                 return boost::str(boost::format("Sketcher.Constraint('PointOnObject', %s, %i, %s")
                                    % geoId1 % static_cast<int>(constr->FirstPos) % geoId2);
              }},
             {Sketcher::Symmetric,
@@ -641,13 +649,13 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId3) {
                  if (constr->ThirdPos == Sketcher::PointPos::none) {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('Symmetric', %s, %i, %s, %i, %s)")
+                         boost::format("Sketcher.Constraint('Symmetric', %s, %i, %s, %i, %s")
                          % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
                          % static_cast<int>(constr->SecondPos) % geoId3);
                  }
                  else {
                      return boost::str(
-                         boost::format("Sketcher.Constraint('Symmetric', %s, %i, %s, %i, %s, %i)")
+                         boost::format("Sketcher.Constraint('Symmetric', %s, %i, %s, %i, %s, %i")
                          % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
                          % static_cast<int>(constr->SecondPos) % geoId3
                          % static_cast<int>(constr->ThirdPos));
@@ -659,7 +667,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId2,
                 std::string& geoId3) {
                  return boost::str(
-                     boost::format("Sketcher.Constraint('SnellsLaw', %s, %i, %s, %i, %s, %f)")
+                     boost::format("Sketcher.Constraint('SnellsLaw', %s, %i, %s, %i, %s, %f")
                      % geoId1 % static_cast<int>(constr->FirstPos) % geoId2
                      % static_cast<int>(constr->SecondPos) % geoId3 % constr->getValue());
              }},
@@ -672,8 +680,19 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
     }
 
     auto creator = result->second;
+    std::string resultStr = creator(constraint, geoId1, geoId2, geoId3);
 
-    return creator(constraint, geoId1, geoId2, geoId3);
+    if (!constraint->isActive || !constraint->isDriving) {
+        std::string active = constraint->isActive ? "True" : "False";
+        resultStr += ", " + active;
+        if (constraint->isDimensional()) {
+            std::string driving = constraint->isDriving ? "True" : "False";
+            resultStr += ", " + driving;
+        }
+    }
+    resultStr += ")";
+
+    return resultStr;
 }
 
 std::vector<std::string> PythonConverter::multiLine(std::string&& singlestring)

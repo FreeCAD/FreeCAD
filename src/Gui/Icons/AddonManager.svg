@@ -82,7 +82,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -91,14 +90,6 @@
     <g
        id="g3851"
        transform="matrix(1.1386579,0,0,1.1324894,-5.849948,-6.8720445)">
-      <ellipse
-         style="fill:url(#radialGradient3079);fill-opacity:1;stroke:none"
-         id="path3885"
-         transform="matrix(0.98607933,0,0,0.88301034,1.1932644,6.9511055)"
-         cx="32.5"
-         cy="52"
-         rx="28.5"
-         ry="7" />
       <g
          transform="matrix(0.8782269,0,0,0.88301047,5.1375817,7.8341081)"
          id="g3821">

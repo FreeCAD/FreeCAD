@@ -27,7 +27,6 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
-#include <QMessageBox>
 #endif
 
 #include "Gui/Control.h"
@@ -53,64 +52,21 @@ ViewProviderFemConstraintForce::~ViewProviderFemConstraintForce() = default;
 bool ViewProviderFemConstraintForce::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        // When double-clicking on the item for this constraint the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintForce* constrDlg = qobject_cast<TaskDlgFemConstraintForce*>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this) {
-            constrDlg = nullptr;  // another constraint left open its task panel
-        }
-        if (dlg && !constrDlg) {
-            // This case will occur in the ShaftWizard application
-            checkForWizard();
-            if (!wizardWidget || !wizardSubLayout) {
-                // No shaft wizard is running
-                QMessageBox msgBox;
-                msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-                msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-                msgBox.setDefaultButton(QMessageBox::Yes);
-                int ret = msgBox.exec();
-                if (ret == QMessageBox::Yes) {
-                    Gui::Control().reject();
-                }
-                else {
-                    return false;
-                }
-            }
-            else if (constraintDialog) {
-                // Another FemConstraint* dialog is already open inside the Shaft Wizard
-                // Ignore the request to open another dialog
-                return false;
-            }
-            else {
-                constraintDialog = new TaskFemConstraintForce(this);
-                return true;
-            }
-        }
-
+        Gui::Control().closeDialog();
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
-
-        // start the edit dialog
-        if (constrDlg) {
-            Gui::Control().showDialog(constrDlg);
-        }
-        else {
-            Gui::Control().showDialog(new TaskDlgFemConstraintForce(this));
-        }
+        Gui::Control().showDialog(new TaskDlgFemConstraintForce(this));
 
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
+        return ViewProviderFemConstraintOnBoundary::setEdit(ModNum);
     }
 }
 
 void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
 {
-    auto pcConstraint = static_cast<Fem::ConstraintForce*>(this->getObject());
+    auto pcConstraint = this->getObject<Fem::ConstraintForce>();
 
     if (prop == &pcConstraint->Reversed || prop == &pcConstraint->DirectionVector) {
         updateSymbol();
@@ -124,7 +80,7 @@ void ViewProviderFemConstraintForce::transformSymbol(const Base::Vector3d& point
                                                      const Base::Vector3d& normal,
                                                      SbMatrix& mat) const
 {
-    auto obj = static_cast<const Fem::ConstraintForce*>(this->getObject());
+    auto obj = this->getObject<const Fem::ConstraintForce>();
     bool rev = obj->Reversed.getValue();
     float s = obj->getScaleFactor();
     // Symbol length from .iv file

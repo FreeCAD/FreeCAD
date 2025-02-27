@@ -1,8 +1,8 @@
 macro(SetupSalomeSMESH)
 # -------------------------------- Salome SMESH --------------------------
-
     # Salome SMESH sources are under src/3rdParty now
-    if(BUILD_SMESH)
+    if(FREECAD_USE_SMESH)
+
         # set the internal smesh version:
         # see src/3rdParty/salomonemesh/CMakeLists.txt and commit https://github.com/FreeCAD/FreeCAD/commit/666a3e5 and https://forum.freecad.org/viewtopic.php?f=10&t=30838
         set(SMESH_VERSION_MAJOR 7)
@@ -26,7 +26,13 @@ macro(SetupSalomeSMESH)
 
         # check which modules are available
         if(UNIX OR WIN32)
-            find_package(VTK COMPONENTS vtkCommonCore REQUIRED NO_MODULE)
+            # Module names changed between 8 and 9, so do a QUIET find for 9 and its module name first, and fall back
+            # to v7 minimum with the old component name if it is not found.
+            find_package(VTK 9 COMPONENTS CommonCore QUIET NO_MODULE)
+            if(NOT VTK_FOUND)
+                message(STATUS "Did not find VTK 9, trying for an older version")
+                find_package(VTK COMPONENTS vtkCommonCore REQUIRED NO_MODULE)
+            endif()
             if(${VTK_MAJOR_VERSION} LESS 9)
                 list(APPEND VTK_COMPONENTS vtkIOMPIParallel vtkParallelMPI vtkhdf5 vtkFiltersParallelDIY2 vtkRenderingCore vtkInteractionStyle vtkRenderingFreeType vtkRenderingOpenGL2)
                 foreach(_module ${VTK_COMPONENTS})
@@ -139,6 +145,6 @@ macro(SetupSalomeSMESH)
 
         set(SMESH_FOUND TRUE)
         configure_file(${CMAKE_SOURCE_DIR}/src/SMESH_Version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/SMESH_Version.h)
-    endif(BUILD_SMESH)
+    endif(FREECAD_USE_SMESH)
 
 endmacro(SetupSalomeSMESH)

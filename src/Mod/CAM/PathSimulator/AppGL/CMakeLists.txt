@@ -3,12 +3,17 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 
 )
@@ -53,6 +58,8 @@ SET(CAMSimulator_SRCS_Core
     GuiDisplay.h
     linmath.h
     MillMotion.h
+    MillPathLine.cpp
+	MillPathLine.h
     MillPathSegment.cpp
     MillPathSegment.h
     MillSimulation.cpp
@@ -60,10 +67,14 @@ SET(CAMSimulator_SRCS_Core
     OpenGlWrapper.h
     Shader.cpp
     Shader.h
+    SimDisplay.cpp
+    SimDisplay.h
     SimShapes.cpp
     SimShapes.h
     StockObject.cpp
     StockObject.h
+    SolidObject.cpp
+    SolidObject.h
     Texture.cpp
     Texture.h
     TextureLoader.cpp

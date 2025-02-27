@@ -79,9 +79,6 @@ void PropertyPartShape::setValue(const TopoShape& sh)
             _Shape.Hasher = obj->getDocument()->getStringHasher();
             _Shape.hashChildMaps();
         }
-        if ( ! _Shape.isNull() && ! _Shape.isValid() ) {
-            _Shape.fix();
-        }
     }
     hasSetValue();
     _Ver.clear();
@@ -260,25 +257,6 @@ void PropertyPartShape::beforeSave() const
         _Shape.beforeSave();
     }
 }
-
-void PropertyPartShape::Save (Base::Writer &writer) const
-{
-    if(!writer.isForceXML()) {
-        //See SaveDocFile(), RestoreDocFile()
-        if (writer.getMode("BinaryBrep")) {
-            writer.Stream() << writer.ind() << "<Part file=\""
-                            << writer.addFile("PartShape.bin", this)
-                            << "\"/>" << std::endl;
-        }
-        else {
-            writer.Stream() << writer.ind() << "<Part file=\""
-                            << writer.addFile("PartShape.brp", this)
-                            << "\"/>" << std::endl;
-        }
-    }
-}
-
-#ifdef NOT_YET_AND_MAYBE_NEVER
 void PropertyPartShape::Save (Base::Writer &writer) const
 {
     //See SaveDocFile(), RestoreDocFile()
@@ -293,28 +271,29 @@ void PropertyPartShape::Save (Base::Writer &writer) const
     }
     std::string version;
     // If exporting, do not export mapped element name, but still make a mark
-    if(owner) {
-        if(!owner->isExporting())
-            version = _Ver.size()?_Ver:owner->getElementMapVersion(this);
-    }else
-        version = _Ver.size()?_Ver:_Shape.getElementMapVersion();
+    auto const version_valid = _Ver.size() && (_Ver != "?");
+    if (owner) {
+        if (!owner->isExporting()) {
+            version = version_valid ? _Ver : owner->getElementMapVersion(this);
+        }
+    } else {
+        version = version_valid ? _Ver : _Shape.getElementMapVersion();
+    }
     writer.Stream() << " ElementMap=\"" << version << '"';
 
     bool binary = writer.getMode("BinaryBrep");
-    bool toXML = writer.getFileVersion()>1 && writer.isForceXML()>=(binary?3:2);
+    bool toXML = writer.isForceXML();
     if(!toXML) {
         writer.Stream() << " file=\""
-                        << writer.addFile(getFileName(binary?".bin":".brp"), this)
+                        << writer.addFile(getFileName(binary?".bin":".brp").c_str(), this)
                         << "\"/>\n";
     } else if(binary) {
         writer.Stream() << " binary=\"1\">\n";
-        TopoShape shape;
-        shape.setShape(_Shape.getShape());
-        shape.exportBinary(writer.beginCharStream(true));
+        _Shape.exportBinary(writer.beginCharStream(Base::CharStreamFormat::Base64Encoded));
         writer.endCharStream() <<  writer.ind() << "</Part>\n";
     } else {
         writer.Stream() << " brep=\"1\">\n";
-        _Shape.exportBrep(writer.beginCharStream(false)<<'\n');
+        _Shape.exportBrep(writer.beginCharStream(Base::CharStreamFormat::Raw)<<'\n');
         writer.endCharStream() << '\n' << writer.ind() << "</Part>\n";
     }
 
@@ -333,7 +312,6 @@ void PropertyPartShape::Save (Base::Writer &writer) const
         _Shape.Save(writer);
     }
 }
-#endif
 
 std::string PropertyPartShape::getElementMapVersion(bool restored) const {
     if(restored)
@@ -344,43 +322,32 @@ std::string PropertyPartShape::getElementMapVersion(bool restored) const {
 void PropertyPartShape::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Part");
-    std::string file (reader.getAttribute("file") );
-
-    if (!file.empty()) {
-        // initiate a file read
-        reader.addFile(file.c_str(),this);
-    }
-}
-
-#ifdef NOT_YET_AND_MAYBE_NEVER
-void PropertyPartShape::Restore(Base::XMLReader &reader)
-{
-    reader.readElement("Part");
 
     auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     _Ver = "?";
     bool has_ver = reader.hasAttribute("ElementMap");
-    if(has_ver)
+    if (has_ver)
         _Ver = reader.getAttribute("ElementMap");
 
-    int hasher_idx = reader.getAttributeAsInteger("HasherIndex","-1");
-    int save_hasher = reader.getAttributeAsInteger("SaveHasher","");
+    int hasher_idx = static_cast<int>(reader.getAttributeAsInteger("HasherIndex", "-1"));
+    int save_hasher = static_cast<int>(reader.getAttributeAsInteger("SaveHasher", "0"));
 
-    TopoDS_Shape sh;
+    TopoShape shape;
 
-    if(reader.hasAttribute("file")) {
+    if (reader.hasAttribute("file")) {
         std::string file = reader.getAttribute("file");
         if (!file.empty()) {
             // initiate a file read
-            reader.addFile(file.c_str(),this);
+            reader.addFile(file.c_str(), this);
         }
-    } else if(reader.getAttributeAsInteger("binary","")) {
+    }
+    else if (reader.hasAttribute(("binary")) && reader.getAttributeAsInteger("binary")) {
         TopoShape shape;
-        shape.importBinary(reader.beginCharStream(true));
-        sh = shape.getShape();
-    } else if(reader.getAttributeAsInteger("brep","")) {
-        BRep_Builder builder;
-        BRepTools::Read(sh, reader.beginCharStream(false), builder);
+        shape.importBinary(reader.beginCharStream());
+        shape = shape.getShape();
+    }
+    else if (reader.hasAttribute("brep") && reader.getAttributeAsInteger("brep")) {
+        shape.importBrep(reader.beginCharStream(Base::CharStreamFormat::Raw));
     }
 
     reader.readEndElement("Part");
@@ -425,15 +392,17 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             }
         }
     } else if(owner && !owner->getDocument()->testStatus(App::Document::PartialDoc)) {
-        if(App::DocumentParams::getWarnRecomputeOnRestore()) {
-            FC_WARN("Pending recompute for generating element map: " << owner->getFullName());
-            owner->getDocument()->addRecomputeObject(owner);
-        }
+        // Toponaming 09/2024:  Original code has an infrastructure for document parameters we aren't bringing in:
+        // if(App::DocumentParams::getWarnRecomputeOnRestore()) {
+        // However, this warning appeared on all files without element maps, and is now superseded by a user dialog
+        // after loading that is triggered by any call to addRecomputeObject()
+        // FC_WARN("Pending recompute for generating element map: " << owner->getFullName());
+        owner->getDocument()->addRecomputeObject(owner);
     }
 
-    if (!sh.IsNull() || !_Shape.isNull()) {
+    if (!shape.isNull() || !_Shape.isNull()) {
         aboutToSetValue();
-        _Shape.setShape(sh,false);
+        _Shape.setShape(shape.getShape(),false);
         hasSetValue();
     }
 }
@@ -446,11 +415,12 @@ void PropertyPartShape::afterRestore()
         // order to try to regenerate the element map
         _Ver = "?";
     }
-    else if (_Shape.getElementMapSize() == 0)
-        _Shape.Hasher->clear(); //reset();
+    else if (_Shape.getElementMapSize() == 0) {
+        if (_Shape.Hasher)
+            _Shape.Hasher->clear();
+    }
     PropertyComplexGeoData::afterRestore();
 }
-#endif
 
 // The following function is copied from OCCT BRepTools.cxx and modified
 // to disable saving of triangulation
@@ -509,7 +479,7 @@ void PropertyPartShape::saveToFile(Base::Writer &writer) const
         // We only print an error message but continue writing the next files to the
         // stream...
         App::PropertyContainer* father = this->getContainer();
-        if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        if (father && father->isDerivedFrom<App::DocumentObject>()) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
             Base::Console().Error("Shape of '%s' cannot be written to BRep file '%s'\n",
                 obj->Label.getValue(),fi.filePath().c_str());
@@ -561,7 +531,7 @@ void PropertyPartShape::loadFromFile(Base::Reader &reader)
             // We only print an error message but continue reading the next files from the
             // stream...
             App::PropertyContainer* father = this->getContainer();
-            if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+            if (father && father->isDerivedFrom<App::DocumentObject>()) {
                 App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
                 Base::Console().Error("BRep file '%s' with shape of '%s' seems to be empty\n",
                     fi.filePath().c_str(),obj->Label.getValue());
@@ -620,11 +590,25 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
 
 void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 {
+
+    // save the element map
+    auto elementMap = _Shape.resetElementMap();
+    auto hasher = _Shape.Hasher;
+
     Base::FileInfo brep(reader.getFileName());
+    TopoShape shape;
+
+    // In LS3 the following statement is executed right before shape.Hasher = hasher;
+    // https://github.com/realthunder/FreeCAD/blob/a9810d509a6f112b5ac03d4d4831b67e6bffd5b7/src/Mod/Part/App/PropertyTopoShape.cpp#L639
+    // Now it's not possible anymore because both PropertyPartShape::loadFromFile() and
+    // PropertyPartShape::loadFromStream() calls PropertyPartShape::setValue() which clears the
+    // value of _Ver.
+    // Therefor we're storing the value of _Ver here so that we don't lose it.
+
+    std::string ver = _Ver;
+
     if (brep.hasExtension("bin")) {
-        TopoShape shape;
         shape.importBinary(reader);
-        setValue(shape);
     }
     else {
         bool direct = App::GetApplication().GetParameterGroupByPath
@@ -637,7 +621,14 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
             loadFromStream(reader);
             reader.exceptions(iostate);
         }
+        shape = getValue();
     }
+
+    // restore the element map
+    shape.Hasher = hasher;
+    shape.resetElementMap(elementMap);
+    setValue(shape);
+    _Ver = ver;
 }
 
 // -------------------------------------------------------------------------

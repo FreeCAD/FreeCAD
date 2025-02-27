@@ -22,12 +22,13 @@
 
 #ifndef __openglwrapper_h__
 #define __openglwrapper_h__
-#ifdef CAM_SIM_USE_GLEW
-#include "GL/glew.h"
-#else
+
 #include "DlgCAMSimulator.h"
 extern QOpenGLContext* gOpenGlContext;
 #define gSimWindow CAMSimulator::DlgCAMSimulator::GetInstance()
+#define glClearColor gSimWindow->glClearColor
+#define glBlendFunc gSimWindow->glBlendFunc
+#define glClear gSimWindow->glClear
 #define glGenBuffers gSimWindow->glGenBuffers
 #define glBindBuffer gSimWindow->glBindBuffer
 #define glBufferData gSimWindow->glBufferData
@@ -37,6 +38,8 @@ extern QOpenGLContext* gOpenGlContext;
 #define glVertexAttribPointer gSimWindow->glVertexAttribPointer
 #define glShaderSource gSimWindow->glShaderSource
 #define glCompileShader gSimWindow->glCompileShader
+#define glDeleteShader gSimWindow->glDeleteShader
+#define glDeleteProgram gSimWindow->glDeleteProgram
 #define glAttachShader gSimWindow->glAttachShader
 #define glLinkProgram gSimWindow->glLinkProgram
 #define glGetProgramiv gSimWindow->glGetProgramiv
@@ -66,6 +69,24 @@ extern QOpenGLContext* gOpenGlContext;
 #define glTexParameteri gSimWindow->glTexParameteri
 #define glTexImage2D gSimWindow->glTexImage2D
 #define glDeleteTextures gSimWindow->glDeleteTextures
-#endif  // HAVE_OPENGL_EXT
+#define glPolygonOffset gSimWindow->glPolygonOffset
+
+#define glBindFramebuffer gSimWindow->glBindFramebuffer
+#define glUniform1f gSimWindow->glUniform1f
+#define glGenFramebuffers gSimWindow->glGenFramebuffers
+#define glFramebufferTexture2D gSimWindow->glFramebufferTexture2D
+#define glDrawBuffers gSimWindow->glDrawBuffers
+#define glGenRenderbuffers gSimWindow->glGenRenderbuffers
+#define glBindRenderbuffer gSimWindow->glBindRenderbuffer
+#define glRenderbufferStorage gSimWindow->glRenderbufferStorage
+#define glFramebufferRenderbuffer gSimWindow->glFramebufferRenderbuffer
+#define glCheckFramebufferStatus gSimWindow->glCheckFramebufferStatus
+#define glDeleteFramebuffers gSimWindow->glDeleteFramebuffers
+#define glDeleteRenderbuffers gSimWindow->glDeleteRenderbuffers
+#define glVertexAttribIPointer gSimWindow->glVertexAttribIPointer
+#define glUniform4fv gSimWindow->glUniform4fv
+#define glLineWidth gSimWindow->glLineWidth
+#define glGetShaderiv gSimWindow->glGetShaderiv
+#define glGetShaderInfoLog gSimWindow->glGetShaderInfoLog
 
 #endif  // !__openglwrapper_h__

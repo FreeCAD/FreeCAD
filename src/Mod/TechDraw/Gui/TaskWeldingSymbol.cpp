@@ -95,7 +95,7 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
 
     App::DocumentObject* obj = m_weldFeat->Leader.getValue();
     if (!obj ||
-        !obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId()) )  {
+        !obj->isDerivedFrom<TechDraw::DrawLeaderLine>() )  {
         Base::Console().Error("TaskWeldingSymbol - no leader for welding symbol.  Can not proceed.\n");
         return;
     }
@@ -371,7 +371,7 @@ void TaskWeldingSymbol::onWeldingChanged()
 void TaskWeldingSymbol::onDirectorySelected(const QString& newDir)
 {
 //    Base::Console().Message("TWS::onDirectorySelected(%s)\n", qPrintable(newDir));
-    m_currDir = newDir + QString::fromUtf8("/");
+    m_currDir = newDir + QStringLiteral("/");
 }
 
 void TaskWeldingSymbol::onSymbolSelected(QString symbolPath,
@@ -457,7 +457,7 @@ TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol()
 {
 //    Base::Console().Message("TWS::createWeldingSymbol()\n");
     App::Document *doc = Application::Instance->activeDocument()->getDocument();
-    auto weldSymbol = dynamic_cast<TechDraw::DrawWeldSymbol*>(doc->addObject("TechDraw::DrawWeldSymbol", "WeldSymbol"));
+    auto weldSymbol = doc->addObject<TechDraw::DrawWeldSymbol>("WeldSymbol");
     if (!weldSymbol) {
         throw Base::RuntimeError("TaskWeldingSymbol - new symbol object not found");
     }

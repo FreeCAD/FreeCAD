@@ -72,10 +72,10 @@ using namespace Import;
 ImportOCAFOptions::ImportOCAFOptions()
 {
     defaultFaceColor.setPackedValue(0xCCCCCC00);
-    defaultFaceColor.a = 0;
+    defaultFaceColor.a = 1.0F;
 
     defaultEdgeColor.setPackedValue(421075455UL);
-    defaultEdgeColor.a = 0;
+    defaultEdgeColor.a = 1.0F;
 }
 
 ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) hDoc, App::Document* doc, const std::string& name)
@@ -114,12 +114,12 @@ ImportOCAFOptions ImportOCAF2::customImportOptions()
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     defaultOptions.defaultFaceColor.setPackedValue(
         hGrp->GetUnsigned("DefaultShapeColor", defaultOptions.defaultFaceColor.getPackedValue()));
-    defaultOptions.defaultFaceColor.a = 0;
+    defaultOptions.defaultFaceColor.a = 1.0F;
 
     defaultOptions.defaultEdgeColor.setPackedValue(
         hGrp->GetUnsigned("DefaultShapeLineColor",
                           defaultOptions.defaultEdgeColor.getPackedValue()));
-    defaultOptions.defaultEdgeColor.a = 0;
+    defaultOptions.defaultEdgeColor.a = 1.0F;
 
     return defaultOptions;
 }
@@ -133,8 +133,6 @@ void ImportOCAF2::setImportOptions(ImportOCAFOptions opts)
 void ImportOCAF2::setUseLinkGroup(bool enable)
 {
     options.useLinkGroup = enable;
-
-    // Interface_Static::SetIVal("read.stepcaf.subshapes.name",1);
     aShapeTool->SetAutoNaming(!enable);
 }
 
@@ -251,22 +249,6 @@ ImportOCAF2::expandShape(App::Document* doc, TDF_Label label, const TopoDS_Shape
         return nullptr;
     }
 
-    // When saved as compound, STEP file does not support instance sharing,
-    // meaning that even if the source compound may contain child shapes of
-    // shared instances, or multiple hierarchies, those information are lost
-    // when saved to STEP, everything become flat and duplicated. So the code
-    // below is not necessary.
-#if 0
-    auto baseShape = shape.Located(TopLoc_Location());
-    auto it = myShapes.find(baseShape);
-    if(it!=myShapes.end()) {
-        auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
-        link->Visibility.setValue(false);
-        link->setLink(-1,it->second.obj);
-        setPlacement(&link->Placement,shape);
-        return link;
-    }
-#endif
     std::vector<App::DocumentObject*> objs;
 
     if (shape.ShapeType() == TopAbs_COMPOUND) {
@@ -287,10 +269,8 @@ ImportOCAF2::expandShape(App::Document* doc, TDF_Label label, const TopoDS_Shape
         if (objs.empty()) {
             return nullptr;
         }
-        auto compound =
-            static_cast<Part::Compound2*>(doc->addObject("Part::Compound2", "Compound"));
+        auto compound = doc->addObject<Part::Compound2>("Compound");
         compound->Links.setValues(objs);
-        // compound->Visibility.setValue(false);
         setPlacement(&compound->Placement, shape);
         return compound;
     }
@@ -372,9 +352,6 @@ bool ImportOCAF2::createObject(App::Document* doc,
                             hasFaceColors = true;
                             info.hasFaceColor = true;
                         }
-                        else {
-                            assert(0);
-                        }
                     }
                 }
                 if (foundEdgeColor) {
@@ -404,10 +381,8 @@ bool ImportOCAF2::createObject(App::Document* doc,
         assert(feature);
     }
     else {
-        feature = static_cast<Part::Feature*>(
-            doc->addObject("Part::Feature", tshape.shapeName().c_str()));
+        feature = doc->addObject<Part::Feature>(tshape.shapeName().c_str());
         feature->Shape.setValue(shape);
-        // feature->Visibility.setValue(false);
     }
     applyFaceColors(feature, {info.faceColor});
     applyEdgeColors(feature, {info.edgeColor});
@@ -434,7 +409,10 @@ App::Document* ImportOCAF2::getDocument(App::Document* doc, TDF_Label label)
         return doc;
     }
 
-    auto newDoc = App::GetApplication().newDocument(name.c_str(), name.c_str(), false);
+    App::DocumentCreateFlags createFlags;
+    createFlags.createView = false;
+    auto newDoc = App::GetApplication().newDocument(name.c_str(), name.c_str(), createFlags);
+
     std::ostringstream ss;
     Base::FileInfo fi(doc->FileName.getValue());
     std::string path = fi.dirPath();
@@ -499,10 +477,10 @@ bool ImportOCAF2::createGroup(App::Document* doc,
         myCollapsedObjects.emplace(info.obj, info.propPlacement);
         return true;
     }
-    auto group = static_cast<App::LinkGroup*>(doc->addObject("App::LinkGroup", "LinkGroup"));
+    auto group = doc->addObject<App::LinkGroup>("LinkGroup");
     for (auto& child : children) {
         if (child->getDocument() != doc) {
-            auto link = static_cast<App::Link*>(doc->addObject("App::Link", "Link"));
+            auto link = doc->addObject<App::Link>("Link");
             link->Label.setValue(child->Label.getValue());
             link->setLink(-1, child);
             auto pla = Base::freecad_dynamic_cast<App::PropertyPlacement>(
@@ -584,10 +562,9 @@ App::DocumentObject* ImportOCAF2::loadShapes()
     if (ret) {
         ret->recomputeFeature(true);
     }
-    if (options.merge && ret && !ret->isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (options.merge && ret && !ret->isDerivedFrom<Part::Feature>()) {
         auto shape = Part::Feature::getTopoShape(ret);
-        auto feature =
-            static_cast<Part::Feature*>(pDocument->addObject("Part::Feature", "Feature"));
+        auto feature = pDocument->addObject<Part::Feature>("Feature");
         auto name = Tools::labelName(pDoc->Main());
         feature->Label.setValue(name.empty() ? default_name.c_str() : name.c_str());
         feature->Shape.setValue(shape);
@@ -721,10 +698,8 @@ App::DocumentObject* ImportOCAF2::loadShape(App::Document* doc,
         auto name = getLabelName(label);
         if (info.faceColor != it->second.faceColor || info.edgeColor != it->second.edgeColor
             || (!name.empty() && !info.baseName.empty() && name != info.baseName)) {
-            auto compound =
-                static_cast<Part::Compound2*>(doc->addObject("Part::Compound2", "Compound"));
+            auto compound = doc->addObject<Part::Compound2>("Compound");
             compound->Links.setValue(info.obj);
-            // compound->Visibility.setValue(false);
             info.propPlacement = &compound->Placement;
             if (info.faceColor != it->second.faceColor) {
                 applyFaceColors(compound, {info.faceColor});
@@ -740,7 +715,7 @@ App::DocumentObject* ImportOCAF2::loadShape(App::Document* doc,
         return info.obj;
     }
 
-    auto link = static_cast<App::Link*>(doc->addObject("App::Link", "Link"));
+    auto link = doc->addObject<App::Link>("Link");
     link->setLink(-1, info.obj);
     setPlacement(&link->Placement, shape);
     info.obj = link;
@@ -847,7 +822,7 @@ bool ImportOCAF2::createAssembly(App::Document* _doc,
             visibilities[i] = true;
 
             // Okay, we are creating a link array
-            auto link = static_cast<App::Link*>(doc->addObject("App::Link", "Link"));
+            auto link = doc->addObject<App::Link>("Link");
             link->setLink(-1, child);
             link->ShowElement.setValue(false);
             link->ElementCount.setValue(childInfo.plas.size());

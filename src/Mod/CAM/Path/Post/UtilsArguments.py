@@ -316,9 +316,7 @@ def init_shared_arguments(
         help_message = "Time to wait (in seconds) after M3, M4 (default = 0.0)"
     else:
         help_message = argparse.SUPPRESS
-    shared.add_argument(
-        "--wait-for-spindle", type=float, default=0.0, help=help_message
-    )
+    shared.add_argument("--wait-for-spindle", type=float, default=0.0, help=help_message)
     return parser
 
 
@@ -608,7 +606,7 @@ def process_shared_arguments(
     argstring: str,
     all_visible: Parser,
     filename: str,
-) -> Tuple[bool, Union[str, argparse.Namespace]]:
+) -> Tuple[bool, Union[None, str, argparse.Namespace]]:
     """Process the arguments to the postprocessor."""
     args: argparse.Namespace
     argument_text: str
@@ -706,9 +704,7 @@ def process_shared_arguments(
             values["RETURN_TO"] = [int(v) for v in args.return_to.split(",")]
             if len(values["RETURN_TO"]) != 3:
                 values["RETURN_TO"] = None
-                print(
-                    "--return-to coordinates must be specified as <x>,<y>,<z>, ignoring"
-                )
+                print("--return-to coordinates must be specified as <x>,<y>,<z>, ignoring")
         if args.show_editor:
             values["SHOW_EDITOR"] = True
         if args.no_show_editor:
@@ -729,7 +725,7 @@ def process_shared_arguments(
             values["SPINDLE_WAIT"] = args.wait_for_spindle
 
     except (ArithmeticError, LookupError):
-        return (False, "")
+        return (False, None)
 
     return (True, args)
 

@@ -26,7 +26,7 @@
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <memory>
 #include <vector>
-#include <Gui/SoFCSelectionContext.h>
+#include <Gui/Selection/SoFCSelectionContext.h>
 #include <Mod/Part/PartGlobal.h>
 
 

@@ -39,12 +39,14 @@ def get_information():
         "constraints": ["fixed"],
         "solvers": ["ccxtools"],
         "material": "solid",
-        "equations": ["frequency"]
+        "equations": ["frequency"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.frequency_beamsimple import setup
@@ -57,6 +59,7 @@ https://forum.freecad.org/viewtopic.php?f=18&t=58959#p506565
 simple frequency analysis
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -85,7 +88,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # solver
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
-        solver_obj.WorkingDir = u""
+        solver_obj.WorkingDir = ""
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -104,9 +107,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(solver_obj)
 
     # material
-    material_obj = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
-    )[0]
+    material_obj = analysis.addObject(ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial"))[0]
     mat = material_obj.Material
     mat["Name"] = "Steel-Generic"
     mat["YoungsModulus"] = "200000 MPa"
@@ -118,13 +119,10 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint displacement xyz
     con_disp_xyz = ObjectsFem.makeConstraintDisplacement(doc, "Fix_XYZ")
     con_disp_xyz.References = [(doc.Box, "Edge4")]
-    con_disp_xyz.xFix = True
     con_disp_xyz.xFree = False
     con_disp_xyz.xDisplacement = 0.0
-    con_disp_xyz.yFix = True
     con_disp_xyz.yFree = False
     con_disp_xyz.yDisplacement = 0.0
-    con_disp_xyz.zFix = True
     con_disp_xyz.zFree = False
     con_disp_xyz.zDisplacement = 0.0
     analysis.addObject(con_disp_xyz)
@@ -132,19 +130,17 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint displacement yz
     con_disp_yz = ObjectsFem.makeConstraintDisplacement(doc, "Fix_YZ")
     con_disp_yz.References = [(doc.Box, "Edge8")]
-    con_disp_yz.xFix = False
     con_disp_yz.xFree = True
     con_disp_yz.xDisplacement = 0.0
-    con_disp_yz.yFix = True
     con_disp_yz.yFree = False
     con_disp_yz.yDisplacement = 0.0
-    con_disp_yz.zFix = True
     con_disp_yz.zFree = False
     con_disp_yz.zDisplacement = 0.0
     analysis.addObject(con_disp_yz)
 
     # mesh
     from .meshes.mesh_beamsimple_tetra10 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -154,7 +150,7 @@ def setup(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.CharacteristicLengthMax = "25.0 mm"
 

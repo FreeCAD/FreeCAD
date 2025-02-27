@@ -56,10 +56,16 @@ include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
+    ${ZIPIOS_INCLUDES}
 )
 
 set(FreeCADApp_LIBS
@@ -99,8 +105,8 @@ generate_from_xml(PropertyContainerPy)
 generate_from_xml(MaterialPy)
 generate_from_xml(MeasureManagerPy)
 
-generate_from_py(FreeCADInit InitScript.h)
-generate_from_py(FreeCADTest TestScript.h)
+generate_embed_from_py(FreeCADInit InitScript.h)
+generate_embed_from_py(FreeCADTest TestScript.h)
 
 SET(FreeCADApp_XML_SRCS
     ExtensionPy.xml
@@ -165,10 +171,9 @@ SET(Document_CPP_SRCS
     Origin.cpp
     Path.cpp
     InventorObject.cpp
-    MeasureDistance.cpp
     Placement.cpp
     ProjectFile.cpp
-    OriginFeature.cpp
+    Datums.cpp
     Range.cpp
     Transactions.cpp
     TransactionalObject.cpp
@@ -212,10 +217,9 @@ SET(Document_HPP_SRCS
     Origin.h
     Path.h
     InventorObject.h
-    MeasureDistance.h
     Placement.h
     ProjectFile.h
-    OriginFeature.h
+    Datums.h
     Range.h
     Transactions.h
     TransactionalObject.h
@@ -290,6 +294,8 @@ SET(FreeCADApp_CPP_SRCS
     Metadata.cpp
     MetadataPyImp.cpp
     ElementNamingUtils.cpp
+    SafeMode.cpp
+    Services.cpp
     StringHasher.cpp
     StringHasherPyImp.cpp
     StringIDPyImp.cpp
@@ -314,6 +320,7 @@ SET(FreeCADApp_HPP_SRCS
     MeasureManager.h
     Metadata.h
     ElementNamingUtils.h
+    Services.h
     StringHasher.h
 )
 

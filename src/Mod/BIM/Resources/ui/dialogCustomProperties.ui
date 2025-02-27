@@ -48,7 +48,7 @@
    <item>
     <widget class="QRadioButton" name="radioButton_2">
      <property name="toolTip">
-      <string>The property will be hidden in the interface, and can only be modified via python script</string>
+      <string>The property will be hidden in the interface, and can only be modified via Python script</string>
      </property>
      <property name="text">
       <string>Hidden</string>

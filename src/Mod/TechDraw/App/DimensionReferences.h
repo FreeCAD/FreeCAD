@@ -55,7 +55,7 @@ class TechDrawExport ReferenceEntry
 {
 public:
     ReferenceEntry() = default;
-    ReferenceEntry( App::DocumentObject* docObject, std::string subName, App::Document* document = nullptr);
+    ReferenceEntry( App::DocumentObject* docObject, const std::string& subName, App::Document* document = nullptr);
     ReferenceEntry(const ReferenceEntry& other);
     ~ReferenceEntry() = default;
 
@@ -63,6 +63,7 @@ public:
     bool operator== (const ReferenceEntry& otherRef) const;
 
     App::DocumentObject* getObject() const;
+    template <class T> T* getObject() const { return dynamic_cast<T*>(getObject()); }
     void setObject(App::DocumentObject* docObj) { m_object = docObj; }
     std::string getSubName(bool longForm = false) const;
     void setSubName(const std::string& subName) { m_subName = subName; }

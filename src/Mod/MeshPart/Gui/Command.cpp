@@ -159,7 +159,7 @@ void CmdMeshPartTrimByPlane::activated(int)
 
             copy.trimByPlane(plnBase, -plnNormal);
             App::Document* doc = it->getDocument();
-            Mesh::Feature* fea = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature"));
+            Mesh::Feature* fea = doc->addObject<Mesh::Feature>();
             fea->Label.setValue(it->Label.getValue());
             Mesh::MeshObject* feamesh = fea->Mesh.startEditing();
             feamesh->swap(copy);
@@ -173,11 +173,7 @@ void CmdMeshPartTrimByPlane::activated(int)
 bool CmdMeshPartTrimByPlane::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) != 1) {
-        return false;
-    }
-
-    return true;
+    return getSelection().countObjectsOfType<Mesh::Feature>() == 1;
 }
 
 //===========================================================================
@@ -230,7 +226,8 @@ void CmdMeshPartSection::activated(int)
     for (auto it : docObj) {
         const Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(it)->Mesh.getValuePtr();
         std::vector<Mesh::MeshObject::TPolylines> polylines;
-        mesh->crossSections(sections, polylines);
+        const float minSectionLength = 1e-7F;
+        mesh->crossSections(sections, polylines, minSectionLength);
 
         for (const auto& it2 : polylines) {
             for (const auto& it3 : it2) {
@@ -261,11 +258,7 @@ void CmdMeshPartSection::activated(int)
 bool CmdMeshPartSection::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) != 1) {
-        return false;
-    }
-
-    return true;
+    return getSelection().countObjectsOfType<Mesh::Feature>() == 1;
 }
 
 //===========================================================================
@@ -303,7 +296,7 @@ void CmdMeshPartCrossSections::activated(int iMsg)
 
 bool CmdMeshPartCrossSections::isActive()
 {
-    return (Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0
+    return (Gui::Selection().countObjectsOfType<Mesh::Feature>() > 0
             && !Gui::Control().activeDialog());
 }
 
@@ -342,11 +335,7 @@ bool CmdMeshPartCurveOnMesh::isActive()
 
     // Check for the selected mesh feature (all Mesh types)
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (doc && doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
-        return true;
-    }
-
-    return false;
+    return doc && doc->countObjectsOfType<Mesh::Feature>() > 0;
 }
 
 

@@ -29,7 +29,6 @@
 #endif
 
 #include <fstream>
-#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -95,6 +94,8 @@ public:
     OutputStream& operator<<(float f);
     OutputStream& operator<<(double d);
 
+    OutputStream& write(const char* s, int n);
+
     OutputStream(const OutputStream&) = delete;
     OutputStream(OutputStream&&) = delete;
     void operator=(const OutputStream&) = delete;
@@ -125,6 +126,8 @@ public:
     InputStream& operator>>(uint64_t& ul);
     InputStream& operator>>(float& f);
     InputStream& operator>>(double& d);
+
+    InputStream& read(char* s, int n);
 
     explicit operator bool() const
     {

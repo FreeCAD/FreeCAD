@@ -60,7 +60,7 @@ Show the object.</UserDocu>
         </Methode>
         <Methode Name="hide">
             <Documentation>
-                <UserDocu>show() -> None
+                <UserDocu>hide() -> None
 
 Hide the object.</UserDocu>
             </Documentation>
@@ -201,6 +201,13 @@ trans : Base.Placement, Base.Matrix</UserDocu>
 Returns list of objects that are to be grouped in tree under this object.</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="claimChildrenRecursive" Const="true">
+            <Documentation>
+                <UserDocu>claimChildrenRecursive() -> list
+
+Returns list of objects that are to be grouped in tree under this object recursively.</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="partialRender">
             <Documentation>
                 <UserDocu>partialRender(sub=None, clear=False) -> int
@@ -307,7 +314,7 @@ view: View3DInventorPy
       <Documentation>
         <UserDocu>Get/Set the default display mode in turns of coin node index.</UserDocu>
       </Documentation>
-      <Parameter Name="DefaultNode" Type="Int" />
+      <Parameter Name="DefaultNode" Type="Long" />
     </Attribute>
     <Attribute Name="IV" ReadOnly="true">
       <Documentation>
