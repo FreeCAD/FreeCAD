@@ -51,14 +51,6 @@
         "hidden": true,
         "generator": "Ninja",
         "cacheVariables": {
-          "Boost_NO_BOOST_CMAKE": {
-            "type": "BOOL",
-            "value": "ON"
-          },
-          "BUILD_DYNAMIC_LINK_PYTHON": {
-            "type": "BOOL",
-            "value": "ON"
-          },
           "BUILD_FEM_NETGEN": {
             "type": "BOOL",
             "value": "ON"
@@ -99,9 +91,9 @@
             "type": "BOOL",
             "value": "ON"
           },
-          "USE_BOOST_PYTHON": {
-            "type": "BOOL",
-            "value": "OFF"
+          "QT_HOST_PATH": {
+            "type": "PATH",
+            "value": "$env{CONDA_PREFIX}"
           }
         }
       },
@@ -117,27 +109,27 @@
         "cacheVariables": {
           "CMAKE_INCLUDE_PATH": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/include"
+            "value": "$env{CONDA_PREFIX}/include"
           },
           "CMAKE_INSTALL_LIBDIR": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/lib"
+            "value": "$env{CONDA_PREFIX}/lib"
           },
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad"
+            "value": "$env{CONDA_PREFIX}"
           },
           "CMAKE_LIBRARY_PATH":{
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/lib"
+            "value": "$env{CONDA_PREFIX}/lib"
           },
           "CMAKE_PREFIX_PATH": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad"
+            "value": "$env{CONDA_PREFIX}"
           },
           "OCC_INCLUDE_DIR": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/include/opencascade"
+            "value": "$env{CONDA_PREFIX}/include/opencascade"
           }
         }
       },
@@ -157,27 +149,27 @@
           },
           "CMAKE_INCLUDE_PATH": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/include"
+            "value": "$env{CONDA_PREFIX}/include"
           },
           "CMAKE_INSTALL_LIBDIR": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/lib"
+            "value": "$env{CONDA_PREFIX}/lib"
           },
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad"
+            "value": "$env{CONDA_PREFIX}"
           },
           "CMAKE_LIBRARY_PATH":{
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/lib"
+            "value": "$env{CONDA_PREFIX}/lib"
           },
           "CMAKE_PREFIX_PATH": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad"
+            "value": "$env{CONDA_PREFIX}"
           },
           "OCC_INCLUDE_DIR": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/include/opencascade"
+            "value": "$env{CONDA_PREFIX}/include/opencascade"
           }
         }
       },
@@ -193,27 +185,27 @@
         "cacheVariables": {
           "CMAKE_INCLUDE_PATH": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/Library/include"
+            "value": "$env{CONDA_PREFIX}/Library/include"
           },
           "CMAKE_INSTALL_LIBDIR": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/Library/lib"
+            "value": "$env{CONDA_PREFIX}/Library/lib"
           },
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/Library"
+            "value": "$env{CONDA_PREFIX}/Library"
           },
           "CMAKE_LIBRARY_PATH":{
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/Library/lib"
+            "value": "$env{CONDA_PREFIX}/Library/lib"
           },
           "CMAKE_PREFIX_PATH": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/Library"
+            "value": "$env{CONDA_PREFIX}/Library"
           },
           "OCC_INCLUDE_DIR": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/Library/include/opencascade"
+            "value": "$env{CONDA_PREFIX}/Library/include/opencascade"
           }
         }
       },
@@ -295,7 +287,13 @@
         "inherits": [
           "conda-release",
           "conda-windows"
-        ]
+        ],
+        "cacheVariables": {
+          "FREECAD_RELEASE_PDB": {
+            "type": "BOOL",
+            "value": "OFF"
+          }
+        }
       }
     ]
-  }
+}

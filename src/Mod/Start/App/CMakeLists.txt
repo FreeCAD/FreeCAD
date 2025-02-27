@@ -22,6 +22,7 @@
 #  ***************************************************************************/
 
 include_directories(
+        SYSTEM
         ${PYTHON_INCLUDE_DIRS}
         ${QtCore_INCLUDE_DIRS}
 )

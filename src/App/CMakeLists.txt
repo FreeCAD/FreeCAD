@@ -56,6 +56,10 @@ include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}

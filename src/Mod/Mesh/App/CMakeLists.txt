@@ -6,6 +6,10 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/src/3rdParty/libkdtree
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
@@ -20,6 +24,7 @@ set(Mesh_LIBS
 )
 
 include_directories(
+    SYSTEM
     ${QtConcurrent_INCLUDE_DIRS}
 )
 list(APPEND Mesh_LIBS
