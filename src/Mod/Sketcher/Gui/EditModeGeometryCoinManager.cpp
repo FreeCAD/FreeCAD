@@ -136,7 +136,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
     };
 
     auto isExternalDefiningGeomPoint = [&geolistfacade](int GeoId) {
-        auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);    
+        auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
         if (geom) {
             auto egf = ExternalGeometryFacade::getFacade(geom->clone());
             auto ref = egf->getRef();

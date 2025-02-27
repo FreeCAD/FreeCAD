@@ -116,9 +116,9 @@ struct DrawingParameters
     static SbColor
         PreselectSelectedColor;  // Color used for pre-selection when geometry is already selected
     static SbColor SelectColor;  // Color used for selected geometry
-    static SbColor CurveExternalColor;                       // Color used for external geometry
-    static SbColor CurveExternalDefiningColor;               // Color used for external defining geometry
-    static SbColor CurveDraftColor;                          // Color used for construction geometry
+    static SbColor CurveExternalColor;          // Color used for external geometry
+    static SbColor CurveExternalDefiningColor;  // Color used for external defining geometry
+    static SbColor CurveDraftColor;             // Color used for construction geometry
     static SbColor FullyConstraintConstructionElementColor;  // Color used for a fully constrained
                                                              // construction element
     static SbColor ConstrDimColor;  // Color used for a dimensional constraints
