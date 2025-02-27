@@ -228,17 +228,12 @@ public:
     bool hasAttribute(const char* AttrName) const;
 
 private:
-    // all explicit template instatiations - this is for getting 
+    // all explicit template instatiations - this is for getting
     // a compile error, rather than linker error.
     template<typename T>
-    static constexpr bool instantiated = (
-        std::is_same_v<T, bool> ||
-        std::is_same_v<T, const char*> ||
-        std::is_same_v<T, double> ||
-        std::is_same_v<T, int> ||
-        std::is_same_v<T, long> ||
-        std::is_same_v<T, unsigned long>
-    );
+    static constexpr bool instantiated =
+        (std::is_same_v<T, bool> || std::is_same_v<T, const char*> || std::is_same_v<T, double>
+         || std::is_same_v<T, int> || std::is_same_v<T, long> || std::is_same_v<T, unsigned long>);
 
 public:
     /// return the named attribute as T (does type checking); if missing return defaultValue.
@@ -246,42 +241,42 @@ public:
     /// corresponding type; bool: false, int: 0, ... as if one had used defaultValue=bool{}
     /// or defaultValue=int{}
     // General template, mark delete as it's not implemented, and should not be used!
-    template <typename T> requires XMLReader::instantiated<T>
+    template<typename T>
+        requires XMLReader::instantiated<T>
     T getAttribute(const char* AttrName, T defaultValue) const;
 
     /// No default? Will throw exception if not found!
-    template <typename T> requires XMLReader::instantiated<T>
-    T getAttribute(const char* AttrName) const; 
+    template<typename T>
+        requires XMLReader::instantiated<T>
+    T getAttribute(const char* AttrName) const;
 
     /// E.g. std::string, QString
     template<typename T>
-    T getAttribute(const char* AttrName) const {
+    T getAttribute(const char* AttrName) const
+    {
         return T(getAttribute<const char*>(AttrName));
     }
     /// E.g. std::string, QString
     template<typename T>
-    T getAttribute(const char* AttrName, T defaultValue) const {
+    T getAttribute(const char* AttrName, T defaultValue) const
+    {
         return T(getAttribute<const char*>(AttrName, defaultValue));
     }
 
     /// Enum classes
-    template <typename T> requires std::is_enum_v<T>
+    template<typename T>
+        requires std::is_enum_v<T>
     T getAttribute(const char* AttrName, T defaultValue) const
     {
         return static_cast<T>(
-            getAttribute<unsigned long>(
-                AttrName,
-                static_cast<unsigned long>(defaultValue)
-            )
-        );
+            getAttribute<unsigned long>(AttrName, static_cast<unsigned long>(defaultValue)));
     }
     /// Enum classes
-    template <typename T> requires std::is_enum_v<T>
+    template<typename T>
+        requires std::is_enum_v<T>
     T getAttribute(const char* AttrName) const
     {
-        return static_cast<T>(
-            getAttribute<unsigned long>(AttrName)
-        );
+        return static_cast<T>(getAttribute<unsigned long>(AttrName));
     }
 
     /** @name additional file reading */

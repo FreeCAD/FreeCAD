@@ -732,19 +732,27 @@ void Cell::moveAbsolute(CellAddress newAddress)
 
 void Cell::restore(Base::XMLReader& reader, bool checkAlias)
 {
-    const char* style = reader.hasAttribute("style") ? reader.getAttribute<const char*>("style") : nullptr;
+    const char* style =
+        reader.hasAttribute("style") ? reader.getAttribute<const char*>("style") : nullptr;
     const char* alignment =
         reader.hasAttribute("alignment") ? reader.getAttribute<const char*>("alignment") : nullptr;
-    const char* content = reader.hasAttribute("content") ? reader.getAttribute<const char*>("content") : "";
-    const char* foregroundColor =
-        reader.hasAttribute("foregroundColor") ? reader.getAttribute<const char*>("foregroundColor") : nullptr;
-    const char* backgroundColor =
-        reader.hasAttribute("backgroundColor") ? reader.getAttribute<const char*>("backgroundColor") : nullptr;
-    const char* displayUnit =
-        reader.hasAttribute("displayUnit") ? reader.getAttribute<const char*>("displayUnit") : nullptr;
-    const char* alias = reader.hasAttribute("alias") ? reader.getAttribute<const char*>("alias") : nullptr;
-    const char* rowSpan = reader.hasAttribute("rowSpan") ? reader.getAttribute<const char*>("rowSpan") : nullptr;
-    const char* colSpan = reader.hasAttribute("colSpan") ? reader.getAttribute<const char*>("colSpan") : nullptr;
+    const char* content =
+        reader.hasAttribute("content") ? reader.getAttribute<const char*>("content") : "";
+    const char* foregroundColor = reader.hasAttribute("foregroundColor")
+        ? reader.getAttribute<const char*>("foregroundColor")
+        : nullptr;
+    const char* backgroundColor = reader.hasAttribute("backgroundColor")
+        ? reader.getAttribute<const char*>("backgroundColor")
+        : nullptr;
+    const char* displayUnit = reader.hasAttribute("displayUnit")
+        ? reader.getAttribute<const char*>("displayUnit")
+        : nullptr;
+    const char* alias =
+        reader.hasAttribute("alias") ? reader.getAttribute<const char*>("alias") : nullptr;
+    const char* rowSpan =
+        reader.hasAttribute("rowSpan") ? reader.getAttribute<const char*>("rowSpan") : nullptr;
+    const char* colSpan =
+        reader.hasAttribute("colSpan") ? reader.getAttribute<const char*>("colSpan") : nullptr;
 
     // Don't trigger multiple updates below; wait until everything is loaded by calling unfreeze()
     // below.
