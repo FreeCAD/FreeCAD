@@ -33,14 +33,13 @@ translate = FreeCAD.Qt.translate
 
 try:
     import ifcopenshell
-    from ifcopenshell import geom
-    from ifcopenshell import api
-    from ifcopenshell import template
-    from ifcopenshell.util import element
-    from ifcopenshell.util import attribute
-    from ifcopenshell.util import schema
-    from ifcopenshell.util import placement
-    from ifcopenshell.util import unit
+    import ifcopenshell.api
+    import ifcopenshell.geom
+    import ifcopenshell.util.attribute
+    import ifcopenshell.util.element
+    import ifcopenshell.util.placement
+    import ifcopenshell.util.schema
+    import ifcopenshell.util.unit
 except ImportError as e:
     import FreeCAD
     FreeCAD.Console.PrintError(
@@ -52,13 +51,13 @@ except ImportError as e:
     )
     raise e
 
-from nativeifc import ifc_objects
-from nativeifc import ifc_viewproviders
-from nativeifc import ifc_import
-from nativeifc import ifc_layers
-from nativeifc import ifc_status
-from nativeifc import ifc_export
-from nativeifc import ifc_psets
+from . import ifc_objects
+from . import ifc_viewproviders
+from . import ifc_import
+from . import ifc_layers
+from . import ifc_status
+from . import ifc_export
+from . import ifc_psets
 
 from draftviewproviders import view_layer
 import ArchBuildingPart
@@ -134,7 +133,7 @@ def convert_document(document, filename=None, shapemode=0, strategy=0, silent=Fa
                3 = no children
     """
 
-    if not "Proxy" in document.PropertiesList:
+    if "Proxy" not in document.PropertiesList:
         document.addProperty("App::PropertyPythonObject", "Proxy")
     document.setPropertyStatus("Proxy", "Transient")
     document.Proxy = ifc_objects.document_object()
@@ -161,9 +160,9 @@ def setup_project(proj, filename, shapemode, silent):
 
     full = False
     d = "The path to the linked IFC file"
-    if not "IfcFilePath" in proj.PropertiesList:
+    if "IfcFilePath" not in proj.PropertiesList:
         proj.addProperty("App::PropertyFile", "IfcFilePath", "Base", d)
-    if not "Modified" in proj.PropertiesList:
+    if "Modified" not in proj.PropertiesList:
         proj.addProperty("App::PropertyBool", "Modified", "Base")
     proj.setPropertyStatus("Modified", "Hidden")
     if filename:
@@ -181,7 +180,7 @@ def setup_project(proj, filename, shapemode, silent):
     # In IFC4, history is optional. What should we do here?
     proj.Proxy.ifcfile = ifcfile
     add_properties(proj, ifcfile, project, shapemode=shapemode)
-    if not "Schema" in proj.PropertiesList:
+    if "Schema" not in proj.PropertiesList:
         proj.addProperty("App::PropertyEnumeration", "Schema", "Base")
     # bug in FreeCAD - to avoid a crash, pre-populate the enum with one value
     proj.Schema = [ifcfile.wrapped_data.schema_name()]
@@ -321,7 +320,7 @@ def create_children(
     def create_child(parent, element):
         subresult = []
         # do not create if a child with same stepid already exists
-        if not element.id() in [
+        if element.id() not in [
             getattr(c, "StepId", 0) for c in get_parent_objects(parent)
         ]:
             doc = getattr(parent, "Document", parent)
@@ -1581,8 +1580,8 @@ def get_orphan_elements(ifcfile):
     ]
     # add control elements
     proj = ifcfile.by_type("IfcProject")[0]
-    for rel in proj.Declares:
-        for ctrl in getattr(rel,"RelatedDefinitions", []):
+    for rel in getattr(proj, "Declares", []):
+        for ctrl in getattr(rel, "RelatedDefinitions", []):
             if ctrl.is_a("IfcControl"):
                 products.append(ctrl)
     groups = []
@@ -1662,7 +1661,7 @@ def remove_tree(objs):
     nobjs = objs
     for obj in objs:
         for child in obj.OutListRecursive:
-            if not child in nobjs:
+            if child not in nobjs:
                 nobjs.append(child)
     deletelist = []
     for obj in nobjs:
