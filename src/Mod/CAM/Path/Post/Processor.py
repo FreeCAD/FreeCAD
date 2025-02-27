@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2024 Larry Woestman <LarryWoestman2@gmail.com>          *
+# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2022 - 2025 Larry Woestman <LarryWoestman2@gmail.com>   *
+# *   Copyright (c) 2024 Ondsel <development@ondsel.com>                    *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,17 +25,24 @@
 # *                                                                         *
 # ***************************************************************************
 """
-The base classes for post processors in CAM workbench.
+The base classes for post processors in the CAM workbench.
 """
-from PySide import QtCore, QtGui
-from importlib import reload
-import FreeCAD
-import Path
-import Path.Base.Util as PathUtil
+import argparse
 import importlib.util
 import os
-import sys
+from PySide import QtCore, QtGui
 import re
+import sys
+from typing import Any, Dict, List, Optional, Tuple, Union
+
+import Path.Base.Util as PathUtil
+import Path.Post.UtilsArguments as PostUtilsArguments
+import Path.Post.UtilsExport as PostUtilsExport
+
+import FreeCAD
+import Path
+
+translate = FreeCAD.Qt.translate
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
@@ -48,6 +59,23 @@ class _TempObject:
     Name = "Fixture"
     InList = []
     Label = "Fixture"
+
+
+#
+# Define some types that are used throughout this file.
+#
+Defaults = Dict[str, bool]
+FormatHelp = str
+GCodeOrNone = Optional[str]
+GCodeSections = List[Tuple[str, GCodeOrNone]]
+Parser = argparse.ArgumentParser
+ParserArgs = Union[None, str, argparse.Namespace]
+Postables = Union[List, List[Tuple[str, List]]]
+Section = Tuple[str, List]
+Sublist = List
+Units = str
+Values = Dict[str, Any]
+Visible = Dict[str, bool]
 
 
 class PostProcessorFactory:
@@ -89,7 +117,7 @@ class PostProcessorFactory:
 
 
 class PostProcessor:
-    """Base Class.  All postprocessors should inherit from this class."""
+    """Base Class.  All non-legacy postprocessors should inherit from this class."""
 
     def __init__(self, job, tooltip, tooltipargs, units, *args, **kwargs):
         self._tooltip = tooltip
@@ -98,13 +126,11 @@ class PostProcessor:
         self._job = job
         self._args = args
         self._kwargs = kwargs
+        self.reinitialize()
 
     @classmethod
     def exists(cls, processor):
         return processor in Path.Preferences.allAvailablePostProcessors()
-
-    def export(self):
-        raise NotImplementedError("Subclass must implement abstract method")
 
     @property
     def tooltip(self):
@@ -113,10 +139,8 @@ class PostProcessor:
         # return self._tooltip
 
     @property
-    def tooltipArgs(self):
-        """Get the tooltip arguments for the post processor."""
-        raise NotImplementedError("Subclass must implement abstract method")
-        # return self._tooltipargs
+    def tooltipArgs(self) -> FormatHelp:
+        return self.parser.format_help()
 
     @property
     def units(self):
@@ -125,8 +149,8 @@ class PostProcessor:
 
     def _buildPostList(self):
         """
-        determines the specific objects and order to
-        postprocess  Returns a list of objects which can be passed to
+        determines the specific objects and order to postprocess
+        Returns a list of objects which can be passed to
         exportObjectsWith() for final posting."""
 
         def __fixtureSetup(order, fixture, job):
@@ -140,7 +164,7 @@ class PostProcessor:
             fobj.Path = Path.Path([c1])
             # Avoid any tool move after G49 in preamble and before tool change
             # and G43 in case tool height compensation is in use, to avoid
-            # dangerous move without toolgg compesation.
+            # dangerous move without tool compensation.
             if order != 0:
                 c2 = Path.Command(
                     "G0 Z"
@@ -278,6 +302,161 @@ class PostProcessor:
         finalpostlist = [("allitems", [item for slist in postlist for item in slist[1]])]
         Path.Log.debug(f"Postlist: {postlist}")
         return finalpostlist
+
+    def export(self) -> Union[None, GCodeSections]:
+        """Process the parser arguments, then postprocess the 'postables'."""
+        args: ParserArgs
+        flag: bool
+
+        Path.Log.debug("Exporting the job")
+
+        (flag, args) = self.process_arguments()
+        #
+        # If the flag is True, then continue postprocessing the 'postables'.
+        #
+        if flag:
+            return self.process_postables()
+        #
+        # The flag is False meaning something unusual happened.
+        #
+        # If args is None then there was an error during argument processing.
+        #
+        if args is None:
+            return None
+        #
+        # Otherwise args will contain the argument list formatted for output
+        # instead of the "usual" gcode.
+        #
+        return [("allitems", args)]  # type: ignore
+
+    def init_arguments(
+        self,
+        values: Values,
+        argument_defaults: Defaults,
+        arguments_visible: Visible,
+    ) -> Parser:
+        """Initialize the shared argument definitions."""
+        _parser: Parser = PostUtilsArguments.init_shared_arguments(
+            values, argument_defaults, arguments_visible
+        )
+        #
+        # Add any argument definitions that are not shared with other postprocessors here.
+        #
+        return _parser
+
+    def init_argument_defaults(self, argument_defaults: Defaults) -> None:
+        """Initialize which arguments (in a pair) are shown as the default argument."""
+        PostUtilsArguments.init_argument_defaults(argument_defaults)
+        #
+        # Modify which argument to show as the default in flag-type arguments here.
+        # If the value is True, the first argument will be shown as the default.
+        # If the value is False, the second argument will be shown as the default.
+        #
+        # For example, if you want to show Metric mode as the default, use:
+        #   argument_defaults["metric_inch"] = True
+        #
+        # If you want to show that "Don't pop up editor for writing output" is
+        # the default, use:
+        #   argument_defaults["show-editor"] = False.
+        #
+        # Note:  You also need to modify the corresponding entries in the "values" hash
+        #        to actually make the default value(s) change to match.
+        #
+
+    def init_arguments_visible(self, arguments_visible: Visible) -> None:
+        """Initialize which argument pairs are visible in TOOLTIP_ARGS."""
+        PostUtilsArguments.init_arguments_visible(arguments_visible)
+        #
+        # Modify the visibility of any arguments from the defaults here.
+        #
+
+    def init_values(self, values: Values) -> None:
+        """Initialize values that are used throughout the postprocessor."""
+        #
+        PostUtilsArguments.init_shared_values(values)
+        #
+        # Set any values here that need to override the default values set
+        # in the init_shared_values routine.
+        #
+        values["UNITS"] = self._units
+
+    def process_arguments(self) -> Tuple[bool, ParserArgs]:
+        """Process any arguments to the postprocessor."""
+        #
+        # This function is separated out to make it easier to inherit from this class.
+        #
+        args: ParserArgs
+        flag: bool
+
+        (flag, args) = PostUtilsArguments.process_shared_arguments(
+            self.values, self.parser, self._job.PostProcessorArgs, self.all_visible, "-"
+        )
+        #
+        # If the flag is True, then all of the arguments should be processed normally.
+        #
+        if flag:
+            #
+            # Process any additional arguments here.
+            #
+            #
+            # Update any variables that might have been modified while processing the arguments.
+            #
+            self._units = self.values["UNITS"]
+        #
+        # If the flag is False, then args is either None (indicating an error while
+        # processing the arguments) or a string containing the argument list formatted
+        # for output.  Either way the calling routine will need to handle the args value.
+        #
+        return (flag, args)
+
+    def process_postables(self) -> GCodeSections:
+        """Postprocess the 'postables' in the job to g code sections."""
+        #
+        # This function is separated out to make it easier to inherit from this class.
+        #
+        gcode: GCodeOrNone
+        g_code_sections: GCodeSections
+        partname: str
+        postables: Postables
+        section: Section
+        sublist: Sublist
+
+        postables = self._buildPostList()
+
+        Path.Log.debug(f"postables count: {len(postables)}")
+
+        g_code_sections = []
+        for _, section in enumerate(postables):
+            partname, sublist = section
+            gcode = PostUtilsExport.export_common(self.values, sublist, "-")
+            g_code_sections.append((partname, gcode))
+
+        return g_code_sections
+
+    def reinitialize(self) -> None:
+        """Initialize or reinitialize the 'core' data structures for the postprocessor."""
+        #
+        # This is also used to reinitialize the data structures between tests.
+        #
+        self.values: Values = {}
+        self.init_values(self.values)
+        self.argument_defaults: Defaults = {}
+        self.init_argument_defaults(self.argument_defaults)
+        self.arguments_visible: Visible = {}
+        self.init_arguments_visible(self.arguments_visible)
+        self.parser: Parser = self.init_arguments(
+            self.values, self.argument_defaults, self.arguments_visible
+        )
+        #
+        # Create another parser just to get a list of all possible arguments
+        # that may be output using --output_all_arguments.
+        #
+        self.all_arguments_visible: Visible = {}
+        for k in iter(self.arguments_visible):
+            self.all_arguments_visible[k] = True
+        self.all_visible: Parser = self.init_arguments(
+            self.values, self.argument_defaults, self.all_arguments_visible
+        )
 
 
 class WrapperPost(PostProcessor):
