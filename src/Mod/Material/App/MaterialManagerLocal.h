@@ -102,7 +102,7 @@ public:
                       bool saveAsCopy,
                       bool saveInherited) const;
 
-    bool isMaterial(const std::filesystem::path& p) const;
+    bool isMaterial(const fs::path& p) const;
     bool isMaterial(const QFileInfo& file) const;
 
     std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>
