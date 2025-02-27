@@ -47,7 +47,7 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     //@}
 

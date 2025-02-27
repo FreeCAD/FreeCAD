@@ -163,9 +163,9 @@ public:
                                                        double atol = 1e-10) const override;
 protected:
     /// recompute only this object
-    App::DocumentObjectExecReturn *recompute() override;
+    App::DocumentObjectExecReturn *recompute(Base::ProgressRange& progressRange) override;
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
     void onDocumentRestored() override;
@@ -214,7 +214,7 @@ public:
     App::PropertyLinkSub   EdgeLinks;
 
     short mustExecute() const override;
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     void onUpdateElementReference(const App::Property* prop) override;
 
 protected:

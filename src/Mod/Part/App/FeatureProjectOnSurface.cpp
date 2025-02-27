@@ -65,8 +65,9 @@ ProjectOnSurface::ProjectOnSurface()
     ADD_PROPERTY_TYPE(Projection,(nullptr), "Projection", App::Prop_None, "Shapes to project onto support face");
 }
 
-App::DocumentObjectExecReturn* ProjectOnSurface::execute()
+App::DocumentObjectExecReturn* ProjectOnSurface::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     try {
         tryExecute();
         return App::DocumentObject::StdReturn;

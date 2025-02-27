@@ -374,9 +374,9 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
 }
 
 
-App::DocumentObjectExecReturn *Body::execute()
+App::DocumentObjectExecReturn *Body::execute(Base::ProgressRange& progressRange)
 {
-    Part::BodyBase::execute();
+    Part::BodyBase::execute(progressRange);
     /*
     Base::Console().Error("Body '%s':\n", getNameInDocument());
     App::DocumentObject* tip = Tip.getValue();

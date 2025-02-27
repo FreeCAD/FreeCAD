@@ -76,7 +76,7 @@ public:
     App::PropertyVector Position1;
     App::PropertyVector Position2;
 
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
     const char* getViewProviderName() const override
     {
@@ -130,7 +130,7 @@ public:
     App::PropertyVector Position1;
     App::PropertyVector Position2;
 
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     void recalculateDistance();
 
     const char* getViewProviderName() const override

@@ -52,9 +52,9 @@ ConstraintHeatflux::ConstraintHeatflux()
     ConstraintType.setEnums(ConstraintTypes);
 }
 
-App::DocumentObjectExecReturn* ConstraintHeatflux::execute()
+App::DocumentObjectExecReturn* ConstraintHeatflux::execute(Base::ProgressRange& progressRange)
 {
-    return Constraint::execute();
+    return Constraint::execute(progressRange);
 }
 
 const char* ConstraintHeatflux::getViewProviderName() const

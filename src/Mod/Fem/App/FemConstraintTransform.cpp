@@ -72,9 +72,9 @@ ConstraintTransform::ConstraintTransform()
                       "Axis of cylindrical surface");
 }
 
-App::DocumentObjectExecReturn* ConstraintTransform::execute()
+App::DocumentObjectExecReturn* ConstraintTransform::execute(Base::ProgressRange& progressRange)
 {
-    return Constraint::execute();
+    return Constraint::execute(progressRange);
 }
 
 const char* ConstraintTransform::getViewProviderName() const

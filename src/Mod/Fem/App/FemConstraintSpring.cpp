@@ -41,9 +41,9 @@ ConstraintSpring::ConstraintSpring()
     ElmerStiffness.setEnums(Stiffnesses);
 }
 
-App::DocumentObjectExecReturn* ConstraintSpring::execute()
+App::DocumentObjectExecReturn* ConstraintSpring::execute(Base::ProgressRange& progressRange)
 {
-    return Constraint::execute();
+    return Constraint::execute(progressRange);
 }
 
 const char* ConstraintSpring::getViewProviderName() const

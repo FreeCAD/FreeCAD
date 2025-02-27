@@ -218,7 +218,8 @@ public:
         if (touched && ui->recompute->isChecked()) {
             auto obj = vp->getObject();
             obj->touch();
-            obj->getDocument()->recompute(obj->getInListRecursive());
+            Base::NullProgressRange progressRange;
+            obj->getDocument()->recompute(progressRange, obj->getInListRecursive());
             touched = false;
         }
         App::GetApplication().closeActiveTransaction();

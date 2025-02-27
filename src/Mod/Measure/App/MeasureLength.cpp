@@ -96,8 +96,10 @@ void MeasureLength::parseSelection(const App::MeasureSelection& selection)
 }
 
 
-App::DocumentObjectExecReturn* MeasureLength::execute()
+App::DocumentObjectExecReturn* MeasureLength::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
+
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
     const std::vector<std::string>& subElements = Elements.getSubValues();
 
@@ -128,7 +130,8 @@ void MeasureLength::onChanged(const App::Property* prop)
     }
 
     if (prop == &Elements) {
-        auto ret = recompute();
+        Base::NullProgressRange progressRange;
+        auto ret = recompute(progressRange);
         delete ret;
     }
 

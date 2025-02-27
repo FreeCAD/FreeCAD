@@ -73,8 +73,9 @@ TrajectoryDressUpObject::TrajectoryDressUpObject()
     AddType.setEnums(AddTypeEnums);
 }
 
-App::DocumentObjectExecReturn* TrajectoryDressUpObject::execute()
+App::DocumentObjectExecReturn* TrajectoryDressUpObject::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     Robot::Trajectory result;
 
     App::DocumentObject* link = Source.getValue();

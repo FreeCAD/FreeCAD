@@ -44,7 +44,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {

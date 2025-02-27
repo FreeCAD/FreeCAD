@@ -41,7 +41,7 @@ PROPERTY_SOURCE(Part::Chamfer, Part::FilletBase)
 
 Chamfer::Chamfer() = default;
 
-App::DocumentObjectExecReturn *Chamfer::execute()
+App::DocumentObjectExecReturn *Chamfer::execute(Base::ProgressRange& progressRange)
 {
     App::DocumentObject* link = Base.getValue();
     if (!link)
@@ -86,7 +86,7 @@ App::DocumentObjectExecReturn *Chamfer::execute()
 
         TopoShape res(0);
         this->Shape.setValue(res.makeElementShape(mkChamfer,baseTopoShape,Part::OpCodes::Chamfer));
-        return Part::FilletBase::execute();
+        return Part::FilletBase::execute(progressRange);
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

@@ -28,6 +28,7 @@
 #include <Base/Persistence.h>
 #include <Base/Type.h>
 #include <Base/Handle.h>
+#include <Base/ProgressRange.h>
 
 #include "PropertyContainer.h"
 #include "PropertyLinks.h"
@@ -389,12 +390,13 @@ public:
      * @param objs: specify a sub set of objects to recompute. If empty, then
      * all object in this document is checked for recompute
      */
-    int recompute(const std::vector<App::DocumentObject*>& objs = {},
+    int recompute(Base::ProgressRange& progressRange,
+                  const std::vector<App::DocumentObject*>& objs = {},
                   bool force = false,
                   bool* hasError = nullptr,
                   int options = 0);
     /// Recompute only one feature
-    bool recomputeFeature(DocumentObject* Feat, bool recursive = false);
+    bool recomputeFeature(Base::ProgressRange& progressRange, DocumentObject* Feat, bool recursive = false);
     /// get the text of the error of a specified object
     const char* getErrorDescription(const App::DocumentObject*) const;
     /// return the status bits
@@ -631,7 +633,7 @@ protected:
     void onChangedProperty(const DocumentObject* Who, const Property* What);
     /// helper which Recompute only this feature
     /// @return 0 if succeeded, 1 if failed, -1 if aborted by user.
-    int _recomputeFeature(DocumentObject* Feat);
+    int _recomputeFeature(Base::ProgressRange& progressRange, DocumentObject* Feat);
     void _clearRedos();
 
     /// refresh the internal dependency graph

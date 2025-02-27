@@ -50,8 +50,9 @@ short Curvature::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn* Curvature::execute()
+App::DocumentObjectExecReturn* Curvature::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     Mesh::Feature* pcFeat = dynamic_cast<Mesh::Feature*>(Source.getValue());
     if (!pcFeat || pcFeat->isError()) {
         return new App::DocumentObjectExecReturn("No mesh object attached.");

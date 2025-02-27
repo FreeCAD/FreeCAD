@@ -42,8 +42,9 @@ Feature::Feature()
     ADD_PROPERTY_TYPE(Mesh, (MeshObject()), 0, App::Prop_Output, "The mesh kernel");
 }
 
-App::DocumentObjectExecReturn* Feature::execute()
+App::DocumentObjectExecReturn* Feature::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     this->Mesh.touch();
     return App::DocumentObject::StdReturn;
 }

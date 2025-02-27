@@ -697,8 +697,9 @@ PyObject* DocumentPy::recompute(PyObject* args)
             options = Document::DepNoCycle;
         }
 
+        Base::NullProgressRange progressrange;
         int objectCount =
-            getDocumentPtr()->recompute(objs, Base::asBoolean(force), nullptr, options);
+            getDocumentPtr()->recompute(progressrange, objs, Base::asBoolean(force), nullptr, options);
 
         // Document::recompute() hides possibly raised Python exceptions by its features
         // So, check if an error is set and return null if yes

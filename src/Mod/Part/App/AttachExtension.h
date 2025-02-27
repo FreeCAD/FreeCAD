@@ -114,7 +114,7 @@ public:
     }
 
     short int extensionMustExecute() override;
-    App::DocumentObjectExecReturn* extensionExecute() override;
+    App::DocumentObjectExecReturn* extensionExecute(Base::ProgressRange& progressRange) override;
     PyObject* getExtensionPyObject() override;
     void onExtendedDocumentRestored() override;
 

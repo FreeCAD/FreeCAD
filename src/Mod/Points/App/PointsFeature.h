@@ -27,6 +27,7 @@
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
+#include <Base/ProgressRange.h>
 
 #include "Points.h"
 #include "PropertyPointKernel.h"
@@ -64,7 +65,7 @@ public:
     void RestoreDocFile(Base::Reader& reader) override;
     short mustExecute() const override;
     /// recalculate the Feature
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override
     {

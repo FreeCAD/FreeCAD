@@ -102,8 +102,9 @@ short Chamfer::mustExecute() const
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Chamfer::execute()
+App::DocumentObjectExecReturn *Chamfer::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     // NOTE: Normally the Base property and the BaseFeature property should point to the same object.

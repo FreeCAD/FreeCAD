@@ -36,9 +36,9 @@ ConstraintPressure::ConstraintPressure()
     ADD_PROPERTY(Reversed, (0));
 }
 
-App::DocumentObjectExecReturn* ConstraintPressure::execute()
+App::DocumentObjectExecReturn* ConstraintPressure::execute(Base::ProgressRange& progressRange)
 {
-    return Constraint::execute();
+    return Constraint::execute(progressRange);
 }
 
 const char* ConstraintPressure::getViewProviderName() const

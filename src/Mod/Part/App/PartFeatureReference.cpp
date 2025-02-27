@@ -49,8 +49,9 @@ short FeatureReference::mustExecute() const
     return GeoFeature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *FeatureReference::execute()
+App::DocumentObjectExecReturn *FeatureReference::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     return App::DocumentObject::StdReturn;
 }
 

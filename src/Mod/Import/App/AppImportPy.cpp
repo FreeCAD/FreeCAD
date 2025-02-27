@@ -121,6 +121,8 @@ private:
         int mode = -1;
         static const std::array<const char*, 7>
             kwd_list {"name", "docName", "importHidden", "merge", "useLinkGroup", "mode", nullptr};
+        Base::NullProgressRange progressRange;
+
         if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(),
                                                  kwds.ptr(),
                                                  "et|sO!O!O!i",
@@ -166,7 +168,7 @@ private:
                     Base::Console().Message("Try to load STEP file without colors...\n");
 
                     Part::ImportStepParts(pcDoc, Utf8Name.c_str());
-                    pcDoc->recompute();
+                    pcDoc->recompute(progressRange);
                 }
             }
             else if (file.hasExtension({"igs", "iges"})) {
@@ -179,7 +181,7 @@ private:
                     Base::Console().Message("Try to load IGES file without colors...\n");
 
                     Part::ImportIgesParts(pcDoc, Utf8Name.c_str());
-                    pcDoc->recompute();
+                    pcDoc->recompute(progressRange);
                 }
             }
             else if (file.hasExtension({"glb", "gltf"})) {
@@ -417,7 +419,8 @@ private:
             dxf_file.setOptionSource(defaultOptions);
             dxf_file.setOptions();
             dxf_file.DoRead(IgnoreErrors);
-            pcDoc->recompute();
+            Base::NullProgressRange progressRange;
+            pcDoc->recompute(progressRange);
         }
         catch (const Standard_Failure& e) {
             throw Py::RuntimeError(e.GetMessageString());

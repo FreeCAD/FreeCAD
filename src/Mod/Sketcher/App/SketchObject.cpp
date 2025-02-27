@@ -255,10 +255,11 @@ short SketchObject::mustExecute() const
     return Part2DObject::mustExecute();
 }
 
-App::DocumentObjectExecReturn* SketchObject::execute()
+App::DocumentObjectExecReturn* SketchObject::execute(Base::ProgressRange& progressRange)
 {
+
     try {
-        App::DocumentObjectExecReturn* rtn = Part2DObject::execute();// to positionBySupport
+        App::DocumentObjectExecReturn* rtn = Part2DObject::execute(progressRange);// to positionBySupport
         if (rtn != App::DocumentObject::StdReturn)
             // error
             return rtn;

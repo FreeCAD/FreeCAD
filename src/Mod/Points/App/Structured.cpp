@@ -70,8 +70,9 @@ Structured::Structured()
     // Height.setStatus(App::Property::ReadOnly, true);
 }
 
-App::DocumentObjectExecReturn* Structured::execute()
+App::DocumentObjectExecReturn* Structured::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     std::size_t size = Height.getValue() * Width.getValue();
     if (size != Points.getValue().size()) {
         throw Base::ValueError("(Width * Height) doesn't match with number of points");

@@ -41,7 +41,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     PyObject* getPyObject() override;
     //@}
@@ -67,7 +67,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     void onChanged(const App::Property*) override;
     /// returns the type name of the ViewProvider
@@ -95,7 +95,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     void onChanged(const App::Property*) override;
     /// returns the type name of the ViewProvider
@@ -118,7 +118,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
@@ -142,7 +142,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
@@ -168,7 +168,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     //@}
     const char* getViewProviderName() const override {
@@ -191,7 +191,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
@@ -215,7 +215,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
@@ -239,7 +239,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
@@ -265,7 +265,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
@@ -290,7 +290,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
@@ -318,7 +318,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
@@ -350,7 +350,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
@@ -383,7 +383,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
@@ -411,7 +411,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     void onChanged(const App::Property*) override;
     /// returns the type name of the ViewProvider

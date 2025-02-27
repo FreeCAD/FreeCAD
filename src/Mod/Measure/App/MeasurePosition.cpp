@@ -91,8 +91,10 @@ void MeasurePosition::parseSelection(const App::MeasureSelection& selection)
 }
 
 
-App::DocumentObjectExecReturn* MeasurePosition::execute()
+App::DocumentObjectExecReturn* MeasurePosition::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
+
     const App::DocumentObject* object = Element.getValue();
     const std::vector<std::string>& subElements = Element.getSubValues();
 
@@ -116,7 +118,8 @@ void MeasurePosition::onChanged(const App::Property* prop)
     }
 
     if (prop == &Element) {
-        auto ret = recompute();
+        Base::NullProgressRange progressRange;
+        auto ret = recompute(progressRange);
         delete ret;
     }
     DocumentObject::onChanged(prop);

@@ -69,7 +69,8 @@ Pad::Pad()
 }
 
 
-App::DocumentObjectExecReturn* Pad::execute()
+App::DocumentObjectExecReturn* Pad::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     return buildExtrusion(ExtrudeOption::MakeFace | ExtrudeOption::MakeFuse);
 }

@@ -44,14 +44,15 @@ TEST_F(AttachExtensionTest, testPlanePlane)
     ASSERT_TRUE(plane1);
     ASSERT_TRUE(plane2);
 
-    getDocument()->recompute();
+    Base::NullProgressRange progressRange;
+    getDocument()->recompute(progressRange);
 
     plane2->MapReversed.setValue(false);
     plane2->AttachmentSupport.setValue(plane1);
     plane2->MapPathParameter.setValue(0.0);
     plane2->MapMode.setValue("FlatFace");
 
-    getDocument()->recompute();
+    getDocument()->recompute(progressRange);
     EXPECT_TRUE(true);
 }
 

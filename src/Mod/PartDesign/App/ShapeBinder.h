@@ -65,7 +65,7 @@ protected:
     bool hasPlacementChanged() const;
     void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
     short int mustExecute() const override;
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     void onChanged(const App::Property* prop) override;
 
 private:
@@ -124,7 +124,7 @@ public:
             Base::Matrix4D *mat=nullptr, bool transform=true, int depth=0) const override;
 
 protected:
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     void onChanged(const App::Property *prop) override;
 
     void handleChangedPropertyType(

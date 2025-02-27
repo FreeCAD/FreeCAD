@@ -57,12 +57,12 @@ public:
     PyObject* getPyObject() override;
 
     /// Do nothing, just to suppress warning, must be redefined in derived classes
-    App::DocumentObjectExecReturn* execute() override {
-        return PartDesign::FeatureAddSub::execute();
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override {
+        return PartDesign::FeatureAddSub::execute(progressRange);
     }
 protected:
     //make the boolean ops with the primitives provided by the derived features
-    App::DocumentObjectExecReturn* execute(const TopoDS_Shape& primitiveShape);
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange, const TopoDS_Shape& primitiveShape);
     Type primitiveType = Box;
 };
 
@@ -79,7 +79,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
 
 protected:
@@ -118,7 +118,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
 };
 
@@ -155,7 +155,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
 
 protected:
@@ -194,7 +194,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
 
 protected:
@@ -236,7 +236,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
 
 protected:
@@ -277,7 +277,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
 
 protected:
@@ -315,7 +315,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
 };
 
@@ -358,7 +358,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
 
 protected:

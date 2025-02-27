@@ -48,8 +48,9 @@ short Part::Polygon::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Part::Polygon::execute()
+App::DocumentObjectExecReturn *Part::Polygon::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     BRepBuilderAPI_MakePolygon poly;
     const std::vector<Base::Vector3d> nodes = Nodes.getValues();
 

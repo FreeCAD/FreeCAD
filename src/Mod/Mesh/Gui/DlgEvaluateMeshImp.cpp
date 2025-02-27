@@ -557,7 +557,8 @@ void DlgEvaluateMeshImp::onRepairOrientationButtonClicked()
         }
 
         doc->commitCommand();
-        doc->getDocument()->recompute();
+        Base::NullProgressRange progressRange;
+        doc->getDocument()->recompute(progressRange);
 
         d->ui.repairOrientationButton->setEnabled(false);
         d->ui.checkOrientationButton->setChecked(false);
@@ -679,7 +680,8 @@ void DlgEvaluateMeshImp::onRepairNonmanifoldsButtonClicked()
         }
 
         doc->commitCommand();
-        doc->getDocument()->recompute();
+        Base::NullProgressRange progressRange;
+        doc->getDocument()->recompute(progressRange);
 
         d->ui.repairNonmanifoldsButton->setEnabled(false);
         d->ui.checkNonmanifoldsButton->setChecked(false);
@@ -772,7 +774,8 @@ void DlgEvaluateMeshImp::onRepairIndicesButtonClicked()
         }
 
         doc->commitCommand();
-        doc->getDocument()->recompute();
+        Base::NullProgressRange progressRange;
+        doc->getDocument()->recompute(progressRange);
 
         d->ui.repairIndicesButton->setEnabled(false);
         d->ui.checkIndicesButton->setChecked(false);
@@ -842,7 +845,8 @@ void DlgEvaluateMeshImp::onRepairDegeneratedButtonClicked()
         }
 
         doc->commitCommand();
-        doc->getDocument()->recompute();
+        Base::NullProgressRange progressRange;
+        doc->getDocument()->recompute(progressRange);
 
         d->ui.repairDegeneratedButton->setEnabled(false);
         d->ui.checkDegenerationButton->setChecked(false);
@@ -913,7 +917,8 @@ void DlgEvaluateMeshImp::onRepairDuplicatedFacesButtonClicked()
         }
 
         doc->commitCommand();
-        doc->getDocument()->recompute();
+        Base::NullProgressRange progressRange;
+        doc->getDocument()->recompute(progressRange);
 
         d->ui.repairDuplicatedFacesButton->setEnabled(false);
         d->ui.checkDuplicatedFacesButton->setChecked(false);
@@ -982,7 +987,8 @@ void DlgEvaluateMeshImp::onRepairDuplicatedPointsButtonClicked()
         }
 
         doc->commitCommand();
-        doc->getDocument()->recompute();
+        Base::NullProgressRange progressRange;
+        doc->getDocument()->recompute(progressRange);
 
         d->ui.repairDuplicatedPointsButton->setEnabled(false);
         d->ui.checkDuplicatedPointsButton->setChecked(false);
@@ -1060,7 +1066,8 @@ void DlgEvaluateMeshImp::onRepairSelfIntersectionButtonClicked()
         mesh->removeSelfIntersections(d->self_intersections);
         d->meshFeature->Mesh.finishEditing();
         doc->commitCommand();
-        doc->getDocument()->recompute();
+        Base::NullProgressRange progressRange;
+        doc->getDocument()->recompute(progressRange);
 
         d->ui.repairSelfIntersectionButton->setEnabled(false);
         d->ui.checkSelfIntersectionButton->setChecked(false);
@@ -1145,7 +1152,8 @@ void DlgEvaluateMeshImp::onRepairFoldsButtonClicked()
         }
 
         doc->commitCommand();
-        doc->getDocument()->recompute();
+        Base::NullProgressRange progressRange;
+        doc->getDocument()->recompute(progressRange);
 
         qApp->restoreOverrideCursor();
         d->ui.repairFoldsButton->setEnabled(false);
@@ -1282,7 +1290,8 @@ void DlgEvaluateMeshImp::onRepairAllTogetherClicked()
         }
 
         doc->commitCommand();
-        doc->getDocument()->recompute();
+        Base::NullProgressRange progressRange;
+        doc->getDocument()->recompute(progressRange);
     }
     // clang-format on
 }

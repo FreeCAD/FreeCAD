@@ -54,7 +54,7 @@ public:
     App::PropertyLinkSub Element2;
     App::PropertyAngle Angle;
 
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
     const char* getViewProviderName() const override
     {

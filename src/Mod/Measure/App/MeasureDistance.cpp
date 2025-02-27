@@ -223,8 +223,9 @@ void MeasureDistance::setValues(const gp_Pnt& p1, const gp_Pnt& p2)
     DistanceZ.setValue(std::fabs(delta.Z()));
 }
 
-App::DocumentObjectExecReturn* MeasureDistance::execute()
+App::DocumentObjectExecReturn* MeasureDistance::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
 
     App::DocumentObject* ob1 = Element1.getValue();
     std::vector<std::string> subs1 = Element1.getSubValues();
@@ -264,7 +265,8 @@ void MeasureDistance::onChanged(const App::Property* prop)
 
     if (prop == &Element1 || prop == &Element2) {
         if (!isRestoring()) {
-            App::DocumentObjectExecReturn* ret = recompute();
+            Base::NullProgressRange progressRange;
+            App::DocumentObjectExecReturn* ret = recompute(progressRange);
             delete ret;
         }
     }
@@ -378,8 +380,9 @@ void MeasureDistanceDetached::parseSelection(const App::MeasureSelection& select
 }
 
 
-App::DocumentObjectExecReturn* MeasureDistanceDetached::execute()
+App::DocumentObjectExecReturn* MeasureDistanceDetached::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     recalculateDistance();
     return DocumentObject::StdReturn;
 }

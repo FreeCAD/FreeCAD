@@ -1043,8 +1043,9 @@ void Sheet::updateBindings()
  *
  */
 
-DocumentObjectExecReturn* Sheet::execute()
+DocumentObjectExecReturn* Sheet::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     updateBindings();
 
     // Get dirty cells that we have to recompute
@@ -1647,7 +1648,8 @@ std::set<CellAddress> Sheet::providesTo(CellAddress address) const
 
 void Sheet::onDocumentRestored()
 {
-    auto ret = execute();
+    Base::NullProgressRange progressRange;
+    auto ret = execute(progressRange);
     if (ret != DocumentObject::StdReturn) {
         FC_ERR("Failed to restore " << getFullName() << ": " << ret->Why);
         delete ret;

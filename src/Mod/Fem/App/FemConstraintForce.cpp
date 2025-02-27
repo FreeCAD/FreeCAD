@@ -56,9 +56,9 @@ ConstraintForce::ConstraintForce()
     naturalDirectionVector = Base::Vector3d(0, 0, 0);
 }
 
-App::DocumentObjectExecReturn* ConstraintForce::execute()
+App::DocumentObjectExecReturn* ConstraintForce::execute(Base::ProgressRange& progressRange)
 {
-    return Constraint::execute();
+    return Constraint::execute(progressRange);
 }
 
 void ConstraintForce::handleChangedPropertyType(Base::XMLReader& reader,

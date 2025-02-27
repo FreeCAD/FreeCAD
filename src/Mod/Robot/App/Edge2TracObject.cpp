@@ -61,8 +61,10 @@ Edge2TracObject::Edge2TracObject()
     NbrOfCluster = 0;
 }
 
-App::DocumentObjectExecReturn* Edge2TracObject::execute()
+App::DocumentObjectExecReturn* Edge2TracObject::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
+
     App::DocumentObject* link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("No object linked");

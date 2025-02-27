@@ -61,9 +61,9 @@ ConstraintBearing::ConstraintBearing()
                       "Axis of bearing seat");
 }
 
-App::DocumentObjectExecReturn* ConstraintBearing::execute()
+App::DocumentObjectExecReturn* ConstraintBearing::execute(Base::ProgressRange& progressRange)
 {
-    return Constraint::execute();
+    return Constraint::execute(progressRange);
 }
 
 void ConstraintBearing::onChanged(const App::Property* prop)

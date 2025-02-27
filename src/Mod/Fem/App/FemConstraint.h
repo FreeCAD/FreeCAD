@@ -120,7 +120,7 @@ public:
      *  cleared right after the @ref execute call by the recompute mechanism.
      *  See Document::recompute() and DocumentObject::purgeTouched().
      */
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
     /**
      * @brief Calculates scale factor based on characteristic length of shape.

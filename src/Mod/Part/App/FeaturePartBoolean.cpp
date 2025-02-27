@@ -101,7 +101,7 @@ const char *Boolean::opCode() const
     return Part::OpCodes::Boolean;
 }
 
-App::DocumentObjectExecReturn* Boolean::execute()
+App::DocumentObjectExecReturn* Boolean::execute(Base::ProgressRange& progressRange)
 {
     try {
 #if defined(__GNUC__) && defined(FC_OS_LINUX)
@@ -153,7 +153,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
         }
         this->Shape.setValue(res);
         copyMaterial(base);
-        return Part::Feature::execute();
+        return Part::Feature::execute(progressRange);
     }
     catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());

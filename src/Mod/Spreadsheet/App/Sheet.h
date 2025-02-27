@@ -39,6 +39,7 @@
 #include <App/FeaturePython.h>
 #include <App/PropertyUnits.h>
 #include <App/Range.h>
+#include <Base/ProgressRange.h>
 #include <Base/Unit.h>
 
 #include "PropertyColumnWidths.h"
@@ -198,7 +199,7 @@ public:
 
     short mustExecute() const override;
 
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
     bool getCellAddress(const App::Property* prop, App::CellAddress& address);
 

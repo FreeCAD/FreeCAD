@@ -63,8 +63,9 @@ short Fillet::mustExecute() const
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Fillet::execute()
+App::DocumentObjectExecReturn *Fillet::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
 

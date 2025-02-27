@@ -66,8 +66,9 @@ short Boolean::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Boolean::execute()
+App::DocumentObjectExecReturn *Boolean::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     // Get the operation type
     std::string type = Type.getValueAsString();
 

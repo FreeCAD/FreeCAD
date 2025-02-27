@@ -86,7 +86,7 @@ short MultiFuse::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *MultiFuse::execute()
+App::DocumentObjectExecReturn *MultiFuse::execute(Base::ProgressRange& progressRange)
 {
     std::vector<TopoShape> shapes;
     std::vector<App::DocumentObject*> obj = Shapes.getValues();
@@ -204,7 +204,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
 
             App::DocumentObject* link = Shapes.getValues()[0];
             copyMaterial(link);
-            return Part::Feature::execute();
+            return Part::Feature::execute(progressRange);
         }
         catch (Standard_Failure& e) {
             return new App::DocumentObjectExecReturn(e.GetMessageString());

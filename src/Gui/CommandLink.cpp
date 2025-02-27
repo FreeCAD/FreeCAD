@@ -454,8 +454,10 @@ static void linkConvert(bool unlink) {
             if(obj)
                 recomputes.push_back(obj);
         }
-        if(!recomputes.empty())
-            recomputes.front()->getDocument()->recompute(recomputes);
+        if(!recomputes.empty()) {
+            Base::NullProgressRange progressRange;
+            recomputes.front()->getDocument()->recompute(progressRange, recomputes);
+        }
 
         Command::commitCommand();
 

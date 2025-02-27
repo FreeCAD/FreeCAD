@@ -73,7 +73,8 @@ private:
             auto* pcSheet = pcDoc->addObject<Spreadsheet::Sheet>(filename);
 
             pcSheet->importFromFile(Name, '\t', '"', '\\');
-            pcSheet->execute();
+            Base::NullProgressRange progressRange;
+            pcSheet->execute(progressRange);
         }
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());

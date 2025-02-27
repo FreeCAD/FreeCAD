@@ -46,7 +46,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderRuledSurface";
@@ -81,7 +81,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderLoft";
@@ -113,7 +113,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderSweep";
@@ -145,7 +145,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderThickness";
@@ -172,7 +172,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderRefine";
     }
@@ -191,7 +191,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderReverse";
     }

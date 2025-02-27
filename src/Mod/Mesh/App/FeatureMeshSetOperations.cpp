@@ -58,8 +58,9 @@ short SetOperations::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn* SetOperations::execute()
+App::DocumentObjectExecReturn* SetOperations::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     Mesh::Feature* mesh1 = dynamic_cast<Mesh::Feature*>(Source1.getValue());
     Mesh::Feature* mesh2 = dynamic_cast<Mesh::Feature*>(Source2.getValue());
 

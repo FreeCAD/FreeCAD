@@ -99,7 +99,8 @@ private:
                 auto* pcFeature = pcDoc->addObject<Sketcher::SketchObjectSF>(filename);
                 pcFeature->SketchFlatFile.setValue(EncodedName.c_str());
 
-                pcDoc->recompute();
+                Base::NullProgressRange progressRange;
+                pcDoc->recompute(progressRange);
             }
             else {
                 throw Py::RuntimeError("Unknown file extension");

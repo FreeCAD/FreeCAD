@@ -38,8 +38,10 @@ TransformDemolding::TransformDemolding()
     ADD_PROPERTY(Axis, (0.0, 0.0, 1.0));
 }
 
-App::DocumentObjectExecReturn* TransformDemolding::execute()
-{ /*
+App::DocumentObjectExecReturn* TransformDemolding::execute(Base::ProgressRange& progressRange)
+{
+    (void)progressRange;
+    /*
   Feature *pcFirst  = dynamic_cast<Feature*>(Source.getValue());
   if (!pcFirst || pcFirst->isError())
       return new App::DocumentObjectExecReturn("Unknown Error");

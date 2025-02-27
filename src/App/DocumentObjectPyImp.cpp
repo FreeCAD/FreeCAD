@@ -444,7 +444,8 @@ PyObject* DocumentObjectPy::recompute(PyObject* args)
     }
 
     try {
-        bool ok = getDocumentObjectPtr()->recomputeFeature(Base::asBoolean(recursive));
+        Base::NullProgressRange progressRange;
+        bool ok = getDocumentObjectPtr()->recomputeFeature(progressRange, Base::asBoolean(recursive));
         return Py_BuildValue("O", (ok ? Py_True : Py_False));
     }
     catch (const Base::Exception& e) {

@@ -120,7 +120,7 @@ App::DocumentObjectExecReturn* RuledSurface::getShape(const App::PropertyLinkSub
     return nullptr;
 }
 
-App::DocumentObjectExecReturn* RuledSurface::execute()
+App::DocumentObjectExecReturn* RuledSurface::execute(Base::ProgressRange& progressRange)
 {
     try {
         std::vector<TopoShape> shapes;
@@ -149,7 +149,7 @@ App::DocumentObjectExecReturn* RuledSurface::execute()
         TopoShape res(0);
         res.makeElementRuledSurface(shapes, Orientation.getValue());
         this->Shape.setValue(res);
-        return Part::Feature::execute();
+        return Part::Feature::execute(progressRange);
 
     }
     catch (Standard_Failure& e) {
@@ -207,7 +207,7 @@ void Loft::onChanged(const App::Property* prop)
     Part::Feature::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn* Loft::execute()
+App::DocumentObjectExecReturn* Loft::execute(Base::ProgressRange& progressRange)
 {
     if (Sections.getSize() == 0) {
         return new App::DocumentObjectExecReturn("No sections linked.");
@@ -231,7 +231,7 @@ App::DocumentObjectExecReturn* Loft::execute()
             result.linearize( LinearizeFace::linearizeFaces, LinearizeEdge::noEdges);
         }
         this->Shape.setValue(result);
-        return Part::Feature::execute();
+        return Part::Feature::execute(progressRange);
     }
     catch (Standard_Failure& e) {
 
@@ -292,8 +292,9 @@ void Sweep::onChanged(const App::Property* prop)
     Part::Feature::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn* Sweep::execute()
+App::DocumentObjectExecReturn* Sweep::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     if (Sections.getSize() == 0) {
         return new App::DocumentObjectExecReturn("No sections linked.");
     }
@@ -412,7 +413,7 @@ void Thickness::handleChangedPropertyType(Base::XMLReader& reader,
     }
 }
 
-App::DocumentObjectExecReturn* Thickness::execute()
+App::DocumentObjectExecReturn* Thickness::execute(Base::ProgressRange& progressRange)
 {
     std::vector<TopoShape> shapes;
     auto base = getTopoShape(Faces.getValue());
@@ -444,7 +445,7 @@ App::DocumentObjectExecReturn* Thickness::execute()
                                                     self,
                                                     mode,
                                                     static_cast<JoinType>(join)));
-    return Part::Feature::execute();
+    return Part::Feature::execute(progressRange);
 }
 
 // ----------------------------------------------------------------------------
@@ -456,8 +457,9 @@ Refine::Refine()
     ADD_PROPERTY_TYPE(Source, (nullptr), "Refine", App::Prop_None, "Source shape");
 }
 
-App::DocumentObjectExecReturn* Refine::execute()
+App::DocumentObjectExecReturn* Refine::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     Part::Feature* source = Source.getValue<Part::Feature*>();
     if (!source) {
         return new App::DocumentObjectExecReturn("No part object linked.");
@@ -482,8 +484,9 @@ Reverse::Reverse()
     ADD_PROPERTY_TYPE(Source, (nullptr), "Reverse", App::Prop_None, "Source shape");
 }
 
-App::DocumentObjectExecReturn* Reverse::execute()
+App::DocumentObjectExecReturn* Reverse::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* source = Source.getValue<App::DocumentObject*>();
     Part::TopoShape topoShape = Part::Feature::getTopoShape(source);
     if (topoShape.isNull()) {

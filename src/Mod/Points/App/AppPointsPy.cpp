@@ -165,8 +165,9 @@ private:
                 }
 
                 // delayed adding of the points feature
+                Base::NullProgressRange progressRange;
                 pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
-                pcDoc->recomputeFeature(pcFeature);
+                pcDoc->recomputeFeature(progressRange, pcFeature);
                 pcFeature->purgeTouched();
             }
             else {
@@ -182,8 +183,9 @@ private:
 
                 // delayed adding of the points feature
                 pcFeature->Points.setValue(reader->getPoints());
+                Base::NullProgressRange progressRange;
                 pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
-                pcDoc->recomputeFeature(pcFeature);
+                pcDoc->recomputeFeature(progressRange, pcFeature);
                 pcFeature->purgeTouched();
             }
         }
@@ -291,13 +293,15 @@ private:
 
                 // delayed adding of the points feature
                 pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
-                pcDoc->recomputeFeature(pcFeature);
+                Base::NullProgressRange progressRange;
+                pcDoc->recomputeFeature(progressRange, pcFeature);
                 pcFeature->purgeTouched();
             }
             else {
                 auto* pcFeature = pcDoc->addObject<Points::Feature>(file.fileNamePure().c_str());
                 pcFeature->Points.setValue(reader->getPoints());
-                pcDoc->recomputeFeature(pcFeature);
+                Base::NullProgressRange progressRange;
+                pcDoc->recomputeFeature(progressRange, pcFeature);
                 pcFeature->purgeTouched();
             }
         }

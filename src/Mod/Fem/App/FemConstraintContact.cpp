@@ -60,9 +60,9 @@ ConstraintContact::ConstraintContact()
                       "Stick slope");
 }
 
-App::DocumentObjectExecReturn* ConstraintContact::execute()
+App::DocumentObjectExecReturn* ConstraintContact::execute(Base::ProgressRange& progressRange)
 {
-    return Constraint::execute();
+    return Constraint::execute(progressRange);
 }
 
 const char* ConstraintContact::getViewProviderName() const

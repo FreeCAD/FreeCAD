@@ -57,7 +57,7 @@ public:
       * If Reversed is true then the direction of revolution will be reversed.
       * The created material will be cut out of the sketch support
       */
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     /// returns the type name of the view provider
     const char* getViewProviderName() const override {

@@ -995,7 +995,8 @@ void Application::checkForRecomputes() {
     bool hasError = false;
     for (auto doc: App::Document::getDependentDocuments(docs, true)) {
         try {
-            doc->recompute({}, false, &hasError);
+            Base::NullProgressRange progressRange;
+            doc->recompute(progressRange, {}, false, &hasError);
         } catch (Base::Exception &e) {
             e.ReportException();
             hasError = true;

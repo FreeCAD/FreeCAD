@@ -61,8 +61,9 @@ FemMeshShapeObject::FemMeshShapeObject() = default;
 
 FemMeshShapeObject::~FemMeshShapeObject() = default;
 
-App::DocumentObjectExecReturn* FemMeshShapeObject::execute()
+App::DocumentObjectExecReturn* FemMeshShapeObject::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     Fem::FemMesh newMesh;
 
     Part::Feature* feat = Shape.getValue<Part::Feature*>();

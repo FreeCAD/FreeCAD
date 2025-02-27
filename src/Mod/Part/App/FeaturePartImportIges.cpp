@@ -48,8 +48,9 @@ short ImportIges::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *ImportIges::execute()
+App::DocumentObjectExecReturn *ImportIges::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     Base::FileInfo fi(FileName.getValue());
     if (!fi.isReadable()) {
         Base::Console().Log("ImportIges::execute() not able to open %s!\n",FileName.getValue());

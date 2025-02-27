@@ -56,7 +56,7 @@ public:
 
     App::PropertyLink Input;
 
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
 protected:
     vtkDataObject* getInputData();
@@ -142,7 +142,7 @@ public:
     void GetAxisData();
 
 protected:
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     void onChanged(const App::Property* prop) override;
     void handleChangedPropertyType(Base::XMLReader& reader,
                                    const char* TypeName,
@@ -177,7 +177,7 @@ public:
     short int mustExecute() const override;
 
 protected:
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     void onChanged(const App::Property* prop) override;
     void GetPointData();
 
@@ -207,7 +207,7 @@ public:
         return "FemGui::ViewProviderFemPostClip";
     }
     short int mustExecute() const override;
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -241,7 +241,7 @@ public:
     short int mustExecute() const override;
 
 protected:
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     void onChanged(const App::Property* prop) override;
 
     void recalculateContours(double min, double max);
@@ -280,7 +280,7 @@ public:
         return "FemGui::ViewProviderFemPostCut";
     }
     short int mustExecute() const override;
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -312,7 +312,7 @@ public:
     short int mustExecute() const override;
 
 protected:
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     void onChanged(const App::Property* prop) override;
     void setConstraintForField();
 
@@ -344,7 +344,7 @@ public:
     short int mustExecute() const override;
 
 protected:
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     void onChanged(const App::Property* prop) override;
 
 private:

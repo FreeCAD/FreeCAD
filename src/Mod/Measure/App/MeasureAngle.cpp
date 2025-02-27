@@ -211,8 +211,9 @@ gp_Vec MeasureAngle::location2()
     return {temp.x, temp.y, temp.z};
 }
 
-App::DocumentObjectExecReturn* MeasureAngle::execute()
+App::DocumentObjectExecReturn* MeasureAngle::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* ob1 = Element1.getValue();
     std::vector<std::string> subs1 = Element1.getSubValues();
 

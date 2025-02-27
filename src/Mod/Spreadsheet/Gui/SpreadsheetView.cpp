@@ -163,7 +163,8 @@ bool SheetView::onMsg(const char* pMsg, const char**)
         getGuiDocument()->undo(1);
         App::Document* doc = getAppDocument();
         if (doc) {
-            doc->recompute();
+            Base::NullProgressRange progressRange;
+            doc->recompute(progressRange);
         }
         return true;
     }
@@ -171,7 +172,8 @@ bool SheetView::onMsg(const char* pMsg, const char**)
         getGuiDocument()->redo(1);
         App::Document* doc = getAppDocument();
         if (doc) {
-            doc->recompute();
+            Base::NullProgressRange progressRange;
+            doc->recompute(progressRange);
         }
         return true;
     }

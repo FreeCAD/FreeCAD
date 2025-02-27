@@ -2974,7 +2974,7 @@ void Document::renameObjectIdentifiers(
 }
 
 #ifdef USE_OLD_DAG
-int Document::recompute(const std::vector<App::DocumentObject*>& objs, bool force)
+int Document::recompute(Base::ProgressRange& progressRange, const std::vector<App::DocumentObject*>& objs, bool force)
 {
     if (testStatus(Document::Recomputing)) {
         // this is clearly a bug in the calling instance
@@ -3094,7 +3094,7 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs, bool forc
 
         if (recomputeList.find(Cur) != recomputeList.end()
             || Cur->ExpressionEngine.depsAreTouched()) {
-            if (_recomputeFeature(Cur)) {
+            if (_recomputeFeature(progressRange, Cur)) {
                 // if something happened break execution of recompute
                 d->vertexMap.clear();
                 return -1;
@@ -3123,7 +3123,8 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs, bool forc
 
 #else  // ifdef USE_OLD_DAG
 
-int Document::recompute(const std::vector<App::DocumentObject*>& objs,
+int Document::recompute(Base::ProgressRange& progressRange,
+                        const std::vector<App::DocumentObject*>& objs,
                         bool force,
                         bool* hasError,
                         int options)
@@ -3217,7 +3218,7 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
                 if (obj->mustRecompute()) {
                     doRecompute = true;
                     ++objectCount;
-                    int res = _recomputeFeature(obj);
+                    int res = _recomputeFeature(progressRange, obj);
                     if (res) {
                         if (hasError) {
                             *hasError = true;
@@ -3501,7 +3502,7 @@ const char* Document::getErrorDescription(const App::DocumentObject* Obj) const
 }
 
 // call the recompute of the Feature and handle the exceptions and errors.
-int Document::_recomputeFeature(DocumentObject* Feat)
+int Document::_recomputeFeature(Base::ProgressRange& progressRange, DocumentObject* Feat)
 {
     FC_LOG("Recomputing " << Feat->getFullName());
 
@@ -3509,7 +3510,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
     try {
         returnCode = Feat->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteNonOutput);
         if (returnCode == DocumentObject::StdReturn) {
-            returnCode = Feat->recompute();
+            returnCode = Feat->recompute(progressRange);
             if (returnCode == DocumentObject::StdReturn) {
                 returnCode =
                     Feat->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteOutput);
@@ -3558,7 +3559,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
     return 0;
 }
 
-bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
+bool Document::recomputeFeature(Base::ProgressRange& progressRange, DocumentObject* Feat, bool recursive)
 {
     // delete recompute log
     d->clearRecomputeLog(Feat);
@@ -3567,11 +3568,11 @@ bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
     if (Feat->isAttachedToDocument()) {
         if (recursive) {
             bool hasError = false;
-            recompute({Feat}, true, &hasError);
+            recompute(progressRange, {Feat}, true, &hasError);
             return !hasError;
         }
         else {
-            _recomputeFeature(Feat);
+            _recomputeFeature(progressRange, Feat);
             signalRecomputedObject(*Feat);
             return Feat->isValid();
         }

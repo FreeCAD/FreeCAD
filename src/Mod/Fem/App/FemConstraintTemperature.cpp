@@ -46,9 +46,9 @@ ConstraintTemperature::ConstraintTemperature()
     ConstraintType.setEnums(ConstraintTypes);
 }
 
-App::DocumentObjectExecReturn* ConstraintTemperature::execute()
+App::DocumentObjectExecReturn* ConstraintTemperature::execute(Base::ProgressRange& progressRange)
 {
-    return Constraint::execute();
+    return Constraint::execute(progressRange);
 }
 
 const char* ConstraintTemperature::getViewProviderName() const

@@ -64,9 +64,9 @@ Part2DObject::Part2DObject()
 }
 
 
-App::DocumentObjectExecReturn *Part2DObject::execute()
+App::DocumentObjectExecReturn *Part2DObject::execute(Base::ProgressRange& progressRange)
 {
-    return Feature::execute();
+    return Feature::execute(progressRange);
 }
 
 void Part2DObject::transformPlacement(const Base::Placement &transform)

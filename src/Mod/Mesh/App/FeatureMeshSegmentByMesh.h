@@ -24,6 +24,7 @@
 #define FEATURE_MESH_SEGMENTBYMESH_H
 
 #include <App/PropertyLinks.h>
+#include <Base/ProgressRange.h>
 
 #include "MeshFeature.h"
 
@@ -52,7 +53,7 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     //@}
 };

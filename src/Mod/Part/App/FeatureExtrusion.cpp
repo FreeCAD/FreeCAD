@@ -353,8 +353,9 @@ void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source, const E
     }
 }
 
-App::DocumentObjectExecReturn* Extrusion::execute()
+App::DocumentObjectExecReturn* Extrusion::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* link = Base.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("No object linked");

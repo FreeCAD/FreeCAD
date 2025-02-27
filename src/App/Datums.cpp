@@ -219,7 +219,7 @@ short LocalCoordinateSystem::mustExecute() const
     return DocumentObject::mustExecute();
 }
 
-App::DocumentObjectExecReturn* LocalCoordinateSystem::execute()
+App::DocumentObjectExecReturn* LocalCoordinateSystem::execute(Base::ProgressRange& progressRange)
 {
     try {  // try to find all base axis and planes in the origin
         for (const char* role : AxisRoles) {
@@ -238,7 +238,7 @@ App::DocumentObjectExecReturn* LocalCoordinateSystem::execute()
         return new App::DocumentObjectExecReturn(ex.what());
     }
 
-    return DocumentObject::execute();
+    return DocumentObject::execute(progressRange);
 }
 
 const std::vector<LocalCoordinateSystem::SetupData>& LocalCoordinateSystem::getSetupData()

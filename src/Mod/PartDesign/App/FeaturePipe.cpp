@@ -102,8 +102,9 @@ short Pipe::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Pipe::execute()
+App::DocumentObjectExecReturn *Pipe::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     auto getSectionShape = [](App::DocumentObject* feature,

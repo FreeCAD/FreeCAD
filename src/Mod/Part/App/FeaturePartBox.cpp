@@ -52,7 +52,7 @@ short Box::mustExecute() const
     return Primitive::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Box::execute()
+App::DocumentObjectExecReturn *Box::execute(Base::ProgressRange& progressRange)
 {
     double L = Length.getValue();
     double W = Width.getValue();
@@ -72,7 +72,7 @@ App::DocumentObjectExecReturn *Box::execute()
         BRepPrimAPI_MakeBox mkBox(L, W, H);
         TopoDS_Shape ResultShape = mkBox.Shape();
         this->Shape.setValue(ResultShape, false);
-        return Primitive::execute();
+        return Primitive::execute(progressRange);
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -224,7 +224,8 @@ void Box::onChanged(const App::Property* prop)
 {
     if (prop == &Length || prop == &Width || prop == &Height) {
         if (!isRestoring()) {
-            App::DocumentObjectExecReturn *ret = recompute();
+            Base::NullProgressRange progressRange;
+            App::DocumentObjectExecReturn *ret = recompute(progressRange);
             delete ret;
         }
     }
@@ -232,7 +233,8 @@ void Box::onChanged(const App::Property* prop)
         // see Box::Restore
         if (this->Shape.testStatus(App::Property::User1)) {
             this->Shape.setStatus(App::Property::User1, false);
-            App::DocumentObjectExecReturn *ret = recompute();
+            Base::NullProgressRange progressRange;
+            App::DocumentObjectExecReturn *ret = recompute(progressRange);
             delete ret;
             return;
         }

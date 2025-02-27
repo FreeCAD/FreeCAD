@@ -270,6 +270,7 @@ SET(FreeCADBase_HPP_SRCS
     Placement.h
     Precision.h
     ProgressIndicatorPy.h
+    ProgressRange.h
     PyExport.h
     PyObjectBase.h
     PyWrapParseTupleAndKeywords.h

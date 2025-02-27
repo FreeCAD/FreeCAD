@@ -53,9 +53,9 @@ ConstraintGear::ConstraintGear()
     naturalDirectionVector = Base::Vector3d(1, 1, 1).Normalize();
 }
 
-App::DocumentObjectExecReturn* ConstraintGear::execute()
+App::DocumentObjectExecReturn* ConstraintGear::execute(Base::ProgressRange& progressRange)
 {
-    return ConstraintBearing::execute();
+    return ConstraintBearing::execute(progressRange);
 }
 
 void ConstraintGear::onChanged(const App::Property* prop)

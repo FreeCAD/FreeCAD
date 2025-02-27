@@ -25,6 +25,7 @@
 #define APP_DOCUMENTOBJECTEXTENSION_H
 
 #include "Extension.h"
+#include <Base/ProgressRange.h>
 
 namespace Base
 {
@@ -55,7 +56,7 @@ public:
 
     // override if execution is necessary
     virtual short extensionMustExecute();
-    virtual App::DocumentObjectExecReturn* extensionExecute();
+    virtual App::DocumentObjectExecReturn* extensionExecute(Base::ProgressRange& progressRange);
 
 
     /// get called after setting the document

@@ -66,13 +66,14 @@ FeaturePrimitive::FeaturePrimitive()
     Part::AttachExtension::initExtension(this);
 }
 
-App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& primitive)
+App::DocumentObjectExecReturn* FeaturePrimitive::execute(Base::ProgressRange& progressRange, const TopoDS_Shape& primitive)
 {
+    (void)progressRange;
     if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     try {
         //transform the primitive in the correct coordinance
-        FeatureAddSub::execute();
+        FeatureAddSub::execute(progressRange);
 
         //if we have no base we just add the standard primitive shape
         TopoShape primitiveShape;
@@ -192,7 +193,7 @@ Box::Box()
     primitiveType = FeaturePrimitive::Box;
 }
 
-App::DocumentObjectExecReturn* Box::execute()
+App::DocumentObjectExecReturn* Box::execute(Base::ProgressRange& progressRange)
 {
     double L = Length.getValue();
     double W = Width.getValue();
@@ -208,7 +209,7 @@ App::DocumentObjectExecReturn* Box::execute()
     try {
         // Build a box using the dimension attributes
         BRepPrimAPI_MakeBox mkBox(L, W, H);
-        return FeaturePrimitive::execute(mkBox.Shape());
+        return FeaturePrimitive::execute(progressRange, mkBox.Shape());
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -245,7 +246,7 @@ Cylinder::Cylinder()
     primitiveType = FeaturePrimitive::Cylinder;
 }
 
-App::DocumentObjectExecReturn* Cylinder::execute()
+App::DocumentObjectExecReturn* Cylinder::execute(Base::ProgressRange& progressRange)
 {
     // Build a cylinder
     if (Radius.getValue() < Precision::Confusion())
@@ -263,7 +264,7 @@ App::DocumentObjectExecReturn* Cylinder::execute()
         BRepPrim_Cylinder prim = mkCylr.Cylinder();
         TopoDS_Shape result = makePrism(Height.getValue(), prim.BottomFace());
 
-        return FeaturePrimitive::execute(result);
+        return FeaturePrimitive::execute(progressRange, result);
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -302,7 +303,7 @@ Sphere::Sphere()
     primitiveType = FeaturePrimitive::Sphere;
 }
 
-App::DocumentObjectExecReturn* Sphere::execute()
+App::DocumentObjectExecReturn* Sphere::execute(Base::ProgressRange& progressRange)
 {
    // Build a sphere
     if (Radius.getValue() < Precision::Confusion())
@@ -312,7 +313,7 @@ App::DocumentObjectExecReturn* Sphere::execute()
                                         Base::toRadians<double>(Angle1.getValue()),
                                         Base::toRadians<double>(Angle2.getValue()),
                                         Base::toRadians<double>(Angle3.getValue()));
-        return FeaturePrimitive::execute(mkSphere.Shape());
+        return FeaturePrimitive::execute(progressRange, mkSphere.Shape());
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -352,7 +353,7 @@ Cone::Cone()
     primitiveType = FeaturePrimitive::Cone;
 }
 
-App::DocumentObjectExecReturn* Cone::execute()
+App::DocumentObjectExecReturn* Cone::execute(Base::ProgressRange& progressRange)
 {
     if (Radius1.getValue() < 0.0)
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Radius of cone cannot be negative"));
@@ -366,14 +367,14 @@ App::DocumentObjectExecReturn* Cone::execute()
             BRepPrimAPI_MakeCylinder mkCylr(Radius1.getValue(),
                                             Height.getValue(),
                                             Base::toRadians<double>(Angle.getValue()));
-            return FeaturePrimitive::execute(mkCylr.Shape());
+            return FeaturePrimitive::execute(progressRange, mkCylr.Shape());
         }
         // Build a cone
         BRepPrimAPI_MakeCone mkCone(Radius1.getValue(),
                                     Radius2.getValue(),
                                     Height.getValue(),
                                     Base::toRadians<double>(Angle.getValue()));
-        return FeaturePrimitive::execute(mkCone.Shape());
+        return FeaturePrimitive::execute(progressRange, mkCone.Shape());
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -418,7 +419,7 @@ Ellipsoid::Ellipsoid()
     primitiveType = FeaturePrimitive::Ellipsoid;
 }
 
-App::DocumentObjectExecReturn* Ellipsoid::execute()
+App::DocumentObjectExecReturn* Ellipsoid::execute(Base::ProgressRange& progressRange)
 {
     // Build a sphere
     if (Radius1.getValue() < Precision::Confusion())
@@ -454,7 +455,7 @@ App::DocumentObjectExecReturn* Ellipsoid::execute()
         mat.SetValue(2,3,0.0);
         mat.SetValue(3,3,scaleZ);
         BRepBuilderAPI_GTransform mkTrsf(mkSphere.Shape(), mat);
-        return FeaturePrimitive::execute(mkTrsf.Shape());
+        return FeaturePrimitive::execute(progressRange, mkTrsf.Shape());
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -503,7 +504,7 @@ Torus::Torus()
     primitiveType = FeaturePrimitive::Torus;
 }
 
-App::DocumentObjectExecReturn* Torus::execute()
+App::DocumentObjectExecReturn* Torus::execute(Base::ProgressRange& progressRange)
 {
     if (Radius1.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Radius of torus too small"));
@@ -517,7 +518,7 @@ App::DocumentObjectExecReturn* Torus::execute()
                                       Base::toRadians<double>(Angle1.getValue()),
                                       Base::toRadians<double>(Angle2.getValue()),
                                       Base::toRadians<double>(Angle3.getValue()));
-        return FeaturePrimitive::execute(mkTorus.Solid());
+        return FeaturePrimitive::execute(progressRange, mkTorus.Solid());
 #else
         Part::TopoShape shape;
         return FeaturePrimitive::execute(shape.makeTorus(Radius1.getValue(),
@@ -567,7 +568,7 @@ Prism::Prism()
     primitiveType = FeaturePrimitive::Prism;
 }
 
-App::DocumentObjectExecReturn* Prism::execute()
+App::DocumentObjectExecReturn* Prism::execute(Base::ProgressRange& progressRange)
 {
     // Build a prism
     if (Polygon.getValue() < 3)
@@ -593,7 +594,7 @@ App::DocumentObjectExecReturn* Prism::execute()
         BRepBuilderAPI_MakeFace mkFace(mkPoly.Wire());
         // the direction vector for the prism is the height for z and the given angle
         TopoDS_Shape prism = makePrism(Height.getValue(), mkFace.Face());
-        return FeaturePrimitive::execute(prism);
+        return FeaturePrimitive::execute(progressRange, prism);
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -636,7 +637,7 @@ Wedge::Wedge()
     primitiveType = FeaturePrimitive::Wedge;
 }
 
-App::DocumentObjectExecReturn* Wedge::execute()
+App::DocumentObjectExecReturn* Wedge::execute(Base::ProgressRange& progressRange)
 {
     double xmin = Xmin.getValue();
     double ymin = Ymin.getValue();
@@ -678,7 +679,7 @@ App::DocumentObjectExecReturn* Wedge::execute()
             xmax, ymax, zmax, z2max, x2max);
         BRepBuilderAPI_MakeSolid mkSolid;
         mkSolid.Add(mkWedge.Shell());
-        return FeaturePrimitive::execute(mkSolid.Solid());
+        return FeaturePrimitive::execute(progressRange, mkSolid.Solid());
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

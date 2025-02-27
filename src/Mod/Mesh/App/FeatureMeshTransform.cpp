@@ -39,8 +39,9 @@ Transform::Transform()
     ADD_PROPERTY(Position, (Matrix4D()));
 }
 
-App::DocumentObjectExecReturn* Transform::execute()
+App::DocumentObjectExecReturn* Transform::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     /*
         Feature* pcFirst = dynamic_cast<Feature*>(Source.getValue());
         if (!pcFirst || pcFirst->isError())

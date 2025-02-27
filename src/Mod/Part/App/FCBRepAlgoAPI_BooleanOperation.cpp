@@ -98,6 +98,14 @@ void FCBRepAlgoAPI_BooleanOperation::RecursiveAddArguments(const TopoDS_Shape& t
 }
 
 void FCBRepAlgoAPI_BooleanOperation::Build() {
+    Message_ProgressRange progressRange;
+    FCBRepAlgoAPI_BooleanOperation::Build(progressRange);
+}
+
+void FCBRepAlgoAPI_BooleanOperation::Build(Message_ProgressRange& progressRange) {
+    if (progressRange.UserBreak()) {
+        Standard_ConstructionError::Raise("User aborted");
+    }
 
     if (myOperation == BOPAlgo_CUT && myArguments.Size() == 1 && myTools.Size() == 1 && myTools.First().ShapeType() == TopAbs_COMPOUND) {
         TopTools_ListOfShape myOriginalArguments = myArguments;
@@ -109,27 +117,38 @@ void FCBRepAlgoAPI_BooleanOperation::Build() {
         RecursiveAddArguments(myOriginalTools.First());
         if (!myTools.IsEmpty()) {
             myOperation = BOPAlgo_FUSE; // fuse tools together
-            Build();
+            Build(progressRange);
+            if (progressRange.UserBreak()) {
+                Standard_ConstructionError::Raise("User aborted");
+            }
             myOperation = BOPAlgo_CUT; // restore
             myArguments = myOriginalArguments;
             if (IsDone()) {
                 myTools.Append(myShape);
-                Build(); // cut with fused tools
+                Build(progressRange); // cut with fused tools
+                if (progressRange.UserBreak()) {
+                    Standard_ConstructionError::Raise("User aborted");
+                }
             }
             myTools = myOriginalTools; //restore
         } else { // there was less than 2 shapes in the compound
             myArguments = myOriginalArguments;
             myTools = myOriginalTools; //restore
-            Build();
+            Build(progressRange);
+            if (progressRange.UserBreak()) {
+                Standard_ConstructionError::Raise("User aborted");
+            }
         }
     } else if (myOperation==BOPAlgo_CUT && myArguments.Size()==1 && myArguments.First().ShapeType() == TopAbs_COMPOUND) {
         TopTools_ListOfShape myOriginalArguments = myArguments;
         myShape = RecursiveCutCompound(myOriginalArguments.First());
         myArguments = myOriginalArguments;
     } else {
-        BRepAlgoAPI_BooleanOperation::Build();
+        BRepAlgoAPI_BooleanOperation::Build(progressRange);
     }
 }
+
+
 
 TopoDS_Shape FCBRepAlgoAPI_BooleanOperation::RecursiveCutCompound(const TopoDS_Shape& theArgument) {
     BRep_Builder builder;

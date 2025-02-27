@@ -1176,7 +1176,8 @@ void Model::editingFinishedSlot()
   Gui::Document* doc = Gui::Application::Instance->getDocument(record.DObject->getDocument());
   doc->commitCommand();
   doc->resetEdit();
-  doc->getDocument()->recompute();
+  Base::NullProgressRange progressRange;
+  doc->getDocument()->recompute(progressRange);
 }
 
 void Model::visiblyIsolate(Gui::DAG::Vertex sourceIn)

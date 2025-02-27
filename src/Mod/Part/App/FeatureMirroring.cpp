@@ -101,7 +101,8 @@ void Mirroring::onChanged(const App::Property* prop)
         }
         if (needsRecompute){
             try {
-                App::DocumentObjectExecReturn *ret = recompute();
+                Base::NullProgressRange progressRange;
+                App::DocumentObjectExecReturn *ret = recompute(progressRange);
                 delete ret;
             }
             catch (...) {
@@ -132,7 +133,7 @@ void Mirroring::handleChangedPropertyType(Base::XMLReader &reader, const char *T
     }
 }
 
-App::DocumentObjectExecReturn *Mirroring::execute()
+App::DocumentObjectExecReturn *Mirroring::execute(Base::ProgressRange& progressRange)
 {
     App::DocumentObject* link = Source.getValue();
     if (!link)
@@ -259,7 +260,7 @@ App::DocumentObjectExecReturn *Mirroring::execute()
         this->Shape.setValue(TopoShape(0).makeElementMirror(shape,ax2));
         copyMaterial(link);
 
-        return Part::Feature::execute();
+        return Part::Feature::execute(progressRange);
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

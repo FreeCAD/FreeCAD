@@ -1190,8 +1190,10 @@ void MacroCommand::activated(int iMsg)
     else {
         Application::Instance->macroManager()->run(MacroManager::File, fi.filePath().toUtf8());
         // after macro run recalculate the document
-        if (Application::Instance->activeDocument())
-            Application::Instance->activeDocument()->getDocument()->recompute();
+        if (Application::Instance->activeDocument()) {
+            Base::NullProgressRange progressRange;
+            Application::Instance->activeDocument()->getDocument()->recompute(progressRange);
+        }
     }
 }
 

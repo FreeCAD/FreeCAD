@@ -54,8 +54,9 @@ short Sphere::mustExecute() const
     return Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn* Sphere::execute()
+App::DocumentObjectExecReturn* Sphere::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     std::unique_ptr<MeshObject> mesh(
         MeshObject::createSphere((float)Radius.getValue(), Sampling.getValue()));
     if (mesh) {
@@ -103,8 +104,9 @@ short Ellipsoid::mustExecute() const
     return Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn* Ellipsoid::execute()
+App::DocumentObjectExecReturn* Ellipsoid::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     std::unique_ptr<MeshObject> mesh(MeshObject::createEllipsoid((float)Radius1.getValue(),
                                                                  (float)Radius2.getValue(),
                                                                  Sampling.getValue()));
@@ -158,8 +160,9 @@ short Cylinder::mustExecute() const
     return Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn* Cylinder::execute()
+App::DocumentObjectExecReturn* Cylinder::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     std::unique_ptr<MeshObject> mesh(MeshObject::createCylinder((float)Radius.getValue(),
                                                                 (float)Length.getValue(),
                                                                 Closed.getValue(),
@@ -217,8 +220,9 @@ short Cone::mustExecute() const
     return Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn* Cone::execute()
+App::DocumentObjectExecReturn* Cone::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     std::unique_ptr<MeshObject> mesh(MeshObject::createCone((float)Radius1.getValue(),
                                                             (float)Radius2.getValue(),
                                                             (float)Length.getValue(),
@@ -271,8 +275,9 @@ short Torus::mustExecute() const
     return Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn* Torus::execute()
+App::DocumentObjectExecReturn* Torus::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     std::unique_ptr<MeshObject> mesh(MeshObject::createTorus((float)Radius1.getValue(),
                                                              (float)Radius2.getValue(),
                                                              Sampling.getValue()));
@@ -322,8 +327,9 @@ short Cube::mustExecute() const
     return Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn* Cube::execute()
+App::DocumentObjectExecReturn* Cube::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     std::unique_ptr<MeshObject> mesh(MeshObject::createCube((float)Length.getValue(),
                                                             (float)Width.getValue(),
                                                             (float)Height.getValue()));

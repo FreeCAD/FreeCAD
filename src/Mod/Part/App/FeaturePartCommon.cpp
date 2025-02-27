@@ -84,7 +84,7 @@ short MultiCommon::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *MultiCommon::execute()
+App::DocumentObjectExecReturn *MultiCommon::execute(Base::ProgressRange& progressRange)
 {
     std::vector<TopoShape> shapes;
     for (auto obj : Shapes.getValues()) {
@@ -112,5 +112,5 @@ App::DocumentObjectExecReturn *MultiCommon::execute()
         copyMaterial(link);
     }
 
-    return Part::Feature::execute();
+    return Part::Feature::execute(progressRange);
 }

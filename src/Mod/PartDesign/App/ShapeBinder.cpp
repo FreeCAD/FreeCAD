@@ -124,7 +124,7 @@ bool ShapeBinder::hasPlacementChanged() const
     return this->Placement.getValue() != placement;
 }
 
-App::DocumentObjectExecReturn* ShapeBinder::execute()
+App::DocumentObjectExecReturn* ShapeBinder::execute(Base::ProgressRange& progressRange)
 {
     if (!this->isRestoring()) {
         Part::TopoShape shape(updatedShape());
@@ -134,7 +134,7 @@ App::DocumentObjectExecReturn* ShapeBinder::execute()
         }
     }
 
-    return Part::Feature::execute();
+    return Part::Feature::execute(progressRange);
 }
 
 void ShapeBinder::getFilteredReferences(const App::PropertyLinkSubList* prop,
@@ -499,6 +499,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     std::vector<Part::TopoShape> shapes;
     std::vector<std::pair<int,int> > shapeOwners;
     std::vector<const Base::Matrix4D*> shapeMats;
+    Base::NullProgressRange progressRange;
 
     bool forced = (Shape.getValue().IsNull() || (options & UpdateForced)) ? true : false;
     bool init = (!forced && (options & UpdateForced)) ? true : false;
@@ -609,7 +610,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                     // IMPORTANT! must make a recomputation first before any
                     // further change so that we can generate the correct
                     // geometry element map.
-                    if (!copied->recomputeFeature(true))
+                    if (!copied->recomputeFeature(progressRange, true))
                         copyerror = 1;
                 }
             }
@@ -642,7 +643,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                     };
 
                     copyPropertyValues(true);
-                    if (recomputeCopy && !copied->recomputeFeature(true))
+                    if (recomputeCopy && !copied->recomputeFeature(progressRange, true))
                         copyerror = 2;
                     if (!copyerror)
                         copyPropertyValues(false);
@@ -870,14 +871,14 @@ void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
     }
 }
 
-App::DocumentObjectExecReturn* SubShapeBinder::execute() {
+App::DocumentObjectExecReturn* SubShapeBinder::execute(Base::ProgressRange& progressRange) {
 
     setupCopyOnChange();
 
     if (BindMode.getValue() == 0)
         update(UpdateForced);
 
-    return inherited::execute();
+    return inherited::execute(progressRange);
 }
 
 void SubShapeBinder::onDocumentRestored() {

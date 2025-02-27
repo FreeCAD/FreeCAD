@@ -53,7 +53,7 @@ public:
     App::PropertyLinkSub Element;
     App::PropertyPosition Position;
 
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
 
     const char* getViewProviderName() const override
     {

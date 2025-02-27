@@ -101,10 +101,10 @@ short Feature::mustExecute() const
     return GeoFeature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Feature::recompute()
+App::DocumentObjectExecReturn *Feature::recompute(Base::ProgressRange& progressRange)
 {
     try {
-        return App::GeoFeature::recompute();
+        return App::GeoFeature::recompute(progressRange);
     }
     catch (Standard_Failure& e) {
 
@@ -114,10 +114,10 @@ App::DocumentObjectExecReturn *Feature::recompute()
     }
 }
 
-App::DocumentObjectExecReturn *Feature::execute()
+App::DocumentObjectExecReturn *Feature::execute(Base::ProgressRange& progressRange)
 {
     this->Shape.touch();
-    return GeoFeature::execute();
+    return GeoFeature::execute(progressRange);
 }
 
 PyObject *Feature::getPyObject()
@@ -1765,14 +1765,14 @@ short FilletBase::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn* FilletBase::execute()
+App::DocumentObjectExecReturn* FilletBase::execute(Base::ProgressRange& progressRange)
 {
     App::DocumentObject* link = this->Base.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("No object linked");
     }
     copyMaterial(link);
-    return Part::Feature::execute();
+    return Part::Feature::execute(progressRange);
 }
 
 void FilletBase::onChanged(const App::Property *prop) {

@@ -52,7 +52,7 @@ public:
 
     Standard_Integer maxDegree;
 
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     const char* getViewProviderName() const override
     {

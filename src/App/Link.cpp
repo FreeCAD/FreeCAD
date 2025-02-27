@@ -36,7 +36,6 @@
 #include "GeoFeatureGroupExtension.h"
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
-
 // FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
 #if defined(__clang__)
 #pragma clang diagnostic push
@@ -339,7 +338,7 @@ void LinkBaseExtension::setProperty(int idx, Property* prop)
 
 static const char _GroupPrefix[] = "Configuration (";
 
-App::DocumentObjectExecReturn* LinkBaseExtension::extensionExecute()
+App::DocumentObjectExecReturn* LinkBaseExtension::extensionExecute(Base::ProgressRange& progressRange)
 {
     // The actual value of LinkTouched is not important, just to notify view
     // provider that the link (in fact, its dependents, i.e. linked ones) have
@@ -454,7 +453,7 @@ App::DocumentObjectExecReturn* LinkBaseExtension::extensionExecute()
             }
         }
     }
-    return inherited::extensionExecute();
+    return inherited::extensionExecute(progressRange);
 }
 
 short LinkBaseExtension::extensionMustExecute()

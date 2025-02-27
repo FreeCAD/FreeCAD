@@ -124,8 +124,9 @@ short Helix::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
-App::DocumentObjectExecReturn* Helix::execute()
+App::DocumentObjectExecReturn* Helix::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     // Validate and normalize parameters

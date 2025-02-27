@@ -76,7 +76,8 @@ void TaskOrientation::accept()
     if (!feature.expired()) {
         App::Document* doc = feature->getDocument();
         doc->commitTransaction();
-        doc->recompute();
+        Base::NullProgressRange progressRange;
+        doc->recompute(progressRange);
     }
 }
 

@@ -196,7 +196,7 @@ short Transformed::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn* Transformed::execute()
+App::DocumentObjectExecReturn* Transformed::execute(Base::ProgressRange& progressRange)
 {
     if (isMultiTransformChild()) {
         return App::DocumentObject::StdReturn;
@@ -298,6 +298,10 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 Part::TopoShape fuseShape;
                 Part::TopoShape cutShape;
 
+                if (progressRange.UserBreak()) {
+                    return new App::DocumentObjectExecReturn("User aborted");
+                }
+
                 auto feature = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(original);
                 if (!feature) {
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
@@ -319,15 +323,15 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     cutShape = cutShape.makeElementTransform(trsf);
                 }
                 if (!fuseShape.isNull()) {
-                    supportShape.makeElementFuse(getTransformedCompShape(supportShape, fuseShape));
+                    supportShape.makeElementFuseProgress(progressRange, getTransformedCompShape(supportShape, fuseShape));
                 }
                 if (!cutShape.isNull()) {
-                    supportShape.makeElementCut(getTransformedCompShape(supportShape, cutShape));
+                    supportShape.makeElementCutProgress(progressRange, getTransformedCompShape(supportShape, cutShape));
                 }
             }
             break;
         case Mode::TransformBody: {
-            supportShape.makeElementFuse(getTransformedCompShape(supportShape, supportShape));
+            supportShape.makeElementFuseProgress(progressRange, getTransformedCompShape(supportShape, supportShape));
             break;
         }
     }

@@ -907,8 +907,10 @@ void ManualAlignment::finish()
     if (myViewer.isNull())
         return;
 
-    if (myDocument)
-        myDocument->getDocument()->recompute();
+    if (myDocument) {
+        Base::NullProgressRange progressRange;
+        myDocument->getDocument()->recompute(progressRange);
+    }
     closeViewer();
     reset();
 

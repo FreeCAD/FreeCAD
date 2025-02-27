@@ -34,7 +34,8 @@ protected:
         _boxes[1]->AttachmentSupport.setValue(_boxes[0]);
         _boxes[1]->MapPathParameter.setValue(0.0);
         _boxes[1]->MapMode.setValue("ObjectXY");  // There are lots of attachment modes!
-        _boxes[1]->recomputeFeature();
+        Base::NullProgressRange progressRange;
+        _boxes[1]->recomputeFeature(progressRange);
     }
 
     void TearDown() override
@@ -177,7 +178,8 @@ TEST_F(AttacherTest, TestAllStringModesValid)
     int index = 0;
     for (auto mode : modes) {
         _boxes[1]->MapMode.setValue(mode);  // There are lots of attachment modes!
-        _boxes[1]->recomputeFeature();
+        Base::NullProgressRange progressRange;
+        _boxes[1]->recomputeFeature(progressRange);
         EXPECT_STREQ(_boxes[1]->MapMode.getValueAsString(), mode);
         EXPECT_EQ(_boxes[1]->MapMode.getValue(), index);
         index++;
@@ -187,172 +189,173 @@ TEST_F(AttacherTest, TestAllStringModesValid)
 TEST_F(AttacherTest, TestAllModesBoundaries)
 {
     _boxes[1]->MapMode.setValue(mmTranslate);
-    _boxes[1]->recomputeFeature();
+    Base::NullProgressRange progressRange;
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 1, 2, 3)));
     _boxes[1]->MapMode.setValue(mmObjectXY);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 1, 2, 3)));
     _boxes[1]->MapMode.setValue(mmObjectXZ);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, -3, 0, 1, 0, 2)));
     _boxes[1]->MapMode.setValue(mmObjectYZ);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
 
     _boxes[1]->MapMode.setValue(mmParallelPlane);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mmFlatFace);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mmTangentPlane);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1Normal);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
 
     _boxes[1]->MapMode.setValue(mmFrenetNB);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mmFrenetTN);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mmFrenetTB);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mmConcentric);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mmRevolutionSection);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mmThreePointsNormal);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mmThreePointsPlane);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mmFolding);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
 
     _boxes[1]->MapMode.setValue(mm1AxisX);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1AxisY);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1AxisZ);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1AxisCurv);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1Directrix1);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1Directrix2);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1Asymptote1);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1Asymptote2);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1Tangent);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1TangentU);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1TangentV);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1TwoPoints);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1Intersection);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1Proximity);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
 
     _boxes[1]->MapMode.setValue(mm0Origin);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm0Focus1);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm0Focus2);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm0OnEdge);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm0CenterOfCurvature);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm0CenterOfMass);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1Intersection);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm0Vertex);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm0ProximityPoint1);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm0ProximityPoint2);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
 
     _boxes[1]->MapMode.setValue(mm1AxisInertia1);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1AxisInertia2);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mm1AxisInertia3);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
 
     _boxes[1]->MapMode.setValue(mmInertialCS);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(
         boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0.5, 1, 1.5, 3.5, 2, 3.5)));
 
     _boxes[1]->MapMode.setValue(mm1FaceNormal);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(
         boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0.5, 1, 1.5, 3.5, 2, 3.5)));
 
     _boxes[1]->MapMode.setValue(mmOZX);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(
         boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0.5, 1, 1.5, 3.5, 2, 3.5)));
     _boxes[1]->MapMode.setValue(mmOZY);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(
         boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0.5, 1, 1.5, 3.5, 2, 3.5)));
     _boxes[1]->MapMode.setValue(mmOXY);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(
         boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0.5, 1, 1.5, 3.5, 2, 3.5)));
     _boxes[1]->MapMode.setValue(mmOXZ);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(
         boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0.5, 1, 1.5, 3.5, 2, 3.5)));
     _boxes[1]->MapMode.setValue(mmOYZ);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(
         boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0.5, 1, 1.5, 3.5, 2, 3.5)));
     _boxes[1]->MapMode.setValue(mmOYX);
-    _boxes[1]->recomputeFeature();
+    _boxes[1]->recomputeFeature(progressRange);
     EXPECT_TRUE(
         boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0.5, 1, 1.5, 3.5, 2, 3.5)));
 }

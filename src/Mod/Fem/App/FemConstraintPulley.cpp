@@ -62,9 +62,9 @@ ConstraintPulley::ConstraintPulley()
     onChanged(&Force);
 }
 
-App::DocumentObjectExecReturn* ConstraintPulley::execute()
+App::DocumentObjectExecReturn* ConstraintPulley::execute(Base::ProgressRange& progressRange)
 {
-    return ConstraintGear::execute();
+    return ConstraintGear::execute(progressRange);
 }
 
 void ConstraintPulley::onChanged(const App::Property* prop)

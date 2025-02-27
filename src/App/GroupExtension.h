@@ -132,7 +132,7 @@ public:
 
     bool extensionGetSubObjects(std::vector<std::string>& ret, int reason) const override;
 
-    App::DocumentObjectExecReturn* extensionExecute() override;
+    App::DocumentObjectExecReturn* extensionExecute(Base::ProgressRange& progressRange) override;
 
     std::vector<DocumentObject*> getAllChildren() const;
     void getAllChildren(std::vector<DocumentObject*>&, std::set<DocumentObject*>&) const;

@@ -790,8 +790,9 @@ short Feature::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn* Feature::execute()
+App::DocumentObjectExecReturn* Feature::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     bool useMultithreading = true;
 
     App::DocumentObject* pcActual = Actual.getValue();

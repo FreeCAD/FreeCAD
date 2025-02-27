@@ -26,7 +26,7 @@
 
 #include "GeoFeature.h"
 #include "PropertyFile.h"
-
+#include <Base/ProgressRange.h>
 
 namespace App
 {
@@ -44,8 +44,9 @@ public:
     {
         return "Gui::ViewProviderVRMLObject";
     }
-    DocumentObjectExecReturn* execute() override
+    DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override
     {
+        (void)progressRange;
         return DocumentObject::StdReturn;
     }
     short mustExecute() const override;

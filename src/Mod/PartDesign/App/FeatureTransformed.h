@@ -90,7 +90,7 @@ public:
      * If Originals is empty, execute() returns immediately without doing anything as
      * the actual processing will happen in the MultiTransform feature
      */
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     short mustExecute() const override;
     //@}
 
@@ -107,8 +107,6 @@ protected:
 
     virtual void positionBySupport();
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
-
-private:
 };
 
 }  // namespace PartDesign

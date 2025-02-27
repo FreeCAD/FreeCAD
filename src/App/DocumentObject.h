@@ -30,6 +30,7 @@
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
 #include <Base/SmartPtrPy.h>
+#include <Base/ProgressRange.h>
 
 #include <bitset>
 #include <unordered_map>
@@ -380,9 +381,10 @@ public:
 
     /** Recompute only this feature
      *
+     * @param progressRange: the progress range to report progress to
      * @param recursive: set to true to recompute any dependent objects as well
      */
-    bool recomputeFeature(bool recursive = false);
+    bool recomputeFeature(Base::ProgressRange& progressRange, bool recursive = false);
 
     /// get the status Message
     const char* getStatusString() const;
@@ -704,7 +706,7 @@ public:
 
 protected:
     /// recompute only this object
-    virtual App::DocumentObjectExecReturn* recompute();
+    virtual App::DocumentObjectExecReturn* recompute(Base::ProgressRange& progressRange);
     /** get called by the document to recompute this feature
      * Normally this method get called in the processing of
      * Document::recompute().
@@ -712,12 +714,12 @@ protected:
      * with the data from linked objects and objects own
      * properties.
      */
-    virtual App::DocumentObjectExecReturn* execute();
+    virtual App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange);
 
     /**
      * Executes the extensions of a document object.
      */
-    App::DocumentObjectExecReturn* executeExtensions();
+    App::DocumentObjectExecReturn* executeExtensions(Base::ProgressRange& progressRange);
 
     /** Status bits of the document object
      * The first 8 bits are used for the base system the rest can be used in

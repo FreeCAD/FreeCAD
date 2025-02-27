@@ -40,8 +40,9 @@ short CustomFeature::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *CustomFeature::execute()
+App::DocumentObjectExecReturn *CustomFeature::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     return App::DocumentObject::StdReturn;
 }
 

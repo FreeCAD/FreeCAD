@@ -4111,8 +4111,16 @@ TopoShape& TopoShape::makeElementGeneralFuse(const std::vector<TopoShape>& _shap
     return *this;
 }
 
-TopoShape&
-TopoShape::makeElementFuse(const std::vector<TopoShape>& shapes, const char* op, double tol)
+TopoShape& TopoShape::makeElementFuseProgress(Message_ProgressRange& progressRange, const std::vector<TopoShape>& shapes, const char* op, double tol)
+{
+    return makeElementBooleanProgress(progressRange, Part::OpCodes::Fuse, shapes, op, tol);
+}
+
+TopoShape& TopoShape::makeElementCutProgress(Message_ProgressRange& progressRange, const std::vector<TopoShape>& shapes, const char* op, double tol)
+{
+    return makeElementBooleanProgress(progressRange, Part::OpCodes::Cut, shapes, op, tol);
+}
+TopoShape& TopoShape::makeElementFuse(const std::vector<TopoShape>& shapes, const char* op, double tol)
 {
     return makeElementBoolean(Part::OpCodes::Fuse, shapes, op, tol);
 }
@@ -5575,8 +5583,18 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
 TopoShape& TopoShape::makeElementBoolean(const char* maker,
                                          const std::vector<TopoShape>& shapes,
                                          const char* op,
-                                         double tolerance)
-{
+                                         double tolerance) {
+    Message_ProgressRange progressRange;
+    return makeElementBooleanProgress(progressRange, maker, shapes, op, tolerance);
+}
+
+TopoShape& TopoShape::makeElementBooleanProgress(Message_ProgressRange& progressRange, const char* maker,
+                                         const std::vector<TopoShape>& shapes,
+                                         const char* op,
+                                         double tolerance) {
+    if (progressRange.UserBreak()) {
+        FC_THROWM(Base::CADKernelError, "User aborted");
+    }
     if (!maker) {
         FC_THROWM(Base::CADKernelError, "no maker");
     }
@@ -5761,7 +5779,10 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
     } else if (tolerance < 0.0) {
         FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
     }
-    mk->Build();
+    mk->Build(progressRange);
+    if (progressRange.UserBreak()) {
+        FC_THROWM(Base::CADKernelError, "User aborted");
+    }
     makeElementShape(*mk, inputs, op);
 
     if (buildShell) {

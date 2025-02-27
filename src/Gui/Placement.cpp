@@ -405,7 +405,8 @@ std::tuple<Base::Vector3d, std::vector<Base::Vector3d>> PlacementHandler::getSel
 void PlacementHandler::tryRecompute(Gui::Document* document)
 {
     try {
-        document->getDocument()->recompute();
+        Base::NullProgressRange progressRange;
+        document->getDocument()->recompute(progressRange);
     }
     catch (...) {
     }

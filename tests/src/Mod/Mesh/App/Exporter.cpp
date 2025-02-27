@@ -31,7 +31,8 @@ protected:
         cube2->Width.setValue(value);
         cube2->Height.setValue(value);
 
-        document->recompute();
+        Base::NullProgressRange progressRange;
+        document->recompute(progressRange);
     }
 
     void TearDown() override

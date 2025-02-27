@@ -60,7 +60,7 @@ public:
 
     /// Keep a copy of suppressed shapes so that we can restore them (and maybe display them)
     Part::PropertyPartShape SuppressedShape;
-    App::DocumentObjectExecReturn* recompute() override;
+    App::DocumentObjectExecReturn* recompute(Base::ProgressRange& progressRange) override;
 
     short mustExecute() const override;
 

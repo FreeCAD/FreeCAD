@@ -46,8 +46,9 @@ public:
     // virtual const char* getViewProviderName(void) const {
     //     return "FemGui::ViewProviderFemSet";
     // }
-    App::DocumentObjectExecReturn* execute() override
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override
     {
+        (void)progressRange;
         return App::DocumentObject::StdReturn;
     }
     short mustExecute() const override;

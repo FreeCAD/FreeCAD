@@ -450,11 +450,11 @@ bool GroupExtension::extensionGetSubObjects(std::vector<std::string>& ret, int) 
     return true;
 }
 
-App::DocumentObjectExecReturn* GroupExtension::extensionExecute()
+App::DocumentObjectExecReturn* GroupExtension::extensionExecute(Base::ProgressRange& progressRange)
 {
     // This touch property is for propagating changes to upper group
     _GroupTouched.touch();
-    return inherited::extensionExecute();
+    return inherited::extensionExecute(progressRange);
 }
 
 std::vector<App::DocumentObject*> GroupExtension::getAllChildren() const

@@ -123,8 +123,10 @@ Constraint::~Constraint()
     connDocChangedObject.disconnect();
 }
 
-App::DocumentObjectExecReturn* Constraint::execute()
+App::DocumentObjectExecReturn* Constraint::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
+
     try {
         References.touch();
         Scale.touch();

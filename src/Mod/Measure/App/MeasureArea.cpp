@@ -94,8 +94,10 @@ void MeasureArea::parseSelection(const App::MeasureSelection& selection)
 }
 
 
-App::DocumentObjectExecReturn* MeasureArea::execute()
+App::DocumentObjectExecReturn* MeasureArea::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
+
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
     const std::vector<std::string>& subElements = Elements.getSubValues();
 

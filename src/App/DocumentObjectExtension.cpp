@@ -45,9 +45,9 @@ short int DocumentObjectExtension::extensionMustExecute()
     return 0;
 }
 
-App::DocumentObjectExecReturn* DocumentObjectExtension::extensionExecute()
+App::DocumentObjectExecReturn* DocumentObjectExtension::extensionExecute(Base::ProgressRange& progressRange)
 {
-
+    (void)progressRange;
     return App::DocumentObject::StdReturn;
 }
 

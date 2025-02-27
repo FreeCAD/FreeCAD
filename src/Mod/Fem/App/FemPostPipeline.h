@@ -47,7 +47,7 @@ public:
     App::PropertyEnumeration Mode;
 
     short mustExecute() const override;
-    App::DocumentObjectExecReturn* execute() override;
+    App::DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override;
     PyObject* getPyObject() override;
 
     const char* getViewProviderName() const override

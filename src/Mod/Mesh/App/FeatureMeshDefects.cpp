@@ -52,8 +52,9 @@ short FixDefects::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn* FixDefects::execute()
+App::DocumentObjectExecReturn* FixDefects::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     return App::DocumentObject::StdReturn;
 }
 
@@ -63,8 +64,9 @@ PROPERTY_SOURCE(Mesh::HarmonizeNormals, Mesh::FixDefects)
 
 HarmonizeNormals::HarmonizeNormals() = default;
 
-App::DocumentObjectExecReturn* HarmonizeNormals::execute()
+App::DocumentObjectExecReturn* HarmonizeNormals::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("No mesh linked");
@@ -87,8 +89,9 @@ PROPERTY_SOURCE(Mesh::FlipNormals, Mesh::FixDefects)
 
 FlipNormals::FlipNormals() = default;
 
-App::DocumentObjectExecReturn* FlipNormals::execute()
+App::DocumentObjectExecReturn* FlipNormals::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("No mesh linked");
@@ -111,8 +114,9 @@ PROPERTY_SOURCE(Mesh::FixNonManifolds, Mesh::FixDefects)
 
 FixNonManifolds::FixNonManifolds() = default;
 
-App::DocumentObjectExecReturn* FixNonManifolds::execute()
+App::DocumentObjectExecReturn* FixNonManifolds::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("No mesh linked");
@@ -135,8 +139,9 @@ PROPERTY_SOURCE(Mesh::FixDuplicatedFaces, Mesh::FixDefects)
 
 FixDuplicatedFaces::FixDuplicatedFaces() = default;
 
-App::DocumentObjectExecReturn* FixDuplicatedFaces::execute()
+App::DocumentObjectExecReturn* FixDuplicatedFaces::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("No mesh linked");
@@ -159,8 +164,9 @@ PROPERTY_SOURCE(Mesh::FixDuplicatedPoints, Mesh::FixDefects)
 
 FixDuplicatedPoints::FixDuplicatedPoints() = default;
 
-App::DocumentObjectExecReturn* FixDuplicatedPoints::execute()
+App::DocumentObjectExecReturn* FixDuplicatedPoints::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("No mesh linked");
@@ -183,8 +189,9 @@ PROPERTY_SOURCE(Mesh::FixDegenerations, Mesh::FixDefects)
 
 FixDegenerations::FixDegenerations() = default;
 
-App::DocumentObjectExecReturn* FixDegenerations::execute()
+App::DocumentObjectExecReturn* FixDegenerations::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("No mesh linked");
@@ -210,8 +217,9 @@ FixDeformations::FixDeformations()
     ADD_PROPERTY(MaxAngle, (5.0F));
 }
 
-App::DocumentObjectExecReturn* FixDeformations::execute()
+App::DocumentObjectExecReturn* FixDeformations::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("No mesh linked");
@@ -235,8 +243,9 @@ PROPERTY_SOURCE(Mesh::FixIndices, Mesh::FixDefects)
 
 FixIndices::FixIndices() = default;
 
-App::DocumentObjectExecReturn* FixIndices::execute()
+App::DocumentObjectExecReturn* FixIndices::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("No mesh linked");
@@ -263,8 +272,9 @@ FillHoles::FillHoles()
     ADD_PROPERTY(MaxArea, (0.1F));
 }
 
-App::DocumentObjectExecReturn* FillHoles::execute()
+App::DocumentObjectExecReturn* FillHoles::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("No mesh linked");
@@ -292,8 +302,9 @@ RemoveComponents::RemoveComponents()
     ADD_PROPERTY(RemoveCompOfSize, (0));
 }
 
-App::DocumentObjectExecReturn* RemoveComponents::execute()
+App::DocumentObjectExecReturn* RemoveComponents::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     App::DocumentObject* link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("No mesh linked");

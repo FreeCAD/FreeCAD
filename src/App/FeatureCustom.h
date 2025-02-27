@@ -25,6 +25,7 @@
 #define APP_FEATURECUSTOM_H
 
 #include <App/PropertyContainer.h>
+#include <Base/ProgressRange.h>
 
 namespace App
 {
@@ -57,9 +58,9 @@ public:
         return FeatureT::mustExecute();
     }
     /// recalculate the Feature
-    DocumentObjectExecReturn* execute() override
+    DocumentObjectExecReturn* execute(Base::ProgressRange& progressRange) override
     {
-        return FeatureT::execute();
+        return FeatureT::execute(progressRange);
     }
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override

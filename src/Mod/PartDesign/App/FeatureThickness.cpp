@@ -64,7 +64,8 @@ int16_t Thickness::mustExecute() const {
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Thickness::execute() {
+App::DocumentObjectExecReturn *Thickness::execute(Base::ProgressRange& progressRange) {
+    (void)progressRange;
     if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     // Base shape

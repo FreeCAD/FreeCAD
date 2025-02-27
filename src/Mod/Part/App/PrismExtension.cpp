@@ -57,9 +57,9 @@ short int PrismExtension::extensionMustExecute()
     return DocumentObjectExtension::extensionMustExecute();
 }
 
-App::DocumentObjectExecReturn *PrismExtension::extensionExecute()
+App::DocumentObjectExecReturn *PrismExtension::extensionExecute(Base::ProgressRange& progressRange)
 {
-    return App::DocumentObjectExtension::extensionExecute();
+    return App::DocumentObjectExtension::extensionExecute(progressRange);
 }
 
 void PrismExtension::extensionOnChanged(const App::Property* prop)

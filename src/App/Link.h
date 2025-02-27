@@ -375,7 +375,7 @@ public:
                                   bool transform,
                                   int depth) const override;
 
-    App::DocumentObjectExecReturn* extensionExecute() override;
+    App::DocumentObjectExecReturn* extensionExecute(Base::ProgressRange& progressRange) override;
     short extensionMustExecute() override;
     void extensionOnChanged(const Property* p) override;
     void onExtendedUnsetupObject() override;

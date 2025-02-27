@@ -1783,9 +1783,10 @@ static gp_Pnt toPnt(gp_Vec dir)
     return {dir.X(), dir.Y(), dir.Z()};
 }
 
-App::DocumentObjectExecReturn* Hole::execute()
+App::DocumentObjectExecReturn* Hole::execute(Base::ProgressRange& progressRange)
 {
-     TopoShape profileshape;
+    (void)progressRange;
+    TopoShape profileshape;
     try {
         profileshape = getTopoShapeVerifiedFace();
     }

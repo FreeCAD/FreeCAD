@@ -57,8 +57,9 @@ void Face::setupObject()
     Feature::setupObject();
 }
 
-App::DocumentObjectExecReturn *Face::execute()
+App::DocumentObjectExecReturn *Face::execute(Base::ProgressRange& progressRange)
 {
+    (void)progressRange;
     std::vector<App::DocumentObject*> links = Sources.getValues();
     if (links.empty())
         return new App::DocumentObjectExecReturn("No shapes linked");
