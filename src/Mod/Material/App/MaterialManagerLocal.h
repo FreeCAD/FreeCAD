@@ -24,14 +24,14 @@
 
 #include <memory>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include <Mod/Material/MaterialGlobal.h>
 
 #include "FolderTree.h"
 #include "Materials.h"
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 class QMutex;
 
@@ -102,7 +102,7 @@ public:
                       bool saveAsCopy,
                       bool saveInherited) const;
 
-    bool isMaterial(const fs::path& p) const;
+    bool isMaterial(const std::filesystem::path& p) const;
     bool isMaterial(const QFileInfo& file) const;
 
     std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>

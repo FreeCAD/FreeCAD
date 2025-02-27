@@ -160,7 +160,7 @@ PyObject* Array2DPy::setValue(PyObject* args)
         Py::String item(valueObj);
         QString value(QString::fromStdString(item.as_string()));
         try {
-            QVariant variant = QVariant::fromValue(Base::Quantity::parse(value));
+            QVariant variant = QVariant::fromValue(Base::Quantity::parse(value.toStdString()));
             getArray2DPtr()->setValue(row, column, variant);
         }
         catch (const InvalidIndex&) {

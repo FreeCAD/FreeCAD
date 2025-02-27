@@ -164,7 +164,7 @@ PyObject* Array3DPy::setDepthValue(PyObject* args)
         Py::String item(valueObj);
         QString value(QString::fromStdString(item.as_string()));
         try {
-            getArray3DPtr()->setDepthValue(depth, Base::Quantity::parse(value));
+            getArray3DPtr()->setDepthValue(depth, Base::Quantity::parse(value.toStdString()));
         }
         catch (const InvalidIndex&) {
             PyErr_SetString(PyExc_IndexError, "Invalid array index");
@@ -187,7 +187,10 @@ PyObject* Array3DPy::setValue(PyObject* args)
         Py::String item(valueObj);
         QString value(QString::fromStdString(item.as_string()));
         try {
-            getArray3DPtr()->setValue(depth, row, column, Base::Quantity::parse(value));
+            getArray3DPtr()->setValue(depth,
+                                      row,
+                                      column,
+                                      Base::Quantity::parse(value.toStdString()));
         }
         catch (const InvalidIndex&) {
             PyErr_SetString(PyExc_IndexError, "Invalid array index");

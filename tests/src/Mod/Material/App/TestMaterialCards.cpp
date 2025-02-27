@@ -57,7 +57,7 @@ protected:
         QDir libDir(libPath);
         libDir.removeRecursively(); // Clear old run data
         libDir.mkdir(libPath);
-        _library = std::make_shared<Materials::MaterialLibrary>(QStringLiteral("Testing"),
+        _library = std::make_shared<Materials::MaterialLibraryLocal>(QStringLiteral("Testing"),
                         libPath,
                         QStringLiteral(":/icons/preferences-general.svg"),
                         false);
