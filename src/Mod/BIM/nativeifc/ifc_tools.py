@@ -933,6 +933,7 @@ def set_attribute(ifcfile, element, attribute, value):
         value = value.Value * f
     if attribute == "Class":
         if value != element.is_a():
+            if value and value.startswith("Ifc"):
                 cmd = "root.reassign_class"
                 FreeCAD.Console.PrintLog(
                     "Changing IFC class value: "
