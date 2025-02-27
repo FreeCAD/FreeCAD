@@ -118,6 +118,7 @@
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
 #include "VarSet.h"
+#include "VariantExtension.h"
 #include "MaterialObject.h"
 #include "MeasureManagerPy.h"
 #include "Origin.h"
@@ -2137,6 +2138,7 @@ void Application::initTypes()
     App::LinkExtensionPython           ::init();
     App::SuppressibleExtension         ::init();
     App::SuppressibleExtensionPython   ::init();
+    App::VariantExtension              ::init();
 
     // Document classes
     App::TransactionalObject       ::init();

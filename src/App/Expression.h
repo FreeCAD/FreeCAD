@@ -146,8 +146,11 @@ public:
     void getDeps(ExpressionDeps &deps, int option=DepNormal) const;
     ExpressionDeps getDeps(int option=DepNormal) const;
 
-    std::map<App::DocumentObject*,bool> getDepObjects(std::vector<std::string> *labels=nullptr) const;
-    void getDepObjects(std::map<App::DocumentObject*,bool> &, std::vector<std::string> *labels=nullptr) const;
+    std::map<App::DocumentObject*,bool> getDepObjects(std::vector<std::string> *labels=nullptr,
+                                                      bool excludeExposed=false) const;
+    void getDepObjects(std::map<App::DocumentObject*,bool> &,
+                       std::vector<std::string> *labels=nullptr,
+                       bool excludeExposed=false) const;
 
     ExpressionPtr importSubNames(const std::map<std::string,std::string> &nameMap) const;
 

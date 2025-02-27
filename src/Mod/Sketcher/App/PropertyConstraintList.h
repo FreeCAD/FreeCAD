@@ -102,18 +102,37 @@ public:
     */
     const Constraint* operator[](const int idx) const
     {
-        return (invalidGeometry || invalidIndices) ? nullptr : _lValueList[idx];
+        try {
+            using OpPtr = const Constraint* (PropertyConstraintList::*)(int) const;
+            OpPtr opPtr = &PropertyConstraintList::operator[];
+            return getFromContext<PropertyConstraintList, const Constraint*>(opPtr, idx);
+        }
+        catch (const App::NoContextException& e) {
+            return (invalidGeometry || invalidIndices) ? nullptr : _lValueList[idx];
+        }
     }
 
     const std::vector<Constraint*>& getValues() const
     {
-        return (invalidGeometry || invalidIndices) ? _emptyValueList : _lValueList;
+        try {
+            return getFromContext<PropertyConstraintList, const std::vector<Constraint*>&>(
+                &PropertyConstraintList::getValues);
+        }
+        catch (const App::NoContextException& e) {
+            return (invalidGeometry || invalidIndices) ? _emptyValueList : _lValueList;
+        }
     }
 
     // to suppress check for invalid geometry, to be used for sketch repairing.
     const std::vector<Constraint*>& getValuesForce() const
     {
-        return _lValueList;
+        try {
+            return getFromContext<PropertyConstraintList, const std::vector<Constraint*>&>(
+                &PropertyConstraintList::getValuesForce);
+        }
+        catch (const App::NoContextException& e) {
+            return _lValueList;
+        }
     }
 
     PyObject* getPyObject() override;

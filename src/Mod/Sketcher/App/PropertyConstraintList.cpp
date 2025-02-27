@@ -87,169 +87,193 @@ App::ObjectIdentifier PropertyConstraintList::makePath(int idx, const Constraint
 
 void PropertyConstraintList::setSize(int newSize)
 {
-    std::set<App::ObjectIdentifier> removed;
+    if (!setInContext<PropertyConstraintList>(&PropertyConstraintList::setSize, newSize)) {
+        std::set<App::ObjectIdentifier> removed;
 
-    /* Collect information about erased elements */
-    for (unsigned int i = newSize; i < _lValueList.size(); i++) {
-        valueMap.erase(_lValueList[i]->tag);
-        removed.insert(makePath(i, _lValueList[i]));
+        /* Collect information about erased elements */
+        for (unsigned int i = newSize; i < _lValueList.size(); i++) {
+            valueMap.erase(_lValueList[i]->tag);
+            removed.insert(makePath(i, _lValueList[i]));
+        }
+
+        /* Signal removed elements */
+        if (!removed.empty()) {
+            signalConstraintsRemoved(removed);
+        }
+
+        /* Actually delete them */
+        for (unsigned int i = newSize; i < _lValueList.size(); i++) {
+            delete _lValueList[i];
+        }
+
+        /* Resize array to new size */
+        _lValueList.resize(newSize);
     }
-
-    /* Signal removed elements */
-    if (!removed.empty()) {
-        signalConstraintsRemoved(removed);
-    }
-
-    /* Actually delete them */
-    for (unsigned int i = newSize; i < _lValueList.size(); i++) {
-        delete _lValueList[i];
-    }
-
-    /* Resize array to new size */
-    _lValueList.resize(newSize);
 }
 
 int PropertyConstraintList::getSize() const
 {
-    return static_cast<int>(_lValueList.size());
+    try {
+        using FuncType = int (PropertyConstraintList::*)() const;
+        return getFromContext<PropertyConstraintList, int, FuncType>(
+            &PropertyConstraintList::getSize);
+    }
+    catch (const NoContextException& e) {
+        return static_cast<int>(_lValueList.size());
+    }
 }
 
 void PropertyConstraintList::set1Value(const int idx, const Constraint* lValue)
 {
-    if (lValue) {
-        aboutToSetValue();
-        Constraint* oldVal = _lValueList[idx];
-        Constraint* newVal = lValue->clone();
+    if (!setInContext<PropertyConstraintList>(&PropertyConstraintList::set1Value, idx, lValue)) {
+        if (lValue) {
+            aboutToSetValue();
+            Constraint* oldVal = _lValueList[idx];
+            Constraint* newVal = lValue->clone();
 
-        if (oldVal->Name != newVal->Name) {
-            std::map<App::ObjectIdentifier, App::ObjectIdentifier> renamed;
+            if (oldVal->Name != newVal->Name) {
+                std::map<App::ObjectIdentifier, App::ObjectIdentifier> renamed;
 
-            renamed[makePath(idx, _lValueList[idx])] = makePath(idx, lValue);
-            if (!renamed.empty()) {
-                signalConstraintsRenamed(renamed);
+                renamed[makePath(idx, _lValueList[idx])] = makePath(idx, lValue);
+                if (!renamed.empty()) {
+                    signalConstraintsRenamed(renamed);
+                }
             }
-        }
 
-        _lValueList[idx] = newVal;
-        valueMap.erase(oldVal->tag);
-        valueMap[newVal->tag] = idx;
-        delete oldVal;
-        hasSetValue();
+            _lValueList[idx] = newVal;
+            valueMap.erase(oldVal->tag);
+            valueMap[newVal->tag] = idx;
+            delete oldVal;
+            hasSetValue();
+        }
     }
 }
 
 void PropertyConstraintList::setValue(const Constraint* lValue)
 {
-    if (lValue) {
-        aboutToSetValue();
-        Constraint* newVal = lValue->clone();
-        std::set<App::ObjectIdentifier> removed;
-        std::map<App::ObjectIdentifier, App::ObjectIdentifier> renamed;
-        int start = 0;
+    if (!setInContext<PropertyConstraintList>(&PropertyConstraintList::setValue, lValue)) {
+        if (lValue) {
+            aboutToSetValue();
+            Constraint* newVal = lValue->clone();
+            std::set<App::ObjectIdentifier> removed;
+            std::map<App::ObjectIdentifier, App::ObjectIdentifier> renamed;
+            int start = 0;
 
-        /* Determine if it is a rename or not * */
-        if (!_lValueList.empty() && lValue->tag == _lValueList[0]->tag) {
-            renamed[makePath(0, _lValueList[0])] = makePath(0, lValue);
-            start = 1;
+            /* Determine if it is a rename or not * */
+            if (!_lValueList.empty() && lValue->tag == _lValueList[0]->tag) {
+                renamed[makePath(0, _lValueList[0])] = makePath(0, lValue);
+                start = 1;
+            }
+
+            /* Signal rename changes */
+            if (!renamed.empty()) {
+                signalConstraintsRenamed(renamed);
+            }
+
+            /* Collect info about removals */
+            for (unsigned int i = start; i < _lValueList.size(); i++) {
+                valueMap.erase(_lValueList[i]->tag);
+                removed.insert(makePath(i, _lValueList[i]));
+            }
+
+            /* Signal removes */
+            if (!removed.empty()) {
+                signalConstraintsRemoved(removed);
+            }
+
+            // Cleanup
+            for (unsigned int i = 0; i < _lValueList.size(); i++) {
+                delete _lValueList[i];
+            }
+
+            /* Set new data */
+            _lValueList.resize(1);
+            _lValueList[0] = newVal;
+            valueMap[_lValueList[0]->tag] = 0;
+            hasSetValue();
         }
-
-        /* Signal rename changes */
-        if (!renamed.empty()) {
-            signalConstraintsRenamed(renamed);
-        }
-
-        /* Collect info about removals */
-        for (unsigned int i = start; i < _lValueList.size(); i++) {
-            valueMap.erase(_lValueList[i]->tag);
-            removed.insert(makePath(i, _lValueList[i]));
-        }
-
-        /* Signal removes */
-        if (!removed.empty()) {
-            signalConstraintsRemoved(removed);
-        }
-
-        // Cleanup
-        for (unsigned int i = 0; i < _lValueList.size(); i++) {
-            delete _lValueList[i];
-        }
-
-        /* Set new data */
-        _lValueList.resize(1);
-        _lValueList[0] = newVal;
-        valueMap[_lValueList[0]->tag] = 0;
-        hasSetValue();
     }
 }
 
 void PropertyConstraintList::setValues(const std::vector<Constraint*>& lValue)
 {
-    auto copy = lValue;
-    for (auto& cstr : copy) {
-        cstr = cstr->clone();
-    }
+    using FuncType = void (PropertyConstraintList::*)(const std::vector<Constraint*>&);
+    if (!setInContext<PropertyConstraintList, FuncType>(&PropertyConstraintList::setValues,
+                                                        lValue)) {
+        auto copy = lValue;
+        for (auto& cstr : copy) {
+            cstr = cstr->clone();
+        }
 
-    setValues(std::move(copy));
+        setValues(std::move(copy));
+    }
 }
 
 void PropertyConstraintList::setValues(std::vector<Constraint*>&& lValue)
 {
-    aboutToSetValue();
-    applyValues(std::move(lValue));
-    hasSetValue();
+    using FuncType = void (PropertyConstraintList::*)(std::vector<Constraint*>&&);
+    if (!setInContext<PropertyConstraintList, FuncType>(&PropertyConstraintList::setValues,
+                                                        std::move(lValue))) {
+        aboutToSetValue();
+        applyValues(std::move(lValue));
+        hasSetValue();
+    }
 }
 
 void PropertyConstraintList::applyValues(std::vector<Constraint*>&& lValue)
 {
-    std::set<Constraint*> oldVals(_lValueList.begin(), _lValueList.end());
-    std::map<App::ObjectIdentifier, App::ObjectIdentifier> renamed;
-    std::set<App::ObjectIdentifier> removed;
-    boost::unordered_map<boost::uuids::uuid, std::size_t> newValueMap;
+    if (!setInContext<PropertyConstraintList>(&PropertyConstraintList::applyValues,
+                                              std::move(lValue))) {
+        std::set<Constraint*> oldVals(_lValueList.begin(), _lValueList.end());
+        std::map<App::ObjectIdentifier, App::ObjectIdentifier> renamed;
+        std::set<App::ObjectIdentifier> removed;
+        boost::unordered_map<boost::uuids::uuid, std::size_t> newValueMap;
 
-    /* Check for renames */
-    for (unsigned int i = 0; i < lValue.size(); i++) {
-        boost::unordered_map<boost::uuids::uuid, std::size_t>::const_iterator j =
-            valueMap.find(lValue[i]->tag);
+        /* Check for renames */
+        for (unsigned int i = 0; i < lValue.size(); i++) {
+            boost::unordered_map<boost::uuids::uuid, std::size_t>::const_iterator j =
+                valueMap.find(lValue[i]->tag);
 
-        if (j != valueMap.end()) {
-            if (i != j->second || _lValueList[j->second]->Name != lValue[i]->Name) {
-                App::ObjectIdentifier old_oid(makePath(j->second, _lValueList[j->second]));
-                App::ObjectIdentifier new_oid(makePath(i, lValue[i]));
-                renamed[old_oid] = new_oid;
+            if (j != valueMap.end()) {
+                if (i != j->second || _lValueList[j->second]->Name != lValue[i]->Name) {
+                    App::ObjectIdentifier old_oid(makePath(j->second, _lValueList[j->second]));
+                    App::ObjectIdentifier new_oid(makePath(i, lValue[i]));
+                    renamed[old_oid] = new_oid;
+                }
+                valueMap.erase(j);
             }
-            valueMap.erase(j);
+
+            newValueMap[lValue[i]->tag] = i;
+
+            // safety insurance in case new new values contain some pointers of the old values
+            oldVals.erase(lValue[i]);
         }
 
-        newValueMap[lValue[i]->tag] = i;
+        /* Collect info about removed elements */
+        for (auto& v : valueMap) {
+            removed.insert(makePath(v.second, _lValueList[v.second]));
+        }
 
-        // safety insurance in case new new values contain some pointers of the old values
-        oldVals.erase(lValue[i]);
-    }
+        /* Update value map with new tags from new array */
+        valueMap = std::move(newValueMap);
 
-    /* Collect info about removed elements */
-    for (auto& v : valueMap) {
-        removed.insert(makePath(v.second, _lValueList[v.second]));
-    }
+        /* Signal removes first, in case renamed values below have the same names as some of the
+         * removed ones. */
+        if (!removed.empty() && !restoreFromTransaction) {
+            signalConstraintsRemoved(removed);
+        }
 
-    /* Update value map with new tags from new array */
-    valueMap = std::move(newValueMap);
+        /* Signal renames */
+        if (!renamed.empty() && !restoreFromTransaction) {
+            signalConstraintsRenamed(renamed);
+        }
 
-    /* Signal removes first, in case renamed values below have the same names as some of the removed
-     * ones. */
-    if (!removed.empty() && !restoreFromTransaction) {
-        signalConstraintsRemoved(removed);
-    }
+        _lValueList = std::move(lValue);
 
-    /* Signal renames */
-    if (!renamed.empty() && !restoreFromTransaction) {
-        signalConstraintsRenamed(renamed);
-    }
-
-    _lValueList = std::move(lValue);
-
-    /* Clean-up; remove old values */
-    for (auto& v : oldVals) {
-        delete v;
+        /* Clean-up; remove old values */
+        for (auto& v : oldVals) {
+            delete v;
+        }
     }
 }
 
@@ -389,14 +413,16 @@ unsigned int PropertyConstraintList::getMemSize() const
 
 void PropertyConstraintList::acceptGeometry(const std::vector<Part::Geometry*>& GeoList)
 {
-    aboutToSetValue();
-    validGeometryKeys.clear();
-    validGeometryKeys.reserve(GeoList.size());
-    for (const auto& it : GeoList) {
-        validGeometryKeys.push_back((it)->getTypeId().getKey());
+    if (!setInContext<PropertyConstraintList>(&PropertyConstraintList::acceptGeometry, GeoList)) {
+        aboutToSetValue();
+        validGeometryKeys.clear();
+        validGeometryKeys.reserve(GeoList.size());
+        for (const auto& it : GeoList) {
+            validGeometryKeys.push_back((it)->getTypeId().getKey());
+        }
+        invalidGeometry = false;
+        hasSetValue();
     }
-    invalidGeometry = false;
-    hasSetValue();
 }
 
 void PropertyConstraintList::applyValidGeometryKeys(const std::vector<unsigned int>& keys)
@@ -517,93 +543,102 @@ int PropertyConstraintList::getIndexFromConstraintName(const string& name)
 
 void PropertyConstraintList::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
-    if (path.numSubComponents() != 2 || path.getPropertyComponent(0).getName() != getName()) {
-        FC_THROWM(Base::ValueError, "invalid constraint path " << path.toString());
-    }
-
-    const ObjectIdentifier::Component& c1 = path.getPropertyComponent(1);
-    double dvalue;
-
-    if (value.type() == typeid(double)) {
-        dvalue = boost::any_cast<double>(value);
-    }
-    else if (value.type() == typeid(float)) {
-        dvalue = App::any_cast<float>(value);
-    }
-    else if (value.type() == typeid(long)) {
-        dvalue = App::any_cast<long>(value);
-    }
-    else if (value.type() == typeid(int)) {
-        dvalue = App::any_cast<int>(value);
-    }
-    else if (value.type() == typeid(Quantity)) {
-        dvalue = (App::any_cast<const Quantity&>(value)).getValue();
-    }
-    else {
-        throw std::bad_cast();
-    }
-
-    if (c1.isArray()) {
-        size_t index = c1.getIndex(_lValueList.size());
-        switch (_lValueList[index]->Type) {
-            case Angle:
-                dvalue = Base::toRadians<double>(dvalue);
-                break;
-            default:
-                break;
+    if (!setInContext<PropertyConstraintList>(&PropertyConstraintList::setPathValue, path, value)) {
+        if (path.numSubComponents() != 2 || path.getPropertyComponent(0).getName() != getName()) {
+            FC_THROWM(Base::ValueError, "invalid constraint path " << path.toString());
         }
-        aboutToSetValue();
-        _lValueList[index]->setValue(dvalue);
-        hasSetValue();
-        return;
-    }
-    else if (c1.isSimple()) {
-        for (std::vector<Constraint*>::const_iterator it = _lValueList.begin();
-             it != _lValueList.end();
-             ++it) {
-            int index = it - _lValueList.begin();
 
-            if ((*it)->Name == c1.getName()) {
-                switch (_lValueList[index]->Type) {
-                    case Angle:
-                        dvalue = Base::toRadians<double>(dvalue);
-                        break;
-                    default:
-                        break;
+        const ObjectIdentifier::Component& c1 = path.getPropertyComponent(1);
+        double dvalue;
+
+        if (value.type() == typeid(double)) {
+            dvalue = boost::any_cast<double>(value);
+        }
+        else if (value.type() == typeid(float)) {
+            dvalue = App::any_cast<float>(value);
+        }
+        else if (value.type() == typeid(long)) {
+            dvalue = App::any_cast<long>(value);
+        }
+        else if (value.type() == typeid(int)) {
+            dvalue = App::any_cast<int>(value);
+        }
+        else if (value.type() == typeid(Quantity)) {
+            dvalue = (App::any_cast<const Quantity&>(value)).getValue();
+        }
+        else {
+            throw std::bad_cast();
+        }
+
+        if (c1.isArray()) {
+            size_t index = c1.getIndex(_lValueList.size());
+            switch (_lValueList[index]->Type) {
+                case Angle:
+                    dvalue = Base::toRadians<double>(dvalue);
+                    break;
+                default:
+                    break;
+            }
+            aboutToSetValue();
+            _lValueList[index]->setValue(dvalue);
+            hasSetValue();
+            return;
+        }
+        else if (c1.isSimple()) {
+            for (std::vector<Constraint*>::const_iterator it = _lValueList.begin();
+                 it != _lValueList.end();
+                 ++it) {
+                int index = it - _lValueList.begin();
+
+                if ((*it)->Name == c1.getName()) {
+                    switch (_lValueList[index]->Type) {
+                        case Angle:
+                            dvalue = Base::toRadians<double>(dvalue);
+                            break;
+                        default:
+                            break;
+                    }
+                    aboutToSetValue();
+                    _lValueList[index]->setValue(dvalue);
+                    hasSetValue();
+                    return;
                 }
-                aboutToSetValue();
-                _lValueList[index]->setValue(dvalue);
-                hasSetValue();
-                return;
             }
         }
+        FC_THROWM(Base::ValueError, "invalid constraint path " << path.toString());
     }
-    FC_THROWM(Base::ValueError, "invalid constraint path " << path.toString());
 }
 
 const Constraint* PropertyConstraintList::getConstraint(const ObjectIdentifier& path) const
 {
-    if (path.numSubComponents() != 2 || path.getPropertyComponent(0).getName() != getName()) {
-        FC_THROWM(Base::ValueError, "Invalid constraint path " << path.toString());
+    try {
+        return getFromContext<PropertyConstraintList, const Constraint*>(
+            &PropertyConstraintList::getConstraint,
+            path);
     }
+    catch (const NoContextException& e) {
+        if (path.numSubComponents() != 2 || path.getPropertyComponent(0).getName() != getName()) {
+            FC_THROWM(Base::ValueError, "Invalid constraint path " << path.toString());
+        }
 
-    const ObjectIdentifier::Component& c1 = path.getPropertyComponent(1);
+        const ObjectIdentifier::Component& c1 = path.getPropertyComponent(1);
 
-    if (c1.isArray()) {
-        return _lValueList[c1.getIndex(_lValueList.size())];
-    }
-    else if (c1.isSimple()) {
-        ObjectIdentifier::Component c1 = path.getPropertyComponent(1);
+        if (c1.isArray()) {
+            return _lValueList[c1.getIndex(_lValueList.size())];
+        }
+        else if (c1.isSimple()) {
+            ObjectIdentifier::Component c1 = path.getPropertyComponent(1);
 
-        for (std::vector<Constraint*>::const_iterator it = _lValueList.begin();
-             it != _lValueList.end();
-             ++it) {
-            if ((*it)->Name == c1.getName()) {
-                return *it;
+            for (std::vector<Constraint*>::const_iterator it = _lValueList.begin();
+                 it != _lValueList.end();
+                 ++it) {
+                if ((*it)->Name == c1.getName()) {
+                    return *it;
+                }
             }
         }
+        FC_THROWM(Base::ValueError, "Invalid constraint path " << path.toString());
     }
-    FC_THROWM(Base::ValueError, "Invalid constraint path " << path.toString());
 }
 
 const boost::any PropertyConstraintList::getPathValue(const ObjectIdentifier& path) const

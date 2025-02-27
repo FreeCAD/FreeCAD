@@ -28,6 +28,7 @@
 
 #include <App/GroupExtension.h>
 #include <App/Document.h>
+#include "App/VariantExtension.h"
 
 #include "Command.h"
 #include "ActiveObjectList.h"
@@ -176,6 +177,56 @@ bool StdCmdVarSet::isActive()
     return hasActiveDocument();
 }
 
+
+//===========================================================================
+// Std_VarSet
+//===========================================================================
+DEF_STD_CMD_A(StdCmdVariant)
+
+StdCmdVariant::StdCmdVariant()
+  : Command("Std_Variant")
+{
+    sGroup        = "Structure";
+    sMenuText     = QT_TR_NOOP("Create a variant");
+    sToolTipText  = QT_TR_NOOP("A Variant is an object that adopts the exposed properties of the Support object"
+                               "to be varied by the user.");
+    sWhatsThis    = "Std_Variant";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Variant";
+}
+
+void StdCmdVariant::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a variant"));
+
+    std::string VariantName;
+    VariantName = getUniqueObjectName("Variant");
+    doCommand(Doc,"App.activeDocument().addObject('Part::Variant','%s')", VariantName.c_str());
+
+    // add the varset to a group if it is selected
+    auto sels = Selection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
+        ResolveMode::OldStyleElement, true);
+    if (sels.size() == 1) {
+        Gui::Document* docGui = Application::Instance->activeDocument();
+        App::Document* doc = docGui->getDocument();
+        App::DocumentObject* obj = sels[0].getObject();
+        App::DocumentObject* variant = doc->getObject(VariantName.c_str());
+        auto variantExt = variant->getExtension<App::VariantExtension>();
+        if (variantExt) {
+            variantExt->Support.setValue(obj);
+        }
+    }
+    commitCommand();
+}
+
+bool StdCmdVariant::isActive()
+{
+    return hasActiveDocument();
+}
+
+
 namespace Gui {
 
 void CreateStructureCommands()
@@ -185,6 +236,7 @@ void CreateStructureCommands()
     rcCmdMgr.addCommand(new StdCmdPart());
     rcCmdMgr.addCommand(new StdCmdGroup());
     rcCmdMgr.addCommand(new StdCmdVarSet());
+    rcCmdMgr.addCommand(new StdCmdVariant());
 }
 
 } // namespace Gui

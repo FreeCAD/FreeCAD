@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <boost/algorithm/cxx11/all_of.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
 #include <QInputDialog>
@@ -46,6 +47,8 @@
 #include "PropertyView.h"
 #include "ViewProviderDocumentObject.h"
 
+
+using boost::algorithm::all_of;
 
 FC_LOG_LEVEL_INIT("PropertyView", true, true)
 
@@ -701,6 +704,7 @@ enum MenuAction
     MA_RemoveProp,
     MA_AddProp,
     MA_EditPropGroup,
+    MA_Expose,
     MA_Transient,
     MA_Output,
     MA_NoRecompute,
@@ -709,6 +713,7 @@ enum MenuAction
     MA_Touched,
     MA_EvalOnRestore,
     MA_CopyOnChange,
+    MA_Exposed,
 };
 
 void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
@@ -758,6 +763,21 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     }
     if (canRemove) {
         menu.addAction(tr("Remove property"))->setData(QVariant(MA_RemoveProp));
+    }
+
+    if (!props.empty()) {
+        bool allExposed = all_of(props, [&](auto prop) {
+            return prop->testStatus(App::Property::Exposed);
+        });
+        bool allUnexposed = all_of(props, [&](auto prop) {
+            return !prop->testStatus(App::Property::Exposed);
+        });
+        if (allExposed) {
+            menu.addAction(tr("Unexpose property"))->setData(QVariant(MA_Expose));
+        }
+        else if (allUnexposed) {
+            menu.addAction(tr("Expose property"))->setData(QVariant(MA_Expose));
+        }
     }
 
     // add a separator between adding/removing properties and the rest
@@ -824,6 +844,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         _ACTION_SETUP(Touched);
         _ACTION_SETUP(EvalOnRestore);
         _ACTION_SETUP(CopyOnChange);
+        _ACTION_SETUP(Exposed);
 
         menu.addMenu(subMenu);
     }
@@ -859,6 +880,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             ACTION_CHECK(Hidden);
             ACTION_CHECK(EvalOnRestore);
             ACTION_CHECK(CopyOnChange);
+            ACTION_CHECK(Exposed);
         case MA_Touched:
             for (auto prop : props) {
                 if (action->isChecked()) {
@@ -923,6 +945,12 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                 }
             }
             break;
+        }
+        case MA_Expose: {
+            for (auto prop : props) {
+                bool exposed = prop->testStatus(App::Property::Exposed);
+                prop->setStatus(App::Property::Exposed, !exposed);
+            }
         }
         default:
             break;
