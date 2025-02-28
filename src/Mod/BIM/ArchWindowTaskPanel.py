@@ -51,13 +51,19 @@ class window_task_panel:
         self.panel2 = FreeCADGui.PySideUic.loadUi(":/ui/taskWindowProperties.ui")
         self.model = QtGui.QStandardItemModel(9, 2)
         self.panel2.table.setModel(self.model)
+        self.panel2.table.setItemDelegate(window_component_delegate(task=self))
         self.model.itemChanged.connect(self.edit_properties)
         self.panel2.table.horizontalHeader().hide()
         self.panel2.table.verticalHeader().hide()
         self.panel2.table.horizontalHeader().setStretchLastSection(True)
+
+        self.panel3 = FreeCADGui.PySideUic.loadUi(":/ui/taskWindowTools.ui")
+        self.panel3.buttonInvertOpening.clicked.connect(self.invert_opening)
+        self.panel3.buttonInvertHinge.clicked.connect(self.invert_hinge)
+
         self.set_titles()
-        self.form = [self.panel1, self.panel2]
-        
+        self.form = [self.panel3, self.panel1, self.panel2]
+
 
     def set_titles(self):
         """Fills the first column of the table"""
@@ -170,6 +176,7 @@ class window_task_panel:
         name, compindex = self.get_component()
         if not name:
             return
+        self.current_name = name
         name = QtGui.QStandardItem(name)
         self.model.setItem(0, 1, name)
         parts2 = self.WindowParts[compindex+2].split(",")
@@ -212,14 +219,14 @@ class window_task_panel:
         self.model.setItem(7, 1, hinge)
         mode = [p for p in parts2 if p.startswith("Mode")]
         if mode:
-            mode = mode[0][4:]
+            mode = ArchWindow.WindowOpeningModes[int(mode[0][4:])]
             mode = QtGui.QStandardItem(mode)
         else:
             mode = QtGui.QStandardItem("")
         self.model.setItem(8, 1, mode)
         self.setting_properties = False
 
-    def edit_properties(self, item):
+    def edit_properties(self, item=None):
         """One of the component properties has changed"""
 
         if self.setting_properties:
@@ -237,7 +244,8 @@ class window_task_panel:
         thickness = self.model.item(5, 1).text()
         offset = self.model.item(6, 1).text()
         hinge = self.model.item(7, 1).text()
-        mode = self.model.item(8, 1).text()
+        mode = str(ArchWindow.WindowOpeningModes.index(self.model.item(8, 1).text()))
+        mode = "Mode" + mode
         self.WindowParts[compindex] = name
         self.WindowParts[compindex+1] = ",".join([comptype, baseobj])
         self.WindowParts[compindex+2] = ",".join([wires, hinge, mode, parent])
@@ -270,6 +278,11 @@ class window_task_panel:
             self.obj.WindowParts = self.WindowParts
             doc.commitTransaction()
             doc.recompute()
+        return self.reject()
+
+    def reject(self):
+        """Cancel was clicked"""
+
         self.obj.ViewObject.Proxy.unsetEdit(self.obj.ViewObject)
         return True
 
@@ -307,14 +320,126 @@ class window_task_panel:
             crawl_child(child)
         QtGui.QTreeWidget.dropEvent(self, event)
 
-    def get_component_names_minus(name):
+    def invert_opening(self):
+        """Inverts the opening direction of this window"""
+
+        if self.obj:
+            self.obj.ViewObject.Proxy.invertOpening()
+            self.reject()
+
+    def invert_hinge(self):
+        """Inverts the hinge direction of this window"""
+
+        if self.obj:
+            self.obj.ViewObject.Proxy.invertHinge()
+            self.reject()
+
+
+class window_component_delegate(QtGui.QStyledItemDelegate):
+    """model delegate for window component properties"""
+
+    def __init__(self, task, *args):
+        self.task = task
+        QtGui.QStyledItemDelegate.__init__(self, None, *args)
+
+    def createEditor(self, parent, option, index):
+        """Creates an editor widget"""
+        row = index.row()
+        uiloader = FreeCADGui.UiLoader()
+        if row == 0:  # name
+            editor = QtGui.QLineEdit(parent)
+        elif row == 1:  # parent
+            editor = QtGui.QComboBox(parent)
+            name = getattr(self.task, "current_name", None)
+            items = self.get_component_names_minus(self.task.WindowParts, name)
+            editor.addItems(items)
+        elif row == 2:  # base object
+            editor = QtGui.QPushButton(parent)
+            editor.clicked.connect(self.on_click_baseobject)
+            self.editor_baseobj = editor
+        elif row == 3:  # wires
+            editor = QtGui.QPushButton(parent)
+            editor.clicked.connect(self.on_click_wires)
+        elif row == 4:  # type
+            editor = QtGui.QComboBox(parent)
+            editor.addItems(ArchWindow.WindowPartTypes)
+        elif row in [5, 6]:  # thickness
+            editor = uiloader.createWidget("Gui::InputField")
+            editor.setParent(parent)
+        elif row == 7:  # hinge
+            editor = QtGui.QPushButton(parent)
+            editor.clicked.connect(self.on_click_hinge)
+            self.editor_hinge = editor
+        elif row == 8:  # mode
+            editor = QtGui.QComboBox(parent)
+            editor.addItems(ArchWindow.WindowOpeningModes)
+        return editor
+
+    def setEditorData(self, editor, index):
+        """Fills the editor widget with current data"""
+        row = index.row()
+        if row in [0, 2, 3, 7]:
+            editor.setText(index.data())
+        elif row == 1:
+            idx = editor.findText(index.data(), QtCore.Qt.MatchExactly)
+            if idx >= 0:
+                editor.setCurrentText(index.data())
+        elif row == 4:
+            editor.setCurrentIndex(ArchWindow.WindowPartTypes.index(index.data()))
+        elif row in [5, 6]:
+            editor.setText(index.data().replace("+V",""))
+        elif row == 8:
+            editor.setCurrentIndex(ArchWindow.WindowOpeningModes.index(index.data()))
+
+    def setModelData(self, editor, model, index):
+        """Saves the changed data"""
+        row = index.row()
+        if row in [0, 2, 3, 7]:
+            model.setData(index, editor.text())
+        elif row == 1:
+            model.setData(index, editor.currentText())
+        elif row == 4:
+            model.setData(index, ArchWindow.WindowPartTypes[editor.currentIndex()])
+        elif row in [5, 6]:
+            val = editor.text()
+            if "+V" in index.data():
+                val += "+V"
+            model.setData(index, val)
+        elif row == 8:
+            model.setData(index, ArchWindow.WindowOpeningModes[editor.currentIndex()])
+        self.task.edit_properties()
+
+    def get_component_names_minus(self, windowparts, name):
         """Returns all the compoonent names minus the given one"""
 
-        cnames = []
-        for cnum in range(int(len(self.WindowParts)/5)):
-            cname = self.WindowParts[cnum*5]
+        cnames = ["",]
+        for cnum in range(int(len(windowparts)/5)):
+            cname = windowparts[cnum*5]
             if cname != name:
                 cnames.append(cname)
         return cnames
 
+    def on_click_baseobject(self):
+        """Select a base object"""
 
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            for obn in sel.ObjectNames:
+                if obn != self.task.obj.Name:
+                    self.editor_baseobj.setText(obn)
+                    return
+        self.editor_baseobj.setText("")
+
+    def on_click_wires(self):
+        """Select wires, or opens the componenbt definition dialog"""
+
+        print("Not implemented yet")
+
+    def on_click_hinge(self):
+        """Selects an hinge"""
+
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            for sub in sel.SubElementNames:
+                if "Edge" in sub:
+                    self.editor_hinge.setText(sub)
+                    return
+        self.editor_hinge.setText("")
