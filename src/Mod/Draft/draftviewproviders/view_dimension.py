@@ -79,7 +79,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
 
     From the viewprovider class
 
-    * `b`, `ArrowType` and `ArrowSize`, the symbol shown on the endpoints
+    * `b`, `ArrowTypeStart`, `ArrowTypeEnd`, `ArrowSizeStart`, `ArrowSizeEnd`, the symbol shown on the endpoints
     * `c`, `DimOvershoot`, extension to the dimension line going through `a`
     * `d`, `ExtLines`, distance to target `(t)`
     * `e`, `ExtOvershoot`, extension in the opposite direction to `(t)`
@@ -194,24 +194,43 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         """Set graphics properties only if they don't already exist."""
         super().set_graphics_properties(vobj, properties)
 
-        if "ArrowSize" not in properties:
+        if "ArrowSizeStart" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Arrow size")
             vobj.addProperty("App::PropertyLength",
-                             "ArrowSize",
+                             "ArrowSizeStart",
                              "Graphics",
                              _tip)
-            vobj.ArrowSize = params.get_param("arrowsize")
+            vobj.ArrowSizeStart = params.get_param("arrowsizestart")
 
-        if "ArrowType" not in properties:
+        if "ArrowTypeStart" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Arrow type")
             vobj.addProperty("App::PropertyEnumeration",
-                             "ArrowType",
+                             "ArrowTypeStart",
                              "Graphics",
                              _tip)
-            vobj.ArrowType = utils.ARROW_TYPES
-            vobj.ArrowType = utils.ARROW_TYPES[params.get_param("dimsymbol")]
+            vobj.ArrowTypeStart = utils.ARROW_TYPES
+            vobj.ArrowTypeStart = utils.ARROW_TYPES[params.get_param("dimsymbolstart")]
+
+        if "ArrowSizeEnd" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Arrow size")
+            vobj.addProperty("App::PropertyLength",
+                             "ArrowSizeEnd",
+                             "Graphics",
+                             _tip)
+            vobj.ArrowSizeEnd = params.get_param("arrowsizeend")
+
+        if "ArrowTypeEnd" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Arrow type")
+            vobj.addProperty("App::PropertyEnumeration",
+                             "ArrowTypeEnd",
+                             "Graphics",
+                             _tip)
+            vobj.ArrowTypeEnd = utils.ARROW_TYPES
+            vobj.ArrowTypeEnd = utils.ARROW_TYPES[params.get_param("dimsymbolend")]
 
         if "FlipArrows" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -352,7 +371,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.onChanged(vobj, "FontSize")
         self.onChanged(vobj, "FontName")
         self.onChanged(vobj, "TextColor")
-        self.onChanged(vobj, "ArrowType")
+        self.onChanged(vobj, "ArrowTypeStart")
+        self.onChanged(vobj, "ArrowTypeEnd")
         self.onChanged(vobj, "LineColor")
         self.onChanged(vobj, "DimOvershoot")
         self.onChanged(vobj, "ExtOvershoot")
@@ -382,7 +402,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 else:
                     vobj.Override = vobj.Override.replace("Ø $dim", "R $dim")
 
-            self.onChanged(vobj, "ArrowType")
+            self.onChanged(vobj, "ArrowTypeStart")
+            self.onChanged(vobj, "ArrowTypeEnd")
             return
 
         # Calculate the 4 points
@@ -646,7 +667,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             if hasattr(self, "font"):
                 self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
             if (hasattr(self, "node_wld") and hasattr(self, "p2")
-                    and "ArrowSize" in properties):
+                    and "ArrowSizeStart" in properties
+                    and "ArrowSizeEnd" in properties):
                 self.remove_dim_arrows()
                 self.draw_dim_arrows(vobj)
             if "DimOvershoot" in properties:
@@ -681,8 +703,9 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
               and hasattr(self, "drawstyle")):
             self.drawstyle.lineWidth = vobj.LineWidth
 
-        elif (prop in ("ArrowSize", "ArrowType")
-              and "ArrowSize" in properties
+        elif (prop in ("ArrowSizeStart", "ArrowSizeEnd", "ArrowTypeStart", "ArrowTypeEnd")
+              and "ArrowSizeStart" in properties
+              and "ArrowSizeEnd" in properties
               and "ScaleMultiplier" in properties
               and hasattr(self, "node_wld") and hasattr(self, "p2")):
             self.remove_dim_arrows()
@@ -720,7 +743,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
 
     def draw_dim_arrows(self, vobj):
         """Draw dimension arrows."""
-        if not hasattr(vobj, "ArrowType"):
+        if not (hasattr(vobj, "ArrowTypeStart") and hasattr(vobj, "ArrowTypeEnd") and
+                hasattr(vobj, "ArrowSizeStart") and hasattr(vobj, "ArrowSizeEnd")):
             return
 
         if self.p3.x < self.p2.x:
@@ -729,32 +753,36 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             inv = True
 
         # Set scale
-        symbol = utils.ARROW_TYPES.index(vobj.ArrowType)
-        s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
-        self.trans1.scaleFactor.setValue((s, s, s))
-        self.trans2.scaleFactor.setValue((s, s, s))
+        startSymbol = utils.ARROW_TYPES.index("None")
+        if vobj.Object.Diameter or not self.is_linked_to_circle():
+            startSymbol = utils.ARROW_TYPES.index(vobj.ArrowTypeStart)
+
+        endSymbol = utils.ARROW_TYPES.index(vobj.ArrowTypeEnd)
+        sstart = vobj.ArrowSizeStart.Value * vobj.ScaleMultiplier
+        send = vobj.ArrowSizeEnd.Value * vobj.ScaleMultiplier
+        self.trans1.scaleFactor.setValue((sstart, sstart, sstart))
+        self.trans2.scaleFactor.setValue((send, send, send))
 
         # Set new nodes
         self.marks = coin.SoSeparator()
         self.marks.addChild(self.linecolor)
 
-        if vobj.Object.Diameter or not self.is_linked_to_circle():
-            s1 = coin.SoSeparator()
-            if symbol == "Circle":
-                s1.addChild(self.coord1)
-            else:
-                s1.addChild(self.trans1)
+        s1 = coin.SoSeparator()
+        if startSymbol == "Circle":
+            s1.addChild(self.coord1)
+        else:
+            s1.addChild(self.trans1)
 
-            s1.addChild(gui_utils.dim_symbol(symbol, invert=not inv))
-            self.marks.addChild(s1)
+        s1.addChild(gui_utils.dim_symbol(startSymbol, invert=not inv))
+        self.marks.addChild(s1)
 
         s2 = coin.SoSeparator()
-        if symbol == "Circle":
+        if endSymbol == "Circle":
             s2.addChild(self.coord2)
         else:
             s2.addChild(self.trans2)
 
-        s2.addChild(gui_utils.dim_symbol(symbol, invert=inv))
+        s2.addChild(gui_utils.dim_symbol(endSymbol, invert=inv))
         self.marks.addChild(s2)
 
         self.node_wld.insertChild(self.marks, 2)
@@ -910,7 +938,8 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.onChanged(vobj, "FontSize")
         self.onChanged(vobj, "FontName")
         self.onChanged(vobj, "TextColor")
-        self.onChanged(vobj, "ArrowType")
+        self.onChanged(vobj, "ArrowTypeStart")
+        self.onChanged(vobj, "ArrowTypeEnd")
         self.onChanged(vobj, "LineColor")
 
     def updateData(self, obj, prop):
@@ -1046,19 +1075,23 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.coord2.point.setValue(p3)
 
         # Calculate small chords to make arrows look better
-        if vobj.ArrowSize.Value !=0 \
+        if vobj.ArrowSizeStart.Value !=0 \
+                and vobj.ArrowSizeEnd.Value !=0 \
                 and hasattr(vobj, "ScaleMultiplier") \
                 and vobj.ScaleMultiplier != 0 \
                 and hasattr(vobj, "FlipArrows"):
-            halfarrowlength = 2 * vobj.ArrowSize.Value * vobj.ScaleMultiplier
-            arrowangle = 2 * math.asin(min(1, halfarrowlength / radius))
+            halfstartarrowlength = 2 * vobj.ArrowSizeStart.Value * vobj.ScaleMultiplier
+            startarrowangle = 2 * math.asin(min(1, halfstartarrowlength / radius))
+            halfendarrowlength = 2 * vobj.ArrowSizeEnd.Value * vobj.ScaleMultiplier
+            endarrowangle = 2 * math.asin(min(1, halfendarrowlength / radius))
             if vobj.FlipArrows:
-                arrowangle = -arrowangle
+                startarrowangle = -startarrowangle
+                endarrowangle = -endarrowangle
 
-            u1 = (self.circle.valueAt(first + arrowangle)
+            u1 = (self.circle.valueAt(first + startarrowangle)
                   - self.circle.valueAt(first)).normalize()
             u2 = (self.circle.valueAt(last)
-                  - self.circle.valueAt(last - arrowangle)).normalize()
+                  - self.circle.valueAt(last - endarrowangle)).normalize()
 
             w2 = self.circle.Curve.Axis
             w1 = w2.negative()
@@ -1121,7 +1154,8 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
             if hasattr(self, "font"):
                 self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
             if (hasattr(self, "node_wld") and hasattr(self, "p2")
-                    and "ArrowSize" in properties):
+                    and "ArrowSizeStart" in properties
+                    and "ArrowSizeEnd" in properties):
                 self.remove_dim_arrows()
                 self.draw_dim_arrows(vobj)
 
@@ -1147,7 +1181,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         elif prop == "LineWidth" and hasattr(self, "drawstyle"):
             self.drawstyle.lineWidth = vobj.LineWidth
 
-        elif (prop in ("ArrowSize", "ArrowType")
+        elif (prop in ("ArrowSizeStart", "ArrowTypeStart", "ArrowSizeEnd", "ArrowTypeEnd")
               and "ScaleMultiplier" in properties
               and hasattr(self, "node_wld") and hasattr(self, "p2")):
             self.updateData(obj, None)
@@ -1167,33 +1201,36 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
     def draw_dim_arrows(self, vobj):
         """Draw dimension arrows."""
-        if not hasattr(vobj, "ArrowType"):
+        if not (hasattr(vobj, "ArrowTypeStart") and hasattr(vobj, "ArrowTypeEnd") and
+                hasattr(vobj, "ArrowSizeStart") and hasattr(vobj, "ArrowSizeEnd")):
             return
 
         # Set scale
-        symbol = utils.ARROW_TYPES.index(vobj.ArrowType)
-        s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
-        self.trans1.scaleFactor.setValue((s, s, s))
-        self.trans2.scaleFactor.setValue((s, s, s))
+        startSymbol = utils.ARROW_TYPES.index(vobj.ArrowTypeStart)
+        endSymbol = utils.ARROW_TYPES.index(vobj.ArrowTypeEnd)
+        sstart = vobj.ArrowSizeStart.Value * vobj.ScaleMultiplier
+        send = vobj.ArrowSizeEnd.Value * vobj.ScaleMultiplier
+        self.trans1.scaleFactor.setValue((sstart, sstart, sstart))
+        self.trans2.scaleFactor.setValue((send, send, send))
 
         # Set new nodes
         self.marks = coin.SoSeparator()
         self.marks.addChild(self.linecolor)
 
         s1 = coin.SoSeparator()
-        if symbol == "Circle":
+        if startSymbol == "Circle":
             s1.addChild(self.coord1)
         else:
             s1.addChild(self.trans1)
-        s1.addChild(gui_utils.dim_symbol(symbol, invert=False))
+        s1.addChild(gui_utils.dim_symbol(startSymbol, invert=False))
         self.marks.addChild(s1)
 
         s2 = coin.SoSeparator()
-        if symbol == "Circle":
+        if endSymbol == "Circle":
             s2.addChild(self.coord2)
         else:
             s2.addChild(self.trans2)
-        s2.addChild(gui_utils.dim_symbol(symbol, invert=True))
+        s2.addChild(gui_utils.dim_symbol(endSymbol, invert=True))
         self.marks.addChild(s2)
 
         self.node_wld.insertChild(self.marks, 2)
