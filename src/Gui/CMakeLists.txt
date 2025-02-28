@@ -1345,6 +1345,7 @@ SET(FreeCADGui_SRCS
     3Dconnexion/GuiAbstractNativeEvent.h
     GuiConsole.h
     InventorAll.h
+    InputHint.h
     Macro.h
     MergeDocuments.h
     MetaTypes.h

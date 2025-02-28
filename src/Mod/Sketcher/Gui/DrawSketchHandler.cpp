@@ -300,7 +300,6 @@ QString DrawSketchHandler::getToolWidgetText() const
     return QString();
 }
 
-
 void DrawSketchHandler::activate(ViewProviderSketch* vp)
 {
     sketchgui = vp;

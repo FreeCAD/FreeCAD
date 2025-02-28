@@ -74,6 +74,27 @@ public:
     {}
     ~DrawSketchHandlerPolygon() override = default;
 
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        switch (state()) {
+            case SelectMode::SeekFirst:
+                return {
+                    {"%1 pick polygon center", {Gui::InputHint::MouseLeft}},
+                    {"%1/%2 increase / decrease number of sides",
+                     {Gui::InputHint::KeyTab, Gui::InputHint::KeyJ}},
+                };
+            case SelectMode::SeekSecond:
+                return {
+                    {"%1 pick rotation and size", {Gui::InputHint::MouseMove}},
+                    {"%1 confirm", {Gui::InputHint::MouseLeft}},
+                    {"%1/%2 increase / decrease number of sides",
+                     {Gui::InputHint::KeyU, Gui::InputHint::KeyJ}},
+                };
+            default:
+                return {};
+        }
+    }
+
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
