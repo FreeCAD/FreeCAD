@@ -274,5 +274,6 @@
         <file>ui/preferencesNativeIFC.ui</file>
         <file>ui/taskWindowComponents.ui</file>
         <file>ui/taskWindowProperties.ui</file>
+        <file>ui/taskWindowTools.ui</file>
     </qresource>
 </RCC>

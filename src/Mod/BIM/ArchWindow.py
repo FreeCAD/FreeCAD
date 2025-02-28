@@ -60,7 +60,8 @@ WindowPartTypes = [
     "Frame",
     "Solid panel",
     "Glass panel",
-    "Louvre"
+    "Louvre",
+    "Custom"
 ]
 WindowOpeningModes = [
     "None",
