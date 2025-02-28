@@ -51,7 +51,7 @@
 #include "FeatureDraft.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
-#include "Mod/Sketcher/App/SketchObject.h"
+#include "Mod/Part/App/Part2DObject.h"
 #include "App/Placement.h"
 
 
@@ -219,7 +219,7 @@ App::DocumentObjectExecReturn *Draft::execute()
         } else if (refPlane->isDerivedFrom<App::Plane>()) {
             neutralPlane = Feature::makePlnFromPlane(refPlane);
         }
-        else if (refPlane->isDerivedFrom<Sketcher::SketchObject>()) {
+        else if (refPlane->isDerivedFrom<Part::Part2DObject>()) {
             Base::Console().Log("Neutral Plane is Sketcher::SketchObject\n");
         } else if (refPlane->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subStrings = NeutralPlane.getSubValues();

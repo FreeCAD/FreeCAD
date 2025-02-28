@@ -170,9 +170,7 @@ set(PartDesignHoleDefines
     Resources/Hole/iso4762-fine.json
     Resources/Hole/iso7046.json
 )
-target_link_libraries(PartDesign
-        Sketcher
-)
+
 include_directories(
         ${EIGEN3_INCLUDE_DIR}
 )
