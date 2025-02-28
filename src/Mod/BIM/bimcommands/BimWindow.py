@@ -33,6 +33,10 @@ PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 ALLOWEDHOSTS = ["Wall", "Structure", "Roof"]
 
 
+# TODO
+# 1. separate doors and window presets
+# 2. Separate all parameters (H3, etc...) between doors and windows
+
 class Arch_Window:
     "the Arch Window command definition"
 
