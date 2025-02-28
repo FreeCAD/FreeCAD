@@ -72,7 +72,7 @@ void TaskFeatureParameters::recomputeFeature()
     if (!blockUpdate) {
         App::DocumentObject* obj = getObject();
         assert (obj);
-        obj->getDocument()->recomputeFeature (obj);
+        obj->recomputeFeature();
     }
 }
 

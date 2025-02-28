@@ -180,7 +180,7 @@ void TaskDimension::recomputeFeature()
     }
     App::DocumentObject* objVP = m_dimensionVP->getObject();
     assert(objVP);
-    objVP->getDocument()->recomputeFeature(objVP);
+    objVP->recomputeFeature();
 }
 
 void TaskDimension::onTheoreticallyExactChanged()

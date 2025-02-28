@@ -157,7 +157,7 @@ void TaskBalloon::recomputeFeature()
 {
     App::DocumentObject* objVP = m_balloonVP->getObject();
     assert(objVP);
-    objVP->getDocument()->recomputeFeature(objVP);
+    objVP->recomputeFeature();
 }
 
 void TaskBalloon::onTextChanged()
