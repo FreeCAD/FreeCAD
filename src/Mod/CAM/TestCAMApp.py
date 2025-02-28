@@ -80,6 +80,7 @@ from CAMTests.TestRefactoredMach3Mach4Post import TestRefactoredMach3Mach4Post
 from CAMTests.TestRefactoredTestPost import TestRefactoredTestPost
 from CAMTests.TestRefactoredTestPostGCodes import TestRefactoredTestPostGCodes
 from CAMTests.TestRefactoredTestPostMCodes import TestRefactoredTestPostMCodes
+from CAMTests.TestSnapmakerPost import TestSnapmakerPost
 
 # dummy usage to get flake8 and lgtm quiet
 False if TestCAMSanity.__name__ else True
@@ -136,3 +137,4 @@ False if TestRefactoredMach3Mach4Post.__name__ else True
 False if TestRefactoredTestPost.__name__ else True
 False if TestRefactoredTestPostGCodes.__name__ else True
 False if TestRefactoredTestPostMCodes.__name__ else True
+False if TestSnapmakerPost.__name__ else True
