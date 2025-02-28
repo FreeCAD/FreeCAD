@@ -329,7 +329,7 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
         pcMatBinding->value = SoMaterialBinding::OVERALL;
     }
     if (prop == &LineTransparency) {
-        float trans = LineTransparency.getValue() / 100.0F;
+        float trans = Base::fromPercent(LineTransparency.getValue());
         pLineColor->transparency = trans;
     }
     else if (prop == &LineWidth) {
@@ -590,7 +590,7 @@ void ViewProviderMesh::tryColorPerVertexOrFace(bool on)
         pcMatBinding->value = SoMaterialBinding::OVERALL;
         const App::Color& c = ShapeAppearance.getDiffuseColor();
         pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
-        pcShapeMaterial->transparency.setValue(Transparency.getValue() / 100.0F);
+        pcShapeMaterial->transparency.setValue(Base::fromPercent(Transparency.getValue()));
     }
 }
 

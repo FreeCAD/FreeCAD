@@ -38,6 +38,8 @@
 #include "View3DSettings.h"
 #include "View3DInventorViewer.h"
 
+#include <Base/Tools.h>
+
 using namespace Gui;
 
 View3DSettings::View3DSettings(ParameterGrp::handle hGrp,
@@ -100,6 +102,12 @@ void View3DSettings::applySettings()
     OnChange(*hGrp,"BacklightColor");
     OnChange(*hGrp,"BacklightDirection");
     OnChange(*hGrp,"BacklightIntensity");
+    OnChange(*hGrp,"EnableFillLight");
+    OnChange(*hGrp,"FillLightColor");
+    OnChange(*hGrp,"FillLightDirection");
+    OnChange(*hGrp,"FillLightIntensity");
+    OnChange(*hGrp,"AmbientLightColor");
+    OnChange(*hGrp,"AmbientLightIntensity");
     OnChange(*hGrp,"NavigationStyle");
     OnChange(*hGrp,"OrbitStyle");
     OnChange(*hGrp,"Sensitivity");
@@ -121,7 +129,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else if (strcmp(Reason,"HeadlightColor") == 0) {
-        unsigned long headlight = rGrp.GetUnsigned("HeadlightColor",ULONG_MAX); // default color (white)
+        unsigned long headlight = rGrp.GetUnsigned("HeadlightColor", 0xFFFFFFFF); // default color (white)
         float transparency;
         SbColor headlightColor;
         headlightColor.setPackedValue((uint32_t)headlight, transparency);
@@ -131,9 +139,9 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"HeadlightDirection") == 0) {
         try {
-            std::string pos = rGrp.GetASCII("HeadlightDirection");
+            std::string pos = rGrp.GetASCII("HeadlightDirection", defaultHeadLightDirection);
             if (!pos.empty()) {
-                Base::Vector3f dir = Base::to_vector(pos);
+                Base::Vector3f dir = Base::stringToVector(pos);
                 for (auto _viewer : _viewers) {
                     _viewer->getHeadlight()->direction.setValue(dir.x, dir.y, dir.z);
                 }
@@ -144,18 +152,18 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else if (strcmp(Reason,"HeadlightIntensity") == 0) {
-        long value = rGrp.GetInt("HeadlightIntensity", 100);
+        long value = rGrp.GetInt("HeadlightIntensity", 90);
         for (auto _viewer : _viewers) {
-            _viewer->getHeadlight()->intensity.setValue((float)value/100.0f);
+            _viewer->getHeadlight()->intensity.setValue(Base::fromPercent(value));
         }
     }
     else if (strcmp(Reason,"EnableBacklight") == 0) {
         for (auto _viewer : _viewers) {
-            _viewer->setBacklightEnabled(rGrp.GetBool("EnableBacklight", false));
+            _viewer->setBacklightEnabled(rGrp.GetBool("EnableBacklight", true));
         }
     }
     else if (strcmp(Reason,"BacklightColor") == 0) {
-        unsigned long backlight = rGrp.GetUnsigned("BacklightColor",ULONG_MAX); // default color (white)
+        unsigned long backlight = rGrp.GetUnsigned("BacklightColor", 0xF5F5EEFF);
         float transparency;
         SbColor backlightColor;
         backlightColor.setPackedValue((uint32_t)backlight, transparency);
@@ -165,9 +173,9 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"BacklightDirection") == 0) {
         try {
-            std::string pos = rGrp.GetASCII("BacklightDirection");
+            std::string pos = rGrp.GetASCII("BacklightDirection", defaultBackLightDirection);
             if (!pos.empty()) {
-                Base::Vector3f dir = Base::to_vector(pos);
+                Base::Vector3f dir = Base::stringToVector(pos);
                 for (auto _viewer : _viewers) {
                     _viewer->getBacklight()->direction.setValue(dir.x, dir.y, dir.z);
                 }
@@ -178,9 +186,58 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else if (strcmp(Reason,"BacklightIntensity") == 0) {
-        long value = rGrp.GetInt("BacklightIntensity", 100);
+        long value = rGrp.GetInt("BacklightIntensity", 60);
         for (auto _viewer : _viewers) {
-            _viewer->getBacklight()->intensity.setValue((float)value/100.0f);
+            _viewer->getBacklight()->intensity.setValue(Base::fromPercent(value));
+        }
+    }
+    else if (strcmp(Reason,"EnableFillLight") == 0) {
+        for (auto _viewer : _viewers) {
+            _viewer->setFillLightEnabled(rGrp.GetBool("EnableFillLight", true));
+        }
+    }
+    else if (strcmp(Reason,"FillLightColor") == 0) {
+        unsigned long backlight = rGrp.GetUnsigned("FillLightColor", 0xE6FAFFFF); // default color (white)
+        float transparency;
+        SbColor backlightColor;
+        backlightColor.setPackedValue((uint32_t)backlight, transparency);
+        for (auto _viewer : _viewers) {
+            _viewer->getFillLight()->color.setValue(backlightColor);
+        }
+    }
+    else if (strcmp(Reason,"FillLightDirection") == 0) {
+        try {
+            std::string pos = rGrp.GetASCII("FillLightDirection", defaultFillLightDirection);
+            if (!pos.empty()) {
+                Base::Vector3f dir = Base::stringToVector(pos);
+                for (auto _viewer : _viewers) {
+                    _viewer->getFillLight()->direction.setValue(dir.x, dir.y, dir.z);
+                }
+            }
+        }
+        catch (const std::exception&) {
+            // ignore exception
+        }
+    }
+    else if (strcmp(Reason,"FillLightIntensity") == 0) {
+        long value = rGrp.GetInt("FillLightIntensity", 40);
+        for (auto _viewer : _viewers) {
+            _viewer->getFillLight()->intensity.setValue(Base::fromPercent(value));
+        }
+    }
+    else if (strcmp(Reason,"AmbientLightColor") == 0) {
+        unsigned long color = rGrp.GetUnsigned("AmbientLightColor", 0xFFFFFFFF);
+        float transparency;
+        SbColor backlightColor;
+        backlightColor.setPackedValue((uint32_t)color, transparency);
+        for (auto _viewer : _viewers) {
+            _viewer->getEnvironment()->ambientColor.setValue(backlightColor);
+        }
+    }
+    else if (strcmp(Reason,"AmbientLightIntensity") == 0) {
+        long value = rGrp.GetInt("AmbientLightIntensity", 20);
+        for (auto _viewer : _viewers) {
+            _viewer->getEnvironment()->ambientIntensity.setValue(Base::fromPercent(value));
         }
     }
     else if (strcmp(Reason,"EnablePreselection") == 0) {

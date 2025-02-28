@@ -8,7 +8,7 @@ target_sources(Material_tests_run PRIVATE
         TestModelProperties.cpp
 )
 
-target_include_directories(Material_tests_run PUBLIC
+target_include_directories(Material_tests_run SYSTEM PUBLIC
         ${QtCore_INCLUDE_DIRS}
 )
 

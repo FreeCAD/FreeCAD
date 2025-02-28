@@ -24,7 +24,7 @@
 
 
 import FreeCAD
-from nativeifc import ifc_tools
+from . import ifc_tools
 
 translate = FreeCAD.Qt.translate
 

@@ -22,13 +22,12 @@
 
 """This NativeIFC module deals with materials"""
 
-
 import FreeCAD
-from nativeifc import ifc_tools
-import ifcopenshell
-from ifcopenshell import util
-from ifcopenshell.util import element
 
+import ifcopenshell
+import ifcopenshell.util.element
+
+from . import ifc_tools
 
 def create_material(element, parent, recursive=False):
     """Creates a material object in the given project or parent material"""

@@ -52,7 +52,7 @@ def nohandle(string):
 class copier:
     "Smart-copier (YAPTU) class"
 
-    def copyblock(self, i=0, last=None):
+    def copyblock(self, cur_line=0, last=None):
         "Main copy method: process lines [i,last) of block"
 
         def repl(match, self=self):
@@ -67,13 +67,13 @@ class copier:
         block = self.locals["_bl"]
         if last is None:
             last = len(block)
-        while i < last:
-            line = block[i]
+        while cur_line < last:
+            line = block[cur_line]
             match = self.restat.match(line)
             if match:  # a statement starts "here" (at line block[i])
                 # i is the last line to _not_ process
                 stat = match.string[match.end(0) :].strip()
-                j = i + 1  # look for 'finish' from here onwards
+                j = cur_line + 1  # look for 'finish' from here onwards
                 nest = 1  # count nesting levels of statements
                 while j < last:
                     line = block[j]
@@ -88,20 +88,20 @@ class copier:
                         match = self.recont.match(line)
                         if match:  # found a contin.-statement
                             nestat = match.string[match.end(0) :].strip()
-                            stat = "%s _cb(%s,%s)\n%s" % (stat, i + 1, j, nestat)
-                            i = j  # again, i is the last line to _not_ process
+                            stat = "%s _cb(%s,%s)\n%s" % (stat, cur_line + 1, j, nestat)
+                            cur_line = j  # again, i is the last line to _not_ process
                     j = j + 1
                 stat = self.preproc(stat, "exec")
-                stat = "%s _cb(%s,%s)" % (stat, i + 1, j)
-                # for debugging, uncomment...: print("-> Executing: {"+stat+"}")
+                stat = "%s _cb(%s,%s)" % (stat, cur_line + 1, j)
+                # for debugging, uncomment...: print(f"-> Executing on line {cur_line}: {stat}")
                 exec(stat, self.globals, self.locals)
-                i = j + 1
+                cur_line = j + 1
             else:  # normal line, just copy with substitution
                 try:
                     self.ouf.write(self.regex.sub(repl, line).encode("utf8"))
                 except TypeError:
                     self.ouf.write(self.regex.sub(repl, line))
-                i = i + 1
+                cur_line = cur_line + 1
 
     def __init__(
         self,

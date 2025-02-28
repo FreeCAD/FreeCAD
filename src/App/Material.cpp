@@ -31,19 +31,7 @@
 #include "Application.h"
 #include "Material.h"
 
-// Helper functions to consistently convert between float and long
-namespace
-{
-float fromPercent(long value)
-{
-    return std::roundf(value) / 100.0F;
-}
-
-long toPercent(float value)
-{
-    return std::lround(100.0 * value);
-}
-}  // namespace
+#include <Base/Tools.h>
 
 using namespace App;
 
@@ -351,9 +339,9 @@ App::Material Material::getDefaultAppearance()
     };
 
     App::Material mat(App::Material::DEFAULT);
-    mat.transparency = fromPercent(hGrp->GetInt("DefaultShapeTransparency", 0));
-    long shininess = toPercent(mat.shininess);
-    mat.shininess = fromPercent(hGrp->GetInt("DefaultShapeShininess", shininess));
+    mat.transparency = Base::fromPercent(hGrp->GetInt("DefaultShapeTransparency", 0));
+    long shininess = Base::toPercent(mat.shininess);
+    mat.shininess = Base::fromPercent(hGrp->GetInt("DefaultShapeShininess", shininess));
 
     // This is handled in the material code when using the object appearance
     bool randomColor = hGrp->GetBool("RandomColor", false);

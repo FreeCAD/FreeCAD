@@ -18,6 +18,7 @@
 // </history>
 #include <navlib/navlib_types.h>
 // stdlib
+#include <chrono>
 #include <map>
 #include <memory>
 #include <stdexcept>

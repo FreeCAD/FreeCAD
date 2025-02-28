@@ -101,6 +101,10 @@ template<class float_type>
 class Vector3
 {
 public:
+    static const Vector3 UnitX;
+    static const Vector3 UnitY;
+    static const Vector3 UnitZ;
+
     using num_type = float_type;
     using traits_type = float_traits<num_type>;
     [[nodiscard]] static constexpr num_type epsilon()
@@ -256,7 +260,12 @@ public:
     //@}
 };
 
-// global functions
+template<class float_type>
+Vector3<float_type> const Vector3<float_type>::UnitX(1.0, 0.0, 0.0);
+template<class float_type>
+Vector3<float_type> const Vector3<float_type>::UnitY(0.0, 1.0, 0.0);
+template<class float_type>
+Vector3<float_type> const Vector3<float_type>::UnitZ(0.0, 0.0, 1.0);
 
 /// Returns the distance between two points
 template<class float_type>

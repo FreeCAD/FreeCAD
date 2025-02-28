@@ -20,20 +20,20 @@
 # *                                                                         *
 # ***************************************************************************
 
-import importlib
 import os
 import time
 
 import FreeCAD
-from nativeifc import ifc_tools
-from nativeifc import ifc_psets
-from nativeifc import ifc_materials
-from nativeifc import ifc_layers
-from nativeifc import ifc_status
+
+from . import ifc_tools
+from . import ifc_psets
+from . import ifc_materials
+from . import ifc_layers
+from . import ifc_status
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    import Arch_rc
+    import Arch_rc  # needed to load the Arch icons, noqa: F401
 
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
@@ -79,7 +79,7 @@ def insert(
     stime = time.time()
     try:
         document = FreeCAD.getDocument(docname)
-    except:
+    except NameError:
         document = FreeCAD.newDocument()
     if singledoc is None:
         singledoc = PARAMS.GetBool("SingleDoc", True)
@@ -145,7 +145,6 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
     ask = PARAMS.GetBool("AskAgain", False)
     if ask and FreeCAD.GuiUp:
         import FreeCADGui
-        from PySide import QtGui
 
         dlg = FreeCADGui.PySideUic.loadUi(":/ui/dialogImport.ui")
         dlg.checkSwitchWB.hide()  # TODO see what to do with this...
@@ -188,7 +187,6 @@ def get_project_type(silent=False):
         return ptype
     if ask and FreeCAD.GuiUp:
         import FreeCADGui
-        from PySide import QtGui
 
         dlg = FreeCADGui.PySideUic.loadUi(":/ui/dialogCreateProject.ui")
         result = dlg.exec_()
@@ -202,16 +200,15 @@ def get_project_type(silent=False):
 # convenience functions
 
 def toggle_lock_on():
-
     ifc_status.on_toggle_lock(True, noconvert=True, setchecked=True)
 
-def toggle_lock_off():
 
+def toggle_lock_off():
     ifc_status.on_toggle_lock(False, noconvert=True, setchecked=True)
 
-def unset_modified():
 
+def unset_modified():
     try:
         FreeCADGui.ActiveDocument.Modified = False
-    except:
+    except AttributeError:
         pass

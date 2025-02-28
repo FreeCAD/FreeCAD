@@ -14,7 +14,7 @@ macro(PrintFinalReport)
 
     # just a value
     macro(value)
-    unset(val)
+        unset(val)
         set(name ${ARGV0})
         if(${name})
             set(val ${${name}}) # name has a value
@@ -89,6 +89,8 @@ macro(PrintFinalReport)
     value(FREECAD_CREATE_MAC_APP)
     value(FREECAD_USE_PYBIND11)
     value(FREECAD_USE_EXTERNAL_KDL)
+    value(FREECAD_USE_PYSIDE)
+    value(FREECAD_USE_SHIBOKEN)
     value(BUILD_ADDONMGR)
     value(BUILD_BIM)
     value(BUILD_ASSEMBLY)

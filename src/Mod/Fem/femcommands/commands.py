@@ -502,6 +502,19 @@ class _EquationMagnetodynamic2D(CommandManager):
         self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
 
 
+class _EquationStaticCurrent(CommandManager):
+    "The FEM_EquationStaticCurrent command definition"
+
+    def __init__(self):
+        super().__init__()
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationStaticCurrent", "Static current equation")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_EquationStaticCurrent", "Creates a FEM equation for static current"
+        )
+        self.is_active = "with_solver_elmer"
+        self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
+
+
 class _Examples(CommandManager):
     "The FEM_Examples command definition"
 
@@ -1179,6 +1192,7 @@ FreeCADGui.addCommand("FEM_EquationFlux", _EquationFlux())
 FreeCADGui.addCommand("FEM_EquationHeat", _EquationHeat())
 FreeCADGui.addCommand("FEM_EquationMagnetodynamic", _EquationMagnetodynamic())
 FreeCADGui.addCommand("FEM_EquationMagnetodynamic2D", _EquationMagnetodynamic2D())
+FreeCADGui.addCommand("FEM_EquationStaticCurrent", _EquationStaticCurrent())
 FreeCADGui.addCommand("FEM_Examples", _Examples())
 FreeCADGui.addCommand("FEM_MaterialEditor", _MaterialEditor())
 FreeCADGui.addCommand("FEM_MaterialFluid", _MaterialFluid())

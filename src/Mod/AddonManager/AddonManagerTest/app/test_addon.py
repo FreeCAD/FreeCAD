@@ -93,6 +93,8 @@ class TestAddon(unittest.TestCase):
         self.assertTrue(addon_with_workbench.contains_workbench())
         self.assertFalse(addon_with_workbench.contains_macro())
         self.assertFalse(addon_with_workbench.contains_preference_pack())
+        self.assertFalse(addon_with_workbench.contains_bundle())
+        self.assertFalse(addon_with_workbench.contains_other())
 
         # Macros
         addon_with_macro = Addon(
@@ -105,6 +107,8 @@ class TestAddon(unittest.TestCase):
         self.assertFalse(addon_with_macro.contains_workbench())
         self.assertTrue(addon_with_macro.contains_macro())
         self.assertFalse(addon_with_macro.contains_preference_pack())
+        self.assertFalse(addon_with_workbench.contains_bundle())
+        self.assertFalse(addon_with_workbench.contains_other())
 
         # Preference Packs
         addon_with_prefpack = Addon(
@@ -117,6 +121,8 @@ class TestAddon(unittest.TestCase):
         self.assertFalse(addon_with_prefpack.contains_workbench())
         self.assertFalse(addon_with_prefpack.contains_macro())
         self.assertTrue(addon_with_prefpack.contains_preference_pack())
+        self.assertFalse(addon_with_workbench.contains_bundle())
+        self.assertFalse(addon_with_workbench.contains_other())
 
         # Combination
         addon_with_all = Addon(
@@ -129,6 +135,8 @@ class TestAddon(unittest.TestCase):
         self.assertTrue(addon_with_all.contains_workbench())
         self.assertTrue(addon_with_all.contains_macro())
         self.assertTrue(addon_with_all.contains_preference_pack())
+        self.assertTrue(addon_with_all.contains_bundle())
+        self.assertTrue(addon_with_all.contains_other())
 
         # Now do the simple, explicitly-set cases
         addon_wb = Addon(

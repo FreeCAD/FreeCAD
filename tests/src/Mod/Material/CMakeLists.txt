@@ -1,7 +1,8 @@
 
-target_include_directories(Material_tests_run PUBLIC
+target_include_directories(Material_tests_run SYSTEM PUBLIC
     ${EIGEN3_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
+    ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )

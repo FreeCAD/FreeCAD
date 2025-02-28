@@ -123,6 +123,10 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         FreeCADGui.ExpressionBinding(self._paramWidget.imagZQSB).bind(
             self.obj, "CurrentDensity_im_3"
         )
+        self._paramWidget.normalQSB.setProperty("value", self.obj.NormalCurrentDensity)
+        FreeCADGui.ExpressionBinding(self._paramWidget.normalQSB).bind(
+            self.obj, "NormalCurrentDensity"
+        )
 
         self._paramWidget.reXunspecBox.setChecked(self.obj.CurrentDensity_re_1_Disabled)
         self._paramWidget.reYunspecBox.setChecked(self.obj.CurrentDensity_re_2_Disabled)
@@ -176,3 +180,4 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
                 self._paramWidget.imZunspecBox, self._paramWidget.imagZQSB
             )
         )
+        self.obj.NormalCurrentDensity = self._paramWidget.normalQSB.property("value")

@@ -381,6 +381,7 @@ SoFrameLabel::SoFrameLabel()
     SO_NODE_ADD_FIELD(frame, (true));
     SO_NODE_ADD_FIELD(border, (true));
     SO_NODE_ADD_FIELD(backgroundUseBaseColor, (false));
+    SO_NODE_ADD_FIELD(textUseBaseColor, (false));
   //SO_NODE_ADD_FIELD(image, (SbVec2s(0,0), 0, NULL));
 }
 
@@ -505,6 +506,15 @@ void SoFrameLabel::GLRender(SoGLRenderAction *action)
 
         if (diffuse != this->backgroundColor.getValue()) {
             this->backgroundColor.setValue(diffuse);
+        }
+    }
+
+    if (textUseBaseColor.getValue()) {
+        SoState* state = action->getState();
+        const SbColor& diffuse = SoLazyElement::getDiffuse(state, 0);
+
+        if (diffuse != this->textColor.getValue()) {
+            this->textColor.setValue(diffuse);
         }
     }
 

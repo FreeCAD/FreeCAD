@@ -285,6 +285,8 @@ SET(FemSolverElmerEquations_SRCS
     femsolver/elmer/equations/magnetodynamic2D.py
     femsolver/elmer/equations/magnetodynamic2D_writer.py
     femsolver/elmer/equations/nonlinear.py
+    femsolver/elmer/equations/staticcurrent.py
+    femsolver/elmer/equations/staticcurrent_writer.py
 )
 
 SET(FemSolverFenics_SRCS

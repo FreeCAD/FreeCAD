@@ -1253,7 +1253,7 @@ bool InventorLoader::isValid() const
 
 namespace Base
 {
-BaseExport Vector3f to_vector(std::string str)
+BaseExport Vector3f stringToVector(std::string str)
 {
     std::string_view view = str;
     if (!boost::starts_with(view, "(") || !boost::ends_with(str, ")")) {
@@ -1280,6 +1280,11 @@ BaseExport Vector3f to_vector(std::string str)
     vec.z = boost::lexical_cast<float>(token_results.at(2));
 
     return vec;
+}
+
+BaseExport std::string vectorToString(Vector3f vec)
+{
+    return fmt::format("({},{},{})", vec.x, vec.y, vec.z);
 }
 
 }  // namespace Base

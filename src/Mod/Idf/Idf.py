@@ -176,12 +176,6 @@ def Process_board_outline(doc,board_outline,drills,board_thickness):
         out_shape=Part.Wire(out_shape.Edges)
         outline=outline.cut(Part.Face(out_shape))
       doc_outline=doc.addObject("Part::Feature","Board_outline")
-      doc_outline.Shape=outline
-      #FreeCADGui.Selection.addSelection(doc_outline)
-      #FreeCADGui.runCommand("Draft_Upgrade")
-      #outline=FreeCAD.ActiveDocument.getObject("Union").Shape
-      #FreeCAD.ActiveDocument.removeObject("Union")
-      #doc_outline=doc.addObject("Part::Feature","Board_outline")
       doc_outline.Shape=outline.extrude(Base.Vector(0,0,-board_thickness))
       grp=doc.addObject("App::DocumentObjectGroup", "Board_Geoms")
       grp.addObject(doc_outline)
@@ -320,7 +314,6 @@ def Process_comp_outline(doc,comp_outline,comp_height):
     out_shape=Part.Wire(out_shape.Edges)
     out_shape=Part.Face(out_shape)
     out_shape=out_shape.extrude(Base.Vector(0,0,comp_height))
-    #Part.show(out_shape)
     return out_shape
 
 def place_steps(doc,placement,board_thickness):
@@ -335,7 +328,6 @@ def place_steps(doc,placement,board_thickness):
     if IDF_diag==1:
         model_file=pyopen(IDF_diag_path+"/missing_models.lst", "w")
     keys=[]
-    #prev_step="*?.*?" #hope nobody will insert this step filename
     step_dict=[]
     for model_line in model_lines:
         model_records=split_records(model_line)
@@ -348,10 +340,7 @@ def place_steps(doc,placement,board_thickness):
     grp=doc.addObject("App::DocumentObjectGroup", "Step Lib")
     for validkey in validkeys:
          ImportGui.insert(step_path+model_dict[validkey],FreeCAD.ActiveDocument.Name)
-         #partName=FreeCAD.ActiveDocument.ActiveObject.Name
          impPart=FreeCAD.ActiveDocument.ActiveObject
-         #impPart.Shape=FreeCAD.ActiveDocument.ActiveObject.Shape
-         #impPart.ViewObject.DiffuseColor=FreeCAD.ActiveDocument.ActiveObject.ViewObject.DiffuseColor
          impPart.ViewObject.Visibility=0
          impPart.Label=validkey
          grp.addObject(impPart)
@@ -363,9 +352,6 @@ def place_steps(doc,placement,board_thickness):
       if place_item[2] in step_dict:
         step_model=doc.addObject("Part::Feature",place_item[0]+"_s")
         FreeCAD.Console.PrintMessage("Adding STEP model "+str(place_item[0])+"\n")
-        #if prev_step!=place_item[2]:
-        #   model0=Part.read(step_path+"/"+model_dict[place_item[2]])
-        #   prev_step=place_item[2]
         step_model.Shape=step_dict[place_item[2]].Shape
         step_model.ViewObject.DiffuseColor=step_dict[place_item[2]].ViewObject.DiffuseColor
         z_pos=0
@@ -401,9 +387,6 @@ def Per_point(prev_vertex,vertex):
     """Per_point(center,vertex)->per point
 
        returns opposite perimeter point of circle"""
-    #basic_angle=atan2(prev_vertex.y-vertex.y,prev_vertex.x-vertex.x)
-    #shift=hypot(prev_vertex.y-vertex.y,prev_vertex.x-vertex.x)
-    #perpoint=Base.Vector(prev_vertex.x+shift*cos(basic_angle),prev_vertex.y+shift*sin(basic_angle),0)
     perpoint=Base.Vector(2*prev_vertex.x-vertex.x,2*prev_vertex.y-vertex.y,0)
     return perpoint
 

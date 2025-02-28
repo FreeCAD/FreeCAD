@@ -69,6 +69,8 @@
 #include "ViewProviderAnalysis.h"
 #include "ViewProviderFemPostObject.h"
 
+#include <Base/Tools.h>
+
 
 using namespace FemGui;
 namespace sp = std::placeholders;
@@ -659,7 +661,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
 
     if (Field.getEnumVector().empty() || Field.getValue() == 0) {
         m_material->diffuseColor.setValue(SbColor(0.8, 0.8, 0.8));
-        float trans = float(Transparency.getValue()) / 100.0;
+        float trans = Base::fromPercent(Transparency.getValue());
         m_material->transparency.setValue(trans);
         m_materialBinding->value = SoMaterialBinding::OVERALL;
         m_materialBinding->touch();
@@ -696,7 +698,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
     SbColor* diffcol = m_material->diffuseColor.startEditing();
     SbColor* edgeDiffcol = m_matPlainEdges->diffuseColor.startEditing();
 
-    float overallTransp = Transparency.getValue() / 100.0f;
+    float overallTransp = Base::fromPercent(Transparency.getValue());
     m_material->transparency.setNum(numPts);
     m_matPlainEdges->transparency.setNum(numPts);
     float* transp = m_material->transparency.startEditing();
@@ -737,7 +739,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
 
 void ViewProviderFemPostObject::WriteTransparency()
 {
-    float trans = static_cast<float>(Transparency.getValue()) / 100.0;
+    float trans = Base::fromPercent(Transparency.getValue());
     float* value = m_material->transparency.startEditing();
     float* edgeValue = m_matPlainEdges->transparency.startEditing();
     // m_material and m_matPlainEdges field containers have same size

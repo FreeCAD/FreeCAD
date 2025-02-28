@@ -30,8 +30,8 @@ from importers import exportIFC
 from importers import exportIFCHelper
 from importers import importIFCHelper
 
-from nativeifc import ifc_tools
-from nativeifc import ifc_import
+from . import ifc_tools
+from . import ifc_import
 
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")

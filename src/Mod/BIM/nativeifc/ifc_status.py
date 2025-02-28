@@ -101,7 +101,7 @@ def on_add_property():
     if not sel:
         return
     from PySide import QtCore, QtGui  # lazy loading
-    from nativeifc import ifc_psets
+    from . import ifc_psets
     obj = sel[0]
     psets = list(set([obj.getGroupOfProperty(p) for p in obj.PropertiesList]))
     psets = [p for p in psets if p]
@@ -180,7 +180,7 @@ def on_add_pset():
     if not sel:
         return
     from PySide import QtCore, QtGui  # lazy loading
-    from nativeifc import ifc_psets
+    from . import ifc_psets
     obj = sel[0]
     mw = FreeCADGui.getMainWindow()
     # read standard psets
@@ -328,7 +328,7 @@ def set_button(checked=False, setchecked=False):
 def unlock_document():
     """Unlocks the active document"""
 
-    from nativeifc import ifc_tools  # lazy loading
+    from . import ifc_tools  # lazy loading
 
     doc = FreeCAD.ActiveDocument
     if not doc:
@@ -356,10 +356,10 @@ def unlock_document():
 def lock_document():
     """Locks the active document"""
 
-    from nativeifc import ifc_tools  # lazy loading
+    from . import ifc_tools  # lazy loading
     from importers import exportIFC
-    from nativeifc import ifc_geometry
-    from nativeifc import ifc_export
+    from . import ifc_geometry
+    from . import ifc_export
     from PySide import QtCore
 
     doc = FreeCAD.ActiveDocument

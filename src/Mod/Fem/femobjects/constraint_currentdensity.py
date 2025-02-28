@@ -98,6 +98,15 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
             )
             obj.setPropertyStatus("CurrentDensity_im_3", "LockDynamic")
             obj.CurrentDensity_im_3 = "0 A/m^2"
+        if not hasattr(obj, "NormalCurrentDensity"):
+            obj.addProperty(
+                "App::PropertyCurrentDensity",
+                "NormalCurrentDensity",
+                "Current Density",
+                "Current density normal to boundary",
+            )
+            obj.setPropertyStatus("NormalCurrentDensity", "LockDynamic")
+            obj.NormalCurrentDensity = "0 A/m^2"
 
         # now the enable bools
         if not hasattr(obj, "CurrentDensity_re_1_Disabled"):

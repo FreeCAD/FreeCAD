@@ -75,7 +75,7 @@ class Line(gui_base_original.Creator):
         elif self.mode == "leader":
             self.ui.wireUi(title=title, icon=icon)
             self.ui.closeButton.hide()
-            self.ui.hasFill.hide()
+            self.ui.makeFace.hide()
         else:
             self.ui.lineUi(title=title, icon=icon)
 

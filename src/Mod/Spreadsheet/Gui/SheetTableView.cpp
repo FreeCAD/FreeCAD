@@ -714,6 +714,10 @@ void SheetTableView::_copySelection(const std::vector<App::Range>& ranges, bool 
         for (int j = minCol; j <= maxCol; j++) {
             QModelIndex index = model()->index(i, j);
             QString cell = index.data(Qt::EditRole).toString();
+            if (!cell.isEmpty() && cell.at(0) == QLatin1Char('\'')) {
+                cell.remove(0, 1);
+            }
+
             if (j < maxCol) {
                 cell.append(QChar::fromLatin1('\t'));
             }

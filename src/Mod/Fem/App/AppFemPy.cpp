@@ -66,6 +66,7 @@ public:
                            &Module::read,
                            "Read a mesh from a file and returns a Mesh object.");
 #ifdef FC_USE_VTK
+        add_varargs_method("frdToVTK", &Module::frdToVTK, "Convert a .frd result file to VTK file");
         add_varargs_method("readResult",
                            &Module::readResult,
                            "Read a CFD or Mechanical result (auto detect) from a file (file format "
@@ -248,6 +249,21 @@ private:
     }
 
 #ifdef FC_USE_VTK
+    Py::Object frdToVTK(const Py::Tuple& args)
+    {
+        char* filename = nullptr;
+
+        if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &filename)) {
+            throw Py::Exception();
+        }
+        std::string encodedName = std::string(filename);
+        PyMem_Free(filename);
+
+        FemVTKTools::frdToVTK(encodedName.c_str());
+
+        return Py::None();
+    }
+
     Py::Object readResult(const Py::Tuple& args)
     {
         char* fileName = nullptr;

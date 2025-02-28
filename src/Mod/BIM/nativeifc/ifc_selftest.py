@@ -29,14 +29,14 @@ import FreeCAD
 import Draft
 import Arch
 import unittest
-from nativeifc import ifc_import
-from nativeifc import ifc_tools
-from nativeifc import ifc_geometry
-from nativeifc import ifc_materials
-from nativeifc import ifc_layers
-from nativeifc import ifc_psets
-from nativeifc import ifc_objects
-from nativeifc import ifc_generator
+from . import ifc_import
+from . import ifc_tools
+from . import ifc_geometry
+from . import ifc_materials
+from . import ifc_layers
+from . import ifc_psets
+from . import ifc_objects
+from . import ifc_generator
 import ifcopenshell
 from ifcopenshell.util import element
 import difflib
@@ -301,7 +301,7 @@ class NativeIFCTest(unittest.TestCase):
         self.assertTrue(obj.Shape.Volume > 1500000, "ChangeGeometry failed")
 
     def test12_RemoveObject(self):
-        from nativeifc import ifc_observer
+        from . import ifc_observer
         ifc_observer.add_observer()
         FreeCAD.Console.PrintMessage("NativeIFC 12: Remove object...")
         clearObjects()

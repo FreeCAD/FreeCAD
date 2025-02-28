@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+	<name>Test Bundle</name>
+	<description>A package.xml file for unit testing.</description>
+	<version>1.0.0</version>
+	<date>2025-02-22</date>
+	<maintainer email="developer@freecad.org">FreeCAD Developer</maintainer>
+	<license file="LICENSE">LGPL-2.1</license>
+	<url type="repository" branch="main">https://github.com/chennes/FreeCAD-Package</url>
+	<url type="readme">https://github.com/chennes/FreeCAD-Package/blob/main/README.md</url>
+
+	<content>
+		<bundle>
+			<name>A bunch of great addons you should install</name>
+			<depend type="addon">TestAddon1</depend>
+			<depend type="addon">TestAddon2</depend>
+			<depend type="addon">TestAddon3</depend>
+			<depend type="addon">TestAddon4</depend>
+			<depend type="addon">TestAddon5</depend>
+		</bundle>
+	</content>
+
+</package>

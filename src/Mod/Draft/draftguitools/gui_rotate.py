@@ -176,7 +176,7 @@ class Rotate(gui_base_original.Modifier):
         self.node = [self.point]
         self.ui.radiusUi()
         self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)
-        self.ui.hasFill.hide()
+        self.ui.makeFace.hide()
         self.ui.labelRadius.setText(translate("draft", "Base angle"))
         self.ui.radiusValue.setToolTip(translate("draft", "The base angle you wish to start the rotation from"))
         self.arctrack.setCenter(self.center)
@@ -291,7 +291,7 @@ class Rotate(gui_base_original.Modifier):
         for ghost in self.ghosts:
             ghost.center(self.center)
         self.ui.radiusUi()
-        self.ui.hasFill.hide()
+        self.ui.makeFace.hide()
         self.ui.labelRadius.setText(translate("draft", "Base angle"))
         self.ui.radiusValue.setToolTip(translate("draft", "The base angle you wish to start the rotation from"))
         self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)

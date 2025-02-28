@@ -16,8 +16,13 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZIPIOS_INCLUDES}
@@ -271,6 +276,8 @@ SET(TechDrawGuiView_SRCS
     QGIView.h
     QGIArrow.cpp
     QGIArrow.h
+    QGIDatumLabel.cpp
+    QGIDatumLabel.h
     QGIEdge.cpp
     QGIEdge.h
     QGIFace.cpp
@@ -365,6 +372,8 @@ SET(TechDrawGuiNav_SRCS
     QGVNavStyleOpenSCAD.h
     QGVNavStyleRevit.cpp
     QGVNavStyleRevit.h
+    QGVNavStyleSolidWorks.cpp
+    QGVNavStyleSolidWorks.h
     QGVNavStyleTinkerCAD.cpp
     QGVNavStyleTinkerCAD.h
     QGVNavStyleTouchpad.cpp
