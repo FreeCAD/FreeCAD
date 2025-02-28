@@ -56,7 +56,12 @@ __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
 
 # presets
-WindowPartTypes = ["Frame", "Solid panel", "Glass panel", "Louvre"]
+WindowPartTypes = [
+    "Frame",
+    "Solid panel",
+    "Glass panel",
+    "Louvre"
+]
 WindowOpeningModes = [
     "None",
     "Arc 90",
@@ -71,6 +76,11 @@ WindowOpeningModes = [
     "Sliding inv",
 ]
 WindowPresets = ArchWindowPresets.WindowPresets
+
+# WindowParts example:
+# ["OuterFrame", "Frame,Sketch2", "Wire0,Wire1",             "100.0+V", "0.00+V",
+#  "InnerFrame", "Frame",         "Wire2,Wire3,Edge8,Mode1", "100.0",   "100.0+V",
+#  "InnerGlass", "Glass panel",   "Wire3,ParentInnerFrame",  "10.0",    "150.0+V"]
 
 
 def recolorize(attr):  # names is [docname,objname]
@@ -94,7 +104,7 @@ def recolorize(attr):  # names is [docname,objname]
             obj.ViewObject.Proxy.colorize(obj)
 
 
-class _Window(ArchComponent.Component):
+class Window(ArchComponent.Component):
     "The Window object"
 
     def __init__(self, obj):
@@ -811,15 +821,15 @@ class _Window(ArchComponent.Component):
     def add_annotations(self, obj):
         """Adds annotation shapes to this object"""
 
-         shapes = []
-         if hasattr(obj.ViewObject, "Annotation"):
-            obj.ViewObject.Annotation.removeAllChildren()
-         for ann in getattr(obj, "SymbolAnnotations", []):
-             shape = getattr(ann, "Shape", None)
-             if shape:
-                 shape = shape.copy()
-                 shape.Placement = shape.Placement.multiply(obj.Placement)
-                 shapes.append(shape)
+        shapes = []
+        if hasattr(obj.ViewObject, "Annotation"):
+           obj.ViewObject.Annotation.removeAllChildren()
+        for ann in getattr(obj, "SymbolAnnotations", []):
+            shape = getattr(ann, "Shape", None)
+            if shape:
+                shape = shape.copy()
+                shape.Placement = shape.Placement.multiply(obj.Placement)
+                shapes.append(shape)
             elif hasattr(ann, "Text"):
                 if hasattr(ann.ViewObject, "RootNode"):
                     node = ann.ViewObject.RootNode.copy()
@@ -827,7 +837,7 @@ class _Window(ArchComponent.Component):
         return shapes
 
 
-class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
+class ViewProviderWindow(ArchComponent.ViewProviderComponent):
     "A View Provider for the Window object"
 
     def __init__(self, vobj):
@@ -1010,11 +1020,6 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     def getHingeEdgeIndices(self):
         """returns a list of hinge edge indices (0-based)"""
 
-        # WindowParts example:
-        # ["OuterFrame", "Frame",       "Wire0,Wire1",             "100.0+V", "0.00+V",
-        #  "InnerFrame", "Frame",       "Wire2,Wire3,Edge8,Mode1", "100.0",   "100.0+V",
-        #  "InnerGlass", "Glass panel", "Wire3",                   "10.0",    "150.0+V"]
-
         idxs = []
         parts = self.Object.WindowParts
         for i in range(len(parts) // 5):
@@ -1027,18 +1032,18 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         if mode != 0:
             return None
 
-        taskd = _ArchWindowTaskPanel()
-        taskd.obj = self.Object
+        import ArchWindowTaskPanel
+
+        self.tasks = ArchWindowTaskPanel.window_task_panel(vobj.Object)
         self.sets = [vobj.DisplayMode, vobj.Transparency]
         vobj.DisplayMode = "Shaded"
         vobj.Transparency = 80
         if self.Object.Base:
             self.Object.Base.ViewObject.show()
-        taskd.update()
-        FreeCADGui.Control.showDialog(taskd)
+        FreeCADGui.Control.showDialog(self.tasks)
         return True
 
-    def unsetEdit(self, vobj, mode):
+    def unsetEdit(self, vobj, mode=0):
         if mode != 0:
             return None
 
@@ -1048,6 +1053,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         if self.Object.Base:
             self.Object.Base.ViewObject.hide()
         FreeCADGui.Control.closeDialog()
+        if hasattr(self, "tasks"):
+            del self.tasks
         return True
 
     def setupContextMenu(self, vobj, menu):
@@ -1140,588 +1147,6 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 )
 
 
-class _ArchWindowTaskPanel:
-    """The TaskPanel for Arch Windows"""
-
-    def __init__(self):
-
-        self.obj = None
-        self.baseform = QtGui.QWidget()
-        self.baseform.setObjectName("TaskPanel")
-        self.grid = QtGui.QGridLayout(self.baseform)
-        self.grid.setObjectName("grid")
-        self.title = QtGui.QLabel(self.baseform)
-        self.grid.addWidget(self.title, 0, 0, 1, 7)
-        self.basepanel = ArchComponent.ComponentTaskPanel()
-        self.form = [self.baseform, self.basepanel.baseform]
-
-        # base object
-        self.tree = QtGui.QTreeWidget(self.baseform)
-        self.grid.addWidget(self.tree, 1, 0, 1, 7)
-        self.tree.setColumnCount(1)
-        self.tree.setMaximumSize(QtCore.QSize(500, 24))
-        self.tree.header().hide()
-
-        # hole
-        self.holeLabel = QtGui.QLabel(self.baseform)
-        self.grid.addWidget(self.holeLabel, 2, 0, 1, 1)
-
-        self.holeNumber = QtGui.QLineEdit(self.baseform)
-        self.grid.addWidget(self.holeNumber, 2, 2, 1, 3)
-
-        self.holeButton = QtGui.QPushButton(self.baseform)
-        self.grid.addWidget(self.holeButton, 2, 6, 1, 1)
-        self.holeButton.setEnabled(True)
-
-        # trees
-        self.wiretree = QtGui.QTreeWidget(self.baseform)
-        self.grid.addWidget(self.wiretree, 3, 0, 1, 3)
-        self.wiretree.setColumnCount(1)
-        self.wiretree.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
-
-        self.comptree = QtGui.QTreeWidget(self.baseform)
-        self.grid.addWidget(self.comptree, 3, 4, 1, 3)
-        self.comptree.setColumnCount(1)
-
-        # buttons
-        self.addButton = QtGui.QPushButton(self.baseform)
-        self.addButton.setObjectName("addButton")
-        self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
-        self.grid.addWidget(self.addButton, 4, 0, 1, 1)
-        self.addButton.setMaximumSize(QtCore.QSize(70, 40))
-
-        self.editButton = QtGui.QPushButton(self.baseform)
-        self.editButton.setObjectName("editButton")
-        self.editButton.setIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
-        self.grid.addWidget(self.editButton, 4, 2, 1, 3)
-        self.editButton.setMaximumSize(QtCore.QSize(60, 40))
-        self.editButton.setEnabled(False)
-
-        self.delButton = QtGui.QPushButton(self.baseform)
-        self.delButton.setObjectName("delButton")
-        self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
-        self.grid.addWidget(self.delButton, 4, 6, 1, 1)
-        self.delButton.setMaximumSize(QtCore.QSize(70, 40))
-        self.delButton.setEnabled(False)
-
-        # invert buttons
-        self.invertOpeningButton = QtGui.QPushButton(self.baseform)
-        self.invertOpeningButton.setIcon(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"))
-        self.invertOpeningButton.clicked.connect(self.invertOpening)
-        self.grid.addWidget(self.invertOpeningButton, 5, 0, 1, 7)
-        self.invertOpeningButton.setEnabled(False)
-        self.invertHingeButton = QtGui.QPushButton(self.baseform)
-        self.invertHingeButton.setIcon(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"))
-        self.invertHingeButton.clicked.connect(self.invertHinge)
-        self.grid.addWidget(self.invertHingeButton, 6, 0, 1, 7)
-        self.invertHingeButton.setEnabled(False)
-
-        # add new
-
-        ui = FreeCADGui.UiLoader()
-        self.newtitle = QtGui.QLabel(self.baseform)
-        self.new1 = QtGui.QLabel(self.baseform)
-        self.new2 = QtGui.QLabel(self.baseform)
-        self.new3 = QtGui.QLabel(self.baseform)
-        self.new4 = QtGui.QLabel(self.baseform)
-        self.new5 = QtGui.QLabel(self.baseform)
-        self.new6 = QtGui.QLabel(self.baseform)
-        self.new7 = QtGui.QLabel(self.baseform)
-        self.field1 = QtGui.QLineEdit(self.baseform)
-        self.field2 = QtGui.QComboBox(self.baseform)
-        self.field3 = QtGui.QLineEdit(self.baseform)
-        self.field4 = ui.createWidget("Gui::InputField")
-        self.field5 = ui.createWidget("Gui::InputField")
-        self.field6 = QtGui.QPushButton(self.baseform)
-        self.field7 = QtGui.QComboBox(self.baseform)
-        self.addp4 = QtGui.QCheckBox(self.baseform)
-        self.addp5 = QtGui.QCheckBox(self.baseform)
-        self.createButton = QtGui.QPushButton(self.baseform)
-        self.createButton.setObjectName("createButton")
-        self.createButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
-        self.grid.addWidget(self.newtitle, 7, 0, 1, 7)
-        self.grid.addWidget(self.new1, 8, 0, 1, 1)
-        self.grid.addWidget(self.field1, 8, 2, 1, 5)
-        self.grid.addWidget(self.new2, 9, 0, 1, 1)
-        self.grid.addWidget(self.field2, 9, 2, 1, 5)
-        self.grid.addWidget(self.new3, 10, 0, 1, 1)
-        self.grid.addWidget(self.field3, 10, 2, 1, 5)
-        self.grid.addWidget(self.new4, 11, 0, 1, 1)
-        self.grid.addWidget(self.field4, 11, 2, 1, 4)
-        self.grid.addWidget(self.addp4, 11, 6, 1, 1)
-        self.grid.addWidget(self.new5, 12, 0, 1, 1)
-        self.grid.addWidget(self.field5, 12, 2, 1, 4)
-        self.grid.addWidget(self.addp5, 12, 6, 1, 1)
-        self.grid.addWidget(self.new6, 13, 0, 1, 1)
-        self.grid.addWidget(self.field6, 13, 2, 1, 5)
-        self.grid.addWidget(self.new7, 14, 0, 1, 1)
-        self.grid.addWidget(self.field7, 14, 2, 1, 5)
-        self.grid.addWidget(self.createButton, 15, 0, 1, 7)
-        self.newtitle.setVisible(False)
-        self.new1.setVisible(False)
-        self.new2.setVisible(False)
-        self.new3.setVisible(False)
-        self.new4.setVisible(False)
-        self.new5.setVisible(False)
-        self.new6.setVisible(False)
-        self.new7.setVisible(False)
-        self.field1.setVisible(False)
-        self.field2.setVisible(False)
-        for t in WindowPartTypes:
-            self.field2.addItem("")
-        self.field3.setVisible(False)
-        self.field3.setReadOnly(True)
-        self.field4.setVisible(False)
-        self.field5.setVisible(False)
-        self.field6.setVisible(False)
-        self.field7.setVisible(False)
-        self.addp4.setVisible(False)
-        self.addp5.setVisible(False)
-        for t in WindowOpeningModes:
-            self.field7.addItem("")
-        self.createButton.setVisible(False)
-
-        QtCore.QObject.connect(
-            self.holeButton, QtCore.SIGNAL("clicked()"), self.selectHole
-        )
-        QtCore.QObject.connect(
-            self.holeNumber, QtCore.SIGNAL("textEdited(QString)"), self.setHoleNumber
-        )
-        QtCore.QObject.connect(
-            self.addButton, QtCore.SIGNAL("clicked()"), self.addElement
-        )
-        QtCore.QObject.connect(
-            self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement
-        )
-        QtCore.QObject.connect(
-            self.editButton, QtCore.SIGNAL("clicked()"), self.editElement
-        )
-        QtCore.QObject.connect(
-            self.createButton, QtCore.SIGNAL("clicked()"), self.create
-        )
-        QtCore.QObject.connect(
-            self.comptree,
-            QtCore.SIGNAL("itemClicked(QTreeWidgetItem*,int)"),
-            self.check,
-        )
-        QtCore.QObject.connect(
-            self.wiretree,
-            QtCore.SIGNAL("itemClicked(QTreeWidgetItem*,int)"),
-            self.select,
-        )
-        QtCore.QObject.connect(self.field6, QtCore.SIGNAL("clicked()"), self.addEdge)
-        self.update()
-
-        FreeCADGui.Selection.clearSelection()
-
-    def isAllowedAlterSelection(self):
-
-        return True
-
-    def isAllowedAlterView(self):
-
-        return True
-
-    def getStandardButtons(self):
-
-        return QtGui.QDialogButtonBox.Close
-
-    def check(self, wid, col):
-
-        self.editButton.setEnabled(True)
-        self.delButton.setEnabled(True)
-
-    def select(self, wid, col):
-
-        FreeCADGui.Selection.clearSelection()
-        ws = ""
-        for it in self.wiretree.selectedItems():
-            if ws:
-                ws += ","
-            ws += str(it.text(0))
-            w = int(str(it.text(0)[4:]))
-            if self.obj:
-                if self.obj.Base:
-                    edges = self.obj.Base.Shape.Wires[w].Edges
-                    for e in edges:
-                        for i in range(len(self.obj.Base.Shape.Edges)):
-                            if e.hashCode() == self.obj.Base.Shape.Edges[i].hashCode():
-                                FreeCADGui.Selection.addSelection(
-                                    self.obj.Base, "Edge" + str(i + 1)
-                                )
-        self.field3.setText(ws)
-
-    def selectHole(self):
-        "takes a selected edge to determine current Hole Wire"
-
-        s = FreeCADGui.Selection.getSelectionEx()
-        if s and self.obj:
-            if s[0].SubElementNames:
-                if "Edge" in s[0].SubElementNames[0]:
-                    for i, w in enumerate(self.obj.Base.Shape.Wires):
-                        for e in w.Edges:
-                            if e.hashCode() == s[0].SubObjects[0].hashCode():
-                                self.holeNumber.setText(str(i + 1))
-                                self.setHoleNumber(str(i + 1))
-                                break
-
-    def setHoleNumber(self, val):
-        "sets the HoleWire obj property"
-
-        if val.isdigit():
-            val = int(val)
-            if self.obj:
-                if not hasattr(self.obj, "HoleWire"):
-                    self.obj.addProperty(
-                        "App::PropertyInteger",
-                        "HoleWire",
-                        "Arch",
-                        QT_TRANSLATE_NOOP(
-                            "App::Property",
-                            "The number of the wire that defines the hole,"
-                            "A value of 0 means automatic",
-                        ),
-                    )
-                self.obj.HoleWire = val
-
-    def getIcon(self, obj):
-
-        if hasattr(obj.ViewObject, "Proxy"):
-            if hasattr(obj.ViewObject.Proxy, "getIcon"):
-                return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
-        elif obj.isDerivedFrom("Sketcher::SketchObject"):
-            return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
-        elif hasattr(obj.ViewObject, "Icon"):
-            return QtGui.QIcon(obj.ViewObject.Icon)
-        return QtGui.QIcon(":/icons/Part_3D_object.svg")
-
-    def update(self):
-        "fills the tree widgets"
-
-        self.tree.clear()
-        self.wiretree.clear()
-        self.comptree.clear()
-        if self.obj:
-            if self.obj.Base:
-                item = QtGui.QTreeWidgetItem(self.tree)
-                item.setText(0, self.obj.Base.Name)
-                item.setIcon(0, self.getIcon(self.obj.Base))
-                if hasattr(self.obj.Base, "Shape"):
-                    i = 0
-                    for w in self.obj.Base.Shape.Wires:
-                        if w.isClosed():
-                            item = QtGui.QTreeWidgetItem(self.wiretree)
-                            item.setText(0, "Wire" + str(i))
-                            item.setIcon(0, QtGui.QIcon(":/icons/Draft_Draft.svg"))
-                        i += 1
-                if self.obj.WindowParts:
-                    for p in range(0, len(self.obj.WindowParts), 5):
-                        item = QtGui.QTreeWidgetItem(self.comptree)
-                        item.setText(0, self.obj.WindowParts[p])
-                        item.setIcon(0, QtGui.QIcon(":/icons/Part_3D_object.svg"))
-                if hasattr(self.obj, "HoleWire"):
-                    self.holeNumber.setText(str(self.obj.HoleWire))
-                else:
-                    self.holeNumber.setText("0")
-
-            self.retranslateUi(self.baseform)
-            self.basepanel.obj = self.obj
-            self.basepanel.update()
-            for wp in self.obj.WindowParts:
-                if ("Edge" in wp) and ("Mode" in wp):
-                    self.invertOpeningButton.setEnabled(True)
-                    self.invertHingeButton.setEnabled(True)
-                    break
-
-    def addElement(self):
-        "opens the component creation dialog"
-
-        self.field1.setText("")
-        self.field3.setText("")
-        self.field4.setText("")
-        self.field5.setText("")
-        self.field6.setText(
-            QtGui.QApplication.translate("Arch", "Get selected edge", None)
-        )
-        self.field7.setCurrentIndex(0)
-        self.addp4.setChecked(False)
-        self.addp5.setChecked(False)
-        self.newtitle.setVisible(True)
-        self.new1.setVisible(True)
-        self.new2.setVisible(True)
-        self.new3.setVisible(True)
-        self.new4.setVisible(True)
-        self.new5.setVisible(True)
-        self.new6.setVisible(True)
-        self.new7.setVisible(True)
-        self.field1.setVisible(True)
-        self.field2.setVisible(True)
-        self.field3.setVisible(True)
-        self.field4.setVisible(True)
-        self.field5.setVisible(True)
-        self.field6.setVisible(True)
-        self.field7.setVisible(True)
-        self.addp4.setVisible(True)
-        self.addp5.setVisible(True)
-        self.createButton.setVisible(True)
-        self.addButton.setEnabled(False)
-        self.editButton.setEnabled(False)
-        self.delButton.setEnabled(False)
-
-    def removeElement(self):
-
-        for it in self.comptree.selectedItems():
-            comp = str(it.text(0))
-            if self.obj:
-                p = self.obj.WindowParts
-                if comp in self.obj.WindowParts:
-                    ind = self.obj.WindowParts.index(comp)
-                    for i in range(5):
-                        p.pop(ind)
-                    self.obj.WindowParts = p
-                    self.update()
-                    self.editButton.setEnabled(False)
-                    self.delButton.setEnabled(False)
-
-    def editElement(self):
-
-        for it in self.comptree.selectedItems():
-            self.addElement()
-            comp = str(it.text(0))
-            if self.obj:
-                if comp in self.obj.WindowParts:
-                    ind = self.obj.WindowParts.index(comp)
-                    self.field6.setText(
-                        QtGui.QApplication.translate("Arch", "Get selected edge", None)
-                    )
-                    self.field7.setCurrentIndex(0)
-                    for i in range(5):
-                        f = getattr(self, "field" + str(i + 1))
-                        t = self.obj.WindowParts[ind + i]
-                        if i == 1:
-                            # special behaviour for types
-                            if t in WindowPartTypes:
-                                f.setCurrentIndex(WindowPartTypes.index(t))
-                            else:
-                                f.setCurrentIndex(0)
-                        elif i == 2:
-                            wires = []
-                            for l in t.split(","):
-                                if "Wire" in l:
-                                    wires.append(l)
-                                elif "Edge" in l:
-                                    self.field6.setText(l)
-                                elif "Mode" in l:
-                                    if int(l[4:]) < len(WindowOpeningModes):
-                                        self.field7.setCurrentIndex(int(l[4:]))
-                                    else:
-                                        # Ignore modes not listed in WindowOpeningModes
-                                        self.field7.setCurrentIndex(0)
-                            if wires:
-                                f.setText(",".join(wires))
-
-                        elif i in [3, 4]:
-                            if "+V" in t:
-                                t = t[:-2]
-                                if i == 3:
-                                    self.addp4.setChecked(True)
-                                else:
-                                    self.addp5.setChecked(True)
-                            else:
-                                if i == 3:
-                                    self.addp4.setChecked(False)
-                                else:
-                                    self.addp5.setChecked(False)
-                            f.setProperty(
-                                "text",
-                                FreeCAD.Units.Quantity(
-                                    float(t), FreeCAD.Units.Length
-                                ).UserString,
-                            )
-                        else:
-                            f.setText(t)
-
-    def create(self):
-        "adds a new component"
-
-        # testing if fields are ok
-        ok = True
-        ar = []
-        for i in range(5):
-            if i == 1:  # type (1)
-                n = getattr(self, "field" + str(i + 1)).currentIndex()
-                if n in range(len(WindowPartTypes)):
-                    t = WindowPartTypes[n]
-                else:
-                    # if type was not specified or is invalid, we set a default
-                    t = WindowPartTypes[0]
-            else:  # name (0)
-                t = str(getattr(self, "field" + str(i + 1)).property("text"))
-                if t in WindowPartTypes:
-                    t = t + "_"  # avoiding part names similar to types
-            if t == "":
-                if not (i in [1, 5]):
-                    ok = False
-            else:
-                if i > 2:  # thickness (3), offset (4)
-                    try:
-                        q = FreeCAD.Units.Quantity(t)
-                        t = str(q.Value)
-                        if i == 3:
-                            if self.addp4.isChecked():
-                                t += "+V"
-                        if i == 4:
-                            if self.addp5.isChecked():
-                                t += "+V"
-                    except (ValueError, TypeError):
-                        ok = False
-                elif i == 2:
-                    # check additional opening parameters
-                    hinge = self.field6.property("text")
-                    n = self.field7.currentIndex()
-                    if (hinge.startswith("Edge")) and (n > 0):
-                        # remove accelerator added by Qt
-                        hinge = hinge.replace("&", "")
-                        t += "," + hinge + ",Mode" + str(n)
-            ar.append(t)
-
-        if ok:
-            if self.obj:
-                parts = self.obj.WindowParts
-                if ar[0] in parts:
-                    b = parts.index(ar[0])
-                    for i in range(5):
-                        parts[b + i] = ar[i]
-                else:
-                    parts.extend(ar)
-                self.obj.WindowParts = parts
-                self.update()
-        else:
-            FreeCAD.Console.PrintWarning(
-                translate("Arch", "Unable to create component") + "\n"
-            )
-
-        self.newtitle.setVisible(False)
-        self.new1.setVisible(False)
-        self.new2.setVisible(False)
-        self.new3.setVisible(False)
-        self.new4.setVisible(False)
-        self.new5.setVisible(False)
-        self.new6.setVisible(False)
-        self.new7.setVisible(False)
-        self.field1.setVisible(False)
-        self.field2.setVisible(False)
-        self.field3.setVisible(False)
-        self.field4.setVisible(False)
-        self.field5.setVisible(False)
-        self.field6.setVisible(False)
-        self.field7.setVisible(False)
-        self.addp4.setVisible(False)
-        self.addp5.setVisible(False)
-        self.createButton.setVisible(False)
-        self.addButton.setEnabled(True)
-
-    def addEdge(self):
-
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            for sub in sel.SubElementNames:
-                if "Edge" in sub:
-                    self.field6.setText(sub)
-                    return
-
-    def reject(self):
-
-        FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.ActiveDocument.resetEdit()
-        return True
-
-    def retranslateUi(self, TaskPanel):
-
-        TaskPanel.setWindowTitle(
-            QtGui.QApplication.translate("Arch", "Window elements", None)
-        )
-        self.holeLabel.setText(QtGui.QApplication.translate("Arch", "Hole wire", None))
-        self.holeNumber.setToolTip(
-            QtGui.QApplication.translate(
-                "Arch",
-                "The number of the wire that defines a hole in the host object."
-                "A value of zero will automatically adopt the largest wire",
-                None,
-            )
-        )
-        self.holeButton.setText(
-            QtGui.QApplication.translate("Arch", "Pick selected", None)
-        )
-        self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
-        self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None))
-        self.editButton.setText(QtGui.QApplication.translate("Arch", "Edit", None))
-        self.createButton.setText(
-            QtGui.QApplication.translate("Arch", "Create/update component", None)
-        )
-        self.title.setText(QtGui.QApplication.translate("Arch", "Base 2D object", None))
-        self.wiretree.setHeaderLabels(
-            [QtGui.QApplication.translate("Arch", "Wires", None)]
-        )
-        self.comptree.setHeaderLabels(
-            [QtGui.QApplication.translate("Arch", "Components", None)]
-        )
-        self.newtitle.setText(
-            QtGui.QApplication.translate("Arch", "Create new component", None)
-        )
-        self.new1.setText(QtGui.QApplication.translate("Arch", "Name", None))
-        self.new2.setText(QtGui.QApplication.translate("Arch", "Type", None))
-        self.new3.setText(QtGui.QApplication.translate("Arch", "Wires", None))
-        self.new4.setText(QtGui.QApplication.translate("Arch", "Thickness", None))
-        self.new5.setText(QtGui.QApplication.translate("Arch", "Offset", None))
-        self.new6.setText(QtGui.QApplication.translate("Arch", "Hinge", None))
-        self.new7.setText(QtGui.QApplication.translate("Arch", "Opening mode", None))
-        self.addp4.setText(QtGui.QApplication.translate("Arch", "+ default", None))
-        self.addp4.setToolTip(
-            QtGui.QApplication.translate(
-                "Arch",
-                "If this is checked, the default Frame value of this window"
-                "will be added to the value entered here",
-                None,
-            )
-        )
-        self.addp5.setText(QtGui.QApplication.translate("Arch", "+ default", None))
-        self.addp5.setToolTip(
-            QtGui.QApplication.translate(
-                "Arch",
-                "If this is checked, the default Offset value of this window"
-                "will be added to the value entered here",
-                None,
-            )
-        )
-        self.field6.setText(
-            QtGui.QApplication.translate("Arch", "Get selected edge", None)
-        )
-        self.field6.setToolTip(
-            QtGui.QApplication.translate(
-                "Arch", "Press to retrieve the selected edge", None
-            )
-        )
-        self.invertOpeningButton.setText(
-            QtGui.QApplication.translate("Arch", "Invert opening direction", None)
-        )
-        self.invertHingeButton.setText(
-            QtGui.QApplication.translate("Arch", "Invert hinge position", None)
-        )
-        for i in range(len(WindowPartTypes)):
-            self.field2.setItemText(
-                i, QtGui.QApplication.translate("Arch", WindowPartTypes[i], None)
-            )
-        for i in range(len(WindowOpeningModes)):
-            self.field7.setItemText(
-                i, QtGui.QApplication.translate("Arch", WindowOpeningModes[i], None)
-            )
-
-    def invertOpening(self):
-
-        if self.obj:
-            self.obj.ViewObject.Proxy.invertOpening()
-
-    def invertHinge(self):
-
-        if self.obj:
-            self.obj.ViewObject.Proxy.invertHinge()
+# backwards compatibility
+_Window = Window
+_ViewProviderWindow = ViewProviderWindow

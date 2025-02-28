@@ -230,6 +230,7 @@
         <file>ui/ParametersWindowFixed.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowStash.svg</file>
+        <file>ui/ParametersWindowComponent.svg</file>
         <file>ui/dialogAddPSet.ui</file>
         <file>ui/dialogAddProperty.ui</file>
         <file>ui/dialogClasses.ui</file>
@@ -263,6 +264,7 @@
         <file>ui/dialogViews.ui</file>
         <file>ui/dialogWelcome.ui</file>
         <file>ui/dialogWindows.ui</file>
+        <file>ui/dialogWindowComponentEditor.ui</file>
         <file>ui/preferences-arch.ui</file>
         <file>ui/preferences-archdefaults.ui</file>
         <file>ui/preferences-dae.ui</file>
@@ -270,5 +272,7 @@
         <file>ui/preferences-ifc.ui</file>
         <file>ui/preferences-sh3d-import.ui</file>
         <file>ui/preferencesNativeIFC.ui</file>
+        <file>ui/taskWindowComponents.ui</file>
+        <file>ui/taskWindowProperties.ui</file>
     </qresource>
 </RCC>
