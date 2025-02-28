@@ -99,9 +99,9 @@ public:
     std::list<Gui::InputHint> getToolHints() const override
     {
         return {
-            {"%1 change mode", {Gui::InputHint::Key::M}},
-            {"%1 start drawing", {Gui::InputHint::Key::MouseLeft}},
-            {"%1 stop drawing", {Gui::InputHint::Key::MouseRight}},
+            {"%1 change mode", {{Gui::InputHint::KeyShift, Gui::InputHint::KeyM}}},
+            {"%1 start drawing", {Gui::InputHint::MouseLeft}},
+            {"%1 stop drawing", {Gui::InputHint::MouseRight}},
         };
     }
 

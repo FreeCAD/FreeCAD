@@ -29,6 +29,7 @@
 #include <QMdiArea>
 
 #include "Window.h"
+#include "InputHint.h"
 
 class QMimeData;
 class QUrl;
@@ -61,24 +62,6 @@ public:
     ~UrlHandler() override = default;
     virtual void openUrl(App::Document*, const QUrl&) {
     }
-};
-
-
-struct InputHint
-{
-    enum class Key {
-        M,
-        F,
-        U,
-        J,
-        MouseLeft,
-        MouseRight,
-        MouseMiddle,
-        MouseMove,
-    };
-
-    const char* message;
-    std::list<Key> keys;
 };
 
 /**

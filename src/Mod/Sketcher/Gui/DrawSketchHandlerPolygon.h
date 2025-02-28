@@ -79,16 +79,16 @@ public:
         switch (state()) {
             case SelectMode::SeekFirst:
                 return {
-                    {"%1 pick polygon center", {Gui::InputHint::Key::MouseLeft}},
+                    {"%1 pick polygon center", {Gui::InputHint::MouseLeft}},
                     {"%1/%2 increase / decrease number of sides",
-                     {Gui::InputHint::Key::U, Gui::InputHint::Key::J}},
+                     {Gui::InputHint::KeyTab, Gui::InputHint::KeyJ}},
                 };
             case SelectMode::SeekSecond:
                 return {
-                    {"%1 pick rotation and size", {Gui::InputHint::Key::MouseMove}},
-                    {"%1 confirm", {Gui::InputHint::Key::MouseLeft}},
+                    {"%1 pick rotation and size", {Gui::InputHint::MouseMove}},
+                    {"%1 confirm", {Gui::InputHint::MouseLeft}},
                     {"%1/%2 increase / decrease number of sides",
-                     {Gui::InputHint::Key::U, Gui::InputHint::Key::J}},
+                     {Gui::InputHint::KeyU, Gui::InputHint::KeyJ}},
                 };
             default:
                 return {};

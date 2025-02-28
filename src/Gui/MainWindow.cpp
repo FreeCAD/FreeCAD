@@ -2240,52 +2240,92 @@ void MainWindow::showHint(InputHint hint)
 
 void MainWindow::showHints(const std::list<InputHint>& hints)
 {
-    if (hints.size() == 0) {
+    if (hints.empty()) {
         hideHint();
         return;
     }
 
-    static const auto iconPath = [](InputHint::Key key) {
+    static const auto maybeIconPath = [](const InputHint::Key key) -> std::optional<const char*> {
         switch (key) {
-            case InputHint::Key::F:
-                return ":/icons/keys/F.svg";
-            case InputHint::Key::U:
-                return ":/icons/keys/U.svg";
-            case InputHint::Key::J:
-                return ":/icons/keys/J.svg";
-            case InputHint::Key::M:
-                return ":/icons/keys/M.svg";
             case InputHint::Key::MouseLeft:
                 return ":/icons/keys/mouse-left.svg";
             case InputHint::Key::MouseRight:
                 return ":/icons/keys/mouse-right.svg";
             case InputHint::Key::MouseMove:
                 return ":/icons/keys/mouse-move.svg";
+            default:
+                return std::nullopt;
         }
+    };
+
+    static const auto generateKeyIcon = [](const InputHint::Key key,
+                                           const QColor color) -> QPixmap {
+        constexpr int margin = 3;
+        constexpr int padding = 4;
+        constexpr int radius = 2;
+        constexpr int iconTotalHeight = 24;
+        constexpr int iconSymbolHeight = iconTotalHeight - 2*margin;
+
+        const QFont font(QStringLiteral("sans"), 10, QFont::Bold);
+        const QFontMetrics fm(font);
+        const QString text = QString::fromUtf8(inputKeyToString(key));
+        const QRect textBoundingRect = fm.tightBoundingRect(text);
+
+        const auto symbolWidth = std::max<unsigned>(textBoundingRect.width() + padding * 2, iconSymbolHeight);
+
+        QImage image(symbolWidth + margin * 2, iconTotalHeight, QImage::Format_ARGB32_Premultiplied);
+        image.fill(0x00000000);
+
+        const QRect keyRect(margin, margin, symbolWidth, 18);
+
+        QPainter painter(&image);
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setPen(QPen(color, 2));
+        painter.setFont(font);
+        painter.drawRoundedRect(keyRect, radius, radius);
+        painter.drawText(
+            // adjust the rectangle so it is visually centered, for characters that are below baseline
+            keyRect.translated(0, -(textBoundingRect.y() + textBoundingRect.height()) / 2),
+            Qt::AlignHCenter,
+            text);
+
+        return QPixmap::fromImage(image);
     };
 
     const auto getKeyImage = [this](InputHint::Key key) {
         const auto& factory = BitmapFactory();
 
-        QPixmap image = factory.pixmapFromSvg(
-            iconPath(key),
-            QSize(24, 24),
-            {
-                {0xFFFFFF, d->hintLabel->palette().text().color().rgb() & RGB_MASK},
-            });
-        QBuffer buffer;
+        QPixmap image = [&] {
+            QColor color = d->hintLabel->palette().text().color();
 
+            if (auto iconPath = maybeIconPath(key)) {
+                return factory.pixmapFromSvg(*iconPath,
+                                             QSize(24, 24),
+                                             {{0xFFFFFF, color.rgb() & RGB_MASK}});
+            }
+
+            return generateKeyIcon(key, color);
+        } ();
+
+
+        QBuffer buffer;
         image.save(&buffer, "png");
 
-        return QStringLiteral("<img src=\"data:image/png;base64,%1\" width=24 height=24 />")
-            .arg(QString::fromLatin1(buffer.data().toBase64()));
+        return QStringLiteral("<img src=\"data:image/png;base64,%1\" width=%2 height=24 />")
+            .arg(QString::fromLatin1(buffer.data().toBase64())).arg(image.width());
     };
 
-    const auto getHintHTML = [&](InputHint hint) {
+    const auto getHintHTML = [&](const InputHint& hint) {
         QString message = QStringLiteral("<td valign=bottom>%1</td>").arg(tr(hint.message));
 
-        for (const auto key : hint.keys) {
-            message = message.arg(getKeyImage(key));
+        for (const auto& sequence : hint.sequences) {
+            QList<QString> keyImages;
+
+            for (const auto key : sequence.keys) {
+                keyImages.append(getKeyImage(key));
+            }
+
+            message = message.arg(keyImages.join(QString {}));
         }
 
         return message;
