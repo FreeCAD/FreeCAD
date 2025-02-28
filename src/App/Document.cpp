@@ -3367,7 +3367,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
         return 1;
     }
     catch (std::exception& e) {
-        FC_ERR("exception in " << Feat->getFullName() << " thrown: " << e.what());
+        FC_ERR("Exception in " << Feat->getFullName() << " thrown: " << e.what());
         d->addRecomputeLog(e.what(), Feat);
         return 1;
     }
