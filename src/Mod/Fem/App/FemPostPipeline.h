@@ -87,9 +87,10 @@ public:
         return "FemGui::ViewProviderFemPostPipeline";
     }
 
-    // load data from files
+    // load data from files (single or as multiframe)
     static bool canRead(Base::FileInfo file);
     void read(Base::FileInfo file);
+    void read(std::vector<Base::FileInfo>& files, std::vector<double>& values, Base::Unit unit, std::string& frame_type);
     void scale(double s);
 
     // load from results
@@ -126,14 +127,15 @@ private:
 
 
     template<class TReader>
-    void readXMLFile(std::string file)
+    vtkSmartPointer<vtkDataObject> readXMLFile(std::string file)
     {
 
         vtkSmartPointer<TReader> reader = vtkSmartPointer<TReader>::New();
         reader->SetFileName(file.c_str());
         reader->Update();
-        Data.setValue(reader->GetOutput());
+        return reader->GetOutput();
     }
+    vtkSmartPointer<vtkDataObject> dataObjectFromFile(Base::FileInfo File);
 };
 
 }  // namespace Fem
