@@ -45,6 +45,8 @@ void ComputationDialog::Show(float position, bool isForce) {
         } else {
             int pct = std::clamp(static_cast<int>(position * 100), 0, 100);
             setMaximum(100);
+            setValue(pct);
+        }
     }, Qt::QueuedConnection);
 }
 
