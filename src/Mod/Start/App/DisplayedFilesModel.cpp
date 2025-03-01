@@ -39,6 +39,7 @@
 #include <App/ProjectFile.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
+#include <Base/TimeInfo.h>
 
 using namespace Start;
 

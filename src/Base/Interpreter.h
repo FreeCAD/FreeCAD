@@ -86,9 +86,6 @@
 namespace Base
 {
 
-using std::string;
-using std::vector;
-
 
 class BaseExport PyException: public Exception
 {

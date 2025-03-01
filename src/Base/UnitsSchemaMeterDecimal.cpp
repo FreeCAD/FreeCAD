@@ -32,9 +32,10 @@
 #ifndef _PreComp_
 #include <algorithm>
 #include <array>
-#include <utility>
 #endif
 
+#include "Quantity.h"
+#include "Unit.h"
 #include "UnitsSchemaMeterDecimal.h"
 
 using namespace Base;

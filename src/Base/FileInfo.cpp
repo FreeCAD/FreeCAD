@@ -26,10 +26,9 @@
 
 #ifndef _PreComp_
 #include <algorithm>
-#include <cassert>
 #include <codecvt>
 #include <cstring>
-#include <locale>
+#include <iostream>
 #if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 #include <dirent.h>
 #include <unistd.h>
@@ -45,6 +44,8 @@
 #include "FileInfo.h"
 #include "Exception.h"
 #include "Stream.h"
+#include "TimeInfo.h"
+#include "Tools.h"
 
 
 using namespace Base;
@@ -119,7 +120,7 @@ const std::string& FileInfo::getTempPath()
         delete[] dest;
 #else
         const char* tmp = getenv("TMPDIR");
-        if (tmp && tmp[0] != '\0') {
+        if (!Base::Tools::isNullOrEmpty(tmp)) {
             tempPath = tmp;
             FileInfo fi(tempPath);
             if (tempPath.empty() || !fi.isDir()) {  // still empty or non-existent

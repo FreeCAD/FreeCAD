@@ -23,6 +23,14 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <tuple>
+# include <memory>
+# include <list>
+# include <string>
+# include <map>
+# include <set>
+# include <unordered_map>
+# include <vector>
 # include <cctype>
 # include <mutex>
 # include <QApplication>
@@ -1701,7 +1709,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
         localreader->readElement("Camera");
         const char* ppReturn = localreader->getAttribute("settings");
         cameraSettings.clear();
-        if(ppReturn && ppReturn[0]) {
+        if(!Base::Tools::isNullOrEmpty(ppReturn)) {
             saveCameraSettings(ppReturn);
             try {
                 const char** pReturnIgnore=nullptr;
@@ -1938,8 +1946,9 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
     localreader->readEndElement("Document");
 
     // In the file GuiDocument.xml new data files might be added
-    if (!localreader->getFilenames().empty())
+    if (localreader->hasFilenames()) {
         reader.initLocalReader(localreader);
+    }
 }
 
 void Document::slotFinishImportObjects(const std::vector<App::DocumentObject*> &objs) {

@@ -45,10 +45,6 @@ using PyObject = struct _object;
 #undef isalnum
 #endif
 
-#ifdef FC_OS_LINUX
-#include <sstream>
-#endif
-
 #include <map>
 #include <vector>
 #include <boost/signals2.hpp>
@@ -67,7 +63,6 @@ using PyObject = struct _object;
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER
-using namespace XERCES_CPP_NAMESPACE;
 namespace XERCES_CPP_NAMESPACE
 {
 class DOMNode;
@@ -111,22 +106,70 @@ public:
     ParameterGrp& operator=(const ParameterGrp&) = delete;
     ParameterGrp& operator=(ParameterGrp&&) = delete;
 
-    /** @name copy and insertation */
+    /** @name Copying & Inserting */
     //@{
-    /// make a deep copy to the other group
-    void copyTo(const Base::Reference<ParameterGrp>&);
-    /// overwrite everything similar, leave the others alone
-    void insertTo(const Base::Reference<ParameterGrp>&);
-    /// export this group to a file
+
+    /**
+     *  Overwrites another group with this one.
+     *
+     *  @param[out] Group The group to overwrite.
+     */
+    void copyTo(const Base::Reference<ParameterGrp>& Group);
+
+    /**
+     *  Inserts items from this group into another.
+     *
+     *  @param[out] Group The group to insert into.
+     *
+     *  @note
+     *  Inserts new and replaces existing items.
+     */
+    void insertTo(const Base::Reference<ParameterGrp>& Group);
+
+    /**
+     *  Exports this group to a given file.
+     *
+     *  @param[out] FileName The path to the file.
+     */
     void exportTo(const char* FileName);
-    /// import from a file to this group
+
+    /**
+     *  Overwrites this group with the given file.
+     *
+     *  @param[in] FileName The path to the file.
+     */
     void importFrom(const char* FileName);
-    /// insert from a file to this group, overwrite only the similar
+
+    /**
+     *  Inserts items from the given file.
+     *
+     *  @param[in] FileName The path to the file.
+     *
+     *  @note
+     *  Inserts new and replaces existing items.
+     */
     void insert(const char* FileName);
-    /// revert to default value by deleting any parameter that has the same value in the given file
+
+    /**
+     *  Removes items from this group that are present in the given file.
+     *
+     *  @param[in] FileName The path to the file.
+     *
+     *  @note
+     *  Only removes items that have the same value.
+     */
     void revert(const char* FileName);
-    /// revert to default value by deleting any parameter that has the same value in the given group
-    void revert(const Base::Reference<ParameterGrp>&);
+
+    /**
+     *  Removes items from this group that are present in the other.
+     *
+     *  @param[in] Group The group to compare with.
+     *
+     *  @note
+     *  Only removes items that have the same value.
+     */
+    void revert(const Base::Reference<ParameterGrp>& Group);
+
     //@}
 
     /** @name methods for group handling */

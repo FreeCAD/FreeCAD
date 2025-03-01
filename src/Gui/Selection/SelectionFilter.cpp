@@ -31,7 +31,7 @@
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentObject.h>
 #include <Base/Interpreter.h>
-
+#include <Base/Tools.h>
 #include "Selection.h"
 #include "SelectionFilter.h"
 #include "SelectionFilterPy.h"
@@ -145,7 +145,7 @@ SelectionFilter::SelectionFilter(const std::string& filter)
 
 void SelectionFilter::setFilter(const char* filter)
 {
-    if (!filter || filter[0] == 0) {
+    if (Base::Tools::isNullOrEmpty(filter)) {
         Ast.reset();
         Filter.clear();
     }

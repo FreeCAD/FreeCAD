@@ -293,7 +293,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         Draft.upgrade(obj3[0], delete=True)
         # when draftifying, upgrade doesn't return a new object
         wire = self.doc.ActiveObject
-        wire.MakeFace = True  # make test independent of fillmode parameter
+        wire.MakeFace = True  # make test independent of MakeFaceMode parameter
         self.doc.recompute()
         _msg("  4: Result '{0}' ({1})".format(wire.Proxy.Type, wire.TypeId))
         self.assertTrue(bool(wire), "'{}' failed".format(operation))
@@ -315,7 +315,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}, a={1}".format(c, a))
         wire = Draft.make_wire([a, b, c, a])
-        wire.MakeFace = True  # make test independent of fillmode parameter
+        wire.MakeFace = True  # make test independent of MakeFaceMode parameter
         self.doc.recompute()
 
         # downgrade to face

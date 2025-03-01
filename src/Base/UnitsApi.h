@@ -25,10 +25,12 @@
 #define BASE_UNITSAPI_H
 
 #include <memory>
-#include <QString>
 #include <QCoreApplication>
 #include "UnitsSchema.h"
 #include "Quantity.h"
+
+
+class QString;
 
 using PyObject = struct _object;
 using PyMethodDef = struct PyMethodDef;

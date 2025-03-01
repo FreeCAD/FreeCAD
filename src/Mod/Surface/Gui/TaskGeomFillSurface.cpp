@@ -33,6 +33,7 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -43,6 +44,7 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskGeomFillSurface.h"
+
 #include "ui_TaskGeomFillSurface.h"
 
 
@@ -172,7 +174,7 @@ bool GeomFillSurface::EdgeSelection::allow(App::Document*,
         return false;
     }
 
-    if (!sSubName || sSubName[0] == '\0') {
+    if (Base::Tools::isNullOrEmpty(sSubName)) {
         return false;
     }
 

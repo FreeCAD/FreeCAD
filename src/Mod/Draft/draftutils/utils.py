@@ -216,7 +216,7 @@ def get_param_type(param):
                    "LineSpacing", "DefaultAnnoScaleMultiplier"):
         return "float"
     elif param in ("selectBaseObjects", "alwaysSnap", "grid",
-                   "fillmode", "DimShowLine",
+                   "MakeFaceMode", "DimShowLine",
                    "SvgLinesBlack", "dxfStdSize", "SnapBarShowOnlyDuringCommands",
                    "alwaysShowGrid", "renderPolylineWidth",
                    "showPlaneTracker", "UsePartPrimitives",
@@ -606,7 +606,7 @@ def get_clone_base(obj, strict=False, recursive=True):
 getCloneBase = get_clone_base
 
 
-def shapify(obj):
+def shapify(obj, delete=True):
     """Transform a parametric object into a static, non-parametric shape.
 
     Parameters
@@ -617,6 +617,10 @@ def shapify(obj):
         This object will be removed, and a non-parametric object
         with the same topological shape (`Part::TopoShape`)
         will be created.
+
+    delete: bool, optional
+        It defaults to `False`.
+        If it is `True`, the original object is deleted.
 
     Returns
     -------
@@ -655,7 +659,8 @@ def shapify(obj):
     else:
         name = getRealName(obj.Name)
 
-    App.ActiveDocument.removeObject(obj.Name)
+    if delete:
+        App.ActiveDocument.removeObject(obj.Name)
     newobj = App.ActiveDocument.addObject("Part::Feature", name)
     newobj.Shape = shape
 

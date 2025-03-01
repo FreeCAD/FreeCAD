@@ -367,7 +367,7 @@ class MetadataReader:
     def _parse_content(namespace: str, metadata: Metadata, root: ET.Element):
         """Given a content node, loop over its children, and if they are a recognized
         element type, recurse into each one to parse it."""
-        known_content_types = ["workbench", "macro", "preferencepack"]
+        known_content_types = ["workbench", "macro", "preferencepack", "bundle", "other"]
         for child in root:
             content_type = child.tag[len(namespace) :]
             if content_type in known_content_types:

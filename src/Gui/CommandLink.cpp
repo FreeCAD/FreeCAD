@@ -302,7 +302,7 @@ void StdCmdLinkMakeRelative::activated(int) {
             auto element = Data::findElementName(sel.SubName);
             auto &info = linkInfo[key];
             info.first = sel.pResolvedObject;
-            if(element && element[0])
+            if(!Base::Tools::isNullOrEmpty(element))
                 info.second.emplace_back(element);
         }
 

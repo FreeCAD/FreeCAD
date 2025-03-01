@@ -35,6 +35,7 @@
 #include <App/Origin.h>
 #include <App/Datums.h>
 #include <App/Part.h>
+#include <Base/Tools.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -86,7 +87,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     }
 #endif
     // Handle selection of geometry elements
-    if (!sSubName || sSubName[0] == '\0')
+    if (Base::Tools::isNullOrEmpty(sSubName))
         return type.testFlag(AllowSelection::WHOLE);
 
     // resolve links if needed

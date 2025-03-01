@@ -82,10 +82,10 @@ class ifc_vp_object:
         return []
 
     def setupContextMenu(self, vobj, menu):
-        from nativeifc import ifc_tools  # lazy import
-        from nativeifc import ifc_psets
-        from nativeifc import ifc_materials
-        from nativeifc import ifc_types
+        from . import ifc_tools  # lazy import
+        from . import ifc_psets
+        from . import ifc_materials
+        from . import ifc_types
         from PySide import QtCore, QtGui  # lazy import
 
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
@@ -164,7 +164,7 @@ class ifc_vp_object:
     def hasChildren(self, obj):
         """Returns True if this IFC object can be decomposed"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
 
         ifcfile = ifc_tools.get_ifcfile(obj)
         if ifcfile:
@@ -174,7 +174,7 @@ class ifc_vp_object:
     def expandChildren(self, obj=None):
         """Creates children of this object"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
         from PySide import QtCore, QtGui
 
         if not obj:
@@ -260,14 +260,14 @@ class ifc_vp_object:
     def addGeometryProperties(self):
         """Adds geometry properties to this object"""
 
-        from nativeifc import ifc_geometry  # lazy loading
+        from . import ifc_geometry  # lazy loading
 
         ifc_geometry.add_geom_properties(self.Object)
 
     def addMaterial(self):
         """Adds a material to this object"""
 
-        from nativeifc import ifc_materials  # lazy loading
+        from . import ifc_materials  # lazy loading
 
         ifc_materials.show_material(self.Object)
         self.Object.Document.recompute()
@@ -275,8 +275,8 @@ class ifc_vp_object:
     def showTree(self):
         """Shows a dialog with a geometry tree for the object"""
 
-        from nativeifc import ifc_tools  # lazy loading
-        from nativeifc import ifc_tree  # lazy loading
+        from . import ifc_tools  # lazy loading
+        from . import ifc_tree  # lazy loading
 
         element = ifc_tools.get_ifc_element(self.Object)
         if element:
@@ -285,7 +285,7 @@ class ifc_vp_object:
     def showProps(self):
         """Expands property sets"""
 
-        from nativeifc import ifc_psets  # lazy loading
+        from . import ifc_psets  # lazy loading
 
         ifc_psets.show_psets(self.Object)
         self.Object.Document.recompute()
@@ -313,7 +313,7 @@ class ifc_vp_object:
     def dragObject(self, vobj, dragged_object):
         """Remove a child from the view provider by d&d"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
 
         parent = vobj.Object
         ifc_tools.deaggregate(dragged_object, parent)
@@ -329,7 +329,7 @@ class ifc_vp_object:
     def onDrop(self, incoming_object):
         """Delayed action to be taken when dropping an object"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
         ifc_tools.aggregate(incoming_object, self.Object)
         if self.hasChildren(self.Object):
             self.expandChildren(self.Object)
@@ -350,7 +350,7 @@ class ifc_vp_object:
     def createGroup(self):
         """Creates a group under this object"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
 
         group = self.Object.Document.addObject("App::DocumentObjectGroup", "Group")
         ifc_tools.aggregate(group, self.Object)
@@ -364,13 +364,13 @@ class ifc_vp_object:
     def expandProperties(self, vobj):
         """Expands everything that needs to be expanded"""
 
-        from nativeifc import ifc_geometry  # lazy import
-        from nativeifc import ifc_tools  # lazy import
-        from nativeifc import ifc_psets  # lazy import
-        from nativeifc import ifc_materials  # lazy import
-        from nativeifc import ifc_layers  # lazy import
-        from nativeifc import ifc_types  # lazy import
-        from nativeifc import ifc_classification  # lazy import
+        from . import ifc_geometry  # lazy import
+        from . import ifc_tools  # lazy import
+        from . import ifc_psets  # lazy import
+        from . import ifc_materials  # lazy import
+        from . import ifc_layers  # lazy import
+        from . import ifc_types  # lazy import
+        from . import ifc_classification  # lazy import
 
         # generic data loading
         ifc_geometry.add_geom_properties(vobj.Object)
@@ -399,7 +399,7 @@ class ifc_vp_object:
 
         if not hasattr(self, "Object"):
             return
-        from nativeifc import ifc_types
+        from . import ifc_types
         ifc_types.convert_to_type(self.Object)
         self.Object.Document.recompute()
 
@@ -444,7 +444,7 @@ class ifc_vp_document(ifc_vp_object):
     def save(self):
         """Saves the associated IFC file"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
 
         ifc_tools.save(self.Object)
         self.Object.Document.recompute()
@@ -452,7 +452,7 @@ class ifc_vp_document(ifc_vp_object):
     def saveas(self):
         """Saves the associated IFC file to another file"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
 
         sf = get_filepath(self.Object)
         if sf:
@@ -503,7 +503,7 @@ class ifc_vp_document(ifc_vp_object):
             return False
 
     def diff(self):
-        from nativeifc import ifc_diff
+        from . import ifc_diff
 
         diff = ifc_diff.get_diff(self.Object)
         ifc_diff.show_diff(diff)
@@ -600,8 +600,8 @@ class ifc_vp_material:
         return []
 
     def setupContextMenu(self, vobj, menu):
-        from nativeifc import ifc_tools  # lazy import
-        from nativeifc import ifc_psets
+        from . import ifc_tools  # lazy import
+        from . import ifc_psets
         from PySide import QtCore, QtGui  # lazy import
 
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
@@ -616,7 +616,7 @@ class ifc_vp_material:
     def showProps(self):
         """Expands property sets"""
 
-        from nativeifc import ifc_psets  # lazy loading
+        from . import ifc_psets  # lazy loading
 
         ifc_psets.show_psets(self.Object)
         self.Object.Document.recompute()
@@ -659,7 +659,7 @@ def overlay(icon1, icon2):
 def get_filepath(project):
     """Saves the associated IFC file to another file"""
 
-    from nativeifc import ifc_tools  # lazy import
+    from . import ifc_tools  # lazy import
     from PySide import QtCore, QtGui  # lazy import
 
     sf = QtGui.QFileDialog.getSaveFileName(

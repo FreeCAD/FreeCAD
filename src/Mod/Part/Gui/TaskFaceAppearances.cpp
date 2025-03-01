@@ -44,6 +44,7 @@
 #endif
 
 #include <App/Document.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Dialogs/DlgMaterialPropertiesImp.h>
@@ -79,7 +80,7 @@ namespace PartGui {
         {
             if (pObj != this->object)
                 return false;
-            if (!sSubName || sSubName[0] == '\0')
+            if (Base::Tools::isNullOrEmpty(sSubName))
                 return false;
             std::string element(sSubName);
             return element.substr(0, 4) == "Face";

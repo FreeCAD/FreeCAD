@@ -29,6 +29,7 @@
 #include <Base/Stream.h>
 #include <Base/Writer.h>
 #include <Base/Uuid.h>
+#include <Base/Tools.h>
 
 #include "PropertyFile.h"
 #include "Document.h"
@@ -110,7 +111,7 @@ std::string PropertyFileIncluded::getOriginalFileName() const
 
 void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
 {
-    if (sFile && sFile[0] != '\0') {
+    if (!Base::Tools::isNullOrEmpty(sFile)) {
         if (_cValue == sFile) {
             throw Base::FileSystemError("Not possible to set the same file!");
         }

@@ -46,6 +46,9 @@
 #include "View3DInventorSelection.h"
 #include "Quarter/SoQTQuarterAdaptor.h"
 
+#include <Inventor/nodes/SoEnvironment.h>
+#include <Inventor/nodes/SoRotation.h>
+
 
 class SoTranslation;
 class SoTransform;
@@ -72,7 +75,7 @@ namespace Base {
 }
 
 namespace Gui {
-
+class NavigationAnimation;
 class ViewProvider;
 class SoFCBackgroundGradient;
 class NavigationStyle;
@@ -146,6 +149,13 @@ public:
     SoDirectionalLight* getBacklight() const;
     void setBacklightEnabled(bool on);
     bool isBacklightEnabled() const;
+
+    SoDirectionalLight* getFillLight() const;
+    void setFillLightEnabled(bool on);
+    bool isFillLightEnabled() const;
+
+    SoEnvironment* getEnvironment() const;
+
     void setSceneGraph (SoNode *root) override;
     bool searchNode(SoNode*) const;
 
@@ -155,8 +165,8 @@ public:
     bool isSpinningAnimationEnabled() const;
     bool isAnimating() const;
     bool isSpinning() const;
-    void startAnimation(const SbRotation& orientation, const SbVec3f& rotationCenter,
-                        const SbVec3f& translation, int duration = -1, bool wait = false);
+    std::shared_ptr<NavigationAnimation> startAnimation(const SbRotation& orientation, const SbVec3f& rotationCenter,
+                        const SbVec3f& translation, int duration = -1, bool wait = false) const;
     void startSpinningAnimation(const SbVec3f& axis, float velocity);
     void stopAnimating();
 
@@ -376,10 +386,10 @@ public:
 
     /**
      * Set the camera's orientation. If isAnimationEnabled() returns
-     * \a true the reorientation is animated, otherwise its directly
+     * \a true the reorientation is animated and the animation is returned, otherwise its directly
      * set.
      */
-    void setCameraOrientation(const SbRotation& orientation, bool moveToCenter = false);
+    std::shared_ptr<NavigationAnimation> setCameraOrientation(const SbRotation& orientation, bool moveToCenter = false) const;
     void setCameraType(SoType type) override;
     void moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration = -1);
     /**
@@ -496,7 +506,12 @@ private:
     SoFCBackgroundGradient *pcBackGround;
     SoSeparator * backgroundroot;
     SoSeparator * foregroundroot;
+
     SoDirectionalLight* backlight;
+    SoDirectionalLight* fillLight;
+    SoEnvironment* environment;
+
+    SoRotation* lightRotation;
 
     // Scene graph root
     SoSeparator * pcViewProviderRoot;

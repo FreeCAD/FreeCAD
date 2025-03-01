@@ -177,6 +177,9 @@
 #include <vtkQuadraticTetra.h>
 #include <vtkQuadraticTriangle.h>
 #include <vtkQuadraticWedge.h>
+#include <vtkStringArray.h>
+#include <vtkFloatArray.h>
+#include <vtkXMLMultiBlockDataWriter.h>
 #include <vtkRectilinearGrid.h>
 #include <vtkStructuredGrid.h>
 #include <vtkTetra.h>
