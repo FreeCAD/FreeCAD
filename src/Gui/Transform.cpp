@@ -298,13 +298,8 @@ Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
         signalMapper->setMapping(it, id++);
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(signalMapper, qOverload<int>(&QSignalMapper::mapped),
-            this, &Transform::onTransformChanged);
-#else
     connect(signalMapper, &QSignalMapper::mappedInt,
             this, &Transform::onTransformChanged);
-#endif
 
     setTransformStrategy(new DefaultTransformStrategy(this));
 }
