@@ -194,15 +194,6 @@ StartView::StartView(QWidget* parent)
     auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);   // NOLINT
     auto showExamples = hGrp->GetBool("ShowExamples", true);  // NOLINT
 
-    // Migrate legacy property, can be removed in later releases
-    std::string legacyCustomFolder(hGrp->GetASCII("ShowCustomFolder", ""));
-    if (!legacyCustomFolder.empty()) {
-        hGrp->SetASCII("CustomFolder", legacyCustomFolder);
-        hGrp->RemoveASCII("ShowCustomFolder");
-        Base::Console().Message("v1.1: renamed ShowCustomFolder parameter to CustomFolder\n");
-    }
-    // End of migration code
-
     // Verify that the folder specified in preferences is available before showing it
     std::string customFolder(hGrp->GetASCII("CustomFolder", ""));
     bool showCustomFolder = false;
