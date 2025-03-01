@@ -186,6 +186,8 @@ Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
 AppExport std::map<std::string, std::string> Application::mConfig;
 
+std::function<void(const std::function<void()>&)> Application::_taskRunner;
+std::atomic<bool> Application::_inTaskRunner = false;
 
 //**************************************************************************
 // Construction and destruction
@@ -3033,13 +3035,16 @@ void Application::recomputeWorker() {
             RecomputeResult result;
 
             try {
-                if (request.document) {
-                    request.document->recompute();
-                }
+                // use runTask so that the progress/abort dialog can be shown
+                Application::runTask([&]() {
+                    if (request.document) {
+                        request.document->recompute();
+                    }
 
-                if (request.documentObject) {
-                    request.documentObject->recomputeFeature();
-                }
+                    if (request.documentObject) {
+                        request.documentObject->recomputeFeature();
+                    }
+                });
             } catch (Base::Exception& exc) {
                 // Report the exception in the UI thread.
                 QMetaObject::invokeMethod(qApp, [exc]() {

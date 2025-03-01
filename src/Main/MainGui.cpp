@@ -51,6 +51,7 @@
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Gui/Application.h>
+#include <Gui/ComputationDialog.h>
 
 
 void PrintInitHelp();
@@ -308,6 +309,18 @@ int main(int argc, char** argv)
         displayCritical(msg, false);
         exit(101);
     }
+
+    // set the task runner so that long-running operations can be aborted
+    // and ensure it runs on the main thread using QMetaObject::invokeMethod
+    App::Application::setTaskRunner([](const std::function<void()>& f) {
+        QMetaObject::invokeMethod(
+            qApp,
+            [f]() {
+                Gui::ComputationDialog dialog;
+                dialog.run(f);
+            },
+            Qt::BlockingQueuedConnection);
+    });
 
     // Run phase ===========================================================
     Base::RedirectStdOutput stdcout;
