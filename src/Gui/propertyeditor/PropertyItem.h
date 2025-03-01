@@ -121,7 +121,7 @@ public:
 class PropertyItemAttorney
 {
 public:
-    static QVariant toString(PropertyItem* item, const QVariant& v);
+    static QString toString(PropertyItem* item, const QVariant& v);
 };
 
 class GuiExport PropertyItem: public QObject, public ExpressionBinding
@@ -207,7 +207,7 @@ protected:
     virtual QVariant displayName() const;
     virtual QVariant decoration(const QVariant&) const;
     virtual QVariant toolTip(const App::Property*) const;
-    virtual QVariant toString(const QVariant&) const;
+    virtual QString toString(const QVariant&) const;
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
     virtual void initialize();
@@ -319,7 +319,7 @@ class GuiExport PropertyIntegerItem: public PropertyItem
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -352,7 +352,7 @@ class GuiExport PropertyIntegerConstraintItem: public PropertyItem
     }
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -379,7 +379,7 @@ class GuiExport PropertyFloatItem: public PropertyItem
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -401,7 +401,7 @@ class GuiExport PropertyUnitItem: public PropertyItem
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -464,7 +464,7 @@ class GuiExport PropertyFloatConstraintItem: public PropertyItem
     }
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -499,7 +499,7 @@ class GuiExport PropertyAngleItem: public PropertyUnitConstraintItem
 
 protected:
     void setEditorData(QWidget* editor, const QVariant& data) const override;
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
 
 protected:
     PropertyAngleItem();
@@ -553,7 +553,7 @@ class GuiExport PropertyVectorItem: public PropertyItem
     void setZ(double z);
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -625,7 +625,7 @@ class GuiExport PropertyVectorListItem: public PropertyItem
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -662,7 +662,7 @@ class GuiExport PropertyVectorDistanceItem: public PropertyItem
     void setZ(Base::Quantity z);
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -747,7 +747,7 @@ class GuiExport PropertyMatrixItem: public PropertyItem
     void setA44(double A44);
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -825,7 +825,7 @@ protected:
     PropertyRotationItem();
     ~PropertyRotationItem() override;
     QVariant toolTip(const App::Property*) const override;
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -887,7 +887,7 @@ protected:
     PropertyPlacementItem();
     ~PropertyPlacementItem() override;
     QVariant toolTip(const App::Property*) const override;
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -960,7 +960,7 @@ class GuiExport PropertyStringListItem: public PropertyItem
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -982,7 +982,7 @@ class GuiExport PropertyFloatListItem: public PropertyItem
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -1004,7 +1004,7 @@ class GuiExport PropertyIntegerListItem: public PropertyItem
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -1027,7 +1027,7 @@ class GuiExport PropertyColorItem: public PropertyItem
 
 protected:
     QVariant decoration(const QVariant&) const override;
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -1077,7 +1077,7 @@ protected:
 
     QVariant decoration(const QVariant&) const override;
     QVariant toolTip(const App::Property*) const override;
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -1128,7 +1128,7 @@ protected:
 
     QVariant decoration(const QVariant&) const override;
     QVariant toolTip(const App::Property*) const override;
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -1267,7 +1267,7 @@ class GuiExport PropertyLinkItem: public PropertyItem
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
     QVariant data(int column, int role) const override;
