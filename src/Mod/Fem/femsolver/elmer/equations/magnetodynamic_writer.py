@@ -162,26 +162,26 @@ class MgDynwriter:
                     )
 
     def _outputMagnetodynamicBodyForce(self, obj, name, equation):
-        if hasattr(obj, "CurrentDensity_re_1"):
+        if femutils.is_derived_from(obj, "Fem::ConstraintCurrentDensity") and obj.Mode == "Custom":
             # output only if current density is enabled and needed
-            if not obj.CurrentDensity_re_1_Disabled:
+            if obj.EnableCurrentDensity_re_1:
                 currentDensity = float(obj.CurrentDensity_re_1.getValueAs("A/m^2"))
                 self.write.bodyForce(name, "Current Density 1", round(currentDensity, 6))
-            if not obj.CurrentDensity_re_2_Disabled:
+            if obj.EnableCurrentDensity_re_2:
                 currentDensity = float(obj.CurrentDensity_re_2.getValueAs("A/m^2"))
                 self.write.bodyForce(name, "Current Density 2", round(currentDensity, 6))
-            if not obj.CurrentDensity_re_3_Disabled:
+            if obj.EnableCurrentDensity_re_3:
                 currentDensity = float(obj.CurrentDensity_re_3.getValueAs("A/m^2"))
                 self.write.bodyForce(name, "Current Density 3", round(currentDensity, 6))
             # imaginaries are only needed for harmonic equation
             if equation.IsHarmonic:
-                if not obj.CurrentDensity_im_1_Disabled:
+                if obj.EnableCurrentDensity_im_1:
                     currentDensity = float(obj.CurrentDensity_im_1.getValueAs("A/m^2"))
                     self.write.bodyForce(name, "Current Density Im 1", round(currentDensity, 6))
-                if not obj.CurrentDensity_im_2_Disabled:
+                if obj.EnableCurrentDensity_im_2:
                     currentDensity = float(obj.CurrentDensity_im_2.getValueAs("A/m^2"))
                     self.write.bodyForce(name, "Current Density Im 2", round(currentDensity, 6))
-                if not obj.CurrentDensity_im_3_Disabled:
+                if obj.EnableCurrentDensity_im_3:
                     currentDensity = float(obj.CurrentDensity_im_3.getValueAs("A/m^2"))
                     self.write.bodyForce(name, "Current Density Im 3", round(currentDensity, 6))
 
