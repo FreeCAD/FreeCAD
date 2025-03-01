@@ -52,8 +52,10 @@
       <item row="1" column="1">
        <widget class="Gui::PrefFileChooser" name="fileChooserCustomFolder" native="true">
         <property name="toolTip">
-         <string>An optional custom folder to be displayed at the bottom of the first page.
-By using &quot;;;&quot; to separate paths, you can add several folders here</string>
+         <string>An optional custom folder to be displayed on the Start page.</string>
+        </property>
+        <property name="mode">
+         <enum>Gui::FileChooser::Directory</enum>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>CustomFolder</cstring>
