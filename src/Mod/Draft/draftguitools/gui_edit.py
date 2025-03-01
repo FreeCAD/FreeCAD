@@ -679,7 +679,7 @@ class Edit(gui_base_original.Modifier):
 
         else:
             # try if user is over an edited object
-            pos = event.getPosition()
+            pos = event.getPosition().getValue()
             obj = self.get_selected_obj_at_position(pos)
 
             obj_gui_tools = self.get_obj_gui_tools(obj)
