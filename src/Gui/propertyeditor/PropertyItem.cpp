@@ -891,11 +891,7 @@ QWidget* PropertyFontItem::createEditor(QWidget* parent, const std::function<voi
     auto cb = new QComboBox(parent);
     cb->setFrame(false);
     cb->setDisabled(isReadOnly());
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    QObject::connect(cb, qOverload<const QString&>(&QComboBox::activated), method);
-#else
     QObject::connect(cb, &QComboBox::textActivated, method);
-#endif
     return cb;
 }
 

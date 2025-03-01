@@ -75,18 +75,13 @@
 # ifdef HAVE_PYSIDE2
 #  define HAVE_PYSIDE
 
-// Since version 5.12 shiboken offers a method to get wrapper by class name (typeForTypeName)
-// This helps to avoid to include the PySide2 headers since MSVC has a compiler bug when
-// compiling together with std::bitset (https://bugreports.qt.io/browse/QTBUG-72073)
-
 // Include shiboken first to get the version
 #  include <shiboken.h>
 
 // Do not use SHIBOKEN_MICRO_VERSION; it might contain a dot
 #  define SHIBOKEN_FULL_VERSION QT_VERSION_CHECK(SHIBOKEN_MAJOR_VERSION, SHIBOKEN_MINOR_VERSION, 0)
-#  if (SHIBOKEN_FULL_VERSION >= QT_VERSION_CHECK(5, 12, 0))
-#   define HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
-#  endif
+#  define HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
+
 
 #  ifndef HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
 #   include <pyside2_qtcore_python.h>

@@ -199,7 +199,6 @@ void QGSPage::addChildrenToPage()
         matchSceneRectToTemplate();
     }
 
-    //    viewAll();
 }
 
 //********** template related routines *********
@@ -251,7 +250,6 @@ QPointF QGSPage::getTemplateCenter()
 
 void QGSPage::matchSceneRectToTemplate()
 {
-    //    Base::Console().Message("QGSP::matchSceneRectToTemplate()\n");
     App::DocumentObject* obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate(dynamic_cast<TechDraw::DrawTemplate*>(obj));
     if (pageTemplate) {
@@ -264,7 +262,6 @@ void QGSPage::matchSceneRectToTemplate()
 
 void QGSPage::setPageTemplate(TechDraw::DrawTemplate* templateFeat)
 {
-    //    Base::Console().Message("QGSP::setPageTemplate()\n");
     removeTemplate();
 
     if (templateFeat->isDerivedFrom<TechDraw::DrawParametricTemplate>()) {
@@ -869,7 +866,6 @@ bool QGSPage::hasQView(App::DocumentObject* obj)
 
 void QGSPage::refreshViews()
 {
-    //    Base::Console().Message("QGSP::refreshViews()\n");
     QList<QGraphicsItem*> list = items();
     QList<QGraphicsItem*> qgiv;
     //find only QGIV's
@@ -1197,16 +1193,10 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
                                            QStringLiteral("stroke: none;"));
 
                 // Scale the template group correctly
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-                templateGroup.setAttribute(
-                    QStringLiteral("transform"),
-                    QString().sprintf("scale(%f, %f)", Rez::guiX(1.0), Rez::guiX(1.0)));
-#else
                 templateGroup.setAttribute(QStringLiteral("transform"),
                                            QStringLiteral("scale(%1, %2)")
                                                .arg(Rez::guiX(1.0), 0, 'f')
                                                .arg(Rez::guiX(1.0), 0, 'f'));
-#endif
 
                 // Finally, transfer all template document child nodes under the template group
                 while (!templateDocElem.firstChild().isNull()) {
