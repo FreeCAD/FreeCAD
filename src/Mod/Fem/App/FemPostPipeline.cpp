@@ -260,41 +260,84 @@ bool FemPostPipeline::canRead(Base::FileInfo File)
     return File.hasExtension({"vtk", "vtp", "vts", "vtr", "vti", "vtu", "pvtu", "vtm"});
 }
 
-void FemPostPipeline::read(Base::FileInfo File)
+vtkSmartPointer<vtkDataObject> FemPostPipeline::dataObjectFromFile(Base::FileInfo File)
 {
-
     // checking on the file
     if (!File.isReadable()) {
         throw Base::FileException("File to load not existing or not readable", File);
     }
 
     if (File.hasExtension("vtu")) {
-        readXMLFile<vtkXMLUnstructuredGridReader>(File.filePath());
+        return readXMLFile<vtkXMLUnstructuredGridReader>(File.filePath());
     }
     else if (File.hasExtension("pvtu")) {
-        readXMLFile<vtkXMLPUnstructuredGridReader>(File.filePath());
+        return readXMLFile<vtkXMLPUnstructuredGridReader>(File.filePath());
     }
     else if (File.hasExtension("vtp")) {
-        readXMLFile<vtkXMLPolyDataReader>(File.filePath());
+        return readXMLFile<vtkXMLPolyDataReader>(File.filePath());
     }
     else if (File.hasExtension("vts")) {
-        readXMLFile<vtkXMLStructuredGridReader>(File.filePath());
+        return readXMLFile<vtkXMLStructuredGridReader>(File.filePath());
     }
     else if (File.hasExtension("vtr")) {
-        readXMLFile<vtkXMLRectilinearGridReader>(File.filePath());
+        return readXMLFile<vtkXMLRectilinearGridReader>(File.filePath());
     }
     else if (File.hasExtension("vti")) {
-        readXMLFile<vtkXMLImageDataReader>(File.filePath());
+        return readXMLFile<vtkXMLImageDataReader>(File.filePath());
     }
     else if (File.hasExtension("vtk")) {
-        readXMLFile<vtkDataSetReader>(File.filePath());
+        return readXMLFile<vtkDataSetReader>(File.filePath());
     }
     else if (File.hasExtension("vtm")) {
-        readXMLFile<vtkXMLMultiBlockDataReader>(File.filePath());
+        return readXMLFile<vtkXMLMultiBlockDataReader>(File.filePath());
     }
-    else {
-        throw Base::FileException("Unknown extension");
+
+    throw Base::FileException("Unknown extension");
+}
+
+void FemPostPipeline::read(Base::FileInfo File)
+{
+    Data.setValue(dataObjectFromFile(File));
+}
+
+void FemPostPipeline::read(std::vector<Base::FileInfo>& files, std::vector<double>& values, Base::Unit unit, std::string& frame_type)
+{
+    if (files.size() != values.size()) {
+        Base::Console().Error("Result files and frame values have different length.\n");
+        return;
     }
+
+    // setup the time information for the multiblock
+    vtkStringArray* TimeInfo = vtkStringArray::New();
+    TimeInfo->SetName("TimeInfo");
+    TimeInfo->InsertNextValue(frame_type);
+    TimeInfo->InsertNextValue(unit.getString());
+
+    auto multiblock = vtkSmartPointer<vtkMultiBlockDataSet>::New();
+    for (ulong i = 0; i < files.size(); i++) {
+
+
+        // add time information
+        vtkFloatArray* TimeValue = vtkFloatArray::New();
+        TimeValue->SetNumberOfComponents(1);
+        TimeValue->SetName("TimeValue");
+        TimeValue->InsertNextValue(values[i]);
+
+        // checking on the file
+        auto File = files[i];
+        if (!File.isReadable()) {
+            throw Base::FileException("File to load not existing or not readable", File);
+        }
+
+        auto data = dataObjectFromFile(File);
+        data->GetFieldData()->AddArray(TimeValue);
+        data->GetFieldData()->AddArray(TimeInfo);
+
+        multiblock->SetBlock(i, data);
+    }
+
+    multiblock->GetFieldData()->AddArray(TimeInfo);
+    Data.setValue(multiblock);
 }
 
 void FemPostPipeline::scale(double s)

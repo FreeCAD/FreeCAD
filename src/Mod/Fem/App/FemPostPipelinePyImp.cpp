@@ -51,6 +51,76 @@ PyObject* FemPostPipelinePy::read(PyObject* args)
         PyMem_Free(Name);
         Py_Return;
     }
+
+    PyObject *files;
+    PyObject *values = nullptr;
+    PyObject *unitobj = nullptr;
+    const char* value_type;
+
+    if (PyArg_ParseTuple(args, "O|OO!s", &files, &values, &(Base::UnitPy::Type), &unitobj, &value_type)) {
+        if (values == nullptr) {
+
+            // single argument version was called!
+
+            if (!PyUnicode_Check(files)) {
+                PyErr_SetString(PyExc_TypeError, "argument must be file path");
+                return nullptr;
+            }
+            const char* path = PyUnicode_AsUTF8(files);
+            getFemPostPipelinePtr()->read(Base::FileInfo(path));
+        }
+        else if (values != nullptr && unitobj != nullptr) {
+
+            //multistep version!
+
+            if ( !(PyTuple_Check(files)   || PyList_Check(files)) ||
+                !(PyTuple_Check(values) || PyList_Check(values)) ) {
+
+                std::string error = std::string("Files and values must be list of strings and number respectively.");
+                throw Base::TypeError(error);
+            }
+
+            // extract the result objects
+            Py::Sequence file_list(files);
+            Py::Sequence::size_type size = file_list.size();
+            std::vector<Base::FileInfo> file_result;
+            file_result.resize(size);
+
+            for (Py::Sequence::size_type i = 0; i < size; i++) {
+                auto path = Py::Object(file_list[i]);
+                if (!path.isString()) {
+                    throw Base::TypeError("File path must be string");
+                }
+                file_result[i] = Base::FileInfo(path.as_string());
+            }
+
+            //extract the values
+            Py::Sequence values_list(values);
+            size = values_list.size();
+            std::vector<double> value_result;
+            value_result.resize(size);
+
+            for (Py::Sequence::size_type i = 0; i < size; i++) {
+                auto value = Py::Object(values_list[i]);
+                if (!value.isNumeric()) {
+                    std::string error = std::string("Values must be numbers");
+                    throw Base::TypeError(error);
+                }
+                value_result[i] = Py::Float(value).as_double();
+            }
+
+            // extract the unit
+            Base::Unit unit = *(static_cast<Base::UnitPy*>(unitobj)->getUnitPtr());
+
+            // extract the value type
+            std::string step_type = std::string(value_type);
+
+            // Finally call the c++ function!
+            getFemPostPipelinePtr()->read(file_result, value_result, unit, step_type);
+            Py_Return;
+        }
+    }
+
     return nullptr;
 }
 
