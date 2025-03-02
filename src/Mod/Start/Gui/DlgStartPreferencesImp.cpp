@@ -53,6 +53,7 @@ void DlgStartPreferencesImp::saveSettings()
     ui->fileChooserCustomFolder->onSave();
     ui->checkBoxShowExamples->onSave();
     ui->checkBoxCloseAfterLoading->onSave();
+    ui->checkBoxShowOnlyFCStd->onSave();
 }
 
 void DlgStartPreferencesImp::loadSettings()
@@ -60,6 +61,7 @@ void DlgStartPreferencesImp::loadSettings()
     ui->fileChooserCustomFolder->onRestore();
     ui->checkBoxShowExamples->onRestore();
     ui->checkBoxCloseAfterLoading->onRestore();
+    ui->checkBoxShowOnlyFCStd->onRestore();
 }
 
 /**
