@@ -84,8 +84,8 @@ public:
     ~DrawViewSection() override;
 
     App::PropertyLink BaseView;
-    App::PropertyVector SectionNormal;
-    App::PropertyVector SectionOrigin;
+    App::PropertyDirection SectionNormal;
+    App::PropertyPosition SectionOrigin;
     App::PropertyString SectionSymbol;
 
 
@@ -118,6 +118,8 @@ public:
     }
     void unsetupObject() override;
     short mustExecute() const override;
+    void handleChangedPropertyType(
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
     void sectionExec(TopoDS_Shape& s);
     virtual void makeSectionCut(const TopoDS_Shape& baseShape);
