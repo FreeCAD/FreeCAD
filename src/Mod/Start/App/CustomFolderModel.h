@@ -25,7 +25,7 @@
 #define FREECAD_START_CUSTOMFOLDERMODEL_H
 
 #include <QAbstractListModel>
-#include <QDir>
+#include <QString>
 #include <Base/Parameter.h>
 
 #include "DisplayedFilesModel.h"
@@ -45,7 +45,7 @@ public:
     void loadCustomFolder();
 
 private:
-    QDir _customFolderDirectory;
+    QString _customFolderPathSpec;
     bool _showOnlyFCStd;  // Show only FreeCAD files
 };
 
