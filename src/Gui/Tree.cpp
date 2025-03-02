@@ -3532,6 +3532,11 @@ void TreeWidget::onItemSelectionChanged()
     }
 
     this->blockSelection(lock);
+
+    if (preselectTimer->isActive()){
+        // preselect instantly when selected
+        onPreSelectTimer();
+    }
 }
 
 void TreeWidget::synchronizeSelectionCheckBoxes() {
