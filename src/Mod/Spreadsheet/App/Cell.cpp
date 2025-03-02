@@ -543,7 +543,7 @@ void Cell::setDisplayUnit(const std::string& unit)
     if (newDisplayUnit != displayUnit) {
         PropertySheet::AtomicPropertyChange signaller(*owner);
 
-        displayUnit = newDisplayUnit;
+        displayUnit = std::move(newDisplayUnit);
         setUsed(DISPLAY_UNIT_SET, !displayUnit.isEmpty());
         setDirty();
 
