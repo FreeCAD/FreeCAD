@@ -120,7 +120,7 @@ G54
 (Path: TC: Default Tool)
 (TC: Default Tool)
 (Begin toolchange)
-( M6 T1 )
+(M6 T1)
 (Finish operation: TC: Default Tool)
 (Begin operation: Profile)
 (Path: Profile)
@@ -307,7 +307,7 @@ M2
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[16], "( M6 T2 )")
+        self.assertEqual(gcode.splitlines()[16], "(M6 T2)")
         self.assertEqual(gcode.splitlines()[17], "M3 S3000")
 
         # suppress TLO
