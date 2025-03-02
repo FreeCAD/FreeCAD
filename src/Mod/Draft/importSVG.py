@@ -1616,7 +1616,7 @@ class svgHandler(xml.sax.ContentHandler):
         _transf = _op + '\\s*?' + _val
         transformre = re.compile(_transf, re.DOTALL)
         m = FreeCAD.Matrix()
-        for transformation, arguments in transformre.findall(tr):
+        for transformation, arguments in reversed(transformre.findall(tr)):
             _args_rep = arguments.replace(',', ' ').split()
             argsplit = [float(arg) for arg in _args_rep]
             # m.multiply(FreeCAD.Matrix(1, 0, 0, 0, 0, -1))
