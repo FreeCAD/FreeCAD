@@ -1436,14 +1436,15 @@ float SphereFit::Fit()
     if (result < FLOAT_MAX) {
         Base::Vector3d center = sphereFit.GetCenter();
 #if defined(_DEBUG)
-        Base::Console().Message("MeshCoreFit::Sphere Fit:  Center: ({:.4f}, {:.4f}, {:.4f}),  Radius: "
-                                "{:.4f},  Std Dev: {:.4f},  Iterations: {}\n",
-                                center.x,
-                                center.y,
-                                center.z,
-                                sphereFit.GetRadius(),
-                                sphereFit.GetStdDeviation(),
-                                sphereFit.GetNumIterations());
+        Base::Console().Message(
+            "MeshCoreFit::Sphere Fit:  Center: ({:.4f}, {:.4f}, {:.4f}),  Radius: "
+            "{:.4f},  Std Dev: {:.4f},  Iterations: {}\n",
+            center.x,
+            center.y,
+            center.z,
+            sphereFit.GetRadius(),
+            sphereFit.GetStdDeviation(),
+            sphereFit.GetNumIterations());
 #endif
         _vCenter = Base::convertTo<Base::Vector3f>(center);
         _fRadius = (float)sphereFit.GetRadius();

@@ -1034,19 +1034,20 @@ public:
             meshds->AddVolumeWithID(n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, element_id);
         }
         else {
-            Base::Console().Warning("NASTRAN: Failed to add volume {} from nodes: ({}, {}, {}, {}, {}, {}, "
-                                    "{}, {}, {}, {})\n",
-                                    element_id,
-                                    elements[1],
-                                    elements[0],
-                                    elements[2],
-                                    elements[3],
-                                    elements[4],
-                                    elements[6],
-                                    elements[5],
-                                    elements[8],
-                                    elements[7],
-                                    elements[9]);
+            Base::Console().Warning(
+                "NASTRAN: Failed to add volume {} from nodes: ({}, {}, {}, {}, {}, {}, "
+                "{}, {}, {}, {})\n",
+                element_id,
+                elements[1],
+                elements[0],
+                elements[2],
+                elements[3],
+                elements[4],
+                elements[6],
+                elements[5],
+                elements[8],
+                elements[7],
+                elements[9]);
         }
     }
 };

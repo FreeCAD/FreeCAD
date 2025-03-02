@@ -342,8 +342,7 @@ int main(int argc, char** argv)
     // cleans up
     App::Application::destruct();
 
-    Base::Console().Log("{} completely terminated\n",
-                        App::Application::Config()["ExeName"]);
+    Base::Console().Log("{} completely terminated\n", App::Application::Config()["ExeName"]);
 
     return 0;
 }
