@@ -45,6 +45,7 @@ public:
     void loadCustomFolder();
 
 private:
+    std::vector<std::string> _splitPaths();
     QDir _customFolderDirectory;
 };
 
