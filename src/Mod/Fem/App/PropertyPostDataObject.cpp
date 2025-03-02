@@ -296,7 +296,7 @@ void PropertyPostDataObject::Restore(Base::XMLReader& reader)
         return;
     }
 
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read

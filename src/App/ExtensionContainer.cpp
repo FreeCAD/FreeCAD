@@ -431,12 +431,12 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader)
     }
 
     reader.readElement("Extensions");
-    int Cnt = reader.getAttributeAsInteger("Count");
+    int Cnt = reader.getAttribute<long>("Count");
 
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Extension");
-        const char* Type = reader.getAttribute("type");
-        const char* Name = reader.getAttribute("name");
+        const char* Type = reader.getAttribute<const char*>("type");
+        const char* Name = reader.getAttribute<const char*>("name");
         try {
             App::Extension* ext = getExtension(Name);
             if (!ext) {

@@ -187,8 +187,8 @@ void Geom2dPoint::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("Geom2dPoint");
     // get the value of my Attribute
-    X = reader.getAttributeAsFloat("X");
-    Y = reader.getAttributeAsFloat("Y");
+    X = reader.getAttribute<double>("X");
+    Y = reader.getAttribute<double>("Y");
 
     // set the read geometry
     setPoint(Base::Vector2d(X,Y));
@@ -635,12 +635,12 @@ void Geom2dConic::SaveAxis(Base::Writer& writer, const gp_Ax22d& axis) const
 void Geom2dConic::RestoreAxis(Base::XMLReader& reader, gp_Ax22d& axis)
 {
     double CenterX,CenterY,XdirX,XdirY,YdirX,YdirY;
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    XdirX = reader.getAttributeAsFloat("XAxisX");
-    XdirY = reader.getAttributeAsFloat("XAxisY");
-    YdirX = reader.getAttributeAsFloat("YAxisX");
-    YdirY = reader.getAttributeAsFloat("YAxisY");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    XdirX = reader.getAttribute<double>("XAxisX");
+    XdirY = reader.getAttribute<double>("XAxisY");
+    YdirX = reader.getAttribute<double>("YAxisX");
+    YdirY = reader.getAttribute<double>("YAxisY");
 
     // set the read geometry
     gp_Pnt2d p1(CenterX,CenterY);
@@ -763,14 +763,14 @@ void Geom2dArcOfConic::SaveAxis(Base::Writer& writer, const gp_Ax22d& axis, doub
 void Geom2dArcOfConic::RestoreAxis(Base::XMLReader& reader, gp_Ax22d& axis, double& u, double &v)
 {
     double CenterX,CenterY,XdirX,XdirY,YdirX,YdirY;
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    XdirX = reader.getAttributeAsFloat("XAxisX");
-    XdirY = reader.getAttributeAsFloat("XAxisY");
-    YdirX = reader.getAttributeAsFloat("YAxisX");
-    YdirY = reader.getAttributeAsFloat("YAxisY");
-    u = reader.getAttributeAsFloat("FirstParameter");
-    v = reader.getAttributeAsFloat("LastParameter");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    XdirX = reader.getAttribute<double>("XAxisX");
+    XdirY = reader.getAttribute<double>("XAxisY");
+    YdirX = reader.getAttribute<double>("YAxisX");
+    YdirY = reader.getAttribute<double>("YAxisY");
+    u = reader.getAttribute<double>("FirstParameter");
+    v = reader.getAttribute<double>("LastParameter");
 
     // set the read geometry
     gp_Pnt2d p1(CenterX,CenterY);
@@ -863,7 +863,7 @@ void Geom2dCircle::Restore(Base::XMLReader& reader)
     reader.readElement("Geom2dCircle");
     // get the value of my Attribute
     RestoreAxis(reader, axis);
-    Radius = reader.getAttributeAsFloat("Radius");
+    Radius = reader.getAttribute<double>("Radius");
 
     try {
         GCE2d_MakeCircle mc(axis, Radius);
@@ -1022,7 +1022,7 @@ void Geom2dArcOfCircle::Restore(Base::XMLReader &reader)
     reader.readElement("Geom2dArcOfCircle");
     // get the value of my Attribute
     RestoreAxis(reader, axis, u, v);
-    Radius = reader.getAttributeAsFloat("Radius");
+    Radius = reader.getAttribute<double>("Radius");
 
     try {
         GCE2d_MakeCircle mc(axis, Radius);
@@ -1182,8 +1182,8 @@ void Geom2dEllipse::Restore(Base::XMLReader& reader)
     reader.readElement("Geom2dEllipse");
     // get the value of my Attribute
     RestoreAxis(reader, axis);
-    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
-    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
+    MajorRadius = reader.getAttribute<double>("MajorRadius");
+    MinorRadius = reader.getAttribute<double>("MinorRadius");
 
     try {
         GCE2d_MakeEllipse mc(axis, MajorRadius, MinorRadius);
@@ -1357,8 +1357,8 @@ void Geom2dArcOfEllipse::Restore(Base::XMLReader &reader)
     reader.readElement("Geom2dArcOfEllipse");
     // get the value of my Attribute
     RestoreAxis(reader, axis, u, v);
-    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
-    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
+    MajorRadius = reader.getAttribute<double>("MajorRadius");
+    MinorRadius = reader.getAttribute<double>("MinorRadius");
 
     try {
         GCE2d_MakeEllipse mc(axis, MajorRadius, MinorRadius);
@@ -1484,8 +1484,8 @@ void Geom2dHyperbola::Restore(Base::XMLReader& reader)
     reader.readElement("Geom2dHyperbola");
     // get the value of my Attribute
     RestoreAxis(reader, axis);
-    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
-    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
+    MajorRadius = reader.getAttribute<double>("MajorRadius");
+    MinorRadius = reader.getAttribute<double>("MinorRadius");
 
     try {
         GCE2d_MakeHyperbola mc(axis, MajorRadius, MinorRadius);
@@ -1615,8 +1615,8 @@ void Geom2dArcOfHyperbola::Restore(Base::XMLReader &reader)
     reader.readElement("Geom2dHyperbola");
     // get the value of my Attribute
     RestoreAxis(reader, axis, u, v);
-    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
-    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
+    MajorRadius = reader.getAttribute<double>("MajorRadius");
+    MinorRadius = reader.getAttribute<double>("MinorRadius");
 
     try {
         GCE2d_MakeHyperbola mc(axis, MajorRadius, MinorRadius);
@@ -1724,7 +1724,7 @@ void Geom2dParabola::Restore(Base::XMLReader& reader)
     gp_Ax22d axis;
     // get the value of my Attribute
     RestoreAxis(reader, axis);
-    Focal = reader.getAttributeAsFloat("Focal");
+    Focal = reader.getAttribute<double>("Focal");
 
     try {
         GCE2d_MakeParabola mc(axis, Focal);
@@ -1835,7 +1835,7 @@ void Geom2dArcOfParabola::Restore(Base::XMLReader &reader)
     reader.readElement("Geom2dParabola");
     // get the value of my Attribute
     RestoreAxis(reader, axis, u, v);
-    Focal = reader.getAttributeAsFloat("Focal");
+    Focal = reader.getAttribute<double>("Focal");
 
     try {
         GCE2d_MakeParabola mc(axis, Focal);
@@ -1946,10 +1946,10 @@ void Geom2dLine::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("Geom2dLine");
     // get the value of my Attribute
-    PosX = reader.getAttributeAsFloat("PosX");
-    PosY = reader.getAttributeAsFloat("PosY");
-    DirX = reader.getAttributeAsFloat("DirX");
-    DirY = reader.getAttributeAsFloat("DirY");
+    PosX = reader.getAttribute<double>("PosX");
+    PosY = reader.getAttribute<double>("PosY");
+    DirX = reader.getAttribute<double>("DirX");
+    DirY = reader.getAttribute<double>("DirY");
     gp_Pnt2d pnt(PosX, PosY);
     gp_Dir2d dir(DirX, DirY);
 
@@ -2078,10 +2078,10 @@ void Geom2dLineSegment::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("Geom2dLineSegment");
     // get the value of my Attribute
-    StartX = reader.getAttributeAsFloat("StartX");
-    StartY = reader.getAttributeAsFloat("StartY");
-    EndX   = reader.getAttributeAsFloat("EndX");
-    EndY   = reader.getAttributeAsFloat("EndY");
+    StartX = reader.getAttribute<double>("StartX");
+    StartY = reader.getAttribute<double>("StartY");
+    EndX   = reader.getAttribute<double>("EndX");
+    EndY   = reader.getAttribute<double>("EndY");
 
     gp_Pnt2d p1(StartX, StartY);
     gp_Pnt2d p2(EndX, EndY);

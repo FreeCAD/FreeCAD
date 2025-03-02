@@ -398,7 +398,7 @@ void PropertyFileIncluded::Restore(Base::XMLReader& reader)
 {
     reader.readElement("FileIncluded");
     if (reader.hasAttribute("file")) {
-        string file(reader.getAttribute("file"));
+        string file(reader.getAttribute<const char*>("file"));
         if (!file.empty()) {
             // initiate a file read
             reader.addFile(file.c_str(), this);
@@ -411,7 +411,7 @@ void PropertyFileIncluded::Restore(Base::XMLReader& reader)
     }
     // section is XML stream
     else if (reader.hasAttribute("data")) {
-        string file(reader.getAttribute("data"));
+        string file(reader.getAttribute<const char*>("data"));
         if (!file.empty()) {
             // is in the document transient path
             aboutToSetValue();

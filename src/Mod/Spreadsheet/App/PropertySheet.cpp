@@ -423,9 +423,9 @@ void PropertySheet::Restore(Base::XMLReader& reader)
     AtomicPropertyChange signaller(*this);
 
     reader.readElement("Cells");
-    Cnt = reader.getAttributeAsInteger("Count");
+    Cnt = reader.getAttribute<long>("Count");
 
-    if (reader.hasAttribute("xlink") && reader.getAttributeAsInteger("xlink")) {
+    if (reader.hasAttribute("xlink") && reader.getAttribute<bool>("xlink")) {
         PropertyExpressionContainer::Restore(reader);
     }
 
@@ -433,7 +433,7 @@ void PropertySheet::Restore(Base::XMLReader& reader)
         reader.readElement("Cell");
 
         const char* strAddress =
-            reader.hasAttribute("address") ? reader.getAttribute("address") : "";
+            reader.hasAttribute("address") ? reader.getAttribute<const char*>("address") : "";
 
         try {
             CellAddress address(strAddress);
@@ -490,7 +490,7 @@ void PropertySheet::copyCells(Base::Writer& writer, const std::vector<Range>& ra
 void PropertySheet::pasteCells(XMLReader& reader, Range dstRange)
 {
     reader.readElement("Cells");
-    int rangeCount = reader.getAttributeAsInteger("count");
+    int rangeCount = reader.getAttribute<long>("count");
     if (rangeCount <= 0) {
         return;
     }
@@ -504,9 +504,9 @@ void PropertySheet::pasteCells(XMLReader& reader, Range dstRange)
     AtomicPropertyChange signaller(*this);
     for (int ri = 0; ri < rangeCount; ++ri) {
         reader.readElement("Range");
-        CellAddress from(reader.getAttribute("from"));
-        CellAddress to(reader.getAttribute("to"));
-        int cellCount = reader.getAttributeAsInteger("count");
+        CellAddress from(reader.getAttribute<const char*>("from"));
+        CellAddress to(reader.getAttribute<const char*>("to"));
+        int cellCount = reader.getAttribute<long>("count");
 
         Range range(from, to);
 
@@ -533,7 +533,7 @@ void PropertySheet::pasteCells(XMLReader& reader, Range dstRange)
         }
         for (int ci = 0; ci < cellCount; ++ci) {
             reader.readElement("Cell");
-            CellAddress src(reader.getAttribute("address"));
+            CellAddress src(reader.getAttribute<const char*>("address"));
 
             if (ci) {
                 range.next();

@@ -507,7 +507,7 @@ void Toolpath::SaveDocFile(Base::Writer& writer) const
 void Toolpath::Restore(XMLReader& reader)
 {
     reader.readElement("Path");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read

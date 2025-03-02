@@ -212,20 +212,20 @@ void PropertyTopoShapeList::SaveDocFile(Base::Writer& writer) const
 void PropertyTopoShapeList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("ShapeList");
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
     m_restorePointers.clear();  // just in case
     m_restorePointers.reserve(count);
     for (int i = 0; i < count; i++) {
         auto newShape = std::make_shared<TopoShape>();
         reader.readElement("TopoShape");
-        std::string file(reader.getAttribute("file"));
+        std::string file(reader.getAttribute<const char*>("file"));
         if (!file.empty()) {
             reader.addFile(file.c_str(), this);
         }
-        else if (reader.hasAttribute("binary") && reader.getAttributeAsInteger("binary")) {
+        else if (reader.hasAttribute("binary") && reader.getAttribute<bool>("binary")) {
             newShape->importBinary(reader.beginCharStream());
         }
-        else if (reader.hasAttribute("brep") && reader.getAttributeAsInteger("brep")) {
+        else if (reader.hasAttribute("brep") && reader.getAttribute<bool>("brep")) {
             newShape->importBrep(reader.beginCharStream());
         }
         m_restorePointers.push_back(newShape);
