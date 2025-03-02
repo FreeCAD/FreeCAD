@@ -178,9 +178,9 @@ protected:
     double m_foldDelta = 0;     ///< Change in height per animation step.
     double m_fullHeight = 0;    ///< Full (expanded) height of the group.
     double m_tempHeight = 0;    ///< Temporary height during animation.
-    int m_foldDirection = 0;   ///< Direction of folding animation.
+    int m_foldDirection = 0;    ///< Direction of folding animation.
 
-    QPixmap m_foldPixmap;      ///< Pixmap for the fold/unfold icon.
+    QPixmap m_foldPixmap;       ///< Pixmap for the fold/unfold icon.
 
     TaskHeader *myHeader = nullptr;        ///< The group's header.
     TaskGroup *myGroup = nullptr;          ///< The container for actions/widgets.
