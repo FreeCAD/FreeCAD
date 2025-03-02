@@ -176,7 +176,7 @@ void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
 
     // display shortcut behind the context menu entry
     deleteAction->setShortcutVisibleInContextMenu(true);
-    
+
     parentList->addAction(deleteAction);
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
