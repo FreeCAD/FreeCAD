@@ -76,8 +76,8 @@ StartView::StartView(QWidget* parent)
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start"
     );
-    auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);   // NOLINT
-    auto showExamples = hGrp->GetBool("ShowExamples", true);  // NOLINT
+    auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);  // NOLINT
+    auto showExamples = hGrp->GetBool("ShowExamples", true);
 
     // Verify that the folder specified in preferences is available before showing it
     std::string customFolder(hGrp->GetASCII("CustomFolder", ""));
@@ -135,23 +135,25 @@ StartView::StartView(QWidget* parent)
     connect(recentFilesListWidget, &QListView::clicked, this, &StartView::fileCardSelected);
     documentsContentLayout->addWidget(recentFilesListWidget);
 
-    auto customFolderListWidget = gsl::owner<FileCardView*>(new FileCardView(_contents));
-    customFolderListWidget->setVisible(showCustomFolder);
-    _customFolderLabel = gsl::owner<QLabel*>(new QLabel());
-    _customFolderLabel->setVisible(showCustomFolder);
-    documentsContentLayout->addWidget(_customFolderLabel);
+    FileCardView* customFolderListWidget {};
+    if (showCustomFolder) {
+        customFolderListWidget = gsl::owner<FileCardView*>(new FileCardView(_contents));
+        _customFolderLabel = gsl::owner<QLabel*>(new QLabel());
+        documentsContentLayout->addWidget(_customFolderLabel);
 
-    connect(customFolderListWidget, &QListView::clicked, this, &StartView::fileCardSelected);
-    documentsContentLayout->addWidget(customFolderListWidget);
+        connect(customFolderListWidget, &QListView::clicked, this, &StartView::fileCardSelected);
+        documentsContentLayout->addWidget(customFolderListWidget);
+    }
 
-    auto examplesListWidget = gsl::owner<FileCardView*>(new FileCardView(_contents));
-    examplesListWidget->setVisible(showExamples);
-    _examplesLabel = gsl::owner<QLabel*>(new QLabel());
-    _examplesLabel->setVisible(showExamples);
-    documentsContentLayout->addWidget(_examplesLabel);
+    FileCardView* examplesListWidget {};
+    if (showExamples) {
+        examplesListWidget = gsl::owner<FileCardView*>(new FileCardView(_contents));
+        _examplesLabel = gsl::owner<QLabel*>(new QLabel());
+        documentsContentLayout->addWidget(_examplesLabel);
 
-    connect(examplesListWidget, &QListView::clicked, this, &StartView::fileCardSelected);
-    documentsContentLayout->addWidget(examplesListWidget);
+        connect(examplesListWidget, &QListView::clicked, this, &StartView::fileCardSelected);
+        documentsContentLayout->addWidget(examplesListWidget);
+    }
 
     documentsContentLayout->setSpacing(static_cast<int>(cardSpacing));
     documentsContentLayout->addStretch();
@@ -179,10 +181,14 @@ StartView::StartView(QWidget* parent)
     setCentralWidget(_contents);
 
     // Set startup widget according to the first start parameter
-    auto firstStart = hGrp->GetBool("FirstStart2024", true);  // NOLINT
+    auto firstStart = hGrp->GetBool("FirstStart2024", true);
     _contents->setCurrentWidget(firstStart ? firstStartScrollArea : documentsWidget);
-    configureCustomFolderListWidget(customFolderListWidget);
-    configureExamplesListWidget(examplesListWidget);
+    if (customFolderListWidget) {
+        configureCustomFolderListWidget(customFolderListWidget);
+    }
+    if (examplesListWidget) {
+        configureExamplesListWidget(examplesListWidget);
+    }
     configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
 
     QTimer::singleShot(2000, [this, recentFilesListWidget]() {
@@ -507,16 +513,17 @@ void StartView::retranslateUi()
     const QLatin1String h1End("</h1>");
 
     _newFileLabel->setText(h1Start + tr("New File") + h1End);
-    _examplesLabel->setText(h1Start + tr("Examples") + h1End);
+    if (_examplesLabel) {
+        _examplesLabel->setText(h1Start + tr("Examples") + h1End);
+    }
     _recentFilesLabel->setText(h1Start + tr("Recent Files") + h1End);
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start"
     );
     std::string customFolder(hGrp->GetASCII("CustomFolder", ""));
-    bool shortCustomFolder = hGrp->GetBool("ShortCustomFolder", true);  // false shows full path
-    if (!customFolder.empty()) {
-        if (shortCustomFolder) {
+    if (!customFolder.empty() && _customFolderLabel) {
+        if (hGrp->GetBool("ShortCustomFolder", true)) {
             _customFolderLabel->setToolTip(QString::fromUtf8(customFolder.c_str()));
             customFolder = customFolder.substr(customFolder.find_last_of("/\\") + 1);
         }
