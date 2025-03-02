@@ -23,19 +23,21 @@
 #ifndef TECHDRAW_CENTERLINE_H
 #define TECHDRAW_CENTERLINE_H
 
-#include <App/FeaturePython.h>
+#include <CXX/Objects.hxx>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include "Cosmetic.h"
-#include "Geometry.h"
+#include "LineFormat.h"
+#include "Tag.h"
 
 
 namespace TechDraw {
 class DrawViewPart;
+class BaseGeom;
+using BaseGeomPtr = std::shared_ptr<BaseGeom>;
 
-class TechDrawExport CenterLine: public Base::Persistence
+class TechDrawExport CenterLine: public Base::Persistence, public TechDraw::Tag
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -175,20 +177,10 @@ public:
 
     TechDraw::BaseGeomPtr m_geometry;
 
-    //Uniqueness
-    boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString() const;
-
 protected:
     void initialize();
 
-    void createNewTag();
-    void assignTag(const TechDraw::CenterLine* cl);
-
-    boost::uuids::uuid tag;
-
     Py::Object PythonObject;
-
 };
 
 }  // namespace TechDraw

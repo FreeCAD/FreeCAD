@@ -27,8 +27,6 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <DrawViewDimension.h>
-
 namespace Part
 {
 class TopoShape;
@@ -37,7 +35,7 @@ class TopoShape;
 namespace TechDraw
 {
 class GeometryMatcher;
-
+class DrawViewDimension;
 
 class TechDrawExport DimensionAutoCorrect
 {

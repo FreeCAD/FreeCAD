@@ -27,10 +27,10 @@
 
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Vec.hxx>
 
 #include "DrawViewSection.h"
+
+class gp_Dir;
 
 namespace TechDraw
 {
@@ -83,22 +83,18 @@ public Q_SLOTS:
 
     bool validateProfilePosition(TopoDS_Wire profileWire, gp_Ax2 sectionCS,
                                  gp_Dir& gClosestBasis) const;
-    bool showSegment(gp_Dir segmentNormal) const;
-    gp_Vec projectVector(const gp_Vec& vec) const;
+    bool showSegment(const gp_Dir& segmentNormal) const;
 
     TopoDS_Wire makeProfileWire() const;
     static TopoDS_Wire makeProfileWire(App::DocumentObject* toolObj);
     static TopoDS_Wire makeNoseToTailWire(TopoDS_Wire inWire);
-    static gp_Vec makeProfileVector(TopoDS_Wire profileWire);
     static bool isProfileObject(App::DocumentObject* obj);
     static bool isMultiSegmentProfile(App::DocumentObject* obj);
     static bool isLinearProfile(App::DocumentObject* obj);
     static bool isTrulyEmpty(TopoDS_Shape inShape);
     static bool canBuild(gp_Ax2 sectionCS, App::DocumentObject* profileObject);
-    static gp_Vec projectVector(const gp_Vec& vec, gp_Ax2 sectionCS);
 
 private:
-    gp_Dir getFaceNormal(TopoDS_Face& face);
     bool validateOffsetProfile(TopoDS_Wire profile, Base::Vector3d direction, double angleThresholdDeg) const;
     std::pair<Base::Vector3d, Base::Vector3d> getSegmentEnds(TopoDS_Edge segment) const;
 

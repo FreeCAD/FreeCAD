@@ -20,6 +20,7 @@
 
 #include "PreCompiled.h"
 
+#include <App/ExtensionPython.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>

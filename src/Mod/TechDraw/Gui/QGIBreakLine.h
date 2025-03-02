@@ -36,7 +36,7 @@
 #include "QGCustomText.h"
 #include "QGIDecoration.h"
 
-using BreakType = TechDraw::DrawBrokenView::BreakType;
+using BreakType = TechDraw::BreakType;
 
 namespace TechDrawGui
 {

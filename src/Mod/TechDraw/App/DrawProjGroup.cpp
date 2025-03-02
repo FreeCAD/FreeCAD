@@ -25,7 +25,6 @@
 
 #ifndef _PreComp_
 #include <QRectF>
-#include <gp_Ax2.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
@@ -566,7 +565,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(DrawPr
     return getDirsFromFront(viewType);
 }
 
-std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(std::string viewType)
+std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(const std::string& viewType)
 {
     //    Base::Console().Message("DPG::getDirsFromFront(%s)\n", viewType.c_str());
     std::pair<Base::Vector3d, Base::Vector3d> result;
@@ -579,16 +578,6 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(std::s
     }
 
     return anch->getDirsFromFront(viewType);
-}
-
-Base::Vector3d DrawProjGroup::dir2vec(gp_Dir d)
-{
-    return Base::Vector3d(d.X(), d.Y(), d.Z());
-}
-
-gp_Dir DrawProjGroup::vec2dir(Base::Vector3d v)
-{
-    return gp_Dir(v.x, v.y, v.z);
 }
 
 //this can be improved.  this implementation positions views too far apart.
@@ -726,7 +715,7 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char* viewTypeCStr)
 }
 
 double DrawProjGroup::getMaxRowHeight(std::array<int, 3> list,
-                                      std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes)
+                                      std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT>& bboxes)
 {
     double bigHeight = 0.0;
     for (auto index : list) {
@@ -739,7 +728,7 @@ double DrawProjGroup::getMaxRowHeight(std::array<int, 3> list,
 }
 
 double DrawProjGroup::getMaxColWidth(std::array<int, 3> list,
-                                     std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes)
+                                     std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT>& bboxes)
 {
     double bigWidth = 0.0;
     for (auto index : list) {

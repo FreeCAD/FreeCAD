@@ -24,23 +24,22 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge.hxx>
-# include <boost/random.hpp>
-# include <boost/uuid/uuid_generators.hpp>
-# include <boost/uuid/uuid_io.hpp>
+# include <TopoDS.hxx>
 #endif
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/thread.hpp>
 
-#include <App/Application.h>
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/App/CosmeticEdgePy.h>
 #include <Mod/TechDraw/App/GeomFormatPy.h>
 
 #include "Cosmetic.h"
+#include "CosmeticVertex.h"
 #include "DrawUtil.h"
-#include "DrawViewPart.h"
-#include "GeometryObject.h"
+#include "ShapeUtils.h"
 #include "Preferences.h"
+
+namespace TechDraw {
+class DrawViewPart;
+}
 
 using namespace TechDraw;
 using namespace std;
@@ -115,8 +114,6 @@ void CosmeticEdge::initialize()
     m_geometry->setHlrVisible( true);
     m_geometry->setCosmetic(true);
     m_geometry->source(SourceType::COSMETICEDGE);
-
-    createNewTag();
     m_geometry->setCosmeticTag(getTagAsString());
 }
 
@@ -298,51 +295,13 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     }
 }
 
-boost::uuids::uuid CosmeticEdge::getTag() const
-{
-    return tag;
-}
-
-std::string CosmeticEdge::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
-}
-
-void CosmeticEdge::createNewTag()
-{
-    // Initialize a random number generator, to avoid Valgrind false positives.
-    // The random number generator is not threadsafe so we guard it.  See
-    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
-    static boost::mt19937 ran;
-    static bool seeded = false;
-    static boost::mutex random_number_mutex;
-
-    boost::lock_guard<boost::mutex> guard(random_number_mutex);
-
-    if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
-        seeded = true;
-    }
-    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
-
-    tag = gen();
-}
-
-void CosmeticEdge::assignTag(const TechDraw::CosmeticEdge* ce)
-{
-    if(ce->getTypeId() == this->getTypeId())
-        this->tag = ce->tag;
-    else
-        throw Base::TypeError("CosmeticEdge tag can not be assigned as types do not match.");
-}
-
 CosmeticEdge* CosmeticEdge::clone() const
 {
     Base::Console().Message("CE::clone()\n");
     CosmeticEdge* cpy = new CosmeticEdge();
     cpy->m_geometry = m_geometry->copy();
     cpy->m_format = m_format;
-    cpy->tag = this->tag;
+    cpy->setTag(this->getTag());
     return cpy;
 }
 
@@ -367,8 +326,6 @@ GeomFormat::GeomFormat() :
     m_format.setColor(LineFormat::getDefEdgeColor());
     m_format.setVisible(true);
     m_format.setLineNumber(LineFormat::InvalidLine);
-
-    createNewTag();
 }
 
 GeomFormat::GeomFormat(const GeomFormat* gf)
@@ -379,8 +336,6 @@ GeomFormat::GeomFormat(const GeomFormat* gf)
     m_format.setColor(gf->m_format.getColor());
     m_format.setVisible(gf->m_format.getVisible());
     m_format.setLineNumber(gf->m_format.getLineNumber());
-
-    createNewTag();
 }
 
 GeomFormat::GeomFormat(const int idx,
@@ -392,8 +347,6 @@ GeomFormat::GeomFormat(const int idx,
     m_format.setColor(fmt.getColor());
     m_format.setVisible(fmt.getVisible());
     m_format.setLineNumber(fmt.getLineNumber());
-
-    createNewTag();
 }
 
 GeomFormat::~GeomFormat()
@@ -474,48 +427,10 @@ void GeomFormat::Restore(Base::XMLReader &reader)
     }
 }
 
-boost::uuids::uuid GeomFormat::getTag() const
-{
-    return tag;
-}
-
-std::string GeomFormat::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
-}
-
-void GeomFormat::createNewTag()
-{
-    // Initialize a random number generator, to avoid Valgrind false positives.
-    // The random number generator is not threadsafe so we guard it.  See
-    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
-    static boost::mt19937 ran;
-    static bool seeded = false;
-    static boost::mutex random_number_mutex;
-
-    boost::lock_guard<boost::mutex> guard(random_number_mutex);
-
-    if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
-        seeded = true;
-    }
-    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
-
-    tag = gen();
-}
-
-void GeomFormat::assignTag(const TechDraw::GeomFormat* ce)
-{
-    if(ce->getTypeId() == this->getTypeId())
-        this->tag = ce->tag;
-    else
-        throw Base::TypeError("GeomFormat tag can not be assigned as types do not match.");
-}
-
 GeomFormat *GeomFormat::clone() const
 {
     GeomFormat* cpy = this->copy();
-    cpy->tag = this->tag;
+    cpy->setTag(this->getTag());
     return cpy;
 }
 

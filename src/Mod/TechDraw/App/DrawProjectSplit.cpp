@@ -47,7 +47,6 @@
 #include <BOPAlgo_Builder.hxx>
 
 #include <Base/Console.h>
-#include <Base/Parameter.h>
 
 #include "DrawProjectSplit.h"
 #include "DrawUtil.h"
@@ -123,7 +122,7 @@ TechDraw::GeometryObjectPtr DrawProjectSplit::buildGeometryObject(TopoDS_Shape s
 
 //this routine is the big time consumer.  gets called many times (and is slow?))
 //note param gets modified here
-bool DrawProjectSplit::isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, bool allowEnds)
+bool DrawProjectSplit::isOnEdge(TopoDS_Edge e, const TopoDS_Vertex& v, double& param, bool allowEnds)
 {
     param = -2;
 

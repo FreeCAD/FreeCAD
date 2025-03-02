@@ -25,9 +25,6 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-//#include <DrawViewDimension.h> Cyclic dependency issue!
-
-
 namespace TechDraw {
 class DrawViewDimension;
 

@@ -29,7 +29,7 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
+#include <Base/Interpreter.h>
 #include <Base/Tools.h>
 
 #include "DrawViewPart.h"

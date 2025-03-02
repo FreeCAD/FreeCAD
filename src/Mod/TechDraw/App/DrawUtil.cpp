@@ -47,6 +47,7 @@
 #include <GCPnts_AbscissaPoint.hxx>
 #include <GeomAPI_ExtremaCurveCurve.hxx>
 #include <Precision.hxx>
+#include <TopoDS.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
@@ -158,7 +159,7 @@ std::string DrawUtil::makeGeomName(const std::string& geomType, int index)
 }
 
 //! true if v1 and v2 are the same geometric point within tolerance
-bool DrawUtil::isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2, double tolerance)
+bool DrawUtil::isSamePoint(const TopoDS_Vertex& v1, const TopoDS_Vertex& v2, double tolerance)
 {
     gp_Pnt p1 = BRep_Tool::Pnt(v1);
     gp_Pnt p2 = BRep_Tool::Pnt(v2);
@@ -231,7 +232,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, bool reverse)
 }
 
 //! find angle of edge with x-Axis at First/LastVertex
-double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
+double DrawUtil::angleWithX(TopoDS_Edge e, const TopoDS_Vertex& v, double tolerance)
 {
     double param = 0;
 
@@ -256,7 +257,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
 }
 
 //! find angle of incidence at First/LastVertex
-double DrawUtil::incidenceAngleAtVertex(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
+double DrawUtil::incidenceAngleAtVertex(TopoDS_Edge e, const TopoDS_Vertex& v, double tolerance)
 {
     double incidenceAngle = 0;
 
@@ -325,13 +326,13 @@ bool DrawUtil::isWithinRange(double actualAngleIn, double targetAngleIn, double 
 }
 
 
-bool DrawUtil::isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
+bool DrawUtil::isFirstVert(TopoDS_Edge e, const TopoDS_Vertex& v, double tolerance)
 {
     TopoDS_Vertex first = TopExp::FirstVertex(e);
     return isSamePoint(first, v, tolerance);
 }
 
-bool DrawUtil::isLastVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
+bool DrawUtil::isLastVert(TopoDS_Edge e, const TopoDS_Vertex& v, double tolerance)
 {
     TopoDS_Vertex last = TopExp::LastVertex(e);
     return isSamePoint(last, v, tolerance);
@@ -538,7 +539,7 @@ bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)
 
 //! test for equality of two vertexes using the vectorLess comparator as used
 //! in sorts and containers
-bool DrawUtil::vertexEqual(TopoDS_Vertex& v1, TopoDS_Vertex& v2)
+bool DrawUtil::vertexEqual(const TopoDS_Vertex& v1, const TopoDS_Vertex& v2)
 {
     gp_Pnt gv1 = BRep_Tool::Pnt(v1);
     gp_Pnt gv2 = BRep_Tool::Pnt(v2);
@@ -765,13 +766,13 @@ Base::Vector3d DrawUtil::closestBasisOriented(Base::Vector3d v)
     return Base::Vector3d(1.0, 0.0, 0.0);
 }
 
-Base::Vector3d DrawUtil::closestBasis(Base::Vector3d vDir, gp_Ax2 coordSys)
+Base::Vector3d DrawUtil::closestBasis(Base::Vector3d vDir, const gp_Ax2& coordSys)
 {
     gp_Dir gDir(vDir.x, vDir.y, vDir.z);
     return closestBasis(gDir, coordSys);
 }
 
-Base::Vector3d DrawUtil::closestBasis(gp_Dir gDir, gp_Ax2 coordSys)
+Base::Vector3d DrawUtil::closestBasis(gp_Dir gDir, const gp_Ax2& coordSys)
 {
     gp_Dir xCS = coordSys.XDirection();
     gp_Dir yCS = coordSys.YDirection();
@@ -1190,7 +1191,7 @@ bool DrawUtil::isCrazy(TopoDS_Edge e)
 }
 
 //get 3d position of a face's center
-Base::Vector3d DrawUtil::getFaceCenter(TopoDS_Face f)
+Base::Vector3d DrawUtil::getFaceCenter(const TopoDS_Face& f)
 {
     BRepAdaptor_Surface adapt(f);
     double u1 = adapt.FirstUParameter();

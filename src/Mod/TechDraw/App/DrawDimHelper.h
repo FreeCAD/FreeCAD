@@ -27,19 +27,19 @@
 #include <vector>
 
 #include <gp_Pnt.hxx>
-#include <TopoDS_Edge.hxx>
 
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include "DimensionReferences.h"
-
+class TopoDS_Edge;
 
 namespace TechDraw
 {
 class BaseGeom;
 class DrawViewPart;
 class DrawViewDimension;
+class ReferenceEntry;
+using ReferenceVector = std::vector<ReferenceEntry>;
 
 /// Additional functions for working with Dimensions
 class TechDrawExport DrawDimHelper {
@@ -47,7 +47,7 @@ class TechDrawExport DrawDimHelper {
 
     static DrawViewDimension* makeExtentDim(DrawViewPart* dvp,
                                             const std::string& dimType,
-                                            ReferenceVector references2d);
+                                            const ReferenceVector& references2d);
 
     static DrawViewDimension* makeExtentDim(DrawViewPart* dvp,
                               std::vector<std::string> edgeNames,
@@ -55,12 +55,12 @@ class TechDrawExport DrawDimHelper {
 
     static void makeExtentDim3d(DrawViewPart* dvp,
                                 const std::string& dimType,
-                                ReferenceVector references2d);
+                                const ReferenceVector& references2d);
     static void makeExtentDim3d(DrawViewPart* dvp,
-                                ReferenceVector references,
+                                const ReferenceVector& references,
                                 int direction);
 
-    static gp_Pnt findClosestPoint(std::vector<TopoDS_Edge> inEdges,
+    static gp_Pnt findClosestPoint(const std::vector<TopoDS_Edge>& inEdges,
                                    TopoDS_Edge& boundary);
 
 
@@ -74,7 +74,7 @@ class TechDrawExport DrawDimHelper {
                                                             std::vector<std::string> edgeNames,
                                                             int direction);
     static std::pair<Base::Vector3d, Base::Vector3d> minMax3d(DrawViewPart* dvp,
-                                                      ReferenceVector references,
+                                                      const ReferenceVector& references,
                                                        int direction);
 };
 

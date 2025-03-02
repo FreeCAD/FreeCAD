@@ -23,8 +23,6 @@
 #ifndef TECHDRAW_DrawSVGTemplate_h_
 #define TECHDRAW_DrawSVGTemplate_h_
 
-# include <QDomDocument>
-
 #include <App/DocumentObserver.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
@@ -32,6 +30,7 @@
 
 #include "DrawTemplate.h"
 
+class QDomDocument;
 
 namespace TechDraw
 {

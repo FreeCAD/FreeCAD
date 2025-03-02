@@ -23,12 +23,8 @@
 #ifndef TECHDRAW_FEATUREVIEWGROUP_H_
 #define TECHDRAW_FEATUREVIEWGROUP_H_
 
-#include <string>
 #include <QRectF>
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -37,6 +33,15 @@
 
 class gp_Dir;
 class gp_Pnt;
+
+namespace App {
+class DocumentObject;
+class DocumentObjectExecReturn;
+}
+
+class BoundBox;
+namespace Base {
+}
 
 namespace TechDraw
 {
@@ -123,7 +128,7 @@ public:
     Base::Vector3d getAnchorDirection();
     TechDraw::DrawProjGroupItem* getAnchor();
     std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(DrawProjGroupItem* view);
-    std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(std::string viewType);
+    std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(const std::string& viewType);
 
     void updateSecondaryDirs();
 
@@ -186,15 +191,13 @@ protected:
 
     int getViewIndex(const char *viewTypeCStr) const;
     int getDefProjConv() const;
-    Base::Vector3d dir2vec(gp_Dir d);
-    gp_Dir vec2dir(Base::Vector3d v);
 
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
 
     double getMaxRowHeight(std::array<int, 3> list,
-                           std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes);
+                           std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT>& bboxes);
     double getMaxColWidth(std::array<int, 3> list,
-                          std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes);
+                          std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT>& bboxes);
 };
 
 } //namespace TechDraw

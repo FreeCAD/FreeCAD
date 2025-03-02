@@ -24,14 +24,12 @@
 #define DrawProjectSplit_h_
 
 #include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
 
 #include <App/FeaturePython.h>
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawUtil.h"
-#include "Geometry.h"
 
 
 class gp_Pnt;
@@ -43,6 +41,7 @@ class GeometryObject;
 using GeometryObjectPtr = std::shared_ptr<GeometryObject>;
 class Vertex;
 class BaseGeom;
+using BaseGeomPtr = std::shared_ptr<BaseGeom>;
 }
 
 namespace TechDraw
@@ -101,7 +100,7 @@ public:
     static std::vector<TopoDS_Edge> getEdgesForWalker(TopoDS_Shape shape, double scale, Base::Vector3d direction);
     static TechDraw::GeometryObjectPtr  buildGeometryObject(TopoDS_Shape shape, const gp_Ax2& viewAxis);
 
-    static bool isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, bool allowEnds = false);
+    static bool isOnEdge(TopoDS_Edge e, const TopoDS_Vertex& v, double& param, bool allowEnds = false);
     static std::vector<TopoDS_Edge> splitEdges(std::vector<TopoDS_Edge> orig, std::vector<splitPoint> splits);
     static std::vector<TopoDS_Edge> split1Edge(TopoDS_Edge e, std::vector<splitPoint> splitPoints);
 
@@ -134,7 +133,7 @@ public:
 
 };
 
-using DrawProjectSplitPython = App::FeaturePythonT<DrawProjectSplit>;
+// using DrawProjectSplitPython = App::FeaturePythonT<DrawProjectSplit>;
 
 } //namespace TechDraw
 

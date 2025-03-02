@@ -61,25 +61,20 @@
 #ifndef _PreComp_
 #endif
 
-#include <TopoDS_Shape.hxx>
 
 #include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
+//#include <Base/Console.h>
 
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Measure/App/ShapeFinder.h>
 
 #include "GeometryMatcher.h"
-#include "DimensionReferences.h"
-#include "DimensionGeometry.h"
 #include "DimensionAutoCorrect.h"
-#include "DrawUtil.h"
 #include "Preferences.h"
 
 using namespace TechDraw;
 using namespace Measure;
-using DU = DrawUtil;
 
 //! true if references point to valid geometry and the valid geometry matches the
 //! corresponding saved geometry.  this method does not correct anything, it just

@@ -23,14 +23,13 @@
 #ifndef DrawProjGroupItem_h_
 #define DrawProjGroupItem_h_
 
-#include <gp_Ax2.hxx>
-
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewPart.h"
 
+namespace App {
+class DocumentObjectExecReturn;
+}
 
 namespace TechDraw
 {

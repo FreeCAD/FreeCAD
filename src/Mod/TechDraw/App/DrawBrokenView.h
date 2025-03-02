@@ -55,18 +55,24 @@ struct PieceLimitEntry {
 };
 using PieceLimitList = std::vector<PieceLimitEntry>;
 
+enum class BreakType : int {
+    NONE,
+    ZIGZAG,
+    SIMPLE
+};
+
+inline const char* BreakTypeEnums[] = {
+    QT_TRANSLATE_NOOP("DrawBrokenView", "None"),
+    QT_TRANSLATE_NOOP("DrawBrokenView", "ZigZag"),
+    QT_TRANSLATE_NOOP("DrawBrokenView", "Simple"),
+    nullptr
+};
+
 class TechDrawExport DrawBrokenView: public TechDraw::DrawViewPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawBrokenView);
 
 public:
-    enum class BreakType : int {
-        NONE,
-        ZIGZAG,
-        SIMPLE
-    };
-    static const char* BreakTypeEnums[];
-
     DrawBrokenView();
     ~DrawBrokenView() override;
 

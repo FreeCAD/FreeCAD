@@ -39,6 +39,7 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepLProp_SLProps.hxx>
 # include <gp_Dir.hxx>
+# include <TopoDS.hxx>
 #endif
 
 #include <App/Application.h>
@@ -61,6 +62,8 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/PrefWidgets.h>
 #include <Inventor/SbVec3f.h>
+#include <Mod/Part/App/PartFeature.h>
+
 
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
 #include <Mod/TechDraw/App/BalloonPropEnum.h>
