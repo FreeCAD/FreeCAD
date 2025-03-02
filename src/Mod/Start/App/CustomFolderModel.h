@@ -27,6 +27,8 @@
 #include <QAbstractListModel>
 #include <QDir>
 #include <Base/Parameter.h>
+#include <string>
+#include <vector>
 
 #include "DisplayedFilesModel.h"
 #include "../StartGlobal.h"

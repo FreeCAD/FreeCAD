@@ -29,6 +29,7 @@
 #include "CustomFolderModel.h"
 #include <App/Application.h>
 #include <string>
+#include <vector>
 
 using namespace Start;
 
