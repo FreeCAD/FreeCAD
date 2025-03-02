@@ -139,7 +139,6 @@ void DrawViewDetail::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn* DrawViewDetail::execute()
 {
-    //    Base::Console().Message("DVD::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
         return DrawView::execute();
     }
@@ -254,6 +253,7 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
 
     TopoDS_Face extrusionFace;
     Base::Vector3d extrudeVec = dirDetail * extrudeLength;
+
     gp_Vec extrudeDir(extrudeVec.x, extrudeVec.y, extrudeVec.z);
     TopoDS_Shape tool;
     if (Preferences::mattingStyle()) {
@@ -381,7 +381,6 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
 
 void DrawViewDetail::postHlrTasks(void)
 {
-    //    Base::Console().Message("DVD::postHlrTasks()\n");
     DrawViewPart::postHlrTasks();
 
     geometryObject->pruneVertexGeom(Base::Vector3d(0.0, 0.0, 0.0),
@@ -465,9 +464,35 @@ bool DrawViewDetail::debugDetail() const
     return Preferences::getPreferenceGroup("debug")->GetBool("debugDetail", false);
 }
 
+void DrawViewDetail::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
+{
+    if (prop == &AnchorPoint) {
+        // AnchorPoint was PropertyVector but is now PropertyPosition
+        App::PropertyVector tmp;
+        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            auto tmpValue = tmp.getValue();
+            AnchorPoint.setValue(tmpValue);
+        }
+        return;
+    }
+
+    if (prop == &Radius) {
+        // Radius was PropertyFloat but is now PropertyLength
+        App::PropertyLength tmp;
+        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            auto tmpValue = tmp.getValue();
+            Radius.setValue(tmpValue);
+        }
+        return;
+    }
+}
+
 void DrawViewDetail::unsetupObject()
 {
-    //    Base::Console().Message("DVD::unsetupObject()\n");
     App::DocumentObject* baseObj = BaseView.getValue();
     DrawView* base = dynamic_cast<DrawView*>(baseObj);
     if (base) {
