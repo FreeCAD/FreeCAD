@@ -774,14 +774,14 @@ G54
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
-( M6 T1 )
+(M6 T1)
 (Finish operation: TC: Default Tool)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
 G90
-( G99 )
-( G73 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000 )
+(G99)
+(G73 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000)
 G0 X1.000 Y2.000
 G1 Z5.000 F7380.000
 G1 Z3.500 F7380.000
@@ -795,7 +795,7 @@ G0 Z0.750
 G0 Z0.575
 G1 Z0.000 F7380.000
 G0 Z5.000
-( G80 )
+(G80)
 G90
 (Finish operation: Profile)
 (Begin postamble)
@@ -873,14 +873,14 @@ G54
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
-( M6 T1 )
+(M6 T1)
 (Finish operation: TC: Default Tool)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
 G91
-( G99 )
-( G73 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000 )
+(G99)
+(G73 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000)
 G90
 G0 Z13.000
 G0 X2.000 Y4.000
@@ -896,7 +896,7 @@ G0 Z8.575
 G1 Z8.000 F7380.000
 G0 Z13.000
 G91
-( G80 )
+(G80)
 G90
 (Finish operation: Profile)
 (Begin postamble)
@@ -961,19 +961,19 @@ G54
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
-( M6 T1 )
+(M6 T1)
 (Finish operation: TC: Default Tool)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
 G90
-( G99 )
-( G81 X1.000 Y2.000 Z0.000 R5.000 F7380.000 )
+(G99)
+(G81 X1.000 Y2.000 Z0.000 R5.000 F7380.000)
 G0 X1.000 Y2.000
 G1 Z5.000 F7380.000
 G1 Z0.000 F7380.000
 G0 Z5.000
-( G80 )
+(G80)
 G90
 (Finish operation: Profile)
 (Begin postamble)
@@ -1042,21 +1042,21 @@ G54
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
-( M6 T1 )
+(M6 T1)
 (Finish operation: TC: Default Tool)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
 G91
-( G99 )
-( G81 X1.000 Y2.000 Z0.000 R5.000 F7380.000 )
+(G99)
+(G81 X1.000 Y2.000 Z0.000 R5.000 F7380.000)
 G90
 G0 Z13.000
 G0 X2.000 Y4.000
 G1 Z8.000 F7380.000
 G0 Z13.000
 G91
-( G80 )
+(G80)
 G90
 (Finish operation: Profile)
 (Begin postamble)
@@ -1122,20 +1122,20 @@ G54
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
-( M6 T1 )
+(M6 T1)
 (Finish operation: TC: Default Tool)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
 G90
-( G99 )
-( G82 X1.000 Y2.000 Z0.000 R5.000 P1.23456 F7380.000 )
+(G99)
+(G82 X1.000 Y2.000 Z0.000 R5.000 P1.23456 F7380.000)
 G0 X1.000 Y2.000
 G1 Z5.000 F7380.000
 G1 Z0.000 F7380.000
 G4 P1.23456
 G0 Z5.000
-( G80 )
+(G80)
 G90
 (Finish operation: Profile)
 (Begin postamble)
@@ -1205,14 +1205,14 @@ G54
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
-( M6 T1 )
+(M6 T1)
 (Finish operation: TC: Default Tool)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
 G91
-( G99 )
-( G82 X1.000 Y2.000 Z0.000 R5.000 P1.23456 F7380.000 )
+(G99)
+(G82 X1.000 Y2.000 Z0.000 R5.000 P1.23456 F7380.000)
 G90
 G0 Z13.000
 G0 X2.000 Y4.000
@@ -1220,7 +1220,7 @@ G1 Z8.000 F7380.000
 G4 P1.23456
 G0 Z13.000
 G91
-( G80 )
+(G80)
 G90
 (Finish operation: Profile)
 (Begin postamble)
@@ -1294,14 +1294,14 @@ G54
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
-( M6 T1 )
+(M6 T1)
 (Finish operation: TC: Default Tool)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
 G90
-( G99 )
-( G83 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000 )
+(G99)
+(G83 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000)
 G0 X1.000 Y2.000
 G1 Z5.000 F7380.000
 G1 Z3.500 F7380.000
@@ -1315,7 +1315,7 @@ G0 Z5.000
 G0 Z0.575
 G1 Z0.000 F7380.000
 G0 Z5.000
-( G80 )
+(G80)
 G90
 (Finish operation: Profile)
 (Begin postamble)
@@ -1393,14 +1393,14 @@ G54
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
-( M6 T1 )
+(M6 T1)
 (Finish operation: TC: Default Tool)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
 G91
-( G99 )
-( G83 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000 )
+(G99)
+(G83 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000)
 G90
 G0 Z13.000
 G0 X2.000 Y4.000
@@ -1416,7 +1416,7 @@ G0 Z8.575
 G1 Z8.000 F7380.000
 G0 Z13.000
 G91
-( G80 )
+(G80)
 G90
 (Finish operation: Profile)
 (Begin postamble)
