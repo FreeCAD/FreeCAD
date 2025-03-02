@@ -636,7 +636,7 @@ def getrgb(color):
 
     Parameters
     ----------
-    color : App::Color::Color
+    color : Base::Color::Color
         FreeCAD color.
 
     Returns

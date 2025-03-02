@@ -30,7 +30,7 @@
 #endif
 
 #include <Base/Builder3D.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 
 #include "NaviCube.h"
 #include "Navigation/NavigationStyle.h"
@@ -599,19 +599,19 @@ void NaviCubeSettings::parameterChanged(const char* Name)
     }
     else if (strcmp(Name, "BaseColor") == 0) {
         unsigned long col = hGrp->GetUnsigned("BaseColor", 3806916544);
-        nc->setBaseColor(App::Color::fromPackedRGBA<QColor>(col));
+        nc->setBaseColor(Base::Color::fromPackedRGBA<QColor>(col));
         // update default contrast colors
         parameterChanged("EmphaseColor");
     }
     else if (strcmp(Name, "EmphaseColor") == 0) {
-        App::Color bc((uint32_t)hGrp->GetUnsigned("BaseColor", 3806916544));
+        Base::Color bc((uint32_t)hGrp->GetUnsigned("BaseColor", 3806916544));
         unsigned long d = bc.r + bc.g + bc.b >= 1.5f ? 255 : 4294967295;
         unsigned long col = hGrp->GetUnsigned("EmphaseColor", d);
-        nc->setEmphaseColor(App::Color::fromPackedRGBA<QColor>(col));
+        nc->setEmphaseColor(Base::Color::fromPackedRGBA<QColor>(col));
     }
     else if (strcmp(Name, "HiliteColor") == 0) {
         unsigned long col = hGrp->GetUnsigned("HiliteColor", 2867003391);
-        nc->setHiliteColor(App::Color::fromPackedRGBA<QColor>(col));
+        nc->setHiliteColor(Base::Color::fromPackedRGBA<QColor>(col));
     }
     else if (strcmp(Name, "BorderWidth") == 0) {
         nc->setBorderWidth(hGrp->GetFloat("BorderWidth", 1.1));

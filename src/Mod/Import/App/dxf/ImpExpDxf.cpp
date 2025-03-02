@@ -644,7 +644,7 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
 {
     if (m_preserveLayers) {
         // Hidden layers are implemented in the wrapup code after the entire file has been read.
-        App::Color appColor = ObjectColor(color);
+        Base::Color appColor = ObjectColor(color);
         PyObject* draftModule = nullptr;
         PyObject* layer = nullptr;
         draftModule = getDraftModule();

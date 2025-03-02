@@ -248,7 +248,7 @@ TechDraw::DrawViewDimension* ViewProviderDimension::getViewObject() const
     return dynamic_cast<TechDraw::DrawViewDimension*>(pcObject);
 }
 
-App::Color ViewProviderDimension::prefColor() const
+Base::Color ViewProviderDimension::prefColor() const
 {
    return PreferencesGui::dimColor();
 }

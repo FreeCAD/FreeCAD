@@ -720,14 +720,14 @@ void PropertySheet::setStyle(CellAddress address, const std::set<std::string>& _
     cell->setStyle(_style);
 }
 
-void PropertySheet::setForeground(CellAddress address, const App::Color& color)
+void PropertySheet::setForeground(CellAddress address, const Base::Color& color)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);
     cell->setForeground(color);
 }
 
-void PropertySheet::setBackground(CellAddress address, const App::Color& color)
+void PropertySheet::setBackground(CellAddress address, const Base::Color& color)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);

@@ -1097,12 +1097,12 @@ std::vector<std::string> DrawUtil::tokenize(std::string csvLine, std::string del
     return tokens;
 }
 
-App::Color DrawUtil::pyTupleToColor(PyObject* pColor)
+Base::Color DrawUtil::pyTupleToColor(PyObject* pColor)
 {
     //    Base::Console().Message("DU::pyTupleToColor()\n");
     double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
     if (!PyTuple_Check(pColor)) {
-        return App::Color(red, green, blue, alpha);
+        return Base::Color(red, green, blue, alpha);
     }
 
     int tSize = (int)PyTuple_Size(pColor);
@@ -1118,10 +1118,10 @@ App::Color DrawUtil::pyTupleToColor(PyObject* pColor)
         PyObject* pAlpha = PyTuple_GetItem(pColor, 3);
         alpha = PyFloat_AsDouble(pAlpha);
     }
-    return App::Color(red, green, blue, alpha);
+    return Base::Color(red, green, blue, alpha);
 }
 
-PyObject* DrawUtil::colorToPyTuple(App::Color color)
+PyObject* DrawUtil::colorToPyTuple(Base::Color color)
 {
     //    Base::Console().Message("DU::pyTupleToColor()\n");
     PyObject* pTuple = PyTuple_New(4);

@@ -47,7 +47,7 @@
 # include <QPainterPath>
 #endif
 
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Base/Tools.h>
 #include <Eigen/Dense>
 
@@ -179,9 +179,9 @@ public:
     float m_InactiveOpacity = 0.5;
     SbVec2s m_PosOffset = SbVec2s(0,0);
 
-    App::Color m_xColor;
-    App::Color m_yColor;
-    App::Color m_zColor;
+    Base::Color m_xColor;
+    Base::Color m_yColor;
+    Base::Color m_zColor;
 
     bool m_Prepared = false;
     static vector<string> m_commands;
@@ -1193,11 +1193,11 @@ void NaviCube::updateColors()
     unsigned long colorLong;
 
     colorLong = Gui::ViewParams::instance()->getAxisXColor();
-    m_NaviCubeImplementation->m_xColor = App::Color(static_cast<uint32_t>(colorLong));
+    m_NaviCubeImplementation->m_xColor = Base::Color(static_cast<uint32_t>(colorLong));
     colorLong = Gui::ViewParams::instance()->getAxisYColor();
-    m_NaviCubeImplementation->m_yColor = App::Color(static_cast<uint32_t>(colorLong));
+    m_NaviCubeImplementation->m_yColor = Base::Color(static_cast<uint32_t>(colorLong));
     colorLong = Gui::ViewParams::instance()->getAxisZColor();
-    m_NaviCubeImplementation->m_zColor = App::Color(static_cast<uint32_t>(colorLong));
+    m_NaviCubeImplementation->m_zColor = Base::Color(static_cast<uint32_t>(colorLong));
 }
 
 void NaviCube::setNaviCubeCommands(const std::vector<std::string>& cmd)

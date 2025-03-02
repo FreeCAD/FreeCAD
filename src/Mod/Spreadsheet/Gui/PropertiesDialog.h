@@ -59,15 +59,15 @@ private:
     Spreadsheet::Sheet* sheet;
     std::vector<App::Range> ranges;
     Ui::PropertiesDialog* ui;
-    App::Color foregroundColor;
-    App::Color backgroundColor;
+    Base::Color foregroundColor;
+    Base::Color backgroundColor;
     int alignment;
     std::set<std::string> style;
     Spreadsheet::DisplayUnit displayUnit;
     std::string alias;
 
-    App::Color orgForegroundColor;
-    App::Color orgBackgroundColor;
+    Base::Color orgForegroundColor;
+    Base::Color orgBackgroundColor;
     int orgAlignment;
     std::set<std::string> orgStyle;
     Spreadsheet::DisplayUnit orgDisplayUnit;

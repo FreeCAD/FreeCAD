@@ -30,7 +30,7 @@
 class QColor;
 class QString;
 
-namespace App
+namespace Base
 {
 class Color;
 }
@@ -54,18 +54,18 @@ static int         dimFontSizePX();
 static QColor      normalQColor();
 static QColor      selectQColor();
 static QColor      preselectQColor();
-static App::Color  sectionLineColor();
+static Base::Color sectionLineColor();
 static QColor      sectionLineQColor();
-static App::Color  centerColor();
+static Base::Color centerColor();
 static QColor      centerQColor();
 static QColor      vertexQColor();
-static App::Color  leaderColor();
+static Base::Color leaderColor();
 static QColor      leaderQColor();
-static App::Color  dimColor();
+static Base::Color dimColor();
 static QColor      dimQColor();
-static App::Color  pageColor();
+static Base::Color pageColor();
 static QColor      pageQColor();
-static App::Color  breaklineColor();
+static Base::Color breaklineColor();
 static QColor      breaklineQColor();
 
 static int         dimArrowStyle();
@@ -76,7 +76,7 @@ static double      edgeFuzz();
 static QString     weldingDirectory();
 
 static bool showGrid();
-static App::Color gridColor();
+static Base::Color gridColor();
 static QColor gridQColor();
 static double gridSpacing();
 static bool multiSelection();

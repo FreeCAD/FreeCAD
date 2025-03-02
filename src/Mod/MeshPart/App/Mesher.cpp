@@ -197,7 +197,7 @@ public:
                 std::stringstream str;
                 str << "patch" << index++;
                 segm.setName(str.str());
-                App::Color col;
+                Base::Color col;
                 col.setPackedValue(it.first);
                 segm.setColor(col.asHexString());
                 meshdata->addSegment(segm);

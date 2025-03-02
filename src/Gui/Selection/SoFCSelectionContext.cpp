@@ -125,8 +125,8 @@ int SoFCSelectionContext::merge(int status, SoFCSelectionContextBasePtr &output,
 /////////////////////////////////////////////////////////////////////////////////////
 
 bool SoFCSelectionContextEx::setColors(
-        const std::map<std::string,App::Color> &colors, const std::string &element) {
-    std::map<int,App::Color> tmp;
+        const std::map<std::string,Base::Color> &colors, const std::string &element) {
+    std::map<int,Base::Color> tmp;
     auto it = colors.find("");
     if(it!=colors.end())
         tmp[-1] = it->second;
@@ -149,7 +149,7 @@ bool SoFCSelectionContextEx::setColors(
     return true;
 }
 
-uint32_t SoFCSelectionContextEx::packColor(const App::Color &c, bool &hasTransparency) {
+uint32_t SoFCSelectionContextEx::packColor(const Base::Color &c, bool &hasTransparency) {
     float trans = std::max(trans0,c.a);
     if(trans>0)
         hasTransparency = true;
