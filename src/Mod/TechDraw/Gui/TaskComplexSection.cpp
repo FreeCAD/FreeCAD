@@ -432,7 +432,7 @@ void TaskComplexSection::enableAll(bool enable)
     ui->cmbScaleType->setEnabled(enable);
     QString qScaleType = ui->cmbScaleType->currentText();
     //Allow or prevent scale changing initially
-    if (qScaleType == QStringLiteral("Custom")) {
+    if (qScaleType == QLatin1String("Custom")) {
         ui->sbScale->setEnabled(true);
     }
     else {

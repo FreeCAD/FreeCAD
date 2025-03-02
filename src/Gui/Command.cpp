@@ -609,10 +609,10 @@ void Command::setGroupName(const char* s)
 QString Command::translatedGroupName() const
 {
     QString text = qApp->translate(className(), getGroupName());
-    if (text == QString::fromLatin1(getGroupName()))
+    if (text == QLatin1String(getGroupName()))
         text = qApp->translate("CommandGroup", getGroupName());
     return text;
-}
+} 
 
 //--------------------------------------------------------------------------
 // UNDO REDO transaction handling

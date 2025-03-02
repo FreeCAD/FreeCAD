@@ -1202,7 +1202,7 @@ bool ToolTip::eventFilter(QObject* o, QEvent*e)
     case QEvent::Show:
     case QEvent::Hide:
         if (auto label = qobject_cast<QLabel*>(o)) {
-            if (label->objectName() == QStringLiteral("qtooltip_label")) {
+            if (label->objectName() == QLatin1String("qtooltip_label")) {
                 // This is a trick to circumvent that the tooltip gets hidden immediately
                 // after it gets visible. We just filter out all timer events to keep the
                 // label visible.

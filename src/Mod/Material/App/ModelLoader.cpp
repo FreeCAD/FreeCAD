@@ -274,8 +274,8 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
                                    propURL,
                                    propDescription);
 
-            if (propType == QStringLiteral("2DArray")
-                || propType == QStringLiteral("3DArray")) {
+            if (propType == QLatin1String("2DArray")
+                || propType == QLatin1String("3DArray")) {
                 // Base::Console().Log("Reading columns\n");
                 // Read the columns
                 auto cols = yamlProp["Columns"];

@@ -331,7 +331,7 @@ QString DimensionFormatter::formatValueToSpec(const double value, QString format
     QString spec = wrMatch.captured(QStringLiteral("spec")).toLower();
     QString dec = wrMatch.captured(QStringLiteral("dec"));
 
-    if (spec == QStringLiteral("w")) {
+    if (spec == QLatin1String("w")) {
         formattedValue = format(QStringLiteral("%") + dec + QStringLiteral("f"), value);
         // First, cut trailing zeros
         while(formattedValue.endsWith(QStringLiteral("0")))
@@ -344,7 +344,7 @@ QString DimensionFormatter::formatValueToSpec(const double value, QString format
             formattedValue.chop(1);
         }
     }
-    else if (spec == QStringLiteral("r")) {
+    else if (spec == QLatin1String("r")) {
         // round the value to the given precision
         double rounder = dec.toDouble();
         double roundValue = std::ceil(value / rounder) * rounder;

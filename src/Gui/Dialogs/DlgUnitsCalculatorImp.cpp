@@ -137,7 +137,7 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
     // first check the unit, if it is invalid, getTypeString() outputs an empty string
     // explicitly check for "ee" like in "eeV" because this would trigger an exception in Base::Unit
     // since it expects then a scientific notation number like "1e3"
-    if ((ui->UnitInput->text().mid(0, 2) == QStringLiteral("ee"))
+    if ((ui->UnitInput->text().mid(0, 2) == QLatin1String("ee"))
         || Base::Unit(ui->UnitInput->text().toStdString()).getTypeString().empty()) {
         ui->ValueOutput->setText(
             QStringLiteral("%1 %2").arg(tr("unknown unit:"), ui->UnitInput->text()));

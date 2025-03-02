@@ -137,18 +137,18 @@ void TaskSketcherMessages::slotSetUp(const QString& state, const QString& msg, c
 
 void TaskSketcherMessages::updateToolTip(const QString& link)
 {
-    if (link == QStringLiteral("#conflicting"))
+    if (link == QLatin1String("#conflicting"))
         ui->labelConstrainStatusLink->setToolTip(
             tr("Click to select these conflicting constraints."));
-    else if (link == QStringLiteral("#redundant"))
+    else if (link == QLatin1String("#redundant"))
         ui->labelConstrainStatusLink->setToolTip(tr("Click to select these redundant constraints."));
-    else if (link == QStringLiteral("#dofs"))
+    else if (link == QLatin1String("#dofs"))
         ui->labelConstrainStatusLink->setToolTip(
             tr("The sketch has unconstrained elements giving rise to those Degrees Of Freedom. "
                "Click to select these unconstrained elements."));
-    else if (link == QStringLiteral("#malformed"))
+    else if (link == QLatin1String("#malformed"))
         ui->labelConstrainStatusLink->setToolTip(tr("Click to select these malformed constraints."));
-    else if (link == QStringLiteral("#partiallyredundant"))
+    else if (link == QLatin1String("#partiallyredundant"))
         ui->labelConstrainStatusLink->setToolTip(
             tr("Some constraints in combination are partially redundant. Click to select these "
                "partially redundant constraints."));
@@ -156,19 +156,19 @@ void TaskSketcherMessages::updateToolTip(const QString& link)
 
 void TaskSketcherMessages::onLabelConstrainStatusLinkClicked(const QString& str)
 {
-    if (str == QStringLiteral("#conflicting"))
+    if (str == QLatin1String("#conflicting"))
         Gui::Application::Instance->commandManager().runCommandByName(
             "Sketcher_SelectConflictingConstraints");
-    else if (str == QStringLiteral("#redundant"))
+    else if (str == QLatin1String("#redundant"))
         Gui::Application::Instance->commandManager().runCommandByName(
             "Sketcher_SelectRedundantConstraints");
-    else if (str == QStringLiteral("#dofs"))
+    else if (str == QLatin1String("#dofs"))
         Gui::Application::Instance->commandManager().runCommandByName(
             "Sketcher_SelectElementsWithDoFs");
-    else if (str == QStringLiteral("#malformed"))
+    else if (str == QLatin1String("#malformed"))
         Gui::Application::Instance->commandManager().runCommandByName(
             "Sketcher_SelectMalformedConstraints");
-    else if (str == QStringLiteral("#partiallyredundant"))
+    else if (str == QLatin1String("#partiallyredundant"))
         Gui::Application::Instance->commandManager().runCommandByName(
             "Sketcher_SelectPartiallyRedundantConstraints");
 }

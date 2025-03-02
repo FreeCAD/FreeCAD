@@ -102,25 +102,25 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
                 auto *projItemPtr = static_cast<TechDraw::DrawProjGroupItem *>(fView);
                 QString type = QString::fromLatin1(projItemPtr->Type.getValueAsString());
 
-                if (type == QStringLiteral("Front")) {
+                if (type == QLatin1String("Front")) {
                     gView->alignTo(m_origin, QStringLiteral("None"));
                     installSceneEventFilter(gView);
                 }
-                else if ( type == QStringLiteral("Top") ||
-                    type == QStringLiteral("Bottom")) {
+                else if ( type == QLatin1String("Top") ||
+                    type == QLatin1String("Bottom")) {
                     gView->alignTo(m_origin, QStringLiteral("Vertical"));
                 }
-                else if ( type == QStringLiteral("Left")  ||
-                            type == QStringLiteral("Right") ||
-                            type == QStringLiteral("Rear") ) {
+                else if ( type == QLatin1String("Left")  ||
+                            type == QLatin1String("Right") ||
+                            type == QLatin1String("Rear") ) {
                     gView->alignTo(m_origin, QStringLiteral("Horizontal"));
                 }
-                else if ( type == QStringLiteral("FrontTopRight") ||
-                            type == QStringLiteral("FrontBottomLeft") ) {
+                else if ( type == QLatin1String("FrontTopRight") ||
+                            type == QLatin1String("FrontBottomLeft") ) {
                     gView->alignTo(m_origin, QStringLiteral("45slash"));
                 }
-                else if ( type == QStringLiteral("FrontTopLeft") ||
-                            type == QStringLiteral("FrontBottomRight") ) {
+                else if ( type == QLatin1String("FrontTopLeft") ||
+                            type == QLatin1String("FrontBottomRight") ) {
                     gView->alignTo(m_origin, QStringLiteral("45backslash"));
                 }
             }

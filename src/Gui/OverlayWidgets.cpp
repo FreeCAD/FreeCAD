@@ -1705,7 +1705,7 @@ void OverlayTabWidget::removeWidget(QDockWidget *dock, QDockWidget *lastDock)
         hide();
 
     w = dock->titleBarWidget();
-    if(w && w->objectName() == QStringLiteral("OverlayTitle")) {
+    if(w && w->objectName() == QLatin1String("OverlayTitle")) {
         dock->setTitleBarWidget(nullptr);
         w->deleteLater();
     }
