@@ -160,29 +160,29 @@ void ActionGroup::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
     QPainter p(this);
 
-    if (myDummy->isVisible())
+    if (!myDummy->isVisible()) {
+        return;
+    }
+    if (myScheme->groupFoldThaw)
     {
-        if (myScheme->groupFoldThaw)
-        {
-            double opacity = (m_foldDirection < 0)
-                                 ? static_cast<double>(m_foldStep) / myScheme->groupFoldSteps
-                                 : static_cast<double>(myScheme->groupFoldSteps - m_foldStep) / myScheme->groupFoldSteps;
-            p.setOpacity(opacity);
-        }
+        double opacity = (m_foldDirection < 0)
+                                ? static_cast<double>(m_foldStep) / myScheme->groupFoldSteps
+                                : static_cast<double>(myScheme->groupFoldSteps - m_foldStep) / myScheme->groupFoldSteps;
+        p.setOpacity(opacity);
+    }
 
-        switch (myScheme->groupFoldEffect)
-        {
-            case ActionPanelScheme::ShrunkFolding:
-                p.drawPixmap(myDummy->pos(), m_foldPixmap.scaled(myDummy->size()));
-                break;
-            case ActionPanelScheme::SlideFolding:
-                p.drawPixmap(myDummy->pos(), m_foldPixmap,
-                             QRect(0, m_foldPixmap.height() - myDummy->height(),
-                                   m_foldPixmap.width(), myDummy->width()));
-                break;
-            default:
-                p.drawPixmap(myDummy->pos(), m_foldPixmap);
-        }
+    switch (myScheme->groupFoldEffect)
+    {
+        case ActionPanelScheme::ShrunkFolding:
+            p.drawPixmap(myDummy->pos(), m_foldPixmap.scaled(myDummy->size()));
+            break;
+        case ActionPanelScheme::SlideFolding:
+            p.drawPixmap(myDummy->pos(), m_foldPixmap,
+                            QRect(0, m_foldPixmap.height() - myDummy->height(),
+                                m_foldPixmap.width(), myDummy->width()));
+            break;
+        default:
+            p.drawPixmap(myDummy->pos(), m_foldPixmap);
     }
 }
 
