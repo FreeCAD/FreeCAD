@@ -261,6 +261,9 @@ public:
     // Updates the Axes extension to span the specified area.
     void updateAxesLength(const Base::BoundBox2d& bb);
 
+    // updates the Axes length to extend beyond the calculated bounding box magnitude
+    void updateLegacyAxesLength();
+
 private:
     // This function populates the coin nodes with the information of the current geometry
     void processGeometry(const GeoListFacade& geolistfacade);
