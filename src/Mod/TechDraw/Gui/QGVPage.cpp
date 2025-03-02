@@ -29,6 +29,7 @@
 #include <QContextMenuEvent>
 #include <QLabel>
 #include <QMouseEvent>
+#include <QOpenGLWidget>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QScrollBar>
