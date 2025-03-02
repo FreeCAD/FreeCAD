@@ -323,10 +323,16 @@ class Trimex(gui_base_original.Modifier):
 
         # snapping
         if snapped:
-            snapped = self.doc.getObject(snapped['Object'])
-            if hasattr(snapped, "Shape"):
+            parent = snapped.get("ParentObject", None)
+            if parent:
+                subname = snapped["SubName"]
+            else:
+                parent = self.doc.getObject(snapped["Object"])
+                subname = snapped["Component"]
+            shape = Part.getShape(parent, subname, needSubElement=True, noElementMap=True)
+            if shape.Edges:
                 pts = []
-                for e in snapped.Shape.Edges:
+                for e in shape.Edges:
                     int = DraftGeomUtils.findIntersection(edge, e, True, True)
                     if int:
                         pts.extend(int)
