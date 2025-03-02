@@ -1169,7 +1169,7 @@ template<Base::LogStyle category,
 inline void
 Base::ConsoleSingleton::Send(const std::string& notifiername, const char* pMsg, Args&&... args)
 {
-    std::string format = fmt::format(pMsg, args...);
+    std::string format = fmt::vformat(pMsg, fmt::make_format_args(args...));
 
     if (connectionMode == Direct) {
         Notify<category, recipient, contenttype>(notifiername, format);

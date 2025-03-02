@@ -367,7 +367,7 @@ ParameterGrp::CreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start,
         && XMLString::compareString(Start->getNodeName(), XStrLiteral("FCParameters").unicodeForm())
             != 0) {
         Base::Console().Warning("CreateElement: {} cannot have the element {} of type {}\n",
-                                StrX(Start->getNodeName()),
+                                StrX(Start->getNodeName()).c_str(),
                                 Name,
                                 Type);
         return nullptr;

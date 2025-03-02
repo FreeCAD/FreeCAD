@@ -173,7 +173,7 @@ void TaskAppearance::onChangeModeActivated(const QString& s)
 
 void TaskAppearance::onChangePlotActivated(const QString& s)
 {
-    Base::Console().Log("Plot = {}\n", s);
+    Base::Console().Log("Plot = {}\n", s.toStdString());
 }
 
 /**
