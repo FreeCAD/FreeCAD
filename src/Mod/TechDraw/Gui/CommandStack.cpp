@@ -93,7 +93,7 @@ void CmdTechDrawStackGroup::activated(int iMsg)
             execStackDown(this);
             break;
         default:
-            Base::Console().Message("CMD::StackGrp - invalid iMsg: %d\n",iMsg);
+            Base::Console().Message("CMD::StackGrp - invalid iMsg: {}\n",iMsg);
     };
 }
 

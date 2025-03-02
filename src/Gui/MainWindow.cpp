@@ -2092,7 +2092,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
                 files << info.absoluteFilePath();
             }
             else {
-                Base::Console().Message("No support to load file '%s'\n",
+                Base::Console().Message("No support to load file '{}'\n",
                     (const char*)info.absoluteFilePath().toUtf8());
             }
         }

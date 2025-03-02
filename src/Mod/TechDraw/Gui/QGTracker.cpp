@@ -109,9 +109,9 @@ void QGTracker::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if (!m_sleep) {
         double someLimit = Rez::guiX(1.0);
         QPointF manhat = myScenePos - m_lastClick;
-//        Base::Console().Message("QGT::mousePressEvent - scenePos: (%.3f, %.3f) lastClick:(%.3f, %.3f)\n",
+//        Base::Console().Message("QGT::mousePressEvent - scenePos: ({:.3f}, {:.3f}) lastClick:({:.3f}, {:.3f})\n",
 //                                myScenePos.x(), myScenePos.y(), m_lastClick.x(), m_lastClick.y());
-//        Base::Console().Message("QGT::mousePressEvent - manhat(%.3f, %.3f) mLength: %.3f\n",
+//        Base::Console().Message("QGT::mousePressEvent - manhat({:.3f}, {:.3f}) mLength: {:.3f}\n",
 //                                manhat.x(), manhat.y(), manhat.manhattanLength());
         if (manhat.manhattanLength() < someLimit) {
 //            Base::Console().Message("QGT::mousePressEvent - too close to last click\n");
@@ -225,7 +225,7 @@ QPointF QGTracker::snapToAngle(QPointF dumbPt)
 //mouse event reactions
 void QGTracker::onMousePress(QPointF pos)
 {
-//    Base::Console().Message("QGT::onMousePress(%s)\n", TechDraw::DrawUtil::formatVector(pos).c_str());
+//    Base::Console().Message("QGT::onMousePress({})\n", TechDraw::DrawUtil::formatVector(pos).c_str());
     m_points.push_back(pos);
     TrackerMode mode = getTrackerMode();
     if (m_points.size() > 1) {
@@ -363,7 +363,7 @@ void QGTracker::drawTrackSquare(QPointF pos)
 
 void QGTracker::drawTrackCircle(QPointF pos)
 {
-//    Base::Console().Message("QGTracker::drawTrackCircle() - m_points: %d \n", m_points.size());
+//    Base::Console().Message("QGTracker::drawTrackCircle() - m_points: {} \n", m_points.size());
     QPointF circum = pos;
     QPainterPath tail;
     if (!m_points.empty()) {

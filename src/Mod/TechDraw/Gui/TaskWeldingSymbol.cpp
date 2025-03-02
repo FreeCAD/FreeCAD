@@ -370,14 +370,14 @@ void TaskWeldingSymbol::onWeldingChanged()
 
 void TaskWeldingSymbol::onDirectorySelected(const QString& newDir)
 {
-//    Base::Console().Message("TWS::onDirectorySelected(%s)\n", qPrintable(newDir));
+//    Base::Console().Message("TWS::onDirectorySelected({})\n", qPrintable(newDir));
     m_currDir = newDir + QStringLiteral("/");
 }
 
 void TaskWeldingSymbol::onSymbolSelected(QString symbolPath,
                                          QString source)
 {
-//    Base::Console().Message("TWS::onSymbolSelected(%s) - source: %s\n",
+//    Base::Console().Message("TWS::onSymbolSelected({}) - source: {}\n",
 //                            qPrintable(symbolPath), qPrintable(source));
     QIcon targetIcon(symbolPath);
     QSize iconSize(32, 32);

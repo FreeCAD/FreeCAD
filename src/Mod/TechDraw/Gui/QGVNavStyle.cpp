@@ -305,7 +305,7 @@ void QGVNavStyle::zoom(double factor)
 
 void QGVNavStyle::startZoom(QPoint p)
 {
-    //    Base::Console().Message("QGVNS::startZoom(%s)\n", TechDraw::DrawUtil::formatVector(p).c_str());
+    //    Base::Console().Message("QGVNS::startZoom({})\n", TechDraw::DrawUtil::formatVector(p).c_str());
     zoomOrigin = p;
     zoomingActive = true;
     m_zoomPending = false;

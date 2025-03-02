@@ -160,8 +160,8 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label,
 
     std::stringstream str;
 
-    Base::Console().Log("H:%-9d \tN:%-30s \tTop:%d, Asm:%d, Shape:%d, Compound:%d, Simple:%d, "
-                        "Free:%d, Ref:%d, Component:%d, SubShape:%d\tTrf:%s-- Dep:%d  \n",
+    Base::Console().Log("H:{:>9} \tN:{:>30} \tTop:{}, Asm:{}, Shape:{}, Compound:{}, Simple:{}, "
+                        "Free:{}, Ref:{}, Component:{}, SubShape:{}\tTrf:{}-- Dep:{}  \n",
                         hash,
                         part_name.c_str(),
                         aShapeTool->IsTopLevel(label),

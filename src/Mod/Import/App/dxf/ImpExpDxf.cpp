@@ -897,7 +897,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
             exportLine(adapt);
         }
         else {
-            Base::Console().Warning("ImpExpDxf - unknown curve type: %d\n",
+            Base::Console().Warning("ImpExpDxf - unknown curve type: {}\n",
                                     static_cast<int>(adapt.GetType()));
         }
     }
@@ -1073,7 +1073,7 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
             s = c.Value(f);
             ePt = c.Value(l);
             Base::Console().Message(
-                "DxfWrite::exportBSpline - no result- from:(%.3f,%.3f) to:(%.3f,%.3f)\n",
+                "DxfWrite::exportBSpline - no result- from:({:.3f},{:.3f}) to:({:.3f},{:.3f})\n",
                 s.X(),
                 s.Y(),
                 ePt.X(),

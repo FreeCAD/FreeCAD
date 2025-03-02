@@ -767,7 +767,7 @@ bool MRichTextEdit::hasMultipleSizes()
 
 void MRichTextEdit::setDefFontSize(int fontSize)
 {
-//    Base::Console().Message("MRTE::setDefFontSize(%d)\n", fs);
+//    Base::Console().Message("MRTE::setDefFontSize({})\n", fs);
     m_defFontSize = fontSize;
     m_fontsize_h1 = fontSize + 8;
     m_fontsize_h2 = fontSize + 6;
@@ -823,7 +823,7 @@ QFont MRichTextEdit::getDefFont()
 // if the conversion factor is float, will generate non-standard sizes
 void MRichTextEdit::addFontSize(QString fontSize)
 {
-//    Base::Console().Message("MRTE::addFontSize(%s)\n", qPrintable(fs));
+//    Base::Console().Message("MRTE::addFontSize({})\n", qPrintable(fs));
     QStringList newList;
     int fsVal = fontSize.toInt();
     int size = f_fontsize->count();

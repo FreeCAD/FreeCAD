@@ -94,7 +94,7 @@ std::vector<App::DocumentObject*> ViewProviderWeld::claimChildren() const
 
 bool ViewProviderWeld::setEdit(int ModNum)
 {
-//    Base::Console().Message("VPW::setEdit(%d)\n", ModNum);
+//    Base::Console().Message("VPW::setEdit({})\n", ModNum);
     if (ModNum != ViewProvider::Default ) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }

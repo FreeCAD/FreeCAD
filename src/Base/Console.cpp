@@ -577,7 +577,7 @@ PyObject* ConsoleSingleton::sPyMessage(PyObject* /*self*/, PyObject* args)
             Instance()
                 .Send<Base::LogStyle::Message,
                       Base::IntendedRecipient::Developer,
-                      Base::ContentType::Untranslatable>(notifier, "%s", msg);
+                      Base::ContentType::Untranslatable>(notifier, "{}", msg);
         },
         args);
 }
@@ -586,7 +586,7 @@ PyObject* ConsoleSingleton::sPyWarning(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
-            Instance().Warning(notifier, "%s", msg);
+            Instance().Warning(notifier, "{}", msg);
         },
         args);
 }
@@ -598,7 +598,7 @@ PyObject* ConsoleSingleton::sPyDeveloperWarning(PyObject* /*self*/, PyObject* ar
             Instance()
                 .Send<Base::LogStyle::Warning,
                       Base::IntendedRecipient::Developer,
-                      Base::ContentType::Untranslatable>(notifier, "%s", msg);
+                      Base::ContentType::Untranslatable>(notifier, "{}", msg);
         },
         args);
 }
@@ -610,7 +610,7 @@ PyObject* ConsoleSingleton::sPyUserWarning(PyObject* /*self*/, PyObject* args)
             Instance()
                 .Send<Base::LogStyle::Warning,
                       Base::IntendedRecipient::User,
-                      Base::ContentType::Untranslated>(notifier, "%s", msg);
+                      Base::ContentType::Untranslated>(notifier, "{}", msg);
         },
         args);
 }
@@ -622,7 +622,7 @@ PyObject* ConsoleSingleton::sPyTranslatedUserWarning(PyObject* /*self*/, PyObjec
             Instance()
                 .Send<Base::LogStyle::Warning,
                       Base::IntendedRecipient::User,
-                      Base::ContentType::Translated>(notifier, "%s", msg);
+                      Base::ContentType::Translated>(notifier, "{}", msg);
         },
         args);
 }
@@ -634,7 +634,7 @@ PyObject* ConsoleSingleton::sPyError(PyObject* /*self*/, PyObject* args)
             Instance()
                 .Send<Base::LogStyle::Error,
                       Base::IntendedRecipient::All,
-                      Base::ContentType::Untranslated>(notifier, "%s", msg);
+                      Base::ContentType::Untranslated>(notifier, "{}", msg);
         },
         args);
 }
@@ -646,7 +646,7 @@ PyObject* ConsoleSingleton::sPyDeveloperError(PyObject* /*self*/, PyObject* args
             Instance()
                 .Send<Base::LogStyle::Error,
                       Base::IntendedRecipient::Developer,
-                      Base::ContentType::Untranslatable>(notifier, "%s", msg);
+                      Base::ContentType::Untranslatable>(notifier, "{}", msg);
         },
         args);
 }
@@ -658,7 +658,7 @@ PyObject* ConsoleSingleton::sPyUserError(PyObject* /*self*/, PyObject* args)
             Instance()
                 .Send<Base::LogStyle::Error,
                       Base::IntendedRecipient::User,
-                      Base::ContentType::Untranslated>(notifier, "%s", msg);
+                      Base::ContentType::Untranslated>(notifier, "{}", msg);
         },
         args);
 }
@@ -670,7 +670,7 @@ PyObject* ConsoleSingleton::sPyTranslatedUserError(PyObject* /*self*/, PyObject*
             Instance()
                 .Send<Base::LogStyle::Error,
                       Base::IntendedRecipient::User,
-                      Base::ContentType::Translated>(notifier, "%s", msg);
+                      Base::ContentType::Translated>(notifier, "{}", msg);
         },
         args);
 }
@@ -682,7 +682,7 @@ PyObject* ConsoleSingleton::sPyLog(PyObject* /*self*/, PyObject* args)
             Instance()
                 .Send<Base::LogStyle::Log,
                       Base::IntendedRecipient::Developer,
-                      Base::ContentType::Untranslatable>(notifier, "%s", msg);
+                      Base::ContentType::Untranslatable>(notifier, "{}", msg);
         },
         args);
 }
@@ -694,7 +694,7 @@ PyObject* ConsoleSingleton::sPyCritical(PyObject* /*self*/, PyObject* args)
             Instance()
                 .Send<Base::LogStyle::Critical,
                       Base::IntendedRecipient::All,
-                      Base::ContentType::Untranslated>(notifier, "%s", msg);
+                      Base::ContentType::Untranslated>(notifier, "{}", msg);
         },
         args);
 }
@@ -706,7 +706,7 @@ PyObject* ConsoleSingleton::sPyNotification(PyObject* /*self*/, PyObject* args)
             Instance()
                 .Send<Base::LogStyle::Notification,
                       Base::IntendedRecipient::User,
-                      Base::ContentType::Untranslated>(notifier, "%s", msg);
+                      Base::ContentType::Untranslated>(notifier, "{}", msg);
         },
         args);
 }
@@ -718,7 +718,7 @@ PyObject* ConsoleSingleton::sPyTranslatedNotification(PyObject* /*self*/, PyObje
             Instance()
                 .Send<Base::LogStyle::Notification,
                       Base::IntendedRecipient::User,
-                      Base::ContentType::Translated>(notifier, "%s", msg);
+                      Base::ContentType::Translated>(notifier, "{}", msg);
         },
         args);
 }

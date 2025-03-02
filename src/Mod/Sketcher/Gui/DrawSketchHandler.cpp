@@ -174,7 +174,7 @@ CurveConverter::CurveConverter()
     catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
                                          // the exception is not propagated
         Base::Console().DeveloperError("CurveConverter",
-                                       "Malformed parameter string: %s\n",
+                                       "Malformed parameter string: {}\n",
                                        e.what());
     }
 

@@ -262,10 +262,10 @@ void cmdAppDocumentArgs(const App::Document* doc, const std::string& cmd, Args&&
             doc->getName(), _cmd.c_str());
     }
     catch (const std::exception& e) {
-        Base::Console().DeveloperError(doc->Label.getStrValue(),"%s: %s\n", e.what(), cmd.c_str());
+        Base::Console().DeveloperError(doc->Label.getStrValue(),"{}: {}\n", e.what(), cmd.c_str());
     }
     catch (const Base::Exception&) {
-        Base::Console().DeveloperError(doc->Label.getStrValue(),"App.getDocument('%s').%s\n",
+        Base::Console().DeveloperError(doc->Label.getStrValue(),"App.getDocument('{}').{}\n",
             doc->getName(), _cmd.c_str());
         throw;
     }
@@ -385,11 +385,11 @@ void cmdAppObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
             obj->getDocument()->getName(), obj->getNameInDocument(), _cmd.c_str());
     }
     catch (const std::exception& e) {
-        Base::Console().DeveloperError(obj->getFullLabel(),"%s: %s\n", e.what(), cmd.c_str());
+        Base::Console().DeveloperError(obj->getFullLabel(),"{}: {}\n", e.what(), cmd);
     }
     catch (const Base::Exception&) {
-        Base::Console().DeveloperError(obj->getFullLabel(),"App.getDocument('%s').getObject('%s').%s\n",
-            obj->getDocument()->getName(), obj->getNameInDocument(), _cmd.c_str());
+        Base::Console().DeveloperError(obj->getFullLabel(),"App.getDocument('{}').getObject('{}').{}\n",
+            obj->getDocument()->getName(), obj->getNameInDocument(), _cmd);
         throw;
     }
 }
@@ -410,11 +410,11 @@ void cmdGuiObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
             obj->getDocument()->getName(), obj->getNameInDocument(), _cmd.c_str());
     }
     catch (const std::exception& e) {
-        Base::Console().DeveloperError(obj->getFullLabel(),"%s: %s\n", e.what(), cmd.c_str());
+        Base::Console().DeveloperError(obj->getFullLabel(),"{}: {}\n", e.what(), cmd);
     }
     catch (const Base::Exception&) {
-        Base::Console().DeveloperError(obj->getFullLabel(),"Gui.getDocument('%s').getObject('%s').%s\n",
-            obj->getDocument()->getName(), obj->getNameInDocument(), _cmd.c_str());
+        Base::Console().DeveloperError(obj->getFullLabel(),"Gui.getDocument('{}').getObject('{}').{}\n",
+            obj->getDocument()->getName(), obj->getNameInDocument(), _cmd);
         throw;
     }
 }
@@ -443,10 +443,10 @@ void doCommandT(Gui::Command::DoCmd_Type cmdType, const std::string& cmd, Args&&
         Gui::Command::doCommand(cmdType,"%s", _cmd.c_str());
     }
     catch (const std::exception& e) {
-        Base::Console().DeveloperError("doCommandT","%s: %s\n", e.what(), cmd.c_str());
+        Base::Console().DeveloperError("doCommandT","{}: {}\n", e.what(), cmd);
     }
     catch (const Base::Exception&) {
-        Base::Console().DeveloperError("doCommandT","%s\n", _cmd.c_str());
+        Base::Console().DeveloperError("doCommandT","{}\n", _cmd);
         throw;
     }
 }

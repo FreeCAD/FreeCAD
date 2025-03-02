@@ -1232,7 +1232,7 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     // Time to save our product
     QFile outFile(fileName);
     if (!outFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        Base::Console().Error("QGSP::ppxml - failed to open file for writing: %s\n",
+        Base::Console().Error("QGSP::ppxml - failed to open file for writing: {}\n",
                               qPrintable(fileName));
     }
 

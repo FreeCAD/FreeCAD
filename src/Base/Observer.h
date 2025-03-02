@@ -185,12 +185,12 @@ public:
             }
             catch (Base::Exception& e) {
                 Base::Console().Error("Unhandled Base::Exception caught when notifying observer.\n"
-                                      "The error message is: %s\n",
+                                      "The error message is: {}\n",
                                       e.what());
             }
             catch (std::exception& e) {
                 Base::Console().Error("Unhandled std::exception caught when notifying observer\n"
-                                      "The error message is: %s\n",
+                                      "The error message is: {}\n",
                                       e.what());
             }
             catch (...) {

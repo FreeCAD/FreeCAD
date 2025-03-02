@@ -144,7 +144,7 @@ void QGIViewAnnotation::drawAnnotation()
     } else if (viewAnno->TextStyle.isValue("Bold-Italic")) {
         ss << "font-weight:bold; font-style:italic; ";
     } else {
-        Base::Console().Warning("%s has invalid TextStyle\n", viewAnno->getNameInDocument());
+        Base::Console().Warning("{} has invalid TextStyle\n", viewAnno->getNameInDocument());
         ss << "font-weight:normal; font-style:normal; ";
     }
     ss << "line-height:" << viewAnno->LineSpace.getValue() << "%; ";

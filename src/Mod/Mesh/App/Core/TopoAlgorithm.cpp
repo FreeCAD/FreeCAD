@@ -1722,7 +1722,7 @@ void MeshTopoAlgorithm::FillupHoles(int level,
         for (auto& newFacet : newFacets) {
             if (newFacet._aulPoints[0] >= ctPoints || newFacet._aulPoints[1] >= ctPoints
                 || newFacet._aulPoints[2] >= ctPoints) {
-                Base::Console().Log("Ignore invalid face <%d, %d, %d> (%d vertices)\n",
+                Base::Console().Log("Ignore invalid face <{}, {}, {}> ({} vertices)\n",
                                     newFacet._aulPoints[0],
                                     newFacet._aulPoints[1],
                                     newFacet._aulPoints[2],

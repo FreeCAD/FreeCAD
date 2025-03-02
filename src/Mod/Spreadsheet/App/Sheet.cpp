@@ -1152,7 +1152,7 @@ DocumentObjectExecReturn* Sheet::execute()
             }
             catch (std::exception&) {  // TODO: evaluate using a more specific exception (not_a_dag)
                 // Cycle detected; flag all with errors
-                Base::Console().Error("Cyclic dependency detected in spreadsheet : %s\n",
+                Base::Console().Error("Cyclic dependency detected in spreadsheet : {}\n",
                                       getNameInDocument());
                 std::ostringstream ss;
                 ss << "Cyclic dependency";

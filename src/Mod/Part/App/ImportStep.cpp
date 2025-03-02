@@ -93,7 +93,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
     Standard_Integer nbr = aReader.NbRootsForTransfer();
     //aReader.PrintCheckTransfer (failsonly, IFSelect_ItemsByEntity);
     for (Standard_Integer n = 1; n<= nbr; n++) {
-        Base::Console().Log("STEP: Transferring Root %d\n",n);
+        Base::Console().Log("STEP: Transferring Root {}\n",n);
         aReader.TransferRoot(n);
     }
 #if OCC_VERSION_HEX < 0x070500
@@ -115,7 +115,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
         //ReadNames(aReader.WS());
 
         for (Standard_Integer i=1; i<=nbs; i++) {
-            Base::Console().Log("STEP:   Transferring Shape %d\n",i);
+            Base::Console().Log("STEP:   Transferring Shape {}\n",i);
             aShape = aReader.Shape(i);
 
             // load each solid as an own object

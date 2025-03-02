@@ -366,7 +366,7 @@ ParameterGrp::CreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start,
             != 0
         && XMLString::compareString(Start->getNodeName(), XStrLiteral("FCParameters").unicodeForm())
             != 0) {
-        Base::Console().Warning("CreateElement: %s cannot have the element %s of type %s\n",
+        Base::Console().Warning("CreateElement: {} cannot have the element {} of type {}\n",
                                 StrX(Start->getNodeName()).c_str(),
                                 Name,
                                 Type);
@@ -1398,7 +1398,7 @@ ParameterGrp::FindElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start,
             != 0
         && XMLString::compareString(Start->getNodeName(), XStrLiteral("FCParameters").unicodeForm())
             != 0) {
-        Base::Console().Warning("FindElement: %s cannot have the element %s of type %s\n",
+        Base::Console().Warning("FindElement: {} cannot have the element {} of type {}\n",
                                 StrX(Start->getNodeName()).c_str(),
                                 Name,
                                 Type);
@@ -2050,7 +2050,7 @@ void ParameterManager::CheckDocument() const
         parser.parse(xmlFile);
 
         if (parser.getErrorCount() > 0) {
-            Base::Console().Error("Unexpected XML structure detected: %zu errors\n",
+            Base::Console().Error("Unexpected XML structure detected: {} errors\n",
                                   parser.getErrorCount());
         }
     }

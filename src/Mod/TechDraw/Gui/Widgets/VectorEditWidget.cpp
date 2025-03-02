@@ -106,7 +106,7 @@ void VectorEditWidget::setLabel(QString newLabel)
 
 void VectorEditWidget::setValue(Base::Vector3d newValue)
 {
-//    Base::Console().Message("VEW::setValue(%.6f, %.6f, %.6f)\n", newValue.x, newValue.y, newValue.z);
+//    Base::Console().Message("VEW::setValue({:.6f}, {:.6f}, {:.6f})\n", newValue.x, newValue.y, newValue.z);
     m_value = newValue;
     dsbX->setValue(m_value.x);
     dsbY->setValue(m_value.y);
@@ -116,7 +116,7 @@ void VectorEditWidget::setValue(Base::Vector3d newValue)
 
 void VectorEditWidget::setValueNoNotify(Base::Vector3d newValue)
 {
-//    Base::Console().Message("VEW::setValueNoNotify(%.6f, %.6f, %.6f)\n", newValue.x, newValue.y, newValue.z);
+//    Base::Console().Message("VEW::setValueNoNotify({:.6f}, {:.6f}, {:.6f})\n", newValue.x, newValue.y, newValue.z);
     m_value = newValue;
     m_blockNotify = true;
     dsbX->setValue(m_value.x);
@@ -128,7 +128,7 @@ void VectorEditWidget::setValueNoNotify(Base::Vector3d newValue)
 
 void VectorEditWidget::slotExpandButtonToggled(bool checked)
 {
-//    Base::Console().Message("VEW::slotExpand - checked: %d\n", checked);
+//    Base::Console().Message("VEW::slotExpand - checked: {}\n", checked);
     if (checked) {
         vectorEditLayout->addLayout(VectorEditItemLayout);
         vectorEditLayout->addItem(verticalSpacer);
@@ -145,7 +145,7 @@ void VectorEditWidget::slotExpandButtonToggled(bool checked)
 //to tell the world about the change if it comes from the Ui.
 void VectorEditWidget::slotXValueChanged(double newValue)
 {
-//    Base::Console().Message("VEW::xValueChanged(%.6f) - m_value.x: %.6f\n", newValue, m_value.x);
+//    Base::Console().Message("VEW::xValueChanged({:.6f}) - m_value.x: {:.6f}\n", newValue, m_value.x);
     if (!m_blockNotify) {
         //this is a change from the dsb
         m_value.x = newValue;
@@ -155,7 +155,7 @@ void VectorEditWidget::slotXValueChanged(double newValue)
 }
 void VectorEditWidget::slotYValueChanged(double newValue)
 {
-//    Base::Console().Message("VEW::yValueChanged(%.6f) - m_value.y: %.6f\n", newValue, m_value.y);
+//    Base::Console().Message("VEW::yValueChanged({:.6f}) - m_value.y: {:.6f}\n", newValue, m_value.y);
     if (!m_blockNotify) {
         //this is a change from the dsb
         m_value.y = newValue;
@@ -165,7 +165,7 @@ void VectorEditWidget::slotYValueChanged(double newValue)
 }
 void VectorEditWidget::slotZValueChanged(double newValue)
 {
-//    Base::Console().Message("VEW::zValueChanged(%.6f)\n", newValue);
+//    Base::Console().Message("VEW::zValueChanged({:.6f})\n", newValue);
     if (!m_blockNotify) {
         //this is a change from the dsb
         m_value.z = newValue;
@@ -176,7 +176,7 @@ void VectorEditWidget::slotZValueChanged(double newValue)
 
 void VectorEditWidget::updateDisplay()
 {
-//    Base::Console().Message("VEW::updateDisplay() - m_value: %s\n", DrawUtil::formatVector(m_value).c_str());
+//    Base::Console().Message("VEW::updateDisplay() - m_value: {}\n", DrawUtil::formatVector(m_value).c_str());
     QString qNewDisplayString = QString::fromStdString(DrawUtil::formatVector(m_value));
     leVectorDisplay->setText(qNewDisplayString);
 }

@@ -80,7 +80,7 @@ DrawViewDimension* DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
 DrawViewDimension* DrawDimHelper::makeExtentDim(DrawViewPart* dvp, std::vector<std::string> edgeNames,
                                   int direction)
 {
-    //    Base::Console().Message("DDH::makeExtentDim() - dvp: %s edgeNames: %d\n",
+    //    Base::Console().Message("DDH::makeExtentDim() - dvp: {} edgeNames: {}\n",
     //                            dvp->Label.getValue(), edgeNames.size());
     if (!dvp) {
         return nullptr;
@@ -146,7 +146,7 @@ void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp, const std::string& dimTyp
 
 void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp, ReferenceVector references, int direction)
 {
-    //    Base::Console().Message("DDH::makeExtentDim3d() - dvp: %s references: %d\n",
+    //    Base::Console().Message("DDH::makeExtentDim3d() - dvp: {} references: {}\n",
     //                            dvp->Label.getValue(), references.size());
     if (!dvp) {
         return;
@@ -204,7 +204,7 @@ void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp, ReferenceVector reference
 std::pair<Base::Vector3d, Base::Vector3d>
 DrawDimHelper::minMax(DrawViewPart* dvp, std::vector<std::string> edgeNames, int direction)
 {
-    //    Base::Console().Message("DDH::minMax() - edgeName: %d\n", edgeNames.size());
+    //    Base::Console().Message("DDH::minMax() - edgeName: {}\n", edgeNames.size());
     std::pair<Base::Vector3d, Base::Vector3d> result;
     Base::Vector3d refMin;
     Base::Vector3d refMax;
@@ -296,7 +296,7 @@ DrawDimHelper::minMax(DrawViewPart* dvp, std::vector<std::string> edgeNames, int
 //computation intensive for a cosmetic result.
 gp_Pnt DrawDimHelper::findClosestPoint(std::vector<TopoDS_Edge> inEdges, TopoDS_Edge& boundary)
 {
-    //    Base::Console().Message("DDH::findClosestPoint() - edges: %d\n", inEdges.size());
+    //    Base::Console().Message("DDH::findClosestPoint() - edges: {}\n", inEdges.size());
     //
     //find an extent point that is actually on one of the curves
     double minDistance(std::numeric_limits<float>::max());
@@ -324,7 +324,7 @@ gp_Pnt DrawDimHelper::findClosestPoint(std::vector<TopoDS_Edge> inEdges, TopoDS_
 std::pair<Base::Vector3d, Base::Vector3d>
 DrawDimHelper::minMax3d(DrawViewPart* dvp, ReferenceVector references, int direction)
 {
-    //    Base::Console().Message("DDH::minMax3d() - references: %d\n", references.size());
+    //    Base::Console().Message("DDH::minMax3d() - references: {}\n", references.size());
     std::pair<Base::Vector3d, Base::Vector3d> result;
     Base::Vector3d refMin;
     Base::Vector3d refMax;
@@ -419,7 +419,7 @@ DrawDimHelper::makeDistDim(DrawViewPart* dvp, std::string dimType,
                            Base::Vector3d inMax,//expects scaled from makeExtentDim
                            bool extent)
 {
-    //    Base::Console().Message("DDH::makeDistDim() - inMin: %s inMax: %s\n",
+    //    Base::Console().Message("DDH::makeDistDim() - inMin: {} inMax: {}\n",
     //                            DrawUtil::formatVector(inMin).c_str(),
     //                            DrawUtil::formatVector(inMax).c_str());
     TechDraw::DrawPage* page = dvp->findParentPage();

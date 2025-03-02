@@ -382,7 +382,7 @@ void TaskDetail::editByHighlight()
 //dragEnd is in scene coords.
 void TaskDetail::onHighlightMoved(QPointF dragEnd)
 {
-//    Base::Console().Message("TD::onHighlightMoved(%s) - highlight: %X\n",
+//    Base::Console().Message("TD::onHighlightMoved({}) - highlight: {}\n",
 //                            DrawUtil::formatVector(dragEnd).c_str(), m_ghost);
     ui->pbDragger->setEnabled(true);
 

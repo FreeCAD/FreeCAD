@@ -150,7 +150,7 @@ TopoDS_Shape ReferenceEntry::getGeometry2d() const
         }
     }
     catch (...) {
-        Base::Console().Message("RE::getGeometry2d - no shape for dimension 2d reference - gType: **%s**\n", gType.c_str());
+        Base::Console().Message("RE::getGeometry2d - no shape for dimension 2d reference - gType: **{}**\n", gType);
     }
 
     return {};

@@ -565,24 +565,24 @@ bool DrawGuiUtil::needView(Gui::Command* cmd, bool partOnly)
 
 void DrawGuiUtil::dumpRectF(const char* text, const QRectF& r)
 {
-    Base::Console().Message("DUMP - dumpRectF - %s\n", text);
+    Base::Console().Message("DUMP - dumpRectF - {}\n", text);
     double left = r.left();
     double right = r.right();
     double top = r.top();
     double bottom = r.bottom();
-    Base::Console().Message("Extents: L: %.3f, R: %.3f, T: %.3f, B: %.3f\n",
+    Base::Console().Message("Extents: L: {:.3f}, R: {:.3f}, T: {:.3f}, B: {:.3f}\n",
                             left,
                             right,
                             top,
                             bottom);
-    Base::Console().Message("Size: W: %.3f H: %.3f\n", r.width(), r.height());
-    Base::Console().Message("Centre: (%.3f, %.3f)\n", r.center().x(), r.center().y());
+    Base::Console().Message("Size: W: {:.3f} H: {:.3f}\n", r.width(), r.height());
+    Base::Console().Message("Centre: ({:.3f}, {:.3f})\n", r.center().x(), r.center().y());
 }
 
 void DrawGuiUtil::dumpPointF(const char* text, const QPointF& p)
 {
-    Base::Console().Message("DUMP - dumpPointF - %s\n", text);
-    Base::Console().Message("Point: (%.3f, %.3f)\n", p.x(), p.y());
+    Base::Console().Message("DUMP - dumpPointF - {}\n", text);
+    Base::Console().Message("Point: ({:.3f}, {:.3f})\n", p.x(), p.y());
 }
 
 std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::get3DDirAndRot()
@@ -647,7 +647,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::getProjDirFromFace(App::D
 
     auto ts = Part::Feature::getShape(obj, faceName.c_str(), true);
     if (ts.IsNull() || ts.ShapeType() != TopAbs_FACE) {
-        Base::Console().Warning("getProjDirFromFace(%s) is not a Face\n", faceName.c_str());
+        Base::Console().Warning("getProjDirFromFace({}) is not a Face\n", faceName.c_str());
         return dirs;
     }
 

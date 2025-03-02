@@ -124,7 +124,7 @@ void QGIDecoration::makeMark(Base::Vector3d v)
 
 void QGIDecoration::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGID::mousePressEvent() - %s\n", getViewName());
+//    Base::Console().Message("QGID::mousePressEvent() - {}\n", getViewName());
     m_dragState = DragState::DragStarted;
 
     QGraphicsItem::mousePressEvent(event);
@@ -140,7 +140,7 @@ void QGIDecoration::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIDecoration::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGID::mouseReleaseEvent() - %s\n", getViewName());
+//    Base::Console().Message("QGID::mouseReleaseEvent() - {}\n", getViewName());
     if (m_dragState == DragState::Dragging) {
         onDragFinished();
     }

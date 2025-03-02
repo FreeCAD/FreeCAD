@@ -216,7 +216,7 @@ void ViewProviderSketch::ParameterObserver::subscribeToParameters()
     catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the
                                        // exception is not propagated
         Base::Console().DeveloperError(
-            "ViewProviderSketch", "Malformed parameter string: %s\n", e.what());
+            "ViewProviderSketch", "Malformed parameter string: {}\n", e.what());
     }
 }
 
@@ -238,7 +238,7 @@ void ViewProviderSketch::ParameterObserver::unsubscribeToParameters()
     catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the
                                        // exception is not propagated
         Base::Console().DeveloperError(
-            "ViewProviderSketch", "Malformed parameter string: %s\n", e.what());
+            "ViewProviderSketch", "Malformed parameter string: {}\n", e.what());
     }
 }
 
@@ -915,22 +915,22 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 case STATUS_NONE: {
                     bool done = false;
                     if (preselection.isPreselectPointValid()) {
-                        // Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
+                        // Base::Console().Log("start dragging, point:{}\n",this->DragPoint);
                         Mode = STATUS_SELECT_Point;
                         done = true;
                     }
                     else if (preselection.isPreselectCurveValid()) {
-                        // Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
+                        // Base::Console().Log("start dragging, point:{}\n",this->DragPoint);
                         Mode = STATUS_SELECT_Edge;
                         done = true;
                     }
                     else if (preselection.isCrossPreselected()) {
-                        // Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
+                        // Base::Console().Log("start dragging, point:{}\n",this->DragPoint);
                         Mode = STATUS_SELECT_Cross;
                         done = true;
                     }
                     else if (!preselection.PreselectConstraintSet.empty()) {
-                        // Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
+                        // Base::Console().Log("start dragging, point:{}\n",this->DragPoint);
                         Mode = STATUS_SELECT_Constraint;
                         done = true;
                     }
@@ -976,7 +976,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
             switch (Mode) {
                 case STATUS_SELECT_Point:
                     if (pp) {
-                        // Base::Console().Log("Select Point:%d\n",this->DragPoint);
+                        // Base::Console().Log("Select Point:{}\n",this->DragPoint);
                         //  Do selection
                         std::stringstream ss;
                         ss << "Vertex" << preselection.getPreselectionVertexIndex();
@@ -987,7 +987,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Edge:
                     if (pp) {
-                        // Base::Console().Log("Select Point:%d\n",this->DragPoint);
+                        // Base::Console().Log("Select Point:{}\n",this->DragPoint);
                         std::stringstream ss;
                         if (preselection.isEdge())
                             ss << "Edge" << preselection.getPreselectionEdgeIndex();
@@ -1000,7 +1000,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Cross:
                     if (pp) {
-                        // Base::Console().Log("Select Point:%d\n",this->DragPoint);
+                        // Base::Console().Log("Select Point:{}\n",this->DragPoint);
                         std::stringstream ss;
                         switch (preselection.PreselectCross) {
                             case Preselection::Axes::RootPoint:
@@ -1224,7 +1224,7 @@ bool ViewProviderSketch::mouseWheelEvent(int delta, const SbVec2s& cursorPos,
 void ViewProviderSketch::editDoubleClicked()
 {
     if (preselection.isPreselectPointValid()) {
-        Base::Console().Log("double click point:%d\n", preselection.PreselectPoint);
+        Base::Console().Log("double click point:{}\n", preselection.PreselectPoint);
     }
     else if (preselection.isPreselectCurveValid()) {
         // We cannot do toggleWireSelelection directly here because the released event with
@@ -1232,7 +1232,7 @@ void ViewProviderSketch::editDoubleClicked()
         Mode = STATUS_SELECT_Wire;
     }
     else if (preselection.isCrossPreselected()) {
-        Base::Console().Log("double click cross:%d\n",
+        Base::Console().Log("double click cross:{}\n",
                             static_cast<int>(preselection.PreselectCross));
     }
     else if (!preselection.PreselectConstraintSet.empty()) {
@@ -3339,7 +3339,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     catch (Base::PyException& e) {
         Base::Console().DeveloperError(
             "ViewProviderSketch",
-            "unsetEdit: visibility automation failed with an error: %s \n",
+            "unsetEdit: visibility automation failed with an error: {} \n",
             e.what());
     }
 }
@@ -3367,7 +3367,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
         catch (Base::PyException& e) {
             Base::Console().DeveloperError(
                 "ViewProviderSketch",
-                "setEdit: visibility automation failed with an error: %s \n",
+                "setEdit: visibility automation failed with an error: {} \n",
                 e.what());
         }
     }
@@ -3492,7 +3492,7 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
     auto tmpFactor = orientation.z < 0 ? -1 : 1;
 
     if (tmpFactor != viewOrientationFactor) {// redraw only if viewing side changed
-        Base::Console().Log("Switching side, now %s, redrawing\n",
+        Base::Console().Log("Switching side, now {}, redrawing\n",
                             tmpFactor < 0 ? "back" : "front");
         viewOrientationFactor = tmpFactor;
         draw();
@@ -3632,7 +3632,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 Gui::cmdAppObjectArgs(getObject(), "delConstraint(%d)", *rit);
             }
             catch (const Base::Exception& e) {
-                Base::Console().DeveloperError("ViewProviderSketch", "%s\n", e.what());
+                Base::Console().DeveloperError("ViewProviderSketch", "{}\n", e.what());
             }
         }
 
@@ -3660,7 +3660,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                                 getObject(), "delConstraintOnPoint(%d,%d)", GeoId, (int)PosId);
                         }
                         catch (const Base::Exception& e) {
-                            Base::Console().DeveloperError("ViewProviderSketch", "%s\n", e.what());
+                            Base::Console().DeveloperError("ViewProviderSketch", "{}\n", e.what());
                         }
                         break;
                     }
@@ -3684,7 +3684,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 Gui::cmdAppObjectArgs(getObject(), "delGeometries([%s])", stream.str().c_str());
             }
             catch (const Base::Exception& e) {
-                Base::Console().DeveloperError("ViewProviderSketch", "%s\n", e.what());
+                Base::Console().DeveloperError("ViewProviderSketch", "{}\n", e.what());
             }
 
             stream.str(std::string());
@@ -3695,7 +3695,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 Gui::cmdAppObjectArgs(getObject(), "delExternal(%d)", *rit);
             }
             catch (const Base::Exception& e) {
-                Base::Console().DeveloperError("ViewProviderSketch", "%s\n", e.what());
+                Base::Console().DeveloperError("ViewProviderSketch", "{}\n", e.what());
             }
         }
 

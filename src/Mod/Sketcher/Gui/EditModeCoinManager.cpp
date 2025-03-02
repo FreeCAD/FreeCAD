@@ -475,7 +475,7 @@ void EditModeCoinManager::ParameterObserver::subscribeToParameters()
     catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
                                          // the exception is not propagated
         Base::Console().DeveloperError("EditModeCoinManager",
-                                       "Malformed parameter string: %s\n",
+                                       "Malformed parameter string: {}\n",
                                        e.what());
     }
 }
@@ -503,7 +503,7 @@ void EditModeCoinManager::ParameterObserver::unsubscribeToParameters()
                e) {  // ensure that if parameter strings are not well-formed, the program is not
                      // terminated when calling the noexcept destructor.
         Base::Console().DeveloperError("EditModeCoinManager",
-                                       "Malformed parameter string: %s\n",
+                                       "Malformed parameter string: {}\n",
                                        e.what());
     }
 }

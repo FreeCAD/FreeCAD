@@ -205,7 +205,7 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     bool success = image.save(QString::fromStdString(tempName));
 
     if (!success) {
-        Base::Console().Error("ActiveView could not save file: %s\n", fileSpec.c_str());
+        Base::Console().Error("ActiveView could not save file: {}\n", fileSpec.c_str());
     }
 
     tempName = DU::cleanFilespecBackslash(tempName);

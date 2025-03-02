@@ -202,7 +202,7 @@ QString Preferences::defaultTemplate()
     QString templateFileName = QString::fromStdString(prefFileName);
     Base::FileInfo fi(prefFileName);
     if (!fi.isReadable()) {
-        Base::Console().Warning("Template File: %s is not readable\n", prefFileName.c_str());
+        Base::Console().Warning("Template File: {} is not readable\n", prefFileName.c_str());
         templateFileName = QString::fromStdString(defaultFileName);
     }
     return templateFileName;
@@ -218,7 +218,7 @@ QString Preferences::defaultTemplateDir()
     QString templateDir = QString::fromStdString(prefTemplateDir);
     Base::FileInfo fi(prefTemplateDir);
     if (!fi.isReadable()) {
-        Base::Console().Warning("Template Directory: %s is not readable\n",
+        Base::Console().Warning("Template Directory: {} is not readable\n",
                                 prefTemplateDir.c_str());
         templateDir = QString::fromStdString(defaultDir);
     }
@@ -235,7 +235,7 @@ std::string Preferences::lineGroupFile()
     }
     Base::FileInfo fi(lgFileName);
     if (!fi.isReadable()) {
-        Base::Console().Warning("Line Group File: %s is not readable\n", lgFileName.c_str());
+        Base::Console().Warning("Line Group File: {} is not readable\n", lgFileName.c_str());
         lgFileName = defaultFileName;
     }
     return lgFileName;
@@ -294,7 +294,7 @@ std::string Preferences::svgFile()
     }
     Base::FileInfo fi(prefHatchFile);
     if (!fi.isReadable()) {
-        Base::Console().Warning("Svg Hatch File: %s is not readable\n", prefHatchFile.c_str());
+        Base::Console().Warning("Svg Hatch File: {} is not readable\n", prefHatchFile.c_str());
         prefHatchFile = defaultFileName;
     }
     return prefHatchFile;
@@ -310,7 +310,7 @@ std::string Preferences::patFile()
     }
     Base::FileInfo fi(prefHatchFile);
     if (!fi.isReadable()) {
-        Base::Console().Warning("Pat Hatch File: %s is not readable\n", prefHatchFile.c_str());
+        Base::Console().Warning("Pat Hatch File: {} is not readable\n", prefHatchFile.c_str());
         prefHatchFile = defaultFileName;
     }
 
@@ -327,7 +327,7 @@ std::string Preferences::bitmapFill()
     }
     Base::FileInfo fi(prefBitmapFile);
     if (!fi.isReadable()) {
-        Base::Console().Warning("Bitmap Fill File: %s is not readable\n", prefBitmapFile.c_str());
+        Base::Console().Warning("Bitmap Fill File: {} is not readable\n", prefBitmapFile.c_str());
         prefBitmapFile = defaultFileName;
     }
     return prefBitmapFile;
@@ -372,7 +372,7 @@ bool Preferences::monochrome()
 //! set monochrome display on/off
 void Preferences::monochrome(bool state)
 {
-    Base::Console().Message("Pref::useLightText - set to %d\n", state);
+    Base::Console().Message("Pref::useLightText - set to {}\n", state);
     getPreferenceGroup("Colors")->SetBool("Monochrome", state);
 }
 

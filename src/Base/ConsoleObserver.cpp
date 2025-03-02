@@ -48,7 +48,7 @@ ConsoleObserverFile::ConsoleObserverFile(const char* sFileName)
     : cFileStream(Base::FileInfo(sFileName))  // can be in UTF8
 {
     if (!cFileStream.is_open()) {
-        Console().Warning("Cannot open log file '%s'.\n", sFileName);
+        Console().Warning("Cannot open log file '{}'.\n", sFileName);
     }
     // mark the file as a UTF-8 encoded file
     unsigned char bom[3] = {0xef, 0xbb, 0xbf};
@@ -261,7 +261,7 @@ int RedirectStdOutput::sync()
 {
     // Print as log as this might be verbose
     if (!buffer.empty() && buffer.back() == '\n') {
-        Base::Console().Log("%s", buffer.c_str());
+        Base::Console().Log("{}", buffer.c_str());
         buffer.clear();
     }
     return 0;
@@ -284,7 +284,7 @@ int RedirectStdLog::sync()
 {
     // Print as log as this might be verbose
     if (!buffer.empty() && buffer.back() == '\n') {
-        Base::Console().Log("%s", buffer.c_str());
+        Base::Console().Log("{}", buffer.c_str());
         buffer.clear();
     }
     return 0;
@@ -306,7 +306,7 @@ int RedirectStdError::overflow(int ch)
 int RedirectStdError::sync()
 {
     if (!buffer.empty() && buffer.back() == '\n') {
-        Base::Console().Error("%s", buffer.c_str());
+        Base::Console().Error("{}", buffer.c_str());
         buffer.clear();
     }
     return 0;

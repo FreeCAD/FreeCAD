@@ -830,7 +830,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Base::Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().Error("Exception opening file: {} [{}]\n", name.c_str(), e.what());
             }
             catch (const std::exception &e) {
                 if (!errs && isMainDoc)
@@ -838,7 +838,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Base::Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().Error("Exception opening file: {} [{}]\n", name.c_str(), e.what());
             }
             catch (...) {
                 if (errs) {
@@ -1751,9 +1751,9 @@ void Application::destruct()
     for (auto it : paramMgr) {
         if ((it.second != _pcSysParamMngr) && (it.second != _pcUserParamMngr)) {
             if (it.second->HasSerializer() && !it.second->IgnoreSave()) {
-                Base::Console().Log("Saving %s...\n", it.first.c_str());
+                Base::Console().Log("Saving {}...\n", it.first.c_str());
                 it.second->SaveDocument();
-                Base::Console().Log("Saving %s...done\n", it.first.c_str());
+                Base::Console().Log("Saving {}...done\n", it.first.c_str());
             }
         }
     }
@@ -1930,7 +1930,7 @@ void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
         throw Base::AccessViolation();
     case EXCEPTION_FLT_DIVIDE_BY_ZERO:
     case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        Base::Console().Error("SEH exception (%u): Division by zero\n", code);
+        Base::Console().Error("SEH exception ({}): Division by zero\n", code);
         return;
     }
 
@@ -2705,7 +2705,7 @@ void Application::initConfig(int argc, char ** argv)
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (!(mConfig["Verbose"] == "Strict"))
-            Base::Console().Message("%s %s, Libs: %s.%s.%s%sR%s\n%s",
+            Base::Console().Message("{} {}, Libs: {}.{}.{}{}R{}\n{}",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
@@ -2715,7 +2715,7 @@ void Application::initConfig(int argc, char ** argv)
                               mConfig["BuildRevision"].c_str(),
                               mConfig["CopyrightInfo"].c_str());
         else
-            Base::Console().Message("%s %s, Libs: %s.%s.%s%sR%s\n",
+            Base::Console().Message("{} {}, Libs: {}.{}.{}{}R{}\n",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
@@ -2891,7 +2891,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
     for (const auto & it : files) {
         Base::FileInfo file(it);
 
-        Base::Console().Log("Init:     Processing file: %s\n",file.filePath().c_str());
+        Base::Console().Log("Init:     Processing file: {}\n",file.filePath().c_str());
 
         try {
             if (file.hasExtension("fcstd") || file.hasExtension("std")) {
@@ -2927,10 +2927,10 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
                             escapedstr.c_str());
                     processed.push_back(it);
-                    Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
+                    Base::Console().Log("Command line open: {}.open(u\"{}\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else if (file.exists()) {
-                    Base::Console().Warning("File format not supported: %s \n", file.filePath().c_str());
+                    Base::Console().Warning("File format not supported: {} \n", file.filePath().c_str());
                 }
             }
         }
@@ -2938,10 +2938,10 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             throw; // re-throw to main() function
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
+            Base::Console().Error("Exception while processing file: {} [{}]\n", file.filePath().c_str(), e.what());
         }
         catch (...) {
-            Base::Console().Error("Unknown exception while processing file: %s \n", file.filePath().c_str());
+            Base::Console().Error("Unknown exception while processing file: {} \n", file.filePath().c_str());
         }
     }
 
@@ -2985,14 +2985,14 @@ void Application::processCmdLineFiles()
                     ,mods.front().c_str(),output.c_str());
             }
             else {
-                Base::Console().Warning("File format not supported: %s \n", output.c_str());
+                Base::Console().Warning("File format not supported: {} \n", output.c_str());
             }
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
+            Base::Console().Error("Exception while saving to file: {} [{}]\n", output.c_str(), e.what());
         }
         catch (...) {
-            Base::Console().Error("Unknown exception while saving to file: %s \n", output.c_str());
+            Base::Console().Error("Unknown exception while saving to file: {} \n", output.c_str());
         }
     }
 }
@@ -3016,7 +3016,7 @@ void Application::runApplication()
         Base::Console().Log("Exiting on purpose\n");
     }
     else {
-        Base::Console().Log("Unknown Run mode (%d) in main()?!?\n\n", mConfig["RunMode"].c_str());
+        Base::Console().Log("Unknown Run mode ({}) in main()?!?\n\n", mConfig["RunMode"].c_str());
     }
 }
 
@@ -3024,10 +3024,10 @@ void Application::logStatus()
 {
     std::string time_str = boost::posix_time::to_simple_string(
         boost::posix_time::second_clock::local_time());
-    Base::Console().Log("Time = %s\n", time_str.c_str());
+    Base::Console().Log("Time = {}\n", time_str.c_str());
 
     for (const auto & It : mConfig) {
-        Base::Console().Log("%s = %s\n", It.first.c_str(), It.second.c_str());
+        Base::Console().Log("{} = {}\n", It.first.c_str(), It.second.c_str());
     }
 }
 
@@ -3060,7 +3060,7 @@ void Application::LoadParameters()
     }
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
-        Base::Console().Error("%s in file %s.\n"
+        Base::Console().Error("{} in file {}.\n"
                               "Continue with an empty configuration.\n",
                               e.what(), mConfig["SystemParameter"].c_str());
         _pcSysParamMngr->CreateDocument();
@@ -3094,7 +3094,7 @@ void Application::LoadParameters()
     }
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
-        Base::Console().Error("%s in file %s.\n"
+        Base::Console().Error("{} in file {}.\n"
                               "Continue with an empty configuration.\n",
                               e.what(), mConfig["UserParameter"].c_str());
         _pcUserParamMngr->CreateDocument();

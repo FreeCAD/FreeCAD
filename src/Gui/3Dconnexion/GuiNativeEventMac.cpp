@@ -75,7 +75,7 @@ Gui::GuiNativeEvent::tdx_drv_handler(io_connect_t connection,
          * assigned id when the connection to the driver was established.
          */
         //printf("msg->client: %d, tdxClientID: %d\n", msg->client, tdxClientID);
-        Base::Console().Log("msg->client: %d, msg->command: %d\n", msg->client, msg->command);
+        Base::Console().Log("msg->client: {}, msg->command: {}\n", msg->client, msg->command);
 
         if (msg->client == tdxClientID) {
             switch (msg->command) {
@@ -177,7 +177,7 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
     SetConnexionClientMask(tdxClientID, kConnexionMaskAll);
     SetConnexionClientButtonMask(tdxClientID, kConnexionMaskAllButtons);
 
-    Base::Console().Log("3Dconnexion driver initialized. Client ID: %d\n", tdxClientID);
+    Base::Console().Log("3Dconnexion driver initialized. Client ID: {}\n", tdxClientID);
     mainApp->setSpaceballPresent(true);
 }
 

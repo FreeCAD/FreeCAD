@@ -94,7 +94,7 @@ void ExternalGeometryFacade::initExtensions()
 
         // The following warning was commented out as part of the Toponaming problem mitigation, and
         // left for potential usefulness to future developers making a custom build for debugging.
-        // Base::Console().Warning("Sketcher External Geometry without Geometry Extension: %s
+        // Base::Console().Warning("Sketcher External Geometry without Geometry Extension: {}
         // \n",
         //                         boost::uuids::to_string(Geo->getTag()).c_str());
     }
@@ -107,7 +107,7 @@ void ExternalGeometryFacade::initExtensions()
         // The following warning was commented out as part of the Toponaming problem mitigation, and
         // left for potential usefulness to future developers making a custom build for debugging.
         // Base::Console().Warning(
-        //     "Sketcher External Geometry without ExternalGeometryExtension: %s \n",
+        //     "Sketcher External Geometry without ExternalGeometryExtension: {} \n",
         //     boost::uuids::to_string(Geo->getTag()).c_str());
     }
 

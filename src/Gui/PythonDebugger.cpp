@@ -237,7 +237,7 @@ Py::Object PythonDebugStderr::write(const Py::Tuple& args)
 
         //send it to the debugger as well
         //g_DebugSocket.SendMessage(eMSG_TRACE, msg);
-        Base::Console().Error("%s", msg);
+        Base::Console().Error("{}", msg);
     }
 
     return Py::None();

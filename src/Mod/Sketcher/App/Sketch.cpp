@@ -235,7 +235,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
     bool found = false;
     for (; i < onlyBlockedGeometry.size(); i++) {
         if (onlyBlockedGeometry[i]) {
-            Base::Console().Log("\n  GeoId=%d", i);
+            Base::Console().Log("\n  GeoId={}", i);
             found = true;
         }
     }
@@ -246,7 +246,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
     Base::Console().Log("\nNotOnlyBlocked GeoIds:");
     i = 0;
     for (; i < blockedGeoIds.size(); i++) {
-        Base::Console().Log("\n  GeoId=%d", blockedGeoIds[i]);
+        Base::Console().Log("\n  GeoId={}", blockedGeoIds[i]);
     }
     if (i == 0) {
         Base::Console().Log("\n  None");
@@ -301,7 +301,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
                 analyseBlockedConstraintDependentParameters(blockedGeoIds, params_to_block);
 
             if (debugMode == GCS::IterationLevel) {
-                Base::Console().Log("Sketcher::setUpSketch()-BlockConstraint-PostAnalysis:%d\n",
+                Base::Console().Log("Sketcher::setUpSketch()-BlockConstraint-PostAnalysis:{}\n",
                                     index);
             }
             index++;
@@ -317,10 +317,10 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
 
             // Debug code block
             for (size_t i = 0; i < groups.size(); i++) {
-                Base::Console().Log("\nDepParams: Group %d:", i);
+                Base::Console().Log("\nDepParams: Group {}:", i);
                 for (size_t j = 0; j < groups[i].size(); j++) {
                     Base::Console().Log(
-                        "\n  Param=%x ,GeoId=%d, GeoPos=%d",
+                        "\n  Param={:#X} ,GeoId={}, GeoPos={}",
                         param2geoelement.find(*std::next(groups[i].begin(), j))->first,
                         param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
                         param2geoelement.find(*std::next(groups[i].begin(), j))->second.second);
@@ -341,7 +341,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
     if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
         Base::TimeElapsed end_time;
 
-        Base::Console().Log("Sketcher::setUpSketch()-T:%s\n",
+        Base::Console().Log("Sketcher::setUpSketch()-T:{}\n",
                             Base::TimeElapsed::diffTime(start_time, end_time).c_str());
     }
 
@@ -403,10 +403,10 @@ bool Sketch::analyseBlockedConstraintDependentParameters(
 
 #ifdef DEBUG_BLOCK_CONSTRAINT
     for (size_t i = 0; i < groups.size(); i++) {
-        Base::Console().Log("\nDepParams: Group %d:", i);
+        Base::Console().Log("\nDepParams: Group {}:", i);
         for (size_t j = 0; j < groups[i].size(); j++) {
             Base::Console().Log(
-                "\n  Param=%x ,GeoId=%d, GeoPos=%d",
+                "\n  Param={:#x} ,GeoId={}, GeoPos={}",
                 param2geoelement.find(*std::next(groups[i].begin(), j))->first,
                 param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
                 param2geoelement.find(*std::next(groups[i].begin(), j))->second.second);
@@ -448,7 +448,7 @@ bool Sketch::analyseBlockedConstraintDependentParameters(
                 params_to_block.push_back(thisparam);
                 prop_groups[i].blocking_param_in_group = thisparam;
 #ifdef DEBUG_BLOCK_CONSTRAINT
-                Base::Console().Log("\nTentatively blocking group %d, with param=%x", i, thisparam);
+                Base::Console().Log("\nTentatively blocking group {}, with param={}", i, thisparam);
 #endif  // DEBUG_BLOCK_CONSTRAINT
                 break;
             }
@@ -2394,7 +2394,7 @@ int Sketch::addConstraints(const std::vector<Constraint*>& ConstraintList)
 
         if (rtn == -1) {
             int humanconstraintid = cid + 1;
-            Base::Console().Error("Sketcher constraint number %d is malformed!\n",
+            Base::Console().Error("Sketcher constraint number {} is malformed!\n",
                                   humanconstraintid);
             MalformedConstraints.push_back(humanconstraintid);
         }
@@ -2417,7 +2417,7 @@ int Sketch::addConstraints(const std::vector<Constraint*>& ConstraintList,
 
             if (rtn == -1) {
                 int humanconstraintid = cid + 1;
-                Base::Console().Error("Sketcher constraint number %d is malformed!\n",
+                Base::Console().Error("Sketcher constraint number {} is malformed!\n",
                                       humanconstraintid);
                 MalformedConstraints.push_back(humanconstraintid);
             }
@@ -2809,7 +2809,7 @@ int Sketch::addPerpendicularConstraint(int geoId1, int geoId2)
         }
     }
 
-    Base::Console().Warning("Perpendicular constraints between %s and %s are not supported.\n",
+    Base::Console().Warning("Perpendicular constraints between {} and {} are not supported.\n",
                             nameByType(Geoms[geoId1].type),
                             nameByType(Geoms[geoId2].type));
     return -1;
@@ -3643,7 +3643,7 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
         }
     }
 
-    Base::Console().Warning("Equality constraints between %s and %s are not supported.\n",
+    Base::Console().Warning("Equality constraints between {} and {} are not supported.\n",
                             nameByType(Geoms[geoId1].type),
                             nameByType(Geoms[geoId2].type));
     return -1;
@@ -4601,7 +4601,7 @@ int Sketch::solve()
 
     if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
 
-        Base::Console().Log("Sketcher::Solve()-%s-T:%s\n",
+        Base::Console().Log("Sketcher::Solve()-{}-T:{}\n",
                             solvername.c_str(),
                             Base::TimeElapsed::diffTime(start_time, end_time).c_str());
     }
@@ -4653,7 +4653,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
         if (!valid_solution) {
             GCSsys.undoSolution();
             updateGeometry();
-            Base::Console().Warning("Invalid solution from %s solver.\n", solvername.c_str());
+            Base::Console().Warning("Invalid solution from {} solver.\n", solvername.c_str());
         }
         else {
             updateNonDrivingConstraints();
@@ -4663,7 +4663,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
         valid_solution = false;
         if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
 
-            Base::Console().Log("Sketcher::Solve()-%s- Failed!! Falling back...\n",
+            Base::Console().Log("Sketcher::Solve()-{}- Failed!! Falling back...\n",
                                 solvername.c_str());
         }
     }
@@ -4713,7 +4713,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
                 if (!valid_solution) {
                     GCSsys.undoSolution();
                     updateGeometry();
-                    Base::Console().Warning("Invalid solution from %s solver.\n",
+                    Base::Console().Warning("Invalid solution from {} solver.\n",
                                             solvername.c_str());
                     ret = GCS::SuccessfulSolutionInvalid;
                 }
@@ -4725,7 +4725,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
                 valid_solution = false;
                 if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
 
-                    Base::Console().Log("Sketcher::Solve()-%s- Failed!! Falling back...\n",
+                    Base::Console().Log("Sketcher::Solve()-{}- Failed!! Falling back...\n",
                                         solvername.c_str());
                 }
             }

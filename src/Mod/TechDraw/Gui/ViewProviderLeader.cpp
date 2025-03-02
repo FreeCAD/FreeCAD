@@ -79,7 +79,7 @@ ViewProviderLeader::ViewProviderLeader()
 
 bool ViewProviderLeader::setEdit(int ModNum)
 {
-//    Base::Console().Message("VPL::setEdit(%d)\n", ModNum);
+//    Base::Console().Message("VPL::setEdit({})\n", ModNum);
     if (ModNum != ViewProvider::Default) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }

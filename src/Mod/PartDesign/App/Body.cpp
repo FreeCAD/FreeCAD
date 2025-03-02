@@ -378,17 +378,17 @@ App::DocumentObjectExecReturn *Body::execute()
 {
     Part::BodyBase::execute();
     /*
-    Base::Console().Error("Body '%s':\n", getNameInDocument());
+    Base::Console().Error("Body '{}':\n", getNameInDocument());
     App::DocumentObject* tip = Tip.getValue();
-    Base::Console().Error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
+    Base::Console().Error("   Tip: {}\n", (tip == NULL) ? "None" : tip->getNameInDocument());
     std::vector<App::DocumentObject*> model = Group.getValues();
     Base::Console().Error("   Group:\n");
     for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++) {
         if (*m == NULL) continue;
-        Base::Console().Error("      %s", (*m)->getNameInDocument());
+        Base::Console().Error("      {}", (*m)->getNameInDocument());
         if (Body::isSolidFeature(*m)) {
             App::DocumentObject* baseFeature = static_cast<PartDesign::Feature*>(*m)->BaseFeature.getValue();
-            Base::Console().Error(", Base: %s\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument());
+            Base::Console().Error(", Base: {}\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument());
         } else {
             Base::Console().Error("\n");
         }

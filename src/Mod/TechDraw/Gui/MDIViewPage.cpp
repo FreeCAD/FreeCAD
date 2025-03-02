@@ -432,7 +432,7 @@ PyObject* MDIViewPage::getPyObject()
 
 void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
 {
-    //    Base::Console().Message("MDIVP::contextMenuEvent() - reason: %d\n", event->reason());
+    //    Base::Console().Message("MDIVP::contextMenuEvent() - reason: {}\n", event->reason());
     if (isContextualMenuEnabled) {
         QMenu menu;
         menu.addAction(m_toggleFrameAction);

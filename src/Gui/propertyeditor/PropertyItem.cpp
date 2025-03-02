@@ -634,7 +634,7 @@ void PropertyItem::setPropertyValue(const std::string& value)
     }
     catch (Base::PyException& e) {
         e.ReportException();
-        Base::Console().Error("Stack Trace: %s\n", e.getStackTrace().c_str());
+        Base::Console().Error("Stack Trace: {}\n", e.getStackTrace());
     }
     catch (Base::Exception& e) {
         e.ReportException();

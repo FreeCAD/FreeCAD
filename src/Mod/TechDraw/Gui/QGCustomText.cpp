@@ -115,7 +115,7 @@ double QGCustomText::getWidth()
 }
 QVariant QGCustomText::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-//    Base::Console().Message("QGCT::itemChange - this: %X change: %d\n", this, change);
+//    Base::Console().Message("QGCT::itemChange - this: {} change: {}\n", this, change);
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             setPrettySel();

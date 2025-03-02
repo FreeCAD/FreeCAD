@@ -624,7 +624,7 @@ void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> trackerScenePoints, 
 {
     //in this case, we already know who the parent is.  We don't need QGTracker to tell us.
     (void) qgParent;
-    //    Base::Console().Message("TTL::onTrackerFinished() - parent: %X\n", qgParent);
+    //    Base::Console().Message("TTL::onTrackerFinished() - parent: {}\n", qgParent);
     if (trackerScenePoints.empty()) {
         Base::Console().Error("TaskLeaderLine - no points available\n");
         return;
@@ -677,7 +677,7 @@ void TaskLeaderLine::removeTracker()
 void TaskLeaderLine::onCancelEditClicked(bool clicked)
 {
     Q_UNUSED(clicked);
-//    Base::Console().Message("TTL::onCancelEditClicked() m_pbTrackerState: %d\n",
+//    Base::Console().Message("TTL::onCancelEditClicked() m_pbTrackerState: {}\n",
 //                            m_pbTrackerState);
     abandonEditSession();
     if (m_lineFeat) {

@@ -224,7 +224,7 @@ void TaskRichAnno::setUiEdit()
 
 void TaskRichAnno::onEditorClicked(bool clicked)
 {
-//    Base::Console().Message("TL::onEditorClicked(%d)\n", b);
+//    Base::Console().Message("TL::onEditorClicked({})\n", b);
     Q_UNUSED(clicked);
     m_textDialog = new QDialog(nullptr);
     QString leadText = ui->teAnnoText->toHtml();
@@ -401,7 +401,7 @@ void TaskRichAnno::removeFeature()
 QPointF TaskRichAnno::calcTextStartPos(double scale)
 {
     Q_UNUSED(scale)
-//    Base::Console().Message("TRA::calcTextStartPos(%.3f)\n", scale);
+//    Base::Console().Message("TRA::calcTextStartPos({:.3f})\n", scale);
     double textWidth = 100.0;
     double textHeight = 20.0;
     double horizGap(20.0);

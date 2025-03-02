@@ -275,7 +275,7 @@ void Translator::setLocale(const std::string& language) const
     updateLocaleChange();
 
 #ifdef FC_DEBUG
-    Base::Console().Log("Locale changed to %s => %s\n", qPrintable(loc.bcp47Name()), qPrintable(loc.name()));
+    Base::Console().Log("Locale changed to {} => {}\n", qPrintable(loc.bcp47Name()), qPrintable(loc.name()));
 #endif
 }
 

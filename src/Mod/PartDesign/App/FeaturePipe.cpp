@@ -496,7 +496,7 @@ void Pipe::getContinuousEdges(Part::TopoShape /*TopShape*/, std::vector<std::str
 
     Base::Console().Message("Initial edges:\n");
     for (int i=0; i<SubNames.size(); ++i)
-        Base::Console().Message("Subname: %s\n", SubNames[i].c_str());
+        Base::Console().Message("Subname: {}\n", SubNames[i].c_str());
 
     unsigned int i = 0;
     while(i < SubNames.size())
@@ -533,7 +533,7 @@ void Pipe::getContinuousEdges(Part::TopoShape /*TopShape*/, std::vector<std::str
 
     Base::Console().Message("Final edges:\n");
     for (int i=0; i<SubNames.size(); ++i)
-        Base::Console().Message("Subname: %s\n", SubNames[i].c_str());
+        Base::Console().Message("Subname: {}\n", SubNames[i].c_str());
     */
 }
 
