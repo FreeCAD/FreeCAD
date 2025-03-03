@@ -43,9 +43,9 @@ QSize ActionLabel::sizeHint() const
     QStyleOptionToolButton opt;
     initStyleOption(&opt);
 
-    QString s = text().isEmpty() ? QString::fromLatin1("XXXX") : text();
+    QString s = text().isEmpty() ? QStringLiteral("XXXX") : text();
     QSize textSize = fontMetrics().size(Qt::TextShowMnemonic, s);
-    const int padding = 10;
+    constexpr int padding = 10;
 
     int width = textSize.width();
     if (!icon().isNull()) {

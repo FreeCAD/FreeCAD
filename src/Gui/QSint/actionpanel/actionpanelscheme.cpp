@@ -12,7 +12,7 @@ namespace QSint
 {
 
 
-const QString ActionPanelScheme::minimumStyle = QString::fromLatin1(
+constexpr QString ActionPanelScheme::minimumStyle = QStringLiteral(
     "QSint--ActionGroup QFrame[class='header'] {"
         "border: none;"
     "}"
@@ -49,7 +49,7 @@ QString ActionPanelScheme::systemStyle(const QPalette& p)
     replacements["headerBackground"] = headerBackground.name();
     replacements["groupBackground"] = groupBackground.name();;
 
-    QString style = QString::fromLatin1(
+    QString style = QStringLiteral(
         "QSint--ActionGroup QFrame[class='header'] {"
             "background-color: {headerBackground};"
         "}"
