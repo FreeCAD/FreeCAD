@@ -14,7 +14,7 @@ if (NOT OCCT_CMAKE_FALLBACK)
     # OCCT 7.5 adds this define that causes hundreds of compiler warnings with Qt5.x, so remove it again
     list(FILTER flags EXCLUDE REGEX [[GL_GLEXT_LEGACY]])
     set_property(DIRECTORY PROPERTY COMPILE_DEFINITIONS ${flags})
-endif(NOT OCCT_CMAKE_FALLBACK)
+endif()
 if(OpenCASCADE_FOUND)
     set(OCC_FOUND ${OpenCASCADE_FOUND})
     set(OCC_INCLUDE_DIR ${OpenCASCADE_INCLUDE_DIR})
