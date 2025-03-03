@@ -65,22 +65,45 @@ QString ActionPanelScheme::systemStyle(const QPalette& p)
     return style;
 }
 
-// Draws fold/unfold icons based on the palette
-QPixmap ActionPanelScheme::drawFoldIcon(const QPalette& palette, bool fold, bool /*hover*/) const
+QPixmap ActionPanelScheme::drawFoldIcon(const QPalette& palette, bool fold, bool hover) const
 {
-    QStyle::StandardPixmap iconType = fold ? QStyle::SP_ArrowUp : QStyle::SP_ArrowDown;
-    QIcon icon = qApp->style()->standardIcon(iconType);
-
-    QSize iconSize = headerButtonSize;
-    QPixmap pixmap = icon.pixmap(iconSize);
-    QImage img = pixmap.toImage();
-    img = img.convertToFormat(QImage::Format_ARGB32);
+    QSize bSize = headerButtonSize;
+    QImage img(bSize.width(), bSize.height(), QImage::Format_ARGB32_Premultiplied);
+    img.fill(Qt::transparent);
 
     QPainter painter(&img);
-    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
-    painter.fillRect(img.rect(), palette.color(QPalette::HighlightedText));
-    painter.end();
 
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    qreal penWidth = bSize.width() / 14.0;
+    qreal lef_X = 0.25 * bSize.width();
+    qreal mid_X = 0.50 * bSize.width();
+    qreal rig_X = 0.75 * bSize.width();
+    qreal bot_Y = 0.40 * bSize.height();
+    qreal top_Y = 0.64 * bSize.height();
+
+    if (hover) {
+        penWidth *= 1.8;
+    }
+
+    painter.setBrush(Qt::NoBrush);
+    painter.setPen(QPen(palette.color(QPalette::HighlightedText), penWidth));
+
+    QPolygon chevron;
+    if (fold) {
+        // Upward
+        chevron << QPoint(lef_X, top_Y)
+                << QPoint(mid_X, bot_Y)
+                << QPoint(rig_X, top_Y);
+    } else {
+        // Downward
+        chevron << QPoint(lef_X, bot_Y)
+                << QPoint(mid_X, top_Y)
+                << QPoint(rig_X, bot_Y);
+    }
+
+    painter.drawPolyline(chevron);
+    painter.end();
     return QPixmap::fromImage(img);
 }
 
