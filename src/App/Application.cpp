@@ -678,7 +678,7 @@ Document* Application::openDocument(const char * FileName, DocumentCreateFlags c
 }
 
 Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCanonical) const {
-    if(!path || !path[0])
+    if(!path || path[0] == '\0')
         return nullptr;
     if(DocFileMap.empty()) {
         for(const auto &v : DocMap) {
@@ -2512,7 +2512,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     }
 
     if (vm.count("get-config")) {
-        auto  configKey = vm["get-config"].as<string>();
+        auto configKey = vm["get-config"].as<string>();
         std::stringstream str;
         std::map<std::string,std::string>::iterator pos;
         pos = mConfig.find(configKey);
@@ -2695,8 +2695,8 @@ void Application::initConfig(int argc, char ** argv)
 
         if (SafeMode::SafeModeEnabled()) {
             Base::Console().Message("FreeCAD is running in _SAFE_MODE_.\n"
-                                    "Safe mode temporarily disables your configurations and "
-                                    "addons. Restart the application to exit safe mode.\n\n");
+                              "Safe mode temporarily disables your configurations and "
+                              "addons. Restart the application to exit safe mode.\n\n");
         }
     }
     LoadParameters();
@@ -3020,8 +3020,8 @@ void Application::LoadParameters()
             if (!Py_IsInitialized()) {
                 Base::Console().Warning("   Parameter does not exist, writing initial one\n");
                 Base::Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
-                                        "   or the configuration was deleted or moved. FreeCAD is generating the standard\n"
-                                        "   configuration.\n");
+                                  "   or the configuration was deleted or moved. FreeCAD is generating the standard\n"
+                                  "   configuration.\n");
             }
         }
     }
@@ -3054,8 +3054,8 @@ void Application::LoadParameters()
             if (!Py_IsInitialized()) {
                 Base::Console().Warning("   User settings do not exist, writing initial one\n");
                 Base::Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
-                                        "   or your configuration was deleted or moved. The system defaults\n"
-                                        "   will be automatically generated for you.\n");
+                                  "   or your configuration was deleted or moved. The system defaults\n"
+                                  "   will be automatically generated for you.\n");
             }
         }
     }
@@ -3181,7 +3181,7 @@ void getOldDataLocation(std::map<std::string,std::string>& mConfig, std::vector<
 QString findUserHomePath(const QString& userHome)
 {
     return userHome.isEmpty() ? getUserHome() : userHome;
- }
+}
 
 /*!
  * \brief findPath
@@ -3482,8 +3482,8 @@ std::string Application::FindHomePath(const char* call)
     if (!Py_IsInitialized()) {
         uint32_t sz = 0;
 
-        _NSGetExecutablePath(
-            nullptr, &sz);  // function only returns "sz" if first arg is to small to hold value
+        // function only returns "sz" if first arg is to small to hold value
+        _NSGetExecutablePath(nullptr, &sz);
 
         if (const auto buf = new char[++sz]; _NSGetExecutablePath(buf, &sz) == 0) {
             char resolved[PATH_MAX];
