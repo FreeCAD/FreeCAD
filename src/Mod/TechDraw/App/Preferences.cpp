@@ -176,9 +176,10 @@ int Preferences::lineGroup()
     return getPreferenceGroup("Decorations")->GetInt("LineGroup", 3);  // FC 0.70mm
 }
 
-int Preferences::balloonArrow()
+ArrowType Preferences::balloonArrow()
 {
-    return getPreferenceGroup("Decorations")->GetInt("BalloonArrow", 0);
+    int temp = getPreferenceGroup("Decorations")->GetInt("BalloonArrow", 0);
+    return static_cast<ArrowType>(temp);
 }
 
 double Preferences::balloonKinkLength()
