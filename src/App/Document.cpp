@@ -3807,6 +3807,9 @@ void Document::_removeObject(DocumentObject* pcObject)
     _checkTransaction(pcObject, nullptr, __LINE__);
 
     auto pos = d->objectMap.find(pcObject->getNameInDocument());
+    if (pos == d->objectMap.end()) {
+        FC_ERR("Internal error, could not find " << pcObject->getFullName() << " to remove");
+    }
 
     if (!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
         // Preserve link group children global visibility. See comments in
@@ -4272,15 +4275,15 @@ std::vector<App::DocumentObject*> Document::getRootObjectsIgnoreLinks() const
 {
     std::vector<App::DocumentObject*> ret;
 
-    for (auto objectIt : d->objectArray) {
+    for (const auto &objectIt : d->objectArray) {
         auto list = objectIt->getInList();
         bool noParents = list.empty();
 
         if (!noParents) {
             // App::Document getRootObjects returns the root objects of the dependency graph.
-            // So if an object is referenced by a App::Link, it will not be returned by that
+            // So if an object is referenced by an App::Link, it will not be returned by that
             // function. So here, as we want the tree-root level objects, we check if all the
-            // parents are links. In which case its still a root object.
+            // parents are links. In which case it's still a root object.
             noParents = std::all_of(list.cbegin(), list.cend(), [](App::DocumentObject* obj) {
                 return obj->isDerivedFrom<App::Link>();
             });
@@ -4300,21 +4303,19 @@ void DocumentP::findAllPathsAt(const std::vector<Node>& all_nodes,
                                Path tmp)
 {
     if (std::find(tmp.begin(), tmp.end(), id) != tmp.end()) {
-        Path tmp2(tmp);
-        tmp2.push_back(id);
-        all_paths.push_back(tmp2);
+        tmp.push_back(id);
+        all_paths.push_back(std::move(tmp));
         return;  // a cycle
     }
 
     tmp.push_back(id);
     if (all_nodes[id].empty()) {
-        all_paths.push_back(tmp);
+        all_paths.push_back(std::move(tmp));
         return;
     }
 
     for (size_t i = 0; i < all_nodes[id].size(); i++) {
-        Path tmp2(tmp);
-        findAllPathsAt(all_nodes, all_nodes[id][i], all_paths, tmp2);
+        findAllPathsAt(all_nodes, all_nodes[id][i], all_paths, tmp);
     }
 }
 
@@ -4342,20 +4343,19 @@ Document::getPathsByOutList(const App::DocumentObject* from, const App::Document
 
     size_t index_from = indexMap[from];
     size_t index_to = indexMap[to];
-    Path tmp;
     std::vector<Path> all_paths;
-    DocumentP::findAllPathsAt(all_nodes, index_from, all_paths, tmp);
+    DocumentP::findAllPathsAt(all_nodes, index_from, all_paths, Path());
 
     for (const Path& it : all_paths) {
         Path::const_iterator jt = std::find(it.begin(), it.end(), index_to);
         if (jt != it.end()) {
-            std::list<App::DocumentObject*> path;
+            array.push_back({});
+            auto& path = array.back();
             for (Path::const_iterator kt = it.begin(); kt != jt; ++kt) {
                 path.push_back(d->objectArray[*kt]);
             }
 
             path.push_back(d->objectArray[*jt]);
-            array.push_back(path);
         }
     }
 

@@ -1162,7 +1162,7 @@ void DocumentObject::Save(Base::Writer& writer) const
 
 void DocumentObject::setExpression(const ObjectIdentifier& path, std::shared_ptr<Expression> expr)
 {
-    ExpressionEngine.setValue(path, expr);
+    ExpressionEngine.setValue(path, std::move(expr));
 }
 
 /**
