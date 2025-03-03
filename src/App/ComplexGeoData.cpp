@@ -586,6 +586,11 @@ void ComplexGeoData::restoreStream(std::istream& stream, std::size_t count)
                 // NOLINTNEXTLINE
                 FC_THROWM(Base::RuntimeError, "Failed to restore element map " << _persistenceName);
             }
+            constexpr std::size_t oneGbOfInts {(1 << 30) / sizeof(int)};
+            if (sCount > oneGbOfInts) {
+                // NOLINTNEXTLINE
+                FC_THROWM(Base::RuntimeError, "Failed to restore element map (>1GB) " << _persistenceName);
+            }
             sids.reserve(static_cast<int>(sCount));
             for (std::size_t j = 0; j < sCount; ++j) {
                 long id = 0;
