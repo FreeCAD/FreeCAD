@@ -44,11 +44,11 @@
 #undef max
 
 
-
+constexpr std::array<int, 2> eyes = {0, 1};
 
 CoinRiftWidget::CoinRiftWidget() : QGLWidget()
 {
-    for (int eye = 0; eye < 2; eye++) {
+    for (int eye : eyes) {
         reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye])->TexId = 0;
 #ifdef USE_FRAMEBUFFER
         frameBufferID[eye] = 0;
@@ -110,7 +110,7 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
 
 
     scene = new SoSeparator(0); // Placeholder.
-    for (int eye = 0; eye < 2; eye++) {
+    for (int eye : eyes) {
         rootScene[eye] = new SoSeparator();
         rootScene[eye]->ref();
         camera[eye] = new SoFrustumCamera();
@@ -174,7 +174,7 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
     }
     static const float nearPlane = 0.01;
 
-    for (int eye = 0; eye < 2; eye++) {
+    for (int eye : eyes) {
         camera[eye]->aspectRatio.setValue((eyeRenderDesc[eye].Fov.LeftTan + eyeRenderDesc[eye].Fov.RightTan) /
                 (eyeRenderDesc[eye].Fov.UpTan + eyeRenderDesc[eye].Fov.DownTan));
         camera[eye]->nearDistance.setValue(nearPlane);
@@ -192,7 +192,7 @@ CoinRiftWidget::~CoinRiftWidget()
 #ifdef USE_SO_OFFSCREEN_RENDERER
     delete renderer;
 #endif
-    for (int eye = 0; eye < 2; eye++) {
+    for (int eye : eyes) {
         rootScene[eye]->unref();
         ovrGLTextureData *texData = reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye]);
         if (texData->TexId) {
@@ -259,7 +259,7 @@ void CoinRiftWidget::initializeGL()
 
     // Create rendering target textures.
     glEnable(GL_TEXTURE_2D);
-    for (int eye = 0; eye < 2; eye++) {
+    for (int eye : eyes) {
 #ifdef USE_FRAMEBUFFER
         OVR::CAPI::GL::glGenFramebuffers(1, &frameBufferID[eye]);
         OVR::CAPI::GL::glBindFramebuffer(GL_FRAMEBUFFER_EXT, frameBufferID[eye]);
