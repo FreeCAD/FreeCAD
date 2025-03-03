@@ -383,7 +383,7 @@ PyObject* DocumentObjectPy::setExpression(PyObject* args)
             shared_expr->comment = comment;
         }
 
-        getDocumentObjectPtr()->setExpression(p, shared_expr);
+        getDocumentObjectPtr()->setExpression(p, std::move(shared_expr));
         Py_Return;
     }
 

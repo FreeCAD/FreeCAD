@@ -1728,7 +1728,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     : UnitExpression(_owner)
     , f(_f)
     , fname(std::move(name))
-    , args(_args)
+    , args(std::move(_args))
 {
     switch (f) {
     case ABS:
@@ -2643,7 +2643,7 @@ Expression *FunctionExpression::simplify() const
         return eval();
     }
     else
-        return new FunctionExpression(owner, f, std::string(fname), a);
+        return new FunctionExpression(owner, f, std::string(fname), std::move(a));
 }
 
 /**
@@ -2811,7 +2811,7 @@ Expression *FunctionExpression::_copy() const
         a.push_back((*i)->copy());
         ++i;
     }
-    return new FunctionExpression(owner, f, std::string(fname), a);
+    return new FunctionExpression(owner, f, std::string(fname), std::move(a));
 }
 
 void FunctionExpression::_visit(ExpressionVisitor &v)
