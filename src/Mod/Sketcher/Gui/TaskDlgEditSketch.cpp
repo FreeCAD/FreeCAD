@@ -146,6 +146,10 @@ bool TaskDlgEditSketch::reject()
     return true;
 }
 
+QDialogButtonBox::StandardButtons TaskDlgEditSketch::getStandardButtons() const
+{
+    return QDialogButtonBox::Close;
+}
 
 void TaskDlgEditSketch::autoClosedOnClosedView()
 {
