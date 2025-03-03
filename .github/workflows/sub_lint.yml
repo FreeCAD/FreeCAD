@@ -264,6 +264,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
+
       - name: Make needed directories, files and initializations
         id: Init
         run: |
@@ -271,7 +272,9 @@ jobs:
           mkdir -p ${{ env.fixesdir }}
           mkdir -p ${{ env.reportdir }}
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
-    # Run generic lints
+
+    # Generic lints steps
+
       - name: Check for non Unix line ending
         if: inputs.checkLineendings && always()
         continue-on-error: ${{ inputs.lineendingsFailSilent }}
@@ -302,105 +305,26 @@ jobs:
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}" \
             --log-dir "${{ env.logdir }}"
 
+    # Python linting steps
+
       - name: Pylint
         if: inputs.checkPylint && inputs.changedPythonFiles != '' && always()
         continue-on-error: ${{ inputs.pylintFailSilent }}
         run: |
-          pylintErrors=0
-          pylintWarnings=0
-          pylintRefactorings=0
-          pylintConventions=0
-          pip install --break-system-packages pylint
-          # List enabled pylint checks
-          pylint --list-msgs-enabled > ${{ env.logdir }}pylint-enabled-checks.log
-          # Run pylint on all python files
-          set +e
-          pylint --disable=${{ inputs.pylintDisable }} ${{ inputs.changedPythonFiles }} > ${{ env.logdir }}pylint.log
-          exitCode=$?
-          set -e
-          # If pylint has run successfully, write the Log to the console with the Problem Matchers
-          if [ -f ${{ env.logdir }}pylint.log ]
-          then
-            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/pylintError.json"
-            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/pylintWarning.json"
-            cat ${{ env.logdir }}pylint.log
-            echo "::remove-matcher owner=pylint-error::"
-            echo "::remove-matcher owner=pylint-warning::"
-            pylintErrors=$( grep -oP '(?<=error      \|)\d+' ${{ env.logdir }}pylint.log) || true # grep returns 0 if no match is found
-            pylintWarnings=$( grep -oP '(?<=warning    \|)\d+' ${{ env.logdir }}pylint.log) || true
-            pylintRefactorings=$( grep -oP '(?<=refactor   \|)\d+' ${{ env.logdir }}pylint.log) || true
-            pylintConventions=$( grep -oP '(?<=convention \|)\d+' ${{ env.logdir }}pylint.log) || true
-          fi
-          echo "Found $pylintErrors errors, $pylintWarnings warnings, $pylintRefactorings refactorings, $pylintConventions conventions"
-          # Write the report
-          if [ $pylintErrors -gt 0 ]
-          then
-            echo "<details><summary>:fire: Pylint found :fire: $pylintErrors errors, :warning: $pylintWarnings warnings, :construction: $pylintRefactorings refactorings and :pencil2: $pylintConventions conventions</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          elif [ $pylintWarnings -gt 0 ]
-          then
-            echo "<details><summary>:warning: Pylint found :warning: $pylintWarnings warnings, :construction: $pylintRefactorings refactorings and :pencil2: $pylintConventions conventions</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          elif [ $pylintRefactorings -gt 0 ]
-          then
-            echo "<details><summary>:construction: Pylint found :construction: $pylintRefactorings refactorings and :pencil2: $pylintConventions conventions</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          elif [ $pylintConventions -gt 0 ]
-          then
-            echo "<details><summary>:pencil2: Pylint found :pencil2: $pylintConventions conventions</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          else
-            echo "<details><summary>:heavy_check_mark: No pylint errors found </summary>  " >> ${{env.reportdir}}${{ env.reportfilename }}
-          fi
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          # List enabled checks in the report
-          echo "<details><summary>:information_source: Enabled checks</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          cat ${{ env.logdir }}pylint-enabled-checks.log >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          cat ${{ env.logdir }}pylint.log >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          # Exit the step with appropriate code
-          [ $pylintErrors -eq 0 ]
-      - name: Black (Python)
+          python3 tools/lint/pylint.py \
+            --files "${{ inputs.changedPythonFiles }}" \
+            --disable "${{ inputs.pylintDisable }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+      - name: Black
         if: inputs.checkBlack && inputs.changedPythonFiles != '' && always()
         continue-on-error: ${{ inputs.blackFailSilent }}
         run: |
-          blackReformats=0
-          blackFails=0
-          pip install --break-system-packages black
-          set +e
-          black --line-length 100 --check ${{ inputs.changedPythonFiles }} &> ${{ env.logdir }}black.log
-          exitCode=$?
-          set -e
-          # If black has run successfully, write the Log to the console with the Problem Matchers
-          if [ -f ${{ env.logdir }}black.log ]
-          then
-            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/blackWarning.json"
-            cat ${{ env.logdir }}black.log
-            echo "::remove-matcher owner=black-warning::"
-            blackReformats=$( grep -oP '\d+(?= fil.+ would be reformatted)' ${{ env.logdir }}black.log) || true # grep returns 0 if no match is found
-            blackFails=$( grep -oP '\d+(?= fil.+ would fail to reformat)' ${{ env.logdir }}black.log) || true
-          fi
-          echo "Found $blackReformats files would be reformatted and $blackFails files would fail to reformat"
-          # Write the report
-          if [ $blackReformats -gt 0 ] || [ $blackFails -gt 0 ] #FIXME purpose of testing $blackFails as we don't use it then
-          then
-            echo "<details><summary>:pencil2: Black would reformat $blackReformats files</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          else
-            echo "<details><summary>:heavy_check_mark: Black would reformat no file</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          fi
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          cat ${{ env.logdir }}black.log >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          # Exit the step with appropriate code
-          [ $exitCode -eq 0 ]
-    # Run C++ lints
+          python3 tools/lint/black.py \
+            --files "${{ inputs.changedPythonFiles }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
       - name: Install FreeCAD dependencies
         if: inputs.changedCppFiles != '' && always()
         run: |
