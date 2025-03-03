@@ -156,13 +156,13 @@ macro(generate_from_py BASE_NAME)
     if(NOT EXISTS "${SOURCE_CPP_PATH}")
         # assures the source files are generated at least once
         message(STATUS "${SOURCE_CPP_PATH}")
-        execute_process(COMMAND "${PYTHON_EXECUTABLE}" "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}"
+        execute_process(COMMAND "${Python3_EXECUTABLE}" "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}"
                         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" COMMAND_ERROR_IS_FATAL ANY
         )
     endif()
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}_.h" "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}_.cpp"
-        COMMAND ${PYTHON_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.pyi
+        COMMAND ${Python3_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.pyi
         MAIN_DEPENDENCY "${BASE_NAME}.pyi"
         DEPENDS
         "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateClassPyExport.py"

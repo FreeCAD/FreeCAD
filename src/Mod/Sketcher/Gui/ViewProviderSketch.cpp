@@ -141,7 +141,7 @@ void ViewProviderSketch::ParameterObserver::updateColorProperty(const std::strin
 
     colorprop->setValue(r, g, b);
 
-    App::Color elementAppColor = colorprop->getValue();
+    Base::Color elementAppColor = colorprop->getValue();
     unsigned long color = (unsigned long)(elementAppColor.getPackedValue());
     color = hGrp->GetUnsigned(string.c_str(), color);
     elementAppColor.setPackedValue((uint32_t)color);
@@ -345,7 +345,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
          {[this, packedDefaultGridColor](const std::string& string,
                                          [[maybe_unused]] App::Property* property) {
               auto v = getSketcherGeneralParameter(string, packedDefaultGridColor);
-              auto color = App::Color(v);
+              auto color = Base::Color(v);
               Client.setGridLineColor(color);
           },
           nullptr}},
@@ -353,7 +353,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
          {[this, packedDefaultGridColor](const std::string& string,
                                          [[maybe_unused]] App::Property* property) {
               auto v = getSketcherGeneralParameter(string, packedDefaultGridColor);
-              auto color = App::Color(v);
+              auto color = Base::Color(v);
               Client.setGridDivLineColor(color);
           },
           nullptr}},
@@ -2941,7 +2941,7 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
     // that meaans that we need to run migration strategy and come up with a proper value
     if (!AutoColor.isTouched()) {
         // white is the normally provided default for FreeCAD sketch colors
-        auto white = App::Color(1.f, 1.f, 1.f, 1.f);
+        auto white = Base::Color(1.f, 1.f, 1.f, 1.f);
 
         auto colorWasNeverChanged =
             LineColor.getValue() == white &&

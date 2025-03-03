@@ -1365,7 +1365,7 @@ void Application::addImportType(const char* Type, const char* ModuleName)
         std::string::size_type next = item.filter.find_first_of(" )", pos+1);
         std::string::size_type len = next-pos-2;
         std::string type = item.filter.substr(pos+2,len);
-        item.types.push_back(type);
+        item.types.push_back(std::move(type));
         pos = item.filter.find("*.", next);
     }
 
@@ -1373,12 +1373,12 @@ void Application::addImportType(const char* Type, const char* ModuleName)
     if (strncmp(Type, "FreeCAD", 7) == 0) {
         std::string AppName = Config()["ExeName"];
         AppName += item.filter.substr(7);
-        item.filter = AppName;
+        item.filter = std::move(AppName);
         // put to the front of the array
-        _mImportTypes.insert(_mImportTypes.begin(),item);
+        _mImportTypes.insert(_mImportTypes.begin(),std::move(item));
     }
     else {
-        _mImportTypes.push_back(item);
+        _mImportTypes.push_back(std::move(item));
     }
 }
 
@@ -1488,7 +1488,7 @@ void Application::addExportType(const char* Type, const char* ModuleName)
         std::string::size_type next = item.filter.find_first_of(" )", pos+1);
         std::string::size_type len = next-pos-2;
         std::string type = item.filter.substr(pos+2,len);
-        item.types.push_back(type);
+        item.types.push_back(std::move(type));
         pos = item.filter.find("*.", next);
     }
 
@@ -1496,12 +1496,12 @@ void Application::addExportType(const char* Type, const char* ModuleName)
     if (strncmp(Type, "FreeCAD", 7) == 0) {
         std::string AppName = Config()["ExeName"];
         AppName += item.filter.substr(7);
-        item.filter = AppName;
+        item.filter = std::move(AppName);
         // put to the front of the array
-        _mExportTypes.insert(_mExportTypes.begin(),item);
+        _mExportTypes.insert(_mExportTypes.begin(),std::move(item));
     }
     else {
-        _mExportTypes.push_back(item);
+        _mExportTypes.push_back(std::move(item));
     }
 }
 
@@ -1670,7 +1670,7 @@ void Application::slotBeforeRecompute(const Document& doc)
 
 void Application::slotOpenTransaction(const Document& d, string s)
 {
-    this->signalOpenTransaction(d, s);
+    this->signalOpenTransaction(d, std::move(s));
 }
 
 void Application::slotCommitTransaction(const Document& d)
@@ -1748,7 +1748,7 @@ void Application::destruct()
 
     // now save all other parameter files
     auto& paramMgr = _pcSingleton->mpcPramManager;
-    for (auto it : paramMgr) {
+    for (const auto &it : paramMgr) {
         if ((it.second != _pcSysParamMngr) && (it.second != _pcUserParamMngr)) {
             if (it.second->HasSerializer() && !it.second->IgnoreSave()) {
                 Base::Console().Log("Saving %s...\n", it.first.c_str());
@@ -2454,7 +2454,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         for (const auto & It : Macros)
             temp += It + ";";
         temp.erase(temp.end()-1);
-        mConfig["AdditionalMacroPaths"] = temp;
+        mConfig["AdditionalMacroPaths"] = std::move(temp);
     }
 
     if (vm.count("python-path")) {
@@ -2489,8 +2489,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     }
 
     if (vm.count("output")) {
-        string file = vm["output"].as<string>();
-        mConfig["SaveFile"] = file;
+        mConfig["SaveFile"] = vm["output"].as<string>();
     }
 
     if (vm.count("hidden")) {
@@ -2524,7 +2523,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         else if (testCase.empty()) {
             testCase = "TestApp.PrintAll";
         }
-        mConfig["TestCase"] = testCase;
+        mConfig["TestCase"] = std::move(testCase);
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
         mConfig["ExitTests"] = vm.count("run-open") == 0  ? "yes" : "no";
@@ -2561,7 +2560,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
             if (pos != std::string::npos) {
                 std::string key = it.substr(0, pos);
                 std::string val = it.substr(pos + 1);
-                mConfig[key] = val;
+                mConfig[key] = std::move(val);
             }
         }
     }
@@ -2876,9 +2875,7 @@ std::list<std::string> Application::getCmdLineFiles()
         // getting file name
         std::ostringstream temp;
         temp << "OpenFile" << i;
-
-        std::string file(mConfig[temp.str()]);
-        files.push_back(file);
+        files.emplace_back(mConfig[temp.str()]);
     }
 
     return files;
@@ -3405,7 +3402,7 @@ void Application::ExtractUserPath()
 
     // Set the default macro directory
     //
-    std::vector<std::string> macrodirs = subdirs;
+    std::vector<std::string> macrodirs = std::move(subdirs);  // Last use in this method, just move
     macrodirs.emplace_back("Macro");
     std::filesystem::path macro = findPath(dataHome, customData, macrodirs, true);
     mConfig["UserMacroPath"] = Base::FileInfo::pathToString(macro) + PATHSEP;

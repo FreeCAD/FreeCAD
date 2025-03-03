@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 #include <boost/tokenizer.hpp>
+#include <boost/regex.hpp>
 #include <deque>
 #include <memory>
 #include <sstream>
@@ -110,7 +111,15 @@ Sheet::Sheet()
 
 Sheet::~Sheet()
 {
-    clearAll();
+    try {
+        clearAll();
+    }
+    catch (...) {
+        // Don't let an exception propagate out of a destructor (calls terminate())
+        Base::Console().Error(
+            "clearAll() resulted in an exception when deleting the spreadsheet : %s\n",
+            getNameInDocument());
+    }
 }
 
 /**

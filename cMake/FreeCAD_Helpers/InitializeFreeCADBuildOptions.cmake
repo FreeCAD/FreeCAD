@@ -77,8 +77,6 @@ macro(InitializeFreeCADBuildOptions)
                  "Community Edition"
     )
 
-    configure_file(${CMAKE_SOURCE_DIR}/src/QtOpenGL.h.cmake ${CMAKE_BINARY_DIR}/src/QtOpenGL.h)
-
     option(BUILD_DESIGNER_PLUGIN "Build and install the designer plugin" OFF)
 
     if(APPLE)

@@ -720,14 +720,14 @@ void PropertySheet::setStyle(CellAddress address, const std::set<std::string>& _
     cell->setStyle(_style);
 }
 
-void PropertySheet::setForeground(CellAddress address, const App::Color& color)
+void PropertySheet::setForeground(CellAddress address, const Base::Color& color)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);
     cell->setForeground(color);
 }
 
-void PropertySheet::setBackground(CellAddress address, const App::Color& color)
+void PropertySheet::setBackground(CellAddress address, const Base::Color& color)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);
@@ -787,7 +787,7 @@ void PropertySheet::setAlias(CellAddress address, const std::string& alias)
         App::ObjectIdentifier key(owner, oldAlias);
         App::ObjectIdentifier value(owner, alias.empty() ? address.toString() : alias);
 
-        m[key] = value;
+        m[key] = std::move(value);
 
         owner->getDocument()->renameObjectIdentifiers(m);
     }
@@ -1397,7 +1397,7 @@ void PropertySheet::addDependencies(CellAddress key)
 
                         // Insert into maps
                         propertyNameToCellMap[propName].insert(key);
-                        cellToPropertyNameMap[key].insert(propName);
+                        cellToPropertyNameMap[key].insert(std::move(propName));
                     }
                 }
             }

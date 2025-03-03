@@ -78,6 +78,7 @@
 #include <mutex>
 #include <bitset>
 #include <algorithm>
+#include <iomanip>
 
 // streams
 #include <iostream>

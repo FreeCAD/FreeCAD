@@ -76,7 +76,7 @@ private:
                     int dep);
     void createShape(const TDF_Label& label, const TopLoc_Location&, const std::string&);
     void createShape(const TopoDS_Shape& label, const TopLoc_Location&, const std::string&);
-    virtual void applyColors(Part::Feature*, const std::vector<App::Color>&)
+    virtual void applyColors(Part::Feature*, const std::vector<Base::Color>&)
     {}
 
 private:

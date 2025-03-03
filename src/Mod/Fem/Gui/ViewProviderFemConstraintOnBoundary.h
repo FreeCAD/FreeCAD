@@ -46,9 +46,9 @@ public:
     void highlightReferences(const bool on) override;
 
 private:
-    std::map<Part::Feature*, std::vector<App::Color>> originalPointColors;
-    std::map<Part::Feature*, std::vector<App::Color>> originalLineColors;
-    std::map<Part::Feature*, std::vector<App::Color>> originalFaceColors;
+    std::map<Part::Feature*, std::vector<Base::Color>> originalPointColors;
+    std::map<Part::Feature*, std::vector<Base::Color>> originalLineColors;
+    std::map<Part::Feature*, std::vector<Base::Color>> originalFaceColors;
 };
 
 }  // namespace FemGui

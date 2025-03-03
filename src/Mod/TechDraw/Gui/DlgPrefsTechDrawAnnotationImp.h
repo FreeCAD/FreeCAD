@@ -31,6 +31,7 @@
 
 namespace TechDraw {
 class LineGenerator;
+enum class ArrowType : int;
 }
 
 namespace TechDrawGui {
@@ -53,7 +54,7 @@ protected:
     void loadSettings() override;
     void changeEvent(QEvent *e) override;
 
-    int prefBalloonArrow() const;
+    TechDraw::ArrowType prefBalloonArrow() const;
     int prefBalloonShape() const;
     int prefMattingStyle() const;
     void loadLineStyleBoxes();

@@ -43,6 +43,9 @@ namespace TechDraw
 const int MAXPROJECTIONCOUNT = 10;
 
 class DrawProjGroupItem;
+enum class ProjDirection : int;
+enum class SpinDirection : int;
+enum class RotationMotion : int;
 
 /**
  * Class super-container for managing a collection of DrawProjGroupItem
@@ -123,12 +126,12 @@ public:
     Base::Vector3d getAnchorDirection();
     TechDraw::DrawProjGroupItem* getAnchor();
     std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(DrawProjGroupItem* view);
-    std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(std::string viewType);
+    std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(TechDraw::ProjDirection viewType);
 
     void updateSecondaryDirs();
 
-    void rotate(const std::string &rotationdirection);
-    void spin(const std::string &spindirection);
+    void rotate(const TechDraw::RotationMotion& motion);
+    void spin(const TechDraw::SpinDirection& spindirection);
     void spin(double angle);
 
     void dumpISO(const char * title);

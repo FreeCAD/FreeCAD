@@ -57,6 +57,7 @@ class StartMigrator2024:
         self._remove_toolbars()
         self._remove_deprecated_parameters()
         self._mark_complete()
+        self._migrate_custom_folder()
         FreeCAD.Console.PrintMessage("done.\n")
 
     # If the old Start workbench was set as the Autoload Module, reconfigure it so the Start command is run at startup,
@@ -99,19 +100,26 @@ class StartMigrator2024:
         if "WebWorkbench" in groups:
             tux_prefs.RemGroup("WebWorkbench")
 
+    # In FreeCAD 1.1, the custom folder parameter was renamed from "ShowCustomFolder"
+    # to "CustomFolder". The new parameter does not yet support multiple locations.
+    def _migrate_custom_folder(self):
+        custom_folder = self.start_prefs.GetString("ShowCustomFolder", "")
+
+        # Note: multiple locations separated by ";;" are not supported at this time
+        # Use the first listed location and discard the rest
+        return custom_folder.split(";;")[0]
+
     # Delete old Start preferences
     def _remove_deprecated_parameters(self):
         show_on_startup = self.start_prefs.GetBool("ShowOnStartup", True)
         show_examples = self.start_prefs.GetBool("ShowExamples", True)
         close_start = self.start_prefs.GetBool("closeStart", False)
-        custom_folder = self.start_prefs.GetString(
-            "ShowCustomFolder", ""
-        )  # Note: allow multiple locations separated by ";;"
+        custom_folder = self._migrate_custom_folder()
         self.start_prefs.Clear()
         self.start_prefs.SetBool("ShowOnStartup", show_on_startup)
         self.start_prefs.SetBool("ShowExamples", show_examples)
         self.start_prefs.SetBool("CloseStart", close_start)
-        self.start_prefs.SetString("ShowCustomFolder", custom_folder)
+        self.start_prefs.SetString("CustomFolder", custom_folder)
 
     # Indicate that this migration has been run
     def _mark_complete(self):

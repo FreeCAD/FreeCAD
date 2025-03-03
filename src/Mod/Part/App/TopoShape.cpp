@@ -1007,7 +1007,7 @@ void TopoShape::exportStl(const char *filename, double deflection) const
 }
 
 void TopoShape::exportFaceSet(double dev, double ca,
-                              const std::vector<App::Color>& colors,
+                              const std::vector<Base::Color>& colors,
                               std::ostream& str) const
 {
     Base::InventorBuilder builder(str);
@@ -1056,7 +1056,7 @@ void TopoShape::exportFaceSet(double dev, double ca,
         Base::ShapeHintsItem shapeHints{static_cast<float>(ca)};
         builder.addNode(shapeHints);
         if (supportFaceColors) {
-            App::Color c = colors[index];
+            Base::Color c = colors[index];
             Base::MaterialItem material;
             material.setDiffuseColor({Base::ColorRGB{c.r, c.g, c.b}});
             material.setTransparency({c.a});

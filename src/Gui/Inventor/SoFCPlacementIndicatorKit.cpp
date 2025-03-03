@@ -50,7 +50,7 @@
 #include <Utilities.h>
 #include <ViewParams.h>
 #include <ViewProvider.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Base/Placement.h>
 #include <Base/Vector3D.h>
 
@@ -152,7 +152,7 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
                                 Base::Vector3d axis,
                                 uint32_t packedColor,
                                 const double offset) {
-        App::Color axisColor(packedColor);
+        Base::Color axisColor(packedColor);
 
         auto sep = new SoSeparator;
 
@@ -265,7 +265,7 @@ SoSeparator* SoFCPlacementIndicatorKit::createPlaneIndicator()
     pcCylinder->radius = planeIndicatorRadius;
     pcCylinder->parts = SoCylinder::TOP;
 
-    const auto gray = App::Color(0.75f, 0.75f, 0.75f);
+    const auto gray = Base::Color(0.75f, 0.75f, 0.75f);
 
     auto pcMaterial = new SoMaterial();
     pcMaterial->diffuseColor.setValue(Base::convertTo<SbColor>(gray));

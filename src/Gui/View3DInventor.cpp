@@ -93,7 +93,7 @@ void GLOverlayWidget::paintEvent(QPaintEvent*)
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView)
 
 View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
-                               const QtGLWidget* sharewidget, Qt::WindowFlags wflags)
+                               const QOpenGLWidget* sharewidget, Qt::WindowFlags wflags)
     : MDIView(pcDocument, parent, wflags), _viewerPy(nullptr)
 {
     stack = new QStackedWidget(this);
@@ -106,7 +106,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     bool smoothing = false;
     bool glformat = false;
     int samples = View3DInventorViewer::getNumSamples();
-    QtGLFormat f;
+    QSurfaceFormat f;
 
     if (samples > 1) {
         glformat = true;

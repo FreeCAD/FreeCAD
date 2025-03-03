@@ -291,7 +291,7 @@ void SoFCColorBar::customize(SoFCColorBarBase* child)
     }
 }
 
-App::Color SoFCColorBar::getColor( float fVal ) const
+Base::Color SoFCColorBar::getColor( float fVal ) const
 {
     return this->getActiveBar()->getColor( fVal );
 }

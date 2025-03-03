@@ -411,10 +411,9 @@ bool MeshRenderer::matchMaterial(SoState* state) const
     return p->pcolors == pcolors;
 }
 
-bool MeshRenderer::shouldRenderDirectly(bool direct)
+bool MeshRenderer::shouldRenderDirectly([[maybe_unused]] bool direct)
 {
 #ifdef RENDER_GL_VAO
-    Q_UNUSED(direct);
     return false;
 #else
     return direct;
@@ -754,7 +753,7 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction* action)
         numcolors = gl->getNumDiffuse();
         transp = gl->getTransparencyPointer();
         numtransp = gl->getNumTransparencies();
-        Q_UNUSED(numtransp);
+        (void)numtransp;
     }
 
     std::vector<float> face_vertices;

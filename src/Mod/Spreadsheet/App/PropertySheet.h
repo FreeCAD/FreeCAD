@@ -98,9 +98,9 @@ public:
 
     void setStyle(App::CellAddress address, const std::set<std::string>& _style);
 
-    void setForeground(App::CellAddress address, const App::Color& color);
+    void setForeground(App::CellAddress address, const Base::Color& color);
 
-    void setBackground(App::CellAddress address, const App::Color& color);
+    void setBackground(App::CellAddress address, const Base::Color& color);
 
     void setDisplayUnit(App::CellAddress address, const std::string& unit);
 

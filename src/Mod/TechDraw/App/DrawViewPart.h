@@ -77,8 +77,33 @@ class GeomFormat;
 
 namespace TechDraw
 {
-
 class DrawViewSection;
+
+
+enum class ProjDirection {
+    Front,
+    Left,
+    Right,
+    Rear,
+    Top,
+    Bottom,
+    FrontTopLeft,
+    FrontTopRight,
+    FrontBottomLeft,
+    FrontBottomRight
+};
+
+enum class RotationMotion {
+    Left,
+    Right,
+    Up,
+    Down
+};
+
+enum class SpinDirection {
+    CW,
+    CCW
+};
 
 class TechDrawExport DrawViewPart: public DrawView, public CosmeticExtension
 {
@@ -172,10 +197,10 @@ public:
     virtual Base::Vector3d getLegacyX(const Base::Vector3d& pt, const Base::Vector3d& axis,
                                       const bool flip = true) const;
 
-    void rotate(const std::string& rotationdirection);
-    void spin(const std::string& spindirection);
+    void rotate(const RotationMotion& motion);
+    void spin(const SpinDirection& spindirection);
     void spin(double val);
-    std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(std::string viewType);
+    std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(ProjDirection viewType);
     Base::Vector3d dir2vec(gp_Dir d);
 
     gp_Ax2 localVectorToCS(const Base::Vector3d localUnit) const;

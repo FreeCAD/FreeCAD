@@ -136,9 +136,9 @@ public:
             "User parameter:BaseApp/Preferences/Mod/Start");
 
         auto getUserColor = [&hGrp](QColor color, const char* parameter) {
-            uint32_t packed = App::Color::asPackedRGB<QColor>(color);
+            uint32_t packed = Base::Color::asPackedRGB<QColor>(color);
             packed = hGrp->GetUnsigned(parameter, packed);
-            color = App::Color::fromPackedRGB<QColor>(packed);
+            color = Base::Color::fromPackedRGB<QColor>(packed);
             return color;
         };
 
@@ -193,15 +193,6 @@ StartView::StartView(QWidget* parent)
         "User parameter:BaseApp/Preferences/Mod/Start");
     auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);   // NOLINT
     auto showExamples = hGrp->GetBool("ShowExamples", true);  // NOLINT
-
-    // Migrate legacy property, can be removed in later releases
-    std::string legacyCustomFolder(hGrp->GetASCII("ShowCustomFolder", ""));
-    if (!legacyCustomFolder.empty()) {
-        hGrp->SetASCII("CustomFolder", legacyCustomFolder);
-        hGrp->RemoveASCII("ShowCustomFolder");
-        Base::Console().Message("v1.1: renamed ShowCustomFolder parameter to CustomFolder\n");
-    }
-    // End of migration code
 
     // Verify that the folder specified in preferences is available before showing it
     std::string customFolder(hGrp->GetASCII("CustomFolder", ""));

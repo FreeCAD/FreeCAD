@@ -110,21 +110,8 @@ Base::Vector3d LineSet::getUnitDir()
 
 Base::Vector3d LineSet::getUnitOrtho()
 {
-    Base::Vector3d result;
     Base::Vector3d unit = getUnitDir();
-    Base::Vector3d X(1.0, 0.0, 0.0);
-    Base::Vector3d Y(0.0, 1.0, 0.0);
-    if (unit.IsEqual(X, 0.000001)) {
-        result = Y;
-    } else if (unit.IsEqual(Y, 0.000001)) {
-        result = X;
-    } else {
-        double unitX = unit.x;
-        double unitY = unit.y;
-        result = Base::Vector3d(unitY, -unitX, 0.0);  //perpendicular
-    }
-    result.Normalize();   //probably redundant
-    return result;
+    return Base::Vector3d(-unit.y, unit.x, 0.0);
 }
 
 

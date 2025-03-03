@@ -70,6 +70,8 @@
 # include <GL/gl.h>
 #endif
 
+#include <QOpenGLWidget>
+
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/ElementNamingUtils.h>
@@ -788,7 +790,7 @@ void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
         // this is called when a selection gate forbade to select an object
         // and the user moved the mouse to an empty area
         this->preSelection = -1;
-        QtGLWidget* window;
+        QOpenGLWidget* window;
         SoState *state = action->getState();
         SoGLWidgetElement::get(state, window);
         QWidget* parent = window ? window->parentWidget() : nullptr;

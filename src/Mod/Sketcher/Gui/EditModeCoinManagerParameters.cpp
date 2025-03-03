@@ -24,7 +24,7 @@
 
 #include "Mod/Sketcher/App/ExternalGeometryFacade.h"
 
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Gui/ViewParams.h>
 
 #include "EditModeCoinManagerParameters.h"
@@ -59,10 +59,10 @@ SbColor DrawingParameters::CreateCurveColor(0.5f, 0.5f, 0.5f);  // ##7f7f7f -> (
 namespace
 {  // Anonymous namespace to avoid making those variables global
 unsigned long HColorLong = Gui::ViewParams::instance()->getAxisXColor();
-App::Color Hcolor = App::Color(static_cast<uint32_t>(HColorLong));
+Base::Color Hcolor = Base::Color(static_cast<uint32_t>(HColorLong));
 
 unsigned long VColorLong = Gui::ViewParams::instance()->getAxisYColor();
-App::Color Vcolor = App::Color(static_cast<uint32_t>(VColorLong));
+Base::Color Vcolor = Base::Color(static_cast<uint32_t>(VColorLong));
 }  // namespace
 SbColor DrawingParameters::CrossColorH(Hcolor.r, Hcolor.g, Hcolor.b);
 SbColor DrawingParameters::CrossColorV(Vcolor.r, Vcolor.g, Vcolor.b);

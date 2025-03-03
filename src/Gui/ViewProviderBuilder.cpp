@@ -97,7 +97,7 @@ ViewProviderColorBuilder::~ViewProviderColorBuilder() = default;
 void ViewProviderColorBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& node) const
 {
     const auto color = static_cast<const App::PropertyColorList*>(prop);
-    const std::vector<App::Color>& val = color->getValues();
+    const std::vector<Base::Color>& val = color->getValues();
     unsigned long i=0;
 
     auto material = new SoMaterial();

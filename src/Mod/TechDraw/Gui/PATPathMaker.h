@@ -50,6 +50,7 @@ public:
 
 protected:
     QGraphicsPathItem* geomToLine(TechDraw::BaseGeomPtr base, TechDraw::LineSet& ls);
+    QGraphicsPathItem* simpleLine(TechDraw::BaseGeomPtr base);
     QGraphicsPathItem* geomToStubbyLine(TechDraw::BaseGeomPtr base, double offset, TechDraw::LineSet& ls);
     QGraphicsPathItem* lineFromPoints(Base::Vector3d start, Base::Vector3d end, TechDraw::DashSpec ds);
     std::vector<double> offsetDash(const std::vector<double> dv, const double offset);

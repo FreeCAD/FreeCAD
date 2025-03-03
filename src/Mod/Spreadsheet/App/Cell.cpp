@@ -467,13 +467,13 @@ bool Cell::getStyle(std::set<std::string>& _style) const
  *
  */
 
-void Cell::setForeground(const App::Color& color)
+void Cell::setForeground(const Base::Color& color)
 {
     if (color != foregroundColor) {
         PropertySheet::AtomicPropertyChange signaller(*owner);
 
         foregroundColor = color;
-        setUsed(FOREGROUND_COLOR_SET, foregroundColor != App::Color(0, 0, 0, 1));
+        setUsed(FOREGROUND_COLOR_SET, foregroundColor != Base::Color(0, 0, 0, 1));
         setDirty();
 
         signaller.tryInvoke();
@@ -485,7 +485,7 @@ void Cell::setForeground(const App::Color& color)
  *
  */
 
-bool Cell::getForeground(App::Color& color) const
+bool Cell::getForeground(Base::Color& color) const
 {
     color = foregroundColor;
     return isUsed(FOREGROUND_COLOR_SET);
@@ -496,13 +496,13 @@ bool Cell::getForeground(App::Color& color) const
  *
  */
 
-void Cell::setBackground(const App::Color& color)
+void Cell::setBackground(const Base::Color& color)
 {
     if (color != backgroundColor) {
         PropertySheet::AtomicPropertyChange signaller(*owner);
 
         backgroundColor = color;
-        setUsed(BACKGROUND_COLOR_SET, backgroundColor != App::Color(1, 1, 1, 0));
+        setUsed(BACKGROUND_COLOR_SET, backgroundColor != Base::Color(1, 1, 1, 0));
         setDirty();
 
         signaller.tryInvoke();
@@ -516,7 +516,7 @@ void Cell::setBackground(const App::Color& color)
  *
  */
 
-bool Cell::getBackground(App::Color& color) const
+bool Cell::getBackground(Base::Color& color) const
 {
     color = backgroundColor;
     return isUsed(BACKGROUND_COLOR_SET);
@@ -543,7 +543,7 @@ void Cell::setDisplayUnit(const std::string& unit)
     if (newDisplayUnit != displayUnit) {
         PropertySheet::AtomicPropertyChange signaller(*owner);
 
-        displayUnit = newDisplayUnit;
+        displayUnit = std::move(newDisplayUnit);
         setUsed(DISPLAY_UNIT_SET, !displayUnit.isEmpty());
         setDirty();
 
@@ -783,12 +783,12 @@ void Cell::restore(Base::XMLReader& reader, bool checkAlias)
         setAlignment(alignmentCode);
     }
     if (foregroundColor) {
-        App::Color color = decodeColor(foregroundColor, App::Color(0, 0, 0, 1));
+        Base::Color color = decodeColor(foregroundColor, Base::Color(0, 0, 0, 1));
 
         setForeground(color);
     }
     if (backgroundColor) {
-        App::Color color = decodeColor(backgroundColor, App::Color(1, 1, 1, 1));
+        Base::Color color = decodeColor(backgroundColor, Base::Color(1, 1, 1, 1));
 
         setBackground(color);
     }
@@ -1016,7 +1016,7 @@ std::string Cell::encodeAlignment(int alignment)
  *
  */
 
-std::string Cell::encodeColor(const App::Color& color)
+std::string Cell::encodeColor(const Base::Color& color)
 {
     std::stringstream tmp;
 
@@ -1064,10 +1064,10 @@ std::string Cell::encodeStyle(const std::set<std::string>& style)
  *
  */
 
-App::Color Cell::decodeColor(const std::string& color, const App::Color& defaultColor)
+Base::Color Cell::decodeColor(const std::string& color, const Base::Color& defaultColor)
 {
     if (color.size() == 7 || color.size() == 9) {
-        App::Color c;
+        Base::Color c;
 
         if (color[0] != '#') {
             return defaultColor;

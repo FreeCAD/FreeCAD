@@ -29,9 +29,9 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 
-#include <QtOpenGL.h>
 #include <FCGlobal.h>
 
+class QOpenGLWidget;
 
 namespace Gui {
 /**
@@ -73,14 +73,14 @@ public:
   SbBool matches(const SoElement * element) const override;
   SoElement * copyMatchInfo() const override;
 
-  static  void set(SoState * state, QtGLWidget * window);
-  static  void get(SoState * state, QtGLWidget *& window);
+  static  void set(SoState * state, QOpenGLWidget * window);
+  static  void get(SoState * state, QOpenGLWidget *& window);
 
 protected:
   ~SoGLWidgetElement() override;
 
 protected:
-  QtGLWidget * window;
+  QOpenGLWidget * window;
 };
 
 class GuiExport SoGLRenderActionElement : public SoElement {
@@ -117,7 +117,7 @@ public:
     static void initClass();
     SoGLWidgetNode();
 
-    QtGLWidget * window{nullptr};
+    QOpenGLWidget * window{nullptr};
 
     void doAction(SoAction * action) override;
     void GLRender(SoGLRenderAction * action) override;

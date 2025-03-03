@@ -165,7 +165,7 @@ bool TaskSelectLineAttributes::accept()
     }
 
     QColor qTemp = ui->cbColor->color();
-    App::Color temp;
+    Base::Color temp;
     temp.set(qTemp.redF(), qTemp.greenF(), qTemp.blueF(), 1.0 - qTemp.alphaF());
     LineFormat::getCurrentLineFormat().setColor(temp);
 

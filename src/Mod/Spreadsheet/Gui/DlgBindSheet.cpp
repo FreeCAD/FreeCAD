@@ -191,7 +191,7 @@ void DlgBindSheet::accept()
                 addr = std::string("<<") + copy + ">>";
             }
             else {
-                addr = copy;
+                addr = std::move(copy);
             }
         };
 

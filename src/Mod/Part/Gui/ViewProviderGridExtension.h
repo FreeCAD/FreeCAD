@@ -76,8 +76,8 @@ protected:
     void setGridDivLinePattern(int pattern);
     void setGridLineWidth(int width);
     void setGridDivLineWidth(int width);
-    void setGridLineColor(const App::Color & color);
-    void setGridDivLineColor(const App::Color & color);
+    void setGridLineColor(const Base::Color & color);
+    void setGridDivLineColor(const Base::Color & color);
 
     bool extensionHandleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 

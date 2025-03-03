@@ -369,9 +369,9 @@ void FaceAppearances::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (docname == msg.pDocName && objname == msg.pObjectName) {
             int index = std::atoi(msg.pSubName + 4) - 1;
             d->index.insert(index);
-            const App::Color& faceColor = d->perface[index].diffuseColor;
+            const Base::Color& faceColor = d->perface[index].diffuseColor;
             QColor color;
-            // alpha of App::Color is contrary to the one of QColor
+            // alpha of Base::Color is contrary to the one of QColor
             color.setRgbF(faceColor.r, faceColor.g, faceColor.b, (1.0 - faceColor.a));
             selection_changed = true;
         }

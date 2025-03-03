@@ -116,7 +116,7 @@ ViewProviderAnnotation::~ViewProviderAnnotation()
 void ViewProviderAnnotation::onChanged(const App::Property* prop)
 {
     if (prop == &TextColor) {
-        const App::Color& c = TextColor.getValue();
+        const Base::Color& c = TextColor.getValue();
         pColor->rgb.setValue(c.r,c.g,c.b);
     }
     else if (prop == &Justification) {
@@ -315,7 +315,7 @@ ViewProviderAnnotationLabel::~ViewProviderAnnotationLabel()
 void ViewProviderAnnotationLabel::onChanged(const App::Property* prop)
 {
     if (prop == &BackgroundColor) {
-        const App::Color& c = BackgroundColor.getValue();
+        const Base::Color& c = BackgroundColor.getValue();
         pColor->rgb.setValue(c.r,c.g,c.b);
     }
     if (prop == &TextColor || prop == &BackgroundColor ||
@@ -454,10 +454,10 @@ void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
     QFontMetrics fm(font);
     int w = 0;
     int h = fm.height() * s.size();
-    const App::Color& b = this->BackgroundColor.getValue();
+    const Base::Color& b = this->BackgroundColor.getValue();
     QColor brush;
     brush.setRgbF(b.r,b.g,b.b);
-    const App::Color& t = this->TextColor.getValue();
+    const Base::Color& t = this->TextColor.getValue();
     QColor front;
     front.setRgbF(t.r,t.g,t.b);
 

@@ -147,7 +147,7 @@ void DlgPrefsTechDrawDimensionsImp::loadSettings()
     ui->plsb_ArrowSize->onRestore();
 
     DrawGuiUtil::loadArrowBox(ui->pcbArrow);
-    ui->pcbArrow->setCurrentIndex(prefArrowStyle());
+    ui->pcbArrow->setCurrentIndex(static_cast<int>(prefArrowStyle()));
 
     ui->leFormatSpec->setText(QString::fromStdString(Preferences::formatSpec()));
     ui->leFormatSpec->onRestore();
@@ -225,7 +225,7 @@ void DlgPrefsTechDrawDimensionsImp::resetSettingsToDefaults()
     PreferencePage::resetSettingsToDefaults();
 }
 
-int DlgPrefsTechDrawDimensionsImp::prefArrowStyle() const
+TechDraw::ArrowType DlgPrefsTechDrawDimensionsImp::prefArrowStyle() const
 {
     return PreferencesGui::dimArrowStyle();
 }

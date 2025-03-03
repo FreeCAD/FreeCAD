@@ -62,8 +62,8 @@ namespace Import
 struct ImportExport ImportOCAFOptions
 {
     ImportOCAFOptions();
-    App::Color defaultFaceColor;
-    App::Color defaultEdgeColor;
+    Base::Color defaultFaceColor;
+    Base::Color defaultEdgeColor;
     bool merge = false;
     bool useLinkGroup = false;
     bool useBaseName = true;
@@ -130,8 +130,8 @@ private:
         std::string baseName;
         App::DocumentObject* obj = nullptr;
         App::PropertyPlacement* propPlacement = nullptr;
-        App::Color faceColor;
-        App::Color edgeColor;
+        Base::Color faceColor;
+        Base::Color edgeColor;
         bool hasFaceColor = false;
         bool hasEdgeColor = false;
         int free = true;
@@ -162,19 +162,19 @@ private:
     bool
     getColor(const TopoDS_Shape& shape, Info& info, bool check = false, bool noDefault = false);
     void
-    getSHUOColors(TDF_Label label, std::map<std::string, App::Color>& colors, bool appendFirst);
+    getSHUOColors(TDF_Label label, std::map<std::string, Base::Color>& colors, bool appendFirst);
     void setObjectName(Info& info, TDF_Label label);
     std::string getLabelName(TDF_Label label);
     App::DocumentObject*
     expandShape(App::Document* doc, TDF_Label label, const TopoDS_Shape& shape);
 
-    virtual void applyEdgeColors(Part::Feature*, const std::vector<App::Color>&)
+    virtual void applyEdgeColors(Part::Feature*, const std::vector<Base::Color>&)
     {}
-    virtual void applyFaceColors(Part::Feature*, const std::vector<App::Color>&)
+    virtual void applyFaceColors(Part::Feature*, const std::vector<Base::Color>&)
     {}
-    virtual void applyElementColors(App::DocumentObject*, const std::map<std::string, App::Color>&)
+    virtual void applyElementColors(App::DocumentObject*, const std::map<std::string, Base::Color>&)
     {}
-    virtual void applyLinkColor(App::DocumentObject*, int /*index*/, App::Color)
+    virtual void applyLinkColor(App::DocumentObject*, int /*index*/, Base::Color)
     {}
 
 private:
@@ -187,7 +187,7 @@ private:
         {}
 
     private:
-        void applyColors(Part::Feature* part, const std::vector<App::Color>& colors) override
+        void applyColors(Part::Feature* part, const std::vector<Base::Color>& colors) override
         {
             myParent.applyFaceColors(part, colors);
         }
@@ -217,16 +217,16 @@ class ImportExport ImportOCAFExt: public ImportOCAF2
 public:
     ImportOCAFExt(Handle(TDocStd_Document) hStdDoc, App::Document* doc, const std::string& name);
 
-    std::map<Part::Feature*, std::vector<App::Color>> partColors;
+    std::map<Part::Feature*, std::vector<Base::Color>> partColors;
 
 private:
-    void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override;
+    void applyFaceColors(Part::Feature* part, const std::vector<Base::Color>& colors) override;
 };
 
 struct ImportExport ExportOCAFOptions
 {
     ExportOCAFOptions();
-    App::Color defaultColor;
+    Base::Color defaultColor;
     bool exportHidden = true;
     bool keepPlacement = false;
 };
@@ -235,7 +235,7 @@ class ImportExport ExportOCAF2
 {
 public:
     using GetShapeColorsFunc =
-        std::function<std::map<std::string, App::Color>(App::DocumentObject*, const char*)>;
+        std::function<std::map<std::string, Base::Color>(App::DocumentObject*, const char*)>;
     explicit ExportOCAF2(Handle(TDocStd_Document) h,
                          GetShapeColorsFunc func = GetShapeColorsFunc());
 

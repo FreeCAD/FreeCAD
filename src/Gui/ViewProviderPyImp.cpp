@@ -484,7 +484,7 @@ PyObject* ViewProviderPy::setElementColors(PyObject* args)
     if(!PyDict_Check(pyObj))
         throw Py::TypeError("Expect a dict");
 
-    std::map<std::string,App::Color> colors;
+    std::map<std::string,Base::Color> colors;
     Py::Dict dict(pyObj);
     for(auto it=dict.begin();it!=dict.end();++it) {
         const auto &value = *it;

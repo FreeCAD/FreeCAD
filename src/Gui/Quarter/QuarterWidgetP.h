@@ -36,8 +36,8 @@
 #include <Inventor/SbBasic.h>
 #include <QList>
 #include <QUrl>
-#include <QtOpenGL.h>
 
+class QOpenGLWidget;
 
 class SoNode;
 class SoCamera;
@@ -61,7 +61,7 @@ class ContextMenu;
 class QuarterWidgetP {
 public:
 
-  QuarterWidgetP(class QuarterWidget * master, const QtGLWidget * sharewidget);
+  QuarterWidgetP(class QuarterWidget * master, const QOpenGLWidget * sharewidget);
   ~QuarterWidgetP();
 
   SoCamera * searchForCamera(SoNode * root);
@@ -109,11 +109,11 @@ public:
   mutable ContextMenu * contextmenu;
 
   static bool nativeEventFilter(void * message, long * result);
-  void replaceGLWidget(const QtGLWidget * newviewport);
+  void replaceGLWidget(const QOpenGLWidget * newviewport);
 
  private:
-  QuarterWidgetP_cachecontext * findCacheContext(QuarterWidget * widget, const QtGLWidget * sharewidget);
-  static void removeFromCacheContext(QuarterWidgetP_cachecontext * context, const QtGLWidget * widget);
+  QuarterWidgetP_cachecontext * findCacheContext(QuarterWidget * widget, const QOpenGLWidget * sharewidget);
+  static void removeFromCacheContext(QuarterWidgetP_cachecontext * context, const QOpenGLWidget * widget);
 };
 
 #endif // QUARTER_QUARTERWIDGETP_H

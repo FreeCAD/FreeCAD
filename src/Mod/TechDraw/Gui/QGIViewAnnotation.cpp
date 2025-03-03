@@ -148,7 +148,7 @@ void QGIViewAnnotation::drawAnnotation()
         ss << "font-weight:normal; font-style:normal; ";
     }
     ss << "line-height:" << viewAnno->LineSpace.getValue() << "%; ";
-    App::Color c = viewAnno->TextColor.getValue();
+    Base::Color c = viewAnno->TextColor.getValue();
     c = TechDraw::Preferences::getAccessibleColor(c);
     ss << "color:" << c.asHexString() << "; ";
     ss << "}\n</style>\n</head>\n<body>\n<p>";

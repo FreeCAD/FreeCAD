@@ -30,6 +30,7 @@
 # include <QMessageBox>
 # include <QPainter>
 # include <QSplitter>
+# include <QSurfaceFormat>
 # include <QTimer>
 # include <QVBoxLayout>
 # include <Inventor/SoPickedPoint.h>
@@ -352,7 +353,7 @@ public:
         bool smoothing = false;
         bool glformat = false;
         int samples = View3DInventorViewer::getNumSamples();
-        QtGLFormat f;
+        QSurfaceFormat f;
 
         if (samples > 1) {
             glformat = true;

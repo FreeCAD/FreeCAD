@@ -44,6 +44,10 @@ set(StartGui_LIBS
         FreeCADGui
         )
 
+set(StartGui_UIC_SRCS
+        DlgStartPreferences.ui
+    )
+
 set(Start_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Start_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
         ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
@@ -54,6 +58,8 @@ qt_add_resources(Start_QRC_SRCS Resources/Start.qrc ${Start_TR_QRC})
 SET(StartGui_SRCS
         ${Start_QRC_SRCS}
         ${StartGui_UIC_SRCS}
+        DlgStartPreferencesImp.cpp
+        DlgStartPreferencesImp.h
         AppStartGui.cpp
         FileCardDelegate.cpp
         FileCardDelegate.h

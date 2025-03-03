@@ -83,7 +83,7 @@ ViewProviderDatum::ViewProviderDatum()
             "User parameter:BaseApp/Preferences/Mod/PartDesign");
     unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
 
-    App::Color col ( (uint32_t) shcol );
+    Base::Color col ( (uint32_t) shcol );
     ShapeAppearance.setDiffuseColor(col);
 
     Transparency.setValue (col.a * 100);

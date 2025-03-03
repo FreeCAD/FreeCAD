@@ -269,7 +269,7 @@ double TaskRichAnno::prefWeight() const
     return TechDraw::LineGroup::getDefaultWidth("Graphic");
 }
 
-App::Color TaskRichAnno::prefLineColor()
+Base::Color TaskRichAnno::prefLineColor()
 {
     return PreferencesGui::leaderColor();
 }
@@ -319,7 +319,7 @@ void TaskRichAnno::createAnnoFeature()
         Gui::ViewProvider* vp = QGIView::getViewProvider(m_annoFeat);
         auto annoVP = dynamic_cast<ViewProviderRichAnno*>(vp);
         if (annoVP) {
-            App::Color ac;
+            Base::Color ac;
             ac.setValue<QColor>(ui->cpFrameColor->color());
             annoVP->LineColor.setValue(ac);
             annoVP->LineWidth.setValue(ui->dsbWidth->rawValue());
@@ -350,7 +350,7 @@ void TaskRichAnno::updateAnnoFeature()
 //    Base::Console().Message("TRA::updateAnnoFeature()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Anno"));
     commonFeatureUpdate();
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->cpFrameColor->color());
     m_annoVP->LineColor.setValue(ac);
     m_annoVP->LineWidth.setValue(ui->dsbWidth->rawValue());

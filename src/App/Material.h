@@ -24,7 +24,7 @@
 #ifndef APP_MATERIAL_H
 #define APP_MATERIAL_H
 
-#include <App/Color.h>
+#include <Base/Color.h>
 
 namespace App
 {
@@ -104,7 +104,7 @@ public:
      *  \li Ruby
      *  \li Emerald
      * Furthermore there two additional modes \a Default which defines a kind of grey metallic and
-     * user defined that does nothing. The Color and the other properties of the material are
+     * user defined that does nothing. The Base::Color and the other properties of the material are
      * defined in the range [0-1]. If \a MatName is an unknown material name then the type
      * USER_DEFINED is set and the material doesn't get changed.
      */
@@ -125,10 +125,10 @@ public:
     /** @name Properties */
     //@{
     // NOLINTBEGIN
-    Color ambientColor;  /**< Defines the ambient color. */
-    Color diffuseColor;  /**< Defines the diffuse color. */
-    Color specularColor; /**< Defines the specular color. */
-    Color emissiveColor; /**< Defines the emissive color. */
+    Base::Color ambientColor;  /**< Defines the ambient color. */
+    Base::Color diffuseColor;  /**< Defines the diffuse color. */
+    Base::Color specularColor; /**< Defines the specular color. */
+    Base::Color emissiveColor; /**< Defines the emissive color. */
     float shininess;
     float transparency;
     std::string image;

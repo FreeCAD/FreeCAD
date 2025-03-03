@@ -22,10 +22,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost/uuid/uuid_io.hpp>
-#endif
-
 #include <Base/Console.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/Vector3D.h>
@@ -118,7 +114,7 @@ PyObject* CosmeticVertexPy::copy(PyObject *args)
 
 Py::String CosmeticVertexPy::getTag() const
 {
-    std::string tmp = boost::uuids::to_string(getCosmeticVertexPtr()->getTag());
+    std::string tmp = getCosmeticVertexPtr()->getTagAsString();
     return Py::String(tmp);
 }
 
@@ -169,7 +165,7 @@ void CosmeticVertexPy::setShow(Py::Boolean arg)
 
 Py::Object CosmeticVertexPy::getColor() const
 {
-    App::Color color = getCosmeticVertexPtr()->color;
+    Base::Color color = getCosmeticVertexPtr()->color;
     PyObject* pyColor = DrawUtil::colorToPyTuple(color);
     return Py::asObject(pyColor);
 }
@@ -178,7 +174,7 @@ void CosmeticVertexPy::setColor(Py::Object arg)
 {
     PyObject* pTuple = arg.ptr();
     double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
-    App::Color c(red, green, blue, alpha);
+    Base::Color c(red, green, blue, alpha);
     if (PyTuple_Check(pTuple)) {
         c = DrawUtil::pyTupleToColor(pTuple);
         CosmeticVertex* cv = getCosmeticVertexPtr();

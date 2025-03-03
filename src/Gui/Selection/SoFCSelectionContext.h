@@ -105,11 +105,11 @@ using SoFCSelectionContextExPtr = std::shared_ptr<SoFCSelectionContextEx>;
 
 struct GuiExport SoFCSelectionContextEx : SoFCSelectionContext
 {
-    std::map<int,App::Color> colors;
+    std::map<int,Base::Color> colors;
     float trans0 = 0.0;
 
-    bool setColors(const std::map<std::string,App::Color> &colors, const std::string &element);
-    uint32_t packColor(const App::Color &c, bool &hasTransparency);
+    bool setColors(const std::map<std::string,Base::Color> &colors, const std::string &element);
+    uint32_t packColor(const Base::Color &c, bool &hasTransparency);
     bool applyColor(int idx, std::vector<uint32_t> &packedColors, bool &hasTransparency);
     bool isSingleColor(uint32_t &color, bool &hasTransparency);
 

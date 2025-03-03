@@ -88,7 +88,7 @@ public:
     void setFillMode(FillMode mode);
 
     //general hatch parms & methods
-    void setHatchColor(App::Color color);
+    void setHatchColor(Base::Color color);
     void setHatchScale(double scale);
 
     //svg fill parms & methods

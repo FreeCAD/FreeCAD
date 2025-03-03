@@ -117,7 +117,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                 switch (type) {
                     case ViewProviderFilling::Vertex:
                         if (on) {
-                            std::vector<App::Color> colors;
+                            std::vector<Base::Color> colors;
                             TopTools_IndexedMapOfShape vMap;
                             TopExp::MapShapes(base->Shape.getValue(), TopAbs_VERTEX, vMap);
                             colors.resize(vMap.Extent(), svp->PointColor.getValue());
@@ -128,7 +128,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                                 std::size_t idx =
                                     static_cast<std::size_t>(std::stoi(jt.substr(6)) - 1);
                                 if (idx < colors.size()) {
-                                    colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
+                                    colors[idx] = Base::Color(1.0, 0.0, 1.0);  // magenta
                                 }
                             }
 
@@ -140,7 +140,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                         break;
                     case ViewProviderFilling::Edge:
                         if (on) {
-                            std::vector<App::Color> colors;
+                            std::vector<Base::Color> colors;
                             TopTools_IndexedMapOfShape eMap;
                             TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
                             colors.resize(eMap.Extent(), svp->LineColor.getValue());
@@ -151,7 +151,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                                 // check again that the index is in range because it's possible that
                                 // the sub-names are invalid
                                 if (idx < colors.size()) {
-                                    colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
+                                    colors[idx] = Base::Color(1.0, 0.0, 1.0);  // magenta
                                 }
                             }
 
@@ -175,7 +175,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                                 // the sub-names are invalid
                                 if (idx < materials.size()) {
                                     materials[idx].diffuseColor =
-                                        App::Color(1.0, 0.0, 1.0);  // magenta
+                                        Base::Color(1.0, 0.0, 1.0);  // magenta
                                 }
                             }
 

@@ -1468,7 +1468,7 @@ std::vector<DrawViewDimension*> TechDrawGui::makeObliqueChainDimension(std::vect
                 edge->m_format.setStyle(1);
                 edge->m_format.setLineNumber(1);
                 edge->m_format.setWidth(TechDraw::LineGroup::getDefaultWidth("Thin"));
-                edge->m_format.setColor(App::Color(0.0f, 0.0f, 0.0f));
+                edge->m_format.setColor(Base::Color(0.0f, 0.0f, 0.0f));
             }
             else
                 carrierVertexes.push_back(oldVertex);
@@ -1851,7 +1851,7 @@ std::vector<DrawViewDimension*> TechDrawGui::makeObliqueCoordDimension(std::vect
                 edge->m_format.setStyle(1);
                 edge->m_format.setLineNumber(1);
                 edge->m_format.setWidth(TechDraw::LineGroup::getDefaultWidth("Thin"));
-                edge->m_format.setColor(App::Color(0.0, 0.0, 0.0));
+                edge->m_format.setColor(Base::Color(0.0, 0.0, 0.0));
             }
             else {
                 carrierVertexes.push_back(oldVertex);

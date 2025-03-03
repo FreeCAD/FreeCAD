@@ -58,7 +58,7 @@ public:
   /**
    * Returns the associated color to the value \a fVal.
    */
-  App::Color getColor (float fVal) const override { return _cColGrad.getColor(fVal); }
+  Base::Color getColor (float fVal) const override { return _cColGrad.getColor(fVal); }
   void setOutsideGrayed (bool bVal) override { _cColGrad.setOutsideGrayed(bVal); }
   /**
    * Returns always true if the gradient is in mode to show colors to arbitrary values of \a fVal,

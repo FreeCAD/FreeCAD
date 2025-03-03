@@ -317,7 +317,7 @@ void TaskCenterLine::onColorChanged()
         return;
     }
 
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     m_cl->m_format.getColor().setValue<QColor>(ui->cpLineColor->color());
     m_partFeat->recomputeFeature();
@@ -430,7 +430,7 @@ void TaskCenterLine::createCenterLine()
     cl->setExtend(extendBy);
     cl->setRotate(rotate);
     cl->m_flip2Line = false;
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     cl->m_format.setColor(ac);
     cl->m_format.setWidth(ui->dsbWeight->value().getValue());

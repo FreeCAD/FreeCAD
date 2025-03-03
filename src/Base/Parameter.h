@@ -52,6 +52,7 @@ using PyObject = struct _object;
 
 #include "Handle.h"
 #include "Observer.h"
+#include "Color.h"
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4251)
@@ -82,7 +83,6 @@ XERCES_CPP_NAMESPACE_END
 #endif
 
 class ParameterManager;
-
 
 /** The parameter container class
  *  This is the base class of all classes handle parameter.
@@ -348,6 +348,21 @@ public:
     GetUnsignedMap(const char* sFilter = nullptr) const;
     /// remove a uint value from this group
     void RemoveUnsigned(const char* Name);
+    //@}
+
+    /** @name methods for Colors handling, colors are persisted as packed uints */
+    //@{
+    /// read color value or give default
+    Base::Color GetColor(const char* Name, Base::Color lPreset = Base::Color(1.0, 1.0, 1.0)) const;
+    /// set a color value
+    void SetColor(const char* Name, Base::Color lValue);
+    /// get a vector of all color values in this group
+    std::vector<Base::Color> GetColors(const char* sFilter = nullptr) const;
+    /// get a map with all color values and the keys of this group
+    std::vector<std::pair<std::string, Base::Color>>
+    GetColorMap(const char* sFilter = nullptr) const;
+    /// remove a color value from this group
+    void RemoveColor(const char* Name);
     //@}
 
 

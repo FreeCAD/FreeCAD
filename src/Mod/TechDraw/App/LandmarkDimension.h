@@ -57,7 +57,7 @@ public:
         return "TechDrawGui::ViewProviderDimension"; }
 
     DrawViewPart* getViewPart() const override;
-    int getRefType() const override;
+    RefType getRefType() const override;
 
     gp_Ax2 getProjAxis() const;
 

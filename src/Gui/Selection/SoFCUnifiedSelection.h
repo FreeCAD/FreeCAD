@@ -297,7 +297,7 @@ public:
         return overrideColor;
     }
 
-    void setColorOverride(App::Color c) {
+    void setColorOverride(Base::Color c) {
         overrideColor = true;
         colorOverride = SbColor(c.r,c.g,c.b);
         transOverride = c.a;
@@ -425,13 +425,13 @@ public:
         _secondary = enable;
     }
 
-    const std::map<std::string,App::Color> &getColors() const {
+    const std::map<std::string,Base::Color> &getColors() const {
         return _colors;
     }
-    void setColors(const std::map<std::string,App::Color> &colors) {
+    void setColors(const std::map<std::string,Base::Color> &colors) {
         _colors = colors;
     }
-    void swapColors(std::map<std::string,App::Color> &colors) {
+    void swapColors(std::map<std::string,Base::Color> &colors) {
         _colors.swap(colors);
     }
 
@@ -447,7 +447,7 @@ private:
     Type _type;
     SbColor _color;
     const SoDetail* _det{nullptr};
-    std::map<std::string,App::Color> _colors;
+    std::map<std::string,Base::Color> _colors;
     bool _secondary;
 };
 
