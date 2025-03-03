@@ -59,8 +59,6 @@ def generate(filename, outputPath):
         Export.export = GenerateModelInst.PythonExport[0]
         Export.is_python = filename.endswith(".pyi")
         Export.Generate()
-        if Export.is_python:
-            Export.Compare()
         print("Done generating: " + GenerateModelInst.PythonExport[0].Name)
 
 
