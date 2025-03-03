@@ -22,10 +22,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost/uuid/uuid_io.hpp>
-#endif
-
 #include <Base/Console.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/Vector3D.h>
@@ -118,7 +114,7 @@ PyObject* CosmeticVertexPy::copy(PyObject *args)
 
 Py::String CosmeticVertexPy::getTag() const
 {
-    std::string tmp = boost::uuids::to_string(getCosmeticVertexPtr()->getTag());
+    std::string tmp = getCosmeticVertexPtr()->getTagAsString();
     return Py::String(tmp);
 }
 
