@@ -32,20 +32,20 @@ TaskGroup::TaskGroup(QWidget *parent, bool hasHeader)
 
 bool TaskGroup::addActionLabel(ActionLabel *label, bool addToLayout, bool addStretch)
 {
-  if (!label)
+  if (!label) {
       return false;
-
+  }
   return addWidget(label, addToLayout, addStretch);
 }
 
 bool TaskGroup::addWidget(QWidget *widget, bool addToLayout, bool addStretch)
 {
-  if (!widget)
+  if (!widget) {
       return false;
-
-  if (!addToLayout)
+  }
+  if (!addToLayout) {
       return true;
-
+  }
   if (addStretch) {
     QHBoxLayout *hbl = new QHBoxLayout();
     hbl->setContentsMargins(0, 0, 0, 0);

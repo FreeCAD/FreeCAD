@@ -64,9 +64,9 @@ QPixmap ActionBox::icon() const
 
 ActionLabel* ActionBox::createItem(QAction * action, QLayout * l)
 {
-    if (!action)
+    if (!action) {
         return nullptr;
-
+    }
     ActionLabel *act = createItem("", l);
     act->setDefaultAction(action);
     return act;
@@ -76,14 +76,15 @@ QList<ActionLabel*> ActionBox::createItems(QList<QAction*> actions)
 {
     QList<ActionLabel*> list;
 
-    if (actions.isEmpty())
+    if (actions.isEmpty()) {
         return list;
-
+    }
     QLayout *l = createHBoxLayout();
 
     for (QAction *action : actions) {
-        if (auto *act = createItem(action, l))
+        if (auto *act = createItem(action, l)) {
             list.append(act);
+        }
     }
 
     return list;
@@ -95,8 +96,9 @@ ActionLabel* ActionBox::createItem(const QString & text, QLayout * l)
     act->setText(text);
     act->setProperty("class", "action");
 
-    if (l)
+    if (l) {
         l->addWidget(act);
+    }
     else {
         QHBoxLayout *hbl = new QHBoxLayout();
         hbl->addWidget(act);
@@ -118,11 +120,14 @@ QSpacerItem* ActionBox::createSpacer(QLayout * l)
 {
     QSpacerItem * spacer;
 
-    if (l) // add horizontal spacer
+    if (l) {
+        // add horizontal spacer
         l->addItem(spacer = new QSpacerItem(1,0,QSizePolicy::MinimumExpanding,QSizePolicy::Ignored));
-    else // add vertical spacer
+    }
+    else {
+        // add vertical spacer
         dataLayout->addItem(spacer = new QSpacerItem(0,1,QSizePolicy::Ignored,QSizePolicy::MinimumExpanding));
-
+    }
     return spacer;
 }
 
@@ -146,13 +151,14 @@ void ActionBox::addLayout(QLayout * l)
 
 void ActionBox::addWidget(QWidget * w, QLayout * l)
 {
-    if (!w)
+    if (!w) {
         return;
-
+    }
     w->setParent(this);
 
-    if (l)
+    if (l) {
         l->addWidget(w);
+    }
     else {
         QHBoxLayout *hbl = new QHBoxLayout();
         hbl->addWidget(w);
