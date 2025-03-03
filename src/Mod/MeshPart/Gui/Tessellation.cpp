@@ -377,7 +377,7 @@ void Tessellation::setFaceColors(int method, App::Document* doc, App::DocumentOb
             auto svp = Base::freecad_dynamic_cast<PartGui::ViewProviderPartExt>(
                 Gui::Application::Instance->getViewProvider(obj));
             if (vpmesh && svp) {
-                std::vector<App::Color> diff_col = svp->ShapeAppearance.getDiffuseColors();
+                std::vector<Base::Color> diff_col = svp->ShapeAppearance.getDiffuseColors();
                 if (ui->groupsFaceColors->isChecked()) {
                     diff_col = getUniqueColors(diff_col);
                 }
@@ -389,15 +389,15 @@ void Tessellation::setFaceColors(int method, App::Document* doc, App::DocumentOb
     }
 }
 
-void Tessellation::addFaceColors(Mesh::Feature* mesh, const std::vector<App::Color>& colorPerSegm)
+void Tessellation::addFaceColors(Mesh::Feature* mesh, const std::vector<Base::Color>& colorPerSegm)
 {
     const Mesh::MeshObject& kernel = mesh->Mesh.getValue();
     unsigned long numSegm = kernel.countSegments();
     if (numSegm > 0 && numSegm == colorPerSegm.size()) {
         unsigned long uCtFacets = kernel.countFacets();
-        std::vector<App::Color> colorPerFace(uCtFacets);
+        std::vector<Base::Color> colorPerFace(uCtFacets);
         for (unsigned long i = 0; i < numSegm; i++) {
-            App::Color segmColor = colorPerSegm[i];
+            Base::Color segmColor = colorPerSegm[i];
             std::vector<Mesh::FacetIndex> segm = kernel.getSegment(i).getIndices();
             for (Mesh::FacetIndex it : segm) {
                 colorPerFace[it] = segmColor;
@@ -412,7 +412,7 @@ void Tessellation::addFaceColors(Mesh::Feature* mesh, const std::vector<App::Col
     }
 }
 
-std::vector<App::Color> Tessellation::getUniqueColors(const std::vector<App::Color>& colors) const
+std::vector<Base::Color> Tessellation::getUniqueColors(const std::vector<Base::Color>& colors) const
 {
     // unique colors
     std::set<uint32_t> col_set;
@@ -420,7 +420,7 @@ std::vector<App::Color> Tessellation::getUniqueColors(const std::vector<App::Col
         col_set.insert(it.getPackedValue());
     }
 
-    std::vector<App::Color> unique;
+    std::vector<Base::Color> unique;
     unique.reserve(col_set.size());
     for (const auto& it : col_set) {
         unique.emplace_back(it);

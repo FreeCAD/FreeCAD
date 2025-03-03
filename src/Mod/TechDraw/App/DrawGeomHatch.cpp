@@ -612,9 +612,9 @@ std::string DrawGeomHatch::prefGeomHatchName()
     return result;
 }
 
-App::Color DrawGeomHatch::prefGeomHatchColor()
+Base::Color DrawGeomHatch::prefGeomHatchColor()
 {
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(Preferences::getPreferenceGroup("Colors")->GetUnsigned("GeomHatch", 0x00FF0000));
     return fcColor;
 }

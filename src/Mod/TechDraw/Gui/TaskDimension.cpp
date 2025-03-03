@@ -322,7 +322,7 @@ void TaskDimension::onColorChanged()
     if (m_dimensionVP.expired()) {
         return;
     }
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->dimensionColor->color());
     m_dimensionVP->Color.setValue(ac);
     recomputeFeature();

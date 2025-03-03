@@ -87,7 +87,7 @@ protected:
     void enableTextUi(bool enable);
     void enableVPUi(bool enable);
     double prefWeight() const;
-    App::Color prefLineColor();
+    Base::Color prefLineColor();
 
 protected Q_SLOTS:
     void onSaveAndExit(QString);

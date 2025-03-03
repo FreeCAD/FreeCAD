@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2017 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2025 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2025 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,23 +21,17 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef TECHDRAW_ENUMS_H
+#define TECHDRAW_ENUMS_H
 
-#ifndef QUARTER_QTOPENGL_H
-#define QUARTER_QTOPENGL_H
+namespace TechDrawGui {
 
-/* QtOpenGL.h.  Generated from QtOpenGL.h.cmake by cmake.  */
+enum class DragState : int {
+    NoDrag,
+    DragStarted,
+    Dragging
+};
 
-#include <QOpenGLContext>
-#include <QSurfaceFormat>
-#include <QOpenGLWidget>
-#include <QOpenGLFramebufferObject>
-#include <QOpenGLVersionProfile>
-#include <QOpenGLFunctions>
+}
 
-using QtGLContext = QOpenGLContext;
-using QtGLFormat = QSurfaceFormat;
-using QtGLWidget = QOpenGLWidget;
-using QtGLFramebufferObject = QOpenGLFramebufferObject;
-using QtGLFramebufferObjectFormat = QOpenGLFramebufferObjectFormat;
-
-#endif //QUARTER_QTOPENGL_H
+#endif

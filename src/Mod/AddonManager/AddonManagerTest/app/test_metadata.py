@@ -616,6 +616,22 @@ class TestMetadataReaderIntegration(unittest.TestCase):
             expected_packs.remove(wb.name)
         self.assertEqual(len(expected_packs), 0)
 
+    def test_bundle(self):
+        from addonmanager_metadata import MetadataReader
+
+        filename = os.path.join(self.test_data_dir, "bundle_only.xml")
+        metadata = MetadataReader.from_file(filename)
+        self.assertIn("bundle", metadata.content)
+        self.assertEqual(len(metadata.content["bundle"]), 1)
+
+    def test_other(self):
+        from addonmanager_metadata import MetadataReader
+
+        filename = os.path.join(self.test_data_dir, "other_only.xml")
+        metadata = MetadataReader.from_file(filename)
+        self.assertIn("other", metadata.content)
+        self.assertEqual(len(metadata.content["other"]), 1)
+
     def test_content_combination(self):
         from addonmanager_metadata import MetadataReader
 

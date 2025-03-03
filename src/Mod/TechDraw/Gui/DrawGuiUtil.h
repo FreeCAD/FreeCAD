@@ -105,6 +105,9 @@ class TechDrawGuiExport DrawGuiUtil {
     static void rotateToAlign(const QGIEdge* edge, const Base::Vector2d& direction);
     static void rotateToAlign(const QGIVertex* p1, const QGIVertex* p2, const Base::Vector2d& direction);
     static void rotateToAlign(TechDraw::DrawViewPart* view, const Base::Vector2d& oldDirection, const Base::Vector2d& newDirection);
+
+    static void showNoPageMessage();
+
 };
 
 } //end namespace TechDrawGui

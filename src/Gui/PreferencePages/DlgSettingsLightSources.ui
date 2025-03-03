@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>484</width>
+    <width>743</width>
     <height>515</height>
    </rect>
   </property>
@@ -26,141 +26,10 @@
       <string>Adjust the orientation of the directional light source by dragging the handle with the mouse or use the spin boxes for fine tuning.</string>
      </property>
      <property name="title">
-      <string>Direction</string>
+      <string>Preview</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="z_spnBox">
-        <property name="minimum">
-         <double>-100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="y_spnBox">
-        <property name="minimum">
-         <double>-100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="z_label">
-        <property name="text">
-         <string notr="true">z</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="x_label">
-        <property name="text">
-         <string notr="true">x</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="4">
-       <widget class="QDoubleSpinBox" name="q1_spnBox">
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>-100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="4">
-       <widget class="QDoubleSpinBox" name="q2_spnBox">
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>-100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4">
-       <widget class="QDoubleSpinBox" name="q0_spnBox">
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>-100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="y_label">
-        <property name="text">
-         <string notr="true">y</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="3">
-       <widget class="QLabel" name="q2_label">
-        <property name="text">
-         <string notr="true">q2</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QLabel" name="q0_label">
-        <property name="text">
-         <string notr="true">q0</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="4">
-       <widget class="QDoubleSpinBox" name="q3_spnBox">
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>-100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QLabel" name="q1_label">
-        <property name="text">
-         <string notr="true">q1</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="3">
-       <widget class="QLabel" name="q3_label">
-        <property name="text">
-         <string notr="true">q3</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="x_spnBox">
-        <property name="minimum">
-         <double>-100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2" rowspan="5">
+      <item row="0" column="0" rowspan="2">
        <widget class="Gui::View3DInventorViewer" name="viewer" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -169,7 +38,7 @@
          </sizepolicy>
         </property>
         <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <property name="leftMargin">
@@ -183,7 +52,7 @@
            <item>
             <spacer name="verticalSpacer">
              <property name="orientation">
-              <enum>Qt::Vertical</enum>
+              <enum>Qt::Orientation::Vertical</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -194,9 +63,9 @@
             </spacer>
            </item>
            <item>
-            <widget class="QToolButton" name="pushInTB">
+            <widget class="QToolButton" name="zoomInButton">
              <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
+              <enum>Qt::FocusPolicy::NoFocus</enum>
              </property>
              <property name="toolTip">
               <string>Push In</string>
@@ -214,9 +83,9 @@
             </widget>
            </item>
            <item>
-            <widget class="QToolButton" name="pullOutTB">
+            <widget class="QToolButton" name="zoomOutButton">
              <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
+              <enum>Qt::FocusPolicy::NoFocus</enum>
              </property>
              <property name="toolTip">
               <string>Pull Out</string>
@@ -238,7 +107,7 @@
          <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -254,16 +123,72 @@
      </layout>
     </widget>
    </item>
+   <item row="3" column="0">
+    <spacer name="bottomSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Light sources</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxLight1">
+      <item row="0" column="4">
+       <widget class="QLabel" name="light1Label">
         <property name="text">
-         <string>Light source</string>
+         <string>Color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="6">
+       <widget class="Gui::PrefSpinBox" name="ambientLightIntensitySpinBox">
+        <property name="suffix">
+         <string>%</string>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>20</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AmbientLightIntensity</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4">
+       <widget class="Gui::PrefColorButton" name="backLightColor">
+        <property name="color">
+         <color>
+          <red>245</red>
+          <green>245</green>
+          <blue>238</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>BacklightColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="mainLightEnable">
+        <property name="text">
+         <string>Main Light</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -276,9 +201,226 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="Gui::PrefColorButton" name="light1Color">
-        <property name="color" stdset="0">
+      <item row="2" column="2">
+       <widget class="Gui::QuantitySpinBox" name="backLightHorizontalAngle">
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+        <property name="value">
+         <double>-130.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="Gui::QuantitySpinBox" name="backLightVerticalAngle">
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+        <property name="value">
+         <double>-10.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="Gui::PrefCheckBox" name="backLightEnable">
+        <property name="text">
+         <string>Back Light</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>EnableBacklight</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="Gui::QuantitySpinBox" name="fillLightHorizontalAngle">
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+        <property name="value">
+         <double>-40.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QLabel" name="light1Label_2">
+        <property name="text">
+         <string>Vertical Angle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="4">
+       <widget class="Gui::PrefColorButton" name="ambientLightColor">
+        <property name="color">
+         <color>
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AmbientLightColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="light1Label_3">
+        <property name="text">
+         <string>Horizontal Angle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="6">
+       <widget class="Gui::PrefSpinBox" name="mainLightIntensitySpinBox">
+        <property name="suffix">
+         <string>%</string>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>90</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>HeadlightIntensity</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="Gui::QuantitySpinBox" name="mainLightHorizontalAngle">
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+        <property name="value">
+         <double>100.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="Gui::QuantitySpinBox" name="fillLightVerticalAngle">
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+        <property name="value">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="6">
+       <widget class="Gui::PrefSpinBox" name="backLightIntensitySpinBox">
+        <property name="suffix">
+         <string>%</string>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>60</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>BacklightIntensity</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="Gui::PrefCheckBox" name="fillLightEnable">
+        <property name="text">
+         <string>Fill Light</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>EnableFillLight</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="6">
+       <widget class="Gui::PrefSpinBox" name="fillLightIntensitySpinBox">
+        <property name="suffix">
+         <string>%</string>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>40</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>FillLightIntensity</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6">
+       <widget class="QLabel" name="light1Label_4">
+        <property name="text">
+         <string>Intensity</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="3" column="4">
+       <widget class="Gui::PrefColorButton" name="fillLightColor">
+        <property name="color">
+         <color>
+          <red>230</red>
+          <green>250</green>
+          <blue>255</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>FillLightColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="Gui::QuantitySpinBox" name="mainLightVerticalAngle">
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+        <property name="value">
+         <double>-46.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="Gui::PrefColorButton" name="mainLightColor">
+        <property name="color">
          <color>
           <red>255</red>
           <green>255</green>
@@ -293,83 +435,37 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <spacer name="horizontalSpacer1">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>115</width>
-          <height>13</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="3">
-       <widget class="QLabel" name="light1Label">
+      <item row="4" column="0">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>Intensity</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4">
-       <widget class="Gui::PrefSlider" name="sliderIntensity1">
-        <property name="maximum">
-         <number>100</number>
-        </property>
-        <property name="value">
-         <number>100</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="tickPosition">
-         <enum>QSlider::TicksBelow</enum>
-        </property>
-        <property name="tickInterval">
-         <number>10</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>HeadlightIntensity</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
+         <string>Ambient Light</string>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
-    <spacer name="bottomSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QAbstractSpinBox</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
   <customwidget>
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>
    <header>Gui/Widgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefColorButton</class>
-   <extends>Gui::ColorButton</extends>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefSlider</class>
-   <extends>QSlider</extends>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
@@ -384,262 +480,28 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>checkBoxLight1</tabstop>
-  <tabstop>light1Color</tabstop>
-  <tabstop>sliderIntensity1</tabstop>
-  <tabstop>x_spnBox</tabstop>
-  <tabstop>y_spnBox</tabstop>
-  <tabstop>z_spnBox</tabstop>
-  <tabstop>q0_spnBox</tabstop>
-  <tabstop>q1_spnBox</tabstop>
-  <tabstop>q2_spnBox</tabstop>
-  <tabstop>q3_spnBox</tabstop>
+  <tabstop>mainLightEnable</tabstop>
+  <tabstop>mainLightHorizontalAngle</tabstop>
+  <tabstop>mainLightVerticalAngle</tabstop>
+  <tabstop>mainLightColor</tabstop>
+  <tabstop>mainLightIntensitySpinBox</tabstop>
+  <tabstop>backLightEnable</tabstop>
+  <tabstop>backLightHorizontalAngle</tabstop>
+  <tabstop>backLightVerticalAngle</tabstop>
+  <tabstop>backLightColor</tabstop>
+  <tabstop>backLightIntensitySpinBox</tabstop>
+  <tabstop>fillLightEnable</tabstop>
+  <tabstop>fillLightHorizontalAngle</tabstop>
+  <tabstop>fillLightVerticalAngle</tabstop>
+  <tabstop>fillLightColor</tabstop>
+  <tabstop>fillLightIntensitySpinBox</tabstop>
+  <tabstop>ambientLightColor</tabstop>
+  <tabstop>ambientLightIntensitySpinBox</tabstop>
  </tabstops>
  <resources>
   <include location="../Icons/resource.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>checkBoxLight1</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>light1Color</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>73</x>
-     <y>53</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>150</x>
-     <y>53</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBoxLight1</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>light1Label</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>73</x>
-     <y>53</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>339</x>
-     <y>65</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBoxLight1</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>sliderIntensity1</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>73</x>
-     <y>53</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>357</x>
-     <y>53</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>q1_spnBox</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>Gui::Dialog::DlgSettingsLightSources</receiver>
-   <slot>updateDraggerQS(void)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>399</x>
-     <y>168</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>q2_spnBox</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>Gui::Dialog::DlgSettingsLightSources</receiver>
-   <slot>updateDraggerQS(void)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>399</x>
-     <y>200</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>q3_spnBox</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>Gui::Dialog::DlgSettingsLightSources</receiver>
-   <slot>updateDraggerQS(void)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>399</x>
-     <y>232</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>q0_spnBox</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>Gui::Dialog::DlgSettingsLightSources</receiver>
-   <slot>updateDraggerQS(void)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>422</x>
-     <y>128</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>257</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBoxLight1</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>Gui::Dialog::DlgSettingsLightSources</receiver>
-   <slot>toggleLight(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>68</x>
-     <y>53</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>257</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sliderIntensity1</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>Gui::Dialog::DlgSettingsLightSources</receiver>
-   <slot>lightIntensity(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>404</x>
-     <y>52</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>257</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>light1Color</sender>
-   <signal>changed(void)</signal>
-   <receiver>Gui::Dialog::DlgSettingsLightSources</receiver>
-   <slot>lightColor(void)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>140</x>
-     <y>53</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>257</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>x_spnBox</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>Gui::Dialog::DlgSettingsLightSources</receiver>
-   <slot>updateDraggerXYZ(void)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>186</x>
-     <y>141</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>257</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>y_spnBox</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>Gui::Dialog::DlgSettingsLightSources</receiver>
-   <slot>updateDraggerXYZ(void)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>186</x>
-     <y>173</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>257</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>z_spnBox</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>Gui::Dialog::DlgSettingsLightSources</receiver>
-   <slot>updateDraggerXYZ(void)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>186</x>
-     <y>205</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>257</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushInTB</sender>
-   <signal>clicked()</signal>
-   <receiver>Gui::Dialog::DlgSettingsLightSources</receiver>
-   <slot>pushIn(void)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>126</x>
-     <y>224</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>257</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pullOutTB</sender>
-   <signal>clicked()</signal>
-   <receiver>Gui::Dialog::DlgSettingsLightSources</receiver>
-   <slot>pullOut(void)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>126</x>
-     <y>255</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>257</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>updateDraggerQS(void)</slot>
   <slot>updateDraggerXYZ(void)</slot>

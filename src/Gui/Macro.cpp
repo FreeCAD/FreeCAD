@@ -83,15 +83,16 @@ bool MacroFile::commit()
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     str.setCodec("UTF-8");
 #endif
-    QStringList import;
-    import << QStringLiteral("import FreeCAD");
+    QStringList importCommand;
+    importCommand << QStringLiteral("import FreeCAD");
     QStringList body;
 
     for (const auto& it : std::as_const(this->macroInProgress)) {
         if (it.startsWith(QLatin1String("import ")) ||
             it.startsWith(QLatin1String("#import "))) {
-            if (import.indexOf(it) == -1)
-                import.push_back(it);
+            if (importCommand.indexOf(it) == -1) {
+                importCommand.push_back(it);
+            }
         }
         else {
             body.push_back(it);
@@ -110,7 +111,7 @@ bool MacroFile::commit()
 
     // write the data to the text file
     str << header;
-    for (const auto& it : std::as_const(import)) {
+    for (const auto& it : std::as_const(importCommand)) {
         str << it << QLatin1Char('\n');
     }
     str << QLatin1Char('\n');

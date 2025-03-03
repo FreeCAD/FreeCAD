@@ -489,23 +489,17 @@ class Addon:
 
         if self.repo_type == Addon.Kind.WORKBENCH:
             return True
-        if self.repo_type == Addon.Kind.PACKAGE:
-            if self.metadata is None:
-                fci.Console.PrintLog(
-                    f"Addon Manager internal error: lost metadata for package {self.name}\n"
-                )
-                return False
-            content = self.metadata.content
-            if not content:
-                return False
-            return "workbench" in content
-        return False
+        return self.contains_packaged_content("workbench")
 
     def contains_macro(self) -> bool:
         """Determine if this package contains (or is) a macro"""
 
         if self.repo_type == Addon.Kind.MACRO:
             return True
+        return self.contains_packaged_content("macro")
+
+    def contains_packaged_content(self, content_type: str):
+        """Determine if the package contains content_type"""
         if self.repo_type == Addon.Kind.PACKAGE:
             if self.metadata is None:
                 fci.Console.PrintLog(
@@ -513,21 +507,20 @@ class Addon:
                 )
                 return False
             content = self.metadata.content
-            return "macro" in content
+            return content_type in content
         return False
 
     def contains_preference_pack(self) -> bool:
         """Determine if this package contains a preference pack"""
+        return self.contains_packaged_content("preferencepack")
 
-        if self.repo_type == Addon.Kind.PACKAGE:
-            if self.metadata is None:
-                fci.Console.PrintLog(
-                    f"Addon Manager internal error: lost metadata for package {self.name}\n"
-                )
-                return False
-            content = self.metadata.content
-            return "preferencepack" in content
-        return False
+    def contains_bundle(self) -> bool:
+        """Determine if this package contains a bundle"""
+        return self.contains_packaged_content("bundle")
+
+    def contains_other(self) -> bool:
+        """Determine if this package contains an "other" content item"""
+        return self.contains_packaged_content("other")
 
     def get_best_icon_relative_path(self) -> str:
         """Get the path within the repo the addon's icon. Usually specified by

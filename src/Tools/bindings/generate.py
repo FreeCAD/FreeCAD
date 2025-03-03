@@ -2,15 +2,19 @@
 # -*- coding: utf-8 -*-
 # (c) 2006 Jürgen Riegel  GPL
 
-import os, sys, getopt
+import os
+import sys
+import getopt
 import model.generateModel_Module
+import model.generateModel_Python
 import templates.templateModule
 import templates.templateClassPyExport
 
-Usage = """generate - generates a FreeCAD Module out of an XML model
+
+Usage = """generate - generates a FreeCAD Module out of an XML or Python model
 
 Usage:
-   generate [Optionen] Model.xml Model2.xml Model3.xml ...
+   generate [Optionen] Model.xml/py Model2.xml/py Model3.xml/py ...
 
 Options:
  -h, --help          print this help
@@ -24,16 +28,23 @@ Author:
     Licence: GPL
 
 Version:
-  0.2
+  0.3
 """
 
 
 # Globals
 
 
+def generate_model(filename):
+    if filename.endswith(".xml"):
+        return model.generateModel_Module.parse(filename)
+    elif filename.endswith(".pyi"):
+        return model.generateModel_Python.parse(filename)
+    raise ValueError("invalid file extension")
+
+
 def generate(filename, outputPath):
-    # load model
-    GenerateModelInst = model.generateModel_Module.parse(filename)
+    GenerateModelInst = generate_model(filename)
 
     if len(GenerateModelInst.Module) != 0:
         Module = templates.templateModule.TemplateModule()
@@ -46,7 +57,10 @@ def generate(filename, outputPath):
         Export.outputDir = outputPath + "/"
         Export.inputDir = os.path.dirname(filename) + "/"
         Export.export = GenerateModelInst.PythonExport[0]
+        Export.is_python = filename.endswith(".pyi")
         Export.Generate()
+        if Export.is_python:
+            Export.Compare()
         print("Done generating: " + GenerateModelInst.PythonExport[0].Name)
 
 

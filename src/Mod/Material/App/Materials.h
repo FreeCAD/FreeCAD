@@ -31,7 +31,7 @@
 #include <QTextStream>
 
 #include <App/Application.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <App/Material.h>
 #include <Base/BaseClass.h>
 
@@ -102,7 +102,7 @@ public:
     {
         return getValue().toString();
     }
-    App::Color getColor() const;
+    Base::Color getColor() const;
 
     MaterialProperty& getColumn(int column);
     const MaterialProperty& getColumn(int column) const;
@@ -129,7 +129,7 @@ public:
     void setQuantity(const QString& value);
     void setList(const QList<QVariant>& value);
     void setURL(const QString& value);
-    void setColor(const App::Color& value);
+    void setColor(const Base::Color& value);
 
     MaterialProperty& operator=(const MaterialProperty& other);
     friend QTextStream& operator<<(QTextStream& output, const MaterialProperty& property);

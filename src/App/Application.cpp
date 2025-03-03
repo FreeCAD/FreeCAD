@@ -38,6 +38,15 @@
 # include <boost/scope_exit.hpp>
 # include <chrono>
 # include <random>
+# include <memory>
+# include <utility>
+# include <set>
+# include <list>
+# include <algorithm>
+# include <iostream>
+# include <map>
+# include <tuple>
+# include <vector>
 # include <fmt/format.h>
 #endif
 
@@ -80,6 +89,7 @@
 #include <Base/PrecisionPy.h>
 #include <Base/ProgressIndicatorPy.h>
 #include <Base/RotationPy.h>
+#include <Base/UniqueNameManager.h>
 #include <Base/Tools.h>
 #include <Base/Translate.h>
 #include <Base/Type.h>
@@ -454,101 +464,88 @@ void Application::renameDocument(const char *OldName, const char *NewName)
     throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
 }
 
-Document* Application::newDocument(const char * Name, const char * UserName, DocumentCreateFlags CreateFlags)
+Document* Application::newDocument(const char * proposedName, const char * proposedLabel, DocumentCreateFlags CreateFlags)
 {
-    auto getNameAndLabel = [this](const char * Name, const char * UserName) -> std::tuple<std::string, std::string> {
-        bool isDefaultName = Tools::isNullOrEmpty(Name);
-
-        // get a valid name anyway!
-        if (isDefaultName) {
-            Name = "Unnamed";
-        }
-
-        std::string userName;
-        if (!Base::Tools::isNullOrEmpty(UserName)) {
-            userName = UserName;
-        }
-        else {
-            userName = isDefaultName ? QObject::tr("Unnamed").toStdString() : Name;
-
-            std::vector<std::string> names;
-            names.reserve(DocMap.size());
-            for (const auto& pos : DocMap) {
-                names.emplace_back(pos.second->Label.getValue());
-            }
-
-            if (!names.empty()) {
-                userName = Base::Tools::getUniqueName(userName, names);
-            }
-        }
-
-        return std::make_tuple(std::string(Name), userName);
-    };
-
-    auto tuple = getNameAndLabel(Name, UserName);
-    std::string name = std::get<0>(tuple);
-    std::string userName = std::get<1>(tuple);
-    name = getUniqueDocumentName(name.c_str(), CreateFlags.temporary);
+    bool isUsingDefaultName = Tools::isNullOrEmpty(proposedName);
+    // get a valid name anyway!
+    if (isUsingDefaultName) {
+        proposedName = "Unnamed";
+    }
+    std::string name(getUniqueDocumentName(proposedName, CreateFlags.temporary));
 
     // return the temporary document if it exists
     if (CreateFlags.temporary) {
         auto it = DocMap.find(name);
-        if (it != DocMap.end() && it->second->testStatus(Document::TempDoc))
+        if (it != DocMap.end() && it->second->testStatus(Document::TempDoc)) {
             return it->second;
+        }
     }
 
-    // create the FreeCAD document
-    std::unique_ptr<Document> newDoc(new Document(name.c_str()));
-    newDoc->setStatus(Document::TempDoc, CreateFlags.temporary);
+    // Determine the document's Label
+    std::string label;
+    if (!Tools::isNullOrEmpty(proposedLabel)) {
+        // If a label is supplied it is used even if not unique
+        label = proposedLabel;
+    }
+    else {
+        label = isUsingDefaultName ? QObject::tr("Unnamed").toStdString() : proposedName;
 
-    auto oldActiveDoc = _pActiveDoc;
-    auto doc = newDoc.release(); // now owned by the Application
+        if (!DocMap.empty()) {
+            // The assumption here is that there are not many documents and
+            // documents are rarely created so the cost
+            // of building this manager each time is inconsequential
+            Base::UniqueNameManager names;
+            for (const auto& pos : DocMap) {
+                names.addExactName(pos.second->Label.getValue());
+            }
+
+            label = names.makeUniqueName(label);
+        }
+    }
+    // create the FreeCAD document
+    auto doc = new Document(name.c_str());
+    doc->setStatus(Document::TempDoc, CreateFlags.temporary);
 
     // add the document to the internal list
     DocMap[name] = doc;
-    _pActiveDoc = doc;
 
     //NOLINTBEGIN
     // clang-format off
     // connect the signals to the application for the new document
-    _pActiveDoc->signalBeforeChange.connect(std::bind(&App::Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
-    _pActiveDoc->signalChanged.connect(std::bind(&App::Application::slotChangedDocument, this, sp::_1, sp::_2));
-    _pActiveDoc->signalNewObject.connect(std::bind(&App::Application::slotNewObject, this, sp::_1));
-    _pActiveDoc->signalDeletedObject.connect(std::bind(&App::Application::slotDeletedObject, this, sp::_1));
-    _pActiveDoc->signalBeforeChangeObject.connect(std::bind(&App::Application::slotBeforeChangeObject, this, sp::_1, sp::_2));
-    _pActiveDoc->signalChangedObject.connect(std::bind(&App::Application::slotChangedObject, this, sp::_1, sp::_2));
-    _pActiveDoc->signalRelabelObject.connect(std::bind(&App::Application::slotRelabelObject, this, sp::_1));
-    _pActiveDoc->signalActivatedObject.connect(std::bind(&App::Application::slotActivatedObject, this, sp::_1));
-    _pActiveDoc->signalUndo.connect(std::bind(&App::Application::slotUndoDocument, this, sp::_1));
-    _pActiveDoc->signalRedo.connect(std::bind(&App::Application::slotRedoDocument, this, sp::_1));
-    _pActiveDoc->signalRecomputedObject.connect(std::bind(&App::Application::slotRecomputedObject, this, sp::_1));
-    _pActiveDoc->signalRecomputed.connect(std::bind(&App::Application::slotRecomputed, this, sp::_1));
-    _pActiveDoc->signalBeforeRecompute.connect(std::bind(&App::Application::slotBeforeRecompute, this, sp::_1));
-    _pActiveDoc->signalOpenTransaction.connect(std::bind(&App::Application::slotOpenTransaction, this, sp::_1, sp::_2));
-    _pActiveDoc->signalCommitTransaction.connect(std::bind(&App::Application::slotCommitTransaction, this, sp::_1));
-    _pActiveDoc->signalAbortTransaction.connect(std::bind(&App::Application::slotAbortTransaction, this, sp::_1));
-    _pActiveDoc->signalStartSave.connect(std::bind(&App::Application::slotStartSaveDocument, this, sp::_1, sp::_2));
-    _pActiveDoc->signalFinishSave.connect(std::bind(&App::Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
-    _pActiveDoc->signalChangePropertyEditor.connect(std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
+    doc->signalBeforeChange.connect(std::bind(&App::Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
+    doc->signalChanged.connect(std::bind(&App::Application::slotChangedDocument, this, sp::_1, sp::_2));
+    doc->signalNewObject.connect(std::bind(&App::Application::slotNewObject, this, sp::_1));
+    doc->signalDeletedObject.connect(std::bind(&App::Application::slotDeletedObject, this, sp::_1));
+    doc->signalBeforeChangeObject.connect(std::bind(&App::Application::slotBeforeChangeObject, this, sp::_1, sp::_2));
+    doc->signalChangedObject.connect(std::bind(&App::Application::slotChangedObject, this, sp::_1, sp::_2));
+    doc->signalRelabelObject.connect(std::bind(&App::Application::slotRelabelObject, this, sp::_1));
+    doc->signalActivatedObject.connect(std::bind(&App::Application::slotActivatedObject, this, sp::_1));
+    doc->signalUndo.connect(std::bind(&App::Application::slotUndoDocument, this, sp::_1));
+    doc->signalRedo.connect(std::bind(&App::Application::slotRedoDocument, this, sp::_1));
+    doc->signalRecomputedObject.connect(std::bind(&App::Application::slotRecomputedObject, this, sp::_1));
+    doc->signalRecomputed.connect(std::bind(&App::Application::slotRecomputed, this, sp::_1));
+    doc->signalBeforeRecompute.connect(std::bind(&App::Application::slotBeforeRecompute, this, sp::_1));
+    doc->signalOpenTransaction.connect(std::bind(&App::Application::slotOpenTransaction, this, sp::_1, sp::_2));
+    doc->signalCommitTransaction.connect(std::bind(&App::Application::slotCommitTransaction, this, sp::_1));
+    doc->signalAbortTransaction.connect(std::bind(&App::Application::slotAbortTransaction, this, sp::_1));
+    doc->signalStartSave.connect(std::bind(&App::Application::slotStartSaveDocument, this, sp::_1, sp::_2));
+    doc->signalFinishSave.connect(std::bind(&App::Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
+    doc->signalChangePropertyEditor.connect(std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
     // clang-format on
     //NOLINTEND
 
-    // make sure that the active document is set in case no GUI is up
-    {
-        Base::PyGILStateLocker lock;
-        Py::Object active(_pActiveDoc->getPyObject(), true);
-        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"), active);
-    }
+    // (temporarily) make this the active document for the upcoming notifications.
+    // Signal NewDocument rather than ActiveDocument (which is what setActiveDocument would do)
+    auto oldActiveDoc = _pActiveDoc;
+    setActiveDocumentNoSignal(doc);
+    signalNewDocument(*doc, CreateFlags.createView);
 
-    signalNewDocument(*_pActiveDoc, CreateFlags.createView);
-
-    // set the UserName after notifying all observers
-    _pActiveDoc->Label.setValue(userName);
+    doc->Label.setValue(label);
 
     // set the old document active again if the new is temporary
-    if (CreateFlags.temporary && oldActiveDoc)
+    if (CreateFlags.temporary && oldActiveDoc) {
         setActiveDocument(oldActiveDoc);
-
+    }
     return doc;
 }
 
@@ -618,29 +615,31 @@ std::vector<App::Document*> Application::getDocuments() const
     return docs;
 }
 
-std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) const
+std::string Application::getUniqueDocumentName(const char* Name, bool tempDoc) const
 {
-    if (!Name || *Name == '\0')
+    if (!Name || *Name == '\0') {
         return {};
+    }
     std::string CleanName = Base::Tools::getIdentifier(Name);
 
     // name in use?
-    std::map<string,Document*>::const_iterator pos;
-    pos = DocMap.find(CleanName);
+    auto pos = DocMap.find(CleanName);
 
     if (pos == DocMap.end() || (tempDoc && pos->second->testStatus(Document::TempDoc))) {
         // if not, name is OK
         return CleanName;
     }
-    else {
-        std::vector<std::string> names;
-        names.reserve(DocMap.size());
-        for (pos = DocMap.begin(); pos != DocMap.end(); ++pos) {
-            if (!tempDoc || !pos->second->testStatus(Document::TempDoc))
-                names.push_back(pos->first);
+    // The assumption here is that there are not many documents and
+    // documents are rarely created so the cost
+    // of building this manager each time is inconsequential
+    Base::UniqueNameManager names;
+    for (const auto& pos : DocMap) {
+        if (!tempDoc || !pos.second->testStatus(Document::TempDoc)) {
+            names.addExactName(pos.first);
         }
-        return Base::Tools::getUniqueName(CleanName, names);
     }
+
+    return names.makeUniqueName(CleanName);
 }
 
 int Application::addPendingDocument(const char *FileName, const char *objName, bool allowPartial)
@@ -1058,24 +1057,30 @@ Document* Application::getActiveDocument() const
 
 void Application::setActiveDocument(Document* pDoc)
 {
+    setActiveDocumentNoSignal(pDoc);
+
+    if (pDoc) {
+        signalActiveDocument(*pDoc);
+    }
+}
+
+void Application::setActiveDocumentNoSignal(Document* pDoc)
+{
     _pActiveDoc = pDoc;
 
     // make sure that the active document is set in case no GUI is up
     if (pDoc) {
         Base::PyGILStateLocker lock;
         Py::Object active(pDoc->getPyObject(), true);
-        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),active);
+        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"), active);
     }
     else {
         Base::PyGILStateLocker lock;
-        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),Py::None());
+        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"), Py::None());
     }
-
-    if (pDoc)
-        signalActiveDocument(*pDoc);
 }
 
-void Application::setActiveDocument(const char *Name)
+void Application::setActiveDocument(const char* Name)
 {
     // If no active document is set, resort to a default.
     if (*Name == '\0') {
@@ -1360,7 +1365,7 @@ void Application::addImportType(const char* Type, const char* ModuleName)
         std::string::size_type next = item.filter.find_first_of(" )", pos+1);
         std::string::size_type len = next-pos-2;
         std::string type = item.filter.substr(pos+2,len);
-        item.types.push_back(type);
+        item.types.push_back(std::move(type));
         pos = item.filter.find("*.", next);
     }
 
@@ -1368,12 +1373,12 @@ void Application::addImportType(const char* Type, const char* ModuleName)
     if (strncmp(Type, "FreeCAD", 7) == 0) {
         std::string AppName = Config()["ExeName"];
         AppName += item.filter.substr(7);
-        item.filter = AppName;
+        item.filter = std::move(AppName);
         // put to the front of the array
-        _mImportTypes.insert(_mImportTypes.begin(),item);
+        _mImportTypes.insert(_mImportTypes.begin(),std::move(item));
     }
     else {
-        _mImportTypes.push_back(item);
+        _mImportTypes.push_back(std::move(item));
     }
 }
 
@@ -1483,7 +1488,7 @@ void Application::addExportType(const char* Type, const char* ModuleName)
         std::string::size_type next = item.filter.find_first_of(" )", pos+1);
         std::string::size_type len = next-pos-2;
         std::string type = item.filter.substr(pos+2,len);
-        item.types.push_back(type);
+        item.types.push_back(std::move(type));
         pos = item.filter.find("*.", next);
     }
 
@@ -1491,12 +1496,12 @@ void Application::addExportType(const char* Type, const char* ModuleName)
     if (strncmp(Type, "FreeCAD", 7) == 0) {
         std::string AppName = Config()["ExeName"];
         AppName += item.filter.substr(7);
-        item.filter = AppName;
+        item.filter = std::move(AppName);
         // put to the front of the array
-        _mExportTypes.insert(_mExportTypes.begin(),item);
+        _mExportTypes.insert(_mExportTypes.begin(),std::move(item));
     }
     else {
-        _mExportTypes.push_back(item);
+        _mExportTypes.push_back(std::move(item));
     }
 }
 
@@ -1665,7 +1670,7 @@ void Application::slotBeforeRecompute(const Document& doc)
 
 void Application::slotOpenTransaction(const Document& d, string s)
 {
-    this->signalOpenTransaction(d, s);
+    this->signalOpenTransaction(d, std::move(s));
 }
 
 void Application::slotCommitTransaction(const Document& d)
@@ -1743,7 +1748,7 @@ void Application::destruct()
 
     // now save all other parameter files
     auto& paramMgr = _pcSingleton->mpcPramManager;
-    for (auto it : paramMgr) {
+    for (const auto &it : paramMgr) {
         if ((it.second != _pcSysParamMngr) && (it.second != _pcUserParamMngr)) {
             if (it.second->HasSerializer() && !it.second->IgnoreSave()) {
                 Base::Console().Log("Saving %s...\n", it.first.c_str());
@@ -2449,7 +2454,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         for (const auto & It : Macros)
             temp += It + ";";
         temp.erase(temp.end()-1);
-        mConfig["AdditionalMacroPaths"] = temp;
+        mConfig["AdditionalMacroPaths"] = std::move(temp);
     }
 
     if (vm.count("python-path")) {
@@ -2484,8 +2489,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     }
 
     if (vm.count("output")) {
-        string file = vm["output"].as<string>();
-        mConfig["SaveFile"] = file;
+        mConfig["SaveFile"] = vm["output"].as<string>();
     }
 
     if (vm.count("hidden")) {
@@ -2519,7 +2523,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         else if (testCase.empty()) {
             testCase = "TestApp.PrintAll";
         }
-        mConfig["TestCase"] = testCase;
+        mConfig["TestCase"] = std::move(testCase);
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
         mConfig["ExitTests"] = vm.count("run-open") == 0  ? "yes" : "no";
@@ -2556,7 +2560,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
             if (pos != std::string::npos) {
                 std::string key = it.substr(0, pos);
                 std::string val = it.substr(pos + 1);
-                mConfig[key] = val;
+                mConfig[key] = std::move(val);
             }
         }
     }
@@ -2871,9 +2875,7 @@ std::list<std::string> Application::getCmdLineFiles()
         // getting file name
         std::ostringstream temp;
         temp << "OpenFile" << i;
-
-        std::string file(mConfig[temp.str()]);
-        files.push_back(file);
+        files.emplace_back(mConfig[temp.str()]);
     }
 
     return files;
@@ -3400,7 +3402,7 @@ void Application::ExtractUserPath()
 
     // Set the default macro directory
     //
-    std::vector<std::string> macrodirs = subdirs;
+    std::vector<std::string> macrodirs = std::move(subdirs);  // Last use in this method, just move
     macrodirs.emplace_back("Macro");
     std::filesystem::path macro = findPath(dataHome, customData, macrodirs, true);
     mConfig["UserMacroPath"] = Base::FileInfo::pathToString(macro) + PATHSEP;

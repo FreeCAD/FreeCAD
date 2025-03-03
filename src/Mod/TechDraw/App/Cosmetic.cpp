@@ -248,7 +248,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     m_format.setWidth(reader.getAttributeAsFloat("value"));
     reader.readElement("Color");
     std::string tempHex = reader.getAttribute("value");
-    App::Color tempColor;
+    Base::Color tempColor;
     tempColor.fromHexString(tempHex);
     m_format.setColor(tempColor);
     reader.readElement("Visible");
@@ -451,7 +451,7 @@ void GeomFormat::Restore(Base::XMLReader &reader)
     m_format.setWidth(reader.getAttributeAsFloat("value"));
     reader.readElement("Color");
     std::string tempHex = reader.getAttribute("value");
-    App::Color tempColor;
+    Base::Color tempColor;
     tempColor.fromHexString(tempHex);
     m_format.setColor(tempColor);
     reader.readElement("Visible");
