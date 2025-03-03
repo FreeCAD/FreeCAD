@@ -653,8 +653,11 @@ void ComplexGeoData::RestoreDocFile(Base::Reader& reader)
             return;
         }
     }
-    std::size_t count = atoi(marker.c_str());
-    restoreStream(reader, count);
+    auto count = atoll(marker.c_str());  // Try to prevent UB if the number is unreasonably large
+    if (count < 0 || count > std::numeric_limits<int>::max()) {
+        FC_THROWM(Base::RuntimeError, "Failed to restore element map " << _persistenceName);
+    }
+    restoreStream(reader, static_cast<std::size_t>(count));
 }
 
 unsigned int ComplexGeoData::getMemSize() const
