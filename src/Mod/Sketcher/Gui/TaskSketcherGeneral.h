@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskSketcherMessages_H
-#define GUI_TASKVIEW_TaskSketcherMessages_H
+#ifndef GUI_TASKVIEW_TaskSketcherGeneral_H
+#define GUI_TASKVIEW_TaskSketcherGeneral_H
 
 #include <boost/signals2.hpp>
 
 #include <Gui/TaskView/TaskView.h>
 
 
-class Ui_TaskSketcherMessages;
+class Ui_TaskSketcherGeneral;
 using Connection = boost::signals2::connection;
 
 namespace App
@@ -41,13 +41,13 @@ namespace SketcherGui
 
 class ViewProviderSketch;
 
-class TaskSketcherMessages: public Gui::TaskView::TaskBox
+class TaskSketcherGeneral: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskSketcherMessages(ViewProviderSketch* sketchView);
-    ~TaskSketcherMessages() override;
+    explicit TaskSketcherGeneral(ViewProviderSketch* sketchView);
+    ~TaskSketcherGeneral() override;
 
     void slotSetUp(const QString& state,
                    const QString& msg,
@@ -57,7 +57,7 @@ public:
 private:
     void setupConnections();
     void onLabelConstrainStatusLinkClicked(const QString&);
-    void onAutoUpdateStateChanged();
+    void onAutoRecomputeStateChanged();
     void onManualUpdateClicked(bool checked);
 
     void updateToolTip(const QString& link);
@@ -68,9 +68,9 @@ protected:
 
 private:
     QWidget* proxy;
-    std::unique_ptr<Ui_TaskSketcherMessages> ui;
+    std::unique_ptr<Ui_TaskSketcherGeneral> ui;
 };
 
 }  // namespace SketcherGui
 
-#endif  // GUI_TASKVIEW_TaskSketcherMessages_H
+#endif  // GUI_TASKVIEW_TaskSketcherGeneral_H

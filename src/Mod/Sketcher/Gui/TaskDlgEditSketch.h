@@ -29,7 +29,7 @@
 
 #include "TaskSketcherConstraints.h"
 #include "TaskSketcherElements.h"
-#include "TaskSketcherMessages.h"
+#include "TaskSketcherGeneral.h"
 #include "TaskSketcherSolverAdvanced.h"
 #include "TaskSketcherTool.h"
 #include "ViewProviderSketch.h"
@@ -82,6 +82,7 @@ public:
 protected:
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
+    void onAutoRecomputeStateChanged();
 
 private:
     void slotToolChanged(const std::string& toolname);
@@ -90,7 +91,7 @@ protected:
     ViewProviderSketch* sketchView;
     TaskSketcherConstraints* Constraints;
     TaskSketcherElements* Elements;
-    TaskSketcherMessages* Messages;
+    TaskSketcherGeneral* Messages;
     TaskSketcherSolverAdvanced* SolverAdvanced;
     TaskSketcherTool* ToolSettings;
 
