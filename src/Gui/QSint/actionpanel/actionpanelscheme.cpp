@@ -12,7 +12,7 @@ namespace QSint
 {
 
 
-constexpr QString ActionPanelScheme::minimumStyle = QStringLiteral(
+const QString ActionPanelScheme::minimumStyle = QStringLiteral(
     "QSint--ActionGroup QFrame[class='header'] {"
         "border: none;"
     "}"
