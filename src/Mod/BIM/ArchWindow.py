@@ -357,6 +357,11 @@ class Window(ArchComponent.Component):
             else:
                 ArchComponent.Component.onChanged(self, obj, prop)
 
+    def get_float(self, val):
+        """Returns a float from the given value"""
+
+        return FreeCAD.Units.Quantity(val.strip()).Value
+
     def buildShapes(self, obj):
 
         import Part
@@ -525,7 +530,7 @@ class Window(ArchComponent.Component):
                 if "+V" in thk:
                     thk = thk[:-2]
                     V = obj.Frame.Value
-                thk = float(thk) + V
+                thk = self.get_float(thk) + V
                 if thk:
                     exv = DraftVecUtils.scaleTo(norm, thk)
                     shape = shape.extrude(exv)
@@ -539,7 +544,7 @@ class Window(ArchComponent.Component):
                     if "+V" in zof:
                         zof = zof[:-2]
                         V = obj.Offset.Value
-                    zof = float(zof) + V
+                    zof = self.get_float(zof) + V
                     if zof:
                         zov = DraftVecUtils.scaleTo(norm, zof)
                         shape.translate(zov)
