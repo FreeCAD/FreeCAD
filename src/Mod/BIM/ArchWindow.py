@@ -56,13 +56,7 @@ __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
 
 # presets
-WindowPartTypes = [
-    "Frame",
-    "Solid panel",
-    "Glass panel",
-    "Louvre",
-    "Custom"
-]
+WindowPartTypes = ["Frame", "Solid panel", "Glass panel", "Louvre", "Custom"]
 WindowOpeningModes = [
     "None",
     "Arc 90",
@@ -293,7 +287,7 @@ class Window(ArchComponent.Component):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "A list of shapes or texts that represent additional"
-                    "symbols to be added to this window"
+                    "symbols to be added to this window",
                 ),
             )
         obj.setEditorMode("VerticalArea", 2)
@@ -707,19 +701,19 @@ class Window(ArchComponent.Component):
         # creation of subface from HoleWire (getSubWire)
         raise NotImplementedError
 
-    def getSubVolume(self,obj,plac=None, host=None):
+    def getSubVolume(self, obj, plac=None, host=None):
         "returns a subvolume for cutting in a base object"
 
         # check if this is a clone or not, setup orig if positive
         orig = None
-        if Draft.isClone(obj,"Window"):
-            if hasattr(obj,"CloneOf"):  # TODO need to check this?
+        if Draft.isClone(obj, "Window"):
+            if hasattr(obj, "CloneOf"):  # TODO need to check this?
                 orig = obj.CloneOf
 
         # TODO Why always need tests e.g. hasattr(obj,"Subvolme"), hasattr(obj,"ClonOf") etc.?
 
         # check if we have a custom subvolume
-        if hasattr(obj,"Subvolume"):  # TODO To support Links
+        if hasattr(obj, "Subvolume"):  # TODO To support Links
             if obj.Subvolume:
                 if hasattr(obj.Subvolume, "Shape"):
                     if not obj.Subvolume.Shape.isNull():
@@ -733,30 +727,43 @@ class Window(ArchComponent.Component):
 
         # getting extrusion depth
         width = 0
-        if hasattr(obj,"HoleDepth"):  # if this is a clone, the original's HoleDepth is overridden if HoleDepth is set in the clone  # TODO To support Links
+        if hasattr(
+            obj, "HoleDepth"
+        ):  # if this is a clone, the original's HoleDepth is overridden if HoleDepth is
+            # set in the clone  # TODO To support Links
             if obj.HoleDepth.Value:
                 width = obj.HoleDepth.Value
         if not width:
-            if orig and hasattr(orig,"HoleDepth"):
+            if orig and hasattr(orig, "HoleDepth"):
                 if orig.HoleDepth.Value:
                     width = orig.HoleDepth.Value
         if not width:
             if host and Draft.getType(host) == "Wall":
-                # TODO More robust approach :  With ArchSketch, on which wall segment an ArchObject is attached to is declared by user and saved.
-                #      The extrusion of each wall segment could be done per segment, and punch hole in the exact wall segment before fusing them all. No need to care about each wall segment thickness.
-                # TODO Consider to turn below codes to getWidths/getSortedWidths() in ArchWall (below codes copied and modified from ArchWall)
+                # TODO More robust approach :  With ArchSketch, on which wall segment
+                # an ArchObject is attached to is declared by user and saved.
+                #      The extrusion of each wall segment could be done per segment, and
+                # punch hole in the exact wall segment before fusing them all. No need to care
+                # about each wall segment thickness.
+                # TODO Consider to turn below codes to getWidths/getSortedWidths() in ArchWall
+                # (below codes copied and modified from ArchWall)
                 propSetUuid = host.Proxy.ArchSkPropSetPickedUuid
                 widths = []  # [] or None are both False
-                if hasattr(host,"ArchSketchData") and host.ArchSketchData and Draft.getType(host.Base) == "ArchSketch":
-                    if hasattr(host.Base, 'Proxy'):  # TODO Any need to test ?
-                        if hasattr(host.Base.Proxy, 'getWidths'):
+                if (
+                    hasattr(host, "ArchSketchData")
+                    and host.ArchSketchData
+                    and Draft.getType(host.Base) == "ArchSketch"
+                ):
+                    if hasattr(host.Base, "Proxy"):  # TODO Any need to test ?
+                        if hasattr(host.Base.Proxy, "getWidths"):
                             # Return a list of Width corresponding to indexes
                             # of sorted edges of Sketch.
-                            widths = host.Base.Proxy.getWidths(host.Base,
-                                                     propSetUuid=propSetUuid)
+                            widths = host.Base.Proxy.getWidths(
+                                host.Base, propSetUuid=propSetUuid
+                            )
                 if not widths:
                     if host.OverrideWidth:
-                        # TODO No need to test as in ArchWall if host.Base is Sketch and sortSketchWidth(), just need the max value
+                        # TODO No need to test as in ArchWall if host.Base is Sketch
+                        # and sortSketchWidth(), just need the max value
                         widths = host.OverrideWidth
                     elif host.Width:
                         widths = [host.Width.Value]
@@ -766,28 +773,42 @@ class Window(ArchComponent.Component):
                     width += 100
             elif obj.Base:  # If host is not Wall
                 b = obj.Base.Shape.BoundBox
-                width = max(b.XLength,b.YLength,b.ZLength)  # TODO Fix this, the width would be too much in many cases
-        if not width:  # TODO Should not happen, it means there is no Base (Sketch or another FC object) in Clone either
-            width = 1.1112 # some weird value to have little chance to overlap with an existing face
+                width = max(
+                    b.XLength, b.YLength, b.ZLength
+                )  # TODO Fix this, the width would be too much in many cases
+        if (
+            not width
+        ):  # TODO Should not happen, it means there is no Base (Sketch or
+            # another FC object) in Clone either
+            width = 1.1112
+            # some weird value to have little chance
+            # to overlap with an existing face
 
         # setup base
         if orig:
-            base = orig.Base  # always use original's base; clone's base should not be used to supersede original's base
+            base = (
+                orig.Base
+            )
+            # always use original's base; clone's base should not
+            # be used to supersede original's base
         else:
             base = obj.Base
 
         # finding which wire to use to drill the hole
         f = None
-        if hasattr(obj,"HoleWire"):  # if this is a clone, the original's HoleWire is overridden if HoleWire is set in the clone  # TODO To support Links
+        if hasattr(
+            obj, "HoleWire"
+        ):  # if this is a clone, the original's HoleWire is overridden if HoleWire is set in
+            # the clone  # TODO To support Links
             if obj.HoleWire > 0:
                 if obj.HoleWire <= len(base.Shape.Wires):
-                    f = base.Shape.Wires[obj.HoleWire-1]
+                    f = base.Shape.Wires[obj.HoleWire - 1]
         if not f:
-            if orig and hasattr(orig,"HoleDepth"):
+            if orig and hasattr(orig, "HoleDepth"):
                 # check original's HoleWire
                 if orig.HoleWire > 0:
                     if orig.HoleWire <= len(base.Shape.Wires):
-                        f = base.Shape.Wires[obj.HoleWire-1]
+                        f = base.Shape.Wires[obj.HoleWire - 1]
         if not f:
             # finding biggest wire in the base shape
             max_length = 0
@@ -824,7 +845,7 @@ class Window(ArchComponent.Component):
 
         shapes = []
         if hasattr(obj.ViewObject, "Annotation"):
-           obj.ViewObject.Annotation.removeAllChildren()
+            obj.ViewObject.Annotation.removeAllChildren()
         for ann in getattr(obj, "SymbolAnnotations", []):
             shape = getattr(ann, "Shape", None)
             if shape:
