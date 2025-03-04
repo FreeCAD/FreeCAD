@@ -23,6 +23,12 @@
 	  <preferencepack>
 		  <name>MyFirstPack</name>
 	  </preferencepack>
+	  <bundle>
+		  <name>A bundle that bundles nothing</name>
+	  </bundle>
+      <other>
+          <name>Mysterious Object</name>
+      </other>
   </content>
 
 </package>

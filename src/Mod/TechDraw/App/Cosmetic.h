@@ -26,7 +26,7 @@
 #include <QColor>
 
 #include <App/FeaturePython.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
@@ -81,23 +81,14 @@ public:
     TechDraw::BaseGeomPtr m_geometry;
     LineFormat m_format;
 
-    boost::uuids::uuid getTag() const;
-    std::string getTagAsString() const override;
-
 protected:
-    //Uniqueness
-    void createNewTag();
-    void assignTag(const TechDraw::CosmeticEdge* ce);
-    boost::uuids::uuid tag;
-
     Py::Object PythonObject;
-
 };
 
 //********** GeomFormat ********************************************************
 
 // format specifier for geometric edges (Edge5)
-class TechDrawExport GeomFormat: public Base::Persistence
+class TechDrawExport GeomFormat: public Base::Persistence, public TechDraw::Tag
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -124,15 +115,7 @@ public:
     int m_geomIndex;            //connection to edgeGeom
     LineFormat m_format;
 
-    //Uniqueness
-    boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString() const;
-
 protected:
-    void createNewTag();
-    void assignTag(const TechDraw::GeomFormat* gf);
-
-    boost::uuids::uuid tag;
     Py::Object PythonObject;
 };
 

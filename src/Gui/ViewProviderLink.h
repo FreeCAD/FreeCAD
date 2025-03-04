@@ -253,8 +253,8 @@ public:
 
     static void updateLinks(ViewProvider *vp);
 
-    std::map<std::string, App::Color> getElementColors(const char *subname=nullptr) const override;
-    void setElementColors(const std::map<std::string, App::Color> &colors) override;
+    std::map<std::string, Base::Color> getElementColors(const char *subname=nullptr) const override;
+    void setElementColors(const std::map<std::string, Base::Color> &colors) override;
 
     void setOverrideMode(const std::string &mode) override;
 

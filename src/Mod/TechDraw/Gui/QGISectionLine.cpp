@@ -141,10 +141,10 @@ void QGISectionLine::makeArrows()
 //make Euro (ISO) Arrows
 void QGISectionLine::makeArrowsISO()
 {
-    m_arrow1->setStyle(0);
+    m_arrow1->setStyle(ArrowType::FILLED_ARROW);
     m_arrow1->setSize(QGIArrow::getPrefArrowSize());
     m_arrow1->setPos(m_start);
-    m_arrow2->setStyle(0);
+    m_arrow2->setStyle(ArrowType::FILLED_ARROW);
     m_arrow2->setSize(QGIArrow::getPrefArrowSize());
     m_arrow2->setPos(m_end);
 
@@ -165,9 +165,9 @@ void QGISectionLine::makeArrowsISO()
 //make traditional (ASME) section arrows
 void QGISectionLine::makeArrowsTrad()
 {
-    m_arrow1->setStyle(0);
+    m_arrow1->setStyle(ArrowType::FILLED_ARROW);
     m_arrow1->setSize(QGIArrow::getPrefArrowSize());
-    m_arrow2->setStyle(0);
+    m_arrow2->setStyle(ArrowType::FILLED_ARROW);
     m_arrow2->setSize(QGIArrow::getPrefArrowSize());
 
     if (m_arrowMode == SINGLEDIRECTIONMODE) {

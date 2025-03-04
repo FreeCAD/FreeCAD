@@ -1169,7 +1169,17 @@ template<Base::LogStyle category,
 inline void
 Base::ConsoleSingleton::Send(const std::string& notifiername, const char* pMsg, Args&&... args)
 {
-    std::string format = fmt::sprintf(pMsg, args...);
+    std::string format;
+    try {
+        format = fmt::sprintf(pMsg, args...);
+    }
+    catch (fmt::format_error& e) {
+        // We can't allow an exception to propagate out of this method, which gets used in some
+        // destructors. Instead, make the string's contents the error message that fmt::sprintf gave
+        // us.
+        format = std::string("ERROR: Invalid format string or arguments provided.\n");
+        format += e.what();
+    }
 
     if (connectionMode == Direct) {
         Notify<category, recipient, contenttype>(notifiername, format);

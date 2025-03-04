@@ -1,6 +1,10 @@
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src/Gui
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
@@ -13,10 +17,13 @@ include_directories(
 
 if(BUILD_QT5)
     include_directories(
+        SYSTEM
         ${Qt5Core_INCLUDE_DIRS}
     )
 else()
+    SYSTEM
     include_directories(
+        SYSTEM
         ${QT_INCLUDE_DIR}
     )
 endif()
