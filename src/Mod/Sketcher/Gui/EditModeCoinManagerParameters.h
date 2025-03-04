@@ -140,17 +140,18 @@ struct DrawingParameters
     int constraintIconSize = 15;  // Size of constraint icons
     int markerSize = 7;           // Size used for markers
 
-    int CurveWidth = 2;         // width of normal edges
-    int ConstructionWidth = 1;  // width of construction edges
-    int InternalWidth = 1;      // width of internal edges
-    int ExternalWidth = 1;      // width of external edges
+    int CurveWidth = 2;             // width of normal edges
+    int ConstructionWidth = 1;      // width of construction edges
+    int InternalWidth = 1;          // width of internal edges
+    int ExternalWidth = 1;          // width of external edges
     int ExternalDefiningWidth = 1;  // width of external defining edges
 
     unsigned int CurvePattern = 0b1111111111111111;         // pattern of normal edges
     unsigned int ConstructionPattern = 0b1111110011111100;  // pattern of construction edges
     unsigned int InternalPattern = 0b1111110011111100;      // pattern of internal edges
     unsigned int ExternalPattern = 0b1111110011111100;      // pattern of external edges
-    unsigned int ExternalDefiningPattern = 0b1111111111111111; // pattern of external defining edges
+    unsigned int ExternalDefiningPattern =
+        0b1111111111111111;  // pattern of external defining edges
     //@}
 
     DrawingParameters()
