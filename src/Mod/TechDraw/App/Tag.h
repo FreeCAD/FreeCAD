@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2025 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2025 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,42 +21,36 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ARROWENUMS_H_
-#define ARROWENUMS_H_
+#ifndef TECHDRAW_TAG_H
+#define TECHDRAW_TAG_H
 
-#include <string>
-#include <vector>
-#include <QCoreApplication>
+#include <boost/uuid/uuid.hpp>
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+namespace Base {
+class XMLReader;
+class Writer;
+}
 
-namespace TechDraw
-{
+namespace TechDraw {
+class TechDrawExport Tag {
+public:
+    //Uniqueness
+    boost::uuids::uuid getTag() const;
+    virtual std::string getTagAsString() const;
 
-//common definitions for line ends / arrows
-enum class ArrowType : int {
-    FILLED_ARROW = 0,
-    OPEN_ARROW,
-    TICK,
-    DOT,
-    OPEN_CIRCLE,
-    FORK,
-    FILLED_TRIANGLE,
-    NONE
-};
-
-class TechDrawExport ArrowPropEnum {
-    Q_DECLARE_TR_FUNCTIONS(TechDraw::ArrowPropEnum)
-
-    public:
-        static const char* ArrowTypeEnums[];
-        static const int   ArrowCount;
-        static const std::vector<std::string> ArrowTypeIcons;
+protected:
+    Tag();
+    void setTag(const boost::uuids::uuid& newTag);
+    void Save(Base::Writer& writer) const;
+    // Setting elementName is only for backwards compatibility!
+    void Restore(Base::XMLReader& reader, std::string_view elementName="Tag");
 
 private:
-
+    void createNewTag();
+    boost::uuids::uuid tag;
 };
+}
 
-} //end namespace TechDraw
 #endif

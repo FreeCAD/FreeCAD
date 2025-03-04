@@ -70,7 +70,7 @@ private:
     QGraphicsScene m_scene;
     QGraphicsProxyWidget* qpw {nullptr};
 
-    int m_zoomLevel {100};
+    int m_zoomLevel {0};
 
 protected:
     void focusOutEvent(QFocusEvent* event) override;

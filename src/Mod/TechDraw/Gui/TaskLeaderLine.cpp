@@ -233,11 +233,11 @@ void TaskLeaderLine::setUiPrimary()
     }
 
     DrawGuiUtil::loadArrowBox(ui->cboxStartSym);
-    int aStyle = PreferencesGui::dimArrowStyle();
-    ui->cboxStartSym->setCurrentIndex(aStyle);
+    ArrowType aStyle = PreferencesGui::dimArrowStyle();
+    ui->cboxStartSym->setCurrentIndex(static_cast<int>(aStyle));
 
     DrawGuiUtil::loadArrowBox(ui->cboxEndSym);
-    ui->cboxEndSym->setCurrentIndex(TechDraw::ArrowType::NONE);
+    ui->cboxEndSym->setCurrentIndex(static_cast<int>(TechDraw::ArrowType::NONE));
 
     ui->dsbWeight->setUnit(Base::Unit::Length);
     ui->dsbWeight->setMinimum(0);
