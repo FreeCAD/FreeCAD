@@ -44,6 +44,17 @@
 # include <Inventor/nodes/SoTransparencyType.h>
 # include <QAction>
 # include <QMenu>
+# include <QDialog>
+# include <QPushButton>
+# include <QVBoxLayout>
+# include <QCloseEvent>
+# include <thread>
+# include <atomic>
+# include <QApplication>
+# include <Gui/MainWindow.h>
+# include <mutex>
+# include <condition_variable>
+# include <QProgressBar>
 #endif
 
 #include <App/Document.h>
@@ -158,11 +169,68 @@ bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
     return ViewProvider::onDelete(s);
 }
 
+class ComputationDialog : public QDialog {
+public:
+    ComputationDialog(QWidget* parent = nullptr) : QDialog(parent) {
+        setWindowTitle(tr("Computing transformation"));
+        setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+        auto layout = new QVBoxLayout(this);
+        
+        // Add informative label
+        auto label = new QLabel(tr("This operation may take a while.\nPlease wait or press 'Abort' to cancel."), this);
+        label->setAlignment(Qt::AlignCenter);
+        layout->addWidget(label);
+        
+        // Add progress bar in indeterminate mode
+        auto progressBar = new QProgressBar(this);
+        progressBar->setMinimum(0);
+        progressBar->setMaximum(0); // This makes it indeterminate
+        layout->addWidget(progressBar);
+        
+        auto abortButton = new QPushButton(tr("Abort"), this);
+        layout->addWidget(abortButton);
+        connect(abortButton, &QPushButton::clicked, this, &QDialog::reject);
+    }
+
+protected:
+    void closeEvent(QCloseEvent* event) override {
+        event->ignore();
+    }
+};
+
 void ViewProviderTransformed::recomputeFeature(bool recompute)
 {
     PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
-    if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute()))
-        pcTransformed->recomputeFeature(true);
+    if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute())) {
+        std::atomic<bool> computationDone(false);
+        std::mutex mutex;  // Still needed for the condition variable
+        std::condition_variable cv;
+
+        // Start computation thread
+        std::thread computeThread([&]() {
+            pcTransformed->recomputeFeature(true);
+            computationDone.store(true);  // Atomic store
+            QMetaObject::invokeMethod(QApplication::activeModalWidget(), "accept", Qt::QueuedConnection);
+            cv.notify_one();
+        });
+
+        while (!computationDone.load()) {
+            // Wait for a brief moment to see if computation completes quickly
+            std::unique_lock<std::mutex> lock(mutex);  // Fixed: std::lock -> std::mutex
+            if (!cv.wait_for(lock, std::chrono::milliseconds(3000), 
+                [&]{ return computationDone.load(); }))  // Atomic load
+            {
+                // Computation didn't finish quickly, show dialog
+                ComputationDialog dialog(Gui::MainWindow::getInstance());
+                
+                if (dialog.exec() == QDialog::Rejected) {
+                    pcTransformed->abort();
+                }
+            }
+        }
+
+        computeThread.join();
+    }
 
     unsigned rejected = 0;
     TopoDS_Shape cShape = pcTransformed->rejected;

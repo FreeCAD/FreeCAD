@@ -106,6 +106,16 @@
 
 #include "Tools.h"
 
+#include <App/Application.h>
+
+#include "AsyncProcessHandle.h"
+#include "BooleanOperation.h"
+
+// Add these includes at the top with the other includes
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
 #if OCC_VERSION_HEX >= 0x070600
@@ -4123,6 +4133,23 @@ TopoShape::makeElementCut(const std::vector<TopoShape>& shapes, const char* op, 
     return makeElementBoolean(Part::OpCodes::Cut, shapes, op, tol);
 }
 
+void
+TopoShape::makeElementFuseAsync(AsyncProcessHandle* handle,
+                               const std::vector<TopoShape>& shapes,
+                               const char* op,
+                               double tol)
+{
+    return makeElementBooleanAsync(handle, Part::OpCodes::Fuse, shapes, op, tol);
+}
+
+void
+TopoShape::makeElementCutAsync(AsyncProcessHandle* handle,
+                              const std::vector<TopoShape>& shapes,
+                              const char* op,
+                              double tol)
+{
+    return makeElementBooleanAsync(handle, Part::OpCodes::Cut, shapes, op, tol);
+}
 
 TopoShape& TopoShape::makeElementShape(BRepBuilderAPI_MakeShape& mkShape,
                                        const TopoShape& source,
@@ -5560,6 +5587,106 @@ bool TopoShape::fixSolidOrientation()
     }
 
     return false;
+}
+
+void TopoShape::makeElementBooleanAsync(AsyncProcessHandle* handle,
+                                        const char* maker,
+                                        const std::vector<TopoShape>& shapes,
+                                        const char* op,
+                                        double tolerance)
+{
+    if (!maker) {
+        FC_THROWM(Base::CADKernelError, "No maker specified");
+    }
+    if (shapes.empty()) {
+        FC_THROWM(Base::CADKernelError, "No shapes provided");
+    }
+
+    // Validate operation type upfront
+    char maker_type;
+    if (strcmp(maker, Part::OpCodes::Fuse) == 0) {
+        maker_type = 'F';
+    } else if (strcmp(maker, Part::OpCodes::Cut) == 0) {
+        maker_type = 'C'; 
+    } else {
+        FC_THROWM(Base::CADKernelError, "Unsupported boolean operation");
+    }
+
+    // Create pipes for stdin and stdout
+    int stdin_pipe[2];  // Parent writes to child's stdin
+    int stdout_pipe[2]; // Parent reads from child's stdout
+
+    if (pipe(stdin_pipe) == -1 || pipe(stdout_pipe) == -1) {
+        // Clean up if second pipe failed
+        if (stdin_pipe[0] >= 0) {
+            close(stdin_pipe[0]);
+            close(stdin_pipe[1]);
+        }
+        FC_THROWM(Base::CADKernelError, "Failed to create pipes");
+    }
+
+    pid_t pid = fork();
+    if (pid == -1) {
+        // Clean up pipes
+        close(stdin_pipe[0]);
+        close(stdin_pipe[1]); 
+        close(stdout_pipe[0]);
+        close(stdout_pipe[1]);
+        FC_THROWM(Base::CADKernelError, "Failed to fork process");
+    }
+
+    if (pid == 0) {  // Child process
+        // Close unused pipe ends
+        close(stdin_pipe[1]);  // Close write end of stdin pipe
+        close(stdout_pipe[0]); // Close read end of stdout pipe
+
+        // Redirect stdin and stdout
+        if (dup2(stdin_pipe[0], STDIN_FILENO) == -1 || 
+            dup2(stdout_pipe[1], STDOUT_FILENO) == -1) {
+            std::cerr << "Failed to redirect stdin/stdout" << std::endl;
+            _exit(2);
+        }
+
+        // Close original file descriptors
+        close(stdin_pipe[0]);
+        close(stdout_pipe[1]);
+
+        // Construct path to worker executable
+        std::string workerExe = App::GetApplication().getHomePath() + "/bin/" + App::GetApplication().getExecutableName();
+        execl(workerExe.c_str(), App::GetApplication().getExecutableName().c_str(), "--boolean-worker", nullptr);
+
+        // If we get here, exec failed
+        std::cerr << "Failed to execute FreeCAD BooleanWorker at " << workerExe << std::endl;
+        _exit(3);
+    }
+
+    // Parent process
+    // Close unused pipe ends
+    close(stdin_pipe[0]);  // Close read end of stdin pipe
+    close(stdout_pipe[1]); // Close write end of stdout pipe
+
+    handle->setup(pid, stdout_pipe[0]);
+    
+    // Create BooleanOperation object and write input
+    try {
+        BooleanOperation op_data;
+        op_data.maker = maker_type;
+        op_data.shapes = shapes;
+        op_data.op = op ? op : ""; // TODO: we really need to be able to pass a null ptr into the child process in order to keep the old behaviour unchanged
+        op_data.tolerance = tolerance;
+        
+        // Write operation data to child's stdin
+        op_data.writeInput(stdin_pipe[1]);
+    } catch (const std::exception& e) {
+        close(stdin_pipe[1]);
+        close(stdout_pipe[0]);
+        kill(pid, SIGTERM);
+        waitpid(pid, nullptr, 0);
+        FC_THROWM(Base::CADKernelError, e.what());
+    }
+    
+    // Close write end of stdin pipe since we're done writing
+    close(stdin_pipe[1]);
 }
 
 TopoShape& TopoShape::makeElementBoolean(const char* maker,

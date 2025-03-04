@@ -2291,6 +2291,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("input-file", boost::program_options::value< vector<string> >(), "input file")
     ("output",     boost::program_options::value<string>(),"output file")
     ("hidden",                                             "don't show the main window")
+    ("boolean-worker", "Run the boolean worker")
     // this are to ignore for the window system (QApplication)
     ("style",      boost::program_options::value< string >(), "set the application GUI style")
     ("stylesheet", boost::program_options::value< string >(), "set the application stylesheet")
@@ -2529,6 +2530,10 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["ExitTests"] = vm.count("run-open") == 0  ? "yes" : "no";
     }
 
+    if (vm.count("boolean-worker")) {
+        mConfig["RunMode"] = "BooleanWorker";
+    }
+
     if (vm.count("single-instance")) {
         mConfig["SingleInstance"] = "1";
     }
@@ -2700,7 +2705,7 @@ void Application::initConfig(int argc, char ** argv)
         _pConsoleObserverFile = nullptr;
 
     // Banner ===========================================================
-    if (!(mConfig["RunMode"] == "Cmd")) {
+    if (!(mConfig["RunMode"] == "Cmd" || mConfig["RunMode"] == "BooleanWorker")) {
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (!(mConfig["Verbose"] == "Strict"))
@@ -3007,6 +3012,12 @@ void Application::runApplication()
         // run internal script
         Base::Console().Log("Running internal script:\n");
         Base::Interpreter().runString(Base::ScriptFactory().ProduceScript(mConfig["ScriptFileName"].c_str()));
+    }
+    else if (mConfig["RunMode"] == "BooleanWorker") {
+        // run boolean worker
+        Base::Interpreter().loadModule("Part");
+        Base::Interpreter().runString("import Part\nPart.RunBooleanWorker()");
+        _exit(0);
     }
     else if (mConfig["RunMode"] == "Exit") {
         // getting out

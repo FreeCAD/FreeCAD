@@ -206,6 +206,8 @@ PyObject* Part::PartExceptionOCCRangeError;
 PyObject* Part::PartExceptionOCCConstructionError;
 PyObject* Part::PartExceptionOCCDimensionError;
 
+extern PyMethodDef BooleanWorkerMethods[];
+
 // clang-format off
 PyMOD_INIT_FUNC(Part)
 {
@@ -580,6 +582,9 @@ PyMOD_INIT_FUNC(Part)
 
     Base::registerServiceImplementation<App::SubObjectPlacementProvider>(new AttacherSubObjectPlacement);
     Base::registerServiceImplementation<App::CenterOfMassProvider>(new PartCenterOfMass);
+
+    // Add the BooleanWorker method to the module
+    PyModule_AddFunctions(partModule, BooleanWorkerMethods);
 
     PyMOD_Return(partModule);
 }

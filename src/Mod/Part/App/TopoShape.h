@@ -44,6 +44,8 @@
 #include <BRepTools_ReShape.hxx>
 #include <ShapeFix_Root.hxx>
 
+#include "AsyncProcessHandle.h"
+
 class gp_Ax1;
 class gp_Ax2;
 class gp_Pln;
@@ -1422,6 +1424,18 @@ public:
         return TopoShape(0, Hasher).makeElementCut({*this, source}, op, tol);
     }
 
+    void
+    makeElementFuseAsync(AsyncProcessHandle* handle,
+                         const std::vector<TopoShape>& shapes,
+                         const char* op = nullptr,
+                         double tol = -1.0);
+
+    void
+    makeElementCutAsync(AsyncProcessHandle* handle,
+                        const std::vector<TopoShape>& shapes,
+                        const char* op = nullptr,
+                        double tol = -1.0);
+
     /** Try to simplify geometry of any linear/planar subshape to line/plane
      *
      * @return Return true if the shape is modified
@@ -1863,6 +1877,12 @@ public:
         return TopoShape(Tag, Hasher).makeElementCopy(*this, op, copyGeom, copyMesh);
     }
 
+    void
+    makeElementBooleanAsync(AsyncProcessHandle* handle,
+                            const char* maker,
+                            const std::vector<TopoShape>& shapes,
+                            const char* op,
+                            double tolerance);
 
     /** Generalized shape making with mapped element name from shape history
      *

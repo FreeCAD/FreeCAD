@@ -569,6 +569,11 @@ SET(Part_SRCS
     TopoShapeMapper.h
     TopoShapeMapper.cpp
     TopoShapeOpCode.h
+    BooleanOperation.cpp
+    BooleanOperation.h
+    BooleanWorkerPyImp.cpp
+    AsyncProcessHandle.cpp
+    AsyncProcessHandle.h
     edgecluster.cpp
     edgecluster.h
     MeasureClient.cpp
