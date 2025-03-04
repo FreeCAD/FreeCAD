@@ -111,6 +111,29 @@ void View3DSettings::applySettings()
     OnChange(*lightSourcesGrp,"AmbientLightColor");
     OnChange(*lightSourcesGrp,"AmbientLightIntensity");
 
+    // Workaround
+    // Clear old settings that was used for a while in 1.1dev
+    // By clearing these settings, 1.0 will be able to run with same config file again
+    // For more info: https://github.com/FreeCAD/FreeCAD/issues/19880
+    // TODO: Remove when 1.1.0 is about to be released
+    if (hGrp->GetASCII("FillLightDirection").empty()) {
+        hGrp->RemoveBool("EnableHeadlight");
+        hGrp->RemoveUnsigned("HeadlightColor");
+        hGrp->RemoveASCII("HeadlightDirection");
+        hGrp->RemoveInt("HeadlightIntensity");
+        hGrp->RemoveBool("EnableBacklight");
+        hGrp->RemoveUnsigned("BacklightColor");
+        hGrp->RemoveASCII("BacklightDirection");
+        hGrp->RemoveInt("BacklightIntensity");
+        hGrp->RemoveBool("EnableFillLight");
+        hGrp->RemoveUnsigned("FillLightColor");
+        hGrp->RemoveASCII("FillLightDirection");
+        hGrp->RemoveInt("FillLightIntensity");
+        hGrp->RemoveUnsigned("AmbientLightColor");
+        hGrp->RemoveInt("AmbientLightIntensity");
+    }
+    // End of workaround
+
     OnChange(*hGrp,"NavigationStyle");
     OnChange(*hGrp,"OrbitStyle");
     OnChange(*hGrp,"Sensitivity");
