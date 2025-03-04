@@ -1252,6 +1252,55 @@ void ParameterGrp::RemoveUnsigned(const char* Name)
     Notify(Name);
 }
 
+Base::Color ParameterGrp::GetColor(const char* Name, Base::Color lPreset) const
+{
+    auto packed = GetUnsigned(Name, lPreset.getPackedValue());
+
+    return Color(static_cast<uint32_t>(packed));
+}
+
+void ParameterGrp::SetColor(const char* Name, Base::Color lValue)
+{
+    SetUnsigned(Name, lValue.getPackedValue());
+}
+
+std::vector<Base::Color> ParameterGrp::GetColors(const char* sFilter) const
+{
+    auto packed = GetUnsigneds(sFilter);
+    std::vector<Base::Color> result;
+
+    std::transform(packed.begin(),
+                   packed.end(),
+                   std::back_inserter(result),
+                   [](const unsigned long lValue) {
+                       return Color(static_cast<uint32_t>(lValue));
+                   });
+
+    return result;
+}
+
+std::vector<std::pair<std::string, Base::Color>>
+ParameterGrp::GetColorMap(const char* sFilter) const
+{
+    auto packed = GetUnsignedMap(sFilter);
+    std::vector<std::pair<std::string, Base::Color>> result;
+
+    std::transform(packed.begin(),
+                   packed.end(),
+                   std::back_inserter(result),
+                   [](const std::pair<std::string, unsigned long>& lValue) {
+                       return std::make_pair(lValue.first,
+                                             Color(static_cast<uint32_t>(lValue.second)));
+                   });
+
+    return result;
+}
+
+void ParameterGrp::RemoveColor(const char* Name)
+{
+    RemoveUnsigned(Name);
+}
+
 void ParameterGrp::RemoveGrp(const char* Name)
 {
     if (!_pGroupNode) {

@@ -414,9 +414,18 @@ def is_float(element: Any) -> bool:
 def get_pip_target_directory():
     """Get the default location to install new pip packages"""
     major, minor, _ = platform.python_version_tuple()
-    vendor_path = os.path.join(
-        fci.DataPaths().mod_dir, "..", "AdditionalPythonPackages", f"py{major}{minor}"
-    )
+    snap_package = os.getenv("SNAP_REVISION")
+
+    if snap_package:
+        import site
+
+        vendor_path = site.getusersitepackages()
+    else:
+        vendor_path = os.path.normpath(
+            os.path.join(
+                fci.DataPaths().mod_dir, "..", "AdditionalPythonPackages", f"py{major}{minor}"
+            )
+        )
     return vendor_path
 
 
@@ -552,13 +561,34 @@ def get_main_am_window():
     return None
 
 
+def remove_options_and_arg(call_args: List[str], deny_args: List[str]) -> List[str]:
+    """Removes a set of options and their only argument from a pip call.
+    This is necessary as the pip binary in the snap package is called with
+    the --user option, which is not compatible with some other options such
+    as --target and --path. We then have to remove e.g. target --path and
+    its argument, if present."""
+    for deny_arg in deny_args:
+        try:
+            index = call_args.index(deny_arg)
+            del call_args[index : index + 2]  # The option and its argument
+        except ValueError:
+            pass
+    return call_args
+
+
 def create_pip_call(args: List[str]) -> List[str]:
     """Choose the correct mechanism for calling pip on each platform. It currently supports
-    either `python -m pip` (most environments) or `freecad.pip` (Snap packages). Returns a list
+    either `python -m pip` (most environments) or `pip` (Snap packages). Returns a list
     of arguments suitable for passing directly to subprocess.Popen and related functions."""
     snap_package = os.getenv("SNAP_REVISION")
+    appimage = os.getenv("APPIMAGE")
     if snap_package:
-        call_args = ["freecad.pip", "--disable-pip-version-check"]
+        args = remove_options_and_arg(args, ["--target", "--path"])
+        call_args = ["pip", "--disable-pip-version-check"]
+        call_args.extend(args)
+    elif appimage:
+        python_exe = fci.DataPaths.home_dir + "bin/python"
+        call_args = [python_exe, "-m", "pip", "--disable-pip-version-check"]
         call_args.extend(args)
     else:
         python_exe = get_python_exe()

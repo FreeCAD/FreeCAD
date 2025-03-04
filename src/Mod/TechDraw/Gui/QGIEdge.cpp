@@ -88,7 +88,7 @@ void QGIEdge::setPrettyNormal() {
 
 QColor QGIEdge::getHiddenColor()
 {
-    App::Color fcColor = App::Color((uint32_t) Preferences::getPreferenceGroup("Colors")->GetUnsigned("HiddenColor", 0x000000FF));
+    Base::Color fcColor = Base::Color((uint32_t) Preferences::getPreferenceGroup("Colors")->GetUnsigned("HiddenColor", 0x000000FF));
     return PreferencesGui::getAccessibleQColor(fcColor.asValue<QColor>());
 }
 

@@ -157,7 +157,7 @@ double ViewProviderLeader::getDefLineWeight()
     return TechDraw::LineGroup::getDefaultWidth("Thin");
 }
 
-App::Color ViewProviderLeader::getDefLineColor()
+Base::Color ViewProviderLeader::getDefLineColor()
 {
     return PreferencesGui::leaderColor();
 }

@@ -58,8 +58,6 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #endif
 
-#include <QtOpenGL.h>
-
 #include "SoTextLabel.h"
 #include "SoFCInteractiveElement.h"
 #include "Tools.h"
@@ -307,7 +305,7 @@ SoStringLabel::SoStringLabel()
  */
 void SoStringLabel::GLRender(SoGLRenderAction *action)
 {
-    QtGLWidget* window;
+    QOpenGLWidget* window;
     SoState * state = action->getState();
     state->push();
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
@@ -381,6 +379,7 @@ SoFrameLabel::SoFrameLabel()
     SO_NODE_ADD_FIELD(frame, (true));
     SO_NODE_ADD_FIELD(border, (true));
     SO_NODE_ADD_FIELD(backgroundUseBaseColor, (false));
+    SO_NODE_ADD_FIELD(textUseBaseColor, (false));
   //SO_NODE_ADD_FIELD(image, (SbVec2s(0,0), 0, NULL));
 }
 
@@ -505,6 +504,15 @@ void SoFrameLabel::GLRender(SoGLRenderAction *action)
 
         if (diffuse != this->backgroundColor.getValue()) {
             this->backgroundColor.setValue(diffuse);
+        }
+    }
+
+    if (textUseBaseColor.getValue()) {
+        SoState* state = action->getState();
+        const SbColor& diffuse = SoLazyElement::getDiffuse(state, 0);
+
+        if (diffuse != this->textColor.getValue()) {
+            this->textColor.setValue(diffuse);
         }
     }
 

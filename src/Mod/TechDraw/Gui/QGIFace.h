@@ -64,7 +64,7 @@ public:
     QPainterPath shape() const override;
 
 public:
-    enum fillMode {
+    enum class FillMode {
         NoFill,
         FromFile,
         SvgFill,
@@ -85,10 +85,10 @@ public:
     //shared fill parms
     void isHatched(bool state) {m_isHatched = state; }
     bool isHatched() {return m_isHatched;}
-    void setFillMode(fillMode mode);
+    void setFillMode(FillMode mode);
 
     //general hatch parms & methods
-    void setHatchColor(App::Color color);
+    void setHatchColor(Base::Color color);
     void setHatchScale(double scale);
 
     //svg fill parms & methods
@@ -163,7 +163,7 @@ private:
 
     double m_fillScale{1.0};
     bool m_isHatched{false};
-    QGIFace::fillMode m_mode;
+    QGIFace::FillMode m_mode;
     QPixmap m_texture;                          //
 
     QPainterPath m_outline;                     //

@@ -60,7 +60,7 @@ class Ellipse(DraftObject):
         _tip = QT_TRANSLATE_NOOP("App::Property","Area of this object")
         obj.addProperty("App::PropertyArea", "Area","Draft", _tip)
 
-        obj.MakeFace = params.get_param("fillmode")
+        obj.MakeFace = params.get_param("MakeFaceMode")
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)

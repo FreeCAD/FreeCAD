@@ -24,6 +24,7 @@
 #define GUI_UTILITIES_H
 
 #include <vector>
+#include <QColor>
 #include <App/Material.h>
 #include <Base/Converter.h>
 #include <Base/ViewProj.h>
@@ -32,7 +33,6 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbViewVolume.h>
-
 
 class SbViewVolume;
 class QAbstractItemView;
@@ -94,12 +94,24 @@ private:
 
 // Specialization for Color
 template <>
-struct vec_traits<App::Color> {
-    using vec_type = App::Color;
+struct vec_traits<Base::Color> {
+    using vec_type = Base::Color;
     using float_type = float;
     explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v.r, v.g, v.b);
+    }
+private:
+    const vec_type& v;
+};
+
+template <>
+struct vec_traits<QColor> {
+    using vec_type = QColor;
+    using float_type = float;
+    explicit vec_traits(const vec_type& v) : v(v){}
+    inline std::tuple<float_type,float_type,float_type> get() const {
+        return std::make_tuple(v.redF(), v.greenF(), v.blueF());
     }
 private:
     const vec_type& v;

@@ -32,9 +32,9 @@
 
 using namespace App;
 
-Color MaterialPy::toColor(PyObject* value)
+Base::Color MaterialPy::toColor(PyObject* value)
 {
-    Color cCol;
+    Base::Color cCol;
     if (PyTuple_Check(value) && (PyTuple_Size(value) == 3 || PyTuple_Size(value) == 4)) {
         PyObject* item {};
         item = PyTuple_GetItem(value, 0);

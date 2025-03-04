@@ -80,16 +80,16 @@ QGIFace::QGIFace(int index) :
     getParameters();
 
     // set up style & colour defaults
-    m_colDefFill = App::Color(static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", COLWHITE)))
+    m_colDefFill = Base::Color(static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", COLWHITE)))
                    .asValue<QColor>();
     m_colDefFill.setAlpha(Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false) ? ALPHALOW : ALPHAHIGH);
 
     m_fillDef = Qt::SolidPattern;
     m_fillSelect = Qt::SolidPattern;
 
-    setFillMode(NoFill);
+    setFillMode(FillMode::NoFill);
     if (m_colDefFill.alpha() > 0) {
-        setFillMode(PlainFill);
+        setFillMode(FillMode::PlainFill);
     }
     setFill(m_colDefFill, m_fillDef);
 
@@ -113,7 +113,7 @@ void QGIFace::draw()
     m_imageSvgHatchArea->hide();
 
     if (isHatched()) {
-        if (m_mode == GeomHatchFill) {
+        if (m_mode == FillMode::GeomHatchFill) {
             //GeomHatch does not appear in pdf if clipping is set to true
             setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);
             if (!m_lineSets.empty()) {
@@ -124,7 +124,7 @@ void QGIFace::draw()
                     lineSetToFillItems(ls);
                 }
             }
-        } else if (m_mode == SvgFill) {
+        } else if (m_mode == FillMode::SvgFill) {
             m_brush.setTexture(QPixmap());
             m_fillNormal = m_fillDef;
             m_fillStyleCurrent = m_fillNormal;
@@ -137,11 +137,11 @@ void QGIFace::draw()
                 buildSvgHatch();
                 m_svgHatchArea->show();
             }
-        } else if (m_mode == BitmapFill) {
+        } else if (m_mode == FillMode::BitmapFill) {
             m_fillStyleCurrent = Qt::TexturePattern;
             m_texture = textureFromBitmap(m_fileSpec);
             m_brush.setTexture(m_texture);
-        } else if (m_mode == PlainFill) {
+        } else if (m_mode == FillMode::PlainFill) {
             setFill(m_colNormalFill, m_fillNormal);
         }
     }
@@ -153,7 +153,7 @@ void QGIFace::draw()
 void QGIFace::setPrettyNormal() {
 //    Base::Console().Message("QGIF::setPrettyNormal() - hatched: %d\n", isHatched());
     if (isHatched()  &&
-        (m_mode == BitmapFill) ) {                               //hatch with bitmap fill
+        (m_mode == FillMode::BitmapFill) ) {                               //hatch with bitmap fill
         m_fillStyleCurrent = Qt::TexturePattern;
         m_brush.setTexture(m_texture);
     } else {
@@ -216,11 +216,11 @@ void QGIFace::loadSvgHatch(std::string fileSpec)
     }
 }
 
-void QGIFace::setFillMode(QGIFace::fillMode mode)
+void QGIFace::setFillMode(FillMode mode)
 {
     m_mode = mode;
-    if ((m_mode == NoFill) ||
-        (m_mode == PlainFill)) {
+    if ((m_mode == FillMode::NoFill) ||
+        (m_mode == FillMode::PlainFill)) {
         isHatched(false);
     } else {
         isHatched(true);
@@ -453,7 +453,7 @@ void QGIFace::buildPixHatch()
 }
 
 
-void QGIFace::setHatchColor(App::Color color)
+void QGIFace::setHatchColor(Base::Color color)
 {
     m_svgCol = color.asHexString();
     m_geomColor = color.asValue<QColor>();
