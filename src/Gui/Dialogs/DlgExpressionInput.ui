@@ -273,7 +273,7 @@
        <item>
         <widget class="QPushButton" name="okBtn">
          <property name="text">
-          <string>Ok</string>
+          <string>&amp;OK</string>
          </property>
          <property name="autoDefault">
           <bool>true</bool>

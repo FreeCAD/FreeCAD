@@ -218,7 +218,7 @@ void TaskHatch::createHatch()
     Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(doc)->getViewProvider(m_hatch);
     m_vp = dynamic_cast<TechDrawGui::ViewProviderHatch*>(vp);
     if (m_vp) {
-        App::Color ac;
+        Base::Color ac;
         ac.setValue<QColor>(ui->ccColor->color());
         m_vp->HatchColor.setValue(ac);
         m_vp->HatchScale.setValue(ui->sbScale->value().getValue());
@@ -244,7 +244,7 @@ void TaskHatch::updateHatch()
                        FeatName.c_str(),
                        filespec.c_str());
 
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->ccColor->color());
     m_vp->HatchColor.setValue(ac);
     m_vp->HatchScale.setValue(ui->sbScale->value().getValue());

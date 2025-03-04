@@ -42,6 +42,8 @@
 #include "Exception.h"
 #include "Interpreter.h"
 
+#include <Tools.h>
+
 
 namespace Base
 {
@@ -73,7 +75,7 @@ public:
             Py::Tuple args(2);
             args.setItem(0, Py::asObject(GetPyObject(hGrp)));
             // A Reason of null indicates to clear the parameter group
-            if (Reason && Reason[0] != '\0') {
+            if (!Base::Tools::isNullOrEmpty(Reason)) {
                 args.setItem(1, Py::String(Reason));
             }
             method.apply(args);

@@ -39,7 +39,7 @@
 
 using namespace MatGui;
 
-ColorWidget::ColorWidget(const App::Color& color, QWidget* parent)
+ColorWidget::ColorWidget(const Base::Color& color, QWidget* parent)
     : QWidget(parent)
 {
     _color = color.asValue<QColor>();

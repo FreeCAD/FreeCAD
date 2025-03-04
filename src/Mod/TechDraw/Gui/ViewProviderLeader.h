@@ -71,7 +71,7 @@ public:
 
 protected:
     double getDefLineWeight();
-    App::Color getDefLineColor();
+    Base::Color getDefLineColor();
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
 
 private:

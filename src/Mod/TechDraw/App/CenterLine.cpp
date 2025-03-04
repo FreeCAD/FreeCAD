@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-    #include <boost/random.hpp>
-    #include <boost/uuid/uuid_io.hpp>
-    #include <boost/uuid/uuid_generators.hpp>
     #include <BRepBuilderAPI_MakeEdge.hxx>
     #include <BRepBndLib.hxx>
     #include <Bnd_Box.hxx>
@@ -35,8 +32,6 @@
 #include <BRepTools.hxx>
 
 #include <Base/Console.h>
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/thread.hpp>
 
 #include "CenterLine.h"
 #include "DrawUtil.h"
@@ -140,8 +135,6 @@ void CenterLine::initialize()
     m_geometry->setHlrVisible( true);
     m_geometry->setCosmetic(true);
     m_geometry->source(SourceType::CENTERLINE);
-
-    createNewTag();
     m_geometry->setCosmeticTag(getTagAsString());
 }
 
@@ -992,7 +985,7 @@ void CenterLine::Restore(Base::XMLReader &reader)
     m_format.setWidth(reader.getAttributeAsFloat("value"));
     reader.readElement("Color");
     std::string tempHex = reader.getAttribute("value");
-    App::Color tempColor;
+    Base::Color tempColor;
     tempColor.fromHexString(tempHex);
     m_format.setColor(tempColor);
     reader.readElement("Visible");
@@ -1062,49 +1055,10 @@ CenterLine* CenterLine::copy() const
     return newCL;
 }
 
-boost::uuids::uuid CenterLine::getTag() const
-{
-    return tag;
-}
-
-std::string CenterLine::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
-}
-
-void CenterLine::createNewTag()
-{
-    // Initialize a random number generator, to avoid Valgrind false positives.
-    // The random number generator is not threadsafe so we guard it.  See
-    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
-    static boost::mt19937 ran;
-    static bool seeded = false;
-    static boost::mutex random_number_mutex;
-
-    boost::lock_guard<boost::mutex> guard(random_number_mutex);
-
-    if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
-        seeded = true;
-    }
-    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
-
-
-    tag = gen();
-}
-
-void CenterLine::assignTag(const TechDraw::CenterLine* ce)
-{
-    if(ce->getTypeId() == this->getTypeId())
-        this->tag = ce->tag;
-    else
-        throw Base::TypeError("CenterLine tag can not be assigned as types do not match.");
-}
-
 CenterLine *CenterLine::clone() const
 {
     CenterLine* cpy = this->copy();
-    cpy->tag = this->tag;
+    cpy->setTag(this->getTag());
 
     return cpy;
 }

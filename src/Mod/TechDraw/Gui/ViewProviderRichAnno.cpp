@@ -121,7 +121,7 @@ TechDraw::DrawRichAnno* ViewProviderRichAnno::getFeature() const
     return dynamic_cast<TechDraw::DrawRichAnno*>(pcObject);
 }
 
-App::Color ViewProviderRichAnno::getDefLineColor()
+Base::Color ViewProviderRichAnno::getDefLineColor()
 {
     return PreferencesGui::leaderColor();
 }

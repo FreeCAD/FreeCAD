@@ -23,7 +23,9 @@
 #include "PreCompiled.h"
 
 #include "Metadata.h"
+
 #include <Base/FileInfo.h>
+#include <Base/Tools.h>
 
 // inclusion of the generated files (generated out of MetadataPy.xml)
 #include "MetadataPy.h"
@@ -166,7 +168,7 @@ void MetadataPy::setVersion(Py::String args)
     if (!PyArg_Parse(args.ptr(), "z", &name)) {
         throw Py::Exception();
     }
-    if (name && name[0] != '\0') {
+    if (!Base::Tools::isNullOrEmpty(name)) {
         getMetadataPtr()->setVersion(App::Meta::Version(std::string(name)));
     }
     else {

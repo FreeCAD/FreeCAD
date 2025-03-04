@@ -151,12 +151,12 @@ void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vecto
     if (!svp)
         return;
 
-    std::vector<App::Color>& edgeColors = originalLineColors[base->getID()];
+    std::vector<Base::Color>& edgeColors = originalLineColors[base->getID()];
 
     if (on) {
         if (edgeColors.empty()) {
             edgeColors = svp->LineColorArray.getValues();
-            std::vector<App::Color> colors = edgeColors;
+            std::vector<Base::Color> colors = edgeColors;
 
             PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), svp->LineColor.getValue());
             highlighter.getEdgeColors(edges, colors);

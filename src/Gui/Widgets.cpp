@@ -671,7 +671,7 @@ QColor ColorButton::color() const
  */
 void ColorButton::setPackedColor(uint32_t c)
 {
-    App::Color color;
+    Base::Color color;
     color.setPackedValue(c);
     d->col.setRedF(color.r);
     d->col.setGreenF(color.g);
@@ -686,7 +686,7 @@ void ColorButton::setPackedColor(uint32_t c)
  */
 uint32_t ColorButton::packedColor() const
 {
-    App::Color color(d->col.redF(), d->col.greenF(), d->col.blueF(), d->col.alphaF());
+    Base::Color color(d->col.redF(), d->col.greenF(), d->col.blueF(), d->col.alphaF());
     return color.getPackedValue();
 }
 
@@ -1009,7 +1009,7 @@ void StatefulLabel::setState(QString state)
                 if (unsignedEntry.first == entry->second.preferenceString) {
                     // Convert the stored Uint into usable color data:
                     unsigned int col = unsignedEntry.second;
-                    QColor qcolor(App::Color::fromPackedRGB<QColor>(col));
+                    QColor qcolor(Base::Color::fromPackedRGB<QColor>(col));
                     this->setStyleSheet(QStringLiteral("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(qcolor.red()).arg(qcolor.green()).arg(qcolor.blue()).arg(qcolor.alpha()));
                     _styleCache[state] = this->styleSheet();
                     return;

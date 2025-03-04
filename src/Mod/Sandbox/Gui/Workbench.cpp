@@ -34,8 +34,6 @@
 # include <Inventor/SbLinear.h>
 #endif
 
-#include <QtOpenGL.h>
-
 #include "Workbench.h"
 #include <App/Application.h>
 #include <Gui/MenuManager.h>

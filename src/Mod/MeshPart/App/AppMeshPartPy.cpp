@@ -510,7 +510,7 @@ private:
                     Py::Float r(t[0]);
                     Py::Float g(t[1]);
                     Py::Float b(t[2]);
-                    App::Color c(static_cast<float>(r),
+                    Base::Color c(static_cast<float>(r),
                                  static_cast<float>(g),
                                  static_cast<float>(b));
                     colors.push_back(c.getPackedValue());

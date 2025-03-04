@@ -108,7 +108,7 @@ on:
           -readability/nolint,
           +readability/nul,
           +readability/strings,
-          +readability/todo,
+          -readability/todo,
           +readability/utf8,
           +runtime/arrays,
           +runtime/casting,

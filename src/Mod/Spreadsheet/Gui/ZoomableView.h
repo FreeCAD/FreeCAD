@@ -68,9 +68,9 @@ private:
 
     QPointer<SpreadsheetGui::SheetTableView> stv;
     QGraphicsScene m_scene;
-    QGraphicsProxyWidget* qpw;
+    QGraphicsProxyWidget* qpw {nullptr};
 
-    int m_zoomLevel;
+    int m_zoomLevel {0};
 
 protected:
     void focusOutEvent(QFocusEvent* event) override;

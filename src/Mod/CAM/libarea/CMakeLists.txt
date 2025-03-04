@@ -9,8 +9,13 @@ if(MSVC)
 endif(MSVC)
 
 include_directories(
+    SYSTEM
+    ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
+)
+
+include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/src/Mod/Import/App/dxf
 )
@@ -38,7 +43,7 @@ if(NOT FREECAD_USE_PYBIND11)
         endif()
 
         if(Boost_FOUND)
-            include_directories(${Boost_INCLUDE_DIRS})
+            include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
             MESSAGE(STATUS "found Boost: " ${Boost_LIB_VERSION})
             MESSAGE(STATUS "boost-incude dirs are: " ${Boost_INCLUDE_DIRS})
             MESSAGE(STATUS "boost-python lib is: " ${Boost_PYTHON_LIBRARY})
@@ -46,10 +51,10 @@ if(NOT FREECAD_USE_PYBIND11)
             MESSAGE(STATUS "Boost_LIBRARIES is: " ${Boost_LIBRARIES})
         endif()
     else()
-        include_directories(${Boost_INCLUDE_DIRS})
+        include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
     endif()
 else()
-    include_directories(${pybind11_INCLUDE_DIR})
+    include_directories(SYSTEM ${pybind11_INCLUDE_DIR})
 endif(NOT FREECAD_USE_PYBIND11)
 
 

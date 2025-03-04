@@ -51,6 +51,7 @@
         <file>icons/FEM_EquationHeat.svg</file>
         <file>icons/FEM_EquationMagnetodynamic.svg</file>
         <file>icons/FEM_EquationMagnetodynamic2D.svg</file>
+        <file>icons/FEM_EquationStaticCurrent.svg</file>
 
         <!-- gui command icons: meshes -->
         <file>icons/FEM_CreateElementsSet.svg</file>

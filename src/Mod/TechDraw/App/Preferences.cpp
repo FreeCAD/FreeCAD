@@ -77,14 +77,14 @@ double Preferences::dimArrowSize()
     return getPreferenceGroup("Dimensions")->GetFloat("ArrowSize", DefaultArrowSize);
 }
 
-App::Color Preferences::normalColor()
+Base::Color Preferences::normalColor()
 {
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("NormalColor", 0x000000FF));//#000000 black
     return fcColor;
 }
 
-App::Color Preferences::selectColor()
+Base::Color Preferences::selectColor()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication()
                                              .GetUserParameter()
@@ -93,12 +93,12 @@ App::Color Preferences::selectColor()
                                              ->GetGroup("View");
     unsigned int defColor = hGrp->GetUnsigned("SelectionColor", 0x00FF00FF);//#00FF00 lime
 
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("SelectColor", defColor));
     return fcColor;
 }
 
-App::Color Preferences::preselectColor()
+Base::Color Preferences::preselectColor()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication()
                                              .GetUserParameter()
@@ -107,14 +107,14 @@ App::Color Preferences::preselectColor()
                                              ->GetGroup("View");
     unsigned int defColor = hGrp->GetUnsigned("HighlightColor", 0xFFFF00FF);//#FFFF00 yellow
 
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("PreSelectColor", defColor));
     return fcColor;
 }
 
-App::Color Preferences::vertexColor()
+Base::Color Preferences::vertexColor()
 {
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(getPreferenceGroup("Decorations")->GetUnsigned("VertexColor", 0x000000FF));//#000000 black
     return fcColor;
 }
@@ -176,9 +176,10 @@ int Preferences::lineGroup()
     return getPreferenceGroup("Decorations")->GetInt("LineGroup", 3);  // FC 0.70mm
 }
 
-int Preferences::balloonArrow()
+ArrowType Preferences::balloonArrow()
 {
-    return getPreferenceGroup("Decorations")->GetInt("BalloonArrow", 0);
+    int temp = getPreferenceGroup("Decorations")->GetInt("BalloonArrow", 0);
+    return static_cast<ArrowType>(temp);
 }
 
 double Preferences::balloonKinkLength()
@@ -376,16 +377,16 @@ void Preferences::monochrome(bool state)
     getPreferenceGroup("Colors")->SetBool("Monochrome", state);
 }
 
-App::Color Preferences::lightTextColor()
+Base::Color Preferences::lightTextColor()
 {
-    App::Color result;
+    Base::Color result;
     result.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("LightTextColor", 0xFFFFFFFF));//#FFFFFFFF white
     return result;
 }
 
 //! attempt to lighten the give color
 // not currently used
-App::Color Preferences::lightenColor(App::Color orig)
+Base::Color Preferences::lightenColor(Base::Color orig)
 {
     // get component colours on [0, 255]
     uchar red = orig.r * 255;
@@ -412,11 +413,11 @@ App::Color Preferences::lightenColor(App::Color orig)
     double greenF = (double)green / 255.0;
     double blueF = (double)blue / 255.0;
 
-    return App::Color(redF, greenF, blueF, orig.a);
+    return Base::Color(redF, greenF, blueF, orig.a);
 }
 
 //! color to use for monochrome display
-App::Color Preferences::getAccessibleColor(App::Color orig)
+Base::Color Preferences::getAccessibleColor(Base::Color orig)
 {
     if (Preferences::lightOnDark() && Preferences::monochrome()) {
         return lightTextColor();

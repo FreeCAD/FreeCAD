@@ -79,6 +79,8 @@
 #include "propertyeditor/PropertyItem.h"
 #include "ArcEngine.h"
 
+#include <Inventor/SoFCPlacementIndicatorKit.h>
+
 
 using namespace Gui;
 using namespace Gui::Inventor;
@@ -148,6 +150,7 @@ void Gui::SoFCDB::init()
     SoMouseWheelEvent               ::initClass();
     So3DAnnotation                  ::initClass();
     SoDelayedAnnotationsElement     ::initClass();
+    SoFCPlacementIndicatorKit       ::initClass();
 
     PropertyItem                    ::init();
     PropertySeparatorItem           ::init();
@@ -189,6 +192,7 @@ void Gui::SoFCDB::init()
     CADNavigationStyle              ::init();
     RevitNavigationStyle            ::init();
     BlenderNavigationStyle          ::init();
+    SolidWorksNavigationStyle       ::init();
     MayaGestureNavigationStyle      ::init();
     TouchpadNavigationStyle         ::init();
     GestureNavigationStyle          ::init();
