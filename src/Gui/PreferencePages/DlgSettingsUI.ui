@@ -81,7 +81,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="label3">
           <property name="text">
-           <string>Background Color</string>
+           <string>General UI Background Color</string>
           </property>
           <property name="buddy">
            <cstring>ThemeBackground</cstring>
@@ -101,7 +101,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="label5">
           <property name="text">
-           <string>Button gradient color 1</string>
+           <string>First button color</string>
           </property>
           <property name="buddy">
            <cstring>ThemeGradientColor1</cstring>
@@ -111,7 +111,7 @@
         <item row="5" column="0">
          <widget class="QLabel" name="label6">
           <property name="text">
-           <string>Button gradient color 2</string>
+           <string>Second button color</string>
           </property>
           <property name="buddy">
            <cstring>ThemeGradientColor2</cstring>
@@ -173,7 +173,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>This color might be used by your theme to let you customize it.</string>
+           <string>This color is the background color of the UI, changing this will change the UI look. If using a light stylesheet you should use light colors. If you want to use dark colors switch to a dark stylesheet.</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -199,7 +199,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>This color might be used by your theme to let you customize it.</string>
+           <string>This color sets the menu color on top of the window. (File / Edit / view / etc)</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -225,7 +225,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>This color might be used by your theme to let you customize it.</string>
+           <string>This color sets the button color, if the buttons use gradients as in the default stylesheets then this will be the top color.</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -251,7 +251,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>This color might be used by your theme to let you customize it.</string>
+           <string>This color sets the button color, if the buttons use gradients as in the default stylesheets then this will be the bottom color.</string>
           </property>
           <property name="color" stdset="0">
            <color>
