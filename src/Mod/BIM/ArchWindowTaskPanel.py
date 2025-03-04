@@ -224,6 +224,9 @@ class window_task_panel:
         else:
             mode = QtGui.QStandardItem("")
         self.model.setItem(8, 1, mode)
+        # TODO below is nice but causes crash
+        #for i in range(0,8):
+        #    self.panel2.table.openPersistentEditor(self.model.index(i, 1))
         self.setting_properties = False
 
     def edit_properties(self, item=None):
@@ -232,7 +235,7 @@ class window_task_panel:
         if self.setting_properties:
             return
         orig_name, compindex = self.get_component()
-        if not orig_name or not compindex:
+        if not orig_name or compindex is None:
             return
         name = self.model.item(0, 1).text()
         parent = self.model.item(1, 1).text()
@@ -244,8 +247,9 @@ class window_task_panel:
         thickness = self.model.item(5, 1).text()
         offset = self.model.item(6, 1).text()
         hinge = self.model.item(7, 1).text()
-        mode = str(ArchWindow.WindowOpeningModes.index(self.model.item(8, 1).text()))
-        mode = "Mode" + mode
+        mode = self.model.item(8, 1).text()
+        if mode:
+            mode = "Mode" + str(ArchWindow.WindowOpeningModes.index(mode))
         self.WindowParts[compindex] = name
         self.WindowParts[compindex+1] = ",".join([comptype, baseobj])
         self.WindowParts[compindex+2] = ",".join([wires, hinge, mode, parent])
@@ -335,17 +339,65 @@ class window_task_panel:
             self.reject()
 
 
+class window_size_editor(QtGui.QWidget):
+    """an editor widget for thickness and offset, that
+    has a quantity editor and a checkbox"""
+
+    def __init__(self, propname, *args):
+        super().__init__(*args)
+        self.uiloader = FreeCADGui.UiLoader()
+        self.layout = QtGui.QHBoxLayout()
+        self.layout.setContentsMargins(QtCore.QMargins(0,0,0,0))
+        self.setLayout(self.layout)
+        self.tt = translate("BIM", "If checked, the value of the window's %1 property is added to this value")
+        self.tt = self.tt.replace("%1", propname)
+        self.val = None
+        self.check = False
+
+    def text(self):
+        try:
+            return self.widget1.text()
+        except (RuntimeError, AttributeError):
+            return self.val
+
+    def setText(self, text):
+        self.val = text
+        try:
+            self.widget1.setText(text)
+        except (RuntimeError, AttributeError):  # this widget might have been destroyed
+            self.widget1 = self.uiloader.createWidget("Gui::InputField")
+            self.widget1.setParent(self)
+            self.layout.addWidget(self.widget1)
+            self.widget1.setText(text)
+
+    def checkState(self):
+        try:
+            return self.widget2.checkState()
+        except (RuntimeError, AttributeError):
+            return self.check
+
+    def setCheckState(self, state):
+        self.check = state
+        try:
+            self.widget2.setCheckState(state)
+        except (RuntimeError, AttributeError):  # this widget might have been destroyed
+            self.widget2 = QtGui.QCheckBox(self)
+            self.widget2.setToolTip(self.tt)
+            self.layout.addWidget(self.widget2)
+            self.widget2.setCheckState(state)
+
+
 class window_component_delegate(QtGui.QStyledItemDelegate):
     """model delegate for window component properties"""
 
     def __init__(self, task, *args):
         self.task = task
-        QtGui.QStyledItemDelegate.__init__(self, None, *args)
+        super().__init__(None, *args)
 
     def createEditor(self, parent, option, index):
         """Creates an editor widget"""
+
         row = index.row()
-        uiloader = FreeCADGui.UiLoader()
         if row == 0:  # name
             editor = QtGui.QLineEdit(parent)
         elif row == 1:  # parent
@@ -357,17 +409,20 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
             editor = QtGui.QPushButton(parent)
             editor.clicked.connect(self.on_click_baseobject)
             self.editor_baseobj = editor
+            editor.setEnabled(False)
         elif row == 3:  # wires
             editor = QtGui.QPushButton(parent)
             editor.clicked.connect(self.on_click_wires)
         elif row == 4:  # type
             editor = QtGui.QComboBox(parent)
             editor.addItems(ArchWindow.WindowPartTypes)
-        elif row in [5, 6]:  # thickness
-            editor = uiloader.createWidget("Gui::InputField")
-            editor.setParent(parent)
+        elif row == 5:  # thickness
+            editor = window_size_editor("Thickness", parent)
+        elif row == 6:  # offset
+            editor = window_size_editor("Offset", parent)
         elif row == 7:  # hinge
             editor = QtGui.QPushButton(parent)
+            editor.setToolTip(translate("BIM", "Select an edge and press this button"))
             editor.clicked.connect(self.on_click_hinge)
             self.editor_hinge = editor
         elif row == 8:  # mode
@@ -377,9 +432,12 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
 
     def setEditorData(self, editor, index):
         """Fills the editor widget with current data"""
+
         row = index.row()
-        if row in [0, 2, 3, 7]:
+        if row in [0, 3, 7]:
             editor.setText(index.data())
+        elif row == 2:
+            editor.setText(getattr(self.task.obj.Base, "Label", ""))
         elif row == 1:
             idx = editor.findText(index.data(), QtCore.Qt.MatchExactly)
             if idx >= 0:
@@ -388,21 +446,28 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
             editor.setCurrentIndex(ArchWindow.WindowPartTypes.index(index.data()))
         elif row in [5, 6]:
             editor.setText(index.data().replace("+V",""))
+            if "+V" in index.data():
+                editor.setCheckState(QtCore.Qt.Checked)
+            else:
+                editor.setCheckState(QtCore.Qt.Unchecked)
         elif row == 8:
             editor.setCurrentIndex(ArchWindow.WindowOpeningModes.index(index.data()))
 
     def setModelData(self, editor, model, index):
         """Saves the changed data"""
+
         row = index.row()
-        if row in [0, 2, 3, 7]:
+        if row in [0, 3, 7]:
             model.setData(index, editor.text())
+        elif row == 2:
+            model.setData(index, "")
         elif row == 1:
             model.setData(index, editor.currentText())
         elif row == 4:
             model.setData(index, ArchWindow.WindowPartTypes[editor.currentIndex()])
         elif row in [5, 6]:
             val = editor.text()
-            if "+V" in index.data():
+            if editor.checkState():
                 val += "+V"
             model.setData(index, val)
         elif row == 8:
