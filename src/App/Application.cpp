@@ -678,7 +678,7 @@ Document* Application::openDocument(const char * FileName, DocumentCreateFlags c
 }
 
 Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCanonical) const {
-    if(!path || path[0] == '\0')
+    if(Base::Tools::isNullOrEmpty(path))
         return nullptr;
     if(DocFileMap.empty()) {
         for(const auto &v : DocMap) {
