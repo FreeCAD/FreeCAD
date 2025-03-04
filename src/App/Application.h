@@ -21,13 +21,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_APPLICATION_H
-#define APP_APPLICATION_H
+#ifndef SRC_APP_APPLICATION_H_
+#define SRC_APP_APPLICATION_H_
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <deque>
 #include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <string>
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
@@ -69,6 +73,10 @@ enum class MessageOption {
     Throw, /**< Throw an exception. */
 };
 
+struct DocumentCreateFlags {
+    bool createView {true};
+    bool temporary {false};
+};
 
 /** The Application
  *  The root of the whole application
@@ -78,7 +86,6 @@ class AppExport Application
 {
 
 public:
-
     //---------------------------------------------------------------------
     // exported functions go here +++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
@@ -86,22 +93,22 @@ public:
     /** @name methods for document handling */
     //@{
     /** Creates a new document
-     * The first name is a the identifier and some kind of an internal (english)
-     * name. It has to be like an identifier in a programming language, with no
-     * spaces and not starting with a number. This name gets also forced to be unique
-     * in this Application. You can avoid the renaming by using getUniqueDocumentName()
-     * to get a unique name before calling newDoucument().
-     * The second name is a UTF8 name of any kind. It's that name normally shown to
-     * the user and stored in the App::Document::Name property.
+     * @param proposedName: a prototype name used to create the permanent Name for the document.
+     * It is converted to be like an identifier in a programming language,
+     * with no spaces and not starting with a number. This name gets also forced to be unique
+     * in this Application. You can obtain the unique name using doc.getDocumentName
+     * on the returned document.
+     * @param proposedLabel: a UTF8 name of any kind. It's that name normally shown to
+     * the user and stored in the App::Document::Label property.
      */
-    App::Document* newDocument(const char * Name=nullptr, const char * UserName=nullptr,
-            bool createView=true, bool tempDoc=false);
+    App::Document* newDocument(const char * proposedName=nullptr, const char * proposedLabel=nullptr,
+            DocumentCreateFlags CreateFlags=DocumentCreateFlags());
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
     /// find a unique document name
     std::string getUniqueDocumentName(const char *Name, bool tempDoc=false) const;
     /// Open an existing document from a file
-    App::Document* openDocument(const char * FileName=nullptr, bool createView=true);
+    App::Document* openDocument(const char * FileName=nullptr, DocumentCreateFlags createFlags = DocumentCreateFlags{});
     /** Open multiple documents
      *
      * @param filenames: input file names
@@ -123,7 +130,7 @@ public:
             const std::vector<std::string> *paths=nullptr,
             const std::vector<std::string> *labels=nullptr,
             std::vector<std::string> *errs=nullptr,
-            bool createView = true);
+            DocumentCreateFlags createFlags = DocumentCreateFlags{});
     /// Retrieve the active document
     App::Document* getActiveDocument() const;
     /// Retrieve a named document
@@ -161,7 +168,7 @@ public:
     std::vector<App::Document*> getDocuments() const;
     /// Set the active document
     void setActiveDocument(App::Document* pDoc);
-    void setActiveDocument(const char *Name);
+    void setActiveDocument(const char* Name);
     /// close all documents (without saving)
     void closeAllDocuments();
     /// Add pending document to open together with the current opening document
@@ -205,6 +212,8 @@ public:
     void closeActiveTransaction(bool abort=false, int id=0);
     //@}
 
+    // NOLINTBEGIN
+    // clang-format off
     /** @name Signals of the Application */
     //@{
     /// signal on new Document
@@ -311,7 +320,9 @@ public:
     boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalBeforeAddingDynamicExtension;
     /// signal after the extension was added
     boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalAddedDynamicExtension;
-     //@}
+    //@}
+    // clang-format off
+    // NOLINTEND
 
 
     /** @name methods for parameter handling */
@@ -399,12 +410,14 @@ public:
     static std::map<std::string, std::string> &Config(){return mConfig;}
     static int GetARGC(){return _argc;}
     static char** GetARGV(){return _argv;}
+    static int64_t applicationPid();
     //@}
 
     /** @name Application directories */
     //@{
     static std::string getHomePath();
     static std::string getExecutableName();
+    static std::string getNameWithVersion();
     /*!
      Returns the temporary directory. By default, this is set to the
      system's temporary directory but can be customized by the user.
@@ -482,7 +495,7 @@ protected:
 
     /// open single document only
     App::Document* openDocumentPrivate(const char * FileName, const char *propFileName,
-            const char *label, bool isMainDoc, bool createView, std::vector<std::string> &&objNames);
+            const char *label, bool isMainDoc, DocumentCreateFlags createFlags, std::vector<std::string> &&objNames);
 
     /// Helper class for App::Document to signal on close/abort transaction
     class AppExport TransactionSignaller {
@@ -494,12 +507,15 @@ protected:
     };
 
 private:
-    /// Constructor
+    /// Constructor. The passed configuration must last for the lifetime of the constructed Application
+    // NOLINTNEXTLINE(runtime/references)
     explicit Application(std::map<std::string, std::string> &mConfig);
     /// Destructor
     virtual ~Application();
 
     static void cleanupUnits();
+
+    void setActiveDocumentNoSignal(App::Document* pDoc);
 
     /** @name member for parameter */
     //@{
@@ -645,4 +661,4 @@ inline App::Application &GetApplication(){
 } // namespace App
 
 
-#endif // APP_APPLICATION_H
+#endif // SRC_APP_APPLICATION_H_

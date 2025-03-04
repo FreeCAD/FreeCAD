@@ -65,7 +65,7 @@ bool ViewProviderFemConstraintRigidBody::setEdit(int ModNum)
 
 void ViewProviderFemConstraintRigidBody::updateData(const App::Property* prop)
 {
-    auto obj = static_cast<Fem::ConstraintRigidBody*>(this->getObject());
+    auto obj = this->getObject<Fem::ConstraintRigidBody>();
 
     if (prop == &obj->ReferenceNode) {
         updateSymbol();
@@ -78,7 +78,7 @@ void ViewProviderFemConstraintRigidBody::transformExtraSymbol() const
 {
     SoTransform* symTrans = getExtraSymbolTransform();
     if (symTrans) {
-        auto obj = static_cast<const Fem::ConstraintRigidBody*>(this->getObject());
+        auto obj = this->getObject<const Fem::ConstraintRigidBody>();
         float s = obj->getScaleFactor();
         const Base::Vector3d& refNode = obj->ReferenceNode.getValue();
         SbVec3f tra(refNode.x, refNode.y, refNode.z);

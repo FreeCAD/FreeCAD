@@ -5,8 +5,7 @@
 #
 # This module provides support for importing airfoil .dat files
 '''@package importAirfoilDAT
-\ingroup DRAFT
-\brief Airfoil (.dat) file importer
+Airfoil (.dat) file importer
 
 This module provides support for importing airfoil .dat files.
 '''
@@ -45,8 +44,7 @@ import Draft
 import Part
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
-from builtins import open as pyopen
-
+from draftutils.utils import pyopen
 
 if FreeCAD.GuiUp:
     from draftutils.translate import translate

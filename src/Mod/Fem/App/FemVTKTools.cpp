@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 #include <Python.h>
+#include <charconv>
 #include <cmath>
 #include <cstdlib>
 #include <map>
@@ -38,9 +39,11 @@
 #include <vtkDataSetReader.h>
 #include <vtkDataSetWriter.h>
 #include <vtkDoubleArray.h>
+#include <vtkFloatArray.h>
 #include <vtkHexahedron.h>
 #include <vtkIdList.h>
 #include <vtkLine.h>
+#include <vtkMultiBlockDataSet.h>
 #include <vtkPointData.h>
 #include <vtkPyramid.h>
 #include <vtkQuad.h>
@@ -51,11 +54,13 @@
 #include <vtkQuadraticTetra.h>
 #include <vtkQuadraticTriangle.h>
 #include <vtkQuadraticWedge.h>
+#include <vtkStringArray.h>
 #include <vtkTetra.h>
 #include <vtkTriangle.h>
 #include <vtkUnsignedCharArray.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkWedge.h>
+#include <vtkXMLMultiBlockDataWriter.h>
 #include <vtkXMLPUnstructuredGridReader.h>
 #include <vtkXMLUnstructuredGridReader.h>
 #include <vtkXMLUnstructuredGridWriter.h>
@@ -339,13 +344,11 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     return mesh;
 }
 
-void exportFemMeshEdges(vtkSmartPointer<vtkUnstructuredGrid> grid,
+void exportFemMeshEdges(vtkSmartPointer<vtkCellArray>& elemArray,
+                        std::vector<int>& types,
                         const SMDS_EdgeIteratorPtr& aEdgeIter)
 {
     Base::Console().Log("  Start: VTK mesh builder edges.\n");
-
-    vtkSmartPointer<vtkCellArray> elemArray = vtkSmartPointer<vtkCellArray>::New();
-    std::vector<int> types;
 
     while (aEdgeIter->more()) {
         const SMDS_MeshEdge* aEdge = aEdgeIter->next();
@@ -362,20 +365,14 @@ void exportFemMeshEdges(vtkSmartPointer<vtkUnstructuredGrid> grid,
         }
     }
 
-    if (elemArray->GetNumberOfCells() > 0) {
-        grid->SetCells(types.data(), elemArray);
-    }
-
     Base::Console().Log("  End: VTK mesh builder edges.\n");
 }
 
-void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
+void exportFemMeshFaces(vtkSmartPointer<vtkCellArray>& elemArray,
+                        std::vector<int>& types,
                         const SMDS_FaceIteratorPtr& aFaceIter)
 {
     Base::Console().Log("  Start: VTK mesh builder faces.\n");
-
-    vtkSmartPointer<vtkCellArray> elemArray = vtkSmartPointer<vtkCellArray>::New();
-    std::vector<int> types;
 
     while (aFaceIter->more()) {
         const SMDS_MeshFace* aFace = aFaceIter->next();
@@ -400,20 +397,14 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
         }
     }
 
-    if (elemArray->GetNumberOfCells() > 0) {
-        grid->SetCells(types.data(), elemArray);
-    }
-
     Base::Console().Log("  End: VTK mesh builder faces.\n");
 }
 
-void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
+void exportFemMeshCells(vtkSmartPointer<vtkCellArray>& elemArray,
+                        std::vector<int>& types,
                         const SMDS_VolumeIteratorPtr& aVolIter)
 {
     Base::Console().Log("  Start: VTK mesh builder volumes.\n");
-
-    vtkSmartPointer<vtkCellArray> elemArray = vtkSmartPointer<vtkCellArray>::New();
-    std::vector<int> types;
 
     while (aVolIter->more()) {
         const SMDS_MeshVolume* aVol = aVolIter->next();
@@ -447,15 +438,12 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
         }
     }
 
-    if (elemArray->GetNumberOfCells() > 0) {
-        grid->SetCells(types.data(), elemArray);
-    }
-
     Base::Console().Log("  End: VTK mesh builder volumes.\n");
 }
 
 void FemVTKTools::exportVTKMesh(const FemMesh* mesh,
                                 vtkSmartPointer<vtkUnstructuredGrid> grid,
+                                bool highest,
                                 float scale)
 {
 
@@ -489,22 +477,45 @@ void FemVTKTools::exportVTKMesh(const FemMesh* mesh,
     Base::Console().Log("    Size of nodes in VTK grid: %i.\n", nNodes);
     Base::Console().Log("  End: VTK mesh builder nodes.\n");
 
-    // edges
-    SMDS_EdgeIteratorPtr aEdgeIter = meshDS->edgesIterator();
-    exportFemMeshEdges(grid, aEdgeIter);
+    vtkSmartPointer<vtkCellArray> elemArray = vtkSmartPointer<vtkCellArray>::New();
+    std::vector<int> types;
 
-    // faces
-    SMDS_FaceIteratorPtr aFaceIter = meshDS->facesIterator();
-    exportFemMeshFaces(grid, aFaceIter);
+    if (highest) {
+        // try volumes
+        SMDS_VolumeIteratorPtr aVolIter = meshDS->volumesIterator();
+        exportFemMeshCells(elemArray, types, aVolIter);
+        // try faces
+        if (elemArray->GetNumberOfCells() == 0) {
+            SMDS_FaceIteratorPtr aFaceIter = meshDS->facesIterator();
+            exportFemMeshFaces(elemArray, types, aFaceIter);
+        }
+        // try edges
+        if (elemArray->GetNumberOfCells() == 0) {
+            SMDS_EdgeIteratorPtr aEdgeIter = meshDS->edgesIterator();
+            exportFemMeshEdges(elemArray, types, aEdgeIter);
+        }
+    }
+    else {
+        // export all elements
+        // edges
+        SMDS_EdgeIteratorPtr aEdgeIter = meshDS->edgesIterator();
+        exportFemMeshEdges(elemArray, types, aEdgeIter);
+        // faces
+        SMDS_FaceIteratorPtr aFaceIter = meshDS->facesIterator();
+        exportFemMeshFaces(elemArray, types, aFaceIter);
+        // volumes
+        SMDS_VolumeIteratorPtr aVolIter = meshDS->volumesIterator();
+        exportFemMeshCells(elemArray, types, aVolIter);
+    }
 
-    // volumes
-    SMDS_VolumeIteratorPtr aVolIter = meshDS->volumesIterator();
-    exportFemMeshCells(grid, aVolIter);
+    if (elemArray->GetNumberOfCells() > 0) {
+        grid->SetCells(types.data(), elemArray);
+    }
 
     Base::Console().Log("End: VTK mesh builder ======================\n");
 }
 
-void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
+void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh, bool highest)
 {
 
     Base::TimeElapsed Start;
@@ -512,7 +523,7 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
     Base::FileInfo f(filename);
 
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
-    exportVTKMesh(mesh, grid);
+    exportVTKMesh(mesh, grid, highest);
     Base::Console().Log("Start: writing mesh data ======================\n");
     if (f.hasExtension("vtu")) {
         writeVTKFile<vtkXMLUnstructuredGridWriter>(filename, grid);
@@ -544,7 +555,7 @@ App::DocumentObject* getObjectByType(const Base::Type type)
     if (obj->is<FemAnalysis>()) {
         std::vector<App::DocumentObject*> fem = (static_cast<FemAnalysis*>(obj))->Group.getValues();
         for (const auto& it : fem) {
-            if (it->getTypeId().isDerivedFrom(type)) {
+            if (it->isDerivedFrom(type)) {
                 return static_cast<App::DocumentObject*>(it);  // return the first of that type
             }
         }
@@ -613,7 +624,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
         }
     }
 
-    App::DocumentObject* mesh = pcDoc->addObject("Fem::FemMeshObject", "ResultMesh");
+    auto* mesh = pcDoc->addObject<Fem::FemMeshObject>("ResultMesh");
     std::unique_ptr<FemMesh> fmesh(new FemMesh());
     importVTKMesh(dataset, fmesh.get());
     static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->setValuePtr(fmesh.release());
@@ -885,7 +896,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
     // vtk has more points. Vtk does not support point gaps, thus the gaps are
     // filled with points. Then the mapping must be correct)
     App::DocumentObject* meshObj = res->Mesh.getValue();
-    if (!meshObj || !meshObj->isDerivedFrom(FemMeshObject::getClassTypeId())) {
+    if (!meshObj || !meshObj->isDerivedFrom<FemMeshObject>()) {
         Base::Console().Error("Result object does not correctly link to mesh");
         return;
     }
@@ -1021,6 +1032,708 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
     }
 
     Base::Console().Log("End: Create VTK result data from FreeCAD result data.\n");
+}
+
+
+namespace FRDReader
+{
+
+enum class ElementType
+{
+    Edge = 11,
+    QuadEdge = 12,
+    Triangle = 7,
+    QuadTriangle = 8,
+    Quadrangle = 9,
+    QuadQuadrangle = 10,
+    Tetra = 3,
+    QuadTetra = 6,
+    Hexa = 1,
+    QuadHexa = 4,
+    Penta = 2,
+    QuadPenta = 5
+};
+
+enum class AnalysisType
+{
+    Static = 0,
+    TimeStep = 1,
+    Frequency = 2,
+    LoadStep = 3,
+    UserNamed = 4
+};
+
+std::map<AnalysisType, std::string> mapAnalysisTypeToStr = {{AnalysisType::Static, "Static"},
+                                                            {AnalysisType::TimeStep, "TimeStep"},
+                                                            {AnalysisType::Frequency, "Frequency"},
+                                                            {AnalysisType::LoadStep, "LoadStep"},
+                                                            {AnalysisType::UserNamed, "User"}};
+
+// value format indicator
+enum class Indicator
+{
+    Short = 0,
+    Long = 1,
+    // BinaryFloat = 2, not used
+    // BinaryDouble = 3 not used
+};
+
+// number of nodes per CalculiX element type: {type, nodes}
+std::map<ElementType, unsigned int> mapCcxTypeNodes = {
+    {ElementType::Edge, 2},
+    {ElementType::QuadEdge, 3},
+    {ElementType::Triangle, 3},
+    {ElementType::QuadTriangle, 6},
+    {ElementType::Quadrangle, 4},
+    {ElementType::QuadQuadrangle, 8},
+    {ElementType::Tetra, 4},
+    {ElementType::QuadTetra, 10},
+    {ElementType::Hexa, 8},
+    {ElementType::QuadHexa, 20},
+    {ElementType::Penta, 6},
+    {ElementType::QuadPenta, 15},
+};
+
+// map CalculiX nodes order to Vtk order
+std::map<int, std::vector<int>> mapCcxToVtk = {
+    {VTK_LINE, {0, 1}},
+    {VTK_QUADRATIC_EDGE, {0, 1, 2}},
+    {VTK_TRIANGLE, {0, 1, 2}},
+    {VTK_QUADRATIC_TRIANGLE, {0, 1, 2, 3, 4, 5}},
+    {VTK_QUAD, {0, 1, 2, 3}},
+    {VTK_QUADRATIC_QUAD, {0, 1, 2, 3, 4, 5, 6, 7}},
+    {VTK_TETRA, {0, 1, 2, 3}},
+    {VTK_QUADRATIC_TETRA, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}},
+    {VTK_HEXAHEDRON, {0, 1, 2, 3, 4, 5, 6, 7}},
+    {VTK_QUADRATIC_HEXAHEDRON,
+     {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18, 19, 12, 13, 14, 15}},
+    {VTK_WEDGE, {0, 1, 2, 3, 4, 5}},
+    {VTK_QUADRATIC_WEDGE, {0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 13, 14, 9, 10, 11}}};
+
+// give position of first non-blank character of string_view
+size_t getFirstNotBlankPos(const std::string_view& view)
+{
+    size_t pos = view.find_first_not_of(" ");
+    if (pos == std::string_view::npos) {
+        pos = 0;
+    }
+
+    return pos;
+}
+
+// get n-digits value from string_view
+// not used until libc++ std::from_chars supports double values
+// template<typename T>
+// void valueFromLine(const std::string_view::const_iterator& it, int digits, T& value)
+//{
+//    std::string_view sub(it, digits);
+//    auto pos = getFirstNotBlankPos(sub);
+//    std::from_chars(sub.data() + pos, sub.data() + digits, value, 10);
+//}
+template<typename T>
+void valueFromLine(const std::string_view::iterator& it, int digits, T& value)
+{
+    std::string_view sub(&*it, digits);
+    value = std::strtol(sub.data(), nullptr, 10);
+}
+template<>
+void valueFromLine<double>(const std::string_view::iterator& it, int digits, double& value)
+{
+    std::string_view sub(&*it, digits);
+    value = std::strtof(sub.data(), nullptr);
+}
+
+// add cell from sorted nodes
+template<typename T>
+void addCell(vtkSmartPointer<vtkCellArray>& cellArray, const std::vector<int>& topoElem)
+{
+    vtkSmartPointer<T> cell = vtkSmartPointer<T>::New();
+    cell->GetPointIds()->SetNumberOfIds(topoElem.size());
+    int type = cell->GetCellType();
+    for (size_t i = 0; i < topoElem.size(); ++i) {
+        cell->GetPointIds()->SetId(i, topoElem[mapCcxToVtk[type][i]]);
+    }
+    cellArray->InsertNextCell(cell);
+}
+
+// fill cell array
+void fillCell(vtkSmartPointer<vtkCellArray>& cellArray,
+              std::vector<int>& topoElem,
+              std::vector<int>& vtkType,
+              ElementType elemType)
+{
+    switch (elemType) {
+        case ElementType::Hexa:
+            addCell<vtkHexahedron>(cellArray, topoElem);
+            vtkType.emplace_back(VTK_HEXAHEDRON);
+            break;
+        case ElementType::Penta:
+            addCell<vtkWedge>(cellArray, topoElem);
+            vtkType.emplace_back(VTK_WEDGE);
+            break;
+        case ElementType::Tetra:
+            addCell<vtkTetra>(cellArray, topoElem);
+            vtkType.emplace_back(VTK_TETRA);
+            break;
+        case ElementType::QuadHexa:
+            addCell<vtkQuadraticHexahedron>(cellArray, topoElem);
+            vtkType.emplace_back(VTK_QUADRATIC_HEXAHEDRON);
+            break;
+        case ElementType::QuadPenta:
+            addCell<vtkQuadraticWedge>(cellArray, topoElem);
+            vtkType.emplace_back(VTK_QUADRATIC_WEDGE);
+            break;
+        case ElementType::QuadTetra:
+            addCell<vtkQuadraticTetra>(cellArray, topoElem);
+            vtkType.emplace_back(VTK_QUADRATIC_TETRA);
+            break;
+        case ElementType::Triangle:
+            addCell<vtkTriangle>(cellArray, topoElem);
+            vtkType.emplace_back(VTK_TRIANGLE);
+            break;
+        case ElementType::QuadTriangle:
+            addCell<vtkQuadraticTriangle>(cellArray, topoElem);
+            vtkType.emplace_back(VTK_QUADRATIC_TRIANGLE);
+            break;
+        case ElementType::Quadrangle:
+            addCell<vtkQuad>(cellArray, topoElem);
+            vtkType.emplace_back(VTK_QUAD);
+            break;
+        case ElementType::QuadQuadrangle:
+            addCell<vtkQuadraticQuad>(cellArray, topoElem);
+            vtkType.emplace_back(VTK_QUADRATIC_QUAD);
+            break;
+        case ElementType::Edge:
+            addCell<vtkLine>(cellArray, topoElem);
+            vtkType.emplace_back(VTK_LINE);
+            break;
+        case ElementType::QuadEdge:
+            addCell<vtkQuadraticEdge>(cellArray, topoElem);
+            vtkType.emplace_back(VTK_QUADRATIC_EDGE);
+            break;
+    }
+}
+
+struct FRDResultInfo
+{
+    double value;
+    long numNodes;
+    AnalysisType analysisType;
+    int step;
+    Indicator indicator;
+
+    bool operator==(const FRDResultInfo& other) const
+    {
+        return (this->step == other.step) && (this->analysisType == other.analysisType);
+    }
+    bool operator<(const FRDResultInfo& other) const
+    {
+        if (this->step < other.step) {
+            return true;
+        }
+        else if (this->step > other.step) {
+            return false;
+        }
+        else if (static_cast<int>(this->analysisType) < static_cast<int>(other.analysisType)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+};
+
+// get number of digits from format indicator
+int getDigits(Indicator indicator)
+{
+    int digits = 0;
+    switch (indicator) {
+        case Indicator::Short:
+            digits = 5;
+            break;
+        case Indicator::Long:
+            digits = 10;
+            break;
+    }
+
+    return digits;
+}
+
+// get position of scalar entities in line result vector
+std::vector<size_t> identifyScalarEntities(const std::vector<std::vector<int>> entities)
+{
+    std::vector<size_t> pos;
+    for (auto it = entities.begin(); it != entities.end(); ++it) {
+        // check type == 1 or component < 1
+        if ((*it)[0] == 1 || (*it)[1] < 1) {
+            pos.emplace_back(it - entities.begin());
+        }
+    }
+    return pos;
+}
+
+// read nodes and fill vtkPoints object
+std::map<int, int>
+readNodes(std::ifstream& ifstr, const std::string& lines, vtkSmartPointer<vtkPoints>& points)
+{
+    std::string keyCode = "    2C";
+    std::string keyCodeCoord = " -1";
+    long numNodes;
+    int indicator;
+    int node;
+    long nodeID = 0;
+
+    // frd file might have nodes that are not numbered starting from zero.
+    // Use the map to identify them
+    std::map<int, int> mapNodes;
+
+    std::string_view view {lines};
+    std::string_view sub = view.substr(keyCode.length() + 18);
+
+    valueFromLine(sub.begin(), 12, numNodes);
+
+    sub = sub.substr(12 + 37);
+    valueFromLine(sub.begin(), 1, indicator);
+    int digits = getDigits(static_cast<Indicator>(indicator));
+
+    points->SetNumberOfPoints(numNodes);
+
+    std::string line;
+    while (nodeID < numNodes && std::getline(ifstr, line)) {
+        std::vector<double> coords;
+        std::string_view view {line};
+        if (view.rfind(keyCodeCoord, 0) == 0) {
+            std::string_view v(line.data() + keyCodeCoord.length(), digits);
+            valueFromLine(v.begin(), digits, node);
+
+            std::string_view vi = view.substr(keyCodeCoord.length() + digits);
+            double value;
+            for (auto it = vi.begin(); it != vi.end(); it += 12) {
+                valueFromLine(it, 12, value);
+                coords.emplace_back(value);
+            }
+        }
+
+        points->SetPoint(nodeID, coords.data());
+        mapNodes[node] = nodeID++;
+    }
+
+    return mapNodes;
+}
+
+// fill elements and fill cell array
+std::vector<int> readElements(std::ifstream& ifstr,
+                              const std::string& lines,
+                              const std::map<int, int>& mapNodes,
+                              vtkSmartPointer<vtkCellArray>& cellArray)
+{
+    std::string line;
+    std::string keyCode = "    3C";
+    std::string keyCodeType = " -1";
+    std::string keyCodeNodes = " -2";
+    long numElem;
+    int indicator;
+    int elem;
+    long elemID = 0;
+    // element info: {type, group, material}
+    std::vector<int> info(3);
+    std::map<int, int> mapElem;
+    std::vector<int> topoElem;
+    std::vector<int> vtkType;
+
+    std::string_view view {lines};
+
+    std::string_view sub = view.substr(keyCode.length() + 18);
+    valueFromLine(sub.begin(), 12, numElem);
+
+    sub = sub.substr(12 + 37);
+    valueFromLine(sub.begin(), 1, indicator);
+    int digits = getDigits(static_cast<Indicator>(indicator));
+    while (elemID < numElem && std::getline(ifstr, line)) {
+        std::string_view view {line};
+        if (view.rfind(keyCodeType, 0) == 0) {
+            std::string_view v(line.data() + keyCodeType.length());
+            valueFromLine(v.begin(), digits, elem);
+            v = v.substr(digits);
+            std::string_view::iterator it1;
+            std::vector<int>::iterator it2;
+            for (it1 = v.begin(), it2 = info.begin(); it1 != v.end() && it2 != info.end();
+                 it1 += 5, ++it2) {
+                valueFromLine(it1, 5, *it2);
+            }
+        }
+        if (view.rfind(keyCodeNodes, 0) == 0) {
+            std::string_view vi = view.substr(keyCodeNodes.length());
+            int node;
+            for (auto it = vi.begin(); it != vi.end(); it += digits) {
+                valueFromLine(it, digits, node);
+                topoElem.emplace_back(mapNodes.at(node));
+            }
+
+            // add cell to cellArray
+            if (topoElem.size() == mapCcxTypeNodes[static_cast<ElementType>(info[0])]) {
+                fillCell(cellArray, topoElem, vtkType, static_cast<ElementType>(info[0]));
+                topoElem.clear();
+                mapElem[elem] = elemID++;
+            }
+        }
+    }
+    return vtkType;
+}
+
+// read parameter header (not used)
+void readParameter(std::ifstream& ifstr, const std::string& line)
+{
+    // do nothing
+    (void)ifstr;
+    (void)line;
+}
+
+// read first header from nodal result block
+void readResultInfo(std::ifstream& ifstr, const std::string& lines, FRDResultInfo& info)
+{
+    (void)ifstr;
+
+    std::string keyCode = "  100C";
+
+    std::string_view view {lines};
+    std::string_view sub = view.substr(keyCode.length() + 6);
+    valueFromLine(sub.begin(), 12, info.value);
+
+    sub = sub.substr(12);
+    valueFromLine(sub.begin(), 12, info.numNodes);
+
+    sub = sub.substr(12 + 20);
+    int anType;
+    valueFromLine(sub.begin(), 2, anType);
+    info.analysisType = static_cast<AnalysisType>(anType);
+
+    sub = sub.substr(2);
+    valueFromLine(sub.begin(), 5, info.step);
+
+    sub = sub.substr(5 + 10);
+    int ind;
+    valueFromLine(sub.begin(), 2, ind);
+    info.indicator = static_cast<Indicator>(ind);
+}
+
+// read result from nodal result block and add result array to grid
+void readResults(std::ifstream& ifstr,
+                 const std::string& lines,
+                 const std::map<int, int>& mapNodes,
+                 const FRDResultInfo& info,
+                 vtkSmartPointer<vtkUnstructuredGrid>& grid)
+{
+    int digits = getDigits(info.indicator);
+    (void)lines;
+
+    // get dataset info, start with " -4"
+    std::string line;
+    std::string keyDataSet = " -4";
+    unsigned int numComps;
+    std::getline(ifstr, line);
+    std::string_view view = line;
+    std::string_view sub = view.substr(keyDataSet.length() + 2);
+    std::string dataSetName {sub.substr(0, 8)};
+    // remove trailing spaces
+    dataSetName.erase(dataSetName.find_last_not_of(" ") + 1);
+    sub = sub.substr(8);
+    valueFromLine(sub.begin(), 5, numComps);
+
+    // get entity info
+    std::string keyEntity = " -5";
+    std::vector<std::string> entityNames;
+    // type: 1: scalar; 2: vector; 4: matrix; 12: vector (3 amp - 3 phase); 14: tensor (6 amp - 6
+    // phase) {type, row, col, exist}
+    std::vector<std::vector<int>> entityTypes;
+    unsigned int countComp = 0;
+    while (countComp < numComps && std::getline(ifstr, line)) {
+        std::string_view view {line};
+        if (view.rfind(keyEntity, 0) == 0) {
+            sub = view.substr(keyEntity.length() + 2);
+            std::string en {sub.substr(0, 8)};
+            // remove trailing spaces
+            en.erase(en.find_last_not_of(" ") + 1);
+            std::vector<int> et = {0, 0, 0, 0};
+            // fill entityType, ignore MENU: "    1"
+            sub = sub.substr(8 + 5, 4 * 5);
+            std::string_view::iterator it1;
+            std::vector<int>::iterator it2;
+            for (it1 = sub.begin(), it2 = et.begin(); it1 != sub.end() && it2 != et.end();
+                 (it1 += 5), ++it2) {
+                valueFromLine(it1, digits, *it2);
+            }
+
+            if (et[3] == 0) {
+                // ignore predefined entity
+                entityNames.emplace_back(en);
+                entityTypes.emplace_back(et);
+            }
+            ++countComp;
+        }
+    }
+
+    // used components
+    numComps = entityNames.size();
+
+    // enter in node values block
+    std::string code1 = " -1";
+    std::string code2 = " -2";
+    int node;
+    double value;
+    std::vector<double> vecValues;
+    std::vector<double> scaValues;
+    std::vector<int> nodes;
+    int countNodes = 0;
+    int countScaPos;
+    // result block could have both vector/matrix and scalar components
+    // save each scalars entity in his own array
+    auto scalarPos = identifyScalarEntities(entityTypes);
+    // array for vector entities (if needed)
+    vtkSmartPointer<vtkDoubleArray> vecArray = vtkSmartPointer<vtkDoubleArray>::New();
+    // arrays for scalar entities (if needed)
+    std::vector<vtkSmartPointer<vtkDoubleArray>> scaArrays;
+    for (size_t i = 0; i < scalarPos.size(); ++i) {
+        scaArrays.emplace_back(vtkSmartPointer<vtkDoubleArray>::New());
+    }
+
+    vecArray->SetNumberOfComponents(numComps - scalarPos.size());
+    vecArray->SetNumberOfTuples(mapNodes.size());
+    vecArray->SetName(dataSetName.c_str());
+    // set all values to zero
+    for (int i = 0; i < vecArray->GetNumberOfComponents(); ++i) {
+        vecArray->FillComponent(i, 0.0);
+    }
+    //    vecArray->Fill(0.0);
+    for (size_t i = 0; i < scaArrays.size(); ++i) {
+        scaArrays[i]->SetNumberOfComponents(1);
+        scaArrays[i]->SetNumberOfTuples(mapNodes.size());
+        std::string name = entityNames[scalarPos[i]];
+        scaArrays[i]->SetName(name.c_str());
+        //        scaArrays[i]->Fill(0.0);
+        for (int j = 0; j < scaArrays[i]->GetNumberOfComponents(); ++j) {
+            scaArrays[i]->FillComponent(j, 0.0);
+        }
+    }
+
+    while (countNodes < info.numNodes && std::getline(ifstr, line)) {
+        std::string_view view {line};
+        if (view.rfind(code1, 0) == 0) {
+            sub = view.substr(code1.length());
+            valueFromLine(sub.begin(), digits, node);
+            // clear values vector for each node result block
+            vecValues.clear();
+            scaValues.clear();
+            countScaPos = 0;
+            try {
+                // result nodes could not exist in .frd file due to element expansion
+                // so mapNodes.at() could throw an exception
+                nodes.emplace_back(mapNodes.at(node));
+                sub = sub.substr(digits);
+                for (auto it = sub.begin(); it != sub.end(); it += 12, ++countScaPos) {
+                    valueFromLine(it, 12, value);
+                    // search if value is scalar or vector/matrix component
+                    auto pos = std::find(scalarPos.begin(), scalarPos.end(), countScaPos);
+                    if (pos == scalarPos.end()) {
+                        vecValues.emplace_back(value);
+                    }
+                    else {
+                        scaValues.emplace_back(value);
+                    }
+                }
+            }
+            catch (const std::out_of_range& ex) {
+                Base::Console().Warning("Invalid node: %d\n", node);
+            }
+            ++countNodes;
+        }
+        else if (view.rfind(code2, 0) == 0) {
+            sub = view.substr(code2.length() + digits);
+            for (auto it = sub.begin(); it != sub.end(); it += 12) {
+                valueFromLine(it, 12, value);
+                // search if value is scalar or vector/matrix component
+                auto pos = std::find(scalarPos.begin(), scalarPos.end(), countScaPos);
+                if (pos == scalarPos.end()) {
+                    vecValues.emplace_back(value);
+                }
+                else {
+                    scaValues.emplace_back(value);
+                }
+            }
+        }
+        if ((vecValues.size() + scaValues.size()) == numComps) {
+            if (!vecValues.empty()) {
+                vecArray->SetTuple(mapNodes.at(node), vecValues.data());
+            }
+            if (!scaValues.empty()) {
+                std::vector<vtkSmartPointer<vtkDoubleArray>>::iterator it1;
+                std::vector<double>::iterator it2;
+                for (it1 = scaArrays.begin(), it2 = scaValues.begin();
+                     it1 != scaArrays.end() && it2 != scaValues.end();
+                     ++it1, ++it2) {
+                    (*it1)->SetTuple1(mapNodes.at(node), *it2);
+                }
+            }
+        }
+    }
+
+    // add vecArray only if not all scalars
+    if (numComps != scalarPos.size()) {
+        grid->GetPointData()->AddArray(vecArray);
+    }
+    for (auto& s : scaArrays) {
+        grid->GetPointData()->AddArray(s);
+    }
+}
+vtkSmartPointer<vtkStringArray> createTimeInfo(const std::string& type)
+{
+    auto timeInfo = vtkSmartPointer<vtkStringArray>::New();
+    timeInfo->SetName("TimeInfo");
+    timeInfo->InsertNextValue(type);
+    // set unit to empty string
+    timeInfo->InsertNextValue("");
+
+    return timeInfo;
+}
+
+vtkSmartPointer<vtkFloatArray> createTimeValue(const double& value)
+{
+    auto stepValue = vtkSmartPointer<vtkFloatArray>::New();
+    stepValue->SetName("TimeValue");
+    stepValue->InsertNextValue(value);
+
+    return stepValue;
+}
+
+vtkSmartPointer<vtkMultiBlockDataSet> readFRD(std::ifstream& ifstr)
+{
+    auto points = vtkSmartPointer<vtkPoints>::New();
+    auto cells = vtkSmartPointer<vtkCellArray>::New();
+    auto multiBlock = vtkSmartPointer<vtkMultiBlockDataSet>::New();
+    vtkSmartPointer<vtkUnstructuredGrid> grid;
+    vtkSmartPointer<vtkMultiBlockDataSet> block;
+    std::map<FRDResultInfo, vtkSmartPointer<vtkUnstructuredGrid>> grids;
+    std::map<AnalysisType, vtkSmartPointer<vtkMultiBlockDataSet>> blocks;
+    std::string line;
+    std::map<int, int> mapNodes;
+    std::vector<int> cellTypes;
+
+    while (std::getline(ifstr, line)) {
+        std::string keyCode = "    2C";
+        std::string_view view = line;
+
+        if (view.rfind(keyCode, 0) == 0) {
+            // read nodes block
+            mapNodes = readNodes(ifstr, line, points);
+        }
+        keyCode = "    3C";
+        if (view.rfind(keyCode, 0) == 0) {
+            // read elements block
+            cellTypes = readElements(ifstr, line, mapNodes, cells);
+        }
+        keyCode = "    1P";
+        if (view.rfind(keyCode, 0) == 0) {
+            // read parameter
+            readParameter(ifstr, line);
+        }
+        keyCode = "  100C";
+        if (view.rfind(keyCode, 0) == 0) {
+            // read result info block
+            FRDResultInfo info;
+            readResultInfo(ifstr, line, info);
+            auto it = grids.find(info);
+            if (it == grids.end()) {
+                // create TimeInfo metadata
+                auto timeInfo = createTimeInfo(mapAnalysisTypeToStr[info.analysisType]);
+                // search analysis type block and create it if necessary
+                auto it2 = blocks.find(info.analysisType);
+                if (it2 == blocks.end()) {
+                    block = vtkSmartPointer<vtkMultiBlockDataSet>::New();
+                    block->GetFieldData()->AddArray(timeInfo);
+                    blocks[info.analysisType] = block;
+                }
+                else {
+                    block = it2->second;
+                }
+                // create unstructured grid
+                grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+                grid->SetPoints(points);
+                grid->SetCells(cellTypes.data(), cells);
+
+                // create TimeValue metadata
+                auto stepValue = createTimeValue(info.value);
+
+                grid->GetFieldData()->AddArray(stepValue);
+                grid->GetFieldData()->AddArray(timeInfo);
+
+                grids[info] = grid;
+                unsigned int nb = block->GetNumberOfBlocks();
+                block->SetBlock(nb, grid);
+            }
+            else {
+                grid = (*it).second;
+            }
+            // read result entries and node results
+            readResults(ifstr, line, mapNodes, info, grid);
+        }
+    }
+    int i = 0;
+
+    for (const auto& b : blocks) {
+        multiBlock->SetBlock(i, b.second);
+        ++i;
+    }
+
+    // save points and elements even without results
+    if (grids.empty()) {
+        block = vtkSmartPointer<vtkMultiBlockDataSet>::New();
+        grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+        grid->SetPoints(points);
+        grid->SetCells(cellTypes.data(), cells);
+        auto timeInfo = createTimeInfo("");
+        auto stepValue = createTimeValue(0);
+        grid->GetFieldData()->AddArray(stepValue);
+        grid->GetFieldData()->AddArray(timeInfo);
+
+        block->SetBlock(0, grid);
+        block->GetFieldData()->AddArray(timeInfo);
+        multiBlock->SetBlock(0, block);
+    }
+
+    return multiBlock;
+}
+
+}  // namespace FRDReader
+
+void FemVTKTools::frdToVTK(const char* filename)
+{
+    Base::FileInfo fi(filename);
+
+    if (!fi.isReadable()) {
+        throw Base::FileException("File to load not existing or not readable", filename);
+    }
+
+    std::ifstream ifstr(filename, std::ios::in | std::ios::binary);
+
+    vtkSmartPointer<vtkMultiBlockDataSet> multiBlock = FRDReader::readFRD(ifstr);
+
+    std::string dir = fi.dirPath();
+
+    for (unsigned int i = 0; i < multiBlock->GetNumberOfBlocks(); ++i) {
+        vtkDataObject* block = multiBlock->GetBlock(i);
+        // get TimeInfo
+        vtkSmartPointer<vtkStringArray> info =
+            vtkStringArray::SafeDownCast(block->GetFieldData()->GetAbstractArray(0));
+        std::string type = info->GetValue(0).c_str();
+
+        auto writer = vtkSmartPointer<vtkXMLMultiBlockDataWriter>::New();
+
+        std::string blockFile =
+            dir + "/" + fi.fileNamePure() + type + "." + writer->GetDefaultFileExtension();
+        writer->SetFileName(blockFile.c_str());
+        writer->SetInputData(block);
+        writer->Update();
+    }
 }
 
 }  // namespace Fem

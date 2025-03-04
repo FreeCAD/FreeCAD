@@ -127,13 +127,39 @@ const Cell* PropertySheet::getValueFromAlias(const std::string& alias) const
     }
 }
 
+bool PropertySheet::isValidCellAddressName(const std::string& candidate)
+{
+    /* Check if it matches a cell reference */
+    static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
+    boost::cmatch cm;
+
+    if (boost::regex_match(candidate.c_str(), cm, e)) {
+        const boost::sub_match<const char*> colstr = cm[1];
+        const boost::sub_match<const char*> rowstr = cm[2];
+
+        if (App::validRow(rowstr.str()) >= 0 && App::validColumn(colstr.str())) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool PropertySheet::isValidAlias(const std::string& candidate)
 {
+    /* Ensure it only contains allowed characters */
     static const boost::regex gen("^[A-Za-z][_A-Za-z0-9]*$");
     boost::cmatch cm;
+    if (!boost::regex_match(candidate.c_str(), cm, gen)) {
+        return false;
+    }
 
     /* Check if it is used before */
     if (getValueFromAlias(candidate)) {
+        return false;
+    }
+
+    /* Check if it would be a valid cell address name, e.g. "A2" or "C3" */
+    if (isValidCellAddressName(candidate)) {
         return false;
     }
 
@@ -143,24 +169,7 @@ bool PropertySheet::isValidAlias(const std::string& candidate)
         return false;
     }
 
-    /* Check to make sure it doesn't match a cell reference */
-    if (boost::regex_match(candidate.c_str(), cm, gen)) {
-        static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
-
-        if (boost::regex_match(candidate.c_str(), cm, e)) {
-            const boost::sub_match<const char*> colstr = cm[1];
-            const boost::sub_match<const char*> rowstr = cm[2];
-
-            // A valid cell address?
-            if (App::validRow(rowstr.str()) >= 0 && App::validColumn(colstr.str())) {
-                return false;
-            }
-        }
-        return true;
-    }
-    else {
-        return false;
-    }
+    return true;
 }
 
 namespace
@@ -711,14 +720,14 @@ void PropertySheet::setStyle(CellAddress address, const std::set<std::string>& _
     cell->setStyle(_style);
 }
 
-void PropertySheet::setForeground(CellAddress address, const App::Color& color)
+void PropertySheet::setForeground(CellAddress address, const Base::Color& color)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);
     cell->setForeground(color);
 }
 
-void PropertySheet::setBackground(CellAddress address, const App::Color& color)
+void PropertySheet::setBackground(CellAddress address, const Base::Color& color)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);
@@ -778,7 +787,7 @@ void PropertySheet::setAlias(CellAddress address, const std::string& alias)
         App::ObjectIdentifier key(owner, oldAlias);
         App::ObjectIdentifier value(owner, alias.empty() ? address.toString() : alias);
 
-        m[key] = value;
+        m[key] = std::move(value);
 
         owner->getDocument()->renameObjectIdentifiers(m);
     }
@@ -1378,7 +1387,7 @@ void PropertySheet::addDependencies(CellAddress key)
                 cellToPropertyNameMap[key].insert(propName);
 
                 // Also an alias?
-                if (!name.empty() && docObj->isDerivedFrom(Sheet::getClassTypeId())) {
+                if (!name.empty() && docObj->isDerivedFrom<Sheet>()) {
                     auto other = static_cast<Sheet*>(docObj);
                     auto j = other->cells.revAliasProp.find(name);
 
@@ -1388,7 +1397,7 @@ void PropertySheet::addDependencies(CellAddress key)
 
                         // Insert into maps
                         propertyNameToCellMap[propName].insert(key);
-                        cellToPropertyNameMap[key].insert(propName);
+                        cellToPropertyNameMap[key].insert(std::move(propName));
                     }
                 }
             }
@@ -2054,7 +2063,7 @@ PropertySheet::BindingType PropertySheet::getBinding(const Range& range,
         path << ObjectIdentifier::SimpleComponent(range.from().toString().c_str());
         path << ObjectIdentifier::SimpleComponent(range.to().toString().c_str());
         auto res = owner->getExpression(path);
-        if (res.expression && res.expression->isDerivedFrom(FunctionExpression::getClassTypeId())) {
+        if (res.expression && res.expression->isDerivedFrom<FunctionExpression>()) {
             auto expr = static_cast<FunctionExpression*>(res.expression.get());
             if (href) {
                 if ((expr->getFunction() != FunctionExpression::HIDDENREF

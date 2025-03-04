@@ -72,7 +72,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     m_lineFeat(m_lineVP->getFeature()),
     m_qgParent(nullptr),
     m_createMode(false),
-    m_trackerMode(QGTracker::None),
+    m_trackerMode(QGTracker::TrackerMode::None),
     m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
     m_qgLeader(nullptr),
@@ -92,7 +92,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     }
     App::DocumentObject* obj = m_lineFeat->LeaderParent.getValue();
     if (obj) {
-        if (obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) )  {
+        if (obj->isDerivedFrom<TechDraw::DrawView>() )  {
             m_baseFeat = static_cast<TechDraw::DrawView*>(m_lineFeat->LeaderParent.getValue());
         }
     }
@@ -145,7 +145,7 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
     m_lineFeat(nullptr),
     m_qgParent(nullptr),
     m_createMode(true),
-    m_trackerMode(QGTracker::None),
+    m_trackerMode(QGTracker::TrackerMode::None),
     m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
     m_qgLeader(nullptr),
@@ -215,13 +215,12 @@ void TaskLeaderLine::changeEvent(QEvent *event)
 
 void TaskLeaderLine::setUiPrimary()
 {
-//    Base::Console().Message("TTL::setUiPrimary()\n");
     enableVPUi(true);
     setWindowTitle(QObject::tr("New Leader Line"));
 
     if (m_baseFeat) {
         std::string baseName = m_baseFeat->getNameInDocument();
-        ui->tbBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->tbBaseView->setText(QString::fromStdString(baseName));
     }
 
     ui->pbTracker->setText(tr("Pick points"));
@@ -234,11 +233,11 @@ void TaskLeaderLine::setUiPrimary()
     }
 
     DrawGuiUtil::loadArrowBox(ui->cboxStartSym);
-    int aStyle = PreferencesGui::dimArrowStyle();
-    ui->cboxStartSym->setCurrentIndex(aStyle);
+    ArrowType aStyle = PreferencesGui::dimArrowStyle();
+    ui->cboxStartSym->setCurrentIndex(static_cast<int>(aStyle));
 
     DrawGuiUtil::loadArrowBox(ui->cboxEndSym);
-    ui->cboxEndSym->setCurrentIndex(TechDraw::ArrowType::NONE);
+    ui->cboxEndSym->setCurrentIndex(static_cast<int>(TechDraw::ArrowType::NONE));
 
     ui->dsbWeight->setUnit(Base::Unit::Length);
     ui->dsbWeight->setMinimum(0);
@@ -258,13 +257,12 @@ void TaskLeaderLine::enableVPUi(bool enable)
 
 void TaskLeaderLine::setUiEdit()
 {
-//    Base::Console().Message("TTL::setUiEdit()\n");
     enableVPUi(true);
     setWindowTitle(QObject::tr("Edit Leader Line"));
 
     if (m_lineFeat) {
         std::string baseName = m_lineFeat->LeaderParent.getValue()->getNameInDocument();
-        ui->tbBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->tbBaseView->setText(QString::fromStdString(baseName));
 
         DrawGuiUtil::loadArrowBox(ui->cboxStartSym);
         ui->cboxStartSym->setCurrentIndex(m_lineFeat->StartSymbol.getValue());
@@ -315,7 +313,7 @@ void TaskLeaderLine::onEndSymbolChanged()
 
 void TaskLeaderLine::onColorChanged()
 {
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     m_lineVP->Color.setValue(ac);
     recomputeFeature();
@@ -366,7 +364,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
         throw Base::RuntimeError("TaskLeaderLine - new markup object not found");
     }
 
-    if (obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawLeaderLine>()) {
         m_lineFeat = static_cast<TechDraw::DrawLeaderLine*>(obj);
         auto forMath{m_attachPoint};
         if (baseRotation != 0) {
@@ -380,16 +378,14 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
             std::vector<Base::Vector3d> pageDeltas;
             // convert deltas to mm. leader points are stored inverted, so we do not convert to conventional Y axis
             for (auto& delta : sceneDeltas) {
-                Base::Vector3d deltaInPageCoords = DGU::fromSceneCoords(delta, false);
+                Base::Vector3d deltaInPageCoords = Rez::appX(delta);
                 pageDeltas.push_back(deltaInPageCoords);
             }
 
-// should just do this in place.
-            if (m_lineFeat->AutoHorizontal.getValue()) {
-                pageDeltas = DrawLeaderLine::horizLastSegment(pageDeltas);
-            }
-            // convert to unscaled, unrotated but inverted
-            auto temp = m_lineFeat->makeCanonicalPointsInverted(pageDeltas);
+            // already unrotated, now convert to unscaled, but inverted
+            bool doScale{true};
+            bool doRotate{false};
+            auto temp = m_lineFeat->makeCanonicalPointsInverted(pageDeltas, doScale, doRotate);
             m_lineFeat->WayPoints.setValues(temp);
         }
         commonFeatureUpdate();
@@ -399,7 +395,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
         Gui::ViewProvider* vp = QGIView::getViewProvider(m_lineFeat);
         auto leadVP = dynamic_cast<ViewProviderLeader*>(vp);
         if (leadVP) {
-            App::Color ac;
+            Base::Color ac;
             ac.setValue<QColor>(ui->cpLineColor->color());
             leadVP->Color.setValue(ac);
             leadVP->LineWidth.setValue(ui->dsbWeight->rawValue());
@@ -437,7 +433,7 @@ void TaskLeaderLine::updateLeaderFeature()
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Leader"));
     //waypoints & x, y are updated by QGILeaderLine (for edits only!)
     commonFeatureUpdate();
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     m_lineVP->Color.setValue(ac);
     m_lineVP->LineWidth.setValue(ui->dsbWeight->rawValue());
@@ -491,8 +487,6 @@ void TaskLeaderLine::removeFeature()
 void TaskLeaderLine::onTrackerClicked(bool clicked)
 {
     Q_UNUSED(clicked);
-//    Base::Console().Message("TTL::onTrackerClicked() m_pbTrackerState: %d\n",
-//                            m_pbTrackerState);
     if (!m_vpp->getMDIViewPage()) {
         Base::Console().Message("TLL::onTrackerClicked - no Mdi, no Tracker!\n");
         return;
@@ -714,7 +708,7 @@ QGIView* TaskLeaderLine::findParentQGIV()
     return vpdv->getQView();;
 }
 
-void TaskLeaderLine::setEditCursor(QCursor cursor)
+void TaskLeaderLine::setEditCursor(const QCursor &cursor)
 {
     if (!m_vpp->getQGSPage()) {
         return;
@@ -725,15 +719,29 @@ void TaskLeaderLine::setEditCursor(QCursor cursor)
     }
 }
 
-//from scene QPointF to zero origin (delta from p0) Vector3d points
+// from scene QPointF to zero origin (delta from p0) Vector3d points
 std::vector<Base::Vector3d> TaskLeaderLine::scenePointsToDeltas(std::vector<QPointF> scenePoints)
 {
-//    Base::Console().Message("TTL::scenePointsToDeltas(%d)\n", pts.size());
+    if (scenePoints.empty()) {
+        return {};
+    }
+
     std::vector<Base::Vector3d> result;
+    auto frontPoint = DU::toVector3d(m_qgParent->mapFromScene(scenePoints.front()));
     result.reserve(scenePoints.size());
     for (auto& point: scenePoints) {
-        QPointF delta = point - scenePoints.front();
-        result.push_back(DU::toVector3d(delta));
+        auto viewPoint = m_qgParent->mapFromScene(point);
+        auto vPoint = DU::toVector3d(viewPoint);
+        auto delta = vPoint - frontPoint;
+        auto rotationDeg = m_baseFeat->Rotation.getValue();
+        auto deltaUnrotated{delta};
+        if (rotationDeg != 0) {
+            deltaUnrotated = DU::invertY(deltaUnrotated);
+            deltaUnrotated.RotateZ(-Base::toRadians(rotationDeg));
+            deltaUnrotated = DU::invertY(deltaUnrotated);
+        }
+
+        result.push_back(deltaUnrotated);
     }
     return result;
 }

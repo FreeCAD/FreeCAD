@@ -26,7 +26,7 @@
 #include <QFontDatabase>
 #endif
 
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Gui/PythonEditor.h>
 #include <Gui/Tools.h>
 
@@ -85,63 +85,63 @@ DlgSettingsEditor::DlgSettingsEditor(QWidget* parent)
     d = new DlgSettingsEditorP();
     QColor col;
     col = qApp->palette().windowText().color();
-    unsigned int lText = App::Color::asPackedRGB<QColor>(col);
+    unsigned int lText = Base::Color::asPackedRGB<QColor>(col);
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Text")), lText));
 
-    unsigned int lBookmarks = App::Color::asPackedRGB<QColor>(QColor(Qt::cyan));
+    unsigned int lBookmarks = Base::Color::asPackedRGB<QColor>(QColor(Qt::cyan));
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Bookmark")), lBookmarks));
 
-    unsigned int lBreakpnts = App::Color::asPackedRGB<QColor>(QColor(Qt::red));
+    unsigned int lBreakpnts = Base::Color::asPackedRGB<QColor>(QColor(Qt::red));
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Breakpoint")), lBreakpnts));
 
-    unsigned int lKeywords = App::Color::asPackedRGB<QColor>(QColor(Qt::blue));
+    unsigned int lKeywords = Base::Color::asPackedRGB<QColor>(QColor(Qt::blue));
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Keyword")), lKeywords));
 
-    unsigned int lComments = App::Color::asPackedRGB<QColor>(QColor(0, 170, 0));
+    unsigned int lComments = Base::Color::asPackedRGB<QColor>(QColor(0, 170, 0));
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Comment")), lComments));
 
-    unsigned int lBlockCom = App::Color::asPackedRGB<QColor>(QColor(160, 160, 164));
+    unsigned int lBlockCom = Base::Color::asPackedRGB<QColor>(QColor(160, 160, 164));
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Block comment")), lBlockCom));
 
-    unsigned int lNumbers = App::Color::asPackedRGB<QColor>(QColor(Qt::blue));
+    unsigned int lNumbers = Base::Color::asPackedRGB<QColor>(QColor(Qt::blue));
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Number")), lNumbers));
 
-    unsigned int lStrings = App::Color::asPackedRGB<QColor>(QColor(Qt::red));
+    unsigned int lStrings = Base::Color::asPackedRGB<QColor>(QColor(Qt::red));
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("String")), lStrings));
 
-    unsigned int lCharacter = App::Color::asPackedRGB<QColor>(QColor(Qt::red));
+    unsigned int lCharacter = Base::Color::asPackedRGB<QColor>(QColor(Qt::red));
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Character")), lCharacter));
 
-    unsigned int lClass = App::Color::asPackedRGB<QColor>(QColor(255, 170, 0));
+    unsigned int lClass = Base::Color::asPackedRGB<QColor>(QColor(255, 170, 0));
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Class name")), lClass));
 
-    unsigned int lDefine = App::Color::asPackedRGB<QColor>(QColor(255, 170, 0));
+    unsigned int lDefine = Base::Color::asPackedRGB<QColor>(QColor(255, 170, 0));
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Define name")), lDefine));
 
-    unsigned int lOperat = App::Color::asPackedRGB<QColor>(QColor(160, 160, 164));
+    unsigned int lOperat = Base::Color::asPackedRGB<QColor>(QColor(160, 160, 164));
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Operator")), lOperat));
 
-    unsigned int lPyOutput = App::Color::asPackedRGB<QColor>(QColor(170, 170, 127));
+    unsigned int lPyOutput = Base::Color::asPackedRGB<QColor>(QColor(170, 170, 127));
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Python output")), lPyOutput));
 
-    unsigned int lPyError = App::Color::asPackedRGB<QColor>(QColor(Qt::red));
+    unsigned int lPyError = Base::Color::asPackedRGB<QColor>(QColor(Qt::red));
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Python error")), lPyError));
 
-    unsigned int lCLine = App::Color::asPackedRGB<QColor>(QColor(224, 224, 224));
+    unsigned int lCLine = Base::Color::asPackedRGB<QColor>(QColor(224, 224, 224));
     d->colormap.push_back(
         QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Current line highlight")),
                                      lCLine));
@@ -195,14 +195,14 @@ void DlgSettingsEditor::onDisplayItemsCurrentItemChanged(QTreeWidgetItem* item)
 {
     int index = ui->displayItems->indexOfTopLevelItem(item);
     unsigned int col = d->colormap[index].second;
-    ui->colorButton->setColor(App::Color::fromPackedRGB<QColor>(col));
+    ui->colorButton->setColor(Base::Color::fromPackedRGB<QColor>(col));
 }
 
 /** Updates the color map if a color was changed */
 void DlgSettingsEditor::onColorButtonChanged()
 {
     QColor col = ui->colorButton->color();
-    unsigned int lcol = App::Color::asPackedRGB<QColor>(col);
+    unsigned int lcol = Base::Color::asPackedRGB<QColor>(col);
 
     int index = ui->displayItems->indexOfTopLevelItem(ui->displayItems->currentItem());
     d->colormap[index].second = lcol;
@@ -253,7 +253,7 @@ void DlgSettingsEditor::loadSettings()
     ui->radioSpaces->onRestore();
 
     setEditorTabWidth(ui->tabSize->value());
-    ui->textEdit1->setPlainText(QString::fromLatin1("# Short Python sample\n"
+    ui->textEdit1->setPlainText(QStringLiteral("# Short Python sample\n"
                                                     "import sys\n"
                                                     "\n"
                                                     "def foo(begin, end):\n"
@@ -272,7 +272,7 @@ void DlgSettingsEditor::loadSettings()
         auto col = static_cast<unsigned long>(textColor);
         col = hGrp->GetUnsigned(textType.toLatin1(), col);
         textColor = static_cast<unsigned int>(col);
-        QColor color = App::Color::fromPackedRGB<QColor>(col);
+        QColor color = Base::Color::fromPackedRGB<QColor>(col);
         pythonSyntax->setColor(textType, color);
     }
 

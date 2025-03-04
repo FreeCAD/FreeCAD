@@ -30,6 +30,7 @@ __url__ = "https://www.freecad.org"
 import os
 import re
 import subprocess
+from PySide.QtCore import QProcess, QThread
 
 import FreeCAD
 from FreeCAD import Console
@@ -54,7 +55,7 @@ class GmshTools:
         # mesh obj
         self.mesh_obj = gmsh_mesh_obj
 
-        self.process = None
+        self.process = QProcess()
         # analysis
         self.analysis = None
 
@@ -208,27 +209,20 @@ class GmshTools:
         self.write_part_file()
         self.write_geo()
 
-    def compute(self):
+    def prepare(self):
         self.load_properties()
         self.update_mesh_data()
         self.get_tmp_file_paths()
         self.get_gmsh_command()
         self.write_gmsh_input_files()
 
-        command_list = [self.gmsh_bin, "-", self.temp_file_geo]
-        self.process = subprocess.Popen(
-            command_list,
-            shell=False,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            startupinfo=femutils.startProgramInfo("hide"),
+    def compute(self):
+        log_level = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetString(
+            "LogVerbosity", "3"
         )
-
-        out, err = self.process.communicate()
-        if self.process.returncode != 0:
-            raise RuntimeError(err.decode("utf-8"))
-
-        return True
+        command_list = ["-v", log_level, "-", self.temp_file_geo]
+        self.process.start(self.gmsh_bin, command_list)
+        return self.process
 
     def update_properties(self):
         self.mesh_obj.FemMesh = Fem.read(self.temp_file_mesh)
@@ -404,6 +398,8 @@ class GmshTools:
         else:
             Console.PrintMessage("  Mesh group objects, we need to get the elements.\n")
             for mg in self.mesh_obj.MeshGroupList:
+                if mg.Suppressed:
+                    continue
                 new_group_elements = meshtools.get_mesh_group_elements(mg, self.part_obj)
                 for ge in new_group_elements:
                     if ge not in self.group_elements:
@@ -483,6 +479,8 @@ class GmshTools:
             ):
                 self.outputCompoundWarning
             for mr_obj in self.mesh_obj.MeshRegionList:
+                if mr_obj.Suppressed:
+                    continue
                 # print(mr_obj.Name)
                 # print(mr_obj.CharacteristicLength)
                 # print(Units.Quantity(mr_obj.CharacteristicLength).Value)
@@ -568,6 +566,8 @@ class GmshTools:
                 # https://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
                 self.outputCompoundWarning
             for mr_obj in self.mesh_obj.MeshBoundaryLayerList:
+                if mr_obj.Suppressed:
+                    continue
                 if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:
                     if mr_obj.References:
                         belem_list = []
@@ -741,11 +741,12 @@ class GmshTools:
         geo.write("// geo file for meshing with Gmsh meshing software created by FreeCAD\n")
         geo.write("\n")
 
-        cpu_count = os.cpu_count()
-        if cpu_count is not None and cpu_count > 1:
-            geo.write("// enable multi-core processing\n")
-            geo.write(f"General.NumThreads = {cpu_count};\n")
-            geo.write("\n")
+        cpu_count = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetInt(
+            "NumOfThreads", QThread.idealThreadCount()
+        )
+        geo.write("// enable multi-core processing\n")
+        geo.write(f"General.NumThreads = {cpu_count};\n")
+        geo.write("\n")
 
         geo.write("// open brep geometry\n")
         # explicit use double quotes in geo file

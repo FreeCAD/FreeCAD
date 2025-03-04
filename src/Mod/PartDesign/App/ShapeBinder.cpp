@@ -28,6 +28,7 @@
 # include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
 #endif
 
 #include <unordered_map>
@@ -38,7 +39,7 @@
 #include <App/Document.h>
 #include <App/GroupExtension.h>
 #include <App/Link.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <App/ElementNamingUtils.h>
 #include <Mod/Part/App/TopoShape.h>
 
@@ -50,6 +51,11 @@ FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 using namespace PartDesign;
 namespace sp = std::placeholders;
+
+namespace PartDesign
+{
+extern bool getPDRefineModelParameter();
+}
 
 // ============================================================================
 
@@ -189,6 +195,10 @@ void ShapeBinder::getFilteredReferences(const App::PropertyLinkSubList* prop,
                 obj = plane;
                 break;
             }
+            if (auto point = dynamic_cast<App::Point*>(it)) {
+                obj = point;
+                break;
+            }
         }
     }
 }
@@ -236,6 +246,13 @@ Part::TopoShape ShapeBinder::buildShapeFromReferences(App::GeoFeature* obj, std:
         gp_Pln plane;
         BRepBuilderAPI_MakeFace mkFace(plane);
         Part::TopoShape shape(mkFace.Shape());
+        shape.setPlacement(obj->Placement.getValue());
+        return shape;
+    }
+    else if (obj->isDerivedFrom<App::Point>()) {
+        gp_Pnt point;
+        BRepBuilderAPI_MakeVertex mkPoint(point);
+        Part::TopoShape shape(mkPoint.Shape());
         shape.setPlacement(obj->Placement.getValue());
         return shape;
     }
@@ -380,10 +397,6 @@ SubShapeBinder::~SubShapeBinder() {
 void SubShapeBinder::setupObject() {
     _Version.setValue(2);
     checkPropertyStatus();
-
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", true));
 }
 
 App::DocumentObject* SubShapeBinder::getSubObject(const char* subname, PyObject** pyObj,
@@ -582,8 +595,11 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 recomputeCopy = true;
                 clearCopiedObjects();
 
-                auto tmpDoc = App::GetApplication().newDocument(
-                    "_tmp_binder", nullptr, false, true);
+                App::DocumentCreateFlags createFlags;
+                createFlags.createView = false;
+                createFlags.temporary = true;
+
+                auto tmpDoc = App::GetApplication().newDocument("_tmp_binder", nullptr, createFlags);
                 tmpDoc->setUndoMode(0);
                 auto objs = tmpDoc->copyObject({ obj }, true, true);
                 if (!objs.empty()) {
@@ -602,21 +618,34 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 if (!copyerror) {
                     std::vector<App::Property*> props;
                     getPropertyList(props);
-                    for (auto prop : props) {
-                        if (!App::LinkBaseExtension::isCopyOnChangeProperty(this, *prop))
-                            continue;
-                        auto p = copied->getPropertyByName(prop->getName());
-                        if (p && p->getContainer() == copied
-                            && p->getTypeId() == prop->getTypeId()
-                            && !p->isSame(*prop))
-                        {
-                            recomputeCopy = true;
-                            std::unique_ptr<App::Property> pcopy(prop->Copy());
-                            p->Paste(*pcopy);
+                    // lambda for copying values of copy-on-change properties
+                    const auto copyPropertyValues = [this, &recomputeCopy, &props, copied](const bool to_support) {
+                        for (auto prop : props) {
+                            if (!App::LinkBaseExtension::isCopyOnChangeProperty(this, *prop))
+                                continue;
+                            // we only copy read-only and output properties from support to binder
+                            if (!to_support && !(prop->testStatus(App::Property::Output) && prop->testStatus(App::Property::ReadOnly)))
+                                continue;
+                            auto p = copied->getPropertyByName(prop->getName());
+                            if (p && p->getContainer() == copied
+                                && p->getTypeId() == prop->getTypeId()
+                                && !p->isSame(*prop))
+                            {
+                                recomputeCopy = true;
+                                auto* const from = to_support ? prop : p;
+                                auto* const to = to_support ? p : prop;
+
+                                std::unique_ptr<App::Property> pcopy(from->Copy());
+                                to->Paste(*pcopy);
+                            }
                         }
-                    }
+                    };
+
+                    copyPropertyValues(true);
                     if (recomputeCopy && !copied->recomputeFeature(true))
                         copyerror = 2;
+                    if (!copyerror)
+                        copyPropertyValues(false);
                 }
                 obj = copied;
                 _CopiedLink.setValue(copied, l.getSubValues(false));
@@ -810,7 +839,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     for (auto& v : mats) {
         const char* name = cacheName(v.first);
         auto prop = getDynamicPropertyByName(name);
-        if (!prop || !prop->isDerivedFrom(App::PropertyMatrix::getClassTypeId())) {
+        if (!prop || !prop->isDerivedFrom<App::PropertyMatrix>()) {
             if (prop)
                 removeDynamicProperty(name);
             prop = addDynamicProperty("App::PropertyMatrix", name, "Cache", nullptr, 0, false, true);

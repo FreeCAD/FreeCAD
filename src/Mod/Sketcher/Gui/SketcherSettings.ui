@@ -124,7 +124,7 @@ Requires to re-enter edit mode to take effect.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxEnableEscape">
         <property name="toolTip">
-         <string>Allow to leave sketch edit mode when pressing Esc button</string>
+         <string>Allow leaving sketch edit mode when pressing Esc button</string>
         </property>
         <property name="text">
          <string>Esc can leave sketch edit mode</string>
@@ -137,25 +137,6 @@ Requires to re-enter edit mode to take effect.</string>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Sketcher</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Gui::PrefCheckBox" name="checkBoxDisableShading">
-        <property name="toolTip">
-         <string>Disables the shaded view when entering the sketch edit mode.</string>
-        </property>
-        <property name="text">
-         <string>Disable shading in edit mode</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="1">
-         <cstring>DisableShadedView</cstring>
-        </property>
-        <property name="prefPath" stdset="1">
-         <cstring>Mod/Sketcher/General</cstring>
         </property>
        </widget>
       </item>
@@ -213,6 +194,25 @@ Requires to re-enter edit mode to take effect.</string>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Sketcher/Constraints</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxAddExtGeo">
+        <property name="toolTip">
+         <string>If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</string>
+        </property>
+        <property name="text">
+         <string>Always add external geometry as reference</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AlwaysExtGeoReference</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
         </property>
        </widget>
       </item>

@@ -75,7 +75,7 @@ Loft::getSectionShape(const char *name,
     // Be smart. If part of a sketch is selected, use the entire sketch unless it is a single vertex - 
     // backward compatibility (#16630)
     auto subName = subs.empty() ? "" : subs.front();
-    auto useEntireSketch = obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&  subName.find("Vertex") != 0;
+    auto useEntireSketch = obj->isDerivedFrom<Part::Part2DObject>() &&  subName.find("Vertex") != 0;
     if (subs.empty() || std::find(subs.begin(), subs.end(), std::string()) != subs.end() || useEntireSketch ) {
         shapes.push_back(Part::Feature::getTopoShape(obj));
         if (shapes.back().isNull())
@@ -112,6 +112,8 @@ Loft::getSectionShape(const char *name,
 
 App::DocumentObjectExecReturn *Loft::execute()
 {
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
+
     std::vector<TopoShape> wires;
     try {
         wires = getSectionShape("Profile", Profile.getValue(), Profile.getSubValues());
@@ -257,6 +259,8 @@ App::DocumentObjectExecReturn *Loft::execute()
         if (boolOp.isNull())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
+        // store shape before refinement
+        this->rawShape = boolOp;
         boolOp = refineShapeIfActive(boolOp);
         boolOp = getSolid(boolOp);
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {

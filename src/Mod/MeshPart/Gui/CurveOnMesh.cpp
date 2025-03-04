@@ -263,7 +263,7 @@ public:
     }
     void createGrid()
     {
-        Mesh::Feature* mf = static_cast<Mesh::Feature*>(mesh->getObject());
+        Mesh::Feature* mf = mesh->getObject<Mesh::Feature>();
         const Mesh::MeshObject& meshObject = mf->Mesh.getValue();
         kernel = meshObject.getKernel();
         kernel.Transform(meshObject.getTransform());
@@ -533,7 +533,7 @@ void CurveOnMeshHandler::displaySpline(const Handle(Geom_BSplineCurve) & spline)
         Gui::View3DInventorViewer* view3d = d_ptr->viewer->getViewer();
         App::Document* doc = view3d->getDocument()->getDocument();
         doc->openTransaction("Add spline");
-        Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Spline", "Spline"));
+        Part::Feature* part = doc->addObject<Part::Feature>("Spline");
         part->Shape.setValue(edge);
         doc->commitTransaction();
     }
@@ -562,8 +562,7 @@ void CurveOnMeshHandler::displayPolyline(const TopoDS_Wire& wire)
         Gui::View3DInventorViewer* view3d = d_ptr->viewer->getViewer();
         App::Document* doc = view3d->getDocument()->getDocument();
         doc->openTransaction("Add polyline");
-        Part::Feature* part =
-            static_cast<Part::Feature*>(doc->addObject("Part::Feature", "Polyline"));
+        Part::Feature* part = doc->addObject<Part::Feature>("Polyline");
         part->Shape.setValue(wire);
         doc->commitTransaction();
     }

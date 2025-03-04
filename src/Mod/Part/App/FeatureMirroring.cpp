@@ -40,7 +40,7 @@
 
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <App/Link.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 
 #include "FeatureMirroring.h"
 #include "DatumFeature.h"
@@ -150,8 +150,8 @@ App::DocumentObjectExecReturn *Mirroring::execute()
       Can also be App::Links to such objects
     */
     if (refObject){
-        if (refObject->isDerivedFrom(Part::Plane::getClassTypeId()) || refObject->isDerivedFrom<App::Plane>() || (strstr(refObject->getNameInDocument(), "Plane")
-                                                                                                                  && refObject->isDerivedFrom(Part::Datum::getClassTypeId()))) {
+        if (refObject->isDerivedFrom<Part::Plane>() || refObject->isDerivedFrom<App::Plane>() || (strstr(refObject->getNameInDocument(), "Plane")
+                                                                                                                  && refObject->isDerivedFrom<Part::Datum>())) {
             Part::Feature* plane = static_cast<Part::Feature*>(refObject);
             Base::Vector3d base = plane->Placement.getValue().getPosition();
             axbase = gp_Pnt(base.x, base.y, base.z);

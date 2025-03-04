@@ -25,8 +25,6 @@
 # include <QListWidgetItem>
 #endif
 
-#include <Base/Tools.h>
-
 #include "DlgStringListEditor.h"
 #include "ui_DlgStringListEditor.h"
 
@@ -70,13 +68,13 @@ void DlgStringListEditor::fillList(std::vector<std::string> texts)
     int textCount = texts.size();
     int i = 0;
     for (; i < textCount; i++) {
-        qText = Base::Tools::fromStdString(texts[i]);
+        qText = QString::fromStdString(texts[i]);
         QListWidgetItem* item = new QListWidgetItem(qText);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
         ui->lwTexts->addItem(item);
     }
     //add a blank line at the end to allow extending the list
-    QListWidgetItem* item = new QListWidgetItem(QString::fromUtf8(""));
+    QListWidgetItem* item = new QListWidgetItem(QStringLiteral(""));
     item->setFlags(item->flags() | Qt::ItemIsEditable);
     ui->lwTexts->addItem(item);
 }
@@ -125,7 +123,7 @@ std::vector<std::string> DlgStringListEditor::getTexts() const
 
     for (int iRow = 0; iRow < ui->lwTexts->count(); iRow++) {
         QString itemText = ui->lwTexts->item(iRow)->text();
-        outTexts.push_back(Base::Tools::toStdString(itemText));
+        outTexts.push_back(itemText.toStdString());
     }
     if (outTexts.back().empty()) {
         outTexts.pop_back();

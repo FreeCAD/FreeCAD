@@ -63,6 +63,9 @@ DrawViewSpreadsheet::DrawViewSpreadsheet()
     ADD_PROPERTY_TYPE(TextSize, (12.0), vgroup, App::Prop_None, "The size of the text");
     ADD_PROPERTY_TYPE(LineWidth, (0.35), vgroup, App::Prop_None, "The thickness of the cell lines");
 
+    ADD_PROPERTY_TYPE(Owner, (nullptr), vgroup, (App::PropertyType)(App::Prop_None),
+                      "Feature to which this sheet is attached");
+
     EditableTexts.setStatus(App::Property::Hidden, true);
 
 }
@@ -240,7 +243,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
     result << getSVGHead();
 
     std::string ViewName = Label.getValue();
-    App::Color c = TextColor.getValue();
+    Base::Color c = TextColor.getValue();
     result << "<g id=\"" << ViewName << "\">" << std::endl;
 
     // fill the cells
@@ -270,16 +273,15 @@ std::string DrawViewSpreadsheet::getSheetImage()
             App::Property* prop = sheet->getPropertyByName(address.toString().c_str());
             std::stringstream field;
             if (prop && cell) {
-                if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
+                if (prop->isDerivedFrom<App::PropertyQuantity>()) {
                     auto contentAsQuantity = static_cast<App::PropertyQuantity*>(prop)->getQuantityValue();
-                    auto ustring = contentAsQuantity.getUserString();
-                    field << Base::Tools::toStdString(ustring);
-                } else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()) ||
-                           prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+                    field << contentAsQuantity.getUserString();
+                } else if (prop->isDerivedFrom<App::PropertyFloat>() ||
+                           prop->isDerivedFrom<App::PropertyInteger>()) {
                     std::string temp = cell->getFormattedQuantity();
                     DrawUtil::encodeXmlSpecialChars(temp);
                     field << temp;
-                } else if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
+                } else if (prop->isDerivedFrom<App::PropertyString>()) {
                     std::string temp = static_cast<App::PropertyString*>(prop)->getValue();
                     DrawUtil::encodeXmlSpecialChars(temp);
                     field << temp;
@@ -294,7 +296,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
             std::string fcolor = c.asHexString();
             std::string textstyle;
             if (cell) {
-                App::Color f, b;
+                Base::Color f, b;
                 std::set<std::string> st;
                 int colspan, rowspan;
                 if (cell->getBackground(b)) {

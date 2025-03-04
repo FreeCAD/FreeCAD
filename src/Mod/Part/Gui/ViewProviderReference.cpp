@@ -122,13 +122,13 @@ void ViewProviderPartReference::onChanged(const App::Property* /*prop*/)
     //    pcPointStyle->pointSize = PointSize.getValue();
     //}
     //else if (prop == &LineColor) {
-    //    const App::Color& c = LineColor.getValue();
+    //    const Base::Color& c = LineColor.getValue();
     //    pcLineMaterial->diffuseColor.setValue(c.r,c.g,c.b);
     //    if (c != LineMaterial.getValue().diffuseColor)
     //    LineMaterial.setDiffuseColor(c);
     //}
     //else if (prop == &PointColor) {
-    //    const App::Color& c = PointColor.getValue();
+    //    const Base::Color& c = PointColor.getValue();
     //    pcPointMaterial->diffuseColor.setValue(c.r,c.g,c.b);
     //    if (c != PointMaterial.getValue().diffuseColor)
     //    PointMaterial.setDiffuseColor(c);

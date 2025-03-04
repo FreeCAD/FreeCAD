@@ -65,6 +65,8 @@ int16_t Thickness::mustExecute() const {
 }
 
 App::DocumentObjectExecReturn *Thickness::execute() {
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
+
     // Base shape
     Part::TopoShape TopShape;
     try {
@@ -164,6 +166,8 @@ App::DocumentObjectExecReturn *Thickness::execute() {
     } else {
         result = shapes.front();
     }
+    // store shape before refinement
+    this->rawShape = result;
     result = refineShapeIfActive(result);
     this->Shape.setValue(getSolid(result));
     return App::DocumentObject::StdReturn;

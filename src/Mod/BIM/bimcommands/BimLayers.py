@@ -124,7 +124,7 @@ class BIM_Layers:
         self.dialog.tree.setRootIsDecorated(False)  # removes spacing in first column
         self.dialog.tree.setSelectionMode(
             QtGui.QTreeView.ExtendedSelection
-        )  # allow to select many
+        )  # allow one to select many
 
         # fill the tree view
         self.update()
@@ -137,18 +137,19 @@ class BIM_Layers:
 
         import Draft
 
+        doc = FreeCAD.ActiveDocument
         changed = False
 
         # delete layers
         for name in self.deleteList:
             if not changed:
-                FreeCAD.ActiveDocument.openTransaction("Layers change")
+                doc.openTransaction("Layers change")
                 changed = True
-            FreeCAD.ActiveDocument.removeObject(name)
+            doc.removeObject(name)
 
         # assign
         for target, objs in self.assignList.items():
-            target_obj = FreeCAD.ActiveDocument.getObject(target)
+            target_obj = doc.getObject(target)
             if target_obj:
                 for obj in objs:
                     target_obj.Proxy.addObject(target_obj, obj)
@@ -159,10 +160,10 @@ class BIM_Layers:
             name = self.model.item(row, 1).toolTip()
             obj = None
             if name:
-                obj = FreeCAD.ActiveDocument.getObject(name)
+                obj = doc.getObject(name)
             if not obj:
                 if not changed:
-                    FreeCAD.ActiveDocument.openTransaction("Layers change")
+                    doc.openTransaction("Layers change")
                     changed = True
                 if self.model.item(row, 1).icon().isNull():
                     obj = Draft.make_layer(self.model.item(row, 1).text())
@@ -183,7 +184,7 @@ class BIM_Layers:
                     else:
                         projects = [
                             o
-                            for o in FreeCAD.ActiveDocument.Objects
+                            for o in doc.Objects
                             if hasattr(o, "Proxy") and hasattr(o.Proxy, "ifcfile")
                         ]
                         if projects:
@@ -209,90 +210,78 @@ class BIM_Layers:
                         obj = ifc_tools.create_layer(
                             self.model.item(row, 1).text(), project
                         )
+            vobj = obj.ViewObject
 
             # visibility
-            checked = (
-                True
-                if self.model.item(row, 0).checkState() == QtCore.Qt.Checked
-                else False
-            )
-            if checked != obj.ViewObject.Visibility:
+            checked = self.model.item(row, 0).checkState() == QtCore.Qt.Checked
+            if checked != vobj.Visibility:
                 if not changed:
-                    FreeCAD.ActiveDocument.openTransaction("Layers change")
+                    doc.openTransaction("Layers change")
                     changed = True
-                obj.ViewObject.Visibility = checked
+                vobj.Visibility = checked
 
             # label
             label = self.model.item(row, 1).text()
-            if label:
-                if obj.Label != label:
-                    if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
-                        changed = True
-                    obj.Label = label
+            # Setting Label="" is possible in the Property editor but we avoid it here:
+            if label and obj.Label != label:
+                if not changed:
+                    doc.openTransaction("Layers change")
+                    changed = True
+                obj.Label = label
 
             # line width
             width = self.model.item(row, 2).data(QtCore.Qt.DisplayRole)
-            if width:
-                if obj.ViewObject.LineWidth != width:
-                    if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
-                        changed = True
-                    obj.ViewObject.LineWidth = width
+            # Setting LineWidth=0 is possible in the Property editor but we avoid it here:
+            if width and vobj.LineWidth != width:
+                if not changed:
+                    doc.openTransaction("Layers change")
+                    changed = True
+                vobj.LineWidth = width
 
             # draw style
             style = self.model.item(row, 3).text()
-            if style:
-                if obj.ViewObject.DrawStyle != style:
-                    if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
-                        changed = True
-                    obj.ViewObject.DrawStyle = style
+            if style is not None and vobj.DrawStyle != style:
+                if not changed:
+                    doc.openTransaction("Layers change")
+                    changed = True
+                vobj.DrawStyle = style
 
             # line color
             color = self.model.item(row, 4).data(QtCore.Qt.UserRole)
-            if color:
-                if obj.ViewObject.LineColor[3:] != color:
-                    if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
-                        changed = True
-                    obj.ViewObject.LineColor = color
+            if color is not None and vobj.LineColor[3:] != color:
+                if not changed:
+                    doc.openTransaction("Layers change")
+                    changed = True
+                vobj.LineColor = color
 
             # shape color
             color = self.model.item(row, 5).data(QtCore.Qt.UserRole)
-            if color:
-                if obj.ViewObject.ShapeColor[3:] != color:
-                    if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
-                        changed = True
-                    obj.ViewObject.ShapeColor = color
+            if color is not None and vobj.ShapeColor[3:] != color:
+                if not changed:
+                    doc.openTransaction("Layers change")
+                    changed = True
+                vobj.ShapeColor = color
 
             # transparency
             transparency = self.model.item(row, 6).data(QtCore.Qt.DisplayRole)
-            if transparency:
-                if obj.ViewObject.Transparency != transparency:
-                    if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
-                        changed = True
-                    obj.ViewObject.Transparency = transparency
+            if transparency is not None and vobj.Transparency != transparency:
+                if not changed:
+                    doc.openTransaction("Layers change")
+                    changed = True
+                vobj.Transparency = transparency
 
             # line print color
             color = self.model.item(row, 7).data(QtCore.Qt.UserRole)
-            if color:
-                if not "LinePrintColor" in obj.ViewObject.PropertiesList:
-                    if hasattr(obj.ViewObject.Proxy, "set_properties"):
-                        obj.ViewObject.Proxy.set_properties(obj.ViewObject)
-                if "LinePrintColor" in obj.ViewObject.PropertiesList:
-                    if obj.ViewObject.LinePrintColor[3:] != color:
-                        if not changed:
-                            FreeCAD.ActiveDocument.openTransaction("Layers change")
-                            changed = True
-                        obj.ViewObject.LinePrintColor = color
+            if color is not None and vobj.LinePrintColor[3:] != color:
+                if not changed:
+                    doc.openTransaction("Layers change")
+                    changed = True
+                vobj.LinePrintColor = color
 
         # recompute
         if changed:
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+            doc.commitTransaction()
+            doc.recompute()
 
         # exit
         self.dialog.reject()

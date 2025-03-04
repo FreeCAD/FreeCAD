@@ -80,6 +80,9 @@ short Revolution::mustExecute() const
 
 App::DocumentObjectExecReturn* Revolution::execute()
 {
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
+
+
     // Validate parameters
     // All angles are in radians unless explicitly stated
     double angleDeg = Angle.getValue();
@@ -96,13 +99,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
 
     double angle2 = Base::toRadians(Angle2.getValue());
 
-    TopoShape sketchshape;
-    try {
-        sketchshape = getTopoShapeVerifiedFace();
-    }
-    catch (const Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
+    TopoShape sketchshape = getTopoShapeVerifiedFace();
 
     // if the Base property has a valid shape, fuse the AddShape into it
     TopoShape base;
@@ -160,7 +157,14 @@ App::DocumentObjectExecReturn* Revolution::execute()
 
         // Create a fresh support even when base exists so that it can be used for patterns
         TopoShape result(0);
-        TopoShape supportface = getSupportFace();
+        TopoShape supportface(0);
+        try {
+            supportface = getSupportFace();
+        }
+        catch(...) {
+            //do nothing, null shape is handle below
+        }
+
         supportface.move(invObjLoc);
 
         if (method == RevolMethod::ToFace || method == RevolMethod::ToFirst
@@ -212,12 +216,16 @@ App::DocumentObjectExecReturn* Revolution::execute()
         }
 
         if (!result.isNull()) {
+            // store shape before refinement
+            this->rawShape = result;
             result = refineShapeIfActive(result);
             // set the additive shape property for later usage in e.g. pattern
             this->AddSubShape.setValue(result);
 
             if (!base.isNull()) {
                 result = result.makeElementFuse(base);
+                // store shape before refinement
+                this->rawShape = result;
                 result = refineShapeIfActive(result);
             }
             this->Shape.setValue(getSolid(result));

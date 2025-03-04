@@ -61,7 +61,9 @@ void EditModeInformationOverlayCoinConverter::convert(const Part::Geometry* geom
 {
 
     if (geometry->is<Part::GeomBSplineCurve>()) {
-        // at this point all calculations relate to BSplineCurves
+        if (geoid < 0) {
+            return;
+        }
         calculate<CalculationType::BSplineDegree>(geometry, geoid);
         calculate<CalculationType::BSplineControlPolygon>(geometry, geoid);
         calculate<CalculationType::BSplineCurvatureComb>(geometry, geoid);
@@ -294,10 +296,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* ge
                 poleWeights.positions.emplace_back(poles[i]);
 
                 QString WeightString =
-                    QString::fromLatin1("[%1]").arg(weights[i],
-                                                    0,
-                                                    'f',
-                                                    Base::UnitsApi::getDecimals());
+                    QStringLiteral("[%1]").arg(weights[i], 0, 'f', Base::UnitsApi::getDecimals());
 
                 poleWeights.strings.emplace_back(WeightString.toStdString());
             }

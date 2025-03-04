@@ -29,6 +29,7 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "DimensionFormatter.h"
 #include "DimensionGeometry.h"
 #include "DimensionReferences.h"
 #include "DrawUtil.h"
@@ -44,9 +45,11 @@ class Measurement;
 namespace TechDraw
 {
 class DrawViewPart;
-class DimensionFormatter;
 class GeometryMatcher;
 class DimensionAutoCorrect;
+using DF = DimensionFormatter;
+
+//TODO: Cyclic dependency issue with DimensionFormatter
 
 class TechDrawExport DrawViewDimension: public TechDraw::DrawView
 {
@@ -92,8 +95,11 @@ public:
 
     Part::PropertyTopoShapeList SavedGeometry;
     App::PropertyVectorList BoxCorners;
+    App::PropertyBool UseActualArea;
 
-    enum RefType
+    App::PropertyBool ShowUnits;
+
+    enum class RefType
     {
         invalidRef,
         oneEdge,
@@ -120,11 +126,11 @@ public:
     // return PyObject as DrawViewDimensionPy
     PyObject* getPyObject() override;
 
-    virtual std::string getFormattedToleranceValue(int partial);
-    virtual std::pair<std::string, std::string> getFormattedToleranceValues(int partial = 0);
-    virtual std::string getFormattedDimensionValue(int partial = 0);
+    virtual std::string getFormattedToleranceValue(DF::Format partial);
+    virtual std::pair<std::string, std::string> getFormattedToleranceValues(DF::Format partial = DF::Format::UNALTERED);
+    virtual std::string getFormattedDimensionValue(DF::Format partial = DF::Format::UNALTERED);
     virtual std::string
-    formatValue(qreal value, QString qFormatSpec, int partial = 0, bool isDim = true);
+    formatValue(qreal value, QString qFormatSpec, DF::Format partial = DF::Format::UNALTERED, bool isDim = true);
 
     virtual bool haveTolerance();
 
@@ -139,8 +145,8 @@ public:
     {
         return {0, 0, 1, 1};
     }                                // pretend dimensions always fit!
-    virtual int getRefType() const;  // Vertex-Vertex, Edge, Edge-Edge
-    static int
+    virtual RefType getRefType() const;  // Vertex-Vertex, Edge, Edge-Edge
+    static RefType
     getRefTypeSubElements(const std::vector<std::string>&);  // Vertex-Vertex, Edge, Edge-Edge
 
     void setReferences2d(const ReferenceVector& refs);
@@ -203,14 +209,18 @@ public:
         return m_corrector;
     }
 
-    // these should probably be static as they don't use the dimension at all
-    std::vector<Part::TopoShape> getEdges(const Part::TopoShape& inShape);
-    std::vector<Part::TopoShape> getVertexes(const Part::TopoShape& inShape);
+    static std::vector<Part::TopoShape> getEdges(const Part::TopoShape& inShape);
+    static std::vector<Part::TopoShape> getVertexes(const Part::TopoShape& inShape);
+    static double getArcAngle(Base::Vector3d center, Base::Vector3d startPoint, Base::Vector3d endPoint);
 
     // autocorrect support methods
     void saveFeatureBox();
     Base::BoundBox3d getSavedBox();
     Base::BoundBox3d getFeatureBox();
+
+    static double getActualArea(const TopoDS_Face& face);
+    static double getFilledArea(const TopoDS_Face& face);
+    static Base::Vector3d getFaceCenter(const TopoDS_Face& face);
 
 protected:
     void handleChangedPropertyType(Base::XMLReader&, const char*, App::Property*) override;

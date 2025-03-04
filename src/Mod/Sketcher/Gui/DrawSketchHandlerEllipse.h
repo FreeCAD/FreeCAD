@@ -249,10 +249,10 @@ private:
     QString getCrosshairCursorSVGName() const override
     {
         if (constructionMethod() == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
-            return QString::fromLatin1("Sketcher_Pointer_Create_EllipseByCenter");
+            return QStringLiteral("Sketcher_Pointer_Create_EllipseByCenter");
         }
         else {
-            return QString::fromLatin1("Sketcher_Pointer_Create_Ellipse_3points");
+            return QStringLiteral("Sketcher_Pointer_Create_Ellipse_3points");
         }
     }
 
@@ -325,9 +325,18 @@ private:
         auto lprojx = projx.Length();  // Px = a cos t
         auto lprojy = projy.Length();  // Py = b sin t
 
-        double t = std::acos(lprojx / firstRadius);
-
-        secondRadius = lprojy / std::sin(t);  // b = Py / sin t
+        if (lprojx > firstRadius) {
+            secondRadius = 0.0;
+        }
+        else {
+            double t = std::acos(lprojx / firstRadius);
+            if (t == 0.0) {
+                secondRadius = 0.0;
+            }
+            else {
+                secondRadius = lprojy / std::sin(t);  // b = Py / sin t
+            }
+        }
 
         secondAxis = projy.Normalize() * secondRadius;
     }

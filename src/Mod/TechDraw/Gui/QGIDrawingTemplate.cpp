@@ -59,7 +59,7 @@ void QGIDrawingTemplate::clearContents()
 
 TechDraw::DrawParametricTemplate * QGIDrawingTemplate::getParametricTemplate()
 {
-    if(pageTemplate && pageTemplate->isDerivedFrom(TechDraw::DrawParametricTemplate::getClassTypeId()))
+    if(pageTemplate && pageTemplate->isDerivedFrom<TechDraw::DrawParametricTemplate>())
         return static_cast<TechDraw::DrawParametricTemplate *>(pageTemplate);
     else
         return nullptr;
@@ -86,9 +86,7 @@ void QGIDrawingTemplate::draw()
     // Draw Edges
     // iterate through all the geometries
     for(; it != geoms.end(); ++it) {
-        switch((*it)->getGeomType()) {
-          case TechDraw::GENERIC: {
-
+        if((*it)->getGeomType() == TechDraw::GeomType::GENERIC) {
             TechDraw::GenericPtr geom = std::static_pointer_cast<TechDraw::Generic>(*it);
 
             path.moveTo(geom->points[0].x, geom->points[0].y);
@@ -97,10 +95,6 @@ void QGIDrawingTemplate::draw()
             for(++it; it != geom->points.end(); ++it) {
                 path.lineTo((*it).x, (*it).y);
             }
-            break;
-          }
-          default:
-            break;
         }
     }
 

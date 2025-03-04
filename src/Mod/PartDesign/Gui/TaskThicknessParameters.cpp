@@ -32,7 +32,7 @@
 #include <Base/Interpreter.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureThickness.h>
@@ -243,11 +243,6 @@ TaskThicknessParameters::~TaskThicknessParameters()
         Base::PyException e;  // extract the Python error text
         e.ReportException();
     }
-}
-
-bool TaskThicknessParameters::event(QEvent* e)
-{
-    return TaskDressUpParameters::KeyEvent(e);
 }
 
 void TaskThicknessParameters::changeEvent(QEvent* e)

@@ -35,7 +35,7 @@
 #endif
 
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintTransform.h>
 #include <Mod/Part/App/PartFeature.h>
 
@@ -106,8 +106,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
             &TaskFemConstraintTransform::angleChanged);
 
     // Get the feature data
-    Fem::ConstraintTransform* pcConstraint =
-        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    Fem::ConstraintTransform* pcConstraint = ConstraintView->getObject<Fem::ConstraintTransform>();
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
@@ -119,7 +118,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     ui->spb_rot_axis_x->setValue(axis.x);
     ui->spb_rot_axis_y->setValue(axis.y);
     ui->spb_rot_axis_z->setValue(axis.z);
-    Base::Quantity rotAngle(angle, QString::fromUtf8("rad"));
+    Base::Quantity rotAngle(angle, "rad");
     ui->qsb_rot_angle->setValue(rotAngle.getValueAs(Base::Quantity::Degree));
 
     ui->spb_rot_axis_x->bind(
@@ -155,11 +154,10 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     ui->lw_Rect->clear();
 
     // Transformable surfaces
-    Gui::Command::doCommand(
-        Gui::Command::Doc,
-        TaskFemConstraintTransform::getSurfaceReferences(
-            (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-            .c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,
+                            TaskFemConstraintTransform::getSurfaceReferences(
+                                (ConstraintView->getObject<Fem::Constraint>())->getNameInDocument())
+                                .c_str());
     std::vector<App::DocumentObject*> ObjDispl = pcConstraint->RefDispl.getValues();
     std::vector<std::string> SubElemDispl = pcConstraint->RefDispl.getSubValues();
 
@@ -226,8 +224,7 @@ void TaskFemConstraintTransform::xAxisChanged(double x)
 {
     (void)x;
     Base::Rotation rot = getRotation();
-    Fem::ConstraintTransform* pcConstraint =
-        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    Fem::ConstraintTransform* pcConstraint = ConstraintView->getObject<Fem::ConstraintTransform>();
     pcConstraint->Rotation.setValue(rot);
 }
 
@@ -235,8 +232,7 @@ void TaskFemConstraintTransform::yAxisChanged(double y)
 {
     (void)y;
     Base::Rotation rot = getRotation();
-    Fem::ConstraintTransform* pcConstraint =
-        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    Fem::ConstraintTransform* pcConstraint = ConstraintView->getObject<Fem::ConstraintTransform>();
     pcConstraint->Rotation.setValue(rot);
 }
 
@@ -244,8 +240,7 @@ void TaskFemConstraintTransform::zAxisChanged(double z)
 {
     (void)z;
     Base::Rotation rot = getRotation();
-    Fem::ConstraintTransform* pcConstraint =
-        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    Fem::ConstraintTransform* pcConstraint = ConstraintView->getObject<Fem::ConstraintTransform>();
     pcConstraint->Rotation.setValue(rot);
 }
 
@@ -253,8 +248,7 @@ void TaskFemConstraintTransform::angleChanged(double a)
 {
     (void)a;
     Base::Rotation rot = getRotation();
-    Fem::ConstraintTransform* pcConstraint =
-        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    Fem::ConstraintTransform* pcConstraint = ConstraintView->getObject<Fem::ConstraintTransform>();
     pcConstraint->Rotation.setValue(rot);
 }
 
@@ -266,8 +260,7 @@ void TaskFemConstraintTransform::Rect()
                             "App.ActiveDocument.%s.TransformType = %s",
                             name.c_str(),
                             get_transform_type().c_str());
-    Fem::ConstraintTransform* pcConstraint =
-        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    Fem::ConstraintTransform* pcConstraint = ConstraintView->getObject<Fem::ConstraintTransform>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     if (!Objects.empty()) {
         setSelection(ui->lw_Rect->item(0));
@@ -283,8 +276,7 @@ void TaskFemConstraintTransform::Cyl()
                             "App.ActiveDocument.%s.TransformType = %s",
                             name.c_str(),
                             get_transform_type().c_str());
-    Fem::ConstraintTransform* pcConstraint =
-        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    Fem::ConstraintTransform* pcConstraint = ConstraintView->getObject<Fem::ConstraintTransform>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     if (!Objects.empty()) {
         setSelection(ui->lw_Rect->item(0));
@@ -318,8 +310,7 @@ void TaskFemConstraintTransform::addToSelection()
         return;
     }
 
-    Fem::ConstraintTransform* pcConstraint =
-        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    Fem::ConstraintTransform* pcConstraint = ConstraintView->getObject<Fem::ConstraintTransform>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -391,12 +382,13 @@ void TaskFemConstraintTransform::addToSelection()
                     }
                 }
                 if (Objects.empty()) {
-                    QMessageBox::warning(
-                        this,
-                        tr("Selection error"),
-                        tr("Only transformable faces can be selected! Apply displacement boundary "
-                           "condition to surface first then apply local coordinate system to "
-                           "surface"));
+                    QMessageBox::warning(this,
+                                         tr("Selection error"),
+                                         tr("Only transformable faces can be selected! Apply a "
+                                            "displacement boundary "
+                                            "condition or a force load to a face first then apply "
+                                            "local coordinate system to "
+                                            "the face."));
                     Gui::Selection().clearSelection();
                     return;
                 }
@@ -415,7 +407,7 @@ void TaskFemConstraintTransform::addToSelection()
         ui->spb_rot_axis_x->setValue(axis.x);
         ui->spb_rot_axis_y->setValue(axis.y);
         ui->spb_rot_axis_z->setValue(axis.z);
-        Base::Quantity rotAngle(angle, QString::fromUtf8("rad"));
+        Base::Quantity rotAngle(angle, "rad");
         ui->qsb_rot_angle->setValue(rotAngle.getValueAs(Base::Quantity::Degree));
     }
 }
@@ -428,8 +420,7 @@ void TaskFemConstraintTransform::removeFromSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintTransform* pcConstraint =
-        static_cast<Fem::ConstraintTransform*>(ConstraintView->getObject());
+    Fem::ConstraintTransform* pcConstraint = ConstraintView->getObject<Fem::ConstraintTransform>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;

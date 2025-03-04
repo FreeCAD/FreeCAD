@@ -9,24 +9,41 @@
 #include "Base/Exception.h"
 #include "Base/Reader.h"
 #include <array>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <fstream>
+#include <random>
+#include <string>
 #include <xercesc/util/PlatformUtils.hpp>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
-class ReaderTest: public ::testing::Test
+static std::string random_string(size_t length)
 {
-protected:
-    void SetUp() override
-    {
-        XERCES_CPP_NAMESPACE::XMLPlatformUtils::Initialize();
-        _tempDir = fs::temp_directory_path();
-        std::string filename = "unit_test_Reader.xml";
-        _tempFile = _tempDir / filename;
+    const std::string digits = "0123456789";
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, digits.size() - 1);
+
+    std::string result;
+    for (size_t i = 0; i < length; ++i) {
+        result += digits[dis(gen)];
     }
 
-    void TearDown() override
+    return result;
+}
+
+class ReaderXML
+{
+public:
+    ReaderXML()
+    {
+        _tempDir = fs::temp_directory_path();
+        fs::path filename =
+            std::string("unit_test_Reader-") + random_string(4) + std::string(".xml");
+        _tempFile = _tempDir / filename;
+    }
+    ~ReaderXML()
     {
         if (inputStream.is_open()) {
             inputStream.close();
@@ -34,6 +51,11 @@ protected:
         if (fs::exists(_tempFile)) {
             fs::remove(_tempFile);
         }
+    }
+
+    Base::XMLReader* Reader()
+    {
+        return _reader.get();
     }
 
     void givenDataAsXMLStream(const std::string& data)
@@ -48,11 +70,6 @@ protected:
         _reader = std::make_unique<Base::XMLReader>(_tempFile.string().c_str(), inputStream);
     }
 
-    Base::XMLReader* Reader()
-    {
-        return _reader.get();
-    }
-
 private:
     std::unique_ptr<Base::XMLReader> _reader;
     fs::path _tempDir;
@@ -60,14 +77,27 @@ private:
     std::ifstream inputStream;
 };
 
+class ReaderTest: public ::testing::Test
+{
+protected:
+    void SetUp() override
+    {
+        XERCES_CPP_NAMESPACE::XMLPlatformUtils::Initialize();
+    }
+
+    void TearDown() override
+    {}
+};
+
 TEST_F(ReaderTest, beginCharStreamNormal)
 {
     // Arrange
-    givenDataAsXMLStream("<data>Test ASCII data</data>");
-    Reader()->readElement("data");
+    ReaderXML xml;
+    xml.givenDataAsXMLStream("<data>Test ASCII data</data>");
+    xml.Reader()->readElement("data");
 
     // Act
-    auto& result = Reader()->beginCharStream();
+    auto& result = xml.Reader()->beginCharStream();
 
     // Assert
     EXPECT_TRUE(result.good());
@@ -76,11 +106,12 @@ TEST_F(ReaderTest, beginCharStreamNormal)
 TEST_F(ReaderTest, beginCharStreamOpenClose)
 {
     // Arrange
-    givenDataAsXMLStream("<data id='12345' />");
-    Reader()->readElement("data");
+    ReaderXML xml;
+    xml.givenDataAsXMLStream("<data id='12345' />");
+    xml.Reader()->readElement("data");
 
     // Act
-    auto& result = Reader()->beginCharStream();  // Not an error, even though there is no data
+    auto& result = xml.Reader()->beginCharStream();  // Not an error, even though there is no data
 
     // Assert
     EXPECT_TRUE(result.good());
@@ -89,23 +120,25 @@ TEST_F(ReaderTest, beginCharStreamOpenClose)
 TEST_F(ReaderTest, beginCharStreamAlreadyBegun)
 {
     // Arrange
-    givenDataAsXMLStream("<data>Test ASCII data</data>");
-    Reader()->readElement("data");
-    Reader()->beginCharStream();
+    ReaderXML xml;
+    xml.givenDataAsXMLStream("<data>Test ASCII data</data>");
+    xml.Reader()->readElement("data");
+    xml.Reader()->beginCharStream();
 
     // Act & Assert
-    EXPECT_THROW(Reader()->beginCharStream(), Base::XMLParseException);  // NOLINT
+    EXPECT_THROW(xml.Reader()->beginCharStream(), Base::XMLParseException);  // NOLINT
 }
 
 TEST_F(ReaderTest, charStreamGood)
 {
     // Arrange
-    givenDataAsXMLStream("<data>Test ASCII data</data>");
-    Reader()->readElement("data");
-    Reader()->beginCharStream();
+    ReaderXML xml;
+    xml.givenDataAsXMLStream("<data>Test ASCII data</data>");
+    xml.Reader()->readElement("data");
+    xml.Reader()->beginCharStream();
 
     // Act
-    auto& result = Reader()->charStream();
+    auto& result = xml.Reader()->charStream();
 
     // Assert
     EXPECT_TRUE(result.good());
@@ -114,33 +147,36 @@ TEST_F(ReaderTest, charStreamGood)
 TEST_F(ReaderTest, charStreamBad)
 {
     // Arrange
-    givenDataAsXMLStream("<data>Test ASCII data</data>");
-    Reader()->readElement("data");
+    ReaderXML xml;
+    xml.givenDataAsXMLStream("<data>Test ASCII data</data>");
+    xml.Reader()->readElement("data");
 
     // Act & Assert
-    EXPECT_THROW(Reader()->charStream(), Base::XMLParseException);  // NOLINT
+    EXPECT_THROW(xml.Reader()->charStream(), Base::XMLParseException);  // NOLINT
 }
 
 TEST_F(ReaderTest, endCharStreamGood)
 {
     // Arrange
-    givenDataAsXMLStream("<data>Test ASCII data</data>");
-    Reader()->readElement("data");
-    Reader()->beginCharStream();
+    ReaderXML xml;
+    xml.givenDataAsXMLStream("<data>Test ASCII data</data>");
+    xml.Reader()->readElement("data");
+    xml.Reader()->beginCharStream();
 
     // Act & Assert
-    Reader()->endCharStream();  // Does not throw
+    xml.Reader()->endCharStream();  // Does not throw
 }
 
 TEST_F(ReaderTest, endCharStreamBad)
 {
     // Arrange
-    givenDataAsXMLStream("<data>Test ASCII data</data>");
-    Reader()->readElement("data");
+    ReaderXML xml;
+    xml.givenDataAsXMLStream("<data>Test ASCII data</data>");
+    xml.Reader()->readElement("data");
     // Do not open the stream...
 
     // Act & Assert
-    Reader()->endCharStream();  // Does not throw, even with no open stream
+    xml.Reader()->endCharStream();  // Does not throw, even with no open stream
 }
 
 TEST_F(ReaderTest, readDataSmallerThanBuffer)
@@ -148,13 +184,14 @@ TEST_F(ReaderTest, readDataSmallerThanBuffer)
     // Arrange
     constexpr size_t bufferSize {20};
     std::string expectedData {"Test ASCII data"};
-    givenDataAsXMLStream("<data>" + expectedData + "</data>");
-    Reader()->readElement("data");
-    Reader()->beginCharStream();
+    ReaderXML xml;
+    xml.givenDataAsXMLStream("<data>" + expectedData + "</data>");
+    xml.Reader()->readElement("data");
+    xml.Reader()->beginCharStream();
     std::array<char, bufferSize> buffer {};
 
     // Act
-    auto bytesRead = Reader()->read(buffer.data(), bufferSize);
+    auto bytesRead = xml.Reader()->read(buffer.data(), bufferSize);
 
     // Assert
     EXPECT_STREQ(expectedData.c_str(), buffer.data());
@@ -166,13 +203,14 @@ TEST_F(ReaderTest, readDataLargerThanBuffer)
     // Arrange
     constexpr size_t bufferSize {5};
     std::string expectedData {"Test ASCII data"};
-    givenDataAsXMLStream("<data>" + expectedData + "</data>");
-    Reader()->readElement("data");
-    Reader()->beginCharStream();
+    ReaderXML xml;
+    xml.givenDataAsXMLStream("<data>" + expectedData + "</data>");
+    xml.Reader()->readElement("data");
+    xml.Reader()->beginCharStream();
     std::array<char, bufferSize> buffer {};
 
     // Act
-    auto bytesRead = Reader()->read(buffer.data(), bufferSize);
+    auto bytesRead = xml.Reader()->read(buffer.data(), bufferSize);
 
     // Assert
     for (size_t i = 0; i < bufferSize; ++i) {
@@ -186,14 +224,15 @@ TEST_F(ReaderTest, readDataLargerThanBufferSecondRead)
     // Arrange
     constexpr size_t bufferSize {5};
     std::string expectedData {"Test ASCII data"};
-    givenDataAsXMLStream("<data>" + expectedData + "</data>");
-    Reader()->readElement("data");
-    Reader()->beginCharStream();
+    ReaderXML xml;
+    xml.givenDataAsXMLStream("<data>" + expectedData + "</data>");
+    xml.Reader()->readElement("data");
+    xml.Reader()->beginCharStream();
     std::array<char, bufferSize> buffer {};
-    Reader()->read(buffer.data(), bufferSize);  // Read the first five bytes
+    xml.Reader()->read(buffer.data(), bufferSize);  // Read the first five bytes
 
     // Act
-    auto bytesRead = Reader()->read(buffer.data(), bufferSize);  // Second five bytes
+    auto bytesRead = xml.Reader()->read(buffer.data(), bufferSize);  // Second five bytes
 
     // Assert
     for (size_t i = 0; i < bufferSize; ++i) {
@@ -207,12 +246,13 @@ TEST_F(ReaderTest, readDataNotStarted)
     // Arrange
     constexpr size_t bufferSize {20};
     std::string expectedData {"Test ASCII data"};
-    givenDataAsXMLStream("<data>" + expectedData + "</data>");
-    Reader()->readElement("data");
+    ReaderXML xml;
+    xml.givenDataAsXMLStream("<data>" + expectedData + "</data>");
+    xml.Reader()->readElement("data");
     std::array<char, bufferSize> buffer {};
 
     // Act
-    auto bytesRead = Reader()->read(buffer.data(), bufferSize);
+    auto bytesRead = xml.Reader()->read(buffer.data(), bufferSize);
 
     // Assert
     EXPECT_EQ(-1, bytesRead);  // Because we didn't call beginCharStream
@@ -225,28 +265,29 @@ TEST_F(ReaderTest, readNextStartElement)
 <node2 attr='2'>Node2</node2>
 )";
 
-    givenDataAsXMLStream(xmlBody);
+    ReaderXML xml;
+    xml.givenDataAsXMLStream(xmlBody);
 
     // start of document
-    EXPECT_TRUE(Reader()->isStartOfDocument());
-    Reader()->readElement("document");
-    EXPECT_STREQ(Reader()->localName(), "document");
+    EXPECT_TRUE(xml.Reader()->isStartOfDocument());
+    xml.Reader()->readElement("document");
+    EXPECT_STREQ(xml.Reader()->localName(), "document");
 
     // next element
-    EXPECT_TRUE(Reader()->readNextElement());
-    EXPECT_STREQ(Reader()->localName(), "node1");
-    EXPECT_STREQ(Reader()->getAttribute("attr"), "1");
-    Reader()->readEndElement("node1");
-    EXPECT_TRUE(Reader()->isEndOfElement());
+    EXPECT_TRUE(xml.Reader()->readNextElement());
+    EXPECT_STREQ(xml.Reader()->localName(), "node1");
+    EXPECT_STREQ(xml.Reader()->getAttribute("attr"), "1");
+    xml.Reader()->readEndElement("node1");
+    EXPECT_TRUE(xml.Reader()->isEndOfElement());
 
     // next element
-    EXPECT_TRUE(Reader()->readNextElement());
-    EXPECT_STREQ(Reader()->localName(), "node2");
-    EXPECT_STREQ(Reader()->getAttribute("attr"), "2");
-    Reader()->readEndElement("node2");
-    EXPECT_TRUE(Reader()->isEndOfElement());
-    Reader()->readEndElement("document");
-    EXPECT_TRUE(Reader()->isEndOfDocument());
+    EXPECT_TRUE(xml.Reader()->readNextElement());
+    EXPECT_STREQ(xml.Reader()->localName(), "node2");
+    EXPECT_STREQ(xml.Reader()->getAttribute("attr"), "2");
+    xml.Reader()->readEndElement("node2");
+    EXPECT_TRUE(xml.Reader()->isEndOfElement());
+    xml.Reader()->readEndElement("document");
+    EXPECT_TRUE(xml.Reader()->isEndOfDocument());
 }
 
 TEST_F(ReaderTest, readNextStartEndElement)
@@ -256,24 +297,25 @@ TEST_F(ReaderTest, readNextStartEndElement)
 <node2 attr='2'/>
 )";
 
-    givenDataAsXMLStream(xmlBody);
+    ReaderXML xml;
+    xml.givenDataAsXMLStream(xmlBody);
 
     // start of document
-    EXPECT_TRUE(Reader()->isStartOfDocument());
-    Reader()->readElement("document");
-    EXPECT_STREQ(Reader()->localName(), "document");
+    EXPECT_TRUE(xml.Reader()->isStartOfDocument());
+    xml.Reader()->readElement("document");
+    EXPECT_STREQ(xml.Reader()->localName(), "document");
 
     // next element
-    EXPECT_TRUE(Reader()->readNextElement());
-    EXPECT_STREQ(Reader()->localName(), "node1");
-    EXPECT_STREQ(Reader()->getAttribute("attr"), "1");
+    EXPECT_TRUE(xml.Reader()->readNextElement());
+    EXPECT_STREQ(xml.Reader()->localName(), "node1");
+    EXPECT_STREQ(xml.Reader()->getAttribute("attr"), "1");
 
     // next element
-    EXPECT_TRUE(Reader()->readNextElement());
-    EXPECT_STREQ(Reader()->localName(), "node2");
-    EXPECT_STREQ(Reader()->getAttribute("attr"), "2");
-    EXPECT_FALSE(Reader()->readNextElement());
-    EXPECT_TRUE(Reader()->isEndOfDocument());
+    EXPECT_TRUE(xml.Reader()->readNextElement());
+    EXPECT_STREQ(xml.Reader()->localName(), "node2");
+    EXPECT_STREQ(xml.Reader()->getAttribute("attr"), "2");
+    EXPECT_FALSE(xml.Reader()->readNextElement());
+    EXPECT_TRUE(xml.Reader()->isEndOfDocument());
 }
 
 TEST_F(ReaderTest, charStreamBase64Encoded)
@@ -281,13 +323,14 @@ TEST_F(ReaderTest, charStreamBase64Encoded)
     // Arrange
     static constexpr size_t bufferSize {100};
     std::array<char, bufferSize> buffer {};
-    givenDataAsXMLStream("<data>RnJlZUNBRCByb2NrcyEg8J+qqPCfqqjwn6qo\n</data>");
-    Reader()->readElement("data");
-    Reader()->beginCharStream(Base::CharStreamFormat::Base64Encoded);
+    ReaderXML xml;
+    xml.givenDataAsXMLStream("<data>RnJlZUNBRCByb2NrcyEg8J+qqPCfqqjwn6qo\n</data>");
+    xml.Reader()->readElement("data");
+    xml.Reader()->beginCharStream(Base::CharStreamFormat::Base64Encoded);
 
     // Act
-    Reader()->charStream().getline(buffer.data(), bufferSize);
-    Reader()->endCharStream();
+    xml.Reader()->charStream().getline(buffer.data(), bufferSize);
+    xml.Reader()->endCharStream();
 
     // Assert
     // Conversion done using https://www.base64encode.org for testing purposes
@@ -302,22 +345,23 @@ TEST_F(ReaderTest, validDefaults)
 <node2 attr='2'/>
 )";
 
-    givenDataAsXMLStream(xmlBody);
+    ReaderXML xml;
+    xml.givenDataAsXMLStream(xmlBody);
 
     // Act
-    const char* value2 = Reader()->getAttribute("missing", "expected value");
-    int value4 = Reader()->getAttributeAsInteger("missing", "-123");
-    unsigned value6 = Reader()->getAttributeAsUnsigned("missing", "123");
-    double value8 = Reader()->getAttributeAsFloat("missing", "1.234");
+    const char* value2 = xml.Reader()->getAttribute("missing", "expected value");
+    int value4 = xml.Reader()->getAttributeAsInteger("missing", "-123");
+    unsigned value6 = xml.Reader()->getAttributeAsUnsigned("missing", "123");
+    double value8 = xml.Reader()->getAttributeAsFloat("missing", "1.234");
 
     // Assert
-    EXPECT_THROW({ Reader()->getAttributeAsInteger("missing"); }, Base::XMLBaseException);
+    EXPECT_THROW({ xml.Reader()->getAttributeAsInteger("missing"); }, Base::XMLBaseException);
     EXPECT_EQ(value2, "expected value");
-    EXPECT_THROW({ Reader()->getAttributeAsInteger("missing"); }, Base::XMLBaseException);
+    EXPECT_THROW({ xml.Reader()->getAttributeAsInteger("missing"); }, Base::XMLBaseException);
     EXPECT_EQ(value4, -123);
-    EXPECT_THROW({ Reader()->getAttributeAsUnsigned("missing"); }, Base::XMLBaseException);
+    EXPECT_THROW({ xml.Reader()->getAttributeAsUnsigned("missing"); }, Base::XMLBaseException);
     EXPECT_EQ(value6, 123);
-    EXPECT_THROW({ Reader()->getAttributeAsFloat("missing"); }, Base::XMLBaseException);
+    EXPECT_THROW({ xml.Reader()->getAttributeAsFloat("missing"); }, Base::XMLBaseException);
     EXPECT_NEAR(value8, 1.234, 0.001);
 }
 
@@ -329,16 +373,17 @@ TEST_F(ReaderTest, invalidDefaults)
 <node2 attr='2'/>
 )";
 
-    givenDataAsXMLStream(xmlBody);
+    ReaderXML xml;
+    xml.givenDataAsXMLStream(xmlBody);
 
     // Act / Assert
     EXPECT_THROW(
-        { Reader()->getAttributeAsInteger("missing", "Not an Integer"); },
+        { xml.Reader()->getAttributeAsInteger("missing", "Not an Integer"); },
         std::invalid_argument);
     EXPECT_THROW(
-        { Reader()->getAttributeAsInteger("missing", "Not an Unsigned"); },
+        { xml.Reader()->getAttributeAsInteger("missing", "Not an Unsigned"); },
         std::invalid_argument);
     EXPECT_THROW(
-        { Reader()->getAttributeAsInteger("missing", "Not a Float"); },
+        { xml.Reader()->getAttributeAsInteger("missing", "Not a Float"); },
         std::invalid_argument);
 }

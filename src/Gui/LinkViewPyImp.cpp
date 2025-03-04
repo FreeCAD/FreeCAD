@@ -83,7 +83,7 @@ PyObject* LinkViewPy::setMaterial(PyObject *args) {
             Py_ssize_t pos = 0;
             std::map<int,App::Material*> materials;
             while(PyDict_Next(pyObj, &pos, &key, &value)) {
-                Py::Int idx(key);
+                Py::Long idx(key);
                 if(value == Py_None)
                     materials[(int)idx] = nullptr;
                 else if(!PyObject_TypeCheck(value,&App::MaterialPy::Type)) {
@@ -135,7 +135,7 @@ PyObject* LinkViewPy::setTransform(PyObject *args) {
             Py_ssize_t pos = 0;
             std::map<int,Base::Matrix4D*> mat;
             while(PyDict_Next(pyObj, &pos, &key, &value)) {
-                Py::Int idx(key);
+                Py::Long idx(key);
                 if(!PyObject_TypeCheck(value,&Base::MatrixPy::Type)) {
                     PyErr_SetString(PyExc_TypeError, "exepcting a type of Matrix");
                     return nullptr;
@@ -384,11 +384,11 @@ PyObject* LinkViewPy::getChildren(PyObject *args) {
     return Py::new_reference_to(ret);
 }
 
-Py::Int LinkViewPy::getCount() const {
-    return Py::Int(getLinkViewPtr()->getSize());
+Py::Long LinkViewPy::getCount() const {
+    return Py::Long(getLinkViewPtr()->getSize());
 }
 
-void LinkViewPy::setCount(Py::Int count) {
+void LinkViewPy::setCount(Py::Long count) {
     try {
         getLinkViewPtr()->setSize((int)count);
     } catch (const Base::Exception& e) {

@@ -36,13 +36,13 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
-#include <Gui/DlgCheckableMessageBox.h>
+#include <Gui/Dialogs/DlgCheckableMessageBox.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Notifications.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionFilter.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
@@ -78,10 +78,10 @@ bool isCreateConstraintActive(Gui::Document* doc)
     if (doc) {
         // checks if a Sketch View provider is in Edit and is in no special mode
         if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
                 == ViewProviderSketch::STATUS_NONE) {
-                if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId())
+                if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>()
                     > 0) {
                     return true;
                 }
@@ -129,7 +129,7 @@ void finishDatumConstraint(Gui::Command* cmd,
     }
 
     if (doc && doc->getInEdit()
-        && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+        && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
         SketcherGui::ViewProviderSketch* vp =
             static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
         scaleFactor = vp->getScaleFactor();
@@ -924,7 +924,7 @@ public:
         if (pObj != this->object) {
             return false;
         }
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
         std::string element(sSubName);
@@ -2502,7 +2502,7 @@ protected:
             Base::Vector3d p2 = line->getEndPoint();
             if (fabs(p1.y - p2.y) < Precision::Confusion()) { // effectively vertical
                 p2 = p1 + (p2 - p1).Length() * Base::Vector3d(0.0, 1.0, 0.0);
-                Gui::cmdAppObjectArgs(Obj, "movePoint(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
+                Gui::cmdAppObjectArgs(Obj, "moveGeometry(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
             }
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%d)) ", GeoId1);
         }
@@ -2530,7 +2530,7 @@ protected:
             Base::Vector3d p2 = line->getEndPoint();
             if (fabs(p1.x - p2.x) < Precision::Confusion()) { // effectively vertical
                 p2 = p1 + (p2 - p1).Length() * Base::Vector3d(1.0, 0.0, 0.0);
-                Gui::cmdAppObjectArgs(Obj, "movePoint(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
+                Gui::cmdAppObjectArgs(Obj, "moveGeometry(%d,2,App.Vector(%f, %f, 0),0) ", GeoId1, p2.x, p2.y);
             }
             Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", GeoId1);
         }
@@ -3691,7 +3691,7 @@ void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair>& selSeq, 
             SketcherGui::ViewProviderSketch* sketchgui =
                 static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
 
-            auto Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+            auto Obj = sketchgui->getObject<Sketcher::SketchObject>();
 
             // check if the edge already has a Block constraint
             const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
@@ -5860,7 +5860,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                             /*disambig.:*/ "perpendicular constraint");
             QString strError =
                 QObject::tr("Select some geometry from the sketch.", "perpendicular constraint");
-            strError.append(QString::fromLatin1("\n\n"));
+            strError.append(QStringLiteral("\n\n"));
             strError.append(strBasicHelp);
             Gui::TranslatedUserWarning(getActiveGuiDocument(),
                                        QObject::tr("Wrong selection"),
@@ -6696,7 +6696,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                             /*disambig.:*/ "tangent constraint");
             QString strError =
                 QObject::tr("Select some geometry from the sketch.", "tangent constraint");
-            strError.append(QString::fromLatin1("\n\n"));
+            strError.append(QStringLiteral("\n\n"));
             strError.append(strBasicHelp);
             Gui::TranslatedUserWarning(getActiveGuiDocument(),
                                        QObject::tr("Wrong selection"),
@@ -10013,7 +10013,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection;
 
-    if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0) {
+    if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0) {
         // Now we check whether we have a constraint selected or not.
 
         // get the selection
@@ -10137,7 +10137,7 @@ void CmdSketcherToggleActiveConstraint::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection;
 
-    if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0) {
+    if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0) {
         // Now we check whether we have a constraint selected or not.
 
         // get the selection

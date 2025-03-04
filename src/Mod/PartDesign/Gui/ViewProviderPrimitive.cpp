@@ -114,40 +114,40 @@ void ViewProviderPrimitive::updateData(const App::Property* p) {
 
 QIcon ViewProviderPrimitive::getIcon() const {
 
-    QString str = QString::fromLatin1("PartDesign_");
-    auto* prim = static_cast<PartDesign::FeaturePrimitive*>(getObject());
+    QString str = QStringLiteral("PartDesign_");
+    auto* prim = getObject<PartDesign::FeaturePrimitive>();
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive");
+        str += QStringLiteral("Additive");
     else
-        str += QString::fromLatin1("Subtractive");
+        str += QStringLiteral("Subtractive");
 
     switch(prim->getPrimitiveType()) {
     case PartDesign::FeaturePrimitive::Box:
-        str += QString::fromLatin1("Box");
+        str += QStringLiteral("Box");
         break;
     case PartDesign::FeaturePrimitive::Cylinder:
-        str += QString::fromLatin1("Cylinder");
+        str += QStringLiteral("Cylinder");
         break;
     case PartDesign::FeaturePrimitive::Sphere:
-        str += QString::fromLatin1("Sphere");
+        str += QStringLiteral("Sphere");
         break;
     case PartDesign::FeaturePrimitive::Cone:
-        str += QString::fromLatin1("Cone");
+        str += QStringLiteral("Cone");
         break;
     case PartDesign::FeaturePrimitive::Ellipsoid:
-        str += QString::fromLatin1("Ellipsoid");
+        str += QStringLiteral("Ellipsoid");
         break;
     case PartDesign::FeaturePrimitive::Torus:
-        str += QString::fromLatin1("Torus");
+        str += QStringLiteral("Torus");
         break;
     case PartDesign::FeaturePrimitive::Prism:
-        str += QString::fromLatin1("Prism");
+        str += QStringLiteral("Prism");
         break;
     case PartDesign::FeaturePrimitive::Wedge:
-        str += QString::fromLatin1("Wedge");
+        str += QStringLiteral("Wedge");
         break;
     }
 
-    str += QString::fromLatin1(".svg");
+    str += QStringLiteral(".svg");
     return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }

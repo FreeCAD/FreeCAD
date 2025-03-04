@@ -194,16 +194,14 @@ std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry* geo
 {
     std::vector<Base::Vector2d> vector2d;
 
-    const auto type = geometry->getTypeId();
-
     auto emplaceasvector2d = [&vector2d](const Base::Vector3d& point) {
         vector2d.emplace_back(point.x, point.y);
     };
 
-    auto isconic = type.isDerivedFrom(Part::GeomConic::getClassTypeId());
-    auto isbounded = type.isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId());
+    auto isconic = geometry->isDerivedFrom<Part::GeomConic>();
+    auto isbounded = geometry->isDerivedFrom<Part::GeomBoundedCurve>();
 
-    if (type == Part::GeomLineSegment::getClassTypeId()) {  // add a line
+    if (geometry->is<Part::GeomLineSegment>()) {  // add a line
         auto geo = static_cast<const Part::GeomLineSegment*>(geometry);
 
         emplaceasvector2d(geo->getStartPoint());
@@ -387,22 +385,22 @@ DrawSketchHandler::suggestedConstraintsPixmaps(std::vector<AutoConstraint>& sugg
         QString iconType;
         switch (autoCstr.Type) {
             case Horizontal:
-                iconType = QString::fromLatin1("Constraint_Horizontal");
+                iconType = QStringLiteral("Constraint_Horizontal");
                 break;
             case Vertical:
-                iconType = QString::fromLatin1("Constraint_Vertical");
+                iconType = QStringLiteral("Constraint_Vertical");
                 break;
             case Coincident:
-                iconType = QString::fromLatin1("Constraint_PointOnPoint");
+                iconType = QStringLiteral("Constraint_PointOnPoint");
                 break;
             case PointOnObject:
-                iconType = QString::fromLatin1("Constraint_PointOnObject");
+                iconType = QStringLiteral("Constraint_PointOnObject");
                 break;
             case Symmetric:
-                iconType = QString::fromLatin1("Constraint_Symmetric");
+                iconType = QStringLiteral("Constraint_Symmetric");
                 break;
             case Tangent:
-                iconType = QString::fromLatin1("Constraint_Tangent");
+                iconType = QStringLiteral("Constraint_Tangent");
                 break;
             default:
                 break;

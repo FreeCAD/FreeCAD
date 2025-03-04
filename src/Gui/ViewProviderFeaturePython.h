@@ -26,16 +26,18 @@
 #include <App/AutoTransaction.h>
 #include <App/PropertyPythonObject.h>
 #include <App/FeaturePython.h>
+#include <Gui/Selection/SelectionObserverPython.h>
 
 #include "ViewProviderGeometryObject.h"
 #include "Document.h"
-
 
 class SoSensor;
 class SoDragger;
 class SoNode;
 
 namespace Gui {
+
+class SelectionChanges;
 
 class GuiExport ViewProviderFeaturePythonImp
 {
@@ -55,6 +57,7 @@ public:
     QIcon getIcon() const;
     bool claimChildren(std::vector<App::DocumentObject*>&) const;
     ValueT useNewSelectionModel() const;
+    void onSelectionChanged(const SelectionChanges&);
     ValueT getElementPicked(const SoPickedPoint *pp, std::string &subname) const;
     bool getElement(const SoDetail *det, std::string &) const;
     bool getDetail(const char*, SoDetail *&det) const;
@@ -72,6 +75,7 @@ public:
     void attach(App::DocumentObject *pcObject);
     void updateData(const App::Property*);
     void onChanged(const App::Property* prop);
+    void onBeforeChange(const App::Property* prop);
     void startRestoring();
     void finishRestoring();
     ValueT onDelete(const std::vector<std::string> & sub);
@@ -129,6 +133,7 @@ public:
 private:
     ViewProviderDocumentObject* object;
     App::PropertyPythonObject &Proxy;
+    SelectionObserverPythonHandler selectionObserver;
     bool has__object__{false};
 
 #define FC_PY_VIEW_OBJECT \
@@ -149,6 +154,7 @@ private:
     FC_PY_ELEMENT(attach) \
     FC_PY_ELEMENT(updateData) \
     FC_PY_ELEMENT(onChanged) \
+    FC_PY_ELEMENT(onBeforeChange) \
     FC_PY_ELEMENT(startRestoring) \
     FC_PY_ELEMENT(finishRestoring) \
     FC_PY_ELEMENT(onDelete) \
@@ -250,6 +256,10 @@ public:
         default:
             return ViewProviderT::useNewSelectionModel();
         }
+    }
+    /// called when the selection changes for the view provider
+    void onSelectionChanged(const SelectionChanges& changes) override {
+        return imp->onSelectionChanged(changes);
     }
     bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const override {
         auto ret = imp->getElementPicked(pp,subname);
@@ -517,6 +527,11 @@ protected:
 
         imp->onChanged(prop);
         ViewProviderT::onChanged(prop);
+    }
+    void onBeforeChange(const App::Property* prop) override
+    {
+        imp->onBeforeChange(prop);
+        ViewProviderT::onBeforeChange(prop);
     }
     /// is called by the document when the provider goes in edit mode
     bool setEdit(int ModNum) override

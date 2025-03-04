@@ -26,7 +26,7 @@
 #include <list>
 #include <map>
 #include <string>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <QString>
 
 #include <Base/Persistence.h>
@@ -218,8 +218,9 @@ public:
     std::list<MDIView*> getMDIViews() const;
     /// returns a list of all MDI views of a certain type
     std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
-    MDIView *setActiveView(ViewProviderDocumentObject *vp=nullptr, Base::Type typeId = Base::Type());
-    View3DInventor* openEditingView3D(ViewProviderDocumentObject* vp);
+    MDIView *setActiveView(const ViewProviderDocumentObject* vp = nullptr, Base::Type typeId = Base::Type());
+    View3DInventor* openEditingView3D(const ViewProviderDocumentObject* vp);
+    View3DInventor* openEditingView3D(const App::DocumentObject* obj);
     //@}
 
     /** @name View provider handling  */
@@ -255,6 +256,8 @@ public:
     void resetEdit();
     /// reset edit of this document
     void _resetEdit();
+    /// set if the edit asks for restore or not.
+    void setEditRestore(bool val);
     /// get the in edit ViewProvider or NULL
     ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=nullptr,
             std::string *subname=nullptr, int *mode=nullptr, std::string *subElement=nullptr) const;

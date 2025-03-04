@@ -25,15 +25,21 @@
 
 #include <algorithm>
 #include <cmath>
-#include <cfloat>
-#include <cstdio>
 #include <list>
 #include <vector>
 
-#include "Vector3D.h"
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
+
+// NOLINTBEGIN
+#ifndef DOUBLE_MAX
+#define DOUBLE_MAX 1.7976931348623157E+308 /* max decimal value of a "double"*/
+#endif
+#ifndef DOUBLE_MIN
+#define DOUBLE_MIN 2.2250738585072014E-308 /* min decimal value of a "double"*/
+#endif
+// NOLINTEND
 
 
 namespace Base
@@ -113,6 +119,7 @@ public:
     inline BoundBox2d(double fX1, double fY1, double fX2, double fY2);
     ~BoundBox2d() = default;
     inline bool IsValid() const;
+    inline bool IsInfinite() const;
     inline bool IsEqual(const BoundBox2d& bbox, double tolerance) const;
 
     // operators
@@ -469,6 +476,11 @@ inline BoundBox2d::BoundBox2d(double fX1, double fY1, double fX2, double fY2)
 inline bool BoundBox2d::IsValid() const
 {
     return (MaxX >= MinX) && (MaxY >= MinY);
+}
+
+inline bool BoundBox2d::IsInfinite() const
+{
+    return MaxX >= DOUBLE_MAX && MaxY >= DOUBLE_MAX && MinX <= -DOUBLE_MAX && MinY <= -DOUBLE_MAX;
 }
 
 inline bool BoundBox2d::IsEqual(const BoundBox2d& bbox, double tolerance) const

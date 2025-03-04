@@ -32,7 +32,7 @@
 #include <Base/Interpreter.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureFillet.h>
 
@@ -54,7 +54,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp* DressUpView, QWi
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
+    PartDesign::Fillet* pcFillet = DressUpView->getObject<PartDesign::Fillet>();
     bool useAllEdges = pcFillet->UseAllEdges.getValue();
     ui->checkBoxUseAllEdges->setChecked(useAllEdges);
     ui->buttonRefSel->setEnabled(!useAllEdges);
@@ -174,11 +174,6 @@ TaskFilletParameters::~TaskFilletParameters()
         Base::PyException e;  // extract the Python error text
         e.ReportException();
     }
-}
-
-bool TaskFilletParameters::event(QEvent* e)
-{
-    return TaskDressUpParameters::KeyEvent(e);
 }
 
 void TaskFilletParameters::changeEvent(QEvent* e)

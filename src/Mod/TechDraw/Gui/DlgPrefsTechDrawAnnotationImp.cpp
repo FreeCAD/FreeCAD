@@ -51,7 +51,7 @@ DlgPrefsTechDrawAnnotationImp::DlgPrefsTechDrawAnnotationImp(QWidget* parent)
 
     // stylesheet override to defeat behaviour of non-editable combobox to ignore
     // maxVisibleItems property
-    QString ssOverride = QString::fromUtf8("combobox-popup: 0;");
+    QString ssOverride = QStringLiteral("combobox-popup: 0;");
     ui->pcbSectionStyle->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->pcbSectionStyle->setStyleSheet(ssOverride);
     ui->pcbCenterStyle->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -127,6 +127,7 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
 
     ui->pcbBreakType->onSave();
     ui->pcbBreakStyle->onSave();
+    ui->cbISODates->onSave();
 }
 
 void DlgPrefsTechDrawAnnotationImp::loadSettings()
@@ -165,7 +166,7 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
 
     ui->pcbBalloonArrow->onRestore();
     DrawGuiUtil::loadArrowBox(ui->pcbBalloonArrow);
-    ui->pcbBalloonArrow->setCurrentIndex(prefBalloonArrow());
+    ui->pcbBalloonArrow->setCurrentIndex(static_cast<int>(prefBalloonArrow()));
 
     ui->cbEndCap->onRestore();
 
@@ -186,6 +187,7 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     loadLineStyleBoxes();
 
     ui->pcbBreakType->onRestore();
+    ui->cbISODates->onRestore();
 }
 
 /**
@@ -205,7 +207,7 @@ void DlgPrefsTechDrawAnnotationImp::changeEvent(QEvent *e)
     }
 }
 
-int DlgPrefsTechDrawAnnotationImp::prefBalloonArrow() const
+TechDraw::ArrowType DlgPrefsTechDrawAnnotationImp::prefBalloonArrow() const
 {
     return Preferences::balloonArrow();
 }

@@ -104,16 +104,18 @@ short Pipe::mustExecute() const
 
 App::DocumentObjectExecReturn *Pipe::execute()
 {
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
+
     auto getSectionShape = [](App::DocumentObject* feature,
                               const std::vector<std::string>& subs) -> TopoDS_Shape {
-        if (!feature || !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
+        if (!feature || !feature->isDerivedFrom<Part::Feature>())
             throw Base::TypeError("Pipe: Invalid profile/section");
 
         auto subName = subs.empty() ? "" : subs.front();
 
         // only take the entire shape when we have a sketch selected, but
         // not a point of the sketch
-        if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId())
+        if (feature->isDerivedFrom<Part::Part2DObject>()
             && subName.compare(0, 6, "Vertex") != 0)
             return static_cast<Part::Part2DObject*>(feature)->Shape.getValue();
         else {
@@ -231,7 +233,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
             // TODO: we need to order the sections to prevent occ from crashing,
             // as makepipeshell connects the sections in the order of adding
             for (auto& subSet : multisections) {
-                if (!subSet.first->isDerivedFrom(Part::Feature::getClassTypeId()))
+                if (!subSet.first->isDerivedFrom<Part::Feature>())
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
                                                                                "Pipe: All sections need to be part features"));
 
@@ -380,6 +382,8 @@ App::DocumentObjectExecReturn *Pipe::execute()
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe: There is nothing to subtract from"));
 
+            // store shape before refinement
+            this->rawShape = result;
             auto ts_result = refineShapeIfActive(result);
             Shape.setValue(getSolid(ts_result));
             return App::DocumentObject::StdReturn;
@@ -402,6 +406,8 @@ App::DocumentObjectExecReturn *Pipe::execute()
                                                                            "Result has multiple solids: that is not currently supported."));
             }
 
+            // store shape before refinement
+            this->rawShape = boolOp;
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }
@@ -422,6 +428,8 @@ App::DocumentObjectExecReturn *Pipe::execute()
                                                                            "Result has multiple solids: that is not currently supported."));
             }
 
+            // store shape before refinement
+            this->rawShape = boolOp;
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }

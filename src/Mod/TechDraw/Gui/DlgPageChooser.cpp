@@ -20,28 +20,28 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+#include "PreCompiled.h"    //NOLINT
 #ifndef _PreComp_
 # include <QListWidgetItem>
 # include <QList>
+# include <QPushButton>
 #endif
 
 #include <Base/Console.h> // for FC_LOG_LEVEL_INIT
-#include <Base/Tools.h>
 
 #include "DlgPageChooser.h"
 #include "ui_DlgPageChooser.h"
 
 
-FC_LOG_LEVEL_INIT("Gui", true, true)
+FC_LOG_LEVEL_INIT("Gui", true, true)    //NOLINT
 
 using namespace TechDrawGui;
 
 /* TRANSLATOR Gui::DlgPageChooser */
 
 DlgPageChooser::DlgPageChooser(
-        const std::vector<std::string> labels,
-        const std::vector<std::string> names,
+        const std::vector<std::string>& labels,
+        const std::vector<std::string>& names,
         QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_DlgPageChooser)
 {
@@ -52,6 +52,9 @@ DlgPageChooser::DlgPageChooser(
 
     connect(ui->bbButtons, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(ui->bbButtons, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    connect(ui->lwPages, &QListWidget::itemSelectionChanged, this, &DlgPageChooser::slotChangedSelection);
+    auto acceptButton = ui->bbButtons->button(QDialogButtonBox::Ok);
+    acceptButton->setEnabled(false);
 }
 
 /**
@@ -63,19 +66,26 @@ DlgPageChooser::~DlgPageChooser()
     delete ui;
 }
 
+void DlgPageChooser::slotChangedSelection()
+{
+    auto acceptButton = ui->bbButtons->button(QDialogButtonBox::Ok);
+    if (ui->lwPages->selectedItems().empty()) {
+        acceptButton->setEnabled(false);
+        return;
+    }
+
+    acceptButton->setEnabled(true);
+}
+
 void DlgPageChooser::fillList(std::vector<std::string> labels, std::vector<std::string> names)
 {
-    QListWidgetItem* item;
-    QString qLabel;
-    QString qName;
-    QString qText;
-    int labelCount = labels.size();
-    int i = 0;
+    size_t labelCount = labels.size();
+    size_t i = 0;
     for (; i < labelCount; i++) {
-        qLabel = Base::Tools::fromStdString(labels[i]);
-        qName = Base::Tools::fromStdString(names[i]);
-        qText = QString::fromUtf8("%1 (%2)").arg(qLabel, qName);
-        item = new QListWidgetItem(qText, ui->lwPages);
+        auto qLabel = QString::fromStdString(labels[i]);
+        auto qName = QString::fromStdString(names[i]);
+        auto qText = QStringLiteral("%1 (%2)").arg(qLabel, qName);
+        auto* item = new QListWidgetItem(qText, ui->lwPages);
         item->setData(Qt::UserRole, qName);
     }
 }
@@ -87,11 +97,14 @@ std::string DlgPageChooser::getSelection() const
         QListWidgetItem* item = sels.front();
         return item->data(Qt::UserRole).toByteArray().constData();
     }
-    return std::string();
+    return {};
 }
 
 
 void DlgPageChooser::accept() {
+    if (ui->lwPages->selectedItems().empty()) {
+        Base::Console().Message("Page Chooser: no page was selected\n");
+    }
     QDialog::accept();
 }
 
@@ -99,4 +112,5 @@ void DlgPageChooser::reject() {
     QDialog::reject();
 }
 
+//NOLINTNEXTLINE
 #include "moc_DlgPageChooser.cpp"

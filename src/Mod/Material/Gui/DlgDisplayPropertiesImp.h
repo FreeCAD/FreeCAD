@@ -29,7 +29,7 @@
 #include <vector>
 
 #include <App/Material.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
@@ -56,8 +56,7 @@ class DlgDisplayPropertiesImp: public QDialog, public Gui::SelectionSingleton::O
     Q_OBJECT
 
 public:
-    explicit DlgDisplayPropertiesImp(bool floating,
-                                     QWidget* parent = nullptr,
+    explicit DlgDisplayPropertiesImp(QWidget* parent = nullptr,
                                      Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgDisplayPropertiesImp() override;
     /// Observer message from the Selection
@@ -96,6 +95,7 @@ private:
     void setTransparency(const std::vector<Gui::ViewProvider*>&);
     void setLineTransparency(const std::vector<Gui::ViewProvider*>&);
     std::vector<Gui::ViewProvider*> getSelection() const;
+    void setPropertiesFromSelection();
 
 private:
     class Private;

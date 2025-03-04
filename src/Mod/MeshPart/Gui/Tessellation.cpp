@@ -36,7 +36,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/Gui/ViewProvider.h>
@@ -254,7 +254,7 @@ bool Tessellation::accept()
             shapeObjects.emplace_back(sel.pObject, sel.SubName);
         }
         else if (sel.pObject) {
-            if (sel.pObject->isDerivedFrom(Part::Feature::getClassTypeId())) {
+            if (sel.pObject->isDerivedFrom<Part::Feature>()) {
                 partWithNoFace = true;
             }
             if (auto body = dynamic_cast<Part::BodyBase*>(sel.pObject)) {
@@ -330,15 +330,14 @@ void Tessellation::process(int method,
 
             QString param = getMeshingParameters(method, sobj);
 
-            QString cmd =
-                QString::fromLatin1("__doc__=FreeCAD.getDocument(\"%1\")\n"
-                                    "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
-                                    "__part__=__doc__.getObject(\"%2\")\n"
-                                    "__shape__=Part.getShape(__part__,\"%3\")\n"
-                                    "__mesh__.Mesh=MeshPart.meshFromShape(%4)\n"
-                                    "__mesh__.Label=\"%5 (Meshed)\"\n"
-                                    "del __doc__, __mesh__, __part__, __shape__\n")
-                    .arg(this->document, objname, subname, param, label);
+            QString cmd = QStringLiteral("__doc__=FreeCAD.getDocument(\"%1\")\n"
+                                         "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
+                                         "__part__=__doc__.getObject(\"%2\")\n"
+                                         "__shape__=Part.getShape(__part__,\"%3\")\n"
+                                         "__mesh__.Mesh=MeshPart.meshFromShape(%4)\n"
+                                         "__mesh__.Label=\"%5 (Meshed)\"\n"
+                                         "del __doc__, __mesh__, __part__, __shape__\n")
+                              .arg(this->document, objname, subname, param, label);
 
             Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
 
@@ -378,27 +377,27 @@ void Tessellation::setFaceColors(int method, App::Document* doc, App::DocumentOb
             auto svp = Base::freecad_dynamic_cast<PartGui::ViewProviderPartExt>(
                 Gui::Application::Instance->getViewProvider(obj));
             if (vpmesh && svp) {
-                std::vector<App::Color> diff_col = svp->ShapeAppearance.getDiffuseColors();
+                std::vector<Base::Color> diff_col = svp->ShapeAppearance.getDiffuseColors();
                 if (ui->groupsFaceColors->isChecked()) {
                     diff_col = getUniqueColors(diff_col);
                 }
 
                 vpmesh->highlightSegments(diff_col);
-                addFaceColors(dynamic_cast<Mesh::Feature*>(vpmesh->getObject()), diff_col);
+                addFaceColors(vpmesh->getObject<Mesh::Feature>(), diff_col);
             }
         }
     }
 }
 
-void Tessellation::addFaceColors(Mesh::Feature* mesh, const std::vector<App::Color>& colorPerSegm)
+void Tessellation::addFaceColors(Mesh::Feature* mesh, const std::vector<Base::Color>& colorPerSegm)
 {
     const Mesh::MeshObject& kernel = mesh->Mesh.getValue();
     unsigned long numSegm = kernel.countSegments();
     if (numSegm > 0 && numSegm == colorPerSegm.size()) {
         unsigned long uCtFacets = kernel.countFacets();
-        std::vector<App::Color> colorPerFace(uCtFacets);
+        std::vector<Base::Color> colorPerFace(uCtFacets);
         for (unsigned long i = 0; i < numSegm; i++) {
-            App::Color segmColor = colorPerSegm[i];
+            Base::Color segmColor = colorPerSegm[i];
             std::vector<Mesh::FacetIndex> segm = kernel.getSegment(i).getIndices();
             for (Mesh::FacetIndex it : segm) {
                 colorPerFace[it] = segmColor;
@@ -413,7 +412,7 @@ void Tessellation::addFaceColors(Mesh::Feature* mesh, const std::vector<App::Col
     }
 }
 
-std::vector<App::Color> Tessellation::getUniqueColors(const std::vector<App::Color>& colors) const
+std::vector<Base::Color> Tessellation::getUniqueColors(const std::vector<Base::Color>& colors) const
 {
     // unique colors
     std::set<uint32_t> col_set;
@@ -421,7 +420,7 @@ std::vector<App::Color> Tessellation::getUniqueColors(const std::vector<App::Col
         col_set.insert(it.getPackedValue());
     }
 
-    std::vector<App::Color> unique;
+    std::vector<Base::Color> unique;
     unique.reserve(col_set.size());
     for (const auto& it : col_set) {
         unique.emplace_back(it);
@@ -453,15 +452,15 @@ QString Tessellation::getStandardParameters(App::DocumentObject* obj) const
     bool relative = ui->relativeDeviation->isChecked();
 
     QString param;
-    param = QString::fromLatin1("Shape=__shape__, "
-                                "LinearDeflection=%1, "
-                                "AngularDeflection=%2, "
-                                "Relative=%3")
+    param = QStringLiteral("Shape=__shape__, "
+                           "LinearDeflection=%1, "
+                           "AngularDeflection=%2, "
+                           "Relative=%3")
                 .arg(devFace)
                 .arg(devAngle)
-                .arg(relative ? QString::fromLatin1("True") : QString::fromLatin1("False"));
+                .arg(relative ? QStringLiteral("True") : QStringLiteral("False"));
     if (ui->meshShapeColors->isChecked()) {
-        param += QString::fromLatin1(",Segments=True");
+        param += QStringLiteral(",Segments=True");
     }
 
     auto svp = Base::freecad_dynamic_cast<PartGui::ViewProviderPartExt>(
@@ -478,10 +477,9 @@ QString Tessellation::getStandardParameters(App::DocumentObject* obj) const
         //
         // PartGui::ViewProviderPartExt::getShapeColors().
         //
-        param +=
-            QString::fromLatin1(",GroupColors=Gui.getDocument('%1').getObject('%2').DiffuseColor")
-                .arg(QString::fromLatin1(obj->getDocument()->getName()),
-                     QString::fromLatin1(obj->getNameInDocument()));
+        param += QStringLiteral(",GroupColors=Gui.getDocument('%1').getObject('%2').DiffuseColor")
+                     .arg(QString::fromLatin1(obj->getDocument()->getName()),
+                          QString::fromLatin1(obj->getNameInDocument()));
     }
 
     return param;
@@ -493,7 +491,7 @@ QString Tessellation::getMefistoParameters() const
     if (!ui->spinMaximumEdgeLength->isEnabled()) {
         maxEdge = 0;
     }
-    return QString::fromLatin1("Shape=__shape__,MaxLength=%1").arg(maxEdge);
+    return QStringLiteral("Shape=__shape__,MaxLength=%1").arg(maxEdge);
 }
 
 QString Tessellation::getNetgenParameters() const
@@ -507,17 +505,17 @@ QString Tessellation::getNetgenParameters() const
     bool optimize = ui->checkOptimizeSurface->isChecked();
     bool allowquad = ui->checkQuadDominated->isChecked();
     if (fineness <= int(VeryFine)) {
-        param = QString::fromLatin1("Shape=__shape__,"
-                                    "Fineness=%1,SecondOrder=%2,Optimize=%3,AllowQuad=%4")
+        param = QStringLiteral("Shape=__shape__,"
+                               "Fineness=%1,SecondOrder=%2,Optimize=%3,AllowQuad=%4")
                     .arg(fineness)
                     .arg(secondOrder ? 1 : 0)
                     .arg(optimize ? 1 : 0)
                     .arg(allowquad ? 1 : 0);
     }
     else {
-        param = QString::fromLatin1("Shape=__shape__,"
-                                    "GrowthRate=%1,SegPerEdge=%2,SegPerRadius=%3,SecondOrder=%4,"
-                                    "Optimize=%5,AllowQuad=%6")
+        param = QStringLiteral("Shape=__shape__,"
+                               "GrowthRate=%1,SegPerEdge=%2,SegPerRadius=%3,SecondOrder=%4,"
+                               "Optimize=%5,AllowQuad=%6")
                     .arg(growthRate)
                     .arg(nbSegPerEdge)
                     .arg(nbSegPerRadius)
@@ -655,7 +653,7 @@ bool Mesh2ShapeGmsh::loadOutput()
     stlIn.close();
     kernel.harmonizeNormals();
 
-    auto fea = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature", "Mesh"));
+    auto fea = doc->addObject<Mesh::Feature>("Mesh");
     fea->Label.setValue(d->label);
     fea->Mesh.setValue(kernel.getKernel());
     stl.deleteFile();

@@ -666,7 +666,7 @@ Py::List AreaPy::getShapes() const
     Area* area = getAreaPtr();
     const std::list<Area::Shape>& shapes = area->getChildren();
     for (auto& s : shapes) {
-        ret.append(Py::TupleN(Part::shape2pyshape(s.shape), Py::Int(s.op)));
+        ret.append(Py::TupleN(Part::shape2pyshape(s.shape), Py::Long(s.op)));
     }
     return ret;
 }

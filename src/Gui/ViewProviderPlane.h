@@ -25,12 +25,15 @@
 #ifndef GUI_ViewProviderPlane_H
 #define GUI_ViewProviderPlane_H
 
-#include "ViewProviderOriginFeature.h"
+#include "ViewProviderDatum.h"
+
+class SoSwitch;
+class SoAsciiText;
 
 namespace Gui
 {
 
-class GuiExport ViewProviderPlane : public ViewProviderOriginFeature
+class GuiExport ViewProviderPlane : public ViewProviderDatum
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPlane);
 public:
@@ -38,7 +41,16 @@ public:
     ViewProviderPlane();
     ~ViewProviderPlane() override;
 
-    void attach ( App::DocumentObject * ) override;
+    void attach (App::DocumentObject*) override;
+
+    unsigned long getColor(const std::string& role) const;
+    std::string getRole() const;
+    std::string getLabelText(const std::string& role) const;
+    void setLabelVisibility(bool val);
+
+private:
+    CoinPtr<SoSwitch> labelSwitch;
+    CoinPtr<SoAsciiText> pLabel;
 };
 
 } //namespace Gui

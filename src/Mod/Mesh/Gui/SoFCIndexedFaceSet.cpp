@@ -59,7 +59,7 @@
 
 #include <Gui/GLBuffer.h>
 #include <Gui/SoFCInteractiveElement.h>
-#include <Gui/SoFCSelectionAction.h>
+#include <Gui/Selection/SoFCSelectionAction.h>
 
 #include "SoFCIndexedFaceSet.h"
 
@@ -133,11 +133,11 @@ void MeshRenderer::Private::generateGLArrays(SoGLRenderAction* action,
     indices.create();
 
     vertices.bind();
-    vertices.allocate(&(vertex[0]), vertex.size() * sizeof(float));
+    vertices.allocate(vertex.data(), vertex.size() * sizeof(float));
     vertices.release();
 
     indices.bind();
-    indices.allocate(&(index[0]), index.size() * sizeof(int32_t));
+    indices.allocate(index.data(), index.size() * sizeof(int32_t));
     indices.release();
     this->matbinding = matbind;
 }
@@ -411,10 +411,9 @@ bool MeshRenderer::matchMaterial(SoState* state) const
     return p->pcolors == pcolors;
 }
 
-bool MeshRenderer::shouldRenderDirectly(bool direct)
+bool MeshRenderer::shouldRenderDirectly([[maybe_unused]] bool direct)
 {
 #ifdef RENDER_GL_VAO
-    Q_UNUSED(direct);
     return false;
 #else
     return direct;
@@ -630,7 +629,7 @@ void SoFCIndexedFaceSet::drawCoords(const SoGLCoordinateElement* const vertexlis
     coords3d = vertexlist->getArrayPtr3();
 
     int mod = numindices / (4 * this->renderTriangleLimit) + 1;
-    float size = std::min<float>((float)mod, 3.0f);
+    float size = std::min<float>((float)mod, 3.0F);
     glPointSize(size);
 
     SbBool per_face = false;
@@ -754,7 +753,7 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction* action)
         numcolors = gl->getNumDiffuse();
         transp = gl->getTransparencyPointer();
         numtransp = gl->getNumTransparencies();
-        Q_UNUSED(numtransp);
+        (void)numtransp;
     }
 
     std::vector<float> face_vertices;

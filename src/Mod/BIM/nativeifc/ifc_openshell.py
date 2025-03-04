@@ -15,10 +15,10 @@
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 # *   GNU Library General Public License for more details.                  *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
@@ -26,6 +26,8 @@
 
 import FreeCAD
 import FreeCADGui
+from packaging.version import Version
+from addonmanager_utilities import create_pip_call
 
 translate = FreeCAD.Qt.translate
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -49,8 +51,7 @@ class IFC_UpdateIOS:
         avail = self.get_avail_version()
         if avail:
             if version:
-                comp = self.compare_versions(avail, version)
-                if comp > 0:
+                if Version(version) < Version(avail):
                     self.show_dialog("update", avail)
                 else:
                     self.show_dialog("uptodate")
@@ -92,6 +93,7 @@ class IFC_UpdateIOS:
             if mode in ["update", "install"]:
                 result = self.install()
                 if result:
+                    FreeCAD.Console.PrintLog(f"{result.stdout}\n")
                     text = translate("BIM", "IfcOpenShell update successfully installed.")
                     buttons = QtGui.QMessageBox.Ok
                     reply = QtGui.QMessageBox.information(None, title, text, buttons)
@@ -104,7 +106,7 @@ class IFC_UpdateIOS:
         from PySide import QtCore, QtGui
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         vendor_path = utils.get_pip_target_directory()
-        args = ["install", "--disable-pip-version-check", "--target", vendor_path, "ifcopenshell"]
+        args = ["install", "--upgrade", "--disable-pip-version-check", "--target", vendor_path, "ifcopenshell"]
         result = self.run_pip(args)
         QtGui.QApplication.restoreOverrideCursor()
         return result
@@ -115,14 +117,17 @@ class IFC_UpdateIOS:
 
         import addonmanager_utilities as utils
         import freecad.utils
-        cmd = [freecad.utils.get_python_exe(), "-m", "pip"]
-        cmd.extend(args)
+        from subprocess import CalledProcessError
+
+        cmd = create_pip_call(args)
         result = None
         try:
             result = utils.run_interruptable_subprocess(cmd)
-        except:
+        except CalledProcessError as pe:
+            FreeCAD.Console.PrintError(pe.stderr)
+        except Exception as e:
             text = translate("BIM","Unable to run pip. Please ensure pip is installed on your system.")
-            FreeCAD.Console.PrintError(text + "\n")
+            FreeCAD.Console.PrintError(f"{text} {str(e)}\n")
         return result
 
 
@@ -130,19 +135,19 @@ class IFC_UpdateIOS:
         """Retrieves the current ifcopenshell version"""
 
         import addonmanager_utilities as utils
+        from packaging.version import InvalidVersion
+
         try:
             import ifcopenshell
-            version = ifcopenshell.version
+            version = ifcopenshell.version           
+            try:
+                Version(version)
+            except InvalidVersion:
+                FreeCAD.Console.PrintWarning(f"Invalid IfcOpenShell version: {version}\n")
+                version = ""
         except:
             version = ""
-        if version.startswith("v"):
-            # this is a pip version
-            vendor_path = utils.get_pip_target_directory()
-            result = self.run_pip(["list", "--path", vendor_path])
-            if result:
-                result = result.stdout.split()
-                if "ifcopenshell" in result:
-                    version = result[result.index("ifcopenshell")+1]
+
         return version
 
 
@@ -157,31 +162,6 @@ class IFC_UpdateIOS:
                 result = [r.strip(",") for r in result]
                 return result[0]  # we return the biggest
         return None
-
-
-    def compare_versions(self, v1, v2):
-        """Compare two version strings in the form '0.7.0' or v0.7.0"""
-
-        # code from https://www.geeksforgeeks.org/compare-two-version-numbers
-
-        arr1 = v1.replace("v","").split(".")
-        arr2 = v2.replace("v","").split(".")
-        n = len(arr1)
-        m = len(arr2)
-        arr1 = [int(i) for i in arr1]
-        arr2 = [int(i) for i in arr2]
-        if n > m:
-          for i in range(m, n):
-             arr2.append(0)
-        elif m > n:
-          for i in range(n, m):
-             arr1.append(0)
-        for i in range(len(arr1)):
-          if arr1[i] > arr2[i]:
-             return 1
-          elif arr2[i] > arr1[i]:
-             return -1
-        return 0
 
 
 FreeCADGui.addCommand("IFC_UpdateIOS", IFC_UpdateIOS())

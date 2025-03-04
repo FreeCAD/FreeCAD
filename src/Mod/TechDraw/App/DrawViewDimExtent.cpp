@@ -53,7 +53,7 @@ DrawViewDimExtent::DrawViewDimExtent(void)
     Source.setScope(App::LinkScope::Global);
 
     //Source3d is a candidate for deprecation as References3D contains the same information
-    ADD_PROPERTY_TYPE(Source3d, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "3d geometry to be dimensioned");
+    ADD_PROPERTY_TYPE(Source3d, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "3D geometry to be dimensioned");
     Source3d.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(DirExtent ,(0), "", App::Prop_Output, "Horizontal / Vertical");
 
@@ -114,7 +114,7 @@ pointPair DrawViewDimExtent::getPointsExtent(ReferenceVector references)
 //    Base::Console().Message("DVD::getPointsExtent() - %s\n", getNameInDocument());
     App::DocumentObject* refObject = references.front().getObject();
     int direction = DirExtent.getValue();
-    if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()) {
         auto dvp = static_cast<TechDraw::DrawViewPart*>(refObject);
 
         std::vector<std::string> edgeNames;     //empty list means we are using all the edges

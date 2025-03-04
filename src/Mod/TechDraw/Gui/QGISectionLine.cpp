@@ -31,7 +31,6 @@
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/Preferences.h>
 
@@ -142,10 +141,10 @@ void QGISectionLine::makeArrows()
 //make Euro (ISO) Arrows
 void QGISectionLine::makeArrowsISO()
 {
-    m_arrow1->setStyle(0);
+    m_arrow1->setStyle(ArrowType::FILLED_ARROW);
     m_arrow1->setSize(QGIArrow::getPrefArrowSize());
     m_arrow1->setPos(m_start);
-    m_arrow2->setStyle(0);
+    m_arrow2->setStyle(ArrowType::FILLED_ARROW);
     m_arrow2->setSize(QGIArrow::getPrefArrowSize());
     m_arrow2->setPos(m_end);
 
@@ -166,9 +165,9 @@ void QGISectionLine::makeArrowsISO()
 //make traditional (ASME) section arrows
 void QGISectionLine::makeArrowsTrad()
 {
-    m_arrow1->setStyle(0);
+    m_arrow1->setStyle(ArrowType::FILLED_ARROW);
     m_arrow1->setSize(QGIArrow::getPrefArrowSize());
-    m_arrow2->setStyle(0);
+    m_arrow2->setStyle(ArrowType::FILLED_ARROW);
     m_arrow2->setSize(QGIArrow::getPrefArrowSize());
 
     if (m_arrowMode == SINGLEDIRECTIONMODE) {
@@ -208,7 +207,7 @@ void QGISectionLine::makeSymbols()
 void QGISectionLine::makeSymbolsTrad()
 {
     prepareGeometryChange();
-    int fontSize = QGIView::exactFontSize(Base::Tools::toStdString(m_symFont.family()), m_symSize);
+    int fontSize = QGIView::exactFontSize(m_symFont.family().toStdString(), m_symSize);
     m_symFont.setPixelSize(fontSize);
     m_symbol1->setFont(m_symFont);
     m_symbol1->setPlainText(QString::fromUtf8(m_symbol));
@@ -238,7 +237,7 @@ void QGISectionLine::makeSymbolsTrad()
 void QGISectionLine::makeSymbolsISO()
 {
     prepareGeometryChange();
-    int fontSize = QGIView::exactFontSize(Base::Tools::toStdString(m_symFont.family()), m_symSize);
+    int fontSize = QGIView::exactFontSize(m_symFont.family().toStdString(), m_symSize);
     m_symFont.setPixelSize(fontSize);
     m_symbol1->setFont(m_symFont);
     m_symbol1->setPlainText(QString::fromUtf8(m_symbol));
@@ -471,7 +470,7 @@ void QGISectionLine::setSectionColor(QColor c)
 
 QColor QGISectionLine::getSectionColor()
 {
-    return PreferencesGui::sectionLineQColor();
+    return getColor();
 }
 
 void QGISectionLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

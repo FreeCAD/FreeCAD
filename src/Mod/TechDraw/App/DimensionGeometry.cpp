@@ -97,9 +97,9 @@ void pointPair::mapToPage(const DrawViewPart* dvp)
     gp_Ax3 OXYZ;
     xOXYZ.SetTransformation(OXYZ, gp_Ax3(dvp->getRotatedCS()));
 
-    gp_Vec gvFirst = DU::togp_Vec(m_first).Transformed(xOXYZ);
+    gp_Vec gvFirst = DU::to<gp_Vec>(m_first).Transformed(xOXYZ);
     m_first = DU::toVector3d(gvFirst);
-    gp_Vec gvSecond = DU::togp_Vec(m_second).Transformed(xOXYZ);
+    gp_Vec gvSecond = DU::to<gp_Vec>(m_second).Transformed(xOXYZ);
     m_second = DU::toVector3d(gvSecond);
 }
 
@@ -194,7 +194,7 @@ void anglePoints::mapToPage(const DrawViewPart* dvp)
     gp_Trsf xOXYZ;
     gp_Ax3 OXYZ;
     xOXYZ.SetTransformation(OXYZ, gp_Ax3(dvp->getRotatedCS()));
-    gp_Vec gvVertex = DU::togp_Vec(m_vertex).Transformed(xOXYZ);
+    gp_Vec gvVertex = DU::to<gp_Vec>(m_vertex).Transformed(xOXYZ);
     m_vertex = DU::toVector3d(gvVertex);
 }
 
@@ -291,17 +291,17 @@ void arcPoints::mapToPage(const DrawViewPart* dvp)
     gp_Ax3 OXYZ;
     xOXYZ.SetTransformation(OXYZ, gp_Ax3(dvp->getRotatedCS()));
 
-    gp_Vec gvCenter = DU::togp_Vec(center).Transformed(xOXYZ);
+    gp_Vec gvCenter = DU::to<gp_Vec>(center).Transformed(xOXYZ);
     center = DU::toVector3d(gvCenter);
-    gp_Vec gvOnCurve1 = DU::togp_Vec(onCurve.first()).Transformed(xOXYZ);
+    gp_Vec gvOnCurve1 = DU::to<gp_Vec>(onCurve.first()).Transformed(xOXYZ);
     onCurve.first(DU::toVector3d(gvOnCurve1));
-    gp_Vec gvOnCurve2 = DU::togp_Vec(onCurve.second()).Transformed(xOXYZ);
+    gp_Vec gvOnCurve2 = DU::to<gp_Vec>(onCurve.second()).Transformed(xOXYZ);
     onCurve.second(DU::toVector3d(gvOnCurve2));
-    gp_Vec gvArcEnds1 = DU::togp_Vec(arcEnds.first()).Transformed(xOXYZ);
+    gp_Vec gvArcEnds1 = DU::to<gp_Vec>(arcEnds.first()).Transformed(xOXYZ);
     arcEnds.first(DU::toVector3d(gvArcEnds1));
-    gp_Vec gvArcEnds2 = DU::togp_Vec(arcEnds.second()).Transformed(xOXYZ);
+    gp_Vec gvArcEnds2 = DU::to<gp_Vec>(arcEnds.second()).Transformed(xOXYZ);
     arcEnds.second(DU::toVector3d(gvArcEnds2));
-    gp_Vec gvMidArc = DU::togp_Vec(midArc).Transformed(xOXYZ);
+    gp_Vec gvMidArc = DU::to<gp_Vec>(midArc).Transformed(xOXYZ);
     midArc = DU::toVector3d(gvMidArc);
 }
 
@@ -365,6 +365,7 @@ void arcPoints::dump(const std::string& text) const
 
 areaPoint::areaPoint() :
     area(0.0),
+    actualArea(0.0),
     center(Base::Vector3d())
 {
 }
@@ -373,6 +374,7 @@ areaPoint& areaPoint::operator=(const areaPoint& ap)
 {
     area = ap.area;
     center = ap.center;
+    actualArea = ap.actualArea;
     return *this;
 }
 
@@ -383,8 +385,12 @@ void areaPoint::move(const Base::Vector3d& offset)
 
 void areaPoint::project(const DrawViewPart* dvp)
 {
-    area = area * dvp->getScale();
     center = dvp->projectPoint(center) * dvp->getScale();
+}
+
+void areaPoint::invertY()
+{
+    center = DU::invertY(center);
 }
 
 void areaPoint::dump(const std::string& text) const

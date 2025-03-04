@@ -151,6 +151,10 @@ class VPMeshNetgen(view_base_femobject.VPBaseFemObject):
             FreeCAD.Console.PrintError(message + "\n")
         return True
 
+    def claimChildren(self):
+        reg_childs = self.Object.MeshRegionList
+        return reg_childs
+
     def dumps(self):
         return None
 

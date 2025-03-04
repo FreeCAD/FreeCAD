@@ -30,6 +30,7 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM FemSelectWidget
 
+from typing import List, TYPE_CHECKING
 from PySide import QtGui
 from PySide import QtCore
 
@@ -38,6 +39,36 @@ import FreeCADGui
 import FreeCADGui as Gui
 
 from femtools import geomtools
+from femguiutils.disambiguate_solid_selection import disambiguate_solid_selection
+
+if TYPE_CHECKING:
+    from Part import Face, Edge, PartFeature
+
+
+def solids_with_edge(parent_part: "PartFeature", edge: "Edge") -> List[int]:
+    """
+    Return the indices in the parent's list of solids that are partially bounded by edge.
+    """
+
+    solids_with_edge: List[int] = []
+    for idx, solid in enumerate(parent_part.Shape.Solids):
+        if any([edge.isSame(e) for e in solid.Edges]):
+            solids_with_edge.append(idx)
+
+    return solids_with_edge
+
+
+def solids_with_face(parent_part: "PartFeature", face: "Face") -> List[int]:
+    """
+    Return the indices in the parent's list of solids that are partially bounded by face.
+    """
+
+    solids_with_face: List[int] = []
+    for idx, solid in enumerate(parent_part.Shape.Solids):
+        if any([face.isSame(f) for f in solid.Faces]):
+            solids_with_face.append(idx)
+
+    return solids_with_face
 
 
 class _Selector(QtGui.QWidget):
@@ -468,36 +499,23 @@ class GeometryElementsSelection(QtGui.QWidget):
                 # adapt selection variable to hold the Solid
                 solid_to_add = None
                 if ele_ShapeType == "Edge":
-                    found_eltedge_in_other_solid = False
-                    for i, s in enumerate(sobj.Shape.Solids):
-                        for e in s.Edges:
-                            if elt.isSame(e):
-                                if found_eltedge_in_other_solid is False:
-                                    solid_to_add = str(i + 1)
-                                else:
-                                    # could be more than two solids, think of polar pattern
-                                    FreeCAD.Console.PrintMessage(
-                                        "    Edge belongs to at least two solids: "
-                                        " Solid{}, Solid{}\n".format(solid_to_add, str(i + 1))
-                                    )
-                                    solid_to_add = None
-                                found_eltedge_in_other_solid = True
+                    solid_indices = solids_with_edge(sobj, elt)
                 elif ele_ShapeType == "Face":
-                    found_eltface_in_other_solid = False
-                    for i, s in enumerate(sobj.Shape.Solids):
-                        for e in s.Faces:
-                            if elt.isSame(e):
-                                if not found_eltface_in_other_solid:
-                                    solid_to_add = str(i + 1)
-                                else:
-                                    # AFAIK (bernd) a face can only belong to two solids
-                                    FreeCAD.Console.PrintMessage(
-                                        "    Face belongs to two solids: Solid{}, Solid{}\n".format(
-                                            solid_to_add, str(i + 1)
-                                        )
-                                    )
-                                    solid_to_add = None
-                                found_eltface_in_other_solid = True
+                    solid_indices = solids_with_face(sobj, elt)
+                else:
+                    raise ValueError(f"Unexpected shape type: {ele_ShapeType}")
+
+                if not solid_indices:
+                    raise ValueError(
+                        f"Selected {ele_ShapeType} does not appear to belong to any of the part's solids"
+                    )
+                elif len(solid_indices) == 1:
+                    solid_to_add = str(solid_indices[0] + 1)
+                else:
+                    selected_solid = disambiguate_solid_selection(sobj, solid_indices)
+                    if selected_solid is not None:
+                        solid_to_add = selected_solid[len("Solid") :]
+
                 if solid_to_add:
                     selection = (sobj, "Solid" + solid_to_add)
                     ele_ShapeType = "Solid"

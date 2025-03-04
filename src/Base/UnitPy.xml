@@ -15,16 +15,15 @@
         FatherNamespace="Base">
     <Documentation>
         <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
-        <UserDocu>
- Unit
- defines a unit type, calculate and compare.
+        <UserDocu>Unit
+defines a unit type, calculate and compare.
 
- The following constructors are supported:
- Unit()                        -- empty constructor
- Unit(i1,i2,i3,i4,i5,i6,i7,i8) -- unit signature
- Unit(Quantity)                -- copy unit from Quantity
- Unit(Unit)                    -- copy constructor
- Unit(string)                  -- parse the string for units
+The following constructors are supported:
+Unit()                        -- empty constructor
+Unit(i1,i2,i3,i4,i5,i6,i7,i8) -- unit signature
+Unit(Quantity)                -- copy unit from Quantity
+Unit(Unit)                    -- copy constructor
+Unit(string)                  -- parse the string for units
         </UserDocu>
         <DeveloperDocu>Unit</DeveloperDocu>
     </Documentation>

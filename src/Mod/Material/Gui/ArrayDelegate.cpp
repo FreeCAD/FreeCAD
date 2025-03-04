@@ -72,16 +72,13 @@ void ArrayDelegate::paint(QPainter* painter,
         auto* tableModel = dynamic_cast<const AbstractArrayModel*>(index.model());
         painter->save();
 
-        if (tableModel->newRow(index)) {
-            painter->drawText(option.rect, 0, QString());
-        }
-        else {
+        QString text;
+        if (!tableModel->newRow(index)) {
             QVariant item = tableModel->data(index);
             auto quantity = item.value<Base::Quantity>();
-            QString text = quantity.getUserString();
-            painter->drawText(option.rect, 0, text);
+            text = QString::fromStdString(quantity.getUserString());
         }
-
+        painter->drawText(option.rect, 0, text);
         painter->restore();
     }
     else {
@@ -149,7 +146,7 @@ QWidget* ArrayDelegate::createWidget(QWidget* parent, const QVariant& item) cons
     }
     else if (_type == Materials::MaterialValue::Boolean) {
         auto combo = new Gui::PrefComboBox(parent);
-        combo->insertItem(0, QString::fromStdString(""));
+        combo->insertItem(0, QStringLiteral(""));
         combo->insertItem(1, tr("False"));
         combo->insertItem(2, tr("True"));
         combo->setCurrentText(item.toString());

@@ -26,6 +26,7 @@
 #include <array>
 #include <cstring>
 #include <string>
+#include <Base/Tools.h>
 
 namespace App
 {
@@ -65,7 +66,7 @@ constexpr std::array<TLicenseArr, countOfLicenses> licenseItems {{
 
 int constexpr findLicense(const char* identifier)
 {
-    if (!identifier || identifier[0] == '\0') {
+    if (Base::Tools::isNullOrEmpty(identifier)) {
         return -1;
     }
     for (int i = 0; i < countOfLicenses; i++) {
@@ -75,6 +76,6 @@ int constexpr findLicense(const char* identifier)
     }
     return -1;
 }
-}// namespace App
+}  // namespace App
 
-#endif// APP_LICENSE_H
+#endif  // APP_LICENSE_H

@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Defines the PackageList QWidget for displaying a list of Addons. """
+"""Defines the PackageList QWidget for displaying a list of Addons."""
 import datetime
 import threading
 
@@ -39,7 +39,7 @@ from addonmanager_metadata import get_first_supported_freecad_version, Version
 from Widgets.addonmanager_widget_view_control_bar import WidgetViewControlBar, SortOptions
 from Widgets.addonmanager_widget_view_selector import AddonManagerDisplayStyle
 from Widgets.addonmanager_widget_filter_selector import StatusFilter, Filter
-from Widgets.addonmanager_widget_progress_bar import WidgetProgressBar
+from Widgets.addonmanager_widget_progress_bar import Progress, WidgetProgressBar
 from addonmanager_licenses import get_license_manager
 
 translate = FreeCAD.Qt.translate
@@ -50,9 +50,11 @@ translate = FreeCAD.Qt.translate
 
 class PackageList(QtWidgets.QWidget):
     """A widget that shows a list of packages and various widgets to control the
-    display of the list"""
+    display of the list, including a progress bar that can display and interrupt the load
+    process."""
 
     itemSelected = QtCore.Signal(Addon)
+    stop_loading = QtCore.Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -70,6 +72,7 @@ class PackageList(QtWidgets.QWidget):
         self.ui.view_bar.sort_changed.connect(self.item_filter.setSortRole)
         self.ui.view_bar.sort_changed.connect(self.item_delegate.set_sort)
         self.ui.view_bar.sort_order_changed.connect(lambda order: self.item_filter.sort(0, order))
+        self.ui.progress_bar.stop_clicked.connect(self.stop_loading)
 
         # Set up the view the same as the last time:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
@@ -156,6 +159,19 @@ class PackageList(QtWidgets.QWidget):
 
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         pref.SetInt("ViewStyle", style)
+
+    def set_loading(self, is_loading: bool) -> None:
+        """Set the loading status of this package list: when a package list is loading, it shows
+        a progress bar. When it is no longer loading, the bar is hidden and the search bar gets
+        the focus."""
+        if is_loading:
+            self.ui.progress_bar.show()
+        else:
+            self.ui.progress_bar.hide()
+            self.ui.view_bar.search.setFocus()
+
+    def update_loading_progress(self, progress: Progress) -> None:
+        self.ui.progress_bar.set_progress(progress)
 
 
 class PackageListItemModel(QtCore.QAbstractListModel):
@@ -306,7 +322,7 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
             self.widget = self.compact
             self._setup_compact_view(repo)
         elif self.displayStyle == AddonManagerDisplayStyle.COMPOSITE:
-            self.widget = self.compact  # For now re-use the compact list
+            self.widget = self.compact  # For now reuse the compact list
             self._setup_composite_view(repo)
         self.widget.adjustSize()
 
@@ -553,7 +569,7 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
 
     def setPackageFilter(
         self, package_type: int
-    ) -> None:  # 0=All, 1=Workbenches, 2=Macros, 3=Preference Packs
+    ) -> None:  # 0=All, 1=Workbenches, 2=Macros, 3=Preference Packs, 4=Bundles, 5=Other
         """Set the package filter to package_type and refreshes."""
         self.package_type = package_type
         self.invalidateFilter()
@@ -617,6 +633,12 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
                 return False
         elif self.package_type == 3:
             if not data.contains_preference_pack():
+                return False
+        elif self.package_type == 4:
+            if not data.contains_bundle():
+                return False
+        elif self.package_type == 5:
+            if not data.contains_other():
                 return False
 
         if self.status == StatusFilter.INSTALLED:
@@ -764,7 +786,7 @@ class Ui_PackageList:
 
         self.verticalLayout.addWidget(self.listPackages)
 
-        self.progressBar = WidgetProgressBar()
-        self.verticalLayout.addWidget(self.progressBar)
+        self.progress_bar = WidgetProgressBar()
+        self.verticalLayout.addWidget(self.progress_bar)
 
         QtCore.QMetaObject.connectSlotsByName(form)

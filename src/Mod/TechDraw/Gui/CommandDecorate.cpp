@@ -36,8 +36,8 @@
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
@@ -48,11 +48,12 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "DrawGuiUtil.h"
-#include "MDIViewPage.h"
 #include "TaskGeomHatch.h"
 #include "TaskHatch.h"
 #include "ViewProviderGeomHatch.h"
 #include "ViewProviderPage.h"
+#include "MDIViewPage.h"
+#include "CommandHelpers.h"
 
 
 using namespace TechDrawGui;
@@ -108,7 +109,7 @@ void CmdTechDrawHatch::activated(int iMsg)
         if (TechDraw::DrawHatch::faceIsHatched(face, hatchObjs)) {
             QMessageBox::StandardButton rc =
                     QMessageBox::question(Gui::getMainWindow(), QObject::tr("Replace Hatch?"),
-                            QObject::tr("Some Faces in selection are already hatched.  Replace?"));
+                            QObject::tr("Some Faces in selection are already hatched. Replace?"));
             if (rc == QMessageBox::StandardButton::NoButton) {
                 return;
             }
@@ -267,12 +268,21 @@ void CmdTechDrawImage::activated(int iMsg)
 
     std::string FeatName = getUniqueObjectName("Image");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
-    auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(fileName));
+    auto filespec = DU::cleanFilespecBackslash(fileName.toStdString());
+
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
               FeatName.c_str(), FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), filespec.c_str());
+
+    auto baseView = CommandHelpers::firstViewInSelection(this);
+    if (baseView) {
+        auto baseName = baseView->getNameInDocument();
+        doCommand(Doc, "App.activeDocument().%s.Owner = App.activeDocument().%s",
+                  FeatName.c_str(), baseName);
+    }
+
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     updateActive();
     commitCommand();
@@ -312,35 +322,42 @@ Gui::Action *CmdTechDrawToggleFrame::createAction()
 void CmdTechDrawToggleFrame::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
 
-    auto mvp = dynamic_cast<MDIViewPage *>(Gui::getMainWindow()->activeWindow());
-    if (!mvp) {
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
+    Gui::ViewProvider* vp = activeGui->getViewProvider(page);
+    ViewProviderPage* vpPage = dynamic_cast<ViewProviderPage*>(vp);
+
+    if (!vpPage) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw Page"),
             QObject::tr("Need a TechDraw Page for this command"));
         return;
     }
 
-    ViewProviderPage* vpp = mvp->getViewProviderPage();
-    if (!vpp) {
-        return;
-    }
-    vpp->toggleFrameState();
+    vpPage->toggleFrameState();
 
     Gui::Action *action = this->getAction();
     if (action) {
-        action->setChecked(!vpp->getFrameState(), true);
+        action->setChecked(!vpPage->getFrameState(), true);
     }
 }
 
+//! true if the active tab is a TechDraw Page.
+// There is an assumption here that you would only want to toggle the frames on a page when you are
+// currently looking at that page
 bool CmdTechDrawToggleFrame::isActive()
 {
-    auto mvp = dynamic_cast<MDIViewPage *>(Gui::getMainWindow()->activeWindow());
+    auto mvp = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
     if (!mvp) {
         return false;
     }
 
     ViewProviderPage* vpp = mvp->getViewProviderPage();
-    Gui::Action *action = this->getAction();
+
+    Gui::Action* action = this->getAction();
     if (action) {
         action->setChecked(vpp && !vpp->getFrameState(), true);
     }

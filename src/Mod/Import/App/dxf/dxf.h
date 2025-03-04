@@ -25,7 +25,7 @@
 #include <Base/Matrix.h>
 #include <Base/Vector3D.h>
 #include <Base/Console.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Mod/Import/ImportGlobal.h>
 
 // For some reason Cpplint complains about some of the categories used by Clang-tidy
@@ -211,6 +211,7 @@ enum eDXFGroupCode_t
     eUCSXDirection = 111,
     eUCSYDirection = 112,
     eExtrusionDirection = 210,
+    eComment = 999,
 
     // The following apply to points and directions in text DXF files to identify the three
     // coordinates
@@ -922,7 +923,7 @@ public:
     {
         return m_entityAttributes.m_LineType[0] == 'h' || m_entityAttributes.m_LineType[0] == 'H';
     }
-    static App::Color ObjectColor(ColorIndex_t colorIndex);  // as rgba value
+    static Base::Color ObjectColor(ColorIndex_t colorIndex);  // as rgba value
 
 #ifdef DEBUG
 protected:

@@ -24,15 +24,17 @@
 #define GUI_VIEW3DINVENTOR_H
 
 #include <memory>
+#include <optional>
 #include <QImage>
-#include <QtOpenGL.h>
 
 #include <Base/Parameter.h>
 
 #include "MDIView.h"
 
+#include "Base/Vector3D.h"
 
 class QPrinter;
+class QOpenGLWidget;
 class QStackedWidget;
 
 namespace Gui {
@@ -43,6 +45,16 @@ class View3DPy;
 class View3DSettings;
 class NaviCubeSettings;
 
+struct RayPickInfo
+{
+    bool isValid;
+    Base::Vector3d point;
+    std::string document;
+    std::string object;
+    std::optional<std::string> parentObject;
+    std::optional<std::string> component;
+    std::optional<std::string> subName;
+};
 class GuiExport GLOverlayWidget : public QWidget
 {
     Q_OBJECT
@@ -70,7 +82,7 @@ class GuiExport View3DInventor : public MDIView
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    View3DInventor(Gui::Document* pcDocument, QWidget* parent, const QtGLWidget* sharewidget = nullptr, Qt::WindowFlags wflags=Qt::WindowFlags());
+    View3DInventor(Gui::Document* pcDocument, QWidget* parent, const QOpenGLWidget* sharewidget = nullptr, Qt::WindowFlags wflags=Qt::WindowFlags());
     ~View3DInventor() override;
 
     /// Message handler
@@ -98,6 +110,8 @@ public:
      * GL widget to get all key events in \a TopLevel or \a Fullscreen mode.
      */
     void setCurrentViewMode(ViewMode b) override;
+    RayPickInfo getObjInfoRay(Base::Vector3d* startvec,
+                                 Base::Vector3d* dirvec);
     bool setCamera(const char* pCamera);
     void toggleClippingPlane();
     bool hasClippingPlane() const;

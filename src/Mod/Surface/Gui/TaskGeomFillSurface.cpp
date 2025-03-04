@@ -33,16 +33,18 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskGeomFillSurface.h"
+
 #include "ui_TaskGeomFillSurface.h"
 
 
@@ -70,7 +72,7 @@ bool ViewProviderGeomFillSurface::setEdit(int ModNum)
         // object unsets and sets its edit mode without closing
         // the task panel
 
-        Surface::GeomFillSurface* obj = static_cast<Surface::GeomFillSurface*>(this->getObject());
+        Surface::GeomFillSurface* obj = this->getObject<Surface::GeomFillSurface>();
 
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
 
@@ -110,7 +112,7 @@ QIcon ViewProviderGeomFillSurface::getIcon() const
 
 void ViewProviderGeomFillSurface::highlightReferences(bool on)
 {
-    Surface::GeomFillSurface* surface = static_cast<Surface::GeomFillSurface*>(getObject());
+    Surface::GeomFillSurface* surface = getObject<Surface::GeomFillSurface>();
     auto bounds = surface->BoundaryList.getSubListValues();
     for (const auto& it : bounds) {
         Part::Feature* base = dynamic_cast<Part::Feature*>(it.first);
@@ -119,7 +121,7 @@ void ViewProviderGeomFillSurface::highlightReferences(bool on)
                 Gui::Application::Instance->getViewProvider(base));
             if (svp) {
                 if (on) {
-                    std::vector<App::Color> colors;
+                    std::vector<Base::Color> colors;
                     TopTools_IndexedMapOfShape eMap;
                     TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
                     colors.resize(eMap.Extent(), svp->LineColor.getValue());
@@ -127,7 +129,7 @@ void ViewProviderGeomFillSurface::highlightReferences(bool on)
                     for (const auto& jt : it.second) {
                         std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
                         assert(idx < colors.size());
-                        colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
+                        colors[idx] = Base::Color(1.0, 0.0, 1.0);  // magenta
                     }
 
                     svp->setHighlightedEdges(colors);
@@ -168,11 +170,11 @@ bool GeomFillSurface::EdgeSelection::allow(App::Document*,
     if (pObj == editedObject) {
         return false;
     }
-    if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (!pObj->isDerivedFrom<Part::Feature>()) {
         return false;
     }
 
-    if (!sSubName || sSubName[0] == '\0') {
+    if (Base::Tools::isNullOrEmpty(sSubName)) {
         return false;
     }
 
@@ -216,7 +218,7 @@ GeomFillSurface::GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomF
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    remove->setShortcut(QString::fromLatin1("Del"));
+    remove->setShortcut(QStringLiteral("Del"));
     ui->listWidget->addAction(remove);
     connect(remove, &QAction::triggered, this, &GeomFillSurface::onDeleteEdge);
 
@@ -307,8 +309,8 @@ void GeomFillSurface::setEditedObject(Surface::GeomFillSurface* obj)
         }
         ui->listWidget->addItem(item);
 
-        QString text = QString::fromLatin1("%1.%2").arg(QString::fromUtf8((*it)->Label.getValue()),
-                                                        QString::fromStdString(*jt));
+        QString text = QStringLiteral("%1.%2").arg(QString::fromUtf8((*it)->Label.getValue()),
+                                                   QString::fromStdString(*jt));
         item->setText(text);
 
         QList<QVariant> data;
@@ -486,9 +488,9 @@ void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->listWidget->addItem(item);
 
             Gui::SelectionObject sel(msg);
-            QString text = QString::fromLatin1("%1.%2").arg(
-                QString::fromUtf8(sel.getObject()->Label.getValue()),
-                QString::fromLatin1(msg.pSubName));
+            QString text =
+                QStringLiteral("%1.%2").arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
+                                            QString::fromLatin1(msg.pSubName));
             item->setText(text);
 
             QList<QVariant> data;

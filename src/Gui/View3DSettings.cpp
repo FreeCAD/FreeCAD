@@ -30,13 +30,15 @@
 #endif
 
 #include <Base/Builder3D.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 
 #include "NaviCube.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "SoFCSelectionAction.h"
 #include "View3DSettings.h"
 #include "View3DInventorViewer.h"
+
+#include <Base/Tools.h>
 
 using namespace Gui;
 
@@ -86,6 +88,9 @@ void View3DSettings::applySettings()
     OnChange(*hGrp,"UseBackgroundColorMid");
     OnChange(*hGrp,"ShowFPS");
     OnChange(*hGrp,"ShowNaviCube");
+    OnChange(*hGrp,"AxisXColor");
+    OnChange(*hGrp,"AxisYColor");
+    OnChange(*hGrp,"AxisZColor");
     OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"RenderCache");
     OnChange(*hGrp,"Orthographic");
@@ -97,6 +102,12 @@ void View3DSettings::applySettings()
     OnChange(*hGrp,"BacklightColor");
     OnChange(*hGrp,"BacklightDirection");
     OnChange(*hGrp,"BacklightIntensity");
+    OnChange(*hGrp,"EnableFillLight");
+    OnChange(*hGrp,"FillLightColor");
+    OnChange(*hGrp,"FillLightDirection");
+    OnChange(*hGrp,"FillLightIntensity");
+    OnChange(*hGrp,"AmbientLightColor");
+    OnChange(*hGrp,"AmbientLightIntensity");
     OnChange(*hGrp,"NavigationStyle");
     OnChange(*hGrp,"OrbitStyle");
     OnChange(*hGrp,"Sensitivity");
@@ -118,7 +129,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else if (strcmp(Reason,"HeadlightColor") == 0) {
-        unsigned long headlight = rGrp.GetUnsigned("HeadlightColor",ULONG_MAX); // default color (white)
+        unsigned long headlight = rGrp.GetUnsigned("HeadlightColor", 0xFFFFFFFF); // default color (white)
         float transparency;
         SbColor headlightColor;
         headlightColor.setPackedValue((uint32_t)headlight, transparency);
@@ -128,10 +139,12 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"HeadlightDirection") == 0) {
         try {
-            std::string pos = rGrp.GetASCII("HeadlightDirection");
-            Base::Vector3f dir = Base::to_vector(pos);
-            for (auto _viewer : _viewers) {
-                _viewer->getHeadlight()->direction.setValue(dir.x, dir.y, dir.z);
+            std::string pos = rGrp.GetASCII("HeadlightDirection", defaultHeadLightDirection);
+            if (!pos.empty()) {
+                Base::Vector3f dir = Base::stringToVector(pos);
+                for (auto _viewer : _viewers) {
+                    _viewer->getHeadlight()->direction.setValue(dir.x, dir.y, dir.z);
+                }
             }
         }
         catch (const std::exception&) {
@@ -139,18 +152,18 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else if (strcmp(Reason,"HeadlightIntensity") == 0) {
-        long value = rGrp.GetInt("HeadlightIntensity", 100);
+        long value = rGrp.GetInt("HeadlightIntensity", 90);
         for (auto _viewer : _viewers) {
-            _viewer->getHeadlight()->intensity.setValue((float)value/100.0f);
+            _viewer->getHeadlight()->intensity.setValue(Base::fromPercent(value));
         }
     }
     else if (strcmp(Reason,"EnableBacklight") == 0) {
         for (auto _viewer : _viewers) {
-            _viewer->setBacklightEnabled(rGrp.GetBool("EnableBacklight", false));
+            _viewer->setBacklightEnabled(rGrp.GetBool("EnableBacklight", true));
         }
     }
     else if (strcmp(Reason,"BacklightColor") == 0) {
-        unsigned long backlight = rGrp.GetUnsigned("BacklightColor",ULONG_MAX); // default color (white)
+        unsigned long backlight = rGrp.GetUnsigned("BacklightColor", 0xF5F5EEFF);
         float transparency;
         SbColor backlightColor;
         backlightColor.setPackedValue((uint32_t)backlight, transparency);
@@ -160,10 +173,12 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"BacklightDirection") == 0) {
         try {
-            std::string pos = rGrp.GetASCII("BacklightDirection");
-            Base::Vector3f dir = Base::to_vector(pos);
-            for (auto _viewer : _viewers) {
-                _viewer->getBacklight()->direction.setValue(dir.x, dir.y, dir.z);
+            std::string pos = rGrp.GetASCII("BacklightDirection", defaultBackLightDirection);
+            if (!pos.empty()) {
+                Base::Vector3f dir = Base::stringToVector(pos);
+                for (auto _viewer : _viewers) {
+                    _viewer->getBacklight()->direction.setValue(dir.x, dir.y, dir.z);
+                }
             }
         }
         catch (const std::exception&) {
@@ -171,14 +186,63 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else if (strcmp(Reason,"BacklightIntensity") == 0) {
-        long value = rGrp.GetInt("BacklightIntensity", 100);
+        long value = rGrp.GetInt("BacklightIntensity", 60);
         for (auto _viewer : _viewers) {
-            _viewer->getBacklight()->intensity.setValue((float)value/100.0f);
+            _viewer->getBacklight()->intensity.setValue(Base::fromPercent(value));
+        }
+    }
+    else if (strcmp(Reason,"EnableFillLight") == 0) {
+        for (auto _viewer : _viewers) {
+            _viewer->setFillLightEnabled(rGrp.GetBool("EnableFillLight", true));
+        }
+    }
+    else if (strcmp(Reason,"FillLightColor") == 0) {
+        unsigned long backlight = rGrp.GetUnsigned("FillLightColor", 0xE6FAFFFF); // default color (white)
+        float transparency;
+        SbColor backlightColor;
+        backlightColor.setPackedValue((uint32_t)backlight, transparency);
+        for (auto _viewer : _viewers) {
+            _viewer->getFillLight()->color.setValue(backlightColor);
+        }
+    }
+    else if (strcmp(Reason,"FillLightDirection") == 0) {
+        try {
+            std::string pos = rGrp.GetASCII("FillLightDirection", defaultFillLightDirection);
+            if (!pos.empty()) {
+                Base::Vector3f dir = Base::stringToVector(pos);
+                for (auto _viewer : _viewers) {
+                    _viewer->getFillLight()->direction.setValue(dir.x, dir.y, dir.z);
+                }
+            }
+        }
+        catch (const std::exception&) {
+            // ignore exception
+        }
+    }
+    else if (strcmp(Reason,"FillLightIntensity") == 0) {
+        long value = rGrp.GetInt("FillLightIntensity", 40);
+        for (auto _viewer : _viewers) {
+            _viewer->getFillLight()->intensity.setValue(Base::fromPercent(value));
+        }
+    }
+    else if (strcmp(Reason,"AmbientLightColor") == 0) {
+        unsigned long color = rGrp.GetUnsigned("AmbientLightColor", 0xFFFFFFFF);
+        float transparency;
+        SbColor backlightColor;
+        backlightColor.setPackedValue((uint32_t)color, transparency);
+        for (auto _viewer : _viewers) {
+            _viewer->getEnvironment()->ambientColor.setValue(backlightColor);
+        }
+    }
+    else if (strcmp(Reason,"AmbientLightIntensity") == 0) {
+        long value = rGrp.GetInt("AmbientLightIntensity", 20);
+        for (auto _viewer : _viewers) {
+            _viewer->getEnvironment()->ambientIntensity.setValue(Base::fromPercent(value));
         }
     }
     else if (strcmp(Reason,"EnablePreselection") == 0) {
         const ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
-        SoFCEnableHighlightAction cAct(rclGrp.GetBool("EnablePreselection", true));
+        SoFCEnablePreselectionAction cAct(rclGrp.GetBool("EnablePreselection", true));
         for (auto _viewer : _viewers) {
             cAct.apply(_viewer->getSceneGraph());
         }
@@ -335,6 +399,11 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"ShowNaviCube") == 0) {
         for (auto _viewer : _viewers) {
             _viewer->setEnabledNaviCube(rGrp.GetBool("ShowNaviCube", true));
+        }
+    }
+    else if (strcmp(Reason,"AxisXColor") == 0 || strcmp(Reason,"AxisYColor") == 0 || strcmp(Reason,"AxisZColor") == 0) {
+        for (auto _viewer : _viewers) {
+            _viewer->updateColors();
         }
     }
     else if (strcmp(Reason,"UseVBO") == 0) {
@@ -530,19 +599,19 @@ void NaviCubeSettings::parameterChanged(const char* Name)
     }
     else if (strcmp(Name, "BaseColor") == 0) {
         unsigned long col = hGrp->GetUnsigned("BaseColor", 3806916544);
-        nc->setBaseColor(App::Color::fromPackedRGBA<QColor>(col));
+        nc->setBaseColor(Base::Color::fromPackedRGBA<QColor>(col));
         // update default contrast colors
         parameterChanged("EmphaseColor");
     }
     else if (strcmp(Name, "EmphaseColor") == 0) {
-        App::Color bc((uint32_t)hGrp->GetUnsigned("BaseColor", 3806916544));
+        Base::Color bc((uint32_t)hGrp->GetUnsigned("BaseColor", 3806916544));
         unsigned long d = bc.r + bc.g + bc.b >= 1.5f ? 255 : 4294967295;
         unsigned long col = hGrp->GetUnsigned("EmphaseColor", d);
-        nc->setEmphaseColor(App::Color::fromPackedRGBA<QColor>(col));
+        nc->setEmphaseColor(Base::Color::fromPackedRGBA<QColor>(col));
     }
     else if (strcmp(Name, "HiliteColor") == 0) {
         unsigned long col = hGrp->GetUnsigned("HiliteColor", 2867003391);
-        nc->setHiliteColor(App::Color::fromPackedRGBA<QColor>(col));
+        nc->setHiliteColor(Base::Color::fromPackedRGBA<QColor>(col));
     }
     else if (strcmp(Name, "BorderWidth") == 0) {
         nc->setBorderWidth(hGrp->GetFloat("BorderWidth", 1.1));

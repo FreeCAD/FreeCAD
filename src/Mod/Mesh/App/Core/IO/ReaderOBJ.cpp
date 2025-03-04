@@ -104,12 +104,12 @@ bool ReaderOBJ::Load(std::istream& str)
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
-            float r = std::min<int>(std::atof(what[10].first), 255) / 255.0f;
-            float g = std::min<int>(std::atof(what[11].first), 255) / 255.0f;
-            float b = std::min<int>(std::atof(what[12].first), 255) / 255.0f;
+            float r = std::min<int>(std::atof(what[10].first), 255) / 255.0F;
+            float g = std::min<int>(std::atof(what[11].first), 255) / 255.0F;
+            float b = std::min<int>(std::atof(what[12].first), 255) / 255.0F;
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
 
-            App::Color c(r, g, b);
+            Base::Color c(r, g, b);
             unsigned long prop = static_cast<uint32_t>(c.getPackedValue());
             meshPoints.back().SetProperty(prop);
             rgb_value = MeshIO::PER_VERTEX;
@@ -123,7 +123,7 @@ bool ReaderOBJ::Load(std::istream& str)
             float b = static_cast<float>(std::atof(what[16].first));
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
 
-            App::Color c(r, g, b);
+            Base::Color c(r, g, b);
             unsigned long prop = static_cast<uint32_t>(c.getPackedValue());
             meshPoints.back().SetProperty(prop);
             rgb_value = MeshIO::PER_VERTEX;
@@ -213,7 +213,7 @@ bool ReaderOBJ::Load(std::istream& str)
 
             for (const auto& it : meshPoints) {
                 unsigned long prop = it._ulProp;
-                App::Color c;
+                Base::Color c;
                 c.setPackedValue(static_cast<uint32_t>(prop));
                 _material->diffuseColor.push_back(c);
             }
@@ -224,7 +224,7 @@ bool ReaderOBJ::Load(std::istream& str)
         // calling instance but the color list is pre-filled with a default value
         if (_material) {
             _material->binding = MeshIO::PER_FACE;
-            _material->diffuseColor.resize(meshFacets.size(), App::Color(0.8f, 0.8f, 0.8f));
+            _material->diffuseColor.resize(meshFacets.size(), Base::Color(0.8F, 0.8F, 0.8F));
         }
     }
 
@@ -259,27 +259,27 @@ bool ReaderOBJ::LoadMaterial(std::istream& str)
         return false;
     }
 
-    std::map<std::string, App::Color> materialAmbientColor;
-    std::map<std::string, App::Color> materialDiffuseColor;
-    std::map<std::string, App::Color> materialSpecularColor;
+    std::map<std::string, Base::Color> materialAmbientColor;
+    std::map<std::string, Base::Color> materialDiffuseColor;
+    std::map<std::string, Base::Color> materialSpecularColor;
     std::map<std::string, float> materialTransparency;
     std::string materialName;
-    std::vector<App::Color> ambientColor;
-    std::vector<App::Color> diffuseColor;
-    std::vector<App::Color> specularColor;
+    std::vector<Base::Color> ambientColor;
+    std::vector<Base::Color> diffuseColor;
+    std::vector<Base::Color> specularColor;
     std::vector<float> transparency;
 
-    auto readColor = [](const std::vector<std::string>& tokens) -> App::Color {
+    auto readColor = [](const std::vector<std::string>& tokens) -> Base::Color {
         if (tokens.size() == 2) {
             // If only R is given then G and B will be equal
             float r = boost::lexical_cast<float>(tokens[1]);
-            return App::Color(r, r, r);
+            return Base::Color(r, r, r);
         }
-        else if (tokens.size() == 4) {
+        if (tokens.size() == 4) {
             float r = boost::lexical_cast<float>(tokens[1]);
             float g = boost::lexical_cast<float>(tokens[2]);
             float b = boost::lexical_cast<float>(tokens[3]);
-            return App::Color(r, g, b);
+            return Base::Color(r, g, b);
         }
 
         throw std::length_error("Unexpected number of tokens");
@@ -298,7 +298,7 @@ bool ReaderOBJ::LoadMaterial(std::istream& str)
                 }
                 else if (token_results[0] == "d") {
                     float a = boost::lexical_cast<float>(token_results[1]);
-                    materialTransparency[materialName] = 1.0f - a;
+                    materialTransparency[materialName] = 1.0F - a;
                 }
                 // If only R is given then G and B will be equal
                 else if (token_results[0] == "Ka") {
@@ -322,21 +322,21 @@ bool ReaderOBJ::LoadMaterial(std::istream& str)
         {
             auto jt = materialAmbientColor.find(it.first);
             if (jt != materialAmbientColor.end()) {
-                std::vector<App::Color> mat(it.second, jt->second);
+                std::vector<Base::Color> mat(it.second, jt->second);
                 ambientColor.insert(ambientColor.end(), mat.begin(), mat.end());
             }
         }
         {
             auto jt = materialDiffuseColor.find(it.first);
             if (jt != materialDiffuseColor.end()) {
-                std::vector<App::Color> mat(it.second, jt->second);
+                std::vector<Base::Color> mat(it.second, jt->second);
                 diffuseColor.insert(diffuseColor.end(), mat.begin(), mat.end());
             }
         }
         {
             auto jt = materialSpecularColor.find(it.first);
             if (jt != materialSpecularColor.end()) {
-                std::vector<App::Color> mat(it.second, jt->second);
+                std::vector<Base::Color> mat(it.second, jt->second);
                 specularColor.insert(specularColor.end(), mat.begin(), mat.end());
             }
         }
@@ -357,12 +357,11 @@ bool ReaderOBJ::LoadMaterial(std::istream& str)
         _material->transparency.swap(transparency);
         return true;
     }
-    else {
-        _material->binding = MeshIO::OVERALL;
-        _material->ambientColor.clear();
-        _material->diffuseColor.clear();
-        _material->specularColor.clear();
-        _material->transparency.clear();
-        return false;
-    }
+
+    _material->binding = MeshIO::OVERALL;
+    _material->ambientColor.clear();
+    _material->diffuseColor.clear();
+    _material->specularColor.clear();
+    _material->transparency.clear();
+    return false;
 }

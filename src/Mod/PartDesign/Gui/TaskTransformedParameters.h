@@ -27,7 +27,7 @@
 #include <QComboBox>
 
 #include <Gui/DocumentObserver.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/PartDesign/Gui/EnumFlags.h>
@@ -177,6 +177,9 @@ protected:
      * For features inside MultiTransform it will be the parent MultiTransform's sub feature object
      */
     PartDesign::Transformed* getObject() const;
+
+    template <class T>
+    T* getObject() const { return dynamic_cast<T*>(getObject()); }
 
     /// Get the sketch object of the first original either of the object associated with this
     /// feature or with the parent feature (MultiTransform mode)

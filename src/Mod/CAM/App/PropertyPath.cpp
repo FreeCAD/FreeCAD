@@ -132,7 +132,7 @@ void PropertyPath::RestoreDocFile(Base::Reader& reader)
 {
     App::PropertyContainer* container = getContainer();
     App::DocumentObject* obj = nullptr;
-    if (container->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    if (container->isDerivedFrom<App::DocumentObject>()) {
         obj = static_cast<App::DocumentObject*>(container);
     }
 

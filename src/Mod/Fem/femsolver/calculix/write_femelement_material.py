@@ -81,6 +81,13 @@ def write_femelement_material(f, ccxwriter):
             if mat_obj.Category == "Solid":
                 TEC = FreeCAD.Units.Quantity(mat_obj.Material["ThermalExpansionCoefficient"])
                 TEC_in_mmK = TEC.getValueAs("mm/mm/K").Value
+                if "ThermalExpansionReferenceTemperature" in mat_obj.Material:
+                    RT = FreeCAD.Units.Quantity(
+                        mat_obj.Material["ThermalExpansionReferenceTemperature"]
+                    )
+                else:
+                    RT = FreeCAD.Units.Quantity("0 K")
+                RT_in_K = RT.getValueAs("K").Value
             elif mat_obj.Category == "Fluid":
                 KV = FreeCAD.Units.Quantity(mat_obj.Material["KinematicViscosity"])
                 KV_in_mm2s = KV.getValueAs("mm^2/s").Value
@@ -100,7 +107,7 @@ def write_femelement_material(f, ccxwriter):
             if mat_obj.Category == "Solid":
                 f.write("*CONDUCTIVITY\n")
                 f.write(f"{TC_in_WmK:.13G}\n")
-                f.write("*EXPANSION\n")
+                f.write(f"*EXPANSION, ZERO={RT_in_K:.13G}\n")
                 f.write(f"{TEC_in_mmK:.13G}\n")
                 f.write("*SPECIFIC HEAT\n")
                 f.write(f"{SH_in_JkgK:.13G}\n")

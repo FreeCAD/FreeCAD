@@ -124,8 +124,7 @@ private:
 
             Gui::Command::commitCommand();
 
-            tryAutoRecomputeIfNotSolve(
-                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+            tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(sketchgui,
@@ -180,7 +179,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Regular_Polygon");
+        return QStringLiteral("Sketcher_Pointer_Regular_Polygon");
     }
 
     std::unique_ptr<QWidget> createWidget() const override

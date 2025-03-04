@@ -33,6 +33,8 @@
 #include <Gui/Language/Translator.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
+#include <Gui/WidgetFactory.h>
+#include "DlgStartPreferencesImp.h"
 
 
 #include <gsl/pointers>
@@ -123,6 +125,10 @@ PyMOD_INIT_FUNC(StartGui)
     Gui::WorkbenchManipulator::installManipulator(manipulator);
     loadStartResource();
     Base::Console().Log("done\n");
+
+    // register preferences pages
+    new Gui::PrefPageProducer<StartGui::DlgStartPreferencesImp>(
+        QT_TRANSLATE_NOOP("QObject", "Start"));
 
     PyMOD_Return(mod);
 }

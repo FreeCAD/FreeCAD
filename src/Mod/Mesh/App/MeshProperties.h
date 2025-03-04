@@ -188,20 +188,20 @@ public:
 
     /** Sets the property
      */
-    void setValue(const MeshCore::Material& mat);
-    void setAmbientColor(const std::vector<App::Color>& col);
-    void setDiffuseColor(const std::vector<App::Color>& col);
-    void setSpecularColor(const std::vector<App::Color>& col);
-    void setEmissiveColor(const std::vector<App::Color>& col);
+    void setValue(const MeshCore::Material& value);
+    void setAmbientColor(const std::vector<Base::Color>& value);
+    void setDiffuseColor(const std::vector<Base::Color>& value);
+    void setSpecularColor(const std::vector<Base::Color>& value);
+    void setEmissiveColor(const std::vector<Base::Color>& value);
     void setShininess(const std::vector<float>&);
     void setTransparency(const std::vector<float>&);
     void setBinding(MeshCore::MeshIO::Binding);
 
     const MeshCore::Material& getValue() const;
-    const std::vector<App::Color>& getAmbientColor() const;
-    const std::vector<App::Color>& getDiffuseColor() const;
-    const std::vector<App::Color>& getSpecularColor() const;
-    const std::vector<App::Color>& getEmissiveColor() const;
+    const std::vector<Base::Color>& getAmbientColor() const;
+    const std::vector<Base::Color>& getDiffuseColor() const;
+    const std::vector<Base::Color>& getSpecularColor() const;
+    const std::vector<Base::Color>& getEmissiveColor() const;
     const std::vector<float>& getShininess() const;
     const std::vector<float>& getTransparency() const;
     MeshCore::MeshIO::Binding getBinding() const;

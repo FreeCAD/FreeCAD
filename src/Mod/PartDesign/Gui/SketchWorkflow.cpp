@@ -43,18 +43,19 @@
 #include <Mod/PartDesign/App/ShapeBinder.h>
 #include <Mod/Part/App/Attacher.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Sketcher/Gui/ViewProviderSketch.h>
 
 #include <App/Document.h>
 #include <App/Link.h>
 #include <App/Origin.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/SelectionFilter.h>
+#include <Gui/Selection/SelectionFilter.h>
 
 using namespace PartDesignGui;
 
@@ -104,7 +105,7 @@ public:
         // https://forum.freecad.org/viewtopic.php?f=3&t=37448
         if (object == activeBody) {
             App::DocumentObject* tip = activeBody->Tip.getValue();
-            if (tip && tip->isDerivedFrom(Part::Feature::getClassTypeId()) && elements.size() == 1) {
+            if (tip && tip->isDerivedFrom<Part::Feature>() && elements.size() == 1) {
                 Gui::SelectionChanges msg;
                 msg.pDocName = faceSelection.getDocName();
                 msg.pObjectName = tip->getNameInDocument();
@@ -247,7 +248,7 @@ public:
 
         guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Create a Sketch on Face"));
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
-        auto Feat = appdocument->getObject(FeatName.c_str());
+        auto Feat = activeBody->getDocument()->getObject(FeatName.c_str());
         FCMD_OBJ_CMD(Feat, "AttachmentSupport = " << supportString);
         FCMD_OBJ_CMD(Feat, "MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
         Gui::Command::updateActive();
@@ -502,7 +503,16 @@ private:
     void tryFindSupport()
     {
         createBodyOrThrow();
-        findAndSelectPlane();
+
+        bool useAttachment = App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/PartDesign")
+            ->GetBool("NewSketchUseAttachmentDialog", false);
+        if (useAttachment) {
+            createSketchAndShowAttachment();
+        }
+        else {
+            findAndSelectPlane();
+        }
     }
 
     void createBodyOrThrow()
@@ -524,6 +534,59 @@ private:
         App::Part *activePart = PartDesignGui::getActivePart();
         if (activePart) {
             activePart->addObject(activeBody);
+        }
+    }
+
+    void setOriginTemporaryVisibility()
+    {
+        auto* origin = activeBody->getOrigin();
+        auto* vpo = dynamic_cast<Gui::ViewProviderCoordinateSystem*>(
+            Gui::Application::Instance->getViewProvider(origin));
+        if (vpo) {
+            vpo->setTemporaryVisibility(Gui::DatumElement::Planes | Gui::DatumElement::Axes);
+            vpo->setTemporaryScale(3.0);  // NOLINT
+            vpo->setPlaneLabelVisibility(true);
+        }
+    }
+
+    void createSketchAndShowAttachment()
+    {
+        setOriginTemporaryVisibility();
+
+        // Create sketch
+        App::Document* doc = activeBody->getDocument();
+        std::string FeatName = doc->getUniqueObjectName("Sketch");
+        FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
+        auto sketch = doc->getObject(FeatName.c_str());
+
+        PartDesign::Body* partDesignBody = activeBody;
+        auto onAccept = [partDesignBody, sketch]() {
+            SketchRequestSelection::resetOriginVisibility(partDesignBody);
+
+            Gui::Selection().clearSelection();
+
+            PartDesignGui::setEdit(sketch, partDesignBody);
+        };
+        auto onReject = [partDesignBody]() {
+            SketchRequestSelection::resetOriginVisibility(partDesignBody);
+        };
+
+        Gui::Selection().clearSelection();
+
+        // Open attachment dialog
+        auto* vps = dynamic_cast<SketcherGui::ViewProviderSketch*>(Gui::Application::Instance->getViewProvider(sketch));
+        vps->showAttachmentEditor(onAccept, onReject);
+    }
+
+    static void resetOriginVisibility(PartDesign::Body* partDesignBody)
+    {
+        auto* origin = partDesignBody->getOrigin();
+        auto* vpo = dynamic_cast<Gui::ViewProviderCoordinateSystem*>(
+            Gui::Application::Instance->getViewProvider(origin));
+        if (vpo) {
+            vpo->resetTemporaryVisibility();
+            vpo->resetTemporarySize();
+            vpo->setPlaneLabelVisibility(false);
         }
     }
 
@@ -618,8 +681,13 @@ private:
         std::string FeatName = documentOfBody->getUniqueObjectName("Sketch");
         std::string supportString = Gui::Command::getObjectCmd(plane,"(",",[''])");
 
+        App::Document* doc = partDesignBody->getDocument();
+        if (!doc->hasPendingTransaction()) {
+            doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Create a new Sketch"));
+        }
+
         FCMD_OBJ_CMD(partDesignBody,"newObject('Sketcher::SketchObject','" << FeatName << "')");
-        auto Feat = partDesignBody->getDocument()->getObject(FeatName.c_str());
+        auto Feat = doc->getObject(FeatName.c_str());
         FCMD_OBJ_CMD(Feat,"AttachmentSupport = " << supportString);
         FCMD_OBJ_CMD(Feat,"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
         Gui::Command::updateActive(); // Make sure the AttachmentSupport's Placement property is updated
@@ -702,7 +770,7 @@ std::tuple<bool, PartDesign::Body*> SketchWorkflow::shouldCreateBody()
         pdBody->Placement.setValue(xLink->Placement.getValue());
     }
     if (!pdBody) {
-        if (appdocument->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 0) {
+        if (appdocument->countObjectsOfType<PartDesign::Body>() == 0) {
             shouldMakeBody = true;
         }
         else {
@@ -738,5 +806,3 @@ std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFaceAn
     }
     return std::make_tuple(FaceFilter, PlaneFilter);
 }
-
-

@@ -111,7 +111,7 @@
         <item>
          <widget class="QPushButton" name="pbReset">
           <property name="toolTip">
-           <string>Reset 3d point selection</string>
+           <string>Reset 3D point selection</string>
           </property>
           <property name="statusTip">
            <string/>

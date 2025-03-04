@@ -87,7 +87,7 @@ class GeometryFacadePy;
  *
  *  Part::Geometry* copy = v->copy();
  *
- *  if(construction && copy->getTypeId() != Part::GeomPoint::getClassTypeId()) {
+ *  if(construction && !copy->is<Part::GeomPoint>()) {
  *      GeometryFacade::setConstruction(copy, construction);
  *  }
  *
@@ -118,8 +118,8 @@ protected:
     friend class GeometryFacadePy;
 
 public:  // Factory methods
-    static std::unique_ptr<GeometryFacade> getFacade(Part::Geometry* geometry, bool owner = false);
-    static std::unique_ptr<const GeometryFacade> getFacade(const Part::Geometry* geometry);
+    static std::unique_ptr<GeometryFacade> getFacade(const Part::Geometry* geometry,
+                                                     bool owner = false);
 
 public:  // Utility methods
     static void ensureSketchGeometryExtension(Part::Geometry* geometry);
@@ -132,7 +132,7 @@ public:  // Utility methods
     static void setInternalType(Part::Geometry* geometry, InternalType::InternalType type);
     static bool getBlocked(const Part::Geometry* geometry);
     static int getId(const Part::Geometry* geometry);
-    static void setId(Part::Geometry* geometry, int id);
+    static void setId(const Part::Geometry* geometry, int id);
 
 public:
     // Explicit deletion to show intent (not that it is needed)
@@ -372,7 +372,7 @@ private:
 // GeometryTypedFacade
 
 /** @brief  It provides all the functionality of GeometryFacade (derives from it), but in addition
- * allows to indicate the type of a Part::Geometry derived class.
+ * allows one to indicate the type of a Part::Geometry derived class.
  *
  * @details
  *

@@ -1,27 +1,50 @@
-# As of January 2023 we require CMake 3.16.3
-# see https://forum.freecad.org/viewtopic.php?f=10&t=72173
-# for further info why
-cmake_minimum_required(VERSION 3.16.3 FATAL_ERROR)
+# As of February 2025 we require CMake 3.22.0
+cmake_minimum_required(VERSION 3.22.0 FATAL_ERROR)
 
-# policy CMP0072 was introduced with CMake 3.11
-# relates to FindOpenGL module
-# and cache variables OPENGL_gl_LIBRARY, OPENGL_glu_LIBRARY
-if (POLICY CMP0072)
-    set(OpenGL_GL_PREFERENCE LEGACY)
-endif(POLICY CMP0072)
 
-# FindPythonInterp and FindPythonLibs modules are deprecated.
-# Currently, they are still used by shiboken's CMake files
-if (POLICY CMP0148)
+# As of cMake 3.27, find_package() will look for both case-sensitive and all-uppercase versions
+# of the package. This seems to affect FLANN as included by Pixi
+if(POLICY CMP0144)
+    cmake_policy(SET CMP0144 NEW)
+endif()
+
+# FindPythonInterp and FindPythonLibs modules are deprecated, but are still in use by
+# all versions of Shiboken2. This policy must be kept at OLD until Shiboken2 is no longer
+# supported
+if(POLICY CMP0148)
     cmake_policy(SET CMP0148 OLD)
 endif()
+
+# The exec_program command was deprecated in cMake 3.0, and policy CMP0153 was added in cMake
+# 3.28 to control whether this gives a warning (the OLD behavior) or a fatal error (NEW)
+if(POLICY CMP0153)
+    cmake_policy(SET CMP0153 NEW)
+endif()
+
+# Suppress 'FindBoost module is removed' warning. Will use BoostConfig.cmake instead
+if(POLICY CMP0167)
+    cmake_policy(SET CMP0167 NEW)
+endif()
+
+# As of cMake 3.31 add_custom_command() rejects invalid arguments
+if(POLICY CMP0175)
+    cmake_policy(SET CMP0175 NEW)
+endif()
+
+# Added in cMake 3.31, enforce normalization of all DESTINATION paths given to install()
+if(POLICY CMP0177)
+    cmake_policy(SET CMP0177 NEW)
+endif()
+
 
 option(FREECAD_USE_CCACHE "Auto detect and use ccache during compilation" ON)
 
 if(FREECAD_USE_CCACHE)
     find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
     if(CCACHE_PROGRAM)
-        set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+        message(STATUS "Using ccache found at: " ${CCACHE_PROGRAM})
+        set(CMAKE_C_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
+        set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
     endif()
 endif()
 
@@ -53,6 +76,7 @@ FreeCADLibpackChecks()
 SetupDoxygen()
 SetupLibFmt()
 SetupYamlCpp()
+SetupZipIos()
 if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIBPACK_CHECKFILE_VERSION)
     SetupPython()
     SetupPCL()
@@ -67,7 +91,6 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
         # OPENGL_gl_LIBRARY empty that results into linker errors
         SetupOpenGL()
     endif(BUILD_GUI)
-    SetupBoost()
     SetupSalomeSMESH()
     if (BUILD_FEM_NETGEN)
         find_package(NETGEN)
@@ -83,10 +106,14 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
 
     if(BUILD_GUI)
         SetupCoin3D()
+        SetupPivy()
         SetupSpaceball()
         SetupShibokenAndPyside()
         SetupMatplotlib()
     endif(BUILD_GUI)
+
+    # SetupCoin3D can overwrite find_package(Boost) output so keep this after.
+    SetupBoost()
 endif()
 
 if(BUILD_VR)

@@ -168,11 +168,11 @@ class _Geometry(object):
         :returns: True if successful, False if maximum depth achieved
         """
 
-        # do not allow to increase depth if we are already at stop depth
+        # do not allow one to increase depth if we are already at stop depth
         if self.maximumDepth == self.stop:
             return False
 
-        # do not allow to increase depth if we are already at
+        # do not allow one to increase depth if we are already at
         # maximum usable depth
 
         if self.maximumDepth <= maximumUsableDepth:
@@ -505,15 +505,12 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             while geom.incrementStepDownDepth(maximumUsableDepth):
                 cutWires(wires, pathlist, obj.OptimizeMovements)
 
-        # add finishing pass if enabled
+            # add finishing pass if enabled
 
-        #   if obj.FinishingPass:
-        #       geom.offset = obj.FinishingPassZOffset.Value
+            if obj.FinishingPass:
+                geom.offset = obj.FinishingPassZOffset.Value
 
-        #       for w in wires:
-        #           pWire = self._getPartEdges(obj, w, geom)
-        #           if pWire:
-        #               pathlist.extend(cutWire(pWire))
+                cutWires(wires, pathlist, obj.OptimizeMovements)
 
         self.commandlist = pathlist
 

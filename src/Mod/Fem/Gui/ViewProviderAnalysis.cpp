@@ -39,8 +39,8 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/Workbench.h>
 #include <Gui/WorkbenchManager.h>
 #include <Mod/Fem/App/FemAnalysis.h>
@@ -199,7 +199,7 @@ bool ViewProviderFemAnalysis::setEdit(int ModNum)
         //            Gui::Control().showDialog(padDlg);
         //        else
 
-        // Fem::FemAnalysis* pcAna = static_cast<Fem::FemAnalysis*>(this->getObject());
+        // Fem::FemAnalysis* pcAna = this->getObject<Fem::FemAnalysis>();
         // Gui::Control().showDialog(new TaskDlgAnalysis(pcAna));
         // return true;
         return false;
@@ -230,38 +230,25 @@ bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
     if (!obj) {
         return false;
     }
-    if (obj->isDerivedFrom<Fem::FemMeshObject>()) {
+
+    // clang-format off: keep line breaks for readability
+    if (obj->isDerivedFrom<Fem::FemMeshObject>()
+        || obj->isDerivedFrom<Fem::FemSolverObject>()
+        || obj->isDerivedFrom<Fem::FemResultObject>()
+        || obj->isDerivedFrom<Fem::Constraint>()
+        || obj->isDerivedFrom<Fem::FemSetObject>()
+        || obj->isDerivedFrom(Base::Type::fromName("Fem::FeaturePython"))
+        || obj->isDerivedFrom<App::MaterialObject>()
+        || obj->isDerivedFrom<App::TextDocument>()) {
         return true;
     }
-    else if (obj->isDerivedFrom<Fem::FemSolverObject>()) {
-        return true;
-    }
-    else if (obj->isDerivedFrom<Fem::FemResultObject>()) {
-        return true;
-    }
-    else if (obj->isDerivedFrom<Fem::Constraint>()) {
-        return true;
-    }
-    else if (obj->isDerivedFrom<Fem::FemSetObject>()) {
-        return true;
-    }
-    else if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Fem::FeaturePython"))) {
-        return true;
-    }
-    else if (obj->isDerivedFrom<App::MaterialObject>()) {
-        return true;
-    }
-    else if (obj->isDerivedFrom<App::TextDocument>()) {
-        return true;
-    }
+    // clang-format on
 #ifdef FC_USE_VTK
     else if (obj->isDerivedFrom<Fem::FemPostObject>()) {
         return true;
     }
 #endif
-    else {
-        return false;
-    }
+    return false;
 }
 
 void ViewProviderFemAnalysis::dragObject(App::DocumentObject* obj)

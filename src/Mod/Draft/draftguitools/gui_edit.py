@@ -340,8 +340,11 @@ class Edit(gui_base_original.Modifier):
         self.running = False
         # delay resetting edit mode otherwise it doesn't happen
         from PySide import QtCore
-        QtCore.QTimer.singleShot(0, Gui.ActiveDocument.resetEdit)
+        QtCore.QTimer.singleShot(0, self.reset_edit)
 
+    def reset_edit(self):
+        if Gui.ActiveDocument is not None:
+            Gui.ActiveDocument.resetEdit()
 
     # -------------------------------------------------------------------------
     # SCENE EVENTS CALLBACKS
@@ -356,25 +359,27 @@ class Edit(gui_base_original.Modifier):
         """
         remove selection callback if it exists
         """
-        if self.selection_callback:
-            self.view.removeEventCallback("SoEvent", self.selection_callback)
+        try:
+            if self.selection_callback:
+                self.view.removeEventCallback("SoEvent", self.selection_callback)
+        except RuntimeError:
+            # the view has been deleted already
+            pass
         self.selection_callback = None
 
     def register_editing_callbacks(self):
         """
         register editing callbacks (former action function)
         """
-        viewer = Gui.ActiveDocument.ActiveView.getViewer()
-        self.render_manager = viewer.getSoRenderManager()
-        view = Gui.ActiveDocument.ActiveView
+        self.render_manager = self.view.getViewer().getSoRenderManager()
         if self._keyPressedCB is None:
-            self._keyPressedCB = view.addEventCallbackPivy(
+            self._keyPressedCB = self.view.addEventCallbackPivy(
             coin.SoKeyboardEvent.getClassTypeId(), self.keyPressed)
         if self._mouseMovedCB is None:
-            self._mouseMovedCB = view.addEventCallbackPivy(
+            self._mouseMovedCB = self.view.addEventCallbackPivy(
             coin.SoLocation2Event.getClassTypeId(), self.mouseMoved)
         if self._mousePressedCB is None:
-            self._mousePressedCB = view.addEventCallbackPivy(
+            self._mousePressedCB = self.view.addEventCallbackPivy(
             coin.SoMouseButtonEvent.getClassTypeId(), self.mousePressed)
         #App.Console.PrintMessage("Draft edit callbacks registered \n")
 
@@ -382,19 +387,22 @@ class Edit(gui_base_original.Modifier):
         """
         remove callbacks used during editing if they exist
         """
-        view = Gui.ActiveDocument.ActiveView
-        if self._keyPressedCB:
-            view.removeEventCallbackSWIG(coin.SoKeyboardEvent.getClassTypeId(), self._keyPressedCB)
-            self._keyPressedCB = None
-            #App.Console.PrintMessage("Draft edit keyboard callback unregistered \n")
-        if self._mouseMovedCB:
-            view.removeEventCallbackSWIG(coin.SoLocation2Event.getClassTypeId(), self._mouseMovedCB)
-            self._mouseMovedCB = None
-            #App.Console.PrintMessage("Draft edit location callback unregistered \n")
-        if self._mousePressedCB:
-            view.removeEventCallbackSWIG(coin.SoMouseButtonEvent.getClassTypeId(), self._mousePressedCB)
-            self._mousePressedCB = None
-            #App.Console.PrintMessage("Draft edit mouse button callback unregistered \n")
+        try:
+            if self._keyPressedCB:
+                self.view.removeEventCallbackSWIG(coin.SoKeyboardEvent.getClassTypeId(), self._keyPressedCB)
+                #App.Console.PrintMessage("Draft edit keyboard callback unregistered \n")
+            if self._mouseMovedCB:
+                self.view.removeEventCallbackSWIG(coin.SoLocation2Event.getClassTypeId(), self._mouseMovedCB)
+                #App.Console.PrintMessage("Draft edit location callback unregistered \n")
+            if self._mousePressedCB:
+                self.view.removeEventCallbackSWIG(coin.SoMouseButtonEvent.getClassTypeId(), self._mousePressedCB)
+                #App.Console.PrintMessage("Draft edit mouse button callback unregistered \n")
+        except RuntimeError:
+            # the view has been deleted already
+            pass
+        self._keyPressedCB = None
+        self._mouseMovedCB = None
+        self._mousePressedCB = None
 
     # -------------------------------------------------------------------------
     # SCENE EVENT HANDLERS
@@ -572,18 +580,25 @@ class Edit(gui_base_original.Modifier):
                 index, obj.ViewObject.LineColor, marker=marker))
 
     def removeTrackers(self, obj=None):
-        """Remove Edit Trackers."""
-        if obj:
-            if obj.Name in self.trackers:
-                for t in self.trackers[obj.Name]:
-                    t.finalize()
-            self.trackers[obj.Name] = []
-        else:
-            for key in self.trackers.keys():
+        """Remove Edit Trackers.
+
+        Attributes
+        ----------
+        obj: FreeCAD object
+            Removes trackers only for given object,
+            if obj is None, removes all trackers
+        """
+        if obj is None:
+            for key in self.trackers:
                 for t in self.trackers[key]:
                     t.finalize()
             self.trackers = {'object': []}
-
+        else:
+            key = obj.Name
+            if key in self.trackers:
+                for t in self.trackers[key]:
+                    t.finalize()
+            self.trackers[key] = []
 
     def hideTrackers(self, obj=None):
         """Hide Edit Trackers.
@@ -664,7 +679,7 @@ class Edit(gui_base_original.Modifier):
 
         else:
             # try if user is over an edited object
-            pos = event.getPosition()
+            pos = event.getPosition().getValue()
             obj = self.get_selected_obj_at_position(pos)
 
             obj_gui_tools = self.get_obj_gui_tools(obj)
@@ -810,15 +825,17 @@ class Edit(gui_base_original.Modifier):
         """Restore objects style during editing mode.
         """
         for obj in objs:
+            if utils.is_deleted(obj):
+                continue
             obj_gui_tools = self.get_obj_gui_tools(obj)
-            if obj_gui_tools and obj.isAttachedToDocument():
+            if obj_gui_tools:
                 obj_gui_tools.restore_object_style(obj, self.objs_formats[obj.Name])
 
 
     def get_specific_object_info(self, obj, pos):
         """Return info of a specific object at a given position.
         """
-        selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
+        selobjs = self.view.getObjectsInfo((pos[0],pos[1]))
         if not selobjs:
             return
         for info in selobjs:
@@ -834,7 +851,7 @@ class Edit(gui_base_original.Modifier):
 
         If object is one of the edited objects (self.edited_objects).
         """
-        selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
+        selobjs = self.view.getObjectsInfo((pos[0],pos[1]))
         if not selobjs:
             return
         for info in selobjs:

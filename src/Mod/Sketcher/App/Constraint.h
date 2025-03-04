@@ -39,7 +39,7 @@ namespace Sketcher
  Important note: New constraint types must be always added at the end but before
  'NumConstraintTypes'. This is mandatory in order to keep the handling of constraint types upward
  compatible which means that this program version ignores later introduced constraint types when
- reading them from a project file.
+ reading them from a project file. They also must be added to the 'type2str' array in this file.
  */
 enum ConstraintType : int
 {
@@ -132,6 +132,21 @@ public:
     /// utility function to swap the index in First/Second/Third of the provided constraint from the
     /// fromGeoId GeoId to toGeoId
     void substituteIndex(int fromGeoId, int toGeoId);
+    /// utility function to swap the index and position in First/Second/Third of the provided
+    /// constraint from {fromGeoId, fromPosId} to {toGeoId, toPosId}.
+    void substituteIndexAndPos(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId);
+
+    /// utility function to check if `geoId` is one of the geometries
+    bool involvesGeoId(int geoId) const
+    {
+        return First == geoId || Second == geoId || Third == geoId;
+    }
+    /// utility function to check if (`geoId`, `posId`) is one of the points/curves
+    bool involvesGeoIdAndPosId(int geoId, PointPos posId) const
+    {
+        return (First == geoId && FirstPos == posId) || (Second == geoId && SecondPos == posId)
+            || (Third == geoId && ThirdPos == posId);
+    }
 
     std::string typeToString() const
     {
@@ -153,8 +168,10 @@ private:
 private:
     double Value;
 
+    // clang-format off
     constexpr static std::array<const char*, ConstraintType::NumConstraintTypes> type2str {
         {"None",
+         "Coincident",
          "Horizontal",
          "Vertical",
          "Parallel",
@@ -173,6 +190,7 @@ private:
          "Block",
          "Diameter",
          "Weight"}};
+    // clang-format on
 
     constexpr static std::array<const char*, InternalAlignmentType::NumInternalAlignmentType>
         internalAlignmentType2str {{"Undef",

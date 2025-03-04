@@ -22,12 +22,13 @@
 
 
 #include "PreCompiled.h"
-#ifdef __GNUC__
-#include <unistd.h>
-#endif
+
+#include <sstream>
+#include <iomanip>
+#include <memory>
 
 #include <CXX/WrapPython.h>
-#include <memory>
+#include <fmt/format.h>
 #include <QString>
 #include "Exception.h"
 
@@ -39,19 +40,6 @@
 #include "UnitsSchemaMmMin.h"
 #include "UnitsSchemaFemMilliMeterNewton.h"
 #include "UnitsSchemaMeterDecimal.h"
-
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-#ifndef M_E
-#define M_E 2.71828182845904523536
-#endif
-#ifndef DOUBLE_MAX
-#define DOUBLE_MAX 1.7976931348623157E+308 /* max decimal value of a "double"*/
-#endif
-#ifndef DOUBLE_MIN
-#define DOUBLE_MIN 2.2250738585072014E-308 /* min decimal value of a "double"*/
-#endif
 
 using namespace Base;
 
@@ -139,23 +127,33 @@ void UnitsApi::setSchema(UnitSystem system)
                                        // Quantity (e.g. mi=1.8km rather then 1.6km).
 }
 
-QString UnitsApi::toString(const Base::Quantity& quantity, const QuantityFormat& format)
+std::string UnitsApi::toString(const Base::Quantity& quantity, const QuantityFormat& format)
 {
-    QString value = QString::fromLatin1("'%1 %2'")
-                        .arg(quantity.getValue(), 0, format.toFormat(), format.precision)
-                        .arg(quantity.getUnit().getString());
-    return value;
+    return fmt::format("'{} {}'", toNumber(quantity, format), quantity.getUnit().getString());
 }
 
-QString UnitsApi::toNumber(const Base::Quantity& quantity, const QuantityFormat& format)
+std::string UnitsApi::toNumber(const Base::Quantity& quantity, const QuantityFormat& format)
 {
     return toNumber(quantity.getValue(), format);
 }
 
-QString UnitsApi::toNumber(double value, const QuantityFormat& format)
+std::string UnitsApi::toNumber(double value, const QuantityFormat& format)
 {
-    QString number = QString::fromLatin1("%1").arg(value, 0, format.toFormat(), format.precision);
-    return number;
+    std::stringstream ss;
+
+    switch (format.format) {
+        case QuantityFormat::Fixed:
+            ss << std::fixed;
+            break;
+        case QuantityFormat::Scientific:
+            ss << std::scientific;
+            break;
+        default:
+            break;
+    }
+    ss << std::setprecision(format.precision) << value;
+
+    return ss.str();
 }
 
 // return true if the current user schema uses multiple units for length (ex. Ft/In)
@@ -177,7 +175,8 @@ std::string UnitsApi::getBasicLengthUnit()
 
 // === static translation methods ==========================================
 
-QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString)
+std::string
+UnitsApi::schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString)
 {
     return UserPrefSystem->schemaTranslate(quant, factor, unitString);
 }
@@ -185,7 +184,7 @@ QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double& factor, Q
 double UnitsApi::toDouble(PyObject* args, const Base::Unit& u)
 {
     if (PyUnicode_Check(args)) {
-        QString str = QString::fromUtf8(PyUnicode_AsUTF8(args));
+        std::string str(PyUnicode_AsUTF8(args));
         // Parse the string
         Quantity q = Quantity::parse(str);
         if (q.getUnit() == u) {
@@ -208,7 +207,7 @@ Quantity UnitsApi::toQuantity(PyObject* args, const Base::Unit& u)
 {
     double d {};
     if (PyUnicode_Check(args)) {
-        QString str = QString::fromUtf8(PyUnicode_AsUTF8(args));
+        std::string str(PyUnicode_AsUTF8(args));
         // Parse the string
         Quantity q = Quantity::parse(str);
         d = q.getValue();

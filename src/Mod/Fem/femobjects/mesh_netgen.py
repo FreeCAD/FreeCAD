@@ -53,6 +53,16 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
 
         prop.append(
             _PropHelper(
+                type="App::PropertyLinkList",
+                name="MeshRegionList",
+                group="Base",
+                doc="Refinements of the mesh",
+                value=[],
+            )
+        )
+        # mesh parameters
+        prop.append(
+            _PropHelper(
                 type="App::PropertyString",
                 name="Optimize3d",
                 group="Mesh Parameters",
@@ -67,11 +77,11 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="OptimizationSteps3d",
                 group="Mesh Parameters",
                 doc="Number of 3d optimization steps",
-                value=3,
+                value={"value": 3, "min": 0},
             )
         )
         prop.append(
@@ -88,11 +98,11 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="OptimizationSteps2d",
                 group="Mesh Parameters",
                 doc="Number of 2d optimization steps",
-                value=3,
+                value={"value": 3, "min": 0},
             )
         )
         prop.append(
@@ -124,20 +134,20 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="Safety",
                 group="Mesh Parameters",
                 doc="Radius of local environment (times h)",
-                value=5.0,
+                value={"value": 5.0, "min": 0, "step": 0.1},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="RelinnerSafety",
                 group="Mesh Parameters",
                 doc="Radius of active environment (times h)",
-                value=3.0,
+                value={"value": 3.0, "min": 0, "step": 0.1},
             )
         )
         prop.append(
@@ -160,11 +170,11 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="GrowthRate",
                 group="Mesh Parameters",
                 doc="Grading for local h",
-                value=0.3,
+                value={"value": 0.3, "min": 0, "step": 0.1},
             )
         )
         prop.append(
@@ -205,11 +215,11 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="CloseEdgeFactor",
                 group="Mesh Parameters",
                 doc="Factor to restrict meshing based on close edges",
-                value=2.0,
+                value={"value": 2.0, "min": 0, "step": 0.1},
             )
         )
         prop.append(
@@ -250,35 +260,35 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="CurvatureSafety",
                 group="Mesh Parameters",
                 doc="Safety factor for curvatures (elements per radius)",
-                value=2.0,
+                value={"value": 2.0, "min": 0, "step": 0.1},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="SegmentsPerEdge",
                 group="Mesh Parameters",
                 doc="Minimal number of segments per edge",
-                value=2.0,
+                value={"value": 2.0, "min": 0, "step": 0.1},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="ElementSizeWeight",
                 group="Mesh Parameters",
-                doc="Weight of element size respect to  element shape",
-                value=0.2,
+                doc="Weight of element size respect to element shape",
+                value={"value": 0.2, "min": 0, "step": 0.1},
             )
         )
 
         # Netgen meshing steps
         meshing_step = [
-            "AnalizeGeometry",
+            "AnalyzeGeometry",
             "MeshEdges",
             "MeshSurface",
             "OptimizeSurface",
@@ -306,47 +316,47 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="GiveUpTolerance2d",
                 group="Mesh Parameters",
                 doc="Give up quality class, 2d meshing",
-                value=200,
+                value={"value": 200, "min": 0},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="GiveUpTolerance",
                 group="Mesh Parameters",
                 doc="Give up quality class, 3d meshing",
-                value=10,
+                value={"value": 10, "min": 0},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="GiveUpToleranceOpenQuads",
                 group="Mesh Parameters",
-                doc="Give up quality class, for closing open quads, greather than 100 for free pyramids",
-                value=15,
+                doc="Give up quality class, for closing open quads, greater than 100 for free pyramids",
+                value={"value": 15, "min": 0},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="MaxOuterSteps",
                 group="Mesh Parameters",
                 doc="Maximal outer steps",
-                value=10,
+                value={"value": 10, "min": 0},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="StarShapeClass",
                 group="Mesh Parameters",
                 doc="Class starting star-shape filling",
-                value=5,
+                value={"value": 5, "min": 0},
             )
         )
         prop.append(
@@ -360,20 +370,20 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyIntegerConstraint",
                 name="Sloppy",
                 group="Mesh Parameters",
                 doc="Quality tolerances are handled less careful",
-                value=10,
+                value={"value": 10, "min": 0},
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyFloat",
+                type="App::PropertyFloatConstraint",
                 name="BadElementLimit",
                 group="Mesh Parameters",
                 doc="Limit for max element angle (150-180)",
-                value=175,
+                value={"value": 175, "min": 0},
             )
         )
         prop.append(
@@ -405,11 +415,20 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyInteger",
+                type="App::PropertyBool",
+                name="SecondOrderLinear",
+                group="Mesh Parameters",
+                doc="Second order nodes are created by linear interpolation",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyIntegerConstraint",
                 name="ElementOrder",
                 group="Mesh Parameters",
                 doc="High order element curvature",
-                value=False,
+                value={"value": 1, "min": 1},
             )
         )
         prop.append(
@@ -450,11 +469,32 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyBool",
-                name="AutoZRefine",
+                type="App::PropertyEnumeration",
+                name="ZRefine",
                 group="Mesh Parameters",
-                doc="Automatic Z refine",
-                value=False,
+                doc="Z-refinement for extruded shapes",
+                value=["No", "Regular", "Custom"],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyVector",
+                name="ZRefineDirection",
+                group="Mesh Parameters",
+                doc="Z-refinement direction",
+                value=Base.Vector(0, 0, 1),
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyFloatList",
+                name="ZRefineSize",
+                group="Mesh Parameters",
+                doc="Z-refinement size given as a fraction of the shape size.\n"
+                + "For a regular partition only one value is needed",
+                value=[
+                    0.1,
+                ],
             )
         )
         prop.append(
@@ -464,15 +504,6 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
                 group="Mesh Parameters",
                 doc="Use parallel meshing",
                 value=True,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyInteger",
-                name="Threads",
-                group="Mesh Parameters",
-                doc="Number of threads for parallel meshing",
-                value=4,
             )
         )
         prop.append(
@@ -534,6 +565,8 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
                 prop.handle_change_type(
                     obj, "App::PropertyInteger", lambda x: 0 if x <= 1 else 5 if x >= 6 else x - 1
                 )
+                # update enum values
+                setattr(obj, prop.name, prop.value)
 
     def get_predef_fineness_params(self, fineness):
         # set specific parameters by fineness

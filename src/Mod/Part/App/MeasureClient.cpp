@@ -62,7 +62,7 @@
 using namespace Part;
 
 
-// From: https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/SelectionSummary.cpp
+// From: https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/Selection/SelectionSummary.cpp
 
 // Should work with edges and wires
 static float getLength(TopoDS_Shape& wire){
@@ -108,7 +108,7 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
     shape.setPlacement(placement);
 
     // Don't get the subShape from datum elements
-    if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+    if (obj->isDerivedFrom<Part::Datum>()) {
         return shape.getShape();
     }
 
@@ -139,10 +139,8 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
 
             switch (curve.GetType()) {
                 case GeomAbs_Line: {
-                    if (ob->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Datum"))) {
-                        return App::MeasureElementType::LINE;
-                    }
-                    return App::MeasureElementType::LINESEGMENT;
+                    return ob->isDerivedFrom<Part::Datum>() ? App::MeasureElementType::LINE
+                                                            : App::MeasureElementType::LINESEGMENT;
                 }
                 case GeomAbs_Circle: { return App::MeasureElementType::CIRCLE; }
                 case GeomAbs_BezierCurve:
@@ -318,7 +316,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
     BRepGProp::SurfaceProperties(shape, gprops);
     auto origin = gprops.CentreOfMass();
 
-    // TODO: Center of Mass might not lie on the surface, somehow snap to the closest point on the surface? 
+    // TODO: Center of Mass might not lie on the surface, somehow snap to the closest point on the surface?
 
     Base::Placement placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), Base::Rotation());
     return std::make_shared<MeasureAreaInfo>(true, getFaceArea(shape), placement);
@@ -340,7 +338,7 @@ MeasurePositionInfoPtr MeasurePositionHandler(const App::SubObjectT& subject)
         return std::make_shared<MeasurePositionInfo>(false, Base::Vector3d());
     }
 
-    TopoDS_Vertex vertex = TopoDS::Vertex(shape);    
+    TopoDS_Vertex vertex = TopoDS::Vertex(shape);
     auto point = BRep_Tool::Pnt(vertex);
     return std::make_shared<MeasurePositionInfo>( true, Base::Vector3d(point.X(), point.Y(), point.Z()));
 }
@@ -365,11 +363,11 @@ MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
     Base::Vector3d position;
     if (sType == TopAbs_FACE) {
         TopoDS_Face face = TopoDS::Face(shape);
-        
+
         GProp_GProps gprops;
         BRepGProp::SurfaceProperties(face, gprops);
         vec = gprops.CentreOfMass();
-        
+
     } else if (sType == TopAbs_EDGE) {
         TopoDS_Edge edge = TopoDS::Edge(shape);
 

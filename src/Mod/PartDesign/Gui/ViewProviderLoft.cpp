@@ -47,14 +47,14 @@ std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
 
-    PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
+    PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
 
     App::DocumentObject* sketch = pcLoft->getVerifiedSketch(true);
     if (sketch)
         temp.push_back(sketch);
 
     for(App::DocumentObject* obj : pcLoft->Sections.getValues()) {
-        if (obj && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        if (obj && obj->isDerivedFrom<Part::Part2DObject>())
             temp.push_back(obj);
     }
 
@@ -88,7 +88,7 @@ void ViewProviderLoft::unsetEdit(int ModNum) {
 
 bool ViewProviderLoft::onDelete(const std::vector<std::string> & /*s*/)
 {/*
-    PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
+    PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
 
     // get the Sketch
     Sketcher::SketchObject *pcSketch = 0;
@@ -105,20 +105,20 @@ bool ViewProviderLoft::onDelete(const std::vector<std::string> & /*s*/)
 
 void ViewProviderLoft::highlightProfile(bool on)
 {
-    PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
+    PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
     highlightReferences(dynamic_cast<Part::Feature*>(pcLoft->Profile.getValue()),
                         pcLoft->Profile.getSubValues(), on);
 }
 
 void ViewProviderLoft::highlightSection(bool on)
 {
-    PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
+    PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
     auto sections = pcLoft->Sections.getSubListValues();
     for (auto& it : sections) {
         // only take the entire shape when we have a sketch selected, but
         // not a point of the sketch
         auto subName = it.second.empty() ? "" : it.second.front();
-        if (it.first->isDerivedFrom(Part::Part2DObject::getClassTypeId()) && subName.compare(0, 6, "Vertex") != 0) {
+        if (it.first->isDerivedFrom<Part::Part2DObject>() && subName.compare(0, 6, "Vertex") != 0) {
             it.second.clear();
         }
         highlightReferences(dynamic_cast<Part::Feature*>(it.first), it.second, on);
@@ -153,11 +153,11 @@ void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vecto
     if (!svp)
         return;
 
-    std::vector<App::Color>& edgeColors = originalLineColors[base->getID()];
+    std::vector<Base::Color>& edgeColors = originalLineColors[base->getID()];
 
     if (on) {
         edgeColors = svp->LineColorArray.getValues();
-        std::vector<App::Color> colors = edgeColors;
+        std::vector<Base::Color> colors = edgeColors;
 
         PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), svp->LineColor.getValue());
         highlighter.getEdgeColors(elements, colors);
@@ -170,14 +170,14 @@ void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vecto
 }
 
 QIcon ViewProviderLoft::getIcon() const {
-    QString str = QString::fromLatin1("PartDesign_");
-    auto* prim = static_cast<PartDesign::Loft*>(getObject());
+    QString str = QStringLiteral("PartDesign_");
+    auto* prim = getObject<PartDesign::Loft>();
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive");
+        str += QStringLiteral("Additive");
     else
-        str += QString::fromLatin1("Subtractive");
+        str += QStringLiteral("Subtractive");
 
-    str += QString::fromLatin1("Loft.svg");
+    str += QStringLiteral("Loft.svg");
     return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 

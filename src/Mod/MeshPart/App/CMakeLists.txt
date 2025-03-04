@@ -1,9 +1,9 @@
-if (BUILD_SMESH)
+if (SMESH_FOUND)
     add_definitions(-DHAVE_SMESH)
     if(SMESH_VERSION_MAJOR LESS_EQUAL 9 AND SMESH_VERSION_MINOR LESS 10 )
       add_definitions(-DHAVE_MEFISTO)
     endif()
-endif(BUILD_SMESH)
+endif(SMESH_FOUND)
 
 if(BUILD_FEM_NETGEN)
     add_definitions(-DHAVE_NETGEN)
@@ -12,10 +12,15 @@ endif(BUILD_FEM_NETGEN)
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
     ${VTK_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
@@ -109,31 +114,32 @@ if (BUILD_FLAT_MESH)
 
         add_library(flatmesh SHARED ${FLATMESH_SRCS})
         SET_PYTHON_PREFIX_SUFFIX(flatmesh)
-        target_link_libraries(flatmesh ${PYTHON_LIBRARIES} ${MeshPart_LIBS})
+        target_link_libraries(flatmesh ${Python3_LIBRARIES} ${MeshPart_LIBS})
 
         SET_BIN_DIR(flatmesh flatmesh /Mod/MeshPart)
         install(TARGETS flatmesh DESTINATION ${CMAKE_INSTALL_LIBDIR})
     else()
-        if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIBPACK_CHECKFILE_VERSION)
+        if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR
+           (FREECAD_LIBPACK_CHECKFILE_VERSION AND FREECAD_LIBPACK_VERSION VERSION_LESS "3.1.0"))
             # boost-python >= 1.67 on some platforms has suffix
             if (FORCE_BOOST_PY_SUFFIX)
                 set(BOOST_PY_SUFFIX ${FORCE_BOOST_PY_SUFFIX})
             else ()
-                set(BOOST_PY_SUFFIX ${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+                set(BOOST_PY_SUFFIX ${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR})
             endif ()
 
             find_package( Boost COMPONENTS python${BOOST_PY_SUFFIX} )
             if (NOT Boost_PYTHON${BOOST_PY_SUFFIX}_FOUND)
                 # try just the major version
-                find_package( Boost COMPONENTS python${PYTHON_VERSION_MAJOR} )
-                if (NOT Boost_PYTHON${PYTHON_VERSION_MAJOR}_FOUND)
+                find_package( Boost COMPONENTS python${Python3_VERSION_MAJOR} )
+                if (NOT Boost_PYTHON${Python3_VERSION_MAJOR}_FOUND)
                     # unversioned
                     find_package( Boost COMPONENTS python REQUIRED)
                 endif()
             endif()
 
             if(Boost_FOUND)
-                include_directories(${Boost_INCLUDE_DIRS})
+                include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
                 SET(FLATMESH_SRCS
                     MeshFlattening.cpp
                     MeshFlattening.h
@@ -149,7 +155,7 @@ if (BUILD_FLAT_MESH)
                 SET_PYTHON_PREFIX_SUFFIX(flatmesh)
 
                 if (BUILD_DYNAMIC_LINK_PYTHON)
-                    target_link_libraries(flatmesh ${PYTHON_LIBRARIES})
+                    target_link_libraries(flatmesh ${Python3_LIBRARIES})
                 endif(BUILD_DYNAMIC_LINK_PYTHON)
 
                 target_link_libraries(flatmesh ${MeshPart_LIBS} ${Boost_LIBRARIES})

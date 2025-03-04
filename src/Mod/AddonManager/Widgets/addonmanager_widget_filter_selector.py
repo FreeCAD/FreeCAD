@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Defines a QWidget-derived class for displaying the view selection buttons. """
+"""Defines a QWidget-derived class for displaying the view selection buttons."""
 
 from enum import IntEnum
 
@@ -38,18 +38,12 @@ except ImportError:
 
 # Get whatever version of PySide we can
 try:
-    import PySide  # Use the FreeCAD wrapper
+    from PySide import QtCore, QtWidgets  # Use the FreeCAD wrapper
 except ImportError:
     try:
-        import PySide6  # Outside FreeCAD, try Qt6 first
-
-        PySide = PySide6
+        from PySide6 import QtCore, QtWidgets  # Outside FreeCAD, try Qt6 first
     except ImportError:
-        import PySide2  # Fall back to Qt5 (if this fails, Python will kill this module's import)
-
-        PySide = PySide2
-
-from PySide import QtCore, QtWidgets
+        from PySide2 import QtCore, QtWidgets  # Fall back to Qt5
 
 
 class FilterType(IntEnum):
@@ -75,6 +69,8 @@ class ContentFilter(IntEnum):
     WORKBENCH = 1
     MACRO = 2
     PREFERENCE_PACK = 3
+    BUNDLE = 4
+    OTHER = 5
 
 
 class Filter:
@@ -121,6 +117,14 @@ class WidgetFilterSelector(QtWidgets.QComboBox):
         self.addItem(
             translate("AddonsInstaller", "Preference Pack"),
             (FilterType.PACKAGE_CONTENTS, ContentFilter.PREFERENCE_PACK),
+        )
+        self.addItem(
+            translate("AddonsInstaller", "Bundle"),
+            (FilterType.PACKAGE_CONTENTS, ContentFilter.BUNDLE),
+        )
+        self.addItem(
+            translate("AddonsInstaller", "Other"),
+            (FilterType.PACKAGE_CONTENTS, ContentFilter.OTHER),
         )
         self.insertSeparator(self.count())
         self.addItem(translate("AddonsInstaller", "Installation Status"))

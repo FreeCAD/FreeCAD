@@ -38,8 +38,8 @@ private:
 
 TEST_F(AttachExtensionTest, testPlanePlane)
 {
-    auto plane1 = dynamic_cast<Part::Plane*>(getDocument()->addObject("Part::Plane", "Plane1"));
-    auto plane2 = dynamic_cast<Part::Plane*>(getDocument()->addObject("Part::Plane", "Plane2"));
+    auto plane1 = getDocument()->addObject<Part::Plane>("Plane1");
+    auto plane2 = getDocument()->addObject<Part::Plane>("Plane2");
 
     ASSERT_TRUE(plane1);
     ASSERT_TRUE(plane2);
@@ -57,7 +57,7 @@ TEST_F(AttachExtensionTest, testPlanePlane)
 
 TEST_F(AttachExtensionTest, testAttacherEngineType)
 {
-    auto plane = dynamic_cast<Part::Plane*>(getDocument()->addObject("Part::Plane", "Plane"));
+    auto plane = getDocument()->addObject<Part::Plane>("Plane");
     EXPECT_STREQ(plane->AttacherType.getValue(), "Attacher::AttachEngine3D");
     EXPECT_STREQ(plane->AttacherEngine.getValueAsString(), "Engine 3D");
 
@@ -76,7 +76,7 @@ TEST_F(AttachExtensionTest, testAttacherEngineType)
 
 TEST_F(AttachExtensionTest, testAttacherTypeEngine)
 {
-    auto plane = dynamic_cast<Part::Plane*>(getDocument()->addObject("Part::Plane", "Plane"));
+    auto plane = getDocument()->addObject<Part::Plane>("Plane");
     EXPECT_STREQ(plane->AttacherType.getValue(), "Attacher::AttachEngine3D");
     EXPECT_STREQ(plane->AttacherEngine.getValueAsString(), "Engine 3D");
 

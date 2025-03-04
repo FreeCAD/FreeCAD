@@ -45,10 +45,10 @@
 
 #include <Gui/Action.h>
 #include <Gui/Application.h>
-#include <Gui/DlgCreateNewPreferencePackImp.h>
-#include <Gui/DlgPreferencesImp.h>
-#include <Gui/DlgPreferencePackManagementImp.h>
-#include <Gui/DlgRevertToBackupConfigImp.h>
+#include <Gui/Dialogs/DlgCreateNewPreferencePackImp.h>
+#include <Gui/Dialogs/DlgPreferencesImp.h>
+#include <Gui/Dialogs/DlgPreferencePackManagementImp.h>
+#include <Gui/Dialogs/DlgRevertToBackupConfigImp.h>
 #include <Gui/MainWindow.h>
 #include <Gui/OverlayManager.h>
 #include <Gui/ParamHandler.h>
@@ -62,7 +62,7 @@
 
 using namespace Gui;
 using namespace Gui::Dialog;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 using namespace Base;
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsGeneral */
@@ -322,7 +322,7 @@ void DlgSettingsGeneral::loadSettings()
     int index = 1;
     TStringMap list = Translator::instance()->supportedLocales();
     ui->Languages->clear();
-    ui->Languages->addItem(QString::fromLatin1("English"), QByteArray("English"));
+    ui->Languages->addItem(QStringLiteral("English"), QByteArray("English"));
     for (auto it = list.begin(); it != list.end(); ++it, index++) {
         QByteArray lang = it->first.c_str();
         QString langname = QString::fromLatin1(lang.constData());
@@ -719,7 +719,8 @@ void DlgSettingsGeneral::newPreferencePackDialogAccepted()
         return false;
     });
     auto preferencePackName = newPreferencePackDialog->preferencePackName();
-    Application::Instance->prefPackManager()->save(preferencePackName, selectedTemplates);
+    auto preferencePackDirectory = newPreferencePackDialog->preferencePackDirectory();
+    Application::Instance->prefPackManager()->save(preferencePackName, preferencePackDirectory, selectedTemplates);
     recreatePreferencePackMenu();
 }
 
@@ -738,7 +739,7 @@ void DlgSettingsGeneral::onImportConfigClicked()
     auto path = fs::path(QFileDialog::getOpenFileName(this,
         tr("Choose a FreeCAD config file to import"),
         QString(),
-        QString::fromUtf8("*.cfg")).toStdString());
+        QStringLiteral("*.cfg")).toStdString());
     if (!path.empty()) {
         // Create a name from the filename:
         auto packName = path.filename().stem().string();

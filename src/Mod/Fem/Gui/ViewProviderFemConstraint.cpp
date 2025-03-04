@@ -39,7 +39,7 @@
 #include "Gui/Command.h"
 #include "Gui/Control.h"
 #include "Gui/Document.h"
-#include "Gui/Selection.h"
+#include "Gui/Selection/Selection.h"
 #include "Mod/Fem/App/FemConstraint.h"
 
 #include "ViewProviderFemConstraint.h"
@@ -170,7 +170,7 @@ void ViewProviderFemConstraint::onChanged(const App::Property* prop)
 
 void ViewProviderFemConstraint::updateData(const App::Property* prop)
 {
-    auto pcConstraint = static_cast<const Fem::Constraint*>(this->getObject());
+    auto pcConstraint = this->getObject<const Fem::Constraint>();
 
     if (prop == &pcConstraint->Points || prop == &pcConstraint->Normals
         || prop == &pcConstraint->Scale) {
@@ -200,9 +200,19 @@ void ViewProviderFemConstraint::handleChangedPropertyName(Base::XMLReader& reade
     }
 }
 
+void ViewProviderFemConstraint::setRotateSymbol(bool rotate)
+{
+    rotateSymbol = rotate;
+    updateSymbol();
+}
+
 void ViewProviderFemConstraint::updateSymbol()
 {
-    auto obj = static_cast<const Fem::Constraint*>(this->getObject());
+    auto obj = this->getObject<const Fem::Constraint>();
+    if (!obj) {
+        return;
+    }
+
     const std::vector<Base::Vector3d>& points = obj->Points.getValue();
     const std::vector<Base::Vector3d>& normals = obj->Normals.getValue();
     if (points.size() != normals.size()) {
@@ -225,7 +235,7 @@ void ViewProviderFemConstraint::transformSymbol(const Base::Vector3d& point,
                                                 const Base::Vector3d& normal,
                                                 SbMatrix& mat) const
 {
-    auto obj = static_cast<const Fem::Constraint*>(this->getObject());
+    auto obj = this->getObject<const Fem::Constraint>();
     SbVec3f axisY(0, 1, 0);
     float s = obj->getScaleFactor();
     SbVec3f scale(s, s, s);
@@ -240,7 +250,7 @@ void ViewProviderFemConstraint::transformSymbol(const Base::Vector3d& point,
 void ViewProviderFemConstraint::transformExtraSymbol() const
 {
     if (pExtraTrans) {
-        auto obj = static_cast<const Fem::Constraint*>(this->getObject());
+        auto obj = this->getObject<const Fem::Constraint>();
         float s = obj->getScaleFactor();
         SbMatrix mat;
         mat.setScale(s);

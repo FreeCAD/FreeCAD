@@ -34,6 +34,7 @@
 #include <Base/Parameter.h>
 
 #include "Preferences.h"
+#include "DrawBrokenView.h"
 #include "LineGenerator.h"
 
 //getters for parameters used in multiple places.
@@ -76,14 +77,14 @@ double Preferences::dimArrowSize()
     return getPreferenceGroup("Dimensions")->GetFloat("ArrowSize", DefaultArrowSize);
 }
 
-App::Color Preferences::normalColor()
+Base::Color Preferences::normalColor()
 {
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("NormalColor", 0x000000FF));//#000000 black
     return fcColor;
 }
 
-App::Color Preferences::selectColor()
+Base::Color Preferences::selectColor()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication()
                                              .GetUserParameter()
@@ -92,12 +93,12 @@ App::Color Preferences::selectColor()
                                              ->GetGroup("View");
     unsigned int defColor = hGrp->GetUnsigned("SelectionColor", 0x00FF00FF);//#00FF00 lime
 
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("SelectColor", defColor));
     return fcColor;
 }
 
-App::Color Preferences::preselectColor()
+Base::Color Preferences::preselectColor()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication()
                                              .GetUserParameter()
@@ -106,14 +107,14 @@ App::Color Preferences::preselectColor()
                                              ->GetGroup("View");
     unsigned int defColor = hGrp->GetUnsigned("HighlightColor", 0xFFFF00FF);//#FFFF00 yellow
 
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("PreSelectColor", defColor));
     return fcColor;
 }
 
-App::Color Preferences::vertexColor()
+Base::Color Preferences::vertexColor()
 {
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(getPreferenceGroup("Decorations")->GetUnsigned("VertexColor", 0x000000FF));//#000000 black
     return fcColor;
 }
@@ -175,9 +176,10 @@ int Preferences::lineGroup()
     return getPreferenceGroup("Decorations")->GetInt("LineGroup", 3);  // FC 0.70mm
 }
 
-int Preferences::balloonArrow()
+ArrowType Preferences::balloonArrow()
 {
-    return getPreferenceGroup("Decorations")->GetInt("BalloonArrow", 0);
+    int temp = getPreferenceGroup("Decorations")->GetInt("BalloonArrow", 0);
+    return static_cast<ArrowType>(temp);
 }
 
 double Preferences::balloonKinkLength()
@@ -268,7 +270,7 @@ bool Preferences::showDetailHighlight()
 //! returns the default or preferred directory to search for svg symbols
 QString Preferences::defaultSymbolDir()
 {
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates";
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Symbols";
     std::string prefSymbolDir = getPreferenceGroup("Files")->GetASCII("DirSymbol", defaultDir.c_str());
     if (prefSymbolDir.empty()) {
         prefSymbolDir = defaultDir;
@@ -375,16 +377,16 @@ void Preferences::monochrome(bool state)
     getPreferenceGroup("Colors")->SetBool("Monochrome", state);
 }
 
-App::Color Preferences::lightTextColor()
+Base::Color Preferences::lightTextColor()
 {
-    App::Color result;
+    Base::Color result;
     result.setPackedValue(getPreferenceGroup("Colors")->GetUnsigned("LightTextColor", 0xFFFFFFFF));//#FFFFFFFF white
     return result;
 }
 
 //! attempt to lighten the give color
 // not currently used
-App::Color Preferences::lightenColor(App::Color orig)
+Base::Color Preferences::lightenColor(Base::Color orig)
 {
     // get component colours on [0, 255]
     uchar red = orig.r * 255;
@@ -411,11 +413,11 @@ App::Color Preferences::lightenColor(App::Color orig)
     double greenF = (double)green / 255.0;
     double blueF = (double)blue / 255.0;
 
-    return App::Color(redF, greenF, blueF, orig.a);
+    return Base::Color(redF, greenF, blueF, orig.a);
 }
 
 //! color to use for monochrome display
-App::Color Preferences::getAccessibleColor(App::Color orig)
+Base::Color Preferences::getAccessibleColor(Base::Color orig)
 {
     if (Preferences::lightOnDark() && Preferences::monochrome()) {
         return lightTextColor();
@@ -508,7 +510,7 @@ int Preferences::CenterLineStyle()
 int Preferences::HighlightLineStyle()
 {
     // default is line #2 dashed, which is index 1
-    return getPreferenceGroup("Decorations")->GetInt("LineStyleHighLight", 1) + 1;
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleHighlight", 1) + 1;
 }
 
 int Preferences::HiddenLineStyle()
@@ -549,21 +551,16 @@ std::string Preferences::currentElementDefFile()
 int Preferences::LineCapStyle()
 {
     int currentIndex = LineCapIndex();
-    int result{0x20};
-        switch (currentIndex) {
+    switch (currentIndex) {
         case 0:
-            result = static_cast<Qt::PenCapStyle>(0x20);   //round;
-            break;
+            return static_cast<Qt::PenCapStyle>(0x20);   //round;
         case 1:
-            result = static_cast<Qt::PenCapStyle>(0x10);   //square;
-            break;
+            return static_cast<Qt::PenCapStyle>(0x10);   //square;
         case 2:
-            result = static_cast<Qt::PenCapStyle>(0x00);   //flat
-            break;
+            return static_cast<Qt::PenCapStyle>(0x00);   //flat
         default:
-            result = static_cast<Qt::PenCapStyle>(0x20);
+            return static_cast<Qt::PenCapStyle>(0x20);
     }
-    return result;
 }
 
 //! returns the line cap index without conversion to a Qt::PenCapStyle
@@ -598,9 +595,10 @@ bool Preferences::useExactMatchOnDims()
     return getPreferenceGroup("Dimensions")->GetBool("UseMatcher", true);
 }
 
-int Preferences::BreakType()
+DrawBrokenView::BreakType Preferences::BreakType()
 {
-    return getPreferenceGroup("Decorations")->GetInt("BreakType", 2);
+    int temp = getPreferenceGroup("Decorations")->GetInt("BreakType", 2);
+    return static_cast<DrawBrokenView::BreakType>(temp);
 }
 
 
@@ -653,6 +651,45 @@ Qt::KeyboardModifiers Preferences::balloonDragModifiers()
 void Preferences::setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers)
 {
     getPreferenceGroup("General")->SetUnsigned("BalloonDragModifier", (uint)newModifiers);
+}
+
+bool Preferences::enforceISODate()
+{
+    return getPreferenceGroup("Standards")->GetBool("EnforceISODate", false);
+}
+
+//! if true, shapes are validated before use and problematic ones are skipped.
+//! validating shape takes time, but can prevent crashes/bad results in occt.
+//! this would normally be set to false and set to true to aid in debugging/support.
+bool Preferences::checkShapesBeforeUse()
+{
+    return getPreferenceGroup("General")->GetBool("CheckShapesBeforeUse", false);
+}
+
+
+//! if true, shapes which fail validation are saved as brep files
+bool Preferences::debugBadShape()
+{
+    return getPreferenceGroup("debug")->GetBool("debugBadShape", false);
+}
+
+
+//! if true, automatically switch to TD workbench when a Page is set in edit (double click)
+bool Preferences::switchOnClick()
+{
+    return getPreferenceGroup("General")->GetBool("SwitchToWB", true);
+}
+
+//! if true, svg symbols will use the old scaling logic.
+bool Preferences::useLegacySvgScaling()
+{
+    return getPreferenceGroup("General")->GetBool("LegacySvgScaling", false);
+}
+
+
+bool Preferences::showUnits()
+{
+    return Preferences::getPreferenceGroup("Dimensions")->GetBool("ShowUnits", false);
 }
 
 

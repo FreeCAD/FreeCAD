@@ -70,7 +70,7 @@ ViewProviderShapeBinder::ViewProviderShapeBinder()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/PartDesign");
     unsigned long shcol = hGrp->GetUnsigned("DefaultDatumColor", 0xFFD70099);
-    App::Color col((uint32_t)shcol);
+    Base::Color col((uint32_t)shcol);
 
     ShapeAppearance.setDiffuseColor(col);
     LineColor.setValue(col);
@@ -138,8 +138,8 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
     App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
 
-    if (getObject()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
-        PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(getObject())->Support, obj, subs);
+    if (getObject()->isDerivedFrom<PartDesign::ShapeBinder>())
+        PartDesign::ShapeBinder::getFilteredReferences(&getObject<PartDesign::ShapeBinder>()->Support, obj, subs);
     else
         return;
 
@@ -157,7 +157,7 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
             TopTools_IndexedMapOfShape eMap;
             TopExp::MapShapes(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_EDGE, eMap);
             originalLineColors = svp->LineColorArray.getValues();
-            std::vector<App::Color> lcolors = originalLineColors;
+            std::vector<Base::Color> lcolors = originalLineColors;
             lcolors.resize(eMap.Extent(), svp->LineColor.getValue());
 
             TopExp::MapShapes(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_FACE, eMap);
@@ -171,13 +171,13 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
                     int idx = std::stoi(e.substr(4)) - 1;
                     assert(idx >= 0);
                     if (idx < static_cast<int>(lcolors.size()))
-                        lcolors[idx] = App::Color(1.0, 0.0, 1.0); // magenta
+                        lcolors[idx] = Base::Color(1.0, 0.0, 1.0); // magenta
                 }
                 else if (e.compare(0, 4, "Face") == 0) {
                     int idx = std::stoi(e.substr(4)) - 1;
                     assert(idx >= 0);
                     if (idx < static_cast<int>(fcolors.size()))
-                        fcolors[idx].diffuseColor = App::Color(1.0, 0.0, 1.0); // magenta
+                        fcolors[idx].diffuseColor = Base::Color(1.0, 0.0, 1.0); // magenta
                 }
             }
             svp->LineColorArray.setValues(lcolors);
@@ -239,7 +239,7 @@ void ViewProviderSubShapeBinder::onChanged(const App::Property* prop) {
     if (prop == &UseBinderStyle
         && (!getObject() || !getObject()->isRestoring()))
     {
-        App::Color shapeColor, lineColor, pointColor;
+        Base::Color shapeColor, lineColor, pointColor;
         int transparency, linewidth;
         if (UseBinderStyle.getValue()) {
             //get the datum coloring scheme
@@ -278,7 +278,7 @@ bool ViewProviderSubShapeBinder::canDropObjectEx(App::DocumentObject*,
 std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject* obj, App::DocumentObject* owner,
     const char* subname, const std::vector<std::string>& elements)
 {
-    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    auto self = getObject<PartDesign::SubShapeBinder>();
     if (!self)
         return {};
     std::map<App::DocumentObject*, std::vector<std::string> > values;
@@ -327,7 +327,7 @@ bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
         updatePlacement(true);
         break;
     case SelectObject: {
-        auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+        auto self = getObject<PartDesign::SubShapeBinder>();
         if (!self || !self->Support.getValue())
             break;
 
@@ -355,7 +355,7 @@ bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
 }
 
 void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
-    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    auto self = getObject<PartDesign::SubShapeBinder>();
     if (!self || !self->Support.getValue())
         return;
 

@@ -51,8 +51,8 @@
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MouseSelection.h>
-#include <Gui/NavigationStyle.h>
-#include <Gui/Selection.h>
+#include <Gui/Navigation/NavigationStyle.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
@@ -151,7 +151,7 @@ void CmdMeshUnion::activated(int)
 
 bool CmdMeshUnion::isActive()
 {
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 2;
+    return getSelection().countObjectsOfType<Mesh::Feature>() == 2;
 }
 
 //--------------------------------------------------------------------------------------
@@ -230,7 +230,7 @@ void CmdMeshDifference::activated(int)
 
 bool CmdMeshDifference::isActive()
 {
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 2;
+    return getSelection().countObjectsOfType<Mesh::Feature>() == 2;
 }
 
 //--------------------------------------------------------------------------------------
@@ -309,7 +309,7 @@ void CmdMeshIntersection::activated(int)
 
 bool CmdMeshIntersection::isActive()
 {
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 2;
+    return getSelection().countObjectsOfType<Mesh::Feature>() == 2;
 }
 
 //--------------------------------------------------------------------------------------
@@ -332,17 +332,17 @@ void CmdMeshImport::activated(int)
 {
     // use current path as default
     QStringList filter;
-    filter << QString::fromLatin1("%1 (*.stl *.ast *.bms *.obj *.off *.iv *.ply *.nas *.bdf)")
+    filter << QStringLiteral("%1 (*.stl *.ast *.bms *.obj *.off *.iv *.ply *.nas *.bdf)")
                   .arg(QObject::tr("All Mesh Files"));
-    filter << QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("Binary STL"));
-    filter << QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL"));
-    filter << QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh"));
-    filter << QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh"));
-    filter << QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format"));
-    filter << QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ASCII"));
-    filter << QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon"));
-    filter << QString::fromLatin1("%1 (*.nas *.bdf)").arg(QObject::tr("NASTRAN"));
-    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
+    filter << QStringLiteral("%1 (*.stl)").arg(QObject::tr("Binary STL"));
+    filter << QStringLiteral("%1 (*.ast)").arg(QObject::tr("ASCII STL"));
+    filter << QStringLiteral("%1 (*.bms)").arg(QObject::tr("Binary Mesh"));
+    filter << QStringLiteral("%1 (*.obj)").arg(QObject::tr("Alias Mesh"));
+    filter << QStringLiteral("%1 (*.off)").arg(QObject::tr("Object File Format"));
+    filter << QStringLiteral("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ASCII"));
+    filter << QStringLiteral("%1 (*.ply)").arg(QObject::tr("Stanford Polygon"));
+    filter << QStringLiteral("%1 (*.nas *.bdf)").arg(QObject::tr("NASTRAN"));
+    filter << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
 
     // Allow multi selection
     QStringList fn = Gui::FileDialog::getOpenFileNames(Gui::getMainWindow(),
@@ -394,25 +394,25 @@ void CmdMeshExport::activated(int)
     // clang-format off
     QString dir = QString::fromUtf8(docObj->Label.getValue());
     QList<QPair<QString, QByteArray> > ext;
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("Binary STL")), "STL");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("ASCII STL")), "AST");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL")), "AST");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh")), "BMS");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh")), "OBJ");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.smf)").arg(QObject::tr("Simple Model Format")), "SMF");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format")), "OFF");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii")), "IV");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.x3d)").arg(QObject::tr("X3D Extensible 3D")), "X3D");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.x3dz)").arg(QObject::tr("Compressed X3D")), "X3DZ");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.xhtml)").arg(QObject::tr("WebGL/X3D")), "X3DOM");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon")), "PLY");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrl *.vrml)").arg(QObject::tr("VRML V2.0")), "VRML");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrz)").arg(QObject::tr("Compressed VRML 2.0")), "WRZ");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.nas *.bdf)").arg(QObject::tr("Nastran")), "NAS");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.py)").arg(QObject::tr("Python module def")), "PY");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.asy)").arg(QObject::tr("Asymptote Format")), "ASY");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.3mf)").arg(QObject::tr("3D Manufacturing Format")), "3MF");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files")), ""); // Undefined
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.stl)").arg(QObject::tr("Binary STL")), "STL");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.stl)").arg(QObject::tr("ASCII STL")), "AST");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.ast)").arg(QObject::tr("ASCII STL")), "AST");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.bms)").arg(QObject::tr("Binary Mesh")), "BMS");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.obj)").arg(QObject::tr("Alias Mesh")), "OBJ");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.smf)").arg(QObject::tr("Simple Model Format")), "SMF");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.off)").arg(QObject::tr("Object File Format")), "OFF");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii")), "IV");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.x3d)").arg(QObject::tr("X3D Extensible 3D")), "X3D");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.x3dz)").arg(QObject::tr("Compressed X3D")), "X3DZ");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.xhtml)").arg(QObject::tr("WebGL/X3D")), "X3DOM");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.ply)").arg(QObject::tr("Stanford Polygon")), "PLY");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.wrl *.vrml)").arg(QObject::tr("VRML V2.0")), "VRML");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.wrz)").arg(QObject::tr("Compressed VRML 2.0")), "WRZ");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.nas *.bdf)").arg(QObject::tr("Nastran")), "NAS");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.py)").arg(QObject::tr("Python module def")), "PY");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.asy)").arg(QObject::tr("Asymptote Format")), "ASY");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.3mf)").arg(QObject::tr("3D Manufacturing Format")), "3MF");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files")), ""); // Undefined
     // clang-format on
     QStringList filter;
     for (const auto& it : ext) {
@@ -445,7 +445,7 @@ void CmdMeshExport::activated(int)
 
 bool CmdMeshExport::isActive()
 {
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
+    return getSelection().countObjectsOfType<Mesh::Feature>() == 1;
 }
 
 //--------------------------------------------------------------------------------------
@@ -503,8 +503,7 @@ void CmdMeshFromGeometry::activated(int)
             }
 
             // create a mesh feature and assign the mesh
-            Mesh::Feature* mf =
-                static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature", "Mesh"));
+            Mesh::Feature* mf = doc->addObject<Mesh::Feature>("Mesh");
             mf->Mesh.setValue(mesh.getKernel());
         }
     }
@@ -516,7 +515,7 @@ bool CmdMeshFromGeometry::isActive()
     if (!doc) {
         return false;
     }
-    return getSelection().countObjectsOfType(App::GeoFeature::getClassTypeId()) >= 1;
+    return getSelection().countObjectsOfType<App::GeoFeature>() >= 1;
 }
 
 //===========================================================================
@@ -598,7 +597,7 @@ void CmdMeshVertexCurvature::activated(int)
 bool CmdMeshVertexCurvature::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
+    return getSelection().countObjectsOfType<Mesh::Feature>() > 0;
 }
 
 //--------------------------------------------------------------------------------------
@@ -636,12 +635,12 @@ void CmdMeshVertexCurvatureInfo::activated(int)
 bool CmdMeshVertexCurvatureInfo::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Mesh::Curvature::getClassTypeId()) == 0) {
+    if (!doc || doc->countObjectsOfType<Mesh::Curvature>() == 0) {
         return false;
     }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
@@ -696,12 +695,12 @@ void CmdMeshPolySegm::activated(int)
 bool CmdMeshPolySegm::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() == 0) {
         return false;
     }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
@@ -744,12 +743,12 @@ void CmdMeshAddFacet::activated(int)
 bool CmdMeshAddFacet::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) != 1) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() != 1) {
         return false;
     }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
@@ -809,12 +808,12 @@ void CmdMeshPolyCut::activated(int)
 bool CmdMeshPolyCut::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() == 0) {
         return false;
     }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
@@ -874,12 +873,12 @@ void CmdMeshPolyTrim::activated(int)
 bool CmdMeshPolyTrim::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() == 0) {
         return false;
     }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
@@ -913,11 +912,7 @@ void CmdMeshTrimByPlane::activated(int)
 bool CmdMeshTrimByPlane::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) != 1) {
-        return false;
-    }
-
-    return true;
+    return getSelection().countObjectsOfType<Mesh::Feature>() == 1;
 }
 
 //--------------------------------------------------------------------------------------
@@ -946,11 +941,7 @@ void CmdMeshSectionByPlane::activated(int)
 bool CmdMeshSectionByPlane::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) != 1) {
-        return false;
-    }
-
-    return true;
+    return getSelection().countObjectsOfType<Mesh::Feature>() == 1;
 }
 
 //--------------------------------------------------------------------------------------
@@ -978,7 +969,7 @@ void CmdMeshCrossSections::activated(int)
 
 bool CmdMeshCrossSections::isActive()
 {
-    return (Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0
+    return (Gui::Selection().countObjectsOfType<Mesh::Feature>() > 0
             && !Gui::Control().activeDialog());
 }
 
@@ -1026,12 +1017,12 @@ void CmdMeshPolySplit::activated(int)
 bool CmdMeshPolySplit::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() == 0) {
         return false;
     }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
@@ -1078,7 +1069,7 @@ void CmdMeshEvaluation::activated(int)
 bool CmdMeshEvaluation::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0) {
+    if (!doc || doc->countObjectsOfType<Mesh::Feature>() == 0) {
         return false;
     }
     return true;
@@ -1117,12 +1108,12 @@ void CmdMeshEvaluateFacet::activated(int)
 bool CmdMeshEvaluateFacet::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0) {
+    if (!doc || doc->countObjectsOfType<Mesh::Feature>() == 0) {
         return false;
     }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
@@ -1160,7 +1151,7 @@ bool CmdMeshRemoveComponents::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     App::Document* doc = getDocument();
-    if (!(doc && doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0)) {
+    if (!(doc && doc->countObjectsOfType<Mesh::Feature>() > 0)) {
         return false;
     }
     Gui::Document* viewDoc = Gui::Application::Instance->getDocument(doc);
@@ -1209,7 +1200,7 @@ void CmdMeshRemeshGmsh::activated(int)
 
 bool CmdMeshRemeshGmsh::isActive()
 {
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
+    return getSelection().countObjectsOfType<Mesh::Feature>() == 1;
 }
 
 //--------------------------------------------------------------------------------------
@@ -1245,7 +1236,7 @@ void CmdMeshRemoveCompByHand::activated(int)
 bool CmdMeshRemoveCompByHand::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0) {
+    if (!doc || doc->countObjectsOfType<Mesh::Feature>() == 0) {
         return false;
     }
 
@@ -1297,7 +1288,7 @@ void CmdMeshEvaluateSolid::activated(int)
 bool CmdMeshEvaluateSolid::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
+    return getSelection().countObjectsOfType<Mesh::Feature>() == 1;
 }
 
 //--------------------------------------------------------------------------------------
@@ -1326,7 +1317,7 @@ bool CmdMeshSmoothing::isActive()
     if (Gui::Control().activeDialog()) {
         return false;
     }
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
+    return getSelection().countObjectsOfType<Mesh::Feature>() > 0;
 }
 
 //--------------------------------------------------------------------------------------
@@ -1358,7 +1349,7 @@ bool CmdMeshDecimating::isActive()
     }
 #endif
     // Check for the selected mesh feature (all Mesh types)
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
+    return getSelection().countObjectsOfType<Mesh::Feature>() > 0;
 }
 
 //--------------------------------------------------------------------------------------
@@ -1394,7 +1385,7 @@ void CmdMeshHarmonizeNormals::activated(int)
 bool CmdMeshHarmonizeNormals::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
+    return getSelection().countObjectsOfType<Mesh::Feature>() > 0;
 }
 
 //--------------------------------------------------------------------------------------
@@ -1430,7 +1421,7 @@ void CmdMeshFlipNormals::activated(int)
 bool CmdMeshFlipNormals::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
+    return getSelection().countObjectsOfType<Mesh::Feature>() > 0;
 }
 
 //--------------------------------------------------------------------------------------
@@ -1467,7 +1458,7 @@ void CmdMeshBoundingBox::activated(int)
 
         QString bound = qApp->translate("Mesh_BoundingBox", "Boundings of %1:")
                             .arg(QString::fromUtf8(it->Label.getValue()));
-        bound += QString::fromLatin1("\n\nMin=<%1,%2,%3>\n\nMax=<%4,%5,%6>")
+        bound += QStringLiteral("\n\nMin=<%1,%2,%3>\n\nMax=<%4,%5,%6>")
                      .arg(box.MinX)
                      .arg(box.MinY)
                      .arg(box.MinZ)
@@ -1482,7 +1473,7 @@ void CmdMeshBoundingBox::activated(int)
 bool CmdMeshBoundingBox::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
+    return getSelection().countObjectsOfType<Mesh::Feature>() == 1;
 }
 
 //--------------------------------------------------------------------------------------
@@ -1565,7 +1556,7 @@ void CmdMeshFillupHoles::activated(int)
 bool CmdMeshFillupHoles::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
+    return getSelection().countObjectsOfType<Mesh::Feature>() > 0;
 }
 
 //--------------------------------------------------------------------------------------
@@ -1604,12 +1595,12 @@ void CmdMeshFillInteractiveHole::activated(int)
 bool CmdMeshFillInteractiveHole::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0) {
+    if (!doc || doc->countObjectsOfType<Mesh::Feature>() == 0) {
         return false;
     }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
@@ -1648,7 +1639,7 @@ bool CmdMeshSegmentation::isActive()
     if (Gui::Control().activeDialog()) {
         return false;
     }
-    return Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Mesh::Feature>() == 1;
 }
 
 //--------------------------------------------------------------------------------------
@@ -1684,7 +1675,7 @@ bool CmdMeshSegmentationBestFit::isActive()
     if (Gui::Control().activeDialog()) {
         return false;
     }
-    return Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Mesh::Feature>() == 1;
 }
 
 //--------------------------------------------------------------------------------------
@@ -1711,8 +1702,7 @@ void CmdMeshMerge::activated(int)
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Mesh merge"));
-    Mesh::Feature* pcFeature =
-        static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Mesh"));
+    Mesh::Feature* pcFeature = pcDoc->addObject<Mesh::Feature>("Mesh");
     Mesh::MeshObject* newMesh = pcFeature->Mesh.startEditing();
     std::vector<App::DocumentObject*> objs =
         Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
@@ -1730,7 +1720,7 @@ void CmdMeshMerge::activated(int)
 
 bool CmdMeshMerge::isActive()
 {
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) >= 2;
+    return getSelection().countObjectsOfType<Mesh::Feature>() >= 2;
 }
 
 //--------------------------------------------------------------------------------------
@@ -1767,8 +1757,7 @@ void CmdMeshSplitComponents::activated(int)
             std::unique_ptr<MeshObject> kernel(mesh.meshFromSegment(comp));
             kernel->setTransform(mesh.getTransform());
 
-            Mesh::Feature* feature =
-                static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Component"));
+            Mesh::Feature* feature = pcDoc->addObject<Mesh::Feature>("Component");
             feature->Mesh.setValuePtr(kernel.release());
         }
     }
@@ -1779,7 +1768,7 @@ void CmdMeshSplitComponents::activated(int)
 
 bool CmdMeshSplitComponents::isActive()
 {
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
+    return getSelection().countObjectsOfType<Mesh::Feature>() == 1;
 }
 
 //--------------------------------------------------------------------------------------
@@ -1837,7 +1826,7 @@ void CmdMeshScale::activated(int)
 
 bool CmdMeshScale::isActive()
 {
-    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
+    return getSelection().countObjectsOfType<Mesh::Feature>() > 0;
 }
 
 

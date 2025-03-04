@@ -23,139 +23,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <vector>
+#include <string>
 #include <sstream>
-#include <locale>
-#include <iostream>
 #include <QDateTime>
 #endif
 
 #include "PyExport.h"
 #include "Interpreter.h"
 #include "Tools.h"
-
-namespace Base
-{
-struct string_comp
-{
-    // s1 and s2 must be numbers represented as string
-    bool operator()(const std::string& s1, const std::string& s2)
-    {
-        if (s1.size() < s2.size()) {
-            return true;
-        }
-        if (s1.size() > s2.size()) {
-            return false;
-        }
-
-        return s1 < s2;
-    }
-    static std::string increment(const std::string& s)
-    {
-        std::string n = s;
-        int addcarry = 1;
-        for (std::string::reverse_iterator it = n.rbegin(); it != n.rend(); ++it) {
-            if (addcarry == 0) {
-                break;
-            }
-            int d = *it - 48;
-            d = d + addcarry;
-            *it = ((d % 10) + 48);
-            addcarry = d / 10;
-        }
-        if (addcarry > 0) {
-            std::string b;
-            b.resize(1);
-            b[0] = addcarry + 48;
-            n = b + n;
-        }
-
-        return n;
-    }
-};
-
-class unique_name
-{
-public:
-    unique_name(std::string name, const std::vector<std::string>& names, int padding)
-        : base_name {std::move(name)}
-        , padding {padding}
-    {
-        removeDigitsFromEnd();
-        findHighestSuffix(names);
-    }
-
-    std::string get() const
-    {
-        return appendSuffix();
-    }
-
-private:
-    void removeDigitsFromEnd()
-    {
-        std::string::size_type pos = base_name.find_last_not_of("0123456789");
-        if (pos != std::string::npos && (pos + 1) < base_name.size()) {
-            num_suffix = base_name.substr(pos + 1);
-            base_name.erase(pos + 1);
-        }
-    }
-
-    void findHighestSuffix(const std::vector<std::string>& names)
-    {
-        for (const auto& name : names) {
-            if (name.substr(0, base_name.length()) == base_name) {  // same prefix
-                std::string suffix(name.substr(base_name.length()));
-                if (!suffix.empty()) {
-                    std::string::size_type pos = suffix.find_first_not_of("0123456789");
-                    if (pos == std::string::npos) {
-                        num_suffix = std::max<std::string>(num_suffix, suffix, Base::string_comp());
-                    }
-                }
-            }
-        }
-    }
-
-    std::string appendSuffix() const
-    {
-        std::stringstream str;
-        str << base_name;
-        if (padding > 0) {
-            str.fill('0');
-            str.width(padding);
-        }
-        str << Base::string_comp::increment(num_suffix);
-        return str.str();
-    }
-
-private:
-    std::string num_suffix;
-    std::string base_name;
-    int padding;
-};
-
-}  // namespace Base
-
-std::string
-Base::Tools::getUniqueName(const std::string& name, const std::vector<std::string>& names, int pad)
-{
-    if (names.empty()) {
-        return name;
-    }
-
-    Base::unique_name unique(name, names, pad);
-    return unique.get();
-}
-
-std::string Base::Tools::addNumber(const std::string& name, unsigned int num, int d)
-{
-    std::stringstream str;
-    str << name;
-    if (d > 0) {
-        str.fill('0');
-        str.width(d);
-    }
-    str << num;
-    return str.str();
-}
 
 std::string Base::Tools::getIdentifier(const std::string& name)
 {
@@ -392,4 +268,18 @@ std::vector<std::string> Base::Tools::splitSubName(const std::string& subname)
     }
 
     return subNames;
+}
+
+// ------------------------------------------------------------------------------------------------
+
+void Base::ZipTools::rewrite(const std::string& source, const std::string& target)
+{
+    Base::PyGILStateLocker lock;
+    PyObject* module = PyImport_ImportModule("freecad.utils_zip");
+    if (!module) {
+        throw Py::Exception();
+    }
+
+    Py::Module commands(module, true);
+    commands.callMemberFunction("rewrite", Py::TupleN(Py::String(source), Py::String(target)));
 }

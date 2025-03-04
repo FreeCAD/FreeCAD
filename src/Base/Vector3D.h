@@ -64,15 +64,15 @@ template<>
 struct float_traits<float>
 {
     using float_type = float;
-    static inline float_type pi()
+    [[nodiscard]] static constexpr float_type pi()
     {
         return F_PI;
     }
-    static inline float_type epsilon()
+    [[nodiscard]] static constexpr float_type epsilon()
     {
         return FLT_EPSILON;
     }
-    static inline float_type maximum()
+    [[nodiscard]] static constexpr float_type maximum()
     {
         return FLT_MAX;
     }
@@ -82,15 +82,15 @@ template<>
 struct float_traits<double>
 {
     using float_type = double;
-    static inline float_type pi()
+    [[nodiscard]] static constexpr float_type pi()
     {
         return D_PI;
     }
-    static inline float_type epsilon()
+    [[nodiscard]] static constexpr float_type epsilon()
     {
         return DBL_EPSILON;
     }
-    static inline float_type maximum()
+    [[nodiscard]] static constexpr float_type maximum()
     {
         return DBL_MAX;
     }
@@ -101,9 +101,13 @@ template<class float_type>
 class Vector3
 {
 public:
+    static const Vector3 UnitX;
+    static const Vector3 UnitY;
+    static const Vector3 UnitZ;
+
     using num_type = float_type;
     using traits_type = float_traits<num_type>;
-    static inline num_type epsilon()
+    [[nodiscard]] static constexpr num_type epsilon()
     {
         return traits_type::epsilon();
     }
@@ -124,46 +128,46 @@ public:
     /** @name Operator */
     //@{
     /// Returns a reference to a coordinate. \a usIndex must be in the range [0,2]
-    float_type& operator[](unsigned short usIndex);
+    [[nodiscard]] float_type& operator[](unsigned short usIndex);
     /// Returns a const reference to a coordinate. \a usIndex must be in the range [0,2]
-    const float_type& operator[](unsigned short usIndex) const;
+    [[nodiscard]] const float_type& operator[](unsigned short usIndex) const;
     /// Vector addition
-    Vector3 operator+(const Vector3<float_type>& rcVct) const;
-    Vector3 operator&(const Vector3<float_type>& rcVct) const;
+    [[nodiscard]] Vector3 operator+(const Vector3<float_type>& rcVct) const;
+    [[nodiscard]] Vector3 operator&(const Vector3<float_type>& rcVct) const;
     /// Vector subtraction
-    Vector3 operator-(const Vector3<float_type>& rcVct) const;
+    [[nodiscard]] Vector3 operator-(const Vector3<float_type>& rcVct) const;
     /// Negative vector
-    Vector3 operator-() const;
+    [[nodiscard]] Vector3 operator-() const;
     /// Vector summation
     Vector3& operator+=(const Vector3<float_type>& rcVct);
     /// Vector subtraction
     Vector3& operator-=(const Vector3<float_type>& rcVct);
     /// Vector scaling
-    Vector3 operator*(float_type fScale) const;
-    Vector3 operator/(float_type fDiv) const;
+    [[nodiscard]] Vector3 operator*(float_type fScale) const;
+    [[nodiscard]] Vector3 operator/(float_type fDiv) const;
     Vector3& operator*=(float_type fScale);
     Vector3& operator/=(float_type fDiv);
     /// Assignment
     Vector3& operator=(const Vector3<float_type>& v) = default;
     Vector3& operator=(Vector3<float_type>&& v) noexcept = default;
     /// Scalar product
-    float_type operator*(const Vector3<float_type>& rcVct) const;
+    [[nodiscard]] float_type operator*(const Vector3<float_type>& rcVct) const;
     /// Scalar product
-    float_type Dot(const Vector3<float_type>& rcVct) const;
+    [[nodiscard]] float_type Dot(const Vector3<float_type>& rcVct) const;
     /// Cross product
-    Vector3 operator%(const Vector3<float_type>& rcVct) const;
+    [[nodiscard]] Vector3 operator%(const Vector3<float_type>& rcVct) const;
     /// Cross product
-    Vector3 Cross(const Vector3<float_type>& rcVct) const;
+    [[nodiscard]] Vector3 Cross(const Vector3<float_type>& rcVct) const;
 
     /// Comparing for inequality
-    bool operator!=(const Vector3<float_type>& rcVct) const;
+    [[nodiscard]] bool operator!=(const Vector3<float_type>& rcVct) const;
     /// Comparing for equality
-    bool operator==(const Vector3<float_type>& rcVct) const;
+    [[nodiscard]] bool operator==(const Vector3<float_type>& rcVct) const;
     //@}
 
     /// Check if Vector is on a line segment
-    bool IsOnLineSegment(const Vector3<float_type>& startVct,
-                         const Vector3<float_type>& endVct) const;
+    [[nodiscard]] bool IsOnLineSegment(const Vector3<float_type>& startVct,
+                                       const Vector3<float_type>& endVct) const;
 
     /** @name Modification */
     //@{
@@ -185,18 +189,18 @@ public:
     /** @name Mathematics */
     //@{
     /// Length of the vector.
-    float_type Length() const;
+    [[nodiscard]] float_type Length() const;
     /// Squared length of the vector.
-    float_type Sqr() const;
+    [[nodiscard]] float_type Sqr() const;
     /// Set length to 1.
     Vector3& Normalize();
     /// Checks whether this is the null vector
-    bool IsNull() const;
+    [[nodiscard]] bool IsNull() const;
     /// Get angle between both vectors. The returned value lies in the interval [0,pi].
-    float_type GetAngle(const Vector3& rcVect) const;
+    [[nodiscard]] float_type GetAngle(const Vector3& rcVect) const;
     /// Get oriented angle between both vectors using a normal. The returned value lies in the
     /// interval [0,2*pi].
-    float_type GetAngleOriented(const Vector3& rcVect, const Vector3& norm) const;
+    [[nodiscard]] float_type GetAngleOriented(const Vector3& rcVect, const Vector3& norm) const;
     /** Transforms this point to the coordinate system defined by origin \a rclBase,
      * vector \a vector rclDirX and vector \a vector rclDirY.
      * \note \a rclDirX must be perpendicular to \a rclDirY, i.e. \a rclDirX * \a rclDirY = 0..
@@ -212,13 +216,13 @@ public:
      * If the distance to point \a rclPnt is within the tolerance \a tol both points are considered
      * equal.
      */
-    bool IsEqual(const Vector3& rclPnt, float_type tol) const;
+    [[nodiscard]] bool IsEqual(const Vector3& rclPnt, float_type tol) const;
     /// Returns true if two vectors are parallel within the tol
     /// If one of the vectors is the null vector then false is returned.
-    bool IsParallel(const Vector3& rclDir, float_type tol) const;
+    [[nodiscard]] bool IsParallel(const Vector3& rclDir, float_type tol) const;
     /// Returns true if two vectors are normal within the tol
     /// If one of the vectors is the null vector then false is returned.
-    bool IsNormal(const Vector3& rclDir, float_type tol) const;
+    [[nodiscard]] bool IsNormal(const Vector3& rclDir, float_type tol) const;
     /// Projects this point onto the plane given by the base \a rclBase and the normal \a rclNorm.
     Vector3& ProjectToPlane(const Vector3& rclBase, const Vector3& rclNorm);
     /**
@@ -239,28 +243,34 @@ public:
      * Get the perpendicular of this point to the line defined by rclBase and rclDir.
      * Note: Do not mix up this method with ProjectToLine.
      */
-    Vector3 Perpendicular(const Vector3& rclBase, const Vector3& rclDir) const;
+    [[nodiscard]] Vector3 Perpendicular(const Vector3& rclBase, const Vector3& rclDir) const;
     /** Computes the distance to the given plane. Depending on the side this point is located
      * the distance can also be negative. The distance is positive if the point is at the same
      * side the plane normal points to, negative otherwise.
      */
-    float_type DistanceToPlane(const Vector3& rclBase, const Vector3& rclNorm) const;
+    [[nodiscard]] float_type DistanceToPlane(const Vector3& rclBase, const Vector3& rclNorm) const;
     /// Computes the distance from this point to the line given by \a rclBase and \a rclDirect.
-    float_type DistanceToLine(const Vector3& rclBase, const Vector3& rclDirect) const;
+    [[nodiscard]] float_type DistanceToLine(const Vector3& rclBase, const Vector3& rclDirect) const;
     /** Computes the vector from this point to the point on the line segment with the shortest
      * distance. The line segment is defined by \a rclP1 and \a rclP2.
      * Note: If the projection of this point is outside the segment then the shortest distance
      * to \a rclP1 or \a rclP2 is computed.
      */
-    Vector3 DistanceToLineSegment(const Vector3& rclP1, const Vector3& rclP2) const;
+    [[nodiscard]] Vector3 DistanceToLineSegment(const Vector3& rclP1, const Vector3& rclP2) const;
     //@}
 };
 
-// global functions
+template<class float_type>
+Vector3<float_type> const Vector3<float_type>::UnitX(1.0, 0.0, 0.0);
+template<class float_type>
+Vector3<float_type> const Vector3<float_type>::UnitY(0.0, 1.0, 0.0);
+template<class float_type>
+Vector3<float_type> const Vector3<float_type>::UnitZ(0.0, 0.0, 1.0);
 
 /// Returns the distance between two points
 template<class float_type>
-inline float_type Distance(const Vector3<float_type>& v1, const Vector3<float_type>& v2)
+[[nodiscard]] inline float_type Distance(const Vector3<float_type>& v1,
+                                         const Vector3<float_type>& v2)
 {
     float_type x = v1.x - v2.x;
     float_type y = v1.y - v2.y;
@@ -270,7 +280,8 @@ inline float_type Distance(const Vector3<float_type>& v1, const Vector3<float_ty
 
 /// Returns the squared distance between two points
 template<class float_type>
-inline float_type DistanceP2(const Vector3<float_type>& v1, const Vector3<float_type>& v2)
+[[nodiscard]] inline float_type DistanceP2(const Vector3<float_type>& v1,
+                                           const Vector3<float_type>& v2)
 {
     float_type x = v1.x - v2.x;
     float_type y = v1.y - v2.y;
@@ -280,13 +291,14 @@ inline float_type DistanceP2(const Vector3<float_type>& v1, const Vector3<float_
 
 /// Multiplication of scalar with vector.
 template<class float_type>
-inline Vector3<float_type> operator*(float_type fFac, const Vector3<float_type>& rcVct)
+[[nodiscard]] inline Vector3<float_type> operator*(float_type fFac,
+                                                   const Vector3<float_type>& rcVct)
 {
     return Vector3<float_type>(rcVct.x * fFac, rcVct.y * fFac, rcVct.z * fFac);
 }
 
 template<class Pr1, class Pr2>
-inline Vector3<Pr1> toVector(const Vector3<Pr2>& v)
+[[nodiscard]] inline Vector3<Pr1> toVector(const Vector3<Pr2>& v)
 {
     return Vector3<Pr1>(static_cast<Pr1>(v.x), static_cast<Pr1>(v.y), static_cast<Pr1>(v.z));
 }

@@ -169,7 +169,7 @@ QByteArray PythonOnlineHelp::loadHelpPage(const QString& filename) const
 QByteArray PythonOnlineHelp::fileNotFound() const
 {
     const int pageNotFound = 404;
-    QString contentType = QString::fromLatin1(
+    QString contentType = QStringLiteral(
         "text/html\r\n"
         "\r\n"
         "<html><head><title>Error</title></head>"
@@ -189,11 +189,11 @@ QByteArray PythonOnlineHelp::fileNotFound() const
         "</html>"
         "\r\n");
 
-    QString header = QString::fromLatin1("content-type: %1\r\n").arg(contentType);
+    QString header = QStringLiteral("content-type: %1\r\n").arg(contentType);
 
     QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
     QString httpResponseHeader =
-        http.arg(pageNotFound).arg(QString::fromLatin1("File not found"), header);
+        http.arg(pageNotFound).arg(QStringLiteral("File not found"), header);
 
     QByteArray res = httpResponseHeader.toLatin1();
     return res;
@@ -203,7 +203,7 @@ QByteArray PythonOnlineHelp::loadFailed(const QString& error) const
 {
     const int pageNotFound = 404;
     QString contentType =
-        QString::fromLatin1(
+        QStringLiteral(
             "text/html\r\n"
             "\r\n"
             "<html><head><title>Error</title></head>"
@@ -222,11 +222,11 @@ QByteArray PythonOnlineHelp::loadFailed(const QString& error) const
             "\r\n")
             .arg(error);
 
-    QString header = QString::fromLatin1("content-type: %1\r\n").arg(contentType);
+    QString header = QStringLiteral("content-type: %1\r\n").arg(contentType);
 
     QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
     QString httpResponseHeader =
-        http.arg(pageNotFound).arg(QString::fromLatin1("File not found"), header);
+        http.arg(pageNotFound).arg(QStringLiteral("File not found"), header);
 
     QByteArray res = httpResponseHeader.toLatin1();
     return res;
@@ -322,10 +322,10 @@ StdCmdPythonHelp::StdCmdPythonHelp()
     , server(nullptr)
 {
     sGroup = "Tools";
-    sMenuText = QT_TR_NOOP("Automatic Python modules documentation");
-    sToolTipText = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
+    sMenuText = QT_TR_NOOP("Automatic Python &Modules Documentation");
+    sToolTipText = QT_TR_NOOP("Opens the Python Modules documentation");
     sWhatsThis = "Std_PythonHelp";
-    sStatusTip = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
+    sStatusTip = sToolTipText;
     sPixmap = "applications-python";
 }
 
@@ -364,7 +364,7 @@ void StdCmdPythonHelp::activated(int iMsg)
 
 bool Gui::OpenURLInBrowser(const char* URL)
 {
-    // The webbrowser Python module allows to start the system browser in an OS-independent way
+    // The webbrowser Python module allows one to start the system browser in an OS-independent way
     Base::PyGILStateLocker lock;
     try {
         PyObject* module = PyImport_ImportModule("webbrowser");

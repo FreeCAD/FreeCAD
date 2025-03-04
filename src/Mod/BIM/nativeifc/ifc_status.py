@@ -4,26 +4,28 @@
 # *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License (GPL)            *
-# *   as published by the Free Software Foundation; either version 3 of     *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
+# *   GNU Library General Public License for more details.                  *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
 """This contains nativeifc status widgets and functionality"""
 
 
+import os
+import csv
 import FreeCAD
 import FreeCADGui
 
@@ -56,6 +58,169 @@ def set_status_widget(statuswidget):
     lock_button.setChecked(checked)
     on_toggle_lock(checked, noconvert=True)
     lock_button.triggered.connect(on_toggle_lock)
+    set_properties_editor(statuswidget)
+
+
+def set_properties_editor(statuswidget):
+    """Adds additional buttons to the properties editor"""
+
+    if hasattr(statuswidget, "propertybuttons"):
+        statuswidget.propertybuttons.show()
+    else:
+        from PySide import QtCore, QtGui  # lazy loading
+
+        mw = FreeCADGui.getMainWindow()
+        editor = mw.findChild(QtGui.QTabWidget,"propertyTab")
+        if editor:
+            pTabCornerWidget = QtGui.QWidget()
+            pButton1 = QtGui.QToolButton(pTabCornerWidget)
+            pButton1.setText("")
+            pButton1.setToolTip(translate("BIM","Add IFC property..."))
+            pButton1.setIcon(QtGui.QIcon(":/icons/IFC.svg"))
+            pButton1.clicked.connect(on_add_property)
+            pButton2 = QtGui.QToolButton(pTabCornerWidget)
+            pButton2.setText("")
+            pButton2.setToolTip(translate("BIM","Add standard IFC Property Set..."))
+            pButton2.setIcon(QtGui.QIcon(":/icons/BIM_IfcProperties.svg"))
+            pButton2.clicked.connect(on_add_pset)
+            pHLayout = QtGui.QHBoxLayout(pTabCornerWidget)
+            pHLayout.addWidget(pButton1)
+            pHLayout.addWidget(pButton2)
+            pHLayout.setSpacing(2)
+            pHLayout.setContentsMargins(2, 2, 0, 0)
+            pHLayout.insertStretch(0)
+            editor.setCornerWidget(pTabCornerWidget, QtCore.Qt.BottomRightCorner)
+            statuswidget.propertybuttons = pTabCornerWidget
+            QtCore.QTimer.singleShot(0,pTabCornerWidget.show)
+
+
+def on_add_property():
+    """When the 'add property' button is clicked"""
+
+    sel = FreeCADGui.Selection.getSelection()
+    if not sel:
+        return
+    from PySide import QtCore, QtGui  # lazy loading
+    from . import ifc_psets
+    obj = sel[0]
+    psets = list(set([obj.getGroupOfProperty(p) for p in obj.PropertiesList]))
+    psets = [p for p in psets if p]
+    psets = [p for p in psets if p not in ["Base", "IFC", "Geometry"]]
+    mw = FreeCADGui.getMainWindow()
+    editor = mw.findChild(QtGui.QTabWidget,"propertyTab")
+    pset = None
+    if editor:
+        wid = editor.currentWidget()
+        if wid and wid.objectName() == "propertyEditorData":
+            if wid.currentIndex().parent():
+                pset = wid.currentIndex().parent().data()
+            else:
+                pset = wid.currentIndex().data()
+    form = FreeCADGui.PySideUic.loadUi(":/ui/dialogAddProperty.ui")
+    # center the dialog over FreeCAD window
+    form.move(mw.frameGeometry().topLeft() + mw.rect().center() - form.rect().center())
+    form.field_pset.clear()
+    form.field_pset.addItems(psets)
+    if pset and (pset in psets):
+        form.field_pset.setCurrentIndex(psets.index(pset))
+    # TODO check for name duplicates while typing
+    # execute
+    result = form.exec_()
+    if not result:
+        return
+    pname = form.field_name.text()
+    if pname in obj.PropertiesList:
+        print("DEBUG: property already exists",pname)
+        return
+    pset = form.field_pset.currentText()
+    if not pset:
+        # TODO disable the OK button if empty
+        t = translate("BIM","No Property set provided")
+        FreeCAD.Console.PrintError(t+"\n")
+    ptype = form.field_type.currentIndex()
+    ptype = ["IfcLabel", "IfcBoolean",
+             "IfcInteger", "IfcReal",
+             "IfcLengthMeasure", "IfcAreaMeasure"][ptype]
+    fctype = ifc_psets.get_freecad_type(ptype)
+    FreeCAD.ActiveDocument.openTransaction(translate("BIM","add property"))
+    for obj in sel:
+        obj.addProperty(fctype, pname, pset, ptype+":"+pname)
+        ifc_psets.edit_pset(obj, pname, force=True)
+    FreeCAD.ActiveDocument.commitTransaction()
+
+
+def on_add_pset():
+    """When the 'add pset' button is pressed"""
+
+    def read_csv(csvfile):
+        result = {}
+        if os.path.exists(csvfile):
+            with open(csvfile, "r") as f:
+                reader = csv.reader(f, delimiter=";")
+                for row in reader:
+                    result[row[0]] = row[1:]
+        return result
+
+    def get_fcprop(ifcprop):
+        if ifcprop == "IfcLengthMeasure":
+            return "App::PropertyDistance"
+        elif ifcprop == "IfcPositiveLengthMeasure":
+            return "App::PropertyLength"
+        elif ifcprop in ["IfcBoolean", "IfcLogical"]:
+            return "App::PropertyBool"
+        elif ifcprop == "IfcInteger":
+            return "App::PropertyInteger"
+        elif ifcprop == "IfcReal":
+            return "App::PropertyFloat"
+        elif ifcprop == "IfcAreaMeasure":
+            return "App::PropertyArea"
+        return "App::PropertyString"
+
+    sel = FreeCADGui.Selection.getSelection()
+    if not sel:
+        return
+    from PySide import QtCore, QtGui  # lazy loading
+    from . import ifc_psets
+    obj = sel[0]
+    mw = FreeCADGui.getMainWindow()
+    # read standard psets
+    psetpath = os.path.join(
+        FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "pset_definitions.csv"
+    )
+    custompath = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "CustomPsets.csv")
+    psetdefs = read_csv(psetpath)
+    psetdefs.update(read_csv(custompath))
+    psetkeys = list(psetdefs.keys())
+    psetkeys.sort()
+    form = FreeCADGui.PySideUic.loadUi(":/ui/dialogAddPSet.ui")
+    # center the dialog over FreeCAD window
+    form.move(mw.frameGeometry().topLeft() + mw.rect().center() - form.rect().center())
+    form.field_pset.clear()
+    form.field_pset.addItems(psetkeys)
+    # execute
+    result = form.exec_()
+    if not result:
+        return
+    pset = form.field_pset.currentText()
+    existing_psets = list(set([obj.getGroupOfProperty(p) for p in obj.PropertiesList]))
+    if pset in existing_psets:
+        t = translate("BIM","Property set already exists")
+        FreeCAD.Console.PrintError(t+": "+pset+"\n")
+        return
+    props = [psetdefs[pset][i:i+2] for i in range(0, len(psetdefs[pset]), 2)]
+    props = [[p[0], p[1]] for p in props]
+    FreeCAD.ActiveDocument.openTransaction(translate("BIM","add property set"))
+    for obj in sel:
+        existing_psets = list(set([obj.getGroupOfProperty(p) for p in obj.PropertiesList]))
+        if pset not in existing_psets:
+            ifc_psets.add_pset(obj, pset)
+        for prop in props:
+            if prop[0] in obj.PropertiesList:
+                t = translate("BIM","Property already exists")
+                FreeCAD.Console.PrintWarning(t+": "+obj.Label+","+prop[0]+"\n")
+            else:
+                obj.addProperty(get_fcprop(prop[1]),prop[0],pset,prop[1]+":"+prop[0])
+    FreeCAD.ActiveDocument.commitTransaction()
 
 
 def on_toggle_lock(checked=None, noconvert=False, setchecked=False):
@@ -83,6 +248,10 @@ def on_activate():
 
     from PySide import QtGui  # lazy import
 
+    # always reset the menu to normal first
+    set_menu(False)
+    if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
+        return
     doc = FreeCAD.ActiveDocument
     if doc and "IfcFilePath" in doc.PropertiesList:
         checked = True
@@ -159,9 +328,11 @@ def set_button(checked=False, setchecked=False):
 def unlock_document():
     """Unlocks the active document"""
 
-    from nativeifc import ifc_tools  # lazy loading
+    from . import ifc_tools  # lazy loading
 
     doc = FreeCAD.ActiveDocument
+    if not doc:
+        return
     if "IfcFilePath" in doc.PropertiesList:
         # this is a locked document
         doc.openTransaction("Unlock document")
@@ -185,12 +356,15 @@ def unlock_document():
 def lock_document():
     """Locks the active document"""
 
-    from nativeifc import ifc_tools  # lazy loading
+    from . import ifc_tools  # lazy loading
     from importers import exportIFC
-    from nativeifc import ifc_geometry
+    from . import ifc_geometry
+    from . import ifc_export
     from PySide import QtCore
 
     doc = FreeCAD.ActiveDocument
+    if not doc:
+        return
     products = []
     spatial = []
     ifcfile = None
@@ -210,7 +384,7 @@ def lock_document():
             if rest:
                 # 1b some objects are outside
                 objs = find_toplevel(rest)
-                prefs, context = ifc_tools.get_export_preferences(ifcfile)
+                prefs, context = ifc_export.get_export_preferences(ifcfile)
                 products = exportIFC.export(objs, ifcfile, preferences=prefs)
                 for product in products.values():
                     if not getattr(product, "ContainedInStructure", None):
@@ -244,15 +418,14 @@ def lock_document():
         elif doc.Objects:
             # 3 there is no project but objects
             doc.openTransaction("Lock document")
-            ifc_tools.convert_document(doc, silent=True)
-            ifcfile = doc.Proxy.ifcfile
             objs = find_toplevel(doc.Objects)
-            prefs, context = ifc_tools.get_export_preferences(ifcfile)
-            exportIFC.export(objs, ifcfile, preferences=prefs)
-            for n in [o.Name for o in doc.Objects]:
+            deletelist = [o.Name for o in doc.Objects]
+            #ifc_export.export_and_convert(objs, doc)
+            ifc_export.direct_conversion(objs, doc)
+            for n in deletelist:
                 if doc.getObject(n):
                     doc.removeObject(n)
-            ifc_tools.create_children(doc, ifcfile, recursive=True)
+            doc.IfcFilePath = ""
             doc.Modified = True
             doc.commitTransaction()
             doc.recompute()
@@ -273,7 +446,7 @@ def lock_document():
             if create:
                 if not ifcfile:
                     ifcfile = doc.Proxy.ifcfile
-                ifc_tools.create_children(doc, recursive=False)
+                ifc_tools.create_children(doc, ifcfile, recursive=False)
 
 
 def find_toplevel(objs):

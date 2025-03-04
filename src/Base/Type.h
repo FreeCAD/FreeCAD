@@ -88,7 +88,7 @@ public:
     ~Type() = default;
 
     /// creates a instance of this type
-    void* createInstance();
+    void* createInstance() const;
     /// Checks whether this type can instantiate
     bool canInstantiate() const;
     /// creates a instance of the named type

@@ -98,9 +98,9 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
 
     d->ui.method->addItem(tr("Automatic"), static_cast<int>(Automatic));
     d->ui.method->addItem(tr("Adaptive"), static_cast<int>(MeshAdapt));
-    d->ui.method->addItem(QString::fromLatin1("Delaunay"), static_cast<int>(Delaunay));
+    d->ui.method->addItem(QStringLiteral("Delaunay"), static_cast<int>(Delaunay));
     d->ui.method->addItem(tr("Frontal"), static_cast<int>(FrontalDelaunay));
-    d->ui.method->addItem(QString::fromLatin1("BAMG"), static_cast<int>(BAMG));
+    d->ui.method->addItem(QStringLiteral("BAMG"), static_cast<int>(BAMG));
     d->ui.method->addItem(tr("Frontal Quad"), static_cast<int>(FrontalDelaunayForQuads));
     d->ui.method->addItem(tr("Parallelograms"), static_cast<int>(PackingOfParallelograms));
     d->ui.method->addItem(tr("Quasi-structured Quad"), static_cast<int>(QuasiStructuredQuad));
@@ -252,8 +252,7 @@ void GmshWidget::finished(int /*exitCode*/, QProcess::ExitStatus exitStatus)
         d->label->close();
     }
 
-    d->ui.labelTime->setText(
-        QString::fromLatin1("%1 %2 ms").arg(tr("Time:")).arg(d->time.elapsed()));
+    d->ui.labelTime->setText(QStringLiteral("%1 %2 ms").arg(tr("Time:")).arg(d->time.elapsed()));
     if (exitStatus == QProcess::NormalExit) {
         loadOutput();
     }
@@ -321,8 +320,9 @@ bool RemeshGmsh::writeProject(QString& inpFile, QString& outFile)
         // Parameters
         int algorithm = meshingAlgorithm();
         double maxSize = getMaxSize();
-        if (maxSize == 0.0)
+        if (maxSize == 0.0) {
             maxSize = 1.0e22;
+        }
         double minSize = getMinSize();
         double angle = getAngle();
         int maxAngle = 120;

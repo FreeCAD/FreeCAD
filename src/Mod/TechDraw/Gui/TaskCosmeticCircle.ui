@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>390</height>
+    <height>409</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -58,10 +58,10 @@
      <item row="1" column="0">
       <widget class="QRadioButton" name="rb2d1">
        <property name="toolTip">
-        <string>Treat the center point as a 2d point within the parent View.  Z coordinate is ignored.</string>
+        <string>Treat the center point as a 2D point within the parent View.  Z coordinate is ignored.</string>
        </property>
        <property name="text">
-        <string>2d Point</string>
+        <string>2D Point</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -74,10 +74,10 @@
      <item row="1" column="1">
       <widget class="QRadioButton" name="rb3d1">
        <property name="toolTip">
-        <string>Treat the center point as a 3d point and project it onto the parent View.</string>
+        <string>Treat the center point as a 3D point and project it onto the parent View.</string>
        </property>
        <property name="text">
-        <string>3d Point</string>
+        <string>3D Point</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -98,12 +98,12 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>X:</string>
+        <string notr="true">X:</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbCenterX">
+      <widget class="Gui::QuantitySpinBox" name="qsbCenterX" native="true">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -112,12 +112,12 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Y:</string>
+        <string notr="true">Y:</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbCenterY">
+      <widget class="Gui::QuantitySpinBox" name="qsbCenterY" native="true">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -126,12 +126,12 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Z:</string>
+        <string notr="true">Z:</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbCenterZ">
+      <widget class="Gui::QuantitySpinBox" name="qsbCenterZ" native="true">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -149,14 +149,14 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbRadius">
+      <widget class="Gui::QuantitySpinBox" name="qsbRadius" native="true">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
-       <property name="value">
+       <property name="value" stdset="0">
         <double>10.000000000000000</double>
        </property>
       </widget>
@@ -166,19 +166,12 @@
    <item>
     <layout class="QGridLayout" name="gridLayout_5" columnstretch="1,0">
      <item row="1" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbStartAngle">
+      <widget class="Gui::QuantitySpinBox" name="qsbStartAngle" native="true">
        <property name="toolTip">
         <string>Start angle (conventional) of arc in degrees.</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>Arc of Circle</string>
        </property>
       </widget>
      </item>
@@ -189,8 +182,18 @@
        </property>
       </widget>
      </item>
+     <item row="3" column="0">
+      <widget class="QCheckBox" name="cbClockwise">
+       <property name="toolTip">
+        <string>Check this box to make an arc from start angle to end angle in a clockwise direction.</string>
+       </property>
+       <property name="text">
+        <string>Clockwise Angle</string>
+       </property>
+      </widget>
+     </item>
      <item row="2" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbEndAngle">
+      <widget class="Gui::QuantitySpinBox" name="qsbEndAngle" native="true">
        <property name="toolTip">
         <string>End angle (conventional) of arc in degrees.</string>
        </property>
@@ -206,13 +209,13 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
-      <widget class="QCheckBox" name="cbClockwise">
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="rbArc">
        <property name="toolTip">
-        <string>Check this box to make an arc from start angle to end angle in a clockwise direction.</string>
+        <string>Select to enter angles and create a circular arc.</string>
        </property>
        <property name="text">
-        <string>Clockwise Angle</string>
+        <string>Arc of Circle</string>
        </property>
       </widget>
      </item>

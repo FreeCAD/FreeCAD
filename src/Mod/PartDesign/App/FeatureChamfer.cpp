@@ -104,6 +104,8 @@ short Chamfer::mustExecute() const
 
 App::DocumentObjectExecReturn *Chamfer::execute()
 {
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
+
     // NOTE: Normally the Base property and the BaseFeature property should point to the same object.
     // The only difference is that the Base property also stores the edges that are to be chamfered
     Part::TopoShape TopShape;
@@ -164,6 +166,9 @@ App::DocumentObjectExecReturn *Chamfer::execute()
                                 TopAbs_SHAPE);
         }
         if (!failed) {
+
+            // store shape before refinement
+            this->rawShape = shape;
             shape = refineShapeIfActive(shape);
             shape = getSolid(shape);
         }

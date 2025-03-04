@@ -32,37 +32,26 @@
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoResetTransform.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #endif
-
-#include <Inventor/nodes/SoResetTransform.h>
 
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
 
 #include "Application.h"
 #include "Document.h"
-#include "SoFCBoundingBox.h"
+#include "Inventor/SoFCBoundingBox.h"
 #include "SoFCSelection.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderGeometryObject.h"
 #include "ViewProviderGeometryObjectPy.h"
 
+#include <Base/Tools.h>
+
 using namespace Gui;
-
-// Helper functions to consistently convert between float and long
-namespace {
-float fromPercent(long value)
-{
-    return std::roundf(value) / 100.0F;
-}
-
-long toPercent(float value)
-{
-    return std::lround(100.0 * value);
-}
-}
 
 PROPERTY_SOURCE(Gui::ViewProviderGeometryObject, Gui::ViewProviderDragger)
 
@@ -71,7 +60,8 @@ const App::PropertyIntegerConstraint::Constraints intPercent = {0, 100, 5};
 ViewProviderGeometryObject::ViewProviderGeometryObject()
 {
     App::Material mat = App::Material::getDefaultAppearance();
-    long initialTransparency = toPercent(mat.transparency);
+
+    long initialTransparency = Base::toPercent(mat.transparency);
 
     static const char* dogroup = "Display Options";
     static const char* sgroup = "Selection";
@@ -92,17 +82,24 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
                       App::Prop_None,
                       "Set if the object is selectable in the 3d view");
 
+    pickStyle = new SoPickStyle();
+    pickStyle->ref();
+    pickStyle->style.setValue(SoPickStyle::SHAPE);
+    pcRoot->insertChild(pickStyle, 1);
     Selectable.setValue(isSelectionEnabled());
 
     pcShapeMaterial = new SoMaterial;
     setCoinAppearance(mat);
     pcShapeMaterial->ref();
+    pcShapeMaterial->setName("ShapeMaterial");
 
     pcBoundingBox = new Gui::SoFCBoundingBox;
     pcBoundingBox->ref();
+    pcBoundingBox->setName("BoundingBox");
 
     pcBoundColor = new SoBaseColor();
     pcBoundColor->ref();
+    pcBoundColor->setName("BoundColor");
 
     sPixmap = "Feature";
 }
@@ -112,6 +109,7 @@ ViewProviderGeometryObject::~ViewProviderGeometryObject()
     pcShapeMaterial->unref();
     pcBoundingBox->unref();
     pcBoundColor->unref();
+    pickStyle->unref();
 }
 
 bool ViewProviderGeometryObject::isSelectionEnabled() const
@@ -132,8 +130,8 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
         setSelectable(Sel);
     }
     else if (prop == &Transparency) {
-        long value = toPercent(ShapeAppearance.getTransparency());
-        float trans = fromPercent(Transparency.getValue());
+        long value = Base::toPercent(ShapeAppearance.getTransparency());
+        float trans = Base::fromPercent(Transparency.getValue());
         if (value != Transparency.getValue()) {
             ShapeAppearance.setTransparency(trans);
         }
@@ -144,7 +142,7 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
         if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange)) {
             getObject()->touch(true);
         }
-        long value = toPercent(ShapeAppearance.getTransparency());
+        long value = Base::toPercent(ShapeAppearance.getTransparency());
         if (value != Transparency.getValue()) {
             Transparency.setValue(value);
         }
@@ -167,14 +165,14 @@ void ViewProviderGeometryObject::attach(App::DocumentObject* pcObj)
 
 void ViewProviderGeometryObject::updateData(const App::Property* prop)
 {
-    if (prop->isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
+    if (prop->isDerivedFrom<App::PropertyComplexGeoData>()) {
         Base::BoundBox3d box =
             static_cast<const App::PropertyComplexGeoData*>(prop)->getBoundingBox();
         pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
         pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
     }
-    else if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
-        auto geometry = dynamic_cast<App::GeoFeature*>(getObject());
+    else if (prop->isDerivedFrom<App::PropertyPlacement>()) {
+        auto geometry = getObject<App::GeoFeature>();
         if (geometry && prop == &geometry->Placement) {
             const App::PropertyComplexGeoData* data = geometry->getPropertyOfGeometry();
             if (data) {
@@ -186,8 +184,7 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
     }
     else if (std::string(prop->getName()) == "ShapeMaterial") {
         // Set the appearance from the material
-        auto geometry = dynamic_cast<App::GeoFeature*>(getObject());
-        if (geometry) {
+        if (auto geometry = getObject<App::GeoFeature>()) {
             /*
              * Change the appearance only if the appearance hasn't been set explicitly. A cached
              * material appearance is used to see if the current appearance matches the last
@@ -298,6 +295,7 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
         blue = ((bbcol >> 8) & 0xff) / 255.0F;
 
         pcBoundSwitch = new SoSwitch();
+        pcBoundSwitch->setName("BoundSwitch");
         auto pBoundingSep = new SoSeparator();
         auto lineStyle = new SoDrawStyle;
         lineStyle->lineWidth = 2.0F;
@@ -339,17 +337,19 @@ void ViewProviderGeometryObject::setSelectable(bool selectable)
         if (selectable) {
             if (selNode) {
                 selNode->selectionMode = SoFCSelection::SEL_ON;
-                selNode->highlightMode = SoFCSelection::AUTO;
+                selNode->preselectionMode = SoFCSelection::AUTO;
             }
         }
         else {
             if (selNode) {
                 selNode->selectionMode = SoFCSelection::SEL_OFF;
-                selNode->highlightMode = SoFCSelection::OFF;
+                selNode->preselectionMode = SoFCSelection::OFF;
                 selNode->selected = SoFCSelection::NOTSELECTED;
             }
         }
     }
+
+    pickStyle->style.setValue(selectable ? SoPickStyle::SHAPE : SoPickStyle::UNPICKABLE);
 }
 
 PyObject* ViewProviderGeometryObject::getPyObject()

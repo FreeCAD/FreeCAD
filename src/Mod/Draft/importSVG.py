@@ -61,7 +61,7 @@ from draftutils import params
 from draftutils import utils
 from draftutils.translate import translate
 from draftutils.messages import _err, _msg, _wrn
-from builtins import open as pyopen
+from draftutils.utils import pyopen
 
 if FreeCAD.GuiUp:
     from PySide import QtWidgets
@@ -636,7 +636,7 @@ def getrgb(color):
 
     Parameters
     ----------
-    color : App::Color::Color
+    color : Base::Color::Color
         FreeCAD color.
 
     Returns
@@ -1616,7 +1616,7 @@ class svgHandler(xml.sax.ContentHandler):
         _transf = _op + '\\s*?' + _val
         transformre = re.compile(_transf, re.DOTALL)
         m = FreeCAD.Matrix()
-        for transformation, arguments in transformre.findall(tr):
+        for transformation, arguments in reversed(transformre.findall(tr)):
             _args_rep = arguments.replace(',', ' ').split()
             argsplit = [float(arg) for arg in _args_rep]
             # m.multiply(FreeCAD.Matrix(1, 0, 0, 0, 0, -1))
@@ -1813,6 +1813,29 @@ def export(exportList, filename):
                        "Unknown SVG export style, switching to Translated"))
         svg_export_style = 0
 
+    tmp = []
+    hidden_doc = None
+    base_sketch_pla = None  # Placement of the 1st sketch.
+    for obj in exportList:
+        if obj.isDerivedFrom("Sketcher::SketchObject"):
+            if hidden_doc is None:
+                hidden_doc = FreeCAD.newDocument(name="hidden", hidden=True, temp=True)
+                base_sketch_pla = obj.Placement
+            import Part
+            sh = Part.Compound()
+            sh.Placement = base_sketch_pla
+            sh.add(obj.Shape.copy())
+            sh.transformShape(base_sketch_pla.inverse().Matrix)
+            new = hidden_doc.addObject("Part::Part2DObjectPython")
+            new.Shape = sh
+            if FreeCAD.GuiUp:
+                for attr in ("DrawStyle", "LineColor", "LineWidth"):
+                    setattr(new.ViewObject, attr, getattr(obj.ViewObject, attr))
+            tmp.append(new)
+        else:
+            tmp.append(obj)
+    exportList = tmp
+
     # Determine the size of the page by adding the bounding boxes
     # of all shapes
     bb = FreeCAD.BoundBox()
@@ -1900,3 +1923,8 @@ def export(exportList, filename):
     # Close the file
     svg.write('</svg>')
     svg.close()
+    if hidden_doc is not None:
+        try:
+            App.closeDocument(hidden_doc.Name)
+        except:
+            pass

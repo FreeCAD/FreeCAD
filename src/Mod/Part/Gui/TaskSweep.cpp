@@ -41,13 +41,14 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Link.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionFilter.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -76,7 +77,7 @@ public:
         }
         bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName) override
         {
-            if (!sSubName || sSubName[0] == '\0') {
+            if (Base::Tools::isNullOrEmpty(sSubName)) {
                 // If selecting again the same edge the passed sub-element is empty. If the whole
                 // shape is an edge or wire we can use it completely.
                 Part::TopoShape topoShape = Part::Feature::getTopoShape(pObj);
@@ -199,7 +200,7 @@ void SweepWidget::findShapes()
             }
         }
 
-        if (!shape.Infinite() && 
+        if (!shape.Infinite() &&
             (shape.ShapeType() == TopAbs_FACE ||
             shape.ShapeType() == TopAbs_WIRE ||
             shape.ShapeType() == TopAbs_EDGE ||
@@ -315,14 +316,14 @@ bool SweepWidget::accept()
 
     QString list, solid, frenet;
     if (d->ui.checkSolid->isChecked())
-        solid = QString::fromLatin1("True");
+        solid = QStringLiteral("True");
     else
-        solid = QString::fromLatin1("False");
+        solid = QStringLiteral("False");
 
     if (d->ui.checkFrenet->isChecked())
-        frenet = QString::fromLatin1("True");
+        frenet = QStringLiteral("True");
     else
-        frenet = QString::fromLatin1("False");
+        frenet = QStringLiteral("False");
 
     QTextStream str(&list);
 
@@ -349,7 +350,7 @@ bool SweepWidget::accept()
     try {
         Gui::WaitCursor wc;
         QString cmd;
-        cmd = QString::fromLatin1(
+        cmd = QStringLiteral(
             "App.getDocument('%5').addObject('Part::Sweep','Sweep')\n"
             "App.getDocument('%5').ActiveObject.Sections=[%1]\n"
             "App.getDocument('%5').ActiveObject.Spine=%2\n"
@@ -412,7 +413,7 @@ void SweepWidget::onButtonPathToggled(bool on)
         d->buttonText = d->ui.buttonPath->text();
         d->ui.buttonPath->setText(tr("Done"));
         d->ui.buttonPath->setEnabled(true);
-        d->ui.labelPath->setText(tr("Select one or more connected edges in the 3d view and press 'Done'"));
+        d->ui.labelPath->setText(tr("Select one or more connected edges in the 3D view and press 'Done'"));
         d->ui.labelPath->setEnabled(true);
 
         Gui::Selection().clearSelection();

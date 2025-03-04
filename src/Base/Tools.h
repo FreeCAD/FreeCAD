@@ -21,22 +21,29 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TOOLS_H
-#define BASE_TOOLS_H
+#ifndef SRC_BASE_TOOLS_H_
+#define SRC_BASE_TOOLS_H_
 
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
-#include <functional>
-#include <algorithm>
 #include <cmath>
-#include <iostream>
-#include <vector>
+#include <ostream>
 #include <string>
-#include <boost_signals2.hpp>
-#include <QString>
+#include <vector>
 
-// ----------------------------------------------------------------------------
+#include <boost/signals2/shared_connection_block.hpp>
+
+namespace boost
+{
+namespace signals2
+{
+class connection;
+}
+}  // namespace boost
+
+
+class QString;
 
 namespace Base
 {
@@ -134,6 +141,16 @@ template<class T>
 inline T toDegrees(T r)
 {
     return static_cast<T>((r / M_PI) * 180.0);
+}
+
+inline float fromPercent(const long value)
+{
+    return std::roundf(value) / 100.0F;
+}
+
+inline long toPercent(float value)
+{
+    return std::lround(100.0 * value);
 }
 
 template<class T>
@@ -266,9 +283,6 @@ public:
 
 struct BaseExport Tools
 {
-    static std::string
-    getUniqueName(const std::string&, const std::vector<std::string>&, int d = 0);
-    static std::string addNumber(const std::string&, unsigned int, int d = 0);
     static std::string getIdentifier(const std::string&);
     static std::wstring widen(const std::string& str);
     static std::string narrow(const std::wstring& str);
@@ -282,27 +296,6 @@ struct BaseExport Tools
     static std::string escapeEncodeFilename(const std::string& s);
 
     /**
-     * @brief toStdString Convert a QString into a UTF-8 encoded std::string.
-     * @param s String to convert.
-     * @return A std::string encoded as UTF-8.
-     */
-    static inline std::string toStdString(const QString& s)
-    {
-        QByteArray tmp = s.toUtf8();
-        return {tmp.constData(), static_cast<size_t>(tmp.size())};
-    }
-
-    /**
-     * @brief fromStdString Convert a std::string encoded as UTF-8 into a QString.
-     * @param s std::string, expected to be UTF-8 encoded.
-     * @return String represented as a QString.
-     */
-    static inline QString fromStdString(const std::string& s)
-    {
-        return QString::fromUtf8(s.c_str(), static_cast<int>(s.size()));
-    }
-
-    /**
      * @brief quoted Creates a quoted string.
      * @param String to be quoted.
      * @return A quoted std::string.
@@ -314,6 +307,11 @@ struct BaseExport Tools
      * @return A quoted std::string.
      */
     static std::string quoted(const std::string&);
+
+    static constexpr bool isNullOrEmpty(const char* str)
+    {
+        return !str || str[0] == '\0';
+    }
 
     /**
      * @brief joinList
@@ -329,7 +327,15 @@ struct BaseExport Tools
     static std::vector<std::string> splitSubName(const std::string& subname);
 };
 
+struct BaseExport ZipTools
+{
+    /**
+     * @brief rewrite Rewrite a zip file under a new name.
+     */
+    static void rewrite(const std::string& source, const std::string& target);
+};
+
 
 }  // namespace Base
 
-#endif  // BASE_TOOLS_H
+#endif  // SRC_BASE_TOOLS_H_

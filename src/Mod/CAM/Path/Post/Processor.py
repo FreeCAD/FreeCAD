@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2024 Larry Woestman <LarryWoestman2@gmail.com>          *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -58,7 +59,6 @@ class PostProcessorFactory:
         Path.Log.debug("PostProcessorFactory.get_post_processor()")
 
         # Posts have to be in a place we can find them
-        syspath = sys.path
         paths = Path.Preferences.searchPathsPost()
         paths.extend(sys.path)
 
@@ -85,7 +85,7 @@ class PostProcessorFactory:
                 except AttributeError:
                     # Return an instance of WrapperPost if no valid module is found
                     Path.Log.debug(f"Post processor {postname} is a script")
-                    return WrapperPost(job, module_path)
+                    return WrapperPost(job, module_path, module_name)
 
 
 class PostProcessor:
@@ -130,12 +130,10 @@ class PostProcessor:
         exportObjectsWith() for final posting."""
 
         def __fixtureSetup(order, fixture, job):
-            """Convert a Fixure setting to _TempObject instance with a G0 move to a
+            """Convert a Fixture setting to _TempObject instance with a G0 move to a
             safe height every time the fixture coordinate system change.  Skip
             the move for first fixture, to avoid moving before tool and tool
-            height compensation is enabled.
-
-            """
+            height compensation is enabled."""
 
             fobj = _TempObject()
             c1 = Path.Command(fixture)
@@ -285,16 +283,17 @@ class PostProcessor:
 class WrapperPost(PostProcessor):
     """Wrapper class for old post processors that are scripts."""
 
-    def __init__(self, job, script_path, *args, **kwargs):
+    def __init__(self, job, script_path, module_name, *args, **kwargs):
         super().__init__(job, tooltip=None, tooltipargs=None, units=None, *args, **kwargs)
         self.script_path = script_path
+        self.module_name = module_name
         Path.Log.debug(f"WrapperPost.__init__({script_path})")
         self.load_script()
 
     def load_script(self):
-        # Dynamically load the script as a module
+        """Dynamically load the script as a module."""
         try:
-            spec = importlib.util.spec_from_file_location("script_module", self.script_path)
+            spec = importlib.util.spec_from_file_location(self.module_name, self.script_path)
             self.script_module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(self.script_module)
         except Exception as e:
@@ -309,7 +308,7 @@ class WrapperPost(PostProcessor):
         self._tooltipargs = getattr(self.script_module, "TOOLTIP_ARGS", [])
 
     def export(self):
-        # Dynamically reload the module for the export to ensure up-to-date usage
+        """Dynamically reload the module for the export to ensure up-to-date usage."""
 
         postables = self._buildPostList()
         Path.Log.debug(f"postables count: {len(postables)}")

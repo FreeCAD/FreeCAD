@@ -84,10 +84,10 @@ class BIM_Tutorial:
             self.pixempty = QtGui.QPixmap()
 
             # fire the loading after displaying the widget
-            from DraftGui import todo
+            from draftutils import todo
 
             # self.load()
-            # todo.delay(self.load,None)
+            # todo.ToDo.delay(self.load,None)
             QtCore.QTimer.singleShot(1000, self.load)
 
     def load(self, arg=None):
@@ -113,7 +113,7 @@ class BIM_Tutorial:
             if sys.version_info.major >= 3:
                 html = html.decode("utf8")
             html = html.replace("\n", " ")
-            html = html.replace('"/wiki/', '"https://www.freecadweb.org/wiki/')
+            html = html.replace('href="/', 'href="https://wiki.freecad.org/')
             html = re.sub(
                 '<div id="toc".*?</ul> </div>', "", html
             )  # remove table of contents
@@ -169,9 +169,12 @@ class BIM_Tutorial:
                     os.makedirs(store)
                 for path in imagepaths:
                     # name = re.findall(r"[\\w.-]+\\.(?i)(?:jpg|png|gif|bmp)",path)
-                    name = re.findall(r"(?i)[\\w.-]+\\.(?:jpg|png|gif|bmp)", path)
-                    if name:
-                        name = name[-1]
+                    # name = re.findall(r"(?i)[\\w.-]+\\.(?:jpg|png|gif|bmp)", path)
+                    try:
+                        name = os.path.splitext(os.path.basename(path))[0]
+                    except:
+                        print("unparsable image path:", path)
+                    else:
                         storename = os.path.join(store, name)
                         if not os.path.exists(storename):
                             if path.startswith("/images"):
@@ -190,8 +193,6 @@ class BIM_Tutorial:
                         descr = descr.replace(
                             path, "file:///" + storename.replace("\\", "/")
                         )
-                    else:
-                        print("unparsable image path:", path)
             nd.append(descr)
         self.descriptions = nd
 

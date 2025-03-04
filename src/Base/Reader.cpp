@@ -24,8 +24,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <memory>
+#include <map>
+#include <vector>
+#include <iostream>
+#include <string>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
+#include <xercesc/sax2/Attributes.hpp>
 #endif
 
 #include <locale>
@@ -34,6 +38,7 @@
 #include "Base64.h"
 #include "Base64Filter.h"
 #include "Console.h"
+#include "Exception.h"
 #include "InputSource.h"
 #include "Persistence.h"
 #include "Sequencer.h"
@@ -437,6 +442,7 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream& zipstream) const
                 // failure.
                 Base::Console().Error("Reading failed from embedded file: %s\n",
                                       entry->toString().c_str());
+                FailedFiles.push_back(jt->FileName);
             }
             // Go to the next registered file name
             it = jt + 1;
@@ -462,14 +468,19 @@ const char* Base::XMLReader::addFile(const char* Name, Base::Persistence* Object
     temp.Object = Object;
 
     FileList.push_back(temp);
-    FileNames.push_back(temp.FileName);
 
     return Name;
 }
 
-const std::vector<std::string>& Base::XMLReader::getFilenames() const
+bool Base::XMLReader::hasFilenames() const
 {
-    return FileNames;
+    return !FileList.empty();
+}
+
+bool Base::XMLReader::hasReadFailed(const std::string& filename) const
+{
+    auto it = std::find(FailedFiles.begin(), FailedFiles.end(), filename);
+    return (it != FailedFiles.end());
 }
 
 bool Base::XMLReader::isRegistered(Base::Persistence* Object) const

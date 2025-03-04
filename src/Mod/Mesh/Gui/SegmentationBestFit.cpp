@@ -35,7 +35,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/Core/Segmentation.h>
 #include <Mod/Mesh/App/MeshFeature.h>
@@ -190,25 +190,25 @@ ParametersDialog::ParametersDialog(std::vector<float>& val,
     QPushButton* regionButton {};
     regionButton = new QPushButton(this);
     regionButton->setText(tr("Region"));
-    regionButton->setObjectName(QString::fromLatin1("region"));
+    regionButton->setObjectName(QStringLiteral("region"));
     selectLayout->addWidget(regionButton);
 
     QPushButton* singleButton {};
     singleButton = new QPushButton(this);
     singleButton->setText(tr("Triangle"));
-    singleButton->setObjectName(QString::fromLatin1("single"));
+    singleButton->setObjectName(QStringLiteral("single"));
     selectLayout->addWidget(singleButton);
 
     QPushButton* clearButton {};
     clearButton = new QPushButton(this);
     clearButton->setText(tr("Clear"));
-    clearButton->setObjectName(QString::fromLatin1("clear"));
+    clearButton->setObjectName(QStringLiteral("clear"));
     selectLayout->addWidget(clearButton);
 
     QPushButton* computeButton {};
     computeButton = new QPushButton(this);
     computeButton->setText(tr("Compute"));
-    computeButton->setObjectName(QString::fromLatin1("compute"));
+    computeButton->setObjectName(QStringLiteral("compute"));
     gridLayout->addWidget(computeButton, 2, 0, 1, 1);
 
     QDialogButtonBox* buttonBox {};
@@ -373,9 +373,9 @@ void SegmentationBestFit::onPlaneParametersClicked()
     p.resize(6);
     QString base = tr("Base");
     QString axis = tr("Normal");
-    QString x = QString::fromLatin1(" x");
-    QString y = QString::fromLatin1(" y");
-    QString z = QString::fromLatin1(" z");
+    QString x = QStringLiteral(" x");
+    QString y = QStringLiteral(" y");
+    QString z = QStringLiteral(" z");
     list.push_back(std::make_pair(base + x, p[0]));
     list.push_back(std::make_pair(base + y, p[1]));
     list.push_back(std::make_pair(base + z, p[2]));
@@ -399,9 +399,9 @@ void SegmentationBestFit::onCylinderParametersClicked()
     QString base = tr("Base");
     QString axis = tr("Axis");
     QString radius = tr("Radius");
-    QString x = QString::fromLatin1(" x");
-    QString y = QString::fromLatin1(" y");
-    QString z = QString::fromLatin1(" z");
+    QString x = QStringLiteral(" x");
+    QString y = QStringLiteral(" y");
+    QString z = QStringLiteral(" z");
     list.push_back(std::make_pair(base + x, p[0]));
     list.push_back(std::make_pair(base + y, p[1]));
     list.push_back(std::make_pair(base + z, p[2]));
@@ -426,9 +426,9 @@ void SegmentationBestFit::onSphereParametersClicked()
     p.resize(4);
     QString base = tr("Center");
     QString radius = tr("Radius");
-    QString x = QString::fromLatin1(" x");
-    QString y = QString::fromLatin1(" y");
-    QString z = QString::fromLatin1(" z");
+    QString x = QStringLiteral(" x");
+    QString y = QStringLiteral(" y");
+    QString z = QStringLiteral(" z");
     list.push_back(std::make_pair(base + x, p[0]));
     list.push_back(std::make_pair(base + y, p[1]));
     list.push_back(std::make_pair(base + z, p[2]));
@@ -505,8 +505,7 @@ void SegmentationBestFit::accept()
 
     std::string internalname = "Segments_";
     internalname += myMesh->getNameInDocument();
-    App::DocumentObjectGroup* group = static_cast<App::DocumentObjectGroup*>(
-        document->addObject("App::DocumentObjectGroup", internalname.c_str()));
+    auto* group = document->addObject<App::DocumentObjectGroup>(internalname.c_str());
     std::string labelname = "Segments ";
     labelname += myMesh->Label.getValue();
     group->Label.setValue(labelname);
@@ -514,8 +513,7 @@ void SegmentationBestFit::accept()
         const std::vector<MeshCore::MeshSegment>& data = it->GetSegments();
         for (const auto& jt : data) {
             Mesh::MeshObject* segment = mesh->meshFromSegment(jt);
-            Mesh::Feature* feaSegm =
-                static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
+            auto* feaSegm = group->addObject<Mesh::Feature>("Segment");
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
             feaSegm->Mesh.finishEditing();

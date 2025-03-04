@@ -36,6 +36,7 @@
 #include <App/DocumentObjectPy.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
+#include <CXX/Python3/Objects.hxx>
 
 #include "ViewProviderFeaturePython.h"
 #include "Application.h"
@@ -44,6 +45,7 @@
 #include "PythonWrapper.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObjectPy.h"
+#include "Selection.h"
 
 
 FC_LOG_LEVEL_INIT("ViewProviderFeaturePython", true, true)
@@ -74,6 +76,8 @@ ViewProviderFeaturePythonImp::~ViewProviderFeaturePythonImp()
     catch (Py::Exception& e) {
         e.clear();
     }
+
+    this->selectionObserver.~SelectionObserverPythonHandler();
 }
 
 void ViewProviderFeaturePythonImp::init(PyObject *pyobj) {
@@ -84,6 +88,8 @@ void ViewProviderFeaturePythonImp::init(PyObject *pyobj) {
 #define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_INIT(_name)
 
     FC_PY_VIEW_OBJECT
+
+    this->selectionObserver.init(pyobj);
 }
 
 #define FC_PY_CALL_CHECK(_name) _FC_PY_CALL_CHECK(_name,return(NotImplemented))
@@ -200,6 +206,10 @@ ViewProviderFeaturePythonImp::useNewSelectionModel() const
     }
 
     return Accepted;
+}
+
+void ViewProviderFeaturePythonImp::onSelectionChanged(const SelectionChanges& changes) {
+    this->selectionObserver.handleSelectionChanged(changes);
 }
 
 bool ViewProviderFeaturePythonImp::getElement(const SoDetail *det, std::string &res) const
@@ -356,7 +366,7 @@ ViewProviderFeaturePythonImp::setEdit(int ModNum)
     try {
         if (has__object__) {
             Py::Tuple args(1);
-            args.setItem(0, Py::Int(ModNum));
+            args.setItem(0, Py::Long(ModNum));
             Py::Object ret(Base::pyCall(py_setEdit.ptr(),args.ptr()));
             if (ret.isNone())
                 return NotImplemented;
@@ -367,7 +377,7 @@ ViewProviderFeaturePythonImp::setEdit(int ModNum)
         else {
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
-            args.setItem(1, Py::Int(ModNum));
+            args.setItem(1, Py::Long(ModNum));
             Py::Object ret(Base::pyCall(py_setEdit.ptr(),args.ptr()));
             if (ret.isNone())
                 return NotImplemented;
@@ -397,7 +407,7 @@ ViewProviderFeaturePythonImp::unsetEdit(int ModNum)
     try {
         if (has__object__) {
             Py::Tuple args(1);
-            args.setItem(0, Py::Int(ModNum));
+            args.setItem(0, Py::Long(ModNum));
             Py::Object ret(Base::pyCall(py_unsetEdit.ptr(),args.ptr()));
             if (ret.isNone())
                 return NotImplemented;
@@ -408,7 +418,7 @@ ViewProviderFeaturePythonImp::unsetEdit(int ModNum)
         else {
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
-            args.setItem(1, Py::Int(ModNum));
+            args.setItem(1, Py::Long(ModNum));
             Py::Object ret(Base::pyCall(py_unsetEdit.ptr(),args.ptr()));
             if (ret.isNone())
                 return NotImplemented;
@@ -439,7 +449,7 @@ ViewProviderFeaturePythonImp::setEditViewer(View3DInventorViewer *viewer, int Mo
         Py::Tuple args(3);
         args.setItem(0, Py::Object(object->getPyObject(),true));
         args.setItem(1, Py::Object(viewer->getPyObject(),true));
-        args.setItem(2, Py::Int(ModNum));
+        args.setItem(2, Py::Long(ModNum));
         Py::Object ret(Base::pyCall(py_setEditViewer.ptr(),args.ptr()));
         return ret.isTrue()?Accepted:Rejected;
     }
@@ -638,6 +648,38 @@ void ViewProviderFeaturePythonImp::onChanged(const App::Property* prop)
     }
 }
 
+void ViewProviderFeaturePythonImp::onBeforeChange(const App::Property* prop)
+{
+    if(py_onBeforeChange.isNone())
+        return;
+
+    // Run the onChanged method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        if (has__object__) {
+            Py::Tuple args(1);
+            const char* prop_name = object->getPropertyName(prop);
+            if (prop_name) {
+                args.setItem(0, Py::String(prop_name));
+                Base::pyCall(py_onBeforeChange.ptr(),args.ptr());
+            }
+        }
+        else {
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            const char* prop_name = object->getPropertyName(prop);
+            if (prop_name) {
+                args.setItem(1, Py::String(prop_name));
+                Base::pyCall(py_onBeforeChange.ptr(),args.ptr());
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
 void ViewProviderFeaturePythonImp::startRestoring()
 {
 }
@@ -649,7 +691,7 @@ void ViewProviderFeaturePythonImp::finishRestoring()
         Py::Object vp = Proxy.getValue();
         if (vp.isNone()) {
             object->show();
-            Proxy.setValue(Py::Int(1));
+            Proxy.setValue(Py::Long(1));
         } else {
             _FC_PY_CALL_CHECK(finishRestoring,return);
             Base::pyCall(py_finishRestoring.ptr());

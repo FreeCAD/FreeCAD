@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Defines the Addon class to encapsulate information about FreeCAD Addons """
+"""Defines the Addon class to encapsulate information about FreeCAD Addons"""
 
 import os
 import re
@@ -35,7 +35,7 @@ import xml.etree.ElementTree
 import addonmanager_freecad_interface as fci
 from addonmanager_macro import Macro
 import addonmanager_utilities as utils
-from addonmanager_utilities import construct_git_url
+from addonmanager_utilities import construct_git_url, process_date_string_to_python_datetime
 from addonmanager_metadata import (
     Metadata,
     MetadataReader,
@@ -49,7 +49,7 @@ translate = fci.translate
 
 #  A list of internal workbenches that can be used as a dependency of an Addon
 INTERNAL_WORKBENCHES = {
-    "arch": "Arch",
+    "bim": "BIM",
     "assembly": "Assembly",
     "draft": "Draft",
     "fem": "FEM",
@@ -149,6 +149,9 @@ class Addon:
 
     # The location of the Mod directory: overridden by testing code
     mod_directory = fci.DataPaths().mod_dir
+
+    # The location of the Macro directory: overridden by testing code
+    macro_directory = fci.DataPaths().macro_dir
 
     def __init__(
         self,
@@ -251,48 +254,14 @@ class Addon:
             elif self.macro and self.macro.date:
                 # Try to parse the date:
                 try:
-                    self._cached_update_date = self._process_date_string_to_python_datetime(
+                    self._cached_update_date = process_date_string_to_python_datetime(
                         self.macro.date
                     )
-                except SyntaxError as e:
+                except ValueError as e:
                     fci.Console.PrintWarning(str(e) + "\n")
             else:
                 fci.Console.PrintWarning(f"No update date info for {self.name}\n")
         return self._cached_update_date
-
-    def _process_date_string_to_python_datetime(self, date_string: str) -> datetime:
-        split_result = re.split(r"[ ./-]+", date_string.strip())
-        if len(split_result) != 3:
-            raise SyntaxError(
-                f"In macro {self.name}, unrecognized date string '{date_string}' (expected YYYY-MM-DD)"
-            )
-
-        if int(split_result[0]) > 2000:  # Assume YYYY-MM-DD
-            try:
-                year = int(split_result[0])
-                month = int(split_result[1])
-                day = int(split_result[2])
-                return datetime(year, month, day)
-            except (OverflowError, OSError, ValueError):
-                raise SyntaxError(
-                    f"In macro {self.name}, unrecognized date string {date_string} (expected YYYY-MM-DD)"
-                )
-        elif int(split_result[2]) > 2000:
-            # Two possibilities, impossible to distinguish in the general case: DD-MM-YYYY and
-            # MM-DD-YYYY. See if the first one makes sense, and if not, try the second
-            if int(split_result[1]) <= 12:
-                year = int(split_result[2])
-                month = int(split_result[1])
-                day = int(split_result[0])
-            else:
-                year = int(split_result[2])
-                month = int(split_result[0])
-                day = int(split_result[1])
-            return datetime(year, month, day)
-        else:
-            raise SyntaxError(
-                f"In macro {self.name}, unrecognized date string '{date_string}' (expected YYYY-MM-DD)"
-            )
 
     @classmethod
     def from_macro(cls, macro: Macro):
@@ -520,23 +489,17 @@ class Addon:
 
         if self.repo_type == Addon.Kind.WORKBENCH:
             return True
-        if self.repo_type == Addon.Kind.PACKAGE:
-            if self.metadata is None:
-                fci.Console.PrintLog(
-                    f"Addon Manager internal error: lost metadata for package {self.name}\n"
-                )
-                return False
-            content = self.metadata.content
-            if not content:
-                return False
-            return "workbench" in content
-        return False
+        return self.contains_packaged_content("workbench")
 
     def contains_macro(self) -> bool:
         """Determine if this package contains (or is) a macro"""
 
         if self.repo_type == Addon.Kind.MACRO:
             return True
+        return self.contains_packaged_content("macro")
+
+    def contains_packaged_content(self, content_type: str):
+        """Determine if the package contains content_type"""
         if self.repo_type == Addon.Kind.PACKAGE:
             if self.metadata is None:
                 fci.Console.PrintLog(
@@ -544,21 +507,20 @@ class Addon:
                 )
                 return False
             content = self.metadata.content
-            return "macro" in content
+            return content_type in content
         return False
 
     def contains_preference_pack(self) -> bool:
         """Determine if this package contains a preference pack"""
+        return self.contains_packaged_content("preferencepack")
 
-        if self.repo_type == Addon.Kind.PACKAGE:
-            if self.metadata is None:
-                fci.Console.PrintLog(
-                    f"Addon Manager internal error: lost metadata for package {self.name}\n"
-                )
-                return False
-            content = self.metadata.content
-            return "preferencepack" in content
-        return False
+    def contains_bundle(self) -> bool:
+        """Determine if this package contains a bundle"""
+        return self.contains_packaged_content("bundle")
+
+    def contains_other(self) -> bool:
+        """Determine if this package contains an "other" content item"""
+        return self.contains_packaged_content("other")
 
     def get_best_icon_relative_path(self) -> str:
         """Get the path within the repo the addon's icon. Usually specified by

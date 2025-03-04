@@ -29,11 +29,14 @@
 # include <QApplication>
 # include <QContextMenuEvent>
 # include <QCursor>
+# include <QDir>
+# include <QFileInfo>
 # include <QHeaderView>
 # include <QMenu>
 # include <QMessageBox>
 # include <QPainter>
 # include <QPixmap>
+# include <QProcess>
 # include <QThread>
 # include <QTimer>
 # include <QToolTip>
@@ -46,7 +49,7 @@
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/AutoTransaction.h>
@@ -109,7 +112,7 @@ static bool isSelectionCheckBoxesEnabled() {
 void TreeParams::onItemBackgroundChanged()
 {
     if (getItemBackground()) {
-        App::Color color;
+        Base::Color color;
         color.setPackedValue(getItemBackground());
         QColor col;
         col.setRedF(color.r);
@@ -439,7 +442,7 @@ TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
     artificial = new QTreeView(qobject_cast<QWidget*>(parent));
-    artificial->setObjectName(QString::fromLatin1("DocumentTreeItems"));
+    artificial->setObjectName(QStringLiteral("DocumentTreeItems"));
     artificial->setFixedSize(0, 0); // ensure that it does not render
 }
 
@@ -540,6 +543,32 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
     }
 }
 
+class DynamicQLineEdit : public ExpLineEdit
+{
+public:
+    DynamicQLineEdit(QWidget *parent = nullptr) : ExpLineEdit(parent) {}
+
+    QSize sizeHint() const override
+    {
+        QSize size = QLineEdit::sizeHint(); 
+        QFontMetrics fm(font());
+        int availableWidth = parentWidget()->width() - geometry().x(); // Calculate available width
+        int margin = 2 * (style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1)
+                    + 2 * style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing)
+                    + TreeParams::getItemBackgroundPadding();
+        size.setWidth(std::min(fm.horizontalAdvance(text()) + margin , availableWidth));
+        return size;
+    }
+
+    // resize on key presses
+    void keyPressEvent(QKeyEvent *event) override
+    {
+        ExpLineEdit::keyPressEvent(event);
+        setMinimumWidth(sizeHint().width());
+    }
+
+};
+
 QWidget* TreeWidgetItemDelegate::createEditor(
         QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
@@ -555,15 +584,15 @@ QWidget* TreeWidgetItemDelegate::createEditor(
     App::GetApplication().setActiveTransaction(str.str().c_str());
     FC_LOG("create editor transaction " << App::GetApplication().getActiveTransaction());
 
-    QLineEdit *editor;
+    DynamicQLineEdit *editor;
     if(TreeParams::getLabelExpression()) {
-        ExpLineEdit *le = new ExpLineEdit(parent);
+        DynamicQLineEdit *le = new DynamicQLineEdit(parent);
         le->setAutoApply(true);
         le->setFrame(false);
         le->bind(App::ObjectIdentifier(prop));
         editor = le;
     } else {
-        editor = new QLineEdit(parent);
+        editor = new DynamicQLineEdit(parent);
     }
     editor->setReadOnly(prop.isReadOnly());
     return editor;
@@ -594,7 +623,6 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
 
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
-    this->setDragDropMode(QTreeWidget::InternalMove);
     this->setColumnCount(3);
     this->setItemDelegate(new TreeWidgetItemDelegate(this));
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -657,6 +685,10 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->searchObjectsAction->setStatusTip(tr("Search for objects"));
     connect(this->searchObjectsAction, &QAction::triggered,
             this, &TreeWidget::onSearchObjects);
+
+    this->openFileLocationAction = new QAction(this);
+    connect(this->openFileLocationAction, &QAction::triggered,
+            this, &TreeWidget::onOpenFileLocation);
 
     //NOLINTBEGIN
     // Setup connections
@@ -722,6 +754,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     setColumnHidden(1, TreeParams::getHideColumn());
     setColumnHidden(2, TreeParams::getHideInternalNames());
     header()->setVisible(!TreeParams::getHideColumn() || !TreeParams::getHideInternalNames());
+    TreeParams::onFontSizeChanged();
 }
 
 TreeWidget::~TreeWidget()
@@ -1006,6 +1039,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 
         showHiddenAction->setChecked(docitem->showHidden());
         contextMenu.addAction(this->showHiddenAction);
+        contextMenu.addAction(this->openFileLocationAction);
         contextMenu.addAction(this->searchObjectsAction);
         contextMenu.addAction(this->closeDocAction);
         if (doc->testStatus(App::Document::PartialDoc))
@@ -1049,7 +1083,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
         contextMenu.addAction(this->toggleVisibilityInTreeAction);
 
         if (!acrossDocuments) { // is only sensible for selections within one document
-            if (objitem->object()->getObject()->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
+            if (objitem->object()->getObject()->isDerivedFrom<App::DocumentObjectGroup>())
                 contextMenu.addAction(this->createGroupAction);
             // if there are dependent objects in the selection, add context menu to add them to selection
             if (CheckForDependents())
@@ -1175,7 +1209,7 @@ void TreeWidget::onCreateGroup()
     if (this->contextItem->type() == DocumentType) {
         auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
-        QString cmd = QString::fromLatin1("App.getDocument(\"%1\").addObject"
+        QString cmd = QStringLiteral("App.getDocument(\"%1\").addObject"
             "(\"App::DocumentObjectGroup\",\"Group\").Label=\"%2\"")
             .arg(QString::fromLatin1(doc->getName()), name);
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
@@ -1185,7 +1219,7 @@ void TreeWidget::onCreateGroup()
             (this->contextItem);
         App::DocumentObject* obj = objitem->object()->getObject();
         App::Document* doc = obj->getDocument();
-        QString cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\")"
+        QString cmd = QStringLiteral("App.getDocument(\"%1\").getObject(\"%2\")"
             ".newObject(\"App::DocumentObjectGroup\",\"Group\").Label=\"%3\"")
             .arg(QString::fromLatin1(doc->getName()),
                 QString::fromLatin1(obj->getNameInDocument()),
@@ -1656,22 +1690,7 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
             return;
         }
     }
-    else if (event->key() == Qt::Key_Left) {
-        auto index = currentIndex();
-        if (index.column() == 1) {
-            setCurrentIndex(model()->index(index.row(), 0, index.parent()));
-            event->accept();
-            return;
-        }
-    }
-    else if (event->key() == Qt::Key_Right) {
-        auto index = currentIndex();
-        if (index.column() == 0) {
-            setCurrentIndex(model()->index(index.row(), 1, index.parent()));
-            event->accept();
-            return;
-        }
-    }
+
     QTreeWidget::keyPressEvent(event);
 }
 
@@ -1724,6 +1743,10 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
                     visible = obj->Visibility.getValue();
                     obj->Visibility.setValue(!visible);
                 }
+
+                // to prevent selection of the item via QTreeWidget::mousePressEvent
+                event->accept();
+                return;
             }
         }
     }
@@ -2861,6 +2884,39 @@ void TreeWidget::onCloseDoc()
     }
 }
 
+void TreeWidget::onOpenFileLocation()
+{
+    auto docitem = static_cast<DocumentItem*>(this->contextItem);
+    App::Document* doc = docitem->document()->getDocument();
+    std::string name = doc->FileName.getValue();
+
+    const QFileInfo fileInfo(QString::fromStdString(name));
+    if (!fileInfo.exists()) {
+        QMessageBox::warning(this, tr("Error"), tr("File does not exist."));
+        return;
+    }
+
+    const QString filePath = fileInfo.canonicalPath();
+    bool success = false;
+
+#if defined(Q_OS_MAC)
+    success = QProcess::startDetached(QStringLiteral("open"), {filePath});
+#elif defined(Q_OS_WIN)
+    QStringList param;
+    if (!fileInfo.isDir()) {
+        param += QStringLiteral("/select,");
+    }
+    param += QDir::toNativeSeparators(filePath);
+    success = QProcess::startDetached(QStringLiteral("explorer.exe"), param);
+#else 
+    success = QProcess::startDetached(QStringLiteral("xdg-open"), {filePath});
+#endif
+
+    if (!success) {
+        QMessageBox::warning(this, tr("Error"), tr("Failed to open directory."));
+    }
+}
+
 void TreeWidget::slotRenameDocument(const Gui::Document& Doc)
 {
     // do nothing here
@@ -2870,7 +2926,7 @@ void TreeWidget::slotRenameDocument(const Gui::Document& Doc)
 void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::Property& prop)
 {
     if (!App::GetApplication().isRestoring()
-        && vp.isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+        && vp.isDerivedFrom<ViewProviderDocumentObject>())
     {
         const auto& vpd = static_cast<const ViewProviderDocumentObject&>(vp);
         if (&prop == &vpd.ShowInTree) {
@@ -3314,6 +3370,14 @@ void TreeWidget::setupText()
 
     this->closeDocAction->setText(tr("Close document"));
     this->closeDocAction->setStatusTip(tr("Close the document"));
+
+#ifdef Q_OS_MAC
+    this->openFileLocationAction->setText(tr("Reveal in Finder"));
+    this->openFileLocationAction->setStatusTip(tr("Reveal the current file location in Finder"));
+#else
+    this->openFileLocationAction->setText(tr("Open File Location"));
+    this->openFileLocationAction->setStatusTip(tr("Open the current file location"));
+#endif
 
     this->reloadDocAction->setText(tr("Reload document"));
     this->reloadDocAction->setStatusTip(tr("Reload a partially loaded document"));
@@ -3797,7 +3861,7 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/TreeView");
     unsigned long col = hGrp->GetUnsigned("TreeEditColor", 563609599);
-    QColor color(App::Color::fromPackedRGB<QColor>(col));
+    QColor color(Base::Color::fromPackedRGB<QColor>(col));
 
     if (!getTree()->editingItem) {
         auto doc = Application::Instance->editDocument();
@@ -5240,7 +5304,7 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
             f.setOverline(overlined);
 
             unsigned long col = hGrp->GetUnsigned("TreeActiveColor", 1538528255);
-            color = App::Color::fromPackedRGB<QColor>(col);
+            color = Base::Color::fromPackedRGB<QColor>(col);
         }
         else {
             f.setBold(false);

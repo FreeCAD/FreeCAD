@@ -43,6 +43,7 @@ import FreeCADGui
 import Draft
 import DraftVecUtils
 from FreeCAD import Vector
+from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 from draftutils.messages import _msg
@@ -438,7 +439,7 @@ class bsplineTracker(Tracker):
                 self.sep.removeChild(self.bspline)
             self.bspline = None
             c =  Part.BSplineCurve()
-            # DNC: allows to close the curve by placing ends close to each other
+            # DNC: allows one to close the curve by placing ends close to each other
             if len(self.points) >= 3 and ( (self.points[0] - self.points[-1]).Length < Draft.tolerance() ):
                 # YVH: Added a try to bypass some hazardous situations
                 try:
@@ -694,22 +695,26 @@ class arcTracker(Tracker):
 
 
 class ghostTracker(Tracker):
-    """A Ghost tracker, that allows to copy whole object representations.
+    """A Ghost tracker, that allows one to copy whole object representations.
 
     You can pass it an object or a list of objects, or a shape.
     """
 
-    def __init__(self, sel, dotted=False, scolor=None, swidth=None, mirror=False):
+    def __init__(self, sel, dotted=False, scolor=None, swidth=None, mirror=False, parent_places=None):
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0, 0, 0])
         self.children = [self.trans]
-        rootsep = coin.SoSeparator()
+        self.rootsep = coin.SoSeparator()
         if not isinstance(sel, list):
             sel = [sel]
-        for obj in sel:
+        for idx, obj in enumerate(sel):
+            if parent_places is not None:
+                parent_place = parent_places[idx]
+            else:
+                parent_place = None
             import Part
             if not isinstance(obj, Part.Vertex):
-                rootsep.addChild(self.getNode(obj))
+                self.rootsep.addChild(self.getNode(obj, parent_place))
             else:
                 self.coords = coin.SoCoordinate3()
                 self.coords.point.setValue((obj.X, obj.Y, obj.Z))
@@ -720,10 +725,13 @@ class ghostTracker(Tracker):
                 selnode.addChild(self.coords)
                 selnode.addChild(self.marker)
                 node.addChild(selnode)
-                rootsep.addChild(node)
+                self.rootsep.addChild(node)
         if mirror is True:
-            self._flip(rootsep)
-        self.children.append(rootsep)
+            self._do_flip(self.rootsep)
+            self.flipped = True
+        else:
+            self.flipped = False
+        self.children.append(self.rootsep)
         super().__init__(dotted, scolor, swidth,
                          children=self.children, name="ghostTracker")
         self.setColor(scolor)
@@ -759,29 +767,34 @@ class ghostTracker(Tracker):
         """Scale the ghost by the given factor."""
         self.trans.scaleFactor.setValue([delta.x, delta.y, delta.z])
 
-    def getNode(self, obj):
+    def getNode(self, obj, parent_place=None):
         """Return a coin node representing the given object."""
         import Part
         if isinstance(obj, Part.Shape):
             return self.getNodeLight(obj)
-        elif obj.isDerivedFrom("Part::Feature"):
-            return self.getNodeFull(obj)
         else:
-            return self.getNodeFull(obj)
+            return self.getNodeFull(obj, parent_place)
 
-    def getNodeFull(self, obj):
+    def getNodeFull(self, obj, parent_place=None):
         """Get a coin node which is a copy of the current representation."""
         sep = coin.SoSeparator()
         try:
             sep.addChild(obj.ViewObject.RootNode.copy())
             # add Part container offset
-            if hasattr(obj, "getGlobalPlacement"):
-                if obj.Placement != obj.getGlobalPlacement():
-                    if sep.getChild(0).getNumChildren() > 0:
-                        if isinstance(sep.getChild(0).getChild(0),coin.SoTransform):
-                            gpl = obj.getGlobalPlacement()
-                            sep.getChild(0).getChild(0).translation.setValue(tuple(gpl.Base))
-                            sep.getChild(0).getChild(0).rotation.setValue(gpl.Rotation.Q)
+            if parent_place is not None:
+                if hasattr(obj, "Placement"):
+                    gpl = parent_place * obj.Placement
+                else:
+                    gpl = parent_place
+            elif hasattr(obj, "getGlobalPlacement"):
+                gpl = obj.getGlobalPlacement()
+            else:
+                gpl = None
+            if gpl is not None:
+                transform = gui_utils.find_coin_node(sep.getChild(0), coin.SoTransform)
+                if transform is not None:
+                    transform.translation.setValue(tuple(gpl.Base))
+                    transform.rotation.setValue(gpl.Rotation.Q)
         except Exception:
             _msg("ghostTracker: Error retrieving coin node (full)")
         return sep
@@ -826,7 +839,17 @@ class ghostTracker(Tracker):
                           matrix.A41, matrix.A42, matrix.A43, matrix.A44)
         self.trans.setMatrix(m)
 
-    def _flip(self, root):
+    def flip_normals(self, flip):
+        if flip:
+            if not self.flipped:
+                self._do_flip(self.rootsep)
+                self.flipped = True
+        else:
+            if self.flipped:
+                self._do_flip(self.rootsep)
+                self.flipped = False
+
+    def _do_flip(self, root):
         """Flip the normals of the coin faces."""
         # Code by wmayer:
         # https://forum.freecad.org/viewtopic.php?p=702640#p702640
@@ -1214,10 +1237,45 @@ class gridTracker(Tracker):
             blue = col
         return col, red, green, blue, gtrans
 
+    def get_human_figure(self, loc=None):
+        """Return a list of points defining a human figure,
+        optionally translated to a given location.
+        Based on "HumanFigure.brep" from the BIM Workbench.
+        """
+        pts = [
+            Vector (131.2, 0.0, 175.8), Vector (135.7, 0.0, 211.7), Vector (142.1, 0.0, 229.3),
+            Vector (154.0, 0.0, 276.3), Vector (163.6, 0.0, 333.4), Vector (173.8, 0.0, 411.5),
+            Vector (186.0, 0.0, 491.7), Vector (200.2, 0.0, 591.8), Vector (215.4, 0.0, 714.8),
+            Vector (224.1, 0.0, 650.0), Vector (234.1, 0.0, 575.8), Vector (251.9, 0.0, 425.5),
+            Vector (240.8, 0.0, 273.3), Vector (235.9, 0.0, 243.2), Vector (197.3, 0.0, 81.7),
+            Vector (188.8, 0.0, 37.6), Vector (195.1, 0.0, 0.0), Vector (278.8, 0.0, 0.0),
+            Vector (294.5, 0.0, 121.0), Vector (308.4, 0.0, 184.3), Vector (318.1, 0.0, 225.4),
+            Vector (322.0, 0.0, 235.2), Vector (340.1, 0.0, 283.5), Vector (349.0, 0.0, 341.4),
+            Vector (354.2, 0.0, 523.7), Vector (383.1, 0.0, 719.7), Vector (399.6, 0.0, 820.3),
+            Vector (381.2, 0.0, 1029.6), Vector (385.6, 0.0, 1164.0), Vector (390.1, 0.0, 1184.6),
+            Vector (398.3, 0.0, 1201.9), Vector (430.2, 0.0, 1273.1), Vector (438.2, 0.0, 1321.2),
+            Vector (441.3, 0.0, 1368.2), Vector (428.1, 0.0, 1405.3), Vector (395.0, 0.0, 1424.3),
+            Vector (365.5, 0.0, 1446.6), Vector (349.8, 0.0, 1460.2), Vector (345.6, 0.0, 1476.7),
+            Vector (337.9, 0.0, 1570.3), Vector (332.8, 0.0, 1624.7), Vector (322.2, 0.0, 1666.9),
+            Vector (216.2, 0.0, 1680.2), Vector (163.5, 0.0, 1559.1), Vector (179.8, 0.0, 1475.5),
+            Vector (195.6, 0.0, 1459.9), Vector (193.1, 0.0, 1447.8), Vector (171.0, 0.0, 1429.4),
+            Vector (132.3, 0.0, 1399.8), Vector (96.8, 0.0, 1374.7), Vector (74.0, 0.0, 1275.1),
+            Vector (46.2, 0.0, 1095.6), Vector (38.0, 0.0, 1041.5), Vector (25.2, 0.0, 958.5),
+            Vector (15.9, 0.0, 889.7), Vector (2.5, 0.0, 842.1), Vector (-5.8, 0.0, 785.4),
+            Vector (15.8, 0.0, 755.1), Vector (38.0, 0.0, 750.4), Vector (45.0, 0.0, 755.4),
+            Vector (53.1, 0.0, 736.1), Vector (76.4, 0.0, 572.2), Vector (83.6, 0.0, 512.0),
+            Vector (81.3, 0.0, 499.0), Vector (74.0, 0.0, 460.9), Vector (61.9, 0.0, 363.4),
+            Vector (53.4, 0.0, 269.3), Vector (44.5, 0.0, 179.7), Vector (25.6, 0.0, 121.6),
+            Vector (0.6, 0.0, 76.5), Vector (-23.7, 0.0, 54.5), Vector (-43.8, 0.0, 33.5),
+            Vector (-25.6, 0.0, 0.0), Vector (117.9, 0.0, 0.0), Vector (131.2, 0.0, 175.8)
+        ]
+        if loc:
+            pts = [p.add(loc) for p in pts]
+        return pts
+
     def displayHumanFigure(self, wp):
         """ Display the human figure at the grid corner.
         The silhouette is displayed only if:
-        - BIM Workbench is available;
         - preference BaseApp/Preferences/Mod/Draft/gridBorder is True;
         - preference BaseApp/Preferences/Mod/Draft/gridShowHuman is True;
         - the working plane normal is vertical.
@@ -1229,15 +1287,10 @@ class gridTracker(Tracker):
         if params.get_param("gridBorder") \
                 and params.get_param("gridShowHuman") \
                 and wp.axis.getAngle(FreeCAD.Vector(0,0,1)) < 0.001:
-            try:
-                import BimProjectManager
-                loc = FreeCAD.Vector(-bound+self.space/2,-bound+self.space/2,0)
-                hpts = BimProjectManager.getHuman(loc)
-                pts.extend([tuple(p) for p in hpts])
-                pidx.append(len(hpts))
-            except Exception:
-                # BIM not installed
-                return
+            loc = FreeCAD.Vector(-bound+self.space/2,-bound+self.space/2,0)
+            hpts = self.get_human_figure(loc)
+            pts.extend([tuple(p) for p in hpts])
+            pidx.append(len(hpts))
         self.human.numVertices.deleteValues(0)
         self.coords_human.point.setValues(pts)
         self.human.numVertices.setValues(pidx)
@@ -1393,7 +1446,7 @@ class boxTracker(Tracker):
 
 
 class radiusTracker(Tracker):
-    """A tracker that displays a transparent sphere to inicate a radius."""
+    """A tracker that displays a transparent sphere to indicate a radius."""
 
     def __init__(self, position=FreeCAD.Vector(0, 0, 0), radius=1):
         self.trans = coin.SoTransform()

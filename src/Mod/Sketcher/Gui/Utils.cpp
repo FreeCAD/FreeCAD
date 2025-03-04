@@ -31,11 +31,10 @@
 
 #include <App/Application.h>
 #include <Base/Quantity.h>
-#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -183,7 +182,7 @@ bool SketcherGui::ReleaseHandler(Gui::Document* doc)
 {
     if (doc) {
         if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             SketcherGui::ViewProviderSketch* vp =
                 static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
 
@@ -480,7 +479,7 @@ void SketcherGui::ActivateHandler(Gui::Document* doc, std::unique_ptr<DrawSketch
 {
     if (doc) {
         if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             SketcherGui::ViewProviderSketch* vp =
                 static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
             vp->purgeHandler();
@@ -511,10 +510,7 @@ bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
             if (!actsOnSelection) {
                 return true;
             }
-            else if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId())
-                     > 0) {
-                return true;
-            }
+            return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
         }
     }
 
@@ -526,17 +522,13 @@ bool SketcherGui::isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelecti
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
                 == ViewProviderSketch::STATUS_NONE) {
                 if (!actsOnSelection) {
                     return true;
                 }
-                else if (Gui::Selection().countObjectsOfType(
-                             Sketcher::SketchObject::getClassTypeId())
-                         > 0) {
-                    return true;
-                }
+                return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
             }
         }
     }
@@ -720,42 +712,41 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     Base::Quantity asQuantity;
     asQuantity.setValue(value);
     asQuantity.setUnit(Base::Unit::Length);
-    QString qUserString = asQuantity.getUserString();
+    std::string userString = asQuantity.getUserString();
     if (Base::UnitsApi::isMultiUnitLength() || (!hideUnits() && useSystemDecimals())) {
         // just return the user string
-        return Base::Tools::toStdString(qUserString);
+        return userString;
     }
 
     // find the unit of measure
     double factor = 1.0;
-    QString qUnitString;
-    QString qtranslate = Base::UnitsApi::schemaTranslate(asQuantity, factor, qUnitString);
-    QString unitPart = QString::fromUtf8(" ") + qUnitString;
+    std::string unitString;
+    std::string translate = Base::UnitsApi::schemaTranslate(asQuantity, factor, unitString);
+    std::string unitPart = " " + unitString;
 
     // get the numeric part of the user string
     QRegularExpression rxNoUnits(
-        QString::fromUtf8("(.*) \\D*$"));  // text before space + any non digits at end of string
-    QRegularExpressionMatch match = rxNoUnits.match(qUserString);
+        QStringLiteral("(.*) \\D*$"));  // text before space + any non digits at end of string
+    QRegularExpressionMatch match = rxNoUnits.match(QString::fromStdString(userString));
     if (!match.hasMatch()) {
         // no units in userString?
-        return Base::Tools::toStdString(qUserString);
+        return userString;
     }
     QString matched = match.captured(1);  // matched is the numeric part of user string
+    auto smatched = matched.toStdString();
     int dpPos = matched.indexOf(QLocale().decimalPoint());
     if (dpPos < 0) {
         // no decimal separator (ie an integer), return all the digits
-        if (hideUnits()) {
-            return Base::Tools::toStdString(matched);
+        if (!hideUnits()) {
+            smatched.append(unitPart);
         }
-        else {
-            return Base::Tools::toStdString(matched + unitPart);
-        }
+        return smatched;
     }
 
     // real number
     if (useSystemDecimals() && hideUnits()) {
         // return just the numeric part of the user string
-        return Base::Tools::toStdString(matched);
+        return smatched;
     }
 
     // real number and not using system decimals
@@ -764,11 +755,11 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
         // just take the whole thing
         requiredLength = matched.size();
     }
-    QString numericPart = matched.left(requiredLength);
-    if (hideUnits()) {
-        return Base::Tools::toStdString(numericPart);
+    auto numericPart = matched.left(requiredLength).toStdString();
+    if (!hideUnits()) {
+        numericPart.append(unitPart);
     }
-    return Base::Tools::toStdString(numericPart + unitPart);
+    return numericPart;
 }
 
 // convert value to display format %0.[digits]f. Units are always displayed for
@@ -781,43 +772,39 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
     Base::Quantity asQuantity;
     asQuantity.setValue(value);
     asQuantity.setUnit(Base::Unit::Angle);
-    QString qUserString = asQuantity.getUserString();
+    QString qUserString = QString::fromStdString(asQuantity.getUserString());
     if (Base::UnitsApi::isMultiUnitAngle()) {
         // just return the user string
         // Coin SbString doesn't handle utf8 well, so we convert to ascii
-        QString schemeMinute = QString::fromUtf8("\xE2\x80\xB2");  // prime symbol
-        QString schemeSecond = QString::fromUtf8("\xE2\x80\xB3");  // double prime symbol
-        QString escapeMinute = QString::fromLatin1("\'");          // substitute ascii single quote
-        QString escapeSecond = QString::fromLatin1("\"");          // substitute ascii double quote
+        QString schemeMinute = QStringLiteral("\xE2\x80\xB2");  // prime symbol
+        QString schemeSecond = QStringLiteral("\xE2\x80\xB3");  // double prime symbol
+        QString escapeMinute = QStringLiteral("\'");            // substitute ascii single quote
+        QString escapeSecond = QStringLiteral("\"");            // substitute ascii double quote
         QString displayString = qUserString.replace(schemeMinute, escapeMinute);
         displayString = displayString.replace(schemeSecond, escapeSecond);
-        return Base::Tools::toStdString(displayString);
+        return displayString.toStdString();
     }
 
     // we always use use U+00B0 (°) as the unit of measure for angles in
     // single unit schema.  Will need a change to support rads or grads.
-    auto qUnitString = QString::fromUtf8("°");
+    std::string unitString = "°";
     auto decimalSep = QLocale().decimalPoint();
 
     // get the numeric part of the user string
-    QRegularExpression rxNoUnits(QString::fromUtf8("(\\d*\\%1?\\d*)(\\D*)$")
+    QRegularExpression rxNoUnits(QStringLiteral("(\\d*\\%1?\\d*)(\\D*)$")
                                      .arg(decimalSep));  // number + non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(qUserString);
     if (!match.hasMatch()) {
         // no units in userString?
-        return Base::Tools::toStdString(qUserString);
+        return qUserString.toStdString();
     }
     QString matched = match.captured(1);  // matched is the numeric part of user string
     int dpPos = matched.indexOf(decimalSep);
-    if (dpPos < 0) {
-        // no decimal separator (ie an integer), return all the digits
-        return Base::Tools::toStdString(matched + qUnitString);
-    }
-
-    // real number
-    if (useSystemDecimals()) {
-        // return just the numeric part of the user string + degree symbol
-        return Base::Tools::toStdString(matched + qUnitString);
+    if (dpPos < 0 || useSystemDecimals()) {
+        // just the numeric part of the user string + degree symbol
+        auto angle = matched.toStdString();
+        angle.append(unitString);
+        return angle;
     }
 
     // real number and not using system decimals
@@ -826,8 +813,9 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
         // just take the whole thing
         requiredLength = matched.size();
     }
-    QString numericPart = matched.left(requiredLength);
-    return Base::Tools::toStdString(numericPart + qUnitString);
+    auto numericPart = matched.left(requiredLength).toStdString();
+    numericPart.append(unitString);
+    return numericPart;
 }
 
 

@@ -152,11 +152,16 @@ PartExport std::vector<TopoShape> getPyShapes(PyObject *obj) {
     return ret;
 }
 
+namespace
+{
+
 struct EdgePoints {
     gp_Pnt v1, v2;
     std::list<TopoDS_Edge>::iterator it;
     TopoDS_Edge edge;
 };
+
+}
 
 PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges)
 {
@@ -420,7 +425,8 @@ public:
             "read(string) -- Load the file and return the shape."
         );
         add_varargs_method("show",&Module::show,
-            "show(shape,[string]) -- Add the shape to the active document or create one if no document exists."
+            "show(shape,[string]) -- Add the shape to the active document or create one if no document exists.\n"
+            "Returns document object."
         );
         add_varargs_method("getFacets",&Module::getFacets,
             "getFacets(shape): simplified mesh generation"
@@ -714,7 +720,6 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        //Base::Console().Log("Open in Part with %s",Name);
         Base::FileInfo file(EncodedName.c_str());
 
         // extract ending
@@ -860,7 +865,7 @@ private:
         } else {
             throw Py::TypeError("Expects argument of type DocumentObject, Shape, or Geometry");
         }
-        Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name));
+        Part::Feature *pcFeature = pcDoc->addObject<Part::Feature>(name);
         // copy the data
         pcFeature->Shape.setValue(shape);
         pcFeature->purgeTouched();
@@ -1048,7 +1053,7 @@ private:
                           if (!PyLong_Check(value)) {
                               throw Py::ValueError(err);
                           }
-                          int order = Py::Int(value);
+                          int order = Py::Long(value);
                           params.orders[s] = static_cast<TopoShape::Continuity>(order);
                           return;
                       });
@@ -1125,7 +1130,7 @@ private:
                           if (!PyLong_Check(value)) {
                               throw Py::ValueError(err);
                           }
-                          int order = Py::Int(value);
+                          int order = Py::Long(value);
                           params.orders[s] = static_cast<TopoShape::Continuity>(order);
                           return;
                       });
@@ -2009,9 +2014,7 @@ private:
             }
 
             pysize = PyUnicode_GetLength(p);
-#if PY_VERSION_HEX < 0x03090000
-            unichars = PyUnicode_AS_UNICODE(p);
-#else
+
 #ifdef FC_OS_WIN32
             //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
             //will result in unknown glyph in even positions, and wrong characters in
@@ -2020,14 +2023,11 @@ private:
 #else
             unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(p);
 #endif
-#endif
         }
         else if (PyUnicode_Check(intext)) {
             pysize = PyUnicode_GetLength(intext);
 
-#if PY_VERSION_HEX < 0x03090000
-            unichars = PyUnicode_AS_UNICODE(intext);
-#else
+
 #ifdef FC_OS_WIN32
             //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
             //will result in unknown glyph in even positions, and wrong characters in
@@ -2035,7 +2035,6 @@ private:
             unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(intext, &pysize);
 #else
             unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(intext);
-#endif
 #endif
         }
         else {
@@ -2049,11 +2048,9 @@ private:
             else {
                 CharList = FT2FC(unichars,pysize,dir,fontfile,height,track);
             }
-#if PY_VERSION_HEX >= 0x03090000
             if (unichars) {
                 PyMem_Free(unichars);
             }
-#endif
         }
         catch (Standard_DomainError&) {                                      // Standard_DomainError is OCC error.
             throw Py::Exception(PartExceptionOCCDomainError, "makeWireString failed - Standard_DomainError");
@@ -2362,12 +2359,12 @@ private:
         std::string subname(sub);
         if (!subname.empty() && subname[subname.size()-1]!='.')
             subname += '.';
-        if (mapped && mapped[0]) {
+        if (!Base::Tools::isNullOrEmpty(mapped)) {
             if (!Data::isMappedElement(mapped))
                 subname += Data::ELEMENT_MAP_PREFIX;
             subname += mapped;
         }
-        if (element && element[0]) {
+        if (!Base::Tools::isNullOrEmpty(element)) {
             if (!subname.empty() && subname[subname.size()-1]!='.')
                 subname += '.';
             subname += element;

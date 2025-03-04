@@ -24,8 +24,9 @@
 #ifndef BASE_MATRIX_H
 #define BASE_MATRIX_H
 
-#include <string>
 #include <array>
+#include <cmath>
+#include <string>
 
 #include "Vector3D.h"
 #ifndef FC_GLOBAL_H

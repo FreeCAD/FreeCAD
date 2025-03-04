@@ -183,7 +183,7 @@
       <location filename="../../Command.cpp" line="378"/>
       <location filename="../../Command.cpp" line="380"/>
       <source>Exports a mesh to file</source>
-      <translation>Netz in eine Datei exportieren</translation>
+      <translation>Exportiert ein Netz in eine Datei</translation>
     </message>
   </context>
   <context>
@@ -315,7 +315,7 @@
       <location filename="../../Command.cpp" line="325"/>
       <location filename="../../Command.cpp" line="327"/>
       <source>Imports a mesh from file</source>
-      <translation>Importiert Netz aus einer Datei</translation>
+      <translation>Importiert ein Netz aus einer Datei</translation>
     </message>
   </context>
   <context>
@@ -435,7 +435,7 @@
     <message>
       <location filename="../../Command.cpp" line="1184"/>
       <source>Refinement...</source>
-      <translation>Aufbereitung...</translation>
+      <translation>Aufbereiten...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1185"/>
@@ -642,7 +642,7 @@
       <location filename="../../Command.cpp" line="559"/>
       <location filename="../../Command.cpp" line="561"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
-      <translation>Berechnet die Krümmungen in den Vertexen eines Netzes</translation>
+      <translation>Berechnet die Krümmung an den Knotenpunkten eines Netzes</translation>
     </message>
   </context>
   <context>

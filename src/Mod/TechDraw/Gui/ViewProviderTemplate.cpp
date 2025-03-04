@@ -81,7 +81,7 @@ void ViewProviderTemplate::attach(App::DocumentObject* pcFeat)
 void ViewProviderTemplate::updateData(const App::Property* prop)
 {
     //This doesn't belong here.  Should be in a ViewProviderSvgTemplate?
-    if (getTemplate()->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
+    if (getTemplate()->isDerivedFrom<TechDraw::DrawSVGTemplate>()) {
         auto t = static_cast<TechDraw::DrawSVGTemplate*>(getTemplate());
         if (prop == &(t->Template)) {
             auto page = t->getParentPage();

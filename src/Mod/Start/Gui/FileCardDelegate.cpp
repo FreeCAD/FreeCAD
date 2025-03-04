@@ -38,7 +38,7 @@
 #include "FileCardDelegate.h"
 #include "../App/DisplayedFilesModel.h"
 #include "App/Application.h"
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <gsl/pointers>
 
 using namespace Start;
@@ -58,27 +58,27 @@ FileCardDelegate::FileCardDelegate(QObject* parent)
 QColor FileCardDelegate::getBorderColor() const
 {
     QColor color(98, 160, 234);  // NOLINT
-    uint32_t packed = App::Color::asPackedRGB<QColor>(color);
+    uint32_t packed = Base::Color::asPackedRGB<QColor>(color);
     packed = _parameterGroup->GetUnsigned("FileThumbnailBorderColor", packed);
-    color = App::Color::fromPackedRGB<QColor>(packed);
+    color = Base::Color::fromPackedRGB<QColor>(packed);
     return color;
 }
 
 QColor FileCardDelegate::getBackgroundColor() const
 {
     QColor color(221, 221, 221);  // NOLINT
-    uint32_t packed = App::Color::asPackedRGB<QColor>(color);
+    uint32_t packed = Base::Color::asPackedRGB<QColor>(color);
     packed = _parameterGroup->GetUnsigned("FileThumbnailBackgroundColor", packed);
-    color = App::Color::fromPackedRGB<QColor>(packed);
+    color = Base::Color::fromPackedRGB<QColor>(packed);
     return color;
 }
 
 QColor FileCardDelegate::getSelectionColor() const
 {
     QColor color(38, 162, 105);  // NOLINT
-    uint32_t packed = App::Color::asPackedRGB<QColor>(color);
+    uint32_t packed = Base::Color::asPackedRGB<QColor>(color);
     packed = _parameterGroup->GetUnsigned("FileThumbnailSelectionColor", packed);
-    color = App::Color::fromPackedRGB<QColor>(packed);
+    color = Base::Color::fromPackedRGB<QColor>(packed);
     return color;
 }
 
@@ -119,11 +119,11 @@ void FileCardDelegate::paint(QPainter* painter,
         _widget->setProperty("state", QStringLiteral("pressed"));
         if (qApp->styleSheet().isEmpty()) {
             QColor color = getSelectionColor();
-            style = QString::fromLatin1("QWidget#thumbnailWidget {"
-                                        " border: 2px solid rgb(%1, %2, %3);"
-                                        " border-radius: 4px;"
-                                        " padding: 2px;"
-                                        "}")
+            style = QStringLiteral("QWidget#thumbnailWidget {"
+                                   " border: 2px solid rgb(%1, %2, %3);"
+                                   " border-radius: 4px;"
+                                   " padding: 2px;"
+                                   "}")
                         .arg(color.red())
                         .arg(color.green())
                         .arg(color.blue());
@@ -133,11 +133,11 @@ void FileCardDelegate::paint(QPainter* painter,
         _widget->setProperty("state", QStringLiteral("hovered"));
         if (qApp->styleSheet().isEmpty()) {
             QColor color = getBorderColor();
-            style = QString::fromLatin1("QWidget#thumbnailWidget {"
-                                        " border: 2px solid rgb(%1, %2, %3);"
-                                        " border-radius: 4px;"
-                                        " padding: 2px;"
-                                        "}")
+            style = QStringLiteral("QWidget#thumbnailWidget {"
+                                   " border: 2px solid rgb(%1, %2, %3);"
+                                   " border-radius: 4px;"
+                                   " padding: 2px;"
+                                   "}")
                         .arg(color.red())
                         .arg(color.green())
                         .arg(color.blue());
@@ -145,10 +145,10 @@ void FileCardDelegate::paint(QPainter* painter,
     }
     else if (qApp->styleSheet().isEmpty()) {
         QColor color = getBackgroundColor();
-        style = QString::fromLatin1("QWidget#thumbnailWidget {"
-                                    " background-color: rgb(%1, %2, %3);"
-                                    " border-radius: 8px;"
-                                    "}")
+        style = QStringLiteral("QWidget#thumbnailWidget {"
+                               " background-color: rgb(%1, %2, %3);"
+                               " border-radius: 8px;"
+                               "}")
                     .arg(color.red())
                     .arg(color.green())
                     .arg(color.blue());

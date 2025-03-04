@@ -43,8 +43,8 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
@@ -292,7 +292,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
 
     bool bEditSelected = false;
     if (support.getSize() == 1 && support.getValue() ){
-        if (support.getValue()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
+        if (support.getValue()->isDerivedFrom<PartDesign::ShapeBinder>())
             bEditSelected = true;
     }
 
@@ -486,7 +486,7 @@ void CmdPartDesignClone::activated(int iMsg)
 
 bool CmdPartDesignClone::isActive()
 {
-    return getSelection().countObjectsOfType(Part::Feature::getClassTypeId()) == 1;
+    return getSelection().countObjectsOfType<Part::Feature>() == 1;
 }
 
 //===========================================================================
@@ -766,7 +766,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 {
     auto base_worker = [=](App::DocumentObject *feature, const std::vector<std::string> &subs) {
 
-        if (!feature || !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
+        if (!feature || !feature->isDerivedFrom<Part::Feature>())
             return;
 
         // Related to #0002760: when an operation can't be performed due to a broken
@@ -818,7 +818,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             // `ProfileBased::getProfileShape()` and other methods will return
             // just the sub-shapes if they are set. So when whole sketches are
             // desired, do not set sub-values.
-            if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
+            if (feature->isDerivedFrom<Part::Part2DObject>() &&
                 subName.compare(0, 6, "Vertex") != 0)
                 runProfileCmd();
             else
@@ -853,7 +853,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             // `ProfileBased::getProfileShape()` and other methods will return
             // just the sub-shapes if they are set. So when whole sketches are
             // desired, don't set sub-values.
-            if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
+            if (feature->isDerivedFrom<Part::Part2DObject>() &&
                 subName.compare(0, 6, "Vertex") != 0)
                 runProfileCmd();
             else
@@ -864,7 +864,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             if (selection.size() == 2) { //treat additional selected object as spine
                 std::vector <string> subnames = selection[1].getSubNames();
                 auto objCmdSpine = Gui::Command::getObjectCmd(selection[1].getObject());
-                if (selection[1].getObject()->isDerivedFrom(Part::Part2DObject::getClassTypeId()) && subnames.empty()) {
+                if (selection[1].getObject()->isDerivedFrom<Part::Part2DObject>() && subnames.empty()) {
                     FCMD_OBJ_CMD(Feat,"Spine = " << objCmdSpine);
                 }
                 else {
@@ -1048,7 +1048,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
 void finishProfileBased(const Gui::Command* cmd, const Part::Feature* sketch, App::DocumentObject *Feat)
 {
-    if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (sketch && sketch->isDerivedFrom<Part::Part2DObject>())
         FCMD_OBJ_HIDE(sketch);
     finishFeature(cmd, Feat);
 }
@@ -1217,7 +1217,7 @@ void CmdPartDesignRevolution::activated(int iMsg)
         if (!Feat)
             return;
 
-        if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        if (sketch->isDerivedFrom<Part::Part2DObject>()) {
             FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(sketch) << ",['V_Axis'])");
         }
         else {
@@ -1273,7 +1273,7 @@ void CmdPartDesignGroove::activated(int iMsg)
         if (!Feat)
             return;
 
-        if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        if (sketch->isDerivedFrom<Part::Part2DObject>()) {
             FCMD_OBJ_CMD(Feat,"ReferenceAxis = ("<<getObjectCmd(sketch)<<",['V_Axis'])");
         }
         else {
@@ -1537,7 +1537,7 @@ void CmdPartDesignAdditiveHelix::activated(int iMsg)
         // specific parameters for helix
         Gui::Command::updateActive();
 
-        if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        if (sketch->isDerivedFrom<Part::Part2DObject>()) {
             FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(sketch) << ",['V_Axis'])");
         }
         else {
@@ -1605,7 +1605,7 @@ void CmdPartDesignSubtractiveHelix::activated(int iMsg)
         // specific parameters for helix
         Gui::Command::updateActive();
 
-        if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        if (sketch->isDerivedFrom<Part::Part2DObject>()) {
             FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(sketch) << ",['V_Axis'])");
         }
         else {
@@ -2022,7 +2022,7 @@ void CmdPartDesignMirrored::activated(int iMsg)
     Gui::Command* cmd = this;
     auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
         bool direction = false;
-        if (!features.empty() && features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+        if (!features.empty() && features.front()->isDerivedFrom<PartDesign::ProfileBased>()) {
             Part::Part2DObject* sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
                 FCMD_OBJ_CMD(Feat,"MirrorPlane = ("<<getObjectCmd(sketch)<<", ['V_Axis'])");
@@ -2073,7 +2073,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
     Gui::Command* cmd = this;
     auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
         bool direction = false;
-        if (!features.empty() && features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+        if (!features.empty() && features.front()->isDerivedFrom<PartDesign::ProfileBased>()) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
                 FCMD_OBJ_CMD(Feat,"Direction = ("<<Gui::Command::getObjectCmd(sketch)<<", ['H_Axis'])");
@@ -2127,7 +2127,7 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
     auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
 
         bool direction = false;
-        if (!features.empty() && features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+        if (!features.empty() && features.front()->isDerivedFrom<PartDesign::ProfileBased>()) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
                 FCMD_OBJ_CMD(Feat,"Axis = ("<<Gui::Command::getObjectCmd(sketch)<<",['N_Axis'])");

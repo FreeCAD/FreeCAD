@@ -43,7 +43,7 @@ ViewProviderFemConstraintOnBoundary::~ViewProviderFemConstraintOnBoundary() = de
 
 void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
 {
-    Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(this->getObject());
+    Fem::Constraint* pcConstraint = this->getObject<Fem::Constraint>();
     const auto& subSets = pcConstraint->References.getSubListValues();
 
     for (auto& subSet : subSets) {
@@ -67,7 +67,7 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 if (originalPointColors[base].empty()) {
                     originalPointColors[base] = vp->PointColorArray.getValues();
                 }
-                std::vector<App::Color> colors = originalPointColors[base];
+                std::vector<Base::Color> colors = originalPointColors[base];
 
                 // go through the subelements with constraint and recolor them
                 // TODO: Replace `ShapeAppearance` with anything more appropriate
@@ -82,7 +82,7 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 if (originalLineColors[base].empty()) {
                     originalLineColors[base] = vp->LineColorArray.getValues();
                 }
-                std::vector<App::Color> colors = originalLineColors[base];
+                std::vector<Base::Color> colors = originalLineColors[base];
 
                 // go through the subelements with constraint and recolor them
                 // TODO: Replace `ShapeAppearance` with anything more appropriate
@@ -97,7 +97,7 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 if (originalFaceColors[base].empty()) {
                     originalFaceColors[base] = vp->ShapeAppearance.getDiffuseColors();
                 }
-                std::vector<App::Color> colors = originalFaceColors[base];
+                std::vector<Base::Color> colors = originalFaceColors[base];
 
                 // go through the subelements with constraint and recolor them
                 // TODO: Replace shape DiffuseColor with anything more appropriate

@@ -32,7 +32,7 @@
 #endif
 
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintDisplacement.h>
 #include <Mod/Part/App/PartFeature.h>
 
@@ -89,7 +89,7 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
 
     // Get the feature data
     Fem::ConstraintDisplacement* pcConstraint =
-        static_cast<Fem::ConstraintDisplacement*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintDisplacement>();
     Base::Quantity fStates[6] {};
     const char* sStates[3] {};
     bool bStates[10] {};
@@ -241,7 +241,7 @@ void TaskFemConstraintDisplacement::addToSelection()
         return;
     }
     Fem::ConstraintDisplacement* pcConstraint =
-        static_cast<Fem::ConstraintDisplacement*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintDisplacement>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -312,7 +312,7 @@ void TaskFemConstraintDisplacement::removeFromSelection()
         return;
     }
     Fem::ConstraintDisplacement* pcConstraint =
-        static_cast<Fem::ConstraintDisplacement*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintDisplacement>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
@@ -378,52 +378,52 @@ const std::string TaskFemConstraintDisplacement::getReferences() const
 
 std::string TaskFemConstraintDisplacement::get_spinxDisplacement() const
 {
-    return ui->spinxDisplacement->value().getSafeUserString().toStdString();
+    return ui->spinxDisplacement->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintDisplacement::get_spinyDisplacement() const
 {
-    return ui->spinyDisplacement->value().getSafeUserString().toStdString();
+    return ui->spinyDisplacement->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintDisplacement::get_spinzDisplacement() const
 {
-    return ui->spinzDisplacement->value().getSafeUserString().toStdString();
+    return ui->spinzDisplacement->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintDisplacement::get_spinxRotation() const
 {
-    return ui->spinxRotation->value().getSafeUserString().toStdString();
+    return ui->spinxRotation->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintDisplacement::get_spinyRotation() const
 {
-    return ui->spinyRotation->value().getSafeUserString().toStdString();
+    return ui->spinyRotation->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintDisplacement::get_spinzRotation() const
 {
-    return ui->spinzRotation->value().getSafeUserString().toStdString();
+    return ui->spinzRotation->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintDisplacement::get_xFormula() const
 {
     QString xFormula = ui->DisplacementXFormulaLE->text();
-    xFormula.replace(QString::fromLatin1("\""), QString::fromLatin1("\\\""));
+    xFormula.replace(QStringLiteral("\""), QStringLiteral("\\\""));
     return xFormula.toStdString();
 }
 
 std::string TaskFemConstraintDisplacement::get_yFormula() const
 {
     QString yFormula = ui->DisplacementYFormulaLE->text();
-    yFormula.replace(QString::fromLatin1("\""), QString::fromLatin1("\\\""));
+    yFormula.replace(QStringLiteral("\""), QStringLiteral("\\\""));
     return yFormula.toStdString();
 }
 
 std::string TaskFemConstraintDisplacement::get_zFormula() const
 {
     QString zFormula = ui->DisplacementZFormulaLE->text();
-    zFormula.replace(QString::fromLatin1("\""), QString::fromLatin1("\\\""));
+    zFormula.replace(QStringLiteral("\""), QStringLiteral("\\\""));
     return zFormula.toStdString();
 }
 

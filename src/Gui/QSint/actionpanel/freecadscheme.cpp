@@ -29,6 +29,7 @@
 #include <QImage>
 #include <QPainter>
 #include <QPalette>
+#include <QHash>
 
 
 namespace QSint
@@ -202,13 +203,11 @@ SystemPanelScheme::SystemPanelScheme()
     headerAnimation = true;
 
     QPalette p = QApplication::palette();
-    QPalette p2 = p;
-    p2.setColor(QPalette::Highlight,p2.color(QPalette::Highlight).lighter());
 
-    headerButtonFold = drawFoldIcon(p, true);
-    headerButtonFoldOver = drawFoldIcon(p2, true);
-    headerButtonUnfold = drawFoldIcon(p, false);
-    headerButtonUnfoldOver = drawFoldIcon(p2, false);
+    headerButtonFold = drawFoldIcon(p, true, false);
+    headerButtonFoldOver = drawFoldIcon(p, true, true);
+    headerButtonUnfold = drawFoldIcon(p, false, false);
+    headerButtonUnfoldOver = drawFoldIcon(p, false, true);
     headerButtonSize = QSize(17,17);
 
     groupFoldSteps = 20;
@@ -219,134 +218,134 @@ SystemPanelScheme::SystemPanelScheme()
     actionStyle = systemStyle(QApplication::palette());
 }
 
-/*!
-  \code
-    QPalette p = QApplication::palette();
-    QPalette p2 = p;
-    p2.setColor(QPalette::Highlight,p2.color(QPalette::Highlight).lighter());
-    headerButtonFold = drawFoldIcon(p, true);
-    headerButtonFoldOver = drawFoldIcon(p2, true);
-    headerButtonUnfold = drawFoldIcon(p, false);
-    headerButtonUnfoldOver = drawFoldIcon(p2, false);
-  \endcode
- */
-QPixmap SystemPanelScheme::drawFoldIcon(const QPalette& p, bool fold) const
+QPixmap SystemPanelScheme::drawFoldIcon(const QPalette& palette, bool fold, bool hover) const
 {
-    QImage img(17,17,QImage::Format_ARGB32_Premultiplied);
-    img.fill(0x00000000);
-    QPainter painter;
-    painter.begin(&img);
-    painter.setBrush(p.window());
-    painter.drawEllipse(2,2,13,13);
-    painter.setPen(p.color(QPalette::Base));
-    painter.drawEllipse(2,2,13,13);
-    painter.setPen(p.color(QPalette::Highlight));
-    painter.drawLine(QLine(5,7,8,4));
-    painter.drawLine(QLine(6,7,8,5));
-    painter.drawLine(QLine(8,4,11,7));
-    painter.drawLine(QLine(8,5,10,7));
-    painter.drawLine(QLine(5,11,8,8));
-    painter.drawLine(QLine(6,11,8,9));
-    painter.drawLine(QLine(8,8,11,11));
-    painter.drawLine(QLine(9,8,10,11));
-    painter.end();
+    QSize bSize = headerButtonSize;
+    QImage img(bSize.width(), bSize.height(), QImage::Format_ARGB32_Premultiplied);
+    img.fill(Qt::transparent);
 
-    if (!fold) {
-        QTransform mat;
-        mat.rotate(180.0);
-        img = img.transformed(mat);
+    QPainter painter(&img);
+
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    qreal penWidth = bSize.width() / 14.0;
+    qreal lef_X = 0.25 * bSize.width();
+    qreal mid_X = 0.50 * bSize.width();
+    qreal rig_X = 0.75 * bSize.width();
+    qreal bot_Y = 0.40 * bSize.height();
+    qreal top_Y = 0.64 * bSize.height();
+
+    if (hover) {
+        penWidth *= 1.8;
     }
+
+    painter.setBrush(Qt::NoBrush);
+    painter.setPen(QPen(palette.color(QPalette::HighlightedText), penWidth));
+
+    QPolygon chevron;
+    if (fold) {
+        // Upward
+        chevron << QPoint(lef_X, top_Y)
+                << QPoint(mid_X, bot_Y)
+                << QPoint(rig_X, top_Y);
+    } else {
+        // Downward
+        chevron << QPoint(lef_X, bot_Y)
+                << QPoint(mid_X, top_Y)
+                << QPoint(rig_X, bot_Y);
+    }
+
+    painter.drawPolyline(chevron);
+    painter.end();
     return QPixmap::fromImage(img);
 }
 
+
 QString SystemPanelScheme::systemStyle(const QPalette& p) const
 {
-  QColor panelBackground1 = p.color(QPalette::Dark);
-  QColor panelBackground2 = p.color(QPalette::Midlight);
+    QHash<QString, QString> replacements;
+    replacements.insert(QStringLiteral("headerBackground"),
+        p.color(QPalette::Highlight).name());
+    replacements.insert(QStringLiteral("headerLabelText"),
+        p.color(QPalette::HighlightedText).name());
+    replacements.insert(QStringLiteral("headerLabelTextOver"),
+        p.color(QPalette::BrightText).name());
+        replacements.insert(QStringLiteral("groupBorder"),
+        p.color(QPalette::Mid).name());
+    replacements.insert(QStringLiteral("disabledActionText"),
+        p.color(QPalette::Disabled, QPalette::Text).name());
+    replacements.insert(QStringLiteral("actionSelectedBg"),
+        p.color(QPalette::Active, QPalette::Light).name());
+    replacements.insert(QStringLiteral("actionSelectedText"),
+        p.color(QPalette::Active, QPalette::ButtonText).name());
+    replacements.insert(QStringLiteral("actionSelectedBorder"),
+        p.color(QPalette::Active, QPalette::Highlight).name());
+    replacements.insert(QStringLiteral("panelBackground"),
+        p.color(QPalette::Window).name());
+    replacements.insert(QStringLiteral("groupBackground"),
+        p.color(QPalette::Button).name());
 
-  QColor headerBackground1 = p.color(QPalette::Highlight);
-  QColor headerBackground2 = p.color(QPalette::Highlight).lighter();
+    QString style = QStringLiteral(
+        "QFrame[class='panel'] {"
+            "background-color: {panelBackground};"
+        "}"
 
-  QColor headerLabelText = p.color(QPalette::HighlightedText);
-  QColor headerLabelTextOver = p.color(QPalette::BrightText);
+        "QSint--ActionGroup QFrame[class='header'] {"
+            "border: 1px solid transparent;"
+            "background-color: {headerBackground};"
+        "}"
 
-  QColor groupBackground = p.window().color();
-  QColor groupBorder = p.color(QPalette::Window);
+        "QSint--ActionGroup QToolButton[class='header'] {"
+            "text-align: left;"
+            "color: {headerLabelText};"
+            "background-color: transparent;"
+            "border: 1px solid transparent;"
+            "font-weight: bold;"
+        "}"
 
-  QColor taskLabelText = p.color(QPalette::Text);
-  QColor taskLabelTextOver = p.color(QPalette::Highlight);
+        "QSint--ActionGroup QToolButton[class='header']:hover {"
+            "color: {headerLabelTextOver};"
+        "}"
 
-  QString style = QString::fromLatin1(
-    "QFrame[class='panel'] {"
-        "background-color:qlineargradient(x1:1, y1:0.3, x2:1, y2:0, stop:0 %1, stop:1 %2);"
-    "}"
+        "QSint--ActionGroup QFrame[class='content'] {"
+            "border: 1px solid {groupBorder};"
+            "background-color: {groupBackground};"
+        "}"
 
-    "QSint--ActionGroup QFrame[class='header'] {"
-        "border: 1px solid #ffffff;"                                // todo
-        "border-top-left-radius: 4px;"
-        "border-top-right-radius: 4px;"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 %3, stop: 1 %4);"
-    "}"
+        "QSint--ActionGroup QFrame[class='content'][header='true'] {"
+            "border-top: none;"
+        "}"
 
-    "QSint--ActionGroup QToolButton[class='header'] {"
-        "text-align: left;"
-        "color: %5;"
-        "background-color: transparent;"
-        "border: 1px solid transparent;"
-        "font-weight: bold;"
-    "}"
+        "QSint--ActionGroup QToolButton[class='action'] {"
+            "background-color: transparent;"
+            "border: 1px solid transparent;"
+            "text-align: left;"
+        "}"
 
-    "QSint--ActionGroup QToolButton[class='header']:hover {"
-        "color: %6;"
-    "}"
+        "QSint--ActionGroup QToolButton[class='action']:!enabled {"
+            "color: {disabledActionText};"
+        "}"
 
-    "QSint--ActionGroup QFrame[class='content'] {"
-        "background-color: %7;"
-        "border: 1px solid %8;"
-    "}"
+        "QSint--ActionGroup QToolButton[class='action']:hover {"
+            "text-decoration: underline;"
+        "}"
 
-    "QSint--ActionGroup QFrame[class='content'][header='true'] {"
-        "border-top: none;"
-    "}"
+        "QSint--ActionGroup QToolButton[class='action']:focus {"
+            "color: {actionSelectedText};"
+            "border: 1px dotted {actionSelectedBorder};"
+        "}"
 
-    "QSint--ActionGroup QToolButton[class='action'] {"
-        "background-color: transparent;"
-        "border: 1px solid transparent;"
-        "color: %9;"
-        "text-align: left;"
-    "}"
+        "QSint--ActionGroup QToolButton[class='action']:on {"
+            "background-color: {actionSelectedBg};"
+            "color: {actionSelectedText};"
+        "}"
+    );
 
-    "QSint--ActionGroup QToolButton[class='action']:!enabled {"
-        "color: #999999;"                                           // todo
-    "}"
+    for (auto it = replacements.begin(); it != replacements.end(); ++it) {
+        style.replace("{" + it.key() + "}", it.value());
+    }
 
-    "QSint--ActionGroup QToolButton[class='action']:hover {"
-        "color: %10;"
-        "text-decoration: underline;"
-    "}"
-
-    "QSint--ActionGroup QToolButton[class='action']:focus {"
-        "border: 1px dotted black;"
-    "}"
-
-    "QSint--ActionGroup QToolButton[class='action']:on {"
-        "background-color: #ddeeff;"                                // todo
-        "color: #006600;"                                           // todo
-    "}"
-  )
-          .arg(panelBackground1.name(),
-               panelBackground2.name(),
-               headerBackground1.name(),
-               headerBackground2.name(),
-               headerLabelText.name(),
-               headerLabelTextOver.name(),
-               groupBackground.name(),
-               groupBorder.name(),
-               taskLabelText.name())
-           .arg(taskLabelTextOver.name())
-  ;
-
-  return style;
+    return style;
 }
 
 }

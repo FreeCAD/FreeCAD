@@ -81,7 +81,16 @@ void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* 
 
 bool ViewProvider::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
+    if (ModNum == ViewProvider::Transform) {
+        if (forwardToLink()) {
+            return true;
+        }
+
+        // this is feature so we need to forward the transform to the body
+        forwardedViewProvider = getBodyViewProvider();
+        return forwardedViewProvider->startEditing(ModNum);
+    }
+    else if (ModNum == ViewProvider::Default) {
         // When double-clicking on the item for this feature the
         // object unsets and sets its edit mode without closing
         // the task panel
@@ -181,7 +190,7 @@ void ViewProvider::onChanged(const App::Property* prop) {
             //hide all features in the body other than this object
             for(App::DocumentObject* obj : body->Group.getValues()) {
 
-                if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && obj != getObject()) {
+                if(obj->isDerivedFrom<PartDesign::Feature>() && obj != getObject()) {
                    auto vpd = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
                            Gui::Application::Instance->getViewProvider(obj));
                    if(vpd && vpd->Visibility.getValue())
@@ -192,6 +201,22 @@ void ViewProvider::onChanged(const App::Property* prop) {
     }
 
     PartGui::ViewProviderPartExt::onChanged(prop);
+}
+
+Gui::ViewProvider* ViewProvider::startEditing(int ModNum)
+{
+    // in case of transform we forward the request to body
+    if (ModNum == Transform) {
+        forwardedViewProvider = nullptr;
+
+        if (!ViewProviderPart::startEditing(ModNum)) {
+            return nullptr;
+        }
+
+        return forwardedViewProvider;
+    }
+
+    return ViewProviderPart::startEditing(ModNum);
 }
 
 void ViewProvider::setTipIcon(bool onoff) {
@@ -214,7 +239,7 @@ QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)
 {
-    PartDesign::Feature* feature = static_cast<PartDesign::Feature*>(getObject());
+    PartDesign::Feature* feature = getObject<PartDesign::Feature>();
 
     App::DocumentObject* previousfeat = feature->BaseFeature.getValue();
 
@@ -299,7 +324,7 @@ ViewProviderBody* ViewProvider::getBodyViewProvider() {
     auto doc = getDocument();
     if(body && doc) {
         auto vp = doc->getViewProvider(body);
-        if(vp && vp->isDerivedFrom(ViewProviderBody::getClassTypeId()))
+        if(vp && vp->isDerivedFrom<ViewProviderBody>())
            return static_cast<ViewProviderBody*>(vp);
     }
 

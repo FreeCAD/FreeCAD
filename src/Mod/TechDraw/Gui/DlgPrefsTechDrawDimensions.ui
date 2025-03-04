@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>440</width>
-    <height>508</height>
+    <width>495</width>
+    <height>692</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -35,7 +35,7 @@
       <item>
        <layout class="QGridLayout" name="gridLayout">
         <item row="8" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -45,7 +45,7 @@
           <property name="toolTip">
            <string>Arrowhead size</string>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -156,6 +156,11 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="toolTip">
            <string>Append unit to dimension values</string>
           </property>
@@ -183,7 +188,7 @@
          </widget>
         </item>
         <item row="4" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -193,7 +198,7 @@
           <property name="toolTip">
            <string>Dimension text font size</string>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>4.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -402,7 +407,7 @@ Multiplier of 'Font Size'</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.</string>
+           <string>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.</string>
           </property>
           <property name="text">
            <string>Extension Gap Factor - ISO</string>
@@ -430,7 +435,7 @@ Multiplier of 'Font Size'</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions.</string>
+           <string>Controls the gap size between the dimension point and the start of the extension line for ASME dimensions.</string>
           </property>
           <property name="text">
            <string>Extension Gap Factor - ASME</string>
@@ -440,7 +445,7 @@ Multiplier of 'Font Size'</string>
         <item row="9" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbGapISO">
           <property name="toolTip">
-           <string>Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.
+           <string>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.
  Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 8.</string>
           </property>
@@ -458,7 +463,7 @@ Multiplier of 'Font Size'</string>
         <item row="10" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbGapASME">
           <property name="toolTip">
-           <string>Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
+           <string>Controls the gap size between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 6.</string>
           </property>
           <property name="value">
@@ -480,7 +485,7 @@ Multiplier of 'Font Size'</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Controls the size of spacing between dimension line and dimension text for ISO dimensions.</string>
+           <string>Controls the gap size between dimension line and dimension text for ISO dimensions.</string>
           </property>
           <property name="text">
            <string>Line Spacing - ISO</string>
@@ -490,7 +495,7 @@ Multiplier of 'Font Size'</string>
         <item row="11" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbLineSpacingFactorISO">
           <property name="toolTip">
-           <string>Controls the size of spacing between dimension line and dimension text.
+           <string>Controls the gap size between dimension line and dimension text.
  Value * linewidth is the line spacing.</string>
           </property>
           <property name="value">
@@ -544,7 +549,7 @@ Multiplier of 'Font Size'</string>
         </property>
        </widget>
       </item>
-	     <item row="0" column="1">
+      <item row="0" column="1">
        <widget class="QComboBox" name="dimensioningMode">
         <property name="toolTip">
          <string>Select the type of dimensioning tools for your toolbar:
@@ -562,7 +567,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
         </property>
        </widget>
       </item>
-	  <item row="1" column="1">
+      <item row="1" column="1">
        <widget class="QComboBox" name="radiusDiameterMode">
         <property name="toolTip">
          <string>While using the Dimension tool you may choose how to handle circles and arcs:
@@ -627,9 +632,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="Resources/TechDraw.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>cbGlobalDecimals</sender>

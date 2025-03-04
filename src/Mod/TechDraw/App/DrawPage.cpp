@@ -173,7 +173,7 @@ bool DrawPage::hasValidTemplate() const
     App::DocumentObject* obj = nullptr;
     obj = Template.getValue();
 
-    if (obj && obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
+    if (obj && obj->isDerivedFrom<TechDraw::DrawTemplate>()) {
         TechDraw::DrawTemplate* templ = static_cast<TechDraw::DrawTemplate*>(obj);
         if (templ->getWidth() > 0. && templ->getHeight() > 0.) {
             return true;
@@ -187,7 +187,7 @@ double DrawPage::getPageWidth() const
 {
     App::DocumentObject* obj = Template.getValue();
 
-    if (obj && obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
+    if (obj && obj->isDerivedFrom<TechDraw::DrawTemplate>()) {
         TechDraw::DrawTemplate* templ = static_cast<TechDraw::DrawTemplate*>(obj);
         return templ->getWidth();
     }
@@ -199,7 +199,7 @@ double DrawPage::getPageHeight() const
 {
     App::DocumentObject* obj = Template.getValue();
 
-    if (obj && obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
+    if (obj && obj->isDerivedFrom<TechDraw::DrawTemplate>()) {
         TechDraw::DrawTemplate* templ = static_cast<TechDraw::DrawTemplate*>(obj);
         return templ->getHeight();
     }
@@ -213,7 +213,7 @@ const char* DrawPage::getPageOrientation() const
     App::DocumentObject* obj;
     obj = Template.getValue();
 
-    if (obj && obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
+    if (obj && obj->isDerivedFrom<TechDraw::DrawTemplate>()) {
         TechDraw::DrawTemplate* templ = static_cast<TechDraw::DrawTemplate*>(obj);
         return templ->Orientation.getValueAsString();
     }
@@ -225,7 +225,7 @@ int DrawPage::getOrientation() const
 {
     App::DocumentObject* obj = Template.getValue();
 
-    if (obj && obj->isDerivedFrom(DrawTemplate::getClassTypeId())) {
+    if (obj && obj->isDerivedFrom<DrawTemplate>()) {
         auto* templ = static_cast<DrawTemplate*>(obj);
         return templ->Orientation.getValue();
     }

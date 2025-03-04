@@ -32,6 +32,7 @@ SET(FemBaseModules_SRCS
     InitGui.py
     ObjectsFem.py
     TestFemApp.py
+    CreateLabels.py
 )
 
 SET(FemCommands_SRCS
@@ -284,6 +285,8 @@ SET(FemSolverElmerEquations_SRCS
     femsolver/elmer/equations/magnetodynamic2D.py
     femsolver/elmer/equations/magnetodynamic2D_writer.py
     femsolver/elmer/equations/nonlinear.py
+    femsolver/elmer/equations/staticcurrent.py
+    femsolver/elmer/equations/staticcurrent_writer.py
 )
 
 SET(FemSolverFenics_SRCS
@@ -606,6 +609,7 @@ SET(FemGuiTests_SRCS
 
 SET(FemGuiUtils_SRCS
     femguiutils/__init__.py
+    femguiutils/disambiguate_solid_selection.py
     femguiutils/migrate_gui.py
     femguiutils/selection_widgets.py
 )
@@ -646,6 +650,11 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_solver_ccxtools.py
 )
 
+SET(FemGuiPreferencePages_SRCS
+    fempreferencepages/__init__.py
+    fempreferencepages/dlg_settings_netgen.py
+)
+
 SET(FemAllGuiScripts
     ${FemGuiBaseModules_SRCS}
     ${FemGuiObjects_SRCS}
@@ -653,6 +662,7 @@ SET(FemAllGuiScripts
     ${FemGuiTests_SRCS}
     ${FemGuiUtils_SRCS}
     ${FemGuiViewProvider_SRCS}
+    ${FemGuiPreferencePages_SRCS}
 )
 
 if(BUILD_GUI)
@@ -669,4 +679,5 @@ if(BUILD_GUI)
     INSTALL(FILES ${FemGuiTests_SRCS} DESTINATION Mod/Fem/femtest/gui/)
     INSTALL(FILES ${FemGuiUtils_SRCS} DESTINATION Mod/Fem/femguiutils/)
     INSTALL(FILES ${FemGuiViewProvider_SRCS} DESTINATION Mod/Fem/femviewprovider/)
+    INSTALL(FILES ${FemGuiPreferencePages_SRCS} DESTINATION Mod/Fem/fempreferencepages/)
 endif(BUILD_GUI)

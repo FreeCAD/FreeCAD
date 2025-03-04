@@ -253,12 +253,14 @@ carbonCopy(objName:str, asConstruction=True)
         <UserDocu>
 Add a link to an external geometry.
 
-addExternal(objName:str, subName:str)
+addExternal(objName:str, subName:str, defining:bool=False, intersection:bool=False)
 
     Args:
         objName: The name of the document object to reference.
         subName: The name of the sub-element of the object's shape to link as
             "external geometry".
+        defining: Should the external edges be defining or construction?
+        intersection: Should the external edges be projections or intersections?
         </UserDocu>
       </Documentation>
     </Methode>
@@ -511,10 +513,10 @@ setLabelDistance(constraintIndex:int, value:float)
             </UserDocu>
         </Documentation>
     </Methode>
-    <Methode Name="movePoint">
+    <Methode Name="moveGeometry">
       <Documentation>
         <UserDocu>
-          movePoint(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
+          moveGeometry(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
           to another location.
           It moves the specified point (or curve) to the given location by adding some
           temporary weak constraints and solve the sketch.
@@ -523,6 +525,22 @@ setLabelDistance(constraintIndex:int, value:float)
           the sketch.
           The argument 'relative', if present, states if the new location is given
           relatively to the current one.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="moveGeometries">
+      <Documentation>
+        <UserDocu>
+          moveGeometries(Geos,Vector,[relative]) - move given points and curves
+          to another location.
+          It moves the specified points and curves to the given location by adding some
+          temporary weak constraints and solve the sketch.
+          This method is mostly used to allow the user to drag some portions of the sketch
+          in real time by e.g. the mouse and it works only for underconstrained portions of
+          the sketch.
+          The argument 'relative', if present, states if the new location is given
+          relatively to the current one. For group dragging this is enforced.
+          Geos is a vector of pairs of geoId and posId.
         </UserDocu>
       </Documentation>
     </Methode>

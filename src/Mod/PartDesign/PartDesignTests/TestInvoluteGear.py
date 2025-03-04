@@ -26,7 +26,7 @@ from math import pi, tan, cos, acos
 import FreeCAD
 Quantity = FreeCAD.Units.Quantity # FIXME from FreeCAD.Units import Quantity doesn't work
 from FreeCAD import Vector
-from Part import makeCircle, Precision
+from Part import makeCircle, Precision, Solid
 import InvoluteGearFeature
 
 FIXTURE_PATH = pathlib.Path(__file__).parent / "Fixtures"
@@ -254,7 +254,6 @@ class TestInvoluteGear(unittest.TestCase):
         profile.HighPrecision = False
         profile.NumberOfTeeth = 8
         body = self.Doc.addObject('PartDesign::Body','GearBody')
-        body.AllowCompound = False
         body.addObject(profile)
         cylinder = body.newObject('PartDesign::AdditiveCylinder','GearCylinder')
         default_dedendum = 1.25
@@ -266,7 +265,7 @@ class TestInvoluteGear(unittest.TestCase):
         pocket.Reversed = True # need to "pocket upwards" into the cylinder
         pocket.Type = 'ThroughAll'
         self.assertSuccessfulRecompute()
-        self.assertSolid(pocket.Shape)
+        self.assertSolid(Solid(pocket.Shape))   # Can be a compound, make that into a Solid if needed.
 
     def testRecomputeExternalGearFromV020(self):
         FreeCAD.closeDocument(self.Doc.Name) # this was created in setUp(self)
@@ -325,7 +324,9 @@ class TestInvoluteGear(unittest.TestCase):
         return distance < Precision.intersection()
 
     def assertSolid(self, shape, msg=None):
-        self.assertEqual(shape.ShapeType, 'Solid', msg=msg)
+        # we don't check shape.ShapeType for 'Solid' as with body.AllowCompound==True
+        # we get, also in the good case, our solid wrapped in a compound.
+        self.assertEqual(len(shape.Solids), 1, msg=msg)
 
 
 def inv(a):

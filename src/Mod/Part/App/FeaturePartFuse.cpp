@@ -30,10 +30,6 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
 #include "FeaturePartFuse.h"
 #include "TopoShape.h"
 #include "modelRefine.h"
@@ -42,6 +38,12 @@
 FC_LOG_LEVEL_INIT("Part",true,true);
 
 using namespace Part;
+
+namespace Part
+{
+    extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
+    extern bool getRefineModelParameter();
+}
 
 PROPERTY_SOURCE(Part::Fuse, Part::Boolean)
 
@@ -74,11 +76,7 @@ MultiFuse::MultiFuse()
 
     ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
 
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
-
+    this->Refine.setValue(getRefineModelParameter());
 }
 
 short MultiFuse::mustExecute() const
@@ -102,12 +100,15 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
     TopoShape compoundOfArguments;
 
     // if only one source shape, and it is a compound - fuse children of the compound
-    if (shapes.size() == 1) {
+    const int maxIterations = 1'000'000; // will trigger "not enough shape objects linked" error below if ever reached
+    for (int i = 0; shapes.size() == 1 && i < maxIterations; ++i) {
         compoundOfArguments = shapes[0];
         if (compoundOfArguments.getShape().ShapeType() == TopAbs_COMPOUND) {
             shapes.clear();
             shapes = compoundOfArguments.getSubTopoShapes();
             argumentsAreInCompound = true;
+        } else {
+            break;
         }
     }
 
@@ -148,17 +149,8 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
                 throw Base::RuntimeError("Resulting shape is null");
             }
 
-            Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                                     .GetUserParameter()
-                                                     .GetGroup("BaseApp")
-                                                     ->GetGroup("Preferences")
-                                                     ->GetGroup("Mod/Part/Boolean");
-            if (hGrp->GetBool("CheckModel", true)) {
-                BRepCheck_Analyzer aChecker(res.getShape());
-                if (!aChecker.IsValid()) {
-                    return new App::DocumentObjectExecReturn("Resulting shape is invalid");
-                }
-            }
+            throwIfInvalidIfCheckModel(res.getShape());
+
             if (this->Refine.getValue()) {
                 try {
                     TopoDS_Shape oldShape = res.getShape();

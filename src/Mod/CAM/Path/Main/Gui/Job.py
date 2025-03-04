@@ -150,7 +150,7 @@ class ViewProvider:
 
         self.sca = coin.SoType.fromName("SoShapeScale").createInstance()
         self.sca.setPart("shape", self.axs)
-        self.sca.scaleFactor.setValue(1)  # Keep or adjust if needed
+        self.sca.scaleFactor.setValue(2)  # Keep or adjust if needed
 
         self.mat = coin.SoMaterial()
         # Set sphere color to bright yellow
@@ -161,7 +161,7 @@ class ViewProvider:
         self.scs = coin.SoType.fromName("SoShapeScale").createInstance()
         self.scs.setPart("shape", self.sph)
         # Increase the scaleFactor to make the sphere larger
-        self.scs.scaleFactor.setValue(10)  # Adjust this value as needed
+        self.scs.scaleFactor.setValue(20)  # Adjust this value as needed
 
         self.sep.addChild(self.sca)
         self.sep.addChild(self.mat)
@@ -265,13 +265,14 @@ class ViewProvider:
 
     def claimChildren(self):
         children = []
-        children.append(self.obj.Operations)
+        if hasattr(self.obj, "Operations"):
+            children.append(self.obj.Operations)
         if hasattr(self.obj, "Model"):
             # unfortunately this function is called before the object has been fully loaded
             # which means we could be dealing with an old job which doesn't have the new Model
             # yet.
             children.append(self.obj.Model)
-        if self.obj.Stock:
+        if hasattr(self.obj, "Stock"):
             children.append(self.obj.Stock)
         if hasattr(self.obj, "SetupSheet"):
             # when loading a job that didn't have a setup sheet they might not've been created yet

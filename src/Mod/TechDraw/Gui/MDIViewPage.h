@@ -27,7 +27,7 @@
 
 #include <Gui/MDIView.h>
 #include <Gui/MDIViewPy.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "ViewProviderPage.h"
@@ -100,8 +100,6 @@ public:
     PyObject* getPyObject() override;
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
     ViewProviderPage* getViewProviderPage() {return m_vpPage;}
-    void savePageExportState(ViewProviderPage* page);
-    void resetPageExportState(ViewProviderPage* page) const;
 
     void setTabText(std::string tabText);
 
@@ -159,11 +157,7 @@ private:
 
     QList<QGraphicsItem*> m_orderedSceneSelection;        //items in selection order
 
-    void getPaperAttributes();
-    PagePrinter* m_pagePrinter;
-
-    bool m_docModStateBeforePrint{false};
-
+    QString defaultFileName();
 };
 
 class MDIViewPagePy : public Py::PythonExtension<MDIViewPagePy>

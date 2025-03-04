@@ -53,7 +53,7 @@
 #endif
 
 #include <App/Document.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
@@ -104,7 +104,7 @@ void ProfileBased::positionByPrevious()
         //no base. Use either Sketch support's placement, or sketch's placement itself.
         Part::Part2DObject* sketch = getVerifiedSketch();
         App::DocumentObject* support = sketch->AttachmentSupport.getValue();
-        if (support && support->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        if (support && support->isDerivedFrom<App::GeoFeature>()) {
             this->Placement.setValue(static_cast<App::GeoFeature*>(support)->Placement.getValue());
         }
         else {
@@ -202,7 +202,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(bool silent,
         }
         else {
             std::string sub;
-            if (!obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            if (!obj->isDerivedFrom<Part::Part2DObject>()) {
                 if (!subs.empty()) {
                     sub = subs[0];
                 }
@@ -304,7 +304,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(bool silent,
         }
         if (count > 1) {
             if (AllowMultiFace.getValue()
-                || obj->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+                || obj->isDerivedFrom<Part::Part2DObject>()) {
                 return shape;
             }
             FC_WARN("Found more than one face from profile");
@@ -431,11 +431,11 @@ TopoShape ProfileBased::getProfileShape() const
 std::vector<TopoDS_Wire> ProfileBased::getProfileWires() const {
     std::vector<TopoDS_Wire> result;
 
-    if (!Profile.getValue() || !Profile.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
+    if (!Profile.getValue() || !Profile.getValue()->isDerivedFrom<Part::Feature>())
         throw Base::TypeError("No valid profile linked");
 
     TopoDS_Shape shape;
-    if (Profile.getValue()->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (Profile.getValue()->isDerivedFrom<Part::Part2DObject>())
         shape = Profile.getValue<Part::Part2DObject*>()->Shape.getValue();
     else {
         if (Profile.getSubValues().empty())
@@ -613,7 +613,7 @@ Part::Feature* ProfileBased::getBaseObject(bool silent) const
     if (!obj)
         return nullptr;
 
-    if (!obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (!obj->isDerivedFrom<Part::Part2DObject>())
         return obj;
 
     //due to former test we know we have a 2d object
@@ -621,7 +621,7 @@ Part::Feature* ProfileBased::getBaseObject(bool silent) const
     const char* err = nullptr;
     App::DocumentObject* spt = sketch->AttachmentSupport.getValue();
     if (spt) {
-        if (spt->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (spt->isDerivedFrom<Part::Feature>()) {
             rv = static_cast<Part::Feature*>(spt);
         }
         else {
@@ -657,7 +657,7 @@ void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace, const App::Proper
         throw Base::ValueError("SketchBased: No face selected");
     }
 
-    if (ref->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+    if (ref->isDerivedFrom<App::Plane>()) {
         upToFace = makeShapeFromPlane(ref);
         return;
     }
@@ -1357,9 +1357,9 @@ void ProfileBased::getAxis(const App::DocumentObject * pcReferenceAxis, const st
     }
 
     if (pcReferenceAxis->isDerivedFrom<App::Line>()) {
-        const App::Line* line = static_cast<const App::Line*>(pcReferenceAxis);
-        base = Base::Vector3d(0, 0, 0);
-        line->Placement.getValue().multVec(Base::Vector3d(1, 0, 0), dir);
+        auto* line = static_cast<const App::Line*>(pcReferenceAxis);
+        base = line->getBasePoint();
+        dir = line->getDirection();
 
         verifyAxisFunc(checkAxis, sketchplane, gp_Dir(dir.x, dir.y, dir.z));
         return;
@@ -1397,7 +1397,7 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
         return SketchVector;
 
     // get the Sketch plane
-    if (obj->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (obj->isDerivedFrom<Part::Part2DObject>()) {
         Base::Placement SketchPos = obj->Placement.getValue();
         Base::Rotation SketchOrientation = SketchPos.getRotation();
         SketchOrientation.multVec(SketchVector, SketchVector);

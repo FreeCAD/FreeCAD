@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <boost/signals2/connection.hpp>
 #endif
 
@@ -32,7 +32,6 @@
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -363,9 +362,9 @@ void ViewProviderDrawingView::onProgressMessage(const TechDraw::DrawView* dv,
 
 void ViewProviderDrawingView::showProgressMessage(const std::string featureName, const std::string text) const
 {
-    QString msg = QString::fromUtf8("%1 %2")
-            .arg(Base::Tools::fromStdString(featureName),
-                 Base::Tools::fromStdString(text));
+    QString msg = QStringLiteral("%1 %2")
+            .arg(QString::fromStdString(featureName),
+                 QString::fromStdString(text));
     if (Gui::getMainWindow()) {
         //neither of these work! Base::Console().Message() output preempts these messages??
 //        Gui::getMainWindow()->showMessage(msg, 3000);

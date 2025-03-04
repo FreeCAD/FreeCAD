@@ -118,7 +118,7 @@ QList<QUrl> FileDialog::fetchSidebarUrls()
 
 bool FileDialog::hasSuffix(const QString& ext) const
 {
-    QRegularExpression rx(QString::fromLatin1("\\*.(%1)\\W").arg(ext), QRegularExpression::CaseInsensitiveOption);
+    QRegularExpression rx(QStringLiteral("\\*.(%1)\\W").arg(ext), QRegularExpression::CaseInsensitiveOption);
     QStringList filters = nameFilters();
     for (const auto & str : filters) {
         if (rx.match(str).hasMatch()) {
@@ -142,9 +142,9 @@ void FileDialog::accept()
             // #0001928: do not add a suffix if a file with suffix is entered
             // #0002209: make sure that the entered suffix is part of one of the filters
             if (!ext.isEmpty() && (suffix.isEmpty() || !hasSuffix(suffix))) {
-                file = QString::fromLatin1("%1.%2").arg(file, ext);
+                file = QStringLiteral("%1.%2").arg(file, ext);
                 // That's the built-in line edit
-                auto fileNameEdit = this->findChild<QLineEdit*>(QString::fromLatin1("fileNameEdit"));
+                auto fileNameEdit = this->findChild<QLineEdit*>(QStringLiteral("fileNameEdit"));
                 if (fileNameEdit)
                     fileNameEdit->setText(file);
             }
@@ -514,10 +514,10 @@ void FileOptionsDialog::accept()
         if (ext.isEmpty())
             setDefaultSuffix(suf);
         else if (ext.toLower() != suf.toLower()) {
-            fn = QString::fromLatin1("%1.%2").arg(fn, suf);
+            fn = QStringLiteral("%1.%2").arg(fn, suf);
             selectFile(fn);
             // That's the built-in line edit (fixes Debian bug #811200)
-            auto fileNameEdit = this->findChild<QLineEdit*>(QString::fromLatin1("fileNameEdit"));
+            auto fileNameEdit = this->findChild<QLineEdit*>(QStringLiteral("fileNameEdit"));
             if (fileNameEdit)
                 fileNameEdit->setText(fn);
         }
@@ -617,7 +617,7 @@ QIcon FileIconProvider::icon(const QFileInfo & info) const
     auto urlToThumbnail = [](const QString& filename) {
         QString hash = QString::fromLatin1(QCryptographicHash::hash(filename.toUtf8(), QCryptographicHash::Md5).toHex());
         QString cache = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
-        return QString::fromLatin1("%1/thumbnails/normal/%2.png").arg(cache, hash);
+        return QStringLiteral("%1/thumbnails/normal/%2.png").arg(cache, hash);
     };
 
     auto iconFromFile = [](const QString& filename) {
@@ -627,7 +627,7 @@ QIcon FileIconProvider::icon(const QFileInfo & info) const
                 return icon;
         }
 
-        return QIcon(QString::fromLatin1(":/icons/freecad-doc.png"));
+        return QIcon(QStringLiteral(":/icons/freecad-doc.png"));
     };
 
     if (info.suffix().toLower() == QLatin1String("fcstd")) {
@@ -637,7 +637,7 @@ QIcon FileIconProvider::icon(const QFileInfo & info) const
         return iconFromFile(thumb);
     }
     else if (info.suffix().toLower().startsWith(QLatin1String("fcstd"))) {
-        QIcon icon(QString::fromLatin1(":/icons/freecad-doc.png"));
+        QIcon icon(QStringLiteral(":/icons/freecad-doc.png"));
         QIcon darkIcon;
         int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
         darkIcon.addPixmap(icon.pixmap(w, w, QIcon::Disabled, QIcon::Off), QIcon::Normal, QIcon::Off);
@@ -673,7 +673,7 @@ FileChooser::FileChooser ( QWidget * parent )
     completer = new QCompleter ( this );
     completer->setMaxVisibleItems( 12 );
     fs_model = new QFileSystemModel( completer );
-    fs_model->setRootPath(QString::fromUtf8(""));
+    fs_model->setRootPath(QStringLiteral(""));
     completer->setModel( fs_model );
     lineEdit->setCompleter( completer );
 
@@ -884,7 +884,7 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
             module = module.left(match.capturedStart());
         }
 
-        button->setText(QString::fromLatin1("%1 (%2)").arg(filter, module));
+        button->setText(QStringLiteral("%1 (%2)").arg(filter, module));
         button->setObjectName(it.value());
         gridLayout1->addWidget(button, index, 0, 1, 1);
         group->addButton(button, index);
@@ -902,7 +902,7 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
     hboxLayout->addItem(spacerItem1);
 
     buttonBox = new QDialogButtonBox(this);
-    buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
+    buttonBox->setObjectName(QStringLiteral("buttonBox"));
     buttonBox->setStandardButtons(QDialogButtonBox::Open | QDialogButtonBox::Cancel);
     buttonBox->button(QDialogButtonBox::Open)->setEnabled(false);
 

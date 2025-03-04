@@ -21,7 +21,7 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _extrusion = dynamic_cast<Part::Extrusion*>(_doc->addObject("Part::Extrusion"));
+        _extrusion = _doc->addObject<Part::Extrusion>();
         PartTestHelpers::rectangle(len, wid, "Rect1");
         _extrusion->Base.setValue(_doc->getObjects().back());
         _extrusion->LengthFwd.setValue(ext1);
@@ -252,7 +252,7 @@ TEST_F(FeatureExtrusionTest, testExecuteEdge)
     const double ang = 30;
     const double tangent = tan(ang / 180.0 * M_PI);
     BRepBuilderAPI_MakeEdge e1(gp_Pnt(0, 0, 0), gp_Pnt(ext1, ext1, ext1));
-    auto edge = dynamic_cast<Part::Feature*>(_doc->addObject("Part::Feature", "Edge"));
+    auto edge = _doc->addObject<Part::Feature>("Edge");
     edge->Shape.setValue(e1);
     _extrusion->DirLink.setValue(edge);
     _extrusion->DirMode.setValue(1);
@@ -310,7 +310,7 @@ TEST_F(FeatureExtrusionTest, testFaceWithHoles)
     // newFace cleans that up and is the outside minus the internal hole.
     auto face2 = newFace.getShape();
 
-    auto partFeature = dynamic_cast<Part::Feature*>(_doc->addObject("Part::Feature"));
+    auto partFeature = _doc->addObject<Part::Feature>();
     partFeature->Shape.setValue(face2);
     _extrusion->Base.setValue(_doc->getObjects().back());
     _extrusion->FaceMakerClass.setValue("Part::FaceMakerCheese");

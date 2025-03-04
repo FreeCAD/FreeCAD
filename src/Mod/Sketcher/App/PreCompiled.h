@@ -53,7 +53,7 @@
 #include <boost/random.hpp>
 #include <boost/range/adaptor/map.hpp>
 #include <boost/uuid/uuid_io.hpp>
-#include <boost_geometry.hpp>
+#include <boost/geometry.hpp>
 
 // OpenCasCade
 #include <BRepAdaptor_Curve.hxx>

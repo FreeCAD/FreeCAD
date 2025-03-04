@@ -22,6 +22,16 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <algorithm>
+#include <set>
+#include <limits>
+#include <memory>
+#include <list>
+#include <map>
+#include <string>
+#include <vector>
+#endif
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/math/special_functions/round.hpp>
@@ -34,6 +44,7 @@
 #include <Base/Quantity.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "PropertyStandard.h"
 #include "Application.h"
@@ -48,14 +59,12 @@ using namespace Base;
 using namespace std;
 
 
-
-
 //**************************************************************************
 //**************************************************************************
 // PropertyInteger
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyInteger , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyInteger, App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -76,7 +85,7 @@ PropertyInteger::~PropertyInteger() = default;
 void PropertyInteger::setValue(long lValue)
 {
     aboutToSetValue();
-    _lValue=lValue;
+    _lValue = lValue;
     hasSetValue();
 }
 
@@ -85,12 +94,12 @@ long PropertyInteger::getValue() const
     return _lValue;
 }
 
-PyObject *PropertyInteger::getPyObject()
+PyObject* PropertyInteger::getPyObject()
 {
     return Py_BuildValue("l", _lValue);
 }
 
-void PropertyInteger::setPyObject(PyObject *value)
+void PropertyInteger::setPyObject(PyObject* value)
 {
     if (PyLong_Check(value)) {
         aboutToSetValue();
@@ -104,12 +113,12 @@ void PropertyInteger::setPyObject(PyObject *value)
     }
 }
 
-void PropertyInteger::Save (Base::Writer &writer) const
+void PropertyInteger::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<Integer value=\"" <<  _lValue <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Integer value=\"" << _lValue << "\"/>" << std::endl;
 }
 
-void PropertyInteger::Restore(Base::XMLReader &reader)
+void PropertyInteger::Restore(Base::XMLReader& reader)
 {
     // read my Element
     reader.readElement("Integer");
@@ -117,36 +126,42 @@ void PropertyInteger::Restore(Base::XMLReader &reader)
     setValue(reader.getAttributeAsInteger("value"));
 }
 
-Property *PropertyInteger::Copy() const
+Property* PropertyInteger::Copy() const
 {
-    PropertyInteger *p= new PropertyInteger();
+    PropertyInteger* p = new PropertyInteger();
     p->_lValue = _lValue;
     return p;
 }
 
-void PropertyInteger::Paste(const Property &from)
+void PropertyInteger::Paste(const Property& from)
 {
     aboutToSetValue();
     _lValue = dynamic_cast<const PropertyInteger&>(from)._lValue;
     hasSetValue();
 }
 
-void PropertyInteger::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyInteger::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
     verifyPath(path);
 
-    if (value.type() == typeid(long))
+    if (value.type() == typeid(long)) {
         setValue(boost::any_cast<long>(value));
-    else if (value.type() == typeid(int))
+    }
+    else if (value.type() == typeid(int)) {
         setValue(boost::any_cast<int>(value));
-    else if (value.type() == typeid(double))
+    }
+    else if (value.type() == typeid(double)) {
         setValue(boost::math::round(boost::any_cast<double>(value)));
-    else if (value.type() == typeid(float))
+    }
+    else if (value.type() == typeid(float)) {
         setValue(boost::math::round(boost::any_cast<float>(value)));
-    else if (value.type() == typeid(Quantity))
+    }
+    else if (value.type() == typeid(Quantity)) {
         setValue(boost::math::round(boost::any_cast<Quantity>(value).getValue()));
-    else
+    }
+    else {
         throw bad_cast();
+    }
 }
 
 
@@ -155,7 +170,7 @@ void PropertyInteger::setPathValue(const ObjectIdentifier &path, const boost::an
 // PropertyPath
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPath , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyPath, App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -172,32 +187,26 @@ PropertyPath::~PropertyPath() = default;
 //**************************************************************************
 // Setter/getter for the property
 
-void PropertyPath::setValue(const boost::filesystem::path &Path)
+void PropertyPath::setValue(const std::filesystem::path& Path)
 {
     aboutToSetValue();
     _cValue = Path;
     hasSetValue();
 }
 
-void PropertyPath::setValue(const char * Path)
+void PropertyPath::setValue(const char* Path)
 {
     aboutToSetValue();
-#if (BOOST_FILESYSTEM_VERSION == 2)
-    _cValue = boost::filesystem::path(Path,boost::filesystem::no_check );
-    //_cValue = boost::filesystem::path(Path,boost::filesystem::native );
-    //_cValue = boost::filesystem::path(Path,boost::filesystem::windows_name );
-#else
-    _cValue = boost::filesystem::path(Path);
-#endif
+    _cValue = std::filesystem::path(Path);
     hasSetValue();
 }
 
-const boost::filesystem::path &PropertyPath::getValue() const
+const std::filesystem::path& PropertyPath::getValue() const
 {
     return _cValue;
 }
 
-PyObject *PropertyPath::getPyObject()
+PyObject* PropertyPath::getPyObject()
 {
 #if (BOOST_FILESYSTEM_VERSION == 2)
     std::string str = _cValue.native_file_string();
@@ -206,12 +215,14 @@ PyObject *PropertyPath::getPyObject()
 #endif
 
     // Returns a new reference, don't increment it!
-    PyObject *p = PyUnicode_DecodeUTF8(str.c_str(),str.size(),nullptr);
-    if (!p) throw Base::UnicodeError("UTF8 conversion failure at PropertyPath::getPyObject()");
+    PyObject* p = PyUnicode_DecodeUTF8(str.c_str(), str.size(), nullptr);
+    if (!p) {
+        throw Base::UnicodeError("UTF8 conversion failure at PropertyPath::getPyObject()");
+    }
     return p;
 }
 
-void PropertyPath::setPyObject(PyObject *value)
+void PropertyPath::setPyObject(PyObject* value)
 {
     std::string path;
     if (PyUnicode_Check(value)) {
@@ -228,13 +239,13 @@ void PropertyPath::setPyObject(PyObject *value)
 }
 
 
-void PropertyPath::Save (Base::Writer &writer) const
+void PropertyPath::Save(Base::Writer& writer) const
 {
     std::string val = encodeAttribute(_cValue.string());
-    writer.Stream() << writer.ind() << "<Path value=\"" <<  val <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Path value=\"" << val << "\"/>" << std::endl;
 }
 
-void PropertyPath::Restore(Base::XMLReader &reader)
+void PropertyPath::Restore(Base::XMLReader& reader)
 {
     // read my Element
     reader.readElement("Path");
@@ -242,21 +253,21 @@ void PropertyPath::Restore(Base::XMLReader &reader)
     setValue(reader.getAttribute("value"));
 }
 
-Property *PropertyPath::Copy() const
+Property* PropertyPath::Copy() const
 {
-    PropertyPath *p= new PropertyPath();
+    PropertyPath* p = new PropertyPath();
     p->_cValue = _cValue;
     return p;
 }
 
-void PropertyPath::Paste(const Property &from)
+void PropertyPath::Paste(const Property& from)
 {
     aboutToSetValue();
     _cValue = dynamic_cast<const PropertyPath&>(from)._cValue;
     hasSetValue();
 }
 
-unsigned int PropertyPath::getMemSize () const
+unsigned int PropertyPath::getMemSize() const
 {
     return static_cast<unsigned int>(_cValue.string().size());
 }
@@ -277,32 +288,34 @@ PropertyEnumeration::PropertyEnumeration()
     _editorTypeName = "Gui::PropertyEditor::PropertyEnumItem";
 }
 
-PropertyEnumeration::PropertyEnumeration(const App::Enumeration &e)
+PropertyEnumeration::PropertyEnumeration(const App::Enumeration& e)
 {
     _enum = e;
 }
 
 PropertyEnumeration::~PropertyEnumeration() = default;
 
-void PropertyEnumeration::setEnums(const char **plEnums)
+void PropertyEnumeration::setEnums(const char** plEnums)
 {
     // For backward compatibility, if the property container is not attached to
     // any document (i.e. its full name starts with '?'), do not notify, or
     // else existing code may crash.
     bool notify = !boost::starts_with(getFullName(), "?");
-    if (notify)
+    if (notify) {
         aboutToSetValue();
+    }
     _enum.setEnums(plEnums);
-    if (notify)
+    if (notify) {
         hasSetValue();
+    }
 }
 
-void PropertyEnumeration::setEnums(const std::vector<std::string> &Enums)
+void PropertyEnumeration::setEnums(const std::vector<std::string>& Enums)
 {
     setEnumVector(Enums);
 }
 
-void PropertyEnumeration::setValue(const char *value)
+void PropertyEnumeration::setValue(const char* value)
 {
     aboutToSetValue();
     _enum.setValue(value);
@@ -316,7 +329,7 @@ void PropertyEnumeration::setValue(long value)
     hasSetValue();
 }
 
-void PropertyEnumeration::setValue(const Enumeration &source)
+void PropertyEnumeration::setValue(const Enumeration& source)
 {
     aboutToSetValue();
     _enum = source;
@@ -328,24 +341,25 @@ long PropertyEnumeration::getValue() const
     return _enum.getInt();
 }
 
-bool PropertyEnumeration::isValue(const char *value) const
+bool PropertyEnumeration::isValue(const char* value) const
 {
     return _enum.isValue(value);
 }
 
-bool PropertyEnumeration::isPartOf(const char *value) const
+bool PropertyEnumeration::isPartOf(const char* value) const
 {
     return _enum.contains(value);
 }
 
-const char * PropertyEnumeration::getValueAsString() const
+const char* PropertyEnumeration::getValueAsString() const
 {
-    if (!_enum.isValid())
+    if (!_enum.isValid()) {
         throw Base::RuntimeError("Cannot get value from invalid enumeration");
+    }
     return _enum.getCStr();
 }
 
-const Enumeration & PropertyEnumeration::getEnum() const
+const Enumeration& PropertyEnumeration::getEnum() const
 {
     return _enum;
 }
@@ -355,17 +369,19 @@ std::vector<std::string> PropertyEnumeration::getEnumVector() const
     return _enum.getEnumVector();
 }
 
-void PropertyEnumeration::setEnumVector(const std::vector<std::string> &values)
+void PropertyEnumeration::setEnumVector(const std::vector<std::string>& values)
 {
     // For backward compatibility, if the property container is not attached to
     // any document (i.e. its full name starts with '?'), do not notify, or
     // else existing code may crash.
     bool notify = !boost::starts_with(getFullName(), "?");
-    if (notify)
+    if (notify) {
         aboutToSetValue();
+    }
     _enum.setEnums(values);
-    if (notify)
+    if (notify) {
         hasSetValue();
+    }
 }
 
 bool PropertyEnumeration::hasEnums() const
@@ -378,26 +394,28 @@ bool PropertyEnumeration::isValid() const
     return _enum.isValid();
 }
 
-void PropertyEnumeration::Save(Base::Writer &writer) const
+void PropertyEnumeration::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<Integer value=\"" <<  _enum.getInt() <<"\"";
-    if (_enum.isCustom())
+    writer.Stream() << writer.ind() << "<Integer value=\"" << _enum.getInt() << "\"";
+    if (_enum.isCustom()) {
         writer.Stream() << " CustomEnum=\"true\"";
+    }
     writer.Stream() << "/>" << std::endl;
     if (_enum.isCustom()) {
         std::vector<std::string> items = getEnumVector();
-        writer.Stream() << writer.ind() << "<CustomEnumList count=\"" <<  items.size() <<"\">" << endl;
+        writer.Stream() << writer.ind() << "<CustomEnumList count=\"" << items.size() << "\">"
+                        << endl;
         writer.incInd();
-        for(auto & item : items) {
+        for (auto& item : items) {
             std::string val = encodeAttribute(item);
-            writer.Stream() << writer.ind() << "<Enum value=\"" <<  val <<"\"/>" << endl;
+            writer.Stream() << writer.ind() << "<Enum value=\"" << val << "\"/>" << endl;
         }
         writer.decInd();
         writer.Stream() << writer.ind() << "</CustomEnumList>" << endl;
     }
 }
 
-void PropertyEnumeration::Restore(Base::XMLReader &reader)
+void PropertyEnumeration::Restore(Base::XMLReader& reader)
 {
     // read my Element
     reader.readElement("Integer");
@@ -411,7 +429,7 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
         int count = reader.getAttributeAsInteger("count");
         std::vector<std::string> values(count);
 
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             reader.readElement("Enum");
             values[i] = reader.getAttribute("value");
         }
@@ -424,7 +442,9 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
     if (val < 0) {
         // If the enum is empty at this stage do not print a warning
         if (_enum.hasEnums()) {
-            Base::Console().DeveloperWarning(std::string("PropertyEnumeration"), "Enumeration index %d is out of range, ignore it\n", val);
+            Base::Console().DeveloperWarning(std::string("PropertyEnumeration"),
+                                             "Enumeration index %d is out of range, ignore it\n",
+                                             val);
         }
         val = getValue();
     }
@@ -433,7 +453,7 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
     hasSetValue();
 }
 
-PyObject * PropertyEnumeration::getPyObject()
+PyObject* PropertyEnumeration::getPyObject()
 {
     if (!_enum.isValid()) {
         Py_Return;
@@ -442,7 +462,7 @@ PyObject * PropertyEnumeration::getPyObject()
     return Py_BuildValue("s", getValueAsString());
 }
 
-void PropertyEnumeration::setPyObject(PyObject *value)
+void PropertyEnumeration::setPyObject(PyObject* value)
 {
     if (PyLong_Check(value)) {
         long val = PyLong_AsLong(value);
@@ -461,9 +481,8 @@ void PropertyEnumeration::setPyObject(PyObject *value)
             hasSetValue();
         }
         else {
-            FC_THROWM(Base::ValueError, "'" << str
-                    << "' is not part of the enumeration in "
-                    << getFullName());
+            FC_THROWM(Base::ValueError,
+                      "'" << str << "' is not part of the enumeration in " << getFullName());
         }
         return;
     }
@@ -475,64 +494,77 @@ void PropertyEnumeration::setPyObject(PyObject *value)
             int idx = -1;
             Py::Sequence seq(value);
 
-            if(seq.size() == 2) {
+            if (seq.size() == 2) {
                 Py::Object v(seq[0].ptr());
-                if(!v.isString() && v.isSequence()) {
-                    idx = Py::Int(seq[1].ptr());
+                if (!v.isString() && v.isSequence()) {
+                    idx = Py::Long(seq[1].ptr());
                     seq = v;
                 }
             }
 
             values.resize(seq.size());
 
-            for (int i = 0; i < seq.size(); ++i)
+            for (int i = 0; i < seq.size(); ++i) {
                 values[i] = Py::Object(seq[i].ptr()).as_string();
+            }
 
             aboutToSetValue();
             _enum.setEnums(values);
-            if (idx>=0)
-                _enum.setValue(idx,true);
+            if (idx >= 0) {
+                _enum.setValue(idx, true);
+            }
             hasSetValue();
             return;
-        } catch (Py::Exception &) {
+        }
+        catch (Py::Exception&) {
             Base::PyException e;
             e.ReportException();
         }
     }
 
-    FC_THROWM(Base::TypeError, "PropertyEnumeration " << getFullName()
-            << " expects type to be int, string, or list(string), or list(list, int)");
+    FC_THROWM(Base::TypeError,
+              "PropertyEnumeration "
+                  << getFullName()
+                  << " expects type to be int, string, or list(string), or list(list, int)");
 }
 
-Property * PropertyEnumeration::Copy() const
+Property* PropertyEnumeration::Copy() const
 {
     return new PropertyEnumeration(_enum);
 }
 
-void PropertyEnumeration::Paste(const Property &from)
+void PropertyEnumeration::Paste(const Property& from)
 {
     const PropertyEnumeration& prop = dynamic_cast<const PropertyEnumeration&>(from);
     setValue(prop._enum);
 }
 
-void PropertyEnumeration::setPathValue(const ObjectIdentifier &, const boost::any &value)
+void PropertyEnumeration::setPathValue(const ObjectIdentifier&, const boost::any& value)
 {
-    if (value.type() == typeid(int))
+    if (value.type() == typeid(int)) {
         setValue(boost::any_cast<int>(value));
-    else if (value.type() == typeid(long))
+    }
+    else if (value.type() == typeid(long)) {
         setValue(boost::any_cast<long>(value));
-    else if (value.type() == typeid(double))
+    }
+    else if (value.type() == typeid(double)) {
         setValue(boost::any_cast<double>(value));
-    else if (value.type() == typeid(float))
+    }
+    else if (value.type() == typeid(float)) {
         setValue(boost::any_cast<float>(value));
-    else if (value.type() == typeid(short))
+    }
+    else if (value.type() == typeid(short)) {
         setValue(boost::any_cast<short>(value));
-    else if (value.type() == typeid(std::string))
+    }
+    else if (value.type() == typeid(std::string)) {
         setValue(boost::any_cast<std::string>(value).c_str());
-    else if (value.type() == typeid(char*))
+    }
+    else if (value.type() == typeid(char*)) {
         setValue(boost::any_cast<char*>(value));
-    else if (value.type() == typeid(const char*))
+    }
+    else if (value.type() == typeid(const char*)) {
         setValue(boost::any_cast<const char*>(value));
+    }
     else {
         Base::PyGILStateLocker lock;
         Py::Object pyValue = pyObjectFromAny(value);
@@ -540,53 +572,59 @@ void PropertyEnumeration::setPathValue(const ObjectIdentifier &, const boost::an
     }
 }
 
-bool PropertyEnumeration::setPyPathValue(const ObjectIdentifier &, const Py::Object &value)
+bool PropertyEnumeration::setPyPathValue(const ObjectIdentifier&, const Py::Object& value)
 {
     setPyObject(value.ptr());
     return true;
 }
 
-const boost::any PropertyEnumeration::getPathValue(const ObjectIdentifier &path) const
+const boost::any PropertyEnumeration::getPathValue(const ObjectIdentifier& path) const
 {
     std::string p = path.getSubPathStr();
     if (p == ".Enum" || p == ".All") {
         Base::PyGILStateLocker lock;
         Py::Object res;
         getPyPathValue(path, res);
-        return pyObjectToAny(res,false);
+        return pyObjectToAny(res, false);
     }
     else if (p == ".String") {
         auto v = getValueAsString();
-        return std::string(v?v:"");
-    } else
+        return std::string(v ? v : "");
+    }
+    else {
         return getValue();
+    }
 }
 
-bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier &path, Py::Object &r) const
+bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier& path, Py::Object& r) const
 {
     std::string p = path.getSubPathStr();
     if (p == ".Enum" || p == ".All") {
         Base::PyGILStateLocker lock;
-        Py::Tuple res(_enum.maxValue()+1);
+        Py::Tuple res(_enum.maxValue() + 1);
         std::vector<std::string> enums = _enum.getEnumVector();
         PropertyString tmp;
-        for(int i=0;i< int(enums.size());++i) {
+        for (int i = 0; i < int(enums.size()); ++i) {
             tmp.setValue(enums[i]);
-            res.setItem(i,Py::asObject(tmp.getPyObject()));
+            res.setItem(i, Py::asObject(tmp.getPyObject()));
         }
-        if (p == ".Enum")
+        if (p == ".Enum") {
             r = res;
+        }
         else {
             Py::Tuple tuple(2);
             tuple.setItem(0, res);
-            tuple.setItem(1, Py::Int(getValue()));
+            tuple.setItem(1, Py::Long(getValue()));
             r = tuple;
         }
-    } else if (p == ".String") {
+    }
+    else if (p == ".String") {
         auto v = getValueAsString();
-        r = Py::String(v?v:"");
-    } else
-        r = Py::Int(getValue());
+        r = Py::String(v ? v : "");
+    }
+    else {
+        r = Py::Long(getValue());
+    }
     return true;
 }
 
@@ -605,93 +643,127 @@ PropertyIntegerConstraint::PropertyIntegerConstraint() = default;
 
 PropertyIntegerConstraint::~PropertyIntegerConstraint()
 {
-    if (_ConstStruct && _ConstStruct->isDeletable())
+    if (_ConstStruct && _ConstStruct->isDeletable()) {
         delete _ConstStruct;
+    }
 }
 
 void PropertyIntegerConstraint::setConstraints(const Constraints* sConstrain)
 {
     if (_ConstStruct != sConstrain) {
-        if (_ConstStruct && _ConstStruct->isDeletable())
+        if (_ConstStruct && _ConstStruct->isDeletable()) {
             delete _ConstStruct;
+        }
     }
 
     _ConstStruct = sConstrain;
 }
 
-const PropertyIntegerConstraint::Constraints*  PropertyIntegerConstraint::getConstraints() const
+const PropertyIntegerConstraint::Constraints* PropertyIntegerConstraint::getConstraints() const
 {
     return _ConstStruct;
 }
 
 long PropertyIntegerConstraint::getMinimum() const
 {
-    if (_ConstStruct)
+    if (_ConstStruct) {
         return _ConstStruct->LowerBound;
+    }
     // return the min of int, not long
-    return std::numeric_limits<int>::min();
+    return std::numeric_limits<int>::lowest();
 }
 
 long PropertyIntegerConstraint::getMaximum() const
 {
-    if (_ConstStruct)
+    if (_ConstStruct) {
         return _ConstStruct->UpperBound;
+    }
     // return the max of int, not long
     return std::numeric_limits<int>::max();
 }
 
 long PropertyIntegerConstraint::getStepSize() const
 {
-    if (_ConstStruct)
+    if (_ConstStruct) {
         return _ConstStruct->StepSize;
+    }
     return 1;
 }
 
-void PropertyIntegerConstraint::setPyObject(PyObject *value)
+void PropertyIntegerConstraint::setPyObject(PyObject* value)
 {
     if (PyLong_Check(value)) {
         long temp = PyLong_AsLong(value);
         if (_ConstStruct) {
-            if (temp > _ConstStruct->UpperBound)
+            if (temp > _ConstStruct->UpperBound) {
                 temp = _ConstStruct->UpperBound;
-            else if(temp < _ConstStruct->LowerBound)
+            }
+            else if (temp < _ConstStruct->LowerBound) {
                 temp = _ConstStruct->LowerBound;
+            }
         }
 
         aboutToSetValue();
         _lValue = temp;
         hasSetValue();
     }
-    else if (PyTuple_Check(value) && PyTuple_Size(value) == 4) {
-        long values[4];
-        for (int i=0; i<4; i++) {
-            PyObject* item;
-            item = PyTuple_GetItem(value,i);
-            if (PyLong_Check(item))
-                values[i] = PyLong_AsLong(item);
-            else
-                throw Base::TypeError("Type in tuple must be int");
+    else {
+        long valConstr[] = {0,
+                            std::numeric_limits<int>::lowest(),
+                            std::numeric_limits<int>::max(),
+                            1};
+
+        if (PyDict_Check(value)) {
+            Py::Tuple dummy;
+            static const std::array<const char*, 5> kw = {"value",
+                                                          "min",
+                                                          "max",
+                                                          "step",
+                                                          nullptr};
+
+            if (!Base::Wrapped_ParseTupleAndKeywords(dummy.ptr(),
+                                                     value,
+                                                     "l|lll",
+                                                      kw,
+                                                     &(valConstr[0]),
+                                                     &(valConstr[1]),
+                                                     &(valConstr[2]),
+                                                     &(valConstr[3]))) {
+                throw Py::Exception();
+            }
+        }
+        else if (PyTuple_Check(value)) {
+            if (!PyArg_ParseTuple(value,
+                                  "llll",
+                                  &(valConstr[0]),
+                                  &(valConstr[1]),
+                                  &(valConstr[2]),
+                                  &(valConstr[3]))) {
+                throw Py::Exception();
+            }
+        }
+        else {
+            std::string error = std::string("type must be int, dict or tuple, not ");
+            error += value->ob_type->tp_name;
+            throw Base::TypeError(error);
         }
 
         Constraints* c = new Constraints();
         c->setDeletable(true);
-        c->LowerBound = values[1];
-        c->UpperBound = values[2];
-        c->StepSize = std::max<long>(1, values[3]);
-        if (values[0] > c->UpperBound)
-            values[0] = c->UpperBound;
-        else if (values[0] < c->LowerBound)
-            values[0] = c->LowerBound;
+        c->LowerBound = valConstr[1];
+        c->UpperBound = valConstr[2];
+        c->StepSize = std::max<long>(1, valConstr[3]);
+        if (valConstr[0] > c->UpperBound) {
+            valConstr[0] = c->UpperBound;
+        }
+        else if (valConstr[0] < c->LowerBound) {
+            valConstr[0] = c->LowerBound;
+        }
         setConstraints(c);
 
         aboutToSetValue();
-        _lValue = values[0];
+        _lValue = valConstr[0];
         hasSetValue();
-    }
-    else {
-        std::string error = std::string("type must be int, not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
     }
 }
 
@@ -700,9 +772,9 @@ void PropertyIntegerConstraint::setPyObject(PyObject *value)
 // PropertyPercent
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPercent , App::PropertyIntegerConstraint)
+TYPESYSTEM_SOURCE(App::PropertyPercent, App::PropertyIntegerConstraint)
 
-const PropertyIntegerConstraint::Constraints percent = {0,100,1};
+const PropertyIntegerConstraint::Constraints percent = {0, 100, 1};
 
 //**************************************************************************
 // Construction/Destruction
@@ -720,7 +792,7 @@ PropertyPercent::~PropertyPercent() = default;
 // PropertyIntegerList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyIntegerList , App::PropertyLists)
+TYPESYSTEM_SOURCE(App::PropertyIntegerList, App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -733,33 +805,37 @@ PropertyIntegerList::~PropertyIntegerList() = default;
 //**************************************************************************
 // Base class implementer
 
-PyObject *PropertyIntegerList::getPyObject()
+PyObject* PropertyIntegerList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
-    for(int i = 0;i<getSize(); i++)
-        PyList_SetItem( list, i, PyLong_FromLong(_lValueList[i]));
+    for (int i = 0; i < getSize(); i++) {
+        PyList_SetItem(list, i, PyLong_FromLong(_lValueList[i]));
+    }
     return list;
 }
 
-long PropertyIntegerList::getPyValue(PyObject *item) const {
-    if (PyLong_Check(item))
+long PropertyIntegerList::getPyValue(PyObject* item) const
+{
+    if (PyLong_Check(item)) {
         return PyLong_AsLong(item);
+    }
     std::string error = std::string("type in list must be int, not ");
     error += item->ob_type->tp_name;
     throw Base::TypeError(error);
 }
 
-void PropertyIntegerList::Save (Base::Writer &writer) const
+void PropertyIntegerList::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<IntegerList count=\"" <<  getSize() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<IntegerList count=\"" << getSize() << "\">" << endl;
     writer.incInd();
-    for(int i = 0;i<getSize(); i++)
-        writer.Stream() << writer.ind() << "<I v=\"" <<  _lValueList[i] <<"\"/>" << endl; ;
+    for (int i = 0; i < getSize(); i++) {
+        writer.Stream() << writer.ind() << "<I v=\"" << _lValueList[i] << "\"/>" << endl;
+    };
     writer.decInd();
-    writer.Stream() << writer.ind() << "</IntegerList>" << endl ;
+    writer.Stream() << writer.ind() << "</IntegerList>" << endl;
 }
 
-void PropertyIntegerList::Restore(Base::XMLReader &reader)
+void PropertyIntegerList::Restore(Base::XMLReader& reader)
 {
     // read my Element
     reader.readElement("IntegerList");
@@ -767,35 +843,33 @@ void PropertyIntegerList::Restore(Base::XMLReader &reader)
     int count = reader.getAttributeAsInteger("count");
 
     std::vector<long> values(count);
-    for(int i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++) {
         reader.readElement("I");
         values[i] = reader.getAttributeAsInteger("v");
     }
 
     reader.readEndElement("IntegerList");
 
-    //assignment
+    // assignment
     setValues(values);
 }
 
-Property *PropertyIntegerList::Copy() const
+Property* PropertyIntegerList::Copy() const
 {
-    PropertyIntegerList *p= new PropertyIntegerList();
+    PropertyIntegerList* p = new PropertyIntegerList();
     p->_lValueList = _lValueList;
     return p;
 }
 
-void PropertyIntegerList::Paste(const Property &from)
+void PropertyIntegerList::Paste(const Property& from)
 {
     setValues(dynamic_cast<const PropertyIntegerList&>(from)._lValueList);
 }
 
-unsigned int PropertyIntegerList::getMemSize () const
+unsigned int PropertyIntegerList::getMemSize() const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(long));
 }
-
-
 
 
 //**************************************************************************
@@ -803,7 +877,7 @@ unsigned int PropertyIntegerList::getMemSize () const
 // PropertyIntegerSet
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyIntegerSet , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyIntegerSet, App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -832,15 +906,16 @@ void PropertyIntegerSet::setValues(const std::set<long>& values)
     hasSetValue();
 }
 
-PyObject *PropertyIntegerSet::getPyObject()
+PyObject* PropertyIntegerSet::getPyObject()
 {
     PyObject* set = PySet_New(nullptr);
-    for(long it : _lValueSet)
-        PySet_Add(set,PyLong_FromLong(it));
+    for (long it : _lValueSet) {
+        PySet_Add(set, PyLong_FromLong(it));
+    }
     return set;
 }
 
-void PropertyIntegerSet::setPyObject(PyObject *value)
+void PropertyIntegerSet::setPyObject(PyObject* value)
 {
     if (PySequence_Check(value)) {
 
@@ -848,7 +923,7 @@ void PropertyIntegerSet::setPyObject(PyObject *value)
         Py_ssize_t nSize = sequence.size();
         std::set<long> values;
 
-        for (Py_ssize_t i=0; i<nSize;++i) {
+        for (Py_ssize_t i = 0; i < nSize; ++i) {
             Py::Object item = sequence.getItem(i);
             if (!PyLong_Check(item.ptr())) {
                 std::string error = std::string("type in list must be int, not ");
@@ -870,17 +945,18 @@ void PropertyIntegerSet::setPyObject(PyObject *value)
     }
 }
 
-void PropertyIntegerSet::Save (Base::Writer &writer) const
+void PropertyIntegerSet::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<IntegerSet count=\"" <<  _lValueSet.size() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<IntegerSet count=\"" << _lValueSet.size() << "\">" << endl;
     writer.incInd();
-    for(long it : _lValueSet)
-        writer.Stream() << writer.ind() << "<I v=\"" <<  it <<"\"/>" << endl; ;
+    for (long it : _lValueSet) {
+        writer.Stream() << writer.ind() << "<I v=\"" << it << "\"/>" << endl;
+    };
     writer.decInd();
-    writer.Stream() << writer.ind() << "</IntegerSet>" << endl ;
+    writer.Stream() << writer.ind() << "</IntegerSet>" << endl;
 }
 
-void PropertyIntegerSet::Restore(Base::XMLReader &reader)
+void PropertyIntegerSet::Restore(Base::XMLReader& reader)
 {
     // read my Element
     reader.readElement("IntegerSet");
@@ -888,36 +964,35 @@ void PropertyIntegerSet::Restore(Base::XMLReader &reader)
     int count = reader.getAttributeAsInteger("count");
 
     std::set<long> values;
-    for(int i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++) {
         reader.readElement("I");
         values.insert(reader.getAttributeAsInteger("v"));
     }
 
     reader.readEndElement("IntegerSet");
 
-    //assignment
+    // assignment
     setValues(values);
 }
 
-Property *PropertyIntegerSet::Copy() const
+Property* PropertyIntegerSet::Copy() const
 {
-    PropertyIntegerSet *p= new PropertyIntegerSet();
+    PropertyIntegerSet* p = new PropertyIntegerSet();
     p->_lValueSet = _lValueSet;
     return p;
 }
 
-void PropertyIntegerSet::Paste(const Property &from)
+void PropertyIntegerSet::Paste(const Property& from)
 {
     aboutToSetValue();
     _lValueSet = dynamic_cast<const PropertyIntegerSet&>(from)._lValueSet;
     hasSetValue();
 }
 
-unsigned int PropertyIntegerSet::getMemSize () const
+unsigned int PropertyIntegerSet::getMemSize() const
 {
     return static_cast<unsigned int>(_lValueSet.size() * sizeof(long));
 }
-
 
 
 //**************************************************************************
@@ -925,7 +1000,7 @@ unsigned int PropertyIntegerSet::getMemSize () const
 // PropertyFloat
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyFloat , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyFloat, App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -944,7 +1019,7 @@ PropertyFloat::~PropertyFloat() = default;
 void PropertyFloat::setValue(double lValue)
 {
     aboutToSetValue();
-    _dValue=lValue;
+    _dValue = lValue;
     hasSetValue();
 }
 
@@ -953,19 +1028,19 @@ double PropertyFloat::getValue() const
     return _dValue;
 }
 
-PyObject *PropertyFloat::getPyObject()
+PyObject* PropertyFloat::getPyObject()
 {
     return Py_BuildValue("d", _dValue);
 }
 
-void PropertyFloat::setPyObject(PyObject *value)
+void PropertyFloat::setPyObject(PyObject* value)
 {
     if (PyFloat_Check(value)) {
         aboutToSetValue();
         _dValue = PyFloat_AsDouble(value);
         hasSetValue();
     }
-    else if(PyLong_Check(value)) {
+    else if (PyLong_Check(value)) {
         aboutToSetValue();
         _dValue = PyLong_AsLong(value);
         hasSetValue();
@@ -977,12 +1052,12 @@ void PropertyFloat::setPyObject(PyObject *value)
     }
 }
 
-void PropertyFloat::Save (Base::Writer &writer) const
+void PropertyFloat::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<Float value=\"" <<  _dValue <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Float value=\"" << _dValue << "\"/>" << std::endl;
 }
 
-void PropertyFloat::Restore(Base::XMLReader &reader)
+void PropertyFloat::Restore(Base::XMLReader& reader)
 {
     // read my Element
     reader.readElement("Float");
@@ -990,41 +1065,48 @@ void PropertyFloat::Restore(Base::XMLReader &reader)
     setValue(reader.getAttributeAsFloat("value"));
 }
 
-Property *PropertyFloat::Copy() const
+Property* PropertyFloat::Copy() const
 {
-    PropertyFloat *p= new PropertyFloat();
+    PropertyFloat* p = new PropertyFloat();
     p->_dValue = _dValue;
     return p;
 }
 
-void PropertyFloat::Paste(const Property &from)
+void PropertyFloat::Paste(const Property& from)
 {
     aboutToSetValue();
     _dValue = dynamic_cast<const PropertyFloat&>(from)._dValue;
     hasSetValue();
 }
 
-void PropertyFloat::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyFloat::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
     verifyPath(path);
 
-    if (value.type() == typeid(long))
+    if (value.type() == typeid(long)) {
         setValue(boost::any_cast<long>(value));
-    else if (value.type() == typeid(unsigned long))
+    }
+    else if (value.type() == typeid(unsigned long)) {
         setValue(boost::any_cast<unsigned long>(value));
-    else if (value.type() == typeid(int))
+    }
+    else if (value.type() == typeid(int)) {
         setValue(boost::any_cast<int>(value));
-    else if (value.type() == typeid(double))
+    }
+    else if (value.type() == typeid(double)) {
         setValue(boost::any_cast<double>(value));
-    else if (value.type() == typeid(float))
+    }
+    else if (value.type() == typeid(float)) {
         setValue(boost::any_cast<float>(value));
-    else if (value.type() == typeid(Quantity))
+    }
+    else if (value.type() == typeid(Quantity)) {
         setValue((boost::any_cast<Quantity>(value)).getValue());
-    else
+    }
+    else {
         throw bad_cast();
+    }
 }
 
-const boost::any PropertyFloat::getPathValue(const ObjectIdentifier &path) const
+const boost::any PropertyFloat::getPathValue(const ObjectIdentifier& path) const
 {
     verifyPath(path);
     return _dValue;
@@ -1045,54 +1127,61 @@ PropertyFloatConstraint::PropertyFloatConstraint() = default;
 
 PropertyFloatConstraint::~PropertyFloatConstraint()
 {
-    if (_ConstStruct && _ConstStruct->isDeletable())
+    if (_ConstStruct && _ConstStruct->isDeletable()) {
         delete _ConstStruct;
+    }
 }
 
 void PropertyFloatConstraint::setConstraints(const Constraints* sConstrain)
 {
     if (_ConstStruct != sConstrain) {
-        if (_ConstStruct && _ConstStruct->isDeletable())
+        if (_ConstStruct && _ConstStruct->isDeletable()) {
             delete _ConstStruct;
+        }
     }
     _ConstStruct = sConstrain;
 }
 
-const PropertyFloatConstraint::Constraints*  PropertyFloatConstraint::getConstraints() const
+const PropertyFloatConstraint::Constraints* PropertyFloatConstraint::getConstraints() const
 {
     return _ConstStruct;
 }
 
 double PropertyFloatConstraint::getMinimum() const
 {
-    if (_ConstStruct)
+    if (_ConstStruct) {
         return _ConstStruct->LowerBound;
-    return std::numeric_limits<double>::min();
+    }
+    return std::numeric_limits<double>::lowest();
 }
 
 double PropertyFloatConstraint::getMaximum() const
 {
-    if (_ConstStruct)
+    if (_ConstStruct) {
         return _ConstStruct->UpperBound;
+    }
     return std::numeric_limits<double>::max();
 }
 
 double PropertyFloatConstraint::getStepSize() const
 {
-    if (_ConstStruct)
+    if (_ConstStruct) {
         return _ConstStruct->StepSize;
+    }
     return 1.0;
 }
 
-void PropertyFloatConstraint::setPyObject(PyObject *value)
+void PropertyFloatConstraint::setPyObject(PyObject* value)
 {
     if (PyFloat_Check(value)) {
         double temp = PyFloat_AsDouble(value);
         if (_ConstStruct) {
-            if (temp > _ConstStruct->UpperBound)
+            if (temp > _ConstStruct->UpperBound) {
                 temp = _ConstStruct->UpperBound;
-            else if (temp < _ConstStruct->LowerBound)
+            }
+            else if (temp < _ConstStruct->LowerBound) {
                 temp = _ConstStruct->LowerBound;
+            }
         }
 
         aboutToSetValue();
@@ -1100,55 +1189,83 @@ void PropertyFloatConstraint::setPyObject(PyObject *value)
         hasSetValue();
     }
     else if (PyLong_Check(value)) {
-        double temp = (double)PyLong_AsLong(value);
+        double temp = static_cast<double>(PyLong_AsLong(value));
         if (_ConstStruct) {
-            if (temp > _ConstStruct->UpperBound)
+            if (temp > _ConstStruct->UpperBound) {
                 temp = _ConstStruct->UpperBound;
-            else if (temp < _ConstStruct->LowerBound)
+            }
+            else if (temp < _ConstStruct->LowerBound) {
                 temp = _ConstStruct->LowerBound;
+            }
         }
 
         aboutToSetValue();
         _dValue = temp;
         hasSetValue();
     }
-    else if (PyTuple_Check(value) && PyTuple_Size(value) == 4) {
-        double values[4];
-        for (int i=0; i<4; i++) {
-            PyObject* item;
-            item = PyTuple_GetItem(value,i);
-            if (PyFloat_Check(item))
-                values[i] = PyFloat_AsDouble(item);
-            else if (PyLong_Check(item))
-                values[i] = PyLong_AsLong(item);
-            else
-                throw Base::TypeError("Type in tuple must be float or int");
+    else {
+        double valConstr[] = {0.0,
+                              std::numeric_limits<double>::lowest(),
+                              std::numeric_limits<double>::max(),
+                              1.0};
+
+        if (PyDict_Check(value)) {
+            Py::Tuple dummy;
+            static const std::array<const char*, 5> kw = {"value",
+                                                          "min",
+                                                          "max",
+                                                          "step",
+                                                           nullptr};
+
+            if (!Base::Wrapped_ParseTupleAndKeywords(dummy.ptr(),
+                                                     value,
+                                                     "d|ddd",
+                                                     kw,
+                                                     &(valConstr[0]),
+                                                     &(valConstr[1]),
+                                                     &(valConstr[2]),
+                                                     &(valConstr[3]))) {
+                throw Py::Exception();
+            }
+        }
+        else if (PyTuple_Check(value)) {
+            if (!PyArg_ParseTuple(value,
+                                  "dddd",
+                                  &(valConstr[0]),
+                                  &(valConstr[1]),
+                                  &(valConstr[2]),
+                                  &(valConstr[3]))) {
+                throw Py::Exception();
+            }
+        }
+        else {
+            std::string error = std::string("type must be float, dict or tuple, not ");
+            error += value->ob_type->tp_name;
+            throw Base::TypeError(error);
         }
 
-        double stepSize = values[3];
+        double stepSize = valConstr[3];
         // need a value > 0
-        if (stepSize < DBL_EPSILON)
+        if (stepSize < DBL_EPSILON) {
             throw Base::ValueError("Step size must be greater than zero");
+        }
 
         Constraints* c = new Constraints();
         c->setDeletable(true);
-        c->LowerBound = values[1];
-        c->UpperBound = values[2];
+        c->LowerBound = valConstr[1];
+        c->UpperBound = valConstr[2];
         c->StepSize = stepSize;
-        if (values[0] > c->UpperBound)
-            values[0] = c->UpperBound;
-        else if (values[0] < c->LowerBound)
-            values[0] = c->LowerBound;
+        if (valConstr[0] > c->UpperBound) {
+            valConstr[0] = c->UpperBound;
+        }
+        else if (valConstr[0] < c->LowerBound) {
+            valConstr[0] = c->LowerBound;
+        }
         setConstraints(c);
 
         aboutToSetValue();
-        _dValue = values[0];
+        _dValue = valConstr[0];
         hasSetValue();
-    }
-    else {
-        std::string error = std::string("type must be float, not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
     }
 }
 
@@ -1161,7 +1278,7 @@ TYPESYSTEM_SOURCE(App::PropertyPrecision, App::PropertyFloatConstraint)
 //**************************************************************************
 // Construction/Destruction
 //
-const PropertyFloatConstraint::Constraints PrecisionStandard = {0.0,DBL_MAX,0.001};
+const PropertyFloatConstraint::Constraints PrecisionStandard = {0.0, DBL_MAX, 0.001};
 
 PropertyPrecision::PropertyPrecision()
 {
@@ -1175,7 +1292,7 @@ PropertyPrecision::~PropertyPrecision() = default;
 // PropertyFloatList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyFloatList , App::PropertyLists)
+TYPESYSTEM_SOURCE(App::PropertyFloatList, App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -1188,54 +1305,60 @@ PropertyFloatList::~PropertyFloatList() = default;
 //**************************************************************************
 // Base class implementer
 
-PyObject *PropertyFloatList::getPyObject()
+PyObject* PropertyFloatList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
-    for (int i = 0;i<getSize(); i++)
-         PyList_SetItem( list, i, PyFloat_FromDouble(_lValueList[i]));
+    for (int i = 0; i < getSize(); i++) {
+        PyList_SetItem(list, i, PyFloat_FromDouble(_lValueList[i]));
+    }
     return list;
 }
 
-double PropertyFloatList::getPyValue(PyObject *item) const {
+double PropertyFloatList::getPyValue(PyObject* item) const
+{
     if (PyFloat_Check(item)) {
         return PyFloat_AsDouble(item);
-    } else if (PyLong_Check(item)) {
+    }
+    else if (PyLong_Check(item)) {
         return static_cast<double>(PyLong_AsLong(item));
-    } else {
+    }
+    else {
         std::string error = std::string("type in list must be float, not ");
         error += item->ob_type->tp_name;
         throw Base::TypeError(error);
     }
 }
 
-void PropertyFloatList::Save (Base::Writer &writer) const
+void PropertyFloatList::Save(Base::Writer& writer) const
 {
     if (writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<FloatList count=\"" <<  getSize() <<"\">" << endl;
+        writer.Stream() << writer.ind() << "<FloatList count=\"" << getSize() << "\">" << endl;
         writer.incInd();
-        for(int i = 0;i<getSize(); i++)
-            writer.Stream() << writer.ind() << "<F v=\"" <<  _lValueList[i] <<"\"/>" << endl; ;
+        for (int i = 0; i < getSize(); i++) {
+            writer.Stream() << writer.ind() << "<F v=\"" << _lValueList[i] << "\"/>" << endl;
+        };
         writer.decInd();
-        writer.Stream() << writer.ind() <<"</FloatList>" << endl ;
+        writer.Stream() << writer.ind() << "</FloatList>" << endl;
     }
     else {
-        writer.Stream() << writer.ind() << "<FloatList file=\"" <<
-            (getSize()?writer.addFile(getName(), this):"") << "\"/>" << std::endl;
+        writer.Stream() << writer.ind() << "<FloatList file=\""
+                        << (getSize() ? writer.addFile(getName(), this) : "") << "\"/>"
+                        << std::endl;
     }
 }
 
-void PropertyFloatList::Restore(Base::XMLReader &reader)
+void PropertyFloatList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("FloatList");
-    string file (reader.getAttribute("file") );
+    string file(reader.getAttribute("file"));
 
     if (!file.empty()) {
         // initiate a file read
-        reader.addFile(file.c_str(),this);
+        reader.addFile(file.c_str(), this);
     }
 }
 
-void PropertyFloatList::SaveDocFile (Base::Writer &writer) const
+void PropertyFloatList::SaveDocFile(Base::Writer& writer) const
 {
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
@@ -1253,19 +1376,19 @@ void PropertyFloatList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyFloatList::RestoreDocFile(Base::Reader &reader)
+void PropertyFloatList::RestoreDocFile(Base::Reader& reader)
 {
     Base::InputStream str(reader);
-    uint32_t uCt=0;
+    uint32_t uCt = 0;
     str >> uCt;
     std::vector<double> values(uCt);
     if (!isSinglePrecision()) {
-        for (double & it : values) {
+        for (double& it : values) {
             str >> it;
         }
     }
     else {
-        for (double & it : values) {
+        for (double& it : values) {
             float val;
             str >> val;
             it = val;
@@ -1274,19 +1397,19 @@ void PropertyFloatList::RestoreDocFile(Base::Reader &reader)
     setValues(values);
 }
 
-Property *PropertyFloatList::Copy() const
+Property* PropertyFloatList::Copy() const
 {
-    PropertyFloatList *p= new PropertyFloatList();
+    PropertyFloatList* p = new PropertyFloatList();
     p->_lValueList = _lValueList;
     return p;
 }
 
-void PropertyFloatList::Paste(const Property &from)
+void PropertyFloatList::Paste(const Property& from)
 {
     setValues(dynamic_cast<const PropertyFloatList&>(from)._lValueList);
 }
 
-unsigned int PropertyFloatList::getMemSize () const
+unsigned int PropertyFloatList::getMemSize() const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(double));
 }
@@ -1296,7 +1419,7 @@ unsigned int PropertyFloatList::getMemSize () const
 // PropertyString
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyString , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyString, App::Property)
 
 PropertyString::PropertyString() = default;
 
@@ -1304,103 +1427,22 @@ PropertyString::~PropertyString() = default;
 
 void PropertyString::setValue(const char* newLabel)
 {
-    if(!newLabel)
+    if (!newLabel) {
         return;
+    }
 
-    if(_cValue == newLabel)
+    if (_cValue == newLabel) {
         return;
+    }
 
-    std::string _newLabel;
-
-    std::vector<std::pair<Property*,std::unique_ptr<Property> > > propChanges;
-    std::string label;
+    std::vector<std::pair<Property*, std::unique_ptr<Property>>> propChanges;
+    std::string label = newLabel;
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
     bool commit = false;
 
-    if(obj && obj->isAttachedToDocument() && this==&obj->Label &&
-       (!obj->getDocument()->testStatus(App::Document::Restoring)||
-        obj->getDocument()->testStatus(App::Document::Importing)) &&
-       !obj->getDocument()->isPerformingTransaction())
-    {
-        // allow object to control label change
-
-        static ParameterGrp::handle _hPGrp;
-        if(!_hPGrp) {
-            _hPGrp = GetApplication().GetUserParameter().GetGroup("BaseApp");
-            _hPGrp = _hPGrp->GetGroup("Preferences")->GetGroup("Document");
-        }
-        App::Document* doc = obj->getDocument();
-        if(doc && !_hPGrp->GetBool("DuplicateLabels") && !obj->allowDuplicateLabel()) {
-            std::vector<std::string> objectLabels;
-            std::vector<App::DocumentObject*>::const_iterator it;
-            std::vector<App::DocumentObject*> objs = doc->getObjects();
-            bool match = false;
-            for (it = objs.begin();it != objs.end();++it) {
-                if (*it == obj)
-                    continue; // don't compare object with itself
-                std::string objLabel = (*it)->Label.getValue();
-                if (!match && objLabel == newLabel)
-                    match = true;
-                objectLabels.push_back(objLabel);
-            }
-
-            // make sure that there is a name conflict otherwise we don't have to do anything
-            if (match && *newLabel) {
-                label = newLabel;
-                // remove number from end to avoid lengthy names
-                size_t lastpos = label.length()-1;
-                while (label[lastpos] >= 48 && label[lastpos] <= 57) {
-                    // if 'lastpos' becomes 0 then all characters are digits. In this case we use
-                    // the complete label again
-                    if (lastpos == 0) {
-                        lastpos = label.length()-1;
-                        break;
-                    }
-                    lastpos--;
-                }
-
-                bool changed = false;
-                label = label.substr(0,lastpos+1);
-                if(label != obj->getNameInDocument()
-                        && boost::starts_with(obj->getNameInDocument(),label))
-                {
-                    // In case the label has the same base name as object's
-                    // internal name, use it as the label instead.
-                    const char *objName = obj->getNameInDocument();
-                    const char *c = &objName[lastpos+1];
-                    for(;*c;++c) {
-                        if(*c<48 || *c>57)
-                            break;
-                    }
-                    if(*c == 0 && std::find(objectLabels.begin(), objectLabels.end(),
-                                            obj->getNameInDocument())==objectLabels.end())
-                    {
-                        label = obj->getNameInDocument();
-                        changed = true;
-                    }
-                }
-                if(!changed)
-                    label = Base::Tools::getUniqueName(label, objectLabels, 3);
-            }
-        }
-
-        if(label.empty())
-            label = newLabel;
-        obj->onBeforeChangeLabel(label);
-        newLabel = label.c_str();
-
-        if(!obj->getDocument()->testStatus(App::Document::Restoring)) {
-            // Only update label reference if we are not restoring. When
-            // importing (which also counts as restoring), it is possible the
-            // new object changes its label. However, we cannot update label
-            // references here, because object restoring is not based on
-            // dependency order. It can only be done in afterRestore().
-            //
-            // See PropertyLinkBase::restoreLabelReference() for more details.
-            propChanges = PropertyLinkBase::updateLabelReferences(obj,newLabel);
-        }
-
-        if(!propChanges.empty() && !GetApplication().getActiveTransaction()) {
+    if (obj && this == &obj->Label) {
+        propChanges = obj->onProposedLabelChange(label);
+        if (!propChanges.empty() && !GetApplication().getActiveTransaction()) {
             commit = true;
             std::ostringstream str;
             str << "Change " << obj->getNameInDocument() << ".Label";
@@ -1409,17 +1451,19 @@ void PropertyString::setValue(const char* newLabel)
     }
 
     aboutToSetValue();
-    _cValue = newLabel;
+    _cValue = label;
     hasSetValue();
 
-    for(auto &change : propChanges)
-        change.first->Paste(*change.second.get());
+    for (auto& change : propChanges) {
+        change.first->Paste(*change.second);
+    }
 
-    if(commit)
+    if (commit) {
         GetApplication().closeActiveTransaction();
+    }
 }
 
-void PropertyString::setValue(const std::string &sString)
+void PropertyString::setValue(const std::string& sString)
 {
     setValue(sString.c_str());
 }
@@ -1429,14 +1473,16 @@ const char* PropertyString::getValue() const
     return _cValue.c_str();
 }
 
-PyObject *PropertyString::getPyObject()
+PyObject* PropertyString::getPyObject()
 {
-    PyObject *p = PyUnicode_DecodeUTF8(_cValue.c_str(),_cValue.size(),nullptr);
-    if (!p) throw Base::UnicodeError("UTF8 conversion failure at PropertyString::getPyObject()");
+    PyObject* p = PyUnicode_DecodeUTF8(_cValue.c_str(), _cValue.size(), nullptr);
+    if (!p) {
+        throw Base::UnicodeError("UTF8 conversion failure at PropertyString::getPyObject()");
+    }
     return p;
 }
 
-void PropertyString::setPyObject(PyObject *value)
+void PropertyString::setPyObject(PyObject* value)
 {
     std::string string;
     if (PyUnicode_Check(value)) {
@@ -1452,90 +1498,103 @@ void PropertyString::setPyObject(PyObject *value)
     setValue(string);
 }
 
-void PropertyString::Save (Base::Writer &writer) const
+void PropertyString::Save(Base::Writer& writer) const
 {
     std::string val;
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
     writer.Stream() << writer.ind() << "<String ";
     bool exported = false;
-    if(obj && obj->isAttachedToDocument() &&
-       obj->isExporting() && &obj->Label==this)
-    {
-        if(obj->allowDuplicateLabel())
-            writer.Stream() <<"restore=\"1\" ";
-        else if(_cValue==obj->getNameInDocument()) {
-            writer.Stream() <<"restore=\"0\" ";
+    if (obj && obj->isAttachedToDocument() && obj->isExporting() && &obj->Label == this) {
+        if (obj->allowDuplicateLabel()) {
+            writer.Stream() << "restore=\"1\" ";
+        }
+        else if (_cValue == obj->getNameInDocument()) {
+            writer.Stream() << "restore=\"0\" ";
             val = encodeAttribute(obj->getExportName());
             exported = true;
         }
     }
-    if(!exported)
+    if (!exported) {
         val = encodeAttribute(_cValue);
-    writer.Stream() <<"value=\"" << val <<"\"/>" << std::endl;
+    }
+    writer.Stream() << "value=\"" << val << "\"/>" << std::endl;
 }
 
-void PropertyString::Restore(Base::XMLReader &reader)
+void PropertyString::Restore(Base::XMLReader& reader)
 {
     // read my Element
     reader.readElement("String");
     // get the value of my Attribute
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
-    if(obj && &obj->Label==this) {
-        if(reader.hasAttribute("restore")) {
+    if (obj && &obj->Label == this) {
+        if (reader.hasAttribute("restore")) {
             int restore = reader.getAttributeAsInteger("restore");
-            if(restore == 1) {
+            if (restore == 1) {
                 aboutToSetValue();
                 _cValue = reader.getAttribute("value");
                 hasSetValue();
-            }else
+            }
+            else {
                 setValue(reader.getName(reader.getAttribute("value")));
-        } else
+            }
+        }
+        else {
             setValue(reader.getAttribute("value"));
-    }else
+        }
+    }
+    else {
         setValue(reader.getAttribute("value"));
+    }
 }
 
-Property *PropertyString::Copy() const
+Property* PropertyString::Copy() const
 {
-    PropertyString *p= new PropertyString();
+    PropertyString* p = new PropertyString();
     p->_cValue = _cValue;
     return p;
 }
 
-void PropertyString::Paste(const Property &from)
+void PropertyString::Paste(const Property& from)
 {
     setValue(dynamic_cast<const PropertyString&>(from)._cValue);
 }
 
-unsigned int PropertyString::getMemSize () const
+unsigned int PropertyString::getMemSize() const
 {
     return static_cast<unsigned int>(_cValue.size());
 }
 
-void PropertyString::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyString::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
     verifyPath(path);
-    if (value.type() == typeid(bool))
-        setValue(boost::any_cast<bool>(value)?"True":"False");
-    else if (value.type() == typeid(int))
+    if (value.type() == typeid(bool)) {
+        setValue(boost::any_cast<bool>(value) ? "True" : "False");
+    }
+    else if (value.type() == typeid(int)) {
         setValue(std::to_string(boost::any_cast<int>(value)));
-    else if (value.type() == typeid(long))
+    }
+    else if (value.type() == typeid(long)) {
         setValue(std::to_string(boost::any_cast<long>(value)));
-    else if (value.type() == typeid(double))
+    }
+    else if (value.type() == typeid(double)) {
         setValue(std::to_string(App::any_cast<double>(value)));
-    else if (value.type() == typeid(float))
+    }
+    else if (value.type() == typeid(float)) {
         setValue(std::to_string(App::any_cast<float>(value)));
-    else if (value.type() == typeid(Quantity))
-        setValue(boost::any_cast<Quantity>(value).getUserString().toUtf8().constData());
-    else if (value.type() == typeid(std::string))
+    }
+    else if (value.type() == typeid(Quantity)) {
+        setValue(boost::any_cast<Quantity>(value).getUserString().c_str());
+    }
+    else if (value.type() == typeid(std::string)) {
         setValue(boost::any_cast<const std::string &>(value));
+    }
     else {
         Base::PyGILStateLocker lock;
         setValue(pyObjectFromAny(value).as_string());
     }
 }
 
-const boost::any PropertyString::getPathValue(const ObjectIdentifier &path) const
+const boost::any PropertyString::getPathValue(const ObjectIdentifier& path) const
 {
     verifyPath(path);
     return _cValue;
@@ -1546,13 +1605,13 @@ const boost::any PropertyString::getPathValue(const ObjectIdentifier &path) cons
 // PropertyUUID
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyUUID , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyUUID, App::Property)
 
 PropertyUUID::PropertyUUID() = default;
 
 PropertyUUID::~PropertyUUID() = default;
 
-void PropertyUUID::setValue(const Base::Uuid &id)
+void PropertyUUID::setValue(const Base::Uuid& id)
 {
     aboutToSetValue();
     _uuid = id;
@@ -1568,7 +1627,7 @@ void PropertyUUID::setValue(const char* sString)
     }
 }
 
-void PropertyUUID::setValue(const std::string &sString)
+void PropertyUUID::setValue(const std::string& sString)
 {
     aboutToSetValue();
     _uuid.setValue(sString);
@@ -1585,13 +1644,13 @@ const Base::Uuid& PropertyUUID::getValue() const
     return _uuid;
 }
 
-PyObject *PropertyUUID::getPyObject()
+PyObject* PropertyUUID::getPyObject()
 {
-    PyObject *p = PyUnicode_FromString(_uuid.getValue().c_str());
+    PyObject* p = PyUnicode_FromString(_uuid.getValue().c_str());
     return p;
 }
 
-void PropertyUUID::setPyObject(PyObject *value)
+void PropertyUUID::setPyObject(PyObject* value)
 {
     std::string string;
     if (PyUnicode_Check(value)) {
@@ -1614,12 +1673,12 @@ void PropertyUUID::setPyObject(PyObject *value)
     }
 }
 
-void PropertyUUID::Save (Base::Writer &writer) const
+void PropertyUUID::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<Uuid value=\"" << _uuid.getValue() <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Uuid value=\"" << _uuid.getValue() << "\"/>" << std::endl;
 }
 
-void PropertyUUID::Restore(Base::XMLReader &reader)
+void PropertyUUID::Restore(Base::XMLReader& reader)
 {
     // read my Element
     reader.readElement("Uuid");
@@ -1627,21 +1686,21 @@ void PropertyUUID::Restore(Base::XMLReader &reader)
     setValue(reader.getAttribute("value"));
 }
 
-Property *PropertyUUID::Copy() const
+Property* PropertyUUID::Copy() const
 {
-    PropertyUUID *p= new PropertyUUID();
+    PropertyUUID* p = new PropertyUUID();
     p->_uuid = _uuid;
     return p;
 }
 
-void PropertyUUID::Paste(const Property &from)
+void PropertyUUID::Paste(const Property& from)
 {
     aboutToSetValue();
     _uuid = dynamic_cast<const PropertyUUID&>(from)._uuid;
     hasSetValue();
 }
 
-unsigned int PropertyUUID::getMemSize () const
+unsigned int PropertyUUID::getMemSize() const
 {
     return static_cast<unsigned int>(sizeof(_uuid));
 }
@@ -1650,7 +1709,7 @@ unsigned int PropertyUUID::getMemSize () const
 // PropertyFont
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyFont , App::PropertyString)
+TYPESYSTEM_SOURCE(App::PropertyFont, App::PropertyString)
 
 PropertyFont::PropertyFont() = default;
 
@@ -1660,7 +1719,7 @@ PropertyFont::~PropertyFont() = default;
 // PropertyStringList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyStringList , App::PropertyLists)
+TYPESYSTEM_SOURCE(App::PropertyStringList, App::PropertyLists)
 
 PropertyStringList::PropertyStringList() = default;
 
@@ -1673,20 +1732,23 @@ void PropertyStringList::setValues(const std::list<std::string>& lValue)
 {
     std::vector<std::string> vals;
     vals.reserve(lValue.size());
-    for(const auto &v : lValue)
+    for (const auto& v : lValue) {
         vals.push_back(v);
+    }
     setValues(vals);
 }
 
-PyObject *PropertyStringList::getPyObject()
+PyObject* PropertyStringList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
 
-    for (int i = 0;i<getSize(); i++) {
-        PyObject* item = PyUnicode_DecodeUTF8(_lValueList[i].c_str(), _lValueList[i].size(), nullptr);
+    for (int i = 0; i < getSize(); i++) {
+        PyObject* item =
+            PyUnicode_DecodeUTF8(_lValueList[i].c_str(), _lValueList[i].size(), nullptr);
         if (!item) {
             Py_DECREF(list);
-            throw Base::UnicodeError("UTF8 conversion failure at PropertyStringList::getPyObject()");
+            throw Base::UnicodeError(
+                "UTF8 conversion failure at PropertyStringList::getPyObject()");
         }
         PyList_SetItem(list, i, item);
     }
@@ -1694,14 +1756,16 @@ PyObject *PropertyStringList::getPyObject()
     return list;
 }
 
-std::string PropertyStringList::getPyValue(PyObject *item) const
+std::string PropertyStringList::getPyValue(PyObject* item) const
 {
     std::string ret;
     if (PyUnicode_Check(item)) {
         ret = PyUnicode_AsUTF8(item);
-    } else if (PyBytes_Check(item)) {
+    }
+    else if (PyBytes_Check(item)) {
         ret = PyBytes_AsString(item);
-    } else {
+    }
+    else {
         std::string error = std::string("type in list must be str or unicode, not ");
         error += item->ob_type->tp_name;
         throw Base::TypeError(error);
@@ -1709,27 +1773,28 @@ std::string PropertyStringList::getPyValue(PyObject *item) const
     return ret;
 }
 
-unsigned int PropertyStringList::getMemSize () const
+unsigned int PropertyStringList::getMemSize() const
 {
-    size_t size=0;
-    for(int i = 0;i<getSize(); i++)
+    size_t size = 0;
+    for (int i = 0; i < getSize(); i++) {
         size += _lValueList[i].size();
+    }
     return static_cast<unsigned int>(size);
 }
 
-void PropertyStringList::Save (Base::Writer &writer) const
+void PropertyStringList::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<StringList count=\"" <<  getSize() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<StringList count=\"" << getSize() << "\">" << endl;
     writer.incInd();
-    for(int i = 0;i<getSize(); i++) {
+    for (int i = 0; i < getSize(); i++) {
         std::string val = encodeAttribute(_lValueList[i]);
-        writer.Stream() << writer.ind() << "<String value=\"" <<  val <<"\"/>" << endl;
+        writer.Stream() << writer.ind() << "<String value=\"" << val << "\"/>" << endl;
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</StringList>" << endl ;
+    writer.Stream() << writer.ind() << "</StringList>" << endl;
 }
 
-void PropertyStringList::Restore(Base::XMLReader &reader)
+void PropertyStringList::Restore(Base::XMLReader& reader)
 {
     // read my Element
     reader.readElement("StringList");
@@ -1737,7 +1802,7 @@ void PropertyStringList::Restore(Base::XMLReader &reader)
     int count = reader.getAttributeAsInteger("count");
 
     std::vector<std::string> values(count);
-    for(int i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++) {
         reader.readElement("String");
         values[i] = reader.getAttribute("value");
     }
@@ -1748,14 +1813,14 @@ void PropertyStringList::Restore(Base::XMLReader &reader)
     setValues(values);
 }
 
-Property *PropertyStringList::Copy() const
+Property* PropertyStringList::Copy() const
 {
-    PropertyStringList *p= new PropertyStringList();
+    PropertyStringList* p = new PropertyStringList();
     p->_lValueList = _lValueList;
     return p;
 }
 
-void PropertyStringList::Paste(const Property &from)
+void PropertyStringList::Paste(const Property& from)
 {
     setValues(dynamic_cast<const PropertyStringList&>(from)._lValueList);
 }
@@ -1765,7 +1830,7 @@ void PropertyStringList::Paste(const Property &from)
 // PropertyMap
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyMap , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyMap, App::Property)
 
 PropertyMap::PropertyMap() = default;
 
@@ -1780,63 +1845,57 @@ int PropertyMap::getSize() const
     return static_cast<int>(_lValueList.size());
 }
 
-void PropertyMap::setValue(const std::string& key,const std::string& value)
+void PropertyMap::setValue(const std::string& key, const std::string& value)
 {
     aboutToSetValue();
     _lValueList[key] = value;
     hasSetValue();
 }
 
-void PropertyMap::setValues(const std::map<std::string,std::string>& map)
+void PropertyMap::setValues(const std::map<std::string, std::string>& map)
 {
     aboutToSetValue();
-    _lValueList=map;
+    _lValueList = map;
     hasSetValue();
 }
 
-
-
-const std::string& PropertyMap::operator[] (const std::string& key) const
+const std::string& PropertyMap::operator[](const std::string& key) const
 {
     static std::string empty;
-    std::map<std::string,std::string>::const_iterator it = _lValueList.find(key);
-    if(it!=_lValueList.end())
+    auto it = _lValueList.find(key);
+    if (it != _lValueList.end()) {
         return it->second;
-    else
-        return empty;
+    }
+    return empty;
 }
 
-
-PyObject *PropertyMap::getPyObject()
+PyObject* PropertyMap::getPyObject()
 {
     PyObject* dict = PyDict_New();
 
-    for (std::map<std::string,std::string>::const_iterator it = _lValueList.begin();it!= _lValueList.end(); ++it) {
+    for (auto it = _lValueList.begin(); it != _lValueList.end(); ++it) {
         PyObject* item = PyUnicode_DecodeUTF8(it->second.c_str(), it->second.size(), nullptr);
         if (!item) {
             Py_DECREF(dict);
             throw Base::UnicodeError("UTF8 conversion failure at PropertyMap::getPyObject()");
         }
-        PyDict_SetItemString(dict,it->first.c_str(),item);
+        PyDict_SetItemString(dict, it->first.c_str(), item);
         Py_DECREF(item);
     }
 
     return dict;
 }
 
-void PropertyMap::setPyObject(PyObject *value)
+void PropertyMap::setPyObject(PyObject* value)
 {
-    if (PyDict_Check(value)) {
-
-        std::map<std::string,std::string> values;
+    if (PyMapping_Check(value)) {
+        std::map<std::string, std::string> values;
         // get key and item list
-        PyObject* keyList = PyDict_Keys(value);
-
-        PyObject* itemList = PyDict_Values(value);
+        PyObject* keyList = PyMapping_Keys(value);
+        PyObject* itemList = PyMapping_Values(value);
         Py_ssize_t nSize = PyList_Size(keyList);
 
-        for (Py_ssize_t i=0; i<nSize;++i) {
-
+        for (Py_ssize_t i = 0; i < nSize; ++i) {
             // check on the key:
             std::string keyStr;
             PyObject* key = PyList_GetItem(keyList, i);
@@ -1844,7 +1903,7 @@ void PropertyMap::setPyObject(PyObject *value)
                 keyStr = PyUnicode_AsUTF8(key);
             }
             else {
-                std::string error = std::string("type of the key need to be unicode or string, not");
+                std::string error("type of the key need to be string, not ");
                 error += key->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
@@ -1855,53 +1914,56 @@ void PropertyMap::setPyObject(PyObject *value)
                 values[keyStr] = PyUnicode_AsUTF8(item);
             }
             else {
-                std::string error = std::string("type in list must be string or unicode, not ");
+                std::string error("type in values must be string, not ");
                 error += item->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
         }
 
+        Py_XDECREF(itemList);
+        Py_XDECREF(keyList);
+
         setValues(values);
     }
     else {
-        std::string error = std::string("type must be a dict object");
+        std::string error("type must be a dict or object with mapping protocol, not ");
         error += value->ob_type->tp_name;
         throw Base::TypeError(error);
     }
 }
 
-unsigned int PropertyMap::getMemSize () const
+unsigned int PropertyMap::getMemSize() const
 {
-    size_t size=0;
-    for (const auto & it : _lValueList) {
+    size_t size = 0;
+    for (const auto& it : _lValueList) {
         size += it.second.size();
         size += it.first.size();
     }
     return size;
 }
 
-void PropertyMap::Save (Base::Writer &writer) const
+void PropertyMap::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<Map count=\"" <<  getSize() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<Map count=\"" << getSize() << "\">" << endl;
     writer.incInd();
-    for (const auto & it : _lValueList) {
-        writer.Stream() << writer.ind() << "<Item key=\"" <<  encodeAttribute(it.first)
-                                        << "\" value=\"" <<  encodeAttribute(it.second) <<"\"/>" << endl;
+    for (const auto& it : _lValueList) {
+        writer.Stream() << writer.ind() << "<Item key=\"" << encodeAttribute(it.first)
+                        << "\" value=\"" << encodeAttribute(it.second) << "\"/>" << endl;
     }
 
     writer.decInd();
-    writer.Stream() << writer.ind() << "</Map>" << endl ;
+    writer.Stream() << writer.ind() << "</Map>" << endl;
 }
 
-void PropertyMap::Restore(Base::XMLReader &reader)
+void PropertyMap::Restore(Base::XMLReader& reader)
 {
     // read my Element
     reader.readElement("Map");
     // get the value of my Attribute
     int count = reader.getAttributeAsInteger("count");
 
-    std::map<std::string,std::string> values;
-    for(int i = 0; i < count; i++) {
+    std::map<std::string, std::string> values;
+    for (int i = 0; i < count; i++) {
         reader.readElement("Item");
         values[reader.getAttribute("key")] = reader.getAttribute("value");
     }
@@ -1912,14 +1974,14 @@ void PropertyMap::Restore(Base::XMLReader &reader)
     setValues(values);
 }
 
-Property *PropertyMap::Copy() const
+Property* PropertyMap::Copy() const
 {
-    PropertyMap *p= new PropertyMap();
+    PropertyMap* p = new PropertyMap();
     p->_lValueList = _lValueList;
     return p;
 }
 
-void PropertyMap::Paste(const Property &from)
+void PropertyMap::Paste(const Property& from)
 {
     aboutToSetValue();
     _lValueList = dynamic_cast<const PropertyMap&>(from)._lValueList;
@@ -1927,14 +1989,12 @@ void PropertyMap::Paste(const Property &from)
 }
 
 
-
-
 //**************************************************************************
 //**************************************************************************
 // PropertyBool
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyBool , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyBool, App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -1952,7 +2012,7 @@ PropertyBool::~PropertyBool() = default;
 void PropertyBool::setValue(bool lValue)
 {
     aboutToSetValue();
-    _lValue=lValue;
+    _lValue = lValue;
     hasSetValue();
 }
 
@@ -1961,12 +2021,12 @@ bool PropertyBool::getValue() const
     return _lValue;
 }
 
-PyObject *PropertyBool::getPyObject()
+PyObject* PropertyBool::getPyObject()
 {
     return PyBool_FromLong(_lValue ? 1 : 0);
 }
 
-void PropertyBool::setPyObject(PyObject *value)
+void PropertyBool::setPyObject(PyObject* value)
 {
     if (PyBool_Check(value) || PyLong_Check(value)) {
         setValue(Base::asBoolean(value));
@@ -1978,17 +2038,19 @@ void PropertyBool::setPyObject(PyObject *value)
     }
 }
 
-void PropertyBool::Save (Base::Writer &writer) const
+void PropertyBool::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<Bool value=\"" ;
-    if (_lValue)
-        writer.Stream() << "true" <<"\"/>" ;
-    else
-        writer.Stream() << "false" <<"\"/>" ;
+    writer.Stream() << writer.ind() << "<Bool value=\"";
+    if (_lValue) {
+        writer.Stream() << "true" << "\"/>";
+    }
+    else {
+        writer.Stream() << "false" << "\"/>";
+    }
     writer.Stream() << std::endl;
 }
 
-void PropertyBool::Restore(Base::XMLReader &reader)
+void PropertyBool::Restore(Base::XMLReader& reader)
 {
     // read my Element
     reader.readElement("Bool");
@@ -1998,41 +2060,48 @@ void PropertyBool::Restore(Base::XMLReader &reader)
 }
 
 
-Property *PropertyBool::Copy() const
+Property* PropertyBool::Copy() const
 {
-    PropertyBool *p= new PropertyBool();
+    PropertyBool* p = new PropertyBool();
     p->_lValue = _lValue;
     return p;
 }
 
-void PropertyBool::Paste(const Property &from)
+void PropertyBool::Paste(const Property& from)
 {
     aboutToSetValue();
     _lValue = dynamic_cast<const PropertyBool&>(from)._lValue;
     hasSetValue();
 }
 
-void PropertyBool::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyBool::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
     verifyPath(path);
 
-    if (value.type() == typeid(bool))
+    if (value.type() == typeid(bool)) {
         setValue(boost::any_cast<bool>(value));
-    else if (value.type() == typeid(int))
+    }
+    else if (value.type() == typeid(int)) {
         setValue(boost::any_cast<int>(value) != 0);
-    else if (value.type() == typeid(long))
+    }
+    else if (value.type() == typeid(long)) {
         setValue(boost::any_cast<long>(value) != 0);
-    else if (value.type() == typeid(double))
+    }
+    else if (value.type() == typeid(double)) {
         setValue(boost::math::round(boost::any_cast<double>(value)));
-    else if (value.type() == typeid(float))
+    }
+    else if (value.type() == typeid(float)) {
         setValue(boost::math::round(boost::any_cast<float>(value)));
-    else if (value.type() == typeid(Quantity))
+    }
+    else if (value.type() == typeid(Quantity)) {
         setValue(boost::any_cast<Quantity>(value).getValue() != 0);
-    else
+    }
+    else {
         throw bad_cast();
+    }
 }
 
-const boost::any PropertyBool::getPathValue(const ObjectIdentifier &path) const
+const boost::any PropertyBool::getPathValue(const ObjectIdentifier& path) const
 {
     verifyPath(path);
 
@@ -2044,7 +2113,7 @@ const boost::any PropertyBool::getPathValue(const ObjectIdentifier &path) const
 // PropertyBoolList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyBoolList , App::PropertyLists)
+TYPESYSTEM_SOURCE(App::PropertyBoolList, App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -2057,10 +2126,10 @@ PropertyBoolList::~PropertyBoolList() = default;
 //**************************************************************************
 // Base class implementer
 
-PyObject *PropertyBoolList::getPyObject()
+PyObject* PropertyBoolList::getPyObject()
 {
     PyObject* tuple = PyTuple_New(getSize());
-    for(int i = 0;i<getSize(); i++) {
+    for (int i = 0; i < getSize(); i++) {
         bool v = _lValueList[i];
         if (v) {
             PyTuple_SetItem(tuple, i, PyBool_FromLong(1));
@@ -2072,7 +2141,7 @@ PyObject *PropertyBoolList::getPyObject()
     return tuple;
 }
 
-void PropertyBoolList::setPyObject(PyObject *value)
+void PropertyBoolList::setPyObject(PyObject* value)
 {
     // string is also a sequence and must be treated differently
     std::string str;
@@ -2080,32 +2149,37 @@ void PropertyBoolList::setPyObject(PyObject *value)
         str = PyUnicode_AsUTF8(value);
         boost::dynamic_bitset<> values(str);
         setValues(values);
-    }else
+    }
+    else {
         inherited::setPyObject(value);
+    }
 }
 
-bool PropertyBoolList::getPyValue(PyObject *item) const {
+bool PropertyBoolList::getPyValue(PyObject* item) const
+{
     if (PyBool_Check(item)) {
         return Base::asBoolean(item);
-    } else if (PyLong_Check(item)) {
+    }
+    else if (PyLong_Check(item)) {
         return (PyLong_AsLong(item) ? true : false);
-    } else {
+    }
+    else {
         std::string error = std::string("type in list must be bool or int, not ");
         error += item->ob_type->tp_name;
         throw Base::TypeError(error);
     }
 }
 
-void PropertyBoolList::Save (Base::Writer &writer) const
+void PropertyBoolList::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<BoolList value=\"" ;
+    writer.Stream() << writer.ind() << "<BoolList value=\"";
     std::string bitset;
     boost::to_string(_lValueList, bitset);
-    writer.Stream() << bitset <<"\"/>" ;
+    writer.Stream() << bitset << "\"/>";
     writer.Stream() << std::endl;
 }
 
-void PropertyBoolList::Restore(Base::XMLReader &reader)
+void PropertyBoolList::Restore(Base::XMLReader& reader)
 {
     // read my Element
     reader.readElement("BoolList");
@@ -2115,19 +2189,19 @@ void PropertyBoolList::Restore(Base::XMLReader &reader)
     setValues(bitset);
 }
 
-Property *PropertyBoolList::Copy() const
+Property* PropertyBoolList::Copy() const
 {
-    PropertyBoolList *p= new PropertyBoolList();
+    PropertyBoolList* p = new PropertyBoolList();
     p->_lValueList = _lValueList;
     return p;
 }
 
-void PropertyBoolList::Paste(const Property &from)
+void PropertyBoolList::Paste(const Property& from)
 {
     setValues(dynamic_cast<const PropertyBoolList&>(from)._lValueList);
 }
 
-unsigned int PropertyBoolList::getMemSize () const
+unsigned int PropertyBoolList::getMemSize() const
 {
     return static_cast<unsigned int>(_lValueList.size());
 }
@@ -2137,7 +2211,7 @@ unsigned int PropertyBoolList::getMemSize () const
 // PropertyColor
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyColor , App::Property)
+TYPESYSTEM_SOURCE(App::PropertyColor, App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -2149,10 +2223,10 @@ PropertyColor::~PropertyColor() = default;
 //**************************************************************************
 // Base class implementer
 
-void PropertyColor::setValue(const Color &col)
+void PropertyColor::setValue(const Base::Color& col)
 {
     aboutToSetValue();
-    _cCol=col;
+    _cCol = col;
     hasSetValue();
 }
 
@@ -2166,16 +2240,16 @@ void PropertyColor::setValue(uint32_t rgba)
 void PropertyColor::setValue(float r, float g, float b, float a)
 {
     aboutToSetValue();
-    _cCol.set(r,g,b,a);
+    _cCol.set(r, g, b, a);
     hasSetValue();
 }
 
-const Color& PropertyColor::getValue() const
+const Base::Color& PropertyColor::getValue() const
 {
     return _cCol;
 }
 
-PyObject *PropertyColor::getPyObject()
+PyObject* PropertyColor::getPyObject()
 {
     PyObject* rgba = PyTuple_New(4);
     PyObject* r = PyFloat_FromDouble(_cCol.r);
@@ -2191,50 +2265,62 @@ PyObject *PropertyColor::getPyObject()
     return rgba;
 }
 
-void PropertyColor::setPyObject(PyObject *value)
+void PropertyColor::setPyObject(PyObject* value)
 {
-    App::Color cCol;
-    if (PyTuple_Check(value) && (PyTuple_Size(value) == 3 || PyTuple_Size(value) == 4) ) {
+    Base::Color cCol;
+    if (PyTuple_Check(value) && (PyTuple_Size(value) == 3 || PyTuple_Size(value) == 4)) {
         PyObject* item;
-        item = PyTuple_GetItem(value,0);
+        item = PyTuple_GetItem(value, 0);
         if (PyFloat_Check(item)) {
             cCol.r = (float)PyFloat_AsDouble(item);
-            item = PyTuple_GetItem(value,1);
-            if (PyFloat_Check(item))
+            item = PyTuple_GetItem(value, 1);
+            if (PyFloat_Check(item)) {
                 cCol.g = (float)PyFloat_AsDouble(item);
-            else
+            }
+            else {
                 throw Base::TypeError("Type in tuple must be consistent (float)");
-            item = PyTuple_GetItem(value,2);
-            if (PyFloat_Check(item))
+            }
+            item = PyTuple_GetItem(value, 2);
+            if (PyFloat_Check(item)) {
                 cCol.b = (float)PyFloat_AsDouble(item);
-            else
+            }
+            else {
                 throw Base::TypeError("Type in tuple must be consistent (float)");
+            }
             if (PyTuple_Size(value) == 4) {
-                item = PyTuple_GetItem(value,3);
-                if (PyFloat_Check(item))
+                item = PyTuple_GetItem(value, 3);
+                if (PyFloat_Check(item)) {
                     cCol.a = (float)PyFloat_AsDouble(item);
-                else
+                }
+                else {
                     throw Base::TypeError("Type in tuple must be consistent (float)");
+                }
             }
         }
         else if (PyLong_Check(item)) {
-            cCol.r = PyLong_AsLong(item)/255.0;
-            item = PyTuple_GetItem(value,1);
-            if (PyLong_Check(item))
-                cCol.g = PyLong_AsLong(item)/255.0;
-            else
+            cCol.r = PyLong_AsLong(item) / 255.0;
+            item = PyTuple_GetItem(value, 1);
+            if (PyLong_Check(item)) {
+                cCol.g = PyLong_AsLong(item) / 255.0;
+            }
+            else {
                 throw Base::TypeError("Type in tuple must be consistent (integer)");
-            item = PyTuple_GetItem(value,2);
-            if (PyLong_Check(item))
-                cCol.b = PyLong_AsLong(item)/255.0;
-            else
+            }
+            item = PyTuple_GetItem(value, 2);
+            if (PyLong_Check(item)) {
+                cCol.b = PyLong_AsLong(item) / 255.0;
+            }
+            else {
                 throw Base::TypeError("Type in tuple must be consistent (integer)");
+            }
             if (PyTuple_Size(value) == 4) {
-                item = PyTuple_GetItem(value,3);
-                if (PyLong_Check(item))
-                    cCol.a = PyLong_AsLong(item)/255.0;
-                else
+                item = PyTuple_GetItem(value, 3);
+                if (PyLong_Check(item)) {
+                    cCol.a = PyLong_AsLong(item) / 255.0;
+                }
+                else {
                     throw Base::TypeError("Type in tuple must be consistent (integer)");
+                }
             }
         }
         else {
@@ -2245,21 +2331,22 @@ void PropertyColor::setPyObject(PyObject *value)
         cCol.setPackedValue(PyLong_AsUnsignedLong(value));
     }
     else {
-        std::string error = std::string("type must be integer or tuple of float or tuple integer, not ");
+        std::string error =
+            std::string("type must be integer or tuple of float or tuple integer, not ");
         error += value->ob_type->tp_name;
         throw Base::TypeError(error);
     }
 
-    setValue( cCol );
+    setValue(cCol);
 }
 
-void PropertyColor::Save (Base::Writer &writer) const
+void PropertyColor::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<PropertyColor value=\""
-    <<  _cCol.getPackedValue() <<"\"/>" << endl;
+    writer.Stream() << writer.ind() << "<PropertyColor value=\"" << _cCol.getPackedValue() << "\"/>"
+                    << endl;
 }
 
-void PropertyColor::Restore(Base::XMLReader &reader)
+void PropertyColor::Restore(Base::XMLReader& reader)
 {
     // read my Element
     reader.readElement("PropertyColor");
@@ -2268,14 +2355,14 @@ void PropertyColor::Restore(Base::XMLReader &reader)
     setValue(rgba);
 }
 
-Property *PropertyColor::Copy() const
+Property* PropertyColor::Copy() const
 {
-    PropertyColor *p= new PropertyColor();
+    PropertyColor* p = new PropertyColor();
     p->_cCol = _cCol;
     return p;
 }
 
-void PropertyColor::Paste(const Property &from)
+void PropertyColor::Paste(const Property& from)
 {
     aboutToSetValue();
     _cCol = dynamic_cast<const PropertyColor&>(from)._cCol;
@@ -2286,7 +2373,7 @@ void PropertyColor::Paste(const Property &from)
 // PropertyColorList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyColorList , App::PropertyLists)
+TYPESYSTEM_SOURCE(App::PropertyColorList, App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -2298,11 +2385,11 @@ PropertyColorList::~PropertyColorList() = default;
 //**************************************************************************
 // Base class implementer
 
-PyObject *PropertyColorList::getPyObject()
+PyObject* PropertyColorList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
 
-    for(int i = 0;i<getSize(); i++) {
+    for (int i = 0; i < getSize(); i++) {
         PyObject* rgba = PyTuple_New(4);
         PyObject* r = PyFloat_FromDouble(_lValueList[i].r);
         PyObject* g = PyFloat_FromDouble(_lValueList[i].g);
@@ -2314,40 +2401,42 @@ PyObject *PropertyColorList::getPyObject()
         PyTuple_SetItem(rgba, 2, b);
         PyTuple_SetItem(rgba, 3, a);
 
-        PyList_SetItem( list, i, rgba );
+        PyList_SetItem(list, i, rgba);
     }
 
     return list;
 }
 
-Color PropertyColorList::getPyValue(PyObject *item) const {
+Base::Color PropertyColorList::getPyValue(PyObject* item) const
+{
     PropertyColor col;
     col.setPyObject(item);
     return col.getValue();
 }
 
-void PropertyColorList::Save (Base::Writer &writer) const
+void PropertyColorList::Save(Base::Writer& writer) const
 {
     if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<ColorList file=\"" <<
-            (getSize()?writer.addFile(getName(), this):"") << "\"/>" << std::endl;
+        writer.Stream() << writer.ind() << "<ColorList file=\""
+                        << (getSize() ? writer.addFile(getName(), this) : "") << "\"/>"
+                        << std::endl;
     }
 }
 
-void PropertyColorList::Restore(Base::XMLReader &reader)
+void PropertyColorList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("ColorList");
     if (reader.hasAttribute("file")) {
-        std::string file (reader.getAttribute("file"));
+        std::string file(reader.getAttribute("file"));
 
         if (!file.empty()) {
             // initiate a file read
-            reader.addFile(file.c_str(),this);
+            reader.addFile(file.c_str(), this);
         }
     }
 }
 
-void PropertyColorList::SaveDocFile (Base::Writer &writer) const
+void PropertyColorList::SaveDocFile(Base::Writer& writer) const
 {
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
@@ -2357,35 +2446,35 @@ void PropertyColorList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyColorList::RestoreDocFile(Base::Reader &reader)
+void PropertyColorList::RestoreDocFile(Base::Reader& reader)
 {
     Base::InputStream str(reader);
-    uint32_t uCt=0;
+    uint32_t uCt = 0;
     str >> uCt;
-    std::vector<Color> values(uCt);
-    uint32_t value; // must be 32 bit long
-    for (auto & it : values) {
+    std::vector<Base::Color> values(uCt);
+    uint32_t value;  // must be 32 bit long
+    for (auto& it : values) {
         str >> value;
         it.setPackedValue(value);
     }
     setValues(values);
 }
 
-Property *PropertyColorList::Copy() const
+Property* PropertyColorList::Copy() const
 {
-    PropertyColorList *p= new PropertyColorList();
+    PropertyColorList* p = new PropertyColorList();
     p->_lValueList = _lValueList;
     return p;
 }
 
-void PropertyColorList::Paste(const Property &from)
+void PropertyColorList::Paste(const Property& from)
 {
     setValues(dynamic_cast<const PropertyColorList&>(from)._lValueList);
 }
 
-unsigned int PropertyColorList::getMemSize () const
+unsigned int PropertyColorList::getMemSize() const
 {
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(Color));
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Color));
 }
 
 //**************************************************************************
@@ -2406,7 +2495,7 @@ void PropertyMaterial::setValue(const Material& mat)
     hasSetValue();
 }
 
-void PropertyMaterial::setValue(const Color& col)
+void PropertyMaterial::setValue(const Base::Color& col)
 {
     setDiffuseColor(col);
 }
@@ -2426,7 +2515,7 @@ const Material& PropertyMaterial::getValue() const
     return _cMat;
 }
 
-void PropertyMaterial::setAmbientColor(const Color& col)
+void PropertyMaterial::setAmbientColor(const Base::Color& col)
 {
     aboutToSetValue();
     _cMat.ambientColor = col;
@@ -2447,7 +2536,7 @@ void PropertyMaterial::setAmbientColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterial::setDiffuseColor(const Color& col)
+void PropertyMaterial::setDiffuseColor(const Base::Color& col)
 {
     aboutToSetValue();
     _cMat.diffuseColor = col;
@@ -2468,7 +2557,7 @@ void PropertyMaterial::setDiffuseColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterial::setSpecularColor(const Color& col)
+void PropertyMaterial::setSpecularColor(const Base::Color& col)
 {
     aboutToSetValue();
     _cMat.specularColor = col;
@@ -2489,7 +2578,7 @@ void PropertyMaterial::setSpecularColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterial::setEmissiveColor(const Color& col)
+void PropertyMaterial::setEmissiveColor(const Base::Color& col)
 {
     aboutToSetValue();
     _cMat.emissiveColor = col;
@@ -2524,22 +2613,22 @@ void PropertyMaterial::setTransparency(float val)
     hasSetValue();
 }
 
-const Color& PropertyMaterial::getAmbientColor() const
+const Base::Color& PropertyMaterial::getAmbientColor() const
 {
     return _cMat.ambientColor;
 }
 
-const Color& PropertyMaterial::getDiffuseColor() const
+const Base::Color& PropertyMaterial::getDiffuseColor() const
 {
     return _cMat.diffuseColor;
 }
 
-const Color& PropertyMaterial::getSpecularColor() const
+const Base::Color& PropertyMaterial::getSpecularColor() const
 {
     return _cMat.specularColor;
 }
 
-const Color& PropertyMaterial::getEmissiveColor() const
+const Base::Color& PropertyMaterial::getEmissiveColor() const
 {
     return _cMat.emissiveColor;
 }
@@ -2727,7 +2816,7 @@ void PropertyMaterialList::setValue(int index, const Material& mat)
     hasSetValue();
 }
 
-void PropertyMaterialList::setAmbientColor(const Color& col)
+void PropertyMaterialList::setAmbientColor(const Base::Color& col)
 {
     aboutToSetValue();
     setMinimumSizeOne();
@@ -2757,7 +2846,7 @@ void PropertyMaterialList::setAmbientColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setAmbientColor(int index, const Color& col)
+void PropertyMaterialList::setAmbientColor(int index, const Base::Color& col)
 {
     verifyIndex(index);
 
@@ -2787,7 +2876,7 @@ void PropertyMaterialList::setAmbientColor(int index, uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setDiffuseColor(const Color& col)
+void PropertyMaterialList::setDiffuseColor(const Base::Color& col)
 {
     aboutToSetValue();
     setMinimumSizeOne();
@@ -2817,7 +2906,7 @@ void PropertyMaterialList::setDiffuseColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setDiffuseColor(int index, const Color& col)
+void PropertyMaterialList::setDiffuseColor(int index, const Base::Color& col)
 {
     verifyIndex(index);
 
@@ -2847,7 +2936,7 @@ void PropertyMaterialList::setDiffuseColor(int index, uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setDiffuseColors(const std::vector<App::Color>& colors)
+void PropertyMaterialList::setDiffuseColors(const std::vector<Base::Color>& colors)
 {
     aboutToSetValue();
     setSize(colors.size(), _lValueList[0]);
@@ -2858,7 +2947,7 @@ void PropertyMaterialList::setDiffuseColors(const std::vector<App::Color>& color
     hasSetValue();
 }
 
-void PropertyMaterialList::setSpecularColor(const Color& col)
+void PropertyMaterialList::setSpecularColor(const Base::Color& col)
 {
     aboutToSetValue();
     setMinimumSizeOne();
@@ -2888,7 +2977,7 @@ void PropertyMaterialList::setSpecularColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setSpecularColor(int index, const Color& col)
+void PropertyMaterialList::setSpecularColor(int index, const Base::Color& col)
 {
     verifyIndex(index);
 
@@ -2918,7 +3007,7 @@ void PropertyMaterialList::setSpecularColor(int index, uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setEmissiveColor(const Color& col)
+void PropertyMaterialList::setEmissiveColor(const Base::Color& col)
 {
     aboutToSetValue();
     setMinimumSizeOne();
@@ -2948,7 +3037,7 @@ void PropertyMaterialList::setEmissiveColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setEmissiveColor(int index, const Color& col)
+void PropertyMaterialList::setEmissiveColor(int index, const Base::Color& col)
 {
     verifyIndex(index);
 
@@ -3029,29 +3118,29 @@ void PropertyMaterialList::setTransparencies(const std::vector<float>& transpare
     hasSetValue();
 }
 
-const Color& PropertyMaterialList::getAmbientColor() const
+const Base::Color& PropertyMaterialList::getAmbientColor() const
 {
     return _lValueList[0].ambientColor;
 }
 
-const Color& PropertyMaterialList::getAmbientColor(int index) const
+const Base::Color& PropertyMaterialList::getAmbientColor(int index) const
 {
     return _lValueList[index].ambientColor;
 }
 
-const Color& PropertyMaterialList::getDiffuseColor() const
+const Base::Color& PropertyMaterialList::getDiffuseColor() const
 {
     return _lValueList[0].diffuseColor;
 }
 
-const Color& PropertyMaterialList::getDiffuseColor(int index) const
+const Base::Color& PropertyMaterialList::getDiffuseColor(int index) const
 {
     return _lValueList[index].diffuseColor;
 }
 
-std::vector<App::Color> PropertyMaterialList::getDiffuseColors() const
+std::vector<Base::Color> PropertyMaterialList::getDiffuseColors() const
 {
-    std::vector<App::Color> list;
+    std::vector<Base::Color> list;
     for (auto& material : _lValueList) {
         list.push_back(material.diffuseColor);
     }
@@ -3059,22 +3148,22 @@ std::vector<App::Color> PropertyMaterialList::getDiffuseColors() const
     return list;
 }
 
-const Color& PropertyMaterialList::getSpecularColor() const
+const Base::Color& PropertyMaterialList::getSpecularColor() const
 {
     return _lValueList[0].specularColor;
 }
 
-const Color& PropertyMaterialList::getSpecularColor(int index) const
+const Base::Color& PropertyMaterialList::getSpecularColor(int index) const
 {
     return _lValueList[index].specularColor;
 }
 
-const Color& PropertyMaterialList::getEmissiveColor() const
+const Base::Color& PropertyMaterialList::getEmissiveColor() const
 {
     return _lValueList[0].emissiveColor;
 }
 
-const Color& PropertyMaterialList::getEmissiveColor(int index) const
+const Base::Color& PropertyMaterialList::getEmissiveColor(int index) const
 {
     return _lValueList[index].emissiveColor;
 }
@@ -3126,8 +3215,7 @@ void PropertyMaterialList::Save(Base::Writer& writer) const
     if (!writer.isForceXML()) {
         writer.Stream() << writer.ind() << "<MaterialList file=\""
                         << (getSize() ? writer.addFile(getName(), this) : "") << "\""
-                        << " version=\"3\"/>"
-                        << std::endl;
+                        << " version=\"3\"/>" << std::endl;
     }
 }
 
@@ -3169,7 +3257,7 @@ void PropertyMaterialList::SaveDocFile(Base::Writer& writer) const
     }
 }
 
-void PropertyMaterialList::writeString(Base::OutputStream& str, const std::string &value) const
+void PropertyMaterialList::writeString(Base::OutputStream& str, const std::string& value) const
 {
     uint32_t uCt = (uint32_t)value.size();
     str << uCt;
@@ -3299,44 +3387,50 @@ unsigned int PropertyMaterialList::getMemSize() const
 // PropertyPersistentObject
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPersistentObject , App::PropertyString)
+TYPESYSTEM_SOURCE(App::PropertyPersistentObject, App::PropertyString)
 
-PyObject *PropertyPersistentObject::getPyObject(){
-    if(_pObject)
+PyObject* PropertyPersistentObject::getPyObject()
+{
+    if (_pObject) {
         return _pObject->getPyObject();
+    }
     return inherited::getPyObject();
 }
 
-void PropertyPersistentObject::Save(Base::Writer &writer) const{
+void PropertyPersistentObject::Save(Base::Writer& writer) const
+{
     inherited::Save(writer);
-#define ELEMENT_PERSISTENT_OBJ "PersistentObject"
-    writer.Stream() << writer.ind() << "<" ELEMENT_PERSISTENT_OBJ ">" << std::endl;
-    if(_pObject) {
+    writer.Stream() << writer.ind() << "<PersistentObject>" << std::endl;
+    if (_pObject) {
         writer.incInd();
         _pObject->Save(writer);
         writer.decInd();
     }
-    writer.Stream() << writer.ind() << "</" ELEMENT_PERSISTENT_OBJ ">" << std::endl;
+    writer.Stream() << writer.ind() << "</PersistentObject>" << std::endl;
 }
 
-void PropertyPersistentObject::Restore(Base::XMLReader &reader){
+void PropertyPersistentObject::Restore(Base::XMLReader& reader)
+{
     inherited::Restore(reader);
-    reader.readElement(ELEMENT_PERSISTENT_OBJ);
-    if(_pObject)
+    reader.readElement("PersistentObject");
+    if (_pObject) {
         _pObject->Restore(reader);
-    reader.readEndElement(ELEMENT_PERSISTENT_OBJ);
+    }
+    reader.readEndElement("PersistentObject");
 }
 
-Property *PropertyPersistentObject::Copy() const{
-    auto *p= new PropertyPersistentObject();
+Property* PropertyPersistentObject::Copy() const
+{
+    auto* p = new PropertyPersistentObject();
     p->_cValue = _cValue;
     p->_pObject = _pObject;
     return p;
 }
 
-void PropertyPersistentObject::Paste(const Property &from){
-    const auto &prop = dynamic_cast<const PropertyPersistentObject&>(from);
-    if(_cValue!=prop._cValue || _pObject!=prop._pObject) {
+void PropertyPersistentObject::Paste(const Property& from)
+{
+    const auto& prop = dynamic_cast<const PropertyPersistentObject&>(from);
+    if (_cValue != prop._cValue || _pObject != prop._pObject) {
         aboutToSetValue();
         _cValue = prop._cValue;
         _pObject = prop._pObject;
@@ -3344,29 +3438,38 @@ void PropertyPersistentObject::Paste(const Property &from){
     }
 }
 
-unsigned int PropertyPersistentObject::getMemSize () const{
+unsigned int PropertyPersistentObject::getMemSize() const
+{
     auto size = inherited::getMemSize();
-    if(_pObject)
+    if (_pObject) {
         size += _pObject->getMemSize();
+    }
     return size;
 }
 
-void PropertyPersistentObject::setValue(const char *type) {
-    if(!type) type = "";
-    if(type[0]) {
+void PropertyPersistentObject::setValue(const char* type)
+{
+    if (!type) {
+        type = "";
+    }
+    if (type[0]) {
         Base::Type::importModule(type);
         Base::Type t = Base::Type::fromName(type);
-        if(t.isBad())
+        if (t.isBad()) {
             throw Base::TypeError("Invalid type");
-        if(!t.isDerivedFrom(Persistence::getClassTypeId()))
+        }
+        if (!t.isDerivedFrom(Persistence::getClassTypeId())) {
             throw Base::TypeError("Type must be derived from Base::Persistence");
-        if(_pObject && _pObject->getTypeId()==t)
+        }
+        if (_pObject && _pObject->getTypeId() == t) {
             return;
+        }
     }
     aboutToSetValue();
     _pObject.reset();
     _cValue = type;
-    if(type[0])
+    if (type[0]) {
         _pObject.reset(static_cast<Base::Persistence*>(Base::Type::createInstanceByName(type)));
+    }
     hasSetValue();
 }

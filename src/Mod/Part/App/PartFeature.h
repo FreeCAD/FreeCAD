@@ -168,6 +168,7 @@ protected:
     App::DocumentObjectExecReturn *execute() override;
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
+    void onDocumentRestored() override;
 
     void copyMaterial(Feature* feature);
     void copyMaterial(App::DocumentObject* link);
@@ -201,7 +202,7 @@ private:
     std::vector<std::pair<std::string, PropertyPartShape*>> _elementCachePrefixMap;
 };
 
-class FilletBase : public Part::Feature
+class PartExport FilletBase : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::FilletBase);
 

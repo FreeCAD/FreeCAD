@@ -83,7 +83,7 @@ on:
           -build/endif_comment,
           +build/explicit_make_pair,
           -build/forward_decl,
-          +build/header_guard,
+          -build/header_guard,
           +build/include,
           -build/include_subdir,
           -build/include_alpha,
@@ -91,9 +91,10 @@ on:
           +build/include_what_you_use,
           +build/namespaces_headers,
           +build/namespaces_literals,
-          +build/namespaces,
+          -build/namespaces,
           +build/printf_format,
           +build/storage_class,
+          -legal/copyright,
           +readability/alt_tokens,
           -readability/braces,
           +readability/casting,
@@ -107,7 +108,7 @@ on:
           -readability/nolint,
           +readability/nul,
           +readability/strings,
-          +readability/todo,
+          -readability/todo,
           +readability/utf8,
           +runtime/arrays,
           +runtime/casting,
@@ -442,7 +443,7 @@ jobs:
           blackFails=0
           pip install --break-system-packages black
           set +e
-          black --check ${{ inputs.changedPythonFiles }} &> ${{ env.logdir }}black.log
+          black --line-length 100 --check ${{ inputs.changedPythonFiles }} &> ${{ env.logdir }}black.log
           exitCode=$?
           set -e
           # If black has run successfully, write the Log to the console with the Problem Matchers
@@ -491,8 +492,6 @@ jobs:
                             libboost-thread-dev                         \
                             libcoin-dev                                 \
                             libeigen3-dev                               \
-                            libgts-bin                                  \
-                            libgts-dev                                  \
                             libkdtree++-dev                             \
                             libmedc-dev                                 \
                             libocct-data-exchange-dev                   \
@@ -730,14 +729,19 @@ jobs:
       - name: Clazy
         if: inputs.checkClazy && inputs.changedCppFiles != '' && always()
         continue-on-error: ${{ inputs.clazyFailSilent }}
+        env:
+          CLAZY_HEADER_FILTER: "^$"
         run: |
           clazyErrors=0
           clazyWarnings=0
           clazyNotes=0
           sudo apt-get install -y --no-install-recommends clazy
           #TODO: check where this "clazy.yaml" goes ; shall this be put in the fixes ?
-          # Run clazy on all cpp files
-          clazy-standalone --export-fixes=clazy.yaml -checks=${{ inputs.clazyChecks }} -p build/ ${{ inputs.changedCppFiles }} &>> ${{ env.logdir }}clazy.log  || true
+          # Run clazy on all changed cpp files, ignoring any included headers
+          for file in ${{ inputs.changedCppFiles }}
+          do
+            clazy-standalone --export-fixes=clazy.yaml -checks=${{ inputs.clazyChecks }} -p build/compile_commands.json $file &>> ${{ env.logdir }}clazy.log  || true
+          done
           # If clazy has run successfully, write the Log to the console with the Problem Matchers
           if [ -f ${{ env.logdir }}clazy.log ]
           then

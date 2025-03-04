@@ -28,9 +28,9 @@
 #include <QPrintPreviewDialog>
 #include <QPrinter>
 #include <QTextDocument>
-#include <cmath>
 #endif
 
+#include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <App/Range.h>
 #include <Base/Tools.h>
@@ -47,6 +47,7 @@
 #include "LineEdit.h"
 #include "SpreadsheetDelegate.h"
 #include "SpreadsheetView.h"
+#include "ZoomableView.h"
 #include "qtcolorpicker.h"
 #include "ui_Sheet.h"
 
@@ -73,6 +74,8 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
     QWidget* w = new QWidget(this);
     ui->setupUi(w);
     setCentralWidget(w);
+
+    new ZoomableView(ui);
 
     delegate = new SpreadsheetDelegate(sheet);
     ui->cells->setModel(model);
@@ -130,13 +133,13 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
     ui->cells->setPalette(palette);
 
     QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-        QString::fromLatin1("Spreadsheet_BackgroundColor"));
+        QStringLiteral("Spreadsheet_BackgroundColor"));
     if (!bgList.empty()) {
         bgList[0]->setCurrentColor(palette.color(QPalette::Base));
     }
 
     QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-        QString::fromLatin1("Spreadsheet_ForegroundColor"));
+        QStringLiteral("Spreadsheet_ForegroundColor"));
     if (!fgList.empty()) {
         fgList[0]->setCurrentColor(palette.color(QPalette::Text));
     }
@@ -296,7 +299,7 @@ void SheetView::printPdf()
         FileDialog::getSaveFileName(this,
                                     tr("Export PDF"),
                                     QString(),
-                                    QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+                                    QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
         // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under:
@@ -305,6 +308,7 @@ void SheetView::printPdf()
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
+        printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
         print(&printer);
     }
 }
@@ -432,7 +436,7 @@ void SheetView::confirmAliasChanged(const QString& text)
     bool aliasOkay = true;
 
     ui->cellAlias->setDocumentObject(sheet);
-    if (text.length() != 0 && !sheet->isValidAlias(Base::Tools::toStdString(text))) {
+    if (text.length() != 0 && !sheet->isValidAlias(text.toStdString())) {
         aliasOkay = false;
     }
 
@@ -444,8 +448,7 @@ void SheetView::confirmAliasChanged(const QString& text)
             std::string current_alias;
             (void)cell->getAlias(current_alias);
             if (text != QString::fromUtf8(current_alias.c_str())) {
-                Base::Console().Error("Unable to set alias: %s\n",
-                                      Base::Tools::toStdString(text).c_str());
+                Base::Console().Error("Unable to set alias: %s\n", text.toStdString().c_str());
             }
         }
         else {
@@ -479,7 +482,7 @@ void SheetView::aliasChanged(const QString& text)
         warningColor = QLatin1String("rgb(200,0,0)");  // Dark red for light mode
     }
 
-    if (!text.isEmpty() && !sheet->isValidAlias(Base::Tools::toStdString(text))) {
+    if (!text.isEmpty() && !sheet->isValidAlias(text.toStdString())) {
         aliasOk = false;
     }
 

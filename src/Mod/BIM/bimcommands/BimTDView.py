@@ -35,12 +35,13 @@ translate = FreeCAD.Qt.translate
 class BIM_TDView:
     def GetResources(self):
         return {
-            "Pixmap": "techdraw-ArchView",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_TDView", "View"),
+            "Pixmap": "BIM_InsertView",
+            "MenuText": QT_TRANSLATE_NOOP("BIM_TDView", "Insert view"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_TDView",
-                "Creates a TechDraw view from a section plane or 2D objects",
+                "Inserts a drawing view on a page",
             ),
+            'Accel': "V, I",
         }
 
     def IsActive(self):
@@ -76,7 +77,7 @@ class BIM_TDView:
         FreeCAD.ActiveDocument.openTransaction("Create view")
         for section in sections:
             view = FreeCAD.ActiveDocument.addObject(
-                "TechDraw::DrawViewArch", "ArchView"
+                "TechDraw::DrawViewArch", "BIM view"
             )
             view.Label = section.Label
             view.Source = section
@@ -92,6 +93,11 @@ class BIM_TDView:
             page.addView(view)
             if page.Scale:
                 view.Scale = page.Scale
+            if "ShapeMode" in draft.PropertiesList:
+                draft.ShapeMode = "Shape"
+            for child in draft.OutListRecursive:
+                if "ShapeMode" in child.PropertiesList:
+                    child.ShapeMode = "Shape"
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

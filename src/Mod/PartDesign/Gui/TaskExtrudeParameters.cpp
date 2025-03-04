@@ -156,7 +156,7 @@ void TaskExtrudeParameters::setupDialog()
     }
     else if (obj && faceId >= 0) {
         ui->lineFaceName->setText(
-            QString::fromLatin1("%1:%2%3").arg(QString::fromUtf8(obj->Label.getValue()),
+            QStringLiteral("%1:%2%3").arg(QString::fromUtf8(obj->Label.getValue()),
                                                tr("Face"),
                                                QString::number(faceId)));
         ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
@@ -186,10 +186,9 @@ void TaskExtrudeParameters::setupDialog()
 
     ui->listWidgetReferences->addAction(unselectShapeFaceAction);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+    ui->checkBoxAllFaces->setChecked(ui->listWidgetReferences->count() == 0);
 
     connectSlots();
-
-    ui->checkBoxAllFaces->setChecked(ui->listWidgetReferences->count() == 0);
 
     this->propReferenceAxis = &(extrude->ReferenceAxis);
 
@@ -926,7 +925,7 @@ void TaskExtrudeParameters::setDirectionMode(int index)
         extrude->UseCustomVector.setValue(false);
     }
 
-    // if we don't use custom direction, only allow to show its direction
+    // if we don't use custom direction, only allow one to show its direction
     if (index != DirectionModes::Custom) {
         ui->XDirectionEdit->setEnabled(false);
         ui->YDirectionEdit->setEnabled(false);
@@ -1024,7 +1023,7 @@ void TaskExtrudeParameters::onFaceName(const QString& text)
         QVariant name = objectNameByLabel(label, ui->lineFaceName->property("FeatureName"));
         if (name.isValid()) {
             parts[0] = name.toString();
-            QString uptoface = parts.join(QString::fromLatin1(":"));
+            QString uptoface = parts.join(QStringLiteral(":"));
             ui->lineFaceName->setProperty("FeatureName", name);
             ui->lineFaceName->setProperty("FaceName", setUpToFace(uptoface));
         }
@@ -1050,7 +1049,7 @@ void TaskExtrudeParameters::translateFaceName()
 
         if (ok) {
             ui->lineFaceName->setText(
-                QString::fromLatin1("%1:%2%3").arg(parts[0], tr("Face")).arg(faceId));
+                QStringLiteral("%1:%2%3").arg(parts[0], tr("Face")).arg(faceId));
         }
         else {
             ui->lineFaceName->setText(parts[0]);
@@ -1119,7 +1118,7 @@ QString TaskExtrudeParameters::getFaceName() const
         return getFaceReference(featureName.toString(), faceName);
     }
 
-    return QString::fromLatin1("None");
+    return QStringLiteral("None");
 }
 
 void TaskExtrudeParameters::changeEvent(QEvent* e)

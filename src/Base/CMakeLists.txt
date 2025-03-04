@@ -10,11 +10,17 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${PYCXX_INCLUDE_DIR}
+    ${ZIPIOS_INCLUDES}
 )
 
 if(MSVC)
@@ -64,7 +70,7 @@ list(APPEND FreeCADBase_LIBS ${QtCore_LIBRARIES})
 list(APPEND FreeCADBase_LIBS fmt::fmt)
 
 if (BUILD_DYNAMIC_LINK_PYTHON)
-    list(APPEND FreeCADBase_LIBS ${PYTHON_LIBRARIES})
+    list(APPEND FreeCADBase_LIBS ${Python3_LIBRARIES})
 endif (BUILD_DYNAMIC_LINK_PYTHON)
 
 # needed for OpenSUSE
@@ -73,18 +79,31 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 endif()
 
 generate_from_xml(TypePy)
+generate_from_py(Type)
 generate_from_xml(BaseClassPy)
+generate_from_py(BaseClass)
 generate_from_xml(BoundBoxPy)
+generate_from_py(BoundBox)
 generate_from_xml(CoordinateSystemPy)
+generate_from_py(CoordinateSystem)
 generate_from_xml(PersistencePy)
+generate_from_py(Persistence)
 generate_from_xml(VectorPy)
+generate_from_py(Vector)
 generate_from_xml(MatrixPy)
+generate_from_py(Matrix)
 generate_from_xml(RotationPy)
+generate_from_py(Rotation)
 generate_from_xml(PlacementPy)
+generate_from_py(Placement)
 generate_from_xml(AxisPy)
+generate_from_py(Axis)
 generate_from_xml(UnitPy)
+generate_from_py(Unit)
 generate_from_xml(QuantityPy)
+generate_from_py(Quantity)
 generate_from_xml(PrecisionPy)
+generate_from_py(Precision)
 generate_from_any(Parameter.xsd Parameter.inl xmlSchemeString)
 
 if(SWIG_FOUND)
@@ -99,56 +118,6 @@ if(SWIG_FOUND)
     )
     add_definitions(-DHAVE_SWIG=1)
 endif(SWIG_FOUND)
-
-if (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++ AND NOT FREECAD_USE_EXTERNAL_ZIPIOS)
-SET(zipios_SRCS
-    ../zipios++/backbuffer.h
-    ../zipios++/collcoll.cpp
-    ../zipios++/collcoll.h
-    ../zipios++/deflateoutputstreambuf.cpp
-    ../zipios++/deflateoutputstreambuf.h
-    ../zipios++/fcoll.cpp
-    ../zipios++/fcoll.h
-    ../zipios++/fcollexceptions.cpp
-    ../zipios++/fcollexceptions.h
-    ../zipios++/fileentry.cpp
-    ../zipios++/fileentry.h
-    ../zipios++/filepath.cpp
-    ../zipios++/filepath.h
-    ../zipios++/filterinputstreambuf.cpp
-    ../zipios++/filterinputstreambuf.h
-    ../zipios++/filteroutputstreambuf.cpp
-    ../zipios++/filteroutputstreambuf.h
-    ../zipios++/gzipoutputstream.cpp
-    ../zipios++/gzipoutputstream.h
-    ../zipios++/gzipoutputstreambuf.cpp
-    ../zipios++/gzipoutputstreambuf.h
-    ../zipios++/inflateinputstreambuf.cpp
-    ../zipios++/inflateinputstreambuf.h
-    ../zipios++/meta-iostreams.h
-    ../zipios++/outputstringstream.h
-    ../zipios++/simplesmartptr.h
-    ../zipios++/virtualseeker.h
-    ../zipios++/zipfile.cpp
-    ../zipios++/zipfile.h
-    ../zipios++/ziphead.cpp
-    ../zipios++/ziphead.h
-    ../zipios++/zipheadio.cpp
-    ../zipios++/zipheadio.h
-    ../zipios++/zipinputstream.cpp
-    ../zipios++/zipinputstream.h
-    ../zipios++/zipinputstreambuf.cpp
-    ../zipios++/zipinputstreambuf.h
-    ../zipios++/zipios_common.h
-    ../zipios++/zipios-config.h
-    ../zipios++/zipios_defs.h
-    ../zipios++/zipoutputstreambuf.cpp
-    ../zipios++/zipoutputstreambuf.h
-    ../zipios++/zipoutputstream.cpp
-    ../zipios++/zipoutputstream.h
-)
-SOURCE_GROUP("zipios" FILES ${zipios_SRCS})
-endif ()
 
 SOURCE_GROUP("pycxx" FILES ${PYCXX_SOURCES})
 
@@ -222,6 +191,7 @@ SET(FreeCADBase_CPP_SRCS
     Builder3D.cpp
     Console.cpp
     ConsoleObserver.cpp
+    Color.cpp
     CoordinateSystem.cpp
     CoordinateSystemPyImp.cpp
     Debugger.cpp
@@ -256,6 +226,7 @@ SET(FreeCADBase_CPP_SRCS
     Rotation.cpp
     RotationPyImp.cpp
     Sequencer.cpp
+    ServiceProvider.cpp
     SmartPtrPy.cpp
     Stream.cpp
     Swap.cpp
@@ -266,6 +237,7 @@ SET(FreeCADBase_CPP_SRCS
     Translate.cpp
     Type.cpp
     TypePyImp.cpp
+    UniqueNameManager.cpp
     Uuid.cpp
     Vector3D.cpp
     VectorPyImp.cpp
@@ -291,6 +263,7 @@ SET(FreeCADBase_HPP_SRCS
     Console.h
     ConsoleObserver.h
     Converter.h
+    Color.h
     CoordinateSystem.h
     Debugger.h
     DualNumber.h
@@ -319,6 +292,7 @@ SET(FreeCADBase_HPP_SRCS
     QtTools.h
     Reader.h
     Rotation.h
+    ServiceProvider.h
     Sequencer.h
     SmartPtrPy.h
     Stream.h
@@ -330,6 +304,7 @@ SET(FreeCADBase_HPP_SRCS
     Tools3D.h
     Translate.h
     Type.h
+    UniqueNameManager.h
     Uuid.h
     Vector3D.h
     ViewProj.h
@@ -356,29 +331,15 @@ IF (MSVC)
         ${FreeCADBase_SRCS}
         StackWalker.cpp
         StackWalker.h
-)
+    )
 ENDIF(MSVC)
 
-# Use external zipios++ if specified.
 if(FREECAD_USE_EXTERNAL_ZIPIOS)
-    find_library(ZIPIOS_LIBRARY zipios)
-    find_path(ZIPIOS_INCLUDES zipios++/zipios-config.h)
-    if(ZIPIOS_LIBRARY)
-        message(STATUS "Found zipios++: ${ZIPIOS}")
-    endif()
-    if(ZIPIOS_INCLUDES)
-        message(STATUS "Found zipios++ headers.")
-    endif()
-    if(ZIPIOS_LIBRARY AND ZIPIOS_INCLUDES)
-        list(APPEND FreeCADBase_LIBS ${ZIPIOS_LIBRARY})
-        include_directories(${ZIPIOS_INCLUDES})
-    else()
-        message(FATAL_ERROR "Using external zipios++ was specified but was not found.")
-    endif()
-else(FREECAD_USE_EXTERNAL_ZIPIOS)
+    list(APPEND FreeCADBase_LIBS ${ZIPIOS_LIBRARY})
+else()
     list(APPEND FreeCADBase_SRCS ${zipios_SRCS})
-endif(FREECAD_USE_EXTERNAL_ZIPIOS)
-
+    SOURCE_GROUP("zipios" FILES ${zipios_SRCS})
+endif()
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

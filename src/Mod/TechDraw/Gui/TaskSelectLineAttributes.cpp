@@ -121,9 +121,9 @@ void TaskSelectLineAttributes::setUiEdit()
     }
 
     // TODO: how to handle translation of a string with arg parameters in it?
-    ui->rbThin->setText(QString::fromUtf8("Thin %1").arg(QString::number(TechDraw::LineGroup::getDefaultWidth("Thin"))));
-    ui->rbMiddle->setText(QString::fromUtf8("Middle %1").arg(QString::number(TechDraw::LineGroup::getDefaultWidth("Graphic"))));
-    ui->rbThick->setText(QString::fromUtf8("Thick %1").arg(QString::number(TechDraw::LineGroup::getDefaultWidth("Thick"))));
+    ui->rbThin->setText(QStringLiteral("Thin %1").arg(QString::number(TechDraw::LineGroup::getDefaultWidth("Thin"))));
+    ui->rbMiddle->setText(QStringLiteral("Middle %1").arg(QString::number(TechDraw::LineGroup::getDefaultWidth("Graphic"))));
+    ui->rbThick->setText(QStringLiteral("Thick %1").arg(QString::number(TechDraw::LineGroup::getDefaultWidth("Thick"))));
 
     double lineWidth = LineFormat::getCurrentLineFormat().getWidth();
     if (lineWidth <= TechDraw::LineGroup::getDefaultWidth("Thin")) {
@@ -165,7 +165,7 @@ bool TaskSelectLineAttributes::accept()
     }
 
     QColor qTemp = ui->cbColor->color();
-    App::Color temp;
+    Base::Color temp;
     temp.set(qTemp.redF(), qTemp.greenF(), qTemp.blueF(), 1.0 - qTemp.alphaF());
     LineFormat::getCurrentLineFormat().setColor(temp);
 

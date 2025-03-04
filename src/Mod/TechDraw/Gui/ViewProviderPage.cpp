@@ -30,7 +30,7 @@
 # include <QPointer>
 # include <QTextStream>
 
-# include <boost_signals2.hpp>
+# include <boost/signals2.hpp>
 # include <boost/signals2/connection.hpp>
 #endif
 
@@ -43,6 +43,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
@@ -50,6 +51,7 @@
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "ViewProviderPage.h"
 #include "MDIViewPage.h"
@@ -66,9 +68,6 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 namespace sp = std::placeholders;
 
-#define _SHOWDRAWING 10
-#define _TOGGLEUPDATE 11
-
 PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 
 
@@ -76,19 +75,21 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 // Construction/Destruction
 
 ViewProviderPage::ViewProviderPage()
-    : m_mdiView(nullptr), m_pageName(""), m_graphicsView(nullptr), m_graphicsScene(nullptr)
+    : m_mdiView(nullptr),  m_graphicsView(nullptr), m_graphicsScene(nullptr)
 {
     initExtension(this);
 
     sPixmap = "TechDraw_TreePage";
     static const char* group = "Grid";
 
+    // NOLINTBEGIN
     ADD_PROPERTY_TYPE(ShowFrames, (true), group, App::Prop_None,
                       "Show or hide View frames and Labels on this Page");
     ADD_PROPERTY_TYPE(ShowGrid, (PreferencesGui::showGrid()), group, App::Prop_None,
                       "Show or hide a grid on this Page");
     ADD_PROPERTY_TYPE(GridSpacing, (PreferencesGui::gridSpacing()), group,
                       (App::PropertyType::Prop_None), "Grid line spacing in mm");
+    // NOLINTEND
 
     ShowFrames.setStatus(App::Property::Hidden, true);
     // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
@@ -116,7 +117,7 @@ void ViewProviderPage::attach(App::DocumentObject* pcFeat)
     //NOLINTBEGIN
     auto bnd = std::bind(&ViewProviderPage::onGuiRepaint, this, sp::_1);
     //NOLINTEND
-    TechDraw::DrawPage* feature = dynamic_cast<TechDraw::DrawPage*>(pcFeat);
+    auto* feature = dynamic_cast<TechDraw::DrawPage*>(pcFeat);
     if (feature) {
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
         if (feature->isAttachedToDocument()) {
@@ -130,10 +131,8 @@ void ViewProviderPage::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderPage::onChanged(const App::Property* prop)
 {
-    if (prop == &(ShowGrid)) {
-        setGrid();
-    }
-    else if (prop == &(GridSpacing)) {
+    if (prop == &(ShowGrid) ||
+        prop == &(GridSpacing)) {
         setGrid();
     }
     else if (prop == &Visibility) {
@@ -173,15 +172,17 @@ void ViewProviderPage::updateData(const App::Property* prop)
         }
     }
     else if (prop == &page->Views) {
-        if (!page->isUnsetting())
+        if (!page->isUnsetting()) {
             m_graphicsScene->fixOrphans();
+        }
     }
 
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
-bool ViewProviderPage::onDelete(const std::vector<std::string>&)
+bool ViewProviderPage::onDelete(const std::vector<std::string>& parms)
 {
+    Q_UNUSED(parms)
     // warn the user if the Page is not empty
     // but don't do this if there is just the template
 
@@ -193,10 +194,7 @@ bool ViewProviderPage::onDelete(const std::vector<std::string>&)
     // the ExportName of a template always begins with "Template"
     bool isTemplate = false;
     for (auto objsIterator : objs) {
-        if (objsIterator->getExportName().substr(0, 8).compare(std::string("Template")) == 0)
-            isTemplate = true;
-        else
-            isTemplate = false;
+        isTemplate = (objsIterator->getExportName().substr(0, 8).compare(std::string("Template")) == 0);
     }
 
     if (!objs.empty() && !isTemplate) {
@@ -207,8 +205,10 @@ bool ViewProviderPage::onDelete(const std::vector<std::string>&)
             "Std_Delete",
             "The page is not empty, therefore the\nfollowing referencing objects might be lost:");
         bodyMessageStream << '\n';
-        for (auto ObjIterator : objs)
-            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
+        for (const auto& obj : objs) {
+             bodyMessageStream << '\n' << QString::fromUtf8(obj->Label.getValue());
+
+        }
         bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
         // show and evaluate the dialog
         int DialogResult = QMessageBox::warning(
@@ -218,8 +218,7 @@ bool ViewProviderPage::onDelete(const std::vector<std::string>&)
             removeMDIView();
             return true;
         }
-        else
-            return false;
+        return false;
     }
     else {
         removeMDIView();
@@ -231,18 +230,19 @@ void ViewProviderPage::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 {
     Gui::ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
     QAction* act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
-    act->setData(QVariant((int)_SHOWDRAWING));
+    act->setData(QVariant((int)ShowDrawing));
     QAction* act2 = menu->addAction(QObject::tr("Toggle Keep Updated"), receiver, member);
-    act2->setData(QVariant((int)_TOGGLEUPDATE));
+    act2->setData(QVariant((int)ToggleUpdate));
 }
 
-bool ViewProviderPage::setEdit(int ModNum)
+bool ViewProviderPage::setEdit(const int ModNum)
 {
-    if (ModNum == _SHOWDRAWING) {
+    if (ModNum == ShowDrawing) {
         showMDIViewPage();// show the drawing
         return false;     //finished editing
     }
-    else if (ModNum == _TOGGLEUPDATE) {
+
+    if (ModNum == ToggleUpdate) {
         auto page = getDrawPage();
         if (page) {
             page->KeepUpdated.setValue(!page->KeepUpdated.getValue());
@@ -250,9 +250,7 @@ bool ViewProviderPage::setEdit(int ModNum)
         }
         return false;
     }
-    else {
-        return Gui::ViewProviderDocumentObject::setEdit(ModNum);
-    }
+    return Gui::ViewProviderDocumentObject::setEdit(ModNum);
 }
 
 void ViewProviderPage::unsetEdit(int ModNum)
@@ -261,35 +259,26 @@ void ViewProviderPage::unsetEdit(int ModNum)
     return;
 }
 
-bool ViewProviderPage::doubleClicked(void)
+bool ViewProviderPage::doubleClicked()
 {
-    // assure the TechDraw workbench
-    if (App::GetApplication()
-        .GetUserParameter()
-        .GetGroup("BaseApp")
-        ->GetGroup("Preferences")
-        ->GetGroup("Mod/TechDraw")
-        ->GetBool("SwitchToWB", true)) {
+    if (Preferences::switchOnClick()) {
         Gui::Command::assureWorkbench("TechDrawWorkbench");
+        show();
     }
 
-    show();
-    if (m_mdiView) {
-        switchToMdiViewPage();
-    }
     return true;
 }
 
-void ViewProviderPage::show(void)
+void ViewProviderPage::show()
 {
     showMDIViewPage();
     ViewProviderDocumentObject::show();
 }
 
-void ViewProviderPage::hide(void)
+void ViewProviderPage::hide()
 {
     if (getMDIView()) {
-        getMDIView()->hide();//this doesn't remove the mdiViewPage from the mainWindow
+        getMDIView()->hide();  // this doesn't remove the mdiViewPage from the mainWindow
         removeMDIView();
     }
     ViewProviderDocumentObject::hide();
@@ -298,21 +287,25 @@ void ViewProviderPage::hide(void)
 bool ViewProviderPage::showMDIViewPage()
 {
     if (m_mdiView.isNull()) {
+        // if our tab has been closed, or if this is first time
         createMDIViewPage();
         m_graphicsScene->addChildrenToPage();
         m_graphicsScene->updateTemplate(true);
         m_graphicsScene->redrawAllViews();
         m_graphicsScene->fixOrphans(true);
+
+        m_mdiView->viewAll();
+        m_mdiView->showMaximized();
     }
     else {
+        // we already have a tab, so just tidy up and switch to it
         m_graphicsScene->redrawAllViews();
         m_graphicsScene->fixOrphans(true);
         m_graphicsView->update();
+        Gui::getMainWindow()->setActiveWindow(m_mdiView);
     }
-    m_graphicsView->centerOnPage();
 
-    m_mdiView->viewAll();
-    m_mdiView->showMaximized();
+    m_graphicsView->centerOnPage();
 
     setGrid();
 
@@ -336,20 +329,19 @@ void ViewProviderPage::createMDIViewPage()
     m_mdiView->setDocumentObject(getDrawPage()->getNameInDocument());
     m_mdiView->setDocumentName(pcObject->getDocument()->getName());
 
-    m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
+    m_mdiView->setWindowTitle(tabTitle + QStringLiteral("[*]"));
     m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_TreePage"));
     Gui::getMainWindow()->addWindow(m_mdiView);
-    switchToMdiViewPage();
 }
 
 void ViewProviderPage::switchToMdiViewPage()
 {
-    Gui::getMainWindow()->setActiveWindow(m_mdiView);
+    show();
     m_graphicsView->setFocus();
 }
 
 //NOTE: removing MDIViewPage (parent) destroys QGVPage (eventually)
-void ViewProviderPage::removeMDIView(void)
+void ViewProviderPage::removeMDIView()
 {
     if (!m_mdiView.isNull()) {//m_mdiView is a QPointer
         QList<QWidget*> wList = Gui::getMainWindow()->windows();
@@ -360,8 +352,9 @@ void ViewProviderPage::removeMDIView(void)
             Gui::MDIView* aw =
                 Gui::getMainWindow()
                     ->activeWindow();//WF: this bit should be in the remove window logic, not here.
-            if (aw)
+            if (aw) {
                 aw->showMaximized();
+            }
         }
     }
 }
@@ -393,7 +386,7 @@ QGITemplate* ViewProviderPage::getQTemplate() const
     return nullptr;
 }
 
-std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderPage::claimChildren() const
 {
     std::vector<App::DocumentObject*> temp;
 
@@ -407,11 +400,16 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     // Collect any child views
     // for Page, valid children are any View except: DrawViewDimension
     //                                               DrawViewBalloon
-    //                                               any FeatuerView in a DrawViewClip
+    //                                               any FeatureView in a DrawViewClip
     //                                               DrawHatch
+    //                                               DrawGeomHatch
+    //  ?? leaders?
 
     try {
         for (auto* obj : getDrawPage()->Views.getValues()) {
+            if (!obj) {
+                continue;
+            }
             auto* featView = dynamic_cast<TechDraw::DrawView*>(obj);
 
             // If the child view appoints a parent, skip it
@@ -422,22 +420,23 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
             // Don't collect if dimension, balloon, hatch or member of ClipGroup as these should be grouped elsewhere
             if (obj->isDerivedFrom<TechDraw::DrawViewDimension>()
                 || obj->isDerivedFrom<TechDraw::DrawHatch>()
+                || obj->isDerivedFrom<TechDraw::DrawGeomHatch>()
                 || obj->isDerivedFrom<TechDraw::DrawViewBalloon>()
-                || (featView && featView->isInClip()))
+                || (featView && featView->isInClip())) {
                 continue;
-            else
-                temp.push_back(obj);
+            }
+            temp.push_back(obj);
         }
         return temp;
     }
     catch (...) {
-        return std::vector<App::DocumentObject*>();
+        return {};
     }
 }
 
-bool ViewProviderPage::isShow(void) const { return Visibility.getValue(); }
+bool ViewProviderPage::isShow() const { return Visibility.getValue(); }
 
-bool ViewProviderPage::getFrameState() { return ShowFrames.getValue(); }
+bool ViewProviderPage::getFrameState() const { return ShowFrames.getValue(); }
 
 void ViewProviderPage::setFrameState(bool state) { ShowFrames.setValue(state); }
 
@@ -450,7 +449,7 @@ void ViewProviderPage::toggleFrameState()
     }
 }
 
-void ViewProviderPage::setTemplateMarkers(bool state)
+void ViewProviderPage::setTemplateMarkers(bool state) const
 {
     App::DocumentObject* templateFeat = nullptr;
     templateFeat = getDrawPage()->Template.getValue();
@@ -527,16 +526,22 @@ Gui::MDIView* ViewProviderPage::getMDIView() const { return m_mdiView.data(); }
 
 void ViewProviderPage::setGrid()
 {
-    TechDraw::DrawPage* dp = getDrawPage();
-    if (!dp) {
+    TechDraw::DrawPage* dPage = getDrawPage();
+    if (!dPage) {
         return;
     }
-    int pageWidth = 298;
-    int pageHeight = 215;
+    constexpr int A4LandscapeWide{298};
+    constexpr int A4LandscapeHigh{215};
+
+    int pageWidth{A4LandscapeWide};
+    int pageHeight{A4LandscapeHigh};
+    //
     double gridStep = GridSpacing.getValue() > 0 ? GridSpacing.getValue() : 10.0;
-    if (dp) {
-        pageWidth = dp->getPageWidth();
-        pageHeight = dp->getPageHeight();
+    if (dPage) {
+        pageWidth = floor(dPage->getPageWidth()); // combining these 2 lines
+        pageWidth = std::max(1, pageWidth);       // causes 'no matching function' error
+        pageHeight = floor(dPage->getPageHeight());   // and again
+        pageHeight = std::max(1, pageHeight);
     }
     QGVPage* widget = getQGVPage();
     if (widget) {
@@ -578,4 +583,13 @@ void ViewProviderPage::fixSceneDependencies()
         vpvp->fixSceneDependencies();
     }
 
+}
+
+//! convenient way to ask feature to redraw everything
+void  ViewProviderPage::redrawPage() const
+{
+    auto feature = getDrawPage();
+    if (feature) {
+        feature->redrawCommand();
+    }
 }

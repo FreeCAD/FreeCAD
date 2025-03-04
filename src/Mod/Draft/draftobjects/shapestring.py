@@ -27,17 +27,17 @@
 
 ## \addtogroup draftobjects
 # @{
+import os
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import Part
-
 from draftgeoutils import faces
-from draftutils.messages import _wrn
-from draftutils.translate import translate
-
 from draftobjects.base import DraftObject
+from draftutils import gui_utils
+from draftutils.messages import _err, _wrn
+from draftutils.translate import translate
 
 
 class ShapeString(DraftObject):
@@ -103,9 +103,11 @@ class ShapeString(DraftObject):
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
-        if hasattr(obj, "ObliqueAngle"): # several more properties were added
-            return
-        self.update_properties_1v0(obj)
+        gui_utils.restore_view_object(
+            obj, vp_module="view_shapestring", vp_class="ViewProviderShapeString"
+        )
+        if not hasattr(obj, "ObliqueAngle"): # several more properties were added
+            self.update_properties_1v0(obj)
 
     def update_properties_1v0(self, obj):
         """Update view properties."""
@@ -129,6 +131,25 @@ class ShapeString(DraftObject):
         if obj.String and obj.FontFile:
             plm = obj.Placement
 
+            if obj.FontFile[0] == ".":
+                # FontFile path relative to the FreeCAD file directory.
+                font_file = os.path.join(os.path.dirname(obj.Document.FileName), obj.FontFile)
+                # We need the absolute path to do some file checks.
+                font_file = os.path.abspath(font_file)
+            else:
+                font_file = obj.FontFile
+
+            # File checks:
+            if not os.path.exists(font_file):
+                _err(obj.Label + ": " + translate("draft", "Font file not found"))
+                return
+            if not os.path.isfile(font_file):
+                _err(obj.Label + ": " + translate("draft", "Specified font file is not a file"))
+                return
+            if not os.path.splitext(font_file)[1].upper() in (".TTF", ".OTF", ".PFB"):
+                _err(obj.Label + ": " + translate("draft", "Specified font type is not supported"))
+                return
+
             fill = obj.MakeFace
             if fill is True:
                 # Test a simple letter to know if we have a sticky font or not.
@@ -136,7 +157,7 @@ class ShapeString(DraftObject):
                 # The 0.03 total area minimum is based on tests with:
                 # 1CamBam_Stick_0.ttf and 1CamBam_Stick_0C.ttf.
                 # See the make_faces function for more information.
-                char = Part.makeWireString("L", obj.FontFile, 1, 0)[0]
+                char = Part.makeWireString("L", font_file, 1, 0)[0]
                 shapes = self.make_faces(char)  # char is list of wires
                 if not shapes:
                     fill = False
@@ -146,7 +167,7 @@ class ShapeString(DraftObject):
                                              Part.Compound(shapes).BoundBox.DiagonalLength,
                                              rel_tol=1e-7)
 
-            chars = Part.makeWireString(obj.String, obj.FontFile, obj.Size, obj.Tracking)
+            chars = Part.makeWireString(obj.String, font_file, obj.Size, obj.Tracking)
             shapes = []
 
             for char in chars:
@@ -164,7 +185,7 @@ class ShapeString(DraftObject):
                         ss_shape = Part.Compound([ss_shape])
                 else:
                     ss_shape = Part.Compound(shapes)
-                cap_char = Part.makeWireString("M", obj.FontFile, obj.Size, obj.Tracking)[0]
+                cap_char = Part.makeWireString("M", font_file, obj.Size, obj.Tracking)[0]
                 cap_height = Part.Compound(cap_char).BoundBox.YMax
                 if obj.ScaleToSize:
                     ss_shape.scale(obj.Size / cap_height)

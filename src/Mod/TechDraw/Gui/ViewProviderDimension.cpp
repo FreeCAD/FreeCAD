@@ -41,6 +41,11 @@
 
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/LandmarkDimension.h>
+#include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawRichAnno.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
+
 
 #include "PreferencesGui.h"
 #include "ZVALUE.h"
@@ -51,6 +56,7 @@
 using namespace TechDrawGui;
 using namespace TechDraw;
 
+// NOLINTBEGIN
 const char *ViewProviderDimension::StandardAndStyleEnums[]=
     { "ISO Oriented", "ISO Referencing", "ASME Inlined", "ASME Referencing", nullptr };
 
@@ -58,6 +64,7 @@ const char *ViewProviderDimension::RenderingExtentEnums[]=
     { "None", "Minimal", "Confined", "Reduced", "Normal", "Expanded", nullptr };
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDimension, TechDrawGui::ViewProviderDrawingView)
+// NOLINTEND
 
 //**************************************************************************
 // Construction/Destruction
@@ -76,16 +83,22 @@ ViewProviderDimension::ViewProviderDimension()
     ADD_PROPERTY_TYPE(Arrowsize, (Preferences::dimArrowSize()),
                                      group, (App::PropertyType)(App::Prop_None),
                                                                      "Arrow size in units");
+
+    ArrowStyle.setEnums(ArrowPropEnum::ArrowTypeEnums);     // NOLINT
+    ADD_PROPERTY_TYPE(ArrowStyle, (static_cast<int>(PreferencesGui::dimArrowStyle())),
+                                    group, (App::PropertyType)(App::Prop_None),
+                                   "Arrow end symbol - point, filled arrow, etc");
+
     ADD_PROPERTY_TYPE(LineWidth, (prefWeight()), group, (App::PropertyType)(App::Prop_None),
                                                         "Dimension line width");
     ADD_PROPERTY_TYPE(Color, (prefColor()), group, App::Prop_None, "Color of the dimension");
     ADD_PROPERTY_TYPE(StandardAndStyle, (prefStandardAndStyle()), group, App::Prop_None,
                                         "Standard and style according to which dimension is drawn");
-    StandardAndStyle.setEnums(StandardAndStyleEnums);
+    StandardAndStyle.setEnums(StandardAndStyleEnums);   // NOLINT
 
     ADD_PROPERTY_TYPE(RenderingExtent, (REND_EXTENT_NORMAL), group, App::Prop_None,
                                          "Select the rendering mode by space requirements");
-    RenderingExtent.setEnums(RenderingExtentEnums);
+    RenderingExtent.setEnums(RenderingExtentEnums);     // NOLINT
     ADD_PROPERTY_TYPE(FlipArrowheads, (false), group, App::Prop_None,
                                           "Reverses usual direction of dimension line terminators");
     ADD_PROPERTY_TYPE(GapFactorISO, (Preferences::GapISO()), group, App::Prop_None,
@@ -98,18 +111,15 @@ ViewProviderDimension::ViewProviderDimension()
    StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
-ViewProviderDimension::~ViewProviderDimension()
-{
-}
 
 void ViewProviderDimension::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
     ViewProviderDrawingView::attach(pcFeat);
 
-//    sPixmap = "TechDraw_Dimension";
+    //    sPixmap = "TechDraw_Dimension";
     setPixmapForType();
-    if (getViewObject()->isDerivedFrom(TechDraw::LandmarkDimension::getClassTypeId())) {
+    if (getViewObject()->isDerivedFrom<TechDraw::LandmarkDimension>()) {
         sPixmap = "TechDraw_LandmarkDimension";
     }
 }
@@ -122,8 +132,9 @@ bool ViewProviderDimension::doubleClicked()
 
 void ViewProviderDimension::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
+    auto* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(
+        QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
     act->setData(QVariant((int)ViewProvider::Default));
     func->trigger(act, [this](){
         this->startDefaultEditMode();
@@ -155,10 +166,10 @@ void ViewProviderDimension::updateData(const App::Property* prop)
         setPixmapForType();
     }
 
-    //Dimension handles X, Y updates differently that other QGIView
-    //call QGIViewDimension::updateView
-    if (prop == &(getViewObject()->X)  ||
-        prop == &(getViewObject()->Y)  ||
+    // Dimension handles X, Y updates differently that other QGIView
+    // call QGIViewDimension::updateView
+    if (prop == &(getViewObject()->X) ||
+        prop == &(getViewObject()->Y) ||
         prop == &(getViewObject()->FormatSpec) ||
         prop == &(getViewObject()->Arbitrary) ||
         prop == &(getViewObject()->FormatSpecOverTolerance) ||
@@ -169,7 +180,7 @@ void ViewProviderDimension::updateData(const App::Property* prop)
         prop == &(getViewObject()->EqualTolerance) ||
         prop == &(getViewObject()->OverTolerance) ||
         prop == &(getViewObject()->UnderTolerance) ||
-        prop == &(getViewObject()->Inverted) ) {
+        prop == &(getViewObject()->Inverted)) {
 
         QGIView* qgiv = getQView();
         if (qgiv) {
@@ -179,7 +190,7 @@ void ViewProviderDimension::updateData(const App::Property* prop)
     }
 
     //Skip QGIView X, Y processing - do not call ViewProviderDrawingView
-    Gui::ViewProviderDocumentObject::updateData(prop);
+    Gui::ViewProviderDocumentObject::updateData(prop);      //NOLINT
 }
 
 void ViewProviderDimension::setPixmapForType()
@@ -201,34 +212,35 @@ void ViewProviderDimension::setPixmapForType()
     }
 }
 
-void ViewProviderDimension::onChanged(const App::Property* p)
+void ViewProviderDimension::onChanged(const App::Property* prop)
 {
-    if ((p == &Font)  ||
-        (p == &Fontsize) ||
-        (p == &Arrowsize) ||
-        (p == &LineWidth) ||
-        (p == &StandardAndStyle) ||
-        (p == &RenderingExtent) ||
-        (p == &FlipArrowheads) ||
-        (p == &GapFactorASME) ||
-        (p == &GapFactorISO) ||
-        p == &LineSpacingFactorISO)  {
-        QGIView* qgiv = getQView();
+    if ((prop == &Font)  ||
+        (prop == &Fontsize) ||
+        (prop == &Arrowsize) ||
+        (prop == &ArrowStyle) ||
+        (prop == &LineWidth) ||
+        (prop == &StandardAndStyle) ||
+        (prop == &RenderingExtent) ||
+        (prop == &FlipArrowheads) ||
+        (prop == &GapFactorASME) ||
+        (prop == &GapFactorISO) ||
+        prop == &LineSpacingFactorISO)  {
+        auto* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
         }
     }
-    if (p == &Color) {
-        QGIView* qgiv = getQView();
+    if (prop == &Color) {
+        auto* qgiv = getQView();
         if (qgiv) {
-            QGIViewDimension* qgivd = dynamic_cast<QGIViewDimension*>(qgiv);
+            auto* qgivd = dynamic_cast<QGIViewDimension*>(qgiv);
             if (qgivd) {
                 qgivd->setNormalColorAll();
             }
         }
     }
 
-    ViewProviderDrawingView::onChanged(p);
+    ViewProviderDrawingView::onChanged(prop);
 }
 
 TechDraw::DrawViewDimension* ViewProviderDimension::getViewObject() const
@@ -236,7 +248,7 @@ TechDraw::DrawViewDimension* ViewProviderDimension::getViewObject() const
     return dynamic_cast<TechDraw::DrawViewDimension*>(pcObject);
 }
 
-App::Color ViewProviderDimension::prefColor() const
+Base::Color ViewProviderDimension::prefColor() const
 {
    return PreferencesGui::dimColor();
 }
@@ -263,7 +275,8 @@ double ViewProviderDimension::prefWeight() const
 
 int ViewProviderDimension::prefStandardAndStyle() const
 {
-    return Preferences::getPreferenceGroup("Dimensions")->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED);
+    return static_cast<int>(
+                Preferences::getPreferenceGroup("Dimensions")->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED));
 }
 
 void ViewProviderDimension::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
@@ -292,7 +305,6 @@ bool ViewProviderDimension::canDelete(App::DocumentObject *obj) const
 bool ViewProviderDimension::onDelete(const std::vector<std::string> & parms)
 {
     Q_UNUSED(parms)
-//    Base::Console().Message("VPB::onDelete() - parms: %d\n", parms.size());
     auto dlg = Gui::Control().activeDialog();
     auto ourDlg = dynamic_cast<TaskDlgDimension*>(dlg);
     if (ourDlg)  {
@@ -307,4 +319,25 @@ bool ViewProviderDimension::onDelete(const std::vector<std::string> & parms)
     }
     return true;
 }
+
+
+std::vector<App::DocumentObject*> ViewProviderDimension::claimChildren() const
+{
+    // What can reasonably have a Dimension as a parent? A leader? a bit unconventional, but not forbidden.
+    // A RichAnno? Maybe? Balloons? This is a bit of a corner case. Typically, a
+    // Dimension would belong to something rather than owning something.
+    // Pages will appear in the inList, but should not be treated as a child of the dimension!
+
+    std::vector<App::DocumentObject*> temp;
+    const std::vector<App::DocumentObject*>& candidates = getViewObject()->getInList();
+    for (auto& obj : candidates) {
+        if (obj->isDerivedFrom<TechDraw::DrawViewBalloon>() ||
+            obj->isDerivedFrom<TechDraw::DrawLeaderLine>()  ||
+            obj->isDerivedFrom<TechDraw::DrawRichAnno>() ) {
+            temp.push_back(obj);
+       }
+   }
+   return temp;
+}
+
 

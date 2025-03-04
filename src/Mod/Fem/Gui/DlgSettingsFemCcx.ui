@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>425</width>
-    <height>642</height>
+    <width>595</width>
+    <height>848</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -287,7 +287,50 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_1">
       <item>
-       <layout class="QGridLayout" name="gl_solver" columnstretch="3,2,0,0">
+       <layout class="QGridLayout" name="gl_solver" columnstretch="3,0,0">
+        <item row="7" column="1">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="l_ccx_initial_time_step">
+          <property name="text">
+           <string>Time Initial Step</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="l_ccx_analysis_time">
+          <property name="text">
+           <string>Time End</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="Gui::PrefCheckBox" name="cb_use_iterations_param">
+          <property name="text">
+           <string>Use non ccx defaults</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>UseNonCcxIterationParam</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Ccx</cstring>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="l_ccx_numcpu">
           <property name="text">
@@ -295,32 +338,38 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="Gui::PrefSpinBox" name="sb_ccx_numcpu">
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <item row="9" column="2">
+         <widget class="Gui::PrefCheckBox" name="cb_BeamShellOutput">
+          <property name="text">
+           <string>3D Output, unchecked for 2D</string>
           </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>40</number>
+          <property name="checked">
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>AnalysisNumCPUs</cstring>
+           <cstring>BeamShellOutput</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Ccx</cstring>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="l_solver">
-          <property name="enabled">
-           <bool>true</bool>
+        <item row="0" column="2">
+         <widget class="Gui::PrefSpinBox" name="sb_ccx_numcpu">
+          <property name="toolTip">
+           <string>Number of threads used for analysis</string>
           </property>
-          <property name="text">
-           <string>Matrix solver</string>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AnalysisNumCPUs</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Ccx</cstring>
           </property>
          </widget>
         </item>
@@ -355,7 +404,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Spooles equation solver</string>
+            <string>SPOOLES equation solver</string>
            </property>
           </item>
           <item>
@@ -377,6 +426,153 @@
           </property>
          </widget>
         </item>
+        <item row="8" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_maximum_time_step">
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string notr="true"> s</string>
+          </property>
+          <property name="decimals">
+           <number>9</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000001000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AnalysisTimeMaximumStep</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Ccx</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_analysis_time">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string notr="true"> s</string>
+          </property>
+          <property name="decimals">
+           <number>9</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000001000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AnalysisTime</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Ccx</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="l_solver">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string>Matrix solver</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="l_use_iterations_param">
+          <property name="text">
+           <string>Time incrementation control parameter</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="l_ccx_max_iterations">
+          <property name="text">
+           <string>Maximum number of iterations</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="l_ccx_minimum_time_step">
+          <property name="text">
+           <string>Time Minimum Step</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="7" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_minimum_time_step">
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string notr="true"> s</string>
+          </property>
+          <property name="decimals">
+           <number>9</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000001000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000010000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AnalysisTimeMinimumStep</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Ccx</cstring>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="2">
          <widget class="Gui::PrefCheckBox" name="cb_ccx_non_lin_geom">
           <property name="text">
@@ -393,33 +589,41 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="l_use_iterations_param">
-          <property name="text">
-           <string>Time incrementation control parameter</string>
+        <item row="5" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_initial_time_step">
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
           </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="Gui::PrefCheckBox" name="cb_use_iterations_param">
-          <property name="text">
-           <string>Use non ccx defaults</string>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="checked">
-           <bool>false</bool>
+          <property name="suffix">
+           <string notr="true"> s</string>
+          </property>
+          <property name="decimals">
+           <number>9</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000001000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.010000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>UseNonCcxIterationParam</cstring>
+           <cstring>AnalysisTimeInitialStep</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Ccx</cstring>
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="l_ccx_max_iterations">
+        <item row="9" column="0">
+         <widget class="QLabel" name="l_BeamShellOutput">
           <property name="text">
-           <string>Maximum number of iterations</string>
+           <string>Beam, shell element 3D output format</string>
           </property>
          </widget>
         </item>
@@ -448,230 +652,10 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="l_ccx_initial_time_step">
-          <property name="text">
-           <string>Time Initial Step</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="5" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_initial_time_step">
-          <property name="contextMenuPolicy">
-           <enum>Qt::DefaultContextMenu</enum>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="decimals">
-           <number>9</number>
-          </property>
-          <property name="minimum">
-           <double>0.000000001000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.010000000000000</double>
-          </property>
-          <property name="value">
-           <double>0.010000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AnalysisTimeInitialStep</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Ccx</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="3">
-         <widget class="QLabel" name="l_hz_1">
-          <property name="text">
-           <string>s</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="l_ccx_analysis_time">
-          <property name="text">
-           <string>Time End</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_analysis_time">
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="decimals">
-           <number>9</number>
-          </property>
-          <property name="minimum">
-           <double>0.000000001000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.010000000000000</double>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AnalysisTime</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Ccx</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="3">
-         <widget class="QLabel" name="l_hz_2">
-          <property name="text">
-           <string>s</string>
-          </property>
-         </widget>
-        </item>
-       <item row="7" column="0">
-         <widget class="QLabel" name="l_ccx_minimum_time_step">
-          <property name="text">
-           <string>Time Minimum Step</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <spacer name="horizontalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="7" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_minimum_time_step">
-          <property name="contextMenuPolicy">
-           <enum>Qt::DefaultContextMenu</enum>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="decimals">
-           <number>9</number>
-          </property>
-          <property name="minimum">
-           <double>0.000000001000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.010000000000000</double>
-          </property>
-          <property name="value">
-           <double>0.000010000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AnalysisTimeMinimumStep</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Ccx</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="3">
-         <widget class="QLabel" name="l_hz_3">
-          <property name="text">
-           <string>s</string>
-          </property>
-         </widget>
-        </item>
-       <item row="8" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="l_ccx_maximum_time_step">
           <property name="text">
            <string>Time Maximum Step</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
-         <spacer name="horizontalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="8" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_maximum_time_step">
-          <property name="contextMenuPolicy">
-           <enum>Qt::DefaultContextMenu</enum>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="decimals">
-           <number>9</number>
-          </property>
-          <property name="minimum">
-           <double>0.000000001000000</double>
-          </property>
-          <property name="singleStep">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AnalysisTimeMaximumStep</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Ccx</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="3">
-         <widget class="QLabel" name="l_hz_4">
-          <property name="text">
-           <string>s</string>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="0">
-         <widget class="QLabel" name="l_BeamShellOutput">
-          <property name="text">
-           <string>Beam, shell element 3D output format</string>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="2">
-         <widget class="Gui::PrefCheckBox" name="cb_BeamShellOutput">
-          <property name="text">
-           <string>3D Output, unchecked for 2D</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>BeamShellOutput</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Ccx</cstring>
           </property>
          </widget>
         </item>
@@ -723,27 +707,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QGridLayout" name="gl_frequ" columnstretch="6,3,1,0">
-        <item row="1" column="0">
-         <widget class="QLabel" name="l_eigenmode_number">
-          <property name="text">
-           <string>Eigenmode number</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
+       <layout class="QGridLayout" name="gl_frequ" columnstretch="6,0,0">
         <item row="1" column="2">
          <widget class="Gui::PrefSpinBox" name="sb_eigenmode_number">
           <property name="minimumSize">
@@ -776,6 +740,13 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="l_eigenmode_number">
+          <property name="text">
+           <string>Eigenmode number</string>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="dsb_eigenmode_high_limit">
           <property name="minimumSize">
@@ -786,6 +757,9 @@
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string notr="true"> Hz</string>
           </property>
           <property name="decimals">
            <number>1</number>
@@ -807,12 +781,18 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="3">
-         <widget class="QLabel" name="l_hz_5">
-          <property name="text">
-           <string>Hz</string>
+        <item row="1" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-         </widget>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="l_eigenmode_low_limit">
@@ -831,6 +811,9 @@
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string> Hz</string>
           </property>
           <property name="decimals">
            <number>1</number>
@@ -852,13 +835,6 @@
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Ccx</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="3">
-         <widget class="QLabel" name="l_hz">
-          <property name="text">
-           <string>Hz</string>
           </property>
          </widget>
         </item>

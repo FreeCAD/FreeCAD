@@ -23,12 +23,16 @@
 
 """ Contains a parameter observer class and parameter related functions."""
 
+import os
 import PySide.QtCore as QtCore
 import xml.etree.ElementTree as ET
 
 import FreeCAD as App
 import Draft_rc
-import Arch_rc
+try:
+    import Arch_rc
+except ModuleNotFoundError:
+    pass
 
 from draftutils import init_draft_statusbar
 from draftutils.translate import translate
@@ -90,7 +94,10 @@ def _param_observer_callback_tray():
 
 
 def _param_observer_callback_scalemultiplier(value):
-    value = float(value)  # value is a string
+    # value is a string.
+    if not value:
+        return
+    value = float(value)
     if value <= 0:
         return
     mw = Gui.getMainWindow()
@@ -366,6 +373,10 @@ def _get_param_dictionary():
 
     param_dict = {}
 
+    hatch_pattern_file = os.path.join(
+        App.getResourceDir().replace("\\", "/"), "Mod/TechDraw/PAT/FCPAT.pat"
+    )
+
     # Draft parameters that are not in the preferences:
     param_dict["Mod/Draft"] = {
         "AnnotationStyleEditorHeight": ("int",       450),
@@ -379,15 +390,20 @@ def _get_param_dictionary():
         "DefaultPrintColor":           ("unsigned",  255),
         "Draft_array_fuse":            ("bool",      False),
         "Draft_array_Link":            ("bool",      True),
-        "fillmode":                    ("bool",      True),
+        "FilletRadius":                ("float",     100.0),
+        "FilletChamferMode":           ("bool",      False),
+        "FilletDeleteMode":            ("bool",      False),
         "GlobalMode":                  ("bool",      False),
         "GridHideInOtherWorkbenches":  ("bool",      True),
-        "HatchPatternResolution":      ("int",       128),
+        "HatchPatternFile":            ("string",    hatch_pattern_file),
+        "HatchPatternName":            ("string",    "Diamond"),
+        "HatchPatternResolution":      ("int",       128),  # used for SVG patterns
         "HatchPatternRotation":        ("float",     0.0),
         "HatchPatternScale":           ("float",     100.0),
         "labeltype":                   ("string",    "Custom"),
         "LayersManagerHeight":         ("int",       320),
         "LayersManagerWidth":          ("int",       640),
+        "MakeFaceMode":                ("bool",      True),
         "maxSnapEdges":                ("int",       0),
         "OffsetCopyMode":              ("bool",      False),
         "Offset_OCC":                  ("bool",      False),
@@ -476,12 +492,6 @@ def _get_param_dictionary():
         "MaxDeviationExport":          ("float",     0.1),
     }
 
-    # For the Mod/TechDraw/PAT parameters we do not check the preferences:
-    param_dict["Mod/TechDraw/PAT"] = {
-        "FilePattern":                 ("string",    ""),
-        "NamePattern":                 ("string",    "Diamant"),
-    }
-
     # For the General parameters we do not check the preferences:
     param_dict["General"] = {
         "ToolbarIconSize":             ("int",       24),
@@ -531,7 +541,8 @@ def _get_param_dictionary():
                 ":/ui/preferences-archdefaults.ui",
                 ":/ui/preferences-dae.ui",
                 ":/ui/preferences-ifc.ui",
-                ":/ui/preferences-ifc-export.ui"):
+                ":/ui/preferences-ifc-export.ui",
+                ":/ui/preferences-sh3d-import.ui",):
 
         # https://stackoverflow.com/questions/14750997/load-txt-file-from-resources-in-python
         fd = QtCore.QFile(fnm)

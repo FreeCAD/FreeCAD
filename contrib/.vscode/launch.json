@@ -16,10 +16,30 @@
       ],
       "linux": {
         "MIMode": "gdb",
-        "miDebuggerPath": "/usr/bin/gdb"
+        "miDebuggerPath": "/usr/bin/gdb",
+        "setupCommands": [
+          {
+            "description": "Load QT pretty-printers for GDB",
+            "text": "python import sys; sys.path.append('${workspaceFolder}/contrib/debugger'); from qt_pretty_printers_gdb import register_qt_printers; register_qt_printers()",
+            "ignoreFailures": false
+          },
+          {
+            "description": "Enable pretty-printing for GDB",
+            "text": "-enable-pretty-printing",
+            "ignoreFailures": true
+          },
+          {
+            "description": "Set Disassembly Flavor to Intel",
+            "text": "-gdb-set disassembly-flavor intel",
+            "ignoreFailures": true
+          }
+        ]
       },
       "osx": {
-        "MIMode": "lldb"
+        "MIMode": "lldb",
+        "preRunCommands": [
+          "command script import ${workspaceFolder}/contrib/debugger/qt_pretty_printers_lldb.py"
+        ]
       },
       "stopAtEntry": false,
       "externalConsole": false,
@@ -47,10 +67,30 @@
       ],
       "linux": {
         "MIMode": "gdb",
-        "miDebuggerPath": "/usr/bin/gdb"
+        "miDebuggerPath": "/usr/bin/gdb",
+        "setupCommands": [
+          {
+            "description": "Load QT pretty-printers for GDB",
+            "text": "python import sys; sys.path.append('${workspaceFolder}/contrib/debugger'); from qt_pretty_printers_gdb import register_qt_printers; register_qt_printers()",
+            "ignoreFailures": false
+          },
+          {
+            "description": "Enable pretty-printing for GDB",
+            "text": "-enable-pretty-printing",
+            "ignoreFailures": true
+          },
+          {
+            "description": "Set Disassembly Flavor to Intel",
+            "text": "-gdb-set disassembly-flavor intel",
+            "ignoreFailures": true
+          }
+        ]
       },
       "osx": {
-        "MIMode": "lldb"
+        "MIMode": "lldb",
+        "preRunCommands": [
+          "command script import ${workspaceFolder}/contrib/debugger/qt_pretty_printers_lldb.py"
+        ]
       },
       "stopAtEntry": false,
       "externalConsole": false,
@@ -66,7 +106,7 @@
       "redirectOutput": true,
       "connect": {
         "host": "localhost",
-        "port": 5678
+        "port": 5679
       },
       "pathMappings": [
         {

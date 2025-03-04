@@ -312,7 +312,7 @@ PyObject* TopoShapePy::writeInventor(PyObject * args, PyObject * keywds)
         return nullptr;
     }
 
-    std::vector<App::Color> faceColors;
+    std::vector<Base::Color> faceColors;
     if (pylist) {
         App::PropertyColorList prop;
         prop.setPyObject(pylist);
@@ -1889,7 +1889,7 @@ PyObject* TopoShapePy::countElement(PyObject *args)
         return nullptr;
 
     PY_TRY {
-        return Py::new_reference_to(Py::Int((long)getTopoShapePtr()->countSubShapes(input)));
+        return Py::new_reference_to(Py::Long((long)getTopoShapePtr()->countSubShapes(input)));
     }
     PY_CATCH_OCC
 }
@@ -2362,10 +2362,10 @@ PyObject* TopoShapePy::findSubShape(PyObject* args)
         for (auto& s : getPyShapes(pyobj)) {
             int index = getTopoShapePtr()->findShape(s.getShape());
             if (index > 0) {
-                res.append(Py::TupleN(Py::String(s.shapeName()), Py::Int(index)));
+                res.append(Py::TupleN(Py::String(s.shapeName()), Py::Long(index)));
             }
             else {
-                res.append(Py::TupleN(Py::Object(), Py::Int(0)));
+                res.append(Py::TupleN(Py::Object(), Py::Long(0)));
             }
         }
         if (PySequence_Check(pyobj)) {
@@ -2555,7 +2555,7 @@ PyObject* TopoShapePy::getChildShapes(PyObject* args)
         return Py::new_reference_to(
             getElements(*getTopoShapePtr(),
                         TopoShape::shapeType(type),
-                        avoid && avoid[0] ? TopoShape::shapeType(avoid) : TopAbs_SHAPE));
+                        !Base::Tools::isNullOrEmpty(avoid) ? TopoShape::shapeType(avoid) : TopAbs_SHAPE));
     }
     PY_CATCH_OCC;
 }
@@ -2652,7 +2652,7 @@ PyObject* TopoShapePy::getElementHistory(PyObject* args)
             Py_Return;
         }
         Py::Tuple ret(3);
-        ret.setItem(0, Py::Int(tag));
+        ret.setItem(0, Py::Long(tag));
         std::string tmp;
         ret.setItem(1, Py::String(original.appendToBuffer(tmp)));
         Py::List pyHistory;

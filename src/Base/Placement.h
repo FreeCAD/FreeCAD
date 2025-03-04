@@ -23,8 +23,9 @@
 #ifndef BASE_PLACEMENT_H
 #define BASE_PLACEMENT_H
 
+#include <string>
+
 #include "Rotation.h"
-#include "Vector3D.h"
 
 
 namespace Base
@@ -32,6 +33,10 @@ namespace Base
 
 class DualQuat;
 class Matrix4D;
+
+template<typename T>
+class Vector3;
+using Vector3d = Vector3<double>;
 
 /**
  * The Placement class.
@@ -104,6 +109,9 @@ public:
     static Placement slerp(const Placement& p0, const Placement& p1, double t);
     static Placement
     sclerp(const Placement& p0, const Placement& p1, double t, bool shorten = true);
+
+    /// Returns string representation of the placement, useful for debugging
+    std::string toString() const;
 
 private:
     Vector3<double> _pos;

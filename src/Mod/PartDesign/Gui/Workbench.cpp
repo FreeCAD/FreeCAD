@@ -85,26 +85,26 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 
         body = PartDesignGui::getBodyFor (feature, false, false, true);
         // lote of assertion so feature should be marked as a tip
-        if ( selection.size () == 1 && feature && (
-            ( feature->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) && body ) ||
-            ( feature->isDerivedFrom ( Part::Feature::getClassTypeId () ) && body &&
+        if ( selection.size() == 1 && feature && body && (
+            feature->isDerivedFrom<PartDesign::Feature>() ||
+            ( feature->isDerivedFrom<Part::Feature>() &&
               body->BaseFeature.getValue() == feature )
         ) ) {
             *item << "PartDesign_MoveTip";
         }
 
         if (strcmp(recipient, "Tree") == 0) {
-
             Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
-            if ( !selection.empty() && activeView ) {
-                bool docHaveBodies = activeView->getAppDocument()->countObjectsOfType (
-                                        PartDesign::Body::getClassTypeId () ) > 0;
+            if (activeView ) {
+                if (feature && feature->isDerivedFrom<PartDesign::Body>()){
+                    *item   << "Std_ToggleFreeze";
+                }
 
-                if ( docHaveBodies ) {
+                if (activeView->getAppDocument()->countObjectsOfType<PartDesign::Body>() > 0) {
                     bool addMoveFeature = true;
                     bool addMoveFeatureInTree = (body != nullptr);
-                    for (auto sel: selection) {
+                    for (auto sel : selection) {
                         // if at least one selected feature cannot be moved to a body
                         // disable the entry
                         if ( addMoveFeature && !PartDesign::Body::isAllowed ( sel.pObject ) ) {
@@ -120,45 +120,25 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
                             break;
                         }
                     }
-
                     if (addMoveFeature) {
                         *item   << "PartDesign_MoveFeature";
                     }
-
                     if (addMoveFeatureInTree) {
                         *item   << "PartDesign_MoveFeatureInTree";
                     }
                 }
             }
-
-            if (Gui::Selection().countObjectsOfType(PartDesign::Transformed::getClassTypeId()) -
-                Gui::Selection().countObjectsOfType(PartDesign::MultiTransform::getClassTypeId()) == 1 )
+            if (Gui::Selection().countObjectsOfType<PartDesign::Transformed>() -
+                Gui::Selection().countObjectsOfType<PartDesign::MultiTransform>() == 1 ) {
                 *item << "PartDesign_MultiTransform";
-
-            if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
-                *item << "Std_Placement"
-                      << "Std_ToggleVisibility"
-                      << "Std_ShowSelection"
-                      << "Std_HideSelection"
-                      << "Std_ToggleSelectability"
-                      << "Std_TreeSelectAllInstances"
-                      << "Separator"
-                      << "Std_RandomColor"
-                      << "Std_ToggleTransparency"
-                      << "Std_Cut"
-                      << "Std_Copy"
-                      << "Std_Paste"
-                      << "Std_Delete"
-                      << "Separator";
             }
         }
     }
 
-    if (strcmp(recipient, "View") == 0) {
-        if (item->hasItems())
-            *item << "Separator";
-        Gui::StdWorkbench::setupContextMenu(recipient, item);
+    if (item->hasItems()) {
+        *item << "Separator";
     }
+    Gui::StdWorkbench::setupContextMenu(recipient, item);
 }
 
 void Workbench::activated()
@@ -170,10 +150,10 @@ void Workbench::activated()
     std::vector<Gui::TaskView::TaskWatcher*> Watcher;
 
     const char* Vertex[] = {
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
+        "Part_DatumPoint",
+        "Part_DatumLine",
+        "Part_DatumPlane",
+        "Part_CoordinateSystem",
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Vertex COUNT 1..",
@@ -185,10 +165,10 @@ void Workbench::activated()
     const char* Edge[] = {
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
+        "Part_DatumPoint",
+        "Part_DatumLine",
+        "Part_DatumPlane",
+        "Part_CoordinateSystem",
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Edge COUNT 1..",
@@ -203,10 +183,10 @@ void Workbench::activated()
         "PartDesign_Chamfer",
         "PartDesign_Draft",
         "PartDesign_Thickness",
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
+        "Part_DatumPoint",
+        "Part_DatumLine",
+        "Part_DatumPlane",
+        "Part_CoordinateSystem",
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 1",
@@ -237,10 +217,10 @@ void Workbench::activated()
 
     const char* Plane1[] = {
         "PartDesign_NewSketch",
-        "PartDesign_Plane",
-        "PartDesign_Line",
-        "PartDesign_Point",
-        "PartDesign_CoordinateSystem",
+        "Part_DatumPoint",
+        "Part_DatumLine",
+        "Part_DatumPlane",
+        "Part_CoordinateSystem",
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT App::Plane COUNT 1",
@@ -250,10 +230,10 @@ void Workbench::activated()
     ));
     const char* Plane2[] = {
         "PartDesign_NewSketch",
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
+        "Part_DatumPoint",
+        "Part_DatumLine",
+        "Part_DatumPlane",
+        "Part_CoordinateSystem",
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Plane COUNT 1",
@@ -263,9 +243,9 @@ void Workbench::activated()
     ));
 
     const char* Line[] = {
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
+        "Part_DatumPoint",
+        "Part_DatumLine",
+        "Part_DatumPlane",
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Line COUNT 1",
@@ -275,10 +255,10 @@ void Workbench::activated()
     ));
 
     const char* Point[] = {
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
+        "Part_DatumPoint",
+        "Part_DatumLine",
+        "Part_DatumPlane",
+        "Part_CoordinateSystem",
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Point COUNT 1",
@@ -379,14 +359,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, part);
     part->setCommand("&Part Design");
 
-    // datums
-    Gui::MenuItem* datums = new Gui::MenuItem;
-    datums->setCommand("Create a datum");
-
-    *datums << "PartDesign_Point"
-            << "PartDesign_Line"
-            << "PartDesign_Plane";
-
     // additives
     Gui::MenuItem* additives = new Gui::MenuItem;
     additives->setCommand("Create an additive feature");
@@ -428,8 +400,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     *part << "PartDesign_Body"
           << "Separator"
-          << datums
-          << "PartDesign_CoordinateSystem"
           << "PartDesign_ShapeBinder"
           << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone"
@@ -451,14 +421,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Separator"
           << "Part_CheckGeometry"
           << "Separator"
+          << "PartDesign_InvoluteGear"
           << "PartDesign_Sprocket";
 
     // For 0.13 a couple of python packages like numpy, matplotlib and others
     // are not deployed with the installer on Windows. Thus, the WizardShaft is
     // not deployed either hence the check for the existence of the command.
-    if (Gui::Application::Instance->commandManager().getCommandByName("PartDesign_InvoluteGear")) {
-        *part << "PartDesign_InvoluteGear";
-    }
     if (Gui::Application::Instance->commandManager().getCommandByName("PartDesign_WizardShaft")) {
         *part << "Separator" << "PartDesign_WizardShaft";
     }
@@ -491,8 +459,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Sketcher_ValidateSketch"
           << "Part_CheckGeometry"
           << "PartDesign_SubShapeBinder"
-          << "PartDesign_Clone"
-          << "PartDesign_CompDatums";
+          << "PartDesign_Clone";
 
     part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Modeling");

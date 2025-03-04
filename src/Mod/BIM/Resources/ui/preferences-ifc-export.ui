@@ -171,8 +171,8 @@ is exported. This leads to smaller differences between file versions.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBox_10">
         <property name="toolTip">
-         <string>IFCOpenShell is a library that allows to import IFC files.
-Its serializer functionality allows to give it an OCC shape and it will
+         <string>IFCOpenShell is a library that enables importing IFC files.
+Its serializer functionality allows giving it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
 Note: The serializer is still an experimental feature!</string>
         </property>
@@ -363,7 +363,7 @@ unit to work with when opening the file.</string>
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</string>
+         <string>Check also native-IFC-specific preferences under BIM -&gt; Native IFC</string>
         </property>
        </widget>
       </item>

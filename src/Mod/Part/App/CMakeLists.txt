@@ -7,10 +7,16 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
     ${FREETYPE_INCLUDE_DIRS}
 )
@@ -213,6 +219,8 @@ SET(Features_SRCS
     CustomFeature.h
     BodyBase.h
     BodyBase.cpp
+    Datums.cpp
+    Datums.h
     DatumFeature.cpp
     DatumFeature.h
     AttachExtension.h
@@ -551,6 +559,8 @@ SET(Part_SRCS
     PreCompiled.h
     ProgressIndicator.cpp
     ProgressIndicator.h
+    Services.cpp
+    Services.h
     TopoShape.cpp
     TopoShape.h
     TopoShapeCache.cpp

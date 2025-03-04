@@ -41,7 +41,7 @@
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/SoFCSelection.h>
+#include <Gui/Selection/SoFCSelection.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Points/App/PointsFeature.h>
 #include <Mod/Points/App/Properties.h>
@@ -113,7 +113,7 @@ void ViewProviderPoints::onChanged(const App::Property* prop)
 
 void ViewProviderPoints::setVertexColorMode(App::PropertyColorList* pcProperty)
 {
-    const std::vector<App::Color>& val = pcProperty->getValues();
+    const std::vector<Base::Color>& val = pcProperty->getValues();
 
     pcColorMat->diffuseColor.setNum(val.size());
     SbColor* col = pcColorMat->diffuseColor.startEditing();
@@ -500,18 +500,18 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked,
         }
         else if (type == App::PropertyColorList::getClassTypeId()) {
             // static_cast<App::PropertyColorList*>(it->second)->removeIndices(removeIndices);
-            const std::vector<App::Color>& colors =
+            const std::vector<Base::Color>& colors =
                 static_cast<App::PropertyColorList*>(it.second)->getValues();
 
             if (removeIndices.size() > colors.size()) {
                 break;
             }
 
-            std::vector<App::Color> remainValue;
+            std::vector<Base::Color> remainValue;
             remainValue.reserve(colors.size() - removeIndices.size());
 
             std::vector<unsigned long>::iterator pos = removeIndices.begin();
-            for (std::vector<App::Color>::const_iterator jt = colors.begin(); jt != colors.end();
+            for (std::vector<Base::Color>::const_iterator jt = colors.begin(); jt != colors.end();
                  ++jt) {
                 unsigned long index = jt - colors.begin();
                 if (pos == removeIndices.end()) {

@@ -39,23 +39,32 @@ Branding::Branding()
     filter.push_back("WindowIcon");
     filter.push_back("ProgramLogo");
     filter.push_back("ProgramIcons");
+    filter.push_back("DesktopFileName");
     filter.push_back("StyleSheet");
 
     filter.push_back("BuildVersionMajor");
     filter.push_back("BuildVersionMinor");
+    filter.push_back("BuildVersionPoint");
     filter.push_back("BuildRevision");
     filter.push_back("BuildRevisionDate");
+    filter.push_back("BuildVersionSuffix");
+    filter.push_back("BuildRepositoryURL");
 
+    filter.push_back("AboutImage");
     filter.push_back("SplashScreen");
     filter.push_back("SplashAlignment");
     filter.push_back("SplashTextColor");
     filter.push_back("SplashInfoColor");
+    filter.push_back("SplashInfoFont");
+    filter.push_back("SplashInfoPosition");
     filter.push_back("SplashWarningColor");
 
     filter.push_back("StartWorkbench");
 
     filter.push_back("ExeName");
     filter.push_back("ExeVendor");
+    filter.push_back("ExeVersion");
+    filter.push_back("AppDataSkipVendor");
     filter.push_back("NavigationStyle");
     filter.push_back("UserParameterTemplate");
 }
@@ -63,10 +72,12 @@ Branding::Branding()
 bool Branding::readFile(const QString& fn)
 {
     QFile file(fn);
-    if (!file.open(QFile::ReadOnly))
+    if (!file.open(QFile::ReadOnly)) {
         return false;
-    if (!evaluateXML(&file, domDocument))
+    }
+    if (!evaluateXML(&file, domDocument)) {
         return false;
+    }
     file.close();
     return true;
 }
@@ -81,22 +92,22 @@ Branding::XmlConfig Branding::getUserDefines() const
         while (!child.isNull()) {
             std::string name = child.localName().toLatin1().constData();
             std::string value = child.text().toUtf8().constData();
-            if (std::find(filter.begin(), filter.end(), name) != filter.end())
+            if (std::find(filter.begin(), filter.end(), name) != filter.end()) {
                 cfg[name] = value;
+            }
             child = child.nextSiblingElement();
         }
     }
     return cfg;
 }
 
-bool Branding::evaluateXML(QIODevice *device, QDomDocument& xmlDocument)
+bool Branding::evaluateXML(QIODevice* device, QDomDocument& xmlDocument)
 {
     QString errorStr;
     int errorLine;
     int errorColumn;
 
-    if (!xmlDocument.setContent(device, true, &errorStr, &errorLine,
-                                &errorColumn)) {
+    if (!xmlDocument.setContent(device, true, &errorStr, &errorLine, &errorColumn)) {
         return false;
     }
 
@@ -106,8 +117,9 @@ bool Branding::evaluateXML(QIODevice *device, QDomDocument& xmlDocument)
     }
     else if (root.hasAttribute(QLatin1String("version"))) {
         QString attr = root.attribute(QLatin1String("version"));
-        if (attr != QLatin1String("1.0"))
+        if (attr != QLatin1String("1.0")) {
             return false;
+        }
     }
 
     return true;

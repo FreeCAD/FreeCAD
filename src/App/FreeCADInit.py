@@ -98,7 +98,8 @@ def InitApplications():
     LibFcDir = os.path.realpath(LibFcDir)
     if (os.path.exists(LibFcDir) and not LibFcDir in libpaths):
         libpaths.append(LibFcDir)
-    AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";")
+    AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";") + \
+            FreeCAD.ConfigGet("AdditionalMacroPaths").split(";")
     HomeMod = FreeCAD.getUserAppDataDir()+"Mod"
     HomeMod = os.path.realpath(HomeMod)
     MacroStd = App.getUserMacroDir(False)
@@ -106,6 +107,7 @@ def InitApplications():
     MacroMod = os.path.realpath(MacroDir+"/Mod")
     SystemWideMacroDir = FreeCAD.getHomePath()+'Macro'
     SystemWideMacroDir = os.path.realpath(SystemWideMacroDir)
+    DisabledAddons = FreeCAD.ConfigGet("DisabledAddons").split(";")
 
     #print FreeCAD.getHomePath()
     if os.path.isdir(FreeCAD.getHomePath()+'src\\Tools'):
@@ -218,11 +220,30 @@ def InitApplications():
         except Exception as exc:
             Err(str(exc))
 
+    def checkIfAddonIsDisabled(Dir):
+        Name = os.path.basename(Dir)
+
+        if Name in DisabledAddons:
+            Msg(f'NOTICE: Addon "{Name}" disabled by presence of "--disable-addon {Name}" argument\n')
+            return True
+
+        stopFileName = "ALL_ADDONS_DISABLED"
+        stopFile = os.path.join(Dir, os.path.pardir, stopFileName)
+        if os.path.exists(stopFile):
+            Msg(f'NOTICE: Addon "{Dir}" disabled by presence of {stopFileName} stopfile\n')
+            return True
+
+        stopFileName = "ADDON_DISABLED"
+        stopFile = os.path.join(Dir, stopFileName)
+        if os.path.exists(stopFile):
+            Msg(f'NOTICE: Addon "{Dir}" disabled by presence of {stopFileName} stopfile\n')
+            return True
+
+        return False
+
     for Dir in ModDict.values():
-        if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
-            stopFile = os.path.join(Dir, "ADDON_DISABLED")
-            if os.path.exists(stopFile):
-                Msg(f'NOTICE: Addon "{Dir}" disabled by presence of ADDON_DISABLED stopfile\n')
+        if Dir not in ['', 'CVS', '__init__.py']:
+            if checkIfAddonIsDisabled(Dir):
                 continue
             sys.path.insert(0,Dir)
             PathExtension.append(Dir)

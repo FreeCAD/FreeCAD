@@ -45,6 +45,7 @@ install_manifest.txt
 /Mod/
 /ZERO_CHECK.dir/
 /build/
+/build-*/
 /cmake-build*/
 /src/Tools/offlinedoc/localwiki/
 /src/Tools/offlinedoc/*.txt
@@ -61,3 +62,6 @@ src/Tools/freecad.zip
 tsupdate_stderr.log
 tsupdate_stdout.log
 files_to_translate.txt
+# pixi environments
+.pixi
+*.egg-info

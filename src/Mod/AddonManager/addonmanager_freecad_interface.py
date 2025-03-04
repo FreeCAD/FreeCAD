@@ -46,9 +46,13 @@ try:
     getUserMacroDir = FreeCAD.getUserMacroDir
     getUserCachePath = FreeCAD.getUserCachePath
     translate = FreeCAD.Qt.translate
+    loadUi = None
 
     if FreeCAD.GuiUp:
         import FreeCADGui
+
+        if hasattr(FreeCADGui, "PySideUic"):
+            loadUi = FreeCADGui.PySideUic.loadUi
     else:
         FreeCADGui = None
 
@@ -63,7 +67,7 @@ except ImportError:
         return string
 
     def Version():
-        return 0, 22, 0, "dev"
+        return 1, 1, 0, "dev"
 
     class ConsoleReplacement:
         """If FreeCAD's Console is not available, create a replacement by redirecting FreeCAD
@@ -143,6 +147,7 @@ class DataPaths:
     all paths are temp directories. If not run within FreeCAD, all directories are
     deleted when the last reference to this class is deleted."""
 
+    data_dir = None
     mod_dir = None
     macro_dir = None
     cache_dir = None
@@ -152,6 +157,8 @@ class DataPaths:
 
     def __init__(self):
         if FreeCAD:
+            if self.data_dir is None:
+                self.data_dir = getUserAppDataDir()
             if self.mod_dir is None:
                 self.mod_dir = os.path.join(getUserAppDataDir(), "Mod")
             if self.cache_dir is None:
@@ -162,6 +169,8 @@ class DataPaths:
                 self.home_dir = FreeCAD.getHomePath()
         else:
             self.reference_count += 1
+            if self.data_dir is None:
+                self.data_dir = tempfile.mkdtemp()
             if self.mod_dir is None:
                 self.mod_dir = tempfile.mkdtemp()
             if self.cache_dir is None:
@@ -174,9 +183,13 @@ class DataPaths:
     def __del__(self):
         self.reference_count -= 1
         if not FreeCAD and self.reference_count <= 0:
-            os.rmdir(self.mod_dir)
-            os.rmdir(self.cache_dir)
-            os.rmdir(self.macro_dir)
+            paths = [self.data_dir, self.mod_dir, self.cache_dir, self.macro_dir, self.mod_dir]
+            for path in paths:
+                try:
+                    os.rmdir(path)
+                except FileNotFoundError:
+                    pass
+            self.data_dir = None
             self.mod_dir = None
             self.cache_dir = None
             self.macro_dir = None

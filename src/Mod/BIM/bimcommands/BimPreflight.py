@@ -294,16 +294,16 @@ class BIM_Preflight_TaskPanel:
         "runs all tests"
 
         from PySide import QtCore, QtGui
-        from DraftGui import todo
+        from draftutils import todo
 
         for test in tests:
             if test != "testAll":
                 QtGui.QApplication.processEvents()
                 self.reset(test)
                 if hasattr(self, test):
-                    todo.delay(getattr(self, test), None)
+                    todo.ToDo.delay(getattr(self, test), None)
         for customTest in self.customTests.keys():
-            todo.delay(self.testCustom, customTest)
+            todo.ToDo.delay(self.testCustom, customTest)
         FreeCADGui.BIMPreflightDone = True
 
     def testIFC4(self):

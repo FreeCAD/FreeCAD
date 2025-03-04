@@ -310,10 +310,10 @@ private:
     QString getCrosshairCursorSVGName() const override
     {
         if (constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
-            return QString::fromLatin1("Sketcher_Pointer_Create_Arc");
+            return QStringLiteral("Sketcher_Pointer_Create_Arc");
         }
         else {  // constructionMethod == DrawSketchHandlerArc::ConstructionMethod::ThreeRim
-            return QString::fromLatin1("Sketcher_Pointer_Create_3PointArc");
+            return QStringLiteral("Sketcher_Pointer_Create_3PointArc");
         }
 
         return QStringLiteral("None");

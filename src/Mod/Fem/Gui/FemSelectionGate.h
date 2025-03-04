@@ -23,7 +23,7 @@
 #ifndef GUI_FemSelectionGate_H
 #define GUI_FemSelectionGate_H
 
-#include <Gui/SelectionFilter.h>
+#include <Gui/Selection/SelectionFilter.h>
 
 namespace FemGui
 {

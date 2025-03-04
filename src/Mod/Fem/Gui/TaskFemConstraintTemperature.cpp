@@ -34,7 +34,7 @@
 #include <App/Document.h>
 #include <Gui/Command.h>
 #include <Gui/QuantitySpinBox.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintTemperature.h>
 #include <Mod/Part/App/PartFeature.h>
 
@@ -61,7 +61,7 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(
 
     // Get the feature data
     Fem::ConstraintTemperature* pcConstraint =
-        static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintTemperature>();
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
@@ -164,7 +164,7 @@ void TaskFemConstraintTemperature::onCFluxChanged(double)
 
 void TaskFemConstraintTemperature::onConstrTypeChanged(int item)
 {
-    auto obj = static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
+    auto obj = ConstraintView->getObject<Fem::ConstraintTemperature>();
     obj->ConstraintType.setValue(item);
     const char* type = obj->ConstraintType.getValueAsString();
     if (strcmp(type, "Temperature") == 0) {
@@ -190,7 +190,7 @@ void TaskFemConstraintTemperature::addToSelection()
         return;
     }
     Fem::ConstraintTemperature* pcConstraint =
-        static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintTemperature>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -241,7 +241,7 @@ void TaskFemConstraintTemperature::removeFromSelection()
         return;
     }
     Fem::ConstraintTemperature* pcConstraint =
-        static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintTemperature>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
@@ -306,12 +306,12 @@ const std::string TaskFemConstraintTemperature::getReferences() const
 
 std::string TaskFemConstraintTemperature::get_temperature() const
 {
-    return ui->qsb_temperature->value().getSafeUserString().toStdString();
+    return ui->qsb_temperature->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintTemperature::get_cflux() const
 {
-    return ui->qsb_cflux->value().getSafeUserString().toStdString();
+    return ui->qsb_cflux->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintTemperature::get_constraint_type() const

@@ -6,6 +6,7 @@
 # *   Copyright (c) 2018, 2019 Gauthier Briere                              *
 # *   Copyright (c) 2019, 2020 Schildkroet                                  *
 # *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
+# *   Copyright (c) 2024 Carl Slater <CandLWorkshopLLC@gmail.com>           *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -27,6 +28,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import math
 import re
 from typing import Any, Callable, Dict, List, Tuple, Union
 
@@ -207,13 +209,19 @@ def default_axis_parameter(
     command: str,  # pylint: disable=unused-argument
     param: str,
     param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
     current_location: PathParameters,
 ) -> str:
     """Process an axis parameter."""
+    #
+    # used to compare two floating point numbers for "close-enough equality"
+    #
+    epsilon: float = 0.00001
+
     if (
         not values["OUTPUT_DOUBLES"]
         and param in current_location
-        and current_location[param] == param_value
+        and math.fabs(current_location[param] - param_value) < epsilon
     ):
         return ""
     return format_for_axis(values, Units.Quantity(param_value, Units.Length))
@@ -224,6 +232,7 @@ def default_D_parameter(
     command: str,
     param: str,  # pylint: disable=unused-argument
     param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
     current_location: PathParameters,  # pylint: disable=unused-argument
 ) -> str:
     """Process the D parameter."""
@@ -242,13 +251,20 @@ def default_F_parameter(
     command: str,
     param: str,
     param_value: PathParameter,
+    parameters: PathParameters,
     current_location: PathParameters,
 ) -> str:
     """Process the F parameter."""
+    #
+    # used to compare two floating point numbers for "close-enough equality"
+    #
+    epsilon: float = 0.00001
+    found: bool
+
     if (
         not values["OUTPUT_DOUBLES"]
         and param in current_location
-        and current_location[param] == param_value
+        and math.fabs(current_location[param] - param_value) < epsilon
     ):
         return ""
     # Many posts don't use rapid speeds, but eventually
@@ -260,6 +276,26 @@ def default_F_parameter(
     feed = Units.Quantity(param_value, Units.Velocity)
     if feed.getValueAs(values["UNIT_SPEED_FORMAT"]) <= 0.0:
         return ""
+    # if any of X, Y, Z, U, V, or W are in the parameters
+    # and any of their values is different than where the device currently should be
+    # then feed is in linear units
+    found = False
+    for key in ("X", "Y", "Z", "U", "V", "W"):
+        if key in parameters and math.fabs(current_location[key] - parameters[key]) > epsilon:
+            found = True
+    if found:
+        return format_for_feed(values, feed)
+    # else if any of A, B, or C are in the paramters, the feed is in degrees,
+    #     which should not be converted when in --inches mode
+    found = False
+    for key in ("A", "B", "C"):
+        if key in parameters:
+            found = True
+    if found:
+        # converting from degrees per second to degrees per minute as well
+        return format(float(feed * 60.0), f'.{str(values["FEED_PRECISION"])}f')
+    # which leaves none of X, Y, Z, U, V, W, A, B, C,
+    # which should not be valid but return a converted value just in case
     return format_for_feed(values, feed)
 
 
@@ -268,6 +304,7 @@ def default_int_parameter(
     command: str,  # pylint: disable=unused-argument
     param: str,  # pylint: disable=unused-argument
     param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
     current_location: PathParameters,  # pylint: disable=unused-argument
 ) -> str:
     """Process a parameter that is treated like an integer."""
@@ -279,6 +316,7 @@ def default_length_parameter(
     command: str,  # pylint: disable=unused-argument
     param: str,  # pylint: disable=unused-argument
     param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
     current_location: PathParameters,  # pylint: disable=unused-argument
 ) -> str:
     """Process a parameter that is treated like a length."""
@@ -290,6 +328,7 @@ def default_P_parameter(
     command: str,
     param: str,  # pylint: disable=unused-argument
     param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
     current_location: PathParameters,  # pylint: disable=unused-argument
 ) -> str:
     """Process the P parameter."""
@@ -308,6 +347,7 @@ def default_Q_parameter(
     command: str,
     param: str,  # pylint: disable=unused-argument
     param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
     current_location: PathParameters,  # pylint: disable=unused-argument
 ) -> str:
     """Process the Q parameter."""
@@ -318,11 +358,37 @@ def default_Q_parameter(
     return ""
 
 
+def default_rotary_parameter(
+    values: Values,
+    command: str,  # pylint: disable=unused-argument
+    param: str,
+    param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
+    current_location: PathParameters,
+) -> str:
+    """Process a rotarty parameter (such as A, B, and C)."""
+    #
+    # used to compare two floating point numbers for "close-enough equality"
+    #
+    epsilon: float = 0.00001
+
+    if (
+        not values["OUTPUT_DOUBLES"]
+        and param in current_location
+        and math.fabs(current_location[param] - param_value) < epsilon
+    ):
+        return ""
+    #  unlike other axis, rotary axis such as A, B, and C are always in degrees
+    #  and should not be converted when in --inches mode
+    return str(format(float(param_value), f'.{str(values["AXIS_PRECISION"])}f'))
+
+
 def default_S_parameter(
     values: Values,
     command: str,  # pylint: disable=unused-argument
     param: str,  # pylint: disable=unused-argument
     param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
     current_location: PathParameters,  # pylint: disable=unused-argument
 ) -> str:
     """Process the S parameter."""
@@ -473,9 +539,9 @@ def init_parameter_functions(parameter_functions: Dict[str, ParameterFunction]) 
     parameter: str
 
     default_parameter_functions = {
-        "A": default_axis_parameter,
-        "B": default_axis_parameter,
-        "C": default_axis_parameter,
+        "A": default_rotary_parameter,
+        "B": default_rotary_parameter,
+        "C": default_rotary_parameter,
         "D": default_D_parameter,
         "E": default_length_parameter,
         "F": default_F_parameter,
@@ -637,7 +703,30 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
     parameter: str
     parameter_value: str
 
-    current_location.update(Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0}).Parameters)
+    # Check to see if values["TOOL_BEFORE_CHANGE"] is set and value is true
+    # doing it here to reduce the number of times it is checked
+    swap_tool_change_order = False
+    if "TOOL_BEFORE_CHANGE" in values and values["TOOL_BEFORE_CHANGE"]:
+        swap_tool_change_order = True
+    current_location.update(
+        # the goal is to have initial values that aren't likely to match
+        # any "real" first parameter values
+        Path.Command(
+            "G0",
+            {
+                "X": 123456789.0,
+                "Y": 123456789.0,
+                "Z": 123456789.0,
+                "U": 123456789.0,
+                "V": 123456789.0,
+                "W": 123456789.0,
+                "A": 123456789.0,
+                "B": 123456789.0,
+                "C": 123456789.0,
+                "F": 123456789.0,
+            },
+        ).Parameters
+    )
     adaptive_op_variables = determine_adaptive_op(values, pathobj)
 
     for c in pathobj.Path.Commands:
@@ -667,6 +756,7 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
                     command,
                     parameter,
                     c.Parameters[parameter],
+                    c.Parameters,
                     current_location,
                 )
                 if parameter_value:
@@ -701,9 +791,21 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
             command_line = []
         if check_for_suppressed_commands(values, gcode, command, command_line):
             command_line = []
-        # Add a line number to the front and a newline to the end of the command line
+
         if command_line:
-            gcode += f"{linenumber(values)}{format_command_line(values, command_line)}{nl}"
+            if command in ("M6", "M06") and swap_tool_change_order:
+                swapped_command_line = [
+                    command_line[1],
+                    command_line[0],
+                ]  # swap the order of the commands
+                # Add a line number to the front and a newline to the end of the command line
+                gcode += (
+                    f"{linenumber(values)}{format_command_line(values, swapped_command_line)}{nl}"
+                )
+            else:
+                # Add a line number to the front and a newline to the end of the command line
+                gcode += f"{linenumber(values)}{format_command_line(values, command_line)}{nl}"
+
         check_for_tlo(values, gcode, command, c.Parameters)
         check_for_machine_specific_commands(values, gcode, command)
 

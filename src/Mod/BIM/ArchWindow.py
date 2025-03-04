@@ -429,6 +429,8 @@ class _Window(ArchComponent.Component):
             if hasattr(clonedProxy, "boxes"):
                 self.boxes = clonedProxy.boxes
             return
+        if not self.ensureBase(obj):
+            return
 
         import Part
         import DraftGeomUtils
@@ -512,12 +514,25 @@ class _Window(ArchComponent.Component):
         # Execute features in the SketchArch External Add-on
         self.executeSketchArchFeatures(obj, linkObj)
 
-    def getSubVolume(self,obj,plac=None):
+    def getSubFace(self):
+        "returns a subface for creation of subvolume for cutting in a base object"
+        # creation of subface from HoleWire (getSubWire)
+        raise NotImplementedError
+
+    def getSubVolume(self,obj,plac=None, host=None):
 
         "returns a subvolume for cutting in a base object"
 
+        # check if this is a clone or not, setup orig if positive
+        orig = None
+        if Draft.isClone(obj,"Window"):
+            if hasattr(obj,"CloneOf"):  # TODO need to check this?
+                orig = obj.CloneOf
+
+        # TODO Why always need tests e.g. hasattr(obj,"Subvolme"), hasattr(obj,"ClonOf") etc.?
+
         # check if we have a custom subvolume
-        if hasattr(obj,"Subvolume"):
+        if hasattr(obj,"Subvolume"):  # TODO To support Links
             if obj.Subvolume:
                 if hasattr(obj.Subvolume,'Shape'):
                     if not obj.Subvolume.Shape.isNull():
@@ -530,62 +545,62 @@ class _Window(ArchComponent.Component):
                         return sh
 
         # getting extrusion depth
-        base = None
-        if obj.Base:
-            base = obj.Base
         width = 0
-        if hasattr(obj,"HoleDepth"):  # the code have not checked whether this is a clone and use the original's HoleDepth; if HoleDepth is set in this object, even it is a clone, the original's HoleDepth is overridden
+        if hasattr(obj,"HoleDepth"):  # if this is a clone, the original's HoleDepth is overridden if HoleDepth is set in the clone  # TODO To support Links
             if obj.HoleDepth.Value:
                 width = obj.HoleDepth.Value
         if not width:
-            if base:
-                b = base.Shape.BoundBox
-                width = max(b.XLength,b.YLength,b.ZLength)
+            if orig and hasattr(orig,"HoleDepth"):
+                if orig.HoleDepth.Value:
+                    width = orig.HoleDepth.Value
         if not width:
-            if Draft.isClone(obj,"Window"):  # check whether this is a clone and use the original's HoleDepth or Shape's Boundbox
-                if hasattr(obj,"CloneOf"):
-                    orig = obj.CloneOf
-                else:
-                    orig = obj.Objects[0]
-                if orig.Base:
-                    base = orig.Base
-
-                if hasattr(orig,"HoleDepth"):
-                    if orig.HoleDepth.Value:
-                        width = orig.HoleDepth.Value
-                if not width:
-                    if base:
-                        b = base.Shape.BoundBox
-                        width = max(b.XLength,b.YLength,b.ZLength)
-        if not width:
+            if host and Draft.getType(host) == "Wall":
+                # TODO More robust approach :  With ArchSketch, on which wall segment an ArchObject is attached to is declared by user and saved.
+                #      The extrusion of each wall segment could be done per segment, and punch hole in the exact wall segment before fusing them all. No need to care about each wall segment thickness.
+                # TODO Consider to turn below codes to getWidths/getSortedWidths() in ArchWall (below codes copied and modified from ArchWall)
+                propSetUuid = host.Proxy.ArchSkPropSetPickedUuid
+                widths = []  # [] or None are both False
+                if hasattr(host,"ArchSketchData") and host.ArchSketchData and Draft.getType(host.Base) == "ArchSketch":
+                    if hasattr(host.Base, 'Proxy'):  # TODO Any need to test ?
+                        if hasattr(host.Base.Proxy, 'getWidths'):
+                            # Return a list of Width corresponding to indexes
+                            # of sorted edges of Sketch.
+                            widths = host.Base.Proxy.getWidths(host.Base,
+                                                     propSetUuid=propSetUuid)
+                if not widths:
+                    if host.OverrideWidth:
+                        # TODO No need to test as in ArchWall if host.Base is Sketch and sortSketchWidth(), just need the max value
+                        widths = host.OverrideWidth
+                    elif host.Width:
+                        widths = [host.Width.Value]
+                if widths:
+                    width = max(widths)
+                    # +100mm to ensure subtract is through at the moment
+                    width += 100
+            elif obj.Base:  # If host is not Wall
+                b = obj.Base.Shape.BoundBox
+                width = max(b.XLength,b.YLength,b.ZLength)  # TODO Fix this, the width would be too much in many cases
+        if not width:  # TODO Should not happen, it means there is no Base (Sketch or another FC object) in Clone either
             width = 1.1112 # some weird value to have little chance to overlap with an existing face
 
-        if not base:
-            if Draft.isClone(obj,"Window"):  # if this object has not base, check whether this is a clone and use the original's base
-                if hasattr(obj,"CloneOf"):
-                    orig = obj.CloneOf
-                else:
-                    orig = obj.Objects[0]  # not sure what is this exactly
-                if orig.Base:
-                    base = orig.Base
-                else:
-                    return None
+        # setup base
+        if orig:
+            base = orig.Base  # always use original's base; clone's base should not be used to supersede original's base
+        else:
+            base = obj.Base
 
         # finding which wire to use to drill the hole
-
         f = None
-        if hasattr(obj,"HoleWire"):  # the code have not checked whether this is a clone and use the original's HoleWire; if HoleWire is set in this object, even it is a clone, the original's BoundBox/HoleWire is overridden
+        if hasattr(obj,"HoleWire"):  # if this is a clone, the original's HoleWire is overridden if HoleWire is set in the clone  # TODO To support Links
             if obj.HoleWire > 0:
                 if obj.HoleWire <= len(base.Shape.Wires):
                     f = base.Shape.Wires[obj.HoleWire-1]
-
         if not f:
-            if Draft.isClone(obj,"Window"):
-                # check original HoleWire then
+            if orig and hasattr(orig,"HoleDepth"):
+                # check original's HoleWire
                 if orig.HoleWire > 0:
                     if orig.HoleWire <= len(base.Shape.Wires):
                         f = base.Shape.Wires[obj.HoleWire-1]
-
         if not f:
             # finding biggest wire in the base shape
             max_length = 0
@@ -739,8 +754,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 sapp_mat = base_sapp_mat
             else:
                 sapp_mat = FreeCAD.Material()  # ShapeAppearance material with default v0.21 properties.
-                sapp_mat.DiffuseColor = color[:3] + (0.0, )
-                sapp_mat.Transparency = color[3]
+                sapp_mat.DiffuseColor = color[:3] + (1.0, )
+                sapp_mat.Transparency = 1.0 - color[3]
             sapp.extend((sapp_mat, ) * len(solids[i].Faces))
 
         if clone is not None:
@@ -817,6 +832,10 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         return True
 
     def setupContextMenu(self, vobj, menu):
+
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         hingeIdxs = self.getHingeEdgeIndices()
 
         super().contextMenuAddEdit(menu)

@@ -44,9 +44,9 @@
 #include <Base/Stream.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/SoAxisCrossKit.h>
-#include <Gui/SoFCBoundingBox.h>
-#include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Inventor/SoAxisCrossKit.h>
+#include <Gui/Inventor/SoFCBoundingBox.h>
+#include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Mod/CAM/App/FeaturePath.h>
 #include <Mod/CAM/App/PathSegmentWalker.h>
 
@@ -255,7 +255,7 @@ ViewProviderPath::ViewProviderPath()
     pArrow->set("zAxis.appearance.drawStyle", "style INVISIBLE");
     pArrow->set("zHead.transform", "translation 0 0 0");
     pArrowScale->setPart("shape", pArrow);
-    pArrowScale->scaleFactor = 1.0f;
+    pArrowScale->scaleFactor = 2.0f;
     pArrowGroup->addChild(pArrowScale);
 
     pcArrowSwitch->addChild(pArrowGroup);
@@ -387,7 +387,7 @@ void ViewProviderPath::onChanged(const App::Property* prop)
     }
     else if (prop == &NormalColor) {
         if (!colorindex.empty() && coordStart >= 0 && coordStart < (int)colorindex.size()) {
-            const App::Color& c = NormalColor.getValue();
+            const Base::Color& c = NormalColor.getValue();
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/Mod/CAM");
             unsigned long rcol =
@@ -429,7 +429,7 @@ void ViewProviderPath::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &MarkerColor) {
-        const App::Color& c = MarkerColor.getValue();
+        const Base::Color& c = MarkerColor.getValue();
         pcMarkerColor->rgb.setValue(c.r, c.g, c.b);
     }
     else if (prop == &ShowNodes) {

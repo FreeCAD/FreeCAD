@@ -28,179 +28,208 @@
 
 #include "MeasureManager.h"
 
-namespace App {
+namespace App
+{
 
-    std::vector<MeasureHandler> MeasureManager::_mMeasureHandlers;
-    std::vector<MeasureType*> MeasureManager::_mMeasureTypes;
+std::vector<MeasureHandler> MeasureManager::_mMeasureHandlers;
+std::vector<MeasureType*> MeasureManager::_mMeasureTypes;
 
-    MeasureManager::MeasureManager()
-    {
-        // Constructor implementation
+MeasureManager::MeasureManager()
+{
+    // Constructor implementation
+}
+
+
+void MeasureManager::addMeasureHandler(const char* module, MeasureTypeMethod typeCb)
+{
+    _mMeasureHandlers.emplace_back(MeasureHandler {module, typeCb});
+}
+
+bool MeasureManager::hasMeasureHandler(const char* module)
+{
+    for (MeasureHandler& handler : _mMeasureHandlers) {
+        if (strcmp(handler.module.c_str(), module) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+MeasureHandler MeasureManager::getMeasureHandler(const char* module)
+{
+    for (MeasureHandler handler : _mMeasureHandlers) {
+        if (!strcmp(handler.module.c_str(), module)) {
+            return handler;
+        }
     }
 
+    MeasureHandler empty;
+    return empty;
+}
 
-    void MeasureManager::addMeasureHandler(const char* module, MeasureTypeMethod typeCb) {
-        _mMeasureHandlers.emplace_back(MeasureHandler{module, typeCb});
+MeasureHandler MeasureManager::getMeasureHandler(const App::MeasureSelectionItem& selectionItem)
+{
+    auto objT = selectionItem.object;
+
+    // Resolve App::Link
+    App::DocumentObject* sub = objT.getSubObject();
+    if (sub->isDerivedFrom<App::Link>()) {
+        auto link = static_cast<App::Link*>(sub);
+        sub = link->getLinkedObject(true);
     }
 
-    bool MeasureManager::hasMeasureHandler(const char* module) {
-        for(MeasureHandler& handler : _mMeasureHandlers) {
-            if (strcmp(handler.module.c_str(), module) == 0) {
-                return true;
+    const char* className = sub->getTypeId().getName();
+    std::string mod = Base::Type::getModuleName(className);
+
+    return getMeasureHandler(mod.c_str());
+}
+
+MeasureElementType
+MeasureManager::getMeasureElementType(const App::MeasureSelectionItem& selectionItem)
+{
+    auto handler = getMeasureHandler(selectionItem);
+    if (handler.module.empty()) {
+        return App::MeasureElementType::INVALID;
+    }
+
+    auto objT = selectionItem.object;
+    return handler.typeCb(objT.getObject(), objT.getSubName().c_str());
+}
+
+void MeasureManager::addMeasureType(MeasureType* measureType)
+{
+    _mMeasureTypes.push_back(measureType);
+}
+
+void MeasureManager::addMeasureType(std::string id,
+                                    std::string label,
+                                    std::string measureObj,
+                                    MeasureValidateMethod validatorCb,
+                                    MeasurePrioritizeMethod prioritizeCb)
+{
+    MeasureType* mType =
+        new MeasureType {id, label, measureObj, validatorCb, prioritizeCb, false, nullptr};
+    _mMeasureTypes.push_back(mType);
+}
+
+void MeasureManager::addMeasureType(const char* id,
+                                    const char* label,
+                                    const char* measureObj,
+                                    MeasureValidateMethod validatorCb,
+                                    MeasurePrioritizeMethod prioritizeCb)
+{
+    addMeasureType(std::string(id),
+                   std::string(label),
+                   std::string(measureObj),
+                   validatorCb,
+                   prioritizeCb);
+}
+
+const std::vector<MeasureType*> MeasureManager::getMeasureTypes()
+{
+    return _mMeasureTypes;
+}
+
+
+Py::Tuple MeasureManager::getSelectionPy(const App::MeasureSelection& selection)
+{
+    // Convert selection to python list
+    Py::Tuple selectionPy(selection.size());
+
+    int i = 0;
+    for (auto it : selection) {
+
+        Py::Dict sel;
+        sel.setItem("object", Py::asObject(it.object.getObject()->getPyObject()));
+        sel.setItem("subName", Py::String(it.object.getSubName()));
+        sel.setItem("pickedPoint", Py::asObject(new Base::VectorPy(it.pickedPoint)));
+
+        selectionPy.setItem(i, sel);
+
+        i++;
+    }
+    return selectionPy;
+}
+
+
+std::vector<MeasureType*> MeasureManager::getValidMeasureTypes(App::MeasureSelection selection,
+                                                               std::string mode)
+{
+    Base::PyGILStateLocker lock;
+
+    // Convert selection to python list
+    Py::Tuple selectionPy = getSelectionPy(selection);
+
+    // Store valid measure types
+    std::vector<MeasureType*> validTypes;
+    std::pair<int, MeasureType>();
+
+
+    // Loop through measure types and check if they work with given selection
+    for (App::MeasureType* mType : getMeasureTypes()) {
+
+        if (mode != "" && mType->label != mode) {
+            continue;
+        }
+
+
+        if (mType->isPython) {
+            // Parse Python measure types
+            auto measurePyClass = Py::Object(mType->pythonClass);
+
+            Py::Tuple args(1);
+            args.setItem(0, selectionPy);
+
+            Py::Object isValid;
+            try {
+                isValid = measurePyClass.callMemberFunction(std::string("isValidSelection"), args);
+            }
+            catch (const Py::Exception&) {
+                Base::PyException e;
+                e.ReportException();
+                isValid = Py::False();
+            }
+
+            if (isValid.as_bool()) {
+
+                // Check priority
+                Py::Object isPriority;
+                try {
+                    isPriority = measurePyClass.callMemberFunction("isPrioritySelection", args);
+                }
+                catch (const Py::Exception&) {
+                    Base::PyException e;
+                    e.ReportException();
+                    isPriority = Py::False();
+                }
+
+                if (isPriority.as_bool()) {
+                    validTypes.insert(validTypes.begin(), mType);
+                }
+                else {
+                    validTypes.push_back(mType);
+                }
             }
         }
-        return false;
-    }
+        else {
+            // Parse c++ measure types
 
-    MeasureHandler MeasureManager::getMeasureHandler(const char* module) {
-        for(MeasureHandler handler : _mMeasureHandlers) {
-            if (!strcmp(handler.module.c_str(), module)) {
-                return handler;
-            }
-        }
-
-        MeasureHandler empty;
-        return empty;
-    }
-
-    MeasureHandler MeasureManager::getMeasureHandler(const App::MeasureSelectionItem& selectionItem) {
-        auto objT = selectionItem.object;
-
-        // Resolve App::Link
-        App::DocumentObject* sub = objT.getSubObject();
-        if (sub->isDerivedFrom<App::Link>()) {
-            auto link = static_cast<App::Link*>(sub);
-            sub = link->getLinkedObject(true);
-        }
-
-        const char* className = sub->getTypeId().getName();
-        std::string mod = Base::Type::getModuleName(className);
-
-        return getMeasureHandler(mod.c_str());
-    }
-
-    MeasureElementType MeasureManager::getMeasureElementType(const App::MeasureSelectionItem& selectionItem) {
-        auto handler = getMeasureHandler(selectionItem);
-        if (handler.module.empty()) {
-            return App::MeasureElementType::INVALID;
-        }
-
-        auto objT = selectionItem.object;
-        return handler.typeCb(objT.getObject(), objT.getSubName().c_str());
-    }
-
-    void MeasureManager::addMeasureType(MeasureType* measureType) {
-        _mMeasureTypes.push_back(measureType);
-    }
-
-    void MeasureManager::addMeasureType(std::string id, std::string label, std::string measureObj, MeasureValidateMethod validatorCb, MeasurePrioritizeMethod prioritizeCb) {
-        MeasureType* mType = new MeasureType{id, label, measureObj, validatorCb, prioritizeCb, false, nullptr};
-        _mMeasureTypes.push_back(mType);
-    }
-
-    void MeasureManager::addMeasureType(const char* id, const char* label, const char* measureObj, MeasureValidateMethod validatorCb, MeasurePrioritizeMethod prioritizeCb) {
-        addMeasureType(std::string(id), std::string(label), std::string(measureObj), validatorCb, prioritizeCb);
-    }
-
-    const std::vector<MeasureType*> MeasureManager::getMeasureTypes() {
-        return _mMeasureTypes;
-    }
-
-
-    Py::Tuple MeasureManager::getSelectionPy(const App::MeasureSelection& selection) {
-        // Convert selection to python list
-        Py::Tuple selectionPy(selection.size());
-
-        int i = 0;
-        for (auto it : selection) {
-
-            Py::Dict sel;
-            sel.setItem("object", Py::asObject(it.object.getObject()->getPyObject()));
-            sel.setItem("subName", Py::String(it.object.getSubName()));
-            sel.setItem("pickedPoint", Py::asObject(new Base::VectorPy(it.pickedPoint)));
-
-            selectionPy.setItem(i, sel);
-
-            i++;
-        }
-        return selectionPy;
-    }
-
-
-    std::vector<MeasureType*> MeasureManager::getValidMeasureTypes(App::MeasureSelection selection, std::string mode) {
-        Base::PyGILStateLocker lock;
-
-        // Convert selection to python list
-        Py::Tuple selectionPy = getSelectionPy(selection);
-
-        // Store valid measure types
-        std::vector<MeasureType*> validTypes;
-        std::pair<int, MeasureType>();
-
-
-        // Loop through measure types and check if they work with given selection
-        for (App::MeasureType* mType : getMeasureTypes()){
-
-            if (mode != "" && mType->label != mode) {
+            if (mType->validatorCb && !mType->validatorCb(selection)) {
                 continue;
             }
 
-
-            if (mType->isPython) {
-                // Parse Python measure types
-                auto measurePyClass = Py::Object(mType->pythonClass);
-                
-                Py::Tuple args(1);
-                args.setItem(0, selectionPy);
-
-                Py::Object isValid;
-                try {
-                    isValid = measurePyClass.callMemberFunction(std::string("isValidSelection"), args);
-                } catch (const Py::Exception&) {
-                    Base::PyException e;
-                    e.ReportException();
-                    isValid = Py::False();
-                }
-
-                if (isValid.as_bool()) {
-
-                    // Check priority
-                    Py::Object isPriority;
-                    try {
-                        isPriority = measurePyClass.callMemberFunction("isPrioritySelection", args);
-                    } catch (const Py::Exception&) {
-                        Base::PyException e;
-                        e.ReportException();
-                        isPriority = Py::False();
-                    }
-
-                    if (isPriority.as_bool()) {
-                        validTypes.insert(validTypes.begin(), mType);
-                    } else {
-                        validTypes.push_back(mType);
-                    }
-                }
-            } else {
-                // Parse c++ measure types
-                
-                if (mType->validatorCb && !mType->validatorCb(selection)) {
-                    continue;
-                }
-
-                // Check if the measurement type prioritizes the given selection
-                if (mType->prioritizeCb && mType->prioritizeCb(selection)) {
-                    validTypes.insert(validTypes.begin(), mType);
-                } else {
-                    validTypes.push_back(mType);
-                }
-
+            // Check if the measurement type prioritizes the given selection
+            if (mType->prioritizeCb && mType->prioritizeCb(selection)) {
+                validTypes.insert(validTypes.begin(), mType);
+            }
+            else {
+                validTypes.push_back(mType);
             }
         }
-
-        return validTypes;
     }
 
+    return validTypes;
+}
 
 
-
-} // namespace App
+}  // namespace App

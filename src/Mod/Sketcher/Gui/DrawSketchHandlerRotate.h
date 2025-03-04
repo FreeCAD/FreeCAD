@@ -155,7 +155,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Rotate");
+        return QStringLiteral("Sketcher_Pointer_Create_Rotate");
     }
 
     std::unique_ptr<QWidget> createWidget() const override
@@ -403,7 +403,7 @@ private:
                         else {
                             // We should be able to handle cases where rotation is 90 or 180, but
                             // this is segfaulting. The same is reported in
-                            // SketchObject::addSymmetric. There's apparantly a problem with
+                            // SketchObject::addSymmetric. There's apparently a problem with
                             // creation of DistanceX/Y. On top of the segfault the DistanceX/Y flips
                             // the new geometry.
                             /*if (cstr->Type == DistanceX || cstr->Type == DistanceY) {
@@ -500,13 +500,13 @@ void DSHRotateController::configureToolWidget()
             QApplication::translate("TaskSketcherTool_c1_offset", "Apply equal constraints"));
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
-            QString::fromLatin1("<p>")
+            QStringLiteral("<p>")
                 + QApplication::translate("TaskSketcherTool_c1_offset",
                                           "If this option is selected dimensional constraints are "
                                           "excluded from the operation.\n"
                                           "Instead equal constraints are applied between the "
                                           "original objects and their copies.")
-                + QString::fromLatin1("</p>"));
+                + QStringLiteral("</p>"));
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);

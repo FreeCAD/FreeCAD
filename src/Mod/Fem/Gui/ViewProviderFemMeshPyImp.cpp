@@ -41,7 +41,7 @@ PyObject* ViewProviderFemMeshPy::applyDisplacement(PyObject* args)
 }
 
 
-App::Color calcColor(double value, double min, double max)
+Base::Color calcColor(double value, double min, double max)
 {
     if (max < 0) {
         max = 0;
@@ -51,27 +51,27 @@ App::Color calcColor(double value, double min, double max)
     }
 
     if (value < min) {
-        return App::Color(0.0, 0.0, 1.0);
+        return Base::Color(0.0, 0.0, 1.0);
     }
     if (value > max) {
-        return App::Color(1.0, 0.0, 0.0);
+        return Base::Color(1.0, 0.0, 0.0);
     }
     if (value == 0.0) {
-        return App::Color(0.0, 1.0, 0.0);
+        return Base::Color(0.0, 1.0, 0.0);
     }
     if (value > max / 2.0) {
-        return App::Color(1.0, 1 - ((value - (max / 2.0)) / (max / 2.0)), 0.0);
+        return Base::Color(1.0, 1 - ((value - (max / 2.0)) / (max / 2.0)), 0.0);
     }
     if (value > 0.0) {
-        return App::Color(value / (max / 2.0), 1.0, 0.0);
+        return Base::Color(value / (max / 2.0), 1.0, 0.0);
     }
     if (value < min / 2.0) {
-        return App::Color(0.0, 1 - ((value - (min / 2.0)) / (min / 2.0)), 1.0);
+        return Base::Color(0.0, 1 - ((value - (min / 2.0)) / (min / 2.0)), 1.0);
     }
     if (value < 0.0) {
-        return App::Color(0.0, 1.0, value / (min / 2.0));
+        return Base::Color(0.0, 1.0, value / (min / 2.0));
     }
-    return App::Color(0, 0, 0);
+    return Base::Color(0, 0, 0);
 }
 
 
@@ -90,7 +90,7 @@ PyObject* ViewProviderFemMeshPy::setNodeColorByScalars(PyObject* args)
             PyErr_SetString(PyExc_ValueError, "PyList_Size < 0. That is not a valid list!");
             Py_Return;
         }
-        std::vector<App::Color> node_colors(num_items);
+        std::vector<Base::Color> node_colors(num_items);
         for (int i = 0; i < num_items; i++) {
             PyObject* id_py = PyList_GetItem(node_ids_py, i);
             long id = PyLong_AsLong(id_py);
@@ -182,9 +182,9 @@ Py::Dict ViewProviderFemMeshPy::getNodeColor() const
 namespace
 {
 
-std::map<std::vector<long>, App::Color> colorMapFromDict(Py::Dict& arg)
+std::map<std::vector<long>, Base::Color> colorMapFromDict(Py::Dict& arg)
 {
-    std::map<std::vector<long>, App::Color> colorMap;
+    std::map<std::vector<long>, Base::Color> colorMap;
         for (Py::Dict::iterator it = arg.begin(); it != arg.end(); ++it) {
         std::vector<long> vecId;
         const Py::Object& id = (*it).first;
@@ -199,7 +199,7 @@ std::map<std::vector<long>, App::Color> colorMapFromDict(Py::Dict& arg)
         }
         const Py::Object& value = (*it).second;
         Py::Tuple color(value);
-        colorMap[vecId] = App::Color(Py::Float(color[0]), Py::Float(color[1]), Py::Float(color[2]));
+        colorMap[vecId] = Base::Color(Py::Float(color[0]), Py::Float(color[1]), Py::Float(color[2]));
     }
 
     return colorMap;
@@ -280,7 +280,7 @@ Py::List ViewProviderFemMeshPy::getHighlightedNodes() const
 void ViewProviderFemMeshPy::setHighlightedNodes(Py::List arg)
 {
     ViewProviderFemMesh* vp = this->getViewProviderFemMeshPtr();
-    const SMESHDS_Mesh* data = static_cast<Fem::FemMeshObject*>(vp->getObject())
+    const SMESHDS_Mesh* data = vp->getObject<Fem::FemMeshObject>()
                                    ->FemMesh.getValue()
                                    .getSMesh()
                                    ->GetMeshDS();

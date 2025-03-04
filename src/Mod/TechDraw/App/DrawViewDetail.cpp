@@ -157,7 +157,7 @@ App::DocumentObjectExecReturn* DrawViewDetail::execute()
     DrawViewPart* dvp = static_cast<DrawViewPart*>(baseObj);
     TopoDS_Shape shape3d = dvp->getShapeForDetail();
     DrawViewSection* dvs = nullptr;
-    if (dvp->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
+    if (dvp->isDerivedFrom<TechDraw::DrawViewSection>()) {
         dvs = static_cast<TechDraw::DrawViewSection*>(dvp);
     }
 

@@ -27,12 +27,21 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SoOffscreenRenderer.h>
 
+#ifdef FC_OS_MACOSX
+# include <OpenGL/gl.h>
+#else
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+# endif  // FC_OS_WIN32
+# include <GL/gl.h>
+#endif  // FC_OS_MACOSX
+
 #include <QImage>
 #include <QStringList>
-#include <QtOpenGL.h>
 
 #include <FCGlobal.h>
 
+class QOpenGLFramebufferObject;
 
 namespace Gui {
 
@@ -45,7 +54,7 @@ class GuiExport SoFCOffscreenRenderer : public SoOffscreenRenderer
 public:
     /** The SoOffscreenRenderer base class seems to have a huge memory leak. Whenever
      * an instance is created internal memory doesn't get freed when destroying it.
-     * Thus, SoFCOffscreenRenderer is implemented as singleton to allow to create only
+     * Thus, SoFCOffscreenRenderer is implemented as singleton to allow one to create only
      * one global instance. So, the memory is leaking for this instance only.
      */
     static SoFCOffscreenRenderer& instance();
@@ -136,7 +145,7 @@ private:
     SbBool renderFromBase(SoBase * base);
     void makeFrameBuffer(int width, int height, int samples);
 
-    QtGLFramebufferObject*  framebuffer;
+    QOpenGLFramebufferObject*  framebuffer;
     uint32_t                cache_context; // our unique context id
 
     SbViewportRegion viewport;

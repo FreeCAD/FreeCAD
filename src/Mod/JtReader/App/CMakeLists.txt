@@ -4,10 +4,15 @@ set(JTREADER_TKJT_LIBRARIES CACHE FILEPATH  "File path to TKJT library")
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -32,7 +37,7 @@ SET(JtReader_SRCS
 
 if (EXISTS "${JTREADER_TKJT_INCLUDE_DIRS}/JtData_Object.hxx")
     add_definitions(-DJTREADER_HAVE_TKJT)
-    include_directories(${JTREADER_TKJT_INCLUDE_DIRS})
+    include_directories(SYSTEM ${JTREADER_TKJT_INCLUDE_DIRS})
     list (APPEND JtReader_LIBS
         ${JTREADER_TKJT_LIBRARIES}
     )

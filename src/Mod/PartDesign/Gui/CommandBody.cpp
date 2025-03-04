@@ -134,13 +134,13 @@ void CmdPartDesignBody::activated(int iMsg)
                                          .arg(QString::fromUtf8(baseFeature->Label.getValue())));
                     baseFeature = nullptr;
                 }
-                else if (baseFeature->isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+                else if (baseFeature->isDerivedFrom<Sketcher::SketchObject>()) {
                     // Add sketcher to the body's group property
                     addtogroup = true;
                 }
                 // if a standard Part feature (not a PartDesign feature) is selected then check
                 // the number of solids/shells
-                else if (!baseFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+                else if (!baseFeature->isDerivedFrom<PartDesign::Feature>()) {
                     const TopoDS_Shape& shape = static_cast<Part::Feature*>(baseFeature)->Shape.getValue();
                     if (!shape.IsNull()) {
                         int numSolids = 0;
@@ -544,7 +544,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
 
     if ( features.size() == 1 ) {
         selFeature = features.front();
-        if ( selFeature->getTypeId().isDerivedFrom ( PartDesign::Body::getClassTypeId() ) ) {
+        if ( selFeature->isDerivedFrom<PartDesign::Body>() ) {
             body = static_cast<PartDesign::Body *> ( selFeature );
         } else {
             body = PartDesignGui::getBodyFor ( selFeature, /* messageIfNot =*/ false );
@@ -606,7 +606,7 @@ CmdPartDesignDuplicateSelection::CmdPartDesignDuplicateSelection()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Duplicate selected object");
+    sMenuText       = QT_TR_NOOP("Duplicate selected &object");
     sToolTipText    = QT_TR_NOOP("Duplicates the selected object and adds it to the active body");
     sWhatsThis      = "PartDesign_DuplicateSelection";
     sStatusTip      = sToolTipText;
@@ -918,7 +918,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     std::vector<App::DocumentObject*> bodyFeatures;
     std::map<App::DocumentObject*,size_t> orders;
     for(auto obj : body->Group.getValues()) {
-        if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        if(obj->isDerivedFrom<PartDesign::Feature>()) {
             orders.emplace(obj,bodyFeatures.size());
             bodyFeatures.push_back(obj);
         }
@@ -928,7 +928,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     for(size_t i=0;i<bodyFeatures.size();++i) {
         auto feat = bodyFeatures[i];
         for(auto obj : feat->getOutList()) {
-            if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+            if(obj->isDerivedFrom<PartDesign::Feature>())
                 continue;
             for(auto dep : App::Document::getDependencyList({obj})) {
                 auto it = orders.find(dep);
@@ -956,7 +956,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     // user if they want the last object to be the new tip.
     // Only do this for features that can hold a tip (not for e.g. datums)
     if ( lastObject != target && body->Tip.getValue() == target
-        && lastObject->isDerivedFrom(PartDesign::Feature::getClassTypeId()) ) {
+        && lastObject->isDerivedFrom<PartDesign::Feature>() ) {
         QMessageBox msgBox(Gui::getMainWindow());
         msgBox.setIcon(QMessageBox::Question);
         msgBox.setWindowTitle(qApp->translate("PartDesign_MoveFeatureInTree", "Move tip"));

@@ -164,30 +164,28 @@ def setup(doc=None, solvertype="elmer"):
         (BooleanFragments, "Face6"),
     ]
     AxialField.PotentialEnabled = False
-    AxialField.AV_im_1_Disabled = False
-    AxialField.AV_im_2_Disabled = False
-    AxialField.AV_re_1_Disabled = False
-    AxialField.AV_re_2_Disabled = False
+    AxialField.EnableAV_1 = True
+    AxialField.EnableAV_2 = True
     analysis.addObject(AxialField)
 
     # voltage on one end
     Voltage = ObjectsFem.makeConstraintElectrostaticPotential(doc, "Voltage")
     Voltage.References = [(BooleanFragments, "Face3")]
-    Voltage.Potential = "10.000 mV"
-    Voltage.AV_im_1_Disabled = False
-    Voltage.AV_im_2_Disabled = False
-    Voltage.AV_re_1_Disabled = False
-    Voltage.AV_re_2_Disabled = False
+    Voltage.AV_re = "10.000 mV"
+    Voltage.AV_im = "0 V"
+    Voltage.EnableAV = True
+    Voltage.EnableAV_1 = True
+    Voltage.EnableAV_2 = True
     analysis.addObject(Voltage)
 
     # ground on other end
     Ground = ObjectsFem.makeConstraintElectrostaticPotential(doc, "Ground")
     Ground.References = [(BooleanFragments, "Face2")]
-    Ground.Potential = "0 V"
-    Ground.AV_im_1_Disabled = False
-    Ground.AV_im_2_Disabled = False
-    Ground.AV_re_1_Disabled = False
-    Ground.AV_re_2_Disabled = False
+    Ground.AV_re = "0 V"
+    Ground.AV_im = "0 V"
+    Ground.EnableAV = True
+    Ground.EnableAV_1 = True
+    Ground.EnableAV_2 = True
     analysis.addObject(Ground)
 
     # magnetization

@@ -35,7 +35,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/ViewProviderOrigin.h>
+#include <Gui/ViewProviderCoordinateSystem.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
 
@@ -260,9 +260,9 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     if(PartDesign::Body * body = PartDesign::Body::findBodyOf(getObject())) {
         try {
             App::Origin *origin = body->getOrigin();
-            Gui::ViewProviderOrigin* vpOrigin {};
-            vpOrigin = static_cast<Gui::ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
-            vpOrigin->setTemporaryVisibility(true, true);
+            Gui::ViewProviderCoordinateSystem* vpOrigin {};
+            vpOrigin = static_cast<Gui::ViewProviderCoordinateSystem*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->setTemporaryVisibility(Gui::DatumElement::Planes | Gui::DatumElement::Axes);
         } catch (const Base::Exception &ex) {
             Base::Console().Error ("%s\n", ex.what () );
         }
@@ -380,8 +380,8 @@ TaskBoxPrimitives::~TaskBoxPrimitives()
         auto obj = getObject();
         if (PartDesign::Body* body = obj ? PartDesign::Body::findBodyOf(obj) : nullptr) {
             App::Origin* origin = body->getOrigin();
-            Gui::ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<Gui::ViewProviderOrigin*>(
+            Gui::ViewProviderCoordinateSystem* vpOrigin;
+            vpOrigin = static_cast<Gui::ViewProviderCoordinateSystem*>(
                 Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->resetTemporaryVisibility();
         }
@@ -811,103 +811,103 @@ void TaskBoxPrimitives::onWedgeZmaxChanged(double v)
 bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
 {
     try {
-        QString name(QString::fromLatin1(Gui::Command::getObjectCmd(obj).c_str()));
-        QString cmd;
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (!doc) {
             return false;
         }
 
+        std::string cmd;
+        std::string name(Gui::Command::getObjectCmd(obj));
         Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
         switch (ui->widgetStack->currentIndex()) {
             case 1:  // box
-                cmd = QString::fromLatin1("%1.Length='%2'\n"
-                                          "%1.Width='%3'\n"
-                                          "%1.Height='%4'\n")
-                          .arg(name,
-                               ui->boxLength->value().getSafeUserString(),
-                               ui->boxWidth->value().getSafeUserString(),
-                               ui->boxHeight->value().getSafeUserString());
+                cmd = fmt::format("{0}.Length='{1}'\n"
+                                  "{0}.Width='{2}'\n"
+                                  "{0}.Height='{3}'\n",
+                                  name,
+                                  ui->boxLength->value().getSafeUserString(),
+                                  ui->boxWidth->value().getSafeUserString(),
+                                  ui->boxHeight->value().getSafeUserString());
                 break;
 
             case 2:  // cylinder
-                cmd = QString::fromLatin1("%1.Radius='%2'\n"
-                                          "%1.Height='%3'\n"
-                                          "%1.Angle='%4'\n"
-                                          "%1.FirstAngle='%5'\n"
-                                          "%1.SecondAngle='%6'\n")
-                          .arg(name,
-                               ui->cylinderRadius->value().getSafeUserString(),
-                               ui->cylinderHeight->value().getSafeUserString(),
-                               ui->cylinderAngle->value().getSafeUserString(),
-                               ui->cylinderXSkew->value().getSafeUserString(),
-                               ui->cylinderYSkew->value().getSafeUserString());
+                cmd = fmt::format("{0}.Radius='{1}'\n"
+                                  "{0}.Height='{2}'\n"
+                                  "{0}.Angle='{3}'\n"
+                                  "{0}.FirstAngle='{4}'\n"
+                                  "{0}.SecondAngle='{5}'\n",
+                                  name,
+                                  ui->cylinderRadius->value().getSafeUserString(),
+                                  ui->cylinderHeight->value().getSafeUserString(),
+                                  ui->cylinderAngle->value().getSafeUserString(),
+                                  ui->cylinderXSkew->value().getSafeUserString(),
+                                  ui->cylinderYSkew->value().getSafeUserString());
                 break;
 
             case 3:  // cone
-                cmd = QString::fromLatin1("%1.Radius1='%2'\n"
-                                          "%1.Radius2='%3'\n"
-                                          "%1.Height='%4'\n"
-                                          "%1.Angle='%5'\n")
-                          .arg(name,
-                               ui->coneRadius1->value().getSafeUserString(),
-                               ui->coneRadius2->value().getSafeUserString(),
-                               ui->coneHeight->value().getSafeUserString(),
-                               ui->coneAngle->value().getSafeUserString());
+                cmd = fmt::format("{0}.Radius1='{1}'\n"
+                                  "{0}.Radius2='{2}'\n"
+                                  "{0}.Height='{3}'\n"
+                                  "{0}.Angle='{4}'\n",
+                                  name,
+                                  ui->coneRadius1->value().getSafeUserString(),
+                                  ui->coneRadius2->value().getSafeUserString(),
+                                  ui->coneHeight->value().getSafeUserString(),
+                                  ui->coneAngle->value().getSafeUserString());
                 break;
 
             case 4:  // sphere
-                cmd = QString::fromLatin1("%1.Radius='%2'\n"
-                                          "%1.Angle1='%3'\n"
-                                          "%1.Angle2='%4'\n"
-                                          "%1.Angle3='%5'\n")
-                          .arg(name,
-                               ui->sphereRadius->value().getSafeUserString(),
-                               ui->sphereAngle1->value().getSafeUserString(),
-                               ui->sphereAngle2->value().getSafeUserString(),
-                               ui->sphereAngle3->value().getSafeUserString());
+                cmd = fmt::format("{0}.Radius='{1}'\n"
+                                  "{0}.Angle1='{2}'\n"
+                                  "{0}.Angle2='{3}'\n"
+                                  "{0}.Angle3='{4}'\n",
+                                  name,
+                                  ui->sphereRadius->value().getSafeUserString(),
+                                  ui->sphereAngle1->value().getSafeUserString(),
+                                  ui->sphereAngle2->value().getSafeUserString(),
+                                  ui->sphereAngle3->value().getSafeUserString());
                 break;
             case 5:  // ellipsoid
-                cmd = QString::fromLatin1("%1.Radius1='%2'\n"
-                                          "%1.Radius2='%3'\n"
-                                          "%1.Radius3='%4'\n"
-                                          "%1.Angle1='%5'\n"
-                                          "%1.Angle2='%6'\n"
-                                          "%1.Angle3='%7'\n")
-                          .arg(name,
-                               ui->ellipsoidRadius1->value().getSafeUserString(),
-                               ui->ellipsoidRadius2->value().getSafeUserString(),
-                               ui->ellipsoidRadius3->value().getSafeUserString(),
-                               ui->ellipsoidAngle1->value().getSafeUserString(),
-                               ui->ellipsoidAngle2->value().getSafeUserString(),
-                               ui->ellipsoidAngle3->value().getSafeUserString());
+                cmd = fmt::format("{0}.Radius1='{1}'\n"
+                                  "{0}.Radius2='{2}'\n"
+                                  "{0}.Radius3='{3}'\n"
+                                  "{0}.Angle1='{4}'\n"
+                                  "{0}.Angle2='{5}'\n"
+                                  "{0}.Angle3='{6}'\n",
+                                  name,
+                                  ui->ellipsoidRadius1->value().getSafeUserString(),
+                                  ui->ellipsoidRadius2->value().getSafeUserString(),
+                                  ui->ellipsoidRadius3->value().getSafeUserString(),
+                                  ui->ellipsoidAngle1->value().getSafeUserString(),
+                                  ui->ellipsoidAngle2->value().getSafeUserString(),
+                                  ui->ellipsoidAngle3->value().getSafeUserString());
                 break;
 
             case 6:  // torus
-                cmd = QString::fromLatin1("%1.Radius1='%2'\n"
-                                          "%1.Radius2='%3'\n"
-                                          "%1.Angle1='%4'\n"
-                                          "%1.Angle2='%5'\n"
-                                          "%1.Angle3='%6'\n")
-                          .arg(name,
-                               ui->torusRadius1->value().getSafeUserString(),
-                               ui->torusRadius2->value().getSafeUserString(),
-                               ui->torusAngle1->value().getSafeUserString(),
-                               ui->torusAngle2->value().getSafeUserString(),
-                               ui->torusAngle3->value().getSafeUserString());
+                cmd = fmt::format("{0}.Radius1='{1}'\n"
+                                  "{0}.Radius2='{2}'\n"
+                                  "{0}.Angle1='{3}'\n"
+                                  "{0}.Angle2='{4}'\n"
+                                  "{0}.Angle3='{5}'\n",
+                                  name,
+                                  ui->torusRadius1->value().getSafeUserString(),
+                                  ui->torusRadius2->value().getSafeUserString(),
+                                  ui->torusAngle1->value().getSafeUserString(),
+                                  ui->torusAngle2->value().getSafeUserString(),
+                                  ui->torusAngle3->value().getSafeUserString());
                 break;
             case 7:  // prism
-                cmd = QString::fromLatin1("%1.Polygon=%2\n"
-                                          "%1.Circumradius='%3'\n"
-                                          "%1.Height='%4'\n"
-                                          "%1.FirstAngle='%5'\n"
-                                          "%1.SecondAngle='%6'\n")
-                          .arg(name,
-                               QString::number(ui->prismPolygon->value()),
-                               ui->prismCircumradius->value().getSafeUserString(),
-                               ui->prismHeight->value().getSafeUserString(),
-                               ui->prismXSkew->value().getSafeUserString(),
-                               ui->prismYSkew->value().getSafeUserString());
+                cmd = fmt::format("{0}.Polygon={1}\n"
+                                  "{0}.Circumradius='{2}'\n"
+                                  "{0}.Height='{3}'\n"
+                                  "{0}.FirstAngle='{4}'\n"
+                                  "{0}.SecondAngle='{5}'\n",
+                                  name,
+                                  ui->prismPolygon->value(),
+                                  ui->prismCircumradius->value().getSafeUserString(),
+                                  ui->prismHeight->value().getSafeUserString(),
+                                  ui->prismXSkew->value().getSafeUserString(),
+                                  ui->prismYSkew->value().getSafeUserString());
                 break;
             case 8:  // wedge
                 // Xmin/max, Ymin/max and Zmin/max must each not be equal
@@ -929,27 +929,27 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
                                          tr("Z min must not be equal to Z max!"));
                     return false;
                 }
-                cmd = QString::fromLatin1("%1.Xmin='%2'\n"
-                                          "%1.Ymin='%3'\n"
-                                          "%1.Zmin='%4'\n"
-                                          "%1.X2min='%5'\n"
-                                          "%1.Z2min='%6'\n"
-                                          "%1.Xmax='%7'\n"
-                                          "%1.Ymax='%8'\n"
-                                          "%1.Zmax='%9'\n"
-                                          "%1.X2max='%10'\n"
-                                          "%1.Z2max='%11'\n")
-                          .arg(name,
-                               ui->wedgeXmin->value().getSafeUserString(),
-                               ui->wedgeYmin->value().getSafeUserString(),
-                               ui->wedgeZmin->value().getSafeUserString(),
-                               ui->wedgeX2min->value().getSafeUserString(),
-                               ui->wedgeZ2min->value().getSafeUserString(),
-                               ui->wedgeXmax->value().getSafeUserString(),
-                               ui->wedgeYmax->value().getSafeUserString(),
-                               ui->wedgeZmax->value().getSafeUserString())
-                          .arg(ui->wedgeX2max->value().getSafeUserString(),
-                               ui->wedgeZ2max->value().getSafeUserString());
+                cmd = fmt::format("{0}.Xmin='{1}'\n"
+                                  "{0}.Ymin='{2}'\n"
+                                  "{0}.Zmin='{3}'\n"
+                                  "{0}.X2min='{4}'\n"
+                                  "{0}.Z2min='{5}'\n"
+                                  "{0}.Xmax='{6}'\n"
+                                  "{0}.Ymax='{7}'\n"
+                                  "{0}.Zmax='{8}'\n"
+                                  "{0}.X2max='{9}'\n"
+                                  "{0}.Z2max='{10}'\n",
+                                  name,
+                                  ui->wedgeXmin->value().getSafeUserString(),
+                                  ui->wedgeYmin->value().getSafeUserString(),
+                                  ui->wedgeZmin->value().getSafeUserString(),
+                                  ui->wedgeX2min->value().getSafeUserString(),
+                                  ui->wedgeZ2min->value().getSafeUserString(),
+                                  ui->wedgeXmax->value().getSafeUserString(),
+                                  ui->wedgeYmax->value().getSafeUserString(),
+                                  ui->wedgeZmax->value().getSafeUserString(),
+                                  ui->wedgeX2max->value().getSafeUserString(),
+                                  ui->wedgeZ2max->value().getSafeUserString());
                 break;
 
             default:
@@ -959,7 +959,7 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
         // Execute the Python block
         // No need to open a transaction because this is already done in the command
         // class or when starting to edit a primitive.
-        Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
+        Gui::Command::runCommand(Gui::Command::Doc, cmd.c_str());
         Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     }
     catch (const Base::PyException& e) {

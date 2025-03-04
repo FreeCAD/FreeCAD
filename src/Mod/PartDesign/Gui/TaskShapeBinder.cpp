@@ -34,7 +34,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Widgets.h>
 
 #include <Mod/Part/App/PartFeature.h>
@@ -86,13 +86,13 @@ void TaskShapeBinder::updateUI()
     App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
 
-    PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, subs);
+    PartDesign::ShapeBinder::getFilteredReferences(&vp->getObject<PartDesign::ShapeBinder>()->Support, obj, subs);
 
     if (obj) {
         ui->baseEdit->setText(QString::fromStdString(obj->Label.getStrValue()));
     }
 
-    // Allow to clear the Support
+    // Allow one to clear the Support
     ui->baseEdit->setClearButtonEnabled(true);
     connect(ui->baseEdit, &QLineEdit::textChanged,
             this, &TaskShapeBinder::supportChanged);
@@ -146,7 +146,7 @@ void TaskShapeBinder::setupContextMenu()
 void TaskShapeBinder::supportChanged(const QString& text)
 {
     if (!vp.expired() && text.isEmpty()) {
-        PartDesign::ShapeBinder* binder = static_cast<PartDesign::ShapeBinder*>(vp->getObject());
+        PartDesign::ShapeBinder* binder = vp->getObject<PartDesign::ShapeBinder>();
         binder->Support.setValue(nullptr, nullptr);
         vp->highlightReferences(false);
         vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
@@ -201,7 +201,7 @@ void TaskShapeBinder::deleteItem()
         App::GeoFeature* obj = nullptr;
         std::vector<std::string> subs;
 
-        PartDesign::ShapeBinder* binder = static_cast<PartDesign::ShapeBinder*>(vp->getObject());
+        PartDesign::ShapeBinder* binder = vp->getObject<PartDesign::ShapeBinder>();
         PartDesign::ShapeBinder::getFilteredReferences(&binder->Support, obj, subs);
 
         std::string subname = data.constData();
@@ -298,11 +298,11 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
         App::GeoFeature* obj = nullptr;
         std::vector<std::string> refs;
 
-        PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, refs);
+        PartDesign::ShapeBinder::getFilteredReferences(&vp->getObject<PartDesign::ShapeBinder>()->Support, obj, refs);
 
         // get selected object
         auto docObj = vp->getObject()->getDocument()->getObject(msg.pObjectName);
-        if (docObj && docObj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (docObj && docObj->isDerivedFrom<Part::Feature>()) {
             selectedObj = static_cast<Part::Feature*>(docObj);
         }
 
@@ -341,7 +341,7 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
             obj = selectedObj;
         }
 
-        static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support.setValue(obj, refs);
+        vp->getObject<PartDesign::ShapeBinder>()->Support.setValue(obj, refs);
 
         return true;
     }
@@ -368,7 +368,7 @@ void TaskShapeBinder::accept()
         return;
 
     std::string label = ui->baseEdit->text().toStdString();
-    PartDesign::ShapeBinder* binder = static_cast<PartDesign::ShapeBinder*>(vp->getObject());
+    PartDesign::ShapeBinder* binder = vp->getObject<PartDesign::ShapeBinder>();
     if (!binder->Support.getValue() && !label.empty()) {
         auto mode = selectionMode;
         selectionMode = refObjAdd;

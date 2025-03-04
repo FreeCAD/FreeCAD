@@ -67,7 +67,7 @@ from Draft import LinearDimension
 from draftobjects.dimension import _Dimension
 from draftutils import params
 from draftutils import utils
-from builtins import open as pyopen
+from draftutils.utils import pyopen
 
 gui = FreeCAD.GuiUp
 draftui = None
@@ -859,7 +859,7 @@ def drawPolyline(polyline, forceShape=False, num=None):
     `dxfCreateDraft` or `dxfCreateSketch` are set, and `forceShape` is `False`
     it creates a straight `Draft Wire`.
 
-    If the polyline is closed, and the global variable `dxfFillMode`
+    If the polyline is closed, and the global variable `dxfMakeFaceMode`
     is set, it will return a `Part.Face`, otherwise it will return
     a `Part.Wire`.
 
@@ -940,7 +940,7 @@ def drawPolyline(polyline, forceShape=False, num=None):
                     ob.Placement = placementFromDXFOCS(polyline)
                     return ob
                 else:
-                    if polyline.closed and dxfFillMode:
+                    if polyline.closed and dxfMakeFaceMode:
                         w = Part.Wire(edges)
                         w.Placement = placementFromDXFOCS(polyline)
                         return Part.Face(w)
@@ -1116,11 +1116,7 @@ def drawEllipse(ellipse, forceShape=False):
 
 
 def drawFace(face):
-    """Return a Part face (filled) from a list of points.
-
-    It takes the points in a `face` and places them in a list,
-    then appends the first point again to the end.
-    Only in this way the shape returned appears filled.
+    """Return a Part face from a list of points.
 
     Parameters
     ----------
@@ -1282,7 +1278,7 @@ def drawSplineIterpolation(verts, closed=False, forceShape=False,
 
     closed : bool, optional
         It defaults to `False`. If it is `True` it will create a closed
-        Wire, closed BSpline, or a filled Face.
+        Wire, closed BSpline, or a Face.
 
     forceShape : bool, optional
         It defaults to `False`. If it is `True` it will try to produce
@@ -1307,7 +1303,7 @@ def drawSplineIterpolation(verts, closed=False, forceShape=False,
         Otherwise it tries producing a `Part.Edge`
         (`dxfDiscretizeCurves` or `alwaysDiscretize` are `True`)
         or `Part.Face`
-        if `closed` and the global variable `dxfFillMode` are `True`.
+        if `closed` and the global variable `dxfMakeFaceMode` are `True`.
 
     To do
     -----
@@ -1328,7 +1324,7 @@ def drawSplineIterpolation(verts, closed=False, forceShape=False,
             # print(knots)
             sp.interpolate(verts)
             sh = Part.Wire(sp.toShape())
-        if closed and dxfFillMode:
+        if closed and dxfMakeFaceMode:
             return Part.Face(sh)
         else:
             return sh
@@ -1807,7 +1803,7 @@ def drawInsert(insert, num=None, clone=False):
     return None
 
 
-def drawLayerBlock(objlist):
+def drawLayerBlock(objlist, name="LayerBlock"):
     """Return a Draft Block (compound) from the given object list.
 
     Parameters
@@ -1836,7 +1832,9 @@ def drawLayerBlock(objlist):
     obj = None
     if (dxfCreateDraft or dxfCreateSketch) and isObj:
         try:
-            obj = Draft.make_block(objlist)
+            # obj = Draft.make_block(objlist)
+            obj = doc.addObject("Part::Compound", name)
+            obj.Links = objlist
         except Part.OCCError:
             pass
     else:
@@ -1942,7 +1940,7 @@ def addObject(shape, name="Shape", layer=None):
             else:
                 l = layerObjects[lay]
             l.append(newob)
-            
+
 
 
     formatObject(newob)
@@ -2739,17 +2737,13 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                         formatObject(newob, insert)
             num += 1
 
-    # Move layer contents to layers
-    for (l, contents) in layerObjects.items():
-        l.Group += contents
-
     # Make blocks, if any
     if dxfMakeBlocks:
         print("creating layerblocks...")
         for k, l in layerBlocks.items():
-            shape = drawLayerBlock(l)
+            shape = drawLayerBlock(l, "LayerBlock_" + k)
             if shape:
-                newob = addObject(shape, k)
+                newob = addObject(shape, "LayerBlock_" + k, k)
     del layerBlocks
 
     # Hide block objects, if any
@@ -2757,6 +2751,10 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
         if o.ViewObject:
             o.ViewObject.hide()
     del blockobjects
+
+    # Move layer contents to layers
+    for (l, contents) in layerObjects.items():
+        l.Group += contents
 
     # Finishing
     print("done processing")
@@ -3676,7 +3674,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     dxf.layers.append(dxfLibrary.Layer(name=ob.Label,
                                                        color=getACI(ob),
                                                        lineType=ltype))
-
+            base_sketch_pla = None  # Placement of the 1st sketch.
             for ob in exportList:
                 obtype = Draft.getType(ob)
                 # print("processing " + str(ob.Name))
@@ -3718,7 +3716,12 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     p2 = FreeCAD.Vector(_v)
                     lspc = FreeCAD.Vector(_h)
                     p1 = ob.Placement.multVec(p2 + lspc)
-                    dxf.append(dxfLibrary.Text(t1, p1, height=h1 * 0.8,
+                    justifyhor = ("Left", "Center", "Right").index(vobj.TextAlign)
+                    dxf.append(dxfLibrary.Text(t1,
+                                               p1,
+                                               alignment=p1 if justifyhor else None,
+                                               height=h1 * 0.8,
+                                               justifyhor=justifyhor,
                                                rotation=rotation,
                                                color=getACI(ob, text=True),
                                                style='STANDARD',
@@ -3728,7 +3731,11 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                         if rotation:
                             Z = FreeCAD.Vector(0, 0, 1)
                             ofs = FreeCAD.Rotation(Z, rotation).multVec(ofs)
-                        dxf.append(dxfLibrary.Text(t2, p1.add(ofs), height=h2 * 0.8,
+                        dxf.append(dxfLibrary.Text(t2,
+                                                   p1.add(ofs),
+                                                   alignment=p1.add(ofs) if justifyhor else None,
+                                                   height=h2 * 0.8,
+                                                   justifyhor=justifyhor,
                                                    rotation=rotation,
                                                    color=getACI(ob, text=True),
                                                    style='STANDARD',
@@ -3746,12 +3753,14 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     h = 1
                     if gui:
                         vobj = ob.ViewObject
-                        h = float(ob.ViewObject.FontSize)
+                        h = float(vobj.FontSize)
                         for text in vobj.Proxy.getTextData():
-                            pos = text[1].add(FreeCAD.Vector(-h/2,-h/2,0))
+                            pos = text[1].add(FreeCAD.Vector(0,-h/2,0))
                             dxf.append(dxfLibrary.Text(text[0],
                                                        pos,
+                                                       alignment=pos,
                                                        height=h,
+                                                       justifyhor=1,
                                                        color=getACI(ob),
                                                        style='STANDARD',
                                                        layer=getStrGroup(ob)))
@@ -3779,10 +3788,16 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
 
                 elif ob.isDerivedFrom("Part::Feature"):
                     tess = None
-                    if hasattr(ob, "Tessellation"):
-                        if ob.Tessellation:
-                            tess = [ob.Tessellation, ob.SegmentLength]
-                    if params.get_param("dxfmesh"):
+                    if getattr(ob, "Tessellation", False):
+                        tess = [ob.Tessellation, ob.SegmentLength]
+                    if ob.isDerivedFrom("Sketcher::SketchObject"):
+                        if base_sketch_pla is None:
+                            base_sketch_pla = ob.Placement
+                        sh = Part.Compound()
+                        sh.Placement = base_sketch_pla
+                        sh.add(ob.Shape.copy())
+                        sh.transformShape(base_sketch_pla.inverse().Matrix)
+                    elif params.get_param("dxfmesh"):
                         sh = None
                         if not ob.Shape.isNull():
                             writeMesh(ob, dxf)
@@ -3790,11 +3805,10 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                         _view = FreeCADGui.ActiveDocument.ActiveView
                         direction = _view.getViewDirection().multiply(-1)
                         sh = projectShape(ob.Shape, direction, tess)
+                    elif ob.Shape.Volume > 0:
+                        sh = projectShape(ob.Shape, Vector(0, 0, 1), tess)
                     else:
-                        if ob.Shape.Volume > 0:
-                            sh = projectShape(ob.Shape, Vector(0, 0, 1), tess)
-                        else:
-                            sh = ob.Shape
+                        sh = ob.Shape
                     if sh:
                         if not sh.isNull():
                             if sh.ShapeType == 'Compound':
@@ -3833,9 +3847,15 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                                                          ob.Position.z))
                         if gui:
                             height = float(ob.ViewObject.FontSize)
+                            justifyhor = ("Left", "Center", "Right").index(ob.ViewObject.Justification)
                         else:
                             height = 1
-                        dxf.append(dxfLibrary.Text(text, point, height=height,
+                            justifyhor = 0
+                        dxf.append(dxfLibrary.Text(text,
+                                                   point,
+                                                   alignment=point if justifyhor else None,
+                                                   height=height,
+                                                   justifyhor=justifyhor,
                                                    color=getACI(ob, text=True),
                                                    style='STANDARD',
                                                    layer=getStrGroup(ob)))
@@ -3844,16 +3864,20 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     # texts
                     if gui:
                         height = float(ob.ViewObject.FontSize)
+                        justifyhor = ("Left", "Center", "Right").index(ob.ViewObject.Justification)
                     else:
                         height = 1
-                    for text in ob.Text:
+                        justifyhor = 0
+                    for idx, text in enumerate(ob.Text):
                         point = DraftVecUtils.tup(Vector(ob.Placement.Base.x,
-                                                         ob.Placement.Base.y - (height * 1.2 * ob.Text.index(text)),
+                                                         ob.Placement.Base.y - (height * 1.2 * idx),
                                                          ob.Placement.Base.z))
                         rotation = math.degrees(ob.Placement.Rotation.Angle)
                         dxf.append(dxfLibrary.Text(text,
                                                    point,
+                                                   alignment=point if justifyhor else None,
                                                    height=height * 0.8,
+                                                   justifyhor=justifyhor,
                                                    rotation=rotation,
                                                    color=getACI(ob, text=True),
                                                    style='STANDARD',
@@ -4134,7 +4158,7 @@ def readPreferences():
     `dxfDiscretizeCurves`, `dxfStarBlocks`, `dxfMakeBlocks`, `dxfJoin`,
     `dxfRenderPolylineWidth`, `dxfImportTexts`, `dxfImportLayouts`,
     `dxfImportPoints`, `dxfImportHatches`, `dxfUseStandardSize`,
-    `dxfGetColors`, `dxfUseDraftVisGroups`, `dxfFillMode`,
+    `dxfGetColors`, `dxfUseDraftVisGroups`, `dxfMakeFaceMode`,
     `dxfBrightBackground`, `dxfDefaultColor`, `dxfUseLegacyImporter`,
     `dxfExportBlocks`, `dxfScaling`, `dxfUseLegacyExporter`
 
@@ -4146,14 +4170,14 @@ def readPreferences():
     """
     # reading parameters
     if gui and params.get_param("dxfShowDialog"):
-        FreeCADGui.showPreferences("Import-Export", 3)
+        FreeCADGui.showPreferencesByName("Import-Export", ":/ui/preferences-dxf.ui")
     global dxfCreatePart, dxfCreateDraft, dxfCreateSketch
     global dxfDiscretizeCurves, dxfStarBlocks
     global dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth
     global dxfImportTexts, dxfImportLayouts
     global dxfImportPoints, dxfImportHatches, dxfUseStandardSize
     global dxfGetColors, dxfUseDraftVisGroups
-    global dxfFillMode, dxfBrightBackground, dxfDefaultColor
+    global dxfMakeFaceMode, dxfBrightBackground, dxfDefaultColor
     global dxfUseLegacyImporter, dxfExportBlocks, dxfScaling
     global dxfUseLegacyExporter
     dxfCreatePart = params.get_param("dxfCreatePart")
@@ -4171,7 +4195,7 @@ def readPreferences():
     dxfUseStandardSize = params.get_param("dxfStdSize")
     dxfGetColors = params.get_param("dxfGetOriginalColors")
     dxfUseDraftVisGroups = params.get_param("dxfUseDraftVisGroups")
-    dxfFillMode = params.get_param("fillmode")
+    dxfMakeFaceMode = params.get_param("MakeFaceMode")
     dxfUseLegacyImporter = params.get_param("dxfUseLegacyImporter")
     dxfUseLegacyExporter = params.get_param("dxfUseLegacyExporter")
     dxfBrightBackground = isBrightBackground()

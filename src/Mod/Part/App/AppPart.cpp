@@ -34,6 +34,7 @@
 #include <Base/ExceptionFactory.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
+#include <Base/ServiceProvider.h>
 #include <Base/PrecisionPy.h>
 
 #include "ArcOfCirclePy.h"
@@ -58,6 +59,7 @@
 #include "ConicPy.h"
 #include "CustomFeature.h"
 #include "CylinderPy.h"
+#include "Datums.h"
 #include "DatumFeature.h"
 #include "EllipsePy.h"
 #include "FaceMaker.h"
@@ -186,7 +188,11 @@
 
 #include <OCAF/ImportExportSettings.h>
 #include "MeasureClient.h"
+
 #include <FuzzyHelper.h>
+
+#include <App/Services.h>
+#include <Services.h>
 
 namespace Part {
 extern PyObject* initModule();
@@ -534,6 +540,10 @@ PyMOD_INIT_FUNC(Part)
     Part::GeomSurfaceOfRevolution 	::init();
     Part::GeomSurfaceOfExtrusion  	::init();
     Part::Datum                   	::init();
+    Part::DatumPlane             	::init();
+    Part::DatumLine                	::init();
+    Part::DatumPoint               	::init();
+    Part::LocalCoordinateSystem     ::init();
 
     // Geometry2d types
     Part::Geometry2d              ::init();
@@ -567,7 +577,10 @@ PyMOD_INIT_FUNC(Part)
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
     
     Part::FuzzyHelper::setBooleanFuzzy(hGrp->GetFloat("BooleanFuzzy",10.0));
-    
+
+    Base::registerServiceImplementation<App::SubObjectPlacementProvider>(new AttacherSubObjectPlacement);
+    Base::registerServiceImplementation<App::CenterOfMassProvider>(new PartCenterOfMass);
+
     PyMOD_Return(partModule);
 }
 // clang-format on

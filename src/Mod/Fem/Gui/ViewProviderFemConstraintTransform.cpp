@@ -70,7 +70,7 @@ bool ViewProviderFemConstraintTransform::setEdit(int ModNum)
 
 void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
 {
-    auto obj = static_cast<Fem::ConstraintTransform*>(this->getObject());
+    auto obj = this->getObject<Fem::ConstraintTransform>();
 
     if (prop == &obj->Rotation) {
         updateSymbol();
@@ -106,7 +106,7 @@ void ViewProviderFemConstraintTransform::transformSymbol(const Base::Vector3d& p
                                                          const Base::Vector3d& normal,
                                                          SbMatrix& mat) const
 {
-    auto obj = static_cast<const Fem::ConstraintTransform*>(this->getObject());
+    auto obj = this->getObject<const Fem::ConstraintTransform>();
 
     std::string transType = obj->TransformType.getValueAsString();
     if (transType == "Rectangular") {
@@ -131,7 +131,7 @@ void ViewProviderFemConstraintTransform::transformSymbol(const Base::Vector3d& p
 
 void ViewProviderFemConstraintTransform::transformExtraSymbol() const
 {
-    auto obj = static_cast<const Fem::ConstraintTransform*>(this->getObject());
+    auto obj = this->getObject<const Fem::ConstraintTransform>();
     std::string transType = obj->TransformType.getValueAsString();
     if (transType == "Cylindrical") {
         SoTransform* trans = getExtraSymbolTransform();

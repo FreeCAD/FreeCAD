@@ -222,7 +222,7 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
       <translation>Nyomja le a 'Start' gombot, majd válasszon pontokat a hálón; ha elegendő pont van beállítva, kattintson a jobb gombbal, és válassza a 'Létrehozás' parancsot. Ismételje meg ezt a folyamatot, hogy több görbét hozzon létre. A művelet végrehajtásához zárja be ezt a feladatpanelt.
 
-Ez a parancs csak 'háló' objektummal működik, normál felülettel vagy felszínnel nem. Az objektum hálóvá alakításához használja a Háló munkaterület eszközeit.</translation>
+Ez a parancs csak 'háló' objektummal működik, normál felülettel vagy felszínnel nem. Az objektum hálóvá alakításához használja a Háló munkafelület eszközeit.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -339,8 +339,8 @@ felületeltérés szorozva az aktuális hálószakasz hosszával (él)</translat
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation>A hálószegmensek az objektum felületek színe szerint lesznek csoportosítva.
-Ezek a csoportok a hálókimeneti formátumokhoz lesznek exportálva, amelyek
+      <translation>A hálószegmensek az objektum felületek színe szerint kerülnek csoportosításra.
+Ezek a csoportokat a hálókimeneti formátumokhoz exportálják, amelyek
 támogatják ezt a tulajdonságot (pl. OBJ formátum).</translation>
     </message>
     <message>

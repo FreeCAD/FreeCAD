@@ -44,7 +44,7 @@ namespace Gui {
          * \param path A path to a mod directory that contains a preferencePack
          * \param metadata The metadata from the package.xml file describing this preferencePack
          */
-        PreferencePack(const boost::filesystem::path& path, const App::Metadata& metadata);
+        PreferencePack(const std::filesystem::path& path, const App::Metadata& metadata);
 
         ~PreferencePack() = default;
 
@@ -68,7 +68,7 @@ namespace Gui {
 
         void applyConfigChanges() const;
 
-        boost::filesystem::path _path;
+        std::filesystem::path _path;
         App::Metadata _metadata;
 
     };
@@ -168,7 +168,7 @@ namespace Gui {
         struct TemplateFile {
             std::string group; // Generally the Add-On/Mod/Package name
             std::string name;
-            boost::filesystem::path path;
+            std::filesystem::path path;
         };
 
         /**
@@ -176,7 +176,7 @@ namespace Gui {
          *
          * If the named preferencePack does not exist, this creates it on disk. If it does exist, this overwrites the original.
          */
-        void save(const std::string& name, const std::vector<TemplateFile>& templates);
+        void save(const std::string& name, const std::string& directory, const std::vector<TemplateFile>& templates);
 
 
         std::vector<TemplateFile> templateFiles(bool rescan = false);
@@ -184,17 +184,37 @@ namespace Gui {
         /**
          * Get a list of all available config file backups. Backups are currently stored for one week.
          */
-        std::vector<boost::filesystem::path> configBackups() const;
+        std::vector<std::filesystem::path> configBackups() const;
 
         /**
          * Import an existing config file as a preference pack with a given name.
          */
-        void importConfig(const std::string &packName, const boost::filesystem::path &path);
+        void importConfig(const std::string &packName, const std::filesystem::path &path);
+
+        /**
+         * Get a list of all mod directories.
+         */
+        std::vector<std::filesystem::path> modPaths() const;
+
+        /**
+         * Get the path to the saved preference packs.
+         */
+        std::filesystem::path getSavedPreferencePacksPath() const;
+
+        /**
+         * Get the path to the preference packs of the resource directory.
+         */
+        std::filesystem::path getResourcePreferencePacksPath() const;
+
+        /**
+         * Collect all preference packs of a directory.
+         */
+        std::vector<std::string> getPacksFromDirectory(const std::filesystem::path& path) const;
 
     private:
 
-        void FindPreferencePacksInPackage(const boost::filesystem::path& mod);
-        void TryFindPreferencePacksInPackage(const boost::filesystem::path& mod);
+        void FindPreferencePacksInPackage(const std::filesystem::path& mod);
+        void TryFindPreferencePacksInPackage(const std::filesystem::path& mod);
 
         void BackupCurrentConfig() const;
 
@@ -202,7 +222,7 @@ namespace Gui {
 
         void AddPackToMetadata(const std::string &packName) const;
 
-        std::vector<boost::filesystem::path> _preferencePackPaths;
+        std::vector<std::filesystem::path> _preferencePackPaths;
         std::vector<TemplateFile> _templateFiles;
         std::map<std::string, PreferencePack> _preferencePacks;
         mutable std::mutex _mutex;

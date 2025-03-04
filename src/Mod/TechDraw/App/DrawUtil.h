@@ -91,7 +91,9 @@ class TechDrawExport DrawUtil
 {
 public:
     static int getIndexFromName(const std::string& geomName);
+    static std::vector<int> getIndexFromName(const std::vector<std::string>& geomNames);
     static std::string getGeomTypeFromName(const std::string& geomName);
+    static bool isGeomTypeConsistent(const std::vector<std::string>& geomNames);
     static std::string makeGeomName(const std::string& geomType, int index);
     static bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2, double tolerance = VERTEXTOLERANCE);
     static bool isZeroEdge(TopoDS_Edge e, double tolerance = VERTEXTOLERANCE);
@@ -116,13 +118,12 @@ public:
 
     static Base::Vector3d vertex2Vector(const TopoDS_Vertex& v);
 
+    template <typename T>
+    static std::string formatVector(const T& v)
+    {
+        return formatVector(toVector3d(v));
+    }
     static std::string formatVector(const Base::Vector3d& v);
-    static std::string formatVector(const gp_Dir& v);
-    static std::string formatVector(const gp_Dir2d& v);
-    static std::string formatVector(const gp_Vec& v);
-    static std::string formatVector(const gp_Pnt& v);
-    static std::string formatVector(const gp_Pnt2d& v);
-    static std::string formatVector(const QPointF& v);
 
     static bool vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2);
     //!std::map require comparator to be a type not a function
@@ -169,36 +170,27 @@ public:
     static Base::Vector2d Intersect2d(Base::Vector2d p1, Base::Vector2d d1, Base::Vector2d p2,
                                       Base::Vector2d d2);
 
-    static Base::Vector3d toVector3d(const gp_Pnt gp)
+
+    template <typename T>
+    static Base::Vector3d toVector3d(const T& v)
     {
-        return Base::Vector3d(gp.X(), gp.Y(), gp.Z());
-    }
-    static Base::Vector3d toVector3d(const gp_Dir gp)
-    {
-        return Base::Vector3d(gp.X(), gp.Y(), gp.Z());
-    }
-    static Base::Vector3d toVector3d(const gp_Vec gp)
-    {
-        return Base::Vector3d(gp.X(), gp.Y(), gp.Z());
-    }
-    static Base::Vector3d toVector3d(const QPointF gp)
-    {
-        return Base::Vector3d(gp.x(), gp.y(), 0.0);
+        return Base::Vector3d(v.X(), v.Y(), v.Z());
     }
 
-    static gp_Pnt togp_Pnt(const Base::Vector3d v)
+    static Base::Vector3d toVector3d(const QPointF& v)
     {
-        return gp_Pnt(v.x, v.y, v.z);
+        return Base::Vector3d(v.x(), v.y(), 0);
     }
-    static gp_Dir togp_Dir(const Base::Vector3d v)
+
+    //! To gp_*
+    // TODO: Would this be relevant to move to Base::Vector3d? Probably
+    template <typename T>
+    static T to(const Base::Vector3d &v)
     {
-        return gp_Dir(v.x, v.y, v.z);
+        return T(v.x, v.y, v.z);
     }
-    static gp_Vec togp_Vec(const Base::Vector3d v)
-    {
-        return gp_Vec(v.x, v.y, v.z);
-    }
-    static QPointF toQPointF(const Base::Vector3d v)
+
+    static QPointF toQPointF(const Base::Vector3d &v)
     {
         return QPointF(v.x, v.y);
     }
@@ -210,8 +202,8 @@ public:
     static std::vector<std::string> split(std::string csvLine);
     static std::vector<std::string> tokenize(std::string csvLine,
                                              std::string delimiter = ", $$$, ");
-    static App::Color pyTupleToColor(PyObject* pColor);
-    static PyObject* colorToPyTuple(App::Color color);
+    static Base::Color pyTupleToColor(PyObject* pColor);
+    static PyObject* colorToPyTuple(Base::Color color);
     static bool isCrazy(TopoDS_Edge e);
     static Base::Vector3d getFaceCenter(TopoDS_Face f);
     static bool circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C);
@@ -293,6 +285,13 @@ public:
     static void dumpCS3(const char* text, const gp_Ax3& CS);
     static void dumpEdges(const char* text, const TopoDS_Shape& s);
 };
+
+
+// GCC BUG 85282, wanting this to be outside class body. This is only the declaration, the definition .cpp
+//template<> std::string DrawUtil::formatVector<Base::Vector3d>(const Base::Vector3d &v);
+
+// GCC BUG 85282, wanting this to be outside class body. This is only the declaration, the definition .cpp
+//template<> Base::Vector3d DrawUtil::toVector3d<QPointF>(const QPointF& v);
 
 }//end namespace TechDraw
 #endif

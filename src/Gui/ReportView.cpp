@@ -32,7 +32,7 @@
 #endif
 
 #include <Base/Interpreter.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 
 #include "ReportView.h"
 #include "Application.h"
@@ -64,7 +64,7 @@ ReportView::ReportView( QWidget* parent )
     tabLayout->setContentsMargins( 0, 0, 0, 0 );
 
     tabWidget = new QTabWidget( this );
-    tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
+    tabWidget->setObjectName(QStringLiteral("tabWidget"));
     tabWidget->setTabPosition(QTabWidget::South);
     tabWidget->setTabShape(QTabWidget::Rounded);
     tabLayout->addWidget( tabWidget, 0, 0 );
@@ -511,7 +511,7 @@ void ReportOutput::SendLog(const std::string& notifiername, const std::string& m
     if (style == ReportHighlighter::LogText) {
         if (messageSize > 0 && qMsg.size()>messageSize) {
             qMsg.truncate(messageSize);
-            qMsg += QString::fromLatin1("...\n");
+            qMsg += QStringLiteral("...\n");
         }
     }
 
@@ -566,7 +566,7 @@ void ReportOutput::changeEvent(QEvent *ev)
     if (ev->type() == QEvent::StyleChange) {
         QPalette pal = qApp->palette();
         QColor color = pal.windowText().color();
-        unsigned int text = App::Color::asPackedRGB<QColor>(color);
+        unsigned int text = Base::Color::asPackedRGB<QColor>(color);
         auto value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
         value = getWindowParameter()->GetUnsigned("colorText", value);
@@ -658,7 +658,7 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     QAction* copy = menu->addAction(copyStr, this, &ReportOutput::copy);
     copy->setShortcut(QKeySequence(QKeySequence::Copy));
     copy->setEnabled(textCursor().hasSelection());
-    QIcon icon = QIcon::fromTheme(QString::fromLatin1("edit-copy"));
+    QIcon icon = QIcon::fromTheme(QStringLiteral("edit-copy"));
     if (!icon.isNull())
         copy->setIcon(icon);
 
@@ -678,7 +678,7 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
 void ReportOutput::onSaveAs()
 {
     QString fn = QFileDialog::getSaveFileName(this, tr("Save Report Output"), QString(),
-        QString::fromLatin1("%1 (*.txt *.log)").arg(tr("Plain Text Files")));
+        QStringLiteral("%1 (*.txt *.log)").arg(tr("Plain Text Files")));
     if (!fn.isEmpty()) {
         QFileInfo fi(fn);
         if (fi.completeSuffix().isEmpty())
@@ -831,7 +831,7 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
     }
     else if (strcmp(sReason, "colorText") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setTextColor(App::Color::fromPackedRGB<QColor>(col));
+        reportHl->setTextColor(Base::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "colorCriticalText") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
@@ -839,15 +839,15 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
     }
     else if (strcmp(sReason, "colorLogging") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setLogColor(App::Color::fromPackedRGB<QColor>(col));
+        reportHl->setLogColor(Base::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "colorWarning") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setWarningColor(App::Color::fromPackedRGB<QColor>(col));
+        reportHl->setWarningColor(Base::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "colorError") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
-        reportHl->setErrorColor(App::Color::fromPackedRGB<QColor>(col));
+        reportHl->setErrorColor(Base::Color::fromPackedRGB<QColor>(col));
     }
     else if (strcmp(sReason, "checkGoToEnd") == 0) {
         gotoEnd = rclGrp.GetBool(sReason, gotoEnd);

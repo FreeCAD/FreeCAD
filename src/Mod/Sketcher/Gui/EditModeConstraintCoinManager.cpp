@@ -2095,23 +2095,23 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
 
 QString EditModeConstraintCoinManager::getPresentationString(const Constraint* constraint)
 {
-    QString nameStr;           // name parameter string
+    std::string nameStr;       // name parameter string
     QString valueStr;          // dimensional value string
-    QString presentationStr;   // final return string
-    QString unitStr;           // the actual unit string
-    QString baseUnitStr;       // the expected base unit string
+    std::string unitStr;       // the actual unit string
+    std::string baseUnitStr;   // the expected base unit string
     double factor;             // unit scaling factor, currently not used
     Base::UnitSystem unitSys;  // current unit system
 
     if (!constraint->isActive) {
-        return QString::fromLatin1(" ");
+        return QStringLiteral(" ");
     }
 
     // Get the current name parameter string of the constraint
-    nameStr = QString::fromStdString(constraint->Name);
+    nameStr = constraint->Name;
 
     // Get the current value string including units
-    valueStr = constraint->getPresentationValue().getUserString(factor, unitStr);
+    valueStr =
+        QString::fromStdString(constraint->getPresentationValue().getUserString(factor, unitStr));
 
     // Hide units if user has requested it, is being displayed in the base
     // units, and the schema being used has a clear base unit in the first
@@ -2127,19 +2127,19 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
         switch (unitSys) {
             case Base::UnitSystem::SI1:
             case Base::UnitSystem::MmMin:
-                baseUnitStr = QString::fromLatin1("mm");
+                baseUnitStr = "mm";
                 break;
 
             case Base::UnitSystem::SI2:
-                baseUnitStr = QString::fromLatin1("m");
+                baseUnitStr = "m";
                 break;
 
             case Base::UnitSystem::ImperialDecimal:
-                baseUnitStr = QString::fromLatin1("in");
+                baseUnitStr = "in";
                 break;
 
             case Base::UnitSystem::Centimeters:
-                baseUnitStr = QString::fromLatin1("cm");
+                baseUnitStr = "cm";
                 break;
 
             default:
@@ -2147,13 +2147,13 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
                 break;
         }
 
-        if (!baseUnitStr.isEmpty()) {
+        if (!baseUnitStr.empty()) {
             // expected unit string matches actual unit string. remove.
-            if (QString::compare(baseUnitStr, unitStr) == 0) {
+            if (baseUnitStr.compare(unitStr) == 0) {
                 // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
                 QRegularExpression rxUnits(
-                    QString::fromUtf8(" \\D*$"));  // space + any non digits at end of string
-                valueStr.remove(rxUnits);          // getUserString(defaultDecimals) without units
+                    QStringLiteral(" \\D*$"));  // space + any non digits at end of string
+                valueStr.remove(rxUnits);       // getUserString(defaultDecimals) without units
             }
         }
     }
@@ -2171,17 +2171,18 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
     %N - the constraint name parameter
     %V - the value of the dimensional constraint, including any unit characters
     */
-    if (constraintParameters.bShowDimensionalName && !nameStr.isEmpty()) {
+    if (constraintParameters.bShowDimensionalName && !nameStr.empty()) {
+        QString presentationStr;
         if (constraintParameters.sDimensionalStringFormat.contains(QLatin1String("%V"))
             || constraintParameters.sDimensionalStringFormat.contains(QLatin1String("%N"))) {
             presentationStr = constraintParameters.sDimensionalStringFormat;
-            presentationStr.replace(QLatin1String("%N"), nameStr);
+            presentationStr.replace(QLatin1String("%N"), QString::fromStdString(nameStr));
             presentationStr.replace(QLatin1String("%V"), valueStr);
         }
         else {
             // user defined format string does not contain any valid parameter, using default format
             // "%N = %V"
-            presentationStr = nameStr + QLatin1String(" = ") + valueStr;
+            presentationStr = QString::fromStdString(nameStr) + QStringLiteral(" = ") + valueStr;
         }
 
         return presentationStr;
@@ -2331,7 +2332,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                     }
                     else {
                         // It's a constraint icon, not a combined one
-                        QStringList constrIdStrings = constrIdsStr.split(QString::fromLatin1(","));
+                        QStringList constrIdStrings = constrIdsStr.split(QStringLiteral(","));
                         while (!constrIdStrings.empty()) {
                             auto constraintid = constrIdStrings.takeAt(0).toInt();
                             constrIndices.insert(constraintid);
@@ -2550,7 +2551,7 @@ void EditModeConstraintCoinManager::combineConstraintIcons(IconQueue iconQueue)
 
         // we group only icons not being Symmetry icons, because we want those on the line
         // and only icons that are visible
-        if (init.type != QString::fromLatin1("Constraint_Symmetric") && init.visible) {
+        if (init.type != QStringLiteral("Constraint_Symmetric") && init.visible) {
 
             IconQueue::iterator i = iconQueue.begin();
 
@@ -2563,7 +2564,7 @@ void EditModeConstraintCoinManager::combineConstraintIcons(IconQueue iconQueue)
                         float distSquared = pow(i->position[0] - j->position[0], 2)
                             + pow(i->position[1] - j->position[1], 2);
                         if (distSquared <= maxDistSquared
-                            && (*i).type != QString::fromLatin1("Constraint_Symmetric")) {
+                            && (*i).type != QStringLiteral("Constraint_Symmetric")) {
                             // Found an icon in iconQueue that's close enough to
                             // a member of thisGroup, so move it into thisGroup
                             thisGroup.push_back(*i);
@@ -2644,7 +2645,7 @@ void EditModeConstraintCoinManager::drawMergedConstraintIcons(IconQueue iconQueu
         maxColorPriority = constrColorPriority(i->constraintId);
 
         if (idString.length()) {
-            idString.append(QString::fromLatin1(","));
+            idString.append(QStringLiteral(","));
         }
         idString.append(QString::number(i->constraintId));
 
@@ -2664,7 +2665,7 @@ void EditModeConstraintCoinManager::drawMergedConstraintIcons(IconQueue iconQueu
                 iconColor = constrColor(i->constraintId);
             }
 
-            idString.append(QString::fromLatin1(",") + QString::number(i->constraintId));
+            idString.append(QStringLiteral(",") + QString::number(i->constraintId));
 
             i = iconQueue.erase(i);
         }
@@ -2756,7 +2757,7 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(const QString& type,
                                                        int* vPad)
 {
     // Constants to help create constraint icons
-    QString joinStr = QString::fromLatin1(", ");
+    QString joinStr = QStringLiteral(", ");
 
     QPixmap pxMap;
     std::stringstream constraintName;
@@ -2869,25 +2870,25 @@ QString EditModeConstraintCoinManager::iconTypeFromConstraint(Constraint* constr
 
     switch (constraint->Type) {
         case Horizontal:
-            return QString::fromLatin1("Constraint_Horizontal");
+            return QStringLiteral("Constraint_Horizontal");
         case Vertical:
-            return QString::fromLatin1("Constraint_Vertical");
+            return QStringLiteral("Constraint_Vertical");
         case PointOnObject:
-            return QString::fromLatin1("Constraint_PointOnObject");
+            return QStringLiteral("Constraint_PointOnObject");
         case Tangent:
-            return QString::fromLatin1("Constraint_Tangent");
+            return QStringLiteral("Constraint_Tangent");
         case Parallel:
-            return QString::fromLatin1("Constraint_Parallel");
+            return QStringLiteral("Constraint_Parallel");
         case Perpendicular:
-            return QString::fromLatin1("Constraint_Perpendicular");
+            return QStringLiteral("Constraint_Perpendicular");
         case Equal:
-            return QString::fromLatin1("Constraint_EqualLength");
+            return QStringLiteral("Constraint_EqualLength");
         case Symmetric:
-            return QString::fromLatin1("Constraint_Symmetric");
+            return QStringLiteral("Constraint_Symmetric");
         case SnellsLaw:
-            return QString::fromLatin1("Constraint_SnellsLaw");
+            return QStringLiteral("Constraint_SnellsLaw");
         case Block:
-            return QString::fromLatin1("Constraint_Block");
+            return QStringLiteral("Constraint_Block");
         default:
             return QString();
     }

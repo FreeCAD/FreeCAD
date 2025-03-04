@@ -31,7 +31,7 @@ These modifications are Copyright (c) 2019 Zheng Lei (realthunder.dev@gmail.com)
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <string>
+#include <array>
 #endif
 
 #include "Base64.h"

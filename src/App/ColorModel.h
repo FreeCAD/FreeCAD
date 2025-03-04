@@ -32,11 +32,11 @@
 #include <string>
 #include <vector>
 
-
 namespace App
 {
 
-enum class Visibility {
+enum class Visibility
+{
     Default,
     Grayed,
     Invisible
@@ -44,12 +44,13 @@ enum class Visibility {
 
 using VisibilityFlags = Base::Flags<Visibility>;
 
-enum class ColorBarStyle {
+enum class ColorBarStyle
+{
     FLOW,
     ZERO_BASED
 };
 
-}
+}  // namespace App
 
 ENABLE_BITMASK_OPERATORS(App::Visibility)
 
@@ -62,11 +63,11 @@ namespace App
 class AppExport ValueFloatToRGB
 {
 public:
-    virtual Color getColor(float fVal) const = 0;
+    virtual Base::Color getColor(float fVal) const = 0;
 
 protected:
-    ValueFloatToRGB () = default;
-    virtual ~ValueFloatToRGB () = default;
+    ValueFloatToRGB() = default;
+    virtual ~ValueFloatToRGB() = default;
 };
 
 
@@ -74,165 +75,197 @@ class AppExport ColorModel
 {
 public:
     ColorModel() = default;
-    explicit ColorModel (std::size_t usCt) {
+    explicit ColorModel(std::size_t usCt)
+    {
         colors.resize(usCt);
     }
     ColorModel(const ColorModel&) = default;
-    virtual ~ColorModel () = default;
-    ColorModel& operator = (const ColorModel&) = default;
-    std::size_t getCountColors() const {
+    virtual ~ColorModel() = default;
+    ColorModel& operator=(const ColorModel&) = default;
+    std::size_t getCountColors() const
+    {
         return colors.size();
     }
-    std::vector<Color> colors;
+    std::vector<Base::Color> colors;
 };
 
-class AppExport ColorModelBlueGreenRed : public ColorModel
+class AppExport ColorModelBlueGreenRed: public ColorModel
 {
 public:
-    ColorModelBlueGreenRed () : ColorModel(5) {
-        colors[0] = Color(0, 0, 1);
-        colors[1] = Color(0, 1, 1);
-        colors[2] = Color(0, 1, 0);
-        colors[3] = Color(1, 1, 0);
-        colors[4] = Color(1, 0, 0);
+    ColorModelBlueGreenRed()
+        : ColorModel(5)
+    {
+        colors[0] = Base::Color(0, 0, 1);
+        colors[1] = Base::Color(0, 1, 1);
+        colors[2] = Base::Color(0, 1, 0);
+        colors[3] = Base::Color(1, 1, 0);
+        colors[4] = Base::Color(1, 0, 0);
     }
 };
 
-class AppExport ColorModelBlueCyanGreen : public ColorModel
+class AppExport ColorModelBlueCyanGreen: public ColorModel
 {
 public:
-    ColorModelBlueCyanGreen () : ColorModel(3) {
-        colors[0] = Color(0, 0, 1);
-        colors[1] = Color(0, 1, 1);
-        colors[2] = Color(0, 1, 0);
+    ColorModelBlueCyanGreen()
+        : ColorModel(3)
+    {
+        colors[0] = Base::Color(0, 0, 1);
+        colors[1] = Base::Color(0, 1, 1);
+        colors[2] = Base::Color(0, 1, 0);
     }
 };
 
-class AppExport ColorModelGreenYellowRed : public ColorModel
+class AppExport ColorModelGreenYellowRed: public ColorModel
 {
 public:
-    ColorModelGreenYellowRed () : ColorModel(3) {
-        colors[0] = Color(0, 1, 0);
-        colors[1] = Color(1, 1, 0);
-        colors[2] = Color(1, 0, 0);
+    ColorModelGreenYellowRed()
+        : ColorModel(3)
+    {
+        colors[0] = Base::Color(0, 1, 0);
+        colors[1] = Base::Color(1, 1, 0);
+        colors[2] = Base::Color(1, 0, 0);
     }
 };
 
-class AppExport ColorModelRedGreenBlue : public ColorModel
+class AppExport ColorModelRedGreenBlue: public ColorModel
 {
 public:
-    ColorModelRedGreenBlue () : ColorModel(5) {
-        colors[0] = Color(1, 0, 0);
-        colors[1] = Color(1, 1, 0);
-        colors[2] = Color(0, 1, 0);
-        colors[3] = Color(0, 1, 1);
-        colors[4] = Color(0, 0, 1);
+    ColorModelRedGreenBlue()
+        : ColorModel(5)
+    {
+        colors[0] = Base::Color(1, 0, 0);
+        colors[1] = Base::Color(1, 1, 0);
+        colors[2] = Base::Color(0, 1, 0);
+        colors[3] = Base::Color(0, 1, 1);
+        colors[4] = Base::Color(0, 0, 1);
     }
 };
 
-class AppExport ColorModelGreenCyanBlue : public ColorModel
+class AppExport ColorModelGreenCyanBlue: public ColorModel
 {
 public:
-    ColorModelGreenCyanBlue () : ColorModel(3) {
-        colors[0] = Color(0, 1, 0);
-        colors[1] = Color(0, 1, 1);
-        colors[2] = Color(0, 0, 1);
+    ColorModelGreenCyanBlue()
+        : ColorModel(3)
+    {
+        colors[0] = Base::Color(0, 1, 0);
+        colors[1] = Base::Color(0, 1, 1);
+        colors[2] = Base::Color(0, 0, 1);
     }
 };
 
-class AppExport ColorModelRedYellowGreen : public ColorModel
+class AppExport ColorModelRedYellowGreen: public ColorModel
 {
 public:
-    ColorModelRedYellowGreen () : ColorModel(3) {
-        colors[0] = Color(1, 0, 0);
-        colors[1] = Color(1, 1, 0);
-        colors[2] = Color(0, 1, 0);
+    ColorModelRedYellowGreen()
+        : ColorModel(3)
+    {
+        colors[0] = Base::Color(1, 0, 0);
+        colors[1] = Base::Color(1, 1, 0);
+        colors[2] = Base::Color(0, 1, 0);
     }
 };
 
-class AppExport ColorModelBlueWhiteRed : public ColorModel
+class AppExport ColorModelBlueWhiteRed: public ColorModel
 {
 public:
-    ColorModelBlueWhiteRed () : ColorModel(5) {
-        colors[0] = Color(0, 0, 1);
-        colors[1] = Color(float(85.0 / 255), float(170.0 / 255), 1);
-        colors[2] = Color(1, 1, 1);
-        colors[3] = Color(1, float(85.0 / 255), 0);
-        colors[4] = Color(1, 0, 0);
+    ColorModelBlueWhiteRed()
+        : ColorModel(5)
+    {
+        colors[0] = Base::Color(0, 0, 1);
+        colors[1] = Base::Color(float(85.0 / 255), float(170.0 / 255), 1);
+        colors[2] = Base::Color(1, 1, 1);
+        colors[3] = Base::Color(1, float(85.0 / 255), 0);
+        colors[4] = Base::Color(1, 0, 0);
     }
 };
 
-class AppExport ColorModelBlueWhite : public ColorModel
+class AppExport ColorModelBlueWhite: public ColorModel
 {
 public:
-    ColorModelBlueWhite () : ColorModel(3) {
-        colors[0] = Color(0, 0, 1);
-        colors[1] = Color(float(85.0 / 255), float(170.0 / 255), 1);
-        colors[2] = Color(1, 1, 1);
+    ColorModelBlueWhite()
+        : ColorModel(3)
+    {
+        colors[0] = Base::Color(0, 0, 1);
+        colors[1] = Base::Color(float(85.0 / 255), float(170.0 / 255), 1);
+        colors[2] = Base::Color(1, 1, 1);
     }
 };
 
-class AppExport ColorModelWhiteRed : public ColorModel
+class AppExport ColorModelWhiteRed: public ColorModel
 {
 public:
-    ColorModelWhiteRed () : ColorModel(3) {
-        colors[0] = Color(1, 1, 1);
-        colors[1] = Color(1, float(85.0 / 255), 0);
-        colors[2] = Color(1, 0, 0);
+    ColorModelWhiteRed()
+        : ColorModel(3)
+    {
+        colors[0] = Base::Color(1, 1, 1);
+        colors[1] = Base::Color(1, float(85.0 / 255), 0);
+        colors[2] = Base::Color(1, 0, 0);
     }
 };
 
-class AppExport ColorModelBlackWhite : public ColorModel
+class AppExport ColorModelBlackWhite: public ColorModel
 {
 public:
-    ColorModelBlackWhite () : ColorModel(2) {
-        colors[0] = Color(0, 0, 0);
-        colors[1] = Color(1, 1, 1);
+    ColorModelBlackWhite()
+        : ColorModel(2)
+    {
+        colors[0] = Base::Color(0, 0, 0);
+        colors[1] = Base::Color(1, 1, 1);
     }
 };
 
-class AppExport ColorModelBlackGray : public ColorModel
+class AppExport ColorModelBlackGray: public ColorModel
 {
 public:
-    ColorModelBlackGray () : ColorModel(2) {
-        colors[0] = Color(0.0f, 0.0f, 0.0f);
-        colors[1] = Color(0.5f, 0.5f, 0.5f);
+    ColorModelBlackGray()
+        : ColorModel(2)
+    {
+        colors[0] = Base::Color(0.0f, 0.0f, 0.0f);
+        colors[1] = Base::Color(0.5f, 0.5f, 0.5f);
     }
 };
 
-class AppExport ColorModelGrayWhite : public ColorModel
+class AppExport ColorModelGrayWhite: public ColorModel
 {
 public:
-    ColorModelGrayWhite () : ColorModel(2) {
-        colors[0] = Color(0.5f, 0.5f, 0.5f);
-        colors[1] = Color(1.0f, 1.0f, 1.0f);
+    ColorModelGrayWhite()
+        : ColorModel(2)
+    {
+        colors[0] = Base::Color(0.5f, 0.5f, 0.5f);
+        colors[1] = Base::Color(1.0f, 1.0f, 1.0f);
     }
 };
 
-class AppExport ColorModelWhiteBlack : public ColorModel
+class AppExport ColorModelWhiteBlack: public ColorModel
 {
 public:
-    ColorModelWhiteBlack () : ColorModel(2) {
-        colors[0] = Color(1, 1, 1);
-        colors[1] = Color(0, 0, 0);
+    ColorModelWhiteBlack()
+        : ColorModel(2)
+    {
+        colors[0] = Base::Color(1, 1, 1);
+        colors[1] = Base::Color(0, 0, 0);
     }
 };
 
-class AppExport ColorModelWhiteGray : public ColorModel
+class AppExport ColorModelWhiteGray: public ColorModel
 {
 public:
-    ColorModelWhiteGray () : ColorModel(2) {
-        colors[0] = Color(1.0f, 1.0f, 1.0f);
-        colors[1] = Color(0.5f, 0.5f, 0.5f);
+    ColorModelWhiteGray()
+        : ColorModel(2)
+    {
+        colors[0] = Base::Color(1.0f, 1.0f, 1.0f);
+        colors[1] = Base::Color(0.5f, 0.5f, 0.5f);
     }
 };
 
-class AppExport ColorModelGrayBlack : public ColorModel
+class AppExport ColorModelGrayBlack: public ColorModel
 {
 public:
-    ColorModelGrayBlack () : ColorModel(2) {
-        colors[0] = Color(0.5f, 0.5f, 0.5f);
-        colors[1] = Color(0.0f, 0.0f, 0.0f);
+    ColorModelGrayBlack()
+        : ColorModel(2)
+    {
+        colors[0] = Base::Color(0.5f, 0.5f, 0.5f);
+        colors[1] = Base::Color(0.0f, 0.0f, 0.0f);
     }
 };
 
@@ -252,82 +285,95 @@ struct AppExport ColorModelPack
 class AppExport ColorField
 {
 public:
-    ColorField ();
-    ColorField (const ColorField &rclCF) = default;
-    ColorField (const ColorModel &rclModel, float fMin, float fMax, std::size_t usCt);
-    virtual ~ColorField () = default;
+    ColorField();
+    ColorField(const ColorField& rclCF) = default;
+    ColorField(const ColorModel& rclModel, float fMin, float fMax, std::size_t usCt);
+    virtual ~ColorField() = default;
 
-    ColorField& operator = (const ColorField &rclCF);
+    ColorField& operator=(const ColorField& rclCF);
 
-    std::size_t getCountColors () const {
+    std::size_t getCountColors() const
+    {
         return ctColors;
     }
-    void set (const ColorModel &rclModel, float fMin, float fMax, std::size_t usCt);
-    void setCountColors (std::size_t usCt) {
+    void set(const ColorModel& rclModel, float fMin, float fMax, std::size_t usCt);
+    void setCountColors(std::size_t usCt)
+    {
         set(colorModel, fMin, fMax, usCt);
     }
-    void setRange (float fMin, float fMax) {
+    void setRange(float fMin, float fMax)
+    {
         set(colorModel, fMin, fMax, ctColors);
     }
-    void getRange (float &rfMin, float &rfMax) {
-        rfMin = fMin; rfMax = fMax;
+    void getRange(float& rfMin, float& rfMax)
+    {
+        rfMin = fMin;
+        rfMax = fMax;
     }
-    std::size_t getMinColors () const {
+    std::size_t getMinColors() const
+    {
         return colorModel.getCountColors();
     }
-    void setColorModel (const ColorModel &rclModel);
-    const ColorModel& getColorModel () const {
+    void setColorModel(const ColorModel& rclModel);
+    const ColorModel& getColorModel() const
+    {
         return colorModel;
     }
-    void setDirect (std::size_t usInd, Color clCol) {
+    void setDirect(std::size_t usInd, Base::Color clCol)
+    {
         colorField[usInd] = clCol;
     }
-    float getMinValue () const {
+    float getMinValue() const
+    {
         return fMin;
     }
-    float getMaxValue () const {
+    float getMaxValue() const
+    {
         return fMax;
     }
 
-    Color getColor (std::size_t usIndex) const {
+    Base::Color getColor(std::size_t usIndex) const
+    {
         return colorField[usIndex];
     }
-    inline Color  getColor (float fVal) const;
-    inline std::size_t getColorIndex (float fVal) const;
+    inline Base::Color getColor(float fVal) const;
+    inline std::size_t getColorIndex(float fVal) const;
 
 protected:
     ColorModel colorModel;
     float fMin, fMax;
     float fAscent, fConstant;  // Index := _fConstant + _fAscent * WERT
     std::size_t ctColors;
-    std::vector<Color> colorField;
+    std::vector<Base::Color> colorField;
 
-    void rebuild ();
-    void interpolate (Color clCol1, std::size_t usPos1, Color clCol2, std::size_t usPos2);
+    void rebuild();
+    void interpolate(Base::Color clCol1, std::size_t usPos1, Base::Color clCol2, std::size_t usPos2);
 };
 
-inline Color ColorField::getColor (float fVal) const
+inline Base::Color ColorField::getColor(float fVal) const
 {
     // if the value is outside or at the border of the range
     std::size_t ct = colorModel.getCountColors() - 1;
-    if ( fVal <= fMin )
+    if (fVal <= fMin) {
         return colorModel.colors[0];
-    else if ( fVal >= fMax )
+    }
+    else if (fVal >= fMax) {
         return colorModel.colors[ct];
+    }
 
-    // get the color field position (with 0 < t < 1)
+    // get the Base::Color field position (with 0 < t < 1)
     float t = (fVal - fMin) / (fMax - fMin);
-    Color col(1.0f, 1.0f, 1.0f); // white as default
-    for (std::size_t i=0; i<ct; i++) {
-        float r = (float)(i+1)/(float)ct;
+    Base::Color col(1.0f, 1.0f, 1.0f);  // white as default
+    for (std::size_t i = 0; i < ct; i++) {
+        float r = (float)(i + 1) / (float)ct;
         if (t < r) {
             // calculate the exact position in the subrange
             float s = t * float(ct) - float(i);
-            Color c1 = colorModel.colors[i];
-            Color c2 = colorModel.colors[i+1];
-            col.r = (1.0f-s) * c1.r + s * c2.r;
-            col.g = (1.0f-s) * c1.g + s * c2.g;
-            col.b = (1.0f-s) * c1.b + s * c2.b;
+            Base::Color c1 = colorModel.colors[i];
+            Base::Color c2 = colorModel.colors[i + 1];
+            col.r = (1.0f - s) * c1.r + s * c2.r;
+            col.g = (1.0f - s) * c1.g + s * c2.g;
+            col.b = (1.0f - s) * c1.b + s * c2.b;
             break;
         }
     }
@@ -335,23 +381,24 @@ inline Color ColorField::getColor (float fVal) const
     return col;
 }
 
-inline std::size_t ColorField::getColorIndex (float fVal) const
+inline std::size_t ColorField::getColorIndex(float fVal) const
 {
-    return std::size_t(std::min<int>(std::max<int>(int(fConstant + fAscent * fVal), 0), int(ctColors - 1)));
+    return std::size_t(
+        std::min<int>(std::max<int>(int(fConstant + fAscent * fVal), 0), int(ctColors - 1)));
 }
 
 struct AppExport ColorGradientProfile
 {
-    ColorBarStyle tStyle{ColorBarStyle::FLOW};
-    float fMin{};
-    float fMax{};
-    std::size_t ctColors{};
-    std::size_t tColorModel{};
-    VisibilityFlags visibility{Visibility::Default};
+    ColorBarStyle tStyle {ColorBarStyle::FLOW};
+    float fMin {};
+    float fMax {};
+    std::size_t ctColors {};
+    std::size_t tColorModel {};
+    VisibilityFlags visibility {Visibility::Default};
 
     ColorGradientProfile();
-    ColorGradientProfile (const ColorGradientProfile &) = default;
-    ColorGradientProfile& operator = (const ColorGradientProfile &) = default;
+    ColorGradientProfile(const ColorGradientProfile&) = default;
+    ColorGradientProfile& operator=(const ColorGradientProfile&) = default;
 
     bool isEqual(const ColorGradientProfile&) const;
 };
@@ -359,261 +406,300 @@ struct AppExport ColorGradientProfile
 class AppExport ColorGradient
 {
 public:
-    ColorGradient ();
-    ColorGradient (float fMin, float fMax, std::size_t usCtColors, ColorBarStyle tS, VisibilityFlags fl = Visibility::Default);
-    ColorGradient (const ColorGradient &) = default;
-    ColorGradient& operator = (const ColorGradient &) = default;
-    const ColorGradientProfile& getProfile() const {
+    ColorGradient();
+    ColorGradient(float fMin,
+                  float fMax,
+                  std::size_t usCtColors,
+                  ColorBarStyle tS,
+                  VisibilityFlags fl = Visibility::Default);
+    ColorGradient(const ColorGradient&) = default;
+    ColorGradient& operator=(const ColorGradient&) = default;
+    const ColorGradientProfile& getProfile() const
+    {
         return profile;
     }
     void setProfile(const ColorGradientProfile& pro);
 
-    void set (float fMin, float fMax, std::size_t usCt, ColorBarStyle tS, VisibilityFlags fl);
-    void setRange (float fMin, float fMax) {
+    void set(float fMin, float fMax, std::size_t usCt, ColorBarStyle tS, VisibilityFlags fl);
+    void setRange(float fMin, float fMax)
+    {
         set(fMin, fMax, profile.ctColors, profile.tStyle, profile.visibility);
     }
-    void getRange (float &rfMin, float &rfMax) const {
+    void getRange(float& rfMin, float& rfMax) const
+    {
         rfMin = profile.fMin;
         rfMax = profile.fMax;
     }
-    bool isOutOfRange(float fVal) const {
+    bool isOutOfRange(float fVal) const
+    {
         return ((fVal < profile.fMin) || (fVal > profile.fMax));
     }
-    std::size_t getCountColors () const {
+    std::size_t getCountColors() const
+    {
         return profile.ctColors;
     }
-    void setCountColors (std::size_t usCt) {
+    void setCountColors(std::size_t usCt)
+    {
         set(profile.fMin, profile.fMax, usCt, profile.tStyle, profile.visibility);
     }
-    void setStyle (ColorBarStyle tS) {
+    void setStyle(ColorBarStyle tS)
+    {
         set(profile.fMin, profile.fMax, profile.ctColors, tS, profile.visibility);
     }
-    std::size_t getMinColors () const;
-    ColorBarStyle getStyle () const {
+    std::size_t getMinColors() const;
+    ColorBarStyle getStyle() const
+    {
         return profile.tStyle;
     }
-    void setOutsideGrayed (bool value) {
+    void setOutsideGrayed(bool value)
+    {
         profile.visibility.setFlag(Visibility::Grayed, value);
     }
-    bool isOutsideGrayed () const {
+    bool isOutsideGrayed() const
+    {
         return profile.visibility.testFlag(Visibility::Grayed);
     }
-    void setOutsideInvisible (bool value) {
+    void setOutsideInvisible(bool value)
+    {
         profile.visibility.setFlag(Visibility::Invisible, value);
     }
-    bool isOutsideInvisible () const {
+    bool isOutsideInvisible() const
+    {
         return profile.visibility.testFlag(Visibility::Invisible);
     }
-    void setColorModel (std::size_t tModel);
-    std::size_t getColorModelType () const {
+    void setColorModel(std::size_t tModel);
+    std::size_t getColorModelType() const
+    {
         return profile.tColorModel;
     }
-    inline const ColorModel& getColorModel () const;
+    inline const ColorModel& getColorModel() const;
     std::vector<std::string> getColorModelNames() const;
-    float getMinValue () const {
+    float getMinValue() const
+    {
         return profile.fMin;
     }
-    float getMaxValue () const {
+    float getMaxValue() const
+    {
         return profile.fMax;
     }
 
-    inline Color  getColor (float fVal) const;
-    inline std::size_t getColorIndex (float fVal) const;
+    inline Base::Color getColor(float fVal) const;
+    inline std::size_t getColorIndex(float fVal) const;
 
 private:
-    inline Color _getColor (float fVal) const;
+    inline Base::Color _getColor(float fVal) const;
 
 protected:
     void createStandardPacks();
 
 protected:
     ColorGradientProfile profile;
-    ColorField     colorField1, colorField2;
+    ColorField colorField1, colorField2;
     ColorModelPack currentModelPack;
     std::vector<ColorModelPack> modelPacks;
 
-    void  rebuild ();
-    void  setColorModel ();
+    void rebuild();
+    void setColorModel();
 };
 
 
 class AppExport ColorLegend
 {
 public:
-    ColorLegend ();
-    ColorLegend (const ColorLegend &rclCL) = default;
-    virtual ~ColorLegend () = default;
+    ColorLegend();
+    ColorLegend(const ColorLegend& rclCL) = default;
+    virtual ~ColorLegend() = default;
 
-    ColorLegend& operator = (const ColorLegend &rclCL) = default;
-    bool operator == (const ColorLegend &rclCL) const;
-    bool operator != (const ColorLegend &rclCL) const {
+    ColorLegend& operator=(const ColorLegend& rclCL) = default;
+    bool operator==(const ColorLegend& rclCL) const;
+    bool operator!=(const ColorLegend& rclCL) const
+    {
         return !(*this == rclCL);
     }
 
-    void resize (std::size_t ulN);
-    std::size_t addMin (const std::string &rclName);
-    std::size_t addMax (const std::string &rclName);
-    bool remove (std::size_t ulPos);
-    void removeFirst ();
-    void removeLast ();
+    void resize(std::size_t ulN);
+    std::size_t addMin(const std::string& rclName);
+    std::size_t addMax(const std::string& rclName);
+    bool remove(std::size_t ulPos);
+    void removeFirst();
+    void removeLast();
 
-    Color getColor (std::size_t ulPos) const;
-    uint32_t  getPackedColor (std::size_t ulPos) const;
-    bool setColor (std::size_t ulPos, float ucRed, float ucGreen, float ucBlue);
-    bool setColor (std::size_t ulPos, unsigned long ulColor);
-    float getValue (std::size_t ulPos) const;
-    bool setValue (std::size_t ulPos, float fVal);
-    std::string getText (std::size_t ulPos) const;
-    bool setText (std::size_t ulPos, const std::string &rclName);
-    std::size_t hasNumberOfFields () const {
+    Base::Color getColor(std::size_t ulPos) const;
+    uint32_t getPackedColor(std::size_t ulPos) const;
+    bool setColor(std::size_t ulPos, float ucRed, float ucGreen, float ucBlue);
+    bool setColor(std::size_t ulPos, unsigned long ulColor);
+    float getValue(std::size_t ulPos) const;
+    bool setValue(std::size_t ulPos, float fVal);
+    std::string getText(std::size_t ulPos) const;
+    bool setText(std::size_t ulPos, const std::string& rclName);
+    std::size_t hasNumberOfFields() const
+    {
         return colorFields.size();
     }
-    void setOutsideGrayed (bool bOS) {
+    void setOutsideGrayed(bool bOS)
+    {
         outsideGrayed = bOS;
     }
-    bool isOutsideGrayed () const {
+    bool isOutsideGrayed() const
+    {
         return outsideGrayed;
     }
-    inline float  getMinValue () const;
-    inline float  getMaxValue () const;
+    inline float getMinValue() const;
+    inline float getMaxValue() const;
 
-    inline Color getColor (float fVal) const;
-    inline std::size_t getColorIndex (float fVal) const;
+    inline Base::Color getColor(float fVal) const;
+    inline std::size_t getColorIndex(float fVal) const;
 
 protected:
-    std::deque<Color> colorFields;
+    std::deque<Base::Color> colorFields;
     std::deque<std::string> names;
     std::deque<float> values;
-    bool outsideGrayed{false};
+    bool outsideGrayed {false};
 };
 
-inline Color ColorLegend::getColor (float fVal) const
+inline Base::Color ColorLegend::getColor(float fVal) const
 {
     std::deque<float>::const_iterator pI;
     for (pI = values.begin(); pI != values.end(); ++pI) {
-        if (fVal < *pI)
+        if (fVal < *pI) {
             break;
+        }
     }
 
     if (outsideGrayed) {
-        if ((pI == values.begin()) || (pI == values.end()))
-            return Color(0.5f, 0.5f, 0.5f);
-        else
+        if ((pI == values.begin()) || (pI == values.end())) {
+            return Base::Color(0.5f, 0.5f, 0.5f);
+        }
+        else {
             return colorFields[pI - values.begin() - 1];
+        }
     }
 
-    if (pI == values.begin())
+    if (pI == values.begin()) {
         return *colorFields.begin();
-    else if (pI == values.end())
-        return *(colorFields.end()-1);
-    else
+    }
+    else if (pI == values.end()) {
+        return *(colorFields.end() - 1);
+    }
+    else {
         return colorFields[pI - values.begin() - 1];
+    }
 }
 
-inline std::size_t ColorLegend::getColorIndex (float fVal) const
+inline std::size_t ColorLegend::getColorIndex(float fVal) const
 {
     std::deque<float>::const_iterator pI;
     for (pI = values.begin(); pI != values.end(); ++pI) {
-        if (fVal < *pI)
+        if (fVal < *pI) {
             break;
+        }
     }
 
-    if (pI == values.begin())
+    if (pI == values.begin()) {
         return 0;
-    else if (pI == values.end())
+    }
+    else if (pI == values.end()) {
         return (std::size_t)(colorFields.size() - 1);
-    else
+    }
+    else {
         return pI - values.begin() - 1;
+    }
 }
 
-inline float ColorLegend::getMinValue () const
+inline float ColorLegend::getMinValue() const
 {
     return values.front();
 }
 
-inline float ColorLegend::getMaxValue () const
+inline float ColorLegend::getMaxValue() const
 {
     return values.back();
 }
 
-inline Color ColorGradient::getColor (float fVal) const
+inline Base::Color ColorGradient::getColor(float fVal) const
 {
-    Color color = _getColor(fVal);
+    Base::Color Color = _getColor(fVal);
     if (isOutsideInvisible()) {
-        if (isOutOfRange(fVal))
-            color.a = 0.8f;
+        if (isOutOfRange(fVal)) {
+            Color.a = 0.2F;
+        }
     }
 
-    return color;
+    return Color;
 }
 
-inline Color ColorGradient::_getColor (float fVal) const
+inline Base::Color ColorGradient::_getColor(float fVal) const
 {
     if (isOutsideGrayed()) {
-        if (isOutOfRange(fVal))
-            return Color(0.5f, 0.5f, 0.5f);
+        if (isOutOfRange(fVal)) {
+            return Base::Color(0.5f, 0.5f, 0.5f);
+        }
     }
 
     switch (profile.tStyle) {
-    case ColorBarStyle::ZERO_BASED:
-        {
+        case ColorBarStyle::ZERO_BASED: {
             if ((profile.fMin < 0.0f) && (profile.fMax > 0.0f)) {
-                if (fVal < 0.0f)
+                if (fVal < 0.0f) {
                     return colorField1.getColor(fVal);
-                else
+                }
+                else {
                     return colorField2.getColor(fVal);
+                }
             }
             else {
                 return colorField1.getColor(fVal);
             }
         }
 
-    default:
-    case ColorBarStyle::FLOW:
-        {
+        default:
+        case ColorBarStyle::FLOW: {
             return colorField1.getColor(fVal);
         }
     }
 }
 
-inline std::size_t ColorGradient::getColorIndex (float fVal) const
+inline std::size_t ColorGradient::getColorIndex(float fVal) const
 {
     switch (profile.tStyle) {
-    case ColorBarStyle::ZERO_BASED:
-        {
+        case ColorBarStyle::ZERO_BASED: {
             if ((profile.fMin < 0.0f) && (profile.fMax > 0.0f)) {
-                if (fVal < 0.0f)
+                if (fVal < 0.0f) {
                     return colorField1.getColorIndex(fVal);
-                else
-                    return std::size_t(colorField1.getCountColors() + colorField2.getColorIndex(fVal));
+                }
+                else {
+                    return std::size_t(colorField1.getCountColors()
+                                       + colorField2.getColorIndex(fVal));
+                }
             }
             else {
                 return colorField1.getColorIndex(fVal);
             }
         }
 
-    default:
-    case ColorBarStyle::FLOW:
-        {
+        default:
+        case ColorBarStyle::FLOW: {
             return colorField1.getColorIndex(fVal);
         }
     }
 }
 
-inline const ColorModel& ColorGradient::getColorModel () const
+inline const ColorModel& ColorGradient::getColorModel() const
 {
     if (profile.tStyle == ColorBarStyle::ZERO_BASED) {
-        if (profile.fMax <= 0.0f)
+        if (profile.fMax <= 0.0f) {
             return currentModelPack.bottomModel;
-        else if ( profile.fMin >= 0.0f )
+        }
+        else if (profile.fMin >= 0.0f) {
             return currentModelPack.topModel;
-        else
+        }
+        else {
             return currentModelPack.totalModel;
+        }
     }
 
     return currentModelPack.totalModel;
 }
 
-} // namespace App
+}  // namespace App
 
-#endif // APP_COLORMODEL_H
+#endif  // APP_COLORMODEL_H

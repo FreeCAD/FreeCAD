@@ -78,10 +78,10 @@ void ViewProviderTransformed::setupContextMenu(QMenu* menu, QObject* receiver, c
 }
 
 Gui::ViewProvider *ViewProviderTransformed::startEditing(int ModNum) {
-    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
+    PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
     if(!pcTransformed->Originals.getSize()) {
         for(auto obj : pcTransformed->getInList()) {
-            if(obj->isDerivedFrom(PartDesign::MultiTransform::getClassTypeId())) {
+            if(obj->isDerivedFrom<PartDesign::MultiTransform>()) {
                 auto vp = Gui::Application::Instance->getViewProvider(obj);
                 if(vp)
                     return vp->startEditing(ModNum);
@@ -160,7 +160,7 @@ bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
 
 void ViewProviderTransformed::recomputeFeature(bool recompute)
 {
-    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
+    PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
     if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute()))
         pcTransformed->recomputeFeature(true);
 
@@ -172,9 +172,9 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
         rejected++;
     }
 
-    QString msg = QString::fromLatin1("%1");
+    QString msg = QStringLiteral("%1");
     if (rejected > 0) {
-        msg = QString::fromLatin1("<font color='orange'>%1<br/></font>\r\n%2");
+        msg = QStringLiteral("<font color='orange'>%1<br/></font>\r\n%2");
         if (rejected == 1)
             msg = msg.arg(QObject::tr("One transformed shape does not intersect the support"));
         else {
@@ -184,10 +184,10 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
     }
     auto error = pcTransformed->getDocument()->getErrorDescription(pcTransformed);
     if (error) {
-        msg = msg.arg(QString::fromLatin1("<font color='red'>%1<br/></font>"));
+        msg = msg.arg(QStringLiteral("<font color='red'>%1<br/></font>"));
         msg = msg.arg(QString::fromUtf8(error));
     } else {
-        msg = msg.arg(QString::fromLatin1("<font color='green'>%1<br/></font>"));
+        msg = msg.arg(QStringLiteral("<font color='green'>%1<br/></font>"));
         msg = msg.arg(QObject::tr("Transformation succeeded"));
     }
     diagMessage = msg;

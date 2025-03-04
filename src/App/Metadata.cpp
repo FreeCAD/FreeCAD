@@ -1,31 +1,31 @@
 /**************************************************************************
-*                                                                         *
-*   Copyright (c) 2021-2023 FreeCAD Project Association                   *
-*                                                                         *
-*   This file is part of FreeCAD.                                         *
-*                                                                         *
-*   FreeCAD is free software: you can redistribute it and/or modify it    *
-*   under the terms of the GNU Lesser General Public License as           *
-*   published by the Free Software Foundation, either version 2.1 of the  *
-*   License, or (at your option) any later version.                       *
-*                                                                         *
-*   FreeCAD is distributed in the hope that it will be useful, but        *
-*   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-*   Lesser General Public License for more details.                       *
-*                                                                         *
-*   You should have received a copy of the GNU Lesser General Public      *
-*   License along with FreeCAD. If not, see                               *
-*   <https://www.gnu.org/licenses/>.                                      *
-*                                                                         *
-***************************************************************************/
+ *                                                                         *
+ *   Copyright (c) 2021-2023 FreeCAD Project Association                   *
+ *                                                                         *
+ *   This file is part of FreeCAD.                                         *
+ *                                                                         *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
+ *                                                                         *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
+ *                                                                         *
+ ***************************************************************************/
 
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/core/ignore_unused.hpp>
-# include <memory>
-# include <sstream>
+#include <boost/core/ignore_unused.hpp>
+#include <memory>
+#include <sstream>
 #endif
 
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
@@ -57,7 +57,7 @@ directly. If you did not intend to use a system-defined macro
 #endif
 
 using namespace App;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER
 using namespace XERCES_CPP_NAMESPACE;
@@ -93,7 +93,7 @@ class XMLErrorHandler: public HandlerBase
         throw Base::XMLBaseException(message.str());
     }
 };
-}// namespace MetadataInternal
+}  // namespace MetadataInternal
 
 Metadata::Metadata(const fs::path& metadataFile)
     : _dom(nullptr)
@@ -130,10 +130,9 @@ Metadata::Metadata(const DOMNode* domNode, int format)
 App::Metadata::Metadata(const std::string& rawData)
     : _dom(nullptr)
 {
-    MemBufInputSource buffer(
-        reinterpret_cast<const XMLByte*>(rawData.c_str()),
-        rawData.size(),
-        "raw data (in memory)");
+    MemBufInputSource buffer(reinterpret_cast<const XMLByte*>(rawData.c_str()),
+                             rawData.size(),
+                             "raw data (in memory)");
     loadFromInputSource(buffer);
 }
 
@@ -159,7 +158,7 @@ void Metadata::loadFromInputSource(const InputSource& source)
         throw Base::XMLBaseException(
             "Malformed package.xml document: Root <package> group not found");
     }
-    auto formatVersion = XMLString::parseInt(_dom->getAttribute(XUTF8Str("format").unicodeForm()));
+    auto formatVersion = XMLString::parseInt(_dom->getAttribute(XUTF8StrLiteral("format").unicodeForm()));
     switch (formatVersion) {
         case 1:
             parseVersion1(_dom);
@@ -247,7 +246,7 @@ std::string Metadata::classname() const
     return _classname;
 }
 
-boost::filesystem::path Metadata::subdirectory() const
+std::filesystem::path Metadata::subdirectory() const
 {
     return _subdirectory;
 }
@@ -294,7 +293,7 @@ XERCES_CPP_NAMESPACE::DOMElement* Metadata::dom() const
 
 void Metadata::setName(const std::string& name)
 {
-    std::string invalidCharacters = "/\\?%*:|\"<>";// Should cover all OSes
+    std::string invalidCharacters = "/\\?%*:|\"<>";  // Should cover all OSes
     if (_name.find_first_of(invalidCharacters) != std::string::npos) {
         throw Base::RuntimeError("Name cannot contain any of: " + invalidCharacters);
     }
@@ -371,7 +370,7 @@ void Metadata::setClassname(const std::string& name)
     _classname = name;
 }
 
-void Metadata::setSubdirectory(const boost::filesystem::path& path)
+void Metadata::setSubdirectory(const std::filesystem::path& path)
 {
     _subdirectory = path;
 }
@@ -476,7 +475,7 @@ void Metadata::removeTag(const std::string& tag)
     _tag.erase(new_end, _tag.end());
 }
 
-void Metadata::removeFile(const boost::filesystem::path& path)
+void Metadata::removeFile(const std::filesystem::path& path)
 {
     auto new_end = std::remove(_file.begin(), _file.end(), path);
     _file.erase(new_end, _file.end());
@@ -534,7 +533,8 @@ void Metadata::clearFile()
 }
 
 
-DOMElement* appendSimpleXMLNode(DOMElement* baseNode, const std::string& nodeName,
+DOMElement* appendSimpleXMLNode(DOMElement* baseNode,
+                                const std::string& nodeName,
                                 const std::string& nodeContents)
 {
     // For convenience (and brevity of final output) don't create nodes that don't have contents
@@ -560,10 +560,10 @@ void addAttribute(DOMElement* node, const std::string& key, const std::string& v
 void addAttribute(DOMElement* node, const std::string& key, bool value)
 {
     if (value) {
-        node->setAttribute(XUTF8Str(key.c_str()).unicodeForm(), XUTF8Str("True").unicodeForm());
+        node->setAttribute(XUTF8Str(key.c_str()).unicodeForm(), XUTF8StrLiteral("True").unicodeForm());
     }
     else {
-        node->setAttribute(XUTF8Str(key.c_str()).unicodeForm(), XUTF8Str("False").unicodeForm());
+        node->setAttribute(XUTF8Str(key.c_str()).unicodeForm(), XUTF8StrLiteral("False").unicodeForm());
     }
 }
 
@@ -608,13 +608,13 @@ void addDependencyNode(DOMElement* root, const std::string& name, const Meta::De
 void Metadata::write(const fs::path& file) const
 {
     DOMImplementation* impl =
-        DOMImplementationRegistry::getDOMImplementation(XUTF8Str("Core LS").unicodeForm());
+        DOMImplementationRegistry::getDOMImplementation(XUTF8StrLiteral("Core LS").unicodeForm());
 
-    DOMDocument* doc = impl->createDocument(nullptr, XUTF8Str("package").unicodeForm(), nullptr);
+    DOMDocument* doc = impl->createDocument(nullptr, XUTF8StrLiteral("package").unicodeForm(), nullptr);
     DOMElement* root = doc->getDocumentElement();
-    root->setAttribute(XUTF8Str("format").unicodeForm(), XUTF8Str("1").unicodeForm());
-    root->setAttribute(XUTF8Str("xmlns").unicodeForm(),
-                       XUTF8Str("https://wiki.freecad.org/Package_Metadata").unicodeForm());
+    root->setAttribute(XUTF8StrLiteral("format").unicodeForm(), XUTF8StrLiteral("1").unicodeForm());
+    root->setAttribute(XUTF8StrLiteral("xmlns").unicodeForm(),
+                       XUTF8StrLiteral("https://wiki.freecad.org/Package_Metadata").unicodeForm());
 
     appendToElement(root);
 
@@ -665,8 +665,9 @@ bool Metadata::satisfies(const Meta::Dependency& dep)
     if (dep.package != _name) {
         return false;
     }
-    // The "condition" attribute allows an expression to enable or disable this dependency check: it must contain a valid
-    // FreeCAD Expression. If it evaluates to false, this dependency is bypassed (e.g. this function returns false).
+    // The "condition" attribute allows an expression to enable or disable this dependency check: it
+    // must contain a valid FreeCAD Expression. If it evaluates to false, this dependency is
+    // bypassed (e.g. this function returns false).
     if (!dep.condition.empty()) {
         auto injectedString = dep.condition;
         std::map<std::string, std::string> replacements;
@@ -851,7 +852,7 @@ void Metadata::appendToElement(DOMElement* root) const
 
     if (!_content.empty()) {
         auto doc = root->getOwnerDocument();
-        DOMElement* contentRootElement = doc->createElement(XUTF8Str("content").unicodeForm());
+        DOMElement* contentRootElement = doc->createElement(XUTF8StrLiteral("content").unicodeForm());
         root->appendChild(contentRootElement);
         for (const auto& content : _content) {
             DOMElement* contentElement =
@@ -938,11 +939,11 @@ void Metadata::parseVersion1(const DOMNode* startNode)
             _icon = fs::path(StrXUTF8(element->getTextContent()).str);
         }
         else if (tagString == "content") {
-            parseContentNodeVersion1(element);// Recursive call
+            parseContentNodeVersion1(element);  // Recursive call
         }
         else {
-            // If none of this node's nodeChildren have nodeChildren of their own, it is a simple element and we
-            // can handle it as a GenericMetadata object
+            // If none of this node's nodeChildren have nodeChildren of their own, it is a simple
+            // element and we can handle it as a GenericMetadata object
             auto nodeChildren = element->getChildNodes();
             bool hasGrandchildren = false;
             for (XMLSize_t j = 0; j < nodeChildren->getLength() && !hasGrandchildren; ++j) {
@@ -970,18 +971,18 @@ void Metadata::parseContentNodeVersion1(const DOMElement* contentNode)
 }
 
 Meta::Contact::Contact(std::string name, std::string email)
-    : name(std::move(name)),
-      email(std::move(email))
+    : name(std::move(name))
+    , email(std::move(email))
 {
     // This has to be provided manually since we have another constructor
 }
 
 Meta::Contact::Contact(const XERCES_CPP_NAMESPACE::DOMElement* elem)
 {
-    if (!elem){
+    if (!elem) {
         return;
     }
-    auto emailAttribute = elem->getAttribute(XUTF8Str("email").unicodeForm());
+    auto emailAttribute = elem->getAttribute(XUTF8StrLiteral("email").unicodeForm());
     name = StrXUTF8(elem->getTextContent()).str;
     email = StrXUTF8(emailAttribute).str;
 }
@@ -992,18 +993,18 @@ bool App::Meta::Contact::operator==(const Contact& rhs) const
 }
 
 Meta::License::License(std::string name, fs::path file)
-    : name(std::move(name)),
-      file(std::move(file))
+    : name(std::move(name))
+    , file(std::move(file))
 {
     // This has to be provided manually since we have another constructor
 }
 
 Meta::License::License(const XERCES_CPP_NAMESPACE::DOMElement* elem)
 {
-    if (!elem){
+    if (!elem) {
         return;
     }
-    auto fileAttribute = elem->getAttribute(XUTF8Str("file").unicodeForm());
+    auto fileAttribute = elem->getAttribute(XUTF8StrLiteral("file").unicodeForm());
     if (XMLString::stringLen(fileAttribute) > 0) {
         file = fs::path(StrXUTF8(fileAttribute).str);
     }
@@ -1016,13 +1017,13 @@ bool App::Meta::License::operator==(const License& rhs) const
 }
 
 App::Meta::Url::Url()
-    : location(""),
-      type(App::Meta::UrlType::website)
+    : location("")
+    , type(App::Meta::UrlType::website)
 {}
 
 Meta::Url::Url(std::string location, UrlType type)
-    : location(std::move(location)),
-      type(type)
+    : location(std::move(location))
+    , type(type)
 {
     // This has to be provided manually since we have another constructor
 }
@@ -1032,7 +1033,7 @@ Meta::Url::Url(const XERCES_CPP_NAMESPACE::DOMElement* elem)
     if (!elem) {
         return;
     }
-    auto typeAttribute = StrXUTF8(elem->getAttribute(XUTF8Str("type").unicodeForm())).str;
+    auto typeAttribute = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("type").unicodeForm())).str;
     if (typeAttribute.empty() || typeAttribute == "website") {
         type = UrlType::website;
     }
@@ -1056,7 +1057,7 @@ Meta::Url::Url(const XERCES_CPP_NAMESPACE::DOMElement* elem)
     }
 
     if (type == UrlType::repository) {
-        branch = StrXUTF8(elem->getAttribute(XUTF8Str("branch").unicodeForm())).str;
+        branch = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("branch").unicodeForm())).str;
     }
     location = StrXUTF8(elem->getTextContent()).str;
 }
@@ -1070,33 +1071,33 @@ bool App::Meta::Url::operator==(const Url& rhs) const
 }
 
 App::Meta::Dependency::Dependency()
-    : optional(false),
-      dependencyType(App::Meta::DependencyType::automatic)
+    : optional(false)
+    , dependencyType(App::Meta::DependencyType::automatic)
 {}
 
 App::Meta::Dependency::Dependency(std::string pkg)
-    : package(std::move(pkg)),
-      optional(false),
-      dependencyType(App::Meta::DependencyType::automatic)
+    : package(std::move(pkg))
+    , optional(false)
+    , dependencyType(App::Meta::DependencyType::automatic)
 {}
 
 Meta::Dependency::Dependency(const XERCES_CPP_NAMESPACE::DOMElement* elem)
 {
-    version_lt = StrXUTF8(elem->getAttribute(XUTF8Str("version_lt").unicodeForm())).str;
-    version_lte = StrXUTF8(elem->getAttribute(XUTF8Str("version_lte").unicodeForm())).str;
-    version_eq = StrXUTF8(elem->getAttribute(XUTF8Str("version_eq").unicodeForm())).str;
-    version_gte = StrXUTF8(elem->getAttribute(XUTF8Str("version_gte").unicodeForm())).str;
-    version_gt = StrXUTF8(elem->getAttribute(XUTF8Str("version_gt").unicodeForm())).str;
-    condition = StrXUTF8(elem->getAttribute(XUTF8Str("condition").unicodeForm())).str;
-    std::string opt_string = StrXUTF8(elem->getAttribute(XUTF8Str("optional").unicodeForm())).str;
+    version_lt = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("version_lt").unicodeForm())).str;
+    version_lte = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("version_lte").unicodeForm())).str;
+    version_eq = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("version_eq").unicodeForm())).str;
+    version_gte = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("version_gte").unicodeForm())).str;
+    version_gt = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("version_gt").unicodeForm())).str;
+    condition = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("condition").unicodeForm())).str;
+    std::string opt_string = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("optional").unicodeForm())).str;
     if (opt_string == "true"
-        || opt_string == "True") {// Support Python capitalization in this one case...
+        || opt_string == "True") {  // Support Python capitalization in this one case...
         optional = true;
     }
     else {
         optional = false;
     }
-    std::string type_string = StrXUTF8(elem->getAttribute(XUTF8Str("type").unicodeForm())).str;
+    std::string type_string = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("type").unicodeForm())).str;
     if (type_string == "automatic" || type_string.empty()) {
         dependencyType = Meta::DependencyType::automatic;
     }
@@ -1128,10 +1129,10 @@ bool App::Meta::Dependency::operator==(const Dependency& rhs) const
 Meta::Version::Version() = default;
 
 Meta::Version::Version(int major, int minor, int patch, std::string suffix)
-    : major(major),
-      minor(minor),
-      patch(patch),
-      suffix(std::move(suffix))
+    : major(major)
+    , minor(minor)
+    , patch(patch)
+    , suffix(std::move(suffix))
 {}
 
 Meta::Version::Version(const std::string& versionString)
@@ -1207,8 +1208,8 @@ Meta::GenericMetadata::GenericMetadata(const XERCES_CPP_NAMESPACE::DOMElement* e
     contents = StrXUTF8(elem->getTextContent()).str;
     for (XMLSize_t i = 0; i < elem->getAttributes()->getLength(); ++i) {
         auto attr = elem->getAttributes()->item(i);
-        attributes.insert(
-            std::make_pair(StrXUTF8(attr->getNodeName()).str, StrXUTF8(attr->getTextContent()).str));
+        attributes.insert(std::make_pair(StrXUTF8(attr->getNodeName()).str,
+                                         StrXUTF8(attr->getTextContent()).str));
     }
 }
 

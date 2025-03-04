@@ -254,6 +254,29 @@ PyObject* DocumentPy::activeView(PyObject *args)
     PY_CATCH;
 }
 
+PyObject* DocumentPy::createView(PyObject *args)
+{
+    char* sType;
+    if (!PyArg_ParseTuple(args, "s", &sType))
+        return nullptr;
+
+    Base::Type type = Base::Type::fromName(sType);
+    if (type.isBad()) {
+        PyErr_Format(PyExc_TypeError, "'%s' is not a valid type", sType);
+        return nullptr;
+    }
+
+    PY_TRY {
+        Gui::MDIView* pcView = getDocumentPtr()->createView(type);
+        if (pcView) {
+            return pcView->getPyObject();
+        } else {
+            Py_Return;
+        }
+    }
+    PY_CATCH;
+}
+
 PyObject* DocumentPy::mdiViewsOfType(PyObject *args)
 {
     char* sType;
@@ -471,7 +494,7 @@ Py::Object DocumentPy::getInEditInfo() const {
         return Py::None();
 
     return Py::TupleN(Py::Object(vp->getObject()->getPyObject(),true),
-            Py::String(subname),Py::String(subelement),Py::Int(mode));
+            Py::String(subname),Py::String(subelement),Py::Long(mode));
 }
 
 void DocumentPy::setInEditInfo(Py::Object arg)
@@ -486,12 +509,12 @@ void DocumentPy::setInEditInfo(Py::Object arg)
                 pyobj)->getViewProviderDocumentObjectPtr(),subname);
 }
 
-Py::Int DocumentPy::getEditMode() const
+Py::Long DocumentPy::getEditMode() const
 {
     int mode = -1;
     getDocumentPtr()->getInEdit(nullptr,nullptr,&mode);
 
-    return Py::Int(mode);
+    return Py::Long(mode);
 }
 
 Py::Boolean DocumentPy::getTransacting() const

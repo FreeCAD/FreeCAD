@@ -29,15 +29,17 @@
 #include <QTimer>
 #endif
 
+#include <fmt/format.h>
+
 #include <App/Document.h>
 #include <App/Origin.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <App/Part.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/ViewProviderOrigin.h>
+#include <Gui/ViewProviderCoordinateSystem.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
 #include <Mod/PartDesign/App/DatumLine.h>
@@ -110,14 +112,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
         ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     }
 
-    enum
-    {
-        axisBit = 0,
-        planeBit = 1
-    };
-
     // NOTE: generally there shouldn't be more then one origin
-    std::map<App::Origin*, std::bitset<2>> originVisStatus;
+    std::map<App::Origin*, Gui::DatumElements> originVisStatus;
 
     auto statusIt = status.cbegin();
     auto objIt = objects.begin();
@@ -126,8 +122,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     bool attached = false;
     for (; statusIt != status.end(); ++statusIt, ++objIt) {
         QListWidgetItem* item = new QListWidgetItem(
-            QString::fromLatin1("%1 (%2)").arg(QString::fromUtf8((*objIt)->Label.getValue()),
-                                               getFeatureStatusString(*statusIt)));
+                QStringLiteral("%1 (%2)").arg(QString::fromUtf8((*objIt)->Label.getValue()),
+                getFeatureStatusString(*statusIt)));
         item->setData(Qt::UserRole, QString::fromLatin1((*objIt)->getNameInDocument()));
         ui->listWidget->addItem(item);
 
@@ -139,15 +135,15 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
         }
 
         // check if we need to set any origin in temporary visibility mode
-        if (*statusIt != invalidShape
-            && (*objIt)->isDerivedFrom(App::OriginFeature::getClassTypeId())) {
-            App::Origin* origin = static_cast<App::OriginFeature*>(*objIt)->getOrigin();
+        auto* datum = dynamic_cast<App::DatumElement*>(*objIt);
+        if (*statusIt != invalidShape && datum) {
+            App::Origin* origin = dynamic_cast<App::Origin*>(datum->getLCS());
             if (origin) {
-                if ((*objIt)->isDerivedFrom(App::Plane::getClassTypeId())) {
-                    originVisStatus[origin].set(planeBit, true);
+                if ((*objIt)->isDerivedFrom<App::Plane>()) {
+                    originVisStatus[origin].setFlag(Gui::DatumElement::Planes, true);
                 }
-                else if ((*objIt)->isDerivedFrom(App::Line::getClassTypeId())) {
-                    originVisStatus[origin].set(axisBit, true);
+                else if ((*objIt)->isDerivedFrom<App::Line>()) {
+                    originVisStatus[origin].setFlag(Gui::DatumElement::Axes, true);
                 }
             }
         }
@@ -157,11 +153,12 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     for (const auto& originPair : originVisStatus) {
         const auto& origin = originPair.first;
 
-        Gui::ViewProviderOrigin* vpo = static_cast<Gui::ViewProviderOrigin*>(
+        Gui::ViewProviderCoordinateSystem* vpo = static_cast<Gui::ViewProviderCoordinateSystem*>(
             Gui::Application::Instance->getViewProvider(origin));
         if (vpo) {
-            vpo->setTemporaryVisibility(originVisStatus[origin][axisBit],
-                                        originVisStatus[origin][planeBit]);
+            vpo->setTemporaryVisibility(originVisStatus[origin]);
+            vpo->setTemporaryScale(4.0);  // NOLINT
+            vpo->setPlaneLabelVisibility(true);
             origins.push_back(vpo);
         }
     }
@@ -175,8 +172,10 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
 
 TaskFeaturePick::~TaskFeaturePick()
 {
-    for (Gui::ViewProviderOrigin* vpo : origins) {
+    for (Gui::ViewProviderCoordinateSystem* vpo : origins) {
         vpo->resetTemporaryVisibility();
+        vpo->resetTemporarySize();
+        vpo->setPlaneLabelVisibility(false);
     }
 }
 
@@ -349,14 +348,14 @@ TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::string sub, bool indepe
         return copy;
     }
     if (independent
-        && (obj->isDerivedFrom(Sketcher::SketchObject::getClassTypeId())
-            || obj->isDerivedFrom(PartDesign::FeaturePrimitive::getClassTypeId()))) {
+        && (obj->isDerivedFrom<Sketcher::SketchObject>()
+            || obj->isDerivedFrom<PartDesign::FeaturePrimitive>())) {
 
         // we do know that the created instance is a document object, as obj is one. But we do not
         // know which exact type
-        auto name = std::string("Copy") + std::string(obj->getNameInDocument());
-        copy = App::GetApplication().getActiveDocument()->addObject(obj->getTypeId().getName(),
-                                                                    name.c_str());
+        auto* doc = App::GetApplication().getActiveDocument();
+        const auto name = fmt::format("Copy{}", obj->getNameInDocument());
+        copy = doc->addObject(obj->getTypeId().getName(), name.c_str());
 
         // copy over all properties
         std::vector<App::Property*> props;
@@ -390,35 +389,23 @@ TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::string sub, bool indepe
 
             // we are a independent copy, therefore no external geometry was copied. WE therefore
             // can delete all constraints
-            if (obj->isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
-                static_cast<Sketcher::SketchObject*>(copy)->delConstraintsToExternal();
+            if (auto* sketchObj = Base::freecad_dynamic_cast<Sketcher::SketchObject>(obj)) {
+                sketchObj->delConstraintsToExternal();
             }
         }
     }
     else {
 
-        std::string name;
-        if (!independent) {
-            name = std::string("Reference");
-        }
-        else {
-            name = std::string("Copy");
-        }
-        name += std::string(obj->getNameInDocument());
-
-        std::string entity;
-        if (!sub.empty()) {
-            entity = sub;
-        }
+        const std::string name = (!independent ? std::string("Reference") : std::string("Copy"))
+            + obj->getNameInDocument();
+        const std::string entity = sub;
 
         Part::PropertyPartShape* shapeProp = nullptr;
 
         // TODO Replace it with commands (2015-09-11, Fat-Zer)
-        if (obj->isDerivedFrom(Part::Datum::getClassTypeId())) {
-            copy = App::GetApplication().getActiveDocument()->addObject(obj->getTypeId().getName(),
-                                                                        name.c_str());
-
-            assert(copy->isDerivedFrom(Part::Datum::getClassTypeId()));
+        if (obj->isDerivedFrom<Part::Datum>()) {
+            auto* doc = App::GetApplication().getActiveDocument();
+            copy = doc->addObject<Part::Datum>(name.c_str());
 
             // we need to reference the individual datums and make again datums. This is important
             // as datum adjust their size dependent on the part size, hence simply copying the shape
@@ -454,45 +441,40 @@ TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::string sub, bool indepe
             }
         }
         else if (obj->is<PartDesign::ShapeBinder>()
-                 || obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+                 || obj->isDerivedFrom<Part::Feature>()) {
 
-            copy = App::GetApplication().getActiveDocument()->addObject("PartDesign::ShapeBinder",
-                                                                        name.c_str());
-
+            auto* doc = App::GetApplication().getActiveDocument();
+            auto* shapeBinderObj = doc->addObject<PartDesign::ShapeBinder>(name.c_str());
             if (!independent) {
-                static_cast<PartDesign::ShapeBinder*>(copy)->Support.setValue(obj, entity.c_str());
+                shapeBinderObj->Support.setValue(obj, entity.c_str());
             }
             else {
-                shapeProp = &static_cast<PartDesign::ShapeBinder*>(copy)->Shape;
+                shapeProp = &shapeBinderObj->Shape;
             }
+            copy = shapeBinderObj;
         }
-        else if (obj->isDerivedFrom(App::Plane::getClassTypeId())
-                 || obj->isDerivedFrom(App::Line::getClassTypeId())) {
+        else if (obj->isDerivedFrom<App::Plane>()
+                 || obj->isDerivedFrom<App::Line>()) {
 
-            copy = App::GetApplication().getActiveDocument()->addObject("PartDesign::ShapeBinder",
-                                                                        name.c_str());
-
+            auto* doc = App::GetApplication().getActiveDocument();
+            auto* shapeBinderObj = doc->addObject<PartDesign::ShapeBinder>(name.c_str());
             if (!independent) {
-                static_cast<PartDesign::ShapeBinder*>(copy)->Support.setValue(obj, entity.c_str());
+                shapeBinderObj->Support.setValue(obj, entity.c_str());
             }
             else {
-                App::GeoFeature* geo = static_cast<App::GeoFeature*>(obj);
                 std::vector<std::string> subvalues;
                 subvalues.push_back(entity);
                 Part::TopoShape shape =
-                    PartDesign::ShapeBinder::buildShapeFromReferences(geo, subvalues);
-                static_cast<PartDesign::ShapeBinder*>(copy)->Shape.setValue(shape);
+                    PartDesign::ShapeBinder::buildShapeFromReferences(shapeBinderObj, subvalues);
+                shapeBinderObj->Shape.setValue(shape);
             }
+            copy = shapeBinderObj;
         }
 
         if (independent && shapeProp) {
-            if (entity.empty()) {
-                shapeProp->setValue(static_cast<Part::Feature*>(obj)->Shape.getValue());
-            }
-            else {
-                shapeProp->setValue(
-                    static_cast<Part::Feature*>(obj)->Shape.getShape().getSubShape(entity.c_str()));
-            }
+            auto* featureObj = static_cast<Part::Feature*>(obj);
+            shapeProp->setValue(entity.empty() ? featureObj->Shape.getValue()
+                                               : featureObj->Shape.getShape().getSubShape(entity.c_str()));
         }
     }
 
@@ -573,7 +555,7 @@ void TaskFeaturePick::onDoubleClick(QListWidgetItem* item)
 
 void TaskFeaturePick::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
 {
-    std::vector<Gui::ViewProviderOrigin*>::iterator it;
+    std::vector<Gui::ViewProviderCoordinateSystem*>::iterator it;
     it = std::find(origins.begin(), origins.end(), &Obj);
     if (it != origins.end()) {
         origins.erase(it);

@@ -146,7 +146,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         saver.dirName = dirName;
 
         // Write recovery meta file
-        QFile file(QString::fromLatin1("%1/fc_recovery_file.xml")
+        QFile file(QStringLiteral("%1/fc_recovery_file.xml")
             .arg(QString::fromUtf8(doc->TransientDir.getValue())));
         if (file.open(QFile::WriteOnly)) {
             QTextStream str(&file);
@@ -293,13 +293,13 @@ bool RecoveryWriter::shouldWrite(const std::string& name, const Base::Persistenc
 {
     // Property files of a view provider can always be written because
     // these are rather small files.
-    if (object->isDerivedFrom(App::Property::getClassTypeId())) {
+    if (object->isDerivedFrom<App::Property>()) {
         const auto* prop = static_cast<const App::Property*>(object);
         const App::PropertyContainer* parent = prop->getContainer();
-        if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId()))
+        if (parent && parent->isDerivedFrom<Gui::ViewProvider>())
             return true;
     }
-    else if (object->isDerivedFrom(Gui::Document::getClassTypeId())) {
+    else if (object->isDerivedFrom<Gui::Document>()) {
         return true;
     }
 
@@ -333,7 +333,7 @@ public:
 
         dirName = QString::fromUtf8(dir);
         fileName = QString::fromUtf8(file);
-        tmpName = QString::fromLatin1("%1.tmp%2").arg(fileName).arg(rand());
+        tmpName = QStringLiteral("%1.tmp%2").arg(fileName).arg(rand());
         writer.putNextEntry(tmpName.toUtf8().constData());
     }
     ~RecoveryRunnable() override
@@ -385,7 +385,7 @@ void RecoveryWriter::writeFiles()
             }
 
             // For properties a copy can be created and then this can be written to disk in a thread
-            if (entry.Object->isDerivedFrom(App::Property::getClassTypeId())) {
+            if (entry.Object->isDerivedFrom<App::Property>()) {
                 const auto* prop = static_cast<const App::Property*>(entry.Object);
                 QThreadPool::globalInstance()->start(new RecoveryRunnable(getModes(), DirName.c_str(), entry.FileName.c_str(), prop));
             }

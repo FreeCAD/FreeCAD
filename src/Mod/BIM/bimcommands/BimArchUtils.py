@@ -54,6 +54,10 @@ class Arch_Add:
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Add space boundary"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.addSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelectionEx() )")
+        elif Draft.getType(sel[-1]).startswith("Ifc"):
+            FreeCADGui.addModule("nativeifc.ifc_tools")
+            for s in sel[:-1]:
+                FreeCADGui.doCommand("nativeifc.ifc_tools.aggregate(FreeCAD.ActiveDocument."+s.Name+",FreeCAD.ActiveDocument."+sel[-1].Name+")")
         else:
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Grouping"))
             if not Arch.mergeCells(sel):
@@ -89,6 +93,10 @@ class Arch_Remove:
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Remove space boundary"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.removeSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelection() )")
+        elif Draft.getType(sel[-1]).startswith("Ifc"):
+            FreeCADGui.addModule("nativeifc.ifc_tools")
+            for s in sel[:-1]:
+                FreeCADGui.doCommand("nativeifc.ifc_tools.aggregate(FreeCAD.ActiveDocument."+s.Name+",FreeCAD.ActiveDocument."+sel[-1].Name+",mode='opening')")
         else:
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Ungrouping"))
             if len(sel) > 1:
