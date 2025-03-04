@@ -145,7 +145,7 @@ std::shared_ptr<App::Material> MaterialManager::defaultAppearance()
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
 
-    auto getColor = [hGrp](const char* parameter, App::Color& color) {
+    auto getColor = [hGrp](const char* parameter, Base::Color& color) {
         uint32_t packed = color.getPackedRGB();
         packed = hGrp->GetUnsigned(parameter, packed);
         color.setPackedRGB(packed);
@@ -164,7 +164,7 @@ std::shared_ptr<App::Material> MaterialManager::defaultAppearance()
         float red = static_cast<float>(intRandom(0, 255)) / 255.0F;
         float green = static_cast<float>(intRandom(0, 255)) / 255.0F;
         float blue = static_cast<float>(intRandom(0, 255)) / 255.0F;
-        mat.diffuseColor = App::Color(red, green, blue, 1.0);
+        mat.diffuseColor = Base::Color(red, green, blue, 1.0);
     }
     else {
         getColor("DefaultShapeColor", mat.diffuseColor);

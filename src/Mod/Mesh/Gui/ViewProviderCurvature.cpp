@@ -360,7 +360,7 @@ void ViewProviderMeshCurvature::setVertexCurvatureMode(int mode)
     float* transp = pcColorMat->transparency.startEditing();
 
     for (auto const& value : fValues | boost::adaptors::indexed(0)) {
-        App::Color c = pcColorBar->getColor(value.value());
+        Base::Color c = pcColorBar->getColor(value.value());
         // NOLINTBEGIN
         diffcol[value.index()].setValue(c.r, c.g, c.b);
         transp[value.index()] = c.transparency();

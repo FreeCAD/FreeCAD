@@ -40,7 +40,7 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
 
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Gui/ViewParams.h>
 #include <Gui/Inventor/SmSwitchboard.h>
 #include <Mod/Sketcher/App/GeoList.h>
@@ -153,14 +153,14 @@ struct DrawingParameters
     DrawingParameters()
     {
         unsigned long colorLong;
-        App::Color color;
+        Base::Color color;
 
         colorLong = Gui::ViewParams::instance()->getAxisXColor();
-        color = App::Color(static_cast<uint32_t>(colorLong));
+        color = Base::Color(static_cast<uint32_t>(colorLong));
         CrossColorH = SbColor(color.r, color.g, color.b);
 
         colorLong = Gui::ViewParams::instance()->getAxisYColor();
-        color = App::Color(static_cast<uint32_t>(colorLong));
+        color = Base::Color(static_cast<uint32_t>(colorLong));
         CrossColorV = SbColor(color.r, color.g, color.b);
     }
 };

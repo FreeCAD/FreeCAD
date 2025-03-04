@@ -80,7 +80,7 @@ QGIFace::QGIFace(int index) :
     getParameters();
 
     // set up style & colour defaults
-    m_colDefFill = App::Color(static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", COLWHITE)))
+    m_colDefFill = Base::Color(static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", COLWHITE)))
                    .asValue<QColor>();
     m_colDefFill.setAlpha(Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false) ? ALPHALOW : ALPHAHIGH);
 
@@ -453,7 +453,7 @@ void QGIFace::buildPixHatch()
 }
 
 
-void QGIFace::setHatchColor(App::Color color)
+void QGIFace::setHatchColor(Base::Color color)
 {
     m_svgCol = color.asHexString();
     m_geomColor = color.asValue<QColor>();

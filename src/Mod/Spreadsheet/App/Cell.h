@@ -72,11 +72,11 @@ public:
     void setStyle(const std::set<std::string>& _style);
     bool getStyle(std::set<std::string>& style) const;
 
-    void setForeground(const App::Color& color);
-    bool getForeground(App::Color& color) const;
+    void setForeground(const Base::Color& color);
+    bool getForeground(Base::Color& color) const;
 
-    void setBackground(const App::Color& color);
-    bool getBackground(App::Color& color) const;
+    void setBackground(const Base::Color& color);
+    bool getBackground(Base::Color& color) const;
 
     void setDisplayUnit(const std::string& unit);
     bool getDisplayUnit(DisplayUnit& unit) const;
@@ -161,8 +161,8 @@ public:
 
     static std::string encodeStyle(const std::set<std::string>& style);
 
-    static std::string encodeColor(const App::Color& color);
-    static App::Color decodeColor(const std::string& color, const App::Color& defaultColor);
+    static std::string encodeColor(const Base::Color& color);
+    static Base::Color decodeColor(const std::string& color, const Base::Color& defaultColor);
 
 private:
     void setParseException(const std::string& e);
@@ -199,8 +199,8 @@ private:
     mutable App::ExpressionPtr expression;
     int alignment;
     std::set<std::string> style;
-    App::Color foregroundColor;
-    App::Color backgroundColor;
+    Base::Color foregroundColor;
+    Base::Color backgroundColor;
     DisplayUnit displayUnit;
     std::string alias;
     Base::Unit computedUnit;

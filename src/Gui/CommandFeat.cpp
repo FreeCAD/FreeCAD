@@ -95,7 +95,7 @@ void StdCmdRandomColor::activated(int iMsg)
         auto fGrn = (float)rand()/fMax;
         auto fBlu = (float)rand()/fMax;
         // NOLINTEND
-        auto objColor = App::Color(fRed, fGrn, fBlu);
+        auto objColor = Base::Color(fRed, fGrn, fBlu);
 
         auto vpLink = dynamic_cast<ViewProviderLink*>(view);
         if (vpLink) {

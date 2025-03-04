@@ -21,9 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <boost/uuid/uuid_io.hpp>
-#endif
 
 #include "GeomFormatPy.h"
 #include "GeomFormatPy.cpp"
@@ -107,7 +104,7 @@ PyObject* GeomFormatPy::copy(PyObject *args)
 
 Py::String GeomFormatPy::getTag(void) const
 {
-    std::string tmp = boost::uuids::to_string(getGeomFormatPtr()->getTag());
+    std::string tmp = getGeomFormatPtr()->getTagAsString();
     return Py::String(tmp);
 }
 

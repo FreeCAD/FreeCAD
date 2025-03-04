@@ -142,7 +142,7 @@ QString MaterialProperty::getYAMLString() const
     return _valuePtr->getYAMLString();
 }
 
-App::Color MaterialProperty::getColor() const
+Base::Color MaterialProperty::getColor() const
 {
     auto colorString = getValue().toString();
     std::stringstream stream(colorString.toStdString());
@@ -163,7 +163,7 @@ App::Color MaterialProperty::getColor() const
         stream >> alpha;
     }
 
-    App::Color color(red, green, blue, alpha);
+    Base::Color color(red, green, blue, alpha);
     return color;
 }
 
@@ -410,7 +410,7 @@ void MaterialProperty::setURL(const QString& value)
     _valuePtr->setValue(QVariant(value));
 }
 
-void MaterialProperty::setColor(const App::Color& value)
+void MaterialProperty::setColor(const Base::Color& value)
 {
     std::stringstream ss;
     ss << "(" << value.r << ", " << value.g << ", " << value.b << ", " << value.a << ")";

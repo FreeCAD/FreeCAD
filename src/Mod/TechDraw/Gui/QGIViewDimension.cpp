@@ -927,7 +927,7 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
         arrow->setSize(arrowSize);
         arrow->setFlipped(flipped);
 
-        if (vp->ArrowStyle.getValue() != ArrowType::NONE) {
+        if (vp->ArrowStyle.getValue() != static_cast<int>(ArrowType::NONE)) {
             arrow->draw();
             arrow->show();
         }
@@ -2249,7 +2249,7 @@ QColor QGIViewDimension::prefNormalColor()
     if (vp) {
         vpDim = dynamic_cast<ViewProviderDimension*>(vp);
         if (vpDim) {
-            App::Color fcColor = vpDim->Color.getValue();
+            Base::Color fcColor = vpDim->Color.getValue();
             fcColor = Preferences::getAccessibleColor(fcColor);
             setNormalColor(fcColor.asValue<QColor>());
         }
