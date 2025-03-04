@@ -94,20 +94,23 @@ void View3DSettings::applySettings()
     OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"RenderCache");
     OnChange(*hGrp,"Orthographic");
-    OnChange(*hGrp,"EnableHeadlight");
-    OnChange(*hGrp,"HeadlightColor");
-    OnChange(*hGrp,"HeadlightDirection");
-    OnChange(*hGrp,"HeadlightIntensity");
-    OnChange(*hGrp,"EnableBacklight");
-    OnChange(*hGrp,"BacklightColor");
-    OnChange(*hGrp,"BacklightDirection");
-    OnChange(*hGrp,"BacklightIntensity");
-    OnChange(*hGrp,"EnableFillLight");
-    OnChange(*hGrp,"FillLightColor");
-    OnChange(*hGrp,"FillLightDirection");
-    OnChange(*hGrp,"FillLightIntensity");
-    OnChange(*hGrp,"AmbientLightColor");
-    OnChange(*hGrp,"AmbientLightIntensity");
+
+    auto lightSourcesGrp = hGrp->GetGroup("LightSources");
+    OnChange(*lightSourcesGrp,"EnableHeadlight");
+    OnChange(*lightSourcesGrp,"HeadlightColor");
+    OnChange(*lightSourcesGrp,"HeadlightDirection");
+    OnChange(*lightSourcesGrp,"HeadlightIntensity");
+    OnChange(*lightSourcesGrp,"EnableBacklight");
+    OnChange(*lightSourcesGrp,"BacklightColor");
+    OnChange(*lightSourcesGrp,"BacklightDirection");
+    OnChange(*lightSourcesGrp,"BacklightIntensity");
+    OnChange(*lightSourcesGrp,"EnableFillLight");
+    OnChange(*lightSourcesGrp,"FillLightColor");
+    OnChange(*lightSourcesGrp,"FillLightDirection");
+    OnChange(*lightSourcesGrp,"FillLightIntensity");
+    OnChange(*lightSourcesGrp,"AmbientLightColor");
+    OnChange(*lightSourcesGrp,"AmbientLightIntensity");
+
     OnChange(*hGrp,"NavigationStyle");
     OnChange(*hGrp,"OrbitStyle");
     OnChange(*hGrp,"Sensitivity");
