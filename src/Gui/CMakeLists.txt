@@ -527,6 +527,8 @@ SET(Dialog_CPP_SRCS
     Dialogs/DlgAddProperty.cpp
     Dialogs/DlgAddPropertyVarSet.cpp
     VectorListEditor.cpp
+    ComputationDialog.cpp
+    ComputationDialogProcess.cpp
 )
 
 SET(Dialog_HPP_SRCS
@@ -568,6 +570,8 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgAddProperty.h
     Dialogs/DlgAddPropertyVarSet.h
     VectorListEditor.h
+    ComputationDialog.h
+    ComputationDialogProcess.h
 )
 
 SET(Dialog_SRCS

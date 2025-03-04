@@ -56,7 +56,8 @@
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Gui/Application.h>
-
+#include <Gui/ComputationDialog.h>
+#include <Gui/ComputationDialogProcess.h>
 
 void PrintInitHelp();
 
@@ -310,7 +311,19 @@ int main(int argc, char** argv)
         }
         if (App::Application::Config()["RunMode"] == "Gui"
             || App::Application::Config()["RunMode"] == "Internal") {
+            // set the task runner so that long-running operations can be aborted
+            App::Application::setTaskRunner([](const std::function<void()>& f) {
+                Gui::ComputationDialog dialog;
+                dialog.run(f);
+            });
             Gui::Application::runApplication();
+        }
+        else if (App::Application::Config()["RunMode"] == "ComputationDialog") {
+            // Create a QApplication before creating the dialog
+            QApplication app(argc, argv);
+            Gui::ComputationDialogProcess dialogProcess;
+            dialogProcess.run();
+            _exit(0);
         }
         else {
             App::Application::runApplication();

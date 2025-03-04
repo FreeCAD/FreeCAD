@@ -1180,7 +1180,9 @@ void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App
         obj = doc.getActiveObject();
     if(!obj || !obj->isAttachedToDocument() || (!objs.empty() && objs.front()!=obj))
         return;
-    obj->recomputeFeature(true);
+    App::Application::runTask([&]() {
+        obj->recomputeFeature(true);
+    });
 }
 
 void Document::slotTouchedObject(const App::DocumentObject &Obj)
