@@ -80,6 +80,10 @@
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Spreadsheet/**/*']
 
+"Mod: Start":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Start/**/*']
+
 "Mod: Surface":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Surface/**/*/']

@@ -287,7 +287,6 @@ QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
 // find a page in Selection, Document or CurrentWindow.
 TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
 {
-    //    Base::Console().Message("DGU::findPage()\n");
     std::vector<std::string> names;
     std::vector<std::string> labels;
     auto docs = App::GetApplication().getDocuments();
@@ -312,7 +311,8 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
                                  QObject::tr("No Drawing Pages available."));
             return nullptr;
         }
-        else if (foundPageObjects.size() > 1) {
+
+        if (foundPageObjects.size() > 1) {
             // multiple pages available, ask for help
             for (auto obj : foundPageObjects) {
                 std::string name = obj->getNameInDocument();
@@ -323,6 +323,10 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
             DlgPageChooser dlg(labels, names, Gui::getMainWindow());
             if (dlg.exec() == QDialog::Accepted) {
                 std::string selName = dlg.getSelection();
+                if (selName.empty()) {
+                    showNoPageMessage();
+                    return nullptr;
+                }
                 App::Document* doc = cmd->getDocument();
                 return static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
             }
@@ -335,49 +339,51 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
 
     // check Selection for a page
     std::vector<App::DocumentObject*> selPages =
-        cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+        Gui::Command::getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     if (selPages.empty()) {
         // no page in selection, try this document
         auto docPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
         if (docPages.empty()) {
             // we are only to look in this document, and there is no page in this document
-            QMessageBox::warning(Gui::getMainWindow(),
-                                 QObject::tr("No page found"),
-                                 QObject::tr("No Drawing Pages in document."));
+            showNoPageMessage();
             return nullptr;
         }
-        else if (docPages.size() > 1) {
+
+        if (docPages.size() > 1) {
             // multiple pages in document, use active page if there is one
-            Gui::MainWindow* w = Gui::getMainWindow();
-            Gui::MDIView* mv = w->activeWindow();
-            MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
+            auto* w = Gui::getMainWindow();
+            auto* mv = w->activeWindow();
+            auto* mvp = dynamic_cast<MDIViewPage*>(mv);
             if (mvp) {
                 QGSPage* qp = mvp->getViewProviderPage()->getQGSPage();
                 return qp->getDrawPage();
             }
-            else {
-                // none of pages in document is active, ask for help
-                for (auto obj : docPages) {
-                    std::string name = obj->getNameInDocument();
-                    names.push_back(name);
-                    std::string label = obj->Label.getValue();
-                    labels.push_back(label);
-                }
-                DlgPageChooser dlg(labels, names, Gui::getMainWindow());
-                if (dlg.exec() == QDialog::Accepted) {
-                    std::string selName = dlg.getSelection();
-                    App::Document* doc = cmd->getDocument();
-                    return static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
-                }
-                return nullptr;
+
+            // none of pages in document is active, ask for help
+            for (auto obj : docPages) {
+                std::string name = obj->getNameInDocument();
+                names.push_back(name);
+                std::string label = obj->Label.getValue();
+                labels.push_back(label);
             }
+            DlgPageChooser dlg(labels, names, Gui::getMainWindow());
+            if (dlg.exec() == QDialog::Accepted) {
+                std::string selName = dlg.getSelection();
+                if (selName.empty()) {
+                    showNoPageMessage();
+                    return nullptr;
+            }
+                App::Document* doc = cmd->getDocument();
+                return static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
+            }
+            return nullptr;
         }
-        else {
-            // only 1 page in document - use it
-            return static_cast<TechDraw::DrawPage*>(docPages.front());
-        }
+
+        // only 1 page in document - use it
+        return static_cast<TechDraw::DrawPage*>(docPages.front());
     }
-    else if (selPages.size() > 1) {
+
+    if (selPages.size() > 1) {
         // multiple pages in selection
         for (auto obj : selPages) {
             std::string name = obj->getNameInDocument();
@@ -388,6 +394,10 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
         DlgPageChooser dlg(labels, names, Gui::getMainWindow());
         if (dlg.exec() == QDialog::Accepted) {
             std::string selName = dlg.getSelection();
+            if (selName.empty()) {
+                showNoPageMessage();
+                return nullptr;
+            }
             App::Document* doc = cmd->getDocument();
             return static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
         }
@@ -397,8 +407,14 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
         return static_cast<TechDraw::DrawPage*>(selPages.front());
     }
 
-    // we can not actually reach this point.
     return nullptr;
+}
+
+void DrawGuiUtil::showNoPageMessage()
+{
+    QMessageBox::warning(Gui::getMainWindow(),
+                    QObject::tr("No page selected"),
+                    QObject::tr("This function needs a page."));
 }
 
 bool DrawGuiUtil::isDraftObject(App::DocumentObject* obj)

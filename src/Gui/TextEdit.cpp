@@ -36,7 +36,7 @@
 #include "TextEdit.h"
 #include "SyntaxHighlighter.h"
 #include "Tools.h"
-#include <App/Color.h>
+#include <Base/Color.h>
 
 
 using namespace Gui;
@@ -375,7 +375,7 @@ void TextEditor::highlightCurrentLine()
     if (!isReadOnly() && isEnabledHighlightCurrentLine()) {
         QTextEdit::ExtraSelection selection;
         QColor lineColor = d->colormap[QLatin1String("Current line highlight")];
-        unsigned int col = App::Color::asPackedRGB<QColor>(lineColor);
+        unsigned int col = Base::Color::asPackedRGB<QColor>(lineColor);
         ParameterGrp::handle hPrefGrp = getWindowParameter();
         auto value = static_cast<unsigned long>(col);
         value = hPrefGrp->GetUnsigned( "Current line highlight", value);
@@ -457,7 +457,7 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
         QMap<QString, QColor>::Iterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
-            unsigned int col = App::Color::asPackedRGB<QColor>(color);
+            unsigned int col = Base::Color::asPackedRGB<QColor>(color);
             auto value = static_cast<unsigned long>(col);
             value = hPrefGrp->GetUnsigned(sReason, value);
             col = static_cast<unsigned int>(value);

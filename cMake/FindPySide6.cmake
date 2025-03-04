@@ -4,19 +4,19 @@
 # cMake find_package() call
 
 find_package(PySide6 CONFIG QUIET)
-if(NOT PySide6_FOUND)
-    if(NOT PySide6_INCLUDE_DIR AND TARGET PySide6::pyside6)
-        get_property(PySide6_INCLUDE_DIR TARGET PySide6::pyside6 PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-    endif()
 
-    if(NOT PySide6_INCLUDE_DIR)
-        find_pip_package(PySide6)
-        if (PySide6_FOUND)
-            set(PYSIDE_INCLUDE_DIR ${PySide6_INCLUDE_DIRS} CACHE INTERNAL "")
-            set(PYSIDE_LIBRARY ${PySide6_LIBRARIES} CACHE INTERNAL "")
-            set(PYSIDE_FOUND TRUE CACHE BOOL OFF)
-            set(PYSIDE_MAJOR_VERSION 6 CACHE INTERNAL 6)
-        endif()
-    endif()
+if(NOT PySide6_INCLUDE_DIRS AND TARGET PySide6::pyside6)
+    get_property(PySide6_INCLUDE_DIRS TARGET PySide6::pyside6 PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
+endif()
 
+if(NOT PySide6_INCLUDE_DIRS)
+    find_pip_package(PySide6)
+endif()
+
+# Also provide the old-style variables so we don't have to update everything yet
+if (PySide6_FOUND)
+    set(PYSIDE_INCLUDE_DIR ${PySide6_INCLUDE_DIRS})
+    set(PYSIDE_LIBRARY ${PySide6_LIBRARIES})
+    set(PYSIDE_FOUND TRUE)
+    set(PYSIDE_MAJOR_VERSION 6)
 endif()

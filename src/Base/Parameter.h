@@ -52,6 +52,7 @@ using PyObject = struct _object;
 
 #include "Handle.h"
 #include "Observer.h"
+#include "Color.h"
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4251)
@@ -83,7 +84,6 @@ XERCES_CPP_NAMESPACE_END
 
 class ParameterManager;
 
-
 /** The parameter container class
  *  This is the base class of all classes handle parameter.
  *  The class contains a map of key-value pairs in a grouping
@@ -106,22 +106,70 @@ public:
     ParameterGrp& operator=(const ParameterGrp&) = delete;
     ParameterGrp& operator=(ParameterGrp&&) = delete;
 
-    /** @name copy and insertation */
+    /** @name Copying & Inserting */
     //@{
-    /// make a deep copy to the other group
-    void copyTo(const Base::Reference<ParameterGrp>&);
-    /// overwrite everything similar, leave the others alone
-    void insertTo(const Base::Reference<ParameterGrp>&);
-    /// export this group to a file
+
+    /**
+     *  Overwrites another group with this one.
+     *
+     *  @param[out] Group The group to overwrite.
+     */
+    void copyTo(const Base::Reference<ParameterGrp>& Group);
+
+    /**
+     *  Inserts items from this group into another.
+     *
+     *  @param[out] Group The group to insert into.
+     *
+     *  @note
+     *  Inserts new and replaces existing items.
+     */
+    void insertTo(const Base::Reference<ParameterGrp>& Group);
+
+    /**
+     *  Exports this group to a given file.
+     *
+     *  @param[out] FileName The path to the file.
+     */
     void exportTo(const char* FileName);
-    /// import from a file to this group
+
+    /**
+     *  Overwrites this group with the given file.
+     *
+     *  @param[in] FileName The path to the file.
+     */
     void importFrom(const char* FileName);
-    /// insert from a file to this group, overwrite only the similar
+
+    /**
+     *  Inserts items from the given file.
+     *
+     *  @param[in] FileName The path to the file.
+     *
+     *  @note
+     *  Inserts new and replaces existing items.
+     */
     void insert(const char* FileName);
-    /// revert to default value by deleting any parameter that has the same value in the given file
+
+    /**
+     *  Removes items from this group that are present in the given file.
+     *
+     *  @param[in] FileName The path to the file.
+     *
+     *  @note
+     *  Only removes items that have the same value.
+     */
     void revert(const char* FileName);
-    /// revert to default value by deleting any parameter that has the same value in the given group
-    void revert(const Base::Reference<ParameterGrp>&);
+
+    /**
+     *  Removes items from this group that are present in the other.
+     *
+     *  @param[in] Group The group to compare with.
+     *
+     *  @note
+     *  Only removes items that have the same value.
+     */
+    void revert(const Base::Reference<ParameterGrp>& Group);
+
     //@}
 
     /** @name methods for group handling */
@@ -300,6 +348,21 @@ public:
     GetUnsignedMap(const char* sFilter = nullptr) const;
     /// remove a uint value from this group
     void RemoveUnsigned(const char* Name);
+    //@}
+
+    /** @name methods for Colors handling, colors are persisted as packed uints */
+    //@{
+    /// read color value or give default
+    Base::Color GetColor(const char* Name, Base::Color lPreset = Base::Color(1.0, 1.0, 1.0)) const;
+    /// set a color value
+    void SetColor(const char* Name, Base::Color lValue);
+    /// get a vector of all color values in this group
+    std::vector<Base::Color> GetColors(const char* sFilter = nullptr) const;
+    /// get a map with all color values and the keys of this group
+    std::vector<std::pair<std::string, Base::Color>>
+    GetColorMap(const char* sFilter = nullptr) const;
+    /// remove a color value from this group
+    void RemoveColor(const char* Name);
     //@}
 
 

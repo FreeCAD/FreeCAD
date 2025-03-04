@@ -386,15 +386,15 @@ SoCamera* NavigationStyle::getCamera() const
     return this->viewer->getCamera();
 }
 
-void NavigationStyle::setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter)
+std::shared_ptr<NavigationAnimation> NavigationStyle::setCameraOrientation(const SbRotation& orientation, const SbBool moveToCenter) const
 {
     SoCamera* camera = getCamera();
     if (!camera)
-        return;
+        return {};
 
     animator->stop();
 
-    SbVec3f focalPoint = getFocalPoint();
+    const SbVec3f focalPoint = getFocalPoint();
     SbVec3f translation(0, 0, 0);
 
     if (moveToCenter) {
@@ -406,42 +406,48 @@ void NavigationStyle::setCameraOrientation(const SbRotation& orientation, SbBool
         }
     }
 
-    // Start an animation or set the pose directly
+    // Start an animation and return it
     if (isAnimationEnabled()) {
-        viewer->startAnimation(orientation, focalPoint, translation);
+        return viewer->startAnimation(orientation, focalPoint, translation);
     }
-    else {
-        // Distance from rotation center to camera position in camera coordinate system
-        SbVec3f rotationCenterDistanceCam = camera->focalDistance.getValue() * SbVec3f(0, 0, 1);
 
-        // Set to the given orientation
-        camera->orientation = orientation;
+    // or set the pose directly
+    
+    // Distance from rotation center to camera position in camera coordinate system
+    const SbVec3f rotationCenterDistanceCam = camera->focalDistance.getValue() * SbVec3f(0, 0, 1);
 
-        // Distance from rotation center to new camera position in global coordinate system
-        SbVec3f newRotationCenterDistance;
-        camera->orientation.getValue().multVec(rotationCenterDistanceCam, newRotationCenterDistance);
+    // Set to the given orientation
+    camera->orientation = orientation;
 
-        // Reposition camera so the rotation center stays in the same place
-        // Optionally add translation to move to center
-        camera->position = focalPoint + newRotationCenterDistance + translation;
-    }
+    // Distance from rotation center to new camera position in global coordinate system
+    SbVec3f newRotationCenterDistance;
+    camera->orientation.getValue().multVec(rotationCenterDistanceCam, newRotationCenterDistance);
+
+    // Reposition camera so the rotation center stays in the same place
+    // Optionally add translation to move to center
+    camera->position = focalPoint + newRotationCenterDistance + translation;
+
+    return {};
 }
 
-void NavigationStyle::translateCamera(const SbVec3f& translation)
+std::shared_ptr<NavigationAnimation> NavigationStyle::translateCamera(const SbVec3f& translation) const
 {
     SoCamera* camera = getCamera();
     if (!camera)
-        return;
+        return {};
 
     animator->stop();
 
-    // Start an animation or set the pose directly
+    // Start an animation and return it
     if (isAnimationEnabled()) {
-        viewer->startAnimation(camera->orientation.getValue(), SbVec3f(0, 0, 0), translation);
+        return viewer->startAnimation(camera->orientation.getValue(), SbVec3f(0, 0, 0), translation);
     }
-    else {
-        camera->position = camera->position.getValue() + translation;
-    }
+
+    // or set the pose directly
+    
+    camera->position = camera->position.getValue() + translation;
+
+    return {};
 }
 
 void NavigationStyle::boxZoom(const SbBox2s& box)

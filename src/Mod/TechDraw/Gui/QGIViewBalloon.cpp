@@ -785,7 +785,7 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
 
     double xAdj = 0.0;
     double yAdj = 0.0;
-    int endType = balloon->EndType.getValue();
+    ArrowType endType = static_cast<ArrowType>(balloon->EndType.getValue());
     double arrowAdj = QGIArrow::getOverlapAdjust(
         endType, balloon->EndTypeScale.getValue() * QGIArrow::getPrefArrowSize());
 
@@ -948,15 +948,16 @@ QColor QGIViewBalloon::prefNormalColor()
     if (vp) {
         vpBalloon = dynamic_cast<ViewProviderBalloon*>(vp);
         if (vpBalloon) {
-            App::Color fcColor = Preferences::getAccessibleColor(vpBalloon->Color.getValue());
+            Base::Color fcColor = Preferences::getAccessibleColor(vpBalloon->Color.getValue());
             setNormalColor(fcColor.asValue<QColor>());
         }
     }
     return getNormalColor();
 }
 
-int QGIViewBalloon::prefDefaultArrow() const { return Preferences::balloonArrow(); }
-
+ArrowType QGIViewBalloon::prefDefaultArrow() const {
+    return Preferences::balloonArrow();
+}
 
 //should this be an object property or global preference?
 //when would you want a crooked pyramid?

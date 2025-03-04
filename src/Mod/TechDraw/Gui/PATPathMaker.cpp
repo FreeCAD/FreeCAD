@@ -57,37 +57,10 @@ void PATPathMaker::lineSetToFillItems(LineSet& ls)
     m_segCount = 0;
     QPen pen = getPen();
     for (auto& geom : ls.getGeoms()) {
-        //geom is a tdGeometry representation of 1 line in the pattern
-        if (ls.isDashed()) {
-            double offset = 0.0;
-            Base::Vector3d pStart = ls.getPatternStartPoint(geom, offset, m_fillScale);
-            offset = Rez::guiX(offset);
-            Base::Vector3d gStart(geom->getStartPoint().x,
-                                  geom->getStartPoint().y,
-                                  0.0);
-            Base::Vector3d gEnd(geom->getEndPoint().x,
-                                geom->getEndPoint().y,
-                                0.0);
-            if (DrawUtil::fpCompare(offset, 0.0, 0.00001)) {                              //no offset
-                QGraphicsPathItem* item1 = lineFromPoints(pStart, gEnd, ls.getDashSpec());
-                item1->setPen(pen);
-                m_fillItems.push_back(item1);
-                if (!pStart.IsEqual(gStart, 0.00001)) {
-                    QGraphicsPathItem* item2 = lineFromPoints(pStart, gStart, ls.getDashSpec().reversed());
-                    item2->setPen(pen);
-                    m_fillItems.push_back(item2);
-                }
-            } else {                                                                  //offset - pattern start not in g
-                double remain = dashRemain(decodeDashSpec(ls.getDashSpec()), offset);
-                QGraphicsPathItem* shortItem = geomToStubbyLine(geom, remain, ls);
-                shortItem->setPen(pen);
-                m_fillItems.push_back(shortItem);
-            }
-        } else {                                                //not dashed
-            QGraphicsPathItem* fillItem = geomToLine(geom, ls);
-            fillItem->setPen(pen);
-            m_fillItems.push_back(fillItem);
-        }
+        //geom is a tdGeometry representation of 1 line in the pattern                                             //not dashed
+        QGraphicsPathItem* fillItem = simpleLine(geom);
+        fillItem->setPen(pen);
+        m_fillItems.push_back(fillItem);
 
         if (m_segCount > m_maxSeg) {
             Base::Console().Warning("PAT segment count exceeded: %ld\n", m_segCount);
@@ -119,6 +92,22 @@ QGraphicsPathItem*  PATPathMaker::geomToLine(TechDraw::BaseGeomPtr base, LineSet
                             base->getEndPoint().y,
                             0.0);
     fillItem->setPath(dashedPPath(decodeDashSpec(ls.getDashSpec()),
+                                  Rez::guiX(start),
+                                  Rez::guiX(end)));
+    return fillItem;
+}
+
+/// create a simple line from geometry
+QGraphicsPathItem*  PATPathMaker::simpleLine(TechDraw::BaseGeomPtr base)
+{
+    QGraphicsPathItem* fillItem = new QGraphicsPathItem(m_parent);
+    Base::Vector3d start(base->getStartPoint().x,
+                            base->getStartPoint().y,
+                            0.0);
+    Base::Vector3d end(base->getEndPoint().x,
+                            base->getEndPoint().y,
+                            0.0);
+    fillItem->setPath(dashedPPath(std::vector<double>(),
                                   Rez::guiX(start),
                                   Rez::guiX(end)));
     return fillItem;

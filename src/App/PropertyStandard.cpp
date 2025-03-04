@@ -22,6 +22,16 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <algorithm>
+#include <set>
+#include <limits>
+#include <memory>
+#include <list>
+#include <map>
+#include <string>
+#include <vector>
+#endif
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/math/special_functions/round.hpp>
@@ -1425,101 +1435,13 @@ void PropertyString::setValue(const char* newLabel)
         return;
     }
 
-    std::string _newLabel;
-
     std::vector<std::pair<Property*, std::unique_ptr<Property>>> propChanges;
-    std::string label;
+    std::string label = newLabel;
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
     bool commit = false;
 
-    if (obj && obj->isAttachedToDocument() && this == &obj->Label
-        && (!obj->getDocument()->testStatus(App::Document::Restoring)
-            || obj->getDocument()->testStatus(App::Document::Importing))
-        && !obj->getDocument()->isPerformingTransaction()) {
-        // allow object to control label change
-
-        static ParameterGrp::handle _hPGrp;
-        if (!_hPGrp) {
-            _hPGrp = GetApplication().GetUserParameter().GetGroup("BaseApp");
-            _hPGrp = _hPGrp->GetGroup("Preferences")->GetGroup("Document");
-        }
-        App::Document* doc = obj->getDocument();
-        if (doc && !_hPGrp->GetBool("DuplicateLabels") && !obj->allowDuplicateLabel()) {
-            std::vector<std::string> objectLabels;
-            std::vector<App::DocumentObject*>::const_iterator it;
-            std::vector<App::DocumentObject*> objs = doc->getObjects();
-            bool match = false;
-            for (it = objs.begin(); it != objs.end(); ++it) {
-                if (*it == obj) {
-                    continue;  // don't compare object with itself
-                }
-                std::string objLabel = (*it)->Label.getValue();
-                if (!match && objLabel == newLabel) {
-                    match = true;
-                }
-                objectLabels.push_back(objLabel);
-            }
-
-            // make sure that there is a name conflict otherwise we don't have to do anything
-            if (match && *newLabel) {
-                label = newLabel;
-                // remove number from end to avoid lengthy names
-                size_t lastpos = label.length() - 1;
-                while (label[lastpos] >= 48 && label[lastpos] <= 57) {
-                    // if 'lastpos' becomes 0 then all characters are digits. In this case we use
-                    // the complete label again
-                    if (lastpos == 0) {
-                        lastpos = label.length() - 1;
-                        break;
-                    }
-                    lastpos--;
-                }
-
-                bool changed = false;
-                label = label.substr(0, lastpos + 1);
-                if (label != obj->getNameInDocument()
-                    && boost::starts_with(obj->getNameInDocument(), label)) {
-                    // In case the label has the same base name as object's
-                    // internal name, use it as the label instead.
-                    const char* objName = obj->getNameInDocument();
-                    const char* c = &objName[lastpos + 1];
-                    for (; *c; ++c) {
-                        if (*c < 48 || *c > 57) {
-                            break;
-                        }
-                    }
-                    if (*c == 0
-                        && std::find(objectLabels.begin(),
-                                     objectLabels.end(),
-                                     obj->getNameInDocument())
-                            == objectLabels.end()) {
-                        label = obj->getNameInDocument();
-                        changed = true;
-                    }
-                }
-                if (!changed) {
-                    label = Base::Tools::getUniqueName(label, objectLabels, 3);
-                }
-            }
-        }
-
-        if (label.empty()) {
-            label = newLabel;
-        }
-        obj->onBeforeChangeLabel(label);
-        newLabel = label.c_str();
-
-        if (!obj->getDocument()->testStatus(App::Document::Restoring)) {
-            // Only update label reference if we are not restoring. When
-            // importing (which also counts as restoring), it is possible the
-            // new object changes its label. However, we cannot update label
-            // references here, because object restoring is not based on
-            // dependency order. It can only be done in afterRestore().
-            //
-            // See PropertyLinkBase::restoreLabelReference() for more details.
-            propChanges = PropertyLinkBase::updateLabelReferences(obj, newLabel);
-        }
-
+    if (obj && this == &obj->Label) {
+        propChanges = obj->onProposedLabelChange(label);
         if (!propChanges.empty() && !GetApplication().getActiveTransaction()) {
             commit = true;
             std::ostringstream str;
@@ -1529,11 +1451,11 @@ void PropertyString::setValue(const char* newLabel)
     }
 
     aboutToSetValue();
-    _cValue = newLabel;
+    _cValue = label;
     hasSetValue();
 
     for (auto& change : propChanges) {
-        change.first->Paste(*change.second.get());
+        change.first->Paste(*change.second);
     }
 
     if (commit) {
@@ -2301,7 +2223,7 @@ PropertyColor::~PropertyColor() = default;
 //**************************************************************************
 // Base class implementer
 
-void PropertyColor::setValue(const Color& col)
+void PropertyColor::setValue(const Base::Color& col)
 {
     aboutToSetValue();
     _cCol = col;
@@ -2322,7 +2244,7 @@ void PropertyColor::setValue(float r, float g, float b, float a)
     hasSetValue();
 }
 
-const Color& PropertyColor::getValue() const
+const Base::Color& PropertyColor::getValue() const
 {
     return _cCol;
 }
@@ -2345,7 +2267,7 @@ PyObject* PropertyColor::getPyObject()
 
 void PropertyColor::setPyObject(PyObject* value)
 {
-    App::Color cCol;
+    Base::Color cCol;
     if (PyTuple_Check(value) && (PyTuple_Size(value) == 3 || PyTuple_Size(value) == 4)) {
         PyObject* item;
         item = PyTuple_GetItem(value, 0);
@@ -2485,7 +2407,7 @@ PyObject* PropertyColorList::getPyObject()
     return list;
 }
 
-Color PropertyColorList::getPyValue(PyObject* item) const
+Base::Color PropertyColorList::getPyValue(PyObject* item) const
 {
     PropertyColor col;
     col.setPyObject(item);
@@ -2529,7 +2451,7 @@ void PropertyColorList::RestoreDocFile(Base::Reader& reader)
     Base::InputStream str(reader);
     uint32_t uCt = 0;
     str >> uCt;
-    std::vector<Color> values(uCt);
+    std::vector<Base::Color> values(uCt);
     uint32_t value;  // must be 32 bit long
     for (auto& it : values) {
         str >> value;
@@ -2552,7 +2474,7 @@ void PropertyColorList::Paste(const Property& from)
 
 unsigned int PropertyColorList::getMemSize() const
 {
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(Color));
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Color));
 }
 
 //**************************************************************************
@@ -2573,7 +2495,7 @@ void PropertyMaterial::setValue(const Material& mat)
     hasSetValue();
 }
 
-void PropertyMaterial::setValue(const Color& col)
+void PropertyMaterial::setValue(const Base::Color& col)
 {
     setDiffuseColor(col);
 }
@@ -2593,7 +2515,7 @@ const Material& PropertyMaterial::getValue() const
     return _cMat;
 }
 
-void PropertyMaterial::setAmbientColor(const Color& col)
+void PropertyMaterial::setAmbientColor(const Base::Color& col)
 {
     aboutToSetValue();
     _cMat.ambientColor = col;
@@ -2614,7 +2536,7 @@ void PropertyMaterial::setAmbientColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterial::setDiffuseColor(const Color& col)
+void PropertyMaterial::setDiffuseColor(const Base::Color& col)
 {
     aboutToSetValue();
     _cMat.diffuseColor = col;
@@ -2635,7 +2557,7 @@ void PropertyMaterial::setDiffuseColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterial::setSpecularColor(const Color& col)
+void PropertyMaterial::setSpecularColor(const Base::Color& col)
 {
     aboutToSetValue();
     _cMat.specularColor = col;
@@ -2656,7 +2578,7 @@ void PropertyMaterial::setSpecularColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterial::setEmissiveColor(const Color& col)
+void PropertyMaterial::setEmissiveColor(const Base::Color& col)
 {
     aboutToSetValue();
     _cMat.emissiveColor = col;
@@ -2691,22 +2613,22 @@ void PropertyMaterial::setTransparency(float val)
     hasSetValue();
 }
 
-const Color& PropertyMaterial::getAmbientColor() const
+const Base::Color& PropertyMaterial::getAmbientColor() const
 {
     return _cMat.ambientColor;
 }
 
-const Color& PropertyMaterial::getDiffuseColor() const
+const Base::Color& PropertyMaterial::getDiffuseColor() const
 {
     return _cMat.diffuseColor;
 }
 
-const Color& PropertyMaterial::getSpecularColor() const
+const Base::Color& PropertyMaterial::getSpecularColor() const
 {
     return _cMat.specularColor;
 }
 
-const Color& PropertyMaterial::getEmissiveColor() const
+const Base::Color& PropertyMaterial::getEmissiveColor() const
 {
     return _cMat.emissiveColor;
 }
@@ -2894,7 +2816,7 @@ void PropertyMaterialList::setValue(int index, const Material& mat)
     hasSetValue();
 }
 
-void PropertyMaterialList::setAmbientColor(const Color& col)
+void PropertyMaterialList::setAmbientColor(const Base::Color& col)
 {
     aboutToSetValue();
     setMinimumSizeOne();
@@ -2924,7 +2846,7 @@ void PropertyMaterialList::setAmbientColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setAmbientColor(int index, const Color& col)
+void PropertyMaterialList::setAmbientColor(int index, const Base::Color& col)
 {
     verifyIndex(index);
 
@@ -2954,7 +2876,7 @@ void PropertyMaterialList::setAmbientColor(int index, uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setDiffuseColor(const Color& col)
+void PropertyMaterialList::setDiffuseColor(const Base::Color& col)
 {
     aboutToSetValue();
     setMinimumSizeOne();
@@ -2984,7 +2906,7 @@ void PropertyMaterialList::setDiffuseColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setDiffuseColor(int index, const Color& col)
+void PropertyMaterialList::setDiffuseColor(int index, const Base::Color& col)
 {
     verifyIndex(index);
 
@@ -3014,7 +2936,7 @@ void PropertyMaterialList::setDiffuseColor(int index, uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setDiffuseColors(const std::vector<App::Color>& colors)
+void PropertyMaterialList::setDiffuseColors(const std::vector<Base::Color>& colors)
 {
     aboutToSetValue();
     setSize(colors.size(), _lValueList[0]);
@@ -3025,7 +2947,7 @@ void PropertyMaterialList::setDiffuseColors(const std::vector<App::Color>& color
     hasSetValue();
 }
 
-void PropertyMaterialList::setSpecularColor(const Color& col)
+void PropertyMaterialList::setSpecularColor(const Base::Color& col)
 {
     aboutToSetValue();
     setMinimumSizeOne();
@@ -3055,7 +2977,7 @@ void PropertyMaterialList::setSpecularColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setSpecularColor(int index, const Color& col)
+void PropertyMaterialList::setSpecularColor(int index, const Base::Color& col)
 {
     verifyIndex(index);
 
@@ -3085,7 +3007,7 @@ void PropertyMaterialList::setSpecularColor(int index, uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setEmissiveColor(const Color& col)
+void PropertyMaterialList::setEmissiveColor(const Base::Color& col)
 {
     aboutToSetValue();
     setMinimumSizeOne();
@@ -3115,7 +3037,7 @@ void PropertyMaterialList::setEmissiveColor(uint32_t rgba)
     hasSetValue();
 }
 
-void PropertyMaterialList::setEmissiveColor(int index, const Color& col)
+void PropertyMaterialList::setEmissiveColor(int index, const Base::Color& col)
 {
     verifyIndex(index);
 
@@ -3196,29 +3118,29 @@ void PropertyMaterialList::setTransparencies(const std::vector<float>& transpare
     hasSetValue();
 }
 
-const Color& PropertyMaterialList::getAmbientColor() const
+const Base::Color& PropertyMaterialList::getAmbientColor() const
 {
     return _lValueList[0].ambientColor;
 }
 
-const Color& PropertyMaterialList::getAmbientColor(int index) const
+const Base::Color& PropertyMaterialList::getAmbientColor(int index) const
 {
     return _lValueList[index].ambientColor;
 }
 
-const Color& PropertyMaterialList::getDiffuseColor() const
+const Base::Color& PropertyMaterialList::getDiffuseColor() const
 {
     return _lValueList[0].diffuseColor;
 }
 
-const Color& PropertyMaterialList::getDiffuseColor(int index) const
+const Base::Color& PropertyMaterialList::getDiffuseColor(int index) const
 {
     return _lValueList[index].diffuseColor;
 }
 
-std::vector<App::Color> PropertyMaterialList::getDiffuseColors() const
+std::vector<Base::Color> PropertyMaterialList::getDiffuseColors() const
 {
-    std::vector<App::Color> list;
+    std::vector<Base::Color> list;
     for (auto& material : _lValueList) {
         list.push_back(material.diffuseColor);
     }
@@ -3226,22 +3148,22 @@ std::vector<App::Color> PropertyMaterialList::getDiffuseColors() const
     return list;
 }
 
-const Color& PropertyMaterialList::getSpecularColor() const
+const Base::Color& PropertyMaterialList::getSpecularColor() const
 {
     return _lValueList[0].specularColor;
 }
 
-const Color& PropertyMaterialList::getSpecularColor(int index) const
+const Base::Color& PropertyMaterialList::getSpecularColor(int index) const
 {
     return _lValueList[index].specularColor;
 }
 
-const Color& PropertyMaterialList::getEmissiveColor() const
+const Base::Color& PropertyMaterialList::getEmissiveColor() const
 {
     return _lValueList[0].emissiveColor;
 }
 
-const Color& PropertyMaterialList::getEmissiveColor(int index) const
+const Base::Color& PropertyMaterialList::getEmissiveColor(int index) const
 {
     return _lValueList[index].emissiveColor;
 }

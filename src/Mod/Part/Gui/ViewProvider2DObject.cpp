@@ -396,6 +396,12 @@ void ViewProvider2DObject::updatePlane()
     Base::ViewOrthoProjMatrix proj(place.inverse().toMatrix());
     Base::BoundBox2d bb = bbox.ProjectBox(&proj);
 
+    // when projection of invalid it often results in infinite shapes
+    // if that happens we simply use some small bounding box to mark plane
+    if (bb.IsInfinite() || !bb.IsValid()) {
+        bb = Base::BoundBox2d(-1, -1, 1, 1);
+    }
+
     SbVec3f verts[4] = {
         SbVec3f(bb.MinX - horizontalPlanePadding, bb.MinY - verticalPlanePadding, 0),
         SbVec3f(bb.MinX - horizontalPlanePadding, bb.MaxY + verticalPlanePadding, 0),

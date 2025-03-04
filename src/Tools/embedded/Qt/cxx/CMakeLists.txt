@@ -30,13 +30,18 @@ set(FREECAD_LIBPACK_DIR ${CMAKE_SOURCE_DIR} CACHE PATH  "Directory of the FreeCA
 add_definitions(-DBOOST_ALL_DYN_LINK)
 
 include_directories(
+    ${FREECAD_SRC_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     #${COIN3D_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
-    ${FREECAD_SRC_DIR}
     "${FREECAD_LIBPACK_DIR}/include"
 )
 

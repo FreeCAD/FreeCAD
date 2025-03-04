@@ -17,10 +17,15 @@ include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
+    ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
     ${VTK_INCLUDE_DIRS}
@@ -368,6 +373,7 @@ SET(FemGuiSymbol_IV
     Resources/symbols/ConstraintContact.iv
     Resources/symbols/ConstraintDisplacement.iv
     Resources/symbols/ConstraintElectrostaticPotential.iv
+    Resources/symbols/ConstraintCurrentDensity.iv
     Resources/symbols/ConstraintFixed.iv
     Resources/symbols/ConstraintForce.iv
     Resources/symbols/ConstraintHeatFlux.iv

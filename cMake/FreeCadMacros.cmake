@@ -26,10 +26,6 @@ MACRO (fc_copy_sources target_name outpath)
 			MAIN_DEPENDENCY "${infile}"
 		)
 	endforeach(it)
-	ADD_CUSTOM_COMMAND(
-		TARGET    ${target_name}
-		DEPENDS   ${ARGN}
-	)
 ENDMACRO(fc_copy_sources)
 
 MACRO (fc_copy_file_if_different inputfile outputfile)
@@ -82,10 +78,6 @@ MACRO (fc_target_copy_resource target_name inpath outpath)
 			MAIN_DEPENDENCY "${infile}"
 		)
 	endforeach(it)
-	ADD_CUSTOM_COMMAND(
-		TARGET    ${target_name}
-		DEPENDS   ${ARGN}
-	)
 ENDMACRO(fc_target_copy_resource)
 
 MACRO (fc_target_copy_resource_flat target_name inpath outpath)
@@ -117,14 +109,11 @@ MACRO (fc_target_copy_resource_flat target_name inpath outpath)
 			MAIN_DEPENDENCY "${infile}"
 		)
 	endforeach(it)
-	ADD_CUSTOM_COMMAND(
-		TARGET    ${target_name}
-		DEPENDS   ${ARGN}
-	)
 ENDMACRO(fc_target_copy_resource_flat)
 
 # It would be a bit cleaner to generate these files in ${CMAKE_CURRENT_BINARY_DIR}
 
+# To be removed once all instances are migrated to generate_from_py
 macro(generate_from_xml BASE_NAME)
     set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/bindings/generate.py")
     file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
@@ -154,7 +143,36 @@ macro(generate_from_xml BASE_NAME)
     )
 endmacro(generate_from_xml)
 
-macro(generate_from_py BASE_NAME OUTPUT_FILE)
+macro(generate_from_py BASE_NAME)
+    set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/bindings/generate.py")
+    file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
+    file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.pyi" SOURCE_NATIVE_PATH)
+
+    set(SOURCE_CPP_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}.cpp" )
+
+    # BASE_NAME may include also a path name
+    GET_FILENAME_COMPONENT(OUTPUT_PATH "${SOURCE_CPP_PATH}" PATH)
+    file(TO_NATIVE_PATH "${OUTPUT_PATH}" OUTPUT_NATIVE_PATH)
+    if(NOT EXISTS "${SOURCE_CPP_PATH}")
+        # assures the source files are generated at least once
+        message(STATUS "${SOURCE_CPP_PATH}")
+        execute_process(COMMAND "${Python3_EXECUTABLE}" "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}"
+                        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" COMMAND_ERROR_IS_FATAL ANY
+        )
+    endif()
+    add_custom_command(
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}_.h" "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}_.cpp"
+        COMMAND ${Python3_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.pyi
+        MAIN_DEPENDENCY "${BASE_NAME}.pyi"
+        DEPENDS
+        "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateClassPyExport.py"
+        "${TOOL_PATH}"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+        COMMENT "Building ${BASE_NAME}.h/.cpp out of ${BASE_NAME}.pyi"
+    )
+endmacro(generate_from_py)
+
+macro(generate_embed_from_py BASE_NAME OUTPUT_FILE)
 		set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py")
 		file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
 		file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.py" SOURCE_NATIVE_PATH)
@@ -165,7 +183,7 @@ macro(generate_from_py BASE_NAME OUTPUT_FILE)
 				DEPENDS "${TOOL_PATH}"
 				WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
 				COMMENT "Building files out of ${BASE_NAME}.py")
-endmacro(generate_from_py)
+endmacro(generate_embed_from_py)
 
 macro(generate_from_any INPUT_FILE OUTPUT_FILE VARIABLE)
 		set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py")
@@ -278,6 +296,8 @@ ENDMACRO(SET_PYTHON_PREFIX_SUFFIX)
 # Locate the include directory for a pip-installed package -- uses pip show to find the base pip
 # install directory, and then appends the package name and  "/include" to the end
 macro(find_pip_package PACKAGE)
+	unset(${PACKAGE}_FOUND)  # Remove from local scope
+	unset(${PACKAGE}_FOUND CACHE)  # Remove from CMake cache (if it exists)
 	execute_process(
 			COMMAND ${Python3_EXECUTABLE} -m pip show ${PACKAGE}
 			RESULT_VARIABLE FAILURE
@@ -312,15 +332,18 @@ macro(find_pip_package PACKAGE)
 			file(GLOB OPT_LIBRARIES "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/*${PIP_LIB_NAME}*.so.*")
 		endif()
 		if (OPT_LIBRARIES AND DEBUG_LIBRARIES)
-			set(${PACKAGE}_LIBRARIES optimized ${OPT_LIBRARIES} debug ${DEBUG_LIBRARIES} CACHE PATH "")
+			set(${PACKAGE}_LIBRARIES optimized ${OPT_LIBRARIES} debug ${DEBUG_LIBRARIES} CACHE PATH "Location of the ${PACKAGE} libraries")
 		elseif(OPT_LIBRARIES)
-			set(${PACKAGE}_LIBRARIES ${OPT_LIBRARIES} CACHE PATH "")
+			set(${PACKAGE}_LIBRARIES ${OPT_LIBRARIES} CACHE PATH "Location of the ${PACKAGE} optimized libraries")
 		elseif(DEBUG_LIBRARIES)
-			set(${PACKAGE}_LIBRARIES ${DEBUG_LIBRARIES} CACHE PATH "")
+			set(${PACKAGE}_LIBRARIES ${DEBUG_LIBRARIES} CACHE PATH "Location of the ${PACKAGE} debug libraries")
 		endif()
-		set(${PACKAGE}_INCLUDE_DIRS ${INCLUDE_DIR} CACHE PATH "")
-		set(${PACKAGE}_FOUND ON CACHE BOOL OFF)
+		set(${PACKAGE}_INCLUDE_DIRS ${INCLUDE_DIR} CACHE PATH "Location of the ${PACKAGE} includes")
+		set(${PACKAGE}_FOUND ON)
 		message(STATUS "Found pip-installed ${PACKAGE} in ${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}")
+		if(${PACKAGE}_INCLUDE_DIRS)
+			message(STATUS "  --> with includes in ${${PACKAGE}_INCLUDE_DIRS}")
+		endif()
 	endif()
 endmacro()
 

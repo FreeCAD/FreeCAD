@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-from nativeifc import ifc_tools  # lazy import
+from . import ifc_tools  # lazy import
 
 
 def edit_classification(obj):

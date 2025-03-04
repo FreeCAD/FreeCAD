@@ -65,18 +65,18 @@ public:
                      std::vector<TopLoc_Location>& hierarchical_loc,
                      std::vector<App::DocumentObject*>& hierarchical_part);
     int saveShape(Part::Feature* part,
-                  const std::vector<App::Color>&,
+                  const std::vector<Base::Color>&,
                   std::vector<TDF_Label>& hierarchical_label,
                   std::vector<TopLoc_Location>& hierarchical_loc,
                   std::vector<App::DocumentObject*>& hierarchical_part);
     void getPartColors(std::vector<App::DocumentObject*> hierarchical_part,
                        std::vector<TDF_Label> FreeLabels,
                        std::vector<int> part_id,
-                       std::vector<std::vector<App::Color>>& Colors) const;
+                       std::vector<std::vector<Base::Color>>& Colors) const;
     void reallocateFreeShape(std::vector<App::DocumentObject*> hierarchical_part,
                              std::vector<TDF_Label> FreeLabels,
                              std::vector<int> part_id,
-                             std::vector<std::vector<App::Color>>& Colors);
+                             std::vector<std::vector<Base::Color>>& Colors);
     void getFreeLabels(std::vector<TDF_Label>& hierarchical_label,
                        std::vector<TDF_Label>& labels,
                        std::vector<int>& label_part_id);
@@ -91,7 +91,7 @@ public:
                   std::vector<TopLoc_Location>& hierarchical_loc);
 
 private:
-    virtual void findColors(Part::Feature*, std::vector<App::Color>&) const
+    virtual void findColors(Part::Feature*, std::vector<Base::Color>&) const
     {}
     std::vector<App::DocumentObject*> filterPart(App::Part* part) const;
 
@@ -108,16 +108,16 @@ class ImportExport ExportOCAFCmd: public ExportOCAF
 {
 public:
     ExportOCAFCmd(Handle(TDocStd_Document) h, bool explicitPlacement);
-    void setPartColorsMap(const std::map<Part::Feature*, std::vector<App::Color>>& colors)
+    void setPartColorsMap(const std::map<Part::Feature*, std::vector<Base::Color>>& colors)
     {
         partColors = colors;
     }
 
 private:
-    void findColors(Part::Feature*, std::vector<App::Color>&) const override;
+    void findColors(Part::Feature*, std::vector<Base::Color>&) const override;
 
 private:
-    std::map<Part::Feature*, std::vector<App::Color>> partColors;
+    std::map<Part::Feature*, std::vector<Base::Color>> partColors;
 };
 
 

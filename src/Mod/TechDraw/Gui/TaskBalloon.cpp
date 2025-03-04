@@ -168,7 +168,7 @@ void TaskBalloon::onTextChanged()
 
 void TaskBalloon::onColorChanged()
 {
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->textColor->color());
     m_balloonVP->Color.setValue(ac);
     recomputeFeature();

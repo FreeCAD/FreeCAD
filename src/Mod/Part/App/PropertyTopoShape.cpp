@@ -271,11 +271,14 @@ void PropertyPartShape::Save (Base::Writer &writer) const
     }
     std::string version;
     // If exporting, do not export mapped element name, but still make a mark
-    if(owner) {
-        if(!owner->isExporting())
-            version = _Ver.size()?_Ver:owner->getElementMapVersion(this);
-    }else
-        version = _Ver.size()?_Ver:_Shape.getElementMapVersion();
+    auto const version_valid = _Ver.size() && (_Ver != "?");
+    if (owner) {
+        if (!owner->isExporting()) {
+            version = version_valid ? _Ver : owner->getElementMapVersion(this);
+        }
+    } else {
+        version = version_valid ? _Ver : _Shape.getElementMapVersion();
+    }
     writer.Stream() << " ElementMap=\"" << version << '"';
 
     bool binary = writer.getMode("BinaryBrep");

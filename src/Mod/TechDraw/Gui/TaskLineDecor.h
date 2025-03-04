@@ -84,7 +84,7 @@ private:
     std::vector<std::string> m_createdFormatTags;
 
     int m_style;
-    App::Color m_color;
+    Base::Color m_color;
     double m_weight;
     bool m_visible;
     bool m_apply;

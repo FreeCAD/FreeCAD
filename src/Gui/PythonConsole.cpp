@@ -37,7 +37,7 @@
 #endif
 
 #include <Base/Interpreter.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
@@ -947,7 +947,7 @@ void PythonConsole::changeEvent(QEvent *e)
     else if (e->type() == QEvent::StyleChange) {
         QPalette pal = qApp->palette();
         QColor color = pal.windowText().color();
-        unsigned int text = App::Color::asPackedRGB<QColor>(color);
+        unsigned int text = Base::Color::asPackedRGB<QColor>(color);
         auto value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
         value = getWindowParameter()->GetUnsigned("Text", value);

@@ -31,19 +31,7 @@
 #include "Application.h"
 #include "Material.h"
 
-// Helper functions to consistently convert between float and long
-namespace
-{
-float fromPercent(long value)
-{
-    return std::roundf(value) / 100.0F;
-}
-
-long toPercent(float value)
-{
-    return std::lround(100.0 * value);
-}
-}  // namespace
+#include <Base/Tools.h>
 
 using namespace App;
 
@@ -339,7 +327,7 @@ App::Material Material::getDefaultAppearance()
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
 
-    auto getColor = [hGrp](const char* parameter, App::Color& color) {
+    auto getColor = [hGrp](const char* parameter, Base::Color& color) {
         uint32_t packed = color.getPackedRGB();
         packed = hGrp->GetUnsigned(parameter, packed);
         color.setPackedRGB(packed);
@@ -351,9 +339,9 @@ App::Material Material::getDefaultAppearance()
     };
 
     App::Material mat(App::Material::DEFAULT);
-    mat.transparency = fromPercent(hGrp->GetInt("DefaultShapeTransparency", 0));
-    long shininess = toPercent(mat.shininess);
-    mat.shininess = fromPercent(hGrp->GetInt("DefaultShapeShininess", shininess));
+    mat.transparency = Base::fromPercent(hGrp->GetInt("DefaultShapeTransparency", 0));
+    long shininess = Base::toPercent(mat.shininess);
+    mat.shininess = Base::fromPercent(hGrp->GetInt("DefaultShapeShininess", shininess));
 
     // This is handled in the material code when using the object appearance
     bool randomColor = hGrp->GetBool("RandomColor", false);
@@ -363,10 +351,10 @@ App::Material Material::getDefaultAppearance()
         float red = static_cast<float>(intRandom(0, 255)) / 255.0F;
         float green = static_cast<float>(intRandom(0, 255)) / 255.0F;
         float blue = static_cast<float>(intRandom(0, 255)) / 255.0F;
-        mat.diffuseColor = App::Color(red, green, blue);
+        mat.diffuseColor = Base::Color(red, green, blue);
     }
     else {
-        // Color = (204, 204, 230) = 3435980543UL
+        // Base::Color = (204, 204, 230) = 3435980543UL
         getColor("DefaultShapeColor", mat.diffuseColor);
     }
 

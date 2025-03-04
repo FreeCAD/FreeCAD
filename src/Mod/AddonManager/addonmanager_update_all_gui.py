@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
+# *   Copyright (c) 2022-2025 FreeCAD project association AISBL             *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -85,6 +85,8 @@ class UpdateAllGUI(QtCore.QObject):
     finished = QtCore.Signal()
     addon_updated = QtCore.Signal(object)
 
+    index_role = QtCore.Qt.UserRole + 1
+
     def __init__(self, addons: List[Addon]):
         super().__init__()
         self.addons = addons
@@ -114,28 +116,58 @@ class UpdateAllGUI(QtCore.QObject):
         self.dialog.tableWidget.clear()
         self.in_process_row = None
         self.row_map = {}
+        self._setup_empty_table()
+        counter = 0
         for addon in self.addons:
             if addon.status() == Addon.Status.UPDATE_AVAILABLE:
-                self._add_addon_to_table(addon)
+                self._add_addon_to_table(addon, counter)
                 self.addons_with_update.append(addon)
+            counter += 1
 
     def _cancel_installation(self):
         self.cancelled = True
         if self.worker_thread and self.worker_thread.isRunning():
             self.worker_thread.requestInterruption()
 
-    def _add_addon_to_table(self, addon: Addon):
-        """Add the given addon to the list, with no icon in the first column"""
+    def _setup_empty_table(self):
+        self.dialog.tableWidget.setColumnCount(4)
+        self.dialog.tableWidget.horizontalHeader().setSectionResizeMode(
+            0, QtWidgets.QHeaderView.ResizeMode.ResizeToContents
+        )
+        self.dialog.tableWidget.horizontalHeader().setSectionResizeMode(
+            1, QtWidgets.QHeaderView.ResizeMode.ResizeToContents
+        )
+        self.dialog.tableWidget.horizontalHeader().setSectionResizeMode(
+            2, QtWidgets.QHeaderView.ResizeMode.ResizeToContents
+        )
+        self.dialog.tableWidget.horizontalHeader().setSectionResizeMode(
+            3, QtWidgets.QHeaderView.ResizeMode.Stretch
+        )
+
+    def _add_addon_to_table(self, addon: Addon, index: int):
+        """Add the given addon to the list, storing its index as user data in the first column"""
         new_row = self.dialog.tableWidget.rowCount()
-        self.dialog.tableWidget.setColumnCount(2)
         self.dialog.tableWidget.setRowCount(new_row + 1)
-        self.dialog.tableWidget.setItem(new_row, 0, QtWidgets.QTableWidgetItem(addon.display_name))
-        self.dialog.tableWidget.setItem(new_row, 1, QtWidgets.QTableWidgetItem(""))
+        new_item = QtWidgets.QTableWidgetItem(addon.display_name)
+        new_item.setData(UpdateAllGUI.index_role, index)  # Only first item in each row needs data()
+        self.dialog.tableWidget.setItem(new_row, 0, new_item)
+        if addon.installed_metadata and addon.installed_metadata.version:
+            self.dialog.tableWidget.setItem(
+                new_row, 1, QtWidgets.QTableWidgetItem(str(addon.installed_metadata.version))
+            )
+        self.dialog.tableWidget.setItem(new_row, 2, QtWidgets.QTableWidgetItem(""))
+        self.dialog.tableWidget.setItem(new_row, 3, QtWidgets.QTableWidgetItem(""))
         self.row_map[addon.name] = new_row
 
     def _update_addon_status(self, row: int, status: AddonStatus):
         """Update the GUI to reflect this addon's new status."""
-        self.dialog.tableWidget.item(row, 1).setText(status.ui_string())
+        self.dialog.tableWidget.item(row, 2).setText(status.ui_string())
+        if status == AddonStatus.SUCCEEDED and self.addons[row].metadata:
+            self.dialog.tableWidget.item(row, 2).setText(status.ui_string() + " →")
+            index = self.dialog.tableWidget.item(row, 0).data(UpdateAllGUI.index_role)
+            addon = self.addons[index]
+            if addon.metadata and addon.metadata.version:
+                self.dialog.tableWidget.item(row, 3).setText(str(addon.metadata.version))
 
     def _process_next_update(self):
         """Grab the next addon in the list and start its updater."""
