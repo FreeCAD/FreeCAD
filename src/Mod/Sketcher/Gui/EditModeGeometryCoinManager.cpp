@@ -656,6 +656,14 @@ void EditModeGeometryCoinManager::createEditModeCurveInventorNodes()
         drawingParameters.ExternalPattern;
     editModeScenegraphNodes.CurvesExternalDrawStyle->linePatternScaleFactor = 2;
 
+    editModeScenegraphNodes.CurvesExternalDefiningDrawStyle = new SoDrawStyle;
+    editModeScenegraphNodes.CurvesExternalDefiningDrawStyle->setName("CurvesExternalDefiningDrawStyle");
+    editModeScenegraphNodes.CurvesExternalDefiningDrawStyle->lineWidth =
+        drawingParameters.ExternalDefiningWidth * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.CurvesExternalDefiningDrawStyle->linePattern =
+        drawingParameters.ExternalDefiningPattern;
+    editModeScenegraphNodes.CurvesExternalDefiningDrawStyle->linePatternScaleFactor = 2;
+
     for (int i = 0; i < geometryLayerParameters.getCoinLayerCount(); i++) {
         editModeScenegraphNodes.CurvesMaterials.emplace_back();
         editModeScenegraphNodes.CurvesCoordinate.emplace_back();
@@ -687,6 +695,9 @@ void EditModeGeometryCoinManager::createEditModeCurveInventorNodes()
             }
             else if (geometryLayerParameters.isExternalSubLayer(t)) {
                 sep->addChild(editModeScenegraphNodes.CurvesExternalDrawStyle);
+            }
+            else if (geometryLayerParameters.isExternalDefiningSubLayer(t)) {
+                sep->addChild(editModeScenegraphNodes.CurvesExternalDefiningDrawStyle);
             }
             else {
                 sep->addChild(editModeScenegraphNodes.CurvesDrawStyle);

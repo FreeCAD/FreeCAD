@@ -144,11 +144,13 @@ struct DrawingParameters
     int ConstructionWidth = 1;  // width of construction edges
     int InternalWidth = 1;      // width of internal edges
     int ExternalWidth = 1;      // width of external edges
+    int ExternalDefiningWidth = 1;  // width of external defining edges
 
     unsigned int CurvePattern = 0b1111111111111111;         // pattern of normal edges
     unsigned int ConstructionPattern = 0b1111110011111100;  // pattern of construction edges
     unsigned int InternalPattern = 0b1111110011111100;      // pattern of internal edges
     unsigned int ExternalPattern = 0b1111110011111100;      // pattern of external edges
+    unsigned int ExternalDefiningPattern = 0b1111111111111111; // pattern of external defining edges
     //@}
 
     DrawingParameters()
@@ -290,6 +292,7 @@ public:
         Construction = 1,
         Internal = 2,
         External = 3,
+        ExternalDefining = 4
     };
 
     void reset()
@@ -343,9 +346,15 @@ public:
         return t == static_cast<int>(SubLayer::External);
     }
 
+    bool isExternalDefiningSubLayer(int t) const
+    {
+        return t == static_cast<int>(SubLayer::ExternalDefining);
+    }
+
+
 private:
     int CoinLayers = 1;  // defaults to a single Coin Geometry Layer.
-    int SubLayers = 4;   // Normal, Construction, Internal, External.
+    int SubLayers = 5;   // Normal, Construction, Internal, External.
 };
 
 /** @brief     Struct to hold the results of analysis performed on geometry
@@ -411,6 +420,7 @@ struct EditModeScenegraphNodes
     SoDrawStyle* CurvesConstructionDrawStyle;
     SoDrawStyle* CurvesInternalDrawStyle;
     SoDrawStyle* CurvesExternalDrawStyle;
+    SoDrawStyle* CurvesExternalDefiningDrawStyle;
     SoDrawStyle* HiddenCurvesDrawStyle;
     //@}
 
