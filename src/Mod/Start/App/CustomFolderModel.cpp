@@ -47,19 +47,14 @@ CustomFolderModel::CustomFolderModel(QObject* parent)
 
 /// If the custom folder path contains multiple paths separated by ';;', split them into individual
 /// paths. This is used to allow the user to specify multiple paths in the preferences dialog.
-/// We use ';;' as a separator because it is not a valid character in a file path.
-QStringList CustomFolderModel::_splitPaths()
-{
-    auto delimiter = QStringLiteral(";;");
-
-    return _customFolderPathSpec.split(delimiter, Qt::SkipEmptyParts);
-}
-
+/// We use ';;' as a separator because ';' is a valid character in a file path (e.g. NTFS on
+/// Windows).
 void CustomFolderModel::loadCustomFolder()
 {
     beginResetModel();
     clear();
-    auto paths = _splitPaths();
+    auto pathDelimiter = QStringLiteral(";;");
+    auto paths = _customFolderPathSpec.split(pathDelimiter, Qt::SkipEmptyParts);
 
     for (const auto& path : paths) {
         QDir customFolderDirectory(path);
