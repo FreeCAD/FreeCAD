@@ -1914,11 +1914,7 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
     }
     case QEvent::Wheel: {
         auto we = static_cast<QWheelEvent*>(ev);
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-        QPoint globalPos = we->globalPos();
-#else
         QPoint globalPos = we->globalPosition().toPoint();
-#endif
         lastIntercept = getChildAt(widget, globalPos);
 
         // For some reason in case of 3D View we have to target it directly instead of targeting
@@ -1932,7 +1928,6 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
             }
         }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5,12,0)
         QWheelEvent wheelEvent(lastIntercept->mapFromGlobal(globalPos),
                                globalPos,
                                we->pixelDelta(),
@@ -1942,19 +1937,6 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
                                we->phase(),
                                we->inverted(),
                                we->source());
-#else
-        QWheelEvent wheelEvent(lastIntercept->mapFromGlobal(globalPos),
-                               globalPos,
-                               we->pixelDelta(),
-                               we->angleDelta(),
-                               0,
-                               Qt::Vertical,
-                               we->buttons(),
-                               we->modifiers(),
-                               we->phase(),
-                               we->source(),
-                               we->inverted());
-#endif
         QApplication::sendEvent(lastIntercept, &wheelEvent);
         break;
     }

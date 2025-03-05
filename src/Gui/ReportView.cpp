@@ -860,11 +860,7 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
         setFont(font);
         QFontMetrics metric(font);
         int width = QtTools::horizontalAdvance(metric, QLatin1String("0000"));
-#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
-        setTabStopWidth(width);
-#else
         setTabStopDistance(width);
-#endif
     }
     else if (strcmp(sReason, "RedirectPythonOutput") == 0) {
         bool checked = rclGrp.GetBool(sReason, true);

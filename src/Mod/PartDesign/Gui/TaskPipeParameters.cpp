@@ -92,10 +92,11 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
         remove->setShortcut(QKeySequence(shortcut));
     }
     remove->setShortcutContext(Qt::WidgetShortcut);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+
     // display shortcut behind the context menu entry
-    remove->setShortcutVisibleInContextMenu(true);
-#endif
+    remove->setShortcutVisibleInContextMenu(true); 
+
+
     ui->listWidgetReferences->addAction(remove);
     connect(remove, &QAction::triggered, this, &TaskPipeParameters::onDeleteEdge);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -615,10 +616,10 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
         remove->setShortcut(QKeySequence(shortcut));
     }
     remove->setShortcutContext(Qt::WidgetShortcut);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+
     // display shortcut behind the context menu entry
     remove->setShortcutVisibleInContextMenu(true);
-#endif
+
     ui->listWidgetReferences->addAction(remove);
     connect(remove, &QAction::triggered, this, &TaskPipeOrientation::onDeleteItem);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -908,10 +909,10 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
         remove->setShortcut(QKeySequence(shortcut));
     }
     remove->setShortcutContext(Qt::WidgetShortcut);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+
     // display shortcut behind the context menu entry
     remove->setShortcutVisibleInContextMenu(true);
-#endif
+
     ui->listWidgetReferences->addAction(remove);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(remove, &QAction::triggered, this, &TaskPipeScaling::onDeleteSection);
