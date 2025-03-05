@@ -238,9 +238,9 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
     nobj.addConstraint(constraints)
     if autoconstraints:
         nobj.detectMissingPointOnPointConstraints(utils.tolerance())
-        nobj.makeMissingPointOnPointCoincident(True)
+        nobj.makeMissingPointOnPointCoincident(False)
         nobj.detectMissingVerticalHorizontalConstraints(utils.tolerance())
-        nobj.makeMissingVerticalHorizontal(True)
+        nobj.makeMissingVerticalHorizontal(False)
 
     return nobj
 
