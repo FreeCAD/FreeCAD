@@ -404,7 +404,7 @@ void WorkbenchTabWidget::buildPrefMenu()
 
     // Add disabled workbenches, sorted alphabetically.
     for (auto action : wbActionGroup->getDisabledWbActions()) {
-        if (action->text() == QStringLiteral("<none>")) {
+        if (action->text() == QLatin1String("<none>")) {
             continue;
         }
 
