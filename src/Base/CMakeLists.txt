@@ -5,6 +5,10 @@ if(WIN32)
     add_definitions(-DZIPIOS_UTF8)
 endif(WIN32)
 
+if(BUILD_TRACY_FRAME_PROFILER)
+    add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
+endif()
+
 include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
@@ -65,6 +69,11 @@ endif(MSVC)
 include_directories(
     ${QtCore_INCLUDE_DIRS}
 )
+
+if(BUILD_TRACY_FRAME_PROFILER)
+    list(APPEND FreeCADBase_LIBS TracyClient)
+endif()
+
 list(APPEND FreeCADBase_LIBS ${QtCore_LIBRARIES})
 
 list(APPEND FreeCADBase_LIBS fmt::fmt)
