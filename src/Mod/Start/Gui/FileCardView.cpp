@@ -30,7 +30,6 @@
 namespace StartGui
 {
 
-
 FileCardView::FileCardView(QWidget* parent)
     : QListView(parent)
 {
@@ -45,7 +44,12 @@ FileCardView::FileCardView(QWidget* parent)
     setResizeMode(QListView::ResizeMode::Adjust);
     setUniformItemSizes(true);
     setMouseTracking(true);
-    setSpacing(20);
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Start");
+    m_cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 16));  // NOLINT
+
+    setSpacing(m_cardSpacing);
 }
 
 int FileCardView::heightForWidth(int width) const
@@ -61,28 +65,22 @@ int FileCardView::heightForWidth(int width) const
     int numRows =
         static_cast<int>(ceil(static_cast<double>(numCards) / static_cast<double>(cardsPerRow)));
     int neededHeight = numRows * cardSize.height();
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
-    int cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 20));  // NOLINT
-    return neededHeight + cardSpacing * (numRows - 1) + 2 * cardSpacing;
+
+    return neededHeight + m_cardSpacing * (numRows - 1) + 2 * m_cardSpacing;
 }
 
 QSize FileCardView::sizeHint() const
 {
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
-    int cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 20));  // NOLINT
-
     auto model = this->model();
     auto delegate = this->itemDelegate();
     if (!model || !delegate) {
         // The model and/or delegate have not been set yet, this was an early startup call
-        return {cardSpacing, cardSpacing};
+        return {m_cardSpacing, m_cardSpacing};
     }
     int numCards = model->rowCount();
     auto cardSize = delegate->sizeHint(QStyleOptionViewItem(), model->index(0, 0));
-    return {(cardSize.width() + cardSpacing) * numCards + cardSpacing,
-            cardSize.height() + 2 * cardSpacing};
+    return {(cardSize.width() + m_cardSpacing) * numCards + m_cardSpacing,
+            cardSize.height() + 2 * m_cardSpacing};
 }
 
 }  // namespace StartGui
