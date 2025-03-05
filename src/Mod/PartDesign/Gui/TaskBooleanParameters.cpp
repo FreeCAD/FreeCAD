@@ -92,6 +92,7 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, Q
 
     // display shortcut behind the context menu entry
     action->setShortcutVisibleInContextMenu(true);
+    
     ui->listWidgetBodies->addAction(action);
     connect(action, &QAction::triggered, this, &TaskBooleanParameters::onBodyDeleted);
     ui->listWidgetBodies->setContextMenuPolicy(Qt::ActionsContextMenu);
