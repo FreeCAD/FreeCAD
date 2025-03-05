@@ -13,3 +13,12 @@ if (BUILD_ASSEMBLY AND NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
     endif()
     add_subdirectory(OndselSolver)
 endif()
+
+if (BUILD_TRACY_FRAME_PROFILER)
+    if( NOT EXISTS "${CMAKE_SOURCE_DIR}/src/3rdParty/tracy/CMakeLists.txt" )
+        message( SEND_ERROR "The Tracy git directory is not available. Please clone it manually." )
+    endif()
+
+    set(TRACY_STATIC OFF)
+    add_subdirectory(tracy)
+endif()
