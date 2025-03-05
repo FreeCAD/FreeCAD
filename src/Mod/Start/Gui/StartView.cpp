@@ -53,6 +53,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <gsl/pointers>
+#include <string>
 
 using namespace StartGui;
 
