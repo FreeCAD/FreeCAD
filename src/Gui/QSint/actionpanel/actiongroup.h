@@ -30,9 +30,15 @@ class QSINT_EXPORT ActionGroup : public QWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool expandable READ isExpandable WRITE setExpandable)
-    Q_PROPERTY(bool header READ hasHeader WRITE setHeader)
-    Q_PROPERTY(QString headerText READ headerText WRITE setHeaderText)
+    Q_PROPERTY(bool expandable READ isExpandable WRITE setExpandable NOTIFY expandableChanged)
+    Q_PROPERTY(bool header READ hasHeader WRITE setHeader NOTIFY headerChanged)
+    Q_PROPERTY(QString headerText READ headerText WRITE setHeaderText NOTIFY headerTextChanged)
+
+Q_SIGNALS:
+    void expandableChanged();
+    void headerChanged();
+    void headerTextChanged();
+
 
 public:
     /**
