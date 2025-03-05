@@ -26,9 +26,8 @@
 
 #include <QAbstractListModel>
 #include <QDir>
+#include <QStringList>
 #include <Base/Parameter.h>
-#include <string>
-#include <vector>
 
 #include "DisplayedFilesModel.h"
 #include "../StartGlobal.h"
@@ -47,8 +46,8 @@ public:
     void loadCustomFolder();
 
 private:
-    std::vector<std::string> _splitPaths();
-    QDir _customFolderDirectory;
+    QStringList _splitPaths();
+    QString _customFolderPathSpec;
     bool _showOnlyFCStd;  // Show only FreeCAD files
 };
 
