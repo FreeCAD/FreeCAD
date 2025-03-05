@@ -825,8 +825,7 @@ class Edit(gui_base_original.Modifier):
         """Restore objects style during editing mode.
         """
         for obj in objs:
-            if not obj.isAttachedToDocument():
-                # Object has been deleted.
+            if utils.is_deleted(obj):
                 continue
             obj_gui_tools = self.get_obj_gui_tools(obj)
             if obj_gui_tools:

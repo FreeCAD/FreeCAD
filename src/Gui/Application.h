@@ -79,6 +79,10 @@ public:
     App::Document *reopen(App::Document *doc);
     /// Prompt about recomputing if needed
     static void checkForRecomputes();
+    /// Prompt about PartialRestore
+    void checkPartialRestore(App::Document* doc);
+    /// Prompt for Errors on open
+    void checkRestoreError(App::Document* doc);
     //@}
 
 

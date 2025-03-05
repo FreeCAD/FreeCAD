@@ -43,6 +43,8 @@ CustomFolderModel::CustomFolderModel(QObject* parent)
 
     _customFolderDirectory =
         QDir(QString::fromStdString(parameterGroup->GetASCII("CustomFolder", "")));
+
+    _showOnlyFCStd = parameterGroup->GetBool("ShowOnlyFCStd", false);
 }
 
 /// If the custom folder path contains multiple paths separated by ';;', split them into individual
@@ -87,6 +89,11 @@ void CustomFolderModel::loadCustomFolder()
                 customFolderDirectory.absolutePath().toStdString().c_str());
             continue;
         }
+
+        if (_showOnlyFCStd) {
+            customFolderDirectory.setNameFilters(QStringList() << QStringLiteral("*.FCStd"));
+        }
+
         auto entries = customFolderDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable,
                                                        QDir::SortFlag::Name);
         for (const auto& entry : entries) {

@@ -40,6 +40,10 @@ class QString;
 
 #include <Mod/TechDraw/App/Preferences.h>
 
+namespace TechDraw{
+enum class ArrowType : int;
+}
+
 namespace TechDrawGui
 {
 
@@ -68,7 +72,7 @@ static QColor      pageQColor();
 static Base::Color breaklineColor();
 static QColor      breaklineQColor();
 
-static int         dimArrowStyle();
+static TechDraw::ArrowType dimArrowStyle();
 static double      dimArrowSize();
 
 static double      edgeFuzz();

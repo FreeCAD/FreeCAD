@@ -39,7 +39,7 @@ FileCardView::FileCardView(QWidget* parent)
     sizePolicy.setHeightForWidth(true);
     setSizePolicy(sizePolicy);
     setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
-    setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
     setViewMode(QListView::ViewMode::IconMode);
     setFlow(QListView::Flow::LeftToRight);
     setResizeMode(QListView::ResizeMode::Adjust);

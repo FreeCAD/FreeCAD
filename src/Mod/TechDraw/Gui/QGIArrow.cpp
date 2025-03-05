@@ -39,7 +39,7 @@ using namespace TechDraw;
 QGIArrow::QGIArrow() :
     m_fill(Qt::SolidPattern),
     m_size(getPrefArrowSize()),
-    m_style(0),
+    m_style(ArrowType::FILLED_ARROW),
     m_dirMode(false),
     m_dir(Base::Vector3d(1.0, 0.0, 0.0))
 {
@@ -300,7 +300,7 @@ QPainterPath QGIArrow::makePyramid(Base::Vector3d dir, double length)
     return path;
 }
 
-int QGIArrow::getPrefArrowStyle()
+ArrowType QGIArrow::getPrefArrowStyle()
 {
     return PreferencesGui::dimArrowStyle();
 }
@@ -310,7 +310,7 @@ double QGIArrow::getPrefArrowSize()
     return PreferencesGui::dimArrowSize();
 }
 
-double QGIArrow::getOverlapAdjust(int style, double size)
+double QGIArrow::getOverlapAdjust(ArrowType style, double size)
 {
     // adjustment required depends on arrow size and type! :(
     // ex for fork and tick, adjustment sb zero. 0.25 is good for filled triangle, 0.1 for open arrow.
@@ -318,22 +318,22 @@ double QGIArrow::getOverlapAdjust(int style, double size)
     // NOTE: this may need to be adjusted to account for line thickness too.
 //    Base::Console().Message("QGIA::getOverlapAdjust(%d, %.3f) \n", style, size);
     switch(style) {
-        case FILLED_ARROW:
+        case ArrowType::FILLED_ARROW:
             return 0.50 * size;
-        case OPEN_ARROW:
+        case ArrowType::OPEN_ARROW:
             return 0.10 * size;
-        case TICK:
+        case ArrowType::TICK:
             return 0.0;
-        case DOT:
+        case ArrowType::DOT:
             return 0.0;
-        case OPEN_CIRCLE:
+        case ArrowType::OPEN_CIRCLE:
                         //diameter is size/2 so radius is size/4
             return 0.25 * size;
-        case FORK:
+        case ArrowType::FORK:
             return 0.0;
-        case FILLED_TRIANGLE:
+        case ArrowType::FILLED_TRIANGLE:
             return size;
-        case NONE:
+        case ArrowType::NONE:
             return 0.0;
     }
     return 1.0;  // Unknown

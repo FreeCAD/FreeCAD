@@ -26,6 +26,7 @@
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoError.h>
+#include <QCheckBox>
 #include <QCloseEvent>
 #include <QDir>
 #include <QFileInfo>
@@ -707,6 +708,11 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             // load the file with the module
             if (File.hasExtension("FCStd")) {
                 Command::doCommand(Command::App, "%s.open(u\"%s\")", Module, unicodepath.c_str());
+                setStatus(UserInitiatedOpenDocument, false);
+                App::Document* doc = App::GetApplication().getActiveDocument();
+                checkPartialRestore(doc);
+                checkRestoreError(doc);
+                checkForRecomputes();
                 if (activeDocument()) {
                     activeDocument()->setModified(false);
                 }
@@ -1005,6 +1011,30 @@ void Application::checkForRecomputes() {
         QMessageBox::critical(getMainWindow(), QObject::tr("Recompute error"),
                               QObject::tr("Failed to recompute some document(s).\n"
                                           "Please check report view for more details."));
+}
+
+void Application::checkPartialRestore(App::Document* doc)
+{
+    if (doc && doc->testStatus(App::Document::PartialRestore)) {
+        QMessageBox::critical(
+            getMainWindow(),
+            QObject::tr("Error"),
+            QObject::tr("There were errors while loading the file. Some data might have been "
+                        "modified or not recovered at all. Look in the report view for more "
+                        "specific information about the objects involved."));
+    }
+}
+
+void Application::checkRestoreError(App::Document* doc)
+{
+    if (doc && doc->testStatus(App::Document::RestoreError)) {
+        QMessageBox::critical(
+            getMainWindow(),
+            QObject::tr("Error"),
+            QObject::tr("There were serious errors while loading the file. Some data might have "
+                        "been modified or not recovered at all. Saving the project will most "
+                        "likely result in loss of data."));
+    }
 }
 
 void Application::slotActiveDocument(const App::Document& Doc)

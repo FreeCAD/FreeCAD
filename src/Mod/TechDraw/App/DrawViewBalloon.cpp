@@ -70,7 +70,7 @@ DrawViewBalloon::DrawViewBalloon()
     ADD_PROPERTY_TYPE(OriginY, (0), "", (App::PropertyType)(App::Prop_None), "Balloon origin y");
 
     EndType.setEnums(ArrowPropEnum::ArrowTypeEnums);
-    ADD_PROPERTY_TYPE(EndType, (Preferences::balloonArrow()), "", (App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(EndType, (static_cast<int>(Preferences::balloonArrow())), "", (App::PropertyType)(App::Prop_None),
                       "End symbol for the balloon line");
 
     ADD_PROPERTY_TYPE(EndTypeScale, (1.0), "", (App::PropertyType)(App::Prop_None),

@@ -21,9 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <boost/uuid/uuid_io.hpp>
-#endif
 
 #include <Base/Console.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -146,7 +143,7 @@ void CenterLinePy::setFormat(Py::Dict arg)
 
 Py::String CenterLinePy::getTag() const
 {
-    std::string tmp = boost::uuids::to_string(getCenterLinePtr()->getTag());
+    std::string tmp = getCenterLinePtr()->getTagAsString();
     return Py::String(tmp);
 }
 

@@ -90,12 +90,12 @@ void TaskLinkDim::loadAvailDims()
         return;
 
     std::string result;
-    int selRefType = TechDraw::DrawViewDimension::getRefTypeSubElements(m_subs);
+    TechDraw::DrawViewDimension::RefType selRefType = TechDraw::DrawViewDimension::getRefTypeSubElements(m_subs);
     //int found = 0;
     for (auto* view : m_page->getViews()) {
         if (view->isDerivedFrom<TechDraw::DrawViewDimension>()) {
             auto* dim = static_cast<TechDraw::DrawViewDimension*>(view);
-            int dimRefType = dim->getRefType();
+            TechDraw::DrawViewDimension::RefType dimRefType = dim->getRefType();
             if (dimRefType == selRefType) {                                     //potential matches
     //            found++;
                 if (dim->has3DReferences()) {

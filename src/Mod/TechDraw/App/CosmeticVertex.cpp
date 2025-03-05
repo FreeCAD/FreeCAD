@@ -24,17 +24,10 @@
 //! CosmeticVertex point is stored in unscaled, unrotated form
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-    #include <boost/random.hpp>
-    #include <boost/uuid/uuid_generators.hpp>
-    #include <boost/uuid/uuid_io.hpp>
-#endif // _PreComp_
 
 #include <App/Application.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/thread.hpp>
 
 #include "CosmeticVertex.h"
 #include "CosmeticVertexPy.h"
@@ -56,8 +49,6 @@ CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
             LineGroup::getDefaultWidth("Thin");
     hlrVisible = true;
     cosmetic = true;
-
-    createNewTag();
 }
 
 CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::Vertex(cv)
@@ -70,8 +61,6 @@ CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::V
     visible = cv->visible;
     hlrVisible = true;
     cosmetic = true;
-
-    createNewTag();
 }
 
 CosmeticVertex::CosmeticVertex(const Base::Vector3d& loc) : TechDraw::Vertex(loc)
@@ -85,9 +74,6 @@ CosmeticVertex::CosmeticVertex(const Base::Vector3d& loc) : TechDraw::Vertex(loc
     visible = true;
     hlrVisible = true;
     cosmetic = true;
-
-    createNewTag();
-
 }
 
 void CosmeticVertex::move(const Base::Vector3d& newPos)
@@ -140,7 +126,7 @@ void CosmeticVertex::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Style value=\"" <<  style << "\"/>" << endl;
     const char v = visible?'1':'0';
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Tag value=\"" <<  getTagAsString() << "\"/>" << endl;
+    Tag::Save(writer);
 }
 
 void CosmeticVertex::Restore(Base::XMLReader &reader)
@@ -164,11 +150,7 @@ void CosmeticVertex::Restore(Base::XMLReader &reader)
     style = reader.getAttributeAsInteger("value");
     reader.readElement("Visible");
     visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
-    reader.readElement("Tag");
-    temp = reader.getAttribute("value");
-    boost::uuids::string_generator gen;
-    boost::uuids::uuid u1 = gen(temp);
-    tag = u1;
+    Tag::Restore(reader);
 }
 
 Base::Vector3d CosmeticVertex::scaled(const double factor)
@@ -224,45 +206,6 @@ Base::Vector3d CosmeticVertex::makeCanonicalPointInverted(DrawViewPart* dvp, Bas
     return DU::invertY(result);
 }
 
-
-boost::uuids::uuid CosmeticVertex::getTag() const
-{
-    return tag;
-}
-
-std::string CosmeticVertex::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
-}
-
-void CosmeticVertex::createNewTag()
-{
-    // Initialize a random number generator, to avoid Valgrind false positives.
-    // The random number generator is not threadsafe so we guard it.  See
-    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
-    static boost::mt19937 ran;
-    static bool seeded = false;
-    static boost::mutex random_number_mutex;
-
-    boost::lock_guard<boost::mutex> guard(random_number_mutex);
-
-    if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
-        seeded = true;
-    }
-    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
-
-    tag = gen();
-}
-
-void CosmeticVertex::assignTag(const TechDraw::CosmeticVertex* cv)
-{
-    if(cv->getTypeId() == this->getTypeId())
-        this->tag = cv->tag;
-    else
-        throw Base::TypeError("CosmeticVertex tag can not be assigned as types do not match.");
-}
-
 CosmeticVertex* CosmeticVertex::copy() const
 {
 //    Base::Console().Message("CV::copy()\n");
@@ -273,7 +216,7 @@ CosmeticVertex* CosmeticVertex::clone() const
 {
 //    Base::Console().Message("CV::clone()\n");
     CosmeticVertex* cpy = this->copy();
-    cpy->tag = this->tag;
+    cpy->setTag(this->getTag());
     return cpy;
 }
 

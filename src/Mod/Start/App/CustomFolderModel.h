@@ -49,6 +49,7 @@ public:
 private:
     std::vector<std::string> _splitPaths();
     QDir _customFolderDirectory;
+    bool _showOnlyFCStd;  // Show only FreeCAD files
 };
 
 }  // namespace Start

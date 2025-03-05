@@ -99,7 +99,7 @@ public:
 
     App::PropertyBool ShowUnits;
 
-    enum RefType
+    enum class RefType
     {
         invalidRef,
         oneEdge,
@@ -145,8 +145,8 @@ public:
     {
         return {0, 0, 1, 1};
     }                                // pretend dimensions always fit!
-    virtual int getRefType() const;  // Vertex-Vertex, Edge, Edge-Edge
-    static int
+    virtual RefType getRefType() const;  // Vertex-Vertex, Edge, Edge-Edge
+    static RefType
     getRefTypeSubElements(const std::vector<std::string>&);  // Vertex-Vertex, Edge, Edge-Edge
 
     void setReferences2d(const ReferenceVector& refs);

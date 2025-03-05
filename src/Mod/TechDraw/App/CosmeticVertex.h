@@ -78,19 +78,8 @@ public:
     int            style{1};
     bool           visible{true};              //base class vertex also has visible property
 
-    boost::uuids::uuid getTag() const;
-    std::string getTagAsString() const override;
-
 protected:
-    //Uniqueness
-    void createNewTag();
-    void assignTag(const TechDraw::CosmeticVertex* cv);
-
-    boost::uuids::uuid tag;
-
     Py::Object PythonObject;
-
-
 };
 
 } //end namespace TechDraw

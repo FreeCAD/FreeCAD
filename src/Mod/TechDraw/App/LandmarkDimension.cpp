@@ -155,7 +155,7 @@ Base::Vector3d LandmarkDimension::projectPoint(const Base::Vector3d& pt, DrawVie
     return DrawUtil::invertY(result);
 }
 
-int LandmarkDimension::getRefType() const
+DrawViewDimension::RefType LandmarkDimension::getRefType() const
 {
     //TODO: need changes here when other reference dim types added
     return DrawViewDimension::RefType::twoVertex;

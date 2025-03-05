@@ -24,7 +24,6 @@
 
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge.hxx>
-# include <boost/uuid/uuid_io.hpp>
 #endif
 
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -152,7 +151,7 @@ Py::Dict CosmeticEdgePy::getFormat() const
 
 Py::String CosmeticEdgePy::getTag() const
 {
-    std::string tmp = boost::uuids::to_string(getCosmeticEdgePtr()->getTag());
+    std::string tmp = getCosmeticEdgePtr()->getTagAsString();
     return Py::String(tmp);
 }
 

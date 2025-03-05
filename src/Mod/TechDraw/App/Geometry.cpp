@@ -23,9 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/uuid/uuid_generators.hpp>
-# include <boost/uuid/uuid_io.hpp>
-# include <boost/random.hpp>
 # include <Approx_Curve3d.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
@@ -79,8 +76,6 @@
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/thread.hpp>
 
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/Geometry.h>
@@ -203,7 +198,6 @@ BaseGeom::BaseGeom() :
 {
     occEdge = TopoDS_Edge();
     cosmeticTag = std::string();
-    tag = boost::uuids::nil_uuid();
 }
 
 BaseGeomPtr BaseGeom::copy()
@@ -244,16 +238,6 @@ std::string BaseGeom::toString() const
     return ss.str();
 }
 
-boost::uuids::uuid BaseGeom::getTag() const
-{
-    return tag;
-}
-
-std::string BaseGeom::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
-}
-
 void BaseGeom::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<GeomType value=\"" << geomType << "\"/>" << endl;
@@ -269,7 +253,6 @@ void BaseGeom::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Source value=\"" << m_source << "\"/>" << endl; // Should this save as text and not number?
     writer.Stream() << writer.ind() << "<SourceIndex value=\"" << m_sourceIndex << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << endl;
-//    writer.Stream() << writer.ind() << "<Tag value=\"" <<  getTagAsString() << "\"/>" << endl;
 }
 
 void BaseGeom::Restore(Base::XMLReader &reader)
@@ -1282,7 +1265,6 @@ Vertex::Vertex()
     cosmeticLink = -1;
     cosmeticTag = std::string();
     m_reference = false;
-    createNewTag();
 }
 
 Vertex::Vertex(const Vertex* v)
@@ -1297,7 +1279,6 @@ Vertex::Vertex(const Vertex* v)
     cosmeticLink = v->cosmeticLink;
     cosmeticTag = v->cosmeticTag;
     m_reference = false;
-    createNewTag();
 }
 
 Vertex::Vertex(double x, double y)
@@ -1313,7 +1294,6 @@ Vertex::Vertex(double x, double y)
     cosmeticLink = -1;
     cosmeticTag = std::string();
     m_reference = false;
-    createNewTag();
 }
 
 Vertex::Vertex(Base::Vector3d v) : Vertex(v.x, v.y)
@@ -1355,7 +1335,7 @@ void Vertex::Save(Base::Writer &writer) const
 //    const char r = reference?'1':'0';
 //    writer.Stream() << writer.ind() << "<Reference value=\"" <<  r << "\"/>" << endl;
 
-    writer.Stream() << writer.ind() << "<VertexTag value=\"" <<  getTagAsString() << "\"/>" << endl;
+    Tag::Save(writer);
 }
 
 void Vertex::Restore(Base::XMLReader &reader)
@@ -1384,44 +1364,10 @@ void Vertex::Restore(Base::XMLReader &reader)
 //    reader.readElement("Reference");
 //    m_reference = (bool)reader.getAttributeAsInteger("value")==0?false:true;
 
-    reader.readElement("VertexTag");
-    std::string temp = reader.getAttribute("value");
-    boost::uuids::string_generator gen;
-    boost::uuids::uuid u1 = gen(temp);
-    tag = u1;
+    Tag::Restore(reader, "VertexTag");
 
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(pnt.x, pnt.y, pnt.z));
     occVertex = mkVert.Vertex();
-}
-
-void Vertex::createNewTag()
-{
-    // Initialize a random number generator, to avoid Valgrind false positives.
-    // The random number generator is not threadsafe so we guard it.  See
-    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
-    static boost::mt19937 ran;
-    static bool seeded = false;
-    static boost::mutex random_number_mutex;
-
-    boost::lock_guard<boost::mutex> guard(random_number_mutex);
-    if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
-        seeded = true;
-    }
-    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
-
-    tag = gen();
-}
-
-
-boost::uuids::uuid Vertex::getTag() const
-{
-    return tag;
-}
-
-std::string Vertex::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
 }
 
 void Vertex::dump(const char* title)

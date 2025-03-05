@@ -41,6 +41,7 @@ class Color;
 
 namespace TechDraw
 {
+enum class ArrowType : int;
 
 //getters for parameters used in multiple places.
 class TechDrawExport Preferences
@@ -70,7 +71,7 @@ public:
     static double groupSpaceX();
     static double groupSpaceY();
 
-    static int balloonArrow();
+    static ArrowType balloonArrow();
     static double balloonKinkLength();
     static int balloonShape();
 

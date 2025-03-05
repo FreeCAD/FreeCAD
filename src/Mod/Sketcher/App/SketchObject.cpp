@@ -366,10 +366,23 @@ void SketchObject::buildShape() {
         auto egf = ExternalGeometryFacade::getFacade(geo);
         if(!egf->testFlag(ExternalGeometryExtension::Defining))
             continue;
+
         auto indexedName = Data::IndexedName::fromConst("ExternalEdge", i-1);
-        shapes.push_back(getEdge(geo, convertSubName(indexedName, false).c_str()));
-        if (checkSmallEdge(shapes.back())) {
-            FC_WARN("Edge too small: " << indexedName);
+
+        if (geo->isDerivedFrom<Part::GeomPoint>()) {
+            Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
+            if (!vertex.hasElementMap()) {
+                vertex.resetElementMap(std::make_shared<Data::ElementMap>());
+            }
+            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+                                  Data::MappedName::fromRawData(convertSubName(indexedName, false).c_str()),0L);
+            vertices.push_back(vertex);
+            vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
+        } else {
+            shapes.push_back(getEdge(geo, convertSubName(indexedName, false).c_str()));
+            if (checkSmallEdge(shapes.back())) {
+                FC_WARN("Edge too small: " << indexedName);
+            }
         }
     }
 

@@ -580,6 +580,7 @@ void AboutDialog::copyToClipboard()
     QString point = QString::fromStdString(config["BuildVersionPoint"]);
     QString suffix = QString::fromStdString(config["BuildVersionSuffix"]);
     QString build = QString::fromStdString(config["BuildRevision"]);
+    QString buildDate = QString::fromStdString(config["BuildRevisionDate"]);
 
     QString deskEnv =
         QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"),
@@ -628,6 +629,7 @@ void AboutDialog::copyToClipboard()
         str << " Snap " << snap;
     }
     str << '\n';
+    str << "Build date: " << buildDate << "\n";
 
 #if defined(_DEBUG) || defined(DEBUG)
     str << "Build type: Debug\n";

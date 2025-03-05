@@ -778,7 +778,7 @@ class Component(ArchIFC.IfcProduct):
 
                 if (Draft.getType(o.getLinkedObject()) == "Window") or (Draft.isClone(o,"Window",True)):
                     # windows can be additions or subtractions, treated the same way
-                    subvolume = o.getLinkedObject().Proxy.getSubVolume(o)
+                    subvolume = o.getLinkedObject().Proxy.getSubVolume(o,host=obj)  # pass host obj (mostly Wall)
                 elif (Draft.getType(o) == "Roof") or (Draft.isClone(o,"Roof")):
                     # roofs define their own special subtraction volume
                     subvolume = o.Proxy.getSubVolume(o)

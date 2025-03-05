@@ -37,6 +37,8 @@
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
 
+#include "Tag.h"
+
 namespace Part {
 class TopoShape;
 }
@@ -106,7 +108,7 @@ using BSplinePtr = std::shared_ptr<BSpline>;
 class Generic;
 using GenericPtr = std::shared_ptr<Generic>;
 
-class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
+class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>, public TechDraw::Tag
 {
     public:
         BaseGeom();
@@ -132,10 +134,6 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         std::string dump();
         virtual std::string toString() const;
         std::vector<Base::Vector3d> intersection(TechDraw::BaseGeomPtr geom2);
-
-        //Uniqueness
-        boost::uuids::uuid getTag() const;
-        virtual std::string getTagAsString() const;
 
         std::string geomTypeName();
         BaseGeomPtr inverted();
@@ -169,8 +167,6 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         virtual void clockwiseAngle(bool direction) { (void) direction; }
 
 protected:
-        void createNewTag();
-
         GeomType geomType;
         ExtractionType extractType;     //obs
         EdgeClass classOfEdge;
@@ -183,7 +179,6 @@ protected:
         SourceType m_source;
         int m_sourceIndex;
         std::string cosmeticTag;
-        boost::uuids::uuid tag;
 
 };
 using BaseGeomPtrVector = std::vector<BaseGeomPtr>;    //new style
@@ -370,7 +365,7 @@ class TechDrawExport Face
 };
 using FacePtr = std::shared_ptr<Face>;
 
-class TechDrawExport Vertex
+class TechDrawExport Vertex : public TechDraw::Tag
 {
     public:
         Vertex();
@@ -389,9 +384,6 @@ class TechDrawExport Vertex
 
         double x() {return pnt.x;}
         double y() {return pnt.y;}
-
-        boost::uuids::uuid getTag() const;
-        virtual std::string getTagAsString() const;
 
         // attribute setters and getters
         bool getHlrVisible() { return hlrVisible; }
@@ -412,10 +404,6 @@ class TechDrawExport Vertex
         Part::TopoShape asTopoShape(double scale = 1.0);
 
     protected:
-        //Uniqueness
-        void createNewTag();
-        void assignTag(const TechDraw::Vertex* v);
-
         Base::Vector3d pnt;
         ExtractionType extractType;       //obs?
         bool hlrVisible;                 //visible according to HLR
@@ -426,8 +414,6 @@ class TechDrawExport Vertex
         int cosmeticLink;                 //deprec. use cosmeticTag
         std::string cosmeticTag;
         bool m_reference;                   //reference vertex (ex robust dimension)
-
-        boost::uuids::uuid tag;
 };
 using VertexPtr = std::shared_ptr<Vertex>;
 

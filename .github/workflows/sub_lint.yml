@@ -276,103 +276,32 @@ jobs:
         if: inputs.checkLineendings && always()
         continue-on-error: ${{ inputs.lineendingsFailSilent }}
         run: |
-          lineendings=0
-          for file in ${{ inputs.changedFiles }}
-          do
-            # Check for DOS or MAC line endings
-            if [[ $(file -b $file) =~ "with CR" ]]
-            then
-              echo "::warning file=$file,title=$file::File has non Unix line endings"
-              echo "$file has non Unix line endings" >> ${{ env.logdir }}lineendings.log
-              ((lineendings=lineendings+1))
-            fi
-          done
-          echo "Found $lineendings line ending errors"
-          # Write the report
-          if [ $lineendings -gt 0 ]
-          then
-            echo "<details><summary>:information_source: Found $lineendings problems with line endings</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-            cat ${{ env.logdir }}lineendings.log >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          else
-            echo ":heavy_check_mark: No line ending problem found  " >> ${{env.reportdir}}${{ env.reportfilename }}
-          fi
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          # Exit the step with appropriate code
-          [ $lineendings -eq 0 ]
+          python3 tools/lint/generic_checks.py \
+            --lineendings-check \
+            --files "${{ inputs.changedFiles }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}" \
+            --log-dir "${{ env.logdir }}"
+
       - name: Check for trailing whitespaces
         if: inputs.checkWhitespace && always()
         continue-on-error: ${{ inputs.whitespaceFailSilent }}
         run: |
-          whitespaceErrors=0
-          exclude="*[.md]"
-          for file in ${{ inputs.changedFiles }}
-          do
-            # Check for trailing whitespaces
-            grep -nIHE --exclude="$exclude" " $" $file | sed -e "s/$/<-- trailing whitespace/" >> ${{ env.logdir }}whitespace.log || true
-          done
-          # Write the Log to the console with the Problem Matchers
-          if [ -f ${{ env.logdir }}whitespace.log ]
-          then
-            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/grepMatcherWarning.json"
-            cat ${{ env.logdir }}whitespace.log
-            echo "::remove-matcher owner=grepMatcher-warning::"
-            whitespaceErrors=$(wc -l < ${{ env.logdir }}whitespace.log)
-          fi
-          echo "Found $whitespaceErrors whitespace errors"
-          # Write the report
-          if [ $whitespaceErrors -gt 0 ]
-          then
-            echo "<details><summary>:information_source: Found $whitespaceErrors trailing whitespace</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-            cat ${{ env.logdir }}whitespace.log >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          else
-            echo ":heavy_check_mark: No trailing whitespace found  " >> ${{env.reportdir}}${{ env.reportfilename }}
-          fi
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          # Exit the step with appropriate code
-          [ $whitespaceErrors -eq 0 ]
+          python3 tools/lint/generic_checks.py \
+            --whitespace-check \
+            --files "${{ inputs.changedFiles }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}" \
+            --log-dir "${{ env.logdir }}"
+
       - name: Check for Tab usage
         if: inputs.checkTabs && always()
         continue-on-error: ${{ inputs.tabsFailSilent }}
         run: |
-          tabErrors=0
-          exclude="*[.md]"
-          # Check for Tab usage
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}
-          do
-            grep -nIHE --exclude="$exclude" $'\t' $file | sed -e "s/$/ <-- contains tab/" >> ${{ env.logdir }}tab.log || true
-          done
-          # Write the Log to the console with the Problem Matchers
-          if [ -f ${{ env.logdir }}tab.log ]
-          then
-            echo "::add-matcher::${{ runner.workspace }}/FreeCAD/.github/problemMatcher/grepMatcherWarning.json"
-            cat ${{ env.logdir }}tab.log
-            echo "::remove-matcher owner=grepMatcher-warning::"
-            tabErrors=$(wc -l < ${{ env.logdir }}tab.log)
-          fi
-          echo "Found $tabErrors tab errors"
-          # Write the report
-          if [ $tabErrors -gt 0 ]; then
-            echo "<details><summary>:information_source: Found $tabErrors tabs, better to use spaces</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-            cat ${{ env.logdir }}tab.log >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo '```' >> ${{env.reportdir}}${{ env.reportfilename }}
-            echo "</details>" >> ${{env.reportdir}}${{ env.reportfilename }}
-          else
-            echo ":heavy_check_mark: No tabs found" >> ${{env.reportdir}}${{ env.reportfilename }}
-          fi
-          echo "" >> ${{env.reportdir}}${{ env.reportfilename }}
-          # Exit the step with appropriate code
-          [ $tabErrors -eq 0 ]
-    # Run Python lints
+          python3 tools/lint/generic_checks.py \
+            --tabs-check \
+            --files "${{ inputs.changedFiles }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}" \
+            --log-dir "${{ env.logdir }}"
+
       - name: Pylint
         if: inputs.checkPylint && inputs.changedPythonFiles != '' && always()
         continue-on-error: ${{ inputs.pylintFailSilent }}
