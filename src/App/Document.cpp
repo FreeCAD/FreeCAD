@@ -2185,6 +2185,7 @@ bool Document::saveToFile(const char* filename) const
     // open extra scope to close ZipWriter properly
     {
         Base::ofstream file(tmp, std::ios::out | std::ios::binary);
+
         Base::ZipWriter writer(file);
         if (!file.is_open()) {
             throw Base::FileException("Failed to open file", tmp);
@@ -2210,9 +2211,15 @@ bool Document::saveToFile(const char* filename) const
 
         // write additional files
         writer.writeFiles();
-
         if (writer.hasErrors()) {
-            throw Base::FileException("Failed to write all data to file", tmp);
+            // retrieve Writer error strings
+            std::stringstream message;
+            message << "Failed to write all data to file";
+            for (auto err: writer.getErrors())
+            {
+                message << ' ' << err;
+            }
+            throw Base::FileException(message.str().c_str(), tmp);
         }
 
         GetApplication().signalSaveDocument(*this);
