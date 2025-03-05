@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2024 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,57 +20,60 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef Fem_FemPostGroup_H
+#define Fem_FemPostGroup_H
 
-#ifndef Fem_FemPostObject_H
-#define Fem_FemPostObject_H
-
-#include "PropertyPostDataObject.h"
-#include <App/GeoFeature.h>
-#include <App/PropertyStandard.h>
-
-#include <vtkBoundingBox.h>
-#include <vtkTransformFilter.h>
-#include <vtkSmartPointer.h>
-
-class vtkDataSet;
+#include "Base/Unit.h"
+#include "App/GroupExtension.h"
+#include "FemPostFilter.h"
 
 namespace Fem
 {
 
-// poly data is the only data we can visualize, hence every post
-// processing object needs to expose it
-class FemExport FemPostObject: public App::GeoFeature
+enum PostGroupMode
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostObject);
+    Serial,
+    Parallel
+};
+
+// object grouping FEM filters and building the structure of the pipeline
+class FemExport FemPostGroupExtension: public App::GroupExtension
+{
+
+    using inherited = App::GroupExtension;
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostGroupExtension);
 
 public:
     /// Constructor
-    FemPostObject();
-    ~FemPostObject() override;
+    FemPostGroupExtension();
+    ~FemPostGroupExtension() override;
 
-    Fem::PropertyPostDataObject Data;
+    void initExtension(App::ExtensionContainer* obj) override;
 
-    // returns the DataSet from the data property. Better use this
-    // instead of casting Data.getValue(), as data does not need to be a dataset,
-    // but could for example also be a composite data structure.
-    // Could return NULL if no dataset is available
-    virtual vtkDataSet* getDataSet();
+    App::PropertyEnumeration Mode;
 
-    PyObject* getPyObject() override;
+    // Pipeline handling
+    virtual void filterChanged(FemPostFilter*) {};          // settings change in filter
+    virtual void filterPipelineChanged(FemPostFilter*) {};  // pipeline change in filter
+    virtual void recomputeChildren();
+    virtual FemPostObject* getLastPostObject();
+    virtual bool holdsPostObject(FemPostObject* obj);
 
-    vtkBoundingBox getBoundingBox();
-    void writeVTK(const char* filename) const;
+    // general
+    std::vector<Fem::FemPostFilter*> getFilter();
+    static App::DocumentObject* getGroupOfObject(const App::DocumentObject* obj);
 
 protected:
-    // placement is applied via transform filter. However, we do not know
-    // how this filter should be used to create data. This is to be implemented
-    // by the derived classes.
-    vtkSmartPointer<vtkTransformFilter> m_transform_filter;
+    void extensionOnChanged(const App::Property* p) override;
+    void onExtendedUnsetupObject() override;
+    bool allowObject(App::DocumentObject* obj) override;
 
-    void onChanged(const App::Property* prop) override;
+private:
+    bool m_blockChange = false;
+    static const char* ModeEnums[];
 };
 
 }  // namespace Fem
 
 
-#endif  // Fem_FemPostObject_H
+#endif  // Fem_FemPostGroup_H

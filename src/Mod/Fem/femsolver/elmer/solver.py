@@ -152,8 +152,6 @@ class Proxy(solverbase.Proxy):
 
         obj.addProperty("App::PropertyLink", "ElmerResult", "Base", "", 4 | 8)
 
-        obj.addProperty("App::PropertyLinkList", "ElmerTimeResults", "Base", "", 4 | 8)
-
         obj.addProperty("App::PropertyLink", "ElmerOutput", "Base", "", 4 | 8)
 
         obj.addProperty(
