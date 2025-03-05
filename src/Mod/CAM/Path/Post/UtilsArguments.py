@@ -203,7 +203,9 @@ def init_shared_arguments(
         arguments_visible["comments"],
     )
     if arguments_visible["comment_symbol"]:
-        help_message = f'The character used to start a comment, default is "{values["COMMENT_SYMBOL"]}"'
+        help_message = (
+            f'The character used to start a comment, default is "{values["COMMENT_SYMBOL"]}"'
+        )
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument(
