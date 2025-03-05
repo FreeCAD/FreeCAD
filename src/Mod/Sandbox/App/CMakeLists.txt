@@ -7,15 +7,6 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-include_directories(
-    SYSTEM
-    ${Boost_INCLUDE_DIRS}
-    ${PYCXX_INCLUDE_DIR}
-    ${Python3_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-)
-
 if (BUILD_QT5)
     include_directories(
         SYSTEM
