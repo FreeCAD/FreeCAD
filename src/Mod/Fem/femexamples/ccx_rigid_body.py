@@ -75,16 +75,17 @@ def setup(doc=None, solvertype="ccxtools"):
     body = doc.addObject("PartDesign::Body", "Body")
     sketch = doc.addObject("Sketcher::SketchObject", "Sketch")
     body.addObject(sketch)
-    sketch.AttachmentSupport = (doc.getObject('XY_Plane'),[''])
-    sketch.MapMode = 'FlatFace'
-    sketch.addGeometry(Part.Ellipse(App.Vector(40, 0, 0),
-                                    App.Vector(0, 20, 0),App.Vector(0, 0, 0)))
+    sketch.AttachmentSupport = (doc.getObject("XY_Plane"), [""])
+    sketch.MapMode = "FlatFace"
+    sketch.addGeometry(
+        Part.Ellipse(App.Vector(40, 0, 0), App.Vector(0, 20, 0), App.Vector(0, 0, 0))
+    )
     sketch.exposeInternalGeometry(0)
-    sketch.addConstraint(Sketcher.Constraint('Distance',0,3,1,1,100))
-    sketch.addConstraint(Sketcher.Constraint('Angle',1,0))
-    sketch.addConstraint(Sketcher.Constraint('Distance',0,3,2,1,50))
-    sketch.addConstraint(Sketcher.Constraint('Coincident', 0, 3, -1, 1))
-    pad = body.Document.addObject("PartDesign::Pad","Pad")
+    sketch.addConstraint(Sketcher.Constraint("Distance", 0, 3, 1, 1, 100))
+    sketch.addConstraint(Sketcher.Constraint("Angle", 1, 0))
+    sketch.addConstraint(Sketcher.Constraint("Distance", 0, 3, 2, 1, 50))
+    sketch.addConstraint(Sketcher.Constraint("Coincident", 0, 3, -1, 1))
+    pad = body.Document.addObject("PartDesign::Pad", "Pad")
     body.addObject(pad)
     pad.Length = 1000
     pad.Profile = sketch
