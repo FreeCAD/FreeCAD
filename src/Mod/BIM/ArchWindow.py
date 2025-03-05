@@ -56,7 +56,12 @@ __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
 
 # presets
-WindowPartTypes = ["Frame", "Solid panel", "Glass panel", "Louvre", "Custom"]
+WindowPartTypes = [
+    "Frame",
+    "Solid panel",
+    "Glass panel",
+    "Louvre",
+    "Custom"]
 WindowOpeningModes = [
     "None",
     "Arc 90",

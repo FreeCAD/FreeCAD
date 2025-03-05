@@ -51,7 +51,7 @@ class window_task_panel:
         self.panel2 = FreeCADGui.PySideUic.loadUi(":/ui/taskWindowProperties.ui")
         self.model = QtGui.QStandardItemModel(9, 2)
         self.panel2.table.setModel(self.model)
-        self.panel2.table.setItemDelegate(window_component_delegate(task=self))
+        self.panel2.table.setItemDelegate(window_component_delegate(self, self.panel2.table))
         self.model.itemChanged.connect(self.edit_properties)
         self.panel2.table.horizontalHeader().hide()
         self.panel2.table.verticalHeader().hide()
@@ -224,9 +224,6 @@ class window_task_panel:
         else:
             mode = QtGui.QStandardItem("")
         self.model.setItem(8, 1, mode)
-        # TODO below is nice but causes crash
-        #for i in range(0,8):
-        #    self.panel2.table.openPersistentEditor(self.model.index(i, 1))
         self.setting_properties = False
 
     def edit_properties(self, item=None):
@@ -369,6 +366,7 @@ class window_size_editor(QtGui.QWidget):
             self.widget1.setParent(self)
             self.layout.addWidget(self.widget1)
             self.widget1.setText(text)
+            self.widget1.keyPressEvent = self.keyPressEvent
 
     def checkState(self):
         try:
@@ -386,20 +384,41 @@ class window_size_editor(QtGui.QWidget):
             self.layout.addWidget(self.widget2)
             self.widget2.setCheckState(state)
 
+    def keyPressEvent(self, event):
+        if event.key() == QtCore.Qt.Key_Enter or event.key() == QtCore.Qt.Key_Return:
+            event.accept()
+
+
+class line_edit(QtGui.QLineEdit):
+    """reimplemented so it does not spread Enter to parents"""
+
+    def __init__(self, *args):
+        super().__init__(*args)
+
+    def keyPressEvent(self, event):
+        super().keyPressEvent(event)
+        if event.key() == QtCore.Qt.Key_Enter or event.key() == QtCore.Qt.Key_Return:
+            event.accept()
+
 
 class window_component_delegate(QtGui.QStyledItemDelegate):
     """model delegate for window component properties"""
 
     def __init__(self, task, *args):
         self.task = task
-        super().__init__(None, *args)
+        super().__init__(*args)
+
+    def paint(self, painter, option, index):
+        if index.column() == 1:
+            self.parent().openPersistentEditor(index)
+        super().paint(painter, option, index)
 
     def createEditor(self, parent, option, index):
         """Creates an editor widget"""
 
         row = index.row()
         if row == 0:  # name
-            editor = QtGui.QLineEdit(parent)
+            editor = line_edit(parent)
         elif row == 1:  # parent
             editor = QtGui.QComboBox(parent)
             name = getattr(self.task, "current_name", None)
@@ -443,15 +462,20 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
             if idx >= 0:
                 editor.setCurrentText(index.data())
         elif row == 4:
-            editor.setCurrentIndex(ArchWindow.WindowPartTypes.index(index.data()))
+            if index.data():
+                editor.setCurrentIndex(ArchWindow.WindowPartTypes.index(index.data()))
         elif row in [5, 6]:
-            editor.setText(index.data().replace("+V",""))
-            if "+V" in index.data():
-                editor.setCheckState(QtCore.Qt.Checked)
+            if index.data():
+                editor.setText(index.data().replace("+V",""))
+                if "+V" in index.data():
+                    editor.setCheckState(QtCore.Qt.Checked)
+                else:
+                    editor.setCheckState(QtCore.Qt.Unchecked)
             else:
                 editor.setCheckState(QtCore.Qt.Unchecked)
         elif row == 8:
-            editor.setCurrentIndex(ArchWindow.WindowOpeningModes.index(index.data()))
+            if index.data():
+                editor.setCurrentIndex(ArchWindow.WindowOpeningModes.index(index.data()))
 
     def setModelData(self, editor, model, index):
         """Saves the changed data"""
