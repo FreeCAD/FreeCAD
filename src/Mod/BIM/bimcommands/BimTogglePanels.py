@@ -49,7 +49,8 @@ class BIM_TogglePanels:
         mw = FreeCADGui.getMainWindow()
         togglebutton = None
         st = mw.statusBar()
-        statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
+        statuswidget = st.findChild(QtGui.QToolBar,
+                                    translate("bimStatusBar", "BIM status widget"))
         if statuswidget:
             if hasattr(statuswidget, "togglebutton"):
                 togglebutton = statuswidget.togglebutton
