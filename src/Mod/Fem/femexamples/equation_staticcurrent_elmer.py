@@ -86,7 +86,7 @@ def setup(doc=None, solvertype="elmer"):
     Wire.Radius = "2 mm"
     Wire.Height = "60 mm"
     Wire.ViewObject.Visibility = True
-    
+
     if FreeCAD.GuiUp:
         Wire.ViewObject.Document.activeView().viewAxonometric()
         Wire.ViewObject.Document.activeView().fitAll()
@@ -101,7 +101,7 @@ def setup(doc=None, solvertype="elmer"):
     # solver
     if solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
-        solver_obj.SimulationType = u"Transient"
+        solver_obj.SimulationType = "Transient"
         solver_obj.TimestepSizes = [50]
         solver_obj.TimestepIntervals = [1]
         eq_staticcurrent = ObjectsFem.makeEquationStaticCurrent(doc, solver_obj)
@@ -111,7 +111,7 @@ def setup(doc=None, solvertype="elmer"):
         eq_staticcurrent.Priority = 2
         eq_heat = ObjectsFem.makeEquationHeat(doc, solver_obj)
         eq_heat.References = [(Wire, "Solid1")]
-        eq_heat.Priority =  1
+        eq_heat.Priority = 1
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -145,7 +145,7 @@ def setup(doc=None, solvertype="elmer"):
     Current.Mode = "Normal"
     Current.NormalCurrentDensity_re = "2387324 A/m^2"
     analysis.addObject(Current)
-    
+
     # constraint initial temperature
     con_inittemp = ObjectsFem.makeConstraintInitialTemperature(doc, "ConstraintInitialTemperature")
     con_inittemp.initialTemperature = 300.0
