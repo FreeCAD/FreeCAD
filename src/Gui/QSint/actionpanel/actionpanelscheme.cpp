@@ -8,122 +8,131 @@
 #include "actionpanelscheme.h"
 
 
-class StaticLibInitializer
-{
-public:
-    StaticLibInitializer()
-    {
-        Q_INIT_RESOURCE(schemes);
-    }
-};
-
-StaticLibInitializer staticLibInitializer;
-
-
 namespace QSint
 {
 
 
-const char* ActionPanelDefaultStyle =
-
-    "QFrame[class='panel'] {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #99cccc, stop: 1 #EAF7FF);"
-    "}"
-
+const QString ActionPanelScheme::minimumStyle = QStringLiteral(
     "QSint--ActionGroup QFrame[class='header'] {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #F9FDFF, stop: 1 #EAF7FF);"
-        "border: 1px solid #00aa99;"
-        "border-bottom: 1px solid #99cccc;"
-        "border-top-left-radius: 3px;"
-        "border-top-right-radius: 3px;"
-    "}"
-
-    "QSint--ActionGroup QFrame[class='header']:hover {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #EAF7FF, stop: 1 #F9FDFF);"
+        "border: none;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='header'] {"
-        "text-align: left;"
-        "font: 14px;"
-        "color: #006600;"
-        "background-color: transparent;"
-        "border: 1px solid transparent;"
-    "}"
-
-    "QSint--ActionGroup QToolButton[class='header']:hover {"
-        "color: #00cc00;"
-        "text-decoration: underline;"
-    "}"
-
-    "QSint--ActionGroup QFrame[class='content'] {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #F9FDFF, stop: 1 #EAF7FF);"
-        "border: 1px solid #00aa99;"
-    "}"
-
-    "QSint--ActionGroup QFrame[class='content'][header='true'] {"
-        "border-top: none;"
+        "border: none;"
+        "font-weight: bold;"
+        "text-align: center;"
+        "background: none;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action'] {"
-        "background-color: transparent;"
-        "border: 1px solid transparent;"
-        "color: #0033ff;"
-        "text-align: left;"
-        "font: 11px;"
-    "}"
-
-    "QSint--ActionGroup QToolButton[class='action']:!enabled {"
-        "color: #999999;"
+        "border: none;"
+        "background: none;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:hover {"
-        "color: #0099ff;"
         "text-decoration: underline;"
     "}"
 
-    "QSint--ActionGroup QToolButton[class='action']:focus {"
-        "border: 1px dotted black;"
+    "QSint--ActionGroup QFrame[class='content'][header='true'] {"
+        "border: none;"
     "}"
 
-    "QSint--ActionGroup QToolButton[class='action']:on {"
-        "background-color: #ddeeff;"
-        "color: #006600;"
-    "}"
+);
 
-    // set a QGroupBox to avoid that the OS style is used, see
-    // https://github.com/FreeCAD/FreeCAD/issues/6102
-    // the px values are taken from Behave-dark.qss, except the padding
-    "QSint--ActionGroup QFrame[class='content'] QGroupBox {"
-    "border: 1px solid #bbbbbb;"
-    "border-radius: 3px;"
-    "margin-top: 10px;"
-    "padding: 2px;"
-    "}"
-    // since we set a custom frame we also need to set the title
-    "QSint--ActionGroup QFrame[class='content'] QGroupBox::title {"
-    "padding-left: 3px;"
-    "top: -6px;"
-    "left: 12px;"
-    "}"
-;
+QString ActionPanelScheme::systemStyle(const QPalette& p)
+{
+    const QColor& highlightColor = p.color(QPalette::Highlight);
+    QColor headerBackground = highlightColor.darker(150);
+    const QColor& groupBackground = p.color(QPalette::Button);
 
+    QHash<QString, QString> replacements;
+    replacements["headerBackground"] = headerBackground.name();
+    replacements["groupBackground"] = groupBackground.name();;
+
+    QString style = QStringLiteral(
+        "QSint--ActionGroup QFrame[class='header'] {"
+            "background-color: {headerBackground};"
+        "}"
+        "QSint--ActionGroup QFrame[class='content'] {"
+            "background-color: {groupBackground};"
+        "}"
+    );
+
+    for (auto it = replacements.begin(); it != replacements.end(); ++it) {
+        style.replace("{" + it.key() + "}", it.value());
+    }
+
+    return style;
+}
+
+QPixmap ActionPanelScheme::drawFoldIcon(const QPalette& palette, bool fold, bool hover) const
+{
+    QSize bSize = headerButtonSize;
+    QImage img(bSize.width(), bSize.height(), QImage::Format_ARGB32_Premultiplied);
+    img.fill(Qt::transparent);
+
+    QPainter painter(&img);
+
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    qreal penWidth = bSize.width() / 14.0;
+    qreal lef_X = 0.25 * bSize.width();
+    qreal mid_X = 0.50 * bSize.width();
+    qreal rig_X = 0.75 * bSize.width();
+    qreal bot_Y = 0.40 * bSize.height();
+    qreal top_Y = 0.64 * bSize.height();
+
+    if (hover) {
+        penWidth *= 1.8;
+    }
+
+    painter.setBrush(Qt::NoBrush);
+    painter.setPen(QPen(palette.color(QPalette::HighlightedText), penWidth));
+
+    QPolygon chevron;
+    if (fold) {
+        // Upward
+        chevron << QPoint(lef_X, top_Y)
+                << QPoint(mid_X, bot_Y)
+                << QPoint(rig_X, top_Y);
+    } else {
+        // Downward
+        chevron << QPoint(lef_X, bot_Y)
+                << QPoint(mid_X, top_Y)
+                << QPoint(rig_X, bot_Y);
+    }
+
+    painter.drawPolyline(chevron);
+    painter.end();
+    return QPixmap::fromImage(img);
+}
 
 ActionPanelScheme::ActionPanelScheme()
 {
-    headerSize = 28;
+    QFontMetrics fm(QApplication::font());
+    headerSize = fm.height() + 10;
     headerAnimation = true;
 
-    headerButtonFold = QPixmap(":/default/Fold.png");
-    headerButtonFoldOver = QPixmap(":/default/FoldOver.png");
-    headerButtonUnfold = QPixmap(":/default/Unfold.png");
-    headerButtonUnfoldOver = QPixmap(":/default/UnfoldOver.png");
-    headerButtonSize = QSize(18,18);
+    QPalette p = QApplication::palette();
 
-    groupFoldSteps = 20; groupFoldDelay = 15;
+    headerButtonSize = QSize(16, 16);
+    headerButtonFold = drawFoldIcon(p, true, false);
+    headerButtonFoldOver = drawFoldIcon(p, true, true);
+    headerButtonUnfold = drawFoldIcon(p, false, false);
+    headerButtonUnfoldOver = drawFoldIcon(p, false, true);
+
+    builtinFold = headerButtonFold;
+    builtinFoldOver = headerButtonFoldOver;
+    builtinUnfold = headerButtonUnfold;
+    builtinUnfoldOver = headerButtonUnfoldOver;
+
+    groupFoldSteps = 20;
+    groupFoldDelay = 15;
     groupFoldEffect = NoFolding;
     groupFoldThaw = true;
 
-    actionStyle = QString(ActionPanelDefaultStyle);
+    actionStyle = minimumStyle + systemStyle(p);
+    builtinScheme = actionStyle;
 }
 
 ActionPanelScheme* ActionPanelScheme::defaultScheme()
@@ -132,5 +141,24 @@ ActionPanelScheme* ActionPanelScheme::defaultScheme()
     return &scheme;
 }
 
+void ActionPanelScheme::clearActionStyle()
+{
+    headerButtonFold = QPixmap();
+    headerButtonFoldOver = QPixmap();
+    headerButtonUnfold = QPixmap();
+    headerButtonUnfoldOver = QPixmap();
 
+    actionStyle = minimumStyle;
 }
+
+void ActionPanelScheme::restoreActionStyle()
+{
+    headerButtonFold = builtinFold;
+    headerButtonFoldOver = builtinFoldOver;
+    headerButtonUnfold = builtinUnfold;
+    headerButtonUnfoldOver = builtinUnfoldOver;
+
+    actionStyle = builtinScheme;
+}
+
+} // namespace QSint
