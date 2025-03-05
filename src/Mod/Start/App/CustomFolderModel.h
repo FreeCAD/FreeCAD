@@ -46,6 +46,7 @@ public:
 
 private:
     QDir _customFolderDirectory;
+    bool _showOnlyFCStd;  // Show only FreeCAD files
 };
 
 }  // namespace Start

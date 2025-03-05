@@ -41,6 +41,8 @@ CustomFolderModel::CustomFolderModel(QObject* parent)
 
     _customFolderDirectory =
         QDir(QString::fromStdString(parameterGroup->GetASCII("CustomFolder", "")));
+
+    _showOnlyFCStd = parameterGroup->GetBool("ShowOnlyFCStd", false);
 }
 
 void CustomFolderModel::loadCustomFolder()
@@ -52,6 +54,11 @@ void CustomFolderModel::loadCustomFolder()
             "BaseApp/Preferences/Mod/Start/CustomFolder: cannot read custom folder %s\n",
             _customFolderDirectory.absolutePath().toStdString().c_str());
     }
+
+    if (_showOnlyFCStd) {
+        _customFolderDirectory.setNameFilters(QStringList() << QStringLiteral("*.FCStd"));
+    }
+
     auto entries = _customFolderDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable,
                                                     QDir::SortFlag::Name);
     for (const auto& entry : entries) {
