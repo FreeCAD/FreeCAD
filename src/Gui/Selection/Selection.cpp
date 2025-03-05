@@ -332,7 +332,7 @@ std::vector<SelectionObject> SelectionSingleton::getObjectList(const char* pDocN
     std::map<App::DocumentObject*,size_t> SortMap;
 
     // check the type
-    if (typeId == Base::Type::badType())
+    if (typeId.isBad())
         return temp;
 
     App::Document *pcDoc = nullptr;
@@ -543,7 +543,7 @@ vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const Base::Ty
 std::vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const char* typeName, const char* pDocName, ResolveMode resolve) const
 {
     Base::Type typeId = Base::Type::fromName(typeName);
-    if (typeId == Base::Type::badType())
+    if (typeId.isBad())
         return {};
     return getObjectsOfType(typeId, pDocName, resolve);
 }
@@ -565,7 +565,7 @@ unsigned int SelectionSingleton::countObjectsOfType(const Base::Type& typeId, co
 unsigned int SelectionSingleton::countObjectsOfType(const char* typeName, const char* pDocName, ResolveMode resolve) const
 {
     Base::Type typeId = Base::Type::fromName(typeName);
-    if (typeId == Base::Type::badType())
+    if (typeId.isBad())
         return 0;
     return countObjectsOfType(typeId, pDocName, resolve);
 }
