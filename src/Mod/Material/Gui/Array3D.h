@@ -67,7 +67,7 @@ private:
     std::unique_ptr<Ui_Array3D> ui;
     std::shared_ptr<Materials::Material> _material;
     std::shared_ptr<Materials::MaterialProperty> _property;
-    std::shared_ptr<Materials::Material3DArray> _value;
+    std::shared_ptr<Materials::Array3D> _value;
 
     QAction _deleteDepthAction;
     QAction _delete2DAction;

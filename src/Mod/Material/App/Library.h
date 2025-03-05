@@ -19,87 +19,91 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_FOLDERTREE_H
-#define MATERIAL_FOLDERTREE_H
+#ifndef MATERIAL_LIBRARY_H
+#define MATERIAL_LIBRARY_H
 
-#include <map>
-#include <memory>
-
+#include <QDir>
 #include <QString>
+
+#include <Base/BaseClass.h>
+
+#include <Mod/Material/MaterialGlobal.h>
 
 namespace Materials
 {
 
-template<class T>
-class FolderTreeNode
+class MaterialsExport Library: public Base::BaseClass
 {
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
-    enum class NodeType
-    {
-        UnknownNode,
-        DataNode,
-        FolderNode
-    };
+    Library() = default;
+    Library(const QString& libraryName, const QString& icon, bool readOnly = true);
+    Library(const QString& libraryName,
+            const QString& dir,
+            const QString& icon,
+            bool readOnly = true);
+    ~Library() override = default;
 
-    FolderTreeNode()
-        : _type(NodeType::UnknownNode)
-    {}
-    virtual ~FolderTreeNode() = default;
-
-    NodeType getType() const
+    QString getName() const
     {
-        // assert(_type == NodeType::DataNode || _type == NodeType::FolderNode);
-        return _type;
+        return _name;
     }
-    void setType(NodeType type)
+    void setName(const QString& newName)
     {
-        _type = type;
+        _name = newName;
     }
-
-    const std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> getFolder() const
+    QString getIconPath() const
     {
-        assert(_type == NodeType::FolderNode);
-        return _folder;
+        return _iconPath;
     }
-    std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> getFolder()
+    void setIconPath(const QString& icon)
     {
-        assert(_type == NodeType::FolderNode);
-        return _folder;
+        _iconPath = icon;
     }
-    std::shared_ptr<T> getData() const
+    bool isReadOnly() const
     {
-        assert(_type == NodeType::DataNode);
-        return _data;
+        return _readOnly;
     }
-    QString getUUID() const
+    void setReadOnly(bool readOnly)
     {
-        assert(_type == NodeType::DataNode);
-        return _uuid;
+        _readOnly = readOnly;
     }
 
-    void setFolder(std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> folder)
+    QString getDirectory() const
     {
-        setType(NodeType::FolderNode);
-        _folder = folder;
+        return _directory;
     }
-    void setData(std::shared_ptr<T> data)
+    void setDirectory(const QString& directory)
     {
-        setType(NodeType::DataNode);
-        _data = data;
+        _directory = directory;
     }
-    void setUUID(const QString uuid)
+    QString getDirectoryPath() const
     {
-        setType(NodeType::DataNode);
-        _uuid = uuid;
+        return QDir(_directory).absolutePath();
     }
+
+    bool operator==(const Library& library) const;
+    bool operator!=(const Library& library) const
+    {
+        return !operator==(library);
+    }
+
+    QString getLocalPath(const QString& path) const;
+    QString getRelativePath(const QString& path) const;
+    QString getLibraryPath(const QString& path, const QString& filename) const;
+    bool isRoot(const QString& path) const;
+
+    // Validate a remote library against this one (a local library)
+    void validate(const Library& remote) const;
 
 private:
-    NodeType _type;
-    std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> _folder;
-    QString _uuid;
-    std::shared_ptr<T> _data;
+    QString _name;
+    QString _directory;
+    QString _iconPath;
+    bool _readOnly;
 };
 
 }  // namespace Materials
 
-#endif  // MATERIAL_FOLDERTREE_H
+#endif  // MATERIAL_LIBRARY_H
