@@ -171,7 +171,7 @@ void TaskSectionView::setUiEdit()
         ui->sbScale->setEnabled(false);
     }
 
-    Base::Vector3d origin = m_section->SectionOrigin.getValue();
+    auto origin = m_section->SectionOrigin.getValue();
     setUiCommon(origin);
 
     // convert section normal to view angle
