@@ -205,11 +205,24 @@ void MenuManager::setup(MenuItem* menuItems) const
 
     QMenuBar* menuBar = getMainWindow()->menuBar();
 
-    // clear() removes all the actions from the menu bar.
-    //Note: On macOS, menu items that have been merged to the system menu bar are not removed by this function.
-    //One way to handle this would be to remove the extra actions yourself.
-    //You can set the menu role on the different menus, so that you know ahead of time which menu items
-    //get merged and which do not. Then decide what to recreate or remove yourself. See also removeAction().
+    // By right, it should be fine for more than one command action having the
+    // same shortcut but in different workbench. It should not require manual
+    // conflict resolving in this case, as the action in an inactive workbench
+    // is expected to be inactive as well, or else user may experience
+    // seemingly random shortcut miss firing based on the order he/she
+    // switches workbenches. In fact, this may be considered as an otherwise
+    // difficult to implement feature of context aware shortcut, where a
+    // specific shortcut can activate different actions under different
+    // workbenches.
+    //
+    // This works as expected for action adding to a toolbar. As Qt will ignore
+    // actions inside an invisible toolbar.  However, Qt refuse to do the same
+    // for actions in a hidden menu action of a menu bar. This is very likely a
+    // Qt bug, as the behavior does not seem to conform to Qt's documentation
+    // of Qt::ShortcutContext.
+    //
+    // Clearing the menu bar, and recreate it every time when switching
+    // workbench with only the active actions can solve this problem.
     menuBar->clear();
 
     QList<QAction*> actions = menuBar->actions();
