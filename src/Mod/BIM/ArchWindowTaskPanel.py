@@ -71,16 +71,16 @@ class window_task_panel:
         c1 = QtGui.QStandardItem(translate("BIM", "Name"))
         c1.setFlags(QtCore.Qt.NoItemFlags)
         self.model.setItem(0, 0, c1)
-        c2 = QtGui.QStandardItem(translate("BIM", "Parent"))
+        c2 = QtGui.QStandardItem(translate("BIM", "Type"))
         c2.setFlags(QtCore.Qt.NoItemFlags)
         self.model.setItem(1, 0, c2)
-        c3 = QtGui.QStandardItem(translate("BIM", "Base object"))
+        c3 = QtGui.QStandardItem(translate("BIM", "Parent"))
         c3.setFlags(QtCore.Qt.NoItemFlags)
         self.model.setItem(2, 0, c3)
-        c4 = QtGui.QStandardItem(translate("BIM", "Wires"))
+        c4 = QtGui.QStandardItem(translate("BIM", "Base object"))
         c4.setFlags(QtCore.Qt.NoItemFlags)
         self.model.setItem(3, 0, c4)
-        c5 = QtGui.QStandardItem(translate("BIM", "Type"))
+        c5 = QtGui.QStandardItem(translate("BIM", "Wires"))
         c5.setFlags(QtCore.Qt.NoItemFlags)
         self.model.setItem(4, 0, c5)
         c6 = QtGui.QStandardItem(translate("BIM", "Thickness"))
@@ -122,13 +122,15 @@ class window_task_panel:
             name = self.WindowParts[cnum*5]
             parts = self.WindowParts[cnum*5+2].split(",")
             parent = [p for p in parts if p.startswith('Parent')]
+            comptype = self.WindowParts[cnum*5+1].split(",")[0]
             if parent:
                 parent = parent[0][6:]
-            comps.append([name, parent])
+            comps.append([name, parent, comptype])
         comps.sort(key = lambda comp: bool(comp[1]))
         widgets = {}
-        for name, parent in comps:
+        for name, parent, comptype in comps:
             item = QtGui.QTreeWidgetItem([name])
+            item.setIcon(0, QtGui.QIcon(":/icons/window_components/"+comptype+".svg"))
             widgets[name] = item
             if parent and (parent in widgets):
                 widgets[parent].addChild(item)
@@ -178,32 +180,32 @@ class window_task_panel:
             return
         self.current_name = name
         name = QtGui.QStandardItem(name)
+        parts1 = self.WindowParts[compindex+1].split(",")  # type, [sketch]
+        parts2 = self.WindowParts[compindex+2].split(",")  # wires/def, [hinge], [mode], [parent]
         self.model.setItem(0, 1, name)
-        parts2 = self.WindowParts[compindex+2].split(",")
+        comptype = parts1[0]
+        comptype = QtGui.QStandardItem(comptype)
+        self.model.setItem(1, 1, comptype)
         parent = [p for p in parts2 if p.startswith("Parent")]
         if parent:
             parent = parent[0][6:]
             parent = QtGui.QStandardItem(parent)
         else:
             parent = QtGui.QStandardItem("")
-        self.model.setItem(1, 1, parent)
-        parts1 = self.WindowParts[compindex+1].split(",")
+        self.model.setItem(2, 1, parent)
         base = parts1[1] if len(parts1) > 1 else ""
         if base:
             base = QtGui.QStandardItem(base)
         else:
             base = QtGui.QStandardItem("")
-        self.model.setItem(2, 1, base)
+        self.model.setItem(3, 1, base)
         wires = [p for p in parts2 if p.startswith("Wire")]
         if wires:
             wires = ",".join(wires)
             wires = QtGui.QStandardItem(wires)
         else:
             wires = QtGui.QStandardItem("")
-        self.model.setItem(3, 1, wires)
-        comptype = parts1[0]
-        comptype = QtGui.QStandardItem(comptype)
-        self.model.setItem(4, 1, comptype)
+        self.model.setItem(4, 1, wires)
         thickness = self.WindowParts[compindex+3]
         thickness = QtGui.QStandardItem(thickness)
         self.model.setItem(5, 1, thickness)
@@ -235,12 +237,12 @@ class window_task_panel:
         if not orig_name or compindex is None:
             return
         name = self.model.item(0, 1).text()
-        parent = self.model.item(1, 1).text()
+        comptype = self.model.item(1, 1).text()
+        parent = self.model.item(2, 1).text()
         if parent:
             parent = "Parent" + parent
-        baseobj = self.model.item(2, 1).text()
-        wires = self.model.item(3, 1).text()
-        comptype = self.model.item(4, 1).text()
+        baseobj = self.model.item(3, 1).text()
+        wires = self.model.item(4, 1).text()
         thickness = self.model.item(5, 1).text()
         offset = self.model.item(6, 1).text()
         hinge = self.model.item(7, 1).text()
@@ -419,22 +421,22 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
         row = index.row()
         if row == 0:  # name
             editor = line_edit(parent)
-        elif row == 1:  # parent
+        elif row == 1:  # type
+            editor = QtGui.QComboBox(parent)
+            editor.addItems(ArchWindow.WindowPartTypes)
+        elif row == 2:  # parent
             editor = QtGui.QComboBox(parent)
             name = getattr(self.task, "current_name", None)
             items = self.get_component_names_minus(self.task.WindowParts, name)
             editor.addItems(items)
-        elif row == 2:  # base object
+        elif row == 3:  # base object
             editor = QtGui.QPushButton(parent)
             editor.clicked.connect(self.on_click_baseobject)
             self.editor_baseobj = editor
             editor.setEnabled(False)
-        elif row == 3:  # wires
+        elif row == 4:  # wires
             editor = QtGui.QPushButton(parent)
             editor.clicked.connect(self.on_click_wires)
-        elif row == 4:  # type
-            editor = QtGui.QComboBox(parent)
-            editor.addItems(ArchWindow.WindowPartTypes)
         elif row == 5:  # thickness
             editor = window_size_editor("Thickness", parent)
         elif row == 6:  # offset
@@ -453,17 +455,17 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
         """Fills the editor widget with current data"""
 
         row = index.row()
-        if row in [0, 3, 7]:
+        if row in [0, 4, 7]:
             editor.setText(index.data())
-        elif row == 2:
-            editor.setText(getattr(self.task.obj.Base, "Label", ""))
         elif row == 1:
+            if index.data():
+                editor.setCurrentIndex(ArchWindow.WindowPartTypes.index(index.data()))
+        elif row == 2:
             idx = editor.findText(index.data(), QtCore.Qt.MatchExactly)
             if idx >= 0:
                 editor.setCurrentText(index.data())
-        elif row == 4:
-            if index.data():
-                editor.setCurrentIndex(ArchWindow.WindowPartTypes.index(index.data()))
+        elif row == 3:
+            editor.setText(getattr(self.task.obj.Base, "Label", ""))
         elif row in [5, 6]:
             if index.data():
                 editor.setText(index.data().replace("+V",""))
@@ -481,14 +483,14 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
         """Saves the changed data"""
 
         row = index.row()
-        if row in [0, 3, 7]:
+        if row in [0, 4, 7]:
             model.setData(index, editor.text())
-        elif row == 2:
-            model.setData(index, "")
         elif row == 1:
-            model.setData(index, editor.currentText())
-        elif row == 4:
             model.setData(index, ArchWindow.WindowPartTypes[editor.currentIndex()])
+        elif row == 2:
+            model.setData(index, editor.currentText())
+        elif row == 3:
+            model.setData(index, "")
         elif row in [5, 6]:
             val = editor.text()
             if editor.checkState():

@@ -165,6 +165,11 @@
         <file>icons/IFC/IfcStair.svg</file>
         <file>icons/IFC/IfcWall.svg</file>
         <file>icons/IFC/IfcWindow.svg</file>
+        <file>icons/window_components/Custom.svg</file>
+        <file>icons/window_components/Frame.svg</file>
+        <file>icons/window_components/Glass panel.svg</file>
+        <file>icons/window_components/Louvre.svg</file>
+        <file>icons/window_components/Solid panel.svg</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_ar.qm</file>
         <file>translations/Arch_be.qm</file>
@@ -226,11 +231,11 @@
         <file>ui/ParametersPillar.svg</file>
         <file>ui/ParametersSlab.svg</file>
         <file>ui/ParametersStairs.svg</file>
+        <file>ui/ParametersWindowComponent.svg</file>
         <file>ui/ParametersWindowDouble.svg</file>
         <file>ui/ParametersWindowFixed.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowStash.svg</file>
-        <file>ui/ParametersWindowComponent.svg</file>
         <file>ui/dialogAddPSet.ui</file>
         <file>ui/dialogAddProperty.ui</file>
         <file>ui/dialogClasses.ui</file>
@@ -263,8 +268,8 @@
         <file>ui/dialogTutorial.ui</file>
         <file>ui/dialogViews.ui</file>
         <file>ui/dialogWelcome.ui</file>
-        <file>ui/dialogWindows.ui</file>
         <file>ui/dialogWindowComponentEditor.ui</file>
+        <file>ui/dialogWindows.ui</file>
         <file>ui/preferences-arch.ui</file>
         <file>ui/preferences-archdefaults.ui</file>
         <file>ui/preferences-dae.ui</file>
