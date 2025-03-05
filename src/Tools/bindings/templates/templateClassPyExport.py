@@ -368,96 +368,43 @@ using namespace @self.export.Namespace@;
 
 /// Type structure of @self.export.Name@
 PyTypeObject @self.export.Name@::Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type,0)
+    .ob_base = PyVarObject_HEAD_INIT(&PyType_Type,0)
 + if (self.export.PythonName):
-    "@self.export.PythonName@",     /*tp_name*/
+    .tp_name = "@self.export.PythonName@",
 = else:
-    "@self.export.Namespace@.@self.export.Twin@",     /*tp_name*/
+    .tp_name = "@self.export.Namespace@.@self.export.Twin@",
 -
-    sizeof(@self.export.Name@),                       /*tp_basicsize*/
-    0,                                                /*tp_itemsize*/
+    .tp_basicsize = sizeof(@self.export.Name@),
+    .tp_itemsize = 0,
     /* methods */
-    PyDestructor,                                     /*tp_dealloc*/
-#if PY_VERSION_HEX >= 0x03080000
-    0,                                                /*tp_vectorcall_offset*/
-#else
-    nullptr,                                          /*tp_print*/
-#endif
-    nullptr,                                          /*tp_getattr*/
-    nullptr,                                          /*tp_setattr*/
-    nullptr,                                          /*tp_compare*/
-    __repr,                                           /*tp_repr*/
+    .tp_dealloc = PyDestructor,
+    .tp_repr = __repr,
 + if (self.export.NumberProtocol):
-    @self.export.Namespace@::@self.export.Name@::Number,      /*tp_as_number*/
-= else:
-    nullptr,                                          /*tp_as_number*/
+    .tp_as_number = @self.export.Namespace@::@self.export.Name@::Number,
 -
 + if (self.export.Sequence):
-    @self.export.Namespace@::@self.export.Name@::Sequence,      /*tp_as_sequence*/
-    @self.export.Namespace@::@self.export.Name@::Mapping,       /*tp_as_mapping*/
-= else:
-    nullptr,                                          /*tp_as_sequence*/
-    nullptr,                                          /*tp_as_mapping*/
+    .tp_as_sequence = @self.export.Namespace@::@self.export.Name@::Sequence,
+    .tp_as_mapping = @self.export.Namespace@::@self.export.Name@::Mapping,
 -
-    nullptr,                                          /*tp_hash*/
-    nullptr,                                          /*tp_call */
-    nullptr,                                          /*tp_str  */
-    __getattro,                                       /*tp_getattro*/
-    __setattro,                                       /*tp_setattro*/
-    /* --- Functions to access object as input/output buffer ---------*/
-    nullptr,                                          /* tp_as_buffer */
+    .tp_getattro = __getattro,
+    .tp_setattro = __setattro,
     /* --- Flags to define presence of optional/expanded features */
-    Py_TPFLAGS_BASETYPE|Py_TPFLAGS_DEFAULT,        /*tp_flags */
-    "@escapeString(self.export.Documentation.UserDocu, indent=4)@",           /*tp_doc */
-    nullptr,                                          /*tp_traverse */
-    nullptr,                                          /*tp_clear */
+    .tp_flags = Py_TPFLAGS_BASETYPE|Py_TPFLAGS_DEFAULT,
+    .tp_doc = "@escapeString(self.export.Documentation.UserDocu, indent=4)@",
 + if (self.export.RichCompare):
-    @self.export.Namespace@::@self.export.Name@::richCompare,      /*tp_richcompare*/
-= else:
-    nullptr,                                          /*tp_richcompare */
+    .tp_richcompare = @self.export.Namespace@::@self.export.Name@::richCompare,
 -
-    0,                                                /*tp_weaklistoffset */
-    nullptr,                                          /*tp_iter */
-    nullptr,                                          /*tp_iternext */
-    @self.export.Namespace@::@self.export.Name@::Methods,                     /*tp_methods */
-    nullptr,                                          /*tp_members */
-    @self.export.Namespace@::@self.export.Name@::GetterSetter,                     /*tp_getset */
-    &@self.export.FatherNamespace@::@self.export.Father@::Type,                        /*tp_base */
-    nullptr,                                          /*tp_dict */
+    .tp_methods = @self.export.Namespace@::@self.export.Name@::Methods,
+    .tp_getset = @self.export.Namespace@::@self.export.Name@::GetterSetter,
+    .tp_base = &@self.export.FatherNamespace@::@self.export.Father@::Type,
 + if (self.export.DescriptorGetter):
-    @self.export.Namespace@::@self.export.Name@::descriptorGetter,                       /*tp_descr_get */
-= else:
-    nullptr,                                          /*tp_descr_get */
+    .tp_descr_get = @self.export.Namespace@::@self.export.Name@::descriptorGetter,
 -
 + if (self.export.DescriptorSetter):
-    @self.export.Namespace@::@self.export.Name@::descriptorSetter,                       /*tp_descr_set */
-= else:
-    nullptr,                                          /*tp_descr_set */
+    .tp_descr_set = @self.export.Namespace@::@self.export.Name@::descriptorSetter,
 -
-    0,                                                /*tp_dictoffset */
-    __PyInit,                                         /*tp_init */
-    nullptr,                                          /*tp_alloc */
-    @self.export.Namespace@::@self.export.Name@::PyMake,/*tp_new */
-    nullptr,                                          /*tp_free   Low-level free-memory routine */
-    nullptr,                                          /*tp_is_gc  For PyObject_IS_GC */
-    nullptr,                                          /*tp_bases */
-    nullptr,                                          /*tp_mro    method resolution order */
-    nullptr,                                          /*tp_cache */
-    nullptr,                                          /*tp_subclasses */
-    nullptr,                                          /*tp_weaklist */
-    nullptr,                                          /*tp_del */
-    0,                                                /*tp_version_tag */
-    nullptr                                           /*tp_finalize */
-#if PY_VERSION_HEX >= 0x03090000
-    ,nullptr                                          /*tp_vectorcall */
-#if PY_VERSION_HEX >= 0x030c0000
-    ,0                                                /*tp_watched */
-#endif
-#elif PY_VERSION_HEX >= 0x03080000
-    ,nullptr                                          /*tp_vectorcall */
-    /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
-    ,nullptr                                          /*tp_print */
-#endif
+    .tp_init = __PyInit,
+    .tp_new = @self.export.Namespace@::@self.export.Name@::PyMake
 };
 
 /// Methods structure of @self.export.Name@
