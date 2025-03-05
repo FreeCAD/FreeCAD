@@ -135,8 +135,10 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             App::DocumentObject* selObj {};
             getReferencedSelection(pcDraft, msg, selObj, planes);
             if (!selObj) {
+                Base::Console().Log("selObj is NULL!\n");
                 return;
             }
+            Base::Console().Log("Setting NeutralPlane to: %s\n", selObj->getNameInDocument());
             setupTransaction();
             pcDraft->NeutralPlane.setValue(selObj, planes);
             ui->linePlane->setText(getRefStr(selObj, planes));
@@ -185,7 +187,7 @@ void TaskDraftParameters::onButtonPlane(bool checked)
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new ReferenceSelection(
             this->getBase(),
-            AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR));
+            AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR | AllowSelection::WHOLE | AllowSelection::SKETCH));
     }
 }
 
