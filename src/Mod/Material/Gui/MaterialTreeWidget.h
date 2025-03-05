@@ -207,17 +207,13 @@ private:
     int _recentMax;
     MaterialTreeWidgetPy* pyTreeWidget {nullptr};
 
-    Materials::MaterialManager _materialManager;
-
     // friends
     friend class Gui::WidgetFactoryInst;
 
 protected:
-    //   bool m_Restored = false;
-
     Materials::MaterialManager& getMaterialManager()
     {
-        return _materialManager;
+        return Materials::MaterialManager::getManager();
     }
 
     void getFavorites();
