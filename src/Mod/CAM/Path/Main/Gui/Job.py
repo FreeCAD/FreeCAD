@@ -226,6 +226,7 @@ class ViewProvider:
     def setEdit(self, vobj=None, mode=0):
         Path.Log.track(mode)
         if 0 == mode:
+
             job = self.vobj.Object
             if not job.Proxy.integrityCheck(job):
                 return False
