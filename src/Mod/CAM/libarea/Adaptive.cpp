@@ -374,7 +374,7 @@ double DistancePointToPathsSqrd(const Paths& paths,
                                 size_t& clpSegmentIndex,
                                 double& clpParameter)
 {
-    double minDistSq = __DBL_MAX__;
+    double minDistSq = DBL_MAX;
     IntPoint clp;
     // iterate though paths
     for (Path::size_type i = 0; i < paths.size(); i++) {
@@ -768,7 +768,7 @@ bool PopPathWithClosestPoint(Paths& paths /*closest path is removed from collect
         return false;
     }
 
-    double minDistSqrd = __DBL_MAX__;
+    double minDistSqrd = DBL_MAX;
     size_t closestPathIndex = 0;
     long closestPointIndex = 0;
     for (size_t pathIndex = 0; pathIndex < paths.size(); pathIndex++) {
@@ -1236,10 +1236,6 @@ public:
         // chain paths according to distance in between
         Paths toChain = toolBoundPaths;
         toolBoundPaths.clear();
-        // if(toChain.size()>0) {
-        // 	toolBoundPaths.push_back(toChain.front());
-        // 	toChain.erase(toChain.begin());
-        // }
         while (PopPathWithClosestPoint(toChain, current, result)) {
             toolBoundPaths.push_back(result);
             if (!result.empty()) {
@@ -1247,7 +1243,7 @@ public:
             }
         }
 
-        double minDistSq = __DBL_MAX__;
+        double minDistSq = DBL_MAX;
         size_t minPathIndex = state.currentPathIndex;
         size_t minSegmentIndex = state.currentSegmentIndex;
         double minSegmentPos = state.segmentPos;
@@ -1550,11 +1546,8 @@ double Adaptive2d::CalcCutArea(Clipper& clip,
             IntPoint midPoint(long(c2.X + toolRadiusScaled * cos(0.5 * (maxFi + minFi))),
                               long(c2.Y + toolRadiusScaled * sin(0.5 * (maxFi + minFi))));
             if (PointSideOfLine(c1, c2, midPoint) < 0) {
-                area = __DBL_MAX__;
+                area = DBL_MAX;
                 Perf_CalcCutAreaCirc.Stop();
-                // #ifdef DEV_MODE
-                // 	cout << "Break: @(" << double(c2.X)/scaleFactor << "," <<
-                // double(c2.Y)/scaleFactor  << ") conventional mode" << endl; #endif
                 return area;
             }
         }
@@ -1730,7 +1723,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths& stockPaths,
     if (scaleFactor > maxScaleFactor) {
         scaleFactor = maxScaleFactor;
     }
-    // scaleFactor = round(scaleFactor);
 
     current_region = 0;
     cout << "Tool Diameter: " << toolDiameter << endl;
@@ -2492,10 +2484,6 @@ void Adaptive2d::AppendToolPath(TPaths& progressPaths,
             Path linkPath;
             MotionType linkType = MotionType::mtCutting;
 
-            // this is not needed:
-            // clearedBefore.ExpandCleared(leadInPath);
-            // clearedBefore.ExpandCleared(leadOutPath);
-
             if (ResolveLinkPath(leadOutPath.back(), leadInPath.front(), clearedBefore, linkPath)) {
                 linkType = MotionType::mtLinkClear;
                 double remainingLeadInExtension = stepOverScaled / 2;
@@ -2919,7 +2907,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             /******************************/
             Perf_PointIterations.Start();
             int iteration;
-            double prev_error = __DBL_MAX__;
+            double prev_error = DBL_MAX;
             for (iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
                 total_iterations++;
                 if (iteration == 0) {
@@ -2948,9 +2936,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                 areaPD = area / double(stepScaled);  // area per distance
                 interp.addPoint(areaPD, angle);
                 double error = areaPD - targetAreaPD;
-                // cout << " iter:" << iteration << " angle:" << angle << " area:" << areaPD
-                //      << " target:" << targetAreaPD << " error:" << error << " max:" << maxError
-                //      << endl;
+
                 if (fabs(error) < maxError) {
                     angleHistory.push_back(angle);
                     if (angleHistory.size() > ANGLE_HISTORY_POINTS) {
@@ -3065,14 +3051,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                 CheckReportProgress(progressPaths);
             }
             else {
-#ifdef DEV_MODE
-                // if(point_index==0) {
-                // 	engage_no_cut_count++;
-                // 	cout<<"Break:no cut #" << engage_no_cut_count << ", bad engage, pass:" << pass
-                // << " over_cut_count:" << over_cut_count << endl;
-                // }
-#endif
-                // cout<<"Break: no cut @" << point_index << endl;
+
                 if (noCutDistance > stepOverScaled) {
                     break;
                 }

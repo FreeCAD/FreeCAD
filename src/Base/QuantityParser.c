@@ -68,12 +68,6 @@
         #define YYSTYPE Quantity
         #define yyparse Quantity_yyparse
         #define yyerror Quantity_yyerror
-        #ifndef  DOUBLE_MAX
-        # define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
-        #endif
-        #ifndef  DOUBLE_MIN
-        # define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
-        #endif
 
 
 #line 79 "QuantityParser.c" /* yacc.c:339  */
@@ -1301,7 +1295,7 @@ yyreduce:
     {
         case 2:
 #line 34 "QuantityParser.y" /* yacc.c:1646  */
-    { QuantResult = Quantity(DOUBLE_MIN); /* empty input */ }
+    { QuantResult = Quantity(DBL_MIN); /* empty input */ }
 #line 1305 "QuantityParser.c" /* yacc.c:1646  */
     break;
 
