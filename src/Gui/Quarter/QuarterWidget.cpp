@@ -154,7 +154,12 @@ public:
         Q_UNUSED(shareWidget);
         QSurfaceFormat surfaceFormat(format);
         surfaceFormat.setSwapBehavior(QSurfaceFormat::DoubleBuffer);
-
+        // With the settings below we could determine deprecated OpenGL API
+        // but can't do this since otherwise it will complain about almost any
+        // OpenGL call in Coin3d
+        //surfaceFormat.setMajorVersion(3);
+        //surfaceFormat.setMinorVersion(2);
+        //surfaceFormat.setProfile(QSurfaceFormat::CoreProfile);
 #if defined (_DEBUG) && 0
         surfaceFormat.setOption(QSurfaceFormat::DebugContext);
 #endif

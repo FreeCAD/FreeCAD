@@ -748,6 +748,11 @@ void TaskView::addTaskWatcher()
         taskPanel->addStretch();
     updateWatcher();
 
+    // Workaround to avoid a crash in Qt. See also
+    // https://forum.freecad.org/viewtopic.php?f=8&t=39187
+    //
+    // Notify the button box about a style change so that it can
+    // safely delete the style animation of its push buttons.
     auto box = taskPanel->findChild<QDialogButtonBox*>();
     if (box) {
         QEvent event(QEvent::StyleChange);
