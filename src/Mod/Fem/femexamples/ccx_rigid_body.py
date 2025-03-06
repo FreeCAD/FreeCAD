@@ -71,13 +71,15 @@ def setup(doc=None, solvertype="ccxtools"):
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # geometric object
-    ellipse = doc.addObject("Part::Ellipse","Ellipse")
-    ellipse.MajorRadius='100,00 mm'
-    ellipse.MinorRadius='50,00 mm'
-    ellipse.Angle1='0,00 °'
-    ellipse.Angle2='360,00 °'
-    ellipse.Placement=App.Placement(App.Vector(0.00,0.00,0.00),App.Rotation(App.Vector(0.00,0.00,1.00),0.00))
-    extrude = doc.addObject('Part::Extrusion','Extrude')
+    ellipse = doc.addObject("Part::Ellipse", "Ellipse")
+    ellipse.MajorRadius = "100,00 mm"
+    ellipse.MinorRadius = "50,00 mm"
+    ellipse.Angle1 = "0,00 °"
+    ellipse.Angle2 = "360,00 °"
+    ellipse.Placement = App.Placement(
+        App.Vector(0.00, 0.00, 0.00), App.Rotation(App.Vector(0.00, 0.00, 1.00), 0.00)
+    )
+    extrude = doc.addObject("Part::Extrusion", "Extrude")
     extrude.Base = ellipse
     extrude.LengthFwd = 1000
     extrude.Solid = True
