@@ -57,7 +57,6 @@ class StartMigrator2024:
         self._remove_toolbars()
         self._remove_deprecated_parameters()
         self._mark_complete()
-        self._migrate_custom_folder()
         FreeCAD.Console.PrintMessage("done.\n")
 
     # If the old Start workbench was set as the Autoload Module, reconfigure it so the Start command is run at startup,
