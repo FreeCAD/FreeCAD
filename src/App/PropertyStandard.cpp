@@ -1389,6 +1389,10 @@ void PropertyString::setValue(const char* newLabel)
         obj->onBeforeChangeLabel(label);
         newLabel = label.c_str();
 
+        if (newLabel == _cValue) {
+            return;
+        }
+
         if(!obj->getDocument()->testStatus(App::Document::Restoring)) {
             // Only update label reference if we are not restoring. When
             // importing (which also counts as restoring), it is possible the
