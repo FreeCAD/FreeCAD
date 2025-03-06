@@ -53,6 +53,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <gsl/pointers>
+#include <string>
 
 using namespace StartGui;
 
@@ -198,15 +199,7 @@ StartView::StartView(QWidget* parent)
     std::string customFolder(hGrp->GetASCII("CustomFolder", ""));
     bool showCustomFolder = false;
     if (!customFolder.empty()) {
-        auto customFolderDirectory = QDir(QString::fromStdString(customFolder));
-        if (customFolderDirectory.exists()) {
-            showCustomFolder = true;
-        }
-        else {
-            Base::Console().Warning(
-                "BaseApp/Preferences/Mod/Start/CustomFolder: '%s' does not exist\n",
-                customFolderDirectory.absolutePath().toStdString().c_str());
-        }
+        showCustomFolder = true;
     }
 
     // First start page
