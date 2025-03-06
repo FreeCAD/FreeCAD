@@ -428,7 +428,7 @@ CmdPartDesignClone::CmdPartDesignClone()
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Create a clone");
-    sToolTipText    = QT_TR_NOOP("Create a new clone");
+    sToolTipText    = QT_TR_NOOP("The Clone tool creates a connected copy of a single solid object, updating with future edits to the original.");
     sWhatsThis      = "PartDesign_Clone";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Clone";
