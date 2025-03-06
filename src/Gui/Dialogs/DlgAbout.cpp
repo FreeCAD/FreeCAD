@@ -730,7 +730,7 @@ void AboutDialog::copyToClipboard()
         << QString::fromStdString(theme) << "/" << QString::fromStdString(style) << "\n";
 
     // Add DPI information
-    str << "Logical/physical/ratio DPI: "
+    str << "Logical DPI/Physical DPI/Pixel Ratio: "
         << QApplication::primaryScreen()->logicalDotsPerInch()
         << "/"
         << QApplication::primaryScreen()->physicalDotsPerInch()
