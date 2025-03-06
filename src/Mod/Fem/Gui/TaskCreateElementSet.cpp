@@ -479,7 +479,7 @@ void TaskCreateElementSet::Poly(void)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     Gui::MDIView* view = doc->getActiveView();
-    if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
         viewer->setEditing(true);
         viewer->startSelection(Gui::View3DInventorViewer::Clip);

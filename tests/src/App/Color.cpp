@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <cmath>
-#include "App/Color.h"
+#include "Base/Color.h"
 
 // NOLINTBEGIN
 TEST(TestColor, equal)
@@ -9,10 +9,10 @@ TEST(TestColor, equal)
     int green = 170;
     int blue = 255;
 
-    App::Color color(red / 255.0F, green / 255.0F, blue / 255.0F);
+    Base::Color color(red / 255.0F, green / 255.0F, blue / 255.0F);
     uint32_t packed = color.getPackedValue();
 
-    App::Color color2 {packed};
+    Base::Color color2 {packed};
     EXPECT_EQ(color, color2);
 }
 
@@ -30,9 +30,9 @@ TEST(TestColor, packedValue)
     int green = 170;
     int blue = 255;
 
-    App::Color color(red / 255.0F, green / 255.0F, blue / 255.0F);
+    Base::Color color(red / 255.0F, green / 255.0F, blue / 255.0F);
     uint32_t packed = color.getPackedValue();
-    App::Color color2 {packed};
+    Base::Color color2 {packed};
 
     EXPECT_EQ(std::lround(color2.r * 255.0F), 85);
     EXPECT_EQ(std::lround(color2.g * 255.0F), 170);
@@ -45,9 +45,9 @@ TEST(TestColor, packedRGB)
     int green = 170;
     int blue = 255;
 
-    App::Color color(red / 255.0F, green / 255.0F, blue / 255.0F);
+    Base::Color color(red / 255.0F, green / 255.0F, blue / 255.0F);
     uint32_t packed = color.getPackedRGB();
-    App::Color color2;
+    Base::Color color2;
     color2.setPackedRGB(packed);
 
     EXPECT_EQ(std::lround(color2.r * 255.0F), 85);
@@ -62,9 +62,9 @@ TEST(TestColor, packedARGB)
     int blue = 255;
     int alpha = 127;
 
-    App::Color color(red / 255.0F, green / 255.0F, blue / 255.0F, alpha / 255.0F);
+    Base::Color color(red / 255.0F, green / 255.0F, blue / 255.0F, alpha / 255.0F);
     uint32_t packed = color.getPackedARGB();
-    App::Color color2;
+    Base::Color color2;
     color2.setPackedARGB(packed);
 
     EXPECT_EQ(std::lround(color2.r * 255.0F), 85);
@@ -136,7 +136,7 @@ TEST(TestColor, asPackedRGB)
     int blue = 255;
 
     IntColor intColor {red, green, blue};
-    uint32_t packed = App::Color::asPackedRGB<IntColor>(intColor);
+    uint32_t packed = Base::Color::asPackedRGB<IntColor>(intColor);
 
 
     EXPECT_EQ(packed, 1437269760);
@@ -148,9 +148,9 @@ TEST(TestColor, fromPackedRGB)
     int green = 170;
     int blue = 255;
 
-    App::Color color(red / 255.0F, green / 255.0F, blue / 255.0F);
+    Base::Color color(red / 255.0F, green / 255.0F, blue / 255.0F);
 
-    IntColor intColor = App::Color::fromPackedRGB<IntColor>(color.getPackedRGB());
+    IntColor intColor = Base::Color::fromPackedRGB<IntColor>(color.getPackedRGB());
 
     EXPECT_EQ(intColor.red(), red);
     EXPECT_EQ(intColor.green(), green);
@@ -165,7 +165,7 @@ TEST(TestColor, asPackedRGBA)
     int alpha = 127;
 
     IntColor intColor {red, green, blue, alpha};
-    uint32_t packed = App::Color::asPackedRGBA<IntColor>(intColor);
+    uint32_t packed = Base::Color::asPackedRGBA<IntColor>(intColor);
 
 
     EXPECT_EQ(packed, 1437269887);
@@ -178,9 +178,9 @@ TEST(TestColor, fromPackedRGBA)
     int blue = 255;
     int alpha = 127;
 
-    App::Color color(red / 255.0F, green / 255.0F, blue / 255.0F, alpha / 255.0F);
+    Base::Color color(red / 255.0F, green / 255.0F, blue / 255.0F, alpha / 255.0F);
 
-    IntColor intColor = App::Color::fromPackedRGBA<IntColor>(color.getPackedValue());
+    IntColor intColor = Base::Color::fromPackedRGBA<IntColor>(color.getPackedValue());
 
     EXPECT_EQ(intColor.red(), red);
     EXPECT_EQ(intColor.green(), green);
@@ -195,7 +195,7 @@ TEST(TestColor, setValue)
     int blue = 255;
 
     IntColor intColor {red, green, blue};
-    App::Color color {};
+    Base::Color color {};
     color.setValue<IntColor>(intColor);
 
     EXPECT_FLOAT_EQ(color.r, 85.0F / 255.0F);
@@ -209,7 +209,7 @@ TEST(TestColor, asValue)
     int green = 170;
     int blue = 255;
 
-    App::Color color(red / 255.0F, green / 255.0F, blue / 255.0F);
+    Base::Color color(red / 255.0F, green / 255.0F, blue / 255.0F);
 
     IntColor intColor = color.asValue<IntColor>();
 
@@ -224,14 +224,14 @@ TEST(TestColor, asHexString)
     int green = 170;
     int blue = 255;
 
-    App::Color color(red / 255.0F, green / 255.0F, blue / 255.0F);
+    Base::Color color(red / 255.0F, green / 255.0F, blue / 255.0F);
 
     EXPECT_EQ(color.asHexString(), "#55AAFF");
 }
 
 TEST(TestColor, fromHexString)
 {
-    App::Color color;
+    Base::Color color;
     EXPECT_FALSE(color.fromHexString(std::string("")));
     EXPECT_FALSE(color.fromHexString(std::string("abcdef")));
     EXPECT_TRUE(color.fromHexString(std::string("#abcdef")));
@@ -243,5 +243,6 @@ TEST(TestColor, fromHexString)
     EXPECT_FLOAT_EQ(color.r, 85.0F / 255.0F);
     EXPECT_FLOAT_EQ(color.g, 170.0F / 255.0F);
     EXPECT_FLOAT_EQ(color.b, 255.0F / 255.0F);
+    EXPECT_FLOAT_EQ(color.a, 255.0F / 255.0F);
 }
 // NOLINTEND

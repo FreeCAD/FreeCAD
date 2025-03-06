@@ -39,7 +39,7 @@
 #include <Base/Parameter.h>
 #include "SoFCColorGradient.h"
 #include "SoTextLabel.h"
-#include "DlgSettingsColorGradientImp.h"
+#include "Dialogs/DlgSettingsColorGradientImp.h"
 #include "MainWindow.h"
 #include "MDIView.h"
 #include "ViewProvider.h"
@@ -105,7 +105,7 @@ const char* SoFCColorGradient::getColorBarName() const
 
 void SoFCColorGradient::applyFormat(const SoLabelTextFormat& fmt)
 {
-    auto textColor = App::Color(fmt.textColor);
+    auto textColor = Base::Color(fmt.textColor);
 
     for (int j = 0; j < labels->getNumChildren(); j++) {
         if (labels->getChild(j)->getTypeId() == SoBaseColor::getClassTypeId()) {
@@ -131,7 +131,7 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
         auto trans = new SoTransform;
 
         SoLabelTextFormat fmt = getFormat();
-        auto textColor = App::Color(fmt.textColor);
+        auto textColor = Base::Color(fmt.textColor);
         auto textFont = new SoFont;
         auto color = new SoBaseColor;
         textFont->name.setValue("Helvetica,Arial,Times New Roman");
@@ -356,7 +356,7 @@ SoMaterial* SoFCColorGradient::createMaterial() const
     auto mat = new SoMaterial;
     mat->diffuseColor.setNum(2 * numColors);
     for (int k = 0; k < numColors; k++) {
-        App::Color col = model.colors[numColors - k - 1];
+        Base::Color col = model.colors[numColors - k - 1];
         mat->diffuseColor.set1Value(2 * k, col.r, col.g, col.b);
         mat->diffuseColor.set1Value(2 * k + 1, col.r, col.g, col.b);
     }

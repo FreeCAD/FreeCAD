@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <algorithm>
+#include <cmath>
 #include <map>
 #endif
 
@@ -69,7 +70,7 @@ bool MeshProjection::isPointInsideDistance(const Base::Vector3f& p1,
     Base::Vector3f move(pt - p1);
     proj.ProjectToLine(move, dir);
     proj = pt + proj;
-    return (((p1 - proj) * (p2 - proj)) < 0.0f);
+    return (((p1 - proj) * (p2 - proj)) < 0.0F);
 }
 
 bool MeshProjection::connectLines(std::list<std::pair<Base::Vector3f, Base::Vector3f>>& cutLines,
@@ -77,8 +78,8 @@ bool MeshProjection::connectLines(std::list<std::pair<Base::Vector3f, Base::Vect
                                   const Base::Vector3f& endPoint,
                                   std::vector<Base::Vector3f>& polyline) const
 {
-    const float fMaxDist = float(sqrt(FLOAT_MAX));  // max. length of a gap
-    const float fMinEps = 1.0e-4f;
+    const float fMaxDist = float(std::sqrt(FLOAT_MAX));  // max. length of a gap
+    const float fMinEps = 1.0e-4F;
 
     polyline.clear();
     polyline.push_back(startPoint);
@@ -182,7 +183,7 @@ bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
                 }
                 else {
                     if (facet == f1) {  // start facet
-                        if (((e2 - v1) * dir) > 0.0f) {
+                        if (((e2 - v1) * dir) > 0.0F) {
                             cutLine.emplace_back(v1, e2);
                         }
                         else {
@@ -193,7 +194,7 @@ bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
                     }
 
                     if (facet == f2) {  // end facet
-                        if (((e2 - v2) * -dir) > 0.0f) {
+                        if (((e2 - v2) * -dir) > 0.0F) {
                             cutLine.emplace_back(v2, e2);
                         }
                         else {

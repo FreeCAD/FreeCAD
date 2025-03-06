@@ -242,12 +242,7 @@ class ObjectDressup:
                 p0 = edge.Vertexes[0].Point
                 p1 = edge.Vertexes[1].Point
                 rampangle = self.angle
-                if (
-                    bb.XLength < 1e-6
-                    and bb.YLength < 1e-6
-                    and bb.ZLength > 0
-                    and p0.z > p1.z
-                ):
+                if bb.XLength < 1e-6 and bb.YLength < 1e-6 and bb.ZLength > 0 and p0.z > p1.z:
 
                     # check if above ignoreAbove parameter - do not generate ramp if it is
                     newEdge, cont = self.checkIgnoreAbove(edge)
@@ -292,9 +287,7 @@ class ObjectDressup:
                         if i >= len(edges):
                             break
                     if len(rampedges) == 0:
-                        Path.Log.debug(
-                            "No suitable edges for ramping, plunge will remain as such"
-                        )
+                        Path.Log.debug("No suitable edges for ramping, plunge will remain as such")
                         outedges.append(edge)
                     else:
                         if not covered:
@@ -303,9 +296,7 @@ class ObjectDressup:
                                 for redge in rampedges:
                                     l = l + redge.Length
                                 if self.method == "RampMethod3":
-                                    rampangle = math.degrees(
-                                        math.atan(l / (plungelen / 2))
-                                    )
+                                    rampangle = math.degrees(math.atan(l / (plungelen / 2)))
                                 else:
                                     rampangle = math.degrees(math.atan(l / plungelen))
                                 Path.Log.warning(
@@ -317,15 +308,11 @@ class ObjectDressup:
                         # Path.Log.debug("Doing ramp to edges: {}".format(rampedges))
                         if self.method == "RampMethod1":
                             outedges.extend(
-                                self.createRampMethod1(
-                                    rampedges, p0, projectionlen, rampangle
-                                )
+                                self.createRampMethod1(rampedges, p0, projectionlen, rampangle)
                             )
                         elif self.method == "RampMethod2":
                             outedges.extend(
-                                self.createRampMethod2(
-                                    rampedges, p0, projectionlen, rampangle
-                                )
+                                self.createRampMethod2(rampedges, p0, projectionlen, rampangle)
                             )
                         else:
                             # if the ramp cannot be covered with Method3, revert to Method1
@@ -334,15 +321,11 @@ class ObjectDressup:
                             if (not covered) and allowBounce:
                                 projectionlen = projectionlen * 2
                                 outedges.extend(
-                                    self.createRampMethod1(
-                                        rampedges, p0, projectionlen, rampangle
-                                    )
+                                    self.createRampMethod1(rampedges, p0, projectionlen, rampangle)
                                 )
                             else:
                                 outedges.extend(
-                                    self.createRampMethod3(
-                                        rampedges, p0, projectionlen, rampangle
-                                    )
+                                    self.createRampMethod3(rampedges, p0, projectionlen, rampangle)
                                 )
                 else:
                     outedges.append(edge)
@@ -366,12 +349,7 @@ class ObjectDressup:
                 bb = edge.BoundBox
                 p0 = edge.Vertexes[0].Point
                 p1 = edge.Vertexes[1].Point
-                if (
-                    bb.XLength < 1e-6
-                    and bb.YLength < 1e-6
-                    and bb.ZLength > 0
-                    and p0.z > p1.z
-                ):
+                if bb.XLength < 1e-6 and bb.YLength < 1e-6 and bb.ZLength > 0 and p0.z > p1.z:
                     # plungelen = abs(p0.z-p1.z)
                     Path.Log.debug(
                         "Found plunge move at X:{} Y:{} From Z:{} to Z{}, Searching for closed loop".format(
@@ -429,17 +407,12 @@ class ObjectDressup:
             p0 = edge.Vertexes[0].Point
             p1 = edge.Vertexes[1].Point
             if p0.z > self.ignoreAbove and (
-                p1.z > self.ignoreAbove
-                or Path.Geom.isRoughly(p1.z, self.ignoreAbove.Value)
+                p1.z > self.ignoreAbove or Path.Geom.isRoughly(p1.z, self.ignoreAbove.Value)
             ):
                 Path.Log.debug("Whole plunge move above 'ignoreAbove', ignoring")
                 return (edge, True)
-            elif p0.z > self.ignoreAbove and not Path.Geom.isRoughly(
-                p0.z, self.ignoreAbove.Value
-            ):
-                Path.Log.debug(
-                    "Plunge move partially above 'ignoreAbove', splitting into two"
-                )
+            elif p0.z > self.ignoreAbove and not Path.Geom.isRoughly(p0.z, self.ignoreAbove.Value):
+                Path.Log.debug("Plunge move partially above 'ignoreAbove', splitting into two")
                 newPoint = FreeCAD.Base.Vector(p0.x, p0.y, self.ignoreAbove)
                 return (Part.makeLine(p0, newPoint), False)
             else:
@@ -473,10 +446,7 @@ class ObjectDressup:
 
     def createRampEdge(self, originalEdge, startPoint, endPoint):
         # Path.Log.debug("Create edge from [{},{},{}] to [{},{},{}]".format(startPoint.x,startPoint.y, startPoint.z, endPoint.x, endPoint.y, endPoint.z))
-        if (
-            type(originalEdge.Curve) == Part.Line
-            or type(originalEdge.Curve) == Part.LineSegment
-        ):
+        if type(originalEdge.Curve) == Part.Line or type(originalEdge.Curve) == Part.LineSegment:
             return Part.makeLine(startPoint, endPoint)
         elif type(originalEdge.Curve) == Part.Circle:
             firstParameter = originalEdge.Curve.parameter(startPoint)
@@ -705,9 +675,7 @@ class ObjectDressup:
             Path.Geom.xy(p0),
             Path.Geom.xy(rampedges[-1].valueAt(rampedges[-1].LastParameter)),
         ):
-            Path.Log.debug(
-                "The ramp forms a closed wire, needless to move on original Z height"
-            )
+            Path.Log.debug("The ramp forms a closed wire, needless to move on original Z height")
         else:
             for i, redge in enumerate(rampedges):
                 if redge.Length >= rampremaining:
@@ -829,9 +797,7 @@ class ObjectDressup:
 
             if cmd.Name in ["G1", "G2", "G3", "G01", "G02", "G03"]:
                 if zVal is not None and zVal2 != zVal:
-                    if Path.Geom.isRoughly(xVal, xVal2) and Path.Geom.isRoughly(
-                        yVal, yVal2
-                    ):
+                    if Path.Geom.isRoughly(xVal, xVal2) and Path.Geom.isRoughly(yVal, yVal2):
                         # this is a straight plunge
                         params["F"] = vertFeed
                     else:
@@ -914,21 +880,17 @@ class CommandPathDressupRampEntry:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             Path.Log.error(
-                translate("CAM_DressupRampEntry", "Please select one toolpath object")
-                + "\n"
+                translate("CAM_DressupRampEntry", "Please select one toolpath object") + "\n"
             )
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
             Path.Log.error(
-                translate("CAM_DressupRampEntry", "The selected object is not a toolpath")
-                + "\n"
+                translate("CAM_DressupRampEntry", "The selected object is not a toolpath") + "\n"
             )
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            Path.Log.error(
-                translate("CAM_DressupRampEntry", "Please select a Profile object")
-            )
+            Path.Log.error(translate("CAM_DressupRampEntry", "Please select a Profile object"))
             return
 
         # everything ok!
@@ -946,9 +908,7 @@ class CommandPathDressupRampEntry:
         FreeCADGui.doCommand(
             "obj.ViewObject.Proxy = Path.Dressup.Gui.RampEntry.ViewProviderDressup(obj.ViewObject)"
         )
-        FreeCADGui.doCommand(
-            "Gui.ActiveDocument.getObject(base.Name).Visibility = False"
-        )
+        FreeCADGui.doCommand("Gui.ActiveDocument.getObject(base.Name).Visibility = False")
         FreeCADGui.doCommand("dbo.setup(obj)")
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()

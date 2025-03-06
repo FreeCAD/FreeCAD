@@ -24,6 +24,7 @@
 #define DRAWINGGUI_VIEWPROVIDERVIEW_H
 
 #include <Gui/ViewProviderDocumentObjectGroup.h>
+#include <Mod/Drawing/DrawingGlobal.h>
 
 
 namespace DrawingGui
@@ -63,7 +64,7 @@ public:
     //@}
 };
 
-using ViewProviderDrawingViewPython = Gui::ViewProviderPythonFeatureT<ViewProviderDrawingView>;
+using ViewProviderDrawingViewPython = Gui::ViewProviderFeaturePythonT<ViewProviderDrawingView>;
 
 class DrawingGuiExport ViewProviderDrawingClip: public Gui::ViewProviderDocumentObjectGroup
 {

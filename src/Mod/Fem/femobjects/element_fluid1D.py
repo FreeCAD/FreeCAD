@@ -31,10 +31,10 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief element fluid 1D object
 
-from . import base_fempythonobject
+from . import base_femelement
 
 
-class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
+class ElementFluid1D(base_femelement.BaseFemElement):
     """
     The element_fluid1D object
     """
@@ -62,11 +62,6 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
 
     def __init__(self, obj):
         super().__init__(obj)
-
-        obj.addProperty(
-            "App::PropertyLinkSubList", "References", "FluidSection", "List of fluid section shapes"
-        )
-        obj.setPropertyStatus("References", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyEnumeration", "SectionType", "FluidSection", "select fluid section type"

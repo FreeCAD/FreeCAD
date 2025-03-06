@@ -114,7 +114,10 @@ def makeBuildingPart(objectslist=None,baseobj=None,name=None):
     if FreeCAD.GuiUp:
         ArchBuildingPart.ViewProviderBuildingPart(obj.ViewObject)
     if objectslist:
-        obj.addObjects(objectslist)
+        if isinstance(objectslist,(list,tuple)):
+            obj.addObjects(objectslist)
+        else:
+            obj.addObject(objectslist)
     return obj
 
 
@@ -125,6 +128,7 @@ def makeFloor(objectslist=None,baseobj=None,name=None):
     obj = makeBuildingPart(objectslist)
     obj.Label = name if name else translate("Arch","Level")
     obj.IfcType = "Building Storey"
+    obj.CompositionType = "ELEMENT"
     return obj
 
 
@@ -136,12 +140,32 @@ def makeBuilding(objectslist=None,baseobj=None,name=None):
     obj = makeBuildingPart(objectslist)
     obj.Label = name if name else translate("Arch","Building")
     obj.IfcType = "Building"
+    obj.CompositionType = "ELEMENT"
     t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
     obj.addProperty("App::PropertyEnumeration","BuildingType","Building",t)
     obj.BuildingType = ArchBuildingPart.BuildingTypes
     if FreeCAD.GuiUp:
         obj.ViewObject.ShowLevel = False
         obj.ViewObject.ShowLabel = False
+    return obj
+
+
+def make2DDrawing(objectslist=None,baseobj=None,name=None):
+
+    """makes a BuildingPart and turns it into a 2D drawing view"""
+
+    obj = makeBuildingPart(objectslist)
+    obj.Label = name if name else translate("Arch","Drawing")
+    obj.IfcType = "Annotation"
+    obj.ObjectType = "DRAWING"
+    obj.setEditorMode("Area",2)
+    obj.setEditorMode("Height",2)
+    obj.setEditorMode("LevelOffset",2)
+    obj.setEditorMode("OnlySolids",2)
+    obj.setEditorMode("HeightPropagate",2)
+    if FreeCAD.GuiUp:
+        obj.ViewObject.DisplayOffset = FreeCAD.Placement()
+        obj.ViewObject.ShowLevel = False
     return obj
 
 
@@ -162,8 +186,10 @@ def convertFloors(floor=None):
             nobj = makeBuildingPart(obj.Group)
             if Draft.getType(obj) == "Floor":
                 nobj.IfcType = "Building Storey"
+                nobj.CompositionType = "ELEMENT"
             else:
                 nobj.IfcType = "Building"
+                nobj.CompositionType = "ELEMENT"
                 t = QT_TRANSLATE_NOOP("App::Property","The type of this building")
                 nobj.addProperty("App::PropertyEnumeration","BuildingType","Building",t)
                 nobj.BuildingType = ArchBuildingPart.BuildingTypes
@@ -183,8 +209,8 @@ def convertFloors(floor=None):
             obj.Label = obj.Label+" to delete"
             nobj.Label = label
     for n in todel:
-        from DraftGui import todo
-        todo.delay(FreeCAD.ActiveDocument.removeObject,n)
+        from draftutils import todo
+        todo.ToDo.delay(FreeCAD.ActiveDocument.removeObject,n)
 
 
 def makeCurtainWall(baseobj=None,name=None):
@@ -477,8 +503,8 @@ def makeProfile(profile=[0,'REC','REC100x100','R',100,100]):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",profile[2])
-    obj.Label = profile[2]
+    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython", "Profile")
+    obj.Label = profile[2] + "_"
     if profile[3]=="C":
         ArchProfile._ProfileC(obj, profile)
     elif profile[3]=="H":
@@ -670,6 +696,20 @@ def makeRoof(baseobj=None,
     return obj
 
 
+def makeSchedule():
+    """makeSchedule(): Creates a schedule object in the active document"""
+
+    import ArchSchedule
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Schedule")
+    obj.Label = translate("Arch","Schedule")
+    ArchSchedule._ArchSchedule(obj)
+    if FreeCAD.GuiUp:
+        ArchSchedule._ViewProviderArchSchedule(obj.ViewObject)
+    if hasattr(obj,"CreateSpreadsheet") and obj.CreateSpreadsheet:
+        obj.Proxy.getSpreadSheet(obj, force=True)
+    return obj
+
+
 def makeSectionPlane(objectslist=None,name=None):
 
     """makeSectionPlane([objectslist],[name]) : Creates a Section plane objects including the
@@ -772,6 +812,7 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
     label = name if name else translate("Arch","Stairs")
 
     def setProperty(obj,length,width,height,steps):
+        """setProperty(obj,length,width,height,steps): sets up the basic properties for this stair"""
         if length:
             obj.Length = length
         else:
@@ -805,7 +846,6 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
             stair.Label = label
             ArchStairs._Stairs(stair)
             stairs.append(stair)
-            stairs[0].Label = label
             i = 1
         else:
             i = 0
@@ -814,17 +854,12 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
             stair.Label = label
             ArchStairs._Stairs(stair)
             stairs.append(stair)
-            stairs[i].Label = label
             stairs[i].Base = baseobjI
-
-            if len(baseobjI.Shape.Edges) > 1:
-                stepsI = 1                              #'landing' if 'multi-edges' currently
-            elif steps:
+            if steps:
                 stepsI = steps
             else:
                 stepsI = 20
             setProperty(stairs[i],None,width,height,stepsI)
-
             if i > 1:
                 additions.append(stairs[i])
                 stairs[i].LastSegment = stairs[i-1]
@@ -864,6 +899,7 @@ def makeRailing(stairs):
     import ArchPipe
 
     def makeRailingLorR(stairs,side="L"):
+        """makeRailingLorR(stairs,side="L"): Creates a railing on the given side of the stairs, L or R"""
         for stair in reversed(stairs):
             if side == "L":
                 outlineLR = stair.OutlineLeft
@@ -1086,7 +1122,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
 
     import ArchWindow
     import Draft
-    from DraftGui import todo
+    from draftutils import todo
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -1137,5 +1173,5 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
     if obj.Base and FreeCAD.GuiUp:
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
-        todo.delay(ArchWindow.recolorize,[obj.Document.Name,obj.Name])
+        todo.ToDo.delay(ArchWindow.recolorize,[obj.Document.Name,obj.Name])
     return obj

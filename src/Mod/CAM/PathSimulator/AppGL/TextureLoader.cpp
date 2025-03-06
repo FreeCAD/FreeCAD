@@ -36,6 +36,9 @@ TextureItem texItems[] = {
     {70, 50, 0, 0},
     {27, 50, 0, 0},
     {44, 50, 0, 0},
+    {90, 50, 0, 0},
+    {128, 50, 0, 0},
+    {168, 50, 0, 0},
 };
 
 
@@ -43,7 +46,9 @@ TextureItem texItems[] = {
 
 int sssize = -1;
 
-TextureLoader::TextureLoader(std::string imgFolder, std::vector<std::string> fileNames, int textureSize)
+TextureLoader::TextureLoader(std::string imgFolder,
+                             std::vector<std::string> fileNames,
+                             int textureSize)
     : mImageFolder(imgFolder)
 {
     int buffsize = textureSize * textureSize * sizeof(unsigned int);
@@ -51,7 +56,7 @@ TextureLoader::TextureLoader(std::string imgFolder, std::vector<std::string> fil
     if (mRawData == nullptr) {
         return;
     }
-    memset(mRawData, 0x80, buffsize);
+    memset(mRawData, 0x00, buffsize);
     for (std::size_t i = 0; i < fileNames.size(); i++) {
         QImage pixmap((imgFolder + fileNames[i]).c_str());
         AddImage(&(texItems[i]), pixmap, mRawData, textureSize);
@@ -60,15 +65,15 @@ TextureLoader::TextureLoader(std::string imgFolder, std::vector<std::string> fil
 
 // parse compressed image into a texture buffer
 bool TextureLoader::AddImage(TextureItem* texItem,
-                               QImage& pixmap,
-                               unsigned int* buffPos,
-                               int stride)
+                             QImage& pixmap,
+                             unsigned int* buffPos,
+                             int stride)
 {
     int width = pixmap.width();
     int height = pixmap.height();
     buffPos += stride * texItem->ty + texItem->tx;
     for (int i = 0; i < height; i++) {
-        unsigned int* line = reinterpret_cast<unsigned int *>(pixmap.scanLine(i));
+        unsigned int* line = reinterpret_cast<unsigned int*>(pixmap.scanLine(i));
         for (int j = 0; j < width; j++) {
             buffPos[j] = line[j];
         }

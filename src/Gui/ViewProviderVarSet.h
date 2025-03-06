@@ -24,7 +24,7 @@
 #define GUI_ViewProviderVarSet_H
 
 #include "ViewProviderDocumentObject.h"
-#include "DlgAddPropertyVarSet.h"
+#include "Dialogs/DlgAddPropertyVarSet.h"
 
 namespace Gui {
 

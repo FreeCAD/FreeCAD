@@ -26,7 +26,7 @@
 
 name: FreeCAD master CI
 
-on: [workflow_dispatch, push, pull_request]
+on: [workflow_dispatch, push, pull_request, merge_group]
 
 concurrency:
   group: FC-CI-${{ github.head_ref || github.run_id }}
@@ -39,41 +39,23 @@ jobs:
     with:
       artifactBasename: Prepare-${{ github.run_id }}
 
-  MacOS_13_Conda_Apple:
+  Pixi:
     needs: [Prepare]
-    uses: ./.github/workflows/sub_buildMacOSCondaApple.yml
+    uses: ./.github/workflows/sub_buildPixi.yml
     with:
-      artifactBasename: MacOS_13_Conda_Apple-${{ github.run_id }}
+      artifactBasename: Pixi-${{ github.run_id }}
 
-#  MacOS_13_Conda_Intel:
-#    needs: [Prepare]
-#    uses: ./.github/workflows/sub_buildMacOSCondaIntel.yml
-#    with:
-#      artifactBasename: MacOS_13_Conda_Intel-${{ github.run_id }}
-
-  Ubuntu_20-04:
+  Ubuntu:
     needs: [Prepare]
-    uses: ./.github/workflows/sub_buildUbuntu2004.yml
+    uses: ./.github/workflows/sub_buildUbuntu.yml
     with:
-      artifactBasename: Ubuntu_20-04-${{ github.run_id }}
-
-  Ubuntu_22-04_Conda:
-    needs: [Prepare]
-    uses: ./.github/workflows/sub_buildUbuntu2204Conda.yml
-    with:
-      artifactBasename: Ubuntu_22-04_Conda-${{ github.run_id }}
+      artifactBasename: Ubuntu-${{ github.run_id }}
 
   Windows:
     needs: [Prepare]
     uses: ./.github/workflows/sub_buildWindows.yml
     with:
       artifactBasename: Windows-${{ github.run_id }}
-
-  Windows_Conda:
-    needs: [Prepare]
-    uses: ./.github/workflows/sub_buildWindowsConda.yml
-    with:
-      artifactBasename: Windows_Conda-${{ github.run_id }}
 
   Lint:
     needs: [Prepare]
@@ -87,12 +69,9 @@ jobs:
   WrapUp:
     needs: [
         Prepare,
-        MacOS_13_Conda_Apple,
-        # MacOS_13_Conda_Intel,
-        Ubuntu_20-04,
-        Ubuntu_22-04_Conda,
+        Pixi,
+        Ubuntu,
         Windows,
-        Windows_Conda,
         Lint
       ]
     if: always()

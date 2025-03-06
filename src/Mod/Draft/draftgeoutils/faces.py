@@ -110,7 +110,7 @@ isCoplanar = is_coplanar
 
 
 def bind(w1, w2, per_segment=False):
-    """Bind 2 wires by their endpoints and returns a face.
+    """Bind 2 wires by their endpoints and returns a face / compound of faces.
 
     If per_segment is True and the wires have the same number of edges, the
     wires are processed per segment: a separate face is created for each pair
@@ -138,13 +138,62 @@ def bind(w1, w2, per_segment=False):
             and len(w1.Edges) > 1
             and len(w1.Edges) == len(w2.Edges)):
         faces = []
+        faces_list = []
         for (edge1, edge2) in zip(w1.Edges, w2.Edges):
-            face = create_face(edge1, edge2)
-            if face is None:
-                return None
-            faces.append(face)
-        # return concatenate(faces[0].fuse(faces[1:])) # Also works.
-        return faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+            # Find touching edges due to ArchWall Align in opposite
+            # directions, and/or opposite edge orientations.
+            #
+            # w1 o-----o            w1 o-----o            w1 o-----o
+            #          | w1                  |                     |
+            # w2 +-----x-----o w1   w2 +-----+            w2 +-----+
+            #       w2 |                  w2 | w1               w2 | w1
+            #          +-----+ w2            o-----o w1            +-----+ w2
+            #                                |                     |
+            #                                +-----+ w2            o-----o w1
+            #
+            # TODO Maybe those edge pair should not be generated in offsetWire()
+            #      and separate wires should then be returned.
+
+            # If edges touch the Shape.section() compound will have 1 or 2 vertexes:
+            if edge1.section(edge2).Vertexes:
+                faces_list.append(faces)  # Break into separate list
+                faces = []  # Reset original faces variable
+                continue  # Skip the touching edge pair
+            else:
+                face = create_face(edge1, edge2)
+                if face is None:
+                    return None
+                faces.append(face)
+        # Usually there is last series of face after above 'for' routine,
+        # EXCEPT when the last edge pair touch, faces had been appended
+        # to faces_list, and reset faces =[]
+        #
+        # TODO Need fix further anything if there is a empty [] in faces_list ?
+        #
+        if faces_list and faces:
+            # if wires are closed, 1st & last series of faces might be connected
+            # except when
+            # 1) there are only 2 series, connecting would return invalid shape
+            # 2) 1st series of faces happens to be [], i.e. 1st edge pairs touch
+            #
+            if w1.isClosed() and w2.isClosed() \
+            and len(faces_list) > 1 and faces_list[0]:
+                faces_list[0].extend(faces)
+            else:
+                faces_list.append(faces)  # Break into separate list
+        if faces_list:
+            faces_fused_list = []
+            for faces in faces_list:
+                if len(faces) > 1 :
+                    faces_fused = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+                    faces_fused_list.append(faces_fused)
+                # faces might be empty list [], see above; skip if empty
+                elif faces:
+                    faces_fused_list.append(faces[0])  # Only 1 face
+            return Part.Compound(faces_fused_list)
+        else:
+            return faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+
     elif w1.isClosed() and w2.isClosed():
         d1 = w1.BoundBox.DiagonalLength
         d2 = w2.BoundBox.DiagonalLength

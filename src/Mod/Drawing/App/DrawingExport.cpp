@@ -133,7 +133,6 @@ TopoDS_Edge DrawingOutput::asCircle(const BRepAdaptor_Curve& c) const
             return mkEdge.Edge();
         }
     }
-
     return TopoDS_Edge();
 }
 
@@ -172,14 +171,7 @@ std::string SVGOutput::exportEdges(const TopoDS_Shape& input)
             printEllipse(adapt, i, result);
         }
         else if (adapt.GetType() == GeomAbs_BSplineCurve) {
-            //            TopoDS_Edge circle = asCircle(adapt);
-            //            if (circle.IsNull()) {
             printBSpline(adapt, i, result);
-            //            }
-            //            else {
-            //                BRepAdaptor_Curve adapt_circle(circle);
-            //                printCircle(adapt_circle, result);
-            //            }
         }
         else if (adapt.GetType() == GeomAbs_BezierCurve) {
             printBezier(adapt, i, result);
@@ -289,10 +281,8 @@ void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& ou
             else {
                 Standard_Failure::Raise("do it the generic way");
             }
-
             return;
         }
-
 
         gp_Pnt p1 = bezier->Pole(1);
         str << p1.X() << "," << p1.Y();
@@ -457,7 +447,6 @@ std::string DXFOutput::exportEdges(const TopoDS_Shape& input)
             printGeneric(adapt, i, result);
         }
     }
-
     return result.str();
 }
 
@@ -472,7 +461,6 @@ void DXFOutput::printHeader(std::ostream& out)
 void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
 {
     gp_Circ circ = c.Circle();
-    // const gp_Ax1& axis = c->Axis();
     const gp_Pnt& p = circ.Location();
     double r = circ.Radius();
     double f = c.FirstParameter();
@@ -488,8 +476,6 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
 
     // a full circle
     if (s.SquareDistance(e) < 0.001) {
-        // out << "<circle cx =\"" << p.X() << "\" cy =\""
-        //<< p.Y() << "\" r =\"" << r << "\" />";
         out << 0 << endl;
         out << "CIRCLE" << endl;
         out << 8 << endl;              // Group code for layer name
@@ -508,17 +494,9 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
         out << r << endl;   // Radius
     }
 
-
     // arc of circle
     else {
-        // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
-        /*char xar = '0'; // x-axis-rotation
-        char las = (l-f > D_PI) ? '1' : '0'; // large-arc-flag
-        char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
-        out << "<path d=\"M" << s.X() <<  " " << s.Y()
-            << " A" << r << " " << r << " "
-            << xar << " " << las << " " << swp << " "
-            << e.X() << " " << e.Y() << "\" />";*/
+
         double ax = s.X() - p.X();
         double ay = s.Y() - p.Y();
         double bx = e.X() - p.X();
@@ -526,7 +504,6 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
 
         double start_angle = atan2(ay, ax) * 180 / D_PI;
         double end_angle = atan2(by, bx) * 180 / D_PI;
-
 
         if (a > 0) {
             double temp = start_angle;
@@ -566,27 +543,8 @@ void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int /*id*/, std::ostrea
     double r2 = ellp.MinorRadius();
     double dp = ellp.Axis().Direction().Dot(gp_Vec(0, 0, 1));
 
-    // a full ellipse
-    /* if (s.SquareDistance(e) < 0.001) {
-         out << "<ellipse cx =\"" << p.X() << "\" cy =\""
-             << p.Y() << "\" rx =\"" << r1 << "\"  ry =\"" << r2 << "\"/>";
-     }
-     // arc of ellipse
-     else {
-         // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
-         gp_Dir xaxis = ellp.XAxis().Direction();
-         Standard_Real angle = xaxis.Angle(gp_Dir(1,0,0));
-         angle = Base::toDegrees<double>(angle);
-         char las = (l-f > D_PI) ? '1' : '0'; // large-arc-flag
-         char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
-         out << "<path d=\"M" << s.X() <<  " " << s.Y()
-             << " A" << r1 << " " << r2 << " "
-             << angle << " " << las << " " << swp << " "
-             << e.X() << " " << e.Y() << "\" />";
-     }*/
     gp_Dir xaxis = ellp.XAxis().Direction();
     double angle = xaxis.AngleWithRef(gp_Dir(1, 0, 0), gp_Dir(0, 0, -1));
-    // double rotation = Base::toDegrees<double>(angle);
 
     double start_angle = c.FirstParameter();
     double end_angle = c.LastParameter();
@@ -653,10 +611,6 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c,
             return;
         }
 
-        // GeomConvert_BSplineCurveToBezierCurve crt(spline);
-        // GeomConvert_BSplineCurveKnotSplitting crt(spline,0);
-        // Standard_Integer arcs = crt.NbArcs();
-        // Standard_Integer arcs = crt.NbSplits()-1;
         Standard_Integer m = 0;
         if (spline->IsPeriodic()) {
             m = spline->NbPoles() + 2 * spline->Degree() - spline->Multiplicity(1) + 2;
@@ -670,7 +624,6 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c,
         spline->KnotSequence(knotsequence);
         TColgp_Array1OfPnt poles(1, spline->NbPoles());
         spline->Poles(poles);
-
 
         str << 0 << endl
             << "SPLINE" << endl
@@ -707,7 +660,6 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c,
             }
         }
 
-        // str << "\" />";
         out << str.str();
     }
     catch (Standard_Failure&) {

@@ -29,7 +29,7 @@
 #include <App/FeaturePythonPyImp.h>
 #include <App/GroupExtension.h>
 #include <Gui/Application.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
 
@@ -53,7 +53,7 @@ ViewProviderFemPostPipeline::~ViewProviderFemPostPipeline() = default;
 std::vector<App::DocumentObject*> ViewProviderFemPostPipeline::claimChildren() const
 {
 
-    Fem::FemPostPipeline* pipeline = static_cast<Fem::FemPostPipeline*>(getObject());
+    Fem::FemPostPipeline* pipeline = getObject<Fem::FemPostPipeline>();
     std::vector<App::DocumentObject*> children;
 
     if (pipeline->Functions.getValue()) {
@@ -75,7 +75,7 @@ std::vector<App::DocumentObject*> ViewProviderFemPostPipeline::claimChildren3D()
 void ViewProviderFemPostPipeline::updateData(const App::Property* prop)
 {
     FemGui::ViewProviderFemPostObject::updateData(prop);
-    Fem::FemPostPipeline* pipeline = static_cast<Fem::FemPostPipeline*>(getObject());
+    Fem::FemPostPipeline* pipeline = getObject<Fem::FemPostPipeline>();
     if (prop == &pipeline->Functions) {
         updateFunctionSize();
     }
@@ -85,7 +85,7 @@ void ViewProviderFemPostPipeline::updateFunctionSize()
 {
 
     // we need to get the bounding box and set the function provider size
-    Fem::FemPostPipeline* obj = static_cast<Fem::FemPostPipeline*>(getObject());
+    Fem::FemPostPipeline* obj = getObject<Fem::FemPostPipeline>();
 
     if (!obj->Functions.getValue()
         || !obj->Functions.getValue()->isDerivedFrom(
@@ -178,7 +178,7 @@ void ViewProviderFemPostPipeline::updateColorBars()
 
 void ViewProviderFemPostPipeline::transformField(char* FieldName, double FieldFactor)
 {
-    Fem::FemPostPipeline* obj = static_cast<Fem::FemPostPipeline*>(getObject());
+    Fem::FemPostPipeline* obj = getObject<Fem::FemPostPipeline>();
 
     vtkSmartPointer<vtkDataObject> data = obj->Data.getValue();
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
@@ -240,9 +240,9 @@ void ViewProviderFemPostPipeline::scaleField(vtkDataSet* dset,
 
 PyObject* ViewProviderFemPostPipeline::getPyObject()
 {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new ViewProviderFemPostPipelinePy(this), true);
+    if (!pyViewObject) {
+        pyViewObject = new ViewProviderFemPostPipelinePy(this);
     }
-    return Py::new_reference_to(PythonObject);
+    pyViewObject->IncRef();
+    return pyViewObject;
 }

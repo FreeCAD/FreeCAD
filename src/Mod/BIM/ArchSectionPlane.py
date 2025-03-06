@@ -734,7 +734,7 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
     wp.align_to_point_and_axis_svg(Vector(0,0,0),cutplane.normalAt(0,0),0)
     p = wp.get_local_coords(markervec)
     orlength = FreeCAD.Vector(p.x,p.y,0).Length
-    marker = re.findall("<line x1=.*?stroke=\"\#ffffff\".*?\/>",svg)
+    marker = re.findall(r"<line x1=.*?stroke=\"\#ffffff\".*?\/>",svg)
     if marker:
         marker = marker[0].split("\"")
         x1 = float(marker[1])
@@ -750,21 +750,21 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
             scaledp1 = FreeCAD.Vector(p1.x*factor,p1.y*factor,0)
             trans = orig.sub(scaledp1)
         # remove marker
-        svg = re.sub("<line x1=.*?stroke=\"\#ffffff\".*?\/>","",svg,count=1)
+        svg = re.sub(r"<line x1=.*?stroke=\"\#ffffff\".*?\/>","",svg,count=1)
 
     # remove background rectangle
-    svg = re.sub("<path.*?>","",svg,count=1,flags=re.MULTILINE|re.DOTALL)
+    svg = re.sub(r"<path.*?>","",svg,count=1,flags=re.MULTILINE|re.DOTALL)
 
     # set face color to white
     if facecolor:
-        res = re.findall("fill:(.*?); stroke:(.*?);",svg)
+        res = re.findall(r"fill:(.*?); stroke:(.*?);",svg)
         pairs = []
         for pair in res:
             if (pair not in pairs) and (pair[0] == pair[1]) and(pair[0] not in ["#0a0a0a"]):
                 # coin seems to be rendering a lot of lines as thin triangles with the #0a0a0a color...
                 pairs.append(pair)
         for pair in pairs:
-            svg = re.sub("fill:"+pair[0]+"; stroke:"+pair[1]+";","fill:"+facecolor+"; stroke:"+facecolor+";",svg)
+            svg = re.sub(r"fill:"+pair[0]+"; stroke:"+pair[1]+";","fill:"+facecolor+"; stroke:"+facecolor+";",svg)
 
     # embed everything in a scale group and scale the viewport
     if factor:
@@ -778,9 +778,9 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
     QtCore.QTimer.singleShot(1,lambda: closeViewer(view_window_name))
 
     # strip svg tags (needed for TD Arch view)
-    svg = re.sub("<\?xml.*?>","",svg,flags=re.MULTILINE|re.DOTALL)
-    svg = re.sub("<svg.*?>","",svg,flags=re.MULTILINE|re.DOTALL)
-    svg = re.sub("<\/svg>","",svg,flags=re.MULTILINE|re.DOTALL)
+    svg = re.sub(r"<\?xml.*?>","",svg,flags=re.MULTILINE|re.DOTALL)
+    svg = re.sub(r"<svg.*?>","",svg,flags=re.MULTILINE|re.DOTALL)
+    svg = re.sub(r"<\/svg>","",svg,flags=re.MULTILINE|re.DOTALL)
 
     ISRENDERING = False
 
@@ -843,6 +843,10 @@ class _SectionPlane:
                 # old objects
                 l = obj.ViewObject.DisplaySize.Value
                 h = obj.ViewObject.DisplaySize.Value
+        if not l:
+            l = 1
+        if not h:
+            h = 1
         p = Part.makePlane(l,h,Vector(l/2,-h/2,0),Vector(0,0,-1))
         # make sure the normal direction is pointing outwards, you never know what OCC will decide...
         if p.normalAt(0,0).getAngle(obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))) > 1:
@@ -1018,6 +1022,10 @@ class _ViewProviderSectionPlane:
             if hasattr(vobj,"Transparency"):
                 self.mat2.transparency.setValue(vobj.Transparency/100.0)
         elif prop in ["DisplayLength","DisplayHeight","ArrowSize"]:
+            # for IFC objects: propagate to the object
+            if prop in ["DisplayLength","DisplayHeight"]:
+                if hasattr(vobj.Object.Proxy, "onChanged"):
+                    vobj.Object.Proxy.onChanged(vobj.Object, prop)
             if hasattr(vobj,"DisplayLength") and hasattr(vobj,"DisplayHeight"):
                 ld = vobj.DisplayLength.Value/2
                 hd = vobj.DisplayHeight.Value/2
@@ -1135,6 +1143,9 @@ class _ViewProviderSectionPlane:
         self.edit()
 
     def setupContextMenu(self, vobj, menu):
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
         QtCore.QObject.connect(actionEdit,

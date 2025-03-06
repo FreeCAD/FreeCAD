@@ -67,7 +67,7 @@ public:
                   const MeshKernel& cutMesh2,
                   MeshKernel& result,
                   OperationType opType,
-                  float minDistanceToPoint = 1e-5f);
+                  float minDistanceToPoint = 1e-5F);
 
 public:
     /** Cut this mesh with another one. The result is a list of polylines
@@ -182,7 +182,7 @@ private:
     std::vector<MeshGeomFacet> _newMeshFacets[2];
 
     /** Cut mesh 1 with mesh 2 */
-    void Cut(std::set<FacetIndex>& facetsNotCuttingEdge0, std::set<FacetIndex>& facetsCuttingEdge1);
+    void Cut(std::set<FacetIndex>& facetsCuttingEdge0, std::set<FacetIndex>& facetsCuttingEdge1);
     /** Trianglute each facets cut with its cutting points */
     void TriangulateMesh(const MeshKernel& cutMesh, int side);
     /** search facets for adding (with region growing) */

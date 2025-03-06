@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Contains a class to handle editing a person (from a Metadata standpoint). """
+"""Contains a class to handle editing a person (from a Metadata standpoint)."""
 
 import os
 from typing import Tuple  # Needed until Py 3.9, when tuple supports this directly

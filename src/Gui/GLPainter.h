@@ -38,10 +38,10 @@
 
 #include <Base/BaseClass.h>
 #include <FCGlobal.h>
-#include <QtOpenGL.h>
 #include <QPoint>
 
 class QPaintDevice;
+class QOpenGLWidget;
 
 namespace Gui {
 class View3DInventorViewer;
@@ -75,10 +75,10 @@ public:
     //@}
 
 private:
-    QtGLWidget* viewer{nullptr};
     GLfloat depthrange[2];
     GLdouble projectionmatrix[16];
     GLint width{0}, height{0};
+    QOpenGLWidget* viewer{nullptr};
     bool logicOp{false};
     bool lineStipple{false};
 };

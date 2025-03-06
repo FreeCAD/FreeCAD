@@ -29,11 +29,14 @@
 # include <QApplication>
 # include <QContextMenuEvent>
 # include <QCursor>
+# include <QDir>
+# include <QFileInfo>
 # include <QHeaderView>
 # include <QMenu>
 # include <QMessageBox>
 # include <QPainter>
 # include <QPixmap>
+# include <QProcess>
 # include <QThread>
 # include <QTimer>
 # include <QToolTip>
@@ -46,7 +49,7 @@
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/AutoTransaction.h>
@@ -97,6 +100,11 @@ static bool isVisibilityIconEnabled() {
     return TreeParams::getVisibilityIcon();
 }
 
+static bool isOnlyNameColumnDisplayed() {
+    return TreeParams::getHideInternalNames() 
+        && TreeParams::getHideColumn();
+}
+
 static bool isSelectionCheckBoxesEnabled() {
     return TreeParams::getCheckBoxesSelection();
 }
@@ -104,7 +112,7 @@ static bool isSelectionCheckBoxesEnabled() {
 void TreeParams::onItemBackgroundChanged()
 {
     if (getItemBackground()) {
-        App::Color color;
+        Base::Color color;
         color.setPackedValue(getItemBackground());
         QColor col;
         col.setRedF(color.r);
@@ -434,7 +442,7 @@ TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
     artificial = new QTreeView(qobject_cast<QWidget*>(parent));
-    artificial->setObjectName(QString::fromLatin1("DocumentTreeItems"));
+    artificial->setObjectName(QStringLiteral("DocumentTreeItems"));
     artificial->setFixedSize(0, 0); // ensure that it does not render
 }
 
@@ -478,19 +486,18 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
     auto tree = static_cast<TreeWidget*>(parent());
     auto style = tree->style();
 
-    // If the second column is not shown, we'll trim the color background when
+    // If only the first column is shown, we'll trim the color background when
     // rendering as transparent overlay.
-
-    bool trimBG = TreeParams::getHideColumn() || TreeParams::getHideInternalNames();
+    bool trimColumnSize = isOnlyNameColumnDisplayed(); 
 
     if (index.column() == 0) {
         if (tree->testAttribute(Qt::WA_NoSystemBackground)
-                && (trimBG || (opt.backgroundBrush.style() == Qt::NoBrush
+                && (trimColumnSize || (opt.backgroundBrush.style() == Qt::NoBrush
                                 && _TreeItemBackground.style() != Qt::NoBrush)))
         {
             QRect rect = calculateItemRect(option);
 
-            if (trimBG && opt.backgroundBrush.style() == Qt::NoBrush) {
+            if (trimColumnSize && opt.backgroundBrush.style() == Qt::NoBrush) {
                 painter->fillRect(rect, _TreeItemBackground);
             } else if (!opt.state.testFlag(QStyle::State_Selected)) {
                 painter->fillRect(rect, _TreeItemBackground);
@@ -527,7 +534,7 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
         );
     }
 
-    if (TreeParams::getHideColumn()) {
+    if (isOnlyNameColumnDisplayed()) {
         option->rect = calculateItemRect(*option);
 
         // we need to extend this shape a bit, 3px on each side
@@ -535,6 +542,32 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
         option->rect.setWidth(option->rect.width() + 3 * 2);
     }
 }
+
+class DynamicQLineEdit : public ExpLineEdit
+{
+public:
+    DynamicQLineEdit(QWidget *parent = nullptr) : ExpLineEdit(parent) {}
+
+    QSize sizeHint() const override
+    {
+        QSize size = QLineEdit::sizeHint(); 
+        QFontMetrics fm(font());
+        int availableWidth = parentWidget()->width() - geometry().x(); // Calculate available width
+        int margin = 2 * (style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1)
+                    + 2 * style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing)
+                    + TreeParams::getItemBackgroundPadding();
+        size.setWidth(std::min(fm.horizontalAdvance(text()) + margin , availableWidth));
+        return size;
+    }
+
+    // resize on key presses
+    void keyPressEvent(QKeyEvent *event) override
+    {
+        ExpLineEdit::keyPressEvent(event);
+        setMinimumWidth(sizeHint().width());
+    }
+
+};
 
 QWidget* TreeWidgetItemDelegate::createEditor(
         QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
@@ -551,15 +584,15 @@ QWidget* TreeWidgetItemDelegate::createEditor(
     App::GetApplication().setActiveTransaction(str.str().c_str());
     FC_LOG("create editor transaction " << App::GetApplication().getActiveTransaction());
 
-    QLineEdit *editor;
+    DynamicQLineEdit *editor;
     if(TreeParams::getLabelExpression()) {
-        ExpLineEdit *le = new ExpLineEdit(parent);
+        DynamicQLineEdit *le = new DynamicQLineEdit(parent);
         le->setAutoApply(true);
         le->setFrame(false);
         le->bind(App::ObjectIdentifier(prop));
         editor = le;
     } else {
-        editor = new QLineEdit(parent);
+        editor = new DynamicQLineEdit(parent);
     }
     editor->setReadOnly(prop.isReadOnly());
     return editor;
@@ -590,7 +623,6 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
 
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
-    this->setDragDropMode(QTreeWidget::InternalMove);
     this->setColumnCount(3);
     this->setItemDelegate(new TreeWidgetItemDelegate(this));
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -653,6 +685,10 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->searchObjectsAction->setStatusTip(tr("Search for objects"));
     connect(this->searchObjectsAction, &QAction::triggered,
             this, &TreeWidget::onSearchObjects);
+
+    this->openFileLocationAction = new QAction(this);
+    connect(this->openFileLocationAction, &QAction::triggered,
+            this, &TreeWidget::onOpenFileLocation);
 
     //NOLINTBEGIN
     // Setup connections
@@ -718,6 +754,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     setColumnHidden(1, TreeParams::getHideColumn());
     setColumnHidden(2, TreeParams::getHideInternalNames());
     header()->setVisible(!TreeParams::getHideColumn() || !TreeParams::getHideInternalNames());
+    TreeParams::onFontSizeChanged();
 }
 
 TreeWidget::~TreeWidget()
@@ -1002,6 +1039,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 
         showHiddenAction->setChecked(docitem->showHidden());
         contextMenu.addAction(this->showHiddenAction);
+        contextMenu.addAction(this->openFileLocationAction);
         contextMenu.addAction(this->searchObjectsAction);
         contextMenu.addAction(this->closeDocAction);
         if (doc->testStatus(App::Document::PartialDoc))
@@ -1045,7 +1083,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
         contextMenu.addAction(this->toggleVisibilityInTreeAction);
 
         if (!acrossDocuments) { // is only sensible for selections within one document
-            if (objitem->object()->getObject()->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
+            if (objitem->object()->getObject()->isDerivedFrom<App::DocumentObjectGroup>())
                 contextMenu.addAction(this->createGroupAction);
             // if there are dependent objects in the selection, add context menu to add them to selection
             if (CheckForDependents())
@@ -1171,7 +1209,7 @@ void TreeWidget::onCreateGroup()
     if (this->contextItem->type() == DocumentType) {
         auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
-        QString cmd = QString::fromLatin1("App.getDocument(\"%1\").addObject"
+        QString cmd = QStringLiteral("App.getDocument(\"%1\").addObject"
             "(\"App::DocumentObjectGroup\",\"Group\").Label=\"%2\"")
             .arg(QString::fromLatin1(doc->getName()), name);
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
@@ -1181,7 +1219,7 @@ void TreeWidget::onCreateGroup()
             (this->contextItem);
         App::DocumentObject* obj = objitem->object()->getObject();
         App::Document* doc = obj->getDocument();
-        QString cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\")"
+        QString cmd = QStringLiteral("App.getDocument(\"%1\").getObject(\"%2\")"
             ".newObject(\"App::DocumentObjectGroup\",\"Group\").Label=\"%3\"")
             .arg(QString::fromLatin1(doc->getName()),
                 QString::fromLatin1(obj->getNameInDocument()),
@@ -1652,31 +1690,12 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
             return;
         }
     }
-    else if (event->key() == Qt::Key_Left) {
-        auto index = currentIndex();
-        if (index.column() == 1) {
-            setCurrentIndex(model()->index(index.row(), 0, index.parent()));
-            event->accept();
-            return;
-        }
-    }
-    else if (event->key() == Qt::Key_Right) {
-        auto index = currentIndex();
-        if (index.column() == 0) {
-            setCurrentIndex(model()->index(index.row(), 1, index.parent()));
-            event->accept();
-            return;
-        }
-    }
+
     QTreeWidget::keyPressEvent(event);
 }
 
 void TreeWidget::mousePressEvent(QMouseEvent* event)
 {
-    QTreeWidget::mousePressEvent(event);
-
-    // Handle the visibility icon after the normal event processing to not interfere with
-    // the selection logic.
     if (isVisibilityIconEnabled()) {
         QTreeWidgetItem* item = itemAt(event->pos());
         if (item && item->type() == TreeWidget::ObjectType && event->button() == Qt::LeftButton) {
@@ -1725,11 +1744,14 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
                     obj->Visibility.setValue(!visible);
                 }
 
-                event->setAccepted(true);
+                // to prevent selection of the item via QTreeWidget::mousePressEvent
+                event->accept();
                 return;
             }
         }
     }
+
+    QTreeWidget::mousePressEvent(event);
 }
 
 void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
@@ -2028,7 +2050,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
                 if (da == Qt::MoveAction) {
                     // Check if item can be dragged from his parent
                     auto parentItem = item->getParentItem();
-                    if (parentItem && !(parentItem->object()->canDragObjects() && parentItem->object()->canDragObject(item->object()->getObject())))
+                    if (parentItem && !(parentItem->object()->canDragObjects() && parentItem->object()->canDragObject(obj)))
                     {
                         TREE_TRACE("Cannot drag object");
                         event->ignore();
@@ -2118,13 +2140,20 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
     infos.reserve(items.size());
     bool syncPlacement = TreeParams::getSyncPlacement();
 
+    App::AutoTransaction committer(
+        da == Qt::LinkAction ? "Link object" :
+        da == Qt::CopyAction ? "Copy object" : "Move object");
+
     // check if items can be dragged
     for (auto& v : items) {
         auto item = v.first;
         auto obj = item->object()->getObject();
         auto parentItem = item->getParentItem();
         if (parentItem) {
-            if (!parentItem->object()->canDragObjects() || !parentItem->object()->canDragObject(obj)) {
+            bool allParentsOK = canDragFromParents(parentItem, obj, nullptr);
+
+            if (!allParentsOK || !parentItem->object()->canDragObjects() || !parentItem->object()->canDragObject(obj)) {
+                committer.close(true);
                 TREE_ERR("'" << obj->getFullName() << "' cannot be dragged out of '" << parentItem->object()->getObject()->getFullName() << "'");
                 return false;
             }
@@ -2163,9 +2192,6 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
 
     // Open command
     auto manager = Application::Instance->macroManager();
-    App::AutoTransaction committer(
-        da == Qt::LinkAction ? "Link object" :
-        da == Qt::CopyAction ? "Copy object" : "Move object");
     try {
         std::vector<App::DocumentObject*> droppedObjs;
         for (auto& info : infos) {
@@ -2352,6 +2378,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         }
     }
 
+    App::DocumentObject* targetObj = targetItemObj->object()->getObject();
     std::ostringstream targetSubname;
     App::DocumentObject* targetParent = nullptr;
     targetItemObj->getSubName(targetSubname, targetParent);
@@ -2362,9 +2389,12 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         Selection().addSelection(targetParent->getDocument()->getName(), targetParent->getNameInDocument(), targetSubname.str().c_str());
     }
     else {
-        targetParent = targetItemObj->object()->getObject();
+        targetParent = targetObj;
         Selection().addSelection(targetParent->getDocument()->getName(), targetParent->getNameInDocument());
     }
+
+    // Open command
+    App::AutoTransaction committer("Drop object");
 
     bool syncPlacement = TreeParams::getSyncPlacement() && targetItemObj->isGroup();
     bool setSelection = true;
@@ -2378,8 +2408,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         infos.emplace_back();
         auto& info = infos.back();
         auto item = v.first;
-        Gui::ViewProviderDocumentObject* vpc = item->object();
-        App::DocumentObject* obj = vpc->getObject();
+        App::DocumentObject* obj = item->object()->getObject();
 
         std::ostringstream str;
         App::DocumentObject* topParent = nullptr;
@@ -2399,21 +2428,25 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         info.subs.swap(v.second);
 
         // check if items can be dragged
-        if (da == Qt::MoveAction &&
-            item->myOwner == targetItemObj->myOwner &&
-            vp->canDragAndDropObject(item->object()->getObject()))
-        {
-            // check if items can be dragged
+        if (da == Qt::MoveAction && item->myOwner == targetItemObj->myOwner && vp->canDragAndDropObject(obj)) {
             auto parentItem = item->getParentItem();
-            if (!parentItem)
+            if (!parentItem) {
                 info.dragging = true;
-            else if (parentItem->object()->canDragObjects()
-                && parentItem->object()->canDragObject(item->object()->getObject()))
-            {
-                info.dragging = true;
-                auto vpp = parentItem->object();
-                info.parent = vpp->getObject()->getNameInDocument();
-                info.parentDoc = vpp->getObject()->getDocument()->getName();
+            }
+            else {
+
+                bool allParentsOK = canDragFromParents(parentItem, obj, targetObj);
+
+                if (allParentsOK) {
+                    auto vpp = parentItem->object();
+                    info.dragging = true;
+                    info.parent = vpp->getObject()->getNameInDocument();
+                    info.parentDoc = vpp->getObject()->getDocument()->getName();
+                }
+                else {
+                    committer.close(true);
+                    return false;
+                }
             }
         }
 
@@ -2422,11 +2455,13 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         {
             if (event->possibleActions() & Qt::LinkAction) {
                 if (items.size() > 1) {
+                    committer.close(true);
                     TREE_TRACE("Cannot replace with more than one object");
                     return false;
                 }
                 auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
                 if ((!ext || !ext->getLinkedObjectProperty()) && !targetItemObj->getParentItem()) {
+                    committer.close(true);
                     TREE_TRACE("Cannot replace without parent");
                     return false;
                 }
@@ -2435,11 +2470,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         }
     }
 
-    // Open command
-    App::AutoTransaction committer("Drop object");
     try {
-        App::DocumentObject* targetObj = targetItemObj->object()->getObject();
-
         std::set<App::DocumentObject*> inList;
         auto parentObj = targetObj;
         if (da == Qt::LinkAction && targetItemObj->getParentItem()) {
@@ -2671,6 +2702,21 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
     return touched;
 }
 
+bool TreeWidget::canDragFromParents(DocumentObjectItem* parentItem, App::DocumentObject* obj, App::DocumentObject* target)
+{
+    // We query all the parents recursively. (for cases like assembly/group/part)
+    bool allParentsOK = true;
+    while (parentItem) {
+        if (!parentItem->object()->canDragObjectToTarget(obj, target)) {
+            allParentsOK = false;
+            break;
+        }
+        parentItem = parentItem->getParentItem();
+    }
+
+    return allParentsOK;
+}
+
 void TreeWidget::dropEvent(QDropEvent* event)
 {
     //FIXME: This should actually be done inside dropMimeData
@@ -2838,6 +2884,39 @@ void TreeWidget::onCloseDoc()
     }
 }
 
+void TreeWidget::onOpenFileLocation()
+{
+    auto docitem = static_cast<DocumentItem*>(this->contextItem);
+    App::Document* doc = docitem->document()->getDocument();
+    std::string name = doc->FileName.getValue();
+
+    const QFileInfo fileInfo(QString::fromStdString(name));
+    if (!fileInfo.exists()) {
+        QMessageBox::warning(this, tr("Error"), tr("File does not exist."));
+        return;
+    }
+
+    const QString filePath = fileInfo.canonicalPath();
+    bool success = false;
+
+#if defined(Q_OS_MAC)
+    success = QProcess::startDetached(QStringLiteral("open"), {filePath});
+#elif defined(Q_OS_WIN)
+    QStringList param;
+    if (!fileInfo.isDir()) {
+        param += QStringLiteral("/select,");
+    }
+    param += QDir::toNativeSeparators(filePath);
+    success = QProcess::startDetached(QStringLiteral("explorer.exe"), param);
+#else 
+    success = QProcess::startDetached(QStringLiteral("xdg-open"), {filePath});
+#endif
+
+    if (!success) {
+        QMessageBox::warning(this, tr("Error"), tr("Failed to open directory."));
+    }
+}
+
 void TreeWidget::slotRenameDocument(const Gui::Document& Doc)
 {
     // do nothing here
@@ -2847,7 +2926,7 @@ void TreeWidget::slotRenameDocument(const Gui::Document& Doc)
 void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::Property& prop)
 {
     if (!App::GetApplication().isRestoring()
-        && vp.isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+        && vp.isDerivedFrom<ViewProviderDocumentObject>())
     {
         const auto& vpd = static_cast<const ViewProviderDocumentObject&>(vp);
         if (&prop == &vpd.ShowInTree) {
@@ -2959,8 +3038,12 @@ void TreeWidget::onUpdateStatus()
 
     std::vector<App::DocumentObject*> errors;
 
+    // Use a local copy in case of nested calls
+    auto localNewObjects = NewObjects;
+    NewObjects.clear();
+
     // Checking for new objects
-    for (auto& v : NewObjects) {
+    for (auto& v : localNewObjects) {
         auto doc = App::GetApplication().getDocument(v.first.c_str());
         if (!doc)
             continue;
@@ -2983,10 +3066,13 @@ void TreeWidget::onUpdateStatus()
                 docItem->createNewItem(*vpd);
         }
     }
-    NewObjects.clear();
+
+    // Use a local copy in case of nested calls
+    auto localChangedObjects = ChangedObjects;
+    ChangedObjects.clear();
 
     // Update children of changed objects
-    for (auto& v : ChangedObjects) {
+    for (auto& v : localChangedObjects) {
         auto obj = v.first;
 
         auto iter = ObjectTable.find(obj);
@@ -3012,7 +3098,6 @@ void TreeWidget::onUpdateStatus()
 
         updateChildren(iter->first, iter->second, v.second.test(CS_Output), false);
     }
-    ChangedObjects.clear();
 
     FC_LOG("update item status");
     TimingInit();
@@ -3271,7 +3356,7 @@ void TreeWidget::setupText()
     this->toggleVisibilityInTreeAction->setText(tr("Toggle visibility in tree view"));
     this->toggleVisibilityInTreeAction->setStatusTip(tr("Toggles the visibility of selected items in the tree view"));
 
-    this->createGroupAction->setText(tr("Create group..."));
+    this->createGroupAction->setText(tr("Create group"));
     this->createGroupAction->setStatusTip(tr("Create a group"));
 
     this->relabelObjectAction->setText(tr("Rename"));
@@ -3285,6 +3370,14 @@ void TreeWidget::setupText()
 
     this->closeDocAction->setText(tr("Close document"));
     this->closeDocAction->setStatusTip(tr("Close the document"));
+
+#ifdef Q_OS_MAC
+    this->openFileLocationAction->setText(tr("Reveal in Finder"));
+    this->openFileLocationAction->setStatusTip(tr("Reveal the current file location in Finder"));
+#else
+    this->openFileLocationAction->setText(tr("Open File Location"));
+    this->openFileLocationAction->setStatusTip(tr("Open the current file location"));
+#endif
 
     this->reloadDocAction->setText(tr("Reload document"));
     this->reloadDocAction->setStatusTip(tr("Reload a partially loaded document"));
@@ -3767,8 +3860,8 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/TreeView");
-    unsigned long col = hGrp->GetUnsigned("TreeEditColor", 4294902015);
-    QColor color(App::Color::fromPackedRGB<QColor>(col));
+    unsigned long col = hGrp->GetUnsigned("TreeEditColor", 563609599);
+    QColor color(Base::Color::fromPackedRGB<QColor>(col));
 
     if (!getTree()->editingItem) {
         auto doc = Application::Instance->editDocument();
@@ -5210,8 +5303,8 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
             f.setUnderline(underlined);
             f.setOverline(overlined);
 
-            unsigned long col = hGrp->GetUnsigned("TreeActiveColor", 3873898495);
-            color = App::Color::fromPackedRGB<QColor>(col);
+            unsigned long col = hGrp->GetUnsigned("TreeActiveColor", 1538528255);
+            color = Base::Color::fromPackedRGB<QColor>(col);
         }
         else {
             f.setBold(false);
@@ -5394,9 +5487,10 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
 
         if (currentStatus & Status::External) {
             static QPixmap pxExternal;
+            int px = 12 * getMainWindow()->devicePixelRatioF();
             if (pxExternal.isNull()) {
                 pxExternal = Gui::BitmapFactory().pixmapFromSvg("LinkOverlay",
-                                                              QSize(24, 24));
+                                                              QSize(px, px));
             }
             pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
             pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);

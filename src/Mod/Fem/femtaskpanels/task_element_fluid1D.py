@@ -40,16 +40,16 @@ from FreeCAD import Units
 
 from femguiutils import selection_widgets
 from femobjects import element_fluid1D
+from . import base_femtaskpanel
 
 
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     """
     The TaskPanel for editing References property of ElementFluid1D objects
     """
 
     def __init__(self, obj):
-
-        self.obj = obj
+        super().__init__(obj)
 
         # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(
@@ -242,18 +242,12 @@ class _TaskPanel:
     def accept(self):
         self.set_fluidsection_props()
         self.obj.References = self.selectionWidget.references
-        self.recompute_and_set_back_all()
-        return True
+        self.selectionWidget.finish_selection()
+        return super().accept()
 
     def reject(self):
-        self.recompute_and_set_back_all()
-        return True
-
-    def recompute_and_set_back_all(self):
-        doc = FreeCADGui.getDocument(self.obj.Document)
-        doc.Document.recompute()
         self.selectionWidget.finish_selection()
-        doc.resetEdit()
+        return super().reject()
 
     def get_fluidsection_props(self):
         self.SectionType = self.obj.SectionType

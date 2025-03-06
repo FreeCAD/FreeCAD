@@ -30,6 +30,7 @@
 #endif
 
 #include <App/Document.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
 #include <App/Part.h>
 #include <Base/Console.h>
@@ -94,9 +95,6 @@ CmdPartDesignBody::CmdPartDesignBody()
 void CmdPartDesignBody::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    // if user decides for old-style workflow then abort the command
-    if (PartDesignGui::assureLegacyWorkflow(getDocument()))
-        return;
 
     App::Part *actPart = PartDesignGui::getActivePart ();
     App::Part* partOfBaseFeature = nullptr;
@@ -136,13 +134,13 @@ void CmdPartDesignBody::activated(int iMsg)
                                          .arg(QString::fromUtf8(baseFeature->Label.getValue())));
                     baseFeature = nullptr;
                 }
-                else if (baseFeature->isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+                else if (baseFeature->isDerivedFrom<Sketcher::SketchObject>()) {
                     // Add sketcher to the body's group property
                     addtogroup = true;
                 }
                 // if a standard Part feature (not a PartDesign feature) is selected then check
                 // the number of solids/shells
-                else if (!baseFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+                else if (!baseFeature->isDerivedFrom<PartDesign::Feature>()) {
                     const TopoDS_Shape& shape = static_cast<Part::Feature*>(baseFeature)->Shape.getValue();
                     if (!shape.IsNull()) {
                         int numSolids = 0;
@@ -300,7 +298,7 @@ void CmdPartDesignBody::activated(int iMsg)
 
 bool CmdPartDesignBody::isActive()
 {
-    return hasActiveDocument() && !PartDesignGui::isLegacyWorkflow ( getDocument () );
+    return hasActiveDocument();
 }
 
 //===========================================================================
@@ -431,7 +429,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
     }
 
     // do the actual migration
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy part design features to Bodies"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to Bodies"));
 
     for ( auto chainIt = featureChains.begin(); !featureChains.empty();
             featureChains.erase (chainIt), chainIt = featureChains.begin () ) {
@@ -546,7 +544,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
 
     if ( features.size() == 1 ) {
         selFeature = features.front();
-        if ( selFeature->getTypeId().isDerivedFrom ( PartDesign::Body::getClassTypeId() ) ) {
+        if ( selFeature->isDerivedFrom<PartDesign::Body>() ) {
             body = static_cast<PartDesign::Body *> ( selFeature );
         } else {
             body = PartDesignGui::getBodyFor ( selFeature, /* messageIfNot =*/ false );
@@ -608,7 +606,7 @@ CmdPartDesignDuplicateSelection::CmdPartDesignDuplicateSelection()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Duplicate selected object");
+    sMenuText       = QT_TR_NOOP("Duplicate selected &object");
     sToolTipText    = QT_TR_NOOP("Duplicates the selected object and adds it to the active body");
     sWhatsThis      = "PartDesign_DuplicateSelection";
     sStatusTip      = sToolTipText;
@@ -635,8 +633,12 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
 
         for (auto feature : newFeatures) {
             if (PartDesign::Body::isAllowed(feature)) {
-                FCMD_OBJ_CMD(pcActiveBody,"addObject(" << getObjectCmd(feature) << ")");
-                FCMD_OBJ_HIDE(feature);
+                // if feature already is in a body, then we don't put it into the active body issue #6278
+                auto body = App::GeoFeatureGroupExtension::getGroupOfObject(feature);
+                if (!body) {
+                    FCMD_OBJ_CMD(pcActiveBody,"addObject(" << getObjectCmd(feature) << ")");
+                    FCMD_OBJ_HIDE(feature);
+                }
             }
         }
 
@@ -821,7 +823,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
 
 bool CmdPartDesignMoveFeature::isActive()
 {
-    return hasActiveDocument () && !PartDesignGui::isLegacyWorkflow ( getDocument () );
+    return hasActiveDocument();
 }
 
 DEF_STD_CMD_A(CmdPartDesignMoveFeatureInTree)
@@ -916,7 +918,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     std::vector<App::DocumentObject*> bodyFeatures;
     std::map<App::DocumentObject*,size_t> orders;
     for(auto obj : body->Group.getValues()) {
-        if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        if(obj->isDerivedFrom<PartDesign::Feature>()) {
             orders.emplace(obj,bodyFeatures.size());
             bodyFeatures.push_back(obj);
         }
@@ -926,7 +928,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     for(size_t i=0;i<bodyFeatures.size();++i) {
         auto feat = bodyFeatures[i];
         for(auto obj : feat->getOutList()) {
-            if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+            if(obj->isDerivedFrom<PartDesign::Feature>())
                 continue;
             for(auto dep : App::Document::getDependencyList({obj})) {
                 auto it = orders.find(dep);
@@ -954,7 +956,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     // user if they want the last object to be the new tip.
     // Only do this for features that can hold a tip (not for e.g. datums)
     if ( lastObject != target && body->Tip.getValue() == target
-        && lastObject->isDerivedFrom(PartDesign::Feature::getClassTypeId()) ) {
+        && lastObject->isDerivedFrom<PartDesign::Feature>() ) {
         QMessageBox msgBox(Gui::getMainWindow());
         msgBox.setIcon(QMessageBox::Question);
         msgBox.setWindowTitle(qApp->translate("PartDesign_MoveFeatureInTree", "Move tip"));
@@ -972,7 +974,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
 
 bool CmdPartDesignMoveFeatureInTree::isActive()
 {
-    return hasActiveDocument () && !PartDesignGui::isLegacyWorkflow ( getDocument () );
+    return hasActiveDocument();
 }
 
 

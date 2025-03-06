@@ -67,25 +67,19 @@ def write_constraint(f, femobj, disp_obj, ccxwriter):
     # floats read from ccx should use {:.13G}, see comment in writer module
 
     f.write("*BOUNDARY\n")
-    if disp_obj.xFix:
-        f.write(f"{disp_obj.Name},1\n")
-    elif not disp_obj.xFree:
+    if not disp_obj.xFree:
         f.write(
             "{},1,1,{}\n".format(
                 disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.xDisplacement.getValueAs("mm"))
             )
         )
-    if disp_obj.yFix:
-        f.write(f"{disp_obj.Name},2\n")
-    elif not disp_obj.yFree:
+    if not disp_obj.yFree:
         f.write(
             "{},2,2,{}\n".format(
                 disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.yDisplacement.getValueAs("mm"))
             )
         )
-    if disp_obj.zFix:
-        f.write(f"{disp_obj.Name},3\n")
-    elif not disp_obj.zFree:
+    if not disp_obj.zFree:
         f.write(
             "{},3,3,{}\n".format(
                 disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.zDisplacement.getValueAs("mm"))
@@ -93,25 +87,19 @@ def write_constraint(f, femobj, disp_obj, ccxwriter):
         )
 
     if ccxwriter.member.geos_beamsection or ccxwriter.member.geos_shellthickness:
-        if disp_obj.rotxFix:
-            f.write(f"{disp_obj.Name},4\n")
-        elif not disp_obj.rotxFree:
+        if not disp_obj.rotxFree:
             f.write(
                 "{},4,4,{}\n".format(
                     disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.xRotation.getValueAs("deg"))
                 )
             )
-        if disp_obj.rotyFix:
-            f.write(f"{disp_obj.Name},5\n")
-        elif not disp_obj.rotyFree:
+        if not disp_obj.rotyFree:
             f.write(
                 "{},5,5,{}\n".format(
                     disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.yRotation.getValueAs("deg"))
                 )
             )
-        if disp_obj.rotzFix:
-            f.write(f"{disp_obj.Name},6\n")
-        elif not disp_obj.rotzFree:
+        if not disp_obj.rotzFree:
             f.write(
                 "{},6,6,{}\n".format(
                     disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.zRotation.getValueAs("deg"))

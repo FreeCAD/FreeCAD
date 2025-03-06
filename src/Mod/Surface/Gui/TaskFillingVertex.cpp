@@ -27,15 +27,17 @@
 #endif
 
 #include <App/Document.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskFilling.h"
 #include "TaskFillingVertex.h"
+
 #include "ui_TaskFillingVertex.h"
 
 
@@ -65,11 +67,11 @@ public:
         if (pObj == editedObject) {
             return false;
         }
-        if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (!pObj->isDerivedFrom<Part::Feature>()) {
             return false;
         }
 
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
 
@@ -125,7 +127,7 @@ FillingVertexPanel::FillingVertexPanel(ViewProviderFilling* vp, Surface::Filling
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QString::fromLatin1("Del"));
+    action->setShortcut(QStringLiteral("Del"));
     action->setShortcutContext(Qt::WidgetShortcut);
     ui->listFreeVertex->addAction(action);
     connect(action, &QAction::triggered, this, &FillingVertexPanel::onDeleteVertex);
@@ -175,8 +177,8 @@ void FillingVertexPanel::setEditedObject(Surface::Filling* obj)
         QListWidgetItem* item = new QListWidgetItem(ui->listFreeVertex);
         ui->listFreeVertex->addItem(item);
 
-        QString text = QString::fromLatin1("%1.%2").arg(QString::fromUtf8((*it)->Label.getValue()),
-                                                        QString::fromStdString(*jt));
+        QString text = QStringLiteral("%1.%2").arg(QString::fromUtf8((*it)->Label.getValue()),
+                                                   QString::fromStdString(*jt));
         item->setText(text);
 
         QList<QVariant> data;
@@ -287,9 +289,9 @@ void FillingVertexPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->listFreeVertex->addItem(item);
 
             Gui::SelectionObject sel(msg);
-            QString text = QString::fromLatin1("%1.%2").arg(
-                QString::fromUtf8(sel.getObject()->Label.getValue()),
-                QString::fromLatin1(msg.pSubName));
+            QString text =
+                QStringLiteral("%1.%2").arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
+                                            QString::fromLatin1(msg.pSubName));
             item->setText(text);
 
             QList<QVariant> data;

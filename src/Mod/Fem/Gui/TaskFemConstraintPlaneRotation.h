@@ -53,7 +53,6 @@ private Q_SLOTS:
     void removeFromSelection();
 
 protected:
-    bool event(QEvent* e) override;
     void changeEvent(QEvent* e) override;
 
 private:

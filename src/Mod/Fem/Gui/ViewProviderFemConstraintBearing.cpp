@@ -67,7 +67,7 @@ bool ViewProviderFemConstraintBearing::setEdit(int ModNum)
 void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    Fem::ConstraintBearing* pcConstraint = static_cast<Fem::ConstraintBearing*>(this->getObject());
+    Fem::ConstraintBearing* pcConstraint = this->getObject<Fem::ConstraintBearing>();
 
     if (prop == &pcConstraint->References) {
         Base::Console().Error("\n");  // enable a breakpoint here

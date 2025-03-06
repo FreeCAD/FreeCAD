@@ -17,9 +17,61 @@
    <item>
     <widget class="QGroupBox" name="groupBox_1">
      <property name="title">
-      <string>Texts</string>
+      <string>Annotations</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_1">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_DefaultAnnoScaleMultiplier">
+        <property name="text">
+         <string>Scale multiplier</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefDoubleSpinBox" name="spinBox_DefaultAnnoScaleMultiplier">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>The default annotation scale multiplier. This is the inverse of the scale set
+in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <double>1.0</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultAnnoScaleMultiplier</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <spacer name="horizontalSpacer_1">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Texts</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
        <widget class="QLabel" name="label_textfont">
         <property name="text">
@@ -87,7 +139,7 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
        </widget>
       </item>
       <item row="1" column="2">
-       <spacer name="horizontalSpacer_1">
+       <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -120,43 +172,13 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="label_DefaultAnnoScaleMultiplier">
-        <property name="text">
-         <string>Scale multiplier</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="Gui::PrefDoubleSpinBox" name="spinBox_DefaultAnnoScaleMultiplier">
-        <property name="toolTip">
-         <string>The default annotation scale multiplier. This is the inverse of the scale set
-in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
-        </property>
-        <property name="minimum">
-         <number>0</number>
-        </property>
-        <property name="maximum">
-         <number>10000</number>
-        </property>
-        <property name="value">
-         <double>1.0</double>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>DefaultAnnoScaleMultiplier</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
        <widget class="QLabel" name="label_DefaultTextColor">
         <property name="text">
          <string>Text color</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="3" column="1">
        <widget class="Gui::PrefColorButton" name="colorButton_DefaultTextColor">
         <property name="toolTip">
          <string>The default color for texts, dimension texts and label texts</string>
@@ -180,11 +202,11 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
       <string>Lines and arrows</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
+     <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0" colspan="3">
        <widget class="Gui::PrefCheckBox" name="checkBox_DimShowLine">
         <property name="toolTip">
@@ -234,7 +256,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
        </widget>
       </item>
       <item row="1" column="2">
-       <spacer name="horizontalSpacer_2">
+       <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -354,11 +376,11 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_3">
+    <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
       <string>Units</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_3">
+     <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0" colspan="3">
        <widget class="Gui::PrefCheckBox" name="checkBox_showUnit">
         <property name="toolTip">
@@ -406,7 +428,7 @@ or cm, leave blank to use the current unit defined in FreeCAD.</string>
        </widget>
       </item>
       <item row="1" column="2">
-       <spacer name="horizontalSpacer_3">
+       <spacer name="horizontalSpacer_4">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -471,11 +493,11 @@ or cm, leave blank to use the current unit defined in FreeCAD.</string>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_4">
+    <widget class="QGroupBox" name="groupBox_5">
      <property name="title">
       <string>Dimension details</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_4">
+     <layout class="QGridLayout" name="gridLayout_5">
       <item row="0" column="0">
        <widget class="QLabel" name="label_dimovershoot">
         <property name="text">
@@ -512,7 +534,7 @@ or cm, leave blank to use the current unit defined in FreeCAD.</string>
        </widget>
       </item>
       <item row="0" column="2">
-       <spacer name="horizontalSpacer_4">
+       <spacer name="horizontalSpacer_5">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -615,7 +637,7 @@ used for linear dimensions.</string>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_5">
+    <widget class="QGroupBox" name="groupBox_6">
      <property name="title">
       <string>ShapeStrings</string>
      </property>

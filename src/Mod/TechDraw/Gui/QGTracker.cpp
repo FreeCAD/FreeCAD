@@ -477,16 +477,13 @@ void QGTracker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 QColor QGTracker::getTrackerColor()
 {
-    App::Color trackColor = App::Color((uint32_t) Preferences::getPreferenceGroup("Tracker")->GetUnsigned("TrackerColor", 0xFF000000));
+    Base::Color trackColor = Base::Color((uint32_t) Preferences::getPreferenceGroup("Tracker")->GetUnsigned("TrackerColor", 0xFF000000));
     return PreferencesGui::getAccessibleQColor(trackColor.asValue<QColor>());
 }
 
 double QGTracker::getTrackerWeight()
 {
-    double result = 1.0;
-    result = Preferences::getPreferenceGroup("Tracker")->GetFloat("TrackerWeight", 4.0);
-
-    return result;
+    return Preferences::getPreferenceGroup("Tracker")->GetFloat("TrackerWeight", 4.0);
 }
 
 #include <Mod/TechDraw/Gui/moc_QGTracker.cpp>

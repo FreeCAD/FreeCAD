@@ -76,7 +76,7 @@ class CommandCreateBom:
             + "</p><p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateBom",
-                "The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the bom. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.",
+                "The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.",
             )
             + "</p><p>"
             + QT_TRANSLATE_NOOP(
@@ -324,11 +324,17 @@ class TaskAssemblyCreateBom(QtCore.QObject):
 
     def createBomObject(self):
         assembly = UtilsAssembly.activeAssembly()
+        Gui.addModule("UtilsAssembly")
         if assembly is not None:
-            bom_group = UtilsAssembly.getBomGroup(assembly)
-            self.bomObj = bom_group.newObject("Assembly::BomObject", "Bill of Materials")
+            commands = (
+                "assembly = UtilsAssembly.activeAssembly()\n"
+                "bom_group = UtilsAssembly.getBomGroup(assembly)\n"
+                'bomObj = bom_group.newObject("Assembly::BomObject", "Bill of Materials")'
+            )
         else:
-            self.bomObj = App.activeDocument().addObject("Assembly::BomObject", "Bill of Materials")
+            commands = 'bomObj = App.activeDocument().addObject("Assembly::BomObject", "Bill of Materials")'
+        Gui.doCommand(commands)
+        self.bomObj = Gui.doCommandEval("bomObj")
 
     def export(self):
         self.bomObj.recompute()
@@ -406,14 +412,26 @@ class TaskAssemblyCreateBom(QtCore.QObject):
             )
             + "\n"
         )
+        export_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Export:") + "</b>")
+        export_text = QtWidgets.QLabel(
+            " - "
+            + translate(
+                "Assembly",
+                "The exported file format can be customized in the Spreadsheet workbench preferences.",
+            )
+            + "\n"
+        )
 
         options_text.setWordWrap(True)
         columns_text.setWordWrap(True)
+        export_text.setWordWrap(True)
 
         layout.addWidget(options_title)
         layout.addWidget(options_text)
         layout.addWidget(columns_title)
         layout.addWidget(columns_text)
+        layout.addWidget(export_title)
+        layout.addWidget(export_text)
 
         help_dialog.setLayout(layout)
         help_dialog.setFixedWidth(500)

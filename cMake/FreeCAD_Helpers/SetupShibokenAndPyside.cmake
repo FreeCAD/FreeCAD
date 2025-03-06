@@ -37,6 +37,10 @@ macro(SetupShibokenAndPyside)
             message(STATUS "PYTHON_CONFIG_SUFFIX: ${PYTHON_CONFIG_SUFFIX}")
             find_package(Shiboken${SHIBOKEN_MAJOR_VERSION} QUIET)
         endif()
+
+        if(TARGET Shiboken6::libshiboken AND SHIBOKEN_MAJOR_VERSION EQUAL 6)
+            set_target_properties(Shiboken6::libshiboken PROPERTIES INTERFACE_COMPILE_DEFINITIONS "NDEBUG")
+        endif()
     endif()
 
     # pyside2 changed its cmake files, this is the dance we have
@@ -48,22 +52,25 @@ macro(SetupShibokenAndPyside)
     if(NOT SHIBOKEN_INCLUDE_DIR)
         find_pip_package(Shiboken${SHIBOKEN_MAJOR_VERSION})
         if (Shiboken${SHIBOKEN_MAJOR_VERSION}_FOUND)
-            set(SHIBOKEN_INCLUDE_DIR ${Shiboken${SHIBOKEN_MAJOR_VERSION}_INCLUDE_DIR})
-            set(SHIBOKEN_LIBRARY ${Shiboken${SHIBOKEN_MAJOR_VERSION}_LIBRARY})
+            set(SHIBOKEN_INCLUDE_DIR ${Shiboken${SHIBOKEN_MAJOR_VERSION}_INCLUDE_DIRS})
+            set(SHIBOKEN_LIBRARY ${Shiboken${SHIBOKEN_MAJOR_VERSION}_LIBRARIES})
         endif()
     endif()
 
     find_package(PySide${PYSIDE_MAJOR_VERSION} QUIET)
 
-    if(NOT PYSIDE_INCLUDE_DIR AND TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION})
-        get_property(PYSIDE_INCLUDE_DIR TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-    endif(NOT PYSIDE_INCLUDE_DIR AND TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION})
+    if(${PYSIDE_MAJOR_VERSION} EQUAL 2)
+        # Our internal FindPySide6.cmake file already provides these for PySide6
+        if(NOT PYSIDE_INCLUDE_DIR AND TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION})
+            get_property(PYSIDE_INCLUDE_DIR TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
+        endif(NOT PYSIDE_INCLUDE_DIR AND TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION})
 
-    if(NOT PYSIDE_INCLUDE_DIR)
-        find_pip_package(PySide${PYSIDE_MAJOR_VERSION})
-        if (PySide${PYSIDE_MAJOR_VERSION}_FOUND)
-            set(PYSIDE_INCLUDE_DIR ${PySide${PYSIDE_MAJOR_VERSION}_INCLUDE_DIR})
-            set(PYSIDE_LIBRARY ${PySide${PYSIDE_MAJOR_VERSION}_LIBRARY})
+        if(NOT PYSIDE_INCLUDE_DIR)
+            find_pip_package(PySide${PYSIDE_MAJOR_VERSION})
+            if (PySide${PYSIDE_MAJOR_VERSION}_FOUND)
+                set(PYSIDE_INCLUDE_DIR ${PySide${PYSIDE_MAJOR_VERSION}_INCLUDE_DIRS})
+                set(PYSIDE_LIBRARY ${PySide${PYSIDE_MAJOR_VERSION}_LIBRARIES})
+            endif()
         endif()
     endif()
 
@@ -124,7 +131,7 @@ macro(SetupShibokenAndPyside)
 
     # Now try to import the shiboken Python module and print a warning if it can't be loaded
     execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} -c "import shiboken${SHIBOKEN_MAJOR_VERSION}"
+        COMMAND ${Python3_EXECUTABLE} -c "import shiboken${SHIBOKEN_MAJOR_VERSION}"
         RESULT_VARIABLE FAILURE
         OUTPUT_VARIABLE PRINT_OUTPUT
     )
@@ -136,7 +143,7 @@ macro(SetupShibokenAndPyside)
                 "==================================\n")
     else()
         execute_process(
-            COMMAND ${PYTHON_EXECUTABLE} -c "import shiboken${SHIBOKEN_MAJOR_VERSION};print(shiboken${SHIBOKEN_MAJOR_VERSION}.__version__, end='')"
+            COMMAND ${Python3_EXECUTABLE} -c "import shiboken${SHIBOKEN_MAJOR_VERSION};print(shiboken${SHIBOKEN_MAJOR_VERSION}.__version__, end='')"
             RESULT_VARIABLE FAILURE
             OUTPUT_VARIABLE Shiboken_VERSION
         )
@@ -150,7 +157,7 @@ macro(SetupShibokenAndPyside)
 
     # Independent of the build option PySide modules must be loaded at runtime. Print a warning if it fails.
     execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} -c "import PySide${PYSIDE_MAJOR_VERSION};import os;print(os.path.dirname(PySide${PYSIDE_MAJOR_VERSION}.__file__), end='')"
+        COMMAND ${Python3_EXECUTABLE} -c "import PySide${PYSIDE_MAJOR_VERSION};import os;print(os.path.dirname(PySide${PYSIDE_MAJOR_VERSION}.__file__), end='')"
         RESULT_VARIABLE FAILURE
         OUTPUT_VARIABLE PRINT_OUTPUT
     )
@@ -161,7 +168,7 @@ macro(SetupShibokenAndPyside)
                 "================================\n")
     else()
         execute_process(
-            COMMAND ${PYTHON_EXECUTABLE} -c "import PySide${PYSIDE_MAJOR_VERSION};print(PySide${PYSIDE_MAJOR_VERSION}.__version__, end='')"
+            COMMAND ${Python3_EXECUTABLE} -c "import PySide${PYSIDE_MAJOR_VERSION};print(PySide${PYSIDE_MAJOR_VERSION}.__version__, end='')"
             RESULT_VARIABLE FAILURE
             OUTPUT_VARIABLE PySide_VERSION
         )

@@ -20,17 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef BASE_UNITSSCHEMAINTERNAL_H
 #define BASE_UNITSSCHEMAINTERNAL_H
 
-#include <QString>
 #include "UnitsSchema.h"
-
 
 namespace Base
 {
-
 
 /** The standard units schema
  *  Here is defined what internal (base) units FreeCAD uses.
@@ -40,12 +36,10 @@ namespace Base
 class UnitsSchemaInternal: public UnitsSchema
 {
 public:
-    QString
-    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) override;
+    std::string
+    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
 };
 
-
 }  // namespace Base
-
 
 #endif  // BASE_UNITSSCHEMAINTERNAL_H

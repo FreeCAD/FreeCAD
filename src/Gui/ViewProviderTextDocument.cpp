@@ -91,7 +91,7 @@ bool ViewProviderTextDocument::doubleClicked()
 
         getMainWindow()->addWindow(
             new TextDocumentEditorView {
-                static_cast<App::TextDocument*>(getObject()),
+                getObject<App::TextDocument>(),
                 editorWidget, getMainWindow()});
     }
     return true;

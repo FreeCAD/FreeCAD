@@ -86,7 +86,7 @@ void TaskPadParameters::updateUI(int index)
 
 void TaskPadParameters::onModeChanged(int index)
 {
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+   auto pcPad = getObject<PartDesign::Pad>();
 
     switch (static_cast<Mode>(index)) {
     case Mode::Dimension:
@@ -124,7 +124,7 @@ void TaskPadParameters::onModeChanged(int index)
 
 void TaskPadParameters::apply()
 {
-    QString facename = QString::fromLatin1("None");
+    QString facename = QStringLiteral("None");
     if (static_cast<Mode>(getMode()) == Mode::ToFace) {
         facename = getFaceName();
     }

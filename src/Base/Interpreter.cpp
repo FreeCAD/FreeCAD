@@ -557,7 +557,7 @@ const char* InterpreterSingleton::init(int argc, char* argv[])
             PyRun_SimpleString(
                 "# Check for virtualenv, and activate if present.\n"
                 "# See "
-                "https://virtualenv.pypa.io/en/latest/userguide/"
+                "https://virtualenv.pypa.io/en/latest/"
                 "#using-virtualenv-without-bin-python\n"
                 "import os\n"
                 "import sys\n"

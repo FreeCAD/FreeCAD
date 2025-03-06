@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: LGPL-2.0-or-later
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
  *   Copyright (c) 2024 wandererfan <wandererfan at gmail dot com>         *
@@ -37,8 +37,7 @@
 #include <App/DocumentObserver.h>
 #include <Base/Vector3D.h>
 #include <Base/Placement.h>
-
-class TopoDS_Shape;
+#include <TopoDS_Shape.hxx>
 
 namespace Part {
 
@@ -93,14 +92,14 @@ public:
 class PartExport MeasureDistanceInfo : public MeasureInfo {
 public:
     MeasureDistanceInfo() = default;
-    explicit MeasureDistanceInfo(bool val, const TopoDS_Shape* shp)  :
+    explicit MeasureDistanceInfo(bool val, const TopoDS_Shape& shp)  :
        MeasureInfo(val), shape(shp) {}
     ~MeasureDistanceInfo() override = default;
 
-    const TopoDS_Shape* getShape() { return shape; }
+    const TopoDS_Shape& getShape() { return shape; }
 
 private:
-    const TopoDS_Shape* shape{nullptr};
+    TopoDS_Shape shape;
 };
 
 class PartExport MeasureLengthInfo : public MeasureInfo {
@@ -139,7 +138,7 @@ public:
 //! callback registrations
 // TODO: is there more that one place that GeometryHandler is defined?
     using GeometryHandler = std::function<Part::MeasureInfoPtr (App::SubObjectT)>;
-    
+
 class PartExport CallbackRegistrationRecord
 {
 public:
@@ -147,7 +146,7 @@ public:
     CallbackRegistrationRecord(const std::string& module, const std::string& measureType, GeometryHandler callback) :
         m_module(module), m_measureType(measureType), m_callback(callback)
         { }
-    
+
     std::string m_module;
     std::string m_measureType;
     GeometryHandler m_callback;

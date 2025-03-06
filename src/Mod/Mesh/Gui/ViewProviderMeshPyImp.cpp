@@ -54,7 +54,7 @@ PyObject* ViewProviderMeshPy::setSelection(PyObject* args)
     selection.reserve(list.size());
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         Py::Long index(*it);
-        Mesh::FacetIndex value = static_cast<Mesh::FacetIndex>(index);
+        auto value = static_cast<Mesh::FacetIndex>(index);
         selection.push_back(value);
     }
 
@@ -75,7 +75,7 @@ PyObject* ViewProviderMeshPy::addSelection(PyObject* args)
     selection.reserve(list.size());
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         Py::Long index(*it);
-        Mesh::FacetIndex value = static_cast<Mesh::FacetIndex>(index);
+        auto value = static_cast<Mesh::FacetIndex>(index);
         selection.push_back(value);
     }
 
@@ -96,7 +96,7 @@ PyObject* ViewProviderMeshPy::removeSelection(PyObject* args)
     selection.reserve(list.size());
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         Py::Long index(*it);
-        Mesh::FacetIndex value = static_cast<Mesh::FacetIndex>(index);
+        auto value = static_cast<Mesh::FacetIndex>(index);
         selection.push_back(value);
     }
 

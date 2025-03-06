@@ -27,8 +27,6 @@ import os
 import subprocess
 from typing import List
 
-from freecad.utils import get_python_exe
-
 import addonmanager_freecad_interface as fci
 from addonmanager_pyside_interface import QObject, Signal, is_interruption_requested
 
@@ -46,7 +44,7 @@ class DependencyInstaller(QObject):
     no_python_exe = Signal()
     no_pip = Signal(str)  # Attempted command
     failure = Signal(str, str)  # Short message, detailed message
-    finished = Signal()
+    finished = Signal(bool)  # True if everything completed normally, otherwise false
 
     def __init__(
         self,
@@ -65,17 +63,25 @@ class DependencyInstaller(QObject):
         self.python_requires = python_requires
         self.python_optional = python_optional
         self.location = location
+        self.required_succeeded = False
+        self.finished_successfully = False
 
     def run(self):
         """Normally not called directly, but rather connected to the worker thread's started
         signal."""
-        if self._verify_pip():
+        try:
             if self.python_requires or self.python_optional:
-                if not is_interruption_requested():
-                    self._install_python_packages()
-        if not is_interruption_requested():
-            self._install_addons()
-        self.finished.emit()
+                if self._verify_pip():
+                    if not is_interruption_requested():
+                        self._install_python_packages()
+            else:
+                self.required_succeeded = True
+            if not is_interruption_requested():
+                self._install_addons()
+                self.finished_successfully = self.required_succeeded
+        except RuntimeError:
+            pass
+        self.finished.emit(self.finished_successfully)
 
     def _install_python_packages(self):
         """Install required and optional Python dependencies using pip."""
@@ -87,20 +93,20 @@ class DependencyInstaller(QObject):
         if not os.path.exists(vendor_path):
             os.makedirs(vendor_path)
 
-        self._install_required(vendor_path)
+        self.required_succeeded = self._install_required(vendor_path)
         self._install_optional(vendor_path)
 
     def _verify_pip(self) -> bool:
         """Ensure that pip is working -- returns True if it is, or False if not. Also emits the
         no_pip signal if pip cannot execute."""
-        python_exe = self._get_python()
-        if not python_exe:
-            return False
         try:
             proc = self._run_pip(["--version"])
             fci.Console.PrintMessage(proc.stdout + "\n")
+            if proc.returncode != 0:
+                return False
         except subprocess.CalledProcessError:
-            self.no_pip.emit(f"{python_exe} -m pip --version")
+            call = utils.create_pip_call([])
+            self.no_pip.emit(" ".join(call))
             return False
         return True
 
@@ -115,7 +121,6 @@ class DependencyInstaller(QObject):
                 proc = self._run_pip(
                     [
                         "install",
-                        "--disable-pip-version-check",
                         "--target",
                         vendor_path,
                         pymod,
@@ -144,7 +149,6 @@ class DependencyInstaller(QObject):
                 proc = self._run_pip(
                     [
                         "install",
-                        "--disable-pip-version-check",
                         "--target",
                         vendor_path,
                         pymod,
@@ -160,22 +164,13 @@ class DependencyInstaller(QObject):
                 )
 
     def _run_pip(self, args):
-        python_exe = self._get_python()
-        final_args = [python_exe, "-m", "pip"]
-        final_args.extend(args)
+        final_args = utils.create_pip_call(args)
         return self._subprocess_wrapper(final_args)
 
     @staticmethod
     def _subprocess_wrapper(args) -> subprocess.CompletedProcess:
         """Wrap subprocess call so test code can mock it."""
-        return utils.run_interruptable_subprocess(args)
-
-    def _get_python(self) -> str:
-        """Wrap Python access so test code can mock it."""
-        python_exe = get_python_exe()
-        if not python_exe:
-            self.no_python_exe.emit()
-        return python_exe
+        return utils.run_interruptable_subprocess(args, timeout_secs=120)
 
     def _install_addons(self):
         for addon in self.addons:

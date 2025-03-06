@@ -31,7 +31,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="128"/>
       <source>&amp;Help</source>
-      <translation>Помощь</translation>
+      <translation>&amp;Справка</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="131"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="154"/>
       <source>&amp;Close</source>
-      <translation>Закрыть</translation>
+      <translation>&amp;Закрыть</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="157"/>

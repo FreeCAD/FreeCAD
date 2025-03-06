@@ -44,9 +44,19 @@
                 <UserDocu>Add an edge by setting two node indices.</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="addEdgeList">
+            <Documentation>
+                <UserDocu>Add list of edges by list of node indices and list of nodes per edge.</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="addFace">
             <Documentation>
                 <UserDocu>Add a face by setting three node indices.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addFaceList">
+            <Documentation>
+                <UserDocu>Add list of faces by list of node indices and list of nodes per face.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="addQuad">
@@ -57,6 +67,11 @@
         <Methode Name="addVolume">
             <Documentation>
                 <UserDocu>Add a volume by setting an arbitrary number of node indices.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addVolumeList">
+            <Documentation>
+                <UserDocu>Add list of volumes by list of node indices and list of nodes per volume.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="read">

@@ -26,7 +26,7 @@
 #include <QToolBar>
 #include <QPointer>
 #include <QWidget>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <Base/Parameter.h>
 
 namespace Gui

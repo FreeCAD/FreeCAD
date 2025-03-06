@@ -39,6 +39,6 @@ class VPConstraintCentrif(view_base_femconstraint.VPBaseFemConstraint):
     """
 
     def setEdit(self, vobj, mode=0):
-        view_base_femconstraint.VPBaseFemConstraint.setEdit(
+        return view_base_femconstraint.VPBaseFemConstraint.setEdit(
             self, vobj, mode, task_constraint_centrif._TaskPanel
         )

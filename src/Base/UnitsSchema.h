@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef BASE_UNITSSCHEMA_H
 #define BASE_UNITSSCHEMA_H
 
-#include <QString>
-#include <Base/Quantity.h>
-
+#include <string>
 
 namespace Base
 {
+class Quantity;
 
 /** Units systems */
 enum class UnitSystem
@@ -73,10 +71,11 @@ public:
     {}
 
     /// This method translates the quantity in a string as the user may expect it.
-    virtual QString
-    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) = 0;
+    virtual std::string
+    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) = 0;
 
-    QString toLocale(const Base::Quantity& quant, double factor, const QString& unitString) const;
+    std::string
+    toLocale(const Base::Quantity& quant, double factor, const std::string& unitString) const;
 
     // return true if this schema uses multiple units for length (ex. Ft/In)
     virtual bool isMultiUnitLength() const
@@ -97,8 +96,6 @@ public:
     }
 };
 
-
 }  // namespace Base
-
 
 #endif  // BASE_UNITSSCHEMA_H

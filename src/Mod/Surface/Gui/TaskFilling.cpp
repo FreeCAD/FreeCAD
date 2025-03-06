@@ -35,18 +35,20 @@
 #endif
 
 #include <App/Document.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskFilling.h"
 #include "TaskFillingEdge.h"
 #include "TaskFillingVertex.h"
+
 #include "ui_TaskFilling.h"
 
 
@@ -72,7 +74,7 @@ bool ViewProviderFilling::setEdit(int ModNum)
         // object unsets and sets its edit mode without closing
         // the task panel
 
-        Surface::Filling* obj = static_cast<Surface::Filling*>(this->getObject());
+        Surface::Filling* obj = this->getObject<Surface::Filling>();
 
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
 
@@ -115,7 +117,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                 switch (type) {
                     case ViewProviderFilling::Vertex:
                         if (on) {
-                            std::vector<App::Color> colors;
+                            std::vector<Base::Color> colors;
                             TopTools_IndexedMapOfShape vMap;
                             TopExp::MapShapes(base->Shape.getValue(), TopAbs_VERTEX, vMap);
                             colors.resize(vMap.Extent(), svp->PointColor.getValue());
@@ -126,7 +128,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                                 std::size_t idx =
                                     static_cast<std::size_t>(std::stoi(jt.substr(6)) - 1);
                                 if (idx < colors.size()) {
-                                    colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
+                                    colors[idx] = Base::Color(1.0, 0.0, 1.0);  // magenta
                                 }
                             }
 
@@ -138,7 +140,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                         break;
                     case ViewProviderFilling::Edge:
                         if (on) {
-                            std::vector<App::Color> colors;
+                            std::vector<Base::Color> colors;
                             TopTools_IndexedMapOfShape eMap;
                             TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
                             colors.resize(eMap.Extent(), svp->LineColor.getValue());
@@ -149,7 +151,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                                 // check again that the index is in range because it's possible that
                                 // the sub-names are invalid
                                 if (idx < colors.size()) {
-                                    colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
+                                    colors[idx] = Base::Color(1.0, 0.0, 1.0);  // magenta
                                 }
                             }
 
@@ -173,7 +175,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                                 // the sub-names are invalid
                                 if (idx < materials.size()) {
                                     materials[idx].diffuseColor =
-                                        App::Color(1.0, 0.0, 1.0);  // magenta
+                                        Base::Color(1.0, 0.0, 1.0);  // magenta
                                 }
                             }
 
@@ -212,11 +214,11 @@ public:
         if (pObj == editedObject) {
             return false;
         }
-        if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (!pObj->isDerivedFrom<Part::Feature>()) {
             return false;
         }
 
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
 
@@ -284,7 +286,7 @@ FillingPanel::FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj)
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QString::fromLatin1("Del"));
+    action->setShortcut(QStringLiteral("Del"));
     action->setShortcutContext(Qt::WidgetShortcut);
     ui->listBoundary->addAction(action);
     connect(action, &QAction::triggered, this, &FillingPanel::onDeleteEdge);
@@ -341,9 +343,8 @@ void FillingPanel::setEditedObject(Surface::Filling* fea)
     App::DocumentObject* initFace = editedObject->InitialFace.getValue();
     const std::vector<std::string>& subList = editedObject->InitialFace.getSubValues();
     if (initFace && subList.size() == 1) {
-        QString text =
-            QString::fromLatin1("%1.%2").arg(QString::fromUtf8(initFace->Label.getValue()),
-                                             QString::fromStdString(subList.front()));
+        QString text = QStringLiteral("%1.%2").arg(QString::fromUtf8(initFace->Label.getValue()),
+                                                   QString::fromStdString(subList.front()));
         ui->lineInitFaceName->setText(text);
     }
 
@@ -375,8 +376,8 @@ void FillingPanel::setEditedObject(Surface::Filling* fea)
         QListWidgetItem* item = new QListWidgetItem(ui->listBoundary);
         ui->listBoundary->addItem(item);
 
-        QString text = QString::fromLatin1("%1.%2").arg(QString::fromUtf8(obj->Label.getValue()),
-                                                        QString::fromStdString(edge));
+        QString text = QStringLiteral("%1.%2").arg(QString::fromUtf8(obj->Label.getValue()),
+                                                   QString::fromStdString(edge));
         item->setText(text);
 
         // The user data field of a list widget item
@@ -605,17 +606,14 @@ void FillingPanel::onListBoundaryItemDoubleClicked(QListWidgetItem* item)
                     // fill up the combo boxes
                     modifyBoundary(true);
                     ui->comboBoxFaces->addItem(tr("None"), QByteArray(""));
-                    ui->comboBoxCont->addItem(QString::fromLatin1("C0"),
-                                              static_cast<int>(GeomAbs_C0));
-                    ui->comboBoxCont->addItem(QString::fromLatin1("G1"),
-                                              static_cast<int>(GeomAbs_G1));
-                    ui->comboBoxCont->addItem(QString::fromLatin1("G2"),
-                                              static_cast<int>(GeomAbs_G2));
+                    ui->comboBoxCont->addItem(QStringLiteral("C0"), static_cast<int>(GeomAbs_C0));
+                    ui->comboBoxCont->addItem(QStringLiteral("G1"), static_cast<int>(GeomAbs_G1));
+                    ui->comboBoxCont->addItem(QStringLiteral("G2"), static_cast<int>(GeomAbs_G2));
                     TopTools_ListIteratorOfListOfShape it(adj_faces);
                     for (; it.More(); it.Next()) {
                         const TopoDS_Shape& F = it.Value();
                         int index = faces.FindIndex(F);
-                        QString text = QString::fromLatin1("Face%1").arg(index);
+                        QString text = QStringLiteral("Face%1").arg(index);
                         ui->comboBoxFaces->addItem(text, text.toLatin1());
                     }
 
@@ -651,9 +649,9 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
         checkOpenCommand();
         if (selectionMode == InitFace) {
             Gui::SelectionObject sel(msg);
-            QString text = QString::fromLatin1("%1.%2").arg(
-                QString::fromUtf8(sel.getObject()->Label.getValue()),
-                QString::fromLatin1(msg.pSubName));
+            QString text =
+                QStringLiteral("%1.%2").arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
+                                            QString::fromLatin1(msg.pSubName));
             ui->lineInitFaceName->setText(text);
 
             std::vector<std::string> subList;
@@ -673,9 +671,9 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->listBoundary->addItem(item);
 
             Gui::SelectionObject sel(msg);
-            QString text = QString::fromLatin1("%1.%2").arg(
-                QString::fromUtf8(sel.getObject()->Label.getValue()),
-                QString::fromLatin1(msg.pSubName));
+            QString text =
+                QStringLiteral("%1.%2").arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
+                                            QString::fromLatin1(msg.pSubName));
             item->setText(text);
 
             QList<QVariant> data;

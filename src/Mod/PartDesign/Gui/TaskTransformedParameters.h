@@ -27,7 +27,7 @@
 #include <QComboBox>
 
 #include <Gui/DocumentObserver.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/PartDesign/Gui/EnumFlags.h>
@@ -178,6 +178,9 @@ protected:
      */
     PartDesign::Transformed* getObject() const;
 
+    template <class T>
+    T* getObject() const { return dynamic_cast<T*>(getObject()); }
+
     /// Get the sketch object of the first original either of the object associated with this
     /// feature or with the parent feature (MultiTransform mode)
     App::DocumentObject* getSketchObject() const;
@@ -294,11 +297,6 @@ class TaskDlgTransformedParameters: public PartDesignGui::TaskDlgFeatureParamete
 
 public:
     explicit TaskDlgTransformedParameters(ViewProviderTransformed* TransformedView);
-
-    ViewProviderTransformed* getTransformedView() const
-    {
-        return static_cast<ViewProviderTransformed*>(vp);
-    }
 
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;

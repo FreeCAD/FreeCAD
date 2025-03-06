@@ -67,7 +67,7 @@ bool ViewProviderFemConstraintPulley::setEdit(int ModNum)
 void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    Fem::ConstraintPulley* pcConstraint = static_cast<Fem::ConstraintPulley*>(this->getObject());
+    Fem::ConstraintPulley* pcConstraint = this->getObject<Fem::ConstraintPulley>();
 
     if (prop == &pcConstraint->BasePoint) {
         if (pcConstraint->Height.getValue() > Precision::Confusion()) {

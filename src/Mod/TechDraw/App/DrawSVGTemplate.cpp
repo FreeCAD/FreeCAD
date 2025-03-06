@@ -34,7 +34,6 @@
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Quantity.h>
-#include <Base/Tools.h>
 
 #include "DrawPage.h"
 #include "DrawSVGTemplate.h"
@@ -104,7 +103,7 @@ void DrawSVGTemplate::onSettingDocument()
 void DrawSVGTemplate::slotCreatedObject(const App::DocumentObject& obj)
 {
     // Base::Console().Message("DSVGT::slotCreatedObject()\n");
-    if (!obj.isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+    if (!obj.isDerivedFrom<TechDraw::DrawPage>()) {
         // we don't care
         return;
     }
@@ -114,7 +113,7 @@ void DrawSVGTemplate::slotCreatedObject(const App::DocumentObject& obj)
 void DrawSVGTemplate::slotDeletedObject(const App::DocumentObject& obj)
 {
     // Base::Console().Message("DSVGT::slotDeletedObject()\n");
-    if (!obj.isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+    if (!obj.isDerivedFrom<TechDraw::DrawPage>()) {
         // we don't care
         return;
     }
@@ -142,7 +141,7 @@ QString DrawSVGTemplate::processTemplate()
 
     // XPath query to select all <tspan> nodes whose <text> parent
     // has "freecad:editable" attribute
-    query.processItems(QString::fromUtf8(
+    query.processItems(QStringLiteral(
         "declare default element namespace \"" SVG_NS_URI "\"; "
         "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
         "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
@@ -159,7 +158,7 @@ QString DrawSVGTemplate::processTemplate()
             QString editableValue = QString::fromUtf8(item->second.c_str());
 
             // Keep all spaces in the text node
-            tspan.setAttribute(QString::fromUtf8("xml:space"), QString::fromUtf8("preserve"));
+            tspan.setAttribute(QStringLiteral("xml:space"), QStringLiteral("preserve"));
 
             // Remove all child nodes and append text node with editable replacement as the only descendant
             while (!tspan.lastChild().isNull()) {
@@ -182,14 +181,14 @@ void DrawSVGTemplate::extractTemplateAttributes(QDomDocument& templateDocument)
     Base::Quantity quantity;
 
     // Obtain the width
-    QString str = docElement.attribute(QString::fromLatin1("width"));
-    quantity = Base::Quantity::parse(str);
+    QString str = docElement.attribute(QStringLiteral("width"));
+    quantity = Base::Quantity::parse(str.toStdString());
     quantity.setUnit(Base::Unit::Length);
 
     Width.setValue(quantity.getValue());
 
-    str = docElement.attribute(QString::fromLatin1("height"));
-    quantity = Base::Quantity::parse(str);
+    str = docElement.attribute(QStringLiteral("height"));
+    quantity = Base::Quantity::parse(str.toStdString());
     quantity.setUnit(Base::Unit::Length);
 
     Height.setValue(quantity.getValue());
@@ -205,7 +204,7 @@ bool DrawSVGTemplate::getTemplateDocument(std::string sourceFile, QDomDocument& 
     if (sourceFile.empty()) {
         return false;
     }
-    QFile templateFile(Base::Tools::fromStdString(sourceFile));
+    QFile templateFile(QString::fromStdString(sourceFile));
     if (!templateFile.open(QIODevice::ReadOnly)) {
         Base::Console().Error("DrawSVGTemplate::processTemplate can't read embedded template %s!\n", PageResult.getValue());
         return false;
@@ -259,7 +258,7 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
 
     // XPath query to select all <tspan> nodes whose <text> parent
     // has "freecad:editable" attribute
-    query.processItems(QString::fromUtf8(
+    query.processItems(QStringLiteral(
         "declare default element namespace \"" SVG_NS_URI "\"; "
         "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
         "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
@@ -302,7 +301,7 @@ QString  DrawSVGTemplate::getAutofillByEditableName(QString nameToMatch)
 
     // XPath query to select all <tspan> nodes whose <text> parent
     // has "freecad:editable" attribute
-    query.processItems(QString::fromUtf8(
+    query.processItems(QStringLiteral(
         "declare default element namespace \"" SVG_NS_URI "\"; "
         "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
         "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),

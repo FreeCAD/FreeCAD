@@ -23,14 +23,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cmath>
-# include <boost/uuid/uuid_generators.hpp>
-# include <boost/uuid/uuid_io.hpp>
-
 # include <Approx_Curve3d.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <BRepAlgoAPI_Section.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
@@ -40,6 +36,7 @@
 # include <BRepLib.hxx>
 # include <BRepLProp_CLProps.hxx>
 # include <BRepTools.hxx>
+#include <BRepLProp_CurveTool.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeEllipse.hxx>
 #include <GC_MakeCircle.hxx>
@@ -51,8 +48,6 @@
 # include <GProp_GProps.hxx>
 # include <Geom_BSplineCurve.hxx>
 # include <Geom_BezierCurve.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_TrimmedCurve.hxx>
 # include <GeomAPI_PointsToBSpline.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <GeomConvert_BSplineCurveToBezierCurve.hxx>
@@ -81,12 +76,12 @@
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/thread.hpp>
 
+#include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/TopoShape.h>
 
+#include "DrawViewPart.h"
 #include "Geometry.h"
 #include "ShapeUtils.h"
 #include "DrawUtil.h"
@@ -100,10 +95,6 @@ using DU = DrawUtil;
 #if OCC_VERSION_HEX >= 0x070600
 using BRepAdaptor_HCurve = BRepAdaptor_Curve;
 #endif
-
-#define GEOMETRYEDGE 0
-#define COSMETICEDGE 1
-#define CENTERLINE   2
 
 // Collection of Geometric Features
 Wire::Wire()
@@ -147,10 +138,14 @@ void Wire::dump(std::string s)
     BRepTools::Write(toOccWire(), s.c_str());            //debug
 }
 
+// note that the face returned is inverted in Y
 TopoDS_Face Face::toOccFace() const
 {
+    if (wires.empty()) {
+        return {};
+    }
+
     TopoDS_Face result;
-    //if (!wires.empty) {
     BRepBuilderAPI_MakeFace mkFace(wires.front()->toOccWire(), true);
     int limit = wires.size();
     int iwire = 1;
@@ -191,19 +186,18 @@ Face::~Face()
 }
 
 BaseGeom::BaseGeom() :
-    geomType(NOTDEF),
-    extractType(Plain),             //obs
-    classOfEdge(ecNONE),
+    geomType(GeomType::NOTDEF),
+    extractType(ExtractionType::Plain),             //obs
+    classOfEdge(EdgeClass::NONE),
     hlrVisible(true),
     reversed(false),
     ref3D(-1),                      //obs?
     cosmetic(false),
-    m_source(0),
+    m_source(SourceType::GEOMETRY),
     m_sourceIndex(-1)
 {
     occEdge = TopoDS_Edge();
     cosmeticTag = std::string();
-    tag = boost::uuids::nil_uuid();
 }
 
 BaseGeomPtr BaseGeom::copy()
@@ -244,16 +238,6 @@ std::string BaseGeom::toString() const
     return ss.str();
 }
 
-boost::uuids::uuid BaseGeom::getTag() const
-{
-    return tag;
-}
-
-std::string BaseGeom::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
-}
-
 void BaseGeom::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<GeomType value=\"" << geomType << "\"/>" << endl;
@@ -266,20 +250,19 @@ void BaseGeom::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Ref3D value=\"" << ref3D << "\"/>" << endl;
     const char c = cosmetic?'1':'0';
     writer.Stream() << writer.ind() << "<Cosmetic value=\"" << c << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Source value=\"" << m_source << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Source value=\"" << m_source << "\"/>" << endl; // Should this save as text and not number?
     writer.Stream() << writer.ind() << "<SourceIndex value=\"" << m_sourceIndex << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << endl;
-//    writer.Stream() << writer.ind() << "<Tag value=\"" <<  getTagAsString() << "\"/>" << endl;
 }
 
 void BaseGeom::Restore(Base::XMLReader &reader)
 {
     reader.readElement("GeomType");
-    geomType = static_cast<TechDraw::GeomType>(reader.getAttributeAsInteger("value"));
+    geomType = static_cast<GeomType>(reader.getAttributeAsInteger("value"));
     reader.readElement("ExtractType");
-    extractType = static_cast<TechDraw::ExtractionType>(reader.getAttributeAsInteger("value"));
+    extractType = static_cast<ExtractionType>(reader.getAttributeAsInteger("value"));
     reader.readElement("EdgeClass");
-    classOfEdge = static_cast<TechDraw::edgeClass>(reader.getAttributeAsInteger("value"));
+    classOfEdge = static_cast<EdgeClass>(reader.getAttributeAsInteger("value"));
     reader.readElement("HLRVisible");
     hlrVisible = reader.getAttributeAsInteger("value") != 0;
     reader.readElement("Reversed");
@@ -289,7 +272,7 @@ void BaseGeom::Restore(Base::XMLReader &reader)
     reader.readElement("Cosmetic");
     cosmetic = reader.getAttributeAsInteger("value") != 0;
     reader.readElement("Source");
-    m_source = reader.getAttributeAsInteger("value");
+    m_source = static_cast<SourceType>(reader.getAttributeAsInteger("value"));
     reader.readElement("SourceIndex");
     m_sourceIndex = reader.getAttributeAsInteger("value");
     reader.readElement("CosmeticTag");
@@ -466,21 +449,21 @@ std::string BaseGeom::geomTypeName()
         "Bezier",
         "BSpline",
         "Line",         //why was this ever called "Generic"?
-        "Unknown" } ;
-    if (geomType >= typeNames.size()) {
-        return "Unknown";
-    }
-    return typeNames.at(geomType);
+    };
+    return typeNames.at(static_cast<int>(geomType));
 }
 
 //! Convert 1 OCC edge into 1 BaseGeom (static factory method)
-BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge)
+// this should not return nullptr as things will break later on.
+// regular geometry is stored scaled, but cosmetic geometry is stored in 1:1 scale, so the crazy edge
+// check is not appropriate.
+BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge, bool isCosmetic)
 {
     if (edge.IsNull()) {
         Base::Console().Message("BG::baseFactory - input edge is NULL \n");
     }
     //weed out rubbish edges before making geometry
-    if (!validateEdge(edge)) {
+    if (!isCosmetic && !validateEdge(edge)) {
         return nullptr;
     }
 
@@ -534,7 +517,9 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge)
                 result = std::make_shared<Generic>(edge);
             } else if (bspline->isCircle())  {
                 circEdge = bspline->asCircle(isArc);
-                if (!circEdge.IsNull()) {
+                if (circEdge.IsNull()) {
+                    result = bspline;
+                } else {
                     if (isArc) {
                         result = std::make_shared<AOC>(circEdge);
                     } else {
@@ -585,7 +570,7 @@ TopoDS_Edge BaseGeom::completeEdge(const TopoDS_Edge &edge) {
                 // If an arc of ellipse was provided, return full ellipse
                 return BRepBuilderAPI_MakeEdge(curve.Ellipse());
             default:
-                // Currently we are not extrapolating BSplines, though it is technically possible
+                // Currently we are not extrapolating B-splines, though it is technically possible
                 return BRepBuilderAPI_MakeEdge(curve.Curve().Curve());
         }
     }
@@ -612,7 +597,7 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
         return interPoints;
     }
 
-    BRepAlgoAPI_Section sectionOp(edge1, edge2);
+    FCBRepAlgoAPI_Section sectionOp(edge1, edge2);
     sectionOp.SetFuzzyValue(FUZZYADJUST*EWTOLERANCE);
     sectionOp.SetNonDestructive(true);
 
@@ -642,7 +627,7 @@ TopoShape BaseGeom::asTopoShape(double scale)
 
 Ellipse::Ellipse(const TopoDS_Edge &e)
 {
-    geomType = ELLIPSE;
+    geomType = GeomType::ELLIPSE;
     BRepAdaptor_Curve c(e);
     occEdge = e;
     gp_Elips ellp = c.Ellipse();
@@ -659,7 +644,7 @@ Ellipse::Ellipse(const TopoDS_Edge &e)
 
 Ellipse::Ellipse(Base::Vector3d c, double mnr, double mjr)
 {
-    geomType = ELLIPSE;
+    geomType = GeomType::ELLIPSE;
     center = c;
     major = mjr;
     minor = mnr;
@@ -679,7 +664,7 @@ Ellipse::Ellipse(Base::Vector3d c, double mnr, double mjr)
 
 AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
 {
-    geomType = ARCOFELLIPSE;
+    geomType = GeomType::ARCOFELLIPSE;
 
     BRepAdaptor_Curve c(e);
     double f = c.FirstParameter();
@@ -716,14 +701,14 @@ AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
 
 Circle::Circle()
 {
-    geomType = CIRCLE;
+    geomType = GeomType::CIRCLE;
     radius = 0.0;
     center = Base::Vector3d(0.0, 0.0, 0.0);
 }
 
 Circle::Circle(Base::Vector3d c, double r)
 {
-    geomType = CIRCLE;
+    geomType = GeomType::CIRCLE;
     radius = r;
     center = c;
     gp_Pnt loc(c.x, c.y, c.z);
@@ -744,7 +729,7 @@ Circle::Circle(Base::Vector3d c, double r)
 
 Circle::Circle(const TopoDS_Edge &e)
 {
-    geomType = CIRCLE;             //center, radius
+    geomType = GeomType::CIRCLE;             //center, radius
     BRepAdaptor_Curve c(e);
     occEdge = e;
 
@@ -793,7 +778,7 @@ void Circle::Restore(Base::XMLReader &reader)
 
 AOC::AOC(const TopoDS_Edge &e) : Circle(e)
 {
-    geomType = ARCOFCIRCLE;
+    geomType = GeomType::ARCOFCIRCLE;
     BRepAdaptor_Curve c(e);
 
     double f = c.FirstParameter();
@@ -825,7 +810,7 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
 
 AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
 {
-    geomType = ARCOFCIRCLE;
+    geomType = GeomType::ARCOFCIRCLE;
 
     radius = r;
     center = c;
@@ -874,7 +859,7 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
 
 AOC::AOC() : Circle()
 {
-    geomType = ARCOFCIRCLE;
+    geomType = GeomType::ARCOFCIRCLE;
 
     startPnt = Base::Vector3d(0.0, 0.0, 0.0);
     endPnt = Base::Vector3d(0.0, 0.0, 0.0);
@@ -1019,7 +1004,7 @@ void AOC::Restore(Base::XMLReader &reader)
 //! Generic is a multiline
 Generic::Generic(const TopoDS_Edge &e)
 {
-    geomType = GENERIC;
+    geomType = GeomType::GENERIC;
     occEdge = e;
     BRepLib::BuildCurve3d(occEdge);
 
@@ -1046,7 +1031,7 @@ Generic::Generic(const TopoDS_Edge &e)
 
 Generic::Generic()
 {
-    geomType = GENERIC;
+    geomType = GeomType::GENERIC;
 }
 
 std::string Generic::toString() const
@@ -1136,7 +1121,7 @@ Base::Vector3d Generic::apparentInter(GenericPtr g)
 
 BSpline::BSpline(const TopoDS_Edge &e)
 {
-    geomType = BSPLINE;
+    geomType = GeomType::BSPLINE;
     BRepAdaptor_Curve c(e);
     isArc = !c.IsClosed();
     Handle(Geom_BSplineCurve) cSpline = c.BSpline();
@@ -1210,7 +1195,7 @@ BSpline::BSpline(const TopoDS_Edge &e)
 }
 
 
-//! Can this BSpline be represented by a straight line?
+//! Can this B-spline be represented by a straight line?
 // if len(first-last) == sum(len(pi - pi+1)) then it is a line
 bool BSpline::isLine()
 {
@@ -1223,7 +1208,7 @@ bool BSpline::isCircle()
     return GeometryUtils::isCircle(occEdge);
 }
 
-// make a circular edge from BSpline
+// make a circular edge from B-spline
 TopoDS_Edge BSpline::asCircle(bool& arc)
 {
     return GeometryUtils::asCircle(occEdge, arc);
@@ -1251,7 +1236,7 @@ bool BSpline::intersectsArc(Base::Vector3d p1, Base::Vector3d p2)
 
 BezierSegment::BezierSegment(const TopoDS_Edge &e)
 {
-    geomType = BEZIER;
+    geomType = GeomType::BEZIER;
     occEdge = e;
     BRepAdaptor_Curve c(e);
     Handle(Geom_BezierCurve) bez = c.Bezier();
@@ -1280,7 +1265,6 @@ Vertex::Vertex()
     cosmeticLink = -1;
     cosmeticTag = std::string();
     m_reference = false;
-    createNewTag();
 }
 
 Vertex::Vertex(const Vertex* v)
@@ -1295,7 +1279,6 @@ Vertex::Vertex(const Vertex* v)
     cosmeticLink = v->cosmeticLink;
     cosmeticTag = v->cosmeticTag;
     m_reference = false;
-    createNewTag();
 }
 
 Vertex::Vertex(double x, double y)
@@ -1311,7 +1294,6 @@ Vertex::Vertex(double x, double y)
     cosmeticLink = -1;
     cosmeticTag = std::string();
     m_reference = false;
-    createNewTag();
 }
 
 Vertex::Vertex(Base::Vector3d v) : Vertex(v.x, v.y)
@@ -1353,7 +1335,7 @@ void Vertex::Save(Base::Writer &writer) const
 //    const char r = reference?'1':'0';
 //    writer.Stream() << writer.ind() << "<Reference value=\"" <<  r << "\"/>" << endl;
 
-    writer.Stream() << writer.ind() << "<VertexTag value=\"" <<  getTagAsString() << "\"/>" << endl;
+    Tag::Save(writer);
 }
 
 void Vertex::Restore(Base::XMLReader &reader)
@@ -1382,44 +1364,10 @@ void Vertex::Restore(Base::XMLReader &reader)
 //    reader.readElement("Reference");
 //    m_reference = (bool)reader.getAttributeAsInteger("value")==0?false:true;
 
-    reader.readElement("VertexTag");
-    std::string temp = reader.getAttribute("value");
-    boost::uuids::string_generator gen;
-    boost::uuids::uuid u1 = gen(temp);
-    tag = u1;
+    Tag::Restore(reader, "VertexTag");
 
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(pnt.x, pnt.y, pnt.z));
     occVertex = mkVert.Vertex();
-}
-
-void Vertex::createNewTag()
-{
-    // Initialize a random number generator, to avoid Valgrind false positives.
-    // The random number generator is not threadsafe so we guard it.  See
-    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
-    static boost::mt19937 ran;
-    static bool seeded = false;
-    static boost::mutex random_number_mutex;
-
-    boost::lock_guard<boost::mutex> guard(random_number_mutex);
-    if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
-        seeded = true;
-    }
-    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
-
-    tag = gen();
-}
-
-
-boost::uuids::uuid Vertex::getTag() const
-{
-    return tag;
-}
-
-std::string Vertex::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
 }
 
 void Vertex::dump(const char* title)
@@ -1433,7 +1381,7 @@ TopoShape Vertex::asTopoShape(double scale)
 {
     Base::Vector3d point = DU::toVector3d(BRep_Tool::Pnt(getOCCVertex()));
     point = point / scale;
-    BRepBuilderAPI_MakeVertex mkVert(DU::togp_Pnt(point));
+    BRepBuilderAPI_MakeVertex mkVert(DU::to<gp_Pnt>(point));
     return TopoShape(mkVert.Vertex());
 }
 
@@ -1552,9 +1500,12 @@ bool GeometryUtils::isCircle(TopoDS_Edge occEdge)
     return GeometryUtils::getCircleParms(occEdge, radius, center, isArc);
 }
 
-//tries to interpret a BSpline edge as a circle. Used by DVDim for approximate dimensions.
+//! tries to interpret a B-spline edge as a circle. Used by DVDim for approximate dimensions.
+//! calculates the curvature of the spline at a number of places and measures the deviation from the average
+//! a true circle has constant curvature and would have no deviation from the average.
 bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Vector3d& center, bool& isArc)
 {
+    int testCount = 5;
     double curveLimit = EWTOLERANCE;
     BRepAdaptor_Curve c(occEdge);
     Handle(Geom_BSplineCurve) spline = c.BSpline();
@@ -1562,7 +1513,6 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
     f = c.FirstParameter();
     l = c.LastParameter();
     double parmRange = fabs(l - f);
-    int testCount = 6;
     double parmStep = parmRange/testCount;
     std::vector<double> curvatures;
     std::vector<gp_Pnt> centers;
@@ -1571,12 +1521,8 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
     Base::Vector3d sumCenter, valueAt;
     try {
         GeomLProp_CLProps prop(spline, f, 3, Precision::Confusion());
-        curvatures.push_back(prop.Curvature());
-        sumCurvature += prop.Curvature();
-        prop.CentreOfCurvature(curveCenter);
-        centers.push_back(curveCenter);
-        sumCenter += DrawUtil::toVector3d(curveCenter);
 
+        // check only the interior points of the edge
         for (int i = 1; i < (testCount - 1); i++) {
             prop.SetParameter(parmStep * i);
             curvatures.push_back(prop.Curvature());
@@ -1585,70 +1531,83 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
             centers.push_back(curveCenter);
             sumCenter += DrawUtil::toVector3d(curveCenter);
         }
-        prop.SetParameter(l);
-        curvatures.push_back(prop.Curvature());
-        sumCurvature += prop.Curvature();
-        prop.CentreOfCurvature(curveCenter);
-        centers.push_back(curveCenter);
-        sumCenter += DrawUtil::toVector3d(curveCenter);
+
     }
     catch (Standard_Failure&) {
-        // Base::Console().Error("OCC error.  Could not interpret BSpline as Circle\n");
         return false;
     }
-    Base::Vector3d avgCenter = sumCenter/testCount;
+    Base::Vector3d avgCenter = sumCenter/ centers.size();
 
-    double avgCurve = sumCurvature/testCount;
+    double avgCurve = sumCurvature/ centers.size();
     double errorCurve  = 0;
+    // sum the errors in curvature
     for (auto& cv: curvatures) {
-        errorCurve += fabs(avgCurve - cv);    //fabs???
+        errorCurve += avgCurve - cv;
     }
-    errorCurve  = errorCurve/testCount;
+
+    double errorCenter{0};
+    for (auto& observe : centers) {
+        auto error = (DU::toVector3d(observe)- avgCenter).Length();
+        errorCenter += error;
+    }
+
+    // calculate average error in curvature.  we are only interested in the magnitude of the error
+    errorCurve  = fabs(errorCurve / curvatures.size());
+    // calculate the average error in center of curvature
+    errorCenter = errorCenter / curvatures.size();
+    auto edgeLong = edgeLength(occEdge);
+    double centerLimit = edgeLong * 0.01;
 
     isArc = !c.IsClosed();
     bool isCircle(false);
-    if ( errorCurve < curveLimit ) {
+    if ( errorCurve <= curveLimit  &&
+         errorCenter <= centerLimit) {
         isCircle = true;
         radius = 1.0/avgCurve;
         center = avgCenter;
     }
+
     return isCircle;
 }
 
 //! make a circle or arc of circle Edge from BSpline Edge
-//! assumes the spline is generally circular but does not check
+// Note that the input edge has been inverted by GeometryObject, so +Y points down.
 TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge splineEdge, bool& arc)
 {
-    BRepAdaptor_Curve curveAdapt(splineEdge);
+    double radius{0};
+    Base::Vector3d center;
+    bool isArc = false;
+    bool canMakeCircle = GeometryUtils::getCircleParms(splineEdge, radius, center, isArc);
+    if (!canMakeCircle) {
+        throw Base::RuntimeError("GU::asCircle received non-circular edge!");
+    }
+
+    gp_Pnt gCenter = DU::to<gp_Pnt>(center);
+    gp_Dir gNormal{0, 0, 1};
+    Handle(Geom_Circle) circleFromParms = GC_MakeCircle(gCenter, gNormal, radius);
 
     // find the ends of the edge from the underlying curve
-    Handle(Geom_Curve) curve = curveAdapt.Curve().Curve();
+    BRepAdaptor_Curve curveAdapt(splineEdge);
     double firstParam = curveAdapt.FirstParameter();
     double lastParam = curveAdapt.LastParameter();
     gp_Pnt startPoint = curveAdapt.Value(firstParam);
     gp_Pnt endPoint = curveAdapt.Value(lastParam);
 
-    arc = true;
-    if (startPoint.IsEqual(endPoint, 0.001)) {    //more reliable than IsClosed flag
+    if (startPoint.IsEqual(endPoint, EWTOLERANCE)) {    //more reliable than IsClosed flag
         arc = false;
+        return BRepBuilderAPI_MakeEdge(circleFromParms);
     }
+
+    arc = true;
     double midRange = (lastParam + firstParam) / 2;
     gp_Pnt midPoint = curveAdapt.Value(midRange);
-    Handle(Geom_Circle) circle3Points = GC_MakeCircle(startPoint, midPoint, endPoint);
 
-    if (circle3Points.IsNull()) {
-        return {};
-    }
+    GC_MakeArcOfCircle mkArc(startPoint, midPoint, endPoint);
+    auto circleArc = mkArc.Value();
 
-    if (!arc) {
-        // whole circle
-        return BRepBuilderAPI_MakeEdge(circle3Points);
-    }
-
-    Handle(Geom_TrimmedCurve) circleArc =
-                                GC_MakeArcOfCircle (startPoint, midPoint, endPoint);
     return BRepBuilderAPI_MakeEdge(circleArc);
 }
+
 
 bool GeometryUtils::isLine(TopoDS_Edge occEdge)
 {
@@ -1688,7 +1647,7 @@ bool GeometryUtils::isLine(TopoDS_Edge occEdge)
 }
 
 
-//! make a line Edge from BSpline Edge
+//! make a line Edge from B-spline Edge
 TopoDS_Edge GeometryUtils::asLine(TopoDS_Edge occEdge)
 {
     BRepAdaptor_Curve c(occEdge);
@@ -1702,5 +1661,123 @@ TopoDS_Edge GeometryUtils::asLine(TopoDS_Edge occEdge)
 
     TopoDS_Edge result = BRepBuilderAPI_MakeEdge(start, end);
     return result;
+}
+
+
+double GeometryUtils::edgeLength(TopoDS_Edge occEdge)
+{
+    BRepAdaptor_Curve adapt(occEdge);
+    const Handle(Geom_Curve) curve = adapt.Curve().Curve();
+    double first = BRepLProp_CurveTool::FirstParameter(adapt);
+    double last = BRepLProp_CurveTool::LastParameter(adapt);
+    try {
+        GeomAdaptor_Curve adaptor(curve);
+        return GCPnts_AbscissaPoint::Length(adaptor,first,last,Precision::Confusion());
+    }
+    catch (Standard_Failure& exc) {
+        THROWM(Base::CADKernelError, exc.GetMessageString())
+    }
+}
+
+//! return a perforated shape/face (using Part::FaceMakerCheese) formed by creating holes in the input face.
+TopoDS_Face GeometryUtils::makePerforatedFace(FacePtr bigCheese,  const std::vector<FacePtr> &holesAll)
+{
+    std::vector<TopoDS_Wire> cheeseIngredients;
+
+    // v0.0 brute force
+
+    // Note: TD Faces are not perforated and should only ever have 1 wire.  They are capable of
+    // having voids, but for now we will just take the first contour wire in all cases.
+
+    if (bigCheese->wires.empty())  {
+        // run in circles.  scream and shout.
+        return {};
+    }
+
+    auto flippedFace = ShapeUtils::fromQtAsFace(bigCheese->toOccFace());
+
+    if (holesAll.empty()) {
+        return flippedFace;
+    }
+
+    auto outer = ShapeUtils::fromQtAsWire(bigCheese->wires.front()->toOccWire());
+    cheeseIngredients.push_back(outer);
+    for (auto& hole : holesAll) {
+        if (hole->wires.empty()) {
+            continue;
+        }
+        auto holeR3 = ShapeUtils::fromQtAsWire(hole->wires.front()->toOccWire());
+        cheeseIngredients.push_back(holeR3);
+    }
+
+    TopoDS_Shape faceShape;
+    try {
+        faceShape = Part::FaceMakerCheese::makeFace(cheeseIngredients);
+    }
+    catch (const Standard_Failure &e) {
+        Base::Console().Warning("Area - could not make holes in face\n");
+        return flippedFace;
+    }
+
+
+    // v0.0 just grab the first face
+    TopoDS_Face foundFace;
+    TopExp_Explorer expFaces(faceShape, TopAbs_FACE);
+    if (expFaces.More()) {
+        foundFace = TopoDS::Face(expFaces.Current());
+    }
+    // TODO: sort out the compound => shape but !compound => face business in FaceMakerCheese here.
+    //       first guess is it does not affect us?
+
+    return foundFace;
+}
+
+
+//! find faces within the bounds of the input face
+std::vector<FacePtr> GeometryUtils::findHolesInFace(const DrawViewPart* dvp, const std::string& bigCheeseSubRef)
+{
+    if (!dvp || bigCheeseSubRef.empty()) {
+        return {};
+    }
+
+    std::vector<FacePtr> holes;
+    auto bigCheeseIndex = DU::getIndexFromName(bigCheeseSubRef);
+
+    // v0.0 brute force
+    auto facesAll = dvp->getFaceGeometry();
+    if (facesAll.empty()) {
+        // tarfu
+        throw Base::RuntimeError("GU::findHolesInFace - no holes to find!!");
+    }
+
+    auto bigCheeseFace = facesAll.at(bigCheeseIndex);
+    auto bigCheeseOCCFace = bigCheeseFace->toOccFace();
+    auto bigCheeseArea = bigCheeseFace->getArea();
+
+    int iFace{0};
+    for (auto& face : facesAll) {
+        if (iFace == bigCheeseIndex) {
+            iFace++;
+            continue;
+        }
+        if (face->getArea() > bigCheeseArea) {
+            iFace++;
+            continue;
+        }
+        auto faceCenter = DU::to<gp_Pnt>(face->getCenter());
+        auto faceCenterVertex = BRepBuilderAPI_MakeVertex(faceCenter);
+        auto distance = DU::simpleMinDist(faceCenterVertex, bigCheeseOCCFace);
+        if (distance > EWTOLERANCE) {
+            // hole center not within outer contour.  not the best test but cheese maker handles it
+            // for us?
+            // FaceMakerCheese does not support partial overlaps and just ignores them?
+            iFace++;
+            continue;
+        }
+        holes.push_back(face);
+        iFace++;
+    }
+
+    return holes;
 }
 

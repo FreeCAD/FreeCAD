@@ -23,6 +23,8 @@
 
 #include "PreCompiled.h"
 
+#include <istream>
+
 #include <qglobal.h>
 #if QT_VERSION < 0x060000
 #include <QTextCodec>
@@ -35,8 +37,12 @@
 #include "InputSource.h"
 #include "XMLTools.h"
 
-
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+#else
 XERCES_CPP_NAMESPACE_USE
+#endif
 
 using namespace Base;
 using namespace std;

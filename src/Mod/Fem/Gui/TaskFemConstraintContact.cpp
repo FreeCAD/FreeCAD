@@ -33,7 +33,7 @@
 
 #include "Mod/Fem/App/FemConstraintContact.h"
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintContact.h"
@@ -86,8 +86,7 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
 
     /* Note: */
     // Get the feature data
-    Fem::ConstraintContact* pcConstraint =
-        static_cast<Fem::ConstraintContact*>(ConstraintView->getObject());
+    Fem::ConstraintContact* pcConstraint = ConstraintView->getObject<Fem::ConstraintContact>();
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
@@ -206,8 +205,7 @@ void TaskFemConstraintContact::addToSelectionSlave()
         Gui::Selection().clearSelection();
         return;
     }
-    Fem::ConstraintContact* pcConstraint =
-        static_cast<Fem::ConstraintContact*>(ConstraintView->getObject());
+    Fem::ConstraintContact* pcConstraint = ConstraintView->getObject<Fem::ConstraintContact>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -268,8 +266,7 @@ void TaskFemConstraintContact::removeFromSelectionSlave()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintContact* pcConstraint =
-        static_cast<Fem::ConstraintContact*>(ConstraintView->getObject());
+    Fem::ConstraintContact* pcConstraint = ConstraintView->getObject<Fem::ConstraintContact>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
@@ -338,8 +335,7 @@ void TaskFemConstraintContact::addToSelectionMaster()
         Gui::Selection().clearSelection();
         return;
     }
-    Fem::ConstraintContact* pcConstraint =
-        static_cast<Fem::ConstraintContact*>(ConstraintView->getObject());
+    Fem::ConstraintContact* pcConstraint = ConstraintView->getObject<Fem::ConstraintContact>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -399,8 +395,7 @@ void TaskFemConstraintContact::removeFromSelectionMaster()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintContact* pcConstraint =
-        static_cast<Fem::ConstraintContact*>(ConstraintView->getObject());
+    Fem::ConstraintContact* pcConstraint = ConstraintView->getObject<Fem::ConstraintContact>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
@@ -478,12 +473,12 @@ const std::string TaskFemConstraintContact::getReferences() const
 
 const std::string TaskFemConstraintContact::getSlope() const
 {
-    return ui->spbSlope->value().getSafeUserString().toStdString();
+    return ui->spbSlope->value().getSafeUserString();
 }
 
 const std::string TaskFemConstraintContact::getAdjust() const
 {
-    return ui->spbAdjust->value().getSafeUserString().toStdString();
+    return ui->spbAdjust->value().getSafeUserString();
 }
 
 bool TaskFemConstraintContact::getFriction() const
@@ -498,7 +493,7 @@ double TaskFemConstraintContact::getFrictionCoeff() const
 
 const std::string TaskFemConstraintContact::getStickSlope() const
 {
-    return ui->spbStickSlope->value().getSafeUserString().toStdString();
+    return ui->spbStickSlope->value().getSafeUserString();
 }
 
 void TaskFemConstraintContact::changeEvent(QEvent*)

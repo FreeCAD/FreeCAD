@@ -18,7 +18,7 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _cut = dynamic_cast<Part::Cut*>(_doc->addObject("Part::Cut"));
+        _cut = _doc->addObject<Part::Cut>();
     }
 
     void TearDown() override
@@ -183,11 +183,7 @@ TEST_F(FeaturePartCutTest, testMapping)
     _cut->execute();
     const Part::TopoShape& ts1 = _cut->Shape.getShape();
     // Assert
-#ifndef FC_USE_TNP_FIX
-    EXPECT_EQ(ts1.getElementMap().size(), 0);
-#else
     EXPECT_EQ(ts1.getElementMap().size(), 26);
-#endif
 }
 
 // See FeaturePartCommon.cpp for a history test.  It would be exactly the same and redundant here.

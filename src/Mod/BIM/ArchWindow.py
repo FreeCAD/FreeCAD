@@ -81,11 +81,11 @@ def recolorize(attr): # names is [docname,objname]
             if obj:
                 if obj.ViewObject:
                     if obj.ViewObject.Proxy:
-                        obj.ViewObject.Proxy.colorize(obj,force=True)
+                        obj.ViewObject.Proxy.colorize(obj)
     elif hasattr(attr,"ViewObject") and attr.ViewObject:
         obj = attr
         if hasattr(obj.ViewObject,"Proxy") and hasattr(obj.ViewObject.Proxy,"colorize"):
-            obj.ViewObject.Proxy.colorize(obj,force=True)
+            obj.ViewObject.Proxy.colorize(obj)
 
 
 
@@ -429,6 +429,8 @@ class _Window(ArchComponent.Component):
             if hasattr(clonedProxy, "boxes"):
                 self.boxes = clonedProxy.boxes
             return
+        if not self.ensureBase(obj):
+            return
 
         import Part
         import DraftGeomUtils
@@ -512,12 +514,25 @@ class _Window(ArchComponent.Component):
         # Execute features in the SketchArch External Add-on
         self.executeSketchArchFeatures(obj, linkObj)
 
-    def getSubVolume(self,obj,plac=None):
+    def getSubFace(self):
+        "returns a subface for creation of subvolume for cutting in a base object"
+        # creation of subface from HoleWire (getSubWire)
+        raise NotImplementedError
+
+    def getSubVolume(self,obj,plac=None, host=None):
 
         "returns a subvolume for cutting in a base object"
 
+        # check if this is a clone or not, setup orig if positive
+        orig = None
+        if Draft.isClone(obj,"Window"):
+            if hasattr(obj,"CloneOf"):  # TODO need to check this?
+                orig = obj.CloneOf
+
+        # TODO Why always need tests e.g. hasattr(obj,"Subvolme"), hasattr(obj,"ClonOf") etc.?
+
         # check if we have a custom subvolume
-        if hasattr(obj,"Subvolume"):
+        if hasattr(obj,"Subvolume"):  # TODO To support Links
             if obj.Subvolume:
                 if hasattr(obj.Subvolume,'Shape'):
                     if not obj.Subvolume.Shape.isNull():
@@ -530,62 +545,62 @@ class _Window(ArchComponent.Component):
                         return sh
 
         # getting extrusion depth
-        base = None
-        if obj.Base:
-            base = obj.Base
         width = 0
-        if hasattr(obj,"HoleDepth"):  # the code have not checked whether this is a clone and use the original's HoleDepth; if HoleDepth is set in this object, even it is a clone, the original's HoleDepth is overridden
+        if hasattr(obj,"HoleDepth"):  # if this is a clone, the original's HoleDepth is overridden if HoleDepth is set in the clone  # TODO To support Links
             if obj.HoleDepth.Value:
                 width = obj.HoleDepth.Value
         if not width:
-            if base:
-                b = base.Shape.BoundBox
-                width = max(b.XLength,b.YLength,b.ZLength)
+            if orig and hasattr(orig,"HoleDepth"):
+                if orig.HoleDepth.Value:
+                    width = orig.HoleDepth.Value
         if not width:
-            if Draft.isClone(obj,"Window"):  # check whether this is a clone and use the original's HoleDepth or Shape's Boundbox
-                if hasattr(obj,"CloneOf"):
-                    orig = obj.CloneOf
-                else:
-                    orig = obj.Objects[0]
-                if orig.Base:
-                    base = orig.Base
-
-                if hasattr(orig,"HoleDepth"):
-                    if orig.HoleDepth.Value:
-                        width = orig.HoleDepth.Value
-                if not width:
-                    if base:
-                        b = base.Shape.BoundBox
-                        width = max(b.XLength,b.YLength,b.ZLength)
-        if not width:
+            if host and Draft.getType(host) == "Wall":
+                # TODO More robust approach :  With ArchSketch, on which wall segment an ArchObject is attached to is declared by user and saved.
+                #      The extrusion of each wall segment could be done per segment, and punch hole in the exact wall segment before fusing them all. No need to care about each wall segment thickness.
+                # TODO Consider to turn below codes to getWidths/getSortedWidths() in ArchWall (below codes copied and modified from ArchWall)
+                propSetUuid = host.Proxy.ArchSkPropSetPickedUuid
+                widths = []  # [] or None are both False
+                if hasattr(host,"ArchSketchData") and host.ArchSketchData and Draft.getType(host.Base) == "ArchSketch":
+                    if hasattr(host.Base, 'Proxy'):  # TODO Any need to test ?
+                        if hasattr(host.Base.Proxy, 'getWidths'):
+                            # Return a list of Width corresponding to indexes
+                            # of sorted edges of Sketch.
+                            widths = host.Base.Proxy.getWidths(host.Base,
+                                                     propSetUuid=propSetUuid)
+                if not widths:
+                    if host.OverrideWidth:
+                        # TODO No need to test as in ArchWall if host.Base is Sketch and sortSketchWidth(), just need the max value
+                        widths = host.OverrideWidth
+                    elif host.Width:
+                        widths = [host.Width.Value]
+                if widths:
+                    width = max(widths)
+                    # +100mm to ensure subtract is through at the moment
+                    width += 100
+            elif obj.Base:  # If host is not Wall
+                b = obj.Base.Shape.BoundBox
+                width = max(b.XLength,b.YLength,b.ZLength)  # TODO Fix this, the width would be too much in many cases
+        if not width:  # TODO Should not happen, it means there is no Base (Sketch or another FC object) in Clone either
             width = 1.1112 # some weird value to have little chance to overlap with an existing face
 
-        if not base:
-            if Draft.isClone(obj,"Window"):  # if this object has not base, check whether this is a clone and use the original's base
-                if hasattr(obj,"CloneOf"):
-                    orig = obj.CloneOf
-                else:
-                    orig = obj.Objects[0]  # not sure what is this exactly
-                if orig.Base:
-                    base = orig.Base
-                else:
-                    return None
+        # setup base
+        if orig:
+            base = orig.Base  # always use original's base; clone's base should not be used to supersede original's base
+        else:
+            base = obj.Base
 
         # finding which wire to use to drill the hole
-
         f = None
-        if hasattr(obj,"HoleWire"):  # the code have not checked whether this is a clone and use the original's HoleWire; if HoleWire is set in this object, even it is a clone, the original's BoundBox/HoleWire is overridden
+        if hasattr(obj,"HoleWire"):  # if this is a clone, the original's HoleWire is overridden if HoleWire is set in the clone  # TODO To support Links
             if obj.HoleWire > 0:
                 if obj.HoleWire <= len(base.Shape.Wires):
                     f = base.Shape.Wires[obj.HoleWire-1]
-
         if not f:
-            if Draft.isClone(obj,"Window"):
-                # check original HoleWire then
+            if orig and hasattr(orig,"HoleDepth"):
+                # check original's HoleWire
                 if orig.HoleWire > 0:
                     if orig.HoleWire <= len(base.Shape.Wires):
                         f = base.Shape.Wires[obj.HoleWire-1]
-
         if not f:
             # finding biggest wire in the base shape
             max_length = 0
@@ -665,34 +680,57 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
     def onChanged(self,vobj,prop):
 
-        if (prop in ["DiffuseColor","Transparency"]) and vobj.Object:
+        if prop == "ShapeAppearance":
             self.colorize(vobj.Object)
-        elif prop == "ShapeColor":
-            self.colorize(vobj.Object,force=True)
         ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
-    def colorize(self,obj,force=False):
+    def colorize(self,obj):
 
-        "setting different part colors"
-        if hasattr(obj,"CloneOf") and obj.CloneOf:
-            if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
-                obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
-            return
+        def _shapeAppearanceMaterialIsSame(sapp_mat1, sapp_mat2):
+            for prop in (
+                "AmbientColor",
+                "DiffuseColor",
+                "EmissiveColor",
+                "Shininess",
+                "SpecularColor",
+                "Transparency",
+            ):
+                if getattr(sapp_mat1, prop) != getattr(sapp_mat2, prop):
+                    return False
+            return True
+
+        def _shapeAppearanceIsSame(sapp1, sapp2):
+            if len(sapp1) != len(sapp2):
+                return False
+            for sapp_mat1, sapp_mat2 in zip(sapp1, sapp2):
+                if not _shapeAppearanceMaterialIsSame(sapp_mat1, sapp_mat2):
+                    return False
+            return True
+
         if not obj.Shape:
             return
         if not obj.Shape.Solids:
             return
+
+        # setting different part colors
+        if hasattr(obj, "CloneOf") and obj.CloneOf:
+            obj, clone = obj.CloneOf, obj
+            base_sapp_mat = clone.ViewObject.ShapeAppearance[0]
+            arch_mat = getattr(clone, "Material", None)
+        else:
+            clone = None
+            base_sapp_mat = obj.ViewObject.ShapeAppearance[0]
+            arch_mat = getattr(obj, "Material", None)
+
         solids = obj.Shape.copy().Solids
-        #print("Colorizing ", solids)
-        colors = []
-        base = obj.ViewObject.ShapeColor
+        sapp = []
         for i in range(len(solids)):
-            ccol = None
+            color = None
             if obj.WindowParts and len(obj.WindowParts) > i*5:
                 # WindowParts-based window
                 name = obj.WindowParts[(i*5)]
                 mtype = obj.WindowParts[(i*5)+1]
-                ccol = self.getSolidMaterial(obj,name,mtype)
+                color = self.getSolidMaterial(obj,arch_mat,name,mtype)
             elif obj.Base and hasattr(obj.Base,"Shape"):
                 # Type-based window: obj.Base furnishes the window solids
                 sol1 = self.getSolidSignature(solids[i])
@@ -703,20 +741,27 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                         if hasattr(child,"Shape") and child.Shape and child.Shape.Solids:
                             sol2 = self.getSolidSignature(child.Shape)
                             if sol1 == sol2:
-                                ccol = self.getSolidMaterial(obj,child.Label)
+                                color = self.getSolidMaterial(obj,arch_mat,child.Label)
                                 break
-            if not ccol:
+            if color is None:
                 typeidx = (i*5)+1
                 if typeidx < len(obj.WindowParts):
                     typ = obj.WindowParts[typeidx]
                     if typ == WindowPartTypes[2]:  # "Glass panel"
-                        ccol = ArchCommands.getDefaultColor("WindowGlass")
-            if not ccol:
-                ccol = base
-            colors.extend([ccol for f in solids[i].Faces])
-        #print("colors: ",colors)
-        if self.areDifferentColors(colors,obj.ViewObject.DiffuseColor) or force:
-            obj.ViewObject.DiffuseColor = colors
+                        color = ArchCommands.getDefaultColor("WindowGlass")
+
+            if color is None:
+                sapp_mat = base_sapp_mat
+            else:
+                sapp_mat = FreeCAD.Material()  # ShapeAppearance material with default v0.21 properties.
+                sapp_mat.DiffuseColor = color[:3] + (1.0, )
+                sapp_mat.Transparency = 1.0 - color[3]
+            sapp.extend((sapp_mat, ) * len(solids[i].Faces))
+
+        if clone is not None:
+            obj = clone
+        if not _shapeAppearanceIsSame(obj.ViewObject.ShapeAppearance, sapp):
+            obj.ViewObject.ShapeAppearance = sapp
 
     def getSolidSignature(self,solid):
 
@@ -724,26 +769,23 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
         return (solid.ShapeType,round(solid.Volume,3),round(solid.Area,3),round(solid.Length,3))
 
-    def getSolidMaterial(self,obj,name,mtype=None):
+    def getSolidMaterial(self,obj,arch_mat,name,mtype=None):
 
-        ccol = None
-        if hasattr(obj,"Material"):
-            if obj.Material:
-                if hasattr(obj.Material,"Materials"):
-                    if obj.Material.Names:
-                        mat = None
-                        if name in obj.Material.Names:
-                            mat = obj.Material.Materials[obj.Material.Names.index(name)]
-                        elif mtype and (mtype in obj.Material.Names):
-                            mat = obj.Material.Materials[obj.Material.Names.index(mtype)]
-                        if mat:
-                            if 'DiffuseColor' in mat.Material:
-                                if "(" in mat.Material['DiffuseColor']:
-                                    ccol = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
-                            if ccol and ('Transparency' in mat.Material):
-                                t = float(mat.Material['Transparency'])/100.0
-                                ccol = (ccol[0],ccol[1],ccol[2],t)
-        return ccol
+        color = None
+        if arch_mat is not None and hasattr(arch_mat,"Materials") and arch_mat.Names:
+            mat = None
+            if name in arch_mat.Names:
+                mat = arch_mat.Materials[arch_mat.Names.index(name)]
+            elif mtype is not None and (mtype in arch_mat.Names):
+                mat = arch_mat.Materials[arch_mat.Names.index(mtype)]
+            if mat:
+                if 'DiffuseColor' in mat.Material:
+                    if "(" in mat.Material['DiffuseColor']:
+                        color = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
+                if color and ('Transparency' in mat.Material):
+                    t = float(mat.Material['Transparency'])/100.0
+                    color = color[:3] + (t, )
+        return color
 
     def getHingeEdgeIndices(self):
 
@@ -790,6 +832,10 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         return True
 
     def setupContextMenu(self, vobj, menu):
+
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
+
         hingeIdxs = self.getHingeEdgeIndices()
 
         super().contextMenuAddEdit(menu)

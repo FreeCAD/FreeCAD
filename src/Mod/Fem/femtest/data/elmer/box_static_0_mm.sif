@@ -53,11 +53,13 @@ Equation 1
 End
 
 Solver 2
+  Binary Output = Logical False
   Coordinate Scaling Revert = Logical True
   Equation = String "ResultOutput"
   Exec Solver = String "After simulation"
   Output File Name = File "FreeCAD"
   Procedure = File "ResultOutputSolve" "ResultOutputSolver"
+  Save Geometry Ids = Logical False
   Vtu Format = Logical True
   Vtu Time Collection = Logical True
 End

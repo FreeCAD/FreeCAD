@@ -24,6 +24,7 @@
 #define GUI_UTILITIES_H
 
 #include <vector>
+#include <QColor>
 #include <App/Material.h>
 #include <Base/Converter.h>
 #include <Base/ViewProj.h>
@@ -32,7 +33,6 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbViewVolume.h>
-
 
 class SbViewVolume;
 class QAbstractItemView;
@@ -94,8 +94,8 @@ private:
 
 // Specialization for Color
 template <>
-struct vec_traits<App::Color> {
-    using vec_type = App::Color;
+struct vec_traits<Base::Color> {
+    using vec_type = Base::Color;
     using float_type = float;
     explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
@@ -104,6 +104,40 @@ struct vec_traits<App::Color> {
 private:
     const vec_type& v;
 };
+
+template <>
+struct vec_traits<QColor> {
+    using vec_type = QColor;
+    using float_type = float;
+    explicit vec_traits(const vec_type& v) : v(v){}
+    inline std::tuple<float_type,float_type,float_type> get() const {
+        return std::make_tuple(v.redF(), v.greenF(), v.blueF());
+    }
+private:
+    const vec_type& v;
+};
+
+template <>
+inline SbMatrix convertTo<SbMatrix, Base::Matrix4D>(const Base::Matrix4D& vec2)
+{
+    double dMtrx[16];
+    vec2.getGLMatrix(dMtrx);
+    return SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3], // clazy:exclude=rule-of-two-soft
+                    dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
+                    dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
+                    dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]);
+}
+
+template <>
+inline Base::Matrix4D convertTo<Base::Matrix4D, SbMatrix>(const SbMatrix& vec2)
+{
+    Base::Matrix4D mat;
+    for(int i=0;i<4;++i) {
+        for(int j=0;j<4;++j)
+            mat[i][j] = vec2[j][i];
+    }
+    return mat;
+}
 }
 
 namespace App{ class DocumentObject; }

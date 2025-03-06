@@ -45,14 +45,16 @@
 
 #include <Gui/Action.h>
 #include <Gui/Application.h>
-#include <Gui/DlgCreateNewPreferencePackImp.h>
-#include <Gui/DlgPreferencesImp.h>
-#include <Gui/DlgPreferencePackManagementImp.h>
-#include <Gui/DlgRevertToBackupConfigImp.h>
+#include <Gui/Dialogs/DlgCreateNewPreferencePackImp.h>
+#include <Gui/Dialogs/DlgPreferencesImp.h>
+#include <Gui/Dialogs/DlgPreferencePackManagementImp.h>
+#include <Gui/Dialogs/DlgRevertToBackupConfigImp.h>
 #include <Gui/MainWindow.h>
 #include <Gui/OverlayManager.h>
 #include <Gui/ParamHandler.h>
 #include <Gui/PreferencePackManager.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/Language/Translator.h>
 
 #include "DlgSettingsGeneral.h"
@@ -60,7 +62,7 @@
 
 using namespace Gui;
 using namespace Gui::Dialog;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 using namespace Base;
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsGeneral */
@@ -82,13 +84,30 @@ DlgSettingsGeneral::DlgSettingsGeneral( QWidget* parent )
 
     recreatePreferencePackMenu();
 
-    connect(ui->ImportConfig, &QPushButton::clicked, this, &DlgSettingsGeneral::onImportConfigClicked);
-    connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgSettingsGeneral::saveAsNewPreferencePack);
-    connect(ui->themesCombobox, qOverload<int>(&QComboBox::activated), this, &DlgSettingsGeneral::onThemeChanged);
-    connect(ui->moreThemesLabel, &QLabel::linkActivated, this, &DlgSettingsGeneral::onLinkActivated);
 
-    ui->ManagePreferencePacks->setToolTip(tr("Manage preference packs"));
-    connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, &DlgSettingsGeneral::onManagePreferencePacksClicked);
+    ui->themesCombobox->setEnabled(true);
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (doc) {
+        Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+        if (view) {
+            Gui::View3DInventorViewer* viewer = view->getViewer();
+            if (viewer->isEditing()) {
+                ui->ImportConfig->setEnabled(false);
+                ui->SaveNewPreferencePack->setEnabled(false);
+                ui->ManagePreferencePacks->setEnabled(false);
+                ui->themesCombobox->setEnabled(false);
+                ui->moreThemesLabel->setEnabled(false);
+            }
+        }
+    }
+    if (ui->themesCombobox->isEnabled()) {
+        connect(ui->ImportConfig, &QPushButton::clicked, this, &DlgSettingsGeneral::onImportConfigClicked);
+        connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgSettingsGeneral::saveAsNewPreferencePack);
+        ui->ManagePreferencePacks->setToolTip(tr("Manage preference packs"));
+        connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, &DlgSettingsGeneral::onManagePreferencePacksClicked);
+        connect(ui->themesCombobox, qOverload<int>(&QComboBox::activated), this, &DlgSettingsGeneral::onThemeChanged);
+        connect(ui->moreThemesLabel, &QLabel::linkActivated, this, &DlgSettingsGeneral::onLinkActivated);
+    }
 
     // If there are any saved config file backs, show the revert button, otherwise hide it:
     const auto & backups = Application::Instance->prefPackManager()->configBackups();
@@ -303,7 +322,7 @@ void DlgSettingsGeneral::loadSettings()
     int index = 1;
     TStringMap list = Translator::instance()->supportedLocales();
     ui->Languages->clear();
-    ui->Languages->addItem(QString::fromLatin1("English"), QByteArray("English"));
+    ui->Languages->addItem(QStringLiteral("English"), QByteArray("English"));
     for (auto it = list.begin(); it != list.end(); ++it, index++) {
         QByteArray lang = it->first.c_str();
         QString langname = QString::fromLatin1(lang.constData());
@@ -329,8 +348,9 @@ void DlgSettingsGeneral::loadSettings()
     }
 
     QAbstractItemModel* model = ui->Languages->model();
-    if (model)
+    if (model) {
         model->sort(0);
+    }
 
     addIconSizes(getCurrentIconSize());
 
@@ -425,15 +445,41 @@ void DlgSettingsGeneral::loadThemes()
 {
     ui->themesCombobox->clear();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
 
     QString currentTheme = QString::fromLatin1(hGrp->GetASCII("Theme", "").c_str());
 
     Application::Instance->prefPackManager()->rescan();
     auto packs = Application::Instance->prefPackManager()->preferencePacks();
+    QString currentStyleSheet = QString::fromLatin1(hGrp->GetASCII("StyleSheet", "").c_str());
+    QFileInfo fi(currentStyleSheet);
+    currentStyleSheet = fi.baseName();
+    QString themeClassic = QStringLiteral("classic");  // handle the upcoming name change
+    QString similarTheme;
+    QString packName;
     for (const auto& pack : packs) {
         if (pack.second.metadata().type() == "Theme") {
+            packName = QString::fromStdString(pack.first);
+            if (packName.contains(themeClassic, Qt::CaseInsensitive)) {
+                themeClassic = QString::fromStdString(pack.first);
+            }
+            if (packName.contains(currentStyleSheet, Qt::CaseInsensitive)) {
+                similarTheme = QString::fromStdString(pack.first);
+            }
             ui->themesCombobox->addItem(QString::fromStdString(pack.first));
+        }
+    }
+
+    if (currentTheme.isEmpty()) {
+        if (!currentStyleSheet.isEmpty()
+            && !similarTheme.isEmpty()) {  // a user upgrading from 0.21 or earlier
+            hGrp->SetASCII("Theme", similarTheme.toStdString());
+            currentTheme = QString::fromLatin1(hGrp->GetASCII("Theme", "").c_str());
+        }
+        else {  // a brand new user
+            hGrp->SetASCII("Theme", themeClassic.toStdString());
+            currentTheme = QString::fromLatin1(hGrp->GetASCII("Theme", "").c_str());
         }
     }
 
@@ -616,8 +662,21 @@ void DlgSettingsGeneral::recreatePreferencePackMenu()
         auto kind = new QTableWidgetItem(tagString);
         ui->PreferencePacks->setItem(row, 1, kind);
         auto button = new QPushButton(icon, tr("Apply"));
-        button->setToolTip(tr("Apply the %1 preference pack").arg(QString::fromStdString(pack.first)));
-        connect(button, &QPushButton::clicked, this, [this, pack]() { onLoadPreferencePackClicked(pack.first); });
+        button->setEnabled(true);
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (doc) {
+            Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+            if (view) {
+                Gui::View3DInventorViewer* viewer = view->getViewer();
+                if (viewer->isEditing()) {
+                    button->setEnabled(false);
+                }
+            }
+        }
+        if (button->isEnabled()) {
+            button->setToolTip(tr("Apply the %1 preference pack").arg(QString::fromStdString(pack.first)));
+            connect(button, &QPushButton::clicked, this, [this, pack]() { onLoadPreferencePackClicked(pack.first); });
+        }
         ui->PreferencePacks->setCellWidget(row, 2, button);
         ++row;
     }
@@ -660,7 +719,8 @@ void DlgSettingsGeneral::newPreferencePackDialogAccepted()
         return false;
     });
     auto preferencePackName = newPreferencePackDialog->preferencePackName();
-    Application::Instance->prefPackManager()->save(preferencePackName, selectedTemplates);
+    auto preferencePackDirectory = newPreferencePackDialog->preferencePackDirectory();
+    Application::Instance->prefPackManager()->save(preferencePackName, preferencePackDirectory, selectedTemplates);
     recreatePreferencePackMenu();
 }
 
@@ -679,7 +739,7 @@ void DlgSettingsGeneral::onImportConfigClicked()
     auto path = fs::path(QFileDialog::getOpenFileName(this,
         tr("Choose a FreeCAD config file to import"),
         QString(),
-        QString::fromUtf8("*.cfg")).toStdString());
+        QStringLiteral("*.cfg")).toStdString());
     if (!path.empty()) {
         // Create a name from the filename:
         auto packName = path.filename().stem().string();

@@ -175,6 +175,8 @@ class BIM_IfcProperties:
                     obj.IfcProperties, dict
                 ):
                     props = obj.IfcProperties
+                elif hasattr(obj, "IfcClass"):
+                    props = self.getNativeIfcProperties(obj)
                 else:
                     props = {}
                 objectslist[obj.Name] = [role, props]
@@ -182,6 +184,7 @@ class BIM_IfcProperties:
                     val = val.split(";;")
                     if ";;" in key:
                         # 0.19 format
+                        # pset;;pname = ptype;;pvalue
                         key = key.split(";;")
                         val = [key[1]] + val
                         key = key[0]
@@ -222,6 +225,8 @@ class BIM_IfcProperties:
             return obj.IfcType
         elif hasattr(obj, "IfcRole"):
             return obj.IfcRole
+        elif hasattr(obj, "IfcClass"):
+            return obj.IfcClass
         else:
             return None
 
@@ -259,14 +264,7 @@ class BIM_IfcProperties:
                 obj = FreeCAD.ActiveDocument.getObject(name)
                 if obj:
                     it1 = QtGui.QStandardItem(obj.Label)
-                    if QtCore.QFileInfo(
-                        ":/icons/Arch_" + obj.Proxy.Type + "_Tree.svg"
-                    ).exists():
-                        icon = QtGui.QIcon(
-                            ":/icons/Arch_" + obj.Proxy.Type + "_Tree.svg"
-                        )
-                    else:
-                        icon = QtGui.QIcon(":/icons/Arch_Component.svg")
+                    icon = obj.ViewObject.Icon
                     it1.setIcon(icon)
                     it1.setToolTip(obj.Name)
                     it2 = QtGui.QStandardItem(group)
@@ -315,12 +313,7 @@ class BIM_IfcProperties:
             role = self.objectslist[obj.Name][0]
             if (not self.form.onlyVisible.isChecked()) or obj.ViewObject.isVisible():
                 it1 = QtGui.QStandardItem(obj.Label)
-                if QtCore.QFileInfo(
-                    ":/icons/Arch_" + obj.Proxy.Type + "_Tree.svg"
-                ).exists():
-                    icon = QtGui.QIcon(":/icons/Arch_" + obj.Proxy.Type + "_Tree.svg")
-                else:
-                    icon = QtGui.QIcon(":/icons/Arch_Component.svg")
+                icon = obj.ViewObject.Icon
                 it1.setIcon(icon)
                 it1.setToolTip(obj.Name)
                 it2 = QtGui.QStandardItem(role)
@@ -353,14 +346,7 @@ class BIM_IfcProperties:
                     not self.form.onlyVisible.isChecked()
                 ) or obj.ViewObject.isVisible():
                     it1 = QtGui.QStandardItem(obj.Label)
-                    if QtCore.QFileInfo(
-                        ":/icons/Arch_" + obj.Proxy.Type + "_Tree.svg"
-                    ).exists():
-                        icon = QtGui.QIcon(
-                            ":/icons/Arch_" + obj.Proxy.Type + "_Tree.svg"
-                        )
-                    else:
-                        icon = QtGui.QIcon(":/icons/Arch_Component.svg")
+                    icon = obj.ViewObject.Icon
                     it1.setIcon(icon)
                     it1.setToolTip(obj.Name)
                     it2 = QtGui.QStandardItem(role)
@@ -398,13 +384,28 @@ class BIM_IfcProperties:
                         )
                         continue
                     props = obj.IfcProperties
+                elif hasattr(obj, "IfcClass"):
+                    props = self.getNativeIfcProperties(obj)
                 else:
                     props = {}
                 if values[1] != props:
                     if not changed:
                         FreeCAD.ActiveDocument.openTransaction("Change properties")
                         changed = True
-                    if not hasattr(obj, "IfcProperties"):
+                    if hasattr(obj,"IfcClass"):
+                        print("props:",props)
+                        for key,value in values[1].items():
+                            if ";;" in key and ";;" in value:
+                                pname, pset = key.split(";;")
+                                ptype, pvalue = value.split(";;")
+                                from nativeifc import ifc_psets  # lazy loading
+                                fctype = ifc_psets.get_freecad_type(ptype)
+                                if not pname in obj.PropertiesList:
+                                    obj.addProperty(fctype, pname, pset, ptype+":"+pname)
+                                    ifc_psets.edit_pset(obj, pname, force=True)
+                                if pvalue:
+                                    setattr(obj, pname, pvalue)
+                    elif not hasattr(obj, "IfcProperties"):
                         obj.addProperty(
                             "App::PropertyMap",
                             "IfcPRoperties",
@@ -413,10 +414,22 @@ class BIM_IfcProperties:
                                 "App::Property", "IFC properties of this object"
                             ),
                         )
-                    obj.IfcProperties = values[1]
+                    if hasattr(obj, "IfcProperties"):
+                        obj.IfcProperties = values[1]
         if changed:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
+
+    def getNativeIfcProperties(self, obj):
+        props = {}
+        for p in obj.PropertiesList:
+            pset = obj.getGroupOfProperty(p)
+            ttip = obj.getDocumentationOfProperty(p)
+            if ":" in ttip:
+                ptype, pname = ttip.split(":")
+                if pset not in ["Base", "IFC", "Geometry"]:
+                    props[pname+";;"+pset] = ptype+";;"+str(getattr(obj,p))
+        return props
 
     def getSearchResults(self, obj):
         from PySide import QtCore, QtGui

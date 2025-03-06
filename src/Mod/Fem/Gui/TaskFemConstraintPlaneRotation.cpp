@@ -34,7 +34,7 @@
 
 #include <App/DocumentObject.h>
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraintPlaneRotation.h>
 #include <Mod/Fem/App/FemTools.h>
@@ -79,7 +79,7 @@ TaskFemConstraintPlaneRotation::TaskFemConstraintPlaneRotation(
     /* Note: */
     // Get the feature data
     Fem::ConstraintPlaneRotation* pcConstraint =
-        static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintPlaneRotation>();
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
@@ -138,7 +138,7 @@ void TaskFemConstraintPlaneRotation::addToSelection()
             return;
         }
         Fem::ConstraintPlaneRotation* pcConstraint =
-            static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
+            ConstraintView->getObject<Fem::ConstraintPlaneRotation>();
         std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
         std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -218,7 +218,7 @@ void TaskFemConstraintPlaneRotation::removeFromSelection()
         return;
     }
     Fem::ConstraintPlaneRotation* pcConstraint =
-        static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
+        ConstraintView->getObject<Fem::ConstraintPlaneRotation>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
@@ -279,11 +279,6 @@ const std::string TaskFemConstraintPlaneRotation::getReferences() const
         items.push_back(ui->lw_references->item(r)->text().toStdString());
     }
     return TaskFemConstraint::getReferences(items);
-}
-
-bool TaskFemConstraintPlaneRotation::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintPlaneRotation::changeEvent(QEvent*)

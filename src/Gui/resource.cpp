@@ -29,7 +29,7 @@
 
 // INCLUDE YOUR PREFERENCE PAGES HERE
 //
-#include "DlgPreferencesImp.h"
+#include "Dialogs/DlgPreferencesImp.h"
 #include "PreferencePages/DlgSettings3DViewImp.h"
 #include "PreferencePages/DlgSettingsCacheDirectory.h"
 #include "PreferencePages/DlgSettingsDocumentImp.h"
@@ -47,13 +47,13 @@
 #include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "PreferencePages/DlgSettingsAdvanced.h"
 
-#include "DlgToolbarsImp.h"
-#include "DlgActionsImp.h"
-#include "DlgKeyboardImp.h"
+#include "Dialogs/DlgToolbarsImp.h"
+#include "Dialogs/DlgActionsImp.h"
+#include "Dialogs/DlgKeyboardImp.h"
 
-#ifndef USE_3DCONNEXION_NAVLIB
-#include "DlgCustomizeSpaceball.h"
-#include "DlgCustomizeSpNavSettings.h"
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
+#include "Dialogs/DlgCustomizeSpaceball.h"
+#include "Dialogs/DlgCustomizeSpNavSettings.h"
 #endif
 
 #include "InputField.h"
@@ -82,7 +82,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new PrefPageProducer<DlgSettingsReportView>       ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettings3DViewImp>        ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsLightSources>     ( QT_TRANSLATE_NOOP("QObject","Display") );
-    new PrefPageProducer<DlgSettingsUI>            ( QT_TRANSLATE_NOOP("QObject","Display") );
+    new PrefPageProducer<DlgSettingsUI>               ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsNavigation>       ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsViewColor>        ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsAdvanced>         ( QT_TRANSLATE_NOOP("QObject","Display") );
@@ -98,7 +98,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new CustomPageProducer<DlgCustomKeyboardImp>;
     new CustomPageProducer<DlgCustomToolbarsImp>;
     new CustomPageProducer<DlgCustomActionsImp>;
-#ifndef USE_3DCONNEXION_NAVLIB
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
     new CustomPageProducer<DlgCustomizeSpNavSettings>;
     new CustomPageProducer<DlgCustomizeSpaceball>;
 #endif

@@ -328,9 +328,9 @@ public:
      * It defines the amount of perimeter of a triangle for which the shortest
      * edge is considered for removal.
      */
-    explicit MeshRemoveNeedles(MeshKernel& rclM, float fMinEdgeLen = 0.05f)
+    explicit MeshRemoveNeedles(MeshKernel& rclM, float fMinEdgeLen = 0.05F)
         : MeshValidation(rclM)
-        , fMinEdgeLength(std::min(fMinEdgeLen, 0.25f))
+        , fMinEdgeLength(std::min(fMinEdgeLen, 0.25F))
     {}
     /**
      * Removes all facets with an edge smaller than \a fMinEdgeLength without leaving holes or gaps
@@ -359,8 +359,8 @@ public:
      * Construction. The \arg fFactor must be in the range of 0.0 and 0.5.
      */
     explicit MeshFixCaps(MeshKernel& rclM,
-                         float fMaxAng = 2.61f,
-                         float fFactor = 0.25f)  // ~150 degree
+                         float fMaxAng = 2.61F,
+                         float fFactor = 0.25F)  // ~150 degree
         : MeshValidation(rclM)
         , fMaxAngle(fMaxAng)
         , fSplitFactor(fFactor)

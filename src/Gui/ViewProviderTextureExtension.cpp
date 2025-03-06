@@ -48,14 +48,18 @@ ViewProviderTextureExtension::ViewProviderTextureExtension()
 
     pcSwitchAppearance = new SoSwitch;
     pcSwitchAppearance->ref();
+    pcSwitchAppearance->setName("SwitchAppearance");
     pcSwitchTexture = new SoSwitch;
     pcSwitchTexture->ref();
+    pcSwitchTexture->setName("SwitchTexture");
 
     pcShapeTexture2D = new SoTexture2;
     pcShapeTexture2D->ref();
+    pcShapeTexture2D->setName("ShapeTexture2D");
 
     pcTextureGroup3D = new SoGroup;
     pcTextureGroup3D->ref();
+    pcTextureGroup3D->setName("TextureGroup3D");
 }
 
 void ViewProviderTextureExtension::setup(SoMaterial* pcShapeMaterial)
@@ -160,10 +164,13 @@ ViewProviderFaceTexture::ViewProviderFaceTexture()
     // Support for textured faces
     pcShapeTexture3D = new SoTexture3;
     pcShapeTexture3D->ref();
+    pcShapeTexture3D->setName("ShapeTexture3D");
     pcShapeCoordinates = new SoCoordinate3;
     pcShapeCoordinates->ref();
+    pcShapeCoordinates->setName("ShapeCoordinates");
     pcShapeFaceset = new SoIndexedFaceSet;
     pcShapeFaceset->ref();
+    pcShapeFaceset->setName("ShapeFaceset");
 }
 
 ViewProviderFaceTexture::~ViewProviderFaceTexture()

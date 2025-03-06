@@ -57,6 +57,7 @@ from .equations import flux_writer
 from .equations import heat_writer
 from .equations import magnetodynamic_writer as MgDyn_writer
 from .equations import magnetodynamic2D_writer as MgDyn2D_writer
+from .equations import staticcurrent_writer as SC_writer
 
 
 _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
@@ -109,6 +110,7 @@ class Writer:
         self._handleFlux()
         self._handleMagnetodynamic()
         self._handleMagnetodynamic2D()
+        self._handleStaticCurrent()
         self._addOutputSolver()
 
         self._writeSif()
@@ -615,6 +617,28 @@ class Writer:
             MgDyn2D.handleMagnetodynamic2DMaterial(activeIn)
 
     # -------------------------------------------------------------------------------------------
+    # StaticCurrent
+
+    def _handleStaticCurrent(self):
+        SCW = SC_writer.SCwriter(self, self.solver)
+        activeIn = []
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerStaticCurrent"):
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self.getAllBodies()
+                solverSection = SCW.getStaticCurrentSolver(equation)
+                for body in activeIn:
+                    self._addSolver(body, solverSection)
+                SCW.handleStaticCurrentBodyForces(activeIn, equation)
+
+        if activeIn:
+            SCW.handleStaticCurrentConstants()
+            SCW.handleStaticCurrentBndConditions()
+            SCW.handleStaticCurrentMaterial(activeIn)
+
+    # -------------------------------------------------------------------------------------------
     # Solver handling
 
     def createEmptySolver(self):
@@ -758,24 +782,24 @@ class Writer:
         obj = self.getSingleMember("Fem::FemMeshObject")
         bodyCount = 0
         prefix = ""
-        if obj.Part.Shape.Solids:
+        if obj.Shape.Shape.Solids:
             prefix = "Solid"
-            bodyCount = len(obj.Part.Shape.Solids)
-        elif obj.Part.Shape.Faces:
+            bodyCount = len(obj.Shape.Shape.Solids)
+        elif obj.Shape.Shape.Faces:
             prefix = "Face"
-            bodyCount = len(obj.Part.Shape.Faces)
-        elif obj.Part.Shape.Edges:
+            bodyCount = len(obj.Shape.Shape.Faces)
+        elif obj.Shape.Shape.Edges:
             prefix = "Edge"
-            bodyCount = len(obj.Part.Shape.Edges)
+            bodyCount = len(obj.Shape.Shape.Edges)
         return [prefix + str(i + 1) for i in range(bodyCount)]
 
     def getMeshDimension(self):
         obj = self.getSingleMember("Fem::FemMeshObject")
-        if obj.Part.Shape.Solids:
+        if obj.Shape.Shape.Solids:
             return 3
-        if obj.Part.Shape.Faces:
+        if obj.Shape.Shape.Faces:
             return 2
-        if obj.Part.Shape.Edges:
+        if obj.Shape.Shape.Edges:
             return 1
         return None
 
@@ -795,6 +819,8 @@ class Writer:
         s["Procedure"] = sifio.FileAttr("ResultOutputSolve/ResultOutputSolver")
         s["Output File Name"] = sifio.FileAttr("FreeCAD")
         s["Vtu Format"] = True
+        s["Binary Output"] = self.solver.BinaryOutput
+        s["Save Geometry Ids"] = self.solver.SaveGeometryIndex
         s["Vtu Time Collection"] = True
         if self.unit_schema == Units.Scheme.SI2:
             s["Coordinate Scaling Revert"] = True

@@ -155,7 +155,7 @@ bool Reader::hasIntensities() const
     return (!intensity.empty());
 }
 
-const std::vector<App::Color>& Reader::getColors() const
+const std::vector<Base::Color>& Reader::getColors() const
 {
     return colors;
 }
@@ -1166,7 +1166,7 @@ void PcdReader::read(const std::string& filename)
         if (types[rgba] == "U") {
             for (Eigen::Index i = 0; i < numPoints; i++) {
                 uint32_t packed = static_cast<uint32_t>(data(i, rgba));
-                App::Color col;
+                Base::Color col;
                 col.setPackedARGB(packed);
                 colors.emplace_back(col);
             }
@@ -1178,7 +1178,7 @@ void PcdReader::read(const std::string& filename)
                 float f = static_cast<float>(data(i, rgba));
                 uint32_t packed {};
                 std::memcpy(&packed, &f, sizeof(packed));
-                App::Color col;
+                Base::Color col;
                 col.setPackedARGB(packed);
                 colors.emplace_back(col);
             }
@@ -1413,7 +1413,7 @@ public:
         }
     }
 
-    std::vector<App::Color> getColors() const
+    std::vector<Base::Color> getColors() const
     {
         return colors;
     }
@@ -1705,9 +1705,9 @@ private:
         return pt;
     }
 
-    App::Color getColor(const Proto& proto, size_t index) const
+    Base::Color getColor(const Proto& proto, size_t index) const
     {
-        App::Color c;
+        Base::Color c;
         c.r = static_cast<float>(proto.redData[index]) / 255.0F;
         c.g = static_cast<float>(proto.greenData[index]) / 255.0F;
         c.b = static_cast<float>(proto.blueData[index]) / 255.0F;
@@ -1769,7 +1769,7 @@ private:
     bool checkState;
     double minDistance;
     const size_t buf_size = 1024;
-    std::vector<App::Color> colors;
+    std::vector<Base::Color> colors;
     std::vector<float> intensity;
     PointKernel points;
     std::vector<Base::Vector3f> normals;
@@ -1817,7 +1817,7 @@ void Writer::setIntensities(const std::vector<float>& i)
     intensity = i;
 }
 
-void Writer::setColors(const std::vector<App::Color>& c)
+void Writer::setColors(const std::vector<Base::Color>& c)
 {
     colors = c;
 }
@@ -1972,7 +1972,7 @@ void PlyWriter::write(const std::string& filename)
         Eigen::Index col2 = col + 2;
         Eigen::Index col3 = col + 3;
         for (Eigen::Index i = 0; i < numPoints; i++) {
-            App::Color c = colors[i];
+            Base::Color c = colors[i];
             data(i, col0) = (c.r * 255.0F + 0.5F);
             data(i, col1) = (c.g * 255.0F + 0.5F);
             data(i, col2) = (c.b * 255.0F + 0.5F);

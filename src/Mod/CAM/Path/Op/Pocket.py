@@ -178,10 +178,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 if len(Faces) == 0:
                     allSubsFaceType = False
 
-                if (
-                    allSubsFaceType is True
-                    and obj.HandleMultipleFeatures == "Collectively"
-                ):
+                if allSubsFaceType is True and obj.HandleMultipleFeatures == "Collectively":
                     (fzmin, fzmax) = self.getMinMaxOfFaces(Faces)
                     if obj.FinalDepth.Value < fzmin:
                         Path.Log.warning(
@@ -191,10 +188,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             )
                         )
 
-                    if (
-                        obj.AdaptivePocketStart is True
-                        or obj.AdaptivePocketFinish is True
-                    ):
+                    if obj.AdaptivePocketStart is True or obj.AdaptivePocketFinish is True:
                         pocketTup = self.calculateAdaptivePocket(obj, base, subObjTups)
                         if pocketTup is not False:
                             obj.removalshape = pocketTup[0]
@@ -205,12 +199,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             base[0].Shape, subshape=shape, depthparams=self.depthparams
                         )
                         rawRemovalShape = env.cut(base[0].Shape)
-                        faceExtrusions = [
-                            f.extrude(FreeCAD.Vector(0.0, 0.0, 1.0)) for f in Faces
-                        ]
-                        obj.removalshape = _identifyRemovalSolids(
-                            rawRemovalShape, faceExtrusions
-                        )
+                        faceExtrusions = [f.extrude(FreeCAD.Vector(0.0, 0.0, 1.0)) for f in Faces]
+                        obj.removalshape = _identifyRemovalSolids(rawRemovalShape, faceExtrusions)
                         removalshapes.append(
                             (obj.removalshape, False, "3DPocket")
                         )  # (shape, isHole, detail)
@@ -227,9 +217,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         )
                         rawRemovalShape = env.cut(base[0].Shape)
                         faceExtrusions = [shape.extrude(FreeCAD.Vector(0.0, 0.0, 1.0))]
-                        obj.removalshape = _identifyRemovalSolids(
-                            rawRemovalShape, faceExtrusions
-                        )
+                        obj.removalshape = _identifyRemovalSolids(rawRemovalShape, faceExtrusions)
                         removalshapes.append((obj.removalshape, False, "3DPocket"))
 
         else:  # process the job base object as a whole
@@ -253,9 +241,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 removalSolids = [
                     s
                     for s in rawRemovalShape.Solids
-                    if Path.Geom.isRoughly(
-                        s.BoundBox.ZMax, rawRemovalShape.BoundBox.ZMax
-                    )
+                    if Path.Geom.isRoughly(s.BoundBox.ZMax, rawRemovalShape.BoundBox.ZMax)
                 ]
 
                 # Fuse multiple solids
@@ -300,7 +286,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         isHighFacePlanar = True
         isLowFacePlanar = True
 
-        for (sub, face) in subObjTups:
+        for sub, face in subObjTups:
             Faces.append(face)
 
         # identify max and min face heights for top loop
@@ -317,7 +303,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             allEdges = []
             makeHighFace = 0
             tryNonPlanar = False
-            for (sub, face, ei) in high:
+            for sub, face, ei in high:
                 allEdges.append(face.Edges[ei])
 
             (hzmin, hzmax) = self.getMinMaxOfFaces(allEdges)
@@ -344,9 +330,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 except Exception as eee:
                     Path.Log.warning(eee)
                     Path.Log.error(
-                        translate(
-                            "CAM", "The non-planar adaptive start is also unavailable."
-                        )
+                        translate("CAM", "The non-planar adaptive start is also unavailable.")
                         + "(1)"
                     )
                     isHighFacePlanar = False
@@ -363,10 +347,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             if makeHighFace == 2:
                 mx = hzmax + obj.StepDown.Value
                 mn = hzmin - obj.StepDown.Value
-                if (
-                    highFace.Shape.BoundBox.ZMax > mx
-                    or highFace.Shape.BoundBox.ZMin < mn
-                ):
+                if highFace.Shape.BoundBox.ZMax > mx or highFace.Shape.BoundBox.ZMin < mn:
                     Path.Log.warning(
                         "ZMaxDiff: {};  ZMinDiff: {}".format(
                             highFace.Shape.BoundBox.ZMax - mx,
@@ -374,9 +355,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         )
                     )
                     Path.Log.error(
-                        translate(
-                            "CAM", "The non-planar adaptive start is also unavailable."
-                        )
+                        translate("CAM", "The non-planar adaptive start is also unavailable.")
                         + "(2)"
                     )
                     isHighFacePlanar = False
@@ -387,7 +366,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         if len(low) > 0 and obj.AdaptivePocketFinish is True:
             # attempt planar face with bottom edges of pocket
             allEdges = []
-            for (sub, face, ei) in low:
+            for sub, face, ei in low:
                 allEdges.append(face.Edges[ei])
 
             # (lzmin, lzmax) = self.getMinMaxOfFaces(allEdges)
@@ -430,9 +409,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             user_depths=None,
         )
         shape = Part.makeCompound(Faces)
-        env = PathUtils.getEnvelope(
-            base[0].Shape, subshape=shape, depthparams=depthparams
-        )
+        env = PathUtils.getEnvelope(base[0].Shape, subshape=shape, depthparams=depthparams)
         cuts.append(env.cut(base[0].Shape))
 
         # Might need to change to .cut(job.Stock.Shape) if pocket has no bottom
@@ -524,7 +501,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             return int(sub.replace("Face", "")) - 1
 
         # get CenterOfMass for each face and add to sumCenterOfMass for average calculation
-        for (sub, face) in subObjTups:
+        for sub, face in subObjTups:
             # for (bsNm, fIdx, eIdx, vIdx) in bfevList:
             # face = FreeCAD.ActiveDocument.getObject(bsNm).Shape.Faces[fIdx]
             subCnt += 1
@@ -538,13 +515,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         avgCom.z = sumCom.z / subCnt
 
         # calculate vector (mag, direct) for each face from avgCom
-        for (sub, face, com) in comList:
-            adjCom = com.sub(
-                avgCom
-            )  # effectively treats avgCom as origin for each face.
-            mag = math.sqrt(
-                adjCom.x**2 + adjCom.y**2
-            )  # adjCom.Length without Z values
+        for sub, face, com in comList:
+            adjCom = com.sub(avgCom)  # effectively treats avgCom as origin for each face.
+            mag = math.sqrt(adjCom.x**2 + adjCom.y**2)  # adjCom.Length without Z values
             drctn = 0.0
             # Determine direction of vector
             if adjCom.x > 0.0:
@@ -572,7 +545,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         sortList = sorted(vectList, key=getDrctn)
 
         # remove magnitute and direction values
-        for (sub, face, mag, drctn) in sortList:
+        for sub, face, mag, drctn in sortList:
             newList.append((sub, face))
 
         # Rotate list items so highest face is first
@@ -604,7 +577,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         touchingCleaned = {}
 
         # Prepare dictionary for edges in shared
-        for (sub, face) in subObjTups:
+        for sub, face in subObjTups:
             touching[sub] = []
 
         # prepare list of indexes as proxies for subObjTups items
@@ -633,9 +606,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         edg2 = face2.Edges[ei2]
                         if edg1.isSame(edg2) is True:
                             Path.Log.debug(
-                                "{}.Edges[{}] connects at {}.Edges[{}]".format(
-                                    sub1, ei1, sub2, ei2
-                                )
+                                "{}.Edges[{}] connects at {}.Edges[{}]".format(sub1, ei1, sub2, ei2)
                             )
                             shared.append((sub1, face1, ei1))
                             touching[sub1].append(ei1)
@@ -659,7 +630,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         low = []
         holding = []
 
-        for (sub, face) in subObjTups:
+        for sub, face in subObjTups:
             holding = []
             for ei in range(0, len(face.Edges)):
                 if ei not in touching[sub]:
@@ -780,7 +751,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             (sub2, face2, ei2) = holding[h2]
 
             # Cycle through attachments for connection to existing
-            for (g, t) in attachments:
+            for g, t in attachments:
                 h1 = grps[g][t]
                 (sub1, face1, ei1) = holding[h1]
 
@@ -893,9 +864,7 @@ def _extrudeBaseDown(base):
     allExtrusions = list()
     zMin = base.Shape.BoundBox.ZMin
     bbFace = Path.Geom.makeBoundBoxFace(base.Shape.BoundBox, offset=5.0)
-    bbFace.translate(
-        FreeCAD.Vector(0.0, 0.0, float(int(base.Shape.BoundBox.ZMin - 5.0)))
-    )
+    bbFace.translate(FreeCAD.Vector(0.0, 0.0, float(int(base.Shape.BoundBox.ZMin - 5.0))))
     direction = FreeCAD.Vector(0.0, 0.0, -1.0)
 
     # Make projections of each non-vertical face and extrude it

@@ -40,19 +40,20 @@ class CAreaOrderer;
 class CInnerCurves: public std::enable_shared_from_this<CInnerCurves>
 {
     std::shared_ptr<CInnerCurves> m_pOuter;
-    std::shared_ptr<CCurve> m_curve; // always empty if top level
-	std::set<std::shared_ptr<CInnerCurves> > m_inner_curves;
-    std::shared_ptr<CArea> m_unite_area; // new curves made by uniting are stored here
+    std::shared_ptr<CCurve> m_curve;  // always empty if top level
+    std::set<std::shared_ptr<CInnerCurves>> m_inner_curves;
+    std::shared_ptr<CArea> m_unite_area;  // new curves made by uniting are stored here
 
 public:
-	static CAreaOrderer* area_orderer;
-	CInnerCurves(std::shared_ptr<CInnerCurves> pOuter, std::shared_ptr<CCurve> curve);
-	CInnerCurves(){}
-	~CInnerCurves();
+    static CAreaOrderer* area_orderer;
+    CInnerCurves(std::shared_ptr<CInnerCurves> pOuter, std::shared_ptr<CCurve> curve);
+    CInnerCurves()
+    {}
+    ~CInnerCurves();
 
-	void Insert(std::shared_ptr<CCurve> pcurve);
-	void GetArea(CArea &area, bool outside = true, bool use_curve = true);
-	void Unite(std::shared_ptr<CInnerCurves> c);
+    void Insert(std::shared_ptr<CCurve> pcurve);
+    void GetArea(CArea& area, bool outside = true, bool use_curve = true);
+    void Unite(std::shared_ptr<CInnerCurves> c);
 };
 
 class CAreaOrderer
@@ -60,8 +61,8 @@ class CAreaOrderer
 public:
     std::shared_ptr<CInnerCurves> m_top_level;
 
-	CAreaOrderer();
+    CAreaOrderer();
 
-	void Insert(std::shared_ptr<CCurve> pcurve);
-	CArea ResultArea()const;
+    void Insert(std::shared_ptr<CCurve> pcurve);
+    CArea ResultArea() const;
 };

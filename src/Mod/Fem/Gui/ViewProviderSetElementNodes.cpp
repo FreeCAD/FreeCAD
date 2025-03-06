@@ -37,7 +37,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderSetElementNodes, Gui::ViewProviderGeometryOb
 bool ViewProviderSetElementNodes::doubleClicked()
 {
     Gui::TaskView::TaskDialog* dlg =
-        new TaskDlgCreateElementSet(static_cast<Fem::FemSetElementNodesObject*>(getObject()));
+        new TaskDlgCreateElementSet(getObject<Fem::FemSetElementNodesObject>());
     Gui::Control().showDialog(dlg);
     return true;
 }

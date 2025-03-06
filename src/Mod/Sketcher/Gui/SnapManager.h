@@ -54,7 +54,7 @@ private:
 /* This class is used to manage the overriding of mouse pointer coordinates in Sketcher
  *  (in Edit-Mode) depending on the situation. Those situations are in priority order :
  *  1 - Snap at angle: For tools like Slot, Arc, Line, Ellipse, this enables to constrain the angle
- * at steps of 5° (or customized angle). This is useful to make features at a certain angle (45° for
+ * at steps of 5Â° (or customized angle). This is useful to make features at a certain angle (45Â° for
  * example) 2 - Snap to object: This snaps the mouse pointer onto objects. 3 - Snap to grid: This
  * snaps the mouse pointer on the grid.
  */

@@ -94,7 +94,7 @@ directories = [
     },
     {
         "tsname": "Material",
-        "workingdir": "./src/Mod/Material/",
+        "workingdir": "./src/Mod/Material/Gui",
         "tsdir": "Resources/translations",
     },
     {

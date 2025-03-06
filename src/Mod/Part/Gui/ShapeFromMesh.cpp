@@ -27,7 +27,7 @@
 
 #include <Base/UnitsApi.h>
 #include <Gui/CommandT.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
 
 #include "ShapeFromMesh.h"

@@ -441,7 +441,7 @@ bool DrawProjGroup::canDelete(const char* viewProjType) const
             if (item == this) {
                 continue;
             }
-            if (item->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+            if (item->isDerivedFrom<TechDraw::DrawView>()) {
                 return false;
             }
         }
@@ -463,43 +463,39 @@ App::DocumentObject* DrawProjGroup::addProjection(const char* viewProjType)
 
     if (checkViewProjType(viewProjType) && !hasProjection(viewProjType)) {
         std::string FeatName = getDocument()->getUniqueObjectName("ProjItem");
-        auto docObj(getDocument()->addObject("TechDraw::DrawProjGroupItem",//add to Document
-                                             FeatName.c_str()));
-        view = dynamic_cast<TechDraw::DrawProjGroupItem*>(docObj);
-        if (!view && docObj) {
+        view = getDocument()->addObject<TechDraw::DrawProjGroupItem>(FeatName.c_str());
+        if (!view) {
             //should never happen that we create a DPGI that isn't a DPGI!!
             Base::Console().Error("PROBLEM - DPG::addProjection - created a non DPGI! %s / %s\n",
                                   getNameInDocument(), viewProjType);
             throw Base::TypeError("Error: new projection is not a DPGI!");
         }
-        if (view) {//coverity CID 151722
-            // the label must be set before the view is added
-            view->Label.setValue(viewProjType);
-            // somewhere deep in DocumentObject, duplicate Labels have a numeric suffix applied,
-            // so we need to wait until that happens before building the translated label
-            view->translateLabel("DrawProjGroupItem", viewProjType, view->Label.getValue());
-            addView(view);//from DrawViewCollection
-            view->Source.setValues(Source.getValues());
-            view->XSource.setValues(XSource.getValues());
+        // the label must be set before the view is added
+        view->Label.setValue(viewProjType);
+        // somewhere deep in DocumentObject, duplicate Labels have a numeric suffix applied,
+        // so we need to wait until that happens before building the translated label
+        view->translateLabel("DrawProjGroupItem", viewProjType, view->Label.getValue());
+        addView(view);//from DrawViewCollection
+        view->Source.setValues(Source.getValues());
+        view->XSource.setValues(XSource.getValues());
 
-            // the Scale is already set by DrawView
-            view->Type.setValue(viewProjType);
-            if (strcmp(viewProjType, "Front") != 0) {//not Front!
-                vecs = getDirsFromFront(view);
-                view->Direction.setValue(vecs.first);
-                view->XDirection.setValue(vecs.second);
-                view->recomputeFeature();
-            }
-            else {//Front
-                Anchor.setValue(view);
-                Anchor.purgeTouched();
-                requestPaint();//make sure the group object is on the Gui page
-                view->LockPosition.setValue(
-                    true);//lock "Front" position within DPG (note not Page!).
-                view->LockPosition.setStatus(App::Property::ReadOnly,
-                                             true);//Front should stay locked.
-                view->LockPosition.purgeTouched();
-            }
+        // the Scale is already set by DrawView
+        view->Type.setValue(viewProjType);
+        if (strcmp(viewProjType, "Front") != 0) {//not Front!
+            vecs = getDirsFromFront(view);
+            view->Direction.setValue(vecs.first);
+            view->XDirection.setValue(vecs.second);
+            view->recomputeFeature();
+        }
+        else {//Front
+            Anchor.setValue(view);
+            Anchor.purgeTouched();
+            requestPaint();//make sure the group object is on the Gui page
+            view->LockPosition.setValue(
+                true);//lock "Front" position within DPG (note not Page!).
+            view->LockPosition.setStatus(App::Property::ReadOnly,
+                                            true);//Front should stay locked.
+            view->LockPosition.purgeTouched();
         }
     }
     return view;
@@ -565,12 +561,11 @@ int DrawProjGroup::purgeProjections()
 
 std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(DrawProjGroupItem* view)
 {
-    std::pair<Base::Vector3d, Base::Vector3d> result;
-    std::string viewType = view->Type.getValueAsString();
+    ProjDirection viewType = static_cast<ProjDirection>(view->Type.getValue());
     return getDirsFromFront(viewType);
 }
 
-std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(std::string viewType)
+std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(ProjDirection viewType)
 {
     //    Base::Console().Message("DPG::getDirsFromFront(%s)\n", viewType.c_str());
     std::pair<Base::Vector3d, Base::Vector3d> result;
@@ -1110,77 +1105,26 @@ void DrawProjGroup::updateSecondaryDirs()
     Base::Vector3d anchDir = anchor->Direction.getValue();
     Base::Vector3d anchRot = anchor->getXDirection();
 
-    std::map<std::string, std::pair<Base::Vector3d, Base::Vector3d>> saveVals;
-    std::string key;
+    std::map<ProjDirection, std::pair<Base::Vector3d, Base::Vector3d>> saveVals;
     std::pair<Base::Vector3d, Base::Vector3d> data;
     for (auto& docObj : Views.getValues()) {
-        std::pair<Base::Vector3d, Base::Vector3d> newDirs;
-        std::string pic;
         DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
-        ProjItemType t = static_cast<ProjItemType>(v->Type.getValue());
-        switch (t) {
-            case Front:
-                data.first = anchDir;
-                data.second = anchRot;
-                key = "Front";
-                saveVals[key] = data;
-                break;
-            case Rear:
-                key = "Rear";
-                newDirs = getDirsFromFront(key);
-                saveVals[key] = newDirs;
-                break;
-            case Left:
-                key = "Left";
-                newDirs = getDirsFromFront(key);
-                saveVals[key] = newDirs;
-                break;
-            case Right:
-                key = "Right";
-                newDirs = getDirsFromFront(key);
-                saveVals[key] = newDirs;
-                break;
-            case Top:
-                key = "Top";
-                newDirs = getDirsFromFront(key);
-                saveVals[key] = newDirs;
-                break;
-            case Bottom:
-                key = "Bottom";
-                newDirs = getDirsFromFront(key);
-                saveVals[key] = newDirs;
-                break;
-            case FrontTopLeft:
-                key = "FrontTopLeft";
-                newDirs = getDirsFromFront(key);
-                saveVals[key] = newDirs;
-                break;
-            case FrontTopRight:
-                key = "FrontTopRight";
-                newDirs = getDirsFromFront(key);
-                saveVals[key] = newDirs;
-                break;
-            case FrontBottomLeft:
-                key = "FrontBottomLeft";
-                newDirs = getDirsFromFront(key);
-                saveVals[key] = newDirs;
-                break;
-            case FrontBottomRight:
-                key = "FrontBottomRight";
-                newDirs = getDirsFromFront(key);
-                saveVals[key] = newDirs;
-                break;
-            default: {
-                //TARFU invalid secondary type
-                Base::Console().Message(
-                    "ERROR - DPG::updateSecondaryDirs - invalid projection type\n");
-            }
+        ProjDirection t = static_cast<ProjDirection>(v->Type.getValue());
+
+        if (t == ProjDirection::Front) {
+            data.first = anchDir;
+            data.second = anchRot;
+            saveVals[ProjDirection::Front] = data;
+        }
+        else {
+            std::pair<Base::Vector3d, Base::Vector3d> newDirs = getDirsFromFront(t);
+            saveVals[t] = newDirs;
         }
     }
 
     for (auto& docObj : Views.getValues()) {
         DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
-        std::string type = v->Type.getValueAsString();
+        ProjDirection type = static_cast<ProjDirection>(v->Type.getValue());
         data = saveVals[type];
         v->Direction.setValue(data.first);
         v->Direction.purgeTouched();
@@ -1190,31 +1134,20 @@ void DrawProjGroup::updateSecondaryDirs()
     recomputeChildren();
 }
 
-void DrawProjGroup::rotate(const std::string& rotationdirection)
+void DrawProjGroup::rotate(const RotationMotion& motion)
 {
-    std::pair<Base::Vector3d, Base::Vector3d> newDirs;
-    if (rotationdirection == "Right")
-        newDirs = getDirsFromFront("Left");// Front -> Right -> Rear -> Left -> Front
-    else if (rotationdirection == "Left")
-        newDirs = getDirsFromFront("Right");// Front -> Left -> Rear -> Right -> Front
-    else if (rotationdirection == "Up")
-        newDirs = getDirsFromFront("Bottom");// Front -> Top -> Rear -> Bottom -> Front
-    else if (rotationdirection == "Down")
-        newDirs = getDirsFromFront("Top");// Front -> Bottom -> Rear -> Top -> Front
-
-    DrawProjGroupItem* anchor = getAnchor();
-    anchor->Direction.setValue(newDirs.first);
-    anchor->XDirection.setValue(newDirs.second);
-
+    getAnchor()->rotate(motion);
     updateSecondaryDirs();
 }
 
-void DrawProjGroup::spin(const std::string& spindirection)
+// TODO: should these functions identical to those
+// in DrawViewPart be moved to DrawView?
+void DrawProjGroup::spin(const SpinDirection& spindirection)
 {
     double angle;
-    if (spindirection == "CW")
+    if (spindirection == SpinDirection::CW)
         angle = M_PI / 2.0;// Top -> Right -> Bottom -> Left -> Top
-    if (spindirection == "CCW")
+    if (spindirection == SpinDirection::CCW)
         angle = -M_PI / 2.0;// Top -> Left -> Bottom -> Right -> Top
 
     spin(angle);

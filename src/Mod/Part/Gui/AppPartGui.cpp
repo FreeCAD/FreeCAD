@@ -31,7 +31,7 @@
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/DlgPreferencesImp.h>
+#include <Gui/Dialogs/DlgPreferencesImp.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 
@@ -47,6 +47,7 @@
 #include "ViewProvider.h"
 #include "ViewProvider2DObject.h"
 #include "ViewProviderAttachExtension.h"
+#include "ViewProviderDatum.h"
 #include "ViewProviderGridExtension.h"
 #include "ViewProviderBoolean.h"
 #include "ViewProviderBox.h"
@@ -134,10 +135,10 @@ PyMOD_INIT_FUNC(PartGui)
 
     Base::Console().Log("Loading GUI of Part module... done\n");
 
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/booleans"));
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/create"));
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/parametric"));
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/tools"));
+    Gui::BitmapFactory().addPath(QStringLiteral(":/icons/booleans"));
+    Gui::BitmapFactory().addPath(QStringLiteral(":/icons/create"));
+    Gui::BitmapFactory().addPath(QStringLiteral(":/icons/parametric"));
+    Gui::BitmapFactory().addPath(QStringLiteral(":/icons/tools"));
 
     // clang-format off
     static struct PyModuleDef pAttachEngineTextsModuleDef = {
@@ -167,6 +168,10 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::ViewProviderGridExtensionPython        ::init();
     PartGui::ViewProviderSplineExtension            ::init();
     PartGui::ViewProviderSplineExtensionPython      ::init();
+    PartGui::ViewProviderLine                       ::init();
+    PartGui::ViewProviderPlane                      ::init();
+    PartGui::ViewProviderPoint                      ::init();
+    PartGui::ViewProviderLCS                        ::init();
     PartGui::ViewProviderPartExt                    ::init();
     PartGui::ViewProviderPart                       ::init();
     PartGui::ViewProviderPrimitive                  ::init();

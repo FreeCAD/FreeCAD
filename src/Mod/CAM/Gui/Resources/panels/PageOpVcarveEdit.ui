@@ -69,7 +69,7 @@
      <item row="0" column="1">
       <widget class="QDoubleSpinBox" name="discretize">
        <property name="toolTip">
-        <string>This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.</string>
+        <string>This value is used in discretizing arcs into segments. Smaller values will result in larger G-code. Larger values may cause unwanted segments in the medial line path.</string>
        </property>
        <property name="decimals">
         <number>3</number>
@@ -137,7 +137,7 @@
         <bool>true</bool>
        </property>
        <property name="toolTip">
-        <string>After carving travel again the path to remove artifacts and imperfections</string>
+        <string>After carving, travel again the path to remove artifacts and imperfections</string>
        </property>
        <property name="statusTip">
         <string/>

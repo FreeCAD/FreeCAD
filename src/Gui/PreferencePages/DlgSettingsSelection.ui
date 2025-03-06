@@ -118,7 +118,7 @@
      <item>
       <widget class="QLabel" name="spinPickRadiusLabel">
        <property name="text">
-        <string>Pick radius (px):</string>
+        <string>Pick radius:</string>
        </property>
       </widget>
      </item>
@@ -152,6 +152,9 @@ Larger value eases to pick things, but can make small features impossible to sel
      </property>
      <property name="inputMethodHints">
       <set>Qt::ImhPreferNumbers</set>
+     </property>
+     <property name="suffix">
+      <string notr="true"> px</string>
      </property>
      <property name="decimals">
       <number>1</number>

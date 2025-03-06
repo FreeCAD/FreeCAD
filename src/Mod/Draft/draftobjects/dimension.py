@@ -107,12 +107,11 @@ import FreeCAD as App
 import DraftVecUtils
 import DraftGeomUtils
 import WorkingPlane
-
+from draftobjects.draft_annotation import DraftAnnotation
+from draftutils import gui_utils
 from draftutils import utils
 from draftutils.messages import _wrn
 from draftutils.translate import translate
-
-from draftobjects.draft_annotation import DraftAnnotation
 
 
 class DimensionBase(DraftAnnotation):
@@ -191,19 +190,6 @@ class DimensionBase(DraftAnnotation):
                             "Dimension",
                             _tip)
             obj.Dimline = App.Vector(0, 1, 0)
-
-    def onDocumentRestored(self, obj):
-        """Execute code when the document is restored."""
-        super().onDocumentRestored(obj)
-
-        if not hasattr(obj, "ViewObject"):
-            return
-        vobj = obj.ViewObject
-        if not vobj:
-            return
-        if hasattr(vobj, "TextColor"):
-            return
-        self.update_properties_0v21(obj, vobj)
 
     def update_properties_0v21(self, obj, vobj):
         """Update view properties."""
@@ -308,7 +294,17 @@ class LinearDimension(DimensionBase):
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(
+            obj, vp_module="view_dimension", vp_class="ViewProviderLinearDimension"
+        )
         self.Type = "LinearDimension"
+
+        if not getattr(obj, "ViewObject", None):
+            return
+        vobj = obj.ViewObject
+        if hasattr(vobj, "TextColor"):
+            return
+        super().update_properties_0v21(obj, vobj)
 
     def onChanged(self, obj, prop):
         """Execute when a property is changed.
@@ -323,6 +319,14 @@ class LinearDimension(DimensionBase):
         #    obj.setPropertyStatus('Normal', 'Hidden')
         if hasattr(obj, "Support"):
             obj.setPropertyStatus('Support', 'Hidden')
+
+    def transform(self, obj, pla):
+        """Transform the object by applying a placement."""
+        obj.Start = pla.multVec(obj.Start)
+        obj.End = pla.multVec(obj.End)
+        obj.Dimline = pla.multVec(obj.Dimline)
+        obj.Normal = pla.Rotation.multVec(obj.Normal)
+        obj.Direction = pla.Rotation.multVec(obj.Direction)
 
     def execute(self, obj):
         """Execute when the object is created or recomputed.
@@ -563,7 +567,35 @@ class AngularDimension(DimensionBase):
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(
+            obj, vp_module="view_dimension", vp_class="ViewProviderAngularDimension"
+        )
         self.Type = "AngularDimension"
+
+        if not getattr(obj, "ViewObject", None):
+            return
+        vobj = obj.ViewObject
+        if hasattr(vobj, "TextColor"):
+            return
+        super().update_properties_0v21(obj, vobj)
+
+    def transform(self, obj, pla):
+        """Transform the object by applying a placement."""
+        import Part
+
+        new_normal = pla.Rotation.multVec(obj.Normal)
+        c_old = Part.makeCircle(1, App.Vector(), obj.Normal)
+        c_tra = c_old.transformShape((pla * c_old.Placement).Rotation.Matrix)
+        c_new = Part.makeCircle(1, App.Vector(), new_normal)
+        delta_angle = math.degrees(c_new.Curve.parameter(c_tra.firstVertex().Point))
+        first_angle = (obj.FirstAngle.Value + delta_angle) % 360
+        last_angle = (obj.LastAngle.Value + delta_angle) % 360
+
+        obj.Center = pla.multVec(obj.Center)
+        obj.Dimline = pla.multVec(obj.Dimline)
+        obj.Normal = new_normal
+        obj.FirstAngle = first_angle
+        obj.LastAngle = last_angle
 
     def execute(self, obj):
         """Execute when the object is created or recomputed.

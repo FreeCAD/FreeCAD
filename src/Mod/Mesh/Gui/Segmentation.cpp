@@ -120,8 +120,7 @@ void Segmentation::accept()
 
     std::string internalname = "Segments_";
     internalname += myMesh->getNameInDocument();
-    App::DocumentObjectGroup* group = static_cast<App::DocumentObjectGroup*>(
-        document->addObject("App::DocumentObjectGroup", internalname.c_str()));
+    auto* group = document->addObject<App::DocumentObjectGroup>(internalname.c_str());
     std::string labelname = "Segments ";
     labelname += myMesh->Label.getValue();
     group->Label.setValue(labelname);
@@ -129,8 +128,7 @@ void Segmentation::accept()
         const std::vector<MeshCore::MeshSegment>& data = it->GetSegments();
         for (const auto& jt : data) {
             Mesh::MeshObject* segment = mesh->meshFromSegment(jt);
-            Mesh::Feature* feaSegm =
-                static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
+            auto* feaSegm = group->addObject<Mesh::Feature>("Segment");
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
             feaSegm->Mesh.finishEditing();

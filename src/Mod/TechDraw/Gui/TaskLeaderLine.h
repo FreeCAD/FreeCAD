@@ -91,7 +91,7 @@ protected:
     void setUiPrimary();
     void setUiEdit();
     void enableVPUi(bool enable);
-    void setEditCursor(QCursor cursor);
+    void setEditCursor(const QCursor& cursor);
 
     QGIView* findParentQGIV();
 
@@ -120,7 +120,7 @@ private:
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
 
-    int m_pbTrackerState;
+    TrackerAction m_pbTrackerState;
 
     double m_saveX;
     double m_saveY;

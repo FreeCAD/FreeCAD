@@ -92,16 +92,18 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
         FrontalDelaunay = 6,
         BAMG = 7,
         FrontalDelaunayForQuads = 8,
-        PackingOfParallelograms = 9
+        PackingOfParallelograms = 9,
+        QuasiStructuredQuad = 11
     };
 
     d->ui.method->addItem(tr("Automatic"), static_cast<int>(Automatic));
     d->ui.method->addItem(tr("Adaptive"), static_cast<int>(MeshAdapt));
-    d->ui.method->addItem(QString::fromLatin1("Delaunay"), static_cast<int>(Delaunay));
+    d->ui.method->addItem(QStringLiteral("Delaunay"), static_cast<int>(Delaunay));
     d->ui.method->addItem(tr("Frontal"), static_cast<int>(FrontalDelaunay));
-    d->ui.method->addItem(QString::fromLatin1("BAMG"), static_cast<int>(BAMG));
+    d->ui.method->addItem(QStringLiteral("BAMG"), static_cast<int>(BAMG));
     d->ui.method->addItem(tr("Frontal Quad"), static_cast<int>(FrontalDelaunayForQuads));
     d->ui.method->addItem(tr("Parallelograms"), static_cast<int>(PackingOfParallelograms));
+    d->ui.method->addItem(tr("Quasi-structured Quad"), static_cast<int>(QuasiStructuredQuad));
 }
 
 GmshWidget::~GmshWidget()
@@ -238,7 +240,7 @@ void GmshWidget::started()
     if (!d->label) {
         d->label = new Gui::StatusWidget(this);
         d->label->setAttribute(Qt::WA_DeleteOnClose);
-        d->label->setStatusText(tr("Running gmsh..."));
+        d->label->setStatusText(tr("Running Gmsh..."));
         d->label->show();
     }
 }
@@ -250,8 +252,7 @@ void GmshWidget::finished(int /*exitCode*/, QProcess::ExitStatus exitStatus)
         d->label->close();
     }
 
-    d->ui.labelTime->setText(
-        QString::fromLatin1("%1 %2 ms").arg(tr("Time:")).arg(d->time.elapsed()));
+    d->ui.labelTime->setText(QStringLiteral("%1 %2 ms").arg(tr("Time:")).arg(d->time.elapsed()));
     if (exitStatus == QProcess::NormalExit) {
         loadOutput();
     }
@@ -319,8 +320,9 @@ bool RemeshGmsh::writeProject(QString& inpFile, QString& outFile)
         // Parameters
         int algorithm = meshingAlgorithm();
         double maxSize = getMaxSize();
-        if (maxSize == 0.0)
+        if (maxSize == 0.0) {
             maxSize = 1.0e22;
+        }
         double minSize = getMinSize();
         double angle = getAngle();
         int maxAngle = 120;
@@ -338,7 +340,7 @@ bool RemeshGmsh::writeProject(QString& inpFile, QString& outFile)
             << "   Exit;\n"
             << "EndIf\n"
             << "Merge \"" << stl.filePath() << "\";\n\n"
-            << "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=Frontal Quad, 9=Packing of Parallelograms)\n"
+            << "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=Frontal Quad, 9=Packing of Parallelograms, 11=Quasi-structured Quad)\n"
             << "Mesh.Algorithm = " << algorithm << ";\n\n"
             << "// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 7=MMG3D, 9=R-tree, 10=HTX)\n"
             << "// Mesh.Algorithm3D = 1;\n\n"

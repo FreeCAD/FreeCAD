@@ -23,7 +23,7 @@
 #ifndef PARTGUI_ViewProviderShapeBinder_H
 #define PARTGUI_ViewProviderShapeBinder_H
 
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 
@@ -47,7 +47,7 @@ protected:
     void attach(App::DocumentObject *obj) override;
 
 private:
-    std::vector<App::Color> originalLineColors;
+    std::vector<Base::Color> originalLineColors;
     std::vector<App::Material> originalFaceAppearance;
 
 };
@@ -84,7 +84,7 @@ private:
     void updatePlacement(bool transaction);
 };
 
-using ViewProviderSubShapeBinderPython = Gui::ViewProviderPythonFeatureT<ViewProviderSubShapeBinder>;
+using ViewProviderSubShapeBinderPython = Gui::ViewProviderFeaturePythonT<ViewProviderSubShapeBinder>;
 
 } // namespace PartDesignGui
 

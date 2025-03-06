@@ -37,8 +37,6 @@ now = datetime.datetime.now()
 SHOW_EDITOR = True
 
 
-
-
 def export(objectslist, filename, argstring):
     "called when freecad exports a list of objects"
 
@@ -54,9 +52,7 @@ def export(objectslist, filename, argstring):
 
         if not hasattr(obj, "Path"):
             print(
-                "the object "
-                + obj.Name
-                + " is not a path. Please select only path and Compounds."
+                "the object " + obj.Name + " is not a path. Please select only path and Compounds."
             )
             return
         print("postprocessing...")
@@ -87,9 +83,7 @@ def parse(pathobj):
         return out
     else:  # parsing simple path
 
-        if not hasattr(
-            pathobj, "Path"
-        ):  # groups might contain non-path things like stock.
+        if not hasattr(pathobj, "Path"):  # groups might contain non-path things like stock.
             return out
 
         out += "(Path: " + pathobj.Label + ")\n"

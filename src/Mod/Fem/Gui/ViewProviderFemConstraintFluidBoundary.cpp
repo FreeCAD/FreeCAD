@@ -78,8 +78,7 @@ bool ViewProviderFemConstraintFluidBoundary::setEdit(int ModNum)
 void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    Fem::ConstraintFluidBoundary* pcConstraint =
-        static_cast<Fem::ConstraintFluidBoundary*>(this->getObject());
+    Fem::ConstraintFluidBoundary* pcConstraint = this->getObject<Fem::ConstraintFluidBoundary>();
     float scaledwidth =
         WIDTH * pcConstraint->Scale.getValue();  // OvG: Calculate scaled values once only
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();

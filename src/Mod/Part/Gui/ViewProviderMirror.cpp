@@ -74,7 +74,7 @@ ViewProviderMirror::~ViewProviderMirror()
 void ViewProviderMirror::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     // don't add plane editor to context menu if MirrorPlane is set because it would override any changes, anyway
-    Part::Mirroring* mf = static_cast<Part::Mirroring*>(getObject());
+    Part::Mirroring* mf = getObject<Part::Mirroring>();
     Part::Feature* ref = static_cast<Part::Feature*>(mf->MirrorPlane.getValue());
     bool enabled = true;
     if (ref){
@@ -92,7 +92,7 @@ bool ViewProviderMirror::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // get the properties from the mirror feature
-        Part::Mirroring* mf = static_cast<Part::Mirroring*>(getObject());
+        Part::Mirroring* mf = getObject<Part::Mirroring>();
         Part::Feature* ref = static_cast<Part::Feature*>(mf->MirrorPlane.getValue());
         if (ref) { //skip this editor if MirrorPlane property is set
             return false;
@@ -173,7 +173,7 @@ void ViewProviderMirror::unsetEdit(int ModNum)
         rot.multVec(norm,norm);
 
         // apply the new values
-        Part::Mirroring* mf = static_cast<Part::Mirroring*>(getObject());
+        Part::Mirroring* mf = getObject<Part::Mirroring>();
         mf->Base.setValue(move[0],move[1],move[2]);
         mf->Normal.setValue(norm[0],norm[1],norm[2]);
 
@@ -189,14 +189,14 @@ std::vector<App::DocumentObject*> ViewProviderMirror::claimChildren() const
 {
     // Make the input object a child (see also #0001482)
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<Part::Mirroring*>(getObject())->Source.getValue());
+    temp.push_back(getObject<Part::Mirroring>()->Source.getValue());
     return temp;
 }
 
 bool ViewProviderMirror::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
-    Part::Mirroring* pMirroring = static_cast<Part::Mirroring*>(getObject());
+    Part::Mirroring* pMirroring = getObject<Part::Mirroring>();
     App::DocumentObject *pSource = pMirroring->Source.getValue();
     if (pSource)
         Gui::Application::Instance->showViewProvider(pSource);
@@ -224,7 +224,7 @@ void ViewProviderMirror::dragMotionCallback(void *data, SoDragger *drag)
     SbRotation rot(mat);
     SbVec3f norm(0,0,1);
     rot.multVec(norm,norm);
-    Part::Mirroring* mf = static_cast<Part::Mirroring*>(that->getObject());
+    Part::Mirroring* mf = that->getObject<Part::Mirroring>();
     mf->Base.setValue(mat[3][0],mat[3][1],mat[3][2]);
     mf->Normal.setValue(norm[0],norm[1],norm[2]);
 }
@@ -248,7 +248,7 @@ void ViewProviderFillet::updateData(const App::Property* prop)
             (prop)->getValues();
         if (hist.size() != 1)
             return;
-        Part::Fillet* objFill = dynamic_cast<Part::Fillet*>(getObject());
+        Part::Fillet* objFill = getObject<Part::Fillet>();
         if (!objFill)
             return;
         Part::Feature* objBase = dynamic_cast<Part::Feature*>(
@@ -301,7 +301,7 @@ bool ViewProviderFillet::setEdit(int ModNum)
     if (ModNum == ViewProvider::Default ) {
         if (Gui::Control().activeDialog())
             return false;
-        Part::Fillet* fillet = static_cast<Part::Fillet*>(getObject());
+        Part::Fillet* fillet = getObject<Part::Fillet>();
         Gui::Control().showDialog(new PartGui::TaskFilletEdges(fillet));
         return true;
     }
@@ -324,14 +324,14 @@ void ViewProviderFillet::unsetEdit(int ModNum)
 std::vector<App::DocumentObject*> ViewProviderFillet::claimChildren() const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<Part::Fillet*>(getObject())->Base.getValue());
+    temp.push_back(getObject<Part::Fillet>()->Base.getValue());
     return temp;
 }
 
 bool ViewProviderFillet::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
-    Part::Fillet* pFillet = static_cast<Part::Fillet*>(getObject());
+    Part::Fillet* pFillet = getObject<Part::Fillet>();
     App::DocumentObject *pBase = pFillet->Base.getValue();
     if (pBase)
         Gui::Application::Instance->showViewProvider(pBase);
@@ -358,7 +358,7 @@ void ViewProviderChamfer::updateData(const App::Property* prop)
             (prop)->getValues();
         if (hist.size() != 1)
             return;
-        Part::Chamfer* objCham = dynamic_cast<Part::Chamfer*>(getObject());
+        Part::Chamfer* objCham = getObject<Part::Chamfer>();
         if (!objCham)
             return;
         Part::Feature* objBase = dynamic_cast<Part::Feature*>(
@@ -411,7 +411,7 @@ bool ViewProviderChamfer::setEdit(int ModNum)
     if (ModNum == ViewProvider::Default ) {
         if (Gui::Control().activeDialog())
             return false;
-        Part::Chamfer* chamfer = static_cast<Part::Chamfer*>(getObject());
+        Part::Chamfer* chamfer = getObject<Part::Chamfer>();
         Gui::Control().showDialog(new PartGui::TaskChamferEdges(chamfer));
         return true;
     }
@@ -434,14 +434,14 @@ void ViewProviderChamfer::unsetEdit(int ModNum)
 std::vector<App::DocumentObject*> ViewProviderChamfer::claimChildren() const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<Part::Chamfer*>(getObject())->Base.getValue());
+    temp.push_back(getObject<Part::Chamfer>()->Base.getValue());
     return temp;
 }
 
 bool ViewProviderChamfer::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
-    Part::Chamfer* pChamfer = static_cast<Part::Chamfer*>(getObject());
+    Part::Chamfer* pChamfer = getObject<Part::Chamfer>();
     App::DocumentObject *pBase = pChamfer->Base.getValue();
     if (pBase)
         Gui::Application::Instance->showViewProvider(pBase);
@@ -463,14 +463,14 @@ ViewProviderRevolution::~ViewProviderRevolution() = default;
 std::vector<App::DocumentObject*> ViewProviderRevolution::claimChildren() const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<Part::Revolution*>(getObject())->Source.getValue());
+    temp.push_back(getObject<Part::Revolution>()->Source.getValue());
     return temp;
 }
 
 bool ViewProviderRevolution::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
-    Part::Revolution* pRevolve = static_cast<Part::Revolution*>(getObject());
+    Part::Revolution* pRevolve = getObject<Part::Revolution>();
     App::DocumentObject *pBase = pRevolve->Source.getValue();
     if (pBase)
         Gui::Application::Instance->showViewProvider(pBase);
@@ -491,7 +491,7 @@ ViewProviderLoft::~ViewProviderLoft() = default;
 
 std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren() const
 {
-    return static_cast<Part::Loft*>(getObject())->Sections.getValues();
+    return getObject<Part::Loft>()->Sections.getValues();
 }
 
 bool ViewProviderLoft::onDelete(const std::vector<std::string> &)
@@ -512,7 +512,7 @@ ViewProviderSweep::~ViewProviderSweep() = default;
 
 std::vector<App::DocumentObject*> ViewProviderSweep::claimChildren() const
 {
-    auto obj = static_cast<Part::Sweep*>(getObject());
+    auto obj = getObject<Part::Sweep>();
     auto children = obj->Sections.getValues();
     if(obj->Spine.getValue())
         children.push_back(obj->Spine.getValue());
@@ -562,7 +562,7 @@ bool ViewProviderOffset::setEdit(int ModNum)
         if (offsetDlg)
             Gui::Control().showDialog(offsetDlg);
         else
-            Gui::Control().showDialog(new TaskOffset(static_cast<Part::Offset*>(getObject())));
+            Gui::Control().showDialog(new TaskOffset(getObject<Part::Offset>()));
 
         return true;
     }
@@ -585,14 +585,14 @@ void ViewProviderOffset::unsetEdit(int ModNum)
 std::vector<App::DocumentObject*> ViewProviderOffset::claimChildren() const
 {
     std::vector<App::DocumentObject*> child;
-    child.push_back(static_cast<Part::Offset*>(getObject())->Source.getValue());
+    child.push_back(getObject<Part::Offset>()->Source.getValue());
     return child;
 }
 
 bool ViewProviderOffset::onDelete(const std::vector<std::string> &)
 {
     // get the support and Sketch
-    Part::Offset* offset = static_cast<Part::Offset*>(getObject());
+    Part::Offset* offset = getObject<Part::Offset>();
     App::DocumentObject* source = offset->Source.getValue();
     if (source){
         Gui::Application::Instance->getViewProvider(source)->show();
@@ -644,7 +644,7 @@ bool ViewProviderThickness::setEdit(int ModNum)
         if (thicknessDlg)
             Gui::Control().showDialog(thicknessDlg);
         else
-            Gui::Control().showDialog(new TaskThickness(static_cast<Part::Thickness*>(getObject())));
+            Gui::Control().showDialog(new TaskThickness(getObject<Part::Thickness>()));
 
         return true;
     }
@@ -667,14 +667,14 @@ void ViewProviderThickness::unsetEdit(int ModNum)
 std::vector<App::DocumentObject*> ViewProviderThickness::claimChildren() const
 {
     std::vector<App::DocumentObject*> child;
-    child.push_back(static_cast<Part::Thickness*>(getObject())->Faces.getValue());
+    child.push_back(getObject<Part::Thickness>()->Faces.getValue());
     return child;
 }
 
 bool ViewProviderThickness::onDelete(const std::vector<std::string> &)
 {
     // get the support and Sketch
-    Part::Thickness* thickness = static_cast<Part::Thickness*>(getObject());
+    Part::Thickness* thickness = getObject<Part::Thickness>();
     App::DocumentObject* source = thickness->Faces.getValue();
     if (source){
         Gui::Application::Instance->getViewProvider(source)->show();

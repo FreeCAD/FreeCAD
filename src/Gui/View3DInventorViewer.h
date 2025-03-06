@@ -34,18 +34,32 @@
 #include <QImage>
 
 #include <Inventor/SbRotation.h>
+#include <Inventor/nodes/SoEnvironment.h>
 #include <Inventor/nodes/SoEventCallback.h>
+#include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSwitch.h>
+
+#ifdef FC_OS_MACOSX
+# include <OpenGL/gl.h>
+#else
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+# endif  // FC_OS_WIN32
+# include <GL/gl.h>
+#endif  // FC_OS_MACOSX
 
 #include <Base/Placement.h>
 
 #include "Namespace.h"
-#include "Selection.h"
+#include "Selection/Selection.h"
 
 #include "CornerCrossLetters.h"
 #include "View3DInventorSelection.h"
 #include "Quarter/SoQTQuarterAdaptor.h"
 
+class QOpenGLFramebufferObject;
+class QOpenGLWidget;
+class QSurfaceFormat;
 
 class SoTranslation;
 class SoTransform;
@@ -67,8 +81,12 @@ class SoClipPlane;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
-namespace Gui {
+namespace Base {
+    class BoundBox2d;
+}
 
+namespace Gui {
+class NavigationAnimation;
 class ViewProvider;
 class SoFCBackgroundGradient;
 class NavigationStyle;
@@ -110,22 +128,6 @@ public:
     };
     //@}
 
-    /** @name Anti-Aliasing modes of the rendered 3D scene
-      * Specifies Anti-Aliasing (AA) method
-      * - Smoothing enables OpenGL line and vertex smoothing (basically deprecated)
-      * - MSAA is hardware multi sampling (with 2, 4 or 8 passes), a quite common and efficient AA technique
-      */
-    //@{
-    enum AntiAliasing {
-        None = 0,
-        Smoothing = 1,
-        MSAA2x = 2,
-        MSAA4x = 3,
-        MSAA6x = 5,
-        MSAA8x = 4
-    };
-    //@}
-
     /** @name Render mode
       */
     //@{
@@ -146,8 +148,8 @@ public:
     };
     //@}
 
-    explicit View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = nullptr);
-    View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = nullptr);
+    explicit View3DInventorViewer (QWidget *parent, const QOpenGLWidget* sharewidget = nullptr);
+    View3DInventorViewer (const QSurfaceFormat& format, QWidget *parent, const QOpenGLWidget* sharewidget = nullptr);
     ~View3DInventorViewer() override;
 
     void init();
@@ -158,6 +160,13 @@ public:
     SoDirectionalLight* getBacklight() const;
     void setBacklightEnabled(bool on);
     bool isBacklightEnabled() const;
+
+    SoDirectionalLight* getFillLight() const;
+    void setFillLightEnabled(bool on);
+    bool isFillLightEnabled() const;
+
+    SoEnvironment* getEnvironment() const;
+
     void setSceneGraph (SoNode *root) override;
     bool searchNode(SoNode*) const;
 
@@ -167,8 +176,8 @@ public:
     bool isSpinningAnimationEnabled() const;
     bool isAnimating() const;
     bool isSpinning() const;
-    void startAnimation(const SbRotation& orientation, const SbVec3f& rotationCenter,
-                        const SbVec3f& translation, int duration = -1, bool wait = false);
+    std::shared_ptr<NavigationAnimation> startAnimation(const SbRotation& orientation, const SbVec3f& rotationCenter,
+                        const SbVec3f& translation, int duration = -1, bool wait = false) const;
     void startSpinningAnimation(const SbVec3f& axis, float velocity);
     void stopAnimating();
 
@@ -185,7 +194,7 @@ public:
     static int getNumSamples();
     void setRenderType(RenderType type);
     RenderType getRenderType() const;
-    void renderToFramebuffer(QtGLFramebufferObject*);
+    void renderToFramebuffer(QOpenGLFramebufferObject*);
     QImage grabFramebuffer();
     void imageFromFramebuffer(int width, int height, int samples,
                               const QColor& bgcolor, QImage& img);
@@ -325,7 +334,10 @@ public:
     SbVec3f getPointOnLine(const SbVec2s&, const SbVec3f& axisCenter, const SbVec3f& axis) const;
 
     /** Returns the 3d point on the XY plane of a placement to the given 2d point. */
-    SbVec3f getPointOnXYPlaneOfPlacement(const SbVec2s&, Base::Placement&) const;
+    SbVec3f getPointOnXYPlaneOfPlacement(const SbVec2s&, const Base::Placement&) const;
+
+    /** Returns the bounding box on the XY plane of a placement to the given 2d point. */
+    Base::BoundBox2d getViewportOnXYPlaneOfPlacement(Base::Placement plc) const;
 
     /** Returns the 2d coordinates on the viewport to the given 3d point. */
     SbVec2s getPointOnViewport(const SbVec3f&) const;
@@ -385,10 +397,10 @@ public:
 
     /**
      * Set the camera's orientation. If isAnimationEnabled() returns
-     * \a true the reorientation is animated, otherwise its directly
+     * \a true the reorientation is animated and the animation is returned, otherwise its directly
      * set.
      */
-    void setCameraOrientation(const SbRotation& orientation, bool moveToCenter = false);
+    std::shared_ptr<NavigationAnimation> setCameraOrientation(const SbRotation& orientation, bool moveToCenter = false) const;
     void setCameraType(SoType type) override;
     void moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration = -1);
     /**
@@ -442,6 +454,9 @@ public:
     void setEnabledVBO(bool on);
     bool isEnabledVBO() const;
     void setRenderCache(int);
+
+    //! Update colors of axis in corner to match preferences
+    void updateColors();
 
     void getDimensions(float& fHeight, float& fWidth) const;
     float getMaxDimension() const;
@@ -502,7 +517,12 @@ private:
     SoFCBackgroundGradient *pcBackGround;
     SoSeparator * backgroundroot;
     SoSeparator * foregroundroot;
+
     SoDirectionalLight* backlight;
+    SoDirectionalLight* fillLight;
+    SoEnvironment* environment;
+
+    SoRotation* lightRotation;
 
     // Scene graph root
     SoSeparator * pcViewProviderRoot;
@@ -521,7 +541,7 @@ private:
     SoClipPlane *pcClipPlane;
 
     RenderType renderType;
-    QtGLFramebufferObject* framebuffer;
+    QOpenGLFramebufferObject* framebuffer;
     QImage glImage;
     bool shading;
     SoSwitch *dimensionRoot;
@@ -539,6 +559,10 @@ private:
     bool fpsEnabled;
     bool vboEnabled;
     bool naviCubeEnabled;
+
+    Base::Color m_xColor;
+    Base::Color m_yColor;
+    Base::Color m_zColor;
 
     bool editing;
     QCursor editCursor, zoomCursor, panCursor, spinCursor;

@@ -102,7 +102,7 @@ class MaterialFilterTestCases(unittest.TestCase):
         self.assertIsNotNone(material)
         self.assertEqual(material.Name, "TestBrassAppearance")
         self.assertEqual(material.UUID, UUIDBrassAppearance)
-    
+
         # Create an empty filter
         filter = Materials.MaterialFilter()
         self.assertEqual(len(self.MaterialManager.MaterialLibraries), 1)

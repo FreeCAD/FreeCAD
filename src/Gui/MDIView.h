@@ -23,7 +23,7 @@
 #ifndef GUI_MDIVIEW_H
 #define GUI_MDIVIEW_H
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <QMainWindow>
 #include <Gui/ActiveObjectList.h>
 #include <Gui/View.h>

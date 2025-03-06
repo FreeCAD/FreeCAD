@@ -165,14 +165,14 @@
        </spacer>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_inCommandShortcutFill">
+       <widget class="QLabel" name="label_inCommandShortcutMakeFace">
         <property name="text">
-         <string>Fill</string>
+         <string>Make face</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutFill">
+       <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutMakeFace">
         <property name="maximumSize">
          <size>
           <width>25</width>
@@ -189,7 +189,7 @@
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>inCommandShortcutFill</cstring>
+         <cstring>inCommandShortcutMakeFace</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
@@ -771,7 +771,7 @@
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBox_DisplayStatusbarSnapWidget">
         <property name="toolTip">
-         <string>If checked, the Snap widget is displayed in the Draft statusbar</string>
+         <string>If checked, the Snap widget is displayed in the Draft status bar</string>
         </property>
         <property name="text">
          <string>Show the Snap widget in the Draft Workbench</string>
@@ -790,7 +790,7 @@
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBox_DisplayStatusbarScaleWidget">
         <property name="toolTip">
-         <string>If checked, the Annotation scale widget is displayed in the Draft statusbar</string>
+         <string>If checked, the Annotation scale widget is displayed in the Draft status bar</string>
         </property>
         <property name="text">
          <string>Show the Annotation scale widget in the Draft Workbench</string>

@@ -25,6 +25,8 @@
 # include <stack>
 #endif
 
+#include <zipios++/zipinputstream.h>
+
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Reader.h>

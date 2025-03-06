@@ -24,6 +24,7 @@
 #include <gtest/gtest.h>
 
 #include "App/Metadata.h"
+#include <xercesc/util/PlatformUtils.hpp>
 
 // NOLINTBEGIN(readability-named-parameter)
 
@@ -192,11 +193,11 @@ class MetadataTest: public ::testing::Test
 protected:
     void SetUp() override
     {
-        xercesc_3_2::XMLPlatformUtils::Initialize();
+        XERCES_CPP_NAMESPACE::XMLPlatformUtils::Initialize();
     }
     void TearDown() override
     {
-        xercesc_3_2::XMLPlatformUtils::Terminate();
+        XERCES_CPP_NAMESPACE::XMLPlatformUtils::Terminate();
     }
     std::string GivenSimpleMetadataXMLString()
     {

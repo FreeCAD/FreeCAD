@@ -120,7 +120,6 @@ class BIM_Unclone:
                 if newobj != obj:
                     name = obj.Name
                     label = obj.Label
-                    from DraftGui import todo
 
                     FreeCAD.ActiveDocument.removeObject(name)
                     newobj.Label = label

@@ -76,7 +76,7 @@ using StringHasherRef = Base::Reference<StringHasher>;
  */
 class AppExport StringID: public Base::BaseClass, public Base::Handled
 {
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();// NOLINT
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
 
 public:
     /// Flag of the stored string data
@@ -119,15 +119,15 @@ public:
      * User code is not supposed to create StringID directly, but through StringHasher::getID()
      */
     StringID(long id, QByteArray data, const Flags& flags = Flag::None)
-        : _id(id),
-          _data(std::move(data)),
-          _flags(flags)
+        : _id(id)
+        , _data(std::move(data))
+        , _flags(flags)
     {}
 
     /// Constructs an empty StringID
     StringID()
-        : _id(0),
-          _flags(Flag::None)
+        : _id(0)
+        , _flags(Flag::None)
     {}
 
     StringID(const StringID& other) = delete;
@@ -327,8 +327,8 @@ public:
     /// Default construction results in an empty StringIDRef object: it will evaluate to boolean
     /// "false" if queried.
     StringIDRef()
-        : _sid(nullptr),
-          _index(0)
+        : _sid(nullptr)
+        , _index(0)
     {}
 
     /// Standard construction from a heap-allocated StringID. This reference-counting class manages
@@ -337,8 +337,8 @@ public:
     /// \param stringID A pointer to a StringID allocated with "new"
     /// \param index (optional) An index value to store along with the StringID. Defaults to zero.
     StringIDRef(StringID* stringID, int index = 0)
-        : _sid(stringID),
-          _index(index)
+        : _sid(stringID)
+        , _index(index)
     {
         if (_sid) {
             _sid->ref();
@@ -347,8 +347,8 @@ public:
 
     /// Copy construction results in an incremented reference count for the stored StringID
     StringIDRef(const StringIDRef& other)
-        : _sid(other._sid),
-          _index(other._index)
+        : _sid(other._sid)
+        , _index(other._index)
     {
         if (_sid) {
             _sid->ref();
@@ -358,15 +358,15 @@ public:
     /// Move construction does NOT increase the reference count of the StringID (instead, it
     /// invalidates the pointer in the moved object).
     StringIDRef(StringIDRef&& other) noexcept
-        : _sid(other._sid),
-          _index(other._index)
+        : _sid(other._sid)
+        , _index(other._index)
     {
         other._sid = nullptr;
     }
 
     StringIDRef(const StringIDRef& other, int index)
-        : _sid(other._sid),
-          _index(index)
+        : _sid(other._sid)
+        , _index(index)
     {
         if (_sid) {
             _sid->ref();
@@ -582,12 +582,12 @@ public:
 
     bool isMarked() const
     {
-        return _sid && _sid->isMarked();// NOLINT
+        return _sid && _sid->isMarked();  // NOLINT
     }
 
     bool isFromSameHasher(const StringHasherRef& hasher) const
     {
-        return _sid && _sid->isFromSameHasher(hasher);// NOLINT
+        return _sid && _sid->isFromSameHasher(hasher);  // NOLINT
     }
 
     StringHasherRef getHasher() const
@@ -633,7 +633,7 @@ private:
 class AppExport StringHasher: public Base::Persistence, public Base::Handled
 {
 
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();// NOLINT
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
 
 public:
     StringHasher();
@@ -778,10 +778,11 @@ protected:
     void restoreStreamNew(std::istream& stream, std::size_t count);
 
 private:
-    std::unique_ptr<HashMap> _hashes;///< Bidirectional map of StringID and its index (a long int).
+    std::unique_ptr<HashMap>
+        _hashes;  ///< Bidirectional map of StringID and its index (a long int).
     mutable std::string _filename;
 };
-}// namespace App
+}  // namespace App
 
 ENABLE_BITMASK_OPERATORS(App::StringID::Flag)
 ENABLE_BITMASK_OPERATORS(App::StringHasher::Option)
@@ -828,6 +829,6 @@ inline void StringID::setPersistent(bool enable)
 {
     _flags.setFlag(Flag::Persistent, enable);
 }
-}// namespace App
+}  // namespace App
 
-#endif// APP_STRING_ID_H
+#endif  // APP_STRING_ID_H

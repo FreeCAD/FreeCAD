@@ -3,13 +3,13 @@
   <name>Built-In Preference Packs</name>
   <description>Preference Packs included with the FreeCAD distribution</description>
   <version>1.0.0</version>
-  <maintainer email="email@freecad.org">MisterMaker</maintainer>
+  <maintainer email="email@FreeCAD.org">MisterMaker</maintainer>
   <license file="../../LICENSE">LGPL2</license>
   <url type="repository">https://github.com/FreeCAD/FreeCAD</url>
 
   <content>
     <preferencepack>
-      <name>Classic</name>
+      <name>FreeCAD Classic</name>
       <type>Theme</type>
       <description>Removes stylesheets, and applies the classic purple/gray background. Resets all colors to default</description>
       <version>1.0.0</version>
@@ -19,22 +19,22 @@
       <tag>classic theme</tag>
     </preferencepack>
 	<preferencepack>
-	  <name>Light theme</name>
+	  <name>FreeCAD Light</name>
       <type>Theme</type>
       <description>Applies a basic light theme.</description>
-      <version>0.1.0</version>
+      <version>1.0.0</version>
       <tag>built-in</tag>
       <tag>background</tag>
-	  <tag>light</tag>
+	    <tag>light</tag>
     </preferencepack>
 	<preferencepack>
-	  <name>Dark theme</name>
+	  <name>FreeCAD Dark</name>
       <type>Theme</type>
       <description>Applies a basic dark theme.</description>
       <version>1.0.0</version>
       <tag>built-in</tag>
       <tag>background</tag>
-	  <tag>dark</tag>
+	    <tag>dark</tag>
     </preferencepack>
   </content>
 

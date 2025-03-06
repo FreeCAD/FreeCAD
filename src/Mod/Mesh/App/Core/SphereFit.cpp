@@ -68,9 +68,8 @@ double SphereFit::GetRadius() const
     if (_bIsFitted) {
         return _dRadius;
     }
-    else {
-        return 0.0;
-    }
+
+    return 0.0;
 }
 
 Base::Vector3d SphereFit::GetCenter() const
@@ -78,9 +77,8 @@ Base::Vector3d SphereFit::GetCenter() const
     if (_bIsFitted) {
         return _vCenter;
     }
-    else {
-        return Base::Vector3d();
-    }
+
+    return Base::Vector3d();
 }
 
 int SphereFit::GetNumIterations() const
@@ -88,9 +86,8 @@ int SphereFit::GetNumIterations() const
     if (_bIsFitted) {
         return _numIter;
     }
-    else {
-        return 0;
-    }
+
+    return 0;
 }
 
 float SphereFit::GetDistanceToSphere(const Base::Vector3f& rcPoint) const
@@ -270,8 +267,7 @@ void SphereFit::setupNormalEquationMatrices(const std::vector<Base::Vector3d>& r
     double a[4] {}, b[3] {};
     double f0 {}, qw {};
     std::vector<Base::Vector3d>::const_iterator vIt = residuals.begin();
-    std::list<Base::Vector3f>::const_iterator cIt;
-    for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt, ++vIt) {
+    for (auto cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt, ++vIt) {
         // if (using this point) { // currently all given points are used (could modify this if
         // eliminating outliers, etc....
         setupObservation(*cIt, *vIt, a, f0, qw, b);
@@ -384,8 +380,7 @@ bool SphereFit::computeResiduals(const Eigen::VectorXd& x,
     // double maxdVz = 0.0;
     // double rmsVv = 0.0;
     std::vector<Base::Vector3d>::iterator vIt = residuals.begin();
-    std::list<Base::Vector3f>::const_iterator cIt;
-    for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt, ++vIt) {
+    for (auto cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt, ++vIt) {
         // if (using this point) { // currently all given points are used (could modify this if
         // eliminating outliers, etc....
         ++nPtsUsed;

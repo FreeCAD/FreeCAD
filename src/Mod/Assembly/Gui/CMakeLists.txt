@@ -1,10 +1,16 @@
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${COIN3D_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
 )
+link_directories(${OCC_LIBRARY_DIR})
 
 set(AssemblyGui_LIBS
     Assembly
@@ -27,6 +33,15 @@ SOURCE_GROUP("Resources" FILES ${AssemblyResource_SRCS})
 
 generate_from_xml(ViewProviderAssemblyPy)
 
+set(AssemblyGui_UIC_SRCS
+    TaskAssemblyCreateBom.ui
+    TaskAssemblyCreateJoint.ui
+    TaskAssemblyCreateSimulation.ui
+    TaskAssemblyCreateView.ui
+    TaskAssemblyInsertLink.ui
+    Assembly.ui
+)
+
 SET(Python_SRCS
     ViewProviderAssemblyPy.xml
     ViewProviderAssemblyPyImp.cpp
@@ -40,6 +55,8 @@ SET(AssemblyGui_SRCS_Module
     PreCompiled.h
     ViewProviderAssembly.cpp
     ViewProviderAssembly.h
+    ViewProviderAssemblyLink.cpp
+    ViewProviderAssemblyLink.h
     ViewProviderBom.cpp
     ViewProviderBom.h
     ViewProviderBomGroup.cpp
@@ -48,6 +65,8 @@ SET(AssemblyGui_SRCS_Module
     ViewProviderJointGroup.h
     ViewProviderViewGroup.cpp
     ViewProviderViewGroup.h
+    ViewProviderSimulationGroup.cpp
+    ViewProviderSimulationGroup.h
     ${Assembly_QRC_SRCS}
 )
 

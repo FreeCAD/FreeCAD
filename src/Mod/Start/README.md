@@ -8,7 +8,7 @@ to things like FreeCAD's Recent Files list. This switch will happen sometime aft
 on Ubuntu 20.04 LTS, which still uses Qt 5.12. The cMake integration of QML and C++ together in a single project is
 greatly improved in Qt 5.15 and later.
 
-In the meantime the workbench is written in C++ so that the models can be re-used later, and only the UI itself will
+In the meantime the workbench is written in C++ so that the models can be reused later, and only the UI itself will
 have to change.
 
 ### Structure

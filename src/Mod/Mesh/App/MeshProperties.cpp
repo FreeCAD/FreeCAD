@@ -244,7 +244,7 @@ std::vector<float> PropertyCurvatureList::getCurvature(int mode) const
     // Mean curvature
     if (mode == MeanCurvature) {
         for (const auto& it : fCurvInfo) {
-            fValues.push_back(0.5f * (it.fMaxCurvature + it.fMinCurvature));
+            fValues.push_back(0.5F * (it.fMaxCurvature + it.fMinCurvature));
         }
     }
     // Gaussian curvature
@@ -415,22 +415,22 @@ MeshCore::MeshIO::Binding PropertyMaterial::getBinding() const
     return _material.binding;
 }
 
-const std::vector<App::Color>& PropertyMaterial::getAmbientColor() const
+const std::vector<Base::Color>& PropertyMaterial::getAmbientColor() const
 {
     return _material.ambientColor;
 }
 
-const std::vector<App::Color>& PropertyMaterial::getDiffuseColor() const
+const std::vector<Base::Color>& PropertyMaterial::getDiffuseColor() const
 {
     return _material.diffuseColor;
 }
 
-const std::vector<App::Color>& PropertyMaterial::getSpecularColor() const
+const std::vector<Base::Color>& PropertyMaterial::getSpecularColor() const
 {
     return _material.specularColor;
 }
 
-const std::vector<App::Color>& PropertyMaterial::getEmissiveColor() const
+const std::vector<Base::Color>& PropertyMaterial::getEmissiveColor() const
 {
     return _material.emissiveColor;
 }
@@ -452,28 +452,28 @@ void PropertyMaterial::setValue(const MeshCore::Material& value)
     hasSetValue();
 }
 
-void PropertyMaterial::setAmbientColor(const std::vector<App::Color>& value)
+void PropertyMaterial::setAmbientColor(const std::vector<Base::Color>& value)
 {
     aboutToSetValue();
     _material.ambientColor = value;
     hasSetValue();
 }
 
-void PropertyMaterial::setDiffuseColor(const std::vector<App::Color>& value)
+void PropertyMaterial::setDiffuseColor(const std::vector<Base::Color>& value)
 {
     aboutToSetValue();
     _material.diffuseColor = value;
     hasSetValue();
 }
 
-void PropertyMaterial::setSpecularColor(const std::vector<App::Color>& value)
+void PropertyMaterial::setSpecularColor(const std::vector<Base::Color>& value)
 {
     aboutToSetValue();
     _material.specularColor = value;
     hasSetValue();
 }
 
-void PropertyMaterial::setEmissiveColor(const std::vector<App::Color>& value)
+void PropertyMaterial::setEmissiveColor(const std::vector<Base::Color>& value)
 {
     aboutToSetValue();
     _material.emissiveColor = value;
@@ -503,7 +503,7 @@ void PropertyMaterial::setBinding(MeshCore::MeshIO::Binding bind)
 
 PyObject* PropertyMaterial::getPyObject()
 {
-    auto getColorList = [](const std::vector<App::Color>& color) {
+    auto getColorList = [](const std::vector<Base::Color>& color) {
         Py::List list;
         for (const auto& it : color) {
             list.append(Py::TupleN(Py::Float(it.r), Py::Float(it.g), Py::Float(it.b)));
@@ -534,7 +534,7 @@ PyObject* PropertyMaterial::getPyObject()
 void PropertyMaterial::setPyObject(PyObject* obj)
 {
     auto getColorList = [](const Py::Dict& dict, const std::string& key) {
-        std::vector<App::Color> color;
+        std::vector<Base::Color> color;
         if (dict.hasKey(key)) {
             Py::Sequence list(dict.getItem(key));
             color.reserve(list.size());
@@ -610,7 +610,7 @@ void PropertyMaterial::Restore(Base::XMLReader& reader)
 void PropertyMaterial::SaveDocFile(Base::Writer& writer) const
 {
     Base::OutputStream str(writer.Stream());
-    auto saveColor = [&str](const std::vector<App::Color>& color) {
+    auto saveColor = [&str](const std::vector<Base::Color>& color) {
         uint32_t count = static_cast<uint32_t>(color.size());
         str << count;
         for (const auto& it : color) {
@@ -640,7 +640,7 @@ void PropertyMaterial::SaveDocFile(Base::Writer& writer) const
 void PropertyMaterial::RestoreDocFile(Base::Reader& reader)
 {
     Base::InputStream str(reader);
-    auto restoreColor = [&str](std::vector<App::Color>& color) {
+    auto restoreColor = [&str](std::vector<Base::Color>& color) {
         uint32_t count = 0;
         str >> count;
         color.resize(count);
@@ -702,7 +702,7 @@ unsigned int PropertyMaterial::getMemSize() const
 {
     auto size = (_material.ambientColor.size() + _material.diffuseColor.size()
                  + _material.emissiveColor.size() + _material.specularColor.size())
-            * sizeof(App::Color)
+            * sizeof(Base::Color)
         + (_material.shininess.size() + _material.transparency.size()) * sizeof(float)
         + _material.library.size() + sizeof(_material);
     return static_cast<unsigned int>(size);
@@ -861,7 +861,7 @@ void PropertyMeshKernel::setPyObject(PyObject* value)
 {
     if (PyObject_TypeCheck(value, &(MeshPy::Type))) {
         MeshPy* mesh = static_cast<MeshPy*>(value);
-        // Do not allow to reassign the same instance
+        // Do not allow one to reassign the same instance
         if (&(*this->_meshObject) != mesh->getMeshObjectPtr()) {
             // Note: Copy the content, do NOT reference the same mesh object
             setValue(*(mesh->getMeshObjectPtr()));

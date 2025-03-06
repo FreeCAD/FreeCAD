@@ -25,6 +25,7 @@
 
 #include <iosfwd>
 #include <list>
+#include <unordered_map>
 
 #include <App/ComplexGeoData.h>
 #include <Base/Exception.h>
@@ -48,7 +49,7 @@ class gp_Ax2;
 class gp_Pln;
 class gp_Vec;
 
-namespace App
+namespace Base
 {
 class Color;
 }
@@ -315,6 +316,8 @@ public:
     Base::Matrix4D getTransform() const override;
     /// Bound box from the CasCade shape
     Base::BoundBox3d getBoundBox() const override;
+    /// More precise bound box from the CasCade shape
+    Base::BoundBox3d getBoundBoxOptimal() const;
     bool getCenterOfGravity(Base::Vector3d& center) const override;
     static void convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf);
     static void convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx);
@@ -358,6 +361,8 @@ public:
 
     /** @name Subelement management */
     //@{
+    /// Search to see if a SubShape matches
+    static Data::MappedElement chooseMatchingSubShapeByPlaneOrLine(const TopoShape& shapeToFind, const TopoShape& shapeToLookIn);
     /// Unlike \ref getTypeAndIndex() this function only handles the supported
     /// element types.
     static std::pair<std::string, unsigned long> getElementTypeAndIndex(const char* Name);
@@ -474,7 +479,7 @@ public:
     void exportBrep(std::ostream&) const;
     void exportBinary(std::ostream&) const;
     void exportStl(const char* FileName, double deflection) const;
-    void exportFaceSet(double, double, const std::vector<App::Color>&, std::ostream&) const;
+    void exportFaceSet(double, double, const std::vector<Base::Color>&, std::ostream&) const;
     void exportLineSet(std::ostream&) const;
     //@}
 
@@ -499,15 +504,15 @@ public:
     /** @name Boolean operation*/
     //@{
     TopoDS_Shape cut(TopoDS_Shape) const;
-    TopoDS_Shape cut(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = 0.0) const;
+    TopoDS_Shape cut(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = -1.0) const;
     TopoDS_Shape common(TopoDS_Shape) const;
-    TopoDS_Shape common(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = 0.0) const;
+    TopoDS_Shape common(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = -1.0) const;
     TopoDS_Shape fuse(TopoDS_Shape) const;
-    TopoDS_Shape fuse(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = 0.0) const;
+    TopoDS_Shape fuse(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = -1.0) const;
     TopoDS_Shape oldFuse(TopoDS_Shape) const;
     TopoDS_Shape section(TopoDS_Shape, Standard_Boolean approximate = Standard_False) const;
     TopoDS_Shape section(const std::vector<TopoDS_Shape>&,
-                         Standard_Real tolerance = 0.0,
+                         Standard_Real tolerance = -1.0,
                          Standard_Boolean approximate = Standard_False) const;
     std::list<TopoDS_Wire> slice(const Base::Vector3d&, double) const;
     TopoDS_Compound slices(const Base::Vector3d&, const std::vector<double>&) const;
@@ -1106,7 +1111,8 @@ public:
 
     /** Make revolved shell around a basis shape
      *
-     * @param base: the basis shape
+     * @param base: the basis shape (solid)
+     * @param profile: the shape to be revolved
      * @param axis: the revolving axis
      * @param face_maker: optional type name of the the maker used to make a
      *                    face from basis shape
@@ -1120,6 +1126,7 @@ public:
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
     TopoShape& makeElementRevolution(const TopoShape& _base,
+                                     const TopoDS_Shape& profile,
                                      const gp_Ax1& axis,
                                      const TopoDS_Face& supportface,
                                      const TopoDS_Face& uptoface,
@@ -1143,6 +1150,7 @@ public:
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
     TopoShape& makeElementRevolution(const gp_Ax1& axis,
+                                     const TopoDS_Shape& profile,
                                      const TopoDS_Face& supportface,
                                      const TopoDS_Face& uptoface,
                                      const char* face_maker = nullptr,
@@ -1151,6 +1159,7 @@ public:
                                      const char* op = nullptr) const
     {
         return TopoShape(0, Hasher).makeElementRevolution(*this,
+                                                          profile,
                                                           axis,
                                                           supportface,
                                                           uptoface,
@@ -1351,7 +1360,7 @@ public:
      */
     TopoShape& makeElementGeneralFuse(const std::vector<TopoShape>& sources,
                                       std::vector<std::vector<TopoShape>>& modified,
-                                      double tol = 0,
+                                      double tol = -1.0,
                                       const char* op = nullptr);
 
     /** Make a fusion of input shapes
@@ -1368,7 +1377,7 @@ public:
      */
     TopoShape& makeElementFuse(const std::vector<TopoShape>& sources,
                                const char* op = nullptr,
-                               double tol = 0);
+                               double tol = -1.0);
     /** Make a fusion of this shape and an input shape
      *
      * @param source: the source shape
@@ -1379,7 +1388,7 @@ public:
      * @return Return the new shape. The TopoShape itself is not modified.
      */
     TopoShape
-    makeElementFuse(const TopoShape& source, const char* op = nullptr, double tol = 0) const
+    makeElementFuse(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
     {
         return TopoShape(0, Hasher).makeElementFuse({*this, source}, op, tol);
     }
@@ -1397,7 +1406,7 @@ public:
      *         for the same shape in the same line of code.
      */
     TopoShape&
-    makeElementCut(const std::vector<TopoShape>& sources, const char* op = nullptr, double tol = 0);
+    makeElementCut(const std::vector<TopoShape>& sources, const char* op = nullptr, double tol = -1.0);
     /** Make a boolean cut of this shape with an input shape
      *
      * @param source: the source shape
@@ -1408,7 +1417,7 @@ public:
      * @return Return the new shape. The TopoShape itself is not modified.
      */
     TopoShape
-    makeElementCut(const TopoShape& source, const char* op = nullptr, double tol = 0) const
+    makeElementCut(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
     {
         return TopoShape(0, Hasher).makeElementCut({*this, source}, op, tol);
     }
@@ -1437,6 +1446,12 @@ public:
                                                          const Data::MappedName& name,
                                                          const char* marker = nullptr,
                                                          std::string* postfix = nullptr) const;
+
+    void reTagElementMap(long tag,  // NOLINT google-default-arguments
+                         App::StringHasherRef hasher,
+                         const char* postfix = nullptr) override;
+
+    long isElementGenerated(const Data::MappedName &name, int depth=1) const;
 
     /** @name sub shape cached functions
      *
@@ -1470,7 +1485,7 @@ public:
      */
      std::vector<TopoShape> findSubShapesWithSharedVertex(const TopoShape &subshape,
                                           std::vector<std::string> *names=nullptr,
-                                          CheckGeometry checkGeometry=CheckGeometry::checkGeometry,
+                                          Data::SearchOptions = Data::SearchOption::CheckGeometry,
                                           double tol=1e-7, double atol=1e-12) const;
     //@}
 
@@ -1489,10 +1504,15 @@ public:
     void mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op = nullptr) const;
     bool hasPendingElementMap() const;
 
+    std::string getElementMapVersion() const override;
+
     void flushElementMap() const override;
 
     Data::ElementMapPtr resetElementMap(
         Data::ElementMapPtr elementMap=Data::ElementMapPtr()) override;
+
+    std::vector<Data::IndexedName> getHigherElements(const char *element,
+                                                     bool silent = false) const override;
 
     /** Helper class to return the generated and modified shape given an input shape
      *
@@ -1861,7 +1881,7 @@ public:
     TopoShape& makeElementBoolean(const char* maker,
                                   const std::vector<TopoShape>& sources,
                                   const char* op = nullptr,
-                                  double tol = 0.0);
+                                  double tol = -1.0);
     /** Generalized shape making with mapped element name from shape history
      *
      * @param maker: op code from TopoShapeOpCodes
@@ -1879,7 +1899,7 @@ public:
     TopoShape& makeElementBoolean(const char* maker,
                                   const TopoShape& source,
                                   const char* op = nullptr,
-                                  double tol = 0.0);
+                                  double tol = -1.0);
 
     /** Generalized shape making with mapped element name from shape history
      *
@@ -1893,7 +1913,7 @@ public:
      *         is not modified.
      */
     TopoShape
-    makeElementBoolean(const char* maker, const char* op = nullptr, double tol = 0.0) const
+    makeElementBoolean(const char* maker, const char* op = nullptr, double tol = -1.0) const
     {
         return TopoShape(0, Hasher).makeElementBoolean(maker, *this, op, tol);
     }

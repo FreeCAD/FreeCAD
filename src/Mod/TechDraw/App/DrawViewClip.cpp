@@ -129,11 +129,11 @@ std::vector<App::DocumentObject*> DrawViewClip::getViews() const
     std::vector<App::DocumentObject*> views = Views.getValues();
     std::vector<App::DocumentObject*> allViews;
     for (auto& v : views) {
-        if (v->isDerivedFrom(App::Link::getClassTypeId())) {
+        if (v->isDerivedFrom<App::Link>()) {
             v = static_cast<App::Link*>(v)->getLinkedObject();
         }
 
-        if (!v->isDerivedFrom(DrawView::getClassTypeId())) {
+        if (!v->isDerivedFrom<DrawView>()) {
             continue;
         }
 

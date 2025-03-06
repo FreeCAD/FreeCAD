@@ -50,7 +50,7 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Control.h"
-#include "DlgUndoRedo.h"
+#include "Dialogs/DlgUndoRedo.h"
 #include "Document.h"
 #include "frameobject.h"
 #include "Macro.h"
@@ -251,7 +251,7 @@ bool Command::isViewOfType(Base::Type t) const
     Gui::BaseView *v = d->getActiveView();
     if (!v)
         return false;
-    if (v->getTypeId().isDerivedFrom(t))
+    if (v->isDerivedFrom(t))
         return true;
     else
         return false;
@@ -1079,7 +1079,7 @@ Action * GroupCommand::createAction() {
 
     for(auto &v : cmds) {
         if(!v.first)
-            pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
+            pcAction->addAction(QStringLiteral(""))->setSeparator(true);
         else
             v.first->addToGroup(pcAction);
     }
@@ -1121,6 +1121,8 @@ void GroupCommand::setup(Action *pcAction) {
     int idx = pcAction->property("defaultAction").toInt();
     if(idx>=0 && idx<(int)cmds.size() && cmds[idx].first) {
         auto cmd = cmds[idx].first;
+        QString shortcut = cmd->getShortcut();
+        pcAction->setShortcut(shortcut);
         pcAction->setText(QCoreApplication::translate(className(), getMenuText()));
         QIcon icon;
         if (auto childAction = cmd->getAction())
@@ -1175,7 +1177,7 @@ void MacroCommand::activated(int iMsg)
         d = QDir(QString::fromUtf8(cMacroPath.c_str()));
     }
     else {
-        QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
+        QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QStringLiteral("Macro");
         d = QDir(dirstr);
     }
 
@@ -1422,7 +1424,7 @@ Action * PythonCommand::createAction()
 const char* PythonCommand::getWhatsThis() const
 {
     const char* whatsthis = getResource("WhatsThis");
-    if (!whatsthis || whatsthis[0] == '\0')
+    if (Base::Tools::isNullOrEmpty(whatsthis))
         whatsthis = this->getName();
     return whatsthis;
 }
@@ -1445,7 +1447,7 @@ const char* PythonCommand::getStatusTip() const
 const char* PythonCommand::getPixmap() const
 {
     const char* ret = getResource("Pixmap");
-    return (ret && ret[0] != '\0') ? ret : nullptr;
+    return !Base::Tools::isNullOrEmpty(ret) ? ret : nullptr;
 }
 
 const char* PythonCommand::getAccel() const
@@ -1560,7 +1562,7 @@ void PythonGroupCommand::activated(int iMsg)
         if (cmd.hasAttr("Activated")) {
             Py::Callable call(cmd.getAttr("Activated"));
             Py::Tuple args(1);
-            args.setItem(0, Py::Int(iMsg));
+            args.setItem(0, Py::Long(iMsg));
             Py::Object ret = call.apply(args);
         }
         // If the command group doesn't implement the 'Activated' method then invoke the command directly
@@ -1640,7 +1642,7 @@ Action * PythonGroupCommand::createAction()
 
         if (cmd.hasAttr("GetDefaultCommand")) {
             Py::Callable call2(cmd.getAttr("GetDefaultCommand"));
-            Py::Int def(call2.apply(args));
+            Py::Long def(call2.apply(args));
             defaultId = static_cast<int>(def);
         }
 
@@ -1740,7 +1742,7 @@ const char* PythonGroupCommand::getResource(const char* sName) const
 const char* PythonGroupCommand::getWhatsThis() const
 {
     const char* whatsthis = getResource("WhatsThis");
-    if (!whatsthis || whatsthis[0] == '\0')
+    if (Base::Tools::isNullOrEmpty(whatsthis))
         whatsthis = this->getName();
     return whatsthis;
 }
@@ -1763,7 +1765,7 @@ const char* PythonGroupCommand::getStatusTip() const
 const char* PythonGroupCommand::getPixmap() const
 {
     const char* ret = getResource("Pixmap");
-    return (ret && ret[0] != '\0') ? ret : nullptr;
+    return !Base::Tools::isNullOrEmpty(ret) ? ret : nullptr;
 }
 
 const char* PythonGroupCommand::getAccel() const
@@ -1988,7 +1990,7 @@ void CommandManager::updateCommands(const char* sContext, int mode)
 
 const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* accel, const Command* ignore) const
 {
-    if (!accel || accel[0] == '\0')
+    if (Base::Tools::isNullOrEmpty(accel))
         return nullptr;
 
     QString newCombo = QString::fromLatin1(accel);
@@ -2004,7 +2006,7 @@ const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* acc
         if (cmd == ignore)
             continue;
         auto existingAccel = cmd->getAccel();
-        if (!existingAccel || existingAccel[0] == '\0')
+        if (Base::Tools::isNullOrEmpty(existingAccel))
             continue;
 
         // Three possible conflict scenarios:

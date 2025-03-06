@@ -67,6 +67,7 @@ class ViewProviderPage;
 class QGIViewBalloon;
 class QGITile;
 class QGILeaderLine;
+class QGIRichAnno;
 
 class TechDrawGuiExport QGSPage: public QGraphicsScene
 {
@@ -85,7 +86,7 @@ public:
     QGIView* addViewSection(TechDraw::DrawViewSection* sectionFeat);
     QGIView* addDrawView(TechDraw::DrawView* viewFeat);
     QGIView* addDrawViewCollection(TechDraw::DrawViewCollection* collectionFeat);
-    QGIView* addDrawViewAnnotation(TechDraw::DrawViewAnnotation* annoFeat);
+    QGIView* addAnnotation(TechDraw::DrawViewAnnotation* annoFeat);
     QGIView* addDrawViewSymbol(TechDraw::DrawViewSymbol* symbolFeat);
     QGIView* addDrawViewClip(TechDraw::DrawViewClip* clipFeat);
     QGIView* addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet* sheetFeat);
@@ -112,6 +113,10 @@ public:
 
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
     void addLeaderToParent(QGILeaderLine* leader, QGIView* parent);
+    void addRichAnnoToParent(QGIRichAnno* anno, QGIView* parent);
+
+    void addItemToScene(QGIView* item);
+    void addItemToParent(QGIView* item, QGIView* parent);
 
     std::vector<QGIView*> getViews() const;
 
@@ -143,14 +148,13 @@ public:
     void postProcessXml(QTemporaryFile& temporaryFile, QString filename, QString pagename);
 
     // scene parentage fixups
-    void setDimensionGroups();
-    void setBalloonGroups();
-    void setLeaderParentage();
+    void setViewParents();
 
+    static bool itemClearsSelection(int itemTypeIn);
+    static Qt::KeyboardModifiers cleanModifierList(Qt::KeyboardModifiers mods);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
     QColor getBackgroundColor();
     bool orphanExists(const char* viewName, const std::vector<App::DocumentObject*>& list);

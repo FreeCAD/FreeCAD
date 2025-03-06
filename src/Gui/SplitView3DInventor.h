@@ -35,7 +35,7 @@ class View3DInventorViewer;
 class AbstractSplitViewPy;
 class View3DSettings;
 
-/** The SplitView3DInventor class allows to create a window with two or more Inventor views.
+/** The SplitView3DInventor class allows one to create a window with two or more Inventor views.
  *  \author Werner Mayer
  */
 class GuiExport AbstractSplitView : public MDIView
@@ -106,7 +106,7 @@ private:
     Gui::MDIViewPy base;
 };
 
-/** The SplitView3DInventor class allows to create a window with two or more Inventor views.
+/** The SplitView3DInventor class allows one to create a window with two or more Inventor views.
  *  \author Werner Mayer
  */
 class GuiExport SplitView3DInventor : public AbstractSplitView

@@ -38,7 +38,7 @@ namespace MED
   struct MEDWRAPPER_EXPORT TWrapper
   {
     typedef boost::mutex TMutex;
-    //! This is a syncronization primitive which allow to support thread safety for the MED access
+    //! This is a synchronization primitive which allows one to support thread safety for the MED access
     TMutex myMutex;
 
     virtual

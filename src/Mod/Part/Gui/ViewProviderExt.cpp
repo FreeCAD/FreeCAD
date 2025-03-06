@@ -79,8 +79,8 @@
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/SoFCSelectionAction.h>
-#include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Selection/SoFCSelectionAction.h>
+#include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/ViewParams.h>
 #include <Mod/Part/App/ShapeMapHasher.h>
 #include <Mod/Part/App/Tools.h>
@@ -96,19 +96,6 @@
 FC_LOG_LEVEL_INIT("Part", true, true)
 
 using namespace PartGui;
-
-// Helper functions to consistently convert between float and long
-namespace {
-float fromPercent(long value)
-{
-    return std::roundf(value) / 100.0F;
-}
-
-long toPercent(float value)
-{
-    return std::lround(100.0 * value);
-}
-}
 
 PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
 
@@ -214,28 +201,35 @@ ViewProviderPartExt::ViewProviderPartExt()
 
     pcFaceBind = new SoMaterialBinding();
     pcFaceBind->ref();
+    pcFaceBind->setName("FaceBind");
 
     pcLineBind = new SoMaterialBinding();
     pcLineBind->ref();
+    pcLineBind->setName("LineBind");
     pcLineMaterial = new SoMaterial;
     pcLineMaterial->ref();
+    pcLineMaterial->setName("LineMaterial");
     LineMaterial.touch();
 
     pcPointBind = new SoMaterialBinding();
     pcPointBind->ref();
+    pcPointBind->setName("PointBind");
     pcPointMaterial = new SoMaterial;
     pcPointMaterial->ref();
+    pcPointMaterial->setName("PointMaterial");
     PointMaterial.touch();
 
     pcLineStyle = new SoDrawStyle();
     pcLineStyle->ref();
     pcLineStyle->style = SoDrawStyle::LINES;
     pcLineStyle->lineWidth = LineWidth.getValue();
+    pcLineStyle->setName("LineStyle");
 
     pcPointStyle = new SoDrawStyle();
     pcPointStyle->ref();
     pcPointStyle->style = SoDrawStyle::POINTS;
     pcPointStyle->pointSize = PointSize.getValue();
+    pcPointStyle->setName("PointStyle");
 
     pShapeHints = new SoShapeHints;
     pShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
@@ -298,14 +292,14 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         pcPointStyle->pointSize = PointSize.getValue();
     }
     else if (prop == &LineColor) {
-        const App::Color& c = LineColor.getValue();
+        const Base::Color& c = LineColor.getValue();
         pcLineMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != LineMaterial.getValue().diffuseColor)
             LineMaterial.setDiffuseColor(c);
         LineColorArray.setValue(LineColor.getValue());
     }
     else if (prop == &PointColor) {
-        const App::Color& c = PointColor.getValue();
+        const Base::Color& c = PointColor.getValue();
         pcPointMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != PointMaterial.getValue().diffuseColor)
             PointMaterial.setDiffuseColor(c);
@@ -341,8 +335,15 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     }
     else if (prop == &_diffuseColor) {
         // Used to load the old DiffuseColor values asynchronously
-        ShapeAppearance.setDiffuseColors(_diffuseColor.getValues());
-        ShapeAppearance.setTransparency(Transparency.getValue() / 100.0F);
+        std::vector<Base::Color> colors = _diffuseColor.getValues();
+        std::vector<float> transparencies;
+        transparencies.resize(static_cast<int>(colors.size()));
+        for (int i = 0; i < static_cast<int>(colors.size()); i++) {
+            transparencies[i] = colors[i].transparency();
+            colors[i].a = 1.0F;
+        }
+        ShapeAppearance.setDiffuseColors(colors);
+        ShapeAppearance.setTransparencies(transparencies);
     }
     else if (prop == &ShapeAppearance) {
         setHighlightedFaces(ShapeAppearance);
@@ -350,9 +351,9 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     }
     else if (prop == &Transparency) {
         const App::Material& Mat = ShapeAppearance[0];
-        long value = toPercent(Mat.transparency);
+        long value = Base::toPercent(Mat.transparency);
         if (value != Transparency.getValue()) {
-            float trans = fromPercent(Transparency.getValue());
+            float trans = Base::fromPercent(Transparency.getValue());
             ShapeAppearance.setTransparency(trans);
         }
     }
@@ -403,9 +404,13 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
 
     // Workaround for #0000433, i.e. use SoSeparator instead of SoGroup
     auto* pcNormalRoot = new SoSeparator();
+    pcNormalRoot->setName("NormalRoot");
     auto* pcFlatRoot = new SoSeparator();
+    pcFlatRoot->setName("FlatRoot");
     auto* pcWireframeRoot = new SoSeparator();
+    pcWireframeRoot->setName("WireframeRoot");
     auto* pcPointsRoot = new SoSeparator();
+    pcPointsRoot->setName("PointsRoot");
     auto* wireframe = new SoSeparator();
 
     // Must turn off all intermediate render caching, and let pcRoot to handle
@@ -445,6 +450,7 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     pcFlatRoot->addChild(texture.getAppearance());
     texture.setup(pcShapeMaterial);
     SoDrawStyle* pcFaceStyle = new SoDrawStyle();
+    pcFaceStyle->setName("FaceStyle");
     pcFaceStyle->style = SoDrawStyle::FILLED;
     pcFlatRoot->addChild(pcFaceStyle);
     pcFlatRoot->addChild(norm);
@@ -652,12 +658,12 @@ void ViewProviderPartExt::setHighlightedFaces(const App::PropertyMaterialList& a
     setHighlightedFaces(appearance.getValues());
 }
 
-std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const char *element) const {
-    std::map<std::string,App::Color> ret;
+std::map<std::string,Base::Color> ViewProviderPartExt::getElementColors(const char *element) const {
+    std::map<std::string,Base::Color> ret;
 
     if(!element || !element[0]) {
         auto color = ShapeAppearance.getDiffuseColor();
-        color.a = Transparency.getValue()/100.0f;
+        color.setTransparency(Base::fromPercent(Transparency.getValue()));
         ret["Face"] = color;
         ret["Edge"] = LineColor.getValue();
         ret["Vertex"] = PointColor.getValue();
@@ -668,7 +674,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
         auto size = ShapeAppearance.getSize();
         if(element[4]=='*') {
             auto color = ShapeAppearance.getDiffuseColor();
-            color.a = Transparency.getValue()/100.0f;
+            color.setTransparency(Base::fromPercent(Transparency.getValue()));
             bool singleColor = true;
             for(int i=0;i<size;++i) {
                 if (ShapeAppearance.getDiffuseColor(i) != color) {
@@ -680,7 +686,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
             }
             if(size && singleColor) {
                 color = ShapeAppearance.getDiffuseColor(0);
-                color.a = Transparency.getValue()/100.0f;
+                color.setTransparency(Base::fromPercent(100.0F));
                 ret.clear();
             }
             ret["Face"] = color;
@@ -691,7 +697,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
             else
                 ret[element] = ShapeAppearance.getDiffuseColor();
             if(size==1)
-                ret[element].a = Transparency.getValue()/100.0f;
+                ret[element].setTransparency(Base::fromPercent(Transparency.getValue()));
         }
     } else if (boost::starts_with(element,"Edge")) {
         auto size = LineColorArray.getSize();
@@ -747,7 +753,7 @@ void ViewProviderPartExt::unsetHighlightedFaces()
     Transparency.touch();
 }
 
-void ViewProviderPartExt::setHighlightedEdges(const std::vector<App::Color>& colors)
+void ViewProviderPartExt::setHighlightedEdges(const std::vector<Base::Color>& colors)
 {
     if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange))
         getObject()->touch(true);
@@ -784,7 +790,7 @@ void ViewProviderPartExt::unsetHighlightedEdges()
     LineMaterial.touch();
 }
 
-void ViewProviderPartExt::setHighlightedPoints(const std::vector<App::Color>& colors)
+void ViewProviderPartExt::setHighlightedPoints(const std::vector<Base::Color>& colors)
 {
     if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange))
         getObject()->touch(true);
@@ -967,7 +973,7 @@ void ViewProviderPartExt::updateVisual()
         // For very big objects the computed deflection can become very high and thus leads to a useless
         // tessellation. To avoid this the upper limit is set to 20.0
         // See also forum: https://forum.freecad.org/viewtopic.php?t=77521
-        deflection = std::min(deflection, 20.0);
+        //deflection = std::min(deflection, 20.0);
 
         // create or use the mesh on the data structure
         Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;

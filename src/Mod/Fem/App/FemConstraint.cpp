@@ -59,7 +59,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/Tools.h>
 
@@ -118,7 +118,10 @@ Constraint::Constraint()
     App::SuppressibleExtension::initExtension(this);
 }
 
-Constraint::~Constraint() = default;
+Constraint::~Constraint()
+{
+    connDocChangedObject.disconnect();
+}
 
 App::DocumentObjectExecReturn* Constraint::execute()
 {
@@ -433,7 +436,11 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
                 BRepGProp::LinearProperties(compCurve.Wire(), linProps);
                 double outWireLength = linProps.Mass();
                 int stepWire = stepsu + stepsv;
-                ShapeAnalysis_Surface surfAnalysis(surface.Surface().Surface());
+                // apply subshape transformation to the geometry
+                gp_Trsf faceTrans = face.Location().Transformation();
+                Handle(Geom_Geometry) transGeo =
+                    surface.Surface().Surface()->Transformed(faceTrans);
+                ShapeAnalysis_Surface surfAnalysis(Handle(Geom_Surface)::DownCast(transGeo));
                 for (int i = 0; i < stepWire; ++i) {
                     gp_Pnt p = compCurve.Value(outWireLength * i / stepWire);
                     gp_Pnt2d pUV = surfAnalysis.ValueOfUV(p, Precision::Confusion());
@@ -509,14 +516,12 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub& direct
     }
 
     if (obj->isDerivedFrom<App::Line>()) {
-        Base::Vector3d vec(1.0, 0.0, 0.0);
-        static_cast<App::Line*>(obj)->Placement.getValue().multVec(vec, vec);
+        Base::Vector3d vec = static_cast<App::Line*>(obj)->getDirection();
         return vec;
     }
 
     if (obj->isDerivedFrom<App::Plane>()) {
-        Base::Vector3d vec(0.0, 0.0, 1.0);
-        static_cast<App::Plane*>(obj)->Placement.getValue().multVec(vec, vec);
+        Base::Vector3d vec = static_cast<App::Plane*>(obj)->getDirection();
         return vec;
     }
 

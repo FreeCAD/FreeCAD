@@ -71,6 +71,11 @@ class Shape2DView(gui_base_original.Modifier):
         else:
             self.proceed()
 
+    def finish(self, cont=False):
+        """Terminate the operation."""
+        self.end_callbacks(self.call)
+        super().finish()
+
     def proceed(self):
         """Proceed with the command if one object was selected."""
         if self.call is not None:

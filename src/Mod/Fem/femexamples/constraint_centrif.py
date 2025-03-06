@@ -92,6 +92,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     fusion = doc.addObject("Part::MultiFuse", "Fusion")
     fusion.Shapes = [stiffener, circumference]
+    fusion.Refine = True
     doc.recompute()
 
     centerhole = doc.addObject("Part::Cylinder", "CenterHole")
@@ -102,6 +103,7 @@ def setup(doc=None, solvertype="ccxtools"):
     ring_bottom = doc.addObject("Part::Cut", "RingBottom")
     ring_bottom.Base = fusion
     ring_bottom.Tool = centerhole
+    ring_bottom.Refine = True
     doc.recompute()
 
     # standard ring
@@ -170,7 +172,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # constraint fixed
     con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    con_fixed.References = [(geom_obj, ("Face4", "Face12"))]
+    con_fixed.References = [(geom_obj, ("Face6", "Face14"))]
     analysis.addObject(con_fixed)
 
     # constraint centrif
@@ -191,7 +193,7 @@ def setup(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.CharacteristicLengthMax = "5.0 mm"
 

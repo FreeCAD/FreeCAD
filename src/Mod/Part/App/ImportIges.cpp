@@ -103,8 +103,8 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
                 if (aShape.ShapeType() == TopAbs_SOLID ||
                     aShape.ShapeType() == TopAbs_COMPOUND ||
                     aShape.ShapeType() == TopAbs_SHELL) {
-                        App::DocumentObject* obj = pcDoc->addObject("Part::Feature", aName.c_str());
-                        static_cast<Part::Feature*>(obj)->Shape.setValue(aShape);
+                        auto* obj = pcDoc->addObject<Part::Feature>(aName.c_str());
+                        obj->Shape.setValue(aShape);
                 }
                 else {
                     builder.Add(comp, aShape);
@@ -114,8 +114,7 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
         }
         if (!emptyComp) {
             std::string name = fi.fileNamePure();
-            Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject
-                ("Part::Feature", name.c_str()));
+            auto* pcFeature = pcDoc->addObject<Part::Feature>(name.c_str());
             pcFeature->Shape.setValue(comp);
         }
     }

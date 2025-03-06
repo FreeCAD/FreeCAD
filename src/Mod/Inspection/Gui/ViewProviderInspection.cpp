@@ -115,9 +115,7 @@ ViewProviderInspection::~ViewProviderInspection()
     pcCoords->unref();
     pcMatBinding->unref();
     pcColorMat->unref();
-    Gui::SoFCColorBarNotifier::instance().detach(pcColorBar);
-    pcColorBar->Detach(this);
-    pcColorBar->unref();
+    deleteColorBar();
     pcLinkRoot->unref();
     pcPointStyle->unref();
 }
@@ -148,6 +146,13 @@ void ViewProviderInspection::show()
 {
     inherited::show();
     pcColorStyle->style = SoDrawStyle::FILLED;
+}
+
+void ViewProviderInspection::deleteColorBar()
+{
+    Gui::SoFCColorBarNotifier::instance().detach(pcColorBar);
+    pcColorBar->Detach(this);
+    pcColorBar->unref();
 }
 
 void ViewProviderInspection::attach(App::DocumentObject* pcFeat)
@@ -185,8 +190,7 @@ void ViewProviderInspection::attach(App::DocumentObject* pcFeat)
         pcBar->ref();
         pcBar->setRange(fMin, fMax, 3);
         pcBar->Notify(0);
-        pcColorBar->Detach(this);
-        pcColorBar->unref();
+        deleteColorBar();
         pcColorBar = pcBar;
     }
 
@@ -381,7 +385,7 @@ void ViewProviderInspection::setDistances()
         SoDebugError::post("ViewProviderInspection::setDistances", "Unknown property 'Distances'");
         return;
     }
-    if (pDistances->getTypeId() != Inspection::PropertyDistanceList::getClassTypeId()) {
+    if (!pDistances->is<Inspection::PropertyDistanceList>()) {
         SoDebugError::post(
             "ViewProviderInspection::setDistances",
             "Property 'Distances' has type %s (Inspection::PropertyDistanceList was expected)",
@@ -409,7 +413,7 @@ void ViewProviderInspection::setDistances()
 
     unsigned long j = 0;
     for (std::vector<float>::const_iterator jt = fValues.begin(); jt != fValues.end(); ++jt, j++) {
-        App::Color col = pcColorBar->getColor(*jt);
+        Base::Color col = pcColorBar->getColor(*jt);
         cols[j] = SbColor(col.r, col.g, col.b);
         if (pcColorBar->isVisible(*jt)) {
             tran[j] = 0.0f;

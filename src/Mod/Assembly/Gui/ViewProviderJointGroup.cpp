@@ -47,10 +47,3 @@ QIcon ViewProviderJointGroup::getIcon() const
 {
     return Gui::BitmapFactory().pixmap("Assembly_JointGroup.svg");
 }
-
-// Make the joint group impossible to delete.
-bool ViewProviderJointGroup::onDelete(const std::vector<std::string>& subNames)
-{
-    Q_UNUSED(subNames);
-    return false;
-}

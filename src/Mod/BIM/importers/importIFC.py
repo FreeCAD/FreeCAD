@@ -55,10 +55,6 @@ __url__    = "https://www.freecad.org"
 DEBUG = False  # Set to True to see debug messages. Otherwise, totally silent
 ZOOMOUT = True  # Set to False to not zoom extents after import
 
-# Save the Python open function because it will be redefined
-if open.__module__ in ['__builtin__', 'io']:
-    pyopen = open
-
 # Templates and other definitions ****
 # which IFC type must create which FreeCAD type
 
@@ -233,7 +229,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
 
     global parametrics
 
-    # allow to override the root element
+    # allow one to override the root element
     if root:
         preferences['ROOT_ELEMENT'] = root
 
@@ -743,7 +739,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
 
         elif (preferences['MERGE_MODE_ARCH'] == 1 and archobj) or (preferences['MERGE_MODE_STRUCT'] == 0 and not archobj):
 
-            # non-parametric Arch objects (just Arch components with a shape)
+            # non-parametric BIM objects (just Arch components with a shape)
 
             if ptype in ["IfcSite","IfcBuilding","IfcBuildingStorey"]:
                 for freecadtype,ifctypes in typesmap.items():
@@ -882,7 +878,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                     if hasattr(obj.ViewObject,"ShapeColor"):
                         obj.ViewObject.ShapeColor = tuple(colors[pid][0:3])
                     if hasattr(obj.ViewObject,"Transparency"):
-                        obj.ViewObject.Transparency = colors[pid][3]
+                        obj.ViewObject.Transparency = 1.0 - colors[pid][3]
 
             # if preferences['DEBUG'] is on, recompute after each shape
             if preferences['DEBUG']: doc.recompute()

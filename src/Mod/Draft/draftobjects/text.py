@@ -31,11 +31,10 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
+from draftobjects.draft_annotation import DraftAnnotation
+from draftutils import gui_utils
 from draftutils.messages import _wrn
 from draftutils.translate import translate
-
-from draftobjects.draft_annotation import DraftAnnotation
 
 
 class Text(DraftAnnotation):
@@ -75,14 +74,16 @@ class Text(DraftAnnotation):
     def onDocumentRestored(self,obj):
         """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
-
-        # See loads: self.Type is None for new objects.
-        if self.Type is not None \
-                and hasattr(obj, "ViewObject") \
-                and obj.ViewObject:
-            self.update_properties_0v21(obj, obj.ViewObject)
-
+        gui_utils.restore_view_object(obj, vp_module="view_text", vp_class="ViewProviderText")
+        # See loads: old_type is None for new objects.
+        old_type = self.Type
         self.Type = "Text"
+
+        if old_type is None:
+            return
+        if not getattr(obj, "ViewObject", None):
+            return
+        self.update_properties_0v21(obj, obj.ViewObject)
 
     def update_properties_0v21(self, obj, vobj):
         """Update view properties."""

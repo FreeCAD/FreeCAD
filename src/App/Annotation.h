@@ -32,7 +32,7 @@
 namespace App
 {
 
-class AppExport Annotation : public DocumentObject
+class AppExport Annotation: public DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(App::Annotation);
 
@@ -45,12 +45,13 @@ public:
     App::PropertyVector Position;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "Gui::ViewProviderAnnotation";
     }
 };
 
-class AppExport AnnotationLabel : public DocumentObject
+class AppExport AnnotationLabel: public DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(App::AnnotationLabel);
 
@@ -64,12 +65,13 @@ public:
     App::PropertyVector TextPosition;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "Gui::ViewProviderAnnotationLabel";
     }
 };
 
-} //namespace App
+}  // namespace App
 
 
-#endif // APP_ANNOTATION_H
+#endif  // APP_ANNOTATION_H

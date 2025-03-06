@@ -31,7 +31,7 @@ import FreeCAD
 
 def get_python_exe() -> str:
     """Find Python. In preference order
-    A) The value of the PythonExecutableForPip user preference
+    A) The value of the BaseApp/Preferences/PythonConsole/ExternalPythonExecutable user preference
     B) The executable located in the same bin directory as FreeCAD and called "python3"
     C) The executable located in the same bin directory as FreeCAD and called "python"
     D) The result of a shutil search for your system's "python3" executable

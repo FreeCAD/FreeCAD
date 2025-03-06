@@ -40,6 +40,9 @@ public:
   Workbench();
   ~Workbench() override;
 
+private:
+  bool hasSketcher = false;
+
 protected:
   Gui::MenuItem* setupMenuBar() const override;
   Gui::ToolBarItem* setupToolBars() const override;

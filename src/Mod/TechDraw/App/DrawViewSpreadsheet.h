@@ -49,9 +49,13 @@ public:
     App::PropertyFloat        LineWidth;
     App::PropertyFloat        TextSize;
 
+    App::PropertyLink         Owner;
 
     App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
+
+    App::PropertyLink *getOwnerProperty() override { return &Owner; }
+
     std::string getSheetImage();
 
     const char* getViewProviderName() const override {

@@ -244,6 +244,12 @@ def get_branch_from_metadata(metadata: Metadata) -> str:
     return "master"  # Legacy default
 
 
+def get_repo_url_from_metadata(metadata: Metadata) -> str:
+    for url in metadata.url:
+        if url.type == UrlType.repository:
+            return url.location
+
+
 class MetadataReader:
     """Read metadata XML data and construct a Metadata object"""
 
@@ -361,7 +367,7 @@ class MetadataReader:
     def _parse_content(namespace: str, metadata: Metadata, root: ET.Element):
         """Given a content node, loop over its children, and if they are a recognized
         element type, recurse into each one to parse it."""
-        known_content_types = ["workbench", "macro", "preferencepack"]
+        known_content_types = ["workbench", "macro", "preferencepack", "bundle", "other"]
         for child in root:
             content_type = child.tag[len(namespace) :]
             if content_type in known_content_types:

@@ -28,7 +28,6 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -83,7 +82,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     //m_baseFeat can be null
     App::DocumentObject* obj = m_annoFeat->AnnoParent.getValue();
     if (obj) {
-        if ( obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) )  {
+        if ( obj->isDerivedFrom<TechDraw::DrawView>() )  {
             m_baseFeat = static_cast<TechDraw::DrawView*>(m_annoFeat->AnnoParent.getValue());
         }
     }
@@ -167,7 +166,7 @@ void TaskRichAnno::setUiPrimary()
 
     if (m_baseFeat) {
         std::string baseName = m_baseFeat->getNameInDocument();
-        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->leBaseView->setText(QString::fromStdString(baseName));
     }
     ui->dsbWidth->setUnit(Base::Unit::Length);
     ui->dsbWidth->setMinimum(0);
@@ -210,7 +209,7 @@ void TaskRichAnno::setUiEdit()
         if (docObj) {
             baseName = docObj->getNameInDocument();
         }
-        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->leBaseView->setText(QString::fromStdString(baseName));
         ui->teAnnoText->setHtml(QString::fromUtf8(m_annoFeat->AnnoText.getValue()));
         ui->dsbMaxWidth->setValue(m_annoFeat->MaxWidth.getValue());
         ui->cbShowFrame->setChecked(m_annoFeat->ShowFrame.getValue());
@@ -270,7 +269,7 @@ double TaskRichAnno::prefWeight() const
     return TechDraw::LineGroup::getDefaultWidth("Graphic");
 }
 
-App::Color TaskRichAnno::prefLineColor()
+Base::Color TaskRichAnno::prefLineColor()
 {
     return PreferencesGui::leaderColor();
 }
@@ -301,7 +300,7 @@ void TaskRichAnno::createAnnoFeature()
     if (!obj) {
         throw Base::RuntimeError("TaskRichAnno - new RichAnno object not found");
     }
-    if (obj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawRichAnno>()) {
         m_annoFeat = static_cast<TechDraw::DrawRichAnno*>(obj);
         commonFeatureUpdate();
         if (m_baseFeat) {
@@ -320,7 +319,7 @@ void TaskRichAnno::createAnnoFeature()
         Gui::ViewProvider* vp = QGIView::getViewProvider(m_annoFeat);
         auto annoVP = dynamic_cast<ViewProviderRichAnno*>(vp);
         if (annoVP) {
-            App::Color ac;
+            Base::Color ac;
             ac.setValue<QColor>(ui->cpFrameColor->color());
             annoVP->LineColor.setValue(ac);
             annoVP->LineWidth.setValue(ui->dsbWidth->rawValue());
@@ -351,7 +350,7 @@ void TaskRichAnno::updateAnnoFeature()
 //    Base::Console().Message("TRA::updateAnnoFeature()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Anno"));
     commonFeatureUpdate();
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->cpFrameColor->color());
     m_annoVP->LineColor.setValue(ac);
     m_annoVP->LineWidth.setValue(ui->dsbWidth->rawValue());
@@ -416,7 +415,7 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
 
     std::vector<Base::Vector3d> points;
     if (m_baseFeat) {
-        if (m_baseFeat->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
+        if (m_baseFeat->isDerivedFrom<TechDraw::DrawLeaderLine>()) {
             TechDraw::DrawLeaderLine* dll = static_cast<TechDraw::DrawLeaderLine*>(m_baseFeat);
             points = dll->WayPoints.getValues();
         } else {

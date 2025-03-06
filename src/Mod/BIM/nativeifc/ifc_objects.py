@@ -3,32 +3,39 @@
 # *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License (GPL)            *
-# *   as published by the Free Software Foundation; either version 3 of     *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
+# *   GNU Library General Public License for more details.                  *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
 """This module contains IFC object definitions"""
 
+import FreeCAD
+import FreeCADGui
+translate = FreeCAD.Qt.translate
+
+# the property groups below should not be treated as psets
+NON_PSETS = ["Base", "IFC", "", "Geometry", "Dimension", "Linear/radial dimension",
+             "SectionPlane", "Axis", "PhysicalProperties", "BuildingPart", "IFC Attributes"]
 
 class ifc_object:
     """Base class for all IFC-based objects"""
 
     def __init__(self, otype=None):
         self.cached = True  # this marks that the object is freshly created and its shape should be taken from cache
-        self.virgin_placement = True  # this allows to set the initial placement without triggering any placement change
+        self.virgin_placement = True  # this allows one to set the initial placement without triggering any placement change
         if otype:
             self.Type = (
                 otype[0].upper() + otype[1:]
@@ -52,13 +59,23 @@ class ifc_object:
             self.rebuild_classlist(obj, setprops=True)
         elif prop == "Schema":
             self.edit_schema(obj, obj.Schema)
+        elif prop == "Type":
+            self.Classification(obj)
+        elif prop == "Classification":
+            self.edit_classification(obj)
         elif prop == "Group":
             self.edit_group(obj)
-        elif obj.getGroupOfProperty(prop) == "IFC":
+        elif hasattr(obj, prop) and obj.getGroupOfProperty(prop) == "IFC":
             if prop not in ["StepId"]:
                 self.edit_attribute(obj, prop)
         elif prop == "Label":
             self.edit_attribute(obj, "Name", obj.Label)
+        elif prop == "Text":
+            self.edit_annotation(obj, "Text", "\n".join(obj.Text))
+        elif prop in ["Start", "End"]:
+            self.edit_annotation(obj, prop)
+        elif prop in ["DisplayLength","DisplayHeight","Depth"]:
+            self.edit_annotation(obj, prop)
         elif prop == "Placement":
             if getattr(self, "virgin_placement", False):
                 self.virgin_placement = False
@@ -68,9 +85,11 @@ class ifc_object:
         elif prop == "Modified":
             if obj.ViewObject:
                 obj.ViewObject.signalChangeIcon()
-        elif obj.getGroupOfProperty(prop) == "Geometry":
+        elif hasattr(obj, prop) and obj.getGroupOfProperty(prop) == "Geometry":
             self.edit_geometry(obj, prop)
-        elif obj.getGroupOfProperty(prop) not in ["Base", "IFC", "", "Geometry"]:
+        elif hasattr(obj, prop) and obj.getGroupOfProperty(prop) == "Quantities":
+            self.edit_quantity(obj, prop)
+        elif hasattr(obj, prop) and obj.getGroupOfProperty(prop) not in NON_PSETS:
             # Treat all property groups outside the default ones as Psets
             # print("DEBUG: editinog pset prop",prop)
             self.edit_pset(obj, prop)
@@ -95,17 +114,13 @@ class ifc_object:
     def fit_all(self):
         """Fits the view"""
 
-        import FreeCAD
-
         if FreeCAD.GuiUp:
-            import FreeCADGui
-
             FreeCADGui.SendMsgToActiveView("ViewFit")
 
     def rebuild_classlist(self, obj, setprops=False):
         """rebuilds the list of Class enum property according to current class"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
 
         obj.Class = [obj.IfcClass]
         obj.Class = ifc_tools.get_ifc_classes(obj, obj.IfcClass)
@@ -129,7 +144,7 @@ class ifc_object:
         return None
 
     def execute(self, obj):
-        from nativeifc import ifc_generator  # lazy import
+        from . import ifc_generator  # lazy import
 
         if obj.isDerivedFrom("Part::Feature"):
             cached = getattr(self, "cached", False)
@@ -152,7 +167,7 @@ class ifc_object:
     def edit_attribute(self, obj, attribute, value=None):
         """Edits an attribute of an underlying IFC object"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
 
         if not value:
             value = obj.getPropertyByName(attribute)
@@ -164,11 +179,68 @@ class ifc_object:
                 if hasattr(result, "id") and (result.id() != obj.StepId):
                     obj.StepId = result.id()
 
+    def edit_annotation(self, obj, attribute, value=None):
+        """Edits an attribute of an underlying IFC annotation"""
+
+        from . import ifc_tools  # lazy import
+        from . import ifc_export
+
+        if not value:
+            if hasattr(obj, attribute):
+                value = obj.getPropertyByName(attribute)
+        ifcfile = ifc_tools.get_ifcfile(obj)
+        elt = ifc_tools.get_ifc_element(obj, ifcfile)
+        if elt:
+            if attribute == "Text":
+                text = ifc_export.get_text(elt)
+                if text:
+                    ifc_tools.set_attribute(ifcfile, text, "Literal", value)
+            elif attribute in ["Start", "End"]:
+                dim = ifc_export.get_dimension(elt)
+                if dim:
+                    rep = dim[0]
+                    for curve in rep.Items:
+                        if not hasattr(curve, "Elements"):
+                            # this is a TextLiteral for the dimension text - skip it
+                            continue
+                        for sub in curve.Elements:
+                            if sub.is_a("IfcIndexedPolyCurve"):
+                                points = sub.Points
+                                value = list(points.CoordList)
+                                is2d = "2D" in points.is_a()
+                                if attribute == "Start":
+                                    value[0] = ifc_export.get_scaled_point(obj.Start, ifcfile, is2d)
+                                else:
+                                    value[-1] = ifc_export.get_scaled_point(obj.End, ifcfile, is2d)
+                                ifc_tools.set_attribute(ifcfile, points, "CoordList", value)
+                            else:
+                                print("DEBUG: unknown dimension curve type:",sub)
+            elif attribute in ["DisplayLength","DisplayHeight","Depth"]:
+                l = w = h = 1000.0
+                if obj.ViewObject:
+                    if obj.ViewObject.DisplayLength.Value:
+                        l = ifc_export.get_scaled_value(obj.ViewObject.DisplayLength.Value, ifcfile)
+                    if obj.ViewObject.DisplayHeight.Value:
+                        w = ifc_export.get_scaled_value(obj.ViewObject.DisplayHeight.Value, ifcfile)
+                if obj.Depth.Value:
+                    h = ifc_export.get_scaled_value(obj.Depth.Value, ifcfile)
+                if elt.Representation.Representations:
+                    for rep in elt.Representation.Representations:
+                        for item in rep.Items:
+                            if item.is_a("IfcCsgSolid"):
+                                if item.TreeRootExpression.is_a("IfcBlock"):
+                                    block = item.TreeRootExpression
+                                    loc = block.Position.Location
+                                    ifc_tools.set_attribute(ifcfile, block, "XLength", l)
+                                    ifc_tools.set_attribute(ifcfile, block, "YLength", w)
+                                    ifc_tools.set_attribute(ifcfile, block, "ZLength", h)
+                                    ifc_tools.set_attribute(ifcfile, loc, "Coordinates", (-l/2, -h/2, -h))
+
     def edit_geometry(self, obj, prop):
         """Edits a geometry property of an object"""
 
-        from nativeifc import ifc_geometry  # lazy loading
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_geometry  # lazy loading
+        from . import ifc_tools  # lazy import
 
         result = ifc_geometry.set_geom_property(obj, prop)
         if result:
@@ -177,7 +249,7 @@ class ifc_object:
     def edit_schema(self, obj, schema):
         """Changes the schema of an IFC document"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
 
         ifcfile = ifc_tools.get_ifcfile(obj)
         if not ifcfile:
@@ -203,22 +275,22 @@ class ifc_object:
     def edit_placement(self, obj):
         """Syncs the internal IFC placement"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
 
         ifc_tools.set_placement(obj)
 
     def edit_pset(self, obj, prop):
         """Edits a Pset value"""
 
-        from nativeifc import ifc_psets  # lazy import
+        from . import ifc_psets  # lazy import
 
         ifc_psets.edit_pset(obj, prop)
 
     def edit_group(self, obj):
         """Edits the children list"""
 
-        from nativeifc import ifc_tools  # lazy import
-        from nativeifc import ifc_layers
+        from . import ifc_tools  # lazy import
+        from . import ifc_layers
 
         if obj.Class in [
             "IfcPresentationLayerAssignment",
@@ -245,6 +317,67 @@ class ifc_object:
                     ifc_layers.add_to_layer(child, obj)
             if newlist != obj.Group:
                 obj.Group = newlist
+
+    def edit_type(self, obj):
+        """Edits the type of this object"""
+
+        from . import ifc_types  # lazy import
+
+        ifc_types.edit_type(obj)
+
+    def edit_quantity(self, obj, prop):
+        """Edits the given quantity"""
+        pass  # TODO implement
+
+    def get_section_data(self, obj):
+        """Returns two things: a list of objects and a cut plane"""
+
+        from . import ifc_tools  # lazy import
+        import Part
+
+        if not obj.IfcClass == "IfcAnnotation":
+            return [], None
+        if obj.ObjectType != "DRAWING":
+            return [], None
+        objs = getattr(obj, "Objects", [])
+        if not objs:
+            # no object defined, we automatically use the project
+            objs = []
+            proj = ifc_tools.get_project(obj)
+            if isinstance(proj, FreeCAD.DocumentObject):
+                objs.append(proj)
+            objs.extend(ifc_tools.get_freecad_children(proj))
+        if objs:
+            s = []
+            for o in objs:
+                # TODO print a better message
+                if o.ShapeMode != "Shape":
+                    s.append(o)
+            if s:
+                FreeCAD.Console.PrintLog("DEBUG: Generating shapes. This might take some time...\n")
+                for o in s:
+                        o.ShapeMode = "Shape"
+                        o.recompute()
+            l = 1
+            h = 1
+            if obj.ViewObject:
+                if hasattr(obj.ViewObject,"DisplayLength"):
+                    l = obj.ViewObject.DisplayLength.Value
+                    h = obj.ViewObject.DisplayHeight.Value
+            plane = Part.makePlane(l,h,FreeCAD.Vector(l/2,-h/2,0),FreeCAD.Vector(0,0,1))
+            plane.Placement = obj.Placement
+            return objs, plane
+        else:
+            print("DEBUG: Section plane returned no objects")
+            return [], None
+
+
+    def edit_classification(self, obj):
+        """Edits the classification of this object"""
+
+        from . import ifc_classification  # lazy loading
+
+        ifc_classification.edit_classification(obj)
 
 
 class document_object:

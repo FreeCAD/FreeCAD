@@ -25,6 +25,8 @@
 
 namespace MillSim
 {
+int gWindowSizeW = 800;
+int gWindowSizeH = 600;
 
 int gDebug = -1;
 

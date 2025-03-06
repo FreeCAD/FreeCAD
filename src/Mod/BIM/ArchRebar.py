@@ -158,13 +158,13 @@ class _Rebar(ArchComponent.Component):
             axis = DraftGeomUtils.getNormal(obj.Base.Shape)
         if not axis:
             axis = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
-        size = 0
-        if father:
-            size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
         if hasattr(obj,"Direction"):
             if not DraftVecUtils.isNull(obj.Direction):
                 axis = FreeCAD.Vector(obj.Direction)
                 axis.normalize()
+        size = 0
+        if father:
+            size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
         if hasattr(obj,"Distance"):
             if obj.Distance.Value:
                 size = obj.Distance.Value
@@ -214,6 +214,8 @@ class _Rebar(ArchComponent.Component):
     def execute(self,obj):
 
         if self.clone(obj):
+            return
+        if not self.ensureBase(obj):
             return
         if not obj.Base:
             # let pass without error so that object can receive a shape directly
@@ -450,7 +452,7 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
                     import re
                     self.centerline = coin.SoSeparator()
                     comp = Part.makeCompound(obj.Proxy.wires)
-                    buf = re.findall("point \[(.*?)\]",comp.writeInventor().replace("\n",""))
+                    buf = re.findall(r"point \[(.*?)\]",comp.writeInventor().replace("\n",""))
                     pts = [zip(*[iter( c.split() )]*3) for c in buf]
                     for pt in pts:
                         vlist = [ [float(v[0]),float(v[1]),float(v[2])] for v in pt ]

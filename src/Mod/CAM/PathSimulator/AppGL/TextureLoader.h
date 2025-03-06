@@ -31,8 +31,8 @@ namespace MillSim
 
 struct TextureItem
 {
-    int tx{}, ty{};  // texture location
-    int w{}, h{};    // item size
+    int tx {}, ty {};  // texture location
+    int w {}, h {};    // item size
 };
 
 class TextureLoader

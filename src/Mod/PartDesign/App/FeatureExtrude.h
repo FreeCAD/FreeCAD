@@ -71,6 +71,7 @@ protected:
     Base::Vector3d computeDirection(const Base::Vector3d& sketchVector, bool inverse);
     bool hasTaperedAngle() const;
 
+
     /// Options for buildExtrusion()
     enum class ExtrudeOption
     {
@@ -83,6 +84,13 @@ protected:
     using ExtrudeOptions = Base::Flags<ExtrudeOption>;
 
     App::DocumentObjectExecReturn* buildExtrusion(ExtrudeOptions options);
+
+    /**
+     * generate an open shell from a given shape
+     * by removing the farthest face from the sketchshape in the direction
+     * if farthest is nearest (circular) then return the initial shape
+     */
+    TopoShape makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir);
 
     /**
       * Generates an extrusion of the input sketchshape and stores it in the given \a prism

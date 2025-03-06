@@ -31,8 +31,8 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 
@@ -144,7 +144,7 @@ bool TaskDimension::accept()
 {
     if (m_dimensionVP.expired()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing Dimension"),
-                                               QObject::tr("Dimension not found.  Was it deleted? Can not continue."));
+                                               QObject::tr("Dimension not found. Was it deleted? Can not continue."));
         return true;
     }
     Gui::Document* doc = m_dimensionVP->getDocument();
@@ -159,7 +159,7 @@ bool TaskDimension::reject()
 {
     if (m_dimensionVP.expired()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing Dimension"),
-                                               QObject::tr("Dimension not found.  Was it deleted? Can not continue."));
+                                               QObject::tr("Dimension not found. Was it deleted? Can not continue."));
         return true;
     }
     Gui::Document* doc = m_dimensionVP->getDocument();
@@ -322,7 +322,7 @@ void TaskDimension::onColorChanged()
     if (m_dimensionVP.expired()) {
         return;
     }
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->dimensionColor->color());
     m_dimensionVP->Color.setValue(ac);
     recomputeFeature();

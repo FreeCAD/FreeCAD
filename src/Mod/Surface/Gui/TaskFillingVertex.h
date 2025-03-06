@@ -24,7 +24,7 @@
 #define SURFACEGUI_TASKFILLINGVERTEX_H
 
 #include <Gui/DocumentObserver.h>
-#include <Gui/SelectionFilter.h>
+#include <Gui/Selection/SelectionFilter.h>
 #include <Mod/Surface/App/FeatureFilling.h>
 #include <Mod/Surface/Gui/SelectionMode.h>
 #include <QWidget>

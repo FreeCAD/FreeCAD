@@ -1,8 +1,6 @@
 # Standard C++ GTest tests
-target_sources(
-    Tests_run
-        PRIVATE
-            ${CMAKE_CURRENT_SOURCE_DIR}/Assistant.cpp
+target_sources(Tests_run PRIVATE
+        Assistant.cpp
 )
 
 # Qt tests

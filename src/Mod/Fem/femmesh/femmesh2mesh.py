@@ -42,9 +42,9 @@ import Fem
 
 """
 from os.path import join
-the_file = join(FreeCAD.getResourceDir(), "examples", "FemCalculixCantilever3D.FCStd")
+the_file = join(FreeCAD.getResourceDir(), "examples", "FEMExample.FCStd")
 fc_file = FreeCAD.openDocument(the_file)
-fem_mesh = fc_file.getObject("Box_Mesh").FemMesh  # do not remove the _
+fem_mesh = fc_file.getObject("FEMMeshGmsh").FemMesh
 result = fc_file.getObject("CCX_Results")
 scale = 1  # displacement scale factor
 from femmesh import femmesh2mesh
@@ -125,7 +125,10 @@ def femmesh_2_mesh(myFemMesh, myResults=None, myDispScale=1):
         for ele in myFemMesh.Faces:
             element_nodes = myFemMesh.getElementNodes(ele)
             # print("element_node: ", element_nodes)
-            faceDef = {1: [0, 1, 2]}
+            if len(element_nodes) in [3, 6]:
+                faceDef = {1: [0, 1, 2]}
+            else:  # quad element
+                faceDef = {1: [0, 1, 2, 3]}
 
             for key in faceDef:
                 nodeList = []

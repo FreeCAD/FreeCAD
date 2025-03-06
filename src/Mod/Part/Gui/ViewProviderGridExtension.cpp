@@ -50,7 +50,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
-#include <Gui/SoFCBoundingBox.h>
+#include <Gui/Inventor/SoFCBoundingBox.h>
 
 #include "ViewProviderGridExtension.h"
 
@@ -523,13 +523,13 @@ void ViewProviderGridExtension::setGridDivLineWidth(int width)
     drawGrid(false);
 }
 
-void ViewProviderGridExtension::setGridLineColor(const App::Color & color)
+void ViewProviderGridExtension::setGridLineColor(const Base::Color & color)
 {
     pImpl->GridLineColor = color.getPackedValue();
     drawGrid(false);
 }
 
-void ViewProviderGridExtension::setGridDivLineColor(const App::Color & color)
+void ViewProviderGridExtension::setGridDivLineColor(const Base::Color & color)
 {
     pImpl->GridDivLineColor = color.getPackedValue();
     drawGrid(false);

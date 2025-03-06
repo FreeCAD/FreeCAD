@@ -84,11 +84,14 @@ public:
     QPointF getKinkPoint();
     QPointF getTailPoint();
 
-    virtual void setPrettyNormal();
-    virtual void setPrettySel();
-    virtual void setPrettyPre();
+    void setPrettyNormal();
+    void setPrettySel();
+    void setPrettyPre();
 
     void getTileFeats();
+    void makeLines();
+    double getLastSegAngle();
+    std::pair<Base::Vector3d, Base::Vector3d> getLocalAxes();
 
 protected:
     QVariant itemChange( GraphicsItemChange change,
@@ -106,10 +109,13 @@ protected:
     void removeQGITiles();
     std::vector<QGITile*> getQGITiles() const;
 
-    virtual QColor prefNormalColor();
-    double prefArrowSize();
+    QColor prefNormalColor();
+    double prefArrowSize() const;
     double prefFontSize() const;
 
+    virtual QRectF customBoundingRect() const;
+
+private:
     TechDraw::DrawTileWeld*   m_arrowFeat;
     TechDraw::DrawTileWeld*   m_otherFeat;
     std::string               m_arrowName;
@@ -123,7 +129,6 @@ protected:
 
     bool m_blockDraw;    //prevent redraws while updating.
 
-    virtual QRectF customBoundingRect() const;
 
 };
 

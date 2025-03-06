@@ -30,6 +30,7 @@
 #endif
 
 #include <Mod/Part/App/Interface.h>
+#include <Mod/Part/App/FuzzyHelper.h>
 #include <Mod/Part/App/IGES/ImportExportSettings.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/STEP/ImportExportSettings.h>
@@ -98,7 +99,7 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
     bg->addButton(ui->radioButtonBRepOn, 1);
 
     QRegularExpression rx;
-    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
+    rx.setPattern(QStringLiteral("[\\x00-\\x7F]+"));
     QRegularExpressionValidator* companyValidator = new QRegularExpressionValidator(ui->lineEditCompany);
     companyValidator->setRegularExpression(rx);
     ui->lineEditCompany->setValidator(companyValidator);

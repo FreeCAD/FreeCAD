@@ -1,0 +1,37 @@
+General:
+  UUID: '048ba0ec-1fc4-4e3c-9710-bde305a1503f'
+  Author: "Jonas Bähr"
+  License: "CC-BY-3.0"
+  Name: "Aluminum (Hard Cast Alloy)"
+  Description: >-
+    Prototype for various high-silicon cast aluminium alloys.
+    Surface speeds given for uncoated bits; coated bits can operate 50% to 70% faster.
+    Surface speeds given for roughing with a width of cut less than half the bit's diameter.
+    For finishing with woc <= 0.1 * D carbide bits can operatre 2.5 times faster.
+    For slotting with woc <= D HSS bits should operate 25% slower.
+    NB: Specific alloys can deviate significantly!
+    Source: Tabellenbuch Zerspantechnik, http://www.europa-lehrmittel.de/14733
+Inherits:
+  Aluminum:
+    UUID: "d1f317f0-5ffa-4798-8ab3-af2ff0b5182c"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Aluminium"
+  Machinability:
+    UUID: '9d81fcb2-bf81-48e3-bb57-d45ecf380096'
+    # ISBN 978-3-7585-1315-2, 5. Edition 2022, P. 272
+    # uncoated HSS, contour milling, roughing (woc: < 0.5 D, doc: < 1.5 D)
+    SurfaceSpeedHSS: '80 m/min'
+    # ISBN 978-3-7585-1315-2, 5. Edition 2022, P. 274
+    # uncoated carbide, contour milling, roughing (woc: < 0.5 D, doc: < 1.5 D)
+    SurfaceSpeedCarbide: '120 m/min'
+    # ISBN 978-3-7585-1315-2, 5. Edition 2022, P. 215
+    # Chip compression correction for milling, 1.2, already applied,
+    # base rake angle transformed from gamma_0=12° (aluminium, cf. P. 216) to 0°
+    # i.e. 680 * 1.2 / (1 - 12/100) is 927.273
+    UnitCuttingForce: '927 N/mm^2'
+    ChipThicknessExponent: 0.27

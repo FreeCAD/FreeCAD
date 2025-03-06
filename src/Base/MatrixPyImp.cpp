@@ -212,7 +212,7 @@ PyObject* MatrixPy::number_power_handler(PyObject* self, PyObject* other, PyObje
 
     Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
 
-    long b = Py::Int(other);
+    long b = Py::Long(other);
     if (b == 0) {
         return new MatrixPy(Matrix4D());
     }
@@ -363,7 +363,7 @@ PyObject* MatrixPy::hasScale(PyObject* args)
     ScaleType type = getMatrixPtr()->hasScale(tol);
     Py::Module mod("FreeCAD");
     return Py::new_reference_to(
-        mod.callMemberFunction("ScaleType", Py::TupleN(Py::Int(static_cast<int>(type)))));
+        mod.callMemberFunction("ScaleType", Py::TupleN(Py::Long(static_cast<int>(type)))));
 }
 
 PyObject* MatrixPy::decompose(PyObject* args)

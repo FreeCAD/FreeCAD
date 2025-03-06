@@ -34,7 +34,7 @@
 #include <App/Part.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/Body.h>
 
@@ -52,7 +52,7 @@ using namespace Attacher;
 /* TRANSLATOR PartDesignGui::TaskDatumParameters */
 
 TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *ViewProvider,QWidget *parent)
-    : PartGui::TaskAttacher(ViewProvider, parent, QString::fromLatin1("PartDesign_") + ViewProvider->datumType,
+    : PartGui::TaskAttacher(ViewProvider, parent, QStringLiteral("PartDesign_") + ViewProvider->datumType,
               ViewProvider->datumMenuText)
 {
     Gui::Selection().addSelectionGate(new NoDependentsSelection(ViewProvider->getObject()));
@@ -61,7 +61,7 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *ViewProvider,QWidget
 
 TaskDatumParameters::~TaskDatumParameters()
 {
-    if(this->ViewProvider && this->ViewProvider->isDerivedFrom(ViewProviderDatum::getClassTypeId()))
+    if(this->ViewProvider && this->ViewProvider->isDerivedFrom<ViewProviderDatum>())
         static_cast<ViewProviderDatum*>(this->ViewProvider)->setPickable(true);
     Gui::Selection().rmvSelectionGate();
 }
@@ -90,7 +90,7 @@ bool TaskDlgDatumParameters::reject() {
 
 bool TaskDlgDatumParameters::accept() {
 
-    Part::Datum* pcDatum = static_cast<Part::Datum*>(ViewProvider->getObject());
+    Part::Datum* pcDatum = ViewProvider->getObject<Part::Datum>();
     auto pcActiveBody = PartDesignGui::getBodyFor(pcDatum, false);
     auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
     std::vector<App::DocumentObject*> copies;

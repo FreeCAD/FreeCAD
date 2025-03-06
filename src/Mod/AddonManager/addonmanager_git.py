@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Wrapper around git executable to simplify calling git commands from Python. """
+"""Wrapper around git executable to simplify calling git commands from Python."""
 
 # pylint: disable=too-few-public-methods
 
@@ -148,7 +148,7 @@ class GitManager:
             fci.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    "Basic git update failed with the following message:",
+                    "Basic Git update failed with the following message:",
                 )
                 + str(e)
                 + "\n"
@@ -263,7 +263,7 @@ class GitManager:
             self.clone(remote, local_path)
         except GitFailed as e:
             fci.Console.PrintError(
-                translate("AddonsInstaller", "Failed to clone {} into {} using git").format(
+                translate("AddonsInstaller", "Failed to clone {} into {} using Git").format(
                     remote, local_path
                 )
             )

@@ -246,20 +246,14 @@ UNIT_SPEED_FORMAT = UNIT_SPEED_FORMAT_METRIC
 parser = argparse.ArgumentParser(prog=__name__, add_help=False)
 parser.add_argument("--name", help="GCode program name")
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
-parser.add_argument(
-    "--no-comments", action="store_true", help="suppress comment output"
-)
-parser.add_argument(
-    "--line-numbers", action="store_true", help="suppress prefix with line numbers"
-)
+parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
+parser.add_argument("--line-numbers", action="store_true", help="suppress prefix with line numbers")
 parser.add_argument(
     "--no-show-editor",
     action="store_true",
     help="don't pop up editor before writing output",
 )
-parser.add_argument(
-    "--precision", default="3", help="number of digits of precision, default=3"
-)
+parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
     help='set commands to be issued before the first command, default="G17\nG90\nG54"',
@@ -413,9 +407,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             print(
-                "the object "
-                + obj.Name
-                + " is not a path. Please select only path and Compounds."
+                "the object " + obj.Name + " is not a path. Please select only path and Compounds."
             )
             return None
 
@@ -617,9 +609,7 @@ def parse(pathobj):
                         currLocation[param] != c.Parameters[param] or REPEAT_ARGUMENTS
                     ):
                         if c.Name not in ["G0", "G00"]:  # No F in G0
-                            speed = Units.Quantity(
-                                c.Parameters["F"], FreeCAD.Units.Velocity
-                            )
+                            speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
                             if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
                                 commandlist.append(
                                     param
@@ -646,14 +636,9 @@ def parse(pathobj):
                         ):
                             continue
                         else:
-                            pos = Units.Quantity(
-                                c.Parameters[param], FreeCAD.Units.Length
-                            )
+                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                             commandlist.append(
-                                param
-                                + format(
-                                    float(pos.getValueAs(UNIT_FORMAT)), precision_string
-                                )
+                                param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
                             )
 
             # store the latest command

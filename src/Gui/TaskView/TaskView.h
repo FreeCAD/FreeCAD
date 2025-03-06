@@ -28,7 +28,7 @@
 #include <QScrollArea>
 
 #include <Gui/QSint/include/QSint>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include "TaskWatcher.h"
 
 
@@ -37,6 +37,7 @@ class Property;
 }
 
 namespace Gui {
+class MDIView;
 class ControlSingleton;
 namespace DockWnd{
 class ComboView;
@@ -181,6 +182,12 @@ private:
     void adjustMinimumSizeHint();
     void saveCurrentWidth();
     void tryRestoreWidth();
+    void slotActiveDocument(const App::Document&);
+    void slotDeletedDocument(const App::Document&);
+    void slotViewClosed(const Gui::MDIView*);
+    void slotUndoDocument(const App::Document&);
+    void slotRedoDocument(const App::Document&);
+    void transactionChangeOnDocument(const App::Document&);
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
@@ -195,11 +202,6 @@ protected:
     // removes the running dialog after accept() or reject() from the TaskView
     void removeDialog();
 
-    void slotActiveDocument(const App::Document&);
-    void slotDeletedDocument();
-    void slotUndoDocument(const App::Document&);
-    void slotRedoDocument(const App::Document&);
-
     std::vector<TaskWatcher*> ActiveWatcher;
 
     QSint::ActionPanel* taskPanel;
@@ -210,6 +212,7 @@ protected:
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;
+    Connection connectApplicationClosedView;
     Connection connectApplicationUndoDocument;
     Connection connectApplicationRedoDocument;
 };

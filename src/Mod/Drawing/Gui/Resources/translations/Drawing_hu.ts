@@ -55,7 +55,7 @@
       <location filename="../../Command.cpp" line="778"/>
       <location filename="../../Command.cpp" line="780"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation>Beilleszt a kiválasztott tárgy(ak)ról egy Tervezet nézetet az aktív rajzba</translation>
+      <translation>Beilleszt a kiválasztott objektum(ok)ról egy Tervrajz nézetet az aktív rajzba</translation>
     </message>
   </context>
   <context>
@@ -231,8 +231,8 @@
     <message>
       <location filename="../../Command.cpp" line="617"/>
       <location filename="../../Command.cpp" line="619"/>
-      <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>Egy szimbólumot szúr be az aktív rajzon szereplő svg-fájlból</translation>
+      <source>Inserts a symbol from a SVG file in the active drawing</source>
+      <translation>Szimbólum beillesztése egy SVG fájlból az aktív rajzba</translation>
     </message>
   </context>
   <context>
@@ -283,83 +283,83 @@
       <translation>Renderelő</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="482"/>
+      <location filename="../../DrawingView.cpp" line="485"/>
       <source>Export PDF</source>
       <translation>Exportálás PDF-be</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="483"/>
+      <location filename="../../DrawingView.cpp" line="486"/>
       <source>PDF file</source>
       <translation>PDF-fájl</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="499"/>
+      <location filename="../../DrawingView.cpp" line="502"/>
       <source>Page sizes</source>
       <translation>Oldalméretek</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="500"/>
+      <location filename="../../DrawingView.cpp" line="503"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="502"/>
+      <location filename="../../DrawingView.cpp" line="505"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="504"/>
+      <location filename="../../DrawingView.cpp" line="507"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="506"/>
+      <location filename="../../DrawingView.cpp" line="509"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="508"/>
+      <location filename="../../DrawingView.cpp" line="511"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="510"/>
+      <location filename="../../DrawingView.cpp" line="513"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="594"/>
+      <location filename="../../DrawingView.cpp" line="597"/>
       <source>Different orientation</source>
       <translation>Eltérő tájolású</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="595"/>
+      <location filename="../../DrawingView.cpp" line="598"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>A nyomtató a rajztól eltérő tájolást használ.
 Szeretné folytatni?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="605"/>
-      <location filename="../../DrawingView.cpp" line="616"/>
+      <location filename="../../DrawingView.cpp" line="608"/>
+      <location filename="../../DrawingView.cpp" line="619"/>
       <source>Different paper size</source>
       <translation>Eltérő papírméret</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="606"/>
-      <location filename="../../DrawingView.cpp" line="617"/>
+      <location filename="../../DrawingView.cpp" line="609"/>
+      <location filename="../../DrawingView.cpp" line="620"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>A nyomtató a rajztól eltérő méretű papír méretet használ.
 Szeretné folytatni?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="631"/>
+      <location filename="../../DrawingView.cpp" line="634"/>
       <source>Opening file failed</source>
       <translation>Fájl megnyitása sikertelen</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="632"/>
+      <location filename="../../DrawingView.cpp" line="635"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>Nem lehet megnyitni a(z) '%1' fájlt írásra.</translation>
     </message>
@@ -697,7 +697,7 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../Command.cpp" line="332"/>
       <source>Select a Part object.</source>
-      <translation>Objektum rész kiválasztása.</translation>
+      <translation>Alkatrész objektum kiválasztása.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="342"/>
@@ -722,13 +722,13 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../Command.cpp" line="432"/>
       <source>Select exactly one Part object.</source>
-      <translation>Jelöljön ki pontosan egy tárgy alkotórészt.</translation>
+      <translation>Jelöljön ki pontosan egy alkatrész objektumot.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <location filename="../../Command.cpp" line="698"/>
       <source>Select one Page object.</source>
-      <translation>Válasszon ki egy teljes oldal tárgyat.</translation>
+      <translation>Válasszon ki egy rajzlapot.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="704"/>
@@ -743,25 +743,25 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../Command.cpp" line="823"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>Jelöljön ki pontosan egy számolótábla tárgyat.</translation>
+      <translation>Jelöljön ki pontosan egy táblázat objektumot.</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="47"/>
       <location filename="../../TaskOrthoViews.cpp" line="1041"/>
       <source>Make axonometric...</source>
-      <translation>Axonometrikus létrehozás...</translation>
+      <translation>Tengelymetszet létrehozás...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="48"/>
       <location filename="../../TaskOrthoViews.cpp" line="1042"/>
       <source>Edit axonometric settings...</source>
-      <translation>Axonometrikus beállítások szerkesztése...</translation>
+      <translation>Tengelymetszet beállítások szerkesztése...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="49"/>
       <location filename="../../TaskOrthoViews.cpp" line="1043"/>
       <source>Make orthographic</source>
-      <translation>Ortografikus létrehozás</translation>
+      <translation>Függőleges vetület létrehozás</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="141"/>

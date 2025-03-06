@@ -3,9 +3,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OPENSSL_CFLAGS}")
 endif()
 
 include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
     ${OPENSSL_INCLUDE_DIR}

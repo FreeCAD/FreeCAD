@@ -34,7 +34,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
@@ -90,12 +90,12 @@ void TaskLinkDim::loadAvailDims()
         return;
 
     std::string result;
-    int selRefType = TechDraw::DrawViewDimension::getRefTypeSubElements(m_subs);
+    TechDraw::DrawViewDimension::RefType selRefType = TechDraw::DrawViewDimension::getRefTypeSubElements(m_subs);
     //int found = 0;
     for (auto* view : m_page->getViews()) {
         if (view->isDerivedFrom<TechDraw::DrawViewDimension>()) {
             auto* dim = static_cast<TechDraw::DrawViewDimension*>(view);
-            int dimRefType = dim->getRefType();
+            TechDraw::DrawViewDimension::RefType dimRefType = dim->getRefType();
             if (dimRefType == selRefType) {                                     //potential matches
     //            found++;
                 if (dim->has3DReferences()) {
@@ -119,7 +119,7 @@ void TaskLinkDim::loadToTree(const TechDraw::DrawViewDimension* dim, const bool 
 {
     QString label = QString::fromUtf8(dim->Label.getValue());
     QString name = QString::fromUtf8(dim->getNameInDocument());
-    QString tooltip = label + QString::fromUtf8(" / ") + name;
+    QString tooltip = label + QStringLiteral(" / ") + name;
 
     QTreeWidgetItem* child = new QTreeWidgetItem();
     child->setText(0, label);

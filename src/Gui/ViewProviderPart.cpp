@@ -126,7 +126,7 @@ bool ViewProviderPart::doubleClicked()
 QIcon ViewProviderPart::getIcon() const
 {
     // the original Part object for this ViewProviderPart
-    auto part = static_cast<App::Part*>(this->getObject());
+    auto part = this->getObject<App::Part>();
     // the normal case for Std_Part
     const char* pixmap = sPixmap;
     // if it's flagged as an Assembly in its Type, it gets another icon
@@ -144,5 +144,5 @@ PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderPartPython, Gui::ViewProviderPart)
 /// @endcond
 
 // explicit template instantiation
-template class GuiExport ViewProviderPythonFeatureT<ViewProviderPart>;
+template class GuiExport ViewProviderFeaturePythonT<ViewProviderPart>;
 }

@@ -23,7 +23,7 @@
 #ifndef FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
 #define FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
 
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 
 #include "ViewProviderFemPostObject.h"
@@ -51,9 +51,6 @@ public:
     void transformField(char* FieldName, double FieldFactor);
     void scaleField(vtkDataSet* dset, vtkDataArray* pdata, double FieldFactor);
     PyObject* getPyObject() override;
-
-private:
-    Py::Object PythonObject;
 
 protected:
     void updateFunctionSize();

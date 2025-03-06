@@ -27,7 +27,11 @@ necessarily have the same orientation as the basis surface.</UserDocu>
         </Documentation>
         <Methode Name="setTrim">
             <Documentation>
-                <UserDocu>Modifies this patch by changing the trim values applied to the original surface</UserDocu>
+                <UserDocu>
+setTrim(self, params: (u1, u2, v1, v2)) -> None
+
+Modifies this patch by changing the trim values applied to the original surface
+                </UserDocu>
             </Documentation>
         </Methode>
         <Attribute Name="BasisSurface" ReadOnly="true">

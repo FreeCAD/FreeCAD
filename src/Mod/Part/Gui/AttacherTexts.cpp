@@ -278,7 +278,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
                               qApp->translate("Attacher0D", "Attachment is disabled. Point can be moved by editing Placement property.","AttachmentPoint mode tooltip"));
         case mm0Origin:
             return TwoStrings(qApp->translate("Attacher0D", "Object's origin","AttachmentPoint mode caption"),
-                              qApp->translate("Attacher0D", "Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.","AttachmentPoint mode tooltip"));
+                              qApp->translate("Attacher0D", "Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.","AttachmentPoint mode tooltip"));
         case mm0Focus1:
             return TwoStrings(qApp->translate("Attacher0D", "Focus1","AttachmentPoint mode caption"),
                               qApp->translate("Attacher0D", "Focus of ellipse, parabola, hyperbola.","AttachmentPoint mode tooltip"));
@@ -369,7 +369,7 @@ QStringList getRefListForMode(AttachEngine &attacher, eMapMode mmode)
         for(eRefType rt : rts){
             buf.append(getShapeTypeText(rt));
         }
-        strlist.append(buf.join(QString::fromLatin1(", ")));
+        strlist.append(buf.join(QStringLiteral(", ")));
     }
     return strlist;
 }

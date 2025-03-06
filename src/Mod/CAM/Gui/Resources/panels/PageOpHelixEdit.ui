@@ -1,175 +1,175 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-  <class>Form</class>
-  <widget class="QWidget" name="Form">
-    <property name="geometry">
-      <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>400</width>
-        <height>365</height>
-      </rect>
-    </property>
-    <property name="windowTitle">
-      <string notr="true">Form</string>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_2">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>365</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-        <widget class="QFrame" name="frame">
-          <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QGridLayout" name="gridLayout">
-            <item row="0" column="0">
-              <widget class="QLabel" name="label">
-                <property name="text">
-                  <string>Tool Controller</string>
-                </property>
-              </widget>
-            </item>
-            <item row="0" column="1">
-              <widget class="QComboBox" name="toolController">
-                <property name="toolTip">
-                  <string>The tool and its settings to be used for this operation.</string>
-                </property>
-              </widget>
-            </item>
-            <item row="1" column="0">
-              <widget class="QLabel" name="label_5">
-                <property name="text">
-                  <string>Coolant</string>
-                </property>
-              </widget>
-            </item>
-            <item row="1" column="1">
-              <widget class="QComboBox" name="coolantController">
-                <property name="toolTip">
-                  <string>The tool and its settings to be used for this operation.</string>
-                </property>
-              </widget>
-            </item>
-          </layout>
-        </widget>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Tool Controller</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="toolController">
+        <property name="toolTip">
+         <string>The tool and its settings to be used for this operation.</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
-        <widget class="QWidget" name="widget">
-          <layout class="QFormLayout" name="formLayout">
-            <item row="0" column="0">
-              <widget class="QLabel" name="label_2">
-                <property name="text">
-                  <string>Start from</string>
-                </property>
-              </widget>
-            </item>
-            <item row="0" column="1">
-              <widget class="QComboBox" name="startSide">
-                <property name="toolTip">
-                  <string>Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center.</string>
-                </property>
-                <item>
-                  <property name="text">
-                    <string>Inside</string>
-                  </property>
-                </item>
-                <item>
-                  <property name="text">
-                    <string>Outside</string>
-                  </property>
-                </item>
-              </widget>
-            </item>
-            <item row="2" column="0">
-              <widget class="QLabel" name="label_3">
-                <property name="text">
-                  <string>Direction</string>
-                </property>
-              </widget>
-            </item>
-            <item row="2" column="1">
-              <widget class="QComboBox" name="direction">
-                <property name="toolTip">
-                  <string>The direction for the helix, clockwise or counterclockwise.</string>
-                </property>
-                <item>
-                  <property name="text">
-                    <string>Climb</string>
-                  </property>
-                </item>
-                <item>
-                  <property name="text">
-                    <string>Conventional</string>
-                  </property>
-                </item>
-              </widget>
-            </item>
-            <item row="4" column="0">
-              <widget class="QLabel" name="label_4">
-                <property name="text">
-                  <string>Step over percent</string>
-                </property>
-              </widget>
-            </item>
-            <item row="4" column="1">
-              <widget class="QSpinBox" name="stepOverPercent">
-                <property name="toolTip">
-                  <string>Specify the percent of the tool diameter each helix will be offset to the previous one. A step over of 100% means no overlap of the individual cuts.</string>
-                </property>
-                <property name="minimum">
-                  <number>1</number>
-                </property>
-                <property name="maximum">
-                  <number>100</number>
-                </property>
-                <property name="singleStep">
-                  <number>10</number>
-                </property>
-                <property name="value">
-                  <number>100</number>
-                </property>
-              </widget>
-            </item>
-            <item row="5" column="0">
-              <widget class="QLabel" name="label_6">
-                <property name="text">
-                  <string>Extra Offset</string>
-                </property>
-              </widget>
-            </item>
-            <item row="5" column="1">
-              <widget class="Gui::InputField" name="extraOffset">
-                <property name="unit" stdset="0">
-                  <string notr="true"/>
-                </property>
-              </widget>
-            </item>
-          </layout>
-        </widget>
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Coolant</string>
+        </property>
+       </widget>
       </item>
-      <item row="3" column="0">
-        <spacer name="verticalSpacer">
-          <property name="orientation">
-            <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-            <size>
-              <width>20</width>
-              <height>40</height>
-            </size>
-          </property>
-        </spacer>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="coolantController">
+        <property name="toolTip">
+         <string>The tool and its settings to be used for this operation.</string>
+        </property>
+       </widget>
       </item>
-    </layout>
-  </widget>
-  <customwidgets>
-    <customwidget>
-      <class>Gui::InputField</class>
-      <extends>QLineEdit</extends>
-      <header>Gui/InputField.h</header>
-    </customwidget>
-  </customwidgets>
-  <resources/>
-  <connections/>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QWidget" name="widget">
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Start from</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="startSide">
+        <property name="toolTip">
+         <string>Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center.</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Inside</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Outside</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Direction</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="cutMode">
+        <property name="toolTip">
+         <string>The direction for the helix, clockwise or counterclockwise.</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Climb</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Conventional</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Step over percent</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QSpinBox" name="stepOverPercent">
+        <property name="toolTip">
+         <string>Specify the percent of the tool diameter each helix will be offset to the previous one. A step over of 100% means no overlap of the individual cuts.</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="singleStep">
+         <number>10</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Extra Offset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::InputField" name="extraOffset">
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  <item row="3" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
 </ui>

@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Contains a wrapper class for a table listing authors and maintainers """
+"""Contains a wrapper class for a table listing authors and maintainers"""
 
 import os
 

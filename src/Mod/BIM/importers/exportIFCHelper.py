@@ -25,6 +25,7 @@ import math
 import FreeCAD
 # import Draft
 import ifcopenshell
+from ifcopenshell import guid
 from draftutils import params
 
 def getObjectsOfIfcType(objects, ifcType):

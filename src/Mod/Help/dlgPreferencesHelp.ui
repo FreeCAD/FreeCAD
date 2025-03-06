@@ -165,6 +165,16 @@ custom stylesheet below and can look nicer than the wiki option. The 'Markdown' 
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="Gui::PrefRadioButton" name="radioBrowser">
         <property name="toolTip">
          <string>The documentation will open in your default web browser.</string>

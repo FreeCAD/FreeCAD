@@ -76,20 +76,14 @@ dynapath_post.export(object,"/path/to/file.ncc","")
 
 parser = argparse.ArgumentParser(prog="dynapath_post", add_help=False)
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
-parser.add_argument(
-    "--no-comments", action="store_true", help="suppress comment output"
-)
-parser.add_argument(
-    "--line-numbers", action="store_true", help="prefix with line numbers"
-)
+parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
+parser.add_argument("--line-numbers", action="store_true", help="prefix with line numbers")
 parser.add_argument(
     "--no-show-editor",
     action="store_true",
     help="don't pop up editor before writing output",
 )
-parser.add_argument(
-    "--precision", default="3", help="number of digits of precision, default=3"
-)
+parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
     help='set commands to be issued before the first command, default="G17\nG90\nG80\nG40"',
@@ -154,9 +148,6 @@ POST_OPERATION = """"""
 TOOL_CHANGE = """"""
 
 
-
-
-
 def processArguments(argstring):
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
@@ -210,9 +201,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             print(
-                "the object "
-                + obj.Name
-                + " is not a path. Please select only path and Compounds."
+                "the object " + obj.Name + " is not a path. Please select only path and Compounds."
             )
             return
 
@@ -317,9 +306,7 @@ def parse(pathobj):
         return out
     else:  # parsing simple path
 
-        if not hasattr(
-            pathobj, "Path"
-        ):  # groups might contain non-path things like stock.
+        if not hasattr(pathobj, "Path"):  # groups might contain non-path things like stock.
             return out
 
         if OUTPUT_COMMENTS:
@@ -338,9 +325,7 @@ def parse(pathobj):
             for param in params:
                 if param in c.Parameters:
                     if param == "F":
-                        speed = Units.Quantity(
-                            c.Parameters["F"], FreeCAD.Units.Velocity
-                        )
+                        speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
                         if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
                             outstring.append(
                                 param
@@ -350,20 +335,13 @@ def parse(pathobj):
                                 )
                             )
                     elif param == "S":
-                        outstring.append(
-                            param + format(c.Parameters[param], precision_string)
-                        )
+                        outstring.append(param + format(c.Parameters[param], precision_string))
                     elif param == "T":
-                        outstring.append(
-                            param + format(c.Parameters["T"], precision_string)
-                        )
+                        outstring.append(param + format(c.Parameters["T"], precision_string))
                     else:
                         pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                         outstring.append(
-                            param
-                            + format(
-                                float(pos.getValueAs(UNIT_FORMAT)), precision_string
-                            )
+                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
                         )
 
             # store the latest command

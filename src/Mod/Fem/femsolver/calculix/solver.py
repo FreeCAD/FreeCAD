@@ -316,6 +316,15 @@ class _BaseSolverCalculix:
             )
             obj.ThermoMechType = thermomech_types
 
+        if not hasattr(obj, "BucklingAccuracy"):
+            obj.addProperty(
+                "App::PropertyFloatConstraint",
+                "BucklingAccuracy",
+                "Fem",
+                "Accuracy for buckling analysis",
+            )
+            obj.BucklingAccuracy = 0.01
+
 
 class Proxy(solverbase.Proxy, _BaseSolverCalculix):
     """The Fem::FemSolver's Proxy python type, add solver specific properties"""

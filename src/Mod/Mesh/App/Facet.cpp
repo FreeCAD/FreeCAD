@@ -75,14 +75,8 @@ Facet::~Facet() = default;
 
 Facet& Facet::operator=(const Facet& f)
 {
-    MeshCore::MeshGeomFacet::operator=(f);
-    Mesh = f.Mesh;
-    Index = f.Index;
-    for (int i = 0; i < 3; i++) {
-        PIndex[i] = f.PIndex[i];
-        NIndex[i] = f.NIndex[i];
-    }
-
+    Facet c = f;
+    *this = std::move(c);
     return *this;
 }
 

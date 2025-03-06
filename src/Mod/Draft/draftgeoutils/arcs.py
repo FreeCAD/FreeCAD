@@ -43,7 +43,23 @@ Part = lz.LazyLoader("Part", globals(), "Part")
 
 
 def isClockwise(edge, ref=None):
-    """Return True if a circle-based edge has a clockwise direction."""
+    """Return True if a circle-based edge has a clockwise direction.
+
+    Parameters
+    ----------
+    edge :
+        The edge to be analyzed.
+
+    ref : Vector, optional
+        The normal around which the direction of the edge is to be determined.
+        Defaults to the Z normal vector.
+
+    Returns
+    -------
+    bool
+        Returns True if the edge is clockwise oriented around the ref Vector
+        or not.
+    """
     if not geomType(edge) == "Circle":
         return True
 

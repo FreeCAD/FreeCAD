@@ -64,7 +64,7 @@ max : Base.Vector, tuple
 Invalidate the bounding box.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="isValid">
+    <Methode Name="isValid" Const="true">
       <Documentation>
         <UserDocu>isValid() -> bool
 
@@ -90,9 +90,9 @@ z : float
     Value to enlarge at z-direction.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getPoint">
+    <Methode Name="getPoint" Const="true">
       <Documentation>
-        <UserDocu>getPoint(index) ->Base.Vector
+        <UserDocu>getPoint(index) -> Base.Vector
 
 Get the point of the given index.
 The index must be in the range of [0, 7].
@@ -100,7 +100,7 @@ The index must be in the range of [0, 7].
 index : int</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getEdge">
+    <Methode Name="getEdge" Const="true">
       <Documentation>
         <UserDocu>getEdge(index) -> tuple of Base.Vector
 
@@ -110,7 +110,7 @@ The index must be in the range of [0, 11].
 index : int</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="closestPoint">
+    <Methode Name="closestPoint" Const="true">
       <Documentation>
         <UserDocu>closestPoint(point) -> Base.Vector
 closestPoint(x, y, z) -> Base.Vector

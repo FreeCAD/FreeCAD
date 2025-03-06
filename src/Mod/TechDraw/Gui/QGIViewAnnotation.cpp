@@ -148,7 +148,7 @@ void QGIViewAnnotation::drawAnnotation()
         ss << "font-weight:normal; font-style:normal; ";
     }
     ss << "line-height:" << viewAnno->LineSpace.getValue() << "%; ";
-    App::Color c = viewAnno->TextColor.getValue();
+    Base::Color c = viewAnno->TextColor.getValue();
     c = TechDraw::Preferences::getAccessibleColor(c);
     ss << "color:" << c.asHexString() << "; ";
     ss << "}\n</style>\n</head>\n<body>\n<p>";
@@ -191,7 +191,7 @@ void QGIViewAnnotation::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 
     const std::vector<std::string>& values = annotation->Text.getValues();
     DlgStringListEditor dlg(values, Gui::getMainWindow());
-    dlg.setWindowTitle(QString::fromUtf8("Annotation Text Editor"));
+    dlg.setWindowTitle(QStringLiteral("Annotation Text Editor"));
     if (dlg.exec() == QDialog::Accepted) {
         App::GetApplication().setActiveTransaction("Set Annotation Text");
         annotation->Text.setValues(dlg.getTexts());

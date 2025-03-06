@@ -192,7 +192,7 @@
             <string>Commands executed by macro scripts are shown in Python console</string>
            </property>
            <property name="text">
-            <string>Show script commands in python console</string>
+            <string>Show script commands in Python console</string>
            </property>
            <property name="checked">
             <bool>true</bool>

@@ -44,8 +44,7 @@ public:
     void extensionUpdateData(const App::Property*) override;
     void extensionSetupContextMenu(QMenu*, QObject*, const char*) override;
 
-private:
-    void showAttachmentEditor();
+    void showAttachmentEditor(std::function<void()> onAccept = {}, std::function<void()> onReject = {});
 };
 
 using ViewProviderAttachExtensionPython = Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderAttachExtension>;

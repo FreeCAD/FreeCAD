@@ -511,7 +511,7 @@ void LscmRelax::set_q_l_g()
         Vector3 r31 = r3 - r1;
         double r21_norm = r21.norm();
         r21.normalize();
-        // if triangle is fliped this gives wrong results?
+        // if triangle is flipped this gives wrong results?
         this->q_l_g.row(i) << r21_norm, r31.dot(r21), r31.cross(r21).norm();
     }
 }
@@ -531,7 +531,7 @@ void LscmRelax::set_q_l_m()
         Vector2 r31 = r3 - r1;
         double r21_norm = r21.norm();
         r21.normalize();
-        // if triangle is fliped this gives wrong results!
+        // if triangle is flipped this gives wrong results!
         this->q_l_m.row(i) << r21_norm, r31.dot(r21), -(r31.x() * r21.y() - r31.y() * r21.x());
     }
 }

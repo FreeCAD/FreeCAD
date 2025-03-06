@@ -80,7 +80,7 @@ bool Assistant::startAssistant()
         QString app;
         app = QDir::toNativeSeparators(QString::fromStdString
             (App::Application::getHomePath()) + QLatin1String("bin/"));
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_MACOS)
         QString app = QCoreApplication::applicationDirPath() + QDir::separator();
 #else
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)

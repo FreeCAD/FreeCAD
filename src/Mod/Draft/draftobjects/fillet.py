@@ -28,15 +28,20 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import draftobjects.base as base
+from draftobjects.base import DraftObject
+from draftutils import gui_utils
 
 
-class Fillet(base.DraftObject):
+class Fillet(DraftObject):
     """Proxy class for the Fillet object."""
 
     def __init__(self, obj):
-        super(Fillet, self).__init__(obj, "Fillet")
+        super().__init__(obj, "Fillet")
         self._set_properties(obj)
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        gui_utils.restore_view_object(obj, vp_module="view_fillet", vp_class="ViewProviderFillet")
 
     def _set_properties(self, obj):
         """Set the properties of objects if they don't exist."""

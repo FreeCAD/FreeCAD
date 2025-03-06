@@ -552,7 +552,7 @@ public:
     }
 
     /** pushes all Notification Items to the fast cache (this also prevents all unnecessary
-     * signaling from parents) and allows to accelerate insertions and deletions
+     * signaling from parents) and allows one to accelerate insertions and deletions
      */
     void shiftToCache()
     {
@@ -1134,7 +1134,7 @@ void NotificationArea::showInNotificationArea()
         // We update the message with the most recent up to maxOpenNotifications
 
         QString msgw =
-            QString::fromLatin1(
+            QStringLiteral(
                 "<style>p { margin: 0 0 0 0 } td { padding: 0 15px }</style>                     \
         <p style='white-space:normal'>                                                                                      \
         <table>                                                                                                             \
@@ -1149,7 +1149,7 @@ void NotificationArea::showInNotificationArea()
 
         if (currentlynotifying > pImp->maxOpenNotifications) {
             msgw +=
-                QString::fromLatin1(
+                QStringLiteral(
                     "                                                                                   \
             <tr>                                                                                                            \
             <td align='left'><img width=\"16\" height=\"16\" src=':/icons/Warning.svg'></td>                                \
@@ -1187,7 +1187,7 @@ void NotificationArea::showInNotificationArea()
                     convertFromPlainText(item->getMessage(), Qt::WhiteSpaceMode::WhiteSpaceNormal);
 
                 msgw +=
-                    QString::fromLatin1(
+                    QStringLiteral(
                         "                                                                                   \
                 <tr>                                                                                                            \
                 <td align='left'><img width=\"16\" height=\"16\" src='%1'></td>                                                 \
@@ -1233,7 +1233,7 @@ void NotificationArea::showInNotificationArea()
             i++;
         }
 
-        msgw += QString::fromLatin1("</table></p>");
+        msgw += QStringLiteral("</table></p>");
 
         NotificationBox::Options options = NotificationBox::Options::RestrictAreaToReference;
 

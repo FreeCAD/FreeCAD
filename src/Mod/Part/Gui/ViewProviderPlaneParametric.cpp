@@ -67,7 +67,7 @@ ViewProviderFace::~ViewProviderFace() = default;
 
 std::vector<App::DocumentObject*> ViewProviderFace::claimChildren() const
 {
-    return static_cast<Part::Face*>(getObject())->Sources.getValues();
+    return getObject<Part::Face>()->Sources.getValues();
 }
 
 bool ViewProviderFace::canDragObjects() const
@@ -84,7 +84,7 @@ bool ViewProviderFace::canDragObject(App::DocumentObject* obj) const
 
 void ViewProviderFace::dragObject(App::DocumentObject* obj)
 {
-    Part::Face* face = static_cast<Part::Face*>(getObject());
+    Part::Face* face = getObject<Part::Face>();
     std::vector<App::DocumentObject*> sources = face->Sources.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it) {
         if (*it == obj) {
@@ -107,7 +107,7 @@ bool ViewProviderFace::canDropObject(App::DocumentObject* obj) const
 
 void ViewProviderFace::dropObject(App::DocumentObject* obj)
 {
-    Part::Face* face = static_cast<Part::Face*>(getObject());
+    Part::Face* face = getObject<Part::Face>();
     std::vector<App::DocumentObject*> sources = face->Sources.getValues();
     sources.push_back(obj);
     face->Sources.setValues(sources);

@@ -96,7 +96,7 @@
      <item row="5" column="0">
       <widget class="QCheckBox" name="cbUse3d">
        <property name="text">
-        <string>Use 3d Background</string>
+        <string>Use 3D Background</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>

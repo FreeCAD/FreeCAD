@@ -66,8 +66,6 @@ public:
     /// Returns the absolute file names of icons found in the given search paths
     QStringList findIconFiles() const;
     /// Adds a build in XPM pixmap under a given name
-    void addXPM(const char* name, const char** pXPM);
-    /// Adds a build in XPM pixmap under a given name
     void addPixmapToCache(const char* name, const QPixmap& icon);
     /// Checks whether the pixmap is already registered.
     bool findPixmapInCache(const char* name, QPixmap& icon) const;
@@ -75,6 +73,10 @@ public:
      * If no such icon is found in the current theme fallback is returned instead.
      */
     QIcon iconFromTheme(const char* name, const QIcon& fallback = QIcon());
+    /** Returns the QIcon corresponding to name in the default (FreeCAD's) icon theme.
+     * If no such icon is found in the current theme fallback is returned instead.
+     */
+    QIcon iconFromDefaultTheme(const char* name, const QIcon& fallback = QIcon());
     /// Retrieves a pixmap by name
     QPixmap pixmap(const char* name) const;
     /** Retrieves a pixmap by name and size created by an
@@ -150,6 +152,7 @@ public:
 private:
     bool loadPixmap(const QString& path, QPixmap&) const;
     void restoreCustomPaths();
+    void configureUseIconTheme();
 
     static BitmapFactoryInst* _pcSingleton;
     BitmapFactoryInst();

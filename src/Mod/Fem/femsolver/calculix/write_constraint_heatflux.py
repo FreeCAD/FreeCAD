@@ -49,22 +49,22 @@ def write_meshdata_constraint(f, femobj, heatflux_obj, ccxwriter):
     if heatflux_obj.ConstraintType == "Convection":
         heatflux_key_word = "FILM"
         heatflux_facetype = "F"
-        # SvdW: add factor to force heatflux to units system of t/mm/s/K
         heatflux_values = "{:.13G},{:.13G}".format(
-            heatflux_obj.AmbientTemp, heatflux_obj.FilmCoef * 0.001
+            heatflux_obj.AmbientTemp.getValueAs("K").Value,
+            heatflux_obj.FilmCoef.getValueAs("t/s^3/K").Value,
         )
 
     elif heatflux_obj.ConstraintType == "Radiation":
         heatflux_key_word = "RADIATE"
         heatflux_facetype = "R"
         heatflux_values = "{:.13G},{:.13G}".format(
-            heatflux_obj.AmbientTemp, heatflux_obj.Emissivity
+            heatflux_obj.AmbientTemp.getValueAs("K").Value, heatflux_obj.Emissivity
         )
 
     elif heatflux_obj.ConstraintType == "DFlux":
         heatflux_key_word = "DFLUX"
         heatflux_facetype = "S"
-        heatflux_values = f"{heatflux_obj.DFlux * 0.001:.13G}"
+        heatflux_values = "{:.13G}".format(heatflux_obj.DFlux.getValueAs("t/s^3").Value)
 
     f.write(f"*{heatflux_key_word}\n")
     for ref_shape in femobj["HeatFluxFaceTable"]:

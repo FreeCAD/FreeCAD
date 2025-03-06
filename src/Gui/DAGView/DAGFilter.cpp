@@ -31,7 +31,7 @@
 using namespace Gui;
 using namespace DAG;
 
-FilterBase::FilterBase() : name(QString::fromLatin1("empty name"))
+FilterBase::FilterBase() : name(QStringLiteral("empty name"))
 {
 
 }

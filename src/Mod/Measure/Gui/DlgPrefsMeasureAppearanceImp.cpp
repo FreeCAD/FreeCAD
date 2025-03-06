@@ -1,4 +1,4 @@
- /**************************************************************************
+/**************************************************************************
  *   Copyright (c) 2023 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
  *   This file is part of FreeCAD.                                         *
@@ -26,9 +26,9 @@
 
 using namespace MeasureGui;
 
-DlgPrefsMeasureAppearanceImp::DlgPrefsMeasureAppearanceImp( QWidget* parent )
-  : PreferencePage( parent )
-  , ui(new Ui_DlgPrefsMeasureAppearanceImp)
+DlgPrefsMeasureAppearanceImp::DlgPrefsMeasureAppearanceImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgPrefsMeasureAppearanceImp)
 {
     ui->setupUi(this);
 }
@@ -57,7 +57,7 @@ void DlgPrefsMeasureAppearanceImp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgPrefsMeasureAppearanceImp::changeEvent(QEvent *e)
+void DlgPrefsMeasureAppearanceImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -68,4 +68,3 @@ void DlgPrefsMeasureAppearanceImp::changeEvent(QEvent *e)
 }
 
 #include <Mod/Measure/Gui/moc_DlgPrefsMeasureAppearanceImp.cpp>
-

@@ -153,7 +153,7 @@ App::DocumentObjectExecReturn* FeatureViewSpreadsheet::execute(void)
     // create the containing group
     std::string ViewName = Label.getValue();
     std::stringstream result, hr, hg, hb;
-    const App::Color& c = Color.getValue();
+    const Base::Color& c = Color.getValue();
     hr << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * c.r);
     hg << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * c.g);
     hb << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * c.b);
@@ -186,14 +186,14 @@ App::DocumentObjectExecReturn* FeatureViewSpreadsheet::execute(void)
             App::Property* prop = sheet->getPropertyByName(address.toString().c_str());
             std::stringstream field;
             if (prop) {
-                if (prop->isDerivedFrom((App::PropertyQuantity::getClassTypeId()))) {
-                    field << static_cast<App::PropertyQuantity*>(prop)->getValue();
+                if (auto* p = Base::freecad_dynamic_cast<App::PropertyQuantity>(prop)) {
+                    field << p->getValue();
                 }
-                else if (prop->isDerivedFrom((App::PropertyFloat::getClassTypeId()))) {
-                    field << static_cast<App::PropertyFloat*>(prop)->getValue();
+                else if (auto p = Base::freecad_dynamic_cast<App::PropertyFloat>(prop)) {
+                    field << p->getValue();
                 }
-                else if (prop->isDerivedFrom((App::PropertyString::getClassTypeId()))) {
-                    field << static_cast<App::PropertyString*>(prop)->getValue();
+                else if (auto p = Base::freecad_dynamic_cast<App::PropertyString>(prop)) {
+                    field << p->getValue();
                 }
                 else {
                     assert(0);
@@ -207,7 +207,7 @@ App::DocumentObjectExecReturn* FeatureViewSpreadsheet::execute(void)
             std::string textstyle = "";
             Spreadsheet::Cell* cell = sheet->getCell(address);
             if (cell) {
-                App::Color f, b;
+                Base::Color f, b;
                 std::set<std::string> st;
                 int colspan, rowspan;
                 if (cell->getBackground(b)) {

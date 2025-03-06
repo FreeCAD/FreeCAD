@@ -22,15 +22,51 @@
 
 #include "PreCompiled.h"
 
+#include "Mod/Sketcher/App/ExternalGeometryFacade.h"
+
+#include <Base/Color.h>
+#include <Gui/ViewParams.h>
+
 #include "EditModeCoinManagerParameters.h"
 
 
 using namespace SketcherGui;
 
-SbColor DrawingParameters::InformationColor(0.0f, 1.0f, 0.0f);       // #00FF00 -> (  0,255,  0)
-SbColor DrawingParameters::CreateCurveColor(0.5f, 0.5f, 0.5f);       // ##7f7f7f -> (127,127,127)
-SbColor DrawingParameters::CrossColorH(0.8f, 0.4f, 0.4f);            // #CC6666 -> (204,102,102)
-SbColor DrawingParameters::CrossColorV(0.47f, 1.0f, 0.51f);          // #83FF83 -> (120,255,131)
+int GeometryLayerParameters::getSubLayerIndex(const int geoId,
+                                              const Sketcher::GeometryFacade* geom) const
+{
+    bool isConstruction = geom->getConstruction();
+    bool isInternal = geom->isInternalAligned();
+    bool isExternal = geoId <= Sketcher::GeoEnum::RefExt;
+    if (isExternal) {
+        auto egf = Sketcher::ExternalGeometryFacade::getFacade(geom->clone());
+        if (egf->testFlag(Sketcher::ExternalGeometryExtension::Defining)) {
+            // Defining external are added to the Normal sublayers because they
+            // share the same line style.
+            return static_cast<int>(SubLayer::Normal);
+        }
+    }
+
+    return static_cast<int>(isExternal           ? SubLayer::External
+                                : isInternal     ? SubLayer::Internal
+                                : isConstruction ? SubLayer::Construction
+                                                 : SubLayer::Normal);
+}
+
+SbColor DrawingParameters::InformationColor(0.0f, 1.0f, 0.0f);  // #00FF00 -> (  0,255,  0)
+SbColor DrawingParameters::CreateCurveColor(0.5f, 0.5f, 0.5f);  // ##7f7f7f -> (127,127,127)
+
+namespace
+{  // Anonymous namespace to avoid making those variables global
+unsigned long HColorLong = Gui::ViewParams::instance()->getAxisXColor();
+Base::Color Hcolor = Base::Color(static_cast<uint32_t>(HColorLong));
+
+unsigned long VColorLong = Gui::ViewParams::instance()->getAxisYColor();
+Base::Color Vcolor = Base::Color(static_cast<uint32_t>(VColorLong));
+}  // namespace
+SbColor DrawingParameters::CrossColorH(Hcolor.r, Hcolor.g, Hcolor.b);
+SbColor DrawingParameters::CrossColorV(Vcolor.r, Vcolor.g, Vcolor.b);
+
 SbColor DrawingParameters::InvalidSketchColor(1.0f, 0.42f, 0.0f);    // #FF6D00 -> (255,109,  0)
 SbColor DrawingParameters::FullyConstrainedColor(0.0f, 1.0f, 0.0f);  // #00FF00 -> (  0,255,  0)
 SbColor

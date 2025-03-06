@@ -58,9 +58,7 @@ class PathUtilsUserInput(object):
         r = form.exec_()
         if not r:
             return None
-        return [
-            i for i in controllers if i.Label == form.uiToolController.currentText()
-        ][0]
+        return [i for i in controllers if i.Label == form.uiToolController.currentText()][0]
 
     def chooseJob(self, jobs):
         job = None
@@ -88,7 +86,7 @@ class PathUtilsUserInput(object):
                         mylist = [j.Label for j in jobs]
 
                     jobname, result = QtGui.QInputDialog.getItem(
-                        None, translate("Path", "Choose a Path Job"), None, mylist
+                        None, translate("Path", "Choose a CAM Job"), None, mylist
                     )
 
                     if result is False:

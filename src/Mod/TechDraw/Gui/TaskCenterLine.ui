@@ -305,7 +305,7 @@
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="unit" stdset="0">
-        <string>mm</string>
+        <string notr="true">mm</string>
        </property>
        <property name="value">
         <double>3.000000000000000</double>

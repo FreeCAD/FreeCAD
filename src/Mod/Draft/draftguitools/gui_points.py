@@ -143,13 +143,17 @@ class Point(gui_base_original.Creator):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
-        if self.callbackClick:
-            self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
-        if self.callbackMove:
-            self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
-        if self.callbackClick or self.callbackMove:
-            # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
-            gui_utils.end_all_events()
+        try:
+            if self.callbackClick:
+                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
+            if self.callbackMove:
+                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
+            if self.callbackClick or self.callbackMove:
+                # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
+                gui_utils.end_all_events()
+        except RuntimeError:
+            # the view has been deleted already
+            pass
         self.callbackClick = None
         self.callbackMove = None
         super().finish()

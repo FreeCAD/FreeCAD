@@ -40,6 +40,7 @@
 # include <QMenuBar>
 # include <QMessageBox>
 # include <QMimeData>
+# include <QOpenGLWidget>
 # include <QPainter>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
@@ -52,6 +53,7 @@
 # include <QToolBar>
 # include <QUrlQuery>
 # include <QWhatsThis>
+# include <QWindow>
 # include <QPushButton>
 #endif
 
@@ -69,6 +71,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/SafeMode.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
@@ -90,6 +93,7 @@
 #include "DownloadManager.h"
 #include "FileDialog.h"
 #include "MenuManager.h"
+#include "ModuleIO.h"
 #include "NotificationArea.h"
 #include "OverlayManager.h"
 #include "ProgressBar.h"
@@ -97,7 +101,7 @@
 #include "PythonConsole.h"
 #include "ReportView.h"
 #include "SelectionView.h"
-#include "Splashscreen.h"
+#include "SplashScreen.h"
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
 #include "Tree.h"
@@ -111,9 +115,8 @@
 #include "SpaceballEvent.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
-#include "DlgObjectSelection.h"
-#include "Tools.h"
-#include <App/Color.h>
+#include "Dialogs/DlgObjectSelection.h"
+#include <Base/Color.h>
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
 
@@ -298,86 +301,6 @@ struct MainWindowP
     void restoreWindowState(const QByteArray &);
 };
 
-class MDITabbar : public QTabBar
-{
-public:
-    explicit MDITabbar( QWidget * parent = nullptr ) : QTabBar(parent)
-    {
-        menu = new QMenu(this);
-        setDrawBase(false);
-        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-    }
-
-    ~MDITabbar() override
-    {
-        delete menu;
-    }
-
-protected:
-    void contextMenuEvent ( QContextMenuEvent * e ) override
-    {
-        menu->clear();
-        CommandManager& cMgr = Application::Instance->commandManager();
-        if (tabRect(currentIndex()).contains(e->pos()))
-            cMgr.getCommandByName("Std_CloseActiveWindow")->addTo(menu);
-        cMgr.getCommandByName("Std_CloseAllWindows")->addTo(menu);
-        menu->addSeparator();
-        cMgr.getCommandByName("Std_CascadeWindows")->addTo(menu);
-        cMgr.getCommandByName("Std_TileWindows")->addTo(menu);
-        menu->addSeparator();
-        cMgr.getCommandByName("Std_Windows")->addTo(menu);
-        menu->popup(e->globalPos());
-    }
-
-private:
-    QMenu* menu;
-};
-
-#if defined(Q_OS_WIN32)
-class MainWindowTabBar : public QTabBar
-{
-public:
-    MainWindowTabBar(QWidget *parent) : QTabBar(parent)
-    {
-        setExpanding(false);
-    }
-protected:
-    bool event(QEvent *e)
-    {
-        // show the tooltip if tab is too small to fit label
-        if (e->type() != QEvent::ToolTip)
-            return QTabBar::event(e);
-        QSize size = this->size();
-        QSize hint = sizeHint();
-        if (shape() == QTabBar::RoundedWest || shape() == QTabBar::RoundedEast) {
-            size.transpose();
-            hint.transpose();
-        }
-        if (size.width() < hint.width())
-            return QTabBar::event(e);
-        e->accept();
-        return true;
-    }
-    void tabInserted (int index)
-    {
-        // get all dock windows
-        QList<QDockWidget*> dw = getMainWindow()->findChildren<QDockWidget*>();
-        for (QList<QDockWidget*>::iterator it = dw.begin(); it != dw.end(); ++it) {
-            // compare tab text and window title to get the right dock window
-            if (this->tabText(index) == (*it)->windowTitle()) {
-                QWidget* dock = (*it)->widget();
-                if (dock) {
-                    QIcon icon = dock->windowIcon();
-                    if (!icon.isNull())
-                        setTabIcon(index, icon);
-                }
-                break;
-            }
-        }
-    }
-};
-#endif
-
 } // namespace Gui
 
 /* TRANSLATOR Gui::MainWindow */
@@ -390,6 +313,15 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->activeView = nullptr;
     d->whatsthis = false;
     d->assistant = new Assistant();
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    // this forces QT to switch to OpenGL mode, this prevents delay and flickering of the window
+    // after opening project and prevent issues with double initialization of the window
+    //
+    // https://stackoverflow.com/questions/76026196/how-to-force-qt-to-use-the-opengl-window-type
+    auto _OpenGLWidget = new QOpenGLWidget(this);
+    _OpenGLWidget->move(QPoint(-100,-100));
+#endif
 
     // global access
     instance = this;
@@ -435,24 +367,24 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         tab->setTabsClosable(true);
         // The tabs might be very wide
         tab->setExpanding(false);
-        tab->setObjectName(QString::fromLatin1("mdiAreaTabBar"));
+        tab->setObjectName(QStringLiteral("mdiAreaTabBar"));
     }
     d->mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation, false);
+#ifndef HAS_QTBUG_129596
     d->mdiArea->setActivationOrder(QMdiArea::ActivationHistoryOrder);
+#endif
     d->mdiArea->setBackground(QBrush(QColor(160,160,160)));
     setCentralWidget(d->mdiArea);
 
-    statusBar()->setObjectName(QString::fromLatin1("statusBar"));
+    statusBar()->setObjectName(QStringLiteral("statusBar"));
     connect(statusBar(), &QStatusBar::messageChanged, this, &MainWindow::statusMessageChanged);
 
     // labels and progressbar
     d->status = new StatusBarObserver();
     d->actionLabel = new QLabel(statusBar());
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    // d->actionLabel->setMinimumWidth(120);
-
     d->sizeLabel = new DimensionWidget(statusBar());
 
     statusBar()->addWidget(d->actionLabel, 1);
@@ -470,24 +402,24 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     if(notificationAreaEnabled) {
         NotificationArea* notificationArea = new NotificationArea(statusBar());
-        notificationArea->setObjectName(QString::fromLatin1("notificationArea"));
+        notificationArea->setObjectName(QStringLiteral("notificationArea"));
         notificationArea->setStyleSheet(QStringLiteral("text-align:left;"));
         statusBar()->addPermanentWidget(notificationArea);
     }
 
     // clears the action label
     d->actionTimer = new QTimer( this );
-    d->actionTimer->setObjectName(QString::fromLatin1("actionTimer"));
+    d->actionTimer->setObjectName(QStringLiteral("actionTimer"));
     connect(d->actionTimer, &QTimer::timeout, d->actionLabel, &QLabel::clear);
 
     // clear status type
     d->statusTimer = new QTimer( this );
-    d->statusTimer->setObjectName(QString::fromLatin1("statusTimer"));
+    d->statusTimer->setObjectName(QStringLiteral("statusTimer"));
     connect(d->statusTimer, &QTimer::timeout, this, &MainWindow::clearStatus);
 
     // update gui timer
     d->activityTimer = new QTimer(this);
-    d->activityTimer->setObjectName(QString::fromLatin1("activityTimer"));
+    d->activityTimer->setObjectName(QStringLiteral("activityTimer"));
     connect(d->activityTimer, &QTimer::timeout, this, &MainWindow::_updateActions);
     d->activityTimer->setSingleShot(false);
     d->activityTimer->start(150);
@@ -853,6 +785,7 @@ void MainWindow::closeActiveWindow ()
 
 int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckbox) {
     QMessageBox box(parent?parent:this);
+    box.setObjectName(QStringLiteral("confirmSave"));
     box.setIcon(QMessageBox::Question);
     box.setWindowFlags(box.windowFlags() | Qt::WindowStaysOnTopHint);
     box.setWindowTitle(QObject::tr("Unsaved document"));
@@ -867,7 +800,7 @@ int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckb
     box.setDefaultButton(QMessageBox::Save);
     box.setEscapeButton(QMessageBox::Cancel);
 
-    QCheckBox checkBox(QObject::tr("Apply answer to all"));
+    QCheckBox checkBox(QObject::tr("Apply to all"));
     ParameterGrp::handle hGrp;
     if(addCheckbox) {
          hGrp = App::GetApplication().GetUserParameter().
@@ -1267,7 +1200,6 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
         subwindow->setParent(nullptr);
 
         assert(!d->mdiArea->subWindowList().contains(subwindow));
-        // d->mdiArea->removeSubWindow(parent);
     }
 
     if(close)
@@ -1386,16 +1318,16 @@ void MainWindow::onWindowsMenuAboutToShow()
         QAction* action = actions.at(index);
         QString text;
         QString title = child->windowTitle();
-        int lastIndex = title.lastIndexOf(QString::fromLatin1("[*]"));
+        int lastIndex = title.lastIndexOf(QStringLiteral("[*]"));
         if (lastIndex > 0) {
             title = title.left(lastIndex);
             if (child->isWindowModified())
-                title = QString::fromLatin1("%1*").arg(title);
+                title = QStringLiteral("%1*").arg(title);
         }
         if (index < 9)
-            text = QString::fromLatin1("&%1 %2").arg(index+1).arg(title);
+            text = QStringLiteral("&%1 %2").arg(index+1).arg(title);
         else
-            text = QString::fromLatin1("%1 %2").arg(index+1).arg(title);
+            text = QStringLiteral("%1 %2").arg(index+1).arg(title);
         action->setText(text);
         action->setVisible(true);
         action->setChecked(child == active);
@@ -1556,16 +1488,16 @@ void MainWindow::hideEvent(QHideEvent* e)
     QMainWindow::hideEvent(e);
 }
 
-void MainWindow::processMessages(const QList<QByteArray> & msg)
+void MainWindow::processMessages(const QList<QString> & msg)
 {
     // handle all the messages to open files
     try {
         WaitCursor wc;
         std::list<std::string> files;
-        QByteArray action("OpenFile:");
+        QString action = QStringLiteral("OpenFile:");
         for (const auto & it : msg) {
             if (it.startsWith(action))
-                files.emplace_back(it.mid(action.size()).constData());
+                files.emplace_back(it.mid(action.size()).toStdString());
         }
         files = App::Application::processFiles(files);
         for (const auto & file : files) {
@@ -1583,7 +1515,7 @@ void MainWindow::delayedStartup()
     if (App::Application::Config()["RunMode"] == "Internal") {
         QTimer::singleShot(1000, this, []{
             try {
-                Base::Interpreter().runString(
+                    string command =
                     "import sys\n"
                     "import FreeCAD\n"
                     "import QtUnitGui\n\n"
@@ -1591,8 +1523,11 @@ void MainWindow::delayedStartup()
                     "QtUnitGui.addTest(testCase)\n"
                     "QtUnitGui.setTest(testCase)\n"
                     "result = QtUnitGui.runTest()\n"
-                    "sys.stdout.flush()\n"
-                    "sys.exit(0 if result else 1)");
+                    "sys.stdout.flush()\n";
+                    if (App::Application::Config()["ExitTests"] == "yes") {
+                        command += "sys.exit(0 if result else 1)";
+                    }
+                    Base::Interpreter().runString(command.c_str());
             }
             catch (const Base::SystemExitException&) {
                 throw;
@@ -1617,9 +1552,7 @@ void MainWindow::delayedStartup()
         throw;
     }
 
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    auto it = cfg.find("StartHidden");
-    if (it != cfg.end()) {
+    if (Application::hiddenMainWindow()) {
         QApplication::quit();
         return;
     }
@@ -1638,12 +1571,28 @@ void MainWindow::delayedStartup()
     if (hGrp->GetBool("RecoveryEnabled", true)) {
         Application::Instance->checkForPreviousCrashes();
     }
+
+    if (SafeMode::SafeModeEnabled()) {
+        auto safeModePopup = QMessageBox(
+            QMessageBox::Information,
+            tr("Safe mode enabled"),
+            tr("FreeCAD is now running in safe mode."),
+            QMessageBox::Ok
+        );
+        safeModePopup.setInformativeText(
+            tr(
+                "Safe mode temporarily disables your configurations and addons."
+                " Restart the application to exit safe mode."
+            )
+        );
+        safeModePopup.exec();
+    }
 }
 
 void MainWindow::appendRecentFile(const QString& filename)
 {
     auto recent = this->findChild<RecentFilesAction *>
-        (QString::fromLatin1("recentFiles"));
+        (QStringLiteral("recentFiles"));
     if (recent) {
         recent->appendFile(filename);
     }
@@ -1652,7 +1601,7 @@ void MainWindow::appendRecentFile(const QString& filename)
 void MainWindow::appendRecentMacro(const QString& filename)
 {
     auto recent = this->findChild<RecentMacrosAction *>
-        (QString::fromLatin1("recentMacros"));
+        (QStringLiteral("recentMacros"));
     if (recent) {
         recent->appendFile(filename);
     }
@@ -1819,6 +1768,8 @@ void MainWindow::loadWindowSettings()
 
     statusBar()->setVisible(showStatusBar);
 
+    setAttribute(Qt::WA_AlwaysShowToolTips);
+
     ToolBarManager::getInstance()->restoreState();
     std::clog << "Toolbars restored" << std::endl;
 
@@ -1867,19 +1818,6 @@ void MainWindow::saveWindowSettings(bool canDelay)
     QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
-#if 0
-    config.beginGroup(qtver);
-    config.setValue(QStringLiteral("Size"), this->size());
-    config.setValue(QStringLiteral("Position"), this->pos());
-    config.setValue(QStringLiteral("Maximized"), this->isMaximized());
-    config.setValue(QStringLiteral("MainWindowState"), this->saveState());
-    config.setValue(QStringLiteral("StatusBar"), this->statusBar()->isVisible());
-    config.endGroup();
-#else
-    // We are migrating from saving qt main window layout state in QSettings to
-    // FreeCAD parameters, for more control.
-#endif
-
     Base::ConnectionBlocker block(d->connParam);
     d->hGrp->SetBool("Maximized", this->isMaximized());
     d->hGrp->SetBool("StatusBar", this->statusBar()->isVisible());
@@ -1905,9 +1843,9 @@ void MainWindow::startSplasher()
             GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
         // first search for an external image file
         if (hGrp->GetBool("ShowSplasher", true)) {
-            d->splashscreen = new SplashScreen(this->splashImage());
+            d->splashscreen = new SplashScreen(SplashScreen::splashImage());
 
-            if (!hGrp->GetBool("ShowSplasherMessages", true)) {
+            if (!hGrp->GetBool("ShowSplasherMessages", false)) {
                 d->splashscreen->setShowMessages(false);
             }
 
@@ -1926,204 +1864,6 @@ void MainWindow::stopSplasher()
         delete d->splashscreen;
         d->splashscreen = nullptr;
     }
-}
-
-QPixmap MainWindow::aboutImage() const
-{
-    // See if we have a custom About screen image set
-    QPixmap about_image;
-    QFileInfo fi(QString::fromLatin1("images:about_image.png"));
-    if (fi.isFile() && fi.exists())
-        about_image.load(fi.filePath(), "PNG");
-
-    std::string about_path = App::Application::Config()["AboutImage"];
-    if (!about_path.empty() && about_image.isNull()) {
-        QString path = QString::fromUtf8(about_path.c_str());
-        if (QDir(path).isRelative()) {
-            QString home = QString::fromStdString(App::Application::getHomePath());
-            path = QFileInfo(QDir(home), path).absoluteFilePath();
-        }
-        about_image.load(path);
-
-        // Now try the icon paths
-        if (about_image.isNull()) {
-            about_image = Gui::BitmapFactory().pixmap(about_path.c_str());
-        }
-    }
-
-    return about_image;
-}
-
-/**
- * Displays a warning about this being a developer build. Designed for display in the Splashscreen.
- * \param painter The painter to draw the warning into
- * \param startPosition The painter-space coordinates to start the warning box at.
- * \param maxSize The maximum extents for the box that is drawn. If the text exceeds this size it
- * will be scaled down to fit.
- * \note The text string is translatable, so its length is somewhat unpredictable. It is always
- * displayed as two lines, regardless of the length of the text (e.g. no wrapping is done). Only the
- * width is considered, the height simply follows from the font size.
- */
-void MainWindow::renderDevBuildWarning(
-    QPainter &painter,
-    const QPoint startPosition,
-    const QSize maxSize)
-{
-    // Create a background box that fades out the artwork for better legibility
-    QColor fader (Qt::black);
-    constexpr float halfDensity (0.5);
-    fader.setAlphaF(halfDensity);
-    QBrush fillBrush(fader, Qt::BrushStyle::SolidPattern);
-    painter.setBrush(fillBrush);
-
-    // Construct the lines of text and figure out how much space they need
-    const auto devWarningLine1 = tr("WARNING: This is a development version.");
-    const auto devWarningLine2 = tr("Please do not use it in a production environment.");
-    QFontMetrics fontMetrics(painter.font()); // Try to use the existing font
-    int padding = QtTools::horizontalAdvance(fontMetrics, QLatin1String("M")); // Arbitrary
-    int line1Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine1);
-    int line2Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine2);
-    int boxWidth = std::max(line1Width,line2Width) + 2 * padding;
-    int lineHeight = fontMetrics.lineSpacing();
-    if (boxWidth > maxSize.width()) {
-        // Especially if the text was translated, there is a chance that using the existing font
-        // will exceed the width of the Splashscreen graphic. Resize down so that it fits, no matter
-        // how long the text strings are.
-        float reductionFactor = static_cast<float>(maxSize.width()) / static_cast<float>(boxWidth);
-        int newFontSize = static_cast<int>(painter.font().pointSize() * reductionFactor);
-        padding *= reductionFactor;
-        QFont newFont = painter.font();
-        newFont.setPointSize(newFontSize);
-        painter.setFont(newFont);
-        lineHeight = painter.fontMetrics().lineSpacing();
-        boxWidth = maxSize.width();
-    }
-    constexpr float lineExpansionFactor(2.3F);
-    int boxHeight = static_cast<int>(lineHeight*lineExpansionFactor);
-
-    // Draw the background rectangle and the text
-    painter.drawRect(startPosition.x(), startPosition.y(), boxWidth, boxHeight);
-    painter.drawText(startPosition.x()+padding, startPosition.y()+lineHeight, devWarningLine1);
-    painter.drawText(startPosition.x()+padding, startPosition.y()+2*lineHeight, devWarningLine2);
-}
-
-QPixmap MainWindow::splashImage() const
-{
-    // search in the UserAppData dir as very first
-    QPixmap splash_image;
-    QFileInfo fi(QString::fromLatin1("images:splash_image.png"));
-    if (fi.isFile() && fi.exists())
-        splash_image.load(fi.filePath(), "PNG");
-
-    // if no image was found try the config
-    std::string splash_path = App::Application::Config()["SplashScreen"];
-    if (splash_image.isNull()) {
-        QString path = QString::fromUtf8(splash_path.c_str());
-        if (QDir(path).isRelative()) {
-            QString home = QString::fromStdString(App::Application::getHomePath());
-            path = QFileInfo(QDir(home), path).absoluteFilePath();
-        }
-
-        splash_image.load(path);
-    }
-
-    // now try the icon paths
-    float pixelRatio (1.0);
-    if (splash_image.isNull()) {
-        if (qApp->devicePixelRatio() > 1.0) {
-            // For HiDPI screens, we have a double-resolution version of the splash image
-            splash_path += "2x";
-            splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
-            splash_image.setDevicePixelRatio(2.0);
-            pixelRatio = 2.0;
-        }
-        else {
-            splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
-        }
-    }
-
-    // include application name and version number
-    std::map<std::string,std::string>::const_iterator tc = App::Application::Config().find("SplashInfoColor");
-    if (tc != App::Application::Config().end()) {
-        QString title = qApp->applicationName();
-        QString major   = QString::fromLatin1(App::Application::Config()["BuildVersionMajor"].c_str());
-        QString minor   = QString::fromLatin1(App::Application::Config()["BuildVersionMinor"].c_str());
-        QString point   = QString::fromLatin1(App::Application::Config()["BuildVersionPoint"].c_str());
-        QString suffix  = QString::fromLatin1(App::Application::Config()["BuildVersionSuffix"].c_str());
-        QString version = QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix);
-        QString position, fontFamily;
-
-        std::map<std::string,std::string>::const_iterator te = App::Application::Config().find("SplashInfoExeName");
-        std::map<std::string,std::string>::const_iterator tv = App::Application::Config().find("SplashInfoVersion");
-        std::map<std::string,std::string>::const_iterator tp = App::Application::Config().find("SplashInfoPosition");
-        std::map<std::string,std::string>::const_iterator tf = App::Application::Config().find("SplashInfoFont");
-        if (te != App::Application::Config().end())
-            title = QString::fromUtf8(te->second.c_str());
-        if (tv != App::Application::Config().end())
-            version = QString::fromUtf8(tv->second.c_str());
-        if (tp != App::Application::Config().end())
-            position = QString::fromUtf8(tp->second.c_str());
-        if (tf != App::Application::Config().end())
-            fontFamily = QString::fromUtf8(tf->second.c_str());
-
-        QPainter painter;
-        painter.begin(&splash_image);
-        if (!fontFamily.isEmpty()) {
-            QFont font = painter.font();
-            if (font.fromString(fontFamily))
-                painter.setFont(font);
-        }
-
-        QFont fontExe = painter.font();
-        fontExe.setPointSizeF(20.0);
-        QFontMetrics metricExe(fontExe);
-        int l = QtTools::horizontalAdvance(metricExe, title);
-        if (title == QLatin1String("FreeCAD")) {
-            l = 0.0; // "FreeCAD" text is already part of the splashscreen, version goes below it
-        }
-        int w = splash_image.width();
-        int h = splash_image.height();
-
-        QFont fontVer = painter.font();
-        fontVer.setPointSizeF(14.0);
-        QFontMetrics metricVer(fontVer);
-        int v = QtTools::horizontalAdvance(metricVer, version);
-
-        int x = -1, y = -1;
-        QRegularExpression rx(QLatin1String("(\\d+).(\\d+)"));
-        auto match = rx.match(position);
-        if (match.hasMatch()) {
-            x = match.captured(1).toInt();
-            y = match.captured(2).toInt();
-        }
-        else {
-            x = w - (l + v + 10);
-            y = h - 20;
-        }
-
-        QColor color;
-        color.setNamedColor(QString::fromLatin1(tc->second.c_str()));
-        if (color.isValid()) {
-            painter.setPen(color);
-            painter.setFont(fontExe);
-            if (title != QLatin1String("FreeCAD")) {
-                // FreeCAD's Splashscreen already contains the EXE name, no need to draw it
-                painter.drawText(x, y, title);
-            }
-            painter.setFont(fontVer);
-            painter.drawText(x + (l + 5), y, version);
-            if (suffix == QLatin1String("dev")) {
-                const int lineHeight = metricVer.lineSpacing();
-                const int padding {10}; // Distance from the edge of the graphic's bounding box
-                QPoint startPosition(padding, y + lineHeight);
-                QSize maxSize(w/pixelRatio - 2*padding, lineHeight * 3);
-                MainWindow::renderDevBuildWarning(painter, startPosition, maxSize);
-            }
-            painter.end();
-        }
-    }
-
-    return splash_image;
 }
 
 /**
@@ -2380,12 +2120,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
     }
 
     QByteArray docName = doc ? QByteArray(doc->getName()) : qApp->translate("StdCmdNew","Unnamed").toUtf8();
-    SelectModule::Dict dict = SelectModule::importHandler(files);
-    // load the files with the associated modules
-    for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-        // if the passed document name doesn't exist the module should create it, if needed
-        Application::Instance->importFrom(it.key().toUtf8(), docName, it.value().toLatin1());
-    }
+    ModuleIO::importFiles(files, docName);
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -2421,7 +2156,7 @@ void MainWindow::changeEvent(QEvent *e)
 
 void MainWindow::clearStatus() {
     d->currentStatusType = 100;
-    statusBar()->setStyleSheet(QString::fromLatin1("#statusBar{}"));
+    statusBar()->setStyleSheet(QStringLiteral("#statusBar{}"));
 }
 
 void MainWindow::statusMessageChanged() {
@@ -2480,7 +2215,7 @@ void MainWindow::showStatus(int type, const QString& message)
         statusBar()->setStyleSheet(d->status->wrn);
         break;
     case MainWindow::Pane:
-        statusBar()->setStyleSheet(QString::fromLatin1("#statusBar{}"));
+        statusBar()->setStyleSheet(QStringLiteral("#statusBar{}"));
         break;
     default:
         statusBar()->setStyleSheet(d->status->msg);
@@ -2565,26 +2300,25 @@ void MainWindow::setWindowTitle(const QString& string)
         appname = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
     }
 
-    // allow to disable version number
+    // allow one to disable version number
     ParameterGrp::handle hGen = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/General");
     bool showVersion = hGen->GetBool("ShowVersionInTitle", true);
 
     if (showVersion) {
         // set main window title with FreeCAD Version
-        auto config = App::Application::Config();
-        QString major = QString::fromUtf8(config["BuildVersionMajor"].c_str());
-        QString minor = QString::fromUtf8(config["BuildVersionMinor"].c_str());
-        QString point = QString::fromUtf8(config["BuildVersionPoint"].c_str());
-        QString suffix = QString::fromUtf8(config["BuildVersionSuffix"].c_str());
-        title = QString::fromUtf8("%1 %2.%3.%4%5").arg(appname, major, minor, point, suffix);
+        title = QString::fromStdString(App::Application::getNameWithVersion());
     }
     else {
         title = appname;
     }
 
+    if (SafeMode::SafeModeEnabled()) {
+        title = QStringLiteral("%1 (%2)").arg(title, tr("Safe Mode"));
+    }
+
     if (!string.isEmpty()) {
-        title = QString::fromUtf8("[*] %1 - %2").arg(string, title);
+        title = QStringLiteral("[*] %1 - %2").arg(string, title);
     }
 
     QMainWindow::setWindowTitle(title);
@@ -2595,9 +2329,9 @@ void MainWindow::setWindowTitle(const QString& string)
     StatusBarObserver::StatusBarObserver()
         : WindowParameter("OutputWindow")
     {
-        msg = QString::fromLatin1("#statusBar{color: #000000}");  // black
-        wrn = QString::fromLatin1("#statusBar{color: #ffaa00}");  // orange
-        err = QString::fromLatin1("#statusBar{color: #ff0000}");  // red
+        msg = QStringLiteral("#statusBar{color: #000000}");  // black
+        wrn = QStringLiteral("#statusBar{color: #ffaa00}");  // orange
+        err = QStringLiteral("#statusBar{color: #ff0000}");  // red
         Base::Console().AttachObserver(this);
         getWindowParameter()->Attach(this);
         getWindowParameter()->NotifyAll();
@@ -2612,18 +2346,18 @@ void MainWindow::setWindowTitle(const QString& string)
     void StatusBarObserver::OnChange(Base::Subject<const char*> & rCaller, const char* sReason)
     {
         ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
-        auto format = QString::fromLatin1("#statusBar{color: %1}");
+        auto format = QStringLiteral("#statusBar{color: %1}");
         if (strcmp(sReason, "colorText") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);
-            this->msg = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+            this->msg = format.arg(Base::Color::fromPackedRGB<QColor>(col).name());
         }
         else if (strcmp(sReason, "colorWarning") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);
-            this->wrn = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+            this->wrn = format.arg(Base::Color::fromPackedRGB<QColor>(col).name());
         }
         else if (strcmp(sReason, "colorError") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);
-            this->err = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+            this->err = format.arg(Base::Color::fromPackedRGB<QColor>(col).name());
         }
         else if (strcmp(sReason, "colorCritical") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);

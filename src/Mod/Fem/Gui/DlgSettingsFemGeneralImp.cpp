@@ -43,7 +43,7 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
     ui->cmb_def_solver->clear();
     std::vector<std::string> Solvers = {"None"};
 
-    if (!Fem::Tools::checkIfBinaryExists("CCX", "ccx", "ccx").empty()) {
+    if (!Fem::Tools::checkIfBinaryExists("Ccx", "ccx", "ccx").empty()) {
         Solvers.emplace_back("CalculiX");
     }
     if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver").empty()) {

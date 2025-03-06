@@ -30,7 +30,7 @@
 
 #include <App/Document.h>
 #include <Gui/Command.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraintGear.h>
 #include <Mod/Fem/App/FemTools.h>
@@ -74,8 +74,7 @@ TaskFemConstraintGear::TaskFemConstraintGear(ViewProviderFemConstraint* Constrai
     ui->checkReversed->blockSignals(true);
 
     // Get the feature data
-    Fem::ConstraintGear* pcConstraint =
-        static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
+    Fem::ConstraintGear* pcConstraint = ConstraintView->getObject<Fem::ConstraintGear>();
     double dia = pcConstraint->Diameter.getValue();
     double force = pcConstraint->Force.getValue();
     double angle = pcConstraint->ForceAngle.getValue();
@@ -137,8 +136,7 @@ void TaskFemConstraintGear::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         std::vector<std::string> references(1, subName);
-        Fem::ConstraintGear* pcConstraint =
-            static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
+        Fem::ConstraintGear* pcConstraint = ConstraintView->getObject<Fem::ConstraintGear>();
         App::DocumentObject* obj =
             ConstraintView->getObject()->getDocument()->getObject(msg.pObjectName);
         Part::Feature* feat = static_cast<Part::Feature*>(obj);
@@ -180,22 +178,19 @@ void TaskFemConstraintGear::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void TaskFemConstraintGear::onDiameterChanged(double l)
 {
-    Fem::ConstraintGear* pcConstraint =
-        static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
+    Fem::ConstraintGear* pcConstraint = ConstraintView->getObject<Fem::ConstraintGear>();
     pcConstraint->Diameter.setValue(l);
 }
 
 void TaskFemConstraintGear::onForceChanged(double f)
 {
-    Fem::ConstraintGear* pcConstraint =
-        static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
+    Fem::ConstraintGear* pcConstraint = ConstraintView->getObject<Fem::ConstraintGear>();
     pcConstraint->Force.setValue(f);
 }
 
 void TaskFemConstraintGear::onForceAngleChanged(double a)
 {
-    Fem::ConstraintGear* pcConstraint =
-        static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
+    Fem::ConstraintGear* pcConstraint = ConstraintView->getObject<Fem::ConstraintGear>();
     pcConstraint->ForceAngle.setValue(a);
 }
 
@@ -213,8 +208,7 @@ void TaskFemConstraintGear::onButtonDirection(const bool pressed)
 
 void TaskFemConstraintGear::onCheckReversed(const bool pressed)
 {
-    Fem::ConstraintGear* pcConstraint =
-        static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
+    Fem::ConstraintGear* pcConstraint = ConstraintView->getObject<Fem::ConstraintGear>();
     pcConstraint->Reversed.setValue(pressed);
 }
 
@@ -304,7 +298,7 @@ bool TaskDlgFemConstraintGear::accept()
         std::string dirobj = parameterGear->getDirectionObject().data();
 
         if (!dirname.empty()) {
-            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+            QString buf = QStringLiteral("(App.ActiveDocument.%1,[\"%2\"])");
             buf = buf.arg(QString::fromStdString(dirname));
             buf = buf.arg(QString::fromStdString(dirobj));
             Gui::Command::doCommand(Gui::Command::Doc,

@@ -176,7 +176,7 @@ def isAligned(edge, axis="x"):
 
 
 def getQuad(face):
-    """Return a list of 3 vectors if the face is a quad, ortherwise None.
+    """Return a list of 3 vectors if the face is a quad, otherwise None.
 
     Returns
     -------
@@ -242,7 +242,18 @@ def hasOnlyWires(shape):
 
 
 def geomType(edge):
-    """Return the type of geometry this edge is based on."""
+    """Return the type of geometry this edge is based on.
+
+    Parameters
+    ----------
+    edge: the edge whose `Curve` attribute is to be checked.
+
+    Returns
+    -------
+    str
+        Return the type of the edge's Curve attribute or "Unknown",
+        if the parameter is missing.
+    """
     try:
         if isinstance(edge.Curve, (Part.LineSegment, Part.Line)):
             return "Line"

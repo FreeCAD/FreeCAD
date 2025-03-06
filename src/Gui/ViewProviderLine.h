@@ -25,12 +25,14 @@
 #ifndef GUI_ViewProviderLine_H
 #define GUI_ViewProviderLine_H
 
-#include "ViewProviderOriginFeature.h"
+#include "ViewProviderDatum.h"
+
+class SoText2;
 
 namespace Gui
 {
 
-class GuiExport ViewProviderLine : public ViewProviderOriginFeature {
+class GuiExport ViewProviderLine : public ViewProviderDatum {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderLine);
 public:
     /// Constructor
@@ -38,6 +40,9 @@ public:
     ~ViewProviderLine() override;
 
     void attach ( App::DocumentObject * ) override;
+
+protected:
+    CoinPtr<SoText2> pLabel;
 };
 
 } //namespace Gui

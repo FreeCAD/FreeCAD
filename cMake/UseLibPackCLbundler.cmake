@@ -39,7 +39,6 @@ set (Qt5UiPlugin_DIR ${Qt5_ROOT_DIR}/lib/cmake/Qt5UiPlugin CACHE PATH "")
 set (Qt5UiTools_DIR ${Qt5_ROOT_DIR}/lib/cmake/Qt5UiTools CACHE PATH "")
 set (Qt5Widgets_DIR ${Qt5_ROOT_DIR}/lib/cmake/Qt5Widgets CACHE PATH "")
 set (Qt5Xml_DIR ${Qt5_ROOT_DIR}/lib/cmake/Qt5Xml CACHE PATH "")
-set (Qt5XmlPatterns_DIR ${Qt5_ROOT_DIR}/lib/cmake/Qt5XmlPatterns CACHE PATH "")
 
 find_library(XercesC_LIBRARY_RELEASE xerces-c_3 "${FREECAD_LIBPACK_DIR}/lib")
 find_library(XercesC_LIBRARY_DEBUG xerces-c_3D "${FREECAD_LIBPACK_DIR}/lib")

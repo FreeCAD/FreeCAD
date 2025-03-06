@@ -42,6 +42,16 @@ std::string ViewProviderAssemblyPy::representation() const
     return str.str();
 }
 
+PyObject* ViewProviderAssemblyPy::isInEditMode(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    Py::Boolean val(getViewProviderAssemblyPtr()->isInEditMode());
+    return Py::new_reference_to(val);
+}
+
 Py::Boolean ViewProviderAssemblyPy::getEnableMovement() const
 {
     return {getViewProviderAssemblyPtr()->getEnableMovement()};

@@ -203,6 +203,20 @@ PyObject* GeometryPy::clone(PyObject *args)
     return cpy;
 }
 
+PyObject* GeometryPy::isSame(PyObject *args)
+{
+    PyObject* other {};
+    double tol {};
+    double angular {};
+    if (!PyArg_ParseTuple(args, "O!dd", &GeometryPy::Type, &other, &tol, &angular)) {
+        return nullptr;
+    }
+
+    Part::Geometry* geom = this->getGeometryPtr();
+    bool same = geom->isSame(*static_cast<GeometryPy*>(other)->getGeometryPtr(), tol, angular);
+    return Py::new_reference_to(Py::Boolean(same));
+}
+
 PyObject* GeometryPy::setExtension(PyObject *args)
 {
     PyObject* o;

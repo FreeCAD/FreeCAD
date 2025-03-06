@@ -40,6 +40,13 @@ inputs:
 runs:
   using: "composite"
   steps:
+      - name: C++ Assembly tests
+        id: assembly
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Assembly_tests_run --gtest_output=json:${{ inputs.reportdir }}assembly_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}assembly_gtest_test_log.txt
+          testName: Assembly
       - name: C++ core tests
         id: core
         uses: ./.github/workflows/actions/runCPPTests/runSingleTest
@@ -54,6 +61,13 @@ runs:
           testCommand: ${{ inputs.builddir }}/tests/Material_tests_run --gtest_output=json:${{ inputs.reportdir }}material_gtest_results.json
           testLogFile: ${{ inputs.reportdir }}material_gtest_test_log.txt
           testName: Material
+      - name: C++ Measure tests
+        id: measure
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Material_tests_run --gtest_output=json:${{ inputs.reportdir }}measure_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}measure_gtest_test_log.txt
+          testName: Measure
       - name: C++ Mesh tests
         id: mesh
         uses: ./.github/workflows/actions/runCPPTests/runSingleTest
@@ -61,6 +75,13 @@ runs:
           testCommand: ${{ inputs.builddir }}/tests/Mesh_tests_run --gtest_output=json:${{ inputs.reportdir }}mesh_gtest_results.json
           testLogFile: ${{ inputs.reportdir }}mesh_gtest_test_log.txt
           testName: Mesh
+      - name: C++ MeshPart tests
+        id: meshpart
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Mesh_tests_run --gtest_output=json:${{ inputs.reportdir }}meshpart_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}meshpart_gtest_test_log.txt
+          testName: MeshPart
       - name: C++ Part tests
         id: part
         uses: ./.github/workflows/actions/runCPPTests/runSingleTest
@@ -89,6 +110,13 @@ runs:
           testCommand: ${{ inputs.builddir }}/tests/Sketcher_tests_run --gtest_output=json:${{ inputs.reportdir }}sketcher_gtest_results.json
           testLogFile: ${{ inputs.reportdir }}sketcher_gtest_test_log.txt
           testName: Sketcher
+      - name: C++ Spreadsheet tests
+        id: spreadsheet
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Sketcher_tests_run --gtest_output=json:${{ inputs.reportdir }}spreadsheet_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}spreadsheet_gtest_test_log.txt
+          testName: Spreadsheet
       - name: Compose summary report based on test results
         if: always()
         shell: bash -l {0}

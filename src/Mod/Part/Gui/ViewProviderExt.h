@@ -76,6 +76,7 @@ public:
     App::PropertyAngle AngularDeflection;
     App::PropertyEnumeration Lighting;
     App::PropertyEnumeration DrawStyle;
+    App::PropertyBool ShowPlacement;
     // Points
     App::PropertyFloatConstraint PointSize;
     App::PropertyColor PointColor;
@@ -93,7 +94,7 @@ public:
     std::vector<std::string> getDisplayModes() const override;
     /// Update the view representation
     void reload();
-    /// If no other task is pending it opens a dialog to allow to change face colors
+    /// If no other task is pending it opens a dialog to allow one to change face colors
     bool changeFaceAppearances();
 
     void updateData(const App::Property*) override;
@@ -127,16 +128,16 @@ public:
     void setHighlightedFaces(const std::vector<App::Material>& materials);
     void setHighlightedFaces(const App::PropertyMaterialList& appearance);
     void unsetHighlightedFaces();
-    void setHighlightedEdges(const std::vector<App::Color>& colors);
+    void setHighlightedEdges(const std::vector<Base::Color>& colors);
     void unsetHighlightedEdges();
-    void setHighlightedPoints(const std::vector<App::Color>& colors);
+    void setHighlightedPoints(const std::vector<Base::Color>& colors);
     void unsetHighlightedPoints();
     //@}
 
     /** @name Color management methods
      */
     //@{
-    std::map<std::string,App::Color> getElementColors(const char *element=nullptr) const override;
+    std::map<std::string,Base::Color> getElementColors(const char *element=nullptr) const override;
     //@}
 
     bool isUpdateForced() const override {

@@ -38411,6 +38411,9 @@ S, E
 ** reaction forces for Constraint fixed
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
+** contact forces for Constraint contact
+*CONTACT PRINT, MASTER=INDConstraintContact, SLAVE=DEPConstraintContact
+CF, CFN, CFS
 
 *OUTPUT, FREQUENCY=1
 ***********************************************************

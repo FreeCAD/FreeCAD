@@ -118,6 +118,9 @@ public:
     SoSFName   name;
     SoSFInt32  size;
     SoSFBool   frame;
+    SoSFBool   border;
+    SoSFBool   backgroundUseBaseColor;
+    SoSFBool   textUseBaseColor;
   //SoSFImage  image;
     QPixmap    iconPixmap;
 

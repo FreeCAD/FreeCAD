@@ -266,7 +266,8 @@ class TaskPanelPage(object):
     def pageRegisterSignalHandlers(self):
         """pageRegisterSignalHandlers() .. internal callback.
         Registers a callback for all signals returned by getSignalsForUpdate(obj).
-        Do not overwrite, implement getSignalsForUpdate(obj) and/or registerSignalHandlers(obj) instead."""
+        Do not overwrite, implement getSignalsForUpdate(obj) and/or registerSignalHandlers(obj) instead.
+        """
         for signal in self.getSignalsForUpdate(self.obj):
             signal.connect(self.pageGetFields)
         self.registerSignalHandlers(self.obj)
@@ -446,9 +447,7 @@ class TaskPanelPage(object):
             if parent and hasattr(parent, "featurePages"):
                 for page in parent.featurePages:
                     if hasattr(page, "panelTitle"):
-                        if page.panelTitle == panelTitle and hasattr(
-                            page, "updateVisibility"
-                        ):
+                        if page.panelTitle == panelTitle and hasattr(page, "updateVisibility"):
                             page.updateVisibility()
                             break
 
@@ -557,20 +556,11 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             return False
         sel = selection[0]
         if sel.HasSubObjects:
-            if (
-                not self.supportsVertexes()
-                and selection[0].SubObjects[0].ShapeType == "Vertex"
-            ):
+            if not self.supportsVertexes() and selection[0].SubObjects[0].ShapeType == "Vertex":
                 return False
-            if (
-                not self.supportsEdges()
-                and selection[0].SubObjects[0].ShapeType == "Edge"
-            ):
+            if not self.supportsEdges() and selection[0].SubObjects[0].ShapeType == "Edge":
                 return False
-            if (
-                not self.supportsFaces()
-                and selection[0].SubObjects[0].ShapeType == "Face"
-            ):
+            if not self.supportsFaces() and selection[0].SubObjects[0].ShapeType == "Face":
                 return False
         else:
             if not self.supportsPanels() or "Panel" not in sel.Object.Name:
@@ -688,13 +678,9 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
     def getForm(self):
         self.formLoc = FreeCADGui.PySideUic.loadUi(":/panels/PageBaseLocationEdit.ui")
         if QtCore.qVersion()[0] == "4":
-            self.formLoc.baseList.horizontalHeader().setResizeMode(
-                QtGui.QHeaderView.Stretch
-            )
+            self.formLoc.baseList.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
         else:
-            self.formLoc.baseList.horizontalHeader().setSectionResizeMode(
-                QtGui.QHeaderView.Stretch
-            )
+            self.formLoc.baseList.horizontalHeader().setSectionResizeMode(QtGui.QHeaderView.Stretch)
         self.getPoint = PathGetPoint.TaskPanel(self.formLoc.addRemoveEdit)
         return self.formLoc
 
@@ -768,12 +754,8 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
 
     def editLocationAt(self, point, obj):
         if point:
-            self.formLoc.baseList.item(self.editRow, 0).setData(
-                self.DataLocation, point.x
-            )
-            self.formLoc.baseList.item(self.editRow, 1).setData(
-                self.DataLocation, point.y
-            )
+            self.formLoc.baseList.item(self.editRow, 0).setData(self.DataLocation, point.x)
+            self.formLoc.baseList.item(self.editRow, 1).setData(self.DataLocation, point.y)
             self.updateLocations()
             FreeCAD.ActiveDocument.recompute()
 
@@ -813,9 +795,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
 
     def initPage(self, obj):
-        self.safeHeight = PathGuiUtil.QuantitySpinBox(
-            self.form.safeHeight, obj, "SafeHeight"
-        )
+        self.safeHeight = PathGuiUtil.QuantitySpinBox(self.form.safeHeight, obj, "SafeHeight")
         self.clearanceHeight = PathGuiUtil.QuantitySpinBox(
             self.form.clearanceHeight, obj, "ClearanceHeight"
         )
@@ -865,15 +845,11 @@ class TaskPanelDepthsPage(TaskPanelPage):
 
     def haveFinalDepth(self):
         return (
-            PathOp.FeatureDepths & self.features
-            and not PathOp.FeatureNoFinalDepth & self.features
+            PathOp.FeatureDepths & self.features and not PathOp.FeatureNoFinalDepth & self.features
         )
 
     def haveFinishDepth(self):
-        return (
-            PathOp.FeatureDepths & self.features
-            and PathOp.FeatureFinishDepth & self.features
-        )
+        return PathOp.FeatureDepths & self.features and PathOp.FeatureFinishDepth & self.features
 
     def haveStepDown(self):
         return PathOp.FeatureStepDown & self.features
@@ -881,18 +857,14 @@ class TaskPanelDepthsPage(TaskPanelPage):
     def initPage(self, obj):
 
         if self.haveStartDepth():
-            self.startDepth = PathGuiUtil.QuantitySpinBox(
-                self.form.startDepth, obj, "StartDepth"
-            )
+            self.startDepth = PathGuiUtil.QuantitySpinBox(self.form.startDepth, obj, "StartDepth")
         else:
             self.form.startDepth.hide()
             self.form.startDepthLabel.hide()
             self.form.startDepthSet.hide()
 
         if self.haveFinalDepth():
-            self.finalDepth = PathGuiUtil.QuantitySpinBox(
-                self.form.finalDepth, obj, "FinalDepth"
-            )
+            self.finalDepth = PathGuiUtil.QuantitySpinBox(self.form.finalDepth, obj, "FinalDepth")
         else:
             if self.haveStartDepth():
                 self.form.finalDepth.setEnabled(False)
@@ -908,9 +880,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.finalDepthSet.hide()
 
         if self.haveStepDown():
-            self.stepDown = PathGuiUtil.QuantitySpinBox(
-                self.form.stepDown, obj, "StepDown"
-            )
+            self.stepDown = PathGuiUtil.QuantitySpinBox(self.form.stepDown, obj, "StepDown")
         else:
             self.form.stepDown.hide()
             self.form.stepDownLabel.hide()
@@ -1021,12 +991,8 @@ class TaskPanelDiametersPage(TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageDiametersEdit.ui")
 
     def initPage(self, obj):
-        self.minDiameter = PathGuiUtil.QuantitySpinBox(
-            self.form.minDiameter, obj, "MinDiameter"
-        )
-        self.maxDiameter = PathGuiUtil.QuantitySpinBox(
-            self.form.maxDiameter, obj, "MaxDiameter"
-        )
+        self.minDiameter = PathGuiUtil.QuantitySpinBox(self.form.minDiameter, obj, "MinDiameter")
+        self.maxDiameter = PathGuiUtil.QuantitySpinBox(self.form.maxDiameter, obj, "MaxDiameter")
 
     def getTitle(self, obj):
         return translate("PathOp", "Diameters")
@@ -1085,17 +1051,13 @@ class TaskPanel(object):
 
         if PathOp.FeatureBaseGeometry & features:
             if hasattr(opPage, "taskPanelBaseGeometryPage"):
-                self.featurePages.append(
-                    opPage.taskPanelBaseGeometryPage(obj, features)
-                )
+                self.featurePages.append(opPage.taskPanelBaseGeometryPage(obj, features))
             else:
                 self.featurePages.append(TaskPanelBaseGeometryPage(obj, features))
 
         if PathOp.FeatureLocations & features:
             if hasattr(opPage, "taskPanelBaseLocationPage"):
-                self.featurePages.append(
-                    opPage.taskPanelBaseLocationPage(obj, features)
-                )
+                self.featurePages.append(opPage.taskPanelBaseLocationPage(obj, features))
             else:
                 self.featurePages.append(TaskPanelBaseLocationPage(obj, features))
 
@@ -1193,9 +1155,7 @@ class TaskPanel(object):
         self.preCleanup()
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
-            FreeCAD.ActiveDocument.openTransaction(
-                translate("PathOp", "Uncreate AreaOp Operation")
-            )
+            FreeCAD.ActiveDocument.openTransaction(translate("PathOp", "Uncreate AreaOp Operation"))
             try:
                 PathUtil.clearExpressionEngine(self.obj)
                 FreeCAD.ActiveDocument.removeObject(self.obj.Name)
@@ -1266,19 +1226,14 @@ class TaskPanel(object):
     def getStandardButtons(self):
         """getStandardButtons() ... returns the Buttons for the task panel."""
         return (
-            QtGui.QDialogButtonBox.Ok
-            | QtGui.QDialogButtonBox.Apply
-            | QtGui.QDialogButtonBox.Cancel
+            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
         )
 
     def setupUi(self):
         """setupUi() ... internal function to initialise all pages."""
         Path.Log.track(self.deleteOnReject)
 
-        if (
-            self.deleteOnReject
-            and PathOp.FeatureBaseGeometry & self.obj.Proxy.opFeatures(self.obj)
-        ):
+        if self.deleteOnReject and PathOp.FeatureBaseGeometry & self.obj.Proxy.opFeatures(self.obj):
             sel = FreeCADGui.Selection.getSelectionEx()
             for page in self.featurePages:
                 if getattr(page, "InitBase", True) and hasattr(page, "addBase"):
@@ -1286,7 +1241,7 @@ class TaskPanel(object):
                     page.addBaseGeometry(sel)
 
         # Update properties based upon expressions in case expression value has changed
-        for (prp, expr) in self.obj.ExpressionEngine:
+        for prp, expr in self.obj.ExpressionEngine:
             val = FreeCAD.Units.Quantity(self.obj.evalExpression(expr))
             value = val.Value if hasattr(val, "Value") else val
             prop = getattr(self.obj, prp)
@@ -1375,16 +1330,12 @@ def Create(res):
             obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
             return obj
     except PathUtils.PathNoTCExistsException:
-        msg = translate(
-            "PathOp", "No suitable tool controller found.\nAborting op creation"
-        )
+        msg = translate("PathOp", "No suitable tool controller found.\nAborting op creation")
         diag = QtGui.QMessageBox(QtGui.QMessageBox.Warning, "Error", msg)
         diag.setWindowModality(QtCore.Qt.ApplicationModal)
         diag.exec_()
     except PathOp.PathNoTCException:
-        Path.Log.warning(
-            translate("PathOp", "No tool controller, aborting op creation")
-        )
+        Path.Log.warning(translate("PathOp", "No tool controller, aborting op creation"))
 
     FreeCAD.ActiveDocument.abortTransaction()
     FreeCAD.ActiveDocument.recompute()
@@ -1423,9 +1374,7 @@ class CommandPathOp:
 class CommandResources:
     """POD class to hold command specific resources."""
 
-    def __init__(
-        self, name, objFactory, opPageClass, pixmap, menuText, accelKey, toolTip
-    ):
+    def __init__(self, name, objFactory, opPageClass, pixmap, menuText, accelKey, toolTip):
         self.name = name
         self.objFactory = objFactory
         self.opPageClass = opPageClass
@@ -1436,9 +1385,7 @@ class CommandResources:
         self.job = None
 
 
-def SetupOperation(
-    name, objFactory, opPageClass, pixmap, menuText, toolTip, setupProperties=None
-):
+def SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, setupProperties=None):
     """SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, setupProperties=None)
     Creates an instance of CommandPathOp with the given parameters and registers the command with FreeCAD.
     When activated it creates a model with proxy (by invoking objFactory), assigns a view provider to it
@@ -1447,9 +1394,7 @@ def SetupOperation(
     It is not expected to be called manually.
     """
 
-    res = CommandResources(
-        name, objFactory, opPageClass, pixmap, menuText, None, toolTip
-    )
+    res = CommandResources(name, objFactory, opPageClass, pixmap, menuText, None, toolTip)
 
     command = CommandPathOp(res)
     FreeCADGui.addCommand("CAM_%s" % name.replace(" ", "_"), command)

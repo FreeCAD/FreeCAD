@@ -1,0 +1,48 @@
+General:
+  UUID: "2f241065-8590-46c3-aa6e-02a999739d1a"
+  Author: "Jonas Bähr"
+  License: "CC-BY-3.0"
+  Name: "Particle Board"
+  Description: >-
+    Particle boards are engineered wood products, composed of wood chips pressed
+    together with a resin.
+    The surface speeds given here are conservative values and can be increased up
+    to 4x on capable machines with sufficiently large tools.
+    In addition, the numbers here use the cutting force model from B.Ettelt,
+    which is less accurate for smaller chip loads, but has the advantage of being
+    compatible with the model from O.Kienzle commonly used for metals.
+    Another source of uncertaintly is the unknown base rake angle.
+    Then, particle boards can differ significantly in density, chip size and type of
+    resin, so the numbers given here can only serve as an initial estimate.
+    Source: Zerspanung von Holz und Holzwerkstoffen, https://www.hanser-fachbuch.de/fachbuch/artikel/9783446477698
+Inherits:
+  Wood:
+    UUID: "1850ac4a-0df2-43cd-9934-e59e95b9526f"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Engineered Wood"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Wood"
+  Machinability:
+    UUID: '9d81fcb2-bf81-48e3-bb57-d45ecf380096'
+    # ISBN 978-3-446-47769-8, 2. Edition 2023, P. 66
+    # for contour milling, a wide range from 10m/s to 40m/s (up to 120m/s for HSC)
+    # is provided, without differentiation on the cutting material or type of wood.
+    # Here we take the lower end, based on the assumption that mainly hobbyists will
+    # apply this information. Here, smaller tool diameters are common, thus higher surface
+    # speeds are not achievable.
+    SurfaceSpeedHSS: '600 m/min'
+    SurfaceSpeedCarbide: '600 m/min'
+    # ISBN 978-3-446-47769-8, 2. Edition 2023, P. 120 (again citing work from B.Ettelt, 1987)
+    # provided is the upper bound of the given range 12..18.
+    # Unfortunately, it is unknown with which rake angle the values have been obtained.
+    # The choice of 20° is arbitrary and needs revision. It should prevent underestimation
+    # of the calculated cutting force when expecting a value normalized for 0°.
+    # i.e. 18 / (1 - 20/100) is 22.5
+    # NB: Ettelt's model uses 'N/mm^1.5' because it does not normalizes the chip thickness,
+    # however, the definition of FC's Machinability-model requires this normalization.
+    UnitCuttingForce: '22.5 N/mm^2'
+    # Ettelt's model uses the square root of the chip thickness, i.e. an 0.5 as exponent
+    ChipThicknessExponent: 0.50

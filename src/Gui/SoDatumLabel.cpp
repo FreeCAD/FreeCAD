@@ -59,6 +59,61 @@ using namespace Gui;
 
 // ------------------------------------------------------
 
+
+namespace {
+
+void glVertex(const SbVec3f& pt){
+    glVertex3f(pt[0], pt[1], pt[2]);
+}
+
+void glVertexes(const std::vector<SbVec3f>& pts){
+    for (auto pt: pts){
+        glVertex3f(pt[0], pt[1], pt[2]);
+    }
+}
+
+void glDrawLine(const SbVec3f& p1, const SbVec3f& p2){
+    glBegin(GL_LINES);
+        glVertexes({p1, p2});
+    glEnd();
+}
+
+void glDrawArc(const SbVec3f& center, float radius, float startAngle=0., float endAngle=2.0*M_PI, int countSegments=0){
+    float range = endAngle - startAngle;
+    if (range < 0.) {
+        range += 2.0 * M_PI;
+    }
+
+    if (countSegments == 0){
+        countSegments = std::max(6, abs(int(25.0 * range / M_PI)));
+    }
+
+    float segment = range / (countSegments-1);
+
+    glBegin(GL_LINE_STRIP);
+    for (int i=0; i < countSegments; i++) {
+        float theta = startAngle + segment*i;
+        SbVec3f v1 = center + radius * SbVec3f(cos(theta),sin(theta),0);
+        glVertex(v1);
+    }
+    glEnd();
+}
+
+void glDrawArrow(const SbVec3f& base, const SbVec3f& dir, float width, float length){
+    // Calculate arrowhead points
+    SbVec3f normal(dir[1], -dir[0], 0);
+    SbVec3f arrowLeft = base - length * dir + width * normal;
+    SbVec3f arrowRight = base - length * dir - width * normal;
+
+    // Draw arrowheads
+    glBegin(GL_TRIANGLES);
+    glVertexes({base, arrowLeft, arrowRight});
+    glEnd();
+}
+
+} // namespace
+
+
 SO_NODE_SOURCE(SoDatumLabel)
 
 void SoDatumLabel::initClass()
@@ -452,7 +507,7 @@ private:
         float imgHeight = scale * (float) (srch);
         float imgWidth  = aspectRatio * imgHeight;
 
-                // Get the points stored in the pnt field
+        // Get the points stored in the pnt field
         const SbVec3f *points = label->pnts.getValues(0);
         if (label->pnts.getNum() < 3) {
             return {};
@@ -467,13 +522,13 @@ private:
         SbVec3f img3 = SbVec3f( imgWidth / 2, -imgHeight / 2, 0.F);
         SbVec3f img4 = SbVec3f( imgWidth / 2,  imgHeight / 2, 0.F);
 
-                //Text orientation
+        //Text orientation
         SbVec3f dir = (p2 - p1);
         dir.normalize();
         SbVec3f normal = SbVec3f (-dir[1], dir[0], 0);
         float angle = atan2f(dir[1],dir[0]);
 
-                // Rotate through an angle
+        // Rotate through an angle
         float s = sin(angle);
         float c = cos(angle);
         img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.F);
@@ -483,16 +538,32 @@ private:
 
         float length = label->param1.getValue();
 
-                // Text location
+
+        // Text location
         SbVec3f vm = (p1+p2)/2 - ctr;
         vm.normalize();
-        SbVec3f textCenter = ctr + vm * (length + imgHeight);
+
+        SbVec3f vc1 = (p1 - ctr);
+        SbVec3f vc2 = (p2 - ctr);
+
+        float startangle = atan2f(vc1[1], vc1[0]);
+        float endangle = atan2f(vc2[1], vc2[0]);
+        if (endangle < startangle) {
+            endangle += 2. * M_PI;
+        }
+
+        SbVec3f textCenter;
+        if (endangle - startangle <= M_PI) {
+            textCenter = ctr + vm * (length + imgHeight);
+        } else {
+            textCenter = ctr - vm * (length + 2. * imgHeight);
+        }
         img1 += textCenter;
         img2 += textCenter;
         img3 += textCenter;
         img4 += textCenter;
 
-                // Finds the mins and maxes
+        // Finds the mins and maxes
         std::vector<SbVec3f> corners;
         float margin = imgHeight / 4.0F;
         corners.push_back(textCenter + dir * (imgWidth / 2.0F + margin) - normal * (imgHeight / 2.0F + margin));
@@ -613,10 +684,27 @@ SbVec3f SoDatumLabel::getLabelTextCenterArcLength(const SbVec3f& ctr, const SbVe
 {
     float length = this->param1.getValue();
 
-            // Text location
+    // Angles calculations
+    SbVec3f vc1 = (p1 - ctr);
+    SbVec3f vc2 = (p2 - ctr);
+
+    float startangle = atan2f(vc1[1], vc1[0]);
+    float endangle = atan2f(vc2[1], vc2[0]);
+
+    if (endangle < startangle) {
+        endangle += 2. * M_PI;
+    }
+
+    // Text location
     SbVec3f vm = (p1+p2)/2 - ctr;
     vm.normalize();
-    SbVec3f textCenter = ctr + vm * (length + this->imgHeight);
+
+    SbVec3f textCenter;
+    if (endangle - startangle <= M_PI) {
+        textCenter = ctr + vm * (length + this->imgHeight);
+    } else {
+        textCenter = ctr - vm * (length + 2. * this->imgHeight);
+    }
     return textCenter;
 }
 
@@ -1358,36 +1446,13 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
     SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
 
     // leave some space for the text
-    if (range >= 0) {
-        range = std::max(0.2F*range, range - this->imgWidth/(2*r));
-    }
-    else {
-        range = std::min(0.2F*range, range + this->imgWidth/(2*r));
-    }
-
-    int countSegments = std::max(6, abs(int(50.0 * range / (2 * M_PI))));
-    double segment = range / (2*countSegments-2);
+    double textMargin = std::min(0.2F*range,  this->imgWidth/(2*r));
 
     textOffset = p0 + v0 * r;
 
-
     // Draw
-    glBegin(GL_LINE_STRIP);
-
-    for (int i=0; i < countSegments; i++) {
-        double theta = startangle + segment*i;
-        SbVec3f v1 = p0+SbVec3f(r*cos(theta),r*sin(theta),0);
-        glVertex2f(v1[0],v1[1]);
-    }
-    glEnd();
-
-    glBegin(GL_LINE_STRIP);
-    for (int i=0; i < countSegments; i++) {
-        double theta = endangle - segment*i;
-        SbVec3f v1 = p0+SbVec3f(r*cos(theta),r*sin(theta),0);
-        glVertex2f(v1[0],v1[1]);
-    }
-    glEnd();
+    glDrawArc(p0, r, startangle, startangle+range/2.-textMargin);
+    glDrawArc(p0, r, startangle+range/2.+textMargin, endangle);
 
     // Direction vectors for start and end lines
     SbVec3f v1(cos(startangle),sin(startangle),0);
@@ -1398,44 +1463,21 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
     SbVec3f pnt3 = p0 + (r - endLineLength2) * v2;
     SbVec3f pnt4 = p0 + (r + endLineLength22) * v2;
 
-    glBegin(GL_LINES);
-        glVertex2f(pnt1[0],pnt1[1]);
-        glVertex2f(pnt2[0],pnt2[1]);
-
-        glVertex2f(pnt3[0],pnt3[1]);
-        glVertex2f(pnt4[0],pnt4[1]);
-    glEnd();
+    glDrawLine(pnt1, pnt2);
+    glDrawLine(pnt3, pnt4);
 
     // Create the arrowheads
     float arrowLength = margin * 2;
     float arrowWidth = margin * 0.5F;
 
-    // Normals for the arrowheads
     SbVec3f dirStart(v1[1], -v1[0], 0);
-    SbVec3f dirEnd(-v2[1], v2[0], 0);
-
-    // Calculate arrowhead points for start angle
     SbVec3f startArrowBase = p0 + r * v1;
-    SbVec3f startArrowLeft = startArrowBase - arrowLength * dirStart + arrowWidth * v1;
-    SbVec3f startArrowRight = startArrowBase - arrowLength * dirStart - arrowWidth * v1;
+    glDrawArrow(startArrowBase, dirStart, arrowWidth, arrowLength);
 
-    // Calculate arrowhead points for end angle
+    SbVec3f dirEnd(-v2[1], v2[0], 0);
     SbVec3f endArrowBase = p0 + r * v2;
-    SbVec3f endArrowLeft = endArrowBase - arrowLength * dirEnd + arrowWidth * v2;
-    SbVec3f endArrowRight = endArrowBase - arrowLength * dirEnd - arrowWidth * v2;
+    glDrawArrow(endArrowBase, dirEnd, arrowWidth, arrowLength);
 
-    // Draw arrowheads
-    glBegin(GL_TRIANGLES);
-    // Start angle arrowhead
-    glVertex2f(startArrowBase[0], startArrowBase[1]);
-    glVertex2f(startArrowLeft[0], startArrowLeft[1]);
-    glVertex2f(startArrowRight[0], startArrowRight[1]);
-
-    // End angle arrowhead
-    glVertex2f(endArrowBase[0], endArrowBase[1]);
-    glVertex2f(endArrowLeft[0], endArrowLeft[1]);
-    glVertex2f(endArrowRight[0], endArrowRight[1]);
-    glEnd();
 }
 
 void SoDatumLabel::drawSymmetric(const SbVec3f* points)
@@ -1496,12 +1538,12 @@ void SoDatumLabel::drawArcLength(const SbVec3f* points, float& angle, SbVec3f& t
     float startangle = atan2f(vc1[1], vc1[0]);
     float endangle = atan2f(vc2[1], vc2[0]);
     if (endangle < startangle) {
-        endangle += 2. * (float)M_PI;
+        endangle += 2.0F * (float)M_PI;
     }
 
-    float radius = vc1.length();
-
     float range = endangle - startangle;
+
+    float radius = vc1.length();
 
     //Text orientation
     SbVec3f dir = (p2 - p1);
@@ -1513,72 +1555,47 @@ void SoDatumLabel::drawArcLength(const SbVec3f* points, float& angle, SbVec3f& t
     } else if (angle <= -M_PI_2+M_PI/12) {
         angle += (float)M_PI;
     }
+       // Text location
+    textOffset = getLabelTextCenterArcLength(ctr, p1, p2);
 
-    // Text location
+    // lines direction
     SbVec3f vm = (p1+p2)/2 - ctr;
     vm.normalize();
-    textOffset = ctr + vm * (length + this->imgHeight);
 
-    int countSegments = std::max(6, abs(int(50.0 * range / (2 * M_PI))));
-    double segment = range / (countSegments - 1);
-
-    // Draw arc
-    glBegin(GL_LINE_STRIP);
-
-    for (int i=0; i < countSegments; i++) {
-        double theta = startangle + segment*i;
-        SbVec3f v1 = ctr + radius * SbVec3f(cos(theta),sin(theta),0) + (length-radius) * vm;
-        glVertex2f(v1[0],v1[1]);
-    }
-    glEnd();
-
-    //Draw lines
+    // Lines points
     SbVec3f pnt1 = p1;
     SbVec3f pnt2 = p1 + (length-radius) * vm;
     SbVec3f pnt3 = p2;
     SbVec3f pnt4 = p2 + (length-radius) * vm;
 
-    glBegin(GL_LINES);
-    glVertex2f(pnt1[0],pnt1[1]);
-    glVertex2f(pnt2[0],pnt2[1]);
+        // Draw arc
+    if (range <= M_PI) {
+        glDrawArc(ctr + (length-radius)*vm, radius, startangle, endangle);
+    }
+    else {
+        pnt2 = p1 + length * vm;
+        pnt4 = p2 + length * vm;
+        vc1 = (pnt2 - ctr);
+        vc2 = (pnt4 - ctr);
+        startangle = atan2f(vc1[1], vc1[0]);
+        endangle = atan2f(vc2[1], vc2[0]);
+        glDrawArc(ctr, vc1.length(), startangle, endangle);
+    }
 
-    glVertex2f(pnt3[0],pnt3[1]);
-    glVertex2f(pnt4[0],pnt4[1]);
-    glEnd();
+    //Draw lines
+    glDrawLine(pnt1, pnt2);
+    glDrawLine(pnt3, pnt4);
 
     // Create the arrowheads
-    // Direction vectors at arc start and end
-    SbVec3f v1(cos(startangle),sin(startangle),0);
-    SbVec3f v2(cos(endangle),sin(endangle),0);
     float arrowLength = margin * 2;
     float arrowWidth = margin * 0.5F;
 
-    // Normals for the arrowheads
-    SbVec3f dirStart(v1[1], -v1[0], 0);
-    SbVec3f dirEnd(-v2[1], v2[0], 0);
+        // Normals for the arrowheads at arc start and end
+    SbVec3f dirStart(sin(startangle), -cos(startangle), 0);
+    SbVec3f dirEnd(-sin(endangle), cos(endangle), 0);
 
-    // Calculate arrowhead points for start angle
-    SbVec3f startArrowBase = pnt2;
-    SbVec3f startArrowLeft = startArrowBase - arrowLength * dirStart + arrowWidth * v1;
-    SbVec3f startArrowRight = startArrowBase - arrowLength * dirStart - arrowWidth * v1;
-
-    // Calculate arrowhead points for end angle
-    SbVec3f endArrowBase = pnt4;
-    SbVec3f endArrowLeft = endArrowBase - arrowLength * dirEnd + arrowWidth * v2;
-    SbVec3f endArrowRight = endArrowBase - arrowLength * dirEnd - arrowWidth * v2;
-
-    // Draw arrowheads
-    glBegin(GL_TRIANGLES);
-    // Start angle arrowhead
-    glVertex2f(startArrowBase[0], startArrowBase[1]);
-    glVertex2f(startArrowLeft[0], startArrowLeft[1]);
-    glVertex2f(startArrowRight[0], startArrowRight[1]);
-
-    // End angle arrowhead
-    glVertex2f(endArrowBase[0], endArrowBase[1]);
-    glVertex2f(endArrowLeft[0], endArrowLeft[1]);
-    glVertex2f(endArrowRight[0], endArrowRight[1]);
-    glEnd();
+    glDrawArrow(pnt2, dirStart, arrowWidth, arrowLength);
+    glDrawArrow(pnt4, dirEnd, arrowWidth, arrowLength);
 }
 
 // NOLINTNEXTLINE

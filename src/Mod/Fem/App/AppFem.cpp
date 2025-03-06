@@ -161,6 +161,8 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemMesh                              ::init();
     Fem::FemMeshObject                        ::init();
     Fem::FemMeshObjectPython                  ::init();
+    Fem::FemMeshShapeBaseObject               ::init();
+    Fem::FemMeshShapeBaseObjectPython         ::init();
     Fem::FemMeshShapeObject                   ::init();
     Fem::FemMeshShapeNetgenObject             ::init();
     Fem::PropertyFemMesh                      ::init();
@@ -179,6 +181,8 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemSolverObjectPython                ::init();
 
 #ifdef FC_USE_VTK
+    Fem::FemPostSmoothFilterExtension         ::init();
+
     Fem::FemPostObject                        ::init();
     Fem::FemPostPipeline                      ::init();
     Fem::FemPostFilter                        ::init();

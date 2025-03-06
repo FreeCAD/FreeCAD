@@ -31,6 +31,7 @@
 # include <QSvgRenderer>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoFaceSet.h>
+# include <Inventor/nodes/SoLightModel.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
@@ -71,6 +72,8 @@ ViewProviderImagePlane::ViewProviderImagePlane()
     shapeHints->ref();
 
     sPixmap = "image-plane";
+
+    ShapeAppearance.setDiffuseColor(1.0F, 1.0F, 1.0F);
 }
 
 ViewProviderImagePlane::~ViewProviderImagePlane()
@@ -87,22 +90,22 @@ void ViewProviderImagePlane::attach(App::DocumentObject *pcObj)
     // NOTE: SoFCSelection node has beem removed because it led to
     // problems using the image as a construction plane with the
     // draft commands
-    SoSeparator* planesep = new SoSeparator;
-    planesep->addChild(pcCoords);
+    SoSeparator* shading = new SoSeparator;
+    shading->addChild(pcCoords);
 
     SoTextureCoordinate2 *textCoord = new SoTextureCoordinate2;
     textCoord->point.set1Value(0,0,0);
     textCoord->point.set1Value(1,1,0);
     textCoord->point.set1Value(2,1,1);
     textCoord->point.set1Value(3,0,1);
-    planesep->addChild(textCoord);
+    shading->addChild(textCoord);
 
     // texture
     texture->model = SoTexture2::MODULATE;
-    planesep->addChild(texture);
+    shading->addChild(texture);
 
-    planesep->addChild(shapeHints);
-    planesep->addChild(pcShapeMaterial);
+    shading->addChild(shapeHints);
+    shading->addChild(pcShapeMaterial);
 
     // plane
     pcCoords->point.set1Value(0,0,0,0);
@@ -111,22 +114,41 @@ void ViewProviderImagePlane::attach(App::DocumentObject *pcObj)
     pcCoords->point.set1Value(3,0,1,0);
     SoFaceSet *faceset = new SoFaceSet;
     faceset->numVertices.set1Value(0,4);
-    planesep->addChild(faceset);
+    shading->addChild(faceset);
 
-    addDisplayMaskMode(planesep, "ImagePlane");
+    addDisplayMaskMode(shading, "Shading");
+
+    SoLightModel* lightmodel = new SoLightModel;
+    lightmodel->model = SoLightModel::BASE_COLOR;
+
+    SoSeparator* noshading = new SoSeparator;
+    noshading->addChild(pcCoords);
+    noshading->addChild(textCoord);
+    noshading->addChild(texture);
+    noshading->addChild(shapeHints);
+    noshading->addChild(pcShapeMaterial);
+    noshading->addChild(lightmodel);
+    noshading->addChild(faceset);
+
+    addDisplayMaskMode(noshading, "No shading");
 }
 
 void ViewProviderImagePlane::setDisplayMode(const char* ModeName)
 {
-    if (strcmp("ImagePlane",ModeName) == 0)
-        setDisplayMaskMode("ImagePlane");
+    if (strcmp("Shading", ModeName) == 0) {
+        setDisplayMaskMode("Shading");
+    }
+    else if (strcmp("No shading", ModeName) == 0) {
+        setDisplayMaskMode("No shading");
+    }
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderImagePlane::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.emplace_back("ImagePlane");
+    StrList.emplace_back("Shading");
+    StrList.emplace_back("No shading");
     return StrList;
 }
 
@@ -161,9 +183,7 @@ bool ViewProviderImagePlane::doubleClicked()
 
 void ViewProviderImagePlane::manipulateImage()
 {
-    auto dialog = new TaskImageDialog(
-        dynamic_cast<Image::ImagePlane*>(getObject())
-    );
+    auto dialog = new TaskImageDialog(getObject<Image::ImagePlane>());
 
     Gui::Control().showDialog(dialog);
 }

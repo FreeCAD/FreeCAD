@@ -95,7 +95,7 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
     }
     else if (strcmp(prop->getName(),"Length") == 0 ||
              strcmp(prop->getName(),"Width") == 0) {
-        PartDesign::Plane* pcDatum = static_cast<PartDesign::Plane*>(this->getObject());
+        PartDesign::Plane* pcDatum = this->getObject<PartDesign::Plane>();
         if (pcDatum->ResizeMode.getValue() != 0)
             setExtents(pcDatum->Length.getValue(), pcDatum->Width.getValue());
     }
@@ -105,7 +105,7 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
 
 
 void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
-    PartDesign::Plane* pcDatum = static_cast<PartDesign::Plane*>(this->getObject());
+    PartDesign::Plane* pcDatum = this->getObject<PartDesign::Plane>();
     if (pcDatum->ResizeMode.getValue() != 0) {
         setExtents(pcDatum->Length.getValue(), pcDatum->Width.getValue());
         return;

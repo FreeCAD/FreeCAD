@@ -21,11 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYCONTAINER_H
-#define APP_PROPERTYCONTAINER_H
+#ifndef SRC_APP_PROPERTYCONTAINER_H_
+#define SRC_APP_PROPERTYCONTAINER_H_
 
 #include <map>
 #include <cstring>
+#include <vector>
+#include <string>
 #include <Base/Persistence.h>
 
 #include "DynamicProperty.h"
@@ -45,13 +47,13 @@ class Extension;
 // clang-format off
 enum PropertyType
 {
-  Prop_None        = 0, /*!< No special property type */
-  Prop_ReadOnly    = 1, /*!< Property is read-only in the editor */
-  Prop_Transient   = 2, /*!< Property content won't be saved to file, but still saves name, type and status */
-  Prop_Hidden      = 4, /*!< Property won't appear in the editor */
-  Prop_Output      = 8, /*!< Modified property doesn't touch its parent container */
-  Prop_NoRecompute = 16,/*!< Modified property doesn't touch its container for recompute */
-  Prop_NoPersist   = 32,/*!< Property won't be saved to file at all */
+    Prop_None        = 0, /*!< No special property type */
+    Prop_ReadOnly    = 1, /*!< Property is read-only in the editor */
+    Prop_Transient   = 2, /*!< Property content won't be saved to file, but still saves name, type and status */
+    Prop_Hidden      = 4, /*!< Property won't appear in the editor */
+    Prop_Output      = 8, /*!< Modified property doesn't touch its parent container */
+    Prop_NoRecompute = 16,/*!< Modified property doesn't touch its container for recompute */
+    Prop_NoPersist   = 32,/*!< Property won't be saved to file at all */
 };
 // clang-format on
 
@@ -70,13 +72,17 @@ struct AppExport PropertyData
   };
 
   //purpose of this struct is to be constructible from all acceptable container types and to
-  //be able to return the offset to a property from the accepted containers. This allows to use
+  //be able to return the offset to a property from the accepted containers. This allows you to use
   //one function implementation for multiple container types without losing all type safety by
   //accepting void*
   struct OffsetBase
   {
-      OffsetBase(const App::PropertyContainer* container) : m_container(container) {}//explicit bombs
-      OffsetBase(const App::Extension* container) : m_container(container) {}//explicit bombs
+      // Lint wants these marked explicit, but they are currently used implicitly in enough
+      // places that I don't wnt to fix it. Instead we disable the Lint message.
+      // NOLINTNEXTLINE(runtime/explicit)
+      OffsetBase(const App::PropertyContainer* container) : m_container(container) {}
+      // NOLINTNEXTLINE(runtime/explicit)
+      OffsetBase(const App::Extension* container) : m_container(container) {}
 
       short int getOffsetTo(const App::Property* prop) const {
             auto *pt = (const char*)prop;
@@ -91,25 +97,27 @@ struct AppExport PropertyData
       const void* m_container;
   };
 
-  // A multi index container for holding the property spec, with the following
-  // index,
-  // * a sequence, to preserve creation order
-  // * hash index on property name
-  // * hash index on property pointer offset
-  mutable bmi::multi_index_container<
-      PropertySpec,
-      bmi::indexed_by<
-          bmi::sequenced<>,
-          bmi::hashed_unique<
-              bmi::member<PropertySpec, const char*, &PropertySpec::Name>,
-              CStringHasher,
-              CStringHasher
-          >,
-          bmi::hashed_unique<
-              bmi::member<PropertySpec, short, &PropertySpec::Offset>
-          >
-      >
-  > propertyData;
+    // clang-format off
+    // A multi index container for holding the property spec, with the following
+    // index,
+    // * a sequence, to preserve creation order
+    // * hash index on property name
+    // * hash index on property pointer offset
+    mutable bmi::multi_index_container<
+        PropertySpec,
+        bmi::indexed_by<
+            bmi::sequenced<>,
+            bmi::hashed_unique<
+                bmi::member<PropertySpec, const char*, &PropertySpec::Name>,
+                CStringHasher,
+                CStringHasher
+            >,
+            bmi::hashed_unique<
+                bmi::member<PropertySpec, short, &PropertySpec::Offset>
+            >
+        >
+    > propertyData;
+    // clang-format on
 
   mutable bool parentMerged = false;
 
@@ -132,6 +140,8 @@ struct AppExport PropertyData
   void getPropertyMap(OffsetBase offsetBase,std::map<std::string,Property*> &Map) const;
   void getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const;
   void getPropertyNamedList(OffsetBase offsetBase, std::vector<std::pair<const char*,Property*> > &List) const;
+  /// See PropertyContainer::visitProperties for semantics
+  void visitProperties(OffsetBase offsetBase, const std::function<void(Property*)>& visitor) const;
 
   void merge(PropertyData *other=nullptr) const;
   void split(PropertyData *other);
@@ -170,6 +180,11 @@ public:
   virtual void getPropertyMap(std::map<std::string,Property*> &Map) const;
   /// get all properties of the class (including properties of the parent)
   virtual void getPropertyList(std::vector<Property*> &List) const;
+  /// Call the given visitor for each property. The visiting order is undefined.
+  /// This method is necessary because PropertyContainer has no begin and end methods
+  /// and it is not practical to implement these.
+  /// What gets visited is undefined if the collection of Properties is changed during this call.
+  virtual void visitProperties(const std::function<void(Property*)>& visitor) const;
   /// get all properties with their names, may contain duplicates and aliases
   virtual void getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const;
   /// set the Status bit of all properties at once
@@ -269,6 +284,7 @@ private:
   static PropertyData propertyData;
 };
 
+// clang-format off
 /// Property define
 #define _ADD_PROPERTY(_name,_prop_, _defaultval_) \
   do { \
@@ -302,6 +318,49 @@ private: \
 /// Like PROPERTY_HEADER, but with overridden methods declared as such
 #define PROPERTY_HEADER_WITH_OVERRIDE(_class_) \
   TYPESYSTEM_HEADER_WITH_OVERRIDE(); \
+public: \
+  static constexpr const char* getClassName() {\
+    /*
+    TODO: When c++20 is available \
+    - Use consteval to ensure the function is evaluated at compile time \
+    - Move bulk of the function to a template `validate<T, _class_, #_class>()` \
+    - Use `starts_with` when checking namespace in path \
+    */ \
+    \
+    static_assert(sizeof(_class_) > 0, "Class is not complete"); \
+    \
+    constexpr const char* sClass = #_class_; \
+    constexpr std::string_view vClass {sClass}; \
+    static_assert(vClass[0] != '\0', "Class name must not be empty"); \
+    static_assert(std::is_base_of<App::PropertyContainer, _class_>::value, \
+                  "Class must be derived from App::PropertyContainer"); \
+    \
+    constexpr bool isSubClassOfDocObj = std::is_base_of<App::DocumentObject, _class_>::value && \
+                                        !std::is_same<App::DocumentObject, _class_>::value; \
+    if constexpr (isSubClassOfDocObj) { \
+      constexpr auto pos = vClass.find("::"); \
+      static_assert(pos != std::string_view::npos, \
+                    "Class name must be fully qualified for document object derived classes"); \
+      static_assert(pos != 0, "Namespace must not be empty"); \
+      \
+      constexpr auto vNamespace = vClass.substr(0, pos); \
+      constexpr std::string_view filePath = __FILE__; \
+      constexpr auto posAfterSrcMod =  filePath.find("/src/Mod/"); \
+      if constexpr (constexpr bool hasSrcModInPath = posAfterSrcMod != std::string_view::npos) { \
+        constexpr auto pathAfterSrcMod = filePath.substr(posAfterSrcMod + 9); \
+        /* some workarounds are needed, if CI is ok in the future, remove these: \
+          - isSubClassOfDocObj shouldn't be needed, but it is for some compilers \
+          - allowing `Path` until it's been properly renamed */ \
+        constexpr bool workarounds = !isSubClassOfDocObj || vNamespace == "Path"; \
+        /* TODO: use `starts_with` instead of `find` when c++20 is available */ \
+        constexpr bool isPathOk = pathAfterSrcMod.find(vNamespace) != std::string_view::npos; \
+        static_assert(workarounds || isPathOk, \
+                      "Classes in `src/Mod` needs to be in a directory with the same name as" \
+                      " the namespace in order to load correctly"); \
+      } \
+    } \
+    return sClass; \
+  } \
 protected: \
   static const App::PropertyData * getPropertyDataPtr(void); \
   const App::PropertyData &getPropertyData(void) const override; \
@@ -345,7 +404,8 @@ template<> void _class_::init(void){\
   initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
   _class_::propertyData.parentPropertyData = _parentclass_::getPropertyDataPtr(); \
 }
+// clang-format on
 
 } // namespace App
 
-#endif // APP_PROPERTYCONTAINER_H
+#endif // SRC_APP_PROPERTYCONTAINER_H_

@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2015 Qingfeng Xia <qingfeng.xia()eng.ox.ac.uk>          *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2024 PMcB                                               *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -43,7 +44,7 @@ class VPResultMechanical(view_base_femconstraint.VPBaseFemConstraint):
     """
 
     def setEdit(self, vobj, mode=0):
-        view_base_femconstraint.VPBaseFemConstraint.setEdit(
+        return view_base_femconstraint.VPBaseFemConstraint.setEdit(
             self,
             vobj,
             mode,
@@ -54,7 +55,8 @@ class VPResultMechanical(view_base_femconstraint.VPBaseFemConstraint):
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
         # hide the mesh after result viewing is finished, but do not reset the coloring
-        self.Object.Mesh.ViewObject.hide()
+        # change this to not hide - PMcB
+        # self.Object.Mesh.ViewObject.hide()
         return True
 
     def claimChildren(self):

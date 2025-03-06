@@ -5,10 +5,16 @@ endif(WIN32)
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
     ${CMAKE_BINARY_DIR}/src/3rdParty/libE57Format
     ${CMAKE_SOURCE_DIR}/src/3rdParty/libE57Format/include
@@ -19,6 +25,7 @@ set(Points_LIBS
 )
 
 include_directories(
+    SYSTEM
     ${QtConcurrent_INCLUDE_DIRS}
 )
 list(APPEND Points_LIBS

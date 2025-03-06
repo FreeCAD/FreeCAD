@@ -2,6 +2,7 @@
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *   Copyright (c) 2020 FreeCAD Developers                                 *
+# *   Copyright (c) 2024 The FreeCAD Project Association                    *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -34,155 +35,178 @@ import DraftVecUtils
 from draftfunctions import join
 from draftmake import make_copy
 from draftmake import make_line
+from draftobjects import layer
 from draftutils import groups
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 
 
-def rotate(objectslist, angle, center=App.Vector(0, 0, 0),
-           axis=App.Vector(0, 0, 1), copy=False):
-    """rotate(objects,angle,[center,axis,copy])
+def rotate(selection, angle, center=App.Vector(0, 0, 0),
+           axis=App.Vector(0, 0, 1), copy=False, subelements=False):
+    """rotate(selection, angle, [center], [axis], [copy], [subelements])
 
-    Rotates the objects contained in objects (that can be a list of objects
-    or an object) of the given angle (in degrees) around the center, using
-    axis as a rotation axis.
+    Rotates or copies selected objects.
 
     Parameters
     ----------
-    objectslist : list
+    selection: single object / list of objects / selection set
+        When dealing with nested objects, use `Gui.Selection.getSelectionEx("", 0)`
+        to create the selection set.
 
-    angle : rotation angle (in degrees)
+    angle: float / integer
+        Rotation angle (in degrees).
 
-    center : Base.Vector
+    center: App.Vector, optional
+        Defaults to `App.Vector(0, 0, 0)`.
+        Rotation center.
 
-    axis : Base.Vector
-        If axis is omitted, the rotation will be around the vertical Z axis.
+    axis: App.Vector, optional
+        Defaults to `App.Vector(0, 0, 1)`.
+        Rotation axis.
 
-    copy : bool
-        If copy is True, the actual objects are not moved, but copies
-        are created instead.
+    copy: bool, optional
+        Defaults to `False`.
+        If `True` the selected objects are not rotated, but rotated copies are
+        created instead.
 
-    Return
-    ----------
-    The objects (or their copies) are returned.
+    subelements: bool, optional
+        Defaults to `False`.
+        If `True` subelements instead of whole objects are processed.
+        Only used if selection is a selection set.
+
+    Returns
+    -------
+    single object / list with 2 or more objects / empty list
+        The objects (or their copies).
     """
-    import Part
-    utils.type_check([(copy,bool)], "rotate")
-    if not isinstance(objectslist,list):
-        objectslist = [objectslist]
+    utils.type_check([(angle, (float, int)), (center, App.Vector),
+                      (axis, App.Vector), (copy, bool), (subelements, bool)], "rotate")
+    if not isinstance(selection, list):
+        selection = [selection]
+    if not selection:
+        return None
 
-    objectslist.extend(groups.get_movable_children(objectslist))
-    newobjlist = []
+    if selection[0].isDerivedFrom("Gui::SelectionObject"):
+        if subelements:
+            return _rotate_subelements(selection, angle, center, axis, copy)
+        else:
+            objs, parent_places, sel_info = utils._modifiers_process_selection(selection, copy)
+    else:
+        objs = utils._modifiers_filter_objects(utils._modifiers_get_group_contents(selection), copy)
+        parent_places = None
+        sel_info = None
+
+    if not objs:
+        return None
+
+    newobjs = []
     newgroups = {}
-    objectslist = utils.filter_objects_for_modifiers(objectslist, copy)
 
     if copy:
-        doc = App.ActiveDocument
-        for obj in objectslist:
-            if obj.isDerivedFrom("App::DocumentObjectGroup") \
-                    and obj.Name not in newgroups:
-                newgroups[obj.Name] = doc.addObject(obj.TypeId,
-                                                    utils.get_real_name(obj.Name))
+        for obj in objs:
+            if obj.isDerivedFrom("App::DocumentObjectGroup") and obj.Name not in newgroups:
+                newgroups[obj.Name] = obj.Document.addObject(obj.TypeId, utils.get_real_name(obj.Name))
 
-    for obj in objectslist:
+    for idx, obj in enumerate(objs):
         newobj = None
 
-        # real_center and real_axis are introduced to take into account
-        # the possibility that object is inside an App::Part
-        if hasattr(obj, "getGlobalPlacement"):
-            ci = obj.getGlobalPlacement().inverse().multVec(center)
-            real_center = obj.Placement.multVec(ci)
-            ai = obj.getGlobalPlacement().inverse().Rotation.multVec(axis)
-            real_axis = obj.Placement.Rotation.multVec(ai)
+        if parent_places is not None:
+            parent_place = parent_places[idx]
+        elif hasattr(obj, "getGlobalPlacement"):
+            parent_place = obj.getGlobalPlacement() * obj.Placement.inverse()
         else:
+            parent_place = App.Placement()
+
+        if copy or parent_place.isIdentity():
             real_center = center
             real_axis = axis
+        else:
+            real_center = parent_place.inverse().multVec(center)
+            real_axis = parent_place.inverse().Rotation.multVec(axis)
 
-        if obj.isDerivedFrom("App::Annotation"):
-            # TODO: this is very different from how move handle annotations
-            # maybe we can uniform the two methods
-            if copy:
-                newobj = make_copy.make_copy(obj)
-            else:
-                newobj = obj
-            if axis.normalize() == App.Vector(1, 0, 0):
-                newobj.ViewObject.RotationAxis = "X"
-                newobj.ViewObject.Rotation = angle
-            elif axis.normalize() == App.Vector(0, 1, 0):
-                newobj.ViewObject.RotationAxis = "Y"
-                newobj.ViewObject.Rotation = angle
-            elif axis.normalize() == App.Vector(0, -1, 0):
-                newobj.ViewObject.RotationAxis = "Y"
-                newobj.ViewObject.Rotation = -angle
-            elif axis.normalize() == App.Vector(0, 0, 1):
-                newobj.ViewObject.RotationAxis = "Z"
-                newobj.ViewObject.Rotation = angle
-            elif axis.normalize() == App.Vector(0, 0, -1):
-                newobj.ViewObject.RotationAxis = "Z"
-                newobj.ViewObject.Rotation = -angle
-
-        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
             if copy:
                 newobj = newgroups[obj.Name]
             else:
                 newobj = obj
 
         elif hasattr(obj, "Placement"):
-            # App.Console.PrintMessage("placement rotation\n")
             if copy:
                 newobj = make_copy.make_copy(obj)
+                if not parent_place.isIdentity():
+                    newobj.Placement = parent_place * newobj.Placement
             else:
                 newobj = obj
             newobj.Placement.rotate(real_center, real_axis, angle, comp=True)
 
-        elif hasattr(obj, "Shape"):
+        elif obj.isDerivedFrom("App::Annotation"):
             if copy:
                 newobj = make_copy.make_copy(obj)
+                if not parent_place.isIdentity():
+                    newobj.Position = parent_place.multVec(newobj.Position)
             else:
                 newobj = obj
-            shape = newobj.Shape.copy()
-            shape.rotate(real_center, real_axis, angle)
-            newobj.Shape = shape
+            newobj.Position = rotate_vector_from_center(newobj.Position, angle, axis, center)
+
+        elif utils.get_type(obj) in ("Dimension", "LinearDimension", "AngularDimension"):
+            # "Dimension" was the type for linear dimensions <= v0.18.
+            if copy:
+                newobj = make_copy.make_copy(obj)
+                if not parent_place.isIdentity():
+                    newobj.Proxy.transform(newobj, parent_place)
+            else:
+                newobj = obj
+            pla = App.Placement()
+            pla.rotate(real_center, real_axis, angle, comp=True)
+            newobj.Proxy.transform(newobj, pla)
 
         if newobj is not None:
-            newobjlist.append(newobj)
+            newobjs.append(newobj)
             if copy:
+                lyr = layer.get_layer(obj)
+                if lyr is not None:
+                    lyr.Proxy.addObject(lyr, newobj)
                 for parent in obj.InList:
-                    if parent.isDerivedFrom("App::DocumentObjectGroup") \
-                            and (parent in objectslist):
+                    if parent.isDerivedFrom("App::DocumentObjectGroup") and (parent in objs):
                         newgroups[parent.Name].addObject(newobj)
-                    if utils.get_type(parent) == "Layer":
-                        parent.Proxy.addObject(parent ,newobj)
 
-    if copy and params.get_param("selectBaseObjects"):
-        gui_utils.select(objectslist)
+    if not copy or params.get_param("selectBaseObjects"):
+        if sel_info is not None:
+            gui_utils.select(sel_info)
+        else:
+            gui_utils.select(objs)
     else:
-        gui_utils.select(newobjlist)
+        gui_utils.select(newobjs)
 
-    if len(newobjlist) == 1:
-        return newobjlist[0]
-    return newobjlist
-
-
-#   Following functions are needed for SubObjects modifiers
-#   implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire)
+    if len(newobjs) == 1:
+        return newobjs[0]
+    return newobjs
 
 
-def rotate_vertex(object, vertex_index, angle, center, axis):
-    """
-    Needed for SubObjects modifiers.
-    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
-    """
-    points = object.Points
-    points[vertex_index] = object.getGlobalPlacement().inverse().multVec(
-        rotate_vector_from_center(
-            object.getGlobalPlacement().multVec(points[vertex_index]),
-            angle, axis, center))
-    object.Points = points
+def _rotate_subelements(selection, angle, center, axis, copy):
+    data_list, sel_info = utils._modifiers_process_subselection(selection, copy)
+    newobjs = []
+    if copy:
+        for obj, vert_idx, edge_idx, global_place in data_list:
+            if edge_idx >= 0:
+                newobjs.append(copy_rotated_edge(obj, edge_idx, angle, center, axis, global_place))
+        newobjs = join.join_wires(newobjs)
+    else:
+        for obj, vert_idx, edge_idx, global_place in data_list:
+            if vert_idx >= 0:
+                rotate_vertex(obj, vert_idx, angle, center, axis, global_place)
+            elif edge_idx >= 0:
+                rotate_edge(obj, edge_idx, angle, center, axis, global_place)
 
+    if not copy or params.get_param("selectBaseObjects"):
+        gui_utils.select(sel_info)
+    else:
+        gui_utils.select(newobjs)
 
-rotateVertex = rotate_vertex
+    if len(newobjs) == 1:
+        return newobjs[0]
+    return newobjs
 
 
 def rotate_vector_from_center(vector, angle, axis, center):
@@ -195,55 +219,57 @@ def rotate_vector_from_center(vector, angle, axis, center):
     return center.add(rv)
 
 
-rotateVectorFromCenter = rotate_vector_from_center
-
-
-def rotate_edge(object, edge_index, angle, center, axis):
+def rotate_vertex(obj, vert_idx, angle, center, axis, global_place=None):
     """
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
-    rotate_vertex(object, edge_index, angle, center, axis)
-    if utils.isClosedEdge(edge_index, object):
-        rotate_vertex(object, 0, angle, center, axis)
+    if global_place is None:
+        glp = obj.getGlobalPlacement()
     else:
-        rotate_vertex(object, edge_index+1, angle, center, axis)
+        glp = global_place
+    points = obj.Points
+    points[vert_idx] = glp.inverse().multVec(
+        rotate_vector_from_center(
+            glp.multVec(points[vert_idx]),
+            angle, axis, center))
+    obj.Points = points
 
 
-rotateEdge = rotate_edge
-
-
-def copy_rotated_edges(arguments):
+def rotate_edge(obj, edge_idx, angle, center, axis, global_place=None):
     """
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
-    copied_edges = []
-    for argument in arguments:
-        copied_edges.append(copy_rotated_edge(argument[0], argument[1],
-            argument[2], argument[3], argument[4]))
-    join.join_wires(copied_edges)
+    rotate_vertex(obj, edge_idx, angle, center, axis, global_place)
+    if utils.is_closed_edge(edge_idx, obj):
+        rotate_vertex(obj, 0, angle, center, axis, global_place)
+    else:
+        rotate_vertex(obj, edge_idx+1, angle, center, axis, global_place)
 
 
-copyRotatedEdges = copy_rotated_edges
-
-
-def copy_rotated_edge(object, edge_index, angle, center, axis):
+def copy_rotated_edge(obj, edge_idx, angle, center, axis, global_place=None):
     """
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
+    if global_place is None:
+        glp = obj.getGlobalPlacement()
+    else:
+        glp = global_place
     vertex1 = rotate_vector_from_center(
-        object.getGlobalPlacement().multVec(object.Points[edge_index]),
+        glp.multVec(obj.Points[edge_idx]),
         angle, axis, center)
-    if utils.isClosedEdge(edge_index, object):
+    if utils.is_closed_edge(edge_idx, obj):
         vertex2 = rotate_vector_from_center(
-            object.getGlobalPlacement().multVec(object.Points[0]),
+            glp.multVec(obj.Points[0]),
             angle, axis, center)
     else:
         vertex2 = rotate_vector_from_center(
-            object.getGlobalPlacement().multVec(object.Points[edge_index+1]),
+            glp.multVec(obj.Points[edge_idx+1]),
             angle, axis, center)
-    return make_line.make_line(vertex1, vertex2)
+    newobj = make_line.make_line(vertex1, vertex2)
+    gui_utils.format_object(newobj, obj)
+    return newobj
 
 ## @}

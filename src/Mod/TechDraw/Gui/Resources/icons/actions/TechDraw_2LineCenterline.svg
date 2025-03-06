@@ -124,25 +124,33 @@
   <g
      id="g2">
     <path
-       style="fill:none;stroke:#555753;stroke-width:6;stroke-linejoin:round;stroke-dasharray:none"
-       d="M 8,59 V 5"
+       style="fill:none;stroke:#555753;stroke-width:8;stroke-linejoin:round;stroke-dasharray:none"
+       d="M 9,59 V 5"
        id="path1" />
+    <path
+       style="fill:none;stroke:#babdb6;stroke-width:4;stroke-linejoin:round;stroke-dasharray:none"
+       d="M 9,59 V 5"
+       id="path2" />
     <path
        style="fill:none;stroke:#d3d7cf;stroke-width:2;stroke-linejoin:round;stroke-dasharray:none"
        d="M 8,59 V 5"
-       id="path2" />
+       id="path5" />
   </g>
   <g
      id="g4"
      transform="translate(48)">
     <path
-       style="fill:none;stroke:#555753;stroke-width:6;stroke-linejoin:round;stroke-dasharray:none"
-       d="M 8,59 V 5"
+       style="fill:none;stroke:#555753;stroke-width:8;stroke-linejoin:round;stroke-dasharray:none"
+       d="M 7,59 V 5"
        id="path3" />
     <path
-       style="fill:none;stroke:#d3d7cf;stroke-width:2;stroke-linejoin:round;stroke-dasharray:none"
-       d="M 8,59 V 5"
+       style="fill:none;stroke:#babdb6;stroke-width:4;stroke-linejoin:round;stroke-dasharray:none"
+       d="M 7,59 V 5"
        id="path4" />
+    <path
+       style="fill:none;stroke:#d3d7cf;stroke-width:2;stroke-linejoin:round;stroke-dasharray:none"
+       d="M 6,59 V 5"
+       id="path6" />
   </g>
   <g
      id="g6-8"
@@ -151,10 +159,14 @@
     <path
        id="path5-6"
        d="m 31.471733,2.7692508 v 6.75 m 0,4.5000002 v 13.5 m 0,4.5 v 13.5 m 0,4.5 v 6.75"
-       style="display:inline;fill:none;fill-rule:evenodd;stroke:#0b1521;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:5.4;stroke-opacity:1" />
+       style="display:inline;fill:none;fill-rule:evenodd;stroke:#0b1521;stroke-width:8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:5.4;stroke-opacity:1" />
     <path
        id="path1-4"
        d="m 31.471733,2.7692508 v 6.75 m 0,4.5000002 v 13.5 m 0,4.5 v 13.5 m 0,4.5 v 6.75"
+       style="display:inline;fill:none;fill-rule:evenodd;stroke:#3465a4;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:5.4;stroke-opacity:1" />
+    <path
+       id="path7"
+       d="m 30.471733,2.7692508 v 6.75 m 0,4.5000002 v 13.5 m 0,4.5 v 13.5 m 0,4.5 v 6.75"
        style="display:inline;fill:none;fill-rule:evenodd;stroke:#729fcf;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:5.4;stroke-opacity:1" />
   </g>
 </svg>

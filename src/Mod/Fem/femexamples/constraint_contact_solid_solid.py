@@ -106,6 +106,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # all geom fusion
     geom_obj = doc.addObject("Part::MultiFuse", "AllGeomFusion")
     geom_obj.Shapes = [bottom_box_obj, top_halfcyl_obj]
+    geom_obj.Refine = True
     if FreeCAD.GuiUp:
         bottom_box_obj.ViewObject.hide()
         top_halfcyl_obj.ViewObject.hide()
@@ -197,7 +198,7 @@ def setup(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()

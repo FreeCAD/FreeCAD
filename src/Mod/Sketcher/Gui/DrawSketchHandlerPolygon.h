@@ -83,10 +83,9 @@ private:
 
                 centerPoint = onSketchPos;
 
-                if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[0]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[0],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekSecond: {
                 toolWidgetManager.drawDirectionAtCursor(onSketchPos, centerPoint);
@@ -95,10 +94,9 @@ private:
 
                 CreateAndDrawShapeGeometry();
 
-                if (seekAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[1]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[1],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             default:
                 break;
@@ -126,8 +124,7 @@ private:
 
             Gui::Command::commitCommand();
 
-            tryAutoRecomputeIfNotSolve(
-                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+            tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(sketchgui,
@@ -182,7 +179,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Regular_Polygon");
+        return QStringLiteral("Sketcher_Pointer_Regular_Polygon");
     }
 
     std::unique_ptr<QWidget> createWidget() const override

@@ -28,6 +28,8 @@
 
 namespace Base
 {
+class Rotation;
+
 /**
  * Describes a right-handed coordinate system in 3D space.
  \author Werner Mayer

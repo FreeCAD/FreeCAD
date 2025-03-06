@@ -51,6 +51,7 @@ set(BOPTools_Scripts
     BOPTools/ShapeMerge.py
     BOPTools/SplitAPI.py
     BOPTools/SplitFeatures.py
+    BOPTools/ToleranceFeatures.py
     BOPTools/Utils.py
 )
 

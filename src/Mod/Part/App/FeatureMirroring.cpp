@@ -40,7 +40,7 @@
 
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <App/Link.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 
 #include "FeatureMirroring.h"
 #include "DatumFeature.h"
@@ -150,8 +150,8 @@ App::DocumentObjectExecReturn *Mirroring::execute()
       Can also be App::Links to such objects
     */
     if (refObject){
-        if (refObject->isDerivedFrom(Part::Plane::getClassTypeId()) || refObject->isDerivedFrom<App::Plane>() || (strstr(refObject->getNameInDocument(), "Plane")
-                                                                                                                  && refObject->isDerivedFrom(Part::Datum::getClassTypeId()))) {
+        if (refObject->isDerivedFrom<Part::Plane>() || refObject->isDerivedFrom<App::Plane>() || (strstr(refObject->getNameInDocument(), "Plane")
+                                                                                                                  && refObject->isDerivedFrom<Part::Datum>())) {
             Part::Feature* plane = static_cast<Part::Feature*>(refObject);
             Base::Vector3d base = plane->Placement.getValue().getPosition();
             axbase = gp_Pnt(base.x, base.y, base.z);
@@ -253,25 +253,13 @@ App::DocumentObjectExecReturn *Mirroring::execute()
 
     try {
         gp_Ax2 ax2(gp_Pnt(base.x,base.y,base.z), gp_Dir(norm.x,norm.y,norm.z));
-#ifndef FC_USE_TNP_FIX
-        const TopoDS_Shape& shape = Feature::getShape(link);
-        if (shape.IsNull())
-            Standard_Failure::Raise(std::string(std::string(this->getFullLabel()) + ": Cannot mirror empty shape").c_str());
-        gp_Trsf mat;
-        mat.SetMirror(ax2);
-        TopLoc_Location loc = shape.Location();
-        gp_Trsf placement = loc.Transformation();
-        mat = placement * mat;
-        BRepBuilderAPI_Transform mkTrf(shape, mat);
-        this->Shape.setValue(mkTrf.Shape());
-        return App::DocumentObject::StdReturn;
-#else
         auto shape = Feature::getTopoShape(link);
         if (shape.isNull())
             Standard_Failure::Raise("Cannot mirror empty shape");
         this->Shape.setValue(TopoShape(0).makeElementMirror(shape,ax2));
+        copyMaterial(link);
+
         return Part::Feature::execute();
-#endif
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

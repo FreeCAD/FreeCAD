@@ -152,12 +152,13 @@ def _get_path_circ_ellipse(plane, edge, verts, edata,
                 _a = _a.split("A")[1]
                 A = "A " + _a
             except IndexError:
+                pass
                 # TODO: trap only specific exception.
                 # Check the problem. Split didn't produce a two element list?
-                _wrn("Circle or ellipse: "
-                     "cannot split the projection snip "
-                     "obtained by 'projectToSVG', "
-                     "continue manually.")
+                # _wrn("Circle or ellipse: "
+                #      "cannot split the projection snip "
+                #      "obtained by 'projectToSVG', "
+                #      "continue manually.")
             else:
                 edata += A
                 done = True

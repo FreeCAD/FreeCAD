@@ -105,7 +105,6 @@ private:
     Gui::PrefSpinBox *DockOverlayHintBottomOffset = nullptr;
     QLabel *labelDockOverlayHintBottomLength = nullptr;
     Gui::PrefSpinBox *DockOverlayHintBottomLength = nullptr;
-    Gui::PrefCheckBox *DockOverlayHintTabBar = nullptr;
     QLabel *labelDockOverlayHintDelay = nullptr;
     Gui::PrefSpinBox *DockOverlayHintDelay = nullptr;
     QLabel *labelDockOverlaySplitterHandleTimeout = nullptr;

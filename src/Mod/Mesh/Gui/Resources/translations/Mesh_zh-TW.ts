@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="1490"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1491"/>
@@ -63,18 +63,18 @@
     <message>
       <location filename="../../Command.cpp" line="960"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="961"/>
       <source>Cross-sections...</source>
-      <translation>剖面...</translation>
+      <translation>橫切面...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="962"/>
       <location filename="../../Command.cpp" line="963"/>
       <source>Cross-sections</source>
-      <translation>剖面</translation>
+      <translation>橫切面</translation>
     </message>
   </context>
   <context>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="166"/>
@@ -115,7 +115,7 @@
     <message>
       <location filename="../../Command.cpp" line="1089"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1090"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../Command.cpp" line="1264"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1265"/>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../../Command.cpp" line="1044"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1046"/>
@@ -172,7 +172,7 @@
     <message>
       <location filename="../../Command.cpp" line="376"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="377"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="1573"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1574"/>
@@ -210,7 +210,7 @@
     <message>
       <location filename="../../Command.cpp" line="1522"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1523"/>
@@ -229,7 +229,7 @@
     <message>
       <location filename="../../Command.cpp" line="1402"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1403"/>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../Command.cpp" line="459"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="460"/>
@@ -267,7 +267,7 @@
     <message>
       <location filename="../../Command.cpp" line="531"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="532"/>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../Command.cpp" line="1366"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1367"/>
@@ -304,7 +304,7 @@
     <message>
       <location filename="../../Command.cpp" line="323"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="324"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../Command.cpp" line="1692"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1693"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../Command.cpp" line="768"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="769"/>
@@ -373,7 +373,7 @@
     <message>
       <location filename="../../Command.cpp" line="660"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="661"/>
@@ -392,7 +392,7 @@
     <message>
       <location filename="../../Command.cpp" line="987"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="988"/>
@@ -411,7 +411,7 @@
     <message>
       <location filename="../../Command.cpp" line="833"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="834"/>
@@ -430,7 +430,7 @@
     <message>
       <location filename="../../Command.cpp" line="1183"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1184"/>
@@ -449,7 +449,7 @@
     <message>
       <location filename="../../Command.cpp" line="1217"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1218"/>
@@ -468,7 +468,7 @@
     <message>
       <location filename="../../Command.cpp" line="1135"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1136"/>
@@ -487,7 +487,7 @@
     <message>
       <location filename="../../Command.cpp" line="1787"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1788"/>
@@ -524,7 +524,7 @@
     <message>
       <location filename="../../Command.cpp" line="1620"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1621"/>
@@ -543,7 +543,7 @@
     <message>
       <location filename="../../Command.cpp" line="1656"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1657"/>
@@ -562,7 +562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1306"/>
@@ -581,7 +581,7 @@
     <message>
       <location filename="../../Command.cpp" line="1738"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1739"/>
@@ -599,7 +599,7 @@
     <message>
       <location filename="../../Command.cpp" line="898"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="899"/>
@@ -618,7 +618,7 @@
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="87"/>
@@ -631,7 +631,7 @@
     <message>
       <location filename="../../Command.cpp" line="557"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="558"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="612"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="613"/>
@@ -679,7 +679,7 @@
     <message>
       <location filename="../../Command.cpp" line="259"/>
       <source>Mesh intersection</source>
-      <translation>網格相交</translation>
+      <translation>網格交叉</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="355"/>
@@ -754,17 +754,17 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="903"/>
       <source>Remove duplicated faces</source>
-      <translation>Remove duplicated faces</translation>
+      <translation>移除重複面</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="972"/>
       <source>Remove duplicated points</source>
-      <translation>Remove duplicated points</translation>
+      <translation>移除重複點</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1057"/>
       <source>Fix self-intersections</source>
-      <translation>Fix self-intersections</translation>
+      <translation>修正自我交錯</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1135"/>
@@ -939,7 +939,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="347"/>
       <source>Duplicated points</source>
-      <translation>複製之點</translation>
+      <translation>被複製的點</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="427"/>
@@ -959,7 +959,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="667"/>
       <source>Self-intersections</source>
-      <translation>自我交錯</translation>
+      <translation>自我交叉</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="735"/>
@@ -1104,23 +1104,23 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="948"/>
       <source>No duplicated points</source>
-      <translation>無重疊點</translation>
+      <translation>無重複點</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="954"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="981"/>
       <source>Duplicated points</source>
-      <translation>複製之點</translation>
+      <translation>被複製的點</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1024"/>
       <source>No self-intersections</source>
-      <translation>無內部交錯</translation>
+      <translation>無自我交叉</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1030"/>
       <source>Self-intersections</source>
-      <translation>自我交錯</translation>
+      <translation>自我交叉</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1100"/>
@@ -1295,7 +1295,7 @@
       <location filename="../../DlgRegularSolidImp.cpp" line="209"/>
       <location filename="../../DlgRegularSolidImp.cpp" line="217"/>
       <source>Create %1</source>
-      <translation>創建%1</translation>
+      <translation>建立%1</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="124"/>
@@ -1323,7 +1323,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="31"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;曲面網格化&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;定義網格化曲面與曲面的最大偏差。數值越小，算繪速度會越慢，但細節和解析度將會增加。&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="34"/>
@@ -1426,15 +1426,15 @@ is used when writing a file in AMF format</translation>
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
-      <translation>The bottom side of surface will be rendered the same way than top side.
-If not checked, it depends on the option "Enable backlight color"
-(preferences section Display -&gt; 3D View). Either the backlight color
-will be used or black.</translation>
+      <translation>表面的底部將以與頂部相同的方式進行算繪。
+如果未勾選，則取決於「啟用背光顏色」選項
+（在偏好設定的「顯示」-&gt;「3D視圖」部分）。
+可以使用背景燈光顏色或黑色。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="257"/>
       <source>Two-side rendering</source>
-      <translation>雙面渲染</translation>
+      <translation>雙面算繪</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="273"/>
@@ -1476,12 +1476,12 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="356"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;這是計算平面陰影時兩個面的法向量之間的最小角度。&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;如果兩個相鄰面的法向量之間的角度小於摺痕角度，則這些面在它們的公共邊緣將會進行平滑陰影處理。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="404"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;提示&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;以每個頂點來定義法向量也稱為&lt;span style=" font-style:italic;"&gt;Phong 陰影處理&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;而以每個面來定義法向量則稱為&lt;/span&gt;平面陰影處理&lt;span style=" font-style:normal;"&gt;。&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="359"/>
@@ -1494,10 +1494,10 @@ to a smoother appearance.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation>Crease angle is a threshold angle between two faces.
+      <translation>折痕角是兩個面之間的閾值角度。
 
- If face angle ≥ crease angle, facet shading is used
- If face angle &lt; crease angle, smooth shading is used</translation>
+如果面角 ≥ 折痕角，則使用面片陰影
+如果面角 &lt; 折痕角，則使用平滑陰影</translation>
     </message>
   </context>
   <context>

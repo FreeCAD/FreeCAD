@@ -142,7 +142,7 @@ If FreeCAD is installed via the bottle then one will have to wait for a new bott
 If any of the dependencies FreeCAD relies on is updated FreeCAD will likely require a rebuild.  Mac homebrew does provide a feature to pin packages at specific versions to prevent them from updating, and also allows setting of an environment variable to prevent homebrew from automatically checking for updates (which can slow things down). All that said, FreeCAD can be built using all the dependencies provided by Mac homebrew, but not using the formula file: instead cloning the source to an arbitrary path on a local filesystem. This provides a couple of advantages:
 
 - If `brew cleanup` is run and FreeCAD was installed using the above-provided command, all source tarballs or bottles that were _checked out_ or downloaded during the install process will be deleted from the system. If a reinstall or upgrade is later required then homebrew will have to refetch the bottles, or reclone the git source again.
-- Mac homebrew provides a method, _install flag_, for keeping the source regardless if the build succeeds or fails. The options are limited, however, and performing a standard `git clone` outside of homebrew is **much** preferred. 
+- Mac homebrew provides a method, _install flag_, for keeping the source regardless if the build succeeds or fails. The options are limited, however, and performing a standard `git clone` outside of homebrew is **much** preferred.
 - Cloning the FreeCAD source allows passing **any** cmake flags not provided by the formula file
   - Allowing the use of other build systems such as _ninja_
   - Allowing the use of alternate compilers, e.g. _ccache_

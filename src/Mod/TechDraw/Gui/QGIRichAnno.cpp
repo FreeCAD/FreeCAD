@@ -238,7 +238,7 @@ QString QGIRichAnno::convertTextSizes(const QString& inHtml)  const
     constexpr double cssPxPerPoint{1.333333};            // CSS says 12 pt text is 16 px high
     double sceneUnitsPerPoint = Rez::getRezFactor() * mmPerPoint;      // scene units per point: 3.53
 
-    QRegularExpression rxFontSize(QString::fromUtf8("font-size:([0-9]*)pt;"));
+    QRegularExpression rxFontSize(QStringLiteral("font-size:([0-9]*)pt;"));
     QRegularExpressionMatch match;
     QStringList findList;
     QStringList replList;
@@ -279,9 +279,7 @@ QString QGIRichAnno::convertTextSizes(const QString& inHtml)  const
 
 TechDraw::DrawRichAnno* QGIRichAnno::getFeature()
 {
-    TechDraw::DrawRichAnno* result =
-         static_cast<TechDraw::DrawRichAnno*>(getViewObject());
-    return result;
+    return static_cast<TechDraw::DrawRichAnno*>(getViewObject());
 }
 
 
@@ -317,7 +315,7 @@ QPen QGIRichAnno::rectPen() const
 
     double rectWeight = Rez::guiX(vp->LineWidth.getValue());
     Qt::PenStyle rectStyle = static_cast<Qt::PenStyle>(vp->LineStyle.getValue());
-    App::Color temp = vp->LineColor.getValue();
+    Base::Color temp = vp->LineColor.getValue();
     QColor rectColor = temp.asValue<QColor>();
 
     QPen pen = QPen(rectStyle);

@@ -45,7 +45,7 @@ class VPConstraintSectionPrint(view_base_femconstraint.VPBaseFemConstraint):
         vobj.ShapeAppearance = mat
 
     def setEdit(self, vobj, mode=0):
-        view_base_femconstraint.VPBaseFemConstraint.setEdit(
+        return view_base_femconstraint.VPBaseFemConstraint.setEdit(
             self, vobj, mode, task_constraint_sectionprint._TaskPanel
         )
 

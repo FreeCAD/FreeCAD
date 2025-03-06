@@ -794,7 +794,7 @@ static float decodeFloat(const PyObject* obj)
     throw Base::TypeError("Float or integer expected");
 }
 
-static void decodeColor(PyObject* value, Color& c)
+static void decodeColor(PyObject* value, Base::Color& c)
 {
     if (PyTuple_Check(value)) {
         if (PyTuple_Size(value) < 3 || PyTuple_Size(value) > 4) {
@@ -822,7 +822,7 @@ PyObject* SheetPy::setForeground(PyObject* args)
     try {
         const char* range;
         PyObject* value;
-        Color c;
+        Base::Color c;
 
         if (!PyArg_ParseTuple(args, "sO:setForeground", &range, &value)) {
             return nullptr;
@@ -863,7 +863,7 @@ PyObject* SheetPy::getForeground(PyObject* args)
         return nullptr;
     }
 
-    Color c;
+    Base::Color c;
     const Cell* cell = getSheetPtr()->getCell(address);
     if (cell && cell->getForeground(c)) {
         PyObject* t = PyTuple_New(4);
@@ -886,7 +886,7 @@ PyObject* SheetPy::setBackground(PyObject* args)
     try {
         const char* strAddress;
         PyObject* value;
-        Color c;
+        Base::Color c;
 
         if (!PyArg_ParseTuple(args, "sO:setBackground", &strAddress, &value)) {
             return nullptr;
@@ -927,7 +927,7 @@ PyObject* SheetPy::getBackground(PyObject* args)
         return nullptr;
     }
 
-    Color c;
+    Base::Color c;
     const Cell* cell = getSheetPtr()->getCell(address);
     if (cell && cell->getBackground(c)) {
         PyObject* t = PyTuple_New(4);

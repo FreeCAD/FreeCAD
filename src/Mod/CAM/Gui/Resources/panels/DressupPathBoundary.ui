@@ -254,7 +254,7 @@
    <item>
     <widget class="QCheckBox" name="stockInside">
      <property name="toolTip">
-      <string>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a 'keep out' zone</string>
+      <string>If checked, the path is constrained by the solid. Otherwise the volume of the solid describes a 'keep out' zone</string>
      </property>
      <property name="text">
       <string>Constrained to Inside</string>

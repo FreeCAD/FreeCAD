@@ -270,6 +270,8 @@ private:
 
         std::vector<TopoDS_Edge> closedEdges;
         edgeList = DrawProjectSplit::scrubEdges(edgeList, closedEdges);
+        // Need to also check closed edges- those are valid wires
+        edgeList.insert( edgeList.end(), closedEdges.begin(), closedEdges.end() );
 
         std::vector<TopoDS_Wire> sortedWires;
         try {
@@ -326,6 +328,8 @@ private:
 
         std::vector<TopoDS_Edge> closedEdges;
         edgeList = DrawProjectSplit::scrubEdges(edgeList, closedEdges);
+        // Need to also check closed edges, since that may be the outline
+        edgeList.insert( edgeList.end(), closedEdges.begin(), closedEdges.end() );
 
         PyObject* outerWire = nullptr;
         std::vector<TopoDS_Wire> sortedWires;
@@ -389,6 +393,8 @@ private:
 
         std::vector<TopoDS_Edge> closedEdges;
         edgeList = DrawProjectSplit::scrubEdges(edgeList, closedEdges);
+        // Need to also check closed edges, since that may be the outline
+        edgeList.insert( edgeList.end(), closedEdges.begin(), closedEdges.end() );
 
         PyObject* outerWire = nullptr;
         std::vector<TopoDS_Wire> sortedWires;
@@ -553,7 +559,7 @@ private:
         TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
         double offX = 0.0;
         double offY = 0.0;
-        if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        if (dvp->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(dvp);
             TechDraw::DrawProjGroup*      dpg = dpgi->getPGroup();
             if (dpg) {
@@ -687,13 +693,13 @@ private:
                 dPage = static_cast<TechDraw::DrawPage*>(obj);
                 auto views = dPage->getAllViews();
                 for (auto& view : views) {
-                    if (view->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+                    if (view->isDerivedFrom<TechDraw::DrawViewPart>()) {
                         TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(view);
                         layerName = dvp->getNameInDocument();
                         writer.setLayerName(layerName);
                         write1ViewDxf(writer, dvp, true);
 
-                    } else if (view->isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId())) {
+                    } else if (view->isDerivedFrom<TechDraw::DrawViewAnnotation>()) {
                         TechDraw::DrawViewAnnotation* dva = static_cast<TechDraw::DrawViewAnnotation*>(view);
                         layerName = dva->getNameInDocument();
                         writer.setLayerName(layerName);
@@ -703,7 +709,7 @@ private:
                         auto lines = dva->Text.getValues();
                         writer.exportText(lines[0].c_str(), loc, loc, height, just);
 
-                    } else if (view->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+                    } else if (view->isDerivedFrom<TechDraw::DrawViewDimension>()) {
                         DrawViewDimension* dvd = static_cast<TechDraw::DrawViewDimension*>(view);
                         TechDraw::DrawViewPart* dvp = dvd->getViewPart();
                         if (!dvp) {
@@ -711,7 +717,7 @@ private:
                         }
                         double grandParentX = 0.0;
                         double grandParentY = 0.0;
-                        if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+                        if (dvp->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
                             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(dvp);
                             TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
                             if (!dpg) {
@@ -726,9 +732,9 @@ private:
                         std::string sDimText;
                         //this is the same code as in QGIViewDimension::updateDim
                         if (dvd->isMultiValueSchema()) {
-                            sDimText = dvd->getFormattedDimensionValue(0); //don't format multis
+                            sDimText = dvd->getFormattedDimensionValue(DimensionFormatter::Format::UNALTERED); //don't format multis
                         } else {
-                            sDimText = dvd->getFormattedDimensionValue(1);
+                            sDimText = dvd->getFormattedDimensionValue(DimensionFormatter::Format::FORMATTED);
                         }
                         char* dimText = &sDimText[0u];                  //hack for const-ness
                         float gap = 5.0;                                //hack. don't know font size here.
@@ -835,8 +841,7 @@ private:
         const TopoDS_Shape& shape = pShape->getTopoShapePtr()->getShape();
         Base::Vector3d dir = static_cast<Base::VectorPy*>(pcObjDir)->value();
         Base::Vector3d centroid = ShapeUtils::findCentroidVec(shape, dir);
-        PyObject* result = nullptr;
-        result = new Base::VectorPy(new Base::Vector3d(centroid));
+        PyObject* result = new Base::VectorPy(new Base::Vector3d(centroid));
         return Py::asObject(result);
     }
 

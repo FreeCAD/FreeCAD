@@ -2,6 +2,7 @@
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *   Copyright (c) 2020 FreeCAD Developers                                 *
+# *   Copyright (c) 2024 The FreeCAD Project Association                    *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -31,62 +32,82 @@ import FreeCAD as App
 from draftfunctions import join
 from draftmake import make_copy
 from draftmake import make_line
-from draftutils import groups
+from draftobjects import layer
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 
 
-def move(objectslist, vector, copy=False):
-    """move(objects,vector,[copy])
+def move(selection, vector, copy=False, subelements=False):
+    """move(selection, vector, [copy], [subelements])
 
-    Move the objects contained in objects (that can be an object or a
-    list of objects) in the direction and distance indicated by the given
-    vector.
+    Moves or copies selected objects.
 
     Parameters
     ----------
-    objectslist : list
+    selection: single object / list of objects / selection set
+        When dealing with nested objects, use `Gui.Selection.getSelectionEx("", 0)`
+        to create the selection set.
 
-    vector : Base.Vector
-        Delta Vector to move the clone from the original position.
+    vector: App.Vector
+        Delta vector.
 
-    copy : bool
-        If copy is True, the actual objects are not moved, but copies
-        are created instead.
+    copy: bool, optional
+        Defaults to `False`.
+        If `True` the selected objects are not moved, but moved copies are
+        created instead.
 
-    Return
-    ----------
-    The objects (or their copies) are returned.
+    subelements: bool, optional
+        Defaults to `False`.
+        If `True` subelements instead of whole objects are processed.
+        Only used if selection is a selection set.
+
+    Returns
+    -------
+    single object / list with 2 or more objects / empty list
+        The objects (or their copies)
     """
-    utils.type_check([(vector, App.Vector), (copy,bool)], "move")
-    if not isinstance(objectslist, list):
-        objectslist = [objectslist]
+    utils.type_check([(vector, App.Vector), (copy, bool), (subelements, bool)], "move")
+    if not isinstance(selection, list):
+        selection = [selection]
+    if not selection:
+        return None
 
-    objectslist.extend(groups.get_movable_children(objectslist))
-    newobjlist = []
+    if selection[0].isDerivedFrom("Gui::SelectionObject"):
+        if subelements:
+            return _move_subelements(selection, vector, copy)
+        else:
+            objs, parent_places, sel_info = utils._modifiers_process_selection(selection, copy)
+    else:
+        objs = utils._modifiers_filter_objects(utils._modifiers_get_group_contents(selection), copy)
+        parent_places = None
+        sel_info = None
+
+    if not objs:
+        return None
+
+    newobjs = []
     newgroups = {}
-    objectslist = utils.filter_objects_for_modifiers(objectslist, copy)
 
     if copy:
-        doc = App.ActiveDocument
-        for obj in objectslist:
-            if obj.isDerivedFrom("App::DocumentObjectGroup") \
-                    and obj.Name not in newgroups:
-                newgroups[obj.Name] = doc.addObject(obj.TypeId,
-                                                    utils.get_real_name(obj.Name))
+        for obj in objs:
+            if obj.isDerivedFrom("App::DocumentObjectGroup") and obj.Name not in newgroups:
+                newgroups[obj.Name] = obj.Document.addObject(obj.TypeId, utils.get_real_name(obj.Name))
 
-    for obj in objectslist:
+    for idx, obj in enumerate(objs):
         newobj = None
 
-        # real_vector have been introduced to take into account
-        # the possibility that object is inside an App::Part
-        # TODO: Make Move work also with App::Link
-        if hasattr(obj, "getGlobalPlacement"):
-            v_minus_global = obj.getGlobalPlacement().inverse().Rotation.multVec(vector)
-            real_vector = obj.Placement.Rotation.multVec(v_minus_global)
+        if parent_places is not None:
+            parent_place = parent_places[idx]
+        elif hasattr(obj, "getGlobalPlacement"):
+            parent_place = obj.getGlobalPlacement() * obj.Placement.inverse()
         else:
+            parent_place = App.Placement()
+
+        if copy or parent_place.isIdentity():
             real_vector = vector
+        else:
+            real_vector = parent_place.inverse().Rotation.multVec(vector)
 
         if obj.isDerivedFrom("App::DocumentObjectGroup"):
             if copy:
@@ -94,130 +115,127 @@ def move(objectslist, vector, copy=False):
             else:
                 newobj = obj
 
-        elif hasattr(obj, "Shape"):
+        elif hasattr(obj, "Placement"):
             if copy:
                 newobj = make_copy.make_copy(obj)
+                if not parent_place.isIdentity():
+                    newobj.Placement = parent_place * newobj.Placement
             else:
                 newobj = obj
-            pla = newobj.Placement
-            pla.move(real_vector)
+            newobj.Placement.move(real_vector)
 
         elif obj.isDerivedFrom("App::Annotation"):
             if copy:
                 newobj = make_copy.make_copy(obj)
+                if not parent_place.isIdentity():
+                    newobj.Position = parent_place.multVec(newobj.Position)
             else:
                 newobj = obj
-            newobj.Position = obj.Position.add(real_vector)
+            newobj.Position = newobj.Position.add(real_vector)
 
-        elif utils.get_type(obj) in ["Text", "DraftText"]:
+        elif utils.get_type(obj) in ("Dimension", "LinearDimension", "AngularDimension"):
+            # "Dimension" was the type for linear dimensions <= v0.18.
             if copy:
                 newobj = make_copy.make_copy(obj)
+                if not parent_place.isIdentity():
+                    newobj.Proxy.transform(newobj, parent_place)
             else:
                 newobj = obj
-            newobj.Placement.Base = obj.Placement.Base.add(real_vector)
-
-        elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
-            if copy:
-                newobj = make_copy.make_copy(obj)
-            else:
-                newobj = obj
-            newobj.Start = obj.Start.add(real_vector)
-            newobj.End = obj.End.add(real_vector)
-            newobj.Dimline = obj.Dimline.add(real_vector)
-
-        elif utils.get_type(obj) == "AngularDimension":
-            if copy:
-                newobj = make_copy.make_copy(obj)
-            else:
-                newobj = obj
-            newobj.Center = obj.Center.add(real_vector)
-            newobj.Dimline = obj.Dimline.add(real_vector)
-
-        elif hasattr(obj, "Placement"):
-            if copy:
-                newobj = make_copy.make_copy(obj)
-            else:
-                newobj = obj
-            pla = newobj.Placement
+            pla = App.Placement()
             pla.move(real_vector)
+            newobj.Proxy.transform(newobj, pla)
 
         if newobj is not None:
-            newobjlist.append(newobj)
+            newobjs.append(newobj)
             if copy:
+                lyr = layer.get_layer(obj)
+                if lyr is not None:
+                    lyr.Proxy.addObject(lyr, newobj)
                 for parent in obj.InList:
-                    if parent.isDerivedFrom("App::DocumentObjectGroup") \
-                            and (parent in objectslist):
+                    if parent.isDerivedFrom("App::DocumentObjectGroup") and (parent in objs):
                         newgroups[parent.Name].addObject(newobj)
-                    if utils.get_type(parent) == "Layer":
-                        parent.Proxy.addObject(parent ,newobj)
 
-    if copy and params.get_param("selectBaseObjects"):
-        gui_utils.select(objectslist)
+    if not copy or params.get_param("selectBaseObjects"):
+        if sel_info is not None:
+            gui_utils.select(sel_info)
+        else:
+            gui_utils.select(objs)
     else:
-        gui_utils.select(newobjlist)
+        gui_utils.select(newobjs)
 
-    if len(newobjlist) == 1:
-        return newobjlist[0]
-    return newobjlist
-
-
-#   Following functions are needed for SubObjects modifiers
-#   implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire)
+    if len(newobjs) == 1:
+        return newobjs[0]
+    return newobjs
 
 
-def move_vertex(object, vertex_index, vector):
-    """
-    Needed for SubObjects modifiers.
-    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
-    """
-    vector = object.getGlobalPlacement().inverse().Rotation.multVec(vector)
-    points = object.Points
-    points[vertex_index] = points[vertex_index].add(vector)
-    object.Points = points
-
-
-moveVertex = move_vertex
-
-
-def move_edge(object, edge_index, vector):
-    """
-    Needed for SubObjects modifiers.
-    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
-    """
-    move_vertex(object, edge_index, vector)
-    if utils.isClosedEdge(edge_index, object):
-        move_vertex(object, 0, vector)
+def _move_subelements(selection, vector, copy):
+    data_list, sel_info = utils._modifiers_process_subselection(selection, copy)
+    newobjs = []
+    if copy:
+        for obj, vert_idx, edge_idx, global_place in data_list:
+            if edge_idx >= 0:
+                newobjs.append(copy_moved_edge(obj, edge_idx, vector, global_place))
+        newobjs = join.join_wires(newobjs)
     else:
-        move_vertex(object, edge_index+1, vector)
+        for obj, vert_idx, edge_idx, global_place in data_list:
+            if vert_idx >= 0:
+                move_vertex(obj, vert_idx, vector, global_place)
+            elif edge_idx >= 0:
+                move_edge(obj, edge_idx, vector, global_place)
 
-
-moveEdge = move_edge
-
-
-def copy_moved_edges(arguments):
-    """
-    Needed for SubObjects modifiers.
-    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
-    """
-    copied_edges = []
-    for argument in arguments:
-        copied_edges.append(copy_moved_edge(argument[0], argument[1], argument[2]))
-    join.join_wires(copied_edges)
-
-
-copyMovedEdges = copy_moved_edges
-
-
-def copy_moved_edge(object, edge_index, vector):
-    """
-    Needed for SubObjects modifiers.
-    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
-    """
-    vertex1 = object.getGlobalPlacement().multVec(object.Points[edge_index]).add(vector)
-    if utils.isClosedEdge(edge_index, object):
-        vertex2 = object.getGlobalPlacement().multVec(object.Points[0]).add(vector)
+    if not copy or params.get_param("selectBaseObjects"):
+        gui_utils.select(sel_info)
     else:
-        vertex2 = object.getGlobalPlacement().multVec(object.Points[edge_index+1]).add(vector)
-    return make_line.make_line(vertex1, vertex2)
+        gui_utils.select(newobjs)
+
+    if len(newobjs) == 1:
+        return newobjs[0]
+    return newobjs
+
+
+def move_vertex(obj, vert_idx, vector, global_place=None):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
+    if global_place is None:
+        glp = obj.getGlobalPlacement()
+    else:
+        glp = global_place
+    vector = glp.inverse().Rotation.multVec(vector)
+    points = obj.Points
+    points[vert_idx] = points[vert_idx].add(vector)
+    obj.Points = points
+
+
+def move_edge(obj, edge_idx, vector, global_place=None):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
+    move_vertex(obj, edge_idx, vector, global_place)
+    if utils.is_closed_edge(edge_idx, obj):
+        move_vertex(obj, 0, vector, global_place)
+    else:
+        move_vertex(obj, edge_idx+1, vector, global_place)
+
+
+def copy_moved_edge(obj, edge_idx, vector, global_place=None):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
+    if global_place is None:
+        glp = obj.getGlobalPlacement()
+    else:
+        glp = global_place
+    vertex1 = glp.multVec(obj.Points[edge_idx]).add(vector)
+    if utils.is_closed_edge(edge_idx, obj):
+        vertex2 = glp.multVec(obj.Points[0]).add(vector)
+    else:
+        vertex2 = glp.multVec(obj.Points[edge_idx+1]).add(vector)
+    newobj = make_line.make_line(vertex1, vertex2)
+    gui_utils.format_object(newobj, obj)
+    return newobj
 
 ## @}

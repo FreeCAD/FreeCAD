@@ -46,8 +46,8 @@ ViewProviderBoolean::~ViewProviderBoolean() = default;
 std::vector<App::DocumentObject*> ViewProviderBoolean::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<Part::Boolean*>(getObject())->Base.getValue());
-    temp.push_back(static_cast<Part::Boolean*>(getObject())->Tool.getValue());
+    temp.push_back(getObject<Part::Boolean>()->Base.getValue());
+    temp.push_back(getObject<Part::Boolean>()->Tool.getValue());
 
     return temp;
 }
@@ -78,7 +78,7 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
             (prop)->getValues();
         if (hist.size() != 2)
             return;
-        Part::Boolean* objBool = dynamic_cast<Part::Boolean*>(getObject());
+        Part::Boolean* objBool = getObject<Part::Boolean>();
         if (!objBool)
             return;
         Part::Feature* objBase = dynamic_cast<Part::Feature*>(
@@ -143,7 +143,7 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
 bool ViewProviderBoolean::onDelete(const std::vector<std::string> &)
 {
     // get the input shapes
-    Part::Boolean* pBool = static_cast<Part::Boolean*>(getObject());
+    Part::Boolean* pBool = getObject<Part::Boolean>();
     App::DocumentObject *pBase = pBool->Base.getValue();
     App::DocumentObject *pTool = pBool->Tool.getValue();
 
@@ -163,7 +163,7 @@ ViewProviderMultiFuse::~ViewProviderMultiFuse() = default;
 
 std::vector<App::DocumentObject*> ViewProviderMultiFuse::claimChildren()const
 {
-    return static_cast<Part::MultiFuse*>(getObject())->Shapes.getValues();
+    return getObject<Part::MultiFuse>()->Shapes.getValues();
 }
 
 QIcon ViewProviderMultiFuse::getIcon() const
@@ -177,7 +177,7 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
     if (prop->is<Part::PropertyShapeHistory>()) {
         const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
             (prop)->getValues();
-        Part::MultiFuse* objBool = static_cast<Part::MultiFuse*>(getObject());
+        Part::MultiFuse* objBool = getObject<Part::MultiFuse>();
         std::vector<App::DocumentObject*> sources = objBool->Shapes.getValues();
         if (hist.size() != sources.size())
             return;
@@ -234,7 +234,7 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
 bool ViewProviderMultiFuse::onDelete(const std::vector<std::string> &)
 {
     // get the input shapes
-    Part::MultiFuse* pBool = static_cast<Part::MultiFuse*>(getObject());
+    Part::MultiFuse* pBool = getObject<Part::MultiFuse>();
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
     for (auto it : pShapes) {
         if (it) {
@@ -259,7 +259,7 @@ bool ViewProviderMultiFuse::canDragObject(App::DocumentObject* obj) const
 
 void ViewProviderMultiFuse::dragObject(App::DocumentObject* obj)
 {
-    Part::MultiFuse* pBool = static_cast<Part::MultiFuse*>(getObject());
+    Part::MultiFuse* pBool = getObject<Part::MultiFuse>();
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
         if (*it == obj) {
@@ -284,7 +284,7 @@ bool ViewProviderMultiFuse::canDropObject(App::DocumentObject* obj) const
 
 void ViewProviderMultiFuse::dropObject(App::DocumentObject* obj)
 {
-    Part::MultiFuse* pBool = static_cast<Part::MultiFuse*>(getObject());
+    Part::MultiFuse* pBool = getObject<Part::MultiFuse>();
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
     pShapes.push_back(obj);
     pBool->Shapes.setValues(pShapes);
@@ -298,7 +298,7 @@ ViewProviderMultiCommon::~ViewProviderMultiCommon() = default;
 
 std::vector<App::DocumentObject*> ViewProviderMultiCommon::claimChildren()const
 {
-    return static_cast<Part::MultiCommon*>(getObject())->Shapes.getValues();
+    return getObject<Part::MultiCommon>()->Shapes.getValues();
 }
 
 QIcon ViewProviderMultiCommon::getIcon() const
@@ -312,7 +312,7 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
     if (prop->is<Part::PropertyShapeHistory>()) {
         const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
             (prop)->getValues();
-        Part::MultiCommon* objBool = static_cast<Part::MultiCommon*>(getObject());
+        Part::MultiCommon* objBool = getObject<Part::MultiCommon>();
         std::vector<App::DocumentObject*> sources = objBool->Shapes.getValues();
         if (hist.size() != sources.size())
             return;
@@ -369,7 +369,7 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
 bool ViewProviderMultiCommon::onDelete(const std::vector<std::string> &)
 {
     // get the input shapes
-    Part::MultiCommon* pBool = static_cast<Part::MultiCommon*>(getObject());
+    Part::MultiCommon* pBool = getObject<Part::MultiCommon>();
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
     for (auto it : pShapes) {
         if (it) {
@@ -394,7 +394,7 @@ bool ViewProviderMultiCommon::canDragObject(App::DocumentObject* obj) const
 
 void ViewProviderMultiCommon::dragObject(App::DocumentObject* obj)
 {
-    Part::MultiCommon* pBool = static_cast<Part::MultiCommon*>(getObject());
+    Part::MultiCommon* pBool = getObject<Part::MultiCommon>();
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
         if (*it == obj) {
@@ -419,7 +419,7 @@ bool ViewProviderMultiCommon::canDropObject(App::DocumentObject* obj) const
 
 void ViewProviderMultiCommon::dropObject(App::DocumentObject* obj)
 {
-    Part::MultiCommon* pBool = static_cast<Part::MultiCommon*>(getObject());
+    Part::MultiCommon* pBool = getObject<Part::MultiCommon>();
     std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
     pShapes.push_back(obj);
     pBool->Shapes.setValues(pShapes);

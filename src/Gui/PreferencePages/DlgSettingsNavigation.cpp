@@ -34,7 +34,7 @@
 #include <Base/Tools.h>
 #include <Gui/MainWindow.h>
 #include <Gui/View3DSettings.h>
-#include <Gui/NavigationStyle.h>
+#include <Gui/Navigation/NavigationStyle.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 
@@ -60,6 +60,12 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     ui->naviCubeBaseColor->setAllowTransparency(true);
     ui->rotationCenterColor->setAllowTransparency(true);
     retranslate();
+#if !defined(_USE_3DCONNEXION_SDK) && !defined(SPNAV_FOUND)
+    ui->legacySpaceMouseDevices->setDisabled(true);
+#elif !defined(USE_3DCONNEXION_NAVLIB)
+    ui->spaceMouseDevice->setHidden(true);
+    ui->legacySpaceMouseDevices->setHidden(true);
+#endif
 }
 
 /**
@@ -97,6 +103,10 @@ void DlgSettingsNavigation::saveSettings()
     ui->prefCubeSize->onSave();
     ui->naviCubeBaseColor->onSave();
     ui->naviCubeInactiveOpacity->onSave();
+    ui->legacySpaceMouseDevices->onSave();
+    if (property("LegacySpaceMouse").toBool() != ui->legacySpaceMouseDevices->isChecked()) {
+        requireRestart();
+    }
 
     bool showNaviCube = ui->groupBoxNaviCube->isChecked();
     hGrp->SetBool("ShowNaviCube", showNaviCube);
@@ -143,6 +153,8 @@ void DlgSettingsNavigation::loadSettings()
     ui->prefCubeSize->onRestore();
     ui->naviCubeBaseColor->onRestore();
     ui->naviCubeInactiveOpacity->onRestore();
+    ui->legacySpaceMouseDevices->onRestore();
+    setProperty("LegacySpaceMouse", ui->legacySpaceMouseDevices->isChecked());
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
@@ -276,21 +288,21 @@ void DlgSettingsNavigation::onMouseButtonClicked()
         ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
     void* instance = Base::Type::createInstanceByName((const char*)data.toByteArray());
     std::unique_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
-    uimb.groupBox->setTitle(uimb.groupBox->title() + QString::fromLatin1(" ")
+    uimb.groupBox->setTitle(uimb.groupBox->title() + QStringLiteral(" ")
                             + ui->comboNavigationStyle->currentText());
     QString descr;
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::SELECTION));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    uimb.selectionLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.selectionLabel->setText(QStringLiteral("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::PANNING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    uimb.panningLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.panningLabel->setText(QStringLiteral("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::DRAGGING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    uimb.rotationLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.rotationLabel->setText(QStringLiteral("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::ZOOMING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    uimb.zoomingLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.zoomingLabel->setText(QStringLiteral("<b>%1</b>").arg(descr));
     dlg.exec();
 }
 
@@ -407,7 +419,7 @@ CameraDialog::CameraDialog(QWidget* parent)
 
     auto currentViewButton = new QPushButton(this);
     currentViewButton->setText(tr("Current view"));
-    currentViewButton->setObjectName(QString::fromLatin1("currentView"));
+    currentViewButton->setObjectName(QStringLiteral("currentView"));
     layout->addWidget(currentViewButton, 4, 1, 2, 1);
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);

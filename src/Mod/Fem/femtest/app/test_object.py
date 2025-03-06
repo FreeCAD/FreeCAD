@@ -76,14 +76,14 @@ class TestObjectCreate(unittest.TestCase):
         # thus they are not added to the analysis group ATM
         # https://forum.freecad.org/viewtopic.php?t=25283
         # thus they should not be counted
-        # solver children: equations --> 9
+        # solver children: equations --> 10
         # gmsh mesh children: group, region, boundary layer --> 3
         # result children: mesh result --> 1
         # post pipeline children: region, scalar, cut, wrap --> 5
         # analysis itself is not in analysis group --> 1
-        # thus: -19
+        # thus: -20
 
-        self.assertEqual(len(doc.Analysis.Group), count_defmake - 19)
+        self.assertEqual(len(doc.Analysis.Group), count_defmake - 20)
         self.assertEqual(len(doc.Objects), count_defmake)
 
         fcc_print(
@@ -240,8 +240,9 @@ class TestObjectType(unittest.TestCase):
         )
         self.assertEqual("Fem::MeshGroup", type_of_obj(ObjectsFem.makeMeshGroup(doc, mesh)))
         self.assertEqual("Fem::MeshRegion", type_of_obj(ObjectsFem.makeMeshRegion(doc, mesh)))
+        self.assertEqual("Fem::FemMeshNetgen", type_of_obj(ObjectsFem.makeMeshNetgen(doc)))
         self.assertEqual(
-            "Fem::FemMeshShapeNetgenObject", type_of_obj(ObjectsFem.makeMeshNetgen(doc))
+            "Fem::FemMeshShapeNetgenObject", type_of_obj(ObjectsFem.makeMeshNetgenLegacy(doc))
         )
         self.assertEqual("Fem::MeshResult", type_of_obj(ObjectsFem.makeMeshResult(doc)))
         self.assertEqual("Fem::ResultMechanical", type_of_obj(ObjectsFem.makeResultMechanical(doc)))
@@ -285,6 +286,10 @@ class TestObjectType(unittest.TestCase):
         self.assertEqual(
             "Fem::EquationElmerMagnetodynamic",
             type_of_obj(ObjectsFem.makeEquationMagnetodynamic(doc, solverelmer)),
+        )
+        self.assertEqual(
+            "Fem::EquationElmerStaticCurrent",
+            type_of_obj(ObjectsFem.makeEquationStaticCurrent(doc, solverelmer)),
         )
 
         fcc_print(
@@ -409,7 +414,10 @@ class TestObjectType(unittest.TestCase):
         )
         self.assertTrue(is_of_type(ObjectsFem.makeMeshGroup(doc, mesh), "Fem::MeshGroup"))
         self.assertTrue(is_of_type(ObjectsFem.makeMeshRegion(doc, mesh), "Fem::MeshRegion"))
-        self.assertTrue(is_of_type(ObjectsFem.makeMeshNetgen(doc), "Fem::FemMeshShapeNetgenObject"))
+        self.assertTrue(is_of_type(ObjectsFem.makeMeshNetgen(doc), "Fem::FemMeshNetgen"))
+        self.assertTrue(
+            is_of_type(ObjectsFem.makeMeshNetgenLegacy(doc), "Fem::FemMeshShapeNetgenObject")
+        )
         self.assertTrue(is_of_type(ObjectsFem.makeMeshResult(doc), "Fem::MeshResult"))
         self.assertTrue(is_of_type(ObjectsFem.makeResultMechanical(doc), "Fem::ResultMechanical"))
         solverelmer = ObjectsFem.makeSolverElmer(doc)
@@ -462,6 +470,12 @@ class TestObjectType(unittest.TestCase):
             is_of_type(
                 ObjectsFem.makeEquationMagnetodynamic(doc, solverelmer),
                 "Fem::EquationElmerMagnetodynamic",
+            )
+        )
+        self.assertTrue(
+            is_of_type(
+                ObjectsFem.makeEquationStaticCurrent(doc, solverelmer),
+                "Fem::EquationElmerStaticCurrent",
             )
         )
 
@@ -721,7 +735,7 @@ class TestObjectType(unittest.TestCase):
         # FemMeshGmsh
         mesh_gmsh = ObjectsFem.makeMeshGmsh(doc)
         self.assertTrue(is_derived_from(mesh_gmsh, "App::DocumentObject"))
-        self.assertTrue(is_derived_from(mesh_gmsh, "Fem::FemMeshObjectPython"))
+        self.assertTrue(is_derived_from(mesh_gmsh, "Fem::FemMeshShapeBaseObjectPython"))
         self.assertTrue(is_derived_from(mesh_gmsh, "Fem::FemMeshGmsh"))
 
         # MeshBoundaryLayer
@@ -744,6 +758,9 @@ class TestObjectType(unittest.TestCase):
 
         # FemMeshShapeNetgenObject
         mesh_netgen = ObjectsFem.makeMeshNetgen(doc)
+        self.assertTrue(is_derived_from(mesh_netgen, "App::DocumentObject"))
+        self.assertTrue(is_derived_from(mesh_netgen, "Fem::FemMeshShapeBaseObjectPython"))
+        mesh_netgen = ObjectsFem.makeMeshNetgenLegacy(doc)
         self.assertTrue(is_derived_from(mesh_netgen, "App::DocumentObject"))
         self.assertTrue(is_derived_from(mesh_netgen, "Fem::FemMeshShapeNetgenObject"))
 
@@ -851,6 +868,12 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(
             is_derived_from(equation_magnetodynamic, "Fem::EquationElmerMagnetodynamic")
         )
+
+        # EquationElmerStaticCurrent
+        equation_staticcurrent = ObjectsFem.makeEquationStaticCurrent(doc, solver_elmer)
+        self.assertTrue(is_derived_from(equation_staticcurrent, "App::DocumentObject"))
+        self.assertTrue(is_derived_from(equation_staticcurrent, "App::FeaturePython"))
+        self.assertTrue(is_derived_from(equation_staticcurrent, "Fem::EquationElmerStaticCurrent"))
 
         fcc_print(
             "doc objects count: {}, method: {}".format(
@@ -965,14 +988,17 @@ class TestObjectType(unittest.TestCase):
             ObjectsFem.makeMaterialReinforced(doc).isDerivedFrom("App::MaterialObjectPython")
         )
         mesh = ObjectsFem.makeMeshGmsh(doc)
-        self.assertTrue(mesh.isDerivedFrom("Fem::FemMeshObjectPython"))
+        self.assertTrue(mesh.isDerivedFrom("Fem::FemMeshShapeBaseObjectPython"))
         self.assertTrue(
             ObjectsFem.makeMeshBoundaryLayer(doc, mesh).isDerivedFrom("Fem::FeaturePython")
         )
         self.assertTrue(ObjectsFem.makeMeshGroup(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
         self.assertTrue(ObjectsFem.makeMeshRegion(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
         self.assertTrue(
-            ObjectsFem.makeMeshNetgen(doc).isDerivedFrom("Fem::FemMeshShapeNetgenObject")
+            ObjectsFem.makeMeshNetgen(doc).isDerivedFrom("Fem::FemMeshShapeBaseObjectPython")
+        )
+        self.assertTrue(
+            ObjectsFem.makeMeshNetgenLegacy(doc).isDerivedFrom("Fem::FemMeshShapeNetgenObject")
         )
         self.assertTrue(ObjectsFem.makeMeshResult(doc).isDerivedFrom("Fem::FemMeshObjectPython"))
         self.assertTrue(
@@ -1022,6 +1048,11 @@ class TestObjectType(unittest.TestCase):
         )
         self.assertTrue(
             ObjectsFem.makeEquationMagnetodynamic(doc, solverelmer).isDerivedFrom(
+                "App::FeaturePython"
+            )
+        )
+        self.assertTrue(
+            ObjectsFem.makeEquationStaticCurrent(doc, solverelmer).isDerivedFrom(
                 "App::FeaturePython"
             )
         )
@@ -1083,6 +1114,7 @@ def create_all_fem_objects_doc(doc):
     ObjectsFem.makeMeshGroup(doc, msh)
     ObjectsFem.makeMeshRegion(doc, msh)
     analysis.addObject(ObjectsFem.makeMeshNetgen(doc))
+    analysis.addObject(ObjectsFem.makeMeshNetgenLegacy(doc))
     rm = ObjectsFem.makeMeshResult(doc)
 
     res = analysis.addObject(ObjectsFem.makeResultMechanical(doc))[0]
@@ -1110,6 +1142,7 @@ def create_all_fem_objects_doc(doc):
     ObjectsFem.makeEquationHeat(doc, sol)
     ObjectsFem.makeEquationMagnetodynamic2D(doc, sol)
     ObjectsFem.makeEquationMagnetodynamic(doc, sol)
+    ObjectsFem.makeEquationStaticCurrent(doc, sol)
 
     doc.recompute()
 

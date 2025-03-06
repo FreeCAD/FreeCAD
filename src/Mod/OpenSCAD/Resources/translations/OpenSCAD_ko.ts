@@ -215,7 +215,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="367"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>저장</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="335"/>

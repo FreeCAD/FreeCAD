@@ -99,7 +99,8 @@ tol : float</UserDocu>
     </Methode>
     <Methode Name="decompose" Const="true">
       <Documentation>
-        <UserDocu>decompose() -> Base.Matrix, Base.Matrix, Base.Matrix, Base.Matrix\n
+        <UserDocu>decompose() -> Base.Matrix, Base.Matrix, Base.Matrix, Base.Matrix
+
 Return a tuple of matrices representing shear, scale, rotation and move.
 So that matrix = move * rotation * scale * shear.</UserDocu>
       </Documentation>

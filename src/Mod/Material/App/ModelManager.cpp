@@ -66,7 +66,7 @@ bool ModelManager::isModel(const QString& file)
     // if (!fs::is_regular_file(p))
     //     return false;
     // check file extension
-    if (file.endsWith(QString::fromStdString(".yml"))) {
+    if (file.endsWith(QStringLiteral(".yml"))) {
         return true;
     }
     return false;

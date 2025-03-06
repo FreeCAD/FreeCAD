@@ -219,7 +219,9 @@ bool Body::isAllowed(const App::DocumentObject *obj)
             //obj->isDerivedFrom<Part::FeaturePython>() // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
             //obj->isDerivedFrom<Part::Feature>()
             // allow VarSets for parameterization
-            obj->isDerivedFrom<App::VarSet>()
+            obj->isDerivedFrom<App::VarSet>() ||
+            obj->isDerivedFrom<App::DatumElement>() ||
+            obj->isDerivedFrom<App::LocalCoordinateSystem>()
             );
 }
 
@@ -253,12 +255,12 @@ std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
     }
 
     if(feature->Visibility.getValue()
-        && feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        && feature->isDerivedFrom<PartDesign::Feature>())
     {
         for(auto obj : Group.getValues()) {
             if(obj->Visibility.getValue()
                     && obj!=feature
-                    && obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+                    && obj->isDerivedFrom<PartDesign::Feature>())
                 obj->Visibility.setValue(false);
         }
     }
@@ -311,7 +313,7 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
 
     Group.setValues (model);
 
-    if(feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+    if(feature->isDerivedFrom<PartDesign::Feature>())
         static_cast<PartDesign::Feature*>(feature)->_Body.setValue(this);
 
     // Set the BaseFeature property
@@ -397,7 +399,7 @@ App::DocumentObjectExecReturn *Body::execute()
 
     Part::TopoShape tipShape;
     if ( tip ) {
-        if ( !tip->getTypeId().isDerivedFrom ( PartDesign::Feature::getClassTypeId() ) ) {
+        if ( !tip->isDerivedFrom<PartDesign::Feature>() ) {
             return new App::DocumentObjectExecReturn (QT_TRANSLATE_NOOP("Exception", "Linked object is not a PartDesign feature" ));
         }
 
@@ -439,8 +441,8 @@ void Body::onChanged(const App::Property* prop) {
 
             if (BaseFeature.getValue()) {
                 //setup the FeatureBase if needed
-                if (!first || !first->isDerivedFrom(FeatureBase::getClassTypeId())) {
-                    bf = static_cast<FeatureBase*>(getDocument()->addObject("PartDesign::FeatureBase", "BaseFeature"));
+                if (!first || !first->isDerivedFrom<FeatureBase>()) {
+                    bf = getDocument()->addObject<FeatureBase>("BaseFeature");
                     insertObject(bf, first, false);
 
                     if (!Tip.getValue())
@@ -458,16 +460,30 @@ void Body::onChanged(const App::Property* prop) {
         else if (prop == &Group) {
             //if the FeatureBase was deleted we set the BaseFeature link to nullptr
             if (BaseFeature.getValue() &&
-               (Group.getValues().empty() || !Group.getValues().front()->isDerivedFrom(FeatureBase::getClassTypeId()))) {
+               (Group.getValues().empty() || !Group.getValues().front()->isDerivedFrom<FeatureBase>())) {
                     BaseFeature.setValue(nullptr);
             }
         }
         else if (prop == &AllowCompound) {
             // As disallowing compounds can break the model we need to recompute the whole tree.
             // This will inform user about first place where there is more than one solid.
-            if (!AllowCompound.getValue()) {
-                for (auto feature : getFullModel()) {
-                    feature->enforceRecompute();
+            // On allowing compounds we must also recompute the entire feature tree
+            for (auto feature : getFullModel()) {
+                feature->enforceRecompute();
+            }
+
+        }
+        else if (prop == &ShapeMaterial) {
+            std::vector<App::DocumentObject*> features = Group.getValues();
+            if (!features.empty()) {
+                for (auto it : features) {
+                    auto feature = dynamic_cast<Part::Feature*>(it);
+                    if (feature) {
+                        if (feature->ShapeMaterial.getValue().getUUID()
+                            != ShapeMaterial.getValue().getUUID()) {
+                            feature->ShapeMaterial.setValue(ShapeMaterial.getValue());
+                        }
+                    }
                 }
             }
         }
@@ -502,6 +518,35 @@ std::vector<std::string> Body::getSubObjects(int reason) const {
 App::DocumentObject *Body::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
+    while (subname && *subname == '.') {
+        ++subname;  // skip leading .
+    }
+
+    // PartDesign::Feature now support grouping sibling features, and the user
+    // is free to expand/collapse at any time. To not disrupt subname path
+    // because of this, the body will peek the next two sub-objects reference,
+    // and skip the first sub-object if possible.
+    if (subname) {
+        const char* firstDot = strchr(subname, '.');
+        if (firstDot) {
+            const char* secondDot = strchr(firstDot + 1, '.');
+            if (secondDot) {
+                auto firstObj = Group.find(std::string(subname, firstDot).c_str());
+                if (!firstObj || firstObj->isDerivedFrom<PartDesign::Feature>()) {
+                    auto secondObj = Group.find(std::string(firstDot + 1, secondDot).c_str());
+                    if (secondObj) {
+                        // we support only one level of sibling grouping, so no
+                        // recursive call to our own getSubObject()
+                        return Part::BodyBase::getSubObject(firstDot + 1,
+                                                            pyObj,
+                                                            pmat,
+                                                            transform,
+                                                            depth + 1);
+                    }
+                }
+            }
+        }
+    }
 #if 1
     return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
 #else
@@ -519,7 +564,7 @@ App::DocumentObject *Body::getSubObject(const char *subname,
     // We return the shape only if there are feature visible inside
     for(auto obj : Group.getValues()) {
         if(obj->Visibility.getValue() &&
-           obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+           obj->isDerivedFrom<PartDesign::Feature>())
         {
             return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
         }
@@ -533,7 +578,7 @@ App::DocumentObject *Body::getSubObject(const char *subname,
 void Body::onDocumentRestored()
 {
     for(auto obj : Group.getValues()) {
-        if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        if(obj->isDerivedFrom<PartDesign::Feature>())
             static_cast<PartDesign::Feature*>(obj)->_Body.setValue(this);
     }
     _GroupTouched.setStatus(App::Property::Output,true);

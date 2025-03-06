@@ -153,7 +153,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Part = cube
+    femmesh_obj.Shape = cube
     femmesh_obj.CharacteristicLengthMax = "1 mm"
     femmesh_obj.ViewObject.Visibility = False
 

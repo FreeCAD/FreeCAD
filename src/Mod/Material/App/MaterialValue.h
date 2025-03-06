@@ -107,6 +107,11 @@ public:
     static QString escapeString(const QString& source);
     static ValueType mapType(const QString& stringType);
 
+    static const Base::QuantityFormat getQuantityFormat();
+
+    // The precision is based on the value from the original materials editor
+    static const int PRECISION = 6;
+
 protected:
     MaterialValue(ValueType type, ValueType inherited);
 

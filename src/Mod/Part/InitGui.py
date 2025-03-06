@@ -38,21 +38,6 @@ class PartWorkbench(Gui.Workbench):
         self.__class__.MenuText = "Part"
         self.__class__.ToolTip = "Part workbench"
 
-    def tryAddManipulator(self):
-        try:
-            import SketcherGui
-
-            class Manipulator:
-                def modifyToolBars(self):
-                    return [{"insert" : "Sketcher_NewSketch", "toolItem" : "Part_Extrude"}]
-                def modifyMenuBar(self):
-                    return [{"insert" : "Sketcher_NewSketch", "menuItem" : "Part_Extrude"}]
-
-            manip = Manipulator()
-            Gui.addWorkbenchManipulator(manip)
-        except ImportError as err:
-            pass
-
     def Initialize(self):
         # load the module
         import PartGui
@@ -78,8 +63,6 @@ class PartWorkbench(Gui.Workbench):
         except Exception as err:
             App.Console.PrintError("'BOPTools' package cannot be loaded. "
                                    "{err}\n".format(err=str(err)))
-
-        self.tryAddManipulator()
 
     def GetClassName(self):
         return "PartGui::Workbench"

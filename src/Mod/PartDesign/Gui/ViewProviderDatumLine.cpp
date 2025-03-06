@@ -72,7 +72,7 @@ void ViewProviderDatumLine::updateData(const App::Property* prop)
         updateExtents ();
     }
     else if (strcmp(prop->getName(),"Length") == 0) {
-        PartDesign::Line* pcDatum = static_cast<PartDesign::Line*>(this->getObject());
+        PartDesign::Line* pcDatum = this->getObject<PartDesign::Line>();
         if (pcDatum->ResizeMode.getValue() != 0)
             setExtents(pcDatum->Length.getValue());
     }
@@ -82,7 +82,7 @@ void ViewProviderDatumLine::updateData(const App::Property* prop)
 
 
 void ViewProviderDatumLine::setExtents (Base::BoundBox3d bbox) {
-    PartDesign::Line* pcDatum = static_cast<PartDesign::Line*>(this->getObject());
+    PartDesign::Line* pcDatum = this->getObject<PartDesign::Line>();
     // set manual size
     if (pcDatum->ResizeMode.getValue() != 0) {
         setExtents(pcDatum->Length.getValue());

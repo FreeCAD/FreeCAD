@@ -70,6 +70,7 @@
 #include <QMetaObject>
 #include <QOpenGLDebugLogger>
 #include <QOpenGLDebugMessage>
+#include <QOpenGLWidget>
 #include <QPaintEvent>
 #include <QResizeEvent>
 #include <QWindow>
@@ -230,7 +231,7 @@ public:
 };
 
 /*! constructor */
-QuarterWidget::QuarterWidget(const QtGLFormat & format, QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
+QuarterWidget::QuarterWidget(const QSurfaceFormat & format, QWidget * parent, const QOpenGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
   Q_UNUSED(f); 
@@ -238,15 +239,15 @@ QuarterWidget::QuarterWidget(const QtGLFormat & format, QWidget * parent, const 
 }
 
 /*! constructor */
-QuarterWidget::QuarterWidget(QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
+QuarterWidget::QuarterWidget(QWidget * parent, const QOpenGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
   Q_UNUSED(f); 
-  this->constructor(QtGLFormat(), sharewidget);
+  this->constructor(QSurfaceFormat(), sharewidget);
 }
 
 /*! constructor */
-QuarterWidget::QuarterWidget(QtGLContext * context, QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
+QuarterWidget::QuarterWidget(QOpenGLContext * context, QWidget * parent, const QOpenGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
   Q_UNUSED(f); 
@@ -254,7 +255,7 @@ QuarterWidget::QuarterWidget(QtGLContext * context, QWidget * parent, const QtGL
 }
 
 void
-QuarterWidget::constructor(const QtGLFormat & format, const QtGLWidget * sharewidget)
+QuarterWidget::constructor(const QSurfaceFormat & format, const QOpenGLWidget * sharewidget)
 {
   QGraphicsScene* scene = new QGraphicsScene(this);
   setScene(scene);
@@ -776,7 +777,7 @@ QuarterWidget::viewAll()
 }
 
 /*!
-  Sets the current camera in seekmode, if supported by the underlying navigation system.
+  Sets the current camera in seek mode, if supported by the underlying navigation system.
   Camera typically seeks towards what the mouse is pointing at.
 */
 void
@@ -856,7 +857,7 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
 
     glMatrixMode(GL_PROJECTION);
 
-    QtGLWidget* w = static_cast<QtGLWidget*>(this->viewport());
+    QOpenGLWidget* w = static_cast<QOpenGLWidget*>(this->viewport());
     if (!w->isValid()) {
         qWarning() << "No valid GL context found!";
         return;
@@ -995,7 +996,7 @@ QuarterWidget::actualRedraw()
 
 
 /*!
-  Passes an event to the eventmanager.
+  Passes an event to the event manager.
 
   \param[in] event to pass
   \retval Returns true if the event was successfully processed
@@ -1015,10 +1016,10 @@ QuarterWidget::processSoEvent(const SoEvent * event)
 */
 
 /*!
-  Set backgroundcolor to a given QColor
+  Set background color to a given QColor
 
   Remember that QColors are given in integers between 0 and 255, as
-  opposed to SbColor4f which is in [0 ,1]. The default alpha value for
+  opposed to SbColor4f which is in [0, 1]. The default alpha value for
   a QColor is 255, but you'll probably want to set it to zero before
   using it as an OpenGL clear color.
  */
@@ -1074,7 +1075,7 @@ QuarterWidget::contextMenuEnabled() const
 */
 
 /*!
-  Controls the display of the contextmenu
+  Controls the display of the context menu
 
   \param[in] yes Context menu on?
 */
@@ -1103,7 +1104,7 @@ QuarterWidget::addStateMachine(SoScXMLStateMachine * statemachine)
 }
 
 /*!
-  Convenience method that removes a state machine to the current
+  Convenience method that removes a state machine from the current
   SoEventManager.
 
   \sa addStateMachine
@@ -1166,8 +1167,8 @@ QuarterWidget::renderModeActions() const
   that defines the possible states for the Coin navigation system
 
   Supports:
-  \li \b coin for internal coinresources
-  \li \b file for filesystem path to resources
+  \li \b coin for internal Coin resources
+  \li \b file for file system path to resources
 
   \sa scxml
 */
@@ -1180,10 +1181,25 @@ QuarterWidget::resetNavigationModeFile() {
   this->setNavigationModeFile(QUrl());
 }
 
+/**
+ * Sets up the default cursors for the widget.
+ */
+void QuarterWidget::setupDefaultCursors()
+{
+    this->setStateCursor("interact", Qt::ArrowCursor);
+    this->setStateCursor("idle", Qt::OpenHandCursor);
+    this->setStateCursor("rotate", Qt::ClosedHandCursor);
+    this->setStateCursor("pan", Qt::SizeAllCursor);
+    this->setStateCursor("zoom", Qt::SizeVerCursor);
+    this->setStateCursor("dolly", Qt::SizeVerCursor);
+    this->setStateCursor("seek", Qt::CrossCursor);
+    this->setStateCursor("spin", Qt::OpenHandCursor);
+}
+
 /*!
   Sets a navigation mode file. Supports the schemes "coin" and "file"
 
-  \param[in] url Url to the resource
+  \param[in] url URL to the resource
 */
 void
 QuarterWidget::setNavigationModeFile(const QUrl & url)
@@ -1250,8 +1266,8 @@ QuarterWidget::setNavigationModeFile(const QUrl & url)
     PRIVATE(this)->currentStateMachine = newsm;
   }
   else {
-    if (stateMachine)
-      delete stateMachine;
+    delete stateMachine;
+    stateMachine = nullptr;
     qDebug()<<filename;
     qDebug()<<"Unable to load"<<url;
     return;
@@ -1266,19 +1282,12 @@ QuarterWidget::setNavigationModeFile(const QUrl & url)
     // set up default cursors for the examiner navigation states
     //FIXME: It may be overly restrictive to not do this for arbitrary
     //navigation systems? - BFG 20090117
-    this->setStateCursor("interact", Qt::ArrowCursor);
-    this->setStateCursor("idle", Qt::OpenHandCursor);
-    this->setStateCursor("rotate", Qt::ClosedHandCursor);
-    this->setStateCursor("pan", Qt::SizeAllCursor);
-    this->setStateCursor("zoom", Qt::SizeVerCursor);
-    this->setStateCursor("dolly", Qt::SizeVerCursor);
-    this->setStateCursor("seek", Qt::CrossCursor);
-    this->setStateCursor("spin", Qt::OpenHandCursor);
+    setupDefaultCursors();
   }
 }
 
 /*!
-  \retval The current navigationModeFile
+  \retval The current navigation mode file
 */
 const QUrl &
 QuarterWidget::navigationModeFile() const

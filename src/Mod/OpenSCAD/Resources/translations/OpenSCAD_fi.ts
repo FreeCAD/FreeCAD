@@ -236,7 +236,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
       <source>Save...</source>
-      <translation type="unfinished">Save...</translation>
+      <translation>Tallenna...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="339"/>
@@ -248,23 +248,23 @@
       <location filename="../../OpenSCADCommands.py" line="352"/>
       <location filename="../../OpenSCADCommands.py" line="371"/>
       <source>Add OpenSCAD Element</source>
-      <translation type="unfinished">Add OpenSCAD Element</translation>
+      <translation>Lisää OpenSCAD-elementti</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="428"/>
       <source>Open file</source>
-      <translation type="unfinished">Open file</translation>
+      <translation>Avaa tiedosto</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="430"/>
       <location filename="../../OpenSCADCommands.py" line="444"/>
       <source>OpenSCAD Files</source>
-      <translation type="unfinished">OpenSCAD Files</translation>
+      <translation>OpenSCAD-tiedostot</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="442"/>
       <source>Save file</source>
-      <translation type="unfinished">Save file</translation>
+      <translation>Tallenna tiedosto</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="456"/>

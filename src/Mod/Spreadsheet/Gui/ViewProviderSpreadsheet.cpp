@@ -73,31 +73,7 @@ std::vector<std::string> ViewProviderSheet::getDisplayModes() const
 
 QIcon ViewProviderSheet::getIcon() const
 {
-    // clang-format off
-    static const char* const Points_Feature_xpm[] = {
-        "16 16 3 1",
-        "       c None",
-        ".      c #000000",
-        "+      c #FFFFFF",
-        "                ",
-        "                ",
-        "................",
-        ".++++.++++.++++.",
-        ".++++.++++.++++.",
-        "................",
-        ".++++.++++.++++.",
-        ".++++.++++.++++.",
-        "................",
-        ".++++.++++.++++.",
-        ".++++.++++.++++.",
-        "................",
-        ".++++.++++.++++.",
-        ".++++.++++.++++.",
-        "................",
-        "                "};
-    QPixmap px(Points_Feature_xpm);
-    return px;
-    // clang-format on
+    return QIcon(QLatin1String(":icons/Spreadsheet.svg"));
 }
 
 bool ViewProviderSheet::setEdit(int ModNum)
@@ -135,7 +111,7 @@ void ViewProviderSheet::showSheetMdi()
 
 void ViewProviderSheet::exportAsFile()
 {
-    auto* sheet = static_cast<Spreadsheet::Sheet*>(getObject());
+    auto* sheet = getObject<Spreadsheet::Sheet>();
     QString selectedFilter;
     QString formatList = QObject::tr("CSV (*.csv *.CSV);;All (*)");
     QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
@@ -191,8 +167,7 @@ SheetView* ViewProviderSheet::showSpreadsheetView()
         Gui::Document* doc = Gui::Application::Instance->getDocument(this->pcObject->getDocument());
         view = new SheetView(doc, this->pcObject, Gui::getMainWindow());
         view->setWindowIcon(Gui::BitmapFactory().pixmap(":icons/Spreadsheet.svg"));
-        view->setWindowTitle(QString::fromUtf8(pcObject->Label.getValue())
-                             + QString::fromLatin1("[*]"));
+        view->setWindowTitle(QString::fromUtf8(pcObject->Label.getValue()) + QStringLiteral("[*]"));
         Gui::getMainWindow()->addWindow(view);
         startEditing();
     }
@@ -230,5 +205,5 @@ PROPERTY_SOURCE_TEMPLATE(SpreadsheetGui::ViewProviderSheetPython, SpreadsheetGui
 /// @endcond
 
 // explicit template instantiation
-template class SpreadsheetGuiExport ViewProviderPythonFeatureT<ViewProviderSheet>;
+template class SpreadsheetGuiExport ViewProviderFeaturePythonT<ViewProviderSheet>;
 }  // namespace Gui

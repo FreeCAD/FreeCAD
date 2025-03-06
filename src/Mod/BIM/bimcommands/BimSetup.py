@@ -377,12 +377,6 @@ class BIM_Setup:
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool(
             "FirstTime", True
         ):
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").SetInt(
-                "OrbitStyle", 0
-            )
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document").SetBool(
-                "SaveThumbnail", True
-            )
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetString(
                 "svgDashedLine", "3,1"
             )
@@ -394,9 +388,6 @@ class BIM_Setup:
             )
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetFloat(
                 "HatchPatternSize", 0.025
-            )
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat(
-                "WallSketches", False
             )
 
         # finish
@@ -528,7 +519,10 @@ class BIM_Setup:
             lic = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Document"
             ).GetInt("prefLicenseType", 0)
-            lic = [0, 1, 2, 1, 3, 4, 1, 0, 0, 0][
+            lic = [0,
+                   1, 2, 1, 3, 4, 1,
+                   1, 2, 1, 3, 4, 1,
+                   0, 0, 0, 0, 0, 0][
                 lic
             ]  # less choices in our simplified dialog
             newdoc = FreeCAD.ParamGet(
@@ -686,7 +680,7 @@ class BIM_Setup:
                     u.close()
                     d = json.loads(r)
                     l = d[-1]["body"]
-                    links = re.findall("http.*?zip", l)
+                    links = re.findall(r"http.*?zip", l)
                     pyv = (
                         "python-"
                         + str(sys.version_info.major)

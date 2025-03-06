@@ -73,14 +73,8 @@ TopoDS_Shape SketchExportHelper::projectShape(const TopoDS_Shape& inShape,
 //! true if obj is a sketch
 bool SketchExportHelper::isSketch(App::DocumentObject* obj)
 {
-    // TODO:: the check for an object being a sketch should be done as in the commented
-    // if statement below. To do this, we need to include Mod/Sketcher/SketchObject.h,
-    // but that makes Import dependent on Eigen libraries which we don't use.  As a
-    // workaround we will inspect the object's class name.
-    //    if (obj->isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
-    std::string objTypeName = obj->getTypeId().getName();
-    std::string sketcherToken("Sketcher");
-    return objTypeName.find(sketcherToken) != std::string::npos;
+    // Use name to lookup to avoid dependency on Sketcher module
+    return obj->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"));
 }
 
 

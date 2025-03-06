@@ -44,7 +44,7 @@ public:
     /// constructor
     ViewProviderBalloon();
     /// destructor
-    ~ViewProviderBalloon() override;
+    ~ViewProviderBalloon() override = default;
 
     App::PropertyFont   Font;
     App::PropertyLength Fontsize;
@@ -53,15 +53,17 @@ public:
     App::PropertyColor  Color;
 
     bool useNewSelectionModel() const override {return false;}
-    void updateData(const App::Property*) override;
-    void onChanged(const App::Property* p) override;
-    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    void updateData(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     bool setEdit(int ModNum) override;
     bool doubleClicked() override;
     bool canDelete(App::DocumentObject* obj) const override;
     bool onDelete(const std::vector<std::string> & parms) override;
 
     TechDraw::DrawViewBalloon* getViewObject() const override;
+
+    std::vector<App::DocumentObject*> claimChildren() const override;
 
 protected:
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;

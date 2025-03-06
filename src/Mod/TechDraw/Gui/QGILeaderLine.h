@@ -99,6 +99,7 @@ public:
     void setLeaderFeature(TechDraw::DrawLeaderLine* feat);
 
     bool useOldCoords() const;
+    Base::Vector3d getAttachPoint();
 
 
 public Q_SLOTS:

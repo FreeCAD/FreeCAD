@@ -29,12 +29,12 @@ TEST_F(FeaturePartMakeElementRefineTest, makeElementRefineBoxes)
 {
     // Arrange
     auto _doc = App::GetApplication().getActiveDocument();
-    auto _fuse = dynamic_cast<Part::Fuse*>(_doc->addObject("Part::Fuse"));
+    auto _fuse = _doc->addObject<Part::Fuse>();
     _fuse->Base.setValue(_boxes[0]);
     _fuse->Tool.setValue(_boxes[3]);
     // Act
     _fuse->execute();
-    Part::TopoShape ts = _fuse->Shape.getValue();
+    Part::TopoShape ts = _fuse->Shape.getShape();
     Part::TopoShape refined = ts.makeElementRefine();
     double volume = PartTestHelpers::getVolume(ts.getShape());
     double refinedVolume = PartTestHelpers::getVolume(refined.getShape());
@@ -47,7 +47,9 @@ TEST_F(FeaturePartMakeElementRefineTest, makeElementRefineBoxes)
     EXPECT_EQ(ts.countSubElements("Edge"), 20);       // Two boxes touching loose 4 edges
     EXPECT_EQ(refined.countSubElements("Face"), 6);   // After refining it is one box
     EXPECT_EQ(refined.countSubElements("Edge"), 12);  // 12 edges in a box
-    // TODO: Make sure we have an elementMap for the refine.
+    // Make sure that the number of elements in the elementMaps is correct.
+    EXPECT_EQ(ts.getElementMapSize(), 42);
+    EXPECT_EQ(refined.getElementMapSize(), 26);
     // TODO: Refine doesn't work on compounds, so we're going to need a binary operation or the
     // like, and those don't exist yet.  Once they do, this test can be expanded
 }

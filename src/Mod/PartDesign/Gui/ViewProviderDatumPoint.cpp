@@ -34,7 +34,7 @@
 #include <App/Application.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <Gui/ViewProviderBuilder.h>
-#include <Gui/SoFCSelection.h>
+#include <Gui/Selection/SoFCSelection.h>
 #include <Mod/PartDesign/App/DatumPoint.h>
 
 #include "ViewProviderDatumPoint.h"

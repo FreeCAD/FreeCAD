@@ -44,7 +44,7 @@ public:
     explicit View3DInventorPy(View3DInventor *vi);
     ~View3DInventorPy() override;
 
-    View3DInventor* getView3DIventorPtr();
+    View3DInventor* getView3DInventorPtr();
     Py::Object repr() override;
     Py::Object getattr(const char *) override;
     int setattr(const char *, const Py::Object &) override;
@@ -95,6 +95,7 @@ public:
     Py::Object getObjectInfo(const Py::Tuple&);
     Py::Object getObjectsInfo(const Py::Tuple&);
     Py::Object getSize();
+    Py::Object getObjectInfoRay(const Py::Tuple&);
     Py::Object getPointOnFocalPlane(const Py::Tuple&);
     Py::Object projectPointToLine(const Py::Tuple&);
     Py::Object getPointOnViewport(const Py::Tuple&);

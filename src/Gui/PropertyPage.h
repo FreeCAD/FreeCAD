@@ -75,6 +75,10 @@ public:
 
     bool isRestartRequired() const;
     void requireRestart();
+    
+    // this fixes issue with wordWrap on labels affecting size hints:
+    // https://stackoverflow.com/questions/78276854/layout-ignoring-sizehints-when-qlabel-with-text-wrap-is-present
+    bool hasHeightForWidth() const override { return false; }
 
 public Q_SLOTS:
     virtual void loadSettings()=0;
@@ -102,6 +106,8 @@ public:
     void loadSettings() override;
     void saveSettings() override;
 
+    QWidget* form();
+
 protected:
     void changeEvent(QEvent *e) override;
 
@@ -112,7 +118,7 @@ private:
     void savePrefWidgets();
 
 private:
-    QWidget* form;
+    QWidget* _form;
 };
 
 /** Base class for custom pages.

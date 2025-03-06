@@ -107,7 +107,7 @@
          </widget>
         </item>
         <item row="3" column="0">
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="backgroundColorLabel">
           <property name="text">
            <string>Background color</string>
           </property>
@@ -137,7 +137,7 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="textColorLabel">
           <property name="text">
            <string>Text color</string>
           </property>

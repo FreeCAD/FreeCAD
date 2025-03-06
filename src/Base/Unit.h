@@ -25,35 +25,12 @@
 #define BASE_Unit_H
 
 #include <cstdint>
-#include <QString>
+#include <string>
 #include <FCGlobal.h>
 
 namespace Base
 {
 
-#define UnitSignatureLengthBits 4
-#define UnitSignatureMassBits 4
-#define UnitSignatureTimeBits 4
-#define UnitSignatureElectricCurrentBits 4
-#define UnitSignatureThermodynamicTemperatureBits 4
-#define UnitSignatureAmountOfSubstanceBits 4
-#define UnitSignatureLuminousIntensityBits 4
-#define UnitSignatureAngleBits 4
-
-// Hint:
-// https://en.cppreference.com/w/cpp/language/bit_field
-// https://stackoverflow.com/questions/33723631/signed-bit-field-in-c14
-struct UnitSignature
-{
-    int32_t Length: UnitSignatureLengthBits;
-    int32_t Mass: UnitSignatureMassBits;
-    int32_t Time: UnitSignatureTimeBits;
-    int32_t ElectricCurrent: UnitSignatureElectricCurrentBits;
-    int32_t ThermodynamicTemperature: UnitSignatureThermodynamicTemperatureBits;
-    int32_t AmountOfSubstance: UnitSignatureAmountOfSubstanceBits;
-    int32_t LuminousIntensity: UnitSignatureLuminousIntensityBits;
-    int32_t Angle: UnitSignatureAngleBits;
-};
 /**
  * The Unit class.
  */
@@ -72,15 +49,15 @@ public:
     Unit();
     Unit(const Unit&) = default;
     Unit(Unit&&) = default;
-    explicit Unit(const QString& expr);
+    explicit Unit(const std::string& expr);
     /// Destruction
     ~Unit() = default;
-
 
     /** Operators. */
     //@{
     inline Unit& operator*=(const Unit& that);
     inline Unit& operator/=(const Unit& that);
+    int operator[](int index) const;
     Unit operator*(const Unit&) const;
     Unit operator/(const Unit&) const;
     bool operator==(const Unit&) const;
@@ -91,17 +68,22 @@ public:
     Unit& operator=(const Unit&) = default;
     Unit& operator=(Unit&&) = default;
     Unit pow(double exp) const;
+    Unit sqrt() const;
+    Unit cbrt() const;
     //@}
-    /// get the unit signature
-    const UnitSignature& getSignature() const
-    {
-        return Sig;
-    }
+    int length() const;
+    int mass() const;
+    int time() const;
+    int electricCurrent() const;
+    int thermodynamicTemperature() const;
+    int amountOfSubstance() const;
+    int luminousIntensity() const;
+    int angle() const;
     bool isEmpty() const;
 
-    QString getString() const;
+    std::string getString() const;
     /// get the type as an string such as "Area", "Length" or "Pressure".
-    QString getTypeString() const;
+    std::string getTypeString() const;
 
     /** Predefined Unit types. */
     //@{
@@ -128,6 +110,7 @@ public:
     static const Unit ElectricCurrent;
     static const Unit ElectricPotential;
     static const Unit ElectricCharge;
+    static const Unit SurfaceChargeDensity;
     static const Unit MagneticFieldStrength;
     static const Unit MagneticFlux;
     static const Unit MagneticFluxDensity;
@@ -137,6 +120,7 @@ public:
     static const Unit ElectricalConductance;
     static const Unit ElectricalResistance;
     static const Unit ElectricalConductivity;
+    static const Unit ElectromagneticPotential;
     static const Unit AmountOfSubstance;
     static const Unit LuminousIntensity;
 
@@ -176,7 +160,7 @@ public:
 
     //@}
 private:
-    UnitSignature Sig;
+    uint32_t Val;
 };
 
 inline Unit& Unit::operator*=(const Unit& that)

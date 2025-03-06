@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Provides the PackageDetails widget. """
+"""Provides the PackageDetails widget."""
 
 import os
 from typing import Optional
@@ -35,6 +35,7 @@ from addonmanager_metadata import (
     Version,
     get_first_supported_freecad_version,
     get_branch_from_metadata,
+    get_repo_url_from_metadata,
 )
 from addonmanager_workers_startup import GetMacroDetailsWorker, CheckSingleUpdateWorker
 from addonmanager_git import GitManager, NoGitFound
@@ -98,6 +99,10 @@ class PackageDetailsController(QtCore.QObject):
 
         installed = self.addon.status() != Addon.Status.NOT_INSTALLED
         self.ui.set_installed(installed)
+        if repo.metadata is not None:
+            self.ui.set_url(get_repo_url_from_metadata(repo.metadata))
+        else:
+            self.ui.set_url(None)  # to reset it and  hide it
         update_info = UpdateInformation()
         if installed:
             update_info.unchecked = self.addon.status() == Addon.Status.UNCHECKED
@@ -109,8 +114,11 @@ class PackageDetailsController(QtCore.QObject):
             elif repo.macro:
                 update_info.version = repo.macro.version
             self.ui.set_update_available(update_info)
-            self.ui.set_location(os.path.join(self.addon.mod_directory, self.addon.name))
-            self.ui.set_location(os.path.join(self.addon.mod_directory, self.addon.name))
+            self.ui.set_location(
+                self.addon.macro_directory
+                if repo.repo_type == Addon.Kind.MACRO
+                else os.path.join(self.addon.mod_directory, self.addon.name)
+            )
             self.ui.set_disabled(self.addon.is_disabled())
         self.ui.allow_running(repo.repo_type == Addon.Kind.MACRO)
         self.ui.allow_disabling(repo.repo_type != Addon.Kind.MACRO)
@@ -121,7 +129,7 @@ class PackageDetailsController(QtCore.QObject):
         if repo.status() == Addon.Status.UNCHECKED:
             self.ui.button_bar.check_for_update.show()
             self.ui.button_bar.check_for_update.setText(
-                translate("AddonsInstaller", "Check for " "update")
+                translate("AddonsInstaller", "Check for update")
             )
             self.ui.button_bar.check_for_update.setEnabled(True)
             if not self.update_check_thread:
@@ -237,17 +245,9 @@ class PackageDetailsController(QtCore.QObject):
             self.addon.set_status(self.original_status)
         self.update_status.emit(self.addon)
 
-    def branch_changed(self, name: str) -> None:
+    def branch_changed(self, old_branch: str, name: str) -> None:
         """Displays a dialog confirming the branch changed, and tries to access the
         metadata file from that branch."""
-        QtWidgets.QMessageBox.information(
-            self.ui,
-            translate("AddonsInstaller", "Success"),
-            translate(
-                "AddonsInstaller",
-                "Branch change succeeded, please restart to use the new version.",
-            ),
-        )
         # See if this branch has a package.xml file:
         basedir = fci.getUserAppDataDir()
         path_to_metadata = os.path.join(basedir, "Mod", self.addon.name, "package.xml")
@@ -263,6 +263,18 @@ class PackageDetailsController(QtCore.QObject):
         self.addon.set_status(Addon.Status.PENDING_RESTART)
         self.ui.set_new_branch(name)
         self.update_status.emit(self.addon)
+        QtWidgets.QMessageBox.information(
+            self.ui,
+            translate("AddonsInstaller", "Success"),
+            translate(
+                "AddonsInstaller",
+                "Branch change succeeded.\n"
+                "Moved\n"
+                "from: {}\n"
+                "to: {}\n"
+                "Please restart to use the new version.",
+            ).format(old_branch, name),
+        )
 
     def display_repo_status(self, addon):
         self.update_status.emit(self.addon)

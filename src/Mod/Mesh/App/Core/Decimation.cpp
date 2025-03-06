@@ -61,7 +61,7 @@ void MeshSimplify::simplify(float tolerance, float reduction)
         alg.triangles.push_back(t);
     }
 
-    int target_count = static_cast<int>(static_cast<float>(facets.size()) * (1.0f - reduction));
+    int target_count = static_cast<int>(static_cast<float>(facets.size()) * (1.0F - reduction));
 
     // Simplification starts
     alg.simplify_mesh(target_count, tolerance);

@@ -235,8 +235,8 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
-      <source>Fit B-Spline</source>
-      <translation>Ajuster la B-spline</translation>
+      <source>Fit B-spline</source>
+      <translation>Ajuster la courbe B-spline</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="83"/>
@@ -568,7 +568,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
       <source>Hide segment</source>
-      <translation>Cacher un segment</translation>
+      <translation>Masquer un segment</translation>
     </message>
   </context>
   <context>
@@ -591,8 +591,8 @@
     <name>ReenGui::FitBSplineCurve</name>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
-      <source>Fit B-spline surface</source>
-      <translation>Ajuster la surface de la B-spline</translation>
+      <source>Fit B-spline curve</source>
+      <translation type="unfinished">Fit B-spline curve</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>

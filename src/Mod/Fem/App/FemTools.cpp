@@ -23,7 +23,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QFileInfo>
+#include <QStandardPaths>
+#include <QStringList>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
@@ -300,29 +301,33 @@ std::string Fem::Tools::checkIfBinaryExists(std::string prefSection,
     bool knownDirectories = hGrp->GetBool(knownDirectoriesString.c_str(), true);
 
     if (knownDirectories) {
-#if defined(FC_OS_WIN32)
-        binaryName = binaryName + ".exe";
-#endif
-        // first check the environment paths by QFileInfo
-        if (QFileInfo::exists(QString::fromLatin1(binaryName.c_str()))) {
-            return binaryName;
+        // first check the environment paths, normally determined by the PATH environment variable
+        // On Windows, the executable extensions(".exe" etc.) should be automatically appended
+        QString executablePath =
+            QStandardPaths::findExecutable(QString::fromLatin1(binaryName.c_str()));
+        if (!executablePath.isEmpty()) {
+            return executablePath.toStdString();
         }
         // check the folder of the FreeCAD binary
         else {
-            auto homePathBinary = App::Application::getHomePath() + "bin/" + binaryName;
-            if (QFileInfo::exists(QString::fromLatin1(homePathBinary.c_str()))) {
-                return binaryName;
+            auto appBinaryPath = App::Application::getHomePath() + "bin/";
+            QStringList pathCandidates = {QString::fromLatin1(appBinaryPath.c_str())};
+            QString executablePath =
+                QStandardPaths::findExecutable(QString::fromLatin1(binaryName.c_str()),
+                                               pathCandidates);
+            if (!executablePath.isEmpty()) {
+                return executablePath.toStdString();
             }
         }
     }
     else {
         auto binaryPathString = prefBinaryName + "BinaryPath";
-        ParameterGrp::handle hGrp =
-            App::GetApplication().GetParameterGroupByPath(paramPath.c_str());
-        auto binaryPath = hGrp->GetASCII(binaryPathString.c_str(), "");
-        QFileInfo::exists(QString::fromLatin1(binaryPath.c_str()));
-        if (QFileInfo::exists(QString::fromLatin1(binaryPath.c_str()))) {
-            return binaryPath;
+        // use binary path from settings, fall back to system path if not defined
+        auto binaryPath = hGrp->GetASCII(binaryPathString.c_str(), binaryName.c_str());
+        QString executablePath =
+            QStandardPaths::findExecutable(QString::fromLatin1(binaryPath.c_str()));
+        if (!executablePath.isEmpty()) {
+            return executablePath.toStdString();
         }
     }
     return "";

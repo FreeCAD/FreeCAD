@@ -13,7 +13,8 @@
         Constructor="true">
         <Documentation>
             <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net"/>
-            <UserDocu>Describes an ellipse in 2D space
+            <UserDocu>
+            Describes an ellipse in 2D space
                 To create an ellipse there are several ways:
                 Part.Geom2d.Ellipse2d()
                     Creates an ellipse with major radius 2 and minor radius 1 with the
@@ -52,17 +53,13 @@
         </Attribute>
         <Attribute Name="Focus1" ReadOnly="true">
             <Documentation>
-                <UserDocu>The first focus is on the positive side of the major axis of the ellipse;
-the second focus is on the negative side.</UserDocu>
+                <UserDocu>The first focus is on the positive side of the major axis of the ellipse.</UserDocu>
             </Documentation>
             <Parameter Name="Focus1" Type="Object"/>
         </Attribute>
         <Attribute Name="Focus2" ReadOnly="true">
             <Documentation>
-                <Documentation>
-                    <UserDocu>The first focus is on the positive side of the major axis of the ellipse;
-the second focus is on the negative side.</UserDocu>
-                </Documentation>
+                <UserDocu>The second focus is on the negative side of the major axis of the ellipse.</UserDocu>
             </Documentation>
             <Parameter Name="Focus2" Type="Object"/>
         </Attribute>

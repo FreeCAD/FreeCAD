@@ -32,19 +32,19 @@ private Q_SLOTS:
     void test_SimpleBaseUnit()  // NOLINT
     {
         auto result = qsb->valueFromText("1mm");
-        QCOMPARE(result, Base::Quantity(1, QLatin1String("mm")));
+        QCOMPARE(result, Base::Quantity(1, "mm"));
     }
 
     void test_UnitInNumerator()  // NOLINT
     {
         auto result = qsb->valueFromText("1mm/10");
-        QCOMPARE(result, Base::Quantity(0.1, QLatin1String("mm")));
+        QCOMPARE(result, Base::Quantity(0.1, "mm"));
     }
 
     void test_UnitInDenominator()  // NOLINT
     {
         auto result = qsb->valueFromText("1/10mm");
-        QCOMPARE(result, Base::Quantity(0.1, QLatin1String("mm")));
+        QCOMPARE(result, Base::Quantity(0.1, "mm"));
     }
 
     void test_KeepFormat()  // NOLINT

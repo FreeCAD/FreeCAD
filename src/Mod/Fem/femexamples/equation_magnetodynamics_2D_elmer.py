@@ -252,13 +252,13 @@ def setup(doc=None, solvertype="elmer"):
     # constraint current density
     CurrentDensity = ObjectsFem.makeConstraintCurrentDensity(doc, "CurrentDensity")
     CurrentDensity.References = [(BooleanFragments, "Face2")]
-    CurrentDensity.CurrentDensity_re_1 = "250000.000 A/m^2"
-    CurrentDensity.CurrentDensity_re_1_Disabled = False
+    CurrentDensity.NormalCurrentDensity_re = "250000.000 A/m^2"
+    CurrentDensity.Mode = "Normal"
     analysis.addObject(CurrentDensity)
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Part = BooleanFragments
+    femmesh_obj.Shape = BooleanFragments
     femmesh_obj.CharacteristicLengthMax = "3 mm"
     femmesh_obj.ViewObject.Visibility = False
 

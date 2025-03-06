@@ -1,20 +1,29 @@
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src/Gui
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
 )
 
 if(BUILD_QT5)
     include_directories(
+        SYSTEM
         ${Qt5Core_INCLUDE_DIRS}
     )
 else()
+    SYSTEM
     include_directories(
+        SYSTEM
         ${QT_INCLUDE_DIR}
     )
 endif()

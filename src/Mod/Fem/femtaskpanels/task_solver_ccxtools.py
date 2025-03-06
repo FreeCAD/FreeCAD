@@ -285,8 +285,9 @@ class _TaskPanel:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         try:
             self.fea.load_results()
-        except Exception:
+        except Exception as e:
             FreeCAD.Console.PrintError("loading results failed\n")
+            FreeCAD.Console.PrintError(e)
 
         QApplication.restoreOverrideCursor()
         self.form.l_time.setText(f"Time: {time.time() - self.Start:4.1f}: ")
@@ -380,13 +381,8 @@ class _TaskPanel:
             # Set up for multi-threading. Note: same functionality as ccx_tools.py/start_ccx()
             ccx_prefs = FreeCAD.ParamGet(self.PREFS_PATH)
             env = QtCore.QProcessEnvironment.systemEnvironment()
-            num_cpu_pref = ccx_prefs.GetInt("AnalysisNumCPUs", 1)
-            if num_cpu_pref > 1:
-                env.insert("OMP_NUM_THREADS", str(num_cpu_pref))
-            else:
-                cpu_count = os.cpu_count()
-                if cpu_count is not None and cpu_count > 1:
-                    env.insert("OMP_NUM_THREADS", str(cpu_count))
+            num_cpu_pref = ccx_prefs.GetInt("AnalysisNumCPUs", QtCore.QThread.idealThreadCount())
+            env.insert("OMP_NUM_THREADS", str(num_cpu_pref))
             self.Calculix.setProcessEnvironment(env)
 
             self.cwd = QtCore.QDir.currentPath()

@@ -144,7 +144,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation>說明此附加元件提供什麼。在附加元件管理器中顯示。沒有必要指明這是 FreeCAD 附加元件。</translation>
+      <translation>說明此附加元件提供什麼。在附加元件管理員中顯示。沒有必要指明這是 FreeCAD 附加元件</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -218,7 +218,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation>附加元件名稱：</translation>
+      <translation>附加元件名稱</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -275,48 +275,23 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
-      <source>Welcome to the Addon Manager</source>
-      <translation>觀迎光臨附加元件管理器</translation>
+      <source>Add-on Manager: Warning!</source>
+      <translation>附加元件管理員：警告!</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="23"/>
-      <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>這裡可以安裝的附加元件並不是 FreeCAD 官方的一部分，也未經 FreeCAD 團隊審查。請確保您知道您正在安裝什麼！</translation>
+      <location filename="../../first_run.ui" line="62"/>
+      <source>The Add-on Manager provides access to an extensive library of useful third-party FreeCAD extensions. No guarantees can be made regarding their safety or functionality.</source>
+      <translation>附加元件管理員提供存取有用的第三方 FreeCAD 擴充功能的廣泛函式庫。無法保證其安全性或功能性。</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="46"/>
-      <source>Download Settings</source>
-      <translation>下載設定</translation>
+      <location filename="../../first_run.ui" line="96"/>
+      <source>Continue</source>
+      <translation>繼續</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="53"/>
-      <source>Automatically check installed Addons for updates</source>
-      <translation>自動檢查已安裝的附加元件是否有更新</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="60"/>
-      <source>Download Macro metadata (approximately 10MB)</source>
-      <translation>下載巨集後設資料(約 10 MB)</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="70"/>
-      <source>No proxy</source>
-      <translation>不使用代理伺服器</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="75"/>
-      <source>System proxy</source>
-      <translation>系統的代理伺服器</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="80"/>
-      <source>User-defined proxy:</source>
-      <translation>使用者定義的代理伺服器：</translation>
-    </message>
-    <message>
-      <location filename="../../first_run.ui" line="93"/>
-      <source>These and other settings are available in the FreeCAD Preferences window.</source>
-      <translation>這些和其他設定可以在 FreeCAD 偏好設定視窗中找到。</translation>
+      <location filename="../../first_run.ui" line="103"/>
+      <source>Cancel</source>
+      <translation>取消</translation>
     </message>
   </context>
   <context>
@@ -506,142 +481,142 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation>附加元件管理器選項</translation>
+      <translation>附加元件管理員選項</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="20"/>
+      <location filename="../../AddonManagerOptions.ui" line="23"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
-      <translation>如果選擇此選項, 則啟動插件管理器時,
-將檢查已安裝的插件是否有可用更新</translation>
+      <translation>如果選擇此選項,，則啟動附加元件管理員時，
+將檢查已安裝的附件元件是否有可用更新</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="24"/>
-      <source>Automatically check for updates at start (requires git)</source>
-      <translation>啟動時自動檢查更新(需要 git 工具)</translation>
+      <location filename="../../AddonManagerOptions.ui" line="27"/>
+      <source>Automatically check for updates at start (requires Git)</source>
+      <translation type="unfinished">Automatically check for updates at start (requires Git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="40"/>
+      <location filename="../../AddonManagerOptions.ui" line="43"/>
       <source>Download Macro metadata (approximately 10MB)</source>
       <translation>下載巨集後設資料(約 10 MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="55"/>
+      <location filename="../../AddonManagerOptions.ui" line="58"/>
       <source>Cache update frequency</source>
       <translation>快取更新頻率</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="75"/>
+      <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>Manual (no automatic updates)</source>
       <translation>手動 (非自動更新)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="80"/>
+      <location filename="../../AddonManagerOptions.ui" line="83"/>
       <source>Daily</source>
       <translation>每日</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="85"/>
+      <location filename="../../AddonManagerOptions.ui" line="88"/>
       <source>Weekly</source>
       <translation>每週</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="95"/>
+      <location filename="../../AddonManagerOptions.ui" line="98"/>
       <source>Hide Addons without a license</source>
       <translation>隱藏未授權的附加元件</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="111"/>
+      <location filename="../../AddonManagerOptions.ui" line="114"/>
       <source>Hide Addons with non-FSF Free/Libre license</source>
       <translation>隱藏具有非自由軟體基金會（FSF）自由許可的附加元件</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="127"/>
+      <location filename="../../AddonManagerOptions.ui" line="130"/>
       <source>Hide Addons with non-OSI-approved license</source>
       <translation>隱藏具有非開放原始碼促進會（OSI）批准的許可證的附加元件</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="143"/>
+      <location filename="../../AddonManagerOptions.ui" line="146"/>
       <source>Hide Addons marked Python 2 Only</source>
       <translation>隱藏標記只能使用於 Python 2 之附加元件</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="159"/>
+      <location filename="../../AddonManagerOptions.ui" line="162"/>
       <source>Hide Addons marked Obsolete</source>
       <translation>隱藏已標記為過時的附加元件</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="175"/>
+      <location filename="../../AddonManagerOptions.ui" line="178"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
       <translation>隱藏需要更新版本的 FreeCAD 的附加元件</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="197"/>
+      <location filename="../../AddonManagerOptions.ui" line="200"/>
       <source>Custom repositories</source>
       <translation>自訂儲存庫</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="251"/>
+      <location filename="../../AddonManagerOptions.ui" line="254"/>
       <source>Proxy</source>
       <translation>代理伺服器</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="257"/>
+      <location filename="../../AddonManagerOptions.ui" line="260"/>
       <source>No proxy</source>
       <translation>不使用代理伺服器</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="273"/>
+      <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>User system proxy</source>
       <translation>使用系統代理伺服器</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="286"/>
+      <location filename="../../AddonManagerOptions.ui" line="289"/>
       <source>User-defined proxy:</source>
       <translation>使用者定義的代理伺服器：</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="323"/>
+      <location filename="../../AddonManagerOptions.ui" line="320"/>
       <source>Score source URL</source>
       <translation>得分來源網址</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="342"/>
+      <location filename="../../AddonManagerOptions.ui" line="333"/>
       <source>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</source>
       <translation>附加元件資料的網址（請參閱附加元件管理員維基頁面以查看格式和主機詳細資訊）。</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="353"/>
-      <source>Path to git executable (optional):</source>
-      <translation>git 可執行檔的路徑(選填):</translation>
+      <location filename="../../AddonManagerOptions.ui" line="350"/>
+      <source>Path to Git executable (optional):</source>
+      <translation>Git 可執行檔的路徑(選填):</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="372"/>
-      <source>The path to the git executable. Autodetected if needed and not specified.</source>
-      <translation>git 可執行檔之路徑。如果需要且未指定，則會自動檢測。</translation>
+      <location filename="../../AddonManagerOptions.ui" line="369"/>
+      <source>The path to the Git executable. Autodetected if needed and not specified.</source>
+      <translation type="unfinished">The path to the Git executable. Autodetected if needed and not specified.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="393"/>
+      <location filename="../../AddonManagerOptions.ui" line="396"/>
+      <source>Show option to change branches (requires Git)</source>
+      <translation type="unfinished">Show option to change branches (requires Git)</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="409"/>
+      <source>Disable Git (fall back to ZIP downloads only)</source>
+      <translation type="unfinished">Disable Git (fall back to ZIP downloads only)</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="390"/>
       <source>Advanced Options</source>
       <translation>進階選項</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="399"/>
-      <source>Show option to change branches (requires git)</source>
-      <translation>顯示更改分支的選項 (需要git)</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="412"/>
-      <source>Disable git (fall back to ZIP downloads only)</source>
-      <translation>停用 git (返回到僅使用 ZIP 下載)</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="425"/>
+      <location filename="../../AddonManagerOptions.ui" line="422"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
       <translation>啟用針對新附加元件開發者設計的附加元件管理員選項。</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="428"/>
+      <location filename="../../AddonManagerOptions.ui" line="425"/>
       <source>Addon developer mode</source>
       <translation>附加元件開發者模式</translation>
     </message>
@@ -699,7 +674,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="64"/>
       <source>Installed version</source>
-      <translation/>
+      <translation>已安裝版本</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="69"/>
@@ -1114,17 +1089,12 @@ installed addons will be checked for available updates</source>
   <context>
     <name>AddonsInstaller</name>
     <message>
-      <location filename="../../AddonManager.py" line="296"/>
+      <location filename="../../AddonManager.py" line="297"/>
       <source>Starting up...</source>
       <translation>啟動中...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="332"/>
-      <source>Loading addon information</source>
-      <translation>載入附加元件資訊</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.py" line="358"/>
+      <location filename="../../AddonManager.py" line="356"/>
       <source>Worker process {} is taking a long time to stop...</source>
       <translation>工作行程 {} 正在花費較長時間停止...</translation>
     </message>
@@ -1142,30 +1112,45 @@ installed addons will be checked for available updates</source>
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="416"/>
+      <location filename="../../AddonManager.py" line="414"/>
       <source>Addon manager</source>
-      <translation>附加元件管理器</translation>
+      <translation>附加元件管理員</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="423"/>
+      <location filename="../../AddonManager.py" line="421"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation>您必須重新啟動 FreeCAD 以使更改生效。</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="429"/>
+      <location filename="../../AddonManager.py" line="430"/>
       <source>Restart now</source>
       <translation>現在重新啟動</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="430"/>
+      <location filename="../../AddonManager.py" line="431"/>
       <source>Restart later</source>
       <translation>稍後重新啟動</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="496"/>
-      <location filename="../../AddonManager.py" line="897"/>
+      <location filename="../../AddonManager.py" line="497"/>
+      <location filename="../../AddonManager.py" line="887"/>
       <source>Refresh local cache</source>
       <translation>刷新本地端快取</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="524"/>
+      <source>Creating addon list</source>
+      <translation type="unfinished">Creating addon list</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="534"/>
+      <source>Loading addon list</source>
+      <translation type="unfinished">Loading addon list</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="570"/>
+      <source>Creating macro list</source>
+      <translation type="unfinished">Creating macro list</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="626"/>
@@ -1173,15 +1158,15 @@ installed addons will be checked for available updates</source>
       <translation>更新快取...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="686"/>
-      <location filename="../../AddonManager.py" line="721"/>
+      <location filename="../../AddonManager.py" line="685"/>
+      <location filename="../../AddonManager.py" line="720"/>
       <source>Checking for updates...</source>
       <translation>檢查更新...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="936"/>
+      <location filename="../../AddonManager.py" line="926"/>
       <source>Temporary installation of macro failed.</source>
-      <translation type="unfinished">Temporary installation of macro failed.</translation>
+      <translation>巨集的暫存安裝失敗。</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="95"/>
@@ -1210,21 +1195,26 @@ installed addons will be checked for available updates</source>
       <translation>開發者工具...</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="106"/>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="107"/>
       <source>Apply %n available update(s)</source>
       <translation>套用 %n 可用更新</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="826"/>
-      <location filename="../../AddonManager.py" line="852"/>
-      <location filename="../../AddonManager.py" line="951"/>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
+      <source>No updates available</source>
+      <translation>沒有可用更新</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="819"/>
+      <location filename="../../AddonManager.py" line="845"/>
+      <location filename="../../AddonManager.py" line="941"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
       <translation>在前一個安裝程式完成之前無法啟動新的安裝程式。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
       <location filename="../../addonmanager_devmode.py" line="115"/>
-      <location filename="../../package_list.py" line="379"/>
+      <location filename="../../package_list.py" line="395"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>維護者</translation>
@@ -1232,34 +1222,34 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="391"/>
+      <location filename="../../package_list.py" line="407"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <source>Author</source>
       <translation>作者</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="164"/>
+      <location filename="../../addonmanager_python_deps_gui.py" line="234"/>
       <source>New Python Version Detected</source>
       <translation>偵測到新的 Python 版本</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="169"/>
+      <location filename="../../addonmanager_python_deps_gui.py" line="239"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
       <translation>這似乎是第一次使用這個版本的 Python 與附加元件管理員。您是否想要為其安裝相同的自動安裝相依套件？</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="199"/>
+      <location filename="../../addonmanager_python_deps_gui.py" line="268"/>
       <source>Processing, please wait...</source>
       <translation>處理中，請稍候...</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="247"/>
+      <location filename="../../addonmanager_python_deps_gui.py" line="314"/>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="115"/>
       <source>Update</source>
       <translation>更新</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="341"/>
+      <location filename="../../addonmanager_python_deps_gui.py" line="360"/>
       <source>Updating...</source>
       <translation>正在更新...</translation>
     </message>
@@ -1289,7 +1279,7 @@ installed addons will be checked for available updates</source>
       <translation>附加元件管理員：從伺服器收到意外的 {} 回應</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="512"/>
+      <location filename="../../NetworkManager.py" line="511"/>
       <source>Error with encrypted connection</source>
       <translation>加密連線出現錯誤</translation>
     </message>
@@ -1330,119 +1320,119 @@ installed addons will be checked for available updates</source>
       <translation>解除安裝失敗</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="259"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="278"/>
       <source>Version {version} installed on {date}</source>
       <translation>版本 {version} 已於 {date} 安裝</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="266"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="285"/>
       <source>Version {version} installed</source>
       <translation>版本 {version} 已安裝</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="270"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="289"/>
       <source>Installed on {date}</source>
       <translation>安裝於 {date}</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="450"/>
-      <location filename="../../package_list.py" line="500"/>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="273"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
+      <location filename="../../package_list.py" line="466"/>
+      <location filename="../../package_list.py" line="516"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="292"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="130"/>
       <source>Installed</source>
       <translation>己安裝</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="294"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="313"/>
       <source>Currently on branch {}, name changed to {}</source>
       <translation>目前在分支 {}，名稱已更改為 {}</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="285"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="304"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
       <translation>已檢查 Git 標籤 &apos;{}&apos;，無法進行更新</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="278"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="297"/>
       <source>Update check in progress</source>
       <translation>正在檢查更新</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="122"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="126"/>
       <source>Installation location</source>
       <translation>安裝位置</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="186"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="138"/>
+      <source>Repository URL</source>
+      <translation>儲存庫網址</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="205"/>
       <source>Changed to branch &apos;{}&apos; -- please restart to use Addon.</source>
       <translation>已切換至分支 &apos;{}&apos; -- 請重新啟動以使用附加元件。</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="197"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="216"/>
       <source>This Addon has been updated. Restart FreeCAD to see changes.</source>
       <translation>這個附加元件已經更新。請重新啟動 FreeCAD 以查看變更。</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="231"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="250"/>
       <source>Disabled</source>
       <translation>已停用</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="302"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="321"/>
       <source>Currently on branch {}, update available to version {}</source>
       <translation>目前在分支 {}，有可用的更新至版本 {}</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="308"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="327"/>
       <source>Update available to version {}</source>
       <translation>可升級至版本 {}</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="314"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="333"/>
       <source>This is the latest version available</source>
       <translation>這是目前可用的最新版本</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="336"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="355"/>
       <source>WARNING: This addon is obsolete</source>
       <translation>警告：此附加元件已過時</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="338"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="357"/>
       <source>WARNING: This addon is Python 2 only</source>
       <translation>警告：此附加元件僅支持Python 2</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="339"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="358"/>
       <source>WARNING: This addon requires FreeCAD {}</source>
       <translation>警告：此附加元件需要 FreeCAD {}</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="334"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="353"/>
       <source>WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</source>
       <translation>警告：此附加元件目前已安裝，但是被停用。使用 &apos;啟用&apos; 按鈕以重新啟用。</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="177"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="196"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
       <translation>此附加元件將會在您重新起動 FreeCAD 後啟用。</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="173"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="192"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
       <translation>此附加元件將會在您重新起動 FreeCAD 後停用。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="477"/>
-      <location filename="../../addonmanager_package_details_controller.py" line="245"/>
+      <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../addonmanager_package_details_controller.py" line="249"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>成功</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_package_details_controller.py" line="249"/>
-      <source>Branch change succeeded, please restart to use the new version.</source>
-      <translation>分支更改成功，請重新啟動以使用此新版本。</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="111"/>
@@ -1465,10 +1455,23 @@ installed addons will be checked for available updates</source>
       <translation>停用</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_package_details_controller.py" line="125"/>
+      <location filename="../../addonmanager_package_details_controller.py" line="129"/>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="110"/>
       <source>Check for update</source>
       <translation>檢查更新</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_package_details_controller.py" line="257"/>
+      <source>Branch change succeeded.
+Moved
+from: {}
+to: {}
+Please restart to use the new version.</source>
+      <translation type="unfinished">Branch change succeeded.
+Moved
+from: {}
+to: {}
+Please restart to use the new version.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="116"/>
@@ -1527,17 +1530,17 @@ installed addons will be checked for available updates</source>
       <translation>新授權檔案的位置</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="355"/>
+      <location filename="../../addonmanager_installer.py" line="364"/>
       <source>Received {} response code from server</source>
       <translation>由伺服器收到 {} 回應碼</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="517"/>
+      <location filename="../../addonmanager_installer.py" line="532"/>
       <source>Failed to install macro {}</source>
       <translation>安裝巨集 {} 失敗</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="551"/>
+      <location filename="../../addonmanager_installer.py" line="566"/>
       <source>Failed to create installation manifest file:
 </source>
       <translation>無法建立安裝清單檔案：
@@ -1577,7 +1580,7 @@ installed addons will be checked for available updates</source>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="428"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="114"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="108"/>
       <source>Workbench</source>
       <translation>工作台</translation>
     </message>
@@ -1618,11 +1621,6 @@ installed addons will be checked for available updates</source>
       <translation>其他...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="153"/>
-      <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
-      <translation>此附加元件需要未安裝的 Python 套件，無法自動安裝。要使用此工作台，您必須手動安裝以下 Python 套件：</translation>
-    </message>
-    <message>
       <location filename="../../addonmanager_installer_gui.py" line="159"/>
       <source>Too many to list</source>
       <translation>太多以至於無法列出</translation>
@@ -1653,122 +1651,127 @@ installed addons will be checked for available updates</source>
       <translation>按 OK 以進行安裝。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="243"/>
+      <location filename="../../addonmanager_installer_gui.py" line="242"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="189"/>
       <source>Incompatible Python version</source>
       <translation>不相容的 Python 版本</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="247"/>
-      <source>This Addon (or one if its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
+      <location filename="../../addonmanager_installer_gui.py" line="153"/>
+      <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</source>
+      <translation>此附加元件需要未安裝的 Python 套件，無法自動安裝。要使用此工作台，您必須手動安裝以下 Python 套件：</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_installer_gui.py" line="246"/>
+      <source>This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
       <translation>此附加元件 (或其一相依元件) 需要 Python {}.{}, 而您的系統正在執行 {}.{}. 安裝取消.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="268"/>
+      <location filename="../../addonmanager_installer_gui.py" line="267"/>
       <source>Optional dependency on {} ignored because it is not in the allow-list</source>
       <translation>可選相依性 {} 被忽略因其不在可允許清單中</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_installer_gui.py" line="313"/>
       <location filename="../../addonmanager_installer_gui.py" line="314"/>
-      <location filename="../../addonmanager_installer_gui.py" line="315"/>
       <source>Installing dependencies</source>
       <translation>正在安裝相依性</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="340"/>
+      <location filename="../../addonmanager_installer_gui.py" line="339"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="76"/>
       <source>Cannot execute Python</source>
       <translation>無法執行 Python</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="345"/>
+      <location filename="../../addonmanager_installer_gui.py" line="344"/>
       <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
-      <translation>自動定位您的 Python 可執行檔失敗，或者設置的路徑不正確。請檢查附加元件管理器偏好設定中 Python 路徑的設置。</translation>
+      <translation>自動定位您的 Python 可執行檔失敗，或者設置的路徑不正確。請檢查附加元件管理員偏好設定中 Python 路徑的設置。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="349"/>
+      <location filename="../../addonmanager_installer_gui.py" line="348"/>
       <source>Dependencies could not be installed. Continue with installation of {} anyway?</source>
       <translation>相依性套件無法被安裝。無論如何繼續 {} 的安裝作業？</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="364"/>
+      <location filename="../../addonmanager_installer_gui.py" line="363"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="86"/>
       <source>Cannot execute pip</source>
       <translation>無法執行 pip</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="370"/>
+      <location filename="../../addonmanager_installer_gui.py" line="369"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was:</source>
       <translation>無法執行 pip，可能是因為您的 Python 安裝缺少 pip。請確保您的系統已安裝 pip，然後再試一次。失敗的指令是：</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="374"/>
-      <location filename="../../addonmanager_installer_gui.py" line="399"/>
+      <location filename="../../addonmanager_installer_gui.py" line="373"/>
+      <location filename="../../addonmanager_installer_gui.py" line="398"/>
       <source>Continue with installation of {} anyway?</source>
       <translation>不管怎樣繼續安裝 {} ?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="391"/>
+      <location filename="../../addonmanager_installer_gui.py" line="390"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="96"/>
       <source>Package installation failed</source>
       <translation>套件安裝失敗</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="395"/>
+      <location filename="../../addonmanager_installer_gui.py" line="394"/>
       <source>See Report View for detailed failure log.</source>
       <translation>詳細的失敗日誌請查看報告檢視。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="436"/>
+      <location filename="../../addonmanager_installer_gui.py" line="435"/>
       <source>Installing Addon</source>
       <translation>安裝附加元件</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="437"/>
+      <location filename="../../addonmanager_installer_gui.py" line="436"/>
       <source>Installing FreeCAD Addon &apos;{}&apos;</source>
       <translation>安裝 FreeCAD 附加元件 &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="451"/>
+      <location filename="../../addonmanager_installer_gui.py" line="450"/>
       <source>Cancelling</source>
       <translation>正在取消</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="452"/>
+      <location filename="../../addonmanager_installer_gui.py" line="451"/>
       <source>Cancelling installation of &apos;{}&apos;</source>
       <translation>取消安裝 &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="478"/>
+      <location filename="../../addonmanager_installer_gui.py" line="477"/>
       <source>{} was installed successfully</source>
       <translation>{} 已成功安裝</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="490"/>
+      <location filename="../../addonmanager_installer_gui.py" line="489"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="64"/>
       <source>Installation Failed</source>
       <translation>安裝失敗</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="491"/>
+      <location filename="../../addonmanager_installer_gui.py" line="490"/>
       <source>Failed to install {}</source>
       <translation>{} 安裝失敗</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="608"/>
-      <location filename="../../install_to_toolbar.py" line="96"/>
+      <location filename="../../addonmanager_installer_gui.py" line="605"/>
+      <location filename="../../install_to_toolbar.py" line="94"/>
       <source>Create new toolbar</source>
       <translation>建立新工具列</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="734"/>
-      <location filename="../../install_to_toolbar.py" line="253"/>
+      <location filename="../../addonmanager_installer_gui.py" line="731"/>
+      <location filename="../../install_to_toolbar.py" line="251"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation>使用 FreeCAD 附加元件管理器安裝的巨集</translation>
+      <translation>使用 FreeCAD 附加元件管理員安裝的巨集</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="736"/>
-      <location filename="../../install_to_toolbar.py" line="255"/>
+      <location filename="../../addonmanager_installer_gui.py" line="733"/>
+      <location filename="../../install_to_toolbar.py" line="253"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
       <translation>執行</translation>
@@ -1899,177 +1902,177 @@ installed addons will be checked for available updates</source>
       <translation>搜尋...</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="189"/>
+      <location filename="../../package_list.py" line="205"/>
       <source>Click for details about package {}</source>
       <translation>點擊查看套件 {} 詳細資料</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="195"/>
+      <location filename="../../package_list.py" line="211"/>
       <source>Click for details about workbench {}</source>
       <translation>點擊查看工作台 {} 詳細資料</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="197"/>
+      <location filename="../../package_list.py" line="213"/>
       <source>Click for details about macro {}</source>
       <translation>點擊查看巨集 {} 詳細資料</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="384"/>
+      <location filename="../../package_list.py" line="400"/>
       <source>Maintainers:</source>
       <translation>維護者：</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="333"/>
+      <location filename="../../package_list.py" line="349"/>
       <source>Tags</source>
       <translation>標籤</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="412"/>
+      <location filename="../../package_list.py" line="428"/>
       <source>{} ★ on GitHub</source>
       <translation>在 GitHub 上的星數 {} ★</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="414"/>
+      <location filename="../../package_list.py" line="430"/>
       <source>No ★, or not on GitHub</source>
       <translation>沒有星星 ★，或不存在 GitHub 上</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="419"/>
+      <location filename="../../package_list.py" line="435"/>
       <source>Created </source>
       <translation>已建立 </translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="427"/>
+      <location filename="../../package_list.py" line="443"/>
       <source>Updated </source>
       <translation>已更新 </translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="430"/>
+      <location filename="../../package_list.py" line="446"/>
       <source>Score: </source>
       <translation>分數： </translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="452"/>
-      <location filename="../../package_list.py" line="504"/>
+      <location filename="../../package_list.py" line="468"/>
+      <location filename="../../package_list.py" line="520"/>
       <source>Up-to-date</source>
       <translation>最新</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="454"/>
-      <location filename="../../package_list.py" line="508"/>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="305"/>
-      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="313"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
+      <location filename="../../package_list.py" line="470"/>
+      <location filename="../../package_list.py" line="524"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="324"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="332"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="134"/>
       <source>Update available</source>
       <translation>有可用更新</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="457"/>
-      <location filename="../../package_list.py" line="514"/>
+      <location filename="../../package_list.py" line="473"/>
+      <location filename="../../package_list.py" line="530"/>
       <source>Pending restart</source>
       <translation>等待重啟</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="459"/>
-      <location filename="../../package_list.py" line="517"/>
+      <location filename="../../package_list.py" line="475"/>
+      <location filename="../../package_list.py" line="533"/>
       <source>DISABLED</source>
       <translation>已被停用</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="474"/>
+      <location filename="../../package_list.py" line="490"/>
       <source>Installed version</source>
-      <translation/>
+      <translation>已安裝版本</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="483"/>
+      <location filename="../../package_list.py" line="499"/>
       <source>Unknown version</source>
       <translation>未知版本</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="485"/>
+      <location filename="../../package_list.py" line="501"/>
       <source>Installed on</source>
       <translation>安裝在</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="494"/>
+      <location filename="../../package_list.py" line="510"/>
       <source>Available version</source>
       <translation>可用版本</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="106"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="100"/>
       <source>Filter by...</source>
       <translation>依據...過濾</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="108"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="102"/>
       <source>Addon Type</source>
       <translation>附加元件類型</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="111"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="129"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="105"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="123"/>
       <source>Any</source>
       <translation>任何</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="118"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="112"/>
       <source>Macro</source>
       <translation>巨集</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="122"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="116"/>
       <source>Preference Pack</source>
       <translation>偏好設定包</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="126"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="120"/>
       <source>Installation Status</source>
       <translation>安裝狀態</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="132"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="126"/>
       <source>Not installed</source>
       <translation>未安裝</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="255"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="249"/>
       <source>Filter</source>
-      <translation>篩選器</translation>
+      <translation>過濾器</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="87"/>
+      <location filename="../../change_branch.py" line="86"/>
       <source>DANGER: Developer feature</source>
       <translation>危險：開發者功能</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="94"/>
+      <location filename="../../change_branch.py" line="93"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
       <translation>危險：分支切換是針對開發人員和測試版本的，可能導致損壞、不向後相容的文件、不穩定性、崩潰，和/或宇宙的提前熱死。您確定要繼續嗎？</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="103"/>
+      <location filename="../../change_branch.py" line="102"/>
       <source>There are local changes</source>
       <translation>這些是本地更改</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="108"/>
+      <location filename="../../change_branch.py" line="107"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
       <translation>警告：此存儲庫具有未提交的本地更改。您確定要切換分支（將更改帶入新分支）嗎？</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="207"/>
+      <location filename="../../change_branch.py" line="206"/>
       <source>Local</source>
       <comment>Table header for local git ref name</comment>
       <translation>本地</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="213"/>
+      <location filename="../../change_branch.py" line="212"/>
       <source>Remote tracking</source>
       <comment>Table header for git remote tracking branch name</comment>
       <translation>遠端追蹤</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="219"/>
+      <location filename="../../change_branch.py" line="218"/>
       <source>Last Updated</source>
       <comment>Table header for git update date</comment>
       <translation>上次更新</translation>
@@ -2095,34 +2098,19 @@ installed addons will be checked for available updates</source>
       <translation>安裝附加元件 {} 失敗</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="165"/>
-      <source>Downloaded package.xml for {}</source>
-      <translation>下載 {} 的 package.xml 檔</translation>
+      <location filename="../../addonmanager_workers_installation.py" line="184"/>
+      <source>Downloaded {} for {}</source>
+      <translation type="unfinished">Downloaded {} for {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="196"/>
+      <location filename="../../addonmanager_workers_installation.py" line="243"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
       <translation>解碼附加元件的檔案 {} 失敗 &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="205"/>
+      <location filename="../../addonmanager_workers_installation.py" line="252"/>
       <source>Any dependency information in this file will be ignored</source>
       <translation>此檔案中的任何相依性資訊將會被忽略</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_workers_installation.py" line="212"/>
-      <source>Downloaded metadata.txt for {}</source>
-      <translation>已下載 {} 的 metadata.txt</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_workers_installation.py" line="255"/>
-      <source>Downloaded requirements.txt for {}</source>
-      <translation>已下載 {} 的 requirements.txt</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_workers_installation.py" line="273"/>
-      <source>Downloaded icon for {}</source>
-      <translation>已下載 {} 的圖示</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="152"/>
@@ -2155,23 +2143,23 @@ installed addons will be checked for available updates</source>
       <translation>無法找到巨集指定的檔案 {}（預期在 {}）</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="442"/>
+      <location filename="../../Addon.py" line="423"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
       <translation>{}：未識別的內部工作台 &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="475"/>
+      <location filename="../../Addon.py" line="456"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
       <translation>附加元件開發者警告：給附加元件{} ({}) 之 package.xml 檔中的儲存庫網址集與截取自 ({}) 的網址不匹配</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="483"/>
+      <location filename="../../Addon.py" line="464"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
       <translation>附加元件開發者警告：給附加元件{} ({}) 之 package.xml 檔中的儲存庫分支集與截取自 ({}) 的分支不匹配</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="859"/>
-      <location filename="../../Addon.py" line="875"/>
+      <location filename="../../Addon.py" line="840"/>
+      <location filename="../../Addon.py" line="856"/>
       <source>Got an error when trying to import {}</source>
       <translation>當試著匯入 {} 時發生錯誤</translation>
     </message>
@@ -2206,7 +2194,7 @@ installed addons will be checked for available updates</source>
       <translation>當試著移除巨集檔 {} 時發生錯誤：</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="122"/>
+      <location filename="../../addonmanager_workers_startup.py" line="123"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
       <translation>連接到 GitHub 失敗。請檢查您的連線與代理伺服器設定。</translation>
     </message>
@@ -2216,128 +2204,113 @@ installed addons will be checked for available updates</source>
       <translation>警告：重複的附加元件 {} 被忽略</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="253"/>
-      <source>Workbenches list was updated.</source>
-      <translation>工作台列表已更新。</translation>
+      <location filename="../../addonmanager_workers_startup.py" line="281"/>
+      <source>Git is disabled, skipping Git macros</source>
+      <translation type="unfinished">Git is disabled, skipping Git macros</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="269"/>
-      <source>Git is disabled, skipping git macros</source>
-      <translation>Git 已被停用，正在跳過 git 巨集</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_workers_startup.py" line="317"/>
-      <source>Attempting to change non-git Macro setup to use git
+      <location filename="../../addonmanager_workers_startup.py" line="328"/>
+      <source>Attempting to change non-Git Macro setup to use Git
 </source>
-      <translation>嘗試將非 git 巨集設定更改為使用 git
+      <translation type="unfinished">Attempting to change non-Git Macro setup to use Git
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="334"/>
+      <location filename="../../addonmanager_workers_startup.py" line="345"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
       <translation>自 GitHub 更新巨集時發生錯誤，試著進行乾淨檢查...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="338"/>
+      <location filename="../../addonmanager_workers_startup.py" line="349"/>
       <source>Attempting to do a clean checkout...</source>
       <translation>企圖進行一個乾淨的檢查...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="350"/>
+      <location filename="../../addonmanager_workers_startup.py" line="361"/>
       <source>Clean checkout succeeded</source>
       <translation>乾淨檢查成功</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="360"/>
+      <location filename="../../addonmanager_workers_startup.py" line="371"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
       <translation>無法從 GitHub 更新巨集 - 請嘗試清除附加元件管理員的快取。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="383"/>
+      <location filename="../../addonmanager_workers_startup.py" line="394"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>連接到維基時出現錯誤，FreeCAD 目前無法檢索維基巨集列表</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="592"/>
-      <source>Unable to fetch git updates for workbench {}</source>
-      <translation>無法針對工作台 {} 擷取 git 更新</translation>
+      <location filename="../../addonmanager_workers_startup.py" line="548"/>
+      <source>Checking {} for update</source>
+      <translation type="unfinished">Checking {} for update</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="605"/>
-      <source>git status failed for {}</source>
-      <translation>對於 {} 的 git 狀態查詢失敗</translation>
+      <location filename="../../addonmanager_workers_startup.py" line="606"/>
+      <source>Unable to fetch Git updates for workbench {}</source>
+      <translation type="unfinished">Unable to fetch Git updates for workbench {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="671"/>
+      <location filename="../../addonmanager_workers_startup.py" line="619"/>
+      <source>Git status failed for {}</source>
+      <translation type="unfinished">Git status failed for {}</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers_startup.py" line="846"/>
+      <source>Caching {} macro</source>
+      <translation type="unfinished">Caching {} macro</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers_startup.py" line="849"/>
+      <source>Caching macros</source>
+      <translation type="unfinished">Caching macros</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers_startup.py" line="687"/>
       <source>Failed to read metadata from {name}</source>
       <translation>由 {name} 讀取後設資料失敗</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="694"/>
+      <location filename="../../addonmanager_workers_startup.py" line="710"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>無法擷取巨集 &apos;{name}&apos; 的程式碼</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="747"/>
-      <source>Caching macro code...</source>
-      <translation>快取巨集程式碼...</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_workers_startup.py" line="770"/>
+      <location filename="../../addonmanager_workers_startup.py" line="783"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>附加元件管理員：在擷取 {name} 時，工作行程未能完成</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="785"/>
+      <location filename="../../addonmanager_workers_startup.py" line="798"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>在 {num_macros} 個巨集中，有 {num_failed} 個在處理時超時。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="808"/>
+      <location filename="../../addonmanager_workers_startup.py" line="821"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>附加元件管理員：在停止 ({name}) 時，工作行程未能完成</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="847"/>
-      <source>Getting metadata from macro {}</source>
-      <translation>自巨集 {} 取得後設資料</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_workers_startup.py" line="861"/>
+      <location filename="../../addonmanager_workers_startup.py" line="872"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>在擷取巨集 {} 的後設資料時超時</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="872"/>
+      <location filename="../../addonmanager_workers_startup.py" line="883"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>無法終止巨集 {} 的行程！
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="893"/>
-      <source>Retrieving macro description...</source>
-      <translation>檢索巨集描述...</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_workers_startup.py" line="895"/>
-      <source>Retrieving info from git</source>
-      <translation>從 git 中檢索訊息</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_workers_startup.py" line="898"/>
-      <source>Retrieving info from wiki</source>
-      <translation>從 git 中檢索訊息</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_workers_startup.py" line="939"/>
+      <location filename="../../addonmanager_workers_startup.py" line="947"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
       <translation>無法從 {} 獲取附加元件統計資料 — 僅以字母順序排序將是準確的
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="971"/>
+      <location filename="../../addonmanager_workers_startup.py" line="979"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
       <translation>無法從 &apos;{}&apos; 獲取附加元件分數 — 按分數排序將失敗
@@ -2357,8 +2330,8 @@ installed addons will be checked for available updates</source>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="153"/>
-      <source>Basic git update failed with the following message:</source>
-      <translation>基本的 Git 更新失敗，出現以下消息：</translation>
+      <source>Basic Git update failed with the following message:</source>
+      <translation type="unfinished">Basic Git update failed with the following message:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="161"/>
@@ -2367,8 +2340,8 @@ installed addons will be checked for available updates</source>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="266"/>
-      <source>Failed to clone {} into {} using git</source>
-      <translation>使用 git 將 {} 克隆到 {} 失敗</translation>
+      <source>Failed to clone {} into {} using Git</source>
+      <translation type="unfinished">Failed to clone {} into {} using Git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="407"/>
@@ -2391,12 +2364,12 @@ installed addons will be checked for available updates</source>
       <translation>失敗</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="199"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="198"/>
       <source>Update was cancelled</source>
       <translation>更新已取消</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="200"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>some addons may have been updated</source>
       <translation>某些附加元件可能已經被更新了</translation>
     </message>
@@ -2416,17 +2389,17 @@ installed addons will be checked for available updates</source>
       <translation>無法從 {} 下載資料 — 收到回應碼 {}。</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="152"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="159"/>
       <source>Composite view</source>
       <translation>組合視圖</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="153"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="160"/>
       <source>Expanded view</source>
       <translation>擴展視圖</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="154"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="161"/>
       <source>Compact view</source>
       <translation>精簡視圖</translation>
     </message>
@@ -2464,12 +2437,12 @@ installed addons will be checked for available updates</source>
   <context>
     <name>Std_AddonMgr</name>
     <message>
-      <location filename="../../AddonManager.py" line="233"/>
+      <location filename="../../AddonManager.py" line="234"/>
       <source>&amp;Addon manager</source>
-      <translation>&amp;附加元件管理器</translation>
+      <translation>&amp;附加元件管理員</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="237"/>
+      <location filename="../../AddonManager.py" line="238"/>
       <source>Manage external workbenches, macros, and preference packs</source>
       <translation>管理外部工作台、巨集和偏好設定套件</translation>
     </message>
@@ -2490,7 +2463,7 @@ installed addons will be checked for available updates</source>
   <context>
     <name>Addons installer</name>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="193"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="192"/>
       <source>Finished updating the following addons</source>
       <translation>已完成更新底下附加元件</translation>
     </message>
@@ -2498,7 +2471,7 @@ installed addons will be checked for available updates</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="653"/>
+      <location filename="../../addonmanager_installer_gui.py" line="650"/>
       <source>Auto-Created Macro Toolbar</source>
       <translation>自動建立之巨集工具列</translation>
     </message>
@@ -2506,7 +2479,7 @@ installed addons will be checked for available updates</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AddonManager.py" line="187"/>
+      <location filename="../../AddonManager.py" line="188"/>
       <source>Addon Manager</source>
       <translation>附加元件管理員</translation>
     </message>

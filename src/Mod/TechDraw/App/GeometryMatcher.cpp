@@ -218,9 +218,11 @@ bool GeometryMatcher::compareBSplines(const TopoDS_Edge& edge1, const TopoDS_Edg
         return compareEndPoints(edge1, edge2);
     }
 
+    if (!(GeometryUtils::isCircle(edge1) && GeometryUtils::isCircle(edge2))) {
+        return false;
+    }
+
     // deal with bsplines as circles
-    BRepAdaptor_Curve adapt1(edge1);
-    BRepAdaptor_Curve adapt2(edge2);
     bool isArc1(false);
     bool isArc2(false);
     TopoDS_Edge circleEdge1;

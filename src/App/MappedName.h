@@ -415,7 +415,7 @@ public:
         }
 
 
-        if (startPosition < other.data.size())// if starting inside data
+        if (startPosition < other.data.size())  // if starting inside data
         {
             int count = size;
             // make sure count doesn't exceed data size and end up in postfix
@@ -436,7 +436,7 @@ public:
             startPosition = 0;
             size -= count;
         }
-        else// else starting inside postfix
+        else  // else starting inside postfix
         {
             startPosition -= other.data.size();
         }
@@ -879,7 +879,8 @@ public:
             return false;
         }
         return startsWith(
-            QByteArray::fromRawData(searchTarget, static_cast<int>(qstrlen(searchTarget))), offset);
+            QByteArray::fromRawData(searchTarget, static_cast<int>(qstrlen(searchTarget))),
+            offset);
     }
 
     /// Returns true if this MappedName starts with the search target. If there is a postfix, only
@@ -902,15 +903,18 @@ public:
     /// \param lenOut: optional pointer to receive the length field after the tagOut field.
     ///             This gives the length of the previous hashed element name starting
     ///             from the beginning of the give element name.
-    /// \param postfixOut: optional pointer to receive the postfixOut starting at the found tagOut field.
-    /// \param typeOut: optional pointer to receive the element typeOut character
-    /// \param negative: return negative tagOut as it is. If disabled, then always return positive tagOut.
+    /// \param postfixOut: optional pointer to receive the postfixOut starting at the found tagOut
+    /// field. \param typeOut: optional pointer to receive the element typeOut character \param
+    /// negative: return negative tagOut as it is. If disabled, then always return positive tagOut.
     ///                  Negative tagOut is sometimes used for element disambiguation.
     /// \param recursive: recursively find the last non-zero tagOut
     ///
     /// \return Return the end position of the tagOut field, or return -1 if not found.
-    int findTagInElementName(long* tagOut = nullptr, int* lenOut = nullptr, std::string* postfixOut = nullptr,
-                             char* typeOut = nullptr, bool negative = false,
+    int findTagInElementName(long* tagOut = nullptr,
+                             int* lenOut = nullptr,
+                             std::string* postfixOut = nullptr,
+                             char* typeOut = nullptr,
+                             bool negative = false,
                              bool recursive = true) const;
 
     /// Get a hash for this MappedName
@@ -1043,7 +1047,7 @@ struct MappedNameRef
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
 
-}// namespace Data
+}  // namespace Data
 
 
-#endif// APP_MAPPED_NAME_H
+#endif  // APP_MAPPED_NAME_H

@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Defines a QWidget-derived class for displaying a set of buttons that affect the Addon
+"""Defines a QWidget-derived class for displaying a set of buttons that affect the Addon
 Manager as a whole (rather than a specific Addon). Typically inserted at the bottom of the Addon
-Manager main window. """
+Manager main window."""
 
 try:
     import FreeCAD
@@ -100,7 +100,11 @@ class WidgetGlobalButtonBar(QtWidgets.QWidget):
         self.close.setText(translate("AddonsInstaller", "Close"))
 
     def set_number_of_available_updates(self, updates: int):
-        self.update_all_addons.setEnabled(True)
-        self.update_all_addons.setText(
-            translate("AddonsInstaller", "Apply %n available update(s)", "", updates)
-        )
+        if updates > 0:
+            self.update_all_addons.setEnabled(True)
+            self.update_all_addons.setText(
+                translate("AddonsInstaller", "Apply %n available update(s)", "", updates)
+            )
+        else:
+            self.update_all_addons.setEnabled(False)
+            self.update_all_addons.setText(translate("AddonsInstaller", "No updates available"))

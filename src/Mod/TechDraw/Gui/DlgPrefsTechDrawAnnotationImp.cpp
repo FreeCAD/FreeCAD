@@ -51,7 +51,7 @@ DlgPrefsTechDrawAnnotationImp::DlgPrefsTechDrawAnnotationImp(QWidget* parent)
 
     // stylesheet override to defeat behaviour of non-editable combobox to ignore
     // maxVisibleItems property
-    QString ssOverride = QString::fromUtf8("combobox-popup: 0;");
+    QString ssOverride = QStringLiteral("combobox-popup: 0;");
     ui->pcbSectionStyle->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->pcbSectionStyle->setStyleSheet(ssOverride);
     ui->pcbCenterStyle->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -100,7 +100,9 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
 
     // don't save invalid parameter values
     // the comboboxes are properly loaded.
-    ui->pcbLineGroup->onSave();
+    if (ui->pcbLineGroup->currentIndex() >= 0) {
+        ui->pcbLineGroup->onSave();
+    }
     if (ui->pcbLineStandard->currentIndex() >= 0) {
         ui->pcbLineStandard->onSave();
     }
@@ -125,6 +127,7 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
 
     ui->pcbBreakType->onSave();
     ui->pcbBreakStyle->onSave();
+    ui->cbISODates->onSave();
 }
 
 void DlgPrefsTechDrawAnnotationImp::loadSettings()
@@ -134,27 +137,13 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     // QAbstractSpinBox
     double kinkDefault = 5.0;
     ui->pdsbBalloonKink->setValue(kinkDefault);
-    // re-read the available LineGroup files
-    ui->pcbLineGroup->clear();
-    std::string lgFileName = Preferences::lineGroupFile();
-    std::string lgRecord = LineGroup::getGroupNamesFromFile(lgFileName);
-    // split collected groups
-    std::stringstream ss(lgRecord);
-    std::vector<std::string> lgNames;
-    while (std::getline(ss, lgRecord, ',')) {
-        lgNames.push_back(lgRecord);
-    }
-    // fill the combobox with the found names
-    for (auto it = lgNames.begin(); it < lgNames.end(); ++it) {
-        ui->pcbLineGroup->addItem(tr((*it).c_str()));
-    }
 
     ui->cbAutoHoriz->onRestore();
     ui->cbPrintCenterMarks->onRestore();
     ui->cbPyramidOrtho->onRestore();
     ui->cbComplexMarks->onRestore();
     ui->cbShowCenterMarks->onRestore();
-    ui->pcbLineGroup->onRestore();
+
     ui->pdsbBalloonKink->onRestore();
     ui->cbCutSurface->onRestore();
     ui->pcbDetailMatting->onRestore();
@@ -162,6 +151,10 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
 
     ui->cb_ShowSectionLine->onRestore();
     ui->cb_IncludeCutLine->onRestore();
+
+    ui->pcbLineGroup->onRestore();
+    DrawGuiUtil::loadLineGroupChoices(ui->pcbLineGroup);
+    ui->pcbLineGroup->setCurrentIndex(Preferences::lineGroup());
 
     ui->pcbMatting->onRestore();
     DrawGuiUtil::loadMattingStyleBox(ui->pcbMatting);
@@ -173,7 +166,7 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
 
     ui->pcbBalloonArrow->onRestore();
     DrawGuiUtil::loadArrowBox(ui->pcbBalloonArrow);
-    ui->pcbBalloonArrow->setCurrentIndex(prefBalloonArrow());
+    ui->pcbBalloonArrow->setCurrentIndex(static_cast<int>(prefBalloonArrow()));
 
     ui->cbEndCap->onRestore();
 
@@ -194,6 +187,7 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     loadLineStyleBoxes();
 
     ui->pcbBreakType->onRestore();
+    ui->cbISODates->onRestore();
 }
 
 /**
@@ -213,7 +207,7 @@ void DlgPrefsTechDrawAnnotationImp::changeEvent(QEvent *e)
     }
 }
 
-int DlgPrefsTechDrawAnnotationImp::prefBalloonArrow() const
+TechDraw::ArrowType DlgPrefsTechDrawAnnotationImp::prefBalloonArrow() const
 {
     return Preferences::balloonArrow();
 }
@@ -246,7 +240,7 @@ void DlgPrefsTechDrawAnnotationImp::onLineGroupChanged(int index)
     }
     ui->pcbLineGroup->setToolTip(
         QObject::tr("%1 defines these line widths:\n thin: %2\n graphic: %3\n"
-                    "thick: %4")
+                    " thick: %4")
             .arg(QString::fromStdString(lgNames.at(0).substr(1)),
                  QString::fromStdString(lgNames.at(1)),
                  QString::fromStdString(lgNames.at(2)),

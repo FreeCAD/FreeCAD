@@ -29,9 +29,8 @@
 #include <sstream>
 #endif
 
-#include <Base/Tools.h>
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintSpring.h>
 #include <Mod/Part/App/PartFeature.h>
 
@@ -70,37 +69,28 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
 
     /* Note: */
     // Get the feature data
-    Fem::ConstraintSpring* pcConstraint =
-        static_cast<Fem::ConstraintSpring*>(ConstraintView->getObject());
+    Fem::ConstraintSpring* pcConstraint = ConstraintView->getObject<Fem::ConstraintSpring>();
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     // Fill data into dialog elements
-    ui->if_norm->setUnit(pcConstraint->NormalStiffness.getUnit());
-    ui->if_norm->setMinimum(
-        0);  // TODO fix this -------------------------------------------------------------------
-    ui->if_norm->setMaximum(FLOAT_MAX);
-    Base::Quantity ns =
-        Base::Quantity((pcConstraint->NormalStiffness.getValue()), Base::Unit::Stiffness);
-    ui->if_norm->setValue(ns);
+    ui->qsb_norm->setUnit(pcConstraint->NormalStiffness.getUnit());
+    ui->qsb_norm->setMaximum(FLOAT_MAX);
+    ui->qsb_norm->setValue(pcConstraint->NormalStiffness.getQuantityValue());
 
-    ui->if_tan->setUnit(pcConstraint->TangentialStiffness.getUnit());
-    ui->if_tan->setMinimum(
-        0);  // TODO fix this -------------------------------------------------------------------
-    ui->if_tan->setMaximum(FLOAT_MAX);
-    Base::Quantity ts =
-        Base::Quantity((pcConstraint->TangentialStiffness.getValue()), Base::Unit::Stiffness);
-    ui->if_tan->setValue(ts);
+    ui->qsb_tan->setUnit(pcConstraint->TangentialStiffness.getUnit());
+    ui->qsb_tan->setMaximum(FLOAT_MAX);
+    ui->qsb_tan->setValue(pcConstraint->TangentialStiffness.getQuantityValue());
 
-    ui->ElmerStiffnessCB->clear();
+    ui->cb_elmer_stiffness->clear();
     auto stiffnesses = pcConstraint->ElmerStiffness.getEnumVector();
     QStringList stiffnessesList;
     for (auto item : stiffnesses) {
         stiffnessesList << QLatin1String(item.c_str());
     }
-    ui->ElmerStiffnessCB->addItems(stiffnessesList);
-    ui->ElmerStiffnessCB->setCurrentIndex(pcConstraint->ElmerStiffness.getValue());
+    ui->cb_elmer_stiffness->addItems(stiffnessesList);
+    ui->cb_elmer_stiffness->setCurrentIndex(pcConstraint->ElmerStiffness.getValue());
 
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
@@ -113,6 +103,9 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
     // Selection buttons
     buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
     buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
+
+    ui->qsb_norm->bind(pcConstraint->NormalStiffness);
+    ui->qsb_tan->bind(pcConstraint->TangentialStiffness);
 
     updateUI();
 }
@@ -136,8 +129,7 @@ void TaskFemConstraintSpring::addToSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintSpring* pcConstraint =
-        static_cast<Fem::ConstraintSpring*>(ConstraintView->getObject());
+    Fem::ConstraintSpring* pcConstraint = ConstraintView->getObject<Fem::ConstraintSpring>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -191,8 +183,7 @@ void TaskFemConstraintSpring::removeFromSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintSpring* pcConstraint =
-        static_cast<Fem::ConstraintSpring*>(ConstraintView->getObject());
+    Fem::ConstraintSpring* pcConstraint = ConstraintView->getObject<Fem::ConstraintSpring>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
@@ -255,24 +246,19 @@ const std::string TaskFemConstraintSpring::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-std::string TaskFemConstraintSpring::get_normalStiffness() const
+std::string TaskFemConstraintSpring::getNormalStiffness() const
 {
-    return ui->if_norm->value().getSafeUserString().toStdString();
+    return ui->qsb_norm->value().getSafeUserString();
 }
 
-std::string TaskFemConstraintSpring::get_tangentialStiffness() const
+std::string TaskFemConstraintSpring::getTangentialStiffness() const
 {
-    return ui->if_tan->value().getSafeUserString().toStdString();
+    return ui->qsb_tan->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintSpring::getElmerStiffness() const
 {
-    return Base::Tools::toStdString(ui->ElmerStiffnessCB->currentText());
-}
-
-bool TaskFemConstraintSpring::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
+    return ui->cb_elmer_stiffness->currentText().toStdString();
 }
 
 void TaskFemConstraintSpring::changeEvent(QEvent*)
@@ -317,11 +303,11 @@ bool TaskDlgFemConstraintSpring::accept()
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.NormalStiffness = \"%s\"",
                                 name.c_str(),
-                                parameterStiffness->get_normalStiffness().c_str());
+                                parameterStiffness->getNormalStiffness().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.TangentialStiffness = \"%s\"",
                                 name.c_str(),
-                                parameterStiffness->get_tangentialStiffness().c_str());
+                                parameterStiffness->getTangentialStiffness().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.ElmerStiffness = '%s'",
                                 name.c_str(),

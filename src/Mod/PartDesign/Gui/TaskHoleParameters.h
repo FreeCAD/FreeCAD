@@ -108,6 +108,7 @@ private Q_SLOTS:
     void updateViewChanged(bool isChecked);
     void threadDepthTypeChanged(int index);
     void threadDepthChanged(double value);
+    void setCutDiagram();
 
 private:
     class Observer : public App::DocumentObserver {
@@ -145,8 +146,6 @@ class TaskDlgHoleParameters : public TaskDlgSketchBasedParameters
 public:
     explicit TaskDlgHoleParameters(ViewProviderHole *HoleView);
     ~TaskDlgHoleParameters() override;
-
-    ViewProviderHole* getHoleView() const { return static_cast<ViewProviderHole*>(vp); }
 
 protected:
     TaskHoleParameters  *parameter;

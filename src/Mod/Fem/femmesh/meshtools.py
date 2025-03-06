@@ -113,6 +113,9 @@ def get_femnodes_by_refshape(femmesh, ref):
             nodes += femmesh.getNodesByFace(r)
         elif r.ShapeType == "Solid":
             nodes += femmesh.getNodesBySolid(r)
+        elif r.ShapeType == "Compound":
+            for s in r.Solids:
+                nodes += femmesh.getNodesBySolid(s)
         else:
             FreeCAD.Console.PrintMessage("  No Vertice, Edge, Face or Solid as reference shapes!\n")
     return nodes
@@ -408,7 +411,11 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects, femnodes_ele_tab
         femelement_table_array = np.zeros_like(referenced_femelements)
         femelement_table_array[list(femelement_table)] = 1
         remaining_femelements_array = femelement_table_array > referenced_femelements
-        remaining_femelements = [i.item() for i in np.nditer(remaining_femelements_array.nonzero())]
+        (non_zeros,) = remaining_femelements_array.nonzero()
+        if non_zeros.size:
+            remaining_femelements = [i.item() for i in np.nditer(non_zeros)]
+        else:
+            remaining_femelements = []
         count_femelements += len(remaining_femelements)
         for fem_object in fem_objects:
             obj = fem_object["Object"]
@@ -1578,7 +1585,6 @@ def get_contact_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj)
 # ***** tie faces ****************************************************************************
 def get_tie_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
     # see comment get_contact_obj_faces
-    # solid mesh is same as contact, but face mesh is not allowed for tie
     # TODO get rid of duplicate code for contact and tie
 
     slave_faces, master_faces = [], []
@@ -1613,27 +1619,23 @@ def get_tie_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
     FreeCAD.Console.PrintLog(f"Slave: {slave_ref[0].Name}, {slave_ref}\n")
     FreeCAD.Console.PrintLog(f"Master: {master_ref[0].Name}, {master_ref}\n")
 
-    if is_solid_femmesh(femmesh):
-        # get the nodes, sorted and duplicates removed
-        slaveface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, slave_ref))))
-        masterface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, master_ref))))
-        # FreeCAD.Console.PrintLog("slaveface_nds: {}\n".format(slaveface_nds))
-        # FreeCAD.Console.PrintLog("masterface_nds: {}\n".format(slaveface_nds))
+    # get the nodes, sorted and duplicates removed
+    slaveface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, slave_ref))))
+    masterface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, master_ref))))
+    # FreeCAD.Console.PrintLog("slaveface_nds: {}\n".format(slaveface_nds))
+    # FreeCAD.Console.PrintLog("masterface_nds: {}\n".format(slaveface_nds))
 
-        # fill the bit_pattern_dict and search for the faces
-        slave_bit_pattern_dict = get_bit_pattern_dict(
-            femelement_table, femnodes_ele_table, slaveface_nds
-        )
-        master_bit_pattern_dict = get_bit_pattern_dict(
-            femelement_table, femnodes_ele_table, masterface_nds
-        )
+    # fill the bit_pattern_dict and search for the faces
+    slave_bit_pattern_dict = get_bit_pattern_dict(
+        femelement_table, femnodes_ele_table, slaveface_nds
+    )
+    master_bit_pattern_dict = get_bit_pattern_dict(
+        femelement_table, femnodes_ele_table, masterface_nds
+    )
 
-        # get the faces ids
-        slave_faces = get_ccxelement_faces_from_binary_search(slave_bit_pattern_dict)
-        master_faces = get_ccxelement_faces_from_binary_search(master_bit_pattern_dict)
-
-    elif is_face_femmesh(femmesh):
-        FreeCAD.Console.PrintError("Shell mesh is not allowed for constraint tie.\n")
+    # get the faces ids
+    slave_faces = get_ccxelement_faces_from_binary_search(slave_bit_pattern_dict)
+    master_faces = get_ccxelement_faces_from_binary_search(master_bit_pattern_dict)
 
     FreeCAD.Console.PrintLog(f"slave_faces: {slave_faces}\n")
     FreeCAD.Console.PrintLog(f"master_faces: {master_faces}\n")
@@ -1749,42 +1751,51 @@ def get_reference_group_elements(obj, aPart):
         childs = r[1]
         # FreeCAD.Console.PrintMessage("{}\n".format(parent))
         # FreeCAD.Console.PrintMessage("{}\n".format(childs))
-        for child in childs:
-            ref_shape = parent.getSubObject(child)
-            FreeCAD.Console.PrintLog(f"{ref_shape}\n")
-            found_element = geomtools.find_element_in_shape(aShape, ref_shape)
-            if found_element is not None:
-                elements.append(found_element)
-            else:
-                FreeCAD.Console.PrintError(
-                    "Problem: For the geometry of the "
-                    "following shape was no Shape found: {}\n".format(ref_shape)
-                )
-                FreeCAD.Console.PrintMessage("    " + obj.Name + "\n")
-                FreeCAD.Console.PrintMessage("    " + str(obj.References) + "\n")
-                FreeCAD.Console.PrintMessage("    " + r[0].Name + "\n")
-                if parent.Name != aPart.Name:
-                    FreeCAD.Console.PrintError(
-                        "The reference Shape is not a child "
-                        "nor it is the shape the mesh is made of. : {}\n".format(ref_shape)
-                    )
-                    FreeCAD.Console.PrintMessage(
-                        f"{aPart.Name}--> Name of the Feature we where searching in.\n"
-                    )
-                    FreeCAD.Console.PrintMessage(
-                        "{} --> Name of the parent Feature of reference Shape "
-                        "(Use the same as in the line before and you "
-                        "will have less trouble :-) !!!!!!).\n".format(parent.Name)
-                    )
-                    # import Part
-                    # Part.show(aShape)
-                    # Part.show(ref_shape)
+
+        for child1 in childs:
+            ref_shape1 = parent.getSubObject(child1)
+            subchilds = [
+                ref_shape1,
+            ]
+            if (
+                ref_shape1.ShapeType == "Compound"
+            ):  # if user selects a compound, add all the solids in it
+                subchilds = ref_shape1.Solids
+            for ref_shape in subchilds:
+                FreeCAD.Console.PrintLog(f"{ref_shape}\n")
+                found_element = geomtools.find_element_in_shape(aShape, ref_shape)
+                if found_element is not None:
+                    elements.append(found_element)
                 else:
-                    FreeCAD.Console.PrintError("This should not happen, please debug!\n")
-                    # in this case we would not have needed to use the
-                    # is_same_geometry() inside geomtools.find_element_in_shape()
-                    # AFAIK we could have used the Part methods isPartner() or even isSame()
-                    # We're going to find out when we need to debug this :-)!
+                    FreeCAD.Console.PrintError(
+                        "Problem: For the geometry of the "
+                        "following shape was no Shape found: {}\n".format(ref_shape)
+                    )
+                    FreeCAD.Console.PrintMessage("    " + obj.Name + "\n")
+                    FreeCAD.Console.PrintMessage("    " + str(obj.References) + "\n")
+                    FreeCAD.Console.PrintMessage("    " + r[0].Name + "\n")
+                    if parent.Name != aPart.Name:
+                        FreeCAD.Console.PrintError(
+                            "The reference Shape is not a child "
+                            "nor it is the shape the mesh is made of. : {}\n".format(ref_shape)
+                        )
+                        FreeCAD.Console.PrintMessage(
+                            f"{aPart.Name}--> Name of the Feature we where searching in.\n"
+                        )
+                        FreeCAD.Console.PrintMessage(
+                            "{} --> Name of the parent Feature of reference Shape "
+                            "(Use the same as in the line before and you "
+                            "will have less trouble :-) !!!!!!).\n".format(parent.Name)
+                        )
+                        # import Part
+                        # Part.show(aShape)
+                        # Part.show(ref_shape)
+                    else:
+                        FreeCAD.Console.PrintError("This should not happen, please debug!\n")
+                        # in this case we would not have needed to use the
+                        # is_same_geometry() inside geomtools.find_element_in_shape()
+                        # AFAIK we could have used the Part methods isPartner() or even isSame()
+                        # We're going to find out when we need to debug this :-)!
     return (key, sorted(elements))
 
 

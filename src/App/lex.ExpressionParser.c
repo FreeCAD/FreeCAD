@@ -9572,7 +9572,7 @@ case 137:
 YY_RULE_SETUP
 #line 342 "ExpressionParser.l"
 { COUNTCHARS;
-                               yylval.ivalue = strtoll( yytext, NULL, 0 );
+                               yylval.ivalue = strtoll( yytext, NULL, 10 );
                                if (yylval.ivalue == LLONG_MIN)
                                   throw Base::UnderflowError("Integer underflow");
                                else if (yylval.ivalue == LLONG_MAX)

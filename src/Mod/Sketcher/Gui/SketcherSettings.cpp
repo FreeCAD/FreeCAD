@@ -107,11 +107,11 @@ void SketcherSettings::saveSettings()
     ui->checkBoxAdvancedSolverTaskBox->onSave();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
     ui->checkBoxEnableEscape->onSave();
-    ui->checkBoxDisableShading->onSave();
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
     ui->checkBoxAutoRemoveRedundants->onSave();
     ui->checkBoxUnifiedCoincident->onSave();
     ui->checkBoxHorVerAuto->onSave();
+    ui->checkBoxAddExtGeo->onSave();
 
     enum
     {
@@ -179,13 +179,13 @@ void SketcherSettings::loadSettings()
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
     ui->checkBoxEnableEscape->onRestore();
-    ui->checkBoxDisableShading->onRestore();
     ui->checkBoxNotifyConstraintSubstitutions->onRestore();
     ui->checkBoxAutoRemoveRedundants->onRestore();
     ui->checkBoxUnifiedCoincident->onRestore();
     setProperty("checkBoxUnifiedCoincident", ui->checkBoxUnifiedCoincident->isChecked());
     ui->checkBoxHorVerAuto->onRestore();
     setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
+    ui->checkBoxAddExtGeo->onRestore();
 
     // Dimensioning constraints mode
     ui->dimensioningMode->clear();
@@ -259,6 +259,29 @@ void SketcherSettings::changeEvent(QEvent* e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+void SketcherSettings::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+    // reset "Dimension tools" parameters
+    hGrp->RemoveBool("SingleDimensioningTool");
+    hGrp->RemoveBool("SeparatedDimensioningTools");
+
+    // reset "radius/diameter mode for dimensioning" parameter
+    hGrp->RemoveBool("DimensioningDiameter");
+    hGrp->RemoveBool("DimensioningRadius");
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+    // reset "OVP visibility" parameter
+    hGrp->RemoveInt("OnViewParameterVisibility");
+
+    // finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
 }
 
 /* TRANSLATOR SketcherGui::SketcherSettingsGrid */
@@ -621,7 +644,7 @@ void SketcherSettingsAppearance::loadSettings()
     }
     ui->InternalPattern->setCurrentIndex(index);
 
-    pattern = hGrp->GetInt("ExternalPattern", 0b1110010011100100);
+    pattern = hGrp->GetInt("ExternalPattern", 0b1111110011111100);
     index = ui->ExternalPattern->findData(QVariant(pattern));
     if (index < 0) {
         index = 0;

@@ -93,23 +93,17 @@ private:
                 if (constructionMethod() == ConstructionMethod::Center) {
                     centerPoint = onSketchPos;
 
-                    if (seekAutoConstraint(sugConstraints[0],
-                                           onSketchPos,
-                                           Base::Vector2d(0.f, 0.f))) {
-                        renderSuggestConstraintsCursor(sugConstraints[0]);
-                        return;
-                    }
+                    seekAndRenderAutoConstraint(sugConstraints[0],
+                                                onSketchPos,
+                                                Base::Vector2d(0.f, 0.f));
                 }
                 else {
                     apoapsis = onSketchPos;
 
-                    if (seekAutoConstraint(sugConstraints[0],
-                                           onSketchPos,
-                                           Base::Vector2d(0.f, 0.f),
-                                           AutoConstraint::CURVE)) {
-                        renderSuggestConstraintsCursor(sugConstraints[0]);
-                        return;
-                    }
+                    seekAndRenderAutoConstraint(sugConstraints[0],
+                                                onSketchPos,
+                                                Base::Vector2d(0.f, 0.f),
+                                                AutoConstraint::CURVE);
                 }
             } break;
             case SelectMode::SeekSecond: {
@@ -126,13 +120,10 @@ private:
                     toolWidgetManager.drawPositionAtCursor(onSketchPos);
                 }
 
-                if (seekAutoConstraint(sugConstraints[1],
-                                       onSketchPos,
-                                       Base::Vector2d(0.f, 0.f),
-                                       AutoConstraint::CURVE)) {
-                    renderSuggestConstraintsCursor(sugConstraints[1]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[1],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f),
+                                            AutoConstraint::CURVE);
             } break;
             case SelectMode::SeekThird: {
                 calculateThroughPointMinorAxisParameters(onSketchPos);
@@ -148,13 +139,10 @@ private:
                     toolWidgetManager.drawPositionAtCursor(onSketchPos);
                 }
 
-                if (seekAutoConstraint(sugConstraints[2],
-                                       onSketchPos,
-                                       Base::Vector2d(0.f, 0.f),
-                                       AutoConstraint::CURVE)) {
-                    renderSuggestConstraintsCursor(sugConstraints[2]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[2],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f),
+                                            AutoConstraint::CURVE);
             } break;
             default:
                 break;
@@ -174,8 +162,7 @@ private:
 
             // in the exceptional event that this may lead to a circle, do not
             // exposeInternalGeometry
-            if (!ShapeGeometry.empty()
-                && ShapeGeometry[0]->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+            if (!ShapeGeometry.empty() && ShapeGeometry[0]->is<Part::GeomEllipse>()) {
                 Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                       "exposeInternalGeometry(%d)",
                                       ellipseGeoId);
@@ -262,10 +249,10 @@ private:
     QString getCrosshairCursorSVGName() const override
     {
         if (constructionMethod() == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
-            return QString::fromLatin1("Sketcher_Pointer_Create_EllipseByCenter");
+            return QStringLiteral("Sketcher_Pointer_Create_EllipseByCenter");
         }
         else {
-            return QString::fromLatin1("Sketcher_Pointer_Create_Ellipse_3points");
+            return QStringLiteral("Sketcher_Pointer_Create_Ellipse_3points");
         }
     }
 
@@ -338,9 +325,18 @@ private:
         auto lprojx = projx.Length();  // Px = a cos t
         auto lprojy = projy.Length();  // Py = b sin t
 
-        double t = std::acos(lprojx / firstRadius);
-
-        secondRadius = lprojy / std::sin(t);  // b = Py / sin t
+        if (lprojx > firstRadius) {
+            secondRadius = 0.0;
+        }
+        else {
+            double t = std::acos(lprojx / firstRadius);
+            if (t == 0.0) {
+                secondRadius = 0.0;
+            }
+            else {
+                secondRadius = lprojy / std::sin(t);  // b = Py / sin t
+            }
+        }
 
         secondAxis = projy.Normalize() * secondRadius;
     }
@@ -725,8 +721,7 @@ void DSHEllipseController::addConstraints()
 
         using namespace Sketcher;
 
-        if (!handler->ShapeGeometry.empty()
-            && handler->ShapeGeometry[0]->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+        if (!handler->ShapeGeometry.empty() && handler->ShapeGeometry[0]->is<Part::GeomEllipse>()) {
 
             int firstLine = firstCurve + 1;   // this is always the major axis
             int secondLine = firstCurve + 2;  // this is always the minor axis

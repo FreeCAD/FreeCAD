@@ -65,7 +65,7 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
         if (Gui::Control().activeDialog())
             return false;
         PartGui::TaskPrimitivesEdit* dlg
-            = new PartGui::TaskPrimitivesEdit(dynamic_cast<Part::Primitive*>(getObject()));
+            = new PartGui::TaskPrimitivesEdit(getObject<Part::Primitive>());
         Gui::Control().showDialog(dlg);
         return true;
     }

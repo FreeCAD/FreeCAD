@@ -61,16 +61,8 @@
 void PrintInitHelp();
 
 const char sBanner[] =
-    "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2024\n"
-    "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n"
-    "FreeCAD wouldn't be possible without FreeCAD community.\n"
-    "  #####                 ####  ###   ####  \n"
-    "  #                    #      # #   #   # \n"
-    "  #     ##  #### ####  #     #   #  #   # \n"
-    "  ####  # # #  # #  #  #     #####  #   # \n"
-    "  #     #   #### ####  #    #     # #   # \n"
-    "  #     #   #    #     #    #     # #   #  ##  ##  ##\n"
-    "  #     #   #### ####   ### #     # ####   ##  ##  ##\n\n";
+    "(C) 2001-2025 FreeCAD contributors\n"
+    "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n";
 
 #if defined(_MSC_VER)
 void InitMiniDumpWriter(const std::string&);
@@ -103,10 +95,41 @@ private:
     FILE* file;
 };
 
+static void DisplayInfo(const QString& msg, bool preformatted = true)
+{
+    if (App::Application::Config()["Console"] == "1") {
+        std::cout << msg.toStdString();
+        return;
+    }
+
+    QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setWindowTitle(appName);
+    msgBox.setDetailedText(msg);
+    msgBox.setText(preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg);
+    msgBox.exec();
+}
+
+static void DisplayCritical(const QString& msg, bool preformatted = true)
+{
+    if (App::Application::Config()["Console"] == "1") {
+        std::cerr << msg.toStdString();
+        return;
+    }
+
+    QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+    QString title = QObject::tr("Initialization of %1 failed").arg(appName);
+    QString text = preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg;
+    QMessageBox::critical(nullptr, title, text);
+}
+
 int main(int argc, char** argv)
 {
 #if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
-    setlocale(LC_ALL, "");  // use native environment settings
+    setlocale(LC_ALL, "");       // use native environment settings
+    setlocale(LC_NUMERIC, "C");  // except for numbers to not break XML import
+    // See https://github.com/FreeCAD/FreeCAD/issues/16724
 
     // Make sure to setup the Qt locale system before setting LANG and LC_ALL to C.
     // which is needed to use the system locale settings.
@@ -176,10 +199,10 @@ int main(int argc, char** argv)
     // App::Application::Config()["HiddenDockWindow"] = "Property editor";
     App::Application::Config()["SplashAlignment"] = "Bottom|Left";
     App::Application::Config()["SplashTextColor"] = "#418FDE";
-    App::Application::Config()["SplashInfoColor"] = "#418FDE";
+    App::Application::Config()["SplashWarningColor"] = "#CA333B";
+    App::Application::Config()["SplashInfoColor"] = "#000000";
     App::Application::Config()["SplashInfoPosition"] = "6,75";
-
-    QGuiApplication::setDesktopFileName(QStringLiteral("org.freecad.FreeCAD"));
+    App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD";
 
     try {
         // Init phase ===========================================================
@@ -194,6 +217,10 @@ int main(int argc, char** argv)
 #else
         App::Application::init(argc, argv);
 #endif
+        // to set window icon on wayland, the desktop file has to be available to the compositor
+        QGuiApplication::setDesktopFileName(
+            QString::fromLatin1(App::Application::Config()["DesktopFileName"].c_str()));
+
 #if defined(_MSC_VER)
         // create a dump file when the application crashes
         std::string dmpfile = App::Application::getUserAppDataDir();
@@ -219,24 +246,14 @@ int main(int argc, char** argv)
     }
     catch (const Base::UnknownProgramOption& e) {
         QApplication app(argc, argv);
-        QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
         QString msg = QString::fromLatin1(e.what());
-        QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
-        QMessageBox::critical(nullptr, appName, s);
+        DisplayCritical(msg);
         exit(1);
     }
     catch (const Base::ProgramInformation& e) {
         QApplication app(argc, argv);
-        QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
         QString msg = QString::fromUtf8(e.what());
-        QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
-
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setWindowTitle(appName);
-        msgBox.setDetailedText(msg);
-        msgBox.setText(s);
-        msgBox.exec();
+        DisplayInfo(msg);
         exit(0);
     }
     catch (const Base::Exception& e) {
@@ -263,9 +280,7 @@ int main(int argc, char** argv)
                 "\nPlease contact the application's support team for more information.\n\n");
         }
 
-        QMessageBox::critical(nullptr,
-                              QObject::tr("Initialization of %1 failed").arg(appName),
-                              msg);
+        DisplayCritical(msg, false);
         exit(100);
     }
     catch (...) {
@@ -276,9 +291,7 @@ int main(int argc, char** argv)
             QObject::tr("Unknown runtime error occurred while initializing %1.\n\n"
                         "Please contact the application's support team for more information.\n\n")
                 .arg(appName);
-        QMessageBox::critical(nullptr,
-                              QObject::tr("Initialization of %1 failed").arg(appName),
-                              msg);
+        DisplayCritical(msg, false);
         exit(101);
     }
 

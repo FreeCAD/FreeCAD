@@ -55,13 +55,15 @@ EditModeInformationOverlayCoinConverter::EditModeInformationOverlayCoinConverter
     , drawingParameters(drawingparameters)
     , nodeId(0) {
 
-      };
+    };
 
 void EditModeInformationOverlayCoinConverter::convert(const Part::Geometry* geometry, int geoid)
 {
 
     if (geometry->is<Part::GeomBSplineCurve>()) {
-        // at this point all calculations relate to BSplineCurves
+        if (geoid < 0) {
+            return;
+        }
         calculate<CalculationType::BSplineDegree>(geometry, geoid);
         calculate<CalculationType::BSplineControlPolygon>(geometry, geoid);
         calculate<CalculationType::BSplineCurvatureComb>(geometry, geoid);
@@ -215,7 +217,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* ge
                         e.ReportException();
                         Base::Console().DeveloperError(
                             "EditModeInformationOverlayCoinConverter",
-                            "Curvature graph for B-Spline with GeoId=%d could not be calculated.\n",
+                            "Curvature graph for B-spline with GeoId=%d could not be calculated.\n",
                             geoid);
                         curvaturelist.emplace_back(0);
                     }
@@ -294,10 +296,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry* ge
                 poleWeights.positions.emplace_back(poles[i]);
 
                 QString WeightString =
-                    QString::fromLatin1("[%1]").arg(weights[i],
-                                                    0,
-                                                    'f',
-                                                    Base::UnitsApi::getDecimals());
+                    QStringLiteral("[%1]").arg(weights[i], 0, 'f', Base::UnitsApi::getDecimals());
 
                 poleWeights.strings.emplace_back(WeightString.toStdString());
             }

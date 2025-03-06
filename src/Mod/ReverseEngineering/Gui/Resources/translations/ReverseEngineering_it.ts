@@ -235,7 +235,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
-      <source>Fit B-Spline</source>
+      <source>Fit B-spline</source>
       <translation>Adatta B-Spline</translation>
     </message>
     <message>
@@ -591,8 +591,8 @@
     <name>ReenGui::FitBSplineCurve</name>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
-      <source>Fit B-spline surface</source>
-      <translation>Adatta la superficie della curva B-Spline</translation>
+      <source>Fit B-spline curve</source>
+      <translation type="unfinished">Fit B-spline curve</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>

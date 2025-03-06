@@ -24,7 +24,7 @@
 #define ROBOT_VIEWPROVIDERROBOTOBJECT_H
 
 #include <Base/Placement.h>
-#include <Gui/SoFCSelection.h>
+#include <Gui/Selection/SoFCSelection.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Inventor/VRMLnodes/SoVRMLTransform.h>
 #include <Mod/Robot/RobotGlobal.h>

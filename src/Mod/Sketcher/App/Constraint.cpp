@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QDateTime>
+#include <boost/random.hpp>
 #include <cmath>
 #endif
 
@@ -235,6 +236,25 @@ void Constraint::substituteIndex(int fromGeoId, int toGeoId)
     }
     if (this->Third == fromGeoId) {
         this->Third = toGeoId;
+    }
+}
+
+void Constraint::substituteIndexAndPos(int fromGeoId,
+                                       PointPos fromPosId,
+                                       int toGeoId,
+                                       PointPos toPosId)
+{
+    if (this->First == fromGeoId && this->FirstPos == fromPosId) {
+        this->First = toGeoId;
+        this->FirstPos = toPosId;
+    }
+    if (this->Second == fromGeoId && this->SecondPos == fromPosId) {
+        this->Second = toGeoId;
+        this->SecondPos = toPosId;
+    }
+    if (this->Third == fromGeoId && this->ThirdPos == fromPosId) {
+        this->Third = toGeoId;
+        this->ThirdPos = toPosId;
     }
 }
 

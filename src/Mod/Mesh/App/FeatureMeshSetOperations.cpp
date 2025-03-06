@@ -95,7 +95,7 @@ App::DocumentObjectExecReturn* SetOperations::execute()
                                       meshKernel2.getKernel(),
                                       pcKernel->getKernel(),
                                       type,
-                                      1.0e-5f);
+                                      1.0e-5F);
         setOp.Do();
         Mesh.setValuePtr(pcKernel.release());
     }

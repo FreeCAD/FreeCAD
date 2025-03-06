@@ -29,7 +29,7 @@
 #include <QObject>
 #include <memory>
 
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskView.h>
 
 #include "TaskFemConstraintOnBoundary.h"
@@ -62,7 +62,6 @@ private Q_SLOTS:
     void removeFromSelection() override;
 
 protected:
-    bool event(QEvent* e) override;
     void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 

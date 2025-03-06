@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <cmath>
+#endif
 
 #include <Base/Tools.h>
 
@@ -76,7 +79,7 @@ void PlaneFitSmoothing::Smooth(unsigned int iterations)
                 center += v_beg[*cv_it];
             }
 
-            float scale = 1.0f / (static_cast<float>(cv.size()) + 1.0f);
+            float scale = 1.0F / (static_cast<float>(cv.size()) + 1.0F);
             center.Scale(scale, scale, scale);
 
             // get the mean plane of the current vertex with the surrounding vertices
@@ -86,12 +89,12 @@ void PlaneFitSmoothing::Smooth(unsigned int iterations)
 
             // look in which direction we should move the vertex
             L.Set(v_it->x - center.x, v_it->y - center.y, v_it->z - center.z);
-            if (N * L < 0.0f) {
+            if (N * L < 0.0F) {
                 N.Scale(-1.0, -1.0, -1.0);
             }
 
             // maximum value to move is distance to mean plane
-            float d = std::min<float>(fabs(this->maximum), fabs(N * L));
+            float d = std::min<float>(std::fabs(this->maximum), fabs(N * L));
             N.Scale(d, d, d);
 
             PointArray[v_it.Position()].Set(v_it->x - N.x, v_it->y - N.y, v_it->z - N.z);
@@ -133,7 +136,7 @@ void PlaneFitSmoothing::SmoothPoints(unsigned int iterations,
                 center += v_beg[*cv_it];
             }
 
-            float scale = 1.0f / (static_cast<float>(cv.size()) + 1.0f);
+            float scale = 1.0F / (static_cast<float>(cv.size()) + 1.0F);
             center.Scale(scale, scale, scale);
 
             // get the mean plane of the current vertex with the surrounding vertices
@@ -143,12 +146,12 @@ void PlaneFitSmoothing::SmoothPoints(unsigned int iterations,
 
             // look in which direction we should move the vertex
             L.Set(v_it->x - center.x, v_it->y - center.y, v_it->z - center.z);
-            if (N * L < 0.0f) {
+            if (N * L < 0.0F) {
                 N.Scale(-1.0, -1.0, -1.0);
             }
 
             // maximum value to move is distance to mean plane
-            float d = std::min<float>(fabs(this->maximum), fabs(N * L));
+            float d = std::min<float>(std::fabs(this->maximum), fabs(N * L));
             N.Scale(d, d, d);
 
             PointArray[v_it.Position()].Set(v_it->x - N.x, v_it->y - N.y, v_it->z - N.z);
@@ -309,14 +312,12 @@ inline Base::Vector3d find_median(std::vector<AngleNormal>& container)
     if ((container.size() % 2) == 1) {
         return container[n].second;
     }
-    else {
-        // even sized vector -> average the two middle values
-        auto max_it =
-            std::max_element(container.begin(), container.begin() + n, compare_angle_normal);
-        Base::Vector3d vec = (max_it->second + container[n].second) / 2.0;
-        vec.Normalize();
-        return vec;
-    }
+
+    // even sized vector -> average the two middle values
+    auto max_it = std::max_element(container.begin(), container.begin() + n, compare_angle_normal);
+    Base::Vector3d vec = (max_it->second + container[n].second) / 2.0;
+    vec.Normalize();
+    return vec;
 }
 }  // namespace
 

@@ -82,7 +82,7 @@ std::shared_ptr<QList<QVariant>> MaterialYamlEntry::readList(const YAML::Node& n
         QVariant nodeValue;
         if (isImageList) {
             nodeValue = QString::fromStdString(it->as<std::string>())
-                            .remove(QRegularExpression(QString::fromStdString("[\r\n]")));
+                            .remove(QRegularExpression(QStringLiteral("[\r\n]")));
         }
         else {
             nodeValue = QString::fromStdString(it->as<std::string>());
@@ -115,8 +115,8 @@ std::shared_ptr<Material2DArray> MaterialYamlEntry::read2DArray(const YAML::Node
 
             auto row = std::make_shared<QList<QVariant>>();
             for (std::size_t j = 0; j < yamlRow.size(); j++) {
-                Base::Quantity qq =
-                    Base::Quantity::parse(QString::fromStdString(yamlRow[j].as<std::string>()));
+                Base::Quantity qq = Base::Quantity::parse(yamlRow[j].as<std::string>());
+                qq.setFormat(MaterialValue::getQuantityFormat());
                 row->push_back(QVariant::fromValue(qq));
             }
             array2d->addRow(row);
@@ -141,9 +141,8 @@ std::shared_ptr<Material3DArray> MaterialYamlEntry::read3DArray(const YAML::Node
         for (std::size_t depth = 0; depth < yamlArray.size(); depth++) {
             auto yamlDepth = yamlArray[depth];
             for (auto it = yamlDepth.begin(); it != yamlDepth.end(); it++) {
-                auto depthValue =
-                    Base::Quantity::parse(QString::fromStdString(it->first.as<std::string>()));
-
+                auto depthValue = Base::Quantity::parse(it->first.as<std::string>());
+                depthValue.setFormat(MaterialValue::getQuantityFormat());
                 array3d->addDepth(depth, depthValue);
 
                 auto yamlTable = it->second;
@@ -152,8 +151,9 @@ std::shared_ptr<Material3DArray> MaterialYamlEntry::read3DArray(const YAML::Node
 
                     auto row = std::make_shared<QList<Base::Quantity>>();
                     for (std::size_t j = 0; j < yamlRow.size(); j++) {
-                        row->push_back(Base::Quantity::parse(
-                            QString::fromStdString(yamlRow[j].as<std::string>())));
+                        auto qq = Base::Quantity::parse(yamlRow[j].as<std::string>());
+                        qq.setFormat(MaterialValue::getQuantityFormat());
+                        row->push_back(qq);
                     }
                     array3d->addRow(depth, row);
                 }
@@ -168,8 +168,8 @@ void MaterialYamlEntry::addToTree(
     std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> materialMap)
 {
     std::set<QString> exclude;
-    exclude.insert(QString::fromStdString("General"));
-    exclude.insert(QString::fromStdString("Inherits"));
+    exclude.insert(QStringLiteral("General"));
+    exclude.insert(QStringLiteral("Inherits"));
 
     auto yamlModel = getModel();
     auto library = getLibrary();
@@ -244,7 +244,7 @@ void MaterialYamlEntry::addToTree(
                                 QString::fromStdString((itp->second).as<std::string>());
                             if (type == MaterialValue::Image) {
                                 propertyValue = propertyValue.remove(
-                                    QRegularExpression(QString::fromStdString("[\r\n]")));
+                                    QRegularExpression(QStringLiteral("[\r\n]")));
                             }
                             finalModel->setPhysicalValue(QString::fromStdString(propertyName),
                                                          propertyValue);
@@ -311,7 +311,7 @@ void MaterialYamlEntry::addToTree(
                                 QString::fromStdString((itp->second).as<std::string>());
                             if (type == MaterialValue::Image) {
                                 propertyValue = propertyValue.remove(
-                                    QRegularExpression(QString::fromStdString("[\r\n]")));
+                                    QRegularExpression(QStringLiteral("[\r\n]")));
                             }
                             finalModel->setAppearanceValue(QString::fromStdString(propertyName),
                                                            propertyValue);
@@ -368,7 +368,7 @@ MaterialLoader::getMaterialFromYAML(const std::shared_ptr<MaterialLibrary>& libr
         // Always get the name from the filename
         QFileInfo filepath(path);
         QString name =
-            filepath.fileName().remove(QString::fromStdString(".FCMat"), Qt::CaseInsensitive);
+            filepath.fileName().remove(QStringLiteral(".FCMat"), Qt::CaseInsensitive);
 
         model = std::make_shared<MaterialYamlEntry>(library,
                                                     name,
@@ -568,9 +568,9 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialLoader::get
         QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
                                                      + "/Mod/Material/Resources/Materials");
         auto libData =
-            std::make_shared<MaterialLibrary>(QString::fromStdString("System"),
+            std::make_shared<MaterialLibrary>(QStringLiteral("System"),
                                               resourceDir,
-                                              QString::fromStdString(":/icons/freecad.svg"),
+                                              QStringLiteral(":/icons/freecad.svg"),
                                               true);
         _libraryList->push_back(libData);
     }
@@ -612,9 +612,9 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialLoader::get
             }
             if (materialDir.exists()) {
                 auto libData = std::make_shared<MaterialLibrary>(
-                    QString::fromStdString("User"),
+                    QStringLiteral("User"),
                     resourceDir,
-                    QString::fromStdString(":/icons/preferences-general.svg"),
+                    QStringLiteral(":/icons/preferences-general.svg"),
                     false);
                 _libraryList->push_back(libData);
             }
@@ -627,9 +627,9 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialLoader::get
             QDir materialDir(resourceDir);
             if (materialDir.exists()) {
                 auto libData =
-                    std::make_shared<MaterialLibrary>(QString::fromStdString("Custom"),
+                    std::make_shared<MaterialLibrary>(QStringLiteral("Custom"),
                                                       resourceDir,
-                                                      QString::fromStdString(":/icons/user.svg"),
+                                                      QStringLiteral(":/icons/user.svg"),
                                                       false);
                 _libraryList->push_back(libData);
             }
@@ -649,7 +649,7 @@ MaterialLoader::getMaterialFolders(const MaterialLibrary& library)
         QFileInfo file(pathname);
         if (file.isDir()) {
             QString path = QDir(library.getDirectory()).relativeFilePath(file.absoluteFilePath());
-            if (!path.startsWith(QString::fromStdString("."))) {
+            if (!path.startsWith(QStringLiteral("."))) {
                 pathList->push_back(path);
             }
         }

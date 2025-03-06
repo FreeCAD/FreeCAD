@@ -311,9 +311,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             self._enableExtensions()  # Recalculate extensions
 
     def createItemForBaseModel(self, base, sub, edges, extensions):
-        Path.Log.track(
-            base.Label, sub, "+", len(edges), len(base.Shape.getElement(sub).Edges)
-        )
+        Path.Log.track(base.Label, sub, "+", len(edges), len(base.Shape.getElement(sub).Edges))
         # Path.Log.debug("createItemForBaseModel() label: {}, sub: {}, {}, edgeCnt: {}, subEdges: {}".format(base.Label, sub, '+', len(edges), len(base.Shape.getElement(sub).Edges)))
 
         extendCorners = self.form.extendCorners.isChecked()
@@ -349,7 +347,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             subEdges = subShape.Edges
 
         for edge in subEdges:
-            for (e, label) in edges:
+            for e, label in edges:
                 if edge.isSame(e):
                     ext1 = self._cachedExtension(self.obj, base, sub, label)
                     if ext1.isValid():
@@ -362,16 +360,12 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             def edgesMatchShape(e0, e1):
                 flipped = Path.Geom.flipEdge(e1)
                 if flipped:
-                    return Path.Geom.edgesMatch(e0, e1) or Path.Geom.edgesMatch(
-                        e0, flipped
-                    )
+                    return Path.Geom.edgesMatch(e0, e1) or Path.Geom.edgesMatch(e0, flipped)
                 else:
                     return Path.Geom.edgesMatch(e0, e1)
 
             self.extensionEdges = extensionEdges
-            Path.Log.debug(
-                "extensionEdges.values(): {}".format(extensionEdges.values())
-            )
+            Path.Log.debug("extensionEdges.values(): {}".format(extensionEdges.values()))
             for edgeList in Part.sortEdges(
                 list(extensionEdges)
             ):  # Identify connected edges that form wires
@@ -447,10 +441,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         if self.enabled:
             for base in self.obj.Base:
                 show = False
-                edges = [
-                    (edge, "Edge%d" % (i + 1))
-                    for i, edge in enumerate(base[0].Shape.Edges)
-                ]
+                edges = [(edge, "Edge%d" % (i + 1)) for i, edge in enumerate(base[0].Shape.Edges)]
                 baseItem = QtGui.QStandardItem()
                 baseItem.setData(base[0].Label, QtCore.Qt.EditRole)
                 baseItem.setSelectable(False)
@@ -531,9 +522,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
             def setSelectionVisuals(item, ext):
                 if selectItem(item, ext):
-                    self.selectionModel.select(
-                        item.index(), QtCore.QItemSelectionModel.Select
-                    )
+                    self.selectionModel.select(item.index(), QtCore.QItemSelectionModel.Select)
 
                 selected = self.selectionModel.isSelected(item.index())
                 if selected:
@@ -652,9 +641,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             if parent and hasattr(parent, "featurePages"):
                 for page in parent.featurePages:
                     if hasattr(page, "panelTitle"):
-                        if page.panelTitle == "Operation" and hasattr(
-                            page.form, "useOutline"
-                        ):
+                        if page.panelTitle == "Operation" and hasattr(page.form, "useOutline"):
                             Path.Log.debug("Found useOutline checkbox")
                             self.useOutlineCheckbox = page.form.useOutline
                             if page.form.useOutline.isChecked():

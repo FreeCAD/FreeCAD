@@ -16,7 +16,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="242"/>
       <source>Add a tool shape to the robot</source>
-      <translation>Добавить правило для робота</translation>
+      <translation>Добавить фигуру инструмента к роботу</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="57"/>
       <source>Create a new empty trajectory</source>
-      <translation>Создать новую пустую траекторию</translation>
+      <translation>Создать новую пустую траекторию движений робота</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="362"/>
       <source>Generate a Trajectory from a set of edges</source>
-      <translation>Создать траекторию из ребер</translation>
+      <translation>Создать траекторию движения робота из набора ребер</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="48"/>
       <source>Export the trajectory as a compact KRL subroutine.</source>
-      <translation>Экспорт траектории в сжатую KRL-подпрограмму.</translation>
+      <translation>Экспортировать траекторию движений в сжатую KRL подпрограмму.</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="123"/>
       <source>Export the trajectory as a full KRL subroutine.</source>
-      <translation>Экспортировать траекторию как полноправную KRL-подпрограмму.</translation>
+      <translation>Экспортировать траекторию движений в полную KRL подпрограмму.</translation>
     </message>
   </context>
   <context>
@@ -363,8 +363,7 @@
       <location filename="../../CommandTrajectory.cpp" line="464"/>
       <location filename="../../Command.cpp" line="71"/>
       <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="237"/>
-      <location filename="../../Command.cpp" line="271"/>
+      <location filename="../../Command.cpp" line="235"/>
       <location filename="../../CommandExport.cpp" line="62"/>
       <location filename="../../CommandExport.cpp" line="137"/>
       <source>Wrong selection</source>
@@ -382,20 +381,19 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="107"/>
-      <location filename="../../Command.cpp" line="238"/>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="236"/>
       <location filename="../../CommandExport.cpp" line="63"/>
       <location filename="../../CommandExport.cpp" line="138"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Выберите робота и траекторию движения.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Trajectory not valid</source>
       <translation>Траектория не действительна</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
       <translation>Для симуляции траектория должна иметь хотя бы две точки.</translation>
     </message>

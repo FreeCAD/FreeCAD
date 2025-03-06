@@ -212,8 +212,7 @@ class Offset(gui_base_original.Modifier):
                 self.constrainSeg = None
                 self.linetrack.off()
                 self.ui.radiusValue.setText("off")
-            self.ui.radiusValue.setFocus()
-            self.ui.radiusValue.selectAll()
+            self.ui.setFocus("radius")
             if self.extendedCopy:
                 if not gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                     self.finish()

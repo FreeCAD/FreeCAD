@@ -67,7 +67,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>
       <source>Nominal</source>
-      <translation type="unfinished">Nominal</translation>
+      <translation>标称量</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="77"/>
@@ -94,40 +94,40 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="485"/>
+      <location filename="../../ViewProviderInspection.cpp" line="489"/>
       <source>Remove annotations</source>
       <translation>移除标注</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="486"/>
+      <location filename="../../ViewProviderInspection.cpp" line="490"/>
       <source>Do you want to remove all annotations?</source>
       <translation>你想移除所有标注吗？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="544"/>
+      <location filename="../../ViewProviderInspection.cpp" line="548"/>
       <source>Annotation</source>
       <translation>注释</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="547"/>
+      <location filename="../../ViewProviderInspection.cpp" line="551"/>
       <source>Leave info mode</source>
       <translation>退出查询模式</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="678"/>
-      <source>Distance: &gt; %1</source>
-      <translation type="unfinished">Distance: &gt; %1</translation>
-    </message>
-    <message>
       <location filename="../../ViewProviderInspection.cpp" line="682"/>
-      <source>Distance: &lt; %1</source>
-      <translation type="unfinished">Distance: &lt; %1</translation>
+      <source>Distance: &gt; %1</source>
+      <translation>距离: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="702"/>
-      <location filename="../../ViewProviderInspection.cpp" line="719"/>
+      <location filename="../../ViewProviderInspection.cpp" line="686"/>
+      <source>Distance: &lt; %1</source>
+      <translation>距离: &lt; %1</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderInspection.cpp" line="706"/>
+      <location filename="../../ViewProviderInspection.cpp" line="723"/>
       <source>Distance: %1</source>
-      <translation type="unfinished">Distance: %1</translation>
+      <translation>距离: %1</translation>
     </message>
   </context>
 </TS>

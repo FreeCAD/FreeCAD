@@ -123,7 +123,7 @@ std::vector<std::string> DrawViewSymbol::getEditableFields()
 
         // XPath query to select all <tspan> nodes whose <text> parent
         // has "freecad:editable" attribute
-        query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
+        query.processItems(QStringLiteral("declare default element namespace \"" SVG_NS_URI "\"; "
                                              "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
                                              "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
                            [&editables](QDomElement& tspan) -> bool {
@@ -152,7 +152,7 @@ void DrawViewSymbol::updateFieldsInSymbol()
 
         // XPath query to select all <tspan> nodes whose <text> parent
         // has "freecad:editable" attribute
-        query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
+        query.processItems(QStringLiteral("declare default element namespace \"" SVG_NS_URI "\"; "
                                              "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
                                              "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
                            [&symbolDocument, &editText, &count](QDomElement& tspanElement) -> bool {
@@ -161,8 +161,8 @@ void DrawViewSymbol::updateFieldsInSymbol()
                 return false;
             }
             // Keep all spaces in the text node
-            tspanElement.setAttribute(QString::fromUtf8("xml:space"),
-                                      QString::fromUtf8("preserve"));
+            tspanElement.setAttribute(QStringLiteral("xml:space"),
+                                      QStringLiteral("preserve"));
 
             // Remove all child nodes (if any)
             while (!tspanElement.lastChild().isNull()) {

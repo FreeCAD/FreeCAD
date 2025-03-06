@@ -25,7 +25,7 @@ def buildShapeContent(objArg, decimals=2, advancedShapeContent=True):
     obj = objArg
     shp = Part.getShape(objArg)
     typeStr = str(shp.ShapeType)
-    lbl = "" if obj.Name == obj.Label else "(" + obj.Label + ")"
+    lbl = "" if obj.Name == obj.Label else " (" + obj.Label + ")"
     result = linkName + obj.Name + lbl + "\n"
     result += (
         translate("TaskCheckGeometryResults", "Shape type") + ":  " + typeStr + "\n"

@@ -55,6 +55,14 @@ bool Gui::DAG::hasRecord(const App::DocumentObject* dObjectIn, const GraphLinkCo
   return it != list.end();
 }
 
+bool Gui::DAG::hasRecord(const ViewProviderDocumentObject* VPDObjectIn, const GraphLinkContainer &containerIn)
+{
+  using List = GraphLinkContainer::index<GraphLinkRecord::ByVPDObject>::type;
+  const List &list = containerIn.get<GraphLinkRecord::ByVPDObject>();
+  List::const_iterator it = list.find(VPDObjectIn);
+  return it != list.end();
+}
+
 const GraphLinkRecord& Gui::DAG::findRecord(Vertex vertexIn, const GraphLinkContainer &containerIn)
 {
   using List = GraphLinkContainer::index<GraphLinkRecord::ByVertex>::type;

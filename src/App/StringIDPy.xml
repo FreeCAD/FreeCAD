@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-    <PythonExport 
-        Father="BaseClassPy" 
-        Name="StringIDPy" 
-        Twin="StringID" 
-        TwinPointer="StringID" 
-        Include="App/StringHasher.h" 
-        FatherInclude="Base/BaseClassPy.h" 
-        Namespace="App" 
+    <PythonExport
+        Father="BaseClassPy"
+        Name="StringIDPy"
+        Twin="StringID"
+        TwinPointer="StringID"
+        Include="App/StringHasher.h"
+        FatherInclude="Base/BaseClassPy.h"
+        Namespace="App"
         FatherNamespace="Base"
         Reference="true">
         <Documentation>
@@ -24,7 +24,7 @@
             <Documentation>
                 <UserDocu>Return the integer value of this ID</UserDocu>
             </Documentation>
-            <Parameter Name="Value" Type="Int"/>
+            <Parameter Name="Value" Type="Long"/>
         </Attribute>
         <Attribute Name="Related" ReadOnly="true">
             <Documentation>
@@ -54,12 +54,11 @@
             <Documentation>
                 <UserDocu>Geometry index. Only meaningful for geometry element name</UserDocu>
             </Documentation>
-            <Parameter Name="Index" Type="Int"/>
+            <Parameter Name="Index" Type="Long"/>
         </Attribute>
 		<ClassDeclarations>private:
     friend class StringID;
     int _index = 0;
-		</ClassDeclarations>
+        </ClassDeclarations>
     </PythonExport>
 </GenerateModel>
-

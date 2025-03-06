@@ -70,9 +70,7 @@ class FilenameGenerator:
         validFilenameSubstitutions = ["j", "d", "T", "t", "W", "O", "S"]
 
         if self.job.PostProcessorOutputFile:
-            candidateOutputPath, candidateFilename = os.path.split(
-                self.job.PostProcessorOutputFile
-            )
+            candidateOutputPath, candidateFilename = os.path.split(self.job.PostProcessorOutputFile)
 
             if candidateOutputPath:
                 outputpath = candidateOutputPath
@@ -88,28 +86,31 @@ class FilenameGenerator:
             filename = FreeCAD.ActiveDocument.Label
 
         if not outputpath:
-            outputpath = os.getcwd()
+            outputpath, _ = os.path.split(FreeCAD.ActiveDocument.getFileName())
+
+        if not outputpath:
+            outputpath = (
+                os.getcwd()
+            )  ## TODO: This should be avoided as it gives the Freecad executable's path in some systems (e.g. Windows)
 
         if not ext:
             ext = ".nc"
 
         # Check for invalid matches
-        for match in re.findall("%(.)", outputpath):
+        for match in re.findall(r"%(.)", outputpath):
             Path.Log.debug(f"match: {match}")
             if match not in validPathSubstitutions:
                 outputpath = outputpath.replace(f"%{match}", "")
                 FreeCAD.Console.PrintWarning(
-                    "Invalid substitution strings will be ignored in output path: %s\n"
-                    % match
+                    "Invalid substitution strings will be ignored in output path: %s\n" % match
                 )
 
-        for match in re.findall("%(.)", filename):
+        for match in re.findall(r"%(.)", filename):
             Path.Log.debug(f"match: {match}")
             if match not in validFilenameSubstitutions:
                 filename = filename.replace(f"%{match}", "")
                 FreeCAD.Console.PrintWarning(
-                    "Invalid substitution strings will be ignored in file path: %s\n"
-                    % match
+                    "Invalid substitution strings will be ignored in file path: %s\n" % match
                 )
 
         Path.Log.debug(f"outputpath: {outputpath} filename: {filename} ext: {ext}")
@@ -155,17 +156,15 @@ class FilenameGenerator:
             temp_filename = self.qualified_filename
             Path.Log.debug(f"temp_filename: {temp_filename}")
             explicit_sequence = False
-            matches = re.findall("%S", temp_filename)
+            matches = re.findall(r"%S", temp_filename)
             if matches:
                 Path.Log.debug(f"matches: {matches}")
-                temp_filename = re.sub("%S", str(self.sequencenumber), temp_filename)
+                temp_filename = re.sub(r"%S", str(self.sequencenumber), temp_filename)
                 explicit_sequence = True
 
             subpart = f"-{self.subpartname}" if self.subpartname else ""
             sequence = (
-                f"-{self.sequencenumber}"
-                if not explicit_sequence and self.sequencenumber
-                else ""
+                f"-{self.sequencenumber}" if not explicit_sequence and self.sequencenumber else ""
             )
             filename = f"{temp_filename}{subpart}{sequence}{self.extension}"
             full_path = os.path.join(self.qualified_path, filename)
@@ -185,16 +184,13 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
         keywordPatterns = ["\\bG[0-9]+\\b", "\\bM[0-9]+\\b"]
 
         self.highlightingRules = [
-            (QtCore.QRegularExpression(pattern), keywordFormat)
-            for pattern in keywordPatterns
+            (QtCore.QRegularExpression(pattern), keywordFormat) for pattern in keywordPatterns
         ]
 
         speedFormat = QtGui.QTextCharFormat()
         speedFormat.setFontWeight(QtGui.QFont.Bold)
         speedFormat.setForeground(QtCore.Qt.green)
-        self.highlightingRules.append(
-            (QtCore.QRegularExpression("\\bF[0-9\\.]+\\b"), speedFormat)
-        )
+        self.highlightingRules.append((QtCore.QRegularExpression("\\bF[0-9\\.]+\\b"), speedFormat))
 
     def highlightBlock(self, text):
         for pattern, hlFormat in self.highlightingRules:
@@ -313,9 +309,7 @@ def editor(gcode):
         FreeCAD.Console.PrintMessage(
             translate(
                 "Path",
-                "GCode size too big ({} o), disabling syntax highlighter.".format(
-                    gcodeSize
-                ),
+                "GCode size too big ({} o), disabling syntax highlighter.".format(gcodeSize),
             )
         )
     result = dia.exec_()

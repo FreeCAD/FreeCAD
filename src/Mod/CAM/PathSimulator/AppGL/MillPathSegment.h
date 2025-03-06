@@ -27,6 +27,7 @@
 #include "MillMotion.h"
 #include "EndMill.h"
 #include "linmath.h"
+#include "MillPathLine.h"
 
 namespace MillSim
 {
@@ -37,7 +38,6 @@ enum MotionType
     MTHorizontal,
     MTCurved
 };
-
 
 bool IsVerticalMotion(MillMotion* m1, MillMotion* m2);
 
@@ -55,7 +55,7 @@ public:
     virtual ~MillPathSegment();
 
 
-    /// Calls the display list.
+    virtual void AppendPathPoints(std::vector<MillPathPosition>& pointsBuffer);
     virtual void render(int substep);
     virtual void GetHeadPosition(vec3 headPos);
     static float SetQuality(float quality, float maxStockDimension);  // 1 minimum, 10 maximum
@@ -65,6 +65,7 @@ public:
     bool isMultyPart;
     int numSimSteps;
     int indexInArray;
+    int segmentIndex;
 
 
 protected:

@@ -24,12 +24,13 @@
 #ifndef _PreComp_
 # include <memory>
 
-# include <BRepAlgoAPI_BooleanOperation.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
 # include <BRepCheck_Analyzer.hxx>
 # include <Standard_Failure.hxx>
 #endif
 
 #include <App/Application.h>
+#include <Base/Exception.h>
 #include <Base/Parameter.h>
 
 #include "FeaturePartBoolean.h"
@@ -38,6 +39,33 @@
 
 
 using namespace Part;
+
+namespace Part
+{
+void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/Part/Boolean");
+
+    if (hGrp->GetBool("CheckModel", true)) {
+        BRepCheck_Analyzer aChecker(shape);
+        if (!aChecker.IsValid()) {
+            throw Base::RuntimeError("Resulting shape is invalid");
+        }
+    }
+}
+
+bool getRefineModelParameter()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    return hGrp->GetBool("RefineModel", false);
+}
+
+}
 
 PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::Feature)
 
@@ -52,10 +80,7 @@ Boolean::Boolean()
 
     ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
 
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
+    this->Refine.setValue(getRefineModelParameter());
 }
 
 short Boolean::mustExecute() const
@@ -118,49 +143,20 @@ App::DocumentObjectExecReturn* Boolean::execute()
         if (resShape.IsNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         }
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                                 .GetUserParameter()
-                                                 .GetGroup("BaseApp")
-                                                 ->GetGroup("Preferences")
-                                                 ->GetGroup("Mod/Part/Boolean");
 
-        if (hGrp->GetBool("CheckModel", true)) {
-            BRepCheck_Analyzer aChecker(resShape);
-            if (!aChecker.IsValid()) {
-                return new App::DocumentObjectExecReturn("Resulting shape is invalid");
-            }
-        }
-#ifndef FC_USE_TNP_FIX
-        std::vector<ShapeHistory> history;
-        history.push_back(buildHistory(*mkBool, TopAbs_FACE, resShape, BaseShape));
-        history.push_back(buildHistory(*mkBool, TopAbs_FACE, resShape, ToolShape));
+        throwIfInvalidIfCheckModel(resShape);
 
-        if (this->Refine.getValue()) {
-            try {
-                TopoDS_Shape oldShape = resShape;
-                BRepBuilderAPI_RefineModel mkRefine(oldShape);
-                resShape = mkRefine.Shape();
-                ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
-                history[0] = joinHistory(history[0], hist);
-                history[1] = joinHistory(history[1], hist);
-            }
-            catch (Standard_Failure&) {
-                // do nothing
-            }
-        }
-
-        this->Shape.setValue(resShape);
-        this->History.setValues(history);
-        return App::DocumentObject::StdReturn;
-#else
         TopoShape res(0);
         res.makeElementShape(*mkBool, shapes, opCode());
         if (this->Refine.getValue()) {
             res = res.makeElementRefine();
         }
         this->Shape.setValue(res);
+        copyMaterial(base);
         return Part::Feature::execute();
-#endif
+    }
+    catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(

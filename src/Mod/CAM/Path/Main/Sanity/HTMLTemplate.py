@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 from string import Template
+
 """
 This module contains the HTML template for the CAM Sanity report.
 """

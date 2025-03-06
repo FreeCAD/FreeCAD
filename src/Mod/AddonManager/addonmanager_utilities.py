@@ -22,27 +22,41 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Utilities to work across different platforms, providers and python versions """
+"""Utilities to work across different platforms, providers and python versions"""
 
+# pylint: disable=deprecated-module, ungrouped-imports
+
+from datetime import datetime
+from typing import Optional, Any, List
 import os
 import platform
 import shutil
 import stat
 import subprocess
+import time
 import re
 import ctypes
-from typing import Optional, Any
 
 from urllib.parse import urlparse
 
 try:
     from PySide import QtCore, QtGui, QtWidgets
 except ImportError:
-    QtCore = None
-    QtWidgets = None
-    QtGui = None
+    try:
+        from PySide6 import QtCore, QtGui, QtWidgets
+    except ImportError:
+        from PySide2 import QtCore, QtGui, QtWidgets
 
 import addonmanager_freecad_interface as fci
+
+try:
+    from freecad.utils import get_python_exe
+except ImportError:
+
+    def get_python_exe():
+        """Use shutil.which to find python executable"""
+        return shutil.which("python")
+
 
 if fci.FreeCADGui:
 
@@ -50,13 +64,51 @@ if fci.FreeCADGui:
     # loop running this is not possible, so fall back to requests (if available), or the native
     # Python urllib.request (if requests is not available).
     import NetworkManager  # Requires an event loop, so is only available with the GUI
+
+    requests = None
+    ssl = None
+    urllib = None
 else:
+    NetworkManager = None
     try:
         import requests
+
+        ssl = None
+        urllib = None
     except ImportError:
         requests = None
         import urllib.request
         import ssl
+
+if fci.FreeCADGui:
+    loadUi = fci.loadUi
+else:
+    has_loader = False
+    try:
+        from PySide6.QtUiTools import QUiLoader
+
+        has_loader = True
+    except ImportError:
+        try:
+            from PySide2.QtUiTools import QUiLoader
+
+            has_loader = True
+        except ImportError:
+
+            def loadUi(ui_file: str):
+                """If there are no available versions of QtUiTools, then raise an error if this
+                method is used."""
+                raise RuntimeError("Cannot use QUiLoader without PySide or FreeCAD")
+
+    if has_loader:
+
+        def loadUi(ui_file: str) -> QtWidgets.QWidget:
+            """Load a Qt UI from an on-disk file."""
+            q_ui_file = QtCore.QFile(ui_file)
+            q_ui_file.open(QtCore.QFile.OpenModeFlag.ReadOnly)
+            loader = QUiLoader()
+            return loader.load(ui_file)
+
 
 #  @package AddonManager_utilities
 #  \ingroup ADDONMANAGER
@@ -97,10 +149,13 @@ def symlink(source, link_name):
 
 
 def rmdir(path: str) -> bool:
+    """Remove a directory or symlink, even if it is read-only."""
     try:
         if os.path.islink(path):
             os.unlink(path)  # Remove symlink
         else:
+            # NOTE: the onerror argument was deprecated in Python 3.12, replaced by onexc -- replace
+            # when earlier versions are no longer supported.
             shutil.rmtree(path, onerror=remove_readonly)
     except (WindowsError, PermissionError, OSError):
         return False
@@ -175,7 +230,7 @@ def get_zip_url(repo):
 
 
 def recognized_git_location(repo) -> bool:
-    """Returns whether this repo is based at a known git repo location: works with github, gitlab,
+    """Returns whether this repo is based at a known git repo location: works with GitHub, gitlab,
     framagit, and salsa.debian.org"""
 
     parsed_url = urlparse(repo.url)
@@ -192,19 +247,20 @@ def construct_git_url(repo, filename):
     """Returns a direct download link to a file in an online Git repo"""
 
     parsed_url = urlparse(repo.url)
+    repo_url = repo.url[:-4] if repo.url.endswith(".git") else repo.url
     if parsed_url.netloc == "github.com":
-        return f"{repo.url}/raw/{repo.branch}/{filename}"
+        return f"{repo_url}/raw/{repo.branch}/{filename}"
     if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
-        return f"{repo.url}/-/raw/{repo.branch}/{filename}"
+        return f"{repo_url}/-/raw/{repo.branch}/{filename}"
     if parsed_url.netloc in ["codeberg.org"]:
-        return f"{repo.url}/raw/branch/{repo.branch}/{filename}"
+        return f"{repo_url}/raw/branch/{repo.branch}/{filename}"
     fci.Console.PrintLog(
         "Debug: addonmanager_utilities.construct_git_url: Unknown git host:"
         + parsed_url.netloc
         + f" for file {filename}\n"
     )
     # Assume it's some kind of local GitLab instance...
-    return f"{repo.url}/-/raw/{repo.branch}/{filename}"
+    return f"{repo_url}/-/raw/{repo.branch}/{filename}"
 
 
 def get_readme_url(repo):
@@ -356,11 +412,20 @@ def is_float(element: Any) -> bool:
 
 
 def get_pip_target_directory():
-    # Get the default location to install new pip packages
+    """Get the default location to install new pip packages"""
     major, minor, _ = platform.python_version_tuple()
-    vendor_path = os.path.join(
-        fci.DataPaths().mod_dir, "..", "AdditionalPythonPackages", f"py{major}{minor}"
-    )
+    snap_package = os.getenv("SNAP_REVISION")
+
+    if snap_package:
+        import site
+
+        vendor_path = site.getusersitepackages()
+    else:
+        vendor_path = os.path.normpath(
+            os.path.join(
+                fci.DataPaths().mod_dir, "..", "AdditionalPythonPackages", f"py{major}{minor}"
+            )
+        )
     return vendor_path
 
 
@@ -378,7 +443,12 @@ def blocking_get(url: str, method=None) -> bytes:
     succeeded, or an empty string if it failed, or returned no data. The method argument is
     provided mainly for testing purposes."""
     p = b""
-    if fci.FreeCADGui and method is None or method == "networkmanager":
+    if (
+        fci.FreeCADGui
+        and method is None
+        or method == "networkmanager"
+        and NetworkManager is not None
+    ):
         NetworkManager.InitializeNetworkManager()
         p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url, 10000)  # 10 second timeout
         if p:
@@ -397,7 +467,7 @@ def blocking_get(url: str, method=None) -> bytes:
     return p
 
 
-def run_interruptable_subprocess(args) -> subprocess.CompletedProcess:
+def run_interruptable_subprocess(args, timeout_secs: int = 10) -> subprocess.CompletedProcess:
     """Wrap subprocess call so it can be interrupted gracefully."""
     creation_flags = 0
     if hasattr(subprocess, "CREATE_NO_WINDOW"):
@@ -417,14 +487,23 @@ def run_interruptable_subprocess(args) -> subprocess.CompletedProcess:
     stdout = ""
     stderr = ""
     return_code = None
+    start_time = time.time()
     while return_code is None:
         try:
-            stdout, stderr = p.communicate(timeout=10)
+            # one second timeout allows interrupting the run once per second
+            stdout, stderr = p.communicate(timeout=1)
             return_code = p.returncode
-        except subprocess.TimeoutExpired:
-            if QtCore.QThread.currentThread().isInterruptionRequested():
+        except subprocess.TimeoutExpired as timeout_exception:
+            if (
+                hasattr(QtCore, "QThread")
+                and QtCore.QThread.currentThread().isInterruptionRequested()
+            ):
                 p.kill()
-                raise ProcessInterrupted()
+                raise ProcessInterrupted() from timeout_exception
+            if time.time() - start_time >= timeout_secs:  # The real timeout
+                p.kill()
+                stdout, stderr = p.communicate()
+                return_code = -1
     if return_code is None or return_code != 0:
         raise subprocess.CalledProcessError(
             return_code if return_code is not None else -1, args, stdout, stderr
@@ -432,7 +511,39 @@ def run_interruptable_subprocess(args) -> subprocess.CompletedProcess:
     return subprocess.CompletedProcess(args, return_code, stdout, stderr)
 
 
+def process_date_string_to_python_datetime(date_string: str) -> datetime:
+    """For modern macros the expected date format is ISO 8601, YYYY-MM-DD. For older macros this
+    standard was not always used, and various orderings and separators were used. This function
+    tries to match the majority of those older macros. Commonly-used separators are periods,
+    slashes, and dashes."""
+
+    def raise_error(bad_string: str, root_cause: Exception = None):
+        raise ValueError(
+            f"Unrecognized date string '{bad_string}' (expected YYYY-MM-DD)"
+        ) from root_cause
+
+    split_result = re.split(r"[ ./-]+", date_string.strip())
+    if len(split_result) != 3:
+        raise_error(date_string)
+
+    try:
+        split_result = [int(x) for x in split_result]
+        # The earliest possible year an addon can be created or edited is 2001:
+        if split_result[0] > 2000:
+            return datetime(split_result[0], split_result[1], split_result[2])
+        if split_result[2] > 2000:
+            # Generally speaking it's not possible to distinguish between DD-MM and MM-DD, so try
+            # the first, and only if that fails try the second
+            if split_result[1] <= 12:
+                return datetime(split_result[2], split_result[1], split_result[0])
+            return datetime(split_result[2], split_result[0], split_result[1])
+        raise ValueError(f"Invalid year in date string '{date_string}'")
+    except ValueError as exception:
+        raise_error(date_string, exception)
+
+
 def get_main_am_window():
+    """Find the Addon Manager's main window in the Qt widget hierarchy."""
     windows = QtWidgets.QApplication.topLevelWidgets()
     for widget in windows:
         if widget.objectName() == "AddonManager_Main_Window":
@@ -448,3 +559,41 @@ def get_main_am_window():
             return widget.centralWidget()
     # Why is this code even getting called?
     return None
+
+
+def remove_options_and_arg(call_args: List[str], deny_args: List[str]) -> List[str]:
+    """Removes a set of options and their only argument from a pip call.
+    This is necessary as the pip binary in the snap package is called with
+    the --user option, which is not compatible with some other options such
+    as --target and --path. We then have to remove e.g. target --path and
+    its argument, if present."""
+    for deny_arg in deny_args:
+        try:
+            index = call_args.index(deny_arg)
+            del call_args[index : index + 2]  # The option and its argument
+        except ValueError:
+            pass
+    return call_args
+
+
+def create_pip_call(args: List[str]) -> List[str]:
+    """Choose the correct mechanism for calling pip on each platform. It currently supports
+    either `python -m pip` (most environments) or `pip` (Snap packages). Returns a list
+    of arguments suitable for passing directly to subprocess.Popen and related functions."""
+    snap_package = os.getenv("SNAP_REVISION")
+    appimage = os.getenv("APPIMAGE")
+    if snap_package:
+        args = remove_options_and_arg(args, ["--target", "--path"])
+        call_args = ["pip", "--disable-pip-version-check"]
+        call_args.extend(args)
+    elif appimage:
+        python_exe = fci.DataPaths.home_dir + "bin/python"
+        call_args = [python_exe, "-m", "pip", "--disable-pip-version-check"]
+        call_args.extend(args)
+    else:
+        python_exe = get_python_exe()
+        if not python_exe:
+            raise RuntimeError("Could not locate Python executable on this system")
+        call_args = [python_exe, "-m", "pip", "--disable-pip-version-check"]
+        call_args.extend(args)
+    return call_args

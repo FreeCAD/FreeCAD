@@ -171,7 +171,7 @@ def yamMechanical(card):
             useDensity = True
         elif param in ["BulkModulus", "PoissonRatio", "ShearModulus", "YoungsModulus"]:
             useIso = True
-        elif param in ["AngleOfFriction", "CompressiveStrength", "FractureToughness", 
+        elif param in ["AngleOfFriction", "CompressiveStrength", "FractureToughness",
                        "UltimateStrain", "UltimateTensileStrength", "YieldStrength", "Stiffness", "Hardness"]:
             useLinearElastic = True
 
@@ -191,7 +191,7 @@ def yamFluid(card):
     for param in card:
         if param not in ["Density"]:
             return yamSection(card, 'Fluid', '1ae66d8c-1ba1-4211-ad12-b9917573b202')
-        
+
     return yamSection(card, 'Density', '454661e5-265b-4320-8e6f-fcf6223ac3af')
 
 def yamThermal(card):
