@@ -24,7 +24,6 @@
 import FreeCAD as App
 
 import Part
-import Sketcher
 import Fem
 import ObjectsFem
 
@@ -55,7 +54,7 @@ from femexamples.ccx_rigid_body import setup
 setup()
 
 
-Analytical solution - max xz stress = 2.547 MPa = 2,547e6 Pa
+Analytical solution - max xz stress = 2.547 MPa = 2.547e6 Pa
 
 """
     )
@@ -72,29 +71,21 @@ def setup(doc=None, solvertype="ccxtools"):
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # geometric object
-    body = doc.addObject("PartDesign::Body", "Body")
-    sketch = doc.addObject("Sketcher::SketchObject", "Sketch")
-    body.addObject(sketch)
-    sketch.AttachmentSupport = (doc.getObject("XY_Plane"), [""])
-    sketch.MapMode = "FlatFace"
-    sketch.addGeometry(
-        Part.Ellipse(App.Vector(40, 0, 0), App.Vector(0, 20, 0), App.Vector(0, 0, 0))
-    )
-    sketch.exposeInternalGeometry(0)
-    sketch.addConstraint(Sketcher.Constraint("Distance", 0, 3, 1, 1, 100))
-    sketch.addConstraint(Sketcher.Constraint("Angle", 1, 0))
-    sketch.addConstraint(Sketcher.Constraint("Distance", 0, 3, 2, 1, 50))
-    sketch.addConstraint(Sketcher.Constraint("Coincident", 0, 3, -1, 1))
-    pad = body.Document.addObject("PartDesign::Pad", "Pad")
-    body.addObject(pad)
-    pad.Length = 1000
-    pad.Profile = sketch
-    sketch.ViewObject.Visibility = False
-    body.Document.recompute()
+    ellipse = doc.addObject("Part::Ellipse","Ellipse")
+    ellipse.MajorRadius='100,00 mm'
+    ellipse.MinorRadius='50,00 mm'
+    ellipse.Angle1='0,00 °'
+    ellipse.Angle2='360,00 °'
+    ellipse.Placement=App.Placement(App.Vector(0.00,0.00,0.00),App.Rotation(App.Vector(0.00,0.00,1.00),0.00))
+    extrude = doc.addObject('Part::Extrusion','Extrude')
+    extrude.Base = ellipse
+    extrude.LengthFwd = 1000
+    extrude.Solid = True
+    ellipse.Visibility = False
     doc.recompute()
     if App.GuiUp:
-        body.ViewObject.Document.activeView().viewAxonometric()
-        body.ViewObject.Document.activeView().fitAll()
+        extrude.ViewObject.Document.activeView().viewAxonometric()
+        extrude.ViewObject.Document.activeView().fitAll()
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
@@ -120,16 +111,17 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["YoungsModulus"] = "210000 MPa"
     mat["PoissonRatio"] = "0.30"
     material_obj.Material = mat
+    material_obj.References = [(extrude, "Solid1")]
     analysis.addObject(material_obj)
 
     # constraint fixed
     con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    con_fixed.References = [(body, "Face2")]
+    con_fixed.References = [(extrude, "Face2")]
     analysis.addObject(con_fixed)
 
     # constraint rigid body
     con_rb = ObjectsFem.makeConstraintRigidBody(doc, "ConstraintRigidBody")
-    con_rb.References = [(body, "Face3")]
+    con_rb.References = [(extrude, "Face3")]
     con_rb.ReferenceNode = App.Vector(0.000000, 0.000000, 1000.000000)
     con_rb.Rotation = App.Rotation(App.Vector(0.000000, 0.000000, 1.000000), Radian=0.000000)
     con_rb.MomentZ = "1,00 kJ"
@@ -138,7 +130,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Shape = body
+    femmesh_obj.Shape = extrude
     femmesh_obj.ElementOrder = "2nd"
     femmesh_obj.CharacteristicLengthMax = "15 mm"
     femmesh_obj.ViewObject.Visibility = False
