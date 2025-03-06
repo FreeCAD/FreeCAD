@@ -34,8 +34,19 @@
 #include <QImage>
 
 #include <Inventor/SbRotation.h>
+#include <Inventor/nodes/SoEnvironment.h>
 #include <Inventor/nodes/SoEventCallback.h>
+#include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSwitch.h>
+
+#ifdef FC_OS_MACOSX
+# include <OpenGL/gl.h>
+#else
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+# endif  // FC_OS_WIN32
+# include <GL/gl.h>
+#endif  // FC_OS_MACOSX
 
 #include <Base/Placement.h>
 
@@ -46,9 +57,9 @@
 #include "View3DInventorSelection.h"
 #include "Quarter/SoQTQuarterAdaptor.h"
 
-#include <Inventor/nodes/SoEnvironment.h>
-#include <Inventor/nodes/SoRotation.h>
-
+class QOpenGLFramebufferObject;
+class QOpenGLWidget;
+class QSurfaceFormat;
 
 class SoTranslation;
 class SoTransform;
@@ -137,8 +148,8 @@ public:
     };
     //@}
 
-    explicit View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = nullptr);
-    View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = nullptr);
+    explicit View3DInventorViewer (QWidget *parent, const QOpenGLWidget* sharewidget = nullptr);
+    View3DInventorViewer (const QSurfaceFormat& format, QWidget *parent, const QOpenGLWidget* sharewidget = nullptr);
     ~View3DInventorViewer() override;
 
     void init();
@@ -183,7 +194,7 @@ public:
     static int getNumSamples();
     void setRenderType(RenderType type);
     RenderType getRenderType() const;
-    void renderToFramebuffer(QtGLFramebufferObject*);
+    void renderToFramebuffer(QOpenGLFramebufferObject*);
     QImage grabFramebuffer();
     void imageFromFramebuffer(int width, int height, int samples,
                               const QColor& bgcolor, QImage& img);
@@ -530,7 +541,7 @@ private:
     SoClipPlane *pcClipPlane;
 
     RenderType renderType;
-    QtGLFramebufferObject* framebuffer;
+    QOpenGLFramebufferObject* framebuffer;
     QImage glImage;
     bool shading;
     SoSwitch *dimensionRoot;
@@ -549,9 +560,9 @@ private:
     bool vboEnabled;
     bool naviCubeEnabled;
 
-    App::Color m_xColor;
-    App::Color m_yColor;
-    App::Color m_zColor;
+    Base::Color m_xColor;
+    Base::Color m_yColor;
+    Base::Color m_zColor;
 
     bool editing;
     QCursor editCursor, zoomCursor, panCursor, spinCursor;

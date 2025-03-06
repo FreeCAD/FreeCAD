@@ -30,14 +30,14 @@ __url__ = "https://www.freecad.org"
 
 from femtools import femutils
 from ... import equationbase
-from . import linear
+from . import nonlinear
 
 
 def create(doc, name="StaticCurrent"):
     return femutils.createObject(doc, name, Proxy, ViewProxy)
 
 
-class Proxy(linear.Proxy, equationbase.StaticCurrentProxy):
+class Proxy(nonlinear.Proxy, equationbase.StaticCurrentProxy):
 
     Type = "Fem::EquationElmerStaticCurrent"
 
@@ -83,7 +83,7 @@ class Proxy(linear.Proxy, equationbase.StaticCurrentProxy):
         obj.addProperty("App::PropertyPower", "Power", "StaticCurrent", "Power control value")
 
 
-class ViewProxy(linear.ViewProxy, equationbase.StaticCurrentViewProxy):
+class ViewProxy(nonlinear.ViewProxy, equationbase.StaticCurrentViewProxy):
     pass
 
 

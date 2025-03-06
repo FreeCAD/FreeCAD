@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2017 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2025 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2025 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,23 +21,36 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef TECHDRAW_TAG_H
+#define TECHDRAW_TAG_H
 
-#ifndef QUARTER_QTOPENGL_H
-#define QUARTER_QTOPENGL_H
+#include <boost/uuid/uuid.hpp>
 
-/* QtOpenGL.h.  Generated from QtOpenGL.h.cmake by cmake.  */
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <QOpenGLContext>
-#include <QSurfaceFormat>
-#include <QOpenGLWidget>
-#include <QOpenGLFramebufferObject>
-#include <QOpenGLVersionProfile>
-#include <QOpenGLFunctions>
+namespace Base {
+class XMLReader;
+class Writer;
+}
 
-using QtGLContext = QOpenGLContext;
-using QtGLFormat = QSurfaceFormat;
-using QtGLWidget = QOpenGLWidget;
-using QtGLFramebufferObject = QOpenGLFramebufferObject;
-using QtGLFramebufferObjectFormat = QOpenGLFramebufferObjectFormat;
+namespace TechDraw {
+class TechDrawExport Tag {
+public:
+    //Uniqueness
+    boost::uuids::uuid getTag() const;
+    virtual std::string getTagAsString() const;
 
-#endif //QUARTER_QTOPENGL_H
+protected:
+    Tag();
+    void setTag(const boost::uuids::uuid& newTag);
+    void Save(Base::Writer& writer) const;
+    // Setting elementName is only for backwards compatibility!
+    void Restore(Base::XMLReader& reader, std::string_view elementName="Tag");
+
+private:
+    void createNewTag();
+    boost::uuids::uuid tag;
+};
+}
+
+#endif

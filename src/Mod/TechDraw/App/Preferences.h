@@ -34,13 +34,14 @@
 class QColor;
 class QString;
 
-namespace App
+namespace Base
 {
 class Color;
 }
 
 namespace TechDraw
 {
+enum class ArrowType : int;
 
 //getters for parameters used in multiple places.
 class TechDrawExport Preferences
@@ -55,10 +56,10 @@ public:
     static double dimFontSizeMM();
     static double dimArrowSize();
 
-    static App::Color normalColor();
-    static App::Color selectColor();
-    static App::Color preselectColor();
-    static App::Color vertexColor();
+    static Base::Color normalColor();
+    static Base::Color selectColor();
+    static Base::Color preselectColor();
+    static Base::Color vertexColor();
     static double vertexScale();
     static int scaleType();
     static double scale();
@@ -70,7 +71,7 @@ public:
     static double groupSpaceX();
     static double groupSpaceY();
 
-    static int balloonArrow();
+    static ArrowType balloonArrow();
     static double balloonKinkLength();
     static int balloonShape();
 
@@ -103,9 +104,9 @@ public:
     static void lightOnDark(bool state);
     static bool monochrome();
     static void monochrome(bool state);
-    static App::Color lightTextColor();
-    static App::Color lightenColor(App::Color orig);
-    static App::Color getAccessibleColor(App::Color orig);
+    static Base::Color lightTextColor();
+    static Base::Color lightenColor(Base::Color orig);
+    static Base::Color getAccessibleColor(Base::Color orig);
 
     static bool autoCorrectDimRefs();
     static int scrubCount();

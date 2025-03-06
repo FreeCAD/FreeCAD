@@ -275,7 +275,6 @@ SET(FreeCADApp_CPP_SRCS
     AutoTransaction.cpp
     Branding.cpp
     CleanupProcess.cpp
-    Color.cpp
     ColorModel.cpp
     ComplexGeoData.cpp
     ComplexGeoDataPyImp.cpp
@@ -305,7 +304,6 @@ SET(FreeCADApp_HPP_SRCS
     AutoTransaction.h
     Branding.h
     CleanupProcess.h
-    Color.h
     ColorModel.h
     ComplexGeoData.h
     ElementMap.h

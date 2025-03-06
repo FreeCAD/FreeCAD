@@ -444,12 +444,12 @@ void TaskProjGroup::rotateButtonClicked()
 
         if (multiView) {
             //change Front View Dir by 90
-            if (clicked == ui->butTopRotate) multiView->rotate("Up");
-            else if (clicked == ui->butDownRotate) multiView->rotate("Down");
-            else if (clicked == ui->butRightRotate) multiView->rotate("Right");
-            else if (clicked == ui->butLeftRotate) multiView->rotate("Left");
-            else if (clicked == ui->butCWRotate) multiView->spin("CW");
-            else if (clicked == ui->butCCWRotate) multiView->spin("CCW");
+            if (clicked == ui->butTopRotate) multiView->rotate(RotationMotion::Up);
+            else if (clicked == ui->butDownRotate) multiView->rotate(RotationMotion::Down);
+            else if (clicked == ui->butRightRotate) multiView->rotate(RotationMotion::Right);
+            else if (clicked == ui->butLeftRotate) multiView->rotate(RotationMotion::Left);
+            else if (clicked == ui->butCWRotate) multiView->spin(SpinDirection::CW);
+            else if (clicked == ui->butCCWRotate) multiView->spin(SpinDirection::CCW);
             else if (clicked == ui->butFront) {
                 multiView->getAnchor()->Direction.setValue(Base::Vector3d(0.0, -1.0, 0.0));
                 multiView->getAnchor()->RotationVector.setValue(Base::Vector3d(1.0, 0.0, 0.0));
@@ -466,12 +466,12 @@ void TaskProjGroup::rotateButtonClicked()
         }
         else {
             auto* viewPart = static_cast<TechDraw::DrawViewPart*>(view);
-            if (clicked == ui->butTopRotate) viewPart->rotate("Up");
-            else if (clicked == ui->butDownRotate) viewPart->rotate("Down");
-            else if (clicked == ui->butRightRotate) viewPart->rotate("Right");
-            else if (clicked == ui->butLeftRotate) viewPart->rotate("Left");
-            else if (clicked == ui->butCWRotate) viewPart->spin("CW");
-            else if (clicked == ui->butCCWRotate) viewPart->spin("CCW");
+            if (clicked == ui->butTopRotate) viewPart->rotate(RotationMotion::Up);
+            else if (clicked == ui->butDownRotate) viewPart->rotate(RotationMotion::Down);
+            else if (clicked == ui->butRightRotate) viewPart->rotate(RotationMotion::Right);
+            else if (clicked == ui->butLeftRotate) viewPart->rotate(RotationMotion::Left);
+            else if (clicked == ui->butCWRotate) viewPart->spin(SpinDirection::CW);
+            else if (clicked == ui->butCCWRotate) viewPart->spin(SpinDirection::CCW);
             else if (clicked == ui->butFront) {
                 viewPart->Direction.setValue(Base::Vector3d(0.0,-1.0,0.0));
                 viewPart->XDirection.setValue(Base::Vector3d(1.0, 0.0, 0.0));

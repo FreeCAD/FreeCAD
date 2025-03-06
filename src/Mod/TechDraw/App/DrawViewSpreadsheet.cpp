@@ -243,7 +243,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
     result << getSVGHead();
 
     std::string ViewName = Label.getValue();
-    App::Color c = TextColor.getValue();
+    Base::Color c = TextColor.getValue();
     result << "<g id=\"" << ViewName << "\">" << std::endl;
 
     // fill the cells
@@ -296,7 +296,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
             std::string fcolor = c.asHexString();
             std::string textstyle;
             if (cell) {
-                App::Color f, b;
+                Base::Color f, b;
                 std::set<std::string> st;
                 int colspan, rowspan;
                 if (cell->getBackground(b)) {

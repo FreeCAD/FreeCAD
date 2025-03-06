@@ -947,6 +947,13 @@ def findPlacement(ref, ignoreVertex=False):
 
     if not elt or not vtx:
         # case of whole parts such as PartDesign::Body or App/PartDesign::CordinateSystem/Point/Line/Plane.
+        if obj.TypeId == "App::Line":
+            if obj.Role == "X_Axis":
+                return App.Placement(App.Vector(), App.Rotation(0.5, 0.5, 0.5, 0.5))
+            if obj.Role == "Y_Axis":
+                return App.Placement(App.Vector(), App.Rotation(0.5, 0.5, 0.5, 0.5))
+            if obj.Role == "Z_Axis":
+                return App.Placement(App.Vector(), App.Rotation(-0.5, 0.5, -0.5, 0.5))
         return App.Placement()
 
     plc = App.Placement()

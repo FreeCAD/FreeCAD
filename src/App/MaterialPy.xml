@@ -64,7 +64,7 @@ Satin, Metalized, Neon GNC, Chrome, Aluminium, Obsidian, Neon PHC, Jade, Ruby or
         </Attribute>
         <CustomAttributes />
         <ClassDeclarations>public:
-    static App::Color toColor(PyObject* value);
+    static Base::Color toColor(PyObject* value);
         </ClassDeclarations>
     </PythonExport>
 </GenerateModel>

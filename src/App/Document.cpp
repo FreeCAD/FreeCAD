@@ -3758,6 +3758,7 @@ void Document::removeObject(const char* sName)
     d->objectIdMap.erase(pos->second->_Id);
     // Unset the bit to be on the safe side
     pos->second->setStatus(ObjectStatus::Remove, false);
+    unregisterLabel(pos->second->Label.getStrValue());
 
     // do no transactions if we do a rollback!
     std::unique_ptr<DocumentObject> tobedestroyed;
@@ -3775,7 +3776,6 @@ void Document::removeObject(const char* sName)
         }
     }
 
-    unregisterLabel(pos->second->Label.getStrValue());
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin();
          obj != d->objectArray.end();
          ++obj) {
@@ -3855,6 +3855,11 @@ void Document::_removeObject(DocumentObject* pcObject)
         signalTransactionRemove(*pcObject, 0);
         breakDependency(pcObject, true);
     }
+    // TODO: Transaction::addObjectName could potentially have freed (deleted) pcObject so some of the following
+    // code may be dereferencing a pointer to a deleted object which is not legal. if (d->rollback) this does not occur
+    // and instead pcObject is deleted at the end of this function.
+    // This either should be fixed, perhaps by moving the following lines up in the code,
+    // or there should be a comment explaining why the object will never be deleted because of the logic that got us here.
 
     // remove from map
     pcObject->setStatus(ObjectStatus::Remove, false);  // Unset the bit to be on the safe side

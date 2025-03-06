@@ -703,8 +703,8 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
     m_matPlainEdges->transparency.setNum(numPts);
     float* transp = m_material->transparency.startEditing();
     float* edgeTransp = m_matPlainEdges->transparency.startEditing();
-    App::Color c;
-    App::Color cEdge = EdgeColor.getValue();
+    Base::Color c;
+    Base::Color cEdge = EdgeColor.getValue();
     for (int i = 0; i < numPts; i++) {
 
         double value = 0;
@@ -930,7 +930,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
         m_drawStyle->pointSize.setValue(PointSize.getValue());
     }
     else if (prop == &EdgeColor && setupPipeline()) {
-        App::Color c = EdgeColor.getValue();
+        Base::Color c = EdgeColor.getValue();
         SbColor* edgeColor = m_matPlainEdges->diffuseColor.startEditing();
         for (int i = 0; i < m_matPlainEdges->diffuseColor.getNum(); ++i) {
             edgeColor[i].setValue(c.r, c.g, c.b);

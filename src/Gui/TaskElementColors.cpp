@@ -190,13 +190,13 @@ public:
 
     void apply()
     {
-        std::map<std::string, App::Color> info;
+        std::map<std::string, Base::Color> info;
         int count = ui->elementList->count();
         for (int i = 0; i < count; ++i) {
             auto item = ui->elementList->item(i);
             auto col = item->data(Qt::UserRole).value<QColor>();
             std::string sub = qPrintable(item->data(Qt::UserRole + 1).value<QString>());
-            info.emplace(sub, App::Color::fromValue<QColor>(col));
+            info.emplace(sub, Base::Color::fromValue<QColor>(col));
         }
         if (!App::GetApplication().getActiveTransaction()) {
             App::GetApplication().setActiveTransaction("Set colors");

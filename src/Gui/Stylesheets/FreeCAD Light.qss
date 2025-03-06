@@ -2865,17 +2865,17 @@ QTreeView::branch#groupsTreeView:has-siblings:!adjoins-item  {
 /*==================================================================================================
 Start page
 ==================================================================================================*/
-QWidget#thumbnailWidget {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #f0f0f0, stop:1 #fdfdfd);
+#thumbnailWidget {
+  background-color: #ededed;
   border-radius: 8px;
   border: 1px solid #ababab;
 }
 
-QWidget#thumbnailWidget[state="hovered"] {
+#thumbnailWidget:hover {
   border: 1px solid @ThemeAccentColor1;
 }
 
-QWidget#thumbnailWidget[state="pressed"] {
+#thumbnailWidget:pressed {
   border: 1px solid @ThemeAccentColor1;
 }
 
