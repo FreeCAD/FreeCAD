@@ -1581,46 +1581,46 @@ void Application::slotChangedDocument(const App::Document& doc, const Property& 
     this->signalChangedDocument(doc, prop);
 }
 
-void Application::slotNewObject(const App::DocumentObject&O)
+void Application::slotNewObject(const App::DocumentObject& obj)
 {
-    this->signalNewObject(O);
+    this->signalNewObject(obj);
     _objCount = -1;
 }
 
-void Application::slotDeletedObject(const App::DocumentObject&O)
+void Application::slotDeletedObject(const App::DocumentObject& obj)
 {
-    this->signalDeletedObject(O);
+    this->signalDeletedObject(obj);
     _objCount = -1;
 }
 
-void Application::slotBeforeChangeObject(const DocumentObject& O, const Property& Prop)
+void Application::slotBeforeChangeObject(const App::DocumentObject& obj, const App::Property& prop)
 {
-    this->signalBeforeChangeObject(O, Prop);
+    this->signalBeforeChangeObject(obj, prop);
 }
 
-void Application::slotChangedObject(const App::DocumentObject&O, const App::Property& P)
+void Application::slotChangedObject(const App::DocumentObject& obj, const App::Property& prop)
 {
-    this->signalChangedObject(O,P);
+    this->signalChangedObject(obj, prop);
 }
 
-void Application::slotRelabelObject(const App::DocumentObject&O)
+void Application::slotRelabelObject(const App::DocumentObject& obj)
 {
-    this->signalRelabelObject(O);
+    this->signalRelabelObject(obj);
 }
 
-void Application::slotActivatedObject(const App::DocumentObject&O)
+void Application::slotActivatedObject(const App::DocumentObject& obj)
 {
-    this->signalActivatedObject(O);
+    this->signalActivatedObject(obj);
 }
 
-void Application::slotUndoDocument(const App::Document& d)
+void Application::slotUndoDocument(const App::Document& doc)
 {
-    this->signalUndoDocument(d);
+    this->signalUndoDocument(doc);
 }
 
-void Application::slotRedoDocument(const App::Document& d)
+void Application::slotRedoDocument(const App::Document& doc)
 {
-    this->signalRedoDocument(d);
+    this->signalRedoDocument(doc);
 }
 
 void Application::slotRecomputedObject(const DocumentObject& obj)
@@ -1638,19 +1638,19 @@ void Application::slotBeforeRecompute(const Document& doc)
     this->signalBeforeRecomputeDocument(doc);
 }
 
-void Application::slotOpenTransaction(const Document& d, string s)
+void Application::slotOpenTransaction(const Document &doc, string name)
 {
-    this->signalOpenTransaction(d, std::move(s));
+    this->signalOpenTransaction(doc, std::move(name));
 }
 
-void Application::slotCommitTransaction(const Document& d)
+void Application::slotCommitTransaction(const Document& doc)
 {
-    this->signalCommitTransaction(d);
+    this->signalCommitTransaction(doc);
 }
 
-void Application::slotAbortTransaction(const Document& d)
+void Application::slotAbortTransaction(const Document& doc)
 {
-    this->signalAbortTransaction(d);
+    this->signalAbortTransaction(doc);
 }
 
 void Application::slotStartSaveDocument(const App::Document& doc, const std::string& filename)
@@ -1664,9 +1664,9 @@ void Application::slotFinishSaveDocument(const App::Document& doc, const std::st
     this->signalFinishSaveDocument(doc, filename);
 }
 
-void Application::slotChangePropertyEditor(const App::Document &doc, const App::Property &prop)
+void Application::slotChangePropertyEditor(const App::Document& doc, const App::Property& prop)
 {
-    this->signalChangePropertyEditor(doc,prop);
+    this->signalChangePropertyEditor(doc, prop);
 }
 
 //**************************************************************************
@@ -3474,7 +3474,7 @@ std::string Application::FindHomePath(const char* sCall)
 #include <cstdlib>
 #include <sys/param.h>
 
-std::string Application::FindHomePath(const char* call)
+std::string Application::FindHomePath(const char* sCall)
 {
     // If Python is initialized at this point, then we're being run from
     // MainPy.cpp, which hopefully rewrote argv[0] to point at the
@@ -3503,7 +3503,7 @@ std::string Application::FindHomePath(const char* call)
         }
     }
 
-    return call;
+    return sCall;
 }
 
 #elif defined (FC_OS_WIN32)
