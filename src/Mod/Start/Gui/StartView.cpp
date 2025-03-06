@@ -73,7 +73,7 @@ class NewFileButton: public QPushButton
 {
 
 public:
-    NewFileButton(const NewButton& newButton)
+    explicit NewFileButton(const NewButton& newButton)
     {
         auto hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Start");
@@ -84,6 +84,7 @@ public:
             static_cast<int>(hGrp->GetInt("FileCardLabelWith", 180));  // NOLINT
 
         auto mainLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(this));
+        mainLayout->setAlignment(Qt::AlignVCenter);
         auto iconLabel = gsl::owner<QLabel*>(new QLabel(this));
         mainLayout->addWidget(iconLabel);
         QIcon baseIcon(newButton.iconPath);
@@ -93,7 +94,9 @@ public:
         auto textLayout = gsl::owner<QVBoxLayout*>(new QVBoxLayout);
         auto textLabelLine1 = gsl::owner<QLabel*>(new QLabel(this));
         textLabelLine1->setText(newButton.heading);
-        textLabelLine1->setStyleSheet(QLatin1String("font-weight: bold;"));
+        QFont font = textLabelLine1->font();
+        font.setWeight(QFont::Bold);
+        textLabelLine1->setFont(font);
         auto textLabelLine2 = gsl::owner<QLabel*>(new QLabel(this));
         textLabelLine2->setText(newButton.description);
         textLabelLine2->setWordWrap(true);
@@ -104,77 +107,17 @@ public:
 
         mainLayout->addStretch();
 
-        this->setMinimumHeight(newFileIconSize + cardSpacing);
-        this->setMinimumWidth(newFileIconSize + cardLabelWith);
+        textLabelLine1->adjustSize();
+        textLabelLine2->adjustSize();
+        int textHeight =
+            textLabelLine1->height() + textLabelLine2->height() + textLayout->spacing();
 
-        updateStyle();
+        int minWidth = newFileIconSize + cardLabelWith + cardSpacing;
+        int minHeight = std::max(newFileIconSize, textHeight) + cardSpacing;
+
+        this->setMinimumHeight(minHeight);
+        this->setMinimumWidth(minWidth);
     }
-
-    void updateStyle()
-    {
-        QString style = QStringLiteral("");
-        if (qApp->styleSheet().isEmpty()) {
-            style = fileCardStyle();
-        }
-        setStyleSheet(style);  // This will trigger a changeEvent
-    }
-
-    void changeEvent(QEvent* event) override
-    {
-        if (!changeInProgress && event->type() == QEvent::StyleChange) {
-            changeInProgress = true;  // Block recursive calls.
-            updateStyle();
-            changeInProgress = false;
-        }
-
-        QPushButton::changeEvent(event);
-    }
-
-
-    QString fileCardStyle() const
-    {
-        auto hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Start");
-
-        auto getUserColor = [&hGrp](QColor color, const char* parameter) {
-            uint32_t packed = Base::Color::asPackedRGB<QColor>(color);
-            packed = hGrp->GetUnsigned(parameter, packed);
-            color = Base::Color::fromPackedRGB<QColor>(packed);
-            return color;
-        };
-
-        QColor background(221, 221, 221);  // NOLINT
-        background = getUserColor(background, "FileCardBackgroundColor");
-
-        QColor hovered(98, 160, 234);  // NOLINT
-        hovered = getUserColor(hovered, "FileCardBorderColor");
-
-        QColor pressed(38, 162, 105);  // NOLINT
-        pressed = getUserColor(pressed, "FileCardSelectionColor");
-
-        return QStringLiteral("QPushButton {"
-                              " background-color: rgb(%1, %2, %3);"
-                              " border-radius: 8px;"
-                              "}"
-                              "QPushButton:hover {"
-                              " border: 2px solid rgb(%4, %5, %6);"
-                              "}"
-                              "QPushButton:pressed {"
-                              " border: 2px solid rgb(%7, %8, %9);"
-                              "}")
-            .arg(background.red())
-            .arg(background.green())
-            .arg(background.blue())
-            .arg(hovered.red())
-            .arg(hovered.green())
-            .arg(hovered.blue())
-            .arg(pressed.red())
-            .arg(pressed.green())
-            .arg(pressed.blue());
-    }
-
-private:
-    bool changeInProgress = false;
 };
 
 }  // namespace
