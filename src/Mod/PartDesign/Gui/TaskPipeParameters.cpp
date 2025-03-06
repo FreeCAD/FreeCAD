@@ -597,8 +597,8 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
             this, &TaskPipeOrientation::onClearButton);
     connect(ui->stackedWidget, &QStackedWidget::currentChanged,
             this, &TaskPipeOrientation::updateUI);
-    connect(ui->curvelinear, &QCheckBox::toggled,
-            this, &TaskPipeOrientation::onCurvelinearChanged);
+    connect(ui->curvilinear, &QCheckBox::toggled,
+            this, &TaskPipeOrientation::onCurvilinearChanged);
     connect(ui->doubleSpinBoxX, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &TaskPipeOrientation::onBinormalChanged);
     connect(ui->doubleSpinBoxY, qOverload<double>(&QDoubleSpinBox::valueChanged),
@@ -643,7 +643,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
     }
 
     ui->comboBoxMode->setCurrentIndex(pipe->Mode.getValue());
-    ui->curvelinear->setChecked(pipe->AuxiliaryCurvelinear.getValue());
+    ui->curvilinear->setChecked(pipe->AuxiliaryCurvilinear.getValue());
 
     // should be called after panel has become visible
     QMetaObject::invokeMethod(this,
@@ -694,10 +694,10 @@ void TaskPipeOrientation::onClearButton()
     }
 }
 
-void TaskPipeOrientation::onCurvelinearChanged(bool checked)
+void TaskPipeOrientation::onCurvilinearChanged(bool checked)
 {
     if (auto pipe = getObject<PartDesign::Pipe>()) {
-        pipe->AuxiliaryCurvelinear.setValue(checked);
+        pipe->AuxiliaryCurvilinear.setValue(checked);
         recomputeFeature();
     }
 }

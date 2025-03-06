@@ -41,7 +41,7 @@ public:
     App::PropertyBool SpineTangent;
     App::PropertyLinkSub AuxiliarySpine;
     App::PropertyBool AuxiliarySpineTangent;
-    App::PropertyBool AuxiliaryCurvelinear;
+    App::PropertyBool AuxiliaryCurvilinear;
     App::PropertyEnumeration Mode;
     App::PropertyVector Binormal;
     App::PropertyEnumeration Transition;
@@ -59,7 +59,7 @@ public:
                                                    const TopLoc_Location &invObjLoc = TopLoc_Location(),
                                                    int transition = 0,
                                                    const TopoShape &auxpath = TopoShape(),
-                                                   bool auxCurveLinear = true,
+                                                   bool auxCurviLinear = true,
                                                    int mode = 2,
                                                    const Base::Vector3d &binormalVector = Base::Vector3d(),
                                                    int transformation = 0,

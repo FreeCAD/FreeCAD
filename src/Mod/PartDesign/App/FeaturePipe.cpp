@@ -76,7 +76,7 @@ Pipe::Pipe()
         "Secondary path to orient sweep");
     ADD_PROPERTY_TYPE(AuxiliarySpineTangent, (false), "Sweep", App::Prop_None,
         "Include tangent edges into secondary path");
-    ADD_PROPERTY_TYPE(AuxiliaryCurvelinear, (true), "Sweep", App::Prop_None,
+    ADD_PROPERTY_TYPE(AuxiliaryCurvilinear, (true), "Sweep", App::Prop_None,
         "Calculate normal between equidistant points on both spines");
     ADD_PROPERTY_TYPE(Mode, (long(0)), "Sweep", App::Prop_None, "Profile mode");
     ADD_PROPERTY_TYPE(Binormal, (Base::Vector3d()), "Sweep", App::Prop_None,
@@ -479,8 +479,8 @@ void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, const TopoDS
     }
 
     if (auxiliary) {
-        mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxiliaryCurvelinear.getValue());
-        // mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxiliaryCurvelinear.getValue(),
+        mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxiliaryCurvilinear.getValue());
+        // mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxiliaryCurvilinear.getValue(),
         // BRepFill_ContactOnBorder);
     }
 }
@@ -622,7 +622,7 @@ void Pipe::handleChangedPropertyName(Base::XMLReader& reader,
     std::string strAuxillerySpine("AuxillerySpine");
     // The AuxiliarySpineTangent property was AuxillerySpineTangent in the past
     std::string strAuxillerySpineTangent("AuxillerySpineTangent");
-    // The AuxiliaryCurvelinear property was AuxilleryCurvelinear in the past
+    // The AuxiliaryCurvilinear property was AuxilleryCurvelinear in the past
     std::string strAuxilleryCurvelinear("AuxilleryCurvelinear");
     Base::Type type = Base::Type::fromName(TypeName);
     if (AuxiliarySpine.getClassTypeId() == type && strAuxillerySpine == PropName) {
@@ -632,7 +632,7 @@ void Pipe::handleChangedPropertyName(Base::XMLReader& reader,
              && strAuxillerySpineTangent == PropName) {
         AuxiliarySpineTangent.Restore(reader);
     }
-    else if (AuxiliaryCurvelinear.getClassTypeId() == type && strAuxilleryCurvelinear == PropName) {
-        AuxiliaryCurvelinear.Restore(reader);
+    else if (AuxiliaryCurvilinear.getClassTypeId() == type && strAuxilleryCurvelinear == PropName) {
+        AuxiliaryCurvilinear.Restore(reader);
     }
 }
