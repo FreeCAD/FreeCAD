@@ -49,12 +49,7 @@ public:
         , support(support_)
         , type(static_cast<AllowSelectionFlags>(allowedTypes))
     {
-        Base::Console().Log("ReferenceSelection constructor (NEW). Allowed types (numerical): %u\n", static_cast<unsigned int>(type));
-        if (type & AllowSelection::SKETCH) {
-            Base::Console().Log("ReferenceSelection: SKETCH is allowed.\n");
-        } else {
-            Base::Console().Log("ReferenceSelection: SKETCH is NOT allowed.\n");
-        }
+
     }
     /**
       * Allow the user to pick only edges or faces (or both) from the defined support

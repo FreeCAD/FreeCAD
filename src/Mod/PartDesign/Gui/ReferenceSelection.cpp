@@ -71,7 +71,6 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
     // Don't allow selection in other document
     if (support && pDoc != support->getDocument()) {
-        Base::Console().Log("  Rejecting: Object in different document.\n");
         return false;
     }
 
@@ -362,17 +361,13 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
     if (!obj) {
         return {};
     }
-    Base::Console().Log("getRefStr called. Object: %s\n", obj->getNameInDocument());
     if (PartDesign::Feature::isDatum(obj) || obj->isDerivedFrom<Sketcher::SketchObject>()) {
-        Base::Console().Log("  Object is a Datum or Sketch. Returning name.\n");
         return QString::fromLatin1(obj->getNameInDocument());
     }
     else if (!sub.empty() && !sub[0].empty()) {
-        Base::Console().Log("  Object has subname. Returning name:subname.\n");
         return QString::fromLatin1(obj->getNameInDocument()) + QStringLiteral(":") +
                QString::fromLatin1(sub.front().c_str());
     }
-    Base::Console().Log("  Returning empty string.\n");
     return {};
 }
 
