@@ -994,6 +994,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     if(!label)
         label = name.c_str();
 
+    initFlags.createView &= isMainDoc;
     Document* newDoc = newDocument(name.c_str(), label, initFlags);
     newDoc->FileName.setValue(propFileName==FileName?File.filePath():propFileName);
 
