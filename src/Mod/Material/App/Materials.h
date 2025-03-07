@@ -80,6 +80,10 @@ public:
     {
         return _valuePtr->isNull();
     }
+    bool isEmpty() const
+    {
+        return _valuePtr->isEmpty();
+    }
     std::shared_ptr<MaterialValue> getMaterialValue();
     std::shared_ptr<MaterialValue> getMaterialValue() const;
     QString getString() const;
@@ -109,6 +113,10 @@ public:
     MaterialValue::ValueType getColumnType(int column) const;
     QString getColumnUnits(int column) const;
     QVariant getColumnNull(int column) const;
+    const std::vector<MaterialProperty>& getColumns() const
+    {
+        return _columns;
+    }
 
     void setModelUUID(const QString& uuid);
     void setPropertyType(const QString& type) override;
@@ -139,6 +147,11 @@ public:
     {
         return !operator==(other);
     }
+
+    void validate(const MaterialProperty& other) const;
+
+    // Define precision for displaying floating point values
+    static int const PRECISION;
 
 protected:
     void setType(const QString& type);
@@ -180,10 +193,9 @@ public:
     {
         return _library;
     }
-    QString getDirectory() const
-    {
-        return _directory;
-    }
+    QString getDirectory() const;
+    QString getFilename() const;
+    QString getFilePath() const;
     QString getUUID() const
     {
         return _uuid;
@@ -240,10 +252,8 @@ public:
     {
         _library = library;
     }
-    void setDirectory(const QString& directory)
-    {
-        _directory = directory;
-    }
+    void setDirectory(const QString& directory);
+    void setFilename(const QString& filename);
     void setUUID(const QString& uuid)
     {
         _uuid = uuid;
@@ -303,6 +313,7 @@ public:
 
     void setValue(const QString& name, const QString& value);
     void setValue(const QString& name, const QVariant& value);
+    void setValue(const QString& name, const std::shared_ptr<MaterialValue>& value);
 
     /*
      * Legacy values are thosed contained in old format files that don't fit in the new
@@ -432,6 +443,8 @@ public:
         return getTypeId() == other.getTypeId() && _uuid == other._uuid;
     }
 
+    void validate(const std::shared_ptr<Material>& other) const;
+
 protected:
     void addModel(const QString& uuid);
     static void removeUUID(QSet<QString>& uuidList, const QString& uuid);
@@ -455,6 +468,7 @@ protected:
 private:
     std::shared_ptr<MaterialLibrary> _library;
     QString _directory;
+    QString _filename;
     QString _uuid;
     QString _name;
     QString _author;
