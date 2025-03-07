@@ -641,6 +641,9 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
                     // In case of sub-assembly, the jointgroup would trigger the dragger.
                     continue;
                 }
+                if (onlySolids && !(obj->isDerivedFrom<App::Part>() || obj->isDerivedFrom<Part::Feature>())) {
+                    continue;
+                }
                 App::DocumentObject* part =
                     getMovingPartFromRef(assemblyPart, selRoot, subNamesStr);
 
