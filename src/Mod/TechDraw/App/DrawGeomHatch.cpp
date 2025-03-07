@@ -49,6 +49,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 
@@ -336,7 +337,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
 
         TopoDS_Shape grid = gridComp;
         gp_Trsf xGridTranslate;
-        xGridTranslate.SetTranslation(DrawUtil::to<gp_Vec>(hatchOffset));
+        xGridTranslate.SetTranslation(Base::convertTo<gp_Vec>(hatchOffset));
         BRepBuilderAPI_Transform mkTransTranslate(grid, xGridTranslate, true);
         grid = mkTransTranslate.Shape();
 

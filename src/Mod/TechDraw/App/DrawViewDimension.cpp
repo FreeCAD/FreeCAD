@@ -58,6 +58,8 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
+#include <Base/Converter.h>
 #include <Base/Parameter.h>
 #include <Base/Quantity.h>
 #include <Base/Tools.h>
@@ -1132,8 +1134,8 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
         if (pts.isArc) {
             // part of circle
             gp_Ax1 axis = circle.Axis();
-            gp_Vec startVec = DrawUtil::to<gp_Vec>(pts.arcEnds.first() - pts.center);
-            gp_Vec endVec = DrawUtil::to<gp_Vec>(pts.arcEnds.second() - pts.center);
+            gp_Vec startVec = Base::convertTo<gp_Vec>(pts.arcEnds.first() - pts.center);
+            gp_Vec endVec = Base::convertTo<gp_Vec>(pts.arcEnds.second() - pts.center);
             double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
             pts.arcCW = (angle < 0.0);
         }
@@ -1152,8 +1154,8 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
         if (pts.isArc) {
             // part of ellipse
             gp_Ax1 axis = ellipse.Axis();
-            gp_Vec startVec = DrawUtil::to<gp_Vec>(pts.arcEnds.first() - pts.center);
-            gp_Vec endVec = DrawUtil::to<gp_Vec>(pts.arcEnds.second() - pts.center);
+            gp_Vec startVec = Base::convertTo<gp_Vec>(pts.arcEnds.first() - pts.center);
+            gp_Vec endVec = Base::convertTo<gp_Vec>(pts.arcEnds.second() - pts.center);
             double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
             pts.arcCW = (angle < 0.0);
         }
@@ -1181,8 +1183,8 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
             if (pts.isArc) {
                 // part of circle
                 gp_Ax1 axis = circle.Axis();
-                gp_Vec startVec = DrawUtil::to<gp_Vec>(pts.arcEnds.first() - pts.center);
-                gp_Vec endVec = DrawUtil::to<gp_Vec>(pts.arcEnds.second() - pts.center);
+                gp_Vec startVec = Base::convertTo<gp_Vec>(pts.arcEnds.first() - pts.center);
+                gp_Vec endVec = Base::convertTo<gp_Vec>(pts.arcEnds.second() - pts.center);
                 double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
                 pts.arcCW = (angle < 0.0);
             }
@@ -1318,7 +1320,7 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
     if (!haveIntersection) {
         throw Base::RuntimeError("Geometry for 3d angle dimension does not intersect");
     }
-    gp_Pnt gApex = DrawUtil::to<gp_Pnt>(vApex);
+    gp_Pnt gApex = Base::convertTo<gp_Pnt>(vApex);
 
     gp_Pnt gFar0 = gEnd0;
     if (gStart0.Distance(gApex) > gEnd0.Distance(gApex)) {
@@ -1718,9 +1720,9 @@ double DrawViewDimension::getArcAngle(Base::Vector3d center, Base::Vector3d star
     auto leg0 = startPoint - center;
     auto leg1 = endPoint - startPoint;
     auto referenceDirection = leg0.Cross(leg1);
-    gp_Ax1 axis{DU::to<gp_Pnt>(center), DU::to<gp_Vec>(referenceDirection)};
-    gp_Vec startVec = DrawUtil::to<gp_Vec>(leg0);
-    gp_Vec endVec = DrawUtil::to<gp_Vec>(leg1);
+    gp_Ax1 axis{Base::convertTo<gp_Pnt>(center), Base::convertTo<gp_Vec>(referenceDirection)};
+    gp_Vec startVec = Base::convertTo<gp_Vec>(leg0);
+    gp_Vec endVec = Base::convertTo<gp_Vec>(leg1);
     double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
     return angle;
 }

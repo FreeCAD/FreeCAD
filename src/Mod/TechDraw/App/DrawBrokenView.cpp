@@ -73,6 +73,7 @@
 #include <App/Document.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 
@@ -323,11 +324,11 @@ TopoDS_Shape DrawBrokenView::makeHalfSpace(const Base::Vector3d& planePoint,
                                            const Base::Vector3d& planeNormal,
                                            const Base::Vector3d& pointInSpace) const
 {
-    auto origin = DU::to<gp_Pnt>(planePoint);
-    auto axis   = DU::to<gp_Dir>(planeNormal);
+    auto origin = Base::convertTo<gp_Pnt>(planePoint);
+    auto axis   = Base::convertTo<gp_Dir>(planeNormal);
     gp_Pln plane(origin, axis);
     BRepBuilderAPI_MakeFace mkFace(plane);
-    BRepPrimAPI_MakeHalfSpace mkHalf(mkFace.Face(), DU::to<gp_Pnt>(pointInSpace));
+    BRepPrimAPI_MakeHalfSpace mkHalf(mkFace.Face(), Base::convertTo<gp_Pnt>(pointInSpace));
 
     return mkHalf.Solid();
 }
@@ -913,7 +914,7 @@ Base::Vector3d DrawBrokenView::mapPoint2dFromView(Base::Vector3d point2d) const
     gp_Ax3 projCS3(getProjectionCS(getCompressedCentroid()));
     gp_Trsf xTo3d;
     xTo3d.SetTransformation(projCS3, OXYZ);
-    auto pseudo3d = DU::toVector3d(DU::to<gp_Pnt>(point2d).Transformed(xTo3d));
+    auto pseudo3d = DU::toVector3d(Base::convertTo<gp_Pnt>(point2d).Transformed(xTo3d));
 
     // now shift down and left
     auto breaksAll = Breaks.getValues();
@@ -1108,7 +1109,7 @@ Base::Vector3d DrawBrokenView::getCompressedCentroid() const
 //! construct a perpendicular direction in the projection CS
 Base::Vector3d  DrawBrokenView::makePerpendicular(Base::Vector3d inDir) const
 {
-    auto gDir = DU::to<gp_Dir>(inDir);
+    auto gDir = Base::convertTo<gp_Dir>(inDir);
     gp_Pnt origin(0.0, 0.0, 0.0);
     auto dir = getProjectionCS().Direction();
     gp_Ax1 axis(origin, dir);

@@ -58,6 +58,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
@@ -648,7 +649,7 @@ Base::Vector3d DrawUtil::vecRotate(Base::Vector3d vec, double angle, Base::Vecto
 
 gp_Vec DrawUtil::closestBasis(gp_Vec inVec)
 {
-    return gp_Vec(to<gp_Dir>(closestBasis(toVector3d(inVec))));
+    return gp_Vec(Base::convertTo<gp_Dir>(closestBasis(toVector3d(inVec))));
 }
 
 //! returns stdX, stdY or stdZ.
@@ -888,7 +889,7 @@ gp_Vec DrawUtil::maskDirection(gp_Vec inVec, gp_Dir directionToMask)
 
 Base::Vector3d DrawUtil::maskDirection(Base::Vector3d inVec, Base::Vector3d directionToMask)
 {
-    return toVector3d(maskDirection(to<gp_Vec>(inVec), to<gp_Vec>(directionToMask)));
+    return toVector3d(maskDirection(Base::convertTo<gp_Vec>(inVec), Base::convertTo<gp_Vec>(directionToMask)));
 }
 
 //! get the coordinate of inPoint for the cardinal unit direction.

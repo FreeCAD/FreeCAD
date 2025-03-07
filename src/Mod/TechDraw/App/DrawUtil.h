@@ -44,6 +44,7 @@
 #include <gp_Vec.hxx>
 
 #include <Base/Vector3D.h>
+#include <Base/Converter.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -71,6 +72,60 @@ constexpr double DegreesHalfCircle{180.0};
 
 //a multiplier for EWTOLERANCE used in fuzzy fuse and common operations.
 #define FUZZYADJUST 4.0
+
+
+namespace Base {
+template<>
+struct vec_traits<gp_Pnt>
+{
+    using vec_type = gp_Pnt;
+    using float_type = Standard_Real;
+    explicit vec_traits(const vec_type& vec)
+        : v(vec)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
+        return std::make_tuple(v.X(), v.Y(), v.Z());
+    }
+
+private:
+    const vec_type& v;
+};
+
+template<>
+struct vec_traits<gp_Dir>
+{
+    using vec_type = gp_Dir;
+    using float_type = Standard_Real;
+    explicit vec_traits(const vec_type& vec)
+        : v(vec)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
+        return std::make_tuple(v.X(), v.Y(), v.Z());
+    }
+
+private:
+    const vec_type& v;
+};
+
+template<>
+struct vec_traits<gp_Vec>
+{
+    using vec_type = gp_Vec;
+    using float_type = Standard_Real;
+    explicit vec_traits(const vec_type& vec)
+        : v(vec)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
+        return std::make_tuple(v.X(), v.Y(), v.Z());
+    }
+
+private:
+    const vec_type& v;
+};
+}
 
 
 namespace TechDraw
@@ -180,14 +235,6 @@ public:
     static Base::Vector3d toVector3d(const QPointF& v)
     {
         return Base::Vector3d(v.x(), v.y(), 0);
-    }
-
-    //! To gp_*
-    // TODO: Would this be relevant to move to Base::Vector3d? Probably
-    template <typename T>
-    static T to(const Base::Vector3d &v)
-    {
-        return T(v.x, v.y, v.z);
     }
 
     static QPointF toQPointF(const Base::Vector3d &v)
