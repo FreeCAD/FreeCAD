@@ -722,6 +722,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_TextDocument"
           << "Separator"
           << "Std_DemoMode"
+          << "Std_FlightMode"
           << "Std_UnitsCalculator"
           << "Separator"
           << "Std_DlgCustomize";

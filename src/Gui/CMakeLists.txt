@@ -373,6 +373,7 @@ SET(Gui_UIC_SRCS
     Dialogs/AboutApplication.ui
     Clipping.ui
     DemoMode.ui
+    FlightMode.ui
     Dialogs/DlgActions.ui
     Dialogs/DlgActivateWindow.ui
     Dialogs/DlgUnitsCalculator.ui
@@ -491,6 +492,7 @@ SOURCE_GROUP("Command" FILES ${Command_SRCS})
 SET(Dialog_CPP_SRCS
     Clipping.cpp
     DemoMode.cpp
+    FlightMode.cpp
     Dialogs/DlgAbout.cpp
     Dialogs/DlgActivateWindowImp.cpp
     Dialogs/DlgCreateNewPreferencePackImp.cpp
@@ -532,6 +534,7 @@ SET(Dialog_CPP_SRCS
 SET(Dialog_HPP_SRCS
     Clipping.h
     DemoMode.h
+    FlightMode.h
     Dialogs/DlgAbout.h
     Dialogs/DlgActivateWindowImp.h
     Dialogs/DlgCreateNewPreferencePackImp.h
@@ -576,6 +579,7 @@ SET(Dialog_SRCS
     Dialogs/AboutApplication.ui
     Clipping.ui
     DemoMode.ui
+    FlightMode.ui
     Dialogs/DlgActivateWindow.ui
     Dialogs/DlgUnitsCalculator.ui
     Dialogs/DlgAuthorization.ui
