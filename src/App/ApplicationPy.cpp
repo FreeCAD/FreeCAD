@@ -409,6 +409,7 @@ PyObject* Application::sNewDocument(PyObject* /*self*/, PyObject* args, PyObject
         App::Document* doc = GetApplication().newDocument(docName,
                                                           usrName,
                                                           createFlags);
+        PyMem_Free(docName);
         PyMem_Free(usrName);
         return doc->getPyObject();
     }
