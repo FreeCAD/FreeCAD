@@ -472,25 +472,25 @@ protected:
      * This slot gets connected to all App::Documents created
      */
     //@{
-    void slotBeforeChangeDocument(const App::Document&, const App::Property&);
-    void slotChangedDocument(const App::Document&, const App::Property&);
-    void slotNewObject(const App::DocumentObject&);
-    void slotDeletedObject(const App::DocumentObject&);
-    void slotBeforeChangeObject(const App::DocumentObject&, const App::Property& Prop);
-    void slotChangedObject(const App::DocumentObject&, const App::Property& Prop);
-    void slotRelabelObject(const App::DocumentObject&);
-    void slotActivatedObject(const App::DocumentObject&);
-    void slotUndoDocument(const App::Document&);
-    void slotRedoDocument(const App::Document&);
-    void slotRecomputedObject(const App::DocumentObject&);
-    void slotRecomputed(const App::Document&);
-    void slotBeforeRecompute(const App::Document&);
-    void slotOpenTransaction(const App::Document&, std::string);
-    void slotCommitTransaction(const App::Document&);
-    void slotAbortTransaction(const App::Document&);
-    void slotStartSaveDocument(const App::Document&, const std::string&);
-    void slotFinishSaveDocument(const App::Document&, const std::string&);
-    void slotChangePropertyEditor(const App::Document&, const App::Property &);
+    void slotBeforeChangeDocument(const App::Document& doc, const App::Property& prop);
+    void slotChangedDocument(const App::Document& doc, const App::Property& prop);
+    void slotNewObject(const App::DocumentObject& obj);
+    void slotDeletedObject(const App::DocumentObject& obj);
+    void slotBeforeChangeObject(const App::DocumentObject& obj, const App::Property& prop);
+    void slotChangedObject(const App::DocumentObject& obj, const App::Property& prop);
+    void slotRelabelObject(const App::DocumentObject& obj);
+    void slotActivatedObject(const App::DocumentObject& obj);
+    void slotUndoDocument(const App::Document& doc);
+    void slotRedoDocument(const App::Document& doc);
+    void slotRecomputedObject(const App::DocumentObject& obj);
+    void slotRecomputed(const App::Document& doc);
+    void slotBeforeRecompute(const App::Document& doc);
+    void slotOpenTransaction(const App::Document& doc, std::string name);
+    void slotCommitTransaction(const App::Document& doc);
+    void slotAbortTransaction(const App::Document& doc);
+    void slotStartSaveDocument(const App::Document& doc, const std::string& filename);
+    void slotFinishSaveDocument(const App::Document& doc, const std::string& filename);
+    void slotChangePropertyEditor(const App::Document& doc, const App::Property& prop);
     //@}
 
     /// open single document only
