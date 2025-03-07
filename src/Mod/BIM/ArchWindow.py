@@ -383,8 +383,14 @@ class Window(ArchComponent.Component):
             omode = None
             ssymbols = []
             vsymbols = []
+            compdef = []
             wstr = obj.WindowParts[(i * 5) + 2].split(",")
             for s in wstr:
+                try:
+                    v = FreeCAD.Units.Quantity(s)
+                    compdef += [v.Value]
+                except ValueError:
+                    pass
                 if "Wire" in s:
                     j = int(s[4:])
                     if obj.Base.Shape.Wires:
@@ -397,6 +403,40 @@ class Window(ArchComponent.Component):
                     if omode >= len(WindowOpeningModes):
                         # Ignore modes not listed in WindowOpeningModes
                         omode = None
+            if len(compdef) >= 5:
+                p1 = FreeCAD.Vector(compdef[0], compdef[1], 0)
+                p2 = FreeCAD.Vector(compdef[0] + compdef[3], compdef[1], 0)
+                p3 = FreeCAD.Vector(compdef[0] + compdef[3], compdef[1] + compdef[2], 0)
+                p4 = FreeCAD.Vector(compdef[0], compdef[1] + compdef[2], 0)
+                wires.append(Part.makePolygon([p1, p2, p3, p4, p1]))
+                if compdef[4]:
+                    if len(compdef) >= 8:
+                        p5 = FreeCAD.Vector(compdef[0] + compdef[7],
+                                            compdef[1] + compdef[6],
+                                            0)
+                        p6 = FreeCAD.Vector(compdef[0] + compdef[3] - compdef[5],
+                                            compdef[1] + compdef[6],
+                                            0)
+                        p7 = FreeCAD.Vector(compdef[0] + compdef[3] - compdef[5],
+                                            compdef[1] + compdef[2] - compdef[4],
+                                            0)
+                        p8 = FreeCAD.Vector(compdef[0] + compdef[7],
+                                            compdef[1]+ compdef[2] - compdef[4],
+                                            0)
+                    else:
+                        p5 = FreeCAD.Vector(compdef[0] + compdef[4],
+                                            compdef[1] + compdef[4],
+                                            0)
+                        p6 = FreeCAD.Vector(compdef[0] + compdef[3] - compdef[4],
+                                            compdef[1] + compdef[4],
+                                            0)
+                        p7 = FreeCAD.Vector(compdef[0] + compdef[3] - compdef[4],
+                                            compdef[1] + compdef[2] - compdef[4],
+                                            0)
+                        p8 = FreeCAD.Vector(compdef[0] + compdef[4],
+                                            compdef[1] + compdef[2] - compdef[4],
+                                            0)
+                    wires.append(Part.makePolygon([p5, p6, p7, p8, p5]))
             if wires:
                 max_length = 0
                 for w in wires:
@@ -613,9 +653,9 @@ class Window(ArchComponent.Component):
             if hasattr(clonedProxy, "boxes"):
                 self.boxes = clonedProxy.boxes
             return
-        if not self.ensureBase(obj):
-            return
-
+        if getattr(obj, "Base", None):
+            if not self.ensureBase(obj):
+                return
         import Part
         import DraftGeomUtils
         import math
@@ -624,22 +664,20 @@ class Window(ArchComponent.Component):
         base = None
         self.sshapes = []
         self.vshapes = []
-        if obj.Base:
-            if hasattr(obj, "Shape"):
-                if hasattr(obj, "WindowParts"):
-                    if obj.WindowParts and (len(obj.WindowParts) % 5 == 0):
-                        shapes = self.buildShapes(obj)
-                        if shapes:
-                            base = Part.makeCompound(shapes)
-                    elif not obj.WindowParts:
-                        if obj.Base.Shape.Solids:
-                            base = obj.Base.Shape.copy()
-                            # obj placement is already added by applyShape() below
-                            # if not DraftGeomUtils.isNull(pl):
-                            #    base.Placement = base.Placement.multiply(pl)
-                    else:
-                        print("Arch: Bad formatting of window parts definitions")
-
+        if hasattr(obj, "Shape"):
+            if hasattr(obj, "WindowParts"):
+                if obj.WindowParts and (len(obj.WindowParts) % 5 == 0):
+                    shapes = self.buildShapes(obj)
+                    if shapes:
+                        base = Part.makeCompound(shapes)
+                elif not obj.WindowParts:
+                    if obj.Base.Shape.Solids:
+                        base = obj.Base.Shape.copy()
+                        # obj placement is already added by applyShape() below
+                        # if not DraftGeomUtils.isNull(pl):
+                        #    base.Placement = base.Placement.multiply(pl)
+                else:
+                    print("Arch: Bad formatting of window parts definitions")
         base = self.processSubShapes(obj, base)
         if base:
             if not base.isNull():
@@ -972,7 +1010,7 @@ class ViewProviderWindow(ArchComponent.ViewProviderComponent):
             if obj.WindowParts and len(obj.WindowParts) > i * 5:
                 # WindowParts-based window
                 name = obj.WindowParts[(i * 5)]
-                mtype = obj.WindowParts[(i * 5) + 1]
+                mtype = obj.WindowParts[(i * 5) + 1].split(",")[0]
                 color = self.getSolidMaterial(obj, arch_mat, name, mtype)
             elif obj.Base and hasattr(obj.Base, "Shape"):
                 # Type-based window: obj.Base furnishes the window solids
@@ -995,7 +1033,7 @@ class ViewProviderWindow(ArchComponent.ViewProviderComponent):
             if color is None:
                 typeidx = (i * 5) + 1
                 if typeidx < len(obj.WindowParts):
-                    typ = obj.WindowParts[typeidx]
+                    typ = obj.WindowParts[typeidx].split(",")[0]
                     if typ == WindowPartTypes[2]:  # "Glass panel"
                         color = ArchCommands.getDefaultColor("WindowGlass")
 

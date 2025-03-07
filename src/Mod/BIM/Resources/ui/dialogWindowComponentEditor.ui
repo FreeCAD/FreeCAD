@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>427</width>
-    <height>643</height>
+    <width>409</width>
+    <height>648</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="labelDrawing">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -52,13 +52,6 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="Gui::QuantitySpinBox" name="fieldX">
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="labelX">
        <property name="text">
@@ -66,31 +59,38 @@
        </property>
       </widget>
      </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="labelHeight">
+       <property name="text">
+        <string>Height</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="Gui::InputField" name="fieldX">
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
      <item row="2" column="1">
-      <widget class="Gui::QuantitySpinBox" name="fieldY">
+      <widget class="Gui::InputField" name="fieldY">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="Gui::QuantitySpinBox" name="fieldWidth">
+      <widget class="Gui::InputField" name="fieldWidth">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="Gui::QuantitySpinBox" name="fieldHeight">
+      <widget class="Gui::InputField" name="fieldHeight">
        <property name="unit" stdset="0">
         <string notr="true"/>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="labelHeight">
-       <property name="text">
-        <string>Height</string>
        </property>
       </widget>
      </item>
@@ -145,41 +145,54 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="fieldThickness">
+      <widget class="Gui::InputField" name="fieldThickness">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="Gui::QuantitySpinBox" name="fieldTopThickness">
+      <widget class="Gui::InputField" name="fieldTopThickness">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="Gui::QuantitySpinBox" name="fieldRightThickness">
+      <widget class="Gui::InputField" name="fieldRightThickness">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="Gui::QuantitySpinBox" name="fieldBottomThickness">
+      <widget class="Gui::InputField" name="fieldBottomThickness">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="Gui::QuantitySpinBox" name="fieldLeftThickness">
+      <widget class="Gui::InputField" name="fieldLeftThickness">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -195,9 +208,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
-   <header>Gui/QuantitySpinBox.h</header>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
   </customwidget>
  </customwidgets>
  <resources>

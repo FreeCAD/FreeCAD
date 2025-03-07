@@ -47,6 +47,8 @@ class window_task_panel:
         self.panel1.tree.currentItemChanged.connect(self.update_properties)
         self.panel1.buttonAdd.clicked.connect(self.add_component)
         self.panel1.buttonDelete.clicked.connect(self.remove_component)
+        # TODO below does not work - self.dropEvent is never triggered
+        self.panel1.tree.dropEvent = self.dropEvent
 
         self.panel2 = FreeCADGui.PySideUic.loadUi(":/ui/taskWindowProperties.ui")
         self.model = QtGui.QStandardItemModel(9, 2)
@@ -63,7 +65,7 @@ class window_task_panel:
 
         self.set_titles()
         self.form = [self.panel3, self.panel1, self.panel2]
-
+        FreeCADGui.Selection.clearSelection()
 
     def set_titles(self):
         """Fills the first column of the table"""
@@ -149,7 +151,7 @@ class window_task_panel:
         """Removes a component"""
 
         name, compindex = self.get_component()
-        if not name or not compindex:
+        if not name:
             return
         self.WindowParts = self.WindowParts[:compindex] + self.WindowParts[compindex+5:]
         self.update_components_list()
@@ -163,8 +165,8 @@ class window_task_panel:
         name = comp.text(0)
         if not name:
             return None, None
-        if not name in self.WindowParts:
-            print("DEBUG: ArchWindowTaskPanel: component not found:",name)
+        if name not in self.WindowParts:
+            print("DEBUG: ArchWindowTaskPanel: component not found:", name)
             return None, None
         compindex = self.WindowParts.index(name)
         return name, compindex
@@ -204,12 +206,21 @@ class window_task_panel:
             wires = ",".join(wires)
             wires = QtGui.QStandardItem(wires)
         else:
-            wires = QtGui.QStandardItem("")
+            compdef = [p for p in parts2 if (p and p[0].isdigit())]
+            if compdef:
+                wires = ",".join(compdef)
+                wires = QtGui.QStandardItem(wires)
+            else:
+                wires = QtGui.QStandardItem("")
         self.model.setItem(4, 1, wires)
         thickness = self.WindowParts[compindex+3]
+        if not thickness:
+            thickness = "0"
         thickness = QtGui.QStandardItem(thickness)
         self.model.setItem(5, 1, thickness)
         offset = self.WindowParts[compindex+4]
+        if not offset:
+            offset = "0"
         offset = QtGui.QStandardItem(offset)
         self.model.setItem(6, 1, offset)
         hinge = [p for p in parts2 if p.startswith("Edge")]
@@ -268,7 +279,7 @@ class window_task_panel:
     def select(self, name):
         """Selects the component with the given name"""
 
-        items = self.panel1.tree.findItems(name, QtCore.Qt.MatchExactly|QtCore.Qt.MatchRecursive)
+        items = self.panel1.tree.findItems(name, QtCore.Qt.MatchExactly | QtCore.Qt.MatchRecursive)
         if items:
             self.panel1.tree.setCurrentItem(items[0])
 
@@ -302,7 +313,7 @@ class window_task_panel:
 
         def set_parent(item, parent=None):
             name = item.text(0)
-            if not name in self.WindowParts:
+            if name not in self.WindowParts:
                 return
             compindex = self.WindowParts.index(name)
             parts = self.WindowParts[compindex+2].split(",")
@@ -317,9 +328,12 @@ class window_task_panel:
                 if parent:
                     parts.append("Parent"+parent.text(0))
 
+        print("dropEvent")
+
         for i in range(self.panel1.tree.topLevelItemCount()):
+            print("top level", i)
             child = self.panel1.tree.topLevelItem(i)
-            set_parent(item, None)
+            set_parent(child, None)
             crawl_child(child)
         QtGui.QTreeWidget.dropEvent(self, event)
 
@@ -346,9 +360,10 @@ class window_size_editor(QtGui.QWidget):
         super().__init__(*args)
         self.uiloader = FreeCADGui.UiLoader()
         self.layout = QtGui.QHBoxLayout()
-        self.layout.setContentsMargins(QtCore.QMargins(0,0,0,0))
+        self.layout.setContentsMargins(QtCore. QMargins(0, 0, 0, 0))
         self.setLayout(self.layout)
-        self.tt = translate("BIM", "If checked, the value of the window's %1 property is added to this value")
+        self.tt = translate("BIM", "If checked, the value of the window's"
+                                   "%1 property is added to this value")
         self.tt = self.tt.replace("%1", propname)
         self.val = None
         self.check = False
@@ -387,6 +402,7 @@ class window_size_editor(QtGui.QWidget):
             self.widget2.setCheckState(state)
 
     def keyPressEvent(self, event):
+        # do not propagate Enter to parent widget otherwise it closes the editor
         if event.key() == QtCore.Qt.Key_Enter or event.key() == QtCore.Qt.Key_Return:
             event.accept()
 
@@ -437,6 +453,7 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
         elif row == 4:  # wires
             editor = QtGui.QPushButton(parent)
             editor.clicked.connect(self.on_click_wires)
+            self.editor_wires = editor
         elif row == 5:  # thickness
             editor = window_size_editor("Thickness", parent)
         elif row == 6:  # offset
@@ -468,7 +485,7 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
             editor.setText(getattr(self.task.obj.Base, "Label", ""))
         elif row in [5, 6]:
             if index.data():
-                editor.setText(index.data().replace("+V",""))
+                editor.setText(index.data().replace("+V", ""))
                 if "+V" in index.data():
                     editor.setCheckState(QtCore.Qt.Checked)
                 else:
@@ -483,7 +500,10 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
         """Saves the changed data"""
 
         row = index.row()
-        if row in [0, 4, 7]:
+        if row == 0:
+            model.setData(index, editor.text())
+        elif row in [4, 7]:
+            # this is set directly by the appropriate tools
             model.setData(index, editor.text())
         elif row == 1:
             model.setData(index, ArchWindow.WindowPartTypes[editor.currentIndex()])
@@ -523,7 +543,48 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
     def on_click_wires(self):
         """Select wires, or opens the componenbt definition dialog"""
 
-        print("Not implemented yet")
+        if not self.task.obj.Base:
+            self.on_define()
+            return
+        menu = QtGui.QMenu()
+        if self.task.obj.Base:
+            wires = ["Wire"+str(i) for i in list(range(len(self.task.obj.Base.Shape.Wires)))]
+            for w in wires:
+                act = menu.addAction(w)
+                act.triggered.connect(self.on_select_wire)
+                act.hovered.connect(self.on_hover_wire)
+        act_define = menu.addAction(translate("BIM", "Define..."))
+        act_define.triggered.connect(self.on_define)
+        pos = FreeCADGui.getMainWindow().cursor().pos()
+        menu.exec_(pos)
+
+    def on_hover_wire(self):
+        """A wire is hovered with the mouse"""
+
+        wire = int(self.sender().text()[4:])
+        if self.task.obj.Base:
+            if len(self.task.obj.Base.Shape.Wires) <= wire:
+                return
+            wire = self.task.obj.Base.Shape.Wires[wire]
+            FreeCADGui.Selection.clearSelection()
+            for edge in wire.Edges:
+                for i, bedge in enumerate(self.task.obj.Base.Shape.Edges):
+                    if bedge.hashCode() == edge.hashCode():
+                        FreeCADGui.Selection.addSelection(self.task.obj.Base, "Edge"+str(i+1))
+                        break
+
+    def on_select_wire(self):
+        """A wire has been selected in the menu"""
+
+        FreeCADGui.Selection.clearSelection()
+        wire = self.sender().text()
+        wires = self.editor_wires.text().split(",")
+        if wire in wires:
+            wires.pop(wires.index(wire))
+        else:
+            wires += [wire]
+        self.editor_wires.setText(",".join(wires))
+        self.task.model.setData(self.task.model.index(4, 1), ",".join(wires))
 
     def on_click_hinge(self):
         """Selects an hinge"""
@@ -532,5 +593,96 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
             for sub in sel.SubElementNames:
                 if "Edge" in sub:
                     self.editor_hinge.setText(sub)
+                    self.task.model.setData(self.task.model.index(7, 1), sub)
                     return
         self.editor_hinge.setText("")
+        self.task.model.setData(self.task.model.index(7, 1), "")
+
+    def on_define(self):
+        """Define one's own wire"""
+
+        self.panel3 = FreeCADGui.PySideUic.loadUi(":/ui/dialogWindowComponentEditor.ui")
+        self.expand_thickness(False)
+        if hasattr(self.panel3.checkThickness, "checkStateChanged"):
+            self.panel3.checkThickness.checkStateChanged.connect(self.expand_thickness)
+        else:  # Qt5 and older Qt6
+            self.panel3.checkThickness.stateChanged.connect(self.expand_thickness)
+        name, compindex = self.task.get_component()
+        if not name:
+            return
+        parts = []
+        if self.task.WindowParts[compindex+2]:
+            parts = self.task.WindowParts[compindex+2].split(",")  # wires, hinge, mode, parent
+        compdef = []
+        for p in parts:
+            try:
+                v = FreeCAD.Units.Quantity(p).UserString
+                compdef.append(v)
+            except ValueError:
+                pass
+        if len(compdef) > 0:
+            self.panel3.fieldX.setText(compdef[0])
+        if len(compdef) > 1:
+            self.panel3.fieldY.setText(compdef[1])
+        if len(compdef) > 2:
+            self.panel3.fieldHeight.setText(compdef[2])
+        if len(compdef) > 3:
+            self.panel3.fieldWidth.setText(compdef[3])
+        if len(compdef) >= 8:
+            try:
+                self.panel3.checkThickness.setCheckState(QtCore.Qt.Checked)
+            except:
+                self.panel3.checkThickness.setChecked(True)
+            if len(compdef) > 5:
+                self.panel3.fieldTopThickness.setText(compdef[5])
+            if len(compdef) > 6:
+                self.panel3.fieldRightThickness.setText(compdef[6])
+            if len(compdef) > 7:
+                self.panel3.fieldBottomThickness.setText(compdef[7])
+            if len(compdef) > 8:
+                self.panel3.fieldLeftThickness.setText(compdef[8])
+        elif len(compdef) > 4:
+            self.panel3.fieldThickness.setText(compdef[4])
+        result = self.panel3.exec()
+        if result:
+            x = FreeCAD.Units.Quantity(self.panel3.fieldX.text()).Value
+            y = FreeCAD.Units.Quantity(self.panel3.fieldY.text()).Value
+            h = FreeCAD.Units.Quantity(self.panel3.fieldHeight.text()).Value
+            w = FreeCAD.Units.Quantity(self.panel3.fieldWidth.text()).Value
+            if self.panel3.checkThickness.checkState() in [False, QtCore.Qt.Unchecked]:
+                t = FreeCAD.Units.Quantity(self.panel3.fieldThickness.text()).Value
+            else:
+                t1 = FreeCAD.Units.Quantity(self.panel3.fieldTopThickness.text()).Value
+                t2 = FreeCAD.Units.Quantity(self.panel3.fieldRightThickness.text()).Value
+                t3 = FreeCAD.Units.Quantity(self.panel3.fieldBottomThickness.text()).Value
+                t4 = FreeCAD.Units.Quantity(self.panel3.fieldLeftThickness.text()).Value
+                t = ",".join([str(i) for i in [t1, t2, t3, t4]])
+            txt = ",".join([str(i) for i in [x, y, h, w, t]])
+            self.editor_wires.setText(txt)
+            self.task.model.setData(self.task.model.index(4, 1), txt)
+
+    def expand_thickness(self, state):
+        """Shows/hides extra thicknesses"""
+
+        if state in [True, QtCore.Qt.Checked]:
+            self.panel3.labelThickness.hide()
+            self.panel3.fieldThickness.hide()
+            self.panel3.labelTopThickness.show()
+            self.panel3.fieldTopThickness.show()
+            self.panel3.labelRightThickness.show()
+            self.panel3.fieldRightThickness.show()
+            self.panel3.labelBottomThickness.show()
+            self.panel3.fieldBottomThickness.show()
+            self.panel3.labelLeftThickness.show()
+            self.panel3.fieldLeftThickness.show()
+        else:
+            self.panel3.labelThickness.show()
+            self.panel3.fieldThickness.show()
+            self.panel3.labelTopThickness.hide()
+            self.panel3.fieldTopThickness.hide()
+            self.panel3.labelRightThickness.hide()
+            self.panel3.fieldRightThickness.hide()
+            self.panel3.labelBottomThickness.hide()
+            self.panel3.fieldBottomThickness.hide()
+            self.panel3.labelLeftThickness.hide()
+            self.panel3.fieldLeftThickness.hide()
