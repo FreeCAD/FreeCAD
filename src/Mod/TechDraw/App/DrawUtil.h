@@ -176,9 +176,10 @@ public:
     template <typename T>
     static std::string formatVector(const T& v)
     {
-        return formatVector(toVector3d(v));
+        return formatVector(Base::convertTo<Base::Vector3d>(v));
     }
     static std::string formatVector(const Base::Vector3d& v);
+    static std::string formatVector(const QPointF& v);
 
     static bool vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2);
     //!std::map require comparator to be a type not a function
@@ -225,12 +226,6 @@ public:
     static Base::Vector2d Intersect2d(Base::Vector2d p1, Base::Vector2d d1, Base::Vector2d p2,
                                       Base::Vector2d d2);
 
-
-    template <typename T>
-    static Base::Vector3d toVector3d(const T& v)
-    {
-        return Base::Vector3d(v.X(), v.Y(), v.Z());
-    }
 
     static Base::Vector3d toVector3d(const QPointF& v)
     {
@@ -338,7 +333,7 @@ public:
 //template<> std::string DrawUtil::formatVector<Base::Vector3d>(const Base::Vector3d &v);
 
 // GCC BUG 85282, wanting this to be outside class body. This is only the declaration, the definition .cpp
-//template<> Base::Vector3d DrawUtil::toVector3d<QPointF>(const QPointF& v);
+//template<> Base::Vector3d DrawUtil::Base::convertTo<Base::Vector3d><QPointF>(const QPointF& v);
 
 }//end namespace TechDraw
 #endif

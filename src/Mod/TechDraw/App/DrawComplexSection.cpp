@@ -551,7 +551,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
     }
 
     //center the compound along SectionCS XDirection
-    Base::Vector3d centerVector = DU::toVector3d(gMovementVector) * distanceToMove / -2.0;
+    Base::Vector3d centerVector = Base::convertTo<Base::Vector3d>(gMovementVector) * distanceToMove / -2.0;
     TopoDS_Shape centeredCompound = ShapeUtils::moveShape(comp, centerVector);
 
     if (debugSection()) {
@@ -827,8 +827,8 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::sectionArrowDirs()
     }
 
     //TODO: similar code elsewhere. Opportunity for reuse.
-    Base::Vector3d vDir0 = DU::toVector3d(gDir0);
-    Base::Vector3d vDir1 = DU::toVector3d(gDir1);
+    Base::Vector3d vDir0 = Base::convertTo<Base::Vector3d>(gDir0);
+    Base::Vector3d vDir1 = Base::convertTo<Base::Vector3d>(gDir1);
     vDir0.Normalize();
     vDir1.Normalize();
     DrawViewPart* baseDvp = dynamic_cast<DrawViewPart*>(BaseView.getValue());
@@ -982,8 +982,8 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawComplexSection::getSegmentEnds(Top
     gp_Pnt gpFirst = BRep_Tool::Pnt(tvFirst);
     gp_Pnt gpLast = BRep_Tool::Pnt(tvLast);
     std::pair<Base::Vector3d, Base::Vector3d> result;
-    result.first = DU::toVector3d(gpFirst);
-    result.second = DU::toVector3d(gpLast);
+    result.first = Base::convertTo<Base::Vector3d>(gpFirst);
+    result.second = Base::convertTo<Base::Vector3d>(gpLast);
     return result;
 }
 

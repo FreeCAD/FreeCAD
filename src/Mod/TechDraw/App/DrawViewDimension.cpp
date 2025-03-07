@@ -844,7 +844,7 @@ pointPair DrawViewDimension::getPointsOneEdge(ReferenceVector references)
     gp_Pnt gEnd0 = BRep_Tool::Pnt(TopExp::FirstVertex(edge));
     gp_Pnt gEnd1 = BRep_Tool::Pnt(TopExp::LastVertex(edge));
 
-    pointPair pts(DrawUtil::toVector3d(gEnd0), DrawUtil::toVector3d(gEnd1));
+    pointPair pts(Base::convertTo<Base::Vector3d>(gEnd0), Base::convertTo<Base::Vector3d>(gEnd1));
     pts.move(getViewPart()->getCurrentCentroid());
     pts.project(getViewPart());
     return pts;
@@ -913,7 +913,7 @@ pointPair DrawViewDimension::getPointsTwoVerts(ReferenceVector references)
     gp_Pnt gPoint0 = BRep_Tool::Pnt(vertex0);
     gp_Pnt gPoint1 = BRep_Tool::Pnt(vertex1);
 
-    pointPair pts(DrawUtil::toVector3d(gPoint0), DrawUtil::toVector3d(gPoint1));
+    pointPair pts(Base::convertTo<Base::Vector3d>(gPoint0), Base::convertTo<Base::Vector3d>(gPoint1));
     pts.move(getViewPart()->getCurrentCentroid());
     pts.project(getViewPart());
     return pts;
@@ -1119,17 +1119,17 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
     double pLast = adapt.LastParameter();
     double pMid = (pFirst + pLast) / 2;
     BRepLProp_CLProps props(adapt, pFirst, 0, Precision::Confusion());
-    pts.arcEnds.first(DrawUtil::toVector3d(props.Value()));
+    pts.arcEnds.first(Base::convertTo<Base::Vector3d>(props.Value()));
     props.SetParameter(pLast);
-    pts.arcEnds.second(DrawUtil::toVector3d(props.Value()));
+    pts.arcEnds.second(Base::convertTo<Base::Vector3d>(props.Value()));
     props.SetParameter(pMid);
-    pts.onCurve.first(DrawUtil::toVector3d(props.Value()));
-    pts.onCurve.second(DrawUtil::toVector3d(props.Value()));
-    pts.midArc = DrawUtil::toVector3d(props.Value());
+    pts.onCurve.first(Base::convertTo<Base::Vector3d>(props.Value()));
+    pts.onCurve.second(Base::convertTo<Base::Vector3d>(props.Value()));
+    pts.midArc = Base::convertTo<Base::Vector3d>(props.Value());
 
     if (adapt.GetType() == GeomAbs_Circle) {
         gp_Circ circle = adapt.Circle();
-        pts.center = DrawUtil::toVector3d(circle.Location());
+        pts.center = Base::convertTo<Base::Vector3d>(circle.Location());
         pts.radius = circle.Radius();
         if (pts.isArc) {
             // part of circle
@@ -1149,7 +1149,7 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
     }
     else if (adapt.GetType() == GeomAbs_Ellipse) {
         gp_Elips ellipse = adapt.Ellipse();
-        pts.center = DrawUtil::toVector3d(ellipse.Location());
+        pts.center = Base::convertTo<Base::Vector3d>(ellipse.Location());
         pts.radius = (ellipse.MajorRadius() + ellipse.MinorRadius()) / 2.0;
         if (pts.isArc) {
             // part of ellipse
@@ -1178,7 +1178,7 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
             }
             gp_Circ circle = adapt.Circle();
             // TODO: same code as above. reuse opportunity.
-            pts.center = DrawUtil::toVector3d(circle.Location());
+            pts.center = Base::convertTo<Base::Vector3d>(circle.Location());
             pts.radius = circle.Radius();
             if (pts.isArc) {
                 // part of circle
@@ -1312,10 +1312,10 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
     gp_Pnt gEnd1 = BRep_Tool::Pnt(TopExp::LastVertex(edge1));
     gp_Vec gDir1(gEnd1.XYZ() - gStart1.XYZ());
     Base::Vector3d vApex;
-    bool haveIntersection = DrawUtil::intersect2Lines3d(DrawUtil::toVector3d(gStart0),
-                                                        DrawUtil::toVector3d(gDir0),
-                                                        DrawUtil::toVector3d(gStart1),
-                                                        DrawUtil::toVector3d(gDir1),
+    bool haveIntersection = DrawUtil::intersect2Lines3d(Base::convertTo<Base::Vector3d>(gStart0),
+                                                        Base::convertTo<Base::Vector3d>(gDir0),
+                                                        Base::convertTo<Base::Vector3d>(gStart1),
+                                                        Base::convertTo<Base::Vector3d>(gDir1),
                                                         vApex);
     if (!haveIntersection) {
         throw Base::RuntimeError("Geometry for 3d angle dimension does not intersect");
@@ -1331,9 +1331,9 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
     if (gStart1.Distance(gApex) > gEnd1.Distance(gApex)) {
         gFar1 = gStart1;
     }
-    anglePoints pts(DrawUtil::toVector3d(gApex),
-                    DrawUtil::toVector3d(gFar0),
-                    DrawUtil::toVector3d(gFar1));
+    anglePoints pts(Base::convertTo<Base::Vector3d>(gApex),
+                    Base::convertTo<Base::Vector3d>(gFar0),
+                    Base::convertTo<Base::Vector3d>(gFar1));
     pts.move(getViewPart()->getCurrentCentroid());
     pts.project(getViewPart());
     return pts;
@@ -1378,9 +1378,9 @@ anglePoints DrawViewDimension::getAnglePointsThreeVerts(ReferenceVector referenc
     gp_Pnt point1 = BRep_Tool::Pnt(vertex1);
     TopoDS_Vertex vertex2 = TopoDS::Vertex(geometry2);
     gp_Pnt point2 = BRep_Tool::Pnt(vertex2);
-    anglePoints pts(DrawUtil::toVector3d(point1),
-                    DrawUtil::toVector3d(point0),
-                    DrawUtil::toVector3d(point2));
+    anglePoints pts(Base::convertTo<Base::Vector3d>(point1),
+                    Base::convertTo<Base::Vector3d>(point0),
+                    Base::convertTo<Base::Vector3d>(point2));
     pts.move(getViewPart()->getCurrentCentroid());
     pts.project(getViewPart());
     return pts;
@@ -1437,7 +1437,7 @@ Base::Vector3d DrawViewDimension::getFaceCenter(const TopoDS_Face& face)
 {
     GProp_GProps props;
     BRepGProp::SurfaceProperties(face, props);
-    auto center = DrawUtil::toVector3d(props.CentreOfMass());
+    auto center = Base::convertTo<Base::Vector3d>(props.CentreOfMass());
     return center;
 }
 

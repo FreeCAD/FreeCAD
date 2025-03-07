@@ -168,7 +168,7 @@ Base::Vector3d Face::getCenter() const {
     GProp_GProps faceProps;
     BRepGProp::SurfaceProperties(toOccFace(), faceProps);
 
-    return DrawUtil::toVector3d(faceProps.CentreOfMass());
+    return Base::convertTo<Base::Vector3d>(faceProps.CentreOfMass());
 }
 
 double Face::getArea() const {
@@ -608,7 +608,7 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
         if (!sectionShape.IsNull()) {
             TopExp_Explorer explorer(sectionShape, TopAbs_VERTEX);
             while (explorer.More()) {
-                Base::Vector3d pt(DrawUtil::toVector3d(BRep_Tool::Pnt(TopoDS::Vertex(explorer.Current()))));
+                Base::Vector3d pt(Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopoDS::Vertex(explorer.Current()))));
                 interPoints.push_back(pt);
                 explorer.Next();
             }
@@ -801,9 +801,9 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
     cw = (a < 0) ? true: false;
     largeArc = (fabs(l-f) > M_PI) ? true : false;
 
-    startPnt = DU::toVector3d(s);
-    endPnt = DU::toVector3d(ePt);
-    midPnt = DU::toVector3d(m);
+    startPnt = Base::convertTo<Base::Vector3d>(s);
+    endPnt = Base::convertTo<Base::Vector3d>(ePt);
+    midPnt = Base::convertTo<Base::Vector3d>(m);
     if (e.Orientation() == TopAbs_REVERSED) {
         reversed = true;
     }
@@ -849,9 +849,9 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
     cw = (a < 0) ? true: false;
     largeArc = (fabs(l-f) > M_PI) ? true : false;
 
-    startPnt = DU::toVector3d(s);
-    endPnt = DU::toVector3d(ePt);
-    midPnt = DU::toVector3d(m);
+    startPnt = Base::convertTo<Base::Vector3d>(s);
+    endPnt = Base::convertTo<Base::Vector3d>(ePt);
+    midPnt = Base::convertTo<Base::Vector3d>(m);
     if (edge.Orientation() == TopAbs_REVERSED) {
         reversed = true;
     }
@@ -1380,7 +1380,7 @@ void Vertex::dump(const char* title)
 
 TopoShape Vertex::asTopoShape(double scale)
 {
-    Base::Vector3d point = DU::toVector3d(BRep_Tool::Pnt(getOCCVertex()));
+    Base::Vector3d point = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(getOCCVertex()));
     point = point / scale;
     BRepBuilderAPI_MakeVertex mkVert(Base::convertTo<gp_Pnt>(point));
     return TopoShape(mkVert.Vertex());
@@ -1530,7 +1530,7 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
             sumCurvature += prop.Curvature();
             prop.CentreOfCurvature(curveCenter);
             centers.push_back(curveCenter);
-            sumCenter += DrawUtil::toVector3d(curveCenter);
+            sumCenter += Base::convertTo<Base::Vector3d>(curveCenter);
         }
 
     }
@@ -1548,7 +1548,7 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
 
     double errorCenter{0};
     for (auto& observe : centers) {
-        auto error = (DU::toVector3d(observe)- avgCenter).Length();
+        auto error = (Base::convertTo<Base::Vector3d>(observe)- avgCenter).Length();
         errorCenter += error;
     }
 
@@ -1625,8 +1625,8 @@ bool GeometryUtils::isLine(TopoDS_Edge occEdge)
         return false;
     }
 
-    Base::Vector3d vs = DrawUtil::toVector3d(s);
-    Base::Vector3d ve = DrawUtil::toVector3d(e);
+    Base::Vector3d vs = Base::convertTo<Base::Vector3d>(s);
+    Base::Vector3d ve = Base::convertTo<Base::Vector3d>(e);
     double endLength = (vs - ve).Length();
     int low = 0;
     int high = spline->NbPoles() - 1;
@@ -1635,9 +1635,9 @@ bool GeometryUtils::isLine(TopoDS_Edge occEdge)
     double lenTotal = 0.0;
     for (int i = 0; i < high; i++) {
         gp_Pnt p1 = poles(i);
-        Base::Vector3d v1 = DrawUtil::toVector3d(p1);
+        Base::Vector3d v1 = Base::convertTo<Base::Vector3d>(p1);
         gp_Pnt p2 = poles(i+1);
-        Base::Vector3d v2 = DrawUtil::toVector3d(p2);
+        Base::Vector3d v2 = Base::convertTo<Base::Vector3d>(p2);
         lenTotal += (v2-v1).Length();
     }
 

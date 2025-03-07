@@ -245,7 +245,7 @@ TopoDS_Shape  DrawBrokenView::compressHorizontal(const TopoDS_Shape& shapeToComp
 {
     auto pieces = getPieces(shapeToCompress);
     auto breaksAll = Breaks.getValues();
-    auto moveDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().XDirection()));
+    auto moveDirection = DU::closestBasisOriented(Base::convertTo<Base::Vector3d>(getProjectionCS().XDirection()));
     bool descend = false;
     auto sortedBreaks = makeSortedBreakList(breaksAll, moveDirection, descend);
     auto limits = getPieceLimits(pieces, moveDirection);
@@ -284,7 +284,7 @@ TopoDS_Shape  DrawBrokenView::compressVertical(const TopoDS_Shape& shapeToCompre
     auto pieces = getPieces(shapeToCompress);
     auto breaksAll = Breaks.getValues();
     // not sure about using closestBasis here. may prevent oblique breaks later.
-    auto moveDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().YDirection()));
+    auto moveDirection = DU::closestBasisOriented(Base::convertTo<Base::Vector3d>(getProjectionCS().YDirection()));
 
     bool descend = false;
     auto sortedBreaks = makeSortedBreakList(breaksAll, moveDirection, descend);
@@ -479,7 +479,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakPointsFromEdge(co
     TopoDS_Edge edge = TopoDS::Edge(locShape);
     gp_Pnt start = BRep_Tool::Pnt(TopExp::FirstVertex(edge));
     gp_Pnt end = BRep_Tool::Pnt(TopExp::LastVertex(edge));
-    return {DU::toVector3d(start), DU::toVector3d(end)};
+    return {Base::convertTo<Base::Vector3d>(start), Base::convertTo<Base::Vector3d>(end)};
 }
 
 
@@ -642,7 +642,7 @@ bool DrawBrokenView::isVertical(const TopoDS_Edge& edge, const bool projected) c
     auto edgeDir = ends.second - ends.first;
     edgeDir.Normalize();
 
-    auto upDir = DU::toVector3d(getProjectionCS().YDirection());
+    auto upDir = Base::convertTo<Base::Vector3d>(getProjectionCS().YDirection());
     if (projected) {
         upDir = stdY;
     }
@@ -658,7 +658,7 @@ bool DrawBrokenView::isVertical(std::pair<Base::Vector3d, Base::Vector3d> inPoin
     auto pointDir = inPoints.second - inPoints.first;
     pointDir.Normalize();
 
-    auto upDir = DU::toVector3d(getProjectionCS().YDirection());
+    auto upDir = Base::convertTo<Base::Vector3d>(getProjectionCS().YDirection());
     if (projected) {
         upDir = stdY;
     }
@@ -674,7 +674,7 @@ bool DrawBrokenView::isHorizontal(const TopoDS_Edge& edge, bool projected) const
     auto edgeDir = ends.second - ends.first;
     edgeDir.Normalize();
 
-    auto sideDir = DU::toVector3d(getProjectionCS().XDirection());
+    auto sideDir = Base::convertTo<Base::Vector3d>(getProjectionCS().XDirection());
     if (projected) {
         sideDir = stdX;
     }
@@ -877,7 +877,7 @@ Base::Vector3d DrawBrokenView::mapPoint3dToView(Base::Vector3d point3d) const
 
     auto breaksAll = Breaks.getValues();
     bool descend = false;
-    auto moveXDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().XDirection()));
+    auto moveXDirection = DU::closestBasisOriented(Base::convertTo<Base::Vector3d>(getProjectionCS().XDirection()));
 
     // get the breaks that move us in X
     auto sortedXBreaks = makeSortedBreakList(breaksAll, moveXDirection, descend);
@@ -886,7 +886,7 @@ Base::Vector3d DrawBrokenView::mapPoint3dToView(Base::Vector3d point3d) const
     double xShift = shiftAmountShrink(xLimit, moveXDirection, sortedXBreaks);
     Base::Vector3d xMove = moveXDirection * xShift;    // move to the right (+X)
 
-    auto moveYDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().YDirection()));
+    auto moveYDirection = DU::closestBasisOriented(Base::convertTo<Base::Vector3d>(getProjectionCS().YDirection()));
     descend = false;
     // get the breaks that move us in Y
     auto sortedYBreaks = makeSortedBreakList(breaksAll, moveYDirection, descend);
@@ -914,12 +914,12 @@ Base::Vector3d DrawBrokenView::mapPoint2dFromView(Base::Vector3d point2d) const
     gp_Ax3 projCS3(getProjectionCS(getCompressedCentroid()));
     gp_Trsf xTo3d;
     xTo3d.SetTransformation(projCS3, OXYZ);
-    auto pseudo3d = DU::toVector3d(Base::convertTo<gp_Pnt>(point2d).Transformed(xTo3d));
+    auto pseudo3d = Base::convertTo<Base::Vector3d>(Base::convertTo<gp_Pnt>(point2d).Transformed(xTo3d));
 
     // now shift down and left
     auto breaksAll = Breaks.getValues();
 
-    auto moveXDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().XDirection()));
+    auto moveXDirection = DU::closestBasisOriented(Base::convertTo<Base::Vector3d>(getProjectionCS().XDirection()));
     // we are expanding, so the direction should be to the "left"/"down" which is the opposite of
     // our XDirection
     auto moveXReverser = isDirectionReversed(moveXDirection) ? 1.0 : -1.0;
@@ -942,7 +942,7 @@ Base::Vector3d DrawBrokenView::mapPoint2dFromView(Base::Vector3d point2d) const
     }
     double xCoord2 = xLimit + breakSum * moveXReverser;
 
-    auto moveYDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().YDirection()));
+    auto moveYDirection = DU::closestBasisOriented(Base::convertTo<Base::Vector3d>(getProjectionCS().YDirection()));
     auto moveYReverser = isDirectionReversed(moveYDirection) ? 1.0 : -1.0;
     descend = false;
     auto sortedYBreaks = makeSortedBreakList(breaksAll, moveYDirection, descend);
@@ -1103,7 +1103,7 @@ Base::Vector3d DrawBrokenView::getCompressedCentroid() const
     }
     gp_Ax2 cs = getProjectionCS();
     gp_Pnt gCenter = ShapeUtils::findCentroid(m_compressedShape, cs);
-    return DU::toVector3d(gCenter);
+    return Base::convertTo<Base::Vector3d>(gCenter);
 }
 
 //! construct a perpendicular direction in the projection CS
@@ -1114,7 +1114,7 @@ Base::Vector3d  DrawBrokenView::makePerpendicular(Base::Vector3d inDir) const
     auto dir = getProjectionCS().Direction();
     gp_Ax1 axis(origin, dir);
     auto gRotated = gDir.Rotated(axis,  M_PI_2);
-    return DU::toVector3d(gRotated);
+    return Base::convertTo<Base::Vector3d>(gRotated);
 }
 
 //! true if this piece should be moved

@@ -1073,8 +1073,8 @@ void DrawViewSection::setCSFromLocalUnit(const Base::Vector3d localUnit)
     gp_Dir newNormal = Base::convertTo<gp_Dir>(projectPoint(localUnit));
     double angle = oldNormal.AngleWithRef(newNormal, verticalDir);
     gp_Ax2 newCS = getSectionCS().Rotated(verticalAxis, angle);
-    SectionNormal.setValue(DrawUtil::toVector3d(newCS.Direction()));
-    XDirection.setValue(DrawUtil::toVector3d(newCS.XDirection()));
+    SectionNormal.setValue(Base::convertTo<Base::Vector3d>(newCS.Direction()));
+    XDirection.setValue(Base::convertTo<Base::Vector3d>(newCS.XDirection()));
 }
 
 gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
