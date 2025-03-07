@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
+ *   Copyright (c) 2024 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
  *   This file is part of FreeCAD.                                         *
  *                                                                         *
@@ -19,12 +19,11 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MODELMANAGER_H
-#define MATERIAL_MODELMANAGER_H
+#ifndef MATERIAL_MODELMANAGERLOCAL_H
+#define MATERIAL_MODELMANAGERLOCAL_H
 
 #include <memory>
 
-#include <Base/Parameter.h>
 #include <Mod/Material/MaterialGlobal.h>
 
 #include <QMutex>
@@ -36,25 +35,20 @@
 
 namespace Materials
 {
-class ModelManagerLocal;
-class ModelManagerExternal;
 
-class MaterialsExport ModelManager: public Base::BaseClass
+class MaterialsExport ModelManagerLocal: public Base::BaseClass
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    ~ModelManager() override;
-
-    static ModelManager& getManager();
+    ModelManagerLocal();
+    ~ModelManagerLocal() override = default;
 
     static void cleanup();
     void refresh();
 
     std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLibraries();
-    std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLocalLibraries();
-    void createLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
-    void createLocalLibrary(const QString& libraryName,
+    void createLibrary(const QString& libraryName,
                        const QString& directory,
                        const QString& icon,
                        bool readOnly = true);
@@ -63,10 +57,11 @@ public:
     void removeLibrary(const QString& libraryName);
     std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
     libraryModels(const QString& libraryName);
-    bool isLocalLibrary(const QString& libraryName);
 
-    std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getModels();
-    std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getLocalModels();
+    std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getModels()
+    {
+        return _modelMap;
+    }
     std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>>
     getModelTree(std::shared_ptr<ModelLibrary> library, ModelFilter filter = ModelFilter_None) const
     {
@@ -78,17 +73,15 @@ public:
     std::shared_ptr<ModelLibrary> getLibrary(const QString& name) const;
 
     static bool isModel(const QString& file);
-    static bool passFilter(ModelFilter filter, Model::ModelType modelType);
 
 private:
-    ModelManager();
-    static void initManagers();
+    static void initLibraries();
 
-    static ModelManager* _manager;
-    static std::unique_ptr<ModelManagerLocal> _localManager;
+    static std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> _libraryList;
+    static std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> _modelMap;
     static QMutex _mutex;
 };
 
 }  // namespace Materials
 
-#endif  // MATERIAL_MODELMANAGER_H
+#endif  // MATERIAL_MODELMANAGERLOCAL_H

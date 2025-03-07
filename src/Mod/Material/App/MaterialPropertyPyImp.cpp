@@ -19,64 +19,56 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_ARRAY2D_H
-#define MATGUI_ARRAY2D_H
+#include "PreCompiled.h"
 
-#include <memory>
+#include "Model.h"
+#include "PyVariants.h"
+#include "ModelPropertyPy.h"
+#include "MaterialPropertyPy.h"
 
-#include <QAbstractTableModel>
-#include <QAction>
-#include <QDialog>
-#include <QPoint>
-#include <QStandardItem>
-#include <QStandardItemModel>
-#include <QTableView>
+#include "MaterialPropertyPy.cpp"
 
-#include <Mod/Material/App/Model.h>
+using namespace Materials;
 
-#include "ArrayModel.h"
-
-namespace MatGui
+// returns a string which represents the object e.g. when printed in python
+std::string MaterialPropertyPy::representation() const
 {
+    std::stringstream str;
+    str << "<MaterialProperty object at " << getMaterialPropertyPtr() << ">";
 
-class Ui_Array2D;
+    return str.str();
+}
 
-class Array2D: public QDialog
+PyObject* MaterialPropertyPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
-    Q_OBJECT
+    // never create such objects with the constructor
+    return new MaterialPropertyPy(new MaterialProperty());
+}
 
-public:
-    Array2D(const QString& propertyName,
-            const std::shared_ptr<Materials::Material>& material,
-            QWidget* parent = nullptr);
-    ~Array2D() override = default;
+// constructor method
+int MaterialPropertyPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
+{
+    return 0;
+}
 
-    void onDataChanged(const QModelIndex& topLeft,
-                       const QModelIndex& bottomRight,
-                       const QVector<int>& roles = QVector<int>());
-    void onDelete(bool checked);
-    void onContextMenu(const QPoint& pos);
+Py::Object MaterialPropertyPy::getValue() const
+{
+    auto value = getMaterialPropertyPtr()->getValue();
 
-    void accept() override;
-    void reject() override;
+    return Py::Object(_pyObjectFromVariant(value), true);
+}
 
-private:
-    std::unique_ptr<Ui_Array2D> ui;
-    std::shared_ptr<Materials::Material> _material;
-    std::shared_ptr<Materials::MaterialProperty> _property;
-    std::shared_ptr<Materials::Array2D> _value;
+Py::Boolean MaterialPropertyPy::getEmpty() const
+{
+    return getMaterialPropertyPtr()->isEmpty();
+}
 
-    QAction _deleteAction;
+PyObject* MaterialPropertyPy::getCustomAttributes(const char* /*attr*/) const
+{
+    return nullptr;
+}
 
-    void setColumnWidths(QTableView* table);
-    void setColumnDelegates(QTableView* table);
-    void setupArray();
-
-    bool newRow(const QModelIndex& index);
-    int confirmDelete();
-    void deleteSelected();
-};
-
-}  // namespace MatGui
-
-#endif  // MATGUI_ARRAY2D_H
+int MaterialPropertyPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
+    return 0;
+}
