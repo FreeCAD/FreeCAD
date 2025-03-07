@@ -73,7 +73,7 @@ enum class MessageOption {
     Throw, /**< Throw an exception. */
 };
 
-struct DocumentCreateFlags {
+struct DocumentInitFlags {
     bool createView {true};
     bool temporary {false};
 };
@@ -102,13 +102,13 @@ public:
      * the user and stored in the App::Document::Label property.
      */
     App::Document* newDocument(const char * proposedName=nullptr, const char * proposedLabel=nullptr,
-            DocumentCreateFlags CreateFlags=DocumentCreateFlags());
+            DocumentInitFlags CreateFlags=DocumentInitFlags());
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
     /// find a unique document name
     std::string getUniqueDocumentName(const char *Name, bool tempDoc=false) const;
     /// Open an existing document from a file
-    App::Document* openDocument(const char * FileName=nullptr, DocumentCreateFlags createFlags = DocumentCreateFlags{});
+    App::Document* openDocument(const char * FileName=nullptr, DocumentInitFlags initFlags = DocumentInitFlags{});
     /** Open multiple documents
      *
      * @param filenames: input file names
@@ -130,7 +130,7 @@ public:
             const std::vector<std::string> *paths=nullptr,
             const std::vector<std::string> *labels=nullptr,
             std::vector<std::string> *errs=nullptr,
-            DocumentCreateFlags createFlags = DocumentCreateFlags{});
+            DocumentInitFlags initFlags = DocumentInitFlags{});
     /// Retrieve the active document
     App::Document* getActiveDocument() const;
     /// Retrieve a named document
@@ -495,7 +495,7 @@ protected:
 
     /// open single document only
     App::Document* openDocumentPrivate(const char * FileName, const char *propFileName,
-            const char *label, bool isMainDoc, DocumentCreateFlags createFlags, std::vector<std::string> &&objNames);
+            const char *label, bool isMainDoc, DocumentInitFlags initFlags, std::vector<std::string> &&objNames);
 
     /// Helper class for App::Document to signal on close/abort transaction
     class AppExport TransactionSignaller {

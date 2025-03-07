@@ -432,7 +432,7 @@ void Application::renameDocument(const char *OldName, const char *NewName)
     throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
 }
 
-Document* Application::newDocument(const char * proposedName, const char * proposedLabel, DocumentCreateFlags CreateFlags)
+Document* Application::newDocument(const char * proposedName, const char * proposedLabel, DocumentInitFlags CreateFlags)
 {
     bool isUsingDefaultName = Tools::isNullOrEmpty(proposedName);
     // get a valid name anyway!
@@ -669,9 +669,9 @@ public:
     }
 };
 
-Document* Application::openDocument(const char * FileName, DocumentCreateFlags createFlags) {
+Document* Application::openDocument(const char * FileName, DocumentInitFlags initFlags) {
     std::vector<std::string> filenames(1,FileName);
-    auto docs = openDocuments(filenames, nullptr, nullptr, nullptr, createFlags);
+    auto docs = openDocuments(filenames, nullptr, nullptr, nullptr, initFlags);
     if(!docs.empty())
         return docs.front();
     return nullptr;
@@ -716,7 +716,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                                                   const std::vector<std::string> *paths,
                                                   const std::vector<std::string> *labels,
                                                   std::vector<std::string> *errs,
-                                                  DocumentCreateFlags createFlags)
+                                                  DocumentInitFlags initFlags)
 {
     std::vector<Document*> res(filenames.size(), nullptr);
     if (filenames.empty())
@@ -780,7 +780,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                         label = (*labels)[count].c_str();
                 }
 
-                auto doc = openDocumentPrivate(path, name.c_str(), label, isMainDoc, createFlags, std::move(objNames));
+                auto doc = openDocumentPrivate(path, name.c_str(), label, isMainDoc, initFlags, std::move(objNames));
                 FC_DURATION_PLUS(timing.d1,t1);
                 if (doc) {
                     timings[doc].d1 += timing.d1;
@@ -919,7 +919,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
 Document* Application::openDocumentPrivate(const char * FileName,
         const char *propFileName, const char *label,
-        bool isMainDoc, DocumentCreateFlags createFlags,
+        bool isMainDoc, DocumentInitFlags initFlags,
         std::vector<std::string> &&objNames)
 {
     FileInfo File(FileName);
@@ -994,7 +994,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     if(!label)
         label = name.c_str();
 
-    Document* newDoc = newDocument(name.c_str(), label, createFlags);
+    Document* newDoc = newDocument(name.c_str(), label, initFlags);
     newDoc->FileName.setValue(propFileName==FileName?File.filePath():propFileName);
 
     try {
