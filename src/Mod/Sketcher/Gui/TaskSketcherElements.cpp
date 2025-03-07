@@ -463,7 +463,7 @@ private:
 
         icons.emplace(
             std::piecewise_construct,
-            std::forward_as_tuple(Base::Type::badType()),
+            std::forward_as_tuple(Base::Type::BadType),
             std::forward_as_tuple(
                 std::initializer_list<
                     std::pair<const Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon>>> {
@@ -479,14 +479,14 @@ private:
         auto typekey = icons.find(type);
 
         if (typekey == icons.end()) {// Not supported Geometry Type - Defaults to invalid icon
-            typekey = icons.find(Base::Type::badType());
+            typekey = icons.find(Base::Type::BadType);
             pos = Sketcher::PointPos::none;
         }
 
         auto poskey = typekey->second.find(pos);
 
         if (poskey == typekey->second.end()) {// invalid PointPos for type - Provide Invalid icon
-            typekey = icons.find(Base::Type::badType());
+            typekey = icons.find(Base::Type::BadType);
             pos = Sketcher::PointPos::none;
             poskey = typekey->second.find(pos);
         }

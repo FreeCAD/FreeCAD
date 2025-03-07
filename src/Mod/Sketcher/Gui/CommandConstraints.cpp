@@ -1526,7 +1526,7 @@ public:
         selIdPair.GeoId = GeoEnum::GeoUndef;
         selIdPair.PosId = Sketcher::PointPos::none;
         std::stringstream ss;
-        Base::Type newselGeoType = Base::Type::badType();
+        Base::Type newselGeoType = Base::Type::BadType;
 
         int VtId = getPreselectPoint();
         int CrvId = getPreselectCurve();
@@ -1662,7 +1662,7 @@ protected:
             SelIdPair selIdPair;
             getIdsFromName(selElement, Obj, selIdPair.GeoId, selIdPair.PosId);
 
-            Base::Type newselGeoType = Base::Type::badType();
+            Base::Type newselGeoType = Base::Type::BadType;
             if (isEdge(selIdPair.GeoId, selIdPair.PosId)) {
                 const Part::Geometry* geo = Obj->getGeometry(selIdPair.GeoId);
                 newselGeoType = geo->getTypeId();
