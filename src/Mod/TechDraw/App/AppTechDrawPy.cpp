@@ -490,7 +490,6 @@ private:
         std::string grpHead1 = "<g fill=\"none\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-width=\"";
         std::string grpHead2 = "\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"4\">\n";
         std::string grpTail  = "</g>\n";
-        Base::Console().Message("TechDraw:: gui is up? %d\n", (int)DrawUtil::isGuiUp());
         try {
             App::DocumentObject* obj = nullptr;
             TechDraw::DrawViewPart* dvp = nullptr;
