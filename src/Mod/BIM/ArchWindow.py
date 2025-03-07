@@ -135,7 +135,7 @@ class Window(ArchComponent.Component):
             ArchSketchObject.ArchSketch.setPropertiesLinkCommon(
                 self, obj, linkObj, mode
             )
-        except:
+        except (ModuleNotFoundError, AttributeError):
             pass
 
     def setProperties(self, obj):
@@ -385,12 +385,23 @@ class Window(ArchComponent.Component):
             vsymbols = []
             compdef = []
             wstr = obj.WindowParts[(i * 5) + 2].split(",")
-            for s in wstr:
+            for i2, s in enumerate(wstr):
+                vadd = False
+                if s.endswith("+V"):
+                    vadd = True
+                    s = s[:-2].strip()
                 try:
-                    v = FreeCAD.Units.Quantity(s)
-                    compdef += [v.Value]
+                    v = FreeCAD.Units.Quantity(s).Value
                 except ValueError:
                     pass
+                else:
+                    if vadd:
+                        if i2 == 2:
+                            vadd = obj.Height.Value
+                        elif i2 == 3:
+                            vadd = obj.Width.Value
+                        v += vadd
+                    compdef += [v]
                 if "Wire" in s:
                     j = int(s[4:])
                     if obj.Base.Shape.Wires:
@@ -421,7 +432,7 @@ class Window(ArchComponent.Component):
                                             compdef[1] + compdef[2] - compdef[4],
                                             0)
                         p8 = FreeCAD.Vector(compdef[0] + compdef[7],
-                                            compdef[1]+ compdef[2] - compdef[4],
+                                            compdef[1] + compdef[2] - compdef[4],
                                             0)
                     else:
                         p5 = FreeCAD.Vector(compdef[0] + compdef[4],
@@ -728,7 +739,7 @@ class Window(ArchComponent.Component):
             # for Arch Windows/Doors, Equipment etc.
             # see https://forum.freecad.org/viewtopic.php?f=23&t=50802
             ArchSketchObject.updateAttachmentOffset(obj, linkObj)
-        except:
+        except (ModuleNotFoundError, AttributeError):
             pass
 
     def appLinkExecute(self, obj, linkObj, index, linkElement):

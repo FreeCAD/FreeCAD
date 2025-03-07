@@ -38,10 +38,20 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="3" column="0">
-      <widget class="QLabel" name="labelWidth">
+     <item row="1" column="0">
+      <widget class="QLabel" name="labelX">
        <property name="text">
-        <string>Width</string>
+        <string>X position</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="Gui::InputField" name="fieldY">
+       <property name="toolTip">
+        <string>The Y coordinate of the bottom left corner of this component, relative to the bottom left corner of the window</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
        </property>
       </widget>
      </item>
@@ -52,45 +62,75 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="labelX">
-       <property name="text">
-        <string>X position</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="labelHeight">
-       <property name="text">
-        <string>Height</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="1">
       <widget class="Gui::InputField" name="fieldX">
-       <property name="unit" stdset="0">
-        <string notr="true"/>
+       <property name="toolTip">
+        <string>The X coordinate of the bottom left corner of this component, relative to the bottom left corner of the window</string>
        </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="Gui::InputField" name="fieldY">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="Gui::InputField" name="fieldWidth">
-       <property name="unit" stdset="0">
-        <string notr="true"/>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="Gui::InputField" name="fieldHeight">
+         <property name="toolTip">
+          <string>The width of this component</string>
+         </property>
+         <property name="unit" stdset="0">
+          <string notr="true"/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkPlusHeight">
+         <property name="toolTip">
+          <string>If checked, the general window height will be added to this value</string>
+         </property>
+         <property name="text">
+          <string>+H</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="labelWidth">
+       <property name="text">
+        <string>Height</string>
        </property>
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="Gui::InputField" name="fieldHeight">
-       <property name="unit" stdset="0">
-        <string notr="true"/>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="Gui::InputField" name="fieldWidth">
+         <property name="toolTip">
+          <string>The height of this component</string>
+         </property>
+         <property name="unit" stdset="0">
+          <string notr="true"/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkPlusWidth">
+         <property name="toolTip">
+          <string>If this is checked, the general window width will be added to this value</string>
+         </property>
+         <property name="text">
+          <string>+W</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="labelHeight">
+       <property name="text">
+        <string>Width</string>
        </property>
       </widget>
      </item>
@@ -100,6 +140,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QCheckBox" name="checkThickness">
+       <property name="toolTip">
+        <string>If this is checked, different thicknesses for left, right, top and bottom sides can be defined</string>
+       </property>
        <property name="text">
         <string>Independent thhicknesses</string>
        </property>
@@ -146,6 +189,9 @@
      </item>
      <item row="0" column="1">
       <widget class="Gui::InputField" name="fieldThickness">
+       <property name="toolTip">
+        <string>Geenral thickness of the frame. If this component is a panel, this value is disregarded</string>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -153,6 +199,9 @@
      </item>
      <item row="2" column="1">
       <widget class="Gui::InputField" name="fieldTopThickness">
+       <property name="toolTip">
+        <string>The thickness of the top member of the frame</string>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -160,6 +209,9 @@
      </item>
      <item row="3" column="1">
       <widget class="Gui::InputField" name="fieldRightThickness">
+       <property name="toolTip">
+        <string>The thickness of the right member of the frame</string>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -167,6 +219,9 @@
      </item>
      <item row="4" column="1">
       <widget class="Gui::InputField" name="fieldBottomThickness">
+       <property name="toolTip">
+        <string>The thickness of the bottom member of the frame</string>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -174,6 +229,9 @@
      </item>
      <item row="5" column="1">
       <widget class="Gui::InputField" name="fieldLeftThickness">
+       <property name="toolTip">
+        <string>The thickness of the left member of the frame</string>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>

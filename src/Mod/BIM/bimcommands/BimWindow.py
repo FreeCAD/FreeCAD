@@ -124,7 +124,7 @@ class Arch_Window:
                         siblings = host.Proxy.getSiblings(host)
                         sibs = [host]
                         for sibling in siblings:
-                            if not sibling in sibs:
+                            if sibling not in sibs:
                                 sibs.append(sibling)
                                 FreeCADGui.doCommand(
                                     "win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."
@@ -238,16 +238,19 @@ class Arch_Window:
                 "FreeCADGui.ActiveDocument.mergeProject('" + path + "')"
             )
             # find the latest added window
+            t1 = translate(
+                "Arch",
+                "Window not based on sketch. Window not aligned or resized.",
+            )
+            t2 = translate(
+                "Arch",
+                "No Width and/or Height constraint in window sketch. Window not resized.",
+            )
             nol = FreeCAD.ActiveDocument.Objects
-            for o in nol[len(col) :]:
+            for o in nol[len(col):]:
                 if Draft.getType(o) == "Window":
                     if Draft.getType(o.Base) != "Sketcher::SketchObject":
-                        _wrn(
-                            translate(
-                                "Arch",
-                                "Window not based on sketch. Window not aligned or resized.",
-                            )
-                        )
+                        _wrn(t1)
                         self.Include = False
                         break
                     FreeCADGui.doCommand(
@@ -261,12 +264,7 @@ class Arch_Window:
                     FreeCADGui.doCommand("win.Height = " + str(self.Height))
                     FreeCADGui.doCommand("win.Base.recompute()")
                     if not self.has_width_and_height_constraint(o.Base):
-                        _wrn(
-                            translate(
-                                "Arch",
-                                "No Width and/or Height constraint in window sketch. Window not resized.",
-                            )
-                        )
+                        _wrn(t2)
                     break
             else:
                 _wrn(translate("Arch", "No window found. Cannot continue."))
@@ -372,7 +370,8 @@ class Arch_Window:
         librarypath = FreeCAD.ParamGet(
             "User parameter:Plugins/parts_library"
         ).GetString("destination", "")
-        # librarypath should have only forward slashes already, but let's use replace() anyway just to be sure:
+        # librarypath should have only forward slashes already, but
+        # let's use replace() anyway just to be sure:
         librarypath = librarypath.replace("\\", "/") + "/Architectural Parts"
         presetdir = FreeCAD.getUserAppDataDir().replace("\\", "/") + "/Arch"
         for path in [librarypath, presetdir]:

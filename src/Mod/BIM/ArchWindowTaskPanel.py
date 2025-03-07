@@ -128,7 +128,7 @@ class window_task_panel:
             if parent:
                 parent = parent[0][6:]
             comps.append([name, parent, comptype])
-        comps.sort(key = lambda comp: bool(comp[1]))
+        comps.sort(key=lambda comp: bool(comp[1]))
         widgets = {}
         for name, parent, comptype in comps:
             item = QtGui.QTreeWidgetItem([name])
@@ -206,7 +206,7 @@ class window_task_panel:
             wires = ",".join(wires)
             wires = QtGui.QStandardItem(wires)
         else:
-            compdef = [p for p in parts2 if (p and p[0].isdigit())]
+            compdef = [p for p in parts2 if (p and (p[0].isdigit() or p[0] == "-"))]
             if compdef:
                 wires = ",".join(compdef)
                 wires = QtGui.QStandardItem(wires)
@@ -614,24 +614,43 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
         if self.task.WindowParts[compindex+2]:
             parts = self.task.WindowParts[compindex+2].split(",")  # wires, hinge, mode, parent
         compdef = []
-        for p in parts:
+        plusH = False
+        plusW = False
+        for i, p in enumerate(parts):
+            if p.endswith("+V"):
+                p = p[:-2]
+                if i == 2:
+                    plusH = True
+                elif i == 3:
+                    plusW = True
             try:
-                v = FreeCAD.Units.Quantity(p).UserString
-                compdef.append(v)
+                v = FreeCAD.Units.Quantity(p)
             except ValueError:
                 pass
+            else:
+                compdef.append(v.UserString)
         if len(compdef) > 0:
             self.panel3.fieldX.setText(compdef[0])
         if len(compdef) > 1:
             self.panel3.fieldY.setText(compdef[1])
         if len(compdef) > 2:
+            if plusH:
+                try:
+                    self.panel3.checkPlusHeight.setCheckState(QtCore.Qt.Checked)
+                except (TypeError, AttributeError):
+                    self.panel3.checkPlusHeight.setChecked(True)
             self.panel3.fieldHeight.setText(compdef[2])
         if len(compdef) > 3:
+            if plusW:
+                try:
+                    self.panel3.checkPlusWidth.setCheckState(QtCore.Qt.Checked)
+                except (TypeError, AttributeError):
+                    self.panel3.checkPlusWidth.setChecked(True)
             self.panel3.fieldWidth.setText(compdef[3])
         if len(compdef) >= 8:
             try:
                 self.panel3.checkThickness.setCheckState(QtCore.Qt.Checked)
-            except:
+            except (TypeError, AttributeError):
                 self.panel3.checkThickness.setChecked(True)
             if len(compdef) > 5:
                 self.panel3.fieldTopThickness.setText(compdef[5])
@@ -645,17 +664,21 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
             self.panel3.fieldThickness.setText(compdef[4])
         result = self.panel3.exec()
         if result:
-            x = FreeCAD.Units.Quantity(self.panel3.fieldX.text()).Value
-            y = FreeCAD.Units.Quantity(self.panel3.fieldY.text()).Value
-            h = FreeCAD.Units.Quantity(self.panel3.fieldHeight.text()).Value
-            w = FreeCAD.Units.Quantity(self.panel3.fieldWidth.text()).Value
+            x = FreeCAD.Units.Quantity(self.panel3.fieldX.text()).UserString
+            y = FreeCAD.Units.Quantity(self.panel3.fieldY.text()).UserString
+            h = FreeCAD.Units.Quantity(self.panel3.fieldHeight.text()).UserString
+            if self.panel3.checkPlusHeight.checkState() in [True, QtCore.Qt.Checked]:
+                h = str(h) + "+V"
+            w = FreeCAD.Units.Quantity(self.panel3.fieldWidth.text()).UserString
+            if self.panel3.checkPlusWidth.checkState() in [True, QtCore.Qt.Checked]:
+                w = str(w) + "+V"
             if self.panel3.checkThickness.checkState() in [False, QtCore.Qt.Unchecked]:
-                t = FreeCAD.Units.Quantity(self.panel3.fieldThickness.text()).Value
+                t = FreeCAD.Units.Quantity(self.panel3.fieldThickness.text()).UserString
             else:
-                t1 = FreeCAD.Units.Quantity(self.panel3.fieldTopThickness.text()).Value
-                t2 = FreeCAD.Units.Quantity(self.panel3.fieldRightThickness.text()).Value
-                t3 = FreeCAD.Units.Quantity(self.panel3.fieldBottomThickness.text()).Value
-                t4 = FreeCAD.Units.Quantity(self.panel3.fieldLeftThickness.text()).Value
+                t1 = FreeCAD.Units.Quantity(self.panel3.fieldTopThickness.text()).UserString
+                t2 = FreeCAD.Units.Quantity(self.panel3.fieldRightThickness.text()).UserString
+                t3 = FreeCAD.Units.Quantity(self.panel3.fieldBottomThickness.text()).UserString
+                t4 = FreeCAD.Units.Quantity(self.panel3.fieldLeftThickness.text()).UserString
                 t = ",".join([str(i) for i in [t1, t2, t3, t4]])
             txt = ",".join([str(i) for i in [x, y, h, w, t]])
             self.editor_wires.setText(txt)
