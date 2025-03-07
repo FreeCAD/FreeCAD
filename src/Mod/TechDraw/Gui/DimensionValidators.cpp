@@ -426,9 +426,9 @@ DimensionGeometry TechDraw::isValidSingleEdge3d(DrawViewPart* dvp, ReferenceEntr
     TopoDS_Edge occEdge = TopoDS::Edge(refShape);
     BRepAdaptor_Curve adapt(occEdge);
     if (adapt.GetType() == GeomAbs_Line) {
-        Base::Vector3d point0 = DU::toVector3d(BRep_Tool::Pnt(TopExp::FirstVertex(occEdge)));
+        Base::Vector3d point0 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::FirstVertex(occEdge)));
         point0 = dvp->projectPoint(point0);
-        Base::Vector3d point1 = DU::toVector3d(BRep_Tool::Pnt(TopExp::LastVertex(occEdge)));
+        Base::Vector3d point1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::LastVertex(occEdge)));
         point1 = dvp->projectPoint(point1);
         Base::Vector3d line = point1 - point0;
         if (fabs(line.y) < FLT_EPSILON) {
@@ -594,11 +594,11 @@ DimensionGeometry TechDraw::isValidMultiEdge3d(DrawViewPart* dvp, ReferenceVecto
     }
 
     if (edgesAll.size() == 2) {
-        Base::Vector3d first0 = DU::toVector3d(BRep_Tool::Pnt(TopExp::FirstVertex(edgesAll.at(0))));
-        Base::Vector3d last0 = DU::toVector3d(BRep_Tool::Pnt(TopExp::LastVertex(edgesAll.at(1))));
+        Base::Vector3d first0 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::FirstVertex(edgesAll.at(0))));
+        Base::Vector3d last0 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::LastVertex(edgesAll.at(1))));
         Base::Vector3d line0 = last0 - first0;
-        Base::Vector3d first1 = DU::toVector3d(BRep_Tool::Pnt(TopExp::FirstVertex(edgesAll.at(0))));
-        Base::Vector3d last1 = DU::toVector3d(BRep_Tool::Pnt(TopExp::LastVertex(edgesAll.at(1))));
+        Base::Vector3d first1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::FirstVertex(edgesAll.at(0))));
+        Base::Vector3d last1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::LastVertex(edgesAll.at(1))));
         Base::Vector3d line1 = last1 - first1;
         line0.Normalize();
         line1.Normalize();
@@ -666,9 +666,9 @@ DimensionGeometry TechDraw::isValidVertexes3d(DrawViewPart* dvp, ReferenceVector
             || geometry1.ShapeType() != TopAbs_VERTEX) {
             return DimensionGeometry::isInvalid;
         }
-        Base::Vector3d point0 = DU::toVector3d(BRep_Tool::Pnt(TopoDS::Vertex(geometry0)));
+        Base::Vector3d point0 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopoDS::Vertex(geometry0)));
         point0 = dvp->projectPoint(point0);
-        Base::Vector3d point1 = DU::toVector3d(BRep_Tool::Pnt(TopoDS::Vertex(geometry1)));
+        Base::Vector3d point1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopoDS::Vertex(geometry1)));
         point1 = dvp->projectPoint(point1);
         Base::Vector3d line = point1 - point0;
         if (fabs(line.y) < FLT_EPSILON) {
