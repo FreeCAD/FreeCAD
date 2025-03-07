@@ -280,6 +280,8 @@ private:
 
     int defaultApplicationFontSizePixels() const;
 
+    qreal getDevicePixelRatio() const;
+
     int getApplicationLogicalDPIX() const;
 
     void updateInventorNodeSizes();
