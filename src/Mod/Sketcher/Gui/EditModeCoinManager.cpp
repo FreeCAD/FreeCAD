@@ -366,44 +366,21 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
 
     int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
 
-    int dpi = Client.getApplicationLogicalDPIX();
+    qreal devicePixelRatio = Client.getDevicePixelRatio();
 
     // simple scaling factor for hardcoded pixel values in the Sketcher
-    Client.drawingParameters.pixelScalingFactor = viewScalingFactor * dpi
-        / 96;  // 96 ppi is the standard pixel density for which pixel quantities were calculated
+    Client.drawingParameters.pixelScalingFactor = devicePixelRatio;
 
     // About sizes:
     // SoDatumLabel takes the size in points, not in pixels. This is because it uses QFont
     // internally. Coin, at least our coin at this time, takes pixels, not points.
-    //
-    // DPI considerations:
-    // With hdpi monitors, the coin font labels do not respect the size passed in pixels:
-    // https://forum.freecad.org/viewtopic.php?f=3&t=54347&p=467610#p467610
-    // https://forum.freecad.org/viewtopic.php?f=10&t=49972&start=40#p467471
-    //
-    // Because I (abdullah) have  96 dpi logical, 82 dpi physical, and I see a 35px font setting for
-    // a "1" in a datum label as 34px, and I see kilsore and Elyas screenshots showing 41px and 61px
-    // in higher resolution monitors for the same configuration, I think that coin pixel size has to
-    // be corrected by the logical dpi of the monitor. The rationale is that: a) it obviously needs
-    // dpi correction, b) with physical dpi, the ratio of representation between kilsore and me is
-    // too far away.
-    //
-    // This means that the following correction does not have a documented basis, but appears
-    // necessary so that the Sketcher is usable in HDPI monitors.
 
     Client.drawingParameters.coinFontSize =
-        std::lround(sketcherfontSize * 96.0f / dpi);  // this is in pixels
+        std::lround(sketcherfontSize * devicePixelRatio);  // this is in pixels
     Client.drawingParameters.labelFontSize = std::lround(
-        sketcherfontSize * 72.0f / dpi);  // this is in points, as SoDatumLabel uses points
-    Client.drawingParameters.constraintIconSize = std::lround(0.8 * sketcherfontSize);
-
-    // For marker size the global default is used.
-    //
-    // Rationale:
-    // -> Other WBs use the default value as is
-    // -> If a user has a HDPI, he will eventually change the value for the other WBs
-    // -> If we correct the value here in addition, we would get two times a resize
-    Client.drawingParameters.markerSize = markersize;
+        sketcherfontSize * devicePixelRatio * 96 / 72);  // this is in points, as SoDatumLabel uses points
+    Client.drawingParameters.constraintIconSize = std::lround(0.8 * sketcherfontSize * devicePixelRatio);
+    Client.drawingParameters.markerSize = std::lround(markersize * devicePixelRatio);
 
     Client.updateInventorNodeSizes();
 }
@@ -1070,6 +1047,11 @@ void EditModeCoinManager::updateVirtualSpace()
 int EditModeCoinManager::defaultApplicationFontSizePixels() const
 {
     return ViewProviderSketchCoinAttorney::defaultApplicationFontSizePixels(viewProvider);
+}
+
+qreal EditModeCoinManager::getDevicePixelRatio() const
+{
+    return ViewProviderSketchCoinAttorney::getDevicePixelRatio(viewProvider);
 }
 
 int EditModeCoinManager::getApplicationLogicalDPIX() const
