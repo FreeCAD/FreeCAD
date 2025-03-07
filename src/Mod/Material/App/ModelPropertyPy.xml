@@ -15,35 +15,64 @@
       <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
       <UserDocu>Material property descriptions.</UserDocu>
     </Documentation>
-    <Attribute Name="Name" ReadOnly="true">
+    <Attribute Name="Name" ReadOnly="false">
       <Documentation>
         <UserDocu>Property name.</UserDocu>
       </Documentation>
       <Parameter Name="Name" Type="String"/>
     </Attribute>
-    <Attribute Name="Type" ReadOnly="true">
+    <Attribute Name="DisplayName" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Property display friendly name.</UserDocu>
+      </Documentation>
+      <Parameter Name="DisplayName" Type="String"/>
+    </Attribute>
+    <Attribute Name="Type" ReadOnly="false">
       <Documentation>
         <UserDocu>Property type.</UserDocu>
       </Documentation>
       <Parameter Name="Type" Type="String"/>
     </Attribute>
-    <Attribute Name="Units" ReadOnly="true">
+    <Attribute Name="Units" ReadOnly="false">
       <Documentation>
         <UserDocu>Property units category.</UserDocu>
       </Documentation>
       <Parameter Name="Units" Type="String"/>
     </Attribute>
-    <Attribute Name="URL" ReadOnly="true">
+    <Attribute Name="URL" ReadOnly="false">
       <Documentation>
         <UserDocu>URL to a detailed description of the property.</UserDocu>
       </Documentation>
       <Parameter Name="URL" Type="String"/>
     </Attribute>
-    <Attribute Name="Description" ReadOnly="true">
+    <Attribute Name="Description" ReadOnly="false">
       <Documentation>
         <UserDocu>Property description.</UserDocu>
       </Documentation>
       <Parameter Name="Description" Type="String"/>
     </Attribute>
+    <Attribute Name="Columns" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of array columns.</UserDocu>
+      </Documentation>
+      <Parameter Name="Columns" Type="List"/>
+    </Attribute>
+    <Attribute Name="Inheritance" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID of the model in which the property is defined.</UserDocu>
+      </Documentation>
+      <Parameter Name="Inheritance" Type="String"/>
+    </Attribute>
+    <Attribute Name="Inherited" ReadOnly="true">
+      <Documentation>
+        <UserDocu>True if the property is inherited.</UserDocu>
+      </Documentation>
+      <Parameter Name="Inherited" Type="Boolean"/>
+    </Attribute>
+    <Methode Name="addColumn" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Add a model property column.</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

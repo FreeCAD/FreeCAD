@@ -130,9 +130,9 @@ TEST_F(TestMaterialProperties, TestEmpty)
 
 TEST_F(TestMaterialProperties, TestSingle)
 {
-    Materials::MaterialProperty prop(modelProp1, QLatin1String("sampleUUID"));
+    Materials::MaterialProperty prop(modelProp1, QStringLiteral("sampleUUID"));
     EXPECT_EQ(prop.getType(), Materials::MaterialValue::Quantity);
-    EXPECT_EQ(prop.getModelUUID(), QLatin1String("sampleUUID"));
+    EXPECT_EQ(prop.getModelUUID(), QStringLiteral("sampleUUID"));
     EXPECT_TRUE(prop.isNull());
     auto variant = prop.getValue();
     EXPECT_TRUE(variant.canConvert<Base::Quantity>());
@@ -146,9 +146,9 @@ TEST_F(TestMaterialProperties, TestSingle)
 void check2DArray(Materials::MaterialProperty& prop)
 {
     EXPECT_EQ(prop.getType(), Materials::MaterialValue::Array2D);
-    EXPECT_EQ(prop.getModelUUID(), QLatin1String("sampleUUID"));
+    EXPECT_EQ(prop.getModelUUID(), QStringLiteral("sampleUUID"));
     EXPECT_TRUE(prop.isNull());
-    auto array = std::static_pointer_cast<Materials::Material2DArray>(prop.getMaterialValue());
+    auto array = std::static_pointer_cast<Materials::Array2D>(prop.getMaterialValue());
     EXPECT_EQ(array->rows(), 0);
     auto variant = prop.getValue();  // Throw an error?
     EXPECT_FALSE(variant.canConvert<QString>());
@@ -162,20 +162,20 @@ void check2DArray(Materials::MaterialProperty& prop)
 
 TEST_F(TestMaterialProperties, Test2DArray)
 {
-    Materials::MaterialProperty prop(modelProp, QLatin1String("sampleUUID"));
+    Materials::MaterialProperty prop(modelProp, QStringLiteral("sampleUUID"));
     check2DArray(prop);
 }
 
 TEST_F(TestMaterialProperties, Test2DArrayCopy)
 {
-    Materials::MaterialProperty propBase(modelProp, QLatin1String("sampleUUID"));
+    Materials::MaterialProperty propBase(modelProp, QStringLiteral("sampleUUID"));
     Materials::MaterialProperty prop(propBase);
     check2DArray(prop);
 }
 
 TEST_F(TestMaterialProperties, Test2DArrayAssignment)
 {
-    Materials::MaterialProperty propBase(modelProp, QLatin1String("sampleUUID"));
+    Materials::MaterialProperty propBase(modelProp, QStringLiteral("sampleUUID"));
     Materials::MaterialProperty prop;
 
     prop = propBase;
@@ -185,9 +185,9 @@ TEST_F(TestMaterialProperties, Test2DArrayAssignment)
 void check3DArray(Materials::MaterialProperty& prop)
 {
     EXPECT_EQ(prop.getType(), Materials::MaterialValue::Array3D);
-    EXPECT_EQ(prop.getModelUUID(), QLatin1String("sampleUUID"));
+    EXPECT_EQ(prop.getModelUUID(), QStringLiteral("sampleUUID"));
     EXPECT_TRUE(prop.isNull());
-    auto array = std::static_pointer_cast<Materials::Material3DArray>(prop.getMaterialValue());
+    auto array = std::static_pointer_cast<Materials::Array3D>(prop.getMaterialValue());
     EXPECT_EQ(array->depth(), 0);
     auto variant = prop.getValue();  // Throw an error?
     EXPECT_FALSE(variant.canConvert<QString>());
@@ -201,20 +201,20 @@ void check3DArray(Materials::MaterialProperty& prop)
 
 TEST_F(TestMaterialProperties, Test3DArray)
 {
-    Materials::MaterialProperty prop(model3DProp, QLatin1String("sampleUUID"));
+    Materials::MaterialProperty prop(model3DProp, QStringLiteral("sampleUUID"));
     check3DArray(prop);
 }
 
 TEST_F(TestMaterialProperties, Test3DArrayCopy)
 {
-    Materials::MaterialProperty propBase(model3DProp, QLatin1String("sampleUUID"));
+    Materials::MaterialProperty propBase(model3DProp, QStringLiteral("sampleUUID"));
     Materials::MaterialProperty prop(propBase);
     check3DArray(prop);
 }
 
 TEST_F(TestMaterialProperties, Test3DArrayAssignment)
 {
-    Materials::MaterialProperty propBase(model3DProp, QLatin1String("sampleUUID"));
+    Materials::MaterialProperty propBase(model3DProp, QStringLiteral("sampleUUID"));
     Materials::MaterialProperty prop;
 
     prop = propBase;
