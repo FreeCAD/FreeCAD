@@ -409,8 +409,9 @@ App::Document* ImportOCAF2::getDocument(App::Document* doc, TDF_Label label)
         return doc;
     }
 
-    App::DocumentCreateFlags createFlags;
-    createFlags.createView = false;
+    App::DocumentCreateFlags createFlags {
+        .createView = false
+    };
     auto newDoc = App::GetApplication().newDocument(name.c_str(), name.c_str(), createFlags);
 
     std::ostringstream ss;
