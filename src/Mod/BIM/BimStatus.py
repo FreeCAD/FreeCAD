@@ -112,7 +112,8 @@ def setStatusIcons(show=True):
     mw = FreeCADGui.getMainWindow()
     if mw:
         st = mw.statusBar()
-        statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
+        statuswidget = st.findChild(QtGui.QToolBar,
+                                    translate("bimStatusBar", "BIM status widget"))
         if show:
             if statuswidget:
                 statuswidget.show()
@@ -120,7 +121,7 @@ def setStatusIcons(show=True):
                     statuswidget.propertybuttons.show()
             else:
                 statuswidget = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
-                statuswidget.setObjectName("BIMStatusWidget")
+                statuswidget.setObjectName(translate("bimStatusBar", "BIM status widget"))
                 s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetInt("ToolbarIconSize", 24)
                 statuswidget.setIconSize(QtCore.QSize(s,s))
                 st.insertPermanentWidget(2, statuswidget)
@@ -219,7 +220,8 @@ def setStatusIcons(show=True):
             if statuswidget is None:
                 # when switching workbenches, the toolbar sometimes "jumps"
                 # out of the status bar to any other dock area...
-                statuswidget = mw.findChild(QtGui.QToolBar, "BIMStatusWidget")
+                statuswidget = mw.findChild(QtGui.QToolBar,
+                                            translate("bimStatusBar", "BIM status widget"))
             if statuswidget:
                 statuswidget.hide()
                 statuswidget.toggleViewAction().setVisible(False)

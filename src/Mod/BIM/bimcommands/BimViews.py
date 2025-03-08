@@ -51,7 +51,8 @@ class BIM_Views:
         bimviewsbutton = None
         mw = FreeCADGui.getMainWindow()
         st = mw.statusBar()
-        statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
+        statuswidget = st.findChild(QtGui.QToolBar,
+                                    translate("bimStatusBar", "BIM status widget"))
         if statuswidget and hasattr(statuswidget, "bimviewsbutton"):
             bimviewsbutton = statuswidget.bimviewsbutton
         if vm:
@@ -163,7 +164,8 @@ class BIM_Views:
         from PySide import QtGui
 
         st = FreeCADGui.getMainWindow().statusBar()
-        statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
+        statuswidget = st.findChild(QtGui.QToolBar,
+                                    translate("bimStatusBar", "BIM status widget"))
         if statuswidget and hasattr(statuswidget, "bimviewsbutton"):
             statuswidget.bimviewsbutton.setChecked(False)
         PARAMS.SetBool("RestoreBimViews", False)
