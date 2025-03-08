@@ -75,7 +75,7 @@ class BIM_IfcProperties:
         # restore saved values
         self.form.onlySelected.setChecked(PARAMS.GetInt("IfcPropertiesSelectedState", 0))
         self.form.onlyVisible.setChecked(PARAMS.GetInt("IfcPropertiesVisibleState", 0))
-        w = PARAMS.GetInt("BimIfcPropertiesDialogWidth", 567)
+        w = PARAMS.GetInt("BimIfcPropertiesDialogWidth", 1024)
         h = PARAMS.GetInt("BimIfcPropertiesDialogHeight", 608)
         self.form.resize(w, h)
 
