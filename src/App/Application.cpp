@@ -171,11 +171,6 @@
 FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
-//using namespace Base;
-//using namespace std;
-//using namespace boost;
-//using namespace boost::program_options;
-//using Base::FileInfo;
 namespace sp = std::placeholders;
 
 //==========================================================================
