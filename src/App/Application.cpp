@@ -175,7 +175,7 @@ using namespace App;
 //using namespace std;
 //using namespace boost;
 //using namespace boost::program_options;
-using Base::FileInfo;
+//using Base::FileInfo;
 namespace sp = std::placeholders;
 
 //==========================================================================
@@ -534,7 +534,7 @@ bool Application::closeDocument(const char* name)
         setActiveDocument(static_cast<Document*>(nullptr));
     std::unique_ptr<Document> delDoc (pos->second);
     DocMap.erase( pos );
-    DocFileMap.erase(FileInfo(delDoc->FileName.getValue()).filePath());
+    DocFileMap.erase(Base::FileInfo(delDoc->FileName.getValue()).filePath());
 
     _objCount = -1;
 
@@ -684,17 +684,17 @@ Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCa
         for(const auto &v : DocMap) {
             const auto &file = v.second->FileName.getStrValue();
             if(!file.empty())
-                DocFileMap[FileInfo(file.c_str()).filePath()] = v.second;
+                DocFileMap[Base::FileInfo(file.c_str()).filePath()] = v.second;
         }
     }
-    auto it = DocFileMap.find(FileInfo(path).filePath());
+    auto it = DocFileMap.find(Base::FileInfo(path).filePath());
     if(it != DocFileMap.end())
         return it->second;
 
     if (checkCanonical == PathMatchMode::MatchAbsolute)
         return nullptr;
 
-    std::string filepath = FileInfo(path).filePath();
+    std::string filepath = Base::FileInfo(path).filePath();
     QString canonicalPath = QFileInfo(QString::fromUtf8(path)).canonicalFilePath();
     for (const auto &v : DocMap) {
         QFileInfo fi(QString::fromUtf8(v.second->FileName.getValue()));
@@ -922,7 +922,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
         bool isMainDoc, DocumentInitFlags initFlags,
         std::vector<std::string> &&objNames)
 {
-    FileInfo File(FileName);
+    Base::FileInfo File(FileName);
 
     if (!File.exists()) {
         std::stringstream str;
@@ -983,7 +983,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
 
     std::string name;
     if(propFileName != FileName) {
-        FileInfo fi(propFileName);
+        Base::FileInfo fi(propFileName);
         name = fi.fileNamePure();
     }else
         name = File.fileNamePure();
@@ -1002,7 +1002,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
         // read the document
         newDoc->restore(File.filePath().c_str(),true,objNames);
         if(!DocFileMap.empty())
-            DocFileMap[FileInfo(newDoc->FileName.getValue()).filePath()] = newDoc;
+            DocFileMap[Base::FileInfo(newDoc->FileName.getValue()).filePath()] = newDoc;
         return newDoc;
     }
     // if the project file itself is corrupt then
