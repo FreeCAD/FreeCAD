@@ -174,7 +174,7 @@ using namespace App;
 //using namespace Base;
 //using namespace std;
 //using namespace boost;
-using namespace boost::program_options;
+//using namespace boost::program_options;
 using Base::FileInfo;
 namespace sp = std::placeholders;
 
@@ -2215,20 +2215,20 @@ void Application::initTypes()
 
 namespace {
 
-void parseProgramOptions(int ac, char ** av, const std::string& exe, variables_map& vm)
+void parseProgramOptions(int ac, char ** av, const std::string& exe, boost::program_options::variables_map& vm)
 {
     // Declare a group of options that will be
     // allowed only on the command line
-    options_description generic("Generic options");
+    boost::program_options::options_description generic("Generic options");
     generic.add_options()
     ("version,v", "Prints version string")
     ("verbose", "Prints verbose version string")
     ("help,h", "Prints help message")
     ("console,c", "Starts in console mode")
-    ("response-file", value<std::string>(),"Can be specified with '@name', too")
+    ("response-file", boost::program_options::value<std::string>(),"Can be specified with '@name', too")
     ("dump-config", "Dumps configuration")
-    ("get-config", value<std::string>(), "Prints the value of the requested configuration key")
-    ("set-config", value< std::vector<std::string> >()->multitoken(), "Sets the value of a configuration key")
+    ("get-config", boost::program_options::value<std::string>(), "Prints the value of the requested configuration key")
+    ("set-config", boost::program_options::value< std::vector<std::string> >()->multitoken(), "Sets the value of a configuration key")
     ("keep-deprecated-paths", "If set then config files are kept on the old location")
     ;
 
@@ -2240,18 +2240,18 @@ void parseProgramOptions(int ac, char ** av, const std::string& exe, variables_m
     boost::program_options::options_description config("Configuration");
     config.add_options()
     ("write-log,l", descr.str().c_str())
-    ("log-file", value<std::string>(), "Unlike --write-log this allows logging to an arbitrary file")
-    ("user-cfg,u", value<std::string>(),"User config file to load/save user settings")
-    ("system-cfg,s", value<std::string>(),"System config file to load/save system settings")
-    ("run-test,t", value<std::string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.")
-    ("run-open,r", value<std::string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
-    ("module-path,M", value< std::vector<std::string> >()->composing(),"Additional module paths")
-    ("macro-path,E", value< std::vector<std::string> >()->composing(),"Additional macro paths")
-    ("python-path,P", value< std::vector<std::string> >()->composing(),"Additional python paths")
-    ("disable-addon", value< std::vector<std::string> >()->composing(),"Disable a given addon.")
+    ("log-file", boost::program_options::value<std::string>(), "Unlike --write-log this allows logging to an arbitrary file")
+    ("user-cfg,u", boost::program_options::value<std::string>(),"User config file to load/save user settings")
+    ("system-cfg,s", boost::program_options::value<std::string>(),"System config file to load/save system settings")
+    ("run-test,t", boost::program_options::value<std::string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.")
+    ("run-open,r", boost::program_options::value<std::string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
+    ("module-path,M", boost::program_options::value< std::vector<std::string> >()->composing(),"Additional module paths")
+    ("macro-path,E", boost::program_options::value< std::vector<std::string> >()->composing(),"Additional macro paths")
+    ("python-path,P", boost::program_options::value< std::vector<std::string> >()->composing(),"Additional python paths")
+    ("disable-addon", boost::program_options::value< std::vector<std::string> >()->composing(),"Disable a given addon.")
     ("single-instance", "Allow to run a single instance of the application")
     ("safe-mode", "Force enable safe mode")
-    ("pass", value< std::vector<std::string> >()->multitoken(), "Ignores the following arguments and pass them through to be used by a script")
+    ("pass", boost::program_options::value< std::vector<std::string> >()->multitoken(), "Ignores the following arguments and pass them through to be used by a script")
     ;
 
 
@@ -2318,7 +2318,7 @@ void parseProgramOptions(int ac, char ** av, const std::string& exe, variables_m
 
     // 0000659: SIGABRT on startup in boost::program_options (Boost 1.49)
     // Add some text to the constructor
-    options_description cmdline_options("Command-line options");
+    boost::program_options::options_description cmdline_options("Command-line options");
     cmdline_options.add(generic).add(config).add(hidden);
 
     boost::program_options::options_description config_file_options("Config");
@@ -2383,7 +2383,7 @@ void parseProgramOptions(int ac, char ** av, const std::string& exe, variables_m
     }
 }
 
-void processProgramOptions(const variables_map& vm, std::map<std::string,std::string>& mConfig)
+void processProgramOptions(const boost::program_options::variables_map& vm, std::map<std::string,std::string>& mConfig)
 {
     if (vm.count("version")) {
         std::stringstream str;
@@ -2582,7 +2582,7 @@ void Application::initConfig(int argc, char ** argv)
         }
     }
 
-    variables_map vm;
+    boost::program_options::variables_map vm;
     {
         BOOST_SCOPE_EXIT_ALL(&) {
             // console-mode needs to be set (if possible) also in case parseProgramOptions
