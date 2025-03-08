@@ -134,7 +134,7 @@ bool QuickMeasure::shouldMeasure(const Gui::SelectionChanges& msg) const
 
 bool QuickMeasure::isObjAcceptable(App::DocumentObject* obj)
 {
-    // only measure shapes
+    // only measure shapes. Exclude datums that derive from Part::Feature
     if (obj && obj->isDerivedFrom<Part::Feature>() && !obj->isDerivedFrom<Part::Datum>()) {
         return true;
     }
