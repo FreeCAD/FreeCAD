@@ -68,8 +68,7 @@ namespace PartDesign {
 const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ nullptr };
 const char* Hole::ThreadDepthTypeEnums[]             = { "Hole Depth", "Dimension", "Tapped (DIN76)",  nullptr };
 const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "NPT", "BSP", "BSW", "BSF", nullptr};
-const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", nullptr};
-const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", nullptr };
+const char* Hole::ThreadFitEnums[]                   = { "Standard", "Tight", "Loose", nullptr };
 const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullptr};
 
 /* "None" profile */
@@ -754,7 +753,7 @@ Hole::Hole()
     ThreadClass.setEnums(ThreadClass_None_Enums);
 
     ADD_PROPERTY_TYPE(ThreadFit, (0L), "Hole", App::Prop_None, "Clearance hole fit");
-    ThreadFit.setEnums(ClearanceMetricEnums);
+    ThreadFit.setEnums(ThreadFitEnums);
 
     ADD_PROPERTY_TYPE(Diameter, (6.0), "Hole", App::Prop_None, "Diameter");
     Diameter.setConstraints(&diameterRange);
@@ -1415,27 +1414,22 @@ void Hole::onChanged(const App::Property* prop)
         else if (type == "ISOMetricProfile") {
             ThreadClass.setEnums(ThreadClass_ISOmetric_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetric_Enums);
-            ThreadFit.setEnums(ClearanceMetricEnums);
         }
         else if (type == "ISOMetricFineProfile") {
             ThreadClass.setEnums(ThreadClass_ISOmetricfine_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetricfine_Enums);
-            ThreadFit.setEnums(ClearanceMetricEnums);
         }
         else if (type == "UNC") {
             ThreadClass.setEnums(ThreadClass_UNC_Enums);
             HoleCutType.setEnums(HoleCutType_UNC_Enums);
-            ThreadFit.setEnums(ClearanceUTSEnums);
         }
         else if (type == "UNF") {
             ThreadClass.setEnums(ThreadClass_UNF_Enums);
             HoleCutType.setEnums(HoleCutType_UNF_Enums);
-            ThreadFit.setEnums(ClearanceUTSEnums);
         }
         else if (type == "UNEF") {
             ThreadClass.setEnums(ThreadClass_UNEF_Enums);
             HoleCutType.setEnums(HoleCutType_UNEF_Enums);
-            ThreadFit.setEnums(ClearanceUTSEnums);
         }
         else if (type == "BSP") {
             ThreadClass.setEnums(ThreadClass_None_Enums);
