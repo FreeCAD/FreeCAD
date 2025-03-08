@@ -141,7 +141,7 @@ PYCXX_EXPORT bool _TraceBack_Check( PyObject *v );
 PYCXX_EXPORT PyTypeObject * _Tuple_Type();
 PYCXX_EXPORT bool _Tuple_Check( PyObject *op );
 
-# if PY_MAJOR_VERSION == 2 || !defined( Py_LIMITED_API )
+# if !defined( Py_LIMITED_API )
 PYCXX_EXPORT int &_Py_DebugFlag();
 PYCXX_EXPORT int &_Py_InteractiveFlag();
 PYCXX_EXPORT int &_Py_OptimizeFlag();
