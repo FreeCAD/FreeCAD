@@ -24,6 +24,10 @@ set(PartGui_LIBS
     MatGui
 )
 
+if(BUILD_TRACY_FRAME_PROFILER)
+    list(APPEND PartGui_LIBS TracyClient)
+endif()
+
 if(MSVC)
     include_directories(
         ${CMAKE_SOURCE_DIR}/src/3rdParty/OpenGL/api
