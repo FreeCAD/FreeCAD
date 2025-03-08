@@ -33,12 +33,12 @@ namespace e57
    class VectorNodeImpl : public StructureNodeImpl
    {
    public:
-      explicit VectorNodeImpl( ImageFileImplWeakPtr destImageFile, bool allowHeteroChildren );
+      VectorNodeImpl( ImageFileImplWeakPtr destImageFile, bool allowHeteroChildren );
       ~VectorNodeImpl() override = default;
 
       NodeType type() const override
       {
-         return E57_VECTOR;
+         return TypeVector;
       }
 
       bool isTypeEquivalent( NodeImplSharedPtr ni ) override;
@@ -49,11 +49,16 @@ namespace e57
       void writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, int indent,
                      const char *forcedFieldName = nullptr ) override;
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
       void dump( int indent = 0, std::ostream &os = std::cout ) const override;
 #endif
 
    private:
+      // Because we are overriding set(), it is hiding the other overrides in StructureNodeImpl.
+      // This will pull them in.
+      // Fixes the "overloaded-virtual" warning in gcc.
+      using StructureNodeImpl::set;
+
       bool allowHeteroChildren_;
    };
 }
