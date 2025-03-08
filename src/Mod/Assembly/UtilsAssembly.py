@@ -177,15 +177,7 @@ def getObject(ref):
             return obj
 
         elif obj.TypeId == "PartDesign::Body":
-            if i + 1 < len(names):
-                obj2 = None
-                for obji in obj.OutList:
-                    if obji.Name == names[i + 1]:
-                        obj2 = obji
-                        break
-                if obj2 and isBodySubObject(obj2):
-                    return obj2
-            return obj
+            return process_body(obj, obj, names, i)
 
         elif obj.isDerivedFrom("Part::Feature"):
             # primitive, fastener, gear ...
@@ -194,15 +186,7 @@ def getObject(ref):
         elif isLink(obj):
             linked_obj = obj.getLinkedObject()
             if linked_obj.TypeId == "PartDesign::Body":
-                if i + 1 < len(names):
-                    obj2 = None
-                    for obji in linked_obj.OutList:
-                        if obji.Name == names[i + 1]:
-                            obj2 = obji
-                            break
-                    if obj2 and isBodySubObject(obj2):
-                        return obj2
-                return obj
+                return process_body(linked_obj, obj, names, i)
             elif linked_obj.isDerivedFrom("Part::Feature"):
                 return obj
             else:
@@ -210,6 +194,29 @@ def getObject(ref):
                 continue
 
     return None
+
+
+def process_body(body, returnObj, names, i):
+    # If there's a next name, it could either be elementName, in which case we can return the Body.
+    # But it could be a subobject like Sketch or datums.
+    if i + 1 < len(names):
+        obj2 = None
+        for obji in body.OutList:
+            if obji.Name == names[i + 1]:
+                obj2 = obji
+                break
+        if obj2 and isBodySubObject(obj2):
+            # obj2 can be a LCS or a Sketch. But it can also be a LCS's Axis or plane.
+            if i + 2 < len(names):
+                obj3 = None
+                for obji in obj2.OutList:
+                    if obji.Name == names[i + 2]:
+                        obj3 = obji
+                        break
+                if obj3 and isBodySubObject(obj3):
+                    return obj3
+            return obj2
+    return returnObj
 
 
 def isBodySubObject(obj):

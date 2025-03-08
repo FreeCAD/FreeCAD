@@ -123,11 +123,7 @@ InteractiveInterpreter::InteractiveInterpreter()
     PyObject* func = PyObject_GetAttrString(module, "InteractiveInterpreter");
     PyObject* args = Py_BuildValue("()");
     d = new InteractiveInterpreterP;
-#if PY_VERSION_HEX < 0x03090000
-    d->interpreter = PyEval_CallObject(func,args);
-#else
     d->interpreter = PyObject_CallObject(func,args);
-#endif
     Py_DECREF(args);
     Py_DECREF(func);
     Py_DECREF(module);
@@ -175,11 +171,7 @@ PyObject* InteractiveInterpreter::compile(const char* source) const
     Base::PyGILStateLocker lock;
     PyObject* func = PyObject_GetAttrString(d->interpreter, "compile");
     PyObject* args = Py_BuildValue("(s)", source);
-#if PY_VERSION_HEX < 0x03090000
-    PyObject* eval = PyEval_CallObject(func,args);  // must decref later
-#else
     PyObject* eval = PyObject_CallObject(func,args);  // must decref later
-#endif
 
     Py_XDECREF(args);
     Py_XDECREF(func);
@@ -211,11 +203,7 @@ int InteractiveInterpreter::compileCommand(const char* source) const
     Base::PyGILStateLocker lock;
     PyObject* func = PyObject_GetAttrString(d->interpreter, "compile");
     PyObject* args = Py_BuildValue("(s)", source);
-#if PY_VERSION_HEX < 0x03090000
-    PyObject* eval = PyEval_CallObject(func,args);  // must decref later
-#else
     PyObject* eval = PyObject_CallObject(func,args);  // must decref later
-#endif
 
     Py_DECREF(args);
     Py_DECREF(func);
