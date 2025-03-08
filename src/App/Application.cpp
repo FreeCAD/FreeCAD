@@ -173,7 +173,7 @@ FC_LOG_LEVEL_INIT("App", true, true)
 using namespace App;
 //using namespace Base;
 using namespace std;
-using namespace boost;
+//using namespace boost;
 using namespace boost::program_options;
 using Base::FileInfo;
 namespace sp = std::placeholders;
@@ -2373,8 +2373,8 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
         stringstream ss;
         ss << ifs.rdbuf();
         // Split the file content
-        char_separator<char> sep(" \n\r");
-        tokenizer<char_separator<char> > tok(ss.str(), sep);
+        boost::char_separator<char> sep(" \n\r");
+        boost::tokenizer<boost::char_separator<char> > tok(ss.str(), sep);
         vector<string> args2;
         copy(tok.begin(), tok.end(), back_inserter(args2));
         // Parse the file and store the options
