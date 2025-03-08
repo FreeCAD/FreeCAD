@@ -47,9 +47,8 @@ public:
     ReferenceSelection(App::DocumentObject* support_, AllowSelectionFlags allowedTypes)
         : Gui::SelectionFilterGate(nullPointer())
         , support(support_)
-        , type(static_cast<AllowSelectionFlags>(allowedTypes))
+        , type(allowedTypes)
     {
-
     }
     /**
       * Allow the user to pick only edges or faces (or both) from the defined support

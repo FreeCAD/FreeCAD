@@ -92,7 +92,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
             return false;
     }
 #endif
-    if (!sSubName || sSubName[0] == '\0'){
+    if (Base::Tools::isNullOrEmpty(sSubName)){
         if (pObj->isDerivedFrom<Sketcher::SketchObject>()) {
              return type.testFlag(AllowSelection::SKETCH);
         }
@@ -116,14 +116,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
 PartDesign::Body* ReferenceSelection::getBody() const
 {
-    PartDesign::Body *body = nullptr;
-    if (support) {
-        body = PartDesign::Body::findBodyOf (support);
-    }
-    else {
-        body = PartDesignGui::getBody(false);
-    }
-
+    PartDesign::Body *body = support? PartDesign::Body::findBodyOf (support) : body = PartDesignGui::getBody(false);
     return body;
 }
 
