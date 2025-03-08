@@ -221,7 +221,7 @@ void QGISVGTemplate::createClickHandles()
         auto newLength = brect.width();
 
         double charWidth = newLength / editableNameString.length();
-        if (textAnchorString == QStringLiteral("middle")) {
+        if (textAnchorString == QLatin1String("middle")) {
             x = x - editableNameString.length() * charWidth / 2;
         }
 

@@ -134,7 +134,7 @@ bool MaterialManager::isMaterial(const QFileInfo& file) const
         return false;
     }
     // check file extension
-    if (file.suffix() == QStringLiteral("FCMat")) {
+    if (file.suffix() == QLatin1String("FCMat")) {
         return true;
     }
     return false;

@@ -365,7 +365,7 @@ QPixmap SplashScreen::splashImage()
         int v = QtTools::horizontalAdvance(metricVer, version);
 
         int x = -1, y = -1;
-        QRegularExpression rx(QLatin1String("(\\d+).(\\d+)"));
+        QRegularExpression rx(QStringLiteral("(\\d+).(\\d+)"));
         auto match = rx.match(position);
         if (match.hasMatch()) {
             x = match.captured(1).toInt();

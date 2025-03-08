@@ -99,7 +99,7 @@ bool MaterialConfigLoader::readFile(const QString& path, QMap<QString, QString>&
                     prefix = line.mid(1, end - 1) + QStringLiteral("/");
 
                     // Render WB uses both Render and Rendering
-                    if (prefix == QStringLiteral("Rendering/")) {
+                    if (prefix == QLatin1String("Rendering/")) {
                         prefix = QStringLiteral("Render/");
                     }
                 }
@@ -152,7 +152,7 @@ void MaterialConfigLoader::splitTextureObject(const QString& value,
                                               QString* object)
 {
     splitTexture(value, texture, remain);
-    if (*remain == QStringLiteral("Object")) {
+    if (*remain == QLatin1String("Object")) {
         *remain = QString();  // Empty string
         *object = QStringLiteral("true");
     }
@@ -772,19 +772,19 @@ void MaterialConfigLoader::addRenderTexture(QMap<QString, QString>& fcmat,
             if (renderName.isEmpty()) {
                 renderName = list1[2];
             }
-            if (list1[3] == QStringLiteral("Images")) {
+            if (list1[3] == QLatin1String("Images")) {
                 renderImage->push_back(value(fcmat, key.toStdString(), ""));
             }
-            else if (list1[3] == QStringLiteral("Scale")) {
+            else if (list1[3] == QLatin1String("Scale")) {
                 renderScale = value(fcmat, key.toStdString(), "");
             }
-            else if (list1[3] == QStringLiteral("Rotation")) {
+            else if (list1[3] == QLatin1String("Rotation")) {
                 renderRotation = value(fcmat, key.toStdString(), "");
             }
-            else if (list1[3] == QStringLiteral("TranslationU")) {
+            else if (list1[3] == QLatin1String("TranslationU")) {
                 renderTranslationU = value(fcmat, key.toStdString(), "");
             }
-            else if (list1[3] == QStringLiteral(" TranslationV")) {
+            else if (list1[3] == QLatin1String(" TranslationV")) {
                 renderTranslationV = value(fcmat, key.toStdString(), "");
             }
         }
