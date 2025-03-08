@@ -293,12 +293,8 @@ public:
     void clearOutListCache() const;
     /// get all possible paths from this to another object following the OutList
     std::vector<std::list<App::DocumentObject*>> getPathsByOutList(App::DocumentObject* to) const;
-#ifdef USE_OLD_DAG
     /// get all objects link to this object
-    std::vector<App::DocumentObject*> getInList(void) const
-#else
     const std::vector<App::DocumentObject*>& getInList() const;
-#endif
         /// get all objects link directly or indirectly to this object
         std::vector<App::DocumentObject*> getInListRecursive() const;
     /** Get a set of all objects linking to this object, including possible external parent objects

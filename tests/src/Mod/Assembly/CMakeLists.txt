@@ -1,5 +1,5 @@
 
-target_include_directories(Assembly_tests_run PUBLIC
+target_include_directories(Assembly_tests_run SYSTEM PUBLIC
     ${EIGEN3_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
     ${PYCXX_INCLUDE_DIR}

@@ -1,6 +1,10 @@
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${COIN3D_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${PYCXX_INCLUDE_DIR}

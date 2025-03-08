@@ -192,7 +192,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
     Property* prop = sheet->getPropertyByName(address.c_str());
 
     if (role == Qt::BackgroundRole) {
-        Color color;
+        Base::Color color;
 
         if (cell->getBackground(color)) {
             return QVariant::fromValue(
@@ -292,7 +292,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
 
         switch (role) {
             case Qt::ForegroundRole: {
-                Color color;
+                Base::Color color;
 
                 if (cell->getForeground(color)) {
                     return QVariant::fromValue(
@@ -327,7 +327,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
 
         switch (role) {
             case Qt::ForegroundRole: {
-                Color color;
+                Base::Color color;
 
                 if (cell->getForeground(color)) {
                     return QVariant::fromValue(
@@ -403,7 +403,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
 
         switch (role) {
             case Qt::ForegroundRole: {
-                Color color;
+                Base::Color color;
 
                 if (cell->getForeground(color)) {
                     return QVariant::fromValue(
@@ -459,7 +459,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
 
         switch (role) {
             case Qt::ForegroundRole: {
-                Color color;
+                Base::Color color;
 
                 if (cell->getForeground(color)) {
                     return QVariant::fromValue(

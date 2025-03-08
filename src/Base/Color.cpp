@@ -30,7 +30,7 @@
 
 #include "Color.h"
 
-using namespace App;
+using namespace Base;
 
 
 // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)

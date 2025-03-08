@@ -10,6 +10,10 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
@@ -75,18 +79,31 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 endif()
 
 generate_from_xml(TypePy)
+generate_from_py(Type)
 generate_from_xml(BaseClassPy)
+generate_from_py(BaseClass)
 generate_from_xml(BoundBoxPy)
+generate_from_py(BoundBox)
 generate_from_xml(CoordinateSystemPy)
+generate_from_py(CoordinateSystem)
 generate_from_xml(PersistencePy)
+generate_from_py(Persistence)
 generate_from_xml(VectorPy)
+generate_from_py(Vector)
 generate_from_xml(MatrixPy)
+generate_from_py(Matrix)
 generate_from_xml(RotationPy)
+generate_from_py(Rotation)
 generate_from_xml(PlacementPy)
+generate_from_py(Placement)
 generate_from_xml(AxisPy)
+generate_from_py(Axis)
 generate_from_xml(UnitPy)
+generate_from_py(Unit)
 generate_from_xml(QuantityPy)
+generate_from_py(Quantity)
 generate_from_xml(PrecisionPy)
+generate_from_py(Precision)
 generate_from_any(Parameter.xsd Parameter.inl xmlSchemeString)
 
 if(SWIG_FOUND)
@@ -174,6 +191,7 @@ SET(FreeCADBase_CPP_SRCS
     Builder3D.cpp
     Console.cpp
     ConsoleObserver.cpp
+    Color.cpp
     CoordinateSystem.cpp
     CoordinateSystemPyImp.cpp
     Debugger.cpp
@@ -246,6 +264,7 @@ SET(FreeCADBase_HPP_SRCS
     Console.h
     ConsoleObserver.h
     Converter.h
+    Color.h
     CoordinateSystem.h
     Debugger.h
     DualNumber.h

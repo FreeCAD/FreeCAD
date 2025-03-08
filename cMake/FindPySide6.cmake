@@ -4,17 +4,13 @@
 # cMake find_package() call
 
 find_package(PySide6 CONFIG QUIET)
-if(NOT PySide6_FOUND)
-    if(NOT PySide6_INCLUDE_DIRS AND TARGET PySide6::pyside6)
-        get_property(PySide6_INCLUDE_DIRS TARGET PySide6::pyside6 PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-    endif()
 
-    if(NOT PySide6_INCLUDE_DIRS)
-        find_pip_package(PySide6)
-    else()
-        set(PySide6_FOUND ON)
-    endif()
+if(NOT PySide6_INCLUDE_DIRS AND TARGET PySide6::pyside6)
+    get_property(PySide6_INCLUDE_DIRS TARGET PySide6::pyside6 PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
+endif()
 
+if(NOT PySide6_INCLUDE_DIRS)
+    find_pip_package(PySide6)
 endif()
 
 # Also provide the old-style variables so we don't have to update everything yet

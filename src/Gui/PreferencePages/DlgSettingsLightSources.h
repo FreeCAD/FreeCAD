@@ -77,7 +77,7 @@ private:
     QPointer <View3DInventorViewer> view;
     SoOrthographicCamera *camera = nullptr;
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View/LightSources");
 
     float zoomStep = 3.0f;
 };

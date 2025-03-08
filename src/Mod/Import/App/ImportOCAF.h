@@ -81,7 +81,7 @@ private:
                      const std::string&,
                      std::vector<App::DocumentObject*>&);
     void loadColors(Part::Feature* part, const TopoDS_Shape& aShape);
-    virtual void applyColors(Part::Feature*, const std::vector<App::Color>&)
+    virtual void applyColors(Part::Feature*, const std::vector<Base::Color>&)
     {}
     static void tryPlacementFromLoc(App::GeoFeature*, const TopLoc_Location&);
     static void tryPlacementFromMatrix(App::GeoFeature*, const Base::Matrix4D&);
@@ -100,16 +100,16 @@ class ImportExport ImportOCAFCmd: public ImportOCAF
 {
 public:
     ImportOCAFCmd(Handle(TDocStd_Document) h, App::Document* d, const std::string& name);
-    std::map<Part::Feature*, std::vector<App::Color>> getPartColorsMap() const
+    std::map<Part::Feature*, std::vector<Base::Color>> getPartColorsMap() const
     {
         return partColors;
     }
 
 private:
-    void applyColors(Part::Feature* part, const std::vector<App::Color>& colors) override;
+    void applyColors(Part::Feature* part, const std::vector<Base::Color>& colors) override;
 
 private:
-    std::map<Part::Feature*, std::vector<App::Color>> partColors;
+    std::map<Part::Feature*, std::vector<Base::Color>> partColors;
 };
 
 class ImportXCAF
@@ -122,7 +122,7 @@ public:
 private:
     void createShape(const TopoDS_Shape& shape, bool perface = false, bool setname = false) const;
     void loadShapes(const TDF_Label& label);
-    virtual void applyColors(Part::Feature*, const std::vector<App::Color>&)
+    virtual void applyColors(Part::Feature*, const std::vector<Base::Color>&)
     {}
 
 private:

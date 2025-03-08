@@ -34,8 +34,6 @@ std::vector<SelectionObserverPython*> SelectionObserverPython::_instances;
 
 void SelectionObserverPythonHandler::init(PyObject* obj)
 {
-    this->inst = obj;
-
 #undef FC_PY_ELEMENT
 #define FC_PY_ELEMENT(_name) FC_PY_GetCallable(obj,#_name,py_##_name);
     FC_PY_SEL_OBSERVER
@@ -209,7 +207,7 @@ void SelectionObserverPythonHandler::removePreselection(const SelectionChanges& 
 
 
 SelectionObserverPython::SelectionObserverPython(const Py::Object& obj, ResolveMode resolve)
-    : SelectionObserver(true, resolve)
+    : SelectionObserver(true, resolve), inst(obj)
 {
     this->init(obj.ptr());
 }

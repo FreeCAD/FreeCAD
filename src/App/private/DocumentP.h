@@ -92,11 +92,6 @@ struct DocumentP
     unsigned int UndoMaxStackSize;
     std::string programVersion;
     mutable HasherMap hashers;
-#ifdef USE_OLD_DAG
-    DependencyList DepList;
-    std::map<DocumentObject*, Vertex> VertexObjectList;
-    std::map<Vertex, DocumentObject*> vertexMap;
-#endif  // USE_OLD_DAG
     std::multimap<const App::DocumentObject*, std::unique_ptr<App::DocumentObjectExecReturn>>
         _RecomputeLog;
 

@@ -12,6 +12,10 @@ endif(BUILD_FEM_NETGEN)
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
@@ -135,7 +139,7 @@ if (BUILD_FLAT_MESH)
             endif()
 
             if(Boost_FOUND)
-                include_directories(${Boost_INCLUDE_DIRS})
+                include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
                 SET(FLATMESH_SRCS
                     MeshFlattening.cpp
                     MeshFlattening.h

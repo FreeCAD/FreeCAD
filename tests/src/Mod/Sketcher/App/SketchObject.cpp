@@ -134,7 +134,8 @@ TEST_F(SketchObjectTest, testGetPointFromGeomPoint)
     auto ptMid = Sketcher::SketchObject::getPoint(&point, Sketcher::PointPos::mid);
     auto ptEnd = Sketcher::SketchObject::getPoint(&point, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    auto ptNone = Sketcher::SketchObject::getPoint(&point, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone =
+        Sketcher::SketchObject::getPoint(&point, Sketcher::PointPos::none);
 
     // Assert
     EXPECT_DOUBLE_EQ(ptStart[0], 1.0);
@@ -156,10 +157,12 @@ TEST_F(SketchObjectTest, testGetPointFromGeomLineSegment)
     // Act
     auto ptStart = Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::start);
     // TODO: Maybe we want this to give an error instead of some default value
-    auto ptMid = Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::mid);
+    [[maybe_unused]] auto ptMid =
+        Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::mid);
     auto ptEnd = Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    auto ptNone = Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone =
+        Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::none);
 
     // Assert
     EXPECT_DOUBLE_EQ(ptStart[0], 1.0);
@@ -184,7 +187,8 @@ TEST_F(SketchObjectTest, testGetPointFromGeomCircle)
     // TODO: Maybe we want this to give an error instead of some default value
     auto ptEnd = Sketcher::SketchObject::getPoint(&circle, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    auto ptNone = Sketcher::SketchObject::getPoint(&circle, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone =
+        Sketcher::SketchObject::getPoint(&circle, Sketcher::PointPos::none);
 
     // Assert
     // NOTE: Presently, start/end points of a circle are defined as the point on circle right of the
@@ -215,7 +219,8 @@ TEST_F(SketchObjectTest, testGetPointFromGeomEllipse)
     // TODO: Maybe we want this to give an error instead of some default value
     auto ptEnd = Sketcher::SketchObject::getPoint(&ellipse, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    auto ptNone = Sketcher::SketchObject::getPoint(&ellipse, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone =
+        Sketcher::SketchObject::getPoint(&ellipse, Sketcher::PointPos::none);
 
     // Assert
     // NOTE: Presently, start/end points of an ellipse are defined as the point on the major axis in
@@ -243,7 +248,8 @@ TEST_F(SketchObjectTest, testGetPointFromGeomArcOfCircle)
     auto ptMid = Sketcher::SketchObject::getPoint(&arcOfCircle, Sketcher::PointPos::mid);
     auto ptEnd = Sketcher::SketchObject::getPoint(&arcOfCircle, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    auto ptNone = Sketcher::SketchObject::getPoint(&arcOfCircle, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone =
+        Sketcher::SketchObject::getPoint(&arcOfCircle, Sketcher::PointPos::none);
 
     // Assert
     // NOTE: parameters for arc of circle are CCW angles from positive x-axis
@@ -273,7 +279,8 @@ TEST_F(SketchObjectTest, testGetPointFromGeomArcOfEllipse)
     auto ptMid = Sketcher::SketchObject::getPoint(&arcOfEllipse, Sketcher::PointPos::mid);
     auto ptEnd = Sketcher::SketchObject::getPoint(&arcOfEllipse, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    auto ptNone = Sketcher::SketchObject::getPoint(&arcOfEllipse, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone =
+        Sketcher::SketchObject::getPoint(&arcOfEllipse, Sketcher::PointPos::none);
 
     // Assert
     // NOTE: parameters for arc of ellipse are CCW angles from positive x-axis
@@ -299,11 +306,14 @@ TEST_F(SketchObjectTest, testGetPointFromGeomArcOfHyperbola)
     arcOfHyperbola.setRange(startParam, endParam, true);
 
     // Act
-    auto ptStart = Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::start);
+    [[maybe_unused]] auto ptStart =
+        Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::start);
     auto ptMid = Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::mid);
-    auto ptEnd = Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::end);
+    [[maybe_unused]] auto ptEnd =
+        Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    auto ptNone = Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone =
+        Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::none);
 
     // Assert
     // FIXME: Figure out how this is defined
@@ -327,11 +337,14 @@ TEST_F(SketchObjectTest, testGetPointFromGeomArcOfParabola)
     arcOfParabola.setRange(startParam, endParam, true);
 
     // Act
-    auto ptStart = Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::start);
+    [[maybe_unused]] auto ptStart =
+        Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::start);
     auto ptMid = Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::mid);
-    auto ptEnd = Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::end);
+    [[maybe_unused]] auto ptEnd =
+        Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    auto ptNone = Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone =
+        Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::none);
 
     // Assert
     // FIXME: Figure out how this is defined
@@ -366,10 +379,12 @@ TEST_F(SketchObjectTest, testGetPointFromGeomBSplineCurveNonPeriodic)
     // Act
     auto ptStart = Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::start);
     // TODO: Maybe we want this to give an error instead of some default value
-    auto ptMid = Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::mid);
+    [[maybe_unused]] auto ptMid =
+        Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::mid);
     auto ptEnd = Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    auto ptNone = Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone =
+        Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::none);
 
     // Assert
     EXPECT_DOUBLE_EQ(ptStart[0], poles.front()[0]);
@@ -402,11 +417,13 @@ TEST_F(SketchObjectTest, testGetPointFromGeomBSplineCurvePeriodic)
     // TODO: Maybe we want this to give an error instead of some default value
     auto ptStart = Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::start);
     // TODO: Maybe we want this to give an error instead of some default value
-    auto ptMid = Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::mid);
+    [[maybe_unused]] auto ptMid =
+        Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::mid);
     // TODO: Maybe we want this to give an error instead of some default value
     auto ptEnd = Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::end);
     // TODO: Maybe we want this to give an error instead of some default value
-    auto ptNone = Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::none);
+    [[maybe_unused]] auto ptNone =
+        Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::none);
 
     // Assert
     // With non-trivial values for weights, knots, mults, etc, getting the coordinates is

@@ -157,4 +157,14 @@ class Magnetodynamic2DViewProxy(BaseViewProxy):
         return ":/icons/FEM_EquationMagnetodynamic2D.svg"
 
 
+class StaticCurrentProxy(BaseProxy):
+    pass
+
+
+class StaticCurrentViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/FEM_EquationStaticCurrent.svg"
+
+
 ##  @}

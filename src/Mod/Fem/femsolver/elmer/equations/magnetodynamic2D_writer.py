@@ -31,6 +31,7 @@ __url__ = "https://www.freecad.org"
 from FreeCAD import Console
 from FreeCAD import Units
 
+from femtools import femutils
 from .. import sifio
 from .. import writer as general_writer
 
@@ -135,31 +136,28 @@ class MgDyn2Dwriter:
                     )
 
     def _outputMagnetodynamic2DBodyForce(self, obj, name, equation):
-        if hasattr(obj, "CurrentDensity_re_1"):
-            # output only if current density is enabled and needed
-            if not obj.CurrentDensity_re_1_Disabled:
-                currentDensity = float(obj.CurrentDensity_re_1.getValueAs("A/m^2"))
-                self.write.bodyForce(name, "Current Density", round(currentDensity, 6))
+        if femutils.is_derived_from(obj, "Fem::ConstraintCurrentDensity") and obj.Mode == "Normal":
+            currentDensity = obj.NormalCurrentDensity_re.getValueAs("A/m^2").Value
+            self.write.bodyForce(name, "Current Density", round(currentDensity, 6))
             # imaginaries are only needed for harmonic equation
             if equation.IsHarmonic:
-                if not obj.CurrentDensity_im_1_Disabled:
-                    currentDensity = float(obj.CurrentDensity_im_1.getValueAs("A/m^2"))
-                    self.write.bodyForce(name, "Current Density Im", round(currentDensity, 6))
+                currentDensity = obj.NormalCurrentDensity_im.getValueAs("A/m^2").Value
+                self.write.bodyForce(name, "Current Density Im", round(currentDensity, 6))
 
-        if hasattr(obj, "Magnetization_re_1"):
+        if femutils.is_derived_from(obj, "Fem::ConstraintMagnetization"):
             # output only if magnetization is enabled and needed
-            if not obj.Magnetization_re_1_Disabled:
+            if obj.EnableMagnetization_1:
                 magnetization = float(obj.Magnetization_re_1.getValueAs("A/m"))
                 self.write.material(name, "Magnetization 1", round(magnetization, 6))
-            if not obj.Magnetization_re_2_Disabled:
+            if obj.EnableMagnetization_2:
                 magnetization = float(obj.Magnetization_re_2.getValueAs("A/m"))
                 self.write.material(name, "Magnetization 2", round(magnetization, 6))
             # imaginaries are only needed for harmonic equation
             if equation.IsHarmonic:
-                if not obj.Magnetization_im_1_Disabled:
+                if obj.EnableMagnetization_1:
                     magnetization = float(obj.Magnetization_im_1.getValueAs("A/m"))
                     self.write.material(name, "Magnetization Im 1", round(magnetization, 6))
-                if not obj.Magnetization_im_2_Disabled:
+                if obj.EnableMagnetization_2:
                     magnetization = float(obj.Magnetization_im_2.getValueAs("A/m"))
                     self.write.material(name, "Magnetization Im 2", round(magnetization, 6))
 
