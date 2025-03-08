@@ -26,6 +26,10 @@
 
 #include "ViewProvider.h"
 
+namespace PartDesign {
+    class Transformed;
+}
+
 namespace PartDesignGui {
 
 class TaskDlgTransformedParameters;
@@ -58,6 +62,7 @@ protected:
     void unsetEdit(int ModNum) override;
 
     bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
+    void handleTranformedResult(PartDesign::Transformed* transformed);
 
     // node for the representation of rejected repetitions
     SoGroup           * pcRejectedRoot{nullptr};
