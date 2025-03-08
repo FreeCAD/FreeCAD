@@ -66,6 +66,9 @@ class ifc_observer:
     def slotDeletedObject(self, obj):
         """Deletes the corresponding object in the IFC document"""
 
+        if not hasattr(obj, "StepId"):
+            return
+
         from . import ifc_tools  # lazy loading
 
         proj = ifc_tools.get_project(obj)
