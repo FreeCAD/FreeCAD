@@ -357,13 +357,14 @@ PyObject* Application::sOpenDocument(PyObject* /*self*/, PyObject* args, PyObjec
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
     try {
-        DocumentCreateFlags createFlags;
-        createFlags.createView = !Base::asBoolean(hidden);
-        createFlags.temporary = Base::asBoolean(temporary);
+        DocumentInitFlags initFlags {
+            .createView = !Base::asBoolean(hidden),
+            .temporary = Base::asBoolean(temporary)
+        };
 
         // return new document
         return (GetApplication()
-                    .openDocument(EncodedName.c_str(), createFlags)
+                    .openDocument(EncodedName.c_str(), initFlags)
                     ->getPyObject());
     }
     catch (const Base::Exception& e) {
@@ -401,13 +402,14 @@ PyObject* Application::sNewDocument(PyObject* /*self*/, PyObject* args, PyObject
 
     PY_TRY
     {
-        DocumentCreateFlags createFlags;
-        createFlags.createView = !Base::asBoolean(hidden);
-        createFlags.temporary = Base::asBoolean(temp);
-
+        DocumentInitFlags initFlags {
+            .createView = !Base::asBoolean(hidden),
+            .temporary = Base::asBoolean(temp)
+        };
         App::Document* doc = GetApplication().newDocument(docName,
                                                           usrName,
-                                                          createFlags);
+                                                          initFlags);
+        PyMem_Free(docName);
         PyMem_Free(usrName);
         return doc->getPyObject();
     }

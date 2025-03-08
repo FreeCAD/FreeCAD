@@ -185,26 +185,26 @@ class MgDynwriter:
                     currentDensity = float(obj.CurrentDensity_im_3.getValueAs("A/m^2"))
                     self.write.bodyForce(name, "Current Density Im 3", round(currentDensity, 6))
 
-        if hasattr(obj, "Magnetization_im_1"):
+        if femutils.is_derived_from(obj, "Fem::ConstraintMagnetization"):
             # output only if magnetization is enabled and needed
-            if not obj.Magnetization_re_1_Disabled:
+            if obj.EnableMagnetization_1:
                 magnetization = float(obj.Magnetization_re_1.getValueAs("A/m"))
                 self.write.bodyForce(name, "Magnetization 1", magnetization)
-            if not obj.Magnetization_re_2_Disabled:
+            if obj.EnableMagnetization_2:
                 magnetization = float(obj.Magnetization_re_2.getValueAs("A/m"))
                 self.write.bodyForce(name, "Magnetization 2", magnetization)
-            if not obj.Magnetization_re_3_Disabled:
+            if obj.EnableMagnetization_3:
                 magnetization = float(obj.Magnetization_re_3.getValueAs("A/m"))
                 self.write.bodyForce(name, "Magnetization 3", magnetization)
             # imaginaries are only needed for harmonic equation
             if equation.IsHarmonic:
-                if not obj.Magnetization_im_1_Disabled:
+                if obj.EnableMagnetization_1:
                     magnetization = float(obj.Magnetization_im_1.getValueAs("A/m"))
                     self.write.bodyForce(name, "Magnetization Im 1", magnetization)
-                if not obj.Magnetization_im_2_Disabled:
+                if obj.EnableMagnetization_2:
                     magnetization = float(obj.Magnetization_im_2.getValueAs("A/m"))
                     self.write.bodyForce(name, "Magnetization Im 2", magnetization)
-                if not obj.Magnetization_im_3_Disabled:
+                if obj.EnableMagnetization_3:
                     magnetization = float(obj.Magnetization_im_3.getValueAs("A/m"))
                     self.write.bodyForce(name, "Magnetization Im 3", magnetization)
 
