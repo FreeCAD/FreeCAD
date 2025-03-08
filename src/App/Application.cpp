@@ -171,7 +171,7 @@
 FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
-using namespace Base;
+//using namespace Base;
 using namespace std;
 using namespace boost;
 using namespace boost::program_options;
@@ -406,19 +406,19 @@ void Application::setupPythonException(PyObject* module)
         return exception;
     };
 
-    PyExc_FC_GeneralError = setup("FreeCADError", PyExc_RuntimeError);
-    PyExc_FC_FreeCADAbort = setup("FreeCADAbort", PyExc_BaseException);
-    PyExc_FC_XMLBaseException = setup("XMLBaseException", PyExc_Exception);
-    PyExc_FC_XMLParseException = setup("XMLParseException", PyExc_FC_XMLBaseException);
-    PyExc_FC_XMLAttributeError = setup("XMLAttributeError", PyExc_FC_XMLBaseException);
-    PyExc_FC_UnknownProgramOption = setup("UnknownProgramOption", PyExc_BaseException);
-    PyExc_FC_BadFormatError = setup("BadFormatError", PyExc_FC_GeneralError);
-    PyExc_FC_BadGraphError = setup("BadGraphError", PyExc_FC_GeneralError);
-    PyExc_FC_ExpressionError = setup("ExpressionError", PyExc_FC_GeneralError);
-    PyExc_FC_ParserError = setup("ParserError", PyExc_FC_GeneralError);
-    PyExc_FC_CADKernelError = setup("CADKernelError", PyExc_FC_GeneralError);
-    PyExc_FC_PropertyError = setup("PropertyError", PyExc_AttributeError);
-    PyExc_FC_AbortIOException = setup("AbortIOException", PyExc_BaseException);
+    Base::PyExc_FC_GeneralError = setup("FreeCADError", PyExc_RuntimeError);
+    Base::PyExc_FC_FreeCADAbort = setup("FreeCADAbort", PyExc_BaseException);
+    Base::PyExc_FC_XMLBaseException = setup("XMLBaseException", PyExc_Exception);
+    Base::PyExc_FC_XMLParseException = setup("XMLParseException", Base::PyExc_FC_XMLBaseException);
+    Base::PyExc_FC_XMLAttributeError = setup("XMLAttributeError", Base::PyExc_FC_XMLBaseException);
+    Base::PyExc_FC_UnknownProgramOption = setup("UnknownProgramOption", PyExc_BaseException);
+    Base::PyExc_FC_BadFormatError = setup("BadFormatError", Base::PyExc_FC_GeneralError);
+    Base::PyExc_FC_BadGraphError = setup("BadGraphError", Base::PyExc_FC_GeneralError);
+    Base::PyExc_FC_ExpressionError = setup("ExpressionError", Base::PyExc_FC_GeneralError);
+    Base::PyExc_FC_ParserError = setup("ParserError", Base::PyExc_FC_GeneralError);
+    Base::PyExc_FC_CADKernelError = setup("CADKernelError", Base::PyExc_FC_GeneralError);
+    Base::PyExc_FC_PropertyError = setup("PropertyError", PyExc_AttributeError);
+    Base::PyExc_FC_AbortIOException = setup("AbortIOException", PyExc_BaseException);
 }
 
 //**************************************************************************
@@ -434,7 +434,7 @@ void Application::renameDocument(const char *OldName, const char *NewName)
 
 Document* Application::newDocument(const char * proposedName, const char * proposedLabel, DocumentInitFlags CreateFlags)
 {
-    bool isUsingDefaultName = Tools::isNullOrEmpty(proposedName);
+    bool isUsingDefaultName = Base::Tools::isNullOrEmpty(proposedName);
     // get a valid name anyway!
     if (isUsingDefaultName) {
         proposedName = "Unnamed";
@@ -451,7 +451,7 @@ Document* Application::newDocument(const char * proposedName, const char * propo
 
     // Determine the document's Label
     std::string label;
-    if (!Tools::isNullOrEmpty(proposedLabel)) {
+    if (!Base::Tools::isNullOrEmpty(proposedLabel)) {
         // If a label is supplied it is used even if not unique
         label = proposedLabel;
     }
@@ -2807,8 +2807,8 @@ void Application::initApplication()
     // set up Unit system default
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
        ("User parameter:BaseApp/Preferences/Units");
-    UnitsApi::setSchema(static_cast<UnitSystem>(hGrp->GetInt("UserSchema", 0)));
-    UnitsApi::setDecimals(static_cast<int>(hGrp->GetInt("Decimals", UnitsApi::getDecimals())));
+    Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(hGrp->GetInt("UserSchema", 0)));
+    Base::UnitsApi::setDecimals(static_cast<int>(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals())));
 
     // In case we are using fractional inches, get user setting for min unit
     int denom = static_cast<int>(hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator()));
