@@ -59,7 +59,6 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Converter.h>
-#include <Base/Converter.h>
 #include <Base/Parameter.h>
 #include <Base/Quantity.h>
 #include <Base/Tools.h>
