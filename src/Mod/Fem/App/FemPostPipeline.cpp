@@ -125,13 +125,20 @@ int FemFrameSourceAlgorithm::RequestInformation(vtkInformation* reqInfo,
                                                 vtkInformationVector* outVector)
 {
 
+    //setup default information
     if (!this->Superclass::RequestInformation(reqInfo, inVector, outVector)) {
         return 0;
+    }
+
+    if (!m_data) {
+        // for the no data case we would return a empty data set in RequestData.
+        return 1;
     }
 
     std::vector<double> frames = getFrameValues();
 
     if (frames.empty()) {
+        // no frames, default info is sfficient
         return 1;
     }
 
@@ -155,8 +162,13 @@ int FemFrameSourceAlgorithm::RequestData(vtkInformation*,
     vtkUnstructuredGrid* output =
         vtkUnstructuredGrid::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
 
-    if (!output || !m_data) {
+    if (!output) {
         return 0;
+    }
+
+    if (!m_data) {
+        outInfo->Set(vtkDataObject::DATA_OBJECT(), vtkUnstructuredGrid::New());
+        return 1;
     }
 
     if (!m_data->IsA("vtkMultiBlockDataSet")) {
