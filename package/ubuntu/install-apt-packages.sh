@@ -34,7 +34,7 @@ packages=(
   libqt5x11extras5-dev
   libshiboken2-dev
   libspnav-dev
-  libvtk7-dev
+  libvtk9-dev
   libx11-dev
   libxerces-c-dev
   libyaml-cpp-dev
