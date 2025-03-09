@@ -3,7 +3,3 @@
 #include "../actionpanel/actiongroup.h"
 #include "../actionpanel/actionpanel.h"
 #include "../actionpanel/actionpanelscheme.h"
-#include "../actionpanel/winxppanelscheme.h"
-#include "../actionpanel/winvistapanelscheme.h"
-#include "../actionpanel/macpanelscheme.h"
-#include "../actionpanel/androidpanelscheme.h"

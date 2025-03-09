@@ -11,83 +11,57 @@
 #include <QToolButton>
 #include "qsint_global.h"
 
-
 namespace QSint
 {
-
-
 /**
-    \brief Class representing an action similar to Windows Vista/7 control panel item.
-
-    \image html ActionLabel.png An example of ActionLabel
-
-    ActionLabel normally consists of an icon and text.
-    It also can have tooltip and status tip,
-    be clickable and checkable etc. i.e. behave like a normal QToolButton.
-
-    <b>Customization of ActionLabel via CSS</b>
-
-    ActionLabel objects are easily customizable via CSS technology - you can get
-    different look just by writing corresponding style sheet and applying it with setStyleSheet().
-
-    See the following example of the complete ActionLabel customization. Note that
-    \a QSint--ActionLabel is used as a main class name.
-
-    \code
-    // define a string representing CSS style
-    const char* ActionLabelNewStyle =
-
-        "QSint--ActionLabel[class='action'] {"
-            "background-color: transparent;"
-            "border: 1px solid transparent;"
-            "color: #0033ff;"
-            "text-align: left;"
-            "font: 11px;"
-        "}"
-
-        "QSint--ActionLabel[class='action']:hover {"
-            "color: #0099ff;"
-            "text-decoration: underline;"
-        "}"
-
-        "QSint--ActionLabel[class='action']:focus {"
-            "border: 1px dotted black;"
-        "}"
-
-        "QSint--ActionLabel[class='action']:on {"
-            "background-color: #ddeeff;"
-            "color: #006600;"
-        "}"
-    ;
-
-    // apply the style
-    label1->setStyleSheet(ActionLabelNewStyle);
-
-    \endcode
-*/
+ * @brief Represents an action, similar to a Windows Vista/7 control panel item.
+ *
+ * An ActionLabel typically displays an icon and text. It supports tooltips, status tips,
+ * clickability, checkability, and other features similar to a QToolButton.
+ *
+ * Customization via CSS: The class name `QSint--ActionLabel` is used.
+ */
 class QSINT_EXPORT ActionLabel : public QToolButton
 {
     Q_OBJECT
 
 public:
-    /** Constructor.
-      */
+    /**
+     * @brief Constructs an ActionLabel.
+     * @param parent The parent widget.
+     */
     explicit ActionLabel(QWidget *parent = nullptr);
 
-    /** Constructor. Creates ActionLabel from the \a action.
-      \since 0.2
-      */
+    /**
+     * @brief Constructs an ActionLabel from a QAction.
+     * @param action The QAction to represent.
+     * @param parent The parent widget.
+     */
     explicit ActionLabel(QAction *action, QWidget *parent = nullptr);
 
+    /**
+     * @brief Destroys the ActionLabel.
+     */
     ~ActionLabel() override = default;
 
+    /**
+     * @brief Returns the recommended size for the label.
+     * @return The size hint.
+     */
     QSize sizeHint() const override;
+
+    /**
+     * @brief Returns the minimum size the label can be.
+     * @return The minimum size hint.
+     */
     QSize minimumSizeHint() const override;
 
 protected:
+    /**
+     * @brief Initializes the ActionLabel.
+     */
     void init();
 };
-
 
 } // namespace
 
