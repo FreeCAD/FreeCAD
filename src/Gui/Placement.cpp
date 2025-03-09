@@ -530,13 +530,8 @@ void Placement::setupSignalMapper()
         signalMapper->setMapping(it, id++);
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(signalMapper, qOverload<int>(&QSignalMapper::mapped),
-            this, &Placement::onPlacementChanged);
-#else
     connect(signalMapper, &QSignalMapper::mappedInt,
             this, &Placement::onPlacementChanged);
-#endif
 }
 
 void Placement::setupRotationMethod()

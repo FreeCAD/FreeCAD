@@ -134,17 +134,12 @@ QString MeasurePosition::getResultString()
     QString unit = QString::fromStdString(Position.getUnit().getString());
     int precision = 2;
     QString text;
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    QTextStream(&text) << "X: " << QString::number(value.x, 'f', precision) << " " << unit << endl
-                       << "Y: " << QString::number(value.y, 'f', precision) << " " << unit << endl
-                       << "Z: " << QString::number(value.z, 'f', precision) << " " << unit;
-#else
+
     QTextStream(&text) << "X: " << QString::number(value.x, 'f', precision) << " " << unit
                        << Qt::endl
                        << "Y: " << QString::number(value.y, 'f', precision) << " " << unit
                        << Qt::endl
                        << "Z: " << QString::number(value.z, 'f', precision) << " " << unit;
-#endif
     return text;
 }
 

@@ -134,10 +134,8 @@ void TaskShapeBinder::setupContextMenu()
         remove->setShortcut(QKeySequence(shortcut));
     }
     remove->setShortcutContext(Qt::WidgetShortcut);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     remove->setShortcutVisibleInContextMenu(true);
-#endif
     ui->listWidgetReferences->addAction(remove);
     connect(remove, &QAction::triggered, this, &TaskShapeBinder::deleteItem);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);

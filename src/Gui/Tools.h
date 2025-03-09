@@ -37,18 +37,11 @@ namespace Gui {
 class GuiExport QtTools {
 public:
     static int horizontalAdvance(const QFontMetrics& fm, QChar ch) {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+
         return fm.horizontalAdvance(ch);
-#else
-        return fm.width(ch);
-#endif
     }
     static int horizontalAdvance(const QFontMetrics& fm, const QString& text, int len = -1) {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
         return fm.horizontalAdvance(text, len);
-#else
-        return fm.width(text, len);
-#endif
     }
     static bool matches(QKeyEvent* ke, const QKeySequence& ks) {
         uint searchkey = (ke->modifiers() | ke->key()) & ~(Qt::KeypadModifier | Qt::GroupSwitchModifier);

@@ -530,11 +530,8 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
     size[0] = p.width();
     size[1] = p.height();
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     int buffersize = static_cast<int>(p.sizeInBytes());
-#else
-    int buffersize = p.byteCount();
-#endif
+
     int numcomponents = 0;
     QVector<QRgb> table = p.colorTable();
     if (!table.isEmpty()) {

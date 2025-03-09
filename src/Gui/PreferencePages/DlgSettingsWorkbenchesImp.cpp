@@ -421,11 +421,8 @@ QStringList DlgSettingsWorkbenchesImp::getEnabledWorkbenches()
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     wbs_ordered = QString::fromStdString(hGrp->GetASCII("Ordered", ""));
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+
     wbs_ordered_list = wbs_ordered.split(QLatin1String(","), Qt::SkipEmptyParts);
-#else
-    wbs_ordered_list = wbs_ordered.split(QLatin1String(","), QString::SkipEmptyParts);
-#endif
 
     QStringList workbenches = Application::Instance->workbenches();
     workbenches.sort();
@@ -458,11 +455,8 @@ QStringList DlgSettingsWorkbenchesImp::getDisabledWorkbenches()
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", "NoneWorkbench,TestWorkbench"));
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+
     unfiltered_disabled_wbs_list = disabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
-#else
-    unfiltered_disabled_wbs_list = disabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
-#endif
 
     QStringList workbenches = Application::Instance->workbenches();
 

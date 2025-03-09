@@ -173,10 +173,10 @@ void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
         auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
         deleteAction->setShortcut(QKeySequence(shortcut));
     }
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+
     // display shortcut behind the context menu entry
     deleteAction->setShortcutVisibleInContextMenu(true);
-#endif
+
     parentList->addAction(deleteAction);
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
 }

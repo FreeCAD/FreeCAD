@@ -77,10 +77,8 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
         auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
         remove->setShortcut(QKeySequence(shortcut));
     }
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     remove->setShortcutVisibleInContextMenu(true);
-#endif
     ui->listWidgetReferences->addAction(remove);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(remove, &QAction::triggered, this, &TaskLoftParameters::onDeleteSection);

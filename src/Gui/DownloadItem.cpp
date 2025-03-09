@@ -261,11 +261,7 @@ void DownloadItem::init()
     m_url = m_reply->url();
     m_reply->setParent(this);
     connect(m_reply, &QNetworkReply::readyRead, this, &DownloadItem::downloadReadyRead);
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(m_reply, qOverload<QNetworkReply::NetworkError>(&QNetworkReply::error), this, &DownloadItem::error);
-#else
     connect(m_reply, &QNetworkReply::errorOccurred, this, &DownloadItem::error);
-#endif
     connect(m_reply, &QNetworkReply::downloadProgress, this, &DownloadItem::downloadProgress);
     connect(m_reply, &QNetworkReply::metaDataChanged, this, &DownloadItem::metaDataChanged);
     connect(m_reply, &QNetworkReply::finished, this, &DownloadItem::finished);
@@ -312,8 +308,6 @@ void DownloadItem::getFileName()
 {
     QSettings settings;
     settings.beginGroup(QLatin1String("downloadmanager"));
-    // QString defaultLocation =
-    // QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
     QString defaultLocation = getDownloadDirectory();
     QString downloadDirectory =
         settings.value(QLatin1String("downloadDirectory"), defaultLocation).toString();
@@ -536,14 +530,7 @@ void DownloadItem::metaDataChanged()
             url = redirectUrl;
 
             disconnect(m_reply, &QNetworkReply::readyRead, this, &DownloadItem::downloadReadyRead);
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-            disconnect(m_reply,
-                       qOverload<QNetworkReply::NetworkError>(&QNetworkReply::error),
-                       this,
-                       &DownloadItem::error);
-#else
             disconnect(m_reply, &QNetworkReply::errorOccurred, this, &DownloadItem::error);
-#endif
             disconnect(m_reply,
                        &QNetworkReply::downloadProgress,
                        this,

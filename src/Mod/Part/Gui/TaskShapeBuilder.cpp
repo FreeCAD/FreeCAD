@@ -122,13 +122,8 @@ ShapeBuilderWidget::ShapeBuilderWidget(QWidget* parent)
             this, &ShapeBuilderWidget::onSelectButtonClicked);
     connect(d->ui.createButton, &QPushButton::clicked,
             this, &ShapeBuilderWidget::onCreateButtonClicked);
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(&d->bg, qOverload<int>(&QButtonGroup::buttonClicked),
-            this, &ShapeBuilderWidget::switchMode);
-#else
     connect(&d->bg, &QButtonGroup::idClicked,
             this, &ShapeBuilderWidget::switchMode);
-#endif
 
     d->gate = new ShapeSelection();
     Gui::Selection().addSelectionGate(d->gate);
