@@ -43,7 +43,7 @@ namespace Fem
 
 // algorithm that allows multi frame handling: if data is stored in MultiBlock dataset
 // this source enables the downstream filters to query the blocks as different time frames
-class FemFrameSourceAlgorithm : public vtkUnstructuredGridAlgorithm
+class FemFrameSourceAlgorithm: public vtkUnstructuredGridAlgorithm
 {
 public:
     static FemFrameSourceAlgorithm* New();
@@ -59,8 +59,12 @@ protected:
 
     vtkSmartPointer<vtkDataObject> m_data;
 
-    int RequestInformation(vtkInformation* reqInfo, vtkInformationVector** inVector, vtkInformationVector* outVector) override;
-    int RequestData(vtkInformation* reqInfo, vtkInformationVector** inVector, vtkInformationVector* outVector) override;
+    int RequestInformation(vtkInformation* reqInfo,
+                           vtkInformationVector** inVector,
+                           vtkInformationVector* outVector) override;
+    int RequestData(vtkInformation* reqInfo,
+                    vtkInformationVector** inVector,
+                    vtkInformationVector* outVector) override;
 };
 
 
@@ -90,12 +94,18 @@ public:
     // load data from files (single or as multiframe)
     static bool canRead(Base::FileInfo file);
     void read(Base::FileInfo file);
-    void read(std::vector<Base::FileInfo>& files, std::vector<double>& values, Base::Unit unit, std::string& frame_type);
+    void read(std::vector<Base::FileInfo>& files,
+              std::vector<double>& values,
+              Base::Unit unit,
+              std::string& frame_type);
     void scale(double s);
 
     // load from results
     void load(FemResultObject* res);
-    void load(std::vector<FemResultObject*>& res, std::vector<double>& values, Base::Unit unit, std::string& frame_type);
+    void load(std::vector<FemResultObject*>& res,
+              std::vector<double>& values,
+              Base::Unit unit,
+              std::string& frame_type);
 
     // Group pipeline handling
     void filterChanged(FemPostFilter* filter) override;
@@ -113,16 +123,18 @@ protected:
     bool allowObject(App::DocumentObject* obj) override;
 
     // update documents
-    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   const char* PropName) override;
     void onDocumentRestored() override;
 
 private:
-    App::Enumeration  m_frameEnum;
+    App::Enumeration m_frameEnum;
     vtkSmartPointer<FemFrameSourceAlgorithm> m_source_algorithm;
 
     bool m_block_property = false;
-    bool m_data_updated   = false;
-    bool m_use_transform  = false;
+    bool m_data_updated = false;
+    bool m_use_transform = false;
     void updateData();
 
 

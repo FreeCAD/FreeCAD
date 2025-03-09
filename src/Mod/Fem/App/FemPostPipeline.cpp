@@ -80,7 +80,8 @@ void FemFrameSourceAlgorithm::setDataObject(vtkSmartPointer<vtkDataObject> data)
     Update();
 }
 
-bool FemFrameSourceAlgorithm::isValid() {
+bool FemFrameSourceAlgorithm::isValid()
+{
     return m_data.GetPointer() != nullptr;
 }
 
@@ -125,7 +126,7 @@ int FemFrameSourceAlgorithm::RequestInformation(vtkInformation* reqInfo,
                                                 vtkInformationVector* outVector)
 {
 
-    //setup default information
+    // setup default information
     if (!this->Superclass::RequestInformation(reqInfo, inVector, outVector)) {
         return 0;
     }
@@ -312,7 +313,10 @@ void FemPostPipeline::read(Base::FileInfo File)
     Data.setValue(dataObjectFromFile(File));
 }
 
-void FemPostPipeline::read(std::vector<Base::FileInfo>& files, std::vector<double>& values, Base::Unit unit, std::string& frame_type)
+void FemPostPipeline::read(std::vector<Base::FileInfo>& files,
+                           std::vector<double>& values,
+                           Base::Unit unit,
+                           std::string& frame_type)
 {
     if (files.size() != values.size()) {
         Base::Console().Error("Result files and frame values have different length.\n");
@@ -370,7 +374,8 @@ App::DocumentObjectExecReturn* FemPostPipeline::execute()
 
             double time = frames[Frame.getValue()];
             m_transform_filter->UpdateTimeStep(time);
-        } else {
+        }
+        else {
             m_transform_filter->Update();
         }
 
@@ -441,7 +446,8 @@ void FemPostPipeline::onChanged(const Property* prop)
             m_block_property = true;
             Frame.setValue(val.c_str());
             m_block_property = false;
-        } else {
+        }
+        else {
             // frame gets updated
             Frame.setValue(long(0));
         }
@@ -451,7 +457,7 @@ void FemPostPipeline::onChanged(const Property* prop)
 
     if (prop == &Frame && !m_block_property) {
 
-        //Update all children with the new frame
+        // Update all children with the new frame
         double value = 0;
         auto frames = m_source_algorithm->getFrameValues();
         if (!frames.empty() && frames.size() > ulong(Frame.getValue())) {
@@ -527,7 +533,7 @@ void FemPostPipeline::filterChanged(FemPostFilter* filter)
 
             if (started) {
                 obj->touch();
-                if(obj->hasExtension(Fem::FemPostGroupExtension::getExtensionClassTypeId())) {
+                if (obj->hasExtension(Fem::FemPostGroupExtension::getExtensionClassTypeId())) {
                     obj->getExtension<FemPostGroupExtension>()->recomputeChildren();
                 }
             }
@@ -729,7 +735,8 @@ void FemPostPipeline::onDocumentRestored()
 {
     // if a old document was loaded with "custom" mode setting, the current value
     // would be out of range. Reset it to "serial"
-    if (Mode.getValue() > Fem::PostGroupMode::Parallel || Mode.getValue() < Fem::PostGroupMode::Serial) {
+    if (Mode.getValue() > Fem::PostGroupMode::Parallel
+        || Mode.getValue() < Fem::PostGroupMode::Serial) {
         Mode.setValue(Fem::PostGroupMode::Serial);
     }
 }

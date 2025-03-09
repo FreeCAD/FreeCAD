@@ -58,7 +58,8 @@ FemPostObject::FemPostObject()
 
 FemPostObject::~FemPostObject() = default;
 
-vtkDataSet* FemPostObject::getDataSet() {
+vtkDataSet* FemPostObject::getDataSet()
+{
 
     if (!Data.getValue()) {
         return nullptr;
@@ -99,7 +100,7 @@ PyObject* FemPostObject::getPyObject()
 
 void FemPostObject::onChanged(const App::Property* prop)
 {
-    if(prop == &Placement) {
+    if (prop == &Placement) {
         // we update the transform filter to match the placement!
         double data[16];
         auto matrix = Placement.getValue().toMatrix();
@@ -107,8 +108,8 @@ void FemPostObject::onChanged(const App::Property* prop)
         vtkTransform* transform = vtkTransform::New();
         transform->SetMatrix(data);
         m_transform_filter->SetTransform(transform);
-        //note: no call to Update(), as we do not know the frame to use. has to happen
-        //in derived class
+        // note: no call to Update(), as we do not know the frame to use. has to happen
+        // in derived class
 
         // placement would not recompute, as it is a "not touch" prop.
         this->touch();
@@ -123,7 +124,8 @@ namespace
 template<typename T>
 void femVTKWriter(const char* filename, const vtkSmartPointer<vtkDataObject>& dataObject)
 {
-    if (dataObject->IsA("vtkDataSet") && vtkDataSet::SafeDownCast(dataObject)->GetNumberOfPoints() <= 0) {
+    if (dataObject->IsA("vtkDataSet")
+        && vtkDataSet::SafeDownCast(dataObject)->GetNumberOfPoints() <= 0) {
         throw Base::ValueError("Empty data object");
     }
 
@@ -186,7 +188,8 @@ void FemPostObject::writeVTK(const char* filename) const
 
     if (extension == "vtm") {
         femVTKWriter<vtkXMLMultiBlockDataWriter>(name.c_str(), data);
-    } else {
+    }
+    else {
         femVTKWriter<vtkXMLDataSetWriter>(name.c_str(), data);
     }
 }

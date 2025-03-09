@@ -69,7 +69,7 @@ private:
     void setupPipeline();
 
     vtkSmartPointer<vtkAppendFilter> m_append;
-    vtkSmartPointer<vtkPassThrough>  m_passthrough;
+    vtkSmartPointer<vtkPassThrough> m_passthrough;
 };
 
 }  // namespace Fem

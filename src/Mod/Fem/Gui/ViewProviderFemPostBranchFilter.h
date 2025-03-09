@@ -38,7 +38,8 @@ namespace FemGui
 
 class TaskDlgPost;
 
-class FemGuiExport ViewProviderFemPostBranchFilter: public ViewProviderFemPostObject, public Gui::ViewProviderGroupExtension
+class FemGuiExport ViewProviderFemPostBranchFilter: public ViewProviderFemPostObject,
+                                                    public Gui::ViewProviderGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(FemGui::ViewProviderFemPostBranchFilter);
 
@@ -51,15 +52,15 @@ protected:
 
     // change default group drag/drop behaviour sligthly
     bool acceptReorderingObjects() const override;
-    bool canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const override;
+    bool canDragObjectToTarget(App::DocumentObject* obj,
+                               App::DocumentObject* target) const override;
 
     // override, to not show/hide children as the parent is shown/hidden like normal groups
     void extensionHide() override {};
     void extensionShow() override {};
-
 };
 
-}
+}  // namespace FemGui
 
 
 #endif  // FEM_VIEWPROVIDERFEMPOSTBRANCHFILTER_H

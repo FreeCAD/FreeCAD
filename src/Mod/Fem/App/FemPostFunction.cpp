@@ -33,9 +33,7 @@ PROPERTY_SOURCE(Fem::FemPostFunctionProvider, App::DocumentObject)
 
 FemPostFunctionProvider::FemPostFunctionProvider()
     : DocumentObjectGroup()
-{
-
-}
+{}
 
 FemPostFunctionProvider::~FemPostFunctionProvider() = default;
 
@@ -54,8 +52,8 @@ void FemPostFunctionProvider::unsetupObject()
 }
 
 void FemPostFunctionProvider::handleChangedPropertyName(Base::XMLReader& reader,
-                                                const char* typeName,
-                                                const char* propName)
+                                                        const char* typeName,
+                                                        const char* propName)
 {
     if (strcmp(propName, "Functions") == 0
         && Base::Type::fromName(typeName) == App::PropertyLinkList::getClassTypeId()) {

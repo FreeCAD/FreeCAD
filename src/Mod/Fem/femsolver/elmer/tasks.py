@@ -309,7 +309,6 @@ class Results(run.Results):
         # but not the shape and bar coloring
         self.solver.ElmerResult.ViewObject.updateColorBars()
 
-
     def _getResultFile(self):
         postPath = None
         # elmer post file path changed with version x.x

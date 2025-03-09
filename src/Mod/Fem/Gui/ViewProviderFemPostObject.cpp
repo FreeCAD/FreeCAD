@@ -1072,7 +1072,7 @@ bool ViewProviderFemPostObject::onDelete(const std::vector<std::string>&)
     };
 
     // delete all subelements
-    for(auto obj : objs) {
+    for (auto obj : objs) {
         getObject()->getDocument()->removeObject(obj->getNameInDocument());
     }
     return true;

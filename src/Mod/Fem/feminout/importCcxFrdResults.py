@@ -62,7 +62,6 @@ def setupPipeline(doc, analysis, results_name, result_data):
     import ObjectsFem
     from . import importToolsFem
 
-
     # create a results pipeline if not already existing
     pipeline_name = "Pipeline_" + results_name
     pipeline_obj = doc.getObject(pipeline_name)
@@ -223,7 +222,6 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
                     multistep_value.append(step_time)
                     multistep_result.append(res_obj)
 
-
             # we have collected all result objects, lets create the multistep result pipeline
             if number_of_increments > 1:
                 # figure out type and unit
@@ -240,8 +238,12 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
                 elif result_analysis_type == "static":
                     description = "Load factor"
 
-                setupPipeline(doc, analysis, results_name, [multistep_result, multistep_value, unit, description])
-
+                setupPipeline(
+                    doc,
+                    analysis,
+                    results_name,
+                    [multistep_result, multistep_value, unit, description],
+                )
 
         elif result_analysis_type == "check":
             results_name = f"{result_name_prefix}Check"
