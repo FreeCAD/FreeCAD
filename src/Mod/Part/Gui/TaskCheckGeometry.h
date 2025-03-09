@@ -123,13 +123,10 @@ private:
     void dispatchError(ResultEntry *entry, const BRepCheck_Status &stat);
     bool split(QString &input, QString &doc, QString &object, QString &sub);
     void setupFunctionMap();
-#if OCC_VERSION_HEX < 0x070500
-    int goBOPSingleCheck(const TopoDS_Shape &shapeIn, ResultEntry *theRoot, const QString &baseName,
-                         const Handle(Message_ProgressIndicator)& theProgress);
-#else
+
     int goBOPSingleCheck(const TopoDS_Shape &shapeIn, ResultEntry *theRoot, const QString &baseName,
                          const Message_ProgressScope& theScope);
-#endif
+
     void buildShapeContent(App::DocumentObject *pObject, const QString &baseName, const TopoDS_Shape &shape);
     ResultModel *model;
     QTreeView *treeView;
@@ -207,13 +204,10 @@ public:
     BOPProgressIndicator (const QString &title, QWidget* parent);
     ~BOPProgressIndicator () override;
 
-#if OCC_VERSION_HEX < 0x070500
-    Standard_Boolean Show (const Standard_Boolean theForce = Standard_True) override;
-#else
     void Show (const Message_ProgressScope& theScope,
                        const Standard_Boolean isForce) override;
     void Reset() override;
-#endif
+
     Standard_Boolean UserBreak() override;
 
 private:
