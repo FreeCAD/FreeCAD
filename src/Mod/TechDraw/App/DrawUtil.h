@@ -279,8 +279,5 @@ public:
 // GCC BUG 85282, wanting this to be outside class body. This is only the declaration, the definition .cpp
 //template<> std::string DrawUtil::formatVector<Base::Vector3d>(const Base::Vector3d &v);
 
-// GCC BUG 85282, wanting this to be outside class body. This is only the declaration, the definition .cpp
-//template<> Base::Vector3d DrawUtil::Base::convertTo<Base::Vector3d><QPointF>(const QPointF& v);
-
 }//end namespace TechDraw
 #endif
