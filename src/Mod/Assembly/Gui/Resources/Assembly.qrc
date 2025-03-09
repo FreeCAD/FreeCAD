@@ -10,10 +10,13 @@
         <file>icons/Assembly_CreateJointAngle.svg</file>
         <file>icons/Assembly_CreateJointBall.svg</file>
         <file>icons/Assembly_CreateJointCylindrical.svg</file>
+        <file>icons/Assembly_AssemblyContextCreate.svg</file>
         <file>icons/Assembly_CreateJointFixed.svg</file>
         <file>icons/Assembly_CreateJointParallel.svg</file>
         <file>icons/Assembly_CreateJointPerpendicular.svg</file>
         <file>icons/Assembly_CreateJointPlanar.svg</file>
+        <file>icons/Assembly_AssemblyContextUpdate.svg</file>
+        <file>icons/AssemblyWorkbench_alternate.svg</file>
         <file>icons/Assembly_CreateJointRevolute.svg</file>
         <file>icons/Assembly_CreateJointSlider.svg</file>
         <file>icons/Assembly_CreateJointTangent.svg</file>
@@ -36,5 +39,9 @@
         <file>preferences/Assembly.ui</file>
         <file>icons/Assembly_CreateJointDistance.svg</file>
         <file>icons/AssemblyWorkbench.svg</file>
+        <file>icons/Assembly_JointGroup.svg</file>
+        <file>icons/Assembly_ExplodedView.svg</file>
+        <file>panels/TaskAssemblyCreateView.ui</file>
+        <file>icons/Assembly_ExplodedViewGroup.svg</file>
     </qresource>
 </RCC>
