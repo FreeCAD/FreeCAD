@@ -87,16 +87,7 @@ public:
      */
     virtual const TopoDS_Face& Face();
 
-#if OCC_VERSION_HEX >= 0x070600
     void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) override;
-#else
-    void Build() override;
-#endif
-
-    //fails to compile, huh!
-    //virtual const TopTools_ListOfShape& Generated(const TopoDS_Shape &S) override {throwNotImplemented();}
-    //virtual const TopTools_ListOfShape& Modified(const TopoDS_Shape &S) override {throwNotImplemented();}
-    //virtual Standard_Boolean IsDeleted(const TopoDS_Shape &S) override {throwNotImplemented();}
 
     static std::unique_ptr<FaceMaker> ConstructFromType(const char* className);
     static std::unique_ptr<FaceMaker> ConstructFromType(Base::Type type);

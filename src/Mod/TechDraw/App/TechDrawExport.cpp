@@ -50,19 +50,13 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Shape.hxx>
-# if OCC_VERSION_HEX < 0x070600
-#  include <BRepAdaptor_HCurve.hxx>
-# endif
 #endif
 
 #include <Base/Tools.h>
 
 #include "TechDrawExport.h"
 
-
-#if OCC_VERSION_HEX >= 0x070600
 using BRepAdaptor_HCurve = BRepAdaptor_Curve;
-#endif
 
 using namespace TechDraw;
 using namespace std;

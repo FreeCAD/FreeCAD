@@ -1531,12 +1531,6 @@ public:
         // populate adjacent list
         for (auto& info : edges) {
             if (info.iteration == -2) {
-
-                // Originally there was the following precompiler directive around assertCheck():
-                // #if OCC_VERSION_HEX >= 0x070000
-                // The precompiler directive has been removed as the minimum OCCT version supported
-                // is 7.3.0 and the precompiler macro has been replaced with assert()
-
                 assert(BRep_Tool::IsClosed(info.shape()));
 
                 showShape(&info, "closed");
@@ -1574,12 +1568,6 @@ public:
                     if (vinfo.pt().SquareDistance(pt[ic]) > myTol2) {
                         break;
                     }
-
-                    // We must push ourself too, because the adjacency
-                    // information is shared among all connected edges.
-                    //
-                    // if (&(*vinfo.it) == &info)
-                    //     continue;
 
                     if (vinfo.it->iteration < 0) {
                         continue;
@@ -3133,14 +3121,10 @@ void WireJoiner::setTolerance(double tol, double atol)
     }
 }
 
-#if OCC_VERSION_HEX < 0x070600
-void WireJoiner::Build()
-{
-#else
 void WireJoiner::Build(const Message_ProgressRange& theRange)
 {
     (void)theRange;
-#endif
+
     if (IsDone()) {
         return;
     }

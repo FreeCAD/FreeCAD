@@ -47,9 +47,6 @@
 #include <gp_Elips.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HCurve.hxx>
-#endif
 #endif
 
 #include <Base/Tools.h>
@@ -57,10 +54,7 @@
 
 #include "DrawingExport.h"
 
-
-#if OCC_VERSION_HEX >= 0x070600
 using BRepAdaptor_HCurve = BRepAdaptor_Curve;
-#endif
 
 using namespace Drawing;
 using namespace std;

@@ -24,9 +24,7 @@
 
 #ifndef _PreComp_
 #include <Standard_Version.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HCurve.hxx>
-#endif
+
 #include <Approx_Curve3d.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
@@ -69,12 +67,9 @@
 
 #include "ImpExpDxf.h"
 
-
 using namespace Import;
 
-#if OCC_VERSION_HEX >= 0x070600
 using BRepAdaptor_HCurve = BRepAdaptor_Curve;
-#endif
 
 
 //******************************************************************************

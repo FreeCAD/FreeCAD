@@ -179,31 +179,14 @@ namespace ModelRefine
     };
 }
 
-/* excerpt from GeomAbs_SurfaceType.hxx
-enum GeomAbs_SurfaceType {
-GeomAbs_Plane,
-GeomAbs_Cylinder,
-GeomAbs_Cone,
-GeomAbs_Sphere,
-GeomAbs_Torus,
-GeomAbs_BezierSurface,
-GeomAbs_BSplineSurface,
-GeomAbs_SurfaceOfRevolution,
-GeomAbs_SurfaceOfExtrusion,
-GeomAbs_OffsetSurface,
-GeomAbs_OtherSurface
-};
-*/
+
 namespace Part {
 class PartExport BRepBuilderAPI_RefineModel : public BRepBuilderAPI_MakeShape
 {
 public:
     BRepBuilderAPI_RefineModel(const TopoDS_Shape&);
-#if OCC_VERSION_HEX >= 0x070600
     void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) override;
-#else
-    void Build() override;
-#endif
+
     const TopTools_ListOfShape& Modified(const TopoDS_Shape& S) override;
     Standard_Boolean IsDeleted(const TopoDS_Shape& S) override;
 

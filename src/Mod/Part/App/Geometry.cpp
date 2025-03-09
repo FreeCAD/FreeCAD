@@ -97,11 +97,6 @@
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_HArray1OfBoolean.hxx>
 
-# if OCC_VERSION_HEX < 0x070600
-# include <GeomAdaptor_HSurface.hxx>
-# include <GeomAdaptor_HCurve.hxx>
-# endif
-
 # include <boost/random.hpp>
 # include <cmath>
 # include <ctime>
@@ -151,10 +146,7 @@
 
 #include <gp_Quaternion.hxx>
 
-
-#if OCC_VERSION_HEX >= 0x070600
 using GeomAdaptor_HCurve = GeomAdaptor_Curve;
-#endif
 
 using namespace Part;
 
@@ -937,7 +929,6 @@ bool GeomCurve::intersect(const Handle(Geom_Curve)& curve1, const Handle(Geom_Cu
         checkendpoints(c1s,c2e);
         checkendpoints(c1e,c2s);
         checkendpoints(c1e,c2e);
-
     }
 
     try {

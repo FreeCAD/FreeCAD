@@ -82,23 +82,12 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
         throw Base::FileException("Cannot open STEP file");
     }
 
-#if OCC_VERSION_HEX < 0x070500
-    Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-    aReader.WS()->MapReader()->SetProgress(pi);
-    pi->NewScope(100, "Reading STEP file...");
-    pi->Show();
-#endif
-
     // Root transfers
     Standard_Integer nbr = aReader.NbRootsForTransfer();
-    //aReader.PrintCheckTransfer (failsonly, IFSelect_ItemsByEntity);
     for (Standard_Integer n = 1; n<= nbr; n++) {
         Base::Console().Log("STEP: Transferring Root %d\n",n);
         aReader.TransferRoot(n);
     }
-#if OCC_VERSION_HEX < 0x070500
-    pi->EndScope();
-#endif
 
     // Collecting resulting entities
     Standard_Integer nbs = aReader.NbShapes();
@@ -106,13 +95,8 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
         throw Base::FileException("No shapes found in file ");
     }
     else {
-        //Handle(StepData_StepModel) Model = aReader.StepModel();
-        //Handle(XSControl_WorkSession) ws = aReader.WS();
-        //Handle(XSControl_TransferReader) tr = ws->TransferReader();
 
         std::map<int, Quantity_Color> hash_col;
-        //ReadColors(aReader.WS(), hash_col);
-        //ReadNames(aReader.WS());
 
         for (Standard_Integer i=1; i<=nbs; i++) {
             Base::Console().Log("STEP:   Transferring Shape %d\n",i);
@@ -126,10 +110,6 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
                 const TopoDS_Solid& aSolid = TopoDS::Solid(ex.Current());
 
                 std::string name = fi.fileNamePure();
-                //Handle(Standard_Transient) ent = tr->EntityFromShapeResult(aSolid, 3);
-                //if (!ent.IsNull()) {
-                //    name += ws->Model()->StringLabel(ent)->ToCString();
-                //}
 
                 Part::Feature *pcFeature;
                 pcFeature = pcDoc->addObject<Part::Feature>(name.c_str());
@@ -148,7 +128,6 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
                         col.setItem(1, Py::Float(it->second.Green()));
                         col.setItem(2, Py::Float(it->second.Blue()));
                         vp.setAttr("ShapeAppearance", col);
-                        //Base::Console().Message("Set color to shape\n");
                     }
                     catch (Py::Exception& e) {
                         e.clear();
@@ -162,11 +141,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
                 const TopoDS_Shell& aShell = TopoDS::Shell(ex.Current());
 
                 std::string name = fi.fileNamePure();
-                //Handle(Standard_Transient) ent = tr->EntityFromShapeResult(aShell, 3);
-                //if (!ent.IsNull()) {
-                //    name += ws->Model()->StringLabel(ent)->ToCString();
-                //}
-
+ 
                 Part::Feature *pcFeature = pcDoc->addObject<Part::Feature>(name.c_str());
                 pcFeature->Shape.setValue(aShell);
             }

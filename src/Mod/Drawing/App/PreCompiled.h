@@ -68,9 +68,6 @@
 #include <gp_Elips.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HCurve.hxx>
-#endif
 
 #endif  // _PreComp_
 #endif

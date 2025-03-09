@@ -29,10 +29,6 @@
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HCurve.hxx>
-#include <BRepAdaptor_HCompCurve.hxx>
-#endif
 
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepCheck_Analyzer.hxx>
@@ -83,9 +79,7 @@
 
 #endif
 
-#if OCC_VERSION_HEX >= 0x070500
 #include <OSD_Parallel.hxx>
-#endif
 
 #include "modelRefine.h"
 #include "CrossSection.h"
@@ -108,11 +102,9 @@
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
-#if OCC_VERSION_HEX >= 0x070600
 using Adaptor3d_HCurve = Adaptor3d_Curve;
 using BRepAdaptor_HCurve = BRepAdaptor_Curve;
 using BRepAdaptor_HCompCurve = BRepAdaptor_CompCurve;
-#endif
 
 namespace Part
 {
@@ -203,31 +195,18 @@ void TopoShape::setShape(const TopoDS_Shape& shape, bool resetElementMap)
 
 TopoDS_Shape& TopoShape::move(TopoDS_Shape& tds, const TopLoc_Location& location)
 {
-#if OCC_VERSION_HEX < 0x070600
-    tds.Move(location);
-#else
     tds.Move(location, false);
-#endif
     return tds;
 }
 
 TopoDS_Shape TopoShape::moved(const TopoDS_Shape& tds, const TopLoc_Location& location)
 {
-#if OCC_VERSION_HEX < 0x070600
-    return tds.Moved(location);
-#else
     return tds.Moved(location, false);
-#endif
 }
 
 TopoDS_Shape& TopoShape::move(TopoDS_Shape& tds, const gp_Trsf& transfer)
 {
-#if OCC_VERSION_HEX < 0x070600
-    static constexpr double scalePrecision {1e-14};
-    if (std::abs(transfer.ScaleFactor()) > scalePrecision)
-#else
     if (std::abs(transfer.ScaleFactor()) > TopLoc_Location::ScalePrec())
-#endif
     {
         auto transferCopy(transfer);
         transferCopy.SetScaleFactor(1.0);
@@ -2660,9 +2639,6 @@ TopoShape& TopoShape::makeElementOffset2D(const TopoShape& shape,
 
     if (shape.isNull()) {
         FC_THROWM(Base::ValueError, "makeOffset2D: input shape is null!");
-    }
-    if (allowOpenResult == OpenResult::allowOpenResult && OCC_VERSION_HEX < 0x060900) {
-        FC_THROWM(Base::AttributeError, "openResult argument is not supported on OCC < 6.9.0.");
     }
 
     // OUTLINE OF MAKEOFFSET2D
@@ -5742,17 +5718,9 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         }
     }
 
-#if OCC_VERSION_HEX >= 0x070500
-    // -1/22/2024 Removing the parameter.
-    // if (PartParams::getParallelRunThreshold() > 0) {
     mk->SetRunParallel(Standard_True);
     OSD_Parallel::SetUseOcctThreads(Standard_True);
-    // }
-#else
-    // 01/22/2024 This will be an extremely rare case, since we don't
-    // build against OCCT versions this old.  Removing the parameter.
-    mk->SetRunParallel(true);
-#endif
+
 
     mk->SetArguments(shapeArguments);
     mk->SetTools(shapeTools);

@@ -772,7 +772,6 @@ TEST_F(WireJoinerTest, getResultWires)
     EXPECT_NE(wireOp.getElementMap()[0].name.find("getResultWires"), -1);
 }
 
-#if OCC_VERSION_HEX >= 0x070600
 // WireJoiner::Build() has already been tested indirectly in the other tests.
 // Here we check only the difference with OCCT versions >= 7.6.0 that add the parameter theRange
 TEST_F(WireJoinerTest, Build)
@@ -808,7 +807,6 @@ TEST_F(WireJoinerTest, Build)
     // https://dev.opencascade.org/doc/occt-7.6.0/refman/html/class_message___progress_indicator.html
     EXPECT_FALSE(mpr.IsActive());
 }
-#endif
 
 TEST_F(WireJoinerTest, Modified)
 {

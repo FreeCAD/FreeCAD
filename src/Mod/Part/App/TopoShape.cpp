@@ -151,11 +151,6 @@
 
 # include <BRepAlgoAPI_Defeaturing.hxx>
 
-#if OCC_VERSION_HEX < 0x070600
-# include <BRepAdaptor_HCurve.hxx>
-# include <BRepAdaptor_HCompCurve.hxx>
-#endif
-
 # include <boost/algorithm/string/predicate.hpp>
 # include <boost/core/ignore_unused.hpp>
 #endif // _PreComp_
@@ -580,14 +575,6 @@ void TopoShape::setPyObject(PyObject* obj)
     }
 }
 
-//void TopoShape::operator = (const TopoShape& sh)
-//{
-//    if (this != &sh) {
-//        this->Tag = sh.Tag;
-//        this->_Shape = sh._Shape;
-//    }
-//}
-
 void TopoShape::convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf)
 {
     trsf.SetValues(mtrx[0][0],mtrx[0][1],mtrx[0][2],mtrx[0][3],
@@ -721,21 +708,12 @@ void TopoShape::importIges(const char *FileName)
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone)
             throw Base::FileException("Error in reading IGES");
 
-#if OCC_VERSION_HEX < 0x070500
-        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-        pi->NewScope(100, "Reading IGES file...");
-        pi->Show();
-        aReader.WS()->MapReader()->SetProgress(pi);
-#endif
-
         // make brep
         aReader.ClearShapes();
         aReader.TransferRoots();
         // one shape that contains all subshapes
         this->_Shape = aReader.OneShape();
-#if OCC_VERSION_HEX < 0x070500
-        pi->EndScope();
-#endif
+
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
@@ -749,20 +727,10 @@ void TopoShape::importStep(const char *FileName)
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone)
             throw Base::FileException("Error in reading STEP");
 
-#if OCC_VERSION_HEX < 0x070500
-        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-        aReader.WS()->MapReader()->SetProgress(pi);
-        pi->NewScope(100, "Reading STEP file...");
-        pi->Show();
-#endif
-
         // Root transfers
         aReader.TransferRoots();
         // one shape that contains all subshapes
         this->_Shape = aReader.OneShape();
-#if OCC_VERSION_HEX < 0x070500
-        pi->EndScope();
-#endif
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
@@ -775,15 +743,7 @@ void TopoShape::importBrep(const char *FileName)
         // read brep-file
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
-#if OCC_VERSION_HEX < 0x070500
-        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-        pi->NewScope(100, "Reading BREP file...");
-        pi->Show();
-        BRepTools::Read(aShape,encodeFilename(FileName).c_str(),aBuilder,pi);
-        pi->EndScope();
-#else
         BRepTools::Read(aShape,static_cast<Standard_CString>(FileName),aBuilder);
-#endif
         this->_Shape = aShape;
     }
     catch (Standard_Failure& e) {
@@ -797,21 +757,9 @@ void TopoShape::importBrep(std::istream& str, int indicator)
         // read brep-file
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
-#if OCC_VERSION_HEX < 0x070500
-        if (indicator) {
-            Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-            pi->NewScope(100, "Reading BREP file...");
-            pi->Show();
-            BRepTools::Read(aShape,str,aBuilder,pi);
-            pi->EndScope();
-        }
-        else {
-            BRepTools::Read(aShape,str,aBuilder);
-        }
-#else
+
         (void)indicator;
         BRepTools::Read(aShape,str,aBuilder);
-#endif
         this->_Shape = aShape;
     }
     catch (Standard_Failure& e) {
@@ -903,13 +851,6 @@ void TopoShape::exportStep(const char *filename) const
         const Handle(XSControl_TransferWriter)& hTransferWriter = aWriter.WS()->TransferWriter();
         Handle(Transfer_FinderProcess) hFinder = hTransferWriter->FinderProcess();
 
-#if OCC_VERSION_HEX < 0x070500
-        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-        hFinder->SetProgress(pi);
-        pi->NewScope(100, "Writing STEP file...");
-        pi->Show();
-#endif
-
         if (aWriter.Transfer(this->_Shape, STEPControl_AsIs) != IFSelect_RetDone)
             throw Base::FileException("Error in transferring STEP");
 
@@ -923,9 +864,6 @@ void TopoShape::exportStep(const char *filename) const
 
         if (aWriter.Write(encodeFilename(filename).c_str()) != IFSelect_RetDone)
             throw Base::FileException("Writing of STEP failed");
-#if OCC_VERSION_HEX < 0x070500
-        pi->EndScope();
-#endif
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
@@ -934,13 +872,8 @@ void TopoShape::exportStep(const char *filename) const
 
 void TopoShape::exportBrep(const char *filename) const
 {
-#if OCC_VERSION_HEX >= 0x070600
     if (!BRepTools::Write(this->_Shape,encodeFilename(filename).c_str(), Standard_False, Standard_False, TopTools_FormatVersion_VERSION_1))
         throw Base::FileException("Writing of BREP failed");
-#else
-    if (!BRepTools::Write(this->_Shape,encodeFilename(filename).c_str()))
-        throw Base::FileException("Writing of BREP failed");
-#endif
 }
 
 void TopoShape::exportBrep(std::ostream& out) const
@@ -2033,23 +1966,12 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Cannot sweep along empty spine");
 
-#if OCC_VERSION_HEX >= 0x070600
-
     Handle(Adaptor3d_Curve) myPath;
 
     if (this->_Shape.ShapeType() == TopAbs_EDGE) {
         const TopoDS_Edge& path_edge = TopoDS::Edge(this->_Shape);
         myPath = new BRepAdaptor_Curve(path_edge);
     }
-#else
-    Handle(Adaptor3d_HCurve) myPath;
-    if (this->_Shape.ShapeType() == TopAbs_EDGE) {
-        const TopoDS_Edge& path_edge = TopoDS::Edge(this->_Shape);
-        BRepAdaptor_Curve path_adapt(path_edge);
-        myPath = new BRepAdaptor_HCurve(path_adapt);
-    }
-#endif
-
     else {
         Standard_Failure::Raise("Spine shape is not an edge");
     }
@@ -2490,8 +2412,6 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
     aGenerator.Build();
     if (!aGenerator.IsDone())
         Standard_Failure::Raise("Failed to create loft face");
-
-    //Base::Console().Message("DEBUG: TopoShape::makeLoft returns.\n");
     return aGenerator.Shape();
 }
 
@@ -3471,21 +3391,10 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
     Standard_Boolean performSewing = Standard_False;
     aSewingTool.Init(tolerance, performSewing);
     aSewingTool.Load(aComp);
-
-#if OCC_VERSION_HEX < 0x070500
-    Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-    pi->NewScope(100, "Create shape from mesh...");
-    pi->Show();
-
-    aSewingTool.Perform(pi);
-#else
     aSewingTool.Perform();
-#endif
 
     _Shape = aSewingTool.SewedShape();
-#if OCC_VERSION_HEX < 0x070500
-    pi->EndScope();
-#endif
+
     if (_Shape.IsNull())
         _Shape = aComp;
 }

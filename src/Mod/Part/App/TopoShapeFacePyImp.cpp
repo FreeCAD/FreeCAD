@@ -459,7 +459,6 @@ PyObject* TopoShapeFacePy::getUVNodes(PyObject *args)
         return Py::new_reference_to(list);
     }
 
-#if OCC_VERSION_HEX >= 0x070600
     for (int i=1; i<=mesh->NbNodes(); i++) {
         gp_Pnt2d pt2d = mesh->UVNode(i);
         Py::Tuple uv(2);
@@ -467,16 +466,6 @@ PyObject* TopoShapeFacePy::getUVNodes(PyObject *args)
         uv.setItem(1, Py::Float(pt2d.Y()));
         list.append(uv);
     }
-#else
-    const TColgp_Array1OfPnt2d& aNodesUV = mesh->UVNodes();
-    for (int i=aNodesUV.Lower(); i<=aNodesUV.Upper(); i++) {
-        gp_Pnt2d pt2d = aNodesUV(i);
-        Py::Tuple uv(2);
-        uv.setItem(0, Py::Float(pt2d.X()));
-        uv.setItem(1, Py::Float(pt2d.Y()));
-        list.append(uv);
-    }
-#endif
 
     return Py::new_reference_to(list);
 }
@@ -593,13 +582,8 @@ PyObject* TopoShapeFacePy::isPartOfDomain(PyObject *args)
     const TopoDS_Face& face = TopoDS::Face(getTopoShapePtr()->getShape());
 
     double tol;
-    //double u1, u2, v1, v2, dialen;
     tol = Precision::Confusion();
     try {
-        //BRepTools::UVBounds(face, u1, u2, v1, v2);
-        //dialen = (u2-u1)*(u2-u1) + (v2-v1)*(v2-v1);
-        //dialen = sqrt(dialen)/400.0;
-        //tol = std::max<double>(dialen, tol);
         BRepTopAdaptor_FClass2d CL(face,tol);
         TopAbs_State state = CL.Perform(gp_Pnt2d(u,v));
         return PyBool_FromLong((state == TopAbs_ON || state == TopAbs_IN) ? 1 : 0);

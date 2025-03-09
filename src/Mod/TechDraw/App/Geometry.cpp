@@ -66,9 +66,6 @@
 # include <TopoDS_Edge.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
-#if OCC_VERSION_HEX < 0x070600
-# include <BRepAdaptor_HCurve.hxx>
-#endif
 #endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
@@ -92,9 +89,7 @@ using namespace Part;
 using namespace std;
 using DU = DrawUtil;
 
-#if OCC_VERSION_HEX >= 0x070600
 using BRepAdaptor_HCurve = BRepAdaptor_Curve;
-#endif
 
 // Collection of Geometric Features
 Wire::Wire()
@@ -129,7 +124,6 @@ TopoDS_Wire Wire::toOccWire() const
     if (mkWire.IsDone())  {
         return mkWire.Wire();
     }
-//    BRepTools::Write(result, "toOccWire.brep");
     return TopoDS_Wire();
 }
 
@@ -150,7 +144,6 @@ TopoDS_Face Face::toOccFace() const
     int limit = wires.size();
     int iwire = 1;
     for ( ; iwire < limit; iwire++) {
-//        w->dump("wireInToFace.brep");
         TopoDS_Wire wOCC = wires.at(iwire)->toOccWire();
         if(!wOCC.IsNull())  {
             mkFace.Add(wOCC);
@@ -431,7 +424,6 @@ bool BaseGeom::closed()
 // return a BaseGeom similar to this, but inverted with respect to Y axis
 BaseGeomPtr BaseGeom::inverted()
 {
-//    Base::Console().Message("BG::inverted()\n");
     TopoDS_Shape invertedShape = ShapeUtils::invertGeometry(occEdge);
     TopoDS_Edge invertedEdge = TopoDS::Edge(invertedShape);
     return baseFactory(invertedEdge);
@@ -527,7 +519,6 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge, bool isCosmetic)
                     }
                  }
             } else {
-//              Base::Console().Message("Geom::baseFactory - circEdge is Null\n");
                 result = bspline;
             }
             break;
@@ -619,7 +610,6 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
 
 TopoShape BaseGeom::asTopoShape(double scale)
 {
-//    Base::Console().Message("BG::asTopoShape(%.3f) - dump: %s\n", scale, dump().c_str());
     TopoDS_Shape unscaledShape = ShapeUtils::scaleShape(getOCCEdge(), 1.0 / scale);
     TopoDS_Edge unscaledEdge = TopoDS::Edge(unscaledShape);
     return unscaledEdge;
@@ -1298,8 +1288,7 @@ Vertex::Vertex(double x, double y)
 
 Vertex::Vertex(Base::Vector3d v) : Vertex(v.x, v.y)
 {
-//    Base::Console().Message("V::V(%s)\n",
-//                            DrawUtil::formatVector(v).c_str());
+
 }
 
 
@@ -1331,10 +1320,6 @@ void Vertex::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<CosmeticLink value=\"" <<  cosmeticLink << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << endl;
 
-    //do we need to save this?  always recreated by program.
-//    const char r = reference?'1':'0';
-//    writer.Stream() << writer.ind() << "<Reference value=\"" <<  r << "\"/>" << endl;
-
     Tag::Save(writer);
 }
 
@@ -1347,8 +1332,6 @@ void Vertex::Restore(Base::XMLReader &reader)
 
     reader.readElement("Extract");
     extractType = static_cast<ExtractionType>(reader.getAttributeAsInteger("value"));
-//    reader.readElement("Visible");
-//    hlrVisible = (bool)reader.getAttributeAsInteger("value")==0?false:true;
     reader.readElement("Ref3D");
     ref3D = reader.getAttributeAsInteger("value");
     reader.readElement("IsCenter");
@@ -1359,10 +1342,6 @@ void Vertex::Restore(Base::XMLReader &reader)
     cosmeticLink = reader.getAttributeAsInteger("value");
     reader.readElement("CosmeticTag");
     cosmeticTag = reader.getAttribute("value");
-
-    //will restore read to eof looking for "Reference" in old docs??  YES!!
-//    reader.readElement("Reference");
-//    m_reference = (bool)reader.getAttributeAsInteger("value")==0?false:true;
 
     Tag::Restore(reader, "VertexTag");
 
@@ -1452,7 +1431,6 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
 
 TopoDS_Edge GeometryUtils::edgeFromGeneric(TechDraw::GenericPtr g)
 {
-//    Base::Console().Message("GU::edgeFromGeneric()\n");
     //TODO: note that this isn't quite right as g can be a polyline!
     //sb points.first, points.last
     //and intermediates should be added to Point

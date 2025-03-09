@@ -111,9 +111,6 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <BRep_Tool.hxx>
 #include <Bnd_Box.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HSurface.hxx>
-#endif
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>

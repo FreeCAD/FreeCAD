@@ -122,11 +122,7 @@ public:
     std::string getUserFriendlyName() const override;
     std::string getBriefExplanation() const override;
 
-#if OCC_VERSION_HEX >= 0x070600
     void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) override;
-#else
-    void Build() override;
-#endif
 
 protected:
     void Build_Essence() override {}

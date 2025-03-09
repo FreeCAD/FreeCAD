@@ -66,14 +66,5 @@ void ReaderStep::read(Handle(TDocStd_Document) hDoc)  // NOLINT
         throw Base::FileException("Cannot read STEP file", file);
     }
 
-#if OCC_VERSION_HEX < 0x070500
-    Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
-    aReader.Reader().WS()->MapReader()->SetProgress(pi);
-    pi->NewScope(100, "Reading STEP file...");
-    pi->Show();
-#endif
     aReader.Transfer(hDoc);
-#if OCC_VERSION_HEX < 0x070500
-    pi->EndScope();
-#endif
 }

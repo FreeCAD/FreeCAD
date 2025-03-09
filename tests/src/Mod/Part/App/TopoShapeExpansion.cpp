@@ -124,9 +124,7 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundEmptyShapesReturnsEmptyCompoun
     // Assert
     EXPECT_EQ(TopAbs_ShapeEnum::TopAbs_COMPOUND, topoShape.getShape().ShapeType());
     EXPECT_TRUE(topoShape.getMappedChildElements().empty());
-#if OCC_VERSION_HEX >= 0x070400
     EXPECT_EQ(0, topoShape.getShape().TShape()->NbChildren());
-#endif
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoShapesGeneratesMap)
@@ -1323,9 +1321,7 @@ TEST_F(TopoShapeExpansionTest, makeElementShellClosed)
     topoShape1.makeElementCompound(shapes, "D");
     // Assert
     TopoShape result = topoShape1.makeElementShell(false, "SH1");
-#if OCC_VERSION_HEX >= 0x070400
     EXPECT_EQ(result.getShape().NbChildren(), 6);
-#endif
     EXPECT_EQ(result.countSubElements("Vertex"), 8);
     EXPECT_EQ(result.countSubElements("Edge"), 12);
     EXPECT_EQ(result.countSubElements("Face"), 6);
@@ -1369,9 +1365,7 @@ TEST_F(TopoShapeExpansionTest, makeElementShellFromWires)
     topoShape1.makeElementCompound(shapes, "D");
     // Assert
     TopoShape result = topoShape1.makeElementShellFromWires(shapes);
-#if OCC_VERSION_HEX >= 0x070400
     EXPECT_EQ(result.getShape().NbChildren(), 20);  // Have a NbChildren method?
-#endif
     EXPECT_EQ(result.countSubElements("Vertex"), 8);
     EXPECT_EQ(result.countSubElements("Edge"), 32);
     EXPECT_EQ(result.countSubElements("Face"), 20);

@@ -386,11 +386,7 @@ std::string FaceMakerExtrusion::getBriefExplanation() const
     return {tr("Supports making faces with holes, does not support nesting.").toStdString()};
 }
 
-#if OCC_VERSION_HEX >= 0x070600
 void FaceMakerExtrusion::Build(const Message_ProgressRange&)
-#else
-void FaceMakerExtrusion::Build()
-#endif
 {
     this->NotDone();
     this->myGenerated.Clear();
@@ -433,14 +429,9 @@ void FaceMakerExtrusion::Build()
     }
 
     if (!wires.empty()) {
-        //try {
         TopoDS_Shape res = FaceMakerCheese::makeFace(wires);
         if (!res.IsNull())
             this->myShape = res;
-        //}
-        //catch (...) {
-
-        //}
     }
 
     this->Done();

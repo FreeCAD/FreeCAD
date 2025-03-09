@@ -2155,9 +2155,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
     }
     BRepExtrema_DistShapeShape extss;
     extss.SetDeflection(tol);
-#if OCC_VERSION_HEX >= 0x070600
     extss.SetMultiThread(true);
-#endif
     extss.LoadS1(s1);
     extss.LoadS2(s2);
     try {
@@ -2176,7 +2174,6 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
     int count = extss.NbSolution();
     if (count != 0) {
         minDist = extss.Value();
-        //extss.Dump(std::cout);
         for (int i=1; i<= count; i++) {
             Py::Object pt1, pt2;
             Py::String suppType1, suppType2;
