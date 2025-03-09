@@ -33,13 +33,19 @@
       </Documentation>
       <Parameter Name="LibraryIcon" Type="String"/>
     </Attribute>
-    <Attribute Name="Name" ReadOnly="true">
+    <Attribute Name="Name" ReadOnly="false">
       <Documentation>
         <UserDocu>Model name.</UserDocu>
       </Documentation>
       <Parameter Name="Name" Type="String"/>
     </Attribute>
-    <Attribute Name="Directory" ReadOnly="true">
+    <Attribute Name="Type" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Model type.</UserDocu>
+      </Documentation>
+      <Parameter Name="Type" Type="String"/>
+    </Attribute>
+    <Attribute Name="Directory" ReadOnly="false">
       <Documentation>
         <UserDocu>Model directory.</UserDocu>
       </Documentation>
@@ -51,19 +57,19 @@
       </Documentation>
       <Parameter Name="UUID" Type="String"/>
     </Attribute>
-    <Attribute Name="Description" ReadOnly="true">
+    <Attribute Name="Description" ReadOnly="false">
       <Documentation>
         <UserDocu>Description of the model.</UserDocu>
       </Documentation>
       <Parameter Name="Description" Type="String"/>
     </Attribute>
-    <Attribute Name="URL" ReadOnly="true">
+    <Attribute Name="URL" ReadOnly="false">
       <Documentation>
         <UserDocu>URL to a detailed description of the model.</UserDocu>
       </Documentation>
       <Parameter Name="URL" Type="String"/>
     </Attribute>
-    <Attribute Name="DOI" ReadOnly="true">
+    <Attribute Name="DOI" ReadOnly="false">
       <Documentation>
         <UserDocu>Digital Object Identifier (see https://doi.org/)</UserDocu>
       </Documentation>
@@ -81,5 +87,15 @@
       </Documentation>
       <Parameter Name="Properties" Type="Dict"/>
     </Attribute>
+    <Methode Name="addInheritance" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Add an inherited model.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addProperty" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Add a model property.</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>
