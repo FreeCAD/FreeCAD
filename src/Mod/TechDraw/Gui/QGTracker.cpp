@@ -41,6 +41,7 @@
 
 #include "PreferencesGui.h"
 #include "QGTracker.h"
+#include "QGIVertex.h"
 #include "QGIView.h"
 #include "QGSPage.h"
 #include "Rez.h"
@@ -437,13 +438,16 @@ void QGTracker::setPoint(std::vector<QPointF> pts)
         Base::Console().Message("QGTracker::setPoint - no pts!\n");
         return;
     }
-    prepareGeometryChange();
-    QPainterPath newPath;
-    QPointF center = pts.front();
-    double radius = 50.0;
-    newPath.addEllipse(center, radius, radius);
-    setPath(newPath);
-    setPrettyNormal();
+    constexpr float baseVertexSize = 7.0F;
+
+    auto point = new QGIVertex(-1);
+    point->setParentItem(this);
+    point->setPos(pts.front());
+    point->setRadius(static_cast<float>(baseVertexSize * Preferences::vertexScale()));
+    point->setNormalColor(Qt::blue);
+    point->setFillColor(Qt::blue);
+    point->setPrettyNormal();
+    point->setZValue(ZVALUE::VERTEX);
 }
 
 std::vector<Base::Vector3d> QGTracker::convertPoints()
