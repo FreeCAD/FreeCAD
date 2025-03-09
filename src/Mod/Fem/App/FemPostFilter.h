@@ -35,6 +35,7 @@
 #include <vtkTableBasedClipDataSet.h>
 #include <vtkVectorNorm.h>
 #include <vtkWarpVector.h>
+#include <vtkImplicitFunction.h>
 
 #include <App/PropertyUnits.h>
 #include <App/DocumentObjectExtension.h>
@@ -232,6 +233,7 @@ protected:
 private:
     vtkSmartPointer<vtkTableBasedClipDataSet> m_clipper;
     vtkSmartPointer<vtkExtractGeometry> m_extractor;
+    vtkSmartPointer<vtkImplicitFunction> m_defaultFunction;
 };
 
 
@@ -304,6 +306,7 @@ protected:
 
 private:
     vtkSmartPointer<vtkCutter> m_cutter;
+    vtkSmartPointer<vtkImplicitFunction> m_defaultFunction;
 };
 
 
