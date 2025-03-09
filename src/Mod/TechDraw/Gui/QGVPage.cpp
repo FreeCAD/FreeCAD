@@ -214,6 +214,11 @@ QGVPage::QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent)
     initNavigationStyle();
 
     createStandardCursors(devicePixelRatio());
+
+    // Let's not use this signal, as it's called BEFORE it's own selection sequence is run
+    // QObject::connect(this, &QGraphicsView::rubberBandChanged, m_scene, &QGSPage::handleRubberBandSelection);
+
+    setFocusPolicy(Qt::StrongFocus);
 }
 
 QGVPage::~QGVPage()
@@ -453,9 +458,7 @@ void QGVPage::keyPressEvent(QKeyEvent* event)
     else {
         m_navStyle->handleKeyPressEvent(event);
     }
-    if (!event->isAccepted()) {
-        QGraphicsView::keyPressEvent(event);
-    }
+    QGraphicsView::keyPressEvent(event);
 }
 
 void QGVPage::keyReleaseEvent(QKeyEvent* event)
@@ -466,9 +469,7 @@ void QGVPage::keyReleaseEvent(QKeyEvent* event)
     else {
         m_navStyle->handleKeyReleaseEvent(event);
     }
-    if (!event->isAccepted()) {
-        QGraphicsView::keyReleaseEvent(event);
-    }
+    QGraphicsView::keyReleaseEvent(event);
 }
 
 void QGVPage::focusOutEvent(QFocusEvent* event)
@@ -519,6 +520,16 @@ void QGVPage::leaveEvent(QEvent* event)
 
 void QGVPage::mousePressEvent(QMouseEvent* event)
 {
+    // For box selection
+    if (event->button() == Qt::LeftButton && event->modifiers() == Qt::ShiftModifier) {
+        setDragMode(QGraphicsView::RubberBandDrag);
+        QGraphicsView::mousePressEvent(event);
+        return;
+    }
+    else {
+        setDragMode(QGraphicsView::NoDrag);
+    }
+
     if (toolHandler && (event->button() != Qt::MiddleButton)) {
         toolHandler->mousePressEvent(event);
     }
@@ -535,6 +546,11 @@ void QGVPage::mouseMoveEvent(QMouseEvent* event)
     }
     m_navStyle->handleMouseMoveEvent(event);
     QGraphicsView::mouseMoveEvent(event);
+
+    // If box selection ongoing
+    if(event->buttons() == Qt::LeftButton && dragMode() == QGraphicsView::RubberBandDrag) {
+        m_scene->handleRubberBandSelection();
+    }
 }
 
 void QGVPage::mouseReleaseEvent(QMouseEvent* event)
