@@ -56,29 +56,7 @@ class JobCreate:
     DataObject = QtCore.Qt.ItemDataRole.UserRole
 
     def __init__(self, parent=None, sel=None):
-        # Warn user if current schema doesn't use minute for time in velocity
-        if not Path.Preferences.suppressVelocity():
-            schemes = FreeCAD.Units.listSchemas()
-            for idx, val in enumerate(schemes):
-                if FreeCAD.ActiveDocument.UnitSystem == FreeCAD.Units.listSchemas(idx):
-                    current_schema = FreeCAD.Units.listSchemas(idx)
-                    if idx not in [2, 3, 6]:
-                        msg = translate(
-                            "CAM_Job",
-                            "The currently selected unit schema: \n     '{}' for this document\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct G-code: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'",
-                        ).format(current_schema)
-                        header = translate("CAM_Job", "Warning")
-                        msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, msg)
-
-                        msgbox.addButton(translate("CAM_Job", "Ok"), QtGui.QMessageBox.AcceptRole)
-                        msgbox.addButton(
-                            translate("CAM_Job", "Don't Show This Anymore"),
-                            QtGui.QMessageBox.ActionRole,
-                        )
-                        if msgbox.exec_() == 1:
-                            from Path.Preferences import preferences
-
-                            preferences().SetBool("WarningSuppressVelocity", True)
+        self._warnUserIfNotUsingMinutes()
 
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
         self.itemsSolid = QtGui.QStandardItem(translate("CAM_Job", "Solids"))
@@ -86,11 +64,49 @@ class JobCreate:
         self.itemsJob = QtGui.QStandardItem(translate("CAM_Job", "Jobs"))
         self.dialog.templateGroup.hide()
         self.dialog.modelGroup.hide()
+
         # debugging support
         self.candidates = None
         self.delegate = None
         self.index = None
         self.model = None
+
+    def _warnUserIfNotUsingMinutes(self):
+        # Warn user if current schema doesn't use minute for time in velocity
+        if Path.Preferences.suppressVelocity():
+            return
+
+        minute_based_schemes = map(FreeCAD.Units.listSchemas, [2, 3, 6])
+        if FreeCAD.ActiveDocument.UnitSystem in minute_based_schemes:
+            return
+
+        msg = translate(
+            "CAM_Job",
+            (
+                "The currently selected unit schema: \n"
+                "     '{}' for this document\n"
+                " Does not use 'minutes' for velocity values. \n"
+                " \n"
+                "CNC machines require feed rate to be expressed in \n"
+                "unit/minute. To ensure correct G-code: \n"
+                "Select a minute-based schema in preferences.\n"
+                "For example:\n"
+                "    'Metric, Small Parts & CNC'\n"
+                "    'US Customary'\n"
+                "    'Imperial Decimal'"
+            ),
+        ).format(FreeCAD.ActiveDocument.UnitSystem)
+        header = translate("CAM_Job", "Warning")
+        msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, msg)
+        msgbox.addButton(translate("CAM_Job", "Ok"), QtGui.QMessageBox.AcceptRole)
+        dont_show_again_button = msgbox.addButton(
+            translate("CAM_Job", "Don't Show This Anymore"),
+            QtGui.QMessageBox.ActionRole,
+        )
+
+        msgbox.exec_()
+        if msgbox.clickedButton() == dont_show_again_button:
+            Path.Preferences.preferences().SetBool(Path.Preferences.WarningSuppressVelocity, True)
 
     def setupTitle(self, title):
         self.dialog.setWindowTitle(title)
