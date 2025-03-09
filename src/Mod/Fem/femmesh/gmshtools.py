@@ -58,13 +58,11 @@ class GmshTools:
         self.process = QProcess()
         # analysis
         self.analysis = None
-        if analysis:
-            self.analysis = analysis
-        else:
-            for i in self.mesh_obj.InList:
-                if i.isDerivedFrom("Fem::FemAnalysis"):
-                    self.analysis = i
-                    break
+
+        for i in self.mesh_obj.InList:
+            if i.isDerivedFrom("Fem::FemAnalysis"):
+                self.analysis = i
+                break
 
         self.load_properties()
         self.error = False
