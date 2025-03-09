@@ -50,7 +50,7 @@ public:
     std::string getFilmCoef() const;
     std::string getDFlux() const;
     double getEmissivity() const;
-    std::string get_constraint_type() const;
+    std::string getConstraintType() const;
     const std::string getReferences() const override;
 
 private Q_SLOTS:
@@ -60,6 +60,7 @@ private Q_SLOTS:
     void onFilmCoefChanged(double val);
     void onEmissivityChanged(double val);
     void onHeatFluxChanged(double val);
+    void onConstrTypeChanged(int val);
     void Conv();
     void Rad();
     void Flux();
