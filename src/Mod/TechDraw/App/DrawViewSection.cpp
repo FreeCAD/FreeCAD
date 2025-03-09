@@ -78,6 +78,7 @@
 #include <App/Document.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
@@ -968,8 +969,8 @@ ChangePointVector DrawViewSection::getChangePointsFromSectionLine()
     if (baseDvp) {
         std::pair<Base::Vector3d, Base::Vector3d> lineEnds = sectionLineEnds();
         // make start and end marks
-        gp_Pnt location0 = DU::to<gp_Pnt>(lineEnds.first);
-        gp_Pnt location1 = DU::to<gp_Pnt>(lineEnds.second);
+        gp_Pnt location0 = Base::convertTo<gp_Pnt>(lineEnds.first);
+        gp_Pnt location1 = Base::convertTo<gp_Pnt>(lineEnds.second);
         gp_Dir postDir = gp_Dir(location1.XYZ() - location0.XYZ());
         gp_Dir preDir = postDir.Reversed();
         ChangePoint startPoint(location0, preDir, postDir);
@@ -1067,13 +1068,13 @@ void DrawViewSection::setCSFromLocalUnit(const Base::Vector3d localUnit)
     //    Base::Console().Message("DVS::setCSFromLocalUnit(%s)\n",
     //    DrawUtil::formatVector(localUnit).c_str());
     gp_Dir verticalDir = getSectionCS().YDirection();
-    gp_Ax1 verticalAxis(DrawUtil::to<gp_Pnt>(SectionOrigin.getValue()), verticalDir);
+    gp_Ax1 verticalAxis(Base::convertTo<gp_Pnt>(SectionOrigin.getValue()), verticalDir);
     gp_Dir oldNormal = getSectionCS().Direction();
-    gp_Dir newNormal = DrawUtil::to<gp_Dir>(projectPoint(localUnit));
+    gp_Dir newNormal = Base::convertTo<gp_Dir>(projectPoint(localUnit));
     double angle = oldNormal.AngleWithRef(newNormal, verticalDir);
     gp_Ax2 newCS = getSectionCS().Rotated(verticalAxis, angle);
-    SectionNormal.setValue(DrawUtil::toVector3d(newCS.Direction()));
-    XDirection.setValue(DrawUtil::toVector3d(newCS.XDirection()));
+    SectionNormal.setValue(Base::convertTo<Base::Vector3d>(newCS.Direction()));
+    XDirection.setValue(Base::convertTo<Base::Vector3d>(newCS.XDirection()));
 }
 
 gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
