@@ -29,6 +29,10 @@
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
+#if OCC_VERSION_HEX < 0x070600
+#include <BRepAdaptor_HCurve.hxx>
+#include <BRepAdaptor_HCompCurve.hxx>
+#endif
 
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepCheck_Analyzer.hxx>
