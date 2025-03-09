@@ -28,6 +28,7 @@
 #include <vtkPointData.h>
 #include <vtkAlgorithm.h>
 #include <vtkAlgorithmOutput.h>
+#include <vtkUnstructuredGrid.h>
 #endif
 
 #include <App/Document.h>
@@ -164,9 +165,14 @@ void FemPostFilter::onChanged(const App::Property* prop)
 
 DocumentObjectExecReturn* FemPostFilter::execute()
 {
-
     // the pipelines are setup correctly, all we need to do is to update and take out the data.
     if (!m_pipelines.empty() && !m_activePipeline.empty()) {
+
+        auto active = m_pipelines[m_activePipeline];
+        if (active.source->GetNumberOfInputConnections(0) == 0) {
+            return nullptr;
+        }
+
         auto output = getFilterOutput();
 
         if (output->GetNumberOfInputConnections(0) == 0) {
@@ -179,14 +185,15 @@ DocumentObjectExecReturn* FemPostFilter::execute()
         else {
             output->Update();
         }
+
         Data.setValue(output->GetOutputDataObject(0));
     }
 
     return StdReturn;
 }
 
-vtkSmartPointer<vtkDataSet> FemPostFilter::getInputData() {
-
+vtkSmartPointer<vtkDataSet> FemPostFilter::getInputData()
+{
     auto active = m_pipelines[m_activePipeline];
     if (active.source->GetNumberOfInputConnections(0) == 0) {
         return nullptr;
@@ -195,7 +202,6 @@ vtkSmartPointer<vtkDataSet> FemPostFilter::getInputData() {
     vtkAlgorithmOutput* output = active.source->GetInputConnection(0,0);
     vtkAlgorithm* algo = output->GetProducer();
     algo->Update();
-
     return vtkDataSet::SafeDownCast(algo->GetOutputDataObject(0));
 }
 
@@ -579,14 +585,20 @@ FemPostClipFilter::FemPostClipFilter()
         App::Prop_None,
         "Decides if cells are cut and interpolated or if the cells are kept as a whole");
 
+    auto sphere = vtkSmartPointer<vtkSphere>::New();
+    sphere->SetRadius(1e12);
+    m_defaultFunction = sphere;
+
     FilterPipeline clip;
     m_clipper = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
+    m_clipper->SetClipFunction(m_defaultFunction);
     clip.source = m_clipper;
     clip.target = m_clipper;
     addFilterPipeline(clip, "clip");
 
     FilterPipeline extr;
     m_extractor = vtkSmartPointer<vtkExtractGeometry>::New();
+    m_extractor->SetImplicitFunction(m_defaultFunction);
     extr.source = m_extractor;
     extr.target = m_extractor;
     addFilterPipeline(extr, "extract");
@@ -604,6 +616,9 @@ void FemPostClipFilter::onChanged(const Property* prop)
         if (auto* value = Base::freecad_dynamic_cast<FemPostFunction>(Function.getValue())) {
             m_clipper->SetClipFunction(value->getImplicitFunction());
             m_extractor->SetImplicitFunction(value->getImplicitFunction());
+        } else {
+            m_clipper->SetClipFunction(m_defaultFunction);
+            m_extractor->SetImplicitFunction(m_defaultFunction);
         }
     }
     else if (prop == &InsideOut) {
@@ -783,6 +798,7 @@ FemPostContoursFilter::~FemPostContoursFilter() = default;
 
 DocumentObjectExecReturn* FemPostContoursFilter::execute()
 {
+
     // update list of available fields and their vectors
     if (!m_blockPropertyChanges) {
         refreshFields();
@@ -790,20 +806,7 @@ DocumentObjectExecReturn* FemPostContoursFilter::execute()
     }
 
     // recalculate the filter
-    auto returnObject = Fem::FemPostFilter::execute();
-
-    // delete contour field
-    vtkDataSet* dset = getInputData();
-    if (!dset) {
-        return returnObject;
-    }
-    dset->GetPointData()->RemoveArray(contourFieldName.c_str());
-    // refresh fields to reflect the deletion
-    if (!m_blockPropertyChanges) {
-        refreshFields();
-    }
-
-    return returnObject;
+    return Fem::FemPostFilter::execute();
 }
 
 void FemPostContoursFilter::onChanged(const Property* prop)
@@ -812,7 +815,7 @@ void FemPostContoursFilter::onChanged(const Property* prop)
         return;
     }
 
-    if (prop == &Field && (Field.getValue() >= 0)) {
+    if (prop == &Field && (Field.isValid())) {
         refreshVectors();
     }
 
@@ -820,7 +823,7 @@ void FemPostContoursFilter::onChanged(const Property* prop)
     // otherwise the contours output would be empty and the ViewProviderFemPostObject
     // would not get any data
     if ((prop == &Field || prop == &VectorMode || prop == &NumberOfContours || prop == &Data)
-        && (Field.getValue() >= 0)) {
+        && (Field.isValid())) {
         double p[2];
 
         // get the field and its data
@@ -932,20 +935,25 @@ void FemPostContoursFilter::refreshFields()
     m_blockPropertyChanges = true;
 
     std::string fieldName;
-    if (Field.getValue() >= 0) {
+    if (Field.isValid()) {
         fieldName = Field.getValueAsString();
     }
 
     std::vector<std::string> FieldsArray;
 
     vtkDataSet* dset = getInputData();
-    if (!dset) {
+    if (!dset || !dset->GetPointData()) {
+        // no valid data: no fields to choose!
+        App::Enumeration empty;
+        Field.setValue(empty);
+        m_fields.setEnums(FieldsArray);
+        Field.setValue(m_fields);
         m_blockPropertyChanges = false;
         return;
     }
-    vtkPointData* pd = dset->GetPointData();
 
     // get all fields
+    auto pd = dset->GetPointData();
     for (int i = 0; i < pd->GetNumberOfArrays(); ++i) {
         FieldsArray.emplace_back(pd->GetArrayName(i));
     }
@@ -956,6 +964,7 @@ void FemPostContoursFilter::refreshFields()
     Field.setValue(m_fields);
 
     // search if the current field is in the available ones and set it
+<<<<<<< HEAD
     const auto it = std::ranges::find(FieldsArray, fieldName);
     if (!fieldName.empty() && it != FieldsArray.end()) {
         Field.setValue(fieldName.c_str());
@@ -965,6 +974,20 @@ void FemPostContoursFilter::refreshFields()
         // select the first field
         Field.setValue(long(0));
         fieldName = Field.getValueAsString();
+=======
+    // Note: list could be empty and hence Field invalid
+    if (Field.isValid()) {
+        std::vector<std::string>::iterator it =
+            std::find(FieldsArray.begin(), FieldsArray.end(), fieldName);
+        if (!fieldName.empty() && it != FieldsArray.end()) {
+            Field.setValue(fieldName.c_str());
+        }
+        else {
+            m_blockPropertyChanges = false;
+            // select the first field
+            Field.setValue(long(0));
+        }
+>>>>>>> cf27d7e05b (FEM: Multistep test fix for vtk 7.x)
     }
 
     m_blockPropertyChanges = false;
@@ -975,25 +998,36 @@ void FemPostContoursFilter::refreshVectors()
 {
     // refreshes the list of available vectors for the current Field
     m_blockPropertyChanges = true;
+    std::vector<std::string> vectorArray;
 
     vtkDataSet* dset = getInputData();
-    if (!dset) {
+    if (!dset || !dset->GetPointData() || !Field.isValid()) {
+        vectorArray.emplace_back("Not a vector");
+        App::Enumeration empty;
+        VectorMode.setValue(empty);
+        m_vectors.setEnums(vectorArray);
+        VectorMode.setValue(m_vectors);
         m_blockPropertyChanges = false;
         return;
     }
+
     vtkDataArray* fieldArray = dset->GetPointData()->GetArray(Field.getValueAsString());
     if (!fieldArray) {
+        vectorArray.emplace_back("Not a vector");
+        App::Enumeration empty;
+        VectorMode.setValue(empty);
+        m_vectors.setEnums(vectorArray);
+        VectorMode.setValue(m_vectors);
         m_blockPropertyChanges = false;
         return;
     }
 
     // store name if already set
     std::string vectorName;
-    if (VectorMode.hasEnums() && VectorMode.getValue() >= 0) {
+    if (VectorMode.isValid()) {
         vectorName = VectorMode.getValueAsString();
     }
 
-    std::vector<std::string> vectorArray;
     if (fieldArray->GetNumberOfComponents() == 1) {
         vectorArray.emplace_back("Not a vector");
     }
@@ -1035,8 +1069,14 @@ FemPostCutFilter::FemPostCutFilter()
                       App::Prop_None,
                       "The function object which defines the cut function");
 
+    auto sphere = vtkSmartPointer<vtkSphere>::New();
+    sphere->SetRadius(1e12);
+    m_defaultFunction = sphere;
+
+
     FilterPipeline cut;
     m_cutter = vtkSmartPointer<vtkCutter>::New();
+    m_cutter->SetCutFunction(m_defaultFunction);
     cut.source = m_cutter;
     cut.target = m_cutter;
     addFilterPipeline(cut, "cut");
@@ -1050,6 +1090,8 @@ void FemPostCutFilter::onChanged(const Property* prop)
     if (prop == &Function) {
         if (auto* value = Base::freecad_dynamic_cast<FemPostFunction>(Function.getValue())) {
             m_cutter->SetCutFunction(value->getImplicitFunction());
+        } else {
+            m_cutter->SetCutFunction(m_defaultFunction);
         }
     }
 
@@ -1106,8 +1148,8 @@ FemPostScalarClipFilter::~FemPostScalarClipFilter() = default;
 
 DocumentObjectExecReturn* FemPostScalarClipFilter::execute()
 {
-    std::string val;
-    if (Scalars.getValue() >= 0) {
+    std::string val = "";
+    if (Scalars.isValid()) {
         val = Scalars.getValueAsString();
     }
 
@@ -1136,7 +1178,7 @@ void FemPostScalarClipFilter::onChanged(const Property* prop)
     else if (prop == &InsideOut) {
         m_clipper->SetInsideOut(InsideOut.getValue());
     }
-    else if (prop == &Scalars && (Scalars.getValue() >= 0)) {
+    else if (prop == &Scalars && (Scalars.isValid())) {
         m_clipper->SetInputArrayToProcess(0,
                                           0,
                                           0,
@@ -1161,7 +1203,10 @@ short int FemPostScalarClipFilter::mustExecute() const
 void FemPostScalarClipFilter::setConstraintForField()
 {
     vtkDataSet* dset = getInputData();
-    if (!dset) {
+    if (!dset || !dset->GetPointData() || !Scalars.isValid()) {
+        m_constraints.LowerBound = 0;
+        m_constraints.UpperBound = 1;
+        m_constraints.StepSize = 1;
         return;
     }
 
@@ -1169,6 +1214,9 @@ void FemPostScalarClipFilter::setConstraintForField()
     // VTK cannot deliver data when the filer relies e.g. on a cut clip filter
     // whose value is set so that all data are cut
     if (!pdata) {
+        m_constraints.LowerBound = 0;
+        m_constraints.UpperBound = 1;
+        m_constraints.StepSize = 1;
         return;
     }
     double p[2];
@@ -1211,7 +1259,7 @@ DocumentObjectExecReturn* FemPostWarpVectorFilter::execute()
 {
 
     std::string val;
-    if (Vector.getValue() >= 0) {
+    if (Vector.isValid()) {
         val = Vector.getValueAsString();
     }
 
@@ -1238,7 +1286,7 @@ void FemPostWarpVectorFilter::onChanged(const Property* prop)
         // since our mesh is in mm, we must scale the factor
         m_warp->SetScaleFactor(1000 * Factor.getValue());
     }
-    else if (prop == &Vector && (Vector.getValue() >= 0)) {
+    else if (prop == &Vector && Vector.isValid()) {
         m_warp->SetInputArrayToProcess(0,
                                        0,
                                        0,

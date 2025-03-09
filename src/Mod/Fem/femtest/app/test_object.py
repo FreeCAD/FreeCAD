@@ -1123,9 +1123,9 @@ def create_all_fem_objects_doc(doc):
         vres = analysis.addObject(ObjectsFem.makePostVtkResult(doc, [res]))[0]
         ObjectsFem.makePostVtkFilterClipRegion(doc, vres)
         ObjectsFem.makePostVtkFilterClipScalar(doc, vres)
-        ObjectsFem.makePostVtkFilterContours(doc, vres)
         ObjectsFem.makePostVtkFilterCutFunction(doc, vres)
         ObjectsFem.makePostVtkFilterWarp(doc, vres)
+        ObjectsFem.makePostVtkFilterContours(doc, vres)
 
     analysis.addObject(ObjectsFem.makeSolverCalculiXCcxTools(doc))
     analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
