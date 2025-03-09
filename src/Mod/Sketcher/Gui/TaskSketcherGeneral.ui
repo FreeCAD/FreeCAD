@@ -1,53 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TaskSketcherMessages</class>
- <widget class="QWidget" name="TaskSketcherMessages">
+ <class>TaskSketcherGeneral</class>
+ <widget class="QWidget" name="TaskSketcherGeneral">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>253</width>
-    <height>48</height>
+    <height>61</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
-   <item>
-    <widget class="Gui::StatefulLabel" name="labelConstrainStatus">
-     <property name="text">
-      <string>DOF</string>
-     </property>
-    </widget>
-   </item>
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="1">
     <widget class="Gui::UrlLabel" name="labelConstrainStatusLink">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string>Link</string>
      </property>
     </widget>
    </item>
-   <item>
-    <widget class="QToolButton" name="manualUpdate">
+   <item row="0" column="0">
+    <widget class="Gui::StatefulLabel" name="labelConstrainStatus">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="toolTip">
-      <string>Forces recomputation of active document</string>
+     <property name="text">
+      <string>DOF</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QCheckBox" name="autoRecompute">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>1</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
      <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>:/icons/view-refresh.svg</normaloff>:/icons/view-refresh.svg</iconset>
-     </property>
-     <property name="popupMode">
-      <enum>QToolButton::MenuButtonPopup</enum>
+      <string>Auto Recompute</string>
      </property>
     </widget>
    </item>

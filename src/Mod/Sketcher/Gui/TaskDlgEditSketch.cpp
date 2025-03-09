@@ -45,7 +45,7 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch* sketchView)
     ToolSettings = new TaskSketcherTool(sketchView);
     Constraints = new TaskSketcherConstraints(sketchView);
     Elements = new TaskSketcherElements(sketchView);
-    Messages = new TaskSketcherMessages(sketchView);
+    Messages = new TaskSketcherGeneral(sketchView);
     SolverAdvanced = new TaskSketcherSolverAdvanced(sketchView);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -114,8 +114,12 @@ void TaskDlgEditSketch::slotToolChanged(const std::string& toolname)
 void TaskDlgEditSketch::open()
 {}
 
-void TaskDlgEditSketch::clicked(int)
-{}
+void TaskDlgEditSketch::clicked(int button)
+{
+    if (button == QDialogButtonBox::Apply) {
+        Gui::Command::updateActive();
+    }
+}
 
 bool TaskDlgEditSketch::accept()
 {
@@ -146,6 +150,10 @@ bool TaskDlgEditSketch::reject()
     return true;
 }
 
+QDialogButtonBox::StandardButtons TaskDlgEditSketch::getStandardButtons() const
+{
+    return QDialogButtonBox::Close | QDialogButtonBox::Apply;
+}
 
 void TaskDlgEditSketch::autoClosedOnClosedView()
 {
