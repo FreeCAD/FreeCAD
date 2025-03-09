@@ -334,7 +334,6 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
     // once the tmp. filename is known use always the same because otherwise
     // we may run into some problems on the Linux platform
     static Base::FileInfo fi = Base::FileInfo(App::Application::getTempFileName());
-    bool success = false;
 
     Base::FileInfo datafolder;
     vtkSmartPointer<vtkXMLWriter> xmlWriter;
