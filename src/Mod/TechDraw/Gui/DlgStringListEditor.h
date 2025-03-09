@@ -26,39 +26,34 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <QDialog>
-
+#include <QPlainTextEdit>
 
 class QListWidgetItem;
 
-namespace TechDrawGui {
+namespace TechDrawGui
+{
 
 class Ui_DlgStringListEditor;
-class TechDrawGuiExport DlgStringListEditor : public QDialog
+class TechDrawGuiExport DlgStringListEditor: public QDialog
 {
     Q_OBJECT
 
 public:
-    DlgStringListEditor(const std::vector<std::string> texts,
-                   QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgStringListEditor() override;
+    explicit DlgStringListEditor(const std::vector<std::string> texts,
+                                 QWidget* parent = nullptr,
+                                 Qt::WindowFlags fl = Qt::WindowFlags());
 
     std::vector<std::string> getTexts() const;
     void accept() override;
     void reject() override;
 
-public Q_SLOTS:
-    void slotItemActivated(QListWidgetItem* item);
-    void slotAddItem();
-    void slotRemoveItem();
-
 private:
     void fillList(std::vector<std::string> texts);
-
-    Ui_DlgStringListEditor* ui;
+    QPlainTextEdit* textEdit_;
+    std::vector<std::string> texts_;
 };
 
-} // namespace Gui
+}  // namespace TechDrawGui
 
 
-#endif // GUI_DLGEDITABLETEXT_H
-
+#endif  // GUI_DLGEDITABLETEXT_H
