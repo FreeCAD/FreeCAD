@@ -9,7 +9,7 @@
 
 # we first try to find opencascade directly:
 if (NOT OCCT_CMAKE_FALLBACK)
-    find_package(OpenCASCADE CONFIG QUIET)
+    find_package(OpenCASCADE "7.5.1" CONFIG QUIET)
     get_property(flags DIRECTORY PROPERTY COMPILE_DEFINITIONS)
     # OCCT 7.5 adds this define that causes hundreds of compiler warnings with Qt5.x, so remove it again
     list(FILTER flags EXCLUDE REGEX [[GL_GLEXT_LEGACY]])
@@ -123,9 +123,9 @@ if (OCC_FOUND)
             TKV3d
     )
 
-    if (NOT OCC_VERSION_STRING VERSION_LESS 7.5.0)
-        list(APPEND OCC_OCAF_LIBRARIES TKRWMesh)
-    endif ()
+
+    list(APPEND OCC_OCAF_LIBRARIES TKRWMesh)
+
     if (OCC_VERSION_STRING VERSION_LESS 7.8.0)
         list(APPEND OCC_LIBRARIES TKIGES TKSTL TKSTEPBase TKSTEPAttr TKSTEP209 TKSTEP)
         list(APPEND OCC_OCAF_LIBRARIES TKXDESTEP TKXDEIGES)
