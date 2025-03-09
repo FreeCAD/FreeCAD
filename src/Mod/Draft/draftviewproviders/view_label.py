@@ -93,24 +93,24 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         """Set graphics properties only if they don't already exist."""
         super().set_graphics_properties(vobj, properties)
 
-        if "ArrowSize" not in properties:
+        if "ArrowSizeStart" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Arrow size")
             vobj.addProperty("App::PropertyLength",
-                             "ArrowSize",
+                             "ArrowSizeStart",
                              "Graphics",
                              _tip)
-            vobj.ArrowSize = params.get_param("arrowsize")
+            vobj.ArrowSizeStart = params.get_param("arrowsizestart")
 
-        if "ArrowType" not in properties:
+        if "ArrowTypeStart" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Arrow type")
             vobj.addProperty("App::PropertyEnumeration",
-                             "ArrowType",
+                             "ArrowTypeStart",
                              "Graphics",
                              _tip)
-            vobj.ArrowType = utils.ARROW_TYPES
-            vobj.ArrowType = utils.ARROW_TYPES[params.get_param("dimsymbol")]
+            vobj.ArrowTypeStart = utils.ARROW_TYPES
+            vobj.ArrowTypeStart = utils.ARROW_TYPES[params.get_param("dimsymbolstart")]
 
         if "Frame" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -163,7 +163,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         self.frame = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         self.lineswitch = coin.SoSwitch()
 
-        self.symbol = gui_utils.dim_symbol()
+        self.startSymbol = gui_utils.dim_symbol()
 
         textdrawstyle = coin.SoDrawStyle()
         textdrawstyle.style = coin.SoDrawStyle.FILLED
@@ -223,7 +223,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         self.onChanged(vobj, "LineColor")
         self.onChanged(vobj, "TextColor")
         self.onChanged(vobj, "LineWidth")
-        self.onChanged(vobj, "ArrowSize")
+        self.onChanged(vobj, "ArrowSizeStart")
         self.onChanged(vobj, "Line")
 
     def updateData(self, obj, prop):
@@ -236,7 +236,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                 self.line.coordIndex.setValues(0,
                                                n_points,
                                                range(n_points))
-                self.onChanged(obj.ViewObject, "ArrowType")
+                self.onChanged(obj.ViewObject, "ArrowTypeStart")
 
             if obj.StraightDistance > 0:
                 self.text_wld.justification = coin.SoAsciiText.RIGHT
@@ -275,8 +275,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                             and "Frame" in properties)
 
         if prop == "ScaleMultiplier" and "ScaleMultiplier" in properties:
-            if "ArrowSize" in properties:
-                s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
+            if "ArrowSizeStart" in properties:
+                s = vobj.ArrowSizeStart.Value * vobj.ScaleMultiplier
                 if s:
                     self.arrowpos.scaleFactor.setValue((s, s, s))
             if can_update_label:
@@ -314,14 +314,14 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             else:
                 self.lineswitch.whichChild = -1
 
-        elif prop == "ArrowType" and "ArrowType" in properties:
+        elif prop == "ArrowTypeStart" and "ArrowTypeStart" in properties:
             if len(obj.Points) > 1:
                 self.update_arrow(obj, vobj)
 
-        elif (prop == "ArrowSize"
-              and "ArrowSize" in properties
+        elif (prop == "ArrowSizeStart"
+              and "ArrowSizeStart" in properties
               and "ScaleMultiplier" in properties):
-            s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
+            s = vobj.ArrowSizeStart.Value * vobj.ScaleMultiplier
             if s:
                 self.arrowpos.scaleFactor.setValue((s, s, s))
 
@@ -400,13 +400,13 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
     def update_arrow(self, obj, vobj):
         """Update the arrow tip of the line."""
-        if hasattr(self, "symbol"):
-            if self.arrow.findChild(self.symbol) != -1:
-                self.arrow.removeChild(self.symbol)
+        if hasattr(self, "startSymbol"):
+            if self.arrow.findChild(self.startSymbol) != -1:
+                self.arrow.removeChild(self.startSymbol)
 
-        s = utils.ARROW_TYPES.index(vobj.ArrowType)
-        self.symbol = gui_utils.dim_symbol(s)
-        self.arrow.addChild(self.symbol)
+        startS = utils.ARROW_TYPES.index(vobj.ArrowTypeStart)
+        self.startSymbol = gui_utils.dim_symbol(startS)
+        self.arrow.addChild(self.startSymbol)
 
         prec = 10**(-utils.precision())
         x_axis = App.Vector(1,0,0)
