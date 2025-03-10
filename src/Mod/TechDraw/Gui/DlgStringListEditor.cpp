@@ -36,12 +36,12 @@ DlgStringListEditor::DlgStringListEditor(const std::vector<std::string> texts,
                                          QWidget* parent,
                                          Qt::WindowFlags fl)
     : QDialog(parent, fl)
-    , textEdit_(new QPlainTextEdit(this))
+    , textEdit(new QPlainTextEdit(this))
 {
     auto buttons = new QDialogButtonBox(QDialogButtonBox::StandardButton::Ok
                                         | QDialogButtonBox::StandardButton::Cancel);
     auto layout = new QVBoxLayout();
-    layout->addWidget(textEdit_);
+    layout->addWidget(textEdit);
     layout->addWidget(buttons);
     setLayout(layout);
     fillList(texts);
@@ -56,21 +56,21 @@ void DlgStringListEditor::fillList(std::vector<std::string> texts)
     for (auto const& text : texts) {
         lines.append(QString::fromStdString(text));
     }
-    textEdit_->setPlainText(lines.join(QChar::SpecialCharacter::LineFeed));
+    textEdit->setPlainText(lines.join(QChar::SpecialCharacter::LineFeed));
 }
 
 std::vector<std::string> DlgStringListEditor::getTexts() const
 {
-    return texts_;
+    return texts;
 }
 
 void DlgStringListEditor::accept()
 {
-    auto lines = textEdit_->toPlainText().split(QChar::SpecialCharacter::LineFeed);
-    texts_.clear();
-    texts_.reserve(static_cast<size_t>(lines.size()));
+    auto lines = textEdit->toPlainText().split(QChar::SpecialCharacter::LineFeed);
+    texts.clear();
+    texts.reserve(static_cast<size_t>(lines.size()));
     for (auto const& line : lines) {
-        texts_.push_back(line.toStdString());
+        texts.push_back(line.toStdString());
     }
     QDialog::accept();
 }

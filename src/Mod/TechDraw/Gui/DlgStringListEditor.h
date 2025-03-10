@@ -49,8 +49,8 @@ public:
 
 private:
     void fillList(std::vector<std::string> texts);
-    QPlainTextEdit* textEdit_;
-    std::vector<std::string> texts_;
+    QPlainTextEdit* textEdit;
+    std::vector<std::string> texts;
 };
 
 }  // namespace TechDrawGui
