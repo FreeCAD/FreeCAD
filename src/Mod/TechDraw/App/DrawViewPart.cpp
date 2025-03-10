@@ -1042,6 +1042,7 @@ bool DrawViewPart::hasGeometry() const
 
     const std::vector<TechDraw::VertexPtr>& verts = getVertexGeometry();
     const std::vector<TechDraw::BaseGeomPtr>& edges = getEdgeGeometry();
+
     return !(verts.empty() && edges.empty());
 }
 
@@ -1467,6 +1468,33 @@ void DrawViewPart::resetReferenceVerts()
     //    Base::Console().Message("DVP::resetReferenceVerts() %s\n", getNameInDocument());
     removeAllReferencesFromGeom();
     addReferencesToGeom();
+}
+
+void DrawViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
+{
+    if (prop == &Direction) {
+        // Direction was PropertyVector but is now PropertyDirection
+        App::PropertyVector tmp;
+        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            auto tmpValue = tmp.getValue();
+            Direction.setValue(tmpValue);
+        }
+        return;
+    }
+
+    if (prop == &XDirection) {
+        // XDirection was PropertyFloat but is now PropertyLength
+        App::PropertyVector tmp;
+        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            auto tmpValue = tmp.getValue();
+            XDirection.setValue(tmpValue);
+        }
+        return;
+    }
 }
 
 // debugging ----------------------------------------------------------------------------
