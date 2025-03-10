@@ -30,9 +30,9 @@
 #include <Gui/Command.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include "TaskSketcherMessages.h"
+#include "TaskSketcherGeneral.h"
 #include "ViewProviderSketch.h"
-#include "ui_TaskSketcherMessages.h"
+#include "ui_TaskSketcherGeneral.h"
 
 
 // clang-format off
@@ -40,10 +40,10 @@ using namespace SketcherGui;
 using namespace Gui::TaskView;
 namespace sp = std::placeholders;
 
-TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_Sketch"), tr("Solver messages"), true, nullptr)
+TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch* sketchView)
+    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_Sketch"), tr("General"), true, nullptr)
     , sketchView(sketchView)
-    , ui(new Ui_TaskSketcherMessages)
+    , ui(new Ui_TaskSketcherGeneral)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -54,7 +54,7 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
 
     //NOLINTBEGIN
     connectionSetUp = sketchView->signalSetUp.connect(std::bind(
-        &SketcherGui::TaskSketcherMessages::slotSetUp, this, sp::_1, sp::_2, sp::_3, sp::_4));
+        &SketcherGui::TaskSketcherGeneral::slotSetUp, this, sp::_1, sp::_2, sp::_3, sp::_4));
     //NOLINTEND
 
     ui->labelConstrainStatus->setOpenExternalLinks(false);
@@ -89,43 +89,38 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
 
     ui->labelConstrainStatusLink->setLaunchExternal(false);
 
-    // Set Auto Update in the 'Manual Update' button menu.
+    // Set up Auto Recompute
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool state = hGrp->GetBool("AutoRecompute", false);
-
     sketchView->getSketchObject()->noRecomputes = !state;
 
-    QAction* action = new QAction(tr("Auto update"), this);
-    action->setToolTip(tr("Executes a recomputation of active document after every sketch action"));
-    action->setCheckable(true);
-    action->setChecked(state);
-    ui->manualUpdate->addAction(action);
+    ui->autoRecompute->setToolTip(tr(
+        "If checked, the whole document is recomputed after every sketch action. "
+        "Not advisable for complex documents."));
+    ui->autoRecompute->setChecked(state);
+    connect(ui->autoRecompute, &QCheckBox::stateChanged, this, &TaskSketcherGeneral::onAutoRecomputeStateChanged);
 
-    QObject::connect(std::as_const(ui->manualUpdate)->actions()[0],
-                     &QAction::changed,
-                     this,
-                     &TaskSketcherMessages::onAutoUpdateStateChanged);
 }
 
-TaskSketcherMessages::~TaskSketcherMessages()
+TaskSketcherGeneral::~TaskSketcherGeneral()
 {
     connectionSetUp.disconnect();
 }
 
-void TaskSketcherMessages::setupConnections()
+void TaskSketcherGeneral::setupConnections()
 {
     connect(ui->labelConstrainStatusLink,
             &Gui::UrlLabel::linkClicked,
             this,
-            &TaskSketcherMessages::onLabelConstrainStatusLinkClicked);
-    connect(ui->manualUpdate,
-            &QToolButton::clicked,
+            &TaskSketcherGeneral::onLabelConstrainStatusLinkClicked);
+    connect(ui->autoRecompute,
+            &QCheckBox::stateChanged,
             this,
-            &TaskSketcherMessages::onManualUpdateClicked);
+            &TaskSketcherGeneral::onAutoRecomputeStateChanged);
 }
 
-void TaskSketcherMessages::slotSetUp(const QString& state, const QString& msg, const QString& link,
+void TaskSketcherGeneral::slotSetUp(const QString& state, const QString& msg, const QString& link,
                                      const QString& linkText)
 {
     ui->labelConstrainStatus->setState(state);
@@ -135,7 +130,7 @@ void TaskSketcherMessages::slotSetUp(const QString& state, const QString& msg, c
     updateToolTip(link);
 }
 
-void TaskSketcherMessages::updateToolTip(const QString& link)
+void TaskSketcherGeneral::updateToolTip(const QString& link)
 {
     if (link == QStringLiteral("#conflicting"))
         ui->labelConstrainStatusLink->setToolTip(
@@ -154,7 +149,7 @@ void TaskSketcherMessages::updateToolTip(const QString& link)
                "partially redundant constraints."));
 }
 
-void TaskSketcherMessages::onLabelConstrainStatusLinkClicked(const QString& str)
+void TaskSketcherGeneral::onLabelConstrainStatusLinkClicked(const QString& str)
 {
     if (str == QStringLiteral("#conflicting"))
         Gui::Application::Instance->commandManager().runCommandByName(
@@ -173,9 +168,9 @@ void TaskSketcherMessages::onLabelConstrainStatusLinkClicked(const QString& str)
             "Sketcher_SelectPartiallyRedundantConstraints");
 }
 
-void TaskSketcherMessages::onAutoUpdateStateChanged()
+void TaskSketcherGeneral::onAutoRecomputeStateChanged()
 {
-    bool state = std::as_const(ui->manualUpdate)->actions()[0]->isChecked();
+    bool state = ui->autoRecompute->isChecked();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -183,11 +178,5 @@ void TaskSketcherMessages::onAutoUpdateStateChanged()
     sketchView->getSketchObject()->noRecomputes = !state;
 }
 
-void TaskSketcherMessages::onManualUpdateClicked(bool checked)
-{
-    Q_UNUSED(checked);
-    Gui::Command::updateActive();
-}
-
-#include "moc_TaskSketcherMessages.cpp"
+#include "moc_TaskSketcherGeneral.cpp"
 // clang-format on
