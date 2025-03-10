@@ -466,7 +466,11 @@ class Window(ArchComponent.Component):
                     if hasattr(obj, "Opening"):
                         if obj.Opening:
                             opening = obj.Opening / 100.0
-                    e = obj.Base.Shape.Edges[hinge]
+                    if obj.Base:
+                        e = obj.Base.Shape.Edges[hinge]
+                    else:
+                        c = Part.makeCompound(wires)
+                        e = c.Edges[hinge]
                     ev1 = e.Vertexes[0].Point
                     ev2 = e.Vertexes[-1].Point
                     # choose the one with lowest z to draw the symbol

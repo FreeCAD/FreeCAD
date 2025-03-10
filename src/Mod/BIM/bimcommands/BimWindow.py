@@ -26,6 +26,7 @@
 import os
 import FreeCAD
 import FreeCADGui
+import ArchWindowPresets
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -69,20 +70,26 @@ class Arch_Window:
         import draftguitools.gui_trackers as DraftTrackers
 
         self.sel = FreeCADGui.Selection.getSelection()
-        self.W1 = params.get_param_arch("WindowW1")  # thickness of the fixed frame
+        sideparams = ["H1", "H2", "H3", "W1", "W2", "O1", "O2"]
         if self.doormode:
             self.Width = params.get_param_arch("DoorWidth")
             self.Height = params.get_param_arch("DoorHeight")
+            self.BasePresets = ArchWindowPresets.DoorPresets
+            for sp in sideparams:
+                setattr(self, sp, PARAMS.GetFloat("Door" + sp, 0.0))
         else:
             self.Width = params.get_param_arch("WindowWidth")
             self.Height = params.get_param_arch("WindowHeight")
+            self.BasePresets = ArchWindowPresets.WindowPresets
+            for sp in sideparams:
+                setattr(self, sp, PARAMS.GetFloat("Window" + sp, 0.0))
         self.RemoveExternal = params.get_param_arch("archRemoveExternal")
         self.Preset = 0
         self.LibraryPreset = 0
         self.Sill = 0
         self.Include = True
         self.baseFace = None
-        self.wparams = ["Width", "Height", "H1", "H2", "H3", "W1", "W2", "O1", "O2"]
+        self.wparams = ["Width", "Height"] + sideparams
         self.wp = None
 
         # autobuild mode
@@ -189,7 +196,6 @@ class Arch_Window:
         import Draft
         from draftutils import gui_utils
         from draftutils.messages import _wrn
-        from ArchWindowPresets import WindowPresets
 
         self.tracker.off()
         if point is None:
@@ -230,10 +236,10 @@ class Arch_Window:
             + ")"
         )
 
-        if self.Preset >= len(WindowPresets):
+        if self.Preset >= len(self.BasePresets):
             # library object
             col = FreeCAD.ActiveDocument.Objects
-            path = self.librarypresets[self.Preset - len(WindowPresets)][1]
+            path = self.librarypresets[self.Preset - len(self.BasePresets)][1]
             FreeCADGui.doCommand(
                 "FreeCADGui.ActiveDocument.mergeProject('" + path + "')"
             )
@@ -277,7 +283,7 @@ class Arch_Window:
                 wp += p.lower() + "=" + str(getattr(self, p)) + ", "
             FreeCADGui.doCommand(
                 "win = Arch.makeWindowPreset('"
-                + WindowPresets[self.Preset]
+                + self.BasePresets[self.Preset]
                 + "', "
                 + wp
                 + "placement=pl)"
@@ -341,7 +347,6 @@ class Arch_Window:
 
         from draftutils import params
         from PySide import QtCore, QtGui, QtSvgWidgets
-        from ArchWindowPresets import WindowPresets
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
@@ -374,35 +379,39 @@ class Arch_Window:
         # let's use replace() anyway just to be sure:
         librarypath = librarypath.replace("\\", "/") + "/Architectural Parts"
         presetdir = FreeCAD.getUserAppDataDir().replace("\\", "/") + "/Arch"
+        if self.doormode:
+            wtype = "Doors"
+        else:
+            wtype = "Windows"
         for path in [librarypath, presetdir]:
-            if os.path.isdir(path):
-                for wtype in ["Windows", "Doors"]:
-                    wdir = path + "/" + wtype
-                    if os.path.isdir(wdir):
-                        for subtype in os.listdir(wdir):
-                            subdir = wdir + "/" + subtype
-                            if os.path.isdir(subdir):
-                                for subfile in os.listdir(subdir):
-                                    if os.path.isfile(
-                                        subdir + "/" + subfile
-                                    ) and subfile.lower().endswith(".fcstd"):
-                                        self.librarypresets.append(
-                                            [
-                                                wtype
-                                                + " - "
-                                                + subtype
-                                                + " - "
-                                                + subfile[:-6],
-                                                subdir + "/" + subfile,
-                                            ]
-                                        )
+            if not os.path.isdir(path):
+                continue
+            wdir = path + "/" + wtype
+            if not os.path.isdir(wdir):
+                continue
+            for subtype in os.listdir(wdir):
+                subdir = wdir + "/" + subtype
+                if not os.path.isdir(subdir):
+                    continue
+                for subfile in os.listdir(subdir):
+                    if os.path.isfile(
+                        subdir + "/" + subfile
+                    ) and subfile.lower().endswith(".fcstd"):
+                        self.librarypresets.append(
+                            [
+                                subtype
+                                + " / "
+                                + subfile[:-6],
+                                subdir + "/" + subfile,
+                            ]
+                        )
 
         # presets box
         labelp = QtGui.QLabel(translate("Arch", "Preset"))
         valuep = QtGui.QComboBox()
         valuep.setMinimumContentsLength(6)
         valuep.setSizeAdjustPolicy(QtGui.QComboBox.AdjustToContents)
-        valuep.addItems(WindowPresets)
+        valuep.addItems(self.BasePresets)
         valuep.setCurrentIndex(self.Preset)
         grid.addWidget(labelp, 2, 0, 1, 1)
         grid.addWidget(valuep, 2, 1, 1, 1)
@@ -417,7 +426,10 @@ class Arch_Window:
         self.pic.hide()
 
         # SVG display
-        self.im = QtSvgWidgets.QSvgWidget(":/ui/ParametersWindowFixed.svg")
+        if self.doormode:
+            self.im = QtSvgWidgets.QSvgWidget(":/ui/ParametersDoorSimple.svg")
+        else:
+            self.im = QtSvgWidgets.QSvgWidget(":/ui/ParametersWindowFixed.svg")
         self.im.setMaximumWidth(200)
         self.im.setMinimumHeight(120)
         grid.addWidget(self.im, 4, 0, 1, 2)
@@ -429,11 +441,7 @@ class Arch_Window:
             lab = QtGui.QLabel(translate("Arch", param))
             setattr(self, "val" + param, ui.createWidget("Gui::InputField"))
             wid = getattr(self, "val" + param)
-            if param == "W1":
-                wid.setText(
-                    FreeCAD.Units.Quantity(self.W1, FreeCAD.Units.Length).UserString
-                )
-            elif param == "Width":
+            if param == "Width":
                 wid.setText(
                     FreeCAD.Units.Quantity(self.Width, FreeCAD.Units.Length).UserString
                 )
@@ -442,14 +450,15 @@ class Arch_Window:
                     FreeCAD.Units.Quantity(self.Height, FreeCAD.Units.Length).UserString
                 )
             else:
-                n = params.get_param_arch("Window" + param)
-                wid.setText(FreeCAD.Units.Quantity(n, FreeCAD.Units.Length).UserString)
+                n = getattr(self, param, 0.0)
+                wid.setText(
+                    FreeCAD.Units.Quantity(n, FreeCAD.Units.Length).UserString
+                )
                 setattr(self, param, n)
             grid.addWidget(lab, i, 0, 1, 1)
             grid.addWidget(wid, i, 1, 1, 1)
             i += 1
             valueChanged = self.getValueChanged(param)
-            FreeCAD.wid = wid
             QtCore.QObject.connect(
                 getattr(self, "val" + param),
                 QtCore.SIGNAL("valueChanged(double)"),
@@ -468,6 +477,13 @@ class Arch_Window:
         values.setText(FreeCAD.Units.Quantity(d, FreeCAD.Units.Length).UserString)
 
         return w
+
+    def setParamWidgets(self, state):
+
+        for param in self.wparams:
+            wid = getattr(self, "val" + param, None)
+            if wid:
+                wid.setEnabled(state)
 
     def getValueChanged(self, p):
 
@@ -495,14 +511,13 @@ class Arch_Window:
         self.tracker.length(self.Width)
         self.tracker.height(self.Height)
         self.tracker.width(self.W1)
-        prefix = "Door" if self.doormode and param in ("Width", "Height") else "Window"
-        params.set_param_arch(prefix + param, d)
+        prefix = "Door" if self.doormode else "Window"
+        PARAMS.SetFloat(prefix + param, d)
 
     def setPreset(self, i):
 
         from PySide import QtGui
         from draftutils import params
-        from ArchWindowPresets import WindowPresets
 
         self.Preset = i
         if self.doormode:
@@ -517,24 +532,15 @@ class Arch_Window:
             self.tracker.on()
             self.pic.hide()
             self.im.show()
-            if i == 0:
-                self.im.load(":/ui/ParametersWindowFixed.svg")
-            elif i in [1, 8]:
-                self.im.load(":/ui/ParametersWindowSimple.svg")
-            elif i in [2, 4, 7]:
-                self.im.load(":/ui/ParametersWindowDouble.svg")
-            elif i == 3:
-                self.im.load(":/ui/ParametersWindowStash.svg")
-            elif i == 5:
-                self.im.load(":/ui/ParametersDoorSimple.svg")
-            elif i == 6:
-                self.im.load(":/ui/ParametersDoorGlass.svg")
-            elif i == 9:
-                self.im.load(":/ui/ParametersOpening.svg")
+            if i < len(self.BasePresets):
+                self.setParamWidgets(True)
+                image = ArchWindowPresets.WindowImages[self.BasePresets[i]]
+                self.im.load(image)
             else:
                 # From Library
+                self.setParamWidgets(False)
                 self.im.hide()
-                path = self.librarypresets[i - len(WindowPresets)][1]
+                path = self.librarypresets[i - len(self.BasePresets)][1]
                 if path.lower().endswith(".fcstd"):
                     try:
                         import tempfile

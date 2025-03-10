@@ -133,6 +133,9 @@ class ifc_observer:
 
     def slotRemoveDynamicProperty(self, obj, prop):
 
+        if not hasattr(obj, "StepId"):
+            return
+
         from . import ifc_psets
         ifc_psets.remove_property(obj, prop)
 
