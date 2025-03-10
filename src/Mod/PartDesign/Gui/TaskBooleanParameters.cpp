@@ -89,10 +89,10 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, Q
         auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
         action->setShortcut(QKeySequence(shortcut));
     }
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+
     // display shortcut behind the context menu entry
     action->setShortcutVisibleInContextMenu(true);
-#endif
+    
     ui->listWidgetBodies->addAction(action);
     connect(action, &QAction::triggered, this, &TaskBooleanParameters::onBodyDeleted);
     ui->listWidgetBodies->setContextMenuPolicy(Qt::ActionsContextMenu);

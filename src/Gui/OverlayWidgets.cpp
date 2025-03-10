@@ -1197,11 +1197,6 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, OverlayOption option)
     if(!widget)
         return;
 
-#if QT_VERSION>QT_VERSION_CHECK(5,12,2) && QT_VERSION < QT_VERSION_CHECK(5,12,6)
-    // Work around Qt bug https://bugreports.qt.io/browse/QTBUG-77006
-    widget->setStyleSheet(OverlayManager::instance()->getStyleSheet());
-#endif
-
     if (qobject_cast<QScrollBar*>(widget)) {
         auto parent = widget->parentWidget();
         if (parent) {
@@ -2602,14 +2597,6 @@ void OverlayGraphicsEffect::draw(QPainter* painter)
     if (px.isNull())
         return;
 
-#if 0
-    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-        static int count;
-        getMainWindow()->showMessage(
-                QStringLiteral("dock overlay redraw %1").arg(count++));
-    }
-#endif
-
     QTransform restoreTransform = painter->worldTransform();
     painter->setWorldTransform(QTransform());
 
@@ -2681,27 +2668,6 @@ void OverlayGraphicsEffect::draw(QPainter* painter)
 
     // draw the actual pixmap...
     painter->drawPixmap(offset, px, QRectF());
-
-#if 0
-    QWidget *focus = qApp->focusWidget();
-    if (focus) {
-        QWidget *widget = qobject_cast<QWidget*>(this->parent());
-        if (auto *edit = qobject_cast<QPlainTextEdit*>(focus)) {
-            if (!edit->isReadOnly() && edit->isEnabled()) {
-                for(auto w=edit->parentWidget(); w; w=w->parentWidget()) {
-                    if (w == widget) {
-                        QRect r = edit->cursorRect();
-                        QRect rect(edit->viewport()->mapTo(widget, r.topLeft()),
-                                edit->viewport()->mapTo(widget, r.bottomRight()));
-                        // painter->fillRect(rect, edit->textColor());
-                        // painter->fillRect(rect, edit->currentCharFormat().foreground());
-                        painter->fillRect(rect.translated(offset), Qt::white);
-                    }
-                }
-            }
-        }
-    }
-#endif
 
     // restore world transform
     painter->setWorldTransform(restoreTransform);
