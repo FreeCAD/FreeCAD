@@ -27,6 +27,8 @@
 
 #include <QDialog>
 #include <QPlainTextEdit>
+#include <string>
+#include <vector>
 
 class QListWidgetItem;
 
