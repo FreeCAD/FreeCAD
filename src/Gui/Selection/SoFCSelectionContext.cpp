@@ -104,7 +104,7 @@ int SoFCSelectionContext::merge(int status, SoFCSelectionContextBasePtr &output,
 
     std::vector<int> remove;
     for(auto idx : ret->selectionIndex) {
-        if(!ctx->selectionIndex.count(idx))
+        if(!ctx->selectionIndex.contains(idx))
             remove.push_back(idx);
     }
 
@@ -216,7 +216,7 @@ int SoFCSelectionContextEx::merge(int status, SoFCSelectionContextBasePtr &outpu
     auto ret = std::dynamic_pointer_cast<SoFCSelectionContextEx>(output);
     assert(ret);
     for(auto &v : ctx->colors) {
-        if(ret->colors.count(v.first))
+        if(ret->colors.contains(v.first))
             continue;
         if(!status) {
             status = 1;

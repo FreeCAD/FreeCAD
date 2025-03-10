@@ -1177,7 +1177,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
         header()->setVisible(action->isChecked()||internalNameAction->isChecked());
     });
 
-    if (contextMenu.actions().count() > 0) {
+    if (!contextMenu.actions().isEmpty()) {
         try {
             contextMenu.exec(QCursor::pos());
         }
@@ -2573,7 +2573,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
                 }
             }
 
-            if (inList.count(obj)) {
+            if (inList.contains(obj)) {
                 FC_THROWM(Base::RuntimeError, "Dependency loop detected for " << obj->getFullName());
             }
 
@@ -3059,7 +3059,7 @@ void TreeWidget::onUpdateStatus()
                 continue;
             if (obj->isError())
                 errors.push_back(obj);
-            if (docItem->ObjectMap.count(obj))
+            if (docItem->ObjectMap.contains(obj))
                 continue;
             auto vpd = freecad_cast<ViewProviderDocumentObject*>(gdoc->getViewProvider(obj));
             if (vpd)
@@ -4447,7 +4447,7 @@ void TreeWidget::updateChildren(App::DocumentObject* obj,
         // and thus, its property change will not be propagated through
         // recomputation. So we have to manually check for each links here.
         for (auto link : App::GetApplication().getLinksTo(obj, App::GetLinkRecursive)) {
-            if (ChangedObjects.count(link))
+            if (ChangedObjects.contains(link))
                 continue;
             std::vector<App::DocumentObject*> linkedChildren;
             DocumentObjectDataPtr found;
@@ -4475,7 +4475,7 @@ void TreeWidget::updateChildren(App::DocumentObject* obj,
         //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children
         //of the geofeaturegroup depends on what the childs claim
         auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
-        if (grp && !ChangedObjects.count(grp)) {
+        if (grp && !ChangedObjects.contains(grp)) {
             auto iter = ObjectTable.find(grp);
             if (iter != ObjectTable.end())
                 updateChildren(grp, iter->second, true, false);
