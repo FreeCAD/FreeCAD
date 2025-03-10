@@ -594,12 +594,8 @@ void CosmeticExtension::removeCenterLine(const std::vector<std::string>& delTags
 
 void CosmeticExtension::clearGeomFormats()
 {
-    std::vector<GeomFormat*> noFormats;
-    std::vector<GeomFormat*> fmts = GeomFormats.getValues();
-    GeomFormats.setValues(noFormats);
-    for (auto& f : fmts) {
-        delete f;
-    }
+  // setValues takes care of deletion of old entries as well
+    GeomFormats.setValues({});
 }
 
 //returns unique GF id
