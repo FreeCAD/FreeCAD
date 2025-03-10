@@ -82,7 +82,24 @@ int main(int argc, char ** argv)
 
 This will return the same CRC as the first example.
 
-Both of the above examples compute a CRC bit-by-bit. However, CRC++ also supports lookup tables, as the following example demonstrates:
+If you need to compute a CRC on an input that is not a multiple of `CHAR_BIT` (usually 8 bits), use the `CalculateBits()` function instead:
+
+```cpp
+int main(int argc, char ** argv)
+{
+	const unsigned char data[] = { 0x98, 0x76, 0x54, 0x32, 0x10 };
+	
+	// Second argument is the number of bits. The input data must
+	// be a whole number of bytes. Pad any used bits with zeros.
+	std::uint32_t crc = CRC::CalculateBits(data, 37, CRC::CRC_32());
+	
+	std::cout << std::hex << crc;
+	
+	return 0;
+}
+```
+
+The above examples compute a CRC bit-by-bit. However, CRC++ also supports lookup tables, as the following example demonstrates:
 
 ```cpp
 int main(int argc, char ** argv)
@@ -149,6 +166,56 @@ Define to enables C++11 features (move semantics, constexpr, static_assert, etc.
 * `#define CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS`
 Define to include definitions for little-used CRCs. Not defined by default.
 
+### Build
+
+CRC does not require a build for basic usage; simply include the header file in your project.
+
+Unit tests and documentation can be built manually with the project files provided or automatically with CMake.
+
+To build documentation manually:
+```bash
+cd doxygen
+doxygen Doxyfile.dox
+```
+
+To build unit tests manually via Make:
+```bash
+# Build
+cd test/prj/gcc
+make [debug|release]
+# Run unit tests
+bin/unittest
+```
+
+Project files and solutions for Visual Studio 2015, 2017 and 2022 are provided in `test/prj`. Simply open the solution file and run the project; no additional configuration should be necessary.
+
+CMake can also be used to build the documentation and unit tests. An out-of-source build is recommended. In this example, we will do an out-of-source build in the `build` directory:
+```bash
+mkdir -p build
+cd build
+cmake .. [-DBUILD_DOC=ON]
+# Build and run unit tests
+make tests
+# Build documentation
+make doxygen
+# Install header file
+sudo make install
+```
+
+Unit tests are built by default. Enable the `BUILD_DOC` CMake flag to also build documentation (requires [Doxygen](https://www.doxygen.nl/index.html)).
+
+### Documentation
+
+https://d-bahr.github.io/CRCpp/
+
 ### License
 
 CRC++ is free to use and provided under a BSD license.
+
+### References
+
+Catalog of CRCs: https://reveng.sourceforge.io/crc-catalogue/
+
+5G-NR Specification 3GPP TS 38.212: https://www.etsi.org/deliver/etsi_ts/138200_138299/138212/15.03.00_60/ts_138212v150300p.pdf
+
+USB 2.0 Specification: https://www.usb.org/document-library/usb-20-specification
