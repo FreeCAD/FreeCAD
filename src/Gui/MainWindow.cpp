@@ -402,7 +402,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     if(notificationAreaEnabled) {
         NotificationArea* notificationArea = new NotificationArea(statusBar());
-        notificationArea->setObjectName(QStringLiteral("notificationArea"));
+        notificationArea->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("statusBar", "Notification area")));
         notificationArea->setStyleSheet(QStringLiteral("text-align:left;"));
         statusBar()->addPermanentWidget(notificationArea);
     }
