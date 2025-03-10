@@ -36,6 +36,8 @@
 namespace Materials
 {
 
+class MaterialLibraryLocal;
+
 class MaterialConfigLoader
 {
 public:
@@ -45,7 +47,7 @@ public:
 
     static bool isConfigStyle(const QString& path);
     static std::shared_ptr<Material>
-    getMaterialFromPath(const std::shared_ptr<MaterialLibrary>& library, const QString& path);
+    getMaterialFromPath(const std::shared_ptr<MaterialLibraryLocal>& library, const QString& path);
 
 private:
     static QString value(const QMap<QString, QString>& fcmat,
