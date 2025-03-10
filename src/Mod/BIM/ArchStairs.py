@@ -203,7 +203,45 @@ class _Stairs(ArchComponent.Component):
             obj.addProperty("App::PropertyEnumeration","ConnectionEndStairsUp","Structure",QT_TRANSLATE_NOOP("App::Property","The type of connection between the end of the stairs and the upper floor slab"))
             obj.ConnectionEndStairsUp = ["toFlightThickness","toSlabThickness"]
 
+        # additional stairs properties
+        if not "ArchSketchData" in pl:
+            obj.addProperty("App::PropertyBool","ArchSketchData","Stairs",QT_TRANSLATE_NOOP("App::Property","Use Base ArchSketch (if used) data (e.g. selected edge, widths, aligns) instead of Stairs' properties"))
+            obj.ArchSketchData = True
+        # TODO Consider other properties for flight, landing etc.
+        if not "ArchSketchEdges" in pl:
+            obj.addProperty("App::PropertyStringList","ArchSketchEdges","Stairs",QT_TRANSLATE_NOOP("App::Property","Selected edges of the base Sketch/ArchSketch, to use in creating the shape (flight) of this Arch Stairs (instead of using all the Base ArchSketch's edges by default).  Input are index numbers of edges.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Flight Axis) information, with getStairsBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Stairs' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used."))
+        if not hasattr(obj,"ArchSketchPropertySet"):
+            obj.addProperty("App::PropertyEnumeration","ArchSketchPropertySet","Stairs",QT_TRANSLATE_NOOP("App::Property","Select User Defined PropertySet to use in creating variant shape, with same ArchSketch "))
+            obj.ArchSketchPropertySet = ['Default']
+        if not hasattr(self,"ArchSkPropSetPickedUuid"):
+            self.ArchSkPropSetPickedUuid = ''
+        if not hasattr(self,"ArchSkPropSetListPrev"):
+            self.ArchSkPropSetListPrev = []
+
         self.Type = "Stairs"
+
+
+    def dumps(self):  # Supercede Arch.Component.dumps()
+        dump = super().dumps()
+        if not isinstance(dump, tuple):
+           dump = (dump,)  #Python Tuple With One Item
+        dump = dump + (self.ArchSkPropSetPickedUuid, self.ArchSkPropSetListPrev)
+        return dump
+
+
+    def loads(self,state):
+        super().loads(state)  # do nothing as of 2024.11.28
+        if state == None:
+            return
+        elif state[0] == 'S':  # state[1] == 't', behaviour before 2024.11.28
+            return
+        elif state[0] == 'Stairs':
+            self.ArchSkPropSetPickedUuid = state[1]
+            self.ArchSkPropSetListPrev = state[2]
+        elif state[0] != 'Stairs':  # model before merging super.dumps/loads()
+            self.ArchSkPropSetPickedUuid = state[0]
+            self.ArchSkPropSetListPrev = state[1]
+
 
     def onDocumentRestored(self,obj):
 
@@ -215,6 +253,19 @@ class _Stairs(ArchComponent.Component):
 
         if obj.getTypeIdOfProperty("RailingLeft") == "App::PropertyString":
             self.update_properties_0v19_to_0v20(obj)
+
+        if (hasattr(obj,"ArchSketchData") and obj.ArchSketchData and
+                Draft.getType(obj.Base) == "ArchSketch"):
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", ["ReadOnly"])
+            if hasattr(obj,"ArchSketchPropertySet"):
+                obj.setEditorMode("ArchSketchPropertySet", 0)
+        else:
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", 0)
+            if hasattr(obj,"ArchSketchPropertySet"):
+                obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
+
 
     def update_properties_0v18_to_0v20(self, obj):
         doc = FreeCAD.ActiveDocument
@@ -279,21 +330,82 @@ class _Stairs(ArchComponent.Component):
         self.pseudosteps = []
         self.structures = []
         pl = obj.Placement
-        landings = 0 # ? Any use - paul 2018.7.15
-
+        landings = 0 # TODO Any use? 2018.7.15
         base = None
+        baseProxy = None
 
-        if obj.Base:
+        # PropertySet support
+        propSetPickedUuidPrev = self.ArchSkPropSetPickedUuid
+        propSetListPrev = self.ArchSkPropSetListPrev
+        propSetSelectedNamePrev = obj.ArchSketchPropertySet
+        propSetSelectedNameCur = None
+        propSetListCur = None
+        if Draft.getType(obj.Base) == "ArchSketch":
+            baseProxy = obj.Base.Proxy
+            if hasattr(baseProxy,"getPropertySet"):
+                # get full list of PropertySet
+                propSetListCur = baseProxy.getPropertySet(obj.Base)
+                # get updated name (if any) of the selected PropertySet
+                propSetSelectedNameCur = baseProxy.getPropertySet(obj.Base,
+                                         propSetUuid=propSetPickedUuidPrev)
+        if propSetSelectedNameCur:  # True if selection is not deleted
+            if propSetListPrev != propSetListCur:
+                obj.ArchSketchPropertySet = propSetListCur
+                obj.ArchSketchPropertySet = propSetSelectedNameCur
+                self.ArchSkPropSetListPrev = propSetListCur
+            #elif propSetListPrev == propSetListCur:
+                #pass  #nothing to do in this case
+            # but if below, though (propSetListPrev == propSetListCur)
+            elif propSetSelectedNamePrev != propSetSelectedNameCur:
+                obj.ArchSketchPropertySet = propSetSelectedNameCur
+        else:  # True if selection is deleted
+            if propSetListCur:
+                if propSetListPrev != propSetListCur:
+                    obj.ArchSketchPropertySet = propSetListCur
+                    obj.ArchSketchPropertySet = 'Default'
+                #else:  # Seems no need ...
+                    #obj.PropertySet = 'Default'
+
+        # Get ArchSketchData if enabled
+        #   e.g. flightAxis, floorHeight, landingAxis
+        flightAxis = landingAxis = strucInfo = []  # None
+        # baseProxy if obj.base is ArchSketch above
+        if baseProxy and obj.ArchSketchData and \
+                hasattr(baseProxy, 'getStairsBaseShapeEdgesInfo'):
+            propSetUuid = self.ArchSkPropSetPickedUuid
+            info = baseProxy.getStairsBaseShapeEdgesInfo(obj.Base,	
+                   propSetUuid=propSetUuid)
+            if info:
+                flightAxis = info.get('flightAxis')
+                strucInfo = info.get('strucInfo, None')
+                #floorHeight = info.get('floorHeight') TODO To support floorHeight
+            # Still fallback to check if Base has Solids e.g. is another Stairs,
+            # do not clear shape.
+            #if not strucInfo and not flightAxis:
+                #obj.Shape = Part.Shape()
+                #return  #if ArchSketchData but no baseShapeEdge, no fallback
+                #pass
+
+        # Creation of base Stairs shape
+
+        # TODO Fix:  Why below is repeated in next if routine?  Seems this is
+        # just part of which further down below.  To add missing codes here?
+        # If ArchSketch not provides info, but there is obj.Base e.g. a Stairs
+        if (not flightAxis and not strucInfo) and obj.Base:
             if hasattr(obj.Base,"Shape"):
                 if obj.Base.Shape:
                     if obj.Base.Shape.Solids:
                         base = Part.Shape(obj.Base.Shape)
+
         # special case NumberOfSteps = 1 : multi-edges landing
-        if (not base) and obj.Width.Value and obj.Height.Value and (obj.NumberOfSteps > 0):
+        # TODO to Support individual width, height etc. for each flight/ landing
+        if (not base) and obj.Width.Value and obj.Height.Value and \
+                (obj.NumberOfSteps > 0):
             # Check if there is obj.Base and its validity to proceed
             if self.ensureBase(obj):
                 if not hasattr(obj.Base,'Shape'):
                     return
+                # TODO See todo remarks above, below to be further reviewed.
                 if obj.Base.Shape.Solids:
                     obj.Shape = obj.Base.Shape.copy()
                     obj.Placement = FreeCAD.Placement(obj.Base.Placement).multiply(pl)
@@ -304,8 +416,45 @@ class _Stairs(ArchComponent.Component):
                     return
                 if obj.Base.Shape.Faces:
                     return
-                if (len(obj.Base.Shape.Edges) == 1):
-                    edge = obj.Base.Shape.Edges[0]
+
+                if baseProxy and obj.ArchSketchData and not flightAxis :
+                    obj.Shape = Part.Shape()
+                    # TODO Clear Railings also?
+                    return
+                elif flightAxis:
+                    edgeL = flightAxis  #[flightAxis]
+                # If Base is Sketch and has input in ArchSketchEdges
+                elif obj.Base.isDerivedFrom("Sketcher::SketchObject") and obj.ArchSketchEdges:
+                    edgeL = []
+                    baseGeom = obj.Base.Geometry
+                    lg =len(baseGeom)
+                    for e in obj.ArchSketchEdges:
+                        ie = int(e)
+                        if lg >= (ie+1) :
+                            if isinstance(baseGeom[ie], Part.LineSegment):
+                                edgeL.append(baseGeom[ie].toShape())
+                #if not ArchSketchData and obj.ArchSketchEdges (whether stock Sketch or ArchSketch)
+                elif len(obj.Base.Shape.Edges) == 1:				#elif not obj.ArchSketchData and len(obj.Base.Shape.Edges) == 1:
+                    edgeL = [obj.Base.Shape.Edges[0]]
+                elif len(obj.Base.Shape.Edges) > 1:				#elif not obj.ArchSketchData and len(obj.Base.Shape.Edges) > 1:  #  >= 1
+                    #if obj.NumberOfSteps == 1:
+                    # Sort the edges so each vertex tested of its tangent direction in order
+                    # TODO - Found Part.sortEdges() occasionally return less edges then 'input'
+                    edgeL = [Part.sortEdges(obj.Base.Shape.Edges)[0]]
+                else:  # Should not happen?
+                    edgeL = []
+                #lenAxis = len(flightAxis) + len(landingAxis)  
+
+            # Build Stairs if there is no obj.Base or even obj.Base is not valid
+            else:
+                if not obj.Length.Value:
+                    obj.Shape = Part.Shape()
+                    # TODO clear Railings also
+                    return
+                edgeL = [Part.LineSegment(Vector(0,0,0),Vector(obj.Length.Value,0,0)).toShape()]
+
+            for edge in edgeL:
+                if not isinstance(edge, list):  # i.e. a single edges
                     if isinstance(edge.Curve,(Part.LineSegment,Part.Line)):
                         # preparing for multi-edges landing / segment staircase
                         if obj.NumberOfSteps > 1:
@@ -313,43 +462,39 @@ class _Stairs(ArchComponent.Component):
                             if edge.Vertexes[0].Point.z > edge.Vertexes[1].Point.z:
                                 edge = Part.LineSegment(edge.Vertexes[1].Point,edge.Vertexes[0].Point).toShape()
                             self.makeStraightStairsWithLanding(obj,edge)    # all cases use makeStraightStairsWithLanding()
-
-                        # preparing for multi-edges landing / segment staircase
-                        if obj.NumberOfSteps == 1:
+                        elif obj.NumberOfSteps == 1:
                             # TODO - All use self.makeMultiEdgesLanding(obj,edges) ?
                             self.makeStraightLanding(obj,edge)
-                        if obj.NumberOfSteps == 0:
-                            pass # Should delete the whole shape
+                        elif obj.NumberOfSteps == 0:
+                            pass  # TODO Should delete the whole shape
 
-                    else:
+                    else:  # TODO Not implemented yet
                         if obj.Landings == "At center":
                             landings = 1
                             self.makeCurvedStairsWithLanding(obj,edge)
                         else:
                             self.makeCurvedStairs(obj,edge)
-
-                elif len(obj.Base.Shape.Edges) >= 1:
-                    #if obj.NumberOfSteps == 1:
-                    # Sort the edges so each vertex tested of its tangent direction in order
-                    ## TODO - Found Part.sortEdges() occasionally return less edges then 'input'
-                    edges = Part.sortEdges(obj.Base.Shape.Edges)[0]
-                    self.makeMultiEdgesLanding(obj,edges)
-            # Build Stairs if there is no obj.Base or even obj.Base is not valid
-            else:
-                if not obj.Length.Value:
-                    return
-                edge = Part.LineSegment(Vector(0,0,0),Vector(obj.Length.Value,0,0)).toShape()
-
-                self.makeStraightStairsWithLanding(obj,edge)
+                #elif len(edge.Edges) >= 1:
+                else:  # i.e. isinstance(edge, list), or elif len(edge) >= 1:
+                    #edges = Part.sortEdges(obj.Base.Shape.Edges)[0]
+                    #self.makeMultiEdgesLanding(obj,edges)
+                    self.makeMultiEdgesLanding(obj,edge)
 
         if self.structures or self.steps or self.risers:
             base = Part.makeCompound(self.structures + self.steps + self.risers)
-
         elif self.pseudosteps:
             shape = Part.makeCompound(self.pseudosteps)
             obj.Shape = shape
             obj.Placement = pl
             return
+            # TODO No Railing etc?
+        elif base:  # i.e. obj.Base has Shape e.g. it is another Stairs
+            pass
+        else:
+            #base = None
+            obj.Shape = Part.Shape()
+            # TODO Clear Railings also
+            # return ?
 
         base = self.processSubShapes(obj,base,pl)
         if base:
@@ -403,7 +548,7 @@ class _Stairs(ArchComponent.Component):
 
         # compute step data
         #if obj.NumberOfSteps > 1:
-        if False: # TODO - To be deleted
+        if False: # TODO Fix this - BlondelRatio is not computed
             l = obj.Length.Value
             h = obj.Height.Value
             if obj.Base:
@@ -419,6 +564,30 @@ class _Stairs(ArchComponent.Component):
             obj.BlondelRatio = obj.RiserHeight.Value*2+obj.TreadDepth.Value
 
 
+    def onChanged(self,obj,prop):
+
+        ArchComponent.Component.onChanged(self,obj,prop)
+
+        if (prop == "ArchSketchPropertySet"
+            and Draft.getType(obj.Base) == "ArchSketch"):
+            baseProxy = obj.Base.Proxy
+            if hasattr(baseProxy,"getPropertySet"):
+                uuid = baseProxy.getPropertySet(obj,
+                                 propSetName=obj.ArchSketchPropertySet)
+                self.ArchSkPropSetPickedUuid = uuid
+        if (hasattr(obj,"ArchSketchData") and obj.ArchSketchData
+            and Draft.getType(obj.Base) == "ArchSketch"):
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", ["ReadOnly"])
+            if hasattr(obj,"ArchSketchPropertySet"):
+                obj.setEditorMode("ArchSketchPropertySet", 0)
+        else:
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", 0)
+            if hasattr(obj,"ArchSketchPropertySet"):
+                obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
+
+
     @staticmethod
     def align(basepoint,align,widthvec):
 
@@ -430,6 +599,7 @@ class _Stairs(ArchComponent.Component):
         return basepoint
 
 
+    # TODO
     def makeMultiEdgesLanding(self,obj,edges):
 
         "builds a 'multi-edges' landing from edges" # 'copying' from makeStraightLanding()
@@ -437,16 +607,16 @@ class _Stairs(ArchComponent.Component):
         outline, outlineL, outlineR, vBase1, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU, pArc, pArcL, pArcR = self.returnOutlines(obj, edges, obj.Align, None, obj.Width, obj.WidthOfLanding,
                                                                                                                                     obj.TreadThickness, zeroMM, zeroMM, zeroMM, zeroMM, zeroMM, True)
 
-        obj.AbsTop = vBase1[0]
+        obj.AbsTop = vBase1[0]  # TODO
         stepWire, stepFace = _Stairs.returnOutlineWireFace(outline, pArc, mode = "faceAlso") #(outlinePoints, pArc, mode="wire or faceAlso")
 
-        if obj.TreadThickness.Value:
+        if obj.TreadThickness.Value:  # TODO
             step = stepFace.extrude(Vector(0,0,abs(obj.TreadThickness.Value)))
             self.steps.append(step)
         else:
             self.pseudosteps.append(stepFace)
 
-        if obj.StructureThickness.Value:
+        if obj.StructureThickness.Value:  # TODO
             landingFace = stepFace
             struct = landingFace.extrude(Vector(0,0,-abs(obj.StructureThickness.Value)))
 
@@ -456,6 +626,7 @@ class _Stairs(ArchComponent.Component):
         self.makeRailingOutline(obj,edges)
 
 
+    # TODO
     def makeRailingOutline(self,obj,edges):
 
         "builds railing outline "
@@ -936,6 +1107,7 @@ class _Stairs(ArchComponent.Component):
 
         "builds a simple, straight staircase from a straight edge"
 
+        # TODO
         # Upgrade obj if it is from an older version of FreeCAD
         if not hasattr(obj, "StringerOverlap"):
             obj.addProperty("App::PropertyLength","StringerOverlap","Structure",QT_TRANSLATE_NOOP("App::Property","The overlap of the stringers above the bottom of the treads"))
@@ -949,6 +1121,7 @@ class _Stairs(ArchComponent.Component):
         else:
             callByMakeStraightStairsWithLanding = True
 
+        # TODO
         if not downstartstairs:
             downstartstairs = obj.ConnectionDownStartStairs
         if not endstairsup:
@@ -959,27 +1132,24 @@ class _Stairs(ArchComponent.Component):
         vLength = Vector(vLength.x,vLength.y,0)
         if round(v.z,Draft.precision()) != 0:
             h = v.z
+        # TODO
         else:
             h = obj.Height.Value
         vHeight = Vector(0,0,float(h)/numberofsteps)
+        # TODO
         vWidth = DraftVecUtils.scaleTo(vLength.cross(Vector(0,0,1)),obj.Width.Value)
         vBase = edge.Vertexes[0].Point
-
         if not callByMakeStraightStairsWithLanding:
-            if obj.LastSegment:
-                print("obj.LastSegment is: " )
-                print(obj.LastSegment.Name)
-                lastSegmentAbsTop = obj.LastSegment.AbsTop
-                print("lastSegmentAbsTop is: ")
-                print(lastSegmentAbsTop)
-                vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z)        # use Last Segment top's z-coordinate
-            obj.AbsTop = vBase.add(Vector(0,0,h))
+            if obj.LastSegment:  # TODO
+                lastSegmentAbsTop = obj.LastSegment.AbsTop  # TODO
+                vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z)  # TODO # use Last Segment top's z-coordinate
+            obj.AbsTop = vBase.add(Vector(0,0,h))  # TODO
 
-        vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))
+        vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))  # TODO
         a = math.atan(vHeight.Length/vLength.Length)
 
-        vBasedAligned = self.align(vBase,obj.Align,vWidth)
-        vRiserThickness = DraftVecUtils.scaleTo(vLength,obj.RiserThickness.Value)    # 50)
+        vBasedAligned = self.align(vBase,obj.Align,vWidth)  # TODO
+        vRiserThickness = DraftVecUtils.scaleTo(vLength,obj.RiserThickness.Value)  # TODO  # 50)
 
         # steps and risers
         for i in range(numberofsteps-1):
@@ -1020,15 +1190,11 @@ class _Stairs(ArchComponent.Component):
             else:
                 self.pseudosteps.append(riser)
 
-        ##
-
-
         # structure
         lProfile = []
         struct = None
         if obj.Structure == "Massive":
-            if obj.StructureThickness.Value:
-
+            if obj.StructureThickness.Value:  # TODO
                 # '# Massive Structure to respect 'align' attribute'
                 vBase = vBasedAligned.add(vRiserThickness)
 
@@ -1089,11 +1255,13 @@ class _Stairs(ArchComponent.Component):
                 pol = Part.makePolygon(lProfile)
                 struct = Part.Face(pol)
                 evec = vWidth
-                if obj.StructureOffset.Value:
+                if obj.StructureOffset.Value:  # TODO
                     mvec = DraftVecUtils.scaleTo(vWidth,obj.StructureOffset.Value)
                     struct.translate(mvec)
                     evec = DraftVecUtils.scaleTo(evec,evec.Length-(2*mvec.Length))
                 struct = struct.extrude(evec)
+
+        # TODO
         elif obj.Structure in ["One stringer","Two stringers"]:
             if obj.StringerWidth.Value and obj.StructureThickness.Value:
                 hyp = math.sqrt(vHeight.Length**2 + vLength.Length**2)
@@ -1143,112 +1311,177 @@ class _Stairs(ArchComponent.Component):
                     s1 = pol.extrude(evec)
                     s2 = pol2.extrude(evec.negative())
                     struct = Part.makeCompound([s1,s2])
+
         if struct:
             self.structures.append(struct)
 
 
-    def makeStraightStairsWithLanding(self,obj,edge):
+    def makeStraightStairsWithLanding(self,obj,edge, numOfSteps=None, landings=None, landingDepth=None, height=None, width=None, align=None, treadDepthEnforce=None, riserHeightEnforce=None, flight=None):
 
         "builds a straight staircase with/without a landing in the middle"
 
-        if obj.NumberOfSteps < 2:
-            print("Fewer than 2 steps, unable to create/update stairs")
-            return
+        '''
+        numOfSteps          : None (default), or parameters from ArchSketch - int (default)
+        landings            : None (default), or parameters from ArchSketch - 'None' (default), or 'At center' (not supported at the moment)
+        landingDepth        : None (default), or parameters from ArchSketch - 'Auto' (default), or float
+        height              : None (default), or parameters from ArchSketch - float (default)
+        width               : None (default), or parameters from ArchSketch - float (default)
+        align               : None (default), or parameters from ArchSketch - 'Left' (default), or 'Right'
+        treadDepthEnforce   : None (default), or parameters from ArchSketch - 'Auto' (default), or float
+        riserHeightEnforce  : None (default), or parameters from ArchSketch - 'Auto' (default), or float
+        flight              : None (default), or parameters from ArchSketch - 'Straight' (default), or ['HalfTurnLeft', 'HalfTurnRight']
+        '''
 
         v = DraftGeomUtils.vec(edge)
         v_proj = Vector(v.x, v.y, 0) # Projected on XY plane.
-        landing = 0
-        if obj.TreadDepthEnforce == 0:
-            if obj.Landings == "At center" and obj.NumberOfSteps > 3:
-                if obj.LandingDepth:
+        landingStep = 0
+
+        # setup numOfSteps
+        if numOfSteps is not None:
+            if numOfSteps < 2:
+                print("Fewer than 2 steps, unable to create/update stairs")
+                return
+            #else: print(" OK, numOfSteps equal or > 2 steps, proceed creation")
+        elif obj.NumberOfSteps < 2:  #elif not numOfSteps and obj.NumberOfSteps < 2:  # Would not be called by execute()
+            print("Fewer than 2 steps, unable to create/update stairs")
+            return
+        else:  #elif obj.NumberOfSteps >= 2:  #elif not numOfSteps and obj.NumberOfSteps >= 2:
+            numOfSteps = obj.NumberOfSteps
+            print(" numOfSteps = obj.NumberOfSteps - ", numOfSteps)
+
+        # setup landingStep - step number of landing, if present
+        if (landings == "At center" or obj.Landings == "At center"):
+            wantLanding = True
+        else:
+            wantLanding = False
+        if wantLanding and numOfSteps > 3:
+            #landing = int(obj.NumberOfSteps/2)
+            landingStep = int(numOfSteps/2)  # so, landing >= 1
+            hasLanding = True
+        else:
+            #landing = obj.NumberOfSteps
+            landingStep = numOfSteps
+            hasLanding = False
+            if wantLanding:  # but not numOfSteps > 3, so no hasLanding
+                print("Fewer than 4 steps, unable to create landing")
+
+        # setup height
+        if height is None:  #if not height:
+            height = obj.Height.Value
+        # check width
+        if width is None:  #if not width:
+            width = obj.Width.Value
+        # check align
+        if align is None:
+            align = obj.Align
+
+        # setup vLength (tread length(depth) ) : check treadDepthEnforce
+        if treadDepthEnforce and treadDepthEnforce != 'Auto':
+            vLength = DraftVecUtils.scaleTo(v_proj,treadDepthEnforce)
+        elif treadDepthEnforce == 'Auto' or obj.TreadDepthEnforce == 0:  #elif treadDepth is None and ...
+            # check landings
+            if hasLanding:
+                # check landingDepth
+                if landingDepth and landingDepth != 'Auto':  # i.e. landingDepth == float
+                    reslength = v_proj.Length - landingDepth
+                elif (landingDepth is None) and obj.LandingDepth:
                     reslength = v_proj.Length - obj.LandingDepth.Value
-                else:
-                    reslength = v_proj.Length - obj.Width.Value
-                treadDepth = reslength/(obj.NumberOfSteps-2)
+                    landingDepth = obj.LandingDepth.Value
+                else:  # e.g. landingDepth == 'Auto', obj.LandingDepth == 0
+                    reslength = v_proj.Length - width
+                    landingDepth = width
+                treadDepth = reslength/(numOfSteps-2)
             else:
                 reslength = v_proj.Length
-                treadDepth = reslength/(obj.NumberOfSteps-1)
-            obj.TreadDepth = treadDepth
+                treadDepth = reslength/(numOfSteps-1)
+            if treadDepthEnforce != 'Auto':
+                obj.TreadDepth = treadDepth
             vLength = DraftVecUtils.scaleTo(v_proj,treadDepth)
-        else:
+        else:  # if obj.TreadDepthEnforce
             obj.TreadDepth = obj.TreadDepthEnforce
             vLength = DraftVecUtils.scaleTo(v_proj,obj.TreadDepthEnforce.Value)
 
-        vWidth = DraftVecUtils.scaleTo(vLength.cross(Vector(0,0,1)),obj.Width.Value)
-        p1 = edge.Vertexes[0].Point
+        # setup vWidth (tread width)
+        vWidth = DraftVecUtils.scaleTo(vLength.cross(Vector(0,0,1)),width)
 
-        if obj.RiserHeightEnforce == 0:
+        # setup h, hstep (flight height, riser height) : check riserHeightEnforce
+        if riserHeightEnforce and riserHeightEnforce != 'Auto':
+            h = riserHeightEnforce * numOfSteps
+            hstep = riserHeight
+        #if obj.RiserHeightEnforce == 0:
+        elif riserHeightEnforce == 'Auto' or obj.RiserHeightEnforce == 0:  # elif riserHeightEnforce is None and ...
             if round(v.z,Draft.precision()) != 0:
                 h = v.z
             else:
-                h = obj.Height.Value
-            hstep = h/obj.NumberOfSteps
-            obj.RiserHeight = hstep
-        else:
-            h = obj.RiserHeightEnforce.Value * (obj.NumberOfSteps)
+                h = height
+            hstep = h/numOfSteps
+            if riserHeightEnforce != 'Auto':
+                obj.RiserHeight = hstep
+        else:  # if obj.RiserHeightEnforce
+            #h = obj.RiserHeightEnforce.Value * (obj.NumberOfSteps)
+            h = obj.RiserHeightEnforce.Value * numOfSteps
             hstep = obj.RiserHeightEnforce.Value
             obj.RiserHeight = hstep
-        if obj.Landings == "At center" and obj.NumberOfSteps > 3:
-            landing = int(obj.NumberOfSteps/2)
-        else:
-            landing = obj.NumberOfSteps
 
+        p1 = edge.Vertexes[0].Point
+
+        # TODO To add support for multi-segments stairs
         if obj.LastSegment:
             lastSegmentAbsTop = obj.LastSegment.AbsTop
-            p1 = Vector(p1.x, p1.y,lastSegmentAbsTop.z)                # use Last Segment top's z-coordinate
-
+            p1 = Vector(p1.x, p1.y,lastSegmentAbsTop.z)  # use Last Segment top's z-coordinate
         obj.AbsTop = p1.add(Vector(0,0,h))
-        p2 = p1.add(DraftVecUtils.scale(vLength,landing-1).add(Vector(0,0,landing*hstep)))
 
-        if obj.Landings == "At center" and obj.NumberOfSteps > 3:
-            if obj.LandingDepth:
-                p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.LandingDepth.Value))
-            else:
-                p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.Width.Value))
-            if obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
-                if (obj.Align == "Left" and obj.Flight == "HalfTurnLeft") or (obj.Align == "Right" and obj.Flight == "HalfTurnRight"):
+        p2 = p1.add(DraftVecUtils.scale(vLength,landingStep-1).add(Vector(0,0,landingStep*hstep)))
+
+        edgeP1p2 = Part.LineSegment(p1,p2).toShape()
+
+        if hasLanding:
+            p3 = p2.add(DraftVecUtils.scaleTo(vLength,landingDepth))
+            halfTurn = ['HalfTurnLeft', 'HalfTurnRight']
+            #if obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
+            if ( (flight in halfTurn) or
+                 (flight is None and (obj.Flight in halfTurn)) ):
+                if (flight == 'HalfTurnLeft') or (obj.Flight in 'HalfTurnLeft') :
+                    #(flight is None and (obj.Flight in 'HalfTurnLeft')) ):
+                    halfTurnLR = 'HalfTurnLeft'
+                else:
+                    halfTurnLR = 'HalfTurnRight'
+                if (align == "Left" and halfTurnLR == "HalfTurnLeft") or (align == "Right" and halfTurnLR == "HalfTurnRight"):
                     p3r = p2
-                elif (obj.Align == "Left" and obj.Flight == "HalfTurnRight"):
-
+                elif (align == "Left" and halfTurnLR == "HalfTurnRight"):
                     p3r = self.align(p2,"Right",-2*vWidth) # -ve / opposite direction of "Right" - no "Left" in _Stairs.Align()
-                elif (obj.Align == "Right" and obj.Flight == "HalfTurnLeft"):
+                elif (align == "Right" and halfTurnLR == "HalfTurnLeft"):
                     p3r = self.align(p2,"Right",2*vWidth)
-                elif (obj.Align == "Center" and obj.Flight == "HalfTurnLeft"):
+                elif (align == "Center" and halfTurnLR == "HalfTurnLeft"):
                     p3r = self.align(p2,"Right",vWidth)
-                elif (obj.Align == "Center" and obj.Flight == "HalfTurnRight"):
+                elif (align == "Center" and halfTurnLR == "HalfTurnRight"):
                     p3r = self.align(p2,"Right",-vWidth) # -ve / opposite direction of "Right" - no "Left" in _Stairs.Align()
                 else:
                     print("Should have a bug here, if see this")
                 if p3r:
-                    p4r = p3r.add(DraftVecUtils.scale(-vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
+                    p4r = p3r.add(DraftVecUtils.scale(-vLength,numOfSteps-(landingStep+1)).add(Vector(0,0,(numOfSteps-landingStep)*hstep)))
+                # TODO To review DownSlabThickness.Value, UpSlabThickness etc.
+                self.makeStraightStairs(obj,Part.LineSegment(p3r,p4r).toShape(),hstep,obj.UpSlabThickness.Value,numOfSteps-landingStep,"HorizontalVerticalCut",None)
             else:
-                p4 = p3.add(DraftVecUtils.scale(vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
-            self.makeStraightLanding(obj,Part.LineSegment(p2,p3).toShape(), None, True)
-
-            if obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
-                self.makeStraightStairs(obj,Part.LineSegment(p3r,p4r).toShape(),obj.RiserHeight.Value,obj.UpSlabThickness.Value,obj.NumberOfSteps-landing,"HorizontalVerticalCut",None)
-            else:
-                self.makeStraightStairs(obj,Part.LineSegment(p3,p4).toShape(),obj.RiserHeight.Value,obj.UpSlabThickness.Value,obj.NumberOfSteps-landing,"HorizontalVerticalCut",None)
-
-            self.makeStraightStairs(obj,Part.LineSegment(p1,p2).toShape(),obj.DownSlabThickness.Value,obj.RiserHeight.Value,landing,None,'toSlabThickness')
+                p4 = p3.add(DraftVecUtils.scale(vLength,numOfSteps-(landingStep+1)).add(Vector(0,0,(numOfSteps-landingStep)*hstep)))
+                # TODO To review DownSlabThickness.Value, UpSlabThickness etc.
+                self.makeStraightStairs(obj,Part.LineSegment(p3,p4).toShape(),hstep,obj.UpSlabThickness.Value,numOfSteps-landingStep,"HorizontalVerticalCut",None)
+            self.makeStraightLanding(obj,Part.LineSegment(p2,p3).toShape(), None, True)  # TODO numberofsteps=None, callByMakeStraightStairsWithLanding=True
+                #self.makeStraightStairs(obj,Part.LineSegment(p3r,p4r).toShape(),obj.RiserHeight.Value,obj.UpSlabThickness.Value,obj.NumberOfSteps-landing,"HorizontalVerticalCut",None)
+            #else:
+                #self.makeStraightStairs(obj,Part.LineSegment(p3,p4).toShape(),obj.RiserHeight.Value,obj.UpSlabThickness.Value,obj.NumberOfSteps-landing,"HorizontalVerticalCut",None)
+            # TODO To review DownSlabThickness.Value, UpSlabThickness etc.
+            self.makeStraightStairs(obj,edgeP1p2,obj.DownSlabThickness.Value,hstep,landingStep,None,'toSlabThickness')
         else:
-            if obj.Landings == "At center":
-                print("Fewer than 4 steps, unable to create landing")
-            self.makeStraightStairs(obj,Part.LineSegment(p1,p2).toShape(),obj.DownSlabThickness.Value,obj.UpSlabThickness.Value,landing,None,None)
+            # TODO To review DownSlabThickness.Value, UpSlabThickness etc.
+            self.makeStraightStairs(obj,edgeP1p2,obj.DownSlabThickness.Value,obj.UpSlabThickness.Value,landingStep,None,None)
 
-        print (p1, p2)
-        if obj.Landings == "At center" and obj.NumberOfSteps > 3:
-            if obj.Flight not in ["HalfTurnLeft", "HalfTurnRight"]:
-                print (p3, p4)
-            elif obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
-                print (p3r, p4r)
-
-        edge = Part.LineSegment(p1,p2).toShape()
-
-        outlineNotUsed, outlineRailL, outlineRailR, vBase2, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU, pArc, pArc1, pArc2 = self.returnOutlines(obj, edge, obj.Align, None, obj.Width, obj.WidthOfLanding,
+        # TODO To review
+        outlineNotUsed, outlineRailL, outlineRailR, vBase2, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU, pArc, pArc1, pArc2 = self.returnOutlines(obj, edgeP1p2, obj.Align, None, obj.Width, obj.WidthOfLanding,
                                                                                                                                                    obj.TreadThickness, obj.RiserHeight, obj.RailingOffsetLeft,
                                                                                                                                                    obj.RailingOffsetRight, obj.RailingHeightLeft,
                                                                                                                                                    obj.RailingHeightRight,True)
+        # TODO To review
         self.connectRailingVector(obj, outlineRailL, outlineRailR, pArc1, pArc2)
 
 
@@ -1272,7 +1505,7 @@ class _Stairs(ArchComponent.Component):
             if obj.LastSegment.Proxy.OutlineRailArcLeftAll: # need if?
                 outlineRailArcLeftAll.extend(obj.LastSegment.Proxy.OutlineRailArcLeftAll)
 
-            if (outlineLeftAll[-1] - obj.OutlineLeft[0]).Length < 0.01: # To avoid 2 points overlapping fail creating LineSegment # TODO to allow one tolerance Part.LineSegment / edge.toShape() allow?
+            if (outlineLeftAll[-1] - obj.OutlineLeft[0]).Length < 0.01: # To avoid 2 points overlapping fail creating LineSegment # TODO to allow tolerance Part.LineSegment / edge.toShape() allow?
                 # no need abs() after .Length right?
                 del outlineLeftAll[-1]
                 del outlineRailArcLeftAll[-1]
