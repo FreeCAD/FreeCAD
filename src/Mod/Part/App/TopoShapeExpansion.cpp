@@ -98,6 +98,7 @@
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "Base/Tools.h"
 #include "Base/BoundBox.h"
+#include "OCCTProgressIndicator.h"
 
 #include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>
@@ -2428,7 +2429,7 @@ TopoShape& TopoShape::makeElementPipeShell(const std::vector<TopoShape>& shapes,
         FC_THROWM(Base::CADKernelError, "shape is not ready to build");
     }
     else {
-        mkPipeShell.Build();
+        mkPipeShell.Build(OCCTProgressIndicator().Start());
     }
 
     if (make_solid == MakeSolid::makeSolid) {
@@ -2534,7 +2535,7 @@ TopoShape& TopoShape::makeElementOffset(const TopoShape& shape,
         BRepOffsetAPI_ThruSections aGenerator;
         aGenerator.AddWire(TopoDS::Wire(originalWire.getShape()));
         aGenerator.AddWire(offsetWire);
-        aGenerator.Build();
+        aGenerator.Build(OCCTProgressIndicator().Start());
         if (!aGenerator.IsDone()) {
             FC_THROWM(Base::CADKernelError, "ThruSections failed");
         }
@@ -2952,7 +2953,7 @@ TopoShape& TopoShape::makeElementOffset2D(const TopoShape& shape,
                 // add final joining edge
                 mkWire.Add(BRepBuilderAPI_MakeEdge(v3, v1).Edge());
 
-                mkWire.Build();
+                mkWire.Build(OCCTProgressIndicator().Start());
 
                 wiresForMakingFaces.push_back(
                     TopoShape(Tag, Hasher).makeElementShape(mkWire, openWires, op));
@@ -3822,7 +3823,7 @@ TopoShape& TopoShape::makeElementFilledFace(const std::vector<TopoShape>& _shape
         }
     }
 
-    maker.Build();
+    maker.Build(OCCTProgressIndicator().Start());
     if (!maker.IsDone()) {
         FC_THROWM(Base::CADKernelError, "Failed to created face by filling edges");
     }
@@ -4091,7 +4092,7 @@ TopoShape& TopoShape::makeElementGeneralFuse(const std::vector<TopoShape>& _shap
         FCBRepAlgoAPIHelper::setAutoFuzzy(&mkGFA);
     }
     mkGFA.SetNonDestructive(Standard_True);
-    mkGFA.Build();
+    mkGFA.Build(OCCTProgressIndicator().Start());
     if (!mkGFA.IsDone()) {
         FC_THROWM(Base::CADKernelError, "GeneralFuse failed");
     }
@@ -4230,7 +4231,7 @@ TopoShape& TopoShape::makeElementLoft(const std::vector<TopoShape>& shapes,
     aGenerator.CheckCompatibility(anIsCheck);  // use BRepFill_CompatibleWires on profiles. force
                                                // #edges, orientation, "origin" to match.
 
-    aGenerator.Build();
+    aGenerator.Build(OCCTProgressIndicator().Start());
     return makeShapeWithElementMap(aGenerator.Shape(),
                                    MapperThruSections(aGenerator, profiles),
                                    shapes,
@@ -4557,7 +4558,7 @@ TopoShape& TopoShape::makeElementDraft(const TopoShape& shape,
         }
     } while (retry && !done);
 
-    mkDraft.Build();
+    mkDraft.Build(OCCTProgressIndicator().Start());
     return makeElementShape(mkDraft, shape, op);
 }
 
@@ -4602,7 +4603,7 @@ TopoShape& TopoShape::makeElementFace(const std::vector<TopoShape>& shapes,
             mkFace->addTopoShape(shape);
         }
     }
-    mkFace->Build();
+    mkFace->Build(OCCTProgressIndicator().Start());
 
     const auto& ret = mkFace->getTopoShape();
     setShape(ret._Shape);
@@ -5589,6 +5590,10 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         FC_THROWM(NullShapeException, "Null shape");
     }
 
+    if (Base::ProgressIndicator::getInstance().UserBreak()) {
+        FC_THROWM(Base::CADKernelError, "User aborted");
+    }
+
     if (strcmp(maker, Part::OpCodes::Compound) == 0) {
         return makeElementCompound(shapes, op, SingleShapeCompoundCreationPolicy::returnShape);
     }
@@ -5761,7 +5766,10 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
     } else if (tolerance < 0.0) {
         FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
     }
-    mk->Build();
+    mk->Build(OCCTProgressIndicator().Start());
+    if (Base::ProgressIndicator::getInstance().UserBreak()) {
+        FC_THROWM(Base::CADKernelError, "User aborted");
+    }
     makeElementShape(*mk, inputs, op);
 
     if (buildShell) {
