@@ -33,9 +33,6 @@ using namespace Sketcher;
 
 //---------- Geometry Extension
 
-constexpr std::array<const char*, ExternalGeometryExtension::NumFlags>
-    ExternalGeometryExtension::flag2str;
-
 TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryExtension, Part::GeometryMigrationPersistenceExtension)
 
 void ExternalGeometryExtension::copyAttributes(Part::GeometryExtension* cpy) const
