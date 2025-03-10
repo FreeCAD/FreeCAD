@@ -9,13 +9,6 @@ if(MSVC)
 endif(MSVC)
 
 include_directories(
-    SYSTEM
-    ${PYCXX_INCLUDE_DIR}
-    ${Python3_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-)
-
-include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/src/Mod/Import/App/dxf
 )
