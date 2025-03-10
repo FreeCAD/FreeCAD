@@ -34,8 +34,6 @@
 // DAMAGE.
 //
 //-----------------------------------------------------------------------------
-#if PY_MAJOR_VERSION == 2
-#include "CXX/Python2/CxxDebug.hxx"
-#else
+
 #include "CXX/Python3/CxxDebug.hxx"
-#endif
+
