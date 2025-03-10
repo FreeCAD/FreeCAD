@@ -187,6 +187,11 @@ void ZoomableView::updateView(void)
     centerOn(new_geometry.center());
 }
 
+void ZoomableView::focusOutEvent(QFocusEvent* event)
+{
+    Q_UNUSED(event);
+}
+
 void ZoomableView::keyPressEvent(QKeyEvent* event)
 {
     if (event->modifiers() & Qt::ControlModifier) {

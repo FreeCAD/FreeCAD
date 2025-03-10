@@ -269,7 +269,7 @@ ViewProviderMesh::ViewProviderMesh()
         Gui::WindowParameter::getDefaultParameter()->GetGroup("Mod/Mesh");
 
     // Mesh color
-    App::Color color = ShapeAppearance.getDiffuseColor();
+    Base::Color color = ShapeAppearance.getDiffuseColor();
     unsigned long current = color.getPackedValue();
     unsigned long setting = hGrp->GetUnsigned("MeshColor", current);
     if (current != setting) {
@@ -329,7 +329,7 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
         pcMatBinding->value = SoMaterialBinding::OVERALL;
     }
     if (prop == &LineTransparency) {
-        float trans = LineTransparency.getValue() / 100.0F;
+        float trans = Base::fromPercent(LineTransparency.getValue());
         pLineColor->transparency = trans;
     }
     else if (prop == &LineWidth) {
@@ -353,7 +353,7 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &LineColor) {
-        const App::Color& c = LineColor.getValue();
+        const Base::Color& c = LineColor.getValue();
         pLineColor->diffuseColor.setValue(c.r, c.g, c.b);
     }
     else if (prop == &Coloring) {
@@ -373,7 +373,7 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
     ViewProviderGeometryObject::onChanged(prop);
 }
 
-void ViewProviderMesh::setOpenEdgeColorFrom(const App::Color& c)
+void ViewProviderMesh::setOpenEdgeColorFrom(const Base::Color& c)
 {
     float r = 1.0F - c.r;
     r = r < 0.5F ? 0.0F : 1.0F;
@@ -588,9 +588,9 @@ void ViewProviderMesh::tryColorPerVertexOrFace(bool on)
     }
     else {
         pcMatBinding->value = SoMaterialBinding::OVERALL;
-        const App::Color& c = ShapeAppearance.getDiffuseColor();
+        const Base::Color& c = ShapeAppearance.getDiffuseColor();
         pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
-        pcShapeMaterial->transparency.setValue(Transparency.getValue() / 100.0F);
+        pcShapeMaterial->transparency.setValue(Base::fromPercent(Transparency.getValue()));
     }
 }
 
@@ -606,7 +606,7 @@ void ViewProviderMesh::setColorPerFace(const App::PropertyColorList* prop)
     setDiffuseColor(prop->getValues());
 }
 
-void ViewProviderMesh::setColorField(const std::vector<App::Color>& val, SoMFColor& field)
+void ViewProviderMesh::setColorField(const std::vector<Base::Color>& val, SoMFColor& field)
 {
     field.setNum(val.size());
     SbColor* col = field.startEditing();
@@ -619,22 +619,22 @@ void ViewProviderMesh::setColorField(const std::vector<App::Color>& val, SoMFCol
     field.finishEditing();
 }
 
-void ViewProviderMesh::setAmbientColor(const std::vector<App::Color>& val)
+void ViewProviderMesh::setAmbientColor(const std::vector<Base::Color>& val)
 {
     setColorField(val, pcShapeMaterial->ambientColor);
 }
 
-void ViewProviderMesh::setDiffuseColor(const std::vector<App::Color>& val)
+void ViewProviderMesh::setDiffuseColor(const std::vector<Base::Color>& val)
 {
     setColorField(val, pcShapeMaterial->diffuseColor);
 }
 
-void ViewProviderMesh::setSpecularColor(const std::vector<App::Color>& val)
+void ViewProviderMesh::setSpecularColor(const std::vector<Base::Color>& val)
 {
     setColorField(val, pcShapeMaterial->specularColor);
 }
 
-void ViewProviderMesh::setEmissiveColor(const std::vector<App::Color>& val)
+void ViewProviderMesh::setEmissiveColor(const std::vector<Base::Color>& val)
 {
     setColorField(val, pcShapeMaterial->emissiveColor);
 }
@@ -1982,7 +1982,7 @@ void ViewProviderMesh::fillHole(Mesh::FacetIndex uFacet)
 void ViewProviderMesh::setFacetTransparency(const std::vector<float>& facetTransparency)
 {
     if (pcShapeMaterial->diffuseColor.getNum() != int(facetTransparency.size())) {
-        App::Color c = ShapeAppearance.getDiffuseColor();
+        Base::Color c = ShapeAppearance.getDiffuseColor();
         pcShapeMaterial->diffuseColor.setNum(facetTransparency.size());
         SbColor* cols = pcShapeMaterial->diffuseColor.startEditing();
         for (std::size_t index = 0; index < facetTransparency.size(); ++index) {
@@ -2004,7 +2004,7 @@ void ViewProviderMesh::setFacetTransparency(const std::vector<float>& facetTrans
 void ViewProviderMesh::resetFacetTransparency()
 {
     pcMatBinding->value = SoMaterialBinding::OVERALL;
-    App::Color c = ShapeAppearance.getDiffuseColor();
+    Base::Color c = ShapeAppearance.getDiffuseColor();
     pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
     pcShapeMaterial->transparency.setValue(0);
 }
@@ -2032,8 +2032,8 @@ void ViewProviderMesh::removeFacets(const std::vector<Mesh::FacetIndex>& facets)
             // switch off coloring mode
             Coloring.setValue(false);
 
-            const std::vector<App::Color>& colors = prop->getValues();
-            std::vector<App::Color> valid_colors;
+            const std::vector<Base::Color>& colors = prop->getValues();
+            std::vector<Base::Color> valid_colors;
             valid_colors.reserve(kernel->countPoints() - invalid);
             std::size_t numPoints = pointDegree.size();
             for (std::size_t index = 0; index < numPoints; index++) {
@@ -2054,8 +2054,8 @@ void ViewProviderMesh::removeFacets(const std::vector<Mesh::FacetIndex>& facets)
             validFacets[it] = false;
         }
 
-        const std::vector<App::Color>& colors = prop->getValues();
-        std::vector<App::Color> valid_colors;
+        const std::vector<Base::Color>& colors = prop->getValues();
+        std::vector<Base::Color> valid_colors;
         valid_colors.reserve(colors.size());
         std::size_t numColors = colors.size();
         for (std::size_t index = 0; index < numColors; index++) {
@@ -2112,7 +2112,7 @@ void ViewProviderMesh::deselectFacet(Mesh::FacetIndex facet)
             highlightSelection();
         }
         else {
-            App::Color c = ShapeAppearance.getDiffuseColor();
+            Base::Color c = ShapeAppearance.getDiffuseColor();
             pcShapeMaterial->diffuseColor.set1Value(facet, c.r, c.g, c.b);
         }
     }
@@ -2280,7 +2280,7 @@ void ViewProviderMesh::highlightSelection()
 
     // Colorize the selection
     pcMatBinding->value = SoMaterialBinding::PER_FACE;
-    App::Color c = ShapeAppearance.getDiffuseColor();
+    Base::Color c = ShapeAppearance.getDiffuseColor();
     int uCtFacets = (int)rMesh.countFacets();
     pcShapeMaterial->diffuseColor.setNum(uCtFacets);
 
@@ -2296,7 +2296,7 @@ void ViewProviderMesh::highlightSelection()
 
 void ViewProviderMesh::unhighlightSelection()
 {
-    App::Color c = ShapeAppearance.getDiffuseColor();
+    Base::Color c = ShapeAppearance.getDiffuseColor();
     pcMatBinding->value = SoMaterialBinding::OVERALL;
     pcShapeMaterial->diffuseColor.setNum(1);
     pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
@@ -2358,13 +2358,13 @@ void ViewProviderMesh::setHighlightedSegments(bool on)
 
 void ViewProviderMesh::highlightSegments()
 {
-    std::vector<App::Color> colors;
+    std::vector<Base::Color> colors;
     const Mesh::MeshObject& rMesh = getMeshObject();
     unsigned long numSegm = rMesh.countSegments();
     colors.resize(numSegm, this->ShapeAppearance.getDiffuseColor());
 
     for (unsigned long i = 0; i < numSegm; i++) {
-        App::Color col;
+        Base::Color col;
         if (col.fromHexString(rMesh.getSegment(i).getColor())) {
             colors[i] = col;
         }
@@ -2373,7 +2373,7 @@ void ViewProviderMesh::highlightSegments()
     highlightSegments(colors);
 }
 
-void ViewProviderMesh::highlightSegments(const std::vector<App::Color>& colors)
+void ViewProviderMesh::highlightSegments(const std::vector<Base::Color>& colors)
 {
     const Mesh::MeshObject& rMesh = getMeshObject();
     unsigned long numSegm = rMesh.countSegments();

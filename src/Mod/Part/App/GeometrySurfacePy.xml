@@ -161,15 +161,15 @@ of the nearest orthogonal projection of the point.</UserDocu>
         <Methode Name="toBSpline" Const="true" Keyword="true">
             <Documentation>
                 <UserDocu>Returns a B-Spline representation of this surface.
-                    The optional arguments are:
-                    * tolerance (default=1e-7)
-                    * continuity in u (as string e.g. C0, G0, G1, C1, G2, C3, CN) (default='C1')
-                    * continuity in v (as string e.g. C0, G0, G1, C1, G2, C3, CN) (default='C1')
-                    * maximum degree in u (default=25)
-                    * maximum degree in v (default=25)
-                    * maximum number of segments (default=1000)
-                    * precision code (default=0)
-                    Will raise an exception if surface is infinite in U or V (like planes, cones or cylinders)</UserDocu>
+The optional arguments are:
+* tolerance (default=1e-7)
+* continuity in u (as string e.g. C0, G0, G1, C1, G2, C3, CN) (default='C1')
+* continuity in v (as string e.g. C0, G0, G1, C1, G2, C3, CN) (default='C1')
+* maximum degree in u (default=25)
+* maximum degree in v (default=25)
+* maximum number of segments (default=1000)
+* precision code (default=0)
+Will raise an exception if surface is infinite in U or V (like planes, cones or cylinders)</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="intersect" Const="true">

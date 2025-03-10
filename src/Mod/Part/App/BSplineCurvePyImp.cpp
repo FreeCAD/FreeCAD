@@ -727,14 +727,14 @@ Py::Object BSplineCurvePy::getEndPoint() const
     return Py::Vector(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
 }
 
-Py::Object BSplineCurvePy::getFirstUKnotIndex() const
+Py::Long BSplineCurvePy::getFirstUKnotIndex() const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(curve->FirstUKnotIndex());
 }
 
-Py::Object BSplineCurvePy::getLastUKnotIndex() const
+Py::Long BSplineCurvePy::getLastUKnotIndex() const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());

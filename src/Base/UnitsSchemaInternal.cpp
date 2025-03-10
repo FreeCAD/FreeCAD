@@ -22,12 +22,17 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <cmath>
+#endif
 #ifdef __GNUC__
 #include <unistd.h>
 #endif
 
+
+#include "Quantity.h"
+#include "Unit.h"
 #include "UnitsSchemaInternal.h"
-#include <cmath>
 
 using namespace Base;
 

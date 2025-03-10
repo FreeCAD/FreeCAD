@@ -40,6 +40,7 @@
 # include <QMenuBar>
 # include <QMessageBox>
 # include <QMimeData>
+# include <QOpenGLWidget>
 # include <QPainter>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
@@ -115,7 +116,7 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "Dialogs/DlgObjectSelection.h"
-#include <App/Color.h>
+#include <Base/Color.h>
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
 
@@ -1493,7 +1494,7 @@ void MainWindow::processMessages(const QList<QString> & msg)
     try {
         WaitCursor wc;
         std::list<std::string> files;
-        QString action = QString::fromStdString("OpenFile:");
+        QString action = QStringLiteral("OpenFile:");
         for (const auto & it : msg) {
             if (it.startsWith(action))
                 files.emplace_back(it.mid(action.size()).toStdString());
@@ -2348,15 +2349,15 @@ void MainWindow::setWindowTitle(const QString& string)
         auto format = QStringLiteral("#statusBar{color: %1}");
         if (strcmp(sReason, "colorText") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);
-            this->msg = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+            this->msg = format.arg(Base::Color::fromPackedRGB<QColor>(col).name());
         }
         else if (strcmp(sReason, "colorWarning") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);
-            this->wrn = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+            this->wrn = format.arg(Base::Color::fromPackedRGB<QColor>(col).name());
         }
         else if (strcmp(sReason, "colorError") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);
-            this->err = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+            this->err = format.arg(Base::Color::fromPackedRGB<QColor>(col).name());
         }
         else if (strcmp(sReason, "colorCritical") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);

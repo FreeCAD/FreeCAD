@@ -60,7 +60,7 @@ Show the object.</UserDocu>
         </Methode>
         <Methode Name="hide">
             <Documentation>
-                <UserDocu>show() -> None
+                <UserDocu>hide() -> None
 
 Hide the object.</UserDocu>
             </Documentation>

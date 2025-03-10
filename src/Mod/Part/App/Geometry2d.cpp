@@ -59,6 +59,7 @@
 
 #include <Base/Exception.h>
 #include <Base/Reader.h>
+#include <Base/Vector3D.h>
 #include <Base/Writer.h>
 
 #include "Geometry2d.h"

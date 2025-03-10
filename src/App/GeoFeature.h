@@ -42,6 +42,7 @@ class AppExport GeoFeature: public App::DocumentObject
 
 public:
     PropertyPlacement Placement;
+    PropertyString _ElementMapVersion;
 
     /// Constructor
     GeoFeature();
@@ -199,7 +200,7 @@ public:
 
 protected:
     void onChanged(const Property* prop) override;
-    //    void onDocumentRestored() override;
+    void onDocumentRestored() override;
     void updateElementReference();
 
 protected:

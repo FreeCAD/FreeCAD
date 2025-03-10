@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost_signals2.hpp>
+# include <boost/signals2.hpp>
 # include <boost/core/ignore_unused.hpp>
 # include <QApplication>
 # include <QEvent>

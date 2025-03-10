@@ -7,7 +7,7 @@
         TwinPointer="LinkView"
         Include="Gui/ViewProviderLink.h"
         Namespace="Gui"
-        FatherInclude="Base/BaseClass.h"
+        FatherInclude="Base/BaseClassPy.h"
         FatherNamespace="Base"
         Constructor="true"
         Delete="true">

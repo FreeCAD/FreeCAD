@@ -81,7 +81,7 @@ def declare_begin(module, header=True):
             f"""
 {trace_comment()}
 #include <Base/Parameter.h>
-{"#include <boost_signals2.hpp>" if signal else ""}
+{"#include <boost/signals2.hpp>" if signal else ""}
 """
         )
 

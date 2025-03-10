@@ -122,7 +122,7 @@ void ShortcutManager::OnChange(Base::Subject<const char*> &src, const char *reas
 
 void ShortcutManager::reset(const char *cmd)
 {
-    if (cmd && cmd[0]) {
+    if (!Base::Tools::isNullOrEmpty(cmd)) {
         QKeySequence oldShortcut = getShortcut(cmd);
         hShortcuts->RemoveASCII(cmd);
         if (oldShortcut != getShortcut(cmd))
@@ -172,7 +172,7 @@ QString ShortcutManager::getShortcut(const char *cmdName, const char *accel)
 
 void ShortcutManager::setShortcut(const char *cmdName, const char *accel)
 {
-    if (cmdName && cmdName[0]) {
+    if (!Base::Tools::isNullOrEmpty(cmdName)) {
         setTopPriority(cmdName);
         if (!accel)
             accel = "";

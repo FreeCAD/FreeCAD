@@ -25,9 +25,7 @@
 
 #ifndef _PreComp_
 #include <QBuffer>
-#include <QByteArray>
 #include <QIODevice>
-#include <cstring>
 #ifdef __GNUC__
 #include <cstdint>
 #endif

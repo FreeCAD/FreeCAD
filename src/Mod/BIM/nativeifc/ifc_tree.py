@@ -79,7 +79,7 @@ def show_geometry_tree(element):
 
     import Arch_rc
     import FreeCADGui  # lazy import
-    from nativeifc import ifc_tools
+    from . import ifc_tools
     from PySide import QtGui, QtWidgets
 
     if isinstance(element, FreeCAD.DocumentObject):
@@ -146,7 +146,7 @@ def show_properties(current, previous):
     """Displays object properties"""
 
     import FreeCADGui
-    from nativeifc import ifc_tools  # lazy loading
+    from . import ifc_tools  # lazy loading
     from PySide import QtCore, QtGui, QtWidgets
 
     ifcid = int(current.text(0).split("=", 1)[0].strip(" ").strip("#"))

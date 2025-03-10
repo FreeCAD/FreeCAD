@@ -54,8 +54,8 @@ ModelSelect::ModelSelect(QWidget* parent, Materials::ModelFilter filter)
     createModelTree();
     createModelProperties();
 
-    ui->buttonURL->setIcon(QIcon(QString::fromStdString(":/icons/internet-web-browser.svg")));
-    ui->buttonDOI->setIcon(QIcon(QString::fromStdString(":/icons/internet-web-browser.svg")));
+    ui->buttonURL->setIcon(QIcon(QStringLiteral(":/icons/internet-web-browser.svg")));
+    ui->buttonDOI->setIcon(QIcon(QStringLiteral(":/icons/internet-web-browser.svg")));
 
     connect(ui->standardButtons, &QDialogButtonBox::accepted, this, &ModelSelect::accept);
     connect(ui->standardButtons, &QDialogButtonBox::rejected, this, &ModelSelect::reject);
@@ -446,10 +446,10 @@ void ModelSelect::updateMaterialModel(const QString& uuid)
 void ModelSelect::clearMaterialModel()
 {
     // Update the general information
-    ui->editName->setText(QString::fromStdString(""));
-    ui->editURL->setText(QString::fromStdString(""));
-    ui->editDOI->setText(QString::fromStdString(""));
-    ui->editDescription->setText(QString::fromStdString(""));
+    ui->editName->setText(QStringLiteral(""));
+    ui->editURL->setText(QStringLiteral(""));
+    ui->editDOI->setText(QStringLiteral(""));
+    ui->editDescription->setText(QStringLiteral(""));
 
     ui->tabWidget->setTabText(1, tr("Properties"));
 
@@ -477,7 +477,7 @@ void ModelSelect::onSelectModel(const QItemSelection& selected, const QItemSelec
                 ui->buttonFavorite->setEnabled(true);
             }
             catch (const std::exception&) {
-                _selected = QString::fromStdString("");
+                _selected = QStringLiteral("");
                 clearMaterialModel();
                 ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
                 ui->buttonFavorite->setEnabled(false);
@@ -507,7 +507,7 @@ void ModelSelect::onDOI(bool checked)
 {
     Q_UNUSED(checked)
 
-    QString url = QString::fromStdString("https://doi.org/") + ui->editDOI->text();
+    QString url = QStringLiteral("https://doi.org/") + ui->editDOI->text();
     if (url.length() > 0) {
         QDesktopServices::openUrl(QUrl(url, QUrl::TolerantMode));
     }

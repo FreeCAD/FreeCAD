@@ -28,7 +28,6 @@
 #include <cstring>
 #include <limits>
 #include <sstream>
-#include <utility>
 #endif
 
 #include "Unit.h"

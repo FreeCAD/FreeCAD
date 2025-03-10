@@ -26,7 +26,7 @@ from math import pi, tan, cos, acos
 import FreeCAD
 Quantity = FreeCAD.Units.Quantity # FIXME from FreeCAD.Units import Quantity doesn't work
 from FreeCAD import Vector
-from Part import makeCircle, Precision
+from Part import makeCircle, Precision, Solid
 import InvoluteGearFeature
 
 FIXTURE_PATH = pathlib.Path(__file__).parent / "Fixtures"
@@ -265,7 +265,7 @@ class TestInvoluteGear(unittest.TestCase):
         pocket.Reversed = True # need to "pocket upwards" into the cylinder
         pocket.Type = 'ThroughAll'
         self.assertSuccessfulRecompute()
-        self.assertSolid(pocket.Shape)
+        self.assertSolid(Solid(pocket.Shape))   # Can be a compound, make that into a Solid if needed.
 
     def testRecomputeExternalGearFromV020(self):
         FreeCAD.closeDocument(self.Doc.Name) # this was created in setUp(self)

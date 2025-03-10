@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <array>
+# include <set>
 # include <boost/algorithm/string/predicate.hpp>
 # include <QApplication>
 #endif
@@ -52,6 +53,7 @@
 #include "SelectionFilterPy.h"
 #include "SelectionObserverPython.h"
 #include "Tree.h"
+#include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
 
 
@@ -391,6 +393,25 @@ void SelectionSingleton::enablePickedList(bool enable)
     }
 }
 
+static void notifyDocumentObjectViewProvider(const SelectionChanges& changes) {
+    const auto* doc = App::GetApplication().getDocument(changes.pDocName);
+    if (!doc) {
+        return;
+    }
+
+    const auto* obj = doc->getObject(changes.pObjectName);
+    if (!obj) {
+        return;
+    }
+
+    auto* vp = Application::Instance->getViewProvider(obj);
+    if (!vp) {
+        return;
+    }
+
+    vp->onSelectionChanged(changes);
+}
+
 void SelectionSingleton::notify(SelectionChanges &&Chng)
 {
     if(Notifying) {
@@ -401,7 +422,7 @@ void SelectionSingleton::notify(SelectionChanges &&Chng)
     NotificationQueue.push_back(std::move(Chng));
     while(!NotificationQueue.empty()) {
         const auto &msg = NotificationQueue.front();
-        bool notify;
+        bool notify = false;
         switch(msg.Type) {
         case SelectionChanges::AddSelection:
             notify = isSelected(msg.pDocName, msg.pObjectName, msg.pSubName, ResolveMode::NoResolve);
@@ -420,6 +441,9 @@ void SelectionSingleton::notify(SelectionChanges &&Chng)
             notify = true;
         }
         if(notify) {
+            // Notify the view provider of the object.
+            notifyDocumentObjectViewProvider(msg);
+
             Notify(msg);
             try {
                 signalSelectionChanged(msg);
@@ -838,7 +862,7 @@ void SelectionSingleton::rmvSelectionGate()
 
 App::Document* SelectionSingleton::getDocument(const char* pDocName) const
 {
-    if (pDocName && pDocName[0])
+    if (!Base::Tools::isNullOrEmpty(pDocName))
         return App::GetApplication().getDocument(pDocName);
     else
         return App::GetApplication().getActiveDocument();
@@ -1453,6 +1477,21 @@ void SelectionSingleton::clearCompleteSelection(bool clearPreSelect)
         Application::Instance->macroManager()->addLine(MacroManager::Cmt,
                 clearPreSelect?"Gui.Selection.clearSelection()"
                               :"Gui.Selection.clearSelection(False)");
+
+    // Send the clear selection notification to all view providers associated with the
+    // objects being deselected.
+
+    std::set<ViewProvider*> viewProviders;
+    for (_SelObj& sel : _SelList) {
+        if (auto vp = Application::Instance->getViewProvider(sel.pObject)) {
+            viewProviders.insert(vp);
+        }
+    }
+
+    for (auto& vp : viewProviders) {
+        SelectionChanges Chng(SelectionChanges::ClrSelection);
+        vp->onSelectionChanged(Chng);
+    }
 
     _SelList.clear();
 

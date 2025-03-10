@@ -99,16 +99,16 @@ const BaseGeomPtrVector GeometryObject::getVisibleFaceEdges(const bool smooth,
     for (auto& e : edgeGeom) {
         if (e->getHlrVisible()) {
             switch (e->getClassOfEdge()) {
-                case ecHARD:
-                case ecOUTLINE:
+                case EdgeClass::HARD:
+                case EdgeClass::OUTLINE:
                     result.push_back(e);
                     break;
-                case ecSMOOTH:
+                case EdgeClass::SMOOTH:
                     if (smoothOK) {
                         result.push_back(e);
                     }
                     break;
-                case ecSEAM:
+                case EdgeClass::SEAM:
                     if (seamOK) {
                         result.push_back(e);
                     }
@@ -251,9 +251,9 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& vie
 void GeometryObject::makeTDGeometry()
 {
 //    Base::Console().Message("GO::makeTDGeometry()\n");
-    extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
+    extractGeometry(EdgeClass::HARD,                   //always show the hard&outline visible lines
                         true);
-    extractGeometry(TechDraw::ecOUTLINE,
+    extractGeometry(EdgeClass::OUTLINE,
                         true);
 
     const DrawViewPart* dvp = static_cast<const DrawViewPart*>(m_parent);
@@ -262,26 +262,26 @@ void GeometryObject::makeTDGeometry()
     }
 
     if (dvp->SmoothVisible.getValue()) {
-        extractGeometry(TechDraw::ecSMOOTH, true);
+        extractGeometry(EdgeClass::SMOOTH, true);
     }
     if (dvp->SeamVisible.getValue()) {
-        extractGeometry(TechDraw::ecSEAM, true);
+        extractGeometry(EdgeClass::SEAM, true);
     }
     if ((dvp->IsoVisible.getValue()) && (dvp->IsoCount.getValue() > 0)) {
-        extractGeometry(TechDraw::ecUVISO, true);
+        extractGeometry(EdgeClass::UVISO, true);
     }
     if (dvp->HardHidden.getValue()) {
-        extractGeometry(TechDraw::ecHARD, false);
-        extractGeometry(TechDraw::ecOUTLINE, false);
+        extractGeometry(EdgeClass::HARD, false);
+        extractGeometry(EdgeClass::OUTLINE, false);
     }
     if (dvp->SmoothHidden.getValue()) {
-        extractGeometry(TechDraw::ecSMOOTH, false);
+        extractGeometry(EdgeClass::SMOOTH, false);
     }
     if (dvp->SeamHidden.getValue()) {
-        extractGeometry(TechDraw::ecSEAM, false);
+        extractGeometry(EdgeClass::SEAM, false);
     }
     if (dvp->IsoHidden.getValue() && (dvp->IsoCount.getValue() > 0)) {
-        extractGeometry(TechDraw::ecUVISO, false);
+        extractGeometry(EdgeClass::UVISO, false);
     }
 }
 
@@ -452,54 +452,54 @@ TopoDS_Shape GeometryObject::projectFace(const TopoDS_Shape& face, const gp_Ax2&
 }
 
 //!add edges meeting filter criteria for category, visibility
-void GeometryObject::extractGeometry(edgeClass category, bool hlrVisible)
+void GeometryObject::extractGeometry(EdgeClass category, bool hlrVisible)
 {
     //    Base::Console().Message("GO::extractGeometry(%d, %d)\n", category, hlrVisible);
     TopoDS_Shape filtEdges;
     if (hlrVisible) {
         switch (category) {
-            case ecHARD:
+            case EdgeClass::HARD:
                 filtEdges = visHard;
                 break;
-            case ecOUTLINE:
+            case EdgeClass::OUTLINE:
                 filtEdges = visOutline;
                 break;
-            case ecSMOOTH:
+            case EdgeClass::SMOOTH:
                 filtEdges = visSmooth;
                 break;
-            case ecSEAM:
+            case EdgeClass::SEAM:
                 filtEdges = visSeam;
                 break;
-            case ecUVISO:
+            case EdgeClass::UVISO:
                 filtEdges = visIso;
                 break;
             default:
                 Base::Console().Warning(
-                    "GeometryObject::ExtractGeometry - unsupported hlrVisible edgeClass: %d\n",
+                    "GeometryObject::ExtractGeometry - unsupported hlrVisible EdgeClass: %d\n",
                     static_cast<int>(category));
                 return;
         }
     }
     else {
         switch (category) {
-            case ecHARD:
+            case EdgeClass::HARD:
                 filtEdges = hidHard;
                 break;
-            case ecOUTLINE:
+            case EdgeClass::OUTLINE:
                 filtEdges = hidOutline;
                 break;
-            case ecSMOOTH:
+            case EdgeClass::SMOOTH:
                 filtEdges = hidSmooth;
                 break;
-            case ecSEAM:
+            case EdgeClass::SEAM:
                 filtEdges = hidSeam;
                 break;
-            case ecUVISO:
+            case EdgeClass::UVISO:
                 filtEdges = hidIso;
                 break;
             default:
                 Base::Console().Warning(
-                    "GeometryObject::ExtractGeometry - unsupported hidden edgeClass: %d\n",
+                    "GeometryObject::ExtractGeometry - unsupported hidden EdgeClass: %d\n",
                     static_cast<int>(category));
                 return;
         }
@@ -509,7 +509,7 @@ void GeometryObject::extractGeometry(edgeClass category, bool hlrVisible)
 }
 
 //! update edgeGeom and vertexGeom from Compound of edges
-void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category,
+void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, EdgeClass category,
                                          bool hlrVisible)
 {
 //    Base::Console().Message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
@@ -552,7 +552,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             //            throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
         }
 
-        base->source(0);//object geometry
+        base->source(SourceType::GEOMETRY);
         base->sourceIndex(i - 1);
         base->setClassOfEdge(category);
         base->setHlrVisible(hlrVisible);
@@ -707,7 +707,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start, Base::Vector3d end, st
     TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(occEdge);
     base->setCosmetic(true);
     base->setCosmeticTag(tagString);
-    base->source(1);//1-CosmeticEdge, 2-CenterLine
+    base->source(SourceType::COSMETICEDGE);
     base->setHlrVisible(true);
     int idx = edgeGeom.size();
     edgeGeom.push_back(base);
@@ -719,7 +719,7 @@ int GeometryObject::addCosmeticEdge(TechDraw::BaseGeomPtr base, std::string tagS
     //    Base::Console().Message("GO::addCosmeticEdge(%X, %s) 3\n", base, tagString.c_str());
     base->setCosmetic(true);
     base->setHlrVisible(true);
-    base->source(1);//1-CosmeticEdge, 2-CenterLine
+    base->source(SourceType::COSMETICEDGE);
     base->setCosmeticTag(tagString);
     base->sourceIndex(-1);
     int idx = edgeGeom.size();
@@ -733,7 +733,7 @@ int GeometryObject::addCenterLine(TechDraw::BaseGeomPtr base, std::string tag)
     //    Base::Console().Message("GO::addCenterLine()\n");
     base->setCosmetic(true);
     base->setCosmeticTag(tag);
-    base->source(2);
+    base->source(SourceType::CENTERLINE);
     //    base->sourceIndex(si);     //index into source;
     int idx = edgeGeom.size();
     edgeGeom.push_back(base);

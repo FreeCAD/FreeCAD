@@ -41,11 +41,13 @@
 # include <QCursor>
 # include <QImage>
 # include <QMenu>
+# include <QOpenGLFramebufferObject>
 # include <QOpenGLTexture>
+# include <QOpenGLWidget>
 # include <QPainterPath>
 #endif
 
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Base/Tools.h>
 #include <Eigen/Dense>
 
@@ -54,6 +56,7 @@
 #include "Command.h"
 #include "Action.h"
 #include "MainWindow.h"
+#include "Navigation/NavigationAnimation.h"
 #include "View3DInventorViewer.h"
 #include "View3DInventor.h"
 #include "ViewParams.h"
@@ -62,10 +65,6 @@
 using namespace Eigen;
 using namespace std;
 using namespace Gui;
-
-
-
-
 
 class NaviCubeImplementation {
 public:
@@ -180,9 +179,9 @@ public:
     float m_InactiveOpacity = 0.5;
     SbVec2s m_PosOffset = SbVec2s(0,0);
 
-    App::Color m_xColor;
-    App::Color m_yColor;
-    App::Color m_zColor;
+    Base::Color m_xColor;
+    Base::Color m_yColor;
+    Base::Color m_zColor;
 
     bool m_Prepared = false;
     static vector<string> m_commands;
@@ -199,13 +198,16 @@ private:
     SbVec2s m_PosAreaBase = SbVec2s(0,0);
     SbVec2s m_PosAreaSize = SbVec2s(0,0);
 
-    QtGLFramebufferObject* m_PickingFramebuffer;
+    QOpenGLFramebufferObject* m_PickingFramebuffer;
     Gui::View3DInventorViewer* m_View3DInventorViewer;
 
     map<PickId, Face> m_Faces;
     map<PickId, LabelTexture> m_LabelTextures;
 
     QMenu* m_Menu;
+
+    std::shared_ptr<NavigationAnimation> m_flatButtonAnimation;
+    SbRotation m_flatButtonTargetOrientation;
 };
 
 int NaviCubeImplementation::m_CubeWidgetSize = 132;
@@ -704,8 +706,8 @@ void NaviCubeImplementation::prepare()
     if (m_PickingFramebuffer)
         delete m_PickingFramebuffer;
     m_PickingFramebuffer =
-        new QtGLFramebufferObject(2 * m_CubeWidgetSize, 2 * m_CubeWidgetSize,
-                                  QtGLFramebufferObject::CombinedDepthStencil);
+        new QOpenGLFramebufferObject(2 * m_CubeWidgetSize, 2 * m_CubeWidgetSize,
+                                     QOpenGLFramebufferObject::CombinedDepthStencil);
     m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
 }
 
@@ -935,7 +937,7 @@ NaviCubeImplementation::PickId NaviCubeImplementation::pickFace(short x, short y
     GLubyte pixels[4] = {0};
     if (m_PickingFramebuffer && std::abs(x) <= m_CubeWidgetSize / 2 &&
         std::abs(y) <= m_CubeWidgetSize / 2) {
-        static_cast<QtGLWidget*>(m_View3DInventorViewer->viewport())->makeCurrent();
+        static_cast<QOpenGLWidget*>(m_View3DInventorViewer->viewport())->makeCurrent();
         m_PickingFramebuffer->bind();
 
         glViewport(0, 0, m_CubeWidgetSize * 2, m_CubeWidgetSize * 2);
@@ -946,7 +948,7 @@ NaviCubeImplementation::PickId NaviCubeImplementation::pickFace(short x, short y
         glReadPixels(2 * x + m_CubeWidgetSize, 2 * y + m_CubeWidgetSize, 1, 1,
                      GL_RGBA, GL_UNSIGNED_BYTE, &pixels);
         m_PickingFramebuffer->release();
-        static_cast<QtGLWidget*>(m_View3DInventorViewer->viewport())->doneCurrent();
+        static_cast<QOpenGLWidget*>(m_View3DInventorViewer->viewport())->doneCurrent();
     }
     return pixels[3] == 255 ? static_cast<PickId>(pixels[0]) : PickId::None;
 }
@@ -1102,7 +1104,17 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
             else {
                 rotation.scaleAngle(rotStepAngle);
             }
-            m_View3DInventorViewer->setCameraOrientation(rotation * m_View3DInventorViewer->getCameraOrientation());
+
+            // If the previous flat button animation is still active then apply the rotation to the
+            // previous target orientation, otherwise apply the rotation to the current camera orientation
+            if (m_flatButtonAnimation != nullptr && m_flatButtonAnimation->state() == QAbstractAnimation::Running) {
+                m_flatButtonTargetOrientation = rotation * m_flatButtonTargetOrientation;
+            }
+            else {
+                m_flatButtonTargetOrientation = rotation * m_View3DInventorViewer->getCameraOrientation();
+            }
+
+            m_flatButtonAnimation = m_View3DInventorViewer->setCameraOrientation(m_flatButtonTargetOrientation);
         }
         else {
             return false;
@@ -1181,11 +1193,11 @@ void NaviCube::updateColors()
     unsigned long colorLong;
 
     colorLong = Gui::ViewParams::instance()->getAxisXColor();
-    m_NaviCubeImplementation->m_xColor = App::Color(static_cast<uint32_t>(colorLong));
+    m_NaviCubeImplementation->m_xColor = Base::Color(static_cast<uint32_t>(colorLong));
     colorLong = Gui::ViewParams::instance()->getAxisYColor();
-    m_NaviCubeImplementation->m_yColor = App::Color(static_cast<uint32_t>(colorLong));
+    m_NaviCubeImplementation->m_yColor = Base::Color(static_cast<uint32_t>(colorLong));
     colorLong = Gui::ViewParams::instance()->getAxisZColor();
-    m_NaviCubeImplementation->m_zColor = App::Color(static_cast<uint32_t>(colorLong));
+    m_NaviCubeImplementation->m_zColor = Base::Color(static_cast<uint32_t>(colorLong));
 }
 
 void NaviCube::setNaviCubeCommands(const std::vector<std::string>& cmd)

@@ -732,9 +732,9 @@ private:
                         std::string sDimText;
                         //this is the same code as in QGIViewDimension::updateDim
                         if (dvd->isMultiValueSchema()) {
-                            sDimText = dvd->getFormattedDimensionValue(0); //don't format multis
+                            sDimText = dvd->getFormattedDimensionValue(DimensionFormatter::Format::UNALTERED); //don't format multis
                         } else {
-                            sDimText = dvd->getFormattedDimensionValue(1);
+                            sDimText = dvd->getFormattedDimensionValue(DimensionFormatter::Format::FORMATTED);
                         }
                         char* dimText = &sDimText[0u];                  //hack for const-ness
                         float gap = 5.0;                                //hack. don't know font size here.

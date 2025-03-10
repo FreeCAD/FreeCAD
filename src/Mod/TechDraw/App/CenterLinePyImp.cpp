@@ -21,9 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <boost/uuid/uuid_io.hpp>
-#endif
 
 #include <Base/Console.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -146,27 +143,27 @@ void CenterLinePy::setFormat(Py::Dict arg)
 
 Py::String CenterLinePy::getTag() const
 {
-    std::string tmp = boost::uuids::to_string(getCenterLinePtr()->getTag());
+    std::string tmp = getCenterLinePtr()->getTagAsString();
     return Py::String(tmp);
 }
 
 
 Py::Long CenterLinePy::getType() const
 {
-    int tmp = getCenterLinePtr()->m_type;
-    return Py::Long(tmp);
+    CenterLine::Type tmp = getCenterLinePtr()->m_type;
+    return Py::Long(static_cast<int>(tmp));
 }
 
 Py::Long CenterLinePy::getMode() const
 {
-    int tmp = getCenterLinePtr()->m_mode;
-    return Py::Long(tmp);
+    CenterLine::Mode tmp = getCenterLinePtr()->m_mode;
+    return Py::Long(static_cast<int>(tmp));
 }
 
 void CenterLinePy::setMode(Py::Long arg)
 {
     int temp = static_cast<int>(arg);
-    getCenterLinePtr()->m_mode = temp;
+    getCenterLinePtr()->m_mode = static_cast<CenterLine::Mode>(temp);
 }
 
 Py::Float CenterLinePy::getHorizShift() const

@@ -117,7 +117,7 @@ QVariant Array2DModel::headerData(int section, Qt::Orientation orientation, int 
         else if (orientation == Qt::Vertical) {
             // Vertical header
             if (section == (rowCount() - 1)) {
-                return QString::fromStdString("*");
+                return QStringLiteral("*");
             }
             return {section + 1};
         }
@@ -258,7 +258,7 @@ QVariant Array3DDepthModel::headerData(int section, Qt::Orientation orientation,
         if (orientation == Qt::Vertical) {
             // Vertical header
             if (section == (rowCount() - 1)) {
-                return QString::fromStdString("*");
+                return QStringLiteral("*");
             }
             return {section + 1};
         }
@@ -416,7 +416,7 @@ QVariant Array3DModel::headerData(int section, Qt::Orientation orientation, int 
         if (orientation == Qt::Vertical) {
             // Vertical header
             if (section == (rowCount() - 1)) {
-                return QString::fromStdString("*");
+                return QStringLiteral("*");
             }
             return {section + 1};
         }

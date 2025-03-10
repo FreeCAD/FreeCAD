@@ -108,7 +108,7 @@ TechDraw::LineFormat *TaskLineDecor::getFormatAccessPtr(const std::string &edgeN
     BaseGeomPtr bg = m_partFeat->getEdge(edgeName);
     if (bg) {
         if (bg->getCosmetic()) {
-            if (bg->source() == SourceType::COSEDGE) {
+            if (bg->source() == SourceType::COSMETICEDGE) {
                 TechDraw::CosmeticEdge *ce = m_partFeat->getCosmeticEdgeBySelection(edgeName);
                 if (ce) {
                     return &ce->m_format;

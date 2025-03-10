@@ -20,24 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_WRITER_H
-#define BASE_WRITER_H
+#ifndef SRC_BASE_WRITER_H_
+#define SRC_BASE_WRITER_H_
 
 
 #include <set>
 #include <string>
 #include <sstream>
 #include <vector>
-#include <cassert>
 #include <memory>
 
-#ifdef _MSC_VER
-#include <zipios++/zipios-config.h>
-#endif
-#include <zipios++/zipfile.h>
-#include <zipios++/zipinputstream.h>
 #include <zipios++/zipoutputstream.h>
-#include <zipios++/meta-iostreams.h>
+
+#include <Base/UniqueNameManager.h>
 
 #include "FileInfo.h"
 
@@ -56,6 +51,24 @@ class Persistence;
  */
 class BaseExport Writer
 {
+private:
+    // This overrides UniqueNameManager's suffix-locating function so that the last '.' and
+    // everything after it is considered suffix.
+    class UniqueFileNameManager: public UniqueNameManager
+    {
+    protected:
+        std::string::const_reverse_iterator
+        getNameSuffixStartPosition(const std::string& name) const override
+        {
+            // This is an awkward way to do this, because the FileInfo class only yields pieces of
+            // the path, not delimiter positions. We can't just use fi.extension().size() because
+            // both "xyz" and "xyz." would yield three; we need the length of the extension
+            // *including its delimiter* so we use the length difference between the fileName and
+            // fileNamePure.
+            FileInfo fi(name);
+            return name.rbegin() + (fi.fileName().size() - fi.fileNamePure().size());
+        }
+    };
 
 public:
     Writer();
@@ -84,8 +97,6 @@ public:
     std::string addFile(const char* Name, const Base::Persistence* Object);
     /// process the requested file storing
     virtual void writeFiles() = 0;
-    /// get all registered file names
-    const std::vector<std::string>& getFilenames() const;
     /// Set mode
     void setMode(const std::string& mode);
     /// Set modes
@@ -151,14 +162,13 @@ public:
     std::string ObjectName;
 
 protected:
-    std::string getUniqueFileName(const char* Name);
     struct FileEntry
     {
         std::string FileName;
         const Base::Persistence* Object;
     };
     std::vector<FileEntry> FileList;
-    std::vector<std::string> FileNames;
+    UniqueFileNameManager FileNameManager;
     std::vector<std::string> Errors;
     std::set<std::string> Modes;
 
@@ -290,4 +300,4 @@ protected:
 }  // namespace Base
 
 
-#endif  // BASE_WRITER_H
+#endif  // SRC_BASE_WRITER_H_

@@ -312,7 +312,7 @@ PyObject* TopoShapePy::writeInventor(PyObject * args, PyObject * keywds)
         return nullptr;
     }
 
-    std::vector<App::Color> faceColors;
+    std::vector<Base::Color> faceColors;
     if (pylist) {
         App::PropertyColorList prop;
         prop.setPyObject(pylist);
@@ -2555,7 +2555,7 @@ PyObject* TopoShapePy::getChildShapes(PyObject* args)
         return Py::new_reference_to(
             getElements(*getTopoShapePtr(),
                         TopoShape::shapeType(type),
-                        avoid && avoid[0] ? TopoShape::shapeType(avoid) : TopAbs_SHAPE));
+                        !Base::Tools::isNullOrEmpty(avoid) ? TopoShape::shapeType(avoid) : TopAbs_SHAPE));
     }
     PY_CATCH_OCC;
 }

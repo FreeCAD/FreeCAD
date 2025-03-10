@@ -33,6 +33,7 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -43,6 +44,7 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskGeomFillSurface.h"
+
 #include "ui_TaskGeomFillSurface.h"
 
 
@@ -119,7 +121,7 @@ void ViewProviderGeomFillSurface::highlightReferences(bool on)
                 Gui::Application::Instance->getViewProvider(base));
             if (svp) {
                 if (on) {
-                    std::vector<App::Color> colors;
+                    std::vector<Base::Color> colors;
                     TopTools_IndexedMapOfShape eMap;
                     TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
                     colors.resize(eMap.Extent(), svp->LineColor.getValue());
@@ -127,7 +129,7 @@ void ViewProviderGeomFillSurface::highlightReferences(bool on)
                     for (const auto& jt : it.second) {
                         std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
                         assert(idx < colors.size());
-                        colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
+                        colors[idx] = Base::Color(1.0, 0.0, 1.0);  // magenta
                     }
 
                     svp->setHighlightedEdges(colors);
@@ -172,7 +174,7 @@ bool GeomFillSurface::EdgeSelection::allow(App::Document*,
         return false;
     }
 
-    if (!sSubName || sSubName[0] == '\0') {
+    if (Base::Tools::isNullOrEmpty(sSubName)) {
         return false;
     }
 

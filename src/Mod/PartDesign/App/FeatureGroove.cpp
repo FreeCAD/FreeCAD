@@ -81,11 +81,7 @@ short Groove::mustExecute() const
 
 App::DocumentObjectExecReturn *Groove::execute()
 {
-    if (onlyHasToRefine()){
-        TopoShape result = refineShapeIfActive(rawShape);
-        Shape.setValue(result);
-        return App::DocumentObject::StdReturn;
-    }
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     // Validate parameters
     double angle = Angle.getValue();

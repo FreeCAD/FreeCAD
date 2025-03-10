@@ -25,7 +25,7 @@
 
 #include <Inventor/SbBox3f.h>
 #include <QWidget>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/Fem/App/FemPostFunction.h>

@@ -145,7 +145,7 @@ void SectionCut::initControls(const Base::BoundBox3d& BoundCompound)
 {
     // lambda function to set color and transparency
     auto setColorTransparency = [&](Part::Box* pcBox) {
-        App::Color cutColor;
+        Base::Color cutColor;
         long cutTransparency{};
         auto vpBox = dynamic_cast<Gui::ViewProviderGeometryObject*>(
             Gui::Application::Instance->getViewProvider(pcBox));
@@ -297,7 +297,7 @@ void SectionCut::initBooleanFragmentControls(Gui::ViewProviderGeometryObject* co
     ui->groupBoxIntersecting->setChecked(true);
 
     if (compoundBF) {
-        App::Color compoundColor = compoundBF->ShapeAppearance.getDiffuseColor();
+        Base::Color compoundColor = compoundBF->ShapeAppearance.getDiffuseColor();
         ui->BFragColor->setColor(compoundColor.asValue<QColor>());
         long compoundTransparency = compoundBF->Transparency.getValue();
         ui->BFragTransparencyHS->setValue(int(compoundTransparency));
@@ -932,9 +932,9 @@ bool SectionCut::isCuttingEnabled() const
 }
 
 namespace {
-App::Color getFirstColor(const std::vector<App::DocumentObject*>& objects)
+Base::Color getFirstColor(const std::vector<App::DocumentObject*>& objects)
 {
-    App::Color cutColor;
+    Base::Color cutColor;
     auto vpFirstObject = dynamic_cast<Gui::ViewProviderGeometryObject*>(
         Gui::Application::Instance->getViewProvider(objects.front()));
     if (vpFirstObject) {
@@ -954,7 +954,7 @@ long getFirstTransparency(const std::vector<App::DocumentObject*>& objects)
     return cutTransparency;
 }
 
-bool isAutoColor(const App::Color& color, const std::vector<App::DocumentObject*>& objects)
+bool isAutoColor(const Base::Color& color, const std::vector<App::DocumentObject*>& objects)
 {
     bool autoColor = true;
     for (auto itCuts : objects) {
@@ -1278,7 +1278,7 @@ void SectionCut::processZBoxAndCut(const Args& args)
 void SectionCut::createAllObjects(const std::vector<App::DocumentObject*>& ObjectsListCut)
 {
     // store color and transparency of first object
-    App::Color cutColor = getFirstColor(ObjectsListCut);
+    Base::Color cutColor = getFirstColor(ObjectsListCut);
     long cutTransparency = getFirstTransparency(ObjectsListCut);
     bool autoColor = true;
     bool autoTransparency = true;
@@ -1325,7 +1325,7 @@ void SectionCut::createAllObjects(const std::vector<App::DocumentObject*>& Objec
     }
 
     // read cutface color for the cut box
-    App::Color boxColor;
+    Base::Color boxColor;
     boxColor.setValue<QColor>(ui->CutColor->color());
     int boxTransparency = ui->CutTransparencyHS->value();
 
@@ -2052,7 +2052,7 @@ void SectionCut::changeCutBoxColors()
         auto boxVP = Gui::Application::Instance->getViewProvider(boxObject);
         auto boxVPGO = dynamic_cast<Gui::ViewProviderGeometryObject*>(boxVP);
         if (boxVPGO) {
-            App::Color boxColor;
+            Base::Color boxColor;
             boxColor.setValue<QColor>(ui->CutColor->color());
             boxVPGO->ShapeAppearance.setDiffuseColor(boxColor);
             int boxTransparency = ui->CutTransparencyHS->value();
@@ -2160,7 +2160,7 @@ void SectionCut::setBooleanFragmentsColor()
         }
         auto CutCompoundBFGeom = dynamic_cast<Gui::ViewProviderGeometryObject*>(CompoundBFVP);
         if (CutCompoundBFGeom) {
-            App::Color BFColor;
+            Base::Color BFColor;
             BFColor.setValue<QColor>(ui->BFragColor->color());
             CutCompoundBFGeom->ShapeAppearance.setDiffuseColor(BFColor);
             int BFTransparency = ui->BFragTransparencyHS->value();

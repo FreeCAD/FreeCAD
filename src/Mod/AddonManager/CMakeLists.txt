@@ -118,6 +118,7 @@ SET(AddonManagerTestsGui_SRCS
 SET(AddonManagerTestsFiles_SRCS
         AddonManagerTest/data/__init__.py
         AddonManagerTest/data/addon_update_stats.json
+        AddonManagerTest/data/bundle_only.xml
         AddonManagerTest/data/combination.xml
         AddonManagerTest/data/corrupted_metadata.zip
         AddonManagerTest/data/depends_on_all_workbenches.xml
@@ -131,6 +132,7 @@ SET(AddonManagerTestsFiles_SRCS
         AddonManagerTest/data/MacrosRecipesWikiPage.zip
         AddonManagerTest/data/metadata.zip
         AddonManagerTest/data/missing_macro_metadata.FCStd
+        AddonManagerTest/data/other_only.xml
         AddonManagerTest/data/prefpack_only.xml
         AddonManagerTest/data/test_addon_with_fcmacro.zip
         AddonManagerTest/data/test_github_style_repo.zip

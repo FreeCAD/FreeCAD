@@ -29,6 +29,7 @@
 #include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
+#include <Base/Tools.h>
 
 #include "Datums.h"
 
@@ -359,7 +360,7 @@ bool LocalCoordinateSystem::LCSExtension::extensionGetSubObject(DocumentObject*&
                                                                 bool,
                                                                 int depth) const
 {
-    if (!subname || subname[0] == '\0') {
+    if (Base::Tools::isNullOrEmpty(subname)) {
         return false;
     }
 

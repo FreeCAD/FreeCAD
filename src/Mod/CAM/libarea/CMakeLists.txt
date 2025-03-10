@@ -9,8 +9,13 @@ if(MSVC)
 endif(MSVC)
 
 include_directories(
-    ${PYTHON_INCLUDE_DIRS}
+    SYSTEM
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
+)
+
+include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/src/Mod/Import/App/dxf
 )
@@ -24,21 +29,21 @@ if(NOT FREECAD_USE_PYBIND11)
         if (FORCE_BOOST_PY_SUFFIX)
             set(BOOST_PY_SUFFIX ${FORCE_BOOST_PY_SUFFIX})
         else ()
-            set(BOOST_PY_SUFFIX ${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+            set(BOOST_PY_SUFFIX ${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR})
         endif ()
 
         find_package( Boost COMPONENTS python${BOOST_PY_SUFFIX} )
         if (NOT Boost_PYTHON${BOOST_PY_SUFFIX}_FOUND)
             # try just the major version
-            find_package( Boost COMPONENTS python${PYTHON_VERSION_MAJOR} )
-            if (NOT Boost_PYTHON${PYTHON_VERSION_MAJOR}_FOUND)
+            find_package( Boost COMPONENTS python${Python3_VERSION_MAJOR} )
+            if (NOT Boost_PYTHON${Python3_VERSION_MAJOR}_FOUND)
                 # unversioned
                 find_package( Boost COMPONENTS python REQUIRED)
             endif()
         endif()
 
         if(Boost_FOUND)
-            include_directories(${Boost_INCLUDE_DIRS})
+            include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
             MESSAGE(STATUS "found Boost: " ${Boost_LIB_VERSION})
             MESSAGE(STATUS "boost-incude dirs are: " ${Boost_INCLUDE_DIRS})
             MESSAGE(STATUS "boost-python lib is: " ${Boost_PYTHON_LIBRARY})
@@ -46,10 +51,10 @@ if(NOT FREECAD_USE_PYBIND11)
             MESSAGE(STATUS "Boost_LIBRARIES is: " ${Boost_LIBRARIES})
         endif()
     else()
-        include_directories(${Boost_INCLUDE_DIRS})
+        include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
     endif()
 else()
-    include_directories(${pybind11_INCLUDE_DIR})
+    include_directories(SYSTEM ${pybind11_INCLUDE_DIR})
 endif(NOT FREECAD_USE_PYBIND11)
 
 
@@ -135,7 +140,7 @@ if(MSVC)
         ${area_native_LIBS}
     )
     if(BUILD_DYNAMIC_LINK_PYTHON)
-        list(APPEND area_LIBS ${PYTHON_LIBRARIES})
+        list(APPEND area_LIBS ${Python3_LIBRARIES})
     endif(BUILD_DYNAMIC_LINK_PYTHON)
 elseif(MINGW)
     set(area_native_LIBS
@@ -146,7 +151,7 @@ elseif(MINGW)
         ${area_native_LIBS}
     )
     if(BUILD_DYNAMIC_LINK_PYTHON)
-        list(APPEND area_LIBS ${PYTHON_LIBRARIES})
+        list(APPEND area_LIBS ${Python3_LIBRARIES})
     endif(BUILD_DYNAMIC_LINK_PYTHON)
 else(MSVC)
     set(area_native_LIBS
@@ -155,7 +160,7 @@ else(MSVC)
         ${Boost_LIBRARIES}
     )
     if(BUILD_DYNAMIC_LINK_PYTHON)
-        list(APPEND area_LIBS ${PYTHON_LIBRARIES})
+        list(APPEND area_LIBS ${Python3_LIBRARIES})
     endif(BUILD_DYNAMIC_LINK_PYTHON)
 endif(MSVC)
 
@@ -178,15 +183,15 @@ SET_BIN_DIR(area area /Mod/CAM)
 SET_PYTHON_PREFIX_SUFFIX(area)
 
 # this figures out where to install the Python modules
-if (${PYTHON_VERSION_STRING} VERSION_LESS "3.10")
+if (${Python3_VERSION} VERSION_LESS "3.10")
     # deprecated distutils package still required for ubuntu 20.04 and similar
     # see https://bugs.launchpad.net/ubuntu/+source/python3.8/+bug/2039511
     # TODO: remove this once we drop support for 20.04
-    EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c
+    EXECUTE_PROCESS(COMMAND ${Python3_EXECUTABLE} -c
         "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True))"
         OUTPUT_VARIABLE Python_site_packages OUTPUT_STRIP_TRAILING_WHITESPACE )
 else()
-    EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c
+    EXECUTE_PROCESS(COMMAND ${Python3_EXECUTABLE} -c
         "from sysconfig import get_path; print(get_path('platlib'))"
         OUTPUT_VARIABLE Python_site_packages OUTPUT_STRIP_TRAILING_WHITESPACE )
 endif()

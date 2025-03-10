@@ -62,7 +62,7 @@ class Circle(DraftObject):
         obj.addProperty("App::PropertyArea", "Area",
                         "Draft", _tip)
 
-        obj.MakeFace = params.get_param("fillmode")
+        obj.MakeFace = params.get_param("MakeFaceMode")
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)

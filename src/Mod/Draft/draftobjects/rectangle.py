@@ -66,7 +66,7 @@ class Rectangle(DraftObject):
         _tip = QT_TRANSLATE_NOOP("App::Property", "The area of this object")
         obj.addProperty("App::PropertyArea", "Area", "Draft", _tip)
 
-        obj.MakeFace = params.get_param("fillmode")
+        obj.MakeFace = params.get_param("MakeFaceMode")
         obj.Length=1
         obj.Height=1
         obj.Rows=1

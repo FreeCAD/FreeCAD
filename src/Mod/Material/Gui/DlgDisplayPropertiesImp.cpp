@@ -24,7 +24,7 @@
 #ifndef _PreComp_
 #include <QSignalBlocker>
 #include <algorithm>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #endif
 
 #include <Base/Console.h>
@@ -64,7 +64,7 @@ public:
         bool hasElementColor = false;
         for (const auto& view : views) {
             if (auto* prop = dynamic_cast<App::PropertyColor*>(view->getPropertyByName(property))) {
-                App::Color color = prop->getValue();
+                Base::Color color = prop->getValue();
                 QSignalBlocker block(buttonColor);
                 buttonColor->setColor(color.asValue<QColor>());
                 hasElementColor = true;
@@ -83,7 +83,7 @@ public:
         for (const auto& view : views) {
             if (auto* prop =
                     dynamic_cast<App::PropertyMaterial*>(view->getPropertyByName(property))) {
-                App::Color color = prop->getDiffuseColor();
+                Base::Color color = prop->getDiffuseColor();
                 QSignalBlocker block(buttonColor);
                 buttonColor->setColor(color.asValue<QColor>());
                 hasElementColor = true;
@@ -310,7 +310,7 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
         }
         std::string prop_name = name;
         if (prop.is<App::PropertyColor>()) {
-            App::Color value = static_cast<const App::PropertyColor&>(prop).getValue();
+            Base::Color value = static_cast<const App::PropertyColor&>(prop).getValue();
             if (prop_name == "LineColor") {
                 bool blocked = d->ui.buttonLineColor->blockSignals(true);
                 d->ui.buttonLineColor->setColor(value.asValue<QColor>());
@@ -479,7 +479,7 @@ void DlgDisplayPropertiesImp::onButtonLineColorChanged()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     QColor s = d->ui.buttonLineColor->color();
-    App::Color c {};
+    Base::Color c {};
     c.setValue<QColor>(s);
     for (auto it : Provider) {
         if (auto* prop = dynamic_cast<App::PropertyColor*>(it->getPropertyByName("LineColor"))) {
@@ -492,7 +492,7 @@ void DlgDisplayPropertiesImp::onButtonPointColorChanged()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     QColor s = d->ui.buttonPointColor->color();
-    App::Color c {};
+    Base::Color c {};
     c.setValue<QColor>(s);
     for (auto it : Provider) {
         if (auto* prop = dynamic_cast<App::PropertyColor*>(it->getPropertyByName("PointColor"))) {

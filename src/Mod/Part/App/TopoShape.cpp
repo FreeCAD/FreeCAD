@@ -1007,7 +1007,7 @@ void TopoShape::exportStl(const char *filename, double deflection) const
 }
 
 void TopoShape::exportFaceSet(double dev, double ca,
-                              const std::vector<App::Color>& colors,
+                              const std::vector<Base::Color>& colors,
                               std::ostream& str) const
 {
     Base::InventorBuilder builder(str);
@@ -1056,7 +1056,7 @@ void TopoShape::exportFaceSet(double dev, double ca,
         Base::ShapeHintsItem shapeHints{static_cast<float>(ca)};
         builder.addNode(shapeHints);
         if (supportFaceColors) {
-            App::Color c = colors[index];
+            Base::Color c = colors[index];
             Base::MaterialItem material;
             material.setDiffuseColor({Base::ColorRGB{c.r, c.g, c.b}});
             material.setTransparency({c.a});
@@ -1119,6 +1119,30 @@ Base::BoundBox3d TopoShape::getBoundBox() const
         // If the shape is empty an exception may be thrown
         Bnd_Box bounds;
         BRepBndLib::Add(_Shape, bounds);
+        bounds.SetGap(0.0);
+        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+        box.MinX = xMin;
+        box.MaxX = xMax;
+        box.MinY = yMin;
+        box.MaxY = yMax;
+        box.MinZ = zMin;
+        box.MaxZ = zMax;
+    }
+    catch (Standard_Failure&) {
+    }
+
+    return box;
+}
+
+Base::BoundBox3d TopoShape::getBoundBoxOptimal() const
+{
+    Base::BoundBox3d box;
+    try {
+        // If the shape is empty an exception may be thrown
+        Bnd_Box bounds;
+        BRepBndLib::AddOptimal(_Shape, bounds, false, false);
         bounds.SetGap(0.0);
         Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
         bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);

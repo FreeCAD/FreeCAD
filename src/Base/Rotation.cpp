@@ -22,7 +22,6 @@
 
 
 #include "PreCompiled.h"
-#include <array>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include "Base/Exception.h"

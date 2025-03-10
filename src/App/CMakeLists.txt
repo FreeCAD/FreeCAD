@@ -20,9 +20,6 @@ IF(DOCDIR)
     add_definitions(-DDOCDIR="${DOCDIR}")
 ENDIF(DOCDIR)
 
-#if you want to use the old DAG structure uncomment this line
-#add_definitions(-DUSE_OLD_DAG)
-
 # -----------------------------------------------------------------------------
 
 #write relevant cmake variables to a file for later access with python. Exported are all variables
@@ -56,10 +53,16 @@ include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
+    ${ZIPIOS_INCLUDES}
 )
 
 set(FreeCADApp_LIBS
@@ -99,8 +102,8 @@ generate_from_xml(PropertyContainerPy)
 generate_from_xml(MaterialPy)
 generate_from_xml(MeasureManagerPy)
 
-generate_from_py(FreeCADInit InitScript.h)
-generate_from_py(FreeCADTest TestScript.h)
+generate_embed_from_py(FreeCADInit InitScript.h)
+generate_embed_from_py(FreeCADTest TestScript.h)
 
 SET(FreeCADApp_XML_SRCS
     ExtensionPy.xml
@@ -272,7 +275,6 @@ SET(FreeCADApp_CPP_SRCS
     AutoTransaction.cpp
     Branding.cpp
     CleanupProcess.cpp
-    Color.cpp
     ColorModel.cpp
     ComplexGeoData.cpp
     ComplexGeoDataPyImp.cpp
@@ -302,7 +304,6 @@ SET(FreeCADApp_HPP_SRCS
     AutoTransaction.h
     Branding.h
     CleanupProcess.h
-    Color.h
     ColorModel.h
     ComplexGeoData.h
     ElementMap.h

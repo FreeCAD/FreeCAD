@@ -24,7 +24,6 @@
 
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge.hxx>
-# include <boost/uuid/uuid_io.hpp>
 #endif
 
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -152,7 +151,7 @@ Py::Dict CosmeticEdgePy::getFormat() const
 
 Py::String CosmeticEdgePy::getTag() const
 {
-    std::string tmp = boost::uuids::to_string(getCosmeticEdgePtr()->getTag());
+    std::string tmp = getCosmeticEdgePtr()->getTagAsString();
     return Py::String(tmp);
 }
 
@@ -231,9 +230,9 @@ void CosmeticEdgePy::setEnd(Py::Vector arg)
 
 Py::Float CosmeticEdgePy::getRadius() const
 {
-    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->getGeomType();
-    if ( (gt != TechDraw::GeomType::CIRCLE) &&
-         (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
+    GeomType gt = getCosmeticEdgePtr()->m_geometry->getGeomType();
+    if ( (gt != GeomType::CIRCLE) &&
+         (gt != GeomType::ARCOFCIRCLE) ) {
         throw Py::TypeError("Not a circle. Can not get radius");
     }
     double r = getCosmeticEdgePtr()->permaRadius;
@@ -242,9 +241,9 @@ Py::Float CosmeticEdgePy::getRadius() const
 
 void CosmeticEdgePy::setRadius(Py::Float arg)
 {
-    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->getGeomType();
-    if ( (gt != TechDraw::GeomType::CIRCLE) &&
-         (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
+    GeomType gt = getCosmeticEdgePtr()->m_geometry->getGeomType();
+    if ( (gt != GeomType::CIRCLE) &&
+         (gt != GeomType::ARCOFCIRCLE) ) {
         throw Py::TypeError("Not a circle. Can not set radius");
     }
 
@@ -258,9 +257,9 @@ void CosmeticEdgePy::setRadius(Py::Float arg)
 
 Py::Vector CosmeticEdgePy::getCenter() const
 {
-    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->getGeomType();
-    if ( (gt != TechDraw::GeomType::CIRCLE) &&
-         (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
+    GeomType gt = getCosmeticEdgePtr()->m_geometry->getGeomType();
+    if ( (gt != GeomType::CIRCLE) &&
+         (gt != GeomType::ARCOFCIRCLE) ) {
         throw Py::TypeError("Not a circle. Can not get center");
     }
     Base::Vector3d point = getCosmeticEdgePtr()->permaStart;
@@ -270,10 +269,10 @@ Py::Vector CosmeticEdgePy::getCenter() const
 
 void CosmeticEdgePy::setCenter(Py::Vector arg)
 {
-    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->getGeomType();
+    GeomType gt = getCosmeticEdgePtr()->m_geometry->getGeomType();
 //    PyObject* p = arg.ptr();
-    if ( (gt != TechDraw::GeomType::CIRCLE) &&
-         (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
+    if ( (gt != GeomType::CIRCLE) &&
+         (gt != GeomType::ARCOFCIRCLE) ) {
         throw Py::TypeError("Not a circle. Can not set center");
     }
 

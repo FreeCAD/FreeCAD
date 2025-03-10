@@ -23,9 +23,8 @@
 
 #include "PreCompiled.h"
 
-#include <iostream>
+#include <sstream>
 #include <iomanip>
-#include <locale>
 #include <memory>
 
 #include <CXX/WrapPython.h>

@@ -37,6 +37,7 @@ class GuiExport NavigationAnimation : protected QVariantAnimation
     Q_OBJECT
 public:
     explicit NavigationAnimation(NavigationStyle* navigation);
+    using QVariantAnimation::state;
 
 Q_SIGNALS:
     void interrupted();

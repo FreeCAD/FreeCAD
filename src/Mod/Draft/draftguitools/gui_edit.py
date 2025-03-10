@@ -679,7 +679,7 @@ class Edit(gui_base_original.Modifier):
 
         else:
             # try if user is over an edited object
-            pos = event.getPosition()
+            pos = event.getPosition().getValue()
             obj = self.get_selected_obj_at_position(pos)
 
             obj_gui_tools = self.get_obj_gui_tools(obj)
@@ -825,8 +825,7 @@ class Edit(gui_base_original.Modifier):
         """Restore objects style during editing mode.
         """
         for obj in objs:
-            if not obj.isAttachedToDocument():
-                # Object has been deleted.
+            if utils.is_deleted(obj):
                 continue
             obj_gui_tools = self.get_obj_gui_tools(obj)
             if obj_gui_tools:

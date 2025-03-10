@@ -43,7 +43,7 @@
         <UserDocu>Checks if the document is saved</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getProgramVersion">
+    <Methode Name="getProgramVersion" Type="String">
       <Documentation>
         <UserDocu>Get the program version that a project file was created with</UserDocu>
       </Documentation>
@@ -60,11 +60,11 @@ For a temporary document it returns its transient directory.
       <Documentation>
         <UserDocu>getUniqueObjectName(objName) -> objName
 
-          Return the same name, or the name made unique, for Example Box -> Box002 if there are conflicting name
-          already in the document.
+Return the same name, or the name made unique, for Example Box -> Box002 if there are conflicting name
+already in the document.
 
-          ObjName : str
-          Object name.
+ObjName : str
+Object name.
         </UserDocu>
       </Documentation>
     </Methode>
@@ -127,7 +127,7 @@ viewType (String): override the view provider type directly, only effective when
         <Documentation>
             <UserDocu>
                 removeProperty(string) -- Remove a generic property.
-                Note, you can only remove user-defined properties but not built-in ones.
+Note, you can only remove user-defined properties but not built-in ones.
             </UserDocu>
         </Documentation>
     </Methode>
@@ -142,8 +142,8 @@ viewType (String): override the view provider type directly, only effective when
 copyObject(object, recursive=False, return_all=False)
 Copy an object or objects from another document to this document.
 
-object: can either a single object or sequence of objects
-recursive: if True, also recursively copies internal objects.
+object: can either be a single object or sequence of objects
+recursive: if True, also recursively copies internal objects
 return_all: if True, returns all copied objects, or else return only the copied
             object corresponding to the input objects.
           </UserDocu>

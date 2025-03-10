@@ -22,6 +22,11 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <map>
+#include <vector>
+#include <string>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -175,6 +180,13 @@ void ExtensionContainer::getPropertyMap(std::map<std::string, Property*>& Map) c
     for (const auto& entry : _extensions) {
         entry.second->extensionGetPropertyMap(Map);
     }
+}
+void ExtensionContainer::visitProperties(const std::function<void(Property*)>& visitor) const
+{
+    App::PropertyContainer::visitProperties(visitor);
+    for (const auto &entry : _extensions) {
+        entry.second->extensionVisitProperties(visitor);
+    };
 }
 
 Property* ExtensionContainer::getPropertyByName(const char* name) const

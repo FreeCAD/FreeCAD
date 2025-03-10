@@ -41,6 +41,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Link.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -76,7 +77,7 @@ public:
         }
         bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName) override
         {
-            if (!sSubName || sSubName[0] == '\0') {
+            if (Base::Tools::isNullOrEmpty(sSubName)) {
                 // If selecting again the same edge the passed sub-element is empty. If the whole
                 // shape is an edge or wire we can use it completely.
                 Part::TopoShape topoShape = Part::Feature::getTopoShape(pObj);

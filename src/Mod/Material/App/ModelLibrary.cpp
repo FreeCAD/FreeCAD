@@ -55,7 +55,7 @@ QString LibraryBase::getLocalPath(const QString& path) const
     }
 
     QString cleanPath = QDir::cleanPath(path);
-    QString prefix = QString::fromStdString("/") + getName();
+    QString prefix = QStringLiteral("/") + getName();
     if (cleanPath.startsWith(prefix)) {
         // Remove the library name from the path
         filePath += cleanPath.right(cleanPath.length() - prefix.length());
@@ -70,7 +70,7 @@ QString LibraryBase::getLocalPath(const QString& path) const
 bool LibraryBase::isRoot(const QString& path) const
 {
     QString localPath = getLocalPath(path);
-    QString cleanPath = getLocalPath(QString::fromStdString(""));
+    QString cleanPath = getLocalPath(QStringLiteral(""));
     std::string pLocal = localPath.toStdString();
     std::string pclean = cleanPath.toStdString();
     return (cleanPath == localPath);
@@ -80,7 +80,7 @@ QString LibraryBase::getRelativePath(const QString& path) const
 {
     QString filePath;
     QString cleanPath = QDir::cleanPath(path);
-    QString prefix = QString::fromStdString("/") + getName();
+    QString prefix = QStringLiteral("/") + getName();
     if (cleanPath.startsWith(prefix)) {
         // Remove the library name from the path
         filePath = cleanPath.right(cleanPath.length() - prefix.length());
@@ -96,7 +96,7 @@ QString LibraryBase::getRelativePath(const QString& path) const
     }
 
     // Remove any leading '/'
-    if (filePath.startsWith(QString::fromStdString("/"))) {
+    if (filePath.startsWith(QStringLiteral("/"))) {
         filePath.remove(0, 1);
     }
 
@@ -151,7 +151,7 @@ ModelLibrary::getModelTree(ModelFilter filter) const
         auto model = it.second;
 
         if (ModelManager::passFilter(filter, model->getType())) {
-            QStringList list = filename.split(QString::fromStdString("/"));
+            QStringList list = filename.split(QStringLiteral("/"));
 
             // Start at the root
             std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>> node = modelTree;

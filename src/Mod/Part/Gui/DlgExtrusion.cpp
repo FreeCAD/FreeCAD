@@ -39,6 +39,8 @@
 #include <App/Link.h>
 #include <App/Part.h>
 #include <Base/UnitsApi.h>
+#include <Base/Tools.h>
+
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -51,7 +53,8 @@
 #include "DlgExtrusion.h"
 
 
-FC_LOG_LEVEL_INIT("Part",true,true)
+
+FC_LOG_LEVEL_INIT("Part", true, true)
 
 using namespace PartGui;
 
@@ -69,7 +72,7 @@ public:
     {
         this->canSelect = false;
 
-        if (!sSubName || sSubName[0] == '\0')
+        if (Base::Tools::isNullOrEmpty(sSubName))
             return false;
         std::string element(sSubName);
         if (element.substr(0,4) != "Edge")

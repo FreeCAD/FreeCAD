@@ -141,7 +141,7 @@ void ViewProviderSketch::ParameterObserver::updateColorProperty(const std::strin
 
     colorprop->setValue(r, g, b);
 
-    App::Color elementAppColor = colorprop->getValue();
+    Base::Color elementAppColor = colorprop->getValue();
     unsigned long color = (unsigned long)(elementAppColor.getPackedValue());
     color = hGrp->GetUnsigned(string.c_str(), color);
     elementAppColor.setPackedValue((uint32_t)color);
@@ -345,7 +345,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
          {[this, packedDefaultGridColor](const std::string& string,
                                          [[maybe_unused]] App::Property* property) {
               auto v = getSketcherGeneralParameter(string, packedDefaultGridColor);
-              auto color = App::Color(v);
+              auto color = Base::Color(v);
               Client.setGridLineColor(color);
           },
           nullptr}},
@@ -353,7 +353,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
          {[this, packedDefaultGridColor](const std::string& string,
                                          [[maybe_unused]] App::Property* property) {
               auto v = getSketcherGeneralParameter(string, packedDefaultGridColor);
-              auto color = App::Color(v);
+              auto color = Base::Color(v);
               Client.setGridDivLineColor(color);
           },
           nullptr}},
@@ -2941,7 +2941,7 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
     // that meaans that we need to run migration strategy and come up with a proper value
     if (!AutoColor.isTouched()) {
         // white is the normally provided default for FreeCAD sketch colors
-        auto white = App::Color(1.f, 1.f, 1.f, 1.f);
+        auto white = Base::Color(1.f, 1.f, 1.f, 1.f);
 
         auto colorWasNeverChanged =
             LineColor.getValue() == white &&
@@ -3294,31 +3294,6 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         if (sketchHandler)
             deactivateHandler();
 
-        Gui::MDIView* mdi = getInventorView();
-
-        // handle the override draw style mode only if there's a 3D view, otherwise SIGSEGV may
-        // occur as described in https://github.com/FreeCAD/FreeCAD/issues/15918
-        if (mdi) {
-
-            // Resets the override draw style mode when leaving the sketch edit mode.
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-            auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
-            if (disableShadedView) {
-                Gui::View3DInventorViewer* viewer =
-                    static_cast<Gui::View3DInventor*>(mdi)->getViewer();
-
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                    "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-                auto OverrideMode = hGrp->GetASCII("OverrideMode", "As Is");
-
-                if (viewer) {
-                    viewer->updateOverrideMode(OverrideMode);
-                    viewer->setOverrideMode(OverrideMode);
-                }
-            }
-        }
-
         editCoinManager = nullptr;
         snapManager = nullptr;
         preselection.reset();
@@ -3396,24 +3371,6 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
                 e.what());
         }
     }
-
-    // Sets the view mode to no shading to prevent visibility issues against parallel surfaces with shininess when entering the sketch mode.
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
-
-    hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    hGrp->SetASCII("OverrideMode", viewer->getOverrideMode());
-
-    if (disableShadedView) {
-
-
-            viewer->updateOverrideMode("No Shading");
-            viewer->setOverrideMode("No Shading");
-
-    }
-
 
     auto editDoc = Gui::Application::Instance->editDocument();
     editDocName.clear();

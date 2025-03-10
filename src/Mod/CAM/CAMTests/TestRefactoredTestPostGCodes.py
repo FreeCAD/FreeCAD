@@ -1771,3 +1771,423 @@ G90
                     f"B{b_inches_output_expected} C{c_inches_output_expected}",
                     "--inches",
                 )
+
+    #############################################################################
+
+    def test19120(self):
+        """Test F parameter handling."""
+        #
+        # Note that FreeCAD internal units are (mm or degrees) per second
+        # and postprocessor outputs are usually in (mm or degrees) per minute
+        #
+        axes_test_values = (
+            # test using all possible axes, all same, then all changing
+            (
+                [
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 X20 Y30 Z10 A70 B80 C90 U40 V50 W60 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+G1 X20.000 Y30.000 Z10.000 A70.000 B80.000 C90.000 U40.000 V50.000 W60.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F74.0736
+G1 X0.7874 Y1.1811 Z0.3937 A70.0000 B80.0000 C90.0000 U1.5748 V1.9685 W2.3622 F2.9163
+""",
+            ),
+            # test using all possible axes, just X changing
+            (
+                [
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 X20 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+G1 X20.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163
+G1 X0.7874 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163
+""",
+            ),
+            # test using all possible axes, just Y changing
+            (
+                [
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 X10 Y30 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+G1 X10.000 Y30.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163
+G1 X0.3937 Y1.1811 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163
+""",
+            ),
+            # test using all possible axes, just Z changing
+            (
+                [
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 X10 Y20 Z10 A40 B50 C60 U70 V80 W90 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+G1 X10.000 Y20.000 Z10.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163
+G1 X0.3937 Y0.7874 Z0.3937 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163
+""",
+            ),
+            # test using all possible axes, just A changing
+            (
+                [
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 X10 Y20 Z30 A70 B50 C60 U70 V80 W90 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+G1 X10.000 Y20.000 Z30.000 A70.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163
+G1 X0.3937 Y0.7874 Z1.1811 A70.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F74.0736
+""",
+            ),
+            # test using all possible axes, just B changing
+            (
+                [
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 X10 Y20 Z30 A40 B80 C60 U70 V80 W90 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+G1 X10.000 Y20.000 Z30.000 A40.000 B80.000 C60.000 U70.000 V80.000 W90.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B80.0000 C60.0000 U2.7559 V3.1496 W3.5433 F74.0736
+""",
+            ),
+            # test using all possible axes, just C changing
+            (
+                [
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C90 U70 V80 W90 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C90.000 U70.000 V80.000 W90.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C90.0000 U2.7559 V3.1496 W3.5433 F74.0736
+""",
+            ),
+            # test using all possible axes, just U changing
+            (
+                [
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U40 V80 W90 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U40.000 V80.000 W90.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U1.5748 V3.1496 W3.5433 F2.9163
+""",
+            ),
+            # test using all possible axes, just V changing
+            (
+                [
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V50 W90 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V50.000 W90.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V1.9685 W3.5433 F2.9163
+""",
+            ),
+            # test using all possible axes, just W changing
+            (
+                [
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 U70 V80 W60 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W60.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W2.3622 F2.9163
+""",
+            ),
+            # test using just XYZ, all same, then all changing
+            (
+                [
+                    Path.Command("G1 X10 Y20 Z30 F1.23456"),
+                    Path.Command("G1 X10 Y20 Z30 F1.23456"),
+                    Path.Command("G1 X20 Y30 Z10 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 X10.000 Y20.000 Z30.000 F74.074
+G1 X10.000 Y20.000 Z30.000 F74.074
+G1 X20.000 Y30.000 Z10.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 X0.3937 Y0.7874 Z1.1811 F2.9163
+G1 X0.3937 Y0.7874 Z1.1811 F2.9163
+G1 X0.7874 Y1.1811 Z0.3937 F2.9163
+""",
+            ),
+            # test using just UVW, all same, then all changing
+            (
+                [
+                    Path.Command("G1 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 U40 V50 W60 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 U70.000 V80.000 W90.000 F74.074
+G1 U70.000 V80.000 W90.000 F74.074
+G1 U40.000 V50.000 W60.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 U2.7559 V3.1496 W3.5433 F2.9163
+G1 U2.7559 V3.1496 W3.5433 F2.9163
+G1 U1.5748 V1.9685 W2.3622 F2.9163
+""",
+            ),
+            # test using just ABC, which should not convert the feed rate for --inches
+            (
+                [
+                    Path.Command("G1 A40 B50 C60 F1.23456"),
+                    Path.Command("G1 A40 B50 C60 F1.23456"),
+                    Path.Command("G1 A70 B80 C90 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 A40.000 B50.000 C60.000 F74.074
+G1 A40.000 B50.000 C60.000 F74.074
+G1 A70.000 B80.000 C90.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 A40.0000 B50.0000 C60.0000 F74.0736
+G1 A40.0000 B50.0000 C60.0000 F74.0736
+G1 A70.0000 B80.0000 C90.0000 F74.0736
+""",
+            ),
+            # test using XYZ and ABC, all same, then all changing
+            (
+                [
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 F1.23456"),
+                    Path.Command("G1 X10 Y20 Z30 A40 B50 C60 F1.23456"),
+                    Path.Command("G1 X20 Y30 Z10 A70 B80 C90 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 F74.074
+G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 F74.074
+G1 X20.000 Y30.000 Z10.000 A70.000 B80.000 C90.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 F2.9163
+G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 F74.0736
+G1 X0.7874 Y1.1811 Z0.3937 A70.0000 B80.0000 C90.0000 F2.9163
+""",
+            ),
+            # test using ABC and UVW, all same, then all changing
+            (
+                [
+                    Path.Command("G1 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 A40 B50 C60 U70 V80 W90 F1.23456"),
+                    Path.Command("G1 A70 B80 C90 U40 V50 W60 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+G1 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000 F74.074
+G1 A70.000 B80.000 C90.000 U40.000 V50.000 W60.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F2.9163
+G1 A40.0000 B50.0000 C60.0000 U2.7559 V3.1496 W3.5433 F74.0736
+G1 A70.0000 B80.0000 C90.0000 U1.5748 V1.9685 W2.3622 F2.9163
+""",
+            ),
+            # test using X and A only, both same, then both changing
+            (
+                [
+                    Path.Command("G1 X10 A40 F1.23456"),
+                    Path.Command("G1 X10 A40 F1.23456"),
+                    Path.Command("G1 X20 A70 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 X10.000 A40.000 F74.074
+G1 X10.000 A40.000 F74.074
+G1 X20.000 A70.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 X0.3937 A40.0000 F2.9163
+G1 X0.3937 A40.0000 F74.0736
+G1 X0.7874 A70.0000 F2.9163
+""",
+            ),
+            # test using A and U only, both same, then both changing
+            (
+                [
+                    Path.Command("G1 A40 U70 F1.23456"),
+                    Path.Command("G1 A40 U70 F1.23456"),
+                    Path.Command("G1 A70 U40 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 A40.000 U70.000 F74.074
+G1 A40.000 U70.000 F74.074
+G1 A70.000 U40.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 A40.0000 U2.7559 F2.9163
+G1 A40.0000 U2.7559 F74.0736
+G1 A70.0000 U1.5748 F2.9163
+""",
+            ),
+            # test using A only, which should not convert the feed rate for --inches
+            (
+                [
+                    Path.Command("G1 A40 F1.23456"),
+                    Path.Command("G1 A40 F1.23456"),
+                    Path.Command("G1 A70 F1.23456"),
+                ],
+                """G90
+G21
+G54
+M6 T1
+G1 A40.000 F74.074
+G1 A40.000 F74.074
+G1 A70.000 F74.074
+""",
+                """G90
+G20
+G54
+M6 T1
+G1 A40.0000 F74.0736
+G1 A40.0000 F74.0736
+G1 A70.0000 F74.0736
+""",
+            ),
+        )
+        for input_value, metric_output_expected, inches_output_expected in axes_test_values:
+            with self.subTest("F feed speed test", input_value=input_value):
+                self.multi_compare(input_value, metric_output_expected, "")
+                self.multi_compare(input_value, inches_output_expected, "--inches")

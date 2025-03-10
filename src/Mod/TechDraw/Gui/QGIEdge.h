@@ -23,6 +23,7 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMEDGE_H
 #define DRAWINGGUI_QGRAPHICSITEMEDGE_H
 
+#include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGIPrimPath.h"
@@ -55,8 +56,8 @@ public:
 
     void setLinePen(QPen isoPen);
 
-    void setSource(int source) { m_source = source; }
-    int getSource() const { return m_source;}
+    void setSource(TechDraw::SourceType source) { m_source = source; }
+    TechDraw::SourceType getSource() const { return m_source;}
 
     void setCurrentPen() override;
 
@@ -75,7 +76,7 @@ protected:
     Qt::PenStyle getHiddenStyle();
 
 private:
-    int m_source{0};
+    TechDraw::SourceType m_source{TechDraw::SourceType::GEOMETRY};
 };
 
 }

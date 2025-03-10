@@ -767,6 +767,17 @@ def makeEquationMagnetodynamic2D(doc, base_solver=None, name="Magnetodynamic2D")
     return obj
 
 
+def makeEquationStaticCurrent(doc, base_solver=None, name="StaticCurrent"):
+    """makeEquationStaticCurrent(document, [base_solver], [name]):
+    creates a FEM static current equation for a solver"""
+    from femsolver.elmer.equations import staticcurrent
+
+    obj = staticcurrent.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
+    return obj
+
+
 def makeSolverCalculiXCcxTools(doc, name="SolverCcxTools"):
     """makeSolverCalculiXCcxTools(document, [name]):
     makes a Calculix solver object for the ccx tools module"""

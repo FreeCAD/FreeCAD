@@ -26,6 +26,8 @@
 #include <boost/algorithm/string/predicate.hpp>
 #endif
 
+#include <Base/Tools.h>
+
 #include "PropertyItem.h"
 #include "PropertyModel.h"
 #include "PropertyView.h"
@@ -271,7 +273,7 @@ static PropertyItem* createPropertyItem(App::Property* prop)
 PropertyModel::GroupInfo& PropertyModel::getGroupInfo(App::Property* prop)
 {
     const char* group = prop->getGroup();
-    bool isEmpty = (!group || group[0] == '\0');
+    bool isEmpty = Base::Tools::isNullOrEmpty(group);
     QString groupName =
         QString::fromLatin1(isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group);
 

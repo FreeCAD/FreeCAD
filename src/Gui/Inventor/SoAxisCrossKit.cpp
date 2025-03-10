@@ -52,7 +52,7 @@
 # include <Inventor/nodes/SoTranslation.h>
 #endif
 
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Gui/ViewParams.h>
 
 #include "SoAxisCrossKit.h"
@@ -225,23 +225,23 @@ SoAxisCrossKit::createAxes()
    set("zAxis.appearance.drawStyle", "lineWidth 1");
 
    unsigned long colorLong;
-   App::Color color;
+   Base::Color color;
    std::stringstream parameterstring;
 
    colorLong = Gui::ViewParams::instance()->getAxisXColor();
-   color = App::Color(static_cast<uint32_t>(colorLong));
+   color = Base::Color(static_cast<uint32_t>(colorLong));
    parameterstring << "diffuseColor " << color.r << " " << color.g << " " << color.b;
    set("xAxis.appearance.material", parameterstring.str().c_str());
    set("xHead.appearance.material", parameterstring.str().c_str());
 
    colorLong = Gui::ViewParams::instance()->getAxisYColor();
-   color = App::Color(static_cast<uint32_t>(colorLong));
+   color = Base::Color(static_cast<uint32_t>(colorLong));
    parameterstring << "diffuseColor " << color.r << " " << color.g << " " << color.b;
    set("yAxis.appearance.material", parameterstring.str().c_str());
    set("yHead.appearance.material", parameterstring.str().c_str());
 
    colorLong = Gui::ViewParams::instance()->getAxisZColor();
-   color = App::Color(static_cast<uint32_t>(colorLong));
+   color = Base::Color(static_cast<uint32_t>(colorLong));
    parameterstring << "diffuseColor " << color.r << " " << color.g << " " << color.b;
    set("zAxis.appearance.material", parameterstring.str().c_str());
    set("zHead.appearance.material", parameterstring.str().c_str());

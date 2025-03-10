@@ -47,43 +47,43 @@ bytes : bytes
             <Documentation>
                 <UserDocu>String representing the name of this item.</UserDocu>
             </Documentation>
-            <Parameter Name="Name" Type="Object" />
+            <Parameter Name="Name" Type="String" />
         </Attribute>
         <Attribute Name="Version">
             <Documentation>
                 <UserDocu>String representing the version of this item in semantic triplet format.</UserDocu>
             </Documentation>
-            <Parameter Name="Version" Type="Object" />
+            <Parameter Name="Version" Type="String" />
         </Attribute>
         <Attribute Name="Date">
             <Documentation>
                 <UserDocu>String representing the date of this item in YYYY-MM-DD format (format not currently programmatically enforced)</UserDocu>
             </Documentation>
-            <Parameter Name="Date" Type="Object" />
+            <Parameter Name="Date" Type="String" />
         </Attribute>
         <Attribute Name="Type">
             <Documentation>
                 <UserDocu>String representing the type of this item (text only, no markup allowed).</UserDocu>
             </Documentation>
-            <Parameter Name="Type" Type="Object" />
+            <Parameter Name="Type" Type="String" />
         </Attribute>
         <Attribute Name="Description">
             <Documentation>
                 <UserDocu>String representing the description of this item (text only, no markup allowed).</UserDocu>
             </Documentation>
-            <Parameter Name="Description" Type="Object" />
+            <Parameter Name="Description" Type="String" />
         </Attribute>
         <Attribute Name="Maintainer">
             <Documentation>
                 <UserDocu>List of maintainer objects with 'name' and 'email' string attributes.</UserDocu>
             </Documentation>
-            <Parameter Name="Maintainer" Type="Object" />
+            <Parameter Name="Maintainer" Type="List" />
         </Attribute>
         <Attribute Name="License">
             <Documentation>
                 <UserDocu>List of applicable licenses as objects with 'name' and 'file' string attributes.</UserDocu>
             </Documentation>
-            <Parameter Name="License" Type="Object" />
+            <Parameter Name="License" Type="List" />
         </Attribute>
         <Attribute Name="Urls">
             <Documentation>
@@ -95,14 +95,14 @@ is one of:
 * readme
 * documentation</UserDocu>
             </Documentation>
-            <Parameter Name="Urls" Type="Object" />
+            <Parameter Name="Urls" Type="List" />
         </Attribute>
         <Attribute Name="Author">
             <Documentation>
                 <UserDocu>List of author objects, each with a 'name' and a (potentially empty) 'email'
 string attribute.</UserDocu>
             </Documentation>
-            <Parameter Name="Author" Type="Object" />
+            <Parameter Name="Author" Type="List" />
         </Attribute>
         <Attribute Name="Depend">
             <Documentation>
@@ -128,53 +128,53 @@ string attribute.</UserDocu>
 * condition
     Optional. Conditional expression as documented in REP149.</UserDocu>
             </Documentation>
-            <Parameter Name="Depend" Type="Object" />
+            <Parameter Name="Depend" Type="List" />
         </Attribute>
         <Attribute Name="Conflict">
             <Documentation>
                 <UserDocu>List of conflicts, format identical to dependencies.</UserDocu>
             </Documentation>
-            <Parameter Name="Conflict" Type="Object" />
+            <Parameter Name="Conflict" Type="List" />
         </Attribute>
         <Attribute Name="Replace">
             <Documentation>
                 <UserDocu>List of things this item is considered by its author to replace. The format is
 identical to dependencies.</UserDocu>
             </Documentation>
-            <Parameter Name="Replace" Type="Object" />
+            <Parameter Name="Replace" Type="List" />
         </Attribute>
         <Attribute Name="Tag">
             <Documentation>
                 <UserDocu>List of strings.</UserDocu>
             </Documentation>
-            <Parameter Name="Tag" Type="Object" />
+            <Parameter Name="Tag" Type="List" />
         </Attribute>
         <Attribute Name="Icon">
             <Documentation>
                 <UserDocu>Relative path to an icon file.</UserDocu>
             </Documentation>
-            <Parameter Name="Icon" Type="Object" />
+            <Parameter Name="Icon" Type="String" />
         </Attribute>
         <Attribute Name="Classname">
             <Documentation>
                 <UserDocu>String representing the name of the main Python class this item
 creates/represents.</UserDocu>
             </Documentation>
-            <Parameter Name="Classname" Type="Object" />
+            <Parameter Name="Classname" Type="String" />
         </Attribute>
         <Attribute Name="Subdirectory">
             <Documentation>
                 <UserDocu>String representing the name of the subdirectory this content item is located in.
 If empty, the item is in a directory named the same as the content item.</UserDocu>
             </Documentation>
-            <Parameter Name="Subdirectory" Type="Object" />
+            <Parameter Name="Subdirectory" Type="String" />
         </Attribute>
         <Attribute Name="File">
             <Documentation>
                 <UserDocu>List of files associated with this item.
 The meaning of each file is implementation-defined.</UserDocu>
             </Documentation>
-            <Parameter Name="File" Type="Object" />
+            <Parameter Name="File" Type="List" />
         </Attribute>
         <Attribute Name="Content">
             <Documentation>
@@ -182,7 +182,7 @@ The meaning of each file is implementation-defined.</UserDocu>
 a Metadata object.
 See package.xml file format documentation for details.</UserDocu>
             </Documentation>
-            <Parameter Name="Content" Type="Object" />
+            <Parameter Name="Content" Type="Dict" />
         </Attribute>
 
         <Attribute Name="FreeCADMin">
@@ -190,7 +190,7 @@ See package.xml file format documentation for details.</UserDocu>
                 <UserDocu>String representing the minimum version of FreeCAD needed for this item.
 If unset it will be 0.0.0.</UserDocu>
             </Documentation>
-            <Parameter Name="FreeCADMin" Type="Object" />
+            <Parameter Name="FreeCADMin" Type="String" />
         </Attribute>
 
         <Attribute Name="FreeCADMax">
@@ -198,7 +198,7 @@ If unset it will be 0.0.0.</UserDocu>
                 <UserDocu>String representing the maximum version of FreeCAD needed for this item.
 If unset it will be 0.0.0.</UserDocu>
             </Documentation>
-            <Parameter Name="FreeCADMax" Type="Object" />
+            <Parameter Name="FreeCADMax" Type="String" />
         </Attribute>
 
         <Attribute Name="PythonMin">
@@ -206,7 +206,7 @@ If unset it will be 0.0.0.</UserDocu>
                 <UserDocu>String representing the minimum version of Python needed for this item.
 If unset it will be 0.0.0.</UserDocu>
             </Documentation>
-            <Parameter Name="PythonMin" Type="Object" />
+            <Parameter Name="PythonMin" Type="String" />
         </Attribute>
 
         <Methode Name="getLastSupportedFreeCADVersion">
@@ -432,12 +432,11 @@ Write the metadata to the given file as XML data.</UserDocu>
             </Documentation>
         </Methode>
 
-        <ClassDeclarations>
-            public:
-            MetadataPy(const Metadata &amp; pla, PyTypeObject *T = &amp;Type)
-            :PyObjectBase(new Metadata(pla),T){}
-            Metadata value() const
-            { return *(getMetadataPtr()); }
+        <ClassDeclarations>public:
+    MetadataPy(const Metadata &amp; pla, PyTypeObject *T = &amp;Type)
+    :PyObjectBase(new Metadata(pla),T){}
+    Metadata value() const
+    { return *(getMetadataPtr()); }
         </ClassDeclarations>
     </PythonExport>
 </GenerateModel>

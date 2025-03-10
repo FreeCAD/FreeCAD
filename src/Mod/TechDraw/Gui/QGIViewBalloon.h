@@ -42,6 +42,7 @@ namespace TechDraw
 {
 class DrawViewBalloon;
 class DrawView;
+enum class ArrowType : int;
 }// namespace TechDraw
 
 namespace TechDraw
@@ -203,7 +204,7 @@ public:
 
     void setNormalColorAll();
     QColor prefNormalColor();
-    int prefDefaultArrow() const;
+    TechDraw::ArrowType prefDefaultArrow() const;
     bool prefOrthoPyramid() const;
 
     TechDraw::DrawViewBalloon* getBalloonFeat()

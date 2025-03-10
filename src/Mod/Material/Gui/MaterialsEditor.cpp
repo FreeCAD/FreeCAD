@@ -871,7 +871,7 @@ void MaterialsEditor::fillMaterialTree()
             addExpanded(tree, model, lib, param);
 
             QIcon icon(library->getIconPath());
-            QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
+            QIcon folderIcon(QStringLiteral(":/icons/folder.svg"));
 
             addMaterials(*lib, modelTree, folderIcon, icon, param);
         }

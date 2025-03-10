@@ -38,6 +38,7 @@
 #include <App/DocumentObject.h>
 #include <App/Link.h>
 #include <App/Part.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -67,7 +68,7 @@ public:
     {
         this->canSelect = false;
 
-        if (!sSubName || sSubName[0] == '\0')
+        if (Base::Tools::isNullOrEmpty(sSubName))
             return false;
         std::string element(sSubName);
         if (element.substr(0,4) != "Edge")

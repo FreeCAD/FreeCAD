@@ -284,7 +284,7 @@ void NavlibInterface::initializePivot()
     pivot.pDepthTestAlways->function.setValue(SoDepthBufferElement::ALWAYS);
     pivot.pDepthTestLess->function.setValue(SoDepthBufferElement::LESS);
 
-    pivot.pivotImage = QImage(QString::fromStdString(":/icons/3dx_pivot.png"));
+    pivot.pivotImage = QImage(QStringLiteral(":/icons/3dx_pivot.png"));
     Gui::BitmapFactory().convert(pivot.pivotImage, pivot.pImage->image);
 
     pivot.pVisibility->ref();

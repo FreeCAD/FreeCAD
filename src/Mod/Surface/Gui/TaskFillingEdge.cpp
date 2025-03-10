@@ -35,6 +35,7 @@
 #endif
 
 #include <App/Document.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -44,6 +45,7 @@
 
 #include "TaskFilling.h"
 #include "TaskFillingEdge.h"
+
 #include "ui_TaskFillingEdge.h"
 
 
@@ -77,7 +79,7 @@ public:
             return false;
         }
 
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
 

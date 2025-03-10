@@ -105,7 +105,6 @@ QGSPage::QGSPage(ViewProviderPage* vpPage, QWidget* parent)
     assert(vpPage);
     m_vpPage = vpPage;
     setItemIndexMethod(QGraphicsScene::BspTreeIndex);//the default
-    //    setItemIndexMethod(QGraphicsScene::NoIndex);    //sometimes faster
 }
 
 
@@ -213,7 +212,6 @@ void QGSPage::attachTemplate(TechDraw::DrawTemplate* obj)
 
 void QGSPage::updateTemplate(bool forceUpdate)
 {
-    //    Base::Console().Message("QGSP::updateTemplate()\n");
     App::DocumentObject* templObj = m_vpPage->getDrawPage()->Template.getValue();
     // TODO: what if template has been deleted? templObj will be NULL. segfault?
     if (!templObj) {
@@ -389,7 +387,6 @@ bool QGSPage::addView(const App::DocumentObject* obj)
 
 bool QGSPage::attachView(App::DocumentObject* obj)
 {
-    //    Base::Console().Message("QGSP::attachView(%s)\n", obj->getNameInDocument());
     if (findQViewForDocObj(obj)) {
         return true;
     }
@@ -440,7 +437,7 @@ bool QGSPage::attachView(App::DocumentObject* obj)
     else if (auto o = freecad_dynamic_cast<TechDraw::DrawWeldSymbol>(obj)) {
         qview = addWeldSymbol(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawHatch>(obj)) {
+    else if (freecad_dynamic_cast<TechDraw::DrawHatch>(obj)) {
         //Hatch is not attached like other Views (since it isn't really a View)
         return true;
     }
@@ -697,7 +694,6 @@ QGIView* QGSPage::addViewLeader(TechDraw::DrawLeaderLine* leaderFeat)
 // TODO: can this be generalized?  addViewToParent(childItem, parentItem, positionInParent)?
 void QGSPage::addLeaderToParent(QGILeaderLine* leader, QGIView* parent)
 {
-    // Base::Console().Message("QGSP::addLeaderToParent()\n");
     assert(leader);
     assert(parent);//blow up if we don't have Dimension or Parent
     QPointF posRef(0., 0.);
@@ -780,7 +776,6 @@ void QGSPage::setViewParents()
 //! find the graphic for a DocumentObject
 QGIView* QGSPage::findQViewForDocObj(App::DocumentObject* obj) const
 {
-    //    Base::Console().Message("QGSP::findQViewForDocObj(%s)\n", obj->getNameInDocument());
     if (obj) {
         const std::vector<QGIView*> qviews = getViews();
         for (std::vector<QGIView*>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
@@ -1025,7 +1020,6 @@ bool QGSPage::orphanExists(const char* viewName, const std::vector<App::Document
 //NOTE: this doesn't add missing views.  see fixOrphans()
 void QGSPage::redrawAllViews()
 {
-    //    Base::Console().Message("QGSP::redrawAllViews() - views: %d\n", getViews().size());
     const std::vector<QGIView*>& upviews = getViews();
     for (std::vector<QGIView*>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
         (*it)->updateView(true);
@@ -1256,7 +1250,7 @@ TechDraw::DrawPage* QGSPage::getDrawPage() { return m_vpPage->getDrawPage(); }
 
 QColor QGSPage::getBackgroundColor()
 {
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(Preferences::getPreferenceGroup("Colors")->GetUnsigned("Background", 0x70707000));
     return fcColor.asValue<QColor>();
 }

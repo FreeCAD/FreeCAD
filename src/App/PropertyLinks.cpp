@@ -31,6 +31,7 @@
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <Base/Tools.h>
 
 #include "PropertyLinks.h"
 #include "Application.h"
@@ -689,7 +690,6 @@ PropertyLink::~PropertyLink()
 void PropertyLink::resetLink()
 {
     // in case this property gets dynamically removed
-#ifndef USE_OLD_DAG
     // maintain the back link in the DocumentObject class if it is from a document object
     if (_pcScope != LinkScope::Hidden && _pcLink && getContainer()
         && getContainer()->isDerivedFrom<App::DocumentObject>()) {
@@ -702,8 +702,6 @@ void PropertyLink::resetLink()
             }
         }
     }
-#endif
-    _pcLink = nullptr;
 }
 
 void PropertyLink::setValue(App::DocumentObject* lValue)
@@ -715,7 +713,7 @@ void PropertyLink::setValue(App::DocumentObject* lValue)
     }
 
     aboutToSetValue();
-#ifndef USE_OLD_DAG
+
     // maintain the back link in the DocumentObject class if it is from a document object
     if (_pcScope != LinkScope::Hidden && parent) {
         // before accessing internals make sure the object is not about to be destroyed
@@ -729,7 +727,7 @@ void PropertyLink::setValue(App::DocumentObject* lValue)
             }
         }
     }
-#endif
+
     _pcLink = lValue;
     hasSetValue();
 }
@@ -894,7 +892,7 @@ PropertyLinkList::PropertyLinkList() = default;
 PropertyLinkList::~PropertyLinkList()
 {
     // in case this property gety dynamically removed
-#ifndef USE_OLD_DAG
+
     // maintain the back link in the DocumentObject class
     if (_pcScope != LinkScope::Hidden && !_lValueList.empty() && getContainer()
         && getContainer()->isDerivedFrom<App::DocumentObject>()) {
@@ -909,7 +907,6 @@ PropertyLinkList::~PropertyLinkList()
             }
         }
     }
-#endif
 }
 
 void PropertyLinkList::setSize(int newSize)
@@ -920,11 +917,10 @@ void PropertyLinkList::setSize(int newSize)
             continue;
         }
         _nameMap.erase(obj->getNameInDocument());
-#ifndef USE_OLD_DAG
+
         if (_pcScope != LinkScope::Hidden) {
             obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
         }
-#endif
     }
     _lValueList.resize(newSize);
 }
@@ -954,7 +950,6 @@ void PropertyLinkList::set1Value(int idx, DocumentObject* const& value)
 
     _nameMap.clear();
 
-#ifndef USE_OLD_DAG
     if (getContainer() && getContainer()->isDerivedFrom<App::DocumentObject>()) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
@@ -968,7 +963,6 @@ void PropertyLinkList::set1Value(int idx, DocumentObject* const& value)
             }
         }
     }
-#endif
 
     inherited::set1Value(idx, value);
 }
@@ -992,7 +986,6 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& value)
     }
     _nameMap.clear();
 
-#ifndef USE_OLD_DAG
     // maintain the back link in the DocumentObject class
     if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
@@ -1010,7 +1003,7 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& value)
             }
         }
     }
-#endif
+
     inherited::setValues(value);
 }
 
@@ -1297,7 +1290,7 @@ PropertyLinkSub::PropertyLinkSub() = default;
 PropertyLinkSub::~PropertyLinkSub()
 {
     // in case this property is dynamically removed
-#ifndef USE_OLD_DAG
+
     if (_pcLinkSub && getContainer()
         && getContainer()->isDerivedFrom<App::DocumentObject>()) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
@@ -1309,7 +1302,6 @@ PropertyLinkSub::~PropertyLinkSub()
             }
         }
     }
-#endif
 }
 
 void PropertyLinkSub::setSyncSubObject(bool enable)
@@ -1339,7 +1331,7 @@ void PropertyLinkSub::setValue(App::DocumentObject* lValue,
         }
     }
     aboutToSetValue();
-#ifndef USE_OLD_DAG
+
     if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -1352,7 +1344,7 @@ void PropertyLinkSub::setValue(App::DocumentObject* lValue,
             }
         }
     }
-#endif
+
     _pcLinkSub = lValue;
     _cSubList = std::move(subs);
     if (shadows.size() == _cSubList.size()) {
@@ -2175,7 +2167,7 @@ PropertyLinkSubList::PropertyLinkSubList() = default;
 PropertyLinkSubList::~PropertyLinkSubList()
 {
     // in case this property is dynamically removed
-#ifndef USE_OLD_DAG
+
     // maintain backlinks
     if (!_lValueList.empty() && getContainer()
         && getContainer()->isDerivedFrom<App::DocumentObject>()) {
@@ -2190,7 +2182,6 @@ PropertyLinkSubList::~PropertyLinkSubList()
             }
         }
     }
-#endif
 }
 
 void PropertyLinkSubList::setSyncSubObject(bool enable)
@@ -2227,7 +2218,6 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const char* SubName)
     auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     verifyObject(lValue, parent);
 
-#ifndef USE_OLD_DAG
     // maintain backlinks
     if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
@@ -2243,7 +2233,6 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const char* SubName)
             }
         }
     }
-#endif
 
     if (lValue) {
         aboutToSetValue();
@@ -2275,7 +2264,6 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
             "PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     }
 
-#ifndef USE_OLD_DAG
     // maintain backlinks.
     if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
@@ -2298,7 +2286,6 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
             }
         }
     }
-#endif
 
     aboutToSetValue();
     _lValueList = lValue;
@@ -2337,7 +2324,6 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
             "PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     }
 
-#ifndef USE_OLD_DAG
     // maintain backlinks.
     if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
@@ -2360,7 +2346,6 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
             }
         }
     }
-#endif
 
     aboutToSetValue();
     _lValueList = std::move(lValue);
@@ -2381,7 +2366,6 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<std
     auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
     verifyObject(lValue, parent);
 
-#ifndef USE_OLD_DAG
     // maintain backlinks.
     if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
@@ -2402,7 +2386,6 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<std
             }
         }
     }
-#endif
 
     aboutToSetValue();
     std::size_t size = SubList.size();
@@ -2430,7 +2413,6 @@ void PropertyLinkSubList::addValue(App::DocumentObject* obj,
     auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     verifyObject(obj, parent);
 
-#ifndef USE_OLD_DAG
     // maintain backlinks.
     if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
@@ -2453,7 +2435,6 @@ void PropertyLinkSubList::addValue(App::DocumentObject* obj,
             }
         }
     }
-#endif
 
     std::vector<DocumentObject*> valueList;
     std::vector<std::string> subList;
@@ -3800,7 +3781,7 @@ void PropertyXLink::hasSetValue()
 void PropertyXLink::setSubName(const char* subname)
 {
     std::vector<std::string> subs;
-    if (subname && subname[0]) {
+    if (!Base::Tools::isNullOrEmpty(subname)) {
         subs.emplace_back(subname);
     }
     aboutToSetValue();
@@ -3830,7 +3811,7 @@ void PropertyXLink::setValue(App::DocumentObject* lValue)
 void PropertyXLink::setValue(App::DocumentObject* lValue, const char* subname)
 {
     std::vector<std::string> subs;
-    if (subname && subname[0]) {
+    if (!Base::Tools::isNullOrEmpty(subname)) {
         subs.emplace_back(subname);
     }
     setValue(lValue, std::move(subs));
@@ -3849,11 +3830,11 @@ void PropertyXLink::restoreLink(App::DocumentObject* lValue)
     setFlag(LinkDetached, false);
     setFlag(LinkRestoring);
     aboutToSetValue();
-#ifndef USE_OLD_DAG
+
     if (!owner->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
         lValue->_addBackLink(owner);
     }
-#endif
+
     _pcLink = lValue;
     updateElementReference(nullptr);
     hasSetValue();
@@ -3909,7 +3890,7 @@ void PropertyXLink::setValue(App::DocumentObject* lValue,
     }
 
     setFlag(LinkDetached, false);
-#ifndef USE_OLD_DAG
+
     if (!owner->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
         if (_pcLink) {
             _pcLink->_removeBackLink(owner);
@@ -3918,7 +3899,7 @@ void PropertyXLink::setValue(App::DocumentObject* lValue,
             lValue->_addBackLink(owner);
         }
     }
-#endif
+
     if (docInfo != info) {
         unlink();
         docInfo = info;
@@ -3968,11 +3949,11 @@ void PropertyXLink::setValue(std::string&& filename,
     }
     setFlag(LinkDetached, false);
     aboutToSetValue();
-#ifndef USE_OLD_DAG
+
     if (_pcLink && !owner->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
         _pcLink->_removeBackLink(owner);
     }
-#endif
+
     _pcLink = nullptr;
     if (docInfo != info) {
         unlink();
@@ -4147,7 +4128,7 @@ void PropertyXLink::Save(Base::Writer& writer) const
             else {
                 auto pDoc = owner->getDocument();
                 const char* docPath = pDoc->getFileName();
-                if (docPath && docPath[0]) {
+                if (!Base::Tools::isNullOrEmpty(docPath)) {
                     if (!filePath.empty()) {
                         _path = DocInfo::getDocPath(filePath.c_str(), pDoc, false);
                     }
@@ -5964,7 +5945,7 @@ void PropertyXLinkContainer::clearDeps()
     if (!owner || !owner->isAttachedToDocument()) {
         return;
     }
-#ifndef USE_OLD_DAG
+
     if (!owner->testStatus(ObjectStatus::Destroy)) {
         for (auto& v : _Deps) {
             auto obj = v.first;
@@ -5974,7 +5955,7 @@ void PropertyXLinkContainer::clearDeps()
             }
         }
     }
-#endif
+
     _Deps.clear();
     _XLinks.clear();
     _LinkRestored = false;

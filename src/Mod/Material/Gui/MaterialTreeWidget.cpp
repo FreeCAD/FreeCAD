@@ -31,7 +31,7 @@
 #include <QSpacerItem>
 #include <QVBoxLayout>
 
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Command.h>
@@ -570,7 +570,7 @@ void MaterialTreeWidget::fillMaterialTree()
             addExpanded(model, lib, param);
 
             QIcon icon(library->getIconPath());
-            QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
+            QIcon folderIcon(QStringLiteral(":/icons/folder.svg"));
 
             addMaterials(*lib, modelTree, folderIcon, icon, param);
         }

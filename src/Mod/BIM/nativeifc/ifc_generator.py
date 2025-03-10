@@ -25,20 +25,23 @@ The only entry point in this module is the generate_geometry() function which is
 used by the execute() method of ifc_objects"""
 
 
-import time
 import re
 import FreeCAD
 from FreeCAD import Base
 import Part
+
 import ifcopenshell
-from ifcopenshell.util import element
-from nativeifc import ifc_tools
-from nativeifc import ifc_export
+import ifcopenshell.util.element
+
 import multiprocessing
+
 import FreeCADGui
+
 from pivy import coin
 from PySide import QtCore
 
+from . import ifc_tools
+from . import ifc_export
 
 def generate_geometry(obj, cached=False):
     """Sets the geometry of the given object from a corresponding IFC element.

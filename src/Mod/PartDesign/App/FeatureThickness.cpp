@@ -65,11 +65,7 @@ int16_t Thickness::mustExecute() const {
 }
 
 App::DocumentObjectExecReturn *Thickness::execute() {
-    if (onlyHasToRefine()){
-        TopoShape result = refineShapeIfActive(rawShape);
-        Shape.setValue(result);
-        return App::DocumentObject::StdReturn;
-    }
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     // Base shape
     Part::TopoShape TopShape;

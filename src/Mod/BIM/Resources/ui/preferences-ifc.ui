@@ -470,7 +470,7 @@ are placed in a 'Group' instead.
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</string>
+         <string>Check also native-IFC-specific preferences under BIM -&gt; Native IFC</string>
         </property>
        </widget>
       </item>

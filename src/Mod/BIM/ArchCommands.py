@@ -558,7 +558,10 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
             print("getShapeFromMesh: error creating solid")
             return se
         else:
-            return solid
+            if solid.isClosed():
+                return solid
+            else:
+                return se
 
 def projectToVector(shape,vector):
     '''projectToVector(shape,vector): projects the given shape on the given

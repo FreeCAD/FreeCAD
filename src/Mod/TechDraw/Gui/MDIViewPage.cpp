@@ -37,7 +37,7 @@
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QPrinter>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <cmath>
 #endif
 
@@ -62,6 +62,7 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "MDIViewPage.h"
+#include "QGIDatumLabel.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
 #include "QGIVertex.h"

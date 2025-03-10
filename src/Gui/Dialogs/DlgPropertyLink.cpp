@@ -640,7 +640,7 @@ DlgPropertyLink::findItem(App::DocumentObject* obj, const char* subname, bool* p
     }
 
     std::vector<App::DocumentObject*> sobjs;
-    if (subname && subname[0]) {
+    if (!Base::Tools::isNullOrEmpty(subname)) {
         if (!allowSubObject) {
             obj = obj->getSubObject(subname);
             if (!obj) {

@@ -1581,6 +1581,12 @@ Feature* Feature::create(const TopoShape& shape, const char* name, App::Document
     return res;
 }
 
+void Feature::onDocumentRestored()
+{
+    // expandShapeContents();
+    App::GeoFeature::onDocumentRestored();
+}
+
 ShapeHistory Feature::buildHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
                                    const TopoDS_Shape& newS, const TopoDS_Shape& oldS)
 {

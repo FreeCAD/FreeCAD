@@ -168,6 +168,7 @@ protected:
     App::DocumentObjectExecReturn *execute() override;
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
+    void onDocumentRestored() override;
 
     void copyMaterial(Feature* feature);
     void copyMaterial(App::DocumentObject* link);

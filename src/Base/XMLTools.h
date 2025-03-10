@@ -26,14 +26,11 @@
 #define BASE_XMLTOOLS_H
 
 #include <memory>
-#include <iostream>
+#include <ostream>
 #include <xercesc/util/TransService.hpp>
-
-#include <Base/Exception.h>
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER
-using namespace XERCES_CPP_NAMESPACE;
 namespace XERCES_CPP_NAMESPACE
 {
 class DOMNode;

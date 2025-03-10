@@ -13,7 +13,7 @@ IF(Python3_Interpreter_FOUND)
     # Try to import matplotlib into Python interpreter. Python
     # interpreter was found previously as required package, so
     # don't take care about this.
-    execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"
+    execute_process(COMMAND "${Python3_EXECUTABLE}" "-c"
         "import matplotlib as m; print(m.__version__); print(m.__path__[0]);"
         RESULT_VARIABLE _MATPLOTLIB_SEARCH_SUCCESS
         OUTPUT_VARIABLE _MATPLOTLIB_VALUES

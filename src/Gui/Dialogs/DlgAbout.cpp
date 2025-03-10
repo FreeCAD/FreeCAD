@@ -370,7 +370,7 @@ void AboutDialog::showCredits()
     ui->tabWidget->addTab(tab_credits, tr("Credits"));
     auto hlayout = new QVBoxLayout(tab_credits);
     auto textField = new QTextBrowser(tab_credits);
-    textField->setOpenExternalLinks(true);
+    textField->setOpenLinks(false);
     hlayout->addWidget(textField);
 
     QString creditsHTML = QStringLiteral("<html><body><p>");
@@ -429,7 +429,6 @@ void AboutDialog::showLicenseInformation()
         auto hlayout = new QVBoxLayout(tab_license);
         auto textField = new QTextBrowser(tab_license);
         textField->setOpenExternalLinks(true);
-        textField->setOpenLinks(true);
         hlayout->addWidget(textField);
 
         textField->setHtml(licenseHTML);
@@ -466,8 +465,7 @@ void AboutDialog::showLibraryInformation()
     ui->tabWidget->addTab(tab_library, tr("Libraries"));
     auto hlayout = new QVBoxLayout(tab_library);
     auto textField = new QTextBrowser(tab_library);
-    textField->setOpenExternalLinks(false);
-    textField->setOpenLinks(false);
+    textField->setOpenExternalLinks(true);
     hlayout->addWidget(textField);
 
     QString baseurl = QStringLiteral("file:///%1/ThirdPartyLibraries.html")
@@ -582,6 +580,7 @@ void AboutDialog::copyToClipboard()
     QString point = QString::fromStdString(config["BuildVersionPoint"]);
     QString suffix = QString::fromStdString(config["BuildVersionSuffix"]);
     QString build = QString::fromStdString(config["BuildRevision"]);
+    QString buildDate = QString::fromStdString(config["BuildRevisionDate"]);
 
     QString deskEnv =
         QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"),
@@ -630,6 +629,7 @@ void AboutDialog::copyToClipboard()
         str << " Snap " << snap;
     }
     str << '\n';
+    str << "Build date: " << buildDate << "\n";
 
 #if defined(_DEBUG) || defined(DEBUG)
     str << "Build type: Debug\n";
@@ -670,7 +670,6 @@ void AboutDialog::copyToClipboard()
 
         if (ifcopenshellVerAsStr) {
             str << "IfcOpenShell " << ifcopenshellVerAsStr << ", ";
-            Py_DECREF(ifcopenshellVerAsStr);
         }
         Py_DECREF(ifcopenshellVer);
     }
@@ -733,10 +732,12 @@ void AboutDialog::copyToClipboard()
         << QString::fromStdString(theme) << "/" << QString::fromStdString(style) << "\n";
 
     // Add DPI information
-    str << "Logical/physical DPI: "
+    str << "Logical DPI/Physical DPI/Pixel Ratio: "
         << QApplication::primaryScreen()->logicalDotsPerInch()
         << "/"
         << QApplication::primaryScreen()->physicalDotsPerInch()
+        << "/"
+        << QApplication::primaryScreen()->devicePixelRatio()
         << "\n";
 
     // Add installed module information:

@@ -46,7 +46,7 @@ endif(WIN32)
 
 if(NOT BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND Google_Tests_LIBS
-        ${PYTHON_LIBRARIES}
+        ${Python3_LIBRARIES}
     )
 endif()
 
@@ -63,13 +63,16 @@ function(setup_qt_test)
 
         if(NOT BUILD_DYNAMIC_LINK_PYTHON)
             list(APPEND ${_testname}_LIBS
-                ${PYTHON_LIBRARIES}
+                ${Python3_LIBRARIES}
             )
         endif()
 
         target_include_directories(${_testname}_Tests_run PUBLIC
+            SYSTEM
+            ${PYCXX_INCLUDE_DIR}
             ${Python3_INCLUDE_DIRS}
             ${XercesC_INCLUDE_DIRS}
+            ${ZIPIOS_INCLUDES}
             ${QtGui_INCLUDE_DIRS}
             ${QtWidgets_INCLUDE_DIRS}
             ${QtTest_INCLUDE_DIRS}
@@ -132,9 +135,11 @@ if ( EXISTS "${CMAKE_SOURCE_DIR}/tests/lib/googletest" )
 endif()
 add_subdirectory(src)
 
-target_include_directories(Tests_run PUBLIC
+target_include_directories(Tests_run SYSTEM PUBLIC
+    ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
 )
 target_link_libraries(Tests_run
     gtest_main

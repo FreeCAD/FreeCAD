@@ -73,7 +73,7 @@ class CommandCreateJointFixed:
             "Pixmap": "Assembly_CreateJointFixed",
             "MenuText": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointFixed",
-                "Create a Fixed Joint",
+                "Create Fixed Joint",
             ),
             "Accel": "F",
             "ToolTip": "<p>"
