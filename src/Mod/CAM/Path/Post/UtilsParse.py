@@ -82,12 +82,7 @@ def check_for_drill_translate(
 
     if values["TRANSLATE_DRILL_CYCLES"] and command in values["DRILL_CYCLES_TO_TRANSLATE"]:
         if values["OUTPUT_COMMENTS"]:  # Comment the original command
-            comment = create_comment(
-                values,
-                values["COMMAND_SPACE"]
-                + format_command_line(values, command_line)
-                + values["COMMAND_SPACE"],
-            )
+            comment = create_comment(values, format_command_line(values, command_line))
             gcode.append(f"{linenumber(values)}{comment}{nl}")
         # wrap this block to ensure that the value of values["MOTION_MODE"]
         # is restored in case of error
@@ -147,12 +142,7 @@ def check_for_suppressed_commands(
     if command in values["SUPPRESS_COMMANDS"]:
         if values["OUTPUT_COMMENTS"]:
             # convert the command to a comment
-            comment = create_comment(
-                values,
-                values["COMMAND_SPACE"]
-                + format_command_line(values, command_line)
-                + values["COMMAND_SPACE"],
-            )
+            comment = create_comment(values, format_command_line(values, command_line))
             gcode.append(f"{linenumber(values)}{comment}{nl}")
         # remove the command
         return True
@@ -186,12 +176,7 @@ def check_for_tool_change(
                 gcode.append(f"{linenumber(values)}{line}{nl}")
         elif values["OUTPUT_COMMENTS"]:
             # convert the tool change to a comment
-            comment = create_comment(
-                values,
-                values["COMMAND_SPACE"]
-                + format_command_line(values, command_line)
-                + values["COMMAND_SPACE"],
-            )
+            comment = create_comment(values, format_command_line(values, command_line))
             gcode.append(f"{linenumber(values)}{comment}{nl}")
             return True
     return False
