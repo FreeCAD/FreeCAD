@@ -36,22 +36,6 @@
 #define D_PI 3.141592653589793
 #endif
 
-#ifndef FLOAT_MAX
-#define FLOAT_MAX 3.402823466E+38F
-#endif
-
-#ifndef FLOAT_MIN
-#define FLOAT_MIN 1.175494351E-38F
-#endif
-
-#ifndef DOUBLE_MAX
-#define DOUBLE_MAX 1.7976931348623157E+308 /* max decimal value of a "double"*/
-#endif
-
-#ifndef DOUBLE_MIN
-#define DOUBLE_MIN 2.2250738585072014E-308 /* min decimal value of a "double"*/
-#endif
-
 
 namespace Base
 {

@@ -121,7 +121,7 @@ bool MeshTopoAlgorithm::SnapVertex(FacetIndex ulFacetPos, const Base::Vector3f& 
             float fTV = (rP - rPt1) * (rPt2 - rPt1);
 
             // Point is on the edge
-            if (cNo3.Length() < FLOAT_EPS) {
+            if (cNo3.Length() < FLT_EPSILON) {
                 return SplitOpenEdge(ulFacetPos, i, rP);
             }
             if ((rP - rPt1) * cNo2 > 0.0F && fD2 >= fTV && fTV >= 0.0F) {
@@ -816,13 +816,13 @@ bool MeshTopoAlgorithm::SplitOpenEdge(FacetIndex ulFacetPos,
 bool MeshTopoAlgorithm::Vertex_Less::operator()(const Base::Vector3f& u,
                                                 const Base::Vector3f& v) const
 {
-    if (std::fabs(u.x - v.x) > FLOAT_EPS) {
+    if (std::fabs(u.x - v.x) > FLT_EPSILON) {
         return u.x < v.x;
     }
-    if (std::fabs(u.y - v.y) > FLOAT_EPS) {
+    if (std::fabs(u.y - v.y) > FLT_EPSILON) {
         return u.y < v.y;
     }
-    if (std::fabs(u.z - v.z) > FLOAT_EPS) {
+    if (std::fabs(u.z - v.z) > FLT_EPSILON) {
         return u.z < v.z;
     }
     return false;
@@ -1251,7 +1251,7 @@ void MeshTopoAlgorithm::SplitFacet(FacetIndex ulFacetPos,
 
 void MeshTopoAlgorithm::SplitFacetOnOneEdge(FacetIndex ulFacetPos, const Base::Vector3f& rP)
 {
-    float fMinDist = FLOAT_MAX;
+    float fMinDist = FLT_MAX;
     unsigned short iEdgeNo = USHRT_MAX;
     MeshFacet& rFace = _rclMesh._aclFacetArray[ulFacetPos];
 
@@ -1283,7 +1283,7 @@ void MeshTopoAlgorithm::SplitFacetOnTwoEdges(FacetIndex ulFacetPos,
 {
     // search for the matching edges
     unsigned short iEdgeNo1 = USHRT_MAX, iEdgeNo2 = USHRT_MAX;
-    float fMinDist1 = FLOAT_MAX, fMinDist2 = FLOAT_MAX;
+    float fMinDist1 = FLT_MAX, fMinDist2 = FLT_MAX;
     MeshFacet& rFace = _rclMesh._aclFacetArray[ulFacetPos];
 
     for (unsigned short i = 0; i < 3; i++) {
