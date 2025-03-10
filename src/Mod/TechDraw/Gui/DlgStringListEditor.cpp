@@ -32,7 +32,7 @@ using namespace TechDrawGui;
 
 /* TRANSLATOR Gui::DlgStringListEditor */
 
-DlgStringListEditor::DlgStringListEditor(const std::vector<std::string> texts,
+DlgStringListEditor::DlgStringListEditor(const std::vector<std::string>& texts,
                                          QWidget* parent,
                                          Qt::WindowFlags fl)
     : QDialog(parent, fl)
@@ -49,7 +49,7 @@ DlgStringListEditor::DlgStringListEditor(const std::vector<std::string> texts,
     connect(buttons, &QDialogButtonBox::rejected, this, &DlgStringListEditor::reject);
 }
 
-void DlgStringListEditor::fillList(std::vector<std::string> texts)
+void DlgStringListEditor::fillList(const std::vector<std::string>& texts)
 {
     QStringList lines;
     lines.reserve(static_cast<int>(texts.size()));

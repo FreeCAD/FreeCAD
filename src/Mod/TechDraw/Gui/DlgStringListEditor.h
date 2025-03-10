@@ -39,7 +39,7 @@ class TechDrawGuiExport DlgStringListEditor: public QDialog
     Q_OBJECT
 
 public:
-    explicit DlgStringListEditor(const std::vector<std::string> texts,
+    explicit DlgStringListEditor(const std::vector<std::string>& texts,
                                  QWidget* parent = nullptr,
                                  Qt::WindowFlags fl = Qt::WindowFlags());
 
@@ -48,7 +48,7 @@ public:
     void reject() override;
 
 private:
-    void fillList(std::vector<std::string> texts);
+    void fillList(std::vector<std::string> const& texts);
     QPlainTextEdit* textEdit;
     std::vector<std::string> texts;
 };
