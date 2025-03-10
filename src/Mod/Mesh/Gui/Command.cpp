@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 #include <map>
 
@@ -35,9 +35,7 @@
 #include <qstringlist.h>
 #endif
 
-#ifndef __InventorAll__
 #include <Gui/InventorAll.h>
-#endif
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
