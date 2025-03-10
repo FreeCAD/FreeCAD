@@ -58,6 +58,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
@@ -414,7 +415,7 @@ bool DrawUtil::apparentIntersection(const Handle(Geom_Curve) curve1,
     //for our purposes, only one intersection point is required.
     gp_Pnt p1, p2;
     intersector.Points(1, p1, p2);
-    result = toVector3d(p1);
+    result = Base::convertTo<Base::Vector3d>(p1);
     return true;
 }
 
@@ -519,6 +520,15 @@ std::string DrawUtil::formatVector(const Base::Vector3d& v)
     return builder.str();
 }
 //template std::string DrawUtil::formatVector<Base::Vector3d>(const Base::Vector3d &v);
+
+// template specialization
+std::string DrawUtil::formatVector(const QPointF& v)
+{
+    std::stringstream builder;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
+    builder << " (" << v.x() << ", " << v.y() << ") ";
+    return builder.str();
+}
 
 //! compare 2 vectors for sorting - true if v1 < v2
 //! precision::Confusion() is too strict for vertex - vertex comparisons
@@ -648,7 +658,7 @@ Base::Vector3d DrawUtil::vecRotate(Base::Vector3d vec, double angle, Base::Vecto
 
 gp_Vec DrawUtil::closestBasis(gp_Vec inVec)
 {
-    return gp_Vec(to<gp_Dir>(closestBasis(toVector3d(inVec))));
+    return gp_Vec(Base::convertTo<gp_Dir>(closestBasis(Base::convertTo<Base::Vector3d>(inVec))));
 }
 
 //! returns stdX, stdY or stdZ.
@@ -836,7 +846,7 @@ double DrawUtil::getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape)
     Base::Vector3d stdXr(-1.0, 0.0, 0.0);
     Base::Vector3d stdYr(0.0, -1.0, 0.0);
     Base::Vector3d stdZr(0.0, 0.0, -1.0);
-    Base::Vector3d vClosestBasis = closestBasis(toVector3d(direction));
+    Base::Vector3d vClosestBasis = closestBasis(Base::convertTo<Base::Vector3d>(direction));
 
     Bnd_Box shapeBox;
     shapeBox.SetGap(0.0);
@@ -888,7 +898,7 @@ gp_Vec DrawUtil::maskDirection(gp_Vec inVec, gp_Dir directionToMask)
 
 Base::Vector3d DrawUtil::maskDirection(Base::Vector3d inVec, Base::Vector3d directionToMask)
 {
-    return toVector3d(maskDirection(to<gp_Vec>(inVec), to<gp_Vec>(directionToMask)));
+    return Base::convertTo<Base::Vector3d>(maskDirection(Base::convertTo<gp_Vec>(inVec), Base::convertTo<gp_Vec>(directionToMask)));
 }
 
 //! get the coordinate of inPoint for the cardinal unit direction.
