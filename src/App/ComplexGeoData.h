@@ -369,7 +369,7 @@ public:
      */
     void traceElement(const MappedName& name, TraceCallback cb) const
     {
-        _elementMap->traceElement(name, Tag, cb);
+        _elementMap->traceElement(name, Tag, std::move(cb));
     }
 
     /** Flush an internal buffering for element mapping */

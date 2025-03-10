@@ -407,7 +407,7 @@ bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject*& ret,
             *mat *= const_cast<GeoFeatureGroupExtension*>(this)->placement().getValue().toMatrix();
         }
     }
-    else if ((dot = strchr(subname, '.'))) {
+    else if (dot = strchr(subname, '.')) {
         if (subname[0] != '$') {
             ret = Group.findUsingMap(std::string(subname, dot));
         }
@@ -421,10 +421,8 @@ bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject*& ret,
             }
         }
         if (ret) {
-            if (dot) {
-                ++dot;
-            }
-            if (dot && *dot && !ret->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId())
+            ++dot;
+            if (*dot && !ret->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId())
                 && !ret->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
                 // Consider this
                 // Body
@@ -451,7 +449,7 @@ bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject*& ret,
                 *mat *=
                     const_cast<GeoFeatureGroupExtension*>(this)->placement().getValue().toMatrix();
             }
-            ret = ret->getSubObject(dot ? dot : "", pyObj, mat, true, depth + 1);
+            ret = ret->getSubObject(dot, pyObj, mat, true, depth + 1);
         }
     }
     return true;
