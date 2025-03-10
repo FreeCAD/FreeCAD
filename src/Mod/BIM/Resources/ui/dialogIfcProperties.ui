@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>567</width>
+    <width>1024</width>
     <height>608</height>
    </rect>
   </property>
@@ -59,8 +59,7 @@
         </property>
         <property name="icon">
          <iconset theme="format-text-direction-ltr">
-          <normaloff/>
-         </iconset>
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </item>
        <item>
@@ -69,8 +68,7 @@
         </property>
         <property name="icon">
          <iconset theme="application-drawing">
-          <normaloff/>
-         </iconset>
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </item>
        <item>
@@ -176,8 +174,7 @@
        </property>
        <property name="icon">
         <iconset theme="gtk-delete">
-         <normaloff/>
-        </iconset>
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
