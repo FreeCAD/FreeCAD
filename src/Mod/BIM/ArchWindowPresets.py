@@ -25,14 +25,31 @@ from FreeCAD import Vector
 from draftutils.translate import translate
 
 
-WindowPresets =  ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane", "Sliding 2-pane",
+AllPresets =  ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane", "Sliding 2-pane",
                   "Simple door", "Glass door", "Sliding 4-pane", "Awning", "Opening only"]
+WindowPresets = AllPresets[0:5] + AllPresets[7:]
+DoorPresets = AllPresets[5:7]+[AllPresets[-1]]
+WindowImages = {
+    "Fixed": ":/ui/ParametersWindowFixed.svg",
+    "Open 1-pane": ":/ui/ParametersWindowSimple.svg",
+    "Awning": ":/ui/ParametersWindowSimple.svg",
+    "Open 2-pane": ":/ui/ParametersWindowDouble.svg",
+    "Sliding 2-pane": ":/ui/ParametersWindowDouble.svg",
+    "Sliding 4-pane": ":/ui/ParametersWindowDouble.svg",
+    "Sash 2-pane": ":/ui/ParametersWindowStash.svg",
+    "Simple door": ":/ui/ParametersDoorSimple.svg",
+    "Glass door": ":/ui/ParametersDoorGlass.svg",
+    "Opening only": ":/ui/ParametersOpening.svg"
+}
+
+# glass size divider
+gla = 10
 
 def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None):
 
     """makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,[placement]): makes a
     window object based on the given data. windowtype must be one of the names
-    defined in Arch.WindowPresets"""
+    defined in AllPresets"""
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -58,8 +75,6 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             return
         # small spacing to avoid wrong auto-wires in sketch
         tol = h1/10
-        # glass size divider
-        gla = 10
         s = FreeCAD.ActiveDocument.addObject('Sketcher::SketchObject','Sketch')
 
         def addRectangle(s,p1,p2,p3,p4):
@@ -500,26 +515,102 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
 
         return (s,wp)
 
-    if windowtype in WindowPresets:
-        import Arch
-        default = makeSketch(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2)
-        FreeCAD.ActiveDocument.recompute()
-        if default:
-            if placement:
-                default[0].Placement = placement
-                FreeCAD.ActiveDocument.recompute()
-            obj = Arch.makeWindow(default[0],width,height,default[1])
-            obj.Preset = WindowPresets.index(windowtype)+1
-            obj.Frame = w2
-            obj.Offset = o1
-            obj.Placement = FreeCAD.Placement() # unable to find where this bug comes from...
-            if "door" in windowtype.lower():
-                obj.IfcType = "Door"
-                obj.Label = translate("Arch","Door")
-            elif "opening" in windowtype.lower():
-                obj.IfcType = "Opening Element"
-                obj.Label = translate("Arch","Opening")
+    if windowtype not in AllPresets:
+        return
+
+    import Arch
+    default = makeSketch(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2)
+    FreeCAD.ActiveDocument.recompute()
+    if default:
+        if placement:
+            default[0].Placement = placement
             FreeCAD.ActiveDocument.recompute()
-            return obj
+        obj = Arch.makeWindow(default[0],width,height,default[1])
+        obj.Preset = AllPresets.index(windowtype)+1
+        obj.Frame = w2
+        obj.Offset = o1
+        obj.Placement = FreeCAD.Placement() # unable to find where this bug comes from...
+        if "door" in windowtype.lower():
+            obj.IfcType = "Door"
+            obj.Label = translate("Arch","Door")
+        elif "opening" in windowtype.lower():
+            obj.IfcType = "Opening Element"
+            obj.Label = translate("Arch","Opening")
+        FreeCAD.ActiveDocument.recompute()
+        return obj
 
     print("Arch: Unknown window type")
+
+
+def makeWindowPresetBaseless(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None):
+
+    """makeWindowPresetBaseless(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,[placement]): makes a
+    window object based on the given data. windowtype must be one of the names
+    defined in AllPresets. This version creates a baseless window"""
+
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
+
+    if windowtype not in AllPresets:
+        return
+
+    wp = []
+    if windowtype == "Fixed":
+        wp += ["OuterFrame", "Frame", "0,0,0+V,0+V,"+str(h1), str(w1), str(o1)+"+V"]
+        wp += ["Glass",
+               "Glass Panel",
+               str(h1)+","+str(h1)+",-"+str(h1*2)+"+V,-"+str(h1*2)+"+V,0.0",
+               str(w1/gla),
+               str(o1+w1/2)+"+V"]
+    elif windowtype == "Open 1-pane":
+        wp += ["OuterFrame", "Frame", "0,0,0+V,0+V,"+str(h1), str(w1), str(o1)+"+V"]
+        wp += ["InnerFrame",
+               "Frame",
+               str(h1)+","+str(h1)+",-"+str(h1*2)+"+V,-"+str(h1*2)+"+V,"+str(h2)+"Edge8,Mode1,ParentOuterFrame",
+               str(w2),
+               str(o1+o2)+"+V"]
+        wp += ["Glass",
+               "Glass Panel",
+               str(h1+h2)+","+str(h1+h2)+",-"+str((h1+h2)*2)+"+V,-"+str((h1+h2)*2)+"+V,0.0,ParentInnerFrame",
+               str(w1/gla),
+               str(o1+o2+w1/2)+"+V"]
+    elif windowtype == "Open 2-pane":
+        wp += ["OuterFrame", "Frame", "0,0,0+V,0+V,"+str(h1), str(w1), str(o1)+"+V"]
+        wp += ["InnerFrameLeft",
+               "Frame",
+               str(h1)+","+str(h1)+",-"+str(h1)+"+V,-"+str(h1+width/2)+","+str(h2)+"Edge8,Mode1,ParentOuterFrame",
+               str(w2),
+               str(o1+o2)+"+V"]
+        wp += ["GlassLeft",
+               "Glass Panel",
+               str(h1+h2)+","+str(h1+h2)+",-"+str(h1+h2)+"+V,-"+str(h1+h2+width/2)+",0.0,ParentInnerFrameLeft",
+               str(w1/gla),
+               str(o1+o2+w1/2)+"+V"]
+        wp += ["InnerFrameRight",
+               "Frame",
+               str(width/2-h1)+","+str(h1)+",-"+str(h1)+"+V,-"+str(h1+width/2)+","+str(h2)+"Edge6,Mode2,ParentOuterFrame",
+               str(w2),
+               str(o1+o2)+"+V"]
+        wp += ["GlassRight",
+               "Glass Panel",
+               str(width/2-(h1+h2))+","+str(h1+h2)+",-"+str(h1+h2)+"+V,-"+str(h1+h2+width/2)+",0.0,ParentInnerFrameRight",
+               str(w1/gla),
+               str(o1+o2+w1/2)+"+V"]
+    if wp:
+        obj = Arch.makeWindow()
+        obj.Width = width
+        obj.Height = height
+        obj.WindowParts = wp
+        obj.Frame = w2
+        obj.Offset = o1
+        if placement:
+            obj.Placement = placement
+        if "door" in windowtype.lower():
+            obj.IfcType = "Door"
+            obj.Label = translate("Arch","Door")
+        elif "opening" in windowtype.lower():
+            obj.IfcType = "Opening Element"
+            obj.Label = translate("Arch","Opening")
+        FreeCAD.ActiveDocument.recompute()
+        return obj
