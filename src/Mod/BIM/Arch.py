@@ -50,7 +50,7 @@ from ArchWindowPresets import *
 # TODO: migrate this one
 
 from ArchStructure import *
-
+from ArchSpace import *
 
 # make functions
 
