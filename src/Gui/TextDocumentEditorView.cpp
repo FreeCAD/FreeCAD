@@ -31,6 +31,7 @@
 
 #include "TextDocumentEditorView.h"
 #include "Application.h"
+#include "BitmapFactory.h"
 #include "Document.h"
 #include "MainWindow.h"
 
@@ -49,6 +50,7 @@ TextDocumentEditorView::TextDocumentEditorView(App::TextDocument* txtDoc,
     setupEditor();
     setupConnection();
     setCentralWidget(editor);
+    setWindowIcon(Gui::BitmapFactory().iconFromTheme("TextDocument"));
 
     // clang-format off
     // update editor actions on request

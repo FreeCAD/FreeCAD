@@ -48,13 +48,6 @@ using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsLightSources */
 
-static inline SbVec3f getDirectionVector(const SbRotation& rotation)
-{
-    SbVec3f dir {0.0f, 0.0f, -1.0f};
-    rotation.multVec(dir, dir);
-    return dir;
-}
-
 DlgSettingsLightSources::DlgSettingsLightSources(QWidget* parent)
     : PreferencePage(parent)
     , ui(new Ui_DlgSettingsLightSources)

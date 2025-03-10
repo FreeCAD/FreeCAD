@@ -158,7 +158,6 @@ class Trimex(gui_base_original.Modifier):
                     self.finish()
                     _err(translate("draft", "Trimex is not supported yet on this type of object."))
                     return
-            # self.obj.ViewObject.Visibility = False
             self.obj.ViewObject.LineColor = (0.5, 0.5, 0.5)
             self.obj.ViewObject.LineWidth = 1
             self.extrudeMode = False
@@ -393,7 +392,7 @@ class Trimex(gui_base_original.Modifier):
                 newedges.append(_sh)
         ghost.on()
 
-        # resetting the visible edges
+        # resetting the edges
         if not reverse:
             li = list(range(npoint + 1, len(self.edges)))
         else:
@@ -584,7 +583,6 @@ class Trimex(gui_base_original.Modifier):
                 for g in self.ghost:
                     g.finalize()
             if self.obj:
-                self.obj.ViewObject.Visibility = True
                 if self.color:
                     self.obj.ViewObject.LineColor = self.color
                 if self.width:

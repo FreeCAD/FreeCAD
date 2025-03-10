@@ -40,7 +40,7 @@ class SCwriter:
 
     def getStaticCurrentSolver(self, equation):
         # output the equation parameters
-        s = self.write.createLinearSolver(equation)
+        s = self.write.createNonlinearSolver(equation)
         s["Equation"] = "Stat Current Solver"
         s["Procedure"] = sifio.FileAttr("StatCurrentSolve/StatCurrentSolver")
         s["Variable"] = self.write.getUniqueVarName("Potential")

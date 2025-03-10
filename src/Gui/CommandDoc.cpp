@@ -96,26 +96,6 @@ StdCmdOpen::StdCmdOpen()
 
 void StdCmdOpen::activated(int iMsg)
 {
-    // clang-format off
-    auto checkPartialRestore = [](App::Document* doc) {
-        if (doc && doc->testStatus(App::Document::PartialRestore)) {
-            QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
-            QObject::tr("There were errors while loading the file. Some data might have been "
-                        "modified or not recovered at all. Look in the report view for more "
-                        "specific information about the objects involved."));
-        }
-    };
-
-    auto checkRestoreError = [](App::Document* doc) {
-        if (doc && doc->testStatus(App::Document::RestoreError)) {
-            QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
-            QObject::tr("There were serious errors while loading the file. Some data might have "
-                        "been modified or not recovered at all. Saving the project will most "
-                        "likely result in loss of data."));
-        }
-    };
-    // clang-format on
-
     Q_UNUSED(iMsg);
 
     // fill the list of registered endings
@@ -183,8 +163,8 @@ void StdCmdOpen::activated(int iMsg)
 
             App::Document *doc = App::GetApplication().getActiveDocument();
 
-            checkPartialRestore(doc);
-            checkRestoreError(doc);
+            getGuiApplication()->checkPartialRestore(doc);
+            getGuiApplication()->checkRestoreError(doc);
         }
     }
 }

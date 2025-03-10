@@ -4,6 +4,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 files: |
     (?x)^(
+        .github|
         src/Base|
         src/Main|
         src/Tools|
