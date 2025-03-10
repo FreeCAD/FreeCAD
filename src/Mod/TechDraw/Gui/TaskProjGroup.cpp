@@ -379,6 +379,11 @@ void TaskProjGroup::turnProjGroupToView()
     view = viewPart;
     multiView = nullptr;
 
+    auto* vpView = static_cast<ViewProviderViewPart*>(activeGui->getViewProvider(viewPart));
+    if (vpView) {
+        vpView->fixSceneDependencies();
+    }
+
     updateUi();
 }
 
