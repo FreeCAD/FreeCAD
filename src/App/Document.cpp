@@ -94,6 +94,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <Base/TimeInfo.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <Base/Profiler.h>
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
 #include <Base/Sequencer.h>
@@ -2963,6 +2964,8 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
                         bool* hasError,
                         int options)
 {
+    ZoneScoped;
+
     if (d->undoing || d->rollback) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Ignore document recompute on undo/redo");
