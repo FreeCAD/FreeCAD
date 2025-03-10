@@ -26,8 +26,6 @@
 #include <QVBoxLayout>
 #endif
 
-#include <Base/Tools.h>
-
 #include "DlgStringListEditor.h"
 
 using namespace TechDrawGui;
