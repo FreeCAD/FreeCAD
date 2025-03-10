@@ -1179,7 +1179,7 @@ public:
                 if (dockWidget == dock
                         || !dockWidget->isVisible()
                         || dockWidget->isFloating()
-                        || _overlayMap.count(dockWidget))
+                        || _overlayMap.contains(dockWidget))
                     continue;
                 if (dockWidget->rect().contains(dockWidget->mapFromGlobal(pos))) {
                     dstDock = dockWidget;

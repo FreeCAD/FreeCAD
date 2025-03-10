@@ -66,7 +66,7 @@ public:
         Base::PyGILStateLocker lock;
         PythonWrapper wrap;
         wrap.loadWidgetsModule();
-        if (func.count("widget") == 0) {
+        if (!func.contains("widget")) {
             throw Py::AttributeError("Object has no attribute 'widget'");
         }
         Py::Callable target(func.at("widget"));

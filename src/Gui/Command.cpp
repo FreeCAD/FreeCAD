@@ -1977,7 +1977,7 @@ const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* acc
     if (newCombo.isEmpty())
         return nullptr;
     auto newSequence = QKeySequence::fromString(newCombo);
-    if (newSequence.count() == 0)
+    if (newSequence.isEmpty())
         return nullptr;
 
     // Does this command shortcut conflict with other commands already defined?
@@ -1998,7 +1998,7 @@ const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* acc
         if (existingCombo.isEmpty())
             continue;
         auto existingSequence = QKeySequence::fromString(existingCombo);
-        if (existingSequence.count() == 0)
+        if (existingSequence.isEmpty())
             continue;
 
         // Exact match
