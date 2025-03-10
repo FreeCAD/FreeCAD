@@ -166,7 +166,7 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
 
     ui->pcbBalloonArrow->onRestore();
     DrawGuiUtil::loadArrowBox(ui->pcbBalloonArrow);
-    ui->pcbBalloonArrow->setCurrentIndex(prefBalloonArrow());
+    ui->pcbBalloonArrow->setCurrentIndex(static_cast<int>(prefBalloonArrow()));
 
     ui->cbEndCap->onRestore();
 
@@ -207,7 +207,7 @@ void DlgPrefsTechDrawAnnotationImp::changeEvent(QEvent *e)
     }
 }
 
-int DlgPrefsTechDrawAnnotationImp::prefBalloonArrow() const
+TechDraw::ArrowType DlgPrefsTechDrawAnnotationImp::prefBalloonArrow() const
 {
     return Preferences::balloonArrow();
 }

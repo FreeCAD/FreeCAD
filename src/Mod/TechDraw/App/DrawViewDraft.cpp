@@ -94,7 +94,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute()
         // Draft.get_svg(obj, scale=1, linewidth=0.35, fontsize=12, fillstyle="shape color", direction=None, linestyle=None, color=None, linespacing=None, techdraw=False)
 
         std::stringstream paramStr;
-        App::Color col = Color.getValue();
+        Base::Color col = Color.getValue();
         paramStr << ", scale=" << getScale()
                  << ", linewidth=" << LineWidth.getValue()
                  << ", fontsize=" << FontSize.getValue()

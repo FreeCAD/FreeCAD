@@ -85,7 +85,7 @@ ViewProviderDimension::ViewProviderDimension()
                                                                      "Arrow size in units");
 
     ArrowStyle.setEnums(ArrowPropEnum::ArrowTypeEnums);     // NOLINT
-    ADD_PROPERTY_TYPE(ArrowStyle, (PreferencesGui::dimArrowStyle()),
+    ADD_PROPERTY_TYPE(ArrowStyle, (static_cast<int>(PreferencesGui::dimArrowStyle())),
                                     group, (App::PropertyType)(App::Prop_None),
                                    "Arrow end symbol - point, filled arrow, etc");
 
@@ -248,7 +248,7 @@ TechDraw::DrawViewDimension* ViewProviderDimension::getViewObject() const
     return dynamic_cast<TechDraw::DrawViewDimension*>(pcObject);
 }
 
-App::Color ViewProviderDimension::prefColor() const
+Base::Color ViewProviderDimension::prefColor() const
 {
    return PreferencesGui::dimColor();
 }

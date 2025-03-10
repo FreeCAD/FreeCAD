@@ -73,7 +73,7 @@ enum class MessageOption {
     Throw, /**< Throw an exception. */
 };
 
-struct DocumentCreateFlags {
+struct DocumentInitFlags {
     bool createView {true};
     bool temporary {false};
 };
@@ -102,13 +102,13 @@ public:
      * the user and stored in the App::Document::Label property.
      */
     App::Document* newDocument(const char * proposedName=nullptr, const char * proposedLabel=nullptr,
-            DocumentCreateFlags CreateFlags=DocumentCreateFlags());
+            DocumentInitFlags CreateFlags=DocumentInitFlags());
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
     /// find a unique document name
     std::string getUniqueDocumentName(const char *Name, bool tempDoc=false) const;
     /// Open an existing document from a file
-    App::Document* openDocument(const char * FileName=nullptr, DocumentCreateFlags createFlags = DocumentCreateFlags{});
+    App::Document* openDocument(const char * FileName=nullptr, DocumentInitFlags initFlags = DocumentInitFlags{});
     /** Open multiple documents
      *
      * @param filenames: input file names
@@ -130,7 +130,7 @@ public:
             const std::vector<std::string> *paths=nullptr,
             const std::vector<std::string> *labels=nullptr,
             std::vector<std::string> *errs=nullptr,
-            DocumentCreateFlags createFlags = DocumentCreateFlags{});
+            DocumentInitFlags initFlags = DocumentInitFlags{});
     /// Retrieve the active document
     App::Document* getActiveDocument() const;
     /// Retrieve a named document
@@ -472,30 +472,30 @@ protected:
      * This slot gets connected to all App::Documents created
      */
     //@{
-    void slotBeforeChangeDocument(const App::Document&, const App::Property&);
-    void slotChangedDocument(const App::Document&, const App::Property&);
-    void slotNewObject(const App::DocumentObject&);
-    void slotDeletedObject(const App::DocumentObject&);
-    void slotBeforeChangeObject(const App::DocumentObject&, const App::Property& Prop);
-    void slotChangedObject(const App::DocumentObject&, const App::Property& Prop);
-    void slotRelabelObject(const App::DocumentObject&);
-    void slotActivatedObject(const App::DocumentObject&);
-    void slotUndoDocument(const App::Document&);
-    void slotRedoDocument(const App::Document&);
-    void slotRecomputedObject(const App::DocumentObject&);
-    void slotRecomputed(const App::Document&);
-    void slotBeforeRecompute(const App::Document&);
-    void slotOpenTransaction(const App::Document&, std::string);
-    void slotCommitTransaction(const App::Document&);
-    void slotAbortTransaction(const App::Document&);
-    void slotStartSaveDocument(const App::Document&, const std::string&);
-    void slotFinishSaveDocument(const App::Document&, const std::string&);
-    void slotChangePropertyEditor(const App::Document&, const App::Property &);
+    void slotBeforeChangeDocument(const App::Document& doc, const App::Property& prop);
+    void slotChangedDocument(const App::Document& doc, const App::Property& prop);
+    void slotNewObject(const App::DocumentObject& obj);
+    void slotDeletedObject(const App::DocumentObject& obj);
+    void slotBeforeChangeObject(const App::DocumentObject& obj, const App::Property& prop);
+    void slotChangedObject(const App::DocumentObject& obj, const App::Property& prop);
+    void slotRelabelObject(const App::DocumentObject& obj);
+    void slotActivatedObject(const App::DocumentObject& obj);
+    void slotUndoDocument(const App::Document& doc);
+    void slotRedoDocument(const App::Document& doc);
+    void slotRecomputedObject(const App::DocumentObject& obj);
+    void slotRecomputed(const App::Document& doc);
+    void slotBeforeRecompute(const App::Document& doc);
+    void slotOpenTransaction(const App::Document& doc, std::string name);
+    void slotCommitTransaction(const App::Document& doc);
+    void slotAbortTransaction(const App::Document& doc);
+    void slotStartSaveDocument(const App::Document& doc, const std::string& filename);
+    void slotFinishSaveDocument(const App::Document& doc, const std::string& filename);
+    void slotChangePropertyEditor(const App::Document& doc, const App::Property& prop);
     //@}
 
     /// open single document only
     App::Document* openDocumentPrivate(const char * FileName, const char *propFileName,
-            const char *label, bool isMainDoc, DocumentCreateFlags createFlags, std::vector<std::string> &&objNames);
+            const char *label, bool isMainDoc, DocumentInitFlags initFlags, std::vector<std::string> &&objNames);
 
     /// Helper class for App::Document to signal on close/abort transaction
     class AppExport TransactionSignaller {

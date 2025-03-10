@@ -78,13 +78,6 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <boost/bimap.hpp>
 #include <boost/graph/strong_components.hpp>
 
-#ifdef USE_OLD_DAG
-#include <boost/graph/topological_sort.hpp>
-#include <boost/graph/depth_first_search.hpp>
-#include <boost/graph/dijkstra_shortest_paths.hpp>
-#include <boost/graph/visitors.hpp>
-#endif  // USE_OLD_DAG
-
 #include <boost/regex.hpp>
 #include <random>
 #include <unordered_map>
@@ -2934,15 +2927,7 @@ std::vector<App::Document*> Document::getDependentDocuments(std::vector<App::Doc
 
 void Document::_rebuildDependencyList(const std::vector<App::DocumentObject*>& objs)
 {
-#ifdef USE_OLD_DAG
-    _buildDependencyList(objs.empty() ? d->objectArray : objs,
-                         false,
-                         0,
-                         &d->DepList,
-                         &d->VertexObjectList);
-#else
     (void)objs;
-#endif
 }
 
 /**
@@ -2972,156 +2957,6 @@ void Document::renameObjectIdentifiers(
         }
     }
 }
-
-#ifdef USE_OLD_DAG
-int Document::recompute(const std::vector<App::DocumentObject*>& objs, bool force)
-{
-    if (testStatus(Document::Recomputing)) {
-        // this is clearly a bug in the calling instance
-        throw Base::RuntimeError("Nested recomputes of a document are not allowed");
-    }
-
-    int objectCount = 0;
-
-    // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
-    // time expensive recomputes
-    if (!force && testStatus(Document::SkipRecompute)) {
-        return 0;
-    }
-
-    Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
-
-    // delete recompute log
-    d->clearRecomputeLog();
-
-    // updates the dependency graph
-    _rebuildDependencyList(objs);
-
-    std::list<Vertex> make_order;
-    DependencyList::out_edge_iterator j, jend;
-
-    try {
-        // this sort gives the execute
-        boost::topological_sort(d->DepList, std::front_inserter(make_order));
-    }
-    catch (const std::exception& e) {
-        std::cerr << "Document::recompute: " << e.what() << std::endl;
-        return -1;
-    }
-
-    // caching vertex to DocObject
-    for (std::map<DocumentObject*, Vertex>::const_iterator It1 = d->VertexObjectList.begin();
-         It1 != d->VertexObjectList.end();
-         ++It1) {
-        d->vertexMap[It1->second] = It1->first;
-    }
-
-#ifdef FC_LOGFEATUREUPDATE
-    std::clog << "make ordering: " << std::endl;
-#endif
-
-    std::set<DocumentObject*> recomputeList;
-
-    for (std::list<Vertex>::reverse_iterator i = make_order.rbegin(); i != make_order.rend(); ++i) {
-        DocumentObject* Cur = d->vertexMap[*i];
-        // Because of PropertyXLink, we should account for external objects
-        // TODO: make sure it is safe to rely on getNameInDocument() to check if
-        // object is in the document. If it crashes, then we should fix the code
-        // to properly nullify getNameInDocument(), rather than revert back to
-        // the inefficient isIn()
-        // if (!Cur || !isIn(Cur)) continue;
-        if (!Cur || !Cur->getNameInDocument()) {
-            continue;
-        }
-#ifdef FC_LOGFEATUREUPDATE
-        std::clog << Cur->getNameInDocument() << " dep on:";
-#endif
-        bool NeedUpdate = false;
-
-        // ask the object if it should be recomputed
-        if (Cur->mustExecute() == 1 || Cur->ExpressionEngine.depsAreTouched()) {
-#ifdef FC_LOGFEATUREUPDATE
-            std::clog << "[touched]";
-#endif
-            NeedUpdate = true;
-        }
-        else {  // if (Cur->mustExecute() == -1)
-            // update if one of the dependencies is touched
-            for (boost::tie(j, jend) = out_edges(*i, d->DepList); j != jend; ++j) {
-                DocumentObject* Test = d->vertexMap[target(*j, d->DepList)];
-
-                if (!Test) {
-                    continue;
-                }
-#ifdef FC_LOGFEATUREUPDATE
-                std::clog << " " << Test->getNameInDocument();
-#endif
-                if (Test->isTouched()) {
-                    NeedUpdate = true;
-#ifdef FC_LOGFEATUREUPDATE
-                    std::clog << "[touched]";
-#endif
-                }
-            }
-        }
-        // if one touched recompute
-        if (NeedUpdate) {
-            Cur->touch();
-#ifdef FC_LOGFEATUREUPDATE
-            std::clog << " => Recompute feature";
-#endif
-            recomputeList.insert(Cur);
-        }
-#ifdef FC_LOGFEATUREUPDATE
-        std::clog << std::endl;
-#endif
-    }
-
-#ifdef FC_LOGFEATUREUPDATE
-    std::clog << "Have to recompute the following document objects" << std::endl;
-    for (std::set<DocumentObject*>::const_iterator it = recomputeList.begin();
-         it != recomputeList.end();
-         ++it) {
-        std::clog << "  " << (*it)->getNameInDocument() << std::endl;
-    }
-#endif
-
-    for (std::list<Vertex>::reverse_iterator i = make_order.rbegin(); i != make_order.rend(); ++i) {
-        DocumentObject* Cur = d->vertexMap[*i];
-        if (!Cur || !isIn(Cur)) {
-            continue;
-        }
-
-        if (recomputeList.find(Cur) != recomputeList.end()
-            || Cur->ExpressionEngine.depsAreTouched()) {
-            if (_recomputeFeature(Cur)) {
-                // if something happened break execution of recompute
-                d->vertexMap.clear();
-                return -1;
-            }
-            signalRecomputedObject(*Cur);
-            ++objectCount;
-        }
-    }
-
-    // reset all touched
-    for (std::map<Vertex, DocumentObject*>::iterator it = d->vertexMap.begin();
-         it != d->vertexMap.end();
-         ++it) {
-        // TODO: check the TODO comments above for details
-        // if ((it->second) && isIn(it->second))
-        if ((it->second) && it->second->getNameInDocument()) {
-            it->second->purgeTouched();
-        }
-    }
-    d->vertexMap.clear();
-
-    signalRecomputed(*this);
-
-    return objectCount;
-}
-
-#else  // ifdef USE_OLD_DAG
 
 int Document::recompute(const std::vector<App::DocumentObject*>& objs,
                         bool force,
@@ -3314,8 +3149,6 @@ int Document::recompute(const std::vector<App::DocumentObject*>& objs,
     }
     return objectCount;
 }
-
-#endif  // USE_OLD_DAG
 
 /*!
   Does almost the same as topologicalSort() until no object with an input degree of zero
@@ -3912,20 +3745,6 @@ void Document::removeObject(const char* sName)
         signalTransactionRemove(*pos->second, 0);
     }
 
-#ifdef USE_OLD_DAG
-    if (!d->vertexMap.empty()) {
-        // recompute of document is running
-        for (std::map<Vertex, DocumentObject*>::iterator it = d->vertexMap.begin();
-             it != d->vertexMap.end();
-             ++it) {
-            if (it->second == pos->second) {
-                it->second = 0;  // just nullify the pointer
-                break;
-            }
-        }
-    }
-#endif  // USE_OLD_DAG
-
     // Before deleting we must nullify all dependent objects
     breakDependency(pos->second, true);
 
@@ -3939,6 +3758,7 @@ void Document::removeObject(const char* sName)
     d->objectIdMap.erase(pos->second->_Id);
     // Unset the bit to be on the safe side
     pos->second->setStatus(ObjectStatus::Remove, false);
+    unregisterLabel(pos->second->Label.getStrValue());
 
     // do no transactions if we do a rollback!
     std::unique_ptr<DocumentObject> tobedestroyed;
@@ -3956,7 +3776,6 @@ void Document::removeObject(const char* sName)
         }
     }
 
-    unregisterLabel(pos->second->Label.getStrValue());
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin();
          obj != d->objectArray.end();
          ++obj) {
@@ -4036,6 +3855,11 @@ void Document::_removeObject(DocumentObject* pcObject)
         signalTransactionRemove(*pcObject, 0);
         breakDependency(pcObject, true);
     }
+    // TODO: Transaction::addObjectName could potentially have freed (deleted) pcObject so some of the following
+    // code may be dereferencing a pointer to a deleted object which is not legal. if (d->rollback) this does not occur
+    // and instead pcObject is deleted at the end of this function.
+    // This either should be fixed, perhaps by moving the following lines up in the code,
+    // or there should be a comment explaining why the object will never be deleted because of the logic that got us here.
 
     // remove from map
     pcObject->setStatus(ObjectStatus::Remove, false);  // Unset the bit to be on the safe side

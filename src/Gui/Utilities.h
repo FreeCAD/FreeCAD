@@ -94,8 +94,8 @@ private:
 
 // Specialization for Color
 template <>
-struct vec_traits<App::Color> {
-    using vec_type = App::Color;
+struct vec_traits<Base::Color> {
+    using vec_type = Base::Color;
     using float_type = float;
     explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {

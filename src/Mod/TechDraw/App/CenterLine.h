@@ -28,6 +28,7 @@
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "Tag.h"
 #include "Cosmetic.h"
 #include "Geometry.h"
 
@@ -35,7 +36,7 @@
 namespace TechDraw {
 class DrawViewPart;
 
-class TechDrawExport CenterLine: public Base::Persistence
+class TechDrawExport CenterLine: public Base::Persistence, public TechDraw::Tag
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -175,20 +176,10 @@ public:
 
     TechDraw::BaseGeomPtr m_geometry;
 
-    //Uniqueness
-    boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString() const;
-
 protected:
     void initialize();
 
-    void createNewTag();
-    void assignTag(const TechDraw::CenterLine* cl);
-
-    boost::uuids::uuid tag;
-
     Py::Object PythonObject;
-
 };
 
 }  // namespace TechDraw

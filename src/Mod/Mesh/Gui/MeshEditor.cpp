@@ -117,7 +117,7 @@ void ViewProviderFace::attach(App::DocumentObject* obj)
 
     SoBaseColor* basecol = new SoBaseColor;
     if (mesh) {
-        App::Color col = mesh->ShapeAppearance.getDiffuseColor();
+        Base::Color col = mesh->ShapeAppearance.getDiffuseColor();
         basecol->rgb.setValue(col.r, col.g, col.b);
     }
     else {

@@ -34,11 +34,16 @@
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoSeparator.h>
 
-#if !defined(FC_OS_MACOSX)
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+# endif
+# ifdef FC_OS_MACOSX
+# include <OpenGL/gl.h>
+# else
 # include <GL/gl.h>
-# include <GL/glu.h>
 # include <GL/glext.h>
-#endif
+# include <GL/glu.h>
+# endif
 
 #include "SoQTQuarterAdaptor.h"
 
@@ -148,7 +153,7 @@ constexpr const int defaultSize = 100;
 
 // NOLINTBEGIN(readability-implicit-bool-conversion)
 SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(QWidget* parent,
-                                                             const QtGLWidget* sharewidget,
+                                                             const QOpenGLWidget* sharewidget,
                                                              Qt::WindowFlags flags)
     : QuarterWidget(parent, sharewidget, flags)
     , matrixaction(SbViewportRegion(defaultSize, defaultSize))
@@ -156,9 +161,9 @@ SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(QWidget* parent,
     init();
 }
 
-SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(const QtGLFormat& format,
+SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(const QSurfaceFormat& format,
                                                              QWidget* parent,
-                                                             const QtGLWidget* shareWidget,
+                                                             const QOpenGLWidget* shareWidget,
                                                              Qt::WindowFlags flags)
     : QuarterWidget(format, parent, shareWidget, flags)
     , matrixaction(SbViewportRegion(defaultSize, defaultSize))
@@ -166,9 +171,9 @@ SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(const QtGLFormat& f
     init();
 }
 
-SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(QtGLContext* context,
+SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(QOpenGLContext* context,
                                                              QWidget* parent,
-                                                             const QtGLWidget* sharewidget,
+                                                             const QOpenGLWidget* sharewidget,
                                                              Qt::WindowFlags flags)
     : QuarterWidget(context, parent, sharewidget, flags)
     , matrixaction(SbViewportRegion(defaultSize, defaultSize))
@@ -638,7 +643,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::draw2DString(
     const char* str,
     SbVec2s glsize,
     SbVec2f position,
-    App::Color color = App::Color(1.0F, 1.0F, 0.0F))  // retains yellow as default color
+    Base::Color color = Base::Color(1.0F, 1.0F, 0.0F))  // retains yellow as default color
 {
     // Store GL state.
     glPushAttrib(GL_ENABLE_BIT|GL_CURRENT_BIT);

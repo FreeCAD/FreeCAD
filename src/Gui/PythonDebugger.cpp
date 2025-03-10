@@ -176,9 +176,7 @@ Py::Object PythonDebugStdout::repr()
 Py::Object PythonDebugStdout::write(const Py::Tuple& args)
 {
     char *msg;
-    //PyObject* pObj;
-    ////args contains a single parameter which is the string to write.
-    //if (!PyArg_ParseTuple(args.ptr(), "Os:OutputString", &pObj, &msg))
+    //args contains a single parameter which is the string to write.
     if (!PyArg_ParseTuple(args.ptr(), "s:OutputString", &msg))
         throw Py::Exception();
 
@@ -186,9 +184,6 @@ Py::Object PythonDebugStdout::write(const Py::Tuple& args)
     {
         //send it to our stdout
         printf("%s\n",msg);
-
-        //send it to the debugger as well
-        //g_DebugSocket.SendMessage(eMSG_OUTPUT, msg);
     }
     return Py::None();
 }
@@ -224,19 +219,12 @@ Py::Object PythonDebugStderr::repr()
 Py::Object PythonDebugStderr::write(const Py::Tuple& args)
 {
     char *msg;
-    //PyObject* pObj;
     //args contains a single parameter which is the string to write.
-    //if (!PyArg_ParseTuple(args.ptr(), "Os:OutputDebugString", &pObj, &msg))
     if (!PyArg_ParseTuple(args.ptr(), "s:OutputDebugString", &msg))
         throw Py::Exception();
 
     if (strlen(msg) > 0)
     {
-        //send the message to our own stderr
-        //dprintf(msg);
-
-        //send it to the debugger as well
-        //g_DebugSocket.SendMessage(eMSG_TRACE, msg);
         Base::Console().Error("%s", msg);
     }
 
@@ -275,24 +263,6 @@ Py::Object PythonDebugExcept::excepthook(const Py::Tuple& args)
     PyErr_NormalizeException(&exc, &value, &tb);
 
     PyErr_Display(exc, value, tb);
-/*
-    if (eEXCEPTMODE_IGNORE != g_eExceptionMode)
-    {
-        assert(tb);
-
-        if (tb && (tb != Py_None))
-        {
-            //get the pointer to the frame held by the bottom traceback object - this
-            //should be where the exception occurred.
-            tracebackobject* pTb = (tracebackobject*)tb;
-            while (pTb->tb_next != NULL)
-            {
-                pTb = pTb->tb_next;
-            }
-            PyFrameObject* frame = (PyFrameObject*)PyObject_GetAttr((PyObject*)pTb, PyString_FromString("tb_frame"));
-            EnterBreakState(frame, (PyObject*)pTb);
-        }
-    }*/
 
     return Py::None();
 }
@@ -542,13 +512,6 @@ void PythonDebugger::hideDebugMarker(const QString& fn)
     }
 }
 
-#if PY_VERSION_HEX < 0x030900B1
-static PyCodeObject* PyFrame_GetCode(PyFrameObject *frame)
-{
-    Py_INCREF(frame->f_code);
-    return frame->f_code;
-}
-#endif
 
 // http://www.koders.com/cpp/fidBA6CD8A0FE5F41F1464D74733D9A711DA257D20B.aspx?s=PyEval_SetTrace
 // http://code.google.com/p/idapython/source/browse/trunk/python.cpp

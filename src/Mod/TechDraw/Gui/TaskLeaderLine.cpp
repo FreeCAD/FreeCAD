@@ -233,11 +233,11 @@ void TaskLeaderLine::setUiPrimary()
     }
 
     DrawGuiUtil::loadArrowBox(ui->cboxStartSym);
-    int aStyle = PreferencesGui::dimArrowStyle();
-    ui->cboxStartSym->setCurrentIndex(aStyle);
+    ArrowType aStyle = PreferencesGui::dimArrowStyle();
+    ui->cboxStartSym->setCurrentIndex(static_cast<int>(aStyle));
 
     DrawGuiUtil::loadArrowBox(ui->cboxEndSym);
-    ui->cboxEndSym->setCurrentIndex(TechDraw::ArrowType::NONE);
+    ui->cboxEndSym->setCurrentIndex(static_cast<int>(TechDraw::ArrowType::NONE));
 
     ui->dsbWeight->setUnit(Base::Unit::Length);
     ui->dsbWeight->setMinimum(0);
@@ -313,7 +313,7 @@ void TaskLeaderLine::onEndSymbolChanged()
 
 void TaskLeaderLine::onColorChanged()
 {
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     m_lineVP->Color.setValue(ac);
     recomputeFeature();
@@ -395,7 +395,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
         Gui::ViewProvider* vp = QGIView::getViewProvider(m_lineFeat);
         auto leadVP = dynamic_cast<ViewProviderLeader*>(vp);
         if (leadVP) {
-            App::Color ac;
+            Base::Color ac;
             ac.setValue<QColor>(ui->cpLineColor->color());
             leadVP->Color.setValue(ac);
             leadVP->LineWidth.setValue(ui->dsbWeight->rawValue());
@@ -433,7 +433,7 @@ void TaskLeaderLine::updateLeaderFeature()
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Leader"));
     //waypoints & x, y are updated by QGILeaderLine (for edits only!)
     commonFeatureUpdate();
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     m_lineVP->Color.setValue(ac);
     m_lineVP->LineWidth.setValue(ui->dsbWeight->rawValue());

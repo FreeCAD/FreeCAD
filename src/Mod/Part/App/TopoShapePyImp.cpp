@@ -312,7 +312,7 @@ PyObject* TopoShapePy::writeInventor(PyObject * args, PyObject * keywds)
         return nullptr;
     }
 
-    std::vector<App::Color> faceColors;
+    std::vector<Base::Color> faceColors;
     if (pylist) {
         App::PropertyColorList prop;
         prop.setPyObject(pylist);

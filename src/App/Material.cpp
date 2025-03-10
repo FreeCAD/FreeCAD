@@ -327,7 +327,7 @@ App::Material Material::getDefaultAppearance()
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
 
-    auto getColor = [hGrp](const char* parameter, App::Color& color) {
+    auto getColor = [hGrp](const char* parameter, Base::Color& color) {
         uint32_t packed = color.getPackedRGB();
         packed = hGrp->GetUnsigned(parameter, packed);
         color.setPackedRGB(packed);
@@ -351,10 +351,10 @@ App::Material Material::getDefaultAppearance()
         float red = static_cast<float>(intRandom(0, 255)) / 255.0F;
         float green = static_cast<float>(intRandom(0, 255)) / 255.0F;
         float blue = static_cast<float>(intRandom(0, 255)) / 255.0F;
-        mat.diffuseColor = App::Color(red, green, blue);
+        mat.diffuseColor = Base::Color(red, green, blue);
     }
     else {
-        // Color = (204, 204, 230) = 3435980543UL
+        // Base::Color = (204, 204, 230) = 3435980543UL
         getColor("DefaultShapeColor", mat.diffuseColor);
     }
 

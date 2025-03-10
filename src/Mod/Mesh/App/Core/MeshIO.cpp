@@ -481,7 +481,7 @@ bool MeshInput::LoadOFF(std::istream& input)
     boost::cmatch what;
 
     bool colorPerVertex = false;
-    std::vector<App::Color> diffuseColor;
+    std::vector<Base::Color> diffuseColor;
     MeshPointArray meshPoints;
     MeshFacetArray meshFacets;
 
@@ -1808,7 +1808,7 @@ bool MeshOutput::SaveAsymptote(std::ostream& out) const
     bool saveFaceColor = (_material && _material->binding == MeshIO::PER_FACE
                           && _material->diffuseColor.size() == rFacets.size());
     // global mesh color
-    App::Color mc(0.8F, 0.8F, 0.8F);
+    Base::Color mc(0.8F, 0.8F, 0.8F);
     if (_material && _material->binding == MeshIO::OVERALL && _material->diffuseColor.size() == 1) {
         mc = _material->diffuseColor[0];
     }
@@ -1831,7 +1831,7 @@ bool MeshOutput::SaveAsymptote(std::ostream& out) const
             const MeshFacet& face = rFacets[index];
             out << ",\n             new pen[] {";
             for (int i = 0; i < 3; i++) {
-                const App::Color& c = _material->diffuseColor[face._aulPoints[i]];
+                const Base::Color& c = _material->diffuseColor[face._aulPoints[i]];
                 out << "rgb(" << c.r << ", " << c.g << ", " << c.b << ")";
                 if (i < 2) {
                     out << ", ";
@@ -1840,7 +1840,7 @@ bool MeshOutput::SaveAsymptote(std::ostream& out) const
             out << "}));\n";
         }
         else if (saveFaceColor) {
-            const App::Color& c = _material->diffuseColor[index];
+            const Base::Color& c = _material->diffuseColor[index];
             out << "),\n     rgb(" << c.r << ", " << c.g << ", " << c.b << "));\n";
         }
         else {
@@ -1912,7 +1912,7 @@ bool MeshOutput::SaveOFF(std::ostream& out) const
         }
 
         if (exportColor) {
-            App::Color c;
+            Base::Color c;
             if (_material->binding == MeshIO::PER_VERTEX) {
                 c = _material->diffuseColor[index];
             }
@@ -1984,7 +1984,7 @@ bool MeshOutput::SaveBinaryPLY(std::ostream& out) const
             os << p.x << p.y << p.z;
         }
         if (saveVertexColor) {
-            const App::Color& c = _material->diffuseColor[i];
+            const Base::Color& c = _material->diffuseColor[i];
             uint8_t r = uint8_t(255.0F * c.r);
             uint8_t g = uint8_t(255.0F * c.g);
             uint8_t b = uint8_t(255.0F * c.b);
@@ -2046,7 +2046,7 @@ bool MeshOutput::SaveAsciiPLY(std::ostream& out) const
                 out << p.x << " " << p.y << " " << p.z;
             }
 
-            const App::Color& c = _material->diffuseColor[i];
+            const Base::Color& c = _material->diffuseColor[i];
             int r = (int)(255.0F * c.r);
             int g = (int)(255.0F * c.g);
             int b = (int)(255.0F * c.b);
@@ -2359,7 +2359,7 @@ bool MeshOutput::SaveX3DContent(std::ostream& out, bool exportViewpoints) const
         bbox = bbox.Transformed(_transform);
     }
 
-    App::Color mat(0.65F, 0.65F, 0.65F);
+    Base::Color mat(0.65F, 0.65F, 0.65F);
     if (_material && _material->binding == MeshIO::Binding::OVERALL) {
         if (!_material->diffuseColor.empty()) {
             mat = _material->diffuseColor.front();
@@ -2679,7 +2679,7 @@ bool MeshOutput::SaveVRML(std::ostream& output) const
            << "        Material {\n";
     if (_material && _material->binding == MeshIO::OVERALL) {
         if (!_material->diffuseColor.empty()) {
-            App::Color c = _material->diffuseColor.front();
+            Base::Color c = _material->diffuseColor.front();
             output << "          diffuseColor " << c.r << " " << c.g << " " << c.b << "\n";
         }
         else {
@@ -2828,7 +2828,7 @@ void MeshCleanup::RemoveInvalidFacets()
         // adjust the material array if needed
         if (materialArray && materialArray->binding == MeshIO::PER_FACE
             && materialArray->diffuseColor.size() == facetArray.size()) {
-            std::vector<App::Color> colors;
+            std::vector<Base::Color> colors;
             colors.reserve(facetArray.size() - countInvalidFacets);
             for (std::size_t index = 0; index < facetArray.size(); index++) {
                 if (facetArray[index].IsValid()) {
@@ -2887,7 +2887,7 @@ void MeshCleanup::RemoveInvalidPoints()
         // adjust the material array if needed
         if (materialArray && materialArray->binding == MeshIO::PER_VERTEX
             && materialArray->diffuseColor.size() == pointArray.size()) {
-            std::vector<App::Color> colors;
+            std::vector<Base::Color> colors;
             colors.reserve(validPoints);
             for (std::size_t index = 0; index < pointArray.size(); index++) {
                 if (pointArray[index].IsValid()) {

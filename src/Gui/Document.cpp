@@ -36,6 +36,7 @@
 # include <QApplication>
 # include <QFileInfo>
 # include <QMessageBox>
+# include <QOpenGLWidget>
 # include <QTextStream>
 # include <QTimer>
 # include <QStatusBar>
@@ -1999,11 +2000,11 @@ MDIView *Document::createView(const Base::Type& typeId)
     std::list<MDIView*> theViews = this->getMDIViewsOfType(typeId);
     if (typeId == View3DInventor::getClassTypeId()) {
 
-        QtGLWidget* shareWidget = nullptr;
+        QOpenGLWidget* shareWidget = nullptr;
         // VBO rendering doesn't work correctly when we don't share the OpenGL widgets
         if (!theViews.empty()) {
             auto firstView = static_cast<View3DInventor*>(theViews.front());
-            shareWidget = qobject_cast<QtGLWidget*>(firstView->getViewer()->getGLWidget());
+            shareWidget = qobject_cast<QOpenGLWidget*>(firstView->getViewer()->getGLWidget());
 
             const char *ppReturn = nullptr;
             firstView->onMsg("GetCamera",&ppReturn);

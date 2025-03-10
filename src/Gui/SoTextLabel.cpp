@@ -58,8 +58,6 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #endif
 
-#include <QtOpenGL.h>
-
 #include "SoTextLabel.h"
 #include "SoFCInteractiveElement.h"
 #include "Tools.h"
@@ -307,7 +305,7 @@ SoStringLabel::SoStringLabel()
  */
 void SoStringLabel::GLRender(SoGLRenderAction *action)
 {
-    QtGLWidget* window;
+    QOpenGLWidget* window;
     SoState * state = action->getState();
     state->push();
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
