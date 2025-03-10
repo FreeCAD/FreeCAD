@@ -106,4 +106,20 @@ TEST(UniqueNameManager, Issue18504)
     name = manager.makeUniqueName("Origin", 3);
     EXPECT_NE(name, "Origin010");
 }
+
+TEST(UniqueNameManager, UniqueNameWithManyDigits)
+{
+    // Check that names with many digits (value larger than max unsigned long) work
+    Base::UniqueNameManager manager;
+    manager.addExactName("Compound006002002002002");
+    EXPECT_EQ(manager.makeUniqueName("Compound", 3), "Compound006002002002003");
+}
+TEST(UniqueNameManager, UniqueNameWith9NDigits)
+{
+    // Check that names with a multiple of 9 digits work. The manager chunks nine digits at a time
+    // so this boundary condition needs a test.
+    Base::UniqueNameManager manager;
+    manager.addExactName("Compound123456789");
+    EXPECT_EQ(manager.makeUniqueName("Compound", 3), "Compound123456790");
+}
 // NOLINTEND(cppcoreguidelines-*,readability-*)
