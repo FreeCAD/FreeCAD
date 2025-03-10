@@ -35,9 +35,7 @@
 #include <qstringlist.h>
 #endif
 
-#ifndef __InventorAll__
 #include <Gui/InventorAll.h>
-#endif
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>

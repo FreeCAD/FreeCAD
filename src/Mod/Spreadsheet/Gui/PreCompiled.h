@@ -47,9 +47,7 @@
 #endif
 
 // Qt Toolkit
-#ifndef __QtAll__
 #include <Gui/QtAll.h>
-#endif
 
 #endif  //_PreComp_
 

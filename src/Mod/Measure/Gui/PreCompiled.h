@@ -82,14 +82,10 @@
 #include <Inventor/C/glue/gl.h>
 
 // Qt Toolkit
-#ifndef __QtAll__
 #include <Gui/QtAll.h>
-#endif
 
 // Inventor includes OpenGL
-#ifndef __InventorAll__
 #include <Gui/InventorAll.h>
-#endif
 
 #endif  //_PreComp_
 
