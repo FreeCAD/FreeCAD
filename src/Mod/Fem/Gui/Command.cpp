@@ -684,6 +684,7 @@ void CmdFemConstraintHeatflux::activated(int)
     doCommand(Doc,
               "App.activeDocument().addObject(\"Fem::ConstraintHeatflux\",\"%s\")",
               FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.ConstraintType = \"DFlux\"", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.AmbientTemp = 300.0",
               FeatName.c_str());  // OvG: set default not equal to 0
