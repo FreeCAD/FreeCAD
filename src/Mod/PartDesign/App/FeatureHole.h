@@ -119,8 +119,7 @@ private:
     static const char* DepthTypeEnums[];
     static const char* ThreadDepthTypeEnums[];
     static const char* ThreadTypeEnums[];
-    static const char* ClearanceMetricEnums[];
-    static const char* ClearanceUTSEnums[];
+    static const char* ThreadFitEnums[];
     static const char* DrillPointEnums[];
     static const char* ThreadDirectionEnums[];
 
