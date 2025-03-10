@@ -76,13 +76,16 @@ class _TaskPanel:
 
     def __init__(self, obj):
         self._obj = obj
-        self._refWidget = selection_widgets.SolidSelector()
-        self._refWidget.setReferences(obj.References)
+        self._selectionWidget = selection_widgets.GeometryElementsSelection(
+            obj.References, ["Solid", "Face"], False, True
+        )
+        # start in solid selection mode
+        self._selectionWidget.rb_solid.setChecked(True)
         propWidget = obj.ViewObject.Proxy.getTaskWidget(obj.ViewObject)
         if propWidget is None:
-            self.form = self._refWidget
+            self.form = self._selectionWidget
         else:
-            self.form = [self.refWidget, propWidget]
+            self.form = [self._selectionWidget, propWidget]
         analysis = obj.getParentGroup()
         self._mesh = membertools.get_single_member(analysis, "Fem::FemMeshObject")
         self._part = self._mesh.Shape if self._mesh is not None else None
@@ -97,12 +100,14 @@ class _TaskPanel:
             self._part.ViewObject.show()
 
     def reject(self):
+        self._selectionWidget.finish_selection()
         self._recomputeAndRestore()
         return True
 
     def accept(self):
-        if self._obj.References != self._refWidget.references():
-            self._obj.References = self._refWidget.references()
+        if self._obj.References != self._selectionWidget.references:
+            self._obj.References = self._selectionWidget.references
+        self._selectionWidget.finish_selection()
         self._recomputeAndRestore()
         return True
 

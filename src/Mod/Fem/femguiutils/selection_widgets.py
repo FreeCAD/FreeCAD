@@ -295,20 +295,6 @@ class GeometryElementsSelection(QtGui.QWidget):
         self.setWindowTitle(self.tr("Geometry reference selector"))
         # button
         self.pushButton_Add = QtGui.QPushButton(self.tr("Add"))
-        # label
-        self._helpTextLbl = QtGui.QLabel()
-        self._helpTextLbl.setWordWrap(True)
-        helpTextPart1 = self.tr(
-            'Click on "Add" and select geometric elements to add them to the list.{}'
-            "The following geometry elements can be selected: {}{}{}"
-        ).format("<br>", "<b>", self.sel_elem_text, "</b>")
-        helpTextEmpty = self.tr(
-            "{}If no geometry is added to the list, all remaining ones are used."
-        ).format("<br>")
-        if self.showHintEmptyList is True:
-            self._helpTextLbl.setText(helpTextPart1 + helpTextEmpty)
-        else:
-            self._helpTextLbl.setText(helpTextPart1)
         # list
         self.list_References = QtGui.QListWidget()
         # radiobutton down the list
@@ -323,9 +309,18 @@ class GeometryElementsSelection(QtGui.QWidget):
         rbtnLayout.addWidget(self.rb_solid)
         # main layout
         mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(self._helpTextLbl)
         mainLayout.addWidget(self.pushButton_Add)
         mainLayout.addWidget(self.list_References)
+
+        tip1 = self.tr(
+            "Click and select geometric elements to add them to the list.{}"
+            "The following geometry elements can be selected: {}{}{}"
+        ).format("<br>", "<b>", self.sel_elem_text, "</b>")
+        tip2 = self.tr(
+            "{}If no geometry is added to the list, all remaining ones are used."
+        ).format("<br>")
+        tip1 += tip2 if self.showHintEmptyList else ""
+        self.pushButton_Add.setToolTip(tip1)
 
         # if only "Solid" is avail, std-sel-mode is obsolete
         if "Solid" in self.sel_elem_types and len(self.sel_elem_types) == 1:
