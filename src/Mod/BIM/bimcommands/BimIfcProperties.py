@@ -75,7 +75,7 @@ class BIM_IfcProperties:
         # restore saved values
         self.form.onlySelected.setChecked(PARAMS.GetInt("IfcPropertiesSelectedState", 0))
         self.form.onlyVisible.setChecked(PARAMS.GetInt("IfcPropertiesVisibleState", 0))
-        w = PARAMS.GetInt("BimIfcPropertiesDialogWidth", 567)
+        w = PARAMS.GetInt("BimIfcPropertiesDialogWidth", 1200)
         h = PARAMS.GetInt("BimIfcPropertiesDialogHeight", 608)
         self.form.resize(w, h)
 
@@ -145,7 +145,7 @@ class BIM_IfcProperties:
         self.form.searchField.editTextChanged.connect(self.update)
         self.form.comboProperty.currentIndexChanged.connect(self.addProperty)
         self.form.comboPset.currentIndexChanged.connect(self.addPset)
-        self.form.buttonDelete.clicked.connect(self.removeProperty)
+        self.form.buttonIFCPropertiesDelete.clicked.connect(self.removeProperty)
         self.form.treeProperties.setSortingEnabled(True)
 
         # center the dialog over FreeCAD window

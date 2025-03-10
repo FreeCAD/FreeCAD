@@ -2877,9 +2877,13 @@ Start page
 /**
  * Special handling for WB Tab Bar
  */
- #WbTabBar #WbTabBarMore {
+#WbTabBar #WbTabBarMore {
   padding-right: 12px;
- }
+}
+
+QPushButton[objectName="buttonIFCPropertiesDelete"] {
+  min-width: 100px;
+}
 
 /* Below is a fix for indentation in properties, but this is a QT 6 bug only and so is disabled since Windows is as I write this still on QT 5. */
 /* QTreeView::item:selected:active#groupsTreeView {
