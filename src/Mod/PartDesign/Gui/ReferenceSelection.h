@@ -27,6 +27,9 @@
 #include <Gui/Selection/SelectionFilter.h>
 #include <Mod/PartDesign/Gui/EnumFlags.h>
 
+#include <Gui/Selection/Selection.h>
+#include <App/DocumentObject.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 namespace App {
 class OriginGroupExtension;
 }
@@ -41,11 +44,10 @@ class ReferenceSelection : public Gui::SelectionFilterGate
     AllowSelectionFlags type;
 
 public:
-    ReferenceSelection(const App::DocumentObject* support_,
-                       AllowSelectionFlags type)
+    ReferenceSelection(App::DocumentObject* support_, AllowSelectionFlags allowedTypes)
         : Gui::SelectionFilterGate(nullPointer())
         , support(support_)
-        , type(type)
+        , type(allowedTypes)
     {
     }
     /**

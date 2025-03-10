@@ -29,6 +29,7 @@
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
 # include <QDialog>
+# include <Mod/Sketcher/App/SketchObject.h>
 #endif
 
 #include <App/Document.h>
@@ -60,6 +61,11 @@ using namespace Gui;
 
 bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
+    if (! pObj) {
+        return false;
+    }
+
+
     PartDesign::Body *body = getBody();
     App::OriginGroupExtension* originGroup = getOriginGroupExtension(body);
 
@@ -86,13 +92,19 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
             return false;
     }
 #endif
-    // Handle selection of geometry elements
-    if (Base::Tools::isNullOrEmpty(sSubName))
+    if (Base::Tools::isNullOrEmpty(sSubName)){
+        if (pObj->isDerivedFrom<Sketcher::SketchObject>()) {
+             return type.testFlag(AllowSelection::SKETCH);
+        }
         return type.testFlag(AllowSelection::WHOLE);
+    }
 
     // resolve links if needed
     if (!pObj->isDerivedFrom<Part::Feature>()) {
         pObj = Part::Feature::getShapeOwner(pObj, sSubName);
+        if (!pObj) {
+            return false;
+        }
     }
 
     if (pObj && pObj->isDerivedFrom<Part::Feature>()) {
@@ -104,14 +116,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
 PartDesign::Body* ReferenceSelection::getBody() const
 {
-    PartDesign::Body *body;
-    if (support) {
-        body = PartDesign::Body::findBodyOf (support);
-    }
-    else {
-        body = PartDesignGui::getBody(false);
-    }
-
+    PartDesign::Body *body = support? PartDesign::Body::findBodyOf (support) : body = PartDesignGui::getBody(false);
     return body;
 }
 
@@ -295,6 +300,11 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     selObj = thisObj->getDocument()->getObject(msg.pObjectName);
     if (selObj == thisObj)
         return false;
+     if (selObj) {
+        Base::Console().Log("  Selected object in getReferencedSelection: %s, Type: %s\n",
+                            selObj->getNameInDocument(), selObj->getTypeId().getName());
+    }
+
 
     std::string subname = msg.pSubName;
 
@@ -344,15 +354,13 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
     if (!obj) {
         return {};
     }
-
-    if (PartDesign::Feature::isDatum(obj)) {
+    if (PartDesign::Feature::isDatum(obj) || obj->isDerivedFrom<Sketcher::SketchObject>()) {
         return QString::fromLatin1(obj->getNameInDocument());
     }
-    else if (!sub.empty()) {
+    else if (!sub.empty() && !sub[0].empty()) {
         return QString::fromLatin1(obj->getNameInDocument()) + QStringLiteral(":") +
                QString::fromLatin1(sub.front().c_str());
     }
-
     return {};
 }
 
@@ -398,7 +406,7 @@ std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & obj
 }
 
 std::string buildLinkSubListPythonStr(const std::vector<App::DocumentObject*> & objs,
-        const std::vector<std::string>& subs)
+                                      const std::vector<std::string>& subs)
 {
     if ( objs.empty() ) {
         return "None";
