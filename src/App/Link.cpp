@@ -880,7 +880,7 @@ bool LinkBaseExtension::setupCopyOnChange(
             if (!gname || !boost::starts_with(gname, _GroupPrefix)) {
                 continue;
             }
-            if (!newProps.count(prop)) {
+            if (!newProps.contains(prop)) {
                 parent->removeDynamicProperty(prop->getName());
             }
         }
@@ -1833,7 +1833,7 @@ void LinkBaseExtension::updateGroup()
         }
     }
     for (auto it = plainGroupConns.begin(); it != plainGroupConns.end();) {
-        if (!groupSet.count(it->first)) {
+        if (!groupSet.contains(it->first)) {
             it = plainGroupConns.erase(it);
         }
         else {

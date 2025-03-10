@@ -2107,7 +2107,7 @@ adjustLinkSubs(App::PropertyLinkBase* prop,
                 break;
             }
             if (!newLink) {
-                if (inList.count(sobj)) {
+                if (inList.contains(sobj)) {
                     continue;
                 }
                 newLink = sobj;
@@ -2138,7 +2138,7 @@ bool PropertyLinkSub::adjustLink(const std::set<App::DocumentObject*>& inList)
     if (_pcScope == LinkScope::Hidden) {
         return false;
     }
-    if (!_pcLinkSub || !_pcLinkSub->isAttachedToDocument() || !inList.count(_pcLinkSub)) {
+    if (!_pcLinkSub || !_pcLinkSub->isAttachedToDocument() || !inList.contains(_pcLinkSub)) {
         return false;
     }
     auto subs = _cSubList;
@@ -3229,7 +3229,7 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*>& inLis
     for (std::string& sub : subs) {
         ++idx;
         auto& link = links[idx];
-        if (!link || !link->isAttachedToDocument() || !inList.count(link)) {
+        if (!link || !link->isAttachedToDocument() || !inList.contains(link)) {
             continue;
         }
         touched = true;
@@ -3240,7 +3240,7 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*>& inLis
                 pos = std::string::npos;
                 break;
             }
-            if (!inList.count(sobj)) {
+            if (!inList.contains(sobj)) {
                 link = sobj;
                 sub = sub.substr(pos + 1);
                 break;
@@ -4657,7 +4657,7 @@ bool PropertyXLink::adjustLink(const std::set<App::DocumentObject*>& inList)
     if (_pcScope == LinkScope::Hidden) {
         return false;
     }
-    if (!_pcLink || !_pcLink->isAttachedToDocument() || !inList.count(_pcLink)) {
+    if (!_pcLink || !_pcLink->isAttachedToDocument() || !inList.contains(_pcLink)) {
         return false;
     }
     auto subs = _SubList;
@@ -5479,7 +5479,7 @@ bool PropertyXLinkSubList::adjustLink(const std::set<App::DocumentObject*>& inLi
             ++count;
             continue;
         }
-        if (inList.count(obj) && adjustLinkSubs(this, inList, obj, l._SubList, &values)) {
+        if (inList.contains(obj) && adjustLinkSubs(this, inList, obj, l._SubList, &values)) {
             touched = true;
         }
     }

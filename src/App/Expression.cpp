@@ -997,7 +997,7 @@ ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string>
                 if(it!=nameMap.end())
                     subNameMap.emplace(std::make_pair(obj,std::string()),it->second);
                 auto key = std::make_pair(obj,path.getSubObjectName());
-                if(key.second.empty() || subNameMap.count(key))
+                if(key.second.empty() || subNameMap.contains(key))
                     continue;
                 std::string imported = PropertyLinkBase::tryImportSubName(
                                obj,key.second.c_str(),owner->getDocument(), nameMap);
