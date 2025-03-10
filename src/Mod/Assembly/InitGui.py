@@ -74,6 +74,7 @@ class AssemblyWorkbench(Workbench):
         )
 
         # build commands list
+
         cmdList = [
             "Assembly_CreateAssembly",
             "Assembly_Insert",
