@@ -378,7 +378,7 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
 
     int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
 
-    qreal devicePixelRatio = Client.getDevicePixelRatio();
+    double devicePixelRatio = Client.getDevicePixelRatio();
 
     // simple scaling factor for hardcoded pixel values in the Sketcher
     Client.drawingParameters.pixelScalingFactor = devicePixelRatio;
@@ -1062,7 +1062,7 @@ int EditModeCoinManager::defaultApplicationFontSizePixels() const
     return ViewProviderSketchCoinAttorney::defaultApplicationFontSizePixels(viewProvider);
 }
 
-qreal EditModeCoinManager::getDevicePixelRatio() const
+double EditModeCoinManager::getDevicePixelRatio() const
 {
     return ViewProviderSketchCoinAttorney::getDevicePixelRatio(viewProvider);
 }

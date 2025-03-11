@@ -280,7 +280,7 @@ private:
 
     int defaultApplicationFontSizePixels() const;
 
-    qreal getDevicePixelRatio() const;
+    double getDevicePixelRatio() const;
 
     int getApplicationLogicalDPIX() const;
 
