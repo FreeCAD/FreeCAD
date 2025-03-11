@@ -38,8 +38,7 @@ class window_task_panel:
 
         self.setting_properties = False  # to not trigger edit_properties when setting
         self.obj = obj
-        self.WindowParts = self.obj.WindowParts
-        self.update_parents()
+        self.WindowParts = self.update_parents(self.obj.WindowParts)
 
         self.panel1 = FreeCADGui.PySideUic.loadUi(":/ui/taskWindowComponents.ui")
         self.update_components_list()
@@ -98,22 +97,23 @@ class window_task_panel:
         c9.setFlags(QtCore.Qt.NoItemFlags)
         self.model.setItem(8, 0, c9)
 
-    def update_parents(self):
+    def update_parents(self, windowparts):
         """Updates the parents in the components list.
         Older files did not specify parents, they were implicit"""
 
         parent = None
-        for cnum in range(int(len(self.WindowParts)/5)):
-            name = self.WindowParts[cnum*5]
-            parts = self.WindowParts[cnum*5+2].split(",")
+        for cnum in range(int(len(windowparts)/5)):
+            name = windowparts[cnum*5]
+            parts = windowparts[cnum*5+2].split(",")
             if parent:
                 if any([p.startswith('Parent') for p in parts]):
                     pass  # expicit parents override the old way
                 else:
                     parts.append("Parent"+parent)
-                    self.WindowParts[cnum*5+2] = ",".join(parts)
+                    windowparts[cnum*5+2] = ",".join(parts)
             if any([p.startswith("Edge") for p in parts]):
                 parent = name
+        return windowparts
 
     def update_components_list(self):
         """Updates the components list"""
@@ -287,6 +287,7 @@ class window_task_panel:
         """OK was clicked"""
 
         if self.WindowParts != self.obj.WindowParts:
+            self.WindowParts = self.reorder(self.WindowParts)
             doc = self.obj.Document
             doc.openTransaction(translate("BIM", "Edit window components"))
             self.obj.WindowParts = self.WindowParts
@@ -336,6 +337,38 @@ class window_task_panel:
             set_parent(child, None)
             crawl_child(child)
         QtGui.QTreeWidget.dropEvent(self, event)
+
+    def reorder(self, parts):
+        """Reorder the window parts depending on parents"""
+
+        # https://stackoverflow.com/questions/43980523/how-to-sort-a-list-into-a-hierarchy-structure-parent-child-grandchild
+
+        def list_node(node,level=0):
+            result = node['part']
+            if node.get('children',False):
+                for child in node['children']:
+                    result.extend(list_node(child,level=level+1))
+            return result
+
+        parts = self.update_parents(parts)
+        parts = [parts[i*5:i*5+5] for i in range(int(len(parts)/5))]
+        nodes = {}
+        for part in parts:
+            name = part[0]
+            nodes[name] = { 'name': name, 'part': part }
+        forest = []
+        for part in parts:
+            node = nodes[part[0]]
+            if "Parent" in part[2]:
+                parent_name = [p[6:] for p in part[2].split(",") if p.startswith("Parent")][0]
+                parent = nodes[parent_name]
+                parent.setdefault('children', []).append(node)
+            else:
+                forest.append(node)
+        result = []
+        for node in forest:
+            result.extend(list_node(node,level=0))
+        return result
 
     def invert_opening(self):
         """Inverts the opening direction of this window"""
@@ -424,6 +457,7 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
 
     def __init__(self, task, *args):
         self.task = task
+        self.base_objects = []
         super().__init__(*args)
 
     def paint(self, painter, option, index):
@@ -446,10 +480,16 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
             items = self.get_component_names_minus(self.task.WindowParts, name)
             editor.addItems(items)
         elif row == 3:  # base object
-            editor = QtGui.QPushButton(parent)
-            editor.clicked.connect(self.on_click_baseobject)
-            self.editor_baseobj = editor
-            editor.setEnabled(False)
+            editor = QtGui.QComboBox(parent)
+            items = [""]
+            self.base_objects = [None]
+            if self.task.obj.Base:
+                items.append(self.task.obj.Base.Label)
+                self.base_objects.append(self.task.obj.Base.Name)
+            for c in getattr(self.task.obj, "Components", []):
+                items.append(c.Label)
+                self.base_objects.append(c.Name)
+            editor.addItems(items)
         elif row == 4:  # wires
             editor = QtGui.QPushButton(parent)
             editor.clicked.connect(self.on_click_wires)
@@ -482,7 +522,10 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
             if idx >= 0:
                 editor.setCurrentText(index.data())
         elif row == 3:
-            editor.setText(getattr(self.task.obj.Base, "Label", ""))
+            if index.data():
+                if index.data() in self.base_objects:
+                    idx = self.base_objects.index(index.data())
+                    editor.setCurrentIndex(idx)
         elif row in [5, 6]:
             if index.data():
                 editor.setText(index.data().replace("+V", ""))
@@ -510,7 +553,9 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
         elif row == 2:
             model.setData(index, editor.currentText())
         elif row == 3:
-            model.setData(index, "")
+            idx = editor.currentIndex()
+            if idx > 0:
+                model.setData(index, self.base_objects[idx])
         elif row in [5, 6]:
             val = editor.text()
             if editor.checkState():
@@ -529,16 +574,6 @@ class window_component_delegate(QtGui.QStyledItemDelegate):
             if cname != name:
                 cnames.append(cname)
         return cnames
-
-    def on_click_baseobject(self):
-        """Select a base object"""
-
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            for obn in sel.ObjectNames:
-                if obn != self.task.obj.Name:
-                    self.editor_baseobj.setText(obn)
-                    return
-        self.editor_baseobj.setText("")
 
     def on_click_wires(self):
         """Select wires, or opens the componenbt definition dialog"""

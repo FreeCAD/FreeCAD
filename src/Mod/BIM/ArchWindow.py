@@ -295,6 +295,18 @@ class Window(ArchComponent.Component):
                     "symbols to be added to this window",
                 ),
             )
+        if "Components" not in lp:
+            obj.addProperty(
+                "App::PropertyLinkList",
+                "Components",
+                "Window",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "A list of additional objects to be used"
+                    "as components of this window. A new window"
+                    "component needs to be created for each object listed here",
+                ),
+            )
         obj.setEditorMode("VerticalArea", 2)
         obj.setEditorMode("HorizontalArea", 2)
         obj.setEditorMode("PerimeterLength", 2)
@@ -384,6 +396,15 @@ class Window(ArchComponent.Component):
             ssymbols = []
             vsymbols = []
             compdef = []
+            baseobj = obj.Base
+            ext = None
+            if len(obj.WindowParts[(i * 5) + 1].split(",")) > 1:
+                n = obj.WindowParts[(i * 5) + 1].split(",")[-1]
+                o = obj.Document.getObject(n)
+                if o:
+                    baseobj = o
+                    if o.Shape.Solids:
+                        shape = o.Shape.copy()
             wstr = obj.WindowParts[(i * 5) + 2].split(",")
             for i2, s in enumerate(wstr):
                 vadd = False
@@ -404,9 +425,9 @@ class Window(ArchComponent.Component):
                     compdef += [v]
                 if "Wire" in s:
                     j = int(s[4:])
-                    if obj.Base.Shape.Wires:
-                        if len(obj.Base.Shape.Wires) >= j:
-                            wires.append(obj.Base.Shape.Wires[j])
+                    if baseobj.Shape.Wires:
+                        if len(baseobj.Shape.Wires) >= j:
+                            wires.append(baseobj.Shape.Wires[j])
                 elif "Edge" in s:
                     hinge = int(s[4:]) - 1
                 elif "Mode" in s:
@@ -456,7 +477,10 @@ class Window(ArchComponent.Component):
                         ext = w
                 wires.remove(ext)
                 shape = Part.Face(ext)
-                norm = shape.normalAt(0, 0)
+            if shape:
+                norm = None
+                if hasattr(shape, "normalAt"):
+                    norm = shape.normalAt(0, 0)
                 if hasattr(obj, "Normal"):
                     if obj.Normal:
                         if not DraftVecUtils.isNull(obj.Normal):
@@ -466,8 +490,8 @@ class Window(ArchComponent.Component):
                     if hasattr(obj, "Opening"):
                         if obj.Opening:
                             opening = obj.Opening / 100.0
-                    if obj.Base:
-                        e = obj.Base.Shape.Edges[hinge]
+                    if baseobj:
+                        e = baseobj.Shape.Edges[hinge]
                     else:
                         c = Part.makeCompound(wires)
                         e = c.Edges[hinge]
@@ -592,8 +616,9 @@ class Window(ArchComponent.Component):
                     V = obj.Frame.Value
                 thk = self.get_float(thk) + V
                 if thk:
-                    exv = DraftVecUtils.scaleTo(norm, thk)
-                    shape = shape.extrude(exv)
+                    if ext:
+                        exv = DraftVecUtils.scaleTo(norm, thk)
+                        shape = shape.extrude(exv)
                     for w in wires:
                         f = Part.Face(w)
                         f = f.extrude(exv)
@@ -621,7 +646,7 @@ class Window(ArchComponent.Component):
                         symb.translate(zov)
                     if rotdata:
                         rotdata[0] = rotdata[0].add(zov)
-                if obj.WindowParts[(i * 5) + 1] == "Louvre":
+                if obj.WindowParts[(i * 5) + 1].split(",")[0] == "Louvre":
                     if hasattr(obj, "LouvreWidth"):
                         if obj.LouvreWidth and obj.LouvreSpacing:
                             bb = shape.BoundBox
@@ -967,6 +992,12 @@ class ViewProviderWindow(ArchComponent.ViewProviderComponent):
                                 obj.CloneOf.ViewObject.DiffuseColor
                             )
                             obj.ViewObject.update()
+
+    def claimChildren(self):
+
+        children = super().claimChildren()
+        children.extend(getattr(self.Object, "Components", []))
+        return children
 
     def onDelete(self, vobj, subelements):
 
