@@ -97,7 +97,7 @@ private:
     static inline QFont getApplicationFont(const ViewProviderSketch& vp);
     static inline double getRotation(const ViewProviderSketch& vp, SbVec3f pos0, SbVec3f pos1);
     static inline int defaultApplicationFontSizePixels(const ViewProviderSketch& vp);
-    static inline qreal getDevicePixelRatio(const ViewProviderSketch& vp);
+    static inline double getDevicePixelRatio(const ViewProviderSketch& vp);
     static inline int getApplicationLogicalDPIX(const ViewProviderSketch& vp);
     static inline int getViewOrientationFactor(const ViewProviderSketch& vp);
 
@@ -196,7 +196,7 @@ ViewProviderSketchCoinAttorney::defaultApplicationFontSizePixels(const ViewProvi
     return vp.defaultFontSizePixels();
 }
 
-inline qreal ViewProviderSketchCoinAttorney::getDevicePixelRatio(const ViewProviderSketch& vp)
+inline double ViewProviderSketchCoinAttorney::getDevicePixelRatio(const ViewProviderSketch& vp)
 {
     return vp.getDevicePixelRatio();
 }
