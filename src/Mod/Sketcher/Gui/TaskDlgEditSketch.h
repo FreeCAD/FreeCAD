@@ -69,7 +69,6 @@ public:
     }
     void autoClosedOnClosedView() override;
 
-    /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons() const override;
 
     /** @brief Function used to register a slot to be triggered when the tool widget is changed. */
