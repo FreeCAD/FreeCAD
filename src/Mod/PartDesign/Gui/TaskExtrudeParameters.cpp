@@ -108,6 +108,8 @@ void TaskExtrudeParameters::setupDialog()
 
     // Fill data into dialog elements
     // the direction combobox is later filled in updateUI()
+    ui->lengthEdit->setMinimum(-DBL_MAX);
+    ui->lengthEdit2->setMinimum(-DBL_MAX);
     ui->lengthEdit->setValue(l);
     ui->lengthEdit2->setValue(l2);
     ui->offsetEdit->setValue(off);
@@ -198,6 +200,8 @@ void TaskExtrudeParameters::setupDialog()
 
 void TaskExtrudeParameters::readValuesFromHistory()
 {
+    ui->lengthEdit->setMinimum(-DBL_MAX);
+    ui->lengthEdit2->setMinimum(-DBL_MAX);
     ui->lengthEdit->setToLastUsedValue();
     ui->lengthEdit->selectNumber();
     ui->lengthEdit2->setToLastUsedValue();
