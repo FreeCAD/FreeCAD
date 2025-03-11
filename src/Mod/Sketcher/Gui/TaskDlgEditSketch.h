@@ -29,7 +29,7 @@
 
 #include "TaskSketcherConstraints.h"
 #include "TaskSketcherElements.h"
-#include "TaskSketcherMessages.h"
+#include "TaskSketcherGeneral.h"
 #include "TaskSketcherSolverAdvanced.h"
 #include "TaskSketcherTool.h"
 #include "ViewProviderSketch.h"
@@ -70,10 +70,7 @@ public:
     void autoClosedOnClosedView() override;
 
     /// returns for Close and Help button
-    QDialogButtonBox::StandardButtons getStandardButtons() const override
-    {
-        return QDialogButtonBox::Close;
-    }
+    QDialogButtonBox::StandardButtons getStandardButtons() const override;
 
     /** @brief Function used to register a slot to be triggered when the tool widget is changed. */
     template<typename F>
@@ -85,6 +82,7 @@ public:
 protected:
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
+    void onAutoRecomputeStateChanged();
 
 private:
     void slotToolChanged(const std::string& toolname);
@@ -93,7 +91,7 @@ protected:
     ViewProviderSketch* sketchView;
     TaskSketcherConstraints* Constraints;
     TaskSketcherElements* Elements;
-    TaskSketcherMessages* Messages;
+    TaskSketcherGeneral* Messages;
     TaskSketcherSolverAdvanced* SolverAdvanced;
     TaskSketcherTool* ToolSettings;
 
