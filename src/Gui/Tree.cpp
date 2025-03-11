@@ -108,6 +108,10 @@ static bool isSelectionCheckBoxesEnabled()
     return TreeParams::getCheckBoxesSelection();
 }
 
+static bool isAutoRelabelNewEnabled() {
+    return TreeParams::getAutoRelabelNew();
+}
+
 void TreeParams::onItemBackgroundChanged()
 {
     if (getItemBackground()) {
@@ -3441,6 +3445,9 @@ void TreeWidget::onUpdateStatus()
             if (vpd) {
                 docItem->createNewItem(*vpd);
             }
+            else {
+                RelabelQueue.insert(obj);
+            }
         }
     }
 
@@ -3585,9 +3592,40 @@ void TreeWidget::onUpdateStatus()
     }
 
     updateGeometries();
+
+
     statusTimer->stop();
 
     FC_LOG("done update status");
+}
+
+void TreeWidget::tryOfferRelabel(App::DocumentObject* obj, DocumentItem* docItem)
+{
+    if (!isAutoRelabelNewEnabled()) {
+        return;
+    }
+
+    auto it = docItem->ObjectMap.find(obj);
+    if (it == docItem->ObjectMap.end()) {
+        return;
+    }
+
+    auto data = it->second;
+    QTreeWidgetItem* item = data->rootItem 
+        ? data->rootItem 
+        : (!data->items.empty() ? *data->items.begin() : nullptr);
+
+    if (!item) {
+        return;        
+    }
+
+    // Make sure any labels already in edit are closed
+    closeEditor(viewport()->findChild<QLineEdit*>(), QAbstractItemDelegate::RevertModelCache);
+    
+    QTimer::singleShot(200, this, [this, item]() {
+        editItem(item);
+    });
+
 }
 
 void TreeWidget::onItemEntered(QTreeWidgetItem* item)
