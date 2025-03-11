@@ -66,7 +66,6 @@
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
-#include <chrono>
 #include <gp_Ax2.hxx>
 #include <gp_Ax3.hxx>
 #include <gp_Dir.hxx>
@@ -78,6 +77,7 @@
 #include <App/Document.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
@@ -735,7 +735,7 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
                                        -m_shapeSize,
                                        m_shapeSize);
         BRepTools::Write(mkFace.Face(), "DVSSectionPlane.brep");// debug
-        BRepTools::Write(shape, "DVSShapeToIntersect.brep)");
+        BRepTools::Write(shape, "DVSShapeToIntersect.brep");
     }
     BRep_Builder builder;
     TopoDS_Compound result;
@@ -759,10 +759,6 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 // move section faces to line up with cut shape
 TopoDS_Compound DrawViewSection::alignSectionFaces(TopoDS_Shape faceIntersections)
 {
-    //    Base::Console().Message("DVS::alignSectionFaces() - %s -
-    //    faceIntersection.isnull: %d\n",
-    //                            getNameInDocument(),
-    //                            faceIntersections.IsNull());
     TopoDS_Compound sectionFaces;
     TopoDS_Shape centeredShape =
         ShapeUtils::moveShape(faceIntersections, getOriginalCentroid() * -1.0);
@@ -771,6 +767,10 @@ TopoDS_Compound DrawViewSection::alignSectionFaces(TopoDS_Shape faceIntersection
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
         scaledSection =
             ShapeUtils::rotateShape(scaledSection, getProjectionCS(), Rotation.getValue());
+    }
+
+    if (debugSection()) {
+        BRepTools::Write(scaledSection, "DVSScaledSectionFaces.brep");
     }
 
     return mapToPage(scaledSection);
@@ -796,12 +796,23 @@ TopoDS_Compound DrawViewSection::mapToPage(TopoDS_Shape& shapeToAlign)
     TopExp_Explorer expFace(shapeToAlign, TopAbs_FACE);
     for (int iFace = 1; expFace.More(); expFace.Next(), iFace++) {
         const TopoDS_Face& face = TopoDS::Face(expFace.Current());
+        if (debugSection()) {
+            std::stringstream ss;
+            ss << "DVSFace" << iFace << ".brep";
+            BRepTools::Write(face, ss.str().c_str());// debug
+        }
+
+
         std::vector<TopoDS_Wire> faceWires;
         TopExp_Explorer expWires(face, TopAbs_WIRE);
         for (; expWires.More(); expWires.Next()) {
             const TopoDS_Wire& wire = TopoDS::Wire(expWires.Current());
-            TopoDS_Shape projectedShape =
-                GeometryObject::projectSimpleShape(wire, getProjectionCS());
+            TopoDS_Shape projectedShape = GeometryObject::projectSimpleShape(wire, getProjectionCS());
+            if (debugSection()) {
+                std::stringstream ss;
+                ss << "DVSProjectedWire" << iFace << ".brep";
+                BRepTools::Write(projectedShape, ss.str().c_str());// debug
+            }
             std::vector<TopoDS_Edge> wireEdges;
             // projectedShape is just a bunch of edges. we have to rebuild the wire.
             TopExp_Explorer expEdges(projectedShape, TopAbs_EDGE);
@@ -809,6 +820,7 @@ TopoDS_Compound DrawViewSection::mapToPage(TopoDS_Shape& shapeToAlign)
                 const TopoDS_Edge& edge = TopoDS::Edge(expEdges.Current());
                 wireEdges.push_back(edge);
             }
+
             TopoDS_Wire cleanWire = EdgeWalker::makeCleanWire(wireEdges, 2.0 * EWTOLERANCE);
             faceWires.push_back(cleanWire);
         }
@@ -968,8 +980,8 @@ ChangePointVector DrawViewSection::getChangePointsFromSectionLine()
     if (baseDvp) {
         std::pair<Base::Vector3d, Base::Vector3d> lineEnds = sectionLineEnds();
         // make start and end marks
-        gp_Pnt location0 = DU::to<gp_Pnt>(lineEnds.first);
-        gp_Pnt location1 = DU::to<gp_Pnt>(lineEnds.second);
+        gp_Pnt location0 = Base::convertTo<gp_Pnt>(lineEnds.first);
+        gp_Pnt location1 = Base::convertTo<gp_Pnt>(lineEnds.second);
         gp_Dir postDir = gp_Dir(location1.XYZ() - location0.XYZ());
         gp_Dir preDir = postDir.Reversed();
         ChangePoint startPoint(location0, preDir, postDir);
@@ -1067,13 +1079,13 @@ void DrawViewSection::setCSFromLocalUnit(const Base::Vector3d localUnit)
     //    Base::Console().Message("DVS::setCSFromLocalUnit(%s)\n",
     //    DrawUtil::formatVector(localUnit).c_str());
     gp_Dir verticalDir = getSectionCS().YDirection();
-    gp_Ax1 verticalAxis(DrawUtil::to<gp_Pnt>(SectionOrigin.getValue()), verticalDir);
+    gp_Ax1 verticalAxis(Base::convertTo<gp_Pnt>(SectionOrigin.getValue()), verticalDir);
     gp_Dir oldNormal = getSectionCS().Direction();
-    gp_Dir newNormal = DrawUtil::to<gp_Dir>(projectPoint(localUnit));
+    gp_Dir newNormal = Base::convertTo<gp_Dir>(projectPoint(localUnit));
     double angle = oldNormal.AngleWithRef(newNormal, verticalDir);
     gp_Ax2 newCS = getSectionCS().Rotated(verticalAxis, angle);
-    SectionNormal.setValue(DrawUtil::toVector3d(newCS.Direction()));
-    XDirection.setValue(DrawUtil::toVector3d(newCS.XDirection()));
+    SectionNormal.setValue(Base::convertTo<Base::Vector3d>(newCS.Direction()));
+    XDirection.setValue(Base::convertTo<Base::Vector3d>(newCS.XDirection()));
 }
 
 gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
@@ -1223,6 +1235,33 @@ void DrawViewSection::setupObject()
     replacePatIncluded(FileGeomPattern.getValue());
 
     DrawViewPart::setupObject();
+}
+
+void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
+{
+    if (prop == &SectionOrigin) {
+        // SectionOrigin was PropertyVector but is now PropertyPosition
+        App::PropertyVector tmp;
+        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            auto tmpValue = tmp.getValue();
+            SectionOrigin.setValue(tmpValue);
+        }
+        return;
+    }
+
+    if (prop == &SectionNormal) {
+        // Radius was PropertyVector but is now PropertyDirection
+        App::PropertyVector tmp;
+        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            auto tmpValue = tmp.getValue();
+            SectionNormal.setValue(tmpValue);
+        }
+        return;
+    }
 }
 
 // hatch file routines
