@@ -508,13 +508,7 @@ void AboutDialog::showPrivacyPolicy()
     auto textField = new QTextBrowser(tabPrivacyPolicy);
     textField->setOpenExternalLinks(true);
     hLayout->addWidget(textField);
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    // We can't actually render the markdown, so just display it as text
-    textField->setText(text);
-#else
     textField->setMarkdown(text);
-#endif
 }
 
 void AboutDialog::linkActivated(const QUrl& link)

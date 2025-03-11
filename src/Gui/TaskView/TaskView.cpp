@@ -270,9 +270,6 @@ QSize TaskPanel::minimumSizeHint() const
 TaskView::TaskView(QWidget *parent)
     : QScrollArea(parent),ActiveDialog(nullptr),ActiveCtrl(nullptr)
 {
-    //addWidget(new TaskEditControl(this));
-    //addWidget(new TaskAppearance(this));
-    //addStretch();
     taskPanel = new TaskPanel(this);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy.setHorizontalStretch(0);
@@ -751,7 +748,6 @@ void TaskView::addTaskWatcher()
         taskPanel->addStretch();
     updateWatcher();
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
     // Workaround to avoid a crash in Qt. See also
     // https://forum.freecad.org/viewtopic.php?f=8&t=39187
     //
@@ -762,7 +758,6 @@ void TaskView::addTaskWatcher()
         QEvent event(QEvent::StyleChange);
         QApplication::sendEvent(box, &event);
     }
-#endif
 
     taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }

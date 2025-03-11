@@ -26,7 +26,6 @@
 #endif
 
 #include <App/Application.h>
-#include <Base/QtTools.h>
 #include <Base/Quantity.h>
 #include <Gui/MetaTypes.h>
 
