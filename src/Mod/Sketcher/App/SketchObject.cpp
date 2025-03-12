@@ -2687,6 +2687,7 @@ int SketchObject::transferConstraints(int fromGeoId,
                     if (!doNotTransformTangencies) {
                         constNew->Type = Sketcher::Coincident;
                     }
+                    break;
                 }
                 case Sketcher::Angle:
                     // With respect to angle constraints, if it is a DeepSOIC style angle constraint
