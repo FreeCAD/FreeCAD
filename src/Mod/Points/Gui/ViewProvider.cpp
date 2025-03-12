@@ -37,6 +37,8 @@
 #include <Inventor/nodes/SoPointSet.h>
 #endif
 
+#include <ranges>
+
 #include <App/Document.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
@@ -400,7 +402,7 @@ void ViewProviderScattered::attach(App::DocumentObject* pcObj)
     addDisplayMaskMode(pcPointRoot, "Point");
 
     // points shaded ---------------------------------------------
-    if (std::find(modes.begin(), modes.end(), std::string("Shaded")) != modes.end()) {
+    if (std::ranges::find(modes, std::string("Shaded")) != modes.end()) {
         SoGroup* pcPointShadedRoot = new SoGroup();
         pcPointShadedRoot->addChild(pcPointStyle);
         pcPointShadedRoot->addChild(pcShapeMaterial);
@@ -410,8 +412,8 @@ void ViewProviderScattered::attach(App::DocumentObject* pcObj)
     }
 
     // color shaded  ------------------------------------------
-    if (std::find(modes.begin(), modes.end(), std::string("Color")) != modes.end()
-        || std::find(modes.begin(), modes.end(), std::string("Intensity")) != modes.end()) {
+    if (std::ranges::find(modes, std::string("Color")) != modes.end()
+        || std::ranges::find(modes, std::string("Intensity")) != modes.end()) {
         SoGroup* pcColorShadedRoot = new SoGroup();
         pcColorShadedRoot->addChild(pcPointStyle);
         SoMaterialBinding* pcMatBinding = new SoMaterialBinding;
@@ -572,7 +574,7 @@ void ViewProviderStructured::attach(App::DocumentObject* pcObj)
     addDisplayMaskMode(pcPointRoot, "Point");
 
     // points shaded ---------------------------------------------
-    if (std::find(modes.begin(), modes.end(), std::string("Shaded")) != modes.end()) {
+    if (std::ranges::find(modes, std::string("Shaded")) != modes.end()) {
         SoGroup* pcPointShadedRoot = new SoGroup();
         pcPointShadedRoot->addChild(pcPointStyle);
         pcPointShadedRoot->addChild(pcShapeMaterial);
@@ -582,8 +584,8 @@ void ViewProviderStructured::attach(App::DocumentObject* pcObj)
     }
 
     // color shaded  ------------------------------------------
-    if (std::find(modes.begin(), modes.end(), std::string("Color")) != modes.end()
-        || std::find(modes.begin(), modes.end(), std::string("Intensity")) != modes.end()) {
+    if (std::ranges::find(modes, std::string("Color")) != modes.end()
+        || std::ranges::find(modes, std::string("Intensity")) != modes.end()) {
         SoGroup* pcColorShadedRoot = new SoGroup();
         pcColorShadedRoot->addChild(pcPointStyle);
         SoMaterialBinding* pcMatBinding = new SoMaterialBinding;
