@@ -493,7 +493,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
     double L2 = 0;
     if (method == "TwoLengths") {
         L2 = Length2.getValue();
-        if (std::abs(L2) < Precision::Confusion() && std::abs(L) == 0) {
+        if (std::abs(L2) < Precision::Confusion() && std::abs(L) < Precision::Confusion()) {
             if (addSubType == Type::Additive)
 				return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Length2 too small"));
