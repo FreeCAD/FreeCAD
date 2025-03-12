@@ -41,8 +41,6 @@
 #include <sys/types.h>
 #endif
 
-#include <ranges>
-
 #include "FileInfo.h"
 #include "Exception.h"
 #include "Stream.h"

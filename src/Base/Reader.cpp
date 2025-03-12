@@ -33,7 +33,6 @@
 #endif
 
 #include <locale>
-#include <ranges>
 
 #include "Reader.h"
 #include "Base64.h"

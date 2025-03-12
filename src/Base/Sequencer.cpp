@@ -30,8 +30,6 @@
 #include <cstdio>
 #endif
 
-#include <ranges>
-
 #include "Sequencer.h"
 
 using namespace Base;
