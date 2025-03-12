@@ -22,6 +22,8 @@
 
 #include "PreCompiled.h"
 
+#include <ranges>
+
 #include "Core/Iterator.h"
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
@@ -182,8 +184,7 @@ bool WriterOBJ::Save(std::ostream& out)
             for (auto it = rFacets.begin(); it != rFacets.end(); ++it, index++) {
                 if (index == 0 || prev != Kd[index]) {
                     prev = Kd[index];
-                    auto c_it = std::find(colors.begin(), colors.end(), prev);
-                    if (c_it != colors.end()) {
+                    if (auto c_it = std::ranges::find(colors, prev); c_it != colors.end()) {
                         out << "usemtl material_" << (c_it - colors.begin()) << '\n';
                     }
                 }
@@ -224,8 +225,7 @@ bool WriterOBJ::Save(std::ostream& out)
                     if (first || prev != Kd[it]) {
                         first = false;
                         prev = Kd[it];
-                        auto c_it = std::find(colors.begin(), colors.end(), prev);
-                        if (c_it != colors.end()) {
+                        if (auto c_it = std::ranges::find(colors, prev); c_it != colors.end()) {
                             out << "usemtl material_" << (c_it - colors.begin()) << '\n';
                         }
                     }

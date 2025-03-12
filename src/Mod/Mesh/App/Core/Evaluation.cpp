@@ -27,6 +27,8 @@
 #include <vector>
 #endif
 
+#include <ranges>
+
 #include <Base/Matrix.h>
 #include <Base/Sequencer.h>
 
@@ -403,8 +405,7 @@ void MeshEvalTopology::GetFacetManifolds(std::vector<FacetIndex>& raclFacetIndLi
             PointIndex ulPt1 = std::max<PointIndex>(pI->_aulPoints[i], pI->_aulPoints[(i + 1) % 3]);
             std::pair<PointIndex, PointIndex> edge = std::make_pair(ulPt0, ulPt1);
 
-            if (std::find(nonManifoldList.begin(), nonManifoldList.end(), edge)
-                != nonManifoldList.end()) {
+            if (std::ranges::find(nonManifoldList, edge) != nonManifoldList.end()) {
                 raclFacetIndList.push_back(pI - rclFAry.begin());
             }
         }
