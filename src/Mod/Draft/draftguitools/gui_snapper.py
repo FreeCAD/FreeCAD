@@ -491,9 +491,7 @@ class Snapper:
                     shortest_all = dist
                     winner_all = snap
 
-        if winner_not_near is None:
-            winner = winner_all
-        elif shortest_not_near == shortest_all:
+        if winner_not_near is None or shortest_not_near == shortest_all:
             winner = winner_all
         else:
             view = Draft.get3DView()
