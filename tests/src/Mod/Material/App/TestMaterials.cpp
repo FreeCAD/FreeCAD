@@ -31,8 +31,8 @@
 #include <QString>
 
 #include <App/Application.h>
-#include <Base/Quantity.h>
 #include <Base/Interpreter.h>
+#include <Base/Quantity.h>
 #include <Gui/MetaTypes.h>
 #include <src/App/InitApplication.h>
 
@@ -97,7 +97,7 @@ TEST_F(TestMaterial, TestMaterialsWithModel)
 
     // All LinearElastic models should be in IsotropicLinearElastic since it is inherited
     EXPECT_LE(materialsLinearElastic->size(), materials->size());
-    for (auto itp : *materialsLinearElastic) {
+    for (auto &itp : *materialsLinearElastic) {
         auto mat = itp.first;
         EXPECT_NO_THROW(materials->at(mat));
     }

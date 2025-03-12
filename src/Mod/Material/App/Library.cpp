@@ -97,8 +97,6 @@ bool Library::isRoot(const QString& path) const
 {
     QString localPath = getLocalPath(path);
     QString cleanPath = getLocalPath(QStringLiteral(""));
-    std::string pLocal = localPath.toStdString();
-    std::string pclean = cleanPath.toStdString();
     return (cleanPath == localPath);
 }
 
