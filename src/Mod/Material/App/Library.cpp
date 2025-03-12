@@ -42,9 +42,9 @@ Library::Library(const QString& libraryName, const QString& icon, bool readOnly)
 
 Library::Library(const QString& libraryName, const QString& dir, const QString& icon, bool readOnly)
     : _name(libraryName)
+    , _directory(QDir::cleanPath(dir))
     , _iconPath(icon)
     , _readOnly(readOnly)
-    , _directory(QDir::cleanPath(dir))
 {}
 
 bool Library::operator==(const Library& library) const
