@@ -114,7 +114,7 @@ public:
     /** @name Error handling */
     //@{
     void addError(const std::string&);
-    bool hasErrors() const;
+    bool hasErrors();
     void clearErrors();
     std::vector<std::string> getErrors() const;
     //@}

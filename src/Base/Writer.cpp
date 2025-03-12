@@ -231,8 +231,16 @@ void Writer::addError(const std::string& msg)
     Errors.push_back(msg);
 }
 
-bool Writer::hasErrors() const
+bool Writer::hasErrors()
 {
+    switch (errno) {
+        case ENOSPC:  // No space left
+        case EROFS:   // Read only
+        case ENODEV:  // No such device
+        case EACCES:  // Access denied
+            addError(strerror(errno));
+    }
+
     return (!Errors.empty());
 }
 
