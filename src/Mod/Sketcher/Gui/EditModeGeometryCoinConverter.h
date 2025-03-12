@@ -154,7 +154,7 @@ private:
     template<typename GeoType, PointsMode pointmode, CurveMode curvemode, AnalyseMode analysemode>
     void convert(const Sketcher::GeometryFacade* geometryfacade,
                  [[maybe_unused]] int geoId,
-                 int subLayerId = 0);
+                 [[maybe_unused]] int subLayerId = 0);
 
 private:
     /// Reference to ViewProviderSketch in order to access the public and the Attorney Interface

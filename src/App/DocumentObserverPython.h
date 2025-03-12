@@ -106,7 +106,7 @@ private:
     /** Called when an object gets a dynamic property removed*/
     void slotRemoveDynamicProperty(const App::Property& Prop);
     /** Called when an object property gets a new editor relevant status like hidden or read only*/
-    void slotChangePropertyEditor(const App::Document &Doc, const App::Property& Prop);
+    void slotChangePropertyEditor(const App::Document& Doc, const App::Property& Prop);
     /** Called when a document is about to be saved*/
     void slotStartSaveDocument(const App::Document&, const std::string&);
     /** Called when an document has been saved*/
@@ -121,12 +121,14 @@ private:
     Py::Object inst;
     static std::vector<DocumentObserverPython*> _instances;
 
-    using Connection = struct PythonObject {
-       boost::signals2::scoped_connection slot;
-       Py::Object py;
-       PyObject* ptr() {
-           return py.ptr();
-       }
+    using Connection = struct PythonObject
+    {
+        boost::signals2::scoped_connection slot;
+        Py::Object py;
+        PyObject* ptr()
+        {
+            return py.ptr();
+        }
     };
 
     Connection pyCreatedDocument;
@@ -160,6 +162,6 @@ private:
     Connection pyAddedDynamicExtension;
 };
 
-} //namespace App
+}  // namespace App
 
-#endif // APP_DOCUMENTOBSERVERPYTHON_H
+#endif  // APP_DOCUMENTOBSERVERPYTHON_H

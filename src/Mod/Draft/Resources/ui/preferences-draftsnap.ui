@@ -90,14 +90,13 @@ showing the main square size in the bottom left corner</string>
         </property>
         <property name="toolTip">
          <string>If checked, the outline of a human figure is displayed at the bottom left
-corner of the grid. Only effective if the BIM workbench is installed and
-&quot;Show grid border&quot; is enabled.</string>
+corner of the grid. Only effective if &quot;Show grid border&quot; is enabled.</string>
         </property>
         <property name="text">
          <string>Show human figure</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>gridShowHuman</cstring>
@@ -148,6 +147,9 @@ Major grid lines are thicker than minor grid lines.</string>
         </property>
         <property name="suffix">
          <string> squares</string>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
         </property>
         <property name="value">
          <number>10</number>
@@ -221,7 +223,7 @@ Major grid lines are thicker than minor grid lines.</string>
          <string> squares</string>
         </property>
         <property name="maximum">
-         <number>9999</number>
+         <number>10000</number>
         </property>
         <property name="value">
          <number>100</number>
@@ -355,7 +357,7 @@ Major grid lines are thicker than minor grid lines.</string>
          <color>
           <red>255</red>
           <green>170</green>
-          <blue>255</blue>
+          <blue>0</blue>
          </color>
         </property>
         <property name="prefEntry" stdset="0">

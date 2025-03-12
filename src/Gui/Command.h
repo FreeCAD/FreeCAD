@@ -28,7 +28,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <Base/Type.h>
 #include <Gui/Application.h>
@@ -1117,7 +1117,7 @@ protected: \
     virtual bool isActive(void)\
     {\
         Gui::MDIView* view = Gui::getMainWindow()->activeWindow();\
-        return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId());\
+        return view && view->isDerivedFrom<Gui::View3DInventor>();\
     }\
 private:\
     X(const X&) = delete;\

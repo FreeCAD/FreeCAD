@@ -1234,6 +1234,5 @@ Py::Object StdMeshers_LayerDistributionPy::getLayerDistribution(const Py::Tuple&
     if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
     }
-    // return hypothesis<StdMeshers_LayerDistribution>()->GetLayerDistribution();
     return Py::None();
 }

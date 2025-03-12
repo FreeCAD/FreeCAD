@@ -35,7 +35,7 @@ std::string OriginGroupExtensionPy::representation() const
     return {"<OriginGroup object>"};
 }
 
-PyObject *OriginGroupExtensionPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* OriginGroupExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
@@ -44,5 +44,3 @@ int OriginGroupExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* 
 {
     return 0;
 }
-
-

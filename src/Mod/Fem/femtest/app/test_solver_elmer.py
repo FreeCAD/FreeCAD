@@ -40,9 +40,7 @@ class TestSolverElmer(unittest.TestCase):
     fcc_print("import TestSolverElmer")
 
     # ********************************************************************************************
-    def setUp(
-        self
-    ):
+    def setUp(self):
         # setUp is executed before every test
 
         # new document
@@ -52,10 +50,7 @@ class TestSolverElmer(unittest.TestCase):
         self.pre_dir_name = "solver_elmer_"
         self.ending = ".sif"
         self.infilename = "case"
-        self.test_file_dir = join(
-            testtools.get_fem_test_home_dir(),
-            "elmer"
-        )
+        self.test_file_dir = join(testtools.get_fem_test_home_dir(), "elmer")
         # set Units
         # since in Elmer writer the FreeCAD pref is used, here we need to set the FreeCAD pref
         # the use of FreeCAD.Units.setScheme would not take affect because the pref is not changed
@@ -64,14 +59,12 @@ class TestSolverElmer(unittest.TestCase):
         self.saved_unit_schema = param.GetInt("UserSchema")
 
     # ********************************************************************************************
-    def tearDown(
-        self
-    ):
+    def tearDown(self):
         # set back unit unit schema
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
         unit_schema = param.GetInt("UserSchema")
         if unit_schema != self.saved_unit_schema:
-            fcc_print("Reset unit schema back to {}".format(self.saved_unit_schema))
+            fcc_print(f"Reset unit schema back to {self.saved_unit_schema}")
             param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
             param.SetInt("UserSchema", self.saved_unit_schema)
 
@@ -80,39 +73,34 @@ class TestSolverElmer(unittest.TestCase):
         fcc_print("")
 
     # ********************************************************************************************
-    def test_00print(
-        self
-    ):
+    def test_00print(self):
         # since method name starts with 00 this will be run first
         # this test just prints a line with stars
 
-        fcc_print("\n{0}\n{1} run FEM TestSolverElmer tests {2}\n{0}".format(
-            100 * "*",
-            10 * "*",
-            55 * "*"
-        ))
+        fcc_print(
+            "\n{0}\n{1} run FEM TestSolverElmer tests {2}\n{0}".format(
+                100 * "*", 10 * "*", 55 * "*"
+            )
+        )
 
     # ********************************************************************************************
-    def set_unit_schema(
-        self,
-        new_unit_schema=0
-    ):
+    def set_unit_schema(self, new_unit_schema=0):
         fcc_print(
-            "\nSaved unit schema: {}. Set unit schema to {}."
-            .format(self.saved_unit_schema, new_unit_schema)
+            "\nSaved unit schema: {}. Set unit schema to {}.".format(
+                self.saved_unit_schema, new_unit_schema
+            )
         )
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
         param.SetInt("UserSchema", new_unit_schema)
 
     # ********************************************************************************************
-    def test_box_static_0_mm(
-        self
-    ):
+    def test_box_static_0_mm(self):
         fcc_print("")
         self.set_unit_schema(0)  # mm/kg/s
 
         # set up the Elmer static analysis example
         from femexamples.boxanalysis_static import setup
+
         setup(self.document, "elmer")
 
         # for information:
@@ -131,9 +119,7 @@ class TestSolverElmer(unittest.TestCase):
         # write input files
         # fcc_print("Checking FEM input file writing for Elmer solver framework solver ...")
         machine_elmer = self.document.SolverElmer.Proxy.createMachine(
-            self.document.SolverElmer,
-            analysis_dir,
-            True
+            self.document.SolverElmer, analysis_dir, True
         )
         machine_elmer.target = femsolver.run.PREPARE
         machine_elmer.start()
@@ -144,67 +130,60 @@ class TestSolverElmer(unittest.TestCase):
         startinfo_totest = join(analysis_dir, "ELMERSOLVER_STARTINFO")
         # fcc_print("Comparing {} to {}".format(startinfo_given, startinfo_totest))
         ret = testtools.compare_files(startinfo_given, startinfo_totest)
-        self.assertFalse(ret, "STARTINFO write file test failed.\n{}".format(ret))
+        self.assertFalse(ret, f"STARTINFO write file test failed.\n{ret}")
 
         fcc_print("Test writing case file")
         casefile_given = join(self.test_file_dir, base_name + self.ending)
         casefile_totest = join(analysis_dir, self.infilename + self.ending)
         # fcc_print("Comparing {} to {}".format(casefile_given, casefile_totest))
         ret = testtools.compare_files(casefile_given, casefile_totest)
-        self.assertFalse(ret, "case write file test failed.\n{}".format(ret))
+        self.assertFalse(ret, f"case write file test failed.\n{ret}")
 
         fcc_print("Test writing GMSH geo file")
         gmshgeofile_given = join(self.test_file_dir, "group_mesh.geo")
         gmshgeofile_totest = join(analysis_dir, "group_mesh.geo")
         # fcc_print("Comparing {} to {}".format(gmshgeofile_given, gmshgeofile_totest))
         ret = testtools.compare_files(gmshgeofile_given, gmshgeofile_totest)
-        self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
+        self.assertFalse(ret, f"GMSH geo write file test failed.\n{ret}")
 
     # ********************************************************************************************
-    def test_ccxcantilever_faceload_0_mm(
-        self
-    ):
+    def test_ccxcantilever_faceload_0_mm(self):
         fcc_print("")
         self.set_unit_schema(0)  # mm/kg/s
         from femexamples.ccx_cantilever_faceload import setup
+
         setup(self.document, "elmer")
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_ccxcantilever_faceload_1_si(
-        self
-    ):
+    def test_ccxcantilever_faceload_1_si(self):
         fcc_print("")
         self.set_unit_schema(1)  # SI-units m/kg/s
         from femexamples.ccx_cantilever_faceload import setup
+
         setup(self.document, "elmer")
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_ccxcantilever_nodeload_0_mm(
-        self
-    ):
+    def test_ccxcantilever_nodeload_0_mm(self):
         fcc_print("")
         self.set_unit_schema(0)  # mm/kg/s
         from femexamples.ccx_cantilever_nodeload import setup
+
         setup(self.document, "elmer")
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_ccxcantilever_prescribeddisplacement_0_mm(
-        self
-    ):
+    def test_ccxcantilever_prescribeddisplacement_0_mm(self):
         fcc_print("")
         self.set_unit_schema(0)  # mm/kg/s
         from femexamples.ccx_cantilever_prescribeddisplacement import setup
+
         setup(self.document, "elmer")
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def input_file_writing_test(
-        self,
-        base_name
-    ):
+    def input_file_writing_test(self, base_name):
         self.document.recompute()
 
         # get analysis working directory and save FreeCAD file
@@ -215,29 +194,15 @@ class TestSolverElmer(unittest.TestCase):
 
         # write input file
         machine = self.document.SolverElmer.Proxy.createMachine(
-            self.document.SolverElmer,
-            working_dir,
-            True  # set testmode to True
+            self.document.SolverElmer, working_dir, True  # set testmode to True
         )
         machine.target = femsolver.run.PREPARE
         machine.start()
         machine.join()  # wait for the machine to finish
 
         # compare input file with the given one
-        inpfile_given = join(
-            self.test_file_dir,
-            base_name + self.ending
-        )
-        inpfile_totest = join(
-            working_dir,
-            self.infilename + self.ending
-        )
+        inpfile_given = join(self.test_file_dir, base_name + self.ending)
+        inpfile_totest = join(working_dir, self.infilename + self.ending)
         # fcc_print("Comparing {}  to  {}".format(inpfile_given, inpfile_totest))
-        ret = testtools.compare_inp_files(
-            inpfile_given,
-            inpfile_totest
-        )
-        self.assertFalse(
-            ret,
-            "Elmer write_inp_file for {0} test failed.\n{1}".format(base_name, ret)
-        )
+        ret = testtools.compare_inp_files(inpfile_given, inpfile_totest)
+        self.assertFalse(ret, f"Elmer write_inp_file for {base_name} test failed.\n{ret}")

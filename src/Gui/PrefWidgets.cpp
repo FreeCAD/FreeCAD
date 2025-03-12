@@ -30,7 +30,7 @@
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 
 #include "PrefWidgets.h"
 
@@ -169,6 +169,15 @@ void PrefWidget::failedToRestore(const QString& name) const
 PrefSpinBox::PrefSpinBox ( QWidget * parent )
   : QSpinBox(parent), PrefWidget()
 {
+    setFocusPolicy(Qt::FocusPolicy::StrongFocus);
+}
+
+void PrefSpinBox::wheelEvent(QWheelEvent *event)
+{
+    if (hasFocus())
+        QSpinBox::wheelEvent(event);
+    else
+        event->ignore();
 }
 
 PrefSpinBox::~PrefSpinBox() = default;
@@ -201,6 +210,15 @@ void PrefSpinBox::savePreferences()
 PrefDoubleSpinBox::PrefDoubleSpinBox ( QWidget * parent )
   : QDoubleSpinBox(parent), PrefWidget()
 {
+    setFocusPolicy(Qt::FocusPolicy::StrongFocus);
+}
+
+void PrefDoubleSpinBox::wheelEvent(QWheelEvent *event)
+{
+    if (hasFocus())
+        QDoubleSpinBox::wheelEvent(event);
+    else
+        event->ignore();    
 }
 
 PrefDoubleSpinBox::~PrefDoubleSpinBox() = default;
@@ -332,6 +350,15 @@ void PrefFileChooser::savePreferences()
 PrefComboBox::PrefComboBox ( QWidget * parent )
   : QComboBox(parent), PrefWidget()
 {
+    setFocusPolicy(Qt::FocusPolicy::StrongFocus);
+}
+
+void PrefComboBox::wheelEvent(QWheelEvent *event)
+{
+    if (hasFocus())
+        QComboBox::wheelEvent(event);
+    else
+        event->ignore();      
 }
 
 PrefComboBox::~PrefComboBox() = default;
@@ -535,12 +562,12 @@ void PrefColorButton::restorePreferences()
   if (!m_Restored)
     m_Default = color();
 
-  unsigned int icol = App::Color::asPackedRGBA<QColor>(m_Default);
+  unsigned int icol = Base::Color::asPackedRGBA<QColor>(m_Default);
 
   unsigned long lcol = static_cast<unsigned long>(icol);
   lcol = getWindowParameter()->GetUnsigned(entryName(), lcol);
   icol = static_cast<unsigned int>(lcol);
-  QColor value = App::Color::fromPackedRGBA<QColor>(icol);
+  QColor value = Base::Color::fromPackedRGBA<QColor>(icol);
   if (!this->allowTransparency())
     value.setAlpha(0xff);
   setColor(value);
@@ -556,7 +583,7 @@ void PrefColorButton::savePreferences()
 
   QColor col = color();
   // (r,g,b,a) with a = 255 (opaque)
-  unsigned int icol = App::Color::asPackedRGBA<QColor>(col);
+  unsigned int icol = Base::Color::asPackedRGBA<QColor>(col);
   unsigned long lcol = static_cast<unsigned long>(icol);
   getWindowParameter()->SetUnsigned( entryName(), lcol );
 }
@@ -566,6 +593,15 @@ void PrefColorButton::savePreferences()
 PrefUnitSpinBox::PrefUnitSpinBox ( QWidget * parent )
   : QuantitySpinBox(parent), PrefWidget()
 {
+    setFocusPolicy(Qt::FocusPolicy::StrongFocus);
+}
+
+void PrefUnitSpinBox::wheelEvent(QWheelEvent *event)
+{
+    if (hasFocus())
+        QuantitySpinBox::wheelEvent(event);
+    else
+        event->ignore();        
 }
 
 PrefUnitSpinBox::~PrefUnitSpinBox() = default;
@@ -662,6 +698,7 @@ PrefQuantitySpinBox::PrefQuantitySpinBox (QWidget * parent)
   : QuantitySpinBox(parent)
   , d_ptr(new PrefQuantitySpinBoxPrivate())
 {
+    setFocusPolicy(Qt::FocusPolicy::StrongFocus);
 }
 
 PrefQuantitySpinBox::~PrefQuantitySpinBox() = default;
@@ -672,7 +709,7 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
 
     QMenu *editMenu = lineEdit()->createStandardContextMenu();
     editMenu->setTitle(tr("Edit"));
-    std::unique_ptr<QMenu> menu(new QMenu(QString::fromLatin1("PrefQuantitySpinBox")));
+    std::unique_ptr<QMenu> menu(new QMenu(QStringLiteral("PrefQuantitySpinBox")));
 
     menu->addMenu(editMenu);
     menu->addSeparator();
@@ -706,6 +743,14 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
             lineEdit()->setText(prop.toString());
         }
     }
+}
+
+void PrefQuantitySpinBox::wheelEvent(QWheelEvent *event)
+{
+    if (hasFocus())
+        QuantitySpinBox::wheelEvent(event);
+    else
+        event->ignore();        
 }
 
 void PrefQuantitySpinBox::restorePreferences()

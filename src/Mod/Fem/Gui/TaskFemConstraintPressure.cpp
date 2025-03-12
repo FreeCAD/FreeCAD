@@ -30,8 +30,9 @@
 #endif
 
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintPressure.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintPressure.h"
 #include "ui_TaskFemConstraintPressure.h"
@@ -55,8 +56,7 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(
     this->groupLayout()->addWidget(proxy);
 
     // Get the feature data
-    Fem::ConstraintPressure* pcConstraint =
-        static_cast<Fem::ConstraintPressure*>(ConstraintView->getObject());
+    Fem::ConstraintPressure* pcConstraint = ConstraintView->getObject<Fem::ConstraintPressure>();
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
@@ -119,8 +119,7 @@ void TaskFemConstraintPressure::updateUI()
 
 void TaskFemConstraintPressure::onCheckReverse(const bool pressed)
 {
-    Fem::ConstraintPressure* pcConstraint =
-        static_cast<Fem::ConstraintPressure*>(ConstraintView->getObject());
+    Fem::ConstraintPressure* pcConstraint = ConstraintView->getObject<Fem::ConstraintPressure>();
     pcConstraint->Reversed.setValue(pressed);
 }
 
@@ -132,8 +131,7 @@ void TaskFemConstraintPressure::addToSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintPressure* pcConstraint =
-        static_cast<Fem::ConstraintPressure*>(ConstraintView->getObject());
+    Fem::ConstraintPressure* pcConstraint = ConstraintView->getObject<Fem::ConstraintPressure>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -187,8 +185,7 @@ void TaskFemConstraintPressure::removeFromSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintPressure* pcConstraint =
-        static_cast<Fem::ConstraintPressure*>(ConstraintView->getObject());
+    Fem::ConstraintPressure* pcConstraint = ConstraintView->getObject<Fem::ConstraintPressure>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
@@ -253,17 +250,12 @@ const std::string TaskFemConstraintPressure::getReferences() const
 
 std::string TaskFemConstraintPressure::getPressure() const
 {
-    return ui->if_pressure->value().getSafeUserString().toStdString();
+    return ui->if_pressure->value().getSafeUserString();
 }
 
 bool TaskFemConstraintPressure::getReverse() const
 {
     return ui->checkBoxReverse->isChecked();
-}
-
-bool TaskFemConstraintPressure::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintPressure::changeEvent(QEvent*)
@@ -295,21 +287,6 @@ TaskDlgFemConstraintPressure::TaskDlgFemConstraintPressure(
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintPressure::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Pressure load");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintPressure::accept()
 {
     /* Note: */
@@ -326,11 +303,6 @@ bool TaskDlgFemConstraintPressure::accept()
                                 "App.ActiveDocument.%s.Reversed = %s",
                                 name.c_str(),
                                 parameterPressure->getReverse() ? "True" : "False");
-        std::string scale = parameterPressure->getScale();  // OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -338,15 +310,6 @@ bool TaskDlgFemConstraintPressure::accept()
     }
     /* */
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintPressure::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintPressure.cpp"

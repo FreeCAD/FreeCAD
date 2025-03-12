@@ -114,6 +114,8 @@ private Q_SLOTS:
 
 private:
     void setupInterface();
+    QStringList reportViewStrings;
+    void generateReport();
     void recursiveCheck(const BRepCheck_Analyzer &shapeCheck, const TopoDS_Shape &shape,
                         ResultEntry *parent);
     void checkSub(const BRepCheck_Analyzer &shapeCheck, const TopoDS_Shape &shape,

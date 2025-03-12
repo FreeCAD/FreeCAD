@@ -20,9 +20,15 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
     ${SMESH_INCLUDE_DIR}
     ${NETGEN_INCLUDE_DIRS}
@@ -133,6 +139,8 @@ SET(FemSet_SRCS
     FemSetObject.h
     FemSetNodesObject.cpp
     FemSetNodesObject.h
+    FemSetElementNodesObject.cpp
+    FemSetElementNodesObject.h
     FemSetElementsObject.cpp
     FemSetElementsObject.h
     FemSetFacesObject.cpp
@@ -197,8 +205,11 @@ endif(FREECAD_USE_PCH)
 
 add_library(Fem SHARED ${Fem_SRCS})
 target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Fem)
+endif()
 
-find_package(OpenMP)
+find_package(OpenMP 4.0)
 if(OpenMP_CXX_FOUND)
 	target_link_libraries(Fem OpenMP::OpenMP_CXX)
 endif()

@@ -43,7 +43,7 @@ Reset deletes all current items from the list and fills the list with all circul
      <item row="1" column="0">
       <widget class="QPushButton" name="addBase">
        <property name="toolTip">
-        <string>Add selected items from 3d view to the list of base geometries</string>
+        <string>Add selected items from 3D view to the list of base geometries</string>
        </property>
        <property name="text">
         <string>Add</string>

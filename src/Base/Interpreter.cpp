@@ -485,8 +485,6 @@ void InterpreterSingleton::runFile(const char* pxFileName, bool local)
 
 bool InterpreterSingleton::loadModule(const char* psModName)
 {
-    // buffer acrobatics
-    // PyBuf ModName(psModName);
     PyObject* module {};
 
     PyGILStateLocker locker;
@@ -557,7 +555,7 @@ const char* InterpreterSingleton::init(int argc, char* argv[])
             PyRun_SimpleString(
                 "# Check for virtualenv, and activate if present.\n"
                 "# See "
-                "https://virtualenv.pypa.io/en/latest/userguide/"
+                "https://virtualenv.pypa.io/en/latest/"
                 "#using-virtualenv-without-bin-python\n"
                 "import os\n"
                 "import sys\n"
@@ -566,10 +564,6 @@ const char* InterpreterSingleton::init(int argc, char* argv[])
                 "    activate_this = os.path.join(base_path, \"bin\", \"activate_this.py\")\n"
                 "    exec(open(activate_this).read(), {'__file__':activate_this})\n");
         }
-
-#if PY_VERSION_HEX < 0x03090000
-        PyEval_InitThreads();
-#endif
 
         size_t size = argc;
         static std::vector<wchar_t*> _argv(size);
@@ -605,22 +599,22 @@ void initInterpreter(int argc, char* argv[])
         throw Base::RuntimeError("Failed to init from config");
     }
 
+    // If FreeCAD was run from within a Python virtual environment, ensure that the site-packages
+    // directory from that environment is used.
+    const char* virtualenv = getenv("VIRTUAL_ENV");
+    if (virtualenv) {
+        std::wstringstream ss;
+        PyConfig_Read(&config);
+        ss << virtualenv << L"/lib/python" << PY_MAJOR_VERSION << "." << PY_MINOR_VERSION
+           << "/site-packages";
+        PyObject* venvLocation = PyUnicode_FromWideChar(ss.str().c_str(), ss.str().size());
+        PyObject* path = PySys_GetObject("path");
+        PyList_Append(path, venvLocation);
+    }
+
     PyConfig_Clear(&config);
 
     Py_Initialize();
-    const char* virtualenv = getenv("VIRTUAL_ENV");
-    if (virtualenv) {
-        PyRun_SimpleString(
-            "# Check for virtualenv, and activate if present.\n"
-            "# See "
-            "https://virtualenv.pypa.io/en/latest/userguide/#using-virtualenv-without-bin-python\n"
-            "import os\n"
-            "import sys\n"
-            "base_path = os.getenv(\"VIRTUAL_ENV\")\n"
-            "if not base_path is None:\n"
-            "    activate_this = os.path.join(base_path, \"bin\", \"activate_this.py\")\n"
-            "    exec(open(activate_this).read(), {'__file__':activate_this})\n");
-    }
 }
 }  // namespace
 const char* InterpreterSingleton::init(int argc, char* argv[])
@@ -774,11 +768,7 @@ void InterpreterSingleton::runMethod(PyObject* pobject,
         throw TypeError("InterpreterSingleton::RunMethod() wrong arguments");
     }
 
-#if PY_VERSION_HEX < 0x03090000
-    presult = PyEval_CallObject(pmeth, pargs); /* run interpreter */
-#else
     presult = PyObject_CallObject(pmeth, pargs); /* run interpreter */
-#endif
 
     Py_DECREF(pmeth);
     Py_DECREF(pargs);

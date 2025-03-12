@@ -151,7 +151,9 @@ class ToDo:
         ToDo.itinerary = []
 
         if ToDo.commitlist:
-            for name, func in ToDo.commitlist:
+            commit_list = ToDo.commitlist
+            ToDo.commitlist = []  # Reset immediately to avoid race condition.
+            for name, func in commit_list:
                 if _DEBUG_inner:
                     _msg("Debug: committing.\n"
                          "name: {}\n".format(name))
@@ -174,7 +176,7 @@ class ToDo:
             # Restack Draft screen widgets after creation
             if hasattr(Gui, "Snapper"):
                 Gui.Snapper.restack()
-        ToDo.commitlist = []
+
 
         for f, arg in ToDo.afteritinerary:
             try:

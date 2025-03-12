@@ -5624,13 +5624,13 @@ RF
 
 
 ***********************************************************
-*END STEP 
+*END STEP
 
 ***********************************************************
 ** CalculiX Input file
 **   written by    --> FreeCAD 0.21.0
 **   written on    --> Tue Mar 28 06:51:00 2023
-**   file name     --> 
+**   file name     --> constraint_contact_solid_solid.FCStd
 **   analysis name --> Analysis
 **
 **

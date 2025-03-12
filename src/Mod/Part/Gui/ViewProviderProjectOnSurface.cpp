@@ -64,7 +64,7 @@ bool ViewProviderProjectOnSurface::setEdit(int ModNum)
             return false;
         }
 
-        if (auto feature = dynamic_cast<Part::ProjectOnSurface*>(getObject())) {
+        if (auto feature = getObject<Part::ProjectOnSurface>()) {
             Gui::Control().showDialog(new TaskProjectOnSurface(feature));
             return true;
         }

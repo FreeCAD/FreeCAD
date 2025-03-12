@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2023 Uwe Stöhr <uwestoehr@lyx.org>                      *
+# *   Copyright (c) 2025 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,42 +23,41 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM constraint magnetization task panel for the document object"
-__author__ = "Uwe Stöhr"
+__author__ = "Uwe Stöhr, Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
 ## @package task_constraint_magnetization
 #  \ingroup FEM
 #  \brief task panel for constraint magnetization object
 
+from PySide import QtCore
+
 import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
 
-from femtools import femutils
 from femtools import membertools
+from . import base_femtaskpanel
 
 
-class _TaskPanel(object):
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
     def __init__(self, obj):
-        self._obj = obj
+        super().__init__(obj)
 
-        self._paramWidget = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/Magnetization.ui")
-        self._initParamWidget()
+        self.parameter_widget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/Magnetization.ui"
+        )
 
         # geometry selection widget
         # magnetization is always a body force for 3D, therefore only allow solid
-        self._selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Solid", "Face"],
-            True,
-            False
+        self._selection_widget = selection_widgets.GeometryElementsSelection(
+            obj.References, ["Solid", "Face"], True, False
         )
 
         # form made from param and selection widget
-        self.form = [self._paramWidget, self._selectionWidget]
+        self.form = [self.parameter_widget, self._selection_widget]
 
         analysis = obj.getParentGroup()
         self._mesh = None
@@ -65,9 +65,57 @@ class _TaskPanel(object):
         if analysis is not None:
             self._mesh = membertools.get_single_member(analysis, "Fem::FemMeshObject")
         if self._mesh is not None:
-            self._part = femutils.get_part_to_mesh(self._mesh)
+            self._part = self._mesh.Shape
         self._partVisible = None
         self._meshVisible = None
+
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_magnetization_1,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.magnetization_1_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_magnetization_re_1,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.magnetization_re_1_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_magnetization_2,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.magnetization_2_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_magnetization_re_2,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.magnetization_re_2_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_magnetization_3,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.magnetization_3_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_magnetization_re_3,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.magnetization_re_3_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_magnetization_im_1,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.magnetization_im_1_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_magnetization_im_2,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.magnetization_im_2_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_magnetization_im_3,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.magnetization_im_3_changed,
+        )
+
+        self.init_parameter_widget()
 
     def open(self):
         if self._mesh is not None and self._part is not None:
@@ -78,17 +126,16 @@ class _TaskPanel(object):
 
     def reject(self):
         self._restoreVisibility()
-        FreeCADGui.ActiveDocument.resetEdit()
-        return True
+        self._selection_widget.finish_selection()
+        return super().reject()
 
     def accept(self):
-        if self._obj.References != self._selectionWidget.references:
-            self._obj.References = self._selectionWidget.references
-        self._applyWidgetChanges()
-        self._obj.Document.recompute()
-        FreeCADGui.ActiveDocument.resetEdit()
+        if self.obj.References != self._selection_widget.references:
+            self.obj.References = self._selection_widget.references
+        self._set_params()
+        self._selection_widget.finish_selection()
         self._restoreVisibility()
-        return True
+        return super().accept()
 
     def _restoreVisibility(self):
         if self._mesh is not None and self._part is not None:
@@ -101,87 +148,102 @@ class _TaskPanel(object):
             else:
                 self._part.ViewObject.hide()
 
-    def _initParamWidget(self):
-        self._paramWidget.realXQSB.setProperty(
-            'value', self._obj.Magnetization_re_1)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.realXQSB).bind(self._obj, "Magnetization_re_1")
-        self._paramWidget.realYQSB.setProperty(
-            'value', self._obj.Magnetization_re_2)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.realYQSB).bind(self._obj, "Magnetization_re_2")
-        self._paramWidget.realZQSB.setProperty(
-            'value', self._obj.Magnetization_re_3)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.realZQSB).bind(self._obj, "Magnetization_re_3")
-        self._paramWidget.imagXQSB.setProperty(
-            'value', self._obj.Magnetization_im_1)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.imagXQSB).bind(self._obj, "Magnetization_im_1")
-        self._paramWidget.imagYQSB.setProperty(
-            'value', self._obj.Magnetization_im_2)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.imagYQSB).bind(self._obj, "Magnetization_im_2")
-        self._paramWidget.imagZQSB.setProperty(
-            'value', self._obj.Magnetization_im_3)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.imagZQSB).bind(self._obj, "Magnetization_im_3")
+    def _get_params(self):
+        self.magnetization_re_1 = self.obj.Magnetization_re_1
+        self.magnetization_re_2 = self.obj.Magnetization_re_2
+        self.magnetization_re_3 = self.obj.Magnetization_re_3
+        self.magnetization_im_1 = self.obj.Magnetization_im_1
+        self.magnetization_im_2 = self.obj.Magnetization_im_2
+        self.magnetization_im_3 = self.obj.Magnetization_im_3
 
-        self._paramWidget.reXunspecBox.setChecked(
-            self._obj.Magnetization_re_1_Disabled)
-        self._paramWidget.reYunspecBox.setChecked(
-            self._obj.Magnetization_re_2_Disabled)
-        self._paramWidget.reZunspecBox.setChecked(
-            self._obj.Magnetization_re_3_Disabled)
-        self._paramWidget.imXunspecBox.setChecked(
-            self._obj.Magnetization_im_1_Disabled)
-        self._paramWidget.imYunspecBox.setChecked(
-            self._obj.Magnetization_im_2_Disabled)
-        self._paramWidget.imZunspecBox.setChecked(
-            self._obj.Magnetization_im_3_Disabled)
+        self.magnetization_1_enabled = self.obj.EnableMagnetization_1
+        self.magnetization_2_enabled = self.obj.EnableMagnetization_2
+        self.magnetization_3_enabled = self.obj.EnableMagnetization_3
 
-    def _applyMagnetizationChanges(self, enabledBox, magnetizationQSB):
-        enabled = enabledBox.isChecked()
-        magnetization = None
-        try:
-            magnetization = magnetizationQSB.property('value')
-        except ValueError:
-            FreeCAD.Console.PrintMessage(
-                "Wrong input. Not recognised input: '{}' "
-                "Magnetization has not been set.\n".format(magnetizationQSB.text())
-            )
-            magnetization = '0.0 A/m'
-        return enabled, magnetization
+    def _set_params(self):
+        self.obj.Magnetization_re_1 = self.magnetization_re_1
+        self.obj.Magnetization_re_2 = self.magnetization_re_2
+        self.obj.Magnetization_re_3 = self.magnetization_re_3
+        self.obj.Magnetization_im_1 = self.magnetization_im_1
+        self.obj.Magnetization_im_2 = self.magnetization_im_2
+        self.obj.Magnetization_im_3 = self.magnetization_im_3
 
-    def _applyWidgetChanges(self):
-        # apply the magnetizations and their enabled state
-        self._obj.Magnetization_re_1_Disabled, self._obj.Magnetization_re_1 = \
-            self._applyMagnetizationChanges(
-                self._paramWidget.reXunspecBox,
-                self._paramWidget.realXQSB
-            )
-        self._obj.Magnetization_re_2_Disabled, self._obj.Magnetization_re_2 = \
-            self._applyMagnetizationChanges(
-                self._paramWidget.reYunspecBox,
-                self._paramWidget.realYQSB
-            )
-        self._obj.Magnetization_re_3_Disabled, self._obj.Magnetization_re_3 = \
-            self._applyMagnetizationChanges(
-                self._paramWidget.reZunspecBox,
-                self._paramWidget.realZQSB
-            )
-        self._obj.Magnetization_im_1_Disabled, self._obj.Magnetization_im_1 = \
-            self._applyMagnetizationChanges(
-                self._paramWidget.imXunspecBox,
-                self._paramWidget.imagXQSB
-            )
-        self._obj.Magnetization_im_2_Disabled, self._obj.Magnetization_im_2 = \
-            self._applyMagnetizationChanges(
-                self._paramWidget.imYunspecBox,
-                self._paramWidget.imagYQSB
-            )
-        self._obj.Magnetization_im_3_Disabled, self._obj.Magnetization_im_3 = \
-            self._applyMagnetizationChanges(
-                self._paramWidget.imZunspecBox,
-                self._paramWidget.imagZQSB
-            )
+        self.obj.EnableMagnetization_1 = self.magnetization_1_enabled
+        self.obj.EnableMagnetization_2 = self.magnetization_2_enabled
+        self.obj.EnableMagnetization_3 = self.magnetization_3_enabled
+
+    def init_parameter_widget(self):
+        self._get_params()
+
+        self.parameter_widget.qsb_magnetization_re_1.setProperty("value", self.magnetization_re_1)
+        self.parameter_widget.qsb_magnetization_re_1.setEnabled(self.magnetization_1_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_magnetization_re_1).bind(
+            self.obj, "Magnetization_re_1"
+        )
+
+        self.parameter_widget.qsb_magnetization_re_2.setProperty("value", self.magnetization_re_2)
+        self.parameter_widget.qsb_magnetization_re_2.setEnabled(self.magnetization_2_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_magnetization_re_2).bind(
+            self.obj, "Magnetization_re_2"
+        )
+
+        self.parameter_widget.qsb_magnetization_re_3.setProperty("value", self.magnetization_re_3)
+        self.parameter_widget.qsb_magnetization_re_3.setEnabled(self.magnetization_3_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_magnetization_re_3).bind(
+            self.obj, "Magnetization_re_3"
+        )
+
+        self.parameter_widget.qsb_magnetization_im_1.setProperty("value", self.magnetization_im_1)
+        self.parameter_widget.qsb_magnetization_im_1.setEnabled(self.magnetization_1_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_magnetization_im_1).bind(
+            self.obj, "Magnetization_im_1"
+        )
+
+        self.parameter_widget.qsb_magnetization_im_2.setProperty("value", self.magnetization_im_2)
+        self.parameter_widget.qsb_magnetization_im_2.setEnabled(self.magnetization_2_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_magnetization_im_2).bind(
+            self.obj, "Magnetization_im_2"
+        )
+
+        self.parameter_widget.qsb_magnetization_im_3.setProperty("value", self.magnetization_im_3)
+        self.parameter_widget.qsb_magnetization_im_3.setEnabled(self.magnetization_3_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_magnetization_im_3).bind(
+            self.obj, "Magnetization_im_3"
+        )
+
+        self.parameter_widget.ckb_magnetization_1.setChecked(self.magnetization_1_enabled)
+        self.parameter_widget.ckb_magnetization_2.setChecked(self.magnetization_2_enabled)
+        self.parameter_widget.ckb_magnetization_3.setChecked(self.magnetization_3_enabled)
+
+    def magnetization_1_enabled_changed(self, value):
+        self.magnetization_1_enabled = value
+        self.parameter_widget.qsb_magnetization_re_1.setEnabled(value)
+        self.parameter_widget.qsb_magnetization_im_1.setEnabled(value)
+
+    def magnetization_2_enabled_changed(self, value):
+        self.magnetization_2_enabled = value
+        self.parameter_widget.qsb_magnetization_re_2.setEnabled(value)
+        self.parameter_widget.qsb_magnetization_im_2.setEnabled(value)
+
+    def magnetization_3_enabled_changed(self, value):
+        self.magnetization_3_enabled = value
+        self.parameter_widget.qsb_magnetization_re_3.setEnabled(value)
+        self.parameter_widget.qsb_magnetization_im_3.setEnabled(value)
+
+    def magnetization_re_1_changed(self, value):
+        self.magnetization_re_1 = value
+
+    def magnetization_re_2_changed(self, value):
+        self.magnetization_re_2 = value
+
+    def magnetization_re_3_changed(self, value):
+        self.magnetization_re_3 = value
+
+    def magnetization_im_1_changed(self, value):
+        self.magnetization_im_1 = value
+
+    def magnetization_im_2_changed(self, value):
+        self.magnetization_im_2 = value
+
+    def magnetization_im_3_changed(self, value):
+        self.magnetization_im_3 = value

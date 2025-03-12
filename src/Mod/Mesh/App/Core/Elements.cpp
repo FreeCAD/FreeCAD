@@ -48,9 +48,8 @@ PointIndex MeshPointArray::Get(const MeshPoint& rclPoint)
     if (clIter != end()) {
         return clIter - begin();
     }
-    else {
-        return POINT_INDEX_MAX;
-    }
+
+    return POINT_INDEX_MAX;
 }
 
 PointIndex MeshPointArray::GetOrAddIndex(const MeshPoint& rclPoint)
@@ -61,21 +60,20 @@ PointIndex MeshPointArray::GetOrAddIndex(const MeshPoint& rclPoint)
         push_back(rclPoint);
         return static_cast<PointIndex>(size() - 1);
     }
-    else {
-        return ulIndex;
-    }
+
+    return ulIndex;
 }
 
 void MeshPointArray::SetFlag(MeshPoint::TFlagType tF) const
 {
-    for (MeshPointArray::_TConstIterator i = begin(); i < end(); ++i) {
+    for (auto i = begin(); i < end(); ++i) {
         i->SetFlag(tF);
     }
 }
 
 void MeshPointArray::ResetFlag(MeshPoint::TFlagType tF) const
 {
-    for (MeshPointArray::_TConstIterator i = begin(); i < end(); ++i) {
+    for (auto i = begin(); i < end(); ++i) {
         i->ResetFlag(tF);
     }
 }
@@ -150,14 +148,14 @@ void MeshFacetArray::DecrementIndices(PointIndex ulIndex)
 
 void MeshFacetArray::SetFlag(MeshFacet::TFlagType tF) const
 {
-    for (MeshFacetArray::_TConstIterator i = begin(); i < end(); ++i) {
+    for (auto i = begin(); i < end(); ++i) {
         i->SetFlag(tF);
     }
 }
 
 void MeshFacetArray::ResetFlag(MeshFacet::TFlagType tF) const
 {
-    for (MeshFacetArray::_TConstIterator i = begin(); i < end(); ++i) {
+    for (auto i = begin(); i < end(); ++i) {
         i->ResetFlag(tF);
     }
 }
@@ -202,11 +200,7 @@ bool MeshGeomEdge::ContainedByOrIntersectBoundingBox(const Base::BoundBox3f& rcl
     }
 
     // "real" test for cut
-    if (IntersectBoundingBox(rclBB)) {
-        return true;
-    }
-
-    return false;
+    return (IntersectBoundingBox(rclBB));
 }
 
 Base::BoundBox3f MeshGeomEdge::GetBoundBox() const
@@ -225,18 +219,18 @@ bool MeshGeomEdge::IntersectBoundingBox(const Base::BoundBox3f& rclBB) const
     Vector3<float> n = B - A;
     float len = n.Length();
     n.Normalize();
-    Vector3<float> p = 0.5f * (A + B);
+    Vector3<float> p = 0.5F * (A + B);
 
-    Segment3<float> akSeg(p, n, 0.5f * len);
+    Segment3<float> akSeg(p, n, 0.5F * len);
 
     Base::Vector3f clCenter = rclBB.GetCenter();
     Vector3<float> center(clCenter.x, clCenter.y, clCenter.z);
-    Vector3<float> axis0(1.0f, 0.0f, 0.0f);
-    Vector3<float> axis1(0.0f, 1.0f, 0.0f);
-    Vector3<float> axis2(0.0f, 0.0f, 1.0f);
-    float extent0 = 0.5f * rclBB.LengthX();
-    float extent1 = 0.5f * rclBB.LengthY();
-    float extent2 = 0.5f * rclBB.LengthZ();
+    Vector3<float> axis0(1.0F, 0.0F, 0.0F);
+    Vector3<float> axis1(0.0F, 1.0F, 0.0F);
+    Vector3<float> axis2(0.0F, 0.0F, 1.0F);
+    float extent0 = 0.5F * rclBB.LengthX();
+    float extent1 = 0.5F * rclBB.LengthY();
+    float extent2 = 0.5F * rclBB.LengthZ();
 
     Box3<float> kBox(center, axis0, axis1, axis2, extent0, extent1, extent2);
 
@@ -248,7 +242,7 @@ bool MeshGeomEdge::IntersectWithLine(const Base::Vector3f& rclPt,
                                      const Base::Vector3f& rclDir,
                                      Base::Vector3f& rclRes) const
 {
-    const float eps = 1e-06f;
+    const float eps = 1e-06F;
     Base::Vector3f n = _aclPoints[1] - _aclPoints[0];
 
     // check angle between edge and the line direction, FLOAT_MAX is
@@ -309,7 +303,7 @@ bool MeshGeomEdge::IsCollinear(const MeshGeomEdge& edge) const
 
 bool MeshGeomEdge::IntersectWithEdge(const MeshGeomEdge& edge, Base::Vector3f& res) const
 {
-    const float eps = 1e-06f;
+    const float eps = 1e-06F;
     Base::Vector3f p(_aclPoints[0]);
     Base::Vector3f r(_aclPoints[1] - _aclPoints[0]);
     Base::Vector3f q(edge._aclPoints[0]);
@@ -332,17 +326,16 @@ bool MeshGeomEdge::IntersectWithEdge(const MeshGeomEdge& edge, Base::Vector3f& r
 
             return false;
         }
-        else {
-            // Parallel
-            return false;
-        }
+
+        // Parallel
+        return false;
     }
     else {
         // Get the distance of q to the plane defined by p and n
         float distance = q.DistanceToPlane(p, n);
 
         // lines are warped
-        if (fabs(distance) > eps) {
+        if (std::fabs(distance) > eps) {
             return false;
         }
 
@@ -350,7 +343,7 @@ bool MeshGeomEdge::IntersectWithEdge(const MeshGeomEdge& edge, Base::Vector3f& r
         float u = d.Cross(r).Dot(n) / n.Sqr();
 
         auto is_in_range = [](float v) {
-            return v >= 0.0f && v <= 1.0f;
+            return v >= 0.0F && v <= 1.0F;
         };
 
         if (is_in_range(t) && is_in_range(u)) {
@@ -370,7 +363,7 @@ bool MeshGeomEdge::IntersectWithPlane(const Base::Vector3f& rclPt,
     float dist2 = _aclPoints[1].DistanceToPlane(rclPt, rclDir);
 
     // either both points are below or above the plane
-    if (dist1 * dist2 >= 0.0f) {
+    if (dist1 * dist2 >= 0.0F) {
         return false;
     }
 
@@ -396,7 +389,7 @@ void MeshGeomEdge::ClosestPointsToLine(const Base::Vector3f& linePt,
                                        Base::Vector3f& rclPnt1,
                                        Base::Vector3f& rclPnt2) const
 {
-    const float eps = 1e-06f;
+    const float eps = 1e-06F;
     Base::Vector3f edgeDir = _aclPoints[1] - _aclPoints[0];
 
     // check angle between edge and the line direction, FLOAT_MAX is
@@ -437,8 +430,8 @@ void MeshGeomEdge::ClosestPointsToLine(const Base::Vector3f& linePt,
 bool MeshGeomEdge::IsPointOf(const Base::Vector3f& rclPoint, float fDistance) const
 {
     float len2 = Base::DistanceP2(_aclPoints[0], _aclPoints[1]);
-    if (len2 == 0.0f) {
-        return _aclPoints[0].IsEqual(rclPoint, 0.0f);
+    if (len2 == 0.0F) {
+        return _aclPoints[0].IsEqual(rclPoint, 0.0F);
     }
 
     Base::Vector3f p2p1 = _aclPoints[1] - _aclPoints[0];
@@ -446,7 +439,7 @@ bool MeshGeomEdge::IsPointOf(const Base::Vector3f& rclPoint, float fDistance) co
 
     float dot = pXp1 * p2p1;
     float t = dot / len2;
-    if (t < 0.0f || t > 1.0f) {
+    if (t < 0.0F || t > 1.0F) {
         return false;
     }
 
@@ -460,7 +453,7 @@ bool MeshGeomEdge::IsProjectionPointOf(const Base::Vector3f& point) const
     Base::Vector3f fromStartToPoint = point - _aclPoints[0];
     Base::Vector3f fromPointToEnd = _aclPoints[1] - point;
     float dot = fromStartToPoint * fromPointToEnd;
-    return dot >= 0.0f;
+    return dot >= 0.0F;
 }
 
 // -----------------------------------------------------------------
@@ -503,7 +496,7 @@ bool MeshGeomFacet::IsPointOf(const Base::Vector3f& rclPoint, float fDistance) c
     // Edge P0 --> P1
     clEdge = clP1 - clP0;
     fLP = clProjPt.DistanceToLine(clP0, clEdge);
-    if (fLP > 0.0f) {
+    if (fLP > 0.0F) {
         fLE = clP2.DistanceToLine(clP0, clEdge);
         if (fLP <= fLE) {
             if (clProjPt.DistanceToLine(clP2, clEdge) > fLE) {
@@ -518,7 +511,7 @@ bool MeshGeomFacet::IsPointOf(const Base::Vector3f& rclPoint, float fDistance) c
     // Edge P0 --> P2
     clEdge = clP2 - clP0;
     fLP = clProjPt.DistanceToLine(clP0, clEdge);
-    if (fLP > 0.0f) {
+    if (fLP > 0.0F) {
         fLE = clP1.DistanceToLine(clP0, clEdge);
         if (fLP <= fLE) {
             if (clProjPt.DistanceToLine(clP1, clEdge) > fLE) {
@@ -533,7 +526,7 @@ bool MeshGeomFacet::IsPointOf(const Base::Vector3f& rclPoint, float fDistance) c
     // Edge P1 --> P2
     clEdge = clP2 - clP1;
     fLP = clProjPt.DistanceToLine(clP1, clEdge);
-    if (fLP > 0.0f) {
+    if (fLP > 0.0F) {
         fLE = clP0.DistanceToLine(clP1, clEdge);
         if (fLP <= fLE) {
             if (clProjPt.DistanceToLine(clP0, clEdge) > fLE) {
@@ -570,15 +563,15 @@ bool MeshGeomFacet::IsPointOfFace(const Base::Vector3f& rclP, float fDistance) c
         return false;
     }
 
-    if (n * n1 <= 0.0f) {
+    if (n * n1 <= 0.0F) {
         return false;
     }
 
-    if (n * n2 <= 0.0f) {
+    if (n * n2 <= 0.0F) {
         return false;
     }
 
-    if (n * n3 <= 0.0f) {
+    if (n * n3 <= 0.0F) {
         return false;
     }
 
@@ -596,7 +589,7 @@ bool MeshGeomFacet::Weights(const Base::Vector3f& rclP, float& w0, float& w1, fl
     w1 = fAreaPCA / fAreaABC;
     w2 = fAreaPAB / fAreaABC;
 
-    return fabs(w0 + w1 + w2 - 1.0f) < 0.001f;
+    return std::fabs(w0 + w1 + w2 - 1.0F) < 0.001F;
 }
 
 void MeshGeomFacet::ProjectPointToPlane(const Base::Vector3f& rclPoint,
@@ -627,7 +620,7 @@ void MeshGeomFacet::Enlarge(float fDist)
         clV = _aclPoints[ulP3] - _aclPoints[ulP1];
         clM = -(clU + clV);
         fA = clM.GetAngle(-clU);
-        fD = fDist / float(sin(fA));
+        fD = fDist / float(std::sin(fA));
         clM.Normalize();
         clM.Scale(fD, fD, fD);
         clPNew[ulP1] = _aclPoints[ulP1] + clM;
@@ -720,9 +713,9 @@ bool MeshGeomFacet::IntersectBoundingBox(const Base::BoundBox3f& rclBB) const
     float len2 = (v2 - v0).Length();
 
     // Build up the line segments
-    Vector3<float> p0(0.5f * (v0.x + v1.x), 0.5f * (v0.y + v1.y), 0.5f * (v0.z + v1.z));
-    Vector3<float> p1(0.5f * (v1.x + v2.x), 0.5f * (v1.y + v2.y), 0.5f * (v1.z + v2.z));
-    Vector3<float> p2(0.5f * (v2.x + v0.x), 0.5f * (v2.y + v0.y), 0.5f * (v2.z + v0.z));
+    Vector3<float> p0(0.5F * (v0.x + v1.x), 0.5F * (v0.y + v1.y), 0.5F * (v0.z + v1.z));
+    Vector3<float> p1(0.5F * (v1.x + v2.x), 0.5F * (v1.y + v2.y), 0.5F * (v1.z + v2.z));
+    Vector3<float> p2(0.5F * (v2.x + v0.x), 0.5F * (v2.y + v0.y), 0.5F * (v2.z + v0.z));
 
     Vector3<float> d0(v1.x - v0.x, v1.y - v0.y, v1.z - v0.z);
     d0.Normalize();
@@ -731,19 +724,19 @@ bool MeshGeomFacet::IntersectBoundingBox(const Base::BoundBox3f& rclBB) const
     Vector3<float> d2(v0.x - v2.x, v0.y - v2.y, v0.z - v2.z);
     d2.Normalize();
 
-    Segment3<float> akSeg0(p0, d0, len0 / 2.0f);
-    Segment3<float> akSeg1(p1, d1, len1 / 2.0f);
-    Segment3<float> akSeg2(p2, d2, len2 / 2.0f);
+    Segment3<float> akSeg0(p0, d0, len0 / 2.0F);
+    Segment3<float> akSeg1(p1, d1, len1 / 2.0F);
+    Segment3<float> akSeg2(p2, d2, len2 / 2.0F);
 
     // Build up the box
     Base::Vector3f clCenter = rclBB.GetCenter();
     Vector3<float> center(clCenter.x, clCenter.y, clCenter.z);
-    Vector3<float> axis0(1.0f, 0.0f, 0.0f);
-    Vector3<float> axis1(0.0f, 1.0f, 0.0f);
-    Vector3<float> axis2(0.0f, 0.0f, 1.0f);
-    float extent0 = 0.5f * rclBB.LengthX();
-    float extent1 = 0.5f * rclBB.LengthY();
-    float extent2 = 0.5f * rclBB.LengthZ();
+    Vector3<float> axis0(1.0F, 0.0F, 0.0F);
+    Vector3<float> axis1(0.0F, 1.0F, 0.0F);
+    Vector3<float> axis2(0.0F, 0.0F, 1.0F);
+    float extent0 = 0.5F * rclBB.LengthX();
+    float extent1 = 0.5F * rclBB.LengthY();
+    float extent2 = 0.5F * rclBB.LengthZ();
 
     Box3<float> akBox(center, axis0, axis1, axis2, extent0, extent1, extent2);
 
@@ -757,12 +750,7 @@ bool MeshGeomFacet::IntersectBoundingBox(const Base::BoundBox3f& rclBB) const
         return true;
     }
     IntrSegment3Box3<float> akSec2(akSeg2, akBox, false);
-    if (akSec2.Test()) {
-        return true;
-    }
-
-    // no intersection
-    return false;
+    return (akSec2.Test());
 }
 
 bool MeshGeomFacet::IntersectWithPlane(const Base::Vector3f& rclBase,
@@ -770,7 +758,7 @@ bool MeshGeomFacet::IntersectWithPlane(const Base::Vector3f& rclBase,
                                        Base::Vector3f& rclP1,
                                        Base::Vector3f& rclP2) const
 {
-    const float eps = 1e-06f;
+    const float eps = 1e-06F;
 
     // the triangle's corner points
     const Base::Vector3f& v0 = _aclPoints[0];
@@ -803,9 +791,9 @@ bool MeshGeomFacet::IntersectWithPlane(const Base::Vector3f& rclBase,
     float len2 = (v2 - v0).Length();
 
     // Build up the line segments
-    Vector3<float> p0(0.5f * (v0.x + v1.x), 0.5f * (v0.y + v1.y), 0.5f * (v0.z + v1.z));
-    Vector3<float> p1(0.5f * (v1.x + v2.x), 0.5f * (v1.y + v2.y), 0.5f * (v1.z + v2.z));
-    Vector3<float> p2(0.5f * (v2.x + v0.x), 0.5f * (v2.y + v0.y), 0.5f * (v2.z + v0.z));
+    Vector3<float> p0(0.5F * (v0.x + v1.x), 0.5F * (v0.y + v1.y), 0.5F * (v0.z + v1.z));
+    Vector3<float> p1(0.5F * (v1.x + v2.x), 0.5F * (v1.y + v2.y), 0.5F * (v1.z + v2.z));
+    Vector3<float> p2(0.5F * (v2.x + v0.x), 0.5F * (v2.y + v0.y), 0.5F * (v2.z + v0.z));
 
     Vector3<float> d0(v1.x - v0.x, v1.y - v0.y, v1.z - v0.z);
     d0.Normalize();
@@ -814,9 +802,9 @@ bool MeshGeomFacet::IntersectWithPlane(const Base::Vector3f& rclBase,
     Vector3<float> d2(v0.x - v2.x, v0.y - v2.y, v0.z - v2.z);
     d2.Normalize();
 
-    Segment3<float> akSeg0(p0, d0, len0 / 2.0f);
-    Segment3<float> akSeg1(p1, d1, len1 / 2.0f);
-    Segment3<float> akSeg2(p2, d2, len2 / 2.0f);
+    Segment3<float> akSeg0(p0, d0, len0 / 2.0F);
+    Segment3<float> akSeg1(p1, d1, len1 / 2.0F);
+    Segment3<float> akSeg2(p2, d2, len2 / 2.0F);
 
     // Build up the plane
     Vector3<float> p(rclBase.x, rclBase.y, rclBase.z);
@@ -840,7 +828,7 @@ bool MeshGeomFacet::IntersectWithPlane(const Base::Vector3f& rclBase,
         }
         return true;
     }
-    else if (dist1 < eps) {
+    if (dist1 < eps) {
         rclP1 = v1;
         rclP2 = v1;
         if (test2.Find()) {
@@ -849,7 +837,7 @@ bool MeshGeomFacet::IntersectWithPlane(const Base::Vector3f& rclBase,
         }
         return true;
     }
-    else if (dist2 < eps) {
+    if (dist2 < eps) {
         rclP1 = v2;
         rclP2 = v2;
         if (test0.Find()) {
@@ -869,7 +857,7 @@ bool MeshGeomFacet::IntersectWithPlane(const Base::Vector3f& rclBase,
             rclP2.Set(intr[0], intr[1], intr[2]);
             return true;
         }
-        else if (test2.Find()) {
+        if (test2.Find()) {
             intr = p2 + test2.GetSegmentT() * d2;
             rclP2.Set(intr[0], intr[1], intr[2]);
             return true;
@@ -894,7 +882,7 @@ bool MeshGeomFacet::Foraminate(const Base::Vector3f& P,
                                Base::Vector3f& I,
                                float fMaxAngle) const
 {
-    const float eps = 1e-06f;
+    const float eps = 1e-06F;
     Base::Vector3f n = this->GetNormal();
 
     // check angle between facet normal and the line direction, FLOAT_MAX is
@@ -925,13 +913,13 @@ bool MeshGeomFacet::Foraminate(const Base::Vector3f& P,
     float vv = v * v;
     float wu = w * u;
     float wv = w * v;
-    float det = float(fabs((uu * vv) - (uv * uv)));
+    float det = float(std::fabs((uu * vv) - (uv * uv)));
 
     float s = (vv * wu) - (uv * wv);
     float t = (uu * wv) - (uv * wu);
 
     // is the intersection point inside the triangle?
-    if ((s >= 0.0f) && (t >= 0.0f) && ((s + t) <= det)) {
+    if ((s >= 0.0F) && (t >= 0.0F) && ((s + t) <= det)) {
         I = w + this->_aclPoints[0];
         return true;
     }
@@ -944,7 +932,7 @@ bool MeshGeomFacet::IntersectPlaneWithLine(const Base::Vector3f& rclPt,
                                            Base::Vector3f& rclRes) const
 {
     // calculate the intersection of the straight line <-> plane
-    if (fabs(rclDir * GetNormal()) < 1e-3f) {
+    if (fabs(rclDir * GetNormal()) < 1e-3F) {
         return false;  // line and plane are parallel
     }
 
@@ -962,7 +950,7 @@ bool MeshGeomFacet::IntersectWithLine(const Base::Vector3f& rclPt,
         return false;  // line and plane are parallel
     }
     // Check if the intersection point is inside the facet
-    return IsPointOfFace(rclRes, 1e-03f);
+    return IsPointOfFace(rclRes, 1e-03F);
 }
 
 float MeshGeomFacet::DistanceToLineSegment(const Base::Vector3f& rclP1,
@@ -975,9 +963,9 @@ float MeshGeomFacet::DistanceToLineSegment(const Base::Vector3f& rclP1,
     Vector3<float> n = B - A;
     float len = n.Length();
     n.Normalize();
-    Vector3<float> p = 0.5f * (A + B);
+    Vector3<float> p = 0.5F * (A + B);
 
-    Segment3<float> akSeg(p, n, 0.5f * len);
+    Segment3<float> akSeg(p, n, 0.5F * len);
 
     // triangle
     Vector3<float> akF0(_aclPoints[0].x, _aclPoints[0].y, _aclPoints[0].z);
@@ -1042,8 +1030,8 @@ void MeshGeomFacet::SubSample(float fStep, std::vector<Base::Vector3f>& rclPoint
     clVecHNorm.Normalize();
 
     float bx = fLenAB;
-    float cy = float(sin(clVecAB.GetAngle(clVecAC)) * fLenAC);
-    float cx = float(sqrt(fabs(fLenAC * fLenAC - cy * cy)));
+    float cy = float(std::sin(clVecAB.GetAngle(clVecAC)) * fLenAC);
+    float cx = float(std::sqrt(std::fabs(fLenAC * fLenAC - cy * cy)));
 
     float fDetABC = bx * cy;
 
@@ -1055,7 +1043,7 @@ void MeshGeomFacet::SubSample(float fStep, std::vector<Base::Vector3f>& rclPoint
             float v = (px * cy - cx * py) / fDetABC;
             float w = (bx * py) / fDetABC;
 
-            if ((u >= 0.0f) && (v >= 0.0f) && (w >= 0.0f) && ((u + v) < 1.0f)) {
+            if ((u >= 0.0F) && (v >= 0.0F) && (w >= 0.0F) && ((u + v) < 1.0F)) {
                 // rclPoints.push_back(CBase::Vector3f(u*A + v*B + w*C));
                 Base::Vector3f clV = A + (px * clVecABNorm) + (py * clVecHNorm);
                 clPoints.push_back(clV);
@@ -1076,10 +1064,10 @@ void MeshGeomFacet::SubSample(float fStep, std::vector<Base::Vector3f>& rclPoint
 
 bool MeshGeomFacet::IsCoplanar(const MeshGeomFacet& facet) const
 {
-    const float eps = 1e-06f;
-    const float unit = 0.9995f;
-    float mult = fabs(this->GetNormal() * facet.GetNormal());
-    float dist = fabs(DistancePlaneToPoint(facet._aclPoints[0]));
+    const float eps = 1e-06F;
+    const float unit = 0.9995F;
+    float mult = std::fabs(this->GetNormal() * facet.GetNormal());
+    float dist = std::fabs(DistancePlaneToPoint(facet._aclPoints[0]));
     return (mult >= unit) && (dist <= eps);
 }
 
@@ -1139,7 +1127,7 @@ int MeshGeomFacet::IntersectWithFacet(const MeshGeomFacet& rclFacet,
             rclPt1 = intersections[1];
             return 2;
         }
-        else if (intersections.size() == 1) {
+        if (intersections.size() == 1) {
             rclPt0 = intersections[0];
             rclPt1 = intersections[0];
             return 1;
@@ -1186,13 +1174,13 @@ int MeshGeomFacet::IntersectWithFacet(const MeshGeomFacet& rclFacet,
     // model. So, a plausibility check is to verify that the intersection points
     // are inside the bounding boxes of both triangles.
     Base::BoundBox3f box1 = this->GetBoundBox();
-    box1.Enlarge(0.001f);
+    box1.Enlarge(0.001F);
     if (!box1.IsInBox(rclPt0) || !box1.IsInBox(rclPt1)) {
         return 0;
     }
 
     Base::BoundBox3f box2 = rclFacet.GetBoundBox();
-    box2.Enlarge(0.001f);
+    box2.Enlarge(0.001F);
     if (!box2.IsInBox(rclPt0) || !box2.IsInBox(rclPt1)) {
         return 0;
     }
@@ -1202,7 +1190,7 @@ int MeshGeomFacet::IntersectWithFacet(const MeshGeomFacet& rclFacet,
     // behaviour occurs if the triangles are nearly co-planar
     float mult = fabs(this->GetNormal() * rclFacet.GetNormal());
     if (rclPt0 == rclPt1) {
-        if (mult < 0.995f) {  // not co-planar, thus no test needed
+        if (mult < 0.995F) {  // not co-planar, thus no test needed
             return 1;
         }
         if (this->IsPointOf(rclPt0) && rclFacet.IsPointOf(rclPt0)) {
@@ -1210,7 +1198,7 @@ int MeshGeomFacet::IntersectWithFacet(const MeshGeomFacet& rclFacet,
         }
     }
     else {
-        if (mult < 0.995f) {  // not co-planar, thus no test needed
+        if (mult < 0.995F) {  // not co-planar, thus no test needed
             return 2;
         }
         if (this->IsPointOf(rclPt0) && rclFacet.IsPointOf(rclPt0) && this->IsPointOf(rclPt1)
@@ -1270,7 +1258,7 @@ float MeshGeomFacet::CenterOfInscribedCircle(Base::Vector3f& rclCenter) const
 
     // radius of the circle
     float fRadius = Area();
-    fRadius *= 2.0f / (a + b + c);
+    fRadius *= 2.0F / (a + b + c);
 
     // center of the circle
     float w = a + b + c;
@@ -1329,10 +1317,10 @@ unsigned short MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt) co
     Base::Vector3f clDir = rcP2 - rcP1;
     float fLen = Base::Distance(rcP2, rcP1);
     float t = ((rclPt - rcP1) * clDir) / (fLen * fLen);
-    if (t < 0.0f) {
+    if (t < 0.0F) {
         fD1 = Base::Distance(rclPt, rcP1);
     }
-    else if (t > 1.0f) {
+    else if (t > 1.0F) {
         fD1 = Base::Distance(rclPt, rcP2);
     }
     else {
@@ -1343,10 +1331,10 @@ unsigned short MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt) co
     clDir = rcP3 - rcP2;
     fLen = Base::Distance(rcP3, rcP2);
     t = ((rclPt - rcP2) * clDir) / (fLen * fLen);
-    if (t < 0.0f) {
+    if (t < 0.0F) {
         fD2 = Base::Distance(rclPt, rcP2);
     }
-    else if (t > 1.0f) {
+    else if (t > 1.0F) {
         fD2 = Base::Distance(rclPt, rcP3);
     }
     else {
@@ -1357,10 +1345,10 @@ unsigned short MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt) co
     clDir = rcP1 - rcP3;
     fLen = Base::Distance(rcP1, rcP3);
     t = ((rclPt - rcP3) * clDir) / (fLen * fLen);
-    if (t < 0.0f) {
+    if (t < 0.0F) {
         fD3 = Base::Distance(rclPt, rcP3);
     }
-    else if (t > 1.0f) {
+    else if (t > 1.0F) {
         fD3 = Base::Distance(rclPt, rcP1);
     }
     else {
@@ -1403,10 +1391,10 @@ void MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt,
     Base::Vector3f clDir = rcP2 - rcP1;
     float fLen = Base::Distance(rcP2, rcP1);
     float t = ((rclPt - rcP1) * clDir) / (fLen * fLen);
-    if (t < 0.0f) {
+    if (t < 0.0F) {
         fD1 = Base::Distance(rclPt, rcP1);
     }
-    else if (t > 1.0f) {
+    else if (t > 1.0F) {
         fD1 = Base::Distance(rclPt, rcP2);
     }
     else {
@@ -1417,10 +1405,10 @@ void MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt,
     clDir = rcP3 - rcP2;
     fLen = Base::Distance(rcP3, rcP2);
     t = ((rclPt - rcP2) * clDir) / (fLen * fLen);
-    if (t < 0.0f) {
+    if (t < 0.0F) {
         fD2 = Base::Distance(rclPt, rcP2);
     }
-    else if (t > 1.0f) {
+    else if (t > 1.0F) {
         fD2 = Base::Distance(rclPt, rcP3);
     }
     else {
@@ -1431,10 +1419,10 @@ void MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt,
     clDir = rcP1 - rcP3;
     fLen = Base::Distance(rcP1, rcP3);
     t = ((rclPt - rcP3) * clDir) / (fLen * fLen);
-    if (t < 0.0f) {
+    if (t < 0.0F) {
         fD3 = Base::Distance(rclPt, rcP3);
     }
-    else if (t > 1.0f) {
+    else if (t > 1.0F) {
         fD3 = Base::Distance(rclPt, rcP1);
     }
     else {
@@ -1500,12 +1488,12 @@ float MeshGeomFacet::VolumeOfPrism(const MeshGeomFacet& rclF1) const
     Base::Vector3f N2 = (P2 - P1) % (Q2 - P1);
     Base::Vector3f N3 = (Q2 - P1) % (Q1 - P1);
 
-    float fVol = 0.0f;
+    float fVol = 0.0F;
     fVol += float(fabs((Q3 - P1) * N1));
     fVol += float(fabs((Q3 - P1) * N2));
     fVol += float(fabs((Q3 - P1) * N3));
 
-    fVol /= 6.0f;
+    fVol /= 6.0F;
 
     return fVol;
     ;
@@ -1513,7 +1501,7 @@ float MeshGeomFacet::VolumeOfPrism(const MeshGeomFacet& rclF1) const
 
 float MeshGeomFacet::MaximumAngle() const
 {
-    float fMaxAngle = 0.0f;
+    float fMaxAngle = 0.0F;
 
     for (int i = 0; i < 3; i++) {
         Base::Vector3f dir1(_aclPoints[(i + 1) % 3] - _aclPoints[i]);
@@ -1589,7 +1577,7 @@ float MeshGeomFacet::AspectRatio() const
 
     // squared area of the parallelogram spanned by d0 and d1
     float a2 = (d0 % d1).Sqr();
-    return float(sqrt((maxl2 * maxl2) / a2));
+    return float(std::sqrt((maxl2 * maxl2) / a2));
 }
 
 float MeshGeomFacet::AspectRatio2() const

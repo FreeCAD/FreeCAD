@@ -44,7 +44,7 @@ class ConstraintTie(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::ConstraintTie"
 
     def __init__(self, obj):
-        super(ConstraintTie, self).__init__(obj)
+        super().__init__(obj)
 
         for prop in self._get_properties():
             prop.add_to_object(obj)
@@ -52,62 +52,67 @@ class ConstraintTie(base_fempythonobject.BaseFemPythonObject):
     def _get_properties(self):
         prop = []
 
-        prop.append(_PropHelper(
-            type  = "App::PropertyLength",
-            name  = "Tolerance",
-            group = "Geometry",
-            doc   = "Set max gap between tied faces",
-            value = "0.0 mm"
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLength",
+                name="Tolerance",
+                group="Geometry",
+                doc="Set max gap between tied faces",
+                value="0.0 mm",
             )
         )
-        prop.append(_PropHelper(
-            type  = "App::PropertyBool",
-            name  = "Adjust",
-            group = "Geometry",
-            doc   = "Adjust connected nodes",
-            value = False
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="Adjust",
+                group="Geometry",
+                doc="Adjust connected nodes",
+                value=False,
             )
         )
-        prop.append(_PropHelper(
-            type  = "App::PropertyBool",
-            name  = "CyclicSymmetry",
-            group = "Geometry",
-            doc   = "Define cyclic symmetry model",
-            value = False
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="CyclicSymmetry",
+                group="Geometry",
+                doc="Define cyclic symmetry model",
+                value=False,
             )
         )
-        prop.append(_PropHelper(
-            type  = "App::PropertyPlacement",
-            name  = "SymmetryAxis",
-            group = "Geometry",
-            doc   = "Placement of axis of symmetry",
-            value = FreeCAD.Placement()
+        prop.append(
+            _PropHelper(
+                type="App::PropertyPlacement",
+                name="SymmetryAxis",
+                group="Geometry",
+                doc="Placement of axis of symmetry",
+                value=FreeCAD.Placement(),
             )
         )
-        prop.append(_PropHelper(
-            type  = "App::PropertyInteger",
-            name  = "Sectors",
-            group = "Geometry",
-            doc   = "Number of sectors",
-            value = 0
+        prop.append(
+            _PropHelper(
+                type="App::PropertyInteger",
+                name="Sectors",
+                group="Geometry",
+                doc="Number of sectors",
+                value=0,
             )
         )
-        prop.append(_PropHelper(
-            type  = "App::PropertyInteger",
-            name  = "ConnectedSectors",
-            group = "Geometry",
-            doc   = "Number of connected sectors",
-            value = 1
+        prop.append(
+            _PropHelper(
+                type="App::PropertyInteger",
+                name="ConnectedSectors",
+                group="Geometry",
+                doc="Number of connected sectors",
+                value=1,
             )
         )
 
         return prop
-
 
     def onDocumentRestored(self, obj):
         # update old project with new properties
         for prop in self._get_properties():
             try:
                 obj.getPropertyByName(prop.name)
-            except:
+            except FreeCAD.Base.PropertyError:
                 prop.add_to_object(obj)

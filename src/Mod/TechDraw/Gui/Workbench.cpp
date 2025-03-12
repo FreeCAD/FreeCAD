@@ -252,6 +252,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *symbols << "TechDraw_SurfaceFinishSymbols";
     *symbols << "TechDraw_HoleShaftFit";
 
+
+    Gui::MenuItem* aligning = new Gui::MenuItem;
+    aligning->setCommand("Aligning");
+    *aligning << "TechDraw_AlignVertexesVertically";
+    *aligning << "TechDraw_AlignVertexesHorizontally";
+
     // main menu
     draw->setCommand("TechDraw");
     *draw << pages;
@@ -267,6 +273,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << symbols;
     *draw << "Separator";
     *draw << stacking;
+    *draw << aligning;
     *draw << "Separator";
     *draw << toolattrib;
     *draw << toolcenter;
@@ -346,8 +353,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *extattribs << "TechDraw_ExtensionExtendShortenLineGroup";
     *extattribs << "TechDraw_ExtensionLockUnlockView";
     *extattribs << "TechDraw_ExtensionPositionSectionView";
-    *extattribs << "TechDraw_ExtensionPosChainDimensionGroup";
-    *extattribs << "TechDraw_ExtensionCascadeDimensionGroup";
     if (separatedTools) {
         *extattribs << "TechDraw_ExtensionAreaAnnotation";
         *extattribs << "TechDraw_ExtensionArcLengthAnnotation";
@@ -452,8 +457,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *extattribs << "TechDraw_ExtensionExtendShortenLineGroup";
     *extattribs << "TechDraw_ExtensionLockUnlockView";
     *extattribs << "TechDraw_ExtensionPositionSectionView";
-    *extattribs << "TechDraw_ExtensionPosChainDimensionGroup";
-    *extattribs << "TechDraw_ExtensionCascadeDimensionGroup";
     *extattribs << "TechDraw_ExtensionAreaAnnotation";
     *extattribs << "TechDraw_ExtensionArcLengthAnnotation";
     *extattribs << "TechDraw_ExtensionCustomizeFormat";

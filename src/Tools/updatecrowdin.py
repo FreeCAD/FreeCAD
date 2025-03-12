@@ -83,7 +83,11 @@ from urllib.parse import quote_plus
 from urllib.request import Request
 from urllib.request import urlopen
 from urllib.request import urlretrieve
-from PySide2 import QtCore
+
+try:
+    from PySide6 import QtCore
+except ImportError:
+    from PySide2 import QtCore
 
 TsFile = namedtuple("TsFile", ["filename", "src_path"])
 
@@ -110,7 +114,7 @@ locations = [
         "../Mod/AddonManager/Resources/AddonManager.qrc",
     ],
     ["App", "../App/Resources/translations", "../App/Resources/App.qrc"],
-    ["Arch", "../Mod/Arch/Resources/translations", "../Mod/Arch/Resources/Arch.qrc"],
+    ["Arch", "../Mod/BIM/Resources/translations", "../Mod/BIM/Resources/Arch.qrc"],
     [
         "Assembly",
         "../Mod/Assembly/Gui/Resources/translations",
@@ -141,8 +145,8 @@ locations = [
     ],
     [
         "Material",
-        "../Mod/Material/Resources/translations",
-        "../Mod/Material/Resources/Material.qrc",
+        "../Mod/Material/Gui/Resources/translations",
+        "../Mod/Material/Gui/Resources/Material.qrc",
     ],
     [
         "Mesh",
@@ -337,7 +341,6 @@ def load_token():
 
 
 def updateqrc(qrcpath, lncode):
-
     "updates a qrc file with the given translation entry"
 
     # print("opening " + qrcpath + "...")
@@ -376,7 +379,7 @@ def updateqrc(qrcpath, lncode):
     # inserting new entry just after the last one
     line = resources[pos]
     if ".qm" in line:
-        line = re.sub("_.*\.qm", "_" + lncode + ".qm", line)
+        line = re.sub(r"_.*\.qm", "_" + lncode + ".qm", line)
     else:
         modname = os.path.splitext(os.path.basename(qrcpath))[0]
         line = "        <file>translations/" + modname + "_" + lncode + ".qm</file>\n"
@@ -394,7 +397,6 @@ def updateqrc(qrcpath, lncode):
 
 
 def updateTranslatorCpp(lncode):
-
     "updates the Translator.cpp file with the given translation entry"
 
     cppfile = os.path.join(os.path.dirname(__file__), "..", "Gui", "Language", "Translator.cpp")
@@ -436,7 +438,6 @@ def updateTranslatorCpp(lncode):
 
 
 def doFile(tsfilepath, targetpath, lncode, qrcpath):
-
     "updates a single ts file, and creates a corresponding qm file"
 
     basename = os.path.basename(tsfilepath)[:-3]
@@ -452,6 +453,7 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
         return
     shutil.copyfile(tsfilepath, newpath)
     if basename in GENERATE_QM:
+        # print("generating qm files for",newpath,"...")
         try:
             subprocess.run(
                 [
@@ -470,7 +472,6 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
 
 
 def doLanguage(lncode):
-
     "treats a single language"
 
     if lncode == "en":

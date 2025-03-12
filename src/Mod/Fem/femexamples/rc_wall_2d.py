@@ -44,12 +44,14 @@ def get_information():
         "constraints": ["fixed", "force", "displacement"],
         "solvers": ["ccxtools"],
         "material": "reinforced",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.rc_wall_2d import setup
@@ -62,6 +64,7 @@ https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=80#p296469
 example from Harry's epic topic: Concrete branch ready for testing
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -104,7 +107,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # solver
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
-        solver_obj.WorkingDir = u""
+        solver_obj.WorkingDir = ""
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -125,7 +128,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # material
     matrixprop = {}
-    matrixprop["Name"] = "Concrete-EN-C35/45"
+    matrixprop["Name"] = "Concrete-EN-C35_45"
     matrixprop["YoungsModulus"] = "32000 MPa"
     matrixprop["PoissonRatio"] = "0.17"
     matrixprop["CompressiveStrength"] = "15.75 MPa"
@@ -158,11 +161,12 @@ def setup(doc=None, solvertype="ccxtools"):
     con_disp = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacmentPrescribed")
     con_disp.References = [(geom_obj, "Face1")]
     con_disp.zFree = False
-    con_disp.zFix = True
+    con_disp.zDisplacement = 0
     analysis.addObject(con_disp)
 
     # mesh
     from .meshes.mesh_rc_wall_2d_tria6 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -172,7 +176,7 @@ def setup(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()

@@ -23,10 +23,6 @@
 #ifndef _MeshAlgos_h_
 #define _MeshAlgos_h_
 
-#ifdef FC_USE_GTS
-#include <gts.h>
-#endif
-
 #include <vector>
 
 #include "CurveProjector.h"
@@ -56,10 +52,6 @@ public:
     static void offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize);
     static void offsetSpecial(MeshCore::MeshKernel* Mesh, float fSize, float zmax, float zmin);
 
-    /** Coarsen the mesh
-     */
-    static void coarsen(MeshCore::MeshKernel* Mesh, float f);
-
     /** makes a boolean add
      * The int Type stears the boolean oberation: 0=add;1=intersection;2=diff
      */
@@ -67,18 +59,6 @@ public:
                                          MeshCore::MeshKernel* Mesh2,
                                          MeshCore::MeshKernel* pResult,
                                          int Type = 0);
-
-#ifdef FC_USE_GTS
-
-    /** Creates a GTS Surface from a MeshKernel
-     */
-    static GtsSurface* createGTSSurface(MeshCore::MeshKernel* Mesh);
-
-    /** Creates a GTS Surface from a MeshKernel
-     */
-
-    static void fillMeshFromGTSSurface(MeshCore::MeshKernel* pMesh, GtsSurface* pSurface);
-#endif
 
     static void cutByShape(const TopoDS_Shape& aShape,
                            const MeshCore::MeshKernel* pMesh,
@@ -96,24 +76,9 @@ public:
                             const Base::Vector3f& up = Base::Vector3f(0, 0, 1),
                             float MaxSize = 0.1);
 
-    /*
-    struct FaceSplitEdge
-    {
-      unsigned long ulFaceIndex;
-      Base::Vector3f p1,p2;
-    };
 
-    static void projectCurve( MeshWithProperty* pMesh,
-                                         const TopoDS_Edge& aEdge,
-                                         const std::vector<Base::Vector3f> &rclPoints,
-                                         std::vector<FaceSplitEdge> &vSplitEdges);
-  */
     static void cutByCurve(MeshCore::MeshKernel* pMesh,
                            const std::vector<CurveProjector::FaceSplitEdge>& vSplitEdges);
-    /*
-      static bool projectPointToMesh(MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f
-      &Rslt,unsigned long &FaceIndex);
-    */
 };
 
 }  // namespace MeshPart

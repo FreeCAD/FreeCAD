@@ -24,8 +24,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepPrim_Cylinder.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepBuilderAPI_GTransform.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
@@ -68,12 +68,13 @@ FeaturePrimitive::FeaturePrimitive()
 
 App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& primitive)
 {
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
+
     try {
         //transform the primitive in the correct coordinance
         FeatureAddSub::execute();
 
         //if we have no base we just add the standard primitive shape
-#ifdef FC_USE_TNP_FIX
         TopoShape primitiveShape;
         primitiveShape.setShape(primitive);
 
@@ -85,15 +86,6 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
             primitiveShape.Tag = -this->getID();
         }
 
-#else
-        auto primitiveShape = primitive;
-        TopoDS_Shape base;
-        try {
-             //if we have a base shape we need to make sure that it does not get our transformation to
-             BRepBuilderAPI_Transform trsf(getBaseShape(), getLocation().Transformation().Inverted(), true);
-             base = trsf.Shape();
-        }
-#endif
         catch (const Base::Exception&) {
 
              //as we use this for preview we can add it even if useless for subtractive
@@ -106,7 +98,6 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 
              return  App::DocumentObject::StdReturn;
         }
-#ifdef FC_USE_TNP_FIX
         AddSubShape.setValue(primitiveShape);
 
         TopoShape boolOp(0);
@@ -126,53 +117,27 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         try {
             boolOp.makeElementBoolean(maker, {base, primitiveShape});
         }
-        catch (Standard_Failure& e) {
+        catch (Standard_Failure&) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation"));
         }
-        boolOp = this->getSolid(boolOp);
+
+        TopoShape solidBoolOp = getSolid(boolOp);
         // lets check if the result is a solid
-        if (boolOp.isNull()) {
+        if (solidBoolOp.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
         }
-#else
-        TopoDS_Shape boolOp;
-        if (getAddSubType() == FeatureAddSub::Additive) {
-
-            BRepAlgoAPI_Fuse mkFuse(base, primitiveShape);
-            if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Adding the primitive failed"));
-            // we have to get the solids (fuse sometimes creates compounds)
-            boolOp = this->getSolid(mkFuse.Shape());
-            
-            // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-
-            if (!isSingleSolidRuleSatisfied(boolOp)) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
-            }
+        // store shape before refinement
+        this->rawShape = boolOp;
+      
+        if (solidBoolOp == base){
+            //solidBoolOp is misplaced but boolOp is ok
+            Shape.setValue(boolOp);
+            return App::DocumentObject::StdReturn;
         }
-        else if (getAddSubType() == FeatureAddSub::Subtractive) {
-
-            BRepAlgoAPI_Cut mkCut(base, primitiveShape);
-            if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Subtracting the primitive failed"));
-            // we have to get the solids (fuse sometimes creates compounds)
-            boolOp = this->getSolid(mkCut.Shape());
-            // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-
-            if (!isSingleSolidRuleSatisfied(boolOp)) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
-            }
-        }
-#endif
-        boolOp = refineShapeIfActive(boolOp);
-        Shape.setValue(getSolid(boolOp));
-        AddSubShape.setValue(primitiveShape);
+        solidBoolOp = refineShapeIfActive(solidBoolOp);
+        Shape.setValue(getSolid(solidBoolOp));
     }
     catch (Standard_Failure& e) {
 
@@ -184,6 +149,10 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 
 void FeaturePrimitive::onChanged(const App::Property* prop)
 {
+    if (prop == &AttachmentOffset){
+        this->touch();
+        return;
+    }
     FeatureAddSub::onChanged(prop);
 }
 
@@ -396,7 +365,7 @@ App::DocumentObjectExecReturn* Cone::execute()
             //Build a cylinder
             BRepPrimAPI_MakeCylinder mkCylr(Radius1.getValue(),
                                             Height.getValue(),
-                                            2.0 * M_PI);
+                                            Base::toRadians<double>(Angle.getValue()));
             return FeaturePrimitive::execute(mkCylr.Shape());
         }
         // Build a cone

@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepPrimAPI_MakeRevol.hxx>
 # include <BRepFeat_MakeRevol.hxx>
 # include <gp_Lin.hxx>
@@ -56,12 +56,11 @@ Revolution::Revolution()
 
     ADD_PROPERTY_TYPE(Type, (0L), "Revolution", App::Prop_None, "Revolution type");
     Type.setEnums(TypeEnums);
-    ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)),"Revolution", App::Prop_ReadOnly, "Base");
-    ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,1.0,0.0)),"Revolution", App::Prop_ReadOnly, "Axis");
+    ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)),"Revolution", App::PropertyType(App::Prop_ReadOnly | App::Prop_Hidden), "Base");
+    ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,1.0,0.0)),"Revolution", App::PropertyType(App::Prop_ReadOnly | App::Prop_Hidden), "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Revolution", App::Prop_None, "Angle");
-    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Revolution", App::Prop_None, "Face where revolution will end");
     ADD_PROPERTY_TYPE(Angle2, (60.0), "Revolution", App::Prop_None, "Revolution length in 2nd direction");
-
+    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Revolution", App::Prop_None, "Face where revolution will end");
     Angle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(ReferenceAxis,(nullptr),"Revolution",(App::Prop_None),"Reference axis of revolution");
 }
@@ -81,6 +80,9 @@ short Revolution::mustExecute() const
 
 App::DocumentObjectExecReturn* Revolution::execute()
 {
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
+
+
     // Validate parameters
     // All angles are in radians unless explicitly stated
     double angleDeg = Angle.getValue();
@@ -97,13 +99,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
 
     double angle2 = Base::toRadians(Angle2.getValue());
 
-    TopoShape sketchshape;
-    try {
-        sketchshape = getTopoShapeVerifiedFace();
-    }
-    catch (const Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
+    TopoShape sketchshape = getTopoShapeVerifiedFace();
 
     // if the Base property has a valid shape, fuse the AddShape into it
     TopoShape base;
@@ -160,61 +156,51 @@ App::DocumentObjectExecReturn* Revolution::execute()
         }
 
         // Create a fresh support even when base exists so that it can be used for patterns
-#ifdef FC_USE_TNP_FIX
         TopoShape result(0);
-#else
-        TopoDS_Shape result;
-#endif
-        TopoDS_Face supportface = getSupportFace();
-        supportface.Move(invObjLoc);
+        TopoShape supportface(0);
+        try {
+            supportface = getSupportFace();
+        }
+        catch(...) {
+            //do nothing, null shape is handle below
+        }
+
+        supportface.move(invObjLoc);
 
         if (method == RevolMethod::ToFace || method == RevolMethod::ToFirst
             || method == RevolMethod::ToLast) {
-            TopoDS_Face upToFace;
+            TopoShape upToFace;
             if (method == RevolMethod::ToFace) {
-                getFaceFromLinkSub(upToFace, UpToFace);
-                upToFace.Move(invObjLoc);
+                getUpToFaceFromLinkSub(upToFace, UpToFace);
+                upToFace.move(invObjLoc);
             }
             else {
                 throw Base::RuntimeError(
                     "ProfileBased: Revolution up to first/last is not yet supported");
             }
 
-            // TODO: This method is designed for extrusions. needs to be adapted for revolutions.
-            // getUpToFace(upToFace, base, supportface, sketchshape, method, dir);
-
-            //            TopoDS_Face supportface = getSupportFace();
-            supportface.Move(invObjLoc);
-
             if (Reversed.getValue()) {
                 dir.Reverse();
             }
 
-            TopExp_Explorer Ex(supportface, TopAbs_WIRE);
+            TopExp_Explorer Ex(supportface.getShape(), TopAbs_WIRE);
             if (!Ex.More()) {
                 supportface = TopoDS_Face();
             }
-            RevolMode mode = RevolMode::None;
-#ifdef FC_USE_TNP_FIX
-            // revolve the face to a solid
-            //            TopoShape result(0);
+
             try {
-                result = base.makeElementRevolution(gp_Ax1(pnt, dir), angle, supportface, upToFace);
+                result = base.makeElementRevolution(base,
+                                    TopoDS::Face(sketchshape.getShape()),
+                                    gp_Ax1(pnt, dir),
+                                    TopoDS::Face(supportface.getShape()),
+                                    TopoDS::Face(upToFace.getShape()),
+                                    nullptr,
+                                    Part::RevolMode::None,
+                                    Standard_True);
             }
             catch (Standard_Failure&) {
                 return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
             }
-#else
-            generateRevolution(result,
-                               base.getShape(),
-                               sketchshape.getShape(),
-                               supportface,
-                               upToFace,
-                               gp_Ax1(pnt, dir),
-                               method,
-                               mode,
-                               Standard_True);
-#endif
         }
         else {
             bool midplane = Midplane.getValue();
@@ -229,35 +215,19 @@ App::DocumentObjectExecReturn* Revolution::execute()
                                method);
         }
 
-#ifdef FC_USE_TNP_FIX
         if (!result.isNull()) {
+            // store shape before refinement
+            this->rawShape = result;
             result = refineShapeIfActive(result);
             // set the additive shape property for later usage in e.g. pattern
             this->AddSubShape.setValue(result);
 
             if (!base.isNull()) {
                 result = result.makeElementFuse(base);
+                // store shape before refinement
+                this->rawShape = result;
                 result = refineShapeIfActive(result);
             }
-#else
-        if (!result.IsNull()) {
-            result = refineShapeIfActive(result);
-            // set the additive shape property for later usage in e.g. pattern
-            this->AddSubShape.setValue(result);
-
-            if (!base.isNull()) {
-                // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
-                // Let's check if the fusion has been successful
-                if (!mkFuse.IsDone()) {
-                    throw Part::BooleanException(
-                        QT_TRANSLATE_NOOP("Exception", "Fusion with base feature failed"));
-                }
-                result = mkFuse.Shape();
-                result = refineShapeIfActive(result);
-            }
-#endif
-
             this->Shape.setValue(getSolid(result));
         }
         else {
@@ -329,13 +299,8 @@ Revolution::RevolMethod Revolution::methodFromString(const std::string& methodSt
     return RevolMethod::Dimension;
 }
 
-#ifdef FC_USE_TNP_FIX
 void Revolution::generateRevolution(TopoShape& revol,
-#else
-void Revolution::generateRevolution(TopoDS_Shape& revol,
-
-#endif
-                                    const TopoDS_Shape& sketchshape,
+                                    const TopoShape& sketchshape,
                                     const gp_Ax1& axis,
                                     const double angle,
                                     const double angle2,
@@ -365,28 +330,17 @@ void Revolution::generateRevolution(TopoDS_Shape& revol,
             revolAx.Reverse();
         }
 
-        TopoDS_Shape from = sketchshape;
+        TopoShape from = sketchshape;
         if (method == RevolMethod::TwoDimensions || midplane) {
             gp_Trsf mov;
             mov.SetRotation(revolAx, angleOffset);
             TopLoc_Location loc(mov);
-            from.Move(loc);
+            from.move(loc);
         }
 
-#ifdef FC_USE_TNP_FIX
-        revol = TopoShape(from).makeElementRevolve(revolAx,angleTotal);
+        revol = from;
+        revol = revol.makeElementRevolve(revolAx,angleTotal);
         revol.Tag = -getID();
-#else
-        // revolve the face to a solid
-        // BRepPrimAPI is the only option that allows use of this shape for patterns.
-        // See https://forum.freecadweb.org/viewtopic.php?f=8&t=70185&p=611673#p611673.
-        BRepPrimAPI_MakeRevol RevolMaker(from, revolAx, angleTotal);
-
-        if (!RevolMaker.IsDone())
-            throw Base::RuntimeError("ProfileBased: RevolMaker failed! Could not revolve the sketch!");
-        else
-            revol = RevolMaker.Shape();
-#endif
     } else {
         std::stringstream str;
         str << "ProfileBased: Internal error: Unknown method for generateRevolution()";
@@ -394,8 +348,8 @@ void Revolution::generateRevolution(TopoDS_Shape& revol,
     }
 }
 
-void Revolution::generateRevolution(TopoDS_Shape& revol,
-                                    const TopoDS_Shape& baseshape,
+void Revolution::generateRevolution(TopoShape& revol,
+                                    const TopoShape& baseshape,
                                     const TopoDS_Shape& profileshape,
                                     const TopoDS_Face& supportface,
                                     const TopoDS_Face& uptoface,
@@ -405,20 +359,8 @@ void Revolution::generateRevolution(TopoDS_Shape& revol,
                                     Standard_Boolean Modify)
 {
     if (method == RevolMethod::ToFirst || method == RevolMethod::ToFace || method == RevolMethod::ToLast) {
-        BRepFeat_MakeRevol RevolMaker;
-        TopoDS_Shape base = baseshape;
-        for (TopExp_Explorer xp(profileshape, TopAbs_FACE); xp.More(); xp.Next()) {
-            RevolMaker.Init(base, xp.Current(), supportface, axis, Mode, Modify);
-            RevolMaker.Perform(uptoface);
-            if (!RevolMaker.IsDone())
-                throw Base::RuntimeError("ProfileBased: Up to face: Could not revolve the sketch!");
-
-            base = RevolMaker.Shape();
-            if (Mode == RevolMode::None)
-                Mode = RevolMode::FuseWithBase;
-        }
-
-        revol = base;
+        revol = revol.makeElementRevolution(baseshape, profileshape, axis, supportface, uptoface, nullptr,
+                                            static_cast<Part::RevolMode>(Mode), Modify, nullptr);
     }
     else {
         std::stringstream str;

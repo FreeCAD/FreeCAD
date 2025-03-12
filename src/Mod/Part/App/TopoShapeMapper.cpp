@@ -71,6 +71,9 @@ void ShapeMapper::populate(MappingStatus status,
         expand(it.Value(), dstShapes);
     }
     insert(status, src.getShape(), dstShapes);
+    if (shapeSet.insert(src.getShape()).second) {
+        shapes.push_back(src);
+    }
 }
 
 void ShapeMapper::insert(MappingStatus status, const TopoDS_Shape& s, const TopoDS_Shape& d)

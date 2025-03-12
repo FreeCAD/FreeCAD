@@ -88,7 +88,7 @@ coef : sequence of float</UserDocu>
 Sets the rotation to its inverse.</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="inverted">
+        <Methode Name="inverted" Const="true">
             <Documentation>
                 <UserDocu>inverted() -> Base.Rotation
 
@@ -232,12 +232,11 @@ tol : float
             </Documentation>
             <Parameter Name="Angle" Type="Float" />
         </Attribute>
-        <ClassDeclarations>
-            public:
-            RotationPy(const Rotation &amp; mat, PyTypeObject *T = &amp;Type)
-            :PyObjectBase(new Rotation(mat),T){}
-            Rotation value() const
-            { return *(getRotationPtr()); }
+        <ClassDeclarations>public:
+    RotationPy(const Rotation &amp; mat, PyTypeObject *T = &amp;Type)
+    :PyObjectBase(new Rotation(mat),T){}
+    Rotation value() const
+    { return *(getRotationPtr()); }
         </ClassDeclarations>
     </PythonExport>
 </GenerateModel>

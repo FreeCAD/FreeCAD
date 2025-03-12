@@ -63,6 +63,9 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         case mmObjectYZ:
             return TwoStrings(qApp->translate("Attacher3D", "Object's Y Z X","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "X', Y', Z' axes are matched with object's local Y, Z, X, respectively.","Attachment3D mode tooltip"));
+        case mmParallelPlane:
+            return TwoStrings(qApp->translate("Attacher3D", "XY parallel to plane","Attachment3D mode caption"),
+                              qApp->translate("Attacher3D", "X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.","Attachment3D mode tooltip"));
         case mmFlatFace:
             return TwoStrings(qApp->translate("Attacher3D", "XY on plane","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "X' Y' plane is aligned to coincide planar face.","Attachment3D mode tooltip"));
@@ -138,6 +141,9 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         case mmObjectYZ:
             return TwoStrings(qApp->translate("Attacher2D", "Object's YZ","AttachmentPlane mode caption"),
                               qApp->translate("Attacher2D", "Plane is aligned to YZ local plane of linked object.","AttachmentPlane mode tooltip"));
+        case mmParallelPlane:
+            return TwoStrings(qApp->translate("Attacher2D", "XY parallel to plane","AttachmentPlane mode caption"),
+                              qApp->translate("Attacher2D", "X' Y' plane is parallel to the plane (object's XY) and passes through the vertex","AttachmentPlane mode tooltip"));
         case mmFlatFace:
             return TwoStrings(qApp->translate("Attacher2D", "Plane face","AttachmentPlane mode caption"),
                               qApp->translate("Attacher2D", "Plane is aligned to coincide planar face.","AttachmentPlane mode tooltip"));
@@ -272,7 +278,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
                               qApp->translate("Attacher0D", "Attachment is disabled. Point can be moved by editing Placement property.","AttachmentPoint mode tooltip"));
         case mm0Origin:
             return TwoStrings(qApp->translate("Attacher0D", "Object's origin","AttachmentPoint mode caption"),
-                              qApp->translate("Attacher0D", "Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.","AttachmentPoint mode tooltip"));
+                              qApp->translate("Attacher0D", "Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.","AttachmentPoint mode tooltip"));
         case mm0Focus1:
             return TwoStrings(qApp->translate("Attacher0D", "Focus1","AttachmentPoint mode caption"),
                               qApp->translate("Attacher0D", "Focus of ellipse, parabola, hyperbola.","AttachmentPoint mode tooltip"));
@@ -363,7 +369,7 @@ QStringList getRefListForMode(AttachEngine &attacher, eMapMode mmode)
         for(eRefType rt : rts){
             buf.append(getShapeTypeText(rt));
         }
-        strlist.append(buf.join(QString::fromLatin1(", ")));
+        strlist.append(buf.join(QStringLiteral(", ")));
     }
     return strlist;
 }

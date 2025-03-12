@@ -33,7 +33,7 @@
 
 
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
-#if defined(Q_OS_LINUX)
+#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
   #if defined(SPNAV_USE_X11)
     #include "3Dconnexion/GuiNativeEventLinuxX11.h"
   #else
@@ -41,7 +41,7 @@
   #endif
 #elif defined(Q_OS_WIN)
   #include "3Dconnexion/GuiNativeEventWin32.h"
-#elif defined(Q_OS_MACX)
+#elif defined(Q_OS_MACOS)
   #include "3Dconnexion/GuiNativeEventMac.h"
 #endif // Platform switch
 #endif // Spacemice
@@ -59,7 +59,15 @@ Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware() = default
 void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 {
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
+# if defined(USE_3DCONNEXION_NAVLIB)
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
+         "User parameter:BaseApp/Preferences/View");
+    if (nativeEvent && hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+        nativeEvent->initSpaceball(window);
+    }
+# else
     nativeEvent->initSpaceball(window);
+# endif
 #else
     Q_UNUSED(window);
 #endif

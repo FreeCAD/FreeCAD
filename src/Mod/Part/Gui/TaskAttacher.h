@@ -25,7 +25,7 @@
 #ifndef GUI_TASKVIEW_TaskAttacher_H
 #define GUI_TASKVIEW_TaskAttacher_H
 
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -113,6 +113,15 @@ private:
     void updateRefButton(int idx);
     void updateAttachmentOffsetUI();
 
+    void findCorrectObjAndSubInThisContext(App::DocumentObject*& obj, std::string& sub);
+    void handleInitialSelection();
+    struct SubAndObjName {
+        std::string objName;
+        std::string subName;
+    };
+    void addToReference(SubAndObjName  pair);
+    void addToReference(const std::vector<SubAndObjName >& pairs);
+
     /**
      * @brief updateListOfModes Fills the mode list with modes that apply to
      * current set of references. Maintains selection when possible.
@@ -151,7 +160,7 @@ class PartGuiExport TaskDlgAttacher : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    explicit TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox = true);
+    explicit TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox = true, std::function<void()> onAccept = {}, std::function<void()> onReject = {});
     ~TaskDlgAttacher() override;
 
     Gui::ViewProviderDocumentObject* getViewProvider() const
@@ -179,6 +188,10 @@ protected:
     Gui::ViewProviderDocumentObject   *ViewProvider;
 
     TaskAttacher  *parameter;
+
+    std::function<void()> onAccept;
+    std::function<void()> onReject;
+    bool accepted;
 };
 
 } //namespace PartDesignGui

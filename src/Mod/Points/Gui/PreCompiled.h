@@ -38,6 +38,7 @@
 // Qt
 #include <QDialog>
 #include <QInputDialog>
+#include <QMessageBox>
 
 // Inventor
 #include <Inventor/SbVec2f.h>

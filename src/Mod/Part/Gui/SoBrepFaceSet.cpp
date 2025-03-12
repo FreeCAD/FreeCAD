@@ -69,8 +69,8 @@
 #endif
 
 #include <Gui/SoFCInteractiveElement.h>
-#include <Gui/SoFCSelectionAction.h>
-#include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Selection/SoFCSelectionAction.h>
+#include <Gui/Selection/SoFCUnifiedSelection.h>
 
 #include "SoBrepFaceSet.h"
 

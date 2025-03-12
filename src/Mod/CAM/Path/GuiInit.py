@@ -53,6 +53,7 @@ def Startup():
         from Path.Main.Gui import Fixture
         from Path.Main.Gui import Inspect
         from Path.Main.Gui import Simulator
+        from Path.Main.Gui import SimulatorGL
 
         from Path.Main.Sanity import Sanity
 
@@ -72,6 +73,7 @@ def Startup():
         from Path.Op.Gui import SimpleCopy
         from Path.Op.Gui import Slot
         from Path.Op.Gui import Stop
+        from Path.Op.Gui import Tapping
         from Path.Op.Gui import ThreadMilling
         from Path.Op.Gui import Vcarve
         from Path.Post import Command

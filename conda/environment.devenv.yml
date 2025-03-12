@@ -2,6 +2,7 @@ name: freecad
 channels:
 - conda-forge
 dependencies:
+- conda-forge/noarch::conda-libmamba-solver==24.11.1
 - libspnav                             # [linux]
 - kernel-headers_linux-64              # [linux and x86_64]
 - libdrm-cos6-x86_64                   # [linux and x86_64]
@@ -56,9 +57,8 @@ dependencies:
 - xorg-x11-server-common-cos7-aarch64  # [linux and aarch64]
 - xorg-x11-server-xvfb-cos7-aarch64    # [linux and aarch64]
 - sed                                  # [unix]
-- boost
-- boost-cpp
 - ccache
+- clang-format
 - cmake
 - coin3d
 - compilers
@@ -73,6 +73,7 @@ dependencies:
 - gmsh
 - graphviz
 - hdf5
+- libboost-devel
 - libcxx
 - mamba
 - matplotlib
@@ -80,7 +81,7 @@ dependencies:
 - numpy
 - occt
 - openssl
-- pcl==1.13.1
+- pcl
 - pip
 - pivy
 - pkg-config
@@ -90,13 +91,10 @@ dependencies:
 - pyside2
 - python==3.11.*
 - pyyaml
-- qt
 - qt-main
-- qt-webengine
-- six
 - smesh
 - swig
-- vtk
+- vtk==9.2.6
 - xerces-c
 - yaml-cpp
 - zlib

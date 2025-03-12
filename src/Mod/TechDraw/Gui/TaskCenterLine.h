@@ -87,9 +87,9 @@ protected:
     QColor getCenterColor();
     double getExtendBy();
 
-    int checkPathologicalEdges(int inMode);
-    int checkPathologicalVertices(int inMode);
-    void setUiOrientation(int orientation);
+    TechDraw::CenterLine::Mode checkPathologicalEdges(TechDraw::CenterLine::Mode inMode);
+    TechDraw::CenterLine::Mode checkPathologicalVertices(TechDraw::CenterLine::Mode inMode);
+    void setUiOrientation(TechDraw::CenterLine::Mode orientation);
 
 private:
     std::unique_ptr<Ui_TaskCenterLine> ui;
@@ -106,8 +106,8 @@ private:
     int m_geomIndex;
     TechDraw::CenterLine* m_cl;
     TechDraw::CenterLine orig_cl;
-    int m_type;
-    int m_mode;
+    TechDraw::CenterLine::Type m_type;
+    TechDraw::CenterLine::Mode m_mode;
     bool m_editMode;
 
 private Q_SLOTS:

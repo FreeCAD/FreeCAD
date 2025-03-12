@@ -315,7 +315,7 @@ template<typename GeoType,
          EditModeGeometryCoinConverter::AnalyseMode analysemode>
 void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade* geometryfacade,
                                             [[maybe_unused]] int geoid,
-                                            int subLayer)
+                                            [[maybe_unused]] int subLayer)
 {
     auto geo = static_cast<const GeoType*>(geometryfacade->getGeometry());
     auto layerId = getSafeGeomLayerId(geometryfacade);
@@ -434,7 +434,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade* geom
                     e.ReportException();
                     Base::Console().DeveloperError(
                         "EditModeGeometryCoinConverter",
-                        "Curvature graph for B-Spline with GeoId=%d could not be calculated.\n",
+                        "Curvature graph for B-spline with GeoId=%d could not be calculated.\n",
                         geoid);  // TODO: Fix identification of curve.
                     curvaturelist[i] = 0;
                 }

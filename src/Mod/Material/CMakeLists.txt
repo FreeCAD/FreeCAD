@@ -4,21 +4,14 @@ if(BUILD_GUI)
     add_subdirectory(Gui)
 endif(BUILD_GUI)
 
-IF(BUILD_GUI)
-    PYSIDE_WRAP_RC(Material_QRC_SRCS Resources/Material.qrc)
-ENDIF(BUILD_GUI)
-
 SET(MaterialScripts_Files
     Init.py
     InitGui.py
     importFCMat.py
     MaterialEditor.py
     TestMaterialsApp.py
+    TestMaterialsGui.py
     Templatematerial.yml
-)
-
-SET(Material_Ui_Files
-    Resources/ui/materials-editor.ui
 )
 
 # SOURCE_GROUP("MaterialScripts" FILES ${MaterialScripts_Files})
@@ -26,10 +19,6 @@ SET(MaterialTools_Files
     materialtools/__init__.py
     materialtools/cardutils.py
     materialtools/MaterialModels.py
-)
-SET(Material_Icon_Files
-    Resources/icons/preview-rendered.svg
-    Resources/icons/preview-vector.svg
 )
 
 # collect all the material cards:
@@ -152,6 +141,7 @@ SET(MaterialLib_Files
     Resources/Materials/Standard/Thermoplast/PP-Generic.FCMat
     Resources/Materials/Standard/Thermoplast/PTFE-Generic.FCMat
     Resources/Materials/Standard/Thermoplast/PVC-Generic.FCMat
+    Resources/Materials/Standard/Thermoplast/PC-Molded.FCMat
     Resources/Materials/Standard/Wood/Wood-Generic.FCMat
 )
 
@@ -187,6 +177,7 @@ SET(AppearanceLib_Files
     Resources/Materials/Appearance/Silver.FCMat
     Resources/Materials/Appearance/Steel.FCMat
     Resources/Materials/Appearance/Stone.FCMat
+    Resources/Materials/Appearance/Wood.FCMat
 )
 
 SET(PatternLib_Files
@@ -224,6 +215,22 @@ SET(PatternLib_Files
     "Resources/Materials/Patterns/Pattern Files/zinc.FCMat"
 )
 
+SET(MachiningLib_Files
+    Resources/Materials/Machining/AluminumCastAlloy.FCMat
+    Resources/Materials/Machining/AluminumWroughtAlloy.FCMat
+    Resources/Materials/Machining/AusteniticStainlessSteel.FCMat
+    Resources/Materials/Machining/BalsaWood.FCMat
+    Resources/Materials/Machining/GrayCastIron.FCMat
+    Resources/Materials/Machining/HardWood.FCMat
+    Resources/Materials/Machining/LowAlloySteel.FCMat
+    Resources/Materials/Machining/MalleableCastIron.FCMat
+    Resources/Materials/Machining/MildSteel.FCMat
+    Resources/Materials/Machining/MDF.FCMat
+    Resources/Materials/Machining/ParticleBoard.FCMat
+    Resources/Materials/Machining/SoftWood.FCMat
+    Resources/Materials/Machining/ToolSteel.FCMat
+)
+
 SET(MaterialTestLib_Files
     "Resources/Materials/Test/Test Material.FCMat"
 )
@@ -236,6 +243,7 @@ SET(MaterialModel_Files
     Resources/Models/Fluid/Fluid.yml
     Resources/Models/Legacy/Father.yml
     Resources/Models/Legacy/MaterialStandard.yml
+    Resources/Models/Machining/Machinability.yml
     Resources/Models/Mechanical/ArrudaBoyce.yml
     Resources/Models/Mechanical/Density.yml
     Resources/Models/Mechanical/Hardness.yml
@@ -286,6 +294,8 @@ set(MaterialTest_Files
     materialtests/TestModels.py
     materialtests/TestMaterials.py
     materialtests/TestMaterialCreation.py
+    materialtests/TestMaterialDocument.py
+    materialtests/TestMaterialFilter.py
 )
 
 ADD_CUSTOM_TARGET(MaterialTest ALL
@@ -297,25 +307,36 @@ fc_target_copy_resource(MaterialTest
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${MaterialTest_Files})
 
+set(MaterialPythonTestData_Files
+    materialtests/Materials/TestAcrylicLegacy.FCMat
+    materialtests/Materials/TestAluminumAppearance.FCMat
+    materialtests/Materials/TestAluminumMixed.FCMat
+    materialtests/Materials/TestAluminumPhysical.FCMat
+    materialtests/Materials/TestBrassAppearance.FCMat
+)
+
+ADD_CUSTOM_TARGET(MaterialPythonTestData ALL
+    SOURCES ${MaterialPythonTestData_Files}
+)
+
+fc_target_copy_resource(MaterialPythonTestData
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Material
+    ${MaterialPythonTestData_Files})
+
 ADD_CUSTOM_TARGET(MaterialScripts ALL
-    SOURCES ${MaterialScripts_Files} ${Material_Ui_Files} ${Material_QRC_SRCS}
+    SOURCES ${MaterialScripts_Files} ${Material_QRC_SRCS}
 )
 
 fc_target_copy_resource(MaterialScripts
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Material
-    ${MaterialScripts_Files}
-    ${Material_Ui_Files})
+    ${MaterialScripts_Files})
 
 INSTALL(FILES ${MaterialScripts_Files} DESTINATION Mod/Material)
-INSTALL(FILES ${Material_Ui_Files} DESTINATION Mod/Material/Resources/ui)
 
 ADD_CUSTOM_TARGET(MaterialToolsLib ALL
     SOURCES ${MaterialTools_Files}
-)
-
-ADD_CUSTOM_TARGET(MaterialIconsLib ALL
-    SOURCES ${Material_Icon_Files}
 )
 
 fc_target_copy_resource(MaterialToolsLib
@@ -323,13 +344,7 @@ fc_target_copy_resource(MaterialToolsLib
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${MaterialTools_Files})
 
-fc_target_copy_resource(MaterialIconsLib
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Material
-    ${Material_Icon_Files})
-
 INSTALL(FILES ${MaterialTools_Files} DESTINATION Mod/Material/materialtools)
-INSTALL(FILES ${Material_Icon_Files} DESTINATION Mod/Material/Resources/icons)
 
 ADD_CUSTOM_TARGET(MaterialLib ALL
     SOURCES ${MaterialLib_Files}
@@ -345,6 +360,9 @@ ADD_CUSTOM_TARGET(PatternLib ALL
 )
 ADD_CUSTOM_TARGET(MaterialTestLib ALL
     SOURCES ${MaterialTestLib_Files}
+)
+ADD_CUSTOM_TARGET(MachiningLib ALL
+    SOURCES ${MachiningLib_Files}
 )
 ADD_CUSTOM_TARGET(MaterialModelLib ALL
     SOURCES ${MaterialModel_Files}
@@ -368,6 +386,10 @@ fc_target_copy_resource(PatternLib
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material/
     ${PatternLib_Files})
+fc_target_copy_resource(MachiningLib
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material/
+    ${MachiningLib_Files})
 fc_target_copy_resource(MaterialTestLib
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material/
@@ -382,7 +404,12 @@ INSTALL(
     DESTINATION Mod/Material/materialtests
 )
 
-foreach(file ${MaterialLib_Files} ${FluidMaterial_Files} ${AppearanceLib_Files} ${PatternLib_Files} ${MaterialTestLib_Files} ${MaterialModel_Files})
+INSTALL(
+    FILES ${MaterialPythonTestData_Files}
+    DESTINATION Mod/Material/materialtests/Materials
+)
+
+foreach(file ${MaterialLib_Files} ${FluidMaterial_Files} ${AppearanceLib_Files} ${PatternLib_Files} ${MachiningLib_Files} ${MaterialTestLib_Files} ${MaterialModel_Files})
     get_filename_component(filepath ${file} DIRECTORY)
     INSTALL(
         FILES ${file}

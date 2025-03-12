@@ -4,9 +4,14 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
 )
@@ -43,6 +48,9 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 add_library(PathSimulator SHARED ${PathSimulator_SRCS})
 target_link_libraries(PathSimulator ${PathSimulator_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(PathSimulator)
+endif()
 
 SET_BIN_DIR(PathSimulator PathSimulator /Mod/CAM)
 SET_PYTHON_PREFIX_SUFFIX(PathSimulator)

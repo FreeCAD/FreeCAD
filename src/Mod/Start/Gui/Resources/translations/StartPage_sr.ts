@@ -4,22 +4,22 @@
   <context>
     <name>StartGui::FirstStartWidget</name>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="101"/>
+      <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Done</source>
       <translation>Готово</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="103"/>
+      <location filename="../../FirstStartWidget.cpp" line="96"/>
       <source>Welcome to %1</source>
       <translation>Добродошли на %1</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="106"/>
+      <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>To get started, set your basic configuration options below.</source>
       <translation>Пре почетка прво испод подеси своје основне опције.</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="107"/>
+      <location filename="../../FirstStartWidget.cpp" line="100"/>
       <source>These options (and many more) can be changed later in Preferences.</source>
       <translation>Ове опције (и многе друге) могу бити касније промењене у Подешавањима.</translation>
     </message>
@@ -27,17 +27,17 @@
   <context>
     <name>StartGui::GeneralSettingsWidget</name>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="209"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
       <source>Language</source>
       <translation>Језик</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="210"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
       <source>Unit System</source>
       <translation>Систем мерних јединица</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="223"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
       <source>Navigation Style</source>
       <translation>Навигациони стил</translation>
     </message>
@@ -46,151 +46,160 @@
     <name>CmdStart</name>
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
-      <location filename="../../Manipulator.cpp" line="48"/>
       <source>Start</source>
-      <translation>Почетак</translation>
+      <translation>Старт</translation>
+    </message>
+    <message>
+      <location filename="../../Manipulator.cpp" line="48"/>
+      <source>&amp;Start Page</source>
+      <translation type="unfinished">&amp;Start Page</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
-      <source>Displays the Start in an MDI view</source>
-      <translation>Приказује почетну страницу у MDI погледу</translation>
+      <source>Displays the Start Page</source>
+      <translation type="unfinished">Displays the Start Page</translation>
     </message>
   </context>
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="178"/>
+      <location filename="../../StartView.cpp" line="289"/>
       <source>Empty file</source>
       <translation>Празна датотека</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="179"/>
+      <location filename="../../StartView.cpp" line="290"/>
       <source>Create a new empty FreeCAD file</source>
       <translation>Направи нову празну FreeCAD датотеку</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="181"/>
+      <location filename="../../StartView.cpp" line="293"/>
       <source>Open File</source>
       <translation>Отвори датотеку</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="182"/>
+      <location filename="../../StartView.cpp" line="294"/>
       <source>Open an existing CAD file or 3D model</source>
       <translation>Отвори постојећу CAD датотеку или 3D модел</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="184"/>
+      <location filename="../../StartView.cpp" line="297"/>
       <source>Parametric Part</source>
       <translation>Део</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="185"/>
+      <location filename="../../StartView.cpp" line="298"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation>Направи део у Part Design радном окружењу</translation>
+      <translation>Направи део у окружењу Конструисање делова</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="187"/>
+      <location filename="../../StartView.cpp" line="301"/>
       <source>Assembly</source>
-      <translation>Скупштина</translation>
+      <translation>Склоп</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="188"/>
+      <location filename="../../StartView.cpp" line="302"/>
       <source>Create an assembly project</source>
-      <translation>Направи пројекат склопа</translation>
+      <translation>Направи склоп</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="190"/>
+      <location filename="../../StartView.cpp" line="305"/>
       <source>2D Draft</source>
       <translation>2D цртеж</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="191"/>
+      <location filename="../../StartView.cpp" line="306"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation>Направи 2D цртеж у Draft радном окружењу</translation>
+      <translation>Направи 2D цртеж у окружењу Цртање</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="193"/>
+      <location filename="../../StartView.cpp" line="309"/>
       <source>BIM/Architecture</source>
       <translation>БИМ/Архитектура</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="194"/>
+      <location filename="../../StartView.cpp" line="310"/>
       <source>Create an architectural project</source>
       <translation>Направи архитектонски пројекат</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="434"/>
+      <location filename="../../StartView.cpp" line="525"/>
       <source>New File</source>
       <translation>Нова датотека</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="435"/>
+      <location filename="../../StartView.cpp" line="526"/>
       <source>Examples</source>
       <translation>Примери</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="436"/>
+      <location filename="../../StartView.cpp" line="527"/>
       <source>Recent Files</source>
       <translation>Недавне датотеке</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="440"/>
+      <location filename="../../StartView.cpp" line="530"/>
+      <source>Open first start setup</source>
+      <translation>Отвори почетна подешавања</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="532"/>
       <source>Don't show this Start page again (start with blank screen)</source>
-      <translation>Не приказуј поново ову почетну страницу (почни са празним екраном)</translation>
+      <translation>Не приказуј поново ову почетну страну (почни са празним екраном)</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="428"/>
+      <location filename="../../StartView.cpp" line="519"/>
       <source>Start</source>
-      <translation>Почетак</translation>
+      <translation>Старт</translation>
     </message>
   </context>
   <context>
     <name>StartGui::ThemeSelectorWidget</name>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="58"/>
-      <source>Classic</source>
-      <translation>Класична</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="113"/>
+      <source>FreeCAD Classic</source>
+      <translation>FreeCAD класични</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
-      <source>Light</source>
-      <translation>Светла</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
+      <source>FreeCAD Dark</source>
+      <translation>FreeCAD тамни</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
-      <source>Dark</source>
-      <translation>Тамна</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
+      <source>FreeCAD Light</source>
+      <translation>FreeCAD светли</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="137"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="238"/>
       <source>Theme</source>
       <translation>Тема</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="138"/>
-      <source>More themes are available online using the Addon Manager</source>
-      <translation>На мрежи постоји још тема и доступне су преко Менаџера додатака</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="239"/>
+      <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
+      <translation>Ниси задовољан избором тема? Пробај да потражиш нове помоћу &lt;a href="freecad:Std_AddonMgr"&gt;Менаџера додатака&lt;/a&gt;.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="139"/>
-      <source>Classic</source>
+      <location filename="../../ThemeSelectorWidget.cpp" line="241"/>
+      <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
-      <translation>Класична</translation>
+      <translation>FreeCAD тамни</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="140"/>
-      <source>Light</source>
+      <location filename="../../ThemeSelectorWidget.cpp" line="242"/>
+      <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
-      <translation>Светла</translation>
+      <translation>FreeCAD светли</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
-      <source>Dark</source>
+      <location filename="../../ThemeSelectorWidget.cpp" line="243"/>
+      <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
-      <translation>Тамна</translation>
+      <translation>FreeCAD класични</translation>
     </message>
   </context>
 </TS>

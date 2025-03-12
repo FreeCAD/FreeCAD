@@ -48,8 +48,8 @@ std::vector<App::DocumentObject*> ViewProviderRuledSurface::claimChildren() cons
 {
     // in a set each element is unique
     std::set<App::DocumentObject*> temp;
-    temp.insert(static_cast<Part::RuledSurface*>(getObject())->Curve1.getValue());
-    temp.insert(static_cast<Part::RuledSurface*>(getObject())->Curve2.getValue());
+    temp.insert(getObject<Part::RuledSurface>()->Curve1.getValue());
+    temp.insert(getObject<Part::RuledSurface>()->Curve2.getValue());
 
     std::vector<App::DocumentObject*> array;
     array.insert(array.begin(), temp.begin(), temp.end());
@@ -66,7 +66,7 @@ void ViewProviderRuledSurface::updateData(const App::Property* prop)
     /*  //The following hides the Children shapes. If the edges from which the Ruled Surface was created
      * were selected from the subshapes of another shape, it is likely that one would not want to hide the shape
      * hence this section is commented out
-    Part::RuledSurface* pRuledSurface = static_cast<Part::RuledSurface*>(getObject());
+    Part::RuledSurface* pRuledSurface = getObject<Part::RuledSurface>();
     App::DocumentObject *pCurve1 = pRuledSurface->Curve1.getValue();
     App::DocumentObject *pCurve2 = pRuledSurface->Curve2.getValue();
     if (pCurve1)
@@ -79,7 +79,7 @@ void ViewProviderRuledSurface::updateData(const App::Property* prop)
 bool ViewProviderRuledSurface::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
-    Part::RuledSurface* pRuledSurface = static_cast<Part::RuledSurface*>(getObject());
+    Part::RuledSurface* pRuledSurface = getObject<Part::RuledSurface>();
     App::DocumentObject *pCurve1 = pRuledSurface->Curve1.getValue();
     App::DocumentObject *pCurve2 = pRuledSurface->Curve2.getValue();
     if (pCurve1)

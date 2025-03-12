@@ -24,19 +24,20 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/actions/SoGetMatrixAction.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/draggers/SoTranslate2Dragger.h>
-# include <Inventor/engines/SoComposeMatrix.h>
-# include <Inventor/engines/SoTransformVec3f.h>
-# include <Inventor/engines/SoConcatenate.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoMarkerSet.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/draggers/SoTranslate2Dragger.h>
+#include <Inventor/engines/SoComposeMatrix.h>
+#include <Inventor/engines/SoTransformVec3f.h>
+#include <Inventor/engines/SoConcatenate.h>
+#include <Inventor/SbViewportRegion.h>
 #endif
 
 #include <App/DocumentObject.h>
@@ -68,20 +69,44 @@ QIcon ViewProviderMeasureGroup::getIcon() const
 }
 
 
-
-//NOLINTBEGIN
+// NOLINTBEGIN
 PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureBase, Gui::ViewProviderDocumentObject)
-//NOLINTEND
+// NOLINTEND
 
 ViewProviderMeasureBase::ViewProviderMeasureBase()
 {
-    static const char *agroup = "Appearance";
-//NOLINTBEGIN
-    ADD_PROPERTY_TYPE(TextColor, (Preferences::defaultTextColor()), agroup, App::Prop_None, "Color for the measurement text");
-    ADD_PROPERTY_TYPE(TextBackgroundColor, (Preferences::defaultTextBackgroundColor()), agroup, App::Prop_None, "Color for the measurement text background");
-    ADD_PROPERTY_TYPE(LineColor, (Preferences::defaultLineColor()), agroup, App::Prop_None, "Color for the measurement lines");
-    ADD_PROPERTY_TYPE(FontSize, (Preferences::defaultFontSize()), agroup, App::Prop_None, "Size of measurement text");
-//NOLINTEND
+    static const char* agroup = "Appearance";
+    // NOLINTBEGIN
+    ADD_PROPERTY_TYPE(TextColor,
+                      (Preferences::defaultTextColor()),
+                      agroup,
+                      App::Prop_None,
+                      "Color for the measurement text");
+    ADD_PROPERTY_TYPE(TextBackgroundColor,
+                      (Preferences::defaultTextBackgroundColor()),
+                      agroup,
+                      App::Prop_None,
+                      "Color for the measurement text background");
+    ADD_PROPERTY_TYPE(LineColor,
+                      (Preferences::defaultLineColor()),
+                      agroup,
+                      App::Prop_None,
+                      "Color for the measurement lines");
+    ADD_PROPERTY_TYPE(FontSize,
+                      (Preferences::defaultFontSize()),
+                      agroup,
+                      App::Prop_None,
+                      "Size of measurement text");
+    // NOLINTEND
+
+    pGlobalSeparator = new SoSeparator();
+    pGlobalSeparator->ref();
+
+    // Connect visibility of delta measurements to the ModeSwitch
+    auto visibilitySwitch = new SoSwitch();
+    getRoot()->insertChild(visibilitySwitch, 0);
+    visibilitySwitch->addChild(pGlobalSeparator);
+    visibilitySwitch->whichChild.connectFrom(&pcModeSwitch->whichChild);
 
     // setupAnnoSceneGraph() - sets up the annotation scene graph
     pLabel = new Gui::SoFrameLabel();
@@ -153,7 +178,7 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
     sa.setSearchingAll(true);
     sa.setNode(pLabel);
     sa.apply(pcRoot);
-    SoPath * labelPath = sa.getPath();
+    SoPath* labelPath = sa.getPath();
     assert(labelPath);
     dragger->setPartAsPath("translator", labelPath);
 
@@ -163,17 +188,18 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
     dragger->setPart("yAxisFeedback", NULL);
     // end setupSceneGraph
 
-    // these touches cause onChanged to run which then updates pLabel and pColor with the initial values
+    // these touches cause onChanged to run which then updates pLabel and pColor with the initial
+    // values
     TextColor.touch();
     TextBackgroundColor.touch();
     FontSize.touch();
     LineColor.touch();
-
 }
 
 ViewProviderMeasureBase::~ViewProviderMeasureBase()
 {
     _mVisibilityChangedConnection.disconnect();
+    pGlobalSeparator->unref();
     pLabel->unref();
     pColor->unref();
     pDragger->unref();
@@ -201,7 +227,8 @@ void ViewProviderMeasureBase::setDisplayMode(const char* ModeName)
 }
 
 
-void ViewProviderMeasureBase::finishRestoring() {
+void ViewProviderMeasureBase::finishRestoring()
+{
     // Force measurement visibility when loading a document
     show();
 }
@@ -210,15 +237,16 @@ void ViewProviderMeasureBase::finishRestoring() {
 void ViewProviderMeasureBase::onChanged(const App::Property* prop)
 {
     if (prop == &TextColor) {
-        const App::Color& color = TextColor.getValue();
+        const Base::Color& color = TextColor.getValue();
         pLabel->textColor.setValue(color.r, color.g, color.b);
+        updateIcon();
     }
     else if (prop == &TextBackgroundColor) {
-        const App::Color& color = TextBackgroundColor.getValue();
+        const Base::Color& color = TextBackgroundColor.getValue();
         pLabel->backgroundColor.setValue(color.r, color.g, color.b);
     }
     else if (prop == &LineColor) {
-        const App::Color& color = LineColor.getValue();
+        const Base::Color& color = LineColor.getValue();
         pColor->rgb.setValue(color.r, color.g, color.b);
     }
     else if (prop == &FontSize) {
@@ -227,17 +255,20 @@ void ViewProviderMeasureBase::onChanged(const App::Property* prop)
     ViewProviderDocumentObject::onChanged(prop);
 }
 
-void ViewProviderMeasureBase::draggerChangedCallback(void *data, SoDragger *) {
+void ViewProviderMeasureBase::draggerChangedCallback(void* data, SoDragger*)
+{
     auto me = static_cast<ViewProviderMeasureBase*>(data);
     me->onLabelMoved();
 }
 
-void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value) {
-    pLabel->string.setValue(value.getUserString().toUtf8().constData());
+void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
+{
+    pLabel->string.setValue(value.getUserString().c_str());
 }
 
-void ViewProviderMeasureBase::setLabelValue(const QString& value) {
-    auto lines = value.split(QString::fromLatin1("\n"));
+void ViewProviderMeasureBase::setLabelValue(const QString& value)
+{
+    auto lines = value.split(QStringLiteral("\n"));
 
     int i = 0;
     for (auto& it : lines) {
@@ -246,48 +277,61 @@ void ViewProviderMeasureBase::setLabelValue(const QString& value) {
     }
 }
 
-void ViewProviderMeasureBase::setLabelTranslation(const SbVec3f& position) {
+void ViewProviderMeasureBase::setLabelTranslation(const SbVec3f& position)
+{
     // Set the dragger translation to keep it in sync with pLabelTranslation
     pDragger->translation.setValue(position);
 }
 
 
-SoPickStyle* ViewProviderMeasureBase::getSoPickStyle() {
+SoPickStyle* ViewProviderMeasureBase::getSoPickStyle()
+{
     auto ps = new SoPickStyle();
     ps->style = SoPickStyle::UNPICKABLE;
     return ps;
 }
 
-SoDrawStyle* ViewProviderMeasureBase::getSoLineStylePrimary() {
+SoDrawStyle* ViewProviderMeasureBase::getSoLineStylePrimary()
+{
     auto style = new SoDrawStyle();
     style->lineWidth = 2.0f;
     return style;
 }
 
-SoDrawStyle* ViewProviderMeasureBase::getSoLineStyleSecondary() {
+SoDrawStyle* ViewProviderMeasureBase::getSoLineStyleSecondary()
+{
     auto style = new SoDrawStyle();
     style->lineWidth = 1.0f;
     return style;
 }
 
-SoSeparator* ViewProviderMeasureBase::getSoSeparatorText() {
+SoSeparator* ViewProviderMeasureBase::getSoSeparatorText()
+{
     return pTextSeparator;
 }
 
 
-void ViewProviderMeasureBase::positionAnno(const Measure::MeasureBase* measureObject) {
+void ViewProviderMeasureBase::positionAnno(const Measure::MeasureBase* measureObject)
+{
     (void)measureObject;
 }
 
 
-void ViewProviderMeasureBase::attach(App::DocumentObject *pcObj)
+void ViewProviderMeasureBase::updateIcon()
+{
+    // This assumes the icons main color is black
+
+    Gui::ColorMap colorMap {
+        {0x000000, TextColor.getValue().getPackedRGB() >> 8},
+    };
+    pLabel->setIcon(Gui::BitmapFactory().pixmapFromSvg(sPixmap, QSize(20, 20), colorMap));
+}
+
+
+void ViewProviderMeasureBase::attach(App::DocumentObject* pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
-    auto measureObj = static_cast<MeasureBase*>(pcObj);
-    positionAnno(measureObj);
-
-    // Set the icon
-    pLabel->setIcon(Gui::BitmapFactory().pixmapFromSvg(sPixmap, QSize(20, 20)));
+    updateIcon();
 }
 
 
@@ -307,7 +351,8 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
 
     // Check if one of the input properties has been changed
     auto inputProps = obj->getInputProps();
-    if (std::find(inputProps.begin(), inputProps.end(), std::string(prop->getName())) != inputProps.end()) {
+    if (std::find(inputProps.begin(), inputProps.end(), std::string(prop->getName()))
+        != inputProps.end()) {
         doUpdate = true;
 
         // Add connections to be notified when the measured objects are changed
@@ -316,7 +361,7 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
 
     // Check if the result prop has been changed
     auto resultProp = obj->getResultProp();
-    if (resultProp && prop == resultProp){
+    if (resultProp && prop == resultProp) {
         doUpdate = true;
     }
 
@@ -336,7 +381,7 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
 // TODO: should this be pure virtual?
 void ViewProviderMeasureBase::redrawAnnotation()
 {
-   // Base::Console().Message("VPMB::redrawAnnotation()\n");
+    // Base::Console().Message("VPMB::redrawAnnotation()\n");
 }
 
 //! connect to the subject to receive visibility updates
@@ -351,9 +396,12 @@ void ViewProviderMeasureBase::connectToSubject(App::DocumentObject* subject)
         _mVisibilityChangedConnection.disconnect();
     }
 
-    //NOLINTBEGIN
-    auto bndVisibility = std::bind(&ViewProviderMeasureBase::onSubjectVisibilityChanged, this, std::placeholders::_1, std::placeholders::_2);
-    //NOLINTEND
+    // NOLINTBEGIN
+    auto bndVisibility = std::bind(&ViewProviderMeasureBase::onSubjectVisibilityChanged,
+                                   this,
+                                   std::placeholders::_1,
+                                   std::placeholders::_2);
+    // NOLINTEND
     _mVisibilityChangedConnection = subject->signalChanged.connect(bndVisibility);
 }
 
@@ -373,7 +421,8 @@ void ViewProviderMeasureBase::connectToSubject(std::vector<App::DocumentObject*>
 //! retrieve the feature
 Measure::MeasureBase* ViewProviderMeasureBase::getMeasureObject()
 {
-    // Note: Cast to MeasurePropertyBase once we use it to provide the needed values e.g. basePosition textPosition etc.
+    // Note: Cast to MeasurePropertyBase once we use it to provide the needed values e.g.
+    // basePosition textPosition etc.
     auto feature = dynamic_cast<Measure::MeasureBase*>(pcObject);
     if (!feature) {
         throw Base::RuntimeError("Feature not found for ViewProviderMeasureBase");
@@ -382,38 +431,44 @@ Measure::MeasureBase* ViewProviderMeasureBase::getMeasureObject()
 }
 
 
-//! calculate a good direction from the elements being measured to the annotation text based on the layout
-//! of the elements and relationship with the cardinal axes and the view direction.  elementDirection
-//! is expected to be a normalized vector.
-//! an example of an elementDirection would be the vector from the start of a line to the end.
-Base::Vector3d ViewProviderMeasureBase::getTextDirection(Base::Vector3d elementDirection, double tolerance)
+//! calculate a good direction from the elements being measured to the annotation text based on the
+//! layout of the elements and relationship with the cardinal axes and the view direction.
+//! elementDirection is expected to be a normalized vector. an example of an elementDirection would
+//! be the vector from the start of a line to the end.
+Base::Vector3d ViewProviderMeasureBase::getTextDirection(Base::Vector3d elementDirection,
+                                                         double tolerance)
 {
-    // TODO: this can fail if the active view is not a 3d view (spreadsheet, techdraw page) and something causes a measure to try to update
-    // we need to search through the mdi views for a 3d view and take the direction from it (or decide that if the active view is not 3d,
-    // assume we are looking from the front).
+    // TODO: this can fail if the active view is not a 3d view (spreadsheet, techdraw page) and
+    // something causes a measure to try to update we need to search through the mdi views for a 3d
+    // view and take the direction from it (or decide that if the active view is not 3d, assume we
+    // are looking from the front).
     Base::Vector3d viewDirection;
     Base::Vector3d upDirection;
 
-Gui::View3DInventor* view = nullptr;
+    Gui::View3DInventor* view = nullptr;
     try {
         view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
-    } catch (const Base::RuntimeError& e) {
-        Base::Console().Log("ViewProviderMeasureBase::getTextDirection: Could not get active view\n");
+    }
+    catch (const Base::RuntimeError&) {
+        Base::Console().Log(
+            "ViewProviderMeasureBase::getTextDirection: Could not get active view\n");
     }
 
     if (view) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         viewDirection = toVector3d(viewer->getViewDirection()).Normalize();
         upDirection = toVector3d(viewer->getUpDirection()).Normalize();
-        // Measure doesn't work with this kind of active view.  Might be dependency graph, might be TechDraw, or ????
-        //throw Base::RuntimeError("Measure doesn't work with this kind of active view.");
-    } else {
+        // Measure doesn't work with this kind of active view.  Might be dependency graph, might be
+        // TechDraw, or ????
+        // throw Base::RuntimeError("Measure doesn't work with this kind of active view.");
+    }
+    else {
         viewDirection = Base::Vector3d(0.0, 1.0, 0.0);
         upDirection = Base::Vector3d(0.0, 0.0, 1.0);
     }
 
     Base::Vector3d textDirection = elementDirection.Cross(viewDirection);
-    if (textDirection.Length() < tolerance)  {
+    if (textDirection.Length() < tolerance) {
         // either elementDirection and viewDirection are parallel or one of them is null.
         textDirection = elementDirection.Cross(upDirection);
     }
@@ -422,26 +477,30 @@ Gui::View3DInventor* view = nullptr;
 }
 
 
-//! true if the subject of this measurement is visible.  For Measures that have multiple object subject,
-//! all of the subjects must be visible.
+//! true if the subject of this measurement is visible.  For Measures that have multiple object
+//! subject, all of the subjects must be visible.
 bool ViewProviderMeasureBase::isSubjectVisible()
 {
     Gui::Document* guiDoc = nullptr;
     try {
         guiDoc = this->getDocument();
-    } catch (const Base::RuntimeError& e) {
+    }
+    catch (const Base::RuntimeError&) {
         Base::Console().Log("ViewProviderMeasureBase::isSubjectVisible: Could not get document\n");
         return false;
     }
 
     // we need these things to proceed
-    if (!getMeasureObject() ||
-        getMeasureObject()->getSubject().empty() ||
-        !guiDoc ) {
+    if (!getMeasureObject() || !guiDoc) {
         return false;
     }
 
-    for (auto & obj : getMeasureObject()->getSubject()) {
+    // Show the measurement if it doesn't track any subjects
+    if (getMeasureObject()->getSubject().empty()) {
+        return true;
+    }
+
+    for (auto& obj : getMeasureObject()->getSubject()) {
         Gui::ViewProvider* vp = guiDoc->getViewProvider(obj);
         if (!vp || !vp->isVisible()) {
             return false;
@@ -453,9 +512,10 @@ bool ViewProviderMeasureBase::isSubjectVisible()
 }
 
 
-//! gets called when the subject object issues a signalChanged (ie a property change).  We are only interested in the subject's
-//! Visibility property
-void ViewProviderMeasureBase::onSubjectVisibilityChanged(const App::DocumentObject& docObj, const App::Property& prop)
+//! gets called when the subject object issues a signalChanged (ie a property change).  We are only
+//! interested in the subject's Visibility property
+void ViewProviderMeasureBase::onSubjectVisibilityChanged(const App::DocumentObject& docObj,
+                                                         const App::Property& prop)
 {
     if (docObj.isRemoving()) {
         return;
@@ -466,19 +526,45 @@ void ViewProviderMeasureBase::onSubjectVisibilityChanged(const App::DocumentObje
         if (!docObj.Visibility.getValue()) {
             // show ourselves only if subject is visible
             setVisible(false);
-        } else {
-            // here, we don't know if we should be visible or not, so we have to check the whole subject
+        }
+        else {
+            // here, we don't know if we should be visible or not, so we have to check the whole
+            // subject
             setVisible(isSubjectVisible());
         }
     }
 }
 
 
-//NOLINTBEGIN
-PROPERTY_SOURCE(MeasureGui::ViewProviderMeasure, MeasureGui::ViewProviderMeasureBase)
-//NOLINTEND
+float ViewProviderMeasureBase::getViewScale()
+{
+    float scale = 1.0;
 
-//! the general purpose view provider.  handles area, length, etc - any measure without a specialized VP
+    Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
+    if (!view) {
+        Base::Console().Log("ViewProviderMeasureBase::getViewScale: Could not get active view\n");
+        return scale;
+    }
+    Gui::View3DInventorViewer* viewer = view->getViewer();
+
+    SoCamera* const camera = viewer->getSoRenderManager()->getCamera();
+    if (!camera) {
+        return false;
+    }
+
+    SbViewVolume volume(camera->getViewVolume());
+    SbVec3f center(volume.getSightPoint(camera->focalDistance.getValue()));
+    scale = volume.getWorldToScreenScale(center, 1.0);
+    return scale;
+}
+
+
+// NOLINTBEGIN
+PROPERTY_SOURCE(MeasureGui::ViewProviderMeasure, MeasureGui::ViewProviderMeasureBase)
+// NOLINTEND
+
+//! the general purpose view provider.  handles area, length, etc - any measure without a
+//! specialized VP
 ViewProviderMeasure::ViewProviderMeasure()
 {
     sPixmap = "umf-measurement";
@@ -489,10 +575,7 @@ ViewProviderMeasure::ViewProviderMeasure()
 
     // indexes used to create the edges
     // this makes a line from verts[0] to verts[1]
-    static const int32_t lines[lineCount] =
-    {
-        0,1,-1
-    };
+    static const int32_t lines[lineCount] = {0, 1, -1};
 
     pCoords = new SoCoordinate3();
     pCoords->ref();
@@ -500,13 +583,13 @@ ViewProviderMeasure::ViewProviderMeasure()
     // Combine coordinates from baseTranslation and labelTranslation
     auto engineCat = new SoConcatenate(SoMFVec3f::getClassTypeId());
     auto origin = new SoSFVec3f();
-    origin->setValue(0,0,0);
+    origin->setValue(0, 0, 0);
     engineCat->input[0]->connectFrom(origin);
     engineCat->input[1]->connectFrom(&pLabelTranslation->translation);
     pCoords->point.setNum(engineCat->output->getNumConnections());
     pCoords->point.connectFrom(engineCat->output);
 
-    pLines  = new SoIndexedLineSet();
+    pLines = new SoIndexedLineSet();
     pLines->ref();
     pLines->coordIndex.setNum(lineCount);
     pLines->coordIndex.setValues(0, lineCount, lines);
@@ -515,17 +598,20 @@ ViewProviderMeasure::ViewProviderMeasure()
     lineSep->addChild(pCoords);
     lineSep->addChild(pLines);
     auto points = new SoMarkerSet();
-    points->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS",
-            Gui::ViewParams::instance()->getMarkerSize());
-    points->numPoints=1;
+    points->markerIndex =
+        Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS",
+                                                     Gui::ViewParams::instance()->getMarkerSize());
+    points->numPoints = 1;
     lineSep->addChild(points);
 
     // Connect dragger local orientation to view orientation
     Gui::View3DInventor* view = nullptr;
     try {
         view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
-    } catch (const Base::RuntimeError& e) {
-        Base::Console().Log("ViewProviderMeasure::ViewProviderMeasure: Could not get active view\n");
+    }
+    catch (const Base::RuntimeError&) {
+        Base::Console().Log(
+            "ViewProviderMeasure::ViewProviderMeasure: Could not get active view\n");
     }
 
     if (view) {
@@ -534,8 +620,6 @@ ViewProviderMeasure::ViewProviderMeasure()
         auto cam = renderManager->getCamera();
         pDraggerOrientation->rotation.connectFrom(&cam->orientation);
     }
-
-
 }
 
 ViewProviderMeasure::~ViewProviderMeasure()
@@ -544,7 +628,8 @@ ViewProviderMeasure::~ViewProviderMeasure()
     pLines->unref();
 }
 
-void ViewProviderMeasure::positionAnno(const Measure::MeasureBase* measureObject) {
+void ViewProviderMeasure::positionAnno(const Measure::MeasureBase* measureObject)
+{
     (void)measureObject;
 
     // Initialize the text position
@@ -555,11 +640,12 @@ void ViewProviderMeasure::positionAnno(const Measure::MeasureBase* measureObject
     Gui::View3DInventor* view = nullptr;
     try {
         view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
-    } catch (const Base::RuntimeError& e) {
+    }
+    catch (const Base::RuntimeError&) {
         Base::Console().Log("ViewProviderMeasure::positionAnno: Could not get active view\n");
     }
 
-    if(!view){
+    if (!view) {
         return;
     }
 
@@ -598,20 +684,33 @@ void ViewProviderMeasure::redrawAnnotation()
 }
 
 
-Base::Vector3d ViewProviderMeasure::getBasePosition(){
+Base::Vector3d ViewProviderMeasure::getBasePosition()
+{
     auto measureObject = getMeasureObject();
     Base::Placement placement = measureObject->getPlacement();
     return placement.getPosition();
 }
 
-
-Base::Vector3d ViewProviderMeasure::getTextPosition(){
-    constexpr float DefaultLeaderLength{20.0};
+Base::Vector3d ViewProviderMeasure::getTextPosition()
+{
+    // Return the initial position relative to the base position
     auto basePoint = getBasePosition();
-    Base::Vector3d textDirection(1.0, 1.0, 1.0);
-    textDirection.Normalize();
 
-    return basePoint + textDirection * DefaultLeaderLength;
+    Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
+    if (!view) {
+        Base::Console().Log(
+            "ViewProviderMeasureBase::getTextPosition: Could not get active view\n");
+        return Base::Vector3d();
+    }
+
+    Gui::View3DInventorViewer* viewer = view->getViewer();
+
+    // Convert to screenspace, offset and convert back to world space
+    SbVec2s screenPos = viewer->getPointOnViewport(SbVec3f(basePoint.x, basePoint.y, basePoint.z));
+    SbVec3f vec = viewer->getPointOnFocalPlane(screenPos + SbVec2s(30.0, 30.0));
+    Base::Vector3d textPos(vec[0], vec[1], vec[2]);
+
+    return textPos - basePoint;
 }
 
 //! called by the system when it is time to display this measure

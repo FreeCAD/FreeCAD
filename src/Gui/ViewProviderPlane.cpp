@@ -33,60 +33,93 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoTranslation.h>
+# include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/SbColor.h>
 #endif
 
+#include <App/Datums.h>
+#include <Gui/ViewParams.h>
+
 #include "ViewProviderPlane.h"
-#include "ViewProviderOrigin.h"
+#include "ViewProviderCoordinateSystem.h"
 
 
 using namespace Gui;
 
-PROPERTY_SOURCE(Gui::ViewProviderPlane, Gui::ViewProviderOriginFeature)
+PROPERTY_SOURCE(Gui::ViewProviderPlane, Gui::ViewProviderDatum)
 
 
 ViewProviderPlane::ViewProviderPlane()
 {
     sPixmap = "Std_Plane";
+    lineThickness = 1.0;
+
+    pLabel = new SoAsciiText();
 }
 
 ViewProviderPlane::~ViewProviderPlane() = default;
 
-void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
-    ViewProviderOriginFeature::attach ( obj );
-    static const float size = ViewProviderOrigin::defaultSize ();
+void ViewProviderPlane::attach(App::DocumentObject * obj) {
+    ViewProviderDatum::attach(obj);
 
-    static const SbVec3f verts[4] = {
-        SbVec3f(size,size,0),   SbVec3f(size,-size,0),
-        SbVec3f(-size,-size,0), SbVec3f(-size,size,0),
-    };
+    std::string role = getRole();
 
-    // indexes used to create the edges
+    SoSeparator* sep = getDatumRoot();
+
+    // Setup colors
+    // Can't use transparency because of https://github.com/FreeCAD/FreeCAD/issues/18395
+    // When this issue is fixed then we can use the below and remove the material here
+    // and faceSeparator...
+    //ShapeAppearance.setTransparency(0.8);
+    auto material = new SoMaterial();
+    material->transparency.setValue(0.95f);
+    if (!role.empty()) {
+        ShapeAppearance.setDiffuseColor(getColor(role));
+        SbColor color;
+        float alpha = 0.0f;
+        color.setPackedValue(getColor(role), alpha);
+        material->ambientColor.setValue(color);
+        material->diffuseColor.setValue(color);
+    }
+
+    static const float size = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetFloat("DatumPlaneSize", 40.0);
+    static const float startSize = 0.25 * size; //NOLINT
+
+    SbVec3f verts[4];
+    if (role.empty()) {
+        verts[0] = SbVec3f(size, size, 0);
+        verts[1] = SbVec3f(size, -size, 0);
+        verts[2] = SbVec3f(-size, -size, 0);
+        verts[3] = SbVec3f(-size, size, 0);
+    }
+    else {
+        verts[0] = SbVec3f(size, size, 0);
+        verts[1] = SbVec3f(size, startSize, 0);
+        verts[2] = SbVec3f(startSize, startSize, 0);
+        verts[3] = SbVec3f(startSize, size, 0);
+    }
+
+    auto pCoords = new SoCoordinate3();
+    pCoords->point.setNum(4);
+    pCoords->point.setValues(0, 4, verts);
+    sep->addChild(pCoords);
+
+    auto lineSeparator = new SoSeparator();
+    auto pLines = new SoIndexedLineSet();
     static const int32_t lines[6] = { 0, 1, 2, 3, 0, -1 };
-
-    SoSeparator *sep = getOriginFeatureRoot ();
-
-    auto pCoords = new SoCoordinate3 ();
-    pCoords->point.setNum (4);
-    pCoords->point.setValues ( 0, 4, verts );
-    sep->addChild ( pCoords );
-
-    auto pLines  = new SoIndexedLineSet ();
     pLines->coordIndex.setNum(6);
     pLines->coordIndex.setValues(0, 6, lines);
-    sep->addChild ( pLines );
+
+    auto ps = new SoPickStyle();
+    ps->style.setValue(SoPickStyle::SHAPE_ON_TOP);
+    lineSeparator->addChild(ps);
+    lineSeparator->addChild(pLines);
+    sep->addChild(lineSeparator);
 
     // add semi transparent face
     auto faceSeparator = new SoSeparator();
     sep->addChild(faceSeparator);
 
-    auto material = new SoMaterial();
-    material->transparency.setValue(0.95f);
-    SbColor color;
-    float alpha = 0.0f;
-    color.setPackedValue(ViewProviderOrigin::defaultColor, alpha);
-    material->ambientColor.setValue(color);
-    material->diffuseColor.setValue(color);
     faceSeparator->addChild(material);
 
     // disable backface culling and render with two-sided lighting
@@ -95,24 +128,75 @@ void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
     shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
     faceSeparator->addChild(shapeHints);
 
-    // disable picking
-    auto pickStyle = new SoPickStyle();
-    pickStyle->style = SoPickStyle::UNPICKABLE;
-    faceSeparator->addChild(pickStyle);
-
     auto faceSet = new SoFaceSet();
     auto vertexProperty = new SoVertexProperty();
     vertexProperty->vertex.setValues(0, 4, verts);
     faceSet->vertexProperty.setValue(vertexProperty);
     faceSeparator->addChild(faceSet);
 
-    auto textTranslation = new SoTranslation ();
-    textTranslation->translation.setValue ( SbVec3f ( -size * 49. / 50., size * 9./10., 0 ) );
-    sep->addChild ( textTranslation );
+    auto textTranslation = new SoTranslation();
+    SbVec3f centeringVec = size * SbVec3f(0.36, 0.49, 0);  // NOLINT
+    textTranslation->translation.setValue(centeringVec);
+    sep->addChild(textTranslation);
 
-    auto ps = new SoPickStyle();
-    ps->style.setValue(SoPickStyle::BOUNDING_BOX);
-    sep->addChild(ps);
+    pLabel->string.setValue(getLabelText(role).c_str());
 
-    sep->addChild ( getLabel () );
+    labelSwitch = new SoSwitch();
+    setLabelVisibility(false);
+    labelSwitch->addChild(pLabel);
+    sep->addChild(labelSwitch);
+}
+
+void ViewProviderPlane::setLabelVisibility(bool val)
+{
+    labelSwitch->whichChild = val ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+}
+
+unsigned long ViewProviderPlane::getColor(const std::string& role) const
+{
+    auto planesRoles = App::LocalCoordinateSystem::PlaneRoles;
+    if (role == planesRoles[0]) {
+        return ViewParams::instance()->getAxisZColor(); // XY-plane
+    }
+    else if (role == planesRoles[1]) {
+        return ViewParams::instance()->getAxisYColor(); // XZ-plane
+    }
+    else if (role == planesRoles[2]) {
+        return ViewParams::instance()->getAxisXColor(); // YZ-plane
+    }
+    return 0;
+}
+
+std::string ViewProviderPlane::getLabelText(const std::string& role) const
+{
+    std::string text;
+    auto planesRoles = App::LocalCoordinateSystem::PlaneRoles;
+    if (role == planesRoles[0]) {
+        text = "XY";
+    }
+    else if (role == planesRoles[1]) {
+        text = "XZ";
+    }
+    else if (role == planesRoles[2]) {
+        text = "YZ";
+    }
+    return text;
+}
+
+std::string ViewProviderPlane::getRole() const
+{
+    // Note: Role property of App::Plane is not set yet when attaching.
+    const char* name = pcObject->getNameInDocument();
+    auto planesRoles = App::LocalCoordinateSystem::PlaneRoles;
+    if (strncmp(name, planesRoles[0], strlen(planesRoles[0])) == 0) {
+        return planesRoles[0];
+    }
+    else if (strncmp(name, planesRoles[1], strlen(planesRoles[1])) == 0) {
+        return planesRoles[1];
+    }
+    else if (strncmp(name, planesRoles[2], strlen(planesRoles[2])) == 0) {
+        return planesRoles[2];
+    }
+
+    return "";
 }

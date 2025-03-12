@@ -1,10 +1,16 @@
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )
 
@@ -86,6 +92,8 @@ SET(SpreadsheetGui_SRCS
     DlgBindSheet.cpp
     DlgSheetConf.h
     DlgSheetConf.cpp
+    ZoomableView.h
+    ZoomableView.cpp
     ${SpreadsheetGui_UIC_HDRS}
 )
 
@@ -110,6 +118,9 @@ set(SpreadsheetGui_UIC_SRCS
 
 add_library(SpreadsheetGui SHARED ${SpreadsheetGui_SRCS} ${SpreadsheetGuiIcon_SVG})
 target_link_libraries(SpreadsheetGui ${SpreadsheetGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(SpreadsheetGui)
+endif()
 
 SET_BIN_DIR(SpreadsheetGui SpreadsheetGui /Mod/Spreadsheet)
 SET_PYTHON_PREFIX_SUFFIX(SpreadsheetGui)

@@ -151,10 +151,12 @@ class DraftWorkbench(FreeCADGui.Workbench):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.show()
-            import draftutils.init_draft_statusbar as dsb
-            dsb.show_draft_statusbar()
+            from draftutils import init_draft_statusbar
+            init_draft_statusbar.show_draft_statusbar()
         import WorkingPlane
         WorkingPlane._view_observer_start()  # Updates the draftToolBar when switching views.
+        from draftutils import grid_observer
+        grid_observer._view_observer_setup()
         FreeCAD.Console.PrintLog("Draft workbench activated.\n")
 
     def Deactivated(self):
@@ -163,10 +165,16 @@ class DraftWorkbench(FreeCADGui.Workbench):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.hide()
-            import draftutils.init_draft_statusbar as dsb
-            dsb.hide_draft_statusbar()
+            from PySide import QtCore
+            from draftutils import init_draft_statusbar
+            # Delay required in case the Draft WB is preloaded,
+            # else show_draft_statusbar will not yet be done:
+            t = QtCore.QTimer()
+            t.singleShot(700, init_draft_statusbar.hide_draft_statusbar)
         import WorkingPlane
         WorkingPlane._view_observer_stop()
+        from draftutils import grid_observer
+        grid_observer._view_observer_setup()
         FreeCAD.Console.PrintLog("Draft workbench deactivated.\n")
 
     def ContextMenu(self, recipient):

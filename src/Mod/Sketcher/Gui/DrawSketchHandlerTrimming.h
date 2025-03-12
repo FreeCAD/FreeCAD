@@ -27,7 +27,7 @@
 #include <Base/Tools.h>
 
 #include <Gui/Notifications.h>
-#include <Gui/SelectionFilter.h>
+#include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 
@@ -59,7 +59,7 @@ public:
         if (pObj != this->object) {
             return false;
         }
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
         std::string element(sSubName);
@@ -98,7 +98,7 @@ public:
             int GeoId = getPreselectCurve();
 
             if (GeoId > -1) {
-                auto sk = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+                auto sk = sketchgui->getObject<Sketcher::SketchObject>();
                 int GeoId1, GeoId2;
                 Base::Vector3d intersect1, intersect2;
                 if (sk->seekTrimPoints(GeoId,
@@ -175,7 +175,7 @@ public:
                                       onSketchPos.x,
                                       onSketchPos.y);
                 Gui::Command::commitCommand();
-                tryAutoRecompute(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                tryAutoRecompute(sketchgui->getObject<Sketcher::SketchObject>());
             }
             catch (const Base::Exception&) {
                 Gui::NotifyError(sketchgui,
@@ -197,7 +197,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Trimming");
+        return QStringLiteral("Sketcher_Pointer_Trimming");
     }
 
 private:

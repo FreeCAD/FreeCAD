@@ -32,6 +32,7 @@ import os
 import time
 import tempfile
 import math
+from builtins import open as pyopen
 
 import FreeCAD
 import Part
@@ -47,16 +48,13 @@ from importers.importIFCHelper import dd2dms
 from draftutils import params
 from draftutils.messages import _msg, _err
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
+import FreeCADGui
 
 __title__  = "FreeCAD IFC export"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
 __url__    = "https://www.freecad.org"
 
-# Save the Python open function because it will be redefined
-if open.__module__ in ['__builtin__', 'io']:
-    pyopen = open
+PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 # Templates and other definitions ****
 # Specific FreeCAD <-> IFC slang translations
@@ -112,7 +110,7 @@ def getPreferences():
     import ifcopenshell
 
     if FreeCAD.GuiUp and params.get_param_arch("ifcShowDialog"):
-        FreeCADGui.showPreferences("Import-Export", 1)
+        FreeCADGui.showPreferencesByName("Import-Export", ":/ui/preferences-ifc-export.ui")
     ifcunit = params.get_param_arch("ifcUnit")
 
     # Factor to multiply the dimension in millimeters
@@ -175,12 +173,9 @@ def getPreferences():
     # set schema
     if hasattr(ifcopenshell, "schema_identifier"):
         schema = ifcopenshell.schema_identifier
-    elif ifcos_version >= 0.6:
-        # v0.6 onwards allows to set our own schema
-        schema = ["IFC4", "IFC2X3"][params.get_param_arch("IfcVersion")]
     else:
-        schema = "IFC2X3"
-
+        # v0.6 onwards allows one to set our own schema
+        schema = PARAMS.GetString("DefaultIfcExportVersion", "IFC4")
     preferences["SCHEMA"] = schema
 
     return preferences
@@ -206,6 +201,7 @@ def export(exportList, filename, colors=None, preferences=None):
              "Visit https://wiki.freecad.org/IfcOpenShell "
              "to learn about installing it.")
         return
+    from ifcopenshell import guid
     if str(filename).lower().endswith("json"):
         import json
         try:
@@ -219,7 +215,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
     starttime = time.time()
 
-    global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs, uids, template
+    global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs, uids, template, curvestyles
 
     if preferences is None:
         preferences = getPreferences()
@@ -270,19 +266,22 @@ def export(exportList, filename, colors=None, preferences=None):
     if history:
         history = history[0]
     else:
-        # IFC4 allows to not write any history
+        # IFC4 allows one to not write any history
         history = None
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
 
-    # separate 2D objects
+    # separate 2D and special objects. Special objects provide their own IFC export method
 
     annotations = []
+    specials = []
     for obj in objectslist:
         if obj.isDerivedFrom("Part::Part2DObject"):
             annotations.append(obj)
         elif obj.isDerivedFrom("App::Annotation") or (Draft.getType(obj) in ["DraftText","Text","Dimension","LinearDimension","AngularDimension"]):
             annotations.append(obj)
+        elif hasattr(obj, "Proxy") and hasattr(obj.Proxy, "export_ifc"):
+            specials.append(obj)
         elif obj.isDerivedFrom("Part::Feature"):
             if obj.Shape and (not obj.Shape.Solids) and obj.Shape.Edges:
                 if not obj.Shape.Faces:
@@ -293,6 +292,7 @@ def export(exportList, filename, colors=None, preferences=None):
     # clean objects list of unwanted types
 
     objectslist = [obj for obj in objectslist if obj not in annotations]
+    objectslist = [obj for obj in objectslist if obj not in specials]
     objectslist = Arch.pruneIncluded(objectslist,strict=True)
     objectslist = [obj for obj in objectslist if Draft.getType(obj) not in ["Dimension","Material","MaterialContainer","WorkingPlaneProxy"]]
     if preferences['FULL_PARAMETRIC']:
@@ -311,9 +311,9 @@ def export(exportList, filename, colors=None, preferences=None):
         project = contextCreator.project
         objectslist = [obj for obj in objectslist if obj != contextCreator.project_object]
 
-    if Draft.getObjectsOfType(objectslist, "Site"):  # we assume one site and one representation context only
-        decl = Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian)
-        contextCreator.model_context.TrueNorth.DirectionRatios = (math.cos(decl+math.pi/2), math.sin(decl+math.pi/2))
+        if Draft.getObjectsOfType(objectslist, "Site"):  # we assume one site and one representation context only
+            decl = Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian)
+            contextCreator.model_context.TrueNorth.DirectionRatios = (math.cos(decl+math.pi/2), math.sin(decl+math.pi/2))
 
     # reusable entity system
 
@@ -338,6 +338,8 @@ def export(exportList, filename, colors=None, preferences=None):
     shapedefs = {} # { ShapeDefString:[shapes],... }
     spatialelements = {} # {Name:IfcEntity, ... }
     uids = [] # store used UIDs to avoid reuse (some FreeCAD objects might have same IFC UID, ex. copy/pasted objects
+    classifications = {} # {Name:IfcEntity, ... }
+    curvestyles = {}
 
     # build clones table
 
@@ -933,6 +935,33 @@ def export(exportList, filename, colors=None, preferences=None):
                     pset
                 )
 
+        # Classifications
+
+        classification = getattr(obj, "StandardCode", "")
+        if classification:
+            name, code = classification.split(" ", 1)
+            if name in classifications:
+                system = classifications[name]
+            else:
+                system = ifcfile.createIfcClassification(None, None, None, name)
+                classifications[name] = system
+            for ref in getattr(system, "HasReferences", []):
+                if code.startswith(ref.Name):
+                    break
+            else:
+                ref = ifcfile.createIfcClassificationReference(None, code, None, system)
+            if getattr(ref, "ClassificationRefForObjects", None):
+                rel = ref.ClassificationRefForObjects[0]
+                rel.RelatedObjects = rel.RelatedObjects + [product]
+            else:
+                rel = ifcfile.createIfcRelAssociatesClassification(
+                    ifcopenshell.guid.new(),
+                    history,'FreeCADClassificationRel',
+                    None,
+                    [product],
+                    ref
+                )
+
         count += 1
 
     # relate structural analysis objects to the struct model
@@ -1110,22 +1139,22 @@ def export(exportList, filename, colors=None, preferences=None):
                 None,
                 None
             )]
-        if buildings and (not sites):
-            ifcfile.createIfcRelAggregates(
-                ifcopenshell.guid.new(),
-                history,
-                'ProjectLink',
-                '',
-                project,buildings
-            )
-        if floors and buildings:
-            ifcfile.createIfcRelAggregates(
-                ifcopenshell.guid.new(),
-                history,
-                'BuildingLink',
-                '',
-                buildings[0],floors
-            )
+    if buildings and (not sites):
+        ifcfile.createIfcRelAggregates(
+            ifcopenshell.guid.new(),
+            history,
+            'ProjectLink',
+            '',
+            project,buildings
+        )
+    if floors and buildings:
+        ifcfile.createIfcRelAggregates(
+            ifcopenshell.guid.new(),
+            history,
+            'BuildingLink',
+            '',
+            buildings[0],floors
+        )
     if sites and buildings:
         ifcfile.createIfcRelAggregates(
             ifcopenshell.guid.new(),
@@ -1295,123 +1324,16 @@ def export(exportList, filename, colors=None, preferences=None):
         curvestyles = {}
         if annotations and preferences['DEBUG']: print("exporting 2D objects...")
         for anno in annotations:
-            objectType = None
-            xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
-            zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
-            ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-            gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-            placement = ifcbin.createIfcLocalPlacement(gpl)
-            if anno.isDerivedFrom("Part::Feature"):
-                if Draft.getType(anno) == "Hatch":
-                    objectType = "HATCH"
-                elif getattr(anno.ViewObject,"EndArrow",False):
-                    objectType = "LEADER"
-                elif anno.Shape.Faces:
-                    objectType = "AREA"
-                else:
-                    objectType = "LINEWORK"
-                reps = []
-                sh = anno.Shape.copy()
-                sh.scale(preferences['SCALE_FACTOR']) # to meters
-                ehc = []
-                curves = []
-                for w in sh.Wires:
-                    curves.append(createCurve(ifcfile,w))
-                    for e in w.Edges:
-                        ehc.append(e.hashCode())
-                if curves:
-                    reps.append(ifcfile.createIfcGeometricCurveSet(curves))
-                curves = []
-                for e in sh.Edges:
-                    if e.hashCode not in ehc:
-                        curves.append(createCurve(ifcfile,e))
-                if curves:
-                    reps.append(ifcfile.createIfcGeometricCurveSet(curves))
-            elif anno.isDerivedFrom("App::Annotation"):
-                objectType = "TEXT"
-                l = FreeCAD.Vector(anno.Position).multiply(preferences['SCALE_FACTOR'])
-                pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
-                tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
-                s = ";".join(anno.LabelText)
-                txt = ifcfile.createIfcTextLiteral(s,tpl,"LEFT")
-                reps = [txt]
-            elif Draft.getType(anno) in ["DraftText","Text"]:
-                objectType = "TEXT"
-                l = FreeCAD.Vector(anno.Placement.Base).multiply(preferences['SCALE_FACTOR'])
-                pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
-                zdir = ifcbin.createIfcDirection(tuple(anno.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))))
-                xdir = ifcbin.createIfcDirection(tuple(anno.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))))
-                tpl = ifcbin.createIfcAxis2Placement3D(pos,zdir,xdir)
-                alg = "LEFT"
-                if FreeCAD.GuiUp and hasattr(anno.ViewObject,"Justification"):
-                    if anno.ViewObject.Justification == "Right":
-                        alg = "RIGHT"
-                s = ";".join(anno.Text)
-                txt = ifcfile.createIfcTextLiteral(s,tpl,alg)
-                reps = [txt]
-            elif Draft.getType(anno) in ["Dimension","LinearDimension","AngularDimension"]:
-                if FreeCAD.GuiUp:
-                    objectType = "DIMENSION"
-                    vp = anno.ViewObject.Proxy
-                    reps = []
-                    sh = Part.makePolygon([vp.p1,vp.p2,vp.p3,vp.p4])
-                    sh.scale(preferences['SCALE_FACTOR']) # to meters
-                    ehc = []
-                    curves = []
-                    for w in sh.Wires:
-                        curves.append(createCurve(ifcfile,w))
-                        for e in w.Edges:
-                            ehc.append(e.hashCode())
-                    if curves:
-                        reps.append(ifcfile.createIfcGeometricCurveSet(curves))
-                    curves = []
-                    for e in sh.Edges:
-                        if e.hashCode not in ehc:
-                            curves.append(createCurve(ifcfile,e))
-                    if curves:
-                        reps.append(ifcfile.createIfcGeometricCurveSet(curves))
-                    l = FreeCAD.Vector(vp.tbase).multiply(preferences['SCALE_FACTOR'])
-                    zdir = None
-                    xdir = None
-                    if hasattr(vp,"trot"):
-                        r = FreeCAD.Rotation(vp.trot[0],vp.trot[1],vp.trot[2],vp.trot[3])
-                        zdir = ifcbin.createIfcDirection(tuple(r.multVec(FreeCAD.Vector(0,0,1))))
-                        xdir = ifcbin.createIfcDirection(tuple(r.multVec(FreeCAD.Vector(1,0,0))))
-                    pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
-                    tpl = ifcbin.createIfcAxis2Placement3D(pos,zdir,xdir)
-                    txt = ifcfile.createIfcTextLiteral(vp.string,tpl,"LEFT")
-                    reps.append(txt)
-            else:
-                print("Unable to handle object",anno.Label)
-                continue
-
-            for coldef in ["LineColor","TextColor","ShapeColor"]:
-                if hasattr(obj.ViewObject,coldef):
-                    rgb = getattr(obj.ViewObject,coldef)[:3]
-                    if rgb in curvestyles:
-                        psa = curvestyles[rgb]
-                    else:
-                        col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
-                        cvf = ifcfile.createIfcDraughtingPredefinedCurveFont("continuous")
-                        ics = ifcfile.createIfcCurveStyle('Line',cvf,None,col)
-                        psa = ifcfile.createIfcPresentationStyleAssignment([ics])
-                        curvestyles[rgb] = psa
-                    for rep in reps:
-                        isi = ifcfile.createIfcStyledItem(rep,[psa],None)
-                    break
-
-            shp = ifcfile.createIfcShapeRepresentation(context,'Annotation','Annotation2D',reps)
-            rep = ifcfile.createIfcProductDefinitionShape(None,None,[shp])
-            l = anno.Label
-            ann = ifcfile.createIfcAnnotation(
-                ifcopenshell.guid.new(),
-                history,l,
-                '',
-                objectType,
-                placement,
-                rep
-            )
+            ann = create_annotation(anno, ifcfile, context, history, preferences)
             annos[anno.Name] = ann
+
+    # specials. Specials should take care of register themselves where needed under the project
+
+    specs = {}
+    for spec in specials:
+        if preferences['DEBUG']: print("exporting special object:",spec.Label)
+        elt = spec.Proxy.export_ifc(spec, ifcfile)
+        specs[spec.Name] = elt
 
     # groups
 
@@ -1661,12 +1583,16 @@ def getPropertyData(key,value,preferences):
     if ptype in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
         pass
     elif ptype == "IfcBoolean":
-        if pvalue == ".T.":
+        if pvalue in ["True", "False"]:
+            pvalue = eval(pvalue)
+        elif pvalue == ".T.":
             pvalue = True
         else:
             pvalue = False
     elif ptype == "IfcLogical":
-        if pvalue.upper() == "TRUE":
+        if pvalue in ["True", "False"]:
+            pvalue = eval(pvalue)
+        elif pvalue.upper() == "TRUE":
             pvalue = True
         else:
             pvalue = False
@@ -1766,7 +1692,7 @@ def exportIfcAttributes(obj, kwargs, scale=0.001):
             value = obj.getPropertyByName(property)
             if isinstance(value, FreeCAD.Units.Quantity):
                 value = float(value)
-                if property in ["ElevationWithFlooring","Elevation"]:
+                if "Elevation" in property:
                     value = value*scale # some properties must be changed to meters
             if (ifctype == "IfcFurnishingElement") and (property == "PredefinedType"):
                 pass # IFC2x3 Furniture objects get converted to IfcFurnishingElement and have no PredefinedType anymore
@@ -1789,13 +1715,31 @@ def buildAddress(obj,ifcfile):
     return addr
 
 
-def createCurve(ifcfile,wire,scaling=1.0):
+def createCurve(ifcfile, wire, scaling=1.0):
+    """creates an IfcIndexdPolyCurve from a wire
+    if possible, or defects to createCurveWithArcs"""
+
+    if wire.ShapeType != "Wire":
+        return createCurveWithArcs(ifcfile, wire, scaling)
+    for e in wire.Edges:
+        if isinstance(e.Curve,Part.Circle):
+            return createCurveWithArcs(ifcfile, wire, scaling)
+    verts = [v.Point for v in wire.Vertexes]
+    if scaling != 1:
+        verts = [v.multiply(scaling) for v in verts]
+    verts = tuple([tuple(v) for v in verts])
+    pts = ifcfile.createIfcCartesianPointList3D(verts)
+    idc = ifcfile.createIfcIndexedPolyCurve(pts, None, None)
+    return idc
+
+
+def createCurveWithArcs(ifcfile,wire,scaling=1.0):
     "creates an IfcCompositeCurve from a shape"
 
     segments = []
     pol = None
     last = None
-    if wire.ShapeType == "edge":
+    if wire.ShapeType == "Edge":
         edges = [wire]
     else:
         edges = Part.__sortEdges__(wire.Edges)
@@ -1987,6 +1931,12 @@ def getRepresentation(
     tostore = False
     subplacement = None
 
+    # enable forcebrep for non-solids
+    if hasattr(obj,"Shape"):
+        if obj.Shape:
+            if not obj.Shape.Solids:
+                forcebrep = True
+
     # check for clones
 
     if ((not subtraction) and (not forcebrep)) or forceclone:
@@ -2072,12 +2022,25 @@ def getRepresentation(
                             pstr = str([v.Point for v in p[i].Vertexes])
                             if pstr in profiledefs:
                                 profile = profiledefs[pstr]
+                                profiles = [profile]
                                 shapetype = "reusing profile"
                             else:
-                                profile = getProfile(ifcfile,pi)
-                                if profile:
-                                    profiledefs[pstr] = profile
-                            if profile and not(DraftVecUtils.isNull(evi)):
+                                # Fix bug in Forum Discussion
+                                # https://forum.freecad.org/viewtopic.php?p=771954#p771954
+                                if not isinstance(pi, Part.Compound):
+                                    profile = getProfile(ifcfile,pi)
+                                    if profile:
+                                        profiledefs[pstr] = profile
+                                        profiles=[profile]
+                                else:  # i.e. Part.Compound
+                                    profiles=[]
+                                    for pif in pi.Faces:
+                                        profile = getProfile(ifcfile,pif)
+                                        if profile:
+                                            profiledefs[pstr] = profile
+                                            profiles.append(profile)
+                            if profiles and not(DraftVecUtils.isNull(evi)):
+                              for profile in profiles:
                                 #ev = pl.Rotation.inverted().multVec(evi)
                                 #print("evi:",evi)
                                 if not tostore:
@@ -2103,12 +2066,12 @@ def getRepresentation(
             profile = getProfile(ifcfile,profile)
             if profile:
                 profiledefs[pstr] = profile
-            ev = obj.Dir
+            ev = FreeCAD.Vector(obj.Dir)
             l = obj.LengthFwd.Value
             if l:
-                ev = FreeCAD.Vector(ev).normalize() # new since 0.20 - obj.Dir length is ignored
+                ev = ev.normalize() # new since 0.20 - obj.Dir length is ignored
                 ev.multiply(l)
-                ev.multiply(preferences['SCALE_FACTOR'])
+            ev.multiply(preferences['SCALE_FACTOR'])
             ev = pl.Rotation.inverted().multVec(ev)
             xvc =       ifcbin.createIfcDirection(tuple(pl.Rotation.multVec(FreeCAD.Vector(1,0,0))))
             zvc =       ifcbin.createIfcDirection(tuple(pl.Rotation.multVec(FreeCAD.Vector(0,0,1))))
@@ -2342,6 +2305,10 @@ def getRepresentation(
             # actual ifcmaterial)
             shapecolor = obj.ViewObject.ShapeColor[:3]
             transparency = obj.ViewObject.Transparency/100.0
+            if transparency == 1:
+                # fix buggy fully transparent materials
+                # TODO there is some problem somewhere in ShapeAppearance that needs solving.
+                transparency = 0.
             if hasattr(obj.ViewObject,"DiffuseColor"):
                 diffusecolor = obj.ViewObject.DiffuseColor
         if shapecolor and (shapetype != "clone"): # cloned objects are already colored
@@ -2456,7 +2423,8 @@ def getUID(obj,preferences):
                 obj.IfcData = d
             if hasattr(obj, "GlobalId"):
                 obj.GlobalId = uid
-    uids.append(uid)
+    if "uids" in globals():
+        uids.append(uid)
     return uid
 
 
@@ -2526,3 +2494,173 @@ def writeJson(filename,ifcfile):
     #print("json:",s)
     f.write(s)
     f.close()
+
+
+def create_annotation(anno, ifcfile, context, history, preferences):
+    """Creates an annotation object"""
+
+    global curvestyles, ifcbin
+    reps = []
+    repid = "Annotation"
+    reptype = "Annotation2D"
+    description = getattr(anno, "Description", None)
+    # uses global ifcbin, curvestyles
+    objectType = None
+    ovc = None
+    zvc = None
+    xvc = None
+    reps = []
+    repid = "Annotation"
+    reptype = "Annotation2D"
+    if anno.isDerivedFrom("Part::Feature"):
+        if Draft.getType(anno) == "Hatch":
+            objectType = "HATCH"
+        elif getattr(anno.ViewObject,"EndArrow",False):
+            objectType = "LEADER"
+        elif anno.Shape.Faces:
+            objectType = "AREA"
+        elif Draft.getType(anno) == "Axis":
+            axdata = anno.Proxy.getAxisData(anno)
+            axes = []
+            for ax in axdata:
+                p1 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[0]).multiply(preferences['SCALE_FACTOR'])[:2]))
+                p2 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[1]).multiply(preferences['SCALE_FACTOR'])[:2]))
+                pol = ifcbin.createIfcPolyline([p1,p2])
+                axis = ifcfile.createIfcGridAxis(ax[2],pol,True)
+                axes.append(axis)
+            if axes:
+                if len(axes) > 1:
+                    print("DEBUG: exportIFC.create_annotation: Cannot create more thna one axis",anno.Label)
+                return axes[0]
+            else:
+                print("Unable to handle object",anno.Label)
+                return None
+        else:
+            objectType = "LINEWORK"
+        sh = anno.Shape.copy()
+        sh.scale(preferences['SCALE_FACTOR']) # to meters
+        ehc = []
+        curves = []
+        for w in sh.Wires:
+            curves.append(createCurve(ifcfile,w))
+            for e in w.Edges:
+                ehc.append(e.hashCode())
+        if curves:
+            reps.append(ifcfile.createIfcGeometricCurveSet(curves))
+        curves = []
+        for e in sh.Edges:
+            if e.hashCode not in ehc:
+                curves.append(createCurve(ifcfile,e))
+        if curves:
+            reps.append(ifcfile.createIfcGeometricCurveSet(curves))
+    elif anno.isDerivedFrom("App::Annotation"):
+        objectType = "TEXT"
+        l = FreeCAD.Vector(anno.Position).multiply(preferences['SCALE_FACTOR'])
+        pos = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
+        tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
+        ovc = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
+        s = ";".join(anno.LabelText)
+        txt = ifcfile.createIfcTextLiteral(s,tpl,"LEFT")
+        reps = [txt]
+    elif Draft.getType(anno) in ["DraftText","Text"]:
+        objectType = "TEXT"
+        l = FreeCAD.Vector(anno.Placement.Base).multiply(preferences['SCALE_FACTOR'])
+        pos = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
+        tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
+        ovc = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
+        zvc = ifcbin.createIfcDirection(tuple(anno.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+        xvc = ifcbin.createIfcDirection(tuple(anno.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+        alg = "LEFT"
+        if FreeCAD.GuiUp and hasattr(anno.ViewObject,"Justification"):
+            if anno.ViewObject.Justification == "Right":
+                alg = "RIGHT"
+        s = ";".join(anno.Text)
+        txt = ifcfile.createIfcTextLiteral(s,tpl,alg)
+        reps = [txt]
+    elif Draft.getType(anno) in ["Dimension","LinearDimension","AngularDimension"]:
+        if FreeCAD.GuiUp:
+            objectType = "DIMENSION"
+            vp = anno.ViewObject.Proxy
+            if "BBIMDIMS" in preferences and preferences["BBIMDIMS"]:
+                sh = Part.makePolygon([vp.p2,vp.p3])
+            else:
+                sh = Part.makePolygon([vp.p1,vp.p2,vp.p3,vp.p4])
+            sh.scale(preferences['SCALE_FACTOR']) # to meters
+            curve = createCurve(ifcfile,sh)
+            reps = [ifcfile.createIfcGeometricCurveSet([curve])]
+            # Append text
+            l = FreeCAD.Vector(vp.tbase).multiply(preferences['SCALE_FACTOR'])
+            zdir = None
+            xdir = None
+            if hasattr(vp,"trot"):
+                r = FreeCAD.Rotation(vp.trot[0],vp.trot[1],vp.trot[2],vp.trot[3])
+                zdir = ifcbin.createIfcDirection(tuple(r.multVec(FreeCAD.Vector(0,0,1))))
+                xdir = ifcbin.createIfcDirection(tuple(r.multVec(FreeCAD.Vector(1,0,0))))
+            pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
+            tpl = ifcbin.createIfcAxis2Placement3D(pos,zdir,xdir)
+            txt = ifcfile.createIfcTextLiteral(vp.string,tpl,"LEFT")
+            reps.append(txt)
+    elif Draft.getType(anno) == "SectionPlane":
+        p = FreeCAD.Vector(anno.Placement.Base).multiply(preferences['SCALE_FACTOR'])
+        ovc = ifcbin.createIfcCartesianPoint((p.x,p.y,p.z))
+        zvc = ifcbin.createIfcDirection(tuple(anno.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+        xvc = ifcbin.createIfcDirection(tuple(anno.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+        objectType = "DRAWING"
+        l = w = h = 1000
+        if anno.ViewObject:
+            if anno.ViewObject.DisplayLength.Value:
+                l = anno.ViewObject.DisplayLength.Value
+            if anno.ViewObject.DisplayHeight.Value:
+                w = anno.ViewObject.DisplayHeight.Value
+        if anno.Depth.Value:
+            h = anno.Depth.Value
+        l = FreeCAD.Vector(l, w, h).multiply(preferences['SCALE_FACTOR'])
+        zdir = ifcbin.createIfcDirection((0.0,0.0,1.0))
+        xdir = ifcbin.createIfcDirection((1.0,0.0,0.0))
+        pos = ifcbin.createIfcCartesianPoint((-l.x/2,-l.y/2,-l.z))
+        tpl = ifcbin.createIfcAxis2Placement3D(pos,zdir,xdir)
+        blk = ifcfile.createIfcBlock(tpl, l.x, l.y, l.z)
+        csg = ifcfile.createIfcCsgSolid(blk)
+        reps = [csg]
+        repid = "Body"
+        reptype = "CSG"
+    else:
+        print("Unable to handle object",anno.Label)
+        return None
+
+    for coldef in ["LineColor","TextColor","ShapeColor"]:
+        if hasattr(anno.ViewObject,coldef):
+            rgb = getattr(anno.ViewObject,coldef)[:3]
+            if rgb in curvestyles:
+                psa = curvestyles[rgb]
+            else:
+                col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
+                cvf = ifcfile.createIfcDraughtingPredefinedCurveFont("continuous")
+                ics = ifcfile.createIfcCurveStyle('Line',cvf,None,col)
+                psa = ifcfile.createIfcPresentationStyleAssignment([ics])
+                curvestyles[rgb] = psa
+            for rep in reps:
+                isi = ifcfile.createIfcStyledItem(rep,[psa],None)
+            break
+    if not xvc:
+        xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
+    if not zvc:
+        zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
+    if not ovc:
+        ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
+    gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+    placement = ifcbin.createIfcLocalPlacement(gpl)
+    shp = ifcfile.createIfcShapeRepresentation(context,'Annotation','Annotation2D',reps)
+    rep = ifcfile.createIfcProductDefinitionShape(None,None,[shp])
+    label = anno.Label
+    description = getattr(anno, "Description", "")
+    ann = ifcfile.createIfcAnnotation(
+        ifcopenshell.guid.new(),
+        history,
+        label,
+        description,
+        objectType,
+        placement,
+        rep
+    )
+    return ann

@@ -86,7 +86,7 @@ def run_all():
     run_example("rc_wall_2d", run_solver=True)
     run_example("square_pipe_end_twisted_edgeforces", run_solver=True)
     run_example("square_pipe_end_twisted_nodeforces", run_solver=True)
-    run_example("thermomech_bimetall", run_solver=True)
+    run_example("thermomech_bimetal", run_solver=True)
 
 
 def setup_all():
@@ -124,7 +124,7 @@ def setup_all():
     run_example("rc_wall_2d")
     run_example("square_pipe_end_twisted_edgeforces")
     run_example("square_pipe_end_twisted_nodeforces")
-    run_example("thermomech_bimetall")
+    run_example("thermomech_bimetal")
 
 
 def run_analysis(doc, base_name, filepath="", run_solver=False):
@@ -148,6 +148,7 @@ def run_analysis(doc, base_name, filepath="", run_solver=False):
     # find the first solver
     # thus ATM only one solver per analysis is supported
     from femtools.femutils import is_derived_from
+
     for m in doc.Analysis.Group:
         if is_derived_from(m, "Fem::FemSolverObjectPython"):
             solver = m
@@ -155,17 +156,17 @@ def run_analysis(doc, base_name, filepath="", run_solver=False):
 
     # a file name is needed for the besides dir to work
     save_fc_file = join(filepath, (base_name + ".FCStd"))
-    FreeCAD.Console.PrintMessage(
-        "Save FreeCAD file for {} analysis to {}\n.".format(base_name, save_fc_file)
-    )
+    FreeCAD.Console.PrintMessage(f"Save FreeCAD file for {base_name} analysis to {save_fc_file}\n.")
     doc.saveAs(save_fc_file)
 
     # get analysis workig dir
     from femtools.femutils import get_beside_dir
+
     working_dir = get_beside_dir(solver)
 
     # run analysis
     from femsolver.run import run_fem_solver
+
     if run_solver is True:
         run_fem_solver(solver, working_dir)
 
@@ -176,9 +177,10 @@ def run_analysis(doc, base_name, filepath="", run_solver=False):
 def run_example(example, solver=None, base_name=None, run_solver=False):
 
     from importlib import import_module
+
     module = import_module("femexamples." + example)
     if not hasattr(module, "setup"):
-        FreeCAD.Console.PrintError("Setup method not found in {}\n".format(example))
+        FreeCAD.Console.PrintError(f"Setup method not found in {example}\n")
         return None
 
     if solver is None:
@@ -201,6 +203,9 @@ def run_example(example, solver=None, base_name=None, run_solver=False):
 def init_doc(doc=None):
     if doc is None:
         doc = FreeCAD.newDocument()
+        # set license
+        doc.License = "Creative Commons Attribution 4.0"
+        doc.LicenseURL = "https://creativecommons.org/licenses/by/4.0/"
     return doc
 
 
@@ -212,7 +217,9 @@ def get_meshname():
 def get_header(information):
     return """{name}
 
-{information}""".format(name=information["name"], information=print_info_dict(information))
+{information}""".format(
+        name=information["name"], information=print_info_dict(information)
+    )
 
 
 def print_info_dict(information):
@@ -221,11 +228,11 @@ def print_info_dict(information):
         value_text = ""
         if isinstance(v, list):
             for j in v:
-                value_text += "{}, ".format(j)
+                value_text += f"{j}, "
             value_text = value_text.rstrip(", ")
         else:
             value_text = v
-        the_text += "{} --> {}\n".format(k, value_text)
+        the_text += f"{k} --> {value_text}\n"
     # print(the_text)
     return the_text
 

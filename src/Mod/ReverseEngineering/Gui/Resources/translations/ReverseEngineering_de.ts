@@ -233,9 +233,9 @@
       <translation>Positionierung</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
-      <source>Fit B-Spline</source>
+      <location filename="../../FitBSplineCurve.cpp" line="139"/>
+      <source>Fit B-spline</source>
       <translation>B-Spline einpassen</translation>
     </message>
     <message>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
       <source>Create placement</source>
-      <translation>Placement erstellen</translation>
+      <translation>Platzierung erstellen</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
@@ -398,7 +398,7 @@
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Please select a point cloud or mesh.</source>
-      <translation>Bitte wählen Sie eine Punktwolke oder ein Netz.</translation>
+      <translation>Bitte eine Punktwolke oder ein Netz auswählen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="619"/>
@@ -591,8 +591,8 @@
     <name>ReenGui::FitBSplineCurve</name>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
-      <source>Fit B-spline surface</source>
-      <translation>B-Spline-Fläche annähern</translation>
+      <source>Fit B-spline curve</source>
+      <translation type="unfinished">Fit B-spline curve</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>

@@ -158,9 +158,9 @@ def CreateSlotPlateSet(SketchFeature):
     SketchFeature.setDatum(6, 0.872665)
     SketchFeature.addConstraint(Sketcher.Constraint("DistanceX", 0, 2, 0.0))
     SketchFeature.setDatum(9, 0.000000)
-    SketchFeature.movePoint(0, 2, App.Vector(-0.007829, -33.376450, 0))
-    SketchFeature.movePoint(0, 2, App.Vector(-0.738149, -10.493386, 0))
-    SketchFeature.movePoint(0, 2, App.Vector(-0.007829, 2.165328, 0))
+    SketchFeature.moveGeometry(0, 2, App.Vector(-0.007829, -33.376450, 0))
+    SketchFeature.moveGeometry(0, 2, App.Vector(-0.738149, -10.493386, 0))
+    SketchFeature.moveGeometry(0, 2, App.Vector(-0.007829, 2.165328, 0))
     SketchFeature.addConstraint(Sketcher.Constraint("DistanceY", 0, 2, 2.165328))
     SketchFeature.setDatum(10, 0.000000)
 
@@ -229,7 +229,7 @@ class TestSketcherSolver(unittest.TestCase):
         CreateBoxSketchSet(self.Box)
         self.Doc.recompute()
         # moving a point of the sketch
-        self.Box.movePoint(0, 2, App.Vector(88.342697, 28.174158, 0))
+        self.Box.moveGeometry(0, 2, App.Vector(88.342697, 28.174158, 0))
         # fully constrain
         self.Box.addConstraint(Sketcher.Constraint("DistanceX", 1, 2, 90.0))
         self.Box.addConstraint(Sketcher.Constraint("DistanceY", 1, 2, -50.0))
@@ -363,7 +363,7 @@ class TestSketcherSolver(unittest.TestCase):
         ActiveSketch.solve()
         ActiveSketch.exposeInternalGeometry(0)
         ActiveSketch.solve()
-        ActiveSketch.movePoint(0, 0, App.Vector(-26.266434, 14.345055, 0), 0)
+        ActiveSketch.moveGeometry(0, 0, App.Vector(-26.266434, 14.345055, 0), 0)
         ActiveSketch.solve()
         ActiveSketch.addConstraint(Sketcher.Constraint("Block", 0))  # Block the Ellipse in place
         ActiveSketch.addConstraint(
@@ -482,30 +482,25 @@ class TestSketcherSolver(unittest.TestCase):
 
     def testRemovedExternalGeometryReference(self):
         body = self.Doc.addObject("PartDesign::Body", "Body")
-        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        sketch = body.newObject("Sketcher::SketchObject", "Sketch")
         CreateRectangleSketch(sketch, (0, 0), (30, 30))
-        pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        pad = body.newObject("PartDesign::Pad", "Pad")
         pad.Profile = sketch
-        sketch1 = self.Doc.addObject("Sketcher::SketchObject", "Sketch1")
+        sketch1 = body.newObject("Sketcher::SketchObject", "Sketch1")
         CreateCircleSketch(sketch1, (15, 15), 0.25)
-        body.addObject(sketch)
-        body.addObject(pad)
-        body.addObject(sketch1)
         self.Doc.recompute()
+        self.assertEqual(len(pad.Shape.Edges), 12)
+
         hole = self.Doc.addObject("PartDesign::Hole", "Hole")
+        hole.Refine = True
+        hole.Reversed = True
         body.addObject(hole)
         hole.Profile = sketch1
-        hole.Diameter = 0.250000
-        hole.Depth = 10.000000
         hole.DrillPointAngle = 118.000000
-        hole.TaperedAngle = 90.000000
         hole.Diameter = 6.000000
-        hole.Depth = 8.000000
-        hole.DrillPointAngle = 118.000000
         hole.TaperedAngle = 90.000000
         hole.Tapered = 0
         hole.Depth = 8.000000
-        hole.DrillPointAngle = 118.000000
         hole.Threaded = 1
         hole.ModelThread = 0
         hole.ThreadDepthType = 0
@@ -517,24 +512,190 @@ class TestSketcherSolver(unittest.TestCase):
         hole.DepthType = 0
         hole.DrillPoint = 1
         hole.DrillForDepth = 0
-        hole.Tapered = 0
         self.Doc.recompute()
-        self.assertEqual(len(hole.Shape.Edges), 13)
-        hole.Threaded = True
-        hole.ModelThread = True
-        body.addObject(hole)
-        #
-        sketch2 = self.Doc.addObject("Sketcher::SketchObject", "Sketch2")
+        # 15 edges if it's passthrough-flat 17 if DrillPoint = 1
+        self.assertEqual(len(hole.Shape.Edges), 17)
+
+        hole.ModelThread = 1
+        sketch2 = body.newObject("Sketcher::SketchObject", "Sketch2")
         CreateRectangleSketch(sketch2, (0, 0), (3, 3))
-        body.addObject(sketch2)
         self.Doc.recompute()
-        sketch2.addExternal("Hole", "Edge35")  # Edge35 will disappear when we stop modeling threads
-        self.assertEqual(len(hole.Shape.Edges), 38)
-        hole.ModelThread = False
-        hole.Refine = True
+        self.assertGreater(len(hole.Shape.Edges), 17)
+        # 77 edges for basic profile
+        self.assertEqual(len(hole.Shape.Edges), 77)
+
+        # Edges in the thread should disappear when we stop modeling thread
+        sketch2.addExternal("Hole", "Edge29")
+        hole.ModelThread = 0
+        hole.Refine = 1
         self.Doc.recompute()
-        self.assertEqual(len(hole.Shape.Edges), 32)
-        self.assertEqual(len(sketch2.ExternalGeometry), 1)
+        self.assertEqual(len(hole.Shape.Edges), 17)
+        self.assertEqual(len(sketch2.ExternalGeometry), 0)
+
+    def testSaveLoadWithExternalGeometryReference(self):
+        # Arrange
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        CreateRectangleSketch(sketch, (0, 0), (30, 30))
+        pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        pad.Profile = sketch
+        sketch1 = self.Doc.addObject("Sketcher::SketchObject", "Sketch1")
+        body.addObject(sketch)
+        body.addObject(pad)
+        body.addObject(sketch1)
+        self.Doc.recompute()
+        sketch1.addExternal("Pad", "Edge12")
+        self.Doc.recompute()
+
+        # Act: Try changing sketch before the save
+        sketch = self.Doc.getObject("Sketch")
+        g1 = sketch.Constraints[11].First
+        d1 = sketch.Constraints[11].Value
+        sketch.delConstraint(11)
+        sketch.addConstraint(Sketcher.Constraint("Distance", g1, d1 - 1.0))
+        self.Doc.recompute()
+
+        # Act: Save and reload the file
+        filename = self.Doc.Name + ".FCStd"
+        self.Doc.saveAs(filename)
+        FreeCAD.closeDocument(self.Doc.Name)
+        self.Doc = FreeCAD.openDocument(filename)
+        pad = self.Doc.getObject("Pad")
+        sketch1 = self.Doc.getObject("Sketch1")
+        self.Doc.recompute()
+
+        # Act:  change sketch after restore ( trigger missing references if there is a bug )
+        sketch = self.Doc.getObject("Sketch")
+        g1 = sketch.Constraints[11].First
+        d1 = sketch.Constraints[11].Value
+        sketch.delConstraint(11)
+        sketch.addConstraint(Sketcher.Constraint("Distance", g1, d1 - 1.0))
+        self.Doc.recompute()
+
+        # Assert
+        self.assertEqual(pad.Shape.ElementMapSize, 30)
+        self.assertIn("Edge12", pad.Shape.ElementReverseMap)
+        self.assertIn((pad, ("Edge12",)), sketch1.ExternalGeometry)  # Not "?Edge12"
+
+    def testTNPExternalGeometryStored(self):
+        # Arrange
+        import xml.etree.ElementTree as ET
+
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        CreateRectangleSketch(sketch, (0, 0), (30, 30))
+        sketch1 = self.Doc.addObject("Sketcher::SketchObject", "Sketch1")
+        pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        pad.Profile = sketch
+        self.Doc.recompute()
+        sketch1.addExternal("Pad", "Edge12")
+        self.Doc.recompute()
+        # Act
+        root = ET.fromstring("<all>" + sketch1.Content + "</all>")
+        # Can't use != in an xpath because it wasn't added until python 3.10.
+        # "*/*[@name='ExternalGeo']//*/[@type='Sketcher::ExternalGeometryExtension']/[@Ref!='']"
+        extRefs = root.findall(
+            "*/*[@name='ExternalGeo']//*/[@type='Sketcher::ExternalGeometryExtension']/[@Ref='']"
+        )
+        extRefsAll = root.findall(
+            "*/*[@name='ExternalGeo']//*/[@type='Sketcher::ExternalGeometryExtension']/[@Ref]"
+        )
+        # Assert
+        self.assertEqual(len(extRefs), 2)
+        self.assertEqual(len(extRefsAll), 3)
+        self.assertEqual(root.tag, "all")
+        # Act
+        filename = self.Doc.Name + ".FCStd"
+        self.Doc.saveAs(filename)
+        FreeCAD.closeDocument(self.Doc.Name)
+        self.Doc = FreeCAD.openDocument(filename)
+        # Assert
+        root = ET.fromstring("<all>" + self.Doc.getObject("Sketch1").Content + "</all>")
+        extRefs = root.findall(
+            "*/*[@name='ExternalGeo']//*/[@type='Sketcher::ExternalGeometryExtension']/[@Ref='']"
+        )
+        extRefsAll = root.findall(
+            "*/*[@name='ExternalGeo']//*/[@type='Sketcher::ExternalGeometryExtension']/[@Ref]"
+        )
+        self.assertEqual(len(extRefs), 2)
+        self.assertEqual(len(extRefsAll), 3)
+        self.assertEqual(root.tag, "all")
+        # Act to change the constraint
+        sketch = self.Doc.getObject("Sketch")
+        g1 = sketch.Constraints[11].First
+        d1 = sketch.Constraints[11].Value
+        sketch.delConstraint(11)
+        sketch.addConstraint(Sketcher.Constraint("Distance", g1, d1 - 1.0))
+        self.Doc.recompute()
+        # Assert
+        root = ET.fromstring("<all>" + self.Doc.getObject("Sketch1").Content + "</all>")
+        extRefs = root.findall(
+            "*/*[@name='ExternalGeo']//*/[@type='Sketcher::ExternalGeometryExtension']/[@Ref='']"
+        )
+        extRefsAll = root.findall(
+            "*/*[@name='ExternalGeo']//*/[@type='Sketcher::ExternalGeometryExtension']/[@Ref]"
+        )
+        self.assertEqual(len(extRefs), 2)
+        self.assertEqual(len(extRefsAll), 3)
+        self.assertEqual(root.tag, "all")
+
+    def testConstructionToggleTNP(self):
+        """Bug 15484"""
+        # Arrange
+        import xml.etree.ElementTree as ET
+
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        CreateRectangleSketch(sketch, (0, 0), (30, 30))
+        # Add zigsag geo as construction lines
+        i = sketch.GeometryCount
+        sketch.addGeometry(
+            Part.LineSegment(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(-10, 10, 0)), True
+        )
+        sketch.addGeometry(
+            Part.LineSegment(FreeCAD.Vector(-10, 10, 0), FreeCAD.Vector(-5, 20, 0)), True
+        )
+        sketch.addGeometry(
+            Part.LineSegment(FreeCAD.Vector(-5, 20, 0), FreeCAD.Vector(-10, 25, 0)), True
+        )
+        sketch.addGeometry(
+            Part.LineSegment(FreeCAD.Vector(-10, 25, 0), FreeCAD.Vector(0, 30, 0)), True
+        )
+        sketch.addConstraint(Sketcher.Constraint("Coincident", i + 0, 2, i + 1, 1))
+        sketch.addConstraint(Sketcher.Constraint("Coincident", i + 1, 2, i + 2, 1))
+        sketch.addConstraint(Sketcher.Constraint("Coincident", i + 2, 2, i + 3, 1))
+        sketch.addConstraint(Sketcher.Constraint("Coincident", i + 3, 2, 0, 1))
+        sketch.addConstraint(Sketcher.Constraint("Coincident", i + 0, 1, 2, 2))
+
+        pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        pad.Profile = sketch
+        body.addObject(sketch)
+        body.addObject(pad)
+        self.Doc.recompute()
+        sketch1 = self.Doc.addObject("Sketcher::SketchObject", "Sketch1")
+        sketch1.AttachmentSupport = (pad, ("Face6"))
+        sketch1.MapMode = "FlatFace"
+        self.Doc.recompute()
+
+        CreateCircleSketch(sketch1, (2, 2, 0), 1)
+        CreateCircleSketch(sketch1, (6, 2, 0), 1)
+        body.addObject(sketch1)
+        self.Doc.recompute()
+        # Act toggle construction lines on in sketch; pad now has 9 instead of 6 faces.
+        sketch.setConstruction(4, False)
+        sketch.setConstruction(5, False)
+        sketch.setConstruction(6, False)
+        sketch.setConstruction(7, False)
+        sketch.setConstruction(3, True)
+        self.Doc.recompute()
+        # Assert
+        # AttachmentSupport is a list of (object,(subobject list)) with 1 entry.  Get the
+        # first and only subobject name in second part of that first tuple and see that it moved
+        # from the Face6 we set above.
+        self.assertEqual(sketch1.AttachmentSupport[0][1][0], "Face9")
+        self.assertIn("Face6", pad.Shape.ElementReverseMap)  # different Face6 exists
+
+    # TODO other tests:
+    #  getHigherElement
 
     def assertSuccessfulSolve(self, sketch, msg=None):
         status = sketch.solve()

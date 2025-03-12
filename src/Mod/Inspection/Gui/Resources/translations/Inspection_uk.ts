@@ -6,12 +6,12 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Inspection</source>
-      <translation type="unfinished">Inspection</translation>
+      <translation>Перевірка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
       <source>Inspection...</source>
-      <translation>Інспекція...</translation>
+      <translation>Перевірка...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Inspection</source>
-      <translation type="unfinished">Inspection</translation>
+      <translation>Перевірка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
@@ -62,7 +62,7 @@
       <location filename="../../VisualInspection.ui" line="39"/>
       <location filename="../../VisualInspection.ui" line="66"/>
       <source>Objects</source>
-      <translation>Об'єкти</translation>
+      <translation>Обʼєкти</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>
@@ -94,38 +94,38 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="482"/>
+      <location filename="../../ViewProviderInspection.cpp" line="489"/>
       <source>Remove annotations</source>
       <translation>Видалити анотації</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="483"/>
+      <location filename="../../ViewProviderInspection.cpp" line="490"/>
       <source>Do you want to remove all annotations?</source>
       <translation>Видалити всі анотації?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="541"/>
+      <location filename="../../ViewProviderInspection.cpp" line="548"/>
       <source>Annotation</source>
       <translation>Анотація</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="544"/>
+      <location filename="../../ViewProviderInspection.cpp" line="551"/>
       <source>Leave info mode</source>
       <translation>Вийти з інформаційного режиму</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="675"/>
+      <location filename="../../ViewProviderInspection.cpp" line="682"/>
       <source>Distance: &gt; %1</source>
       <translation>Відстань: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="679"/>
+      <location filename="../../ViewProviderInspection.cpp" line="686"/>
       <source>Distance: &lt; %1</source>
       <translation>Відстань: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="699"/>
-      <location filename="../../ViewProviderInspection.cpp" line="716"/>
+      <location filename="../../ViewProviderInspection.cpp" line="706"/>
+      <location filename="../../ViewProviderInspection.cpp" line="723"/>
       <source>Distance: %1</source>
       <translation>Відстань: %1</translation>
     </message>

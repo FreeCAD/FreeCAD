@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <src/App/InitApplication.h>
 
@@ -21,7 +21,7 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _offset = dynamic_cast<Part::Offset*>(_doc->addObject("Part::Offset"));
+        _offset = _doc->addObject<Part::Offset>();
         _offset->Source.setValue(_boxes[0]);
         _offset->Value.setValue(1);
         _offset->Join.setValue((int)JoinType::intersection);
@@ -43,20 +43,16 @@ TEST_F(FeatureOffsetTest, testOffset3D)
     EXPECT_EQ(getVolume(_offset->Shape.getShape().getShape()), 60);
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(-1, -1, -1, 2, 3, 4)));
     // Assert correct element Map
-#ifdef FC_USE_TNP_FIX
     EXPECT_EQ(_offset->Shape.getShape().countSubElements("Vertex"), 8);
     EXPECT_EQ(_offset->Shape.getShape().countSubElements("Edge"), 12);
     EXPECT_EQ(_offset->Shape.getShape().countSubElements("Face"), 6);
-#else
-    EXPECT_EQ(_offset->Shape.getShape().getElementMapSize(), 0);
-#endif
 }
 
 TEST_F(FeatureOffsetTest, testOffset3DWithExistingElementMap)
 {
     // Arrange
     Part::Fuse* _fuse = nullptr;  // NOLINT Can't be private in a test framework
-    _fuse = dynamic_cast<Part::Fuse*>(_doc->addObject("Part::Fuse"));
+    _fuse = _doc->addObject<Part::Fuse>();
     _fuse->Base.setValue(_boxes[0]);
     _fuse->Tool.setValue(_boxes[1]);
     _fuse->Refine.setValue(true);
@@ -72,20 +68,16 @@ TEST_F(FeatureOffsetTest, testOffset3DWithExistingElementMap)
     EXPECT_EQ(getVolume(_offset->Shape.getShape().getShape()), 245);
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(-2, -2, -2, 3, 5, 5)));
     // Assert correct element Map
-#ifdef FC_USE_TNP_FIX
     EXPECT_EQ(_offset->Shape.getShape().countSubElements("Vertex"), 8);
     EXPECT_EQ(_offset->Shape.getShape().countSubElements("Edge"), 12);
     EXPECT_EQ(_offset->Shape.getShape().countSubElements("Face"), 6);
-#else
-    EXPECT_EQ(_offset->Shape.getShape().getElementMapSize(), 0);
-#endif
 }
 
 TEST_F(FeatureOffsetTest, testOffset2D)
 {
     // Arrange
-    Part::Offset2D* _offset2 = dynamic_cast<Part::Offset2D*>(_doc->addObject("Part::Offset2D"));
-    Part::Plane* _pln = dynamic_cast<Part::Plane*>(_doc->addObject("Part::Plane"));
+    Part::Offset2D* _offset2 = _doc->addObject<Part::Offset2D>();
+    Part::Plane* _pln = _doc->addObject<Part::Plane>();
     _pln->Length.setValue(2);
     _pln->Width.setValue(3);
     _offset2->Source.setValue(_pln);

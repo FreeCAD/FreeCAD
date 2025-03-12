@@ -40,7 +40,6 @@
 # include <QToolTip>
 #endif
 
-#include <Base/Tools.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <App/ExpressionParser.h>
@@ -51,11 +50,11 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "DlgExpressionInput.h"
+#include "Dialogs/DlgExpressionInput.h"
 #include "PrefWidgets.h"
 #include "QuantitySpinBox_p.h"
 #include "Tools.h"
-#include "ui_DlgTreeWidget.h"
+#include "Dialogs/ui_DlgTreeWidget.h"
 
 using namespace Gui;
 using namespace App;
@@ -95,7 +94,7 @@ void CommandIconView::startDrag (Qt::DropActions supportedActions)
     }
 
     auto mimeData = new QMimeData;
-    mimeData->setData(QString::fromLatin1("text/x-action-items"), itemData);
+    mimeData->setData(QStringLiteral("text/x-action-items"), itemData);
 
     auto drag = new QDrag(this);
     drag->setMimeData(mimeData);
@@ -429,7 +428,7 @@ void AccelLineEdit::keyPressEvent (QKeyEvent * e)
             txtLine.clear();
             break;
         default:
-            txtLine += QString::fromLatin1(",");
+            txtLine += QStringLiteral(",");
             break;
         }
     }
@@ -525,7 +524,7 @@ void ModifierLineEdit::keyPressEvent (QKeyEvent * e)
 ClearLineEdit::ClearLineEdit (QWidget * parent)
   : QLineEdit(parent)
 {
-    clearAction = this->addAction(QIcon(QString::fromLatin1(":/icons/edit-cleartext.svg")),
+    clearAction = this->addAction(QIcon(QStringLiteral(":/icons/edit-cleartext.svg")),
                                         QLineEdit::TrailingPosition);
     connect(clearAction, &QAction::triggered, this, &ClearLineEdit::clear);
     connect(this, &QLineEdit::textChanged, this, &ClearLineEdit::updateClearButton);
@@ -672,7 +671,7 @@ QColor ColorButton::color() const
  */
 void ColorButton::setPackedColor(uint32_t c)
 {
-    App::Color color;
+    Base::Color color;
     color.setPackedValue(c);
     d->col.setRedF(color.r);
     d->col.setGreenF(color.g);
@@ -687,7 +686,7 @@ void ColorButton::setPackedColor(uint32_t c)
  */
 uint32_t ColorButton::packedColor() const
 {
-    App::Color color(d->col.redF(), d->col.greenF(), d->col.blueF(), d->col.alphaF());
+    Base::Color color(d->col.redF(), d->col.greenF(), d->col.blueF(), d->col.alphaF());
     return color.getPackedValue();
 }
 
@@ -944,7 +943,7 @@ void StatefulLabel::registerState(const QString& state, const QColor& color,
 {
     QString css;
     if (color.isValid())
-        css = QString::fromUtf8("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
+        css = QStringLiteral("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
     _availableStates[state] = { css, preferenceName };
 }
 
@@ -953,10 +952,10 @@ void StatefulLabel::registerState(const QString& state, const QColor& fg, const 
 {
     QString colorEntries;
     if (fg.isValid())
-        colorEntries.append(QString::fromUtf8("color : rgba(%1,%2,%3,%4);").arg(fg.red()).arg(fg.green()).arg(fg.blue()).arg(fg.alpha()));
+        colorEntries.append(QStringLiteral("color : rgba(%1,%2,%3,%4);").arg(fg.red()).arg(fg.green()).arg(fg.blue()).arg(fg.alpha()));
     if (bg.isValid())
-        colorEntries.append(QString::fromUtf8("background-color : rgba(%1,%2,%3,%4);").arg(bg.red()).arg(bg.green()).arg(bg.blue()).arg(bg.alpha()));
-    QString css = QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(colorEntries);
+        colorEntries.append(QStringLiteral("background-color : rgba(%1,%2,%3,%4);").arg(bg.red()).arg(bg.green()).arg(bg.blue()).arg(bg.alpha()));
+    QString css = QStringLiteral("Gui--StatefulLabel{ %1 }").arg(colorEntries);
     _availableStates[state] = { css, preferenceName };
 }
 
@@ -1010,8 +1009,8 @@ void StatefulLabel::setState(QString state)
                 if (unsignedEntry.first == entry->second.preferenceString) {
                     // Convert the stored Uint into usable color data:
                     unsigned int col = unsignedEntry.second;
-                    QColor qcolor(App::Color::fromPackedRGB<QColor>(col));
-                    this->setStyleSheet(QString::fromUtf8("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(qcolor.red()).arg(qcolor.green()).arg(qcolor.blue()).arg(qcolor.alpha()));
+                    QColor qcolor(Base::Color::fromPackedRGB<QColor>(col));
+                    this->setStyleSheet(QStringLiteral("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(qcolor.red()).arg(qcolor.green()).arg(qcolor.blue()).arg(qcolor.alpha()));
                     _styleCache[state] = this->styleSheet();
                     return;
                 }
@@ -1021,7 +1020,7 @@ void StatefulLabel::setState(QString state)
             auto availableStringPrefs = _parameterGroup->GetASCIIMap();
             for (const auto& stringEntry : availableStringPrefs) {
                 if (stringEntry.first == entry->second.preferenceString) {
-                    QString css = QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(QString::fromStdString(stringEntry.second));
+                    QString css = QStringLiteral("Gui--StatefulLabel{ %1 }").arg(QString::fromStdString(stringEntry.second));
                     this->setStyleSheet(css);
                     _styleCache[state] = this->styleSheet();
                     return;
@@ -1069,7 +1068,7 @@ LabelButton::LabelButton (QWidget * parent)
     layout->addWidget(label);
 
     button = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
+#if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
     layout->addWidget(button);
@@ -1356,9 +1355,10 @@ void PropertyListEditor::highlightCurrentLine()
     if (!isReadOnly()) {
         QTextEdit::ExtraSelection selection;
 
-        QColor lineColor = QColor(Qt::yellow).lighter(160);
+        QPalette palette = style()->standardPalette();
+        selection.format.setBackground(palette.highlight().color());
+        selection.format.setForeground(palette.highlightedText().color());
 
-        selection.format.setBackground(lineColor);
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
         selection.cursor = textCursor();
         selection.cursor.clearSelection();
@@ -1409,7 +1409,7 @@ public:
         if (edit) {
             QString inputText = edit->toPlainText();
             if (!inputText.isEmpty()) // let pass empty input, regardless of the type, so user can void the value
-                lines = inputText.split(QString::fromLatin1("\n"));
+                lines = inputText.split(QStringLiteral("\n"));
         }
         if (!lines.isEmpty()) {
             if (type == 1) { // floats
@@ -1456,7 +1456,7 @@ LabelEditor::LabelEditor (QWidget * parent)
             this, &LabelEditor::validateText);
 
     button = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
+#if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
     layout->addWidget(button);
@@ -1483,7 +1483,7 @@ void LabelEditor::setText(const QString& s)
 {
     this->plainText = s;
 
-    QString text = QString::fromLatin1("[%1]").arg(this->plainText);
+    QString text = QStringLiteral("[%1]").arg(this->plainText);
     lineEdit->setText(text);
 }
 
@@ -1506,7 +1506,7 @@ void LabelEditor::changeText()
     connect(buttonBox, &QDialogButtonBox::rejected, dlg, &PropertyListDialog::reject);
     connect(dlg, &PropertyListDialog::accepted, this, [&] {
         QString inputText = edit->toPlainText();
-        QString text = QString::fromLatin1("[%1]").arg(inputText);
+        QString text = QStringLiteral("[%1]").arg(inputText);
         lineEdit->setText(text);
     });
 
@@ -1578,7 +1578,7 @@ void ExpLineEdit::bind(const ObjectIdentifier& _path) {
     ExpressionBinding::bind(_path);
 
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
+    setStyleSheet(QStringLiteral("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
 
     iconLabel->show();
 }
@@ -1603,7 +1603,7 @@ void ExpLineEdit::onChange() {
 
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
-        if(result->isDerivedFrom(App::StringExpression::getClassTypeId()))
+        if(result->isDerivedFrom<App::StringExpression>())
             setText(QString::fromUtf8(static_cast<App::StringExpression*>(
                             result.get())->getText().c_str()));
         else
@@ -1614,7 +1614,7 @@ void ExpLineEdit::onChange() {
         QPalette p(palette());
         p.setColor(QPalette::Text, Qt::lightGray);
         setPalette(p);
-        iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setExpressionText(QString::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -1633,7 +1633,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
 
     QSize sz = iconLabel->sizeHint();
-    iconLabel->move(rect().right() - frameWidth - sz.width(), 0);
+    iconLabel->move(rect().right() - frameWidth - sz.width(), rect().center().y() - sz.height() / 2);
 
     try {
         if (isBound() && getExpression()) {
@@ -1644,7 +1644,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
             QPalette p(palette());
             p.setColor(QPalette::Text, Qt::lightGray);
             setPalette(p);
-            iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setExpressionText(QString::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);

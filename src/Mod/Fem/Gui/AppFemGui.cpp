@@ -1,4 +1,5 @@
 /***************************************************************************
+ *   Copyright (c) 2023 Peter McB                                          *
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -42,6 +43,7 @@
 #include "ViewProviderFemMeshShape.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
 #include "ViewProviderSetElements.h"
+#include "ViewProviderSetElementNodes.h"
 #include "ViewProviderSetFaces.h"
 #include "ViewProviderSetGeometry.h"
 #include "ViewProviderSetNodes.h"
@@ -136,11 +138,14 @@ PyMOD_INIT_FUNC(FemGui)
 
     FemGui::ViewProviderFemMesh                                 ::init();
     FemGui::ViewProviderFemMeshPython                           ::init();
+    FemGui::ViewProviderFemMeshShapeBase                        ::init();
+    FemGui::ViewProviderFemMeshShapeBasePython                  ::init();
     FemGui::ViewProviderFemMeshShape                            ::init();
     FemGui::ViewProviderFemMeshShapeNetgen                      ::init();
     FemGui::PropertyFemMeshItem                                 ::init();
 
     FemGui::ViewProviderSetElements                             ::init();
+    FemGui::ViewProviderSetElementNodes                         ::init();
     FemGui::ViewProviderSetFaces                                ::init();
     FemGui::ViewProviderSetGeometry                             ::init();
     FemGui::ViewProviderSetNodes                                ::init();

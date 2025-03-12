@@ -36,15 +36,9 @@ import FreeCAD
 from femmesh import meshsetsgetter
 
 
-class FemInputWriter():
+class FemInputWriter:
     def __init__(
-        self,
-        analysis_obj,
-        solver_obj,
-        mesh_obj,
-        member,
-        dir_name=None,
-        mat_geo_sets=None
+        self, analysis_obj, solver_obj, mesh_obj, member, dir_name=None, mat_geo_sets=None
     ):
         # class attributes from parameter values
         self.analysis = analysis_obj
@@ -73,10 +67,10 @@ class FemInputWriter():
             make_tmp_dir = True
         if make_tmp_dir is True:
             from tempfile import mkdtemp
+
             dir_name = mkdtemp(prefix="fcfem_")
             FreeCAD.Console.PrintWarning(
-                "The working directory '{}' was created and will be used."
-                .format(dir_name)
+                f"The working directory '{dir_name}' was created and will be used."
             )
         self.dir_name = dir_name
 
@@ -147,12 +141,7 @@ class FemInputWriter():
     # ********************************************************************************************
     # generic writer for constraints mesh sets and constraints property data
     # write constraint node sets, constraint face sets, constraint element sets
-    def write_constraints_meshsets(
-        self,
-        f,
-        femobjs,
-        con_module
-    ):
+    def write_constraints_meshsets(self, f, femobjs, con_module):
         if not femobjs:
             return
 
@@ -166,7 +155,7 @@ class FemInputWriter():
             for femobj in femobjs:
                 # femobj --> dict, FreeCAD document object is femobj["Object"]
                 the_obj = femobj["Object"]
-                the_file.write("** {}\n".format(the_obj.Label))
+                the_file.write(f"** {the_obj.Label}\n")
                 con_module.write_meshdata_constraint(the_file, femobj, the_obj, self)
             if write_after != "":
                 the_file.write(write_after)
@@ -180,8 +169,8 @@ class FemInputWriter():
         f.write("** {}\n".format(write_name.replace("_", " ")))
 
         if self.split_inpfile is True:
-            file_name_split = "{}_{}.inp".format(self.mesh_name, write_name)
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_split))
+            file_name_split = f"{self.mesh_name}_{write_name}.inp"
+            f.write(f"*INCLUDE,INPUT={file_name_split}\n")
             inpfile_split = open(join(self.dir_name, file_name_split), "w")
             constraint_sets_loop_writing(inpfile_split, femobjs, write_before, write_after)
             inpfile_split.close()
@@ -189,12 +178,7 @@ class FemInputWriter():
             constraint_sets_loop_writing(f, femobjs, write_before, write_after)
 
     # write constraint property data
-    def write_constraints_propdata(
-        self,
-        f,
-        femobjs,
-        con_module
-    ):
+    def write_constraints_propdata(self, f, femobjs, con_module):
 
         if not femobjs:
             return
@@ -208,13 +192,13 @@ class FemInputWriter():
 
         # write constraint to file
         f.write("\n{}\n".format(59 * "*"))
-        f.write("** {}\n".format(con_module.get_constraint_title()))
+        f.write(f"** {con_module.get_constraint_title()}\n")
         if write_before != "":
             f.write(write_before)
         for femobj in femobjs:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             the_obj = femobj["Object"]
-            f.write("** {}\n".format(the_obj.Label))
+            f.write(f"** {the_obj.Label}\n")
             con_module.write_constraint(f, femobj, the_obj, self)
         if write_after != "":
             f.write(write_after)

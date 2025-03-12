@@ -34,8 +34,7 @@ from ... import equationbase
 
 
 def create(doc, name="Deformation"):
-    return femutils.createObject(
-        doc, name, Proxy, ViewProxy)
+    return femutils.createObject(doc, name, Proxy, ViewProxy)
 
 
 class Proxy(nonlinear.Proxy, equationbase.DeformationProxy):
@@ -43,51 +42,40 @@ class Proxy(nonlinear.Proxy, equationbase.DeformationProxy):
     Type = "Fem::EquationElmerDeformation"
 
     def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
+        super().__init__(obj)
 
         obj.addProperty(
-            "App::PropertyBool",
-            "CalculatePangle",
-            "Deformation",
-            "Compute principal stress angles"
+            "App::PropertyBool", "CalculatePangle", "Deformation", "Compute principal stress angles"
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculatePrincipal",
             "Deformation",
-            "Compute principal stress components"
+            "Compute principal stress components",
         )
         obj.addProperty(
-            "App::PropertyBool",
-            "CalculateStrains",
-            "Deformation",
-            "Compute the strain tensor"
+            "App::PropertyBool", "CalculateStrains", "Deformation", "Compute the strain tensor"
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateStresses",
             "Deformation",
-            "Compute stress tensor and vanMises"
+            "Compute stress tensor and vanMises",
         )
         obj.addProperty(
             "App::PropertyBool",
             "InitializeStateVariables",
             "Deformation",
-            "See Elmer manual for info"
+            "See Elmer manual for info",
         )
         obj.addProperty(
-            "App::PropertyBool",
-            "MixedFormulation",
-            "Deformation",
-            "See Elmer manual for info"
+            "App::PropertyBool", "MixedFormulation", "Deformation", "See Elmer manual for info"
         )
         obj.addProperty(
             "App::PropertyBool",
             "NeoHookeanMaterial",
             "Deformation",
-            (
-                "Uses the neo-Hookean material model"
-            )
+            ("Uses the neo-Hookean material model"),
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -96,13 +84,13 @@ class Proxy(nonlinear.Proxy, equationbase.DeformationProxy):
             (
                 "Computes solution according to plane\nstress situation.\n"
                 "Applies only for 2D geometry."
-            )
+            ),
         )
         obj.addProperty(
             "App::PropertyString",
             "Variable",
             "Deformation",
-            "Only for a 2D model change the '3' to '2'"
+            "Only for a 2D model change the '3' to '2'",
         )
 
         obj.Priority = 10
@@ -113,5 +101,6 @@ class Proxy(nonlinear.Proxy, equationbase.DeformationProxy):
 
 class ViewProxy(nonlinear.ViewProxy, equationbase.DeformationViewProxy):
     pass
+
 
 ##  @}

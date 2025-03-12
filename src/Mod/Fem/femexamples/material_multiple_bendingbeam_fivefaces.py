@@ -40,12 +40,14 @@ def get_information():
         "constraints": ["fixed", "force"],
         "solvers": ["ccxtools"],
         "material": "multimaterial",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.material_multiple_bendingbeam_fivefaces import setup
@@ -56,6 +58,7 @@ See forum topic post:
 ...
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -113,7 +116,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # solver
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
-        solver_obj.WorkingDir = u""
+        solver_obj.WorkingDir = ""
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -143,10 +146,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj1)
 
     material_obj2 = ObjectsFem.makeMaterialSolid(doc, "FemMaterial2")
-    material_obj2.References = [
-        (doc.Face2, "Face1"),
-        (doc.Face4, "Face1")
-    ]
+    material_obj2.References = [(doc.Face2, "Face1"), (doc.Face4, "Face1")]
     mat = material_obj2.Material
     mat["Name"] = "PLA"
     mat["YoungsModulus"] = "3640 MPa"
@@ -165,10 +165,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # constraint fixed
     con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    con_fixed.References = [
-        (doc.Face1, "Edge1"),
-        (doc.Face5, "Edge3")
-    ]
+    con_fixed.References = [(doc.Face1, "Edge1"), (doc.Face5, "Edge3")]
     analysis.addObject(con_fixed)
 
     # constraint force
@@ -178,7 +175,7 @@ def setup(doc=None, solvertype="ccxtools"):
         (doc.Face2, "Edge4"),
         (doc.Face3, "Edge4"),
         (doc.Face4, "Edge4"),
-        (doc.Face5, "Edge4")
+        (doc.Face5, "Edge4"),
     ]
     con_force.Force = "10000.00 N"
     con_force.Direction = (doc.Face1, ["Edge1"])
@@ -187,6 +184,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # mesh
     from .meshes.mesh_multibodybeam_tria6 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -196,7 +194,7 @@ def setup(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()

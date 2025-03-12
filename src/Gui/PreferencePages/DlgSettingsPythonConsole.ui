@@ -90,6 +90,9 @@ horizontal space in Python console</string>
         <property name="toolTip">
          <string>The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</string>
         </property>
+        <property name="suffix">
+         <string> ms</string>
+        </property>
         <property name="minimum">
          <number>0</number>
         </property>

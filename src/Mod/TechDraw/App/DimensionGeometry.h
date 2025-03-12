@@ -167,11 +167,16 @@ public:
 
     void move(const Base::Vector3d& offset);
     void project(const DrawViewPart* dvp);
+    void invertY();
     void dump(const std::string& text) const;
 
-//TODO: setters and getters
-    double area;
-    Base::Vector3d center;
+    double getFilledArea() const { return area; }
+    double getActualArea() const { return actualArea; }
+    Base::Vector3d getCenter() const { return center; }
+
+    double area{0};             // this is the outer area without considering holes
+    double actualArea{0};       // this is the net area after holes are removed
+    Base::Vector3d center;      // this is geometric center of the outer face
 };
 
 }   //end namespace TechDraw

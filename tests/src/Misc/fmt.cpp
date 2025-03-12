@@ -1,6 +1,6 @@
 #include "fmt/format.h"
 #include "fmt/printf.h"
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <stdexcept>
 
 // NOLINTBEGIN

@@ -45,30 +45,30 @@ class ExportImportTest(unittest.TestCase):
         self.doc.recompute()
 
         box.ViewObject.DiffuseColor = [
-            (1.0, 0.0, 0.0, 0.0),
-            (1.0, 0.0, 0.0, 0.0),
-            (1.0, 0.0, 0.0, 0.0),
-            (1.0, 0.0, 0.0, 0.0),
-            (1.0, 1.0, 0.0, 0.0),
-            (1.0, 1.0, 0.0, 0.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 0.0, 0.0, 1.0),
+            (1.0, 1.0, 0.0, 1.0),
+            (1.0, 1.0, 0.0, 1.0),
         ]
 
         ImportGui.export([part], self.fileName)
 
         self.doc.clearDocument()
-        ImportGui.insert(name=self.fileName, docName=self.doc.Name, useLinkGroup=True)
+        ImportGui.insert(name=self.fileName, docName=self.doc.Name, merge=False, useLinkGroup=True)
 
         part_features = list(filter(lambda x: x.isDerivedFrom("Part::Feature"), self.doc.Objects))
         self.assertEqual(len(part_features), 1)
         feature = part_features[0]
 
         self.assertEqual(len(feature.ViewObject.DiffuseColor), 6)
-        self.assertEqual(feature.ViewObject.DiffuseColor[0], (1.0, 0.0, 0.0, 0.0))
-        self.assertEqual(feature.ViewObject.DiffuseColor[1], (1.0, 0.0, 0.0, 0.0))
-        self.assertEqual(feature.ViewObject.DiffuseColor[2], (1.0, 0.0, 0.0, 0.0))
-        self.assertEqual(feature.ViewObject.DiffuseColor[3], (1.0, 0.0, 0.0, 0.0))
-        self.assertEqual(feature.ViewObject.DiffuseColor[4], (1.0, 1.0, 0.0, 0.0))
-        self.assertEqual(feature.ViewObject.DiffuseColor[5], (1.0, 1.0, 0.0, 0.0))
+        self.assertEqual(feature.ViewObject.DiffuseColor[0], (1.0, 0.0, 0.0, 1.0))
+        self.assertEqual(feature.ViewObject.DiffuseColor[1], (1.0, 0.0, 0.0, 1.0))
+        self.assertEqual(feature.ViewObject.DiffuseColor[2], (1.0, 0.0, 0.0, 1.0))
+        self.assertEqual(feature.ViewObject.DiffuseColor[3], (1.0, 0.0, 0.0, 1.0))
+        self.assertEqual(feature.ViewObject.DiffuseColor[4], (1.0, 1.0, 0.0, 1.0))
+        self.assertEqual(feature.ViewObject.DiffuseColor[5], (1.0, 1.0, 0.0, 1.0))
 
         sa = coin.SoSearchAction()
         sa.setType(coin.SoMaterialBinding.getClassTypeId())

@@ -100,9 +100,9 @@ void DrawSketchKeyboardManager::detectKeyboardEventHandlingMode(QKeyEvent* keyEv
     auto match = rx.match(keyEvent->text());
     if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return
         || keyEvent->key() == Qt::Key_Tab || keyEvent->key() == Qt::Key_Backtab
-        || keyEvent->key() == Qt::Key_Backspace || keyEvent->key() == Qt::Key_Delete
         || keyEvent->key() == Qt::Key_Minus || keyEvent->key() == Qt::Key_Period
-        || keyEvent->key() == Qt::Key_Comma || match.hasMatch()) {
+        || keyEvent->key() == Qt::Key_Comma || match.hasMatch()
+        || keyEvent->matches(QKeySequence::Backspace) || keyEvent->matches(QKeySequence::Delete)) {
         keyMode = KeyboardEventHandlingMode::DSHControl;
         timer.start(timeOutValue);
     }

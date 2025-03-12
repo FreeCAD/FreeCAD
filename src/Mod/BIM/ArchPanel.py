@@ -35,7 +35,6 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
-    import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
     def translate(ctxt,txt):
@@ -55,19 +54,6 @@ else:
 __title__  = "FreeCAD Panel"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
-
-#           Description                 l    w    t
-
-Presets = [None,
-           ["Plywood 12mm, 1220 x 2440",1220,2440,12],
-           ["Plywood 15mm, 1220 x 2440",1220,2440,15],
-           ["Plywood 18mm, 1220 x 2440",1220,2440,18],
-           ["Plywood 25mm, 1220 x 2440",1220,2440,25],
-           ["MDF 3mm, 900 x 600",       900, 600, 3],
-           ["MDF 6mm, 900 x 600",       900, 600, 6],
-           ["OSB 18mm, 1220 x 2440",    1220,2440,18],
-           ]
-
 
 
 class _Panel(ArchComponent.Component):
@@ -485,12 +471,12 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
                             cols = []
                             for i,mat in enumerate(activematerials):
                                 c = obj.ViewObject.ShapeColor
-                                c = (c[0],c[1],c[2],obj.ViewObject.Transparency/100.0)
+                                c = (c[0],c[1],c[2],1.0-obj.ViewObject.Transparency/100.0)
                                 if 'DiffuseColor' in mat.Material:
                                     if "(" in mat.Material['DiffuseColor']:
                                         c = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
                                 if 'Transparency' in mat.Material:
-                                    c = (c[0],c[1],c[2],float(mat.Material['Transparency']))
+                                    c = (c[0],c[1],c[2],1.0-float(mat.Material['Transparency']))
                                 cols.extend([c for j in range(len(obj.Shape.Solids[i].Faces))])
                             if obj.ViewObject.DiffuseColor != cols:
                                 obj.ViewObject.DiffuseColor = cols

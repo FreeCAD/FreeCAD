@@ -34,6 +34,7 @@
 #include "View3DInventorSelection.h"
 #include "ViewProviderDocumentObject.h"
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <Base/Console.h>
 
@@ -48,19 +49,22 @@ View3DInventorSelection::View3DInventorSelection(SoFCUnifiedSelection* root)
 
     pcGroupOnTop = new SoSeparator;
     pcGroupOnTop->ref();
+    pcGroupOnTop->setName("GroupOnTop");
     root->addChild(pcGroupOnTop);
 
     auto pcGroupOnTopPickStyle = new SoPickStyle;
     pcGroupOnTopPickStyle->style = SoPickStyle::UNPICKABLE;
     pcGroupOnTopPickStyle->setOverride(true);
+    pcGroupOnTopPickStyle->setName("GroupOnTopPickStyle");
     pcGroupOnTop->addChild(pcGroupOnTopPickStyle);
 
     coin_setenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE", "1", TRUE);
-    auto pcOnTopMaterial = new SoMaterial;
-    pcOnTopMaterial->transparency = 0.5;
-    pcOnTopMaterial->diffuseColor.setIgnored(true);
-    pcOnTopMaterial->setOverride(true);
-    pcGroupOnTop->addChild(pcOnTopMaterial);
+    auto pcGroupOnTopMaterial = new SoMaterial;
+    pcGroupOnTopMaterial->transparency = 0.5;
+    pcGroupOnTopMaterial->diffuseColor.setIgnored(true);
+    pcGroupOnTopMaterial->setOverride(true);
+    pcGroupOnTopMaterial->setName("GroupOnTopMaterial");
+    pcGroupOnTop->addChild(pcGroupOnTopMaterial);
 
     {
         auto selRoot = new SoFCSelectionRoot;
@@ -113,6 +117,12 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges &Reason)
     std::string key(obj->getNameInDocument());
     key += '.';
     auto subname = Reason.pSubName;
+    App::ElementNamePair element;
+    App::GeoFeature::resolveElement(obj, Reason.pSubName, element);
+    if (Data::isMappedElement(subname)
+        && !element.oldName.empty()) {      // If we have a shortened element name
+        subname = element.oldName.c_str();  // use if
+    }
     if(subname)
         key += subname;
     if(Reason.Type == SelectionChanges::RmvSelection) {

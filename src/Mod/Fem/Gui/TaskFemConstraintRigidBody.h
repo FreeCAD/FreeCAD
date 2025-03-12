@@ -61,9 +61,11 @@ private Q_SLOTS:
     void onRotModeXChanged(int);
     void onRotModeYChanged(int);
     void onRotModeZChanged(int);
+    void onRefNodeXChanged(double);
+    void onRefNodeYChanged(double);
+    void onRefNodeZChanged(double);
 
 protected:
-    bool event(QEvent* e) override;
     void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
@@ -78,9 +80,7 @@ class TaskDlgFemConstraintRigidBody: public TaskDlgFemConstraint
 
 public:
     explicit TaskDlgFemConstraintRigidBody(ViewProviderFemConstraintRigidBody* ConstraintView);
-    void open() override;
     bool accept() override;
-    bool reject() override;
 };
 
 }  // namespace FemGui

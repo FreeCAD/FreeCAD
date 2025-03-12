@@ -24,7 +24,7 @@
 #define SKETCHERGUI_DrawSketchHandlerFillet_H
 
 #include <Gui/Notifications.h>
-#include <Gui/SelectionFilter.h>
+#include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 
@@ -57,7 +57,7 @@ public:
         if (pObj != this->object) {
             return false;
         }
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
         std::string element(sSubName);
@@ -314,18 +314,18 @@ private:
 
         if (constructionMethod() == DrawSketchHandlerFillet::ConstructionMethod::Fillet) {
             if (preserveCorner) {
-                return QString::fromLatin1("Sketcher_Pointer_Create_PointFillet");
+                return QStringLiteral("Sketcher_Pointer_Create_PointFillet");
             }
             else {
-                return QString::fromLatin1("Sketcher_Pointer_Create_Fillet");
+                return QStringLiteral("Sketcher_Pointer_Create_Fillet");
             }
         }
         else {
             if (preserveCorner) {
-                return QString::fromLatin1("Sketcher_Pointer_Create_PointChamfer");
+                return QStringLiteral("Sketcher_Pointer_Create_PointChamfer");
             }
             else {
-                return QString::fromLatin1("Sketcher_Pointer_Create_Chamfer");
+                return QStringLiteral("Sketcher_Pointer_Create_Chamfer");
             }
         }
     }

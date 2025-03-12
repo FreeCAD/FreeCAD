@@ -53,7 +53,7 @@ public:
      original material is used.
      */
     void apply(const Mesh::MeshObject& mesh,
-               const App::Color& defaultColor,
+               const Base::Color& defaultColor,
                MeshCore::Material& material);
     /*!
      Find common points or facets of this to the original mesh. For points or facets
@@ -61,7 +61,7 @@ public:
      original material is used.
      */
     void apply(const Mesh::MeshObject& mesh,
-               const App::Color& defaultColor,
+               const Base::Color& defaultColor,
                float max_dist,
                MeshCore::Material& material);
     /*!
@@ -80,19 +80,18 @@ public:
 private:
     void apply(const Mesh::MeshObject& mesh,
                bool addDefaultColor,
-               const App::Color& defaultColor,
+               const Base::Color& defaultColor,
                float max_dist,
                MeshCore::Material& material);
     PointIndex findIndex(const Base::Vector3f& p, float max_dist) const
     {
-        if (max_dist < 0.0f) {
+        if (max_dist < 0.0F) {
             return kdTree->FindExact(p);
         }
-        else {
-            Base::Vector3f n;
-            float dist {};
-            return kdTree->FindNearest(p, max_dist, n, dist);
-        }
+
+        Base::Vector3f n;
+        float dist {};
+        return kdTree->FindNearest(p, max_dist, n, dist);
     }
 
 private:

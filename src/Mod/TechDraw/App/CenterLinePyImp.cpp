@@ -21,9 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <boost/uuid/uuid_io.hpp>
-#endif
 
 #include <Base/Console.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -115,10 +112,10 @@ Py::Dict CenterLinePy::getFormat() const
     TechDraw::LineFormat* format= &(this->getCenterLinePtr()->m_format);
     Py::Dict dict;
 
-    dict.setItem("style", Py::Long(format->m_style));
-    dict.setItem("weight", Py::Float(format->m_weight));
-    dict.setItem("color", Py::Tuple(DrawUtil::colorToPyTuple(format->m_color), true));
-    dict.setItem("visible", Py::Boolean(format->m_visible));
+    dict.setItem("style", Py::Long(format->getStyle()));
+    dict.setItem("weight", Py::Float(format->getWidth()));
+    dict.setItem("color", Py::Tuple(DrawUtil::colorToPyTuple(format->getColor()), true));
+    dict.setItem("visible", Py::Boolean(format->getVisible()));
 
     return dict;
 }
@@ -138,35 +135,35 @@ void CenterLinePy::setFormat(Py::Dict arg)
     }
 
     TechDraw::LineFormat* format = &(this->getCenterLinePtr()->m_format);
-    format->m_style = style;
-    format->m_weight = weight;
-    format->m_color = DrawUtil::pyTupleToColor(pColor);
-    format->m_visible = Base::asBoolean(visible);
+    format->setStyle(style);
+    format->setWidth(weight);
+    format->setColor(DrawUtil::pyTupleToColor(pColor));
+    format->setVisible(Base::asBoolean(visible));
 }
 
 Py::String CenterLinePy::getTag() const
 {
-    std::string tmp = boost::uuids::to_string(getCenterLinePtr()->getTag());
+    std::string tmp = getCenterLinePtr()->getTagAsString();
     return Py::String(tmp);
 }
 
 
 Py::Long CenterLinePy::getType() const
 {
-    int tmp = getCenterLinePtr()->m_type;
-    return Py::Long(tmp);
+    CenterLine::Type tmp = getCenterLinePtr()->m_type;
+    return Py::Long(static_cast<int>(tmp));
 }
 
 Py::Long CenterLinePy::getMode() const
 {
-    int tmp = getCenterLinePtr()->m_mode;
-    return Py::Long(tmp);
+    CenterLine::Mode tmp = getCenterLinePtr()->m_mode;
+    return Py::Long(static_cast<int>(tmp));
 }
 
 void CenterLinePy::setMode(Py::Long arg)
 {
     int temp = static_cast<int>(arg);
-    getCenterLinePtr()->m_mode = temp;
+    getCenterLinePtr()->m_mode = static_cast<CenterLine::Mode>(temp);
 }
 
 Py::Float CenterLinePy::getHorizShift() const

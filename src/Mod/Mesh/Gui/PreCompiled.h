@@ -37,11 +37,6 @@
 
 #ifdef _PreComp_
 
-// Gts
-#ifdef FC_USE_GTS
-#include <gts.h>
-#endif
-
 // standard
 #include <ios>
 #include <cfloat>
@@ -51,6 +46,7 @@
 #include <iomanip>
 #include <list>
 #include <map>
+#include <random>
 #include <sstream>
 #include <string>
 #include <vector>

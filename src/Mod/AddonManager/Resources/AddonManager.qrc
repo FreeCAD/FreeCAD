@@ -2,6 +2,7 @@
     <qresource>
         <file>icons/preferences-addon_manager.svg</file>
         <file>icons/3D_Printing_Tools_workbench_icon.svg</file>
+        <file>icons/AddonMgrWithWarning.svg</file>
         <file>icons/A2plus_workbench_icon.svg</file>
         <file>icons/AirPlaneDesign_workbench_icon.svg</file>
         <file>icons/ArchTextures_workbench_icon.svg</file>

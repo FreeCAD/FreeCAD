@@ -64,17 +64,13 @@ class ObjectProbing(PathOp.ObjectOp):
             "App::PropertyInteger",
             "PointCountX",
             "Probe",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Number of points to probe in X direction"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in X direction"),
         )
         obj.addProperty(
             "App::PropertyInteger",
             "PointCountY",
             "Probe",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Number of points to probe in Y direction"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in Y direction"),
         )
         obj.addProperty(
             "App::PropertyFile",
@@ -95,6 +91,10 @@ class ObjectProbing(PathOp.ObjectOp):
     def opExecute(self, obj):
         """opExecute(obj) ... generate probe locations."""
         Path.Log.track()
+        if not self.isToolSupported(obj, self.tool):
+            Path.Log.warning("No suitable probe tool found")
+            return
+
         self.commandlist.append(Path.Command("(Begin Probing)"))
 
         stock = PathUtils.findParentJob(obj).Stock
@@ -131,6 +131,12 @@ class ObjectProbing(PathOp.ObjectOp):
 
     def opSetDefaultValues(self, obj, job):
         """opSetDefaultValues(obj, job) ... set default value for RetractHeight"""
+
+    def isToolSupported(self, obj, tool):
+        """Probe operation requires a probe tool"""
+        support = hasattr(tool, "ShapeName") and (tool.ShapeName == "probe")
+        Path.Log.track(tool.Label, support)
+        return support
 
 
 def SetupProperties():

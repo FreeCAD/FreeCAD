@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #include <Gui/CommandT.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 
@@ -97,7 +97,7 @@ void DlgDecimating::onCheckAbsoluteNumberToggled(bool on)
     else {
         ui->spinBoxReduction->setRange(0, 100);
         ui->spinBoxReduction->setValue(ui->sliderReduction->value());
-        ui->spinBoxReduction->setSuffix(QString::fromLatin1("%"));
+        ui->spinBoxReduction->setSuffix(QStringLiteral("%"));
         ui->checkAbsoluteNumber->setText(tr("Absolute number"));
         connect(ui->sliderReduction,
                 qOverload<int>(&QSlider::valueChanged),

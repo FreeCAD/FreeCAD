@@ -138,6 +138,6 @@ PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderPlacementPython, Gui::ViewProviderPlac
 /// @endcond
 
 // explicit template instantiation
-template class GuiExport ViewProviderPythonFeatureT<ViewProviderPlacement>;
+template class GuiExport ViewProviderFeaturePythonT<ViewProviderPlacement>;
 }
 

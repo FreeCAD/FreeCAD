@@ -70,9 +70,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return form
 
     def initPage(self, obj):
-        self.opImagePath = "{}Mod/CAM/Images/Ops/{}".format(
-            FreeCAD.getHomePath(), "chamfer.svg"
-        )
+        self.opImagePath = "{}Mod/CAM/Images/Ops/{}".format(FreeCAD.getHomePath(), "chamfer.svg")
         self.opImage = QtGui.QPixmap(self.opImagePath)
         self.form.opImage.setPixmap(self.opImage)
         iconMiter = QtGui.QIcon(":/icons/edge-join-miter-not.svg")
@@ -101,9 +99,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             FreeCAD.Units.Quantity(obj.Width.Value, FreeCAD.Units.Length).UserString
         )
         self.form.value_h.setText(
-            FreeCAD.Units.Quantity(
-                obj.ExtraDepth.Value, FreeCAD.Units.Length
-            ).UserString
+            FreeCAD.Units.Quantity(obj.ExtraDepth.Value, FreeCAD.Units.Length).UserString
         )
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
@@ -143,9 +139,7 @@ Command = PathOpGui.SetupOperation(
     TaskPanelOpPage,
     "CAM_Deburr",
     QT_TRANSLATE_NOOP("CAM_Deburr", "Deburr"),
-    QT_TRANSLATE_NOOP(
-        "CAM_Deburr", "Creates a Deburr toolpath along Edges or around Faces"
-    ),
+    QT_TRANSLATE_NOOP("CAM_Deburr", "Creates a Deburr toolpath along Edges or around Faces"),
     PathDeburr.SetupProperties,
 )
 

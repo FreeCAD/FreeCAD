@@ -49,9 +49,9 @@ void ViewProviderPathCompound::unsetEdit(int ModNum)
     Gui::Control().closeDialog();
 }
 
-std::vector<App::DocumentObject*> ViewProviderPathCompound::claimChildren()const
+std::vector<App::DocumentObject*> ViewProviderPathCompound::claimChildren() const
 {
-    return std::vector<App::DocumentObject*>(static_cast<Path::FeatureCompound *>(getObject())->Group.getValues());
+    return std::vector<App::DocumentObject*>(getObject<Path::FeatureCompound>()->Group.getValues());
 }
 
 bool ViewProviderPathCompound::canDragObjects() const
@@ -61,7 +61,7 @@ bool ViewProviderPathCompound::canDragObjects() const
 
 void ViewProviderPathCompound::dragObject(App::DocumentObject* obj)
 {
-    static_cast<Path::FeatureCompound *>(getObject())->removeObject(obj);
+    getObject<Path::FeatureCompound>()->removeObject(obj);
 }
 
 bool ViewProviderPathCompound::canDropObjects() const
@@ -71,7 +71,7 @@ bool ViewProviderPathCompound::canDropObjects() const
 
 void ViewProviderPathCompound::dropObject(App::DocumentObject* obj)
 {
-    static_cast<Path::FeatureCompound *>(getObject())->addObject(obj);
+    getObject<Path::FeatureCompound>()->addObject(obj);
 }
 
 QIcon ViewProviderPathCompound::getIcon() const
@@ -81,11 +81,12 @@ QIcon ViewProviderPathCompound::getIcon() const
 
 // Python object -----------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PathGui::ViewProviderPathCompoundPython, PathGui::ViewProviderPathCompound)
 /// @endcond
 
 // explicit template instantiation
-template class PathGuiExport ViewProviderPythonFeatureT<PathGui::ViewProviderPathCompound>;
-}
+template class PathGuiExport ViewProviderFeaturePythonT<PathGui::ViewProviderPathCompound>;
+}  // namespace Gui

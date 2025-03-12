@@ -60,15 +60,16 @@ class CommandSolveAssembly:
         }
 
     def IsActive(self):
-        return UtilsAssembly.isAssemblyCommandActive() and UtilsAssembly.isAssemblyGrounded()
+        return UtilsAssembly.isAssemblyCommandActive()
 
     def Activated(self):
         assembly = UtilsAssembly.activeAssembly()
         if not assembly:
             return
 
+        Gui.addModule("UtilsAssembly")
         App.setActiveTransaction("Solve assembly")
-        assembly.solve()
+        Gui.doCommand("UtilsAssembly.activeAssembly().solve()")
         App.closeActiveTransaction()
 
 

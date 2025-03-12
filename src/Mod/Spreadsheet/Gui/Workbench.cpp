@@ -68,7 +68,7 @@ void Workbench::activated()
 {
     if (!initialized) {
         QList<QToolBar*> bars =
-            Gui::getMainWindow()->findChildren<QToolBar*>(QString::fromLatin1("Spreadsheet"));
+            Gui::getMainWindow()->findChildren<QToolBar*>(QStringLiteral("Spreadsheet"));
 
         if (bars.size() == 1) {
             QToolBar* bar = bars[0];
@@ -77,13 +77,13 @@ void Workbench::activated()
             QPalette palette = Gui::getMainWindow()->palette();
 
             QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-                QString::fromLatin1("Spreadsheet_ForegroundColor"));
+                QStringLiteral("Spreadsheet_ForegroundColor"));
             if (!fgList.empty()) {
                 foregroundColor = fgList[0];
             }
             else {
                 foregroundColor = new QtColorPicker(bar);
-                foregroundColor->setObjectName(QString::fromLatin1("Spreadsheet_ForegroundColor"));
+                foregroundColor->setObjectName(QStringLiteral("Spreadsheet_ForegroundColor"));
                 foregroundColor->setStandardColors();
                 foregroundColor->setCurrentColor(palette.color(QPalette::WindowText));
                 QObject::connect(foregroundColor,
@@ -91,20 +91,19 @@ void Workbench::activated()
                                  workbenchHelper.get(),
                                  &WorkbenchHelper::setForegroundColor);
             }
-            foregroundColor->setToolTip(QObject::tr("Set cell(s) foreground color"));
-            foregroundColor->setWhatsThis(
-                QObject::tr("Sets the Spreadsheet cell(s) foreground color"));
-            foregroundColor->setStatusTip(QObject::tr("Set cell(s) foreground color"));
+            foregroundColor->setToolTip(QObject::tr("Set cell(s) text color"));
+            foregroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell(s) text color"));
+            foregroundColor->setStatusTip(QObject::tr("Set cell(s) text color"));
             bar->addWidget(foregroundColor);
 
             QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-                QString::fromLatin1("Spreadsheet_BackgroundColor"));
+                QStringLiteral("Spreadsheet_BackgroundColor"));
             if (!bgList.empty()) {
                 backgroundColor = bgList[0];
             }
             else {
                 backgroundColor = new QtColorPicker(bar);
-                backgroundColor->setObjectName(QString::fromLatin1("Spreadsheet_BackgroundColor"));
+                backgroundColor->setObjectName(QStringLiteral("Spreadsheet_BackgroundColor"));
                 backgroundColor->setStandardColors();
                 backgroundColor->setCurrentColor(palette.color(QPalette::Base));
                 QObject::connect(backgroundColor,
@@ -140,7 +139,7 @@ void WorkbenchHelper::setForegroundColor(const QColor& color)
             if (!ranges.empty()) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set foreground color"));
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set text color"));
                 for (; i != ranges.end(); ++i) {
                     Gui::Command::doCommand(Gui::Command::Doc,
                                             "App.ActiveDocument.%s.setForeground('%s', (%f,%f,%f))",

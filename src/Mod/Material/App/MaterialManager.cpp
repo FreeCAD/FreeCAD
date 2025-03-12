@@ -38,6 +38,8 @@
 #include "ModelManager.h"
 #include "ModelUuids.h"
 
+#include <Base/Tools.h>
+
 
 using namespace Materials;
 
@@ -132,25 +134,24 @@ bool MaterialManager::isMaterial(const QFileInfo& file) const
         return false;
     }
     // check file extension
-    if (file.suffix() == QString::fromStdString("FCMat")) {
+    if (file.suffix() == QStringLiteral("FCMat")) {
         return true;
     }
     return false;
 }
 
-std::shared_ptr<Material> MaterialManager::defaultMaterial()
+std::shared_ptr<App::Material> MaterialManager::defaultAppearance()
 {
-    MaterialManager manager;
-
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
 
-    auto getColor = [hGrp](const char* parameter, App::Color& color) {
+    auto getColor = [hGrp](const char* parameter, Base::Color& color) {
         uint32_t packed = color.getPackedRGB();
         packed = hGrp->GetUnsigned(parameter, packed);
         color.setPackedRGB(packed);
+        color.a = 1.0; // The default color sets fully transparent, not opaque
     };
-    auto intRandom = [] (int min, int max) -> int {
+    auto intRandom = [](int min, int max) -> int {
         static std::mt19937 generator;
         std::uniform_int_distribution<int> distribution(min, max);
         return distribution(generator);
@@ -163,7 +164,7 @@ std::shared_ptr<Material> MaterialManager::defaultMaterial()
         float red = static_cast<float>(intRandom(0, 255)) / 255.0F;
         float green = static_cast<float>(intRandom(0, 255)) / 255.0F;
         float blue = static_cast<float>(intRandom(0, 255)) / 255.0F;
-        mat.diffuseColor = App::Color(red, green, blue);
+        mat.diffuseColor = Base::Color(red, green, blue, 1.0);
     }
     else {
         getColor("DefaultShapeColor", mat.diffuseColor);
@@ -175,24 +176,34 @@ std::shared_ptr<Material> MaterialManager::defaultMaterial()
 
     long initialTransparency = hGrp->GetInt("DefaultShapeTransparency", 0);
     long initialShininess = hGrp->GetInt("DefaultShapeShininess", 90);
+    mat.shininess = Base::fromPercent(initialShininess);
+    mat.transparency = Base::fromPercent(initialTransparency);
 
+    return std::make_shared<App::Material>(mat);
+}
+
+std::shared_ptr<Material> MaterialManager::defaultMaterial()
+{
+    MaterialManager manager;
+
+    auto mat = defaultAppearance();
     auto material = manager.getMaterial(defaultMaterialUUID());
     if (!material) {
         material = manager.getMaterial(QLatin1String("7f9fd73b-50c9-41d8-b7b2-575a030c1eeb"));
     }
     if (material->hasAppearanceModel(ModelUUIDs::ModelUUID_Rendering_Basic)) {
-        material->getAppearanceProperty(QString::fromLatin1("DiffuseColor"))
-            ->setColor(mat.diffuseColor);
-        material->getAppearanceProperty(QString::fromLatin1("AmbientColor"))
-            ->setColor(mat.ambientColor);
-        material->getAppearanceProperty(QString::fromLatin1("EmissiveColor"))
-            ->setColor(mat.emissiveColor);
-        material->getAppearanceProperty(QString::fromLatin1("SpecularColor"))
-            ->setColor(mat.specularColor);
-        material->getAppearanceProperty(QString::fromLatin1("Transparency"))
-            ->setFloat((float)initialTransparency / 100.0F);
-        material->getAppearanceProperty(QString::fromLatin1("Shininess"))
-            ->setFloat((float)initialShininess / 100.0F);
+        material->getAppearanceProperty(QStringLiteral("DiffuseColor"))
+            ->setColor(mat->diffuseColor);
+        material->getAppearanceProperty(QStringLiteral("AmbientColor"))
+            ->setColor(mat->ambientColor);
+        material->getAppearanceProperty(QStringLiteral("EmissiveColor"))
+            ->setColor(mat->emissiveColor);
+        material->getAppearanceProperty(QStringLiteral("SpecularColor"))
+            ->setColor(mat->specularColor);
+        material->getAppearanceProperty(QStringLiteral("Transparency"))
+            ->setFloat(mat->transparency);
+        material->getAppearanceProperty(QStringLiteral("Shininess"))
+            ->setFloat(mat->shininess);
     }
 
     return material;

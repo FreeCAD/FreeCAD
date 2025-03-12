@@ -192,11 +192,31 @@ def InitApplications():
         except Exception as exc:
             Err(str(exc))
 
+    def checkIfAddonIsDisabled(Dir):
+        DisabledAddons = FreeCAD.ConfigGet("DisabledAddons").split(";")
+        Name = os.path.basename(Dir)
+
+        if Name in DisabledAddons:
+            Msg(f'NOTICE: Addon "{Name}" disabled by presence of "--disable-addon {Name}" argument\n')
+            return True
+
+        stopFileName = "ALL_ADDONS_DISABLED"
+        stopFile = os.path.join(Dir, os.path.pardir, stopFileName)
+        if os.path.exists(stopFile):
+            Msg(f'NOTICE: Addon "{Dir}" disabled by presence of {stopFileName} stopfile\n')
+            return True
+
+        stopFileName = "ADDON_DISABLED"
+        stopFile = os.path.join(Dir, stopFileName)
+        if os.path.exists(stopFile):
+            Msg(f'NOTICE: Addon "{Dir}" disabled by presence of {stopFileName} stopfile\n')
+            return True
+
+        return False
+
     for Dir in ModDirs:
-        if (Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py'):
-            stopFile = os.path.join(Dir, "ADDON_DISABLED")
-            if os.path.exists(stopFile):
-                Msg(f'NOTICE: Addon "{Dir}" disabled by presence of ADDON_DISABLED stopfile\n')
+        if Dir not in ['', 'CVS', '__init__.py']:
+            if checkIfAddonIsDisabled(Dir):
                 continue
             MetadataFile = os.path.join(Dir, "package.xml")
             if os.path.exists(MetadataFile):
@@ -278,21 +298,6 @@ App.Gui = FreeCADGui
 FreeCADGui.Workbench = Workbench
 
 Gui.addWorkbench(NoneWorkbench())
-
-# Monkey patching pivy.coin.SoGroup.removeAllChildren to work around a bug
-# https://bitbucket.org/Coin3D/coin/pull-requests/119/fix-sochildlist-auditing/diff
-
-def _SoGroup_init(self,*args):
-    import types
-    _SoGroup_init_orig(self,*args)
-    self.removeAllChildren = \
-        types.MethodType(FreeCADGui.coinRemoveAllChildren,self)
-try:
-    from pivy import coin
-    _SoGroup_init_orig = coin.SoGroup.__init__
-    coin.SoGroup.__init__ = _SoGroup_init
-except Exception:
-    pass
 
 # init modules
 InitApplications()

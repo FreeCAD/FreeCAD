@@ -408,7 +408,7 @@ normal vector of the face is used as direction</string>
          <item row="1" column="0">
           <widget class="QLabel" name="labelTemperature">
            <property name="text">
-            <string>Temperature[K]</string>
+            <string>Temperature [K]</string>
            </property>
           </widget>
          </item>

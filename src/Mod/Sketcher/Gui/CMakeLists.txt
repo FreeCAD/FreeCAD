@@ -3,13 +3,19 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${COIN3D_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
+    ${ZIPIOS_INCLUDES}
 )
 link_directories(${OCC_LIBRARY_DIR})
 
@@ -67,7 +73,6 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerArcOfParabola.h
     DrawSketchHandlerArcSlot.h
     DrawSketchHandlerBSpline.h
-    DrawSketchHandlerBSplineByInterpolation.h
     DrawSketchHandlerPoint.h
     DrawSketchHandlerFillet.h
     DrawSketchHandlerTranslate.h
@@ -197,7 +202,9 @@ SET(SketcherGuiIcon_SVG
 
 add_library(SketcherGui SHARED ${SketcherGui_SRCS} ${SketcherGuiIcon_SVG})
 target_link_libraries(SketcherGui ${SketcherGui_LIBS})
-
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(SketcherGui)
+endif()
 
 SET_BIN_DIR(SketcherGui SketcherGui /Mod/Sketcher)
 SET_PYTHON_PREFIX_SUFFIX(SketcherGui)

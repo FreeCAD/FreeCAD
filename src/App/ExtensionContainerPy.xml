@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-    Father="PropertyContainerPy" 
-    Name="ExtensionContainerPy" 
-    TwinPointer="ExtensionContainer" 
-    Twin="ExtensionContainer" 
-    Include="App/ExtensionContainer.h" 
-    Namespace="App" 
-    FatherInclude="App/PropertyContainerPy.h" 
+  <PythonExport
+    Father="PropertyContainerPy"
+    Name="ExtensionContainerPy"
+    TwinPointer="ExtensionContainer"
+    Twin="ExtensionContainer"
+    Include="App/ExtensionContainer.h"
+    Namespace="App"
+    FatherInclude="App/PropertyContainerPy.h"
     FatherNamespace="App"
     Initialization="true"
     Constructor = "true">

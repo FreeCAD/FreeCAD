@@ -111,6 +111,7 @@ void SketcherSettings::saveSettings()
     ui->checkBoxAutoRemoveRedundants->onSave();
     ui->checkBoxUnifiedCoincident->onSave();
     ui->checkBoxHorVerAuto->onSave();
+    ui->checkBoxAddExtGeo->onSave();
 
     enum
     {
@@ -184,6 +185,7 @@ void SketcherSettings::loadSettings()
     setProperty("checkBoxUnifiedCoincident", ui->checkBoxUnifiedCoincident->isChecked());
     ui->checkBoxHorVerAuto->onRestore();
     setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
+    ui->checkBoxAddExtGeo->onRestore();
 
     // Dimensioning constraints mode
     ui->dimensioningMode->clear();
@@ -219,9 +221,9 @@ void SketcherSettings::loadSettings()
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
     ui->ovpVisibility->clear();
-    ui->ovpVisibility->addItem(tr("Disabled"));
-    ui->ovpVisibility->addItem(tr("Only dimensional"));
-    ui->ovpVisibility->addItem(tr("All"));
+    ui->ovpVisibility->addItem(tr("None"));
+    ui->ovpVisibility->addItem(tr("Dimensions only"));
+    ui->ovpVisibility->addItem(tr("Position and dimensions"));
 
     index = hGrp->GetInt("OnViewParameterVisibility", 1);
     ui->ovpVisibility->setCurrentIndex(index);
@@ -257,6 +259,29 @@ void SketcherSettings::changeEvent(QEvent* e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+void SketcherSettings::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+    // reset "Dimension tools" parameters
+    hGrp->RemoveBool("SingleDimensioningTool");
+    hGrp->RemoveBool("SeparatedDimensioningTools");
+
+    // reset "radius/diameter mode for dimensioning" parameter
+    hGrp->RemoveBool("DimensioningDiameter");
+    hGrp->RemoveBool("DimensioningRadius");
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+    // reset "OVP visibility" parameter
+    hGrp->RemoveInt("OnViewParameterVisibility");
+
+    // finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
 }
 
 /* TRANSLATOR SketcherGui::SketcherSettingsGrid */
@@ -619,7 +644,7 @@ void SketcherSettingsAppearance::loadSettings()
     }
     ui->InternalPattern->setCurrentIndex(index);
 
-    pattern = hGrp->GetInt("ExternalPattern", 0b1110010011100100);
+    pattern = hGrp->GetInt("ExternalPattern", 0b1111110011111100);
     index = ui->ExternalPattern->findData(QVariant(pattern));
     if (index < 0) {
         index = 0;

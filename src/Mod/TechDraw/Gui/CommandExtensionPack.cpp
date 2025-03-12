@@ -24,7 +24,6 @@
 #ifndef _PreComp_
 #include <QApplication>
 #include <QMessageBox>
-#include <sstream>
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -34,7 +33,6 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Base/Type.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
@@ -43,8 +41,8 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Part/App/Geometry2d.h>
 #include <Mod/TechDraw/App/CenterLine.h>
@@ -58,6 +56,9 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/Preferences.h>
+#include <Mod/TechDraw/App/LineFormat.h>
+#include <Mod/TechDraw/App/LineGenerator.h>
+#include <Mod/TechDraw/App/LineGroup.h>
 
 #include "DrawGuiUtil.h"
 #include "QGSPage.h"
@@ -79,18 +80,18 @@ namespace TechDrawGui
 //internal helper functions
 TechDraw::LineFormat& _getActiveLineAttributes();
 Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d p3);
-void _createThreadCircle(std::string Name, TechDraw::DrawViewPart* objFeat, float factor);
-void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPart* objFeat,
-                        float factor);
+void _createThreadCircle(const std::string Name, TechDraw::DrawViewPart* objFeat, double factor);
+void _createThreadLines(const std::vector<std::string>& SubNames, TechDraw::DrawViewPart* objFeat,
+                        double factor);
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge);
 void _setLineAttributes(TechDraw::CenterLine* cosEdge);
-void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color);
-void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, App::Color color);
-float _getAngle(Base::Vector3d center, Base::Vector3d point);
-std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames,
+void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, Base::Color color);
+void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, Base::Color color);
+double _getAngle(Base::Vector3d center, Base::Vector3d point);
+std::vector<Base::Vector3d> _getVertexPoints(const std::vector<std::string>& SubNames,
                                              TechDraw::DrawViewPart* objFeat);
 bool _checkSel(Gui::Command* cmd, std::vector<Gui::SelectionObject>& selection,
-               TechDraw::DrawViewPart*& objFeat, std::string message);
+               TechDraw::DrawViewPart*& objFeat, const std::string& message);
 std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat);
 
 //===========================================================================
@@ -101,9 +102,10 @@ void execHoleCircle(Gui::Command* cmd)
 {
     //create centerlines of a hole/bolt circle
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Hole Circle")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Hole Circle"))) {
         return;
+    }
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     std::vector<TechDraw::CirclePtr> Circles;
     for (const std::string& Name : SubNames) {
@@ -111,7 +113,7 @@ void execHoleCircle(Gui::Command* cmd)
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
         TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
         if (GeoType == "Edge") {
-            if (geom->getGeomType() == TechDraw::CIRCLE || geom->getGeomType() == TechDraw::ARCOFCIRCLE) {
+            if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
                 TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
                 Circles.push_back(cgen);
             }
@@ -129,9 +131,7 @@ void execHoleCircle(Gui::Command* cmd)
         _circleCenter(Circles[0]->center, Circles[1]->center, Circles[2]->center);
     double bigRadius = (Circles[0]->center - bigCenter).Length();
     // now convert the center & radius to canonical form
-    bigCenter = DU::invertY(bigCenter);
-    bigCenter = CosmeticVertex::makeCanonicalPoint(objFeat, bigCenter);
-    bigCenter = DU::invertY(bigCenter);
+    bigCenter = CosmeticVertex::makeCanonicalPointInverted(objFeat, bigCenter);
     bigRadius = bigRadius / objFeat->getScale();
     TechDraw::BaseGeomPtr bigCircle =
         std::make_shared<TechDraw::Circle>(bigCenter, bigRadius);
@@ -143,18 +143,14 @@ void execHoleCircle(Gui::Command* cmd)
     constexpr double ExtendFactor{1.1};
     for (const TechDraw::CirclePtr& oneCircle : Circles) {
         // convert the center to canonical form
-        Base::Vector3d oneCircleCenter = DU::invertY(oneCircle->center);
-        oneCircleCenter = CosmeticVertex::makeCanonicalPoint(objFeat, oneCircleCenter);
-        oneCircleCenter = DU::invertY(oneCircleCenter);
+        Base::Vector3d oneCircleCenter = CosmeticVertex::makeCanonicalPointInverted(objFeat, oneCircle->center);
         // oneCircle->radius is scaled.
-        float oneRadius = oneCircle->radius / objFeat->getScale();
+        double oneRadius = oneCircle->radius / objFeat->getScale();
         // what is magic number 2 (now ExtendFactor)?  just a fudge factor to extend the line beyond the bolt
         // hole circle?  should it be a function of hole diameter? maybe 110% of oneRadius?
         Base::Vector3d delta = (oneCircleCenter - bigCenter).Normalize() * (oneRadius * ExtendFactor);
         Base::Vector3d startPt = oneCircleCenter + delta;
         Base::Vector3d endPt = oneCircleCenter - delta;
-        startPt = DU::invertY(startPt);
-        endPt = DU::invertY(endPt);
         std::string oneLineTag = objFeat->addCosmeticEdge(startPt, endPt);
         TechDraw::CosmeticEdge* ceLine = objFeat->getCosmeticEdge(oneLineTag);
         _setLineAttributes(ceLine);
@@ -205,9 +201,10 @@ void execCircleCenterLines(Gui::Command* cmd)
 {
     // create circle centerlines
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Circle Centerlines")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Circle Centerlines"))) {
         return;
+    }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Circle Centerlines"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (const std::string& Name : SubNames) {
@@ -215,12 +212,10 @@ void execCircleCenterLines(Gui::Command* cmd)
         TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
         if (GeoType == "Edge") {
-            if (geom->getGeomType() == TechDraw::CIRCLE || geom->getGeomType() == TechDraw::ARCOFCIRCLE) {
+            if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
                 TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
-                // center is a scaled and rotated point
-                Base::Vector3d center = cgen->center;
-                center.y = -center.y;
-                center = CosmeticVertex::makeCanonicalPoint(objFeat, center);
+                // cgen->center is a scaled, rotated and inverted point
+                Base::Vector3d center = CosmeticVertex::makeCanonicalPointInverted(objFeat, cgen->center);
                 double radius = cgen->radius / objFeat->getScale();
                 // right, left, top, bottom are formed from a canonical point (center)
                 // so they do not need to be changed to canonical form.
@@ -302,7 +297,7 @@ void CmdTechDrawExtensionCircleCenterLinesGroup::activated(int iMsg)
         return;
     }
 
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
     switch (iMsg) {
         case 0://circle centerlines
@@ -324,12 +319,12 @@ Gui::Action* CmdTechDrawExtensionCircleCenterLinesGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCircleCenterLines"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionCircleCenterLines"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCircleCenterLines"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionCircleCenterLines"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionCircleCenterLines"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionHoleCircle"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionHoleCircle"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionHoleCircle"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionHoleCircle"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionHoleCircle"));
 
     _pcAction = pcAction;
     languageChange();
@@ -345,12 +340,13 @@ void CmdTechDrawExtensionCircleCenterLinesGroup::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
+    QList<QAction*> action = pcAction->actions();
 
-    QAction* arc1 = a[0];
+    QAction* arc1 = action[0];
     arc1->setText(
         QApplication::translate("CmdTechDrawExtensionCircleCenterLines", "Add Circle Centerlines"));
     arc1->setToolTip(QApplication::translate("CmdTechDrawExtensionCircleCenterLines",
@@ -359,7 +355,7 @@ void CmdTechDrawExtensionCircleCenterLinesGroup::languageChange()
 - Select one or more circles or arcs<br>\
 - Click this tool"));
     arc1->setStatusTip(arc1->text());
-    QAction* arc2 = a[1];
+    QAction* arc2 = action[1];
     arc2->setText(
         QApplication::translate("CmdTechDrawExtensionHoleCircle", "Add Bolt Circle Centerlines"));
     arc2->setToolTip(QApplication::translate("CmdTechDrawExtensionHoleCircle",
@@ -383,15 +379,17 @@ bool CmdTechDrawExtensionCircleCenterLinesGroup::isActive()
 
 void execThreadHoleSide(Gui::Command* cmd)
 {
+    constexpr double ThreadFactor{1.176};
     // add cosmetic thread to side view of hole
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Hole Side")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Hole Side"))) {
         return;
+    }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Hole Side"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() >= 2) {
-        _createThreadLines(SubNames, objFeat, 1.176f);
+        _createThreadLines(SubNames, objFeat, ThreadFactor);
     }
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
@@ -435,15 +433,17 @@ bool CmdTechDrawExtensionThreadHoleSide::isActive()
 
 void execThreadBoltSide(Gui::Command* cmd)
 {
+    constexpr double ThreadFactor{0.85};
     // add cosmetic thread to side view of bolt
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Bolt Side")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Bolt Side")))  {
         return;
+    }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Bolt Side"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() >= 2) {
-        _createThreadLines(SubNames, objFeat, 0.85f);
+        _createThreadLines(SubNames, objFeat, ThreadFactor);
     }
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
@@ -487,15 +487,17 @@ bool CmdTechDrawExtensionThreadBoltSide::isActive()
 
 void execThreadHoleBottom(Gui::Command* cmd)
 {
+    constexpr double ThreadFactor{1.177};           // factor above is 1.176. should they be the same?
     // add cosmetic thread to bottom view of hole
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Hole Bottom")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Hole Bottom"))) {
         return;
+    }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Hole Bottom"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (const std::string& Name : SubNames) {
-        _createThreadCircle(Name, objFeat, 1.177f);
+        _createThreadCircle(Name, objFeat, ThreadFactor);
     }
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
@@ -539,15 +541,17 @@ bool CmdTechDrawExtensionThreadHoleBottom::isActive()
 
 void execThreadBoltBottom(Gui::Command* cmd)
 {
+    constexpr double ThreadFactor{0.85};
     // add cosmetic thread to bottom view of bolt
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Bolt Bottom")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Bolt Bottom")))  {
         return;
+    }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Bolt Bottom"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (const std::string& Name : SubNames) {
-        _createThreadCircle(Name, objFeat, 0.85f);
+        _createThreadCircle(Name, objFeat, ThreadFactor);
     }
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
@@ -616,7 +620,7 @@ void CmdTechDrawExtensionThreadsGroup::activated(int iMsg)
         return;
     }
 
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
     switch (iMsg) {
         case 0://thread hole side view
@@ -644,20 +648,20 @@ Gui::Action* CmdTechDrawExtensionThreadsGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionThreadHoleSide"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionThreadHoleSide"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionThreadHoleSide"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionThreadHoleSide"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionThreadHoleSide"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionThreadHoleBottom"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionThreadHoleBottom"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionThreadHoleBottom"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionThreadHoleBottom"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionThreadHoleBottom"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionThreadBoltSide"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionThreadBoltSide"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionThreadBoltSide"));
+    p3->setObjectName(QStringLiteral("TechDraw_ExtensionThreadBoltSide"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_ExtensionThreadBoltSide"));
     QAction* p4 = pcAction->addAction(QString());
     p4->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionThreadBoltBottom"));
-    p4->setObjectName(QString::fromLatin1("TechDraw_ExtensionThreadBoltBottom"));
-    p4->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionThreadBoltBottom"));
+    p4->setObjectName(QStringLiteral("TechDraw_ExtensionThreadBoltBottom"));
+    p4->setWhatsThis(QStringLiteral("TechDraw_ExtensionThreadBoltBottom"));
 
     _pcAction = pcAction;
     languageChange();
@@ -673,12 +677,13 @@ void CmdTechDrawExtensionThreadsGroup::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction)  {
         return;
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
+    }
+    auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> action = pcAction->actions();
 
-    QAction* arc1 = a[0];
+    QAction* arc1 = action[0];
     arc1->setText(QApplication::translate("CmdTechDrawExtensionThreadHoleSide",
                                           "Add Cosmetic Thread Hole Side View"));
     arc1->setToolTip(QApplication::translate("CmdTechDrawExtensionThreadHoleSide",
@@ -687,7 +692,7 @@ void CmdTechDrawExtensionThreadsGroup::languageChange()
 - Select two parallel lines<br>\
 - Click this tool"));
     arc1->setStatusTip(arc1->text());
-    QAction* arc2 = a[1];
+    QAction* arc2 = action[1];
     arc2->setText(QApplication::translate("CmdTechDrawExtensionThreadHoleBottom",
                                           "Add Cosmetic Thread Hole Bottom View"));
     arc2->setToolTip(
@@ -697,7 +702,7 @@ void CmdTechDrawExtensionThreadsGroup::languageChange()
 - Select one or more circles<br>\
 - Click this tool"));
     arc2->setStatusTip(arc2->text());
-    QAction* arc3 = a[2];
+    QAction* arc3 = action[2];
     arc3->setText(QApplication::translate("CmdTechDrawExtensionThreadBoltSide",
                                           "Add Cosmetic Thread Bolt Side View"));
     arc3->setToolTip(
@@ -707,7 +712,7 @@ void CmdTechDrawExtensionThreadsGroup::languageChange()
 - Select two parallel lines<br>\
 - Click this tool"));
     arc3->setStatusTip(arc3->text());
-    QAction* arc4 = a[3];
+    QAction* arc4 = action[3];
     arc4->setText(QApplication::translate("CmdTechDrawExtensionThreadBoltBottom",
                                           "Add Cosmetic Thread Bolt Bottom View"));
     arc4->setToolTip(QApplication::translate(
@@ -751,7 +756,7 @@ CmdTechDrawExtensionSelectLineAttributes::CmdTechDrawExtensionSelectLineAttribut
 void CmdTechDrawExtensionSelectLineAttributes::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new TaskDlgSelectLineAttributes(&_getActiveLineAttributes()));
+    Gui::Control().showDialog(new TaskDlgSelectLineAttributes());
 }
 
 bool CmdTechDrawExtensionSelectLineAttributes::isActive()
@@ -787,9 +792,10 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg)
     // change attributes (type, width, color) of a cosmetic or centerline
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Change Line Attributes")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Change Line Attributes"))) {
         return;
+    }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Change Line Attributes"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     for (const std::string& name : subNames) {
@@ -797,11 +803,11 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg)
         BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
         if (baseGeo) {
             if (baseGeo->getCosmetic()) {
-                if (baseGeo->source() == 1) {
+                if (baseGeo->source() == SourceType::COSMETICEDGE) {
                     TechDraw::CosmeticEdge* cosEdgeTag = objFeat->getCosmeticEdgeBySelection(name);
                     _setLineAttributes(cosEdgeTag);
                 }
-                else if (baseGeo->source() == 2) {
+                else if (baseGeo->source() == SourceType::CENTERLINE) {
                     TechDraw::CenterLine* centerLineTag = objFeat->getCenterLineBySelection(name);
                     _setLineAttributes(centerLineTag);
                 }
@@ -847,9 +853,10 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
     Q_UNUSED(iMsg);
     //Base::Console().Message("VertexAtIntersection started\n");
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Intersection Vertex(es)")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Intersection Vertex(es)")))  {
         return;
+    }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Intersection Vertex(es)"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() >= 2) {
@@ -861,14 +868,11 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
             int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
             TechDraw::BaseGeomPtr geom2 = objFeat->getGeomByIndex(GeoId2);
 
-            // double scale = objFeat->getScale();
             std::vector<Base::Vector3d> interPoints = geom1->intersection(geom2);
             for (auto pt : interPoints) {
-                // std::string ptId = objFeat->addCosmeticVertex(pt/scale);
-                // objFeat->add1CVToGV(ptId);
-                // invert the point so the math works correctly
-                Base::Vector3d temp = CosmeticVertex::makeCanonicalPoint(objFeat, pt);
-                objFeat->addCosmeticVertex(temp);
+                // geometry points are inverted
+                Base::Vector3d temp = CosmeticVertex::makeCanonicalPointInverted(objFeat, pt);
+                objFeat->addCosmeticVertex(temp, false);
             }
         }
     }
@@ -889,23 +893,34 @@ bool CmdTechDrawExtensionVertexAtIntersection::isActive()
 // TechDraw_ExtensionDrawCosmArc
 //===========================================================================
 
+//! adds an anti-clockwise arc based on a center point, a radius/start angle point and an end angle
+//! point.  Selection order is significant - center, start end.
 void execDrawCosmArc(Gui::Command* cmd)
 {
     //draw a cosmetic arc of circle
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Arc")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Arc")))  {
         return;
+    }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Arc"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     std::vector<Base::Vector3d> vertexPoints;
     vertexPoints = _getVertexPoints(SubNames, objFeat);
     if (vertexPoints.size() >= 3) {
-        float arcRadius = (vertexPoints[1] - vertexPoints[0]).Length();
-        float angle1 = _getAngle(vertexPoints[0], vertexPoints[1]);
-        float angle2 = _getAngle(vertexPoints[0], vertexPoints[2]);
+        // vertexPoints come from stored geometry, so are centered, scaled, rotated and inverted (CSRIz).
+        // because the points are inverted, the start and end angles will be mirrored unless we invert the points
+        // before calculating the angle.
+        Base::Vector3d center = CosmeticVertex::makeCanonicalPoint(objFeat, DU::invertY(vertexPoints[0]));
+        Base::Vector3d end1 = CosmeticVertex::makeCanonicalPoint(objFeat, DU::invertY(vertexPoints[1]));
+        Base::Vector3d end2 = CosmeticVertex::makeCanonicalPoint(objFeat, DU::invertY(vertexPoints[2]));
+        double arcRadius = (end1 - center).Length();
+        double angle1 = _getAngle(center, end1);
+        double angle2 = _getAngle(center, end2);
         TechDraw::BaseGeomPtr baseGeo = std::make_shared<TechDraw::AOC>(
-            vertexPoints[0], arcRadius, angle1, angle2);
+            center, arcRadius, angle1, angle2);
+        TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(baseGeo);
+        // having done our calculations in sensible coordinates, we convert to inverted coords
         std::string arcTag = objFeat->addCosmeticEdge(baseGeo->inverted());
         TechDraw::CosmeticEdge* arcEdge = objFeat->getCosmeticEdge(arcTag);
         _setLineAttributes(arcEdge);
@@ -957,18 +972,20 @@ void execDrawCosmCircle(Gui::Command* cmd)
 {
     //draw a cosmetic circle
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Circle")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Circle"))) {
         return;
+    }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Circle"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     std::vector<Base::Vector3d> vertexPoints;
     vertexPoints = _getVertexPoints(SubNames, objFeat);
     if (vertexPoints.size() >= 2) {
-        float circleRadius = (vertexPoints[1] - vertexPoints[0]).Length();
+        double circleRadius = (vertexPoints[1] - vertexPoints[0]).Length() / objFeat->getScale();
+        auto center = CosmeticVertex::makeCanonicalPointInverted(objFeat, vertexPoints[0]);
         TechDraw::BaseGeomPtr baseGeo =
-            std::make_shared<TechDraw::Circle>(vertexPoints[0], circleRadius);
-        std::string circleTag = objFeat->addCosmeticEdge(baseGeo->inverted());
+            std::make_shared<TechDraw::Circle>(center, circleRadius);
+        std::string circleTag = objFeat->addCosmeticEdge(baseGeo);
         TechDraw::CosmeticEdge* circleEdge = objFeat->getCosmeticEdge(circleTag);
         _setLineAttributes(circleEdge);
         objFeat->refreshCEGeoms();
@@ -1018,9 +1035,10 @@ void execDrawCosmCircle3Points(Gui::Command* cmd)
 {
     //draw a cosmetic circle through 3 points
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Circle 3 Points")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Circle 3 Points")))  {
         return;
+    }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Circle 3 Points"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     std::vector<Base::Vector3d> vertexPoints;
@@ -1029,10 +1047,11 @@ void execDrawCosmCircle3Points(Gui::Command* cmd)
         Base::Vector3d circleCenter = _circleCenter(vertexPoints[0],
                                                     vertexPoints[1],
                                                     vertexPoints[2]);
-        float circleRadius = (vertexPoints[0] - circleCenter).Length();
+        double circleRadius = (vertexPoints[0] - circleCenter).Length() / objFeat->getScale();
+        circleCenter = CosmeticVertex::makeCanonicalPointInverted(objFeat, circleCenter);
         TechDraw::BaseGeomPtr theCircle =
             std::make_shared<TechDraw::Circle>(circleCenter, circleRadius);
-        std::string circleTag = objFeat->addCosmeticEdge(theCircle->inverted());
+        std::string circleTag = objFeat->addCosmeticEdge(theCircle);
         TechDraw::CosmeticEdge* circleEdge = objFeat->getCosmeticEdge(circleTag);
         _setLineAttributes(circleEdge);
         objFeat->refreshCEGeoms();
@@ -1104,7 +1123,7 @@ void CmdTechDrawExtensionDrawCirclesGroup::activated(int iMsg)
         return;
     }
 
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
     switch (iMsg) {
         case 0://draw cosmetic circle
@@ -1129,16 +1148,16 @@ Gui::Action* CmdTechDrawExtensionDrawCirclesGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionDrawCosmCircle"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionDrawCosmCircle"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionDrawCosmCircle"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionDrawCosmCircle"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionDrawCosmCircle"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionDrawCosmArc"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionDrawCosmArc"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionDrawCosmArc"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionDrawCosmArc"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionDrawCosmArc"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionDrawCosmCircle3Points"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionDrawCosmCircle3Points"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionDrawCosmCircle3Points"));
+    p3->setObjectName(QStringLiteral("TechDraw_ExtensionDrawCosmCircle3Points"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_ExtensionDrawCosmCircle3Points"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1154,12 +1173,13 @@ void CmdTechDrawExtensionDrawCirclesGroup::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction)  {
         return;
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
+    }
+    auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> action = pcAction->actions();
 
-    QAction* arc1 = a[0];
+    QAction* arc1 = action[0];
     arc1->setText(
         QApplication::translate("CmdTechDrawExtensionDrawCosmCircle", "Add Cosmetic Circle"));
     arc1->setToolTip(QApplication::translate("CmdTechDrawExtensionDrawCosmCircle",
@@ -1169,7 +1189,7 @@ void CmdTechDrawExtensionDrawCirclesGroup::languageChange()
 - Select vertex 2 (radius)<br>\
 - Click this tool"));
     arc1->setStatusTip(arc1->text());
-    QAction* arc2 = a[1];
+    QAction* arc2 = action[1];
     arc2->setText(QApplication::translate("CmdTechDrawExtensionDrawCosmArc", "Add Cosmetic Arc"));
     arc2->setToolTip(
         QApplication::translate("CmdTechDrawExtensionDrawCosmArc",
@@ -1180,7 +1200,7 @@ void CmdTechDrawExtensionDrawCirclesGroup::languageChange()
 - Select vertex 3 (end angle)<br>\
 - Click this tool"));
     arc2->setStatusTip(arc2->text());
-    QAction* arc3 = a[2];
+    QAction* arc3 = action[2];
     arc3->setText(QApplication::translate("CmdTechDrawExtensionDrawCosmCircle3Points",
                                           "Add Cosmetic Circle 3 Points"));
     arc3->setToolTip(QApplication::translate("CmdTechDrawExtensionDrawCosmCircle3Points",
@@ -1206,16 +1226,17 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel)
 {
     // create a line parallel or perpendicular to another line
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Line Parallel/Perpendicular")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Line Parallel/Perpendicular"))) {
         return;
+    }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Line Parallel/Perpendicular"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() >= 2) {
         std::string GeoType1 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]);
         std::string GeoType2 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]);
-        int EdgeId;
-        int VertId;
+        int EdgeId{-1};
+        int VertId{-1};
         if (GeoType1 == "Edge" && GeoType2 == "Vertex") {
             EdgeId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
             VertId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
@@ -1228,10 +1249,15 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel)
         }
         TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(EdgeId);
         TechDraw::GenericPtr lineGen = std::static_pointer_cast<TechDraw::Generic>(geom1);
+        // ends are scaled and rotated
         Base::Vector3d lineStart = lineGen->points.at(0);
+        lineStart = CosmeticVertex::makeCanonicalPointInverted(objFeat, lineStart);
         Base::Vector3d lineEnd = lineGen->points.at(1);
+        lineEnd = CosmeticVertex::makeCanonicalPointInverted(objFeat, lineEnd);
         TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(VertId);
         Base::Vector3d vertexPoint(vert->point().x, vert->point().y, 0.0);
+        vertexPoint = CosmeticVertex::makeCanonicalPointInverted(objFeat, vertexPoint);
+
         Base::Vector3d halfVector = (lineEnd - lineStart) / 2.0;
         if (!isParallel) {
             float dummy = halfVector.x;
@@ -1240,9 +1266,7 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel)
         }
         Base::Vector3d startPoint = vertexPoint + halfVector;
         Base::Vector3d endPoint = vertexPoint - halfVector;
-        startPoint.y = -startPoint.y;
-        endPoint.y = -endPoint.y;
-        TechDraw::BaseGeomPtr cLine = CosmeticEdge::makeCanonicalLine(objFeat, startPoint, endPoint);
+        TechDraw::BaseGeomPtr cLine = CosmeticEdge::makeLineFromCanonicalPoints(startPoint, endPoint);
         std::string lineTag = objFeat->addCosmeticEdge(cLine);
         TechDraw::CosmeticEdge* lineEdge = objFeat->getCosmeticEdge(lineTag);
         _setLineAttributes(lineEdge);
@@ -1348,7 +1372,7 @@ void CmdTechDrawExtensionLinePPGroup::activated(int iMsg)
         return;
     }
 
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
     switch (iMsg) {
         case 0://create parallel line
@@ -1370,12 +1394,12 @@ Gui::Action* CmdTechDrawExtensionLinePPGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionLineParallel"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionLineParallel"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionLineParallel"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionLineParallel"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionLineParallel"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionLinePerpendicular"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionLinePerpendicular"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionLinePerpendicular"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionLinePerpendicular"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionLinePerpendicular"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1391,12 +1415,13 @@ void CmdTechDrawExtensionLinePPGroup::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
+    QList<QAction*> action = pcAction->actions();
 
-    QAction* arc1 = a[0];
+    QAction* arc1 = action[0];
     arc1->setText(
         QApplication::translate("CmdTechDrawExtensionLineParallel", "Add Cosmetic Parallel Line"));
     arc1->setToolTip(
@@ -1406,7 +1431,7 @@ void CmdTechDrawExtensionLinePPGroup::languageChange()
 - Select a vertex<br>\
 - Click this tool"));
     arc1->setStatusTip(arc1->text());
-    QAction* arc2 = a[1];
+    QAction* arc2 = action[1];
     arc2->setText(QApplication::translate("CmdTechDrawExtensionLinePerpendicular",
                                           "Add Cosmetic Perpendicular Line"));
     arc2->setToolTip(QApplication::translate(
@@ -1450,11 +1475,12 @@ void CmdTechDrawExtensionLockUnlockView::activated(int iMsg)
     // lock/unlock a selected view
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Lock/Unlock View")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Lock/Unlock View")))  {
         return;
+    }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Lock/Unlock View"));
-    if (objFeat->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    if (objFeat->isDerivedFrom<TechDraw::DrawViewPart>()) {
         bool lockPosition = objFeat->LockPosition.getValue();
         lockPosition = !lockPosition;
         objFeat->LockPosition.setValue(lockPosition);
@@ -1477,9 +1503,10 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
 {
     // extend or shorten a cosmetic line or a centerline
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Extend/Shorten Line")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Extend/Shorten Line"))) {
         return;
+    }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Extend/Shorten Line"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     if (!subNames.empty()) {
@@ -1489,34 +1516,30 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
         if (geoType == "Edge") {
             TechDraw::BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
             if (baseGeo) {
-                if (baseGeo->getGeomType() == TechDraw::GENERIC) {
-                    // start and end points are scaled and rotated. invert the points
-                    // so the canonicalPoint math works correctly.
-                    Base::Vector3d P0 = DU::invertY(baseGeo->getStartPoint());
-                    Base::Vector3d P1 = DU::invertY(baseGeo->getEndPoint());
+                if (baseGeo->getGeomType() == GeomType::GENERIC) {
+                    // start and end points are geometry points and are scaled, rotated and inverted
                     // convert start and end to unscaled, unrotated.
-                    P0 = CosmeticVertex::makeCanonicalPoint(objFeat, P0);
-                    P1 = CosmeticVertex::makeCanonicalPoint(objFeat, P1);
-                    // put the points back into weird Qt coord system.
-                    P0 = DU::invertY(P0);
-                    P1 = DU::invertY(P1);
+                    Base::Vector3d P0 = CosmeticVertex::makeCanonicalPointInverted(objFeat, baseGeo->getStartPoint());
+                    Base::Vector3d P1 = CosmeticVertex::makeCanonicalPointInverted(objFeat, baseGeo->getEndPoint());
                     bool isCenterLine = false;
                     TechDraw::CenterLine* centerEdge = nullptr;
                     if (baseGeo->getCosmetic()) {
                         std::string uniTag = baseGeo->getCosmeticTag();
                         int oldStyle = 1;
-                        float oldWeight = 1.0f;
-                        App::Color oldColor;
+                        float oldWeight = 1.0;
+                        Base::Color oldColor;
                         std::vector<std::string> toDelete;
                         toDelete.push_back(uniTag);
-                        if (baseGeo->source() == 1) {
+                        if (baseGeo->source() == SourceType::COSMETICEDGE) {
+                            // cosmetic edge
                             auto cosEdge = objFeat->getCosmeticEdge(uniTag);
-                            oldStyle = cosEdge->m_format.m_lineNumber;
-                            oldWeight = cosEdge->m_format.m_weight;
-                            oldColor = cosEdge->m_format.m_color;
+                            oldStyle = cosEdge->m_format.getLineNumber();
+                            oldWeight = cosEdge->m_format.getWidth();
+                            oldColor = cosEdge->m_format.getColor();
                             objFeat->removeCosmeticEdge(toDelete);
                         }
-                        else if (baseGeo->source() == 2) {
+                        else if (baseGeo->source() == SourceType::CENTERLINE) {
+                            // centerline
                             isCenterLine = true;
                             centerEdge = objFeat->getCenterLine(uniTag);
                         }
@@ -1524,17 +1547,23 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                         Base::Vector3d delta = direction * activeDimAttributes.getLineStretch();
                         Base::Vector3d startPt, endPt;
                         if (extend) {
+                            // make it longer
                             startPt = P0 - delta;
                             endPt = P1 + delta;
                         }
                         else {
+                            // make it shorter
                             startPt = P0 + delta;
                             endPt = P1 - delta;
                         }
-                        startPt.y = -startPt.y;
-                        endPt.y = -endPt.y;
+                        // startPt.y = -startPt.y;
+                        // endPt.y = -endPt.y;
                         if (isCenterLine) {
-                            centerEdge->m_extendBy += activeDimAttributes.getLineStretch();
+                            if (extend) {
+                                centerEdge->m_extendBy += activeDimAttributes.getLineStretch();
+                            } else {
+                                centerEdge->m_extendBy -= activeDimAttributes.getLineStretch();
+                            }
                             objFeat->refreshCLGeoms();
                         }
                         else {
@@ -1649,7 +1678,7 @@ void CmdTechDrawExtendShortenLineGroup::activated(int iMsg)
         return;
     }
 
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
     switch (iMsg) {
         case 0://extend a line
@@ -1671,12 +1700,12 @@ Gui::Action* CmdTechDrawExtendShortenLineGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionExtendLine"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionExtendLine"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionExtendLine"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionExtendLine"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionExtendLine"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionShortenLine"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionShortenLine"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionShortenLine"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionShortenLine"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionShortenLine"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1692,12 +1721,13 @@ void CmdTechDrawExtendShortenLineGroup::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
+    QList<QAction*> action = pcAction->actions();
 
-    QAction* arc1 = a[0];
+    QAction* arc1 = action[0];
     arc1->setText(QApplication::translate("CmdTechDrawExtensionExtendLine", "Extend Line"));
     arc1->setToolTip(QApplication::translate(
         "CmdTechDrawExtensionExtendLine", "Extend a cosmetic line or centerline at both ends:<br>\
@@ -1705,7 +1735,7 @@ void CmdTechDrawExtendShortenLineGroup::languageChange()
 - Select a single line<br>\
 - Click this tool"));
     arc1->setStatusTip(arc1->text());
-    QAction* arc2 = a[1];
+    QAction* arc2 = action[1];
     arc2->setText(QApplication::translate("CmdTechDrawExtensionShortenLine", "Shorten Line"));
     arc2->setToolTip(QApplication::translate(
         "CmdTechDrawExtensionShortenLine", "Shorten a cosmetic line or centerline at both ends:<br>\
@@ -1734,8 +1764,7 @@ CmdTechDrawExtensionAreaAnnotation::CmdTechDrawExtensionAreaAnnotation()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Calculate the area of selected faces");
-    sToolTipText = QT_TR_NOOP("Select several faces<br>\
-    - click this tool");
+    sToolTipText = QT_TR_NOOP("Select several faces then click this tool");
     sWhatsThis = "TechDraw_ExtensionAreaAnnotation";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_ExtensionAreaAnnotation";
@@ -1746,9 +1775,10 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat;
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw calculate selected area")))
+    TechDraw::DrawViewPart* objFeat{nullptr};
+    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw calculate selected area")))  {
         return;
+    }
 
     // we must have at least 1 face in the selection
     const std::vector<std::string> subNamesAll = selection[0].getSubNames();
@@ -1794,8 +1824,9 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     TechDraw::DrawViewBalloon* balloon = nullptr;
     balloon = dynamic_cast<TechDraw::DrawViewBalloon*>(
         this->getDocument()->getObject(balloonName.c_str()));
-    if (!balloon)
+    if (!balloon) {
         throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
+    }
     // the balloon has been created successfully
 
     // calculate needed variables
@@ -1809,12 +1840,12 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     asQuantity.setValue(totalArea);
     asQuantity.setUnit(Base::Unit::Area);
 
-    QString qUserString = asQuantity.getUserString();
-    if (qUserString.endsWith(QString::fromUtf8("^2"))) {
+    QString qUserString = QString::fromStdString(asQuantity.getUserString());
+    if (qUserString.endsWith(QStringLiteral("^2"))) {
         qUserString.chop(2);
-        qUserString.append(QString::fromUtf8("²"));
+        qUserString.append(QStringLiteral("²"));
     }
-    std::string sUserString = Base::Tools::toStdString(qUserString);
+    std::string sUserString = qUserString.toStdString();
 
     // set the attributes in the data tab's fields
     //    balloon->SourceView.setValue(objFeat);
@@ -1835,9 +1866,9 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
         // view provider successfully found,
         // set the attributes in the view tab's fields
         viewProvider->Fontsize.setValue(2.0);
-        viewProvider->LineWidth.setValue(0.75);
+        viewProvider->LineWidth.setValue(TechDraw::LineGroup::getDefaultWidth("Graphic"));
         viewProvider->LineVisible.setValue(false);
-        viewProvider->Color.setValue(App::Color(1.0f, 0.0f, 0.0f));
+        viewProvider->Color.setValue(Base::Color(1.0, 0.0, 0.0));
     }
     Gui::Command::commitCommand();
     objFeat->touch(true);
@@ -1876,7 +1907,7 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart *objFeat;
+    TechDraw::DrawViewPart *objFeat{nullptr};
     if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command", "TechDraw calculate selected arc length"))) {
         return;
     }
@@ -1899,10 +1930,9 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
     // Now we have at least one edge
     std::vector<double> lengths(subNames.size());
     double totalLength = 0.0;
-    size_t i;
-    for (i = 0; i < subNames.size(); ++i) {
-        lengths[i] = totalLength;
-        TechDraw::BaseGeomPtr edge = objFeat->getEdge(subNames[i]);
+    for (size_t iName = 0; iName < subNames.size(); ++iName) {
+        lengths[iName] = totalLength;
+        TechDraw::BaseGeomPtr edge = objFeat->getEdge(subNames[iName]);
         if (!edge) {
             continue;
         }
@@ -1911,7 +1941,7 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
         BRepGProp::LinearProperties(edge->getOCCEdge(), edgeProps);
 
         totalLength += edgeProps.Mass();
-        lengths[i] = totalLength;
+        lengths[iName] = totalLength;
     }
 
     // We have calculated the length, let's start the command
@@ -1926,16 +1956,16 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
 
     // Find the edge halving the selected path and the offset from its starting point
     double anchorLength = totalLength*0.5;
-    i = 0;
-    while (i < lengths.size() && lengths[i] < anchorLength) {
-        ++i;
+    size_t iLength = 0;
+    while (iLength < lengths.size() && lengths[iLength] < anchorLength) {
+        ++iLength;
     }
-    if (i) {
-        anchorLength -= lengths[i - 1];
+    if (iLength > 0) {
+        anchorLength -= lengths[iLength - 1];
     }
 
     // As reasonable anchor base point seems the "halving" edge endpoint
-    BRepAdaptor_Curve curve(objFeat->getEdge(subNames[i])->getOCCEdge());
+    BRepAdaptor_Curve curve(objFeat->getEdge(subNames[iLength])->getOCCEdge());
     gp_Pnt midPoint;
     curve.D0(curve.LastParameter(), midPoint);
 
@@ -1951,9 +1981,10 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
 
     // Use virtual dimension view helper to format resulting value
     TechDraw::DrawViewDimension helperDim;
+    using Format = DimensionFormatter::Format;
     std::string valueStr = helperDim.formatValue(totalLength,
                                                  QString::fromUtf8(helperDim.FormatSpec.getStrValue().data()),
-                                                 helperDim.isMultiValueSchema() ? 0 : 1);
+                                                 helperDim.isMultiValueSchema() ? Format::UNALTERED : Format::FORMATTED);
     balloon->Text.setValue("◠ " + valueStr);
 
     // Set balloon format to be referencing dimension-like
@@ -1998,8 +2029,7 @@ namespace TechDrawGui
 
 LineFormat& _getActiveLineAttributes()
 {
-    static TechDraw::LineFormat attributes;
-    return attributes;
+    return LineFormat::getCurrentLineFormat();
 }
 
 std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat)
@@ -2008,7 +2038,7 @@ std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat)
     std::string featName;
     TechDraw::DrawPage* page = objFeat->findParentPage();
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
-    ViewProviderPage* pageVP = dynamic_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
+    auto pageVP = dynamic_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
     if (pageVP) {
         QGSPage* scenePage = pageVP->getQGSPage();
         featName = scenePage->getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
@@ -2026,7 +2056,7 @@ std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat)
 }
 
 bool _checkSel(Gui::Command* cmd, std::vector<Gui::SelectionObject>& selection,
-               TechDraw::DrawViewPart*& objFeat, std::string message)
+               TechDraw::DrawViewPart*& objFeat, const std::string& message)
 {
     // check selection of getSelectionEx() and selection[0].getObject()
     selection = cmd->getSelection().getSelectionEx();
@@ -2047,9 +2077,8 @@ bool _checkSel(Gui::Command* cmd, std::vector<Gui::SelectionObject>& selection,
     return true;
 }
 
-//! return the vertices in the selection as [Base::Vector3d] in App coords -
-//! inverted, unrotated and unscaled
-std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames,
+//! return the vertices in the selection as [Base::Vector3d]
+std::vector<Base::Vector3d> _getVertexPoints(const std::vector<std::string>& SubNames,
                                              TechDraw::DrawViewPart* objFeat)
 {
     std::vector<Base::Vector3d> vertexPoints;
@@ -2058,8 +2087,7 @@ std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames,
         if (GeoType == "Vertex") {
             int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
             TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(GeoId);
-            Base::Vector3d onePoint = DU::toAppSpace(*objFeat, vert->point());
-            vertexPoints.push_back(onePoint);
+            vertexPoints.push_back(vert->point());
         }
     }
     return vertexPoints;
@@ -2067,10 +2095,11 @@ std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames,
 
 //! get angle between x-axis and the vector from center to point.
 //! result is [0, 360]
-float _getAngle(Base::Vector3d center, Base::Vector3d point)
+double _getAngle(Base::Vector3d center, Base::Vector3d point)
 {
+    constexpr double DegreesHalfCircle{180.0};
     Base::Vector3d vecCP = point - center;
-    double angle = DU::angleWithX(vecCP) * 180.0 / M_PI;
+    double angle = DU::angleWithX(vecCP) * DegreesHalfCircle / M_PI;
     return angle;
 }
 
@@ -2079,32 +2108,36 @@ Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3
     Base::Vector2d v1(p1.x, p1.y);
     Base::Vector2d v2(p2.x, p2.y);
     Base::Vector2d v3(p3.x, p3.y);
-    Base::Vector2d c = Part::Geom2dCircle::getCircleCenter(v1, v2, v3);
-    return Base::Vector3d(c.x, c.y, 0.0);
+    Base::Vector2d center = Part::Geom2dCircle::getCircleCenter(v1, v2, v3);
+    return Base::Vector3d(center.x, center.y, 0.0);
 }
 
-void _createThreadCircle(std::string Name, TechDraw::DrawViewPart* objFeat, float factor)
+void _createThreadCircle(const std::string Name, TechDraw::DrawViewPart* objFeat, double factor)
 {
+    constexpr double ArcStartDegree{255.0};
+    constexpr double ArcEndDegree{165.0};
     // create the 3/4 arc symbolizing a thread from top seen
     double scale = objFeat->getScale();
     int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
     TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
     std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
 
-    if (GeoType == "Edge" && geom->getGeomType() == TechDraw::CIRCLE) {
+    if (GeoType == "Edge" && geom->getGeomType() == GeomType::CIRCLE) {
         TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
-        Base::Vector3d center = cgen->center;
-        float radius = cgen->radius;
+        // center is rotated and scaled
+        Base::Vector3d center = CosmeticVertex::makeCanonicalPointInverted(objFeat, cgen->center);
+        // radius is scaled
+        float radius = cgen->radius * factor / scale;
         TechDraw::BaseGeomPtr threadArc =
-            std::make_shared<TechDraw::AOC>(center / scale, radius * factor / scale, 255.0, 165.0);
+            std::make_shared<TechDraw::AOC>(center, radius, ArcStartDegree, ArcEndDegree);
         std::string arcTag = objFeat->addCosmeticEdge(threadArc);
         TechDraw::CosmeticEdge* arc = objFeat->getCosmeticEdge(arcTag);
         _setLineAttributes(arc);
     }
 }
 
-void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPart* objFeat,
-                        float factor)
+void _createThreadLines(const std::vector<std::string>& SubNames, TechDraw::DrawViewPart* objFeat,
+                        double factor)
 {
     // create symbolizing lines of a thread from the side seen
     std::string GeoType0 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]);
@@ -2114,7 +2147,7 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
         int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
         TechDraw::BaseGeomPtr geom0 = objFeat->getGeomByIndex(GeoId0);
         TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
-        if (geom0->getGeomType() != TechDraw::GENERIC || geom1->getGeomType() != TechDraw::GENERIC) {
+        if (geom0->getGeomType() != GeomType::GENERIC || geom1->getGeomType() != GeomType::GENERIC) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw Thread Hole Side"),
                                  QObject::tr("Please select two straight lines"));
             return;
@@ -2122,17 +2155,12 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
 
         TechDraw::GenericPtr line0 = std::static_pointer_cast<TechDraw::Generic>(geom0);
         TechDraw::GenericPtr line1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
-        // start and end points are scaled,rotated and inverted (CSRIx). We need to
-        // uninvert the points so the canonicalPoint math works correctly.
-        Base::Vector3d start0 = DU::invertY(line0->getStartPoint());
-        Base::Vector3d end0 = DU::invertY(line0->getEndPoint());
-        Base::Vector3d start1 = DU::invertY(line1->getStartPoint());
-        Base::Vector3d end1 = DU::invertY(line1->getEndPoint());
+        // start and end points are scaled,rotated and inverted (CSRIx).
         // convert start and end to unscaled, unrotated.
-        start0 = CosmeticVertex::makeCanonicalPoint(objFeat, start0);
-        start1 = CosmeticVertex::makeCanonicalPoint(objFeat, start1);
-        end0 = CosmeticVertex::makeCanonicalPoint(objFeat, end0);
-        end1 = CosmeticVertex::makeCanonicalPoint(objFeat, end1);
+        Base::Vector3d start0 = CosmeticVertex::makeCanonicalPointInverted(objFeat, line0->getStartPoint());
+        Base::Vector3d start1 = CosmeticVertex::makeCanonicalPointInverted(objFeat, line1->getStartPoint());
+        Base::Vector3d end0 = CosmeticVertex::makeCanonicalPointInverted(objFeat, line0->getEndPoint());
+        Base::Vector3d end1 = CosmeticVertex::makeCanonicalPointInverted(objFeat, line1->getEndPoint());
         if (DrawUtil::circulation(start0, end0, start1)
             != DrawUtil::circulation(end0, end1, start1)) {
             Base::Vector3d help1 = start1;
@@ -2143,7 +2171,6 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
         float kernelDiam = (start1 - start0).Length();
         float kernelFactor = (kernelDiam * factor - kernelDiam) / 2;
         Base::Vector3d delta = (start1 - start0).Normalize() * kernelFactor;
-        // addCosmeticEdge(pt1, pt2) inverts the points before creating the edge
         std::string line0Tag =
             objFeat->addCosmeticEdge(start0 - delta, end0 - delta);
         std::string line1Tag =
@@ -2161,35 +2188,38 @@ void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge)
     cosEdge->m_format.setStyle(_getActiveLineAttributes().getStyle());
     cosEdge->m_format.setWidth(_getActiveLineAttributes().getWidth());
     cosEdge->m_format.setColor(_getActiveLineAttributes().getColor());
+    cosEdge->m_format.setVisible(_getActiveLineAttributes().getVisible());
     cosEdge->m_format.setLineNumber(_getActiveLineAttributes().getLineNumber());
 }
 
 void _setLineAttributes(TechDraw::CenterLine* cosEdge)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
-    cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidth();
-    cosEdge->m_format.m_color = _getActiveLineAttributes().getColor();
+    cosEdge->m_format.setStyle(_getActiveLineAttributes().getStyle());
+    cosEdge->m_format.setWidth(_getActiveLineAttributes().getWidth());
+    cosEdge->m_format.setColor(_getActiveLineAttributes().getColor());
+    cosEdge->m_format.setVisible(_getActiveLineAttributes().getVisible());
     cosEdge->m_format.setLineNumber(_getActiveLineAttributes().getLineNumber());
 }
 
-void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color)
+void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, Base::Color color)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
-    cosEdge->m_format.m_weight = weight;
-    cosEdge->m_format.m_color = color;
-    cosEdge->m_format.setLineNumber(style);
+    cosEdge->m_format.setStyle(style);
+    cosEdge->m_format.setWidth(weight);
+    cosEdge->m_format.setColor(color);
+    cosEdge->m_format.setVisible(_getActiveLineAttributes().getVisible());
+    cosEdge->m_format.setLineNumber(LineGenerator::fromQtStyle((Qt::PenStyle)style));
 }
 
-void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, App::Color color)
+void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, Base::Color color)
 {
     // set line attributes of a centerline
-    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
-    cosEdge->m_format.m_weight = weight;
-    cosEdge->m_format.m_color = color;
-    cosEdge->m_format.setLineNumber(style);
-}
+    cosEdge->m_format.setStyle(style);
+    cosEdge->m_format.setWidth(weight);
+    cosEdge->m_format.setColor(color);
+    cosEdge->m_format.setVisible(_getActiveLineAttributes().getVisible());
+    cosEdge->m_format.setLineNumber(style);}
 }// namespace TechDrawGui
 
 //------------------------------------------------------------------------------

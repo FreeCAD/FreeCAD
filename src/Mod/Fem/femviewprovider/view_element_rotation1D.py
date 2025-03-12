@@ -30,10 +30,10 @@ __url__ = "https://www.freecad.org"
 #  \brief view provider for element rotation 1D object
 
 # from femtaskpanels import task_element_rotation1D
-from . import view_base_femconstraint
+from . import view_base_femelement
 
 
-class VPElementRotation1D(view_base_femconstraint.VPBaseFemConstraint):
+class VPElementRotation1D(view_base_femelement.VPBaseFemElement):
     """
     A View Provider for the ElementRotation1D object
     """

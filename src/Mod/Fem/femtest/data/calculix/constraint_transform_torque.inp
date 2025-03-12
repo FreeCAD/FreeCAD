@@ -10979,7 +10979,7 @@ Evolumes
 ** Transform Constraints
 ** ConstraintTransform
 *TRANSFORM, NSET=CylinConstraintTransform, TYPE=C
-0,0,-35,0,0,-15
+0,0,25,0,0,24
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
@@ -13163,7 +13163,7 @@ RF
 
 *OUTPUT, FREQUENCY=1
 ***********************************************************
-*END STEP 
+*END STEP
 
 ***********************************************************
 ** CalculiX Input file

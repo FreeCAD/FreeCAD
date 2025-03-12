@@ -25,10 +25,10 @@
         <item>
          <widget class="QLabel" name="labelServerName">
           <property name="toolTip">
-           <string>The name of the BimServer you are currently connecting to. Change settings in Arch Preferences</string>
+           <string>The name of the BIM Server you are currently connecting to. Change settings in the BIM preferences</string>
           </property>
           <property name="text">
-           <string>Bim Server</string>
+           <string>BIM Server</string>
           </property>
          </widget>
         </item>
@@ -94,7 +94,7 @@
         <item>
          <widget class="QComboBox" name="comboProjects">
           <property name="toolTip">
-           <string>The list of projects present on the Bim Server</string>
+           <string>The list of projects present on the BIM Server</string>
           </property>
          </widget>
         </item>

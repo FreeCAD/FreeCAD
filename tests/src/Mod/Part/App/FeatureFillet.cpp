@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <src/App/InitApplication.h>
 
@@ -28,11 +28,11 @@ protected:
         _boxes[1]->Length.setValue(1);
         _boxes[1]->Width.setValue(2);
         _boxes[1]->Height.setValue(3);
-        _fused = dynamic_cast<Part::Fuse*>(_doc->addObject("Part::Fuse"));
+        _fused = _doc->addObject<Part::Fuse>();
         _fused->Base.setValue(_boxes[0]);
         _fused->Tool.setValue(_boxes[1]);
         _fused->execute();
-        _fillet = dynamic_cast<Part::Fillet*>(_doc->addObject("Part::Fillet"));
+        _fillet = _doc->addObject<Part::Fillet>();
     }
 
     void TearDown() override
@@ -76,7 +76,7 @@ TEST_F(FeatureFilletTest, testOtherEdges)
     _fillet->execute();
     filletVolume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
     // Assert
-    EXPECT_FLOAT_EQ(filletVolume, 125.57079);
+    EXPECT_NEAR(filletVolume, 125.57079, 1e-5);
 }
 
 TEST_F(FeatureFilletTest, testMostEdges)
@@ -93,7 +93,7 @@ TEST_F(FeatureFilletTest, testMostEdges)
     _fillet->execute();
     double filletVolume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
     // Assert
-    EXPECT_FLOAT_EQ(filletVolume, 118.38763);
+    EXPECT_NEAR(filletVolume, 118.38763, 1e-5);
 }
 
 // Worth noting that FeaturePartCommon with insufficient parameters says MustExecute false,

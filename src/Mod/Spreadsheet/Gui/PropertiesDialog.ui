@@ -236,7 +236,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Unit string</string>
+          <string>Text for the unit</string>
          </property>
         </widget>
        </item>

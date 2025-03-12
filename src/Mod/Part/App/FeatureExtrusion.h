@@ -52,6 +52,7 @@ public:
     App::PropertyAngle TaperAngle;
     App::PropertyAngle TaperAngleRev;
     App::PropertyString FaceMakerClass;
+    App::PropertyEnumeration FaceMakerMode;
 
     /** @name methods override feature */
     //@{
@@ -74,7 +75,7 @@ public:
 
     /**
      * @brief fetchAxisLink: read AxisLink to obtain the direction and
-     * length. Note: this routine is re-used in Extrude dialog, hence it
+     * length. Note: this routine is reused in Extrude dialog, hence it
      * is static.
      * @param axisLink (input): the link
      * @param basepoint (output): starting point of edge. Not used by extrude as of now.
@@ -94,6 +95,7 @@ public:
     ExtrusionParameters computeFinalParameters();
 
     static Base::Vector3d calculateShapeNormal(const App::PropertyLink& shapeLink);
+    void onDocumentRestored() override;
 
 public: //mode enumerations
     enum eDirMode{
@@ -105,6 +107,7 @@ public: //mode enumerations
 
 protected:
     void setupObject() override;
+    void onChanged(const App::Property* prop) override;
 };
 
 /**

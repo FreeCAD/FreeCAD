@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Cut.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
@@ -266,7 +266,7 @@ void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
                         // get MomentOfInertia of first shape
                         BRepGProp::VolumeProperties(*itOuter, tempProperties);
                         momentOfInertiaInitial = tempProperties.MomentOfInertia(gp_Ax1(gp_Pnt(), direction));
-                        BRepAlgoAPI_Cut mkCut(*itOuter, *itInner);
+                        FCBRepAlgoAPI_Cut mkCut(*itOuter, *itInner);
                         if (!mkCut.IsDone())
                             Standard_Failure::Raise("Extrusion: Final cut out failed");
                         BRepGProp::VolumeProperties(mkCut.Shape(), tempProperties);
@@ -346,7 +346,7 @@ void ExtrusionHelper::checkInnerWires(std::vector<bool>& isInnerWire, const gp_D
             // get MomentOfInertia of first shape
             BRepGProp::VolumeProperties(*itInner, tempProperties);
             momentOfInertiaInitial = tempProperties.MomentOfInertia(gp_Ax1(gp_Pnt(), direction));
-            BRepAlgoAPI_Cut mkCut(*itInner, *itOuter);
+            FCBRepAlgoAPI_Cut mkCut(*itInner, *itOuter);
             if (!mkCut.IsDone())
                 Standard_Failure::Raise("Extrusion: Cut out failed");
             BRepGProp::VolumeProperties(mkCut.Shape(), tempProperties);

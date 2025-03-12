@@ -30,8 +30,6 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief view provider for Python base constraint object
 
-from pivy import coin
-
 from FreeCAD import getResourceDir
 from femviewprovider import view_base_femobject
 
@@ -40,7 +38,3 @@ class VPBaseFemConstraint(view_base_femobject.VPBaseFemObject):
     """Proxy View Provider for Pythons base constraint."""
 
     resource_symbol_dir = getResourceDir() + "Mod/Fem/Resources/symbols/"
-
-    def attach(self, vobj):
-        # used on various places, claim childreens, get icon, etc.
-        self.Object = vobj.Object

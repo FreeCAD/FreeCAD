@@ -27,7 +27,7 @@ __url__ = "https://www.freecad.org"
 
 
 def get_analysis_types():
-    return "all"    # write for all analysis types
+    return "all"  # write for all analysis types
 
 
 def get_sets_name():
@@ -56,13 +56,13 @@ def get_after_write_constraint():
 
 def write_meshdata_constraint(f, femobj, contact_obj, ccxwriter):
     # slave DEP
-    f.write("*SURFACE, NAME=DEP{}\n".format(contact_obj.Name))
+    f.write(f"*SURFACE, NAME=DEP{contact_obj.Name}\n")
     for i in femobj["ContactSlaveFaces"]:
-        f.write("{},S{}\n".format(i[0], i[1]))
+        f.write(f"{i[0]},S{i[1]}\n")
     # master IND
-    f.write("*SURFACE, NAME=IND{}\n".format(contact_obj.Name))
+    f.write(f"*SURFACE, NAME=IND{contact_obj.Name}\n")
     for i in femobj["ContactMasterFaces"]:
-        f.write("{},S{}\n".format(i[0], i[1]))
+        f.write(f"{i[0]},S{i[1]}\n")
 
 
 def write_constraint(f, femobj, contact_obj, ccxwriter):
@@ -70,22 +70,22 @@ def write_constraint(f, femobj, contact_obj, ccxwriter):
     # floats read from ccx should use {:.13G}, see comment in writer module
     adjust = ""
     if contact_obj.Adjust.Value > 0:
-        adjust = ", ADJUST={:.13G}".format(
-            contact_obj.Adjust.getValueAs("mm").Value)
+        adjust = ", ADJUST={:.13G}".format(contact_obj.Adjust.getValueAs("mm").Value)
 
     f.write(
-        "*CONTACT PAIR, INTERACTION=INT{}, TYPE=SURFACE TO SURFACE{}\n"
-        .format(contact_obj.Name, adjust)
+        "*CONTACT PAIR, INTERACTION=INT{}, TYPE=SURFACE TO SURFACE{}\n".format(
+            contact_obj.Name, adjust
+        )
     )
     ind_surf = "IND" + contact_obj.Name
     dep_surf = "DEP" + contact_obj.Name
-    f.write("{}, {}\n".format(dep_surf, ind_surf))
-    f.write("*SURFACE INTERACTION, NAME=INT{}\n".format(contact_obj.Name))
+    f.write(f"{dep_surf}, {ind_surf}\n")
+    f.write(f"*SURFACE INTERACTION, NAME=INT{contact_obj.Name}\n")
     f.write("*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=LINEAR\n")
     slope = contact_obj.Slope.getValueAs("MPa/mm").Value
-    f.write("{:.13G}\n".format(slope))
+    f.write(f"{slope:.13G}\n")
     if contact_obj.Friction:
         f.write("*FRICTION\n")
         friction = contact_obj.FrictionCoefficient
         stick = contact_obj.StickSlope.getValueAs("MPa/mm").Value
-        f.write("{:.13G}, {:.13G}\n".format(friction, stick))
+        f.write(f"{friction:.13G}, {stick:.13G}\n")

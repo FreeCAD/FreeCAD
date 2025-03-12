@@ -439,9 +439,9 @@ void DlgEvaluateMeshImp::showInformation()
 
     if (d->meshFeature) {
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
-        d->ui.textLabel4->setText(QString::fromLatin1("%1").arg(rMesh.CountFacets()));
-        d->ui.textLabel5->setText(QString::fromLatin1("%1").arg(rMesh.CountEdges()));
-        d->ui.textLabel6->setText(QString::fromLatin1("%1").arg(rMesh.CountPoints()));
+        d->ui.textLabel4->setText(QStringLiteral("%1").arg(rMesh.CountFacets()));
+        d->ui.textLabel5->setText(QStringLiteral("%1").arg(rMesh.CountEdges()));
+        d->ui.textLabel6->setText(QStringLiteral("%1").arg(rMesh.CountPoints()));
     }
 }
 
@@ -1278,7 +1278,7 @@ void DlgEvaluateMeshImp::onRepairAllTogetherClicked()
             QMessageBox::warning(this, tr("Mesh repair"), QString::fromLatin1(e.what()));
         }
         catch (...) {
-            QMessageBox::warning(this, tr("Mesh repair"), QString::fromLatin1("Unknown error occurred."));
+            QMessageBox::warning(this, tr("Mesh repair"), QStringLiteral("Unknown error occurred."));
         }
 
         doc->commitCommand();

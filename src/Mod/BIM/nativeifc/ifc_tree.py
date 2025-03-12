@@ -3,20 +3,20 @@
 # *   Copyright (c) 2023 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License (GPL)            *
-# *   as published by the Free Software Foundation; either version 3 of     *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
+# *   GNU Library General Public License for more details.                  *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
@@ -77,10 +77,10 @@ def print_geometry_tree(element):
 def show_geometry_tree(element):
     """Same as get_geometry_tree but in a Qt dialog"""
 
-    import FreeCADGui  # lazy import
-    from PySide2 import QtGui, QtWidgets
-    from nativeifc import ifc_tools
     import Arch_rc
+    import FreeCADGui  # lazy import
+    from . import ifc_tools
+    from PySide import QtGui, QtWidgets
 
     if isinstance(element, FreeCAD.DocumentObject):
         element = ifc_tools.get_ifc_element(element)
@@ -145,9 +145,9 @@ def isfloat(s):
 def show_properties(current, previous):
     """Displays object properties"""
 
-    from nativeifc import ifc_tools  # lazy loading
     import FreeCADGui
-    from PySide2 import QtCore, QtGui, QtWidgets
+    from . import ifc_tools  # lazy loading
+    from PySide import QtCore, QtGui, QtWidgets
 
     ifcid = int(current.text(0).split("=", 1)[0].strip(" ").strip("#"))
     sel = FreeCADGui.Selection.getSelection()

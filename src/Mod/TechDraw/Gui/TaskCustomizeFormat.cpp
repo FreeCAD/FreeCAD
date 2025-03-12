@@ -26,7 +26,6 @@
 #endif
 
 #include <App/DocumentObject.h>
-#include <Base/Tools.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
@@ -84,13 +83,13 @@ void TaskCustomizeFormat::setUiEdit()
         isDimension = true;
         std::string dimText = dim->FormatSpec.getStrValue();
         dimRawValue = dim->getDimValue();
-        ui->leFormat->setText(Base::Tools::fromStdString(dimText));
+        ui->leFormat->setText(QString::fromStdString(dimText));
     }
     else if (auto balloon = dynamic_cast<TechDraw::DrawViewBalloon*>(selectedObject))
     {
         isDimension = false;
         std::string balloonText = balloon->Text.getStrValue();
-        ui->leFormat->setText(Base::Tools::fromStdString(balloonText));
+        ui->leFormat->setText(QString::fromStdString(balloonText));
     }
     // GD&T
     connect(ui->pbA01, &QPushButton::clicked, this, &TaskCustomizeFormat::onSymbolClicked);

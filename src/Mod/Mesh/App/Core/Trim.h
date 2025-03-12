@@ -44,9 +44,7 @@ public:
     };
 
 public:
-    MeshTrimming(MeshKernel& mesh,
-                 const Base::ViewProjMethod* pclProj,
-                 const Base::Polygon2d& rclPoly);
+    MeshTrimming(MeshKernel& mesh, const Base::ViewProjMethod* proj, const Base::Polygon2d& poly);
 
 public:
     /**

@@ -4,11 +4,15 @@ set(JTREADER_TKJT_LIBRARIES CACHE FILEPATH  "File path to TKJT library")
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${QT_INCLUDE_DIR}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -33,7 +37,7 @@ SET(JtReader_SRCS
 
 if (EXISTS "${JTREADER_TKJT_INCLUDE_DIRS}/JtData_Object.hxx")
     add_definitions(-DJTREADER_HAVE_TKJT)
-    include_directories(${JTREADER_TKJT_INCLUDE_DIRS})
+    include_directories(SYSTEM ${JTREADER_TKJT_INCLUDE_DIRS})
     list (APPEND JtReader_LIBS
         ${JTREADER_TKJT_LIBRARIES}
     )
@@ -56,6 +60,9 @@ SOURCE_GROUP("Module" FILES ${JtReader_SRCS})
 
 add_library(JtReader SHARED ${JtReader_SRCS} ${JRJT_SRCS} ${JtReader_Scripts})
 target_link_libraries(JtReader ${JtReader_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(JtReader)
+endif()
 
 fc_target_copy_resource_flat(JtReader
     ${CMAKE_CURRENT_SOURCE_DIR}

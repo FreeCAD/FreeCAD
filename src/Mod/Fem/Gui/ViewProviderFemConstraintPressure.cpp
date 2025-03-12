@@ -50,49 +50,24 @@ ViewProviderFemConstraintPressure::ViewProviderFemConstraintPressure()
 
 ViewProviderFemConstraintPressure::~ViewProviderFemConstraintPressure() = default;
 
-// FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintPressure::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        // When double-clicking on the item for this constraint the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintPressure* constrDlg = qobject_cast<TaskDlgFemConstraintPressure*>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this) {
-            constrDlg = nullptr;  // another constraint left open its task panel
-        }
-        if (dlg && !constrDlg) {
-            if (constraintDialog) {
-                // Ignore the request to open another dialog
-                return false;
-            }
-            else {
-                constraintDialog = new TaskFemConstraintPressure(this);
-                return true;
-            }
-        }
-
+        Gui::Control().closeDialog();
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
+        Gui::Control().showDialog(new TaskDlgFemConstraintPressure(this));
 
-        // start the edit dialog
-        if (constrDlg) {
-            Gui::Control().showDialog(constrDlg);
-        }
-        else {
-            Gui::Control().showDialog(new TaskDlgFemConstraintPressure(this));
-        }
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
+        return ViewProviderFemConstraintOnBoundary::setEdit(ModNum);
     }
 }
 
 void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
 {
-    auto pcConstraint = static_cast<Fem::ConstraintPressure*>(this->getObject());
+    auto pcConstraint = this->getObject<Fem::ConstraintPressure>();
 
     if (prop == &pcConstraint->Reversed) {
         updateSymbol();
@@ -106,7 +81,7 @@ void ViewProviderFemConstraintPressure::transformSymbol(const Base::Vector3d& po
                                                         const Base::Vector3d& normal,
                                                         SbMatrix& mat) const
 {
-    auto obj = static_cast<const Fem::ConstraintPressure*>(this->getObject());
+    auto obj = this->getObject<const Fem::ConstraintPressure>();
     float rotAngle = obj->Reversed.getValue() ? F_PI : 0.0f;
     float s = obj->getScaleFactor();
     // Symbol length from .iv file

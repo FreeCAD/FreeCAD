@@ -21,8 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef APP_EXTENSION_H
-#define APP_EXTENSION_H
+#ifndef SRC_APP_EXTENSION_H_
+#define SRC_APP_EXTENSION_H_
+
+#include <map>
+#include <string>
 
 #include "PropertyContainer.h"
 #include <Base/SmartPtrPy.h>
@@ -31,6 +34,7 @@ namespace App {
 
 class ExtensionContainer;
 
+// clang-format off
 /// define Extension types
 #define EXTENSION_TYPESYSTEM_HEADER() \
 public: \
@@ -45,7 +49,7 @@ private: \
 #define EXTENSION_TYPESYSTEM_HEADER_WITH_OVERRIDE() \
 public: \
   static Base::Type getExtensionClassTypeId(void); \
-  virtual Base::Type getExtensionTypeId(void) const override; \
+  Base::Type getExtensionTypeId(void) const override; \
   static void init(void);\
   static void *create(void);\
 private: \
@@ -96,7 +100,7 @@ private: \
   EXTENSION_TYPESYSTEM_HEADER_WITH_OVERRIDE(); \
 protected: \
   static const App::PropertyData * extensionGetPropertyDataPtr(void); \
-  virtual const App::PropertyData &extensionGetPropertyData(void) const override; \
+  const App::PropertyData &extensionGetPropertyData(void) const override; \
 private: \
   static App::PropertyData propertyData
 
@@ -119,6 +123,7 @@ template<> void _class_::init(void){\
   initExtensionSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
   _class_::propertyData.parentPropertyData = _parentclass_::extensionGetPropertyDataPtr();\
 }
+// clang-format on
 
 /**
  * @brief Base class for all extension that can be added to a DocumentObject
@@ -252,6 +257,8 @@ public:
     virtual const char* extensionGetPropertyName(const Property* prop) const;
     /// get all properties of the class (including properties of the parent)
     virtual void extensionGetPropertyMap(std::map<std::string,Property*> &Map) const;
+    /// See PropertyContainer::visitProperties for semantics
+    virtual void extensionVisitProperties(const std::function<void(Property*)>& visitor) const;
     /// get all properties of the class (including properties of the parent)
     virtual void extensionGetPropertyList(std::vector<Property*> &List) const;
 
@@ -302,6 +309,7 @@ private:
     App::ExtensionContainer*      m_base = nullptr;
 };
 
+// clang-format off
 // Property define
 #define _EXTENSION_ADD_PROPERTY(_name, _prop_, _defaultval_) \
   do { \
@@ -321,8 +329,9 @@ private:
 
 #define EXTENSION_ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \
     _EXTENSION_ADD_PROPERTY_TYPE(#_prop_, _prop_, _defaultval_, _group_,_type_,_Docu_)
+// clang-format on
 
 
-} //App
+} // namespace App
 
-#endif // APP_EXTENSION_H
+#endif // SRC_APP_EXTENSION_H_

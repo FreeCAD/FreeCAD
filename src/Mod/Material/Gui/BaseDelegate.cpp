@@ -75,9 +75,9 @@ QString BaseDelegate::getStringValue(const QModelIndex& index) const
 QRgb BaseDelegate::parseColor(const QString& color) const
 {
     QString trimmed = color;
-    trimmed.replace(QRegularExpression(QString::fromStdString("\\(([^<]*)\\)")),
-                    QString::fromStdString("\\1"));
-    QStringList parts = trimmed.split(QString::fromStdString(","));
+    trimmed.replace(QRegularExpression(QStringLiteral("\\(([^<]*)\\)")),
+                    QStringLiteral("\\1"));
+    QStringList parts = trimmed.split(QStringLiteral(","));
     if (parts.length() < 3) {
         return qRgba(0, 0, 0, 255);
     }
@@ -103,15 +103,13 @@ void BaseDelegate::paintQuantity(QPainter* painter,
         painter->drawText(option.rect, 0, QString());
     }
     else {
+        QString text;
         QVariant item = getValue(index);
         auto quantity = item.value<Base::Quantity>();
         if (quantity.isValid()) {
-            QString text = quantity.getUserString();
-            painter->drawText(option.rect, 0, text);
+            text = QString::fromStdString(quantity.getUserString());
         }
-        else {
-            painter->drawText(option.rect, 0, QString());
-        }
+        painter->drawText(option.rect, 0, text);
     }
 
     painter->restore();
@@ -196,7 +194,7 @@ void BaseDelegate::paintList(QPainter* painter,
 
     painter->save();
 
-    QImage list(QString::fromStdString(":/icons/list.svg"));
+    QImage list(QStringLiteral(":/icons/list.svg"));
     QRect target(option.rect);
     if (target.width() > target.height()) {
         target.setWidth(target.height());
@@ -217,7 +215,7 @@ void BaseDelegate::paintMultiLineString(QPainter* painter,
 
     painter->save();
 
-    QImage table(QString::fromStdString(":/icons/multiline.svg"));
+    QImage table(QStringLiteral(":/icons/multiline.svg"));
     QRect target(option.rect);
     if (target.width() > target.height()) {
         target.setWidth(target.height());
@@ -238,7 +236,7 @@ void BaseDelegate::paintArray(QPainter* painter,
 
     painter->save();
 
-    QImage table(QString::fromStdString(":/icons/table.svg"));
+    QImage table(QStringLiteral(":/icons/table.svg"));
     QRect target(option.rect);
     if (target.width() > target.height()) {
         target.setWidth(target.height());
@@ -437,7 +435,7 @@ BaseDelegate::createWidget(QWidget* parent, const QVariant& item, const QModelIn
     }
     else if (type == Materials::MaterialValue::Boolean) {
         auto combo = new Gui::PrefComboBox(parent);
-        combo->insertItem(0, QString::fromStdString(""));
+        combo->insertItem(0, QStringLiteral(""));
         combo->insertItem(1, tr("False"));
         combo->insertItem(2, tr("True"));
         combo->setCurrentText(item.toString());

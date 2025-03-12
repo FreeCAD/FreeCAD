@@ -45,7 +45,8 @@ class Arch_Truss:
 
     def IsActive(self):
 
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
 
@@ -78,7 +79,7 @@ class Arch_Truss:
             self.createTruss()
 
     def createTruss(self, basename=""):
-        
+
         """Creates the truss"""
 
         FreeCADGui.Control.closeDialog()
@@ -95,6 +96,6 @@ class Arch_Truss:
         FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        
+
 
 FreeCADGui.addCommand('Arch_Truss', Arch_Truss())

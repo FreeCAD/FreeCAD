@@ -1,10 +1,16 @@
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
 )
 
@@ -57,6 +63,9 @@ SET(InspectionGuiIcon_SVG
 
 add_library(InspectionGui SHARED ${InspectionGui_SRCS} ${InspectionGui_Scripts} ${InspectionGuiIcon_SVG})
 target_link_libraries(InspectionGui ${InspectionGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(InspectionGui)
+endif()
 
 
 fc_target_copy_resource_flat(InspectionGui

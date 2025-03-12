@@ -43,10 +43,8 @@ class BIM_Convert:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
@@ -95,9 +93,9 @@ class BIM_Convert_TaskPanel:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         if idx:
-            from DraftGui import todo
+            from draftutils import todo
 
-            todo.delay(FreeCADGui.Control.closeDialog, None)
+            todo.ToDo.delay(FreeCADGui.Control.closeDialog, None)
         return True
 
 

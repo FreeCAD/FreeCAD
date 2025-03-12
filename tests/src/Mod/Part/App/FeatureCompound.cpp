@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include "Mod/Part/App/FeatureCompound.h"
 #include <src/App/InitApplication.h>
@@ -19,7 +19,7 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _compound = dynamic_cast<Part::Compound*>(_doc->addObject("Part::Compound"));
+        _compound = _doc->addObject<Part::Compound>();
     }
 
     void TearDown() override

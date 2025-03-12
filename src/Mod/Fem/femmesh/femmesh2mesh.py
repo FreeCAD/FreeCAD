@@ -1,6 +1,11 @@
 # ***************************************************************************
+# *   Copyright (c) 2023 Peter McB                                          *
+# *   added the function, mesh_2_femmesh, to convert the MESH               *
+# *                     into a triangular FEMMESH                           *
 # *                                                                         *
 # *   Copyright (c) 2016 Frantisek Loeffelmann <LoffF@email.cz>             *
+# *   extension to the work of:                                             *
+#         Frantisek Loeffelmann, Ulrich Brammer, Bernd Hahnebach            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,7 +26,7 @@
 # ***************************************************************************
 
 __title__ = "FemMesh to Mesh converter"
-__author__ = "Frantisek Loeffelmann, Ulrich Brammer, Bernd Hahnebach"
+__author__ = "Frantisek Loeffelmann, Ulrich Brammer, Bernd Hahnebach, Peter McB"
 __url__ = "https://www.freecad.org"
 
 ## @package FwmMesh2Mesh
@@ -30,14 +35,16 @@ __url__ = "https://www.freecad.org"
 import time
 
 import FreeCAD
+import Fem
+
 # import Mesh
 
 
 """
 from os.path import join
-the_file = join(FreeCAD.getResourceDir(), "examples", "FemCalculixCantilever3D.FCStd")
+the_file = join(FreeCAD.getResourceDir(), "examples", "FEMExample.FCStd")
 fc_file = FreeCAD.openDocument(the_file)
-fem_mesh = fc_file.getObject("Box_Mesh").FemMesh  # do not remove the _
+fem_mesh = fc_file.getObject("FEMMeshGmsh").FemMesh
 result = fc_file.getObject("CCX_Results")
 scale = 1  # displacement scale factor
 from femmesh import femmesh2mesh
@@ -49,33 +56,26 @@ Mesh.show(Mesh.Mesh(out_mesh))
 # These dictionaries list the nodes, that define faces of an element.
 # The key is the face number, used internally by FreeCAD.
 # The list contains the nodes in the element for each face.
-tetFaces = {
-    1: [0, 1, 2],
-    2: [0, 3, 1],
-    3: [1, 3, 2],
-    4: [2, 3, 0]}
+tetFaces = {1: [0, 1, 2], 2: [0, 3, 1], 3: [1, 3, 2], 4: [2, 3, 0]}
 
-pentaFaces = {
-    1: [0, 1, 2],
-    2: [3, 5, 4],
-    3: [0, 3, 4, 1],
-    4: [1, 4, 5, 2],
-    5: [0, 2, 5, 3]}
+pentaFaces = {1: [0, 1, 2], 2: [3, 5, 4], 3: [0, 3, 4, 1], 4: [1, 4, 5, 2], 5: [0, 2, 5, 3]}
 
-hexaFaces = {        # hexa8 or hexa20 (ignoring mid-nodes)
+hexaFaces = {  # hexa8 or hexa20 (ignoring mid-nodes)
     1: [0, 1, 2, 3],
     2: [4, 7, 6, 5],
     3: [0, 4, 5, 1],
     4: [1, 5, 6, 2],
     5: [2, 6, 7, 3],
-    6: [3, 7, 4, 0]}
+    6: [3, 7, 4, 0],
+}
 
-pyraFaces = {      # pyra5 or pyra13 (ignoring mid-nodes)
+pyraFaces = {  # pyra5 or pyra13 (ignoring mid-nodes)
     1: [0, 1, 2, 3],
     2: [0, 4, 1],
     3: [1, 4, 2],
     4: [2, 4, 3],
-    5: [3, 4, 0]}
+    5: [3, 4, 0],
+}
 
 face_dicts = {
     4: tetFaces,
@@ -85,7 +85,8 @@ face_dicts = {
     10: tetFaces,
     13: pyraFaces,
     15: pentaFaces,
-    20: hexaFaces}
+    20: hexaFaces,
+}
 
 
 def femmesh_2_mesh(myFemMesh, myResults=None, myDispScale=1):
@@ -114,7 +115,7 @@ def femmesh_2_mesh(myFemMesh, myResults=None, myDispScale=1):
                     codeList.append(element_nodes[nodeIdx])
                 codeList.sort()
                 for node in codeList:
-                    faceCode += (node << shifter)
+                    faceCode += node << shifter
                     # x << n: x shifted left by n bits = Multiplication
                     shifter += shiftBits
                 # print("codeList: ", codeList)
@@ -124,7 +125,10 @@ def femmesh_2_mesh(myFemMesh, myResults=None, myDispScale=1):
         for ele in myFemMesh.Faces:
             element_nodes = myFemMesh.getElementNodes(ele)
             # print("element_node: ", element_nodes)
-            faceDef = {1: [0, 1, 2]}
+            if len(element_nodes) in [3, 6]:
+                faceDef = {1: [0, 1, 2]}
+            else:  # quad element
+                faceDef = {1: [0, 1, 2, 3]}
 
             for key in faceDef:
                 nodeList = []
@@ -136,7 +140,7 @@ def femmesh_2_mesh(myFemMesh, myResults=None, myDispScale=1):
                     codeList.append(element_nodes[nodeIdx])
                 codeList.sort()
                 for node in codeList:
-                    faceCode += (node << shifter)
+                    faceCode += node << shifter
                     # x << n: x shifted left by n bits = Multiplication
                     shifter += shiftBits
                 # print("codeList: ", codeList)
@@ -158,48 +162,103 @@ def femmesh_2_mesh(myFemMesh, myResults=None, myDispScale=1):
                 singleFaces.append(faceCodeList[actFaceIdx])
                 actFaceIdx += 1
         else:
-            FreeCAD.Console.PrintMessage("Found a last Face: {}\n".format(faceCodeList[actFaceIdx]))
+            FreeCAD.Console.PrintMessage(f"Found a last Face: {faceCodeList[actFaceIdx]}\n")
             singleFaces.append(faceCodeList[actFaceIdx])
             actFaceIdx += 1
 
     output_mesh = []
     if myResults:
-        FreeCAD.Console.PrintMessage("{}\n".format(myResults.Name))
+        FreeCAD.Console.PrintMessage(f"{myResults.Name}\n")
         for myFace in singleFaces:
             face_nodes = faceCodeDict[myFace]
             dispVec0 = myResults.DisplacementVectors[myResults.NodeNumbers.index(face_nodes[0])]
             dispVec1 = myResults.DisplacementVectors[myResults.NodeNumbers.index(face_nodes[1])]
             dispVec2 = myResults.DisplacementVectors[myResults.NodeNumbers.index(face_nodes[2])]
-            triangle = [myFemMesh.getNodeById(face_nodes[0]) + dispVec0 * myDispScale,
-                        myFemMesh.getNodeById(face_nodes[1]) + dispVec1 * myDispScale,
-                        myFemMesh.getNodeById(face_nodes[2]) + dispVec2 * myDispScale]
+            triangle = [
+                myFemMesh.getNodeById(face_nodes[0]) + dispVec0 * myDispScale,
+                myFemMesh.getNodeById(face_nodes[1]) + dispVec1 * myDispScale,
+                myFemMesh.getNodeById(face_nodes[2]) + dispVec2 * myDispScale,
+            ]
             output_mesh.extend(triangle)
             # print("my triangle: ", triangle)
             if len(face_nodes) == 4:
                 dispVec3 = myResults.DisplacementVectors[myResults.NodeNumbers.index(face_nodes[3])]
-                triangle = [myFemMesh.getNodeById(face_nodes[2]) + dispVec2 * myDispScale,
-                            myFemMesh.getNodeById(face_nodes[3]) + dispVec3 * myDispScale,
-                            myFemMesh.getNodeById(face_nodes[0]) + dispVec0 * myDispScale]
+                triangle = [
+                    myFemMesh.getNodeById(face_nodes[2]) + dispVec2 * myDispScale,
+                    myFemMesh.getNodeById(face_nodes[3]) + dispVec3 * myDispScale,
+                    myFemMesh.getNodeById(face_nodes[0]) + dispVec0 * myDispScale,
+                ]
                 output_mesh.extend(triangle)
                 # print("my 2. triangle: ", triangle)
 
     else:
         for myFace in singleFaces:
             face_nodes = faceCodeDict[myFace]
-            triangle = [myFemMesh.getNodeById(face_nodes[0]),
-                        myFemMesh.getNodeById(face_nodes[1]),
-                        myFemMesh.getNodeById(face_nodes[2])]
+            triangle = [
+                myFemMesh.getNodeById(face_nodes[0]),
+                myFemMesh.getNodeById(face_nodes[1]),
+                myFemMesh.getNodeById(face_nodes[2]),
+            ]
             output_mesh.extend(triangle)
             # print("my triangle: ", triangle)
             if len(face_nodes) == 4:
-                triangle = [myFemMesh.getNodeById(face_nodes[2]),
-                            myFemMesh.getNodeById(face_nodes[3]),
-                            myFemMesh.getNodeById(face_nodes[0])]
+                triangle = [
+                    myFemMesh.getNodeById(face_nodes[2]),
+                    myFemMesh.getNodeById(face_nodes[3]),
+                    myFemMesh.getNodeById(face_nodes[0]),
+                ]
                 output_mesh.extend(triangle)
                 # print("my 2. triangle: ", triangle)
 
     end_time = time.process_time()
-    FreeCAD.Console.PrintMessage(
-        "Mesh by surface search method: {}\n".format(end_time - start_time)
-    )
+    FreeCAD.Console.PrintMessage(f"Mesh by surface search method: {end_time - start_time}\n")
+    # call to mesh_2_femmesh to convert mesh to femmesh before return statement
+    mesh2femmesh = mesh_2_femmesh(myFemMesh, singleFaces, faceCodeDict)
     return output_mesh
+
+
+# additional function to convert mesh to femmesh
+def mesh_2_femmesh(myFemMesh, singleFaces, faceCodeDict):
+    start_time = time.process_time()
+    femmesh = Fem.FemMesh()
+    myfemmesh = myFemMesh.Nodes
+    # nodes contains the nodes that are used
+    nodes = {}
+    for myFace in singleFaces:
+        face_nodes = faceCodeDict[myFace]
+        for j in (0, 1, 2):
+            try:
+                nodes[face_nodes[j]] += 1
+            except:
+                nodes[face_nodes[j]] = 0
+        if len(face_nodes) == 4:
+            j = 3
+            try:
+                nodes[face_nodes[j]] += 1
+            except:
+                nodes[face_nodes[j]] = 0
+    sfNode = femmesh.addNode
+    sfFace = femmesh.addFace
+    for key in myFemMesh.Nodes:
+        mynode = myfemmesh[key]
+        try:
+            if nodes[key] >= 0:
+                sfNode(mynode[0], mynode[1], mynode[2], key)
+        except:
+            pass
+
+    output_mesh = []
+
+    for myFace in singleFaces:
+        face_nodes = faceCodeDict[myFace]
+        sfFace(face_nodes[0], face_nodes[1], face_nodes[2])
+        if len(face_nodes) == 4:
+            sfFace(face_nodes[2], face_nodes[3], face_nodes[0])
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FemMeshObject", "Mesh2Fem")
+    obj.FemMesh = femmesh
+    end_time = time.process_time()
+    FreeCAD.Console.PrintMessage(f"Convert to FemMesh: {end_time - start_time}\n")
+    return obj
+
+
+# end of mesh_2_femmesh

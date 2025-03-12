@@ -1,0 +1,12 @@
+import pydevd
+from multiprocessing.connection import Listener
+
+print("CLion debugger macro running.  Starting listener to get port")
+listen = Listener(('localhost', 39998), backlog=1)
+link = listen.accept()
+port = link.recv()
+link.close()
+listen.close()
+print("Port", port, "received, starting debugger.  Check CLion to see if a breakpoint has been hit and continue")
+pydevd.settrace(port=port)
+print("Debugger operating, leaving macro.")

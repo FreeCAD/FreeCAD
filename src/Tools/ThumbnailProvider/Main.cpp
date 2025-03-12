@@ -132,8 +132,7 @@ STDAPI DllRegisterServer()
          L".FCBak\\shellex\\{E357FCCD-A995-4576-B01F-234630154E96}",
          NULL,
          REG_SZ,
-         (DWORD_PTR)szCLSID_SampleThumbnailProvider}
-    };
+         (DWORD_PTR)szCLSID_SampleThumbnailProvider}};
 
     return CreateRegistryKeys(keys, ARRAYSIZE(keys));
 }

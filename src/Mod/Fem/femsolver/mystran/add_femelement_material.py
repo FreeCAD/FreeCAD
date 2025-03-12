@@ -41,10 +41,7 @@ def add_femelement_material(f, model, mystran_writer):
     YM_in_MPa = YM.getValueAs("MPa").Value
     PR = float(mat_obj.Material["PoissonRatio"])
     pynas_code = "# mat1 card, material properties for linear isotropic material\n"
-    pynas_code += (
-        "mat = model.add_mat1(mid=1, E={:.1f}, G=None, nu={})\n\n\n"
-        .format(YM_in_MPa, PR)
-    )
+    pynas_code += f"mat = model.add_mat1(mid=1, E={YM_in_MPa:.1f}, G=None, nu={PR})\n\n\n"
 
     # write the pyNastran code
     f.write(pynas_code)

@@ -31,7 +31,7 @@
 #include <QTextStream>
 
 #include <App/Application.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <App/Material.h>
 #include <Base/BaseClass.h>
 
@@ -52,7 +52,7 @@ class MaterialsExport MaterialProperty: public ModelProperty
 public:
     MaterialProperty();
     MaterialProperty(const MaterialProperty& other);
-    explicit MaterialProperty(const ModelProperty& other);
+    explicit MaterialProperty(const ModelProperty& other, QString modelUUID);
     explicit MaterialProperty(const std::shared_ptr<MaterialProperty>& other);
     ~MaterialProperty() override = default;
 
@@ -61,7 +61,11 @@ public:
         return _valuePtr->getType();
     }
 
-    const QString getModelUUID() const;
+    const QString getModelUUID() const
+    {
+        return _modelUUID;
+    }
+
     QVariant getValue();
     QVariant getValue() const;
     QList<QVariant> getList()
@@ -98,7 +102,7 @@ public:
     {
         return getValue().toString();
     }
-    App::Color getColor() const;
+    Base::Color getColor() const;
 
     MaterialProperty& getColumn(int column);
     const MaterialProperty& getColumn(int column) const;
@@ -112,6 +116,7 @@ public:
     void setValue(const QString& value);
     void setValue(const std::shared_ptr<MaterialValue>& value);
     void setString(const QString& value);
+    void setString(const std::string& value);
     void setBoolean(bool value);
     void setBoolean(int value);
     void setBoolean(const QString& value);
@@ -124,7 +129,7 @@ public:
     void setQuantity(const QString& value);
     void setList(const QList<QVariant>& value);
     void setURL(const QString& value);
-    void setColor(const App::Color& value);
+    void setColor(const Base::Color& value);
 
     MaterialProperty& operator=(const MaterialProperty& other);
     friend QTextStream& operator<<(QTextStream& output, const MaterialProperty& property);
@@ -134,11 +139,6 @@ public:
     {
         return !operator==(other);
     }
-
-    // void save(QTextStream& stream);
-
-    // Define precision for displaying floating point values
-    static int const PRECISION;
 
 protected:
     void setType(const QString& type);
@@ -308,7 +308,7 @@ public:
      * Legacy values are thosed contained in old format files that don't fit in the new
      * property format. It should not be used as a catch all for defining a property with
      * no model.
-     * 
+     *
      * These values are transient and will not be saved.
      */
     void setLegacyValue(const QString& name, const QString& value);
@@ -330,6 +330,8 @@ public:
     bool hasNonLegacyProperty(const QString& name) const;
     bool hasLegacyProperty(const QString& name) const;
     bool hasLegacyProperties() const;
+    bool hasPhysicalProperties() const;
+    bool hasAppearanceProperties() const;
 
     // Test if the model is defined, and if values are provided for all properties
     bool hasModel(const QString& uuid) const;
@@ -347,7 +349,15 @@ public:
     {
         return _physical;
     }
+    const std::map<QString, std::shared_ptr<MaterialProperty>>& getPhysicalProperties() const
+    {
+        return _physical;
+    }
     std::map<QString, std::shared_ptr<MaterialProperty>>& getAppearanceProperties()
+    {
+        return _appearance;
+    }
+    const std::map<QString, std::shared_ptr<MaterialProperty>>& getAppearanceProperties() const
     {
         return _appearance;
     }

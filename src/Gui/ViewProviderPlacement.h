@@ -25,7 +25,7 @@
 
 #include "AxisOrigin.h"
 #include "ViewProviderGeometryObject.h"
-#include "ViewProviderPythonFeature.h"
+#include "ViewProviderFeaturePython.h"
 
 
 class SoFontStyle;
@@ -67,7 +67,7 @@ protected:
 
 };
 
-using ViewProviderPlacementPython = ViewProviderPythonFeatureT<ViewProviderPlacement>;
+using ViewProviderPlacementPython = ViewProviderFeaturePythonT<ViewProviderPlacement>;
 
 } //namespace Gui
 

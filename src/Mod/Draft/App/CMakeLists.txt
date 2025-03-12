@@ -8,9 +8,14 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${QT_QTCORE_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
@@ -31,6 +36,9 @@ SET(DraftUtils_SRCS
 
 add_library(DraftUtils SHARED ${DraftUtils_SRCS})
 target_link_libraries(DraftUtils ${DraftUtils_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(DraftUtils)
+endif()
 
 
 SET_BIN_DIR(DraftUtils DraftUtils /Mod/Draft)

@@ -34,7 +34,7 @@
 #include <Base/Tools.h>
 #include <Gui/MainWindow.h>
 #include <Gui/View3DSettings.h>
-#include <Gui/NavigationStyle.h>
+#include <Gui/Navigation/NavigationStyle.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 
@@ -60,6 +60,12 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     ui->naviCubeBaseColor->setAllowTransparency(true);
     ui->rotationCenterColor->setAllowTransparency(true);
     retranslate();
+#if !defined(_USE_3DCONNEXION_SDK) && !defined(SPNAV_FOUND)
+    ui->legacySpaceMouseDevices->setDisabled(true);
+#elif !defined(USE_3DCONNEXION_NAVLIB)
+    ui->spaceMouseDevice->setHidden(true);
+    ui->legacySpaceMouseDevices->setHidden(true);
+#endif
 }
 
 /**
@@ -97,6 +103,10 @@ void DlgSettingsNavigation::saveSettings()
     ui->prefCubeSize->onSave();
     ui->naviCubeBaseColor->onSave();
     ui->naviCubeInactiveOpacity->onSave();
+    ui->legacySpaceMouseDevices->onSave();
+    if (property("LegacySpaceMouse").toBool() != ui->legacySpaceMouseDevices->isChecked()) {
+        requireRestart();
+    }
 
     bool showNaviCube = ui->groupBoxNaviCube->isChecked();
     hGrp->SetBool("ShowNaviCube", showNaviCube);
@@ -143,6 +153,8 @@ void DlgSettingsNavigation::loadSettings()
     ui->prefCubeSize->onRestore();
     ui->naviCubeBaseColor->onRestore();
     ui->naviCubeInactiveOpacity->onRestore();
+    ui->legacySpaceMouseDevices->onRestore();
+    setProperty("LegacySpaceMouse", ui->legacySpaceMouseDevices->isChecked());
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
@@ -166,29 +178,8 @@ void DlgSettingsNavigation::loadSettings()
     bool useNavigationAnimations = hGrp->GetBool("UseNavigationAnimations", true);
     ui->groupBoxAnimations->setChecked(useNavigationAnimations);
 
-    ui->comboNewDocView->addItem(tr("Isometric"), QByteArray("Isometric"));
-    ui->comboNewDocView->addItem(tr("Dimetric"), QByteArray("Dimetric"));
-    ui->comboNewDocView->addItem(tr("Trimetric"), QByteArray("Trimetric"));
-    ui->comboNewDocView->addItem(tr("Top"), QByteArray("Top"));
-    ui->comboNewDocView->addItem(tr("Front"), QByteArray("Front"));
-    ui->comboNewDocView->addItem(tr("Left"), QByteArray("Left"));
-    ui->comboNewDocView->addItem(tr("Right"), QByteArray("Right"));
-    ui->comboNewDocView->addItem(tr("Rear"), QByteArray("Rear"));
-    ui->comboNewDocView->addItem(tr("Bottom"), QByteArray("Bottom"));
-    ui->comboNewDocView->addItem(tr("Custom"), QByteArray("Custom"));
-    std::string camera = hGrp->GetASCII("NewDocumentCameraOrientation", "Trimetric");
-    index = ui->comboNewDocView->findData(QByteArray(camera.c_str()));
-    if (index > -1) ui->comboNewDocView->setCurrentIndex(index);
-    if (camera == "Custom") {
-        ParameterGrp::handle hCustom = hGrp->GetGroup("Custom");
-        q0 = hCustom->GetFloat("Q0", q0);
-        q1 = hCustom->GetFloat("Q1", q1);
-        q2 = hCustom->GetFloat("Q2", q2);
-        q3 = hCustom->GetFloat("Q3", q3);
-    }
+    addOrientations();
 
-    connect(ui->comboNewDocView, qOverload<int>(&QComboBox::currentIndexChanged),
-        this, &DlgSettingsNavigation::onNewDocViewChanged);
     connect(ui->mouseButton, &QPushButton::clicked,
         this, &DlgSettingsNavigation::onMouseButtonClicked);
 
@@ -208,6 +199,50 @@ void DlgSettingsNavigation::loadSettings()
         QString::fromStdString(hGrp->GetASCII("FontString")));
     ui->naviCubeFontName->setCurrentIndex(indexFamilyNames + 1);
 
+}
+
+void DlgSettingsNavigation::addOrientations()
+{
+    ui->comboNewDocView->addItem(tr("Isometric"), QByteArray("Isometric"));
+    ui->comboNewDocView->addItem(tr("Dimetric"), QByteArray("Dimetric"));
+    ui->comboNewDocView->addItem(tr("Trimetric"), QByteArray("Trimetric"));
+    ui->comboNewDocView->addItem(tr("Top"), QByteArray("Top"));
+    ui->comboNewDocView->addItem(tr("Front"), QByteArray("Front"));
+    ui->comboNewDocView->addItem(tr("Left"), QByteArray("Left"));
+    ui->comboNewDocView->addItem(tr("Right"), QByteArray("Right"));
+    ui->comboNewDocView->addItem(tr("Rear"), QByteArray("Rear"));
+    ui->comboNewDocView->addItem(tr("Bottom"), QByteArray("Bottom"));
+    ui->comboNewDocView->addItem(tr("Custom"), QByteArray("Custom"));
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+    std::string camera = hGrp->GetASCII("NewDocumentCameraOrientation", "Trimetric");
+    int index = ui->comboNewDocView->findData(QByteArray(camera.c_str()));
+    if (index > -1) ui->comboNewDocView->setCurrentIndex(index);
+    if (camera == "Custom") {
+        ParameterGrp::handle hCustom = hGrp->GetGroup("Custom");
+        q0 = hCustom->GetFloat("Q0", q0);
+        q1 = hCustom->GetFloat("Q1", q1);
+        q2 = hCustom->GetFloat("Q2", q2);
+        q3 = hCustom->GetFloat("Q3", q3);
+    }
+
+    connect(ui->comboNewDocView, qOverload<int>(&QComboBox::currentIndexChanged),
+        this, &DlgSettingsNavigation::onNewDocViewChanged);
+}
+
+void DlgSettingsNavigation::translateOrientations()
+{
+    ui->comboNewDocView->setItemText(0, tr("Isometric"));
+    ui->comboNewDocView->setItemText(1, tr("Dimetric"));
+    ui->comboNewDocView->setItemText(2, tr("Trimetric"));
+    ui->comboNewDocView->setItemText(3, tr("Top"));
+    ui->comboNewDocView->setItemText(4, tr("Front"));
+    ui->comboNewDocView->setItemText(5, tr("Left"));
+    ui->comboNewDocView->setItemText(6, tr("Right"));
+    ui->comboNewDocView->setItemText(7, tr("Rear"));
+    ui->comboNewDocView->setItemText(8, tr("Bottom"));
+    ui->comboNewDocView->setItemText(9, tr("Custom"));
 }
 
 void DlgSettingsNavigation::resetSettingsToDefaults()
@@ -253,21 +288,21 @@ void DlgSettingsNavigation::onMouseButtonClicked()
         ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
     void* instance = Base::Type::createInstanceByName((const char*)data.toByteArray());
     std::unique_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
-    uimb.groupBox->setTitle(uimb.groupBox->title() + QString::fromLatin1(" ")
+    uimb.groupBox->setTitle(uimb.groupBox->title() + QStringLiteral(" ")
                             + ui->comboNavigationStyle->currentText());
     QString descr;
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::SELECTION));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    uimb.selectionLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.selectionLabel->setText(QStringLiteral("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::PANNING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    uimb.panningLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.panningLabel->setText(QStringLiteral("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::DRAGGING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    uimb.rotationLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.rotationLabel->setText(QStringLiteral("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::ZOOMING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    uimb.zoomingLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.zoomingLabel->setText(QStringLiteral("<b>%1</b>").arg(descr));
     dlg.exec();
 }
 
@@ -282,6 +317,7 @@ void DlgSettingsNavigation::changeEvent(QEvent *e)
         int corner = ui->naviCubeCorner->currentIndex();
         ui->retranslateUi(this);
         retranslate();
+        translateOrientations();
         ui->comboNavigationStyle->setCurrentIndex(navigation);
         ui->comboOrbitStyle->setCurrentIndex(orbit);
         ui->naviCubeCorner->setCurrentIndex(corner);
@@ -383,7 +419,7 @@ CameraDialog::CameraDialog(QWidget* parent)
 
     auto currentViewButton = new QPushButton(this);
     currentViewButton->setText(tr("Current view"));
-    currentViewButton->setObjectName(QString::fromLatin1("currentView"));
+    currentViewButton->setObjectName(QStringLiteral("currentView"));
     layout->addWidget(currentViewButton, 4, 1, 2, 1);
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);

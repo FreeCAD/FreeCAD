@@ -233,21 +233,15 @@ parser.add_argument(
     action="store_true",
     help="try to replace repetitive movements with LBL",
 )
-parser.add_argument(
-    "--first-lbl", default="1", help="change the first LBL number, default=1"
-)
+parser.add_argument("--first-lbl", default="1", help="change the first LBL number, default=1")
 parser.add_argument(
     "--no-show-editor",
     action="store_true",
     help="don't pop up editor before writing output",
 )
-parser.add_argument(
-    "--no-warns", action="store_true", help="don't pop up post-processor warnings"
-)
+parser.add_argument("--no-warns", action="store_true", help="don't pop up post-processor warnings")
 
 TOOLTIP_ARGS = parser.format_help()
-
-
 
 
 def processArguments(argstring):
@@ -332,9 +326,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             print(
-                "the object "
-                + obj.Name
-                + " is not a path. Please select only path and Compounds."
+                "the object " + obj.Name + " is not a path. Please select only path and Compounds."
             )
             return
 
@@ -463,9 +455,7 @@ def export(objectslist, filename, argstring):
             # Rapid movement
             if command == "G0":
                 Spindle_Status = ""
-                if (
-                    Spindle_Active == False
-                ):  # At first rapid movement we turn on spindle
+                if Spindle_Active == False:  # At first rapid movement we turn on spindle
                     Spindle_Status += str(MACHINE_SPINDLE_DIRECTION)  # Activate spindle
                     Spindle_Active = True
                 else:  # At last rapid movement we turn off spindle
@@ -482,9 +472,7 @@ def export(objectslist, filename, argstring):
 
             # Linear movement
             if command == "G1":
-                parsedElem = HEIDEN_Line(
-                    c.Parameters, Compensation, Feed, False, "", Cmd_Count
-                )
+                parsedElem = HEIDEN_Line(c.Parameters, Compensation, Feed, False, "", Cmd_Count)
                 if parsedElem is not None:
                     POSTGCODE.append(parsedElem)
 
@@ -604,9 +592,7 @@ def HEIDEN_ToolCall(tool_Params):
 
 
 # create a linear movement
-def HEIDEN_Line(
-    line_Params, line_comp, line_feed, line_rapid, line_M_funct, Cmd_Number
-):
+def HEIDEN_Line(line_Params, line_comp, line_feed, line_rapid, line_M_funct, Cmd_Number):
     global FEED_MAX_SPEED
     global COMPENSATION_DIFF_STATUS
     global G_FUNCTION_STORE
@@ -632,9 +618,7 @@ def HEIDEN_Line(
             H_Line_New[i] = 0
             if i in line_Params:
                 if line_Params[i] != 0 or line_M_funct != "":
-                    H_Line += " I" + HEIDEN_Format(
-                        i, line_Params[i]
-                    )  # print incremental
+                    H_Line += " I" + HEIDEN_Format(i, line_Params[i])  # print incremental
             # update to absolute position
             H_Line_New[i] = MACHINE_LAST_POSITION[i] + H_Line_New[i]
         else:  # absolute
@@ -648,21 +632,13 @@ def HEIDEN_Line(
         return None
 
     if COMPENSATION_DIFF_STATUS[0]:  # Diff from compensated ad not compensated path
-        if COMPENSATION_DIFF_STATUS[
-            1
-        ]:  # skip if already compensated, not active by now
+        if COMPENSATION_DIFF_STATUS[1]:  # skip if already compensated, not active by now
             Cmd_Number -= 1  # align
             # initialize like true, set false if not same point compensated and not compensated
             i = True
             for j in H_Line_Params[0]:
-                if (
-                    j in STORED_COMPENSATED_OBJ[Cmd_Number].Parameters
-                    and j in line_Params
-                ):
-                    if (
-                        STORED_COMPENSATED_OBJ[Cmd_Number].Parameters[j]
-                        != line_Params[j]
-                    ):
+                if j in STORED_COMPENSATED_OBJ[Cmd_Number].Parameters and j in line_Params:
+                    if STORED_COMPENSATED_OBJ[Cmd_Number].Parameters[j] != line_Params[j]:
                         i = False
             if i == False:
                 H_Line_Params[1][0] = "R" + line_comp
@@ -683,10 +659,7 @@ def HEIDEN_Line(
     if MACHINE_USE_FMAX and line_rapid:
         H_Line += " FMAX"
     else:
-        if (
-            MACHINE_SKIP_PARAMS == False
-            or H_Line_Params[1][1] != MACHINE_STORED_PARAMS[1]
-        ):
+        if MACHINE_SKIP_PARAMS == False or H_Line_Params[1][1] != MACHINE_STORED_PARAMS[1]:
             MACHINE_STORED_PARAMS[1] = H_Line_Params[1][1]
             H_Line += HEIDEN_Format(" F", H_Line_Params[1][1])
 
@@ -712,9 +685,7 @@ def HEIDEN_Line(
 
 
 # create a arc movement
-def HEIDEN_Arc(
-    arc_Params, arc_direction, arc_comp, arc_feed, arc_rapid, arc_M_funct, Cmd_Number
-):
+def HEIDEN_Arc(arc_Params, arc_direction, arc_comp, arc_feed, arc_rapid, arc_M_funct, Cmd_Number):
     global FEED_MAX_SPEED
     global COMPENSATION_DIFF_STATUS
     global G_FUNCTION_STORE
@@ -772,11 +743,7 @@ def HEIDEN_Arc(
     def Axis_Select(a, b, c, incr):
         if a in arc_Params and b in arc_Params:
             _H_ArcCenter = (
-                incr
-                + HEIDEN_Format(a, H_Arc_CC[a])
-                + " "
-                + incr
-                + HEIDEN_Format(b, H_Arc_CC[b])
+                incr + HEIDEN_Format(a, H_Arc_CC[a]) + " " + incr + HEIDEN_Format(b, H_Arc_CC[b])
             )
             if c in arc_Params and arc_Params[c] != MACHINE_LAST_POSITION[c]:
                 # if there are 3 axis movements it need to be polar arc
@@ -826,14 +793,8 @@ def HEIDEN_Arc(
             Cmd_Number -= 1  # align
             i = True
             for j in H_Arc_Params[0]:
-                if (
-                    j in STORED_COMPENSATED_OBJ[Cmd_Number].Parameters
-                    and j in arc_Params
-                ):
-                    if (
-                        STORED_COMPENSATED_OBJ[Cmd_Number].Parameters[j]
-                        != arc_Params[j]
-                    ):
+                if j in STORED_COMPENSATED_OBJ[Cmd_Number].Parameters and j in arc_Params:
+                    if STORED_COMPENSATED_OBJ[Cmd_Number].Parameters[j] != arc_Params[j]:
                         i = False
             if i == False:
                 H_Arc_Params[1][0] = "R" + arc_comp
@@ -854,10 +815,7 @@ def HEIDEN_Arc(
     if MACHINE_USE_FMAX and arc_rapid:
         H_ArcPoint += " FMAX"
     else:
-        if (
-            MACHINE_SKIP_PARAMS == False
-            or H_Arc_Params[1][1] != MACHINE_STORED_PARAMS[1]
-        ):
+        if MACHINE_SKIP_PARAMS == False or H_Arc_Params[1][1] != MACHINE_STORED_PARAMS[1]:
             MACHINE_STORED_PARAMS[1] = H_Arc_Params[1][1]
             H_ArcPoint += HEIDEN_Format(" F", H_Arc_Params[1][1])
 
@@ -936,11 +894,7 @@ def HEIDEN_PolarArc(pol_cc_X, pol_cc_Y, pol_X, pol_Y, pol_Z, pol_Axis, pol_Incr)
             pol_Angle = pol_Angle + 360
 
     pol_Result = (
-        "P"
-        + HEIDEN_Format(" PA+", pol_Angle)
-        + " "
-        + pol_Incr
-        + HEIDEN_Format(pol_Axis, pol_Z)
+        "P" + HEIDEN_Format(" PA+", pol_Angle) + " " + pol_Incr + HEIDEN_Format(pol_Axis, pol_Z)
     )
 
     return pol_Result
@@ -1014,9 +968,7 @@ def HEIDEN_Drill(
         # update Z value to R + actual_Z if first call
         if G_FUNCTION_STORE[drill_Type] == False:
             MACHINE_LAST_POSITION["Z"] = drill_Defs["DIST"] + MACHINE_LAST_POSITION["Z"]
-            drill_Movement = (
-                "L" + HEIDEN_Format(" Z", MACHINE_LAST_POSITION["Z"]) + drill_Rapid
-            )
+            drill_Movement = "L" + HEIDEN_Format(" Z", MACHINE_LAST_POSITION["Z"]) + drill_Rapid
             drill_Output.append(drill_Movement)
 
         # update X and Y position
@@ -1176,9 +1128,7 @@ def HEIDEN_LBL_Replace():
                     for j in range(CellStart, CellStop, -1):
                         POSTGCODE.pop(j)
                     # add the LBL calls
-                    POSTGCODE.insert(
-                        CellStop + 1, "CALL LBL " + str(FIRST_LBL - LBL_Shift)
-                    )
+                    POSTGCODE.insert(CellStop + 1, "CALL LBL " + str(FIRST_LBL - LBL_Shift))
         if Gcode_Lenght != len(POSTGCODE):
             LBL_Shift = 0
             Rows = len(STORED_LBL[0]) - 1

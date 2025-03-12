@@ -29,19 +29,22 @@
 #include <FCGlobal.h>
 #endif
 
-namespace App {
+namespace App
+{
 
 struct CellAddress;
 
-AppExport CellAddress stringToAddress(const char *strAddress, bool silent=false);
-AppExport int decodeColumn(const std::string &colstr, bool silent=false);
-AppExport int decodeRow(const std::string &rowstr, bool silent=false);
-AppExport bool validColumn(const std::string &colstr);
-AppExport int validRow(const std::string &rowstr);
+AppExport CellAddress stringToAddress(const char* strAddress, bool silent = false);
+AppExport int decodeColumn(const std::string& colstr, bool silent = false);
+AppExport int decodeRow(const std::string& rowstr, bool silent = false);
+AppExport bool validColumn(const std::string& colstr);
+AppExport int validRow(const std::string& rowstr);
 
-struct AppExport CellAddress {
+struct AppExport CellAddress
+{
     // See call of ENABLE_BITMASK_OPERATORS
-    enum class Cell {
+    enum class Cell
+    {
         Absolute = 1,
         ShowRow = 2,
         ShowColumn = 4,
@@ -49,41 +52,79 @@ struct AppExport CellAddress {
         ShowFull = Absolute | ShowRow | ShowColumn
     };
 
-    explicit CellAddress(int row = -1, int col = -1, bool absRow=false, bool absCol=false)
-        : _row(row), _col(col), _absRow(absRow), _absCol(absCol)
-    { }
+    explicit CellAddress(int row = -1, int col = -1, bool absRow = false, bool absCol = false)
+        : _row(row)
+        , _col(col)
+        , _absRow(absRow)
+        , _absCol(absCol)
+    {}
 
-    explicit CellAddress(const char * address) {
+    explicit CellAddress(const char* address)
+    {
         *this = stringToAddress(address);
     }
 
-    explicit CellAddress(const std::string & address) {
+    explicit CellAddress(const std::string& address)
+    {
         *this = stringToAddress(address.c_str());
     }
 
-    bool parseAbsoluteAddress(const char *txt);
+    bool parseAbsoluteAddress(const char* txt);
 
-    inline int row() const { return _row; }
+    inline int row() const
+    {
+        return _row;
+    }
 
-    inline int col() const { return _col; }
+    inline int col() const
+    {
+        return _col;
+    }
 
-    void setRow(int r, bool clip=false) { _row = (clip && r>=MAX_ROWS) ? MAX_ROWS-1 : r; }
+    void setRow(int r, bool clip = false)
+    {
+        _row = (clip && r >= MAX_ROWS) ? MAX_ROWS - 1 : r;
+    }
 
-    void setCol(int c, bool clip=false) { _col = (clip && c>=MAX_COLUMNS) ? MAX_COLUMNS-1 : c; }
+    void setCol(int c, bool clip = false)
+    {
+        _col = (clip && c >= MAX_COLUMNS) ? MAX_COLUMNS - 1 : c;
+    }
 
-    inline bool operator<(const CellAddress & other) const { return asInt() < other.asInt(); }
+    inline bool operator<(const CellAddress& other) const
+    {
+        return asInt() < other.asInt();
+    }
 
-    inline bool operator>(const CellAddress & other) const { return asInt() > other.asInt(); }
+    inline bool operator>(const CellAddress& other) const
+    {
+        return asInt() > other.asInt();
+    }
 
-    inline bool operator==(const CellAddress & other) const { return asInt() == other.asInt(); }
+    inline bool operator==(const CellAddress& other) const
+    {
+        return asInt() == other.asInt();
+    }
 
-    inline bool operator!=(const CellAddress & other) const { return asInt() != other.asInt(); }
+    inline bool operator!=(const CellAddress& other) const
+    {
+        return asInt() != other.asInt();
+    }
 
-    inline bool isValid() { return (row() >=0 && row() < MAX_ROWS && col() >= 0 && col() < MAX_COLUMNS); }
+    inline bool isValid()
+    {
+        return (row() >= 0 && row() < MAX_ROWS && col() >= 0 && col() < MAX_COLUMNS);
+    }
 
-    inline bool isAbsoluteRow() const { return _absRow; }
+    inline bool isAbsoluteRow() const
+    {
+        return _absRow;
+    }
 
-    inline bool isAbsoluteCol() const { return _absCol; }
+    inline bool isAbsoluteCol() const
+    {
+        return _absCol;
+    }
 
     std::string toString(Cell = Cell::ShowFull) const;
 
@@ -94,8 +135,10 @@ struct AppExport CellAddress {
     static const int MAX_COLUMNS;
 
 protected:
-
-    inline unsigned int asInt() const { return ((_row << 16) | _col); }
+    inline unsigned int asInt() const
+    {
+        return ((_row << 16) | _col);
+    }
 
     short _row;
     short _col;
@@ -115,13 +158,14 @@ protected:
  *
  */
 
-class AppExport Range {
+class AppExport Range
+{
 public:
-    explicit Range(const char *range, bool normalize=false);
+    explicit Range(const char* range, bool normalize = false);
 
-    Range(int _row_begin, int _col_begin, int _row_end, int _col_end, bool normalize=false);
+    Range(int _row_begin, int _col_begin, int _row_end, int _col_end, bool normalize = false);
 
-    Range(const CellAddress & from, const CellAddress & to, bool normalize=false);
+    Range(const CellAddress& from, const CellAddress& to, bool normalize = false);
 
     bool next();
 
@@ -129,49 +173,87 @@ public:
     void normalize();
 
     /** Current row */
-    inline int row() const { return row_curr; }
-
-    /** Current column */
-    inline int column() const { return col_curr; }
-
-    /** Row count */
-    inline int rowCount() const { return row_end - row_begin + 1; }
-
-    /** Column count */
-    inline int colCount() const { return col_end - col_begin + 1; }
-
-    /** Position of start of range */
-    inline CellAddress from() const { return CellAddress(row_begin, col_begin); }
-
-    /** Position of end of range */
-    inline CellAddress to() const { return CellAddress(row_end, col_end); }
-
-    /** Start of range as a string */
-    inline std::string fromCellString() const { return CellAddress(row_begin, col_begin).toString(); }
-
-    /** End of range as a string */
-    inline std::string toCellString() const { return CellAddress(row_end, col_end).toString(); }
-
-    /** Current cell as a string */
-    inline std::string address() const { return CellAddress(row_curr, col_curr).toString(); }
-
-    /** The raneg as a string */
-    inline std::string rangeString() const {
-        return CellAddress(row_begin, col_begin).toString() + ":" + CellAddress(row_end, col_end).toString();
+    inline int row() const
+    {
+        return row_curr;
     }
 
-    CellAddress operator*() const { return CellAddress(row_curr, col_curr); }
+    /** Current column */
+    inline int column() const
+    {
+        return col_curr;
+    }
 
-    inline bool operator<(const Range & other) const {
-        if(from() < other.from())
+    /** Row count */
+    inline int rowCount() const
+    {
+        return row_end - row_begin + 1;
+    }
+
+    /** Column count */
+    inline int colCount() const
+    {
+        return col_end - col_begin + 1;
+    }
+
+    /** Position of start of range */
+    inline CellAddress from() const
+    {
+        return CellAddress(row_begin, col_begin);
+    }
+
+    /** Position of end of range */
+    inline CellAddress to() const
+    {
+        return CellAddress(row_end, col_end);
+    }
+
+    /** Start of range as a string */
+    inline std::string fromCellString() const
+    {
+        return CellAddress(row_begin, col_begin).toString();
+    }
+
+    /** End of range as a string */
+    inline std::string toCellString() const
+    {
+        return CellAddress(row_end, col_end).toString();
+    }
+
+    /** Current cell as a string */
+    inline std::string address() const
+    {
+        return CellAddress(row_curr, col_curr).toString();
+    }
+
+    /** The raneg as a string */
+    inline std::string rangeString() const
+    {
+        return CellAddress(row_begin, col_begin).toString() + ":"
+            + CellAddress(row_end, col_end).toString();
+    }
+
+    CellAddress operator*() const
+    {
+        return CellAddress(row_curr, col_curr);
+    }
+
+    inline bool operator<(const Range& other) const
+    {
+        if (from() < other.from()) {
             return true;
-        if(from() > other.from())
+        }
+        if (from() > other.from()) {
             return false;
+        }
         return to() < other.to();
     }
 
     /** Number of elements in range */
-    inline int size() const { return (row_end - row_begin + 1) * (col_end - col_begin + 1); }
+    inline int size() const
+    {
+        return (row_end - row_begin + 1) * (col_end - col_begin + 1);
+    }
 
 private:
     int row_curr, col_curr;
@@ -179,8 +261,8 @@ private:
     int row_end, col_end;
 };
 
-}
+}  // namespace App
 
 ENABLE_BITMASK_OPERATORS(App::CellAddress::Cell)
 
-#endif // RANGE_H
+#endif  // RANGE_H

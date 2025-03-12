@@ -49,13 +49,13 @@
     <message>
       <location filename="../../Command.cpp" line="1491"/>
       <source>Regular solid...</source>
-      <translation>正多面体实体...</translation>
+      <translation>常规实体...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1492"/>
       <location filename="../../Command.cpp" line="1494"/>
       <source>Builds a regular solid</source>
-      <translation>建立正多面体实体</translation>
+      <translation>建立常规实体</translation>
     </message>
   </context>
   <context>
@@ -87,14 +87,14 @@
     <message>
       <location filename="../../Command.cpp" line="1335"/>
       <source>Decimation...</source>
-      <translation>十进制...</translation>
+      <translation>精简...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1336"/>
       <location filename="../../Command.cpp" line="1337"/>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Decimates a mesh</source>
-      <translation>破坏 网格</translation>
+      <translation>精简网格</translation>
     </message>
   </context>
   <context>
@@ -435,7 +435,7 @@
     <message>
       <location filename="../../Command.cpp" line="1184"/>
       <source>Refinement...</source>
-      <translation>精制...</translation>
+      <translation>优化...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1185"/>
@@ -782,34 +782,34 @@
       <translation>删除所选项</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="955"/>
-      <location filename="../../ViewProvider.cpp" line="1016"/>
+      <location filename="../../ViewProvider.cpp" line="963"/>
+      <location filename="../../ViewProvider.cpp" line="1024"/>
       <source>Cut</source>
       <translation>剪切</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="965"/>
-      <location filename="../../ViewProvider.cpp" line="1086"/>
+      <location filename="../../ViewProvider.cpp" line="973"/>
+      <location filename="../../ViewProvider.cpp" line="1094"/>
       <source>Trim</source>
       <translation>修剪</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1173"/>
+      <location filename="../../ViewProvider.cpp" line="1181"/>
       <source>Split</source>
       <translation>分割</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1246"/>
+      <location filename="../../ViewProvider.cpp" line="1254"/>
       <source>Segment</source>
       <translation>段</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1848"/>
+      <location filename="../../ViewProvider.cpp" line="1856"/>
       <source>Delete</source>
       <translation>删除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1977"/>
+      <location filename="../../ViewProvider.cpp" line="1985"/>
       <source>Fill hole</source>
       <translation>填充孔</translation>
     </message>
@@ -1177,7 +1177,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="14"/>
       <source>Regular Solid</source>
-      <translation>合法实体</translation>
+      <translation>常规实体</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
@@ -1348,12 +1348,12 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="82"/>
       <source>Always export mesh as model type in 3MF format even if not a solid</source>
-      <translation type="unfinished">Always export mesh as model type in 3MF format even if not a solid</translation>
+      <translation>始终将网格导出为 3MF 格式的 model 类型，即便其不是实体</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="85"/>
       <source>Export 3MF files as model type</source>
-      <translation type="unfinished">Export 3MF files as model type</translation>
+      <translation>导出 3MF 文件为 model 类型</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="114"/>
@@ -1714,7 +1714,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
       <source>Path</source>
-      <translation>刀轨</translation>
+      <translation>路径</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
@@ -2284,48 +2284,48 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>[点： %1，边线： %2，面： %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="801"/>
+      <location filename="../../ViewProvider.cpp" line="809"/>
       <source>Display components</source>
       <translation>显示组件</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="809"/>
+      <location filename="../../ViewProvider.cpp" line="817"/>
       <source>Display segments</source>
       <translation>显示段</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="817"/>
+      <location filename="../../ViewProvider.cpp" line="825"/>
       <source>Display colors</source>
       <translation>显示颜色</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1679"/>
+      <location filename="../../ViewProvider.cpp" line="1687"/>
       <location filename="../../ViewProviderCurvature.cpp" line="522"/>
       <source>Leave info mode</source>
       <translation>退出查询模式</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1746"/>
+      <location filename="../../ViewProvider.cpp" line="1754"/>
       <source>Index: %1</source>
       <translation>索引： %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1772"/>
+      <location filename="../../ViewProvider.cpp" line="1780"/>
       <source>Leave hole-filling mode</source>
       <translation>退出孔填充模式</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1822"/>
+      <location filename="../../ViewProvider.cpp" line="1830"/>
       <source>Leave removal mode</source>
       <translation>退出删除模式</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1823"/>
+      <location filename="../../ViewProvider.cpp" line="1831"/>
       <source>Delete selected faces</source>
       <translation>删除选定的面</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1824"/>
+      <location filename="../../ViewProvider.cpp" line="1832"/>
       <source>Clear selected faces</source>
       <translation>清除选中的面</translation>
     </message>
@@ -2355,7 +2355,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Cutting</source>
-      <translation>锯切</translation>
+      <translation>切割</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>

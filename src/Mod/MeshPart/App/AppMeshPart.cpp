@@ -38,7 +38,6 @@ PyMOD_INIT_FUNC(MeshPart)
     // load dependent module
     try {
         Base::Interpreter().loadModule("Part");
-        // Base::Interpreter().loadModule("Mesh");
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());

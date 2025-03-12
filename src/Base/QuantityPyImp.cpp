@@ -42,7 +42,7 @@ std::string QuantityPy::representation() const
     Py::Float flt(val);
     ret << static_cast<std::string>(flt.repr());
     if (!unit.isEmpty()) {
-        ret << " " << unit.getString().toUtf8().constData();
+        ret << " " << unit.getString();
     }
 
     return ret.str();
@@ -63,7 +63,7 @@ PyObject* QuantityPy::toStr(PyObject* args)
     ret.setf(std::ios::fixed, std::ios::floatfield);
     ret << val;
     if (!unit.isEmpty()) {
-        ret << " " << unit.getString().toUtf8().constData();
+        ret << " " << unit.getString();
     }
 
     return Py_BuildValue("s", ret.str().c_str());
@@ -127,10 +127,10 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();  // set by PyArg_ParseTuple()
     char* string {};
     if (PyArg_ParseTuple(args, "et", "utf-8", &string)) {
-        QString qstr = QString::fromUtf8(string);
+        std::string str(string);
         PyMem_Free(string);
         try {
-            *self = Quantity::parse(qstr);
+            *self = Quantity::parse(str);
         }
         catch (const Base::ParserError& e) {
             PyErr_SetString(PyExc_ValueError, e.what());
@@ -142,7 +142,7 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();  // set by PyArg_ParseTuple()
     if (PyArg_ParseTuple(args, "det", &f, "utf-8", &string)) {
-        QString unit = QString::fromUtf8(string);
+        std::string unit(string);
         PyMem_Free(string);
         try {
             *self = Quantity(f, unit);
@@ -161,15 +161,15 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 PyObject* QuantityPy::getUserPreferred(PyObject* /*args*/)
 {
-    QString uus;
+    std::string uus;
     double factor {};
     Py::Tuple res(3);
 
-    QString uss = getQuantityPtr()->getUserString(factor, uus);
+    auto uss = getQuantityPtr()->getUserString(factor, uus);
 
-    res[0] = Py::String(uss.toUtf8(), "utf-8");
+    res[0] = Py::String(uss, "utf-8");
     res[1] = Py::Float(factor);
-    res[2] = Py::String(uus.toUtf8(), "utf-8");
+    res[2] = Py::String(uus, "utf-8");
 
     return Py::new_reference_to(res);
 }
@@ -236,9 +236,9 @@ PyObject* QuantityPy::getValueAs(PyObject* args)
         PyErr_Clear();
         char* string {};
         if (PyArg_ParseTuple(args, "et", "utf-8", &string)) {
-            QString qstr = QString::fromUtf8(string);
+            std::string str(string);
             PyMem_Free(string);
-            quant = Quantity::parse(qstr);
+            quant = Quantity::parse(str);
         }
     }
 
@@ -633,7 +633,7 @@ void QuantityPy::setUnit(Py::Object arg)
 
 Py::String QuantityPy::getUserString() const
 {
-    return {getQuantityPtr()->getUserString().toUtf8(), "utf-8"};
+    return {getQuantityPtr()->getUserString(), "utf-8"};
 }
 
 Py::Dict QuantityPy::getFormat() const
@@ -641,9 +641,9 @@ Py::Dict QuantityPy::getFormat() const
     QuantityFormat fmt = getQuantityPtr()->getFormat();
 
     Py::Dict dict;
-    dict.setItem("Precision", Py::Int(fmt.precision));
+    dict.setItem("Precision", Py::Long(fmt.precision));
     dict.setItem("NumberFormat", Py::Char(fmt.toFormat()));
-    dict.setItem("Denominator", Py::Int(fmt.denominator));
+    dict.setItem("Denominator", Py::Long(fmt.denominator));
     return dict;
 }
 
@@ -652,14 +652,14 @@ void QuantityPy::setFormat(Py::Dict arg)
     QuantityFormat fmt = getQuantityPtr()->getFormat();
 
     if (arg.hasKey("Precision")) {
-        Py::Int prec(arg.getItem("Precision"));
+        Py::Long prec(arg.getItem("Precision"));
         fmt.precision = static_cast<int>(prec);
     }
 
     if (arg.hasKey("NumberFormat")) {
         Py::Object item = arg.getItem("NumberFormat");
         if (item.isNumeric()) {
-            int format = static_cast<int>(Py::Int(item));
+            int format = static_cast<int>(Py::Long(item));
             if (format < 0 || format > QuantityFormat::Scientific) {
                 throw Py::ValueError("Invalid format value");
             }
@@ -681,7 +681,7 @@ void QuantityPy::setFormat(Py::Dict arg)
     }
 
     if (arg.hasKey("Denominator")) {
-        Py::Int denom(arg.getItem("Denominator"));
+        Py::Long denom(arg.getItem("Denominator"));
         int fracInch = static_cast<int>(denom);
         // check that the value is positive and a power of 2
         if (fracInch <= 0) {

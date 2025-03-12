@@ -28,14 +28,15 @@
 
 class Ui_DlgProcessorChooser;
 
-namespace PathGui {
+namespace PathGui
+{
 
-class DlgProcessorChooser : public QDialog
+class DlgProcessorChooser: public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DlgProcessorChooser(std::vector<std::string> &scriptnames, bool withArguments = false);
+    explicit DlgProcessorChooser(std::vector<std::string>& scriptnames, bool withArguments = false);
     ~DlgProcessorChooser() override;
 
     std::string getProcessor();
@@ -50,6 +51,6 @@ private:
     std::string processor, arguments;
 };
 
-}
+}  // namespace PathGui
 
-#endif // PATH_DlgProcessorChooser_H
+#endif  // PATH_DlgProcessorChooser_H

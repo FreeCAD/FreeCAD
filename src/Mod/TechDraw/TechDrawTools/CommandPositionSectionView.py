@@ -49,7 +49,7 @@ class CommandPositionSectionView:
         return {'Pixmap': 'TechDraw_ExtensionPositionSectionView.svg',
                 'Accel': "",
                 'MenuText': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView", "Position Section View"),
-                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView", 
+                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView",
                   "Orthogonally align a section view with its source view:<br>\
                 - Select a single section view<br>\
                 - Click this tool<br>\

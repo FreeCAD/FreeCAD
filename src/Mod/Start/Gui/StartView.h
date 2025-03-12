@@ -31,6 +31,7 @@
 #include "../App/DisplayedFilesModel.h"
 #include "../App/RecentFilesModel.h"
 #include "../App/ExamplesModel.h"
+#include "../App/CustomFolderModel.h"
 
 class QCheckBox;
 class QEvent;
@@ -38,6 +39,8 @@ class QGridLayout;
 class QLabel;
 class QListView;
 class QScrollArea;
+class QStackedWidget;
+class QPushButton;
 
 namespace Gui
 {
@@ -54,7 +57,7 @@ class StartGuiExport StartView: public Gui::MDIView
     TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
 
 public:
-    StartView(Gui::Document* pcDocument, QWidget* parent);
+    StartView(QWidget* parent);
 
     const char* getName() const override
     {
@@ -67,6 +70,8 @@ public:
     void newAssemblyFile() const;
     void newDraftFile() const;
     void newArchFile() const;
+
+    bool onHasMsg(const char* pMsg) const override;
 
 public:
     enum class PostStartBehavior
@@ -82,24 +87,28 @@ protected:
     static void configureFileCardWidget(QListView* fileCardWidget);
     void configureRecentFilesListWidget(QListView* recentFilesListWidget, QLabel* recentFilesLabel);
     void configureExamplesListWidget(QListView* examplesListWidget);
+    void configureCustomFolderListWidget(QListView* customFolderListWidget);
 
     void postStart(PostStartBehavior behavior) const;
 
     void fileCardSelected(const QModelIndex& index);
-
     void showOnStartupChanged(bool checked);
+    void openFirstStartClicked();
+    void firstStartWidgetDismissed();
+
     QString fileCardStyle() const;
 
 private:
     void retranslateUi();
-
-    QScrollArea* _contents = nullptr;
+    QStackedWidget* _contents = nullptr;
     Start::RecentFilesModel _recentFilesModel;
     Start::ExamplesModel _examplesModel;
-
+    Start::CustomFolderModel _customFolderModel;
     QLabel* _newFileLabel;
     QLabel* _examplesLabel;
     QLabel* _recentFilesLabel;
+    QLabel* _customFolderLabel;
+    QPushButton* _openFirstStart;
     QCheckBox* _showOnStartupCheckBox;
 
 

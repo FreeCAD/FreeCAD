@@ -80,50 +80,55 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="192"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="170"/>
+        <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dlgPreferencesHelp.ui" line="202"/>
         <source>In a FreeCAD tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="170"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="180"/>
         <source>The documentation will open in your default web browser.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="246"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="221"/>
+        <source>The documentation will open in a dockable dialog inside the FreeCAD window,
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dlgPreferencesHelp.ui" line="256"/>
         <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="173"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="183"/>
         <source>In your default web browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="189"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="199"/>
         <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="211"/>
-        <source>The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open whlle working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="215"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="225"/>
         <source>In a separate, embeddable dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="231"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="241"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="239"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="249"/>
         <source>      Custom stylesheet:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -131,27 +136,27 @@ which allows you to keep it open whlle working in the 3D view. This requires the
 <context>
     <name>Help</name>
     <message>
-        <location filename="../../Help.py" line="72"/>
+        <location filename="../../Help.py" line="75"/>
         <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Help.py" line="76"/>
+        <location filename="../../Help.py" line="79"/>
         <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Help.py" line="80"/>
+        <location filename="../../Help.py" line="83"/>
         <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Help.py" line="84"/>
-        <source>There is no markdown renderer installed on your system, so this help page is rendered as is. Please install the markdown or pandoc python modules to improve the rendering of this page.</source>
+        <location filename="../../Help.py" line="87"/>
+        <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Help.py" line="113"/>
+        <location filename="../../Help.py" line="119"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
@@ -159,7 +164,7 @@ which allows you to keep it open whlle working in the 3D view. This requires the
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Help.py" line="389"/>
+        <location filename="../../Help.py" line="432"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>

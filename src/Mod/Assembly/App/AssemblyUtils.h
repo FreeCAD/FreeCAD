@@ -26,6 +26,9 @@
 #define ASSEMBLY_AssemblyUtils_H
 
 
+#include <GeomAbs_CurveType.hxx>
+#include <GeomAbs_SurfaceType.hxx>
+
 #include <Mod/Assembly/AssemblyGlobal.h>
 
 #include <App/FeaturePython.h>
@@ -43,7 +46,7 @@ class Placement;
 
 namespace Assembly
 {
-/*
+
 // This enum has to be the same as the one in JointObject.py
 enum class JointType
 {
@@ -52,19 +55,126 @@ enum class JointType
     Cylindrical,
     Slider,
     Ball,
-    Distance
+    Distance,
+    Parallel,
+    Perpendicular,
+    Angle,
+    RackPinion,
+    Screw,
+    Gears,
+    Belt,
 };
 
+enum class GeometryType
+{
+    Point = 0,
+
+    // Edges
+    Line = 1,
+    Curve = 2,
+    Circle = 3,
+
+    // Faces
+    Place = 4,
+    Cylinder = 5,
+    Sphere = 6,
+    Cone = 7,
+    Torus = 8,
+};
+
+enum class DistanceType
+{
+    PointPoint,
+
+    LineLine,
+    LineCircle,
+    CircleCircle,
+
+    PlanePlane,
+    PlaneCylinder,
+    PlaneSphere,
+    PlaneCone,
+    PlaneTorus,
+    CylinderCylinder,
+    CylinderSphere,
+    CylinderCone,
+    CylinderTorus,
+    ConeCone,
+    ConeTorus,
+    ConeSphere,
+    TorusTorus,
+    TorusSphere,
+    SphereSphere,
+
+    PointPlane,
+    PointCylinder,
+    PointSphere,
+    PointCone,
+    PointTorus,
+
+    LinePlane,
+    LineCylinder,
+    LineSphere,
+    LineCone,
+    LineTorus,
+
+    CurvePlane,
+    CurveCylinder,
+    CurveSphere,
+    CurveCone,
+    CurveTorus,
+
+    PointLine,
+    PointCurve,
+
+    Other,
+};
+
+class AssemblyObject;
+class JointGroup;
+
+AssemblyExport void swapJCS(const App::DocumentObject* joint);
+
+AssemblyExport bool
+isEdgeType(const App::DocumentObject* obj, const std::string& elName, const GeomAbs_CurveType type);
+AssemblyExport bool isFaceType(const App::DocumentObject* obj,
+                               const std::string& elName,
+                               const GeomAbs_SurfaceType type);
+AssemblyExport double getFaceRadius(const App::DocumentObject* obj, const std::string& elName);
+AssemblyExport double getEdgeRadius(const App::DocumentObject* obj, const std::string& elName);
+
+AssemblyExport DistanceType getDistanceType(App::DocumentObject* joint);
+AssemblyExport JointGroup* getJointGroup(const App::Part* part);
+
 // getters to get from properties
-double getJointDistance(App::DocumentObject* joint);
-JointType getJointType(App::DocumentObject* joint);
-const char* getElementFromProp(App::DocumentObject* obj, const char* propName);
-std::string getElementTypeFromProp(App::DocumentObject* obj, const char* propName);
-App::DocumentObject* getLinkObjFromProp(App::DocumentObject* joint, const char* propName);
-App::DocumentObject* getObjFromNameProp(App::DocumentObject* joint, const char* pObjName, const
-char* pPart); App::DocumentObject* getLinkedObjFromNameProp(App::DocumentObject* joint, const char*
-pObjName, const char* pPart); Base::Placement getPlacementFromProp(App::DocumentObject* obj, const
-char* propName);*/
+AssemblyExport void setJointActivated(const App::DocumentObject* joint, bool val);
+AssemblyExport bool getJointActivated(const App::DocumentObject* joint);
+AssemblyExport double getJointDistance(const App::DocumentObject* joint);
+AssemblyExport double getJointDistance2(const App::DocumentObject* joint);
+AssemblyExport JointType getJointType(const App::DocumentObject* joint);
+AssemblyExport std::string getElementFromProp(const App::DocumentObject* obj, const char* propName);
+AssemblyExport std::string getElementTypeFromProp(const App::DocumentObject* obj,
+                                                  const char* propName);
+AssemblyExport App::DocumentObject* getObjFromProp(const App::DocumentObject* joint,
+                                                   const char* propName);
+AssemblyExport App::DocumentObject* getObjFromRef(const App::DocumentObject* obj,
+                                                  const std::string& sub);
+AssemblyExport App::DocumentObject* getObjFromRef(const App::PropertyXLinkSub* prop);
+AssemblyExport App::DocumentObject* getObjFromRef(const App::DocumentObject* joint,
+                                                  const char* propName);
+AssemblyExport App::DocumentObject* getLinkedObjFromRef(const App::DocumentObject* joint,
+                                                        const char* propName);
+AssemblyExport App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
+                                                         App::DocumentObject* obj,
+                                                         const std::string& sub);
+AssemblyExport App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
+                                                         const App::PropertyXLinkSub* prop);
+AssemblyExport App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
+                                                         App::DocumentObject* joint,
+                                                         const char* pName);
+AssemblyExport std::vector<std::string> getSubAsList(const App::PropertyXLinkSub* prop);
+AssemblyExport std::vector<std::string> getSubAsList(const App::DocumentObject* joint,
+                                                     const char* propName);
 
 }  // namespace Assembly
 

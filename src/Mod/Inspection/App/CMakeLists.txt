@@ -2,9 +2,15 @@ include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
 )
@@ -38,6 +44,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(Inspection SHARED ${Inspection_SRCS} ${Inspection_Scripts})
 target_link_libraries(Inspection ${Inspection_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Inspection)
+endif()
 
 fc_target_copy_resource_flat(Inspection
     ${CMAKE_CURRENT_SOURCE_DIR}

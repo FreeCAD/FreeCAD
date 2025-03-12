@@ -22,7 +22,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <algorithm>
+#include <array>
 #include <cmath>
+#include <cstring>
 #include <limits>
 #include <sstream>
 #endif
@@ -35,24 +38,28 @@
 using namespace Base;
 
 // clang-format off
-static inline void checkPow(UnitSignature sig, double exp)
-{
-    auto isInt = [](double value) {
-        return std::fabs(std::round(value) - value) < std::numeric_limits<double>::epsilon();
-    };
-    if (!isInt(sig.Length * exp) ||
-        !isInt(sig.Mass * exp) ||
-        !isInt(sig.Time * exp) ||
-        !isInt(sig.ElectricCurrent * exp) ||
-        !isInt(sig.ThermodynamicTemperature * exp) ||
-        !isInt(sig.AmountOfSubstance * exp) ||
-        !isInt(sig.LuminousIntensity * exp) ||
-        !isInt(sig.Angle * exp)) {
-        throw Base::UnitsMismatchError("pow() of unit not possible");
-    }
-}
+constexpr int UnitSignatureLengthBits                   = 4;
+constexpr int UnitSignatureMassBits                     = 4;
+constexpr int UnitSignatureTimeBits                     = 4;
+constexpr int UnitSignatureElectricCurrentBits          = 4;
+constexpr int UnitSignatureThermodynamicTemperatureBits = 4;
+constexpr int UnitSignatureAmountOfSubstanceBits        = 4;
+constexpr int UnitSignatureLuminousIntensityBits        = 4;
+constexpr int UnitSignatureAngleBits                    = 4;
 
-static inline void checkRange(const char * op, int length, int mass, int time, int electricCurrent,
+struct UnitSignature {
+    int32_t Length: UnitSignatureLengthBits;
+    int32_t Mass: UnitSignatureMassBits;
+    int32_t Time: UnitSignatureTimeBits;
+    int32_t ElectricCurrent: UnitSignatureElectricCurrentBits;
+    int32_t ThermodynamicTemperature: UnitSignatureThermodynamicTemperatureBits;
+    int32_t AmountOfSubstance: UnitSignatureAmountOfSubstanceBits;
+    int32_t LuminousIntensity: UnitSignatureLuminousIntensityBits;
+    int32_t Angle: UnitSignatureAngleBits;
+};
+
+static inline uint32_t sigVal(const std::string &op,
+                              int length, int mass, int time, int electricCurrent,
                               int thermodynamicTemperature, int amountOfSubstance, int luminousIntensity, int angle)
 {
     if ( ( length                   >=  (1 << (UnitSignatureLengthBits                   - 1)) ) ||
@@ -63,7 +70,7 @@ static inline void checkRange(const char * op, int length, int mass, int time, i
          ( amountOfSubstance        >=  (1 << (UnitSignatureAmountOfSubstanceBits        - 1)) ) ||
          ( luminousIntensity        >=  (1 << (UnitSignatureLuminousIntensityBits        - 1)) ) ||
          ( angle                    >=  (1 << (UnitSignatureAngleBits                    - 1)) ) ) {
-        throw Base::OverflowError((std::string("Unit overflow in ") + std::string(op)).c_str());
+        throw Base::OverflowError(("Unit overflow in " + op).c_str());
     }
     if ( ( length                   <  -(1 << (UnitSignatureLengthBits                   - 1)) ) ||
          ( mass                     <  -(1 << (UnitSignatureMassBits                     - 1)) ) ||
@@ -73,9 +80,24 @@ static inline void checkRange(const char * op, int length, int mass, int time, i
          ( amountOfSubstance        <  -(1 << (UnitSignatureAmountOfSubstanceBits        - 1)) ) ||
          ( luminousIntensity        <  -(1 << (UnitSignatureLuminousIntensityBits        - 1)) ) ||
          ( angle                    <  -(1 << (UnitSignatureAngleBits                    - 1)) ) ) {
-        throw Base::UnderflowError((std::string("Unit underflow in ") + std::string(op)).c_str());
+        throw Base::UnderflowError(("Unit underflow in " + op).c_str());
     }
+
+    UnitSignature Sig;
+    Sig.Length                   = length;
+    Sig.Mass                     = mass;
+    Sig.Time                     = time;
+    Sig.ElectricCurrent          = electricCurrent;
+    Sig.ThermodynamicTemperature = thermodynamicTemperature;
+    Sig.AmountOfSubstance        = amountOfSubstance;
+    Sig.LuminousIntensity        = luminousIntensity;
+    Sig.Angle                    = angle;
+
+    uint32_t ret;
+    memcpy(&ret, &Sig, sizeof(ret));
+    return ret;
 }
+
 
 Unit::Unit(int8_t Length, //NOLINT
            int8_t Mass,
@@ -86,257 +108,358 @@ Unit::Unit(int8_t Length, //NOLINT
            int8_t LuminousIntensity,
            int8_t Angle)
 {
-    checkRange("unit",
-               Length,
-               Mass,
-               Time,
-               ElectricCurrent,
-               ThermodynamicTemperature,
-               AmountOfSubstance,
-               LuminousIntensity,
-               Angle);
-
-    Sig.Length                   = Length;
-    Sig.Mass                     = Mass;
-    Sig.Time                     = Time;
-    Sig.ElectricCurrent          = ElectricCurrent;
-    Sig.ThermodynamicTemperature = ThermodynamicTemperature;
-    Sig.AmountOfSubstance        = AmountOfSubstance;
-    Sig.LuminousIntensity        = LuminousIntensity;
-    Sig.Angle                    = Angle;
+    Val = sigVal("unit",
+                 Length,
+                 Mass,
+                 Time,
+                 ElectricCurrent,
+                 ThermodynamicTemperature,
+                 AmountOfSubstance,
+                 LuminousIntensity,
+                 Angle);
 }
 
 
 Unit::Unit() //NOLINT
 {
-    Sig.Length                   = 0;
-    Sig.Mass                     = 0;
-    Sig.Time                     = 0;
-    Sig.ElectricCurrent          = 0;
-    Sig.ThermodynamicTemperature = 0;
-    Sig.AmountOfSubstance        = 0;
-    Sig.LuminousIntensity        = 0;
-    Sig.Angle                    = 0;
+    Val = 0;
 }
 
-Unit::Unit(const QString& expr)  // NOLINT
+Unit::Unit(const std::string& expr)  // NOLINT
 {
     try {
         *this = Quantity::parse(expr).getUnit();
     }
     catch (const Base::ParserError&) {
-        Sig.Length                   = 0;
-        Sig.Mass                     = 0;
-        Sig.Time                     = 0;
-        Sig.ElectricCurrent          = 0;
-        Sig.ThermodynamicTemperature = 0;
-        Sig.AmountOfSubstance        = 0;
-        Sig.LuminousIntensity        = 0;
-        Sig.Angle                    = 0;
+        Val = 0;
     }
 }
 
 Unit Unit::pow(double exp) const
 {
-    checkPow(Sig, exp);
-    checkRange("pow()",
-               static_cast<int>(Sig.Length * exp),
-               static_cast<int>(Sig.Mass * exp),
-               static_cast<int>(Sig.Time * exp),
-               static_cast<int>(Sig.ElectricCurrent * exp),
-               static_cast<int>(Sig.ThermodynamicTemperature * exp),
-               static_cast<int>(Sig.AmountOfSubstance * exp),
-               static_cast<int>(Sig.LuminousIntensity * exp),
-               static_cast<int>(Sig.Angle * exp));
+    UnitSignature sig;
+    memcpy(&sig, &Val, sizeof(Val));
+    auto isInt = [](double value) {
+        return std::fabs(std::round(value) - value) < std::numeric_limits<double>::epsilon();
+    };
+    if (!isInt(sig.Length                   * exp) ||
+        !isInt(sig.Mass                     * exp) ||
+        !isInt(sig.Time                     * exp) ||
+        !isInt(sig.ElectricCurrent          * exp) ||
+        !isInt(sig.ThermodynamicTemperature * exp) ||
+        !isInt(sig.AmountOfSubstance        * exp) ||
+        !isInt(sig.LuminousIntensity        * exp) ||
+        !isInt(sig.Angle                    * exp))
+        throw Base::UnitsMismatchError("pow() of unit not possible");
 
     Unit result;
-    result.Sig.Length                   = static_cast<int8_t>(Sig.Length                    * exp);
-    result.Sig.Mass                     = static_cast<int8_t>(Sig.Mass                      * exp);
-    result.Sig.Time                     = static_cast<int8_t>(Sig.Time                      * exp);
-    result.Sig.ElectricCurrent          = static_cast<int8_t>(Sig.ElectricCurrent           * exp);
-    result.Sig.ThermodynamicTemperature = static_cast<int8_t>(Sig.ThermodynamicTemperature  * exp);
-    result.Sig.AmountOfSubstance        = static_cast<int8_t>(Sig.AmountOfSubstance         * exp);
-    result.Sig.LuminousIntensity        = static_cast<int8_t>(Sig.LuminousIntensity         * exp);
-    result.Sig.Angle                    = static_cast<int8_t>(Sig.Angle                     * exp);
+    result.Val = sigVal("pow()",
+               sig.Length                   * exp,
+               sig.Mass                     * exp,
+               sig.Time                     * exp,
+               sig.ElectricCurrent          * exp,
+               sig.ThermodynamicTemperature * exp,
+               sig.AmountOfSubstance        * exp,
+               sig.LuminousIntensity        * exp,
+               sig.Angle                    * exp);
 
     return result;
 }
 
-bool Unit::isEmpty()const
+Unit Unit::sqrt() const
 {
-    return (this->Sig.Length == 0)
-        && (this->Sig.Mass == 0)
-        && (this->Sig.Time == 0)
-        && (this->Sig.ElectricCurrent == 0)
-        && (this->Sig.ThermodynamicTemperature == 0)
-        && (this->Sig.AmountOfSubstance == 0)
-        && (this->Sig.LuminousIntensity == 0)
-        && (this->Sig.Angle == 0);
+    UnitSignature sig;
+    memcpy(&sig, &Val, sizeof(Val));
+    // All components of unit must be either zero or dividable by 2
+    if (!((sig.Length                   % 2) == 0) &&
+         ((sig.Mass                     % 2) == 0) &&
+         ((sig.Time                     % 2) == 0) &&
+         ((sig.ElectricCurrent          % 2) == 0) &&
+         ((sig.ThermodynamicTemperature % 2) == 0) &&
+         ((sig.AmountOfSubstance        % 2) == 0) &&
+         ((sig.LuminousIntensity        % 2) == 0) &&
+         ((sig.Angle                    % 2) == 0))
+        throw Base::UnitsMismatchError("sqrt() needs even dimensions");
+
+    Unit result;
+    result.Val = sigVal("sqrt()",
+          sig.Length                   >> 1,
+          sig.Mass                     >> 1,
+          sig.Time                     >> 1,
+          sig.ElectricCurrent          >> 1,
+          sig.ThermodynamicTemperature >> 1,
+          sig.AmountOfSubstance        >> 1,
+          sig.LuminousIntensity        >> 1,
+          sig.Angle                    >> 1);
+
+    return result;
+}
+
+Unit Unit::cbrt() const
+{
+    UnitSignature sig;
+    memcpy(&sig, &Val, sizeof(Val));
+    // All components of unit must be either zero or dividable by 3
+    if (!((sig.Length                   % 3) == 0) &&
+         ((sig.Mass                     % 3) == 0) &&
+         ((sig.Time                     % 3) == 0) &&
+         ((sig.ElectricCurrent          % 3) == 0) &&
+         ((sig.ThermodynamicTemperature % 3) == 0) &&
+         ((sig.AmountOfSubstance        % 3) == 0) &&
+         ((sig.LuminousIntensity        % 3) == 0) &&
+         ((sig.Angle                    % 3) == 0))
+        throw Base::UnitsMismatchError("cbrt() needs dimensions to be multiples of 3");
+
+    Unit result;
+    result.Val = sigVal("cbrt()",
+          sig.Length                   / 3,
+          sig.Mass                     / 3,
+          sig.Time                     / 3,
+          sig.ElectricCurrent          / 3,
+          sig.ThermodynamicTemperature / 3,
+          sig.AmountOfSubstance        / 3,
+          sig.LuminousIntensity        / 3,
+          sig.Angle                    / 3);
+
+    return result;
+}
+
+int Unit::length() const
+{
+    UnitSignature sig;
+    memcpy(&sig, &Val, sizeof(Val));
+    return sig.Length;
+}
+
+int Unit::mass() const
+{
+    UnitSignature sig;
+    memcpy(&sig, &Val, sizeof(Val));
+    return sig.Mass;
+}
+
+
+int Unit::time() const
+{
+    UnitSignature sig;
+    memcpy(&sig, &Val, sizeof(Val));
+    return sig.Time;
+}
+
+int Unit::electricCurrent() const
+{
+    UnitSignature sig;
+    memcpy(&sig, &Val, sizeof(Val));
+    return sig.ElectricCurrent;
+}
+
+int Unit::thermodynamicTemperature() const
+{
+    UnitSignature sig;
+    memcpy(&sig, &Val, sizeof(Val));
+    return sig.ThermodynamicTemperature;
+}
+
+int Unit::amountOfSubstance() const
+{
+    UnitSignature sig;
+    memcpy(&sig, &Val, sizeof(Val));
+    return sig.AmountOfSubstance;
+}
+
+int Unit::luminousIntensity() const
+{
+    UnitSignature sig;
+    memcpy(&sig, &Val, sizeof(Val));
+    return sig.LuminousIntensity;
+}
+
+int Unit::angle() const
+{
+    UnitSignature sig;
+    memcpy(&sig, &Val, sizeof(Val));
+    return sig.Angle;
+}
+
+bool Unit::isEmpty() const
+{
+    return Val == 0;
+}
+
+int Unit::operator [](int index) const
+{
+    UnitSignature sig;
+    memcpy(&sig, &Val, sizeof(Val));
+
+    switch (index) {
+       case 0:
+          return sig.Length;
+       case 1:
+          return sig.Mass;
+       case 2:
+          return sig.Time;
+       case 3:
+          return sig.ElectricCurrent;
+       case 4:
+          return sig.ThermodynamicTemperature;
+       case 5:
+          return sig.AmountOfSubstance;
+       case 6:
+          return sig.LuminousIntensity;
+       case 7:
+          return sig.Angle;
+       default:
+          throw Base::IndexError("Unknown Unit element");
+    }
 }
 
 bool Unit::operator ==(const Unit& that) const
 {
-    return (this->Sig.Length == that.Sig.Length)
-        && (this->Sig.Mass == that.Sig.Mass)
-        && (this->Sig.Time == that.Sig.Time)
-        && (this->Sig.ElectricCurrent == that.Sig.ElectricCurrent)
-        && (this->Sig.ThermodynamicTemperature == that.Sig.ThermodynamicTemperature)
-        && (this->Sig.AmountOfSubstance == that.Sig.AmountOfSubstance)
-        && (this->Sig.LuminousIntensity == that.Sig.LuminousIntensity)
-        && (this->Sig.Angle == that.Sig.Angle);
+    return Val == that.Val;
 }
-
 
 Unit Unit::operator *(const Unit &right) const
 {
-    checkRange("* operator",
-               Sig.Length +right.Sig.Length,
-               Sig.Mass + right.Sig.Mass,
-               Sig.Time + right.Sig.Time,
-               Sig.ElectricCurrent + right.Sig.ElectricCurrent,
-               Sig.ThermodynamicTemperature + right.Sig.ThermodynamicTemperature,
-               Sig.AmountOfSubstance + right.Sig.AmountOfSubstance,
-               Sig.LuminousIntensity + right.Sig.LuminousIntensity,
-               Sig.Angle + right.Sig.Angle);
-
     Unit result;
-    result.Sig.Length                   = Sig.Length                    + right.Sig.Length;
-    result.Sig.Mass                     = Sig.Mass                      + right.Sig.Mass;
-    result.Sig.Time                     = Sig.Time                      + right.Sig.Time;
-    result.Sig.ElectricCurrent          = Sig.ElectricCurrent           + right.Sig.ElectricCurrent;
-    result.Sig.ThermodynamicTemperature = Sig.ThermodynamicTemperature  + right.Sig.ThermodynamicTemperature;
-    result.Sig.AmountOfSubstance        = Sig.AmountOfSubstance         + right.Sig.AmountOfSubstance;
-    result.Sig.LuminousIntensity        = Sig.LuminousIntensity         + right.Sig.LuminousIntensity;
-    result.Sig.Angle                    = Sig.Angle                     + right.Sig.Angle;
+    UnitSignature sig, rsig;
+
+    memcpy(&sig, &Val, sizeof(Val));
+    memcpy(&rsig, &right.Val, sizeof(right.Val));
+    result.Val = sigVal("* operator",
+                        sig.Length                   + rsig.Length,
+                        sig.Mass                     + rsig.Mass,
+                        sig.Time                     + rsig.Time,
+                        sig.ElectricCurrent          + rsig.ElectricCurrent,
+                        sig.ThermodynamicTemperature + rsig.ThermodynamicTemperature,
+                        sig.AmountOfSubstance        + rsig.AmountOfSubstance,
+                        sig.LuminousIntensity        + rsig.LuminousIntensity,
+                        sig.Angle                    + rsig.Angle);
 
     return result;
 }
 
 Unit Unit::operator /(const Unit &right) const
 {
-    checkRange("/ operator",
-               Sig.Length - right.Sig.Length,
-               Sig.Mass - right.Sig.Mass,
-               Sig.Time - right.Sig.Time,
-               Sig.ElectricCurrent - right.Sig.ElectricCurrent,
-               Sig.ThermodynamicTemperature - right.Sig.ThermodynamicTemperature,
-               Sig.AmountOfSubstance - right.Sig.AmountOfSubstance,
-               Sig.LuminousIntensity - right.Sig.LuminousIntensity,
-               Sig.Angle - right.Sig.Angle);
-
     Unit result;
-    result.Sig.Length                   = Sig.Length                    - right.Sig.Length;
-    result.Sig.Mass                     = Sig.Mass                      - right.Sig.Mass;
-    result.Sig.Time                     = Sig.Time                      - right.Sig.Time;
-    result.Sig.ElectricCurrent          = Sig.ElectricCurrent           - right.Sig.ElectricCurrent;
-    result.Sig.ThermodynamicTemperature = Sig.ThermodynamicTemperature  - right.Sig.ThermodynamicTemperature;
-    result.Sig.AmountOfSubstance        = Sig.AmountOfSubstance         - right.Sig.AmountOfSubstance;
-    result.Sig.LuminousIntensity        = Sig.LuminousIntensity         - right.Sig.LuminousIntensity;
-    result.Sig.Angle                    = Sig.Angle                     - right.Sig.Angle;
+    UnitSignature sig, rsig;
+
+    memcpy(&sig, &Val, sizeof(Val));
+    memcpy(&rsig, &right.Val, sizeof(right.Val));
+    result.Val = sigVal("/ operator",
+                        sig.Length                   - rsig.Length,
+                        sig.Mass                     - rsig.Mass,
+                        sig.Time                     - rsig.Time,
+                        sig.ElectricCurrent          - rsig.ElectricCurrent,
+                        sig.ThermodynamicTemperature - rsig.ThermodynamicTemperature,
+                        sig.AmountOfSubstance        - rsig.AmountOfSubstance,
+                        sig.LuminousIntensity        - rsig.LuminousIntensity,
+                        sig.Angle                    - rsig.Angle);
 
     return result;
 }
 
-QString Unit::getString() const
+std::string Unit::getString() const
 {
-    std::stringstream ret;
-
     if (isEmpty()) {
         return {};
     }
 
-    if (Sig.Length                  > 0 ||
-        Sig.Mass                    > 0 ||
-        Sig.Time                    > 0 ||
-        Sig.ElectricCurrent         > 0 ||
-        Sig.ThermodynamicTemperature> 0 ||
-        Sig.AmountOfSubstance       > 0 ||
-        Sig.LuminousIntensity       > 0 ||
-        Sig.Angle                   > 0 ){
+    std::stringstream ret;
+    UnitSignature sig;
+    memcpy(&sig, &Val, sizeof(Val));
+
+    if (sig.Length                   > 0 ||
+        sig.Mass                     > 0 ||
+        sig.Time                     > 0 ||
+        sig.ElectricCurrent          > 0 ||
+        sig.ThermodynamicTemperature > 0 ||
+        sig.AmountOfSubstance        > 0 ||
+        sig.LuminousIntensity        > 0 ||
+        sig.Angle                    > 0 ) {
 
         bool mult = false;
-        if (Sig.Length > 0) {
+        if (sig.Length > 0) {
             mult = true;
             ret << "mm";
-            if (Sig.Length > 1) {
-                ret << "^" << Sig.Length;
+            if (sig.Length > 1) {
+                ret << "^" << sig.Length;
             }
         }
 
-        if (Sig.Mass > 0) {
+        if (sig.Mass > 0) {
             if (mult) {
-                ret<<'*';
+                ret << '*';
             }
             mult = true;
             ret << "kg";
-            if (Sig.Mass > 1) {
-                ret << "^" << Sig.Mass;
+            if (sig.Mass > 1) {
+                ret << "^" << sig.Mass;
             }
         }
 
-        if (Sig.Time > 0) {
+        if (sig.Time > 0) {
             if (mult) {
-                ret<<'*';
+                ret << '*';
             }
             mult = true;
             ret << "s";
-            if (Sig.Time > 1) {
-                ret << "^" << Sig.Time;
+            if (sig.Time > 1) {
+                ret << "^" << sig.Time;
             }
         }
 
-        if (Sig.ElectricCurrent > 0) {
+        if (sig.ElectricCurrent > 0) {
             if (mult) {
-                ret<<'*';
+                ret << '*';
             }
             mult = true;
             ret << "A";
-            if (Sig.ElectricCurrent > 1) {
-                ret << "^" << Sig.ElectricCurrent;
+            if (sig.ElectricCurrent > 1) {
+                ret << "^" << sig.ElectricCurrent;
             }
         }
 
-        if (Sig.ThermodynamicTemperature > 0) {
+        if (sig.ThermodynamicTemperature > 0) {
             if (mult) {
-                ret<<'*';
+                ret << '*';
             }
             mult = true;
             ret << "K";
-            if (Sig.ThermodynamicTemperature > 1) {
-                ret << "^" << Sig.ThermodynamicTemperature;
+            if (sig.ThermodynamicTemperature > 1) {
+                ret << "^" << sig.ThermodynamicTemperature;
             }
         }
 
-        if (Sig.AmountOfSubstance > 0){
+        if (sig.AmountOfSubstance > 0) {
             if (mult) {
-                ret<<'*';
+                ret << '*';
             }
             mult = true;
             ret << "mol";
-            if (Sig.AmountOfSubstance > 1) {
-                ret << "^" << Sig.AmountOfSubstance;
+            if (sig.AmountOfSubstance > 1) {
+                ret << "^" << sig.AmountOfSubstance;
             }
         }
 
-        if (Sig.LuminousIntensity > 0) {
+        if (sig.LuminousIntensity > 0) {
             if (mult) {
-                ret<<'*';
+                ret << '*';
             }
             mult = true;
             ret << "cd";
-            if (Sig.LuminousIntensity > 1) {
-                ret << "^" << Sig.LuminousIntensity;
+            if (sig.LuminousIntensity > 1) {
+                ret << "^" << sig.LuminousIntensity;
             }
         }
 
-        if (Sig.Angle > 0) {
+        if (sig.Angle > 0) {
             if (mult) {
-                ret<<'*';
+                ret << '*';
             }
-            mult = true; //NOLINT
+            mult = true;
             ret << "deg";
-            if (Sig.Angle > 1) {
-                ret << "^" << Sig.Angle;
+            if (sig.Angle > 1) {
+                ret << "^" << sig.Angle;
             }
         }
     }
@@ -344,113 +467,113 @@ QString Unit::getString() const
         ret << "1";
     }
 
-    if (Sig.Length                  < 0 ||
-        Sig.Mass                    < 0 ||
-        Sig.Time                    < 0 ||
-        Sig.ElectricCurrent         < 0 ||
-        Sig.ThermodynamicTemperature< 0 ||
-        Sig.AmountOfSubstance       < 0 ||
-        Sig.LuminousIntensity       < 0 ||
-        Sig.Angle                   < 0 ){
+    if (sig.Length                   < 0 ||
+        sig.Mass                     < 0 ||
+        sig.Time                     < 0 ||
+        sig.ElectricCurrent          < 0 ||
+        sig.ThermodynamicTemperature < 0 ||
+        sig.AmountOfSubstance        < 0 ||
+        sig.LuminousIntensity        < 0 ||
+        sig.Angle                    < 0 ) {
         ret << "/";
 
         int nnom = 0;
-        nnom += Sig.Length<0?1:0;
-        nnom += Sig.Mass<0?1:0;
-        nnom += Sig.Time<0?1:0;
-        nnom += Sig.ElectricCurrent<0?1:0;
-        nnom += Sig.ThermodynamicTemperature<0?1:0;
-        nnom += Sig.AmountOfSubstance<0?1:0;
-        nnom += Sig.LuminousIntensity<0?1:0;
-        nnom += Sig.Angle<0?1:0;
+        nnom += sig.Length                   < 0 ? 1 : 0;
+        nnom += sig.Mass                     < 0 ? 1 : 0;
+        nnom += sig.Time                     < 0 ? 1 : 0;
+        nnom += sig.ElectricCurrent          < 0 ? 1 : 0;
+        nnom += sig.ThermodynamicTemperature < 0 ? 1 : 0;
+        nnom += sig.AmountOfSubstance        < 0 ? 1 : 0;
+        nnom += sig.LuminousIntensity        < 0 ? 1 : 0;
+        nnom += sig.Angle                    < 0 ? 1 : 0;
 
         if (nnom > 1) {
             ret << '(';
         }
 
-        bool mult=false;
-        if (Sig.Length < 0) {
+        bool mult = false;
+        if (sig.Length < 0) {
             ret << "mm";
             mult = true;
-            if (Sig.Length < -1) {
-                ret << "^" << abs(Sig.Length);
+            if (sig.Length < -1) {
+                ret << "^" << abs(sig.Length);
             }
         }
 
-        if (Sig.Mass < 0) {
+        if (sig.Mass < 0) {
             if (mult) {
-                ret<<'*';
+                ret << '*';
             }
             mult = true;
             ret << "kg";
-            if (Sig.Mass < -1) {
-                ret << "^" << abs(Sig.Mass);
+            if (sig.Mass < -1) {
+                ret << "^" << abs(sig.Mass);
             }
         }
 
-        if (Sig.Time < 0) {
+        if (sig.Time < 0) {
             if (mult) {
-                ret<<'*';
+                ret << '*';
             }
             mult = true;
             ret << "s";
-            if (Sig.Time < -1) {
-                ret << "^" << abs(Sig.Time);
+            if (sig.Time < -1) {
+                ret << "^" << abs(sig.Time);
             }
         }
 
-        if (Sig.ElectricCurrent < 0) {
+        if (sig.ElectricCurrent < 0) {
             if (mult) {
-                ret<<'*';
+                ret << '*';
             }
             mult = true;
             ret << "A";
-            if (Sig.ElectricCurrent < -1) {
-                ret << "^" << abs(Sig.ElectricCurrent);
+            if (sig.ElectricCurrent < -1) {
+                ret << "^" << abs(sig.ElectricCurrent);
             }
         }
 
-        if (Sig.ThermodynamicTemperature < 0) {
+        if (sig.ThermodynamicTemperature < 0) {
             if (mult) {
-                ret<<'*';
+                ret << '*';
             }
             mult = true;
             ret << "K";
-            if (Sig.ThermodynamicTemperature < -1) {
-                ret << "^" << abs(Sig.ThermodynamicTemperature);
+            if (sig.ThermodynamicTemperature < -1) {
+                ret << "^" << abs(sig.ThermodynamicTemperature);
             }
         }
 
-        if (Sig.AmountOfSubstance < 0) {
+        if (sig.AmountOfSubstance < 0) {
             if (mult) {
-                ret<<'*';
+                ret << '*';
             }
             mult = true;
             ret << "mol";
-            if (Sig.AmountOfSubstance < -1) {
-                ret << "^" << abs(Sig.AmountOfSubstance);
+            if (sig.AmountOfSubstance < -1) {
+                ret << "^" << abs(sig.AmountOfSubstance);
             }
         }
 
-        if (Sig.LuminousIntensity < 0) {
+        if (sig.LuminousIntensity < 0) {
             if (mult) {
-                ret<<'*';
+                ret << '*';
             }
             mult = true;
             ret << "cd";
-            if (Sig.LuminousIntensity < -1) {
-                ret << "^" << abs(Sig.LuminousIntensity);
+            if (sig.LuminousIntensity < -1) {
+                ret << "^" << abs(sig.LuminousIntensity);
             }
         }
 
-        if (Sig.Angle < 0) {
+        if (sig.Angle < 0) {
             if (mult) {
-                ret<<'*';
+                ret << '*';
             }
-            mult = true; //NOLINT
+            mult = true;
             ret << "deg";
-            if (Sig.Angle < -1) {
-                ret << "^" << abs(Sig.Angle);
+            if (sig.Angle < -1) {
+                ret << "^" << abs(sig.Angle);
             }
         }
 
@@ -459,175 +582,79 @@ QString Unit::getString() const
         }
     }
 
-    return QString::fromUtf8(ret.str().c_str());
+    return ret.str();
 }
 
-QString Unit::getTypeString() const
+std::string Unit::getTypeString() const
 {
-    if (*this == Unit::Acceleration) {
-        return QString::fromLatin1("Acceleration");
-    }
-    if (*this == Unit::AmountOfSubstance) {
-        return QString::fromLatin1("AmountOfSubstance");
-    }
-    if (*this == Unit::Angle) {
-        return QString::fromLatin1("Angle");
-    }
-    if (*this == Unit::AngleOfFriction) {
-        return QString::fromLatin1("AngleOfFriction");
-    }
-    if (*this == Unit::Area) {
-        return QString::fromLatin1("Area");
-    }
-    if (*this == Unit::CurrentDensity) {
-        return QString::fromLatin1("CurrentDensity");
-    }
-    if (*this == Unit::Density) {
-        return QString::fromLatin1("Density");
-    }
-    if (*this == Unit::DissipationRate) {
-        return QString::fromLatin1("DissipationRate");
-    }
-    if (*this == Unit::DynamicViscosity) {
-        return QString::fromLatin1("DynamicViscosity");
-    }
-    if (*this == Unit::ElectricalCapacitance) {
-        return QString::fromLatin1("ElectricalCapacitance");
-    }
-    if (*this == Unit::ElectricalConductance) {
-        return QString::fromLatin1("ElectricalConductance");
-    }
-    if (*this == Unit::ElectricalConductivity) {
-        return QString::fromLatin1("ElectricalConductivity");
-    }
-    if (*this == Unit::ElectricalInductance) {
-        return QString::fromLatin1("ElectricalInductance");
-    }
-    if (*this == Unit::ElectricalResistance) {
-        return QString::fromLatin1("ElectricalResistance");
-    }
-    if (*this == Unit::ElectricCharge) {
-        return QString::fromLatin1("ElectricCharge");
-    }
-    if (*this == Unit::ElectricCurrent) {
-        return QString::fromLatin1("ElectricCurrent");
-    }
-    if (*this == Unit::ElectricPotential) {
-        return QString::fromLatin1("ElectricPotential");
-    }
-    if (*this == Unit::Frequency) {
-        return QString::fromLatin1("Frequency");
-    }
-    if (*this == Unit::Force) {
-        return QString::fromLatin1("Force");
-    }
-    if (*this == Unit::HeatFlux) {
-        return QString::fromLatin1("HeatFlux");
-    }
-    if (*this == Unit::InverseArea) {
-        return QString::fromLatin1("InverseArea");
-    }
-    if (*this == Unit::InverseLength) {
-        return QString::fromLatin1("InverseLength");
-    }
-    if (*this == Unit::InverseVolume) {
-        return QString::fromLatin1("InverseVolume");
-    }
-    if (*this == Unit::KinematicViscosity) {
-        return QString::fromLatin1("KinematicViscosity");
-    }
-    if (*this == Unit::Length) {
-        return QString::fromLatin1("Length");
-    }
-    if (*this == Unit::LuminousIntensity) {
-        return QString::fromLatin1("LuminousIntensity");
-    }
-    if (*this == Unit::MagneticFieldStrength) {
-        return QString::fromLatin1("MagneticFieldStrength");
-    }
-    if (*this == Unit::MagneticFlux) {
-        return QString::fromLatin1("MagneticFlux");
-    }
-    if (*this == Unit::MagneticFluxDensity) {
-        return QString::fromLatin1("MagneticFluxDensity");
-    }
-    if (*this == Unit::Magnetization) {
-        return QString::fromLatin1("Magnetization");
-    }
-    if (*this == Unit::Mass) {
-        return QString::fromLatin1("Mass");
-    }
-    if (*this == Unit::Pressure) {
-        return QString::fromLatin1("Pressure");
-    }
-    if (*this == Unit::Power) {
-        return QString::fromLatin1("Power");
-    }
-    if (*this == Unit::ShearModulus) {
-        return QString::fromLatin1("ShearModulus");
-    }
-    if (*this == Unit::SpecificEnergy) {
-        return QString::fromLatin1("SpecificEnergy");
-    }
-    if (*this == Unit::SpecificHeat) {
-        return QString::fromLatin1("SpecificHeat");
-    }
-    if (*this == Unit::Stiffness) {
-        return QString::fromLatin1("Stiffness");
-    }
-    if (*this == Unit::StiffnessDensity) {
-        return QString::fromLatin1("StiffnessDensity");
-    }
-    if (*this == Unit::Stress) {
-        return QString::fromLatin1("Stress");
-    }
-    if (*this == Unit::Temperature) {
-        return QString::fromLatin1("Temperature");
-    }
-    if (*this == Unit::ThermalConductivity) {
-        return QString::fromLatin1("ThermalConductivity");
-    }
-    if (*this == Unit::ThermalExpansionCoefficient) {
-        return QString::fromLatin1("ThermalExpansionCoefficient");
-    }
-    if (*this == Unit::ThermalTransferCoefficient) {
-        return QString::fromLatin1("ThermalTransferCoefficient");
-    }
-    if (*this == Unit::TimeSpan) {
-        return QString::fromLatin1("TimeSpan");
-    }
-    if (*this == Unit::UltimateTensileStrength) {
-        return QString::fromLatin1("UltimateTensileStrength");
-    }
-    if (*this == Unit::VacuumPermittivity) {
-        return QString::fromLatin1("VacuumPermittivity");
-    }
-    if (*this == Unit::Velocity) {
-        return QString::fromLatin1("Velocity");
-    }
-    if (*this == Unit::Volume) {
-        return QString::fromLatin1("Volume");
-    }
-    if (*this == Unit::VolumeFlowRate) {
-        return QString::fromLatin1("VolumeFlowRate");
-    }
-    if (*this == Unit::VolumetricThermalExpansionCoefficient) {
-        return QString::fromLatin1("VolumetricThermalExpansionCoefficient");
-    }
-    if (*this == Unit::Work) {
-        return QString::fromLatin1("Work");
-    }
-    if (*this == Unit::YieldStrength) {
-        return QString::fromLatin1("YieldStrength");
-    }
-    if (*this == Unit::YoungsModulus) {
-        return QString::fromLatin1("YoungsModulus");
-    }
-    if (*this == Unit::Moment) {
-        return QString::fromLatin1("Moment");
-    }
+    static std::array<std::pair<Unit, std::string>, 56> unitSpecs {{
+        { Unit::Acceleration, "Acceleration" },
+        { Unit::AmountOfSubstance, "AmountOfSubstance" },
+        { Unit::Angle, "Angle" },
+        { Unit::AngleOfFriction, "AngleOfFriction" },
+        { Unit::Area, "Area" },
+        { Unit::CurrentDensity, "CurrentDensity" },
+        { Unit::Density, "Density" },
+        { Unit::DissipationRate, "DissipationRate" },
+        { Unit::DynamicViscosity, "DynamicViscosity" },
+        { Unit::ElectricalCapacitance, "ElectricalCapacitance" },
+        { Unit::ElectricalConductance, "ElectricalConductance" },
+        { Unit::ElectricalConductivity, "ElectricalConductivity" },
+        { Unit::ElectricalInductance, "ElectricalInductance" },
+        { Unit::ElectricalResistance, "ElectricalResistance" },
+        { Unit::ElectricCharge, "ElectricCharge" },
+        { Unit::SurfaceChargeDensity, "SurfaceChargeDensity" },
+        { Unit::ElectricCurrent, "ElectricCurrent" },
+        { Unit::ElectricPotential, "ElectricPotential" },
+        { Unit::ElectromagneticPotential, "ElectromagneticPotential" },
+        { Unit::Frequency, "Frequency" },
+        { Unit::Force, "Force" },
+        { Unit::HeatFlux, "HeatFlux" },
+        { Unit::InverseArea, "InverseArea" },
+        { Unit::InverseLength, "InverseLength" },
+        { Unit::InverseVolume, "InverseVolume" },
+        { Unit::KinematicViscosity, "KinematicViscosity" },
+        { Unit::Length, "Length" },
+        { Unit::LuminousIntensity, "LuminousIntensity" },
+        { Unit::MagneticFieldStrength, "MagneticFieldStrength" },
+        { Unit::MagneticFlux, "MagneticFlux" },
+        { Unit::MagneticFluxDensity, "MagneticFluxDensity" },
+        { Unit::Magnetization, "Magnetization" },
+        { Unit::Mass, "Mass" },
+        { Unit::Pressure, "Pressure" },
+        { Unit::Power, "Power" },
+        { Unit::ShearModulus, "ShearModulus" },
+        { Unit::SpecificEnergy, "SpecificEnergy" },
+        { Unit::SpecificHeat, "SpecificHeat" },
+        { Unit::Stiffness, "Stiffness" },
+        { Unit::StiffnessDensity, "StiffnessDensity" },
+        { Unit::Stress, "Stress" },
+        { Unit::Temperature, "Temperature" },
+        { Unit::ThermalConductivity, "ThermalConductivity" },
+        { Unit::ThermalExpansionCoefficient, "ThermalExpansionCoefficient" },
+        { Unit::ThermalTransferCoefficient, "ThermalTransferCoefficient" },
+        { Unit::TimeSpan, "TimeSpan" },
+        { Unit::UltimateTensileStrength, "UltimateTensileStrength" },
+        { Unit::VacuumPermittivity, "VacuumPermittivity" },
+        { Unit::Velocity, "Velocity" },
+        { Unit::Volume, "Volume" },
+        { Unit::VolumeFlowRate, "VolumeFlowRate" },
+        { Unit::VolumetricThermalExpansionCoefficient, "VolumetricThermalExpansionCoefficient" },
+        { Unit::Work, "Work" },
+        { Unit::YieldStrength, "YieldStrength" },
+        { Unit::YoungsModulus, "YoungsModulus" },
+        { Unit::Moment, "Moment" },
+    }};
 
-    return {};
+    const auto spec =
+        std::find_if(unitSpecs.begin(), unitSpecs.end(), [&](const auto& pair) {
+            return pair.first == *this;
+        });
+
+    if (spec == std::end(unitSpecs))
+        return "";
+
+    return spec->second;
 }
 
 // SI base units
@@ -655,7 +682,9 @@ const Unit Unit::ElectricalConductivity     (-3, -1, 3, 2);
 const Unit Unit::ElectricalInductance       (2, 1, -2, -2);
 const Unit Unit::ElectricalResistance       (2, 1, -3, -2);
 const Unit Unit::ElectricCharge             (0, 0, 1, 1);
+const Unit Unit::SurfaceChargeDensity       (-2, 0, 1, 1);
 const Unit Unit::ElectricPotential          (2, 1, -3, -1);
+const Unit Unit::ElectromagneticPotential   (1, 1, -2, -1);
 const Unit Unit::Force                      (1, 1, -2);
 const Unit Unit::Frequency                  (0, 0, -1);
 const Unit Unit::HeatFlux                   (0, 1, -3, 0, 0);

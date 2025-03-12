@@ -25,11 +25,13 @@
 # include <QContextMenuEvent>
 # include <QMenu>
 # include <QPainter>
+# include <QRegularExpression>
 # include <QShortcut>
 # include <QTextCursor>
 #endif
 
 #include <Base/Parameter.h>
+#include <Gui/Command.h>
 
 #include "PythonEditor.h"
 #include "Application.h"
@@ -65,26 +67,49 @@ struct PythonEditorP
  *  syntax highlighting for the Python language.
  */
 PythonEditor::PythonEditor(QWidget* parent)
-  : TextEditor(parent)
+    : PythonTextEditor(parent)
 {
     d = new PythonEditorP();
     this->setSyntaxHighlighter(new PythonSyntaxHighlighter(this));
 
     // set accelerators
     auto comment = new QShortcut(this);
-    comment->setKey(QKeySequence(QString::fromLatin1("ALT+C")));
+    comment->setKey(QKeySequence(QStringLiteral("ALT+C")));
 
     auto uncomment = new QShortcut(this);
-    uncomment->setKey(QKeySequence(QString::fromLatin1("ALT+U")));
+    uncomment->setKey(QKeySequence(QStringLiteral("ALT+U")));
+
+    auto execInConsole = new QShortcut(this);
+    execInConsole->setKey(QKeySequence(QStringLiteral("ALT+SHIFT+P")));
 
     connect(comment, &QShortcut::activated, this, &PythonEditor::onComment);
     connect(uncomment, &QShortcut::activated, this, &PythonEditor::onUncomment);
+    connect(execInConsole, &QShortcut::activated, this, &PythonEditor::onExecuteInConsole);
 }
 
 /** Destroys the object and frees any allocated resources */
 PythonEditor::~PythonEditor()
 {
     delete d;
+}
+
+void PythonEditor::OnChange(Base::Subject<const char*> &rCaller, const char* sReason)
+{
+    const auto & rGrp = static_cast<ParameterGrp &>(rCaller);
+
+    if (strcmp(sReason, "EnableBlockCursor") == 0 ||
+        strcmp(sReason, "FontSize") == 0 ||
+        strcmp(sReason, "Font") == 0) {
+        bool block = rGrp.GetBool("EnableBlockCursor", false);
+        if (block) {
+            setCursorWidth(QFontMetrics(font()).averageCharWidth());
+        }
+        else {
+            setCursorWidth(1);
+        }
+    }
+
+    TextEditor::OnChange(rCaller, sReason);
 }
 
 void PythonEditor::setFileName(const QString& fn)
@@ -150,9 +175,12 @@ void PythonEditor::contextMenuEvent ( QContextMenuEvent * e )
     if (!isReadOnly()) {
         menu->addSeparator();
         QAction* comment = menu->addAction( tr("Comment"), this, &PythonEditor::onComment);
-        comment->setShortcut(QKeySequence(QString::fromLatin1("ALT+C")));
+        comment->setShortcut(QKeySequence(QStringLiteral("ALT+C")));
         QAction* uncomment = menu->addAction( tr("Uncomment"), this, &PythonEditor::onUncomment);
-        uncomment->setShortcut(QKeySequence(QString::fromLatin1("ALT+U")));
+        uncomment->setShortcut(QKeySequence(QStringLiteral("ALT+U")));
+        QAction* execInConsole = menu->addAction( tr("Execute in console"),
+                                                  this, &PythonEditor::onExecuteInConsole);
+        execInConsole->setShortcut(QKeySequence(QStringLiteral("ALT+Shift+P")));
     }
 
     menu->exec(e->globalPos());
@@ -171,8 +199,8 @@ void PythonEditor::keyPressEvent(QKeyEvent* e)
         ParameterGrp::handle hPrefGrp = getWindowParameter();
         int indent = hPrefGrp->GetInt( "IndentSize", 4 );
         bool space = hPrefGrp->GetBool( "Spaces", true );
-        QString ch = space ? QString::fromLatin1(" ")
-                           : QString::fromLatin1("\t");
+        QString ch = space ? QStringLiteral(" ")
+                           : QStringLiteral("\t");
 
         QTextCursor cursor = textCursor();
         QString currentLineText = cursor.block().text();
@@ -205,7 +233,7 @@ void PythonEditor::keyPressEvent(QKeyEvent* e)
         setTextCursor(cursor);
         return; //skip default handler
     }
-    TextEditor::keyPressEvent(e); //wasn't enter key, so let base class handle it
+    PythonTextEditor::keyPressEvent(e); //wasn't enter key, so let base class handle it
 }
 
 void PythonEditor::onComment()
@@ -254,6 +282,70 @@ void PythonEditor::onUncomment()
     }
 
     cursor.endEditBlock();
+}
+
+void PythonEditor::onExecuteInConsole()
+{
+    QTextCursor cursor = textCursor();
+    int selStart = cursor.selectionStart();
+    int selEnd = cursor.selectionEnd();
+    QTextBlock block;
+    QString selectedCode;
+
+    for (block = document()->begin(); block.isValid(); block = block.next()) {
+        int pos = block.position();
+        int off = block.length() - 1;
+        if (pos >= selStart || pos + off >= selStart) {
+            if (pos + 1 > selEnd) {
+                break;
+            }
+
+            QString lineText = block.text();
+            selectedCode.append(lineText + QLatin1String("\n"));
+        }
+    }
+
+    if (!selectedCode.isEmpty()) {
+
+        /** Dedent the block of code so that the first selected
+         *  line has no indentation, but the remaining lines
+         *  keep their indentation relative to that first line.
+         */
+
+        // get the leading whitespace of the first line
+        QStringList lines = selectedCode.split(QLatin1Char('\n'));
+        QString firstLineIndent;
+        for (const QString& line : lines) {
+            if (!line.isEmpty()) {
+                int leadingWhitespace = line.indexOf(QRegularExpression(QLatin1String("\\S")));
+                if (leadingWhitespace > 0) {
+                    firstLineIndent = line.left(leadingWhitespace);
+                }
+                break;
+            }
+        }
+
+        // remove that first line whitespace from all the lines
+        for (QString& line : lines) {
+            if (!line.isEmpty() && line.startsWith(firstLineIndent)) {
+                line.remove(0, firstLineIndent.length());
+            }
+        }
+
+        // join the lines into a single QString so we can execute as a single block
+        QString dedentedCode = lines.join(QLatin1Char('\n'));
+
+        if (!dedentedCode.isEmpty()) {
+            try {
+                Gui::Command::doCommand(Gui::Command::Doc, dedentedCode.toStdString().c_str());
+            } catch (const Base::Exception& e) {
+                QString errorMessage = QString::fromStdString(e.what());
+                Base::Console().Error("Error executing Python code:\n%s\n", errorMessage.toUtf8().constData());
+            } catch (...) {
+                Base::Console().Error("An unknown error occurred while executing Python code.\n");
+            }
+        }
+    }
 }
 
 // ------------------------------------------------------------------------

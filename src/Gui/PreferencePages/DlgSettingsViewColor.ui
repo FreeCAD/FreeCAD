@@ -342,9 +342,9 @@
           </property>
           <property name="color" stdset="0">
            <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>0</blue>
+            <red>94</red>
+            <green>170</green>
+            <blue>35</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
@@ -373,11 +373,11 @@
           <property name="toolTip">
            <string>Background color for active containers in tree view</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color" stdset="0">rgb(60, 145, 252)
            <color>
-            <red>230</red>
-            <green>230</green>
-            <blue>255</blue>
+            <red>60</red>
+            <green>145</green>
+            <blue>252</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
@@ -497,29 +497,32 @@
          </widget>
         </item>
         <item row="1" column="1">
-       <widget class="Gui::PrefSpinBox" name="CbLabelTextSize">
-        <property name="toolTip">
-         <string>Color Bar (used in Mesh and FEM Wbs) Label Text Size</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-        <property name="minimum">
-         <number>4</number>
-        </property>
-        <property name="maximum">
-         <number>36</number>
-        </property>
-        <property name="value">
-         <number>13</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>CbLabelTextSize</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
+         <widget class="Gui::PrefSpinBox" name="CbLabelTextSize">
+          <property name="toolTip">
+           <string>Color Bar (used in Mesh and FEM Wbs) Label Text Size</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string> pt</string>
+          </property>
+          <property name="minimum">
+           <number>4</number>
+          </property>
+          <property name="maximum">
+           <number>36</number>
+          </property>
+          <property name="value">
+           <number>13</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CbLabelTextSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

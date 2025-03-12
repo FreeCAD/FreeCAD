@@ -145,7 +145,8 @@ def createExtension(obj, extObj, extFeature, extSub):
 
 def readObjExtensionFeature(obj):
     """readObjExtensionFeature(obj)...
-    Return three item string tuples (base name, feature, subfeature) extracted from obj.ExtensionFeature"""
+    Return three item string tuples (base name, feature, subfeature) extracted from obj.ExtensionFeature
+    """
     extensions = []
 
     for extObj, features in obj.ExtensionFeature:
@@ -218,8 +219,7 @@ class Extension(object):
 
     def __init__(self, op, obj, feature, sub, length, direction):
         Path.Log.debug(
-            "Extension(%s, %s, %s, %.2f, %s"
-            % (obj.Label, feature, sub, length, direction)
+            "Extension(%s, %s, %s, %.2f, %s" % (obj.Label, feature, sub, length, direction)
         )
         self.op = op
         self.obj = obj
@@ -247,14 +247,10 @@ class Extension(object):
             e2.translate(off)
             e2 = Path.Geom.flipEdge(e2)
             e1 = Part.Edge(
-                Part.LineSegment(
-                    e0.valueAt(e0.LastParameter), e2.valueAt(e2.FirstParameter)
-                )
+                Part.LineSegment(e0.valueAt(e0.LastParameter), e2.valueAt(e2.FirstParameter))
             )
             e3 = Part.Edge(
-                Part.LineSegment(
-                    e2.valueAt(e2.LastParameter), e0.valueAt(e0.FirstParameter)
-                )
+                Part.LineSegment(e2.valueAt(e2.LastParameter), e0.valueAt(e0.FirstParameter))
             )
             wire = Part.Wire([e0, e1, e2, e3])
             self.wire = wire
@@ -411,9 +407,7 @@ class Extension(object):
 
             else:
                 Path.Log.debug("else is NOT Part.Circle")
-                Path.Log.track(
-                    self.feature, self.sub, type(edge.Curve), endPoints(edge)
-                )
+                Path.Log.track(self.feature, self.sub, type(edge.Curve), endPoints(edge))
                 direction = self._getDirection(sub)
                 if direction is None:
                     return None
@@ -517,9 +511,7 @@ def SetupProperties():
 
 
 # Extend outline face generation function
-def getExtendOutlineFace(
-    base_shape, face, extension, remHoles=False, offset_tolerance=1e-4
-):
+def getExtendOutlineFace(base_shape, face, extension, remHoles=False, offset_tolerance=1e-4):
     """getExtendOutlineFace(obj, base_shape, face, extension, remHoles) ...
     Creates an extended face for the pocket, taking into consideration lateral
     collision with the greater base shape.
@@ -605,9 +597,7 @@ def getWaterlineFace(base_shape, face):
         final_depth=baseBB.ZMin,
         user_depths=None,
     )
-    env = PathUtils.getEnvelope(
-        partshape=base_shape, subshape=None, depthparams=depthparams
-    )
+    env = PathUtils.getEnvelope(partshape=base_shape, subshape=None, depthparams=depthparams)
     # Get top face(s) of envelope at face height
     rawList = list()
     for f in env.Faces:
@@ -615,9 +605,7 @@ def getWaterlineFace(base_shape, face):
             rawList.append(f)
     # make compound and extrude downward
     rawComp = Part.makeCompound(rawList)
-    rawCompExtNeg = rawComp.extrude(
-        FreeCAD.Vector(0.0, 0.0, baseBB.ZMin - faceHeight - 1.0)
-    )
+    rawCompExtNeg = rawComp.extrude(FreeCAD.Vector(0.0, 0.0, baseBB.ZMin - faceHeight - 1.0))
     # Cut off bottom of base shape at face height
     topSolid = base_shape.cut(rawCompExtNeg)
 

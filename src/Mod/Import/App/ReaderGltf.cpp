@@ -24,6 +24,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <boost/core/ignore_unused.hpp>
 #include <Standard_Version.hxx>
 #if OCC_VERSION_HEX >= 0x070500
 #include <BRep_Builder.hxx>
@@ -73,7 +74,7 @@ void ReaderGltf::read(Handle(TDocStd_Document) hDoc)
     processDocument(hDoc);
 
 #else
-    (void)hDoc;
+    boost::ignore_unused(hDoc);
     throw Base::RuntimeError("gITF support requires OCCT 7.5.0 or later");
 #endif
 }
@@ -100,6 +101,8 @@ void ReaderGltf::processDocument(Handle(TDocStd_Document) hDoc)
             }
         }
     }
+#else
+    boost::ignore_unused(hDoc);
 #endif
 }
 
@@ -138,6 +141,9 @@ TopoDS_Shape ReaderGltf::processSubShapes(Handle(TDocStd_Document) hDoc,
             aColorTool->SetColor(faceLabel, rgba, XCAFDoc_ColorSurf);
         }
     }
+#else
+    boost::ignore_unused(hDoc);
+    boost::ignore_unused(subShapeLabels);
 #endif
 
     return {std::move(compound)};

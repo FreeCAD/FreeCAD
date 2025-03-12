@@ -70,6 +70,7 @@ protected Q_SLOTS:
     void onManagePreferencePacksClicked();
     void onImportConfigClicked();
     void onThemeChanged(int index);
+    void onLinkActivated(const QString& link);
 
 public Q_SLOTS:
     void onUnitSystemIndexChanged(int index);
@@ -84,6 +85,10 @@ private:
     bool setLanguage(); //Returns true if language has been changed
     void setNumberLocale(bool force = false);
     void setDecimalPointConversion(bool on);
+    void retranslateUnits();
+    int getCurrentIconSize() const;
+    void addIconSizes(int current);
+    void translateIconSizes();
 
 private:
     int localeIndex;

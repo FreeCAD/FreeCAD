@@ -22,62 +22,64 @@
 
 import TestApp
 
-from Tests.TestCAMSanity import TestCAMSanity
-from Tests.TestPathProfile import TestPathProfile
+from CAMTests.TestCAMSanity import TestCAMSanity
+from CAMTests.TestPathProfile import TestPathProfile
 
-from Tests.TestPathAdaptive import TestPathAdaptive
-from Tests.TestPathCore import TestPathCore
-from Tests.TestPathDepthParams import depthTestCases
-from Tests.TestPathDressupDogbone import TestDressupDogbone
-from Tests.TestPathDressupDogboneII import TestDressupDogboneII
-from Tests.TestPathDressupHoldingTags import TestHoldingTags
-from Tests.TestPathDrillable import TestPathDrillable
-from Tests.TestPathDrillGenerator import TestPathDrillGenerator
-from Tests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
-from Tests.TestPathGeom import TestPathGeom
-from Tests.TestPathLanguage import TestPathLanguage
-from Tests.TestPathOpDeburr import TestPathOpDeburr
+from CAMTests.TestPathAdaptive import TestPathAdaptive
+from CAMTests.TestPathCore import TestPathCore
+from CAMTests.TestPathDepthParams import depthTestCases
+from CAMTests.TestPathDressupDogbone import TestDressupDogbone
+from CAMTests.TestPathDressupDogboneII import TestDressupDogboneII
+from CAMTests.TestPathDressupHoldingTags import TestHoldingTags
+from CAMTests.TestPathDrillable import TestPathDrillable
+from CAMTests.TestPathDrillGenerator import TestPathDrillGenerator
+from CAMTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
+from CAMTests.TestPathGeom import TestPathGeom
+from CAMTests.TestPathLanguage import TestPathLanguage
+from CAMTests.TestPathOpDeburr import TestPathOpDeburr
+from CAMTests.TestPathHelpers import TestPathHelpers
+from CAMTests.TestPathHelix import TestPathHelix
+from CAMTests.TestPathHelixGenerator import TestPathHelixGenerator
+from CAMTests.TestPathLog import TestPathLog
+from CAMTests.TestPathOpUtil import TestPathOpUtil
 
-# from Tests.TestPathHelix import TestPathHelix
-from Tests.TestPathHelpers import TestPathHelpers
-from Tests.TestPathHelixGenerator import TestPathHelixGenerator
-from Tests.TestPathLog import TestPathLog
-from Tests.TestPathOpUtil import TestPathOpUtil
+# from CAMTests.TestPathPost import TestPathPost
+from CAMTests.TestPathPost import TestPathPostUtils
+from CAMTests.TestPathPost import TestBuildPostList
 
-#from Tests.TestPathPost import TestPathPost
-from Tests.TestPathPost import TestPathPostUtils
-from Tests.TestPathPost import TestBuildPostList
-# from Tests.TestPathPost import TestOutputNameSubstitution
-from Tests.TestPathPost import TestPostProcessorFactory
-from Tests.TestPathPost import TestResolvingPostProcessorName
-from Tests.TestPathPost import TestFileNameGenerator
+# from CAMTests.TestPathPost import TestOutputNameSubstitution
+from CAMTests.TestPathPost import TestPostProcessorFactory
+from CAMTests.TestPathPost import TestResolvingPostProcessorName
+from CAMTests.TestPathPost import TestFileNameGenerator
 
-from Tests.TestPathPreferences import TestPathPreferences
-from Tests.TestPathProfile import TestPathProfile
-from Tests.TestPathPropertyBag import TestPathPropertyBag
-from Tests.TestPathRotationGenerator import TestPathRotationGenerator
-from Tests.TestPathSetupSheet import TestPathSetupSheet
-from Tests.TestPathStock import TestPathStock
-from Tests.TestPathThreadMilling import TestPathThreadMilling
-from Tests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
-from Tests.TestPathToolBit import TestPathToolBit
-from Tests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
-from Tests.TestPathToolController import TestPathToolController
-from Tests.TestPathUtil import TestPathUtil
-from Tests.TestPathVcarve import TestPathVcarve
-from Tests.TestPathVoronoi import TestPathVoronoi
+from CAMTests.TestPathPreferences import TestPathPreferences
+from CAMTests.TestPathProfile import TestPathProfile
+from CAMTests.TestPathPropertyBag import TestPathPropertyBag
+from CAMTests.TestPathRotationGenerator import TestPathRotationGenerator
+from CAMTests.TestPathSetupSheet import TestPathSetupSheet
+from CAMTests.TestPathStock import TestPathStock
+from CAMTests.TestPathTapGenerator import TestPathTapGenerator
+from CAMTests.TestPathThreadMilling import TestPathThreadMilling
+from CAMTests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
+from CAMTests.TestPathToolBit import TestPathToolBit
+from CAMTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
+from CAMTests.TestPathToolController import TestPathToolController
+from CAMTests.TestPathUtil import TestPathUtil
+from CAMTests.TestPathVcarve import TestPathVcarve
+from CAMTests.TestPathVoronoi import TestPathVoronoi
 
-from Tests.TestCentroidPost import TestCentroidPost
-from Tests.TestGrblPost import TestGrblPost
-from Tests.TestLinuxCNCPost import TestLinuxCNCPost
-from Tests.TestMach3Mach4Post import TestMach3Mach4Post
-from Tests.TestRefactoredCentroidPost import TestRefactoredCentroidPost
-from Tests.TestRefactoredGrblPost import TestRefactoredGrblPost
-from Tests.TestRefactoredLinuxCNCPost import TestRefactoredLinuxCNCPost
-from Tests.TestRefactoredMach3Mach4Post import TestRefactoredMach3Mach4Post
-from Tests.TestRefactoredTestPost import TestRefactoredTestPost
-from Tests.TestRefactoredTestPostGCodes import TestRefactoredTestPostGCodes
-from Tests.TestRefactoredTestPostMCodes import TestRefactoredTestPostMCodes
+from CAMTests.TestCentroidPost import TestCentroidPost
+from CAMTests.TestGrblPost import TestGrblPost
+from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
+from CAMTests.TestMach3Mach4Post import TestMach3Mach4Post
+from CAMTests.TestRefactoredCentroidPost import TestRefactoredCentroidPost
+from CAMTests.TestRefactoredGrblPost import TestRefactoredGrblPost
+from CAMTests.TestRefactoredLinuxCNCPost import TestRefactoredLinuxCNCPost
+from CAMTests.TestRefactoredMassoG3Post import TestRefactoredMassoG3Post
+from CAMTests.TestRefactoredMach3Mach4Post import TestRefactoredMach3Mach4Post
+from CAMTests.TestRefactoredTestPost import TestRefactoredTestPost
+from CAMTests.TestRefactoredTestPostGCodes import TestRefactoredTestPostGCodes
+from CAMTests.TestRefactoredTestPostMCodes import TestRefactoredTestPostMCodes
 
 # dummy usage to get flake8 and lgtm quiet
 False if TestCAMSanity.__name__ else True
@@ -97,10 +99,10 @@ False if TestPathOpDeburr.__name__ else True
 False if TestPathDrillable.__name__ else True
 False if TestPathGeom.__name__ else True
 False if TestPathHelpers.__name__ else True
-# False if TestPathHelix.__name__ else True
+False if TestPathHelix.__name__ else True
 False if TestPathLog.__name__ else True
 False if TestPathOpUtil.__name__ else True
-#False if TestPathPost.__name__ else True
+# False if TestPathPost.__name__ else True
 False if TestPostProcessorFactory.__name__ else True
 False if TestResolvingPostProcessorName.__name__ else True
 False if TestPathPostUtils.__name__ else True
@@ -110,6 +112,7 @@ False if TestPathPropertyBag.__name__ else True
 False if TestPathRotationGenerator.__name__ else True
 False if TestPathSetupSheet.__name__ else True
 False if TestPathStock.__name__ else True
+False if TestPathTapGenerator.__name__ else True
 False if TestPathThreadMilling.__name__ else True
 False if TestPathThreadMillingGenerator.__name__ else True
 False if TestPathToolBit.__name__ else True
@@ -128,6 +131,7 @@ False if TestMach3Mach4Post.__name__ else True
 False if TestRefactoredCentroidPost.__name__ else True
 False if TestRefactoredGrblPost.__name__ else True
 False if TestRefactoredLinuxCNCPost.__name__ else True
+False if TestRefactoredMassoG3Post.__name__ else True
 False if TestRefactoredMach3Mach4Post.__name__ else True
 False if TestRefactoredTestPost.__name__ else True
 False if TestRefactoredTestPostGCodes.__name__ else True

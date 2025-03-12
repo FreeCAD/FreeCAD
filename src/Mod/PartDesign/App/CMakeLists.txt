@@ -3,11 +3,17 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
@@ -94,6 +100,8 @@ SET(FeaturesSketchBased_SRCS
     FeatureRevolution.h
     FeatureGroove.cpp
     FeatureGroove.h
+    FeatureRefine.cpp
+    FeatureRefine.h
     FeatureAddSub.cpp
     FeatureAddSub.h
     FeatureHole.h
@@ -143,6 +151,9 @@ SET(PartDesign_SRCS
 
 add_library(PartDesign SHARED ${PartDesign_SRCS})
 target_link_libraries(PartDesign ${PartDesign_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(PartDesign)
+endif()
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

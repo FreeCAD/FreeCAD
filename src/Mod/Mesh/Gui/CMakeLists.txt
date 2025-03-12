@@ -1,9 +1,15 @@
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}/Inventor/annex
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
 )
@@ -170,6 +176,9 @@ endif ()
 
 add_library(MeshGui SHARED ${MeshGui_SRCS} ${MeshGuiIcon_SVG})
 target_link_libraries(MeshGui ${MeshGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(MeshGui)
+endif()
 
 
 SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)

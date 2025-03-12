@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="postProcessingGroup">
      <property name="toolTip">
-      <string>If enabled include all post processing settings in the template.</string>
+      <string>If enabled, include all post processing settings in the template.</string>
      </property>
      <property name="title">
       <string>Post Processing</string>
@@ -45,7 +45,7 @@
    <item>
     <widget class="QGroupBox" name="toolsGroup">
      <property name="toolTip">
-      <string>If enabled tool controller definitions are stored in the template.</string>
+      <string>If enabled, tool controller definitions are stored in the template.</string>
      </property>
      <property name="title">
       <string>Tools</string>
@@ -142,7 +142,7 @@ Note that only operations which currently have configuration values set are list
    <item>
     <widget class="QGroupBox" name="stockGroup">
      <property name="toolTip">
-      <string>If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bounding box).
+      <string>If enabled, the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bounding box).
 
 This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
 
@@ -158,7 +158,7 @@ Note that this option is disabled if a stock object from an existing solid is us
       <item row="0" column="0">
        <widget class="QCheckBox" name="stockExtent">
         <property name="toolTip">
-         <string>If enabled the current size settings for the stock object are included in the template.
+         <string>If enabled, the current size settings for the stock object are included in the template.
 
 For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
@@ -188,7 +188,7 @@ For stock from the Base object's bounding box it means the extra material in all
       <item row="1" column="0">
        <widget class="QCheckBox" name="stockPlacement">
         <property name="toolTip">
-         <string>If enabled the current placement of the stock solid is stored in the template.</string>
+         <string>If enabled, the current placement of the stock solid is stored in the template.</string>
         </property>
         <property name="text">
          <string>Placement</string>

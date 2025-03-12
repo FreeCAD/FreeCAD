@@ -78,6 +78,11 @@ public:
     void setPoint(int idx, const SbVec3f& pt) const;
     Gui::View3DInventorViewer* getView() const;
     App::DocumentObject* getObject() const;
+    template<class T>
+    T* getObject() const
+    {
+        return Base::freecad_dynamic_cast<T>(getObject());
+    }
     QMetaObject::Connection connSelectPoint;
 
 protected:
@@ -145,6 +150,11 @@ protected:
     App::DocumentObject* getObject() const
     {
         return *m_object;
+    }
+    template<class T>
+    T* getObject() const
+    {
+        return Base::freecad_dynamic_cast<T>(getObject());
     }
     template<typename T>
     T* getTypedObject() const
@@ -402,6 +412,8 @@ private:
     void onVectorModeChanged(int idx);
     void onNumberOfContoursChanged(int number);
     void onNoColorChanged(bool state);
+    void onSmoothingChanged(bool state);
+    void onRelaxationChanged(double v);
 
 private:
     QWidget* proxy;

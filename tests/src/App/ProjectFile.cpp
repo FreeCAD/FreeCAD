@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include "InitApplication.h"
 #include <App/ProjectFile.h>

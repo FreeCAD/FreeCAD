@@ -5,10 +5,16 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )
 
@@ -16,11 +22,15 @@ set(TechDrawLIBS
     Measure
     Part
     Spreadsheet
-    Import
     PartDesign
 )
 
+if (BUILD_IMPORT)
+    list(APPEND TechDrawLIBS Import)
+endif ()
+
 include_directories(
+    SYSTEM
     ${QtConcurrent_INCLUDE_DIRS}
     ${QtCore_INCLUDE_DIR}
     ${QtGui_INCLUDE_DIR}
@@ -164,8 +174,14 @@ SET(TechDraw_SRCS
     LineNameEnum.h
     ArrowPropEnum.cpp
     ArrowPropEnum.h
+    BalloonPropEnum.cpp
+    BalloonPropEnum.h
+    MattingPropEnum.cpp
+    MattingPropEnum.h
     Preferences.cpp
     Preferences.h
+    Tag.cpp
+    Tag.h
     TechDrawExport.cpp
     TechDrawExport.h
     ProjectionAlgos.cpp
@@ -174,6 +190,8 @@ SET(TechDraw_SRCS
     XMLQuery.h
     LineGenerator.cpp
     LineGenerator.h
+    LineFormat.cpp
+    LineFormat.h
 )
 
 SET(Geometry_SRCS
@@ -275,6 +293,9 @@ endif(FREECAD_USE_PCH)
 add_library(TechDraw SHARED ${TechDraw_SRCS} ${Draw_SRCS} ${TechDrawAlgos_SRCS}
                            ${Geometry_SRCS} ${Python_SRCS})
 target_link_libraries(TechDraw ${TechDrawLIBS} ${TechDraw})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(TechDraw)
+endif()
 
 ADD_CUSTOM_COMMAND(TARGET TechDraw
                    POST_BUILD

@@ -56,9 +56,7 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
         ]
 
         enumTups = PathMillFace.ObjectFace.propertyEnumerations(dataType="raw")
-        enumTups.update(
-            PathPocketShape.ObjectPocket.pocketPropertyEnumerations(dataType="raw")
-        )
+        enumTups.update(PathPocketShape.ObjectPocket.pocketPropertyEnumerations(dataType="raw"))
 
         self.populateCombobox(form, enumTups, comboToPropertyMap)
         return form
@@ -74,9 +72,7 @@ Command = PathOpGui.SetupOperation(
     TaskPanelOpPage,
     "CAM_Face",
     QT_TRANSLATE_NOOP("CAM_MillFace", "Face"),
-    QT_TRANSLATE_NOOP(
-        "CAM_MillFace", "Create a Facing Operation from a model or face"
-    ),
+    QT_TRANSLATE_NOOP("CAM_MillFace", "Create a Facing Operation from a model or face"),
     PathMillFace.SetupProperties,
 )
 

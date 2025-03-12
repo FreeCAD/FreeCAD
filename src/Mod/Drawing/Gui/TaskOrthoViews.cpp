@@ -150,8 +150,7 @@ orthoview::orthoview(App::Document* parent,
     cy = partbox->GetCenter().y;
     cz = partbox->GetCenter().z;
 
-    this_view = static_cast<Drawing::FeatureViewPart*>(
-        parent_doc->addObject("Drawing::FeatureViewPart", myname.c_str()));
+    this_view = parent_doc->addObject<Drawing::FeatureViewPart>(myname.c_str());
     static_cast<App::DocumentObjectGroup*>(page)->addObject(this_view);
     this_view->Source.setValue(part);
 

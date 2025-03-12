@@ -58,7 +58,7 @@ PyObject* ViewProviderGeometryObjectPy::getCustomAttributes(const char* attr) co
     }
     if (strcmp(attr, "ShapeMaterial") == 0) {
         // Get material property of ViewProviderGeometryObject
-        auto geometry = dynamic_cast<App::GeoFeature*>(vp->getObject());
+        auto geometry = vp->getObject<App::GeoFeature>();
         if (geometry) {
             auto material = geometry->getMaterialAppearance();
             App::PropertyMaterial prop;
@@ -71,7 +71,7 @@ PyObject* ViewProviderGeometryObjectPy::getCustomAttributes(const char* attr) co
 
 PyObject* ViewProviderGeometryObjectPy::getUserDefinedMaterial()
 {
-    App::Material mat = ViewProviderGeometryObject::getUserDefinedMaterial();
+    App::Material mat = App::Material::getDefaultAppearance();
     return new App::MaterialPy(new App::Material(mat));
 }
 
@@ -89,7 +89,7 @@ int ViewProviderGeometryObjectPy::setCustomAttributes(const char* attr, PyObject
     }
     if (strcmp(attr, "ShapeMaterial") == 0) {
         // Get material property of ViewProviderGeometryObject
-        auto geometry = dynamic_cast<App::GeoFeature*>(vp->getObject());
+        auto geometry = vp->getObject<App::GeoFeature>();
         if (geometry) {
             App::PropertyMaterial prop;
             prop.setPyObject(obj);

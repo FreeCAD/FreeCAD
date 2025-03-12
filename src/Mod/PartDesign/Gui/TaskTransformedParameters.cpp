@@ -35,7 +35,7 @@
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
@@ -102,7 +102,11 @@ void TaskTransformedParameters::setupUI()
 
     // Create context menu
     auto action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        action->setShortcut(QKeySequence(shortcut));
+    }
     // display shortcut behind the context menu entry
     action->setShortcutVisibleInContextMenu(true);
     ui->listWidgetFeatures->addAction(action);
@@ -119,9 +123,34 @@ void TaskTransformedParameters::setupUI()
             &TaskTransformedParameters::onUpdateView);
 
     // Get the feature data
-    auto pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+    auto pcTransformed = getObject<PartDesign::Transformed>();
 
+    using Mode = PartDesign::Transformed::Mode;
+
+    ui->buttonGroupMode->setId(ui->radioTransformBody, static_cast<int>(Mode::TransformBody));
+    ui->buttonGroupMode->setId(ui->radioTransformToolShapes, static_cast<int>(Mode::TransformToolShapes));
+
+    connect(ui->buttonGroupMode,
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+            qOverload<int>(&QButtonGroup::buttonClicked),
+#else
+            &QButtonGroup::idClicked,
+#endif
+            this,
+            &TaskTransformedParameters::onModeChanged);
+
+    auto const mode = static_cast<Mode>(pcTransformed->TransformMode.getValue());
+    ui->groupFeatureList->setEnabled(mode == Mode::TransformToolShapes);
+    switch (mode) {
+        case Mode::TransformBody:
+            ui->radioTransformBody->setChecked(true);
+            break;
+        case Mode::TransformToolShapes:
+            ui->radioTransformToolShapes->setChecked(true);
+            break;
+    }
+
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
     // Fill data into dialog elements
     for (auto obj : originals) {
         if (obj) {
@@ -270,6 +299,26 @@ void TaskTransformedParameters::setEnabledTransaction(bool on)
 bool TaskTransformedParameters::isEnabledTransaction() const
 {
     return enableTransaction;
+}
+
+void TaskTransformedParameters::onModeChanged(int mode_id)
+{
+    if (mode_id < 0) {
+        return;
+    }
+
+    auto pcTransformed = getObject<PartDesign::Transformed>();
+    pcTransformed->TransformMode.setValue(mode_id);
+
+    using Mode = PartDesign::Transformed::Mode;
+    Mode const mode = static_cast<Mode>(mode_id);
+
+    ui->groupFeatureList->setEnabled(mode == Mode::TransformToolShapes);
+    if (mode == Mode::TransformBody) {
+        ui->listWidgetFeatures->clear();
+    }
+    setupTransaction();
+    recomputeFeature();
 }
 
 void TaskTransformedParameters::onButtonAddFeature(bool checked)
@@ -451,7 +500,7 @@ PartDesign::Transformed* TaskTransformedParameters::getObject() const
         return parentTask->getSubFeature();
     }
     if (TransformedView) {
-        return static_cast<PartDesign::Transformed*>(TransformedView->getObject());
+        return TransformedView->getObject<PartDesign::Transformed>();
     }
     return nullptr;
 }
@@ -570,13 +619,10 @@ void TaskTransformedParameters::indexesMoved()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgTransformedParameters::TaskDlgTransformedParameters(
-    ViewProviderTransformed* TransformedView_)
-    : TaskDlgFeatureParameters(TransformedView_)
+TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransformed* viewProvider)
+    : TaskDlgFeatureParameters(viewProvider)
 {
-    assert(vp);
-    message = new TaskTransformedMessages(getTransformedView());
-
+    message = new TaskTransformedMessages(viewProvider);
     Content.push_back(message);
 }
 
@@ -594,7 +640,6 @@ bool TaskDlgTransformedParameters::reject()
 {
     // ensure that we are not in selection mode
     parameter->exitSelectionMode();
-
     return TaskDlgFeatureParameters::reject();
 }
 

@@ -38,7 +38,7 @@ def get_information():
         "constraints": ["fixed", "force"],
         "solvers": ["z88"],
         "material": "solid",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
@@ -58,6 +58,7 @@ def setup(doc=None, solvertype="z88"):
 
     # mesh
     from .meshes.mesh_truss_crane_seg2 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:

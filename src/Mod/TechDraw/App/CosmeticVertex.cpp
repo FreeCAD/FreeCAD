@@ -21,11 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
+//! CosmeticVertex point is stored in unscaled, unrotated form
+
 #include "PreCompiled.h"
-#ifndef _PreComp_
-    #include <boost/uuid/uuid_generators.hpp>
-    #include <boost/uuid/uuid_io.hpp>
-#endif // _PreComp_
 
 #include <App/Application.h>
 #include <Base/Persistence.h>
@@ -46,18 +44,11 @@ TYPESYSTEM_SOURCE(TechDraw::CosmeticVertex, Base::Persistence)
 
 CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
 {
-    point(Base::Vector3d(0.0, 0.0, 0.0));
-    permaPoint = Base::Vector3d(0.0, 0.0, 0.0);
-    linkGeom = -1;
     color = Preferences::vertexColor();
     size  = Preferences::vertexScale() *
             LineGroup::getDefaultWidth("Thin");
-    style = 1;
-    visible = true;
     hlrVisible = true;
     cosmetic = true;
-
-    createNewTag();
 }
 
 CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::Vertex(cv)
@@ -70,13 +61,10 @@ CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::V
     visible = cv->visible;
     hlrVisible = true;
     cosmetic = true;
-
-    createNewTag();
 }
 
 CosmeticVertex::CosmeticVertex(const Base::Vector3d& loc) : TechDraw::Vertex(loc)
 {
-//    Base::Console().Message("CV::CV(%s)\n", DU::formatVector(loc).c_str());
     permaPoint = loc;
     linkGeom = -1;
     color = Preferences::vertexColor();
@@ -86,28 +74,21 @@ CosmeticVertex::CosmeticVertex(const Base::Vector3d& loc) : TechDraw::Vertex(loc
     visible = true;
     hlrVisible = true;
     cosmetic = true;
-
-    createNewTag();
-
 }
 
 void CosmeticVertex::move(const Base::Vector3d& newPos)
 {
-    permaPoint = newPos;
+    point(newPos);
 }
 
 void CosmeticVertex::moveRelative(const Base::Vector3d& movement)
 {
-    permaPoint += movement;
+    point( point() += movement);
 }
 
 std::string CosmeticVertex::toString() const
 {
     std::stringstream ss;
-    ss << permaPoint.x << ", " <<
-          permaPoint.y << ", " <<
-          permaPoint.z << ", " <<
-          " / ";
     ss << point().x << ", " <<
           point().y << ", " <<
           point().z << ", " <<
@@ -145,7 +126,7 @@ void CosmeticVertex::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Style value=\"" <<  style << "\"/>" << endl;
     const char v = visible?'1':'0';
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Tag value=\"" <<  getTagAsString() << "\"/>" << endl;
+    Tag::Save(writer);
 }
 
 void CosmeticVertex::Restore(Base::XMLReader &reader)
@@ -169,11 +150,7 @@ void CosmeticVertex::Restore(Base::XMLReader &reader)
     style = reader.getAttributeAsInteger("value");
     reader.readElement("Visible");
     visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
-    reader.readElement("Tag");
-    temp = reader.getAttribute("value");
-    boost::uuids::string_generator gen;
-    boost::uuids::uuid u1 = gen(temp);
-    tag = u1;
+    Tag::Restore(reader);
 }
 
 Base::Vector3d CosmeticVertex::scaled(const double factor)
@@ -181,13 +158,15 @@ Base::Vector3d CosmeticVertex::scaled(const double factor)
     return permaPoint * factor;
 }
 
+//! returns a transformed version of our coordinates (permaPoint)
 Base::Vector3d CosmeticVertex::rotatedAndScaled(const double scale, const double rotDegrees)
 {
     Base::Vector3d scaledPoint = scaled(scale);
     if (rotDegrees != 0.0) {
         // invert the Y coordinate so the rotation math works out
+        // the stored point is inverted
         scaledPoint = DU::invertY(scaledPoint);
-        scaledPoint.RotateZ(rotDegrees * M_PI / 180.0);
+        scaledPoint.RotateZ(rotDegrees * M_PI / DegreesHalfCircle);
         scaledPoint = DU::invertY(scaledPoint);
     }
     return scaledPoint;
@@ -198,13 +177,12 @@ Base::Vector3d CosmeticVertex::rotatedAndScaled(const double scale, const double
 //! inverted back on return.
 Base::Vector3d CosmeticVertex::makeCanonicalPoint(DrawViewPart* dvp, Base::Vector3d point, bool unscale)
 {
-    // Base::Console().Message("CV::makeCanonicalPoint(%s)\n", DU::formatVector(point).c_str());
     double rotDeg = dvp->Rotation.getValue();
 
     Base::Vector3d result = point;
     if (rotDeg != 0.0) {
         // unrotate the point
-        double rotRad = rotDeg * M_PI / 180.0;
+        double rotRad = rotDeg * M_PI / DegreesHalfCircle;
         // we always rotate around the origin.
         result.RotateZ(-rotRad);
     }
@@ -219,37 +197,13 @@ Base::Vector3d CosmeticVertex::makeCanonicalPoint(DrawViewPart* dvp, Base::Vecto
     return result;
 }
 
-boost::uuids::uuid CosmeticVertex::getTag() const
+//! a version of makeCanonicalPoint that accepts and returns an invertedPoint.
+Base::Vector3d CosmeticVertex::makeCanonicalPointInverted(DrawViewPart* dvp, Base::Vector3d invertedPoint, bool unscale)
 {
-    return tag;
-}
-
-std::string CosmeticVertex::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
-}
-
-void CosmeticVertex::createNewTag()
-{
-    // Initialize a random number generator, to avoid Valgrind false positives.
-    static boost::mt19937 ran;
-    static bool seeded = false;
-
-    if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
-        seeded = true;
-    }
-    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
-
-    tag = gen();
-}
-
-void CosmeticVertex::assignTag(const TechDraw::CosmeticVertex* cv)
-{
-    if(cv->getTypeId() == this->getTypeId())
-        this->tag = cv->tag;
-    else
-        throw Base::TypeError("CosmeticVertex tag can not be assigned as types do not match.");
+    Base::Vector3d result = makeCanonicalPoint(dvp,
+                                               DU::invertY(invertedPoint),
+                                               unscale);
+    return DU::invertY(result);
 }
 
 CosmeticVertex* CosmeticVertex::copy() const
@@ -262,7 +216,7 @@ CosmeticVertex* CosmeticVertex::clone() const
 {
 //    Base::Console().Message("CV::clone()\n");
     CosmeticVertex* cpy = this->copy();
-    cpy->tag = this->tag;
+    cpy->setTag(this->getTag());
     return cpy;
 }
 

@@ -42,7 +42,7 @@ class ConstraintSelfWeight(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::ConstraintSelfWeight"
 
     def __init__(self, obj):
-        super(ConstraintSelfWeight, self).__init__(obj)
+        super().__init__(obj)
 
         self.addProperty(obj)
 
@@ -53,17 +53,15 @@ class ConstraintSelfWeight(base_fempythonobject.BaseFemPythonObject):
         obj.setEditorMode("References", 2)  # do not show in Editor
 
     def addProperty(self, obj):
-        obj.addProperty("App::PropertyAcceleration",
-                        "GravityAcceleration",
-                        "Gravity",
-                        "Gravity acceleration")
+        obj.addProperty(
+            "App::PropertyAcceleration", "GravityAcceleration", "Gravity", "Gravity acceleration"
+        )
         obj.setPropertyStatus("GravityAcceleration", "LockDynamic")
         obj.GravityAcceleration = constants.gravity()
 
-        obj.addProperty("App::PropertyVector",
-                        "GravityDirection",
-                        "Gravity",
-                        "Normalized gravity direction")
+        obj.addProperty(
+            "App::PropertyVector", "GravityDirection", "Gravity", "Normalized gravity direction"
+        )
         obj.setPropertyStatus("GravityDirection", "LockDynamic")
         obj.GravityDirection = FreeCAD.Vector(0, 0, -1)
 

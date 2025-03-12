@@ -14,10 +14,16 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}/..
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
 )
@@ -145,6 +151,9 @@ SET(Sketcher_PCH_SRCS
 
 add_library(Sketcher SHARED ${Sketcher_SRCS})
 target_link_libraries(Sketcher ${Sketcher_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Sketcher)
+endif()
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

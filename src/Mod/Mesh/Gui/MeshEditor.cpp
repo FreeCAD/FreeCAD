@@ -117,7 +117,7 @@ void ViewProviderFace::attach(App::DocumentObject* obj)
 
     SoBaseColor* basecol = new SoBaseColor;
     if (mesh) {
-        App::Color col = mesh->ShapeAppearance.getDiffuseColor();
+        Base::Color col = mesh->ShapeAppearance.getDiffuseColor();
         basecol->rgb.setValue(col.r, col.g, col.b);
     }
     else {
@@ -230,7 +230,7 @@ void MeshFaceAddition::finishEditing()
 
 void MeshFaceAddition::addFace()
 {
-    Mesh::Feature* mf = static_cast<Mesh::Feature*>(faceView->mesh->getObject());
+    Mesh::Feature* mf = faceView->mesh->getObject<Mesh::Feature>();
     App::Document* doc = mf->getDocument();
     doc->openTransaction("Add triangle");
     Mesh::MeshObject* mesh = mf->Mesh.startEditing();
@@ -290,7 +290,7 @@ void MeshFaceAddition::showMarker(SoPickedPoint* pp)
     if (detail) {
         if (detail->isOfType(SoFaceDetail::getClassTypeId())) {
             const SoFaceDetail* fd = static_cast<const SoFaceDetail*>(detail);
-            Mesh::Feature* mf = static_cast<Mesh::Feature*>(faceView->mesh->getObject());
+            Mesh::Feature* mf = faceView->mesh->getObject<Mesh::Feature>();
             const MeshCore::MeshFacetArray& facets =
                 mf->Mesh.getValuePtr()->getKernel().GetFacets();
             const MeshCore::MeshPointArray& points =
@@ -485,7 +485,7 @@ MeshFillHole::~MeshFillHole()
 
 void MeshFillHole::startEditing(MeshGui::ViewProviderMesh* vp)
 {
-    this->myMesh = static_cast<Mesh::Feature*>(vp->getObject());
+    this->myMesh = vp->getObject<Mesh::Feature>();
 
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(parent());
     Gui::View3DInventorViewer* viewer = view->getViewer();

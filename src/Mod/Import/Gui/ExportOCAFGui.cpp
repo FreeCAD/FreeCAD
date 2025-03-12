@@ -35,14 +35,10 @@ ExportOCAFGui::ExportOCAFGui(Handle(TDocStd_Document) hDoc, bool explicitPlaceme
     : ExportOCAF(hDoc, explicitPlacement)
 {}
 
-void ExportOCAFGui::findColors(Part::Feature* part, std::vector<App::Color>& colors) const
+void ExportOCAFGui::findColors(Part::Feature* part, std::vector<Base::Color>& colors) const
 {
     Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-    if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-        colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
-        if (colors.empty()) {
-            colors.push_back(
-                static_cast<PartGui::ViewProviderPart*>(vp)->ShapeAppearance.getDiffuseColor());
-        }
+    if (vp && vp->isDerivedFrom<PartGui::ViewProviderPartExt>()) {
+        colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->ShapeAppearance.getDiffuseColors();
     }
 }

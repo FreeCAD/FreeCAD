@@ -50,15 +50,12 @@ class PartDesignWorkbench ( Workbench ):
 
         import PartDesignGui
         import PartDesign
-        try:
-            from PartDesign import InvoluteGearFeature
-            from PartDesign import SprocketFeature
-        except ImportError:
-            print("Involute gear module cannot be loaded")
-            #try:
-            #    from FeatureHole import HoleGui
-            #except:
-            #    pass
+
+        from PartDesign.InvoluteGearFeature import CommandInvoluteGear
+        Gui.addCommand('PartDesign_InvoluteGear', CommandInvoluteGear())
+
+        from PartDesign.SprocketFeature import CommandSprocket
+        FreeCADGui.addCommand('PartDesign_Sprocket', CommandSprocket())
 
     def GetClassName(self):
         return "PartDesignGui::Workbench"

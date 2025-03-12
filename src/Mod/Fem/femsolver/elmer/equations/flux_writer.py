@@ -78,38 +78,35 @@ class Fluxwriter:
                 (
                     "Enforces continuity within the same material\n"
                     "in the 'Discontinuous Galerkin' discretization"
-                )
+                ),
             )
         if hasattr(equation, "Bubbles"):
             # Bubbles was removed because it is unused by Elmer for the flux solver
             equation.removeProperty("Bubbles")
         if not hasattr(equation, "CalculateFluxAbs"):
             equation.addProperty(
-                "App::PropertyBool",
-                "CalculateFluxAbs",
-                "Flux",
-                "Computes absolute of flux vector"
+                "App::PropertyBool", "CalculateFluxAbs", "Flux", "Computes absolute of flux vector"
             )
         if not hasattr(equation, "CalculateFluxMagnitude"):
             equation.addProperty(
                 "App::PropertyBool",
                 "CalculateFluxMagnitude",
                 "Flux",
-                "Computes magnitude of flux vector field"
+                "Computes magnitude of flux vector field",
             )
         if not hasattr(equation, "CalculateGradAbs"):
             equation.addProperty(
                 "App::PropertyBool",
                 "CalculateGradAbs",
                 "Flux",
-                "Computes absolute of gradient field"
+                "Computes absolute of gradient field",
             )
         if not hasattr(equation, "CalculateGradMagnitude"):
             equation.addProperty(
                 "App::PropertyBool",
                 "CalculateGradMagnitude",
                 "Flux",
-                "Computes magnitude of gradient field"
+                "Computes magnitude of gradient field",
             )
         if not hasattr(equation, "DiscontinuousGalerkin"):
             equation.addProperty(
@@ -119,7 +116,7 @@ class Fluxwriter:
                 (
                     "Enable if standard Galerkin approximation leads to\n"
                     "unphysical results when there are discontinuities"
-                )
+                ),
             )
         if not hasattr(equation, "EnforcePositiveMagnitude"):
             equation.addProperty(
@@ -129,7 +126,7 @@ class Fluxwriter:
                 (
                     "If true, negative values of computed magnitude fields\n"
                     "are a posteriori set to zero."
-                )
+                ),
             )
         tempFluxCoefficient = ""
         if hasattr(equation, "FluxCoefficient"):
@@ -143,7 +140,7 @@ class Fluxwriter:
                 "App::PropertyEnumeration",
                 "FluxCoefficient",
                 "Flux",
-                "Name of proportionality coefficient\nto compute the flux"
+                "Name of proportionality coefficient\nto compute the flux",
             )
             equation.FluxCoefficient = flux.COEFFICIENTS
             if tempFluxCoefficient:
@@ -161,9 +158,10 @@ class Fluxwriter:
                     "App::PropertyEnumeration",
                     "FluxVariable",
                     "Flux",
-                    "Variable name for flux calculation"
+                    "Variable name for flux calculation",
                 )
                 equation.FluxVariable = flux.VARIABLES
                 equation.FluxVariable = tempFluxVariable
+
 
 ##  @}

@@ -142,10 +142,6 @@ public:
     void startSplasher();
     /** Stops the splasher after startup. */
     void stopSplasher();
-    /* The image of the About dialog, it might be empty. */
-    QPixmap aboutImage() const;
-    /* The image of the splash screen of the application. */
-    QPixmap splashImage() const;
     /** Shows the online documentation. */
     void showDocumentation(const QString& help);
     //@}
@@ -186,7 +182,7 @@ public:
      * one gets created automatically if needed.
      *
      * If a url handler is registered that supports its scheme it will be delegated
-     * to this handler. This mechanism allows to change the default behaviour.
+     * to this handler. This mechanism allows one to change the default behaviour.
      */
     void loadUrls(App::Document*, const QList<QUrl>&);
     /**
@@ -292,7 +288,7 @@ protected:
     void dragEnterEvent(QDragEnterEvent * e) override;
     /**
      * This method is called from the Qt framework automatically whenever a
-     * QTranslator object has been installed. This allows to translate all
+     * QTranslator object has been installed. This allows one to translate all
      * relevant user visible text.
      */
     void changeEvent(QEvent *e) override;
@@ -312,7 +308,7 @@ private:
     void populateToolBarMenu(QMenu *);
     void populateDockWindowMenu(QMenu *);
 
-    static void renderDevBuildWarning(QPainter &painter, const QPoint startPosition, const QSize maxSize);
+    static void renderDevBuildWarning(QPainter &painter, const QPoint startPosition, const QSize maxSize, QColor color);
 
 private Q_SLOTS:
     /**
@@ -350,7 +346,7 @@ private Q_SLOTS:
     /**
      * \internal
      */
-    void processMessages(const QList<QByteArray> &);
+    void processMessages(const QList<QString> &);
     /**
      * \internal
      */

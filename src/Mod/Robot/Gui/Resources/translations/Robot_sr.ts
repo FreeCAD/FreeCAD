@@ -356,17 +356,16 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
-      <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="237"/>
-      <location filename="../../Command.cpp" line="271"/>
-      <location filename="../../CommandExport.cpp" line="62"/>
-      <location filename="../../CommandExport.cpp" line="137"/>
       <location filename="../../CommandInsertRobot.cpp" line="260"/>
       <location filename="../../CommandTrajectory.cpp" line="106"/>
       <location filename="../../CommandTrajectory.cpp" line="173"/>
       <location filename="../../CommandTrajectory.cpp" line="192"/>
       <location filename="../../CommandTrajectory.cpp" line="464"/>
+      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="130"/>
+      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../CommandExport.cpp" line="62"/>
+      <location filename="../../CommandExport.cpp" line="137"/>
       <source>Wrong selection</source>
       <translation>Погрешан избор</translation>
     </message>
@@ -381,21 +380,20 @@
       <translation>Изабери једног Робота</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../CommandTrajectory.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="236"/>
       <location filename="../../CommandExport.cpp" line="63"/>
       <location filename="../../CommandExport.cpp" line="138"/>
-      <location filename="../../CommandTrajectory.cpp" line="107"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Изабери једног Робота и један објекат Путање.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Trajectory not valid</source>
       <translation>Путања је неважећа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
       <translation>Потребне cу бар две тачке путање за cимулацију.</translation>
     </message>
@@ -436,7 +434,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="202"/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-      <translation>Морате прелазити преко геометрије (предизбора)  cа мишем,да би кориcтили ову команду.Погледајте документацију за детаље.</translation>
+      <translation>Мораш лебдети мишем изнад геометрије (Предизбор), да би користио ову команду. Погледај документацију за детаље.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="294"/>
@@ -931,7 +929,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>&amp;Robot</source>
-      <translation>&amp;Робот</translation>
+      <translation>&amp;Роботи</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>

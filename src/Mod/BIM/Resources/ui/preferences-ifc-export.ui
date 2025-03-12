@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>534</width>
-    <height>691</height>
+    <height>718</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,16 +17,7 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <property name="leftMargin">
-    <number>9</number>
-   </property>
-   <property name="topMargin">
-    <number>9</number>
-   </property>
-   <property name="rightMargin">
-    <number>9</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>9</number>
    </property>
    <item>
@@ -180,8 +171,8 @@ is exported. This leads to smaller differences between file versions.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBox_10">
         <property name="toolTip">
-         <string>IFCOpenShell is a library that allows to import IFC files.
-Its serializer functionality allows to give it an OCC shape and it will
+         <string>IFCOpenShell is a library that enables importing IFC files.
+Its serializer functionality allows giving it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
 Note: The serializer is still an experimental feature!</string>
         </property>
@@ -368,6 +359,13 @@ unit to work with when opening the file.</string>
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Check also native-IFC-specific preferences under BIM -&gt; Native IFC</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

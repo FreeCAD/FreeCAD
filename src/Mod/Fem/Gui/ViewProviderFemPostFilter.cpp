@@ -123,9 +123,8 @@ void ViewProviderFemPostClip::setupTaskDialog(TaskDlgPost* dlg)
 
     // add the function box
     assert(dlg->getView() == this);
-    dlg->appendBox(new TaskPostClip(
-        this,
-        &static_cast<Fem::FemPostClipFilter*>(dlg->getView()->getObject())->Function));
+    dlg->appendBox(
+        new TaskPostClip(this, &dlg->getView()->getObject<Fem::FemPostClipFilter>()->Function));
 
     // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
@@ -166,9 +165,8 @@ void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the function box
     assert(dlg->getView() == this);
-    dlg->appendBox(new TaskPostCut(
-        this,
-        &static_cast<Fem::FemPostCutFilter*>(dlg->getView()->getObject())->Function));
+    dlg->appendBox(
+        new TaskPostCut(this, &dlg->getView()->getObject<Fem::FemPostCutFilter>()->Function));
 
     // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);

@@ -24,21 +24,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QColor>
-#include <QEvent>
-#include <QGridLayout>
-#include <Inventor/draggers/SoDirectionalLightDragger.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoComplexity.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoSphere.h>
 #endif
 
 #include "DlgSettingsLightSources.h"
 #include "ui_DlgSettingsLightSources.h"
-#include <App/Application.h>
+
+#include <Utilities.h>
+#include <Base/Builder3D.h>
+#include <Base/Tools.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/View3DSettings.h>
 
@@ -48,191 +49,301 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgSettingsLightSources */
 
 DlgSettingsLightSources::DlgSettingsLightSources(QWidget* parent)
-  : PreferencePage(parent)
-  , ui(new Ui_DlgSettingsLightSources)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsLightSources)
 {
     ui->setupUi(this);
-    setupConnection();
+
+    view = ui->viewer;
+
+    configureViewer();
+
+    const auto connectLightEvents = [&](QuantitySpinBox* horizontalAngleSpinBox,
+                                        QuantitySpinBox* verticalAngleSpinBox,
+                                        QSpinBox* intensitySpinBox,
+                                        ColorButton* colorButton,
+                                        QCheckBox* enabledCheckbox,
+                                        auto updateLightFunction) {
+        connect(horizontalAngleSpinBox,
+                qOverload<double>(&QuantitySpinBox::valueChanged),
+                this,
+                updateLightFunction);
+        connect(verticalAngleSpinBox,
+                qOverload<double>(&QuantitySpinBox::valueChanged),
+                this,
+                updateLightFunction);
+        connect(intensitySpinBox,
+                qOverload<int>(&QSpinBox::valueChanged),
+                this,
+                updateLightFunction);
+        connect(colorButton, &ColorButton::changed, this, updateLightFunction);
+        connect(enabledCheckbox, &QCheckBox::stateChanged, this, updateLightFunction);
+    };
+
+    const auto updateLight = [&](SoDirectionalLight* light,
+                                 QuantitySpinBox* horizontalAngleSpinBox,
+                                 QuantitySpinBox* verticalAngleSpinBox,
+                                 QSpinBox* intensitySpinBox,
+                                 ColorButton* colorButton,
+                                 QCheckBox* enabledCheckbox,
+                                 std::function<void(bool)> setLightEnabled) {
+        light->color = Base::convertTo<SbColor>(colorButton->color());
+        light->intensity = Base::fromPercent(intensitySpinBox->value());
+        light->direction =
+            Base::convertTo<SbVec3f>(azimuthElevationToDirection(horizontalAngleSpinBox->rawValue(),
+                                                                 verticalAngleSpinBox->rawValue()));
+        setLightEnabled(enabledCheckbox->isChecked());
+    };
+
+    const auto updateHeadLight = [&] {
+        updateLight(view->getHeadlight(),
+                    ui->mainLightHorizontalAngle,
+                    ui->mainLightVerticalAngle,
+                    ui->mainLightIntensitySpinBox,
+                    ui->mainLightColor,
+                    ui->mainLightEnable,
+                    [&](bool enabled) {
+                        view->setHeadlightEnabled(enabled);
+                    });
+    };
+
+    const auto updateFillLight = [&] {
+        updateLight(view->getFillLight(),
+                    ui->fillLightHorizontalAngle,
+                    ui->fillLightVerticalAngle,
+                    ui->fillLightIntensitySpinBox,
+                    ui->fillLightColor,
+                    ui->fillLightEnable,
+                    [&](bool enabled) {
+                        view->setFillLightEnabled(enabled);
+                    });
+    };
+
+    const auto updateBackLight = [&] {
+        updateLight(view->getBacklight(),
+                    ui->backLightHorizontalAngle,
+                    ui->backLightVerticalAngle,
+                    ui->backLightIntensitySpinBox,
+                    ui->backLightColor,
+                    ui->backLightEnable,
+                    [&](bool enabled) {
+                        view->setBacklightEnabled(enabled);
+                    });
+    };
+
+    connectLightEvents(ui->mainLightHorizontalAngle,
+                       ui->mainLightVerticalAngle,
+                       ui->mainLightIntensitySpinBox,
+                       ui->mainLightColor,
+                       ui->mainLightEnable,
+                       updateHeadLight);
+    connectLightEvents(ui->backLightHorizontalAngle,
+                       ui->backLightVerticalAngle,
+                       ui->backLightIntensitySpinBox,
+                       ui->backLightColor,
+                       ui->backLightEnable,
+                       updateBackLight);
+    connectLightEvents(ui->fillLightHorizontalAngle,
+                       ui->fillLightVerticalAngle,
+                       ui->fillLightIntensitySpinBox,
+                       ui->fillLightColor,
+                       ui->fillLightEnable,
+                       updateFillLight);
+
+    const auto updateAmbientLight = [&] {
+        view->getEnvironment()->ambientColor =
+            Base::convertTo<SbColor>(ui->ambientLightColor->color());
+        view->getEnvironment()->ambientIntensity =
+            Base::fromPercent(ui->ambientLightIntensitySpinBox->value());
+    };
+
+    connect(ui->ambientLightIntensitySpinBox,
+            qOverload<int>(&QSpinBox::valueChanged),
+            this,
+            updateAmbientLight);
+    connect(ui->ambientLightColor, &ColorButton::changed, this, updateAmbientLight);
+
+    connect(ui->zoomInButton, &QToolButton::clicked, this, &DlgSettingsLightSources::zoomIn);
+    connect(ui->zoomOutButton, &QToolButton::clicked, this, &DlgSettingsLightSources::zoomOut);
+
+    DlgSettingsLightSources::loadSettings();
 }
 
-DlgSettingsLightSources::~DlgSettingsLightSources()
+static inline SoMaterial* createMaterial(void)
 {
-    delete view;
+    const QColor ambientColor {0xff333333}, diffuseColor {0xffd2d2ff}, emissiveColor {0xff000000},
+        specularColor {0xffcccccc};
+
+    auto material = new SoMaterial();
+
+    material->ambientColor.setValue(Base::convertTo<SbColor>(ambientColor));
+    material->diffuseColor.setValue(Base::convertTo<SbColor>(diffuseColor));
+    material->emissiveColor.setValue(Base::convertTo<SbColor>(emissiveColor));
+    material->specularColor.setValue(Base::convertTo<SbColor>(specularColor));
+
+    material->shininess = 0.9f;
+
+    return material;
 }
 
-void DlgSettingsLightSources::setupConnection()
+static inline SoSphere* createSphere(void)
 {
-    connect(ui->checkBoxLight1, &QCheckBox::toggled,
-            this, &DlgSettingsLightSources::toggleLight);
-    connect(ui->sliderIntensity1, &QSlider::valueChanged,
-            this, &DlgSettingsLightSources::lightIntensity);
-    connect(ui->light1Color, &Gui::ColorButton::changed,
-            this, &DlgSettingsLightSources::lightColor);
+    auto sphere = new SoSphere();
+    sphere->radius = 3;
+
+    return sphere;
 }
 
-void DlgSettingsLightSources::showEvent(QShowEvent* event)
+static inline SoComplexity* createGoodComplexity()
 {
-    Q_UNUSED(event)
-    if (!view) {
-        QGroupBox* box = ui->groupBoxLight;
-        QWidget* widget = createViewer(box);
-        auto grid = new QGridLayout(box);
-        grid->addWidget(widget);
-        box->setLayout(grid);
+    auto complexity = new SoComplexity();
+    complexity->value = 1.0;
 
-        loadDirection();
-    }
+    return complexity;
 }
 
-void DlgSettingsLightSources::dragMotionCallback(void *data, SoDragger *drag)
+void DlgSettingsLightSources::configureViewer()
 {
-    auto lightdrag = static_cast<SoDirectionalLightDragger*>(drag);  // NOLINT
-    auto self = static_cast<DlgSettingsLightSources*>(data);
-    SbRotation rotation = lightdrag->rotation.getValue();
-    SbVec3f dir(0, 0, -1);
-    rotation.multVec(dir, dir);
-    self->view->getHeadlight()->direction = dir;
-}
+    const SbVec3f defaultViewDirection {0.0f, 1.0f, 0.3f};
 
-QWidget* DlgSettingsLightSources::createViewer(QWidget* parent)
-{
-    // NOLINTBEGIN
-    view = new Gui::View3DInventorViewer(parent);
+    View3DSettings(hGrp, view).applySettings();
+
     view->setRedirectToSceneGraph(true);
     view->setViewing(true);
     view->setPopupMenuEnabled(false);
-
-    view->setBackgroundColor(QColor(255, 255, 255));
-    view->setGradientBackground(Gui::View3DInventorViewer::NoGradient);
     view->setEnabledNaviCube(false);
 
-    auto root = static_cast<SoSeparator*>(view->getSceneGraph());
-    root->addChild(createDragger());
+    const auto root = static_cast<SoSeparator*>(view->getSceneGraph());
+    root->addChild(createGoodComplexity());
+    root->addChild(createMaterial());
+    root->addChild(createSphere());
 
-    auto callback = new SoEventCallback();
+    const auto callback = new SoEventCallback();
     root->addChild(callback);
     callback->addEventCallback(SoEvent::getClassTypeId(),
-                               [] (void* ud, SoEventCallback* cb) {
-        Q_UNUSED(ud)
-        cb->setHandled();
-    });
+                               []([[maybe_unused]] void* ud, SoEventCallback* cb) {
+                                   cb->setHandled();
+                               });
 
     view->setCameraType(SoOrthographicCamera::getClassTypeId());
-    view->setViewDirection(SbVec3f(1, 1, -5));
+    view->setViewDirection(defaultViewDirection);
     view->viewAll();
-    float height = static_cast<SoOrthographicCamera*>(view->getCamera())->height.getValue();
-    static_cast<SoOrthographicCamera*>(view->getCamera())->height.setValue(height / 2.0F);
-    // NOLINTEND
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    View3DSettings viewSettings(hGrp, view);
-    viewSettings.OnChange(*hGrp,"BackgroundColor");
-
-    const int size = 250;
-    view->resize(size, size);
-
-    return view;
+    camera = dynamic_cast<SoOrthographicCamera*>(view->getCamera());
+    const float cameraHeight = camera->height.getValue() * 2.0f;
+    camera->height = cameraHeight;
+    zoomStep = cameraHeight / 14.0f;
 }
 
-SoDirectionalLightDragger* DlgSettingsLightSources::createDragger()
+Base::Vector3d DlgSettingsLightSources::azimuthElevationToDirection(double azimuth,
+                                                                    double elevation)
 {
-    // NOLINTBEGIN
-    lightDragger = new SoDirectionalLightDragger();
-    if (SoDragger* translator = dynamic_cast<SoDragger *>(lightDragger->getPart("translator", false))) {
-        translator->setPartAsDefault("xTranslator.translatorActive", nullptr);
-        translator->setPartAsDefault("yTranslator.translatorActive", nullptr);
-        translator->setPartAsDefault("zTranslator.translatorActive", nullptr);
-        translator->setPartAsDefault("xTranslator.translator", nullptr);
-        translator->setPartAsDefault("yTranslator.translator", nullptr);
-        translator->setPartAsDefault("zTranslator.translator", nullptr);
-        SoNode* node = translator->getPart("yzTranslator.translator", false);
-        if (node && node->isOfType(SoGroup::getClassTypeId())) {
-            auto ps = new SoPickStyle();
-            ps->style = SoPickStyle::UNPICKABLE;
-            static_cast<SoGroup*>(node)->insertChild(ps, 0);
-        }
-    }
+    azimuth = Base::toRadians(azimuth);
+    elevation = Base::toRadians(elevation);
 
-    lightDragger->addMotionCallback(dragMotionCallback, this);
-    return lightDragger;
-    // NOLINTEND
+    auto direction = Base::Vector3d {std::sin(azimuth) * std::cos(elevation),
+                                     std::cos(azimuth) * std::cos(elevation),
+                                     std::sin(elevation)};
+
+    direction.Normalize();
+
+    return direction;
+}
+
+std::pair<double, double>
+DlgSettingsLightSources::directionToAzimuthElevation(Base::Vector3d direction)
+{
+    const auto azimuth = std::atan2(direction[0], direction[1]);
+    const auto elevation =
+        std::atan2(direction[2],
+                   std::sqrt(direction[1] * direction[1] + direction[0] * direction[0]));
+
+    return {Base::toDegrees(azimuth), Base::toDegrees(elevation)};
 }
 
 void DlgSettingsLightSources::saveSettings()
 {
-    ui->checkBoxLight1->onSave();
-    ui->light1Color->onSave();
-    ui->sliderIntensity1->onSave();
-    saveDirection();
+    for (const auto& widget : findChildren<QWidget*>()) {
+        if (const auto pref = dynamic_cast<PrefWidget*>(widget)) {
+            pref->onSave();
+        }
+    }
+
+    const auto saveAngles = [&](QuantitySpinBox* horizontalAngleSpinBox,
+                                QuantitySpinBox* verticalAngleSpinBox,
+                                const char* parameter) {
+        try {
+            const auto direction = azimuthElevationToDirection(horizontalAngleSpinBox->rawValue(),
+                                                               verticalAngleSpinBox->rawValue());
+
+            hGrp->SetASCII(parameter,
+                           Base::vectorToString(Base::convertTo<Base::Vector3f>(direction)));
+        }
+        catch (...) {
+        }
+    };
+
+    saveAngles(ui->mainLightHorizontalAngle, ui->mainLightVerticalAngle, "HeadlightDirection");
+    saveAngles(ui->backLightHorizontalAngle, ui->backLightVerticalAngle, "BacklightDirection");
+    saveAngles(ui->fillLightHorizontalAngle, ui->fillLightVerticalAngle, "FillLightDirection");
 }
 
 void DlgSettingsLightSources::loadSettings()
 {
-    ui->checkBoxLight1->onRestore();
-    ui->light1Color->onRestore();
-    ui->sliderIntensity1->onRestore();
-}
-
-void DlgSettingsLightSources::saveDirection()
-{
-    if (lightDragger) {
-        ParameterGrp::handle grp = ui->sliderIntensity1->getWindowParameter();
-        SbRotation rotation = lightDragger->rotation.getValue();
-        grp->SetFloat("HeadlightRotationX", rotation[0]);
-        grp->SetFloat("HeadlightRotationY", rotation[1]);
-        grp->SetFloat("HeadlightRotationZ", rotation[2]);
-        grp->SetFloat("HeadlightRotationW", rotation[3]);
-
-        SbVec3f dir(0, 0, -1);
-        rotation.multVec(dir, dir);
-
-        QString headlightDir = QString::fromLatin1("(%1,%2,%3)").arg(dir[0]).arg(dir[1]).arg(dir[2]);
-        grp->SetASCII("HeadlightDirection", headlightDir.toLatin1());
+    for (const auto& widget : findChildren<QWidget*>()) {
+        if (const auto pref = dynamic_cast<PrefWidget*>(widget)) {
+            pref->onRestore();
+        }
     }
+
+    const auto loadAngles = [&](QuantitySpinBox* horizontalAngleSpinBox,
+                                QuantitySpinBox* verticalAngleSpinBox,
+                                const char* parameter) {
+        try {
+            const auto direction = Base::stringToVector(hGrp->GetASCII(parameter));
+            const auto [azimuth, elevation] =
+                directionToAzimuthElevation(Base::convertTo<Base::Vector3d>(direction));
+
+            horizontalAngleSpinBox->setValue(azimuth);
+            verticalAngleSpinBox->setValue(elevation);
+        }
+        catch (...) {
+        }
+    };
+
+    loadAngles(ui->mainLightHorizontalAngle, ui->mainLightVerticalAngle, "HeadlightDirection");
+    loadAngles(ui->backLightHorizontalAngle, ui->backLightVerticalAngle, "BacklightDirection");
+    loadAngles(ui->fillLightHorizontalAngle, ui->fillLightVerticalAngle, "FillLightDirection");
 }
 
-void DlgSettingsLightSources::loadDirection()
+void DlgSettingsLightSources::resetSettingsToDefaults()
 {
-    ParameterGrp::handle grp = ui->sliderIntensity1->getWindowParameter();
-    SbRotation rotation = lightDragger->rotation.getValue();
-    // NOLINTBEGIN
-    float q1 = float(grp->GetFloat("HeadlightRotationX", rotation[0]));
-    float q2 = float(grp->GetFloat("HeadlightRotationY", rotation[1]));
-    float q3 = float(grp->GetFloat("HeadlightRotationZ", rotation[2]));
-    float q4 = float(grp->GetFloat("HeadlightRotationW", rotation[3]));
-    // NOLINTEND
-    rotation.setValue(q1, q2, q3, q4);
-    lightDragger->rotation.setValue(rotation);
+    PreferencePage::resetSettingsToDefaults();
 
-    SbVec3f direction(0, 0, -1);
-    rotation.multVec(direction, direction);
-    view->getHeadlight()->direction = direction;
+    hGrp->RemoveASCII("HeadlightDirection");
+    hGrp->RemoveASCII("BacklightDirection");
+    hGrp->RemoveASCII("FillLightDirection");
+
+    loadSettings();
+    configureViewer();
 }
 
-void DlgSettingsLightSources::toggleLight(bool on)
+void DlgSettingsLightSources::zoomIn() const
 {
-    if (view) {
-        view->setHeadlightEnabled(on);
+    if (camera == nullptr) {
+        return;
     }
+
+    camera->height = camera->height.getValue() - zoomStep;
 }
 
-void DlgSettingsLightSources::lightIntensity(int value)
+void DlgSettingsLightSources::zoomOut() const
 {
-    if (view) {
-        float intensity = float(value) / 100.0F;
-        view->getHeadlight()->intensity = intensity;
+    if (camera == nullptr) {
+        return;
     }
-}
 
-void DlgSettingsLightSources::lightColor()
-{
-    if (view) {
-        QColor color = ui->light1Color->color();
-        float red = float(color.redF());
-        float green = float(color.greenF());
-        float blue = float(color.blueF());
-        view->getHeadlight()->color = SbColor(red, green, blue);
-    }
+    camera->height = camera->height.getValue() + zoomStep;
 }
 
 void DlgSettingsLightSources::changeEvent(QEvent* event)
@@ -242,6 +353,5 @@ void DlgSettingsLightSources::changeEvent(QEvent* event)
     }
     PreferencePage::changeEvent(event);
 }
-
 
 #include "moc_DlgSettingsLightSources.cpp"

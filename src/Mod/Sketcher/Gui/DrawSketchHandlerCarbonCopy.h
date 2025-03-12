@@ -26,7 +26,7 @@
 #include <QApplication>
 
 #include <Gui/Notifications.h>
-#include <Gui/SelectionFilter.h>
+#include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/MDIView.h>
@@ -160,7 +160,9 @@ public:
                 throw Base::ValueError("Sketcher: Carbon Copy: Invalid object in selection");
             }
 
-            if (obj->is<Sketcher::SketchObject>()) {
+            std::string sketchArchType("Sketcher::SketchObjectPython");
+
+            if (obj->is<Sketcher::SketchObject>() || sketchArchType == obj->getTypeId().getName()) {
 
                 try {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create a carbon copy"));
@@ -171,8 +173,7 @@ public:
 
                     Gui::Command::commitCommand();
 
-                    tryAutoRecomputeIfNotSolve(
-                        static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                    tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                     Gui::Selection().clearSelection();
                     /* this is ok not to call to purgeHandler
@@ -209,7 +210,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_CarbonCopy");
+        return QStringLiteral("Sketcher_Pointer_CarbonCopy");
     }
 
     void deactivated() override

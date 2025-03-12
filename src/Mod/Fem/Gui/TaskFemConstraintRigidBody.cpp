@@ -30,8 +30,9 @@
 
 #include <App/Document.h>
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintRigidBody.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintRigidBody.h"
 #include "ui_TaskFemConstraintRigidBody.h"
@@ -91,19 +92,31 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
             qOverload<int>(&QComboBox::activated),
             this,
             &TaskFemConstraintRigidBody::onRotModeZChanged);
+    connect(ui->qsb_ref_node_x,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskFemConstraintRigidBody::onRefNodeXChanged);
+    connect(ui->qsb_ref_node_y,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskFemConstraintRigidBody::onRefNodeYChanged);
+    connect(ui->qsb_ref_node_z,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskFemConstraintRigidBody::onRefNodeZChanged);
 
     this->groupLayout()->addWidget(proxy);
 
     /* Note: */
     // Get the feature data
-    auto pcConstraint = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    auto pcConstraint = ConstraintView->getObject<Fem::ConstraintRigidBody>();
 
     const Base::Vector3d& refNode = pcConstraint->ReferenceNode.getValue();
     const Base::Vector3d& disp = pcConstraint->Displacement.getValue();
     Base::Vector3d rotDir;
     double rotAngleRad;
     pcConstraint->Rotation.getValue().getValue(rotDir, rotAngleRad);
-    Base::Quantity rotAngle(rotAngleRad, QString::fromUtf8("rad"));
+    Base::Quantity rotAngle(rotAngleRad, "rad");
     Base::Quantity forceX = pcConstraint->ForceX.getQuantityValue();
     Base::Quantity forceY = pcConstraint->ForceY.getQuantityValue();
     Base::Quantity forceZ = pcConstraint->ForceZ.getQuantityValue();
@@ -260,8 +273,7 @@ void TaskFemConstraintRigidBody::addToSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintRigidBody* pcConstraint =
-        static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    Fem::ConstraintRigidBody* pcConstraint = ConstraintView->getObject<Fem::ConstraintRigidBody>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -306,8 +318,8 @@ void TaskFemConstraintRigidBody::addToSelection()
             }
             for (size_t iStr = 0; iStr < (SubElements.size()); ++iStr) {
                 if (SubElements[iStr].find(searchStr) == std::string::npos) {
-                    QString msg = tr(
-                        "Only one type of selection (vertex,face or edge) per constraint allowed!");
+                    QString msg = tr("Only one type of selection (vertex, face or edge) per "
+                                     "constraint allowed!");
                     QMessageBox::warning(this, tr("Selection error"), msg);
                     addMe = false;
                     break;
@@ -334,8 +346,7 @@ void TaskFemConstraintRigidBody::removeFromSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintRigidBody* pcConstraint =
-        static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    Fem::ConstraintRigidBody* pcConstraint = ConstraintView->getObject<Fem::ConstraintRigidBody>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
@@ -392,7 +403,7 @@ void TaskFemConstraintRigidBody::onReferenceDeleted()
 
 void TaskFemConstraintRigidBody::onRotModeXChanged(int item)
 {
-    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
                           ->RotationalModeX.getEnumVector()[item]
                           .c_str();
 
@@ -411,7 +422,7 @@ void TaskFemConstraintRigidBody::onRotModeXChanged(int item)
 }
 void TaskFemConstraintRigidBody::onRotModeYChanged(int item)
 {
-    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
                           ->RotationalModeY.getEnumVector()[item]
                           .c_str();
 
@@ -430,7 +441,7 @@ void TaskFemConstraintRigidBody::onRotModeYChanged(int item)
 }
 void TaskFemConstraintRigidBody::onRotModeZChanged(int item)
 {
-    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
                           ->RotationalModeZ.getEnumVector()[item]
                           .c_str();
 
@@ -450,7 +461,7 @@ void TaskFemConstraintRigidBody::onRotModeZChanged(int item)
 
 void TaskFemConstraintRigidBody::onTransModeXChanged(int item)
 {
-    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
                           ->TranslationalModeX.getEnumVector()[item]
                           .c_str();
 
@@ -469,7 +480,7 @@ void TaskFemConstraintRigidBody::onTransModeXChanged(int item)
 }
 void TaskFemConstraintRigidBody::onTransModeYChanged(int item)
 {
-    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
                           ->TranslationalModeY.getEnumVector()[item]
                           .c_str();
 
@@ -488,7 +499,7 @@ void TaskFemConstraintRigidBody::onTransModeYChanged(int item)
 }
 void TaskFemConstraintRigidBody::onTransModeZChanged(int item)
 {
-    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
                           ->TranslationalModeZ.getEnumVector()[item]
                           .c_str();
 
@@ -506,6 +517,29 @@ void TaskFemConstraintRigidBody::onTransModeZChanged(int item)
     }
 }
 
+void TaskFemConstraintRigidBody::onRefNodeXChanged(double value)
+{
+    auto obj = ConstraintView->getObject<Fem::ConstraintRigidBody>();
+    Base::Vector3d refNode = obj->ReferenceNode.getValue();
+    refNode.x = value;
+    obj->ReferenceNode.setValue(refNode);
+}
+
+void TaskFemConstraintRigidBody::onRefNodeYChanged(double value)
+{
+    auto obj = ConstraintView->getObject<Fem::ConstraintRigidBody>();
+    Base::Vector3d refNode = obj->ReferenceNode.getValue();
+    refNode.y = value;
+    obj->ReferenceNode.setValue(refNode);
+}
+
+void TaskFemConstraintRigidBody::onRefNodeZChanged(double value)
+{
+    auto obj = ConstraintView->getObject<Fem::ConstraintRigidBody>();
+    Base::Vector3d refNode = obj->ReferenceNode.getValue();
+    refNode.z = value;
+    obj->ReferenceNode.setValue(refNode);
+}
 
 const std::string TaskFemConstraintRigidBody::getReferences() const
 {
@@ -547,18 +581,18 @@ Base::Rotation TaskFemConstraintRigidBody::getRotation() const
 
 std::vector<std::string> TaskFemConstraintRigidBody::getForce() const
 {
-    std::string x = ui->qsb_force_x->value().getSafeUserString().toStdString();
-    std::string y = ui->qsb_force_y->value().getSafeUserString().toStdString();
-    std::string z = ui->qsb_force_z->value().getSafeUserString().toStdString();
+    std::string x = ui->qsb_force_x->value().getSafeUserString();
+    std::string y = ui->qsb_force_y->value().getSafeUserString();
+    std::string z = ui->qsb_force_z->value().getSafeUserString();
 
     return {x, y, z};
 }
 
 std::vector<std::string> TaskFemConstraintRigidBody::getMoment() const
 {
-    std::string x = ui->qsb_moment_x->value().getSafeUserString().toStdString();
-    std::string y = ui->qsb_moment_y->value().getSafeUserString().toStdString();
-    std::string z = ui->qsb_moment_z->value().getSafeUserString().toStdString();
+    std::string x = ui->qsb_moment_x->value().getSafeUserString();
+    std::string y = ui->qsb_moment_y->value().getSafeUserString();
+    std::string z = ui->qsb_moment_z->value().getSafeUserString();
 
     return std::vector<std::string>({x, y, z});
 }
@@ -581,11 +615,6 @@ std::vector<std::string> TaskFemConstraintRigidBody::getRotationalMode() const
     rotModes[2] = ui->cb_z_rot_mode->currentText().toStdString();
 
     return rotModes;
-}
-
-bool TaskFemConstraintRigidBody::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintRigidBody::changeEvent(QEvent*)
@@ -616,21 +645,6 @@ TaskDlgFemConstraintRigidBody::TaskDlgFemConstraintRigidBody(
 }
 
 //==== calls from the TaskView ===============================================================
-
-void TaskDlgFemConstraintRigidBody::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint RigidBody");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
 
 bool TaskDlgFemConstraintRigidBody::accept()
 {
@@ -722,26 +736,12 @@ bool TaskDlgFemConstraintRigidBody::accept()
                                 "App.ActiveDocument.%s.RotationalModeZ = \"%s\"",
                                 name.c_str(),
                                 rotModes[2].c_str());
-
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                parameters->getScale().c_str());
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintRigidBody::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintRigidBody.cpp"

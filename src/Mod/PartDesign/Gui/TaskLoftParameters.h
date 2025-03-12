@@ -70,6 +70,7 @@ private:
     void removeFromListWidget(QListWidget*w, QString name);
     void clearButtons(const selectionModes notThis=none);
     void exitSelectionMode();
+    void setSelectionMode(selectionModes mode, bool checked);
 
 private:
     QWidget* proxy;
@@ -86,9 +87,6 @@ class TaskDlgLoftParameters : public TaskDlgSketchBasedParameters
 public:
     explicit TaskDlgLoftParameters(ViewProviderLoft *LoftView,bool newObj=false);
     ~TaskDlgLoftParameters() override;
-
-    ViewProviderLoft* getLoftView() const
-    { return static_cast<ViewProviderLoft*>(vp); }
 
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;

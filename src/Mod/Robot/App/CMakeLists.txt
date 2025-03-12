@@ -3,10 +3,16 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
 )
@@ -123,6 +129,9 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
 add_library(Robot SHARED ${Robot_SRCS})
 target_link_libraries(Robot ${Robot_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Robot)
+endif()
 
 unset(_flag_found CACHE)
 check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)

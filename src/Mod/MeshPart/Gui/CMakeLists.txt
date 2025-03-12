@@ -1,9 +1,9 @@
-if (BUILD_SMESH)
+if (SMESH_FOUND)
     add_definitions(-DHAVE_SMESH)
     if(SMESH_VERSION_MAJOR LESS_EQUAL 9 AND SMESH_VERSION_MINOR LESS 10 )
       add_definitions(-DHAVE_MEFISTO)
     endif()
-endif(BUILD_SMESH)
+endif(SMESH_FOUND)
 
 if(BUILD_FEM_NETGEN)
     add_definitions(-DHAVE_NETGEN)
@@ -13,11 +13,16 @@ include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${COIN3D_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -81,6 +86,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(MeshPartGui SHARED ${MeshPartGui_SRCS} ${MeshPartGui_Scripts} ${FLATMESH_PY_SRCS})
 target_link_libraries(MeshPartGui ${MeshPartGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(MeshPartGui)
+endif()
 
 
 SET_BIN_DIR(MeshPartGui MeshPartGui /Mod/MeshPart)

@@ -86,7 +86,7 @@ Part::Feature *DressUp::getBaseObject(bool silent) const
     const char* err = nullptr;
     App::DocumentObject* base = Base.getValue();
     if (base) {
-        if(base->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if(base->isDerivedFrom<Part::Feature>()) {
             rv = static_cast<Part::Feature*>(base);
         } else {
             err = "Linked object is not a Part object";
@@ -203,10 +203,10 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
 
     for (const auto& v : Base.getShadowSubs()) {
         TopoDS_Shape subshape;
-        const auto& ref = v.first.size() ? v.first : v.second;
+        const auto& ref = v.newName.size() ? v.newName : v.oldName;
         subshape = shape.getSubShape(ref.c_str(), true);
         if (subshape.IsNull()) {
-            FC_THROWM(Base::CADKernelError, "Invalid edge link: " << v.second);
+            FC_THROWM(Base::CADKernelError, "Invalid edge link: " << ref);
         }
 
         if (subshape.ShapeType() == TopAbs_EDGE) {
@@ -236,7 +236,7 @@ std::vector<TopoShape> DressUp::getFaces(const TopoShape& shape)
             continue;
         }
         auto& sub = subs[i++];
-        auto& ref = sub.first.size() ? sub.first : val;
+        auto& ref = sub.newName.size() ? sub.newName : val;
         TopoShape subshape;
         try {
             subshape = shape.getSubTopoShape(ref.c_str());
@@ -314,7 +314,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                     if(!base)
                         FC_THROWM(Base::CADKernelError,
                                 "Cannot find additive or subtractive support for " << getFullName());
-                    if(!base->isDerivedFrom(DressUp::getClassTypeId()))
+                    if(!base->isDerivedFrom<DressUp>())
                         break;
                 }
             }
@@ -325,11 +325,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                 baseShape.move(base->getLocation().Inverted());
                 if (base->getAddSubType() == Additive) {
                     if(!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID))
-#ifdef FC_USE_TNP_FIX
                         shapes.emplace_back(shape.makeElementCut(baseShape.getShape()));
-#else
-                        shapes.emplace_back(shape.cut(baseShape.getShape()));
-#endif
                     else
                         shapes.push_back(shape);
                 } else {
@@ -339,35 +335,22 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                     // push an empty compound to indicate null additive shape
                     shapes.emplace_back(comp);
                     if(!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID))
-#ifdef FC_USE_TNP_FIX
                         shapes.emplace_back(baseShape.makeElementCut(shape.getShape()));
-#else
-                        shapes.emplace_back(baseShape.cut(shape.getShape()));
-#endif
                     else
                         shapes.push_back(shape);
                 }
             } else {
                 baseShape = getBaseTopoShape();
                 baseShape.move(getLocation().Inverted());
-#ifdef FC_USE_TNP_FIX
                 shapes.emplace_back(shape.makeElementCut(baseShape.getShape()));
                 shapes.emplace_back(baseShape.makeElementCut(shape.getShape()));
-#else
-                shapes.emplace_back(shape.cut(baseShape.getShape()));
-                shapes.emplace_back(baseShape.cut(shape.getShape()));
-#endif
             }
 
             // Make a compound to contain both additive and subtractive shape,
             // bceause a dressing (e.g. a fillet) can either be additive or
             // subtractive. And the dressup feature can contain mixture of both.
-#ifdef FC_USE_TNP_FIX
             AddSubShape.setValue(Part::TopoShape().makeElementCompound(shapes));
 
-#else
-            AddSubShape.setValue(Part::TopoShape().makeCompound(shapes));
-#endif
         } catch (Standard_Failure &e) {
             FC_THROWM(Base::CADKernelError, "Failed to calculate AddSub shape: "
                     << e.GetMessageString());

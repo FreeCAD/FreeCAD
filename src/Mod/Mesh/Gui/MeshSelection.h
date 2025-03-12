@@ -26,7 +26,7 @@
 #include <vector>
 #include <QWidget>
 
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #ifndef MESH_GLOBAL_H
 #include <Mod/Mesh/MeshGlobal.h>

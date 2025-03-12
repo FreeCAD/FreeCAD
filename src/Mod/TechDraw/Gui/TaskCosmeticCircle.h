@@ -55,7 +55,7 @@ class TaskCosmeticCircle : public QWidget
 
 public:
     TaskCosmeticCircle(TechDraw::DrawViewPart* partFeat,
-                       Base::Vector3d center, bool is3d);
+                       std::vector<Base::Vector3d> points, bool is3d);
     TaskCosmeticCircle(TechDraw::DrawViewPart* partFeat,
                         std::string circleName);
     ~TaskCosmeticCircle() override;
@@ -63,6 +63,10 @@ public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
+
+protected Q_SLOTS:
+    void radiusChanged();
+    void arcButtonClicked();
 
 protected:
     void changeEvent(QEvent *e) override;
@@ -72,6 +76,8 @@ protected:
 
     void createCosmeticCircle();
     void updateCosmeticCircle();
+
+    void enableArcWidgets(bool newState);
 
 private:
     std::unique_ptr<Ui_TaskCosmeticCircle> ui;
@@ -85,6 +91,7 @@ private:
     bool m_createMode;
     std::string m_tag;
     bool            m_is3d;
+    std::vector<Base::Vector3d> m_points;
 };
 
 class TaskDlgCosmeticCircle : public Gui::TaskView::TaskDialog
@@ -93,7 +100,7 @@ class TaskDlgCosmeticCircle : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgCosmeticCircle(TechDraw::DrawViewPart* partFeat,
-                       Base::Vector3d center, bool is3d);
+                       std::vector<Base::Vector3d> points, bool is3d);
     TaskDlgCosmeticCircle(TechDraw::DrawViewPart* partFeat,
                         std::string circleName)
 ;    ~TaskDlgCosmeticCircle() override;

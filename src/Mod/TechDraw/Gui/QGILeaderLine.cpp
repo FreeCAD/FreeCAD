@@ -31,11 +31,13 @@
 # include <QVector2D>
 #endif
 
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/LineGroup.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
 #include "QGILeaderLine.h"
 #include "PreferencesGui.h"
@@ -45,10 +47,14 @@
 #include "Rez.h"
 #include "ViewProviderLeader.h"
 #include "ZVALUE.h"
+#include "DrawGuiUtil.h"
 
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DU = DrawUtil;
+using DGU = DrawGuiUtil;
+
 
 //**************************************************************
 QGILeaderLine::QGILeaderLine()
@@ -75,7 +81,7 @@ QGILeaderLine::QGILeaderLine()
     m_line->setAcceptHoverEvents(false);
     m_line->setPos(0.0, 0.0);
 
-    m_editPath = new QGEPath(this);
+    m_editPath = new QGEPath();
     addToGroup(m_editPath);
     m_editPath->setPos(0.0, 0.0);
     m_editPath->setFlag(QGraphicsItem::ItemIsSelectable, false);
@@ -137,16 +143,28 @@ QVariant QGILeaderLine::itemChange(GraphicsItemChange change, const QVariant& va
 //QGILL isn't draggable so skip QGIV::mousePress have event
 void QGILeaderLine::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    //    Base::Console().Message("QGILL::mousePressEvent() - %s\n", getViewName());
     QGraphicsItem::mousePressEvent(event);
 }
 
-//QGILL isn't draggable so skip QGIV::mouseRelease
+//QGILL isn't draggable so skip QGIV::Release
 void QGILeaderLine::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-    //    Base::Console().Message("QGILL::mouseReleaseEvent() - %s\n", getViewName());
     QGraphicsItem::mouseReleaseEvent(event);
 }
+
+//! start editor on double click
+void QGILeaderLine::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+{
+    auto ViewProvider = dynamic_cast<ViewProviderLeader*>(getViewProvider(getLeaderFeature()));
+    if (!ViewProvider) {
+        qWarning() << "QGILeaderLine::mouseDoubleClickEvent: No valid view provider";
+        return;
+    }
+
+    ViewProvider->startDefaultEditMode();
+    QGraphicsItem::mouseDoubleClickEvent(event);
+}
+
 
 void QGILeaderLine::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 {
@@ -213,14 +231,17 @@ void QGILeaderLine::closeEdit()
     }
 }
 
-//signaled from QEPath
-void QGILeaderLine::onLineEditFinished(QPointF tipDisplace, std::vector<QPointF> points)
+//! scene coordinates of leaderline points are converted to real page coordinates as deltas from first point.
+//! line start point (X,Y of leader feature) is recomputed as displacement from parent's (0,0).
+//! signaled from QEPath
+void QGILeaderLine::onLineEditFinished(QPointF tipDisplace, std::vector<QPointF> scenePoints)
 {
-    //    Base::Console().Message("QGILL::onLineEditFinished(%s, %d)\n",
-    //                            TechDraw::DrawUtil::formatVector(tipDisplace).c_str(),
-    //                            points.size());
+    // Base::Console().Message("QGILL::onLineEditFinished(%s, %d)\n",
+    //                        TechDraw::DrawUtil::formatVector(tipDisplace).c_str(),
+    //                        scenePoints.size());
+
     m_blockDraw = true;
-    auto featLeader = getFeature();
+    auto featLeader = getLeaderFeature();
     if (!featLeader) {
         return;
     }
@@ -234,18 +255,18 @@ void QGILeaderLine::onLineEditFinished(QPointF tipDisplace, std::vector<QPointF>
         featLeader->setPosition(Rez::appX(newAttach.x()), Rez::appX(-newAttach.y()), true);
     }
 
-    std::vector<Base::Vector3d> waypoints;
-    for (auto& p : points) {
-        QPointF moved = p - tipDisplace;
-        Base::Vector3d v(moved.x(), moved.y(), 0.0);
-        waypoints.push_back(v);
+    std::vector<Base::Vector3d> pageDeltas;
+    for (auto& pt : scenePoints) {
+        QPointF distFromP0 = pt - scenePoints.front();
+        // convert deltas to mm
+        Base::Vector3d deltaInPageCoords = Rez::appX(DU::toVector3d(distFromP0));
+        pageDeltas.push_back(deltaInPageCoords);
     }
-    waypoints.at(0) = Base::Vector3d(0.0, 0.0, 0.0);
+    pageDeltas.at(0) = Base::Vector3d(0.0, 0.0, 0.0);
 
-    featLeader->WayPoints.setValues(waypoints);
-    if (featLeader->AutoHorizontal.getValue()) {
-        featLeader->adjustLastSegment();
-    }
+    // to canonical form here
+    auto temp = featLeader->makeCanonicalPointsInverted(pageDeltas);
+    featLeader->WayPoints.setValues(temp);
 
     Q_EMIT editComplete();//tell task editing is complete
 
@@ -266,13 +287,20 @@ void QGILeaderLine::startPathEdit()
     m_editPath->setScale(scale);
     m_editPath->inEdit(true);
     m_editPath->show();
-    m_editPath->startPathEdit(getWayPointsFromFeature());
+    // m_editPath->startPathEdit(getWayPointsFromFeature());
+    auto vPoints = featLeader->getTransformedWayPoints();
+    std::vector<QPointF> qPoints;
+    qPoints.reserve(vPoints.size());
+    for (auto& point : vPoints) {
+        qPoints.emplace_back(Rez::guiX(DU::toQPointF(point)));
+    }
+    m_editPath->startPathEdit(qPoints);
 }
 
 void QGILeaderLine::saveState()
 {
     //    Base::Console().Message("QGILL::saveState()\n");
-    auto featLeader = getFeature();
+    auto featLeader = getLeaderFeature();
     if (featLeader) {
         m_savePoints = featLeader->WayPoints.getValues();
         m_saveX = featLeader->X.getValue();
@@ -283,7 +311,7 @@ void QGILeaderLine::saveState()
 void QGILeaderLine::restoreState()
 {
     //    Base::Console().Message("QGILL::restoreState()\n");
-    auto featLeader = getFeature();
+    auto featLeader = getLeaderFeature();
     if (featLeader) {
         featLeader->WayPoints.setValues(m_savePoints);
         featLeader->X.setValue(m_saveX);
@@ -296,7 +324,7 @@ void QGILeaderLine::restoreState()
 
 void QGILeaderLine::updateView(bool update)
 {
-    //    Base::Console().Message("QGIL::updateView() %s\n", getViewObject()->getNameInDocument());
+    // Base::Console().Message("QGILL::updateView()\n");
     Q_UNUSED(update);
     auto featLeader(dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()));
     if (!featLeader) {
@@ -313,14 +341,13 @@ void QGILeaderLine::updateView(bool update)
 
 void QGILeaderLine::draw()
 {
-    //    Base::Console().Message("QGILL::draw()- %s\n", getViewObject()->getNameInDocument());
     if (m_blockDraw) {
         return;
     }
     if (!isVisible()) {
         return;
     }
-    TechDraw::DrawLeaderLine* featLeader = getFeature();
+    TechDraw::DrawLeaderLine* featLeader = getLeaderFeature();
     if (!featLeader) {
         return;
     }
@@ -329,10 +356,10 @@ void QGILeaderLine::draw()
         return;
     }
 
-    double scale = 1.0;
     TechDraw::DrawView* parent = featLeader->getBaseView();
-    if (parent) {
-        scale = parent->getScale();
+
+    if (!parent) {
+        return;
     }
 
     if (m_editPath->inEdit()) {
@@ -347,25 +374,25 @@ void QGILeaderLine::draw()
         setFlag(QGraphicsItem::ItemIsMovable, true);
     }
 
+    // set the leader's Qt position from feature's X,Y and scale.
+    // the feature's x,y is unscaled, unrotated and conventional Y
+     QPointF qPoint = DU::toQPointF(getAttachPoint());
+    // ???? why does the attach point not need Rez applied?
+    setPos(qPoint);
+
+    // line style is standing in for line number here?
     m_lineStyle = static_cast<Qt::PenStyle>(vp->LineStyle.getValue());
-    double baseScale = featLeader->getBaseScale();
-    double x = Rez::guiX(featLeader->X.getValue());
-    double y = -Rez::guiX(featLeader->Y.getValue());
-    QPointF aPoint(x, y);
-    aPoint *= baseScale;
-    setPos(aPoint);
 
     m_line->setFillStyle(Qt::NoBrush);
     m_line->setStyle(m_lineStyle);
     m_line->setWidth(getLineWidth());
 
-    m_line->setPos(0, 0);//make m_line coords == leader coords
+    m_line->setPos(0, 0);   //make m_line coords == leader coords
 
     std::vector<QPointF> qPoints = getWayPointsFromFeature();
-    if (featLeader->Scalable.getValue()) {
-        for (auto& p : qPoints) {
-            p = p * scale;
-        }
+    if (qPoints.empty() ) {
+        Base::Console().Message("QGILL::draw - no points\n");
+        return;
     }
 
     setNormalColorAll();
@@ -386,11 +413,10 @@ void QGILeaderLine::draw()
 
 QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
 {
-    //    Base::Console().Message("QGILeaderLine::makeLeaderPath()\n");
     QPainterPath result;
-    DrawLeaderLine* featLeader = getFeature();
+    DrawLeaderLine* featLeader = getLeaderFeature();
     if (!featLeader) {
-        Base::Console().Message("QGILL::makeLeaderPath - featLeader is nullptr\n");
+        // Base::Console().Message("QGILL::makeLeaderPath - featLeader is nullptr\n");
         return result;
     }
 
@@ -400,12 +426,14 @@ QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
     double endAdjLength(0.0);
     if (qPoints.size() > 1) {
         //make path adjustment to hide leaderline ends behind arrowheads
-        if (featLeader->StartSymbol.getValue() != ArrowType::NONE) {
-            startAdjLength = QGIArrow::getOverlapAdjust(featLeader->StartSymbol.getValue(),
+        ArrowType choice = static_cast<ArrowType>(featLeader->StartSymbol.getValue());
+        if (choice != ArrowType::NONE) {
+            startAdjLength = QGIArrow::getOverlapAdjust(choice,
                                                         QGIArrow::getPrefArrowSize());
         }
-        if (featLeader->EndSymbol.getValue() != ArrowType::NONE) {
-            endAdjLength = QGIArrow::getOverlapAdjust(featLeader->EndSymbol.getValue(),
+        choice = static_cast<ArrowType>(featLeader->EndSymbol.getValue());
+        if (choice != ArrowType::NONE) {
+            endAdjLength = QGIArrow::getOverlapAdjust(choice,
                                                       QGIArrow::getPrefArrowSize());
         }
 
@@ -431,34 +459,51 @@ QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
     return result;
 }
 
+//! returns the point (on the parent) to which the leader is attached.
+//! result is relative to the center of the unscaled, unrotated parent.
+//! result is is not inverted (Y grows upwards).
 QPointF QGILeaderLine::getAttachFromFeature()
 {
-    //    Base::Console().Message("QGILL::getAttachFromFeature()\n");
-    TechDraw::DrawLeaderLine* featLeader = getFeature();
+    TechDraw::DrawLeaderLine* featLeader = getLeaderFeature();
     if (!featLeader) {
-        Base::Console().Message("QGIL::getAttachFromLeader - no feature\n");
-        return QPointF();
+        // Base::Console().Message("QGIL::getAttachFromLeader - no feature\n");
+        return {};
     }
     double x = Rez::guiX(featLeader->X.getValue());
     double y = -Rez::guiX(featLeader->Y.getValue());
-    return QPointF(x, y);
+    // this is unrotated point.  is it scaled?
+    return {x, y};
 }
 
 std::vector<QPointF> QGILeaderLine::getWayPointsFromFeature()
 {
-    std::vector<QPointF> qPoints;
-
-    DrawLeaderLine* featLeader = getFeature();
+    DrawLeaderLine* featLeader = getLeaderFeature();
     if (!featLeader) {
-        Base::Console().Message("QGILL::getWayPointsFromFeature - featLeader is nullptr\n");
-        return qPoints;
+        // Base::Console().Message("QGILL::getWayPointsFromFeature - featLeader is nullptr\n");
+        return {};
     }
 
-    std::vector<Base::Vector3d> vPoints = featLeader->WayPoints.getValues();
-    for (auto& d : vPoints) {
-        QPointF temp(d.x, d.y);
-        qPoints.push_back(temp);
+    // vPoints are in mm with conventional Y axis
+    auto doScale = featLeader->Scalable.getValue();
+    auto doRotate = featLeader->RotatesWithParent.getValue();
+    auto vPoints =  featLeader->getScaledAndRotatedPoints(doScale, doRotate);
+    if (featLeader->AutoHorizontal.getValue()) {
+        vPoints = DrawLeaderLine::horizLastSegment(vPoints, featLeader->getBaseView()->Rotation.getValue());
     }
+
+    std::vector<QPointF> qPoints;
+    qPoints.reserve(vPoints.size());
+    // now convert to sceneUnits and Qt Y axis
+    for (auto& entry : vPoints) {
+        if (useOldCoords()) {
+            // use points as saved in <= v0.21 (in Qt form, Rez'd and
+            qPoints.push_back(DU::toQPointF(entry));
+        } else {
+            // use points as saved in >= v0.22
+            qPoints.push_back(DU::toQPointF(Rez::guiX(entry)));
+        }
+    }
+
     if (qPoints.empty()) {
         Base::Console().Warning("QGILeaderLine::getWayPointsFromFeature - no points\n");
     }
@@ -467,14 +512,14 @@ std::vector<QPointF> QGILeaderLine::getWayPointsFromFeature()
 
 void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
 {
-    //    Base::Console().Message("QGILL::setArrows()\n");
     Base::Vector3d stdX(1.0, 0.0, 0.0);
-    TechDraw::DrawLeaderLine* featLeader = getFeature();
+    TechDraw::DrawLeaderLine* featLeader = getLeaderFeature();
 
     QPointF lastOffset = (pathPoints.back() - pathPoints.front());
 
-    if (featLeader->StartSymbol.getValue() != ArrowType::NONE) {
-        m_arrow1->setStyle(featLeader->StartSymbol.getValue());
+    ArrowType choice = static_cast<ArrowType>(featLeader->StartSymbol.getValue());
+    if (choice != ArrowType::NONE) {
+        m_arrow1->setStyle(choice);
         m_arrow1->setWidth(getLineWidth());
         m_arrow1->setSize(QGIArrow::getPrefArrowSize());
         m_arrow1->setDirMode(true);
@@ -495,8 +540,9 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
         m_arrow1->hide();
     }
 
-    if (featLeader->EndSymbol.getValue() != ArrowType::NONE) {
-        m_arrow2->setStyle(featLeader->EndSymbol.getValue());
+    choice = static_cast<ArrowType>(featLeader->EndSymbol.getValue());
+    if (choice != ArrowType::NONE) {
+        m_arrow2->setStyle(choice);
         m_arrow2->setWidth(getLineWidth());
         m_arrow2->setSize(QGIArrow::getPrefArrowSize());
         m_arrow2->setDirMode(true);
@@ -524,6 +570,33 @@ void QGILeaderLine::drawBorder()
     //    QGIView::drawBorder();   //good for debugging
 }
 
+
+//! return the position of the tip of the leader's arrow
+Base::Vector3d  QGILeaderLine::getAttachPoint()
+{
+    TechDraw::DrawLeaderLine* featLeader = getLeaderFeature();
+    if (!featLeader) {
+        return Base::Vector3d(0, 0, 0);
+    }
+        TechDraw::DrawView* parent = featLeader->getBaseView();
+
+    if (!parent) {
+        return Base::Vector3d(0, 0, 0);
+    }
+
+    double baseScale = featLeader->getBaseScale();
+    double xPos = Rez::guiX(featLeader->X.getValue());
+    double yPos = Rez::guiX(featLeader->Y.getValue());
+    Base::Vector3d vAttachPoint{xPos, yPos};
+    vAttachPoint = vAttachPoint * baseScale;
+    double rotationRad = parent->Rotation.getValue() * M_PI / DegreesHalfCircle;
+    if (rotationRad != 0.0) {
+        vAttachPoint.RotateZ(rotationRad);
+    }
+    vAttachPoint = DU::invertY(vAttachPoint);
+    return vAttachPoint;
+}
+
 //******************************************************************************
 
 
@@ -544,10 +617,9 @@ double QGILeaderLine::getLineWidth()
     return Rez::guiX(vp->LineWidth.getValue());
 }
 
-TechDraw::DrawLeaderLine* QGILeaderLine::getFeature()
+TechDraw::DrawLeaderLine* QGILeaderLine::getLeaderFeature()
 {
-    TechDraw::DrawLeaderLine* result = static_cast<TechDraw::DrawLeaderLine*>(getViewObject());
-    return result;
+    return static_cast<TechDraw::DrawLeaderLine*>(getViewObject());
 }
 
 double QGILeaderLine::getEdgeFuzz() const
@@ -579,10 +651,20 @@ void QGILeaderLine::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    //    painter->setPen(Qt::blue);
-    //    painter->drawRect(boundingRect());          //good for debugging
+    // painter->setPen(Qt::blue);
+    // painter->drawRect(boundingRect());          //good for debugging
 
     QGIView::paint(painter, &myOption, widget);
 }
+
+bool QGILeaderLine::useOldCoords() const
+{
+    auto vp = dynamic_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
+    if (vp) {
+        return vp->UseOldCoords.getValue();
+    }
+    return false;
+}
+
 
 #include <Mod/TechDraw/Gui/moc_QGILeaderLine.cpp>

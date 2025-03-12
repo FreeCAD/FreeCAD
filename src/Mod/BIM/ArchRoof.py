@@ -601,6 +601,8 @@ class _Roof(ArchComponent.Component):
 
         if self.clone(obj):
             return
+        if not self.ensureBase(obj):
+            return
 
         pl = obj.Placement
         #self.baseface = None
@@ -744,16 +746,16 @@ class _Roof(ArchComponent.Component):
             # Not only the solid of the base object itself be subtracted from
             # a Wall, but all portion of the wall above the roof solid would be
             # subtracted as well.
-            # 
+            #
             # FC forum discussion : Sketch based Arch_Roof and wall substraction
             # - https://forum.freecad.org/viewtopic.php?t=84389
-            # 
+            #
             faces = []
             solids = []
             for f in obj.Base.Shape.Faces:  # obj.Base.Shape.Solids.Faces
                 p = f.findPlane()  # Curve face (surface) seems return no Plane
                 if p:
-                    if p.Axis[2] < 0:  # z<0, i.e. normal pointing below horizon
+                    if p.Axis[2] < -1e-7:  # i.e. normal pointing below horizon
                         faces.append(f)
                 else:
                     # Not sure if it is pointing towards and/or above horizon
@@ -766,8 +768,10 @@ class _Roof(ArchComponent.Component):
 
             for f in faces:
                 solid = f.extrude(Vector(0.0, 0.0, 1000000.0))
-                solids.append(solid)
+                if not solid.isNull() and solid.isValid() and solid.Volume > 1e-3:
+                    solids.append(solid)
             compound = Part.Compound(solids)
+            compound.Placement = obj.Placement
             return compound
 
         sub_field = getattr(self, 'sub', None)

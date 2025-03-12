@@ -37,54 +37,45 @@ class TestMaterialUnits(unittest.TestCase):
     fcc_print("import TestMaterialUnits")
 
     # ********************************************************************************************
-    def setUp(
-        self
-    ):
+    def setUp(self):
         # setUp is executed before every test
 
         # new document
         self.document = FreeCAD.newDocument(self.__class__.__name__)
 
     # ********************************************************************************************
-    def tearDown(
-        self
-    ):
+    def tearDown(self):
         # tearDown is executed after every test
         FreeCAD.closeDocument(self.document.Name)
 
     # ********************************************************************************************
-    def test_00print(
-        self
-    ):
+    def test_00print(self):
         # since method name starts with 00 this will be run first
         # this test just prints a line with stars
 
-        fcc_print("\n{0}\n{1} run FEM TestMaterialUnits tests {2}\n{0}".format(
-            100 * "*",
-            10 * "*",
-            57 * "*"
-        ))
+        fcc_print(
+            "\n{0}\n{1} run FEM TestMaterialUnits tests {2}\n{0}".format(
+                100 * "*", 10 * "*", 57 * "*"
+            )
+        )
 
     # ********************************************************************************************
-    def test_known_quantity_units(
-        self
-    ):
+    def test_known_quantity_units(self):
         from materialtools.cardutils import get_known_material_quantity_parameter as knownquant
+
         known_quantity_parameter = knownquant()
         from materialtools.cardutils import check_parm_unit as checkparamunit
+
         for param in known_quantity_parameter:
-            fcc_print("{}".format(param))
+            fcc_print(f"{param}")
             self.assertTrue(
                 checkparamunit(param),
                 "Unit of quantity material parameter {} "
-                "is unknown to the FreeCAD unit system."
-                .format(param)
+                "is unknown to the FreeCAD unit system.".format(param),
             )
 
     # ********************************************************************************************
-    def test_material_card_quantities(
-        self
-    ):
+    def test_material_card_quantities(self):
         # test the value and unit of known quantity parameter
         # from solid build in material cards
         # keep in mind only if FreeCAD is installed all materials are copied
@@ -92,28 +83,29 @@ class TestMaterialUnits(unittest.TestCase):
 
         # get build in materials
         builtin_solid_mat_dir = join(
-            FreeCAD.getResourceDir(),
-            "Mod",
-            "Material",
-            "StandardMaterial"
+            FreeCAD.getResourceDir(), "Mod", "Material", "StandardMaterial"
         )
-        fcc_print("{}".format(builtin_solid_mat_dir))
+        fcc_print(f"{builtin_solid_mat_dir}")
         from materialtools.cardutils import add_cards_from_a_dir as addmats
+
         materials, cards, icons = addmats({}, {}, {}, builtin_solid_mat_dir, "")
 
         # get known material quantity parameter
         from materialtools.cardutils import get_known_material_quantity_parameter as knownquant
+
         known_quantities = knownquant()
 
         # check param, value pairs
         from materialtools.cardutils import check_value_unit as checkvalueunit
+
         for mat in materials:
-            fcc_print("{}".format(mat))
+            fcc_print(f"{mat}")
             for param, value in materials[mat].items():
                 if param in known_quantities:
                     # fcc_print("    {} --> {}".format(param, value))
                     self.assertTrue(
                         checkvalueunit(param, value),
-                        "Unit of quantity {} from material parameter {} is wrong."
-                        .format(value, param)
+                        "Unit of quantity {} from material parameter {} is wrong.".format(
+                            value, param
+                        ),
                     )

@@ -78,7 +78,7 @@ class TechDrawGuiExport QGVPage: public QGraphicsView
     Q_OBJECT
 
 public:
-    enum RendererType
+    enum class RendererType
     {
         Native,
         OpenGL,
@@ -88,7 +88,7 @@ public:
     QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent = nullptr);
     ~QGVPage() override;
 
-    void setRenderer(RendererType type = Native);
+    void setRenderer(RendererType type = RendererType::Native);
     void drawBackground(QPainter* painter, const QRectF& rect) override;
 
     QGSPage* getScene() { return m_scene; }

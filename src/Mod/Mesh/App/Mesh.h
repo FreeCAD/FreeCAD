@@ -209,7 +209,7 @@ public:
     // Save and load in internal format
     void save(std::ostream&) const;
     void load(std::istream&);
-    void writeInventor(std::ostream& str, float creaseangle = 0.0f) const;
+    void writeInventor(std::ostream& str, float creaseangle = 0.0F) const;
     //@}
 
     /** @name Manipulation */
@@ -249,7 +249,7 @@ public:
      * The point degree information is stored in \a point_degree. The return value
      * gives the number of points which will have a degree of zero.
      */
-    unsigned long getPointDegree(const std::vector<FacetIndex>& facets,
+    unsigned long getPointDegree(const std::vector<FacetIndex>& indices,
                                  std::vector<PointIndex>& point_degree) const;
     void fillupHoles(unsigned long, int, MeshCore::AbstractPolygonTriangulator&);
     void offset(float fSize);
@@ -260,7 +260,7 @@ public:
     void transformToEigenSystem();
     Base::Matrix4D getEigenSystem(Base::Vector3d& v) const;
     void movePoint(PointIndex, const Base::Vector3d& v);
-    void setPoint(PointIndex, const Base::Vector3d& v);
+    void setPoint(PointIndex index, const Base::Vector3d& p);
     void smooth(int iterations, float d_max);
     void decimate(float fTolerance, float fReduction);
     void decimate(int targetSize);
@@ -268,7 +268,7 @@ public:
     std::vector<Base::Vector3d> getPointNormals() const;
     void crossSections(const std::vector<TPlane>&,
                        std::vector<TPolylines>& sections,
-                       float fMinEps = 1.0e-2f,
+                       float fMinEps = 1.0e-2F,
                        bool bConnectPolygons = false) const;
     void cut(const Base::Polygon2d& polygon, const Base::ViewProjMethod& proj, CutType);
     void trim(const Base::Polygon2d& polygon, const Base::ViewProjMethod& proj, CutType);
@@ -385,12 +385,12 @@ public:
         const_point_iterator(const_point_iterator&& pi);
         ~const_point_iterator();
 
-        const_point_iterator& operator=(const const_point_iterator& fi);
-        const_point_iterator& operator=(const_point_iterator&& fi);
+        const_point_iterator& operator=(const const_point_iterator& pi);
+        const_point_iterator& operator=(const_point_iterator&& pi);
         const MeshPoint& operator*();
         const MeshPoint* operator->();
-        bool operator==(const const_point_iterator& fi) const;
-        bool operator!=(const const_point_iterator& fi) const;
+        bool operator==(const const_point_iterator& pi) const;
+        bool operator!=(const const_point_iterator& pi) const;
         const_point_iterator& operator++();
         const_point_iterator& operator--();
 
@@ -463,7 +463,7 @@ private:
     void deletedFacets(const std::vector<FacetIndex>& remFacets);
     void updateMesh(const std::vector<FacetIndex>&) const;
     void updateMesh() const;
-    void swapKernel(MeshCore::MeshKernel& m, const std::vector<std::string>& g);
+    void swapKernel(MeshCore::MeshKernel& kernel, const std::vector<std::string>& g);
     void copySegments(const MeshObject&);
     void swapSegments(MeshObject&);
 

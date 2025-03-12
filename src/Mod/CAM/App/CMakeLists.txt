@@ -7,17 +7,22 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
 )
 link_directories(${OCC_LIBRARY_DIR})
 
 set(Path_LIBS
-#   Robot
     Part
     area-native
     FreeCADApp
@@ -120,21 +125,10 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
 add_library(Path SHARED ${Path_SRCS})
 target_link_libraries(Path ${Path_LIBS})
-
-# Boost >= 1.75.0
-if(NOT ${Boost_VERSION} LESS 107500)
-    set_target_properties(Path PROPERTIES CXX_STANDARD_REQUIRED ON)
-    set_target_properties(Path PROPERTIES CXX_STANDARD 14)
-
-    # Suppress -Wc++17-extensions when using  OCCT 7.5 or newer
-    if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
-        unset(_flag_found CACHE)
-        check_cxx_compiler_flag("-Wno-c++17-extensions" _flag_found)
-        if (_flag_found)
-            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++17-extensions")
-        endif()
-    endif()
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Path)
 endif()
+
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

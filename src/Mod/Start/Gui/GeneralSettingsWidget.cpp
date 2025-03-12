@@ -39,7 +39,7 @@
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Language/Translator.h>
-#include <Gui/NavigationStyle.h>
+#include <Gui/Navigation/NavigationStyle.h>
 
 using namespace StartGui;
 
@@ -102,7 +102,7 @@ gsl::owner<QComboBox*> GeneralSettingsWidget::createLanguageComboBox()
     auto langToStr = Gui::Translator::instance()->activeLanguage();
     QByteArray language = hGrp->GetASCII("Language", langToStr.c_str()).c_str();
     auto comboBox = gsl::owner<QComboBox*>(new QComboBox);
-    comboBox->addItem(QString::fromLatin1("English"), QByteArray("English"));
+    comboBox->addItem(QStringLiteral("English"), QByteArray("English"));
     Gui::TStringMap list = Gui::Translator::instance()->supportedLocales();
     int index {1};
     for (auto it = list.begin(); it != list.end(); ++it, ++index) {
@@ -193,10 +193,10 @@ void GeneralSettingsWidget::onNavigationStyleChanged(int index)
     if (index < 0) {
         return;  // happens when clearing the combo box in retranslateUi()
     }
-    auto navStyleName = _navigationStyleComboBox->itemData(index).toByteArray().data();
+    auto navStyleName = _navigationStyleComboBox->itemData(index).toByteArray();
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    hGrp->SetASCII("NavigationStyle", navStyleName);
+    hGrp->SetASCII("NavigationStyle", navStyleName.constData());
 }
 
 bool GeneralSettingsWidget::eventFilter(QObject* object, QEvent* event)

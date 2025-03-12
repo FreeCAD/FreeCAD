@@ -116,12 +116,12 @@ Base::Vector3d FemFace::set(short size,
     hide = false;
 
     // sorting the nodes for later easier comparison (bubble sort)
-    int i, j, flag = 1;         // set flag to 1 to start first pass
+    int flag = 1;               // set flag to 1 to start first pass
     const SMDS_MeshNode* temp;  // holding variable
 
-    for (i = 1; (i <= size) && flag; i++) {
+    for (int i = 1; (i <= size) && flag; i++) {
         flag = 0;
-        for (j = 0; j < (size - 1); j++) {
+        for (int j = 0; j < (size - 1); j++) {
             if (Nodes[j + 1] > Nodes[j])  // ascending order simply changes to <
             {
                 temp = Nodes[j];  // swap elements
@@ -192,13 +192,13 @@ ViewProviderFemMesh::ViewProviderFemMesh()
 {
     sPixmap = "fem-femmesh-from-shape";
 
-    ADD_PROPERTY(PointColor, (App::Color(0.7f, 0.7f, 0.7f)));
+    ADD_PROPERTY(PointColor, (Base::Color(0.7f, 0.7f, 0.7f)));
     ADD_PROPERTY(PointSize, (5.0f));
     PointSize.setConstraints(&floatRange);
-    ADD_PROPERTY(LineWidth, (2.0f));
+    ADD_PROPERTY(LineWidth, (1.0f));
     LineWidth.setConstraints(&floatRange);
 
-    ShapeAppearance.setDiffuseColor(App::Color(1.0f, 0.7f, 0.0f));
+    ShapeAppearance.setDiffuseColor(Base::Color(1.0f, 0.7f, 0.0f));
     Transparency.setValue(0);
     ADD_PROPERTY(BackfaceCulling, (true));
     ADD_PROPERTY(ShowInner, (false));
@@ -219,6 +219,8 @@ ViewProviderFemMesh::ViewProviderFemMesh()
                       "Object Style",
                       App::Prop_Hidden,
                       "Node diffuse color array");
+
+    suppressibleExt.initExtension(this);
 
     ColorMode.setEnums(colorModeEnum);
     onlyEdges = false;
@@ -334,14 +336,11 @@ void ViewProviderFemMesh::attach(App::DocumentObject* pcObj)
     // because the group affects nodes that are rendered afterwards (#0003769)
 
     // Faces + Wireframe (Elements)
-    // SoPolygonOffset* offset = new SoPolygonOffset();
-    // offset->styles = SoPolygonOffset::FILLED;
-    // offset->factor = 2.0f;
-    // offset->units = 1.0f;
+    SoPolygonOffset* offset = new SoPolygonOffset();
 
     SoGroup* pcFlatWireRoot = new SoGroup();
     pcFlatWireRoot->addChild(pcWireRoot);
-    // pcFlatWireRoot->addChild(offset);
+    pcFlatWireRoot->addChild(offset);
     pcFlatWireRoot->addChild(pcFlatRoot);
     addDisplayMaskMode(pcFlatWireRoot, Private::dm_face_wire);
 
@@ -349,7 +348,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject* pcObj)
     SoGroup* pcElemNodesRoot = new SoGroup();
     pcElemNodesRoot->addChild(pcPointsRoot);
     pcElemNodesRoot->addChild(pcWireRoot);
-    // pcElemNodesRoot->addChild(offset);
+    pcElemNodesRoot->addChild(offset);
     pcElemNodesRoot->addChild(pcFlatRoot);
     addDisplayMaskMode(pcElemNodesRoot, Private::dm_face_wire_node);
 
@@ -380,7 +379,7 @@ std::vector<std::string> ViewProviderFemMesh::getDisplayModes() const
 
 void ViewProviderFemMesh::updateData(const App::Property* prop)
 {
-    if (prop->isDerivedFrom(Fem::PropertyFemMesh::getClassTypeId())) {
+    if (prop->isDerivedFrom<Fem::PropertyFemMesh>()) {
         ViewProviderFEMMeshBuilder builder;
         resetColorByNodeId();
         resetDisplacementByNodeId();
@@ -413,7 +412,7 @@ void ViewProviderFemMesh::onChanged(const App::Property* prop)
         pcPointStyle->pointSize = PointSize.getValue();
     }
     else if (prop == &PointColor) {
-        const App::Color& c = PointColor.getValue();
+        const Base::Color& c = PointColor.getValue();
         pcPointMaterial->diffuseColor.setValue(c.r, c.g, c.b);
     }
     else if (prop == &BackfaceCulling) {
@@ -596,11 +595,11 @@ void ViewProviderFemMesh::resetHighlightNodes()
 
 PyObject* ViewProviderFemMesh::getPyObject()
 {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new ViewProviderFemMeshPy(this), true);
+    if (!pyViewObject) {
+        pyViewObject = new ViewProviderFemMeshPy(this);
     }
-    return Py::new_reference_to(PythonObject);
+    pyViewObject->IncRef();
+    return pyViewObject;
 }
 
 void ViewProviderFemMesh::setDisplacementByNodeId(const std::map<long, Base::Vector3d>& NodeDispMap)
@@ -659,7 +658,7 @@ void ViewProviderFemMesh::applyDisplacementToNodes(double factor)
         return;
     }
 
-    float x, y, z;
+    float x = 0, y = 0, z = 0;
     // set the point coordinates
     long sz = pcCoords->point.getNum();
     SbVec3f* verts = pcCoords->point.startEditing();
@@ -684,11 +683,11 @@ void ViewProviderFemMesh::applyDisplacementToNodes(double factor)
 }
 
 void ViewProviderFemMesh::setColorByNodeId(const std::vector<long>& NodeIds,
-                                           const std::vector<App::Color>& NodeColors)
+                                           const std::vector<Base::Color>& NodeColors)
 {
     long endId = *(std::max_element(NodeIds.begin(), NodeIds.end()));
 
-    std::vector<App::Color> colorVec(endId + 1, App::Color(0, 1, 0));
+    std::vector<Base::Color> colorVec(endId + 1, Base::Color(0, 1, 0));
     long i = 0;
     for (std::vector<long>::const_iterator it = NodeIds.begin(); it != NodeIds.end(); ++it, i++) {
         colorVec[*it] = NodeColors[i];
@@ -697,7 +696,7 @@ void ViewProviderFemMesh::setColorByNodeId(const std::vector<long>& NodeIds,
     setColorByNodeIdHelper(colorVec);
 }
 
-void ViewProviderFemMesh::setColorByNodeIdHelper(const std::vector<App::Color>& colorVec)
+void ViewProviderFemMesh::setColorByNodeIdHelper(const std::vector<Base::Color>& colorVec)
 {
     pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
 
@@ -717,43 +716,43 @@ void ViewProviderFemMesh::setColorByNodeIdHelper(const std::vector<App::Color>& 
 
 void ViewProviderFemMesh::resetColorByNodeId()
 {
-    const App::Color& c = ShapeAppearance.getDiffuseColor();
+    const Base::Color& c = ShapeAppearance.getDiffuseColor();
     NodeColorArray.setValue(c);
 }
 
 void ViewProviderFemMesh::setColorByNodeId(
-    const std::map<std::vector<long>, App::Color>& elemColorMap)
+    const std::map<std::vector<long>, Base::Color>& elemColorMap)
 {
     setColorByIdHelper(elemColorMap, vNodeElementIdx, 0, NodeColorArray);
 }
 
 void ViewProviderFemMesh::setColorByElementId(
-    const std::map<std::vector<long>, App::Color>& elemColorMap)
+    const std::map<std::vector<long>, Base::Color>& elemColorMap)
 {
     setColorByIdHelper(elemColorMap, vFaceElementIdx, 3, ElementColorArray);
 }
 
 void ViewProviderFemMesh::setColorByIdHelper(
-    const std::map<std::vector<long>, App::Color>& elemColorMap,
+    const std::map<std::vector<long>, Base::Color>& elemColorMap,
     const std::vector<unsigned long>& vElementIdx,
     int rShift,
     App::PropertyColorList& prop)
 {
-    std::vector<App::Color> vecColor(vElementIdx.size());
-    std::map<long, const App::Color*> colorMap;
+    std::vector<Base::Color> vecColor(vElementIdx.size());
+    std::map<long, const Base::Color*> colorMap;
     for (const auto& m : elemColorMap) {
         for (long i : m.first) {
             colorMap[i] = &m.second;
         }
     }
 
-    App::Color baseDif = ShapeAppearance.getDiffuseColor();
+    Base::Color baseDif = ShapeAppearance.getDiffuseColor();
     int i = 0;
     for (std::vector<unsigned long>::const_iterator it = vElementIdx.begin();
          it != vElementIdx.end();
          ++it, i++) {
         unsigned long ElemIdx = ((*it) >> rShift);
-        const std::map<long, const App::Color*>::const_iterator pos = colorMap.find(ElemIdx);
+        const std::map<long, const Base::Color*>::const_iterator pos = colorMap.find(ElemIdx);
         vecColor[i] = pos == colorMap.end() ? baseDif : *pos->second;
     }
 
@@ -763,10 +762,10 @@ void ViewProviderFemMesh::setColorByIdHelper(
 void ViewProviderFemMesh::setMaterialOverall() const
 {
     const App::Material& mat = ShapeAppearance[0];
-    App::Color baseDif = mat.diffuseColor;
-    App::Color baseAmb = mat.ambientColor;
-    App::Color baseSpe = mat.specularColor;
-    App::Color baseEmi = mat.emissiveColor;
+    Base::Color baseDif = mat.diffuseColor;
+    Base::Color baseAmb = mat.ambientColor;
+    Base::Color baseSpe = mat.specularColor;
+    Base::Color baseEmi = mat.emissiveColor;
     float baseShi = mat.shininess;
     float baseTra = mat.transparency;
 
@@ -794,15 +793,15 @@ void ViewProviderFemMesh::setMaterialByColorArray(
     const std::vector<unsigned long>& vElementIdx) const
 {
     const App::Material& baseMat = ShapeAppearance[0];
-    App::Color baseDif = baseMat.diffuseColor;
-    App::Color baseAmb = baseMat.ambientColor;
-    App::Color baseSpe = baseMat.specularColor;
-    App::Color baseEmi = baseMat.emissiveColor;
+    Base::Color baseDif = baseMat.diffuseColor;
+    Base::Color baseAmb = baseMat.ambientColor;
+    Base::Color baseSpe = baseMat.specularColor;
+    Base::Color baseEmi = baseMat.emissiveColor;
     float baseShi = baseMat.shininess;
     float baseTra = baseMat.transparency;
 
     // resizing and writing the color vector:
-    std::vector<App::Color> vecColor = prop->getValue();
+    std::vector<Base::Color> vecColor = prop->getValue();
     size_t elemSize = vElementIdx.size();
     if (vecColor.size() == 1) {
         pcMatBinding->value = SoMaterialBinding::OVERALL;
@@ -845,7 +844,7 @@ void ViewProviderFemMesh::setMaterialByColorArray(
     vecColor.resize(elemSize, baseDif);
 
     int i = 0;
-    for (const App::Color& c : vecColor) {
+    for (const Base::Color& c : vecColor) {
         diffuse[i] = SbColor(c.r, c.g, c.b);
         ambient[i] = SbColor(baseAmb.r, baseAmb.g, baseAmb.b);
         specular[i] = SbColor(baseSpe.r, baseSpe.g, baseSpe.b);
@@ -867,7 +866,7 @@ void ViewProviderFemMesh::setMaterialByColorArray(
 
 void ViewProviderFemMesh::resetColorByElementId()
 {
-    const App::Color& c = ShapeAppearance.getDiffuseColor();
+    const Base::Color& c = ShapeAppearance.getDiffuseColor();
     ElementColorArray.setValue(c);
 }
 
@@ -3170,5 +3169,5 @@ PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderFemMeshPython, FemGui::ViewProvider
 /// @endcond
 
 // explicit template instantiation
-template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderFemMesh>;
+template class FemGuiExport ViewProviderFeaturePythonT<ViewProviderFemMesh>;
 }  // namespace Gui

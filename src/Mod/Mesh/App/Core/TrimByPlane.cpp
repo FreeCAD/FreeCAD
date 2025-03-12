@@ -32,8 +32,8 @@
 
 using namespace MeshCore;
 
-MeshTrimByPlane::MeshTrimByPlane(MeshKernel& rclM)
-    : myMesh(rclM)
+MeshTrimByPlane::MeshTrimByPlane(MeshKernel& mesh)
+    : myMesh(mesh)
 {}
 
 void MeshTrimByPlane::CheckFacets(const MeshFacetGrid& rclGrid,
@@ -53,7 +53,7 @@ void MeshTrimByPlane::CheckFacets(const MeshFacetGrid& rclGrid,
             // save all elements in checkElements
             clGridIter.GetElements(checkElements);
         }
-        else if (clBBox3d.CalcPoint(Base::BoundBox3f::TLB).DistanceToPlane(base, normal) > 0.0f) {
+        else if (clBBox3d.CalcPoint(Base::BoundBox3f::TLB).DistanceToPlane(base, normal) > 0.0F) {
             // save all elements in removeFacets
             clGridIter.GetElements(removeFacets);
         }
@@ -71,7 +71,7 @@ void MeshTrimByPlane::CheckFacets(const MeshFacetGrid& rclGrid,
             trimFacets.push_back(element);
             removeFacets.push_back(element);
         }
-        else if (clFacet._aclPoints[0].DistanceToPlane(base, normal) > 0.0f) {
+        else if (clFacet._aclPoints[0].DistanceToPlane(base, normal) > 0.0F) {
             removeFacets.push_back(element);
         }
     }
@@ -155,23 +155,23 @@ void MeshTrimByPlane::TrimFacets(const std::vector<FacetIndex>& trimFacets,
         float dist3 = facet._aclPoints[2].DistanceToPlane(base, normal);
 
         // only one point below
-        if (dist1 < 0.0f && dist2 > 0.0f && dist3 > 0.0f) {
+        if (dist1 < 0.0F && dist2 > 0.0F && dist3 > 0.0F) {
             CreateOneFacet(base, normal, 0, facet, trimmedFacets);
         }
-        else if (dist1 > 0.0f && dist2 < 0.0f && dist3 > 0.0f) {
+        else if (dist1 > 0.0F && dist2 < 0.0F && dist3 > 0.0F) {
             CreateOneFacet(base, normal, 1, facet, trimmedFacets);
         }
-        else if (dist1 > 0.0f && dist2 > 0.0f && dist3 < 0.0f) {
+        else if (dist1 > 0.0F && dist2 > 0.0F && dist3 < 0.0F) {
             CreateOneFacet(base, normal, 2, facet, trimmedFacets);
         }
         // two points below
-        else if (dist1 < 0.0f && dist2 < 0.0f && dist3 > 0.0f) {
+        else if (dist1 < 0.0F && dist2 < 0.0F && dist3 > 0.0F) {
             CreateTwoFacet(base, normal, 0, facet, trimmedFacets);
         }
-        else if (dist1 > 0.0f && dist2 < 0.0f && dist3 < 0.0f) {
+        else if (dist1 > 0.0F && dist2 < 0.0F && dist3 < 0.0F) {
             CreateTwoFacet(base, normal, 1, facet, trimmedFacets);
         }
-        else if (dist1 < 0.0f && dist2 > 0.0f && dist3 < 0.0f) {
+        else if (dist1 < 0.0F && dist2 > 0.0F && dist3 < 0.0F) {
             CreateTwoFacet(base, normal, 2, facet, trimmedFacets);
         }
     }

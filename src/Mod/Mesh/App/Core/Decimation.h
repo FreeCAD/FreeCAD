@@ -33,7 +33,7 @@ class MeshKernel;
 class MeshExport MeshSimplify
 {
 public:
-    MeshSimplify(MeshKernel&);  // explicit bombs
+    explicit MeshSimplify(MeshKernel&);
     void simplify(float tolerance, float reduction);
     void simplify(int targetSize);
 

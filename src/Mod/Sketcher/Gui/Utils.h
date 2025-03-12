@@ -175,7 +175,7 @@ void GetCirclesMinimalDistance(const Part::Geometry* geom1,
                                Base::Vector3d& point1,
                                Base::Vector3d& point2);
 
-void ActivateHandler(Gui::Document* doc, DrawSketchHandler* handler);
+void ActivateHandler(Gui::Document* doc, std::unique_ptr<DrawSketchHandler> handler);
 
 /// Returns if a sketch is in edit mode
 bool isSketchInEdit(Gui::Document* doc);

@@ -2776,13 +2776,13 @@ RF
 
 *OUTPUT, FREQUENCY=1
 ***********************************************************
-*END STEP 
+*END STEP
 
 ***********************************************************
 ** CalculiX Input file
 **   written by    --> FreeCAD 0.21.0
 **   written on    --> Tue Mar 28 05:36:19 2023
-**   file name     --> 
+**   file name     --> square_pipe_end_twisted_nodeforces.FCStd
 **   analysis name --> Analysis
 **
 **

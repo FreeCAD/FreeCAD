@@ -43,7 +43,8 @@ class BIM_SetWPFront:
         }
 
     def Activated(self):
-        FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.setFront()")
+        FreeCADGui.addModule("WorkingPlane")
+        FreeCADGui.doCommand("WorkingPlane.get_working_plane(update=False).set_to_front()")
 
 
 class BIM_SetWPSide:
@@ -59,7 +60,8 @@ class BIM_SetWPSide:
         }
 
     def Activated(self):
-        FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.setSide()")
+        FreeCADGui.addModule("WorkingPlane")
+        FreeCADGui.doCommand("WorkingPlane.get_working_plane(update=False).set_to_side()")
 
 
 class BIM_SetWPTop:
@@ -75,7 +77,8 @@ class BIM_SetWPTop:
         }
 
     def Activated(self):
-        FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.setTop()")
+        FreeCADGui.addModule("WorkingPlane")
+        FreeCADGui.doCommand("WorkingPlane.get_working_plane(update=False).set_to_top()")
 
 
 class BIM_WPView:
@@ -92,10 +95,8 @@ class BIM_WPView:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         done = False

@@ -5,8 +5,14 @@ endif(WIN32)
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+)
+
+include_directories(
+    SYSTEM
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
 )
@@ -57,6 +63,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(Spreadsheet SHARED ${Spreadsheet_SRCS})
 target_link_libraries(Spreadsheet ${Spreadsheet_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Spreadsheet)
+endif()
 
 
 SET_BIN_DIR(Spreadsheet Spreadsheet /Mod/Spreadsheet)

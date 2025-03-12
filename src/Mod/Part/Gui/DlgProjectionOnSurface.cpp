@@ -50,7 +50,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Application.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Inventor/SbVec3d.h>
 
 #include "DlgProjectionOnSurface.h"
@@ -165,8 +165,7 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget* parent)
     }
     this->attachDocument(m_partDocument);
     m_partDocument->openTransaction("Project on surface");
-    m_projectionObject = dynamic_cast<Part::Feature*>(
-        m_partDocument->addObject("Part::Feature", "Projection Object"));
+    m_projectionObject = m_partDocument->addObject<Part::Feature>("Projection Object");
     if (!m_projectionObject) {
         throw Base::ValueError(QString(tr("Can not create a projection object!!!")).toUtf8());
     }
@@ -207,6 +206,7 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
 
 void PartGui::DlgProjectionOnSurface::setupConnections()
 {
+    // clang-format off
     connect(ui->pushButtonAddFace,
             &QPushButton::clicked,
             this,
@@ -259,6 +259,7 @@ void PartGui::DlgProjectionOnSurface::setupConnections()
             qOverload<double>(&QDoubleSpinBox::valueChanged),
             this,
             &DlgProjectionOnSurface::onDoubleSpinBoxSolidDepthValueChanged);
+    // clang-format on
 }
 
 void PartGui::DlgProjectionOnSurface::slotDeletedDocument(const App::Document& Doc)
@@ -411,7 +412,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(
     std::vector<Gui::SelectionObject> selObj = Gui::Selection().getSelectionEx();
     if (!selObj.empty()) {
         for (auto it = selObj.begin(); it != selObj.end(); ++it) {
-            auto aPart = dynamic_cast<Part::Feature*>(it->getObject());
+            auto aPart = it->getObject<Part::Feature>();
             if (!aPart) {
                 continue;
             }
@@ -655,7 +656,7 @@ void PartGui::DlgProjectionOnSurface::show_projected_shapes(
     if (vp) {
         const unsigned int color = 0x8ae23400;
         vp->LineColor.setValue(color);
-        vp->ShapeAppearance.setDiffuseColor(App::Color(color));
+        vp->ShapeAppearance.setDiffuseColor(Base::Color(color));
         vp->PointColor.setValue(color);
         vp->Transparency.setValue(0);
     }
@@ -720,11 +721,11 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
     auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(
         Gui::Application::Instance->getViewProvider(iCurrentObject));
     if (vp) {
-        std::vector<App::Color> colors;
-        App::Color defaultColor;
+        std::vector<Base::Color> colors;
+        Base::Color defaultColor;
         if (currentShapeType == TopAbs_FACE) {
-            colors = vp->DiffuseColor.getValues();
-            defaultColor = vp->ShapeAppearance.getDiffuseColor();
+            colors = vp->ShapeAppearance.getDiffuseColors();
+            defaultColor = colors.front();
         }
         else if (currentShapeType == TopAbs_EDGE) {
             colors = vp->LineColorArray.getValues();
@@ -736,7 +737,7 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
         }
 
         if (iHighlight) {
-            App::Color aColor;
+            Base::Color aColor;
             aColor.setPackedValue(iColor);
             colors.at(index - 1) = aColor;
         }
@@ -744,7 +745,7 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
             colors.at(index - 1) = defaultColor;
         }
         if (currentShapeType == TopAbs_FACE) {
-            vp->DiffuseColor.setValues(colors);
+            vp->ShapeAppearance.setDiffuseColors(colors);
         }
         else if (currentShapeType == TopAbs_EDGE) {
             vp->LineColorArray.setValues(colors);
@@ -1555,8 +1556,7 @@ TaskProjectOnSurface::TaskProjectOnSurface(App::Document* doc)
 {
     setDocumentName(doc->getName());
     doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Project on surface"));
-    auto obj = doc->addObject("Part::ProjectOnSurface", "Projection");
-    auto feature = dynamic_cast<Part::ProjectOnSurface*>(obj);
+    auto feature = doc->addObject<Part::ProjectOnSurface>("Projection");
     widget = new DlgProjectOnSurface(feature);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_ProjectionOnSurface"),
                                          widget->windowTitle(), true, nullptr);

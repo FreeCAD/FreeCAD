@@ -30,23 +30,23 @@ import FreeCADGui
 import os
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translate = FreeCAD.Qt.translate
 
 
 class BIM_TDPage:
     def GetResources(self):
         return {
-            "Pixmap": "techdraw-PageDefault",
+            "Pixmap": "BIM_PageDefault",
             "MenuText": QT_TRANSLATE_NOOP("BIM_TDPage", "Page"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_TDPage", "Creates a new TechDraw page from a template"
             ),
+            'Accel': "T, P",
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         from PySide import QtCore, QtGui
@@ -57,14 +57,13 @@ class BIM_TDPage:
         ).GetString("TDTemplateDir", "")
         if not templatedir:
             templatedir = None
-        filename = QtGui.QFileDialog.getOpenFileName(
+        filename, _ = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
             translate("BIM", "Select page template"),
             templatedir,
             "SVG file (*.svg)",
         )
         if filename:
-            filename = filename[0]
             name = os.path.splitext(os.path.basename(filename))[0]
             FreeCAD.ActiveDocument.openTransaction("Create page")
             page = FreeCAD.ActiveDocument.addObject("TechDraw::DrawPage", "Page")

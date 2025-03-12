@@ -1,14 +1,14 @@
     1C
-    1UUSER                                                              
-    1UDATE              07.february.2018                                
-    1UTIME              13:19:11                                        
-    1UHOST                                                              
-    1UPGM               CalculiX                                        
-    1UVERSION           Version 2.11                             
-    1UCOMPILETIME       So 31. Jul 13:26:31 CEST 2016                    
-    1UDIR                                                               
-    1UDBN                                                               
-    1UMAT    1MECHANICALMATERIAL                                        
+    1UUSER
+    1UDATE              07.february.2018
+    1UTIME              13:19:11
+    1UHOST
+    1UPGM               CalculiX
+    1UVERSION           Version 2.11
+    1UCOMPILETIME       So 31. Jul 13:26:31 CEST 2016
+    1UDIR
+    1UDBN
+    1UMAT    1MECHANICALMATERIAL
     2C                           280                                     1
  -1         1 0.00000E+00 0.00000E+00 0.00000E+00
  -1         2 0.00000E+00 0.00000E+00 1.00000E+01
@@ -551,7 +551,7 @@
  -1       129    6    0    1
  -2        45        15       122        49        67       138       280        61        69       260
  -3
-    1PSTEP                         1           1           1          
+    1PSTEP                         1           1           1
   100CL  101 1.000000000         280                     0    1           1
  -4  DISP        4    1
  -5  D1          1    2    1    0
@@ -839,7 +839,7 @@
  -1       279-2.80320E-03-1.20429E-03-1.42116E-02
  -1       280-5.32384E-03 1.88752E-03-6.50264E-03
  -3
-    1PSTEP                         2           1           1          
+    1PSTEP                         2           1           1
   100CL  101 1.000000000         280                     0    1           1
  -4  STRESS      6    1
  -5  SXX         1    4    1    1
@@ -1129,7 +1129,7 @@
  -1       279-5.37654E+02-8.69506E+01-3.13393E+02-1.84915E+01-6.76820E+00-2.28670E+02
  -1       280-1.06012E+03-1.74273E+02-2.84613E+02 3.45887E+01-4.50833E+00-3.83611E+02
  -3
-    1PSTEP                         3           1           1          
+    1PSTEP                         3           1           1
   100CL  101 1.000000000         280                     0    1           1
  -4  TOSTRAIN    6    1
  -5  EXX         1    4    1    1

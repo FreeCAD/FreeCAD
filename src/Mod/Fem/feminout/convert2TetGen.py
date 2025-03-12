@@ -37,6 +37,7 @@ import Mesh
 App = FreeCAD  # shortcut
 if FreeCAD.GuiUp:
     import FreeCADGui
+
     Gui = FreeCADGui  # shortcut
 
 ## \addtogroup FEM
@@ -54,23 +55,25 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
     f.write("# Part 1 - node list\n")
     f.write(
         "TotalNumOfPoints: {},  NumOfDimensions; {}, "
-        "NumOfProperties: {}, BoundaryMarkerExists: {}\n"
-        .format(len(allVertices), 3, 0, 0)
+        "NumOfProperties: {}, BoundaryMarkerExists: {}\n".format(len(allVertices), 3, 0, 0)
     )
     for PointIndex in range(len(allVertices)):
-        f.write("%(PointIndex)5i %(x) e %(y) e %(z) e\n" % {
-            "PointIndex": PointIndex,
-            "x": allVertices[PointIndex].x,
-            "y": allVertices[PointIndex].y,
-            "z": allVertices[PointIndex].z
-        })
+        f.write(
+            "%(PointIndex)5i %(x) e %(y) e %(z) e\n"
+            % {
+                "PointIndex": PointIndex,
+                "x": allVertices[PointIndex].x,
+                "y": allVertices[PointIndex].y,
+                "z": allVertices[PointIndex].z,
+            }
+        )
 
     # Find out BoundaryMarker for each facet. If edge connects only two facets,
     # then this facets should have the same BoundaryMarker
     BoundaryMarkerExists = 1
     PointList = [allFacets[0][1], allFacets[0][0]]
     PointList.sort()
-    EdgeFacets = {(PointList[0], PointList[1]): set([0])}
+    EdgeFacets = {(PointList[0], PointList[1]): {0}}
     Edge = []
 
     # Find all facets for each edge
@@ -85,7 +88,7 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
             if EdgeIndex in EdgeFacets:
                 EdgeFacets[EdgeIndex].add(FacetIndex)
             else:
-                EdgeFacets[EdgeIndex] = set([FacetIndex])
+                EdgeFacets[EdgeIndex] = {FacetIndex}
         Edge = []
 
     # Find BoundaryMarker for each facet
@@ -120,7 +123,7 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
                 if (BoundaryMarker[FacetPair[0]] != 0) and (BoundaryMarker[FacetPair[1]] != 0):
                     removeEdge = 1
                     break
-                if (BoundaryMarker[FacetPair[0]] != 0):
+                if BoundaryMarker[FacetPair[0]] != 0:
                     BoundaryMarker[FacetPair[1]] = BoundaryMarker[FacetPair[0]]
                 else:
                     BoundaryMarker[FacetPair[0]] = BoundaryMarker[FacetPair[1]]
@@ -156,10 +159,10 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
 
     # ********** Part 2 - write all facets to *.poly file
     f.write("# Part 2 - facet list\n")
-    f.write("%(TotalNumOfFacets)i  %(BoundaryMarkerExists)i\n" % {
-        "TotalNumOfFacets": len(allFacets),
-        "BoundaryMarkerExists": BoundaryMarkerExists
-    })
+    f.write(
+        "%(TotalNumOfFacets)i  %(BoundaryMarkerExists)i\n"
+        % {"TotalNumOfFacets": len(allFacets), "BoundaryMarkerExists": BoundaryMarkerExists}
+    )
     for FacetIndex in range(len(allFacets)):
         f.write("# FacetIndex = %(Index)i\n" % {"Index": FacetIndex})
         f.write("%(NumOfPolygons)3i " % {"NumOfPolygons": 1})
@@ -215,14 +218,7 @@ def createMesh():
     AdsorbtionBox = AppPyDoc.addObject("Part::Box", AdsorbtionBoxName)
     pnMesh = AppPyDoc.addObject("Mesh::Feature", pnMeshName)
 
-    BoxList = [
-        NSideBox,
-        DepletionBox,
-        PSideBox,
-        OxideBox,
-        AdsorbtionBox,
-        SurfDepletionBox
-    ]
+    BoxList = [NSideBox, DepletionBox, PSideBox, OxideBox, AdsorbtionBox, SurfDepletionBox]
     NSideBoxMesh = Mesh.Mesh()
     PSideBoxMesh = Mesh.Mesh()
     DepletionBoxMesh = Mesh.Mesh()
@@ -235,7 +231,7 @@ def createMesh():
         PSideBoxMesh,
         OxideBoxMesh,
         AdsorbtionBoxMesh,
-        SurfDepletionBoxMesh
+        SurfDepletionBoxMesh,
     ]
     if beVerbose == 1:
         if len(BoxList) != len(BoxMeshList):
@@ -280,30 +276,14 @@ def createMesh():
 
     # Object placement
     Rot = App.Rotation(0, 0, 0, 1)
-    NSideBox.Placement = App.Placement(
-        App.Vector(0, 0, -BulkHeight),
-        Rot
-    )
+    NSideBox.Placement = App.Placement(App.Vector(0, 0, -BulkHeight), Rot)
     PSideBox.Placement = App.Placement(
-        App.Vector(DepletionSize * 2 + BulkLength, 0, -BulkHeight),
-        Rot
+        App.Vector(DepletionSize * 2 + BulkLength, 0, -BulkHeight), Rot
     )
-    DepletionBox.Placement = App.Placement(
-        App.Vector(BulkLength, 0, -BulkHeight),
-        Rot
-    )
-    SurfDepletionBox.Placement = App.Placement(
-        App.Vector(0, 0, 0),
-        Rot
-    )
-    OxideBox.Placement = App.Placement(
-        App.Vector(0, 0, DepletionSize),
-        Rot
-    )
-    AdsorbtionBox.Placement = App.Placement(
-        App.Vector(0, 0, DepletionSize + OxideThickness),
-        Rot
-    )
+    DepletionBox.Placement = App.Placement(App.Vector(BulkLength, 0, -BulkHeight), Rot)
+    SurfDepletionBox.Placement = App.Placement(App.Vector(0, 0, 0), Rot)
+    OxideBox.Placement = App.Placement(App.Vector(0, 0, DepletionSize), Rot)
+    AdsorbtionBox.Placement = App.Placement(App.Vector(0, 0, DepletionSize + OxideThickness), Rot)
 
     # Unite
     if beVerbose == 1:
@@ -316,9 +296,7 @@ def createMesh():
 
     # for index in range(len(BoxList)):
     for index in range(len(BoxList) - 1):  # Manual hack
-        BoxMeshList[index].addFacets(
-            BoxList[index].Shape.tessellate(tessellationTollerance)
-        )
+        BoxMeshList[index].addFacets(BoxList[index].Shape.tessellate(tessellationTollerance))
         nmesh.addMesh(BoxMeshList[index])
 
     nmesh.removeDuplicatedPoints()
@@ -347,5 +325,6 @@ def createMesh():
 
     if beVerbose == 1:
         Console.PrintMessage("\nScript finished without errors.")
+
 
 ##  @}

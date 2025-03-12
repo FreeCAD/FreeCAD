@@ -33,10 +33,11 @@
 
 
 namespace App {
-
+class DocumentObject;
 }
 
 namespace Gui {
+class MDIView;
 namespace TaskView {
 
 class TaskContent;
@@ -91,10 +92,35 @@ public:
         return autoCloseTransaction;
     }
 
+    /// Defines whether a task dialog must be closed if the document is
+    /// deleted.
+    void setAutoCloseOnDeletedDocument(bool on) {
+        autoCloseDeletedDocument = on;
+    }
+    bool isAutoCloseOnDeletedDocument() const {
+        return autoCloseDeletedDocument;
+    }
+
     const std::string& getDocumentName() const
     { return documentName; }
     void setDocumentName(const std::string& doc)
     { documentName = doc; }
+
+    /// Defines whether a task dialog must be closed if the associated view
+    /// is deleted.
+    void setAutoCloseOnClosedView(bool on) {
+        autoCloseClosedView = on;
+    }
+    bool isAutoCloseOnClosedView() const {
+        return autoCloseClosedView;
+    }
+    void associateToObject3dView(App::DocumentObject* obj);
+
+    const Gui::MDIView* getAssociatedView() const
+    { return associatedView; }
+    void setAssociatedView(const Gui::MDIView* view)
+    { associatedView = view; }
+
     /*!
       Indicates whether this task dialog allows other commands to modify
       the document while it is open.
@@ -124,6 +150,12 @@ public:
     /// is called by the framework when the dialog is automatically closed due to
     /// changing the active transaction
     virtual void autoClosedOnTransactionChange();
+    /// is called by the framework when the dialog is automatically closed due to
+    /// deleting the document
+    virtual void autoClosedOnDeletedDocument();
+    /// is called by the framework when the dialog is automatically closed due to
+    /// closing of associated view
+    virtual void autoClosedOnClosedView();
     /// is called by the framework if a button is clicked which has no accept or reject role
     virtual void clicked(int);
     /// is called by the framework if the dialog is accepted (Ok)
@@ -148,8 +180,11 @@ protected:
 
 private:
     std::string documentName;
+    const Gui::MDIView* associatedView;
     bool escapeButton;
     bool autoCloseTransaction;
+    bool autoCloseDeletedDocument;
+    bool autoCloseClosedView;
 
     friend class TaskDialogAttorney;
 };

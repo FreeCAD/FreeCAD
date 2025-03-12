@@ -27,7 +27,9 @@
 #include <QCoreApplication>
 #include <QGraphicsItem>
 
+#include <App/DocumentObject.h>
 #include <Base/Vector3D.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 
@@ -35,24 +37,28 @@ class QComboBox;
 class QPointF;
 class QRectF;
 
-namespace App {
-class DocumentObject;
-}
-
 namespace Part {
 class Feature;
 }
 
 namespace TechDraw {
 class DrawPage;
+class DrawView;
+class DrawViewPart;
 class LineGenerator;
 }
 namespace Gui {
 class Command;
 }
 
+namespace Base {
+class Vector2d;
+}
+
 namespace TechDrawGui
 {
+class QGIEdge;
+class QGIVertex;
 
 /// Convenient utility functions for TechDraw Gui Module
 class TechDrawGuiExport DrawGuiUtil {
@@ -72,14 +78,35 @@ class TechDrawGuiExport DrawGuiUtil {
     static std::pair<Base::Vector3d, Base::Vector3d> getProjDirFromFace(App::DocumentObject* obj,
                                                                        std::string faceName);
     static void loadArrowBox(QComboBox* qcb);
+    static void loadBalloonShapeBox(QComboBox* qballooncb);
+    static void loadMattingStyleBox(QComboBox* qmattingcb);
     static void loadLineStandardsChoices(QComboBox* combo);
-    static void loadLineStyleChoices(QComboBox* combo, TechDraw::LineGenerator* generator = nullptr);
+    static void loadLineStyleChoices(QComboBox* combo,
+                                     TechDraw::LineGenerator* generator = nullptr);
+    static void loadLineGroupChoices(QComboBox* combo);
     static QIcon iconForLine(size_t lineNumber, TechDraw::LineGenerator* generator);
 
     static double roundToDigits(double original, int digits);
 
-    static bool isSelectedInTree(QGraphicsItem *item);
-    static void setSelectedTree(QGraphicsItem *item, bool selected);
+    static bool isSelectedInTree(QGraphicsItem* item);
+    static void setSelectedTree(QGraphicsItem* item, bool selected);
+    static bool isStyleSheetDark(std::string curStyleSheet);
+    static QIcon maskBlackPixels(QIcon itemIcon, QSize iconSize, QColor textColor);
+
+    static Base::Vector3d fromSceneCoords(const Base::Vector3d& sceneCoord, bool invert = true);
+    static Base::Vector3d toSceneCoords(const Base::Vector3d& pageCoord, bool invert = true);
+    static Base::Vector3d toGuiPoint(TechDraw::DrawView* obj, const Base::Vector3d& toConvert);
+
+    static bool findObjectInSelection(const std::vector<Gui::SelectionObject>& selection,
+                                      const App::DocumentObject& targetObject);
+    static std::vector<std::string>  getSubsForSelectedObject(const std::vector<Gui::SelectionObject>& selection,
+                                                                App::DocumentObject* selectedObj);
+
+    static void rotateToAlign(const QGIEdge* edge, const Base::Vector2d& direction);
+    static void rotateToAlign(const QGIVertex* p1, const QGIVertex* p2, const Base::Vector2d& direction);
+    static void rotateToAlign(TechDraw::DrawViewPart* view, const Base::Vector2d& oldDirection, const Base::Vector2d& newDirection);
+
+    static void showNoPageMessage();
 
 };
 

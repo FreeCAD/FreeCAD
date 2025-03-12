@@ -21,10 +21,11 @@
 #include <string>
 #include <vector>
 
+#include <Base/Interpreter.h>
 #include <Base/Matrix.h>
 #include <Base/Vector3D.h>
 #include <Base/Console.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Mod/Import/ImportGlobal.h>
 
 // For some reason Cpplint complains about some of the categories used by Clang-tidy
@@ -210,6 +211,7 @@ enum eDXFGroupCode_t
     eUCSXDirection = 111,
     eUCSYDirection = 112,
     eExtrusionDirection = 210,
+    eComment = 999,
 
     // The following apply to points and directions in text DXF files to identify the three
     // coordinates
@@ -493,7 +495,7 @@ protected:
     };
     // This is a combination of ui options:
     //    "Group layers into blocks" (groupLayers) checkbox which means MergeShapes,
-    //    "simple part shapes" (dxfCreatePart) radio button which means SingleShapes
+    //    "Simple part shapes" (dxfCreatePart) radio button which means SingleShapes
     //    "Draft objects" (dxfCreateDraft) radio button which means DraftObjects
     //    We do not support (dxfCreateSketch).
     //    (joingeometry) is described as being slow so I think the implication is that it only joins
@@ -685,12 +687,12 @@ protected:
     // notification popup "Log" goes to a log somewhere and not to the screen/user at all
 
     template<typename... args>
-    void ImportError(const char* format, args&&... argValues) const
+    static void ImportError(const char* format, args&&... argValues)
     {
         Base::ConsoleSingleton::Instance().Warning(format, std::forward<args>(argValues)...);
     }
     template<typename... args>
-    void ImportObservation(const char* format, args&&... argValues) const
+    static void ImportObservation(const char* format, args&&... argValues)
     {
         Base::ConsoleSingleton::Instance().Message(format, std::forward<args>(argValues)...);
     }
@@ -921,6 +923,26 @@ public:
     {
         return m_entityAttributes.m_LineType[0] == 'h' || m_entityAttributes.m_LineType[0] == 'H';
     }
-    static App::Color ObjectColor(ColorIndex_t colorIndex);  // as rgba value
+    static Base::Color ObjectColor(ColorIndex_t colorIndex);  // as rgba value
+
+#ifdef DEBUG
+protected:
+    static PyObject* PyObject_GetAttrString(PyObject* o, const char* attr_name)
+    {
+        PyObject* result = ::PyObject_GetAttrString(o, attr_name);
+        if (result == nullptr) {
+            ImportError("Unable to get Attribute '%s'\n", attr_name);
+            PyErr_Clear();
+        }
+        return result;
+    }
+    static void PyObject_SetAttrString(PyObject* o, const char* attr_name, PyObject* v)
+    {
+        if (::PyObject_SetAttrString(o, attr_name, v) != 0) {
+            ImportError("Unable to set Attribute '%s'\n", attr_name);
+            PyErr_Clear();
+        }
+    }
+#endif
 };
 #endif

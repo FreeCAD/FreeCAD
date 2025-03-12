@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Classes to manage "Developer Mode" """
+"""Classes to manage "Developer Mode" """
 
 import os
 import datetime

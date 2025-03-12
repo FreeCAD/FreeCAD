@@ -47,17 +47,17 @@ int MeasureManagerPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*
 }
 
 
-PyObject* MeasureManagerPy::addMeasureType(PyObject *args)
+PyObject* MeasureManagerPy::addMeasureType(PyObject* args)
 {
-    PyObject *pyobj = Py_None;
+    PyObject* pyobj = Py_None;
     char *id, *label;
 
-    if (!PyArg_ParseTuple(args, "ssO", &id, &label, &pyobj))
+    if (!PyArg_ParseTuple(args, "ssO", &id, &label, &pyobj)) {
         return nullptr;
+    }
 
     MeasureManager::addMeasureType(
-        new App::MeasureType{id, label, "", nullptr, nullptr, true, pyobj}
-    );
+        new App::MeasureType {id, label, "", nullptr, nullptr, true, pyobj});
 
     Py_Return;
 }
@@ -66,7 +66,7 @@ PyObject* MeasureManagerPy::addMeasureType(PyObject *args)
 PyObject* MeasureManagerPy::getMeasureTypes()
 {
     Py::List types;
-    for (auto & it : MeasureManager::getMeasureTypes()) {
+    for (auto& it : MeasureManager::getMeasureTypes()) {
         Py::Tuple type(3);
         type.setItem(0, Py::String(it->identifier));
         type.setItem(1, Py::String(it->label));

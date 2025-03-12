@@ -41,22 +41,19 @@ def add_con_fixed(f, model, mystran_writer):
         spc_ids.append(conid)
         fixed_obj = femobj["Object"]
         # print(fixed_obj.Name)
-        fixed_code += "# {}\n".format(fixed_obj.Name)
+        fixed_code += f"# {fixed_obj.Name}\n"
         # node set
         fixed_code += "nodes_{} = {}\n".format(fixed_obj.Name, femobj["Nodes"])
         # all nodes in one line may be to long ... FIXME
-        fixed_code += (
-            "model.add_spc1(conid={}, components={}, nodes=nodes_{})\n\n"
-            .format(conid, "123456", fixed_obj.Name)
+        fixed_code += "model.add_spc1(conid={}, components={}, nodes=nodes_{})\n\n".format(
+            conid, "123456", fixed_obj.Name
         )
 
     # spcadd card
     spcadd_code = "# spcadd card, Single-Point Constraint Set Combination from SPC or SPC1 cards\n"
-    spcadd_code += (
-        "model.add_spcadd(conid=1, sets={})\n\n".format(spc_ids)
-    )
+    spcadd_code += f"model.add_spcadd(conid=1, sets={spc_ids})\n\n"
 
-    pynas_code = "{}\n{}".format(fixed_code, spcadd_code)
+    pynas_code = f"{fixed_code}\n{spcadd_code}"
     # print(pynas_code)
 
     # write the pyNastran code

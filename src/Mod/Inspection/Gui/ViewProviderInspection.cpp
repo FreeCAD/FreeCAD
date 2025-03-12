@@ -52,6 +52,7 @@
 #include <Gui/Flag.h>
 #include <Gui/MainWindow.h>
 #include <Gui/SoFCColorBar.h>
+#include <Gui/SoFCColorBarNotifier.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>
 #include <Mod/Inspection/App/InspectionFeature.h>
@@ -95,6 +96,7 @@ ViewProviderInspection::ViewProviderInspection()
     // simple color bar
     pcColorBar = new Gui::SoFCColorBar;
     pcColorBar->Attach(this);
+    Gui::SoFCColorBarNotifier::instance().attach(pcColorBar);
     pcColorBar->ref();
     pcColorBar->setRange(-0.1f, 0.1f, 3);
     pcLinkRoot = new SoGroup;
@@ -113,8 +115,7 @@ ViewProviderInspection::~ViewProviderInspection()
     pcCoords->unref();
     pcMatBinding->unref();
     pcColorMat->unref();
-    pcColorBar->Detach(this);
-    pcColorBar->unref();
+    deleteColorBar();
     pcLinkRoot->unref();
     pcPointStyle->unref();
 }
@@ -145,6 +146,13 @@ void ViewProviderInspection::show()
 {
     inherited::show();
     pcColorStyle->style = SoDrawStyle::FILLED;
+}
+
+void ViewProviderInspection::deleteColorBar()
+{
+    Gui::SoFCColorBarNotifier::instance().detach(pcColorBar);
+    pcColorBar->Detach(this);
+    pcColorBar->unref();
 }
 
 void ViewProviderInspection::attach(App::DocumentObject* pcFeat)
@@ -182,8 +190,7 @@ void ViewProviderInspection::attach(App::DocumentObject* pcFeat)
         pcBar->ref();
         pcBar->setRange(fMin, fMax, 3);
         pcBar->Notify(0);
-        pcColorBar->Detach(this);
-        pcColorBar->unref();
+        deleteColorBar();
         pcColorBar = pcBar;
     }
 
@@ -378,7 +385,7 @@ void ViewProviderInspection::setDistances()
         SoDebugError::post("ViewProviderInspection::setDistances", "Unknown property 'Distances'");
         return;
     }
-    if (pDistances->getTypeId() != Inspection::PropertyDistanceList::getClassTypeId()) {
+    if (!pDistances->is<Inspection::PropertyDistanceList>()) {
         SoDebugError::post(
             "ViewProviderInspection::setDistances",
             "Property 'Distances' has type %s (Inspection::PropertyDistanceList was expected)",
@@ -406,7 +413,7 @@ void ViewProviderInspection::setDistances()
 
     unsigned long j = 0;
     for (std::vector<float>::const_iterator jt = fValues.begin(); jt != fValues.end(); ++jt, j++) {
-        App::Color col = pcColorBar->getColor(*jt);
+        Base::Color col = pcColorBar->getColor(*jt);
         cols[j] = SbColor(col.r, col.g, col.b);
         if (pcColorBar->isVisible(*jt)) {
             tran[j] = 0.0f;

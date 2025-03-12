@@ -4,9 +4,14 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/src
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+include_directories(
+  SYSTEM
   ${Boost_INCLUDE_DIRS}
   ${OCC_INCLUDE_DIR}
-  ${PYTHON_INCLUDE_DIRS}
+  ${PYCXX_INCLUDE_DIR}
+  ${Python3_INCLUDE_DIRS}
   ${ZLIB_INCLUDE_DIR}
   ${XercesC_INCLUDE_DIRS}
   ${FREETYPE_INCLUDE_DIRS}
@@ -71,6 +76,9 @@ endif(FREECAD_USE_PCH)
 link_directories(${OCC_LIBRARY_DIR})
 add_library(Surface SHARED ${Surface_SRCS})
 target_link_libraries(Surface ${Surface_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Surface)
+endif()
 
 SET_BIN_DIR(Surface Surface /Mod/Surface)
 SET_PYTHON_PREFIX_SUFFIX(Surface)

@@ -43,12 +43,14 @@ def get_information():
         "constraints": ["fixed", "force"],
         "solvers": ["ccxtools"],
         "material": "solid",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 # To run the example from Python console use,
 # (works even after an edit without restart of FreeCAD):
@@ -69,6 +71,7 @@ Z88 official example 2, crane beam
 - max deflection Mystran : x.xx mm
 - max deflection Z88 : 8.19 mm  # one seg2 truss element foreach bar
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -401,7 +404,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # solver
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
-        solver_obj.WorkingDir = u""
+        solver_obj.WorkingDir = ""
     elif solvertype == "z88":
         solver_obj = ObjectsFem.makeSolverZ88(doc, "SolverZ88")
     else:
@@ -420,10 +423,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # beam section
     beamsection_obj = ObjectsFem.makeElementGeometry1D(
-        doc,
-        sectiontype="Circular",
-        height=25.0,
-        name="CrossSectionCircular"
+        doc, sectiontype="Circular", height=25.0, name="CrossSectionCircular"
     )
     analysis.addObject(beamsection_obj)
 
@@ -451,6 +451,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # mesh
     from .meshes.mesh_truss_crane_seg3 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -460,7 +461,7 @@ def setup(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.ElementDimension = "1D"
     # four elements for each bar

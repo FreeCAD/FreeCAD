@@ -30,7 +30,9 @@
 #endif
 
 #ifdef FC_OS_WIN32
-# define NOMINMAX
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #endif
 
 #ifdef _PreComp_

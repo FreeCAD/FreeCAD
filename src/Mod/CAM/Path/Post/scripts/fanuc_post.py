@@ -50,20 +50,14 @@ now = datetime.datetime.now()
 
 parser = argparse.ArgumentParser(prog="fanuc", add_help=False)
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
-parser.add_argument(
-    "--no-comments", action="store_true", help="suppress comment output"
-)
-parser.add_argument(
-    "--line-numbers", action="store_true", help="prefix with line numbers"
-)
+parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
+parser.add_argument("--line-numbers", action="store_true", help="prefix with line numbers")
 parser.add_argument(
     "--no-show-editor",
     action="store_true",
     help="don't pop up editor before writing output",
 )
-parser.add_argument(
-    "--precision", default="3", help="number of digits of precision, default=3"
-)
+parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
     help='set commands to be issued before the first command, default="G17\nG90"',
@@ -139,8 +133,6 @@ POST_OPERATION = """"""
 TOOL_CHANGE = """"""
 
 
-
-
 def processArguments(argstring):
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
@@ -202,9 +194,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             print(
-                "the object "
-                + obj.Name
-                + " is not a path. Please select only path and Compounds."
+                "the object " + obj.Name + " is not a path. Please select only path and Compounds."
             )
             return None
 
@@ -247,19 +237,13 @@ def export(objectslist, filename, argstring):
         # do the pre_op
         if OUTPUT_COMMENTS:
             gcode += linenumber() + "(BEGIN OPERATION: %s)\n" % obj.Label.upper()
-            gcode += linenumber() + "(MACHINE UNITS: %s)\n" % (
-                UNIT_SPEED_FORMAT.upper()
-            )
+            gcode += linenumber() + "(MACHINE UNITS: %s)\n" % (UNIT_SPEED_FORMAT.upper())
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
         # get coolant mode
         coolantMode = "None"
-        if (
-            hasattr(obj, "CoolantMode")
-            or hasattr(obj, "Base")
-            and hasattr(obj.Base, "CoolantMode")
-        ):
+        if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
             if hasattr(obj, "CoolantMode"):
                 coolantMode = obj.CoolantMode
             else:
@@ -455,9 +439,7 @@ def parse(pathobj):
                             ):
                                 continue
                             else:
-                                pos = Units.Quantity(
-                                    c.Parameters[param], FreeCAD.Units.Length
-                                )
+                                pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                                 paramstring += (
                                     " "
                                     + param
@@ -482,9 +464,7 @@ def parse(pathobj):
                             ):
                                 continue
                             else:
-                                pos = Units.Quantity(
-                                    c.Parameters[param], FreeCAD.Units.Length
-                                )
+                                pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                                 paramstring += (
                                     " "
                                     + param
@@ -498,9 +478,7 @@ def parse(pathobj):
                     # Q is the peck depth of the threading operation
                     for param in ["F", "P", "Q"]:
                         if param in c.Parameters:
-                            value = Units.Quantity(
-                                c.Parameters[param], FreeCAD.Units.Length
-                            )
+                            value = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                             paramstring += (
                                 " "
                                 + param
@@ -539,9 +517,7 @@ def parse(pathobj):
                             "G0",
                             "G00",
                         ]:  # fanuc doesn't use rapid speeds
-                            speed = Units.Quantity(
-                                c.Parameters["F"], FreeCAD.Units.Velocity
-                            )
+                            speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
                             if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
                                 outstring.append(
                                     param
@@ -568,14 +544,9 @@ def parse(pathobj):
                         ):
                             continue
                         else:
-                            pos = Units.Quantity(
-                                c.Parameters[param], FreeCAD.Units.Length
-                            )
+                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                             outstring.append(
-                                param
-                                + format(
-                                    float(pos.getValueAs(UNIT_FORMAT)), precision_string
-                                )
+                                param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
                             )
 
             if adaptiveOp and c.Name in ["G0", "G00"]:

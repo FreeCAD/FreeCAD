@@ -100,7 +100,7 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     if (!img.isNull()) {
         // Create a small "Fc" Application icon in the bottom right of the thumbnail
         if (App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetBool("AddThumbnailLogo",true)) {
+            ("User parameter:BaseApp/Preferences/Document")->GetBool("AddThumbnailLogo",false)) {
             // only scale app icon if an offscreen image could be created
             appIcon = appIcon.scaled(this->size / 4, this->size /4, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             px = BitmapFactory().merge(QPixmap::fromImage(img), appIcon, BitmapFactoryInst::BottomRight);
@@ -113,7 +113,7 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     if (!px.isNull()) {
         // according to specification add some meta-information to the image
         qint64 mt = QDateTime::currentDateTimeUtc().toSecsSinceEpoch();
-        QString mtime = QString::fromLatin1("%1").arg(mt);
+        QString mtime = QStringLiteral("%1").arg(mt);
         img.setText(QLatin1String("Software"), qApp->applicationName());
         img.setText(QLatin1String("Thumb::Mimetype"), QLatin1String("application/x-extension-fcstd"));
         img.setText(QLatin1String("Thumb::MTime"), mtime);

@@ -42,9 +42,9 @@ def get_constraint_title():
 
 
 def write_meshdata_constraint(f, femobj, temp_obj, ccxwriter):
-    f.write("*NSET,NSET={}\n".format(temp_obj.Name))
+    f.write(f"*NSET,NSET={temp_obj.Name}\n")
     for n in femobj["Nodes"]:
-        f.write("{},\n".format(n))
+        f.write(f"{n},\n")
 
 
 def get_before_write_meshdata_constraint():
@@ -82,7 +82,7 @@ def write_constraint(f, femobj, temp_obj, ccxwriter):
         f.write(
             "{},11,{}\n".format(
                 temp_obj.Name,
-                FreeCAD.Units.Quantity(temp_obj.CFlux.getValueAs("mW")) / NumberOfNodes
+                FreeCAD.Units.Quantity(temp_obj.CFlux.getValueAs("mW")) / NumberOfNodes,
             )
         )
         f.write("\n")

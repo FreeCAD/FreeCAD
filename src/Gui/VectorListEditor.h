@@ -27,6 +27,7 @@
 #include <QDialog>
 #include <QItemDelegate>
 #include <QList>
+#include <QMenu>
 
 #include <memory>
 #include <Base/Vector3D.h>
@@ -49,6 +50,8 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QModelIndex parent(const QModelIndex &index) const override;
     void setValues(const QList<Base::Vector3d>& d);
+    void copyToClipboard() const;
+    void pasteFromClipboard();
     const QList<Base::Vector3d>& values() const;
     bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
@@ -100,6 +103,7 @@ private Q_SLOTS:
     void acceptCurrent();
     void setCurrentRow(int);
     void clickedRow(const QModelIndex&);
+    void showContextMenu(const QPoint&);
 
 private:
     std::unique_ptr<Ui_VectorListEditor> ui;

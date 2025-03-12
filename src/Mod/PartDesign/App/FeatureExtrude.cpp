@@ -24,7 +24,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRep_Builder.hxx>
 # include <BRepFeat_MakePrism.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
@@ -40,6 +40,7 @@
 #include <Base/Tools.h>
 #include <Mod/Part/App/ExtrusionHelper.h>
 #include "Mod/Part/App/TopoShapeOpCode.h"
+#include <Mod/Part/App/PartFeature.h>
 
 #include "FeatureExtrude.h"
 
@@ -129,6 +130,46 @@ bool FeatureExtrude::hasTaperedAngle() const
 {
     return fabs(TaperAngle.getValue()) > Base::toRadians(Precision::Angular()) ||
            fabs(TaperAngle2.getValue()) > Base::toRadians(Precision::Angular());
+}
+
+TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir){
+
+    // Find nearest/furthest face
+    std::vector<Part::cutTopoShapeFaces> cfaces =
+        Part::findAllFacesCutBy(shape, sketchshape, dir);
+    if (cfaces.empty()) {
+        dir = -dir;
+        cfaces = Part::findAllFacesCutBy(shape, sketchshape, dir);
+    }
+
+    if (cfaces.empty()) {
+        return shape;
+    }
+
+    struct Part::cutTopoShapeFaces *nearFace {};
+    struct Part::cutTopoShapeFaces *farFace {};
+    nearFace = farFace = &cfaces.front();
+    for (auto &face : cfaces) {
+        if (face.distsq > farFace->distsq) {
+            farFace = &face;
+        }
+        else if (face.distsq < nearFace->distsq) {
+            nearFace = &face;
+        }
+    }
+
+    if (nearFace != farFace) {
+        std::vector<TopoShape> faceList;
+        for (auto &face : shape.getSubTopoShapes(TopAbs_FACE)) {
+            if (! (face == farFace->face)){
+                // don't use the last face so the shell is open
+                // and OCC works better
+                faceList.push_back(face);
+            }
+        }
+        return shape.makeElementCompound(faceList);
+    }
+    return shape;
 }
 
 // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
@@ -239,7 +280,7 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
                     throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
                 auto onePrism = PrismMaker.Shape();
 
-                BRepAlgoAPI_Fuse fuse(prism, onePrism);
+                FCBRepAlgoAPI_Fuse fuse(prism, onePrism);
                 prism = fuse.Shape();
             }
         }
@@ -269,15 +310,10 @@ void FeatureExtrude::generatePrism(TopoShape& prism,
             Ltotal = getThroughAllLength();
         }
 
-
         if (method == "TwoLengths") {
-            // midplane makes no sense here
             Ltotal += L2;
             if (reversed) {
                 Loffset = -L;
-            }
-            else if (midplane) {
-                Loffset = -0.5 * (L2 + L);
             }
             else {
                 Loffset = -L2;
@@ -375,6 +411,7 @@ void FeatureExtrude::updateProperties(const std::string &method)
     bool isMidplaneEnabled = false;
     bool isReversedEnabled = false;
     bool isUpToFaceEnabled = false;
+    bool isUpToShapeEnabled = false;
     bool isTaperVisible = false;
     bool isTaper2Visible = false;
     if (method == "Length") {
@@ -409,6 +446,7 @@ void FeatureExtrude::updateProperties(const std::string &method)
     }
     else if (method == "UpToShape") {
         isReversedEnabled = true;
+        isUpToShapeEnabled = true;
     }
 
     Length.setReadOnly(!isLengthEnabled);
@@ -420,6 +458,7 @@ void FeatureExtrude::updateProperties(const std::string &method)
     Midplane.setReadOnly(!isMidplaneEnabled);
     Reversed.setReadOnly(!isReversedEnabled);
     UpToFace.setReadOnly(!isUpToFaceEnabled);
+    UpToShape.setReadOnly(!isUpToShapeEnabled);
 }
 
 void FeatureExtrude::setupObject()
@@ -429,6 +468,9 @@ void FeatureExtrude::setupObject()
 
 App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions options)
 {
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
+
+
     bool makeface = options.testFlag(ExtrudeOption::MakeFace);
     bool fuse = options.testFlag(ExtrudeOption::MakeFuse);
     bool legacyPocket = options.testFlag(ExtrudeOption::LegacyPocket);
@@ -558,7 +600,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
         TopoShape prism(0, getDocument()->getStringHasher());
 
-        if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
+        if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace" || method == "UpToShape") {
             // Note: This will return an unlimited planar face if support is a datum plane
             TopoShape supportface = getTopoShapeSupportFace();
             supportface.move(invObjLoc);
@@ -567,18 +609,35 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 dir.Reverse();
             }
 
-            // Find a valid face or datum plane to extrude up to
-            TopoShape upToFace;
-
-            if (method != "UpToShape") {
-                if (method == "UpToFace") {
-                    getUpToFaceFromLinkSub(upToFace, UpToFace);
-                    upToFace.move(invObjLoc);
+            TopoShape upToShape;
+            int faceCount = 1;
+            // Find a valid shape, face or datum plane to extrude up to
+            if (method == "UpToFace") {
+                getUpToFaceFromLinkSub(upToShape, UpToFace);
+                upToShape.move(invObjLoc);
+                faceCount = 1;
+            }
+            else if (method == "UpToShape") {
+                faceCount = getUpToShapeFromLinkSubList(upToShape, UpToShape);
+                upToShape.move(invObjLoc);
+                if (faceCount == 0){
+                    // No shape selected, use the base
+                    upToShape = base;
+                    faceCount = 0;
                 }
-                getUpToFace(upToFace, base, supportface, sketchshape, method, dir);
-                addOffsetToFace(upToFace, dir, Offset.getValue());
             }
 
+            if (faceCount == 1) {
+                getUpToFace(upToShape, base, sketchshape, method, dir);
+                addOffsetToFace(upToShape, dir, Offset.getValue());
+            }
+            else{
+                if (fabs(Offset.getValue()) > Precision::Confusion()){
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Extrude: Can only offset one face"));
+                }
+                // open the shell by removing the furthest face
+                upToShape = makeShellFromUpToShape(upToShape, sketchshape, dir);
+            }
 
             if (!supportface.hasSubShape(TopAbs_WIRE)) {
                 supportface = TopoShape();
@@ -588,7 +647,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     base.isNull() ? TopoShape::PrismMode::None : TopoShape::PrismMode::CutFromBase;
                 prism = base.makeElementPrismUntil(sketchshape,
                                                    supportface,
-                                                   upToFace,
+                                                   upToShape,
                                                    dir,
                                                    mode,
                                                    false /*CheckUpToFaceLimits.getValue()*/);
@@ -609,6 +668,9 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     else {
                         result.makeElementCut({base, prism});
                     }
+
+                    // store shape before refinement
+                    this->rawShape = result;
                     result = refineShapeIfActive(result);
                     this->AddSubShape.setValue(result);
                 }
@@ -621,19 +683,35 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     prism = base.makeElementFuse(this->AddSubShape.getShape());
                 }
                 else {
+
+                    // store shape before refinement
+                    this->rawShape = prism;
                     prism = refineShapeIfActive(prism);
                 }
 
                 this->Shape.setValue(getSolid(prism));
                 return App::DocumentObject::StdReturn;
             }
-            prism.makeElementPrismUntil(base,
-                                        sketchshape,
-                                        supportface,
-                                        upToFace,
-                                        dir,
-                                        TopoShape::PrismMode::None,
-                                        true /*CheckUpToFaceLimits.getValue()*/);
+            try {
+                TopoShape _base;
+                if (addSubType!=FeatureAddSub::Subtractive) {
+                    _base=base; // avoid issue #16690
+                }
+                prism.makeElementPrismUntil(_base,
+                                            sketchshape,
+                                            supportface,
+                                            upToShape,
+                                            dir,
+                                            TopoShape::PrismMode::None,
+                                            true /*CheckUpToFaceLimits.getValue()*/);
+            }
+            catch (Base::Exception&) {
+                if (method == "UpToShape" && faceCount > 1){
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                        "Exception",
+                        "Unable to reach the selected shape, please select faces"));
+                }
+            }
         }
         else {
             Part::ExtrusionParameters params;
@@ -686,11 +764,13 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
         }
 
-        // set the additive shape property for later usage in e.g. pattern
+        // store shape before refinement
+        this->rawShape = prism;
         prism = refineShapeIfActive(prism);
+        // set the additive shape property for later usage in e.g. pattern
         this->AddSubShape.setValue(prism);
 
-        if (!base.isNull() && fuse) {
+        if (base.shapeType(true) <= TopAbs_SOLID && fuse) {
             prism.Tag = -this->getID();
 
             // Let's call algorithm computing a fuse operation:
@@ -718,18 +798,36 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
             }
 
+            // store shape before refinement
+            this->rawShape = result;
             solRes = refineShapeIfActive(solRes);
+
+            if (!isSingleSolidRuleSatisfied(solRes.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            }
             this->Shape.setValue(getSolid(solRes));
         }
         else if (prism.hasSubShape(TopAbs_SOLID)) {
             if (prism.countSubShapes(TopAbs_SOLID) > 1) {
                 prism.makeElementFuse(prism.getSubTopoShapes(TopAbs_SOLID));
             }
+
+            // store shape before refinement
+            this->rawShape = prism;
             prism = refineShapeIfActive(prism);
-            this->Shape.setValue(getSolid(prism));
+            prism = getSolid(prism);
+            if (!isSingleSolidRuleSatisfied(prism.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            }
+            this->Shape.setValue(prism);
         }
         else {
+            // store shape before refinement
+            this->rawShape = prism;
             prism = refineShapeIfActive(prism);
+            if (!isSingleSolidRuleSatisfied(prism.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            }
             this->Shape.setValue(prism);
         }
 

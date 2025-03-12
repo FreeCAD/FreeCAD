@@ -1,9 +1,15 @@
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
+    ${ZIPIOS_INCLUDES}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
 )
@@ -66,6 +72,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(PointsGui SHARED ${PointsGui_SRCS} ${PointsGui_Scripts} ${PointsGuiIcon_SVG})
 target_link_libraries(PointsGui ${PointsGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(PointsGui)
+endif()
 
 fc_target_copy_resource_flat(PointsGui
     ${CMAKE_CURRENT_SOURCE_DIR}

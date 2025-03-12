@@ -77,7 +77,7 @@ using ChangePointVector = std::vector<ChangePoint>;
 
 class TechDrawExport DrawViewSection: public DrawViewPart
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewSection);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewSection);
 
 public:
     DrawViewSection();
@@ -134,7 +134,6 @@ public:
     virtual TopoDS_Shape getShapeToPrepare() const { return m_cutPieces; }
 
     //CS related methods
-    gp_Ax2 getProjectionCS(Base::Vector3d pt = Base::Vector3d(0.0, 0.0, 0.0)) const override;
     void setCSFromBase(const std::string sectionName);
     void setCSFromBase(Base::Vector3d localUnit);
     void setCSFromLocalUnit(const Base::Vector3d localUnit);
@@ -165,11 +164,14 @@ public:
     static const char* CutSurfaceEnums[];
 
     virtual std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds();
+    Base::Vector3d getSectionDirectionOnBaseView();
     virtual ChangePointVector getChangePointsFromSectionLine();
 
     bool showSectionEdges(void);
 
     TopoDS_Shape makeFaceFromWires(std::vector<TopoDS_Wire> &inWires);
+
+    Base::Vector3d getCutCentroid() const;
 
 public Q_SLOTS:
     virtual void onSectionCutFinished(void);

@@ -44,8 +44,8 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Notifications.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -129,13 +129,13 @@ public:
             if (value.isValid())
                 return value;
             else
-                return Base::Tools::fromStdString(
+                return QString::fromStdString(
                     Sketcher::PropertyConstraintList::getConstraintName(constraint->Name,
                                                                         ConstraintNbr));
         }
         else if (role == Qt::DisplayRole) {
             QString name =
-                Base::Tools::fromStdString(Sketcher::PropertyConstraintList::getConstraintName(
+                QString::fromStdString(Sketcher::PropertyConstraintList::getConstraintName(
                     constraint->Name, ConstraintNbr));
 
             switch (constraint->Type) {
@@ -157,8 +157,9 @@ public:
                 case Sketcher::Weight:
                 case Sketcher::Diameter:
                 case Sketcher::Angle:
-                    name = QString::fromLatin1("%1 (%2)").arg(
-                        name, constraint->getPresentationValue().getUserString());
+                    name = QStringLiteral("%1 (%2)").arg(
+                        name,
+                        QString::fromStdString(constraint->getPresentationValue().getUserString()));
                     break;
                 case Sketcher::SnellsLaw: {
                     double v = constraint->getPresentationValue().getValue();
@@ -170,7 +171,7 @@ public:
                     else {
                         n1 = 1 / v;
                     }
-                    name = QString::fromLatin1("%1 (%2/%3)").arg(name).arg(n2).arg(n1);
+                    name = QStringLiteral("%1 (%2/%3)").arg(name).arg(n2).arg(n1);
                     break;
                 }
                 case Sketcher::InternalAlignment:
@@ -185,13 +186,13 @@ public:
 
             if (extended) {
                 if (constraint->Second == Sketcher::GeoEnum::GeoUndef) {
-                    name = QString::fromLatin1("%1 [(%2,%3)]")
+                    name = QStringLiteral("%1 [(%2,%3)]")
                                .arg(name)
                                .arg(constraint->First)
                                .arg(static_cast<int>(constraint->FirstPos));
                 }
                 else if (constraint->Third == Sketcher::GeoEnum::GeoUndef) {
-                    name = QString::fromLatin1("%1 [(%2,%3),(%4,%5)]")
+                    name = QStringLiteral("%1 [(%2,%3),(%4,%5)]")
                                .arg(name)
                                .arg(constraint->First)
                                .arg(static_cast<int>(constraint->FirstPos))
@@ -199,7 +200,7 @@ public:
                                .arg(static_cast<int>(constraint->SecondPos));
                 }
                 else {
-                    name = QString::fromLatin1("%1 [(%2,%3),(%4,%5),(%6,%7)]")
+                    name = QStringLiteral("%1 [(%2,%3),(%4,%5),(%6,%7)]")
                                .arg(name)
                                .arg(constraint->First)
                                .arg(static_cast<int>(constraint->FirstPos))
@@ -342,7 +343,7 @@ public:
             App::PropertyExpressionEngine::ExpressionInfo expr_info = sketch->getExpression(path);
 
             if (expr_info.expression)
-                return Base::Tools::fromStdString(expr_info.expression->toString());
+                return QString::fromStdString(expr_info.expression->toString());
             else
                 return QVariant();
         }
@@ -446,7 +447,7 @@ public:
 protected:
     QPixmap getIcon(const char* name, const QSize& size) const
     {
-        QString key = QString::fromLatin1("%1_%2x%3")
+        QString key = QStringLiteral("%1_%2x%3")
                           .arg(QString::fromLatin1(name))
                           .arg(size.width())
                           .arg(size.height());
@@ -813,7 +814,8 @@ FilterValueBitset ConstraintFilterList::getMultiFilter()
 // ----------------------------------------------------------------------------
 
 TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Constraints"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_CreateLineAngleLength"), tr("Constraints"), true, nullptr)
+    , specialFilterMode{SpecialFilterType::None}
     , sketchView(sketchView)
     , inEditMode(false)
     , ui(new Ui_TaskSketcherConstraints)
@@ -953,7 +955,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
 
     multiFilterStatus = filterList->getMultiFilter();
 
-    ui->listWidgetConstraints->setStyleSheet(QString::fromLatin1("margin-top: 0px"));
+    ui->listWidgetConstraints->setStyleSheet(QStringLiteral("margin-top: 0px"));
 
     //NOLINTBEGIN
     Gui::Application* app = Gui::Application::Instance;
@@ -1209,7 +1211,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
     const Sketcher::Constraint* v = vals[it->ConstraintNbr];
     const std::string currConstraintName = v->Name;
 
-    const std::string basename = Base::Tools::toStdString(it->data(Qt::EditRole).toString());
+    const std::string basename = it->data(Qt::EditRole).toString().toStdString();
 
     std::string newName(
         Sketcher::PropertyConstraintList::getConstraintName(basename, it->ConstraintNbr));
@@ -1353,7 +1355,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
         if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) == 0
             && strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) == 0) {
             if (msg.pSubName) {
-                QRegularExpression rx(QString::fromLatin1("^Constraint(\\d+)$"));
+                QRegularExpression rx(QStringLiteral("^Constraint(\\d+)$"));
                 QRegularExpressionMatch match;
                 QString expr = QString::fromLatin1(msg.pSubName);
                 boost::ignore_unused(expr.indexOf(rx, 0, &match));
@@ -1369,6 +1371,10 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
                                 auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
                                 item->setSelected(select);
                                 ui->listWidgetConstraints->blockSignals(tmpBlock);
+                                if (select && ui->listWidgetConstraints->model()) { // scrollTo only on select, not de-select
+                                    QModelIndex index = ui->listWidgetConstraints->model()->index(i, 0);
+                                    ui->listWidgetConstraints->scrollTo(index, QAbstractItemView::PositionAtCenter);
+                                }
                                 break;
                             }
                         }
@@ -1432,7 +1438,7 @@ void TaskSketcherConstraints::OnChange(Base::Subject<const char*>& rCaller, cons
 void TaskSketcherConstraints::getSelectionGeoId(QString expr, int& geoid,
                                                 Sketcher::PointPos& pointpos)
 {
-    QRegularExpression rxEdge(QString::fromLatin1("^Edge(\\d+)$"));
+    QRegularExpression rxEdge(QStringLiteral("^Edge(\\d+)$"));
     QRegularExpressionMatch match;
     boost::ignore_unused(expr.indexOf(rxEdge, 0, &match));
     geoid = Sketcher::GeoEnum::GeoUndef;
@@ -1446,7 +1452,7 @@ void TaskSketcherConstraints::getSelectionGeoId(QString expr, int& geoid,
         }
     }
     else {
-        QRegularExpression rxVertex(QString::fromLatin1("^Vertex(\\d+)$"));
+        QRegularExpression rxVertex(QStringLiteral("^Vertex(\\d+)$"));
         boost::ignore_unused(expr.indexOf(rxVertex, 0, &match));
 
         if (match.hasMatch()) {
@@ -1643,6 +1649,8 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
                 break;
         }
 
+        visible |= !constraint->Name.empty() && checkFilterBitset(multiFilterStatus, FilterValue::Named);
+
         // Then we re-filter based on selected/associated if such mode selected.
         if (visible && specialFilterMode == SpecialFilterType::Selected) {
             visible = (std::find(selectionFilter.begin(), selectionFilter.end(), it->ConstraintNbr)
@@ -1709,7 +1717,7 @@ void TaskSketcherConstraints::slotConstraintsChanged()
         QAbstractItemModel* model = ui->listWidgetConstraints->model();
         auto tmpBlock = model->blockSignals(true);
         it->setHidden(!visible);
-        it->setData(Qt::EditRole, Base::Tools::fromStdString(constraint->Name));
+        it->setData(Qt::EditRole, QString::fromStdString(constraint->Name));
         model->blockSignals(tmpBlock);
     }
 }
@@ -1772,7 +1780,7 @@ void TaskSketcherConstraints::onFilterListItemChanged(QListWidgetItem* item)
     for (int i = filterList->count() - 1; i >= 0; i--) {
         bool isChecked = filterList->item(i)->checkState() == Qt::Checked;
         filterState = filterState << 1;// we shift left first, else the list is shifted at the end.
-        filterState = filterState | isChecked;
+        filterState = filterState | (isChecked ? 1 : 0);
     }
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");

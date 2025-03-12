@@ -2,9 +2,14 @@ include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
@@ -83,6 +88,9 @@ SET(DrawingGuiIcon_SVG
 add_library(DrawingGui SHARED ${DrawingGui_SRCS} ${DrawingGuiView_SRCS}
                               ${DrawingGuiViewProvider_SRCS} ${DrawingGuiIcon_SVG})
 target_link_libraries(DrawingGui ${DrawingGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(DrawingGui)
+endif()
 
 
 SET_BIN_DIR(DrawingGui DrawingGui /Mod/Drawing)

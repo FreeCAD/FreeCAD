@@ -31,7 +31,11 @@
 
 
 class SoCoordinate3;
+class SoIndexedFaceSet;
+class SoMaterial;
+class SoMaterialBinding;
 class SoMFString;
+class SoTransparencyType;
 class SbVec2s;
 
 namespace Gui {
@@ -54,7 +58,7 @@ public:
   /**
    * Returns the associated color to the value \a fVal.
    */
-  App::Color getColor (float fVal) const override { return _cColGrad.getColor(fVal); }
+  Base::Color getColor (float fVal) const override { return _cColGrad.getColor(fVal); }
   void setOutsideGrayed (bool bVal) override { _cColGrad.setOutsideGrayed(bVal); }
   /**
    * Returns always true if the gradient is in mode to show colors to arbitrary values of \a fVal,
@@ -74,6 +78,7 @@ public:
   const char* getColorBarName() const override;
 
 protected:
+  void applyFormat(const SoLabelTextFormat& fmt) override;
   /**
    * Sets the current viewer size this color gradient is embedded into, to recalculate its new position.
    */
@@ -95,9 +100,16 @@ protected:
   std::vector<float> getMarkerValues(float fMin, float fMax, int count) const;
 
 private:
+  bool isZeroBased(float fMin, float fMax) const;
   /** Sets the new labels. */
+  int getNumColors() const;
   void setMarkerLabel( const SoMFString& label );
   void modifyPoints(const SbBox2f&);
+  void setCoordSize(int numPoints);
+  SoIndexedFaceSet* createFaceSet(int numFaces) const;
+  SoTransparencyType* createTransparencyType() const;
+  SoMaterial* createMaterial() const;
+  SoMaterialBinding* createMaterialBinding() const;
 
 private:
   SoCoordinate3* coords;

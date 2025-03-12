@@ -42,7 +42,7 @@ INFO_COLOR = "Logging"
 class ReportDialog(QtGui.QDialog):
 
     def __init__(self, report, title="Report", text=None, parent=None):
-        super(ReportDialog, self).__init__(parent)
+        super().__init__(parent)
         msgDetails = QtGui.QTextEdit()
         msgDetails.setReadOnly(True)
         msgDetails.setHtml(self._getText(report))
@@ -73,8 +73,7 @@ class ReportDialog(QtGui.QDialog):
         return text
 
     def _getColoredLine(self, text, outputwin_color_type):
-        return '<font color="{}">{}</font>'.format(
-            getOutputWinColor(outputwin_color_type), text
-        )
+        return f'<font color="{getOutputWinColor(outputwin_color_type)}">{text}</font>'
+
 
 ##  @}

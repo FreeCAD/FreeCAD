@@ -42,6 +42,16 @@ std::string ViewProviderAssemblyPy::representation() const
     return str.str();
 }
 
+PyObject* ViewProviderAssemblyPy::isInEditMode(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    Py::Boolean val(getViewProviderAssemblyPtr()->isInEditMode());
+    return Py::new_reference_to(val);
+}
+
 Py::Boolean ViewProviderAssemblyPy::getEnableMovement() const
 {
     return {getViewProviderAssemblyPtr()->getEnableMovement()};
@@ -50,6 +60,26 @@ Py::Boolean ViewProviderAssemblyPy::getEnableMovement() const
 void ViewProviderAssemblyPy::setEnableMovement(Py::Boolean arg)
 {
     getViewProviderAssemblyPtr()->setEnableMovement(arg);
+}
+
+Py::Boolean ViewProviderAssemblyPy::getMoveOnlyPreselected() const
+{
+    return {getViewProviderAssemblyPtr()->getMoveOnlyPreselected()};
+}
+
+void ViewProviderAssemblyPy::setMoveOnlyPreselected(Py::Boolean arg)
+{
+    getViewProviderAssemblyPtr()->setMoveOnlyPreselected(arg);
+}
+
+Py::Boolean ViewProviderAssemblyPy::getMoveInCommand() const
+{
+    return {getViewProviderAssemblyPtr()->getMoveInCommand()};
+}
+
+void ViewProviderAssemblyPy::setMoveInCommand(Py::Boolean arg)
+{
+    getViewProviderAssemblyPtr()->setMoveInCommand(arg);
 }
 
 Py::Boolean ViewProviderAssemblyPy::getDraggerVisibility() const

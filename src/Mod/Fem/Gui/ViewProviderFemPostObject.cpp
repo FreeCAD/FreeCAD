@@ -32,6 +32,7 @@
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoNormal.h>
+#include <Inventor/nodes/SoPolygonOffset.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -55,9 +56,10 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/SoFCColorBar.h>
+#include <Gui/SoFCColorBarNotifier.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -66,6 +68,8 @@
 #include "TaskPostBoxes.h"
 #include "ViewProviderAnalysis.h"
 #include "ViewProviderFemPostObject.h"
+
+#include <Base/Tools.h>
 
 
 using namespace FemGui;
@@ -174,7 +178,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
                       "Object Style",
                       App::Prop_None,
                       "Use plain color for edges on surface.");
-    ADD_PROPERTY_TYPE(LineWidth, (2), "Object Style", App::Prop_None, "Set wireframe line width.");
+    ADD_PROPERTY_TYPE(LineWidth, (1), "Object Style", App::Prop_None, "Set wireframe line width.");
     ADD_PROPERTY_TYPE(PointSize, (3), "Object Style", App::Prop_None, "Set node point size.");
 
 
@@ -232,6 +236,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
     m_colorRoot->addChild(m_colorStyle);
     m_colorBar = new Gui::SoFCColorBar;
     m_colorBar->Attach(this);
+    Gui::SoFCColorBarNotifier::instance().attach(m_colorBar);
     m_colorBar->ref();
 
     // create the vtk algorithms we use for visualisation
@@ -274,10 +279,16 @@ ViewProviderFemPostObject::~ViewProviderFemPostObject()
     m_material->unref();
     m_matPlainEdges->unref();
     m_switchMatEdges->unref();
-    m_colorBar->Detach(this);
-    m_colorBar->unref();
+    deleteColorBar();
     m_colorStyle->unref();
     m_colorRoot->unref();
+}
+
+void ViewProviderFemPostObject::deleteColorBar()
+{
+    Gui::SoFCColorBarNotifier::instance().detach(m_colorBar);
+    m_colorBar->Detach(this);
+    m_colorBar->unref();
 }
 
 void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
@@ -297,27 +308,24 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
     m_sepMarkerLine->addChild(m_lines);
 
     // face nodes
+    SoPolygonOffset* offset = new SoPolygonOffset();
     m_separator->addChild(m_shapeHints);
     m_separator->addChild(m_materialBinding);
     m_separator->addChild(m_material);
     m_separator->addChild(m_coordinates);
-    m_separator->addChild(m_faces);
     m_separator->addChild(m_sepMarkerLine);
+    m_separator->addChild(offset);
+    m_separator->addChild(m_faces);
 
     // Check for an already existing color bar
     Gui::SoFCColorBar* pcBar =
         static_cast<Gui::SoFCColorBar*>(findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
     if (pcBar) {
-        float fMin = m_colorBar->getMinValue();
-        float fMax = m_colorBar->getMaxValue();
-
         // Attach to the foreign color bar and delete our own bar
         pcBar->Attach(this);
         pcBar->ref();
-        pcBar->setRange(fMin, fMax, 3);
         pcBar->Notify(0);
-        m_colorBar->Detach(this);
-        m_colorBar->unref();
+        deleteColorBar();
         m_colorBar = pcBar;
     }
 
@@ -611,12 +619,27 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points,
     }
 }
 
-void ViewProviderFemPostObject::setRangeOfColorBar(double min, double max)
+void ViewProviderFemPostObject::setRangeOfColorBar(float min, float max)
 {
     try {
+        // setRange expects max value greater than min value.
+        // A typical case is max equal to min, so machine epsilon
+        // is used to overwrite and differentiate both values
         if (min >= max) {
-            min = max - 10 * std::numeric_limits<double>::epsilon();
-            max = max + 10 * std::numeric_limits<double>::epsilon();
+            static constexpr float eps = std::numeric_limits<float>::epsilon();
+            if (max > 0) {
+                min = max * (1 - eps);
+                max = max * (1 + eps);
+            }
+            else if (max < 0) {
+                min = max * (1 + eps);
+                max = max * (1 - eps);
+            }
+            else {
+                static constexpr float minF = std::numeric_limits<float>::min();
+                min = -1 * minF;
+                max = minF;
+            }
         }
         m_colorBar->setRange(min, max);
     }
@@ -638,7 +661,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
 
     if (Field.getEnumVector().empty() || Field.getValue() == 0) {
         m_material->diffuseColor.setValue(SbColor(0.8, 0.8, 0.8));
-        float trans = float(Transparency.getValue()) / 100.0;
+        float trans = Base::fromPercent(Transparency.getValue());
         m_material->transparency.setValue(trans);
         m_materialBinding->value = SoMaterialBinding::OVERALL;
         m_materialBinding->touch();
@@ -666,7 +689,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
     if (ResetColorBarRange) {
         double range[2];
         data->GetRange(range, component);
-        setRangeOfColorBar(range[0], range[1]);
+        setRangeOfColorBar(static_cast<float>(range[0]), static_cast<float>(range[1]));
     }
 
     vtkIdType numPts = pd->GetNumberOfPoints();
@@ -675,14 +698,13 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
     SbColor* diffcol = m_material->diffuseColor.startEditing();
     SbColor* edgeDiffcol = m_matPlainEdges->diffuseColor.startEditing();
 
-    float overallTransp = Transparency.getValue() / 100.0f;
+    float overallTransp = Base::fromPercent(Transparency.getValue());
     m_material->transparency.setNum(numPts);
     m_matPlainEdges->transparency.setNum(numPts);
     float* transp = m_material->transparency.startEditing();
     float* edgeTransp = m_matPlainEdges->transparency.startEditing();
-
-    App::Color c;
-    App::Color cEdge = EdgeColor.getValue();
+    Base::Color c;
+    Base::Color cEdge = EdgeColor.getValue();
     for (int i = 0; i < numPts; i++) {
 
         double value = 0;
@@ -699,9 +721,9 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
 
         c = m_colorBar->getColor(value);
         diffcol[i].setValue(c.r, c.g, c.b);
-        transp[i] = std::max(c.a, overallTransp);
+        transp[i] = std::max(c.transparency(), overallTransp);
         edgeDiffcol[i].setValue(cEdge.r, cEdge.g, cEdge.b);
-        edgeTransp[i] = std::max(cEdge.a, overallTransp);
+        edgeTransp[i] = std::max(cEdge.transparency(), overallTransp);
     }
 
     m_material->diffuseColor.finishEditing();
@@ -717,7 +739,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
 
 void ViewProviderFemPostObject::WriteTransparency()
 {
-    float trans = static_cast<float>(Transparency.getValue()) / 100.0;
+    float trans = Base::fromPercent(Transparency.getValue());
     float* value = m_material->transparency.startEditing();
     float* edgeValue = m_matPlainEdges->transparency.startEditing();
     // m_material and m_matPlainEdges field containers have same size
@@ -741,7 +763,7 @@ void ViewProviderFemPostObject::WriteTransparency()
 
 void ViewProviderFemPostObject::updateData(const App::Property* p)
 {
-    Fem::FemPostObject* postObject = static_cast<Fem::FemPostObject*>(getObject());
+    Fem::FemPostObject* postObject = getObject<Fem::FemPostObject>();
     if (p == &postObject->Data) {
         updateVtk();
     }
@@ -826,7 +848,7 @@ bool ViewProviderFemPostObject::setupPipeline()
         return false;
     }
 
-    auto postObject = static_cast<Fem::FemPostObject*>(getObject());
+    auto postObject = getObject<Fem::FemPostObject>();
 
     vtkDataObject* data = postObject->Data.getValue();
     if (!data) {
@@ -883,7 +905,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
     bool ResetColorBarRange;
 
     // the point filter delivers a single value thus recoloring the bar is senseless
-    if (static_cast<Fem::FemPostObject*>(getObject())->getTypeId()
+    if (getObject<Fem::FemPostObject>()->getTypeId()
         == Base::Type::fromName("Fem::FemPostDataAtPointFilter")) {
         ResetColorBarRange = false;
     }
@@ -908,7 +930,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
         m_drawStyle->pointSize.setValue(PointSize.getValue());
     }
     else if (prop == &EdgeColor && setupPipeline()) {
-        App::Color c = EdgeColor.getValue();
+        Base::Color c = EdgeColor.getValue();
         SbColor* edgeColor = m_matPlainEdges->diffuseColor.startEditing();
         for (int i = 0; i < m_matPlainEdges->diffuseColor.getNum(); ++i) {
             edgeColor[i].setValue(c.r, c.g, c.b);
@@ -1016,7 +1038,7 @@ void ViewProviderFemPostObject::hide()
     for (auto it : ObjectsList) {
         if (it->isDerivedFrom<Fem::FemPostObject>()) {
             if (!firstVisiblePostObject && it->Visibility.getValue()
-                && !it->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
+                && !it->isDerivedFrom<Fem::FemPostDataAtPointFilter>()) {
                 firstVisiblePostObject = it;
                 break;
             }
@@ -1043,7 +1065,7 @@ void ViewProviderFemPostObject::show()
 
 void ViewProviderFemPostObject::OnChange(Base::Subject<int>& /*rCaller*/, int /*rcReason*/)
 {
-    bool ResetColorBarRange = true;
+    bool ResetColorBarRange = false;
     WriteColorData(ResetColorBarRange);
 }
 

@@ -161,6 +161,7 @@ public:
     /** initializes a point (or curve) drag by setting the current
      * sketch status as a reference
      */
+    int initMove(std::vector<GeoElementId> geoEltIds, bool fine = true);
     int initMove(int geoId, PointPos pos, bool fine = true);
 
     /** Initializes a B-spline piece drag by setting the current
@@ -184,7 +185,10 @@ public:
      * a condition for satisfying the new point location!
      * The relative flag permits moving relatively to the current position
      */
-    int movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative = false);
+    int moveGeometries(std::vector<GeoElementId> geoEltIds,
+                       Base::Vector3d toPoint,
+                       bool relative = false);
+    int moveGeometry(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative = false);
 
     /**
      * Sets whether the initial solution should be recalculated while dragging after a certain
@@ -794,7 +798,7 @@ private:
      * The implementation is on the order of the groups provided by the QR decomposition used to
      * reveal the parameters (see System::identifyDependentParameters in GCS). Zeros are made over
      * the pilot of the full R matrix of the QR decomposition, which is a top triangular
-     * matrix.This, together with the permutation matrix, allow to know groups of dependent
+     * matrix.This, together with the permutation matrix, allow one to know groups of dependent
      * parameters (cols between rank and full size). Each group refers to a new parameter not
      * affected by the rank in combination with other free parameters intervening in the rank
      * (because of the triangular shape of the R matrix). This results in that each the first column

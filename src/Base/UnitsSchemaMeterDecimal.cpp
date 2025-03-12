@@ -29,60 +29,41 @@
  */
 
 #include "PreCompiled.h"
-#ifdef __GNUC__
-#include <unistd.h>
+#ifndef _PreComp_
+#include <algorithm>
+#include <array>
 #endif
 
-#include <QString>
-
+#include "Quantity.h"
+#include "Unit.h"
 #include "UnitsSchemaMeterDecimal.h"
-
 
 using namespace Base;
 
-
-QString UnitsSchemaMeterDecimal::schemaTranslate(const Base::Quantity& quant,
-                                                 double& factor,
-                                                 QString& unitString)
+std::string UnitsSchemaMeterDecimal::schemaTranslate(const Base::Quantity& quant,
+                                                     double& factor,
+                                                     std::string& unitString)
 {
-    Unit unit = quant.getUnit();
-    if (unit == Unit::Length) {
-        // all length units in metres
-        unitString = QString::fromLatin1("m");
-        factor = 1e3;
-    }
-    else if (unit == Unit::Area) {
-        // all area units in square meters
-        unitString = QString::fromLatin1("m^2");
-        factor = 1e6;
-    }
-    else if (unit == Unit::Volume) {
-        // all area units in cubic meters
-        unitString = QString::fromLatin1("m^3");
-        factor = 1e9;
-    }
-    else if (unit == Unit::Power) {
-        // watts
-        unitString = QString::fromLatin1("W");
-        factor = 1000000;
-    }
-    else if (unit == Unit::ElectricPotential) {
-        // volts
-        unitString = QString::fromLatin1("V");
-        factor = 1000000;
-    }
-    else if (unit == Unit::HeatFlux) {
-        // watts per square metre
-        unitString = QString::fromLatin1("W/m^2");
-        factor = 1.0;
-    }
-    else if (unit == Unit::Velocity) {
-        // metres per second
-        unitString = QString::fromLatin1("m/s");
-        factor = 1e3;
+    static std::array<std::pair<Unit, std::pair<std::string, double>>, 7> unitSpecs {{
+        {Unit::Length, {"m", 1e3}},
+        {Unit::Area, {"m^2", 1e6}},
+        {Unit::Volume, {"m^3", 1e9}},
+        {Unit::Power, {"W", 1000000}},
+        {Unit::ElectricPotential, {"V", 1000000}},
+        {Unit::HeatFlux, {"W/m^2", 1.0}},
+        {Unit::Velocity, {"m/s", 1e3}},
+    }};
+
+    const auto unit = quant.getUnit();
+    const auto spec = std::find_if(unitSpecs.begin(), unitSpecs.end(), [&](const auto& pair) {
+        return pair.first == unit;
+    });
+
+    if (spec != std::end(unitSpecs)) {
+        unitString = spec->second.first;
+        factor = spec->second.second;
     }
     else {
-        // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
         factor = 1.0;
     }

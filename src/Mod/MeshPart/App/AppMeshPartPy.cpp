@@ -183,7 +183,6 @@ private:
         float x=0.0f,y=0.0f,z=1.0f,size = 0.1f;
 
         if (!PyArg_ParseTuple(args.ptr(), "O!O(fff)f", &(Part::TopoShapePy::Type), &pcTopoObj,&pcListObj,&x,&y,&z,&size))
-//      if (!PyArg_ParseTuple(args, "O!O!", &(App::TopoShapePy::Type), &pcTopoObj,&PyList_Type,&pcListObj,x,y,z,size))
             throw Py::Exception();
 
         pcObject = static_cast<Part::TopoShapePy*>(pcTopoObj);
@@ -511,7 +510,7 @@ private:
                     Py::Float r(t[0]);
                     Py::Float g(t[1]);
                     Py::Float b(t[2]);
-                    App::Color c(static_cast<float>(r),
+                    Base::Color c(static_cast<float>(r),
                                  static_cast<float>(g),
                                  static_cast<float>(b));
                     colors.push_back(c.getPackedValue());

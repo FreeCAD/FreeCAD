@@ -4,19 +4,22 @@
 # See https://pre-commit.com/hooks.html for more hooks
 files: |
     (?x)^(
+        .github|
         src/Base|
+        src/Main|
         src/Tools|
         tests/src|
         src/Mod/AddonManager|
         src/Mod/Assembly|
+        src/Mod/CAM|
         src/Mod/Cloud|
         src/Mod/Drawing|
-        src/Mod/Fem/App|
-        src/Mod/Fem/Gui|
+        src/Mod/Fem|
         src/Mod/Help|
         src/Mod/Import|
         src/Mod/Inspection|
         src/Mod/JtReader|
+        src/Mod/Measure|
         src/Mod/Mesh|
         src/Mod/MeshPart|
         src/Mod/Plot|
@@ -36,6 +39,13 @@ exclude: |
     (?x)^(
         .*vcproj.*|
         .*vcxproj.*|
+        src/App/ExpressionParser.tab.c|
+        src/App/ExpressionParser.tab.h|
+        src/App/ExpressionParser.y|
+        src/App/lex.ExpressionParser.c|
+        src/Gui/3Dconnexion/navlib|
+        src/Gui/QSint|
+        src/Gui/Quarter|
         src/Mod/Import/App/SCL|
         src/Mod/Import/App/SCL_output|
         src/Mod/Mesh/App/TestData|
@@ -45,7 +55,7 @@ exclude: |
     )
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: cef0300fd0fc4d2a87a85fa2093c6b283ea36f4b # frozen: v5.0.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -53,11 +63,11 @@ repos:
     -   id: check-added-large-files
     -   id: mixed-line-ending
 -   repo: https://github.com/psf/black
-    rev: 24.3.0
+    rev: 8a737e727ac5ab2f1d4cf5876720ed276dc8dc4b  # frozen: 25.1.0
     hooks:
         -   id: black
             args: ['--line-length', '100']
 -   repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v15.0.7
+    rev: f9a52e87b6cdcb01b0a62b8611d9ba9f2dad0067  # frozen: v19.1.7
     hooks:
         -   id: clang-format

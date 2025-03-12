@@ -36,9 +36,7 @@ translate = FreeCAD.Qt.translate
 class GCodeHighlighter(QtGui.QSyntaxHighlighter):
     def __init__(self, parent=None):
         def convertcolor(c):
-            return QtGui.QColor(
-                int((c >> 24) & 0xFF), int((c >> 16) & 0xFF), int((c >> 8) & 0xFF)
-            )
+            return QtGui.QColor(int((c >> 24) & 0xFF), int((c >> 16) & 0xFF), int((c >> 8) & 0xFF))
 
         super(GCodeHighlighter, self).__init__(parent)
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
@@ -62,25 +60,18 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
         self.highlightingRules = []
         numberFormat = QtGui.QTextCharFormat()
         numberFormat.setForeground(colors[0])
-        self.highlightingRules.append(
-            (QtCore.QRegularExpression("[\\-0-9\\.]"), numberFormat)
-        )
+        self.highlightingRules.append((QtCore.QRegularExpression("[\\-0-9\\.]"), numberFormat))
         keywordFormat = QtGui.QTextCharFormat()
         keywordFormat.setForeground(colors[1])
         keywordFormat.setFontWeight(QtGui.QFont.Bold)
         keywordPatterns = ["\\bG[0-9]+\\b", "\\bM[0-9]+\\b"]
         self.highlightingRules.extend(
-            [
-                (QtCore.QRegularExpression(pattern), keywordFormat)
-                for pattern in keywordPatterns
-            ]
+            [(QtCore.QRegularExpression(pattern), keywordFormat) for pattern in keywordPatterns]
         )
         speedFormat = QtGui.QTextCharFormat()
         speedFormat.setFontWeight(QtGui.QFont.Bold)
         speedFormat.setForeground(colors[2])
-        self.highlightingRules.append(
-            (QtCore.QRegularExpression("\\bF[0-9\\.]+\\b"), speedFormat)
-        )
+        self.highlightingRules.append((QtCore.QRegularExpression("\\bF[0-9\\.]+\\b"), speedFormat))
 
     def highlightBlock(self, text):
 
@@ -108,9 +99,7 @@ class GCodeEditorDialog(QtGui.QDialog):
 
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
         c = p.GetUnsigned("DefaultHighlightPathColor", 4286382335)
-        Q = QtGui.QColor(
-            int((c >> 24) & 0xFF), int((c >> 16) & 0xFF), int((c >> 8) & 0xFF)
-        )
+        Q = QtGui.QColor(int((c >> 24) & 0xFF), int((c >> 16) & 0xFF), int((c >> 8) & 0xFF))
         highlightcolor = (
             Q.red() / 255.0,
             Q.green() / 255.0,
@@ -118,9 +107,7 @@ class GCodeEditorDialog(QtGui.QDialog):
             Q.alpha() / 255.0,
         )
 
-        self.selectionobj = FreeCAD.ActiveDocument.addObject(
-            "Path::Feature", "selection"
-        )
+        self.selectionobj = FreeCAD.ActiveDocument.addObject("Path::Feature", "selection")
         self.selectionobj.ViewObject.LineWidth = 4
         self.selectionobj.ViewObject.NormalColor = highlightcolor
 
@@ -281,23 +268,19 @@ class CommandPathInspect:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("CAM_Inspect", "Please select exactly one path object")
-                + "\n"
+                translate("CAM_Inspect", "Please select exactly one path object") + "\n"
             )
             return
         if not (selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("CAM_Inspect", "Please select exactly one path object")
-                + "\n"
+                translate("CAM_Inspect", "Please select exactly one path object") + "\n"
             )
             return
 
         # if everything is ok, execute
         FreeCADGui.addModule("Path.Main.Gui.Inspect")
         FreeCADGui.doCommand(
-            "Path.Main.Gui.Inspect.show(FreeCAD.ActiveDocument."
-            + selection[0].Name
-            + ")"
+            "Path.Main.Gui.Inspect.show(FreeCAD.ActiveDocument." + selection[0].Name + ")"
         )
 
 

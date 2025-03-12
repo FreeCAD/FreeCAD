@@ -41,7 +41,7 @@ ViewProviderMainPart::~ViewProviderMainPart()
 std::vector<App::DocumentObject*> ViewProviderMainPart::claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<PartDesign::MainPart*>(getObject())->Sketch.getValue());
+    temp.push_back(getObject<PartDesign::MainPart>()->Sketch.getValue());
 
     return temp;
 }

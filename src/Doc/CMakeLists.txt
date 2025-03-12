@@ -1,13 +1,12 @@
-
-configure_file(ThirdPartyLibraries.html
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/ThirdPartyLibraries.html COPYONLY)
+configure_file(ThirdPartyLibraries.html.cmake
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/ThirdPartyLibraries.html)
 configure_file(LICENSE.html
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/LICENSE.html COPYONLY)
 
 # The CONTRIBUTORS file is now compiled into the FreeCAD GUI Qt resource file
 
 INSTALL(FILES
-    ThirdPartyLibraries.html
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/ThirdPartyLibraries.html
     LICENSE.html
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
@@ -34,7 +33,7 @@ if(DOXYGEN_FOUND)
     # (files containing macros definitions must be parsed before the files using them)
     SET(DOXYGEN_SOURCE_DIR ${COIN3D_INCLUDE_DIRS}/Inventor/fields/SoSubField.h 
                            ${CMAKE_SOURCE_DIR}/src/CXX 
-                           ${CMAKE_SOURCE_DIR}/src/zipios++ 
+                           ${CMAKE_SOURCE_DIR}/src/3rdParty/zipios++ 
                            ${CMAKE_SOURCE_DIR}/src/3rdParty
                            ${CMAKE_SOURCE_DIR}/src/Build 
                            ${CMAKE_SOURCE_DIR}/src/Base 

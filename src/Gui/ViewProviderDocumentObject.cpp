@@ -401,6 +401,18 @@ Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
 {
     if(!pcObject)
         throw Base::RuntimeError("View provider detached");
+
+    if (!pcObject->isAttachedToDocument()) {
+        // Check if view provider is attached to a document as an annotation
+        for (auto doc : App::GetApplication().getDocuments()) {
+            auto guiDoc = Gui::Application::Instance->getDocument(doc);
+            if (guiDoc->isAnnotationViewProvider(this)) {
+                return guiDoc->getActiveView();
+            }
+        }
+        return nullptr;
+    }
+
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
     return pGuiDoc->getActiveView();
@@ -487,12 +499,10 @@ void ViewProviderDocumentObject::setActiveMode()
 
 bool ViewProviderDocumentObject::canDelete(App::DocumentObject* obj) const
 {
-    Q_UNUSED(obj)
-    if (getObject()->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
-        return true;
-    if (getObject()->isDerivedFrom(App::Origin::getClassTypeId()))
-        return true;
-    return false;
+    Q_UNUSED(obj);
+    auto* o = getObject();
+    return o->hasExtension(App::GroupExtension::getExtensionClassTypeId())
+           || o->isDerivedFrom<App::Origin>();
 }
 
 PyObject* ViewProviderDocumentObject::getPyObject()

@@ -90,7 +90,7 @@ void SymbolChooser::onOKClicked()
     QString targetText = sourceItem->text();
     m_symbolPath = m_symbolDir +
                    targetText +
-                   QString::fromUtf8(".svg");
+                   QStringLiteral(".svg");
 
     Q_EMIT symbolSelected(m_symbolPath, m_source);
 }
@@ -109,7 +109,7 @@ void SymbolChooser::onItemClicked(QListWidgetItem* item)
     QString targetText = sourceItem->text();
     m_symbolPath = m_symbolDir +
                    targetText +
-                   QString::fromUtf8(".svg");
+                   QStringLiteral(".svg");
     Q_EMIT symbolSelected(m_symbolPath, m_source);
 
     // Base::Console().Message("SC::onOKClicked - symbol: %s\n", qPrintable(m_symbolPath));
@@ -120,7 +120,7 @@ void SymbolChooser::onDirectoryChanged(const QString& newDir)
 {
     ui->lwSymbols->clear(); // Remove all previous symbols
     // Base::Console().Message("SC::onDirectoryChanged(%s)\n", qPrintable(newDir));
-    m_symbolDir = newDir + QString::fromUtf8("/");
+    m_symbolDir = newDir + QStringLiteral("/");
     loadSymbolNames(m_symbolDir);
 }
 

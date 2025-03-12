@@ -304,7 +304,7 @@ PyObject* ViewProviderPy::replaceObject(PyObject *args)
         int ret = getViewProviderPtr()->replaceObject(
                 static_cast<App::DocumentObjectPy*>(oldObj)->getDocumentObjectPtr(),
                 static_cast<App::DocumentObjectPy*>(newObj)->getDocumentObjectPtr());
-        return Py::new_reference_to(Py::Int(ret));
+        return Py::new_reference_to(Py::Long(ret));
     }
     PY_CATCH;
 }
@@ -319,6 +319,10 @@ PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin","_p_SoNode", obj, &ptr, 0);
+        if (!ptr) {
+            PyErr_SetString(PyExc_RuntimeError, "Conversion of coin.SoNode failed");
+            return nullptr;
+        }
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
@@ -393,7 +397,23 @@ PyObject* ViewProviderPy::claimChildren(PyObject* args)
 
     std::vector<App::DocumentObject*> children = this->getViewProviderPtr()->claimChildren();
     Py::List ret;
-    for(App::DocumentObject* child: children){
+    for(auto* child : children){
+        if (child)
+            ret.append(Py::asObject(child->getPyObject()));
+        else
+            ret.append(Py::None());
+    }
+    return Py::new_reference_to(ret);
+}
+
+PyObject* ViewProviderPy::claimChildrenRecursive(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    std::vector<App::DocumentObject*> children = this->getViewProviderPtr()->claimChildrenRecursive();
+    Py::List ret;
+    for(auto* child : children){
         if (child)
             ret.append(Py::asObject(child->getPyObject()));
         else
@@ -436,7 +456,7 @@ PyObject* ViewProviderPy::partialRender(PyObject* args)
         }
     }
 
-    Py::Int ret(getViewProviderPtr()->partialRender(values, Base::asBoolean(clear)));
+    Py::Long ret(getViewProviderPtr()->partialRender(values, Base::asBoolean(clear)));
     return Py::new_reference_to(ret);
 }
 
@@ -464,7 +484,7 @@ PyObject* ViewProviderPy::setElementColors(PyObject* args)
     if(!PyDict_Check(pyObj))
         throw Py::TypeError("Expect a dict");
 
-    std::map<std::string,App::Color> colors;
+    std::map<std::string,Base::Color> colors;
     Py::Dict dict(pyObj);
     for(auto it=dict.begin();it!=dict.end();++it) {
         const auto &value = *it;
@@ -540,7 +560,7 @@ PyObject *ViewProviderPy::getBoundingBox(PyObject *args) {
     PY_TRY {
         View3DInventor *view = nullptr;
         if(pyView)
-            view = static_cast<View3DInventorPy*>(pyView)->getView3DIventorPtr();
+            view = static_cast<View3DInventorPy*>(pyView)->getView3DInventorPtr();
         auto bbox = getViewProviderPtr()->getBoundingBox(subname, Base::asBoolean(transform), view);
         return new Base::BoundBoxPy(new Base::BoundBox3d(bbox));
     }
@@ -657,12 +677,12 @@ Py::Object ViewProviderPy::getIcon() const
     return wrap.fromQIcon(new QIcon(icon));
 }
 
-Py::Int ViewProviderPy::getDefaultMode() const
+Py::Long ViewProviderPy::getDefaultMode() const
 {
-    return Py::Int((long)getViewProviderPtr()->getDefaultMode());
+    return Py::Long((long)getViewProviderPtr()->getDefaultMode());
 }
 
-void ViewProviderPy::setDefaultMode(Py::Int arg)
+void ViewProviderPy::setDefaultMode(Py::Long arg)
 {
     return getViewProviderPtr()->setDefaultMode(arg);
 }

@@ -43,21 +43,20 @@ using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::MaterialProperty, Materials::ModelProperty)
 
-int const MaterialProperty::PRECISION = 6;
-
 MaterialProperty::MaterialProperty()
 {
     _valuePtr = std::make_shared<MaterialValue>(MaterialValue::None);
 }
 
-MaterialProperty::MaterialProperty(const ModelProperty& other)
+MaterialProperty::MaterialProperty(const ModelProperty& other, QString modelUUID)
     : ModelProperty(other)
+    , _modelUUID(modelUUID)
     , _valuePtr(nullptr)
 {
     setType(getPropertyType());
     auto columns = other.getColumns();
     for (auto& it : columns) {
-        MaterialProperty prop(it);
+        MaterialProperty prop(it, modelUUID);
         addColumn(prop);
     }
 }
@@ -126,14 +125,14 @@ QString MaterialProperty::getString() const
     }
     if (getType() == MaterialValue::Quantity) {
         auto quantity = getValue().value<Base::Quantity>();
-        return quantity.getUserString();
+        return QString::fromStdString(quantity.getUserString());
     }
     if (getType() == MaterialValue::Float) {
         auto value = getValue();
         if (value.isNull()) {
             return {};
         }
-        return QString(QLatin1String("%L1")).arg(value.toFloat(), 0, 'g', PRECISION);
+        return QString(QLatin1String("%L1")).arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
     }
     return getValue().toString();
 }
@@ -143,7 +142,7 @@ QString MaterialProperty::getYAMLString() const
     return _valuePtr->getYAMLString();
 }
 
-App::Color MaterialProperty::getColor() const
+Base::Color MaterialProperty::getColor() const
 {
     auto colorString = getValue().toString();
     std::stringstream stream(colorString.toStdString());
@@ -164,7 +163,7 @@ App::Color MaterialProperty::getColor() const
         stream >> alpha;
     }
 
-    App::Color color(red, green, blue, alpha);
+    Base::Color color(red, green, blue, alpha);
     return color;
 }
 
@@ -179,8 +178,8 @@ QString MaterialProperty::getDictionaryString() const
     if (getType() == MaterialValue::Quantity) {
         auto quantity = getValue().value<Base::Quantity>();
         auto string = QString(QLatin1String("%1 %2"))
-                          .arg(quantity.getValue(), 0, 'g', PRECISION)
-                          .arg(quantity.getUnit().getString());
+                          .arg(quantity.getValue(), 0, 'g', MaterialValue::PRECISION)
+                          .arg(QString::fromStdString(quantity.getUnit().getString()));
         return string;
     }
     if (getType() == MaterialValue::Float) {
@@ -188,7 +187,7 @@ QString MaterialProperty::getDictionaryString() const
         if (value.isNull()) {
             return {};
         }
-        return QString(QLatin1String("%1")).arg(value.toFloat(), 0, 'g', PRECISION);
+        return QString(QLatin1String("%1")).arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
     }
     return getValue().toString();
 }
@@ -267,7 +266,7 @@ QVariant MaterialProperty::getColumnNull(int column) const
 
     switch (valueType) {
         case MaterialValue::Quantity: {
-            Base::Quantity quant = Base::Quantity(0, getColumnUnits(column));
+            Base::Quantity quant = Base::Quantity(0, getColumnUnits(column).toStdString());
             return QVariant::fromValue(quant);
         }
 
@@ -307,7 +306,7 @@ void MaterialProperty::setValue(const QString& value)
     }
     else if (_valuePtr->getType() == MaterialValue::Quantity) {
         try {
-            setQuantity(Base::Quantity::parse(value));
+            setQuantity(Base::Quantity::parse(value.toStdString()));
         }
         catch (const Base::ParserError& e) {
             Base::Console().Log("MaterialProperty::setValue Error '%s' - '%s'\n",
@@ -330,6 +329,11 @@ void MaterialProperty::setValue(const std::shared_ptr<MaterialValue>& value)
 void MaterialProperty::setString(const QString& value)
 {
     _valuePtr->setValue(QVariant(value));
+}
+
+void MaterialProperty::setString(const std::string& value)
+{
+    _valuePtr->setValue(QVariant(QString::fromStdString(value)));
 }
 
 void MaterialProperty::setBoolean(bool value)
@@ -381,17 +385,19 @@ void MaterialProperty::setFloat(const QString& value)
 
 void MaterialProperty::setQuantity(const Base::Quantity& value)
 {
-    _valuePtr->setValue(QVariant(QVariant::fromValue(value)));
+    auto quantity = value;
+    quantity.setFormat(MaterialValue::getQuantityFormat());
+    _valuePtr->setValue(QVariant(QVariant::fromValue(quantity)));
 }
 
 void MaterialProperty::setQuantity(double value, const QString& units)
 {
-    setQuantity(Base::Quantity(value, units));
+    setQuantity(Base::Quantity(value, units.toStdString()));
 }
 
 void MaterialProperty::setQuantity(const QString& value)
 {
-    setQuantity(Base::Quantity::parse(value));
+    setQuantity(Base::Quantity::parse(value.toStdString()));
 }
 
 void MaterialProperty::setList(const QList<QVariant>& value)
@@ -404,7 +410,7 @@ void MaterialProperty::setURL(const QString& value)
     _valuePtr->setValue(QVariant(value));
 }
 
-void MaterialProperty::setColor(const App::Color& value)
+void MaterialProperty::setColor(const Base::Color& value)
 {
     std::stringstream ss;
     ss << "(" << value.r << ", " << value.g << ", " << value.b << ", " << value.a << ")";
@@ -657,7 +663,7 @@ void Material::addPhysical(const QString& uuid)
                 ModelProperty property = static_cast<ModelProperty>(it.second);
 
                 try {
-                    _physical[propertyName] = std::make_shared<MaterialProperty>(property);
+                    _physical[propertyName] = std::make_shared<MaterialProperty>(property, uuid);
                 }
                 catch (const UnknownValueType&) {
                     Base::Console().Error("Property '%s' has unknown type '%s'. Ignoring\n",
@@ -733,7 +739,7 @@ void Material::addAppearance(const QString& uuid)
             if (!hasAppearanceProperty(propertyName)) {
                 ModelProperty property = static_cast<ModelProperty>(it.second);
 
-                _appearance[propertyName] = std::make_shared<MaterialProperty>(property);
+                _appearance[propertyName] = std::make_shared<MaterialProperty>(property, uuid);
             }
         }
     }
@@ -1032,7 +1038,7 @@ Material::getValueString(const std::map<QString, std::shared_ptr<MaterialPropert
             if (value.isNull()) {
                 return {};
             }
-            return value.value<Base::Quantity>().getUserString();
+            return QString::fromStdString(value.value<Base::Quantity>().getUserString());
         }
         if (property->getType() == MaterialValue::Float) {
             auto value = property->getValue();
@@ -1040,7 +1046,7 @@ Material::getValueString(const std::map<QString, std::shared_ptr<MaterialPropert
                 return {};
             }
             return QString(QLatin1String("%L1"))
-                .arg(value.toFloat(), 0, 'g', MaterialProperty::PRECISION);
+                .arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
         }
         return property->getValue().toString();
     }
@@ -1081,24 +1087,12 @@ QString Material::getAppearanceValueString(const QString& name) const
 
 bool Material::hasPhysicalProperty(const QString& name) const
 {
-    try {
-        static_cast<void>(_physical.at(name));
-    }
-    catch (std::out_of_range const&) {
-        return false;
-    }
-    return true;
+    return _physical.find(name) != _physical.end();
 }
 
 bool Material::hasAppearanceProperty(const QString& name) const
 {
-    try {
-        static_cast<void>(_appearance.at(name));
-    }
-    catch (std::out_of_range const&) {
-        return false;
-    }
-    return true;
+    return _appearance.find(name) != _appearance.end();
 }
 
 bool Material::hasNonLegacyProperty(const QString& name) const
@@ -1112,6 +1106,16 @@ bool Material::hasNonLegacyProperty(const QString& name) const
 bool Material::hasLegacyProperties() const
 {
     return !_legacy.empty();
+}
+
+bool Material::hasPhysicalProperties() const
+{
+    return !_physicalUuids.isEmpty();
+}
+
+bool Material::hasAppearanceProperties() const
+{
+    return !_appearanceUuids.isEmpty();
 }
 
 bool Material::isInherited(const QString& uuid) const
@@ -1544,13 +1548,21 @@ Material& Material::operator=(const App::Material& other)
         addAppearance(ModelUUIDs::ModelUUID_Rendering_Basic);
     }
 
-    getAppearanceProperty(QString::fromLatin1("AmbientColor"))->setColor(other.ambientColor);
-    getAppearanceProperty(QString::fromLatin1("DiffuseColor"))->setColor(other.diffuseColor);
-    getAppearanceProperty(QString::fromLatin1("SpecularColor"))->setColor(other.specularColor);
-    getAppearanceProperty(QString::fromLatin1("EmissiveColor"))->setColor(other.emissiveColor);
-    getAppearanceProperty(QString::fromLatin1("Shininess"))->setFloat(other.shininess);
-    getAppearanceProperty(QString::fromLatin1("Transparency"))->setFloat(other.transparency);
-    // std::string uuid;
+    getAppearanceProperty(QLatin1String("AmbientColor"))->setColor(other.ambientColor);
+    getAppearanceProperty(QLatin1String("DiffuseColor"))->setColor(other.diffuseColor);
+    getAppearanceProperty(QLatin1String("SpecularColor"))->setColor(other.specularColor);
+    getAppearanceProperty(QLatin1String("EmissiveColor"))->setColor(other.emissiveColor);
+    getAppearanceProperty(QLatin1String("Shininess"))->setFloat(other.shininess);
+    getAppearanceProperty(QLatin1String("Transparency"))->setFloat(other.transparency);
+
+    if (!other.image.empty() || !other.imagePath.empty()) {
+        if (!hasAppearanceModel(ModelUUIDs::ModelUUID_Rendering_Texture)) {
+            addAppearance(ModelUUIDs::ModelUUID_Rendering_Texture);
+        }
+
+        getAppearanceProperty(QLatin1String("TextureImage"))->setString(other.image);
+        getAppearanceProperty(QLatin1String("TexturePath"))->setString(other.imagePath);
+    }
 
     return *this;
 }
@@ -1640,33 +1652,46 @@ App::Material Material::getMaterialAppearance() const
     App::Material material(App::Material::DEFAULT);
 
     bool custom = false;
-    if (hasAppearanceProperty(QString::fromLatin1("AmbientColor"))) {
-        material.ambientColor =
-            getAppearanceProperty(QString::fromLatin1("AmbientColor"))->getColor();
+    if (hasAppearanceProperty(QLatin1String("AmbientColor"))) {
+        material.ambientColor = getAppearanceProperty(QLatin1String("AmbientColor"))->getColor();
         custom = true;
     }
-    if (hasAppearanceProperty(QString::fromLatin1("DiffuseColor"))) {
-        material.diffuseColor =
-            getAppearanceProperty(QString::fromLatin1("DiffuseColor"))->getColor();
+    if (hasAppearanceProperty(QLatin1String("DiffuseColor"))) {
+        material.diffuseColor = getAppearanceProperty(QLatin1String("DiffuseColor"))->getColor();
         custom = true;
     }
-    if (hasAppearanceProperty(QString::fromLatin1("SpecularColor"))) {
-        material.specularColor =
-            getAppearanceProperty(QString::fromLatin1("SpecularColor"))->getColor();
+    if (hasAppearanceProperty(QLatin1String("SpecularColor"))) {
+        material.specularColor = getAppearanceProperty(QLatin1String("SpecularColor"))->getColor();
         custom = true;
     }
-    if (hasAppearanceProperty(QString::fromLatin1("EmissiveColor"))) {
-        material.emissiveColor =
-            getAppearanceProperty(QString::fromLatin1("EmissiveColor"))->getColor();
+    if (hasAppearanceProperty(QLatin1String("EmissiveColor"))) {
+        material.emissiveColor = getAppearanceProperty(QLatin1String("EmissiveColor"))->getColor();
         custom = true;
     }
-    if (hasAppearanceProperty(QString::fromLatin1("Shininess"))) {
-        material.shininess = getAppearanceProperty(QString::fromLatin1("Shininess"))->getFloat();
+    if (hasAppearanceProperty(QLatin1String("Shininess"))) {
+        material.shininess = getAppearanceProperty(QLatin1String("Shininess"))->getFloat();
         custom = true;
     }
-    if (hasAppearanceProperty(QString::fromLatin1("Transparency"))) {
-        material.transparency =
-            getAppearanceProperty(QString::fromLatin1("Transparency"))->getFloat();
+    if (hasAppearanceProperty(QLatin1String("Transparency"))) {
+        material.transparency = getAppearanceProperty(QLatin1String("Transparency"))->getFloat();
+        custom = true;
+    }
+    if (hasAppearanceProperty(QLatin1String("TextureImage"))) {
+        auto property = getAppearanceProperty(QLatin1String("TextureImage"));
+        if (!property->isNull()) {
+            Base::Console().Log("Has 'TextureImage'\n");
+            material.image = property->getString().toStdString();
+        }
+
+        custom = true;
+    }
+    else if (hasAppearanceProperty(QLatin1String("TexturePath"))) {
+        auto property = getAppearanceProperty(QLatin1String("TexturePath"));
+        if (!property->isNull()) {
+            Base::Console().Log("Has 'TexturePath'\n");
+            material.imagePath = property->getString().toStdString();
+        }
+
         custom = true;
     }
 

@@ -66,17 +66,17 @@ camera = OfflineRenderingUtils.getCamera(freecadFile)
 
 # export to OBJ
 
-import importOBJ
+from importers import importOBJ
 importOBJ.export(doc.Objects,baseFileName+".obj",colors=colors)
 
 # export to DAE
 
-import importDAE
+from importers import importDAE
 importDAE.export(doc.Objects,baseFileName+".dae",colors=colors)
 
 # export to IFC
 
-import importIFC
+from importers import importIFC
 importIFC.export(doc.Objects,baseFileName+".ifc",colors=colors)
 
 # export to STEP
@@ -220,6 +220,8 @@ def getGuiData(filename):
                 if isinstance(properties,dict):
                     for propname in properties.keys():
                         if properties[propname]["type"] == "App::PropertyColorList":
+                            if not guidata[key][propname]["value"]:
+                                continue
                             df = zdoc.open(guidata[key][propname]["value"])
                             buf = df.read()
                             df.close()

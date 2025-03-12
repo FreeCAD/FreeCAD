@@ -47,6 +47,7 @@
 
 #include <Mod/Material/App/Exceptions.h>
 #include <Mod/Material/App/ModelManager.h>
+#include <Mod/Material/App/ModelUuids.h>
 
 #include "MaterialDelegate.h"
 #include "MaterialSave.h"
@@ -88,7 +89,7 @@ void MaterialsEditor::setup()
     Gui::WaitCursor wc;
     ui->setupUi(this);
 
-    _warningIcon = QIcon(QString::fromStdString(":/icons/Warning.svg"));
+    _warningIcon = QIcon(QLatin1String(":/icons/Warning.svg"));
 
     getFavorites();
     getRecents();
@@ -107,7 +108,7 @@ void MaterialsEditor::setup()
 
     resize(width, height);
 
-    ui->buttonURL->setIcon(QIcon(QString::fromStdString(":/icons/internet-web-browser.svg")));
+    ui->buttonURL->setIcon(QIcon(QLatin1String(":/icons/internet-web-browser.svg")));
 
     connect(ui->standardButtons->button(QDialogButtonBox::Ok),
             &QPushButton::clicked,
@@ -160,11 +161,14 @@ void MaterialsEditor::setup()
             &MaterialsEditor::onSelectMaterial);
     connect(ui->treeMaterials, &QTreeView::doubleClicked, this, &MaterialsEditor::onDoubleClick);
 
+    // Disabled for now. This will be revisited post 1.0
+#if 0
     ui->treeMaterials->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeMaterials,
             &QWidget::customContextMenuRequested,
             this,
             &MaterialsEditor::onContextMenu);
+#endif
 }
 
 void MaterialsEditor::getFavorites()
@@ -175,7 +179,7 @@ void MaterialsEditor::getFavorites()
         "User parameter:BaseApp/Preferences/Mod/Material/Favorites");
     int count = param->GetInt("Favorites", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
-        QString key = QString::fromLatin1("FAV%1").arg(i);
+        QString key = QStringLiteral("FAV%1").arg(i);
         QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
         if (!_filter || _filter->modelIncluded(uuid)) {
             _favorites.push_back(uuid);
@@ -191,7 +195,7 @@ void MaterialsEditor::saveFavorites()
     // Clear out the existing favorites
     int count = param->GetInt("Favorites", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
-        QString key = QString::fromLatin1("FAV%1").arg(i);
+        QString key = QStringLiteral("FAV%1").arg(i);
         param->RemoveASCII(key.toStdString().c_str());
     }
 
@@ -199,7 +203,7 @@ void MaterialsEditor::saveFavorites()
     param->SetInt("Favorites", _favorites.size());
     int j = 0;
     for (auto& favorite : _favorites) {
-        QString key = QString::fromLatin1("FAV%1").arg(j);
+        QString key = QStringLiteral("FAV%1").arg(j);
         param->SetASCII(key.toStdString().c_str(), favorite.toStdString());
 
         j++;
@@ -253,7 +257,7 @@ void MaterialsEditor::getRecents()
     _recentMax = param->GetInt("RecentMax", 5);
     int count = param->GetInt("Recent", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
-        QString key = QString::fromLatin1("MRU%1").arg(i);
+        QString key = QStringLiteral("MRU%1").arg(i);
         QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
         if (!_filter || _filter->modelIncluded(uuid)) {
             _recents.push_back(uuid);
@@ -269,7 +273,7 @@ void MaterialsEditor::saveRecents()
     // Clear out the existing favorites
     int count = param->GetInt("Recent", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
-        QString key = QString::fromLatin1("MRU%1").arg(i);
+        QString key = QStringLiteral("MRU%1").arg(i);
         param->RemoveASCII(key.toStdString().c_str());
     }
 
@@ -281,7 +285,7 @@ void MaterialsEditor::saveRecents()
     param->SetInt("Recent", size);
     int j = 0;
     for (auto& recent : _recents) {
-        QString key = QString::fromLatin1("MRU%1").arg(j);
+        QString key = QStringLiteral("MRU%1").arg(j);
         param->SetASCII(key.toStdString().c_str(), recent.toStdString());
 
         j++;
@@ -425,6 +429,13 @@ void MaterialsEditor::onAppearanceAdd(bool checked)
     if (dialog.exec() == QDialog::Accepted) {
         QString selected = dialog.selectedModel();
         _material->addAppearance(selected);
+        auto model = getModelManager().getModel(selected);
+        if (selected == Materials::ModelUUIDs::ModelUUID_Rendering_Basic
+            || model->inherits(Materials::ModelUUIDs::ModelUUID_Rendering_Basic)) {
+            // Add default appearance properties
+            *_material = *(getMaterialManager().defaultAppearance());
+        }
+
         updateMaterial();
     }
     else {
@@ -483,7 +494,7 @@ void MaterialsEditor::setMaterialDefaults()
     const char* name = App::licenseItems.at(index).at(App::posnOfFullName);
     // const char* url = App::licenseItems.at(index).at(App::posnOfUrl);
     // std::string licenseUrl = (paramGrp->GetASCII("prefLicenseUrl", url));
-    _material->setLicense(QString::fromStdString(name));
+    _material->setLicense(QLatin1String(name));
 
     // Empty materials will have no parent
     _materialManager.dereference(_material);
@@ -860,7 +871,7 @@ void MaterialsEditor::fillMaterialTree()
             addExpanded(tree, model, lib, param);
 
             QIcon icon(library->getIconPath());
-            QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
+            QIcon folderIcon(QStringLiteral(":/icons/folder.svg"));
 
             addMaterials(*lib, modelTree, folderIcon, icon, param);
         }
@@ -886,54 +897,120 @@ void MaterialsEditor::refreshMaterialTree()
     fillMaterialTree();
 }
 
-void MaterialsEditor::updatePreview() const
+bool MaterialsEditor::updateTexturePreview() const
 {
-    if (_material->hasAppearanceProperty(QString::fromStdString("AmbientColor"))) {
-        QString color = _material->getAppearanceValueString(QString::fromStdString("AmbientColor"));
+    bool hasImage = false;
+    QImage image;
+    //double scaling = 99.0;
+    if (_material->hasModel(Materials::ModelUUIDs::ModelUUID_Rendering_Texture)) {
+        // First try loading an embedded image
+        try {
+            auto property = _material->getAppearanceProperty(QLatin1String("TextureImage"));
+            if (!property->isNull()) {
+                // Base::Console().Log("Has 'TextureImage'\n");
+                auto propertyValue = property->getString();
+                if (!propertyValue.isEmpty()) {
+                    QByteArray by = QByteArray::fromBase64(propertyValue.toUtf8());
+                    image = QImage::fromData(by, "PNG");  //.scaled(64, 64, Qt::KeepAspectRatio);
+                    hasImage = true;
+                }
+            }
+        }
+        catch (const Materials::PropertyNotFound&) {
+        }
+
+        // If no embedded image, load from a path
+        if (!hasImage) {
+            try {
+                auto property = _material->getAppearanceProperty(QLatin1String("TexturePath"));
+                if (!property->isNull()) {
+                    // Base::Console().Log("Has 'TexturePath'\n");
+                    auto filePath = property->getString();
+                    if (!image.load(filePath)) {
+                        Base::Console().Log("Unable to load image '%s'\n",
+                                            filePath.toStdString().c_str());
+                        // return;  // ???
+                    }
+                    hasImage = true;
+                }
+            }
+            catch (const Materials::PropertyNotFound&) {
+            }
+        }
+
+        // Apply any scaling
+        try {
+            auto property = _material->getAppearanceProperty(QLatin1String("TextureScaling"));
+            if (!property->isNull()) {
+                //scaling = property->getFloat();
+                // Base::Console().Log("Has 'TextureScaling' = %g\n", scaling);
+            }
+        }
+        catch (const Materials::PropertyNotFound&) {
+        }
+
+        if (hasImage) {
+            _rendered->setTexture(image);
+        }
+    }
+
+    return hasImage;
+}
+
+bool MaterialsEditor::updateMaterialPreview() const
+{
+    if (_material->hasAppearanceProperty(QLatin1String("AmbientColor"))) {
+        QString color = _material->getAppearanceValueString(QLatin1String("AmbientColor"));
         _rendered->setAmbientColor(getColorHash(color, 255));
     }
     else {
         _rendered->resetAmbientColor();
     }
-    if (_material->hasAppearanceProperty(QString::fromStdString("DiffuseColor"))) {
-        QString color = _material->getAppearanceValueString(QString::fromStdString("DiffuseColor"));
+    if (_material->hasAppearanceProperty(QLatin1String("DiffuseColor"))) {
+        QString color = _material->getAppearanceValueString(QLatin1String("DiffuseColor"));
         _rendered->setDiffuseColor(getColorHash(color, 255));
     }
     else {
         _rendered->resetDiffuseColor();
     }
-    if (_material->hasAppearanceProperty(QString::fromStdString("SpecularColor"))) {
-        QString color =
-            _material->getAppearanceValueString(QString::fromStdString("SpecularColor"));
+    if (_material->hasAppearanceProperty(QLatin1String("SpecularColor"))) {
+        QString color = _material->getAppearanceValueString(QLatin1String("SpecularColor"));
         _rendered->setSpecularColor(getColorHash(color, 255));
     }
     else {
         _rendered->resetSpecularColor();
     }
-    if (_material->hasAppearanceProperty(QString::fromStdString("EmissiveColor"))) {
-        QString color =
-            _material->getAppearanceValueString(QString::fromStdString("EmissiveColor"));
+    if (_material->hasAppearanceProperty(QLatin1String("EmissiveColor"))) {
+        QString color = _material->getAppearanceValueString(QLatin1String("EmissiveColor"));
         _rendered->setEmissiveColor(getColorHash(color, 255));
     }
     else {
         _rendered->resetEmissiveColor();
     }
-    if (_material->hasAppearanceProperty(QString::fromStdString("Shininess"))) {
-        double value =
-            _material->getAppearanceValue(QString::fromStdString("Shininess")).toDouble();
+    if (_material->hasAppearanceProperty(QLatin1String("Shininess"))) {
+        double value = _material->getAppearanceValue(QLatin1String("Shininess")).toDouble();
         _rendered->setShininess(value);
     }
     else {
         _rendered->resetShininess();
     }
-    if (_material->hasAppearanceProperty(QString::fromStdString("Transparency"))) {
-        double value =
-            _material->getAppearanceValue(QString::fromStdString("Transparency")).toDouble();
+    if (_material->hasAppearanceProperty(QLatin1String("Transparency"))) {
+        double value = _material->getAppearanceValue(QLatin1String("Transparency")).toDouble();
         _rendered->setTransparency(value);
     }
     else {
         _rendered->resetTransparency();
     }
+
+    return true;
+}
+
+void MaterialsEditor::updatePreview() const
+{
+    if (updateTexturePreview()) {
+        return;
+    }
+    updateMaterialPreview();
 }
 
 QString MaterialsEditor::getColorHash(const QString& colorString, int colorRange)
@@ -1008,6 +1085,7 @@ void MaterialsEditor::updateMaterialAppearance()
                     auto valueItem = new QStandardItem(_material->getAppearanceValueString(key));
                     valueItem->setToolTip(itp->second.getDescription());
                     QVariant variant;
+                    // variant.setValue(_material->getAppearanceValueString(key));
                     variant.setValue(_material);
                     valueItem->setData(variant);
                     items.append(valueItem);
@@ -1099,12 +1177,12 @@ QString MaterialsEditor::libraryPath(const std::shared_ptr<Materials::Material>&
     QString path;
     auto library = material->getLibrary();
     if (library) {
-        path = QString::fromStdString("/%1/%2")
+        path = QStringLiteral("/%1/%2")
                    .arg(material->getLibrary()->getName())
                    .arg(material->getDirectory());
     }
     else {
-        path = QString::fromStdString("%1").arg(material->getDirectory());
+        path = QStringLiteral("%1").arg(material->getDirectory());
     }
 
     return path;
@@ -1208,12 +1286,10 @@ void MaterialsEditor::onContextMenu(const QPoint& pos)
     QMenu contextMenu(tr("Context menu"), this);
 
     QAction action1(tr("Inherit from"), this);
-    // action1.setShortcut(Qt::Key_Delete);
     connect(&action1, &QAction::triggered, this, &MaterialsEditor::onInherit);
     contextMenu.addAction(&action1);
 
     QAction action2(tr("Inherit new material"), this);
-    // action1.setShortcut(Qt::Key_Delete);
     connect(&action2, &QAction::triggered, this, &MaterialsEditor::onInheritNew);
     contextMenu.addAction(&action2);
 

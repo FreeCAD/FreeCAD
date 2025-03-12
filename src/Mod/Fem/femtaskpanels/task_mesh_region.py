@@ -35,61 +35,53 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
+from . import base_femtaskpanel
 
 
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     """
     The TaskPanel for editing References property of FemMeshRegion objects
     """
 
     def __init__(self, obj):
-
-        self.obj = obj
+        super().__init__(obj)
 
         # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+        self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshRegion.ui"
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_elelen,
+            self.parameter_widget.qsb_elelen,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.elelen_changed
+            self.elelen_changed,
         )
         self.init_parameter_widget()
 
         # geometry selection widget
         # start with Solid in list!
-        self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Solid", "Face", "Edge", "Vertex"],
-            True,
-            False
+        self.selection_widget = selection_widgets.GeometryElementsSelection(
+            obj.References, ["Solid", "Face", "Edge", "Vertex"], True, False
         )
 
         # form made from param and selection widget
-        self.form = [self.parameterWidget, self.selectionWidget]
+        self.form = [self.parameter_widget, self.selection_widget]
 
     def accept(self):
         self.obj.CharacteristicLength = self.elelen
-        self.obj.References = self.selectionWidget.references
-        self.recompute_and_set_back_all()
-        return True
+        self.obj.References = self.selection_widget.references
+        self.selection_widget.finish_selection()
+        return super().accept()
 
     def reject(self):
-        self.recompute_and_set_back_all()
-        return True
-
-    def recompute_and_set_back_all(self):
-        doc = FreeCADGui.getDocument(self.obj.Document)
-        doc.Document.recompute()
-        self.selectionWidget.setback_listobj_visibility()
-        if self.selectionWidget.sel_server:
-            FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
-        doc.resetEdit()
+        self.selection_widget.finish_selection()
+        return super().reject()
 
     def init_parameter_widget(self):
         self.elelen = self.obj.CharacteristicLength
-        self.parameterWidget.if_elelen.setText(self.elelen.UserString)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_elelen).bind(
+            self.obj, "CharacteristicLength"
+        )
+        self.parameter_widget.qsb_elelen.setProperty("value", self.elelen)
 
     def elelen_changed(self, base_quantity_value):
         self.elelen = base_quantity_value

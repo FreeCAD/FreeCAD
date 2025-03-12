@@ -45,7 +45,7 @@
 using namespace Fem;
 using namespace App;
 
-PROPERTY_SOURCE(Fem::FemMeshShapeNetgenObject, Fem::FemMeshShapeObject)
+PROPERTY_SOURCE(Fem::FemMeshShapeNetgenObject, Fem::FemMeshShapeBaseObject)
 
 const char* FinenessEnums[] =
     {"VeryCoarse", "Coarse", "Moderate", "Fine", "VeryFine", "UserDefined", nullptr};
@@ -62,19 +62,19 @@ FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
         (0.3),
         "MeshParams",
         Prop_None,
-        " allows to define how much the linear dimensions of two adjacent cells can differ");
+        " allows defining how much the linear dimensions of two adjacent cells can differ");
     ADD_PROPERTY_TYPE(
         NbSegsPerEdge,
         (1),
         "MeshParams",
         Prop_None,
-        "allows to define the minimum number of mesh segments in which edges will be split");
+        "allows defining the minimum number of mesh segments in which edges will be split");
     ADD_PROPERTY_TYPE(
         NbSegsPerRadius,
         (2),
         "MeshParams",
         Prop_None,
-        "allows to define the minimum number of mesh segments in which radiuses will be split");
+        "allows defining the minimum number of mesh segments in which radii will be split");
     ADD_PROPERTY_TYPE(Optimize, (true), "MeshParams", Prop_None, "Optimize the resulting mesh");
 }
 
@@ -86,14 +86,18 @@ App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
 
     Fem::FemMesh newMesh;
 
-    Part::Feature* feat = Shape.getValue<Part::Feature*>();
+    const Part::Feature* feat = Shape.getValue<Part::Feature*>();
+    if (!feat) {
+        return App::DocumentObject::StdReturn;
+    }
+
     TopoDS_Shape shape = feat->Shape.getValue();
 
     NETGENPlugin_Mesher myNetGenMesher(newMesh.getSMesh(), shape, true);
 #if SMESH_VERSION_MAJOR >= 9
     NETGENPlugin_Hypothesis* tet = new NETGENPlugin_Hypothesis(0, newMesh.getGenerator());
 #else
-    NETGENPlugin_Hypothesis* tet = new NETGENPlugin_Hypothesis(0, 1, newMesh.getGenerator());
+    NETGENPlugin_Hypothesis* tet = new NETGENPlugin_Hypothesis(0, 0, newMesh.getGenerator());
 #endif
     tet->SetMaxSize(MaxSize.getValue());
     tet->SetMinSize(MinSize.getValue());

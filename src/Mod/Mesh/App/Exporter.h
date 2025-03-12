@@ -205,7 +205,7 @@ private:
 class MeshExport Exporter3MF: public Exporter
 {
 public:
-    Exporter3MF(std::string fileName, const std::vector<Extension3MFPtr>& = {});
+    explicit Exporter3MF(std::string fileName, const std::vector<Extension3MFPtr>& = {});
     ~Exporter3MF() override;
 
     Exporter3MF(const Exporter3MF&) = delete;

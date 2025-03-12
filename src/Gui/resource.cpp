@@ -29,7 +29,7 @@
 
 // INCLUDE YOUR PREFERENCE PAGES HERE
 //
-#include "DlgPreferencesImp.h"
+#include "Dialogs/DlgPreferencesImp.h"
 #include "PreferencePages/DlgSettings3DViewImp.h"
 #include "PreferencePages/DlgSettingsCacheDirectory.h"
 #include "PreferencePages/DlgSettingsDocumentImp.h"
@@ -42,19 +42,24 @@
 #include "PreferencePages/DlgSettingsPythonConsole.h"
 #include "PreferencePages/DlgSettingsReportView.h"
 #include "PreferencePages/DlgSettingsSelection.h"
-#include "PreferencePages/DlgSettingsTheme.h"
+#include "PreferencePages/DlgSettingsUI.h"
 #include "PreferencePages/DlgSettingsViewColor.h"
 #include "PreferencePages/DlgSettingsWorkbenchesImp.h"
-#include "PreferencePages/DlgSettingsUI.h"
+#include "PreferencePages/DlgSettingsAdvanced.h"
 
-#include "DlgToolbarsImp.h"
-#include "DlgActionsImp.h"
-#include "DlgKeyboardImp.h"
-#include "DlgCustomizeSpaceball.h"
-#include "DlgCustomizeSpNavSettings.h"
+#include "Dialogs/DlgToolbarsImp.h"
+#include "Dialogs/DlgActionsImp.h"
+#include "Dialogs/DlgKeyboardImp.h"
+
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
+#include "Dialogs/DlgCustomizeSpaceball.h"
+#include "Dialogs/DlgCustomizeSpNavSettings.h"
+#endif
+
 #include "InputField.h"
 #include "QuantitySpinBox.h"
 #include "PrefWidgets.h"
+#include "ToolBarManager.h"
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -80,8 +85,8 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new PrefPageProducer<DlgSettingsUI>               ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsNavigation>       ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsViewColor>        ( QT_TRANSLATE_NOOP("QObject","Display") );
-    new PrefPageProducer<DlgSettingsTheme>            ( QT_TRANSLATE_NOOP("QObject","Display") );
-    DlgSettingsTheme::attachObserver();
+    new PrefPageProducer<DlgSettingsAdvanced>         ( QT_TRANSLATE_NOOP("QObject","Display") );
+    DlgSettingsUI::attachObserver();
     new PrefPageProducer<DlgSettingsWorkbenchesImp>   ( QT_TRANSLATE_NOOP("QObject","Workbenches") );
     new PrefPageProducer<DlgSettingsMacroImp>         ( QT_TRANSLATE_NOOP("QObject", "Python"));
     new PrefPageProducer<DlgSettingsPythonConsole>    ( QT_TRANSLATE_NOOP("QObject", "Python"));
@@ -93,9 +98,10 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new CustomPageProducer<DlgCustomKeyboardImp>;
     new CustomPageProducer<DlgCustomToolbarsImp>;
     new CustomPageProducer<DlgCustomActionsImp>;
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
     new CustomPageProducer<DlgCustomizeSpNavSettings>;
     new CustomPageProducer<DlgCustomizeSpaceball>;
-
+#endif
     // ADD YOUR PREFERENCE WIDGETS HERE
     //
     //

@@ -41,6 +41,14 @@ class SoGLRenderAction;
 namespace Gui {
 class SoFCColorGradient;
 
+struct SoLabelTextFormat
+{
+    // NOLINTBEGIN
+    int textSize = 13;
+    uint32_t textColor = 0xffffffff;
+    // NOLINTEND
+};
+
 /**
  * The abstract color bar base class to get most important information on how to convert a scalar to an RGB color.
  * @author Werner Mayer
@@ -68,7 +76,7 @@ public:
    *
    * This method must be implemented in subclasses.
    */
-  App::Color getColor(float fVal) const override = 0;
+  Base::Color getColor(float fVal) const override = 0;
   /**
    * Returns always true if the color bar is in mode to show colors to arbitrary values of \a fVal,
    * otherwise true is returned if \a fVal is within the specified parameter range, if not false is
@@ -110,8 +118,16 @@ public:
    * This method must be implemented in subclasses.
    */
   virtual const char* getColorBarName() const = 0;
+  /** Sets the format for the label text.
+   */
+  virtual void setFormat(const SoLabelTextFormat& fmt);
+  /** Returns the format for the label text.
+   */
+  SoLabelTextFormat getFormat() const;
 
 protected:
+  /** Applies the format to the label text */
+  virtual void applyFormat(const SoLabelTextFormat& fmt);
   /** Computes the dimensions of the color bar and labels in coordinates with
    * respect to the defined height of the camera.
    * Returns the width of the bounding box
@@ -140,6 +156,7 @@ protected:
 private:
   float _boxWidth{-1.0F};
   SbVec2s _windowSize;
+  SoLabelTextFormat format;
 };
 
 // --------------------------------------------------------------------------
@@ -174,7 +191,7 @@ public:
   /**
    * Returns the associated color to the value \a fVal of the currently active color bar.
    */
-  App::Color getColor(float fVal) const override;
+  Base::Color getColor(float fVal) const override;
   /**
    * Sets whether values outside the range should be in gray,
    */
@@ -202,6 +219,7 @@ public:
   /** Returns the name of the color bar.
    */
   const char* getColorBarName() const override { return "Color Bar"; }
+  void setFormat(const SoLabelTextFormat& fmt) override;
 
 protected:
   /**

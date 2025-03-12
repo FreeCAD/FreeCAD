@@ -34,7 +34,6 @@
 #include <Base/Console.h>
 #include <Base/Quantity.h>
 #include <Base/Reader.h>
-#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Base/Writer.h>
 
@@ -46,6 +45,9 @@ FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
 
 #ifdef _MSC_VER
 #define __func__ __FUNCTION__
+#ifdef PropertySheet
+#undef PropertySheet  // Microsoft's #define conflicts with the use below
+#endif
 #endif
 
 using namespace App;
@@ -465,13 +467,13 @@ bool Cell::getStyle(std::set<std::string>& _style) const
  *
  */
 
-void Cell::setForeground(const App::Color& color)
+void Cell::setForeground(const Base::Color& color)
 {
     if (color != foregroundColor) {
         PropertySheet::AtomicPropertyChange signaller(*owner);
 
         foregroundColor = color;
-        setUsed(FOREGROUND_COLOR_SET, foregroundColor != App::Color(0, 0, 0, 1));
+        setUsed(FOREGROUND_COLOR_SET, foregroundColor != Base::Color(0, 0, 0, 1));
         setDirty();
 
         signaller.tryInvoke();
@@ -483,7 +485,7 @@ void Cell::setForeground(const App::Color& color)
  *
  */
 
-bool Cell::getForeground(App::Color& color) const
+bool Cell::getForeground(Base::Color& color) const
 {
     color = foregroundColor;
     return isUsed(FOREGROUND_COLOR_SET);
@@ -494,13 +496,13 @@ bool Cell::getForeground(App::Color& color) const
  *
  */
 
-void Cell::setBackground(const App::Color& color)
+void Cell::setBackground(const Base::Color& color)
 {
     if (color != backgroundColor) {
         PropertySheet::AtomicPropertyChange signaller(*owner);
 
         backgroundColor = color;
-        setUsed(BACKGROUND_COLOR_SET, backgroundColor != App::Color(1, 1, 1, 0));
+        setUsed(BACKGROUND_COLOR_SET, backgroundColor != Base::Color(1, 1, 1, 0));
         setDirty();
 
         signaller.tryInvoke();
@@ -514,7 +516,7 @@ void Cell::setBackground(const App::Color& color)
  *
  */
 
-bool Cell::getBackground(App::Color& color) const
+bool Cell::getBackground(Base::Color& color) const
 {
     color = backgroundColor;
     return isUsed(BACKGROUND_COLOR_SET);
@@ -541,7 +543,7 @@ void Cell::setDisplayUnit(const std::string& unit)
     if (newDisplayUnit != displayUnit) {
         PropertySheet::AtomicPropertyChange signaller(*owner);
 
-        displayUnit = newDisplayUnit;
+        displayUnit = std::move(newDisplayUnit);
         setUsed(DISPLAY_UNIT_SET, !displayUnit.isEmpty());
         setDirty();
 
@@ -781,12 +783,12 @@ void Cell::restore(Base::XMLReader& reader, bool checkAlias)
         setAlignment(alignmentCode);
     }
     if (foregroundColor) {
-        App::Color color = decodeColor(foregroundColor, App::Color(0, 0, 0, 1));
+        Base::Color color = decodeColor(foregroundColor, Base::Color(0, 0, 0, 1));
 
         setForeground(color);
     }
     if (backgroundColor) {
-        App::Color color = decodeColor(backgroundColor, App::Color(1, 1, 1, 1));
+        Base::Color color = decodeColor(backgroundColor, Base::Color(1, 1, 1, 1));
 
         setBackground(color);
     }
@@ -1014,7 +1016,7 @@ std::string Cell::encodeAlignment(int alignment)
  *
  */
 
-std::string Cell::encodeColor(const App::Color& color)
+std::string Cell::encodeColor(const Base::Color& color)
 {
     std::stringstream tmp;
 
@@ -1062,10 +1064,10 @@ std::string Cell::encodeStyle(const std::set<std::string>& style)
  *
  */
 
-App::Color Cell::decodeColor(const std::string& color, const App::Color& defaultColor)
+Base::Color Cell::decodeColor(const std::string& color, const Base::Color& defaultColor)
 {
     if (color.size() == 7 || color.size() == 9) {
-        App::Color c;
+        Base::Color c;
 
         if (color[0] != '#') {
             return defaultColor;
@@ -1087,16 +1089,15 @@ App::Color Cell::decodeColor(const std::string& color, const App::Color& default
 // roughly based on Spreadsheet/Gui/SheetModel.cpp
 std::string Cell::getFormattedQuantity()
 {
-    std::string result;
     QString qFormatted;
     App::CellAddress thisCell = getAddress();
     Property* prop = owner->sheet()->getPropertyByName(thisCell.toString().c_str());
 
-    if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
+    if (prop->isDerivedFrom<App::PropertyString>()) {
         const App::PropertyString* stringProp = static_cast<const App::PropertyString*>(prop);
         qFormatted = QString::fromUtf8(stringProp->getValue());
     }
-    else if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyQuantity>()) {
         double rawVal = static_cast<App::PropertyQuantity*>(prop)->getValue();
         const App::PropertyQuantity* floatProp = static_cast<const App::PropertyQuantity*>(prop);
         DisplayUnit du;
@@ -1108,11 +1109,11 @@ std::string Cell::getFormattedQuantity()
             if (computedUnit.isEmpty() || computedUnit == du.unit) {
                 QString number =
                     QLocale().toString(rawVal / duScale, 'f', Base::UnitsApi::getDecimals());
-                qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+                qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);
             }
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyFloat>()) {
         double rawVal = static_cast<const App::PropertyFloat*>(prop)->getValue();
         DisplayUnit du;
         bool hasDisplayUnit = getDisplayUnit(du);
@@ -1121,10 +1122,10 @@ std::string Cell::getFormattedQuantity()
         if (hasDisplayUnit) {
             QString number =
                 QLocale().toString(rawVal / duScale, 'f', Base::UnitsApi::getDecimals());
-            qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+            qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyInteger>()) {
         double rawVal = static_cast<const App::PropertyInteger*>(prop)->getValue();
         DisplayUnit du;
         bool hasDisplayUnit = getDisplayUnit(du);
@@ -1134,9 +1135,8 @@ std::string Cell::getFormattedQuantity()
         if (hasDisplayUnit) {
             QString number =
                 QLocale().toString(rawVal / duScale, 'f', Base::UnitsApi::getDecimals());
-            qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+            qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);
         }
     }
-    result = Base::Tools::toStdString(qFormatted);
-    return result;
+    return qFormatted.toStdString();
 }

@@ -66,9 +66,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 "App::PropertyLinkList",
                 "BaseShapes",
                 "Path",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Additional base objects to be engraved"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Additional base objects to be engraved"),
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
         if not hasattr(obj, "BaseObject"):
@@ -76,9 +74,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 "App::PropertyLink",
                 "BaseObject",
                 "Path",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Additional base objects to be engraved"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Additional base objects to be engraved"),
             )
         obj.setEditorMode("BaseObject", 2)  # hide
 
@@ -88,9 +84,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             "App::PropertyInteger",
             "StartVertex",
             "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The vertex index to start the toolpath from"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The vertex index to start the toolpath from"),
         )
         self.setupAdditionalProperties(obj)
 
@@ -145,16 +139,12 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 shapeWires = shape.Wires
                 Path.Log.debug("jobshape has {} edges".format(len(shape.Edges)))
                 self.commandlist.append(
-                    Path.Command(
-                        "G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}
-                    )
+                    Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
                 )
                 self.buildpathocc(obj, shapeWires, self.getZValues(obj))
                 wires.extend(shapeWires)
             self.wires = wires
-            Path.Log.debug(
-                "processing {} jobshapes -> {} wires".format(len(jobshapes), len(wires))
-            )
+            Path.Log.debug("processing {} jobshapes -> {} wires".format(len(jobshapes), len(wires)))
         # the last command is a move to clearance, which is automatically added by PathOp
         if self.commandlist:
             self.commandlist.pop()

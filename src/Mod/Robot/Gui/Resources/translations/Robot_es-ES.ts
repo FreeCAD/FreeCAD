@@ -11,12 +11,12 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="241"/>
       <source>Add tool</source>
-      <translation>Agregar herramienta</translation>
+      <translation>Añadir herramienta</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="242"/>
       <source>Add a tool shape to the robot</source>
-      <translation>Agregar una forma de herramienta para el robot</translation>
+      <translation>Añadir una forma de herramienta para el robot</translation>
     </message>
   </context>
   <context>
@@ -356,17 +356,16 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
-      <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="237"/>
-      <location filename="../../Command.cpp" line="271"/>
-      <location filename="../../CommandExport.cpp" line="62"/>
-      <location filename="../../CommandExport.cpp" line="137"/>
       <location filename="../../CommandInsertRobot.cpp" line="260"/>
       <location filename="../../CommandTrajectory.cpp" line="106"/>
       <location filename="../../CommandTrajectory.cpp" line="173"/>
       <location filename="../../CommandTrajectory.cpp" line="192"/>
       <location filename="../../CommandTrajectory.cpp" line="464"/>
+      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="130"/>
+      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../CommandExport.cpp" line="62"/>
+      <location filename="../../CommandExport.cpp" line="137"/>
       <source>Wrong selection</source>
       <translation>Selección incorrecta</translation>
     </message>
@@ -381,21 +380,20 @@
       <translation>Seleccione un Robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../CommandTrajectory.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="236"/>
       <location filename="../../CommandExport.cpp" line="63"/>
       <location filename="../../CommandExport.cpp" line="138"/>
-      <location filename="../../CommandTrajectory.cpp" line="107"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Seleccione un robot y un objeto trayectoria.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Trajectory not valid</source>
       <translation>La trayectoria no es válida</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
       <translation>Necesitas al menos dos puntos de ruta en una trayectoria para simular.</translation>
     </message>

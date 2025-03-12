@@ -53,7 +53,7 @@
 #endif
 
 #include <App/Document.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
@@ -75,6 +75,7 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(Midplane, (0), "SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0), "SketchBased", App::Prop_None, "Reverse extrusion direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "SketchBased", (App::PropertyType)(App::Prop_None), "Face where feature will end");
+    ADD_PROPERTY_TYPE(UpToShape, (nullptr), "SketchBased", (App::PropertyType)(App::Prop_None), "Shape where feature will end");
     ADD_PROPERTY_TYPE(AllowMultiFace, (false), "SketchBased", App::Prop_None, "Allow multiple faces in profile");
 }
 
@@ -102,12 +103,8 @@ void ProfileBased::positionByPrevious()
     else {
         //no base. Use either Sketch support's placement, or sketch's placement itself.
         Part::Part2DObject* sketch = getVerifiedSketch();
-#ifdef FC_USE_TNP_FIX
-        App::DocumentObject* support = sketch->Support.getValue();
-#else
         App::DocumentObject* support = sketch->AttachmentSupport.getValue();
-#endif
-        if (support && support->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        if (support && support->isDerivedFrom<App::GeoFeature>()) {
             this->Placement.setValue(static_cast<App::GeoFeature*>(support)->Placement.getValue());
         }
         else {
@@ -205,7 +202,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(bool silent,
         }
         else {
             std::string sub;
-            if (!obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            if (!obj->isDerivedFrom<Part::Part2DObject>()) {
                 if (!subs.empty()) {
                     sub = subs[0];
                 }
@@ -307,7 +304,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(bool silent,
         }
         if (count > 1) {
             if (AllowMultiFace.getValue()
-                || obj->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+                || obj->isDerivedFrom<Part::Part2DObject>()) {
                 return shape;
             }
             FC_WARN("Found more than one face from profile");
@@ -407,7 +404,6 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
     return TopoDS_Face();
 }
 
-#ifdef FC_USE_TNP_FIX
 TopoShape ProfileBased::getProfileShape() const
 {
     TopoShape shape;
@@ -429,30 +425,17 @@ TopoShape ProfileBased::getProfileShape() const
     }
     return shape;
 }
-#else
-Part::TopoShape ProfileBased::getProfileShape() const
-{
-    auto shape = getTopoShape(Profile.getValue());
-    if (!shape.isNull() && !Profile.getSubValues().empty()) {
-        std::vector<Part::TopoShape> shapes;
-        for (auto& sub : Profile.getSubValues(true))
-            shapes.emplace_back(shape.getSubShape(sub.c_str()));
-        shape = Part::TopoShape().makeCompound(shapes);
-    }
-    return shape;
-}
-#endif
 
 
 // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 std::vector<TopoDS_Wire> ProfileBased::getProfileWires() const {
     std::vector<TopoDS_Wire> result;
 
-    if (!Profile.getValue() || !Profile.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
+    if (!Profile.getValue() || !Profile.getValue()->isDerivedFrom<Part::Feature>())
         throw Base::TypeError("No valid profile linked");
 
     TopoDS_Shape shape;
-    if (Profile.getValue()->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (Profile.getValue()->isDerivedFrom<Part::Part2DObject>())
         shape = Profile.getValue<Part::Part2DObject*>()->Shape.getValue();
     else {
         if (Profile.getSubValues().empty())
@@ -580,13 +563,8 @@ TopoShape ProfileBased::getTopoShapeSupportFace() const
         shape = getTopoShapeVerifiedFace();
     }
     else if (sketch->MapMode.getValue() == Attacher::mmFlatFace
-#ifdef FC_USE_TNP_FIX
-             && sketch->Support.getValue()) {
-        const auto& Support = sketch->Support;
-#else
              && sketch->AttachmentSupport.getValue()) {
         const auto& Support = sketch->AttachmentSupport;
-#endif
         App::DocumentObject* ref = Support.getValue();
         shape = Part::Feature::getTopoShape(
             ref,
@@ -635,19 +613,15 @@ Part::Feature* ProfileBased::getBaseObject(bool silent) const
     if (!obj)
         return nullptr;
 
-    if (!obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (!obj->isDerivedFrom<Part::Part2DObject>())
         return obj;
 
     //due to former test we know we have a 2d object
     Part::Part2DObject* sketch = getVerifiedSketch(silent);
     const char* err = nullptr;
-#ifdef FC_USE_TNP_FIX
-    App::DocumentObject* spt = sketch->Support.getValue();
-#else
     App::DocumentObject* spt = sketch->AttachmentSupport.getValue();
-#endif
     if (spt) {
-        if (spt->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (spt->isDerivedFrom<Part::Feature>()) {
             rv = static_cast<Part::Feature*>(spt);
         }
         else {
@@ -683,7 +657,7 @@ void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace, const App::Proper
         throw Base::ValueError("SketchBased: No face selected");
     }
 
-    if (ref->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+    if (ref->isDerivedFrom<App::Plane>()) {
         upToFace = makeShapeFromPlane(ref);
         return;
     }
@@ -695,6 +669,56 @@ void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace, const App::Proper
     }
 }
 
+int ProfileBased::getUpToShapeFromLinkSubList(TopoShape& upToShape, const App::PropertyLinkSubList& refShape)
+{
+    int ret = 0;
+
+    auto subSets = refShape.getSubListValues();
+
+    std::vector<TopoShape> faceList;
+    for (auto &subSet : subSets){
+        auto ref = subSet.first;
+        if (ref->isDerivedFrom<App::Plane>()) {
+            faceList.push_back(makeTopoShapeFromPlane(ref));
+            ret ++;
+        } else {
+            if (!ref->isDerivedFrom<Part::Feature>())
+                throw Base::TypeError("SketchBased: Must be face of a feature");
+
+            auto subStrings = subSet.second;
+            if (subStrings.empty() || subStrings[0].empty()) {
+                TopoShape baseShape = Part::Feature::getTopoShape(ref, nullptr, true);
+                for (auto face : baseShape.getSubTopoShapes(TopAbs_FACE)){
+                    faceList.push_back(face);
+                    ret ++;
+                }
+            }
+            else {
+                for (auto &subString : subStrings){
+                    auto shape = Part::Feature::getTopoShape(ref, subString.c_str(), true);
+                    TopoShape face = shape;
+                    face = face.makeElementFace();
+                    if (face.isNull()) {
+                        throw Base::ValueError("SketchBased: Failed to extract face");
+                    }
+                    faceList.push_back(face);
+                    ret ++;
+                }
+            }
+        }
+    }
+    if (ret == 0){
+        return 0;
+    }
+    if (ret == 1){
+        upToShape = faceList[0];
+        return 1;
+    }
+
+    // create a unique shell with all selected faces
+    upToShape = upToShape.makeElementCompound(faceList);
+    return ret;
+}
 
 void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::PropertyLinkSub& refFace)
 {
@@ -718,7 +742,8 @@ void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::Property
         throw Base::TypeError("SketchBased: Must be face of a feature");
     Part::TopoShape baseShape = static_cast<Part::Feature*>(ref)->Shape.getShape();
 
-    if (subStrings.empty() || subStrings[0].empty())
+    // Allow an empty sub here - example is a sketch reference (no sub) that creates a face.
+    if (subStrings.empty() )
         throw Base::ValueError("SketchBased: No face selected");
     // TODO: Check for multiple UpToFaces?
 
@@ -823,7 +848,6 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
 
 void ProfileBased::getUpToFace(TopoShape& upToFace,
                                const TopoShape& support,
-                               const TopoShape& supportface,
                                const TopoShape& sketchshape,
                                const std::string& method,
                                gp_Dir& dir)
@@ -862,13 +886,11 @@ void ProfileBased::getUpToFace(TopoShape& upToFace,
     TopoDS_Face face = TopoDS::Face(upToFace.getShape());
 
     // Check that the upToFace does not intersect the sketch face and
-    // is not parallel to the extrusion direction (for simplicity, supportface is used instead of
-    // sketchshape)
-    BRepAdaptor_Surface adapt1(TopoDS::Face(supportface.getShape()));
-    BRepAdaptor_Surface adapt2(face);
+    // is not parallel to the extrusion direction
+    BRepAdaptor_Surface adapt(face);
 
-    if (adapt2.GetType() == GeomAbs_Plane) {
-        if (adapt1.Plane().Axis().IsNormal(adapt2.Plane().Axis(), Precision::Confusion())) {
+    if (adapt.GetType() == GeomAbs_Plane) {
+        if (dir.IsNormal(adapt.Plane().Axis().Direction(), Precision::Confusion())) {
             throw Base::ValueError(
                 "SketchBased: Up to face: Must not be parallel to extrusion direction!");
         }
@@ -1093,105 +1115,11 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
 
 void ProfileBased::remapSupportShape(const TopoDS_Shape & newShape)
 {
-#if FC_USE_TNP_FIX
     (void)newShape;
     // Realthunder: with the new topological naming, I don't think this function
     // is necessary. A missing element will cause an explicitly error, and the
     // user will be force to manually select the element. Various editors, such
     // as dress up editors, can perform element guessing when activated.
-#else
-    TopTools_IndexedMapOfShape faceMap;
-    TopExp::MapShapes(newShape, TopAbs_FACE, faceMap);
-
-    // here we must reset the placement otherwise the geometric matching doesn't work
-    Part::TopoShape shape = this->Shape.getValue();
-    TopoDS_Shape sh = shape.getShape();
-    sh.Location(TopLoc_Location());
-    shape.setShape(sh);
-
-    std::vector<App::DocumentObject*> refs = this->getInList();
-    for (auto ref : refs) {
-        std::vector<App::Property*> props;
-        ref->getPropertyList(props);
-        for (auto prop : props) {
-            if (!prop->isDerivedFrom(App::PropertyLinkSub::getClassTypeId()))
-                continue;
-            App::PropertyLinkSub* link = static_cast<App::PropertyLinkSub*>(prop);
-            if (link->getValue() != this)
-                continue;
-            std::vector<std::string> subValues = link->getSubValues();
-            std::vector<std::string> newSubValues;
-
-            for (auto & subValue : subValues) {
-                std::string shapetype;
-                if (subValue.compare(0, 4, "Face") == 0) {
-                    shapetype = "Face";
-                }
-                else if (subValue.compare(0, 4, "Edge") == 0) {
-                    shapetype = "Edge";
-                }
-                else if (subValue.compare(0, 6, "Vertex") == 0) {
-                    shapetype = "Vertex";
-                }
-                else {
-                    newSubValues.push_back(subValue);
-                    continue;
-                }
-
-                bool success = false;
-                TopoDS_Shape element;
-                try {
-                    element = shape.getSubShape(subValue.c_str());
-                }
-                catch (Standard_Failure&) {
-                    // This shape doesn't even exist, so no chance to do some tests
-                    newSubValues.push_back(subValue);
-                    continue;
-                }
-                try {
-                    // as very first test check if old face and new face are parallel planes
-                    TopoDS_Shape newElement = Part::TopoShape(newShape).getSubShape(subValue.c_str());
-                    if (isParallelPlane(element, newElement)) {
-                        newSubValues.push_back(subValue);
-                        success = true;
-                    }
-                }
-                catch (Standard_Failure&) {
-                }
-                // try an exact matching
-                if (!success) {
-                    for (int i = 1; i < faceMap.Extent(); i++) {
-                        if (isQuasiEqual(element, faceMap.FindKey(i))) {
-                            std::stringstream str;
-                            str << shapetype << i;
-                            newSubValues.push_back(str.str());
-                            success = true;
-                            break;
-                        }
-                    }
-                }
-                // if an exact matching fails then try to compare only the geometries
-                if (!success) {
-                    for (int i = 1; i < faceMap.Extent(); i++) {
-                        if (isEqualGeometry(element, faceMap.FindKey(i))) {
-                            std::stringstream str;
-                            str << shapetype << i;
-                            newSubValues.push_back(str.str());
-                            success = true;
-                            break;
-                        }
-                    }
-                }
-
-                // the new shape couldn't be found so keep the old sub-name
-                if (!success)
-                    newSubValues.push_back(subValue);
-            }
-
-            link->setValue(this, newSubValues);
-        }
-    }
-#endif
 }
 
 namespace PartDesign {
@@ -1429,9 +1357,9 @@ void ProfileBased::getAxis(const App::DocumentObject * pcReferenceAxis, const st
     }
 
     if (pcReferenceAxis->isDerivedFrom<App::Line>()) {
-        const App::Line* line = static_cast<const App::Line*>(pcReferenceAxis);
-        base = Base::Vector3d(0, 0, 0);
-        line->Placement.getValue().multVec(Base::Vector3d(1, 0, 0), dir);
+        auto* line = static_cast<const App::Line*>(pcReferenceAxis);
+        base = line->getBasePoint();
+        dir = line->getDirection();
 
         verifyAxisFunc(checkAxis, sketchplane, gp_Dir(dir.x, dir.y, dir.z));
         return;
@@ -1469,11 +1397,10 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
         return SketchVector;
 
     // get the Sketch plane
-    if (obj->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (obj->isDerivedFrom<Part::Part2DObject>()) {
         Base::Placement SketchPos = obj->Placement.getValue();
         Base::Rotation SketchOrientation = SketchPos.getRotation();
         SketchOrientation.multVec(SketchVector, SketchVector);
-#ifdef FC_USE_TNP_FIX
         return SketchVector;
     }
 
@@ -1551,31 +1478,6 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
         }
         return dir.Normalize();
     }
-
-#else
-    }
-    else {
-        TopoDS_Shape shape = getVerifiedFace(true);
-        if (shape.IsNull())
-            return SketchVector;
-
-        // the shape can be a single face or a compound of faces, only consider the first face
-        TopExp_Explorer ex(shape, TopAbs_FACE);
-        if (ex.More()) {
-            TopoDS_Face face = TopoDS::Face(ex.Current());
-            BRepAdaptor_Surface adapt(face);
-            double u = adapt.FirstUParameter() + (adapt.LastUParameter() - adapt.FirstUParameter()) / 2.;
-            double v = adapt.FirstVParameter() + (adapt.LastVParameter() - adapt.FirstVParameter()) / 2.;
-            BRepLProp_SLProps prop(adapt, u, v, 2, Precision::Confusion());
-            if (prop.IsNormalDefined()) {
-                gp_Pnt pnt; gp_Vec vec;
-                // handles the orientation state of the shape
-                BRepGProp_Face(face).Normal(u, v, pnt, vec);
-                SketchVector = Base::Vector3d(vec.X(), vec.Y(), vec.Z());
-            }
-        }
-    }
-#endif
     return SketchVector;
 }
 

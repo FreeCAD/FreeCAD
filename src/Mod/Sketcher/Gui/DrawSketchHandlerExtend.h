@@ -24,7 +24,7 @@
 #define SKETCHERGUI_DrawSketchHandlerExtend_H
 
 #include <Gui/Notifications.h>
-#include <Gui/SelectionFilter.h>
+#include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 
@@ -57,7 +57,7 @@ public:
         if (pObj != this->object) {
             return false;
         }
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
         if (disabled) {
@@ -232,10 +232,8 @@ public:
                 drawEdit(EditCurve);
             }
             int curveId = getPreselectCurve();
-            if (BaseGeoId != curveId
-                && seekAutoConstraint(SugConstr, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(SugConstr);
-                return;
+            if (BaseGeoId != curveId) {
+                seekAndRenderAutoConstraint(SugConstr, onSketchPos, Base::Vector2d(0.f, 0.f));
             }
         }
     }
@@ -357,7 +355,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Extension");
+        return QStringLiteral("Sketcher_Pointer_Extension");
     }
 
 protected:

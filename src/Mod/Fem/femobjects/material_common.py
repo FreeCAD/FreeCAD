@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2013 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2024 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,14 +24,19 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM material document object"
-__author__ = "Juergen Riegel, Bernd Hahnebach"
+__author__ = "Juergen Riegel, Bernd Hahnebach, Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
 ## @package material_common
 #  \ingroup FEM
 #  \brief material common object
 
+from FreeCAD import Base, Units
+import Materials
+
 from . import base_fempythonobject
+
+_PropHelper = base_fempythonobject._PropHelper
 
 
 class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
@@ -41,34 +47,95 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::MaterialCommon"
 
     def __init__(self, obj):
-        super(MaterialCommon, self).__init__(obj)
-        self.add_properties(obj)
+        super().__init__(obj)
+
+        for prop in self._get_properties():
+            prop.add_to_object(obj)
+
+        obj.addExtension("App::SuppressibleExtensionPython")
+
+    def _get_properties(self):
+        prop = []
+
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLinkSubListGlobal",
+                name="References",
+                group="Material",
+                doc="List of material shapes",
+                value=[],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="Category",
+                group="Material",
+                doc="Material type: fluid or solid",
+                value=["Solid", "Fluid"],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyString",
+                name="UUID",
+                group="Material",
+                doc="Material UUID",
+                hidden=True,
+                value="",
+            )
+        )
+
+        return prop
 
     def onDocumentRestored(self, obj):
-        self.add_properties(obj)
+        # update old project with new properties
+        for prop in self._get_properties():
+            try:
+                obj.getPropertyByName(prop.name)
+            except Base.PropertyError:
+                prop.add_to_object(obj)
 
-    def add_properties(self, obj):
-        # References
-        if not hasattr(obj, "References"):
-            obj.addProperty(
-                "App::PropertyLinkSubList",
-                "References",
-                "Material",
-                "List of material shapes"
-            )
-            obj.setPropertyStatus("References", "LockDynamic")
-        # Category
-        # attribute Category was added in commit 61fb3d429a
-        if not hasattr(obj, "Category"):
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "Category",
-                "Material",
-                "Material type: fluid or solid"
-            )
-            obj.setPropertyStatus("Category", "LockDynamic")
-            obj.Category = ["Solid", "Fluid"]  # used in TaskPanel
-            obj.Category = "Solid"
+            if prop.name == "References":
+                # change References to App::PropertyLinkSubListGlobal
+                prop.handle_change_type(obj, old_type="App::PropertyLinkSubList")
+
+        # try update UUID from Material
+        if not obj.UUID:
+            obj.UUID = self._get_material_uuid(obj.Material)
+
+        if not obj.hasExtension("App::SuppressibleExtensionPython"):
+            obj.addExtension("App::SuppressibleExtensionPython")
+
+    def _get_material_uuid(self, material):
+        if not material:
+            return ""
+
+        material_manager = Materials.MaterialManager()
+
+        for a_mat in material_manager.Materials:
+            unmatched_item = True
+            a_mat_prop = material_manager.getMaterial(a_mat).Properties
+            for it in material:
+                if it in a_mat_prop:
+                    # first try to compare quantities
+                    try:
+                        unmatched_item = Units.Quantity(material[it]) != Units.Quantity(
+                            a_mat_prop[it]
+                        )
+                    except ValueError:
+                        # if there is no quantity, compare values directly
+                        unmatched_item = material[it] != a_mat_prop[it]
+
+                if unmatched_item:
+                    break
+
+            if not unmatched_item:
+                # all material items are found in a_mat
+                return a_mat
+
+        return ""
+
         """
         Some remarks to the category. Not finished, thus to be continued.
 

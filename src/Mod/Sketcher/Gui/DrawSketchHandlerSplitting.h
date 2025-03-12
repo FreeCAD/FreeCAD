@@ -24,7 +24,7 @@
 #define SKETCHERGUI_DrawSketchHandlerSplitting_H
 
 #include <Gui/Notifications.h>
-#include <Gui/SelectionFilter.h>
+#include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 
@@ -57,7 +57,7 @@ public:
         if (pObj != this->object) {
             return false;
         }
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
         std::string element(sSubName);
@@ -65,12 +65,16 @@ public:
             int GeoId = std::atoi(element.substr(4, 4000).c_str()) - 1;
             Sketcher::SketchObject* Sketch = static_cast<Sketcher::SketchObject*>(object);
             const Part::Geometry* geom = Sketch->getGeometry(GeoId);
-            if (geom->is<Part::GeomLineSegment>() || geom->is<Part::GeomCircle>()
+
+            // clang-format off: keep line breaks for readability
+            if (geom->is<Part::GeomLineSegment>()
+                || geom->is<Part::GeomCircle>()
                 || geom->is<Part::GeomEllipse>()
-                || geom->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())
+                || geom->isDerivedFrom<Part::GeomArcOfConic>()
                 || geom->is<Part::GeomBSplineCurve>()) {
                 return true;
             }
+            // clang-format on
         }
         else if (element.substr(0, 6) == "Vertex") {
             int VertId = std::atoi(element.substr(6, 4000).c_str()) - 1;
@@ -114,12 +118,15 @@ public:
         int curveGeoId = getPreselectCurve();
         if (curveGeoId >= 0) {
             const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(curveGeoId);
-            if (geom->is<Part::GeomLineSegment>() || geom->is<Part::GeomCircle>()
+            // clang-format off: keep line breaks for readability
+            if (geom->is<Part::GeomLineSegment>()
+                || geom->is<Part::GeomCircle>()
                 || geom->is<Part::GeomEllipse>()
-                || geom->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())
+                || geom->isDerivedFrom<Part::GeomArcOfConic>()
                 || geom->is<Part::GeomBSplineCurve>()) {
                 GeoId = curveGeoId;
             }
+            // clang-format on
         }
         else {
             // No curve of interest is pre-selected. Try pre-selected point.
@@ -151,7 +158,7 @@ public:
                                       onSketchPos.x,
                                       onSketchPos.y);
                 Gui::Command::commitCommand();
-                tryAutoRecompute(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                tryAutoRecompute(sketchgui->getObject<Sketcher::SketchObject>());
             }
             catch (const Base::Exception&) {
                 Gui::NotifyError(sketchgui,
@@ -178,7 +185,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Splitting");
+        return QStringLiteral("Sketcher_Pointer_Splitting");
     }
 };
 

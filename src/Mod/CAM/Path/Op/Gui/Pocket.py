@@ -55,9 +55,7 @@ Command = PathOpGui.SetupOperation(
     TaskPanelOpPage,
     "CAM_3DPocket",
     QT_TRANSLATE_NOOP("CAM_Pocket3D", "3D Pocket"),
-    QT_TRANSLATE_NOOP(
-        "CAM_Pocket3D", "Creates a 3D Pocket toolpath from a face or faces"
-    ),
+    QT_TRANSLATE_NOOP("CAM_Pocket3D", "Creates a 3D Pocket toolpath from a face or faces"),
     PathPocket.SetupProperties,
 )
 

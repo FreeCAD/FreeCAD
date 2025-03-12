@@ -47,14 +47,14 @@ MeshTexture::MeshTexture(const Mesh::MeshObject& mesh, const MeshCore::Material&
 }
 
 void MeshTexture::apply(const Mesh::MeshObject& mesh,
-                        const App::Color& defaultColor,
+                        const Base::Color& defaultColor,
                         MeshCore::Material& material)
 {
-    apply(mesh, true, defaultColor, -1.0f, material);
+    apply(mesh, true, defaultColor, -1.0F, material);
 }
 
 void MeshTexture::apply(const Mesh::MeshObject& mesh,
-                        const App::Color& defaultColor,
+                        const Base::Color& defaultColor,
                         float max_dist,
                         MeshCore::Material& material)
 {
@@ -63,31 +63,31 @@ void MeshTexture::apply(const Mesh::MeshObject& mesh,
 
 void MeshTexture::apply(const Mesh::MeshObject& mesh, MeshCore::Material& material)
 {
-    App::Color defaultColor;
-    apply(mesh, false, defaultColor, -1.0f, material);
+    Base::Color defaultColor;
+    apply(mesh, false, defaultColor, -1.0F, material);
 }
 
 void MeshTexture::apply(const Mesh::MeshObject& mesh, float max_dist, MeshCore::Material& material)
 {
-    App::Color defaultColor;
+    Base::Color defaultColor;
     apply(mesh, false, defaultColor, max_dist, material);
 }
 
 void MeshTexture::apply(const Mesh::MeshObject& mesh,
                         bool addDefaultColor,
-                        const App::Color& defaultColor,
+                        const Base::Color& defaultColor,
                         float max_dist,
                         MeshCore::Material& material)
 {
     // copy the color values because the passed material could be the same instance as
     // 'materialRefMesh'
-    std::vector<App::Color> textureColor = materialRefMesh.diffuseColor;
+    std::vector<Base::Color> textureColor = materialRefMesh.diffuseColor;
     material.diffuseColor.clear();
     material.binding = MeshCore::MeshIO::OVERALL;
 
-    if (kdTree.get()) {
+    if (kdTree) {
         // the points of the current mesh
-        std::vector<App::Color> diffuseColor;
+        std::vector<Base::Color> diffuseColor;
         const MeshCore::MeshPointArray& points = mesh.getKernel().GetPoints();
         const MeshCore::MeshFacetArray& facets = mesh.getKernel().GetFacets();
 

@@ -4,12 +4,10 @@ SET(Examples_Files
     draft_test_objects.FCStd
     EngineBlock.FCStd
     PartDesignExample.FCStd
-    RobotExample.FCStd
-    ArchDetail.FCStd
-    FemCalculixCantilever1D.FCStd
-    FemCalculixCantilever2D.FCStd
-    FemCalculixCantilever3D.FCStd
+    BIMExample.FCStd
+    FEMExample.FCStd
     AssemblyExample.FCStd
+    ArchDetail.FCStd
 )
 
 ADD_CUSTOM_TARGET(Example_data ALL

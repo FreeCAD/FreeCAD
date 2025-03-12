@@ -93,9 +93,7 @@ class ObjectArray:
             "App::PropertyVector",
             "Centre",
             "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The centre of rotation in Polar pattern"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in Polar pattern"),
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -137,9 +135,7 @@ class ObjectArray:
             "App::PropertyBool",
             "Active",
             "Path",
-            QT_TRANSLATE_NOOP(
-                "PathOp", "Make False, to prevent operation from generating code"
-            ),
+            QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"),
         )
 
         obj.Active = True
@@ -170,9 +166,7 @@ class ObjectArray:
                 "App::PropertyInteger",
                 "JitterSeed",
                 "Path",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property", "Seed value for jitter randomness"
-                ),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
             )
             obj.JitterSeed = 0
 
@@ -293,15 +287,9 @@ class PathArray:
         if self.jitterPercent == 0:
             pass
         elif random.randint(0, 100) < self.jitterPercent:
-            pos.x = pos.x + random.uniform(
-                -self.jitterMagnitude.x, self.jitterMagnitude.x
-            )
-            pos.y = pos.y + random.uniform(
-                -self.jitterMagnitude.y, self.jitterMagnitude.y
-            )
-            pos.z = pos.z + random.uniform(
-                -self.jitterMagnitude.z, self.jitterMagnitude.z
-            )
+            pos.x = pos.x + random.uniform(-self.jitterMagnitude.x, self.jitterMagnitude.x)
+            pos.y = pos.y + random.uniform(-self.jitterMagnitude.y, self.jitterMagnitude.y)
+            pos.z = pos.z + random.uniform(-self.jitterMagnitude.z, self.jitterMagnitude.z)
         return pos
 
     # Public method
@@ -349,7 +337,9 @@ class PathArray:
                 for b in base:
                     pl = FreeCAD.Placement()
                     pl.move(pos)
-                    np = Path.Path([cm.transform(pl) for cm in PathUtils.getPathWithPlacement(b).Commands])
+                    np = Path.Path(
+                        [cm.transform(pl) for cm in PathUtils.getPathWithPlacement(b).Commands]
+                    )
                     output += np.toGCode()
 
         elif self.arrayType == "Linear2D":
@@ -376,7 +366,10 @@ class PathArray:
                             if not (i == 0 and j == 0):
                                 pl.move(pos)
                                 np = Path.Path(
-                                    [cm.transform(pl) for cm in PathUtils.getPathWithPlacement(b).Commands]
+                                    [
+                                        cm.transform(pl)
+                                        for cm in PathUtils.getPathWithPlacement(b).Commands
+                                    ]
                                 )
                                 output += np.toGCode()
             else:
@@ -402,7 +395,10 @@ class PathArray:
                             if not (i == 0 and j == 0):
                                 pl.move(pos)
                                 np = Path.Path(
-                                    [cm.transform(pl) for cm in PathUtils.getPathWithPlacement(b).Commands]
+                                    [
+                                        cm.transform(pl)
+                                        for cm in PathUtils.getPathWithPlacement(b).Commands
+                                    ]
                                 )
                                 output += np.toGCode()
             # Eif
@@ -450,15 +446,12 @@ class CommandPathArray:
         return {
             "Pixmap": "CAM_Array",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Array", "Array"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_Array", "Creates an array from selected toolpath(s)"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Array", "Creates an array from selected toolpath(s)"),
         }
 
     def IsActive(self):
         selections = [
-            sel.isDerivedFrom("Path::Feature")
-            for sel in FreeCADGui.Selection.getSelection()
+            sel.isDerivedFrom("Path::Feature") for sel in FreeCADGui.Selection.getSelection()
         ]
         return selections and all(selections)
 
@@ -470,9 +463,7 @@ class CommandPathArray:
         for sel in selection:
             if not (sel.isDerivedFrom("Path::Feature")):
                 FreeCAD.Console.PrintError(
-                    translate(
-                        "CAM_Array", "Arrays can be created only from toolpath operations."
-                    )
+                    translate("CAM_Array", "Arrays can be created only from toolpath operations.")
                     + "\n"
                 )
                 return

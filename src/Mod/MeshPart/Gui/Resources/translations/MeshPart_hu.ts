@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="280"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>MeshPart</source>
       <translation>RészekKapcsolása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>Cross-sections...</source>
       <translation>Keresztmetszet...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="283"/>
       <source>Cross-sections</source>
       <translation>Keresztmetszet</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="316"/>
+      <location filename="../../Command.cpp" line="317"/>
       <source>Mesh</source>
       <translation>Háló</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Curve on mesh...</source>
       <translation>Görbe a hálón...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="319"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Közelítő ívet hoz létre a háló tetején.
@@ -222,7 +222,7 @@ Ez a parancs csak 'háló' objektummal működik.</translation>
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
       <translation>Nyomja le a 'Start' gombot, majd válasszon pontokat a hálón; ha elegendő pont van beállítva, kattintson a jobb gombbal, és válassza a 'Létrehozás' parancsot. Ismételje meg ezt a folyamatot, hogy több görbét hozzon létre. A művelet végrehajtásához zárja be ezt a feladatpanelt.
 
-Ez a parancs csak 'háló' objektummal működik, normál felülettel vagy felszínnel nem. Az objektum hálóvá alakításához használja a Háló munkaterület eszközeit.</translation>
+Ez a parancs csak 'háló' objektummal működik, normál felülettel vagy felszínnel nem. Az objektum hálóvá alakításához használja a Háló munkafelület eszközeit.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -339,8 +339,8 @@ felületeltérés szorozva az aktuális hálószakasz hosszával (él)</translat
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation>A hálószegmensek az objektum felületek színe szerint lesznek csoportosítva.
-Ezek a csoportok a hálókimeneti formátumokhoz lesznek exportálva, amelyek
+      <translation>A hálószegmensek az objektum felületek színe szerint kerülnek csoportosításra.
+Ezek a csoportokat a hálókimeneti formátumokhoz exportálják, amelyek
 támogatják ezt a tulajdonságot (pl. OBJ formátum).</translation>
     </message>
     <message>
@@ -491,27 +491,27 @@ A value in the range of 0.2-10.</source>
       <translation>Gmsh ( http://gmsh.info/ )</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="235"/>
-      <location filename="../../Tessellation.cpp" line="241"/>
+      <location filename="../../Tessellation.cpp" line="237"/>
+      <location filename="../../Tessellation.cpp" line="243"/>
       <source>No active document</source>
       <translation>Nincs aktív dokumentum</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="272"/>
+      <location filename="../../Tessellation.cpp" line="273"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Kiválasztott egy csúcs nélküli testet.
 Kérem állítsa be a test csúcsát, vagy válasszon egy másik alakzatot.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="278"/>
+      <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Felületek nélküli alakzatot választott.
 Válasszon másik alakzatot.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="282"/>
+      <location filename="../../Tessellation.cpp" line="283"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Válassza ki a formát kapcsolás előtt.</translation>
     </message>

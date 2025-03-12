@@ -43,15 +43,13 @@ class BIM_Welcome:
     def Activated(self):
         from PySide import QtCore, QtGui
 
-        # load dialog
         self.form = FreeCADGui.PySideUic.loadUi(":ui/dialogWelcome.ui")
-
-        # set the title image
-        self.form.image.setPixmap(QtGui.QPixmap(":/icons/banner.png"))
 
         # handle the tutorial links
         self.form.label_4.linkActivated.connect(self.handleLink)
         self.form.label_7.linkActivated.connect(self.handleLink)
+
+        self.form.adjustSize()
 
         # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()

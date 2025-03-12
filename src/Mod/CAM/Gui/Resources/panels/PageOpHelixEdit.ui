@@ -89,18 +89,18 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QComboBox" name="direction">
+       <widget class="QComboBox" name="cutMode">
         <property name="toolTip">
          <string>The direction for the helix, clockwise or counterclockwise.</string>
         </property>
         <item>
          <property name="text">
-          <string>CW</string>
+          <string>Climb</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>CCW</string>
+          <string>Conventional</string>
          </property>
         </item>
        </widget>

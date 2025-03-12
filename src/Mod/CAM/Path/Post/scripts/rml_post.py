@@ -40,8 +40,6 @@ import Path.Post.Utils as PostUtils
 from builtins import open as pyopen
 
 
-
-
 # Entrypoint used by FreeCAD
 def export(objectslist, filename, argstring):
     "Export objects as Roland Modela code."

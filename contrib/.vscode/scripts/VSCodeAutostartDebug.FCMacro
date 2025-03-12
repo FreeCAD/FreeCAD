@@ -7,7 +7,11 @@ from freecad.utils import get_python_exe
 # By default it attempts to use Freecad's PID mistaking it for python.
 # https://github.com/microsoft/debugpy/issues/262
 debugpy.configure(python=get_python_exe())
-debugpy.listen(('localhost', 5678))
+# As of Python 3.12, debugpy runs a forwarding process that listens both on the port specified here for the debugger
+# to connect to, but also on an internal port for the underlying pydevd within the python process to connect to.  The
+# default for that internal port is 5678, so we need to not duplicate it for the external port.  Also, on Linux the
+# attempt to spawn the forwarding process separately fails, so we force it to be internal to our main process.
+debugpy.listen(('localhost', 5679),in_process_debug_adapter=True)
 
 # Turns out you cannot probe debugpy to see if it is up:
 # https://github.com/microsoft/debugpy/issues/974

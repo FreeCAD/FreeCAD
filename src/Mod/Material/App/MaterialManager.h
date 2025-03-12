@@ -24,7 +24,7 @@
 
 #include <memory>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include <Mod/Material/MaterialGlobal.h>
 
@@ -34,7 +34,7 @@
 #include "MaterialLibrary.h"
 #include "MaterialFilter.h"
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 class QMutex;
 
@@ -56,6 +56,7 @@ public:
 
     static void cleanup();
     static void refresh();
+    static std::shared_ptr<App::Material> defaultAppearance();
     static std::shared_ptr<Material> defaultMaterial();
     static QString defaultMaterialUUID();
 

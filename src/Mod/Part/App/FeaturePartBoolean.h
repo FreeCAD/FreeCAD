@@ -27,12 +27,12 @@
 #include <App/PropertyLinks.h>
 #include "PartFeature.h"
 
-class BRepAlgoAPI_BooleanOperation;
+class FCBRepAlgoAPI_BooleanOperation;
 
 namespace Part
 {
 
-class Boolean : public Part::Feature
+class PartExport Boolean : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Boolean);
 

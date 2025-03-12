@@ -40,6 +40,8 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
 
+#include <Base/Color.h>
+#include <Gui/ViewParams.h>
 #include <Gui/Inventor/SmSwitchboard.h>
 #include <Mod/Sketcher/App/GeoList.h>
 
@@ -145,8 +147,22 @@ struct DrawingParameters
     unsigned int CurvePattern = 0b1111111111111111;         // pattern of normal edges
     unsigned int ConstructionPattern = 0b1111110011111100;  // pattern of construction edges
     unsigned int InternalPattern = 0b1111110011111100;      // pattern of internal edges
-    unsigned int ExternalPattern = 0b1110010011100100;      // pattern of external edges
+    unsigned int ExternalPattern = 0b1111110011111100;      // pattern of external edges
     //@}
+
+    DrawingParameters()
+    {
+        unsigned long colorLong;
+        Base::Color color;
+
+        colorLong = Gui::ViewParams::instance()->getAxisXColor();
+        color = Base::Color(static_cast<uint32_t>(colorLong));
+        CrossColorH = SbColor(color.r, color.g, color.b);
+
+        colorLong = Gui::ViewParams::instance()->getAxisYColor();
+        color = Base::Color(static_cast<uint32_t>(colorLong));
+        CrossColorV = SbColor(color.r, color.g, color.b);
+    }
 };
 
 /** @brief      Struct for storing references to the scenegraph nodes necessary for geometry layers
@@ -304,17 +320,7 @@ public:
         return SubLayers;
     }
 
-    int inline getSubLayerIndex(const int geoId, const Sketcher::GeometryFacade* geom) const
-    {
-        bool isConstruction = geom->getConstruction();
-        bool isInternal = geom->isInternalAligned();
-        bool isExternal = geoId <= Sketcher::GeoEnum::RefExt;
-
-        return static_cast<int>(isExternal           ? SubLayer::External
-                                    : isInternal     ? SubLayer::Internal
-                                    : isConstruction ? SubLayer::Construction
-                                                     : SubLayer::Normal);
-    }
+    int getSubLayerIndex(const int geoId, const Sketcher::GeometryFacade* geom) const;
 
     bool isNormalSubLayer(int t) const
     {

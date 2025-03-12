@@ -48,9 +48,44 @@ def findIntersection(edge1, edge2,
     """Return a list containing the intersection points of 2 edges.
 
     You can also feed 4 points instead of `edge1` and `edge2`.
-    If `dts` is used, `Shape.distToShape()` is used, which can be buggy.
-    """
+    If `dts` is used, `Shape.section()` is used.
 
+    Parameters
+    ----------
+    edge1
+        Part.Edge, Circle, Line -> the first edge.
+        Base::Vector3 -> the starting point of the first line. In which case
+            `infinite1` must also be a point.
+    edge2
+        Part.Edge, Circle, Line -> the second edge.
+        Base::Vector3 -> the ending point of the second line. In which case
+            `infinite2` must also be a point.
+        the second edge. In case of a point, `infinite2` must also be a point.
+    infinite1
+        bool, optional -> whether `edge1` should be continued to infinity.
+        Default to `False`.
+        Base::Vector3 -> if `edge1` is a point, must also be a point.
+    infinite2
+        bool, optional -> whether `edge2` should be continued to infinity.
+        Default to `False`.
+        Base::Vector3 -> if `edge2` is a point, must also be a point.
+    ex1: bool, optional
+        In case `edge1` is a point, indicate whether the line should be
+        continued to infinity. Default to `False`
+    ex2: bool, optional
+        In case `edge2` is a point, indicate whether the line should be
+        continued to infinity. Default to `False`
+    dts: bool, optional
+        NOT_DOCUMENTED. Default to `True`
+    findAll: bool, optional
+        In case either `edge1` or `edge2` is a circle, indicates whether
+        to find all intersection points. Default to `False`
+
+    Returns
+    -------
+    list
+        A list of intersection points
+    """
     def getLineIntersections(pt1, pt2, pt3, pt4, infinite1, infinite2):
         if pt1:
             # first check if we don't already have coincident endpoints
@@ -104,24 +139,20 @@ def findIntersection(edge1, edge2,
         else:
             return []  # Lines aren't on same plane
 
+    tol = pow(10, -precision())
+
     # First, check bound boxes
     if (isinstance(edge1, Part.Edge) and isinstance(edge2, Part.Edge)
             and (not infinite1) and (not infinite2)):
         bb1 = edge1.BoundBox
-        bb1.enlarge(pow(10, -precision()))  # enlarge one box to account for rounding errors
+        bb1.enlarge(tol)  # enlarge one box to account for rounding errors
         if not bb1.intersect(edge2.BoundBox):
             return []  # bound boxes don't intersect
 
-    # First, try to use distToShape if possible
+    # First, try to use Shape.section if possible
     if (dts and isinstance(edge1, Part.Edge) and isinstance(edge2, Part.Edge)
             and (not infinite1) and (not infinite2)):
-        dist, pts, geom = edge1.distToShape(edge2)
-        sol = []
-        if round(dist, precision()) == 0:
-            for p in pts:
-                if p[0] not in sol:
-                    sol.append(p[0])
-        return sol
+        return [v.Point for v in edge1.section((edge2), tol).Vertexes]
 
     pt1 = None
 
@@ -310,8 +341,7 @@ def wiresIntersect(wire1, wire2):
                 return True
     return False
 
-
-def connect(edges, closed=False):
+def connect(edges, closed=False, wireNedge=False):
     """Connect the edges in the given list by their intersections."""
 
     inters_list = [] # List of intersections (with the previous edge).
@@ -334,7 +364,9 @@ def connect(edges, closed=False):
                                                             curr_inters_list)]
             inters_list.append(inters)
 
+    new_edges_full = []
     new_edges = []
+
     for i, curr in enumerate(edges):
         curr_sta = inters_list[i]
         if i < (len(edges) - 1):
@@ -354,19 +386,32 @@ def connect(edges, closed=False):
                 prev = None
             if prev is not None:
                 prev_end = prev.Vertexes[-1].Point
-                new_edges.append(Part.LineSegment(prev_end, curr_sta).toShape())
+                new_edges_full.append(Part.LineSegment(prev_end, curr_sta).toShape())
 
         if curr_end is None:
             curr_end = curr.Vertexes[-1].Point
 
         if curr_sta != curr_end:
             if geomType(curr) == "Line":
-                new_edges.append(Part.LineSegment(curr_sta, curr_end).toShape())
+                n = Part.LineSegment(curr_sta, curr_end).toShape()
+                new_edges.append(n)
+                new_edges_full.append(n)
+
             elif geomType(curr) == "Circle":
-                new_edges.append(Part.Arc(curr_sta, findMidpoint(curr), curr_end).toShape())
+                n = Part.Arc(curr_sta, findMidpoint(curr), curr_end).toShape()
+                new_edges.append(n)
+                new_edges_full.append(n)
 
     try:
-        return Part.Wire(new_edges)
+        wire = Part.Wire(new_edges_full)
+
+        # TODO May phase out wire if bind() can do without it later and do with
+        # only connectEdges so no need bind() to find 'touching edges' there
+        if wireNedge:
+            return (wire, new_edges_full, new_edges)
+        else:
+            return wire
+
     except Part.OCCError:
         print("DraftGeomUtils.connect: unable to connect edges")
         for edge in new_edges:

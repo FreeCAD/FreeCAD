@@ -29,9 +29,7 @@
 #ifndef BASE_UNITSSCHEMAMETERS_H
 #define BASE_UNITSSCHEMAMETERS_H
 
-#include <QString>
 #include "UnitsSchema.h"
-
 
 namespace Base
 {
@@ -42,8 +40,8 @@ namespace Base
 class UnitsSchemaMeterDecimal: public UnitsSchema
 {
 public:
-    QString
-    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) override;
+    std::string
+    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
 
     std::string getBasicLengthUnit() const override
     {

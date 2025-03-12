@@ -291,7 +291,7 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="665"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
-      <translation>Грешка: или сви облици морају бити 2D, или сви морају бити 3Д</translation>
+      <translation>Грешка: или сви облици морају бити 2Д, или сви морају бити 3Д</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="549"/>

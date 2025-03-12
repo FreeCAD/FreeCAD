@@ -30,6 +30,10 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 
+namespace TechDraw {
+enum class ArrowType : int;
+}
+
 namespace TechDrawGui {
 class Ui_DlgPrefsTechDrawDimensionsImp;
 
@@ -41,13 +45,14 @@ public:
     explicit DlgPrefsTechDrawDimensionsImp( QWidget* parent = nullptr );
     ~DlgPrefsTechDrawDimensionsImp() override;
 
+    void resetSettingsToDefaults() override;
 protected:
     void saveSettings() override;
     void loadSettings() override;
     void changeEvent(QEvent *e) override;
     void dimensioningModeChanged(int index);
 
-    int prefArrowStyle() const;
+    TechDraw::ArrowType prefArrowStyle() const;
 
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawDimensionsImp> ui;

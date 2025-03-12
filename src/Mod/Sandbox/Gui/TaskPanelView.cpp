@@ -81,38 +81,38 @@ public:
     void setupUi(QWidget *MainWindow2)
     {
         if (MainWindow2->objectName().isEmpty())
-            MainWindow2->setObjectName(QString::fromUtf8("MainWindow2"));
+            MainWindow2->setObjectName(QStringLiteral("MainWindow2"));
         MainWindow2->resize(529, 407);
-        MainWindow2->setStyleSheet(QString::fromUtf8("\n"
+        MainWindow2->setStyleSheet(QStringLiteral("\n"
             "QWidget2 {\n"
 "    background-color: green;\n"
 "}\n"
 ""));
         actionNew = new QAction(MainWindow2);
-        actionNew->setObjectName(QString::fromUtf8("actionNew"));
+        actionNew->setObjectName(QStringLiteral("actionNew"));
         QIcon icon;
-        icon.addFile(QString::fromUtf8(":/icons/document-new.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QStringLiteral(":/icons/document-new.svg"), QSize(), QIcon::Normal, QIcon::Off);
         actionNew->setIcon(icon);
         actionLoad = new QAction(MainWindow2);
-        actionLoad->setObjectName(QString::fromUtf8("actionLoad"));
+        actionLoad->setObjectName(QStringLiteral("actionLoad"));
         QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/icons/document-open.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon1.addFile(QStringLiteral(":/icons/document-open.svg"), QSize(), QIcon::Normal, QIcon::Off);
         actionLoad->setIcon(icon1);
         actionSave = new QAction(MainWindow2);
-        actionSave->setObjectName(QString::fromUtf8("actionSave"));
+        actionSave->setObjectName(QStringLiteral("actionSave"));
         actionSave->setEnabled(false);
         QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/icons/document-save.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon2.addFile(QStringLiteral(":/icons/document-save.svg"), QSize(), QIcon::Normal, QIcon::Off);
         actionSave->setIcon(icon2);
         actionPrint = new QAction(MainWindow2);
-        actionPrint->setObjectName(QString::fromUtf8("actionPrint"));
+        actionPrint->setObjectName(QStringLiteral("actionPrint"));
         QIcon icon3;
-        icon3.addFile(QString::fromUtf8(":/icons/document-print.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon3.addFile(QStringLiteral(":/icons/document-print.svg"), QSize(), QIcon::Normal, QIcon::Off);
         actionPrint->setIcon(icon3);
         gridLayout = new QGridLayout(MainWindow2);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
         ActionPanel = new QSint::ActionPanel(MainWindow2);
-        ActionPanel->setObjectName(QString::fromUtf8("ActionPanel"));
+        ActionPanel->setObjectName(QStringLiteral("ActionPanel"));
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -122,39 +122,39 @@ public:
         gridLayout->addWidget(ActionPanel, 0, 0, 2, 1);
 
         ActionGroup1 = new QSint::ActionGroup(MainWindow2);
-        ActionGroup1->setObjectName(QString::fromUtf8("ActionGroup1"));
+        ActionGroup1->setObjectName(QStringLiteral("ActionGroup1"));
         ActionGroup1->setProperty("expandable", QVariant(true));
         ActionGroup1->setProperty("header", QVariant(true));
         verticalLayout = new QVBoxLayout(ActionGroup1);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         rbDefaultScheme = new QRadioButton(ActionGroup1);
-        rbDefaultScheme->setObjectName(QString::fromUtf8("rbDefaultScheme"));
+        rbDefaultScheme->setObjectName(QStringLiteral("rbDefaultScheme"));
         rbDefaultScheme->setChecked(true);
 
         verticalLayout->addWidget(rbDefaultScheme);
 
         rbXPBlueScheme = new QRadioButton(ActionGroup1);
-        rbXPBlueScheme->setObjectName(QString::fromUtf8("rbXPBlueScheme"));
+        rbXPBlueScheme->setObjectName(QStringLiteral("rbXPBlueScheme"));
 
         verticalLayout->addWidget(rbXPBlueScheme);
 
         rbXPBlue2Scheme = new QRadioButton(ActionGroup1);
-        rbXPBlue2Scheme->setObjectName(QString::fromUtf8("rbXPBlue2Scheme"));
+        rbXPBlue2Scheme->setObjectName(QStringLiteral("rbXPBlue2Scheme"));
 
         verticalLayout->addWidget(rbXPBlue2Scheme);
 
         rbVistaScheme = new QRadioButton(ActionGroup1);
-        rbVistaScheme->setObjectName(QString::fromUtf8("rbVistaScheme"));
+        rbVistaScheme->setObjectName(QStringLiteral("rbVistaScheme"));
 
         verticalLayout->addWidget(rbVistaScheme);
 
         rbMacScheme = new QRadioButton(ActionGroup1);
-        rbMacScheme->setObjectName(QString::fromUtf8("rbMacScheme"));
+        rbMacScheme->setObjectName(QStringLiteral("rbMacScheme"));
 
         verticalLayout->addWidget(rbMacScheme);
 
         rbAndroidScheme = new QRadioButton(ActionGroup1);
-        rbAndroidScheme->setObjectName(QString::fromUtf8("rbAndroidScheme"));
+        rbAndroidScheme->setObjectName(QStringLiteral("rbAndroidScheme"));
 
         verticalLayout->addWidget(rbAndroidScheme);
 
@@ -220,17 +220,17 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
         MainWindow->setSizePolicy(sizePolicy);
-        MainWindow->setStyleSheet(QString::fromUtf8("\n"
+        MainWindow->setStyleSheet(QStringLiteral("\n"
 "SandboxGui--TaskPanelView {\n"
 "	background-color: green;\n"
 "}\n"
 ""));
         verticalLayout = new QVBoxLayout(MainWindow);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout_3 = new QVBoxLayout();
-        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         label = new QLabel(MainWindow);
-        label->setObjectName(QString::fromUtf8("label"));
+        label->setObjectName(QStringLiteral("label"));
         QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Maximum);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
@@ -240,7 +240,7 @@ public:
         verticalLayout_3->addWidget(label);
 
         line_2 = new QFrame(MainWindow);
-        line_2->setObjectName(QString::fromUtf8("line_2"));
+        line_2->setObjectName(QStringLiteral("line_2"));
         line_2->setFrameShape(QFrame::HLine);
         line_2->setFrameShadow(QFrame::Sunken);
 
@@ -250,16 +250,16 @@ public:
         verticalLayout->addLayout(verticalLayout_3);
 
         gridLayout_2 = new QGridLayout();
-        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
         ActionBox1 = new QSint::ActionBox(MainWindow);
-        ActionBox1->setObjectName(QString::fromUtf8("ActionBox1"));
+        ActionBox1->setObjectName(QStringLiteral("ActionBox1"));
         ActionBox1->setFrameShape(QFrame::StyledPanel);
         ActionBox1->setFrameShadow(QFrame::Raised);
 
         gridLayout_2->addWidget(ActionBox1, 0, 0, 1, 1);
 
         ActionBox2 = new QSint::ActionBox(MainWindow);
-        ActionBox2->setObjectName(QString::fromUtf8("ActionBox2"));
+        ActionBox2->setObjectName(QStringLiteral("ActionBox2"));
         ActionBox2->setFrameShape(QFrame::StyledPanel);
         ActionBox2->setFrameShadow(QFrame::Raised);
 
@@ -270,21 +270,21 @@ public:
         gridLayout_2->addItem(verticalSpacer, 3, 0, 1, 1);
 
         ActionBox3 = new QSint::ActionBox(MainWindow);
-        ActionBox3->setObjectName(QString::fromUtf8("ActionBox3"));
+        ActionBox3->setObjectName(QStringLiteral("ActionBox3"));
         ActionBox3->setFrameShape(QFrame::StyledPanel);
         ActionBox3->setFrameShadow(QFrame::Raised);
 
         gridLayout_2->addWidget(ActionBox3, 0, 1, 1, 1);
 
         ActionBox4 = new QSint::ActionBox(MainWindow);
-        ActionBox4->setObjectName(QString::fromUtf8("ActionBox4"));
+        ActionBox4->setObjectName(QStringLiteral("ActionBox4"));
         ActionBox4->setFrameShape(QFrame::StyledPanel);
         ActionBox4->setFrameShadow(QFrame::Raised);
 
         gridLayout_2->addWidget(ActionBox4, 1, 1, 1, 1);
 
         ActionBox5 = new Gui::TaskView::TaskGroup(MainWindow);
-        ActionBox5->setObjectName(QString::fromUtf8("ActionBox5"));
+        ActionBox5->setObjectName(QStringLiteral("ActionBox5"));
         ActionBox5->setFrameShape(QFrame::StyledPanel);
         ActionBox5->setFrameShadow(QFrame::Raised);
 
@@ -293,16 +293,16 @@ public:
         verticalLayout->addLayout(gridLayout_2);
 
         verticalLayout_4 = new QVBoxLayout();
-        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
         label_2 = new QLabel(MainWindow);
-        label_2->setObjectName(QString::fromUtf8("label_2"));
+        label_2->setObjectName(QStringLiteral("label_2"));
         sizePolicy1.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
         label_2->setSizePolicy(sizePolicy1);
 
         verticalLayout_4->addWidget(label_2);
 
         line = new QFrame(MainWindow);
-        line->setObjectName(QString::fromUtf8("line"));
+        line->setObjectName(QStringLiteral("line"));
         line->setFrameShape(QFrame::HLine);
         line->setFrameShadow(QFrame::Sunken);
 
@@ -312,9 +312,9 @@ public:
         verticalLayout->addLayout(verticalLayout_4);
 
         verticalLayout_2 = new QVBoxLayout();
-        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         ActionLabel1 = new QSint::ActionLabel(MainWindow);
-        ActionLabel1->setObjectName(QString::fromUtf8("ActionLabel1"));
+        ActionLabel1->setObjectName(QStringLiteral("ActionLabel1"));
         QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Fixed);
         sizePolicy2.setHorizontalStretch(0);
         sizePolicy2.setVerticalStretch(0);
@@ -324,21 +324,21 @@ public:
         verticalLayout_2->addWidget(ActionLabel1);
 
         ActionLabel2 = new QSint::ActionLabel(MainWindow);
-        ActionLabel2->setObjectName(QString::fromUtf8("ActionLabel2"));
+        ActionLabel2->setObjectName(QStringLiteral("ActionLabel2"));
         sizePolicy2.setHeightForWidth(ActionLabel2->sizePolicy().hasHeightForWidth());
         ActionLabel2->setSizePolicy(sizePolicy2);
         QIcon icon;
-        icon.addFile(QString::fromUtf8(":/icons/document-open.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QStringLiteral(":/icons/document-open.svg"), QSize(), QIcon::Normal, QIcon::Off);
         ActionLabel2->setIcon(icon);
 
         verticalLayout_2->addWidget(ActionLabel2);
 
         ActionLabel3 = new QSint::ActionLabel(MainWindow);
-        ActionLabel3->setObjectName(QString::fromUtf8("ActionLabel3"));
+        ActionLabel3->setObjectName(QStringLiteral("ActionLabel3"));
         sizePolicy2.setHeightForWidth(ActionLabel3->sizePolicy().hasHeightForWidth());
         ActionLabel3->setSizePolicy(sizePolicy2);
         QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/icons/document-print.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon1.addFile(QStringLiteral(":/icons/document-print.svg"), QSize(), QIcon::Normal, QIcon::Off);
         ActionLabel3->setIcon(icon1);
 
         verticalLayout_2->addWidget(ActionLabel3);
@@ -387,62 +387,62 @@ TaskPanelView::TaskPanelView(QWidget *parent)
     tabWidget->addTab(page1, QLatin1String("Action Box"));
 
     // setup ActionBox 1
-    ui->ActionBox1->setIcon(QPixmap(QString::fromLatin1(":/icons/document-open.svg")));
-    ui->ActionBox1->header()->setText(QString::fromLatin1("Header of the group"));
+    ui->ActionBox1->setIcon(QPixmap(QStringLiteral(":/icons/document-open.svg")));
+    ui->ActionBox1->header()->setText(QStringLiteral("Header of the group"));
     connect(ui->ActionBox1->header(), SIGNAL(clicked()), action, SIGNAL(triggered()));
 
-    QSint::ActionLabel *a1 = ui->ActionBox1->createItem(QString::fromLatin1("This action has no icon"));
+    QSint::ActionLabel *a1 = ui->ActionBox1->createItem(QStringLiteral("This action has no icon"));
     connect(a1, SIGNAL(clicked()), action, SIGNAL(triggered()));
-    QSint::ActionLabel *a2 = ui->ActionBox1->createItem(QPixmap(QString::fromLatin1(":/icons/document-print.svg")),
-                                                QString::fromLatin1("This action has icon"));
+    QSint::ActionLabel *a2 = ui->ActionBox1->createItem(QPixmap(QStringLiteral(":/icons/document-print.svg")),
+                                                QStringLiteral("This action has icon"));
     connect(a2, SIGNAL(clicked()), action, SIGNAL(triggered()));
 
     QLayout *hbl1 = ui->ActionBox1->createHBoxLayout();
-    QSint::ActionLabel *a3 = ui->ActionBox1->createItem(QString::fromLatin1("1st action in row"), hbl1);
+    QSint::ActionLabel *a3 = ui->ActionBox1->createItem(QStringLiteral("1st action in row"), hbl1);
     connect(a3, SIGNAL(clicked()), action, SIGNAL(triggered()));
-    QSint::ActionLabel *a4 = ui->ActionBox1->createItem(QString::fromLatin1("2nd action in row"), hbl1);
+    QSint::ActionLabel *a4 = ui->ActionBox1->createItem(QStringLiteral("2nd action in row"), hbl1);
     connect(a4, SIGNAL(clicked()), action, SIGNAL(triggered()));
 
     // setup ActionBox 2
-    ui->ActionBox2->setIcon(QPixmap(QString::fromLatin1(":/icons/document-save.png")));
-    ui->ActionBox2->header()->setText(QString::fromLatin1("Checkable actions allowed"));
+    ui->ActionBox2->setIcon(QPixmap(QStringLiteral(":/icons/document-save.png")));
+    ui->ActionBox2->header()->setText(QStringLiteral("Checkable actions allowed"));
     connect(ui->ActionBox2->header(), SIGNAL(clicked()), action, SIGNAL(triggered()));
 
-    QSint::ActionLabel *b1 = ui->ActionBox2->createItem(QString::fromLatin1("Action 1 (Exclusive)"));
+    QSint::ActionLabel *b1 = ui->ActionBox2->createItem(QStringLiteral("Action 1 (Exclusive)"));
     b1->setCheckable(true);
     b1->setAutoExclusive(true);
     b1->setChecked(true);
-    QSint::ActionLabel *b2 = ui->ActionBox2->createItem(QString::fromLatin1("Action 2 (Exclusive)"));
+    QSint::ActionLabel *b2 = ui->ActionBox2->createItem(QStringLiteral("Action 2 (Exclusive)"));
     b2->setCheckable(true);
     b2->setAutoExclusive(true);
-    QSint::ActionLabel *b3 = ui->ActionBox2->createItem(QString::fromLatin1("Action 3 (Exclusive)"));
+    QSint::ActionLabel *b3 = ui->ActionBox2->createItem(QStringLiteral("Action 3 (Exclusive)"));
     b3->setCheckable(true);
     b3->setAutoExclusive(true);
 
-    QSint::ActionLabel *b4 = ui->ActionBox2->createItem(QString::fromLatin1("Non-exclusive but still checkable"));
+    QSint::ActionLabel *b4 = ui->ActionBox2->createItem(QStringLiteral("Non-exclusive but still checkable"));
     b4->setCheckable(true);
 
     // setup ActionBox 3
-    ui->ActionBox3->setIcon(QPixmap(QString::fromLatin1(":/icons/document-print.png")));
-    ui->ActionBox3->header()->setText(QString::fromLatin1("Also, widgets allowed as well"));
+    ui->ActionBox3->setIcon(QPixmap(QStringLiteral(":/icons/document-print.png")));
+    ui->ActionBox3->header()->setText(QStringLiteral("Also, widgets allowed as well"));
 
-    ui->ActionBox3->addWidget(new QPushButton(QString::fromLatin1("PushButton"), this));
-    ui->ActionBox3->addWidget(new QCheckBox(QString::fromLatin1("CheckBox"), this));
+    ui->ActionBox3->addWidget(new QPushButton(QStringLiteral("PushButton"), this));
+    ui->ActionBox3->addWidget(new QCheckBox(QStringLiteral("CheckBox"), this));
     QLayout *hbl3 = ui->ActionBox3->createHBoxLayout();
-    ui->ActionBox3->addWidget(new QRadioButton(QString::fromLatin1("RadioButton 1"), this), hbl3);
-    ui->ActionBox3->addWidget(new QRadioButton(QString::fromLatin1("RadioButton 2"), this), hbl3);
+    ui->ActionBox3->addWidget(new QRadioButton(QStringLiteral("RadioButton 1"), this), hbl3);
+    ui->ActionBox3->addWidget(new QRadioButton(QStringLiteral("RadioButton 2"), this), hbl3);
 
     // setup ActionBox 4
-    ui->ActionBox4->setIcon(QPixmap(QString::fromLatin1(":/icons/document-open.png")));
-    ui->ActionBox4->header()->setText(QString::fromLatin1("ActionBox with different scheme"));
+    ui->ActionBox4->setIcon(QPixmap(QStringLiteral(":/icons/document-open.png")));
+    ui->ActionBox4->header()->setText(QStringLiteral("ActionBox with different scheme"));
 
-    ui->ActionBox4->createItem(QString::fromLatin1("This action has no icon"));
-    ui->ActionBox4->createItem(QPixmap(QString::fromLatin1(":/icons/document-print.png")),
-                                                QString::fromLatin1("This action has icon"));
+    ui->ActionBox4->createItem(QStringLiteral("This action has no icon"));
+    ui->ActionBox4->createItem(QPixmap(QStringLiteral(":/icons/document-print.png")),
+                                                QStringLiteral("This action has icon"));
     QLayout *hbl4 = ui->ActionBox4->createHBoxLayout();
-    ui->ActionBox4->createItem(QString::fromLatin1("1st action in row"), hbl4);
-    ui->ActionBox4->createItem(QString::fromLatin1("2nd action in row"), hbl4);
-    ui->ActionBox4->createItem(QString::fromLatin1("3rd action in row"), hbl4);
+    ui->ActionBox4->createItem(QStringLiteral("1st action in row"), hbl4);
+    ui->ActionBox4->createItem(QStringLiteral("2nd action in row"), hbl4);
+    ui->ActionBox4->createItem(QStringLiteral("3rd action in row"), hbl4);
 
     const char* ActionBoxNewStyle =
         "QSint--ActionBox {"
@@ -493,8 +493,8 @@ TaskPanelView::TaskPanelView(QWidget *parent)
 
     // setup ActionBox 5
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-    ui->ActionBox5->setIcon(QPixmap(QString::fromLatin1(":/icons/document-save.png")));
-    ui->ActionBox5->header()->setText(QString::fromLatin1("TaskGroup with different scheme"));
+    ui->ActionBox5->setIcon(QPixmap(QStringLiteral(":/icons/document-save.png")));
+    ui->ActionBox5->header()->setText(QStringLiteral("TaskGroup with different scheme"));
 
     rcCmdMgr.addTo("Std_New", ui->ActionBox5);
     rcCmdMgr.addTo("Std_Open", ui->ActionBox5);
@@ -510,23 +510,23 @@ TaskPanelView::TaskPanelView(QWidget *parent)
     this->actionGroup = ui->ActionPanel;
 
     // create ActionGroups on ActionPanel
-    QIcon save = QIcon::fromTheme(QString::fromLatin1("document-save"));
-    QSint::ActionGroup *group1 = ui->ActionPanel->createGroup(save.pixmap(24,24), QString::fromLatin1("Expandable Group"));
+    QIcon save = QIcon::fromTheme(QStringLiteral("document-save"));
+    QSint::ActionGroup *group1 = ui->ActionPanel->createGroup(save.pixmap(24,24), QStringLiteral("Expandable Group"));
     group1->addAction(ui->actionNew);
     group1->addAction(ui->actionLoad);
-    group1->addWidget(new QPushButton(QString::fromLatin1("Just a button"), this));
+    group1->addWidget(new QPushButton(QStringLiteral("Just a button"), this));
     group1->addAction(ui->actionSave);
     group1->addAction(ui->actionPrint);
-    group1->addWidget(new QPushButton(QString::fromLatin1("Just another button"), this));
+    group1->addWidget(new QPushButton(QStringLiteral("Just another button"), this));
 
-    QIcon redo = QIcon::fromTheme(QString::fromLatin1("edit-redo"));
-    QSint::ActionGroup *group2 = ui->ActionPanel->createGroup(redo.pixmap(24,24), QString::fromLatin1("Non-Expandable Group"), false);
+    QIcon redo = QIcon::fromTheme(QStringLiteral("edit-redo"));
+    QSint::ActionGroup *group2 = ui->ActionPanel->createGroup(redo.pixmap(24,24), QStringLiteral("Non-Expandable Group"), false);
     group2->addAction(ui->actionNew);
     group2->addAction(ui->actionLoad);
     group2->addAction(ui->actionSave);
     group2->addAction(ui->actionPrint);
 
-    ui->ActionPanel->addWidget(new QLabel(QString::fromLatin1("Action Group without header"), this));
+    ui->ActionPanel->addWidget(new QLabel(QStringLiteral("Action Group without header"), this));
 
     QSint::ActionGroup *group3 = ui->ActionPanel->createGroup();
     group3->addAction(ui->actionNew);
@@ -587,7 +587,7 @@ TaskPanelView::~TaskPanelView()
 
 void TaskPanelView::executeAction()
 {
-    QMessageBox::about(0, QString::fromLatin1("Action clicked"), QString::fromLatin1("Do something here :)"));
+    QMessageBox::about(0, QStringLiteral("Action clicked"), QStringLiteral("Do something here :)"));
 }
 
 void TaskPanelView::on_rbDefaultScheme_toggled(bool b)

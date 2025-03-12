@@ -53,3 +53,31 @@ PyObject* JointGroup::getPyObject()
     }
     return Py::new_reference_to(PythonObject);
 }
+
+
+std::vector<App::DocumentObject*> JointGroup::getJoints()
+{
+    std::vector<App::DocumentObject*> joints = {};
+
+    Base::PyGILStateLocker lock;
+    for (auto joint : getObjects()) {
+        if (!joint) {
+            continue;
+        }
+
+        auto* prop = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Activated"));
+        if (!prop || !prop->getValue()) {
+            // Filter grounded joints and deactivated joints.
+            continue;
+        }
+
+        auto proxy = dynamic_cast<App::PropertyPythonObject*>(joint->getPropertyByName("Proxy"));
+        if (proxy) {
+            if (proxy->getValue().hasAttr("setJointConnectors")) {
+                joints.push_back(joint);
+            }
+        }
+    }
+
+    return joints;
+}

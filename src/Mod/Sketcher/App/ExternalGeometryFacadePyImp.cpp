@@ -510,7 +510,7 @@ Py::Boolean ExternalGeometryFacadePy::getConstruction() const
 
 void ExternalGeometryFacadePy::setConstruction(Py::Boolean arg)
 {
-    if (getExternalGeometryFacadePtr()->getTypeId() != Part::GeomPoint::getClassTypeId()) {
+    if (!getExternalGeometryFacadePtr()->is<Part::GeomPoint>()) {
         getExternalGeometryFacadePtr()->setConstruction(arg);
     }
 }

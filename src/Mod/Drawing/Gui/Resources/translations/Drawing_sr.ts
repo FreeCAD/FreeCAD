@@ -49,13 +49,13 @@
     <message>
       <location filename="../../Command.cpp" line="776"/>
       <source>&amp;Draft View</source>
-      <translation type="unfinished">&amp;Draft View</translation>
+      <translation>&amp;Преглед нацрта</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="778"/>
       <location filename="../../Command.cpp" line="780"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation type="unfinished">Inserts a Draft view of the selected object(s) in the active drawing</translation>
+      <translation>Умеће Преглед нацрта за иазбарани објекат(те) активног цртежа</translation>
     </message>
   </context>
   <context>
@@ -207,13 +207,13 @@
     <message>
       <location filename="../../Command.cpp" line="808"/>
       <source>&amp;Spreadsheet View</source>
-      <translation type="unfinished">&amp;Spreadsheet View</translation>
+      <translation>&amp;Поглед табела</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="809"/>
       <location filename="../../Command.cpp" line="811"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-      <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
+      <translation>Умеће изабрану табелу у активан цртеж</translation>
     </message>
   </context>
   <context>
@@ -231,8 +231,8 @@
     <message>
       <location filename="../../Command.cpp" line="617"/>
       <location filename="../../Command.cpp" line="619"/>
-      <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>Умеће cимбол из svg датотеке у активни цртеж</translation>
+      <source>Inserts a symbol from a SVG file in the active drawing</source>
+      <translation>Уметни cимбол из svg датотеке у активни цртеж</translation>
     </message>
   </context>
   <context>
@@ -280,86 +280,86 @@
     <message>
       <location filename="../../DrawingView.cpp" line="370"/>
       <source>&amp;Renderer</source>
-      <translation>Приказивач</translation>
+      <translation>&amp;Рендеринг</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="482"/>
+      <location filename="../../DrawingView.cpp" line="485"/>
       <source>Export PDF</source>
       <translation>Извоз у ПДФ-у</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="483"/>
+      <location filename="../../DrawingView.cpp" line="486"/>
       <source>PDF file</source>
       <translation>PDF датотека</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="499"/>
+      <location filename="../../DrawingView.cpp" line="502"/>
       <source>Page sizes</source>
       <translation>Величина странице</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="500"/>
+      <location filename="../../DrawingView.cpp" line="503"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="502"/>
+      <location filename="../../DrawingView.cpp" line="505"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="504"/>
+      <location filename="../../DrawingView.cpp" line="507"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="506"/>
+      <location filename="../../DrawingView.cpp" line="509"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="508"/>
+      <location filename="../../DrawingView.cpp" line="511"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="510"/>
+      <location filename="../../DrawingView.cpp" line="513"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="594"/>
+      <location filename="../../DrawingView.cpp" line="597"/>
       <source>Different orientation</source>
       <translation>Другачија оријентација</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="595"/>
+      <location filename="../../DrawingView.cpp" line="598"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different orientation than the drawing.
-Do you want to continue?</translation>
+      <translation>Штампач је подешен на другачији положај папира него што је цртеж.
+Желите ли да наставите?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="605"/>
-      <location filename="../../DrawingView.cpp" line="616"/>
+      <location filename="../../DrawingView.cpp" line="608"/>
+      <location filename="../../DrawingView.cpp" line="619"/>
       <source>Different paper size</source>
       <translation>Другачија величина папира</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="606"/>
-      <location filename="../../DrawingView.cpp" line="617"/>
+      <location filename="../../DrawingView.cpp" line="609"/>
+      <location filename="../../DrawingView.cpp" line="620"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Штампач користи другачију величину папира од цртежа.
 Да ли желиш да наставиш?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="631"/>
+      <location filename="../../DrawingView.cpp" line="634"/>
       <source>Opening file failed</source>
       <translation>Отварање датотеке неуcпешно</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="632"/>
+      <location filename="../../DrawingView.cpp" line="635"/>
       <source>Can't open file '%1' for writing.</source>
       <translation type="unfinished">Can't open file '%1' for writing.</translation>
     </message>
@@ -480,12 +480,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="588"/>
       <source>Top left x / y</source>
-      <translation>Горе лево x / y</translation>
+      <translation>Одозго слева x / y</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="636"/>
       <source>Spacing dx / dy</source>
-      <translation type="unfinished">Spacing dx / dy</translation>
+      <translation>Размак dx / dy</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="681"/>
@@ -505,7 +505,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="707"/>
       <source>View projection</source>
-      <translation type="unfinished">View projection</translation>
+      <translation>Пројекција погледа</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="718"/>
@@ -629,7 +629,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="94"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation type="unfinished">There is currently no active view to complete the operation</translation>
+      <translation>Тренутно нема активног погледа да би се операција завршила</translation>
     </message>
   </context>
   <context>

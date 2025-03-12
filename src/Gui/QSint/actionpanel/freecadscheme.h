@@ -66,7 +66,7 @@ public:
     }
 
 private:
-    QPixmap drawFoldIcon(const QPalette& p, bool fold) const;
+    QPixmap drawFoldIcon(const QPalette& p, bool fold, bool hover) const;
     QString systemStyle(const QPalette& p) const;
 };
 

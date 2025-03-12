@@ -60,9 +60,10 @@ class EFwriter:
                 (
                     "That solver is only executed after solution converged\n"
                     "To execute always, change to 'Always'"
-                )
+                ),
             )
             equation.ExecSolver = electricforce.SOLVER_EXEC_METHODS
             equation.ExecSolver = "After Timestep"
+
 
 ##  @}

@@ -19,7 +19,7 @@ namespace Base {
       <DeveloperDocu>This is the Type class</DeveloperDocu>
       <UserDocu>BaseTypePy class.
 
-        This class provides functionality related to type management in the Base module. It's not intended for direct instantiation but for accessing type information and creating instances of various types. Instantiation is possible for classes that inherit from the Base::BaseClass class and are not abstract.</UserDocu>
+This class provides functionality related to type management in the Base module. It's not intended for direct instantiation but for accessing type information and creating instances of various types. Instantiation is possible for classes that inherit from the Base::BaseClass class and are not abstract.</UserDocu>
     </Documentation>
     <Methode Name="fromName" Static="true">
       <Documentation>

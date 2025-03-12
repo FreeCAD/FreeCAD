@@ -97,7 +97,7 @@ private:
  * @author Werner Mayer
  */
 class PythonConsoleHighlighter;
-class GuiExport PythonConsole : public TextEdit, public WindowParameter
+class GuiExport PythonConsole : public PythonTextEditor
 {
     Q_OBJECT
 
@@ -115,6 +115,8 @@ public:
     void OnChange( Base::Subject<const char*> &rCaller,const char* rcReason ) override;
     void printStatement( const QString& cmd );
     QString readline( );
+    int getInputStringPosition() override;
+    QString getInputString() override;
 
 public Q_SLOTS:
     void onSaveHistoryAs();

@@ -46,13 +46,13 @@ ViewProviderCompound::~ViewProviderCompound() = default;
 
 std::vector<App::DocumentObject*> ViewProviderCompound::claimChildren() const
 {
-    return static_cast<Part::Compound*>(getObject())->Links.getValues();
+    return getObject<Part::Compound>()->Links.getValues();
 }
 
 bool ViewProviderCompound::onDelete(const std::vector<std::string> &)
 {
     // get the input shapes
-    Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
+    Part::Compound* pComp = getObject<Part::Compound>();
     std::vector<App::DocumentObject*> pLinks = pComp->Links.getValues();
     for (auto pLink : pLinks) {
         if (pLink)
@@ -68,7 +68,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
     if (prop->is<Part::PropertyShapeHistory>()) {
         const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
             (prop)->getValues();
-        Part::Compound* objComp = static_cast<Part::Compound*>(getObject());
+        Part::Compound* objComp = getObject<Part::Compound>();
         std::vector<App::DocumentObject*> sources = objComp->Links.getValues();
 
         if (hist.size() != sources.size()) {
@@ -95,8 +95,8 @@ void ViewProviderCompound::updateData(const App::Property* prop)
         TopTools_IndexedMapOfShape compMap;
         TopExp::MapShapes(compShape, TopAbs_FACE, compMap);
 
-        std::vector<App::Color> compCol;
-        compCol.resize(compMap.Extent(), this->ShapeAppearance.getDiffuseColor());
+        std::vector<App::Material> compCol;
+        compCol.resize(compMap.Extent(), this->ShapeAppearance[0]);
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
@@ -111,14 +111,14 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
             auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
             if (vpBase) {
-                std::vector<App::Color> baseCol = vpBase->DiffuseColor.getValues();
-                applyTransparency(vpBase->Transparency.getValue(),baseCol);
+                std::vector<App::Material> baseCol = vpBase->ShapeAppearance.getValues();
+                applyTransparency(vpBase->Transparency.getValue(), baseCol);
                 if (static_cast<int>(baseCol.size()) == baseMap.Extent()) {
-                    applyColor(hist[index], baseCol, compCol);
+                    applyMaterial(hist[index], baseCol, compCol);
                 }
-                else if (!baseCol.empty() && baseCol[0] != this->ShapeAppearance.getDiffuseColor()) {
+                else if (!baseCol.empty() && baseCol[0] != this->ShapeAppearance[0]) {
                     baseCol.resize(baseMap.Extent(), baseCol[0]);
-                    applyColor(hist[index], baseCol, compCol);
+                    applyMaterial(hist[index], baseCol, compCol);
                 }
             }
         }
@@ -129,7 +129,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
             applyTransparency(Transparency.getValue(), compCol);
         }
 
-        this->DiffuseColor.setValues(compCol);
+        this->ShapeAppearance.setValues(compCol);
     }
     else if (prop->isDerivedFrom<App::PropertyLinkList>()) {
         const std::vector<App::DocumentObject *>& pBases = static_cast<const App::PropertyLinkList*>(prop)->getValues();
@@ -151,7 +151,7 @@ bool ViewProviderCompound::canDragObject(App::DocumentObject* obj) const
 
 void ViewProviderCompound::dragObject(App::DocumentObject* obj)
 {
-    Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
+    Part::Compound* pComp = getObject<Part::Compound>();
     std::vector<App::DocumentObject*> pShapes = pComp->Links.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
         if (*it == obj) {
@@ -174,7 +174,7 @@ bool ViewProviderCompound::canDropObject(App::DocumentObject* obj) const
 
 void ViewProviderCompound::dropObject(App::DocumentObject* obj)
 {
-    Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
+    Part::Compound* pComp = getObject<Part::Compound>();
     std::vector<App::DocumentObject*> pShapes = pComp->Links.getValues();
     pShapes.push_back(obj);
     pComp->Links.setValues(pShapes);

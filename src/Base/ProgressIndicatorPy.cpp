@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 
+#include "Exception.h"
 #include "ProgressIndicatorPy.h"
 
 

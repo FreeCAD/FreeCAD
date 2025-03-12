@@ -1,6 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2024 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,24 +25,21 @@
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINT_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINT_H
 
-#include <QObject>
-#include <QVBoxLayout>
-
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 
 #include <Gui/ViewProviderSuppressibleExtension.h>
 
 
+class QMenu;
+class QObject;
 class SbRotation;
 class SoMultipleCopy;
 class SoTransform;
 
 namespace FemGui
 {
-
-class TaskFemConstraint;
 
 class FemGuiExport ViewProviderFemConstraint: public Gui::ViewProviderGeometryObject,
                                               public Gui::ViewProviderSuppressibleExtension
@@ -98,67 +96,6 @@ protected:
     transformSymbol(const Base::Vector3d& point, const Base::Vector3d& normal, SbMatrix& mat) const;
     virtual void transformExtraSymbol() const;
 
-    static void createPlacement(SoSeparator* sep, const SbVec3f& base, const SbRotation& r);
-    static void updatePlacement(const SoSeparator* sep,
-                                const int idx,
-                                const SbVec3f& base,
-                                const SbRotation& r);
-    static void createCone(SoSeparator* sep, const double height, const double radius);
-    static SoSeparator* createCone(const double height, const double radius);
-    static void
-    updateCone(const SoNode* node, const int idx, const double height, const double radius);
-    static void createCylinder(SoSeparator* sep, const double height, const double radius);
-    static SoSeparator* createCylinder(const double height, const double radius);
-    static void
-    updateCylinder(const SoNode* node, const int idx, const double height, const double radius);
-    static void
-    createCube(SoSeparator* sep, const double width, const double length, const double height);
-    static SoSeparator* createCube(const double width, const double length, const double height);
-    static void updateCube(const SoNode* node,
-                           const int idx,
-                           const double width,
-                           const double length,
-                           const double height);
-    static void createArrow(SoSeparator* sep, const double length, const double radius);
-    static SoSeparator* createArrow(const double length, const double radius);
-    static void
-    updateArrow(const SoNode* node, const int idx, const double length, const double radius);
-    static void createSpring(SoSeparator* sep, const double length, const double width);
-    static SoSeparator* createSpring(const double length, const double width);
-    static void
-    updateSpring(const SoNode* node, const int idx, const double length, const double width);
-    static void
-    createFixed(SoSeparator* sep, const double height, const double width, const bool gap = false);
-    static SoSeparator*
-    createFixed(const double height, const double width, const bool gap = false);
-    static void updateFixed(const SoNode* node,
-                            const int idx,
-                            const double height,
-                            const double width,
-                            const bool gap = false);
-    static void createDisplacement(SoSeparator* sep,
-                                   const double height,
-                                   const double width,
-                                   const bool gap = false);
-    static SoSeparator*
-    createDisplacement(const double height, const double width, const bool gap = false);
-    static void updateDisplacement(const SoNode* node,
-                                   const int idx,
-                                   const double height,
-                                   const double width,
-                                   const bool gap = false);
-    static void createRotation(SoSeparator* sep,
-                               const double height,
-                               const double width,
-                               const bool gap = false);
-    static SoSeparator*
-    createRotation(const double height, const double width, const bool gap = false);
-    static void updateRotation(const SoNode* node,
-                               const int idx,
-                               const double height,
-                               const double width,
-                               const bool gap = false);
-
 private:
     bool rotateSymbol;
 
@@ -171,16 +108,6 @@ protected:
     const char* ivFile;
 
     static std::string resourceSymbolDir;
-
-    // Shaft design wizard integration
-protected:
-    friend class TaskFemConstraint;
-    QVBoxLayout* wizardWidget;
-    QVBoxLayout* wizardSubLayout;
-    TaskFemConstraint* constraintDialog;
-
-    void checkForWizard();
-    static QObject* findChildByName(const QObject* parent, const QString& name);
 };
 
 
@@ -204,12 +131,7 @@ inline bool ViewProviderFemConstraint::getRotateSymbol() const
     return rotateSymbol;
 }
 
-inline void ViewProviderFemConstraint::setRotateSymbol(bool rotate)
-{
-    rotateSymbol = rotate;
-}
-
-using ViewProviderFemConstraintPython = Gui::ViewProviderPythonFeatureT<ViewProviderFemConstraint>;
+using ViewProviderFemConstraintPython = Gui::ViewProviderFeaturePythonT<ViewProviderFemConstraint>;
 
 
 }  // namespace FemGui

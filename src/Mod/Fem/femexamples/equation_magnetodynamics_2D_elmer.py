@@ -43,12 +43,14 @@ def get_information():
         "constraints": ["current density"],
         "solvers": ["elmer"],
         "material": "solid",
-        "equations": ["electromagnetic"]
+        "equations": ["electromagnetic"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.equation_magnetodynamics_2D_elmer import setup
@@ -57,6 +59,7 @@ setup()
 Magnetodynamic2D equation - Elmer solver
 
 """
+    )
 
 
 def setup(doc=None, solvertype="elmer"):
@@ -120,8 +123,7 @@ def setup(doc=None, solvertype="elmer"):
     Powder.ViewObject.Visibility = False
 
     # a half circle defining later the air volume
-    Air_Circle = Part.makeCircle(
-        140.0, Vector(0.0, 60.0, 0.0), Vector(0.0, 0.0, 1.0), -90.0, 90.0)
+    Air_Circle = Part.makeCircle(140.0, Vector(0.0, 60.0, 0.0), Vector(0.0, 0.0, 1.0), -90.0, 90.0)
     Air_Line = Part.makeLine((0.0, -80.0, 0.0), (0.0, 200.0, 0.0))
     Air_Area = doc.addObject("Part::Feature", "Air_Area")
     Air_Area.Shape = Part.Face([Part.Wire([Air_Circle, Air_Line])])
@@ -175,6 +177,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
     if FreeCAD.GuiUp:
         import FemGui
+
         FemGui.setActiveAnalysis(analysis)
 
     # solver
@@ -212,7 +215,8 @@ def setup(doc=None, solvertype="elmer"):
     material_obj.References = [
         (BooleanFragments, "Face2"),
         (BooleanFragments, "Face5"),
-        (BooleanFragments, "Face6")]
+        (BooleanFragments, "Face6"),
+    ]
     analysis.addObject(material_obj)
 
     # graphite of the crucible
@@ -248,13 +252,13 @@ def setup(doc=None, solvertype="elmer"):
     # constraint current density
     CurrentDensity = ObjectsFem.makeConstraintCurrentDensity(doc, "CurrentDensity")
     CurrentDensity.References = [(BooleanFragments, "Face2")]
-    CurrentDensity.CurrentDensity_re_1 = "250000.000 A/m^2"
-    CurrentDensity.CurrentDensity_re_1_Disabled = False
+    CurrentDensity.NormalCurrentDensity_re = "250000.000 A/m^2"
+    CurrentDensity.Mode = "Normal"
     analysis.addObject(CurrentDensity)
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Part = BooleanFragments
+    femmesh_obj.Shape = BooleanFragments
     femmesh_obj.CharacteristicLengthMax = "3 mm"
     femmesh_obj.ViewObject.Visibility = False
 
@@ -265,20 +269,19 @@ def setup(doc=None, solvertype="elmer"):
         (BooleanFragments, "Face1"),
         (BooleanFragments, "Face2"),
         (BooleanFragments, "Face3"),
-        (BooleanFragments, "Face4")]
+        (BooleanFragments, "Face4"),
+    ]
     mesh_region.ViewObject.Visibility = False
 
     # generate the mesh
     from femmesh import gmshtools
+
     gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
     try:
         error = gmsh_mesh.create_mesh()
     except Exception:
         error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(
-            "Unexpected error when creating mesh: {}\n"
-            .format(error)
-        )
+        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
 
     doc.recompute()
     return doc

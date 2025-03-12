@@ -82,7 +82,7 @@ void DlgSettingsPathColor::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsPathColor::changeEvent(QEvent *e)
+void DlgSettingsPathColor::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -93,4 +93,3 @@ void DlgSettingsPathColor::changeEvent(QEvent *e)
 }
 
 #include "moc_DlgSettingsPathColor.cpp"
-

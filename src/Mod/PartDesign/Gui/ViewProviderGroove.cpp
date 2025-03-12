@@ -49,5 +49,5 @@ void ViewProviderGroove::setupContextMenu(QMenu* menu, QObject* receiver, const 
 
 TaskDlgFeatureParameters *ViewProviderGroove::getEditDialog()
 {
-    return new TaskDlgRevolutionParameters( this );
+    return new TaskDlgGrooveParameters( this );
 }

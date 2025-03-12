@@ -50,7 +50,6 @@
 
 #include <App/Application.h>
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Gui/FileDialog.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
@@ -812,7 +811,7 @@ void MRichTextEdit::setDefFont(QString fontName)
 
 QFont MRichTextEdit::getDefFont()
 {
-    QString family = Base::Tools::fromStdString(Preferences::labelFont());
+    QString family = QString::fromStdString(Preferences::labelFont());
     m_defFont = family;
     QFont result;
     result.setFamily(family);

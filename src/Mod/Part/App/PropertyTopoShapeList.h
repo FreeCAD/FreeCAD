@@ -84,6 +84,9 @@ public:
     void Save(Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;
 
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
+
     App::Property *Copy() const override;
     void Paste(const App::Property &from) override;
 

@@ -48,7 +48,7 @@ using namespace Gui;
 
 QString ToolHandler::getCrosshairCursorSVGName() const
 {
-    return QString::fromLatin1("None");
+    return QStringLiteral("None");
 }
 
 bool ToolHandler::activate()
@@ -123,7 +123,7 @@ void ToolHandler::setSvgCursor(const QString& cursorName,
     qreal defaultCursorSize = isRatioOne ? 64 : 32;
     qreal hotX = x;
     qreal hotY = y;
-#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+#if !defined(Q_OS_WIN32) && !defined(Q_OS_MACOS)
     if (qGuiApp->platformName() == QLatin1String("xcb")) {
         hotX *= pRatio;
         hotY *= pRatio;
@@ -157,7 +157,7 @@ void ToolHandler::setCursor(const QPixmap& p, int x, int y, bool autoScale)
             p1.setDevicePixelRatio(pRatio);
             qreal hotX = x;
             qreal hotY = y;
-#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+#if !defined(Q_OS_WIN32) && !defined(Q_OS_MACOS)
             if (qGuiApp->platformName() == QLatin1String("xcb")) {
                 hotX *= pRatio;
                 hotY *= pRatio;
@@ -230,7 +230,7 @@ void ToolHandler::updateCursor()
 {
     auto cursorstring = getCrosshairCursorSVGName();
 
-    if (cursorstring != QString::fromLatin1("None")) {
+    if (cursorstring != QStringLiteral("None")) {
         setCrosshairCursor(cursorstring);
     }
 }
@@ -281,7 +281,7 @@ void ToolHandler::setWidgetCursor(QCursor cursor)
 Gui::View3DInventorViewer* ToolHandler::getViewer()
 {
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         return static_cast<Gui::View3DInventor*>(view)->getViewer();
     }
     return nullptr;

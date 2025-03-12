@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-    Father="PersistencePy" 
-    Name="PropertyContainerPy" 
-    TwinPointer="PropertyContainer" 
-    Twin="PropertyContainer" 
-    Include="App/PropertyContainer.h" 
-    Namespace="App" 
-    FatherInclude="Base/PersistencePy.h" 
+  <PythonExport
+    Father="PersistencePy"
+    Name="PropertyContainerPy"
+    TwinPointer="PropertyContainer"
+    Twin="PropertyContainer"
+    Include="App/PropertyContainer.h"
+    Namespace="App"
+    FatherInclude="Base/PersistencePy.h"
     FatherNamespace="Base"
     DisableNotify="true">
     <Documentation>
@@ -22,7 +22,7 @@ Returns the value of a named property. Note that the returned property may not
 always belong to this container (e.g. from a linked object).
 
 name : str
-     Name of the property.
+    Name of the property.
 checkOwner : int
     0: just return the property.
     1: raise exception if not found or the property does not belong to this container.

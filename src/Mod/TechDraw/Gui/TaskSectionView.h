@@ -95,6 +95,8 @@ protected Q_SLOTS:
 private:
     double requiredRotation(double inputAngle);
     std::string makeSectionLabel(QString symbol);
+    bool directionChanged() const { return m_directionChanged; }
+    void directionChanged(bool newState) { m_directionChanged = newState; }
 
     std::unique_ptr<Ui_TaskSectionView> ui;
     TechDraw::DrawViewPart* m_base;
@@ -130,6 +132,7 @@ private:
     bool m_modelIsDirty;
 
     bool m_scaleEdited;
+    bool m_directionChanged{false};
 };
 
 class TaskDlgSectionView : public Gui::TaskView::TaskDialog

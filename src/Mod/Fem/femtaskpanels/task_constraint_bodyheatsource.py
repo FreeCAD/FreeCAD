@@ -29,35 +29,54 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief task panel for constraint bodyheatsource object
 
+from PySide import QtCore
+
 import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
 
-from femtools import femutils
 from femtools import membertools
+from . import base_femtaskpanel
 
 
-class _TaskPanel(object):
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
     def __init__(self, obj):
-        self._obj = obj
+        super().__init__(obj)
 
-        self._paramWidget = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/BodyHeatSource.ui")
-        self._initParamWidget()
+        self.parameter_widget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/BodyHeatSource.ui"
+        )
+
+        self.init_parameter_widget()
+
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_dissipation_rate,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.dissipation_rate_changed,
+        )
+
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_total_power,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.total_power_changed,
+        )
+
+        QtCore.QObject.connect(
+            self.parameter_widget.cb_mode,
+            QtCore.SIGNAL("currentIndexChanged(int)"),
+            self.mode_changed,
+        )
 
         # geometry selection widget
         # start with Solid in list!
-        self._selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Solid", "Face"],
-            True,
-            False
+        self.selection_widget = selection_widgets.GeometryElementsSelection(
+            obj.References, ["Solid", "Face"], True, False
         )
 
         # form made from param and selection widget
-        self.form = [self._paramWidget, self._selectionWidget]
+        self.form = [self.selection_widget, self.parameter_widget]
 
         analysis = obj.getParentGroup()
         self._mesh = None
@@ -65,7 +84,7 @@ class _TaskPanel(object):
         if analysis is not None:
             self._mesh = membertools.get_single_member(analysis, "Fem::FemMeshObject")
         if self._mesh is not None:
-            self._part = femutils.get_part_to_mesh(self._mesh)
+            self._part = self._mesh.Shape
         self._partVisible = None
         self._meshVisible = None
 
@@ -77,20 +96,21 @@ class _TaskPanel(object):
             self._part.ViewObject.show()
 
     def reject(self):
-        self._restoreVisibility()
-        FreeCADGui.ActiveDocument.resetEdit()
-        return True
+        self.restore_visibility()
+        self.selection_widget.finish_selection()
+        return super().reject()
 
     def accept(self):
-        if self._obj.References != self._selectionWidget.references:
-            self._obj.References = self._selectionWidget.references
-        self._applyWidgetChanges()
-        self._obj.Document.recompute()
-        FreeCADGui.ActiveDocument.resetEdit()
-        self._restoreVisibility()
-        return True
+        self.obj.References = self.selection_widget.references
+        self.obj.DissipationRate = self.dissipation_rate
+        self.obj.TotalPower = self.total_power
+        self.obj.Mode = self.mode
 
-    def _restoreVisibility(self):
+        self.selection_widget.finish_selection()
+        self.restore_visibility()
+        return super().accept()
+
+    def restore_visibility(self):
         if self._mesh is not None and self._part is not None:
             if self._meshVisible:
                 self._mesh.ViewObject.show()
@@ -101,21 +121,37 @@ class _TaskPanel(object):
             else:
                 self._part.ViewObject.hide()
 
-    def _initParamWidget(self):
-        self._paramWidget.bodyheatQSB.setProperty(
-            'value', self._obj.HeatSource)
-        self._paramWidget.bodyheatQSB.setProperty("unit", "W/kg")
-        FreeCADGui.ExpressionBinding(self._paramWidget.bodyheatQSB).bind(self._obj, "HeatSource")
+    def init_parameter_widget(self):
+        self.dissipation_rate = self.obj.DissipationRate
+        self.total_power = self.obj.TotalPower
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_dissipation_rate).bind(
+            self.obj, "DissipationRate"
+        )
+        self.parameter_widget.qsb_dissipation_rate.setProperty("value", self.dissipation_rate)
 
-    def _applyWidgetChanges(self):
-        bodyheat = None
-        try:
-            bodyheat = self._paramWidget.bodyheatQSB.property('value').getValueAs("W/kg")
-        except ValueError:
-            FreeCAD.Console.PrintMessage(
-                "Wrong input. Not recognised input: '{}' "
-                "Body heat has not been set.\n"
-                .format(self._paramWidget.bodyheatQSB.text())
-            )
-        if bodyheat is not None:
-            self._obj.HeatSource = float(bodyheat)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_total_power).bind(
+            self.obj, "TotalPower"
+        )
+        self.parameter_widget.qsb_total_power.setProperty("value", self.total_power)
+
+        self.mode = self.obj.Mode
+        self.mode_enum = self.obj.getEnumerationsOfProperty("Mode")
+        self.parameter_widget.cb_mode.addItems(self.mode_enum)
+        index = self.mode_enum.index(self.mode)
+        self.parameter_widget.cb_mode.setCurrentIndex(index)
+        self.mode_changed(index)
+
+    def dissipation_rate_changed(self, base_quantity_value):
+        self.dissipation_rate = base_quantity_value
+
+    def total_power_changed(self, base_quantity_value):
+        self.total_power = base_quantity_value
+
+    def mode_changed(self, index):
+        self.mode = self.mode_enum[index]
+        if self.mode == "Dissipation Rate":
+            self.parameter_widget.qsb_dissipation_rate.setEnabled(True)
+            self.parameter_widget.qsb_total_power.setEnabled(False)
+        elif self.mode == "Total Power":
+            self.parameter_widget.qsb_dissipation_rate.setEnabled(False)
+            self.parameter_widget.qsb_total_power.setEnabled(True)

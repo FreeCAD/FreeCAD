@@ -92,6 +92,7 @@ class PackageDetailsView(QtWidgets.QWidget):
         self.readme_browser = None
         self.message_label = None
         self.location_label = None
+        self.url_label = None
         self.installed = False
         self.disabled = False
         self.update_info = UpdateInformation()
@@ -108,24 +109,42 @@ class PackageDetailsView(QtWidgets.QWidget):
         self.readme_browser = WidgetReadmeBrowser(self)
         self.message_label = QtWidgets.QLabel(self)
         self.location_label = QtWidgets.QLabel(self)
-        self.location_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+        self.url_label = QtWidgets.QLabel(self)
+        self.url_label.setOpenExternalLinks(True)
+        self.location_label.setOpenExternalLinks(True)
         self.vertical_layout.addWidget(self.button_bar)
         self.vertical_layout.addWidget(self.message_label)
         self.vertical_layout.addWidget(self.location_label)
+        self.vertical_layout.addWidget(self.url_label)
         self.vertical_layout.addWidget(self.readme_browser)
         self.button_bar.hide()  # Start with no bar
 
     def set_location(self, location: Optional[str]):
         if location is not None:
+            location_path = os.path.normpath(location)
             text = (
-                translate("AddonsInstaller", "Installation location")
-                + ": "
-                + os.path.normpath(location)
+                f"{translate('AddonsInstaller', 'Installation location')}: "
+                f'<a href="file://{location_path}">{location_path}</a>'
             )
             self.location_label.setText(text)
             self.location_label.show()
         else:
             self.location_label.hide()
+
+    def set_url(self, url: Optional[str]):
+        if url is not None:
+            text = (
+                translate("AddonsInstaller", "Repository URL")
+                + ': <a href="'
+                + url
+                + '">'
+                + url
+                + "</a>"
+            )
+            self.url_label.setText(text)
+            self.url_label.show()
+        else:
+            self.url_label.hide()
 
     def set_installed(
         self,

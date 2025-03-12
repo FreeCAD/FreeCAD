@@ -36,14 +36,17 @@ if FreeCAD.GuiUp:
     class MatLineEdit(QtGui.QLineEdit):
         "custom QLineEdit widget that has the power to catch up/down arrow keypress"
 
+        up = QtCore.Signal()
+        down = QtCore.Signal()
+
         def __init__(self, parent=None):
             QtGui.QLineEdit.__init__(self, parent)
 
         def keyPressEvent(self, event):
             if event.key() == QtCore.Qt.Key_Up:
-                self.emit(QtCore.SIGNAL("up()"))
+                self.up.emit()
             elif event.key() == QtCore.Qt.Key_Down:
-                self.emit(QtCore.SIGNAL("down()"))
+                self.down.emit()
             else:
                 QtGui.QLineEdit.keyPressEvent(self, event)
 
@@ -59,6 +62,10 @@ class BIM_Material:
                 "BIM_Material", "Sets or creates a material for selected objects"
             ),
         }
+
+    def IsActive(self):
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
 
@@ -341,9 +348,7 @@ class BIM_Material:
             if item:
                 oldmat = FreeCAD.ActiveDocument.getObject(item.toolTip())
                 # load dialog
-                form = FreeCADGui.PySideUic.loadUi(
-                    os.path.join(os.path.dirname(__file__), "dialogListWidget.ui")
-                )
+                form = FreeCADGui.PySideUic.loadUi(":/ui/dialogListWidget.ui")
                 # center the dialog over FreeCAD window
                 mw = FreeCADGui.getMainWindow()
                 form.move(
@@ -433,8 +438,8 @@ class BIM_Material:
                         FreeCAD.ActiveDocument.openTransaction("Change material")
                         for obj in self.dlg.objects:
                             if hasattr(obj, "StepId"):
-                                from nativeifc import ifc_tools
-                                ifc_tools.set_material(mat, obj)
+                                from nativeifc import ifc_materials
+                                ifc_materials.set_material(mat, obj)
                             else:
                                 obj.Material = mat
                         FreeCAD.ActiveDocument.commitTransaction()
@@ -442,9 +447,9 @@ class BIM_Material:
             p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
             p.SetInt("BimMaterialDialogWidth", self.dlg.width())
             p.SetInt("BimMaterialDialogHeight", self.dlg.height())
-            from DraftGui import todo
+            from draftutils import todo
 
-            todo.delay(self.dlg.hide, None)
+            todo.ToDo.delay(self.dlg.hide, None)
 
     def onReject(self):
         if self.dlg:
@@ -574,11 +579,8 @@ class Arch_Material:
         FreeCAD.ActiveDocument.recompute()
 
     def IsActive(self):
-
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
 
 class Arch_MultiMaterial:
@@ -609,11 +611,8 @@ class Arch_MultiMaterial:
         FreeCAD.ActiveDocument.recompute()
 
     def IsActive(self):
-
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
 
 class Arch_MaterialToolsCommand:
@@ -625,7 +624,8 @@ class Arch_MaterialToolsCommand:
                  'ToolTip': QT_TRANSLATE_NOOP("Arch_MaterialTools",'Material tools')
                }
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
 
 FreeCADGui.addCommand("BIM_Material", BIM_Material())

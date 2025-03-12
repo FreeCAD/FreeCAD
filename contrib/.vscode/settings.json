@@ -1,8 +1,8 @@
-{  
-  // This disables vscode from adding lines to files.associations, 
+{
+  // This disables vscode from adding lines to files.associations,
   // some files might not be recognized though.
   // This is a vscode issue.
-  "C_Cpp.autoAddFileAssociations": false, 
+  "C_Cpp.autoAddFileAssociations": false,
   "files.associations": {
     "*.c": "c",
     "*.h": "cpp",
@@ -12,7 +12,7 @@
     "*.hxx": "cpp",
     "*.py": "python",
     "*.FCMacro": "python"
-  }, 
+  },
 
   "editor.formatOnType": true,
   "files.autoSave": "afterDelay",
@@ -20,8 +20,8 @@
 
   // Does not quick launch the debugger, forces to select debugger config every time
   // Use the debug panel on the left instead
-  "debug.showInStatusBar": "never", 
-  
+  "debug.showInStatusBar": "never",
+
   "cmake.options.advanced": {
     "configurePreset": {
       "statusBarVisibility": "visible"

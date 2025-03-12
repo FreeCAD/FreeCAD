@@ -47,7 +47,7 @@ PartCmdSelectFilter::PartCmdSelectFilter()
     sToolTipText  = QT_TR_NOOP("Change the selection filter");
     sStatusTip    = QT_TR_NOOP("Change the selection filter");
     sWhatsThis    = "Part_SelectFilter";
-    sPixmap       = "selection-filter";
+    sPixmap       = "clear-selection";
     eType         = Alter3DView;
 }
 
@@ -87,21 +87,21 @@ Gui::Action * PartCmdSelectFilter::createAction()
 
     QAction* cmd0 = pcAction->addAction(QString());
     cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("vertex-selection"));
-    cmd0->setShortcut(QKeySequence(QString::fromUtf8("X,S")));
+    cmd0->setShortcut(QKeySequence(QStringLiteral("X,S")));
     QAction* cmd1 = pcAction->addAction(QString());
     cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("edge-selection"));
-    cmd1->setShortcut(QKeySequence(QString::fromUtf8("E,S")));
+    cmd1->setShortcut(QKeySequence(QStringLiteral("E,S")));
     QAction* cmd2 = pcAction->addAction(QString());
     cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("face-selection"));
-    cmd2->setShortcut(QKeySequence(QString::fromUtf8("F,S")));
+    cmd2->setShortcut(QKeySequence(QStringLiteral("F,S")));
     QAction* cmd3 = pcAction->addAction(QString());
     cmd3->setIcon(Gui::BitmapFactory().iconFromTheme("clear-selection"));
-    cmd3->setShortcut(QKeySequence(QString::fromUtf8("C,S")));
+    cmd3->setShortcut(QKeySequence(QStringLiteral("C,S")));
 
     _pcAction = pcAction;
     languageChange();
 
-    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("selection-filter"));
+    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("clear-selection"));
     int defaultId = 3;
     pcAction->setProperty("defaultAction", QVariant(defaultId));
 
@@ -157,7 +157,7 @@ void PartCmdSelectFilter::languageChange()
 bool PartCmdSelectFilter::isActive()
 {
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId());
+    return view && view->isDerivedFrom<Gui::View3DInventor>();
 }
 
 

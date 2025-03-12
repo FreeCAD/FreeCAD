@@ -59,10 +59,10 @@ public:
     /// mode table
     enum SelectMode
     {
-        STATUS_SEEK_First,  /**< enum value ----. */
-        STATUS_SEEK_Second, /**< enum value ----. */
-        STATUS_SEEK_Third,  /**< enum value ----. */
-        STATUS_SEEK_Fourth, /**< enum value ----. */
+        STATUS_SEEK_First,
+        STATUS_SEEK_Second,
+        STATUS_SEEK_Third,
+        STATUS_SEEK_Fourth,
         STATUS_Close
     };
 
@@ -70,12 +70,9 @@ public:
     {
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1,
-                                   onSketchPos,
-                                   Base::Vector2d(0.f, 0.f))) {  // TODO: ellipse prio 1
-                renderSuggestConstraintsCursor(sugConstr1);
-                return;
-            }
+            seekAndRenderAutoConstraint(sugConstr1,
+                                        onSketchPos,
+                                        Base::Vector2d(0.f, 0.f));  // TODO: ellipse prio 1
         }
         else if (Mode == STATUS_SEEK_Second) {
             double rx0 = onSketchPos.x - EditCurve[0].x;
@@ -100,13 +97,10 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2,
-                                   onSketchPos,
-                                   onSketchPos - centerPoint,
-                                   AutoConstraint::CURVE)) {
-                renderSuggestConstraintsCursor(sugConstr2);
-                return;
-            }
+            seekAndRenderAutoConstraint(sugConstr2,
+                                        onSketchPos,
+                                        onSketchPos - centerPoint,
+                                        AutoConstraint::CURVE);
         }
         else if (Mode == STATUS_SEEK_Third) {
             // angle between the major axis of the ellipse and the X axis
@@ -140,10 +134,7 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr3);
-                return;
-            }
+            seekAndRenderAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
         else if (Mode == STATUS_SEEK_Fourth) {  // here we differ from ellipse creation
             // angle between the major axis of the ellipse and the X axis
@@ -196,14 +187,8 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr4);
-                return;
-            }
+            seekAndRenderAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
-
-
-        applyCursor();
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override
@@ -333,8 +318,7 @@ public:
                     QT_TRANSLATE_NOOP("Notifications", "Failed to add arc of ellipse"));
                 Gui::Command::abortCommand();
 
-                tryAutoRecomputeIfNotSolve(
-                    static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                 return false;
             }
@@ -371,8 +355,7 @@ public:
                 sugConstr4.clear();
             }
 
-            tryAutoRecomputeIfNotSolve(
-                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+            tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -400,7 +383,7 @@ public:
 private:
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_ArcOfEllipse");
+        return QStringLiteral("Sketcher_Pointer_Create_ArcOfEllipse");
     }
 
 protected:

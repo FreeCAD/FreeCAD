@@ -34,12 +34,14 @@ def get_information():
         "constraints": ["fixed", "force"],
         "solvers": ["ccxtools", "z88"],
         "material": "solid",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.ccx_cantilever_ele_tria6 import setup
@@ -51,6 +53,7 @@ See forum topic post:
 CalculiX cantilever modeled with face elements
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):

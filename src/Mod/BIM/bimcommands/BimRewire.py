@@ -44,6 +44,10 @@ class BIM_Rewire:
             "Accel": "R,W",
         }
 
+    def IsActive(self):
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
+
     def Activated(self):
         import Part
         import Draft

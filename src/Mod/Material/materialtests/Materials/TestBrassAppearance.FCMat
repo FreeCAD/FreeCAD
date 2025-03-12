@@ -1,0 +1,17 @@
+---
+# File created by ConvertFCMat.py
+General:
+  UUID: "fff3d5c8-98c3-4ee2-8fe5-7e17403c48fcc"
+  Author: "David Carter"
+  License: "GPL-2.0-or-later"
+  Name: "TestBrassAppearance"
+  Description: "Defines the Brass appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.3294, 0.2235, 0.0275, 1.0)"
+    DiffuseColor: "(0.7804, 0.5686, 0.1137, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.2179"
+    SpecularColor: "(0.9922, 0.9412, 0.8078, 1.0)"
+    Transparency: "0.0"

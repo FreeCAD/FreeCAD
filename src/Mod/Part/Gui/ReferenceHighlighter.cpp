@@ -33,7 +33,7 @@
 
 using namespace PartGui;
 
-ReferenceHighlighter::ReferenceHighlighter(const TopoDS_Shape& shape, const App::Color& color)
+ReferenceHighlighter::ReferenceHighlighter(const TopoDS_Shape& shape, const Base::Color& color)
     : defaultColor(color)
     , elementColor(1.0f,0.0f,1.0f) // magenta
     , objectColor(0.6f,0.0f,1.0f) // purple
@@ -44,7 +44,7 @@ ReferenceHighlighter::ReferenceHighlighter(const TopoDS_Shape& shape, const App:
     TopExp::MapShapes(shape, TopAbs_FACE, fMap);
 }
 
-void ReferenceHighlighter::getVertexColor(const std::string& element, std::vector<App::Color>& colors) const
+void ReferenceHighlighter::getVertexColor(const std::string& element, std::vector<Base::Color>& colors) const
 {
     int idx = std::stoi(element.substr(6)) - 1;
     assert ( idx >= 0 );
@@ -53,7 +53,7 @@ void ReferenceHighlighter::getVertexColor(const std::string& element, std::vecto
         colors[pos] = elementColor;
 }
 
-void ReferenceHighlighter::getVertexColorsOfEdge(const std::string& element, std::vector<App::Color>& colors) const
+void ReferenceHighlighter::getVertexColorsOfEdge(const std::string& element, std::vector<Base::Color>& colors) const
 {
     int idx = std::stoi(element.substr(4));
     assert ( idx > 0 );
@@ -71,7 +71,7 @@ void ReferenceHighlighter::getVertexColorsOfEdge(const std::string& element, std
     }
 }
 
-void ReferenceHighlighter::getVertexColorsOfWire(const std::string& element, std::vector<App::Color>& colors) const
+void ReferenceHighlighter::getVertexColorsOfWire(const std::string& element, std::vector<Base::Color>& colors) const
 {
     int idx = std::stoi(element.substr(4));
     assert ( idx > 0 );
@@ -89,7 +89,7 @@ void ReferenceHighlighter::getVertexColorsOfWire(const std::string& element, std
     }
 }
 
-void ReferenceHighlighter::getVertexColorsOfFace(const std::string& element, std::vector<App::Color>& colors) const
+void ReferenceHighlighter::getVertexColorsOfFace(const std::string& element, std::vector<Base::Color>& colors) const
 {
     int idx = std::stoi(element.substr(4));
     assert ( idx > 0 );
@@ -108,7 +108,7 @@ void ReferenceHighlighter::getVertexColorsOfFace(const std::string& element, std
 }
 
 void ReferenceHighlighter::getVertexColors(const std::vector<std::string>& elements,
-                                           std::vector<App::Color>& colors) const
+                                           std::vector<Base::Color>& colors) const
 {
     colors.resize(vMap.Extent(), defaultColor);
 
@@ -133,7 +133,7 @@ void ReferenceHighlighter::getVertexColors(const std::vector<std::string>& eleme
     }
 }
 
-void ReferenceHighlighter::getEdgeColor(const std::string& element, std::vector<App::Color>& colors) const
+void ReferenceHighlighter::getEdgeColor(const std::string& element, std::vector<Base::Color>& colors) const
 {
     int idx = std::stoi(element.substr(4)) - 1;
     assert ( idx >= 0 );
@@ -142,7 +142,7 @@ void ReferenceHighlighter::getEdgeColor(const std::string& element, std::vector<
         colors[pos] = elementColor;
 }
 
-void ReferenceHighlighter::getEdgeColorsOfWire(const std::string& element, std::vector<App::Color>& colors) const
+void ReferenceHighlighter::getEdgeColorsOfWire(const std::string& element, std::vector<Base::Color>& colors) const
 {
     int idx = std::stoi(element.substr(4));
     assert ( idx > 0 );
@@ -160,7 +160,7 @@ void ReferenceHighlighter::getEdgeColorsOfWire(const std::string& element, std::
     }
 }
 
-void ReferenceHighlighter::getEdgeColorsOfFace(const std::string& element, std::vector<App::Color>& colors) const
+void ReferenceHighlighter::getEdgeColorsOfFace(const std::string& element, std::vector<Base::Color>& colors) const
 {
     int idx = std::stoi(element.substr(4));
     assert ( idx > 0 );
@@ -179,7 +179,7 @@ void ReferenceHighlighter::getEdgeColorsOfFace(const std::string& element, std::
 }
 
 void ReferenceHighlighter::getEdgeColors(const std::vector<std::string>& elements,
-                                         std::vector<App::Color>& colors) const
+                                         std::vector<Base::Color>& colors) const
 {
     colors.resize(eMap.Extent(), defaultColor);
 
@@ -201,7 +201,7 @@ void ReferenceHighlighter::getEdgeColors(const std::vector<std::string>& element
     }
 }
 
-void ReferenceHighlighter::getFaceColor(const std::string& element, std::vector<App::Color>& colors) const
+void ReferenceHighlighter::getFaceColor(const std::string& element, std::vector<Base::Color>& colors) const
 {
     int idx = std::stoi(element.substr(4)) - 1;
     assert ( idx >= 0 );
@@ -210,8 +210,19 @@ void ReferenceHighlighter::getFaceColor(const std::string& element, std::vector<
         colors[pos] = elementColor;
 }
 
+void ReferenceHighlighter::getFaceColor(const std::string& element,
+                                        std::vector<App::Material>& materials) const
+{
+    int idx = std::stoi(element.substr(4)) - 1;
+    assert(idx >= 0);
+    std::size_t pos = std::size_t(idx);
+    if (pos < materials.size()) {
+        materials[pos].diffuseColor = elementColor;
+    }
+}
+
 void ReferenceHighlighter::getFaceColors(const std::vector<std::string>& elements,
-                                         std::vector<App::Color>& colors) const
+                                         std::vector<Base::Color>& colors) const
 {
     colors.resize(fMap.Extent(), defaultColor);
 
@@ -224,5 +235,26 @@ void ReferenceHighlighter::getFaceColors(const std::vector<std::string>& element
     }
     else {
         std::fill(colors.begin(), colors.end(), objectColor);
+    }
+}
+
+void ReferenceHighlighter::getFaceMaterials(const std::vector<std::string>& elements,
+                                         std::vector<App::Material>& materials) const
+{
+    App::Material defaultMaterial;
+    materials.resize(fMap.Extent(), defaultMaterial);
+
+    if (!elements.empty()) {
+        for (const std::string& e : elements) {
+            if (boost::starts_with(e, "Face")) {
+                getFaceColor(e, materials);
+            }
+        }
+    }
+    else {
+        for (auto& material : materials) {
+            material.diffuseColor = objectColor;
+        }
+        // std::fill(materials.begin(), materials.end(), objectColor);
     }
 }

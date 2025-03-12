@@ -33,6 +33,8 @@ namespace MeshCoreFit
 {
 
 using Matrix5x5 = Eigen::Matrix<double, 5, 5, Eigen::RowMajor>;
+using DoubleArray3 = std::array<double, 3>;
+using DoubleArray5 = std::array<double, 5>;
 
 /**
  * Best-fit cylinder for a given set of points.
@@ -144,14 +146,14 @@ protected:
     void setupObservation(SolutionD solDir,
                           const Base::Vector3f& point,
                           const Base::Vector3d& residual,
-                          double a[5],
+                          DoubleArray5& a,
                           double& f0,
                           double& qw,
-                          double b[3]) const;
+                          DoubleArray3& b) const;
     /**
      * Computes contribution of the given observation equation on the normal equation matrices
      */
-    void addObservationU(double a[5],
+    void addObservationU(DoubleArray5 a,
                          double li,
                          double pi,
                          Matrix5x5& atpa,

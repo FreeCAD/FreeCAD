@@ -28,6 +28,7 @@
 # include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
 #endif
 
 #include <unordered_map>
@@ -38,20 +39,23 @@
 #include <App/Document.h>
 #include <App/GroupExtension.h>
 #include <App/Link.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <App/ElementNamingUtils.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "ShapeBinder.h"
+#include "Mod/Part/App/TopoShapeOpCode.h"
+#include "Base/Tools.h"
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
-#ifndef M_PI
-# define M_PI       3.14159265358979323846
-#endif
-
 using namespace PartDesign;
 namespace sp = std::placeholders;
+
+namespace PartDesign
+{
+extern bool getPDRefineModelParameter();
+}
 
 // ============================================================================
 
@@ -191,6 +195,10 @@ void ShapeBinder::getFilteredReferences(const App::PropertyLinkSubList* prop,
                 obj = plane;
                 break;
             }
+            if (auto point = dynamic_cast<App::Point*>(it)) {
+                obj = point;
+                break;
+            }
         }
     }
 }
@@ -238,6 +246,13 @@ Part::TopoShape ShapeBinder::buildShapeFromReferences(App::GeoFeature* obj, std:
         gp_Pln plane;
         BRepBuilderAPI_MakeFace mkFace(plane);
         Part::TopoShape shape(mkFace.Shape());
+        shape.setPlacement(obj->Placement.getValue());
+        return shape;
+    }
+    else if (obj->isDerivedFrom<App::Point>()) {
+        gp_Pnt point;
+        BRepBuilderAPI_MakeVertex mkPoint(point);
+        Part::TopoShape shape(mkPoint.Shape());
         shape.setPlacement(obj->Placement.getValue());
         return shape;
     }
@@ -382,10 +397,6 @@ SubShapeBinder::~SubShapeBinder() {
 void SubShapeBinder::setupObject() {
     _Version.setValue(2);
     checkPropertyStatus();
-
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 }
 
 App::DocumentObject* SubShapeBinder::getSubObject(const char* subname, PyObject** pyObj,
@@ -486,6 +497,7 @@ void SubShapeBinder::clearCopiedObjects() {
 void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     Part::TopoShape result;
     std::vector<Part::TopoShape> shapes;
+    std::vector<std::pair<int,int> > shapeOwners;
     std::vector<const Base::Matrix4D*> shapeMats;
 
     bool forced = (Shape.getValue().IsNull() || (options & UpdateForced)) ? true : false;
@@ -519,7 +531,9 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
 
     bool first = false;
     std::unordered_map<const App::DocumentObject*, Base::Matrix4D> mats;
+    int idx = -1;
     for (auto& l : Support.getSubListValues()) {
+        ++idx;
         auto obj = l.getValue();
         if (!obj || !obj->isAttachedToDocument())
             continue;
@@ -581,8 +595,11 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 recomputeCopy = true;
                 clearCopiedObjects();
 
-                auto tmpDoc = App::GetApplication().newDocument(
-                    "_tmp_binder", nullptr, false, true);
+                App::DocumentInitFlags initFlags {
+                    .createView = false,
+                    .temporary = true
+                };
+                auto tmpDoc = App::GetApplication().newDocument("_tmp_binder", nullptr, initFlags);
                 tmpDoc->setUndoMode(0);
                 auto objs = tmpDoc->copyObject({ obj }, true, true);
                 if (!objs.empty()) {
@@ -601,21 +618,34 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 if (!copyerror) {
                     std::vector<App::Property*> props;
                     getPropertyList(props);
-                    for (auto prop : props) {
-                        if (!App::LinkBaseExtension::isCopyOnChangeProperty(this, *prop))
-                            continue;
-                        auto p = copied->getPropertyByName(prop->getName());
-                        if (p && p->getContainer() == copied
-                            && p->getTypeId() == prop->getTypeId()
-                            && !p->isSame(*prop))
-                        {
-                            recomputeCopy = true;
-                            std::unique_ptr<App::Property> pcopy(prop->Copy());
-                            p->Paste(*pcopy);
+                    // lambda for copying values of copy-on-change properties
+                    const auto copyPropertyValues = [this, &recomputeCopy, &props, copied](const bool to_support) {
+                        for (auto prop : props) {
+                            if (!App::LinkBaseExtension::isCopyOnChangeProperty(this, *prop))
+                                continue;
+                            // we only copy read-only and output properties from support to binder
+                            if (!to_support && !(prop->testStatus(App::Property::Output) && prop->testStatus(App::Property::ReadOnly)))
+                                continue;
+                            auto p = copied->getPropertyByName(prop->getName());
+                            if (p && p->getContainer() == copied
+                                && p->getTypeId() == prop->getTypeId()
+                                && !p->isSame(*prop))
+                            {
+                                recomputeCopy = true;
+                                auto* const from = to_support ? prop : p;
+                                auto* const to = to_support ? p : prop;
+
+                                std::unique_ptr<App::Property> pcopy(from->Copy());
+                                to->Paste(*pcopy);
+                            }
                         }
-                    }
+                    };
+
+                    copyPropertyValues(true);
                     if (recomputeCopy && !copied->recomputeFeature(true))
                         copyerror = 2;
+                    if (!copyerror)
+                        copyPropertyValues(false);
                 }
                 obj = copied;
                 _CopiedLink.setValue(copied, l.getSubValues(false));
@@ -631,16 +661,20 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
 
         const auto& subvals = copied ? _CopiedLink.getSubValues() : l.getSubValues();
         std::set<std::string> subs(subvals.begin(), subvals.end());
+        int sidx = copied?-1:idx;
+        int subidx = -1;
         static std::string none;
         if (subs.empty())
             subs.insert(none);
         else if (subs.size() > 1)
             subs.erase(none);
         for (const auto& sub : subs) {
+            ++subidx;
             try {
                 auto shape = Part::Feature::getTopoShape(obj, sub.c_str(), true);
                 if (!shape.isNull()) {
                     shapes.push_back(shape);
+                    shapeOwners.emplace_back(sidx, subidx);
                     shapeMats.push_back(&res.first->second);
                 }
             }
@@ -695,17 +729,32 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             if (hit)
                 return;
         }
+        std::ostringstream ss;
+        int idx = -1;
+        for(auto &shape : shapes) {
+            ++idx;
+            if(shape.Hasher
+                && shape.getElementMapSize()
+                && shape.Hasher != getDocument()->getStringHasher())
+            {
+                ss.str("");
+                ss << Data::POSTFIX_EXTERNAL_TAG
+                   << Data::ComplexGeoData::elementMapPrefix()
+                   << Part::OpCodes::Shapebinder << ':' << shapeOwners[idx].first
+                   << ':' << shapeOwners[idx].second;
+                shape.reTagElementMap(-getID(),
+                                      getDocument()->getStringHasher(),ss.str().c_str());
+            }
+            if (!shape.hasSubShape(TopAbs_FACE) && shape.hasSubShape(TopAbs_EDGE))
+                shape = shape.makeElementCopy();
+        }
 
         if (shapes.size() == 1 && !Relative.getValue())
             shapes.back().setPlacement(Base::Placement());
         else {
             for (size_t i = 0; i < shapes.size(); ++i) {
                 auto& shape = shapes[i];
-#ifdef FC_USE_TNP_FIX
                 shape = shape.makeElementTransform(*shapeMats[i]);
-#else
-                shape = shape.makeTransform(*shapeMats[i]);
-#endif
                 // if(shape.Hasher
                 //         && shape.getElementMapSize()
                 //         && shape.Hasher != getDocument()->getStringHasher())
@@ -720,11 +769,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             // Shape.resetElementMapVersion();
             return;
         }
-#ifdef FC_USE_TNP_FIX
         result.makeElementCompound(shapes);
-#else
-        result.makeCompound(shapes);
-#endif
         bool fused = false;
         if (Fuse.getValue()) {
             // If the compound has solid, fuse them together, and ignore other type of
@@ -743,11 +788,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             }
             else if (!solid.isNull()) {
                 // wrap the single solid in compound to keep its placement
-#ifdef FC_USE_TNP_FIX
                 result.makeElementCompound({ solid });
-#else
-                result.makeCompound({ solid });
-#endif
                 fused = true;
             }
         }
@@ -756,7 +797,6 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             && !result.hasSubShape(TopAbs_FACE)
             && result.hasSubShape(TopAbs_EDGE))
         {
-#ifdef FC_USE_TNP_FIX
             result = result.makeElementWires();
             if (MakeFace.getValue()) {
                 try {
@@ -764,33 +804,16 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 }
                 catch (...) {}
             }
-#else
-            result = result.makeWires();
-            if (MakeFace.getValue()) {
-                try {
-                    result = result.makeFace(nullptr);
-                }
-                catch (...) {}
-            }
-#endif
         }
 
         if (!fused && result.hasSubShape(TopAbs_WIRE)
             && Offset.getValue() != 0.0) {
             try {
-#ifdef FC_USE_TNP_FIX
                 result = result.makeElementOffset2D(Offset.getValue(),
                                              (Part::JoinType) OffsetJoinType.getValue() ,
                                              OffsetFill.getValue() ? Part::FillType::fill : Part::FillType::noFill,
                                              OffsetOpenResult.getValue() ? Part::OpenResult::allowOpenResult : Part::OpenResult::noOpenResult,
                                              OffsetIntersection.getValue());
-#else
-                result = result.makeOffset2D(Offset.getValue(),
-                                             OffsetJoinType.getValue(),
-                                             OffsetFill.getValue(),
-                                             OffsetOpenResult.getValue(),
-                                             OffsetIntersection.getValue());
-#endif
             }
             catch (...) {
                 std::ostringstream msg;
@@ -800,11 +823,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         }
 
         if (Refine.getValue())
-#ifdef FC_USE_TNP_FIX
             result = result.makeElementRefine();
-#else
-            result = result.makeRefine();
-#endif
         result.setPlacement(Placement.getValue());
         Shape.setValue(result);
     }
@@ -820,7 +839,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     for (auto& v : mats) {
         const char* name = cacheName(v.first);
         auto prop = getDynamicPropertyByName(name);
-        if (!prop || !prop->isDerivedFrom(App::PropertyMatrix::getClassTypeId())) {
+        if (!prop || !prop->isDerivedFrom<App::PropertyMatrix>()) {
             if (prop)
                 removeDynamicProperty(name);
             prop = addDynamicProperty("App::PropertyMatrix", name, "Cache", nullptr, 0, false, true);
@@ -867,6 +886,68 @@ void SubShapeBinder::onDocumentRestored() {
     inherited::onDocumentRestored();
 }
 
+void SubShapeBinder::collapseGeoChildren()
+{
+    // Geo children, i.e. children of GeoFeatureGroup may group some tool
+    // features under itself but does not function as a container. In addition,
+    // its parent group can directly reference the tool feature grouped without
+    // referencing the child. The purpose of this function is to remove any
+    // intermediate Non group features in the object path to avoid unnecessary
+    // dependencies.
+    if (Support.testStatus(App::Property::User3))
+        return;
+
+    Base::ObjectStatusLocker<App::Property::Status, App::Property>
+        guard(App::Property::User3, &Support);
+    App::PropertyXLinkSubList::atomic_change guard2(Support, false);
+
+    std::vector<App::DocumentObject*> removes;
+    std::map<App::DocumentObject*, std::vector<std::string> > newVals;
+    std::ostringstream ss;
+    for(auto &l : Support.getSubListValues()) {
+        auto obj = l.getValue();
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        auto subvals = l.getSubValues();
+        if (subvals.empty())
+            continue;
+        bool touched = false;
+        for (auto itSub=subvals.begin(); itSub!=subvals.end();) {
+            auto &sub = *itSub;
+            App::SubObjectT sobjT(obj, sub.c_str());
+            if (sobjT.normalize(App::SubObjectT::NormalizeOption::KeepSubName)) {
+                touched = true;
+                auto newobj = sobjT.getObject();
+                sub = sobjT.getSubName();
+                if (newobj != obj) {
+                    newVals[newobj].push_back(std::move(sub));
+                    itSub = subvals.erase(itSub);
+                    continue;
+                }
+            }
+            ++itSub;
+        }
+        if (touched)
+            removes.push_back(obj);
+        if (!subvals.empty() && touched) {
+            auto &newSubs = newVals[obj];
+            if (newSubs.empty())
+                newSubs = std::move(subvals);
+            else
+                newSubs.insert(newSubs.end(),
+                               std::make_move_iterator(subvals.begin()),
+                               std::make_move_iterator(subvals.end()));
+        }
+    }
+
+    if (removes.size() || newVals.size())
+        guard2.aboutToChange();
+    for (auto obj : removes)
+        Support.removeValue(obj);
+    if (newVals.size())
+        setLinks(std::move(newVals));
+}
+
 void SubShapeBinder::onChanged(const App::Property* prop) {
     if (prop == &Context || prop == &Relative) {
         if (!Context.getValue() || !Relative.getValue()) {
@@ -884,6 +965,7 @@ void SubShapeBinder::onChanged(const App::Property* prop) {
     }
     else if (!isRestoring()) {
         if (prop == &Support) {
+            collapseGeoChildren();
             clearCopiedObjects();
             setupCopyOnChange();
             if (!Support.getSubListValues().empty()) {

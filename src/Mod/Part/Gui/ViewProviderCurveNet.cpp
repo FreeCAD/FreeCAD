@@ -43,7 +43,7 @@
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Gui/SoFCSelection.h>
+#include <Gui/Selection/SoFCSelection.h>
 #include <Gui/View3DInventorViewer.h>
 
 #include "ViewProviderCurveNet.h"

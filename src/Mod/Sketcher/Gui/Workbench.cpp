@@ -160,18 +160,18 @@ namespace
 {
 inline const QStringList editModeToolbarNames()
 {
-    return QStringList {QString::fromLatin1("Sketcher edit mode"),
-                        QString::fromLatin1("Sketcher geometries"),
-                        QString::fromLatin1("Sketcher constraints"),
-                        QString::fromLatin1("Sketcher tools"),
-                        QString::fromLatin1("Sketcher B-spline tools"),
-                        QString::fromLatin1("Sketcher visual"),
-                        QString::fromLatin1("Sketcher edit tools")};
+    return QStringList {QStringLiteral("Sketcher edit mode"),
+                        QStringLiteral("Sketcher geometries"),
+                        QStringLiteral("Sketcher constraints"),
+                        QStringLiteral("Sketcher tools"),
+                        QStringLiteral("Sketcher B-spline tools"),
+                        QStringLiteral("Sketcher visual"),
+                        QStringLiteral("Sketcher edit tools")};
 }
 
 inline const QStringList nonEditModeToolbarNames()
 {
-    return QStringList {QString::fromLatin1("Structure"), QString::fromLatin1("Sketcher")};
+    return QStringList {QStringLiteral("Structure"), QStringLiteral("Sketcher")};
 }
 }  // namespace
 
@@ -298,7 +298,8 @@ inline void SketcherAddWorkspaceLines<Gui::MenuItem>(Gui::MenuItem& geom)
 template<>
 inline void SketcherAddWorkspaceLines<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
 {
-    geom << "Sketcher_CompLine";
+    geom << "Sketcher_CreatePolyline"
+         << "Sketcher_CreateLine";
 }
 
 template<typename T>
@@ -536,7 +537,8 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
 {
     SketcherAddWorkspaceFillets(consaccel);
     SketcherAddWorkspaceCurveEdition(consaccel);
-    consaccel << "Sketcher_External"
+    consaccel << "Sketcher_Projection"
+              << "Sketcher_Intersection"
               << "Sketcher_CarbonCopy"
               << "Separator"
               << "Sketcher_SelectOrigin"
@@ -563,7 +565,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
 {
     SketcherAddWorkspaceFillets(consaccel);
     SketcherAddWorkspaceCurveEdition(consaccel);
-    consaccel << "Sketcher_External"
+    consaccel << "Sketcher_CompExternal"
               << "Sketcher_CarbonCopy"
               << "Separator"
               << "Sketcher_Translate"

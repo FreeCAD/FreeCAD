@@ -1,8 +1,13 @@
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )
 
@@ -61,6 +66,9 @@ add_library(QtUnitGui SHARED ${TestGui_SRCS} ${TestGuiPy_SRCS} ${TestGuiIcon_SVG
 
 target_link_libraries(QtUnitGui ${TestGui_LIBS})
 add_dependencies(QtUnitGui Test)
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(QtUnitGui)
+endif()
 
 fc_copy_sources(QtUnitGui "${CMAKE_BINARY_DIR}/Mod/Test" qtunittest.py)
 fc_copy_sources(QtUnitGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Test" ${TestGuiIcon_SVG})

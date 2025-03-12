@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="537"/>
       <source>Wire from mesh boundary...</source>
-      <translation>Žica od ivica mreže...</translation>
+      <translation>Žičani ram od ivica mreže...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="538"/>
       <source>Create wire from mesh boundaries</source>
-      <translation>Napravi žicu od ivica mreže</translation>
+      <translation>Napravi žičani ram od ivica mreže</translation>
     </message>
   </context>
   <context>
@@ -233,9 +233,9 @@
       <translation>Položaj</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
-      <source>Fit B-Spline</source>
+      <location filename="../../FitBSplineCurve.cpp" line="139"/>
+      <source>Fit B-spline</source>
       <translation>Uklopi B-Splajn</translation>
     </message>
     <message>
@@ -477,7 +477,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="61"/>
       <source>All</source>
-      <translation>Sva</translation>
+      <translation>Svi</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="81"/>
@@ -576,7 +576,7 @@
     <message>
       <location filename="../../SegmentationManual.cpp" line="352"/>
       <source>Create</source>
-      <translation>Spakuj</translation>
+      <translation>Napravi</translation>
     </message>
   </context>
   <context>
@@ -591,8 +591,8 @@
     <name>ReenGui::FitBSplineCurve</name>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
-      <source>Fit B-spline surface</source>
-      <translation>Uklopi B-Splajn površinu</translation>
+      <source>Fit B-spline curve</source>
+      <translation type="unfinished">Fit B-spline curve</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>

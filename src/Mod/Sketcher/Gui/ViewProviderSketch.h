@@ -26,18 +26,19 @@
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <memory>
 
 #include <Base/Parameter.h>
 #include <Base/Placement.h>
 #include <Gui/Document.h>
 #include <Gui/GLPainter.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Part/Gui/ViewProvider2DObject.h>
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/Part/Gui/ViewProviderGridExtension.h>
 #include <Mod/Sketcher/App/GeoList.h>
+#include <Mod/Sketcher/App/GeoEnum.h>
 
 #include "PropertyVisualLayerList.h"
 
@@ -174,6 +175,8 @@ private:
         /** Observer for parameter group. */
         void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override;
 
+        void updateFromParameter(const char* property);
+
     private:
         void
         updateBoolProperty(const std::string& string, App::Property* property, bool defaultvalue);
@@ -259,13 +262,12 @@ private:
     class Drag
     {
     public:
-        enum SpecialValues
-        {
-            InvalidPoint = -1,
-            InvalidCurve = -1
-        };
-
         Drag()
+        {
+            reset();
+        }
+
+        void reset()
         {
             resetVector();
             resetIds();
@@ -280,28 +282,15 @@ private:
 
         void resetIds()
         {
-            DragPoint = InvalidPoint;
-            DragCurve = InvalidCurve;
+            Dragged.clear();
             DragConstraintSet.clear();
-        }
-
-        bool isDragPointValid()
-        {
-            return DragPoint > InvalidPoint;
-        }
-        bool isDragCurveValid()
-        {
-            return DragCurve > InvalidCurve;
         }
 
         double xInit, yInit;  // starting point of the dragging operation
         bool relative;        // whether the dragging move vector is relative or absolute
 
-
-        int DragPoint;  // dragged point id (only positive integers)
-        int DragCurve;  // dragged curve id (only positive integers), negative external curves
-                        // cannot be dragged.
-        std::set<int> DragConstraintSet;  // dragged constraints ids
+        std::vector<Sketcher::GeoElementId> Dragged;  // dragged geometries
+        std::set<int> DragConstraintSet;              // dragged constraints ids
     };
 
     // TODO: Selection and Preselection should use a same structure. Probably Drag should use the
@@ -517,6 +506,7 @@ public:
     App::PropertyBool RestoreCamera;
     App::PropertyBool ForceOrtho;
     App::PropertyBool SectionView;
+    App::PropertyBool AutoColor;
     App::PropertyString EditingWorkbench;
     SketcherGui::PropertyVisualLayerList VisualLayerList;
     //@}
@@ -528,7 +518,7 @@ public:
     /** @name handler control */
     //@{
     /// sets an DrawSketchHandler in control
-    void activateHandler(DrawSketchHandler* newHandler);
+    void activateHandler(std::unique_ptr<DrawSketchHandler> newHandler);
     /// removes the active handler
     void purgeHandler();
     //@}
@@ -550,8 +540,7 @@ public:
         STATUS_SELECT_Constraint,      /**< enum value a constraint was selected. */
         STATUS_SELECT_Cross,           /**< enum value the base coordinate system was selected. */
         STATUS_SELECT_Wire,            /**< enum value and edge was double clicked. */
-        STATUS_SKETCH_DragPoint,       /**< enum value while dragging a point. */
-        STATUS_SKETCH_DragCurve,       /**< enum value while dragging a curve. */
+        STATUS_SKETCH_Drag,            /**< enum value while dragging curves and or points. */
         STATUS_SKETCH_DragConstraint,  /**< enum value while dragging a compatible constraint. */
         STATUS_SKETCH_UseHandler,      /**< enum value a DrawSketchHandler is in control. */
         STATUS_SKETCH_StartRubberBand, /**< enum value for initiating a rubber band selection */
@@ -612,7 +601,7 @@ public:
      * -> inline void setRecalculateInitialSolutionWhileMovingPoint(bool
      * recalculateInitialSolutionWhileMovingPoint)
      * -> inline int initTemporaryMove(int geoId, PointPos pos, bool fine=true)
-     * -> inline int moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool
+     * -> inline int moveGeometryTemporary(int geoId, PointPos pos, Base::Vector3d toPoint, bool
      * relative=false)
      * -> inline void updateSolverExtension(int geoId, std::unique_ptr<Part::GeometryExtension> &&
      * ext)
@@ -656,6 +645,9 @@ public:
     {
         return nullptr;
     }
+    /// is called when the provider is in edit and a "Select All" command was issued
+    /// Provider shall return 'false' is it ignores the command, 'true' otherwise
+    bool selectAll() override;
     /// is called by the tree if the user double clicks on the object
     bool doubleClicked() override;
     /// is called when the Provider is in edit and the mouse is moved
@@ -711,7 +703,8 @@ protected:
     void unsetEdit(int ModNum) override;
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(Gui::View3DInventorViewer*) override;
-    static void camSensCB(void* data, SoSensor*);  // camera sensor callback
+    static void camSensCB(void* data, SoSensor*);        // camera sensor callback
+    static void camSensDeleteCB(void* data, SoSensor*);  // camera sensor callback
     void onCameraChanged(SoCamera* cam);
     //@}
 
@@ -741,6 +734,7 @@ protected:
     //@{
     void slotUndoDocument(const Gui::Document&);
     void slotRedoDocument(const Gui::Document&);
+    void slotSolverUpdate();
     void forceUpdateData();
     //@}
 
@@ -749,6 +743,10 @@ protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
     //@}
+
+    /// hook after property restoring to change some property statuses
+    void startRestoring() override;
+    void finishRestoring() override;
 
 private:
     /// function to handle OCCT BSpline weight calculation singularities and representation
@@ -778,6 +776,15 @@ private:
     void resetPreselectPoint();
 
     bool setPreselect(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
+    //@}
+
+    /** @name dragging functions */
+    //@{
+    /// dragging helpers
+    void initDragging(int geoId, Sketcher::PointPos pos, Gui::View3DInventorViewer* viewer);
+    void doDragStep(double x, double y);
+    void commitDragMove(double x, double y);
+
     //@}
 
     /** @name Selection functions */
@@ -916,6 +923,7 @@ private:
 private:
     boost::signals2::connection connectUndoDocument;
     boost::signals2::connection connectRedoDocument;
+    boost::signals2::connection connectSolverUpdate;
 
     // modes while sketching
     SketchMode Mode;

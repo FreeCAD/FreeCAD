@@ -1,15 +1,23 @@
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${COIN3D_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
 )
+link_directories(${OCC_LIBRARY_DIR})
 
 set(AssemblyGui_LIBS
     Assembly
     PartDesign
     PartGui
+    Spreadsheet
+    SpreadsheetGui
     FreeCADGui
 )
 
@@ -25,6 +33,15 @@ SOURCE_GROUP("Resources" FILES ${AssemblyResource_SRCS})
 
 generate_from_xml(ViewProviderAssemblyPy)
 
+set(AssemblyGui_UIC_SRCS
+    TaskAssemblyCreateBom.ui
+    TaskAssemblyCreateJoint.ui
+    TaskAssemblyCreateSimulation.ui
+    TaskAssemblyCreateView.ui
+    TaskAssemblyInsertLink.ui
+    Assembly.ui
+)
+
 SET(Python_SRCS
     ViewProviderAssemblyPy.xml
     ViewProviderAssemblyPyImp.cpp
@@ -38,10 +55,18 @@ SET(AssemblyGui_SRCS_Module
     PreCompiled.h
     ViewProviderAssembly.cpp
     ViewProviderAssembly.h
+    ViewProviderAssemblyLink.cpp
+    ViewProviderAssemblyLink.h
+    ViewProviderBom.cpp
+    ViewProviderBom.h
+    ViewProviderBomGroup.cpp
+    ViewProviderBomGroup.h
     ViewProviderJointGroup.cpp
     ViewProviderJointGroup.h
     ViewProviderViewGroup.cpp
     ViewProviderViewGroup.h
+    ViewProviderSimulationGroup.cpp
+    ViewProviderSimulationGroup.h
     ${Assembly_QRC_SRCS}
 )
 
@@ -66,7 +91,15 @@ SET(AssemblyGuiIcon_SVG
 )
 
 add_library(AssemblyGui SHARED ${AssemblyGui_SRCS} ${AssemblyGuiIcon_SVG})
+
+if(WIN32)
+    target_compile_definitions(AssemblyGui PRIVATE _USE_MATH_DEFINES)
+endif(WIN32)
+
 target_link_libraries(AssemblyGui ${AssemblyGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(AssemblyGui)
+endif()
 
 SET_BIN_DIR(AssemblyGui AssemblyGui /Mod/Assembly)
 SET_PYTHON_PREFIX_SUFFIX(AssemblyGui)

@@ -103,7 +103,7 @@ class _CommandFloor:
 
     Create a floor from the objects selected by the user, if any. Exclude
     objects that appear higher in the object hierarchy, such as sites or
-    buildings. If free linking is enabled in the Arch preferences, allow higher
+    buildings. If free linking is enabled in the BIM preferences, allow higher
     hierarchy objects to be part of floors.
 
     Find documentation on the end user usage of Arch Floor here:
@@ -132,7 +132,7 @@ class _CommandFloor:
 
         Create a floor from the objects selected by the user, if any. Exclude
         objects that appear higher in the object hierarchy, such as sites or
-        buildings. If free linking is enabled in the Arch preferences, allow
+        buildings. If free linking is enabled in the BIM preferences, allow
         higher hierarchy objects to be part of floors.
         """
 
@@ -399,6 +399,8 @@ class _ViewProviderFloor:
 
         from PySide import QtCore,QtGui
         import Arch_rc
+        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+            return
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_BuildingPart.svg"),"Convert to BuildingPart",menu)
         QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.convertToBuildingPart)
         menu.addAction(action1)
@@ -411,8 +413,8 @@ class _ViewProviderFloor:
 
         if hasattr(self,"Object"):
             import ArchBuildingPart
-            from DraftGui import todo
-            todo.delay(ArchBuildingPart.convertFloors,self.Object)
+            from draftutils import todo
+            todo.ToDo.delay(ArchBuildingPart.convertFloors,self.Object)
 
 
 if FreeCAD.GuiUp:

@@ -47,6 +47,15 @@ bool ImportExportSettings::isVisibleExportDialog() const
     return pGroup->GetBool("VisibleExportDialog", true);
 }
 
+void ImportExportSettings::setVisibleImportDialog(bool on)
+{
+    pGroup->SetBool("VisibleImportDialog", on);
+}
+
+bool ImportExportSettings::isVisibleImportDialog() const
+{
+    return pGroup->GetBool("VisibleImportDialog", true);
+}
 
 void ImportExportSettings::setWriteSurfaceCurveMode(bool on)
 {

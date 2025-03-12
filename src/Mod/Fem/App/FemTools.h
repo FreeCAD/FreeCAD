@@ -24,13 +24,21 @@
 #ifndef FEM_TOOLS_H
 #define FEM_TOOLS_H
 
+#include <Base/Placement.h>
 #include <Base/Vector3D.h>
 #include <Mod/Fem/FemGlobal.h>
 #include <gp_XYZ.hxx>
+#include <TopoDS_Shape.hxx>
 
-class TopoDS_Shape;
 class TopoDS_Edge;
 class TopoDS_Face;
+
+namespace Part
+{
+
+class Feature;
+
+}
 
 namespace Fem
 {
@@ -75,6 +83,27 @@ public:
     static std::string checkIfBinaryExists(std::string prefSection,
                                            std::string prefBinaryPath,
                                            std::string prefBinaryName);
+
+    /*!
+     Subshape placement is not necessarily the same as the
+     feature placement
+    */
+    static Base::Placement getSubShapeGlobalLocation(const Part::Feature* feat,
+                                                     const TopoDS_Shape& sh);
+    static void setSubShapeGlobalLocation(const Part::Feature* feat, TopoDS_Shape& sh);
+    /*!
+     Get subshape from Part Feature. The subShape is returned with global location
+    */
+    static TopoDS_Shape
+    getFeatureSubShape(const Part::Feature* feat, const char* subName, bool silent);
+    /*!
+     Get cylinder parameters. Base is located at the center of the cylinder
+    */
+    static bool getCylinderParams(const TopoDS_Shape& sh,
+                                  Base::Vector3d& base,
+                                  Base::Vector3d& axis,
+                                  double& height,
+                                  double& radius);
 };
 
 }  // namespace Fem

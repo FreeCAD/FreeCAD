@@ -51,6 +51,7 @@ Options:
                      This is sufficient to see if a file has changed, as
                      its SHA1 code and timestamp will show it. But won't
                      show details of what has changed.
+    -p  --partinfo:  Print size and hash of internal BREP part files
     -g  --gui:       Adds visual properties too (if not using -s or -vs)
 
 Git usage:
@@ -112,17 +113,18 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
                 self.obj = self.clean(attributes["name"])
 
         elif tag == "Part":
-            if self.obj:
+            if self.obj and partinfo:
+                file = self.clean(attributes["file"])
                 r = self.zfile.read(attributes["file"])
                 s = r.__sizeof__()
                 if s < 1024:
-                    s = str(s) + "B"
+                    s = f"{s:g}B"
                 elif s > 1048576:
-                    s = str(s / 1048576) + "M"
+                    s = f"{s / 1048576:.3g}M"
                 else:
-                    s = str(s / 1024) + "K"
-                s += " " + str(hashlib.sha1(r).hexdigest()[:12])
-                self.contents[self.obj] += " (" + s + ")"
+                    s = f"{s / 1024:.3g}K"
+                d = str(hashlib.sha1(r).hexdigest()[:12])
+                self.contents[self.obj] += f" ({file},{s},{d})"
 
         elif tag == "Property":
             self.prop = None
@@ -154,58 +156,41 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
                     self.contents[self.prop] = attributes["value"]
                 elif self.short == 0:
                     if tag == "Float":
-                        self.contents[self.obj + "00000000::" + self.prop] = str(
-                            float(attributes["value"])
-                        )
+                        val = float(attributes["value"])
+                        self.contents[self.obj + "00000000::" + self.prop] = f"{val:g}"
                     else:
                         self.contents[self.obj + "00000000::" + self.prop] = attributes["value"]
 
         elif tag in ["PropertyVector"]:
             if self.prop and self.obj and (self.short == 0):
-                val = (
-                    "("
-                    + str(float(attributes["valueX"]))
-                    + ","
-                    + str(float(attributes["valueY"]))
-                    + ","
-                    + str(float(attributes["valueZ"]))
-                    + ")"
-                )
+                vx = float(attributes["valueX"])
+                vy = float(attributes["valueY"])
+                vz = float(attributes["valueZ"])
+                val = f"({vx:g},{vy:g},{vz:g})"
                 self.contents[self.obj + "00000000::" + self.prop] = val
 
         elif tag in ["PropertyPlacement"]:
             if self.prop and self.obj and (self.short == 0):
-                val = (
-                    "("
-                    + str(float(attributes["Px"]))
-                    + ","
-                    + str(float(attributes["Py"]))
-                    + ","
-                    + str(float(attributes["Pz"]))
-                    + ")"
-                )
-                val += (
-                    " ("
-                    + str(round(float(attributes["Q0"]), 4))
-                    + ","
-                    + str(round(float(attributes["Q1"]), 4))
-                    + ","
-                )
-                val += (
-                    str(round(float(attributes["Q2"]), 4))
-                    + ","
-                    + str(round(float(attributes["Q3"]), 4))
-                    + ")"
-                )
+                px = float(attributes["Px"])
+                py = float(attributes["Py"])
+                pz = float(attributes["Pz"])
+
+                q0 = float(attributes["Q0"])
+                q1 = float(attributes["Q1"])
+                q2 = float(attributes["Q2"])
+                q3 = float(attributes["Q3"])
+
+                val = f"({px:g},{py:g},{pz:g})"
+                val += f"({q0:.3g},{q1:.3g},{q2:.3g},{q3:.3g})"
                 self.contents[self.obj + "00000000::" + self.prop] = val
 
         elif tag in ["PropertyColor"]:
             if self.prop and self.obj and (self.short == 0):
                 c = int(attributes["value"])
-                r = float((c >> 24) & 0xFF) / 255.0
-                g = float((c >> 16) & 0xFF) / 255.0
-                b = float((c >> 8) & 0xFF) / 255.0
-                val = str((r, g, b))
+                r = (c >> 24) & 0xFF
+                g = (c >> 16) & 0xFF
+                b = (c >> 8) & 0xFF
+                val = f"({r},{g},{b})"
                 self.contents[self.obj + "00000000::" + self.prop] = val
 
         elif tag == "Objects":
@@ -218,8 +203,8 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
             for key, value in items:
                 key = self.clean(key)
                 value = self.clean(value)
-                print("   " + key + " : " + value)
-            print("   Objects: (" + self.count + ")")
+                print(f"   {key} : {value}")
+            print(f"   Objects: ({self.count})")
             self.contents = {}
 
     def endElement(self, tag):
@@ -233,7 +218,7 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
                     key = "   " + key.split("00000000::")[1]
                 value = self.clean(value)
                 if value:
-                    print("        " + key + " : " + value)
+                    print(f"        {key} : {value}")
 
     def clean(self, value):
 
@@ -263,6 +248,11 @@ if __name__ == "__main__":
     else:
         short = 0
 
+    if ("-p" in sys.argv[1:]) or ("--partinfo" in sys.argv[1:]):
+        partinfo = True
+    else:
+        partinfo = False
+
     if ("-g" in sys.argv[1:]) or ("--gui" in sys.argv[1:]):
         gui = True
     else:
@@ -275,10 +265,10 @@ if __name__ == "__main__":
     doc = zfile.read("Document.xml")
     if gui and "GuiDocument.xml" in zfile.namelist():
         guidoc = zfile.read("GuiDocument.xml")
-        guidoc = re.sub(b"<\?xml.*?-->", b" ", guidoc, flags=re.MULTILINE | re.DOTALL)
+        guidoc = re.sub(b"<\\?xml.*?-->", b" ", guidoc, flags=re.MULTILINE | re.DOTALL)
         # a valid xml doc can have only one root element. So we need to insert
         # all the contents of the GUiDocument <document> tag into the main one
-        doc = re.sub(b"<\/Document>", b"", doc, flags=re.MULTILINE | re.DOTALL)
+        doc = re.sub(b"<\\/Document>", b"", doc, flags=re.MULTILINE | re.DOTALL)
         guidoc = re.sub(b"<Document.*?>", b" ", guidoc, flags=re.MULTILINE | re.DOTALL)
         doc += guidoc
     s = os.path.getsize(sys.argv[-1])

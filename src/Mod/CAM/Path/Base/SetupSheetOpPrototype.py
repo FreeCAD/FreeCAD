@@ -130,9 +130,7 @@ class PropertyFloat(Property):
         try:
             return float(string)
         except ValueError:
-            Path.Log.error(
-                f"{self.category}.{self.name} [{self.propType}] : '{string}'"
-            )
+            Path.Log.error(f"{self.category}.{self.name} [{self.propType}] : '{string}'")
             raise
 
 
@@ -144,9 +142,7 @@ class PropertyInteger(Property):
         try:
             return int(string)
         except ValueError:
-            Path.Log.error(
-                f"{self.category}.{self.name} [{self.propType}] : '{string}'"
-            )
+            Path.Log.error(f"{self.category}.{self.name} [{self.propType}] : '{string}'")
             raise
 
 
@@ -163,9 +159,7 @@ class PropertyBool(Property):
         try:
             return bool(string)
         except ValueError:
-            Path.Log.error(
-                f"{self.category}.{self.name} [{self.propType}] : '{string}'"
-            )
+            Path.Log.error(f"{self.category}.{self.name} [{self.propType}] : '{string}'")
             raise
 
 
@@ -229,6 +223,9 @@ class OpPrototype(object):
 
     def setEditorMode(self, name, mode):
         self.properties[name].setEditorMode(mode)
+
+    def setPropertyStatus(self, name, status):
+        pass
 
     def getProperty(self, name):
         return self.properties[name]

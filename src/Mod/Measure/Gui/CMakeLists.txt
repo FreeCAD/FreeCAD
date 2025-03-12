@@ -3,10 +3,15 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+    ${PYCXX_INCLUDE_DIR}
+    ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
 )
@@ -51,18 +56,20 @@ SET(MeasureGui_SRCS
     QuickMeasurePyImp.cpp
     QuickMeasure.cpp
     QuickMeasure.h
+    TaskMeasure.cpp
+    TaskMeasure.h
     ViewProviderMeasureBase.cpp
     ViewProviderMeasureBase.h
     ViewProviderMeasureAngle.cpp
     ViewProviderMeasureAngle.h
     ViewProviderMeasureDistance.cpp
     ViewProviderMeasureDistance.h
-    # Workbench.cpp
-    # Workbench.h
+    WorkbenchManipulator.cpp
+    WorkbenchManipulator.h
     DlgPrefsMeasureAppearanceImp.ui
     DlgPrefsMeasureAppearanceImp.cpp
     DlgPrefsMeasureAppearanceImp.h
-    
+
 )
 
 SET(MeasureGuiTaskDlgs_SRCS
@@ -86,6 +93,9 @@ SET(MeasureGuiIcon_SVG
 
 add_library(MeasureGui SHARED ${MeasureGui_SRCS} ${MeasureGuiIcon_SVG})
 target_link_libraries(MeasureGui ${MeasureGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(MeasureGui)
+endif()
 
 SET_BIN_DIR(MeasureGui MeasureGui /Mod/Measure)
 SET_PYTHON_PREFIX_SUFFIX(MeasureGui)
@@ -94,4 +104,3 @@ fc_copy_sources(MeasureGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Mea
 
 INSTALL(TARGETS MeasureGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${MeasureGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Measure/Resources/icons")
-

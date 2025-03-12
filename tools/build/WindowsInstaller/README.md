@@ -32,7 +32,7 @@ msvcp140.dll
 vcamp140.dll
 vccorlib140.dll
 vcomp140.dll
-```    
+```
 3. Open the file *Settings.nsh* with a text editor (both jEdit and Visual Studio Code are good editors for NSIS files). Edit the following paths to correspond to your system: `FILES_FREECAD` corresponds to your installation directory (e.g. `CMAKE_INSTALL_PREFIX` if you self-compiled) and `FILES_DEPS` is the folder you created with the MSVC redistributable files in it.
 ```
 !define FILES_FREECAD "C:\FreeCAD\Installer\FreeCAD"

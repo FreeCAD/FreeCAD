@@ -33,7 +33,7 @@ class PythonConsole;
 
 /**
  * Python class for redirection of stdout to FreeCAD's Python
- * console window. This allows to show all Python messages in
+ * console window. This allows one to show all Python messages in
  * the same window where the commands are performed.
  * @see PythonStderr
  * @see PythonConsole
@@ -59,7 +59,7 @@ public:
 
 /**
  * Python class for redirection of stderr to FreeCAD's Python
- * console window. This allows to show all Python messages in
+ * console window. This allows one to show all Python messages in
  * the same window where the commands are performed.
  * @see PythonStdout
  * @see PythonConsole
@@ -85,7 +85,7 @@ public:
 
 /**
  * Python class for redirection of stdout to FreeCAD's output
- * console window. This allows to report all Python output to
+ * console window. This allows one to report all Python output to
  * the report view which simplifies debugging scripts.
  * @see PythonStdout
  * @see PythonStderr
@@ -108,7 +108,7 @@ public:
 
 /**
  * Python class for redirection of stderr to FreeCAD's output
- * console window. This allows to report all Python errors to
+ * console window. This allows one to report all Python errors to
  * the report view which simplifies error tracking.
  * @see PythonStdout
  * @see PythonStderr

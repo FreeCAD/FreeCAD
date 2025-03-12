@@ -39,6 +39,10 @@ class BIM_Fuse:
             "ToolTip": QT_TRANSLATE_NOOP("Part_Fuse", "Make a union of several shapes"),
         }
 
+    def IsActive(self):
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
+
     def Activated(self):
         import PartGui
         FreeCADGui.runCommand("Part_Fuse")

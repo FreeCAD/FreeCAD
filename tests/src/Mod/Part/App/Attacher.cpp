@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include "PartTestHelpers.h"
 
 #include <src/App/InitApplication.h>
@@ -79,8 +79,8 @@ TEST_F(AttacherTest, TestGetShapeType)
 TEST_F(AttacherTest, TestGetInertialPropsOfShape)
 {
     auto& attacher = _boxes[1]->attacher();
-    std::vector<const TopoDS_Shape*> result;
-    auto faces = _boxes[1]->Shape.getShape().getSubShapes(TopAbs_FACE);
+    std::vector<const TopoShape*> result;
+    auto faces = _boxes[1]->Shape.getShape().getSubTopoShapes(TopAbs_FACE);
     result.emplace_back(&faces[0]);
     auto shapeType = attacher.getInertialPropsOfShape(result);
     EXPECT_EQ(result.size(), 1);
@@ -171,6 +171,8 @@ TEST_F(AttacherTest, TestAllStringModesValid)
         "OXZ",
         "OYZ",
         "OYX",
+
+        "ParallelPlane",
     };
     int index = 0;
     for (auto mode : modes) {
@@ -197,6 +199,9 @@ TEST_F(AttacherTest, TestAllModesBoundaries)
     _boxes[1]->recomputeFeature();
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
 
+    _boxes[1]->MapMode.setValue(mmParallelPlane);
+    _boxes[1]->recomputeFeature();
+    EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mmFlatFace);
     _boxes[1]->recomputeFeature();
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));

@@ -235,14 +235,29 @@ dot/period will always be printed.</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item row="1" column="0" colspan="2">
+        <widget class="QLabel" name="moreThemesLabel">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Looking for more themes? You can obtain them using &lt;a href=&quot;freecad:Std_AddonMgr&quot;&gt;Addon Manager&lt;/a&gt;.</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::RichText</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
         <widget class="QLabel" name="iconSizeLabel">
          <property name="text">
           <string>Size of toolbar icons:</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="2" column="1">
         <widget class="QComboBox" name="toolbarIconSize">
          <property name="toolTip">
           <string>Choose your preference for toolbar icon size. You can adjust
@@ -250,32 +265,31 @@ this according to your screen size or personal taste</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="QLabel" name="treeModeLabel">
          <property name="text">
-          <string>Tree view mode:</string>
+          <string>Tree view and Property view mode:</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="3" column="1">
         <widget class="QComboBox" name="treeMode">
          <property name="toolTip">
           <string>Customize how tree view is shown in the panel (restart required).
 
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</string>
+'Combined': combine Tree view and Property view into one panel.
+'Independent': split Tree view and Property view into separate panels.</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="4" column="0">
         <widget class="QLabel" name="recentFileListLabel">
          <property name="text">
           <string>Size of recent file list:</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="4" column="1">
         <widget class="Gui::PrefSpinBox" name="RecentFiles">
          <property name="toolTip">
           <string>How many files should be listed in recent files list</string>
@@ -291,7 +305,7 @@ this according to your screen size or personal taste</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
+       <item row="5" column="0">
         <widget class="QCheckBox" name="tiledBackground">
          <property name="toolTip">
           <string>Background of the main window (when no document is opened) will consist of tiles of a special image.
@@ -302,7 +316,7 @@ See the FreeCAD Wiki for details about the image.</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
+       <item row="5" column="1">
         <widget class="Gui::PrefCheckBox" name="EnableCursorBlinking">
          <property name="toolTip">
           <string>The text cursor will be blinking</string>
@@ -321,7 +335,7 @@ See the FreeCAD Wiki for details about the image.</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item row="6" column="0">
         <widget class="Gui::PrefCheckBox" name="SplashScreen">
          <property name="toolTip">
           <string>A Splash screen is a small loading window that is shown
@@ -342,7 +356,7 @@ display the splash screen</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="6" column="1">
         <widget class="Gui::PrefCheckBox" name="ActivateOverlay">
          <property name="toolTip">
           <string>Activate overlay handling of dock windows</string>

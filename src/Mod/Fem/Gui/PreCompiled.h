@@ -50,12 +50,15 @@
 #include <vector>
 
 // boost
+#include <boost/algorithm/string.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/lexical_cast.hpp>
 
 #ifdef FC_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #include <windows.h>
 #endif
 
@@ -153,6 +156,7 @@
 #include <SMDSAbs_ElementType.hxx>
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>
+#include <SMESH_MeshEditor.hxx>
 
 // VTK
 #include <vtkCellArray.h>

@@ -51,6 +51,7 @@ void DlgSettingsFemInOutVtkImp::saveSettings()
     hGrp->SetInt("ImportObject", ui->comboBoxVtkImportObject->currentIndex());
 
     ui->comboBoxVtkImportObject->onSave();
+    ui->cb_export_level->onSave();
 }
 
 void DlgSettingsFemInOutVtkImp::loadSettings()
@@ -64,6 +65,9 @@ void DlgSettingsFemInOutVtkImp::loadSettings()
     if (index > -1) {
         ui->comboBoxVtkImportObject->setCurrentIndex(index);
     }
+
+    populateExportLevel();
+    ui->cb_export_level->onRestore();
 }
 
 /**
@@ -79,6 +83,21 @@ void DlgSettingsFemInOutVtkImp::changeEvent(QEvent* e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+void DlgSettingsFemInOutVtkImp::populateExportLevel() const
+{
+    std::list<std::string> values = {"All", "Highest"};
+
+    for (const auto& val : values) {
+        ui->cb_export_level->addItem(QString::fromStdString(val));
+    }
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk");
+    std::string current = hGrp->GetASCII("MeshExportLevel", "Highest");
+    int index = ui->cb_export_level->findText(QString::fromStdString(current));
+    ui->cb_export_level->setCurrentIndex(index);
 }
 
 #include "moc_DlgSettingsFemInOutVtkImp.cpp"

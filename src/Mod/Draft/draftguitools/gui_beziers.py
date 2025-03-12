@@ -55,7 +55,7 @@ class BezCurve(gui_lines.Line):
     """Gui command for the Bézier Curve tool."""
 
     def __init__(self):
-        super().__init__(wiremode=True)
+        super().__init__(mode="wire")
         self.degree = None
 
     def GetResources(self):
@@ -121,11 +121,11 @@ class BezCurve(gui_lines.Line):
                 # if mod(len(cpoints), 2) == 0
                 # then create 2 handle points?
                 self.drawUpdate(self.point)
-                if not self.isWire and len(self.node) == 2:
+                if self.mode == "line" and len(self.node) == 2:
                     self.finish(cont=None, closed=False)
                 if len(self.node) > 2:
                     # does this make sense for a BCurve?
-                    # DNC: allows to close the curve
+                    # DNC: allows one to close the curve
                     # by placing ends close to each other
                     # with tol = Draft tolerance
                     # old code has been to insensitive
@@ -241,7 +241,7 @@ class CubicBezCurve(gui_lines.Line):
     """
 
     def __init__(self):
-        super().__init__(wiremode=True)
+        super().__init__(mode="wire")
         self.degree = 3
         self.old_EnableSelection = True
 
@@ -320,14 +320,14 @@ class CubicBezCurve(gui_lines.Line):
                     # if mod(len(cpoints), 2) == 0
                     # then create 2 handle points?
                     self.drawUpdate(self.point)
-                    if not self.isWire and len(self.node) == 2:
+                    if self.mode == "line" and len(self.node) == 2:
                         self.finish(cont=None, closed=False)
                     # does this make sense for a BCurve?
                     if len(self.node) > 2:
                         # add point to "clicked list"
                         self.node.append(self.point)
                         self.drawUpdate(self.point)
-                        # DNC: allows to close the curve
+                        # DNC: allows one to close the curve
                         # by placing ends close to each other
                         # with tol = Draft tolerance
                         # old code has been to insensitive
@@ -357,13 +357,13 @@ class CubicBezCurve(gui_lines.Line):
                     # if mod(len(cpoints),2) == 0
                     # then create 2 handle points?
                     self.drawUpdate(self.point)
-                    if not self.isWire and len(self.node) == 2:
+                    if self.mode == "line" and len(self.node) == 2:
                         self.finish(cont=None, closed=False)
                     # Does this make sense for a BCurve?
                     if len(self.node) > 2:
                         self.node[-3] = 2 * self.node[-2] - self.node[-1]
                         self.drawUpdate(self.point)
-                        # DNC: allows to close the curve
+                        # DNC: allows one to close the curve
                         # by placing ends close to each other
                         # with tol = Draft tolerance
                         # old code has been to insensitive

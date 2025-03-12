@@ -196,8 +196,6 @@ struct eigen_matrix
 
 BOOST_PYTHON_MODULE(flatmesh)
 {
-    //m.doc() = "functions to unwrapp faces/ meshes";
-
     py::class_<lscmrelax::LscmRelax>("LscmRelax")
         .def(py::init<ColMat<double, 3>, ColMat<long, 3>, std::vector<long>>())
         .def("lscm", &lscmrelax::LscmRelax::lscm)
@@ -208,7 +206,6 @@ BOOST_PYTHON_MODULE(flatmesh)
         .def_readonly("MATRIX", &lscmrelax::LscmRelax::MATRIX)
         .def_readonly("area", &lscmrelax::LscmRelax::get_area)
         .def_readonly("flat_area", &lscmrelax::LscmRelax::get_flat_area)
-//        .def_readonly("flat_vertices", [](lscmrelax::LscmRelax& L){return L.flat_vertices.transpose();}, py::return_value_policy<py::copy_const_reference>())
         .def_readonly("flat_vertices_3D", &lscmrelax::LscmRelax::get_flat_vertices_3D);
 
     py::class_<nurbs::NurbsBase2D>("NurbsBase2D")
@@ -216,7 +213,6 @@ BOOST_PYTHON_MODULE(flatmesh)
         .def_readonly("u_knots", &nurbs::NurbsBase2D::u_knots)
         .def_readonly("weights", &nurbs::NurbsBase2D::weights)
         .def_readonly("degree_u", &nurbs::NurbsBase2D::degree_u)
-//         .def_readonly("v_knots", &nurbs::NurbsBase2D::u_knots)
         .def_readonly("degree_v", &nurbs::NurbsBase2D::degree_u)
         .def("getUVMesh", &nurbs::NurbsBase2D::getUVMesh)
         .def("computeFirstDerivatives", &nurbs::NurbsBase2D::computeFirstDerivatives)

@@ -47,5 +47,5 @@ PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderGeoFeatureGroupPython, Gui::ViewProvid
 /// @endcond
 
 // explicit template instantiation
-template class GuiExport ViewProviderPythonFeatureT<ViewProviderGeoFeatureGroup>;
+template class GuiExport ViewProviderFeaturePythonT<ViewProviderGeoFeatureGroup>;
 }

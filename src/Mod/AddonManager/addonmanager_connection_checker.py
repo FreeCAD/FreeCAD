@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" System for checking the network connection status asynchronously. """
+"""System for checking the network connection status asynchronously."""
 
 import FreeCAD
 

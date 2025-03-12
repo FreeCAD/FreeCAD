@@ -103,7 +103,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>X</string>
+           <string notr="true">X</string>
           </property>
          </widget>
         </item>
@@ -139,7 +139,7 @@
         <item row="1" column="0" colspan="2">
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Y</string>
+           <string notr="true">Y</string>
           </property>
          </widget>
         </item>
