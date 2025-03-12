@@ -31,8 +31,6 @@
 # include <QTransform>
 #endif
 
-#include <ranges>
-
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>

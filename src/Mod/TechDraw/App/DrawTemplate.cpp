@@ -28,8 +28,6 @@
 # include <QDateTime>
 #endif
 
-#include <ranges>
-
 #include <Base/Console.h>
 
 #include <App/Application.h>

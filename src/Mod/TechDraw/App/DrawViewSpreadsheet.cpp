@@ -29,8 +29,6 @@
 #include <boost_regex.hpp>
 #endif
 
-#include <ranges>
-
 #include <App/Property.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>

@@ -27,8 +27,6 @@
 # include <QGraphicsScene>
 #endif
 
-#include <ranges>
-
 #include <Base/Console.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 
