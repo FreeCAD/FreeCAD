@@ -214,7 +214,7 @@ bool TechDraw::validateSubnameList(const StringVector& subNames, GeometrySet acc
 {
     for (auto& sub : subNames) {
         std::string geometryType = DrawUtil::getGeomTypeFromName(ShapeFinder::getLastTerm(sub));
-        if (acceptableGeometrySet.contains(geometryType)) {
+        if (!acceptableGeometrySet.contains(geometryType)) {
             //this geometry type is not allowed
             return false;
         }
