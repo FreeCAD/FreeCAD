@@ -119,19 +119,19 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
 
     // TODO: Must we make a copy here instead of assigning to const char* ?
     const char* fname = base->getNameInDocument();
-    if (strcmp(msg.pObjectName, fname) != 0)
+    if (strcmp(msg.pObjectName, fname) != 0) {
         return;
+    }
 
-    std::string subName(msg.pSubName);
+    const std::string subName(msg.pSubName);
     std::vector<std::string> refs = pcDressUp->Base.getSubValues();
-    std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);
 
-    if (f != refs.end()) { //If it's found then it's in the list so we remove it.
-        refs.erase(f);
+    if (const auto f = std::ranges::find(refs, subName); f != refs.end()) {
+        refs.erase(f);  // it's in the list. Remove it
         removeItemFromListWidget(widget, msg.pSubName);
     }
-    else { //if it's not found then it's not yet in the list so we add it.
-        refs.push_back(subName);
+    else {
+        refs.push_back(subName);  // not yet in the list so we add it
         widget->addItem(QString::fromStdString(msg.pSubName));
     }
 

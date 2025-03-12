@@ -136,7 +136,7 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
 
         if (selectionMode == bodyAdd) {
-            if (std::find(bodies.begin(), bodies.end(), pcBody) == bodies.end()) {
+            if (std::ranges::find(bodies, pcBody) == bodies.end()) {
                 bodies.push_back(pcBody);
                 pcBoolean->Group.setValues(std::vector<App::DocumentObject*>());
                 pcBoolean->addObjects(bodies);
@@ -178,13 +178,11 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
         }
         else if (selectionMode == bodyRemove) {
-            std::vector<App::DocumentObject*>::iterator b =
-                std::find(bodies.begin(), bodies.end(), pcBody);
-            if (b != bodies.end()) {
+            if (const auto b = std::ranges::find(bodies, pcBody); b != bodies.end()) {
                 bodies.erase(b);
                 pcBoolean->setObjects(bodies);
 
-                QString internalName = QString::fromStdString(body);
+                const QString internalName = QString::fromStdString(body);
                 for (int row = 0; row < ui->listWidgetBodies->count(); row++) {
                     QListWidgetItem* item = ui->listWidgetBodies->item(row);
                     QString name = item->data(Qt::UserRole).toString();
