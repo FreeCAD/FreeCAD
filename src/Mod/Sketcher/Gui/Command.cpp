@@ -33,6 +33,8 @@
 #include <QWidgetAction>
 #endif
 
+#include <ranges>
+
 #include <App/DocumentObjectGroup.h>
 #include <App/Datums.h>
 #include <Gui/Action.h>
@@ -607,16 +609,15 @@ void CmdSketcherMapSketch::activated(int iMsg)
          *  in its own outlist, so we remove it from the dialog list proactively
          *  rather than wait and generate an error after the fact.
          */
-        auto newEnd = std::remove_if(sketches.begin(), sketches.end(),
+        const auto newEnd = std::ranges::remove_if(sketches,
             [&selectedSketches, &sketchInSelection](App::DocumentObject* obj) {
-                Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(obj);
-                if (sketch && std::find(selectedSketches.begin(),
+                if (const auto sketch = dynamic_cast<Part::Part2DObject*>(obj);sketch && std::ranges::find(selectedSketches.begin(),
                         selectedSketches.end(), sketch) != selectedSketches.end()) {
                     sketchInSelection = true;
                     return true;
                 }
                 return false;
-            });
+            }).begin();
         sketches.erase(newEnd, sketches.end());
 
         if (sketches.empty()) {
@@ -665,8 +666,8 @@ void CmdSketcherMapSketch::activated(int iMsg)
                 throw Base::ValueError(
                     "Unexpected null pointer in CmdSketcherMapSketch::activated");
             }
-            std::vector<App::DocumentObject*> input = part->getOutListRecursive();
-            if (std::find(input.begin(), input.end(), sketch) != input.end()) {
+            if (std::vector<App::DocumentObject*> input = part->getOutListRecursive();
+                std::ranges::find(input, sketch) != input.end()) {
                 throw ExceptionWrongInput(
                     QT_TR_NOOP("Some of the selected objects depend on the sketch to be mapped. "
                                "Circular dependencies are not allowed."));
@@ -685,9 +686,9 @@ void CmdSketcherMapSketch::activated(int iMsg)
         bool bAttach = true;
         bool bCurIncompatible = false;
         // * find out the modes that are compatible with selection.
-        eMapMode curMapMode = eMapMode(sketch->MapMode.getValue());
+        const auto  curMapMode = eMapMode(sketch->MapMode.getValue());
         // * Test if current mode is OK.
-        if (std::find(validModes.begin(), validModes.end(), curMapMode) == validModes.end())
+        if (std::ranges::find(validModes, curMapMode) == validModes.end())
             bCurIncompatible = true;
 
         // * fill in the dialog

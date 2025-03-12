@@ -42,6 +42,8 @@
 #include <Inventor/nodes/SoTranslation.h>
 #endif  // #ifndef _PreComp_
 
+#include <ranges>
+
 #include <Base/Exception.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <Gui/Inventor/SoFCBoundingBox.h>
@@ -570,13 +572,12 @@ void EditModeCoinManager::drawEditMarkers(const std::vector<Base::Vector2d>& Edi
 
     auto supportedsizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_LINE");
 
-    auto defaultmarker =
-        std::find(supportedsizes.begin(), supportedsizes.end(), drawingParameters.markerSize);
+    const auto defaultmarker = std::ranges::find(supportedsizes, drawingParameters.markerSize);
 
     if (defaultmarker != supportedsizes.end()) {
-        auto validAugmentationLevels = std::distance(defaultmarker, supportedsizes.end());
 
-        if (augmentationlevel >= validAugmentationLevels) {
+        if (const auto validAugmentationLevels = std::distance(defaultmarker, supportedsizes.end());
+            augmentationlevel >= validAugmentationLevels) {
             augmentationlevel = validAugmentationLevels - 1;
         }
 

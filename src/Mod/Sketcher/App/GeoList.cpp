@@ -25,6 +25,7 @@
 #include <cassert>
 #endif  // #ifndef _PreComp_
 
+#include <ranges>
 #include <boost/core/ignore_unused.hpp>
 
 #include <Base/Exception.h>
@@ -332,14 +333,12 @@ Sketcher::GeoElementId GeoListModel<T>::getGeoElementIdFromVertexId(int vertexId
 template<typename T>
 int GeoListModel<T>::getVertexIdFromGeoElementId(const Sketcher::GeoElementId& geoelementId) const
 {
-    if (!indexInit) {  // lazy initialised
-        rebuildVertexIndex();
+    if (!indexInit) {
+        rebuildVertexIndex();  // lazy initialised
     }
 
-    auto found =
-        std::find(VertexId2GeoElementId.begin(), VertexId2GeoElementId.end(), geoelementId);
-
-    if (found != VertexId2GeoElementId.end()) {
+    if (const auto found = std::ranges::find(VertexId2GeoElementId, geoelementId);
+        found != VertexId2GeoElementId.end()) {
         return std::distance(found, VertexId2GeoElementId.begin());
     }
 
