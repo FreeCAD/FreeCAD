@@ -31,7 +31,6 @@
 
 #include <thread>
 #include <chrono>
-#include <ranges>
 
 #include <App/Application.h>
 #include <App/Datums.h>

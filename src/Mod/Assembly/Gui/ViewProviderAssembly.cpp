@@ -41,7 +41,6 @@
 #endif
 
 #include <chrono>
-#include <ranges>
 
 #include <App/Link.h>
 #include <App/Document.h>
