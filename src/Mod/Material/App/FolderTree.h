@@ -56,7 +56,7 @@ public:
         _type = type;
     }
 
-    const std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> getFolder() const
+    std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> getFolder() const
     {
         assert(_type == NodeType::FolderNode);
         return _folder;
@@ -87,7 +87,7 @@ public:
         setType(NodeType::DataNode);
         _data = data;
     }
-    void setUUID(const QString uuid)
+    void setUUID(const QString& uuid)
     {
         setType(NodeType::DataNode);
         _uuid = uuid;
