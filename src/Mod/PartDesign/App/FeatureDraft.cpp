@@ -51,8 +51,6 @@
 #include "FeatureDraft.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
-#include "Mod/Part/App/Part2DObject.h"
-#include "App/Placement.h"
 
 
 using namespace PartDesign;
@@ -218,10 +216,10 @@ App::DocumentObjectExecReturn *Draft::execute()
             neutralPlane = gp_Pln(gp_Pnt(b.x, b.y, b.z), gp_Dir(n.x, n.y, n.z));
         } else if (refPlane->isDerivedFrom<App::Plane>()) {
             neutralPlane = Feature::makePlnFromPlane(refPlane);
-        }
-        else if (refPlane->isDerivedFrom<Part::Part2DObject>()) {
+        } if (refPlane->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
             Base::Console().Log("Neutral Plane is Sketcher::SketchObject\n");
-        } else if (refPlane->isDerivedFrom<Part::Feature>()) {
+        }
+        else if (refPlane->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subStrings = NeutralPlane.getSubValues();
             if (subStrings.empty() || subStrings[0].empty())
                 throw Base::ValueError("No neutral plane reference specified");

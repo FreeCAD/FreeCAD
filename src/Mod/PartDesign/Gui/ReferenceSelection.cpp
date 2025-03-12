@@ -29,7 +29,6 @@
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
 # include <QDialog>
-# include <Mod/Sketcher/App/SketchObject.h>
 #endif
 
 #include <App/Document.h>
@@ -64,8 +63,6 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     if (! pObj) {
         return false;
     }
-
-
     PartDesign::Body *body = getBody();
     App::OriginGroupExtension* originGroup = getOriginGroupExtension(body);
 
@@ -92,9 +89,10 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
             return false;
     }
 #endif
+    // Handle selection of geometry elements
     if (Base::Tools::isNullOrEmpty(sSubName)){
-        if (pObj->isDerivedFrom<Sketcher::SketchObject>()) {
-             return type.testFlag(AllowSelection::SKETCH);
+        if (pObj->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
+            return type.testFlag(AllowSelection::SKETCH);
         }
         return type.testFlag(AllowSelection::WHOLE);
     }
@@ -354,13 +352,15 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
     if (!obj) {
         return {};
     }
-    if (PartDesign::Feature::isDatum(obj) || obj->isDerivedFrom<Sketcher::SketchObject>()) {
+
+    if (PartDesign::Feature::isDatum(obj) || obj->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
         return QString::fromLatin1(obj->getNameInDocument());
     }
     else if (!sub.empty() && !sub[0].empty()) {
         return QString::fromLatin1(obj->getNameInDocument()) + QStringLiteral(":") +
                QString::fromLatin1(sub.front().c_str());
     }
+
     return {};
 }
 
@@ -406,7 +406,7 @@ std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & obj
 }
 
 std::string buildLinkSubListPythonStr(const std::vector<App::DocumentObject*> & objs,
-                                      const std::vector<std::string>& subs)
+        const std::vector<std::string>& subs)
 {
     if ( objs.empty() ) {
         return "None";
