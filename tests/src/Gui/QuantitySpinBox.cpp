@@ -86,7 +86,7 @@ private Q_SLOTS:
         QCOMPARE(val2.getFormat().precision, 7);
     }
 
-    void test_DefaultUnitLost()// NOLINT
+    void test_DefaultUnitLost()  // NOLINT
     {
         // Arrange
         auto foundWindow = QTest::qWaitForWindowActive(mainWindow);
