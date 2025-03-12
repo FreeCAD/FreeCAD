@@ -29,6 +29,8 @@
 #include <boost_regex.hpp>
 #endif
 
+#include <ranges>
+
 #include <App/Property.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -331,7 +333,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
                 cell->getAlignment(alignment);
             }
             // skip cell if found in skiplist
-            if (std::find(skiplist.begin(), skiplist.end(), address.toString()) == skiplist.end()) {
+            if (std::ranges::find(skiplist, address.toString()) == skiplist.end()) {
                 result << "    <rect x=\"" << coloffset << "\" y=\"" << rowoffset << "\" width=\""
                        << cellwidth << "\" height=\"" << cellheight << "\" style=\"fill:" << bcolor
                        << ";stroke-width:" << LineWidth.getValue() / getScale()
@@ -388,7 +390,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
 int DrawViewSpreadsheet::colInList(const std::vector<std::string>& list,
                                    const std::string& toFind)
 {
-    auto match = std::find(std::begin(list), std::end(list), toFind);
+    const auto match = std::ranges::find(list, toFind);
     if (match == std::end(list)) {
         return -1; // Error value
     }

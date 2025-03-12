@@ -31,6 +31,8 @@
 # include <QTransform>
 #endif
 
+#include <ranges>
+
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -990,7 +992,7 @@ std::vector<T> QGIView::getObjects(std::vector<int> indexes)
         T object = static_cast<T>(child);
         int target = object->getProjIndex();
         // If child item's index in indexes, then add to results
-        if (std::find(indexes.begin(), indexes.end(), target) != indexes.end()) {
+        if (std::ranges::find(indexes, target) != indexes.end()) {
             result.push_back(object);
         }
     }
