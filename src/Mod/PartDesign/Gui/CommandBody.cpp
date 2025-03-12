@@ -29,8 +29,6 @@
 # include <TopExp_Explorer.hxx>
 #endif
 
-#include <ranges>
-
 #include <App/Document.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>

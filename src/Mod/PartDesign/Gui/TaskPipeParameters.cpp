@@ -28,8 +28,6 @@
 #include <QMetaObject>
 #endif
 
-#include <ranges>
-
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>

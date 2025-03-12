@@ -32,7 +32,6 @@
 #endif
 
 #include <boost/core/ignore_unused.hpp>
-#include <ranges>
 
 #include <App/Document.h>
 #include <Base/Exception.h>

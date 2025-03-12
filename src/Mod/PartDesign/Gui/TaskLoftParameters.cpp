@@ -27,8 +27,6 @@
 #include <QAction>
 #endif
 
-#include <ranges>
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>

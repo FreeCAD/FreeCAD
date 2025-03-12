@@ -29,8 +29,6 @@
 # include <QMessageBox>
 #endif
 
-#include <ranges>
-
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>

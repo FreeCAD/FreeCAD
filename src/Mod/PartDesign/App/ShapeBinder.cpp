@@ -31,7 +31,6 @@
 # include <BRepBuilderAPI_MakeVertex.hxx>
 #endif
 
-#include <ranges>
 #include <unordered_map>
 #include <unordered_set>
 #include <boost/algorithm/string/predicate.hpp>

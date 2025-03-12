@@ -32,7 +32,6 @@
 #include <TopExp_Explorer.hxx>
 #endif
 
-#include <ranges>
 
 #include <boost/algorithm/string/predicate.hpp>
 

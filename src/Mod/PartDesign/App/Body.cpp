@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include <ranges>
-
 #include <App/Document.h>
 #include <App/VarSet.h>
 #include <App/Origin.h>
