@@ -952,7 +952,7 @@ void TaskAttacher::updateListOfModes()
     //first up, remember currently selected mode.
     eMapMode curMode = mmDeactivated;
     auto sel = ui->listOfModes->selectedItems();
-    if (sel.count() > 0)
+    if (!sel.isEmpty())
         curMode = modesInList[ui->listOfModes->row(sel[0])];
 
     //obtain list of available modes:
@@ -1054,7 +1054,7 @@ void TaskAttacher::selectMapMode(eMapMode mmode) {
 Attacher::eMapMode TaskAttacher::getActiveMapMode()
 {
     auto sel = ui->listOfModes->selectedItems();
-    if (sel.count() > 0)
+    if (!sel.isEmpty())
         return modesInList[ui->listOfModes->row(sel[0])];
     else {
         if (this->lastSuggestResult.message == SuggestResult::srOK)
