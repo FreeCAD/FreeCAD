@@ -32,6 +32,8 @@
 #include <sstream>
 #endif
 
+#include <ranges>
+
 #include <Gui/Application.h>
 #include <Gui/Workbench.h>
 #include <Gui/WorkbenchManager.h>
@@ -400,12 +402,12 @@ void DlgSettingsWorkbenchesImp::buildWorkbenchList()
 
 void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled)
 {
-    bool isStartupWb = wbName.toStdString() == _startupModule;
-    bool autoLoad = std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
-        wbName.toStdString()) != _backgroundAutoloadedModules.end();
-    wbListItem* widget = new wbListItem(wbName, enabled, isStartupWb, autoLoad, ui->wbList->count(), this);
+    const bool isStartupWb = wbName.toStdString() == _startupModule;
+    const bool autoLoad = std::ranges::find(_backgroundAutoloadedModules, wbName.toStdString())
+        != _backgroundAutoloadedModules.end();
+    const auto widget = new wbListItem(wbName, enabled, isStartupWb, autoLoad, ui->wbList->count(), this);
     connect(widget, &wbListItem::wbToggled, this, &DlgSettingsWorkbenchesImp::wbToggled);
-    auto wItem = new QListWidgetItem();
+    const auto wItem = new QListWidgetItem();
     wItem->setSizeHint(widget->sizeHint());
     ui->wbList->addItem(wItem);
     ui->wbList->setItemWidget(wItem, widget);

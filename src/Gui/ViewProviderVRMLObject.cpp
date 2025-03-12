@@ -34,6 +34,8 @@
 # include <QFileInfo>
 #endif
 
+#include <ranges>
+
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/VRMLnodes/SoVRMLAnchor.h>
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
@@ -164,7 +166,7 @@ void ViewProviderVRMLObject::addResource(const SbString& url, std::list<std::str
     Base::FileInfo fi(found.getString());
     if (fi.exists()) {
         // add the resource file if not yet listed
-        if (std::find(resources.begin(), resources.end(), found.getString()) == resources.end()) {
+        if (std::ranges::find(resources, found.getString()) == resources.end()) {
             resources.emplace_back(found.getString());
         }
     }
@@ -186,7 +188,7 @@ void ViewProviderVRMLObject::getLocalResources(SoNode* node, std::list<std::stri
         const SbString& url = vrml->getFullURLName();
         if (url.getLength() > 0) {
             // add the resource file if not yet listed
-            if (std::find(resources.begin(), resources.end(), url.getString()) == resources.end()) {
+            if (std::ranges::find(resources, url.getString()) == resources.end()) {
                 resources.emplace_back(url.getString());
             }
 

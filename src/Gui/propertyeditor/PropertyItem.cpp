@@ -39,6 +39,8 @@
 #include <QMenu>
 #endif
 
+#include <ranges>
+
 #include "PropertyItem.h"
 #include "PropertyView.h"
 
@@ -199,7 +201,7 @@ const std::vector<App::Property*>& PropertyItem::getPropertyData() const
 
 bool PropertyItem::hasProperty(const App::Property* prop) const
 {
-    auto it = std::find(propertyItems.begin(), propertyItems.end(), prop);
+    auto it = std::ranges::find(propertyItems, prop);
     return (it != propertyItems.end());
 }
 
@@ -210,7 +212,7 @@ void PropertyItem::assignProperty(const App::Property* prop)
 
 bool PropertyItem::removeProperty(const App::Property* prop)
 {
-    auto it = std::find(propertyItems.begin(), propertyItems.end(), prop);
+    auto it = std::ranges::find(propertyItems, prop);
     if (it != propertyItems.end()) {
         propertyItems.erase(it);
     }

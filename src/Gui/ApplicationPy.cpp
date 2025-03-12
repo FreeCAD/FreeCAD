@@ -34,6 +34,7 @@
 # include <xercesc/util/XMLString.hpp>
 #endif
 
+#include <ranges>
 #include <boost/regex.hpp>
 
 #include <App/DocumentObjectPy.h>
@@ -1626,7 +1627,7 @@ PyObject* ApplicationPy::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
         //get the marker size
         auto sizeList = Gui::Inventor::MarkerBitmaps::getSupportedSizes(marker_arg);
 
-        if (std::find(std::begin(sizeList), std::end(sizeList), defSize) == std::end(sizeList)) {
+        if (std::ranges::find(sizeList, defSize) == std::end(sizeList)) {
             defSize = defaultSize;
         }
 

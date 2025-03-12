@@ -32,6 +32,8 @@
 #include <QPainter>
 #endif
 
+#include <ranges>
+
 #include <App/Application.h>
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
@@ -680,7 +682,7 @@ void PropertyEditor::removeProperty(const App::Property& prop)
     for (PropertyModel::PropertyList::iterator it = propList.begin(); it != propList.end(); ++it) {
         // find the given property in the list and remove it if it's there
         std::vector<App::Property*>::iterator pos =
-            std::find(it->second.begin(), it->second.end(), &prop);
+            std::ranges::find(it->second, &prop);
         if (pos != it->second.end()) {
             it->second.erase(pos);
             // if the last property of this name is removed then also remove the whole group

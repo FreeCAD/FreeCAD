@@ -32,6 +32,8 @@
 # include <QWidget>
 #endif
 
+#include <ranges>
+
 #include <App/Application.h>
 #include <Gui/TextEdit.h>
 #include "Translator.h"
@@ -240,7 +242,7 @@ void Translator::activateLanguage (const char* lang)
     removeTranslators(); // remove the currently installed translators
     d->activatedLanguage = lang;
     TStringList languages = supportedLanguages();
-    if (std::find(languages.begin(), languages.end(), lang) != languages.end()) {
+    if (std::ranges::find(languages, lang) != languages.end()) {
         refresh();
     }
 }
