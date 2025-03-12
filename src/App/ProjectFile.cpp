@@ -363,7 +363,7 @@ Base::Type ProjectFile::getTypeId(const std::string& name) const
     //   <Object type="Mesh::MeshFeature" name="Mesh" />
     // <Objects/>
     if (!xmlDocument) {
-        return Base::Type::badType();
+        return Base::Type::BadType;
     }
 
     DOMNodeList* nodes = xmlDocument->getElementsByTagName(XStrLiteral("Objects").unicodeForm());
@@ -388,7 +388,7 @@ Base::Type ProjectFile::getTypeId(const std::string& name) const
         }
     }
 
-    return Base::Type::badType();
+    return Base::Type::BadType;
 }
 
 std::list<ProjectFile::PropertyFile> ProjectFile::getPropertyFiles(const std::string& name) const
