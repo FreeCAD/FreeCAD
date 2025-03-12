@@ -37,8 +37,6 @@
 #include <Inventor/nodes/SoPointSet.h>
 #endif
 
-#include <ranges>
-
 #include <App/Document.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
