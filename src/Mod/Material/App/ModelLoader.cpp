@@ -163,7 +163,7 @@ void ModelLoader::dereference(const QString& uuid,
     auto childProperties = childYaml[childBase];
     for (auto it = childProperties.begin(); it != childProperties.end(); it++) {
         std::string name = it->first.as<std::string>();
-        if (exclude.count(QString::fromStdString(name)) == 0) {
+        if (!exclude.contains(QString::fromStdString(name))) {
             // showYaml(it->second);
             if (!parentProperties[name]) {
                 parentProperties[name] = it->second;
@@ -261,7 +261,7 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
     auto yamlProperties = yamlModel[base];
     for (auto it = yamlProperties.begin(); it != yamlProperties.end(); it++) {
         std::string propName = it->first.as<std::string>();
-        if (exclude.count(QString::fromStdString(propName)) == 0) {
+        if (!exclude.contains(QString::fromStdString(propName))) {
             // showYaml(it->second);
             auto yamlProp = yamlProperties[propName];
             auto propDisplayName = yamlValue(yamlProp, "DisplayName", "");
@@ -304,7 +304,7 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
             }
 
             auto key = std::pair<QString, QString>(uuid, QString::fromStdString(propName));
-            if (inheritances->count(key) > 0) {
+            if (inheritances->contains(key)) {
                 property.setInheritance((*inheritances)[key]);
             }
 
