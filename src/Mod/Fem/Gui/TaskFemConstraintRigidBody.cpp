@@ -28,6 +28,8 @@
 #include <sstream>
 #endif
 
+#include <ranges>
+
 #include <App/Document.h>
 #include <Gui/Command.h>
 #include <Gui/Selection/SelectionObject.h>
@@ -289,8 +291,7 @@ void TaskFemConstraintRigidBody::addToSelection()
         for (size_t subIt = 0; subIt < (subNames.size());
              ++subIt) {  // for every selected sub element
             bool addMe = true;
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+            for (auto itr = std::ranges::find(SubElements, subNames[subIt]);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
@@ -361,8 +362,7 @@ void TaskFemConstraintRigidBody::removeFromSelection()
 
         for (size_t subIt = 0; subIt < (subNames.size());
              ++subIt) {  // for every selected sub element
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+            for (auto itr = std::ranges::find(SubElements, subNames[subIt]);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),

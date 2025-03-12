@@ -29,6 +29,8 @@
 #include <sstream>
 #endif
 
+#include <ranges>
+
 #include <Gui/Command.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintSpring.h>
@@ -147,9 +149,7 @@ void TaskFemConstraintSpring::addToSelection()
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
                 return;
             }
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -196,9 +196,7 @@ void TaskFemConstraintSpring::removeFromSelection()
         const App::DocumentObject* obj = it.getObject();
 
         for (const auto& subName : subNames) {  // for every selected sub element
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that

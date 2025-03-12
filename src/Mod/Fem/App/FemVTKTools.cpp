@@ -66,6 +66,7 @@
 #include <vtkXMLUnstructuredGridWriter.h>
 #endif
 
+#include <ranges>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -1533,7 +1534,7 @@ void readResults(std::ifstream& ifstr,
                 for (auto it = sub.begin(); it != sub.end(); it += 12, ++countScaPos) {
                     valueFromLine(it, 12, value);
                     // search if value is scalar or vector/matrix component
-                    auto pos = std::find(scalarPos.begin(), scalarPos.end(), countScaPos);
+                    auto pos = std::ranges::find(scalarPos, countScaPos);
                     if (pos == scalarPos.end()) {
                         vecValues.emplace_back(value);
                     }
@@ -1552,7 +1553,7 @@ void readResults(std::ifstream& ifstr,
             for (auto it = sub.begin(); it != sub.end(); it += 12) {
                 valueFromLine(it, 12, value);
                 // search if value is scalar or vector/matrix component
-                auto pos = std::find(scalarPos.begin(), scalarPos.end(), countScaPos);
+                auto pos = std::ranges::find(scalarPos, countScaPos);
                 if (pos == scalarPos.end()) {
                     vecValues.emplace_back(value);
                 }
