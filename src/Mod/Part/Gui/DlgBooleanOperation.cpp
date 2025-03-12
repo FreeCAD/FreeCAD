@@ -28,6 +28,8 @@
 # include <TopoDS_Shape.hxx>
 #endif
 
+#include <ranges>
+
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <App/Application.h>
@@ -134,9 +136,8 @@ void DlgBooleanOperation::slotCreatedObject(const App::DocumentObject& obj)
 void DlgBooleanOperation::slotChangedObject(const App::DocumentObject& obj,
                                             const App::Property& prop)
 {
-    std::list<const App::DocumentObject*>::iterator it;
-    it = std::find(observe.begin(), observe.end(), &obj);
-    if (it != observe.end() && prop.is<Part::PropertyPartShape>()) {
+    if (const auto it = std::ranges::find(observe, &obj);
+        it != observe.end() && prop.is<Part::PropertyPartShape>()) {
         const TopoDS_Shape& shape = static_cast<const Part::PropertyPartShape&>(prop).getValue();
         if (!shape.IsNull()) {
             Gui::Document* activeGui = Gui::Application::Instance->getDocument(obj.getDocument());
