@@ -139,7 +139,7 @@ void ModelProperty::validate(const ModelProperty& other) const
         Base::Console().Log("Remote property column count %d\n", other._columns.size());
         throw InvalidProperty("Model property column counts don't match");
     }
-    for (int i = 0; i < _columns.size(); i++) {
+    for (size_t i = 0; i < _columns.size(); i++) {
         _columns[i].validate(other._columns[i]);
     }
 }
