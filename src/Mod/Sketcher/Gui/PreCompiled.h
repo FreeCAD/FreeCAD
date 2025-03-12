@@ -71,16 +71,12 @@
 #include <gp_Pnt.hxx>
 
 // Qt
-#ifndef __QtAll__
 #include <Gui/QtAll.h>
-#endif
 
 #include <QWidgetAction>
 
 // all of Inventor
-#ifndef __InventorAll__
 #include <Gui/InventorAll.h>
-#endif
 
 #endif  //_PreComp_
 

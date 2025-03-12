@@ -937,11 +937,7 @@ bool QuarterWidget::viewportEvent(QEvent* event)
     }
     else if (event->type() == QEvent::Wheel) {
         auto wheel = static_cast<QWheelEvent*>(event);
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-        QPoint pos = wheel->pos();
-#else
         QPoint pos = wheel->position().toPoint();
-#endif
         QGraphicsItem* item = itemAt(pos);
         if (!item) {
             QGraphicsView::viewportEvent(event);

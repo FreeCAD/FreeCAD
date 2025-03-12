@@ -454,10 +454,6 @@ FileOptionsDialog::FileOptionsDialog( QWidget* parent, Qt::WindowFlags fl )
 
     setOption(QFileDialog::DontUseNativeDialog);
 
-    // This is an alternative to add the button to the grid layout
-    //QDialogButtonBox* box = this->findChild<QDialogButtonBox*>();
-    //box->addButton(extensionButton, QDialogButtonBox::ActionRole);
-
     //search for the grid layout and add the new button
     auto grid = this->findChild<QGridLayout*>();
     grid->addWidget(extensionButton, 4, 2, Qt::AlignLeft);
@@ -570,11 +566,6 @@ void FileOptionsDialog::setOptionsWidget(FileOptionsDialog::ExtensionPosition po
         grid->addWidget(extensionWidget, rows, 0, -1, -1);
         setMinimumWidth(extensionWidget->width());
     }
-
-    // Instead of resizing the dialog we can fix the layout size.
-    // This however, doesn't work nicely when the extension widget
-    // is higher/wider than the dialog.
-    //grid->setSizeConstraint(QLayout::SetFixedSize);
 
     oldSize = size();
     w->hide();
@@ -912,11 +903,7 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
     // connections
     connect(buttonBox, &QDialogButtonBox::accepted, this, &SelectModule::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &SelectModule::reject);
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(group, qOverload<int>(&QButtonGroup::buttonClicked), this, &SelectModule::onButtonClicked);
-#else
     connect(group, &QButtonGroup::idClicked, this, &SelectModule::onButtonClicked);
-#endif
 }
 
 SelectModule::~SelectModule() = default;

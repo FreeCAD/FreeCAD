@@ -74,7 +74,7 @@
 # include <Inventor/nodes/SoTranslation.h>
 # include <QBitmap>
 # include <QEventLoop>
-#if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6,6,0) && QT_VERSION >= QT_VERSION_CHECK(5,13,0)
+#if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6,6,0)
 # include <QGuiApplication>
 # define HAS_QTBUG_95434
 #endif
