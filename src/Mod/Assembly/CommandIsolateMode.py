@@ -1,7 +1,6 @@
 import FreeCAD as App
 
 from PySide.QtCore import QT_TRANSLATE_NOOP, QEvent
-from ContextCreatorLibrary import ContextCreationSystem
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -19,6 +18,9 @@ __title__ = "Isolate Mode"
 __author__ = "drwho495"
 __url__ = "https://github.com/drwho495/FreeCAD-Context-Fork"
 
+def validPart(part):
+    return hasattr(part, 'Placement') and hasattr(part, 'Shape')
+
 class IsolateManager(QtWidgets.QMainWindow):
     def __init__(self, part, assembly, allParts):
         super().__init__()
@@ -28,6 +30,7 @@ class IsolateManager(QtWidgets.QMainWindow):
             print("Closed Dialog")
 
         if part == None:
+
             self.error("You need to select a part!")
             return False
         if assembly == None:
@@ -66,23 +69,31 @@ class IsolateManager(QtWidgets.QMainWindow):
     def sliderChanged(self):
         self.isolateUI.transparencyBox.setText(str(self.isolateUI.transparencySlider.sliderPosition()))
 
+    def setSinglePartTrans(self, part, transp):
+        if transp >= 99:
+            part.Visibility = False
+        else:
+            part.Visibility = True
+
+            if not hasattr(part.ViewObject, "Transparency"):
+                for item in part.OutList:
+                    if hasattr(item.ViewObject, "Transparency"):
+                        item.ViewObject.Transparency = transp
+                        break
+            else:
+                part.ViewObject.Transparency = transp
+
     def setTransparency(self, transp):
         for part in self.allParts:
-            if transp >= 99:
-                part.Visibility = False
-            else:
-                part.Visibility = True
-
             try:
-                if not hasattr(part.ViewObject, "Transparency"):
-                    for item in part.OutList:
-                        if hasattr(item.ViewObject, "Transparency"):
-                            item.ViewObject.Transparency = transp
-                            break
-                else:
-                    part.ViewObject.Transparency = transp
+                # Laggy #
+                # if hasattr(part, "OutListRecursive"):
+                    # for item in part.OutListRecursive:
+                        # self.setSinglePartTrans(item, transp)
+
+                self.setSinglePartTrans(part, transp)
             except:
-                print(part.Label) # for debugging
+                print("Unable to set part: ", part.Label, "'s transparency.") # for debugging
 
     def isInt(self, number):
         try:
@@ -147,6 +158,7 @@ class IsolateGuiManager(QtCore.QObject):
         self.insertionStack = []  # used to handle cancellation of insertions.
         self.buildPartList()
         selection = Gui.Selection.getSelection()
+        print(selection)
 
         if len(selection) != 0:
             if self.getPartFromSelection(selection) != None:
@@ -163,16 +175,16 @@ class IsolateGuiManager(QtCore.QObject):
         selPart = sel[0]
         part = None
 
-        for item in selPart.InListRecursive:
-            if item.TypeId == "App::Part":
-                part = item
-                break
-            elif item.TypeId == "App::Link" and hasattr(item, "Placement") and hasattr(item, "Shape") and item.InList[0].TypeId != "App::Part":
-                print(item.InList[0].TypeId != "App::Part")
-                part = item # ^^^ Checks if the link can be used and if a App::Part is not its parent ^^^ #
-                break
+        if validPart(selPart):
+            part = selPart
+        else:
+            for item in selPart.InListRecursive:
+                print(item)
 
-        print(part.TypeId)
+                if validPart(item): # Make sure the part can be isolated
+                        part = item # ^^^ Checks if the link can be used and if a App::Part is not its parent ^^^ #
+                        break
+
         return part
 
     def onItemClicked(self, item):
