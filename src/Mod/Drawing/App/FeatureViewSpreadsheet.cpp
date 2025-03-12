@@ -26,8 +26,6 @@
 #include <sstream>
 #endif
 
-#include <ranges>
-
 #include <App/PropertyUnits.h>
 #include <Base/Exception.h>
 #include <Mod/Spreadsheet/App/Cell.h>
