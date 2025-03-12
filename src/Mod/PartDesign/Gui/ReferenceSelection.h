@@ -42,10 +42,10 @@ class ReferenceSelection : public Gui::SelectionFilterGate
 
 public:
     ReferenceSelection(const App::DocumentObject* support_,
-                       AllowSelectionFlags type)
+                       AllowSelectionFlags allowedTypes)
         : Gui::SelectionFilterGate(nullPointer())
         , support(support_)
-        , type(type)
+        , type(allowedTypes)
     {
     }
     /**

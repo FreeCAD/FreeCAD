@@ -216,6 +216,8 @@ App::DocumentObjectExecReturn *Draft::execute()
             neutralPlane = gp_Pln(gp_Pnt(b.x, b.y, b.z), gp_Dir(n.x, n.y, n.z));
         } else if (refPlane->isDerivedFrom<App::Plane>()) {
             neutralPlane = Feature::makePlnFromPlane(refPlane);
+        } else if (refPlane->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
+            Base::Console().Log("Neutral Plane is Sketcher::SketchObject\n");
         } else if (refPlane->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subStrings = NeutralPlane.getSubValues();
             if (subStrings.empty() || subStrings[0].empty())
