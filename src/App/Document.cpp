@@ -1259,10 +1259,11 @@ void Document::writeObjectDeps(const std::vector<DocumentObject*>& objs,
                                             DocumentObject::OutListNoXLinked);
         // clang-format on
 
+        auto objName = o->getNameInDocument();
         writer.Stream() << writer.ind()
                         << "<" << fcElementObjectDeps
                         << " " << fcAttrDepObjName << "=\""
-                        << o->getNameInDocument() << "\" "
+                        << (objName ? objName : "") << "\" "
                         << fcAttrDepCount << "=\""
                         << outList.size();
         if (outList.empty()) {
@@ -1276,11 +1277,11 @@ void Document::writeObjectDeps(const std::vector<DocumentObject*>& objs,
         writer.Stream() << "\">\n";
         writer.incInd();
         for (auto dep : outList) {
-            auto name = dep ? dep->getNameInDocument() : "";
+            auto depName = dep ? dep->getNameInDocument() : "";
             writer.Stream() << writer.ind()
                             << "<" << fcElementObjectDep
                             << " " << fcAttrDepObjName << "=\""
-                            << (name ? name : "") << "\"/>\n";
+                            << (depName ? depName : "") << "\"/>\n";
         }
         writer.decInd();
         writer.Stream() << writer.ind() << "</" << fcElementObjectDeps << ">\n";
@@ -1368,6 +1369,14 @@ void Document::writeObjects(const std::vector<DocumentObject*>& objs,
 
     writeObjectData(objs, writer);
     writer.decInd();  // indentation for 'Objects count'
+
+    // check for errors
+    if (writer.hasFailed()) {
+        std::cerr << "Output stream is in error state. As a result the "
+                     "Document.xml file may be incomplete.\n";
+        // reset the error flags to try to safe the data files
+        writer.clear();
+    }
 }
 
 struct DepInfo
