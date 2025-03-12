@@ -847,9 +847,7 @@ class ArchTest(unittest.TestCase):
         wall.Normal = wp.axis
 
         # Add the boundary
-        Gui.Selection.clearSelection()
-        Gui.Selection.addSelection(wall, "Face1")
-        wallBoundary = Gui.Selection.getSelectionEx()
+        wallBoundary = [[wall, ["Face1"]]]
         Arch.addSpaceBoundaries(App.ActiveDocument.Space, wallBoundary)
         App.ActiveDocument.recompute()  # To recalculate area
 
