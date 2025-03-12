@@ -1846,7 +1846,7 @@ int SketchObject::delGeometries(InputIt first, InputIt last)
     // if a GeoId has internal geometry, it must delete internal geometries too
     for (auto c : Constraints.getValues()) {
         if (c->Type == InternalAlignment) {
-            auto pos = std::find(sGeoIds.begin(), sGeoIds.end(), c->Second);
+            auto pos = std::ranges::find(sGeoIds, c->Second);
 
             if (pos != sGeoIds.end()) {
                 sGeoIds.push_back(c->First);
@@ -1854,7 +1854,7 @@ int SketchObject::delGeometries(InputIt first, InputIt last)
         }
     }
 
-    std::sort(sGeoIds.begin(), sGeoIds.end());
+    std::ranges::sort(sGeoIds);
     // eliminate duplicates
     auto newend = std::unique(sGeoIds.begin(), sGeoIds.end());
     sGeoIds.resize(std::distance(sGeoIds.begin(), newend));
@@ -1866,7 +1866,7 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
 {
     std::vector<int> sGeoIds(GeoIds);
 
-    std::sort(sGeoIds.begin(), sGeoIds.end());
+    std::ranges::sort(sGeoIds);
     if (sGeoIds.empty())
         return 0;
 
@@ -4925,7 +4925,7 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 }
             }
             // Return true if definedGeo is in geoIdList, false otherwise
-            return std::find(geoIdList.begin(), geoIdList.end(), definedGeo) != geoIdList.end();
+            return std::ranges::find(geoIdList, definedGeo) != geoIdList.end();
         }
         // Return true if not internal aligned, indicating it should always be copied
         return true;
@@ -5358,8 +5358,7 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList, const Base::Vector3
                         }
                     }
 
-                    if (std::find(newgeoIdList.begin(), newgeoIdList.end(), definedGeo)
-                        == newgeoIdList.end()) {
+                    if (std::ranges::find(newgeoIdList, definedGeo) == newgeoIdList.end()) {
                         // the first element setting the reference is an internal alignment
                         // geometry, wherein the geometry it defines is not part of the copy
                         // operation.
@@ -5414,7 +5413,7 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList, const Base::Vector3
                         }
                     }
 
-                    if (std::find(newgeoIdList.begin(), newgeoIdList.end(), definedGeo)
+                    if (std::ranges::find(newgeoIdList, definedGeo)
                         == newgeoIdList.end()) {
                         // we should not copy internal alignment geometry, unless the element they
                         // define is also mirrored
@@ -7184,7 +7183,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     indexInNew[Sketcher::BSplineKnotPoint].reserve(knots.size());
 
     for (const auto& pole : poles) {
-        const auto it = std::find(newPoles.begin(), newPoles.end(), pole);
+        const auto it = std::ranges::find(newPoles, pole);
         indexInNew[Sketcher::BSplineControlPoint].emplace_back(it - newPoles.begin());
     }
     std::replace(indexInNew[Sketcher::BSplineControlPoint].begin(),
@@ -7193,7 +7192,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
                  -1);
 
     for (const auto& knot : knots) {
-        const auto it = std::find(newKnots.begin(), newKnots.end(), knot);
+        const auto it = std::ranges::find(newKnots, knot);
         indexInNew[Sketcher::BSplineKnotPoint].emplace_back(it - newKnots.begin());
     }
     std::replace(indexInNew[Sketcher::BSplineKnotPoint].begin(),
@@ -7319,7 +7318,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     std::vector<int> poleIndexInNew(poles.size(), -1);
 
     for (size_t j = 0; j < poles.size(); j++) {
-        const auto it = std::find(newPoles.begin(), newPoles.end(), poles[j]);
+        const auto it = std::ranges::find(newPoles, poles[j]);
         poleIndexInNew[j] = it - newPoles.begin();
     }
     std::replace(poleIndexInNew.begin(), poleIndexInNew.end(), int(newPoles.size()), -1);
@@ -7329,7 +7328,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     std::vector<int> knotIndexInNew(knots.size(), -1);
 
     for (size_t j = 0; j < knots.size(); j++) {
-        const auto it = std::find(newKnots.begin(), newKnots.end(), knots[j]);
+        const auto it = std::ranges::find(newKnots, knots[j]);
         knotIndexInNew[j] = it - newKnots.begin();
     }
     std::replace(knotIndexInNew.begin(), knotIndexInNew.end(), int(newKnots.size()), -1);
