@@ -35,8 +35,6 @@
 #include <TopoDS_Edge.hxx>
 #endif
 
-#include <ranges>
-
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>

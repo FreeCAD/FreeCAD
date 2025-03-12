@@ -51,7 +51,6 @@
 #include <future>
 #include <iostream>
 #include <limits>
-#include <ranges>
 
 #include "GCS.h"
 #include "qp_eq.h"

@@ -35,8 +35,6 @@
 #include <cmath>
 #endif
 
-#include <ranges>
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Expression.h>

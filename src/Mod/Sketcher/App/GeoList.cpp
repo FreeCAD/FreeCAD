@@ -25,7 +25,6 @@
 #include <cassert>
 #endif  // #ifndef _PreComp_
 
-#include <ranges>
 #include <boost/core/ignore_unused.hpp>
 
 #include <Base/Exception.h>

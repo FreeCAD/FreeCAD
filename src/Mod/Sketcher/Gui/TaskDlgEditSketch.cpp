@@ -22,8 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include <ranges>
-
 #include <Gui/Command.h>
 
 #include "TaskDlgEditSketch.h"

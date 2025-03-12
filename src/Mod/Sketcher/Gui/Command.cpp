@@ -33,8 +33,6 @@
 #include <QWidgetAction>
 #endif
 
-#include <ranges>
-
 #include <App/DocumentObjectGroup.h>
 #include <App/Datums.h>
 #include <Gui/Action.h>

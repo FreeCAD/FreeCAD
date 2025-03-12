@@ -78,8 +78,6 @@
 
 #endif
 
-#include <ranges>
-
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_Algo.hxx>
 #include <HLRBRep_HLRToShape.hxx>

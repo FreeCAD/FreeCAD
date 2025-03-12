@@ -40,8 +40,6 @@
 #include <QTextStream>
 #endif
 
-#include <ranges>
-
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>

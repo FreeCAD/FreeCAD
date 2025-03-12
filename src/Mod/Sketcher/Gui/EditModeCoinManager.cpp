@@ -42,8 +42,6 @@
 #include <Inventor/nodes/SoTranslation.h>
 #endif  // #ifndef _PreComp_
 
-#include <ranges>
-
 #include <Base/Exception.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <Gui/Inventor/SoFCBoundingBox.h>

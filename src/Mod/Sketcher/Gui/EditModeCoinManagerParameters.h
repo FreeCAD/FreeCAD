@@ -25,7 +25,6 @@
 
 #include <map>
 #include <vector>
-#include <ranges>
 
 #include <QString>
 
