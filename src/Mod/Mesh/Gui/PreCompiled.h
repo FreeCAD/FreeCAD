@@ -55,7 +55,7 @@
 #include <Gui/QtAll.h>
 
 // Inventor
-
+#include <Gui/InventorAll.h>
 
 #elif defined(FC_OS_WIN32)
 #ifndef NOMINMAX
