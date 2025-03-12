@@ -171,9 +171,7 @@ set(PartDesignHoleDefines
     Resources/Hole/iso7046.json
 )
 
-include_directories(
-        ${EIGEN3_INCLUDE_DIR}
-)
+
 add_custom_target(PartDesignHole ALL SOURCES
     ${PartDesignHoleDefines}
 )
