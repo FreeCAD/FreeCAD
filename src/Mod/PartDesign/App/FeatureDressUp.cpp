@@ -32,6 +32,7 @@
 #include <TopExp_Explorer.hxx>
 #endif
 
+#include <ranges>
 
 #include <boost/algorithm/string/predicate.hpp>
 
@@ -158,7 +159,7 @@ void DressUp::getContinuousEdges(Part::TopoShape TopShape, std::vector< std::str
                 buf << "Edge";
                 buf << id;
 
-                if(std::find(SubNames.begin(),SubNames.end(),buf.str()) == SubNames.end())
+                if (std::ranges::find(SubNames, buf.str()) == SubNames.end())
                 {
                     SubNames.push_back(buf.str());
                 }

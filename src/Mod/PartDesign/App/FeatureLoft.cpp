@@ -32,6 +32,7 @@
 #endif
 
 #include <boost/core/ignore_unused.hpp>
+#include <ranges>
 
 #include <App/Document.h>
 #include <Base/Exception.h>
@@ -72,11 +73,11 @@ Loft::getSectionShape(const char *name,
                       size_t expected_size)
 {
     std::vector<TopoShape> shapes;
-    // Be smart. If part of a sketch is selected, use the entire sketch unless it is a single vertex - 
+    // Be smart. If part of a sketch is selected, use the entire sketch unless it is a single vertex -
     // backward compatibility (#16630)
     auto subName = subs.empty() ? "" : subs.front();
     auto useEntireSketch = obj->isDerivedFrom<Part::Part2DObject>() &&  subName.find("Vertex") != 0;
-    if (subs.empty() || std::find(subs.begin(), subs.end(), std::string()) != subs.end() || useEntireSketch ) {
+    if (subs.empty() || std::ranges::find(subs, std::string()) != subs.end() || useEntireSketch ) {
         shapes.push_back(Part::Feature::getTopoShape(obj));
         if (shapes.back().isNull())
             FC_THROWM(Part::NullShapeException, "Failed to get shape of "
