@@ -90,6 +90,7 @@ class IsolateManager(QtWidgets.QMainWindow):
                 # if hasattr(part, "OutListRecursive"):
                     # for item in part.OutListRecursive:
                         # self.setSinglePartTrans(item, transp)
+                #########
 
                 self.setSinglePartTrans(part, transp)
             except:

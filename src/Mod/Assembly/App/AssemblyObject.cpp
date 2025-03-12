@@ -1061,7 +1061,7 @@ bool AssemblyObject::isPartConnected(App::DocumentObject* obj)
 void AssemblyObject::jointParts(std::vector<App::DocumentObject*> joints)
 {
     for (auto* joint : joints) {
-        if (!joint) {
+        if (!joint || joint->getPropertyByName<App::PropertyBool>("MissingReference")->getValue() == true) {
             continue;
         }
 
