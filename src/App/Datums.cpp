@@ -26,8 +26,6 @@
 #include <string>
 #endif
 
-#include <ranges>
-
 #include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>

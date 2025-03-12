@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include <ranges>
->
 #include <Base/Tools.h>
 
 #include "Document.h"

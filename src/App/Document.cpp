@@ -82,7 +82,6 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <random>
 #include <unordered_map>
 #include <unordered_set>
-#include <ranges>
 
 #include <QCryptographicHash>
 #include <QCoreApplication>

@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #include <QFile>
-#include <ranges>
 
 #include "Branding.h"
 

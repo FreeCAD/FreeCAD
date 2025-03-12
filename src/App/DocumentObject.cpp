@@ -32,8 +32,6 @@
 #include <string>
 #endif
 
-#include <ranges>
-
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
 #include <Base/Matrix.h>

@@ -24,7 +24,6 @@
 
 #include <boost/graph/graphviz.hpp>
 #include <random>
-#include <ranges>
 
 #include "Application.h"
 #include "Document.h"
