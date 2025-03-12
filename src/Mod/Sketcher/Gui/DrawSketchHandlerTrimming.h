@@ -164,6 +164,11 @@ public:
             return;
         }
 
+        // FIXME: Attempt to avoid double trimming. This messes up the cursor.
+        // Possibly `mouseMove` gets triggered after first trim, but before preselection,
+        // resulting in another edge being deleted.
+        Gui::Selection().rmvPreselect();
+
         const Part::Geometry* geo = sketchgui->getSketchObject()->getGeometry(GeoId);
         if (geo->isDerivedFrom<Part::GeomTrimmedCurve>() || geo->is<Part::GeomCircle>()
             || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomBSplineCurve>()) {
