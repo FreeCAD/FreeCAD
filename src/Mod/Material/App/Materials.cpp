@@ -454,7 +454,7 @@ void MaterialProperty::validate(const MaterialProperty& other) const {
     if (_columns.size() != other._columns.size()) {
         throw InvalidProperty("Model property column counts don't match");
     }
-    for (int i = 0; i < _columns.size(); i++) {
+    for (size_t i = 0; i < _columns.size(); i++) {
         _columns[i].validate(other._columns[i]);
     }
 }
