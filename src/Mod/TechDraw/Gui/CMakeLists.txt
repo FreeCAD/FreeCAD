@@ -123,8 +123,6 @@ SET(TechDrawGui_SRCS
     TaskProjGroup.ui
     TaskProjGroup.cpp
     TaskProjGroup.h
-    DlgStringListEditor.cpp
-    DlgStringListEditor.h
     DlgPageChooser.ui
     DlgPageChooser.cpp
     DlgPageChooser.h
