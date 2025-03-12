@@ -27,8 +27,6 @@
 #include <vector>
 #endif
 
-#include <ranges>
-
 #include <Base/Matrix.h>
 #include <Base/Sequencer.h>
 

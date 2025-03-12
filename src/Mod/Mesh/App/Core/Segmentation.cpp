@@ -26,8 +26,6 @@
 #include <cmath>
 #endif
 
-#include <ranges>
-
 #include "Algorithm.h"
 #include "Approximation.h"
 #include "Segmentation.h"

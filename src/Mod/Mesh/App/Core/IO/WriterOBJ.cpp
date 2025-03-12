@@ -22,8 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include <ranges>
-
 #include "Core/Iterator.h"
 #include <Base/Console.h>
 #include <Base/Sequencer.h>

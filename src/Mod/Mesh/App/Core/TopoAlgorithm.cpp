@@ -30,8 +30,6 @@
 #include <utility>
 #endif
 
-#include <ranges>
-
 #include <Base/Console.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
 
