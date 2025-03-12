@@ -438,6 +438,8 @@ void QGTracker::setPoint(std::vector<QPointF> pts)
         Base::Console().Message("QGTracker::setPoint - no pts!\n");
         return;
     }
+    prepareGeometryChange();
+
     constexpr float baseVertexSize = 7.0F;
 
     auto point = new QGIVertex(-1);
