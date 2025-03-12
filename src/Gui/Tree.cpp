@@ -101,7 +101,7 @@ static bool isVisibilityIconEnabled() {
 }
 
 static bool isOnlyNameColumnDisplayed() {
-    return TreeParams::getHideInternalNames() 
+    return TreeParams::getHideInternalNames()
         && TreeParams::getHideColumn();
 }
 
@@ -488,7 +488,7 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
 
     // If only the first column is shown, we'll trim the color background when
     // rendering as transparent overlay.
-    bool trimColumnSize = isOnlyNameColumnDisplayed(); 
+    bool trimColumnSize = isOnlyNameColumnDisplayed();
 
     if (index.column() == 0) {
         if (tree->testAttribute(Qt::WA_NoSystemBackground)
@@ -550,7 +550,7 @@ public:
 
     QSize sizeHint() const override
     {
-        QSize size = QLineEdit::sizeHint(); 
+        QSize size = QLineEdit::sizeHint();
         QFontMetrics fm(font());
         int availableWidth = parentWidget()->width() - geometry().x(); // Calculate available width
         int margin = 2 * (style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1)
@@ -2779,7 +2779,7 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
                 }
             }
             else {
-                if (std::find(draggedObjects.begin(), draggedObjects.end(), obj) == draggedObjects.end()) {
+                if (std::ranges::find(draggedObjects, obj) == draggedObjects.end()) {
                     sortedObjList.push_back(obj);
                 }
             }
@@ -2908,7 +2908,7 @@ void TreeWidget::onOpenFileLocation()
     }
     param += QDir::toNativeSeparators(filePath);
     success = QProcess::startDetached(QStringLiteral("explorer.exe"), param);
-#else 
+#else
     success = QProcess::startDetached(QStringLiteral("xdg-open"), {filePath});
 #endif
 
@@ -4992,8 +4992,9 @@ DocumentObjectItem* DocumentItem::findItem(
     else {
         if (select) {
             item->selected += 2;
-            if (std::find(item->mySubs.begin(), item->mySubs.end(), subname) == item->mySubs.end())
+            if (std::ranges::find(item->mySubs, subname) == item->mySubs.end()) {
                 item->mySubs.emplace_back(subname);
+            }
         }
         return item;
     }
@@ -5006,7 +5007,7 @@ DocumentObjectItem* DocumentItem::findItem(
             TREE_LOG("sub object not found " << item->getName() << '.' << name.c_str());
         if (select) {
             item->selected += 2;
-            if (std::find(item->mySubs.begin(), item->mySubs.end(), subname) == item->mySubs.end())
+            if (std::ranges::find(item->mySubs, subname) == item->mySubs.end())
                 item->mySubs.emplace_back(subname);
         }
         return item;
@@ -5051,7 +5052,7 @@ DocumentObjectItem* DocumentItem::findItem(
         // Select the current object instead.
         TREE_TRACE("element " << subname << " not found");
         item->selected += 2;
-        if (std::find(item->mySubs.begin(), item->mySubs.end(), subname) == item->mySubs.end())
+        if (std::ranges::find(item->mySubs, subname) == item->mySubs.end())
             item->mySubs.emplace_back(subname);
     }
     return res;

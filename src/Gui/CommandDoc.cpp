@@ -106,9 +106,8 @@ void StdCmdOpen::activated(int iMsg)
     formatList += QLatin1String(" (");
 
     std::vector<std::string> filetypes = App::GetApplication().getImportTypes();
-    std::vector<std::string>::iterator it;
     // Make sure FCStd is the very first fileformat
-    it = std::find(filetypes.begin(), filetypes.end(), "FCStd");
+    auto it = std::ranges::find(filetypes, "FCStd");
     if (it != filetypes.end()) {
         filetypes.erase(it);
         filetypes.insert(filetypes.begin(), "FCStd");
@@ -498,7 +497,7 @@ void StdCmdExport::activated(int iMsg)
             lastExportUsedGeneratedFilename = true;
         else
             lastExportUsedGeneratedFilename = false;
-            
+
         lastExportFullPath = fileName;
         lastActiveDocument = getActiveGuiDocument();
         lastExportedObject = selection.front();
