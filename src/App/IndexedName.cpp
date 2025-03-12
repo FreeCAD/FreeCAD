@@ -71,7 +71,7 @@ std::pair<int, int> getIntegerSuffix(const char* name, int nameLength)
 void IndexedName::set(const char* name,
                       int length,
                       const std::vector<const char*>& allowedNames,
-                      bool allowOthers)
+                      const bool allowOthers)
 {
     // Storage for names that we weren't given external storage for
     static std::unordered_set<ByteArray, ByteArrayHasher> NameSet;

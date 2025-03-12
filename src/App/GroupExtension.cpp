@@ -23,6 +23,8 @@
 
 #include "PreCompiled.h"
 
+#include <ranges>
+>
 #include <Base/Tools.h>
 
 #include "Document.h"
@@ -268,7 +270,7 @@ bool GroupExtension::recursiveHasObject(const DocumentObject* obj,
 
             auto ext = child->getExtensionByType<GroupExtension>();
 
-            if (std::find(history.begin(), history.end(), ext) != history.end()) {
+            if (std::ranges::find(history, ext) != history.end()) {
                 throw Base::RuntimeError(
                     "Cyclic dependencies detected: Search cannot be performed");
             }
