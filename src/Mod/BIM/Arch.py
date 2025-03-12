@@ -69,12 +69,10 @@ def makeAxis(num=1,size=1000,name=None):
     if FreeCAD.GuiUp:
         ArchAxis._ViewProviderAxis(obj.ViewObject)
     if num:
-        dist = []
+        dist = [0,]
         angles = []
         for i in range(num):
-            if i == 0:
-                dist.append(0)
-            else:
+            if i != 0:
                 dist.append(float(size))
             angles.append(float(0))
         obj.Distances = dist
