@@ -22,8 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include <ranges>
-
 #include <App/Document.h>
 
 #include "BodyBase.h"

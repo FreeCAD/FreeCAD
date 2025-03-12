@@ -28,8 +28,6 @@
 # include <TopoDS_Shape.hxx>
 #endif
 
-#include <ranges>
-
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <App/Application.h>

@@ -61,7 +61,6 @@
 #include <deque>
 #include <boost/geometry.hpp>
 #include <utility>
-#include <ranges>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>

@@ -46,8 +46,6 @@
 # include <Inventor/details/SoLineDetail.h>
 #endif
 
-#include <ranges>
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
