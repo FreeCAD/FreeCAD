@@ -30,8 +30,6 @@
 #include <sstream>
 #endif
 
-#include <ranges>
-
 #include <App/DocumentObject.h>
 #include <App/Datums.h>
 #include <Gui/Command.h>

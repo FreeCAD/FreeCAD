@@ -28,8 +28,6 @@
 #include <vtkPointData.h>
 #endif
 
-#include <ranges>
-
 #include <App/Document.h>
 
 #include "FemPostFilter.h"

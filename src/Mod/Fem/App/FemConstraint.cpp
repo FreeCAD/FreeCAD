@@ -56,8 +56,6 @@
 #endif
 #endif
 
-#include <ranges>
-
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>

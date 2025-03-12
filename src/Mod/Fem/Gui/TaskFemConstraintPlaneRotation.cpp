@@ -32,8 +32,6 @@
 #include <sstream>
 #endif
 
-#include <ranges>
-
 #include <App/DocumentObject.h>
 #include <Gui/Command.h>
 #include <Gui/Selection/SelectionObject.h>

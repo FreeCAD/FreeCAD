@@ -50,8 +50,6 @@
 #include <QTextStream>
 #endif
 
-#include <ranges>
-
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>

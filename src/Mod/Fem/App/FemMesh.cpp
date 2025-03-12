@@ -60,8 +60,6 @@
 #include <boost/tokenizer.hpp>  //to simplify parsing input files we use the boost lib
 #endif
 
-#include <ranges>
-
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>

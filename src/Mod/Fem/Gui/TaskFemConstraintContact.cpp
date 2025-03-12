@@ -31,8 +31,6 @@
 #include <sstream>
 #endif
 
-#include <ranges>
-
 #include "Mod/Fem/App/FemConstraintContact.h"
 #include <Gui/Command.h>
 #include <Gui/Selection/SelectionObject.h>

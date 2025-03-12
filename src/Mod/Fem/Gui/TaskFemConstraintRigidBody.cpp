@@ -28,8 +28,6 @@
 #include <sstream>
 #endif
 
-#include <ranges>
-
 #include <App/Document.h>
 #include <Gui/Command.h>
 #include <Gui/Selection/SelectionObject.h>

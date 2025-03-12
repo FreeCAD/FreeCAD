@@ -29,8 +29,6 @@
 #include <sstream>
 #endif
 
-#include <ranges>
-
 #include <Gui/Command.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintSpring.h>
