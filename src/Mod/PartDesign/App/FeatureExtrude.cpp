@@ -493,7 +493,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
     double L2 = 0;
     if (method == "TwoLengths") {
         L2 = Length2.getValue();
-        if (std::abs(L2) < Precision::Confusion()) {
+        if (std::abs(L2) < Precision::Confusion() && std::abs(L) == 0) {
             if (addSubType == Type::Additive)
 				return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Length2 too small"));
@@ -502,6 +502,14 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     QT_TRANSLATE_NOOP("Exception", "Length2 too small"));
         }
     }
+    if (std::abs(L + L2) < Precision::Confusion()) {
+        if (addSubType == Type::Additive)
+                return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Cannot create a pad with zero total length."));
+            else
+                return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Cannot create a pocket with zero total length."));
+        }
 
     Part::Feature* obj = nullptr;
     TopoShape sketchshape;
