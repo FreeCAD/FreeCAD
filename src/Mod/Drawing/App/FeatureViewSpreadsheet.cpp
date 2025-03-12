@@ -256,7 +256,7 @@ App::DocumentObjectExecReturn* FeatureViewSpreadsheet::execute(void)
                 cell->getAlignment(alignment);
             }
             // skip cell if found in skiplist
-            if (std::find(skiplist.begin(), skiplist.end(), address.toString()) == skiplist.end()) {
+            if (std::ranges::find(skiplist, address.toString()) == skiplist.end()) {
                 result << "    <rect x=\"" << coloffset << "\" y=\"" << rowoffset << "\" width=\""
                        << cellwidth << "\" height=\"" << cellheight << "\" style=\"fill:" << bcolor
                        << ";stroke-width:" << LineWidth.getValue() / Scale.getValue() << ";stroke:#"
