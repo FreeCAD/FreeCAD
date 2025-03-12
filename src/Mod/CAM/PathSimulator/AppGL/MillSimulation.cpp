@@ -24,7 +24,6 @@
 #include "OpenGlWrapper.h"
 #include <vector>
 #include <iostream>
-#include <ranges>
 
 #define DRAG_ZOOM_FACTOR 10
 
