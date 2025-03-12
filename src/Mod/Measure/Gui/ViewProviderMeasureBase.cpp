@@ -40,8 +40,6 @@
 #include <Inventor/SbViewportRegion.h>
 #endif
 
-#include <ranges>
-
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Gui/BitmapFactory.h>
