@@ -37,6 +37,7 @@
 #include <QVBoxLayout>
 #endif
 
+#include "ViewProviderAnnotation.h"
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -45,7 +46,6 @@
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
-#include "DlgStringListEditor.h"
 #include "QGCustomText.h"
 #include "QGIViewAnnotation.h"
 #include "Rez.h"
@@ -181,20 +181,18 @@ void QGIViewAnnotation::rotateView()
 
 void QGIViewAnnotation::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 {
-    Q_UNUSED(event);
-
+    // forwards the double click on the page to the view provider, as of the item in the tree was
+    // double clicked, just like the QGILeaderLine
     TechDraw::DrawViewAnnotation* annotation =
         dynamic_cast<TechDraw::DrawViewAnnotation*>(getViewObject());
     if (!annotation) {
         return;
     }
-
-    const std::vector<std::string>& values = annotation->Text.getValues();
-    DlgStringListEditor dlg(values, Gui::getMainWindow());
-    dlg.setWindowTitle(QStringLiteral("Annotation Text Editor"));
-    if (dlg.exec() == QDialog::Accepted) {
-        App::GetApplication().setActiveTransaction("Set Annotation Text");
-        annotation->Text.setValues(dlg.getTexts());
-        App::GetApplication().closeActiveTransaction();
+    auto ViewProvider = dynamic_cast<ViewProviderAnnotation*>(getViewProvider(annotation));
+    if (!ViewProvider) {
+        qWarning() << "QGIViewAnnotation::mouseDoubleClickEvent: No valid view provider";
+        return;
     }
+    ViewProvider->startDefaultEditMode();
+    QGraphicsItem::mouseDoubleClickEvent(event);
 }
