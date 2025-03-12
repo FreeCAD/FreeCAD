@@ -30,6 +30,8 @@
 #include <cstdio>
 #endif
 
+#include <ranges>
+
 #include "Sequencer.h"
 
 using namespace Base;
@@ -51,8 +53,7 @@ struct SequencerP
     }
     static void removeInstance(SequencerBase* sb)
     {
-        std::vector<SequencerBase*>::iterator it;
-        it = std::find(_instances.begin(), _instances.end(), sb);
+        const auto it = std::ranges::find(_instances, sb);
         _instances.erase(it);
     }
     static SequencerBase& getInstance()

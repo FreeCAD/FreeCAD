@@ -41,6 +41,8 @@
 #include <sys/types.h>
 #endif
 
+#include <ranges>
+
 #include "FileInfo.h"
 #include "Exception.h"
 #include "Stream.h"
@@ -333,7 +335,7 @@ bool FileInfo::hasExtension(const char* Ext) const
 
 bool FileInfo::hasExtension(std::initializer_list<const char*> Exts) const
 {
-    return std::any_of(Exts.begin(), Exts.end(), [this](const char* ext) {
+    return std::ranges::any_of(Exts, [this](const char* ext) {
         return hasExtension(ext);
     });
 }
