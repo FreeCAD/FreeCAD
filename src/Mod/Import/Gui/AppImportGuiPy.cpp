@@ -35,8 +35,6 @@
 #pragma clang diagnostic ignored "-Wextra-semi"
 #endif
 
-#include <ranges>
-
 #include <OSD_Exception.hxx>
 #include <Standard_Version.hxx>
 #include <TColStd_IndexedDataMapOfStringString.hxx>

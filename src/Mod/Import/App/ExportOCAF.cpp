@@ -43,8 +43,6 @@
 #include <gp_Trsf.hxx>
 #endif
 
-#include <ranges>
-
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Part.h>
