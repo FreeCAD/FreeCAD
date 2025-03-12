@@ -47,8 +47,6 @@
 # include <sstream>
 #endif
 
-#include <ranges>
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Exception.h>

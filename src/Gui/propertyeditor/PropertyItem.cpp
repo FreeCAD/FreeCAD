@@ -39,8 +39,6 @@
 #include <QMenu>
 #endif
 
-#include <ranges>
-
 #include "PropertyItem.h"
 #include "PropertyView.h"
 

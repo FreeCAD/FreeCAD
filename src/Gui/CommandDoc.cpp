@@ -35,7 +35,6 @@
 
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/replace.hpp>
-#include <ranges>
 
 #include <App/AutoTransaction.h>
 #include <App/Document.h>

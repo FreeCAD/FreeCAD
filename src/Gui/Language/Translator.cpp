@@ -32,8 +32,6 @@
 # include <QWidget>
 #endif
 
-#include <ranges>
-
 #include <App/Application.h>
 #include <Gui/TextEdit.h>
 #include "Translator.h"

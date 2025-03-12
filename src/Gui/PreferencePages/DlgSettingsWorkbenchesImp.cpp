@@ -32,8 +32,6 @@
 #include <sstream>
 #endif
 
-#include <ranges>
-
 #include <Gui/Application.h>
 #include <Gui/Workbench.h>
 #include <Gui/WorkbenchManager.h>

@@ -29,8 +29,6 @@
 # include <QRegularExpressionMatch>
 #endif
 
-#include <ranges>
-
 #include "Dialogs/DlgCreateNewPreferencePackImp.h"
 #include "ui_DlgCreateNewPreferencePack.h"
 

@@ -36,8 +36,6 @@
 # include <boost/filesystem.hpp>
 #endif
 
-#include <ranges>
-
 #include <App/Document.h>
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>

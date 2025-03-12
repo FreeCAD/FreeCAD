@@ -32,8 +32,6 @@
 #include <QPainter>
 #endif
 
-#include <ranges>
-
 #include <App/Application.h>
 #include <App/AutoTransaction.h>
 #include <App/Document.h>

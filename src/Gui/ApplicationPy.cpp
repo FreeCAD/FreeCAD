@@ -34,7 +34,6 @@
 # include <xercesc/util/XMLString.hpp>
 #endif
 
-#include <ranges>
 #include <boost/regex.hpp>
 
 #include <App/DocumentObjectPy.h>

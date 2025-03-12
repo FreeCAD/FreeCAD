@@ -44,8 +44,6 @@
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include <ranges>
-
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>

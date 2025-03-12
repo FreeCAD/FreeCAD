@@ -43,8 +43,6 @@
 # include <QVBoxLayout>
 #endif
 
-#include <ranges>
-
 #include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Sequencer.h>

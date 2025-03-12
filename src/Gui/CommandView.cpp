@@ -43,8 +43,6 @@
 # include <QTextStream>
 #endif
 
-#include <ranges>
-
 #include <App/ComplexGeoDataPy.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>

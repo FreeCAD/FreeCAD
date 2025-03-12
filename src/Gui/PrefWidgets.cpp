@@ -27,7 +27,6 @@
 #endif
 
 #include <cstring>
-#include <ranges>
 
 #include <Base/Console.h>
 #include <Base/Tools.h>

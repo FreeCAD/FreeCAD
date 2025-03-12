@@ -34,8 +34,6 @@
 # include <QFileInfo>
 #endif
 
-#include <ranges>
-
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/VRMLnodes/SoVRMLAnchor.h>
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
