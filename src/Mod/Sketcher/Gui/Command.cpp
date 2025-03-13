@@ -609,8 +609,8 @@ void CmdSketcherMapSketch::activated(int iMsg)
          */
         const auto newEnd = std::ranges::remove_if(sketches,
             [&selectedSketches, &sketchInSelection](App::DocumentObject* obj) {
-                if (const auto sketch = dynamic_cast<Part::Part2DObject*>(obj);sketch && std::ranges::find(selectedSketches.begin(),
-                        selectedSketches.end(), sketch) != selectedSketches.end()) {
+                if (const auto sketch = dynamic_cast<Part::Part2DObject*>(obj);
+                    sketch && std::ranges::find(selectedSketches, sketch) != selectedSketches.end()) {
                     sketchInSelection = true;
                     return true;
                 }
