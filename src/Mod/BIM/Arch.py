@@ -772,29 +772,58 @@ def makeSpace(objects=None,baseobj=None,name=None):
     """makeSpace([objects],[baseobj],[name]): Creates a space object from the given objects.
     Objects can be one document object, in which case it becomes the base shape of the space
     object, or a list of selection objects as got from getSelectionEx(), or a list of tuples
-    (object, subobjectname)"""
+    [ (object, [subobjectname, ...]), ... ]"""
 
     import ArchSpace
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
-    obj.Label = name if name else translate("Arch","Space")
-    ArchSpace._Space(obj)
+    space = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
+    space.Label = name if name else translate("Arch","Space")
+    ArchSpace._Space(space)
     if FreeCAD.GuiUp:
-        ArchSpace._ViewProviderSpace(obj.ViewObject)
+        ArchSpace._ViewProviderSpace(space.ViewObject)
     if baseobj:
         objects = baseobj
     if objects:
         if not isinstance(objects,list):
             objects = [objects]
-        if len(objects) == 1:
-            obj.Base = objects[0]
-            if FreeCAD.GuiUp:
-                objects[0].ViewObject.hide()
+
+        isSingleObject = lambda objs: len(objs) == 1
+
+        # We assume that the objects list is not a mixed set. The type of the first
+        # object will determine the type of the set.
+        # Input to this function can come into three different formats. First convert it
+        # to a common format: [ (<Part::PartFeature>, ["Face1", ...]), ... ]
+        if (hasattr(objects[0], "isDerivedFrom") and
+                objects[0].isDerivedFrom("Gui::SelectionObject")):
+            # Selection set: convert to common format
+            # [<SelectionObject>, ...]
+            objects = [(obj.Object, obj.SubElementNames) for obj in objects]
+        elif (isinstance(objects[0], tuple) or isinstance(objects[0], list)):
+            # Tuple or list of object with subobjects: pass unmodified
+            # [ (<Part::PartFeature>, ["Face1", ...]), ... ]
+            pass
         else:
-            obj.Proxy.addSubobjects(obj,objects)
-    return obj
+            # Single object: assume anything else passed is a single object with no
+            # boundaries.
+            # [ <Part::PartFeature> ]
+            objects = [(objects[0], [])]
+
+        if isSingleObject(objects):
+            # For a single object, having boundaries is determined by them being defined
+            # as more than one subelement (e.g. two faces)
+            boundaries = [obj for obj in objects if len(obj[1]) > 1]
+        else:
+            boundaries = [obj for obj in objects if obj[1]]
+
+        if isSingleObject(objects) and not boundaries:
+            space.Base = objects[0][0]
+            if FreeCAD.GuiUp:
+                objects[0][0].ViewObject.hide()
+        else:
+            space.Proxy.addSubobjects(space, boundaries)
+    return space
 
 
 def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=None):
