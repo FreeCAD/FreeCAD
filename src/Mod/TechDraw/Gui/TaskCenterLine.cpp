@@ -158,11 +158,7 @@ void TaskCenterLine::setUiConnect()
     connect(ui->qsbHorizShift, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onShiftHorizChanged);
     connect(ui->qsbExtend, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onExtendChanged);
     connect(ui->qsbRotate, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onRotationChanged);
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(ui->bgOrientation, qOverload<int>(&QButtonGroup::buttonClicked), this, &TaskCenterLine::onOrientationChanged);
-#else
     connect(ui->bgOrientation, &QButtonGroup::idClicked, this, &TaskCenterLine::onOrientationChanged);
-#endif
 }
 
 void TaskCenterLine::setUiPrimary()
@@ -449,7 +445,6 @@ void TaskCenterLine::createCenterLine()
 
 void TaskCenterLine::updateOrientation()
 {
-//    Base::Console().Message("TCL::updateOrientation()\n");
     if (!m_cl) {
         return;
     }
@@ -613,7 +608,6 @@ TaskDlgCenterLine::~TaskDlgCenterLine()
 
 void TaskDlgCenterLine::update()
 {
-//    widget->updateTask();
 }
 
 void TaskDlgCenterLine::modifyStandardButtons(QDialogButtonBox* box)

@@ -121,13 +121,18 @@ class BIM_Material:
             buttonClear.clicked.connect(self.onClearSearch)
             lay.addLayout(searchLayout)
 
+            createButtonsLayoutBox = QtGui.QGroupBox(
+                translate("BIM", " Material operations"), self.dlg
+            )
+            createButtonsLayoutBox.setObjectName("matOpsGrpBox")
+            createButtonsLayout = QtGui.QGridLayout()
+
             # create
-            createLayout = QtGui.QHBoxLayout()
             buttonCreate = QtGui.QPushButton(
                 translate("BIM", "Create new material"), self.dlg
             )
             buttonCreate.setIcon(QtGui.QIcon(":/icons/Arch_Material.svg"))
-            createLayout.addWidget(buttonCreate)
+            createButtonsLayout.addWidget(buttonCreate, 0, 0)
             buttonCreate.clicked.connect(self.onCreate)
 
             # create multi
@@ -135,9 +140,8 @@ class BIM_Material:
                 translate("BIM", "Create new multi-material"), self.dlg
             )
             buttonMulti.setIcon(QtGui.QIcon(":/icons/Arch_Material_Multi.svg"))
-            createLayout.addWidget(buttonMulti)
+            createButtonsLayout.addWidget(buttonMulti, 0, 1)
             buttonMulti.clicked.connect(self.onMulti)
-            lay.addLayout(createLayout)
 
             # merge dupes
             opsLayout = QtGui.QHBoxLayout()
@@ -145,7 +149,7 @@ class BIM_Material:
                 translate("BIM", "Merge duplicates"), self.dlg
             )
             buttonMergeDupes.setIcon(QtGui.QIcon(":/icons/view-refresh.svg"))
-            opsLayout.addWidget(buttonMergeDupes)
+            createButtonsLayout.addWidget(buttonMergeDupes, 1, 0)
             buttonMergeDupes.clicked.connect(self.onMergeDupes)
 
             # delete unused
@@ -153,9 +157,11 @@ class BIM_Material:
                 translate("BIM", "Delete unused"), self.dlg
             )
             buttonDeleteUnused.setIcon(QtGui.QIcon(":/icons/delete.svg"))
-            opsLayout.addWidget(buttonDeleteUnused)
+            createButtonsLayout.addWidget(buttonDeleteUnused, 1, 1)
             buttonDeleteUnused.clicked.connect(self.onDeleteUnused)
-            lay.addLayout(opsLayout)
+
+            createButtonsLayoutBox.setLayout(createButtonsLayout)
+            lay.addWidget(createButtonsLayoutBox)
 
             # add standard buttons
             buttonBox = QtGui.QDialogButtonBox(self.dlg)

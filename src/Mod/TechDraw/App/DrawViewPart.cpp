@@ -68,6 +68,7 @@
 #include <App/Document.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 
@@ -312,7 +313,7 @@ GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
     TopoDS_Shape localShape = copier.Shape();
 
     gp_Pnt gCentroid = ShapeUtils::findCentroid(localShape, getProjectionCS());
-    m_saveCentroid = DU::toVector3d(gCentroid);
+    m_saveCentroid = Base::convertTo<Base::Vector3d>(gCentroid);
     m_saveShape = centerScaleRotate(this, localShape, m_saveCentroid);
 
     return buildGeometryObject(localShape, getProjectionCS());
@@ -1042,6 +1043,7 @@ bool DrawViewPart::hasGeometry() const
 
     const std::vector<TechDraw::VertexPtr>& verts = getVertexGeometry();
     const std::vector<TechDraw::BaseGeomPtr>& edges = getEdgeGeometry();
+
     return !(verts.empty() && edges.empty());
 }
 
@@ -1074,7 +1076,7 @@ Base::Vector3d DrawViewPart::localVectorToDirection(const Base::Vector3d localUn
 {
     //    Base::Console().Message("DVP::localVectorToDirection() - localUnit: %s\n", DrawUtil::formatVector(localUnit).c_str());
     gp_Ax2 cs = localVectorToCS(localUnit);
-    return DrawUtil::toVector3d(cs.Direction());
+    return Base::convertTo<Base::Vector3d>(cs.Direction());
 }
 
 gp_Ax2 DrawViewPart::getProjectionCS(const Base::Vector3d pt) const
@@ -1099,7 +1101,7 @@ gp_Ax2 DrawViewPart::getRotatedCS(const Base::Vector3d basePoint) const
 {
     //    Base::Console().Message("DVP::getRotatedCS() - %s - %s\n", getNameInDocument(), Label.getValue());
     gp_Ax2 unrotated = getProjectionCS(basePoint);
-    gp_Ax1 rotationAxis(DU::to<gp_Pnt>(basePoint), unrotated.Direction());
+    gp_Ax1 rotationAxis(Base::convertTo<gp_Pnt>(basePoint), unrotated.Direction());
     double angleRad = Rotation.getValue() * M_PI / 180.0;
     gp_Ax2 rotated = unrotated.Rotated(rotationAxis, -angleRad);
     return rotated;
@@ -1126,7 +1128,7 @@ Base::Vector3d DrawViewPart::getCurrentCentroid() const
     }
     gp_Ax2 cs = getProjectionCS();
     gp_Pnt gCenter = ShapeUtils::findCentroid(shape, cs);
-    return DU::toVector3d(gCenter);
+    return Base::convertTo<Base::Vector3d>(gCenter);
 }
 
 std::vector<DrawViewSection*> DrawViewPart::getSectionRefs() const
@@ -1467,6 +1469,33 @@ void DrawViewPart::resetReferenceVerts()
     //    Base::Console().Message("DVP::resetReferenceVerts() %s\n", getNameInDocument());
     removeAllReferencesFromGeom();
     addReferencesToGeom();
+}
+
+void DrawViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
+{
+    if (prop == &Direction) {
+        // Direction was PropertyVector but is now PropertyDirection
+        App::PropertyVector tmp;
+        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            auto tmpValue = tmp.getValue();
+            Direction.setValue(tmpValue);
+        }
+        return;
+    }
+
+    if (prop == &XDirection) {
+        // XDirection was PropertyFloat but is now PropertyLength
+        App::PropertyVector tmp;
+        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            auto tmpValue = tmp.getValue();
+            XDirection.setValue(tmpValue);
+        }
+        return;
+    }
 }
 
 // debugging ----------------------------------------------------------------------------
