@@ -4119,6 +4119,10 @@ bool SketchObject::deriveConstraintsForPieces(const int oldId,
             return true;
         }
 
+        if (conId == GeoEnum::GeoUndef) {
+            // nothing further to do
+            return false;
+        }
         Base::Vector3d conPoint(getPoint(conId, conPos));
         double conParam;
         auto* geoAsCurve = static_cast<const Part::GeomCurve*>(geo);
