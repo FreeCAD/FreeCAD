@@ -217,21 +217,17 @@ if(FREECAD_USE_SHIBOKEN)
         SYSTEM
         ${SHIBOKEN_INCLUDE_DIR}
     )
-    if (SHIBOKEN_LIBRARY)
-        list(APPEND FreeCADGui_LIBS
-            ${SHIBOKEN_LIBRARY}
+       
+    if (TARGET Shiboken2::libshiboken)
+    	list(APPEND FreeCADGui_LIBS
+    		Shiboken2::libshiboken
         )
-    else (SHIBOKEN_LIBRARY)
-        if (TARGET Shiboken2::libshiboken)
-            list(APPEND FreeCADGui_LIBS
-                Shiboken2::libshiboken
-            )
-        elseif (TARGET Shiboken6::libshiboken)
-            list(APPEND FreeCADGui_LIBS
-                Shiboken6::libshiboken
-            )
-        endif (TARGET Shiboken2::libshiboken)
-    endif (SHIBOKEN_LIBRARY)
+    elseif (TARGET Shiboken6::libshiboken)
+        list(APPEND FreeCADGui_LIBS
+    		Shiboken6::libshiboken
+        )
+    endif()
+        
 endif(FREECAD_USE_SHIBOKEN)
 
 if(FREECAD_USE_PYSIDE)
@@ -240,26 +236,19 @@ if(FREECAD_USE_PYSIDE)
         ${PYSIDE_INCLUDE_DIR}
         ${PYSIDE_INCLUDE_DIR}/QtCore
         ${PYSIDE_INCLUDE_DIR}/QtGui
-    )
-    if (PYSIDE_LIBRARY)
-        list(APPEND FreeCADGui_LIBS
-            ${PYSIDE_LIBRARY}
-        )
-    else (PYSIDE_LIBRARY)
-        if (TARGET PySide2::pyside2)
-            list(APPEND FreeCADGui_LIBS
-                PySide2::pyside2
-            )
-        elseif (TARGET PySide6::pyside6)
-            list(APPEND FreeCADGui_LIBS
-                PySide6::pyside6
-            )
-        endif ()
-    endif (PYSIDE_LIBRARY)
-    include_directories(
-        SYSTEM
         ${PYSIDE_INCLUDE_DIR}/QtWidgets
     )
+
+    if (TARGET PySide2::pyside2)
+    	list(APPEND FreeCADGui_LIBS
+    		PySide2::pyside2
+    	)
+    elseif (TARGET PySide6::pyside6)
+        list(APPEND FreeCADGui_LIBS
+     	   PySide6::pyside6
+        )
+    endif()
+ 
     add_definitions(-DHAVE_PYSIDE${PYSIDE_MAJOR_VERSION})
 endif(FREECAD_USE_PYSIDE)
 
