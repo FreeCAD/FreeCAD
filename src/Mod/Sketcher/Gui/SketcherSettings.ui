@@ -200,7 +200,7 @@ Requires to re-enter edit mode to take effect.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxLineGroup">
         <property name="toolTip">
-         <string>Use the line command group instead of separate commands. This create a command group in which you have the polyline and line tool.</string>
+         <string>If checked, show a command group button that contains both the polyline and line commands. Otherwise, each command has its own separate button.</string>
         </property>
         <property name="text">
          <string>Group polyline and line</string>
