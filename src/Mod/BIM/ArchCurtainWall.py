@@ -193,9 +193,7 @@ class CurtainWall(ArchComponent.Component):
 
     def execute(self,obj):
 
-        if self.clone(obj):
-            return
-        if not self.ensureBase(obj):
+        if self.clone(obj) or not self.ensureBase(obj):
             return
 
         import Part,DraftGeomUtils
