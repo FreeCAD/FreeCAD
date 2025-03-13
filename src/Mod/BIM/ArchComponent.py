@@ -365,14 +365,6 @@ class Component(ArchIFC.IfcProduct):
                 if obj == o.Host:
                     ilist.append(o)
         return list(ilist)
-        # ilist2 = []
-        # for o in ilist:
-        #     #TODO : ilist2 will be iqual to ilist. Is this code nescessary?
-        #     if hasattr(o,"MoveWithHost") and o.MoveWithHost:
-        #         ilist2.append(o)
-        #     else:
-        #         ilist2.append(o)
-        # return ilist2
 
     def getParentHeight(self,obj):
         """Get a height value from hosts.
