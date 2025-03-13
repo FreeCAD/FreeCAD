@@ -103,7 +103,7 @@ class _Axis:
             angles = obj.Angles
         if distances and obj.Length.Value:
             if angles and len(distances) == len(angles):
-                for i in range(len(distances)):
+                for i, _ in enumerate(distances):
                     if hasattr(obj.Length,"Value"):
                         l = obj.Length.Value
                     else:
@@ -752,9 +752,7 @@ class _AxisTaskPanel:
 
         "transfers the values from the widget to the object"
 
-        d = []
-        a = []
-        l = []
+        d,a,l = [],[],[]
         for i in range(self.tree.topLevelItemCount()):
             it = self.tree.findItems(str(i+1),QtCore.Qt.MatchExactly,0)[0]
             if (remove is None) or (remove != i):
