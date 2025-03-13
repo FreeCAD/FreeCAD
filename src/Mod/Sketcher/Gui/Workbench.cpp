@@ -306,7 +306,7 @@ inline void SketcherAddWorkspaceLines<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
     }
     else {
         geom << "Sketcher_CreatePolyline"
-            << "Sketcher_CreateLine";
+             << "Sketcher_CreateLine";
     }
 }
 
