@@ -280,33 +280,40 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 "App::PropertyLinkList",
                 "BaseShapes",
                 "Path",
-                QT_TRANSLATE_NOOP("App::Property", "Additional base objects to be engraved"),
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Additional base objects to be engraved"
+                ),
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
 
-        obj.addProperty(
-            "App::PropertyBool",
-            "OptimizeMovements",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Optimize movements"),
-        )
+        if not hasattr(obj, "OptimizeMovements"):
 
-        obj.addProperty(
-            "App::PropertyBool",
-            "FinishingPass",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Add finishing pass"),
-        )
+            obj.addProperty(
+                "App::PropertyBool",
+                "OptimizeMovements",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Optimize movements"),
+            )
+            obj.OptimizeMovements = False
 
-        obj.addProperty(
-            "App::PropertyDistance",
-            "FinishingPassZOffset",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Finishing pass Z offset"),
-        )
+        if not hasattr(obj, "FinishingPass"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "FinishingPass",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Add finishing pass"),
+            )
+            obj.FinishingPass = False
 
-        obj.FinishingPass = False
-        obj.FinishingPassZOffset = "0.00"
+        if not hasattr(obj, "FinishingPassZOffset"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "FinishingPassZOffset",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Finishing pass Z offset"),
+            )
+
+            obj.FinishingPassZOffset = "0.00"
 
     def initOperation(self, obj):
         """initOperation(obj) ... create vcarve specific properties."""
@@ -314,7 +321,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             "App::PropertyFloat",
             "Discretize",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The deflection value for discretizing arcs"),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The deflection value for discretizing arcs"
+            ),
         )
         obj.addProperty(
             "App::PropertyFloat",
@@ -334,7 +343,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         )
 
         obj.Colinear = 10.0
-        obj.Discretize = 0.01
+        obj.Discretize = 0.1
         obj.Tolerance = Path.Preferences.defaultGeometryTolerance()
         self.setupAdditionalProperties(obj)
 
@@ -367,7 +376,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                     dist = ptv[-1].distanceToPoint(ptv[0])
                     if dist < FreeCAD.Base.Precision.confusion():
                         Path.Log.debug(
-                            "Removing bad carve point: {} from polygon origin".format(dist)
+                            "Removing bad carve point: {} from polygon origin".format(
+                                dist
+                            )
                         )
                         del ptv[-1]
                 ptv.append(ptv[0])
@@ -390,13 +401,17 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                         e.Color = PRIMARY
                 else:
                     e.Color = SECONDARY
+
+            vd.colorColinear(COLINEAR, obj.Colinear)
+            vd.colorTwins(TWIN)
+
             vd.colorExterior(EXTERIOR1)
             vd.colorExterior(
                 EXTERIOR2,
-                lambda v: not f.isInside(v.toPoint(f.BoundBox.ZMin), obj.Tolerance, True),
+                lambda v: not f.isInside(
+                    v.toPoint(f.BoundBox.ZMin), obj.Tolerance, True
+                ),
             )
-            vd.colorColinear(COLINEAR, obj.Colinear)
-            vd.colorTwins(TWIN)
 
             wires = _collectVoronoiWires(vd)
             wires = _sortVoronoiWires(wires)
@@ -462,7 +477,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 path.append(Path.Command("G0 Z{}".format(obj.SafeHeight.Value)))
                 path.append(
                     Path.Command(
-                        "G0 X{} Y{} Z{}".format(newPosition.x, newPosition.y, obj.SafeHeight.Value)
+                        "G0 X{} Y{} Z{}".format(
+                            newPosition.x, newPosition.y, obj.SafeHeight.Value
+                        )
                     )
                 )
 
@@ -470,7 +487,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             vSpeed = obj.ToolController.VertFeed.Value
             path.append(
                 Path.Command(
-                    "G1 X{} Y{} Z{} F{}".format(newPosition.x, newPosition.y, newPosition.z, vSpeed)
+                    "G1 X{} Y{} Z{} F{}".format(
+                        newPosition.x, newPosition.y, newPosition.z, vSpeed
+                    )
                 )
             )
             for e in wire:
@@ -496,7 +515,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 _maximumUsableDepth = _get_maximumUsableDepth(wires, geom)
                 if _maximumUsableDepth is not None:
                     maximumUsableDepth = _maximumUsableDepth
-                    Path.Log.debug(f"Maximum usable depth for current face: {maximumUsableDepth}")
+                    Path.Log.debug(
+                        f"Maximum usable depth for current face: {maximumUsableDepth}"
+                    )
 
             # first pass
             cutWires(wires, pathlist, obj.OptimizeMovements)
@@ -534,7 +555,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         if obj.ToolController.Tool.CuttingEdgeAngle >= 180.0:
             Path.Log.info(
-                translate("CAM_Vcarve", "Engraver cutting edge angle must be < 180 degrees.")
+                translate(
+                    "CAM_Vcarve", "Engraver cutting edge angle must be < 180 degrees."
+                )
             )
             return
 
@@ -552,9 +575,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
             if not faces:
                 for model in self.model:
-                    if model.isDerivedFrom("Sketcher::SketchObject") or model.isDerivedFrom(
-                        "Part::Part2DObject"
-                    ):
+                    if model.isDerivedFrom(
+                        "Sketcher::SketchObject"
+                    ) or model.isDerivedFrom("Part::Part2DObject"):
                         faces.extend(model.Shape.Faces)
 
             if faces:
@@ -602,10 +625,14 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         """Debug function to display calculated voronoi edges"""
 
         if not getattr(self, "voronoiDebugCache", None):
-            Path.Log.error("debugVoronoi: empty debug cache. Recompute VCarve operation first")
+            Path.Log.error(
+                "debugVoronoi: empty debug cache. Recompute VCarve operation first"
+            )
             return
 
-        vPart = FreeCAD.activeDocument().addObject("App::Part", f"{obj.Name}-VoronoiDebug")
+        vPart = FreeCAD.activeDocument().addObject(
+            "App::Part", f"{obj.Name}-VoronoiDebug"
+        )
 
         wiresToShow = []
 
