@@ -356,7 +356,7 @@ public:
         void erase(const T &vToErase)
         {
             if (!sorted) {
-                data.erase(std::ranges::remove(data, vToErase), data.end());
+                data.erase(std::remove(data.begin(), data.end(), vToErase), data.end());
             }
             else {
                 auto it = std::ranges::lower_bound(data, vToErase);
