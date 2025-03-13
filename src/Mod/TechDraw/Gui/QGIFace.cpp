@@ -162,7 +162,7 @@ void QGIFace::setPrettyNormal() {
     QGIPrimPath::setPrettyNormal();
 }
 
-/// show the face style & colour in pre-select configuration
+/// show the face style & colour in preselect configuration
 void QGIFace::setPrettyPre() {
 //    Base::Console().Message("QGIF::setPrettyPre()\n");
     m_fillStyleCurrent = Qt::SolidPattern;
