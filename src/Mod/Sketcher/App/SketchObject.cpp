@@ -3627,7 +3627,7 @@ std::unique_ptr<Constraint> transformPreexistingConstraintForTrim(const SketchOb
      */
     // TODO: Symmetric and distance constraints (sometimes together) can be changed to something
     std::unique_ptr<Constraint> newConstr;
-    if (!constr->involvesGeoId(cuttingGeoId)
+    if (cuttingGeoId == GeoEnum::GeoUndef || !constr->involvesGeoId(cuttingGeoId)
         || !constr->involvesGeoIdAndPosId(GeoId, PointPos::none)) {
         return newConstr;
     }
