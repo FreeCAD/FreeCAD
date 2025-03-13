@@ -452,11 +452,9 @@ class Component(ArchIFC.IfcProduct):
         list of <App::FeaturePython>
             List of objects that have the same Base and type as this component.
         """
-
-        if not hasattr(obj,"Base"):
+        if not getattr(obj,"Base",False):
             return []
-        if not obj.Base:
-            return []
+        
         siblings = []
         for o in obj.Base.InList:
             if hasattr(o,"Base"):
@@ -1129,14 +1127,9 @@ class Component(ArchIFC.IfcProduct):
         hosts = []
 
         for link in obj.InListRecursive:
-            if hasattr(link,"Host"):
-                if link.Host:
-                    if link.Host == obj:
-                        hosts.append(link)
-            elif hasattr(link,"Hosts"):
-                if link.Hosts:
-                    if obj in link.Hosts:
-                        hosts.append(link)
+
+            hosts.append(link) if getattr(link,"Host") == obj or obj in getattr(link,"Hosts",[]) else None
+
         return hosts
 
     def ensureBase(self, obj):
