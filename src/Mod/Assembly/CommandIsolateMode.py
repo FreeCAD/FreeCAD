@@ -45,7 +45,7 @@ class IsolateManager(QtWidgets.QMainWindow):
         #self.isolateUI.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.isolateUI.transparencySlider.valueChanged.connect(self.sliderChanged)
         self.isolateUI.transparencyBox.textChanged.connect(self.onLabelChanged)
-        self.isolateUI.doneButton.clicked.connect(self.isolateDone)
+        self.isolateUI.doneButton.clicked.connect(self.resetAndClose)
         self.isolateUI.installEventFilter(self)
         self.isolateUI.setFixedSize(392, 116)
         self.isolateUI.show()
@@ -55,33 +55,58 @@ class IsolateManager(QtWidgets.QMainWindow):
            if self.partToKeep.Name == part.Name:
                self.allParts.remove(part)
         
+        self.setProperties()
         self.setTransparency(50)
+
+    def resetObjects(self):
+        print("reset")
+
+        for item in self.allParts:
+            try:
+                if hasattr(item, "OriginalTransparency"):
+                    item.ViewObject.Transparency = item.OriginalTransparency
+                    item.removeProperty("OriginalTransparency")
+                    
+                if hasattr(item, "Isolated"):
+                    item.removeProperty("Isolated")
+            except:
+                pass
 
     def eventFilter(self, target, event):
         if event.type() == QEvent.Close:
             print("window closing...")
-            self.setTransparency(0)
+            self.resetObjects()
             return True
         else:
-            # event.ignore()
             return False
 
     def sliderChanged(self):
         self.isolateUI.transparencyBox.setText(str(self.isolateUI.transparencySlider.sliderPosition()))
 
-    def setSinglePartTrans(self, part, transp):
-        if transp >= 99:
-            part.Visibility = False
-        else:
-            part.Visibility = True
+    def setProperties(self):
+        for item in self.allParts:
+            # If FreeCAD crashes while isolate mode is created, then
+            # these properties will stay here and not be removed.
+            # We need to leave these here so if you run the isolate command
+            # again then after you exit the mode, it will reset the transparency
+            # to what it was before the crash, and not after. A tool will be
+            # created to reset in case this happens.
 
-            if not hasattr(part.ViewObject, "Transparency"):
-                for item in part.OutList:
-                    if hasattr(item.ViewObject, "Transparency"):
-                        item.ViewObject.Transparency = transp
-                        break
-            else:
-                part.ViewObject.Transparency = transp
+            if not hasattr(item, "OriginalTransparency"):
+                item.addProperty(
+                    "App::PropertyInteger",
+                    "OriginalTransparency",
+                )
+                item.setEditorMode("OriginalTransparency", 3)
+                item.OriginalTransparency = item.ViewObject.Transparency
+
+            if not hasattr(item, "Isolated"):
+                item.addProperty(
+                    "App::PropertyBool",
+                    "Isolated",
+                )
+                item.setEditorMode("Isolated", 3)
+                item.Isolated = True
 
     def setTransparency(self, transp):
         for part in self.allParts:
@@ -92,9 +117,20 @@ class IsolateManager(QtWidgets.QMainWindow):
                         # self.setSinglePartTrans(item, transp)
                 #########
 
-                self.setSinglePartTrans(part, transp)
+                if transp >= 99:
+                    part.Visibility = False
+                else:
+                    part.Visibility = True
+
+                    if not hasattr(part.ViewObject, "Transparency"):
+                        for item in part.OutList:
+                            if hasattr(item.ViewObject, "Transparency"):
+                                item.ViewObject.Transparency = transp
+                                break
+                    else:
+                        part.ViewObject.Transparency = transp
             except:
-                print("Unable to set part: ", part.Label, "'s transparency.") # for debugging
+                pass
 
     def isInt(self, number):
         try:
@@ -103,7 +139,8 @@ class IsolateManager(QtWidgets.QMainWindow):
         except ValueError:
             return False
     
-    def isolateDone(self):
+    def resetAndClose(self):
+        self.resetObjects()
         self.isolateUI.close()
         pass
 
@@ -177,13 +214,21 @@ class IsolateGuiManager(QtCore.QObject):
         part = None
 
         if validPart(selPart):
-            part = selPart
+            partInList = selPart.InListRecursive
+
+            print(partInList)
+
+            part = partInList[len(partInList) - 2] # ^^^ Checks if the link can be used and if a App::Part is not its parent ^^^ #
         else:
             for item in selPart.InListRecursive:
                 print(item)
 
                 if validPart(item): # Make sure the part can be isolated
-                        part = item # ^^^ Checks if the link can be used and if a App::Part is not its parent ^^^ #
+                        partInList = item.InListRecursive
+
+                        print(partInList)
+
+                        part = partInList[len(partInList) - 2] # ^^^ Checks if the link can be used and if a App::Part is not its parent ^^^ #
                         break
 
         return part
@@ -258,9 +303,6 @@ class CommandCreateAssemblyIsolation:
                     Gui.Control.closeDialog()
         else:
             App.Console.PrintWarning("You need to have an assembly as your active body!")
-    
-    
-
 
 if App.GuiUp:
     Gui.addCommand("Assembly_IsolatePart", CommandCreateAssemblyIsolation())
