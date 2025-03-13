@@ -294,7 +294,8 @@ TEST_F(ReaderTest, readNextStartElement)
 TEST_F(ReaderTest, readNextStartEndElement)
 {
     // Arrange
-    enum class TimesIGoToBed {
+    enum class TimesIGoToBed
+    {
         Late,
         Later,
         VeryLate,
@@ -356,7 +357,8 @@ TEST_F(ReaderTest, readNextStartEndElement)
     // next element
     EXPECT_TRUE(xml.Reader()->readNextElement());
     EXPECT_STREQ(xml.Reader()->localName(), "node7");
-    EXPECT_EQ(xml.Reader()->getAttribute<std::string>("attr"), std::string("const char* is faster :'("));
+    EXPECT_EQ(xml.Reader()->getAttribute<std::string>("attr"),
+              std::string("const char* is faster :'("));
 
     // next element
     EXPECT_TRUE(xml.Reader()->readNextElement());
@@ -404,7 +406,8 @@ TEST_F(ReaderTest, charStreamBase64Encoded)
 TEST_F(ReaderTest, validDefaults)
 {
     // Arrange
-    enum class TimesIGoToBed {
+    enum class TimesIGoToBed
+    {
         Late,
         Later,
         VeryLate,
@@ -428,7 +431,8 @@ TEST_F(ReaderTest, validDefaults)
     bool value14 = xml.Reader()->getAttribute<bool>("missing", 1);
     bool value16 = xml.Reader()->getAttribute<bool>("missing", -10);
     bool value18 = xml.Reader()->getAttribute<bool>("missing", 10);
-    TimesIGoToBed value20 = xml.Reader()->getAttribute<TimesIGoToBed>("missing", TimesIGoToBed::Late);
+    TimesIGoToBed value20 =
+        xml.Reader()->getAttribute<TimesIGoToBed>("missing", TimesIGoToBed::Late);
 
     // Assert
     EXPECT_THROW({ xml.Reader()->getAttribute<const char*>("missing"); }, Base::XMLBaseException);
