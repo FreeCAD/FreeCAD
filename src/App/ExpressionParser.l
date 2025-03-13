@@ -348,7 +348,7 @@ EXPO     [eE][-+]?[0-9]+
                                if (yylval.ivalue == 1) { yylval.fvalue = 1; return ONE; } else return INTEGER;
                              }
 
-"e"                          COUNTCHARS; yylval.constant.fvalue = M_E; yylval.constant.name = "e"; return CONSTANT; // constant e
+"e"                          COUNTCHARS; yylval.constant.fvalue = e; yylval.constant.name = "e"; return CONSTANT; // constant e
 
 "None"                       COUNTCHARS; yylval.constant.fvalue = 0; yylval.constant.name = "None"; return CONSTANT;
 "True"                       COUNTCHARS; yylval.constant.fvalue = 1; yylval.constant.name = "True"; return CONSTANT;
