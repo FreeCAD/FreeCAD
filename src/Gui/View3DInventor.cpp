@@ -791,7 +791,7 @@ RayPickInfo View3DInventor::getObjInfoRay(Base::Vector3d* startvec, Base::Vector
     vdy = dirvec->y;
     vdz = dirvec->z;
     // near plane clipping is required to avoid false intersections
-    float nearClippingPlane = 0.1;
+    float nearClippingPlane = 0.1F;
 
     RayPickInfo ret = {false,
                        Base::Vector3d(),
