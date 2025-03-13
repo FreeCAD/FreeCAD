@@ -203,7 +203,7 @@ Requires to re-enter edit mode to take effect.</string>
          <string>If checked, show a command group button that contains both the polyline and line commands. Otherwise, each command has its own separate button.</string>
         </property>
         <property name="text">
-         <string>Group polyline and line</string>
+         <string>Group the polyline and line commands</string>
         </property>
         <property name="checked">
          <bool>false</bool>
