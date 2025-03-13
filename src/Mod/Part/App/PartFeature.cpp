@@ -1696,7 +1696,7 @@ bool Feature::isElementMappingDisabled(App::PropertyContainer* container)
 //    return false;
 }
 
-bool Feature::getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const
+bool Feature::getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vector3d &directionX, const char* subname) const
 {
     const auto topoShape = getTopoShape(this, subname, true);
 
@@ -1711,7 +1711,36 @@ bool Feature::getCameraAlignmentDirection(Base::Vector3d& direction, const char*
             gp_Pnt point;
             gp_Vec vector;
             BRepGProp_Face(face).Normal(0, 0, point, vector);
-            direction = Base::Vector3d(vector.X(), vector.Y(), vector.Z()).Normalize();
+            directionZ = Base::Vector3d(vector.X(), vector.Y(), vector.Z()).Normalize();
+            
+            // Try to find a second alignment direction
+            // Use the longest straight edge for horizontal or vertical alignment
+            std::optional<std::tuple<TopoDS_Shape, Standard_Real>> longestEdge; // Tuple of (shape, length of edge)
+            for (TopExp_Explorer Ex (face, TopAbs_EDGE); Ex.More(); Ex.Next()) {
+                const auto edge = TopoDS::Edge(Ex.Current());
+                const auto edgeTopoShape = TopoShape(edge);
+                if (!edgeTopoShape.isLinearEdge()) {
+                    continue;
+                }
+
+                GProp_GProps props;
+                BRepGProp::LinearProperties(edge, props);
+                const auto length = props.Mass();
+
+                // Check if this edge is the longest
+                if (!longestEdge.has_value() || length > get<1>(longestEdge.value())) {
+                    longestEdge = std::tuple(edge, length);
+                }
+            }
+
+            if (longestEdge.has_value()) {
+                if (const std::unique_ptr<Geometry> geometry = Geometry::fromShape(get<0>(longestEdge.value()), true)) {
+                    if (const std::unique_ptr<GeomLine> geomLine(static_cast<GeomCurve*>(geometry.get())->toLine()); geomLine) {
+                        directionX = geomLine->getDir().Normalize();
+                    }
+                }
+            }
+            
             return true;
         }
         catch (Standard_TypeMismatch&) {
@@ -1725,13 +1754,13 @@ bool Feature::getCameraAlignmentDirection(Base::Vector3d& direction, const char*
         if (const std::unique_ptr<Geometry> geometry = Geometry::fromShape(topoShape.getSubShape(TopAbs_EDGE, 1), true)) {
             const std::unique_ptr<GeomLine> geomLine(static_cast<GeomCurve*>(geometry.get())->toLine());
             if (geomLine) {
-                direction = geomLine->getDir().Normalize();
+                directionZ = geomLine->getDir().Normalize();
                 return true;
             }
         }
     }
 
-    return GeoFeature::getCameraAlignmentDirection(direction, subname);
+    return GeoFeature::getCameraAlignmentDirection(directionZ, directionX, subname);
 }
 
 void Feature::guessNewLink(std::string &replacementName, DocumentObject *base, const char *oldLink) {
