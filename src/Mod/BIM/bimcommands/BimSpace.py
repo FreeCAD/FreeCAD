@@ -53,10 +53,17 @@ class Arch_Space:
         import ArchComponent
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Space"))
         FreeCADGui.addModule("Arch")
-        sel = FreeCADGui.Selection.getSelection()
+        sel = FreeCADGui.Selection.getSelectionEx()
         if sel:
             FreeCADGui.Control.closeDialog()
-            if len(sel) == 1:
+            isSingleObject = len(sel) == 1
+            hasNoBoundaries = (not sel[0].HasSubObjects) or len(sel[0].SubObjects) == 1
+            if isSingleObject and hasNoBoundaries:
+                # The selection is a single object. Either with no subobjects (e.g. user clicked
+                # the object on the Tree View), or with a single subobject (e.g. user clicked
+                # on an object's face to select it on the 3D view).
+                # Thus we consider that the object is not defining any boundaries, and the
+                # object itself will become the Base for the space.
                 FreeCADGui.doCommand("obj = Arch.makeSpace(FreeCADGui.Selection.getSelection())")
             else:
                 FreeCADGui.doCommand("obj = Arch.makeSpace(FreeCADGui.Selection.getSelectionEx())")
