@@ -2860,26 +2860,34 @@ QTreeView::branch#groupsTreeView:has-siblings:!adjoins-item  {
 /*==================================================================================================
 Start page
 ==================================================================================================*/
-QWidget#thumbnailWidget {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:1 #252525);
+#thumbnailWidget {
+  background-color: #2f2f2f;
   border-radius: 8px;
   border: 1px solid #020202;
 }
 
-QWidget#thumbnailWidget[state="hovered"] {
+#thumbnailWidget:hover {
   border: 1px solid @ThemeAccentColor1;
 }
 
-QWidget#thumbnailWidget[state="pressed"] {
+#thumbnailWidget:pressed {
   border: 1px solid @ThemeAccentColor1;
 }
 
 /**
  * Special handling for WB Tab Bar
  */
- #WbTabBar #WbTabBarMore {
+#WbTabBar #WbTabBarMore {
   padding-right: 12px;
- }
+}
+
+QPushButton[objectName="buttonIFCPropertiesDelete"] {
+  min-width: 100px;
+}
+
+QGroupBox[objectName="matOpsGrpBox"] QPushButton {
+  min-width: 235px;
+}
 
 /* Below is a fix for indentation in properties, but this is a QT 6 bug only and so is disabled since Windows is as I write this still on QT 5. */
 /* QTreeView::item:selected:active#groupsTreeView {

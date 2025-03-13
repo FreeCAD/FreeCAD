@@ -24,7 +24,7 @@ import os
 import time
 import FreeCAD
 import unittest
-from nativeifc import ifc_import
+from . import ifc_import
 
 
 FILES = [

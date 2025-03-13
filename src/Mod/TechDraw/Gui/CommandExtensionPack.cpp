@@ -85,8 +85,8 @@ void _createThreadLines(const std::vector<std::string>& SubNames, TechDraw::Draw
                         double factor);
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge);
 void _setLineAttributes(TechDraw::CenterLine* cosEdge);
-void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color);
-void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, App::Color color);
+void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, Base::Color color);
+void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, Base::Color color);
 double _getAngle(Base::Vector3d center, Base::Vector3d point);
 std::vector<Base::Vector3d> _getVertexPoints(const std::vector<std::string>& SubNames,
                                              TechDraw::DrawViewPart* objFeat);
@@ -1527,7 +1527,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                         std::string uniTag = baseGeo->getCosmeticTag();
                         int oldStyle = 1;
                         float oldWeight = 1.0;
-                        App::Color oldColor;
+                        Base::Color oldColor;
                         std::vector<std::string> toDelete;
                         toDelete.push_back(uniTag);
                         if (baseGeo->source() == SourceType::COSMETICEDGE) {
@@ -1811,7 +1811,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
 
         double faceArea = faceProps.Mass();
         totalArea += faceArea;
-        center += faceArea*DrawUtil::toVector3d(faceProps.CentreOfMass());
+        center += faceArea*Base::convertTo<Base::Vector3d>(faceProps.CentreOfMass());
     }
     if (totalArea > 0.0) {
         center /= totalArea;
@@ -1868,7 +1868,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
         viewProvider->Fontsize.setValue(2.0);
         viewProvider->LineWidth.setValue(TechDraw::LineGroup::getDefaultWidth("Graphic"));
         viewProvider->LineVisible.setValue(false);
-        viewProvider->Color.setValue(App::Color(1.0, 0.0, 0.0));
+        viewProvider->Color.setValue(Base::Color(1.0, 0.0, 0.0));
     }
     Gui::Command::commitCommand();
     objFeat->touch(true);
@@ -1976,7 +1976,7 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
     }
 
     double scale = objFeat->getScale();
-    Base::Vector3d anchor = DrawUtil::invertY(DrawUtil::toVector3d(midPoint)/scale);
+    Base::Vector3d anchor = DrawUtil::invertY(Base::convertTo<Base::Vector3d>(midPoint)/scale);
     totalLength /= scale;
 
     // Use virtual dimension view helper to format resulting value
@@ -2202,7 +2202,7 @@ void _setLineAttributes(TechDraw::CenterLine* cosEdge)
     cosEdge->m_format.setLineNumber(_getActiveLineAttributes().getLineNumber());
 }
 
-void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color)
+void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, Base::Color color)
 {
     // set line attributes of a cosmetic edge
     cosEdge->m_format.setStyle(style);
@@ -2212,7 +2212,7 @@ void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight
     cosEdge->m_format.setLineNumber(LineGenerator::fromQtStyle((Qt::PenStyle)style));
 }
 
-void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, App::Color color)
+void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, Base::Color color)
 {
     // set line attributes of a centerline
     cosEdge->m_format.setStyle(style);

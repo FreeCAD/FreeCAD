@@ -344,14 +344,15 @@ class _ViewProviderAxis:
                                 pos = []
                             else:
                                 pos = [vobj.BubblePosition]
-                        n = 0
-                        if hasattr(vobj.Object, "Distances"):
-                            n = len(vobj.Object.Distances)
-                        for i in range(n):
+                        e = len(vobj.Object.Shape.Edges)
+                        if getattr(vobj.Object,"Limit",0):
+                            e //= 2
+                        n = len(getattr(vobj.Object,"Distances",[]))
+                        for i in range(min(e,n)):
                             for p in pos:
-                                if hasattr(vobj.Object,"Limit") and vobj.Object.Limit.Value:
-                                    verts = [vobj.Object.Placement.inverse().multVec(vobj.Object.Shape.Edges[i].Vertexes[0].Point),
-                                             vobj.Object.Placement.inverse().multVec(vobj.Object.Shape.Edges[i+1].Vertexes[0].Point)]
+                                if getattr(vobj.Object,"Limit",0):
+                                    verts = [vobj.Object.Placement.inverse().multVec(vobj.Object.Shape.Edges[i*2].Vertexes[0].Point),
+                                             vobj.Object.Placement.inverse().multVec(vobj.Object.Shape.Edges[i*2+1].Vertexes[0].Point)]
                                 else:
                                     verts = [vobj.Object.Placement.inverse().multVec(v.Point) for v in vobj.Object.Shape.Edges[i].Vertexes]
                                 arrow = None

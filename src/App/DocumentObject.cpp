@@ -468,26 +468,10 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Prop
     return ret;
 }
 
-#ifdef USE_OLD_DAG
-std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
-{
-    if (_pDoc) {
-        return _pDoc->getInList(this);
-    }
-    else {
-        return std::vector<App::DocumentObject*>();
-    }
-}
-
-#else  // ifndef USE_OLD_DAG
-
 const std::vector<App::DocumentObject*>& DocumentObject::getInList() const
 {
     return _inList;
 }
-
-#endif  // if USE_OLD_DAG
-
 
 // The original algorithm is highly inefficient in some special case.
 // Considering an object is linked by every other objects. After excluding this
@@ -513,41 +497,6 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*>& inSet,
                                  bool recursive,
                                  std::vector<App::DocumentObject*>* inList) const
 {
-#ifdef USE_OLD_DAG
-    std::map<DocumentObject*, std::set<App::DocumentObject*>> outLists;
-
-    // Old DAG does not have pre-built InList, and must calculate The InList by
-    // going through all objects' OutLists. So we collect all objects and their
-    // outLists first here.
-    for (auto doc : GetApplication().getDocuments()) {
-        for (auto obj : doc->getObjects()) {
-            if (!obj || !obj->isAttachedToDocument() || obj == this) {
-                continue;
-            }
-            const auto& outList = obj->getOutList();
-            outLists[obj].insert(outList.begin(), outList.end());
-        }
-    }
-
-    std::stack<DocumentObject*> pendings;
-    pendings.push(const_cast<DocumentObject*>(this));
-    while (pendings.size()) {
-        auto obj = pendings.top();
-        pendings.pop();
-        for (auto& v : outLists) {
-            if (v.first == obj) {
-                continue;
-            }
-            auto& outList = v.second;
-            // Check the outList to see if the object is there, and pend the
-            // object for recursive check if it's not already in the inList
-            if (outList.find(obj) != outList.end() && inSet.insert(v.first).second && recursive) {
-                pendings.push(v.first);
-            }
-        }
-    }
-#else  // USE_OLD_DAG
-
     if (!recursive) {
         inSet.insert(_inList.begin(), _inList.end());
         if (inList) {
@@ -570,8 +519,6 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*>& inSet,
             }
         }
     }
-
-#endif
 }
 
 std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const
@@ -618,7 +565,6 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListRecursive() const
 // helper for isInInListRecursive()
 bool _isInInListRecursive(const DocumentObject* act, const DocumentObject* checkObj, int depth)
 {
-#ifndef USE_OLD_DAG
     for (auto obj : act->getInList()) {
         if (obj == checkObj) {
             return true;
@@ -633,11 +579,6 @@ bool _isInInListRecursive(const DocumentObject* act, const DocumentObject* check
             return true;
         }
     }
-#else
-    (void)act;
-    (void)checkObj;
-    (void)depth;
-#endif
 
     return false;
 }
@@ -649,23 +590,17 @@ bool DocumentObject::isInInListRecursive(DocumentObject* linkTo) const
 
 bool DocumentObject::isInInList(DocumentObject* linkTo) const
 {
-#ifndef USE_OLD_DAG
     if (std::find(_inList.begin(), _inList.end(), linkTo) != _inList.end()) {
         return true;
     }
     else {
         return false;
     }
-#else
-    (void)linkTo;
-    return false;
-#endif
 }
 
 // helper for isInOutListRecursive()
 bool _isInOutListRecursive(const DocumentObject* act, const DocumentObject* checkObj, int depth)
 {
-#ifndef USE_OLD_DAG
     for (auto obj : act->getOutList()) {
         if (obj == checkObj) {
             return true;
@@ -680,11 +615,6 @@ bool _isInOutListRecursive(const DocumentObject* act, const DocumentObject* chec
             return true;
         }
     }
-#else
-    (void)act;
-    (void)checkObj;
-    (void)depth;
-#endif
 
     return false;
 }
@@ -1321,29 +1251,21 @@ void DocumentObject::unsetupObject()
 
 void App::DocumentObject::_removeBackLink(DocumentObject* rmvObj)
 {
-#ifndef USE_OLD_DAG
     // do not use erase-remove idom, as this erases ALL entries that match. we only want to remove a
     // single one.
     auto it = std::find(_inList.begin(), _inList.end(), rmvObj);
     if (it != _inList.end()) {
         _inList.erase(it);
     }
-#else
-    (void)rmvObj;
-#endif
 }
 
 void App::DocumentObject::_addBackLink(DocumentObject* newObj)
 {
-#ifndef USE_OLD_DAG
     // we need to add all links, even if they are available multiple times. The reason for this is
     // the removal: If a link loses this object it removes the backlink. If we would have added it
     // only once this removal would clear the object from the inlist, even though there may be other
     // link properties from this object that link to us.
     _inList.push_back(newObj);
-#else
-    (void)newObj;
-#endif  // USE_OLD_DAG
 }
 
 int DocumentObject::setElementVisible(const char* element, bool visible)

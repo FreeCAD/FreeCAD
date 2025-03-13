@@ -43,7 +43,7 @@ class PropertyConstraintListItem: public Gui::PropertyEditor::PropertyItem
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
     bool event(QEvent* ev) override;

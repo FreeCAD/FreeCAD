@@ -684,6 +684,7 @@ void CmdFemConstraintHeatflux::activated(int)
     doCommand(Doc,
               "App.activeDocument().addObject(\"Fem::ConstraintHeatflux\",\"%s\")",
               FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.ConstraintType = \"DFlux\"", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.AmbientTemp = 300.0",
               FeatName.c_str());  // OvG: set default not equal to 0
@@ -1542,6 +1543,9 @@ void CmdFemCompEmEquations::activated(int iMsg)
     else if (iMsg == 3) {
         rcCmdMgr.runCommandByName("FEM_EquationMagnetodynamic2D");
     }
+    else if (iMsg == 4) {
+        rcCmdMgr.runCommandByName("FEM_EquationStaticCurrent");
+    }
     else {
         return;
     }
@@ -1569,6 +1573,8 @@ Gui::Action* CmdFemCompEmEquations::createAction()
     cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationMagnetodynamic"));
     QAction* cmd3 = pcAction->addAction(QString());
     cmd3->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationMagnetodynamic2D"));
+    QAction* cmd4 = pcAction->addAction(QString());
+    cmd4->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationStaticCurrent"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1636,6 +1642,17 @@ void CmdFemCompEmEquations::languageChange()
                                                  EquationMagnetodynamic2D->getToolTipText()));
         cmd3->setStatusTip(QApplication::translate("FEM_EquationMagnetodynamic2D",
                                                    EquationMagnetodynamic2D->getStatusTip()));
+    }
+
+    Gui::Command* EquationStaticCurrent = rcCmdMgr.getCommandByName("FEM_EquationStaticCurrent");
+    if (EquationStaticCurrent) {
+        QAction* cmd4 = a[4];
+        cmd4->setText(QApplication::translate("FEM_EquationStaticCurrent",
+                                              EquationStaticCurrent->getMenuText()));
+        cmd4->setToolTip(QApplication::translate("FEM_EquationStaticCurrent",
+                                                 EquationStaticCurrent->getToolTipText()));
+        cmd4->setStatusTip(QApplication::translate("FEM_EquationStaticCurrent",
+                                                   EquationStaticCurrent->getStatusTip()));
     }
 }
 

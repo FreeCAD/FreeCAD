@@ -25,7 +25,7 @@
 
 import FreeCAD
 import FreeCADGui
-from nativeifc import ifc_openshell
+from . import ifc_openshell
 
 translate = FreeCAD.Qt.translate
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -34,7 +34,7 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 def get_project():
     """Gets the current project"""
 
-    from nativeifc import ifc_tools
+    from . import ifc_tools
 
     if FreeCADGui.Selection.getSelection():
         return ifc_tools.get_project(FreeCADGui.Selection.getSelection()[0])
@@ -57,7 +57,7 @@ class IFC_Diff:
         }
 
     def Activated(self):
-        from nativeifc import ifc_diff
+        from . import ifc_diff
 
         proj = get_project()
         if proj:
@@ -88,8 +88,8 @@ class IFC_Expand:
                         no = obj.ViewObject.Proxy.expandChildren(obj)
                         ns.extend(no)
         else:
-            from nativeifc import ifc_generator
-            from nativeifc import ifc_tools
+            from . import ifc_generator
+            from . import ifc_tools
 
             document = FreeCAD.ActiveDocument
             ifc_generator.delete_ghost(document)
@@ -130,7 +130,7 @@ class IFC_ConvertDocument:
                 translate("BIM", "The active document is already an IFC document")
             )
         else:
-            from nativeifc import ifc_tools
+            from . import ifc_tools
 
             ifc_tools.convert_document(doc)
 
@@ -154,7 +154,7 @@ class IFC_MakeProject:
 
     def Activated(self):
         from importers import exportIFC  # lazy loading
-        from nativeifc import ifc_tools
+        from . import ifc_tools
         from PySide import QtCore, QtGui
 
         doc = FreeCAD.ActiveDocument
@@ -196,7 +196,7 @@ class IFC_Save:
         return False
 
     def Activated(self):
-        from nativeifc import ifc_tools  # lazy loading
+        from . import ifc_tools  # lazy loading
 
         doc = FreeCAD.ActiveDocument
         if getattr(doc, "IfcFilePath", None):
@@ -231,8 +231,8 @@ class IFC_SaveAs:
         return False
 
     def Activated(self):
-        from nativeifc import ifc_tools  # lazy loading
-        from nativeifc import ifc_viewproviders
+        from . import ifc_tools  # lazy loading
+        from . import ifc_viewproviders
 
         doc = FreeCAD.ActiveDocument
         if ifc_viewproviders.get_filepath(doc):

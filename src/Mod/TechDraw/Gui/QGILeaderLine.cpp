@@ -426,12 +426,14 @@ QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
     double endAdjLength(0.0);
     if (qPoints.size() > 1) {
         //make path adjustment to hide leaderline ends behind arrowheads
-        if (featLeader->StartSymbol.getValue() != ArrowType::NONE) {
-            startAdjLength = QGIArrow::getOverlapAdjust(featLeader->StartSymbol.getValue(),
+        ArrowType choice = static_cast<ArrowType>(featLeader->StartSymbol.getValue());
+        if (choice != ArrowType::NONE) {
+            startAdjLength = QGIArrow::getOverlapAdjust(choice,
                                                         QGIArrow::getPrefArrowSize());
         }
-        if (featLeader->EndSymbol.getValue() != ArrowType::NONE) {
-            endAdjLength = QGIArrow::getOverlapAdjust(featLeader->EndSymbol.getValue(),
+        choice = static_cast<ArrowType>(featLeader->EndSymbol.getValue());
+        if (choice != ArrowType::NONE) {
+            endAdjLength = QGIArrow::getOverlapAdjust(choice,
                                                       QGIArrow::getPrefArrowSize());
         }
 
@@ -515,8 +517,9 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
 
     QPointF lastOffset = (pathPoints.back() - pathPoints.front());
 
-    if (featLeader->StartSymbol.getValue() != ArrowType::NONE) {
-        m_arrow1->setStyle(featLeader->StartSymbol.getValue());
+    ArrowType choice = static_cast<ArrowType>(featLeader->StartSymbol.getValue());
+    if (choice != ArrowType::NONE) {
+        m_arrow1->setStyle(choice);
         m_arrow1->setWidth(getLineWidth());
         m_arrow1->setSize(QGIArrow::getPrefArrowSize());
         m_arrow1->setDirMode(true);
@@ -537,8 +540,9 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
         m_arrow1->hide();
     }
 
-    if (featLeader->EndSymbol.getValue() != ArrowType::NONE) {
-        m_arrow2->setStyle(featLeader->EndSymbol.getValue());
+    choice = static_cast<ArrowType>(featLeader->EndSymbol.getValue());
+    if (choice != ArrowType::NONE) {
+        m_arrow2->setStyle(choice);
         m_arrow2->setWidth(getLineWidth());
         m_arrow2->setSize(QGIArrow::getPrefArrowSize());
         m_arrow2->setDirMode(true);

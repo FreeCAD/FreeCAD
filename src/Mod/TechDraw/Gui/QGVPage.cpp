@@ -29,6 +29,7 @@
 #include <QContextMenuEvent>
 #include <QLabel>
 #include <QMouseEvent>
+#include <QOpenGLWidget>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QScrollBar>
@@ -232,7 +233,6 @@ void QGVPage::initNavigationStyle()
 
 void QGVPage::setNavigationStyle(std::string navParm)
 {
-    //    Base::Console().Message("QGVP::setNavigationStyle(%s)\n", navParm.c_str());
     if (m_navStyle) {
         delete m_navStyle;
     }
@@ -308,15 +308,10 @@ void QGVPage::deactivateHandler()
 
 void QGVPage::startBalloonPlacing(DrawView* parent)
 {
-    //    Base::Console().Message("QGVP::startBalloonPlacing(%s)\n", parent->getNameInDocument());
     balloonPlacing = true;
     m_balloonParent = parent;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     activateCursor(
         QCursor(balloonCursor->pixmap(Qt::ReturnByValue), balloonHotspot.x(), balloonHotspot.y()));
-#else
-    activateCursor(QCursor(*balloonCursor->pixmap(), balloonHotspot.x(), balloonHotspot.y()));
-#endif
 }
 
 void QGVPage::cancelBalloonPlacing()
@@ -338,7 +333,6 @@ void QGVPage::drawBackground(QPainter* painter, const QRectF&)
     }
 
     if (!m_vpPage->getDrawPage()) {
-        //        Base::Console().Message("QGVP::drawBackground - no Page Feature!\n");
         return;
     }
 
@@ -558,7 +552,7 @@ TechDraw::DrawPage* QGVPage::getDrawPage() { return m_vpPage->getDrawPage(); }
 
 QColor QGVPage::getBackgroundColor()
 {
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(Preferences::getPreferenceGroup("Colors")->GetUnsigned("Background", 0x70707000));
     return fcColor.asValue<QColor>();
 }
@@ -696,7 +690,7 @@ static QCursor createCursor(QBitmap &bitmap, QBitmap &mask, int hotX, int hotY, 
 #else
     Q_UNUSED(dpr)
 #endif
-#if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6,6,0) && QT_VERSION >= QT_VERSION_CHECK(5,13,0)
+#if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6,6,0)
     if (qGuiApp->platformName() == QLatin1String("wayland")) {
         QImage img = bitmap.toImage();
         img.convertTo(QImage::Format_ARGB32);

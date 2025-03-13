@@ -68,6 +68,7 @@
 #include <App/Document.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 
@@ -312,7 +313,7 @@ GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
     TopoDS_Shape localShape = copier.Shape();
 
     gp_Pnt gCentroid = ShapeUtils::findCentroid(localShape, getProjectionCS());
-    m_saveCentroid = DU::toVector3d(gCentroid);
+    m_saveCentroid = Base::convertTo<Base::Vector3d>(gCentroid);
     m_saveShape = centerScaleRotate(this, localShape, m_saveCentroid);
 
     return buildGeometryObject(localShape, getProjectionCS());
@@ -1042,6 +1043,7 @@ bool DrawViewPart::hasGeometry() const
 
     const std::vector<TechDraw::VertexPtr>& verts = getVertexGeometry();
     const std::vector<TechDraw::BaseGeomPtr>& edges = getEdgeGeometry();
+
     return !(verts.empty() && edges.empty());
 }
 
@@ -1074,7 +1076,7 @@ Base::Vector3d DrawViewPart::localVectorToDirection(const Base::Vector3d localUn
 {
     //    Base::Console().Message("DVP::localVectorToDirection() - localUnit: %s\n", DrawUtil::formatVector(localUnit).c_str());
     gp_Ax2 cs = localVectorToCS(localUnit);
-    return DrawUtil::toVector3d(cs.Direction());
+    return Base::convertTo<Base::Vector3d>(cs.Direction());
 }
 
 gp_Ax2 DrawViewPart::getProjectionCS(const Base::Vector3d pt) const
@@ -1099,7 +1101,7 @@ gp_Ax2 DrawViewPart::getRotatedCS(const Base::Vector3d basePoint) const
 {
     //    Base::Console().Message("DVP::getRotatedCS() - %s - %s\n", getNameInDocument(), Label.getValue());
     gp_Ax2 unrotated = getProjectionCS(basePoint);
-    gp_Ax1 rotationAxis(DU::to<gp_Pnt>(basePoint), unrotated.Direction());
+    gp_Ax1 rotationAxis(Base::convertTo<gp_Pnt>(basePoint), unrotated.Direction());
     double angleRad = Rotation.getValue() * M_PI / 180.0;
     gp_Ax2 rotated = unrotated.Rotated(rotationAxis, -angleRad);
     return rotated;
@@ -1126,7 +1128,7 @@ Base::Vector3d DrawViewPart::getCurrentCentroid() const
     }
     gp_Ax2 cs = getProjectionCS();
     gp_Pnt gCenter = ShapeUtils::findCentroid(shape, cs);
-    return DU::toVector3d(gCenter);
+    return Base::convertTo<Base::Vector3d>(gCenter);
 }
 
 std::vector<DrawViewSection*> DrawViewPart::getSectionRefs() const
@@ -1276,29 +1278,29 @@ Base::Vector3d DrawViewPart::getXDirection() const
 }
 
 
-void DrawViewPart::rotate(const std::string& rotationdirection)
+void DrawViewPart::rotate(const RotationMotion& motion)
 {
     std::pair<Base::Vector3d, Base::Vector3d> newDirs;
-    if (rotationdirection == "Right")
-        newDirs = getDirsFromFront("Left");// Front -> Right -> Rear -> Left -> Front
-    else if (rotationdirection == "Left")
-        newDirs = getDirsFromFront("Right");// Front -> Left -> Rear -> Right -> Front
-    else if (rotationdirection == "Up")
-        newDirs = getDirsFromFront("Bottom");// Front -> Top -> Rear -> Bottom -> Front
-    else if (rotationdirection == "Down")
-        newDirs = getDirsFromFront("Top");// Front -> Bottom -> Rear -> Top -> Front
+    if (motion == RotationMotion::Right)
+        newDirs = getDirsFromFront(ProjDirection::Left);// Front -> Right -> Rear -> Left -> Front
+    else if (motion == RotationMotion::Left)
+        newDirs = getDirsFromFront(ProjDirection::Right);// Front -> Left -> Rear -> Right -> Front
+    else if (motion == RotationMotion::Up)
+        newDirs = getDirsFromFront(ProjDirection::Bottom);// Front -> Top -> Rear -> Bottom -> Front
+    else if (motion == RotationMotion::Down)
+        newDirs = getDirsFromFront(ProjDirection::Top);// Front -> Bottom -> Rear -> Top -> Front
 
     Direction.setValue(newDirs.first);
     XDirection.setValue(newDirs.second);
     recompute();
 }
 
-void DrawViewPart::spin(const std::string& spindirection)
+void DrawViewPart::spin(const SpinDirection& spindirection)
 {
     double angle;
-    if (spindirection == "CW")
+    if (spindirection == SpinDirection::CW)
         angle = M_PI / 2.0;// Top -> Right -> Bottom -> Left -> Top
-    if (spindirection == "CCW")
+    if (spindirection == SpinDirection::CCW)
         angle = -M_PI / 2.0;// Top -> Left -> Bottom -> Right -> Top
 
     spin(angle);
@@ -1315,7 +1317,7 @@ void DrawViewPart::spin(double angle)
     recompute();
 }
 
-std::pair<Base::Vector3d, Base::Vector3d> DrawViewPart::getDirsFromFront(std::string viewType)
+std::pair<Base::Vector3d, Base::Vector3d> DrawViewPart::getDirsFromFront(ProjDirection viewType)
 {
     //    Base::Console().Message("DVP::getDirsFromFront(%s)\n", viewType.c_str());
     std::pair<Base::Vector3d, Base::Vector3d> result;
@@ -1335,59 +1337,51 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawViewPart::getDirsFromFront(std::st
 
     double angle = M_PI / 2.0;//90*
 
-    if (viewType == "Right") {
+    if (viewType == ProjDirection::Right) {
         newCS = anchorCS.Rotated(gUpAxis, angle);
         projDir = dir2vec(newCS.Direction());
         rotVec = dir2vec(newCS.XDirection());
     }
-    else if (viewType == "Left") {
+    else if (viewType == ProjDirection::Left) {
         newCS = anchorCS.Rotated(gUpAxis, -angle);
         projDir = dir2vec(newCS.Direction());
         rotVec = dir2vec(newCS.XDirection());
     }
-    else if (viewType == "Top") {
+    else if (viewType == ProjDirection::Top) {
         projDir = dir2vec(gYDir);
         rotVec = dir2vec(gXDir);
     }
-    else if (viewType == "Bottom") {
+    else if (viewType == ProjDirection::Bottom) {
         projDir = dir2vec(gYDir.Reversed());
         rotVec = dir2vec(gXDir);
     }
-    else if (viewType == "Rear") {
+    else if (viewType == ProjDirection::Rear) {
         projDir = dir2vec(gDir.Reversed());
         rotVec = dir2vec(gXDir.Reversed());
     }
-    else if (viewType == "FrontTopLeft") {
+    else if (viewType == ProjDirection::FrontTopLeft) {
         gp_Dir newDir = gp_Dir(gp_Vec(gDir) - gp_Vec(gXDir) + gp_Vec(gYDir));
         projDir = dir2vec(newDir);
         gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) + gp_Vec(gDir));
         rotVec = dir2vec(newXDir);
     }
-    else if (viewType == "FrontTopRight") {
+    else if (viewType == ProjDirection::FrontTopRight) {
         gp_Dir newDir = gp_Dir(gp_Vec(gDir) + gp_Vec(gXDir) + gp_Vec(gYDir));
         projDir = dir2vec(newDir);
         gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) - gp_Vec(gDir));
         rotVec = dir2vec(newXDir);
     }
-    else if (viewType == "FrontBottomLeft") {
+    else if (viewType == ProjDirection::FrontBottomLeft) {
         gp_Dir newDir = gp_Dir(gp_Vec(gDir) - gp_Vec(gXDir) - gp_Vec(gYDir));
         projDir = dir2vec(newDir);
         gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) + gp_Vec(gDir));
         rotVec = dir2vec(newXDir);
     }
-    else if (viewType == "FrontBottomRight") {
+    else if (viewType == ProjDirection::FrontBottomRight) {
         gp_Dir newDir = gp_Dir(gp_Vec(gDir) + gp_Vec(gXDir) - gp_Vec(gYDir));
         projDir = dir2vec(newDir);
         gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) - gp_Vec(gDir));
         rotVec = dir2vec(newXDir);
-    }
-    else {
-        // not one of the standard view directions, so complain and use the values for "Front"
-        Base::Console().Error("DrawViewPart - %s unknown projection: %s\n", getNameInDocument(),
-            viewType.c_str());
-        Base::Vector3d dirAnch = Direction.getValue();
-        Base::Vector3d rotAnch = getXDirection();
-        return std::make_pair(dirAnch, rotAnch);
     }
 
     return std::make_pair(projDir, rotVec);
@@ -1475,6 +1469,33 @@ void DrawViewPart::resetReferenceVerts()
     //    Base::Console().Message("DVP::resetReferenceVerts() %s\n", getNameInDocument());
     removeAllReferencesFromGeom();
     addReferencesToGeom();
+}
+
+void DrawViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
+{
+    if (prop == &Direction) {
+        // Direction was PropertyVector but is now PropertyDirection
+        App::PropertyVector tmp;
+        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            auto tmpValue = tmp.getValue();
+            Direction.setValue(tmpValue);
+        }
+        return;
+    }
+
+    if (prop == &XDirection) {
+        // XDirection was PropertyFloat but is now PropertyLength
+        App::PropertyVector tmp;
+        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            auto tmpValue = tmp.getValue();
+            XDirection.setValue(tmpValue);
+        }
+        return;
+    }
 }
 
 // debugging ----------------------------------------------------------------------------

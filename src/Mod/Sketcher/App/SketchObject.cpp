@@ -113,6 +113,7 @@
 #include "SolverGeometryExtension.h"
 
 #include "ExternalGeometryFacade.h"
+#include <Mod/Part/App/Datums.h>
 
 
 #undef DEBUG
@@ -365,10 +366,23 @@ void SketchObject::buildShape() {
         auto egf = ExternalGeometryFacade::getFacade(geo);
         if(!egf->testFlag(ExternalGeometryExtension::Defining))
             continue;
+
         auto indexedName = Data::IndexedName::fromConst("ExternalEdge", i-1);
-        shapes.push_back(getEdge(geo, convertSubName(indexedName, false).c_str()));
-        if (checkSmallEdge(shapes.back())) {
-            FC_WARN("Edge too small: " << indexedName);
+
+        if (geo->isDerivedFrom<Part::GeomPoint>()) {
+            Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
+            if (!vertex.hasElementMap()) {
+                vertex.resetElementMap(std::make_shared<Data::ElementMap>());
+            }
+            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+                                  Data::MappedName::fromRawData(convertSubName(indexedName, false).c_str()),0L);
+            vertices.push_back(vertex);
+            vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
+        } else {
+            shapes.push_back(getEdge(geo, convertSubName(indexedName, false).c_str()));
+            if (checkSmallEdge(shapes.back())) {
+                FC_WARN("Edge too small: " << indexedName);
+            }
         }
     }
 
@@ -8272,6 +8286,9 @@ void SketchObject::validateExternalLinks()
                 const Part::Datum* datum = static_cast<const Part::Datum*>(Obj);
                 refSubShape = datum->getShape();
             }
+            else if (Obj->isDerivedFrom<App::DatumElement>()) {
+                // do nothing - shape will be calculated later during rebuild
+            }
             else {
                 const Part::Feature* refObj = static_cast<const Part::Feature*>(Obj);
                 const Part::TopoShape& refShape = refObj->Shape.getShape();
@@ -8960,16 +8977,58 @@ void processEdge(const TopoDS_Edge& edge,
         }
         else {
             try {
-                BRepOffsetAPI_NormalProjection mkProj(aProjFace);
-                mkProj.Add(edge);
-                mkProj.Build();
-                const TopoDS_Shape& projShape = mkProj.Projection();
-                if (!projShape.IsNull()) {
-                    TopExp_Explorer xp;
-                    for (xp.Init(projShape, TopAbs_EDGE); xp.More(); xp.Next()) {
-                        TopoDS_Edge projEdge = TopoDS::Edge(xp.Current());
-                        TopLoc_Location loc(mov);
-                        projEdge.Location(loc);
+                Part::TopoShape projShape;
+                // Projection of the edge on parallel plane to the sketch plane is edge itself
+                // all we need to do is match coordinate systems
+                // for some reason OCC doesn't like to project a planar B-Spline to a plane parallel to it
+                if (planar && plane.Axis().Direction().IsParallel(sketchPlane.Axis().Direction(), Precision::Confusion())) {
+                    TopoDS_Edge projEdge = edge;
+
+                    // We need to trim the curve in case we are projecting a B-Spline segment
+                    if(curve.GetType() == GeomAbs_BSplineCurve){
+                        double Param1 = curve.FirstParameter();
+                        double Param2 = curve.LastParameter();
+
+                        if (Param1 > Param2){
+                            std::swap(Param1, Param2);
+                        }
+
+                        // trim curve in case we are projecting a segment
+                        auto bsplineCurve = curve.BSpline();
+                        if(Param2 - Param1 > Precision::Confusion()){
+                            bsplineCurve->Segment(Param1, Param2);
+                            projEdge = BRepBuilderAPI_MakeEdge(bsplineCurve).Edge();
+                        }
+                    }
+
+                    projShape.setShape(projEdge);
+
+                    // We can't use gp_Pln::Distance() because we need to
+                    // know which side the plane is regarding the sketch
+                    const gp_Pnt& aP = sketchPlane.Location();
+                    const gp_Pnt& aLoc = plane.Location ();
+                    const gp_Dir& aDir = plane.Axis().Direction();
+                    double d = (aDir.X() * (aP.X() - aLoc.X()) +
+                            aDir.Y() * (aP.Y() - aLoc.Y()) +
+                            aDir.Z() * (aP.Z() - aLoc.Z()));
+
+                    gp_Trsf trsf;
+                    trsf.SetTranslation(gp_Vec(aDir) * d);
+                    projShape.transformShape(Part::TopoShape::convert(trsf), /*copy*/false);
+                } else {
+                    // When planes not parallel or perpendicular, or edge is not planar
+                    // normal projection is working just fine
+                    BRepOffsetAPI_NormalProjection mkProj(aProjFace);
+                    mkProj.Add(edge);
+                    mkProj.Build();
+
+                    projShape.setShape(mkProj.Projection());
+                }
+                if (!projShape.isNull() && projShape.hasSubShape(TopAbs_EDGE)) {
+                    for (auto &e : projShape.getSubTopoShapes(TopAbs_EDGE)) {
+                        // Transform copy of the edge to the sketch plane local coordinates
+                        e.transformShape(invPlm.toMatrix(), /*copy*/true, /*checkScale*/true);
+                        TopoDS_Edge projEdge = TopoDS::Edge(e.getShape());
                         processEdge2(projEdge, geos);
                     }
                 }
@@ -9217,6 +9276,35 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
 
                 TopoDS_Face f = TopoDS::Face(fBuilder.Shape());
                 refSubShape = f;
+            }
+            else if (Obj->isDerivedFrom<Part::DatumLine>()) {
+                auto* line = static_cast<const Part::DatumLine*>(Obj);
+                Base::Placement plm = line->Placement.getValue();
+                Base::Vector3d base = plm.getPosition();
+                Base::Vector3d dir = line->getDirection();
+                gp_Lin l(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
+                BRepBuilderAPI_MakeEdge eBuilder(l);
+                if (!eBuilder.IsDone()) {
+                    throw Base::RuntimeError(
+                        "Sketcher: addExternal(): Failed to build edge from Part::DatumLine");
+                }
+
+                TopoDS_Edge e = TopoDS::Edge(eBuilder.Shape());
+                refSubShape = e;
+            }
+            else if (Obj->isDerivedFrom<Part::DatumPoint>()) {
+                auto* point = static_cast<const Part::DatumPoint*>(Obj);
+                Base::Placement plm = point->Placement.getValue();
+                Base::Vector3d base = plm.getPosition();
+                gp_Pnt p(base.x, base.y, base.z);
+                BRepBuilderAPI_MakeVertex eBuilder(p);
+                if (!eBuilder.IsDone()) {
+                    throw Base::RuntimeError(
+                        "Sketcher: addExternal(): Failed to build vertex from Part::DatumPoint");
+                }
+
+                TopoDS_Vertex v = TopoDS::Vertex(eBuilder.Shape());
+                refSubShape = v;
             }
             else {
                 throw Base::TypeError(

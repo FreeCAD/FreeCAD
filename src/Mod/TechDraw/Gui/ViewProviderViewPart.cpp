@@ -386,14 +386,14 @@ bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
     return true;
 }
 
-App::Color ViewProviderViewPart::prefSectionColor()
+Base::Color ViewProviderViewPart::prefSectionColor()
 {
     return PreferencesGui::sectionLineColor();
 }
 
-App::Color ViewProviderViewPart::prefHighlightColor()
+Base::Color ViewProviderViewPart::prefHighlightColor()
 {
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("HighlightColor", 0x00000000));
     return fcColor;
 }

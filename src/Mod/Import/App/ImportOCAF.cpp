@@ -394,12 +394,12 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape,
 void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
 {
     Quantity_ColorRGBA aColor;
-    App::Color color(0.8f, 0.8f, 0.8f);
+    Base::Color color(0.8f, 0.8f, 0.8f);
     if (aColorTool->GetColor(aShape, XCAFDoc_ColorGen, aColor)
         || aColorTool->GetColor(aShape, XCAFDoc_ColorSurf, aColor)
         || aColorTool->GetColor(aShape, XCAFDoc_ColorCurv, aColor)) {
         color = Tools::convertColor(aColor);
-        std::vector<App::Color> colors;
+        std::vector<Base::Color> colors;
         colors.push_back(color);
         applyColors(part, colors);
     }
@@ -412,7 +412,7 @@ void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
     }
 
     bool found_face_color = false;
-    std::vector<App::Color> faceColors;
+    std::vector<Base::Color> faceColors;
     faceColors.resize(faces.Extent(), color);
     xp.Init(aShape, TopAbs_FACE);
     while (xp.More()) {
@@ -438,7 +438,7 @@ ImportOCAFCmd::ImportOCAFCmd(Handle(TDocStd_Document) h, App::Document* d, const
     : ImportOCAF(h, d, name)
 {}
 
-void ImportOCAFCmd::applyColors(Part::Feature* part, const std::vector<App::Color>& colors)
+void ImportOCAFCmd::applyColors(Part::Feature* part, const std::vector<Base::Color>& colors)
 {
     partColors[part] = colors;
 }
@@ -503,7 +503,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
     std::map<Standard_Integer, Quantity_ColorRGBA>::const_iterator jt;
     jt = myColorMap.find(Part::ShapeMapHasher {}(shape));
 
-    App::Color partColor(0.8f, 0.8f, 0.8f);
+    Base::Color partColor(0.8f, 0.8f, 0.8f);
 
 
     // set label name if defined
@@ -524,7 +524,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
             xp.Next();
         }
 
-        std::vector<App::Color> faceColors;
+        std::vector<Base::Color> faceColors;
         faceColors.resize(faces.Extent(), partColor);
         xp.Init(shape, TopAbs_FACE);
         while (xp.More()) {

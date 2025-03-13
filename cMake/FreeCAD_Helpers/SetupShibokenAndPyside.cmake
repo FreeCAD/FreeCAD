@@ -59,7 +59,7 @@ macro(SetupShibokenAndPyside)
 
     find_package(PySide${PYSIDE_MAJOR_VERSION} QUIET)
 
-    if(${PYSIDE_MAJOR_VERSION} EQUAL 5)
+    if(${PYSIDE_MAJOR_VERSION} EQUAL 2)
         # Our internal FindPySide6.cmake file already provides these for PySide6
         if(NOT PYSIDE_INCLUDE_DIR AND TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION})
             get_property(PYSIDE_INCLUDE_DIR TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)

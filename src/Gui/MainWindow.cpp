@@ -40,6 +40,7 @@
 # include <QMenuBar>
 # include <QMessageBox>
 # include <QMimeData>
+# include <QOpenGLWidget>
 # include <QPainter>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
@@ -115,7 +116,7 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "Dialogs/DlgObjectSelection.h"
-#include <App/Color.h>
+#include <Base/Color.h>
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
 
@@ -430,10 +431,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->windowMapper = new QSignalMapper(this);
 
     // connection between workspace, window menu and tab bar
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(d->windowMapper, qOverload<QWidget*>(&QSignalMapper::mapped),
-            this, &MainWindow::onSetActiveSubWindow);
-#elif QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     connect(d->windowMapper, &QSignalMapper::mappedWidget,
             this, &MainWindow::onSetActiveSubWindow);
 #else
@@ -2348,15 +2346,15 @@ void MainWindow::setWindowTitle(const QString& string)
         auto format = QStringLiteral("#statusBar{color: %1}");
         if (strcmp(sReason, "colorText") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);
-            this->msg = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+            this->msg = format.arg(Base::Color::fromPackedRGB<QColor>(col).name());
         }
         else if (strcmp(sReason, "colorWarning") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);
-            this->wrn = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+            this->wrn = format.arg(Base::Color::fromPackedRGB<QColor>(col).name());
         }
         else if (strcmp(sReason, "colorError") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);
-            this->err = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+            this->err = format.arg(Base::Color::fromPackedRGB<QColor>(col).name());
         }
         else if (strcmp(sReason, "colorCritical") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);

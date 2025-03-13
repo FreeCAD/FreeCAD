@@ -82,7 +82,7 @@ public:
 
     TechDraw::DrawViewDimension* getViewObject() const override;
 
-    App::Color prefColor() const;
+    Base::Color prefColor() const;
     std::string prefFont() const;
     double prefFontSize() const;
     double prefArrowSize() const;

@@ -341,8 +341,8 @@ private:
         return Py::None();
     }
 
-    static std::map<std::string, App::Color> getShapeColors(App::DocumentObject* obj,
-                                                            const char* subname)
+    static std::map<std::string, Base::Color> getShapeColors(App::DocumentObject* obj,
+                                                             const char* subname)
     {
         auto vp = Gui::Application::Instance->getViewProvider(obj);
         if (vp) {

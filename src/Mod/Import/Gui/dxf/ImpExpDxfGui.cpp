@@ -69,7 +69,7 @@ ImpExpDxfReadGui::ImpExpDxfReadGui(const std::string& filepath, App::Document* p
 void ImpExpDxfReadGui::ApplyGuiStyles(Part::Feature* object) const
 {
     auto view = static_cast<PartGui::ViewProviderPart*>(GuiDocument->getViewProvider(object));
-    App::Color color = ObjectColor(m_entityAttributes.m_Color);
+    Base::Color color = ObjectColor(m_entityAttributes.m_Color);
     view->LineColor.setValue(color);
     view->PointColor.setValue(color);
     view->ShapeAppearance.setDiffuseColor(color);
@@ -82,7 +82,7 @@ void ImpExpDxfReadGui::ApplyGuiStyles(App::FeaturePython* object) const
     static Base::Type PropertyColorType = App::PropertyColor::getClassTypeId();
 
     auto view = static_cast<Gui::ViewProviderDocumentObject*>(GuiDocument->getViewProvider(object));
-    App::Color color = ObjectColor(m_entityAttributes.m_Color);
+    Base::Color color = ObjectColor(m_entityAttributes.m_Color);
 
     // The properties on this object depend on which Python object is wrapped around it.
     // For now we look for the two colors we expect in text and dimensions, and check that they

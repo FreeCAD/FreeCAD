@@ -72,7 +72,7 @@ void LineFormat::setCurrentLineFormat(LineFormat& newFormat)
 
 LineFormat::LineFormat(const int style,
                        const double weight,
-                       const App::Color& color,
+                       const Base::Color& color,
                        const bool visible) :
     m_style(style),
     m_weight(weight),
@@ -104,7 +104,7 @@ double LineFormat::getDefEdgeWidth()
     return TechDraw::LineGroup::getDefaultWidth("Graphic");
 }
 
-App::Color LineFormat::getDefEdgeColor()
+Base::Color LineFormat::getDefEdgeColor()
 {
     return Preferences::normalColor();
 }

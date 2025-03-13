@@ -71,17 +71,10 @@ TaskAppearance::~TaskAppearance()
 void TaskAppearance::setupConnections()
 {
     // clang-format off
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    connect(ui->changeMode, qOverload<const QString&>(&QComboBox::activated),
-            this, &TaskAppearance::onChangeModeActivated);
-    connect(ui->changePlot, qOverload<const QString&>(&QComboBox::activated),
-            this, &TaskAppearance::onChangePlotActivated);
-#else
     connect(ui->changeMode, &QComboBox::textActivated,
             this, &TaskAppearance::onChangeModeActivated);
     connect(ui->changePlot, &QComboBox::textActivated,
             this, &TaskAppearance::onChangePlotActivated);
-#endif
     connect(ui->spinTransparency, qOverload<int>(&QSpinBox::valueChanged),
             this, &TaskAppearance::onTransparencyValueChanged);
     connect(ui->spinPointSize, qOverload<int>(&QSpinBox::valueChanged),

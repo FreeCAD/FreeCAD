@@ -41,11 +41,13 @@
 # include <QCursor>
 # include <QImage>
 # include <QMenu>
+# include <QOpenGLFramebufferObject>
 # include <QOpenGLTexture>
+# include <QOpenGLWidget>
 # include <QPainterPath>
 #endif
 
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Base/Tools.h>
 #include <Eigen/Dense>
 
@@ -157,6 +159,7 @@ private:
     void drawNaviCube(bool picking, float opacity);
 
     SbRotation getNearestOrientation(PickId pickId);
+    qreal getPhysicalCubeWidgetSize();
 
 public:
 
@@ -177,9 +180,9 @@ public:
     float m_InactiveOpacity = 0.5;
     SbVec2s m_PosOffset = SbVec2s(0,0);
 
-    App::Color m_xColor;
-    App::Color m_yColor;
-    App::Color m_zColor;
+    Base::Color m_xColor;
+    Base::Color m_yColor;
+    Base::Color m_zColor;
 
     bool m_Prepared = false;
     static vector<string> m_commands;
@@ -195,8 +198,9 @@ private:
     SbVec2f m_RelPos = SbVec2f(1.0f,1.0f);
     SbVec2s m_PosAreaBase = SbVec2s(0,0);
     SbVec2s m_PosAreaSize = SbVec2s(0,0);
+    qreal m_DevicePixelRatio = 1.0;
 
-    QtGLFramebufferObject* m_PickingFramebuffer;
+    QOpenGLFramebufferObject* m_PickingFramebuffer;
     Gui::View3DInventorViewer* m_View3DInventorViewer;
 
     map<PickId, Face> m_Faces;
@@ -334,6 +338,11 @@ void NaviCube::setNaviCubeLabels(const std::vector<std::string>& labels)
 void NaviCube::setInactiveOpacity(float opacity)
 {
     m_NaviCubeImplementation->m_InactiveOpacity = opacity;
+}
+
+qreal NaviCubeImplementation::getPhysicalCubeWidgetSize()
+{
+    return m_CubeWidgetSize * m_DevicePixelRatio;
 }
 
 void NaviCubeImplementation::setLabels(const std::vector<std::string>& labels)
@@ -701,19 +710,22 @@ void NaviCubeImplementation::prepare()
     addButtonFace(PickId::DotBackside, SbVec3f(0, 1, 0));
     addButtonFace(PickId::ViewMenu);
 
+    qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
+
     if (m_PickingFramebuffer)
         delete m_PickingFramebuffer;
     m_PickingFramebuffer =
-        new QtGLFramebufferObject(2 * m_CubeWidgetSize, 2 * m_CubeWidgetSize,
-                                  QtGLFramebufferObject::CombinedDepthStencil);
+        new QOpenGLFramebufferObject(2 * physicalCubeWidgetSize, 2 * physicalCubeWidgetSize,
+                                     QOpenGLFramebufferObject::CombinedDepthStencil);
     m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
 }
 
 void NaviCubeImplementation::drawNaviCube() {
     handleResize();
-    int posX = (int)(m_RelPos[0] * m_PosAreaSize[0]) + m_PosAreaBase[0] - m_CubeWidgetSize / 2;
-    int posY = (int)(m_RelPos[1] * m_PosAreaSize[1]) + m_PosAreaBase[1] - m_CubeWidgetSize / 2;
-    glViewport(posX, posY, m_CubeWidgetSize, m_CubeWidgetSize);
+    qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
+    int posX = (int)(m_RelPos[0] * m_PosAreaSize[0]) + m_PosAreaBase[0] - physicalCubeWidgetSize / 2;
+    int posY = (int)(m_RelPos[1] * m_PosAreaSize[1]) + m_PosAreaBase[1] - physicalCubeWidgetSize / 2;
+    glViewport(posX, posY, physicalCubeWidgetSize, physicalCubeWidgetSize);
     drawNaviCube(false, m_Hovering ? 1.f : m_InactiveOpacity);
 }
 
@@ -729,10 +741,13 @@ void NaviCubeImplementation::createContextMenu(const std::vector<std::string>& c
 }
 
 void NaviCubeImplementation::handleResize() {
+    qreal devicePixelRatio = m_View3DInventorViewer->devicePixelRatio();
     SbVec2s viewSize = m_View3DInventorViewer->getSoRenderManager()->getSize();
-    if (viewSize != m_ViewSize) {
-        m_PosAreaBase[0] = std::min((int)(m_PosOffset[0] + m_CubeWidgetSize * 0.55), viewSize[0] / 2);
-        m_PosAreaBase[1] = std::min((int)(m_PosOffset[1] + m_CubeWidgetSize * 0.55), viewSize[1] / 2);
+    if (viewSize != m_ViewSize || devicePixelRatio != m_DevicePixelRatio) {
+        m_DevicePixelRatio = devicePixelRatio;
+        qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
+        m_PosAreaBase[0] = std::min((int)(m_PosOffset[0] + physicalCubeWidgetSize * 0.55), viewSize[0] / 2);
+        m_PosAreaBase[1] = std::min((int)(m_PosOffset[1] + physicalCubeWidgetSize * 0.55), viewSize[1] / 2);
         m_PosAreaSize[0] = viewSize[0] - 2 * m_PosAreaBase[0];
         m_PosAreaSize[1] = viewSize[1] - 2 * m_PosAreaBase[1];
         m_ViewSize = viewSize;
@@ -932,21 +947,22 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode, float opacity)
 }
 
 NaviCubeImplementation::PickId NaviCubeImplementation::pickFace(short x, short y) {
+    qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
     GLubyte pixels[4] = {0};
-    if (m_PickingFramebuffer && std::abs(x) <= m_CubeWidgetSize / 2 &&
-        std::abs(y) <= m_CubeWidgetSize / 2) {
-        static_cast<QtGLWidget*>(m_View3DInventorViewer->viewport())->makeCurrent();
+    if (m_PickingFramebuffer && std::abs(x) <= physicalCubeWidgetSize / 2 &&
+        std::abs(y) <= physicalCubeWidgetSize / 2) {
+        static_cast<QOpenGLWidget*>(m_View3DInventorViewer->viewport())->makeCurrent();
         m_PickingFramebuffer->bind();
 
-        glViewport(0, 0, m_CubeWidgetSize * 2, m_CubeWidgetSize * 2);
+        glViewport(0, 0, physicalCubeWidgetSize * 2, physicalCubeWidgetSize * 2);
 
         drawNaviCube(true, 1.f);
 
         glFinish();
-        glReadPixels(2 * x + m_CubeWidgetSize, 2 * y + m_CubeWidgetSize, 1, 1,
+        glReadPixels(2 * x + physicalCubeWidgetSize, 2 * y + physicalCubeWidgetSize, 1, 1,
                      GL_RGBA, GL_UNSIGNED_BYTE, &pixels);
         m_PickingFramebuffer->release();
-        static_cast<QtGLWidget*>(m_View3DInventorViewer->viewport())->doneCurrent();
+        static_cast<QOpenGLWidget*>(m_View3DInventorViewer->viewport())->doneCurrent();
     }
     return pixels[3] == 255 ? static_cast<PickId>(pixels[0]) : PickId::None;
 }
@@ -1129,13 +1145,15 @@ void NaviCubeImplementation::setHilite(PickId hilite) {
 }
 
 bool NaviCubeImplementation::inDragZone(short x, short y) {
-    int limit = m_CubeWidgetSize / 4;
+    qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
+    int limit = physicalCubeWidgetSize / 4;
     return std::abs(x) < limit && std::abs(y) < limit;
 }
 
 bool NaviCubeImplementation::mouseMoved(short x, short y) {
-    bool hovering = std::abs(x) <= m_CubeWidgetSize / 2 &&
-            std::abs(y) <= m_CubeWidgetSize / 2;
+    qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
+    bool hovering = std::abs(x) <= physicalCubeWidgetSize  / 2 &&
+            std::abs(y) <= physicalCubeWidgetSize  / 2;
 
     if (hovering != m_Hovering) {
         m_Hovering = hovering;
@@ -1191,11 +1209,11 @@ void NaviCube::updateColors()
     unsigned long colorLong;
 
     colorLong = Gui::ViewParams::instance()->getAxisXColor();
-    m_NaviCubeImplementation->m_xColor = App::Color(static_cast<uint32_t>(colorLong));
+    m_NaviCubeImplementation->m_xColor = Base::Color(static_cast<uint32_t>(colorLong));
     colorLong = Gui::ViewParams::instance()->getAxisYColor();
-    m_NaviCubeImplementation->m_yColor = App::Color(static_cast<uint32_t>(colorLong));
+    m_NaviCubeImplementation->m_yColor = Base::Color(static_cast<uint32_t>(colorLong));
     colorLong = Gui::ViewParams::instance()->getAxisZColor();
-    m_NaviCubeImplementation->m_zColor = App::Color(static_cast<uint32_t>(colorLong));
+    m_NaviCubeImplementation->m_zColor = Base::Color(static_cast<uint32_t>(colorLong));
 }
 
 void NaviCube::setNaviCubeCommands(const std::vector<std::string>& cmd)

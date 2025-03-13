@@ -23,9 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/uuid/uuid_generators.hpp>
-# include <boost/uuid/uuid_io.hpp>
-# include <boost/random.hpp>
 # include <Approx_Curve3d.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
@@ -75,12 +72,11 @@
 #endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Parameter.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/thread.hpp>
 
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/Geometry.h>
@@ -172,7 +168,7 @@ Base::Vector3d Face::getCenter() const {
     GProp_GProps faceProps;
     BRepGProp::SurfaceProperties(toOccFace(), faceProps);
 
-    return DrawUtil::toVector3d(faceProps.CentreOfMass());
+    return Base::convertTo<Base::Vector3d>(faceProps.CentreOfMass());
 }
 
 double Face::getArea() const {
@@ -203,7 +199,6 @@ BaseGeom::BaseGeom() :
 {
     occEdge = TopoDS_Edge();
     cosmeticTag = std::string();
-    tag = boost::uuids::nil_uuid();
 }
 
 BaseGeomPtr BaseGeom::copy()
@@ -244,16 +239,6 @@ std::string BaseGeom::toString() const
     return ss.str();
 }
 
-boost::uuids::uuid BaseGeom::getTag() const
-{
-    return tag;
-}
-
-std::string BaseGeom::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
-}
-
 void BaseGeom::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<GeomType value=\"" << geomType << "\"/>" << endl;
@@ -269,7 +254,6 @@ void BaseGeom::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Source value=\"" << m_source << "\"/>" << endl; // Should this save as text and not number?
     writer.Stream() << writer.ind() << "<SourceIndex value=\"" << m_sourceIndex << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << endl;
-//    writer.Stream() << writer.ind() << "<Tag value=\"" <<  getTagAsString() << "\"/>" << endl;
 }
 
 void BaseGeom::Restore(Base::XMLReader &reader)
@@ -624,7 +608,7 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
         if (!sectionShape.IsNull()) {
             TopExp_Explorer explorer(sectionShape, TopAbs_VERTEX);
             while (explorer.More()) {
-                Base::Vector3d pt(DrawUtil::toVector3d(BRep_Tool::Pnt(TopoDS::Vertex(explorer.Current()))));
+                Base::Vector3d pt(Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopoDS::Vertex(explorer.Current()))));
                 interPoints.push_back(pt);
                 explorer.Next();
             }
@@ -817,9 +801,9 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
     cw = (a < 0) ? true: false;
     largeArc = (fabs(l-f) > M_PI) ? true : false;
 
-    startPnt = DU::toVector3d(s);
-    endPnt = DU::toVector3d(ePt);
-    midPnt = DU::toVector3d(m);
+    startPnt = Base::convertTo<Base::Vector3d>(s);
+    endPnt = Base::convertTo<Base::Vector3d>(ePt);
+    midPnt = Base::convertTo<Base::Vector3d>(m);
     if (e.Orientation() == TopAbs_REVERSED) {
         reversed = true;
     }
@@ -865,9 +849,9 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
     cw = (a < 0) ? true: false;
     largeArc = (fabs(l-f) > M_PI) ? true : false;
 
-    startPnt = DU::toVector3d(s);
-    endPnt = DU::toVector3d(ePt);
-    midPnt = DU::toVector3d(m);
+    startPnt = Base::convertTo<Base::Vector3d>(s);
+    endPnt = Base::convertTo<Base::Vector3d>(ePt);
+    midPnt = Base::convertTo<Base::Vector3d>(m);
     if (edge.Orientation() == TopAbs_REVERSED) {
         reversed = true;
     }
@@ -1282,7 +1266,6 @@ Vertex::Vertex()
     cosmeticLink = -1;
     cosmeticTag = std::string();
     m_reference = false;
-    createNewTag();
 }
 
 Vertex::Vertex(const Vertex* v)
@@ -1297,7 +1280,6 @@ Vertex::Vertex(const Vertex* v)
     cosmeticLink = v->cosmeticLink;
     cosmeticTag = v->cosmeticTag;
     m_reference = false;
-    createNewTag();
 }
 
 Vertex::Vertex(double x, double y)
@@ -1313,7 +1295,6 @@ Vertex::Vertex(double x, double y)
     cosmeticLink = -1;
     cosmeticTag = std::string();
     m_reference = false;
-    createNewTag();
 }
 
 Vertex::Vertex(Base::Vector3d v) : Vertex(v.x, v.y)
@@ -1355,7 +1336,7 @@ void Vertex::Save(Base::Writer &writer) const
 //    const char r = reference?'1':'0';
 //    writer.Stream() << writer.ind() << "<Reference value=\"" <<  r << "\"/>" << endl;
 
-    writer.Stream() << writer.ind() << "<VertexTag value=\"" <<  getTagAsString() << "\"/>" << endl;
+    Tag::Save(writer);
 }
 
 void Vertex::Restore(Base::XMLReader &reader)
@@ -1384,44 +1365,10 @@ void Vertex::Restore(Base::XMLReader &reader)
 //    reader.readElement("Reference");
 //    m_reference = (bool)reader.getAttributeAsInteger("value")==0?false:true;
 
-    reader.readElement("VertexTag");
-    std::string temp = reader.getAttribute("value");
-    boost::uuids::string_generator gen;
-    boost::uuids::uuid u1 = gen(temp);
-    tag = u1;
+    Tag::Restore(reader, "VertexTag");
 
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(pnt.x, pnt.y, pnt.z));
     occVertex = mkVert.Vertex();
-}
-
-void Vertex::createNewTag()
-{
-    // Initialize a random number generator, to avoid Valgrind false positives.
-    // The random number generator is not threadsafe so we guard it.  See
-    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
-    static boost::mt19937 ran;
-    static bool seeded = false;
-    static boost::mutex random_number_mutex;
-
-    boost::lock_guard<boost::mutex> guard(random_number_mutex);
-    if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
-        seeded = true;
-    }
-    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
-
-    tag = gen();
-}
-
-
-boost::uuids::uuid Vertex::getTag() const
-{
-    return tag;
-}
-
-std::string Vertex::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
 }
 
 void Vertex::dump(const char* title)
@@ -1433,9 +1380,9 @@ void Vertex::dump(const char* title)
 
 TopoShape Vertex::asTopoShape(double scale)
 {
-    Base::Vector3d point = DU::toVector3d(BRep_Tool::Pnt(getOCCVertex()));
+    Base::Vector3d point = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(getOCCVertex()));
     point = point / scale;
-    BRepBuilderAPI_MakeVertex mkVert(DU::to<gp_Pnt>(point));
+    BRepBuilderAPI_MakeVertex mkVert(Base::convertTo<gp_Pnt>(point));
     return TopoShape(mkVert.Vertex());
 }
 
@@ -1583,7 +1530,7 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
             sumCurvature += prop.Curvature();
             prop.CentreOfCurvature(curveCenter);
             centers.push_back(curveCenter);
-            sumCenter += DrawUtil::toVector3d(curveCenter);
+            sumCenter += Base::convertTo<Base::Vector3d>(curveCenter);
         }
 
     }
@@ -1601,7 +1548,7 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
 
     double errorCenter{0};
     for (auto& observe : centers) {
-        auto error = (DU::toVector3d(observe)- avgCenter).Length();
+        auto error = (Base::convertTo<Base::Vector3d>(observe)- avgCenter).Length();
         errorCenter += error;
     }
 
@@ -1636,7 +1583,7 @@ TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge splineEdge, bool& arc)
         throw Base::RuntimeError("GU::asCircle received non-circular edge!");
     }
 
-    gp_Pnt gCenter = DU::to<gp_Pnt>(center);
+    gp_Pnt gCenter = Base::convertTo<gp_Pnt>(center);
     gp_Dir gNormal{0, 0, 1};
     Handle(Geom_Circle) circleFromParms = GC_MakeCircle(gCenter, gNormal, radius);
 
@@ -1678,8 +1625,8 @@ bool GeometryUtils::isLine(TopoDS_Edge occEdge)
         return false;
     }
 
-    Base::Vector3d vs = DrawUtil::toVector3d(s);
-    Base::Vector3d ve = DrawUtil::toVector3d(e);
+    Base::Vector3d vs = Base::convertTo<Base::Vector3d>(s);
+    Base::Vector3d ve = Base::convertTo<Base::Vector3d>(e);
     double endLength = (vs - ve).Length();
     int low = 0;
     int high = spline->NbPoles() - 1;
@@ -1688,9 +1635,9 @@ bool GeometryUtils::isLine(TopoDS_Edge occEdge)
     double lenTotal = 0.0;
     for (int i = 0; i < high; i++) {
         gp_Pnt p1 = poles(i);
-        Base::Vector3d v1 = DrawUtil::toVector3d(p1);
+        Base::Vector3d v1 = Base::convertTo<Base::Vector3d>(p1);
         gp_Pnt p2 = poles(i+1);
-        Base::Vector3d v2 = DrawUtil::toVector3d(p2);
+        Base::Vector3d v2 = Base::convertTo<Base::Vector3d>(p2);
         lenTotal += (v2-v1).Length();
     }
 
@@ -1818,7 +1765,7 @@ std::vector<FacePtr> GeometryUtils::findHolesInFace(const DrawViewPart* dvp, con
             iFace++;
             continue;
         }
-        auto faceCenter = DU::to<gp_Pnt>(face->getCenter());
+        auto faceCenter = Base::convertTo<gp_Pnt>(face->getCenter());
         auto faceCenterVertex = BRepBuilderAPI_MakeVertex(faceCenter);
         auto distance = DU::simpleMinDist(faceCenterVertex, bigCheeseOCCFace);
         if (distance > EWTOLERANCE) {

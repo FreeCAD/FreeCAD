@@ -25,8 +25,10 @@
 
 import os
 import re
+
 import FreeCAD
-from nativeifc import ifc_tools
+
+from . import ifc_tools
 
 translate = FreeCAD.Qt.translate
 
@@ -361,7 +363,7 @@ def read_properties_conversion():
 def remove_property(obj, prop):
     """Removes a custom property"""
 
-    from nativeifc import ifc_tools
+    from . import ifc_tools
     ifcfile = ifc_tools.get_ifcfile(obj)
     if not ifcfile:
         return

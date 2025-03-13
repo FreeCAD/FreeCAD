@@ -138,8 +138,8 @@ void ColorField::rebuild()
     fConstant = -fAscent * fMin;
 }
 
-// fuellt das Array von Farbe 1, Index 1 bis Farbe 2, Index 2
-void ColorField::interpolate(Color clCol1, std::size_t usInd1, Color clCol2, std::size_t usInd2)
+// fills the array from color 1, index 1 to color 2, index 2
+void ColorField::interpolate(Base::Color clCol1, std::size_t usInd1, Base::Color clCol2, std::size_t usInd2)
 {
     float fStep = 1.0f, fLen = float(usInd2 - usInd1);
 
@@ -154,7 +154,7 @@ void ColorField::interpolate(Color clCol1, std::size_t usInd1, Color clCol2, std
         float ucR = clCol1.r + fR * fStep;
         float ucG = clCol1.g + fG * fStep;
         float ucB = clCol1.b + fB * fStep;
-        colorField[i] = Color(ucR, ucG, ucB);
+        colorField[i] = Base::Color(ucR, ucG, ucB);
         fStep += 1.0f;
     }
 }
@@ -370,20 +370,20 @@ bool ColorLegend::setValue(std::size_t ulPos, float fVal)
     }
 }
 
-Color ColorLegend::getColor(std::size_t ulPos) const
+Base::Color ColorLegend::getColor(std::size_t ulPos) const
 {
     if (ulPos < colorFields.size()) {
         return colorFields[ulPos];
     }
     else {
-        return Color();
+        return Base::Color();
     }
 }
 
 // color as: 0x00rrggbb
 uint32_t ColorLegend::getPackedColor(std::size_t ulPos) const
 {
-    Color clRGB = getColor(ulPos);
+    Base::Color clRGB = getColor(ulPos);
     return clRGB.getPackedValue();
 }
 
@@ -402,7 +402,7 @@ std::size_t ColorLegend::addMin(const std::string& rclName)
     names.push_front(rclName);
     values.push_front(values.front() - 1.0f);
 
-    Color clNewRGB;
+    Base::Color clNewRGB;
     clNewRGB.r = ((float)rand() / (float)RAND_MAX);
     clNewRGB.g = ((float)rand() / (float)RAND_MAX);
     clNewRGB.b = ((float)rand() / (float)RAND_MAX);
@@ -417,7 +417,7 @@ std::size_t ColorLegend::addMax(const std::string& rclName)
     names.push_back(rclName);
     values.push_back(values.back() + 1.0f);
 
-    Color clNewRGB;
+    Base::Color clNewRGB;
     clNewRGB.r = ((float)rand() / (float)RAND_MAX);
     clNewRGB.g = ((float)rand() / (float)RAND_MAX);
     clNewRGB.b = ((float)rand() / (float)RAND_MAX);
@@ -481,7 +481,7 @@ void ColorLegend::resize(std::size_t ulCt)
 bool ColorLegend::setColor(std::size_t ulPos, float ucRed, float ucGreen, float ucBlue)
 {
     if (ulPos < names.size()) {
-        colorFields[ulPos] = Color(ucRed, ucGreen, ucBlue);
+        colorFields[ulPos] = Base::Color(ucRed, ucGreen, ucBlue);
         return true;
     }
 

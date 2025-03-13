@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
+# *   Copyright (c) 2022-2025 FreeCAD project association AISBL             *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -73,6 +73,8 @@ class MockAddon:
         self.display_name = name
         self.name = name
         self.macro = None
+        self.metadata = None
+        self.installed_metadata = None
 
     def status(self):
         return Addon.Status.UPDATE_AVAILABLE
@@ -144,29 +146,29 @@ class TestUpdateAllGui(unittest.TestCase):
     def test_add_addon_to_table(self):
         mock_addon = MockAddon("MockAddon")
         self.test_object.dialog.tableWidget.clear()
-        self.test_object._add_addon_to_table(mock_addon)
+        self.test_object._add_addon_to_table(mock_addon, 1)
         self.assertEqual(self.test_object.dialog.tableWidget.rowCount(), 1)
 
     def test_update_addon_status(self):
         self.test_object._setup_dialog()
         self.test_object._update_addon_status(0, AddonStatus.WAITING)
         self.assertEqual(
-            self.test_object.dialog.tableWidget.item(0, 1).text(),
+            self.test_object.dialog.tableWidget.item(0, 2).text(),
             AddonStatus.WAITING.ui_string(),
         )
         self.test_object._update_addon_status(0, AddonStatus.INSTALLING)
         self.assertEqual(
-            self.test_object.dialog.tableWidget.item(0, 1).text(),
+            self.test_object.dialog.tableWidget.item(0, 2).text(),
             AddonStatus.INSTALLING.ui_string(),
         )
         self.test_object._update_addon_status(0, AddonStatus.SUCCEEDED)
         self.assertEqual(
-            self.test_object.dialog.tableWidget.item(0, 1).text(),
+            self.test_object.dialog.tableWidget.item(0, 2).text(),
             AddonStatus.SUCCEEDED.ui_string(),
         )
         self.test_object._update_addon_status(0, AddonStatus.FAILED)
         self.assertEqual(
-            self.test_object.dialog.tableWidget.item(0, 1).text(),
+            self.test_object.dialog.tableWidget.item(0, 2).text(),
             AddonStatus.FAILED.ui_string(),
         )
 
@@ -175,19 +177,19 @@ class TestUpdateAllGui(unittest.TestCase):
         self.test_object._launch_active_installer = lambda: None
         self.test_object._process_next_update()
         self.assertEqual(
-            self.test_object.dialog.tableWidget.item(0, 1).text(),
+            self.test_object.dialog.tableWidget.item(0, 2).text(),
             AddonStatus.INSTALLING.ui_string(),
         )
 
         self.test_object._process_next_update()
         self.assertEqual(
-            self.test_object.dialog.tableWidget.item(1, 1).text(),
+            self.test_object.dialog.tableWidget.item(1, 2).text(),
             AddonStatus.INSTALLING.ui_string(),
         )
 
         self.test_object._process_next_update()
         self.assertEqual(
-            self.test_object.dialog.tableWidget.item(2, 1).text(),
+            self.test_object.dialog.tableWidget.item(2, 2).text(),
             AddonStatus.INSTALLING.ui_string(),
         )
 
@@ -208,7 +210,7 @@ class TestUpdateAllGui(unittest.TestCase):
         self.test_object._setup_dialog()
         self.test_object._update_succeeded(self.addons[0])
         self.assertEqual(
-            self.test_object.dialog.tableWidget.item(0, 1).text(),
+            self.test_object.dialog.tableWidget.item(0, 2).text(),
             AddonStatus.SUCCEEDED.ui_string(),
         )
 
@@ -216,7 +218,7 @@ class TestUpdateAllGui(unittest.TestCase):
         self.test_object._setup_dialog()
         self.test_object._update_failed(self.addons[0])
         self.assertEqual(
-            self.test_object.dialog.tableWidget.item(0, 1).text(),
+            self.test_object.dialog.tableWidget.item(0, 2).text(),
             AddonStatus.FAILED.ui_string(),
         )
 

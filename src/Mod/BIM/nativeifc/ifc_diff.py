@@ -26,7 +26,7 @@ import difflib
 import FreeCAD
 import FreeCADGui
 import ifcopenshell
-from nativeifc import ifc_tools
+from . import ifc_tools
 import Arch_rc
 
 translate = FreeCAD.Qt.translate
