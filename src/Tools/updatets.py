@@ -98,6 +98,11 @@ directories = [
         "tsdir": "Resources/translations",
     },
     {
+        "tsname": "Measure",
+        "workingdir": "./src/Mod/Measure/",
+        "tsdir": "Gui/Resources/translations",
+    },
+    {
         "tsname": "Mesh",
         "workingdir": "./src/Mod/Mesh/",
         "tsdir": "Gui/Resources/translations",
