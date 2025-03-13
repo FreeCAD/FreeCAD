@@ -343,7 +343,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         )
 
         obj.Colinear = 10.0
-        obj.Discretize = 0.1
+        obj.Discretize = 0.25
         obj.Tolerance = Path.Preferences.defaultGeometryTolerance()
         self.setupAdditionalProperties(obj)
 
@@ -358,6 +358,12 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         wires_by_face = dict()
         self.voronoiDebugCache = dict()
+
+        def is_exterior(vertex, face):
+            vector = FreeCAD.Vector(vertex.toPoint(face.BoundBox.ZMin))
+            (u, v) = face.Surface.parameter(vector)
+            # isPartOfDomain is faster than face.IsInside(...)
+            return not face.isPartOfDomain(u, v)
 
         def insert_many_wires(vd, wires):
             for wire in wires:
@@ -402,16 +408,17 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 else:
                     e.Color = SECONDARY
 
+            # filter our colinear edged so there are fewer ones
+            # to iterate over in colorExterior which is slow
             vd.colorColinear(COLINEAR, obj.Colinear)
-            vd.colorTwins(TWIN)
 
             vd.colorExterior(EXTERIOR1)
-            vd.colorExterior(
-                EXTERIOR2,
-                lambda v: not f.isInside(
-                    v.toPoint(f.BoundBox.ZMin), obj.Tolerance, True
-                ),
-            )
+            vd.colorExterior(EXTERIOR2, lambda v: is_exterior(v, f))
+
+            # if colorTwin is done before colorExterior we seem to have
+            # much more weird exterior edges needed to be filtered out,
+            # keep it here to be safe
+            vd.colorTwins(TWIN)
 
             wires = _collectVoronoiWires(vd)
             wires = _sortVoronoiWires(wires)
