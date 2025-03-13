@@ -364,7 +364,7 @@ class Component(ArchIFC.IfcProduct):
             elif hasattr(o,"Host"):
                 if obj == o.Host:
                     ilist.append(o)
-        return list(ilist)
+        return [ obj for obj in ilist if getattr(obj,"MoveWithHost", True)]
 
     def getParentHeight(self,obj):
         """Get a height value from hosts.
