@@ -22,6 +22,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#include <algorithm>
 #ifndef _PreComp_
 #include <cmath>
 #include <vector>
@@ -2686,6 +2687,7 @@ int SketchObject::transferConstraints(int fromGeoId,
                     if (!doNotTransformTangencies) {
                         constNew->Type = Sketcher::Coincident;
                     }
+                    break;
                 }
                 case Sketcher::Angle:
                     // With respect to angle constraints, if it is a DeepSOIC style angle constraint
@@ -3623,8 +3625,9 @@ std::unique_ptr<Constraint> transformPreexistingConstraintForTrim(const SketchOb
      * is set to Sketcher::Tangent, that the secondPos1 is captured from the PointOnObject,
      * and also make sure that the PointOnObject constraint is deleted.
      */
+    // TODO: Symmetric and distance constraints (sometimes together) can be changed to something
     std::unique_ptr<Constraint> newConstr;
-    if (!constr->involvesGeoId(cuttingGeoId)
+    if (cuttingGeoId == GeoEnum::GeoUndef || !constr->involvesGeoId(cuttingGeoId)
         || !constr->involvesGeoIdAndPosId(GeoId, PointPos::none)) {
         return newConstr;
     }
@@ -3634,7 +3637,7 @@ std::unique_ptr<Constraint> transformPreexistingConstraintForTrim(const SketchOb
             // coincidence At this stage of the check the point has to be an end of `cuttingGeoId`
             // on the edge of `GeoId`.
             if (isPointAtPosition(obj, constr->First, constr->FirstPos, cutPointVec)) {
-                // This concerns the start portion of the trim
+                // We already know the point-on-object is on the whole of GeoId
                 newConstr.reset(constr->copy());
                 newConstr->Type = Sketcher::Coincident;
                 newConstr->Second = newGeoId;
@@ -3848,6 +3851,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     // FIXME: we should be able to transfer these to new curves smoothly
     // auto geo = getGeometry(GeoId);
     const auto* geoAsCurve = getGeometry<Part::GeomCurve>(GeoId);
+    bool isOriginalCurveConstruction = GeometryFacade::getConstruction(geoAsCurve);
 
     //******************* Step A => Detection of intersection - Common to all Geometries
     //****************************************//
@@ -3923,26 +3927,23 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     // remove the constraints that we want to manually transfer
     // We could transfer beforehand but in case of exception that transfer is permanent
     if (!isClosedCurve(geoAsCurve)) {
-        if (cuttingGeoIds[0] != GeoEnum::GeoUndef) {
-            idsOfOldConstraints.erase(
-                std::remove_if(
-                    idsOfOldConstraints.begin(),
-                    idsOfOldConstraints.end(),
-                    [&GeoId, &allConstraints](const auto& i) {
-                        return (allConstraints[i]->involvesGeoIdAndPosId(GeoId, PointPos::start));
-                    }),
-                idsOfOldConstraints.end());
-        }
-        if (cuttingGeoIds[1] != GeoEnum::GeoUndef) {
-            idsOfOldConstraints.erase(
-                std::remove_if(idsOfOldConstraints.begin(),
-                               idsOfOldConstraints.end(),
-                               [&GeoId, &allConstraints](const auto& i) {
-                                   return (allConstraints[i]->involvesGeoIdAndPosId(GeoId,
-                                                                                    PointPos::end));
-                               }),
-                idsOfOldConstraints.end());
-        }
+        idsOfOldConstraints.erase(
+            std::remove_if(idsOfOldConstraints.begin(),
+                           idsOfOldConstraints.end(),
+                           [&GeoId, &allConstraints, &cuttingGeoIds](const auto& i) {
+                               auto* constr = allConstraints[i];
+                               bool involvesStart =
+                                   constr->involvesGeoIdAndPosId(GeoId, PointPos::start);
+                               bool involvesEnd =
+                                   constr->involvesGeoIdAndPosId(GeoId, PointPos::end);
+                               bool keepStart = cuttingGeoIds[0] != GeoEnum::GeoUndef;
+                               bool keepEnd = cuttingGeoIds[1] != GeoEnum::GeoUndef;
+                               bool involvesBothButNotBothKept =
+                                   involvesStart && involvesEnd && !(keepStart && keepEnd);
+                               return !involvesBothButNotBothKept
+                                   && ((involvesStart && keepStart) || (involvesEnd && keepEnd));
+                           }),
+            idsOfOldConstraints.end());
     }
     idsOfOldConstraints.erase(
         std::remove_if(idsOfOldConstraints.begin(),
@@ -3965,7 +3966,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     //****************************************//
 
     // Constraints related to start/mid/end points of original
-    auto constrainAsEqual = [this](int GeoId1, int GeoId2) {
+    [[maybe_unused]] auto constrainAsEqual = [this](int GeoId1, int GeoId2) {
         auto newConstr = std::make_unique<Sketcher::Constraint>();
 
         // Build Constraints associated with new pair of arcs
@@ -3998,13 +3999,25 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             newConstraints.push_back(joint);
 
             // Any radius etc. equality constraints here
-            constrainAsEqual(newIds.front(), newIds.back());
+            // TODO: There could be some form of equality between the constraints here. However, it
+            // may happen that this is imposed by an elaborate set of additional constraints. When
+            // that happens, this causes redundant constraints, and in worse cases (incorrect)
+            // complaints of over-constraint and solver failures.
+
+            // if (std::none_of(newConstraints.begin(), newConstraints.end(), [](const auto& constr)
+            // {
+            //         return constr->Type == ConstraintType::Equal;
+            //     })) {
+            //     constrainAsEqual(newIds.front(), newIds.back());
+            // }
             // TODO: ensure alignment as well?
         }
     }
 
-    // TODO: Implement this
     replaceGeometries({GeoId}, newGeos);
+    for (auto newId : newIds) {
+        setConstruction(newId, isOriginalCurveConstruction);
+    }
 
     if (noRecomputes) {
         solve();
@@ -4120,6 +4133,10 @@ bool SketchObject::deriveConstraintsForPieces(const int oldId,
             return true;
         }
 
+        if (conId == GeoEnum::GeoUndef) {
+            // nothing further to do
+            return false;
+        }
         Base::Vector3d conPoint(getPoint(conId, conPos));
         double conParam;
         auto* geoAsCurve = static_cast<const Part::GeomCurve*>(geo);
@@ -4151,8 +4168,10 @@ bool SketchObject::deriveConstraintsForPieces(const int oldId,
     case Radius:
     case Diameter:
     case Equal: {
-        // FIXME: This sounds good by itself, but results in redundant constraints when equality is applied between newIds
-        transferToAll = geo->is<Part::GeomCircle>() || geo->is<Part::GeomArcOfCircle>();
+        // Only transfer to one of them (arbitrarily chosen here as the first)
+        Constraint* trans = con->copy();
+        trans->substituteIndex(oldId, newIds.front());
+        newConstraints.push_back(trans);
         break;
     }
     default:
