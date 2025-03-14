@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   id="svg2"
+   version="1.1"
+   viewBox="0 0 64 64"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient1">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient1"
+       id="linearGradient2"
+       x1="36.329655"
+       y1="1042.527"
+       x2="25.310667"
+       y2="999.39594"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.88441619,0,0,0.88400544,3.6451335,118.30293)" />
+  </defs>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="translate(0,-988.36218)">
+    <path
+       id="rect1"
+       style="display:inline;fill:#ef2929;stroke:#280000;stroke-width:2;stroke-linecap:square;stroke-dasharray:none;fill-opacity:1"
+       d="m 15.140816,994.77606 -8.7266995,8.72784 16.8401825,16.8463 -16.8401825,16.8184 8.7439725,8.7779 16.841913,-16.8479 16.840182,16.8479 8.745702,-8.7779 -16.840182,-16.8184 16.840182,-16.8463 -8.7267,-8.72784 -16.859184,16.83754 z" />
+    <path
+       id="path4"
+       style="display:inline;fill:url(#linearGradient2);stroke:#ef2929;stroke-width:2;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
+       d="M 15.140625,997.60352 32,1014.4395 l 16.859375,-16.83598 5.898437,5.90038 -16.839843,16.8477 16.839843,16.8203 -5.919921,5.9433 L 32,1026.2676 15.162109,1043.1152 9.2421875,1037.1719 26.082031,1020.3516 9.2421875,1003.5039 Z" />
+  </g>
+</svg>
