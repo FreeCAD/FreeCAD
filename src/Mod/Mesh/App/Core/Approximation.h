@@ -201,7 +201,7 @@ protected:
     // NOLINTBEGIN
     std::list<Base::Vector3f> _vPoints; /**< Holds the points for the fit algorithm.  */
     bool _bIsFitted {false};            /**< Flag, whether the fit has been called. */
-    float _fLastResult {FLOAT_MAX};     /**< Stores the last result of the fit */
+    float _fLastResult {FLT_MAX};       /**< Stores the last result of the fit */
     // NOLINTEND
 };
 
@@ -224,22 +224,22 @@ public:
     Base::Vector3f GetNormal() const;
     /**
      * Fit a plane into the given points. We must have at least three non-collinear points
-     * to succeed. If the fit fails FLOAT_MAX is returned.
+     * to succeed. If the fit fails FLT_MAX is returned.
      */
     float Fit() override;
     /**
      * Returns the distance from the point \a rcPoint to the fitted plane. If Fit() has not been
-     * called FLOAT_MAX is returned.
+     * called FLT_MAX is returned.
      */
     float GetDistanceToPlane(const Base::Vector3f& rcPoint) const;
     /**
      * Returns the standard deviation from the points to the fitted plane. If Fit() has not been
-     * called FLOAT_MAX is returned.
+     * called FLT_MAX is returned.
      */
     float GetStdDeviation() const;
     /**
      * Returns the standard deviation from the points to the fitted plane with respect to the
-     * orientation of the plane's normal. If Fit() has not been called FLOAT_MAX is returned.
+     * orientation of the plane's normal. If Fit() has not been called FLT_MAX is returned.
      */
     float GetSignedStdDeviation() const;
     /**
@@ -419,17 +419,17 @@ public:
      */
     Base::Vector3f GetInitialAxisFromNormals(const std::vector<Base::Vector3f>& n) const;
     /**
-     * Fit a cylinder into the given points. If the fit fails FLOAT_MAX is returned.
+     * Fit a cylinder into the given points. If the fit fails FLT_MAX is returned.
      */
     float Fit() override;
     /**
      * Returns the distance from the point \a rcPoint to the fitted cylinder. If Fit() has not been
-     * called FLOAT_MAX is returned.
+     * called FLT_MAX is returned.
      */
     float GetDistanceToCylinder(const Base::Vector3f& rcPoint) const;
     /**
      * Returns the standard deviation from the points to the fitted cylinder. If Fit() has not been
-     * called FLOAT_MAX is returned.
+     * called FLT_MAX is returned.
      */
     float GetStdDeviation() const;
     /**
@@ -461,17 +461,17 @@ public:
     float GetRadius() const;
     Base::Vector3f GetCenter() const;
     /**
-     * Fit a sphere into the given points. If the fit fails FLOAT_MAX is returned.
+     * Fit a sphere into the given points. If the fit fails FLT_MAX is returned.
      */
     float Fit() override;
     /**
      * Returns the distance from the point \a rcPoint to the fitted sphere. If Fit() has not been
-     * called FLOAT_MAX is returned.
+     * called FLT_MAX is returned.
      */
     float GetDistanceToSphere(const Base::Vector3f& rcPoint) const;
     /**
      * Returns the standard deviation from the points to the fitted sphere. If Fit() has not been
-     * called FLOAT_MAX is returned.
+     * called FLT_MAX is returned.
      */
     float GetStdDeviation() const;
     /**
