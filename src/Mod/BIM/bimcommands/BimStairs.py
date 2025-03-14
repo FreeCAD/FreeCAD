@@ -68,12 +68,33 @@ class Arch_Stairs:
             FreeCADGui.doCommand("stairs = Arch.makeStairs(baseobj=["+nStr+"],steps="+str(params.get_param_arch("StairsSteps"))+")")
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(stairs)")
+
+            #ArchSketch Support
+            if len(sel)==1 and Draft.getType(obj)=="ArchSketch":
+                # Get ArchSketch.FloorHeight as default and assign to Stairs
+                try:
+                    height = str(obj.FloorHeight.Value)  # vs obj.FloorHeight
+                    # Can only use Value to assign to PropertyLength
+                    FreeCADGui.doCommand("stairs.Height = " + height)
+                except:
+                    pass
+                #If base is ArchSketch, ArchSketchObject is already loaded, no
+                #need to load again : FreeCADGui.addModule("ArchSketchObject")
+                try:
+                    FreeCADGui.runCommand("EditStairs")
+                except:
+                    pass
+
         else:
             FreeCADGui.doCommand("stairs = Arch.makeStairs(steps="+str(params.get_param_arch("StairsSteps"))+")")
         FreeCADGui.addModule("Draft")
+
+        #FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCADGui.doCommand("Draft.autogroup(stairs)")
+
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+        print(" ActiveDocument.recompute, done ")
 
 
 FreeCADGui.addCommand('Arch_Stairs', Arch_Stairs())
