@@ -136,6 +136,9 @@
 #include "WidgetFactory.h"
 #include "3Dconnexion/navlib/NavlibInterface.h"
 
+#ifdef BUILD_TRACY_FRAME_PROFILER
+#include <tracy/Tracy.hpp>
+#endif
 
 using namespace Gui;
 using namespace Gui::DockWnd;

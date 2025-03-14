@@ -2885,6 +2885,10 @@ QPushButton[objectName="buttonIFCPropertiesDelete"] {
   min-width: 100px;
 }
 
+QGroupBox[objectName="matOpsGrpBox"] QPushButton {
+  min-width: 235px;
+}
+
 /* Below is a fix for indentation in properties, but this is a QT 6 bug only and so is disabled since Windows is as I write this still on QT 5. */
 /* QTreeView::item:selected:active#groupsTreeView {
   background-color: @ThemeAccentColor1;
