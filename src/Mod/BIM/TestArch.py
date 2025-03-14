@@ -830,7 +830,8 @@ class ArchTest(unittest.TestCase):
         pl = App.Placement()
         pl.Rotation.Q = (0.0, 0.0, 0.0, 1.0)
         pl.Base = App.Vector(-2000.0, -2000.0, 0.0)
-        rectangleBase = Draft.make_rectangle(length=4000.0, height=4000.0, placement=pl, face=True, support=None)
+        rectangleBase = Draft.make_rectangle(
+            length=4000.0, height=4000.0, placement=pl, face=True, support=None)
         App.ActiveDocument.recompute()
         extr = rectangleBase.Shape.extrude(App.Vector(0,0,2000))
         Part.show(extr, 'Extrusion')
@@ -838,7 +839,8 @@ class ArchTest(unittest.TestCase):
         App.ActiveDocument.recompute()  # To calculate area
 
         # Create the wall
-        trace = Part.LineSegment(App.Vector (3000.0, 1000.0, 0.0), App.Vector (-3000.0, 1000.0, 0.0))
+        trace = Part.LineSegment(App.Vector (3000.0, 1000.0, 0.0), 
+                                 App.Vector (-3000.0, 1000.0, 0.0))
         wp = WorkingPlane.get_working_plane()
         base = App.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")
         base.Placement = wp.get_placement()
