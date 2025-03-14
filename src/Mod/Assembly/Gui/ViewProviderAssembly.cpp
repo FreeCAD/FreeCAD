@@ -1061,7 +1061,7 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
                 auto* subAsmLink = dynamic_cast<AssemblyLink*>(obj);
                 auto* link = dynamic_cast<App::Link*>(obj);
                 if (subAsmLink || link) {
-                    if (std::find(objs.begin(), objs.end(), obj) == objs.end()) {
+                    if (std::ranges::find(objs, obj) == objs.end()) {
                         objs.push_back(obj);
                         if (subAsmLink && !asmLink->isRigid()) {
                             addSubComponents(subAsmLink, objs);
@@ -1084,7 +1084,7 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
             }
             joints = assemblyPart->getJointsOfPart(obj);
             for (auto* joint : joints) {
-                if (std::find(objToDel.begin(), objToDel.end(), joint) == objToDel.end()) {
+                if (std::ranges::find(objToDel, joint) == objToDel.end()) {
                     objToDel.push_back(joint);
                 }
             }

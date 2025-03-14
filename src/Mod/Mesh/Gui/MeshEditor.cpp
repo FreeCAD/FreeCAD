@@ -323,9 +323,8 @@ void MeshFaceAddition::showMarker(SoPickedPoint* pp)
             SbVec3f face_pnt;
 
             for (int i = 0; i < 3; i++) {
-                int index = (int)f._aulPoints[i];
-                if (std::find(faceView->index.begin(), faceView->index.end(), index)
-                    != faceView->index.end()) {
+                int index = static_cast<int>(f._aulPoints[i]);
+                if (std::ranges::find(faceView->index, index) != faceView->index.end()) {
                     continue;  // already inside
                 }
                 if (f._aulNeighbours[i] == MeshCore::FACET_INDEX_MAX
@@ -524,9 +523,9 @@ void MeshFillHole::closeBridge()
 {
     // Do the hole-filling
     Gui::WaitCursor wc;
-    auto it = std::find(myPolygon.begin(), myPolygon.end(), myVertex1);
-    auto jt = std::find(myPolygon.begin(), myPolygon.end(), myVertex2);
-    if (it != myPolygon.end() && jt != myPolygon.end()) {
+    auto it = std::ranges::find(myPolygon, myVertex1);
+    if (auto jt = std::ranges::find(myPolygon, myVertex2);
+        it != myPolygon.end() && jt != myPolygon.end()) {
         // which iterator comes first
         if (jt < it) {
             std::swap(it, jt);

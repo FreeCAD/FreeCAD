@@ -290,7 +290,7 @@ void Document::exportGraphviz(std::ostream& out) const
         {
 
             // don't add objects twice
-            if (std::find(objects.begin(), objects.end(), docObj) != objects.end()) {
+            if (std::ranges::find(objects, docObj) != objects.end()) {
                 return;
             }
 

@@ -521,7 +521,7 @@ std::map<int, int> FemMesh::getccxVolumesByFace(const TopoDS_Face& face) const
             int missing_node = 0;
             for (int i = 0; i < 4; i++) {
                 // search for the ID of the volume which is not part of 'element_face_nodes'
-                if (std::find(element_face_nodes.begin(), element_face_nodes.end(), apair.second[i])
+                if (std::ranges::find(element_face_nodes, apair.second[i])
                     == element_face_nodes.end()) {
                     missing_node = i + 1;
                     break;

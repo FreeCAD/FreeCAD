@@ -208,7 +208,7 @@ App::Point* LocalCoordinateSystem::getPoint(const char* role) const
 bool LocalCoordinateSystem::hasObject(const DocumentObject* obj) const
 {
     const auto& features = OriginFeatures.getValues();
-    return std::find(features.begin(), features.end(), obj) != features.end();
+    return std::ranges::find(features, obj) != features.end();
 }
 
 short LocalCoordinateSystem::mustExecute() const
@@ -302,12 +302,12 @@ void LocalCoordinateSystem::unsetupObject()
 {
     const auto& objsLnk = OriginFeatures.getValues();
     // Copy to set to assert we won't call method more then one time for each object
-    std::set<App::DocumentObject*> objs(objsLnk.begin(), objsLnk.end());
+    const std::set<App::DocumentObject*> objs(objsLnk.begin(), objsLnk.end());
     // Remove all controlled objects
     for (auto obj : objs) {
         // Check that previous deletes didn't indirectly remove one of our objects
-        const auto& objsLnk = OriginFeatures.getValues();
-        if (std::find(objsLnk.begin(), objsLnk.end(), obj) != objsLnk.end()) {
+        const auto& objsLnk2 = OriginFeatures.getValues();
+        if (std::ranges::find(objsLnk2, obj) != objsLnk2.end()) {
             if (!obj->isRemoving()) {
                 obj->getDocument()->removeObject(obj->getNameInDocument());
             }
@@ -331,7 +331,7 @@ void LocalCoordinateSystem::migrateOriginPoint()
         return obj->isDerivedFrom<App::DatumElement>() &&
             strcmp(static_cast<App::DatumElement*>(obj)->Role.getValue(), PointRoles[0]) == 0;
     };
-    if (std::none_of(features.begin(), features.end(), isOrigin)) {
+    if (std::ranges::none_of(features, isOrigin)) {
         auto data = getData(PointRoles[0]);
         auto* origin = createDatum(data);
         origin->purgeTouched();

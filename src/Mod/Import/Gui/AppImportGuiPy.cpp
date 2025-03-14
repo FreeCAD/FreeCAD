@@ -535,7 +535,7 @@ private:
                     "User parameter:BaseApp/Preferences/Mod/Part/STEP");
                 std::string scheme = hGrp->GetASCII("Scheme", Part::Interface::writeStepScheme());
                 std::list<std::string> supported = Part::supportedSTEPSchemes();
-                if (std::find(supported.begin(), supported.end(), scheme) != supported.end()) {
+                if (std::ranges::find(supported, scheme) != supported.end()) {
                     Part::Interface::writeStepScheme(scheme.c_str());
                 }
 

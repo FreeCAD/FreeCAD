@@ -53,7 +53,7 @@ void MeshSurfaceSegment::AddSegment(const std::vector<FacetIndex>& segm)
 MeshSegment MeshSurfaceSegment::FindSegment(FacetIndex index) const
 {
     for (const auto& segment : segments) {
-        if (std::find(segment.begin(), segment.end(), index) != segment.end()) {
+        if (std::ranges::find(segment, index) != segment.end()) {
             return segment;
         }
     }

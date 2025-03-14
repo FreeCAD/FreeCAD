@@ -291,13 +291,13 @@ public:
         bool contains(const T &vForContains)
         {
             if (!sorted) {
-                const size_t dataSizeMax = 30;
+                constexpr static size_t dataSizeMax = 30;
                 if (data.size() < dataSizeMax) {
-                    return std::find(data.begin(), data.end(), vForContains) != data.end();
+                    return std::ranges::find(data, vForContains) != data.end();
                 }
                 sort();
             }
-            auto it = std::lower_bound(data.begin(), data.end(), vForContains);
+            auto it = std::ranges::lower_bound(data, vForContains);
             return it!=data.end() && *it == vForContains;
         }
         bool intersects(const VectorSet<T> &other)
@@ -330,7 +330,7 @@ public:
         void insert(const T &vToInsert)
         {
             if (sorted) {
-                data.insert(std::upper_bound(data.begin(), data.end(), vToInsert), vToInsert);
+                data.insert(std::ranges::upper_bound(data, vToInsert), vToInsert);
             }
             else {
                 data.push_back(vToInsert);
@@ -339,7 +339,7 @@ public:
         bool insertUnique(const T &vToInsertUnique)
         {
             if (sorted) {
-                auto it = std::lower_bound(data.begin(), data.end(), vToInsertUnique);
+                auto it = std::ranges::lower_bound(data, vToInsertUnique);
                 bool insert = !(it != data.end() && *it == vToInsertUnique);
                 if (insert) {
                     data.insert(it, vToInsertUnique);
@@ -359,7 +359,7 @@ public:
                 data.erase(std::remove(data.begin(), data.end(), vToErase), data.end());
             }
             else {
-                auto it = std::lower_bound(data.begin(), data.end(), vToErase);
+                auto it = std::ranges::lower_bound(data, vToErase);
                 auto itEnd = it;
                 while (itEnd != data.end() && *itEnd == vToErase) {
                     ++itEnd;
@@ -493,15 +493,15 @@ public:
         {
             const size_t verticesSizeMax = 20;
             if (vertices.size() < verticesSizeMax) {
-                auto it = std::find(vertices.begin(), vertices.end(), info);
+                const auto it = std::ranges::find(vertices, info);
                 if (it == vertices.end()) {
                     return 0;
                 }
                 return (static_cast<int>(it - vertices.begin()) + 1);
             }
             sort();
-            auto it = std::lower_bound(sorted.begin(), sorted.end(), info,
-                    [&](int idx, const VertexInfo &vertex) {return vertices[idx]<vertex;});
+            const auto it = std::lower_bound(sorted.begin(), sorted.end(), info,
+                    [&](const int idx, const VertexInfo &vertex) {return vertices[idx]<vertex;});
             int res = 0;
             if (it != sorted.end() && vertices[*it] == info) {
                 res = *it + 1;
@@ -520,7 +520,7 @@ public:
                 return 0;
             }
             sort();
-            auto it = std::lower_bound(sorted.begin(), sorted.end(), info,
+            const auto it = std::lower_bound(sorted.begin(), sorted.end(), info,
                     [&](int idx, const EdgeInfo *vertex) {return vertices[idx].edgeInfo()<vertex;});
             int res = 0;
             if (it != sorted.end() && vertices[*it].edgeInfo() == info) {

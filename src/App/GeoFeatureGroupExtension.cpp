@@ -338,7 +338,7 @@ void GeoFeatureGroupExtension::getCSInList(const DocumentObject* obj,
         // check if the link is real Local scope one or if it is a expression one (could also be
         // both, so it is not enough to check the expressions)
         auto res = getScopedObjectsFromLinks(parent, LinkScope::Local);
-        if (std::find(res.begin(), res.end(), obj) != res.end()) {
+        if (std::ranges::find(res, obj) != res.end()) {
             vec.push_back(parent);
         }
     }
@@ -382,7 +382,7 @@ void GeoFeatureGroupExtension::recursiveCSRelevantLinks(const DocumentObject* ob
 
     // go on traversing the graph in all directions!
     for (auto o : links) {
-        if (!o || o == obj || std::find(vec.begin(), vec.end(), o) != vec.end()) {
+        if (!o || o == obj || std::ranges::find(vec, o) != vec.end()) {
             continue;
         }
 

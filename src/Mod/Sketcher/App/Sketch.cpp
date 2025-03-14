@@ -361,9 +361,7 @@ void Sketch::fixParametersAndDiagnose(std::vector<double*>& params_to_block)
 {
     if (!params_to_block.empty()) {  // only there are parameters to fix
         for (auto p : params_to_block) {
-            auto findparam = std::find(Parameters.begin(), Parameters.end(), p);
-
-            if (findparam != Parameters.end()) {
+            if (auto findparam = std::ranges::find(Parameters, p); findparam != Parameters.end()) {
                 FixParameters.push_back(*findparam);
                 Parameters.erase(findparam);
             }
@@ -419,15 +417,11 @@ bool Sketch::analyseBlockedConstraintDependentParameters(
 
             double* thisparam = *std::next(groups[i].begin(), j);
 
-            auto element = param2geoelement.find(thisparam);
+            if (auto element = param2geoelement.find(thisparam);
+                element != param2geoelement.end()) {
 
-            if (element != param2geoelement.end()) {
-
-                auto blockable = std::find(blockedGeoIds.begin(),
-                                           blockedGeoIds.end(),
-                                           std::get<0>(element->second));
-
-                if (blockable != blockedGeoIds.end()) {
+                if (auto blockable = std::ranges::find(blockedGeoIds, std::get<0>(element->second));
+                    blockable != blockedGeoIds.end()) {
                     // This dependent parameter group contains at least one parameter that should be
                     // blocked, so added to the blockable list.
                     prop_groups[i].blockable_params_in_group.push_back(thisparam);
@@ -442,7 +436,7 @@ bool Sketch::analyseBlockedConstraintDependentParameters(
         for (size_t j = prop_groups[i].blockable_params_in_group.size(); j-- > 0;) {
             // check if parameter is already satisfying one group
             double* thisparam = prop_groups[i].blockable_params_in_group[j];
-            auto pos = std::find(params_to_block.begin(), params_to_block.end(), thisparam);
+            auto pos = std::ranges::find(params_to_block, thisparam);
 
             if (pos == params_to_block.end()) {  // not found, so add
                 params_to_block.push_back(thisparam);
@@ -2959,7 +2953,7 @@ int Sketch::addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId,
 
     size_t knotindex = b.knots.size();
 
-    auto knotIt = std::find(b.knotpointGeoids.begin(), b.knotpointGeoids.end(), checkedknotgeoid);
+    const auto knotIt = std::ranges::find(b.knotpointGeoids, checkedknotgeoid);
 
     knotindex = std::distance(b.knotpointGeoids.begin(), knotIt);
 
@@ -3012,7 +3006,7 @@ int Sketch::addTangentLineEndpointAtBSplineKnotConstraint(int checkedlinegeoId,
 
     size_t knotindex = b.knots.size();
 
-    auto knotIt = std::find(b.knotpointGeoids.begin(), b.knotpointGeoids.end(), checkedknotgeoid);
+    auto knotIt = std::ranges::find(b.knotpointGeoids, checkedknotgeoid);
 
     knotindex = std::distance(b.knotpointGeoids.begin(), knotIt);
 
@@ -4570,9 +4564,7 @@ bool Sketch::updateNonDrivingConstraints()
                     rad = a.rad;
                 }
 
-                auto pos = std::find(FixParameters.begin(), FixParameters.end(), rad);
-
-                if (pos != FixParameters.end()) {
+                if (auto pos = std::ranges::find(FixParameters, rad); pos != FixParameters.end()) {
                     (*it).constr->setValue(*((*it).value));
                 }
                 else {

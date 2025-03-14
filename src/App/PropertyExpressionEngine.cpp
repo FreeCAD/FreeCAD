@@ -1232,17 +1232,15 @@ void PropertyExpressionEngine::getLinksTo(std::vector<App::ObjectIdentifier>& id
                 identifiers.push_back(expressionId);
                 break;
             }
-            if (std::any_of(paths.begin(),
-                            paths.end(),
-                            [subname, obj, sobj, &subElement](const auto& path) {
-                                if (path.getSubObjectName() == subname) {
-                                    return true;
-                                }
+            if (std::ranges::any_of(paths, [subname, obj, sobj, &subElement](const auto& path) {
+                    if (path.getSubObjectName() == subname) {
+                        return true;
+                    }
 
-                                App::SubObjectT sobjT(obj, path.getSubObjectName().c_str());
-                                return (sobjT.getSubObject() == sobj
-                                        && sobjT.getOldElementName() == subElement);
-                            })) {
+                    App::SubObjectT sobjT(obj, path.getSubObjectName().c_str());
+                    return (sobjT.getSubObject() == sobj
+                            && sobjT.getOldElementName() == subElement);
+                })) {
                 identifiers.push_back(expressionId);
             }
         }
