@@ -3851,6 +3851,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     // FIXME: we should be able to transfer these to new curves smoothly
     // auto geo = getGeometry(GeoId);
     const auto* geoAsCurve = getGeometry<Part::GeomCurve>(GeoId);
+    bool isOriginalCurveConstruction = GeometryFacade::getConstruction(geoAsCurve);
 
     //******************* Step A => Detection of intersection - Common to all Geometries
     //****************************************//
@@ -4006,6 +4007,9 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     }
 
     replaceGeometries({GeoId}, newGeos);
+    for (auto newId : newIds) {
+        setConstruction(newId, isOriginalCurveConstruction);
+    }
 
     if (noRecomputes) {
         solve();
