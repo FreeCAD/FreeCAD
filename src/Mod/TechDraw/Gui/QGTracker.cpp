@@ -43,6 +43,7 @@
 #include "QGTracker.h"
 #include "QGIVertex.h"
 #include "QGIView.h"
+#include "QGIViewPart.h"
 #include "QGSPage.h"
 #include "Rez.h"
 #include "ZVALUE.h"
@@ -440,12 +441,10 @@ void QGTracker::setPoint(std::vector<QPointF> pts)
     }
     prepareGeometryChange();
 
-    constexpr float baseVertexSize = 7.0F;
-
     auto point = new QGIVertex(-1);
     point->setParentItem(this);
     point->setPos(pts.front());
-    point->setRadius(static_cast<float>(baseVertexSize * Preferences::vertexScale()));
+    point->setRadius(dynamic_cast<QGIViewPart *>(m_qgParent)->getVertexSize());
     point->setNormalColor(Qt::blue);
     point->setFillColor(Qt::blue);
     point->setPrettyNormal();

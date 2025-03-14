@@ -124,6 +124,9 @@ public:
 
     virtual bool removeSelectedCosmetic() const;
 
+    virtual float getLineWidth();
+    virtual float getVertexSize();
+
 protected:
     QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;
     void drawViewPart();
