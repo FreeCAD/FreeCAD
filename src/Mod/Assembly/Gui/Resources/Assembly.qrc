@@ -36,5 +36,6 @@
         <file>preferences/Assembly.ui</file>
         <file>icons/Assembly_CreateJointDistance.svg</file>
         <file>icons/AssemblyWorkbench.svg</file>
+        <file>icons/Assembly_BrokenJoint.svg</file>
     </qresource>
 </RCC>
