@@ -60,7 +60,7 @@ using namespace Gui;
 
 bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
-    if (! pObj) {
+    if (!pObj) {
         return false;
     }
     PartDesign::Body *body = getBody();
@@ -100,9 +100,6 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     // resolve links if needed
     if (!pObj->isDerivedFrom<Part::Feature>()) {
         pObj = Part::Feature::getShapeOwner(pObj, sSubName);
-        if (!pObj) {
-            return false;
-        }
     }
 
     if (pObj && pObj->isDerivedFrom<Part::Feature>()) {
@@ -114,7 +111,8 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
 PartDesign::Body* ReferenceSelection::getBody() const
 {
-    PartDesign::Body *body = support? PartDesign::Body::findBodyOf (support) : body = PartDesignGui::getBody(false);
+    auto* body = support ? PartDesign::Body::findBodyOf(support)
+                         : PartDesignGui::getBody(false);
     return body;
 }
 
@@ -298,10 +296,6 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     selObj = thisObj->getDocument()->getObject(msg.pObjectName);
     if (selObj == thisObj)
         return false;
-     if (selObj) {
-        Base::Console().Log("  Selected object in getReferencedSelection: %s, Type: %s\n",
-                            selObj->getNameInDocument(), selObj->getTypeId().getName());
-    }
 
 
     std::string subname = msg.pSubName;
