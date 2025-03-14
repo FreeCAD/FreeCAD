@@ -396,8 +396,325 @@ class TestPathAdaptive(PathTestBase):
                 break
         self.assertTrue(isInBox, "No paths originating within the inner hole.")
 
+    def test08(self):
+        """test08() Tests stock awareness- avoids cutting into the model regardless
+        of bounding box selected."""
+        # Instantiate a Adaptive operation and set Base Geometry
+        adaptive = PathAdaptive.Create("Adaptive")
+        adaptive.Base = [(self.doc.Fusion, ["Face3", "Face10"])]  # (base, subs_list)
+        adaptive.Label = "test08+"
+        adaptive.Comment = "test08() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different. Result should be the combination at Z=10 (faces from (0,0) to (40,25), minus tool radius), and only the lower face at Z=5: (15,0) to (40,25)."
+
+        # Set additional operation properties
+        setDepthsAndHeights(adaptive, 15, 0)
+        adaptive.FinishingProfile = False
+        adaptive.HelixAngle = 75.0
+        adaptive.HelixDiameterLimit.Value = 1.0
+        adaptive.LiftDistance.Value = 1.0
+        adaptive.StepOver = 75
+        adaptive.UseOutline = False
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            5.0  # Have to set expression to None before numerical value assignment
+        )
+
+        _addViewProvider(adaptive)
+        self.doc.recompute()
+
+        # Check:
+        # - Bounding box at Z=10 stays within Face3 and Face10- so -X for Face3,
+        # +X and +/-Y for Face10
+        # - bounding box at Z=5 stays within Face10
+        # - No toolpaths at Z=0
+
+        paths = [c for c in adaptive.Path.Commands if c.Name in ["G0", "G00", "G1", "G01"]]
+        toolr = adaptive.OpToolDiameter.Value / 2
+        tol = adaptive.Tolerance
+
+        # Make clean up math below- combine tool radius and tolerance into a
+        # single field that can be added/subtracted to/from bounding boxes
+        moffset = toolr - tol
+
+        zDict = {10: None, 5: None, 0: None}
+
+        getPathBoundaries(paths, zDict)
+
+        # NOTE: Face3 is at Z=10, Face10 is at Z=5
+        bbf3 = self.doc.Fusion.Shape.getElement("Face3").BoundBox
+        bbf10 = self.doc.Fusion.Shape.getElement("Face10").BoundBox
+
+        okAt10 = (
+            zDict[10] is not None
+            and zDict[10]["min"][0] >= bbf3.XMin + moffset
+            and zDict[10]["min"][1] >= bbf10.YMin + moffset
+            and zDict[10]["max"][0] <= bbf10.XMax - moffset
+            and zDict[10]["max"][1] <= bbf10.YMax - moffset
+        )
+
+        okAt5 = (
+            zDict[5] is not None
+            and zDict[5]["min"][0] >= bbf10.XMin + moffset
+            and zDict[5]["min"][1] >= bbf10.YMin + moffset
+            and zDict[5]["max"][0] < bbf10.XMax - moffset
+            and zDict[5]["max"][1] < bbf10.YMax - moffset
+        )
+
+        okAt0 = not zDict[0]
+
+        self.assertTrue(okAt10 and okAt5 and okAt0, "Path boundaries outside of expected regions")
+
+    def test09(self):
+        """test09() Tests Z stock to leave- with 1mm Z stock to leave, machining
+        at the top of the model should not touch the top model face"""
+        # Instantiate a Adaptive operation and set Base Geometry
+        adaptive = PathAdaptive.Create("Adaptive")
+        adaptive.Base = [(self.doc.Fusion, ["Face3", "Face10"])]  # (base, subs_list)
+        adaptive.Label = "test09+"
+        adaptive.Comment = "test09() Verify Z stock is left as requested"
+
+        # Set additional operation properties
+        setDepthsAndHeights(adaptive, 15, 10)
+        adaptive.FinishingProfile = False
+        adaptive.HelixAngle = 75.0
+        adaptive.HelixDiameterLimit.Value = 1.0
+        adaptive.LiftDistance.Value = 1.0
+        adaptive.StepOver = 75
+        adaptive.UseOutline = False
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            5.0  # Have to set expression to None before numerical value assignment
+        )
+        # Add some Z stock to leave so we avoid Face3 in this stepdown at Z=10
+        adaptive.setExpression("ZStockToLeave", None)
+        adaptive.ZStockToLeave.Value = 1
+
+        _addViewProvider(adaptive)
+        self.doc.recompute()
+
+        # Check:
+        # - No feed path at depth Z=10 touchs Face3
+        toolr = adaptive.OpToolDiameter.Value / 2
+        tol = adaptive.Tolerance
+
+        # Make clean up math below- combine tool radius and tolerance into a
+        # single field that can be added/subtracted to/from bounding boxes
+        moffset = toolr - tol
+
+        # Offset the face we don't expect to touch, verify no move is within
+        # that boundary
+        # NOTE: This isn't a perfect test (won't catch moves that start and end
+        # outside of our face, but cut through/across it), but combined with
+        # other tests should be sufficient.
+        noPathTouchesFace3 = True
+        foffset = self.doc.Fusion.Shape.getElement("Face3").makeOffset2D(moffset)
+        # NOTE: Face3 is at Z=10, and the only feed moves will be at Z=10
+        lastpt = FreeCAD.Vector(0, 0, 10)
+        for p in [c.Parameters for c in adaptive.Path.Commands if c.Name in ["G1", "G01"]]:
+            pt = FreeCAD.Vector(lastpt)
+            if "X" in p:
+                pt.x = p.get("X")
+            if "Y" in p:
+                pt.x = p.get("Y")
+
+            if foffset.isInside(pt, 0.001, True):
+                noPathTouchesFace3 = False
+                break
+
+            lastpt = pt
+
+        self.assertTrue(noPathTouchesFace3, "No feed moves within the top face.")
+
+    def test10(self):
+        """test10() Tests full roughing- should machine entire model with no inputs"""
+        # Instantiate a Adaptive operation and set Base Geometry
+        adaptive = PathAdaptive.Create("Adaptive")
+        adaptive.Base = [(self.doc.Fusion, [])]  # (base, subs_list)
+        adaptive.Label = "test10+"
+        adaptive.Comment = "test10() Verify path generated with no subs roughs entire model"
+
+        # Set additional operation properties
+        setDepthsAndHeights(adaptive, 15, 0)
+        adaptive.FinishingProfile = False
+        adaptive.HelixAngle = 75.0
+        adaptive.HelixDiameterLimit.Value = 1.0
+        adaptive.LiftDistance.Value = 1.0
+        adaptive.StepOver = 75
+        adaptive.UseOutline = False
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            5.0  # Have to set expression to None before numerical value assignment
+        )
+
+        _addViewProvider(adaptive)
+        self.doc.recompute()
+
+        # Check:
+        # - Bounding box at Z=0 goes outside the model box + tool diameter
+        # (has to profile the model)
+        # - Bounding box at Z=5 should go past the model in -X, but only up to the
+        # stock edges in +X and Y
+        # - Bounding box at Z=10 goes to at least stock bounding box edges,
+        # minus tool diameter (has to machine the entire top of the stock off)
+        # - [Should maybe check] At least one move Z = [10,5] is within the model
+        # - [Should maybe check] No moves at Z = 0 are within the model
+
+        paths = [c for c in adaptive.Path.Commands if c.Name in ["G0", "G00", "G1", "G01"]]
+        toolr = adaptive.OpToolDiameter.Value / 2
+        tol = adaptive.Tolerance
+
+        # Make clean up math below- combine tool radius and tolerance into a
+        # single field that can be added/subtracted to/from bounding boxes
+        moffset = toolr - tol
+
+        zDict = {10: None, 5: None, 0: None}
+
+        getPathBoundaries(paths, zDict)
+        mbb = self.doc.Fusion.Shape.BoundBox
+        sbb = adaptive.Document.Stock.Shape.BoundBox
+
+        okAt10 = (
+            zDict[10] is not None
+            and zDict[10]["min"][0] <= sbb.XMin + moffset
+            and zDict[10]["min"][1] <= sbb.YMin + moffset
+            and zDict[10]["max"][0] >= sbb.XMax - moffset
+            and zDict[10]["max"][1] >= sbb.YMax - moffset
+        )
+
+        okAt5 = (
+            zDict[5] is not None
+            and zDict[5]["min"][0] <= mbb.XMin - moffset
+            and zDict[5]["min"][1] <= sbb.YMin + moffset
+            and zDict[5]["max"][0] >= sbb.XMax - moffset
+            and zDict[5]["max"][1] >= sbb.YMax - moffset
+        )
+
+        okAt0 = (
+            zDict[0] is not None
+            and zDict[0]["min"][0] <= mbb.XMin - moffset
+            and zDict[0]["min"][1] <= mbb.YMin - moffset
+            and zDict[0]["max"][0] >= mbb.XMax + moffset
+            and zDict[0]["max"][1] >= mbb.YMax + moffset
+        )
+
+        self.assertTrue(
+            okAt10 and okAt5 and okAt0, "Path boundaries don't include expected regions"
+        )
+
+    def test11(self):
+        """test11() Tests stock handling- should rough full model, but not cut
+        air excessively where there's not stock"""
+        # Instantiate a Adaptive operation and set Base Geometry
+        adaptive = PathAdaptive.Create("Adaptive")
+        adaptive.Base = [(self.doc.Fusion, [])]  # (base, subs_list)
+        adaptive.Label = "test11+"
+        adaptive.Comment = "test11() Verify machining region is limited to the stock"
+
+        # Set additional operation properties
+        setDepthsAndHeights(adaptive, 15, 5)
+        adaptive.FinishingProfile = False
+        adaptive.HelixAngle = 75.0
+        adaptive.HelixDiameterLimit.Value = 1.0
+        adaptive.LiftDistance.Value = 1.0
+        adaptive.StepOver = 75
+        adaptive.UseOutline = False
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            5.0  # Have to set expression to None before numerical value assignment
+        )
+
+        # Create and assign new stock that will create different bounds at
+        # different stepdowns
+        btall = Part.makeBox(17, 27, 11, FreeCAD.Vector(-1, -1, 0))
+        bshort = Part.makeBox(42, 27, 6, FreeCAD.Vector(-1, -1, 0))
+        adaptive.Document.Job.Stock.Shape = btall.fuse(bshort)
+
+        _addViewProvider(adaptive)
+        # NOTE: Do NOT recompute entire doc, which will undo our stock change!
+        adaptive.recompute()
+
+        # Check:
+        # - Bounding box at Z=10 stays basically above "btall"
+        # - Bounding box at Z=5 and Z=0 are outside of stock
+
+        paths = [c for c in adaptive.Path.Commands if c.Name in ["G1", "G01"]]
+        toolr = adaptive.OpToolDiameter.Value / 2
+        tol = adaptive.Tolerance
+
+        # Make clean up math below- combine tool radius and tolerance into a
+        # single field that can be added/subtracted to/from bounding boxes
+        # NOTE: ADD tol here, since we're effectively flipping our normal
+        # comparison and want tolerance to make our check looser
+        moffset = toolr + tol
+
+        zDict = {10: None, 5: None}
+
+        getPathBoundaries(paths, zDict)
+        sbb = adaptive.Document.Stock.Shape.BoundBox
+        sbb10 = btall.BoundBox
+
+        # These should be no more than a tool radius outside of the "btall"
+        # XY section of the stock
+        okAt10 = (
+            zDict[10] is not None
+            and zDict[10]["min"][0] >= sbb10.XMin - moffset
+            and zDict[10]["min"][1] >= sbb10.YMin - moffset
+            and zDict[10]["max"][0] <= sbb10.XMax + moffset
+            and zDict[10]["max"][1] <= sbb10.YMax + moffset
+        )
+
+        # These should be no more than a tool radius outside of the overall
+        # stock bounding box
+        okAt5 = (
+            zDict[5] is not None
+            and zDict[5]["min"][0] >= sbb.XMin - moffset
+            and zDict[5]["min"][1] >= sbb.YMin - moffset
+            and zDict[5]["max"][0] <= sbb.XMax + moffset
+            and zDict[5]["max"][1] <= sbb.YMax + moffset
+        )
+
+        self.assertTrue(okAt10 and okAt5, "Path feeds extend excessively in +X")
+
+    # POSSIBLY MISSING TESTS:
+    # - Something for region ordering
+    # - Known-edge cases: cones/spheres/cylinders (especially partials on edges
+    # of model + strange angles- especially for cylinders)
+    # - Multiple models/stock
+    # - XY stock to leave
+
 
 # Eclass
+
+
+def getPathBoundaries(paths, zDict):
+    """getPathBoundaries(paths, zDict): Takes the list of paths and dictionary
+    of Z depths of interest, and finds the bounding box of the paths at each
+    depth.
+
+    NOTE: You'd think that using Path.BoundBox would give us what we want,
+    but... no, for whatever reason it appears to always extend to (0,0,0)
+    """
+    last = FreeCAD.Vector(0.0, 0.0, 0.0)
+    # First make sure each element has X, Y, and Z coordinates
+    for p in paths:
+        params = p.Parameters
+        last.x = p.X if "X" in params else last.x
+        last.y = p.Y if "Y" in params else last.y
+        last.z = p.Z if "Z" in params else last.z
+
+        p.X = last.x
+        p.Y = last.y
+        p.Z = last.z
+
+    for z in zDict:
+        zpaths = [k for k in paths if k.Z == z]
+        if not zpaths:
+            zDict[z] = None
+            continue
+        xmin = min([k.X for k in zpaths])
+        xmax = max([k.X for k in zpaths])
+        ymin = min([k.Y for k in zpaths])
+        ymax = max([k.Y for k in zpaths])
+        zDict[z] = {"min": (xmin, ymin), "max": (xmax, ymax)}
 
 
 def setDepthsAndHeights(op, strDep=20.0, finDep=0.0):
@@ -421,43 +738,29 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
     """getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=True)...
     Accepts command dict and returns point string coordinate.
     """
+
+    # NOTE: Can NOT just check "if p.get("X")" or similar- that chokes when X is
+    # zero. That becomes especially obvious when Z=0, and moves end up on the
+    # wrong depth
     gcode_list = list()
     last = FreeCAD.Vector(0.0, 0.0, 0.0)
     for c in cmdList:
         p = c.Parameters
         name = c.Name
-        if includeRapids and name in ["G0", "G00"]:
+        if (includeRapids and name in ["G0", "G00"]) or (includeLines and name in ["G1", "G01"]):
             gcode = name
             x = last.x
             y = last.y
             z = last.z
-            if p.get("X"):
+            if "X" in p:
                 x = round(p["X"], 2)
-                gcode += " X" + str(x)
-            if p.get("Y"):
+            gcode += " X" + str(x)
+            if "Y" in p:
                 y = round(p["Y"], 2)
-                gcode += " Y" + str(y)
-            if p.get("Z"):
+            gcode += " Y" + str(y)
+            if "Z" in p:
                 z = round(p["Z"], 2)
-                gcode += " Z" + str(z)
-            last.x = x
-            last.y = y
-            last.z = z
-            gcode_list.append(gcode)
-        elif includeLines and name in ["G1", "G01"]:
-            gcode = name
-            x = last.x
-            y = last.y
-            z = last.z
-            if p.get("X"):
-                x = round(p["X"], 2)
-                gcode += " X" + str(x)
-            if p.get("Y"):
-                y = round(p["Y"], 2)
-                gcode += " Y" + str(y)
-            if p.get("Z"):
-                z = round(p["Z"], 2)
-                gcode += " Z" + str(z)
+            gcode += " Z" + str(z)
             last.x = x
             last.y = y
             last.z = z
@@ -470,23 +773,23 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
             i = 0.0
             j = 0.0
             k = 0.0
-            if p.get("I"):
+            if "I" in p:
                 i = round(p["I"], 2)
             gcode += " I" + str(i)
-            if p.get("J"):
+            if "J" in p:
                 j = round(p["J"], 2)
             gcode += " J" + str(j)
-            if p.get("K"):
+            if "K" in p:
                 k = round(p["K"], 2)
             gcode += " K" + str(k)
 
-            if p.get("X"):
+            if "X" in p:
                 x = round(p["X"], 2)
             gcode += " X" + str(x)
-            if p.get("Y"):
+            if "Y" in p:
                 y = round(p["Y"], 2)
             gcode += " Y" + str(y)
-            if p.get("Z"):
+            if "Z" in p:
                 z = round(p["Z"], 2)
             gcode += " Z" + str(z)
 
@@ -501,7 +804,7 @@ def pathOriginatesInBox(cmd, minPoint, maxPoint):
     p = cmd.Parameters
     name = cmd.Name
     if name in ["G0", "G00", "G1", "G01"]:
-        if p.get("X") and p.get("Y"):
+        if "X" in p and "Y" in p:
             x = p.get("X")
             y = p.get("Y")
             if x > minPoint.x and y > minPoint.y and x < maxPoint.x and y < maxPoint.y:
