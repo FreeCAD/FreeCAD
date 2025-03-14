@@ -118,7 +118,7 @@ void QGMarker::keyPressEvent(QKeyEvent * event)
 }
 
 //! adjust the size of this marker
-void QGMarker::setRadius(float radius)
+void QGMarker::setRadius(double radius)
 {
     //TODO:: implement different marker shapes. circle, square, triangle, ???
     //if (m_markerShape == Circle) { ...
