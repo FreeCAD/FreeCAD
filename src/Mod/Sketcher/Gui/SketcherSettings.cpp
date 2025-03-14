@@ -111,6 +111,7 @@ void SketcherSettings::saveSettings()
     ui->checkBoxAutoRemoveRedundants->onSave();
     ui->checkBoxUnifiedCoincident->onSave();
     ui->checkBoxHorVerAuto->onSave();
+    ui->checkBoxLineGroup->onSave();
     ui->checkBoxAddExtGeo->onSave();
 
     enum
@@ -186,6 +187,8 @@ void SketcherSettings::loadSettings()
     ui->checkBoxHorVerAuto->onRestore();
     setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
     ui->checkBoxAddExtGeo->onRestore();
+    setProperty("checkBoxLineGroup", ui->checkBoxLineGroup->isChecked());
+    ui->checkBoxAddExtGeo->onRestore();
 
     // Dimensioning constraints mode
     ui->dimensioningMode->clear();
@@ -244,6 +247,9 @@ void SketcherSettings::checkForRestart()
         SketcherSettings::requireRestart();
     }
     if (property("checkBoxHorVerAuto").toBool() != ui->checkBoxHorVerAuto->isChecked()) {
+        SketcherSettings::requireRestart();
+    }
+    if (property("checkBoxLineGroup").toBool() != ui->checkBoxLineGroup->isChecked()) {
         SketcherSettings::requireRestart();
     }
 }
