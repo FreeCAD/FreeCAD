@@ -407,13 +407,6 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
 
 void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
 {
-    const auto isEnter = event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return;
-
-    if (isEnter && !isNormalized()) {
-        normalize();
-        return;
-    }
-
     if (!handleKeyEvent(event->text())) {
         QAbstractSpinBox::keyPressEvent(event);
     }
