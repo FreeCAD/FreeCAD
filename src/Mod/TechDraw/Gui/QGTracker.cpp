@@ -444,7 +444,7 @@ void QGTracker::setPoint(std::vector<QPointF> pts)
     auto point = new QGIVertex(-1);
     point->setParentItem(this);
     point->setPos(pts.front());
-    point->setRadius(dynamic_cast<QGIViewPart *>(m_qgParent)->getVertexSize());
+    point->setRadius(static_cast<QGIViewPart *>(m_qgParent)->getVertexSize());
     point->setNormalColor(Qt::blue);
     point->setFillColor(Qt::blue);
     point->setPrettyNormal();

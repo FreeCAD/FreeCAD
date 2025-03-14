@@ -1291,12 +1291,12 @@ void QGIViewPart::setGroupSelection(bool isSelected, const std::vector<std::stri
     }
 }
 
-float QGIViewPart::getLineWidth() {
+double QGIViewPart::getLineWidth() {
     auto vp{static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()))};
 
-    return static_cast<float>(vp->LineWidth.getValue() * lineScaleFactor); // Thick
+    return vp->LineWidth.getValue() * lineScaleFactor; // Thick
 }
 
-float QGIViewPart::getVertexSize() {
-    return static_cast<float>(getLineWidth() * Preferences::vertexScale());
+double QGIViewPart::getVertexSize() {
+    return getLineWidth() * Preferences::vertexScale();
 }
