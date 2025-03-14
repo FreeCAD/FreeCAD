@@ -32,6 +32,7 @@
 #include <vtkSphere.h>
 
 #include <App/PropertyUnits.h>
+#include <App/DocumentObjectGroup.h>
 
 #include "FemPostObject.h"
 
@@ -72,7 +73,7 @@ protected:
     vtkBoundingBox m_boundingBox;
 };
 
-class FemExport FemPostFunctionProvider: public App::DocumentObject
+class FemExport FemPostFunctionProvider: public App::DocumentObjectGroup
 {
 
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostFunctionProvider);
@@ -86,10 +87,14 @@ public:
         return "FemGui::ViewProviderFemPostFunctionProvider";
     }
 
-    App::PropertyLinkList Functions;
-
 protected:
-    void onChanged(const App::Property* prop) override;
+    bool allowObject(App::DocumentObject* obj) override;
+    void unsetupObject() override;
+
+    // update documents
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   const char* PropName) override;
 };
 
 // ---------------------------------------------------------------------------

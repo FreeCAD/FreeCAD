@@ -65,6 +65,7 @@
 #include "FemPostFilter.h"
 #include "FemPostFunction.h"
 #include "FemPostPipeline.h"
+#include "FemPostBranchFilter.h"
 #include "PropertyPostDataObject.h"
 #endif
 
@@ -184,8 +185,10 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemPostSmoothFilterExtension         ::init();
 
     Fem::FemPostObject                        ::init();
+    Fem::FemPostGroupExtension                ::init();
     Fem::FemPostPipeline                      ::init();
     Fem::FemPostFilter                        ::init();
+    Fem::FemPostBranchFilter                  ::init();
     Fem::FemPostClipFilter                    ::init();
     Fem::FemPostContoursFilter                ::init();
     Fem::FemPostCutFilter                     ::init();
