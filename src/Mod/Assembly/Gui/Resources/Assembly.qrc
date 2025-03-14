@@ -14,8 +14,10 @@
         <file>icons/Assembly_CreateJointParallel.svg</file>
         <file>icons/Assembly_CreateJointPerpendicular.svg</file>
         <file>icons/Assembly_CreateJointPlanar.svg</file>
+        <file>icons/AssemblyWorkbench_alternate.svg</file>
         <file>icons/Assembly_CreateJointRevolute.svg</file>
         <file>icons/Assembly_CreateJointSlider.svg</file>
+        <file>icons/Invisible.svg</file>
         <file>icons/Assembly_CreateJointTangent.svg</file>
         <file>icons/Assembly_CreateJointGears.svg</file>
         <file>icons/Assembly_CreateJointPulleys.svg</file>
@@ -28,6 +30,7 @@
         <file>icons/Assembly_ExplodedViewGroup.svg</file>
         <file>icons/Assembly_CreateSimulation.svg</file>
         <file>icons/Assembly_SimulationGroup.svg</file>
+        <file>icons/Assembly_BrokenJoint.svg</file>
         <file>panels/TaskAssemblyCreateBom.ui</file>
         <file>panels/TaskAssemblyCreateJoint.ui</file>
         <file>panels/TaskAssemblyInsertLink.ui</file>
@@ -36,5 +39,11 @@
         <file>preferences/Assembly.ui</file>
         <file>icons/Assembly_CreateJointDistance.svg</file>
         <file>icons/AssemblyWorkbench.svg</file>
+        <file>icons/Assembly_JointGroup.svg</file>
+        <file>icons/Assembly_ExplodedView.svg</file>
+        <file>panels/TaskAssemblyCreateView.ui</file>
+        <file>panels/TaskAssemblySelectIsolateMode.ui</file>
+        <file>panels/TaskAssemblyIsolateMode.ui</file>
+        <file>icons/Assembly_ExplodedViewGroup.svg</file>
     </qresource>
 </RCC>
