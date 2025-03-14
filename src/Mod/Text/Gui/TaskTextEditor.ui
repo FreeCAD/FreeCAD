@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TextGui::TaskTextEditor</class>
+ <widget class="QWidget" name="TextGui::TaskTextEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>449</width>
+    <height>640</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Edit text</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Text</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTextEdit" name="textEdit"/>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Source</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="changeFontSource">
+       <item>
+        <property name="text">
+         <string>Name</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Path</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Object</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFontComboBox" name="changeFont"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>File</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::FileChooser" name="fontFileChooser"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Size</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::QuantitySpinBox" name="sizeEdit">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000001</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Aspect</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="changeAspect">
+       <item>
+        <property name="text">
+         <string>Normal</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Bold</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Italic</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Bold italic</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <item>
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Justification</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="changeJustification">
+       <item>
+        <property name="text">
+         <string>Top left</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Top center</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Top right</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Middle left</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Middle center</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Middle right</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Bottom left</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Bottom center</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Bottom right</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Height reference</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="changeHeightReference">
+       <item>
+        <property name="text">
+         <string>Cap height</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Shape height</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <item>
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Text direction</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="changeDirection">
+       <item>
+        <property name="text">
+         <string>Left to right</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Right to left</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Top to bottom</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Bottom to top</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkKeepLeftMargin">
+     <property name="text">
+      <string>Keep left margin</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkScaleToSize">
+     <property name="text">
+      <string>Scale to size</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>256</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::FileChooser</class>
+   <extends>QWidget</extends>
+   <header>Gui/FileDialog.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QAbstractSpinBox</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
