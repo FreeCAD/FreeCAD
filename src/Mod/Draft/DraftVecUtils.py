@@ -845,7 +845,7 @@ def get_spherical_coords(x, y, z, precision=None):
     (0, 0, z) -> (radius, theta, 0)
     """
 
-    if precision < 1:
+    if precision is None:
         precision = params.get_param("precision")
 
     v = Vector(x,y,z)
