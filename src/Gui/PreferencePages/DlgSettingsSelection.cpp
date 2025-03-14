@@ -53,6 +53,7 @@ void DlgSettingsSelection::saveSettings()
     ui->checkBoxPreselect->onSave();
     ui->checkBoxRecord->onSave();
     ui->checkBoxSelectionCheckBoxes->onSave();
+    ui->checkBoxTreeAutoRelabel->onSave();
 }
 
 void DlgSettingsSelection::loadSettings()
@@ -67,6 +68,7 @@ void DlgSettingsSelection::loadSettings()
     ui->checkBoxPreselect->onRestore();
     ui->checkBoxRecord->onRestore();
     ui->checkBoxSelectionCheckBoxes->onRestore();
+    ui->checkBoxTreeAutoRelabel->onRestore();
 }
 
 void DlgSettingsSelection::changeEvent(QEvent *e)
