@@ -39,7 +39,7 @@
       </Documentation>
       <Parameter Name="Name" Type="String"/>
     </Attribute>
-    <Attribute Name="Directory" ReadOnly="true">
+    <Attribute Name="Directory" ReadOnly="false">
       <Documentation>
         <UserDocu>Model directory relative to the library root.</UserDocu>
       </Documentation>
@@ -69,7 +69,7 @@
       </Documentation>
       <Parameter Name="Reference" Type="String"/>
     </Attribute>
-    <Attribute Name="Parent" ReadOnly="true">
+    <Attribute Name="Parent" ReadOnly="false">
       <Documentation>
         <UserDocu>Parent material UUID.</UserDocu>
       </Documentation>
@@ -210,6 +210,17 @@
         <UserDocu>Set the value associated with the property</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="setValue" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Set the value associated with the property</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="PropertyObjects" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Dictionary of MaterialProperty objects.</UserDocu>
+      </Documentation>
+      <Parameter Name="PropertyObjects" Type="Dict"/>
+    </Attribute>
     <Methode Name="keys" NoArgs="true">
       <Documentation>
         <UserDocu>Property keys</UserDocu>

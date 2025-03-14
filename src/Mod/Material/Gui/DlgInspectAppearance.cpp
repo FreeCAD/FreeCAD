@@ -151,7 +151,7 @@ void DlgInspectAppearance::update(std::vector<Gui::ViewProvider*>& views)
                 ui->editObjectLabel->setText(QString::fromUtf8(labelProp->getValue()));
             }
             else {
-                ui->editObjectLabel->setText(QLatin1String(""));
+                ui->editObjectLabel->setText(QStringLiteral(""));
             }
             ui->editObjectName->setText(QLatin1String(obj->getNameInDocument()));
 
@@ -162,15 +162,15 @@ void DlgInspectAppearance::update(std::vector<Gui::ViewProvider*>& views)
                     ui->editSubShape->setText(QString::fromStdString(subObject.getSubNames()[0]));
                 }
                 else {
-                    ui->editSubShape->setText(QLatin1String(""));
+                    ui->editSubShape->setText(QStringLiteral(""));
                 }
             }
             else {
-                ui->editSubShape->setText(QLatin1String(""));
+                ui->editSubShape->setText(QStringLiteral(""));
             }
 
             auto subShapeType = QString::fromUtf8(obj->getTypeId().getName());
-            subShapeType.remove(subShapeType.indexOf(QLatin1String("::")), subShapeType.size());
+            subShapeType.remove(subShapeType.indexOf(QStringLiteral("::")), subShapeType.size());
             ui->editSubShapeType->setText(subShapeType);
             ui->editShapeType->setText(QString::fromUtf8(obj->getTypeId().getName()));
 
