@@ -899,8 +899,14 @@ const char* Command::keySequenceToAccel(int sk) const
     static StringMap strings;
     auto i = strings.find(sk);
 
-    if (i != strings.end())
+    if (i != strings.end()) {
         return i->second.c_str();
+    }
+
+    // In case FreeCAD is loaded without GUI (issue 16407)
+    if (!QApplication::instance()) {
+        return "";
+    }
 
     auto type = static_cast<QKeySequence::StandardKey>(sk);
     QKeySequence ks(type);
