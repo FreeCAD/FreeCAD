@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>574</width>
+    <width>800</width>
     <height>488</height>
    </rect>
   </property>
@@ -48,8 +48,7 @@
         </property>
         <property name="icon">
          <iconset theme="format-text-direction-ltr">
-          <normaloff/>
-         </iconset>
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </item>
        <item>
@@ -58,8 +57,7 @@
         </property>
         <property name="icon">
          <iconset theme="application-drawing">
-          <normaloff/>
-         </iconset>
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </item>
        <item>
@@ -100,14 +98,14 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>change type to:</string>
+        <string>Change type to:</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>change material to:</string>
+        <string>Change material to:</string>
        </property>
       </widget>
      </item>
