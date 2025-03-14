@@ -31,17 +31,18 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <unordered_map>
+#include <unordered_set>
+
+#include <boost/bimap.hpp>
+#include <boost/graph/adjacency_list.hpp>
+
+#include <CXX/Objects.hxx>
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <App/StringHasher.h>
 #include <Base/UniqueNameManager.h>
-#include <CXX/Objects.hxx>
-#include <boost/bimap.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <unordered_map>
-#include <unordered_set>
-
 
 // using VertexProperty = boost::property<boost::vertex_root_t, DocumentObject* >;
 using DependencyList = boost::adjacency_list<
