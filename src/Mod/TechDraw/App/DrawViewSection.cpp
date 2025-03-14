@@ -446,8 +446,6 @@ bool DrawViewSection::isBaseValid() const
 
 void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
 {
-    // Base::Console().Message("DVS::sectionExec() - %s baseShape.IsNull: %d\n", Label.getValue(), baseShape.IsNull());
-
     if (waitingForHlr() || waitingForCut()) {
         return;
     }
@@ -458,6 +456,14 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
     }
 
     m_cuttingTool = makeCuttingTool(m_shapeSize);
+
+    if (!DU::isGuiUp()) {
+        // without the gui we will never be informed of completion of the separate thread
+        makeSectionCut(baseShape);
+        waitingForCut(false);
+        onSectionCutFinished();
+        return;
+    }
 
     try {
         // note that &m_cutWatcher in the third parameter is not strictly required,
@@ -485,8 +491,6 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
 
 void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
 {
-    // Base::Console().Message("DVS::makeSectionCut() - %s - baseShape.IsNull:%d\n", Label.getValue(), baseShape.IsNull());
-
     showProgressMessage(getNameInDocument(), "is making section cut");
 
     // We need to copy the shape to not modify the BRepstructure
@@ -550,14 +554,10 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     waitingForCut(false);
 }
 
-//! position, scale and rotate shape for  buildGeometryObject
+//! position, scale and rotate shape for buildGeometryObject
 //! save the cut shape for further processing
 TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& rawShape, double shapeSize)
 {
-    //    Base::Console().Message("DVS::prepareShape - %s - rawShape.IsNull: %d
-    //    shapeSize: %.3f\n",
-    //                            getNameInDocument(), rawShape.IsNull(),
-    //                            shapeSize);
     (void)shapeSize;// shapeSize is not used in this base class, but is
                     // interesting for derived classes
     // build display geometry as in DVP, with minor mods
@@ -596,8 +596,6 @@ TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& rawShape, double 
 
 TopoDS_Shape DrawViewSection::makeCuttingTool(double shapeSize)
 {
-    //    Base::Console().Message("DVS::makeCuttingTool(%.3f) - %s\n", shapeSize,
-    //    getNameInDocument());
     // Make the extrusion face
     gp_Pln pln = getSectionPlane();
     gp_Dir gpNormal = pln.Axis().Direction();
@@ -615,11 +613,10 @@ TopoDS_Shape DrawViewSection::makeCuttingTool(double shapeSize)
 
 void DrawViewSection::onSectionCutFinished()
 {
-    //    Base::Console().Message("DVS::onSectionCutFinished() - %s\n",
-    //    getNameInDocument());
-    QObject::disconnect(connectCutWatcher);
-
-    showProgressMessage(getNameInDocument(), "has finished making section cut");
+    if (DU::isGuiUp()) {
+        QObject::disconnect(connectCutWatcher);
+        showProgressMessage(getNameInDocument(), "has finished making section cut");
+    }
 
     m_preparedShape = prepareShape(getShapeToPrepare(), m_shapeSize);
     if (debugSection()) {
@@ -630,13 +627,14 @@ void DrawViewSection::onSectionCutFinished()
 
     // display geometry for cut shape is in geometryObject as in DVP
     m_tempGeometryObject = buildGeometryObject(m_preparedShape, getProjectionCS());
+    if (!DU::isGuiUp()) {
+        onHlrFinished();
+    }
 }
 
 // activities that depend on updated geometry object
 void DrawViewSection::postHlrTasks(void)
 {
-    // Base::Console().Message("DVS::postHlrTasks() - %s\n", Label.getValue());
-
     DrawViewPart::postHlrTasks();
 
     // second pass if required
@@ -683,7 +681,6 @@ void DrawViewSection::postHlrTasks(void)
 // activities that depend on a valid section cut
 void DrawViewSection::postSectionCutTasks()
 {
-    //    Base::Console().Message("DVS::postSectionCutTasks()\n");
     std::vector<App::DocumentObject*> children = getInList();
     for (auto& c : children) {
         if (c->isDerivedFrom<DrawViewPart>()) {
@@ -717,8 +714,6 @@ gp_Pln DrawViewSection::getSectionPlane() const
 //! section plane.
 TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shape& shape)
 {
-    //    Base::Console().Message("DVS::findSectionPlaneIntersections() - %s\n",
-    //    getNameInDocument());
     if (shape.IsNull()) {
         // this shouldn't happen
         Base::Console().Warning(
