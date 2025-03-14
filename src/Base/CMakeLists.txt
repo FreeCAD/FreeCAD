@@ -1,3 +1,5 @@
+add_library(FreeCADBase SHARED)
+
 if(WIN32)
     add_definitions(-DFCBase)
     add_definitions(-DPYCXX_DLL)
@@ -16,14 +18,15 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-include_directories(
+target_include_directories(
+    FreeCADBase
     SYSTEM
+    PUBLIC
     ${Boost_INCLUDE_DIRS}
     ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${PYCXX_INCLUDE_DIR}
     ${ZIPIOS_INCLUDES}
 )
 
@@ -353,8 +356,7 @@ if(FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(FreeCADBase PreCompiled.h PreCompiled.cpp FreeCADBase_CPP_SRCS)
 endif(FREECAD_USE_PCH)
 
-add_library(FreeCADBase SHARED ${FreeCADBase_SRCS})
-
+target_sources(FreeCADBase PRIVATE ${FreeCADBase_SRCS})
 target_link_libraries(FreeCADBase ${FreeCADBase_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FreeCADBase)
