@@ -3,7 +3,7 @@
 import os
 txt = "<RCC>\n    <qresource>\n"
 cdir = os.path.dirname(__file__)
-for subdir in ["geometry", "icons", "icons/IFC", "translations", "ui"]:
+for subdir in ["geometry", "icons", "icons/IFC", "icons/window_components", "translations", "ui"]:
     subpath = os.path.join(cdir, subdir)
     for f in sorted(os.listdir(subpath)):
         if f not in ["Arch.ts", "BIM.ts", "IFC"]:

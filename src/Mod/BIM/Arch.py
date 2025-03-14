@@ -1131,13 +1131,13 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
             obj = Draft.clone(baseobj)
             return obj
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Window")
-    ArchWindow._Window(obj)
+    ArchWindow.Window(obj)
     if name:
         obj.Label = name
     else:
         obj.Label = translate("Arch","Window")
     if FreeCAD.GuiUp:
-        ArchWindow._ViewProviderWindow(obj.ViewObject)
+        ArchWindow.ViewProviderWindow(obj.ViewObject)
     if width:
         obj.Width = width
     if height:
