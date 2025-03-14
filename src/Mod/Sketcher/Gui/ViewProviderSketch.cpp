@@ -2980,7 +2980,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     if (sketchDlg && sketchDlg->getSketchView() != this)
         sketchDlg = nullptr;// another sketch left open its task panel
     if (dlg && !sketchDlg) {
-        QMessageBox msgBox;
+        QMessageBox msgBox(Gui::getMainWindow());
         msgBox.setText(tr("A dialog is already open in the task panel"));
         msgBox.setInformativeText(tr("Do you want to close this dialog?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);

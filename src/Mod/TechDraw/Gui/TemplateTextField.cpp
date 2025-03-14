@@ -30,6 +30,7 @@
 #endif // #ifndef _PreCmp_
 
 #include <Base/Console.h>
+#include <Gui/MainWindow.h>
 
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
@@ -73,7 +74,7 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if ( tmplte && m_rect->rect().contains(event->pos()) ) {
         event->accept();
 
-        DlgTemplateField ui;
+        DlgTemplateField ui(Gui::getMainWindow());
 
         ui.setFieldName(fieldNameStr);
         ui.setFieldContent(tmplte->EditableTexts[fieldNameStr]);

@@ -45,6 +45,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
+#include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
@@ -245,7 +246,7 @@ bool ViewProviderDatum::setEdit(int ModNum)
         if (datumDlg && datumDlg->getViewProvider() != this)
             datumDlg = nullptr; // another datum feature left open its task panel
         if (dlg && !datumDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);

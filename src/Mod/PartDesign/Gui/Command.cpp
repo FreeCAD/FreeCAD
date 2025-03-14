@@ -892,7 +892,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         (which.compare("Pocket") == 0)) {
 
         if (!pcActiveBody->isSolid()) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("Cannot use this command as there is no solid to subtract from."));
             msgBox.setInformativeText(QObject::tr("Ensure that the body contains a feature before attempting a subtractive command."));
             msgBox.setStandardButtons(QMessageBox::Ok);
@@ -914,7 +914,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             }
         }
         if (!onlyAllowed) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("Cannot use selected object. Selected object must belong to the active body"));
             msgBox.setInformativeText(QObject::tr("Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body."));
             msgBox.setStandardButtons(QMessageBox::Ok);
@@ -1012,7 +1012,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
         if (dlg && !pickDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
