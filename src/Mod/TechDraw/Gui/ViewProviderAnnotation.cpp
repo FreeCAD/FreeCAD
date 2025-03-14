@@ -121,7 +121,7 @@ bool ViewProviderAnnotation::setEdit(int ModNum)
         return false;
     }
     auto dataPropView = comboView->findChild<Gui::PropertyEditor::PropertyEditor*>(
-        "propertyEditorData");
+        QStringLiteral("propertyEditorData"));
     if (!dataPropView) {
         return false;
     }
