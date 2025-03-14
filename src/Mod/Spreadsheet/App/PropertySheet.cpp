@@ -2300,7 +2300,7 @@ void PropertySheet::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
             const auto [docObj, depsList] = *it;
             for (auto& [depName, paths] : depsList) {
                 if (!subname) {
-                    identifiers.emplace_back(owner, cellName.toString().c_str());
+                    identifiers.emplace_back(owner, cellName.toString());
                     break;
                 }
                 if (std::any_of(paths.begin(),
@@ -2314,7 +2314,7 @@ void PropertySheet::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
                                     return (sobjT.getSubObject() == subObject
                                             && sobjT.getOldElementName() == subElement);
                                 })) {
-                    identifiers.emplace_back(owner, cellName.toString().c_str());
+                    identifiers.emplace_back(owner, cellName.toString());
                 }
             }
         }

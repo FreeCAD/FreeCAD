@@ -114,7 +114,7 @@ TEST_F(FuzzyBooleanTest, testFailsTooSmallFuzzy)
     double oldFuzzy = Part::FuzzyHelper::getBooleanFuzzy();
     Part::FuzzyHelper::setBooleanFuzzy(0.01);
     _fuse->execute();
-    EXPECT_FLOAT_EQ(Part::FuzzyHelper::getBooleanFuzzy(), 0.01);
+    EXPECT_DOUBLE_EQ(Part::FuzzyHelper::getBooleanFuzzy(), 0.01);
     Part::FuzzyHelper::setBooleanFuzzy(oldFuzzy);
 
     // Verify
