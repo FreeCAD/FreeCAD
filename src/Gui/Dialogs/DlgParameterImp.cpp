@@ -412,11 +412,7 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
         App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences");
     hGrp = hGrp->GetGroup("ParameterEditor");
     QString path = QString::fromUtf8(hGrp->GetASCII("LastParameterGroup").c_str());
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     QStringList paths = path.split(QLatin1String("."), Qt::SkipEmptyParts);
-#else
-    QStringList paths = path.split(QLatin1String("."), QString::SkipEmptyParts);
-#endif
 
     QTreeWidgetItem* parent = nullptr;
     for (int index = 0; index < paramGroup->topLevelItemCount() && !paths.empty(); index++) {

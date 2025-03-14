@@ -44,7 +44,9 @@
 #include <gp_Vec.hxx>
 
 #include <Base/Vector3D.h>
+#include <Base/Converter.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/Tools.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 
@@ -121,9 +123,10 @@ public:
     template <typename T>
     static std::string formatVector(const T& v)
     {
-        return formatVector(toVector3d(v));
+        return formatVector(Base::convertTo<Base::Vector3d>(v));
     }
     static std::string formatVector(const Base::Vector3d& v);
+    static std::string formatVector(const QPointF& v);
 
     static bool vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2);
     //!std::map require comparator to be a type not a function
@@ -171,23 +174,9 @@ public:
                                       Base::Vector2d d2);
 
 
-    template <typename T>
-    static Base::Vector3d toVector3d(const T& v)
-    {
-        return Base::Vector3d(v.X(), v.Y(), v.Z());
-    }
-
     static Base::Vector3d toVector3d(const QPointF& v)
     {
         return Base::Vector3d(v.x(), v.y(), 0);
-    }
-
-    //! To gp_*
-    // TODO: Would this be relevant to move to Base::Vector3d? Probably
-    template <typename T>
-    static T to(const Base::Vector3d &v)
-    {
-        return T(v.x, v.y, v.z);
     }
 
     static QPointF toQPointF(const Base::Vector3d &v)
@@ -289,9 +278,6 @@ public:
 
 // GCC BUG 85282, wanting this to be outside class body. This is only the declaration, the definition .cpp
 //template<> std::string DrawUtil::formatVector<Base::Vector3d>(const Base::Vector3d &v);
-
-// GCC BUG 85282, wanting this to be outside class body. This is only the declaration, the definition .cpp
-//template<> Base::Vector3d DrawUtil::toVector3d<QPointF>(const QPointF& v);
 
 }//end namespace TechDraw
 #endif

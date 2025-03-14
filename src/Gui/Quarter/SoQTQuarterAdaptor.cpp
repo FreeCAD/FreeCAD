@@ -47,6 +47,10 @@
 
 #include "SoQTQuarterAdaptor.h"
 
+#ifdef BUILD_TRACY_FRAME_PROFILER
+#include <tracy/Tracy.hpp>
+#endif
+
 // NOLINTBEGIN
 // clang-format off
 static unsigned char fps2dfont[][12] = {
@@ -766,6 +770,10 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::paintEvent(QPaintEvent* event)
     double start = SbTime::getTimeOfDay().getValue();
     QuarterWidget::paintEvent(event);
     this->framesPerSecond = addFrametime(start);
+
+#ifdef BUILD_TRACY_FRAME_PROFILER
+    FrameMark;
+#endif
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetFrameCounter()
