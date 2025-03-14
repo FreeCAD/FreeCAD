@@ -534,7 +534,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
         // There are a few factors affects the rendering order.
         //
-        // 1) For normal case, the highlight (pre-selection) is the top layer. And since
+        // 1) For normal case, the highlight (preselection) is the top layer. And since
         // the depth buffer clipping is on here, we shall draw highlight first, then
         // selection, then the rest part.
         //

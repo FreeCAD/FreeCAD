@@ -653,7 +653,7 @@ public:
             // very forgiving. We should have used Precision::SquareConfisuion(),
             // which is 1e-14. However, there is a problem with current
             // commandGeoCreate. They create new geometry with initial point of
-            // the exact mouse position, instead of the pre-selected point
+            // the exact mouse position, instead of the preselected point
             // position, and rely on auto constraint to snap in the new
             // geometry. So, we cannot use a very strict threshold here.
             double tol = strict?Precision::SquareConfusion()*10:1e-6;
@@ -8350,7 +8350,7 @@ void adjustParameterRange(const TopoDS_Edge &edge,
     // lower arc. Because projection orientation may swap the first and last
     // parameter of the original curve.
     //
-    // We project the middel point of the original curve to the projected curve
+    // We project the middle point of the original curve to the projected curve
     // to decide whether to flip the parameters.
 
     Handle(Geom_Curve) origCurve = BRepAdaptor_Curve(edge).Curve().Curve();
@@ -8778,7 +8778,7 @@ void processEdge(const TopoDS_Edge& edge,
                     // projection is an arc of ellipse
                     auto* aoe = new Part::GeomArcOfEllipse();
                     double firstParam, lastParam;
-                    // ajust the parameter range to get the correct arc
+                    // adjust the parameter range to get the correct arc
                     adjustParameterRange(edge, gPlane, mov, projCurve, firstParam, lastParam);
 
                     Handle(Geom_TrimmedCurve) trimmedCurve = new Geom_TrimmedCurve(projCurve, firstParam, lastParam);

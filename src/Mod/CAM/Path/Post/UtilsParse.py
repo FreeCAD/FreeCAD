@@ -285,7 +285,7 @@ def default_F_parameter(
             found = True
     if found:
         return format_for_feed(values, feed)
-    # else if any of A, B, or C are in the paramters, the feed is in degrees,
+    # else if any of A, B, or C are in the parameters, the feed is in degrees,
     #     which should not be converted when in --inches mode
     found = False
     for key in ("A", "B", "C"):

@@ -197,7 +197,7 @@ class Transaction(object):
         if exc_value is None:
             self.document.commitTransaction()
         elif DEBUG_GEOMETRY:
-            _err(f"Transactino failed but DEBUG_GEOMETRY is set. Commiting transaction anyway.")
+            _err(f"Transaction failed but DEBUG_GEOMETRY is set. Committing transaction anyway.")
             self.document.commitTransaction()
         else:
             self.document.abortTransaction()
@@ -933,9 +933,9 @@ class BaseHandler:
     def get_faces(self, wall):
         """Returns the name of the left and right face for `wall`
 
-        The face names are suitable for selection later on when creating 
+        The face names are suitable for selection later on when creating
         the Facebinders and baseboards. Note, that this must be executed
-        once the wall has been completly been constructued. If a window
+        once the wall has been completely constructed. If a window
         or door is added afterward, this will have an impact on what is
         considered the left and right side of the wall
 
@@ -948,7 +948,7 @@ class BaseHandler:
                 right side of the wall
         """
         # In order to handle curved walls, take the oriented line (from
-        # start to end) that pass throuh the center of gravity of the wall
+        # start to end) that pass through the center of gravity of the wall
         # Hopefully the COG of the face will always be on the correct side
         # of the COG of the wall
         wall_spine = self.get_wall_spine(wall)
@@ -1328,7 +1328,7 @@ class RoomHandler(BaseHandler):
     def _get_offset_wire(self, wire, inward=True):
         """Return an inward (or outward) offset wire to avoid self intersection.
 
-        This will return a non self-intersecting wire offseted either inward
+        This will return a non self-intersecting wire offsetted either inward
         or outward from the original wire.
 
         Args:
@@ -1931,7 +1931,7 @@ class WallHandler(BaseHandler):
         by the problem.
 
         Args:
-            wall (Arch.Wall): the wall for which to create the referene face
+            wall (Arch.Wall): the wall for which to create the reference face
 
         Returns:
             Part.Wire: the wire for the reference face
