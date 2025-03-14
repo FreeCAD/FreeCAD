@@ -48,7 +48,6 @@ class QGCustomImage;
     constexpr uint32_t COLWHITE{0xfffff};       // white
     constexpr int ALPHALOW{0};
     constexpr int ALPHAHIGH{255};
-    constexpr long int MAXSEGMENT{10000L};
     constexpr long int MAXTILES{10000L};
     const std::string SVGCOLDEFAULT = "#000000";  // black
 
@@ -82,6 +81,11 @@ public:
     void setDrawEdges(bool state);
     virtual void setOutline(const QPainterPath& path);
 
+    QColor getDefaultFillColor() override;
+    Qt::BrushStyle getDefaultFillStyle() override {
+        return Qt::SolidPattern;
+    }
+
     //shared fill parms
     void isHatched(bool state) {m_isHatched = state; }
     bool isHatched() {return m_isHatched;}
@@ -89,25 +93,22 @@ public:
 
     //general hatch parms & methods
     void setHatchColor(Base::Color color);
+    void setHatchColor(QColor color);
     void setHatchScale(double scale);
 
     //svg fill parms & methods
     void setHatchFile(std::string fileSpec);
     void loadSvgHatch(std::string fileSpec);
     void buildSvgHatch();
-    void hideSvg(bool state);
-    void clearSvg();
 
     //tiled pixmap fill from svg
     void buildPixHatch();
 
     //PAT fill parms & methods
-    void setGeomHatchWeight(double weight) { m_geomWeight = weight; }
     void setLineWeight(double weight);
 
-    void clearLineSets();
+    [[deprecated]] void clearLineSets();
     void addLineSet(TechDraw::LineSet& ls);
-    void clearFillItems();
 
     void lineSetToFillItems(TechDraw::LineSet& ls);
     QGraphicsPathItem* geomToLine(TechDraw::BaseGeomPtr base, TechDraw::LineSet& ls);
@@ -122,6 +123,10 @@ public:
 
     void setHatchOffset(Base::Vector3d offset) { m_hatchOffset = offset; }
     Base::Vector3d getHatchOffset() { return m_hatchOffset; }
+
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override {
+        QGIPrimPath::paint(painter, option, widget);
+    }
 
 protected:
     void makeMark(double x, double y);  // NOLINT readability-identifier-length
@@ -144,14 +149,9 @@ protected:
 
 
 private:
-    std::vector<QGraphicsPathItem*> m_fillItems;
     std::vector<TechDraw::LineSet> m_lineSets;
-    std::vector<TechDraw::DashSpec> m_dashSpecs;
-    long int m_segCount{0};
-    long int m_maxSeg{0};
     long int m_maxTile{0};
 
-    bool m_hideSvgTiles{false};
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
 
     QGCustomRect* m_svgHatchArea;
@@ -165,15 +165,6 @@ private:
     bool m_isHatched{false};
     QGIFace::FillMode m_mode;
     QPixmap m_texture;                          //
-
-    QPainterPath m_outline;                     //
-
-    QPainterPath m_geomhatch;                  //crosshatch fill lines
-
-    QColor m_geomColor;                        //color for crosshatch lines
-    double m_geomWeight{0.5};                       //lineweight for crosshatch lines
-
-    QColor m_defFaceColor;
 
     double m_hatchRotation{0.0};
     Base::Vector3d m_hatchOffset;
