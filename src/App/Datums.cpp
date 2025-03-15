@@ -65,8 +65,12 @@ DatumElement::~DatumElement() = default;
 bool DatumElement::getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vector3d& directionX, const char* subname) const
 {
     Q_UNUSED(subname);
-    Q_UNUSED(directionX);
+    
     Placement.getValue().getRotation().multVec(baseDir, directionZ);
+
+    if (baseDir == Base::Vector3d::UnitZ) {
+        Placement.getValue().getRotation().multVec(Base::Vector3d::UnitX, directionX);
+    }
 
     return true;
 }
@@ -150,8 +154,9 @@ bool LocalCoordinateSystem::getCameraAlignmentDirection(Base::Vector3d& directio
                                                         const char* subname) const
 {
     Q_UNUSED(subname);
-    Q_UNUSED(directionX);
-    Placement.getValue().getRotation().multVec(Base::Vector3d(0., 0., 1.), directionZ);
+
+    Placement.getValue().getRotation().multVec(Base::Vector3d::UnitZ, directionZ);
+    Placement.getValue().getRotation().multVec(Base::Vector3d::UnitX, directionX);
 
     return true;
 }
