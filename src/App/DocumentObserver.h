@@ -78,6 +78,11 @@ public:
         return document < other.document;
     }
 
+    explicit operator bool() const
+    {
+        return getDocument() != nullptr;
+    }
+
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
     /*! Get the name of the document. */
@@ -126,6 +131,16 @@ public:
     /*! Equality operator */
     bool operator==(const DocumentObjectT&) const;
 
+    bool operator<(const DocumentObjectT& other) const
+    {
+        return object < other.object;
+    }
+
+    explicit operator bool() const
+    {
+        return getObject() != nullptr;
+    }
+
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
     /*! Get the name of the document. */
@@ -136,8 +151,13 @@ public:
     DocumentObject* getObject() const;
     /*! Get a pointer to the property or 0 if it doesn't exist any more. */
     Property* getProperty() const;
+    /*! Get a pointer to the property by name or 0 if it doesn't exist any more. */
+    Property* getPropertyByName(const char* name) const;
     /*! Get the name of the document object. */
     const std::string& getObjectName() const;
+    /*! Get the name of the document object. */
+    const char* getNameInDocument() const;
+    bool isAttachedToDocument() const;
     /*! Get the label of the document object. */
     const std::string& getObjectLabel() const;
     /*! Get the name of the property. */
