@@ -495,6 +495,30 @@ PythonTextEditor::PythonTextEditor(QWidget *parent)
 
 PythonTextEditor::~PythonTextEditor() = default;
 
+void PythonTextEditor::prepend(const QString& str)
+{
+    QTextCursor cursor = textCursor();
+    // for each selected block insert a tab or spaces
+    int selStart = cursor.selectionStart();
+    int selEnd = cursor.selectionEnd();
+    QTextBlock block;
+    cursor.beginEditBlock();
+    for (block = document()->begin(); block.isValid(); block = block.next()) {
+        int pos = block.position();
+        int off = block.length()-1;
+        // at least one char of the block is part of the selection
+        if ( pos >= selStart || pos+off >= selStart) {
+            if ( pos+1 > selEnd )
+                break; // end of selection reached
+            cursor.setPosition(block.position());
+            cursor.insertText(str);
+            selEnd += str.length();
+        }
+    }
+
+    cursor.endEditBlock();
+}
+
 void PythonTextEditor::keyPressEvent (QKeyEvent * e)
 {
     if ( e->key() == Qt::Key_Tab ) {
@@ -511,25 +535,7 @@ void PythonTextEditor::keyPressEvent (QKeyEvent * e)
             cursor.insertText(ch);
             cursor.endEditBlock();
         } else {
-            // for each selected block insert a tab or spaces
-            int selStart = cursor.selectionStart();
-            int selEnd = cursor.selectionEnd();
-            QTextBlock block;
-            cursor.beginEditBlock();
-            for (block = document()->begin(); block.isValid(); block = block.next()) {
-                int pos = block.position();
-                int off = block.length()-1;
-                // at least one char of the block is part of the selection
-                if ( pos >= selStart || pos+off >= selStart) {
-                    if ( pos+1 > selEnd )
-                        break; // end of selection reached
-                    cursor.setPosition(block.position());
-                    cursor.insertText(ch);
-                    selEnd += ch.length();
-                }
-            }
-
-            cursor.endEditBlock();
+            prepend(ch);
         }
 
         return;

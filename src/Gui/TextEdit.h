@@ -139,6 +139,12 @@ public:
     explicit PythonTextEditor(QWidget *parent = nullptr);
     ~PythonTextEditor() override;
 
+public Q_SLOTS:
+    /** Inserts \a str at the beginning of each selected line or the current line if
+     * nothing is selected
+     */
+    void prepend(const QString& str);
+
 protected:
     void keyPressEvent(QKeyEvent *) override;
 };
