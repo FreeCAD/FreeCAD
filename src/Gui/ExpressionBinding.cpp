@@ -311,5 +311,4 @@ void ExpressionWidget::makeLabel(QLineEdit* le)
     iconLabel->setStyleSheet(QStringLiteral("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
     iconLabel->hide();
     iconLabel->setExpressionText(QString());
-    le->setStyleSheet(QStringLiteral("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
 }

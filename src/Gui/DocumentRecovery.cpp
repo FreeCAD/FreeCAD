@@ -713,17 +713,10 @@ void DocumentRecoveryCleaner::clearDirectory(const QFileInfo& dir)
 void DocumentRecoveryCleaner::subtractFiles(QStringList& files)
 {
     if (!ignoreFiles.isEmpty() && !files.isEmpty()) {
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
         auto set1 = QSet<QString>(files.begin(), files.end());
         auto set2 = QSet<QString>(ignoreFiles.begin(), ignoreFiles.end());
         set1.subtract(set2);
         files = QList<QString>(set1.begin(), set1.end());
-#else
-        QSet<QString> set1 = files.toSet();
-        QSet<QString> set2 = ignoreFiles.toSet();
-        set1.subtract(set2);
-        files = set1.toList();
-#endif
     }
 }
 

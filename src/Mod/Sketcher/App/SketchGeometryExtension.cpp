@@ -32,10 +32,6 @@
 using namespace Sketcher;
 
 //---------- Geometry Extension
-constexpr std::array<const char*, InternalType::NumInternalGeometryType>
-    SketchGeometryExtension::internaltype2str;
-constexpr std::array<const char*, GeometryMode::NumGeometryMode>
-    SketchGeometryExtension::geometrymode2str;
 
 TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension, Part::GeometryMigrationPersistenceExtension)
 

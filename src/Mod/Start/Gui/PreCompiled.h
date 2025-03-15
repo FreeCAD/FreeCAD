@@ -66,6 +66,7 @@
 #include <QSpacerItem>
 #include <QStackedWidget>
 #include <QString>
+#include <QStringList>
 #include <QStyleHints>
 #include <QStyleOptionViewItem>
 #include <QTimer>

@@ -1640,7 +1640,7 @@ void TaskPostCut::collectImplicitFunctions()
             QStringList items;
             std::size_t currentItem = 0;
             App::DocumentObject* currentFunction =
-                getObject<Fem::FemPostClipFilter>()->Function.getValue();
+                getObject<Fem::FemPostCutFilter>()->Function.getValue();
             const std::vector<App::DocumentObject*>& funcs =
                 static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())
                     ->Functions.getValues();

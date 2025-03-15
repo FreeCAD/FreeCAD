@@ -26,6 +26,7 @@
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoError.h>
+#include <QCheckBox>
 #include <QCloseEvent>
 #include <QDir>
 #include <QFileInfo>
@@ -135,6 +136,9 @@
 #include "WidgetFactory.h"
 #include "3Dconnexion/navlib/NavlibInterface.h"
 
+#ifdef BUILD_TRACY_FRAME_PROFILER
+#include <tracy/Tracy.hpp>
+#endif
 
 using namespace Gui;
 using namespace Gui::DockWnd;
@@ -707,6 +711,11 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             // load the file with the module
             if (File.hasExtension("FCStd")) {
                 Command::doCommand(Command::App, "%s.open(u\"%s\")", Module, unicodepath.c_str());
+                setStatus(UserInitiatedOpenDocument, false);
+                App::Document* doc = App::GetApplication().getActiveDocument();
+                checkPartialRestore(doc);
+                checkRestoreError(doc);
+                checkForRecomputes();
                 if (activeDocument()) {
                     activeDocument()->setModified(false);
                 }
@@ -1005,6 +1014,30 @@ void Application::checkForRecomputes() {
         QMessageBox::critical(getMainWindow(), QObject::tr("Recompute error"),
                               QObject::tr("Failed to recompute some document(s).\n"
                                           "Please check report view for more details."));
+}
+
+void Application::checkPartialRestore(App::Document* doc)
+{
+    if (doc && doc->testStatus(App::Document::PartialRestore)) {
+        QMessageBox::critical(
+            getMainWindow(),
+            QObject::tr("Error"),
+            QObject::tr("There were errors while loading the file. Some data might have been "
+                        "modified or not recovered at all. Look in the report view for more "
+                        "specific information about the objects involved."));
+    }
+}
+
+void Application::checkRestoreError(App::Document* doc)
+{
+    if (doc && doc->testStatus(App::Document::RestoreError)) {
+        QMessageBox::critical(
+            getMainWindow(),
+            QObject::tr("Error"),
+            QObject::tr("There were serious errors while loading the file. Some data might have "
+                        "been modified or not recovered at all. Saving the project will most "
+                        "likely result in loss of data."));
+    }
 }
 
 void Application::slotActiveDocument(const App::Document& Doc)
@@ -1806,22 +1839,16 @@ QStringList Application::workbenches() const
     QStringList hidden, extra;
     if (ht != config.end()) {
         QString items = QString::fromLatin1(ht->second.c_str());
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
         hidden = items.split(QLatin1Char(';'), Qt::SkipEmptyParts);
-#else
-        hidden = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
-#endif
+
         if (hidden.isEmpty()) {
             hidden.push_back(QLatin1String(""));
         }
     }
     if (et != config.end()) {
         QString items = QString::fromLatin1(et->second.c_str());
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+
         extra = items.split(QLatin1Char(';'), Qt::SkipEmptyParts);
-#else
-        extra = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
-#endif
         if (extra.isEmpty()) {
             extra.push_back(QLatin1String(""));
         }
@@ -2562,9 +2589,10 @@ App::Document* Application::reopen(App::Document* doc)
         }
 
         for (auto& file : docs) {
-            App::DocumentCreateFlags createFlags;
-            createFlags.createView = false;
-            App::GetApplication().openDocument(file.c_str(), createFlags);
+            App::DocumentInitFlags initFlags {
+                .createView = false
+            };
+            App::GetApplication().openDocument(file.c_str(), initFlags);
         }
     }
 

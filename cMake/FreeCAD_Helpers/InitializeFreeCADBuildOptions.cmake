@@ -17,6 +17,8 @@ macro(InitializeFreeCADBuildOptions)
     option(FREECAD_PARALLEL_LINK_JOBS "Linkage jobs pool size to fit memory limitations.")
     option(BUILD_WITH_CONDA "Set ON if you build FreeCAD with conda" OFF)
     option(BUILD_DYNAMIC_LINK_PYTHON "If OFF extension-modules do not link against python-libraries" ON)
+    option(BUILD_TRACY_FRAME_PROFILER "If ON then enables support for the Tracy frame profiler" OFF)
+
     option(INSTALL_TO_SITEPACKAGES "If ON the freecad root namespace (python) is installed into python's site-packages" ON)
     option(INSTALL_PREFER_SYMLINKS "If ON then fc_copy_sources macro will create symlinks instead of copying files" OFF)
     option(OCCT_CMAKE_FALLBACK "disable usage of occt-config files" OFF)

@@ -68,6 +68,8 @@
 # include <Inventor/C/glue/gl.h>
 #endif
 
+#include <Base/Profiler.h>
+
 #include <Gui/SoFCInteractiveElement.h>
 #include <Gui/Selection/SoFCSelectionAction.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
@@ -493,6 +495,8 @@ void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
 
 void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 {
+    ZoneScoped;
+
     //SoBase::staticDataLock();
     static bool init = false;
     if (!init) {

@@ -116,18 +116,13 @@ PyBaseProxy_dealloc(PyObject* self)
     }
     Py_TYPE(self)->tp_free(self);
 }
-
 static PyTypeObject PyBaseProxyType = {
     PyVarObject_HEAD_INIT(nullptr, 0)
     "PyBaseProxy",                                          /*tp_name*/
     sizeof(PyBaseProxy),                                    /*tp_basicsize*/
     0,                                                      /*tp_itemsize*/
     PyBaseProxy_dealloc,                                    /*tp_dealloc*/
-#if PY_VERSION_HEX >= 0x03080000
     0,                                                      /*tp_vectorcall_offset*/
-#else
-    nullptr,                                                /*tp_print*/
-#endif
     nullptr,                                                /*tp_getattr*/
     nullptr,                                                /*tp_setattr*/
     nullptr,                                                /*tp_compare*/
@@ -170,16 +165,11 @@ static PyTypeObject PyBaseProxyType = {
     nullptr,                                                /*tp_del */
     0,                                                      /*tp_version_tag */
     nullptr                                                 /*tp_finalize */
-#if PY_VERSION_HEX >= 0x03090000
     ,0                                            //NOLINT  /*tp_vectorcall */
 #if PY_VERSION_HEX >= 0x030c0000
     ,0                                                      /*tp_watched */
 #endif
-#elif PY_VERSION_HEX >= 0x03080000
-    ,0                                                      /*tp_vectorcall */
-    /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
-    ,0                                                      /*tp_print */
-#endif
+
 };
 
 PyTypeObject PyObjectBase::Type = {
@@ -189,11 +179,7 @@ PyTypeObject PyObjectBase::Type = {
     0,                                                      /*tp_itemsize*/
     /* --- methods ---------------------------------------------- */
     PyDestructor,                                           /*tp_dealloc*/
-#if PY_VERSION_HEX >= 0x03080000
     0,                                                      /*tp_vectorcall_offset*/
-#else
-    nullptr,                                                /*tp_print*/
-#endif
     nullptr,                                                /*tp_getattr*/
     nullptr,                                                /*tp_setattr*/
     nullptr,                                                /*tp_compare*/
@@ -238,15 +224,9 @@ PyTypeObject PyObjectBase::Type = {
     nullptr,                                                /*tp_del */
     0,                                                      /*tp_version_tag */
     nullptr                                                 /*tp_finalize */
-#if PY_VERSION_HEX >= 0x03090000
     ,0                                            //NOLINT  /*tp_vectorcall */
 #if PY_VERSION_HEX >= 0x030c0000
     ,0                                                      /*tp_watched */
-#endif
-#elif PY_VERSION_HEX >= 0x03080000
-    ,0                                                      /*tp_vectorcall */
-    /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
-    ,0                                                      /*tp_print */
 #endif
 };
 
