@@ -72,11 +72,9 @@ void StdCmdPart::activated(int iMsg)
             QObject::tr(PartName.c_str()).toUtf8().data());
 
     doCommand(Doc,
-    "selected_objects = Gui.Selection.getSelection()\n"
-    "if len(selected_objects) > 1:\n"
-    "    for obj in selected_objects:\n"
-    "        App.activeDocument().%s.addObject(obj)",
-    PartName.c_str());
+        "for obj in Gui.Selection.getSelection()[1:]:\n"
+        "    App.activeDocument().%s.addObject(obj)",
+        PartName.c_str());
 
     doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)\n"
                                  "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
