@@ -772,29 +772,47 @@ def makeSpace(objects=None,baseobj=None,name=None):
     """makeSpace([objects],[baseobj],[name]): Creates a space object from the given objects.
     Objects can be one document object, in which case it becomes the base shape of the space
     object, or a list of selection objects as got from getSelectionEx(), or a list of tuples
-    (object, subobjectname)"""
+    [ (object, [subobjectname, ...]), ... ]"""
 
     import ArchSpace
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
-    obj.Label = name if name else translate("Arch","Space")
-    ArchSpace._Space(obj)
+    space = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
+    space.Label = name if name else translate("Arch","Space")
+    ArchSpace._Space(space)
     if FreeCAD.GuiUp:
-        ArchSpace._ViewProviderSpace(obj.ViewObject)
+        ArchSpace._ViewProviderSpace(space.ViewObject)
     if baseobj:
         objects = baseobj
     if objects:
         if not isinstance(objects,list):
             objects = [objects]
-        if len(objects) == 1:
-            obj.Base = objects[0]
+
+        isSingleObject = len(objects) == 1
+
+        if (hasattr(objects[0], "isDerivedFrom") and
+                objects[0].isDerivedFrom("Gui::SelectionObject")):
+            # Selection set
+            # [<SelectionObject>]
+            hasNoBoundaries = not objects[0].HasSubObjects
+        elif isinstance(objects[0], tuple) or isinstance(objects[0], list):
+            # Single object with subobjects. If it has only
+            # a subobject, do not consider it as a boundary
+            # [ (<Part::PartFeature>, ["Face1", ...]) ]
+            hasNoBoundaries = not len(objects[0][1]) > 1
+        else:
+            # Single object
+            # [ <Part::PartFeature> ]
+            hasNoBoundaries = True
+
+        if isSingleObject and hasNoBoundaries:
+            space.Base = objects[0]
             if FreeCAD.GuiUp:
                 objects[0].ViewObject.hide()
         else:
-            obj.Proxy.addSubobjects(obj,objects)
-    return obj
+            space.Proxy.addSubobjects(space,objects)
+    return space
 
 
 def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=None):

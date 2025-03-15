@@ -818,6 +818,58 @@ class ArchTest(unittest.TestCase):
         App.ActiveDocument.recompute()
         assert True
 
+    def test_SpaceFromSingleWall(self):
+        """Create a space from boundaries of a single wall.
+        """
+        from FreeCAD import Units
+
+        operation = "Arch Space from single wall"
+        _msg(f"\n  Test '{operation}'")
+
+        # Create a wall
+        wallInnerLength = 4000.0
+        wallHeight = 3000.0
+        wallInnerFaceArea = wallInnerLength * wallHeight
+        pl = App.Placement()
+        pl.Rotation.Q = (0.0, 0.0, 0.0, 1.0)
+        pl.Base = App.Vector(0.0, 0.0, 0.0)
+        rectangleBase = Draft.make_rectangle(
+            length=wallInnerLength, height=wallInnerLength, placement=pl, face=True, support=None)
+        App.ActiveDocument.recompute() # To calculate rectangle area
+        rectangleArea = rectangleBase.Area
+        App.ActiveDocument.getObject(rectangleBase.Name).MakeFace = False
+        wall = Arch.makeWall(baseobj=rectangleBase, height=wallHeight, align="Left")
+        App.ActiveDocument.recompute() # To calculate face areas
+
+        # Create a space from the wall's inner faces
+        boundaries = [f"Face{ind+1}" for ind, face in enumerate(wall.Shape.Faces)
+                      if round(face.Area) == round(wallInnerFaceArea)]
+
+        if App.GuiUp:
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.Selection.addSelection(wall, boundaries)
+
+            space = Arch.makeSpace(FreeCADGui.Selection.getSelectionEx())
+            # Alternative, but test takes longer to run (~10x)
+            # FreeCADGui.activateWorkbench("BIMWorkbench")
+            # FreeCADGui.runCommand('Arch_Space', 0)
+            # space = App.ActiveDocument.Space
+        else:
+            # Also tests the alternative way of specifying the boundaries
+            # [ (<Part::PartFeature>, ["Face1", ...]), ... ]
+            space = Arch.makeSpace([(wall, boundaries)])
+
+        App.ActiveDocument.recompute() # To calculate space area
+
+        # Assert if area is as expected
+        expectedArea = Units.parseQuantity(str(rectangleArea))
+        actualArea = Units.parseQuantity(str(space.Area))
+
+        self.assertAlmostEqual(
+            expectedArea.Value,
+            actualArea.Value,
+            msg = f"Invalid area value. Expected: {expectedArea.UserString}, actual: {actualArea.UserString}")
+
     def tearDown(self):
         App.closeDocument("ArchTest")
         pass
