@@ -103,14 +103,14 @@ void PropertyPointKernel::Save(Base::Writer& writer) const
 void PropertyPointKernel::Restore(Base::XMLReader& reader)
 {
     reader.readElement("Points");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
         reader.addFile(file.c_str(), this);
     }
     if (reader.DocumentSchema > 3) {
-        std::string Matrix(reader.getAttribute("mtrx"));
+        std::string Matrix(reader.getAttribute<const char*>("mtrx"));
         Base::Matrix4D mtrx;
         mtrx.fromString(Matrix);
 

@@ -327,9 +327,9 @@ void PropertyExpressionEngine::Save(Base::Writer& writer) const
 void PropertyExpressionEngine::Restore(Base::XMLReader& reader)
 {
     reader.readElement("ExpressionEngine");
-    int count = reader.getAttributeAsFloat("count");
+    int count = reader.getAttribute<double>("count");
 
-    if (reader.hasAttribute("xlink") && reader.getAttributeAsInteger("xlink")) {
+    if (reader.hasAttribute("xlink") && reader.getAttribute<bool>("xlink")) {
         PropertyExpressionContainer::Restore(reader);
     }
 
@@ -340,10 +340,10 @@ void PropertyExpressionEngine::Restore(Base::XMLReader& reader)
         reader.readElement("Expression");
         restoredExpressions->emplace_back();
         auto& info = restoredExpressions->back();
-        info.path = reader.getAttribute("path");
-        info.expr = reader.getAttribute("expression");
+        info.path = reader.getAttribute<const char*>("path");
+        info.expr = reader.getAttribute<const char*>("expression");
         if (reader.hasAttribute("comment")) {
-            info.comment = reader.getAttribute("comment");
+            info.comment = reader.getAttribute<const char*>("comment");
         }
     }
 
