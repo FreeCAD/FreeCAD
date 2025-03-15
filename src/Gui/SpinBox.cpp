@@ -67,9 +67,6 @@ void ExpressionSpinBox::bind(const App::ObjectIdentifier &_path)
 
 void ExpressionSpinBox::showIcon()
 {
-    int frameWidth = spinbox->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    lineedit->setStyleSheet(QStringLiteral("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
-
     iconLabel->show();
 }
 
@@ -164,10 +161,9 @@ void ExpressionSpinBox::onChange()
 
 void ExpressionSpinBox::resizeWidget()
 {
-    int frameWidth = spinbox->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-
-    QSize sz = iconLabel->sizeHint();
-    iconLabel->move(lineedit->rect().right() - frameWidth - sz.width(), lineedit->rect().center().y() - sz.height() / 2);
+    int margin = lineedit->style()->pixelMetric(QStyle::PM_LineEditIconMargin, nullptr, lineedit);
+    int iconWidth = iconLabel->width() + margin;
+    iconLabel->move(lineedit->width() - iconWidth, (lineedit->height() - iconLabel->height()) / 2);
     updateExpression();
 }
 
