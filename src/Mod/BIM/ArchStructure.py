@@ -65,8 +65,7 @@ class Structure(ArchComponent.Component):
 
     def setProperties(self, obj):
 
-        pl = obj.PropertiesList
-        if "Tool" not in pl:
+        if "Tool" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyLinkSubList",
                 "Tool",
@@ -75,7 +74,7 @@ class Structure(ArchComponent.Component):
                     "App::Property", "An optional extrusion path for this element"
                 ),
             )
-        if "ComputedLength" not in pl:
+        if "ComputedLength" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyDistance",
                 "ComputedLength",
@@ -85,7 +84,7 @@ class Structure(ArchComponent.Component):
                 ),
                 1,
             )
-        if "ToolOffsetFirst" not in pl:
+        if "ToolOffsetFirst" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyDistance",
                 "ToolOffsetFirst",
@@ -96,7 +95,7 @@ class Structure(ArchComponent.Component):
                     "(positive: extend, negative: trim)",
                 ),
             )
-        if "ToolOffsetLast" not in pl:
+        if "ToolOffsetLast" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyDistance",
                 "ToolOffsetLast",
@@ -107,7 +106,7 @@ class Structure(ArchComponent.Component):
                     "(positive: extend, negative: trim)",
                 ),
             )
-        if "BasePerpendicularToTool" not in pl:
+        if "BasePerpendicularToTool" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyBool",
                 "BasePerpendicularToTool",
@@ -117,7 +116,7 @@ class Structure(ArchComponent.Component):
                     "Automatically align the Base of the Structure perpendicular to the Tool axis",
                 ),
             )
-        if "BaseOffsetX" not in pl:
+        if "BaseOffsetX" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyDistance",
                 "BaseOffsetX",
@@ -128,7 +127,7 @@ class Structure(ArchComponent.Component):
                     "(only used if BasePerpendicularToTool is True)",
                 ),
             )
-        if "BaseOffsetY" not in pl:
+        if "BaseOffsetY" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyDistance",
                 "BaseOffsetY",
@@ -139,7 +138,7 @@ class Structure(ArchComponent.Component):
                     "(only used if BasePerpendicularToTool is True)",
                 ),
             )
-        if "BaseMirror" not in pl:
+        if "BaseMirror" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyBool",
                 "BaseMirror",
@@ -150,7 +149,7 @@ class Structure(ArchComponent.Component):
                     "(only used if BasePerpendicularToTool is True)",
                 ),
             )
-        if "BaseRotation" not in pl:
+        if "BaseRotation" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyAngle",
                 "BaseRotation",
@@ -161,7 +160,7 @@ class Structure(ArchComponent.Component):
                     "(only used if BasePerpendicularToTool is True)",
                 ),
             )
-        if "Length" not in pl:
+        if "Length" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyLength",
                 "Length",
@@ -171,7 +170,7 @@ class Structure(ArchComponent.Component):
                     "The length of this element, if not based on a profile",
                 ),
             )
-        if "Width" not in pl:
+        if "Width" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyLength",
                 "Width",
@@ -181,7 +180,7 @@ class Structure(ArchComponent.Component):
                     "The width of this element, if not based on a profile",
                 ),
             )
-        if "Height" not in pl:
+        if "Height" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyLength",
                 "Height",
@@ -191,7 +190,7 @@ class Structure(ArchComponent.Component):
                     "The height or extrusion depth of this element. Keep 0 for automatic",
                 ),
             )
-        if "Normal" not in pl:
+        if "Normal" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyVector",
                 "Normal",
@@ -202,7 +201,7 @@ class Structure(ArchComponent.Component):
                     "(keep (0,0,0) for automatic normal)",
                 ),
             )
-        if "Nodes" not in pl:
+        if "Nodes" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyVectorList",
                 "Nodes",
@@ -211,7 +210,7 @@ class Structure(ArchComponent.Component):
                     "App::Property", "The structural nodes of this element"
                 ),
             )
-        if "Profile" not in pl:
+        if "Profile" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyString",
                 "Profile",
@@ -221,7 +220,7 @@ class Structure(ArchComponent.Component):
                     "A description of the standard profile this element is based upon",
                 ),
             )
-        if "NodesOffset" not in pl:
+        if "NodesOffset" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyDistance",
                 "NodesOffset",
@@ -231,7 +230,7 @@ class Structure(ArchComponent.Component):
                     "Offset distance between the centerline and the nodes line",
                 ),
             )
-        if "FaceMaker" not in pl:
+        if "FaceMaker" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyEnumeration",
                 "FaceMaker",
@@ -242,7 +241,7 @@ class Structure(ArchComponent.Component):
                 ),
             )
             obj.FaceMaker = ["None", "Simple", "Cheese", "Bullseye"]
-        if "ArchSketchData" not in pl:
+        if "ArchSketchData" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyBool",
                 "ArchSketchData",
@@ -254,7 +253,7 @@ class Structure(ArchComponent.Component):
                 ),
             )
             obj.ArchSketchData = True
-        if "ArchSketchEdges" not in pl:  # PropertyStringList
+        if "ArchSketchEdges" not in obj.PropertiesList:  # PropertyStringList
             obj.addProperty(
                 "App::PropertyStringList",
                 "ArchSketchEdges",
@@ -303,6 +302,29 @@ class Structure(ArchComponent.Component):
             self.ArchSkPropSetPickedUuid = ""
         if not hasattr(self, "ArchSkPropSetListPrev"):
             self.ArchSkPropSetListPrev = []
+
+        if "EndingStart" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyPlacement",
+                "EndingStart",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "A placement, relative to the main wall placement,,describing"
+                    "a plane that cuts the end of the wall, at start position.",
+                ),
+            )
+        if "EndingEnd" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyPlacement",
+                "EndingEnd",
+                "Wall",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "A placement, relative to the main wall placement,,describing"
+                    "a plane that cuts the end of the wall, at end position.",
+                ),
+            )
 
         self.Type = "Structure"
 
@@ -362,101 +384,84 @@ class Structure(ArchComponent.Component):
 
         base = None
         pl = obj.Placement
-
-        # PropertySet support
-        propSetPickedUuidPrev = self.ArchSkPropSetPickedUuid
-        propSetListPrev = self.ArchSkPropSetListPrev
-        propSetSelectedNamePrev = obj.ArchSketchPropertySet
-        propSetSelectedNameCur = None
-        propSetListCur = None
-        if Draft.getType(obj.Base) == "ArchSketch":
-            baseProxy = obj.Base.Proxy
-            if hasattr(baseProxy, "getPropertySet"):
-                # get full list of PropertySet
-                propSetListCur = baseProxy.getPropertySet(obj.Base)
-                # get updated name (if any) of the selected PropertySet
-                propSetSelectedNameCur = baseProxy.getPropertySet(
-                    obj.Base, propSetUuid=propSetPickedUuidPrev
-                )
-        if propSetSelectedNameCur:  # True if selection is not deleted
-            if propSetListPrev != propSetListCur:
-                obj.ArchSketchPropertySet = propSetListCur
-                obj.ArchSketchPropertySet = propSetSelectedNameCur
-                self.ArchSkPropSetListPrev = propSetListCur
-            # elif propSetListPrev == propSetListCur:
-            # pass  #nothing to do in this case
-            # but if below, though (propSetListPrev == propSetListCur)
-            elif propSetSelectedNamePrev != propSetSelectedNameCur:
-                obj.ArchSketchPropertySet = propSetSelectedNameCur
-        else:  # True if selection is deleted
-            if propSetListCur:
-                if propSetListPrev != propSetListCur:
-                    obj.ArchSketchPropertySet = propSetListCur
-                    obj.ArchSketchPropertySet = "Default"
-                # else:  # Seems no need ...
-                # obj.PropertySet = 'Default'
-
+        self.set_archsketch_properties(obj)
         extdata = self.getExtrusionData(obj)
 
         if extdata:
-            sh = extdata[0]
-            if not isinstance(sh, list):
-                sh = [sh]
-            ev = extdata[1]
-            if not isinstance(ev, list):
-                ev = [ev]
-            pla = extdata[2]
-            if not isinstance(pla, list):
-                pla = [pla]
-            base = []
-            extrusion_length = 0.0
-            for i in range(len(sh)):
-                shi = sh[i]
-                if i < len(ev):
-                    evi = ev[i]
-                else:
-                    evi = ev[-1]
-                    if isinstance(evi, FreeCAD.Vector):
-                        evi = FreeCAD.Vector(evi)
-                    else:
-                        evi = evi.copy()
-                if i < len(pla):
-                    pli = pla[i]
-                else:
-                    pli = pla[-1].copy()
-                shi.Placement = pli.multiply(shi.Placement)
-                if isinstance(evi, FreeCAD.Vector):
-                    extv = pla[0].Rotation.multVec(evi)
-                    shi = shi.extrude(extv)
-                else:
-                    try:
-                        shi = evi.makePipe(shi)
-                    except Part.OCCError:
-                        FreeCAD.Console.PrintError(
-                            translate(
-                                "Arch",
-                                "Error: The base shape couldn't be extruded along this tool object",
-                            )
-                            + "\n"
-                        )
-                        return
-                base.append(shi)
-                extrusion_length += evi.Length
-            if len(base) == 1:
-                base = base[0]
+            base = self.build_shape(obj, extdata)
+
+        if not base and not obj.Additions:
+            tx = translate("Arch","Error: Invalid base object") + ":" + obj.Label + "\n"
+            FreeCAD.Console.PrintLog(tx)
+            return
+
+        base = self.processSubShapes(obj, base, pl)
+        base = self.process_endings(obj, base, pl)
+        self.applyShape(obj, base, pl)
+
+    def build_shape(self, obj, extdata):
+        """Builds a shape from the extrusion data"""
+
+        base = None
+        sh = extdata[0]
+        if not isinstance(sh, list):
+            sh = [sh]
+        ev = extdata[1]
+        if not isinstance(ev, list):
+            ev = [ev]
+        pla = extdata[2]
+        if not isinstance(pla, list):
+            pla = [pla]
+        base = []
+        extrusion_length = 0.0
+        for i in range(len(sh)):
+            shi = sh[i]
+            if i < len(ev):
+                evi = ev[i]
             else:
-                base = Part.makeCompound(base)
-            obj.ComputedLength = FreeCAD.Units.Quantity(
-                extrusion_length, FreeCAD.Units.Length
-            )
+                evi = ev[-1]
+                if isinstance(evi, FreeCAD.Vector):
+                    evi = FreeCAD.Vector(evi)
+                else:
+                    evi = evi.copy()
+            if i < len(pla):
+                pli = pla[i]
+            else:
+                pli = pla[-1].copy()
+            pli, evi = self.extend_endpoints(obj, pli, evi)
+            shi.Placement = pli.multiply(shi.Placement)
+            if isinstance(evi, FreeCAD.Vector):
+                extv = pla[0].Rotation.multVec(evi)
+                shi = shi.extrude(extv)
+            else:
+                try:
+                    shi = evi.makePipe(shi)
+                except Part.OCCError:
+                    FreeCAD.Console.PrintError(
+                        translate(
+                            "Arch",
+                            "Error: The base shape couldn't be extruded along this tool object",
+                        )
+                        + "\n"
+                    )
+                    return None
+            base.append(shi)
+            extrusion_length += evi.Length
+        if len(base) == 1:
+            base = base[0]
+        else:
+            base = Part.makeCompound(base)
+        obj.ComputedLength = FreeCAD.Units.Quantity(
+            extrusion_length, FreeCAD.Units.Length
+        )
         if obj.Base:
             if hasattr(obj.Base, "Shape"):
                 if obj.Base.Shape.isNull():
-                    return
+                    return None
                 if not obj.Base.Shape.isValid():
                     if not obj.Base.Shape.Solids:
                         # let pass invalid objects if they have solids...
-                        return
+                        return None
                 elif obj.Base.Shape.Solids:
                     base = obj.Base.Shape.copy()
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
@@ -476,12 +481,7 @@ class Structure(ArchComponent.Component):
                                 + "\n"
                             )
                             obj.Base.ViewObject.show()
-        if (not base) and (not obj.Additions):
-            # FreeCAD.Console.PrintError(translate("Arch","Error: Invalid base object")+"\n")
-            return
-
-        base = self.processSubShapes(obj, base, pl)
-        self.applyShape(obj, base, pl)
+        return base
 
     def getExtrusionData(self, obj):
         """returns (shape,extrusion vector or path,placement) or None"""
@@ -836,6 +836,103 @@ class Structure(ArchComponent.Component):
                         ).toShape()
                     )
         return edges
+
+    def set_archsketch_properties(self, obj):
+        """Sets the different archsketch-related properties on execute"""
+
+        # PropertySet support
+        propSetPickedUuidPrev = self.ArchSkPropSetPickedUuid
+        propSetListPrev = self.ArchSkPropSetListPrev
+        propSetSelectedNamePrev = obj.ArchSketchPropertySet
+        propSetSelectedNameCur = None
+        propSetListCur = None
+        if Draft.getType(obj.Base) == "ArchSketch":
+            baseProxy = obj.Base.Proxy
+            if hasattr(baseProxy, "getPropertySet"):
+                # get full list of PropertySet
+                propSetListCur = baseProxy.getPropertySet(obj.Base)
+                # get updated name (if any) of the selected PropertySet
+                propSetSelectedNameCur = baseProxy.getPropertySet(
+                    obj.Base, propSetUuid=propSetPickedUuidPrev
+                )
+        if propSetSelectedNameCur:  # True if selection is not deleted
+            if propSetListPrev != propSetListCur:
+                obj.ArchSketchPropertySet = propSetListCur
+                obj.ArchSketchPropertySet = propSetSelectedNameCur
+                self.ArchSkPropSetListPrev = propSetListCur
+            # elif propSetListPrev == propSetListCur:
+            # pass  #nothing to do in this case
+            # but if below, though (propSetListPrev == propSetListCur)
+            elif propSetSelectedNamePrev != propSetSelectedNameCur:
+                obj.ArchSketchPropertySet = propSetSelectedNameCur
+        else:  # True if selection is deleted
+            if propSetListCur:
+                if propSetListPrev != propSetListCur:
+                    obj.ArchSketchPropertySet = propSetListCur
+                    obj.ArchSketchPropertySet = "Default"
+                # else:  # Seems no need ...
+                # obj.PropertySet = 'Default'
+
+    def extend_endings(self, obj, pli, evi, ending=None):
+        """
+        Extends the given placement and extrusion vector so they
+        meet the object End placements"""
+
+        if ending not in ["Start", "End"]:
+            if getattr(obj, "EndingStart", None):
+                pli, evi = self.extend_endings(obj, pli, evi, "Start")
+            if getattr(obj, "EndingStart", None):
+                pli, evi = self.extend_endings(obj, pli, evi, "End")
+        else:
+            if getattr(obj, "Ending" + ending).isNull():
+                return pli, evi
+            plength = evi.Length * 2  # security margin
+            compl = FreeCAD.Placement(getattr(obj, "Ending" + ending)).multiply(pli)
+            if ending == "Start":
+                basep = pli.Base
+                endp = pli.Base + evi
+            else:
+                basep = pli.Base + evi
+                endp = pli.Base
+            target = compl.Base
+            chord = target.sub(basep)
+            addvec = DraftVecUtils.project(chord, evi)
+            if ending == "Start":
+                pli.Base = basep.add(addvec)
+                evi = endp.sub(pli.Base)
+            else:
+                evi = (basep.add(addvec)).sub(endp)
+            return pli, evi
+
+    def process_endings(self, obj, base, pl, ending=None):
+        """
+        Cuts the given base against the given ending,
+        be it Start or End. If ending is None (or something else), both ends
+        are processed.
+        """
+
+        if ending not in ["Start", "End"]:
+            if getattr(obj, "EndingStart", None):
+                base = self.process_endings(base, obj, pl, "Start")
+            if getattr(obj, "EndingStart", None):
+                base = self.process_endings(base, obj, pl, "End")
+        else:
+            if getattr(obj, "Ending" + ending).isNull():
+                return base
+            plength = base.BoundBox.DiagonalLength * 2  # security margin
+            plane = Part.makePlane(plength, plength)
+            compl = FreeCAD.Placement(getattr(obj, "Ending" + ending)).multiply(pl)
+            plane.Placement = compl
+            extv = compl.multVec(Vector(0, 0, plength))
+            subsolid = plane.extrude(extv)
+            if base.ShapeType == "Compound":
+                newcomp = []
+                for ss in base.SubShapes:
+                    newcomp.append(ss.cut(subsolid))
+                base = newcomp
+            else:
+                base = base.cut(subsolid)
+        return base
 
 
 class ViewProviderStructure(ArchComponent.ViewProviderComponent):
