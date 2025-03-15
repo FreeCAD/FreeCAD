@@ -78,7 +78,8 @@ void FileCardDelegate::paint(QPainter* painter,
             buttonOption.state |= QStyle::State_Sunken;
         }
         QApplication::style()->drawControl(QStyle::CE_PushButton, &buttonOption, painter);
-    } else {
+    }
+    else {
         QPushButton button;
         button.resize(option.rect.size());
         painter->translate(option.rect.topLeft());
