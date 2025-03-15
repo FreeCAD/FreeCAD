@@ -42,7 +42,7 @@ struct NewButton
     QString iconPath;
 };
 
-class NewFileButton : public QPushButton
+class NewFileButton: public QPushButton
 {
 public:
     explicit NewFileButton(const NewButton& newButton);
@@ -51,6 +51,6 @@ protected:
     QSize minimumSizeHint() const override;
 };
 
-} // namespace StartGui
+}  // namespace StartGui
 
-#endif // FREECAD_NEWFILEBUTTON_H
+#endif  // FREECAD_NEWFILEBUTTON_H

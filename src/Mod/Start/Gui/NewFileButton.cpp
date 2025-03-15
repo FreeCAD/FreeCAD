@@ -35,8 +35,7 @@ NewFileButton::NewFileButton(const NewButton& newButton)
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
-    const auto newFileIconSize =
-        static_cast<int>(hGrp->GetInt("NewFileIconSize", 48)); // NOLINT
+    const auto newFileIconSize = static_cast<int>(hGrp->GetInt("NewFileIconSize", 48));  // NOLINT
 
     auto mainLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(this));
     mainLayout->setAlignment(Qt::AlignVCenter);
@@ -67,19 +66,16 @@ QSize NewFileButton::minimumSizeHint() const
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
-    const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 25)); // NOLINT
-    const auto newFileIconSize =
-        static_cast<int>(hGrp->GetInt("NewFileIconSize", 48)); // NOLINT
-    const auto cardLabelWith =
-        static_cast<int>(hGrp->GetInt("FileCardLabelWith", 180)); // NOLINT
+    const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 25));       // NOLINT
+    const auto newFileIconSize = static_cast<int>(hGrp->GetInt("NewFileIconSize", 48));   // NOLINT
+    const auto cardLabelWith = static_cast<int>(hGrp->GetInt("FileCardLabelWith", 180));  // NOLINT
 
     auto textLayout = layout()->itemAt(1)->layout();
 
     auto textLabelLine1 = static_cast<QLabel*>(textLayout->itemAt(0)->widget());
     auto textLabelLine2 = static_cast<QLabel*>(textLayout->itemAt(1)->widget());
 
-    int textHeight =
-        textLabelLine1->height() + textLabelLine2->height() + textLayout->spacing();
+    int textHeight = textLabelLine1->height() + textLabelLine2->height() + textLayout->spacing();
 
     int minWidth = newFileIconSize + cardLabelWith + cardSpacing;
     int minHeight = std::max(newFileIconSize, textHeight) + cardSpacing;
@@ -87,4 +83,4 @@ QSize NewFileButton::minimumSizeHint() const
     return QSize(minWidth, minHeight);
 }
 
-} // namespace StartGui
+}  // namespace StartGui
