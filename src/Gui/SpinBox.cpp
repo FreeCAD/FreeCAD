@@ -60,11 +60,21 @@ ExpressionSpinBox::ExpressionSpinBox(QAbstractSpinBox* sb)
     // horizontal to avoid going under the icon
     lineedit->setAlignment(Qt::AlignVCenter);
     int iconWidth = iconLabel->sizeHint().width();
-    int margin = lineedit->style()->pixelMetric(QStyle::PM_LineEditIconMargin, nullptr, lineedit);
+    int margin = getMargin();
     lineedit->setTextMargins(margin, margin, margin + iconWidth, margin);
 }
 
 ExpressionSpinBox::~ExpressionSpinBox() = default;
+
+int ExpressionSpinBox::getMargin()
+{
+    lineedit = spinbox->findChild<QLineEdit*>();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+    return lineedit->style()->pixelMetric(QStyle::PM_LineEditIconMargin, nullptr, lineedit) / 2;
+#else
+    return lineedit->style()->pixelMetric(QStyle::PM_FocusFrameHMargin, nullptr, lineedit);
+#endif
+}
 
 void ExpressionSpinBox::bind(const App::ObjectIdentifier &_path)
 {
@@ -169,7 +179,11 @@ void ExpressionSpinBox::onChange()
 
 void ExpressionSpinBox::resizeWidget()
 {
-    int margin = lineedit->style()->pixelMetric(QStyle::PM_LineEditIconMargin, nullptr, lineedit);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+    int margin = lineedit->style()->pixelMetric(QStyle::PM_LineEditIconMargin, nullptr, lineedit) / 2;
+#else
+    int margin = lineedit->style()->pixelMetric(QStyle::PM_FocusFrameHMargin, nullptr, lineedit);
+#endif
     int iconWidth = iconLabel->width() + margin;
     iconLabel->move(lineedit->width() - iconWidth, (lineedit->height() - iconLabel->height()) / 2);
     updateExpression();
