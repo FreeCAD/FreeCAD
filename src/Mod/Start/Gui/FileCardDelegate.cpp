@@ -63,22 +63,29 @@ void FileCardDelegate::paint(QPainter* painter,
     painter->save();
 
     // Step 1: Styling
-    QStyleOptionButton buttonOption;
-    buttonOption.initFrom(_widget.get());
-    buttonOption.rect = option.rect;
-    buttonOption.state = QStyle::State_Enabled;
-
-    if ((option.state & QStyle::State_MouseOver) != 0) {
-        buttonOption.state |= QStyle::State_MouseOver;
+    if (qApp->styleSheet().isEmpty()) {
+        QStyleOptionButton buttonOption;
+        buttonOption.initFrom(_widget.get());
+        buttonOption.rect = option.rect;
+        buttonOption.state = QStyle::State_Enabled;
+        if ((option.state & QStyle::State_MouseOver) != 0) {
+            buttonOption.state |= QStyle::State_MouseOver;
+        }
+        if ((option.state & QStyle::State_Selected) != 0) {
+            buttonOption.state |= QStyle::State_On;
+        }
+        if ((option.state & QStyle::State_Sunken) != 0) {
+            buttonOption.state |= QStyle::State_Sunken;
+        }
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &buttonOption, painter);
     }
-    if ((option.state & QStyle::State_Selected) != 0) {
-        buttonOption.state |= QStyle::State_On;
+    else {
+        QPushButton button;
+        button.resize(option.rect.size());
+        painter->translate(option.rect.topLeft());
+        button.render(painter);
+        painter->translate(-option.rect.topLeft());
     }
-    if ((option.state & QStyle::State_Sunken) != 0) {
-        buttonOption.state |= QStyle::State_Sunken;
-    }
-
-    QApplication::style()->drawControl(QStyle::CE_PushButton, &buttonOption, painter);
 
     // Step 2: Fetch required data
     auto thumbnailSize =
