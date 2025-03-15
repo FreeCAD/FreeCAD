@@ -134,6 +134,7 @@ SET(PathPythonPost_SRCS
     Path/Post/UtilsArguments.py
     Path/Post/UtilsExport.py
     Path/Post/UtilsParse.py
+    Path/Post/UtilsPostBase.py
 )
 
 SET(PathPythonPostScripts_SRCS
