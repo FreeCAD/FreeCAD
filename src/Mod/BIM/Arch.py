@@ -778,11 +778,11 @@ def makeSpace(objects=None,baseobj=None,name=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
-    obj.Label = name if name else translate("Arch","Space")
-    ArchSpace._Space(obj)
+    space = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
+    space.Label = name if name else translate("Arch","Space")
+    ArchSpace._Space(space)
     if FreeCAD.GuiUp:
-        ArchSpace._ViewProviderSpace(obj.ViewObject)
+        ArchSpace._ViewProviderSpace(space.ViewObject)
     if baseobj:
         objects = baseobj
     if objects:
@@ -807,12 +807,12 @@ def makeSpace(objects=None,baseobj=None,name=None):
             hasNoBoundaries = True
 
         if isSingleObject and hasNoBoundaries:
-            obj.Base = objects[0]
+            space.Base = objects[0]
             if FreeCAD.GuiUp:
                 objects[0].ViewObject.hide()
         else:
-            obj.Proxy.addSubobjects(obj,objects)
-    return obj
+            space.Proxy.addSubobjects(space,objects)
+    return space
 
 
 def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=None):
