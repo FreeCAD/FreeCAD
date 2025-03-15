@@ -54,6 +54,14 @@ ExpressionSpinBox::ExpressionSpinBox(QAbstractSpinBox* sb)
     QObject::connect(iconLabel, &ExpressionLabel::clicked, [this]() {
         this->openFormulaDialog();
     });
+
+    // Set Margins
+    // vertical to avoid this: https://forum.freecad.org/viewtopic.php?f=8&t=50615
+    // horizontal to avoid going under the icon
+    lineedit->setAlignment(Qt::AlignVCenter);
+    int iconWidth = iconLabel->sizeHint().width();
+    int margin = lineedit->style()->pixelMetric(QStyle::PM_LineEditIconMargin, nullptr, lineedit);
+    lineedit->setTextMargins(margin, margin, margin + iconWidth, margin);
 }
 
 ExpressionSpinBox::~ExpressionSpinBox() = default;
