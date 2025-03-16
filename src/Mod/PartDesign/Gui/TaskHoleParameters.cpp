@@ -838,6 +838,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
     else if (&Prop == &hole->Diameter) {
         ui->Diameter->setEnabled(true);
         updateSpinBox(ui->Diameter, hole->Diameter.getValue());
+        ui->HoleCutDiameter->setMinimum(hole->Diameter.getValue() + 0.1);
     }
     else if (&Prop == &hole->ThreadDirection) {
         ui->directionRightHand->setEnabled(true);
