@@ -869,13 +869,7 @@ def removeSpaceBoundaries(space,subobjects):
 
     import Draft
     if Draft.getType(space) == "Space":
-        bounds = space.Boundaries
-        for o in objects:
-            for b in bounds:
-                if o.Name == b[0].Name:
-                    bounds.remove(b)
-                    break
-        space.Boundaries = bounds
+        space.Proxy.removeSubobjects(space,subobjects)
 
 def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=None):
 

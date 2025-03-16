@@ -283,6 +283,17 @@ class _Space(ArchComponent.Component):
                             objs.append((o.Object,el))
         obj.Boundaries = objs
 
+    def removeSubobjects(self,obj,subobjects):
+
+        "removes subobjects to this space"
+        bounds = obj.Boundaries
+        for o in subobjects:
+            for b in bounds:
+                if o.Name == b[0].Name:
+                    bounds.remove(b)
+                    break
+        obj.Boundaries = bounds
+
     def addObject(self,obj,child):
 
         "Adds an object to this Space"
