@@ -897,6 +897,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Side of selected faces that tool should cut",
             ),
+            locked=True,
         )
         # obj.Side = [
         #     "Outside",
@@ -911,6 +912,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Type of adaptive operation",
             ),
+            locked=True,
         )
         # obj.OperationType = [
         #     "Clearing",
@@ -925,6 +927,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Influences accuracy and performance",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyPercent",
@@ -934,6 +937,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Percent of cutter diameter to step over on each pass",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -943,6 +947,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Lift distance for rapid moves",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -952,6 +957,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Max length of keep tool down path compared to direct distance between points",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -961,6 +967,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "How much stock to leave (i.e. for finishing operation)",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -970,6 +977,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Force plunging into material inside and clearing towards the edges",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -979,12 +987,14 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "To take a finishing profile path at the end",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "Stopped",
             "Adaptive",
             QT_TRANSLATE_NOOP("App::Property", "Stop processing"),
+            locked=True,
         )
         obj.setEditorMode("Stopped", 2)  # hide this property
 
@@ -996,6 +1006,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Stop processing",
             ),
+            locked=True,
         )
         obj.setEditorMode("StopProcessing", 2)  # hide this property
 
@@ -1007,6 +1018,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Use Arcs (G2) for helix ramp",
             ),
+            locked=True,
         )
 
         obj.addProperty(
@@ -1017,6 +1029,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Internal input state",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyPythonObject",
@@ -1026,6 +1039,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Internal output state",
             ),
+            locked=True,
         )
         obj.setEditorMode("AdaptiveInputState", 2)  # hide this property
         obj.setEditorMode("AdaptiveOutputState", 2)  # hide this property
@@ -1037,6 +1051,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Helix ramp entry angle (degrees)",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyAngle",
@@ -1046,6 +1061,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Helix cone angle (degrees)",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLength",
@@ -1055,6 +1071,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Limit helix entry diameter, if limit larger than tool diameter or 0, tool diameter is used",
             ),
+            locked=True,
         )
 
         obj.addProperty(
@@ -1065,6 +1082,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "App::Property",
                 "Uses the outline of the base geometry.",
             ),
+            locked=True,
         )
 
         obj.addProperty(
@@ -1072,6 +1090,7 @@ class PathAdaptive(PathOp.ObjectOp):
             "removalshape",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", ""),
+            locked=True,
         )
 
         for n in self.propertyEnumerations():
@@ -1118,6 +1137,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "HelixConeAngle",
                 "Adaptive",
                 "Helix cone angle (degrees)",
+                locked=True,
             )
 
         if not hasattr(obj, "UseOutline"):
@@ -1126,10 +1146,11 @@ class PathAdaptive(PathOp.ObjectOp):
                 "UseOutline",
                 "Adaptive",
                 "Uses the outline of the base geometry.",
+                locked=True,
             )
 
         if not hasattr(obj, "removalshape"):
-            obj.addProperty("Part::PropertyPartShape", "removalshape", "Path", "")
+            obj.addProperty("Part::PropertyPartShape", "removalshape", "Path", "", locked=True)
         obj.setEditorMode("removalshape", 2)  # hide
 
         FeatureExtensions.initialize_properties(obj)

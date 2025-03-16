@@ -78,6 +78,7 @@ class ObjectOp(PathOp.ObjectOp):
             "Disabled",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "List of disabled features"),
+            locked=True,
         )
         self.initCircularHoleOperation(obj)
 

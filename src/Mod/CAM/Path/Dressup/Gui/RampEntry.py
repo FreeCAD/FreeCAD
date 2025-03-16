@@ -55,30 +55,35 @@ class ObjectDressup:
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The base toolpath to modify"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyAngle",
             "Angle",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Angle of ramp."),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "Method",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Ramping Method"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "RampFeedRate",
             "FeedRate",
             QT_TRANSLATE_NOOP("App::Property", "Which feed rate to use for ramping"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertySpeed",
             "CustomFeedRate",
             "FeedRate",
             QT_TRANSLATE_NOOP("App::Property", "Custom feed rate"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -88,6 +93,7 @@ class ObjectDressup:
                 "App::Property",
                 "Should the dressup ignore motion commands above DressupStartDepth",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -97,6 +103,7 @@ class ObjectDressup:
                 "App::Property",
                 "The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is.",
             ),
+            locked=True,
         )
 
         # populate the enumerations

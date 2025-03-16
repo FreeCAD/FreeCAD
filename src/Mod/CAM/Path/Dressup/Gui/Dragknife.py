@@ -56,6 +56,7 @@ class ObjectDressup:
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The base toolpath to modify"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyAngle",
@@ -64,6 +65,7 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Angles less than filter angle will not receive corner actions",
+                locked=True,
             ),
         )
         obj.addProperty(
@@ -71,12 +73,14 @@ class ObjectDressup:
             "offset",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Distance the point trails behind the spindle"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyFloat",
             "pivotheight",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Height to raise during corner action"),
+            locked=True,
         )
 
         obj.Proxy = self

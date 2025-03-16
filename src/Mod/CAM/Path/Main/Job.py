@@ -78,7 +78,7 @@ def isResourceClone(obj, propLink, resourceName):
 def createResourceClone(obj, orig, name, icon):
     clone = Draft.clone(orig)
     clone.Label = "%s-%s" % (name, orig.Label)
-    clone.addProperty("App::PropertyString", "PathResource")
+    clone.addProperty("App::PropertyString", "PathResource", locked=True)
     clone.PathResource = name
     if clone.ViewObject:
         import Path.Base.Gui.IconViewProvider
@@ -113,12 +113,14 @@ class ObjectJob:
             "PostProcessorOutputFile",
             "Output",
             QT_TRANSLATE_NOOP("App::Property", "The G-code output file for this project"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "PostProcessor",
             "Output",
             QT_TRANSLATE_NOOP("App::Property", "Select the Post Processor"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyString",
@@ -128,12 +130,14 @@ class ObjectJob:
                 "App::Property",
                 "Arguments for the Post Processor (specific to the script)",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyString",
             "LastPostProcessDate",
             "Output",
             QT_TRANSLATE_NOOP("App::Property", "Last Time the Job was post processed"),
+            locked=True,
         )
         obj.setEditorMode("LastPostProcessDate", 2)  # Hide
         obj.addProperty(
@@ -141,6 +145,7 @@ class ObjectJob:
             "LastPostProcessOutput",
             "Output",
             QT_TRANSLATE_NOOP("App::Property", "Last Time the Job was post processed"),
+            locked=True,
         )
         obj.setEditorMode("LastPostProcessOutput", 2)  # Hide
 
@@ -149,12 +154,14 @@ class ObjectJob:
             "Description",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "An optional description for this job"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyString",
             "CycleTime",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Job Cycle Time Estimation"),
+            locked=True,
         )
         obj.setEditorMode("CycleTime", 1)  # read-only
         obj.addProperty(
@@ -165,6 +172,7 @@ class ObjectJob:
                 "App::Property",
                 "For computing Paths; smaller increases accuracy, but slows down computation",
             ),
+            locked=True,
         )
 
         obj.addProperty(
@@ -172,6 +180,7 @@ class ObjectJob:
             "Stock",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "Solid object to be used as stock."),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLink",
@@ -181,6 +190,7 @@ class ObjectJob:
                 "App::Property",
                 "Compound path of all operations in the order they are processed.",
             ),
+            locked=True,
         )
 
         obj.addProperty(
@@ -188,6 +198,7 @@ class ObjectJob:
             "JobType",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "Select the Type of Job"),
+            locked=True,
         )
         obj.setEditorMode("JobType", 2)  # Hide
 
@@ -196,18 +207,21 @@ class ObjectJob:
             "SplitOutput",
             "Output",
             QT_TRANSLATE_NOOP("App::Property", "Split output into multiple G-code files"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "OrderOutputBy",
             "WCS",
             QT_TRANSLATE_NOOP("App::Property", "If multiple WCS, order the output this way"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyStringList",
             "Fixtures",
             "WCS",
             QT_TRANSLATE_NOOP("App::Property", "The Work Coordinate Systems for the Job"),
+            locked=True,
         )
 
         obj.Fixtures = ["G54"]
@@ -296,6 +310,7 @@ class ObjectJob:
                     QT_TRANSLATE_NOOP(
                         "App::Property", "SetupSheet holding the settings for this job"
                     ),
+                    locked=True,
                 )
             obj.SetupSheet = PathSetupSheet.Create()
             if obj.SetupSheet.ViewObject:
@@ -345,6 +360,7 @@ class ObjectJob:
                 QT_TRANSLATE_NOOP(
                     "App::Property", "Collection of all tool controllers for the job"
                 ),
+                locked=True,
             )
             addTable = True
         elif obj.Tools is None:
@@ -477,6 +493,7 @@ class ObjectJob:
                 "CycleTime",
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
+                locked=True,
             )
             obj.setEditorMode("CycleTime", 1)  # read-only
 
@@ -486,6 +503,7 @@ class ObjectJob:
                 "Fixtures",
                 "WCS",
                 QT_TRANSLATE_NOOP("App::Property", "The Work Coordinate Systems for the Job"),
+                locked=True,
             )
             obj.Fixtures = ["G54"]
 
@@ -495,6 +513,7 @@ class ObjectJob:
                 "OrderOutputBy",
                 "WCS",
                 QT_TRANSLATE_NOOP("App::Property", "If multiple WCS, order the output this way"),
+                locked=True,
             )
             obj.OrderOutputBy = ["Fixture", "Tool", "Operation"]
 
@@ -504,6 +523,7 @@ class ObjectJob:
                 "SplitOutput",
                 "Output",
                 QT_TRANSLATE_NOOP("App::Property", "Split output into multiple G-code files"),
+                locked=True,
             )
             obj.SplitOutput = False
 
@@ -513,6 +533,7 @@ class ObjectJob:
                 "JobType",
                 "Base",
                 QT_TRANSLATE_NOOP("App::Property", "Select the type of Job"),
+                locked=True,
             )
             obj.setEditorMode("JobType", 2)  # Hide
 

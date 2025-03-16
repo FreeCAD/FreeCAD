@@ -39,6 +39,7 @@ class ObjectPathCopy:
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The toolpath to be copied"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLink",
@@ -48,6 +49,7 @@ class ObjectPathCopy:
                 "App::Property",
                 "The tool controller that will be used to calculate the toolpath",
             ),
+            locked=True,
         )
         obj.Proxy = self
 

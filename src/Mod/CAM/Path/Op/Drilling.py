@@ -100,6 +100,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "chipBreakEnabled",
                 "Drill",
                 QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
+                locked=True,
             )
 
         if not hasattr(obj, "feedRetractEnabled"):
@@ -108,6 +109,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "feedRetractEnabled",
                 "Drill",
                 QT_TRANSLATE_NOOP("App::Property", "Use G85 boring cycle with feed out"),
+                locked=True,
             )
 
     def initCircularHoleOperation(self, obj):
@@ -120,30 +122,35 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "App::Property",
                 "Incremental Drill depth before retracting to clear chips",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "PeckEnabled",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "Enable pecking"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "chipBreakEnabled",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyFloat",
             "DwellTime",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "DwellEnabled",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "Enable dwell"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -153,6 +160,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "App::Property",
                 "Calculate the tip length and subtract from final depth",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -162,6 +170,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "App::Property",
                 "Controls tool retract height between holes in same op, Default=G98: safety height",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -171,12 +180,14 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "App::Property",
                 "The height where cutting feed rate starts and retract height for peck operation",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "ExtraOffset",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "How far the drilling depth is extended"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -186,12 +197,14 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "App::Property",
                 "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "feedRetractEnabled",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "Use G85 boring cycle with feed out"),
+            locked=True,
         )
 
         for n in self.propertyEnumerations():
@@ -227,6 +240,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     "App::Property",
                     "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
                 ),
+                locked=True,
             )
 
         if not hasattr(obj, "RetractMode"):
@@ -238,6 +252,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     "App::Property",
                     "Controls tool retract height between holes in same op, Default=G98: safety height",
                 ),
+                locked=True,
             )
             # ensure new enums exist in old class
             for n in self.propertyEnumerations():

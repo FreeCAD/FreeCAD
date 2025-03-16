@@ -53,24 +53,28 @@ class ObjectProbing(PathOp.ObjectOp):
             "Xoffset",
             "Probe",
             QT_TRANSLATE_NOOP("App::Property", "X offset between tool and probe"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLength",
             "Yoffset",
             "Probe",
             QT_TRANSLATE_NOOP("App::Property", "Y offset between tool and probe"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyInteger",
             "PointCountX",
             "Probe",
             QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in X direction"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyInteger",
             "PointCountY",
             "Probe",
             QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in Y direction"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyFile",
@@ -79,6 +83,7 @@ class ObjectProbing(PathOp.ObjectOp):
             QT_TRANSLATE_NOOP(
                 "App::Property", "The output location for the probe data to be written"
             ),
+            locked=True,
         )
 
     def nextpoint(self, startpoint=0.0, endpoint=0.0, count=3):

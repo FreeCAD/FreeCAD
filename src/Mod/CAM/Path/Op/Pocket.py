@@ -64,6 +64,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     "App::Property",
                     "Choose how to process multiple Base Geometry features.",
                 ),
+                locked=True,
             )
 
         if not hasattr(obj, "AdaptivePocketStart"):
@@ -75,6 +76,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     "App::Property",
                     "Use adaptive algorithm to eliminate excessive air milling above planar pocket top.",
                 ),
+                locked=True,
             )
         if not hasattr(obj, "AdaptivePocketFinish"):
             obj.addProperty(
@@ -85,6 +87,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     "App::Property",
                     "Use adaptive algorithm to eliminate excessive air milling below planar pocket bottom.",
                 ),
+                locked=True,
             )
         if not hasattr(obj, "ProcessStockArea"):
             obj.addProperty(
@@ -95,6 +98,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     "App::Property",
                     "Process the model and stock in an operation with no Base Geometry selected.",
                 ),
+                locked=True,
             )
 
         # populate the property enumerations

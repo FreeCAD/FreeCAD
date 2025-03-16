@@ -142,30 +142,35 @@ class ToolBit(object):
             "BitShape",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "Shape for bit shape"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLink",
             "BitBody",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The parametrized body representing the tool bit"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyFile",
             "File",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The file of the tool"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyString",
             "ShapeName",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The name of the shape file"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyStringList",
             "BitPropertyNames",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "List of all properties inherited from the bit"),
+            locked=True,
         )
 
         if path:
@@ -202,6 +207,7 @@ class ToolBit(object):
                 "BitPropertyNames",
                 "Base",
                 QT_TRANSLATE_NOOP("App::Property", "List of all properties inherited from the bit"),
+                locked=True,
             )
             propNames = []
             for prop in obj.PropertiesList:

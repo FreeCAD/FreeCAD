@@ -66,6 +66,7 @@ class ToolController:
             "ToolNumber",
             "Tool",
             QT_TRANSLATE_NOOP("App::Property", "The active tool"),
+            locked=True,
         )
         obj.ToolNumber = (0, 0, 10000, 1)
         obj.addProperty(
@@ -73,36 +74,42 @@ class ToolController:
             "SpindleSpeed",
             "Tool",
             QT_TRANSLATE_NOOP("App::Property", "The speed of the cutting spindle in RPM"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "SpindleDir",
             "Tool",
             QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertySpeed",
             "VertFeed",
             "Feed",
             QT_TRANSLATE_NOOP("App::Property", "Feed rate for vertical moves in Z"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertySpeed",
             "HorizFeed",
             "Feed",
             QT_TRANSLATE_NOOP("App::Property", "Feed rate for horizontal moves"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertySpeed",
             "VertRapid",
             "Rapid",
             QT_TRANSLATE_NOOP("App::Property", "Rapid rate for vertical moves in Z"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertySpeed",
             "HorizRapid",
             "Rapid",
             QT_TRANSLATE_NOOP("App::Property", "Rapid rate for horizontal moves"),
+            locked=True,
         )
         obj.setEditorMode("Placement", 2)
 
@@ -290,6 +297,7 @@ class ToolController:
                 "Tool",
                 "Base",
                 QT_TRANSLATE_NOOP("App::Property", "The tool used by this controller"),
+                locked=True,
             )
 
 

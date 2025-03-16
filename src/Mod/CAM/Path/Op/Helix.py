@@ -139,6 +139,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "App::Property",
                 "The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)",
             ),
+            locked=True,
         )
         obj.setEditorMode("Direction", ["ReadOnly", "Hidden"])
         obj.setPropertyStatus("Direction", ["ReadOnly", "Output"])
@@ -148,6 +149,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "StartSide",
             "Helix Drill",
             QT_TRANSLATE_NOOP("App::Property", "Start cutting from the inside or outside"),
+            locked=True,
         )
 
         # TODO: revise property description once v1.0 release string freeze is lifted
@@ -159,6 +161,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "App::Property",
                 "The direction of the circular cuts, ClockWise (Climb), or CounterClockWise (Conventional)",
             ),
+            locked=True,
         )
 
         obj.addProperty(
@@ -168,12 +171,14 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             QT_TRANSLATE_NOOP(
                 "App::Property", "Percent of cutter diameter to step over on each pass"
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLength",
             "StartRadius",
             "Helix Drill",
             QT_TRANSLATE_NOOP("App::Property", "Starting Radius"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -183,6 +188,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "App::Property",
                 "Extra value to stay away from final profile- good for roughing toolpath",
             ),
+            locked=True,
         )
 
         ENUMS = self.helixOpPropertyEnumerations()
@@ -197,6 +203,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "StartRadius",
                 "Helix Drill",
                 QT_TRANSLATE_NOOP("App::Property", "Starting Radius"),
+                locked=True,
             )
 
         if not hasattr(obj, "OffsetExtra"):
@@ -208,6 +215,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                     "App::Property",
                     "Extra value to stay away from final profile- good for roughing toolpath",
                 ),
+                locked=True,
             )
 
         if not hasattr(obj, "CutMode"):
@@ -221,6 +229,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                     "App::Property",
                     "The direction of the circular cuts, ClockWise (Climb), or CounterClockWise (Conventional)",
                 ),
+                locked=True,
             )
             obj.CutMode = ["Climb", "Conventional"]
             if obj.Direction in ["Climb", "Conventional"]:

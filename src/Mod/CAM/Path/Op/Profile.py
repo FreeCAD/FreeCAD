@@ -74,7 +74,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         for propertytype, propertyname, grp, tt in self.areaOpProperties():
             if not hasattr(obj, propertyname):
-                obj.addProperty(propertytype, propertyname, grp, tt)
+                obj.addProperty(propertytype, propertyname, grp, tt, locked=True)
                 self.addNewProps.append(propertyname)
 
         if len(self.addNewProps) > 0:
@@ -324,6 +324,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "App::Property",
                     "The number of passes to do. Requires a non-zero value for Stepover",
                 ),
+                locked=True,
             )
         if not hasattr(obj, "Stepover"):
             obj.addProperty(
@@ -334,6 +335,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "App::Property",
                     "If doing multiple passes, the extra offset of each additional pass",
                 ),
+                locked=True,
             )
 
     def areaOpOnChanged(self, obj, prop):

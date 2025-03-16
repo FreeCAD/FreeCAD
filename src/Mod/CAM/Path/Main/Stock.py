@@ -113,6 +113,7 @@ class StockFromBase(Stock):
             "Base",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The base object this stock is derived from"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -122,6 +123,7 @@ class StockFromBase(Stock):
                 "App::Property",
                 "Extra allowance from part bound box in negative X direction",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -131,6 +133,7 @@ class StockFromBase(Stock):
                 "App::Property",
                 "Extra allowance from part bound box in positive X direction",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -140,6 +143,7 @@ class StockFromBase(Stock):
                 "App::Property",
                 "Extra allowance from part bound box in negative Y direction",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -149,6 +153,7 @@ class StockFromBase(Stock):
                 "App::Property",
                 "Extra allowance from part bound box in positive Y direction",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -158,6 +163,7 @@ class StockFromBase(Stock):
                 "App::Property",
                 "Extra allowance from part bound box in negative Z direction",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -167,6 +173,7 @@ class StockFromBase(Stock):
                 "App::Property",
                 "Extra allowance from part bound box in positive Z direction",
             ),
+            locked=True,
         )
 
         obj.Base = base
@@ -233,18 +240,21 @@ class StockCreateBox(Stock):
             "Length",
             "Stock",
             QT_TRANSLATE_NOOP("App::Property", "Length of this stock box"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLength",
             "Width",
             "Stock",
             QT_TRANSLATE_NOOP("App::Property", "Width of this stock box"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLength",
             "Height",
             "Stock",
             QT_TRANSLATE_NOOP("App::Property", "Height of this stock box"),
+            locked=True,
         )
 
         obj.Length = 10
@@ -285,12 +295,14 @@ class StockCreateCylinder(Stock):
             "Radius",
             "Stock",
             QT_TRANSLATE_NOOP("App::Property", "Radius of this stock cylinder"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLength",
             "Height",
             "Stock",
             QT_TRANSLATE_NOOP("App::Property", "Height of this stock cylinder"),
+            locked=True,
         )
 
         obj.Radius = 2
@@ -327,6 +339,7 @@ def SetupStockObject(obj, stockType):
             "StockType",
             "Stock",
             QT_TRANSLATE_NOOP("App::Property", "Internal representation of stock type"),
+            locked=True,
         )
         obj.StockType = stockType
         obj.setEditorMode("StockType", 2)  # hide

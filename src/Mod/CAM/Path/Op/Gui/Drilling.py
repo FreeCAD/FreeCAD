@@ -148,6 +148,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
                     "App::Property",
                     "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
                 ),
+                locked=True,
             )
 
         if obj.KeepToolDown:

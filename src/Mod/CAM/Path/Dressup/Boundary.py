@@ -51,6 +51,7 @@ class DressupPathBoundary(object):
             "Base",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
+            locked=True,
         )
         obj.Base = base
         obj.addProperty(
@@ -61,6 +62,7 @@ class DressupPathBoundary(object):
                 "App::Property",
                 "Solid object to be used to limit the generated Path.",
             ),
+            locked=True,
         )
         obj.Stock = PathStock.CreateFromBase(job)
         obj.addProperty(
@@ -71,6 +73,7 @@ class DressupPathBoundary(object):
                 "App::Property",
                 "Determines if Boundary describes an inclusion or exclusion mask.",
             ),
+            locked=True,
         )
         obj.Inside = True
 

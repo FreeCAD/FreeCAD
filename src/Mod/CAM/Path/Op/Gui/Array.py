@@ -43,12 +43,14 @@ class ObjectArray:
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The toolpath(s) to array"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "Type",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Pattern method"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyVectorDistance",
@@ -58,6 +60,7 @@ class ObjectArray:
                 "App::Property",
                 "The spacing between the array copies in Linear pattern",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyInteger",
@@ -66,6 +69,7 @@ class ObjectArray:
             QT_TRANSLATE_NOOP(
                 "App::Property", "The number of copies in X direction in Linear pattern"
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyInteger",
@@ -74,12 +78,14 @@ class ObjectArray:
             QT_TRANSLATE_NOOP(
                 "App::Property", "The number of copies in Y direction in Linear pattern"
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyAngle",
             "Angle",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Total angle in Polar pattern"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyInteger",
@@ -88,12 +94,14 @@ class ObjectArray:
             QT_TRANSLATE_NOOP(
                 "App::Property", "The number of copies in Linear 1D and Polar pattern"
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyVector",
             "Centre",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in Polar pattern"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -103,24 +111,28 @@ class ObjectArray:
                 "App::Property",
                 "Make copies in X direction before Y in Linear 2D pattern",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyInteger",
             "JitterPercent",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Percent of copies to randomly offset"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyVectorDistance",
             "JitterMagnitude",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Maximum random offset of copies"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyInteger",
             "JitterSeed",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLink",
@@ -130,12 +142,14 @@ class ObjectArray:
                 "App::Property",
                 "The tool controller that will be used to calculate the toolpath",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "Active",
             "Path",
             QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"),
+            locked=True,
         )
 
         obj.Active = True
@@ -167,6 +181,7 @@ class ObjectArray:
                 "JitterSeed",
                 "Path",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
+                locked=True,
             )
             obj.JitterSeed = 0
 
@@ -197,6 +212,7 @@ class ObjectArray:
                 QT_TRANSLATE_NOOP(
                     "PathOp", "Make False, to prevent operation from generating code"
                 ),
+                locked=True,
             )
             obj.Active = True
 

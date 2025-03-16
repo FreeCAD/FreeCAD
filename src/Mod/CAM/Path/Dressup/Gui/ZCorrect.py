@@ -60,12 +60,14 @@ class ObjectDressup:
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The base toolpath to modify"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyFile",
             "probefile",
             "ProbeData",
             QT_TRANSLATE_NOOP("App::Property", "The point file from the surface probing."),
+            locked=True,
         )
         obj.Proxy = self
         obj.addProperty("Part::PropertyPartShape", "interpSurface", "Path")
@@ -74,6 +76,7 @@ class ObjectDressup:
             "ArcInterpolate",
             "Interpolate",
             QT_TRANSLATE_NOOP("App::Property", "Deflection distance for arc interpolation"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -83,6 +86,7 @@ class ObjectDressup:
                 "App::Property",
                 "break segments into smaller segments of this length.",
             ),
+            locked=True,
         )
         obj.ArcInterpolate = 0.1
         obj.SegInterpolate = 1.0

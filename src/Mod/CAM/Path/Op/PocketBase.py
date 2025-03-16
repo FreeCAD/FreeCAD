@@ -127,6 +127,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "App::Property",
                 "The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -136,12 +137,14 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "App::Property",
                 "Extra offset to apply to the operation. Direction is operation dependent.",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "StartAt",
             "Pocket",
             QT_TRANSLATE_NOOP("App::Property", "Start pocketing at center or boundary"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyPercent",
@@ -150,30 +153,35 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             QT_TRANSLATE_NOOP(
                 "App::Property", "Percent of cutter diameter to step over on each pass"
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyFloat",
             "ZigZagAngle",
             "Pocket",
             QT_TRANSLATE_NOOP("App::Property", "Angle of the zigzag pattern"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "OffsetPattern",
             "Face",
             QT_TRANSLATE_NOOP("App::Property", "Clearing pattern to use"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "MinTravel",
             "Pocket",
             QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "KeepToolDown",
             "Pocket",
             QT_TRANSLATE_NOOP("App::Property", "Attempts to avoid unnecessary retractions."),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyPercent",
@@ -183,6 +191,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "App::Property",
                 "Last Stepover Radius.  If 0, 50% of cutter is used. Tuning this can be used to improve stepover for some shapes",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -192,6 +201,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "App::Property",
                 "Skips machining regions that have already been cleared by previous operations.",
             ),
+            locked=True,
         )
 
         for n in self.pocketPropertyEnumerations():
@@ -252,6 +262,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                     "App::Property",
                     "Last Stepover Radius.  If 0, 50% of cutter is used. Tuning this can be used to improve stepover for some shapes",
                 ),
+                locked=True,
             )
             obj.PocketLastStepOver = 0
 
@@ -264,6 +275,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                     "App::Property",
                     "Skips machining regions that have already been cleared by previous operations.",
                 ),
+                locked=True,
             )
 
         if hasattr(obj, "RestMachiningRegions"):
