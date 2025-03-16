@@ -54,7 +54,8 @@ class ViewProviderText(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyEnumeration",
                              "Justification",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.Justification = ["Left", "Center", "Right"]
 
         if "LineSpacing" not in properties:
@@ -63,7 +64,8 @@ class ViewProviderText(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyFloat",
                              "LineSpacing",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.LineSpacing = params.get_param("LineSpacing")
 
     def getIcon(self):
