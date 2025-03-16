@@ -413,6 +413,7 @@ class BIM_IfcProperties:
                             QT_TRANSLATE_NOOP(
                                 "App::Property", "IFC properties of this object"
                             ),
+                            locked=True,
                         )
                     if hasattr(obj, "IfcProperties"):
                         obj.IfcProperties = values[1]
@@ -627,7 +628,12 @@ class BIM_IfcProperties:
                                 # print("deleting",prop)
                                 del self.objectslist[name][1][prop]
 
-    def addProperty(self, idx=0, pset=None, prop=None, ptype=None):
+    def addProperty(self, idx=0, pset=None, prop=None, ptype=None, locked=False):
+
+        if locked:
+            import warnings
+            warnings.warn("Unused 'locked' keyword")
+
         from PySide import QtCore, QtGui
 
         if not self.form.tree.selectedIndexes():
