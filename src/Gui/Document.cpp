@@ -648,6 +648,7 @@ bool Document::trySetEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     Application::Instance->setEditDocument(this);
 
     if (!d->tryStartEditing(vp, obj, _subname.c_str(), ModNum)) {
+        d->setDocumentNameOfTaskDialog(getDocument());
         return false;
     }
 
