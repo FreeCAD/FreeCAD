@@ -68,14 +68,14 @@ class IfcRoot:
         """
 
         if not "IfcData" in obj.PropertiesList:
-            obj.addProperty("App::PropertyMap","IfcData","IFC",QT_TRANSLATE_NOOP("App::Property","IFC data"))
+            obj.addProperty("App::PropertyMap","IfcData","IFC",QT_TRANSLATE_NOOP("App::Property","IFC data"), locked=True)
 
         if not "IfcType" in obj.PropertiesList:
-            obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
+            obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"), locked=True)
             obj.IfcType = self.getCanonicalisedIfcTypes()
 
         if not "IfcProperties" in obj.PropertiesList:
-            obj.addProperty("App::PropertyMap","IfcProperties","IFC",QT_TRANSLATE_NOOP("App::Property","IFC properties of this object"))
+            obj.addProperty("App::PropertyMap","IfcProperties","IFC",QT_TRANSLATE_NOOP("App::Property","IFC properties of this object"), locked=True)
 
         self.migrateDeprecatedAttributes(obj)
 

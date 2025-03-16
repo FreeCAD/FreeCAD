@@ -49,12 +49,12 @@ def add_geom_properties(obj):
                     ext = rep.Items[0]
                     if "ExtrusionDepth" not in obj.PropertiesList:
                         obj.addProperty(
-                            "App::PropertyLength", "ExtrusionDepth", "Geometry"
+                            "App::PropertyLength", "ExtrusionDepth", "Geometry", locked=True
                         )
                     obj.ExtrusionDepth = ext.Depth * scaling
                     if "ExtrusionDirection" not in obj.PropertiesList:
                         obj.addProperty(
-                            "App::PropertyVector", "ExtrusionDirection", "Geometry"
+                            "App::PropertyVector", "ExtrusionDirection", "Geometry", locked=True
                         )
                     obj.ExtrusionDirection = FreeCAD.Vector(
                         ext.ExtrudedDirection.DirectionRatios
@@ -64,12 +64,12 @@ def add_geom_properties(obj):
                     if ext.SweptArea.is_a("IfcRectangleProfileDef"):
                         if "RectangleLength" not in obj.PropertiesList:
                             obj.addProperty(
-                                "App::PropertyLength", "RectangleLength", "Geometry"
+                                "App::PropertyLength", "RectangleLength", "Geometry", locked=True
                             )
                         obj.RectangleLength = ext.SweptArea.XDim * scaling
                         if "RectangleWidth" not in obj.PropertiesList:
                             obj.addProperty(
-                                "App::PropertyLength", "RectangleWidth", "Geometry"
+                                "App::PropertyLength", "RectangleWidth", "Geometry", locked=True
                             )
                         obj.RectangleWidth = ext.SweptArea.YDim * scaling
 
@@ -81,6 +81,7 @@ def add_geom_properties(obj):
                                     "App::PropertyVectorList",
                                     "PolylinePoints",
                                     "Geometry",
+                                    locked=True,
                                 )
                             points = [
                                 p.Coordinates for p in ext.SweptArea.OuterCurve.Points
@@ -103,14 +104,14 @@ def add_geom_properties(obj):
                             "WebThickness",
                         ]:
                             if hasattr(ext.SweptArea, p):
-                                obj.addProperty("App::PropertyLength", p, "Geometry")
+                                obj.addProperty("App::PropertyLength", p, "Geometry", locked=True)
                                 value = getattr(ext.SweptArea, p)
                                 if not value:
                                     value = 0
                                 value = value * scaling
                                 setattr(obj, p, value)
                             obj.addProperty(
-                                "App::PropertyString", "ProfileName", "Geometry"
+                                "App::PropertyString", "ProfileName", "Geometry", locked=True
                             )
                             obj.ProfileName = ext.SweptArea.ProfileName
 
@@ -129,6 +130,7 @@ def add_geom_properties(obj):
                                             "App::PropertyPosition",
                                             "AxisStart",
                                             "Geometry",
+                                            locked=True,
                                         )
                                     obj.AxisStart = FreeCAD.Vector(
                                         pol.Points[0].Coordinates
@@ -138,6 +140,7 @@ def add_geom_properties(obj):
                                             "App::PropertyPosition",
                                             "AxisEnd",
                                             "Geometry",
+                                            locked=True,
                                         )
                                     obj.AxisEnd = FreeCAD.Vector(
                                         pol.Points[1].Coordinates
