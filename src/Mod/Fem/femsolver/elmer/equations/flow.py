@@ -56,8 +56,11 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
                 "Set to true for incompressible flow for more stable\n"
                 "discretization when Reynolds number increases"
             ),
+            locked=True,
         )
-        obj.addProperty("App::PropertyEnumeration", "FlowModel", "Flow", "Flow model to be used")
+        obj.addProperty(
+            "App::PropertyEnumeration", "FlowModel", "Flow", "Flow model to be used", locked=True
+        )
         obj.addProperty(
             "App::PropertyBool",
             "GradpDiscretization",
@@ -66,13 +69,22 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
                 "If true pressure Dirichlet boundary conditions can be used.\n"
                 "Also mass flux is available as a natural boundary condition."
             ),
+            locked=True,
         )
         obj.addProperty(
-            "App::PropertyString", "Variable", "Flow", "Only for a 2D model change the '3' to '2'"
+            "App::PropertyString",
+            "Variable",
+            "Flow",
+            "Only for a 2D model change the '3' to '2'",
+            locked=True,
         )
 
         obj.addProperty(
-            "App::PropertyEnumeration", "Convection", "Equation", "Type of convection to be used"
+            "App::PropertyEnumeration",
+            "Convection",
+            "Equation",
+            "Type of convection to be used",
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -82,6 +94,7 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
                 "Magnetic induction equation will be solved\n"
                 "along with the Navier-Stokes equations"
             ),
+            locked=True,
         )
         obj.FlowModel = FLOW_MODEL
         obj.FlowModel = "Full"
