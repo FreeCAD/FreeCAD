@@ -287,20 +287,21 @@ void Cell::setContent(const char* value)
 
     clearException();
     if (value) {
-        if (owner->sheet()->isRestoring()) {
+        Sheet* sheet = owner->sheet();
+        if (sheet && sheet->isRestoring()) {
             if (value[0] == '\0' || (value[0] == '\'' && value[1] == '\0')) {
                 return;
             }
-            expression = std::make_unique<App::StringExpression>(owner->sheet(), value);
+            expression = std::make_unique<App::StringExpression>(sheet, value);
             setUsed(EXPRESSION_SET, true);
             return;
         }
         if (*value == '=') {
             try {
-                newExpr = ExpressionPtr(App::ExpressionParser::parse(owner->sheet(), value + 1));
+                newExpr = ExpressionPtr(App::ExpressionParser::parse(sheet, value + 1));
             }
             catch (Base::Exception& e) {
-                newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value);
+                newExpr = std::make_unique<App::StringExpression>(sheet, value);
                 setParseException(e.what());
             }
         }
@@ -309,7 +310,7 @@ void Cell::setContent(const char* value)
                 value = nullptr;
             }
             else {
-                newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value + 1);
+                newExpr = std::make_unique<App::StringExpression>(sheet, value + 1);
             }
         }
         else if (*value != '\0') {
@@ -320,8 +321,7 @@ void Cell::setContent(const char* value)
             if (errno == 0) {
                 const bool isEndEmpty = *end == '\0' || strspn(end, " \t\n\r") == strlen(end);
                 if (isEndEmpty) {
-                    newExpr = std::make_unique<App::NumberExpression>(owner->sheet(),
-                                                                      Quantity(float_value));
+                    newExpr = std::make_unique<App::NumberExpression>(sheet, Quantity(float_value));
                 }
             }
 
@@ -329,7 +329,7 @@ void Cell::setContent(const char* value)
             const bool isStartingWithNumber = value != end;
             if (!newExpr && isStartingWithNumber) {
                 try {
-                    ExpressionPtr parsedExpr(App::ExpressionParser::parse(owner->sheet(), value));
+                    ExpressionPtr parsedExpr(App::ExpressionParser::parse(sheet, value));
 
                     if (const auto fraction = freecad_cast<OperatorExpression*>(parsedExpr.get())) {
                         if (fraction->getOperator() == OperatorExpression::UNIT) {
@@ -384,7 +384,7 @@ void Cell::setContent(const char* value)
         }
 
         if (!newExpr && value && *value != '\0') {
-            newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value);
+            newExpr = std::make_unique<App::StringExpression>(sheet, value);
         }
 
         // trying to add an empty string will make newExpr = nullptr
