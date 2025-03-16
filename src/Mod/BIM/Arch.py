@@ -50,7 +50,6 @@ from ArchWindowPresets import *
 # TODO: migrate this one
 
 from ArchStructure import *
-from ArchSpace import *
 
 # make functions
 
@@ -856,6 +855,27 @@ def makeSpace(objects=None,baseobj=None,name=None):
             space.Proxy.addSubobjects(space, boundaries)
     return space
 
+def addSpaceBoundaries(space,subobjects):
+
+    """addSpaceBoundaries(space,subobjects): adds the given subobjects to the given space"""
+
+    import Draft
+    if Draft.getType(space) == "Space":
+        space.Proxy.addSubobjects(space,subobjects)
+
+def removeSpaceBoundaries(space,subobjects):
+
+    """removeSpaceBoundaries(space,objects): removes the given objects from the given spaces boundaries"""
+
+    import Draft
+    if Draft.getType(space) == "Space":
+        bounds = space.Boundaries
+        for o in objects:
+            for b in bounds:
+                if o.Name == b[0].Name:
+                    bounds.remove(b)
+                    break
+        space.Boundaries = bounds
 
 def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=None):
 

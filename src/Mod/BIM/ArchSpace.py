@@ -180,30 +180,6 @@ else:
 #  building, ie. a room.
 
 
-
-def addSpaceBoundaries(space,subobjects):
-
-    """addSpaceBoundaries(space,subobjects): adds the given subobjects to the given space"""
-
-    import Draft
-    if Draft.getType(space) == "Space":
-        space.Proxy.addSubobjects(space,subobjects)
-
-def removeSpaceBoundaries(space,objects):
-
-    """removeSpaceBoundaries(space,objects): removes the given objects from the given spaces boundaries"""
-
-    import Draft
-    if Draft.getType(space) == "Space":
-        bounds = space.Boundaries
-        for o in objects:
-            for b in bounds:
-                if o.Name == b[0].Name:
-                    bounds.remove(b)
-                    break
-        space.Boundaries = bounds
-
-
 class _Space(ArchComponent.Component):
 
     "A space object"
