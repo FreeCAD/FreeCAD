@@ -9,10 +9,10 @@ from FreeCAD import Base
 class MySpring:
    def __init__(self, obj):
       ''' Add the properties: Pitch, Diameter, Height, BarDiameter '''
-      obj.addProperty("App::PropertyLength", "Pitch", "MySpring", "Pitch of the helix").Pitch = 5.0
-      obj.addProperty("App::PropertyLength", "Diameter", "MySpring", "Diameter of the helix").Diameter = 6.0
-      obj.addProperty("App::PropertyLength", "Height", "MySpring", "Height of the helix").Height = 30.0
-      obj.addProperty("App::PropertyLength", "BarDiameter", "MySpring", "Diameter of the bar").BarDiameter = 3.0
+      obj.addProperty("App::PropertyLength", "Pitch", "MySpring", "Pitch of the helix", locked=True).Pitch = 5.0
+      obj.addProperty("App::PropertyLength", "Diameter", "MySpring", "Diameter of the helix", locked=True).Diameter = 6.0
+      obj.addProperty("App::PropertyLength", "Height", "MySpring", "Height of the helix", locked=True).Height = 30.0
+      obj.addProperty("App::PropertyLength", "BarDiameter", "MySpring", "Diameter of the bar", locked=True).BarDiameter = 3.0
       obj.Proxy = self
 
    def onChanged(self, fp, prop):
