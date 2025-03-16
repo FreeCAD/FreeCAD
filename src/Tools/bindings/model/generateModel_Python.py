@@ -331,7 +331,7 @@ def _get_module_from_path(path: str) -> str:
 
     # 2. Attempt to find "src" in the path components.
     try:
-        idx_src = parts.index("src")
+        idx_src = len(parts) - 1 - list(reversed(parts)).index("src")
     except ValueError:
         # If "src" is not found, we cannot determine the module name.
         return None
