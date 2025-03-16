@@ -85,7 +85,8 @@ class ViewProviderDraftAnnotation(object):
             vobj.addProperty("App::PropertyFloat",
                              "ScaleMultiplier",
                              "Annotation",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ScaleMultiplier = params.get_param("DefaultAnnoScaleMultiplier")
 
         if "AnnotationStyle" not in properties:
@@ -101,7 +102,8 @@ class ViewProviderDraftAnnotation(object):
             vobj.addProperty("App::PropertyEnumeration",
                              "AnnotationStyle",
                              "Annotation",
-                             _tip)
+                             _tip,
+                             locked=True)
             styles = []
             for key in vobj.Object.Document.Meta.keys():
                 if key.startswith("Draft_Style_"):
@@ -117,7 +119,8 @@ class ViewProviderDraftAnnotation(object):
             vobj.addProperty("App::PropertyFont",
                              "FontName",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.FontName = params.get_param("textfont")
 
         if "FontSize" not in properties:
@@ -126,7 +129,8 @@ class ViewProviderDraftAnnotation(object):
             vobj.addProperty("App::PropertyLength",
                              "FontSize",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.FontSize = params.get_param("textheight")
 
         if "TextColor" not in properties:
@@ -135,7 +139,8 @@ class ViewProviderDraftAnnotation(object):
             vobj.addProperty("App::PropertyColor",
                              "TextColor",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.TextColor = params.get_param("DefaultTextColor") | 0x000000FF
 
     def set_units_properties(self, vobj, properties):
@@ -148,7 +153,8 @@ class ViewProviderDraftAnnotation(object):
             vobj.addProperty("App::PropertyFloat",
                              "LineWidth",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.LineWidth = params.get_param("DefaultAnnoLineWidth")
 
         if "LineColor" not in properties:
@@ -156,7 +162,8 @@ class ViewProviderDraftAnnotation(object):
             vobj.addProperty("App::PropertyColor",
                              "LineColor",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.LineColor = params.get_param("DefaultAnnoLineColor") | 0x000000FF
 
     def dumps(self):
