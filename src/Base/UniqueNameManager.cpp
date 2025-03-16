@@ -30,7 +30,7 @@
 #endif
 #include "UniqueNameManager.h"
 
-std::tuple<std::string, std::string, unsigned int, Base::UniqueNameManager::UnlimitedUnsigned>
+std::tuple<std::string, std::string, unsigned int, Base::UnlimitedUnsigned>
 Base::UniqueNameManager::decomposeName(const std::string& name) const
 {
     auto suffixStart = getNameSuffixStartPosition(name);
