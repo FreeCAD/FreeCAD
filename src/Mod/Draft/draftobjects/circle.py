@@ -43,24 +43,24 @@ class Circle(DraftObject):
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "Start angle of the arc")
         obj.addProperty("App::PropertyAngle", "FirstAngle",
-                        "Draft", _tip)
+                        "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "End angle of the arc (for a full circle, \
                 give it same value as First Angle)")
         obj.addProperty("App::PropertyAngle","LastAngle",
-                        "Draft", _tip)
+                        "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "Radius of the circle")
         obj.addProperty("App::PropertyLength", "Radius",
-                        "Draft", _tip)
+                        "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "Create a face")
         obj.addProperty("App::PropertyBool", "MakeFace",
-                        "Draft", _tip)
+                        "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "The area of this object")
         obj.addProperty("App::PropertyArea", "Area",
-                        "Draft", _tip)
+                        "Draft", _tip, locked=True)
 
         obj.MakeFace = params.get_param("MakeFaceMode")
 

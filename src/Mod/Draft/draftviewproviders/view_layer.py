@@ -67,7 +67,8 @@ class ViewProviderLayer:
             vobj.addProperty("App::PropertyBool",
                              "OverrideLineColorChildren",
                              "Layer",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.OverrideLineColorChildren = True
 
         if "OverrideShapeAppearanceChildren" not in properties:
@@ -78,7 +79,8 @@ class ViewProviderLayer:
             vobj.addProperty("App::PropertyBool",
                              "OverrideShapeAppearanceChildren",
                              "Layer",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.OverrideShapeAppearanceChildren = True
 
         if "UsePrintColor" not in properties:
@@ -89,7 +91,8 @@ class ViewProviderLayer:
             vobj.addProperty("App::PropertyBool",
                              "UsePrintColor",
                              "Print",
-                             _tip)
+                             _tip,
+                             locked=True)
 
     def set_visual_properties(self, vobj, properties):
         """Set visual properties only if they don't already exist."""
@@ -100,7 +103,8 @@ class ViewProviderLayer:
             vobj.addProperty("App::PropertyColor",
                              "LineColor",
                              "Layer",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.LineColor = params.get_param_view("DefaultShapeLineColor") | 0x000000FF
 
         if "ShapeColor" not in properties:
@@ -111,7 +115,8 @@ class ViewProviderLayer:
                              "ShapeColor",
                              "Layer",
                              _tip,
-                             4)  # Hidden
+                             4,
+                             locked=True)  # Hidden
             vobj.ShapeColor = params.get_param_view("DefaultShapeColor") | 0x000000FF
 
         if "ShapeAppearance" not in properties:
@@ -121,7 +126,8 @@ class ViewProviderLayer:
             vobj.addProperty("App::PropertyMaterialList",
                              "ShapeAppearance",
                              "Layer",
-                             _tip)
+                             _tip,
+                             locked=True)
             material = App.Material()
             material.DiffuseColor = params.get_param_view("DefaultShapeColor") | 0x000000FF
             vobj.ShapeAppearance = (material, )
@@ -133,7 +139,8 @@ class ViewProviderLayer:
             vobj.addProperty("App::PropertyFloat",
                              "LineWidth",
                              "Layer",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.LineWidth = params.get_param_view("DefaultShapeLineWidth")
 
         if "DrawStyle" not in properties:
@@ -143,7 +150,8 @@ class ViewProviderLayer:
             vobj.addProperty("App::PropertyEnumeration",
                              "DrawStyle",
                              "Layer",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.DrawStyle = utils.DRAW_STYLES
             vobj.DrawStyle = params.get_param("DefaultDrawStyle")
 
@@ -154,7 +162,8 @@ class ViewProviderLayer:
             vobj.addProperty("App::PropertyPercent",
                              "Transparency",
                              "Layer",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.Transparency = params.get_param_view("DefaultShapeTransparency")
 
         if "LinePrintColor" not in properties:
@@ -165,7 +174,8 @@ class ViewProviderLayer:
             vobj.addProperty("App::PropertyColor",
                              "LinePrintColor",
                              "Print",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.LinePrintColor = params.get_param("DefaultPrintColor")
 
     def getIcon(self):
