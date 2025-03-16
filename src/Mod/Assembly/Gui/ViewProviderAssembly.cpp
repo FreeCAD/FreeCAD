@@ -642,7 +642,7 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
                     continue;
                 }
                 if (onlySolids
-                    && !(obj->isDerivedFrom<App::Part>() || obj->isDerivedFrom<Part::Feature>())) {
+                    && !(obj->isDerivedFrom<App::Part>() || obj->isDerivedFrom<Part::Feature>() || obj->isDerivedFrom<App::Link>())) {
                     continue;
                 }
                 App::DocumentObject* part =
