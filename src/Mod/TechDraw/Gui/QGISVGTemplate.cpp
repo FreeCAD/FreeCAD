@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <QDomDocument>
 # include <QFile>
+# include <QFontMetrics>
 # include <QGraphicsColorizeEffect>
 # include <QGraphicsEffect>
 # include <QGraphicsSvgItem>
@@ -47,17 +48,85 @@
 #include "Rez.h"
 #include "TemplateTextField.h"
 #include "ZVALUE.h"
+#include "DrawGuiUtil.h"
+
+
+
+namespace {
+    QFont getFont(QDomElement& elem)
+    {
+        if(elem.hasAttribute(QStringLiteral("font-family"))) {
+            return elem.attribute(QStringLiteral("font-family"));
+        }
+        QDomElement parent = elem.parentNode().toElement();
+        // Check if has parent
+        if(!parent.isNull()) {
+            // Traverse up and check if parent node has attribute
+            return getFont(parent);
+        }
+        // No attribute and no parent nodes left? Defaulting:
+        return QFont(QStringLiteral("sans"));
+    }
+    
+    std::vector<QDomElement> getFCElements(QDomDocument& doc) {
+        QDomNodeList textElements = doc.elementsByTagName(QStringLiteral("text"));
+        std::vector<QDomElement> filteredTextElements;
+        filteredTextElements.reserve(textElements.size());
+        for(int i = 0; i < textElements.size(); i++) {
+            QDomElement textElement = textElements.at(i).toElement();
+            if(textElement.hasAttribute(QStringLiteral(FREECAD_ATTR_EDITABLE))) {
+                filteredTextElements.push_back(textElement);
+            }
+        }
+        return filteredTextElements;
+    }
+
+    void applyWorkaround(QByteArray& svgCode)
+    {
+        QDomDocument doc;
+        doc.setContent(svgCode);
+
+        // Example <text font-size="12px"><tspan font-size"12px">sadasd</tspan></text>
+        // QSvgRenderer::boundsOnElement calculates the bounds of the text element using text width of the `tspan`
+        // but faultly the text height of the `text` element that might have another font size. The width
+        // of a `tspan will also always be one character too wide.
+        // Workaround: apply the font-size of the `tspan` to its parent `text` and remove `tspan` completely
+        std::vector<QDomElement> textElements = getFCElements(doc);
+        for(QDomElement& textElement : textElements) {
+            QDomElement tspan = textElement.firstChildElement(QStringLiteral("tspan"));
+            if(tspan.isNull()) {
+                continue;
+            }
+
+            if(tspan.hasAttribute(QStringLiteral("font-size"))) {
+                QString fontSize = tspan.attribute(QStringLiteral("font-size"));
+                textElement.setAttribute(QStringLiteral("font-size"), fontSize);
+            }
+            if(tspan.hasAttribute(QStringLiteral("x"))) {
+                QString x = tspan.attribute(QStringLiteral("x"));
+                textElement.setAttribute(QStringLiteral("x"), x);
+            }
+            if(tspan.hasAttribute(QStringLiteral("y"))) {
+                QString y = tspan.attribute(QStringLiteral("y"));
+                textElement.setAttribute(QStringLiteral("y"), y);
+            }
+
+            // Delete tspan, but keep tspan content
+            textElement.replaceChild(tspan.firstChild(), tspan);
+        }
+
+        svgCode = doc.toByteArray();
+    }
+}  // anonymous namespace
 
 
 using namespace TechDrawGui;
 using namespace TechDraw;
 
-QGISVGTemplate::QGISVGTemplate(QGSPage* scene) : QGITemplate(scene), firstTime(true)
+QGISVGTemplate::QGISVGTemplate(QGSPage* scene) : QGITemplate(scene),
+    m_svgItem(new QGraphicsSvgItem(this)),
+    m_svgRender(new QSvgRenderer())
 {
-
-    m_svgItem = new QGraphicsSvgItem(this);
-    m_svgRender = new QSvgRenderer();
-
     m_svgItem->setSharedRenderer(m_svgRender);
 
     m_svgItem->setFlags(QGraphicsItem::ItemClipsToShape);
@@ -73,23 +142,20 @@ QGISVGTemplate::~QGISVGTemplate() { delete m_svgRender; }
 
 void QGISVGTemplate::openFile(const QFile& file) { Q_UNUSED(file); }
 
-void QGISVGTemplate::load(const QByteArray& svgCode)
+void QGISVGTemplate::load(QByteArray svgCode)
 {
+    applyWorkaround(svgCode);
     m_svgRender->load(svgCode);
 
     QSize size = m_svgRender->defaultSize();
     m_svgItem->setSharedRenderer(m_svgRender);
 
-    if (firstTime) {
-        createClickHandles();
-        firstTime = false;
-    }
+    createClickHandles();
 
     //convert from pixels or mm or inches in svg file to mm page size
     TechDraw::DrawSVGTemplate* tmplte = getSVGTemplate();
-    double xaspect, yaspect;
-    xaspect = tmplte->getWidth() / static_cast<double>(size.width());
-    yaspect = tmplte->getHeight() / static_cast<double>(size.height());
+    double xaspect = tmplte->getWidth() / static_cast<double>(size.width());
+    double yaspect = tmplte->getHeight() / static_cast<double>(size.height());
 
     QTransform qtrans;
     qtrans.translate(0.0, Rez::guiX(-tmplte->getHeight()));
@@ -97,8 +163,8 @@ void QGISVGTemplate::load(const QByteArray& svgCode)
     m_svgItem->setTransform(qtrans);
 
     if (Preferences::lightOnDark()) {
-        QColor color = PreferencesGui::getAccessibleQColor(QColor(Qt::black));
-        QGraphicsColorizeEffect* colorizeEffect = new QGraphicsColorizeEffect();
+        auto color = PreferencesGui::getAccessibleQColor(QColor(Qt::black));
+        auto* colorizeEffect = new QGraphicsColorizeEffect();
         colorizeEffect->setColor(color);
         m_svgItem->setGraphicsEffect(colorizeEffect);
     }
@@ -115,9 +181,8 @@ TechDraw::DrawSVGTemplate* QGISVGTemplate::getSVGTemplate()
     if (pageTemplate && pageTemplate->isDerivedFrom<TechDraw::DrawSVGTemplate>()) {
         return static_cast<TechDraw::DrawSVGTemplate*>(pageTemplate);
     }
-    else {
-        return nullptr;
-    }
+
+    return nullptr;
 }
 
 void QGISVGTemplate::draw()
@@ -132,12 +197,30 @@ void QGISVGTemplate::draw()
 
 void QGISVGTemplate::updateView(bool update)
 {
-    Q_UNUSED(update);
+    if (update) {
+        clearClickHandles();
+        createClickHandles();
+    }
     draw();
+}
+
+void QGISVGTemplate::clearClickHandles()
+{
+    prepareGeometryChange();
+    constexpr int TemplateTextFieldType{QGraphicsItem::UserType + 160};
+    auto templateChildren = childItems();
+    for (auto& child : templateChildren) {
+        if (child->type() == TemplateTextFieldType) {
+            child->hide();
+            scene()->removeItem(child);
+            delete child;
+        }
+     }
 }
 
 void QGISVGTemplate::createClickHandles()
 {
+    prepareGeometryChange();
     TechDraw::DrawSVGTemplate* svgTemplate = getSVGTemplate();
     if (svgTemplate->isRestoring()) {
         //the embedded file is not available yet, so just return
@@ -167,128 +250,75 @@ void QGISVGTemplate::createClickHandles()
 
     //TODO: Find location of special fields (first/third angle) and make graphics items for them
 
-    QColor editClickBoxColor = PreferencesGui::templateClickBoxColor();
-
     auto textMap = svgTemplate->EditableTexts.getValues();
 
     TechDraw::XMLQuery query(templateDocument);
 
-    // XPath query to select all <text> nodes with "freecad:editable" attribute
-    // XPath query to select all <tspan> nodes whose <text> parent
-    // has "freecad:editable" attribute
-    query.processItems(QStringLiteral("declare default element namespace \"" SVG_NS_URI "\"; "
-                                         "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-                                         "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
-                       [&](QDomElement& tspan) -> bool {
-        QString fontSizeString = tspan.attribute(QStringLiteral("font-size"));
-        QDomElement textElement = tspan.parentNode().toElement();
-        QString textAnchorString = textElement.attribute(QStringLiteral("text-anchor"));
-        QString name = textElement.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
 
-        double x = Rez::guiX(
-            textElement.attribute(QStringLiteral("x"), QStringLiteral("0.0")).toDouble());
-        double y = Rez::guiX(
-            textElement.attribute(QStringLiteral("y"), QStringLiteral("0.0")).toDouble());
-        if (name.isEmpty()) {
-            Base::Console().Warning(
-                "QGISVGTemplate::createClickHandles - no name for editable text at %f, %f\n", x, y);
-            return true;
+    std::vector<QDomElement> textElements = getFCElements(templateDocument);
+    for(QDomElement& textElement : textElements) {
+        // Get elements bounding box of text
+        QString id = textElement.attribute(QStringLiteral("id"));
+        QRectF textRect = m_svgRender->boundsOnElement(id);
+        
+        // Get tight bounding box of text
+        QDomElement tspan = textElement.firstChildElement();
+        QFont font = getFont(tspan);
+        QFontMetricsF fm(font);
+        double factor = textRect.height() / fm.height();  // Correcting font metrics and SVG text due to different font sizes
+        QRectF tightTextRect = textRect.adjusted(0.0, 0.0, 0.0, -fm.descent() * factor);
+        tightTextRect.setTop(tightTextRect.bottom() - fm.capHeight() * factor);
+
+        // Ensure min size; if no text content, tightTextRect will have no size
+        // and factor will also be incorrect
+
+        // Default font size guess. Getting attribute seems complicated, as it can have different units
+        // and both be in style attribute and native attribute
+        font.setPointSizeF(1.5);
+        fm = QFontMetricsF(font);
+        
+        if (tightTextRect.height() < fm.capHeight()) {
+            tightTextRect.setTop(tightTextRect.bottom() - fm.capHeight());
         }
-        std::string editableNameString = textMap[name.toStdString()];
-
-        // default box size
-        double textHeight{0};
-        QString style = textElement.attribute(QStringLiteral("style"));
-        if (!style.isEmpty()) {
-            // get text attributes from style element
-            textHeight = getFontSizeFromStyle(style);
-        }
-
-        if (textHeight == 0) {
-            textHeight = getFontSizeFromElement(fontSizeString);
+        double charWidth = fm.horizontalAdvance(QLatin1Char(' '));
+        if(tightTextRect.width() < charWidth) {
+            tightTextRect.setWidth(charWidth);
         }
 
-        if (textHeight == 0.0) {
-            textHeight =  Preferences::labelFontSizeMM() * 3.78;  // 3.78 = px/mm
-        }
+        // Transform tight bounding box of text
+        QPolygonF tightTextPoly(tightTextRect);  // Polygon because rect cannot be rotated
+        QTransform SVGTransform = m_svgRender->transformForElement(id);
+        tightTextPoly = SVGTransform.map(tightTextPoly);  // SVGTransform always before templateTransform
+        QTransform templateTransform;
+        templateTransform.translate(0.0, Rez::guiX(-getSVGTemplate()->getHeight()));
+        templateTransform.scale(Rez::getRezFactor(), Rez::getRezFactor());
+        tightTextPoly = templateTransform.map(tightTextPoly);
 
-        QGraphicsTextItem textItemForLength;
-        QFont fontForLength(Preferences::labelFontQString());
-        fontForLength.setPixelSize(textHeight);
-        textItemForLength.setFont(fontForLength);
-        textItemForLength.setPlainText(QString::fromStdString(editableNameString));
-        auto brect = textItemForLength.boundingRect();
-        auto newLength = brect.width();
-
-        double charWidth = newLength / editableNameString.length();
-        if (textAnchorString == QStringLiteral("middle")) {
-            x = x - editableNameString.length() * charWidth / 2;
-        }
-
-        double textLength = editableNameString.length() * charWidth;
-        textLength = std::max(charWidth, textLength);
-
+        QString name = textElement.attribute(QStringLiteral(FREECAD_ATTR_EDITABLE));
         auto item(new TemplateTextField(this, svgTemplate, name.toStdString()));
         auto autoValue = svgTemplate->getAutofillByEditableName(name);
         item->setAutofill(autoValue);
 
-        double pad = 1.0;
-        double top = Rez::guiX(-svgTemplate->getHeight()) + y - textHeight - pad;
-        double bottom = top + textHeight + 2.0 * pad;
-        double left = x - pad;
-        item->setRectangle(QRectF(left, top,
-                      newLength + 2.0 * pad, textHeight + 2.0 * pad));
-        item->setLine(QPointF( left, bottom),
-                      QPointF(left + newLength + 2.0 * pad, bottom));
-        item->setLineColor(editClickBoxColor);
+        QMarginsF padding(
+            0.0,
+            0.15 * tightTextRect.height(),
+            0.0,
+            0.2 * tightTextRect.height()
+        );
+        QRectF clickrect = tightTextRect.marginsAdded(padding);
+        QPolygonF clickpoly = SVGTransform.map(clickrect);
+        clickpoly = templateTransform.map(clickpoly);
+        item->setRectangle(clickpoly.boundingRect());  // TODO: templateTextField doesn't support polygon yet
 
+        QPointF bottomLeft = clickpoly.at(3);
+        QPointF bottomRight = clickpoly.at(2);
+        item->setLine(bottomLeft, bottomRight);
+        item->setLineColor(PreferencesGui::templateClickBoxColor());
         item->setZValue(ZVALUE::SVGTEMPLATE + 1);
+
         addToGroup(item);
-
         textFields.push_back(item);
-        return true;
-    });
+    }
 }
-
-//! find the font-size hidden in a style element
-double QGISVGTemplate::getFontSizeFromStyle(QString style)
-{
-    if (style.isEmpty()) {
-        return 0.0;
-    }
-
-    // get text attributes from style element
-    QRegularExpression rxFontSize(QStringLiteral("font-size:([0-9]*.?[0-9]*)px;"));
-    QRegularExpressionMatch match;
-
-    int pos{0};
-    pos = style.indexOf(rxFontSize, 0, &match);
-    if (pos != -1) {
-        return Rez::guiX(match.captured(1).toDouble());
-    }
-
-    return 0.0;
-}
-
-//! find the font-size hidden in a style element
-double QGISVGTemplate::getFontSizeFromElement(QString element)
-{
-    if (element.isEmpty()) {
-        return 0.0;
-    }
-
-    //                                               font-size="3.95px"
-    QRegularExpression rxFontSize(QStringLiteral("([0-9]*.?[0-9]*)px"));
-    QRegularExpressionMatch match;
-
-    int pos{0};
-    pos = element.indexOf(rxFontSize, 0, &match);
-    if (pos != -1) {
-        return Rez::guiX(match.captured(1).toDouble());
-    }
-
-    return 0.0;
-}
-
 
 #include <Mod/TechDraw/Gui/moc_QGISVGTemplate.cpp>
