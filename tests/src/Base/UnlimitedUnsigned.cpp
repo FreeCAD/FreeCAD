@@ -41,7 +41,7 @@ TEST(UnlimitedUnsigned, TestSubtraction1)
 {
     // Check subtraction and comparison with byte-sized number
     EXPECT_EQ(Base::UnlimitedUnsigned::fromString("6842357951")
-               - Base::UnlimitedUnsigned::fromString("6842357948"),
+                  - Base::UnlimitedUnsigned::fromString("6842357948"),
               3);
 }
 TEST(UnlimitedUnsigned, TestSubtraction2)
