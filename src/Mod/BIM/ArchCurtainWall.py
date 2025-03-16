@@ -377,18 +377,17 @@ class CurtainWall(ArchComponent.Component):
         if obj.PanelThickness.Value:
             for face in baseshape.Faces:
                 verts = [v.Point for v in face.OuterWire.OrderedVertexes]
-                if len(verts) == 4:
-                    if DraftGeomUtils.isPlanar(verts):
-                        panel = self.makePanel(verts,obj.PanelThickness.Value)
-                        panels.append(panel)
-                    else:
-                        verts1 = [verts[0],verts[1],verts[2]]
-                        panel = self.makePanel(verts1,obj.PanelThickness.Value)
-                        panels.append(panel)
-                        verts2 = [verts[0],verts[2],verts[3]]
-                        panel = self.makePanel(verts2,obj.PanelThickness.Value)
-                        panels.append(panel)
-                        dedges.append(Part.makeLine(verts[0],verts[2]))
+                if DraftGeomUtils.isPlanar(verts):
+                    panel = self.makePanel(verts,obj.PanelThickness.Value)
+                    panels.append(panel)
+                elif len(verts) == 4:
+                    verts1 = [verts[0],verts[1],verts[2]]
+                    panel = self.makePanel(verts1,obj.PanelThickness.Value)
+                    panels.append(panel)
+                    verts2 = [verts[0],verts[2],verts[3]]
+                    panel = self.makePanel(verts2,obj.PanelThickness.Value)
+                    panels.append(panel)
+                    dedges.append(Part.makeLine(verts[0],verts[2]))
 
         # construct diagonal mullions
         dmullions = []
