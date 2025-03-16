@@ -74,36 +74,36 @@ class _Panel(ArchComponent.Component):
 
         pl = obj.PropertiesList
         if not "Length" in pl:
-            obj.addProperty("App::PropertyLength","Length","Panel",   QT_TRANSLATE_NOOP("App::Property","The length of this element, if not based on a profile"))
+            obj.addProperty("App::PropertyLength","Length","Panel",   QT_TRANSLATE_NOOP("App::Property","The length of this element, if not based on a profile"), locked=True)
         if not "Width" in pl:
-            obj.addProperty("App::PropertyLength","Width","Panel",    QT_TRANSLATE_NOOP("App::Property","The width of this element, if not based on a profile"))
+            obj.addProperty("App::PropertyLength","Width","Panel",    QT_TRANSLATE_NOOP("App::Property","The width of this element, if not based on a profile"), locked=True)
         if not "Thickness" in pl:
-            obj.addProperty("App::PropertyLength","Thickness","Panel",QT_TRANSLATE_NOOP("App::Property","The thickness or extrusion depth of this element"))
+            obj.addProperty("App::PropertyLength","Thickness","Panel",QT_TRANSLATE_NOOP("App::Property","The thickness or extrusion depth of this element"), locked=True)
         if not "Sheets" in pl:
-            obj.addProperty("App::PropertyInteger","Sheets","Panel",  QT_TRANSLATE_NOOP("App::Property","The number of sheets to use"))
+            obj.addProperty("App::PropertyInteger","Sheets","Panel",  QT_TRANSLATE_NOOP("App::Property","The number of sheets to use"), locked=True)
             obj.Sheets = 1
         if not "Offset" in pl:
-            obj.addProperty("App::PropertyDistance","Offset","Panel",   QT_TRANSLATE_NOOP("App::Property","The offset between this panel and its baseline"))
+            obj.addProperty("App::PropertyDistance","Offset","Panel",   QT_TRANSLATE_NOOP("App::Property","The offset between this panel and its baseline"), locked=True)
         if not "WaveLength" in pl:
-            obj.addProperty("App::PropertyLength","WaveLength","Panel", QT_TRANSLATE_NOOP("App::Property","The length of waves for corrugated elements"))
+            obj.addProperty("App::PropertyLength","WaveLength","Panel", QT_TRANSLATE_NOOP("App::Property","The length of waves for corrugated elements"), locked=True)
         if not "WaveHeight" in pl:
-            obj.addProperty("App::PropertyLength","WaveHeight","Panel", QT_TRANSLATE_NOOP("App::Property","The height of waves for corrugated elements"))
+            obj.addProperty("App::PropertyLength","WaveHeight","Panel", QT_TRANSLATE_NOOP("App::Property","The height of waves for corrugated elements"), locked=True)
         if not "WaveOffset" in pl:
-            obj.addProperty("App::PropertyDistance","WaveOffset","Panel", QT_TRANSLATE_NOOP("App::Property","The horizontal offset of waves for corrugated elements"))
+            obj.addProperty("App::PropertyDistance","WaveOffset","Panel", QT_TRANSLATE_NOOP("App::Property","The horizontal offset of waves for corrugated elements"), locked=True)
         if not "WaveDirection" in pl:
-            obj.addProperty("App::PropertyAngle","WaveDirection","Panel", QT_TRANSLATE_NOOP("App::Property","The direction of waves for corrugated elements"))
+            obj.addProperty("App::PropertyAngle","WaveDirection","Panel", QT_TRANSLATE_NOOP("App::Property","The direction of waves for corrugated elements"), locked=True)
         if not "WaveType" in pl:
-            obj.addProperty("App::PropertyEnumeration","WaveType","Panel", QT_TRANSLATE_NOOP("App::Property","The type of waves for corrugated elements"))
+            obj.addProperty("App::PropertyEnumeration","WaveType","Panel", QT_TRANSLATE_NOOP("App::Property","The type of waves for corrugated elements"), locked=True)
             obj.WaveType = ["Curved","Trapezoidal","Spikes"]
         if not "WaveBottom" in pl:
-            obj.addProperty("App::PropertyBool","WaveBottom","Panel", QT_TRANSLATE_NOOP("App::Property","If the wave also affects the bottom side or not"))
+            obj.addProperty("App::PropertyBool","WaveBottom","Panel", QT_TRANSLATE_NOOP("App::Property","If the wave also affects the bottom side or not"), locked=True)
         if not "Area" in pl:
-            obj.addProperty("App::PropertyArea","Area","Panel",       QT_TRANSLATE_NOOP("App::Property","The area of this panel"))
+            obj.addProperty("App::PropertyArea","Area","Panel",       QT_TRANSLATE_NOOP("App::Property","The area of this panel"), locked=True)
         if not "FaceMaker" in pl:
-            obj.addProperty("App::PropertyEnumeration","FaceMaker","Panel",QT_TRANSLATE_NOOP("App::Property","The facemaker type to use to build the profile of this object"))
+            obj.addProperty("App::PropertyEnumeration","FaceMaker","Panel",QT_TRANSLATE_NOOP("App::Property","The facemaker type to use to build the profile of this object"), locked=True)
             obj.FaceMaker = ["None","Simple","Cheese","Bullseye"]
         if not "Normal" in pl:
-            obj.addProperty("App::PropertyVector","Normal","Panel",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
+            obj.addProperty("App::PropertyVector","Normal","Panel",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"), locked=True)
         self.Type = "Panel"
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
@@ -505,27 +505,27 @@ class PanelCut(Draft.DraftObject):
 
         pl = obj.PropertiesList
         if not "Source" in pl:
-            obj.addProperty("App::PropertyLink","Source","PanelCut",QT_TRANSLATE_NOOP("App::Property","The linked object"))
+            obj.addProperty("App::PropertyLink","Source","PanelCut",QT_TRANSLATE_NOOP("App::Property","The linked object"), locked=True)
         if not "TagText" in pl:
-            obj.addProperty("App::PropertyString","TagText","PanelCut",QT_TRANSLATE_NOOP("App::Property","The text to display. Can be %tag%, %label% or %description% to display the panel tag or label"))
+            obj.addProperty("App::PropertyString","TagText","PanelCut",QT_TRANSLATE_NOOP("App::Property","The text to display. Can be %tag%, %label% or %description% to display the panel tag or label"), locked=True)
             obj.TagText = "%tag%"
         if not "TagSize" in pl:
-            obj.addProperty("App::PropertyLength","TagSize","PanelCut",QT_TRANSLATE_NOOP("App::Property","The size of the tag text"))
+            obj.addProperty("App::PropertyLength","TagSize","PanelCut",QT_TRANSLATE_NOOP("App::Property","The size of the tag text"), locked=True)
             obj.TagSize = 10
         if not "TagPosition" in pl:
-            obj.addProperty("App::PropertyVector","TagPosition","PanelCut",QT_TRANSLATE_NOOP("App::Property","The position of the tag text. Keep (0,0,0) for center position"))
+            obj.addProperty("App::PropertyVector","TagPosition","PanelCut",QT_TRANSLATE_NOOP("App::Property","The position of the tag text. Keep (0,0,0) for center position"), locked=True)
         if not "TagRotation" in pl:
-            obj.addProperty("App::PropertyAngle","TagRotation","PanelCut",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"))
+            obj.addProperty("App::PropertyAngle","TagRotation","PanelCut",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"), locked=True)
         if not "FontFile" in pl:
-            obj.addProperty("App::PropertyFile","FontFile","PanelCut",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
+            obj.addProperty("App::PropertyFile","FontFile","PanelCut",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"), locked=True)
             obj.FontFile = params.get_param("FontFile")
         if not "MakeFace" in pl:
-            obj.addProperty("App::PropertyBool","MakeFace","PanelCut",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
+            obj.addProperty("App::PropertyBool","MakeFace","PanelCut",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."), locked=True)
         if not "AllowedAngles" in pl:
-            obj.addProperty("App::PropertyFloatList","AllowedAngles","PanelCut",QT_TRANSLATE_NOOP("App::Property","The allowed angles this object can be rotated to when placed on sheets"))
+            obj.addProperty("App::PropertyFloatList","AllowedAngles","PanelCut",QT_TRANSLATE_NOOP("App::Property","The allowed angles this object can be rotated to when placed on sheets"), locked=True)
         self.Type = "PanelCut"
         if not "CutOffset" in pl:
-            obj.addProperty("App::PropertyDistance","CutOffset","PanelCut",QT_TRANSLATE_NOOP("App::Property","An offset value to move the cut plane from the center point"))
+            obj.addProperty("App::PropertyDistance","CutOffset","PanelCut",QT_TRANSLATE_NOOP("App::Property","An offset value to move the cut plane from the center point"), locked=True)
 
     def onDocumentRestored(self,obj):
 
@@ -698,9 +698,9 @@ class ViewProviderPanelCut(Draft.ViewProviderDraft):
 
         pl = vobj.PropertiesList
         if not "Margin" in pl:
-            vobj.addProperty("App::PropertyLength","Margin","Arch",QT_TRANSLATE_NOOP("App::Property","A margin inside the boundary"))
+            vobj.addProperty("App::PropertyLength","Margin","Arch",QT_TRANSLATE_NOOP("App::Property","A margin inside the boundary"), locked=True)
         if not "ShowMargin" in pl:
-            vobj.addProperty("App::PropertyBool","ShowMargin","Arch",QT_TRANSLATE_NOOP("App::Property","Turns the display of the margin on/off"))
+            vobj.addProperty("App::PropertyBool","ShowMargin","Arch",QT_TRANSLATE_NOOP("App::Property","Turns the display of the margin on/off"), locked=True)
 
     def onDocumentRestored(self,vobj):
 
@@ -786,37 +786,37 @@ class PanelSheet(Draft.DraftObject):
 
         pl = obj.PropertiesList
         if not "Group" in pl:
-            obj.addProperty("App::PropertyLinkList","Group","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The linked Panel cuts"))
+            obj.addProperty("App::PropertyLinkList","Group","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The linked Panel cuts"), locked=True)
         if not "TagText" in pl:
-            obj.addProperty("App::PropertyString","TagText","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The tag text to display"))
+            obj.addProperty("App::PropertyString","TagText","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The tag text to display"), locked=True)
         if not "TagSize" in pl:
-            obj.addProperty("App::PropertyLength","TagSize","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The size of the tag text"))
+            obj.addProperty("App::PropertyLength","TagSize","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The size of the tag text"), locked=True)
             obj.TagSize = 10
         if not "TagPosition" in pl:
-            obj.addProperty("App::PropertyVector","TagPosition","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The position of the tag text. Keep (0,0,0) for center position"))
+            obj.addProperty("App::PropertyVector","TagPosition","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The position of the tag text. Keep (0,0,0) for center position"), locked=True)
         if not "TagRotation" in pl:
-            obj.addProperty("App::PropertyAngle","TagRotation","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"))
+            obj.addProperty("App::PropertyAngle","TagRotation","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"), locked=True)
         if not "FontFile" in pl:
-            obj.addProperty("App::PropertyFile","FontFile","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
+            obj.addProperty("App::PropertyFile","FontFile","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"), locked=True)
             obj.FontFile = params.get_param("FontFile")
         if not "Width" in pl:
-            obj.addProperty("App::PropertyLength","Width","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The width of the sheet"))
+            obj.addProperty("App::PropertyLength","Width","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The width of the sheet"), locked=True)
             obj.Width = params.get_param_arch("PanelLength")
         if not "Height" in pl:
-            obj.addProperty("App::PropertyLength","Height","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The height of the sheet"))
+            obj.addProperty("App::PropertyLength","Height","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The height of the sheet"), locked=True)
             obj.Height = params.get_param_arch("PanelWidth")
         if not "FillRatio" in pl:
-            obj.addProperty("App::PropertyPercent","FillRatio","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The fill ratio of this sheet"))
+            obj.addProperty("App::PropertyPercent","FillRatio","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The fill ratio of this sheet"), locked=True)
             obj.setEditorMode("FillRatio",2)
         if not "MakeFace" in pl:
-            obj.addProperty("App::PropertyBool","MakeFace","PanelSheet",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
+            obj.addProperty("App::PropertyBool","MakeFace","PanelSheet",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."), locked=True)
         if not "GrainDirection" in pl:
-            obj.addProperty("App::PropertyAngle","GrainDirection","PanelSheet",QT_TRANSLATE_NOOP("App::Property","Specifies an angle for the wood grain (Clockwise, 0 is North)"))
+            obj.addProperty("App::PropertyAngle","GrainDirection","PanelSheet",QT_TRANSLATE_NOOP("App::Property","Specifies an angle for the wood grain (Clockwise, 0 is North)"), locked=True)
         if not "Scale" in pl:
-            obj.addProperty("App::PropertyFloat","Scale","PanelSheet", QT_TRANSLATE_NOOP("App::Property","Specifies the scale applied to each panel view."))
+            obj.addProperty("App::PropertyFloat","Scale","PanelSheet", QT_TRANSLATE_NOOP("App::Property","Specifies the scale applied to each panel view."), locked=True)
             obj.Scale = 1.0
         if not "Rotations" in pl:
-            obj.addProperty("App::PropertyFloatList","Rotations","PanelSheet", QT_TRANSLATE_NOOP("App::Property","A list of possible rotations for the nester"))
+            obj.addProperty("App::PropertyFloatList","Rotations","PanelSheet", QT_TRANSLATE_NOOP("App::Property","A list of possible rotations for the nester"), locked=True)
         self.Type = "PanelSheet"
 
     def onDocumentRestored(self, obj):
@@ -961,11 +961,11 @@ class ViewProviderPanelSheet(Draft.ViewProviderDraft):
 
         pl = vobj.PropertiesList
         if not "Margin" in pl:
-            vobj.addProperty("App::PropertyLength","Margin","PanelSheet",QT_TRANSLATE_NOOP("App::Property","A margin inside the boundary"))
+            vobj.addProperty("App::PropertyLength","Margin","PanelSheet",QT_TRANSLATE_NOOP("App::Property","A margin inside the boundary"), locked=True)
         if not "ShowMargin" in pl:
-            vobj.addProperty("App::PropertyBool","ShowMargin","PanelSheet",QT_TRANSLATE_NOOP("App::Property","Turns the display of the margin on/off"))
+            vobj.addProperty("App::PropertyBool","ShowMargin","PanelSheet",QT_TRANSLATE_NOOP("App::Property","Turns the display of the margin on/off"), locked=True)
         if not "ShowGrain" in pl:
-            vobj.addProperty("App::PropertyBool","ShowGrain","PanelSheet",QT_TRANSLATE_NOOP("App::Property","Turns the display of the wood grain texture on/off"))
+            vobj.addProperty("App::PropertyBool","ShowGrain","PanelSheet",QT_TRANSLATE_NOOP("App::Property","Turns the display of the wood grain texture on/off"), locked=True)
 
     def onDocumentRestored(self,vobj):
 

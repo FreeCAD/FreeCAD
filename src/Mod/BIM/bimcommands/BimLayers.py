@@ -171,7 +171,7 @@ class BIM_Layers:
                     obj = Draft.make_layer(self.model.item(row, 1).text())
                     # By default BIM layers should not swallow their children otherwise
                     # they will disappear from the tree root
-                    obj.ViewObject.addProperty("App::PropertyBool", "HideChildren", "Layer")
+                    obj.ViewObject.addProperty("App::PropertyBool", "HideChildren", "Layer", locked=True)
                     obj.ViewObject.HideChildren = True
                 else:
                     from nativeifc import ifc_tools
