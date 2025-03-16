@@ -842,110 +842,6 @@ void StdCmdUnitsCalculator::activated(int iMsg)
 }
 
 //===========================================================================
-// StdCmdUserEditMode
-//===========================================================================
-class StdCmdUserEditMode : public Gui::Command
-{
-public:
-    StdCmdUserEditMode();
-    ~StdCmdUserEditMode() override = default;
-    void languageChange() override;
-    const char* className() const override {return "StdCmdUserEditMode";}
-    void updateIcon(int mode);
-protected:
-    void activated(int iMsg) override;
-    bool isActive() override;
-    Gui::Action * createAction() override;
-};
-
-StdCmdUserEditMode::StdCmdUserEditMode()
-  : Command("Std_UserEditMode")
-{
-    sGroup        = "Edit";
-    sMenuText     = QT_TR_NOOP("Edit &mode");
-    sToolTipText  = QT_TR_NOOP("Defines behavior when editing an object from tree");
-    sStatusTip    = QT_TR_NOOP("Defines behavior when editing an object from tree");
-    sWhatsThis    = "Std_UserEditMode";
-    sPixmap       = "Std_UserEditModeDefault";
-    eType         = ForEdit;
-
-    this->getGuiApplication()->signalUserEditModeChanged.connect([this](int mode) {
-        this->updateIcon(mode);
-    });
-}
-
-Gui::Action * StdCmdUserEditMode::createAction()
-{
-    auto pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
-    pcAction->setDropDownMenu(true);
-    pcAction->setIsMode(true);
-    applyCommandData(this->className(), pcAction);
-
-    for (auto const &uem : Gui::Application::Instance->listUserEditModes()) {
-        QAction* act = pcAction->addAction(QString());
-        auto modeName = QString::fromStdString(uem.second.first).remove(QChar::fromLatin1('&'));
-        act->setCheckable(true);
-        act->setIcon(BitmapFactory().iconFromTheme(qPrintable(QStringLiteral("Std_UserEditMode")+modeName)));
-        act->setObjectName(QStringLiteral("Std_UserEditMode")+modeName);
-        act->setWhatsThis(QString::fromLatin1(getWhatsThis()));
-        act->setToolTip(QString::fromStdString(uem.second.second));
-
-        if (uem.first == 0) {
-            pcAction->setIcon(act->icon());
-            act->setChecked(true);
-        }
-    }
-
-    _pcAction = pcAction;
-
-    int lastMode = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-        GetInt("UserEditMode", 0);
-    Gui::Application::Instance->setUserEditMode(lastMode);
-
-    languageChange();
-    return pcAction;
-}
-
-void StdCmdUserEditMode::languageChange()
-{
-    Command::languageChange();
-
-    if (!_pcAction)
-        return;
-    auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    for (int i = 0 ; i < a.count() ; i++) {
-        auto modeName = Gui::Application::Instance->getUserEditModeUIStrings(i);
-        a[i]->setText(QCoreApplication::translate(
-        "EditMode", modeName.first.c_str()));
-        a[i]->setToolTip(QCoreApplication::translate(
-        "EditMode", modeName.second.c_str()));
-    }
-}
-
-void StdCmdUserEditMode::updateIcon(int mode)
-{
-    auto actionGroup = dynamic_cast<Gui::ActionGroup *>(_pcAction);
-    if (!actionGroup)
-        return;
-
-    actionGroup->setCheckedAction(mode);
-}
-
-void StdCmdUserEditMode::activated(int iMsg)
-{
-    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-            SetInt("UserEditMode", iMsg);
-    Gui::Application::Instance->setUserEditMode(iMsg);
-}
-
-bool StdCmdUserEditMode::isActive()
-{
-    return true;
-}
-
-//===========================================================================
 // Std_ReloadStylesheet
 //===========================================================================
 DEF_STD_CMD(StdCmdReloadStyleSheet)
@@ -1003,7 +899,6 @@ void CreateStdCommands()
     rcCmdMgr.addCommand(new StdCmdReportBug());
     rcCmdMgr.addCommand(new StdCmdTextDocument());
     rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
-    rcCmdMgr.addCommand(new StdCmdUserEditMode());
     rcCmdMgr.addCommand(new StdCmdReloadStyleSheet());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     //rcCmdMgr.addCommand(new StdCmdDescription());
