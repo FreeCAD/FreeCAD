@@ -565,7 +565,7 @@ void DlgMacroExecuteImp::onToolbarButtonClicked()
                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
                          ->GetBool("ShowWalkthroughMessage", true);
     if (showAgain) {
-        QMessageBox msgBox;
+        QMessageBox msgBox(this);
         QAbstractButton* doNotShowAgainButton =
             msgBox.addButton(tr("Do not show again"), QMessageBox::YesRole);
         msgBox.setText(tr("Guided Walkthrough"));

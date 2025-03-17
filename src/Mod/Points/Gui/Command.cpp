@@ -112,7 +112,7 @@ void CmdPointsImport::activated(int iMsg)
             auto center = bbox.GetCenter();
 
             if (!bbox.IsInBox(Base::Vector3d(0, 0, 0))) {
-                QMessageBox msgBox;
+                QMessageBox msgBox(Gui::getMainWindow());
                 msgBox.setIcon(QMessageBox::Question);
                 msgBox.setWindowTitle(QObject::tr("Points not at Origin"));
                 msgBox.setText(QObject::tr(
