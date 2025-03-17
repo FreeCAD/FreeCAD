@@ -285,6 +285,7 @@ private:
 };
 
 // clang-format off
+// NOLINTSTART(*-avoid-do-while)
 /// Property define
 #define _ADD_PROPERTY(_name,_prop_, _defaultval_) \
   do { \
@@ -398,6 +399,7 @@ template<> void _class_::init(void){\
   initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
   _class_::propertyData.parentPropertyData = _parentclass_::getPropertyDataPtr(); \
 }
+// NOLINTEND(*-avoid-do-while)
 // clang-format on
 
 } // namespace App
