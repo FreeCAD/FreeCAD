@@ -62,7 +62,6 @@ BuildRequires:  python3-devel
 BuildRequires:  python3-matplotlib
 BuildRequires:  python3-pivy
 BuildRequires:  boost-devel
-BuildRequires:  boost-python3-devel
 BuildRequires:  eigen3-devel
 BuildRequires:  qt6-qtsvg-devel
 BuildRequires:  qt6-qttools-static
@@ -88,6 +87,7 @@ BuildRequires:  zipios++-devel
 %if ! %{bundled_pycxx}
 BuildRequires:  python3-pycxx-devel
 %endif
+BuildRequires:  python3-pybind11
 BuildRequires:  libicu-devel
 BuildRequires:  vtk-devel
 BuildRequires:  openmpi-devel
@@ -194,6 +194,7 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DRESOURCEDIR=%{_datadir}/%{name} \
        -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
        -DFREECAD_USE_EXTERNAL_FMT=TRUE \
+       -DFREECAD_USE_PCL:BOOL=OFF \
        -DFREECAD_QT_VERSION:STRING=6 \
        -DSHIBOKEN_INCLUDE_DIR=%{_includedir}/shiboken6 \
        -DSHIBOKEN_LIBRARY=-lshiboken6.%{py_suffix} \
