@@ -65,7 +65,7 @@ class ViewProviderWire(ViewProviderDraft):
                              "EndArrow",
                              "Draft",
                              _tip,
-                             locked=True))
+                             locked=True)
             vobj.EndArrow = False
 
         if not hasattr(vobj, "ArrowSize"):
@@ -83,7 +83,7 @@ class ViewProviderWire(ViewProviderDraft):
                              "ArrowType",
                              "Draft",
                              _tip,
-                             locked=True))
+                             locked=True)
             vobj.ArrowType = utils.ARROW_TYPES
             vobj.ArrowType = utils.ARROW_TYPES[params.get_param("dimsymbol")]
 
