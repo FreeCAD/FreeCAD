@@ -41,6 +41,7 @@
 #include "ViewProviderDocumentObject.h"
 #include "MainWindow.h"
 
+#include <format>
 #include <limits>
 
 
@@ -217,7 +218,7 @@ static std::string formatSbXfBox3f(const SbXfBox3f& box)
     float maxx, maxy, maxz; //NOLINT
     maxpoint.getValue(maxx, maxy, maxz);
 
-    return fmt::format("Min: ({:.3},{:.3},{:.3}), Max: ({:.3},{:.3},{:.3})", minx, miny, minz, maxx, maxy, maxz);
+    return std::format("Min: ({:.3},{:.3},{:.3}), Max: ({:.3},{:.3},{:.3})", minx, miny, minz, maxx, maxy, maxz);
 }
 
 void SceneModel::setNode(QModelIndex index, SoNode* node)
@@ -233,7 +234,7 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
     this->setData(index.siblingAtColumn(static_cast<int>(Column::NAME)), QVariant(name));
 
     this->setData(index.siblingAtColumn(static_cast<int>(Column::MEMORY_ADDRESS)),
-        QVariant(QString::fromStdString(fmt::format("{}", (void*)node))));
+        QVariant(QString::fromStdString(std::format("{}", (void*)node))));
 
     auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     auto vp = view->getViewer()->getSoRenderManager()->getViewportRegion();
@@ -243,7 +244,7 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
     if(static_cast<bool>(node->isOfType(SoSwitch::getClassTypeId()))) {
         auto pcSwitch = static_cast<SoSwitch*>(node);
         auto value = pcSwitch->whichChild.getValue();
-        stream << fmt::format("Which: {} ({})", formatSoSwitchValue(value), value).c_str();
+        stream << std::format("Which: {} ({})", formatSoSwitchValue(value), value).c_str();
     } else if (static_cast<bool>(node->isOfType(SoSeparator::getClassTypeId()))) {
         auto pcSeparator = static_cast<SoSeparator*>(node);
 
@@ -262,11 +263,11 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
     } else if (static_cast<bool>(node->isOfType(SoDrawStyle::getClassTypeId()))) {
         auto pcDrawStyle = static_cast<SoDrawStyle*>(node);
         auto value = pcDrawStyle->style.getValue();
-        stream << fmt::format("Style: {} ({})", formatSoDrawStyleElement(value), value).c_str();
+        stream << std::format("Style: {} ({})", formatSoDrawStyleElement(value), value).c_str();
     } else if (static_cast<bool>(node->isOfType(SoPickStyle::getClassTypeId()))) {
         auto pcPickStyle = static_cast<SoPickStyle*>(node);
         auto value = pcPickStyle->style.getValue();
-        stream << fmt::format("Style: {} ({})", formatSoPickStyleElement(value), value).c_str();
+        stream << std::format("Style: {} ({})", formatSoPickStyleElement(value), value).c_str();
     } else if (static_cast<bool>(node->isOfType(SoCoordinate3::getClassTypeId()))) {
         auto pcCoords = static_cast<SoCoordinate3*>(node);
         auto values = pcCoords->point.getValues(0);
@@ -275,7 +276,7 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
             float y { 0 };
             float z { 0 };
             values->getValue(x, y, z);
-            stream << fmt::format("XYZ: {}, {}, {}", x, y, z).c_str();
+            stream << std::format("XYZ: {}, {}, {}", x, y, z).c_str();
         }
     }
 
