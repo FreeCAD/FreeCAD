@@ -21,14 +21,29 @@
  ***************************************************************************/
 
 
+#include "Gui/Control.h"
+#include "Mod/PartDesign/App/FeatureExtrude.h"
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QMenu>
+#include <algorithm>
 #endif
 
+#include <Inventor/draggers/SoDragger.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoTransform.h>
 #include "TaskPadParameters.h"
 #include "ViewProviderPad.h"
+#include <Gui/SoFCCSysDragger.h>
+#include <Gui/ViewParams.h>
+#include <qnamespace.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Gui/Inventor/SoFCPlacementIndicatorKit.h>
+#include <Base/Converter.h>
+#include <Gui/Utilities.h>
+#include <Gui/View3DInventorViewer.h>
 
 using namespace PartDesignGui;
 
@@ -44,6 +59,7 @@ ViewProviderPad::~ViewProviderPad() = default;
 void ViewProviderPad::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     addDefaultAction(menu, QObject::tr("Edit pad"));
+
     PartDesignGui::ViewProviderSketchBased::setupContextMenu(menu, receiver, member);
 }
 
@@ -52,4 +68,131 @@ TaskDlgFeatureParameters *ViewProviderPad::getEditDialog()
     // TODO fix setting values from the history: now it doesn't work neither in
     //      the master and in the migrated branch  (2015-07-26, Fat-Zer)
     return new TaskDlgPadParameters( this );
+}
+
+bool ViewProviderPad::setEdit([[maybe_unused]] int ModNum)
+{
+    assert(!dragger);
+    dragger = new Gui::SoFCCSysDragger();
+    dragger->setAxisColors(0x00000000, 0x00000000, 0xFF0000FF);
+    dragger->zAxisLabel.setValue("Length");
+    dragger->draggerSize.setValue(Gui::ViewParams::instance()->getDraggerScale());
+
+    dragger->addStartCallback(dragStartCallback, this);
+    dragger->addFinishCallback(dragFinishCallback, this);
+    dragger->addMotionCallback(dragMotionCallback, this);
+
+    dialog = new TaskDlgPadParameters(this);
+    Gui::Control().showDialog(dialog);
+
+    updatePosition();
+    hideUnWantedAxes();
+
+    return true;
+}
+
+void ViewProviderPad::unsetEdit([[maybe_unused]] int ModNum)
+{
+    dragger.reset();
+}
+
+void ViewProviderPad::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
+{
+    Q_UNUSED(ModNum);
+
+    if (dragger && viewer) {
+        dragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
+
+        auto originPlacement = App::GeoFeature::getGlobalPlacement(getObject()) * getObjectPlacement().inverse();
+        auto mat = originPlacement.toMatrix();
+
+        viewer->getDocument()->setEditingTransform(mat);
+        viewer->setupEditingRoot(dragger, &mat);
+    }
+}
+
+void ViewProviderPad::updatePosition()
+{
+    if (!dragger) {
+        return;
+    }
+
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    auto shape = extrude->getProfileShape();
+
+    Base::Vector3d center;
+    shape.getCenterOfGravity(center);
+
+    center += extrude->getProfileNormal() * dialog->getPadLength();
+    dragger->translation.setValue(Base::convertTo<SbVec3f>(center));
+
+    auto rotation = Base::Rotation::fromNormalVector(extrude->getProfileNormal());
+    dragger->rotation.setValue(Base::convertTo<SbRotation>(rotation));
+
+    dragger->clearIncrementCounts();
+}
+
+Base::Placement ViewProviderPad::getDraggerPlacement()
+{
+    return {Base::convertTo<Base::Vector3d>(dragger->translation.getValue()),
+            Base::convertTo<Base::Rotation>(dragger->rotation.getValue())};
+}
+
+
+double PartDesignGui::ViewProviderPad::getPadLengthFromDragger()
+{
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    auto shape = extrude->getProfileShape();
+
+    Base::Vector3d center;
+    shape.getCenterOfGravity(center);
+
+    auto placement = getDraggerPlacement();
+
+    return (placement.getPosition() - center).Length();
+}
+
+void ViewProviderPad::hideUnWantedAxes()
+{
+    dragger->hideRotationX();
+    dragger->hideRotationY();
+    dragger->hideRotationZ();
+    dragger->hideTranslationX();
+    dragger->hideTranslationY();
+    dragger->hidePlanarTranslationXY();
+    dragger->hidePlanarTranslationYZ();
+    dragger->hidePlanarTranslationZX();
+}
+
+void ViewProviderPad::dragStartCallback(void *data, SoDragger *d)
+{
+    auto vp = static_cast<ViewProviderPad*>(data);
+    // Can we assume that the padlength won't change once we start dragging?
+    vp->padLength = vp->dialog->getPadLength();
+
+    Base::Console().Message("Started dragging\n");
+}
+
+void ViewProviderPad::dragFinishCallback(void *data, SoDragger *d)
+{
+    Base::Console().Message("Finished dragging\n");
+}
+
+void ViewProviderPad::dragMotionCallback(void *data, SoDragger *d)
+{
+    auto vp = static_cast<ViewProviderPad*>(data);
+
+    auto padLength = std::max<double>(vp->getPadLengthFromDragger(), 0.001);
+    vp->dialog->setPadLength(padLength);
+    // This is hack used due to pad of 0 length giving arbitrary size in the model
+    if (std::abs(padLength - 0.001) <= 0.01) {
+        vp->updatePosition();
+    }
+
+    Base::Console().Message("Continuing dragging\n");
+}
+
+void PartDesignGui::ViewProviderPad::setDraggerPosFromUI([[maybe_unused]] double value)
+{
+    updatePosition();
 }

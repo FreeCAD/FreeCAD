@@ -25,8 +25,11 @@
 #define PARTGUI_ViewProviderPad_H
 
 #include "ViewProviderExtrude.h"
+#include <Gui/ViewProviderPart.h>
 
 namespace PartDesignGui {
+
+class TaskDlgPadParameters;
 
 class PartDesignGuiExport ViewProviderPad : public ViewProviderExtrude
 {
@@ -43,6 +46,27 @@ public:
 protected:
     /// Returns a newly created TaskDlgPadParameters
     TaskDlgFeatureParameters *getEditDialog() override;
+
+public:
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+    void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
+
+    void updatePosition();
+    Base::Placement getDraggerPlacement();
+    double getPadLengthFromDragger();
+    void hideUnWantedAxes();
+
+    void setDraggerPosFromUI(double value);
+
+private:
+    Gui::CoinPtr<Gui::SoFCCSysDragger> dragger = nullptr;
+    TaskDlgPadParameters *dialog = nullptr;
+    double padLength = 0;
+
+    static void dragStartCallback(void *data, SoDragger *d);
+    static void dragFinishCallback(void *data, SoDragger *d);
+    static void dragMotionCallback(void *data, SoDragger *d);
 
 };
 
