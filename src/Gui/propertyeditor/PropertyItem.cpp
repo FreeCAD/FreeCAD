@@ -1150,7 +1150,7 @@ QString PropertyUnitItem::toString(const QVariant& prop) const
     const Base::Quantity& unit = prop.value<Base::Quantity>();
     std::string str = unit.getUserString();
     if (hasExpression()) {
-        str += fmt::format("  ( {} )", getExpressionString());
+        str += std::format("  ( {} )", getExpressionString());
     }
 
     return QString::fromStdString(str);
@@ -1749,12 +1749,12 @@ PropertyVectorDistanceItem::PropertyVectorDistanceItem()
 QString PropertyVectorDistanceItem::toString(const QVariant& prop) const
 {
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
-    std::string str = fmt::format("[{} {} {}]",
+    std::string str = std::format("[{} {} {}]",
                                   Base::Quantity(value.x, Base::Unit::Length).getUserString(),
                                   Base::Quantity(value.y, Base::Unit::Length).getUserString(),
                                   Base::Quantity(value.z, Base::Unit::Length).getUserString());
     if (hasExpression()) {
-        str += fmt::format("  ( {} )", getExpressionString());
+        str += std::format("  ( {} )", getExpressionString());
     }
     return QString::fromStdString(str);
 }
@@ -1780,7 +1780,7 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
 
     Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
-    std::string val = fmt::format("({}, {}, {})",
+    std::string val = std::format("({}, {}, {})",
                                   Base::UnitsApi::toNumber(x, format),
                                   Base::UnitsApi::toNumber(y, format),
                                   Base::UnitsApi::toNumber(z, format));
@@ -2517,7 +2517,7 @@ void PropertyRotationItem::setValue(const QVariant& value)
     double angle {};
     h.getValue(axis, angle);
     Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
-    std::string val = fmt::format("App.Rotation(App.Vector({},{},{}),{})",
+    std::string val = std::format("App.Rotation(App.Vector({},{},{}),{})",
                                   Base::UnitsApi::toNumber(axis.x, format),
                                   Base::UnitsApi::toNumber(axis.y, format),
                                   Base::UnitsApi::toNumber(axis.z, format),
@@ -2834,7 +2834,7 @@ void PropertyPlacementItem::setValue(const QVariant& value)
     h.getValue(axis, angle);
 
     Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
-    std::string str = fmt::format("App.Placement("
+    std::string str = std::format("App.Placement("
                                   "App.Vector({},{},{}),"
                                   "App.Rotation(App.Vector({},{},{}),{}))",
                                   Base::UnitsApi::toNumber(pos.x, format),
