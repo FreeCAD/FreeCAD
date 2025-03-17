@@ -683,7 +683,7 @@ class _Structure(ArchComponent.Component):
         if not "Tool" in pl:
             obj.addProperty("App::PropertyLinkSubList", "Tool", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "An optional extrusion path for this element"), locked=True)
         if not "ComputedLength" in pl:
-            obj.addProperty("App::PropertyDistance", "ComputedLength", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "The computed length of the extrusion path"), locked=True, 1)
+            obj.addProperty("App::PropertyDistance", "ComputedLength", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "The computed length of the extrusion path"), 1, locked=True)
         if not "ToolOffsetFirst" in pl:
             obj.addProperty("App::PropertyDistance", "ToolOffsetFirst", "ExtrusionPath", QT_TRANSLATE_NOOP("App::Property", "Start offset distance along the extrusion path (positive: extend, negative: trim)"), locked=True)
         if not "ToolOffsetLast" in pl:
