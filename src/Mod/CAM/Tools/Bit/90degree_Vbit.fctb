@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "name": "60 Deg. V-Bit",
+  "name": "90 Deg. V-Bit",
   "shape": "v-bit.fcstd",
   "parameter": {
-    "CuttingEdgeAngle": "60.0000 \u00b0",
+    "CuttingEdgeAngle": "90.0000 \u00b0",
     "Diameter": "10.0000 mm",
     "CuttingEdgeHeight": "1.0000 mm",
     "TipDiameter": "0.1000 mm",

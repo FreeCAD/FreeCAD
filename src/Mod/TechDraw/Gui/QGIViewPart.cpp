@@ -433,8 +433,6 @@ void QGIViewPart::drawAllVertexes()
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
     auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject())));
 
-    float lineWidth = vp->LineWidth.getValue() * lineScaleFactor;     //thick
-    double vertexScaleFactor = Preferences::getPreferenceGroup("General")->GetFloat("VertexScale", 3.0);
     QColor vertexColor = PreferencesGui::getAccessibleQColor(PreferencesGui::vertexQColor());
 
     const std::vector<TechDraw::VertexPtr>& verts = dvp->getVertexGeometry();
@@ -445,8 +443,8 @@ void QGIViewPart::drawAllVertexes()
                 QGICMark* cmItem = new QGICMark(i);
                 addToGroup(cmItem);
                 cmItem->setPos(Rez::guiX((*vert)->x()), Rez::guiX((*vert)->y()));
-                cmItem->setThick(0.5 * lineWidth);//need minimum?
-                cmItem->setSize(lineWidth * vertexScaleFactor * vp->CenterScale.getValue());
+                cmItem->setThick(0.5F * getLineWidth());//need minimum?
+                cmItem->setSize(getVertexSize() * vp->CenterScale.getValue());
                 cmItem->setPrettyNormal();
                 cmItem->setZValue(ZVALUE::VERTEX);
             }
@@ -458,7 +456,7 @@ void QGIViewPart::drawAllVertexes()
                 item->setPos(Rez::guiX((*vert)->x()), Rez::guiX((*vert)->y()));
                 item->setNormalColor(vertexColor);
                 item->setFillColor(vertexColor);
-                item->setRadius(lineWidth * vertexScaleFactor);
+                item->setRadius(getVertexSize());
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
             }
@@ -1291,4 +1289,14 @@ void QGIViewPart::setGroupSelection(bool isSelected, const std::vector<std::stri
             subItem->setSelected(isSelected);
         }
     }
+}
+
+double QGIViewPart::getLineWidth() {
+    auto vp{static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()))};
+
+    return vp->LineWidth.getValue() * lineScaleFactor; // Thick
+}
+
+double QGIViewPart::getVertexSize() {
+    return getLineWidth() * Preferences::vertexScale();
 }
