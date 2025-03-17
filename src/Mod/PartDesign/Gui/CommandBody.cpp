@@ -379,16 +379,16 @@ void CmdPartDesignMigrate::activated(int iMsg)
                 featIt = baseFeatSetIt;
                 continue;
             } else {
-                // The base feature seems already assigned to some chain
-                // Find which
+                // The base feature seems already assigned to some chain. Find which
                 std::list<PartDesign::Feature *>::iterator baseFeatIt;
-                auto chainIt = std::find_if( featureChains.begin(), featureChains.end(),
-                        [baseFeat, &baseFeatIt] ( std::list<PartDesign::Feature *>&chain ) mutable -> bool {
-                            baseFeatIt = std::find( chain.begin(), chain.end(), baseFeat );
-                            return baseFeatIt !=  chain.end();
-                        } );
+                auto isChain = [baseFeat, &baseFeatIt](
+                                   std::list<PartDesign::Feature*>& fchain) mutable -> bool {
+                    baseFeatIt = std::ranges::find(fchain, baseFeat);
+                    return baseFeatIt != fchain.end();
+                };
 
-                if ( chainIt != featureChains.end() ) {
+                if (auto chainIt = std::ranges::find_if(featureChains, isChain);
+                    chainIt != featureChains.end() ) {
                     assert (baseFeatIt != chainIt->end());
                     if ( std::next ( baseFeatIt ) == chainIt->end() ) {
                         // just append our chain to already found

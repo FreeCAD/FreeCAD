@@ -4306,7 +4306,7 @@ void DocumentP::findAllPathsAt(const std::vector<Node>& all_nodes,
                                std::vector<Path>& all_paths,
                                Path tmp)
 {
-    if (std::find(tmp.begin(), tmp.end(), id) != tmp.end()) {
+    if (std::ranges::find(tmp, id) != tmp.end()) {
         Path tmp2(tmp);
         tmp2.push_back(id);
         all_paths.push_back(tmp2);
@@ -4354,10 +4354,10 @@ Document::getPathsByOutList(const App::DocumentObject* from, const App::Document
     DocumentP::findAllPathsAt(all_nodes, index_from, all_paths, tmp);
 
     for (const Path& it : all_paths) {
-        Path::const_iterator jt = std::find(it.begin(), it.end(), index_to);
+        auto jt = std::ranges::find(it, index_to);
         if (jt != it.end()) {
-            std::list<App::DocumentObject*> path;
-            for (Path::const_iterator kt = it.begin(); kt != jt; ++kt) {
+            std::list<DocumentObject*> path;
+            for (auto kt = it.begin(); kt != jt; ++kt) {
                 path.push_back(d->objectArray[*kt]);
             }
 

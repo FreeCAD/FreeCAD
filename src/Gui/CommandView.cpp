@@ -948,7 +948,7 @@ void StdCmdToggleTransparency::activated(int iMsg)
                     }
                 }
 
-                if (std::find(views.begin(), views.end(), view) == views.end()) {
+                if (std::ranges::find(views, view) == views.end()) {
                     views.push_back(view);
                 }
             }

@@ -537,10 +537,9 @@ struct CoinMapping
     {
 
         for (size_t l = 0; l < PointIdToVertexId.size(); l++) {
-            auto indexit =
-                std::find(PointIdToVertexId[l].begin(), PointIdToVertexId[l].end(), vertexId);
 
-            if (indexit != PointIdToVertexId[l].end()) {
+            if (auto indexit = std::ranges::find(PointIdToVertexId[l], vertexId);
+                indexit != PointIdToVertexId[l].end()) {
                 return MultiFieldId(std::distance(PointIdToVertexId[l].begin(), indexit), l);
             }
         }
