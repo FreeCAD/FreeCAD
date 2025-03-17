@@ -385,7 +385,8 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         int mode = ui->changeMode->currentIndex();
         if (selectionFace) {
-            QString refText = onAddSelection(msg);
+            auto rev = getObject<PartDesign::Revolution>();
+            QString refText = onAddSelection(msg, rev->UpToFace);
             if (refText.length() > 0) {
                 QSignalBlocker block(ui->lineFaceName);
                 ui->lineFaceName->setText(refText);
