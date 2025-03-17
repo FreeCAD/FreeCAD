@@ -60,6 +60,8 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     if (newObj) {
         readValuesFromHistory();
     }
+
+    connect(ui->lengthEdit, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged), [PadView](double value) { PadView->setDraggerPosFromUI(value); });
 }
 
 TaskPadParameters::~TaskPadParameters() = default;
@@ -74,6 +76,14 @@ void TaskPadParameters::translateModeList(int index)
     ui->changeMode->addItem(tr("Two dimensions"));
     ui->changeMode->addItem(tr("Up to shape"));
     ui->changeMode->setCurrentIndex(index);
+}
+
+double TaskPadParameters::getPadLength() {
+    return ui->lengthEdit->value().getValue();
+}
+
+void TaskPadParameters::setPadLength(double val) {
+    ui->lengthEdit->setValue(val);
 }
 
 void TaskPadParameters::updateUI(int index)
@@ -140,6 +150,14 @@ TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView, bool /*newO
     : TaskDlgExtrudeParameters(PadView), parameters(new TaskPadParameters(PadView))
 {
     Content.push_back(parameters);
+}
+
+double TaskDlgPadParameters::getPadLength() {
+    return parameters->getPadLength();
+}
+
+void TaskDlgPadParameters::setPadLength(double val) {
+    parameters->setPadLength(val);
 }
 
 //==== calls from the TaskView ===============================================================
