@@ -592,7 +592,7 @@ class Joint:
             solveIfAllowed(self.getAssembly(joint))
 
     def execute(self, joint):
-        errStr = joint.Label + ": " + QT_TRANSLATE_NOOP("Assembly", "Broken link in :")
+        errStr = joint.Label + ": " + QT_TRANSLATE_NOOP("Assembly", "Broken link in: ")
         if hasattr(joint, "Reference1") and (joint.Reference1[1][0].find("?") != -1):
             raise Exception(errStr + "Reference1")
 
