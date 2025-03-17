@@ -518,6 +518,7 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
     ui->ConstructionPattern->setIconSize(QSize(70, 12));
     ui->InternalPattern->setIconSize(QSize(70, 12));
     ui->ExternalPattern->setIconSize(QSize(70, 12));
+    ui->ExternalDefiningPattern->setIconSize(QSize(70, 12));
     for (auto& style : styles) {
         QPixmap px(ui->EdgePattern->iconSize());
         px.fill(Qt::transparent);
@@ -537,6 +538,7 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
         ui->ConstructionPattern->addItem(QIcon(px), QString(), QVariant(style));
         ui->InternalPattern->addItem(QIcon(px), QString(), QVariant(style));
         ui->ExternalPattern->addItem(QIcon(px), QString(), QVariant(style));
+        ui->ExternalDefiningPattern->addItem(QIcon(px), QString(), QVariant(style));
     }
 }
 
@@ -556,6 +558,7 @@ void SketcherSettingsAppearance::saveSettings()
     ui->EditedEdgeColor->onSave();
     ui->ConstructionColor->onSave();
     ui->ExternalColor->onSave();
+    ui->ExternalDefiningColor->onSave();
     ui->InvalidSketchColor->onSave();
     ui->FullyConstrainedColor->onSave();
     ui->InternalAlignedGeoColor->onSave();
@@ -577,6 +580,7 @@ void SketcherSettingsAppearance::saveSettings()
     ui->ConstructionWidth->onSave();
     ui->InternalWidth->onSave();
     ui->ExternalWidth->onSave();
+    ui->ExternalDefiningWidth->onSave();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/View");
@@ -595,6 +599,10 @@ void SketcherSettingsAppearance::saveSettings()
     data = ui->ExternalPattern->itemData(ui->ExternalPattern->currentIndex());
     pattern = data.toInt();
     hGrp->SetInt("ExternalPattern", pattern);
+
+    data = ui->ExternalDefiningPattern->itemData(ui->ExternalDefiningPattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("ExternalDefiningPattern", pattern);
 }
 
 void SketcherSettingsAppearance::loadSettings()
@@ -605,6 +613,7 @@ void SketcherSettingsAppearance::loadSettings()
     ui->EditedEdgeColor->onRestore();
     ui->ConstructionColor->onRestore();
     ui->ExternalColor->onRestore();
+    ui->ExternalDefiningColor->onRestore();
     ui->InvalidSketchColor->onRestore();
     ui->FullyConstrainedColor->onRestore();
     ui->InternalAlignedGeoColor->onRestore();
@@ -626,6 +635,7 @@ void SketcherSettingsAppearance::loadSettings()
     ui->ConstructionWidth->onRestore();
     ui->InternalWidth->onRestore();
     ui->ExternalWidth->onRestore();
+    ui->ExternalDefiningWidth->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/View");
@@ -656,6 +666,13 @@ void SketcherSettingsAppearance::loadSettings()
         index = 0;
     }
     ui->ExternalPattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("ExternalDefiningPattern", 0b1111111111111111);
+    index = ui->ExternalDefiningPattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->ExternalDefiningPattern->setCurrentIndex(index);
 }
 
 /**

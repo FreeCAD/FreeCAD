@@ -116,8 +116,9 @@ struct DrawingParameters
     static SbColor
         PreselectSelectedColor;  // Color used for preselection when geometry is already selected
     static SbColor SelectColor;  // Color used for selected geometry
-    static SbColor CurveExternalColor;                       // Color used for external geometry
-    static SbColor CurveDraftColor;                          // Color used for construction geometry
+    static SbColor CurveExternalColor;          // Color used for external geometry
+    static SbColor CurveExternalDefiningColor;  // Color used for external defining geometry
+    static SbColor CurveDraftColor;             // Color used for construction geometry
     static SbColor FullyConstraintConstructionElementColor;  // Color used for a fully constrained
                                                              // construction element
     static SbColor ConstrDimColor;  // Color used for a dimensional constraints
@@ -139,15 +140,18 @@ struct DrawingParameters
     int constraintIconSize = 15;  // Size of constraint icons
     int markerSize = 7;           // Size used for markers
 
-    int CurveWidth = 2;         // width of normal edges
-    int ConstructionWidth = 1;  // width of construction edges
-    int InternalWidth = 1;      // width of internal edges
-    int ExternalWidth = 1;      // width of external edges
+    int CurveWidth = 2;             // width of normal edges
+    int ConstructionWidth = 1;      // width of construction edges
+    int InternalWidth = 1;          // width of internal edges
+    int ExternalWidth = 1;          // width of external edges
+    int ExternalDefiningWidth = 1;  // width of external defining edges
 
     unsigned int CurvePattern = 0b1111111111111111;         // pattern of normal edges
     unsigned int ConstructionPattern = 0b1111110011111100;  // pattern of construction edges
     unsigned int InternalPattern = 0b1111110011111100;      // pattern of internal edges
     unsigned int ExternalPattern = 0b1111110011111100;      // pattern of external edges
+    unsigned int ExternalDefiningPattern =
+        0b1111111111111111;  // pattern of external defining edges
     //@}
 
     DrawingParameters()
@@ -289,6 +293,7 @@ public:
         Construction = 1,
         Internal = 2,
         External = 3,
+        ExternalDefining = 4
     };
 
     void reset()
@@ -342,9 +347,15 @@ public:
         return t == static_cast<int>(SubLayer::External);
     }
 
+    bool isExternalDefiningSubLayer(int t) const
+    {
+        return t == static_cast<int>(SubLayer::ExternalDefining);
+    }
+
+
 private:
     int CoinLayers = 1;  // defaults to a single Coin Geometry Layer.
-    int SubLayers = 4;   // Normal, Construction, Internal, External.
+    int SubLayers = 5;   // Normal, Construction, Internal, External.
 };
 
 /** @brief     Struct to hold the results of analysis performed on geometry
@@ -410,6 +421,7 @@ struct EditModeScenegraphNodes
     SoDrawStyle* CurvesConstructionDrawStyle;
     SoDrawStyle* CurvesInternalDrawStyle;
     SoDrawStyle* CurvesExternalDrawStyle;
+    SoDrawStyle* CurvesExternalDefiningDrawStyle;
     SoDrawStyle* HiddenCurvesDrawStyle;
     //@}
 
