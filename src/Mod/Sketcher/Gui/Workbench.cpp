@@ -298,8 +298,16 @@ inline void SketcherAddWorkspaceLines<Gui::MenuItem>(Gui::MenuItem& geom)
 template<>
 inline void SketcherAddWorkspaceLines<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
 {
-    geom << "Sketcher_CreatePolyline"
-         << "Sketcher_CreateLine";
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Commands");
+
+    if (hGrp->GetBool("UnifiedLineCommands", false)) {
+        geom << "Sketcher_CompLine";
+    }
+    else {
+        geom << "Sketcher_CreatePolyline"
+             << "Sketcher_CreateLine";
+    }
 }
 
 template<typename T>
