@@ -118,15 +118,8 @@ def show(page, view=None, conv=None):
         pagename = os.path.basename(page.replace("_", " ").replace(".md", ""))
     title = translate("Help", "Help") + ": " + pagename
     if FreeCAD.GuiUp:
-        if PREFS.GetBool("optionTab", False) and get_qtwebwidgets():
-            # MDI tab
-            show_tab(html, baseurl, title, view)
-        elif PREFS.GetBool("optionDialog", False) and get_qtwebwidgets():
-            # floating dock window
-            show_dialog(html, baseurl, title, view)
-        else:
-            # desktop web browser - default
-            show_browser(location)
+        # desktop web browser - default
+        show_browser(location)
     else:
         # console mode, we just print the output
         print(md)
@@ -257,42 +250,6 @@ def show_browser(url):
         import webbrowser
 
         webbrowser.open_new(url)
-
-
-def show_dialog(html, baseurl, title, view=None):
-    """opens a dock dialog with the given html"""
-
-    from PySide import QtCore
-
-    if view:  # reusing existing view
-        view.setHtml(html, baseUrl=QtCore.QUrl(baseurl))
-        view.parent().parent().setWindowTitle(title)
-    else:
-        openBrowserHTML(html, baseurl, title, ICON, dialog=True)
-
-
-def show_tab(html, baseurl, title, view=None):
-    """opens a MDI tab with the given html"""
-
-    from PySide import QtCore
-
-    if view:  # reusing existing view
-        view.setHtml(html, baseUrl=QtCore.QUrl(baseurl))
-        view.parent().parent().setWindowTitle(title)
-    else:
-        openBrowserHTML(html, baseurl, title, ICON)
-
-
-def get_qtwebwidgets():
-    """verifies if qtwebengine is available"""
-
-    try:
-        from PySide import QtWebEngineWidgets
-    except:
-        FreeCAD.Console.PrintLog(LOGTXT + "\n")
-        return False
-    else:
-        return True
 
 
 def get_contents(location):
@@ -439,69 +396,3 @@ def add_language_path():
     import Help_rc
 
     FreeCADGui.addLanguagePath(":/translations")
-
-
-def openBrowserHTML(html, baseurl, title, icon, dialog=False):
-    """creates a browser view and adds it as a FreeCAD MDI tab or dockable dialog"""
-
-    import FreeCADGui
-    from PySide import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
-
-    # turn an int into a qt dock area
-    def getDockArea(area):
-        if area == 1:
-            return QtCore.Qt.LeftDockWidgetArea
-        elif area == 4:
-            return QtCore.Qt.TopDockWidgetArea
-        elif area == 8:
-            return QtCore.Qt.BottomDockWidgetArea
-        else:
-            return QtCore.Qt.RightDockWidgetArea
-
-    # save dock widget size and location
-    def onDockLocationChanged(area):
-        PREFS.SetInt("dockWidgetArea", int(area))
-        mw = FreeCADGui.getMainWindow()
-        dock = mw.findChild(QtWidgets.QDockWidget, "HelpWidget")
-        if dock:
-            PREFS.SetBool("dockWidgetFloat", dock.isFloating())
-            PREFS.SetInt("dockWidgetWidth", dock.width())
-            PREFS.SetInt("dockWidgetHeight", dock.height())
-
-    # a custom page that handles .md links
-    class HelpPage(QtWebEngineWidgets.QWebEnginePage):
-        def acceptNavigationRequest(self, url, _type, isMainFrame):
-            if _type == QtWebEngineWidgets.QWebEnginePage.NavigationTypeLinkClicked:
-                show(url.toString(), view=self)
-            return super().acceptNavigationRequest(url, _type, isMainFrame)
-
-    mw = FreeCADGui.getMainWindow()
-    view = QtWebEngineWidgets.QWebEngineView()
-    page = HelpPage(None, view)
-    page.setHtml(html, baseUrl=QtCore.QUrl(baseurl))
-    view.setPage(page)
-
-    if dialog:
-        area = PREFS.GetInt("dockWidgetArea", 2)
-        floating = PREFS.GetBool("dockWidgetFloat", True)
-        height = PREFS.GetBool("dockWidgetWidth", 200)
-        width = PREFS.GetBool("dockWidgetHeight", 300)
-        dock = mw.findChild(QtWidgets.QDockWidget, "HelpWidget")
-        if not dock:
-            dock = QtWidgets.QDockWidget()
-            dock.setObjectName("HelpWidget")
-            mw.addDockWidget(getDockArea(area), dock)
-            dock.setFloating(floating)
-            dock.setGeometry(dock.x(), dock.y(), width, height)
-            dock.dockLocationChanged.connect(onDockLocationChanged)
-        dock.setWidget(view)
-        dock.setWindowTitle(title)
-        dock.setWindowIcon(QtGui.QIcon(icon))
-        dock.show()
-    else:
-        mdi = mw.findChild(QtWidgets.QMdiArea)
-        sw = mdi.addSubWindow(view)
-        sw.setWindowTitle(title)
-        sw.setWindowIcon(QtGui.QIcon(icon))
-        sw.show()
-        mdi.setActiveSubWindow(sw)
