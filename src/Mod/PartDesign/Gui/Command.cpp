@@ -528,17 +528,18 @@ bool CmdPartDesignNewSketch::isActive()
 // Common utility functions for all features creating solids
 //===========================================================================
 
-void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
+static void finishFeature(const Gui::Command* cmd, App::DocumentObject *feature,
                    App::DocumentObject* prevSolidFeature = nullptr,
                    const bool hidePrevSolid = true,
                    const bool updateDocument = true)
 {
-    PartDesign::Body *pcActiveBody;
+    PartDesign::Body *activeBody;
 
     if (prevSolidFeature) {
-        pcActiveBody = PartDesignGui::getBodyFor(prevSolidFeature, /*messageIfNot = */false);
-    } else { // insert into the same body as the given previous one
-        pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
+        // insert into the same body as the given previous one
+        activeBody = PartDesignGui::getBodyFor(prevSolidFeature, /*messageIfNot = */false);
+    } else {
+        activeBody = PartDesignGui::getBody(/*messageIfNot = */false);
     }
 
     if (hidePrevSolid && prevSolidFeature)
@@ -547,27 +548,24 @@ void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
     if (updateDocument)
         cmd->updateActive();
 
-    auto base = dynamic_cast<PartDesign::Feature*>(Feat);
+    auto base = dynamic_cast<PartDesign::Feature*>(feature);
     if (base)
         base = dynamic_cast<PartDesign::Feature*>(base->getBaseObject(true));
     App::DocumentObject *obj = base;
     if (!obj)
-        obj = pcActiveBody;
+        obj = activeBody;
 
     // Do this before calling setEdit to avoid to override the 'Shape preview' mode (#0003621)
     if (obj) {
-        cmd->copyVisual(Feat, "ShapeAppearance", obj);
-        cmd->copyVisual(Feat, "LineColor", obj);
-        cmd->copyVisual(Feat, "PointColor", obj);
-        cmd->copyVisual(Feat, "Transparency", obj);
-        cmd->copyVisual(Feat, "DisplayMode", obj);
+        cmd->copyVisual(feature, "ShapeAppearance", obj);
+        cmd->copyVisual(feature, "LineColor", obj);
+        cmd->copyVisual(feature, "PointColor", obj);
+        cmd->copyVisual(feature, "Transparency", obj);
+        cmd->copyVisual(feature, "DisplayMode", obj);
     }
 
-    // #0001721: use '0' as edit value to avoid switching off selection in
-    // ViewProviderGeometryObject::setEditViewer
-    PartDesignGui::setEdit(Feat,pcActiveBody);
+    PartDesignGui::setEdit(feature, activeBody);
     cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
-    //cmd->doCommand(cmd->Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");
 }
 
 //===========================================================================
