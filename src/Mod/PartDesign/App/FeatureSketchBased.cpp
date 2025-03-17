@@ -944,11 +944,13 @@ double ProfileBased::getThroughAllLength() const
 {
     TopoShape profileshape;
     TopoShape base;
-    profileshape = getTopoShapeVerifiedFace();
+    profileshape = getTopoShapeVerifiedFace(true);
     base = getBaseTopoShape();
     Bnd_Box box;
     BRepBndLib::Add(base.getShape(), box);
-    BRepBndLib::Add(profileshape.getShape(), box);
+
+    if(!profileshape.isNull()) 
+        BRepBndLib::Add(profileshape.getShape(), box);
     box.SetGap(0.0);
     // The diagonal of the bounding box, plus 1%  extra to eliminate risk of
     // co-planar issues, gives a length that is guaranteed to go through all.
