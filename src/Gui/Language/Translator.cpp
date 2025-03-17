@@ -240,7 +240,7 @@ void Translator::activateLanguage (const char* lang)
     removeTranslators(); // remove the currently installed translators
     d->activatedLanguage = lang;
     TStringList languages = supportedLanguages();
-    if (std::find(languages.begin(), languages.end(), lang) != languages.end()) {
+    if (std::ranges::find(languages, lang) != languages.end()) {
         refresh();
     }
 }

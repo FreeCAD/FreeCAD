@@ -111,10 +111,10 @@
             <item>
              <widget class="QRadioButton" name="radioNative1">
               <property name="toolTip">
-               <string>This will create a new FreeCAD docment that allows you to build a BIM model, but with no specific IFC structure yet. This is the most flexible option when you start working ona BIM project. You can convert this project to IFC anytime later.</string>
+               <string>This will create a new FreeCAD document that allows you to build a BIM model, but with no specific IFC structure yet. This is the most flexible option when you start working ona BIM project. You can convert this project to IFC anytime later.</string>
               </property>
               <property name="text">
-               <string>Create a new document witout IFC support yet</string>
+               <string>Create a new document without IFC support yet</string>
               </property>
               <property name="checked">
                <bool>false</bool>
@@ -634,7 +634,7 @@
           <item>
            <widget class="QLabel" name="label_34">
             <property name="text">
-             <string>Default groups to be added to each level. Defautl groups such as walls, windows,... are useful to organize the different building elements inside a level</string>
+             <string>Default groups to be added to each level. Default groups such as walls, windows,... are useful to organize the different building elements inside a level</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -714,7 +714,7 @@
      <item>
       <widget class="QPushButton" name="buttonOK">
        <property name="toolTip">
-        <string>Accept the values fo this form</string>
+        <string>Accept the values of this form</string>
        </property>
        <property name="text">
         <string>OK</string>

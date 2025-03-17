@@ -3,6 +3,10 @@ if(WIN32)
     add_definitions(-DBOOST_DYN_LINK)
 endif(WIN32)
 
+if(BUILD_TRACY_FRAME_PROFILER)
+    add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
+endif()
+
 if(FREECAD_RELEASE_SEH)
     add_definitions(-DHAVE_SEH)
 endif(FREECAD_RELEASE_SEH)
@@ -70,6 +74,10 @@ set(FreeCADApp_LIBS
     ${Boost_LIBRARIES}
     fmt::fmt
 )
+
+if(BUILD_TRACY_FRAME_PROFILER)
+    list(APPEND FreeCADApp_LIBS TracyClient)
+endif()
 
 include_directories(
     ${QtCore_INCLUDE_DIRS}

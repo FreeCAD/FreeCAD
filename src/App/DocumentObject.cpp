@@ -590,7 +590,7 @@ bool DocumentObject::isInInListRecursive(DocumentObject* linkTo) const
 
 bool DocumentObject::isInInList(DocumentObject* linkTo) const
 {
-    if (std::find(_inList.begin(), _inList.end(), linkTo) != _inList.end()) {
+    if (std::ranges::find(_inList, linkTo) != _inList.end()) {
         return true;
     }
     else {
@@ -1253,7 +1253,7 @@ void App::DocumentObject::_removeBackLink(DocumentObject* rmvObj)
 {
     // do not use erase-remove idom, as this erases ALL entries that match. we only want to remove a
     // single one.
-    auto it = std::find(_inList.begin(), _inList.end(), rmvObj);
+    auto it = std::ranges::find(_inList, rmvObj);
     if (it != _inList.end()) {
         _inList.erase(it);
     }

@@ -660,11 +660,7 @@ void Command::_doCommand(const char *file, int line, DoCmd_Type eType, const cha
     va_list ap;
     va_start(ap, sCmd);
     QString s;
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    const QString cmd = s.vsprintf(sCmd, ap);
-#else
     const QString cmd = s.vasprintf(sCmd, ap);
-#endif
     va_end(ap);
 
     // 'vsprintf' expects a utf-8 string for '%s'
@@ -785,10 +781,7 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
     if(!from || !from->isAttachedToDocument() || !to || !to->isAttachedToDocument())
         return;
     static std::map<std::string,std::string> attrMap = {
-        // {"ShapeColor","ShapeMaterial.DiffuseColor"},
         {"ShapeAppearance", "ShapeMaterial"},
-        // {"LineColor","ShapeMaterial.DiffuseColor"},
-        // {"PointColor","ShapeMaterial.DiffuseColor"},
         {"Transparency","Transparency"},
     };
     auto it = attrMap.find(attr_to);
@@ -816,7 +809,6 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
                 objCmd.c_str(),attr_to,getObjectCmd(from).c_str(),attr_from,objCmd.c_str(),attr_to);
     }
     catch(Base::Exception& /*e*/) {
-        // e.ReportException();
     }
 }
 
@@ -859,18 +851,6 @@ bool Command::isActiveObjectValid()
     App::DocumentObject* object = document->getActiveObject();
     assert(object);
     return object->isValid();
-}
-
-/// Updates the (all or listed) documents (propagate changes)
-void Command::updateAll(std::list<Gui::Document*> cList)
-{
-    if (!cList.empty()) {
-        for (auto & it : cList)
-            it->onUpdate();
-    }
-    else {
-        Gui::Application::Instance->onUpdate();
-    }
 }
 
 //--------------------------------------------------------------------------

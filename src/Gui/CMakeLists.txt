@@ -1,4 +1,3 @@
-#add_subdirectory(Icons)
 add_subdirectory(Stylesheets)
 add_subdirectory(PreferencePacks)
 add_subdirectory(PreferencePackTemplates)
@@ -43,6 +42,10 @@ endif(BUILD_VR)
 if (BUILD_ADDONMGR)
     add_definitions(-DBUILD_ADDONMGR )
 endif(BUILD_ADDONMGR)
+
+if (BUILD_TRACY_FRAME_PROFILER)
+    add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
+endif()
 
 include_directories(
     ${CMAKE_BINARY_DIR}
@@ -98,6 +101,10 @@ else(MSVC)
         ${3DCONNEXION_LINKFLAGS}
     )
 endif(MSVC)
+
+if(BUILD_TRACY_FRAME_PROFILER)
+    list(APPEND FreeCADGui_LIBS TracyClient)
+endif()
 
 if (TARGET Coin::Coin)
     list(APPEND FreeCADGui_LIBS Coin::Coin)
@@ -240,6 +247,7 @@ if(FREECAD_USE_PYSIDE)
         ${PYSIDE_INCLUDE_DIR}
         ${PYSIDE_INCLUDE_DIR}/QtCore
         ${PYSIDE_INCLUDE_DIR}/QtGui
+        ${PYSIDE_INCLUDE_DIR}/QtWidgets
     )
     if (PYSIDE_LIBRARY)
         list(APPEND FreeCADGui_LIBS
@@ -256,10 +264,7 @@ if(FREECAD_USE_PYSIDE)
             )
         endif ()
     endif (PYSIDE_LIBRARY)
-    include_directories(
-        SYSTEM
-        ${PYSIDE_INCLUDE_DIR}/QtWidgets
-    )
+
     add_definitions(-DHAVE_PYSIDE${PYSIDE_MAJOR_VERSION})
 endif(FREECAD_USE_PYSIDE)
 
@@ -878,17 +883,6 @@ set(qsint_MOC_HDRS
 qt_wrap_cpp(qsint_MOC_SRCS ${qsint_MOC_HDRS})
 SOURCE_GROUP("Widget\\QSintActionPanel\\Mocs" FILES ${qsint_MOC_SRCS})
 
-#SET(Resource_RCS
-#   Icons/resource.qrc
-#   Language/translation.qrc)
-#qt_add_resources(Resource_SRCS ${Resource_RCS})
-#SET(Resource_SRCS
-#   ${Resource_SRCS}
-#   Icons/resource.qrc
-#   Language/translation.qrc
-#)
-#SOURCE_GROUP("Resource" FILES ${Resource_SRCS})
-
 # The 3d view
 SET(View3D_CPP_SRCS
     Camera.cpp
@@ -1457,15 +1451,6 @@ else(WIN32)
     INSTALL(TARGETS FreeCADGui
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
-    #INSTALL(FILES
-    #    Icons/freecad-icon-16.png
-    #    Icons/freecad-icon-32.png
-    #    Icons/freecad-icon-48.png
-    #    Icons/freecad-icon-64.png
-    #    Icons/freecad.svg
-    #    Icons/freecad-doc.png
-    #    DESTINATION ${CMAKE_INSTALL_DATADIR}
-    #)
     INSTALL(FILES Icons/freecad-icon-16.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps RENAME org.freecad.FreeCAD.png)
     INSTALL(FILES Icons/freecad-icon-32.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/apps RENAME org.freecad.FreeCAD.png)
     INSTALL(FILES Icons/freecad-icon-48.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps RENAME org.freecad.FreeCAD.png)

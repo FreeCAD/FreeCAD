@@ -59,8 +59,6 @@ public:
     void setSource(TechDraw::SourceType source) { m_source = source; }
     TechDraw::SourceType getSource() const { return m_source;}
 
-    void setCurrentPen() override;
-
 protected:
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;

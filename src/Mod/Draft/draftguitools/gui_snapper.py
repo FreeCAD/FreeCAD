@@ -472,22 +472,38 @@ class Snapper:
             return None
 
         # calculating the nearest snap point
-        shortest = 1000000000000000000
-        origin = App.Vector(self.snapInfo['x'],
-                            self.snapInfo['y'],
-                            self.snapInfo['z'])
-        winner = None
-        fp = point
+        # a Near ("passive") snap point does not 'win' if a different snap point
+        # is within snapRange of the cursor point (in screen coordinates)
+        cursor_pt = App.Vector(self.snapInfo["x"], self.snapInfo["y"], self.snapInfo["z"])
+        shortest_all = shortest_not_near = 1000000000000000000
+        winner_all = winner_not_near = None
         for snap in snaps:
             if (not snap) or (snap[0] is None):
                 pass
-                # print("debug: Snapper: invalid snap point: ",snaps)
+                # print("debug: Snapper: invalid snap point: ", snaps)
             else:
-                delta = snap[0].sub(origin)
-                if delta.Length < shortest:
-                    shortest = delta.Length
-                    winner = snap
+                dist = snap[0].sub(cursor_pt).Length
+                if snap[1] != "passive":
+                    if dist < shortest_not_near:
+                        shortest_not_near = dist
+                        winner_not_near = snap
+                if dist < shortest_all:
+                    shortest_all = dist
+                    winner_all = snap
 
+        if winner_not_near is None or shortest_not_near == shortest_all:
+            winner = winner_all
+        else:
+            view = Draft.get3DView()
+            # get screen points with pixel coordinates
+            scr_win_not_near_pt = App.Vector(*view.getPointOnScreen(winner_not_near[0]), 0)
+            scr_cursor_pt = App.Vector(*view.getPointOnScreen(cursor_pt), 0)
+            if scr_win_not_near_pt.sub(scr_cursor_pt).Length <= params.get_param("snapRange"):
+                winner = winner_not_near
+            else:
+                winner = winner_all
+
+        fp = point
         if winner:
             # setting the cursors
             if self.tracker and not self.selectMode:

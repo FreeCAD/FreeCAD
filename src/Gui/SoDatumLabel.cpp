@@ -80,9 +80,6 @@ void glDrawLine(const SbVec3f& p1, const SbVec3f& p2){
 
 void glDrawArc(const SbVec3f& center, float radius, float startAngle=0., float endAngle=2.0*M_PI, int countSegments=0){
     float range = endAngle - startAngle;
-    if (range < 0.) {
-        range += 2.0 * M_PI;
-    }
 
     if (countSegments == 0){
         countSegments = std::max(6, abs(int(25.0 * range / M_PI)));
@@ -1446,7 +1443,7 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
     SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
 
     // leave some space for the text
-    double textMargin = std::min(0.2F*range,  this->imgWidth/(2*r));
+    double textMargin = std::min(0.2F * std::abs(range), this->imgWidth / (2 * r));
 
     textOffset = p0 + v0 * r;
 

@@ -32,6 +32,7 @@
 #include <BRepTools.hxx>
 
 #include <Base/Console.h>
+#include <Base/Converter.h>
 
 #include "CenterLine.h"
 #include "DrawUtil.h"
@@ -320,8 +321,8 @@ TechDraw::BaseGeomPtr CenterLine::scaledAndRotatedGeometry(TechDraw::DrawViewPar
 
     TopoDS_Edge newEdge;
     if (getType() == Type::FACE ) {
-        gp_Pnt gp1(DU::to<gp_Pnt>(p1));
-        gp_Pnt gp2(DU::to<gp_Pnt>(p2));
+        gp_Pnt gp1(Base::convertTo<gp_Pnt>(p1));
+        gp_Pnt gp2(Base::convertTo<gp_Pnt>(p2));
         TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
         // Mirror shape in Y and scale
         TopoDS_Shape s = ShapeUtils::mirrorShape(e, gp_Pnt(0.0, 0.0, 0.0), scale);
@@ -330,8 +331,8 @@ TechDraw::BaseGeomPtr CenterLine::scaledAndRotatedGeometry(TechDraw::DrawViewPar
         newEdge = TopoDS::Edge(s);
     } else if (getType() == Type::EDGE  ||
                getType() == Type::VERTEX) {
-        gp_Pnt gp1(DU::to<gp_Pnt>(DU::invertY(p1 * scale)));
-        gp_Pnt gp2(DU::to<gp_Pnt>(DU::invertY(p2 * scale)));
+        gp_Pnt gp1(Base::convertTo<gp_Pnt>(DU::invertY(p1 * scale)));
+        gp_Pnt gp2(Base::convertTo<gp_Pnt>(DU::invertY(p2 * scale)));
         newEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
     }
 

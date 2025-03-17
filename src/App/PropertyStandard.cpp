@@ -3453,17 +3453,10 @@ unsigned int PropertyPersistentObject::getMemSize() const
 
 void PropertyPersistentObject::setValue(const char* type)
 {
-    if (!type) {
-        type = "";
-    }
-    if (type[0]) {
-        Base::Type::importModule(type);
-        Base::Type t = Base::Type::fromName(type);
+    if (!Base::Tools::isNullOrEmpty(type)) {
+        Base::Type t = Base::Type::getTypeIfDerivedFrom(type, Persistence::getClassTypeId());
         if (t.isBad()) {
-            throw Base::TypeError("Invalid type");
-        }
-        if (!t.isDerivedFrom(Persistence::getClassTypeId())) {
-            throw Base::TypeError("Type must be derived from Base::Persistence");
+            throw Base::TypeError("Invalid type or type must be derived from Base::Persistence");
         }
         if (_pObject && _pObject->getTypeId() == t) {
             return;

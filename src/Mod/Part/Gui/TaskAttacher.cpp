@@ -676,7 +676,7 @@ void TaskAttacher::onCheckFlip(bool on)
 
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     pcAttach->MapReversed.setValue(on);
-    ViewProvider->getObject()->getDocument()->recomputeFeature(ViewProvider->getObject());
+    ViewProvider->getObject()->recomputeFeature();
 }
 
 void TaskAttacher::onButtonRef(const bool checked, unsigned idx)

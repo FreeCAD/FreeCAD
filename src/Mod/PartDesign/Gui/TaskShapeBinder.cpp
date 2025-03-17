@@ -134,10 +134,8 @@ void TaskShapeBinder::setupContextMenu()
         remove->setShortcut(QKeySequence(shortcut));
     }
     remove->setShortcutContext(Qt::WidgetShortcut);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     remove->setShortcutVisibleInContextMenu(true);
-#endif
     ui->listWidgetReferences->addAction(remove);
     connect(remove, &QAction::triggered, this, &TaskShapeBinder::deleteItem);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -204,11 +202,10 @@ void TaskShapeBinder::deleteItem()
         PartDesign::ShapeBinder* binder = vp->getObject<PartDesign::ShapeBinder>();
         PartDesign::ShapeBinder::getFilteredReferences(&binder->Support, obj, subs);
 
-        std::string subname = data.constData();
-        std::vector<std::string>::iterator it = std::find(subs.begin(), subs.end(), subname);
+        const std::string subname = data.constData();
 
         // if something was found, delete it and update the support
-        if (it != subs.end()) {
+        if (const auto it = std::ranges::find(subs, subname); it != subs.end()) {
             subs.erase(it);
             binder->Support.setValue(obj, subs);
 
@@ -317,10 +314,11 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
 
         if (selectionMode != refObjAdd) {
             // ensure the new selected subref belongs to the same object
-            if (strcmp(msg.pObjectName, obj->getNameInDocument()) != 0)
+            if (strcmp(msg.pObjectName, obj->getNameInDocument()) != 0) {
                 return false;
+            }
 
-            std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);
+            const auto f = std::ranges::find(refs, subName);
 
             if (selectionMode == refAdd) {
                 if (f == refs.end())

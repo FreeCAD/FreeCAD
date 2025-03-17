@@ -653,7 +653,7 @@ public:
             // very forgiving. We should have used Precision::SquareConfisuion(),
             // which is 1e-14. However, there is a problem with current
             // commandGeoCreate. They create new geometry with initial point of
-            // the exact mouse position, instead of the pre-selected point
+            // the exact mouse position, instead of the preselected point
             // position, and rely on auto constraint to snap in the new
             // geometry. So, we cannot use a very strict threshold here.
             double tol = strict?Precision::SquareConfusion()*10:1e-6;
@@ -1846,7 +1846,7 @@ int SketchObject::delGeometries(InputIt first, InputIt last)
     // if a GeoId has internal geometry, it must delete internal geometries too
     for (auto c : Constraints.getValues()) {
         if (c->Type == InternalAlignment) {
-            auto pos = std::find(sGeoIds.begin(), sGeoIds.end(), c->Second);
+            auto pos = std::ranges::find(sGeoIds, c->Second);
 
             if (pos != sGeoIds.end()) {
                 sGeoIds.push_back(c->First);
@@ -1854,7 +1854,7 @@ int SketchObject::delGeometries(InputIt first, InputIt last)
         }
     }
 
-    std::sort(sGeoIds.begin(), sGeoIds.end());
+    std::ranges::sort(sGeoIds);
     // eliminate duplicates
     auto newend = std::unique(sGeoIds.begin(), sGeoIds.end());
     sGeoIds.resize(std::distance(sGeoIds.begin(), newend));
@@ -1866,7 +1866,7 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
 {
     std::vector<int> sGeoIds(GeoIds);
 
-    std::sort(sGeoIds.begin(), sGeoIds.end());
+    std::ranges::sort(sGeoIds);
     if (sGeoIds.empty())
         return 0;
 
@@ -4925,7 +4925,7 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 }
             }
             // Return true if definedGeo is in geoIdList, false otherwise
-            return std::find(geoIdList.begin(), geoIdList.end(), definedGeo) != geoIdList.end();
+            return std::ranges::find(geoIdList, definedGeo) != geoIdList.end();
         }
         // Return true if not internal aligned, indicating it should always be copied
         return true;
@@ -5358,8 +5358,7 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList, const Base::Vector3
                         }
                     }
 
-                    if (std::find(newgeoIdList.begin(), newgeoIdList.end(), definedGeo)
-                        == newgeoIdList.end()) {
+                    if (std::ranges::find(newgeoIdList, definedGeo) == newgeoIdList.end()) {
                         // the first element setting the reference is an internal alignment
                         // geometry, wherein the geometry it defines is not part of the copy
                         // operation.
@@ -5414,7 +5413,7 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList, const Base::Vector3
                         }
                     }
 
-                    if (std::find(newgeoIdList.begin(), newgeoIdList.end(), definedGeo)
+                    if (std::ranges::find(newgeoIdList, definedGeo)
                         == newgeoIdList.end()) {
                         // we should not copy internal alignment geometry, unless the element they
                         // define is also mirrored
@@ -7184,7 +7183,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     indexInNew[Sketcher::BSplineKnotPoint].reserve(knots.size());
 
     for (const auto& pole : poles) {
-        const auto it = std::find(newPoles.begin(), newPoles.end(), pole);
+        const auto it = std::ranges::find(newPoles, pole);
         indexInNew[Sketcher::BSplineControlPoint].emplace_back(it - newPoles.begin());
     }
     std::replace(indexInNew[Sketcher::BSplineControlPoint].begin(),
@@ -7193,7 +7192,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
                  -1);
 
     for (const auto& knot : knots) {
-        const auto it = std::find(newKnots.begin(), newKnots.end(), knot);
+        const auto it = std::ranges::find(newKnots, knot);
         indexInNew[Sketcher::BSplineKnotPoint].emplace_back(it - newKnots.begin());
     }
     std::replace(indexInNew[Sketcher::BSplineKnotPoint].begin(),
@@ -7319,7 +7318,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     std::vector<int> poleIndexInNew(poles.size(), -1);
 
     for (size_t j = 0; j < poles.size(); j++) {
-        const auto it = std::find(newPoles.begin(), newPoles.end(), poles[j]);
+        const auto it = std::ranges::find(newPoles, poles[j]);
         poleIndexInNew[j] = it - newPoles.begin();
     }
     std::replace(poleIndexInNew.begin(), poleIndexInNew.end(), int(newPoles.size()), -1);
@@ -7329,7 +7328,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     std::vector<int> knotIndexInNew(knots.size(), -1);
 
     for (size_t j = 0; j < knots.size(); j++) {
-        const auto it = std::find(newKnots.begin(), newKnots.end(), knots[j]);
+        const auto it = std::ranges::find(newKnots, knots[j]);
         knotIndexInNew[j] = it - newKnots.begin();
     }
     std::replace(knotIndexInNew.begin(), knotIndexInNew.end(), int(newKnots.size()), -1);
@@ -8350,7 +8349,7 @@ void adjustParameterRange(const TopoDS_Edge &edge,
     // lower arc. Because projection orientation may swap the first and last
     // parameter of the original curve.
     //
-    // We project the middel point of the original curve to the projected curve
+    // We project the middle point of the original curve to the projected curve
     // to decide whether to flip the parameters.
 
     Handle(Geom_Curve) origCurve = BRepAdaptor_Curve(edge).Curve().Curve();
@@ -8778,7 +8777,7 @@ void processEdge(const TopoDS_Edge& edge,
                     // projection is an arc of ellipse
                     auto* aoe = new Part::GeomArcOfEllipse();
                     double firstParam, lastParam;
-                    // ajust the parameter range to get the correct arc
+                    // adjust the parameter range to get the correct arc
                     adjustParameterRange(edge, gPlane, mov, projCurve, firstParam, lastParam);
 
                     Handle(Geom_TrimmedCurve) trimmedCurve = new Geom_TrimmedCurve(projCurve, firstParam, lastParam);
@@ -8977,16 +8976,58 @@ void processEdge(const TopoDS_Edge& edge,
         }
         else {
             try {
-                BRepOffsetAPI_NormalProjection mkProj(aProjFace);
-                mkProj.Add(edge);
-                mkProj.Build();
-                const TopoDS_Shape& projShape = mkProj.Projection();
-                if (!projShape.IsNull()) {
-                    TopExp_Explorer xp;
-                    for (xp.Init(projShape, TopAbs_EDGE); xp.More(); xp.Next()) {
-                        TopoDS_Edge projEdge = TopoDS::Edge(xp.Current());
-                        TopLoc_Location loc(mov);
-                        projEdge.Location(loc);
+                Part::TopoShape projShape;
+                // Projection of the edge on parallel plane to the sketch plane is edge itself
+                // all we need to do is match coordinate systems
+                // for some reason OCC doesn't like to project a planar B-Spline to a plane parallel to it
+                if (planar && plane.Axis().Direction().IsParallel(sketchPlane.Axis().Direction(), Precision::Confusion())) {
+                    TopoDS_Edge projEdge = edge;
+
+                    // We need to trim the curve in case we are projecting a B-Spline segment
+                    if(curve.GetType() == GeomAbs_BSplineCurve){
+                        double Param1 = curve.FirstParameter();
+                        double Param2 = curve.LastParameter();
+
+                        if (Param1 > Param2){
+                            std::swap(Param1, Param2);
+                        }
+
+                        // trim curve in case we are projecting a segment
+                        auto bsplineCurve = curve.BSpline();
+                        if(Param2 - Param1 > Precision::Confusion()){
+                            bsplineCurve->Segment(Param1, Param2);
+                            projEdge = BRepBuilderAPI_MakeEdge(bsplineCurve).Edge();
+                        }
+                    }
+
+                    projShape.setShape(projEdge);
+
+                    // We can't use gp_Pln::Distance() because we need to
+                    // know which side the plane is regarding the sketch
+                    const gp_Pnt& aP = sketchPlane.Location();
+                    const gp_Pnt& aLoc = plane.Location ();
+                    const gp_Dir& aDir = plane.Axis().Direction();
+                    double d = (aDir.X() * (aP.X() - aLoc.X()) +
+                            aDir.Y() * (aP.Y() - aLoc.Y()) +
+                            aDir.Z() * (aP.Z() - aLoc.Z()));
+
+                    gp_Trsf trsf;
+                    trsf.SetTranslation(gp_Vec(aDir) * d);
+                    projShape.transformShape(Part::TopoShape::convert(trsf), /*copy*/false);
+                } else {
+                    // When planes not parallel or perpendicular, or edge is not planar
+                    // normal projection is working just fine
+                    BRepOffsetAPI_NormalProjection mkProj(aProjFace);
+                    mkProj.Add(edge);
+                    mkProj.Build();
+
+                    projShape.setShape(mkProj.Projection());
+                }
+                if (!projShape.isNull() && projShape.hasSubShape(TopAbs_EDGE)) {
+                    for (auto &e : projShape.getSubTopoShapes(TopAbs_EDGE)) {
+                        // Transform copy of the edge to the sketch plane local coordinates
+                        e.transformShape(invPlm.toMatrix(), /*copy*/true, /*checkScale*/true);
+                        TopoDS_Edge projEdge = TopoDS::Edge(e.getShape());
                         processEdge2(projEdge, geos);
                     }
                 }

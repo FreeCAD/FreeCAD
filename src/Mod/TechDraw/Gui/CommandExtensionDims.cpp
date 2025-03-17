@@ -113,7 +113,7 @@ void execInsertPrefixChar(Gui::Command* cmd, std::string prefixFormat, const QAc
 
     std::string prefixText(prefixFormat);
     if (prefixFormat.find("%s") != std::string::npos) {
-        DlgTemplateField ui;
+        DlgTemplateField ui(Gui::getMainWindow());
         const int MAX_PREFIX_LENGTH = 31;
 
         if (action) {

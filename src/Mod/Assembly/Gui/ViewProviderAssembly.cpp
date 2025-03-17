@@ -55,6 +55,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/MDIView.h>
+#include <Gui/MainWindow.h>
 #include <Gui/SoFCCSysDragger.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -191,7 +192,7 @@ bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj,
         if (obj == obj1 || obj == obj2 || obj == part1 || obj == part2 || obj == obj3) {
             if (!prompted) {
                 prompted = true;
-                QMessageBox msgBox;
+                QMessageBox msgBox(Gui::getMainWindow());
                 msgBox.setText(tr("The object is associated to one or more joints."));
                 msgBox.setInformativeText(
                     tr("Do you want to move the object and delete associated joints?"));
@@ -1061,7 +1062,7 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
                 auto* subAsmLink = dynamic_cast<AssemblyLink*>(obj);
                 auto* link = dynamic_cast<App::Link*>(obj);
                 if (subAsmLink || link) {
-                    if (std::find(objs.begin(), objs.end(), obj) == objs.end()) {
+                    if (std::ranges::find(objs, obj) == objs.end()) {
                         objs.push_back(obj);
                         if (subAsmLink && !asmLink->isRigid()) {
                             addSubComponents(subAsmLink, objs);
@@ -1084,7 +1085,7 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
             }
             joints = assemblyPart->getJointsOfPart(obj);
             for (auto* joint : joints) {
-                if (std::find(objToDel.begin(), objToDel.end(), joint) == objToDel.end()) {
+                if (std::ranges::find(objToDel, joint) == objToDel.end()) {
                     objToDel.push_back(joint);
                 }
             }

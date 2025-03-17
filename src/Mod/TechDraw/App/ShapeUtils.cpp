@@ -399,8 +399,8 @@ std::pair<Base::Vector3d, Base::Vector3d> ShapeUtils::getEdgeEnds(TopoDS_Edge ed
     gp_Pnt gpFirst = BRep_Tool::Pnt(tvFirst);
     gp_Pnt gpLast = BRep_Tool::Pnt(tvLast);
 
-    result.first = DU::toVector3d(gpFirst);
-    result.second = DU::toVector3d(gpLast);
+    result.first = Base::convertTo<Base::Vector3d>(gpFirst);
+    result.second = Base::convertTo<Base::Vector3d>(gpLast);
     return result;
 }
 

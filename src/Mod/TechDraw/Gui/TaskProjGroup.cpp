@@ -112,13 +112,9 @@ void TaskProjGroup::connectWidgets()
     connect(ui->sbScaleDen,   qOverload<int>(&QSpinBox::valueChanged), this, &TaskProjGroup::scaleManuallyChanged);
 
     // Slot for Projection Type (layout)
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(ui->projection, qOverload<const QString&>(&QComboBox::currentIndexChanged), this, &TaskProjGroup::projectionTypeChanged);
-#else
     connect(ui->projection, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int index) {
         projectionTypeChanged(ui->projection->itemText(index));
     });
-#endif
 
     // Spacing
     connect(ui->cbAutoDistribute, &QPushButton::clicked, this, &TaskProjGroup::AutoDistributeClicked);

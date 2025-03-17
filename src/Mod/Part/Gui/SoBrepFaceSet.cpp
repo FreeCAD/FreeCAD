@@ -68,6 +68,8 @@
 # include <Inventor/C/glue/gl.h>
 #endif
 
+#include <Base/Profiler.h>
+
 #include <Gui/SoFCInteractiveElement.h>
 #include <Gui/Selection/SoFCSelectionAction.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
@@ -493,6 +495,8 @@ void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
 
 void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 {
+    ZoneScoped;
+
     //SoBase::staticDataLock();
     static bool init = false;
     if (!init) {
@@ -530,7 +534,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
         // There are a few factors affects the rendering order.
         //
-        // 1) For normal case, the highlight (pre-selection) is the top layer. And since
+        // 1) For normal case, the highlight (preselection) is the top layer. And since
         // the depth buffer clipping is on here, we shall draw highlight first, then
         // selection, then the rest part.
         //
