@@ -47,7 +47,9 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/TopoShape.h>
+
 
 #include "FeatureDraft.h"
 #include "DatumLine.h"
@@ -218,8 +220,8 @@ App::DocumentObjectExecReturn *Draft::execute()
         } else if (refPlane->isDerivedFrom<App::Plane>()) {
             neutralPlane = Feature::makePlnFromPlane(refPlane);
         } else if (refPlane->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
-            auto sketch* = static_cast<Part::Part2DObject*>(refPlane); // avoid direct dependency to Sketcher
-            const Base::Placement& palcement = sketch->Placement->getValue();
+            Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(refPlane);
+            const Base::Placement& placement = sketch->Placement.getValue();
 
             Base::Vector3d pos = placement.getPosition();
             Base::Rotation rot = placement.getRotation();
