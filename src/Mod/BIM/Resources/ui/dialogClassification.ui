@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
+ <class>bimDialogClassification</class>
  <widget class="QDialog" name="bimDialogClassification">
   <property name="geometry">
    <rect>
@@ -69,8 +69,7 @@
             </property>
             <property name="icon">
              <iconset theme="format-text-direction-ltr">
-              <normaloff/>
-             </iconset>
+              <normaloff>.</normaloff>.</iconset>
             </property>
            </item>
            <item>
@@ -79,8 +78,7 @@
             </property>
             <property name="icon">
              <iconset theme="application-drawing">
-              <normaloff/>
-             </iconset>
+              <normaloff>.</normaloff>.</iconset>
             </property>
            </item>
            <item>
@@ -232,44 +230,22 @@
     </widget>
    </item>
   </layout>
-  <zorder>labelDownload</zorder>
-  <zorder>buttonBox</zorder>
-  <zorder>groupMaterials</zorder>
-  <zorder>groupClasses</zorder>
-  <zorder>groupMaterials</zorder>
-  <zorder>groupClasses</zorder>
  </widget>
  <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>Dialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>bimDialogClassification</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>503</x>
+     <y>496</y>
     </hint>
     <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
+     <x>547</x>
+     <y>-18</y>
     </hint>
    </hints>
   </connection>
