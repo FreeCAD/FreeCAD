@@ -172,28 +172,24 @@ class ObjectOp(object):
             QT_TRANSLATE_NOOP(
                 "App::Property", "Make False, to prevent operation from generating code"
             ),
-            locked=True,
         )
         obj.addProperty(
             "App::PropertyString",
             "Comment",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Operation"),
-            locked=True,
         )
         obj.addProperty(
             "App::PropertyString",
             "UserLabel",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"),
-            locked=True,
         )
         obj.addProperty(
             "App::PropertyString",
             "CycleTime",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
-            locked=True,
         )
         obj.setEditorMode("CycleTime", 1)  # read-only
 
@@ -208,7 +204,6 @@ class ObjectOp(object):
                 "Locations",
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Base locations for this operation"),
-                locked=True,
             )
 
         if FeatureTool & features:
@@ -220,7 +215,6 @@ class ObjectOp(object):
                     "App::Property",
                     "The tool controller that will be used to calculate the path",
                 ),
-                locked=True,
             )
             self.addOpValues(obj, ["tooldia"])
 
@@ -230,7 +224,6 @@ class ObjectOp(object):
                 "CoolantMode",
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Coolant mode for this operation"),
-                locked=True,
             )
 
         if FeatureDepths & features:
@@ -239,14 +232,12 @@ class ObjectOp(object):
                 "StartDepth",
                 "Depth",
                 QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"),
-                locked=True,
             )
             obj.addProperty(
                 "App::PropertyDistance",
                 "FinalDepth",
                 "Depth",
                 QT_TRANSLATE_NOOP("App::Property", "Final Depth of Tool- lowest value in Z"),
-                locked=True,
             )
             if FeatureNoFinalDepth & features:
                 obj.setEditorMode("FinalDepth", 2)  # hide
@@ -261,7 +252,6 @@ class ObjectOp(object):
                     "App::Property",
                     "Starting Depth internal use only for derived values",
                 ),
-                locked=True,
             )
             obj.setEditorMode("StartDepth", 1)  # read-only
 
@@ -273,7 +263,6 @@ class ObjectOp(object):
                 "StepDown",
                 "Depth",
                 QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"),
-                locked=True,
             )
 
         if FeatureFinishDepth & features:
@@ -282,7 +271,6 @@ class ObjectOp(object):
                 "FinishDepth",
                 "Depth",
                 QT_TRANSLATE_NOOP("App::Property", "Maximum material removed on final pass."),
-                locked=True,
             )
 
         if FeatureHeights & features:
@@ -294,14 +282,12 @@ class ObjectOp(object):
                     "App::Property",
                     "The height needed to clear clamps and obstructions",
                 ),
-                locked=True,
             )
             obj.addProperty(
                 "App::PropertyDistance",
                 "SafeHeight",
                 "Depth",
                 QT_TRANSLATE_NOOP("App::Property", "Rapid Safety Height between locations."),
-                locked=True,
             )
 
         if FeatureStartPoint & features:
@@ -310,14 +296,12 @@ class ObjectOp(object):
                 "StartPoint",
                 "Start Point",
                 QT_TRANSLATE_NOOP("App::Property", "The start point of this path"),
-                locked=True,
             )
             obj.addProperty(
                 "App::PropertyBool",
                 "UseStartPoint",
                 "Start Point",
                 QT_TRANSLATE_NOOP("App::Property", "Make True, if specifying a Start Point"),
-                locked=True,
             )
 
         if FeatureDiameters & features:
@@ -326,14 +310,12 @@ class ObjectOp(object):
                 "MinDiameter",
                 "Diameter",
                 QT_TRANSLATE_NOOP("App::Property", "Lower limit of the turning diameter"),
-                locked=True,
             )
             obj.addProperty(
                 "App::PropertyDistance",
                 "MaxDiameter",
                 "Diameter",
                 QT_TRANSLATE_NOOP("App::Property", "Upper limit of the turning diameter."),
-                locked=True,
             )
 
         # members being set later

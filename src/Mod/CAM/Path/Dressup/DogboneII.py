@@ -201,7 +201,6 @@ class Proxy(object):
             "Base",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The base path to dress up"),
-            locked=True,
         )
         obj.Base = base
 
@@ -210,7 +209,6 @@ class Proxy(object):
             "Side",
             "Dressup",
             QT_TRANSLATE_NOOP("App::Property", "The side of path to insert bones"),
-            locked=True,
         )
         obj.Side = Side.All
         if hasattr(base, "BoneBlacklist"):
@@ -228,7 +226,6 @@ class Proxy(object):
             "Style",
             "Dressup",
             QT_TRANSLATE_NOOP("App::Property", "The style of bones"),
-            locked=True,
         )
         obj.Style = Style.All
         obj.Style = Style.Dogbone
@@ -238,7 +235,6 @@ class Proxy(object):
             "Incision",
             "Dressup",
             QT_TRANSLATE_NOOP("App::Property", "The algorithm to determine the bone length"),
-            locked=True,
         )
         obj.Incision = Incision.All
         obj.Incision = Incision.Adaptive
@@ -248,7 +244,6 @@ class Proxy(object):
             "Custom",
             "Dressup",
             QT_TRANSLATE_NOOP("App::Property", "Dressup length if incision is set to 'custom'"),
-            locked=True,
         )
         obj.Custom = 0.0
 
@@ -257,7 +252,6 @@ class Proxy(object):
             "BoneBlacklist",
             "Dressup",
             QT_TRANSLATE_NOOP("App::Property", "Bones that aren't dressed up"),
-            locked=True,
         )
         obj.BoneBlacklist = []
 

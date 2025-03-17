@@ -413,14 +413,12 @@ class ObjectDressup(object):
             "Base",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
-            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "Side",
             "Dressup",
             QT_TRANSLATE_NOOP("App::Property", "The side of path to insert bones"),
-            locked=True,
         )
         obj.Side = [Side.Left, Side.Right]
         obj.Side = Side.Right
@@ -429,7 +427,6 @@ class ObjectDressup(object):
             "Style",
             "Dressup",
             QT_TRANSLATE_NOOP("App::Property", "The style of bones"),
-            locked=True,
         )
         obj.Style = Style.All
         obj.Style = Style.Dogbone
@@ -438,7 +435,6 @@ class ObjectDressup(object):
             "BoneBlacklist",
             "Dressup",
             QT_TRANSLATE_NOOP("App::Property", "Bones that aren't dressed up"),
-            locked=True,
         )
         obj.BoneBlacklist = []
         obj.setEditorMode("BoneBlacklist", 2)  # hide this one
@@ -447,7 +443,6 @@ class ObjectDressup(object):
             "Incision",
             "Dressup",
             QT_TRANSLATE_NOOP("App::Property", "The algorithm to determine the bone length"),
-            locked=True,
         )
         obj.Incision = Incision.All
         obj.Incision = Incision.Adaptive
@@ -456,7 +451,6 @@ class ObjectDressup(object):
             "Custom",
             "Dressup",
             QT_TRANSLATE_NOOP("App::Property", "Dressup length if incision is set to 'custom'"),
-            locked=True,
         )
         obj.Custom = 0.0
         obj.Proxy = self
