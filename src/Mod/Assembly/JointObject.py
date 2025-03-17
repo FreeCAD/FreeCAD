@@ -569,6 +569,9 @@ class Joint:
         if App.isRestoring():
             return
 
+        if prop == "Reference1" or prop == "Reference2":
+            joint.recompute()
+
         if prop == "Offset1" or prop == "Offset2":
             if joint.Reference1 is None or joint.Reference2 is None:
                 return
