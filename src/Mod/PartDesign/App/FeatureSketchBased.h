@@ -57,8 +57,10 @@ public:
     App::PropertyBool    Midplane;
     /// Face to extrude up to
     App::PropertyLinkSub UpToFace;
+    App::PropertyLinkSub UpToFace2;
     /// Shape to extrude up to
     App::PropertyLinkSubList UpToShape;
+    App::PropertyLinkSubList UpToShape2;
 
     App::PropertyBool AllowMultiFace;
 

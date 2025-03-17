@@ -42,7 +42,9 @@ class PartDesignExport FeatureExtrude : public ProfileBased
 public:
     FeatureExtrude();
 
+    App::PropertyEnumeration SideType;
     App::PropertyEnumeration Type;
+    App::PropertyEnumeration Type2;
     App::PropertyLength      Length;
     App::PropertyLength      Length2;
     App::PropertyAngle       TaperAngle;
@@ -51,6 +53,7 @@ public:
     App::PropertyVector      Direction;
     App::PropertyBool        AlongSketchNormal;
     App::PropertyLength      Offset;
+    App::PropertyLength      Offset2;
     App::PropertyLinkSub     ReferenceAxis;
 
     static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
@@ -67,7 +70,10 @@ public:
     }
     //@}
 
+    static const char* SideTypesEnums[];
+
 protected:
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
     Base::Vector3d computeDirection(const Base::Vector3d& sketchVector, bool inverse);
     bool hasTaperedAngle() const;
 
@@ -150,7 +156,20 @@ protected:
     /**
       * Disables settings that are not valid for the current method
       */
-    void updateProperties(const std::string &method);
+    void updateProperties();
+
+    TopoShape generateSingleExtrusionSide(
+        const TopoShape& sketchShape,  // The base sketch for this side (global CS)
+        const std::string& method,
+        double length,
+        double taperAngleDeg,
+        App::PropertyLinkSub& upToFacePropHandle,  // e.g., &UpToFace or &UpToFace2
+        App::PropertyLinkSubList& upToShapePropHandle,  // e.g., &UpToShape or &UpToShape2
+        gp_Dir dir,
+        double offsetVal,
+        bool makeFace,
+        const TopoShape& base         // The base shape for context (global CS)
+    );
 };
 
 } //namespace PartDesign
