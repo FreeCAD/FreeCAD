@@ -4,6 +4,12 @@ set -euo pipefail
 # Update package lists quietly
 sudo apt-get update -qq
 
+if apt-cache show libvtk9-dev >/dev/null 2>&1; then
+  vtk_dev="libvtk9-dev"
+else
+  vtk_dev="libvtk7-dev"
+fi
+
 packages=(
   ccache
   doxygen
@@ -34,7 +40,7 @@ packages=(
   libqt5x11extras5-dev
   libshiboken2-dev
   libspnav-dev
-  libvtk7-dev
+  ${vtk_dev}
   libx11-dev
   libxerces-c-dev
   libyaml-cpp-dev
