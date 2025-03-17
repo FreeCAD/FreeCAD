@@ -30,6 +30,7 @@
 #include "Application.h"
 #include "Command.h"
 #include "PreferencePackManager.h"
+#include "Base/FileInfo.h"
 
 
 using namespace Gui::Dialog;

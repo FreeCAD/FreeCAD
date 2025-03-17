@@ -37,6 +37,7 @@
 #include "App/Metadata.h"
 #include "Base/Parameter.h"
 #include "Base/Interpreter.h"
+#include "Base/FileInfo.h"
 #include "Base/Console.h"
 #include "DockWindowManager.h"
 #include "ToolBarManager.h"

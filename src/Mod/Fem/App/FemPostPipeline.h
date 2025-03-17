@@ -27,6 +27,8 @@
 #include "FemPostObject.h"
 #include "FemResultObject.h"
 
+#include "Base/FileInfo.h"
+
 #include <vtkSmartPointer.h>
 
 

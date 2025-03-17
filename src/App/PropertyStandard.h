@@ -31,6 +31,7 @@
 #include <boost/dynamic_bitset.hpp>
 #include <boost/filesystem/path.hpp>
 #include <Base/Uuid.h>
+#include "Base/FileInfo.h"
 
 #include "Property.h"
 #include "Enumeration.h"

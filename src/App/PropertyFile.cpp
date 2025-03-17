@@ -30,6 +30,7 @@
 #include <Base/Writer.h>
 #include <Base/Uuid.h>
 #include <Base/Tools.h>
+#include "Base/FileInfo.h"
 
 #include "PropertyFile.h"
 #include "Document.h"

@@ -42,6 +42,7 @@
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
+#include "Base/FileInfo.h"
 #include <CXX/Objects.hxx>
 
 #include "Application.h"

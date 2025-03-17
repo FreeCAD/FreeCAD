@@ -33,6 +33,7 @@
 #include <Base/Interpreter.h>
 #include <Base/PlacementPy.h>
 #include <Mod/Part/App/OCCError.h>
+#include "Base/FileInfo.h"
 
 #include "FemMesh.h"
 #include "FemMeshObject.h"

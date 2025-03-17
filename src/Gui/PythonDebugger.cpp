@@ -28,6 +28,7 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include "Base/FileInfo.h"
 
 #include "PythonDebugger.h"
 #include "BitmapFactory.h"

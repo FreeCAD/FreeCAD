@@ -26,7 +26,7 @@
 
 #include "Importer.h"
 #include "MeshFeature.h"
-
+#include "Base/FileInfo.h"
 
 using namespace Mesh;
 

@@ -50,6 +50,7 @@
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/RotationPy.h>
 #include <Base/VectorPy.h>
+#include "Base/FileInfo.h"
 
 #include "View3DPy.h"
 

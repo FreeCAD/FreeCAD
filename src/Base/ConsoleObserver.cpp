@@ -36,6 +36,7 @@
 #include "ConsoleObserver.h"
 #include "Interpreter.h"
 #include "Tools.h"
+#include "FileInfo.h"
 
 
 using namespace Base;
