@@ -475,8 +475,8 @@ void DSHSlotController::adaptParameters(Base::Vector2d onSketchPos)
 
                 if (fabs(range - range2) > Precision::Confusion()) {
                     setOnViewParameterValue(OnViewParameter::Fourth,
-                        Base::toDegrees(range),
-                        Base::Unit::Angle);
+                                            Base::toDegrees(range),
+                                            Base::Unit::Angle);
                 }
             }
 
