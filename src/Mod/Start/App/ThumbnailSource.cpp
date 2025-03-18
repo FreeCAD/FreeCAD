@@ -38,10 +38,7 @@
 
 using namespace Start;
 
-bool ThumbnailSource::_f3dInitialized = false;
-int ThumbnailSource::_f3dMajor = 0;
-int ThumbnailSource::_f3dMinor = 0;
-QStringList ThumbnailSource::_f3dBaseArgs;
+ThumbnailSource::F3DInstallation ThumbnailSource::_f3d {};
 QMutex ThumbnailSource::_mutex;
 
 ThumbnailSource::ThumbnailSource(QString file)
@@ -63,16 +60,16 @@ ThumbnailSourceSignals* ThumbnailSource::signals()
 
 void ThumbnailSource::run()
 {
-    const QString thumbnailPath = getUniquePNG(_file);
-    if (!useCachedPNG(thumbnailPath, _file)) {
-        setupF3D();
-        if (_f3dMajor < 2) {
+    const QString thumbnailPath = getPathToCachedThumbnail(_file);
+    if (!useCachedThumbnail(thumbnailPath, _file)) {
+        setupF3D();  // Go through the mutex to ensure data is not stale
+        if (_f3d.major < 2) {
             return;
         }
         const ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Start");
         const auto f3d = QString::fromUtf8(hGrp->GetASCII("f3d", "f3d").c_str());
-        QStringList args(_f3dBaseArgs);
+        QStringList args(_f3d.baseArgs);
         args << QLatin1String("--output=") + thumbnailPath << _file;
 
         _process = std::make_unique<QProcess>();
@@ -161,11 +158,11 @@ QStringList getF3DOptions(const QString& f3d)
 void ThumbnailSource::setupF3D()
 {
     QMutexLocker locker(&_mutex);
-    if (_f3dInitialized) {
+    if (_f3d.initialized) {
         return;
     }
 
-    _f3dInitialized = true;  // Set immediately so we can use early-return below
+    _f3d.initialized = true;  // Set immediately so we can use early-return below
     const ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
     const auto f3d = QString::fromUtf8(hGrp->GetASCII("f3d", "f3d").c_str());
@@ -179,9 +176,9 @@ void ThumbnailSource::setupF3D()
     const QByteArray stdoutBytes = process.readAllStandardOutput();
     const auto stdoutString = QString::fromUtf8(stdoutBytes);
     const auto version = extractF3DVersion(stdoutString);
-    _f3dMajor = std::get<0>(version);
-    _f3dMinor = std::get<1>(version);
-    if (_f3dMajor >= 2) {
-        _f3dBaseArgs = getF3DOptions(f3d);
+    _f3d.major = std::get<0>(version);
+    _f3d.minor = std::get<1>(version);
+    if (_f3d.major >= 2) {
+        _f3d.baseArgs = getF3DOptions(f3d);
     }
 }

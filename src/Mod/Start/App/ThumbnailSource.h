@@ -70,10 +70,15 @@ private:
     ThumbnailSourceSignals _signals;
     std::unique_ptr<QProcess> _process;
 
-    static bool _f3dInitialized;
-    static int _f3dMajor;
-    static int _f3dMinor;
-    static QStringList _f3dBaseArgs;
+    /// Gather together all of the f3d information protected by the mutex: data in this struct
+    /// should be accessed only after a call to setupF3D() to ensure synchronization.
+    static struct F3DInstallation
+    {
+        bool initialized {false};
+        int major {0};
+        int minor {0};
+        QStringList baseArgs;
+    } _f3d;
     static QMutex _mutex;
 };
 

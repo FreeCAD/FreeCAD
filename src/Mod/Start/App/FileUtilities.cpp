@@ -25,46 +25,21 @@
 #ifndef _PreComp_
 #include <QCryptographicHash>
 #include <QDateTime>
-#include <QDir>
 #include <QFileInfo>
-#include <QStandardPaths>
 #include <QString>
+#include <QTimeZone>
 #include <QUrl>
+#include <fmt/format.h>
 #endif
 
 #include "FileUtilities.h"
+#include <Base/TimeInfo.h>
 
-
-QString Start::getThumbnailsImage()
-{
-    return QLatin1String("thumbnails/Thumbnail.png");
-}
-
-QString Start::getThumbnailsName()
-{
-#if defined(Q_OS_LINUX)
-    return QLatin1String("thumbnails/normal");
-#else
-    return QLatin1String("FreeCADStartThumbnails");
-#endif
-}
-
-QDir Start::getThumbnailsParentDir()
-{
-    return {QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation)};
-}
-
-QString Start::getThumbnailsDir()
-{
-    const QDir dir = getThumbnailsParentDir();
-    return dir.absoluteFilePath(getThumbnailsName());
-}
 
 void Start::createThumbnailsDir()
 {
-    const QString name = getThumbnailsName();
-    if (const QDir dir(getThumbnailsParentDir()); !dir.exists(name)) {
-        [[maybe_unused]] bool result = dir.mkpath(name);
+    if (!thumbnailsParentDir.exists(defaultThumbnailName)) {
+        thumbnailsParentDir.mkpath(defaultThumbnailName);
     }
 }
 
@@ -80,14 +55,13 @@ QString Start::getMD5Hash(const QString& path)
     return QString::fromLatin1(ba);
 }
 
-QString Start::getUniquePNG(const QString& path)
+QString Start::getPathToCachedThumbnail(const QString& path)
 {
-    const QDir dir = getThumbnailsDir();
     const QString md5 = getMD5Hash(path) + QLatin1String(".png");
-    return dir.absoluteFilePath(md5);
+    return thumbnailsDir.absoluteFilePath(md5);
 }
 
-bool Start::useCachedPNG(const QString& image, const QString& project)
+bool Start::useCachedThumbnail(const QString& image, const QString& project)
 {
     const QFileInfo f1(image);
     const QFileInfo f2(project);
@@ -99,4 +73,34 @@ bool Start::useCachedPNG(const QString& image, const QString& project)
     }
 
     return f1.lastModified() > f2.lastModified();
+}
+
+std::string Start::humanReadableSize(uint64_t bytes)
+{
+    if (bytes == 0) {
+        return "0 B";
+    }
+
+    // uint64_t can't express numbers higher than the EB range (< 20 EB)
+    constexpr std::array units {"B", "kB", "MB", "GB", "TB", "PB", "EB"};
+    constexpr double unitFactor = 1000.0;
+
+    const double logBaseFactor = std::log10(unitFactor);  // change to constexpr on c++26
+    const auto unitIndex = static_cast<size_t>(std::log10(bytes) / logBaseFactor);
+    const auto unit = units.at(unitIndex);
+
+    const double scaledValue = static_cast<double>(bytes) / std::pow(unitFactor, unitIndex);
+
+    const bool isByteUnit = unitIndex == 0;
+    const size_t precision = isByteUnit ? 0 : 1;
+    return fmt::format("{:.{}f} {}", scaledValue, precision, unit);  // change to std:: on c++20
+}
+
+std::string Start::getLastModifiedAsString(const Base::FileInfo& file)
+{
+    Base::TimeInfo lastModified = file.lastModified();
+    return QDateTime::fromSecsSinceEpoch(lastModified.getTime_t())
+        .toTimeZone(QTimeZone::utc())
+        .toString(Qt::ISODate)
+        .toStdString();
 }

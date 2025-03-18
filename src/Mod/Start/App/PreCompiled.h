@@ -45,6 +45,9 @@
 // boost
 #include <boost/algorithm/string/predicate.hpp>
 
+// fmt
+#include <fmt/format.h>
+
 // Qt (should never include GUI files, only QtCore)
 #include <QByteArray>
 #include <QCryptographicHash>

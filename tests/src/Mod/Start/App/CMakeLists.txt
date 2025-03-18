@@ -1,6 +1,7 @@
 target_sources(
     Start_tests_run
         PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/FileUtilities.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/ThumbnailSource.cpp
 )
 

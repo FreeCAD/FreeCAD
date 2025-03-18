@@ -24,27 +24,43 @@
 #ifndef FREECAD_FILEUTILITIES_H
 #define FREECAD_FILEUTILITIES_H
 
+#include "Base/FileInfo.h"
+#include "Mod/Start/StartGlobal.h"
+
+#include <qglobal.h>
+#include <QDir>
+#include <QStandardPaths>
+
 class QString;
-class QDir;
 
 namespace Start
 {
 
-QString getThumbnailsImage();
+const QLatin1String defaultThumbnailPath("thumbnails/Thumbnail.png");
 
-QString getThumbnailsName();
+const QLatin1String defaultThumbnailName
+#if defined(Q_OS_LINUX)
+    ("thumbnails/normal");
+#else
+    ("FreeCADStartThumbnails");
+#endif
 
-QDir getThumbnailsParentDir();
+const QDir thumbnailsParentDir {
+    QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation)};
 
-QString getThumbnailsDir();
+const QDir thumbnailsDir {thumbnailsParentDir.absoluteFilePath(defaultThumbnailName)};
 
-void createThumbnailsDir();
+StartExport void createThumbnailsDir();
 
-QString getMD5Hash(const QString& path);
+StartExport QString getMD5Hash(const QString& path);
 
-QString getUniquePNG(const QString& path);
+StartExport QString getPathToCachedThumbnail(const QString& path);
 
-bool useCachedPNG(const QString& image, const QString& project);
+StartExport bool useCachedThumbnail(const QString& image, const QString& project);
+
+StartExport std::string humanReadableSize(std::uint64_t bytes);
+
+StartExport std::string getLastModifiedAsString(const Base::FileInfo& file);
 
 }  // namespace Start
 

@@ -25,7 +25,6 @@
 #ifndef _PreComp_
 #include <boost/algorithm/string/predicate.hpp>
 #include <QByteArray>
-#include <QCryptographicHash>
 #include <QFileInfo>
 #include <QProcess>
 #include <QTimeZone>
@@ -47,34 +46,6 @@
 
 using namespace Start;
 
-
-namespace
-{
-std::string humanReadableSize(const unsigned int bytes)
-{
-    static const std::vector<std::string> siPrefix {
-        "b",
-        "kb",
-        "Mb",
-        "Gb",
-        "Tb",
-        "Pb",
-        "Eb"  // I think it's safe to stop here (for the time being)...
-    };
-    size_t base = 0;
-    double inUnits = bytes;
-    constexpr double siFactor {1000.0};
-    while (inUnits > siFactor && base < siPrefix.size() - 1) {
-        ++base;
-        inUnits /= siFactor;
-    }
-    if (base == 0) {
-        // Don't include a decimal point for bytes
-        return fmt::format("{:.0f} {}", inUnits, siPrefix[base]);
-    }
-    // For all others, include one digit after the decimal place
-    return fmt::format("{:.1f} {}", inUnits, siPrefix[base]);
-}
 
 FileStats fileInfoFromFreeCADFile(const std::string& path)
 {
@@ -98,19 +69,19 @@ QByteArray loadFCStdThumbnail(const QString& pathToFCStdFile)
 {
     if (App::ProjectFile proj(pathToFCStdFile.toStdString()); proj.loadDocument()) {
         try {
-            const QString thumbnailFile = getUniquePNG(pathToFCStdFile);
-            if (!useCachedPNG(thumbnailFile, pathToFCStdFile)) {
-                static const QString thumb = getThumbnailsImage();
-                if (proj.containsFile(thumb.toStdString())) {
+            const QString pathToCachedThumbnail = getPathToCachedThumbnail(pathToFCStdFile);
+            if (!useCachedThumbnail(pathToCachedThumbnail, pathToFCStdFile)) {
+                static const QString pathToThumbnail = defaultThumbnailPath;
+                if (proj.containsFile(pathToThumbnail.toStdString())) {
                     createThumbnailsDir();
-                    const Base::FileInfo fi(thumbnailFile.toStdString());
-                    Base::ofstream str(fi, std::ios::out | std::ios::binary);
-                    proj.readInputFileDirect(thumb.toStdString(), str);
-                    str.close();
+                    const Base::FileInfo fi(pathToCachedThumbnail.toStdString());
+                    Base::ofstream stream(fi, std::ios::out | std::ios::binary);
+                    proj.readInputFileDirect(pathToThumbnail.toStdString(), stream);
+                    stream.close();
                 }
             }
 
-            if (auto inputFile = QFile(thumbnailFile); inputFile.exists()) {
+            if (auto inputFile = QFile(pathToCachedThumbnail); inputFile.exists()) {
                 inputFile.open(QIODevice::OpenModeFlag::ReadOnly);
                 return inputFile.readAll();
             }
@@ -130,12 +101,8 @@ FileStats getFileInfo(const std::string& path)
         result = fileInfoFromFreeCADFile(path);
     }
     else {
-        Base::TimeInfo lastModified = file.lastModified();
-        std::string lmString = QDateTime::fromSecsSinceEpoch(lastModified.getTime_t())
-                                   .toTimeZone(QTimeZone::utc())
-                                   .toString(Qt::ISODate)
-                                   .toStdString();
-        result.insert(std::make_pair(DisplayedFilesModelRoles::modifiedTime, lmString));
+        result.insert(
+            std::make_pair(DisplayedFilesModelRoles::modifiedTime, getLastModifiedAsString(file)));
     }
     result.insert(std::make_pair(DisplayedFilesModelRoles::path, path));
     result.insert(std::make_pair(DisplayedFilesModelRoles::size, humanReadableSize(file.size())));
@@ -153,7 +120,6 @@ bool freecadCanOpen(const QString& extension)
                                 })
         != importTypes.end();
 }
-}  // namespace
 
 DisplayedFilesModel::DisplayedFilesModel(QObject* parent)
     : QAbstractListModel(parent)
@@ -194,7 +160,7 @@ QVariant DisplayedFilesModel::data(const QModelIndex& index, int role) const
             if (mapEntry.contains(roleAsType)) {
                 return QString::fromStdString(mapEntry.at(roleAsType));
             }
-            return {};
+            break;
         case DisplayedFilesModelRoles::image: {
             if (const auto path =
                     QString::fromStdString(mapEntry.at(DisplayedFilesModelRoles::path));
