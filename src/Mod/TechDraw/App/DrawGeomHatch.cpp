@@ -320,7 +320,13 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
     gp_Vec translateVector(hatchOffset.x, hatchOffset.y, 0.);
     auto cornerMin = bBox.CornerMin().Translated(-translateVector);
     auto cornerMax = bBox.CornerMax().Translated(-translateVector);
-    bBox = Bnd_Box(cornerMin, cornerMax);
+    bBox = Bnd_Box();
+    bBox.Update(cornerMin.X(),
+                cornerMin.Y(),
+                cornerMin.Z(),
+                cornerMax.X(),
+                cornerMax.Y(),
+                cornerMax.Z());
 
     for (auto& ls: lineSets) {
         PATLineSpec hl = ls.getPATLineSpec();
