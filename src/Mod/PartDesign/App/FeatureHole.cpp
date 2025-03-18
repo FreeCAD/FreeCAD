@@ -67,7 +67,7 @@ namespace PartDesign {
 
 const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ nullptr };
 const char* Hole::ThreadDepthTypeEnums[]             = { "Hole Depth", "Dimension", "Tapped (DIN76)",  nullptr };
-const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "NPT", "BSP", "BSW", "BSF", nullptr};
+const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "NPT", "BSP", "BSW", "BSF", "ISOTyre", nullptr};
 const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", nullptr};
 const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", nullptr };
 const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullptr};
@@ -519,6 +519,30 @@ const std::vector<Hole::ThreadDescription> Hole::threadDescription[] =
         { "3 3/4",  95.250,   5.644,   0.0   },
         { "4",      101.600,  5.644,   0.0   },
         { "4 1/4",  107.950,  6.350,   0.0   },
+    },
+    /* ISO Tyre valve threads */
+    // ISO 4570:2002
+    // Ordered as the standard
+    {
+        { "5v1",  5.334, 0.705, 0 }, // Schrader internal
+        { "5v2",  5.370, 1.058, 0 }, // Presta cap
+        { "6v1",  6.160, 0.800, 0 }, // Presta body
+        { "8v1",  7.798, 0.794, 0 }, // Schrader external
+        { "9v1",  9.525, 0.794, 0 },
+        { "10v2", 10.414, 0.907, 0 },
+        { "12v1", 12.319, 0.977, 0 },
+        { "13v1", 12.700, 1.270, 0 },
+        { "8v2",  7.938, 1.058, 0 },
+        { "10v1", 9.800, 1.000, 0 },
+        { "11v1", 11.113, 1.270, 0 },
+        { "13v2", 12.700, 0.794, 0 },
+        { "15v1", 15.137, 1.000, 0 },
+        { "16v1", 15.875, 0.941, 0 },
+        { "17v1", 17.137, 1.000, 0 },
+        { "17v2", 17.463, 1.058, 0 },
+        { "17v3", 17.463, 1.588, 0 },
+        { "19v1", 19.050, 1.588, 0 },
+        { "20v1", 20.642, 1.000, 0 },
     }
 };
 
@@ -1452,6 +1476,10 @@ void Hole::onChanged(const App::Property* prop)
         else if (type == "BSF") {
             ThreadClass.setEnums(ThreadClass_BSF_Enums);
             HoleCutType.setEnums(HoleCutType_BSF_Enums);
+        }
+        else if (type == "ISOTyre") {
+            ThreadClass.setEnums(ThreadClass_None_Enums);
+            HoleCutType.setEnums(HoleCutType_None_Enums);
         }
 
         bool isNone = type == "None";
