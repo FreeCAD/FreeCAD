@@ -409,8 +409,9 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     double angle =
                         Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
-                    onSketchPos.x = handler->startPoint.x + cos(angle) * length;
-                    onSketchPos.y = handler->startPoint.y + sin(angle) * length;
+                    Base::Vector2d dir2(cos(angle), sin(angle));
+                    onSketchPos.ProjectToLine(onSketchPos - handler->startPoint, dir2);
+                    onSketchPos += handler->startPoint;
                 }
             }
             else {
@@ -491,6 +492,15 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
                     setOnViewParameterValue(OnViewParameter::Fourth,
                                             Base::toDegrees(range),
                                             Base::Unit::Angle);
+                }
+                else {
+                    double range2 =
+                        Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+                    if (fabs(range - range2) > Precision::Confusion()) {
+                        setOnViewParameterValue(OnViewParameter::Fourth,
+                                                Base::toDegrees(range),
+                                                Base::Unit::Angle);
+                    }
                 }
 
                 onViewParameters[OnViewParameter::Third]->setPoints(start, end);
