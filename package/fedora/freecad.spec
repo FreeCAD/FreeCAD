@@ -12,11 +12,10 @@
 # Some configuration options for other environments
 # rpmbuild --with=bundled_zipios:  use bundled version of zipios++
 %global bundled_zipios %{?_with_bundled_zipios: 1} %{?!_with_bundled_zipios: 1}
+# rpmbuild --with=bundled_pycxx:  use bundled version of pycxx
+%global bundled_pycxx %{?_with_bundled_pycxx: 1} %{?!_with_bundled_pycxx: 0}
 # rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
 %global bundled_smesh %{?_without_bundled_smesh: 0} %{?!_without_bundled_smesh: 1}
-
-# Don't use bundled version of pycxx
-%global bundled_pycxx 0
 
 # Prevent RPM from doing its magical 'build' directory for now
 %global __cmake_in_source_build 0
@@ -271,9 +270,6 @@ popd
 
 # Remove obsolete Start_Page.html
 rm -f %{buildroot}%{_docdir}/%{name}/Start_Page.html
-# Keep this until transition from %%doc to %%license is done
-# and the tab is removed in UI
-# %{buildroot}%{_docdir}/freecad/ThirdPartyLibraries.html
 
 # Remove header from external library that's erroneously installed
 rm -f %{buildroot}%{_libdir}/%{name}/include/E57Format/E57Export.h
