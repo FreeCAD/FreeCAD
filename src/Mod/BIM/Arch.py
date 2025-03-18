@@ -768,12 +768,43 @@ def makeSite(objectslist=None,baseobj=None,name=None):
 
 
 def makeSpace(objects=None,baseobj=None,name=None):
+    """Creates a space object from the given objects.
 
-    """makeSpace([objects],[baseobj],[name]): Creates a space object from the given objects.
-    Objects can be one document object, in which case it becomes the base shape of the space
-    object, or a list of selection objects as got from getSelectionEx(), or a list of tuples
-    [ (object, [subobjectname, ...]), ... ]"""
+    Parameters
+    ----------
+    objects : object or List(<SelectionObject>) or App::PropertyLinkSubList, optional
+        The object or selection set that defines the space. If a single object is given,
+        it becomes the base shape for the object. If the object or selection set contains
+        subelements, these will be used as the boundaries to create the space. By default None.
+    baseobj : object or List(<SelectionObject>) or App::PropertyLinkSubList, optional
+        Currently unimplemented, it replaces and behaves in the same way as the objects parameter
+        if defined. By default None.
+    name : str, optional
+        The user-facing name to assign to the space object's label. By default None, in
+        which case the label is set to "Space".
 
+    Notes
+    -----
+    The objects parameter can be passed using either of these different formats:
+    1. Single object (e.g. a Part::Feature document object). Will be used as the space's base
+       shape.
+       ::
+            objects = <Part::Feature>
+    2. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
+       requires the GUI to be active. The `SubObjects` property of each selection object in the
+       list defines the space's boundaries. If the list contains a single selection object without
+       subobjects, or with only one subobject, the object in its ``Object`` property is used as
+       the base shape.
+       ::
+            objects = [<SelectionObject>, ...]
+    3. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
+       tuple contains a document object and a nested tuple of subobjects that define boundaries. If
+       the list contains a single tuple without a nested subobjects tuple, or a subobjects tuple
+       with only one subobject, the object in the tuple is used as the base shape.
+       ::
+            objects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
+            objects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
+    """
     import ArchSpace
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
