@@ -38,6 +38,7 @@
 # include <boost/scope_exit.hpp>
 # include <chrono>
 # include <random>
+# include <csignal>
 # include <memory>
 # include <utility>
 # include <set>
