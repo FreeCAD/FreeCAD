@@ -197,6 +197,7 @@ SET(TechDraw_SRCS
 SET(Geometry_SRCS
     Geometry.cpp
     Geometry.h
+    GeometryId.h
     GeometryObject.cpp
     GeometryObject.h
     ShapeUtils.cpp

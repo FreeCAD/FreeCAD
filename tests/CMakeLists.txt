@@ -123,6 +123,9 @@ endif(BUILD_SKETCHER)
 if(BUILD_SPREADSHEET)
   list (APPEND TestExecutables Spreadsheet_tests_run)
 endif()
+if(BUILD_TECHDRAW)
+  list (APPEND TestExecutables TechDraw_tests_run)
+endif()
 
 # -------------------------
 
