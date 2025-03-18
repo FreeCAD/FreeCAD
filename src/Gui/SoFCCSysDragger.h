@@ -303,6 +303,9 @@ public:
 
     void setAxisColors(unsigned long x, unsigned long y, unsigned long z); //!< set the axis colors.
 
+    float getAxisRadius();
+    void setAxisRadius(float radius);
+
     //! @name Visibility Functions
     //@{
     void showTranslationX(); //!< show the x translation dragger.

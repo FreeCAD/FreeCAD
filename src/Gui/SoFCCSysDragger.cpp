@@ -189,6 +189,7 @@ SoSeparator* TDragger::buildCylinderGeometry() const
     cylinderSeparator->addChild(cylinderTranslation);
 
     auto cylinder = new SoCylinder();
+    cylinder->setName("CSysDynamics_TDragger_CylinderShape");
     cylinder->radius.setValue(cylinderRadius);
     cylinder->height.setValue(cylinderHeight);
     cylinderSeparator->addChild(cylinder);
@@ -1821,4 +1822,15 @@ bool SoFCCSysDragger::isHiddenRotationZ()
 {
     SoSwitch* sw = SO_GET_ANY_PART(this, "zRotatorSwitch", SoSwitch);
     return (sw->whichChild.getValue() == SO_SWITCH_NONE);
+}
+
+float Gui::SoFCCSysDragger::getAxisRadius()
+{
+    SoCylinder *cylinder = static_cast<SoCylinder*>(getByName("CSysDynamics_TDragger_CylinderShape"));
+    return cylinder->radius.getValue();
+}
+void Gui::SoFCCSysDragger::setAxisRadius(float radius)
+{
+    SoCylinder *cylinder = static_cast<SoCylinder*>(getByName("CSysDynamics_TDragger_CylinderShape"));
+    cylinder->radius = radius;
 }
