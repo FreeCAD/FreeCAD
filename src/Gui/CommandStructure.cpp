@@ -72,9 +72,19 @@ void StdCmdPart::activated(int iMsg)
             QObject::tr(PartName.c_str()).toUtf8().data());
 
     doCommand(Doc,
-        "for obj in Gui.Selection.getSelection()[1:]:\n"
-        "    App.activeDocument().%s.addObject(obj)",
-        PartName.c_str());
+    "selected_objects = Gui.Selection.getSelection()\n"
+    "if len(selected_objects) > 1:\n"
+    "    for obj in selected_objects:\n"
+    "        # Exclude spreadsheets\n"
+    "        if obj.TypeId == 'Spreadsheet::Sheet':\n"
+    "            continue\n"
+    "        # Add subobjects if obj is a container (optional)\n"
+    "        if hasattr(obj, 'OutList') and len(obj.OutList) > 0:\n"
+    "            for child in obj.OutList:\n"
+    "                App.activeDocument().%s.addObject(child)\n"
+    "        else:\n"
+    "            App.activeDocument().%s.addObject(obj)\n",
+    PartName.c_str(), PartName.c_str());
 
     doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)\n"
                                  "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
