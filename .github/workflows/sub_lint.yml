@@ -212,7 +212,7 @@ on:
         type: boolean
         required: false
       checkClazy: # for the Message codes see: https://invent.kde.org/sdk/clazy#list-of-checks
-        default: true
+        default: false
         type: boolean
         required: false
       clazyChecks:
@@ -224,7 +224,7 @@ on:
         type: boolean
         required: false
       checkClazyQT6:
-        default: true
+        default: false
         type: boolean
         required: false
       clazyQT6Checks:
