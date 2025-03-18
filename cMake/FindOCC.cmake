@@ -121,10 +121,8 @@ if (OCC_FOUND)
             TKMeshVS
             TKService
             TKV3d
+            TKRWMesh
     )
-
-
-    list(APPEND OCC_OCAF_LIBRARIES TKRWMesh)
 
     if (OCC_VERSION_STRING VERSION_LESS 7.8.0)
         list(APPEND OCC_LIBRARIES TKIGES TKSTL TKSTEPBase TKSTEPAttr TKSTEP209 TKSTEP)
