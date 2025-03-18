@@ -1081,8 +1081,7 @@ double GeomCurve::length(double u, double v) const
         return GCPnts_AbscissaPoint::Length(adaptor,u,v,Precision::Confusion());
     }
     catch (Standard_Failure& exc) {
-
-        THROWM(Base::CADKernelError, exc.GetMessageString())
+        throw(std::runtime_error(exc.GetMessageString()));
     }
 }
 
