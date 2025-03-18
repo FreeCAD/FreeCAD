@@ -162,13 +162,13 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget* parent)
 
     m_partDocument = App::GetApplication().getActiveDocument();
     if (!m_partDocument) {
-        throw Base::ValueError(QString(tr("Have no active document!!!")).toUtf8());
+        throw Base::ValueError(tr("Have no active document!!!").toStdString());
     }
     this->attachDocument(m_partDocument);
     m_partDocument->openTransaction("Project on surface");
     m_projectionObject = m_partDocument->addObject<Part::Feature>("Projection Object");
     if (!m_projectionObject) {
-        throw Base::ValueError(QString(tr("Can not create a projection object!!!")).toUtf8());
+        throw Base::ValueError(tr("Can not create a projection object!!!").toStdString());
     }
     m_projectionObject->Label.setValue(std::string(m_projectionObjectName.toUtf8()).c_str());
     onRadioButtonShowAllClicked();
