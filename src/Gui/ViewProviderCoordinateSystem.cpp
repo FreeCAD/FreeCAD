@@ -72,13 +72,16 @@ ViewProviderCoordinateSystem::~ViewProviderCoordinateSystem() {
 
 std::vector<App::DocumentObject*> ViewProviderCoordinateSystem::claimChildren() const
 {
-    auto obj = getObject<App::LocalCoordinateSystem>();
-    std::vector<App::DocumentObject*> childs = obj->OriginFeatures.getValues();
-    auto it = std::find(childs.begin(), childs.end(), obj);
-    if (it != childs.end()) {
-        childs.erase(it);
+    if (auto obj = getObject<App::LocalCoordinateSystem>()) {
+        std::vector<App::DocumentObject*> childs = obj->OriginFeatures.getValues();
+        auto it = std::find(childs.begin(), childs.end(), obj);
+        if (it != childs.end()) {
+            childs.erase(it);
+        }
+        return childs;
     }
-    return childs;
+
+    return {};
 }
 
 std::vector<App::DocumentObject*> ViewProviderCoordinateSystem::claimChildren3D() const
@@ -106,7 +109,10 @@ void ViewProviderCoordinateSystem::setDisplayMode(const char* ModeName)
 
 void ViewProviderCoordinateSystem::setTemporaryVisibility(DatumElements elements)
 {
-    auto origin = getObject<App::Origin>();
+    auto origin = getObject<App::LocalCoordinateSystem>();
+    if (!origin) {
+        return;
+    }
 
     bool saveState = tempVisMap.empty();
 
@@ -163,32 +169,34 @@ double ViewProviderCoordinateSystem::defaultSize()
     return hGrp->GetFloat("DatumsSize", 25);
 }
 
-bool ViewProviderCoordinateSystem::isTemporaryVisibility() {
+bool ViewProviderCoordinateSystem::isTemporaryVisibility()
+{
     return !tempVisMap.empty();
 }
 
 void ViewProviderCoordinateSystem::setPlaneLabelVisibility(bool val)
 {
-    auto lcs = getObject<App::LocalCoordinateSystem>();
-    for (auto* plane : lcs->planes()) {
-        auto* vp = dynamic_cast<Gui::ViewProviderPlane*>(
-            Gui::Application::Instance->getViewProvider(plane));
-        if (vp) {
-            vp->setLabelVisibility(val);
+    if (auto lcs = getObject<App::LocalCoordinateSystem>()) {
+        for (auto* plane : lcs->planes()) {
+            auto* vp = dynamic_cast<Gui::ViewProviderPlane*>(
+                Gui::Application::Instance->getViewProvider(plane));
+            if (vp) {
+                vp->setLabelVisibility(val);
+            }
         }
     }
-
 }
 
 void ViewProviderCoordinateSystem::applyDatumObjects(const DatumObjectFunc& func)
 {
-    auto lcs = getObject<App::LocalCoordinateSystem>();
-    const auto& objs = lcs->OriginFeatures.getValues();
-    for (auto* obj : objs) {
-        auto* vp = dynamic_cast<Gui::ViewProviderDatum*>(
-            Gui::Application::Instance->getViewProvider(obj));
-        if (vp) {
-            func(vp);
+    if (auto lcs = getObject<App::LocalCoordinateSystem>()) {
+        const auto& objs = lcs->OriginFeatures.getValues();
+        for (auto* obj : objs) {
+            auto* vp = dynamic_cast<Gui::ViewProviderDatum*>(
+                Gui::Application::Instance->getViewProvider(obj));
+            if (vp) {
+                func(vp);
+            }
         }
     }
 }
@@ -207,9 +215,9 @@ void ViewProviderCoordinateSystem::resetTemporarySize()
     });
 }
 
-void ViewProviderCoordinateSystem::updateData(const App::Property* prop) {
-    auto* jcs = dynamic_cast<App::LocalCoordinateSystem*>(getObject());
-    if(jcs) {
+void ViewProviderCoordinateSystem::updateData(const App::Property* prop)
+{
+    if (auto* jcs = dynamic_cast<App::LocalCoordinateSystem*>(getObject())) {
         if (prop == &jcs->Placement) {
             // Update position
         }
@@ -217,11 +225,14 @@ void ViewProviderCoordinateSystem::updateData(const App::Property* prop) {
     ViewProviderDocumentObject::updateData(prop);
 }
 
-bool ViewProviderCoordinateSystem::onDelete(const std::vector<std::string> &) {
+bool ViewProviderCoordinateSystem::onDelete(const std::vector<std::string> &)
+{
     auto lcs = getObject<App::LocalCoordinateSystem>();
+    if (!lcs) {
+        return false;
+    }
 
-    auto origin = dynamic_cast<App::Origin*>(lcs);
-    if (origin && !origin->getInList().empty()) {
+    if (lcs && !lcs->getInList().empty()) {
         // Do not allow deletion of origin objects that are not lost.
         return false;
     }
