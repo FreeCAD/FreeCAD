@@ -37,6 +37,7 @@ import getopt
 opt, par = getopt.getopt(sys.argv[1:], "-s:")
 input_file = par[0]
 output_file = par[1]
+default_icon = "@CMAKE_INSTALL_DATAROOTDIR@/icons/hicolor/48x48/apps/org.freecad.FreeCAD.png"
 
 try:
     # Read compressed file
@@ -54,7 +55,7 @@ try:
         image = zfile.read(image)
     else:
         # apps should have at least 48x48 icons
-        freecad = open("/usr/share/icons/hicolor/48x48/apps/org.freecad.FreeCAD.png", "rb")
+        freecad = open(default_icon, "rb")
         image = freecad.read()
 
     # Write icon to output_file
