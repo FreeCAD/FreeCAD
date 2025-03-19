@@ -59,6 +59,10 @@
             "type": "BOOL",
             "value": "ON"
           },
+          "BUILD_REVERSEENGINEERING": {
+            "type": "BOOL",
+            "value": "OFF"
+          },
           "ENABLE_DEVELOPER_TESTS": {
             "type": "BOOL",
             "value": "ON"
@@ -87,6 +91,10 @@
             "type": "BOOL",
             "value": "ON"
           },
+          "FREECAD_QT_VERSION": {
+            "type": "STRING",
+            "value": "6"
+          },
           "OCCT_CMAKE_FALLBACK": {
             "type": "BOOL",
             "value": "ON"
@@ -107,21 +115,9 @@
         },
         "cmakeExecutable": "${sourceDir}/conda/cmake.sh",
         "cacheVariables": {
-          "CMAKE_INCLUDE_PATH": {
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/include"
-          },
-          "CMAKE_INSTALL_LIBDIR": {
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/lib"
-          },
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}"
-          },
-          "CMAKE_LIBRARY_PATH":{
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/lib"
           },
           "CMAKE_PREFIX_PATH": {
             "type": "FILEPATH",
@@ -147,21 +143,9 @@
             "type": "STRING",
             "value": "/opt/homebrew;/usr/local/homebrew"
           },
-          "CMAKE_INCLUDE_PATH": {
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/include"
-          },
-          "CMAKE_INSTALL_LIBDIR": {
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/lib"
-          },
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}"
-          },
-          "CMAKE_LIBRARY_PATH":{
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/lib"
           },
           "CMAKE_PREFIX_PATH": {
             "type": "FILEPATH",
@@ -183,21 +167,9 @@
         },
         "cmakeExecutable": "${sourceDir}/conda/cmake.cmd",
         "cacheVariables": {
-          "CMAKE_INCLUDE_PATH": {
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/Library/include"
-          },
-          "CMAKE_INSTALL_LIBDIR": {
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/Library/lib"
-          },
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}/Library"
-          },
-          "CMAKE_LIBRARY_PATH":{
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/Library/lib"
           },
           "CMAKE_PREFIX_PATH": {
             "type": "FILEPATH",

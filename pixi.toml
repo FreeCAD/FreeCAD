@@ -8,10 +8,10 @@ platforms = [ "linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64" ]
 
 [dependencies]
 ccache = "*"
+clang-format = "*"
 cmake = "3.28.3"
 coin3d = "*"
 compilers = "*"
-conda-devenv = "*"
 debugpy = "*"
 doxygen = "*"
 eigen = "*"
@@ -30,6 +30,7 @@ openssl = "*"
 pcl = "*"
 pip = "*"
 pivy = "*"
+pkg-config = "*"
 ply = "*"
 pre-commit = "*"
 pybind11 = "*"
@@ -49,6 +50,7 @@ zstd = "*"
 
 ## Linux Dependencies (x86-64)
 [target.linux-64.dependencies]
+coreutils = "*"
 kernel-headers_linux-64 = "*"
 libdrm-cos7-x86_64 = "*"
 libselinux-cos7-x86_64 = "*"
@@ -78,6 +80,7 @@ xorg-xproto = "*"
 
 ## Linux Dependencies (aarch64)
 [target.linux-aarch64.dependencies]
+coreutils = "*"
 kernel-headers_linux-aarch64 = "*"
 libdrm-cos7-aarch64 = "*"
 libglvnd-cos7-aarch64 = "*"
@@ -112,10 +115,12 @@ xorg-xproto = "*"
 
 ## macOS Dependencies (Intel)
 [target.osx-64.dependencies]
+coreutils = "*"
 sed = "*"
 
 ## macOS Dependencies (Apple Silicon)
 [target.osx-arm64.dependencies]
+coreutils = "*"
 sed = "*"
 
 ## Qt 6 Configuration Presets
