@@ -88,7 +88,7 @@
 
 using namespace Gui;
 
-constexpr char* TDraggerCylinderShape{"CSysDynamics_TDragger_CylinderShape"};
+constexpr const char* TDraggerCylinderShape{"CSysDynamics_TDragger_CylinderShape"};
 
 SO_KIT_SOURCE(TDragger)
 
