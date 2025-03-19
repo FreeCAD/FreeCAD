@@ -88,6 +88,8 @@
 
 using namespace Gui;
 
+constexpr std::array TDraggerCylinderShape{std::to_array("CSysDynamics_TDragger_CylinderShape")};
+
 SO_KIT_SOURCE(TDragger)
 
 void TDragger::initClass()
@@ -189,7 +191,7 @@ SoSeparator* TDragger::buildCylinderGeometry() const
     cylinderSeparator->addChild(cylinderTranslation);
 
     auto cylinder = new SoCylinder();
-    cylinder->setName("CSysDynamics_TDragger_CylinderShape");
+    cylinder->setName(TDraggerCylinderShape.data());
     cylinder->radius.setValue(cylinderRadius);
     cylinder->height.setValue(cylinderHeight);
     cylinderSeparator->addChild(cylinder);
@@ -1826,11 +1828,11 @@ bool SoFCCSysDragger::isHiddenRotationZ()
 
 float Gui::SoFCCSysDragger::getAxisRadius()
 {
-    SoCylinder *cylinder = static_cast<SoCylinder*>(getByName("CSysDynamics_TDragger_CylinderShape"));
+    SoCylinder *cylinder = static_cast<SoCylinder*>(getByName(TDraggerCylinderShape.data()));
     return cylinder->radius.getValue();
 }
 void Gui::SoFCCSysDragger::setAxisRadius(float radius)
 {
-    SoCylinder *cylinder = static_cast<SoCylinder*>(getByName("CSysDynamics_TDragger_CylinderShape"));
+    SoCylinder *cylinder = static_cast<SoCylinder*>(getByName(TDraggerCylinderShape.data()));
     cylinder->radius = radius;
 }
