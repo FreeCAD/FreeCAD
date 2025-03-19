@@ -147,6 +147,7 @@ protected:
         void operator=(const Layer&) = delete;
         void operator=(Layer&&) = delete;
         ~Layer() override;
+        // The View object for the layer or Py_None (e.g. if no gui)
         PyObject* const DraftLayerView;
         std::vector<App::DocumentObject*> Contents;
         void FinishLayer() const;
