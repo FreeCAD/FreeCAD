@@ -1286,12 +1286,7 @@ QPushButton::menu-indicator {
 
 QDialogButtonBox QPushButton {
   /* Issue # 194 # 248 - Special case of QPushButton inside dialogs, for better UI */
-  min-width: 80px;
-}
-
-QMessageBox[objectName="macroGuideWalkthrough"] QDialogButtonBox QPushButton,
-QMessageBox[objectName="confirmSave"] QDialogButtonBox QPushButton {
-  min-width: 20px;
+  min-width: -1;
 }
 
 /* QToolButton ------------------------------------------------------------
