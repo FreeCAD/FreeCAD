@@ -58,6 +58,8 @@ SOURCE_GROUP("Properties" FILES ${Properties_SRCS})
 SET(Features_SRCS
     SketchObjectSF.cpp
     SketchObjectSF.h
+    SketchGeometry.cpp
+    SketchGeometry.h
     SketchGeometryExtension.cpp
     SketchGeometryExtension.h
     ExternalGeometryExtension.cpp
