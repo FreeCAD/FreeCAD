@@ -268,8 +268,12 @@ class PlaneBase:
         """
         if face.Surface.isPlanar() is False:
             return False
-        vertex = Part.Vertex(face.CenterOfMass)
-        return self.align_to_edges_vertexes([edge, vertex], offset)
+        axis = face.normalAt(0,0)
+        point = edge.Vertexes[0].Point
+        upvec = edge.Vertexes[-1].Point.sub(point)
+        return self.align_to_point_and_axis(point, axis, offset, upvec)
+        #vertex = Part.Vertex(face.CenterOfMass)
+        #return self.align_to_edges_vertexes([edge, vertex], offset)
 
     def align_to_face(self, shape, offset=0):
         """Align the WP to a face with an optional offset.
@@ -1295,11 +1299,15 @@ class PlaneGui(PlaneBase):
                 objs.append(Part.getShape(sel.Object, sub, needSubElement=True, retType=1))
 
         if len(objs) != 1:
+            ret = False
             if all([obj[0].isNull() is False and obj[0].ShapeType in ["Edge", "Vertex"] for obj in objs]):
                 ret = self.align_to_edges_vertexes([obj[0] for obj in objs], offset, _hist_add)
-            else:
-                ret = False
-
+            elif all([obj[0].isNull() is False and obj[0].ShapeType in ["Edge", "Face"] for obj in objs]):
+                    edges = [obj[0] for obj in objs if obj[0].ShapeType == "Edge"]
+                    faces = [obj[0] for obj in objs if obj[0].ShapeType == "Face"]
+                    if len(edges) == 1 and len(faces) == 1:
+                        if edges[0].hashCode() in [e.hashCode() for e in faces[0].Edges]:
+                            ret = self.align_to_face_and_edge(faces[0], edges[0], offset)
             if ret is False:
                 _wrn(translate("draft", "Selected shapes do not define a plane"))
             return ret
@@ -1364,6 +1372,13 @@ class PlaneGui(PlaneBase):
     def align_to_face(self, shape, offset=0, _hist_add=True):
         """See PlaneBase.align_to_face."""
         if super().align_to_face(shape, offset) is False:
+            return False
+        self._handle_custom(_hist_add)
+        return True
+
+    def align_to_face_and_edge(self, face, edge, offset=0, _hist_add=True):
+        """See PlaneBase.align_to_face."""
+        if super().align_to_face_and_edge(face, edge, offset) is False:
             return False
         self._handle_custom(_hist_add)
         return True
