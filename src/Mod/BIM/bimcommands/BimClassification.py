@@ -42,7 +42,7 @@ class BIM_Classification:
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Classification",
-                "Manage classification systems and apply classification on objects",
+                "Manage classification systems and apply classification to objects",
             ),
         }
 
