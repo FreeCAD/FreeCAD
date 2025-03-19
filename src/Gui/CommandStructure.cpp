@@ -82,8 +82,7 @@ void StdCmdPart::activated(int iMsg)
     "        if hasattr(obj, 'OutList') and len(obj.OutList) > 0:\n"
     "            for child in obj.OutList:\n"
     "                App.activeDocument().%s.addObject(child)\n"
-    "        else:\n"
-    "            App.activeDocument().%s.addObject(obj)\n",
+    "        App.activeDocument().%s.addObject(obj)\n",
     PartName.c_str(), PartName.c_str());
 
     doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)\n"
