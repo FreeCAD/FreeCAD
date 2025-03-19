@@ -493,7 +493,7 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
                                             Base::toDegrees(range),
                                             Base::Unit::Angle);
                 }
-                else {
+                else if (vec.Length() > Precision::Confusion()) {
                     double ovpRange =
                         Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
                     if (fabs(range - ovpRange) > Precision::Confusion()) {
