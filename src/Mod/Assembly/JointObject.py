@@ -141,6 +141,7 @@ JointParallelForbidden = [
     "Perpendicular",
 ]
 
+
 def solveIfAllowed(assembly, storePrev=False):
     if assembly.Type == "Assembly" and Preferences.preferences().GetBool(
         "SolveInJointCreation", True
@@ -179,9 +180,6 @@ class Joint:
             "Joint",
             QT_TRANSLATE_NOOP("App::Property", "The type of the joint"),
         )
-
-        self.oldJointIcon = ":/icons/Assembly_CreateJointFixed.svg"
-
         joint.JointType = JointTypes  # sets the list
         joint.JointType = JointTypes[type_index]  # set the initial value
 
@@ -191,19 +189,6 @@ class Joint:
 
     def onDocumentRestored(self, joint):
         self.createProperties(joint)
-
-    def addMissingRefProperty(self, joint):
-        joint.addProperty(
-            "App::PropertyBool",
-            "MissingReference",
-            "Joint",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This indicates if the joint needs to be skipped because of a missing element.",
-            ),
-        )
-        joint.MissingReference = False
-        joint.setEditorMode("MissingReference", 3)
 
     def createProperties(self, joint):
         self.migrationScript(joint)
@@ -422,9 +407,6 @@ class Joint:
                 ),
             )
 
-        if not hasattr(joint, "MissingReference"):
-            self.addMissingRefProperty(joint)
-
     def migrationScript(self, joint):
         if hasattr(joint, "Object1") and isinstance(joint.Object1, str):
             objName = joint.Object1
@@ -583,27 +565,12 @@ class Joint:
         """Do something when a property has changed"""
         # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
 
-        # if not hasattr(joint, "MissingReference"):
-            # self.addMissingRefProperty(joint)
-
-        if hasattr(joint, "MissingReference") and hasattr(joint, "Reference1") and hasattr(joint, "Reference2") and joint.Reference1 is not None and joint.Reference2 is not None:
-            # print("check for broken link")
-
-            if (joint.Reference1[1][0].find("?") != -1) or (joint.Reference2[1][0].find("?") != -1):
-                if joint.MissingReference == False:
-                    joint.MissingReference = True
-
-                    joint.ViewObject.signalChangeIcon()
-            else:
-                if joint.MissingReference == True:
-                    joint.MissingReference = False
-
-                    joint.ViewObject.signalChangeIcon()
-
-
         # during loading the onchanged may be triggered before full init.
         if App.isRestoring():
             return
+
+        if prop == "Reference1" or prop == "Reference2":
+            joint.recompute()
 
         if prop == "Offset1" or prop == "Offset2":
             if joint.Reference1 is None or joint.Reference2 is None:
@@ -627,10 +594,21 @@ class Joint:
                 self.preventParallel(joint)
             solveIfAllowed(self.getAssembly(joint))
 
-    def execute(self, fp):
-        """Do something when doing a recomputation, this method is mandatory"""
-        # App.Console.PrintMessage("Recompute Python Box feature\n")
-        pass
+    def execute(self, joint):
+        errStr = joint.Label + ": " + QT_TRANSLATE_NOOP("Assembly", "Broken link in: ")
+        if (
+            hasattr(joint, "Reference1")
+            and joint.Reference1 is not None
+            and (joint.Reference1[1][0].find("?") != -1)
+        ):
+            raise Exception(errStr + "Reference1")
+
+        if (
+            hasattr(joint, "Reference2")
+            and joint.Reference2 is not None
+            and (joint.Reference2[1][0].find("?") != -1)
+        ):
+            raise Exception(errStr + "Reference2")
 
     def setJointConnectors(self, joint, refs):
         # current selection is a vector of strings like "Assembly.Assembly1.Assembly2.Body.Pad.Edge16" including both what selection return as obj_name and obj_sub
@@ -910,9 +888,6 @@ class ViewProviderJoint:
             self.switch_JCS_preview.onChanged(vp, prop)
 
     def getIcon(self):
-        if hasattr(self.app_obj, "MissingReference"):
-            if self.app_obj.MissingReference == True:
-                return ":/icons/Assembly_BrokenJoint.svg"
         if self.app_obj.JointType == "Fixed":
             return ":/icons/Assembly_CreateJointFixed.svg"
         elif self.app_obj.JointType == "Revolute":
