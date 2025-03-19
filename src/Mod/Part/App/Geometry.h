@@ -128,6 +128,8 @@ public:
     void scale(const Base::Vector3d& vec, double scale) const;
     void transform(const Base::Matrix4D& mat) const;
     void translate(const Base::Vector3d& vec) const;
+    
+    virtual Base::Vector3d getPoint(const PointPos posId) const;
 
 protected:
     /// create a new tag for the geometry object
@@ -177,7 +179,7 @@ public:
     const Handle(Geom_Geometry)& handle() const override;
     void setHandle(const Handle(Geom_CartesianPoint)&);
 
-    Base::Vector3d getPoint()const;
+    Base::Vector3d getPoint(PointPos posId=PointPos::start) const override;
     void setPoint(const Base::Vector3d&);
 
 private:
@@ -257,6 +259,7 @@ public:
     ~GeomBoundedCurve() override;
 
     // Geometry helper
+    virtual Base::Vector3d getPoint(const PointPos posId) const override;
     virtual Base::Vector3d getStartPoint() const;
     virtual Base::Vector3d getEndPoint() const;
 };
@@ -478,6 +481,7 @@ public:
     ~GeomArcOfConic() override;
     Geometry *copy() const override = 0;
 
+    Base::Vector3d getPoint(const PointPos posId) const override;
     Base::Vector3d getStartPoint(bool emulateCCWXY) const;
     Base::Vector3d getEndPoint(bool emulateCCWXY) const;
 
@@ -525,6 +529,8 @@ public:
     explicit GeomCircle(const Handle(Geom_Circle)&);
     ~GeomCircle() override;
     Geometry *copy() const override;
+
+    Base::Vector3d getPoint(const PointPos posId) const override;
 
     GeomCurve* createArc(double first, double last) const override;
     double getRadius() const;
@@ -587,6 +593,8 @@ public:
     explicit GeomEllipse(const Handle(Geom_Ellipse)&);
     ~GeomEllipse() override;
     Geometry *copy() const override;
+
+    Base::Vector3d getPoint(PointPos PosId) const override;
 
     GeomCurve* createArc(double first, double last) const override;
     double getMajorRadius() const;
@@ -812,6 +820,7 @@ public:
     ~GeomLineSegment() override;
     Geometry *copy() const override;
 
+    Base::Vector3d getPoint(const PointPos posId) const override;
     Base::Vector3d getStartPoint() const override;
     Base::Vector3d getEndPoint() const override;
 
