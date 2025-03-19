@@ -475,6 +475,7 @@ def initialize_properties(obj):
             "ExtensionLengthDefault",
             "Extension",
             QT_TRANSLATE_NOOP("App::Property", "Default length of extensions."),
+            locked=True,
         )
     if not hasattr(obj, "ExtensionFeature"):
         obj.addProperty(
@@ -482,6 +483,7 @@ def initialize_properties(obj):
             "ExtensionFeature",
             "Extension",
             QT_TRANSLATE_NOOP("App::Property", "List of features to extend."),
+            locked=True,
         )
     if not hasattr(obj, "ExtensionCorners"):
         obj.addProperty(
@@ -492,6 +494,7 @@ def initialize_properties(obj):
                 "App::Property",
                 "When enabled connected extension edges are combined to wires.",
             ),
+            locked=True,
         )
         obj.ExtensionCorners = True
 

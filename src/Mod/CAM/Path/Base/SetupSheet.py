@@ -113,24 +113,28 @@ class SetupSheet:
             "VertRapid",
             "ToolController",
             QT_TRANSLATE_NOOP("App::Property", "Default speed for horizontal rapid moves."),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertySpeed",
             "HorizRapid",
             "ToolController",
             QT_TRANSLATE_NOOP("App::Property", "Default speed for vertical rapid moves."),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyStringList",
             "CoolantModes",
             "CoolantMode",
             QT_TRANSLATE_NOOP("App::Property", "Coolant Modes"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "CoolantMode",
             "CoolantMode",
             QT_TRANSLATE_NOOP("App::Property", "Default coolant mode."),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLength",
@@ -140,12 +144,14 @@ class SetupSheet:
                 "App::Property",
                 "The usage of this field depends on SafeHeightExpression - by default its value is added to the start depth and used for the safe height of an operation.",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyString",
             "SafeHeightExpression",
             "OperationHeights",
             QT_TRANSLATE_NOOP("App::Property", "Expression for the safe height of new operations."),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLength",
@@ -155,6 +161,7 @@ class SetupSheet:
                 "App::Property",
                 "The usage of this field depends on ClearanceHeightExpression - by default is value is added to the start depth and used for the clearance height of an operation.",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyString",
@@ -164,6 +171,7 @@ class SetupSheet:
                 "App::Property",
                 "Expression for the clearance height of new operations.",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyString",
@@ -172,6 +180,7 @@ class SetupSheet:
             QT_TRANSLATE_NOOP(
                 "App::Property", "Expression used for the start depth of new operations."
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyString",
@@ -180,12 +189,14 @@ class SetupSheet:
             QT_TRANSLATE_NOOP(
                 "App::Property", "Expression used for the final depth of new operations."
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyString",
             "StepDownExpression",
             "OperationDepths",
             QT_TRANSLATE_NOOP("App::Property", "Expression used for step down of new operations."),
+            locked=True,
         )
 
         obj.SafeHeightOffset = self.decodeAttributeString(self.DefaultSafeHeightOffset)
@@ -383,6 +394,7 @@ class SetupSheet:
                 "CoolantModes",
                 "CoolantMode",
                 QT_TRANSLATE_NOOP("App::Property", "Coolant Modes"),
+                locked=True,
             )
             obj.CoolantModes = self.DefaultCoolantModes
 
@@ -392,6 +404,7 @@ class SetupSheet:
                 "CoolantMode",
                 "CoolantMode",
                 QT_TRANSLATE_NOOP("App::Property", "Default coolant mode."),
+                locked=True,
             )
             obj.CoolantMode = self.DefaultCoolantModes
 

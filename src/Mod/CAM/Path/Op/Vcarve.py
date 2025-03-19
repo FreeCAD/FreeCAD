@@ -281,6 +281,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 "BaseShapes",
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Additional base objects to be engraved"),
+                locked=True,
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
 
@@ -289,6 +290,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             "OptimizeMovements",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Optimize movements"),
+            locked=True,
         )
 
         obj.addProperty(
@@ -296,6 +298,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             "FinishingPass",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Add finishing pass"),
+            locked=True,
         )
 
         obj.addProperty(
@@ -303,6 +306,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             "FinishingPassZOffset",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Finishing pass Z offset"),
+            locked=True,
         )
 
         obj.FinishingPass = False
@@ -315,6 +319,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             "Discretize",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The deflection value for discretizing arcs"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyFloat",
@@ -325,12 +330,14 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 "Cutoff for removing colinear segments (degrees). \
                         default=10.0.",
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyFloat",
             "Tolerance",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Vcarve Tolerance"),
+            locked=True,
         )
 
         obj.Colinear = 10.0

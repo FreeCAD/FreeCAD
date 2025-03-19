@@ -113,6 +113,7 @@ class ObjectOp(object):
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The base geometry for this operation"),
+            locked=True,
         )
 
     def addOpValues(self, obj, values):
@@ -122,6 +123,7 @@ class ObjectOp(object):
                 "OpStartDepth",
                 "Op Values",
                 QT_TRANSLATE_NOOP("App::Property", "Holds the calculated value for the StartDepth"),
+                locked=True,
             )
             obj.setEditorMode("OpStartDepth", 1)  # read-only
         if "final" in values:
@@ -130,6 +132,7 @@ class ObjectOp(object):
                 "OpFinalDepth",
                 "Op Values",
                 QT_TRANSLATE_NOOP("App::Property", "Holds the calculated value for the FinalDepth"),
+                locked=True,
             )
             obj.setEditorMode("OpFinalDepth", 1)  # read-only
         if "tooldia" in values:
@@ -138,6 +141,7 @@ class ObjectOp(object):
                 "OpToolDiameter",
                 "Op Values",
                 QT_TRANSLATE_NOOP("App::Property", "Holds the diameter of the tool"),
+                locked=True,
             )
             obj.setEditorMode("OpToolDiameter", 1)  # read-only
         if "stockz" in values:
@@ -146,6 +150,7 @@ class ObjectOp(object):
                 "OpStockZMax",
                 "Op Values",
                 QT_TRANSLATE_NOOP("App::Property", "Holds the max Z value of Stock"),
+                locked=True,
             )
             obj.setEditorMode("OpStockZMax", 1)  # read-only
             obj.addProperty(
@@ -153,6 +158,7 @@ class ObjectOp(object):
                 "OpStockZMin",
                 "Op Values",
                 QT_TRANSLATE_NOOP("App::Property", "Holds the min Z value of Stock"),
+                locked=True,
             )
             obj.setEditorMode("OpStockZMin", 1)  # read-only
 
@@ -418,6 +424,7 @@ class ObjectOp(object):
                     "CoolantMode",
                     "Path",
                     QT_TRANSLATE_NOOP("App::Property", "Coolant option for this operation"),
+                    locked=True,
                 )
                 for n in self.opPropertyEnumerations():
                     if n[0] == "CoolantMode":
@@ -438,6 +445,7 @@ class ObjectOp(object):
                 "CycleTime",
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
+                locked=True,
             )
 
         if FeatureStepDown & features and not hasattr(obj, "StepDown"):
@@ -446,6 +454,7 @@ class ObjectOp(object):
                 "StepDown",
                 "Depth",
                 QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"),
+                locked=True,
             )
             obj.StepDown = 0
 

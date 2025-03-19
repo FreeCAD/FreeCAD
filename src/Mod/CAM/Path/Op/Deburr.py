@@ -123,18 +123,21 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             "Width",
             "Deburr",
             QT_TRANSLATE_NOOP("App::Property", "The desired width of the chamfer"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
             "ExtraDepth",
             "Deburr",
             QT_TRANSLATE_NOOP("App::Property", "The additional depth of the toolpath"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "Join",
             "Deburr",
             QT_TRANSLATE_NOOP("App::Property", "How to join chamfer segments"),
+            locked=True,
         )
         # obj.Join = ["Round", "Miter"]
         obj.setEditorMode("Join", 2)  # hide for now
@@ -143,6 +146,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             "Direction",
             "Deburr",
             QT_TRANSLATE_NOOP("App::Property", "Direction of toolpath"),
+            locked=True,
         )
         # obj.Direction = ["CW", "CCW"]
         obj.addProperty(
@@ -150,6 +154,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             "Side",
             "Deburr",
             QT_TRANSLATE_NOOP("App::Property", "Side of base object"),
+            locked=True,
         )
         obj.Side = ["Outside", "Inside"]
         obj.setEditorMode("Side", 2)  # Hide property, it's calculated by op
@@ -158,6 +163,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             "EntryPoint",
             "Deburr",
             QT_TRANSLATE_NOOP("App::Property", "The segment where the toolpath starts"),
+            locked=True,
         )
 
         ENUMS = self.propertyEnumerations()

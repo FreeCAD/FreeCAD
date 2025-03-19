@@ -59,42 +59,49 @@ class ObjectDressup:
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The base toolpath to modify"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "LeadIn",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Calculate roll-on to toolpath"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "LeadOut",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Calculate roll-off from toolpath"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "KeepToolDown",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Keep the Tool Down in toolpath"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
             "Length",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Length or Radius of the approach"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
             "LengthOut",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Length or Radius of the exit"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "StyleOn",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The Style of motion into the toolpath"),
+            locked=True,
         )
         obj.StyleOn = lead_styles
         obj.addProperty(
@@ -102,6 +109,7 @@ class ObjectDressup:
             "StyleOff",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The Style of motion out of the toolpath"),
+            locked=True,
         )
         obj.StyleOff = lead_styles
         obj.addProperty(
@@ -109,24 +117,28 @@ class ObjectDressup:
             "ExtendLeadIn",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Extends LeadIn distance"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
             "ExtendLeadOut",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Extends LeadOut distance"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "RapidPlunge",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Perform plunges with G0"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "IncludeLayers",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Apply LeadInOut to layers within an operation"),
+            locked=True,
         )
         obj.Proxy = self
 

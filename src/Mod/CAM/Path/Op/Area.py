@@ -95,6 +95,7 @@ class ObjectOp(PathOp.ObjectOp):
             "SplitArcs",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Split Arcs into discrete segments"),
+            locked=True,
         )
 
         self.initAreaOp(obj)
@@ -156,6 +157,7 @@ class ObjectOp(PathOp.ObjectOp):
                 "SplitArcs",
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Split Arcs into discrete segments"),
+                locked=True,
             )
 
         self.areaOpOnDocumentRestored(obj)

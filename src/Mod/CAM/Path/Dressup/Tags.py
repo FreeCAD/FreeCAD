@@ -906,42 +906,49 @@ class ObjectTagDressup:
             "Base",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLength",
             "Width",
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "Width of tags."),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLength",
             "Height",
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "Height of tags."),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyAngle",
             "Angle",
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "Angle of tag plunge and ascent."),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyLength",
             "Radius",
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "Radius of the fillet for the tag."),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyVectorList",
             "Positions",
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "Locations of inserted holding tags"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyIntegerList",
             "Disabled",
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "IDs of disabled holding tags"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyInteger",
@@ -951,6 +958,7 @@ class ObjectTagDressup:
                 "App::Property",
                 "Factor determining the # of segments used to approximate rounded tags.",
             ),
+            locked=True,
         )
 
         self.obj = obj

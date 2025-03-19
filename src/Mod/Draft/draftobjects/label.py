@@ -67,7 +67,8 @@ class Label(DraftAnnotation):
             obj.addProperty("App::PropertyVector",
                             "TargetPoint",
                             "Target",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.TargetPoint = App.Vector(2, -1, 0)
 
         if "Target" not in properties:
@@ -81,7 +82,8 @@ class Label(DraftAnnotation):
             obj.addProperty("App::PropertyLinkSub",
                             "Target",
                             "Target",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Target = None
 
     def set_leader_properties(self, obj):
@@ -111,7 +113,8 @@ class Label(DraftAnnotation):
             obj.addProperty("App::PropertyVectorList",
                             "Points",
                             "Leader",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Points = []
 
         if "StraightDirection" not in properties:
@@ -126,7 +129,8 @@ class Label(DraftAnnotation):
             obj.addProperty("App::PropertyEnumeration",
                             "StraightDirection",
                             "Leader",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.StraightDirection = ["Horizontal", "Vertical", "Custom"]
 
         if "StraightDistance" not in properties:
@@ -144,7 +148,8 @@ class Label(DraftAnnotation):
             obj.addProperty("App::PropertyDistance",
                             "StraightDistance",
                             "Leader",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.StraightDistance = 1
 
     def set_label_properties(self, obj):
@@ -158,7 +163,8 @@ class Label(DraftAnnotation):
             obj.addProperty("App::PropertyPlacement",
                             "Placement",
                             "Label",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Placement = App.Placement()
 
         if "CustomText" not in properties:
@@ -168,7 +174,8 @@ class Label(DraftAnnotation):
             obj.addProperty("App::PropertyStringList",
                             "CustomText",
                             "Label",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.CustomText = "Label"
 
         if "Text" not in properties:
@@ -183,7 +190,8 @@ class Label(DraftAnnotation):
             obj.addProperty("App::PropertyStringList",
                             "Text",
                             "Label",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.setEditorMode("Text", 1)  # Read only
 
         # TODO: maybe here we can define a second and third 'label type'
@@ -218,7 +226,8 @@ class Label(DraftAnnotation):
             obj.addProperty("App::PropertyEnumeration",
                             "LabelType",
                             "Label",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.LabelType = get_label_types()
 
     def onDocumentRestored(self, obj):

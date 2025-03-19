@@ -79,6 +79,7 @@ class ESwriter:
                     "File where capacitance matrix is being saved\n"
                     "Only used if 'CalculateCapacitanceMatrix' is true"
                 ),
+                locked=True,
             )
             equation.CapacitanceMatrixFilename = "cmatrix.dat"
         if not hasattr(equation, "ConstantWeights"):
@@ -87,6 +88,7 @@ class ESwriter:
                 "ConstantWeights",
                 "Electrostatic",
                 "Use constant weighting for results",
+                locked=True,
             )
         if not hasattr(equation, "PotentialDifference"):
             equation.addProperty(
@@ -97,6 +99,7 @@ class ESwriter:
                     "Potential difference in Volt for which capacitance is\n"
                     "calculated if 'CalculateCapacitanceMatrix' is false"
                 ),
+                locked=True,
             )
             equation.PotentialDifference = 0.0
 

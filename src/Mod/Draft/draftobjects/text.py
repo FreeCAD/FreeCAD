@@ -56,7 +56,8 @@ class Text(DraftAnnotation):
             obj.addProperty("App::PropertyPlacement",
                             "Placement",
                             "Base",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Placement = App.Placement()
 
         if "Text" not in properties:
@@ -68,7 +69,8 @@ class Text(DraftAnnotation):
             obj.addProperty("App::PropertyStringList",
                             "Text",
                             "Base",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Text = []
 
     def onDocumentRestored(self,obj):

@@ -94,6 +94,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             "BoundaryShape",
             "Face",
             QT_TRANSLATE_NOOP("App::Property", "Shape to use for calculating Boundary"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -102,6 +103,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             QT_TRANSLATE_NOOP(
                 "App::Property", "Clear edges of surface (Only applicable to BoundBox)"
             ),
+            locked=True,
         )
         if not hasattr(obj, "ExcludeRaisedAreas"):
             obj.addProperty(
@@ -109,6 +111,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                 "ExcludeRaisedAreas",
                 "Face",
                 QT_TRANSLATE_NOOP("App::Property", "Exclude milling raised areas inside the face."),
+                locked=True,
             )
 
         for n in self.propertyEnumerations():

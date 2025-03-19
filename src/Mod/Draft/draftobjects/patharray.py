@@ -216,7 +216,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyLinkGlobal",
                             "Base",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Base = None
 
         if "PathObject" not in properties:
@@ -224,7 +225,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyLinkGlobal",
                             "PathObject",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.PathObject = None
 
         # TODO: the 'PathSubelements' property must be changed,
@@ -239,7 +241,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyLinkSubListGlobal",
                             "PathSubelements",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.PathSubelements = []
 
         if "Fuse" not in properties:
@@ -250,7 +253,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "Fuse",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Fuse = False
 
         if self.use_link and "ExpandArray" not in properties:
@@ -258,7 +262,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "ExpandArray",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.ExpandArray = False
             obj.setPropertyStatus('Shape', 'Transient')
 
@@ -269,7 +274,8 @@ class PathArray(DraftLink):
                 obj.addProperty("App::PropertyPlacementList",
                                 "PlacementList",
                                 "Objects",
-                                _tip)
+                                _tip,
+                                locked=True)
                 obj.PlacementList = []
 
     def set_align_properties(self, obj, properties):
@@ -279,7 +285,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyVectorDistance",
                             "ExtraTranslation",
                             "Alignment",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.ExtraTranslation = App.Vector(0, 0, 0)
 
         if "TangentVector" not in properties:
@@ -287,7 +294,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyVector",
                             "TangentVector",
                             "Alignment",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.TangentVector = App.Vector(1, 0, 0)
 
         if "ForceVertical" not in properties:
@@ -295,7 +303,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "ForceVertical",
                             "Alignment",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.ForceVertical = False
 
         if "VerticalVector" not in properties:
@@ -303,7 +312,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyVector",
                             "VerticalVector",
                             "Alignment",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.VerticalVector = App.Vector(0, 0, 1)
 
         if "AlignMode" not in properties:
@@ -311,7 +321,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyEnumeration",
                             "AlignMode",
                             "Alignment",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.AlignMode = ["Original", "Frenet", "Tangent"]
             obj.AlignMode = "Original"
 
@@ -320,7 +331,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "ReversePath",
                             "Alignment",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.ReversePath = False
 
         # The Align property must be attached after other align properties
@@ -330,7 +342,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "Align",
                             "Alignment",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Align = False
 
     def set_spacing_properties(self, obj, properties):
@@ -340,7 +353,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyInteger",
                             "Count",
                             "Spacing",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Count = 4
 
         if "SpacingMode" not in properties:
@@ -354,7 +368,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyEnumeration",
                             "SpacingMode",
                             "Spacing",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.SpacingMode = ["Fixed count", "Fixed spacing", "Fixed count and spacing"]
             obj.SpacingMode = "Fixed count"
 
@@ -363,7 +378,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyLength",
                             "SpacingUnit",
                             "Spacing",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.SpacingUnit = 20.0
             obj.setPropertyStatus("SpacingUnit", "Hidden")
 
@@ -372,7 +388,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "UseSpacingPattern",
                             "Spacing",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.UseSpacingPattern = False
 
         if "SpacingPattern" not in properties:
@@ -380,7 +397,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyFloatList",
                             "SpacingPattern",
                             "Spacing",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.SpacingPattern = [1, 2]
             obj.setPropertyStatus("SpacingPattern", "Hidden")
 
@@ -389,7 +407,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyLength",
                             "StartOffset",
                             "Spacing",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.StartOffset = 0.0
 
         if "EndOffset" not in properties:
@@ -397,7 +416,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyLength",
                             "EndOffset",
                             "Spacing",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.EndOffset = 0.0
 
     def linkSetup(self, obj):

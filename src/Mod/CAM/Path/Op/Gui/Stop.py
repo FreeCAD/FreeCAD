@@ -38,6 +38,7 @@ class Stop:
             "Stop",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Add Optional or Mandatory Stop to the program"),
+            locked=True,
         )
         obj.Stop = ["Optional", "Mandatory"]
         obj.Proxy = self

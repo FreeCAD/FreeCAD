@@ -36,6 +36,7 @@ class Fixture:
             "Fixture",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Fixture Offset Number"),
+            locked=True,
         )
         obj.Fixture = [
             "G54",
@@ -61,6 +62,7 @@ class Fixture:
             QT_TRANSLATE_NOOP(
                 "App::Property", "Make False, to prevent operation from generating code"
             ),
+            locked=True,
         )
 
         obj.Proxy = self

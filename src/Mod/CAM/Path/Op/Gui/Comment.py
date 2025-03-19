@@ -39,6 +39,7 @@ class Comment:
             "Comment",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Comment or note for CNC program"),
+            locked=True,
         )
         obj.Proxy = self
         mode = 2

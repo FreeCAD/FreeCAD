@@ -64,6 +64,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 "UseOutline",
                 "Pocket",
                 QT_TRANSLATE_NOOP("App::Property", "Uses the outline of the base geometry."),
+                locked=True,
             )
 
         FeatureExtensions.initialize_properties(obj)

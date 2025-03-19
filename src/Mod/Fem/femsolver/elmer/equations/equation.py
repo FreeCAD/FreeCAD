@@ -50,6 +50,7 @@ class Proxy(equationbase.BaseProxy):
                 "The equation with highest number\n"
                 "will be solved first."
             ),
+            locked=True,
         )
 
 

@@ -67,6 +67,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 "BaseShapes",
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Additional base objects to be engraved"),
+                locked=True,
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
         if not hasattr(obj, "BaseObject"):
@@ -75,6 +76,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 "BaseObject",
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Additional base objects to be engraved"),
+                locked=True,
             )
         obj.setEditorMode("BaseObject", 2)  # hide
 
@@ -85,6 +87,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             "StartVertex",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The vertex index to start the toolpath from"),
+            locked=True,
         )
         self.setupAdditionalProperties(obj)
 

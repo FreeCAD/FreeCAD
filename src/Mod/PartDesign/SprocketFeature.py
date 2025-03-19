@@ -136,7 +136,7 @@ class Sprocket:
             "App::PropertyEnumeration",
             "SprocketReference",
             "Sprocket",
-            "Sprocket Reference",
+            "Sprocket Reference", locked=True,
         )
         obj.SprocketReference = list(self.sprockRef)
         obj.Proxy = self
@@ -148,7 +148,7 @@ class Sprocket:
     def _ensure_properties(self, obj, is_restore):
         def ensure_property(type_, name, doc, default):
             if not hasattr(obj, name):
-                obj.addProperty(type_, name, "Sprocket")
+                obj.addProperty(type_, name, "Sprocket", locked=True)
                 if callable(default):
                     setattr(obj, name, default())
                 else:

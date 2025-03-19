@@ -87,14 +87,16 @@ class ObjectCustom(PathOp.ObjectOp):
             "App::PropertyEnumeration",
             "Source",
             "Path",
-            "Source of gcode (text, file, ...)",
+            QT_TRANSLATE_NOOP("App::Property", "Source of gcode (text, file, ...)"),
+            locked=True,
         )
 
         obj.addProperty(
             "App::PropertyFile",
             "GcodeFile",
             "Path",
-            "File containing gcode to be inserted",
+            QT_TRANSLATE_NOOP("App::Property", "File containing gcode to be inserted"),
+            locked=True,
         )
 
         obj.addProperty(
@@ -102,6 +104,7 @@ class ObjectCustom(PathOp.ObjectOp):
             "Gcode",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The G-code to be inserted"),
+            locked=True,
         )
 
         # populate the property enumerations
@@ -121,7 +124,8 @@ class ObjectCustom(PathOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "Source",
                 "Path",
-                "Source of gcode (text, file, ...)",
+                QT_TRANSLATE_NOOP("App::Property", "Source of gcode (text, file, ...)"),
+                locked=True,
             )
 
         if not hasattr(obj, "GcodeFile"):
@@ -129,7 +133,8 @@ class ObjectCustom(PathOp.ObjectOp):
                 "App::PropertyFile",
                 "GcodeFile",
                 "Path",
-                "File containing gcode to be inserted",
+                QT_TRANSLATE_NOOP("App::Property", "File containing gcode to be inserted"),
+                locked=True,
             )
 
         # populate the property enumerations

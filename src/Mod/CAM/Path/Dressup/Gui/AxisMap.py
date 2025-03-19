@@ -52,18 +52,21 @@ class ObjectDressup:
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "AxisMap",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The input mapping axis"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyDistance",
             "Radius",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The radius of the wrapped axis"),
+            locked=True,
         )
         obj.AxisMap = maplist
         obj.AxisMap = "Y->A"
