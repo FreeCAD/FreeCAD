@@ -765,7 +765,7 @@
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>inCommandRecenter</cstring>
+         <cstring>inCommandShortcutRecenter</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
