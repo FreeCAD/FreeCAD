@@ -348,8 +348,6 @@ fi
 %files data
 %{_datadir}/%{name}/
 %{_docdir}/%{name}/LICENSE.html
-# Please see note above about keeping it for now until merged
-# completely with licence tab./ljo
 %{_docdir}/%{name}/ThirdPartyLibraries.html
 
 %changelog
