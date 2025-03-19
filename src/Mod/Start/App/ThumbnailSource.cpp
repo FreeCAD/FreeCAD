@@ -153,6 +153,12 @@ void ThumbnailSource::setupF3D()
         return;
     }
 
+    // This method makes repeated blocking calls to f3d (both directly, the call below, and
+    // indirectly, by calling getF3DOptions). By holding the mutex above, it ensures that these
+    // calls complete before any process can attempt to make a real call to f3d to create thumbnail
+    // data. ThumbnailSource is run in its own thread, so blocking here is appropriate and will not
+    // affect any other part of the program.
+
     _f3d.initialized = true;  // Set immediately so we can use early-return below
     const ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
