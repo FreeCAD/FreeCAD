@@ -24,15 +24,14 @@
 #ifndef FREECAD_THUMBNAIL_SOURCE_H
 #define FREECAD_THUMBNAIL_SOURCE_H
 
+#include <QMutex>
+#include <QObject>
+#include <QProcess>
 #include <QRunnable>
 #include <QString>
-#include <QObject>
-#include <QMutex>
 #include <QStringList>
 
 #include <memory>
-
-class QProcess;
 
 namespace Start
 {
@@ -65,10 +64,14 @@ public:
 
 private:
     static void setupF3D();
+    void f3dRunFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
     QString _file;
+    QString _thumbnailPath;
     ThumbnailSourceSignals _signals;
     std::unique_ptr<QProcess> _process;
+    bool _killed {false};
+    QMetaObject::Connection _finishedConnection;
 
     /// Gather together all of the f3d information protected by the mutex: data in this struct
     /// should be accessed only after a call to setupF3D() to ensure synchronization.

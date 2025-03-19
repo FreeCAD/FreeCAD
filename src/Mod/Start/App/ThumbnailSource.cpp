@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QFile>
+#include <QMetaObject>
+#include <QObject>
 #include <QProcess>
 #include <QMutexLocker>
 #endif
@@ -48,6 +50,9 @@ ThumbnailSource::ThumbnailSource(QString file)
 ThumbnailSource::~ThumbnailSource()
 {
     if (_process && _process->state() == QProcess::Running) {
+        if (_finishedConnection) {
+            QObject::disconnect(_finishedConnection);
+        }
         _process->kill();
         _process->waitForFinished();
     }
@@ -60,8 +65,8 @@ ThumbnailSourceSignals* ThumbnailSource::signals()
 
 void ThumbnailSource::run()
 {
-    const QString thumbnailPath = getPathToCachedThumbnail(_file);
-    if (!useCachedThumbnail(thumbnailPath, _file)) {
+    _thumbnailPath = getPathToCachedThumbnail(_file);
+    if (!useCachedThumbnail(_thumbnailPath, _file)) {
         setupF3D();  // Go through the mutex to ensure data is not stale
         if (_f3d.major < 2) {
             return;
@@ -70,35 +75,22 @@ void ThumbnailSource::run()
             "User parameter:BaseApp/Preferences/Mod/Start");
         const auto f3d = QString::fromUtf8(hGrp->GetASCII("f3d", "f3d").c_str());
         QStringList args(_f3d.baseArgs);
-        args << QLatin1String("--output=") + thumbnailPath << _file;
+        args << QLatin1String("--output=") + _thumbnailPath << _file;
 
         _process = std::make_unique<QProcess>();
+        _finishedConnection =
+            QObject::connect(_process.get(),
+                             &QProcess::finished,
+                             /*ThumbnailSource is not derived from QObject, so wrap the signal in a
+                               lambda to propagate it.*/
+                             [this](int exitCode, QProcess::ExitStatus exitStatus) {
+                                 this->f3dRunFinished(exitCode, exitStatus);
+                             });
         Base::Console().Log("Creating thumbnail for %s...\n", _file.toStdString());
         _process->start(f3d, args);
-        constexpr int checkEveryMs {50};
-        while (!_process->waitForFinished(checkEveryMs)) {
-            if (QThread::currentThread()->isInterruptionRequested()) {
-                _process->kill();
-                break;
-            }
-        }
-        if (_process->exitCode() != 0) {
-            Base::Console().Log("Creating thumbnail for %s failed\n", _file.toStdString());
-            return;
-        }
-        Base::Console().Log("Creating thumbnail for %s succeeded, wrote to %s\n",
-                            _file.toStdString(),
-                            thumbnailPath.toStdString());
-    }
-
-    if (QFile thumbnailFile(thumbnailPath); thumbnailFile.exists()) {
-        thumbnailFile.open(QIODevice::OpenModeFlag::ReadOnly);
-        Q_EMIT _signals.thumbnailAvailable(_file, thumbnailFile.readAll());
     }
 }
 
-namespace
-{
 std::tuple<int, int, int> extractF3DVersion(const QString& stdoutString)
 {
     int major {0};
@@ -153,7 +145,6 @@ QStringList getF3DOptions(const QString& f3d)
     }
     return goodOptions;
 }
-}  // namespace
 
 void ThumbnailSource::setupF3D()
 {
@@ -180,5 +171,25 @@ void ThumbnailSource::setupF3D()
     _f3d.minor = std::get<1>(version);
     if (_f3d.major >= 2) {
         _f3d.baseArgs = getF3DOptions(f3d);
+    }
+}
+
+void ThumbnailSource::f3dRunFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    if (exitStatus == QProcess::CrashExit) {
+        Base::Console().Log("Creating thumbnail for %s crashed\n", _file.toStdString());
+        return;
+    }
+    if (exitCode != 0) {
+        Base::Console().Log("Creating thumbnail for %s failed\n", _file.toStdString());
+        return;
+    }
+    Base::Console().Log("Creating thumbnail for %s succeeded, wrote to %s\n",
+                        _file.toStdString(),
+                        _thumbnailPath.toStdString());
+
+    if (QFile thumbnailFile(_thumbnailPath); thumbnailFile.exists()) {
+        thumbnailFile.open(QIODevice::OpenModeFlag::ReadOnly);
+        Q_EMIT _signals.thumbnailAvailable(_file, thumbnailFile.readAll());
     }
 }

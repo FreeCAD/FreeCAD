@@ -55,7 +55,10 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QMetaObject>
 #include <QMutexLocker>
+#include <QObject>
+#include <QProcess>
 #include <QStandardPaths>
 #include <QString>
 #include <QThreadPool>
