@@ -93,7 +93,7 @@ Branding::XmlConfig Branding::getUserDefines() const
             std::string name = child.localName().toLatin1().constData();
             std::string value = child.text().toUtf8().constData();
             if (std::ranges::find(filter, name) != filter.end()) {
-                cfg[name] = value;
+                cfg[name] = std::move(value);
             }
             child = child.nextSiblingElement();
         }

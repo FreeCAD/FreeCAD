@@ -55,7 +55,7 @@ public:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
     void keyPressEvent(QKeyEvent * event) override;
 
-    void setRadius(float radius) override;
+    void setRadius(double radius) override;
 
 Q_SIGNALS:
     void dragging(QPointF pos, int idx);

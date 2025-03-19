@@ -1443,7 +1443,7 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
     SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
 
     // leave some space for the text
-    double textMargin = std::min(0.2F * std::abs(range), this->imgWidth / (2 * r));
+    double textMargin = std::min(0.2F*range,  this->imgWidth/(2*r));
 
     textOffset = p0 + v0 * r;
 

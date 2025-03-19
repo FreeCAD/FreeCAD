@@ -1485,7 +1485,7 @@ void readResults(std::ifstream& ifstr,
     std::vector<double> scaValues;
     std::vector<int> nodes;
     int countNodes = 0;
-    int countScaPos;
+    size_t countScaPos;
     // result block could have both vector/matrix and scalar components
     // save each scalars entity in his own array
     auto scalarPos = identifyScalarEntities(entityTypes);
@@ -1542,7 +1542,7 @@ void readResults(std::ifstream& ifstr,
                     }
                 }
             }
-            catch (const std::out_of_range& ex) {
+            catch (const std::out_of_range&) {
                 Base::Console().Warning("Invalid node: %d\n", node);
             }
             ++countNodes;
