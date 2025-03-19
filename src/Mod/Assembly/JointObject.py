@@ -596,10 +596,10 @@ class Joint:
 
     def execute(self, joint):
         errStr = joint.Label + ": " + QT_TRANSLATE_NOOP("Assembly", "Broken link in: ")
-        if hasattr(joint, "Reference1") and (joint.Reference1[1][0].find("?") != -1):
+        if hasattr(joint, "Reference1") and joint.Reference1 is not None  and (joint.Reference1[1][0].find("?") != -1):
             raise Exception(errStr + "Reference1")
 
-        if hasattr(joint, "Reference2") and (joint.Reference2[1][0].find("?") != -1):
+        if hasattr(joint, "Reference2") and joint.Reference2 is not None  and (joint.Reference2[1][0].find("?") != -1):
             raise Exception(errStr + "Reference2")
 
     def setJointConnectors(self, joint, refs):
