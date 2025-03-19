@@ -410,8 +410,8 @@ void DSHSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
             if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                 double angle =
                     Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
-                Base::Vector2d dir2(cos(angle), sin(angle));
-                onSketchPos.ProjectToLine(onSketchPos - handler->startPoint, dir2);
+                Base::Vector2d ovpDir(cos(angle), sin(angle));
+                onSketchPos.ProjectToLine(onSketchPos - handler->startPoint, ovpDir);
                 onSketchPos += handler->startPoint;
             }
         } break;
@@ -470,10 +470,10 @@ void DSHSlotController::adaptParameters(Base::Vector2d onSketchPos)
                                         Base::Unit::Angle);
             }
             else {
-                double range2 =
+                double ovpRange =
                     Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
 
-                if (fabs(range - range2) > Precision::Confusion()) {
+                if (fabs(range - ovpRange) > Precision::Confusion()) {
                     setOnViewParameterValue(OnViewParameter::Fourth,
                                             Base::toDegrees(range),
                                             Base::Unit::Angle);
