@@ -224,6 +224,7 @@ class ViewProvider:
         return hasattr(self, "deleteOnReject") and self.deleteOnReject
 
     def setEdit(self, vobj=None, mode=0):
+        self.taskPanel = None
         Path.Log.track(mode)
         if 0 == mode:
             job = self.vobj.Object
@@ -233,8 +234,8 @@ class ViewProvider:
         return True
 
     def openTaskPanel(self, activate=None):
-        self.taskPanel = TaskPanel(self.vobj, self.deleteObjectsOnReject())
         FreeCADGui.Control.closeDialog()
+        self.taskPanel = TaskPanel(self.vobj, self.deleteObjectsOnReject())
         FreeCADGui.Control.showDialog(self.taskPanel)
         self.taskPanel.setupUi(activate)
         self.showOriginAxis(True)
@@ -696,7 +697,10 @@ class TaskPanel:
         self.vproxy = vobj.Proxy
         self.obj = vobj.Object
         self.deleteOnReject = deleteOnReject
-        self.form = FreeCADGui.PySideUic.loadUi(":/panels/PathEdit.ui")
+        self.wrapper = QtGui.QVBoxLayout()
+        self.wrapper.setContentsMargins(0, 0, 0, 0)
+        self.wrapper.addWidget(FreeCADGui.PySideUic.loadUi(":/panels/PathEdit.ui"))
+        self.form = self.wrapper
         self.template = PathJobDlg.JobTemplateExport(self.obj, self.form.jobBox.widget(1))
         self.name = self.obj.Name
 
