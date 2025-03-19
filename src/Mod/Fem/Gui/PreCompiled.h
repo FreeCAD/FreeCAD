@@ -81,6 +81,7 @@
 #include <QSlider>
 #include <QStackedWidget>
 #include <QString>
+#include <QStringList>
 #include <QTextCharFormat>
 #include <QTextStream>
 #include <QThread>
