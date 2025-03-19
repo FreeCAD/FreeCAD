@@ -161,8 +161,7 @@ class Rotate(gui_base_original.Modifier):
                 sweep = angle - self.firstangle
             self.arctrack.setApertureAngle(sweep)
             for ghost in self.ghosts:
-                if sweep:
-                    ghost.rotate(self.wp.axis, sweep)
+                ghost.rotate(self.wp.axis, sweep)
                 ghost.on()
             self.ui.setRadiusValue(math.degrees(sweep), 'Angle')
             self.ui.radiusValue.setFocus()
