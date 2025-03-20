@@ -135,7 +135,7 @@ void ViewProviderPlane::attach(App::DocumentObject * obj) {
     faceSeparator->addChild(faceSet);
 
     auto textTranslation = new SoTranslation();
-    SbVec3f centeringVec = size * SbVec3f(0.36, 0.49, 0);  // NOLINT
+    SbVec3f centeringVec = size * SbVec3f(0.36F, 0.49F, 0.0F);  // NOLINT
     textTranslation->translation.setValue(centeringVec);
     sep->addChild(textTranslation);
 

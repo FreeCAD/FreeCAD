@@ -156,6 +156,7 @@ import ArchComponent
 import ArchCommands
 import Draft
 from draftutils import params
+import re
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -177,30 +178,6 @@ else:
 #  This module provides tools to build Space objects.
 #  Spaces define an open volume inside or outside a
 #  building, ie. a room.
-
-
-
-def addSpaceBoundaries(space,subobjects):
-
-    """addSpaceBoundaries(space,subobjects): adds the given subobjects to the given space"""
-
-    import Draft
-    if Draft.getType(space) == "Space":
-        space.Proxy.addSubobjects(space,subobjects)
-
-def removeSpaceBoundaries(space,objects):
-
-    """removeSpaceBoundaries(space,objects): removes the given objects from the given spaces boundaries"""
-
-    import Draft
-    if Draft.getType(space) == "Space":
-        bounds = space.Boundaries
-        for o in objects:
-            for b in bounds:
-                if o.Name == b[0].Name:
-                    bounds.remove(b)
-                    break
-        space.Boundaries = bounds
 
 
 class _Space(ArchComponent.Component):
@@ -305,6 +282,17 @@ class _Space(ArchComponent.Component):
                         if o.Object.Name != obj.Name:
                             objs.append((o.Object,el))
         obj.Boundaries = objs
+
+    def removeSubobjects(self,obj,subobjects):
+
+        "removes subobjects to this space"
+        bounds = obj.Boundaries
+        for o in subobjects:
+            for b in bounds:
+                if o.Name == b[0].Name:
+                    bounds.remove(b)
+                    break
+        obj.Boundaries = bounds
 
     def addObject(self,obj,child):
 
@@ -454,7 +442,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
 
         pl = vobj.PropertiesList
         if not "Text" in pl:
-            vobj.addProperty("App::PropertyStringList",    "Text",        "Space",QT_TRANSLATE_NOOP("App::Property","The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data"))
+            vobj.addProperty("App::PropertyStringList",    "Text",        "Space",QT_TRANSLATE_NOOP("App::Property","The text to show. Use $area, $label, $longname, $description or any other propery name preceded with $ (case insensitive), or $floor, $walls, $ceiling for finishes, to insert the respective data"))
             vobj.Text = ["$label","$area"]
         if not "FontName" in pl:
             vobj.addProperty("App::PropertyFont",          "FontName",    "Space",QT_TRANSLATE_NOOP("App::Property","The name of the font"))
@@ -576,6 +564,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 first = True
                 for t in vobj.Text:
                     if t:
+                        t = t.replace("$label",vobj.Object.Label)
                         if hasattr(vobj.Object,"Area"):
                             from FreeCAD import Units
                             q = Units.Quantity(vobj.Object.Area.Value,Units.Area).getUserPreferred()
@@ -592,19 +581,27 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                                 if vobj.ShowUnit:
                                     qt = qt + q[2].replace("^2",u"\xb2") # square symbol
                             t = t.replace("$area",qt)
-                        t = t.replace("$label",vobj.Object.Label)
-                        if hasattr(vobj.Object,"Tag"):
-                            t = t.replace("$tag",vobj.Object.Tag)
                         if hasattr(vobj.Object,"FinishFloor"):
                             t = t.replace("$floor",vobj.Object.FinishFloor)
                         if hasattr(vobj.Object,"FinishWalls"):
                             t = t.replace("$walls",vobj.Object.FinishWalls)
                         if hasattr(vobj.Object,"FinishCeiling"):
                             t = t.replace("$ceiling",vobj.Object.FinishCeiling)
-                        if hasattr(vobj.Object,"LongName"):
-                            t = t.replace("$longname",vobj.Object.LongName)
-                        if hasattr(vobj.Object,"Description"):
-                            t = t.replace("$description",vobj.Object.Description)
+                        # replace all other properties
+                        props = vobj.Object.PropertiesList
+                        lower_props = [p.lower() for p in props]
+                        for rtag in re.findall(r"\$\w+", t):
+                            lower_rtag = rtag[1:].lower()
+                            if lower_rtag in lower_props:
+                                prop = props[lower_props.index(lower_rtag)]
+                                value = getattr(vobj.Object, prop, "")
+                                if hasattr(value, "UserString"):
+                                    value = value.UserString
+                                elif hasattr(value, "Label"):
+                                    value = value.Label
+                                elif hasattr(value, "Name"):
+                                    value = value.Name
+                                t = t.replace(rtag, str(value))
                         if first:
                             text1.append(t)
                         else:

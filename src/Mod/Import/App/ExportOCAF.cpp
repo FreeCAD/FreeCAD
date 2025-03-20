@@ -100,8 +100,7 @@ std::vector<App::DocumentObject*> ExportOCAF::filterPart(App::Part* part) const
             std::vector<App::DocumentObject*> inList = it->getInList();
             bool accept = true;
             for (auto jt : inList) {
-                auto kt = std::find(filterType.begin(), filterType.end(), jt);
-                if (kt != filterType.end()) {
+                if (auto kt = std::ranges::find(filterType, jt); kt != filterType.end()) {
                     accept = false;
                     break;
                 }

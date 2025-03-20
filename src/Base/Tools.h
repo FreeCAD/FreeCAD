@@ -145,7 +145,7 @@ inline T toDegrees(T r)
 
 inline float fromPercent(const long value)
 {
-    return std::roundf(value) / 100.0F;
+    return std::roundf(static_cast<float>(value)) / 100.0F;
 }
 
 inline long toPercent(float value)

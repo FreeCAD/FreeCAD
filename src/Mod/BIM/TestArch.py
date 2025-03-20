@@ -27,12 +27,14 @@ import os
 import unittest
 
 import FreeCAD as App
+from FreeCAD import Units
 
 import Arch
 import Draft
 import Part
 import Sketcher
 import TechDraw
+import WorkingPlane
 
 from draftutils.messages import _msg
 
@@ -817,6 +819,103 @@ class ArchTest(unittest.TestCase):
         view.Y = "15cm"
         App.ActiveDocument.recompute()
         assert True
+
+    def test_addSpaceBoundaries(self):
+        """Test the Arch.addSpaceBoundaries method.
+        Create a space and a wall that intersects it. Add the wall as a boundary to the space,
+        and check if the resulting space area is as expected.
+        """
+        operation = " Add a wall face as a boundary to a space"
+        _msg("  Test '{}'".format(operation))
+
+        # Create the space
+        pl = App.Placement()
+        pl.Rotation.Q = (0.0, 0.0, 0.0, 1.0)
+        pl.Base = App.Vector(-2000.0, -2000.0, 0.0)
+        rectangleBase = Draft.make_rectangle(
+            length=4000.0, height=4000.0, placement=pl, face=True, support=None)
+        App.ActiveDocument.recompute()
+        extr = rectangleBase.Shape.extrude(App.Vector(0,0,2000))
+        Part.show(extr, 'Extrusion')
+        space = Arch.makeSpace(App.activeDocument().getObject('Extrusion'))
+        App.ActiveDocument.recompute()  # To calculate area
+
+        # Create the wall
+        trace = Part.LineSegment(App.Vector (3000.0, 1000.0, 0.0), 
+                                 App.Vector (-3000.0, 1000.0, 0.0))
+        wp = WorkingPlane.get_working_plane()
+        base = App.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")
+        base.Placement = wp.get_placement()
+        base.addGeometry(trace)
+        wall = Arch.makeWall(base,width=200.0,height=3000.0,align="Left")
+        wall.Normal = wp.axis
+
+        # Add the boundary
+        wallBoundary = [(wall, ["Face1"])]
+        Arch.addSpaceBoundaries(App.ActiveDocument.Space, wallBoundary)
+        App.ActiveDocument.recompute()  # To recalculate area
+
+        # Assert if area is as expected
+        expectedArea = Units.parseQuantity('12 m^2')
+        actualArea = Units.parseQuantity(str(space.Area))
+
+        self.assertAlmostEqual(
+            expectedArea.Value,
+            actualArea.Value,
+            msg = (f"Invalid area value. " + 
+                   f"Expected: {expectedArea.UserString}, actual: {actualArea.UserString}"))
+
+    def test_SpaceFromSingleWall(self):
+        """Create a space from boundaries of a single wall.
+        """
+        from FreeCAD import Units
+
+        operation = "Arch Space from single wall"
+        _msg(f"\n  Test '{operation}'")
+
+        # Create a wall
+        wallInnerLength = 4000.0
+        wallHeight = 3000.0
+        wallInnerFaceArea = wallInnerLength * wallHeight
+        pl = App.Placement()
+        pl.Rotation.Q = (0.0, 0.0, 0.0, 1.0)
+        pl.Base = App.Vector(0.0, 0.0, 0.0)
+        rectangleBase = Draft.make_rectangle(
+            length=wallInnerLength, height=wallInnerLength, placement=pl, face=True, support=None)
+        App.ActiveDocument.recompute() # To calculate rectangle area
+        rectangleArea = rectangleBase.Area
+        App.ActiveDocument.getObject(rectangleBase.Name).MakeFace = False
+        wall = Arch.makeWall(baseobj=rectangleBase, height=wallHeight, align="Left")
+        App.ActiveDocument.recompute() # To calculate face areas
+
+        # Create a space from the wall's inner faces
+        boundaries = [f"Face{ind+1}" for ind, face in enumerate(wall.Shape.Faces)
+                      if round(face.Area) == round(wallInnerFaceArea)]
+
+        if App.GuiUp:
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.Selection.addSelection(wall, boundaries)
+
+            space = Arch.makeSpace(FreeCADGui.Selection.getSelectionEx())
+            # Alternative, but test takes longer to run (~10x)
+            # FreeCADGui.activateWorkbench("BIMWorkbench")
+            # FreeCADGui.runCommand('Arch_Space', 0)
+            # space = App.ActiveDocument.Space
+        else:
+            # Also tests the alternative way of specifying the boundaries
+            # [ (<Part::PartFeature>, ["Face1", ...]), ... ]
+            space = Arch.makeSpace([(wall, boundaries)])
+
+        App.ActiveDocument.recompute() # To calculate space area
+
+        # Assert if area is as expected
+        expectedArea = Units.parseQuantity(str(rectangleArea))
+        actualArea = Units.parseQuantity(str(space.Area))
+
+        self.assertAlmostEqual(
+            expectedArea.Value,
+            actualArea.Value,
+            msg = f"Invalid area value. Expected: {expectedArea.UserString}, actual: {actualArea.UserString}")
 
     def tearDown(self):
         App.closeDocument("ArchTest")
