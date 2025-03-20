@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
+# *   Reimplemented as dressup in 2025  phaseloop <phaseloop@protonmail.com *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -20,32 +20,27 @@
 # *                                                                         *
 # ***************************************************************************
 
+
 import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts
 import PathScripts.PathUtils as PathUtils
-from Path.Dressup.Utils import toolController
+from Path.Dressup.Base import DressupBase
 from PySide import QtCore
-from PySide import QtGui
-
 import math
 import random
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-__doc__ = """CAM Array object and FreeCAD command"""
+__doc__ = """CAM Array dressup"""
 
 translate = FreeCAD.Qt.translate
 
 
-class ObjectArray:
-    def __init__(self, obj):
-        obj.addProperty(
-            "App::PropertyLinkList",
-            "Base",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The toolpath(s) to array"),
-        )
+class DressupArray(DressupBase):
+    def __init__(self, obj, base, job):
+        super().__init__(obj, base)
+
         obj.addProperty(
             "App::PropertyEnumeration",
             "Type",
@@ -124,21 +119,9 @@ class ObjectArray:
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
         )
-        obj.addProperty(
-            "App::PropertyLink",
-            "ToolController",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "The tool controller that will be used to calculate the toolpath",
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "Active",
-            "Path",
-            QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"),
-        )
+        
+        self.obj = obj
+        obj.Base = base
 
         obj.Active = True
         obj.Type = ["Linear1D", "Linear2D", "Polar"]
@@ -163,15 +146,6 @@ class ObjectArray:
             angleMode = copiesMode = centreMode = 0
             copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 2
 
-        if not hasattr(obj, "JitterSeed"):
-            obj.addProperty(
-                "App::PropertyInteger",
-                "JitterSeed",
-                "Path",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
-            )
-            obj.JitterSeed = 0
-
         obj.setEditorMode("Angle", angleMode)
         obj.setEditorMode("Copies", copiesMode)
         obj.setEditorMode("Centre", centreMode)
@@ -182,52 +156,34 @@ class ObjectArray:
         obj.setEditorMode("JitterPercent", 0)
         obj.setEditorMode("JitterMagnitude", 0)
         obj.setEditorMode("JitterSeed", 0)
-        obj.setEditorMode("ToolController", 2)
 
     def onChanged(self, obj, prop):
         if prop == "Type":
             self.setEditorModes(obj)
 
-    def onDocumentRestored(self, obj):
+    def dresupOnDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
-
-        if not hasattr(obj, "Active"):
-            obj.addProperty(
-                "App::PropertyBool",
-                "Active",
-                "Path",
-                QT_TRANSLATE_NOOP(
-                    "PathOp", "Make False, to prevent operation from generating code"
-                ),
-            )
-            obj.Active = True
-
+        self.obj = obj
         self.setEditorModes(obj)
 
-    def execute(self, obj):
-        if FreeCAD.GuiUp:
+    def onDelete(self, obj, args):
+        if obj.Base:
+            job = PathUtils.findParentJob(obj)
+            if job:
+                job.Proxy.addOperation(obj.Base, obj)
+            if obj.Base.ViewObject:
+                obj.Base.ViewObject.Visibility = True
+            obj.Base = None
+        return True
 
-            QtGui.QMessageBox.warning(
-                None,
-                QT_TRANSLATE_NOOP("CAM_ArrayOp", "Operation is depreciated"),
-                QT_TRANSLATE_NOOP("CAM_ArrayOp", 
-                                  ("CAM -> Path Modification -> Array operation is depreciated "
-                                   "and will be removed in future FreeCAD versions.\n\n"
-                                   "Please use CAM -> Path Dressup -> Array instead.\n\n"
-                                   "DO NOT USE CURRENT ARRAY OPERATION WHEN MACHINING WITH COOLANT!\n"
-                                   "Due to a bug - collant will not be enabled for array paths."
-                                   )),
-            )
-        # backwards compatibility for PathArrays created before support for multiple bases
-        if isinstance(obj.Base, list):
-            base = obj.Base
-        else:
-            base = [obj.Base]
-
-        if len(base) == 0:
-            return
-
-        obj.ToolController = toolController(base[0])
+    def dressupExecute(self, obj):
+   
+        if (
+            not obj.Base
+            or not obj.Base.isDerivedFrom("Path::Feature")
+            or not obj.Base.Path
+        ):
+            return None
 
         # Do not generate paths and clear current Path data if operation not
         if not obj.Active:
@@ -263,7 +219,7 @@ class PathArray:
 
     def __init__(
         self,
-        baseList,
+        base,
         arrayType,
         copies,
         offsetVector,
@@ -276,7 +232,7 @@ class PathArray:
         jitterPercent=0,
         seed="FreeCAD",
     ):
-        self.baseList = list()
+        self.base = base
         self.arrayType = arrayType  # ['Linear1D', 'Linear2D', 'Polar']
         self.copies = copies
         self.offsetVector = offsetVector
@@ -288,12 +244,6 @@ class PathArray:
         self.jitterMagnitude = jitterMagnitude
         self.jitterPercent = jitterPercent
         self.seed = seed
-
-        if baseList:
-            if isinstance(baseList, list):
-                self.baseList = baseList
-            else:
-                self.baseList = [baseList]
 
     # Private method
     def _calculateJitter(self, pos):
@@ -312,29 +262,11 @@ class PathArray:
         """getPath() ... Call this method on an instance of the class to generate and return
         path data for the requested path array."""
 
-        if len(self.baseList) == 0:
+        if self.base is None:
             Path.Log.error(translate("PathArray", "No base objects for PathArray."))
             return None
 
-        base = self.baseList
-        for b in base:
-            if not b.isDerivedFrom("Path::Feature"):
-                return
-            if not b.Path:
-                return
-
-            b_tool_controller = toolController(b)
-            if not b_tool_controller:
-                return
-
-            if b_tool_controller != toolController(base[0]):
-                # this may be important if Job output is split by tool controller
-                Path.Log.warning(
-                    translate(
-                        "PathArray",
-                        "Arrays of toolpaths having different tool controllers are handled according to the tool controller of the first path.",
-                    )
-                )
+        base = self.base
 
         # build copies
         output = ""
@@ -349,13 +281,13 @@ class PathArray:
                 )
                 pos = self._calculateJitter(pos)
 
-                for b in base:
-                    pl = FreeCAD.Placement()
-                    pl.move(pos)
-                    np = Path.Path(
-                        [cm.transform(pl) for cm in PathUtils.getPathWithPlacement(b).Commands]
-                    )
-                    output += np.toGCode()
+                pl = FreeCAD.Placement()
+                pl.move(pos)
+                np = Path.Path(
+                    [cm.transform(pl) for cm in PathUtils.getPathWithPlacement(base).Commands]
+                )
+
+                output += np.toGCode()
 
         elif self.arrayType == "Linear2D":
             if self.swapDirection:
@@ -375,18 +307,18 @@ class PathArray:
                             )
                         pos = self._calculateJitter(pos)
 
-                        for b in base:
-                            pl = FreeCAD.Placement()
-                            # do not process the index 0,0. It will be processed by the base Paths themselves
-                            if not (i == 0 and j == 0):
-                                pl.move(pos)
-                                np = Path.Path(
-                                    [
-                                        cm.transform(pl)
-                                        for cm in PathUtils.getPathWithPlacement(b).Commands
-                                    ]
-                                )
-                                output += np.toGCode()
+
+                        pl = FreeCAD.Placement()
+                        # do not process the index 0,0. It will be processed by the base Paths themselves
+                        if not (i == 0 and j == 0):
+                            pl.move(pos)
+                            np = Path.Path(
+                                [
+                                    cm.transform(pl)
+                                    for cm in PathUtils.getPathWithPlacement(base).Commands
+                                ]
+                            )
+                            output+= np.toGCode()
             else:
                 for i in range(self.copiesX + 1):
                     for j in range(self.copiesY + 1):
@@ -404,108 +336,44 @@ class PathArray:
                             )
                         pos = self._calculateJitter(pos)
 
-                        for b in base:
-                            pl = FreeCAD.Placement()
-                            # do not process the index 0,0. It will be processed by the base Paths themselves
-                            if not (i == 0 and j == 0):
-                                pl.move(pos)
-                                np = Path.Path(
-                                    [
-                                        cm.transform(pl)
-                                        for cm in PathUtils.getPathWithPlacement(b).Commands
-                                    ]
-                                )
-                                output += np.toGCode()
+                        pl = FreeCAD.Placement()
+                        # do not process the index 0,0. It will be processed by the base Paths themselves
+                        if not (i == 0 and j == 0):
+                            pl.move(pos)
+                            np = Path.Path(
+                                [
+                                    cm.transform(pl)
+                                    for cm in PathUtils.getPathWithPlacement(base).Commands
+                                ]
+                            )
+                            output += np.toGCode()
             # Eif
         else:
             for i in range(self.copies):
-                for b in base:
-                    ang = 360
-                    if self.copies > 0:
-                        ang = self.angle / self.copies * (1 + i)
+                ang = 360
+                if self.copies > 0:
+                    ang = self.angle / self.copies * (1 + i)
 
-                    pl = FreeCAD.Placement()
-                    pl.rotate(self.centre, FreeCAD.Vector(0, 0, 1), ang)
-                    np = PathUtils.applyPlacementToPath(pl, PathUtils.getPathWithPlacement(b))
-                    output += np.toGCode()
+                pl = FreeCAD.Placement()
+                pl.rotate(self.centre, FreeCAD.Vector(0, 0, 1), ang)
+                np = PathUtils.applyPlacementToPath(pl, PathUtils.getPathWithPlacement(base))
+                output += np.toGCode()
 
         # return output
         return Path.Path(output)
 
 
-class ViewProviderArray:
-    def __init__(self, vobj):
-        self.Object = vobj.Object
-        vobj.Proxy = self
+def Create(base, name="DressupArray"):
+    """Create(base, name='DressupPathBoundary') ... creates a dressup array."""
 
-    def attach(self, vobj):
-        self.Object = vobj.Object
-        return
-
-    def dumps(self):
+    if not base.isDerivedFrom("Path::Feature"):
+        Path.Log.error(
+            translate("CAM_DressupArray", "The selected object is not a path") + "\n"
+        )
         return None
 
-    def loads(self, state):
-        return None
-
-    def claimChildren(self):
-        if hasattr(self, "Object"):
-            if hasattr(self.Object, "Base"):
-                if self.Object.Base:
-                    return self.Object.Base
-        return []
-
-
-class CommandPathArray:
-    def GetResources(self):
-        return {
-            "Pixmap": "CAM_Array",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Array", "Array"),
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Array", "Creates an array from selected toolpath(s)"),
-        }
-
-    def IsActive(self):
-        selections = [
-            sel.isDerivedFrom("Path::Feature") for sel in FreeCADGui.Selection.getSelection()
-        ]
-        return selections and all(selections)
-
-    def Activated(self):
-
-        # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-
-        for sel in selection:
-            if not (sel.isDerivedFrom("Path::Feature")):
-                FreeCAD.Console.PrintError(
-                    translate("CAM_Array", "Arrays can be created only from toolpath operations.")
-                    + "\n"
-                )
-                return
-
-        # if everything is ok, execute and register the transaction in the
-        # undo/redo stack
-        FreeCAD.ActiveDocument.openTransaction("Create Array")
-        FreeCADGui.addModule("Path.Op.Gui.Array")
-        FreeCADGui.addModule("PathScripts.PathUtils")
-
-        FreeCADGui.doCommand(
-            'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Array")'
-        )
-
-        FreeCADGui.doCommand("Path.Op.Gui.Array.ObjectArray(obj)")
-
-        baseString = "[%s]" % ",".join(
-            ["FreeCAD.ActiveDocument.%s" % sel.Name for sel in selection]
-        )
-        FreeCADGui.doCommand("obj.Base = %s" % baseString)
-
-        FreeCADGui.doCommand("obj.ViewObject.Proxy = 0")
-        FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
-
-
-if FreeCAD.GuiUp:
-    # register the FreeCAD command
-    FreeCADGui.addCommand("CAM_Array", CommandPathArray())
+    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    job = PathUtils.findParentJob(base)
+    obj.Proxy = DressupArray(obj, base, job)
+    job.Proxy.addOperation(obj, base, True)
+    return obj
