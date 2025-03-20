@@ -1650,7 +1650,7 @@ class IfcEntity:
                     return prop.NominalValue
         return None
 
-    def getAttribute(self,attr):
+    def getAttribute<const char*>(self,attr):
         "returns the value of the given attribute, if exists"
         if hasattr(self,attr):
             return self.__dict__[attr]
@@ -1766,7 +1766,7 @@ class IfcDocument:
             obs = []
             for bob in bobs:
                 if hasattr(bob,pat2):
-                    if bob.getAttribute(pat2) == pat3:
+                    if bob.getAttribute<const char*>(pat2) == pat3:
                         obs.append(bob)
             return obs
         elif pat1:
