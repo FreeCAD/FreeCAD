@@ -78,6 +78,7 @@ void ThumbnailSource::run()
         args << QLatin1String("--output=") + _thumbnailPath << _file;
 
         _process = std::make_unique<QProcess>();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
         _finishedConnection =
             QObject::connect(_process.get(),
                              &QProcess::finished,
@@ -86,6 +87,17 @@ void ThumbnailSource::run()
                              [this](int exitCode, QProcess::ExitStatus exitStatus) {
                                  this->f3dRunFinished(exitCode, exitStatus);
                              });
+#else
+        // In Qt5 we need to resolve the overload of the `finished` signal:
+        _finishedConnection =
+            QObject::connect(_process.get(),
+                             QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+                             /*ThumbnailSource is not derived from QObject, so wrap the signal in a
+                               lambda to propagate it.*/
+                             [this](int exitCode, QProcess::ExitStatus exitStatus) {
+                                 this->f3dRunFinished(exitCode, exitStatus);
+                             });
+#endif
         Base::Console().Log("Creating thumbnail for %s...\n", _file.toStdString());
         _process->start(f3d, args);
     }
