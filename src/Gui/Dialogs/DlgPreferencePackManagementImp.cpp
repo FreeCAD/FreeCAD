@@ -126,7 +126,7 @@ void DlgPreferencePackManagementImp::addTreeNode(const std::string &name, const 
             else
                 button->setIcon(iconIsInvisible);
             button->setToolTip(tr("Toggle visibility of built-in preference pack '%1'").arg(item->text(0)));
-            connect(button, &QPushButton::clicked, [this, name, item]() {
+            connect(button, &QPushButton::clicked, [this, item]() {
                 this->hideBuiltInPack(item->text(0).toStdString());
                 });
         break; case TreeWidgetType::USER:

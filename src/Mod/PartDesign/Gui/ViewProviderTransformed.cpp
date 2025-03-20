@@ -158,12 +158,7 @@ bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
     return ViewProvider::onDelete(s);
 }
 
-void ViewProviderTransformed::recomputeFeature(bool recompute)
-{
-    PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
-    if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute()))
-        pcTransformed->recomputeFeature(true);
-
+void ViewProviderTransformed::handleTranformedResult(PartDesign::Transformed* pcTransformed) {
     unsigned rejected = 0;
     TopoDS_Shape cShape = pcTransformed->rejected;
     TopExp_Explorer xp;
@@ -207,6 +202,15 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
     if (rejected > 0) {
         showRejectedShape(cShape);
     }
+}
+
+void ViewProviderTransformed::recomputeFeature(bool recompute)
+{
+    PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
+    if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute()))
+        pcTransformed->recomputeFeature(true);
+
+    handleTranformedResult(pcTransformed);
 }
 
 void ViewProviderTransformed::showRejectedShape(TopoDS_Shape shape)

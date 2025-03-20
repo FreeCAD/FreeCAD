@@ -218,7 +218,7 @@ void PrefDoubleSpinBox::wheelEvent(QWheelEvent *event)
     if (hasFocus())
         QDoubleSpinBox::wheelEvent(event);
     else
-        event->ignore();    
+        event->ignore();
 }
 
 PrefDoubleSpinBox::~PrefDoubleSpinBox() = default;
@@ -358,7 +358,7 @@ void PrefComboBox::wheelEvent(QWheelEvent *event)
     if (hasFocus())
         QComboBox::wheelEvent(event);
     else
-        event->ignore();      
+        event->ignore();
 }
 
 PrefComboBox::~PrefComboBox() = default;
@@ -601,7 +601,7 @@ void PrefUnitSpinBox::wheelEvent(QWheelEvent *event)
     if (hasFocus())
         QuantitySpinBox::wheelEvent(event);
     else
-        event->ignore();        
+        event->ignore();
 }
 
 PrefUnitSpinBox::~PrefUnitSpinBox() = default;
@@ -650,9 +650,10 @@ public:
         list.clear();
     }
     void append(const QString& value) {
-        if (!list.isEmpty() && list.back() == value)
+        if (!list.isEmpty() && list.back() == value) {
             return;
-        auto it = std::find(list.begin(), list.end(), value);
+        }
+        const auto it = std::ranges::find(list, value);
         if (it != list.end())
             list.erase(it);
         else if (list.size() == max_size)
@@ -750,7 +751,7 @@ void PrefQuantitySpinBox::wheelEvent(QWheelEvent *event)
     if (hasFocus())
         QuantitySpinBox::wheelEvent(event);
     else
-        event->ignore();        
+        event->ignore();
 }
 
 void PrefQuantitySpinBox::restorePreferences()

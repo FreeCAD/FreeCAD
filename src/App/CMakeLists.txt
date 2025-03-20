@@ -1,3 +1,5 @@
+add_library(FreeCADApp SHARED)
+
 if(WIN32)
     add_definitions(-DFCApp)
     add_definitions(-DBOOST_DYN_LINK)
@@ -59,16 +61,6 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-include_directories(
-    SYSTEM
-    ${Boost_INCLUDE_DIRS}
-    ${PYCXX_INCLUDE_DIR}
-    ${Python3_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${ZIPIOS_INCLUDES}
-)
-
 set(FreeCADApp_LIBS
     FreeCADBase
     ${Boost_LIBRARIES}
@@ -89,26 +81,46 @@ list(APPEND FreeCADApp_LIBS
 )
 
 generate_from_xml(DocumentPy)
+generate_from_py(Document)
 generate_from_xml(DocumentObjectPy)
+generate_from_py(DocumentObject)
 generate_from_xml(ExtensionPy)
+generate_from_py(Extension)
 generate_from_xml(ExtensionContainerPy)
+generate_from_py(ExtensionContainer)
 generate_from_xml(DocumentObjectExtensionPy)
+generate_from_py(DocumentObjectExtension)
 generate_from_xml(GroupExtensionPy)
+generate_from_py(GroupExtension)
 generate_from_xml(LinkBaseExtensionPy)
+generate_from_py(LinkBaseExtension)
 generate_from_xml(DocumentObjectGroupPy)
+generate_from_py(DocumentObjectGroup)
 generate_from_xml(GeoFeaturePy)
+generate_from_py(GeoFeature)
 generate_from_xml(GeoFeatureGroupExtensionPy)
+generate_from_py(GeoFeatureGroupExtension)
 generate_from_xml(SuppressibleExtensionPy)
+generate_from_py(SuppressibleExtension)
 generate_from_xml(MetadataPy)
+generate_from_py(Metadata)
 generate_from_xml(OriginGroupExtensionPy)
+generate_from_py(OriginGroupExtension)
 generate_from_xml(PartPy)
+generate_from_py(Part)
 generate_from_xml(StringHasherPy)
+generate_from_py(StringHasher)
 generate_from_xml(StringIDPy)
+generate_from_py(StringID)
 
 generate_from_xml(ComplexGeoDataPy)
+generate_from_py(ComplexGeoData)
 generate_from_xml(PropertyContainerPy)
+generate_from_py(PropertyContainer)
 generate_from_xml(MaterialPy)
+generate_from_py(Material)
 generate_from_xml(MeasureManagerPy)
+generate_from_py(MeasureManager)
 
 generate_embed_from_py(FreeCADInit InitScript.h)
 generate_embed_from_py(FreeCADTest TestScript.h)
@@ -350,7 +362,7 @@ if(FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(FreeCADApp PreCompiled.h PreCompiled.cpp FreeCADApp_CPP_SRCS)
 endif(FREECAD_USE_PCH)
 
-add_library(FreeCADApp SHARED ${FreeCADApp_SRCS})
+target_sources(FreeCADApp PRIVATE ${FreeCADApp_SRCS})
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FreeCADApp)

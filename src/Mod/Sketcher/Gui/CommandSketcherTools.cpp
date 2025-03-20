@@ -112,14 +112,14 @@ std::vector<int> getListOfSelectedGeoIds(bool forceInternalSelection)
     }
 
     if (forceInternalSelection) {
-        size_t loopSize = listOfGeoIds.size();
+        const size_t loopSize = listOfGeoIds.size();
         for (size_t i = 0; i < loopSize; i++) {
             const Part::Geometry* geo = Obj->getGeometry(listOfGeoIds[i]);
             if (isEllipse(*geo) || isArcOfEllipse(*geo) || isArcOfHyperbola(*geo) || isArcOfParabola(*geo) || isBSplineCurve(*geo)) {
                 const std::vector<Sketcher::Constraint*>& constraints = Obj->Constraints.getValues();
-                for (auto constr : constraints) {
+                for (const auto constr : constraints) {
                     if (constr->Type == InternalAlignment && constr->Second == listOfGeoIds[i]) {
-                        if (std::find(listOfGeoIds.begin(), listOfGeoIds.end(), constr->First) == listOfGeoIds.end()) {
+                        if (std::ranges::find(listOfGeoIds, constr->First) == listOfGeoIds.end()) {
                             // If the value is not found, add it to the vector
                             listOfGeoIds.push_back(constr->First);
                         }
@@ -171,7 +171,7 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj) {
     for (auto constr : obj->Constraints.getValues()) {
 
         auto isSelectedGeoOrAxis = [](const std::vector<int>& vec, int value) {
-            return (std::find(vec.begin(), vec.end(), value) != vec.end())
+            return (std::ranges::find(vec, value) != vec.end())
                 || value == GeoEnum::GeoUndef || value == GeoEnum::RtPnt
                 || value == GeoEnum::VAxis || value == GeoEnum::HAxis;
         };

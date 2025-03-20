@@ -759,7 +759,7 @@ void DlgPreferencesImp::applyChanges()
 void DlgPreferencesImp::restartIfRequired()
 {
     if (restartRequired) {
-        QMessageBox restartBox;
+        QMessageBox restartBox(parentWidget()); // current window likely already closed, cant parent to it
 
         restartBox.setIcon(QMessageBox::Warning);
         restartBox.setWindowTitle(tr("Restart required"));

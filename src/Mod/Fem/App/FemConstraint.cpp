@@ -197,14 +197,13 @@ void Constraint::onChanged(const App::Property* prop)
     App::DocumentObject::onChanged(prop);
 }
 
-void Constraint::slotChangedObject(const App::DocumentObject& obj, const App::Property& prop)
+void Constraint::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
-    if (obj.isDerivedFrom<App::GeoFeature>()
-        && (prop.isDerivedFrom<App::PropertyPlacement>() || obj.isRemoving())) {
-        auto values = References.getValues();
-        for (const auto ref : values) {
+    if (Obj.isDerivedFrom<App::GeoFeature>()
+        && (Prop.isDerivedFrom<App::PropertyPlacement>() || Obj.isRemoving())) {
+        for (const auto ref : References.getValues()) {
             auto v = ref->getInListEx(true);
-            if ((&obj == ref) || (std::find(v.begin(), v.end(), &obj) != v.end())) {
+            if ((&Obj == ref) || (std::ranges::find(v, &Obj) != v.end())) {
                 this->touch();
                 return;
             }
