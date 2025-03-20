@@ -511,6 +511,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
 
     py_export = PythonExport(
         Documentation=doc_obj,
+        ModuleName=module_name,
         Name=export_decorator_kwargs.get("Name", "") or native_python_class_name,
         PythonName=export_decorator_kwargs.get("PythonName", "") or None,
         Include=export_decorator_kwargs.get("Include", "") or include,
