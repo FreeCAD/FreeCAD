@@ -335,7 +335,7 @@ protected:
                        const std::string& name,
                        double rotation) override
         {
-            InsertsList[Reader.m_entityAttributes].push_back(
+            InsertsList[Reader.m_entityAttributes].emplace_back(
                 Block::Insert(name, point, rotation, scale));
         }
 

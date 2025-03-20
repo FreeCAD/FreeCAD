@@ -462,7 +462,7 @@ void ImpExpDxfRead::ExpandInsert(const std::string& name,
                                  double rotation,
                                  const Base::Vector3d& scale)
 {
-    if (Blocks.count(name) == 0) {
+    if (!Blocks.contains(name)) {
         ImportError("Reference to undefined or external block '%s'\n", name);
         return;
     }
@@ -612,10 +612,10 @@ ImpExpDxfRead::Layer::Layer(const std::string& name,
     , GroupContents(
           drawingLayer == nullptr
               ? nullptr
-              : (App::PropertyLinkListHidden*)(((App::FeaturePythonPyT<App::DocumentObjectPy>*)
+              : dynamic_cast<App::PropertyLinkListHidden*>((((App::FeaturePythonPyT<App::DocumentObjectPy>*)
                                                     drawingLayer)
                                                    ->getPropertyContainerPtr())
-                    ->getDynamicPropertyByName("Group"))
+                    ->getDynamicPropertyByName("Group")))
 {}
 ImpExpDxfRead::Layer::~Layer()
 {
