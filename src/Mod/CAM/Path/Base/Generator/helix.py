@@ -205,13 +205,13 @@ def generate(
         if tool_diameter >= hole_radius:
             center_clear = True  # single cut operation
         else:
-            center_clear = (startAt == "Inside") and (inner_radius <= 0.0)  
-            # hole centre is already clear (hole inner radius<=tool_radius) 
+            center_clear = (startAt == "Inside") and (inner_radius <= 0.0)
+            # hole centre is already clear (hole inner radius<=tool_radius)
 
         # use G1 since tool tip still in contact with workpiece.
         if center_clear and (prev_r == "NaN"):
             retractcommands.append(Path.Command("G1", {"X": endPoint.x, "Y": endPoint.y}))
-        elif (prev_r != "NaN"):
+        elif prev_r != "NaN":
             dwell_r = (r + prev_r) / 2
             retractcommands.append(
                 Path.Command(
