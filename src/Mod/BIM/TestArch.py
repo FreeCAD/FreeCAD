@@ -27,12 +27,14 @@ import os
 import unittest
 
 import FreeCAD as App
+from FreeCAD import Units
 
 import Arch
 import Draft
 import Part
 import Sketcher
 import TechDraw
+import WorkingPlane
 
 from draftutils.messages import _msg
 
@@ -817,6 +819,51 @@ class ArchTest(unittest.TestCase):
         view.Y = "15cm"
         App.ActiveDocument.recompute()
         assert True
+
+    def test_addSpaceBoundaries(self):
+        """Test the Arch.addSpaceBoundaries method.
+        Create a space and a wall that intersects it. Add the wall as a boundary to the space,
+        and check if the resulting space area is as expected.
+        """
+        operation = " Add a wall face as a boundary to a space"
+        _msg("  Test '{}'".format(operation))
+
+        # Create the space
+        pl = App.Placement()
+        pl.Rotation.Q = (0.0, 0.0, 0.0, 1.0)
+        pl.Base = App.Vector(-2000.0, -2000.0, 0.0)
+        rectangleBase = Draft.make_rectangle(
+            length=4000.0, height=4000.0, placement=pl, face=True, support=None)
+        App.ActiveDocument.recompute()
+        extr = rectangleBase.Shape.extrude(App.Vector(0,0,2000))
+        Part.show(extr, 'Extrusion')
+        space = Arch.makeSpace(App.activeDocument().getObject('Extrusion'))
+        App.ActiveDocument.recompute()  # To calculate area
+
+        # Create the wall
+        trace = Part.LineSegment(App.Vector (3000.0, 1000.0, 0.0), 
+                                 App.Vector (-3000.0, 1000.0, 0.0))
+        wp = WorkingPlane.get_working_plane()
+        base = App.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")
+        base.Placement = wp.get_placement()
+        base.addGeometry(trace)
+        wall = Arch.makeWall(base,width=200.0,height=3000.0,align="Left")
+        wall.Normal = wp.axis
+
+        # Add the boundary
+        wallBoundary = [(wall, ["Face1"])]
+        Arch.addSpaceBoundaries(App.ActiveDocument.Space, wallBoundary)
+        App.ActiveDocument.recompute()  # To recalculate area
+
+        # Assert if area is as expected
+        expectedArea = Units.parseQuantity('12 m^2')
+        actualArea = Units.parseQuantity(str(space.Area))
+
+        self.assertAlmostEqual(
+            expectedArea.Value,
+            actualArea.Value,
+            msg = (f"Invalid area value. " + 
+                   f"Expected: {expectedArea.UserString}, actual: {actualArea.UserString}"))
 
     def test_SpaceFromSingleWall(self):
         """Create a space from boundaries of a single wall.
