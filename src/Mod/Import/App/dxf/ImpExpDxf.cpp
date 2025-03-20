@@ -609,13 +609,12 @@ ImpExpDxfRead::Layer::Layer(const std::string& name,
     : CDxfRead::Layer(name, color, std::move(lineType))
     , DraftLayerView(drawingLayer == nullptr ? Py_None
                                              : PyObject_GetAttrString(drawingLayer, "ViewObject"))
-    , GroupContents(
-          drawingLayer == nullptr
-              ? nullptr
-              : dynamic_cast<App::PropertyLinkListHidden*>((((App::FeaturePythonPyT<App::DocumentObjectPy>*)
-                                                    drawingLayer)
-                                                   ->getPropertyContainerPtr())
-                    ->getDynamicPropertyByName("Group")))
+    , GroupContents(drawingLayer == nullptr
+                        ? nullptr
+                        : dynamic_cast<App::PropertyLinkListHidden*>(
+                              (((App::FeaturePythonPyT<App::DocumentObjectPy>*)drawingLayer)
+                                   ->getPropertyContainerPtr())
+                                  ->getDynamicPropertyByName("Group")))
 {}
 ImpExpDxfRead::Layer::~Layer()
 {
