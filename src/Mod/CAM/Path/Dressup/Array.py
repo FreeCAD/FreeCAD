@@ -183,6 +183,7 @@ class DressupArray(DressupBase):
             or not obj.Base.isDerivedFrom("Path::Feature")
             or not obj.Base.Path
         ):
+            Path.Log.error(translate("PathArray", "Base is empty or an invalid object."))
             return None
 
         # Do not generate paths and clear current Path data if operation not
