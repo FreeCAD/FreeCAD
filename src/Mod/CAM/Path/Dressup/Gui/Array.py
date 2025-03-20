@@ -1,5 +1,3 @@
-
-
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
@@ -97,6 +95,7 @@ def Create(base, name="DressupPathArray"):
     obj.Base.ViewObject.Visibility = False
     FreeCAD.ActiveDocument.commitTransaction()
     return obj
+
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
