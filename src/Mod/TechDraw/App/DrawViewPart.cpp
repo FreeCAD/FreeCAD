@@ -718,7 +718,7 @@ std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
     std::vector<App::DocumentObject*> children = getInList();
     for (auto& child : children) {
         if (child->isDerivedFrom<DrawHatch>() && !child->isRemoving()) {
-            TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(child);
+            TechDraw::DrawHatch* hatch = static_cast<TechDraw::DrawHatch*>(child);
             result.push_back(hatch);
         }
     }
@@ -733,7 +733,7 @@ std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
     for (auto& child : children) {
         if (child->isDerivedFrom<DrawGeomHatch>()
             && !child->isRemoving()) {
-            TechDraw::DrawGeomHatch* geom = dynamic_cast<TechDraw::DrawGeomHatch*>(child);
+            TechDraw::DrawGeomHatch* geom = static_cast<TechDraw::DrawGeomHatch*>(child);
             result.push_back(geom);
         }
     }
@@ -752,7 +752,7 @@ std::vector<TechDraw::DrawViewDimension*> DrawViewPart::getDimensions() const
         std::unique(children.begin(), children.end());
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
         if ((*it)->isDerivedFrom<DrawViewDimension>()) {
-            TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>(*it);
+            TechDraw::DrawViewDimension* dim = static_cast<TechDraw::DrawViewDimension*>(*it);
             result.push_back(dim);
         }
     }
@@ -768,7 +768,7 @@ std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
         std::unique(children.begin(), children.end());
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
         if ((*it)->isDerivedFrom<DrawViewBalloon>()) {
-            TechDraw::DrawViewBalloon* balloon = dynamic_cast<TechDraw::DrawViewBalloon*>(*it);
+            TechDraw::DrawViewBalloon* balloon = static_cast<TechDraw::DrawViewBalloon*>(*it);
             result.push_back(balloon);
         }
     }
@@ -1142,7 +1142,7 @@ std::vector<DrawViewSection*> DrawViewPart::getSectionRefs() const
         if (o->isDerivedFrom<DrawViewSection>()) {
             // expressions can add extra links to this DVP so we keep only
             // objects that are BaseViews
-            auto section = dynamic_cast<TechDraw::DrawViewSection*>(o);
+            auto section = static_cast<TechDraw::DrawViewSection*>(o);
             auto base = section->BaseView.getValue();
             if (base == this) {
                 result.push_back(section);
@@ -1161,7 +1161,7 @@ std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs() const
             !o->isRemoving() ) {
             // expressions can add extra links to this DVP so we keep only
             // objects that are BaseViews
-            auto detail = dynamic_cast<TechDraw::DrawViewDetail*>(o);
+            auto detail = static_cast<TechDraw::DrawViewDetail*>(o);
             auto base = detail->BaseView.getValue();
             if (base == this) {
                 result.push_back(detail);
