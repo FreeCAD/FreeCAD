@@ -23,7 +23,7 @@ static std::string random_string(size_t length)
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, digits.size() - 1);
+    std::uniform_int_distribution<> dis(0, static_cast<int>(digits.size()) - 1);
 
     std::string result;
     for (size_t i = 0; i < length; ++i) {

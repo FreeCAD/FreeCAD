@@ -267,7 +267,6 @@ QGIViewBalloon::QGIViewBalloon()
     addToGroup(balloonShape);
     balloonShape->setNormalColor(prefNormalColor());
     balloonShape->setFill(Qt::transparent, Qt::SolidPattern);
-    balloonShape->setFillOverride(true);
     balloonShape->setPrettyNormal();
 
     arrow = new QGIArrow();
@@ -863,9 +862,6 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
 void QGIViewBalloon::setPrettyPre(void)
 {
     arrow->setPrettyPre();
-    //TODO: primPath needs override for fill
-    //balloonShape->setFillOverride(true);   //don't fill with pre or select colours.
-    //    balloonShape->setFill(Qt::white, Qt::NoBrush);
     balloonShape->setPrettyPre();
     balloonLines->setPrettyPre();
 }

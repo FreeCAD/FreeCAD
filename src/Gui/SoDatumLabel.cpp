@@ -80,9 +80,6 @@ void glDrawLine(const SbVec3f& p1, const SbVec3f& p2){
 
 void glDrawArc(const SbVec3f& center, float radius, float startAngle=0., float endAngle=2.0*M_PI, int countSegments=0){
     float range = endAngle - startAngle;
-    if (range < 0.) {
-        range += 2.0 * M_PI;
-    }
 
     if (countSegments == 0){
         countSegments = std::max(6, abs(int(25.0 * range / M_PI)));

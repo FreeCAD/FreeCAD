@@ -97,7 +97,7 @@ bool TaskDlgDatumParameters::accept() {
 
     //see if we are able to assign a mode
     if (parameter->getActiveMapMode() == mmDeactivated) {
-        QMessageBox msg;
+        QMessageBox msg(Gui::getMainWindow());
         msg.setWindowTitle(tr("Incompatible reference set"));
         msg.setText(tr("There is no attachment mode that fits the current set"
         " of references. If you choose to continue, the feature will remain where"

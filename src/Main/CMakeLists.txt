@@ -3,30 +3,6 @@ configure_file(freecad.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc)
 configure_file(freecadCmd.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecadCmd.rc)
 file(COPY icon.ico DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-if(BUILD_GUI)
-    include_directories(
-        SYSTEM
-        ${Boost_INCLUDE_DIRS}
-        ${COIN3D_INCLUDE_DIRS}
-        ${ZLIB_INCLUDE_DIR}
-        ${QtWidgets_INCLUDE_DIRS}
-        ${QT_INCLUDE_DIR}
-        ${PYCXX_INCLUDE_DIR}
-        ${Python3_INCLUDE_DIRS}
-        ${XercesC_INCLUDE_DIRS}
-    )
-else(BUILD_GUI)
-    include_directories(
-        SYSTEM
-        ${Boost_INCLUDE_DIRS}
-        ${ZLIB_INCLUDE_DIR}
-        ${QT_INCLUDE_DIR}
-        ${PYCXX_INCLUDE_DIR}
-        ${Python3_INCLUDE_DIRS}
-        ${XercesC_INCLUDE_DIRS}
-    )
-endif(BUILD_GUI)
-
 ######################## FreeCADMain ########################
 if(BUILD_GUI)
 

@@ -46,8 +46,8 @@ public:
 
     int getProjIndex() const { return projIndex; }
 
-    float getRadius() { return m_radius; }
-    virtual void setRadius(float r);
+    double getRadius() const { return m_radius; }
+    virtual void setRadius(double r);
 
     Base::Vector2d toVector2d() const;
     Base::Vector2d vector2dBetweenPoints(const QGIVertex* p2) const;
@@ -56,9 +56,7 @@ protected:
     bool multiselectEligible() override { return true; }
 
     int projIndex;
-    float m_radius;
-
-private:
+    double m_radius;
 };
 
 }

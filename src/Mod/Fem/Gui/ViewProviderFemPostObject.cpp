@@ -430,7 +430,7 @@ void ViewProviderFemPostObject::updateProperties()
     m_coloringEnum.setEnums(colorArrays);
     Field.setValue(m_coloringEnum);
 
-    std::vector<std::string>::iterator it = std::find(colorArrays.begin(), colorArrays.end(), val);
+    auto it = std::ranges::find(colorArrays, val);
     if (!val.empty() && it != colorArrays.end()) {
         Field.setValue(val.c_str());
     }
@@ -472,7 +472,7 @@ void ViewProviderFemPostObject::updateProperties()
     m_vectorEnum.setEnums(colorArrays);
     VectorMode.setValue(m_vectorEnum);
 
-    it = std::find(colorArrays.begin(), colorArrays.end(), val);
+    it = std::ranges::find(colorArrays, val);
     if (!val.empty() && it != colorArrays.end()) {
         VectorMode.setValue(val.c_str());
     }
@@ -964,7 +964,7 @@ bool ViewProviderFemPostObject::setEdit(int ModNum)
             postDlg = nullptr;  // another pad left open its task panel
         }
         if (dlg && !postDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);

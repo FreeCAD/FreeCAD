@@ -826,8 +826,7 @@ void FemPostContoursFilter::refreshFields()
     Field.setValue(m_fields);
 
     // search if the current field is in the available ones and set it
-    std::vector<std::string>::iterator it =
-        std::find(FieldsArray.begin(), FieldsArray.end(), fieldName);
+    const auto it = std::ranges::find(FieldsArray, fieldName);
     if (!fieldName.empty() && it != FieldsArray.end()) {
         Field.setValue(fieldName.c_str());
     }
@@ -884,7 +883,7 @@ void FemPostContoursFilter::refreshVectors()
     VectorMode.setValue(m_vectors);
 
     // apply stored name
-    auto it = std::find(vectorArray.begin(), vectorArray.end(), vectorName);
+    const auto it = std::ranges::find(vectorArray, vectorName);
     if (!vectorName.empty() && it != vectorArray.end()) {
         VectorMode.setValue(vectorName.c_str());
     }
@@ -1004,8 +1003,7 @@ DocumentObjectExecReturn* FemPostScalarClipFilter::execute()
     Scalars.setValue(m_scalarFields);
 
     // search if the current field is in the available ones and set it
-    std::vector<std::string>::iterator it =
-        std::find(ScalarsArray.begin(), ScalarsArray.end(), val);
+    const auto it = std::ranges::find(ScalarsArray, val);
     if (!val.empty() && it != ScalarsArray.end()) {
         Scalars.setValue(val.c_str());
     }
@@ -1123,7 +1121,7 @@ DocumentObjectExecReturn* FemPostWarpVectorFilter::execute()
     Vector.setValue(m_vectorFields);
 
     // search if the current field is in the available ones and set it
-    std::vector<std::string>::iterator it = std::find(VectorArray.begin(), VectorArray.end(), val);
+    const auto it = std::ranges::find(VectorArray, val);
     if (!val.empty() && it != VectorArray.end()) {
         Vector.setValue(val.c_str());
     }

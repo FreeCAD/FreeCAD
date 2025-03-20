@@ -853,18 +853,6 @@ bool Command::isActiveObjectValid()
     return object->isValid();
 }
 
-/// Updates the (all or listed) documents (propagate changes)
-void Command::updateAll(std::list<Gui::Document*> cList)
-{
-    if (!cList.empty()) {
-        for (auto & it : cList)
-            it->onUpdate();
-    }
-    else {
-        Gui::Application::Instance->onUpdate();
-    }
-}
-
 //--------------------------------------------------------------------------
 // Online help handling
 //--------------------------------------------------------------------------

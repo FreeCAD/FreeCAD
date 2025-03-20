@@ -479,8 +479,7 @@ bool Base::XMLReader::hasFilenames() const
 
 bool Base::XMLReader::hasReadFailed(const std::string& filename) const
 {
-    auto it = std::find(FailedFiles.begin(), FailedFiles.end(), filename);
-    return (it != FailedFiles.end());
+    return std::ranges::find(FailedFiles, filename) != FailedFiles.end();
 }
 
 bool Base::XMLReader::isRegistered(Base::Persistence* Object) const

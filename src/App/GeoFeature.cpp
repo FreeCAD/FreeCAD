@@ -223,14 +223,6 @@ bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& direction, const ch
 bool GeoFeature::hasMissingElement(const char* subname)
 {
     return Data::hasMissingElement(subname);
-    if (!subname) {
-        return false;
-    }
-    auto dot = strrchr(subname, '.');
-    if (!dot) {
-        return subname[0] == '?';
-    }
-    return dot[1] == '?';
 }
 
 void GeoFeature::updateElementReference()

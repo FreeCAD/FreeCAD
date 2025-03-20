@@ -39,7 +39,7 @@ class TimeInfo;
 /// When reading and writing a character stream, the incoming data can be dumped into the stream
 /// unaltered (if it contains only data that is valid in the current XML character set), or it can
 /// be Base64-encoded. This enum is used by Reader and Writer to distinguish the two cases.
-enum class CharStreamFormat : size_t
+enum class CharStreamFormat : std::uint8_t
 {
     Raw,
     Base64Encoded
@@ -53,7 +53,7 @@ enum class CharStreamFormat : size_t
 class BaseExport FileInfo
 {
 public:
-    enum Permissions
+    enum Permissions : std::uint8_t
     {
         WriteOnly = 0x01,
         ReadOnly = 0x02,

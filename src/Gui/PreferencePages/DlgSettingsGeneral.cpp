@@ -745,7 +745,7 @@ void DlgSettingsGeneral::onImportConfigClicked()
         auto packName = path.filename().stem().string();
         std::replace(packName.begin(), packName.end(), '_', ' ');
         auto existingPacks = Application::Instance->prefPackManager()->preferencePackNames();
-        if (std::find(existingPacks.begin(), existingPacks.end(), packName)
+        if (std::ranges::find(existingPacks, packName)
             != existingPacks.end()) {
             auto result = QMessageBox::question(
                 this, tr("File exists"),
@@ -803,7 +803,7 @@ void DlgSettingsGeneral::onLinkActivated(const QString& link)
     // This is a quick and dirty way to open Addon Manager with only themes.
     auto pref = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Addons");
     pref->SetInt("PackageTypeSelection", 3); // 3 stands for Preference Packs
-    pref->SetInt("StatusSelection", 0);      // 0 stands for any installation status 
+    pref->SetInt("StatusSelection", 0);      // 0 stands for any installation status
 
     Gui::Application::Instance->commandManager().runCommandByName("Std_AddonMgr");
 }

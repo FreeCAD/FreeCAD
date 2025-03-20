@@ -188,16 +188,10 @@ void QGIHighlight::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
 
 void QGIHighlight::setTools()
 {
-    m_pen.setWidthF(m_width);
-    m_pen.setColor(m_colCurrent);
-
-    m_brush.setStyle(m_brushCurrent);
-    m_brush.setColor(m_colCurrent);
-
     m_circle->setPen(m_pen);
     m_rect->setPen(m_pen);
 
-    m_reference->setDefaultTextColor(m_colCurrent);
+    m_reference->setDefaultTextColor(m_pen.color());
 }
 
 void QGIHighlight::setLinePen(QPen isoPen)

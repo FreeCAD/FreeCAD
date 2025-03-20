@@ -1275,7 +1275,7 @@ void ViewProviderSketch::toggleWireSelelection(int clickedGeoId)
     while (partHasBeenAdded) {
         partHasBeenAdded = false;
         for (int geoId = 0; geoId <= obj->getHighestCurveIndex(); geoId++) {
-            if (geoId == clickedGeoId || std::find(connectedEdges.begin(), connectedEdges.end(), geoId) != connectedEdges.end()) {
+            if (geoId == clickedGeoId || std::ranges::find(connectedEdges, geoId) != connectedEdges.end()) {
                 continue;
             }
 
@@ -2711,10 +2711,9 @@ void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGe
 
                                 for (auto ic : getSketchObject()->Constraints.getValues()) {
                                     if (ic->Type == Weight) {
-                                        auto pos = std::find(
-                                            polegeoids.begin(), polegeoids.end(), ic->First);
 
-                                        if (pos != polegeoids.end()) {
+                                        if (auto pos = std::ranges::find(polegeoids, ic->First);
+                                            pos != polegeoids.end()) {
                                             vradius = ic->getValue() * scalefactor;
                                             break;// one is enough, otherwise it would not be
                                                   // non-rational
@@ -2980,7 +2979,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     if (sketchDlg && sketchDlg->getSketchView() != this)
         sketchDlg = nullptr;// another sketch left open its task panel
     if (dlg && !sketchDlg) {
-        QMessageBox msgBox;
+        QMessageBox msgBox(Gui::getMainWindow());
         msgBox.setText(tr("A dialog is already open in the task panel"));
         msgBox.setInformativeText(tr("Do you want to close this dialog?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);

@@ -161,6 +161,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updateWidth(drawingParameters.ExternalWidth, param, 2);
          }},
+        {"ExternalDefiningWidth",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateWidth(drawingParameters.ExternalDefiningWidth, param, 2);
+         }},
         {"EdgePattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.CurvePattern, param, 0b1111111111111111);
@@ -176,6 +180,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
         {"ExternalPattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.ExternalPattern, param, 0b1111110011111100);
+         }},
+        {"ExternalDefiningPattern",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updatePattern(drawingParameters.ExternalDefiningPattern, param, 0b1111111111111111);
          }},
         {"CreateLineColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -240,6 +248,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
         {"ExternalColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
              updateColor(drawingParameters.CurveExternalColor, param);
+         }},
+        {"ExternalDefiningColor",
+         [this, drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateColor(drawingParameters.CurveExternalDefiningColor, param);
          }},
         {"HighlightColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -570,13 +582,12 @@ void EditModeCoinManager::drawEditMarkers(const std::vector<Base::Vector2d>& Edi
 
     auto supportedsizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_LINE");
 
-    auto defaultmarker =
-        std::find(supportedsizes.begin(), supportedsizes.end(), drawingParameters.markerSize);
+    const auto defaultmarker = std::ranges::find(supportedsizes, drawingParameters.markerSize);
 
     if (defaultmarker != supportedsizes.end()) {
-        auto validAugmentationLevels = std::distance(defaultmarker, supportedsizes.end());
 
-        if (augmentationlevel >= validAugmentationLevels) {
+        if (const auto validAugmentationLevels = std::distance(defaultmarker, supportedsizes.end());
+            augmentationlevel >= validAugmentationLevels) {
             augmentationlevel = validAugmentationLevels - 1;
         }
 
@@ -1119,6 +1130,8 @@ void EditModeCoinManager::updateInventorWidths()
         drawingParameters.InternalWidth * drawingParameters.pixelScalingFactor;
     editModeScenegraphNodes.CurvesExternalDrawStyle->lineWidth =
         drawingParameters.ExternalWidth * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.CurvesExternalDefiningDrawStyle->lineWidth =
+        drawingParameters.ExternalDefiningWidth * drawingParameters.pixelScalingFactor;
 }
 
 void EditModeCoinManager::updateInventorPatterns()
@@ -1130,6 +1143,8 @@ void EditModeCoinManager::updateInventorPatterns()
         drawingParameters.InternalPattern;
     editModeScenegraphNodes.CurvesExternalDrawStyle->linePattern =
         drawingParameters.ExternalPattern;
+    editModeScenegraphNodes.CurvesExternalDefiningDrawStyle->linePattern =
+        drawingParameters.ExternalDefiningPattern;
 }
 
 void EditModeCoinManager::updateInventorColors()

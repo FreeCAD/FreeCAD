@@ -4,6 +4,12 @@ set -euo pipefail
 # Update package lists quietly
 sudo apt-get update -qq
 
+if apt-cache show libvtk9-dev >/dev/null 2>&1; then
+  vtk_dev="libvtk9-dev"
+else
+  vtk_dev="libvtk7-dev"
+fi
+
 packages=(
   ccache
   doxygen
@@ -15,7 +21,6 @@ packages=(
   libboost-graph-dev
   libboost-iostreams-dev
   libboost-program-options-dev
-  libboost-python-dev
   libboost-regex-dev
   libboost-serialization-dev
   libboost-thread-dev
@@ -34,7 +39,7 @@ packages=(
   libqt5x11extras5-dev
   libshiboken2-dev
   libspnav-dev
-  libvtk7-dev
+  ${vtk_dev}
   libx11-dev
   libxerces-c-dev
   libyaml-cpp-dev
@@ -52,6 +57,7 @@ packages=(
   python3-packaging
   python3-pivy
   python3-ply
+  python3-pybind11
   python3-pyside2.qtcore
   python3-pyside2.qtgui
   python3-pyside2.qtnetwork

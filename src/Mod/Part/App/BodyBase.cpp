@@ -68,16 +68,12 @@ bool BodyBase::isAfter(const App::DocumentObject *feature, const App::DocumentOb
         return hasObject (feature);
     }
 
-    const std::vector<App::DocumentObject *> & features = Group.getValues();
-    auto featureIt = std::find(features.begin(), features.end(), feature);
-    auto targetIt = std::find(features.begin(), features.end(), target);
+    const std::vector<App::DocumentObject*>& features = Group.getValues();
+    const auto featureIt = std::ranges::find(features, feature);
+    const auto targetIt = std::ranges::find(features, target);
 
-    if (featureIt == features.end()) {
-        return false;
-    } else {
-        return featureIt > targetIt;
-    }
-}
+    return featureIt == features.end() ? false : featureIt > targetIt;
+ }
 
 void BodyBase::onBeforeChange (const App::Property* prop) {
 

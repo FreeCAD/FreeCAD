@@ -18,22 +18,34 @@
     },
     {
       "nr": 5,
-      "path": "60degree_Vbit.fctb"
+      "path": "30degree_Vbit.fctb"
     },
     {
       "nr": 6,
-      "path": "45degree_chamfer.fctb"
+      "path": "45degree_Vbit.fctb"
     },
     {
       "nr": 7,
-      "path": "slittingsaw.fctb"
+      "path": "60degree_Vbit.fctb"
     },
     {
       "nr": 8,
-      "path": "probe.fctb"
+      "path": "90degree_Vbit.fctb"
     },
     {
       "nr": 9,
+      "path": "45degree_chamfer.fctb"
+    },
+    {
+      "nr": 10,
+      "path": "slittingsaw.fctb"
+    },
+    {
+      "nr": 11,
+      "path": "probe.fctb"
+    },
+    {
+      "nr": 12,
       "path": "5mm-thread-cutter.fctb"
     }
   ],

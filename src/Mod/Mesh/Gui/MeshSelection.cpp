@@ -568,10 +568,10 @@ void MeshSelection::pickFaceCallback(void* ud, SoEventCallback* n)
             if (!vp || !vp->isDerivedFrom<ViewProviderMesh>()) {
                 return;
             }
-            ViewProviderMesh* mesh = static_cast<ViewProviderMesh*>(vp);
-            MeshSelection* self = static_cast<MeshSelection*>(ud);
-            std::list<ViewProviderMesh*> views = self->getViewProviders();
-            if (std::find(views.begin(), views.end(), mesh) == views.end()) {
+            const auto mesh = static_cast<ViewProviderMesh*>(vp);
+            const auto self = static_cast<MeshSelection*>(ud);
+            if (std::list<ViewProviderMesh*> views = self->getViewProviders();
+                std::ranges::find(views, mesh) == views.end()) {
                 return;
             }
             const SoDetail* detail = point->getDetail(/*mesh->getShapeNode()*/);

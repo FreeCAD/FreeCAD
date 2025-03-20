@@ -46,28 +46,30 @@ def _parse_docstring_for_documentation(docstring: str) -> Documentation:
     if not docstring:
         return Documentation()
 
-    lines = docstring.strip().split("\n")
+    import textwrap
+
+    # Remove common indentation
+    dedented_docstring = textwrap.dedent(docstring).strip()
+    lines = dedented_docstring.split("\n")
     user_docu_lines = []
 
     for raw_line in lines:
-        line = raw_line.strip()
-        if line.startswith("DeveloperDocu:"):
-            dev_docu = line.split("DeveloperDocu:", 1)[1].strip()
-        elif line.startswith("UserDocu:"):
-            user_docu = line.split("UserDocu:", 1)[1].strip()
-        elif line.startswith("Author:"):
+        stripped_line = raw_line.strip()
+        if stripped_line.startswith("DeveloperDocu:"):
+            dev_docu = stripped_line.split("DeveloperDocu:", 1)[1].strip()
+        elif stripped_line.startswith("UserDocu:"):
+            user_docu = stripped_line.split("UserDocu:", 1)[1].strip()
+        elif stripped_line.startswith("Author:"):
             # e.g. "Author: John Doe (john@example.com)"
-            # naive approach:
-            author_part = line.split("Author:", 1)[1].strip()
-            # attempt to find email in parentheses
+            author_part = stripped_line.split("Author:", 1)[1].strip()
             match = re.search(r"(.*?)\s*\((.*?)\)", author_part)
             if match:
                 author_name = match.group(1).strip()
                 author_email = match.group(2).strip()
             else:
                 author_name = author_part
-        elif line.startswith("Licence:"):
-            author_licence = line.split("Licence:", 1)[1].strip()
+        elif stripped_line.startswith("Licence:"):
+            author_licence = stripped_line.split("Licence:", 1)[1].strip()
         else:
             user_docu_lines.append(raw_line)
 
@@ -331,7 +333,7 @@ def _get_module_from_path(path: str) -> str:
 
     # 2. Attempt to find "src" in the path components.
     try:
-        idx_src = parts.index("src")
+        idx_src = len(parts) - 1 - list(reversed(parts)).index("src")
     except ValueError:
         # If "src" is not found, we cannot determine the module name.
         return None

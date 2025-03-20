@@ -194,7 +194,7 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet>& rclFAry, bool 
 {
     // Build map of edges of the referencing facets we want to append
 #ifdef FC_DEBUG
-    unsigned long countPoints = CountPoints();
+    [[maybe_unused]] unsigned long countPoints = CountPoints();
 #endif
 
     // if the manifold check shouldn't be done then just add all faces

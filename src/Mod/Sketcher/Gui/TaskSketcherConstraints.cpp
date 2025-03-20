@@ -1103,7 +1103,7 @@ void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget t
             processItem = !item->isHidden();
         }
         else if (target == ActionTarget::Selected) {
-            if (std::find(selecteditems.begin(), selecteditems.end(), item) != selecteditems.end())
+            if (std::ranges::find(selecteditems, item) != selecteditems.end())
                 processItem = true;
         }
 
@@ -1653,13 +1653,10 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
 
         // Then we re-filter based on selected/associated if such mode selected.
         if (visible && specialFilterMode == SpecialFilterType::Selected) {
-            visible = (std::find(selectionFilter.begin(), selectionFilter.end(), it->ConstraintNbr)
-                       != selectionFilter.end());
+            visible = (std::ranges::find(selectionFilter, it->ConstraintNbr) != selectionFilter.end());
         }
         else if (visible && specialFilterMode == SpecialFilterType::Associated) {
-            visible = (std::find(associatedConstraintsFilter.begin(),
-                                 associatedConstraintsFilter.end(),
-                                 it->ConstraintNbr)
+            visible = (std::ranges::find(associatedConstraintsFilter, it->ConstraintNbr)
                        != associatedConstraintsFilter.end());
         }
     }

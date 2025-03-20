@@ -40,7 +40,7 @@ public:
     explicit PATPathMaker(QGraphicsItem* parent = nullptr, double lineWidth = 0.50, double fillScale = 1.0);
     ~PATPathMaker() = default;
 
-    void setLineWidth(double width) {  m_lineWidth = width; }
+    void setLineWidth(double width);
     void setScale(double scale) { m_fillScale = scale; }
     void setPen(QPen pen) { m_pen = pen; }
     QPen getPen()  { return m_pen; }
@@ -61,7 +61,6 @@ protected:
 
 private:
     QGraphicsItem* m_parent;
-    QPainterPath m_geomhatch;                  //crosshatch fill lines
     QPen m_pen;
 
     std::vector<TechDraw::LineSet> m_lineSets;

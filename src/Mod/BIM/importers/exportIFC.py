@@ -2530,7 +2530,7 @@ def create_annotation(anno, ifcfile, context, history, preferences):
                 axes.append(axis)
             if axes:
                 if len(axes) > 1:
-                    print("DEBUG: exportIFC.create_annotation: Cannot create more thna one axis",anno.Label)
+                    print("DEBUG: exportIFC.create_annotation: Cannot create more than one axis",anno.Label)
                 return axes[0]
             else:
                 print("Unable to handle object",anno.Label)

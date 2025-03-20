@@ -31,6 +31,7 @@
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
+#include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/FeatureHole.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -73,7 +74,7 @@ bool ViewProviderHole::setEdit(int ModNum)
         if (holeDlg && holeDlg->getViewObject() != this)
             holeDlg = nullptr; // another hole left open its task panel
         if (dlg && !holeDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
