@@ -940,10 +940,10 @@ bool MeshTopoAlgorithm::CollapseVertex(const VertexCollapse& vc)
     const std::vector<FacetIndex>& faces = vc._circumFacets;
     // get neighbours that are not part of the faces to be removed
     for (int i = 0; i < 3; i++) {
-        if (std::find(faces.begin(), faces.end(), rFace2._aulNeighbours[i]) == faces.end()) {
+        if (std::ranges::find(faces, rFace2._aulNeighbours[i]) == faces.end()) {
             neighbour1 = rFace2._aulNeighbours[i];
         }
-        if (std::find(faces.begin(), faces.end(), rFace3._aulNeighbours[i]) == faces.end()) {
+        if (std::ranges::find(faces, rFace3._aulNeighbours[i]) == faces.end()) {
             neighbour2 = rFace3._aulNeighbours[i];
         }
     }
@@ -1106,8 +1106,7 @@ bool MeshTopoAlgorithm::CollapseEdge(const EdgeCollapse& ec)
         for (FacetIndex nbIndex : f._aulNeighbours) {
             // get the neighbours of the facet that won't be invalidated
             if (nbIndex != FACET_INDEX_MAX) {
-                if (std::find(ec._removeFacets.begin(), ec._removeFacets.end(), nbIndex)
-                    == ec._removeFacets.end()) {
+                if (std::ranges::find(ec._removeFacets, nbIndex) == ec._removeFacets.end()) {
                     neighbours.push_back(nbIndex);
                 }
             }

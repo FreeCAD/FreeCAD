@@ -605,10 +605,9 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
     for(auto &sub : subs)
         subSet.insert(sub.newName.empty()?sub.oldName:sub.newName);
 
-    std::string tmp;
-    std::vector<App::DocumentObject*>::const_iterator it = std::find(objs.begin(), objs.end(), base);
-    if (it != objs.end()) {
+    if (auto it = std::ranges::find(objs, base); it != objs.end()) {
         // toggle visibility
+        std::string tmp;
         Gui::ViewProvider* vp;
         vp = Gui::Application::Instance->getViewProvider(d->fillet);
         if (vp) vp->hide();
@@ -662,9 +661,9 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         }
 
         for (const auto & et : e) {
-            std::vector<int>::iterator it = std::find(d->edge_ids.begin(), d->edge_ids.end(), et.edgeid);
-            if (it != d->edge_ids.end()) {
-                int index = it - d->edge_ids.begin();
+            auto it2 = std::ranges::find(d->edge_ids, et.edgeid);
+            if (it2 != d->edge_ids.end()) {
+                int index = it2 - d->edge_ids.begin();
                 model->setData(model->index(index, 0), Qt::Checked, Qt::CheckStateRole);
                 //model->setData(model->index(index, 1), QVariant(QLocale().toString(et->radius1,'f',Base::UnitsApi::getDecimals())));
                 //model->setData(model->index(index, 2), QVariant(QLocale().toString(et->radius2,'f',Base::UnitsApi::getDecimals())));

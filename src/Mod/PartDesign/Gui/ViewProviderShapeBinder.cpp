@@ -38,6 +38,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/ViewParams.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
@@ -91,7 +92,7 @@ bool ViewProviderShapeBinder::setEdit(int ModNum) {
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         TaskDlgShapeBinder* sbDlg = qobject_cast<TaskDlgShapeBinder*>(dlg);
         if (dlg && !sbDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);

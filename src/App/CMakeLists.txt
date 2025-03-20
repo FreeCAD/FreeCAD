@@ -1,7 +1,13 @@
+add_library(FreeCADApp SHARED)
+
 if(WIN32)
     add_definitions(-DFCApp)
     add_definitions(-DBOOST_DYN_LINK)
 endif(WIN32)
+
+if(BUILD_TRACY_FRAME_PROFILER)
+    add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
+endif()
 
 if(FREECAD_RELEASE_SEH)
     add_definitions(-DHAVE_SEH)
@@ -55,21 +61,15 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-include_directories(
-    SYSTEM
-    ${Boost_INCLUDE_DIRS}
-    ${PYCXX_INCLUDE_DIR}
-    ${Python3_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${ZIPIOS_INCLUDES}
-)
-
 set(FreeCADApp_LIBS
     FreeCADBase
     ${Boost_LIBRARIES}
     fmt::fmt
 )
+
+if(BUILD_TRACY_FRAME_PROFILER)
+    list(APPEND FreeCADApp_LIBS TracyClient)
+endif()
 
 include_directories(
     ${QtCore_INCLUDE_DIRS}
@@ -342,7 +342,7 @@ if(FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(FreeCADApp PreCompiled.h PreCompiled.cpp FreeCADApp_CPP_SRCS)
 endif(FREECAD_USE_PCH)
 
-add_library(FreeCADApp SHARED ${FreeCADApp_SRCS})
+target_sources(FreeCADApp PRIVATE ${FreeCADApp_SRCS})
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FreeCADApp)

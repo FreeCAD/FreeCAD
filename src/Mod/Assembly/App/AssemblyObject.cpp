@@ -259,7 +259,7 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
     draggedParts.clear();
     for (auto part : dragParts) {
         // make sure no duplicate
-        if (std::find(draggedParts.begin(), draggedParts.end(), part) != draggedParts.end()) {
+        if (std::ranges::find(draggedParts, part) != draggedParts.end()) {
             continue;
         }
 
@@ -1493,7 +1493,7 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
     std::vector<App::DocumentObject*> done;
     // Add motions if needed
     for (auto* motion : motions) {
-        if (std::find(done.begin(), done.end(), motion) != done.end()) {
+        if (std::ranges::find(done, motion) != done.end()) {
             continue;  // don't process twice (can happen in case of cylindrical)
         }
 
