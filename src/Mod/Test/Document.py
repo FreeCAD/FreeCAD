@@ -671,10 +671,12 @@ class DocumentBasicCases(unittest.TestCase):
         # closing doc
         FreeCAD.closeDocument("CreateTest")
 
+
 class DocumentImportCases(unittest.TestCase):
     def testDXFImportCPPIssue20195(self):
         import importDXF
         from draftutils import params
+
         # Set options, doing our best to restore them:
         wasShowDialog = params.get_param("dxfShowDialog")
         wasUseLayers = params.get_param("dxfUseDraftVisGroups")
@@ -690,14 +692,16 @@ class DocumentImportCases(unittest.TestCase):
             params.set_param("dxfUseDraftVisGroups", True)
             # Use the new C++ importer -- that's where the bug was
             params.set_param("dxfUseLegacyImporter", False)
-            # create simple part shapes (3 params) 
+            # create simple part shapes (3 params)
             # This is required to display the bug because creation of Draft objects clears out the
             # pending exception this test is looking for, whereas creation of the simple shape object
             # actually throws on the pending exception so the entity is absent from the document.
             params.set_param("dxfCreatePart", True)
             params.set_param("dxfCreateDraft", False)
             params.set_param("dxfCreateSketch", False)
-            importDXF.insert(FreeCAD.getHomePath() + "Mod/Test/TestData/DXFSample.dxf", "ImportedDocName")
+            importDXF.insert(
+                FreeCAD.getHomePath() + "Mod/Test/TestData/DXFSample.dxf", "ImportedDocName"
+            )
         finally:
             params.set_param("dxfShowDialog", wasShowDialog)
             params.set_param("dxfUseDraftVisGroups", wasUseLayers)
@@ -709,6 +713,7 @@ class DocumentImportCases(unittest.TestCase):
         # This doc should ahve 3 objects: The Layers containter, the DXF layer called 0, and one Line
         self.assertEqual(len(doc.Objects), 3)
         FreeCAD.closeDocument("ImportedDocName")
+
 
 # class must be defined in global scope to allow it to be reloaded on document open
 class SaveRestoreSpecialGroup:
