@@ -202,16 +202,18 @@ def generate(
     def retract():
         # try to move to a safe place to retract without leaving a dwell mark
         retractcommands = []
-        if tool_diameter >= hole_radius: center_clear = True  # single cut operation
-        else: center_clear = (startAt == "Inside") and (inner_radius <= 0.0)  # hole centre is already clear (hole inner radius<=tool_radius) 
+        if tool_diameter >= hole_radius:
+            center_clear = True  # single cut operation
+        else:
+            center_clear = (startAt == "Inside") and (
+                inner_radius <= 0.0
+            )  # hole centre is already clear (hole inner radius<=tool_radius)
 
         # use G1 since tool tip still in contact with workpiece.
         if center_clear and (prev_r == "NaN"):
-            retractcommands.append(
-                Path.Command("G1", {"X": endPoint.x, "Y": endPoint.y})
-            )
-        elif (prev_r != "NaN"):
-            dwell_r = (r+prev_r)/2
+            retractcommands.append(Path.Command("G1", {"X": endPoint.x, "Y": endPoint.y}))
+        elif prev_r != "NaN":
+            dwell_r = (r + prev_r) / 2
             retractcommands.append(
                 Path.Command(
                     "G1",
@@ -231,9 +233,9 @@ def generate(
         radii = radii[::-1]
 
     commands = []
-    prev_r="NaN";
+    prev_r = "NaN"
     for r in radii:
         commands.extend(helix_cut_r(r))
         commands.extend(retract())
-        prev_r=r
+        prev_r = r
     return commands
