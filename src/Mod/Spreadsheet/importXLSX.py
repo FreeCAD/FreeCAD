@@ -346,9 +346,18 @@ def handleCells(cellList, actCellSheet, sList):
         formulaRef = cell.getElementsByTagName("f")
         if len(formulaRef) == 1:
             theFormula = getText(formulaRef[0].childNodes)
-            # print("theFormula: ", theFormula)
-            fTrans = FormulaTranslator()
-            actCellSheet.set(ref, fTrans.translateForm(theFormula))
+            if theFormula:
+                # print("theFormula: ", theFormula)
+                fTrans = FormulaTranslator()
+                actCellSheet.set(ref, fTrans.translateForm(theFormula))
+            else:
+                attrs = formulaRef[0].attributes
+                attrRef = attrs.getNamedItem("t")
+                attrName = getText(attrRef.childNodes)
+                indexRef = attrs.getNamedItem("si")
+                indexName = getText(indexRef.childNodes)
+                content = "<f t='{}' si='{}'/>".format(attrName, indexName)
+                print(f"Unsupported formula in cell {ref}: {content}")
 
         else:
             valueRef = cell.getElementsByTagName("v")
