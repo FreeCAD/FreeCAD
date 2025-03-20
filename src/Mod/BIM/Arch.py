@@ -50,7 +50,6 @@ from ArchWindowPresets import *
 # TODO: migrate this one
 
 from ArchStructure import *
-from ArchSpace import *
 
 # make functions
 
@@ -856,6 +855,63 @@ def makeSpace(objects=None,baseobj=None,name=None):
             space.Proxy.addSubobjects(space, boundaries)
     return space
 
+def addSpaceBoundaries(space,subobjects):
+    """Adds the given subobjects as defining boundaries of the given space.
+
+    Parameters
+    ----------
+    space : ArchSpace._Space
+        Arch space object to add the boundaries to.
+    subobjects : List(<SelectionObject>) or App::PropertyLinkSubList
+        List of boundaries to add to the space.
+
+    Notes
+    -----
+    The subobjects parameter can be passed using either of these different formats:
+    1. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
+       requires the GUI to be active. The `SubObjects` property of each selection object in the
+       list defines the boundaries to add to the space.
+       ::
+            subobjects = [<SelectionObject>, ...]
+    2. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
+       tuple contains a document object and a nested tuple of subobjects that define the boundaries
+       to add.
+       ::
+            subobjects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
+            subobjects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
+    """
+    import Draft
+    if Draft.getType(space) == "Space":
+        space.Proxy.addSubobjects(space,subobjects)
+
+def removeSpaceBoundaries(space,subobjects):
+    """Remove the given subobjects as defining boundaries of the given space.
+
+    Parameters
+    ----------
+    space : ArchSpace._Space
+        Arch space object to remove the boundaries from.
+    subobjects : List(<SelectionObject>) or App::PropertyLinkSubList
+        List of boundaries to remove from the space.
+
+    Notes
+    -----
+    The subobjects parameter can be passed using either of these different formats:
+    1. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
+       requires the GUI to be active. The `SubObjects` property of each selection object in the
+       list defines the boundaries to remove from the space.
+       ::
+            subobjects = [<SelectionObject>, ...]
+    2. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
+       tuple contains a document object and a nested tuple of subobjects that define the boundaries
+       to remove.
+       ::
+            subobjects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
+            subobjects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
+    """
+    import Draft
+    if Draft.getType(space) == "Space":
+        space.Proxy.removeSubobjects(space,subobjects)
 
 def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=None):
 
