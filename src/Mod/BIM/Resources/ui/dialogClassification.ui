@@ -183,7 +183,7 @@
          <item>
           <widget class="QPushButton" name="buttonRename">
            <property name="toolTip">
-            <string>Use this class as material name</string>
+            <string>Use this class as object name</string>
            </property>
            <property name="text">
             <string>&lt;&lt; Set as name</string>
@@ -195,7 +195,7 @@
        <item>
         <widget class="QCheckBox" name="checkPrefix">
          <property name="text">
-          <string>Prefix with class name when applying</string>
+          <string>Prefix with classification system name</string>
          </property>
          <property name="checked">
           <bool>true</bool>
