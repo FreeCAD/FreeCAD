@@ -442,7 +442,7 @@ DrawViewClip* DrawView::getClipGroup()
 {
     for (auto* obj : getInList()) {
         if (obj->isDerivedFrom<DrawViewClip>()) {
-            return dynamic_cast<DrawViewClip*>(obj);
+            return static_cast<DrawViewClip*>(obj);
         }
     }
     return nullptr;
@@ -452,7 +452,7 @@ DrawViewCollection *DrawView::getCollection() const
 {
     for (auto* obj : getInList()) {
         if (obj->isDerivedFrom<DrawViewCollection>()) {
-            return dynamic_cast<DrawViewCollection*>(obj);
+            return static_cast<DrawViewCollection*>(obj);
         }
     }
     return nullptr;
@@ -551,7 +551,7 @@ std::vector<TechDraw::DrawLeaderLine*> DrawView::getLeaders() const
     std::vector<App::DocumentObject*> children = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
         if ((*it)->isDerivedFrom<DrawLeaderLine>()) {
-            TechDraw::DrawLeaderLine* lead = dynamic_cast<TechDraw::DrawLeaderLine*>(*it);
+            TechDraw::DrawLeaderLine* lead = static_cast<TechDraw::DrawLeaderLine*>(*it);
             result.push_back(lead);
         }
     }

@@ -73,7 +73,7 @@ void DrawViewClip::addView(App::DocumentObject* docObj)
         return;
     }
 
-    auto* view = dynamic_cast<DrawView*>(docObj);
+    auto* view = static_cast<DrawView*>(docObj);
 
     if (!view) {
         auto* link = dynamic_cast<App::Link*>(docObj);
