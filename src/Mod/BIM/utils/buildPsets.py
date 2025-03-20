@@ -25,9 +25,9 @@
    a qto_definitions.csv files in the directory ../Presets."""
 
 import os
-from zipfile import ZipFile
 from urllib.request import urlopen
 import xml.sax
+from zipfile import ZipFile
 
 
 URL = "https://ifc43-docs.standards.buildingsmart.org/IFC/RELEASE/IFC4x3/HTML/annex-a-psd.zip"

@@ -24,7 +24,6 @@
 
 """The BIM SimpleCopy command"""
 
-
 import FreeCAD
 import FreeCADGui
 

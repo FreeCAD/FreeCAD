@@ -24,7 +24,6 @@
 
 """The BIM Extrude command"""
 
-
 import FreeCAD
 import FreeCADGui
 

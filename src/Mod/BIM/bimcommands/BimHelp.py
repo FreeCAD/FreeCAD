@@ -24,7 +24,6 @@
 
 """The BIM Help command"""
 
-
 import FreeCAD
 import FreeCADGui
 

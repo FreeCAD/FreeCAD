@@ -24,6 +24,7 @@
 """The BIM Box command"""
 
 import os
+
 import FreeCAD
 import FreeCADGui
 

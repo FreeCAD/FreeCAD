@@ -24,7 +24,6 @@
 
 """The BIM Compound command"""
 
-
 import FreeCAD
 import FreeCADGui
 

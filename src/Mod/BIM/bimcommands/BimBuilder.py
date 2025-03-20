@@ -24,7 +24,6 @@
 
 """The BIM Builder command"""
 
-
 import FreeCAD
 import FreeCADGui
 

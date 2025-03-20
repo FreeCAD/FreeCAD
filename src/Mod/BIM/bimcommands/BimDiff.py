@@ -23,6 +23,7 @@
 """The BIM Diff command"""
 
 import os
+
 import FreeCAD
 import FreeCADGui
 

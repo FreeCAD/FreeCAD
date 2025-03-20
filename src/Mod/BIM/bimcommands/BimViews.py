@@ -23,11 +23,13 @@
 """The BIM Views command"""
 
 import sys
+
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 UPDATEINTERVAL = 2000  # number of milliseconds between BIM Views window update
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 

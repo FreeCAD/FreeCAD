@@ -19,17 +19,28 @@
 #*                                                                         *
 #***************************************************************************
 
+__title__  = "FreeCAD Collada importer"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
+
+## @package importDAE
+#  \ingroup ARCH
+#  \brief DAE (Collada) file format importer and exporter
+#
+#  This module provides tools to import and export Collada (.dae) files.
+
 import os
 from typing import Optional
 
 import numpy as np
 
-from draftutils import params
+import FreeCAD
 import Arch
 import Draft
-import FreeCAD
 import Mesh
 import MeshPart
+
+from draftutils import params
 
 if FreeCAD.GuiUp:
     from draftutils.translate import translate
@@ -38,16 +49,6 @@ else:
     def translate(context, text):
         return text
     # \endcond
-
-## @package importDAE
-#  \ingroup ARCH
-#  \brief DAE (Collada) file format importer and exporter
-#
-#  This module provides tools to import and export Collada (.dae) files.
-
-__title__  = "FreeCAD Collada importer"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
 
 DEBUG = True
 

@@ -22,8 +22,8 @@
 
 """BIM Panel-related Arch_"""
 
-
 import os
+
 import FreeCAD
 import FreeCADGui
 

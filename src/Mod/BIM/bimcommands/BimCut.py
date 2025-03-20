@@ -24,7 +24,6 @@
 
 """The BIM Cut command"""
 
-
 import FreeCAD
 import FreeCADGui
 
