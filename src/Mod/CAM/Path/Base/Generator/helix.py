@@ -200,28 +200,29 @@ def generate(
         return commandlist
 
     def retract():
-        # try to move to a safe place to retract without leaving a dwell
-        # mark
+        # try to move to a safe place to retract without leaving a dwell mark
         retractcommands = []
-        # Calculate retraction
-        if hole_radius <= tool_diameter:  # simple case where center is clear
-            center_clear = True
-
-        elif startAt == "Inside" and inner_radius == 0.0:  # middle is clear
-            center_clear = True
+        if tool_diameter >= hole_radius:
+            center_clear = True  # single cut operation
         else:
-            center_clear = False
+            center_clear = (startAt == "Inside") and (inner_radius <= 0.0)
+            # hole centre is already clear (hole inner radius<=tool_radius)
 
-        if center_clear:
+        # use G1 since tool tip still in contact with workpiece.
+        if center_clear and (prev_r == "NaN"):
+            retractcommands.append(Path.Command("G1", {"X": endPoint.x, "Y": endPoint.y}))
+        elif prev_r != "NaN":
+            dwell_r = (r + prev_r) / 2
             retractcommands.append(
-                Path.Command("G0", {"X": endPoint.x, "Y": endPoint.y, "Z": endPoint.z})
+                Path.Command(
+                    "G1",
+                    {
+                        "X": endPoint.x + dwell_r,
+                        "Y": endPoint.y,
+                    },
+                )
             )
-
-        # Technical Debt.
-        # If the operation is clearing multiple passes in annulus mode (inner
-        # radius > 0.0 and len(radii) > 1) then there is a derivable
-        # safe place which does not touch the inner or outer wall on all radii except
-        # the first.  This is left as a future improvement.
+            # else annular slot, no pulloff, just retract along wall
 
         retractcommands.append(Path.Command("G0", {"Z": startPoint.z}))
 
@@ -231,8 +232,9 @@ def generate(
         radii = radii[::-1]
 
     commands = []
+    prev_r = "NaN"
     for r in radii:
         commands.extend(helix_cut_r(r))
         commands.extend(retract())
-
+        prev_r = r
     return commands
