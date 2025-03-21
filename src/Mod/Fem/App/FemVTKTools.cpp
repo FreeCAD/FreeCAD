@@ -1479,8 +1479,8 @@ void readResults(std::ifstream& ifstr,
     // enter in node values block
     std::string code1 = " -1";
     std::string code2 = " -2";
-    int node;
-    double value;
+    int node {-1};
+    double value {0.0};
     std::vector<double> vecValues;
     std::vector<double> scaValues;
     std::vector<int> nodes;
@@ -1563,9 +1563,15 @@ void readResults(std::ifstream& ifstr,
         }
         if ((vecValues.size() + scaValues.size()) == numComps) {
             if (!vecValues.empty()) {
+                if (node == -1) {
+                    throw Base::FileException("File to load not readable");
+                }
                 vecArray->SetTuple(mapNodes.at(node), vecValues.data());
             }
             if (!scaValues.empty()) {
+                if (node == -1) {
+                    throw Base::FileException("File to load not readable");
+                }
                 std::vector<vtkSmartPointer<vtkDoubleArray>>::iterator it1;
                 std::vector<double>::iterator it2;
                 for (it1 = scaArrays.begin(), it2 = scaValues.begin();
