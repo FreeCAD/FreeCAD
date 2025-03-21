@@ -1371,6 +1371,9 @@ void Hole::findClosestDesignation()
     // Intended for thread type changes
     // finds the closest diameter of the new thread type
     int threadType = ThreadType.getValue();
+    if (threadType < 0) {
+        throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type out of range"));
+    }
     int closestSize = 0;
     double diameter = ThreadDiameter.getValue();
     if (diameter == 0)
