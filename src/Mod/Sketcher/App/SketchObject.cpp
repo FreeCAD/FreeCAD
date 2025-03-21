@@ -593,16 +593,14 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     // does not converge. We avoid marking a sketch as fully constrained when no convergence is
     // achieved.
     if (err == 0) {
-        auto isFullyConstrained = lastDoF == 0;
-        auto fullyConstrainedChanged = FullyConstrained.getValue() == isFullyConstrained;
-        FullyConstrained.setValue(isFullyConstrained);
+        FullyConstrained.setValue(lastDoF == 0);
         if (updateGeoAfterSolving) {
             // set the newly solved geometry
             std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
             Part::PropertyGeometryList tmp;
             tmp.setValues(std::move(geomlist));
             // Only set values if there is actual changes
-            if (!Geometry.isSame(tmp) || Constraints.isTouched()) {
+            if (Constraints.isTouched() || !Geometry.isSame(tmp)) {
                 Geometry.moveValues(std::move(tmp));
             }
         }
