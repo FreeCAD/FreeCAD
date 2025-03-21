@@ -243,23 +243,6 @@ PyObject* HLRBRep_PolyAlgoPy::outLinedShape(PyObject *args)
     return new TopoShapePy(new TopoShape(result));
 }
 
-Py::Float HLRBRep_PolyAlgoPy::getAngle() const
-{
-#if OCC_VERSION_HEX <= 0x070400
-    return Py::Float(getHLRBRep_PolyAlgoPtr()->Angle());
-#else
-    throw Py::RuntimeError("Function has been removed with OCC 7.5");
-#endif
-}
-
-void  HLRBRep_PolyAlgoPy::setAngle(Py::Float arg)
-{
-#if OCC_VERSION_HEX <= 0x070400
-    getHLRBRep_PolyAlgoPtr()->Angle(static_cast<double>(arg));
-#else
-    (void)arg;
-#endif
-}
 
 Py::Float HLRBRep_PolyAlgoPy::getTolAngular() const
 {

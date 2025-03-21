@@ -158,12 +158,6 @@ Make a shape with the internal outlines in each face of shape S.
             </UserDocu>
         </Documentation>
     </Methode>
-    <Attribute Name="Angle">
-        <Documentation><!-- OCCT has no further documentation -->
-            <UserDocu></UserDocu>
-        </Documentation>
-        <Parameter Name="Angle" Type="Float"/>
-    </Attribute>
     <Attribute Name="TolAngular">
         <Documentation><!-- OCCT has no further documentation -->
             <UserDocu></UserDocu>
