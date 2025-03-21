@@ -41,10 +41,10 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection/Selection.h>
 
-namespace Gui
+namespace MeasureGui
 {
 
-class TaskMeasure: public TaskView::TaskDialog, public Gui::SelectionObserver
+class TaskMeasure: public Gui::TaskView::TaskDialog, public Gui::SelectionObserver
 {
 
 public:
@@ -70,6 +70,7 @@ public:
     bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
+    void tryUpdate();
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
     Measure::MeasureBase* _mMeasureObject = nullptr;
@@ -103,6 +104,6 @@ private:
     bool mAutoSave = false;
 };
 
-}  // namespace Gui
+}  // namespace MeasureGui
 
 #endif  // MEASURE_TASKMEASURE_H

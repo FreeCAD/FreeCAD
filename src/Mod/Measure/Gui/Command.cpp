@@ -62,7 +62,7 @@ void StdCmdMeasure::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Gui::TaskMeasure* task = new Gui::TaskMeasure();
+    MeasureGui::TaskMeasure* task = new MeasureGui::TaskMeasure();
     task->setDocumentName(this->getDocument()->getName());
     Gui::Control().showDialog(task);
 }
