@@ -416,7 +416,7 @@ def getSVG(source,
         if should_update_svg_cache:
             svgcache = ""
             # render using the TechDraw module
-            import TechDraw, Part
+            import TechDraw
             if vshapes:
                 baseshape = Part.makeCompound(vshapes)
                 style = {'stroke':       "SVGLINECOLOR",
@@ -1348,4 +1348,3 @@ class SectionPlaneTaskPanel:
         self.resizeButton.setToolTip(QtGui.QApplication.translate("Arch", "Resizes the plane to fit the objects in the list above", None))
         self.recenterButton.setText(QtGui.QApplication.translate("Arch", "Center", None))
         self.recenterButton.setToolTip(QtGui.QApplication.translate("Arch", "Centers the plane on the objects in the list above", None))
-

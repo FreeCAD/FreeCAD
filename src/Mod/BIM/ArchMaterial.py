@@ -308,7 +308,6 @@ class _ViewProviderArchMaterial:
 
     def updateData(self, obj, prop):
         if prop == "Color":
-            from PySide import QtCore,QtGui
 
             # custom icon
             if hasattr(obj,"Color"):
@@ -895,5 +894,3 @@ class _ArchMultiMaterialTaskPanel:
     def reject(self):
         FreeCADGui.ActiveDocument.resetEdit()
         return True
-
-

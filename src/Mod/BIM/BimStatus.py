@@ -24,7 +24,6 @@
 
 """This module contains FreeCAD commands for the BIM workbench"""
 
-import os
 import FreeCAD
 import FreeCADGui
 
@@ -37,7 +36,6 @@ translate = FreeCAD.Qt.translate
 def setStatusIcons(show=True):
     "shows or hides the BIM icons in the status bar"
 
-    import FreeCADGui
     from PySide import QtCore, QtGui
 
     nudgeLabelsI = [
