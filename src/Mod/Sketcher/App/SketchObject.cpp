@@ -604,7 +604,7 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
             // Only set values if there is actual changes
             if (!Geometry.isSame(tmp) || Constraints.isTouched()) {
                 Geometry.moveValues(std::move(tmp));
-            }                
+            }
         }
     }
     else if (err < 0) {
