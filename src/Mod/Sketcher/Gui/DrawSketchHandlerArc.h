@@ -191,9 +191,6 @@ private:
 
                 if (constructionMethod() == ConstructionMethod::Center) {
                     startAngle = startAngleBackup;
-                }
-
-                if (constructionMethod() == ConstructionMethod::Center) {
                     toolWidgetManager.drawDoubleAtCursor(onSketchPos, arcAngle, Base::Unit::Angle);
                     seekAndRenderAutoConstraint(sugConstraints[2],
                                                 onSketchPos,

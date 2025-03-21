@@ -282,14 +282,6 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
             this, [&]{
         this->handlePendingEmit(true);
     });
-
-    // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
-#ifndef Q_OS_MAC
-    lineEdit()->setTextMargins(0, 2, 0, 2);
-#else
-    // https://forum.freecad.org/viewtopic.php?f=8&t=50615
-    lineEdit()->setTextMargins(0, 2, 0, 0);
-#endif
 }
 
 QuantitySpinBox::~QuantitySpinBox() = default;

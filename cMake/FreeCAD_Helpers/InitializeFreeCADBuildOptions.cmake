@@ -203,6 +203,10 @@ macro(InitializeFreeCADBuildOptions)
         set(BUILD_SMESH OFF)
     endif()
 
+    if (BUILD_CAM OR BUILD_FLAT_MESH)
+        set(FREECAD_USE_PYBIND11 ON)
+    endif()
+
     # force build directory to be different to source directory
     if (BUILD_FORCE_DIRECTORY)
         if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})

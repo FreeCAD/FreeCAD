@@ -1485,7 +1485,7 @@ void readResults(std::ifstream& ifstr,
     std::vector<double> scaValues;
     std::vector<int> nodes;
     int countNodes = 0;
-    int countScaPos;
+    size_t countScaPos;
     // result block could have both vector/matrix and scalar components
     // save each scalars entity in his own array
     auto scalarPos = identifyScalarEntities(entityTypes);
@@ -1533,7 +1533,7 @@ void readResults(std::ifstream& ifstr,
                 for (auto it = sub.begin(); it != sub.end(); it += 12, ++countScaPos) {
                     valueFromLine(it, 12, value);
                     // search if value is scalar or vector/matrix component
-                    auto pos = std::find(scalarPos.begin(), scalarPos.end(), countScaPos);
+                    auto pos = std::ranges::find(scalarPos, countScaPos);
                     if (pos == scalarPos.end()) {
                         vecValues.emplace_back(value);
                     }
@@ -1542,7 +1542,7 @@ void readResults(std::ifstream& ifstr,
                     }
                 }
             }
-            catch (const std::out_of_range& ex) {
+            catch (const std::out_of_range&) {
                 Base::Console().Warning("Invalid node: %d\n", node);
             }
             ++countNodes;
@@ -1552,7 +1552,7 @@ void readResults(std::ifstream& ifstr,
             for (auto it = sub.begin(); it != sub.end(); it += 12) {
                 valueFromLine(it, 12, value);
                 // search if value is scalar or vector/matrix component
-                auto pos = std::find(scalarPos.begin(), scalarPos.end(), countScaPos);
+                auto pos = std::ranges::find(scalarPos, countScaPos);
                 if (pos == scalarPos.end()) {
                     vecValues.emplace_back(value);
                 }

@@ -54,9 +54,26 @@ ExpressionSpinBox::ExpressionSpinBox(QAbstractSpinBox* sb)
     QObject::connect(iconLabel, &ExpressionLabel::clicked, [this]() {
         this->openFormulaDialog();
     });
+
+    // Set Margins
+    // vertical to avoid this: https://forum.freecad.org/viewtopic.php?f=8&t=50615
+    // horizontal to avoid going under the icon
+    lineedit->setAlignment(Qt::AlignVCenter);
+    int iconWidth = iconLabel->sizeHint().width();
+    int margin = getMargin();
+    lineedit->setTextMargins(margin, margin, margin + iconWidth, margin);
 }
 
 ExpressionSpinBox::~ExpressionSpinBox() = default;
+
+int ExpressionSpinBox::getMargin()
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+    return lineedit->style()->pixelMetric(QStyle::PM_LineEditIconMargin, nullptr, lineedit) / 2;
+#else
+    return lineedit->style()->pixelMetric(QStyle::PM_FocusFrameHMargin, nullptr, lineedit);
+#endif
+}
 
 void ExpressionSpinBox::bind(const App::ObjectIdentifier &_path)
 {
@@ -67,9 +84,6 @@ void ExpressionSpinBox::bind(const App::ObjectIdentifier &_path)
 
 void ExpressionSpinBox::showIcon()
 {
-    int frameWidth = spinbox->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    lineedit->setStyleSheet(QStringLiteral("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
-
     iconLabel->show();
 }
 
@@ -164,10 +178,8 @@ void ExpressionSpinBox::onChange()
 
 void ExpressionSpinBox::resizeWidget()
 {
-    int frameWidth = spinbox->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-
-    QSize sz = iconLabel->sizeHint();
-    iconLabel->move(lineedit->rect().right() - frameWidth - sz.width(), lineedit->rect().center().y() - sz.height() / 2);
+    int iconWidth = iconLabel->width() + getMargin();
+    iconLabel->move(lineedit->width() - iconWidth, (lineedit->height() - iconLabel->height()) / 2);
     updateExpression();
 }
 

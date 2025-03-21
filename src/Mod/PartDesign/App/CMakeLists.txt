@@ -7,15 +7,6 @@ include_directories(
 
 include_directories(
     SYSTEM
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${QT_INCLUDE_DIR}
-    ${ZIPIOS_INCLUDES}
-    ${ZLIB_INCLUDE_DIR}
-    ${PYCXX_INCLUDE_DIR}
-    ${Python3_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${QT_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
 )
 link_directories(${OCC_LIBRARY_DIR})

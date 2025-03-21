@@ -702,6 +702,7 @@ void PropertyLink::resetLink()
             }
         }
     }
+    _pcLink = nullptr;
 }
 
 void PropertyLink::setValue(App::DocumentObject* lValue)
