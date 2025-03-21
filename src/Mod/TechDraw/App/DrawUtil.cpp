@@ -1890,9 +1890,8 @@ std::string DrawUtil::cleanFilespecBackslash(const std::string& filespec)
 //! returns true if the Gui module and its event loop are active.
 bool DrawUtil::isGuiUp()
 {
-    std::string pyCommand{"import FreeCAD\nguiState = FreeCAD.GuiUp"};
-    std::string result{Base::Interpreter().runStringWithKey(pyCommand.c_str(), "guiState", "None")};
-    return  (result == "1");
+    auto* app = QCoreApplication::instance();
+    return (app != nullptr) && app->inherits("QApplication");
 }
 
 

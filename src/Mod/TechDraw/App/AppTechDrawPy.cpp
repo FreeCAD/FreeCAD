@@ -44,8 +44,6 @@
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 
-#include <Gui/Application.h>
-
 #include <Mod/Import/App/dxf/ImpExpDxf.h>
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -74,7 +72,6 @@
 #include "GeometryObject.h"
 #include "ProjectionAlgos.h"
 #include "TechDrawExport.h"
-#include "CosmeticVertexPy.h"
 #include "DrawLeaderLinePy.h"
 
 namespace TechDraw {
