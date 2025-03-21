@@ -1955,7 +1955,7 @@ std::vector<std::string> updateLinkSubs(const App::DocumentObject* obj,
     std::vector<std::string> res;
     for (auto it = subs.begin(); it != subs.end(); ++it) {
         const auto& sub = *it;
-        auto new_sub = (*f)(obj, sub.c_str(), std::forward<Args>(args)...);
+        auto new_sub = (*f)(obj, sub.c_str(), args...);
         if (new_sub.size()) {
             if (res.empty()) {
                 res.reserve(subs.size());
