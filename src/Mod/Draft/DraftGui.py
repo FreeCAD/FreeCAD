@@ -1636,7 +1636,7 @@ class DraftToolBar:
     def Activated(self):
         self.setWatchers()
         if hasattr(self,"tray"):
-            self.tray.show()
+            todo.delay(self.tray.show, None)
 
     def Deactivated(self):
         if (FreeCAD.activeDraftCommand is not None):
@@ -1645,7 +1645,7 @@ class DraftToolBar:
         FreeCADGui.Control.clearTaskWatcher()
         #self.tray = None
         if hasattr(self,"tray"):
-            self.tray.hide()
+            todo.delay(self.tray.hide, None)
 
     def reset_ui_values(self):
         """Method to reset task panel values"""
