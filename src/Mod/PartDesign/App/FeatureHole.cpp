@@ -1785,7 +1785,7 @@ static gp_Pnt toPnt(gp_Vec dir)
 
 App::DocumentObjectExecReturn* Hole::execute()
 { 
-    TopoShape profileshape = getProfileShape();
+    TopoShape profileshape = getProfileShape(false);
 
     // Find the base shape
     TopoShape base;
@@ -2155,7 +2155,23 @@ TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
 {
     TopoShape result(0);
 
-    int n_circles_found = 0;
+    auto add_hole = [&](Part::TopoShape const& baseshape, gp_Pnt loc) {
+        gp_Trsf localSketchTransformation;
+        localSketchTransformation.SetTranslation( gp_Pnt( 0, 0, 0 ),
+                                                  gp_Pnt(loc.X(), loc.Y(), loc.Z()) );
+
+        Part::ShapeMapper mapper;
+        mapper.populate(Part::MappingStatus::Modified, baseshape, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
+
+        TopoShape hole(-getID());
+        hole.makeShapeWithElementMap(protoHole, mapper, {baseshape});
+
+        // transform and generate element map.
+        hole = hole.makeElementTransform(localSketchTransformation);
+        holes.push_back(hole);
+    };
+
+    // Iterate over edges and filter out non-circle/non-arc types
     for(const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
         Standard_Real c_start;
         Standard_Real c_end;
@@ -2166,47 +2182,16 @@ TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
         if (c->DynamicType() != STANDARD_TYPE(Geom_Circle))
             continue;
 
-        n_circles_found++;
         Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
-        gp_Pnt loc = circle->Axis().Location();
-
-        gp_Trsf localSketchTransformation;
-        localSketchTransformation.SetTranslation( gp_Pnt( 0, 0, 0 ),
-                                                  gp_Pnt(loc.X(), loc.Y(), loc.Z()) );
-
-        Part::ShapeMapper mapper;
-        mapper.populate(Part::MappingStatus::Modified, profileEdge, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
-
-        TopoShape hole(-getID());
-        hole.makeShapeWithElementMap(protoHole, mapper, {profileEdge});
-
-        // transform and generate element map.
-        hole = hole.makeElementTransform(localSketchTransformation);
-        holes.push_back(hole);
+        add_hole(profileEdge, circle->Axis().Location());
     }
 
-    std::cerr<<"meep\n";
+    // Iterate over vertices while avoiding edges so that curve handles are ignored
     for(const auto &profileVertex : profileshape.getSubTopoShapes(TopAbs_VERTEX, TopAbs_EDGE)) {
         TopoDS_Vertex vertex = TopoDS::Vertex(TopoDS_Shape(profileVertex.getShape()));
 
-        gp_Pnt loc = BRep_Tool::Pnt(vertex);    
-        std::cerr<<"Point: "<<loc.X()<<",  "<<loc.Y()<<",  "<<loc.Z()<<"\n"; 
-
-        gp_Trsf localSketchTransformation;
-        localSketchTransformation.SetTranslation( gp_Pnt( 0, 0, 0 ),
-                                                    gp_Pnt(loc.X(), loc.Y(), loc.Z()) );
-
-        Part::ShapeMapper mapper;
-        mapper.populate(Part::MappingStatus::Modified, profileVertex, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
-
-        TopoShape hole(-getID());
-        hole.makeShapeWithElementMap(protoHole, mapper, {profileVertex});
-
-        // transform and generate element map.
-        hole = hole.makeElementTransform(localSketchTransformation);
-        holes.push_back(hole);
+        add_hole(profileVertex, BRep_Tool::Pnt(vertex));
     }
-    std::cerr<<"moop\n";
     return TopoShape().makeElementCompound(holes);
 }
 

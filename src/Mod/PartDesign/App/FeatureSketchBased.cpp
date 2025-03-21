@@ -404,7 +404,7 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
     return TopoDS_Face();
 }
 
-TopoShape ProfileBased::getProfileShape() const
+TopoShape ProfileBased::getProfileShape(bool needSubElement) const
 {
     TopoShape shape;
     const auto& subs = Profile.getSubValues();
@@ -416,7 +416,7 @@ TopoShape ProfileBased::getProfileShape() const
         std::vector<TopoShape> shapes;
         for (auto& sub : subs) {
             shapes.push_back(
-                Part::Feature::getTopoShape(profile, sub.c_str(), /* needSubElement */ true));
+                Part::Feature::getTopoShape(profile, sub.c_str(), needSubElement));
         }
         shape = TopoShape(shape.Tag).makeElementCompound(shapes);
     }
