@@ -153,6 +153,10 @@ void WorkbenchManipulatorPython::tryModifyMenuBar(const Py::Dict& dict, MenuItem
         std::string command = static_cast<std::string>(Py::String(dict.getItem(remove)));
         if (auto par = menuBar->findParentOf(command)) {
             if (MenuItem* item = par->findItem(command)) {
+                if (item == menuBar) {
+                    // Can't remove the menubar itself - Coverity issue 512853
+                    return;
+                }
                 par->removeItem(item);
                 delete item;  // NOLINT
             }
@@ -310,6 +314,10 @@ void WorkbenchManipulatorPython::tryModifyToolBar(const Py::Dict& dict, ToolBarI
         else {
             for (auto it : toolBar->getItems()) {
                 if (ToolBarItem* item = it->findItem(command)) {
+                    if (item == toolBar) {
+                        // Can't remove the toolBar itself - Coverity issue 513838
+                        return;
+                    }
                     it->removeItem(item);
                     delete item;  // NOLINT
                     break;
