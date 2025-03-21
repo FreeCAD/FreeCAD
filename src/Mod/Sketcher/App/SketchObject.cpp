@@ -603,7 +603,7 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
             Part::PropertyGeometryList tmp;
             tmp.setValues(std::move(geomlist));
             // Only set values if there is actual changes
-            if (!Geometry.isSame(tmp) || fullyConstrainedChanged) {
+            if (!Geometry.isSame(tmp) || Constraints.isTouched()) {
                 Geometry.moveValues(std::move(tmp));
             }                
         }
