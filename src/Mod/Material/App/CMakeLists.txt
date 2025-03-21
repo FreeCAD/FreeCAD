@@ -43,40 +43,54 @@ else()
 endif()
 
 generate_from_xml(Array2DPy)
+generate_from_py(Array2D)
 generate_from_xml(Array3DPy)
+generate_from_py(Array3D)
 generate_from_xml(MaterialFilterPy)
+generate_from_py(MaterialFilter)
 generate_from_xml(MaterialManagerPy)
+generate_from_py(MaterialManager)
 generate_from_xml(MaterialPy)
+generate_from_py(Material)
 generate_from_xml(ModelManagerPy)
+generate_from_py(ModelManager)
 generate_from_xml(ModelPropertyPy)
+generate_from_py(ModelProperty)
 generate_from_xml(ModelPy)
+generate_from_py(Model)
 generate_from_xml(UUIDsPy)
+generate_from_py(UUIDs)
 
-SET(Python_SRCS
-    Exceptions.h
+SET(Materials_XML_SRCS
     Array2DPy.xml
-    Array2DPyImp.cpp
     Array3DPy.xml
-    Array3DPyImp.cpp
     MaterialManagerPy.xml
-    MaterialManagerPyImp.cpp
     MaterialPy.xml
-    MaterialPyImp.cpp
     MaterialFilterPy.xml
-    MaterialFilterPyImp.cpp
     ModelManagerPy.xml
-    ModelManagerPyImp.cpp
     ModelPropertyPy.xml
-    ModelPropertyPyImp.cpp
     ModelPy.xml
-    ModelPyImp.cpp
     UUIDsPy.xml
+)
+SOURCE_GROUP("Python" FILES ${Materials_XML_SRCS})
+
+SET(Materials_Python_SRCS
+    Exceptions.h
+    Array2DPyImp.cpp
+    Array3DPyImp.cpp
+    MaterialManagerPyImp.cpp
+    MaterialPyImp.cpp
+    MaterialFilterPyImp.cpp
+    ModelManagerPyImp.cpp
+    ModelPropertyPyImp.cpp
+    ModelPyImp.cpp
     UUIDsPyImp.cpp
 )
-SOURCE_GROUP("Python" FILES ${Python_SRCS})
+SOURCE_GROUP("Python" FILES ${Materials_Python_SRCS})
 
 SET(Materials_SRCS
-    ${Python_SRCS}
+    ${Materials_XML_SRCS}
+    ${Materials_Python_SRCS}
     AppMaterial.cpp
     FolderTree.h
     MaterialConfigLoader.cpp
