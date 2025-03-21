@@ -469,7 +469,7 @@ void Geometry::createNewTag()
     boost::lock_guard<boost::mutex> guard(random_number_mutex);
 
     if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
+        ran.seed(static_cast<std::uint64_t>(std::time(nullptr)));
         seeded = true;
     }
     static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
