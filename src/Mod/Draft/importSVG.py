@@ -1396,56 +1396,45 @@ def export(exportList, filename):
 
 # function to replace use tag to it's referenced object
 def replace_use_with_reference(file_path):
-    # open file and read
-
-    svg_content = pyopen(file_path).read()
-
-    # parse as xml.
-    tree = ET.ElementTree(ET.fromstring(svg_content))
-    root = tree.getroot()
-
-    # create id dictionary.
-    id_map = {}
-    for elem in root.findall(".//*[@id]"):
-        id_map[elem.attrib["id"]] = elem
-
-    # create parent map
-    parent_map = {child: parent for parent in tree.iter() for child in parent}
-
     #function that replace use tag to freecad:used
-    def replace_use(element, parent_map):
-        uses = element.findall(".//{http://www.w3.org/2000/svg}use")
-        for use in uses:
-            href = use.attrib.get("{http://www.w3.org/1999/xlink}href", "")
-            if href.startswith("#"):
-                ref_id = href[1:]
-                ref_element = id_map.get(ref_id)
-                if ref_element is not None:
-                    # defs tag could not be referenced by use tag.
-                    if ref_element.tag.endswith("defs"):
-                        continue
-                    # make new element named freecad:used because use tag may have it own transform.
-                    new_element = ET.Element("freecad:used")
-                    for attr in use.attrib:
-                        # copy attribute to new one except href attribute
-                        if attr != "{http://www.w3.org/1999/xlink}href" and attr not in new_element.attrib:
-                            new_element.set(attr, use.attrib[attr])
-                    ref_element=deepcopy(ref_element)
-                    # change referenced symbol tag to g tag, because symbol tag will be ignored when importing.
-                    if ref_element.tag.endswith("symbol"):
-                        ref_element.tag="g"
-                    # remove id from referenced element.(without this multiple same id problem)
-                    if "id" in ref_element.attrib:
-                        del ref_element.attrib["id"]
-                    for child in list(ref_element):
-                        # remove id from child of referenced element.(without this multiple same id problem)
-                        if "id" in child.attrib:
-                            del child.attrib["id"]
-                    new_element.append(ref_element)
-                    parent = parent_map[use]
-                    # replace use tag by freecad:used tag. 
-                    parent.remove(use)
-                    parent.append(new_element)
+    def replace_use(element, tree):
+        while True:
+            uses = element.findall(".//{http://www.w3.org/2000/svg}use")
+            if uses == []:
+                break   
+            # create parent map
+            parent_map = {child: parent for parent in tree.iter() for child in parent}
+            for use in uses:
+                href = use.attrib.get("{http://www.w3.org/1999/xlink}href", "")
+                if href.startswith("#"):
+                    ref_id = href[1:]
+                    ref_element = id_map.get(ref_id)
+                    if ref_element is not None:
+                        # defs tag could not be referenced by use tag.
+                        if ref_element.tag.endswith("defs"):
+                            continue
+                        # make new element named freecad:used because use tag may have it own transform.
+                        new_element = ET.Element("freecad:used")
+                        for attr in use.attrib:
+                            # copy attribute to new one except href attribute
+                            if attr != "{http://www.w3.org/1999/xlink}href" and attr not in new_element.attrib:
+                                new_element.set(attr, use.attrib[attr])
+                        ref_element=deepcopy(ref_element)
+                        # change referenced symbol tag to g tag, because symbol tag will be ignored when importing.
+                        if ref_element.tag.endswith("symbol"):
+                            ref_element.tag="g"
+                        # remove id from referenced element.(without this multiple same id problem)
+                        if "id" in ref_element.attrib:
+                            del ref_element.attrib["id"]
+                        for child in list(ref_element):
+                            # remove id from child of referenced element.(without this multiple same id problem)
+                            if "id" in child.attrib:
+                                del child.attrib["id"]
+                        new_element.append(ref_element)
+                        parent = parent_map[use]
+                        # replace use tag by freecad:used tag. 
+                        parent.remove(use)
+                        parent.append(new_element)
         #now all use tag processd
         #remove symbol and defs tag from tree.
         symbols = element.findall(".//{http://www.w3.org/2000/svg}symbol")
@@ -1457,7 +1446,20 @@ def replace_use_with_reference(file_path):
             parent = parent_map[deftag]
             parent.remove(deftag)
 
-    replace_use(root, parent_map)
+    # open file and read
+    svg_content = pyopen(file_path).read()
+
+    # parse as xml.
+    tree = ET.ElementTree(ET.fromstring(svg_content))
+    root = tree.getroot()
+
+    # create id dictionary.
+    id_map = {}
+    for elem in root.findall(".//*[@id]"):
+        id_map[elem.attrib["id"]] = elem
+
+    replace_use(root, tree)
+
     
     # function that remove namespace prefix from tree.
     def strip_ns_prefix(tree):
