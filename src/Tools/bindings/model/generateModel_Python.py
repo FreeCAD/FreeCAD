@@ -537,11 +537,8 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
 
     # Attach sequence protocol metadata if provided.
     if sequence_protocol_kwargs is not None:
-        try:
-            seq_protocol = SequenceProtocol(**sequence_protocol_kwargs)
-            py_export.Sequence = seq_protocol
-        except Exception as e:
-            py_export.Sequence = None
+        seq_protocol = SequenceProtocol(**sequence_protocol_kwargs)
+        py_export.Sequence = seq_protocol
 
     py_export.Attribute.extend(class_attributes)
     py_export.Methode.extend(class_methods)
