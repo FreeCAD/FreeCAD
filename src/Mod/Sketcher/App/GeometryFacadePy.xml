@@ -29,7 +29,7 @@
    <Attribute Name="Id" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                Sets/returns the Id of the SketchGeometryExtension.
+Sets/returns the Id of the SketchGeometryExtension.
             </UserDocu>
         </Documentation>
         <Parameter Name="Id" Type="Long"/>
@@ -37,7 +37,7 @@
     <Attribute Name="InternalType" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                Sets/returns the Internal Alignment Type of the Geometry.
+Sets/returns the Internal Alignment Type of the Geometry.
             </UserDocu>
         </Documentation>
         <Parameter Name="InternalType" Type="String"/>
@@ -45,7 +45,7 @@
     <Attribute Name="Blocked" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                Sets/returns whether the geometry is blocked or not.
+Sets/returns whether the geometry is blocked or not.
             </UserDocu>
         </Documentation>
         <Parameter Name="Blocked" Type="Boolean"/>
@@ -59,7 +59,7 @@
     <Attribute Name="GeometryLayerId" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                Returns the Id of the geometry Layer in which the geometry is located.
+Returns the Id of the geometry Layer in which the geometry is located.
             </UserDocu>
         </Documentation>
         <Parameter Name="GeometryLayerId" Type="Long"/>

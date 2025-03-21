@@ -17,36 +17,36 @@
     </Documentation>
     <Methode Name="solve">
       <Documentation>
-        <UserDocu>solve the actual set of geometry and constraints</UserDocu>
+        <UserDocu>Solve the actual set of geometry and constraints</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="addGeometry">
       <Documentation>
-        <UserDocu>add a geometric object to the sketch</UserDocu>
+        <UserDocu>Add a geometric object to the sketch</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="addConstraint">
       <Documentation>
-        <UserDocu>add an constraint object to the sketch</UserDocu>
+        <UserDocu>Add an constraint object to the sketch</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="clear">
       <Documentation>
-        <UserDocu>clear the sketch</UserDocu>
+        <UserDocu>Clear the sketch</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="moveGeometry">
       <Documentation>
         <UserDocu>
-          moveGeometry(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
-          to another location.
-          It moves the specified point (or curve) to the given location by adding some
-          temporary weak constraints and solve the sketch.
-          This method is mostly used to allow the user to drag some portions of the sketch
-          in real time by e.g. the mouse and it works only for underconstrained portions of
-          the sketch.
-          The argument 'relative', if present, states if the new location is given
-          relatively to the current one.
+moveGeometry(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
+to another location.
+It moves the specified point (or curve) to the given location by adding some
+temporary weak constraints and solve the sketch.
+This method is mostly used to allow the user to drag some portions of the sketch
+in real time by e.g. the mouse and it works only for underconstrained portions of
+the sketch.
+The argument 'relative', if present, states if the new location is given
+relatively to the current one.
         </UserDocu>
       </Documentation>
     </Methode>

@@ -31,13 +31,21 @@ set(Sketcher_LIBS
 )
 
 generate_from_xml(SketchObjectSFPy)
+generate_from_py_(SketchObjectSF)
 generate_from_xml(SketchObjectPy)
+generate_from_py_(SketchObject)
 generate_from_xml(SketchGeometryExtensionPy)
+generate_from_py_(SketchGeometryExtension)
 generate_from_xml(ExternalGeometryExtensionPy)
+generate_from_py_(ExternalGeometryExtension)
 generate_from_xml(GeometryFacadePy)
+generate_from_py_(GeometryFacade)
 generate_from_xml(ExternalGeometryFacadePy)
+generate_from_py_(ExternalGeometryFacade)
 generate_from_xml(ConstraintPy)
+generate_from_py_(Constraint)
 generate_from_xml(SketchPy)
+generate_from_py_(Sketch)
 
 
 SET(Properties_SRCS
