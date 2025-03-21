@@ -52,7 +52,7 @@ public:
     void unsetEdit(int ModNum) override;
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
 
-    void updatePosition();
+    void updatePosition(double padLength);
     Base::Placement getDraggerPlacement();
     double getPadLengthFromDragger();
     void hideUnWantedAxes();

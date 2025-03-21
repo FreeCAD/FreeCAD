@@ -85,7 +85,7 @@ bool ViewProviderPad::setEdit([[maybe_unused]] int ModNum)
     dialog = new TaskDlgPadParameters(this);
     Gui::Control().showDialog(dialog);
 
-    updatePosition();
+    updatePosition(dialog->getPadLength());
     hideUnWantedAxes();
 
     return true;
@@ -111,7 +111,7 @@ void ViewProviderPad::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNu
     }
 }
 
-void ViewProviderPad::updatePosition()
+void ViewProviderPad::updatePosition(double padLength)
 {
     if (!dragger) {
         return;
@@ -123,7 +123,7 @@ void ViewProviderPad::updatePosition()
     Base::Vector3d center;
     shape.getCenterOfGravity(center);
 
-    center += extrude->getProfileNormal() * dialog->getPadLength();
+    center += extrude->getProfileNormal() * padLength;
     dragger->translation.setValue(Base::convertTo<SbVec3f>(center));
 
     auto rotation = Base::Rotation::fromNormalVector(extrude->getProfileNormal());
@@ -149,7 +149,12 @@ double PartDesignGui::ViewProviderPad::getPadLengthFromDragger()
 
     auto placement = getDraggerPlacement();
 
-    return (placement.getPosition() - center).Length();
+    auto diff = (placement.getPosition() - center);
+    if (diff.Dot(extrude->getProfileNormal()) >=0) {
+        return diff.Length();
+    }
+
+    return 0.001; // hack value
 }
 
 void ViewProviderPad::hideUnWantedAxes()
@@ -186,13 +191,13 @@ void ViewProviderPad::dragMotionCallback(void *data, SoDragger *d)
     vp->dialog->setPadLength(padLength);
     // This is hack used due to pad of 0 length giving arbitrary size in the model
     if (std::abs(padLength - 0.001) <= 0.01) {
-        vp->updatePosition();
+        vp->updatePosition(padLength);
     }
 
-    Base::Console().Message("Continuing dragging\n");
+    Base::Console().Message("Continuing dragging, Pad Length: %lf\n", padLength);
 }
 
-void PartDesignGui::ViewProviderPad::setDraggerPosFromUI([[maybe_unused]] double value)
+void PartDesignGui::ViewProviderPad::setDraggerPosFromUI(double value)
 {
-    updatePosition();
+    updatePosition(value);
 }
