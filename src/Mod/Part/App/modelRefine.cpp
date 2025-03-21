@@ -1071,8 +1071,13 @@ bool FaceUniter::process()
                         checkFinalShell = true;
                     }
                     facesToSew.push_back(newFace);
-                    if (facesToRemove.capacity() <= facesToRemove.size() + adjacencySplitter.getGroup(adjacentIndex).size())
-                        facesToRemove.reserve(facesToRemove.size() + adjacencySplitter.getGroup(adjacentIndex).size());
+
+                    // This reserve is probably not actually an improvement over letting
+                    // emplace_back allocate as needed. Leaving the code here for study if someone
+                    // wants to measure it. Coverity issue 356645. - chennes, March 2025
+                    //if (facesToRemove.capacity() <= facesToRemove.size() + adjacencySplitter.getGroup(adjacentIndex).size())
+                    //    facesToRemove.reserve(facesToRemove.size() + adjacencySplitter.getGroup(adjacentIndex).size());
+
                     FaceVectorType temp = adjacencySplitter.getGroup(adjacentIndex);
                     facesToRemove.insert(facesToRemove.end(), temp.begin(), temp.end());
                     // the first shape will be marked as modified, i.e. replaced by newFace, all others are marked as deleted
