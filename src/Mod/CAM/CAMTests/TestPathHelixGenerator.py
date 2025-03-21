@@ -35,7 +35,7 @@ def _resetArgs():
     v1 = FreeCAD.Vector(5, 5, 20)
     v2 = FreeCAD.Vector(5, 5, 18)
 
-    #edg = Part.makeLine(v1, v2)
+    # edg = Part.makeLine(v1, v2)
 
     return {
         "edge": Part.makeLine(v1, v2),
@@ -136,7 +136,7 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
         args["tool_diameter"] = 5.001
         self.assertRaises(ValueError, generator.generate, **args)
 
-        # 2b. tool == hole should be allowed. 
+        # 2b. tool == hole should be allowed.
         args = _resetArgs()
         designed_hole_diameter = 10.0
         extra_offset = 2.5
@@ -213,7 +213,7 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
         result = generator.generate(**args)
         self.assertTrue(result[-2].Name == "G1")
 
-        # if center is not clear, single annular slot, 
+        # if center is not clear, single annular slot,
         # retraction is one straight up on the last move.
         #  the second to last move should be a G2 since "CW"
         args["hole_radius"] = 7.0
@@ -221,7 +221,7 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
         result = generator.generate(**args)
         print(result[-2])
         self.assertTrue(result[-2].Name == "G2")
-        
+
         # if center is not clear, multiple helical paths
         # retraction is one straight up on the last move.
         # the second to last move should be a G1 pulloff to a clear radius
