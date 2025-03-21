@@ -12,7 +12,9 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 generate_from_xml(BodyPy)
+generate_from_py(Body)
 generate_from_xml(FeaturePy)
+generate_from_py(Feature)
 
 
 set(PartDesign_LIBS
