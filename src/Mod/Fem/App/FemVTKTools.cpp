@@ -1278,9 +1278,9 @@ readNodes(std::ifstream& ifstr, const std::string& lines, vtkSmartPointer<vtkPoi
 {
     std::string keyCode = "    2C";
     std::string keyCodeCoord = " -1";
-    long numNodes;
-    int indicator;
-    int node;
+    long numNodes {0};
+    int indicator {0};
+    int node {0};
     long nodeID = 0;
 
     // frd file might have nodes that are not numbered starting from zero.
