@@ -1485,7 +1485,7 @@ void readResults(std::ifstream& ifstr,
     std::vector<double> scaValues;
     std::vector<int> nodes;
     int countNodes = 0;
-    size_t countScaPos;
+    size_t countScaPos {0};
     // result block could have both vector/matrix and scalar components
     // save each scalars entity in his own array
     auto scalarPos = identifyScalarEntities(entityTypes);
