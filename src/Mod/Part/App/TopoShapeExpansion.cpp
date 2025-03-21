@@ -83,9 +83,7 @@
 
 #endif
 
-#if OCC_VERSION_HEX >= 0x070500
 #include <OSD_Parallel.hxx>
-#endif
 
 #include "modelRefine.h"
 #include "CrossSection.h"
@@ -2661,9 +2659,7 @@ TopoShape& TopoShape::makeElementOffset2D(const TopoShape& shape,
     if (shape.isNull()) {
         FC_THROWM(Base::ValueError, "makeOffset2D: input shape is null!");
     }
-    if (allowOpenResult == OpenResult::allowOpenResult && OCC_VERSION_HEX < 0x060900) {
-        FC_THROWM(Base::AttributeError, "openResult argument is not supported on OCC < 6.9.0.");
-    }
+
 
     // OUTLINE OF MAKEOFFSET2D
     // * Prepare shapes to process
@@ -5742,17 +5738,8 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         }
     }
 
-#if OCC_VERSION_HEX >= 0x070500
-    // -1/22/2024 Removing the parameter.
-    // if (PartParams::getParallelRunThreshold() > 0) {
     mk->SetRunParallel(Standard_True);
     OSD_Parallel::SetUseOcctThreads(Standard_True);
-    // }
-#else
-    // 01/22/2024 This will be an extremely rare case, since we don't
-    // build against OCCT versions this old.  Removing the parameter.
-    mk->SetRunParallel(true);
-#endif
 
     mk->SetArguments(shapeArguments);
     mk->SetTools(shapeTools);
