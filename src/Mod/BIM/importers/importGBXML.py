@@ -23,6 +23,8 @@ __title__  = "FreeCAD GbXml exporter"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
+from builtins import open as pyopen
+
 import FreeCAD
 import Draft
 

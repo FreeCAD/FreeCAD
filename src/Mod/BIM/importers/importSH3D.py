@@ -24,7 +24,6 @@ __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
 import os
-import xml.sax
 import zipfile
 
 import FreeCAD

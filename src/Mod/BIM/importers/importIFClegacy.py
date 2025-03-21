@@ -26,7 +26,7 @@
 ############################################################################
 
 
-import FreeCAD, Arch, Draft, os, sys, time, Part, DraftVecUtils, uuid, math, re
+import FreeCAD, Arch, Draft, os, time, Part, DraftVecUtils, uuid, math, re
 from builtins import open as pyopen
 from draftutils import params
 from draftutils.translate import translate
@@ -1779,7 +1779,7 @@ class IfcDocument:
 
 def explorer(filename,schema="IFC2X3_TC1.exp"):
     "returns a PySide dialog showing the contents of an IFC file"
-    from PySide import QtCore,QtGui
+    from PySide import QtGui
     ifc = IfcDocument(filename,schema)
     schema = IfcSchema(schema)
     tree = QtGui.QTreeWidget()
