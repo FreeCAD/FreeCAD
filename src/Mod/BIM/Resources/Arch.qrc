@@ -1,5 +1,6 @@
 <RCC>
     <qresource>
+        <file>geometry/HumanFigure.brep</file>
         <file>icons/Arch_3Views.svg</file>
         <file>icons/Arch_Add.svg</file>
         <file>icons/Arch_Axis.svg</file>

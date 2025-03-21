@@ -106,8 +106,6 @@ class Snapper:
         self.dim1 = None
         self.dim2 = None
         self.snapInfo = None
-        self.lastSnappedObject = None
-        self.active = True
         self.lastExtensions = []
         # the trackers are stored in lists because there can be several views,
         # each with its own set
@@ -272,8 +270,6 @@ class Snapper:
         # Activate snap
         if params.get_param("alwaysSnap"):
             active = True
-        if not self.active:
-            active = False
 
         self.setCursor('passive')
         if self.tracker:
@@ -315,6 +311,7 @@ class Snapper:
         if self.snapInfo and "Component" in self.snapInfo:
             osnap = self.snapToObject(lastpoint, active, constrain, eline, point)
             if osnap:
+                self.running = False
                 return osnap
 
         # Nothing has been snapped.
@@ -347,121 +344,109 @@ class Snapper:
     def snapToObject(self, lastpoint, active, constrain, eline, point):
         """Snap to an object."""
 
-        parent = self.snapInfo.get('ParentObject', None)
+        if not active:
+            return None
+
+        parent = self.snapInfo.get("ParentObject", None)
         if parent:
-            subname = self.snapInfo['SubName']
+            subname = self.snapInfo["SubName"]
             obj = parent.getSubObject(subname, retType=1)
         else:
-            obj = App.ActiveDocument.getObject(self.snapInfo['Object'])
+            obj = App.ActiveDocument.getObject(self.snapInfo["Object"])
             parent = obj
-            subname = self.snapInfo['Component']
-        if not obj:
-            self.spoint = self.cstr(point)
-            self.running = False
-            return self.spoint
+            subname = self.snapInfo["Component"]
+
+        if not obj \
+                or Draft.getType(obj) in UNSNAPPABLES \
+                or not getattr(obj.ViewObject, "Selectable", True):
+            return None
 
         snaps = []
-        self.lastSnappedObject = obj
+        point = App.Vector(self.snapInfo["x"], self.snapInfo["y"], self.snapInfo["z"])
+        comp = self.snapInfo["Component"]
+        shape = Part.getShape(parent, subname, needSubElement=True, noElementMap=True)
 
-        if obj and (Draft.getType(obj) in UNSNAPPABLES):
-            return []
+        if not shape.isNull():
+            snaps.extend(self.snapToSpecials(obj, lastpoint, eline))
 
-        if hasattr(obj.ViewObject, "Selectable"):
-            if not obj.ViewObject.Selectable:
-                self.spoint = self.cstr(lastpoint, constrain, point)
-                self.running = False
-                return self.spoint
+            if Draft.getType(obj) == "Polygon":
+                # Special snapping for polygons: add the center
+                snaps.extend(self.snapToPolygon(obj))
 
-        if not active:
-            # Passive snapping
-            snaps = [self.snapToVertex(self.snapInfo)]
-        else:
-            # Active snapping
-            point = App.Vector(self.snapInfo['x'], self.snapInfo['y'], self.snapInfo['z'])
-            comp = self.snapInfo['Component']
-            shape = Part.getShape(parent, subname,
-                                  needSubElement=True,
-                                  noElementMap=True)
-
-            if not shape.isNull():
-                snaps.extend(self.snapToSpecials(obj, lastpoint, eline))
-
-                if Draft.getType(obj) == "Polygon":
-                    # Special snapping for polygons: add the center
-                    snaps.extend(self.snapToPolygon(obj))
-
-                elif (Draft.getType(obj) == "BuildingPart"
-                      and self.isEnabled("Center")):
-                    # snap to the base placement of empty BuildingParts
-                    snaps.append([obj.Placement.Base, 'center',
-                                  self.toWP(obj.Placement.Base)])
-
-                if (not self.maxEdges) or (len(shape.Edges) <= self.maxEdges):
-                    if "Edge" in comp:
-                        # we are snapping to an edge
-                        if shape.ShapeType == "Edge":
-                            edge = shape
-                            snaps.extend(self.snapToNear(edge, point))
-                            snaps.extend(self.snapToEndpoints(edge))
-                            snaps.extend(self.snapToMidpoint(edge))
-                            snaps.extend(self.snapToPerpendicular(edge, lastpoint))
-                            snaps.extend(self.snapToIntersection(edge))
-                            snaps.extend(self.snapToElines(edge, eline))
-
-                            et = DraftGeomUtils.geomType(edge)
-                            if et == "Circle":
-                                # the edge is an arc, we have extra options
-                                snaps.extend(self.snapToAngles(edge))
-                                snaps.extend(self.snapToCenter(edge))
-                            elif et == "Ellipse":
-                                # extra ellipse options
-                                snaps.extend(self.snapToCenter(edge))
-                    elif "Face" in comp:
-                        # we are snapping to a face
-                        if shape.ShapeType == "Face":
-                            face = shape
-                            snaps.extend(self.snapToNearFace(face, point))
-                            snaps.extend(self.snapToPerpendicularFace(face, lastpoint))
-                            snaps.extend(self.snapToCenterFace(face))
-                    elif "Vertex" in comp:
-                        # we are snapping to a vertex
-                        if shape.ShapeType == "Vertex":
-                            snaps.extend(self.snapToEndpoints(shape))
-                    else:
-                        # `Catch-all` for other cases. Probably never executes
-                        # as objects with a Shape typically have edges, faces
-                        # or vertices.
-                        snaps.extend(self.snapToNearUnprojected(point))
-
-            elif Draft.getType(obj) in ("LinearDimension", "AngularDimension"):
-                # for dimensions we snap to their 2 points:
-                snaps.extend(self.snapToDim(obj))
-
-            elif Draft.getType(obj) == "Axis":
-                for edge in obj.Shape.Edges:
-                    snaps.extend(self.snapToEndpoints(edge))
-                    snaps.extend(self.snapToIntersection(edge))
-
-            elif Draft.getType(obj).startswith("Mesh::"):
-                snaps.extend(self.snapToNearUnprojected(point))
-                snaps.extend(self.snapToEndpoints(obj.Mesh))
-
-            elif Draft.getType(obj).startswith("Points::"):
-                # for points we only snap to points
-                snaps.extend(self.snapToEndpoints(obj.Points))
-
-            elif (Draft.getType(obj) in ("WorkingPlaneProxy", "BuildingPart")
+            elif (Draft.getType(obj) == "BuildingPart"
                   and self.isEnabled("Center")):
-                # snap to the center of WPProxies or to the base
-                # placement of no empty BuildingParts
+                # snap to the base placement of empty BuildingParts
                 snaps.append([obj.Placement.Base, 'center',
                               self.toWP(obj.Placement.Base)])
 
-            elif Draft.getType(obj) == "SectionPlane":
-                # snap to corners of section planes
-                snaps.extend(self.snapToEndpoints(obj.Shape))
+            if (not self.maxEdges) or (len(shape.Edges) <= self.maxEdges):
+                if "Edge" in comp:
+                    # we are snapping to an edge
+                    if shape.ShapeType == "Edge":
+                        edge = shape
+                        snaps.extend(self.snapToNear(edge, point))
+                        snaps.extend(self.snapToEndpoints(edge))
+                        snaps.extend(self.snapToMidpoint(edge))
+                        snaps.extend(self.snapToPerpendicular(edge, lastpoint))
+                        snaps.extend(self.snapToIntersection(edge))
+                        snaps.extend(self.snapToElines(edge, eline))
+
+                        et = DraftGeomUtils.geomType(edge)
+                        if et == "Circle":
+                            # the edge is an arc, we have extra options
+                            snaps.extend(self.snapToAngles(edge))
+                            snaps.extend(self.snapToCenter(edge))
+                        elif et == "Ellipse":
+                            # extra ellipse options
+                            snaps.extend(self.snapToCenter(edge))
+                elif "Face" in comp:
+                    # we are snapping to a face
+                    if shape.ShapeType == "Face":
+                        face = shape
+                        snaps.extend(self.snapToNearFace(face, point))
+                        snaps.extend(self.snapToPerpendicularFace(face, lastpoint))
+                        snaps.extend(self.snapToCenterFace(face))
+                elif "Vertex" in comp:
+                    # we are snapping to a vertex
+                    if shape.ShapeType == "Vertex":
+                        snaps.extend(self.snapToEndpoints(shape))
+                else:
+                    # `Catch-all` for other cases. Probably never executes
+                    # as objects with a Shape typically have edges, faces
+                    # or vertices.
+                    snaps.extend(self.snapToNearUnprojected(point))
+
+        elif Draft.getType(obj) in ("LinearDimension", "AngularDimension"):
+            # for dimensions we snap to their 2 points:
+            snaps.extend(self.snapToDim(obj))
+
+        elif Draft.getType(obj) == "Axis":
+            for edge in obj.Shape.Edges:
+                snaps.extend(self.snapToEndpoints(edge))
+                snaps.extend(self.snapToIntersection(edge))
+
+        elif Draft.getType(obj).startswith("Mesh::"):
+            snaps.extend(self.snapToNearUnprojected(point))
+            snaps.extend(self.snapToEndpoints(obj.Mesh))
+
+        elif Draft.getType(obj).startswith("Points::"):
+            # for points we only snap to points
+            snaps.extend(self.snapToEndpoints(obj.Points))
+
+        elif (Draft.getType(obj) in ("WorkingPlaneProxy", "BuildingPart")
+              and self.isEnabled("Center")):
+            # snap to the center of WPProxies or to the base
+            # placement of no empty BuildingParts
+            snaps.append([obj.Placement.Base, 'center',
+                          self.toWP(obj.Placement.Base)])
+
+        elif Draft.getType(obj) == "SectionPlane":
+            # snap to corners of section planes
+            snaps.extend(self.snapToEndpoints(obj.Shape))
 
         # updating last objects list
+        # objects must be added even if no snap has been found for the object
+        # otherwise Intersection snap (for example) will not work
         if obj.Name in self.lastObj:
             self.lastObj.remove(obj.Name)
         self.lastObj.append(obj.Name)
@@ -525,7 +510,6 @@ class Snapper:
 
         # return the final point
         self.spoint = fp
-        self.running = False
         return self.spoint
 
 
@@ -1069,19 +1053,6 @@ class Snapper:
         return snaps
 
 
-    def snapToVertex(self, info, active=False):
-        p = App.Vector(info['x'], info['y'], info['z'])
-        if active:
-            if self.isEnabled("Near"):
-                return [p, 'endpoint', self.toWP(p)]
-            else:
-                return []
-        elif self.isEnabled("Near"):
-            return [p, 'passive', p]
-        else:
-            return []
-
-
     def snapToSpecials(self, obj, lastpoint=None, eline=None):
         """Return special snap locations, if any."""
         snaps = []
@@ -1395,7 +1366,6 @@ class Snapper:
         but the callbacks are removed, so it can be used as a cancel function.
         """
         self.pt = None
-        self.lastSnappedObject = None
         self.holdPoints = []
         self.ui = Gui.draftToolBar
         self.view = Draft.get3DView()
