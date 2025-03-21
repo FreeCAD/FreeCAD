@@ -53,7 +53,7 @@ class BIM_IfcProperties:
         return v
 
     def Activated(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         try:
             import ArchIFC
@@ -244,7 +244,7 @@ class BIM_IfcProperties:
         return result
 
     def updateByType(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         groups = {}
         for name, role in self.objectslist.items():
@@ -278,7 +278,7 @@ class BIM_IfcProperties:
         self.spanTopLevels()
 
     def updateByTree(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         # order by hierarchy
         def istop(obj):
@@ -336,7 +336,7 @@ class BIM_IfcProperties:
         self.form.tree.expandAll()
 
     def updateDefault(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         for name, role in self.objectslist.items():
             role = role[0]
@@ -432,7 +432,7 @@ class BIM_IfcProperties:
         return props
 
     def getSearchResults(self, obj):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         text = self.form.searchField.currentText()
         if not text:
@@ -465,7 +465,7 @@ class BIM_IfcProperties:
                 return QtGui.QStandardItem()
 
     def updateProperties(self, sel1=None, sel2=None):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.propmodel.clear()
         self.propmodel.setHorizontalHeaderLabels(
@@ -628,7 +628,7 @@ class BIM_IfcProperties:
                                 del self.objectslist[name][1][prop]
 
     def addProperty(self, idx=0, pset=None, prop=None, ptype=None):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         if not self.form.tree.selectedIndexes():
             return
@@ -685,7 +685,7 @@ class BIM_IfcProperties:
             self.form.comboProperty.setCurrentIndex(0)
 
     def addPset(self, idx):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         if not self.form.tree.selectedIndexes():
             return
@@ -732,7 +732,7 @@ class BIM_IfcProperties:
             self.form.comboPset.setCurrentIndex(0)
 
     def removeProperty(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         sel = self.form.treeProperties.selectedIndexes()
         remove = []
@@ -764,7 +764,7 @@ class BIM_IfcProperties:
 
 
 if FreeCAD.GuiUp:
-    from PySide import QtCore, QtGui
+    from PySide import QtGui
 
     class propertiesDelegate(QtGui.QStyledItemDelegate):
         def __init__(self, parent=None, container=None, ptypes=[], plabels=[], *args):

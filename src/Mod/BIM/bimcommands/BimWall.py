@@ -23,7 +23,6 @@
 """BIM wall command"""
 
 
-import os
 import FreeCAD
 import FreeCADGui
 

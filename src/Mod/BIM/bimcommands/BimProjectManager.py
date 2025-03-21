@@ -24,7 +24,6 @@
 
 
 import os
-import sys
 import math
 import FreeCAD
 import FreeCADGui
@@ -49,7 +48,7 @@ class BIM_ProjectManager:
 
         import FreeCADGui
         import ArchBuildingPart
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogProjectManager.ui")
         self.project = None
@@ -413,7 +412,7 @@ class BIM_ProjectManager:
 
     def savePreset(self):
         import Arch
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         res = QtGui.QInputDialog.getText(
             None,
@@ -648,7 +647,7 @@ class BIM_ProjectManager:
         )
 
         d.Meta = values
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         filename = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
@@ -670,7 +669,7 @@ class BIM_ProjectManager:
         """loads the contents of a template into the current file"""
 
         import FreeCADGui
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         filename = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),

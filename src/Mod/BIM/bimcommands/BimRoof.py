@@ -23,7 +23,6 @@
 """BIM Roof command"""
 
 
-import os
 import FreeCAD
 import FreeCADGui
 
@@ -83,4 +82,3 @@ class Arch_Roof:
 
 
 FreeCADGui.addCommand("Arch_Roof", Arch_Roof())
-

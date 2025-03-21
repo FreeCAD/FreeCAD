@@ -25,7 +25,6 @@
 # TODO: Refactor the Site code so it becomes a BuildingPart too
 
 
-import os
 import FreeCAD
 import FreeCADGui
 

@@ -23,7 +23,6 @@
 """BIM fence command"""
 
 
-import os
 import FreeCAD
 import FreeCADGui
 

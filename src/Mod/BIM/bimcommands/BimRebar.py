@@ -23,7 +23,6 @@
 """BIM Rebar command"""
 
 
-import os
 import FreeCAD
 import FreeCADGui
 
