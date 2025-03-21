@@ -165,7 +165,6 @@ class DraftWorkbench(FreeCADGui.Workbench):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.hide()
-            from PySide import QtCore
             from draftutils import init_draft_statusbar
             init_draft_statusbar.hide_draft_statusbar()
         import WorkingPlane
