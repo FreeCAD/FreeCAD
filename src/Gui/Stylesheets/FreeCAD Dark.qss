@@ -1287,11 +1287,6 @@ QPushButton::menu-indicator {
   bottom: 4px;
 }
 
-QDialogButtonBox QPushButton {
-  /* Issue # 194 # 248 - Special case of QPushButton inside dialogs, for better UI */
-  min-width: -1;
-}
-
 /* QToolButton ------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbutton
