@@ -1981,7 +1981,7 @@ private:
         double height;
         double track = 0;
 
-        Py_UNICODE *unichars = nullptr;
+        Py_UCS4 *unichars = nullptr;
         Py_ssize_t pysize;
 
         PyObject *CharList;
@@ -2014,28 +2014,11 @@ private:
             }
 
             pysize = PyUnicode_GetLength(p);
-
-#ifdef FC_OS_WIN32
-            //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
-            //will result in unknown glyph in even positions, and wrong characters in
-            //odd positions.
-            unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(p, &pysize);
-#else
-            unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(p);
-#endif
+            unichars = PyUnicode_AsUCS4Copy(p);
         }
         else if (PyUnicode_Check(intext)) {
             pysize = PyUnicode_GetLength(intext);
-
-
-#ifdef FC_OS_WIN32
-            //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
-            //will result in unknown glyph in even positions, and wrong characters in
-            //odd positions.
-            unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(intext, &pysize);
-#else
-            unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(intext);
-#endif
+            unichars = PyUnicode_AsUCS4Copy(intext);
         }
         else {
             throw Py::TypeError("** makeWireString bad text parameter");
