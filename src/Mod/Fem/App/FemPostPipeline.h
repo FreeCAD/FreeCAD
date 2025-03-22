@@ -133,7 +133,6 @@ private:
 
     bool m_block_property = false;
     bool m_data_updated = false;
-    bool m_use_transform = false;
     void updateData();
 
 
