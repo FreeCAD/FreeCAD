@@ -26,10 +26,11 @@
 Provides the data as IfcContexts, IfcProducts and IfcTypes.
 """
 
-import os
 import json
+import os
 
 import FreeCAD
+
 from draftutils import params
 
 ifcVersions = ["IFC4", "IFC2X3"]

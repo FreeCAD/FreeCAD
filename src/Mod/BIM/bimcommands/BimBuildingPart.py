@@ -26,11 +26,13 @@
 
 
 import os
+
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -56,7 +58,7 @@ class Arch_Level:
         FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("Draft")
         FreeCADGui.addModule("WorkingPlane")
-        FreeCADGui.doCommand("obj = Arch.makeFloor(FreeCADGui.Selection.getSelection())") 
+        FreeCADGui.doCommand("obj = Arch.makeFloor(FreeCADGui.Selection.getSelection())")
         FreeCADGui.doCommand("obj.Placement = WorkingPlane.get_working_plane().get_placement()")
         FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCAD.ActiveDocument.commitTransaction()

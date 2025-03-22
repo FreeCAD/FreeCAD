@@ -20,21 +20,9 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD
-from draftutils import params
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
+__title__ = "Arch Schedule"
+__author__ = "Yorik van Havre"
+__url__ = "https://www.freecad.org"
 
 ## @package ArchSchedule
 #  \ingroup ARCH
@@ -44,14 +32,26 @@ else:
 #  Schedules are objects that can count and gather information
 #  about objects in the document, and fill a spreadsheet with the result
 
-__title__ = "Arch Schedule"
-__author__ = "Yorik van Havre"
-__url__ = "https://www.freecad.org"
+import FreeCAD
+
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 VERBOSE = True # change this for silent recomputes
-
 
 
 class _ArchScheduleDocObserver:
@@ -254,7 +254,8 @@ class _ArchSchedule:
             ifcfile = None
             elts = None
             if val:
-                import Draft,Arch
+                import Draft
+                import Arch
                 if objs:
                     objs = objs.split(";")
                     objs = [FreeCAD.ActiveDocument.getObject(o) for o in objs]
@@ -1000,5 +1001,3 @@ class ArchScheduleTaskPanel:
         self.obj.AutoUpdate = self.form.checkAutoUpdate.isChecked()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-
-

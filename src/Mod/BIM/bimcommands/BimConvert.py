@@ -24,7 +24,6 @@
 
 """The BIM Convert command"""
 
-
 import FreeCAD
 import FreeCADGui
 

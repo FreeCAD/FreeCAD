@@ -24,7 +24,6 @@
 
 """The BIM Fuse command"""
 
-
 import FreeCAD
 import FreeCADGui
 

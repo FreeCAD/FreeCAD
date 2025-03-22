@@ -19,21 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD
-import ArchComponent
-import Draft
-import DraftVecUtils
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
+__title__  = "FreeCAD Arch Frame"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchFrame
 #  \ingroup ARCH
@@ -43,10 +31,22 @@ else:
 #  Frames are objects made of a profile and an object with
 #  edges along which the profile gets extruded
 
-__title__  = "FreeCAD Arch Frame"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+import FreeCAD
+import ArchComponent
+import Draft
+import DraftVecUtils
 
+if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 class _Frame(ArchComponent.Component):
@@ -228,4 +228,3 @@ class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
             if self.Object.Profile:
                 p = [self.Object.Profile]
         return ArchComponent.ViewProviderComponent.claimChildren(self)+p
-

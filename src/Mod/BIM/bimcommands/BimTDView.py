@@ -24,7 +24,6 @@
 
 """The BIM TD View command"""
 
-
 import FreeCAD
 import FreeCADGui
 

@@ -22,10 +22,10 @@
 
 """This module contains FreeCAD commands for the BIM workbench"""
 
-
+import math
 import os
 import sys
-import math
+
 import FreeCAD
 import FreeCADGui
 

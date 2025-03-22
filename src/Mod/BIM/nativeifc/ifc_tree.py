@@ -22,7 +22,6 @@
 
 """This NativeIFC module handles the retrieval and display of geometry compositions of objects"""
 
-
 import FreeCAD
 
 TAB = 2

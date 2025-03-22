@@ -19,29 +19,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import math
-
-import FreeCAD
-import ArchCommands
-import Draft
-import Part
-from FreeCAD import Vector
-from draftutils import params
-
-if FreeCAD.GuiUp:
-    import FreeCADGui, re
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from pivy import coin
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
-
 __title__  = "FreeCAD Axis System"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
@@ -52,6 +29,31 @@ __url__    = "https://www.freecad.org"
 #
 #  This module provides tools to build axis
 #  An axis is a collection of planar axes with a number/tag
+
+import math
+
+import FreeCAD
+import ArchCommands
+import Draft
+import Part
+
+from FreeCAD import Vector
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    import re
+    from pivy import coin
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 class _Axis:
@@ -789,4 +791,3 @@ class _AxisTaskPanel:
                                    QtGui.QApplication.translate("Arch", "Distance", None),
                                    QtGui.QApplication.translate("Arch", "Angle", None),
                                    QtGui.QApplication.translate("Arch", "Label", None)])
-

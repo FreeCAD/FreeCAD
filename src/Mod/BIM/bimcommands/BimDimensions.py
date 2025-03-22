@@ -24,9 +24,9 @@
 
 """The BIM DimensionAligned command"""
 
-
 import FreeCAD
 import FreeCADGui
+
 from draftguitools import gui_dimensions
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP

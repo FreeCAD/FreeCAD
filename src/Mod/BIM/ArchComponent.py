@@ -19,6 +19,17 @@
 #*                                                                         *
 #***************************************************************************
 
+__title__  = "FreeCAD Arch Component"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
+
+## @package ArchComponent
+#  \ingroup ARCH
+#  \brief The base class of all Arch objects
+#
+#  This module provides the base Arch component class, that
+#  is shared by all of the Arch BIM objects
+
 """This module provides the base Arch component class, that is shared
 by all of the Arch BIM objects.
 
@@ -27,21 +38,18 @@ Examples
 TODO put examples here.
 """
 
-__title__  = "FreeCAD Arch Component"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
-
 import FreeCAD
 import ArchCommands
 import ArchIFC
 import Draft
+
 from draftutils import params
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
     from PySide import QtGui,QtCore
-    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
 else:
     # \cond
     def translate(ctxt,txt):
@@ -50,12 +58,6 @@ else:
         return txt
     # \endcond
 
-## @package ArchComponent
-#  \ingroup ARCH
-#  \brief The base class of all Arch objects
-#
-#  This module provides the base Arch component class, that
-#  is shared by all of the Arch BIM objects
 
 def addToComponent(compobject,addobject,mod=None):
     """Add an object to a component's properties.
@@ -606,7 +608,8 @@ class Component(ArchIFC.IfcProduct):
             before being rotated.
         """
 
-        import DraftGeomUtils,math
+        import math
+        import DraftGeomUtils
 
         # Get the object's center.
         if not isinstance(shape,list):
@@ -1994,9 +1997,9 @@ class ComponentTaskPanel:
             return
         if not isinstance(self.obj.IfcProperties,dict):
             return
-        import Arch_rc
         import csv
         import os
+        import Arch_rc
         import ArchIFCSchema
 
         # get presets

@@ -19,23 +19,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD
-from draftutils import params
-
-if FreeCAD.GuiUp:
-    import FreeCADGui, os
-    import Arch_rc # Needed for access to icons # lgtm [py/unused_import]
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
-
 __title__ = "Arch Material Management"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
@@ -46,6 +29,25 @@ __url__ = "https://www.freecad.org"
 #
 #  This module provides tools to add materials to
 #  Arch objects
+
+import FreeCAD
+
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    import os
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    import Arch_rc # Needed for access to icons # lgtm [py/unused_import]
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 class _ArchMaterialContainer:
@@ -895,5 +897,3 @@ class _ArchMultiMaterialTaskPanel:
     def reject(self):
         FreeCADGui.ActiveDocument.resetEdit()
         return True
-
-

@@ -24,7 +24,6 @@
 
 """The BIM Glue command"""
 
-
 import FreeCAD
 import FreeCADGui
 

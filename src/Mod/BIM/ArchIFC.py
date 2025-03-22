@@ -36,6 +36,7 @@ else:
     def QT_TRANSLATE_NOOP(ctx,txt):
         return txt
 
+
 def uncamel(t):
     return ''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:]
 

@@ -23,6 +23,7 @@
 """BIM nudge commands"""
 
 import os
+
 import FreeCAD
 import FreeCADGui
 

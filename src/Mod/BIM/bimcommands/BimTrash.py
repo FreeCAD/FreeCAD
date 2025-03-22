@@ -24,7 +24,6 @@
 
 """The BIM Trash command"""
 
-
 import FreeCAD
 import FreeCADGui
 

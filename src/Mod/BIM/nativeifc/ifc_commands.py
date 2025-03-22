@@ -22,9 +22,9 @@
 
 """This module contains IFC-related FreeCAD commands"""
 
-
 import FreeCAD
 import FreeCADGui
+
 from . import ifc_openshell
 
 translate = FreeCAD.Qt.translate

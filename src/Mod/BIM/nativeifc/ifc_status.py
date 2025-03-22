@@ -23,12 +23,11 @@
 
 """This contains nativeifc status widgets and functionality"""
 
-
-import os
 import csv
+import os
+
 import FreeCAD
 import FreeCADGui
-
 
 translate = FreeCAD.Qt.translate
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")

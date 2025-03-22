@@ -23,6 +23,7 @@
 """The BIM workbench"""
 
 import os
+
 import FreeCAD
 import FreeCADGui
 import Arch_rc
@@ -315,7 +316,9 @@ class BIMWorkbench(Workbench):
         # load webtools
 
         try:
-            import BIMServer, Git, Sketchfab
+            import BIMServer
+            import Git
+            import Sketchfab
         except ImportError:
             pass
         else:
@@ -330,7 +333,9 @@ class BIMWorkbench(Workbench):
         # load flamingo
 
         try:
-            import CommandsPolar, CommandsFrame, CommandsPipe
+            import CommandsPolar
+            import CommandsFrame
+            import CommandsPipe
         except ImportError:
             flamingo = None
         else:
@@ -369,7 +374,8 @@ class BIMWorkbench(Workbench):
         # load fasteners
 
         try:
-            import FastenerBase, FastenersCmd
+            import FastenerBase
+            import FastenersCmd
         except ImportError:
             fasteners = None
         else:

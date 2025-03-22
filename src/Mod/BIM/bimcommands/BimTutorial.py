@@ -22,13 +22,14 @@
 
 """This is the tutorial of the BIM workbench"""
 
-
 import os
+
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -91,7 +92,9 @@ class BIM_Tutorial:
             QtCore.QTimer.singleShot(1000, self.load)
 
     def load(self, arg=None):
-        import re, sys, codecs
+        import codecs
+        import re
+        import sys
 
         if sys.version_info.major < 3:
             import urllib2

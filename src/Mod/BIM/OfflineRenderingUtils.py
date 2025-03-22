@@ -102,14 +102,13 @@ OfflineRenderingUtils.viewer(scene)
 OfflineRenderingUtils.save(doc,filename=baseFileName+"_exported.FCStd",colors=colors,camera=camera)
 """
 
-import sys
+import binascii
+import inspect
 import os
+import sys
+import tempfile
 import xml.sax
 import zipfile
-import tempfile
-import inspect
-import binascii
-
 
 
 

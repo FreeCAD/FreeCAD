@@ -24,10 +24,10 @@
 
 """The BIM TDPage command"""
 
+import os
 
 import FreeCAD
 import FreeCADGui
-import os
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate

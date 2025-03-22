@@ -25,15 +25,27 @@
 #                                                                          #
 ############################################################################
 
-
-import FreeCAD, Arch, Draft, os, sys, time, Part, DraftVecUtils, uuid, math, re
-from builtins import open as pyopen
-from draftutils import params
-from draftutils.translate import translate
-
 __title__="FreeCAD IFC importer"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
+
+
+import math
+import os
+import re
+import sys
+import time
+import uuid
+from builtins import open as pyopen
+
+import FreeCAD
+import Arch
+import Draft
+import DraftVecUtils
+import Part
+
+from draftutils import params
+from draftutils.translate import translate
 
 # config
 subtractiveTypes = ["IfcOpeningElement"] # elements that must be subtracted from their parents
@@ -937,7 +949,8 @@ def export(exportList,filename):
                  have IFC export capabilities. IFC export currently requires an experimental
                  version of IfcOpenShell available from https://github.com/aothms/IfcOpenShell""")
         return
-    import Arch,Draft
+    import Draft
+    import Arch
 
     # creating base IFC project
     getConfig()
@@ -1139,7 +1152,8 @@ def export(exportList,filename):
     ifc.write()
 
     if exporttxt:
-        import time, os
+        import os
+        import time
         txtstring = "List of objects exported by FreeCAD in file\n"
         txtstring += filename + "\n"
         txtstring += "On " + time.ctime() + "\n"
@@ -1181,7 +1195,8 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
     elif isinstance(data,Part.Shape):
         t = []
         if len(data.Wires) == 1:
-            import Part,DraftGeomUtils
+            import Part
+            import DraftGeomUtils
             data = Part.Wire(Part.__sortEdges__(data.Wires[0].Edges))
             verts = data.Vertexes
             try:

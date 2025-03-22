@@ -22,13 +22,14 @@
 
 """The BIM Classification command"""
 
+import os
 
 import FreeCAD
 import FreeCADGui
-import os
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -526,7 +527,8 @@ class BIM_Classification:
         )
         if not os.path.exists(preset):
             return None
-        import codecs, re
+        import codecs
+        import re
 
         d = Item()
         with codecs.open(preset, "r", "utf-8") as f:

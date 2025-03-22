@@ -24,7 +24,6 @@
 
 """The BIM Offset command"""
 
-
 import FreeCAD
 import FreeCADGui
 

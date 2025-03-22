@@ -26,6 +26,7 @@ from builtins import open as pyopen
 import FreeCAD
 translate = FreeCAD.Qt.translate
 
+
 def open(filename):
 
     """opens a SHP/SHX/DBF file in a new FreeCAD document"""

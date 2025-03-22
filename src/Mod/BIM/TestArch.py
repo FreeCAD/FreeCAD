@@ -27,8 +27,6 @@ import os
 import unittest
 
 import FreeCAD as App
-from FreeCAD import Units
-
 import Arch
 import Draft
 import Part
@@ -36,6 +34,7 @@ import Sketcher
 import TechDraw
 import WorkingPlane
 
+from FreeCAD import Units
 from draftutils.messages import _msg
 
 if App.GuiUp:
@@ -841,7 +840,7 @@ class ArchTest(unittest.TestCase):
         App.ActiveDocument.recompute()  # To calculate area
 
         # Create the wall
-        trace = Part.LineSegment(App.Vector (3000.0, 1000.0, 0.0), 
+        trace = Part.LineSegment(App.Vector (3000.0, 1000.0, 0.0),
                                  App.Vector (-3000.0, 1000.0, 0.0))
         wp = WorkingPlane.get_working_plane()
         base = App.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")
@@ -862,7 +861,7 @@ class ArchTest(unittest.TestCase):
         self.assertAlmostEqual(
             expectedArea.Value,
             actualArea.Value,
-            msg = (f"Invalid area value. " + 
+            msg = (f"Invalid area value. " +
                    f"Expected: {expectedArea.UserString}, actual: {actualArea.UserString}"))
 
     def test_SpaceFromSingleWall(self):

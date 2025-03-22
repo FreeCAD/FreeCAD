@@ -24,7 +24,6 @@
 
 """The BIM Common command"""
 
-
 import FreeCAD
 import FreeCADGui
 

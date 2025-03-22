@@ -20,6 +20,18 @@
 #*                                                                         *
 #***************************************************************************
 
+__title__  = "FreeCAD Arch Floor"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
+
+## @package ArchFloor
+#  \ingroup ARCH
+#  \brief The Floor object and tools
+#
+#  This module provides tools to build Floor objects.
+#  Floors are used to group different Arch objects situated
+#  at a same level
+
 """This module provides tools to build Floor objects. Floors are used to group
 different Arch objects situated at a same level.
 
@@ -33,12 +45,13 @@ import ArchCommands
 import ArchIFC
 import Draft
 import DraftVecUtils
+
 from draftutils import params
 
 if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
     def translate(ctxt,txt):
@@ -47,17 +60,6 @@ else:
         return txt
     # \endcond
 
-## @package ArchFloor
-#  \ingroup ARCH
-#  \brief The Floor object and tools
-#
-#  This module provides tools to build Floor objects.
-#  Floors are used to group different Arch objects situated
-#  at a same level
-
-__title__  = "FreeCAD Arch Floor"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
 
 def makeFloor(objectslist=None,baseobj=None,name=None):
     """Obsolete, superseded by ArchBuildingPart.makeFloor.

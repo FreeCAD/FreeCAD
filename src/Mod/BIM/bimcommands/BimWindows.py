@@ -23,6 +23,7 @@
 """The BIM Windows Manager command"""
 
 import os
+
 import FreeCAD
 import FreeCADGui
 
@@ -78,7 +79,8 @@ class BIM_Windows_TaskPanel:
         FreeCAD.ActiveDocument.recompute()
 
     def update(self, index=None):
-        import Draft, Arch_rc
+        import Draft
+        import Arch_rc
         from PySide import QtGui
 
         self.form.windows.clear()
@@ -214,7 +216,8 @@ class BIM_Windows_TaskPanel:
         self.update()
 
     def setMaterial(self):
-        import Draft, Arch_rc
+        import Draft
+        import Arch_rc
         from PySide import QtGui
 
         form = FreeCADGui.PySideUic.loadUi(":/ui/dialogMaterialChooser.ui")
