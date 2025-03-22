@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2025 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,40 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
-#define FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
+#ifndef FEM_VIEWPROVIDERFEMPOSTBRANCHFILTER_H
+#define FEM_VIEWPROVIDERFEMPOSTBRANCHFILTER_H
 
-#include <Gui/ViewProviderFeaturePython.h>
-#include <Mod/Fem/FemGlobal.h>
-
-#include "Gui/ViewProviderGroupExtension.h"
 #include "ViewProviderFemPostObject.h"
+#include <Gui/ViewProviderGroupExtension.h>
 
+
+namespace Gui
+{
+class SelectionChanges;
+class SoFCColorBar;
+}  // namespace Gui
 
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemPostPipeline: public ViewProviderFemPostObject,
-                                                public Gui::ViewProviderGroupExtension
-{
+class TaskDlgPost;
 
-    PROPERTY_HEADER_WITH_EXTENSIONS(FemGui::ViewProviderFemPostPipeline);
+class FemGuiExport ViewProviderFemPostBranchFilter: public ViewProviderFemPostObject,
+                                                    public Gui::ViewProviderGroupExtension
+{
+    PROPERTY_HEADER_WITH_EXTENSIONS(FemGui::ViewProviderFemPostBranchFilter);
 
 public:
-    /// constructor.
-    ViewProviderFemPostPipeline();
-    ~ViewProviderFemPostPipeline() override;
-
-    void updateData(const App::Property* prop) override;
-    bool onDelete(const std::vector<std::string>& objs) override;
-    void onSelectionChanged(const Gui::SelectionChanges& sel) override;
-    void updateColorBars();
-    void transformField(char* FieldName, double FieldFactor);
-    void scaleField(vtkDataSet* dset, vtkDataArray* pdata, double FieldFactor);
-    PyObject* getPyObject() override;
+    ViewProviderFemPostBranchFilter();
+    ~ViewProviderFemPostBranchFilter() override;
 
 protected:
-    void updateFunctionSize();
     virtual void setupTaskDialog(TaskDlgPost* dlg) override;
 
     // change default group drag/drop behaviour sligthly
@@ -69,4 +63,4 @@ protected:
 }  // namespace FemGui
 
 
-#endif  // FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
+#endif  // FEM_VIEWPROVIDERFEMPOSTBRANCHFILTER_H

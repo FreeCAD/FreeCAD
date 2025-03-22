@@ -850,15 +850,9 @@ bool ViewProviderFemPostObject::setupPipeline()
 
     auto postObject = getObject<Fem::FemPostObject>();
 
-    vtkDataObject* data = postObject->Data.getValue();
-    if (!data) {
-        return false;
-    }
-
     // check all fields if there is a real/imaginary one and if so
     // add a field with an absolute value
-    vtkSmartPointer<vtkDataObject> SPdata = data;
-    vtkDataSet* dset = vtkDataSet::SafeDownCast(SPdata);
+    vtkDataSet* dset = postObject->getDataSet();
     if (!dset) {
         return false;
     }
@@ -1073,7 +1067,15 @@ bool ViewProviderFemPostObject::onDelete(const std::vector<std::string>&)
 {
     // warn the user if the object has unselected children
     auto objs = claimChildren();
-    return ViewProviderFemAnalysis::checkSelectedChildren(objs, this->getDocument(), "pipeline");
+    if (!ViewProviderFemAnalysis::checkSelectedChildren(objs, this->getDocument(), "pipeline")) {
+        return false;
+    };
+
+    // delete all subelements
+    for (auto obj : objs) {
+        getObject()->getDocument()->removeObject(obj->getNameInDocument());
+    }
+    return true;
 }
 
 bool ViewProviderFemPostObject::canDelete(App::DocumentObject* obj) const
