@@ -365,12 +365,13 @@ void TaskProjGroup::turnProjGroupToView()
 
     Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().removeObject('%s')", multiView->getNameInDocument());
 
-    Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
-    auto* vp = static_cast<ViewProviderProjGroupItem*>(activeGui->getViewProvider(viewPart));
-    if (vp) {
-        vp->updateIcon();
-    }
     viewPart->recomputeFeature();
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
+    auto* vpView = static_cast<ViewProviderProjGroupItem*>(activeGui->getViewProvider(viewPart));
+    if (vpView) {
+        vpView->updateIcon();
+        vpView->fixSceneDependencies();
+    }
 
     view = viewPart;
     multiView = nullptr;
