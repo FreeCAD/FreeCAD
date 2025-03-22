@@ -28,27 +28,20 @@ import unittest
 import Arch
 import Draft
 import Part
+import FreeCAD as App
+from bimtests import TestArchBase
 
 
-class TestArchWall(unittest.TestCase):
-
-    def setUp(self):
-        # setting a new document to hold the tests
-        if App.ActiveDocument:
-            if App.ActiveDocument.Name != "ArchTest":
-                App.newDocument("ArchTest")
-        else:
-            App.newDocument("ArchTest")
-        App.setActiveDocument("ArchTest")
+class TestArchWall(TestArchBase.TestArchBase):
 
     def testWall(self):
-        App.Console.PrintLog ('Checking Arch Wall...\n')
+        App.Console.PrintMessage('Checking Arch Wall...\n')
         l=Draft.makeLine(App.Vector(0,0,0),App.Vector(-2,0,0))
         w = Arch.makeWall(l)
         self.assertTrue(w,"Arch Wall failed")
 
     def testWallMultiMatAlign(self):
-        App.Console.PrintLog ('Checking Arch Wall with MultiMaterial and 3 alignments...\n')
+        App.Console.PrintMessage('Checking Arch Wall with MultiMaterial and 3 alignments...\n')
         matA = Arch.makeMaterial()
         matB = Arch.makeMaterial()
         matMulti = Arch.makeMultiMaterial()
@@ -86,6 +79,3 @@ class TestArchWall(unittest.TestCase):
                 self.assertTrue(ptMax.isEqual(checkLst[i][1], 1e-8),
                                 "Arch Wall with MultiMaterial and 3 alignments failed")
 
-    def tearDown(self):
-        App.closeDocument("ArchTest")
-        pass
