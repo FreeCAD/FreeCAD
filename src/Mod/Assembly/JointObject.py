@@ -1820,5 +1820,4 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
     def clearSelection(self, doc_name):
         self.refs.clear()
-        
         self.updateJoint()
