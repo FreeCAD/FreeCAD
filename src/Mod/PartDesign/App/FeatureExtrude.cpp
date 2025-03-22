@@ -480,18 +480,36 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
     // Validate parameters
     double L = Length.getValue();
-    if ((method == "Length") && (L < Precision::Confusion())) {
-        return new App::DocumentObjectExecReturn(
-            QT_TRANSLATE_NOOP("Exception", "Length too small"));
-    }
-    double L2 = 0;
-    if ((method == "TwoLengths")) {
-        L2 = Length2.getValue();
-        if (std::abs(L2) < Precision::Confusion()) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Second length too small"));
+    if (method == "Length") {
+        if (std::abs(L) < Precision::Confusion()) {
+            if (addSubType == Type::Additive)
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Cannot create a pad with a height of zero."));
+            else
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Cannot create a pocket with a depth of zero."));
         }
     }
+    double L2 = 0;
+    if (method == "TwoLengths") {
+        L2 = Length2.getValue();
+        if (std::abs(L2) < Precision::Confusion() && std::abs(L) < Precision::Confusion()) {
+            if (addSubType == Type::Additive)
+				return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Length2 too small"));
+			else
+				return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Length2 too small"));
+        }
+    }
+    if (std::abs(L + L2) < Precision::Confusion()) {
+        if (addSubType == Type::Additive)
+                return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Cannot create a pad with zero total length."));
+            else
+                return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Cannot create a pocket with zero total length."));
+        }
 
     Part::Feature* obj = nullptr;
     TopoShape sketchshape;
