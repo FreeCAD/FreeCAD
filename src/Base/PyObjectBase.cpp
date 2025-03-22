@@ -169,7 +169,9 @@ static PyTypeObject PyBaseProxyType = {
 #if PY_VERSION_HEX >= 0x030c0000
     ,0                                                      /*tp_watched */
 #endif
-
+#if PY_VERSION_HEX >= 0x030d0000
+    ,0                                                      /*tp_versions_used*/
+#endif
 };
 
 PyTypeObject PyObjectBase::Type = {
@@ -227,6 +229,9 @@ PyTypeObject PyObjectBase::Type = {
     ,0                                            //NOLINT  /*tp_vectorcall */
 #if PY_VERSION_HEX >= 0x030c0000
     ,0                                                      /*tp_watched */
+#endif
+#if PY_VERSION_HEX >= 0x030d0000
+    ,0                                                      /*tp_versions_used*/
 #endif
 };
 
