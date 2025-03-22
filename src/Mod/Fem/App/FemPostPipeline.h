@@ -71,7 +71,6 @@ class FemExport FemPostPipeline: public Fem::FemPostObject, public Fem::FemPostG
 public:
     /// Constructor
     FemPostPipeline();
-    ~FemPostPipeline() override;
 
     App::PropertyEnumeration Frame;
 

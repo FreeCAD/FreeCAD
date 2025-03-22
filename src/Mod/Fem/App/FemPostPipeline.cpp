@@ -138,7 +138,7 @@ int FemFrameSourceAlgorithm::RequestInformation(vtkInformation* reqInfo,
     std::vector<double> frames = getFrameValues();
 
     if (frames.empty()) {
-        // no frames, default info is sfficient
+        // no frames, default info is sufficient
         return 1;
     }
 
@@ -190,8 +190,8 @@ int FemFrameSourceAlgorithm::RequestData(vtkInformation*,
             frame = std::abs(frame - time);
         }
 
-        auto it = std::min_element(std::begin(frames), std::end(frames));
-        idx = std::distance(std::begin(frames), it);
+        auto it = std::ranges::min_element(frames);
+        idx = std::distance(frames.begin(), it);
     }
 
     auto block = multiblock->GetBlock(idx);
@@ -202,8 +202,6 @@ int FemFrameSourceAlgorithm::RequestData(vtkInformation*,
 PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostPipeline, Fem::FemPostObject)
 
 FemPostPipeline::FemPostPipeline()
-    : FemPostObject()
-    , FemPostGroupExtension()
 {
 
     FemPostGroupExtension::initExtension(this);
@@ -219,8 +217,6 @@ FemPostPipeline::FemPostPipeline()
     m_source_algorithm = vtkSmartPointer<FemFrameSourceAlgorithm>::New();
     m_transform_filter->SetInputConnection(m_source_algorithm->GetOutputPort(0));
 }
-
-FemPostPipeline::~FemPostPipeline() = default;
 
 vtkDataSet* FemPostPipeline::getDataSet()
 {
@@ -458,8 +454,8 @@ void FemPostPipeline::onChanged(const Property* prop)
             value = frames[Frame.getValue()];
         }
         for (const auto& obj : Group.getValues()) {
-            if (obj->isDerivedFrom<FemPostFilter>()) {
-                static_cast<Fem::FemPostFilter*>(obj)->Frame.setValue(value);
+            if (auto* postFilter = Base::freecad_dynamic_cast<FemPostFilter>(obj)) {
+                postFilter->Frame.setValue(value);
             }
         }
         // pipeline data updated!
@@ -478,7 +474,7 @@ void FemPostPipeline::onChanged(const Property* prop)
             return;
         }
 
-        FemPostFilter* filter = NULL;
+        FemPostFilter* filter = nullptr;
         for (auto& obj : objs) {
 
             // prepare the filter: make all connections new
@@ -494,7 +490,7 @@ void FemPostPipeline::onChanged(const Property* prop)
             }
             else {
                 // serial: the next filter gets the previous output, the first one gets our input
-                if (filter == NULL) {
+                if (!filter) {
                     nextFilter->getFilterInput()->SetInputConnection(
                         m_transform_filter->GetOutputPort(0));
                 }

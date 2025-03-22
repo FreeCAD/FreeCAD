@@ -10,7 +10,7 @@
         FatherInclude="Mod/Fem/App/FemPostObjectPy.h"
         FatherNamespace="Fem">
         <Documentation>
-            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+            <Author Licence="LGPL" Name="Stefan Tröger" EMail="stefantroeger@gmx.net" />
             <UserDocu>The FemPostPipeline class.</UserDocu>
         </Documentation>
         <Methode Name="read">

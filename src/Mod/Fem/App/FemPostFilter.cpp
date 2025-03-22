@@ -72,7 +72,7 @@ void FemPostFilter::setActiveFilterPipeline(std::string name)
     if (m_activePipeline != name && isValid()) {
 
         // disable all inputs of current pipeline
-        if (m_activePipeline != "" and m_pipelines.find( m_activePipeline ) != m_pipelines.end()) {
+        if (m_activePipeline != "" && m_pipelines.find( m_activePipeline ) != m_pipelines.end()) {
             m_pipelines[m_activePipeline].source->RemoveAllInputConnections(0);
         }
 
@@ -964,21 +964,9 @@ void FemPostContoursFilter::refreshFields()
     Field.setValue(m_fields);
 
     // search if the current field is in the available ones and set it
-<<<<<<< HEAD
-    const auto it = std::ranges::find(FieldsArray, fieldName);
-    if (!fieldName.empty() && it != FieldsArray.end()) {
-        Field.setValue(fieldName.c_str());
-    }
-    else {
-        m_blockPropertyChanges = false;
-        // select the first field
-        Field.setValue(long(0));
-        fieldName = Field.getValueAsString();
-=======
     // Note: list could be empty and hence Field invalid
     if (Field.isValid()) {
-        std::vector<std::string>::iterator it =
-            std::find(FieldsArray.begin(), FieldsArray.end(), fieldName);
+        const auto it = std::ranges::find(FieldsArray, fieldName);
         if (!fieldName.empty() && it != FieldsArray.end()) {
             Field.setValue(fieldName.c_str());
         }
@@ -987,7 +975,6 @@ void FemPostContoursFilter::refreshFields()
             // select the first field
             Field.setValue(long(0));
         }
->>>>>>> cf27d7e05b (FEM: Multistep test fix for vtk 7.x)
     }
 
     m_blockPropertyChanges = false;
