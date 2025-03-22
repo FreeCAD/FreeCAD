@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2024 The FreeCAD Project Association AISBL               *
+ *   Copyright (c) 2025 The FreeCAD Project Association AISBL               *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,62 +21,70 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_START_DISPLAYED_FILES_MODEL_H
-#define FREECAD_START_DISPLAYED_FILES_MODEL_H
+#ifndef FREECAD_THUMBNAIL_SOURCE_H
+#define FREECAD_THUMBNAIL_SOURCE_H
 
-#include <QAbstractListModel>
-#include <Base/Parameter.h>
+#include <QMutex>
+#include <QObject>
+#include <QProcess>
+#include <QRunnable>
+#include <QString>
+#include <QStringList>
 
-#include "../StartGlobal.h"
+#include <memory>
 
 namespace Start
 {
 
-enum class DisplayedFilesModelRoles
-{
-    baseName = Qt::UserRole + 1,
-    image,
-    size,
-    author,
-    creationTime,
-    modifiedTime,
-    description,
-    company,
-    license,
-    path
-};
-
-using FileStats = std::map<DisplayedFilesModelRoles, std::string>;
-
-/// A model for displaying a list of files including a thumbnail or icon, plus various file
-/// statistics.
-class StartExport DisplayedFilesModel: public QAbstractListModel
+class ThumbnailSourceSignals: public QObject
 {
     Q_OBJECT
 public:
-    explicit DisplayedFilesModel(QObject* parent = nullptr);
+Q_SIGNALS:
 
-    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    void thumbnailAvailable(const QString& file, const QByteArray& data);
+};
 
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+class ThumbnailSource: public QRunnable
+{
+public:
+    explicit ThumbnailSource(QString file);
+    ~ThumbnailSource() override;
 
-    void addFile(const QString& filePath);
+    // Don't make copies of a ThumbnailSource (it's probably running a process, what would it mean
+    // to copy it?):
+    ThumbnailSource(ThumbnailSource&) = delete;
+    ThumbnailSource(ThumbnailSource&&) = delete;
+    ThumbnailSource operator=(const ThumbnailSource&) = delete;
+    ThumbnailSource operator=(ThumbnailSource&&) = delete;
 
-    void clear();
+    void run() override;
 
-protected:
-    /// For communication with QML, define the text version of each role name defined in the
-    /// DisplayedFilesModelRoles enumeration
-    QHash<int, QByteArray> roleNames() const override;
-
-    /// Process a new thumbnail produces by some sort of worker thread
-    void processNewThumbnail(const QString& file, const QByteArray& thumbnail);
+    ThumbnailSourceSignals* signals();
 
 private:
-    std::vector<FileStats> _fileInfoCache;
-    QMap<QString, QByteArray> _imageCache;
+    static void setupF3D();
+    void f3dRunFinished(int exitCode, QProcess::ExitStatus exitStatus);
+
+    QString _file;
+    QString _thumbnailPath;
+    ThumbnailSourceSignals _signals;
+    std::unique_ptr<QProcess> _process;
+    bool _killed {false};
+    QMetaObject::Connection _finishedConnection;
+
+    /// Gather together all of the f3d information protected by the mutex: data in this struct
+    /// should be accessed only after a call to setupF3D() to ensure synchronization.
+    static struct F3DInstallation
+    {
+        bool initialized {false};
+        int major {0};
+        int minor {0};
+        QStringList baseArgs;
+    } _f3d;
+    static QMutex _mutex;
 };
 
 }  // namespace Start
 
-#endif  // FREECAD_START_DISPLAYED_FILES_MODEL_H
+#endif  // FREECAD_THUMBNAIL_SOURCE_H
