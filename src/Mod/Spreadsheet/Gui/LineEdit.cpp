@@ -26,9 +26,12 @@
 #include <QApplication>
 #include <QEvent>
 #include <QKeyEvent>
+#include <QGraphicsProxyWidget>
 #endif
 
 #include "LineEdit.h"
+#include <Gui/MainWindow.h>
+#include "ZoomableView.h"
 
 
 using namespace SpreadsheetGui;
@@ -40,46 +43,122 @@ LineEdit::LineEdit(QWidget* parent)
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
 }
 
-bool LineEdit::eventFilter(QObject* object, QEvent* event)
+void LineEdit::setDocumentObject(const App::DocumentObject* currentDocObj, bool checkInList)
 {
-    Q_UNUSED(object);
-    if (event && event->type() == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        if (keyEvent->key() == Qt::Key_Tab) {
-            // Special tab handling -- must be done via a QApplication event filter, otherwise the
-            // widget system will always grab the tab events
-            if (completerActive()) {
-                hideCompleter();
-                event->accept();
-                return true;  // To make sure this tab press doesn't do anything else
-            }
-            else {
-                lastKeyPressed = keyEvent->key();
-                lastModifiers = keyEvent->modifiers();
-            }
-        }
+    ExpressionLineEdit::setDocumentObject(currentDocObj, checkInList);
+
+    /* The code below is supposed to fix the input of an expression and to make the popup
+     * functional. The input seems to be broken because of installed event filters. My solution is
+     * to readd the widget into the scene. Only a parentless widget can be added to the scene.
+     * Making a widget parentless makes it lose its windowFlags, even if it is added to the scene.
+     * So, the algorithm is to obtain globalPos, then to make the widget parentless,
+     * to add it to the scene, setting the globalPos after. */
+
+    QPointer<Gui::MDIView> active_view = Gui::MainWindow::getInstance()->activeWindow();
+    if (!active_view) {
+        Base::Console().DeveloperWarning("LineEdit::setDocumentObject",
+                                         "The active view is not Spreadsheet");
+        return;
     }
-    return false;  // We don't usually actually "handle" the tab event, we just keep track of it
+    QPointer<ZoomableView> zv = active_view->findChild<ZoomableView*>();
+    if (!zv) {
+        Base::Console().DeveloperWarning("LineEdit::setDocumentObject", "ZoomableView not found");
+        return;
+    }
+
+    auto getPos = [this]() {
+        return this->mapToGlobal(QPoint {0, 0});
+    };
+    const QPoint old_pos = getPos();
+
+    auto xpopup = new XListView(this);
+    getCompleter()->setPopup(xpopup);
+    setParent(nullptr);
+    QGraphicsProxyWidget* proxy_lineedit = zv->scene()->addWidget(this);
+
+    const QPoint new_pos = getPos();
+    const QPoint shift = old_pos - new_pos;
+    const qreal scale_factor = static_cast<qreal>(zv->zoomLevel()) / 100.0;
+    const qreal shift_x = static_cast<qreal>(shift.x()) / scale_factor,
+                shift_y = static_cast<qreal>(shift.y()) / scale_factor;
+
+    QTransform trans = proxy_lineedit->transform();
+    proxy_lineedit->setTransform(trans.translate(shift_x, shift_y));
+
+
+    auto getPopupPos = [proxy_lineedit, zv]() {
+        const QPointF scene_pos =
+            proxy_lineedit->mapToScene(proxy_lineedit->boundingRect().bottomLeft());
+        const QPoint view_pos = zv->mapFromScene(scene_pos);
+        const QPoint global_pos = zv->viewport()->mapToGlobal(view_pos);
+
+        return global_pos;
+    };
+
+    auto getPopupWidth = [this, zv]() {
+        const int zoom_level = zv->zoomLevel(), editors_width = this->width();
+
+        return qMax(editors_width * zoom_level / 100, editors_width);
+    };
+
+    auto updatePopupGeom = [getPopupPos, getPopupWidth, xpopup]() {
+        const QPoint new_pos = getPopupPos();
+        xpopup->setGeometry(new_pos.x(), new_pos.y(), getPopupWidth(), xpopup->height());
+    };
+
+    QObject::connect(xpopup, &XListView::geometryChanged, this, updatePopupGeom);
 }
 
-bool LineEdit::event(QEvent* event)
+void LineEdit::focusOutEvent(QFocusEvent* event)
 {
-    if (event && event->type() == QEvent::FocusIn) {
-        qApp->installEventFilter(this);
+    if (lastKeyPressed) {
+        Q_EMIT finishedWithKey(lastKeyPressed, lastModifiers);
     }
-    else if (event && event->type() == QEvent::FocusOut) {
-        qApp->removeEventFilter(this);
-        if (lastKeyPressed) {
-            Q_EMIT finishedWithKey(lastKeyPressed, lastModifiers);
-        }
-        lastKeyPressed = 0;
+
+    Gui::ExpressionLineEdit::focusOutEvent(event);
+}
+
+void LineEdit::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key::Key_Tab && completerActive()) {
+        hideCompleter();
+        Gui::ExpressionLineEdit::keyPressEvent(event);
+        return;
     }
-    else if (event && event->type() == QEvent::KeyPress && !completerActive()) {
-        QKeyEvent* kevent = static_cast<QKeyEvent*>(event);
-        lastKeyPressed = kevent->key();
-        lastModifiers = kevent->modifiers();
+
+    lastKeyPressed = event->key();
+    lastModifiers = event->modifiers();
+
+    if ((lastKeyPressed == Qt::Key::Key_Down || lastKeyPressed == Qt::Key::Key_Up)
+        && completerActive()) {
+        auto kevent = new QKeyEvent(QEvent::KeyPress, lastKeyPressed, Qt::NoModifier);
+        QCoreApplication::postEvent(getCompleter()->popup(), kevent);
     }
-    return Gui::ExpressionLineEdit::event(event);
+
+    Gui::ExpressionLineEdit::keyPressEvent(event);
+}
+
+XListView::XListView(LineEdit* parent)
+    : QListView(parent)
+{
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setSelectionBehavior(QAbstractItemView::SelectRows);
+    setSelectionMode(QAbstractItemView::SingleSelection);
+
+    setAttribute(Qt::WidgetAttribute::WA_ShowWithoutActivating);
+}
+
+void XListView::resizeEvent(QResizeEvent* event)
+{
+    Q_EMIT geometryChanged();
+    QListView::resizeEvent(event);
+}
+
+void XListView::updateGeometries()
+{
+    QListView::updateGeometries();
+    Q_EMIT geometryChanged();
 }
 
 #include "moc_LineEdit.cpp"
