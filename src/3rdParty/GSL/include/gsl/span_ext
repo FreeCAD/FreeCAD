@@ -1,0 +1,214 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2015 Microsoft Corporation. All rights reserved.
+//
+// This code is licensed under the MIT License (MIT).
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+#ifndef GSL_SPAN_EXT_H
+#define GSL_SPAN_EXT_H
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// File: span_ext
+// Purpose: continue offering features that have been cut from the official
+//   implementation of span.
+//   While modernizing gsl::span a number of features needed to be removed to
+//   be compliant with the design of std::span
+//
+///////////////////////////////////////////////////////////////////////////////
+
+#include "./assert" // GSL_KERNEL_MODE
+#include "./util"   // for narrow_cast, narrow
+
+#include <cstddef> // for ptrdiff_t, size_t
+#include <utility>
+
+#ifndef GSL_KERNEL_MODE
+#include <algorithm> // for lexicographical_compare
+#endif               // GSL_KERNEL_MODE
+
+namespace gsl
+{
+
+// [span.views.constants], constants
+GSL_INLINE constexpr const std::size_t dynamic_extent = narrow_cast<std::size_t>(-1);
+
+template <class ElementType, std::size_t Extent = dynamic_extent>
+class span;
+
+// std::equal and std::lexicographical_compare are not /kernel compatible
+// so all comparison operators must be removed for kernel mode.
+#ifndef GSL_KERNEL_MODE
+
+// [span.comparison], span comparison operators
+template <class ElementType, std::size_t FirstExtent, std::size_t SecondExtent>
+constexpr bool operator==(span<ElementType, FirstExtent> l, span<ElementType, SecondExtent> r)
+{
+    return std::equal(l.begin(), l.end(), r.begin(), r.end());
+}
+
+template <class ElementType, std::size_t Extent>
+constexpr bool operator!=(span<ElementType, Extent> l, span<ElementType, Extent> r)
+{
+    return !(l == r);
+}
+
+template <class ElementType, std::size_t Extent>
+constexpr bool operator<(span<ElementType, Extent> l, span<ElementType, Extent> r)
+{
+    return std::lexicographical_compare(l.begin(), l.end(), r.begin(), r.end());
+}
+
+template <class ElementType, std::size_t Extent>
+constexpr bool operator<=(span<ElementType, Extent> l, span<ElementType, Extent> r)
+{
+    return !(l > r);
+}
+
+template <class ElementType, std::size_t Extent>
+constexpr bool operator>(span<ElementType, Extent> l, span<ElementType, Extent> r)
+{
+    return r < l;
+}
+
+template <class ElementType, std::size_t Extent>
+constexpr bool operator>=(span<ElementType, Extent> l, span<ElementType, Extent> r)
+{
+    return !(l < r);
+}
+
+#endif // GSL_KERNEL_MODE
+
+//
+// make_span() - Utility functions for creating spans
+//
+template <class ElementType>
+constexpr span<ElementType> make_span(ElementType* ptr, typename span<ElementType>::size_type count)
+{
+    return span<ElementType>(ptr, count);
+}
+
+template <class ElementType>
+constexpr span<ElementType> make_span(ElementType* firstElem, ElementType* lastElem)
+{
+    return span<ElementType>(firstElem, lastElem);
+}
+
+template <class ElementType, std::size_t N>
+constexpr span<ElementType, N> make_span(ElementType (&arr)[N]) noexcept
+{
+    return span<ElementType, N>(arr);
+}
+
+template <class Container>
+constexpr span<typename Container::value_type> make_span(Container& cont)
+{
+    return span<typename Container::value_type>(cont);
+}
+
+template <class Container>
+constexpr span<const typename Container::value_type> make_span(const Container& cont)
+{
+    return span<const typename Container::value_type>(cont);
+}
+
+template <class Ptr>
+GSL_DEPRECATED("This function is deprecated. See GSL issue #1092.")
+constexpr span<typename Ptr::element_type> make_span(Ptr& cont, std::size_t count)
+{
+    return span<typename Ptr::element_type>(cont, count);
+}
+
+template <class Ptr>
+GSL_DEPRECATED("This function is deprecated. See GSL issue #1092.")
+constexpr span<typename Ptr::element_type> make_span(Ptr& cont)
+{
+    return span<typename Ptr::element_type>(cont);
+}
+
+// Specialization of gsl::at for span
+template <class ElementType, std::size_t Extent>
+constexpr ElementType& at(span<ElementType, Extent> s, index i)
+{
+    // No bounds checking here because it is done in span::operator[] called below
+    Ensures(i >= 0);
+    return s[narrow_cast<std::size_t>(i)];
+}
+
+// [span.obs] Free observer functions
+template <class ElementType, std::size_t Extent>
+constexpr std::ptrdiff_t ssize(const span<ElementType, Extent>& s) noexcept
+{
+    return static_cast<std::ptrdiff_t>(s.size());
+}
+
+// [span.iter] Free functions for begin/end functions
+template <class ElementType, std::size_t Extent>
+constexpr typename span<ElementType, Extent>::iterator
+begin(const span<ElementType, Extent>& s) noexcept
+{
+    return s.begin();
+}
+
+template <class ElementType, std::size_t Extent = dynamic_extent>
+constexpr typename span<ElementType, Extent>::iterator
+end(const span<ElementType, Extent>& s) noexcept
+{
+    return s.end();
+}
+
+template <class ElementType, std::size_t Extent>
+constexpr typename span<ElementType, Extent>::reverse_iterator
+rbegin(const span<ElementType, Extent>& s) noexcept
+{
+    return s.rbegin();
+}
+
+template <class ElementType, std::size_t Extent>
+constexpr typename span<ElementType, Extent>::reverse_iterator
+rend(const span<ElementType, Extent>& s) noexcept
+{
+    return s.rend();
+}
+
+template <class ElementType, std::size_t Extent>
+constexpr typename span<ElementType, Extent>::iterator
+cbegin(const span<ElementType, Extent>& s) noexcept
+{
+    return s.begin();
+}
+
+template <class ElementType, std::size_t Extent = dynamic_extent>
+constexpr typename span<ElementType, Extent>::iterator
+cend(const span<ElementType, Extent>& s) noexcept
+{
+    return s.end();
+}
+
+template <class ElementType, std::size_t Extent>
+constexpr typename span<ElementType, Extent>::reverse_iterator
+crbegin(const span<ElementType, Extent>& s) noexcept
+{
+    return s.rbegin();
+}
+
+template <class ElementType, std::size_t Extent>
+constexpr typename span<ElementType, Extent>::reverse_iterator
+crend(const span<ElementType, Extent>& s) noexcept
+{
+    return s.rend();
+}
+
+} // namespace gsl
+
+#endif // GSL_SPAN_EXT_H

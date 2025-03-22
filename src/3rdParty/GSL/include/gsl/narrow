@@ -1,0 +1,82 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (c) 2015 Microsoft Corporation. All rights reserved.
+//
+// This code is licensed under the MIT License (MIT).
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+#ifndef GSL_NARROW_H
+#define GSL_NARROW_H
+#include "./assert"    // for GSL_SUPPRESS
+#include "./util"      // for narrow_cast
+#include <exception> // for std::exception
+namespace gsl
+{
+struct narrowing_error : public std::exception
+{
+    const char* what() const noexcept override { return "narrowing_error"; }
+};
+
+// narrow() : a checked version of narrow_cast() that throws if the cast changed the value
+template <class T, class U, typename std::enable_if<std::is_arithmetic<T>::value>::type* = nullptr>
+// clang-format off
+GSL_SUPPRESS(type.1) // NO-FORMAT: attribute
+GSL_SUPPRESS(es.46) // NO-FORMAT: attribute // The warning suggests that a floating->unsigned conversion can occur
+                                            // in the static_cast below, and that gsl::narrow should be used instead.
+                                            // Suppress this warning, since gsl::narrow is defined in terms of
+                                            // static_cast
+    // clang-format on
+    constexpr T narrow(U u)
+{
+    constexpr const bool is_different_signedness =
+        (std::is_signed<T>::value != std::is_signed<U>::value);
+
+GSL_SUPPRESS(es.103) // NO-FORMAT: attribute // don't overflow
+GSL_SUPPRESS(es.104) // NO-FORMAT: attribute // don't underflow
+GSL_SUPPRESS(p.2) // NO-FORMAT: attribute // don't rely on undefined behavior
+    const T t = narrow_cast<T>(u); // While this is technically undefined behavior in some cases (i.e., if the source value is of floating-point type
+                                   // and cannot fit into the destination integral type), the resultant behavior is benign on the platforms
+                                   // that we target (i.e., no hardware trap representations are hit).
+
+#if defined(__clang__) || defined(__GNUC__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
+    // Note: NaN will always throw, since NaN != NaN
+    if (static_cast<U>(t) != u || (is_different_signedness && ((t < T{}) != (u < U{}))))
+    {
+        throw narrowing_error{};
+    }
+#if defined(__clang__) || defined(__GNUC__)
+    #pragma GCC diagnostic pop
+#endif
+
+    return t;
+}
+
+template <class T, class U, typename std::enable_if<!std::is_arithmetic<T>::value>::type* = nullptr>
+// clang-format off
+GSL_SUPPRESS(type.1) // NO-FORMAT: attribute
+    // clang-format on
+    constexpr T narrow(U u)
+{
+    const T t = narrow_cast<T>(u);
+
+    if (static_cast<U>(t) != u)
+    {
+        throw narrowing_error{};
+    }
+
+    return t;
+}
+} // namespace gsl
+#endif // GSL_NARROW_H

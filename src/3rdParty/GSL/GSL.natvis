@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    This will make GitHub and some editors recognize this code as XML: 
+    vim: syntax=xml
+-->
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+    <!-- These types are from the util header. -->
+    <Type Name="gsl::final_action&lt;*&gt;">
+        <DisplayString>{{ invoke = {invoke_}, action = {f_} }}</DisplayString>
+        <Expand>
+            <Item Name="[invoke]">invoke_</Item>
+            <Item Name="[callback]">f_</Item>
+        </Expand>
+    </Type>
+
+  <!-- These types are from the span header. -->
+  <Type Name="gsl::span&lt;*, *&gt;">
+        <DisplayString>{{ extent = {storage_.size_} }}</DisplayString>
+        <Expand>
+            <ArrayItems>
+                <Size>storage_.size_</Size>
+                <ValuePointer>storage_.data_</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+
+    <!-- These types are from the pointers header. -->
+    <Type Name="gsl::not_null&lt;*&gt;">
+        <!-- We can always dereference this since it's an invariant. -->
+        <DisplayString>value = {*ptr_}</DisplayString>
+    </Type>
+</AutoVisualizer>  
