@@ -30,24 +30,26 @@ EXTENSION_PROPERTY_SOURCE(Fem::FemPostGroupExtension, App::GroupExtension);
 
 const char* FemPostGroupExtension::ModeEnums[] = {"Serial", "Parallel", nullptr};
 
-FemPostGroupExtension::FemPostGroupExtension() : App::GroupExtension() {
+FemPostGroupExtension::FemPostGroupExtension()
+    : App::GroupExtension()
+{
 
     initExtensionType(Fem::FemPostGroupExtension::getExtensionClassTypeId());
 
-    EXTENSION_ADD_PROPERTY_TYPE(Mode,
-                                (long(0)),
-                                "Pipeline",
-                                App::Prop_None,
-                                "Selects the pipeline data transition mode.\n"
-                                "In serial, every filter gets the output of the previous one as input.\n"
-                                "In parallel, every filter gets the pipeline source as input.\n");
+    EXTENSION_ADD_PROPERTY_TYPE(
+        Mode,
+        (long(0)),
+        "Pipeline",
+        App::Prop_None,
+        "Selects the pipeline data transition mode.\n"
+        "In serial, every filter gets the output of the previous one as input.\n"
+        "In parallel, every filter gets the pipeline source as input.\n");
 
     Mode.setEnums(ModeEnums);
 }
 
-FemPostGroupExtension::~FemPostGroupExtension() {
-
-}
+FemPostGroupExtension::~FemPostGroupExtension()
+{}
 
 
 void FemPostGroupExtension::initExtension(App::ExtensionContainer* obj)
@@ -62,16 +64,18 @@ void FemPostGroupExtension::initExtension(App::ExtensionContainer* obj)
 
 void FemPostGroupExtension::extensionOnChanged(const App::Property* p)
 {
-    if(p == &Group) {
+    if (p == &Group) {
         if (!m_blockChange) {
-            // sort the group, so that non filter objects are always on top (in case any object using this extension allows those)
+            // sort the group, so that non filter objects are always on top (in case any object
+            // using this extension allows those)
             auto objs = Group.getValues();
-            std::sort( objs.begin( ), objs.end( ), [ ]( const App::DocumentObject* lhs, const App::DocumentObject* rhs ){
-
-                int l = lhs->isDerivedFrom<FemPostFilter>() ? 0 : 1;
-                int r = rhs->isDerivedFrom<FemPostFilter>() ? 0 : 1;
-                return r<l;
-            });
+            std::sort(objs.begin(),
+                      objs.end(),
+                      [](const App::DocumentObject* lhs, const App::DocumentObject* rhs) {
+                          int l = lhs->isDerivedFrom<FemPostFilter>() ? 0 : 1;
+                          int r = rhs->isDerivedFrom<FemPostFilter>() ? 0 : 1;
+                          return r < l;
+                      });
             m_blockChange = true;
             Group.setValue(objs);
             m_blockChange = false;
@@ -82,7 +86,7 @@ void FemPostGroupExtension::extensionOnChanged(const App::Property* p)
 
 std::vector<Fem::FemPostFilter*> FemPostGroupExtension::getFilter()
 {
-    //collect all other items that are not filters
+    // collect all other items that are not filters
     std::vector<Fem::FemPostFilter*> filters;
     for (auto& obj : Group.getValues()) {
         if (obj->isDerivedFrom<FemPostFilter>()) {

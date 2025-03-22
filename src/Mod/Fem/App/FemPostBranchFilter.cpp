@@ -55,9 +55,9 @@ FemPostBranchFilter::FemPostBranchFilter()
      * filter. We do not care if the input filter changes, as this is affecting only the passthrough
      * input and does not affect our child connections.
      * Dependent on our output mode, the passthrough is also used as output, but potentially
-     * the append filter is used. in this case our children need to be connected into the append filter.
-     * Here the same holds as before: Append filter output can be connected to arbitrary other filters
-     * in the pipeline, not affecting our internal connections to our children.
+     * the append filter is used. in this case our children need to be connected into the append
+     * filter. Here the same holds as before: Append filter output can be connected to arbitrary
+     * other filters in the pipeline, not affecting our internal connections to our children.
      */
 
     m_append = vtkSmartPointer<vtkAppendFilter>::New();
@@ -112,10 +112,11 @@ void FemPostBranchFilter::setupPipeline()
             // serial: the next filter gets the previous output, the first one gets our input
             if (!filter) {
                 nextFilter->getFilterInput()->SetInputConnection(m_passthrough->GetOutputPort());
-            } else {
-                nextFilter->getFilterInput()->SetInputConnection(filter->getFilterOutput()->GetOutputPort());
             }
-
+            else {
+                nextFilter->getFilterInput()->SetInputConnection(
+                    filter->getFilterOutput()->GetOutputPort());
+            }
         }
         else if (Mode.getValue() == Fem::PostGroupMode::Parallel) {
             // parallel: all filters get out input
@@ -140,7 +141,7 @@ void FemPostBranchFilter::onChanged(const Property* prop)
     }
 
     if (prop == &Frame) {
-        //Update all children with the new step
+        // Update all children with the new step
         for (const auto& obj : Group.getValues()) {
             if (obj->isDerivedFrom<FemPostFilter>()) {
                 static_cast<Fem::FemPostFilter*>(obj)->Frame.setValue(Frame.getValue());
@@ -172,7 +173,7 @@ void FemPostBranchFilter::onChanged(const Property* prop)
 void FemPostBranchFilter::filterChanged(FemPostFilter* filter)
 {
 
-    //we only need to update the following children if we are in serial mode
+    // we only need to update the following children if we are in serial mode
     if (Mode.getValue() == Fem::PostGroupMode::Serial) {
 
         std::vector<App::DocumentObject*> objs = Group.getValues();
@@ -195,7 +196,8 @@ void FemPostBranchFilter::filterChanged(FemPostFilter* filter)
 
     // if we append as output, we need to inform the parent object that we are isTouched
     if (Output.getValue() == 1) {
-        //make sure we inform our parent object that we changed, it then can inform others if needed
+        // make sure we inform our parent object that we changed, it then can inform others if
+        // needed
         App::DocumentObject* group = FemPostGroupExtension::getGroupOfObject(this);
         if (!group) {
             return;
@@ -207,7 +209,8 @@ void FemPostBranchFilter::filterChanged(FemPostFilter* filter)
     }
 }
 
-void FemPostBranchFilter::filterPipelineChanged([[maybe_unused]] FemPostFilter* postfilter) {
+void FemPostBranchFilter::filterPipelineChanged([[maybe_unused]] FemPostFilter* postfilter)
+{
     // one of our filters has changed its active pipeline. We need to reconnect it properly.
     // As we are cheap we just reconnect everything
     // TODO: Do more efficiently

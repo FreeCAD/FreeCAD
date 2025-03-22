@@ -305,10 +305,11 @@ void PropertyPostDataObject::Restore(Base::XMLReader& reader)
     }
 }
 
-void add_to_zip(Base::FileInfo path, int zip_path_idx, zipios::ZipOutputStream& ZipWriter) {
+void add_to_zip(Base::FileInfo path, int zip_path_idx, zipios::ZipOutputStream& ZipWriter)
+{
 
     if (path.isDir()) {
-        for(auto file : path.getDirectoryContent()) {
+        for (auto file : path.getDirectoryContent()) {
             add_to_zip(file, zip_path_idx, ZipWriter);
         }
     }
@@ -344,7 +345,7 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
         datafolder.createDirectories();
         auto datafile = Base::FileInfo(datafolder.filePath() + "/datafile.vtm");
 
-        //create the data: vtm file and subfolder with the subsequent data files
+        // create the data: vtm file and subfolder with the subsequent data files
         xmlWriter = vtkSmartPointer<vtkXMLMultiBlockDataWriter>::New();
         xmlWriter->SetInputDataObject(m_dataObject);
         xmlWriter->SetFileName(datafile.filePath().c_str());
@@ -356,14 +357,14 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
         xmlWriter->SetFileName(fi.filePath().c_str());
         xmlWriter->SetDataModeToBinary();
 
-        #ifdef VTK_CELL_ARRAY_V2
+#ifdef VTK_CELL_ARRAY_V2
         // Looks like an invalid data object that causes a crash with vtk9
         vtkUnstructuredGrid* dataGrid = vtkUnstructuredGrid::SafeDownCast(m_dataObject);
         if (dataGrid && (dataGrid->GetPiece() < 0 || dataGrid->GetNumberOfPoints() <= 0)) {
             std::cerr << "PropertyPostDataObject::SaveDocFile: ignore empty vtkUnstructuredGrid\n";
             return;
         }
-        #endif
+#endif
     }
 
     if (xmlWriter->Write() != 1) {
@@ -389,7 +390,8 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
     else if (m_dataObject->IsA("vtkMultiBlockDataSet")) {
         // ZIP file we store all data in
         zipios::ZipOutputStream ZipWriter(fi.filePath());
-        ZipWriter.putNextEntry("dummy"); //need to add a dummy first, as the read stream preloads the first entry, and we cannot get the file name...
+        ZipWriter.putNextEntry("dummy");  // need to add a dummy first, as the read stream preloads
+                                          // the first entry, and we cannot get the file name...
         add_to_zip(datafolder, datafolder.filePath().length(), ZipWriter);
         ZipWriter.close();
         datafolder.deleteDirectoryRecursive();
@@ -455,7 +457,7 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
 
             try {
                 zipios::ConstEntryPointer entry = ZipReader.getNextEntry();
-                while(entry->isValid()) {
+                while (entry->isValid()) {
                     Base::FileInfo entry_path(fo.filePath() + entry->getName());
                     if (entry->isDirectory()) {
                         // seems not to be called
@@ -463,7 +465,7 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
                     }
                     else {
                         auto entry_dir = Base::FileInfo(entry_path.dirPath());
-                        if(!entry_dir.exists()) {
+                        if (!entry_dir.exists()) {
                             entry_dir.createDirectories();
                         }
 
@@ -480,7 +482,8 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
                 // there is no further entry
             }
 
-            // create the reader, and change the file for it to read. Also delete zip file, not needed anymore
+            // create the reader, and change the file for it to read. Also delete zip file, not
+            // needed anymore
             fi.deleteFile();
             fi = Base::FileInfo(fo.filePath() + "/datafile.vtm");
             xmlReader = vtkSmartPointer<vtkXMLMultiBlockDataReader>::New();
