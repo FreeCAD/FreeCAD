@@ -22,7 +22,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <qstringliteral.h>
 
 #ifndef _PreComp_
 #include <QFile>
@@ -35,6 +34,7 @@
 #include <QVBoxLayout>
 #include <QApplication>
 #include <QPushButton>
+#include <QString>
 #endif
 
 #include "FileCardDelegate.h"
