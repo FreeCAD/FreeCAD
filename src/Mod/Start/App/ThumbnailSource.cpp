@@ -139,6 +139,7 @@ QStringList getF3DOptions(const QString& f3d)
         QStringLiteral("--resolution=256,256"),
         QStringLiteral("--filename=0"),
         QStringLiteral("--grid=0"),
+        QStringLiteral("--axis=0"),
         QStringLiteral("--no-background"),
         QStringLiteral("--max-size=100")  // Max input file size in MB
     };
