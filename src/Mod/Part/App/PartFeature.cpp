@@ -252,7 +252,7 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                         }
                         else if (size > 1) {
                             for (auto it = ancestors.begin(); it != ancestors.end();) {
-                                if (std::find(v.second.begin(), v.second.end(), *it)
+                                if (std::ranges::find(v.second, *it)
                                     == v.second.end()) {
                                     it = ancestors.erase(it);
                                     if (ancestors.size() == 1) {
@@ -283,13 +283,12 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                         // The current chosen elements are not enough to
                         // identify the higher element, generate an index for
                         // disambiguation.
-                        auto it = std::find(ancestors.begin(), ancestors.end(), res.second);
+                        auto it = std::ranges::find(ancestors, res.second);
                         if (it == ancestors.end()) {
                             assert(0 && "ancestor not found");  // this shouldn't happen
                         }
-                        else {
-                            op = Data::POSTFIX_INDEX + std::to_string(it - ancestors.begin());
-                        }
+
+                        op = Data::POSTFIX_INDEX + std::to_string(it - ancestors.begin());
                     }
 
                     // Note: setting names to shape will change its underlying
@@ -367,7 +366,7 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                     }
                     else {
                         for (auto it = ancestors.begin(); it != ancestors.end();) {
-                            if (std::find(current.begin(), current.end(), *it) == current.end()) {
+                            if (std::ranges::find(current, *it) == current.end()) {
                                 it = ancestors.erase(it);
                             }
                             else {

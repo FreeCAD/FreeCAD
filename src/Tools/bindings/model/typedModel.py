@@ -181,6 +181,7 @@ class PythonExport:
     NoArgs: bool = False
 
     # Attributes
+    ModuleName: str = ""
     Name: str = ""
     PythonName: Optional[str] = None
     Include: str = ""

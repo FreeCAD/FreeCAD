@@ -6,14 +6,6 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-include_directories(
-    SYSTEM
-    ${OCC_INCLUDE_DIR}
-    ${PYCXX_INCLUDE_DIR}
-    ${Python3_INCLUDE_DIRS}
-)
-link_directories(${OCC_LIBRARY_DIR})
-
 set(Assembly_LIBS
     Part
     PartDesign

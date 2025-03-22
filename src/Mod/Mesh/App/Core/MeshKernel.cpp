@@ -194,7 +194,7 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet>& rclFAry, bool 
 {
     // Build map of edges of the referencing facets we want to append
 #ifdef FC_DEBUG
-    unsigned long countPoints = CountPoints();
+    [[maybe_unused]] unsigned long countPoints = CountPoints();
 #endif
 
     // if the manifold check shouldn't be done then just add all faces
@@ -1032,6 +1032,12 @@ void MeshKernel::Read(std::istream& rclIn)
         unsigned long uCtPts = magic, uCtFts = version;
         MeshPointArray pointArray;
         MeshFacetArray facetArray;
+
+        // Sanity checks so we don't over-allocate below: limit the mesh to 1 billion points and
+        // 1 billion facets. Coverity issue 515697.
+        if (uCtPts > 1e9 || uCtFts > 1e9) {
+            throw Base::BadFormatError("Mesh seems to have over a billion points or facets");
+        }
 
         float ratio = 0;
         if (uCtPts > 0) {

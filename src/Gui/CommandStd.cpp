@@ -343,7 +343,7 @@ void StdCmdRestartInSafeMode::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    QMessageBox restartBox;
+    QMessageBox restartBox(Gui::getMainWindow());
     restartBox.setIcon(QMessageBox::Warning);
     restartBox.setWindowTitle(QObject::tr("Restart in safe mode"));
     restartBox.setText(QObject::tr("Are you sure you want to restart FreeCAD and enter safe mode?"));

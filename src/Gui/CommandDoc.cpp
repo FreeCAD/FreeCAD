@@ -106,9 +106,8 @@ void StdCmdOpen::activated(int iMsg)
     formatList += QLatin1String(" (");
 
     std::vector<std::string> filetypes = App::GetApplication().getImportTypes();
-    std::vector<std::string>::iterator it;
     // Make sure FCStd is the very first fileformat
-    it = std::find(filetypes.begin(), filetypes.end(), "FCStd");
+    auto it = std::ranges::find(filetypes, "FCStd");
     if (it != filetypes.end()) {
         filetypes.erase(it);
         filetypes.insert(filetypes.begin(), "FCStd");
@@ -498,7 +497,7 @@ void StdCmdExport::activated(int iMsg)
             lastExportUsedGeneratedFilename = true;
         else
             lastExportUsedGeneratedFilename = false;
-            
+
         lastExportFullPath = fileName;
         lastActiveDocument = getActiveGuiDocument();
         lastExportedObject = selection.front();
@@ -1487,24 +1486,25 @@ StdCmdRefresh::StdCmdRefresh()
         eType = eType | NoTransaction;
 }
 
-void StdCmdRefresh::activated(int iMsg)
+void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
 {
-    Q_UNUSED(iMsg);
-    if (getActiveGuiDocument()) {
-        App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
-        try {
-            doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
-        }
-        catch (Base::Exception& /*e*/) {
-            auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
-                qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
-                            "Please check the Report View for more details.\n\n"
-                            "Do you still want to proceed?"),
-                    QMessageBox::Yes, QMessageBox::No);
-            if(ret == QMessageBox::No)
-                return;
-            doCommand(Doc,"App.activeDocument().recompute(None,True)");
-        }
+    if (!getActiveGuiDocument()) {
+        return;
+    }
+
+    App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
+    try {
+        doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
+    }
+    catch (Base::Exception& /*e*/) {
+        auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
+            qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
+                        "Please check the Report View for more details.\n\n"
+                        "Do you still want to proceed?"),
+                QMessageBox::Yes, QMessageBox::No);
+        if(ret == QMessageBox::No)
+            return;
+        doCommand(Doc,"App.activeDocument().recompute(None,True)");
     }
 }
 
