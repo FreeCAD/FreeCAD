@@ -131,42 +131,36 @@ class ViewProvider:
         self.axs = coin.SoType.fromName("SoAxisCrossKit").createInstance()
 
         # Adjust the axis heads if needed, the scale here is just for the head
-        self.axs.set("xHead.transform", "scaleFactor 1.5 1.5 1")
-        self.axs.set("yHead.transform", "scaleFactor 1.5 1.5 1")
-        self.axs.set("zHead.transform", "scaleFactor 1.5 1.5 1")
+        #self.axs.set("xHead.transform", "scaleFactor 1.5 1.5 1")
+        #self.axs.set("yHead.transform", "scaleFactor 1.5 1.5 1")
+        #self.axs.set("zHead.transform", "scaleFactor 1.5 1.5 1")
 
         # Adjust the axis heads if needed, the scale here is just for the head
         self.axs.set("xHead.transform", "translation 50 0 0")
         self.axs.set("yHead.transform", "translation 0 50 0")
         self.axs.set("zHead.transform", "translation 0 0 50")
+        self.axs.set("xHead.appearance.material", "transparency 0.5")
+        self.axs.set("yHead.appearance.material", "transparency 0.5")
+        self.axs.set("zHead.appearance.material", "transparency 0.5")
 
         # Adjust the axis line width if needed
         self.axs.set("xAxis.transform", "scaleFactor 0.5 0.5 1")
-        self.axs.set("xAxis.appearance.drawStyle", "lineWidth 9")
+        self.axs.set("xAxis.appearance.drawStyle", "lineWidth 8")
         self.axs.set("yAxis.transform", "scaleFactor 0.5 0.5 1")
-        self.axs.set("yAxis.appearance.drawStyle", "lineWidth 9")
+        self.axs.set("yAxis.appearance.drawStyle", "lineWidth 8")
         self.axs.set("zAxis.transform", "scaleFactor 0.5 0.5 1")
-        self.axs.set("zAxis.appearance.drawStyle", "lineWidth 9")
+        self.axs.set("zAxis.appearance.drawStyle", "lineWidth 8")
+
+        self.axs.set("xAxis.appearance.material", "transparency 0.5")
+        self.axs.set("yAxis.appearance.material", "transparency 0.5")
+        self.axs.set("zAxis.appearance.material", "transparency 0.5")
 
         self.sca = coin.SoType.fromName("SoShapeScale").createInstance()
         self.sca.setPart("shape", self.axs)
-        self.sca.scaleFactor.setValue(2)  # Keep or adjust if needed
-
-        self.mat = coin.SoMaterial()
-        # Set sphere color to bright yellow
-        self.mat.diffuseColor = coin.SbColor(1, 1, 0)
-        self.mat.transparency = 0.35  # Keep or adjust if needed
-
-        self.sph = coin.SoSphere()
-        self.scs = coin.SoType.fromName("SoShapeScale").createInstance()
-        self.scs.setPart("shape", self.sph)
-        # Increase the scaleFactor to make the sphere larger
-        self.scs.scaleFactor.setValue(20)  # Adjust this value as needed
+        self.sca.scaleFactor.setValue(1)  # Keep or adjust if needed
 
         self.sep.addChild(self.sca)
-        self.sep.addChild(self.mat)
-        self.sep.addChild(self.scs)
-        self.switch.addChild(self.sep)
+        self.switch.addChild(self.axs)
 
         self.switch.addChild(self.sep)
         vobj.RootNode.addChild(self.switch)
