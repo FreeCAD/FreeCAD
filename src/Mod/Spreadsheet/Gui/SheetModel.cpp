@@ -65,22 +65,21 @@ SheetModel::SheetModel(Sheet* _sheet, QObject* parent)
         QColor(QString::fromStdString(hGrp->GetASCII("NegativeNumberColor", "#000000")));
 
 
-    const QStringList alphabet{QStringLiteral("A"), QStringLiteral("B"), QStringLiteral("C"),
-                              QStringLiteral("D"), QStringLiteral("E"), QStringLiteral("F"),
-                              QStringLiteral("G"), QStringLiteral("H"), QStringLiteral("I"),
-                              QStringLiteral("J"), QStringLiteral("K"), QStringLiteral("L"),
-                              QStringLiteral("M"), QStringLiteral("N"), QStringLiteral("O"),
-                              QStringLiteral("P"), QStringLiteral("Q"), QStringLiteral("R"),
-                              QStringLiteral("S"), QStringLiteral("T"), QStringLiteral("U"),
-                              QStringLiteral("V"), QStringLiteral("W"), QStringLiteral("X"),
-                              QStringLiteral("Y"), QStringLiteral("Z")};
+    const QStringList alphabet {
+        QStringLiteral("A"), QStringLiteral("B"), QStringLiteral("C"), QStringLiteral("D"),
+        QStringLiteral("E"), QStringLiteral("F"), QStringLiteral("G"), QStringLiteral("H"),
+        QStringLiteral("I"), QStringLiteral("J"), QStringLiteral("K"), QStringLiteral("L"),
+        QStringLiteral("M"), QStringLiteral("N"), QStringLiteral("O"), QStringLiteral("P"),
+        QStringLiteral("Q"), QStringLiteral("R"), QStringLiteral("S"), QStringLiteral("T"),
+        QStringLiteral("U"), QStringLiteral("V"), QStringLiteral("W"), QStringLiteral("X"),
+        QStringLiteral("Y"), QStringLiteral("Z")};
 
-    for (const QString &letter : alphabet) {
+    for (const QString& letter : alphabet) {
         columnLabels << letter;
     }
 
-    for (const QString &left : alphabet) {
-        for (const QString &right : alphabet) {
+    for (const QString& left : alphabet) {
+        for (const QString& right : alphabet) {
             columnLabels << left + right;
         }
     }
@@ -537,9 +536,12 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
 QVariant SheetModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role == Qt::SizeHintRole) {
-        const int width  = (orientation == Qt::Horizontal ? sheet->getColumnWidth(section) : PropertyColumnWidths::defaultHeaderWidth);
-        const int height = (orientation == Qt::Horizontal ? PropertyRowHeights::defaultHeight : sheet->getRowHeight(section));
-        return QSize{width, height};
+        const int width =
+            (orientation == Qt::Horizontal ? sheet->getColumnWidth(section)
+                                           : PropertyColumnWidths::defaultHeaderWidth);
+        const int height = (orientation == Qt::Horizontal ? PropertyRowHeights::defaultHeight
+                                                          : sheet->getRowHeight(section));
+        return QSize {width, height};
     }
     if (role == Qt::DisplayRole) {
         return (orientation == Qt::Horizontal ? columnLabels.at(section) : rowLabels.at(section));
