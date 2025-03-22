@@ -46,7 +46,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
-from draftutils.messages import _msg, _toolmsg
+from draftutils.messages import _msg, _toolmsg, _err
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -105,6 +105,8 @@ class Stretch(gui_base_original.Modifier):
                         if obj.Base.Base:
                             if utils.getType(obj.Base.Base) in supported:
                                 self.sel.append([obj.Base.Base, obj.Placement.multiply(obj.Base.Placement)])
+                elif utils.getType(obj) == "Wall":  # baseless walls
+                    self.sel.append([obj, App.Placement()])
             elif utils.getType(obj) in ["Offset2D", "Array"]:
                 base = None
                 if hasattr(obj, "Source") and obj.Source:
@@ -125,6 +127,8 @@ class Stretch(gui_base_original.Modifier):
             self.nodetracker = []
             self.displacement = None
             _toolmsg(translate("draft", "Pick first point of selection rectangle"))
+        else:
+            _err(translate("draft", "No stretchable object in the selection"))
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -212,6 +216,17 @@ class Stretch(gui_base_original.Modifier):
                     iso = False
                     for p in o.Shape.Vertexes:
                         p = vispla.multVec(p.Point)
+                        isi = self.rectracker.isInside(p)
+                        np.append(isi)
+                        if isi:
+                            iso = True
+                            nodes.append(p)
+                    if iso:
+                        self.ops.append([o, np])
+                elif tp in ["Wall"]:
+                    np = []
+                    iso = False
+                    for p in o.Proxy.calc_endpoints(o):
                         isi = self.rectracker.isInside(p)
                         np.append(isi)
                         if isi:
@@ -474,6 +489,18 @@ class Stretch(gui_base_original.Modifier):
                             commitops.append("w = " + _cmd)
                             commitops.append(_format)
                             commitops.append(_hide)
+                    elif tp == "Wall":
+                        npts = []
+                        for i, pt in enumerate(ops[0].Proxy.calc_endpoints(ops[0])):
+                            if ops[1][i]:
+                                npts.append(pt.add(localdisp))
+                            else:
+                                npts.append(pt)
+                        _cmd = "FreeCAD.ActiveDocument." + ops[0].Name
+                        _cmd += ".Proxy.set_from_endpoints("
+                        _cmd += "FreeCAD.ActiveDocument." + ops[0].Name + ", "
+                        _cmd += str(npts).replace("Vector", "FreeCAD.Vector") + ")"
+                        commitops.append(_cmd)
                     else:
                         _pl = _doc + ops[0].Name
                         _pl += ".Placement.Base=FreeCAD."
