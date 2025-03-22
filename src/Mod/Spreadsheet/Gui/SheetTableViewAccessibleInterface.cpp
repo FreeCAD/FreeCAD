@@ -81,7 +81,7 @@ QAccessibleInterface* SheetTableViewAccessibleInterface::child(int index) const
 
 QAccessibleInterface* SheetTableViewAccessibleInterface::ifactory(const QString& key, QObject* obj)
 {
-    if (key == QStringLiteral("SpreadsheetGui::SheetTableView")) {
+    if (key == QLatin1String("SpreadsheetGui::SheetTableView")) {
         return new SheetTableViewAccessibleInterface(
             static_cast<SpreadsheetGui::SheetTableView*>(obj));
     }

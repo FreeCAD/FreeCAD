@@ -494,7 +494,7 @@ void TaskProjGroup::projectionTypeChanged(QString qText)
         return;
     }
 
-    if (qText == QStringLiteral("Page")) {
+    if (qText == QLatin1String("Page")) {
         multiView->ProjectionType.setValue("Default");
     }
     else {

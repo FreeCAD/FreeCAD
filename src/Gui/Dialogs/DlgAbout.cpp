@@ -338,7 +338,7 @@ void AboutDialog::setupLabels()
                 url = url.left(space);  // Strip off the branch information to get just the repo
             }
 
-            if (url == QStringLiteral("Unknown")) {
+            if (url == QLatin1String("Unknown")) {
                 url = QStringLiteral("https://github.com/FreeCAD/FreeCAD");  // Just take a guess
             }
 
@@ -394,7 +394,7 @@ void AboutDialog::showCredits()
     QString line;
     while (stream.readLineInto(&line)) {
         if (!line.isEmpty()) {
-            if (line == QStringLiteral("Firms")) {
+            if (line == QLatin1String("Firms")) {
                 creditsHTML += QStringLiteral("</ul><h2>");
                 //: Header for the list of companies/organizations in the Credits list.
                 creditsHTML += tr("Organizations");
