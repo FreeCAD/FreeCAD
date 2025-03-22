@@ -33,7 +33,8 @@
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemPostPipeline: public ViewProviderFemPostObject, public Gui::ViewProviderGroupExtension
+class FemGuiExport ViewProviderFemPostPipeline: public ViewProviderFemPostObject,
+                                                public Gui::ViewProviderGroupExtension
 {
 
     PROPERTY_HEADER_WITH_EXTENSIONS(FemGui::ViewProviderFemPostPipeline);
@@ -57,7 +58,8 @@ protected:
 
     // change default group drag/drop behaviour sligthly
     bool acceptReorderingObjects() const override;
-    bool canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const override;
+    bool canDragObjectToTarget(App::DocumentObject* obj,
+                               App::DocumentObject* target) const override;
 
     // override, to not show/hide children as the parent is shown/hidden like normal groups
     void extensionHide() override {};

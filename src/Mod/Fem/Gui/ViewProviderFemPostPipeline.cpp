@@ -58,8 +58,7 @@ void ViewProviderFemPostPipeline::updateData(const App::Property* prop)
     FemGui::ViewProviderFemPostObject::updateData(prop);
 
     Fem::FemPostPipeline* pipeline = getObject<Fem::FemPostPipeline>();
-    if ((prop == &pipeline->Data) ||
-        (prop == &pipeline->Group)) {
+    if ((prop == &pipeline->Data) || (prop == &pipeline->Group)) {
 
         updateFunctionSize();
     }
@@ -226,11 +225,14 @@ void ViewProviderFemPostPipeline::setupTaskDialog(TaskDlgPost* dlg)
 }
 
 
-bool ViewProviderFemPostPipeline::acceptReorderingObjects() const {
+bool ViewProviderFemPostPipeline::acceptReorderingObjects() const
+{
     return true;
 }
 
-bool ViewProviderFemPostPipeline::canDragObjectToTarget(App::DocumentObject*, App::DocumentObject* target) const {
+bool ViewProviderFemPostPipeline::canDragObjectToTarget(App::DocumentObject*,
+                                                        App::DocumentObject* target) const
+{
 
     // allow drag only to other post groups
     if (target) {
