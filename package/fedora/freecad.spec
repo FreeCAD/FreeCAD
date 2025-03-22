@@ -179,6 +179,10 @@ rm -rf src/zipios++
 %build
 rm -rf build && mkdir build && cd build
 
+# Update submodules so they are available
+# when rpkg fetches git source from remote
+#{{{git_submodule_update_init}}}
+
 # Deal with cmake projects that tend to link excessively.
 CXXFLAGS='-Wno-error=cast-function-type'; export CXXFLAGS
 LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
