@@ -46,7 +46,6 @@ class BIM_Offset2D:
         return v
 
     def Activated(self):
-        import PartGui
         FreeCADGui.runCommand("Part_Offset2D")
 
 

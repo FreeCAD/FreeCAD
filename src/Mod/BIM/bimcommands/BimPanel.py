@@ -23,7 +23,6 @@
 """BIM Panel-related Arch_"""
 
 
-import os
 import FreeCAD
 import FreeCADGui
 
@@ -334,7 +333,6 @@ class NestTaskPanel:
     def __init__(self,obj=None):
 
         import ArchNesting
-        from PySide import QtCore, QtGui
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/ArchNest.ui")
         self.form.progressBar.hide()
         self.form.ButtonPreview.setEnabled(False)

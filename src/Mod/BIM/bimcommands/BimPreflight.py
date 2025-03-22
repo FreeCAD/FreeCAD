@@ -80,7 +80,7 @@ class BIM_Preflight:
 class BIM_Preflight_TaskPanel:
 
     def __init__(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.results = {}  # to store the result message
         self.culprits = {}  # to store objects to highlight
@@ -156,12 +156,12 @@ class BIM_Preflight_TaskPanel:
                             self.customTests[butname] = func
 
     def getStandardButtons(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         return QtGui.QDialogButtonBox.Close
 
     def reject(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         QtGui.QApplication.restoreOverrideCursor()
         FreeCADGui.Control.closeDialog()
@@ -170,7 +170,7 @@ class BIM_Preflight_TaskPanel:
     def passed(self, test):
         "sets the button as passed"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         getattr(self.form, test).setIcon(QtGui.QIcon(":/icons/button_valid.svg"))
         getattr(self.form, test).setText(translate("BIM", "Passed"))
@@ -181,7 +181,7 @@ class BIM_Preflight_TaskPanel:
     def failed(self, test):
         "sets the button as failed"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         getattr(self.form, test).setIcon(QtGui.QIcon(":/icons/process-stop.svg"))
         getattr(self.form, test).setText("Failed")
@@ -192,7 +192,7 @@ class BIM_Preflight_TaskPanel:
     def reset(self, test):
         "reset the button"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         getattr(self.form, test).setIcon(QtGui.QIcon(":/icons/button_right.svg"))
         getattr(self.form, test).setText(translate("BIM", "Test"))
@@ -293,7 +293,7 @@ class BIM_Preflight_TaskPanel:
     def testAll(self):
         "runs all tests"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
         from draftutils import todo
 
         for test in tests:
@@ -698,6 +698,7 @@ class BIM_Preflight_TaskPanel:
     def testQuantities(self):
         "tests for explicit quantities export"
 
+        import Draft
         from PySide import QtCore, QtGui
 
         test = "testQuantities"

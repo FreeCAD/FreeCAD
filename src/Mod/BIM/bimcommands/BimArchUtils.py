@@ -23,7 +23,6 @@
 """Misc Arch util commands"""
 
 
-import os
 import FreeCAD
 import FreeCADGui
 

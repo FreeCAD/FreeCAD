@@ -23,7 +23,6 @@
 """BIM Frame command"""
 
 
-import os
 import FreeCAD
 import FreeCADGui
 
@@ -62,4 +61,3 @@ class Arch_Frame:
 
 
 FreeCADGui.addCommand('Arch_Frame',Arch_Frame())
-

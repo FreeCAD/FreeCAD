@@ -22,7 +22,6 @@
 
 """The BIM Windows Manager command"""
 
-import os
 import FreeCAD
 import FreeCADGui
 
@@ -52,7 +51,7 @@ class BIM_Windows:
 class BIM_Windows_TaskPanel:
 
     def __init__(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogWindows.ui")
         self.form.setWindowIcon(QtGui.QIcon(":/icons/BIM_Windows.svg"))

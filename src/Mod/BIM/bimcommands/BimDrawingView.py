@@ -23,10 +23,8 @@
 """The BIM DrawingView command"""
 
 
-import os
 import FreeCAD
 import FreeCADGui
-from bimcommands import BimBuildingPart
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
