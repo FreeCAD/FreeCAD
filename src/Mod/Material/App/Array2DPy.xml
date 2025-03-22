@@ -3,8 +3,8 @@
   <PythonExport
       Father="BaseClassPy"
       Name="Array2DPy"
-      Twin="Material2DArray"
-      TwinPointer="Material2DArray"
+      Twin="Array2D"
+      TwinPointer="Array2D"
       Include="Mod/Material/App/MaterialValue.h"
       Namespace="Materials"
       FatherInclude="Base/BaseClassPy.h"
@@ -21,13 +21,19 @@
       </Documentation>
       <Parameter Name="Array" Type="List"/>
     </Attribute>
-    <Attribute Name="Rows" ReadOnly="true">
+    <Attribute Name="Dimensions" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The number of dimensions in the array, in this case 2.</UserDocu>
+      </Documentation>
+      <Parameter Name="Dimensions" Type="Int"/>
+    </Attribute>
+    <Attribute Name="Rows" ReadOnly="false">
       <Documentation>
         <UserDocu>The number of rows in the array.</UserDocu>
       </Documentation>
       <Parameter Name="Rows" Type="Long"/>
     </Attribute>
-    <Attribute Name="Columns" ReadOnly="true">
+    <Attribute Name="Columns" ReadOnly="false">
       <Documentation>
         <UserDocu>The number of columns in the array.</UserDocu>
       </Documentation>
@@ -41,6 +47,11 @@
     <Methode Name="getValue" ReadOnly="true">
       <Documentation>
         <UserDocu>Get the value at the given row and column</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setValue" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Set the value at the given row and column</UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>
