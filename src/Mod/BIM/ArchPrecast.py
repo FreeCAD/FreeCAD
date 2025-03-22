@@ -1001,7 +1001,6 @@ class _PrecastTaskPanel:
         params.set_param_arch("PrecastTread",value)
 
     def retranslateUi(self, dialog):
-        from PySide import QtGui
         self.form.setWindowTitle(translate("Arch", "Precast elements"))
         self.labelSlabType.setText(translate("Arch", "Slab type"))
         self.labelChamfer.setText(translate("Arch", "Chamfer"))
@@ -1404,7 +1403,6 @@ class _DentsTaskPanel:
             self.valueOffset.setText(FreeCAD.Units.Quantity(float(s[6]),FreeCAD.Units.Length).UserString)
 
     def retranslateUi(self, dialog):
-        from PySide import QtGui
         self.form.setWindowTitle(translate("Arch", "Precast options"))
         self.labelDents.setText(translate("Arch", "Dents list"))
         self.buttonAdd.setText(translate("Arch", "Add dent"))

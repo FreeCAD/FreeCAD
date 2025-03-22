@@ -19,7 +19,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import os
 
 import FreeCAD
 import ArchCommands
@@ -434,7 +433,6 @@ class _Window(ArchComponent.Component):
 
         import Part
         import DraftGeomUtils
-        import math
         pl = obj.Placement
         base = None
         self.sshapes = []
@@ -1417,6 +1415,3 @@ class _ArchWindowTaskPanel:
 
         if self.obj:
             self.obj.ViewObject.Proxy.invertHinge()
-
-
-

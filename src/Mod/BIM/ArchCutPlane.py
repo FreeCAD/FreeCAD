@@ -27,7 +27,6 @@ import Draft
 import ArchCommands
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
     from draftutils.translate import translate
 else:
     # \cond

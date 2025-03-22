@@ -118,7 +118,6 @@ class _Frame(ArchComponent.Component):
                 for w in obj.Profile.Shape.Wires:
                     if not w.isClosed():
                         return
-            import math
             import DraftGeomUtils
             import Part
             baseprofile = obj.Profile.Shape.copy()
@@ -228,4 +227,3 @@ class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
             if self.Object.Profile:
                 p = [self.Object.Profile]
         return ArchComponent.ViewProviderComponent.claimChildren(self)+p
-

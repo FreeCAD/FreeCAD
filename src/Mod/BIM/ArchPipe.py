@@ -266,7 +266,6 @@ class _ViewProviderPipe(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):
 
-        import Arch_rc
         return ":/icons/Arch_Pipe_Tree.svg"
 
 
@@ -451,5 +450,3 @@ class _ArchPipeConnector(ArchComponent.Component):
             if pipe.OffsetEnd != offset:
                 pipe.OffsetEnd = offset
                 pipe.Proxy.execute(pipe)
-
-

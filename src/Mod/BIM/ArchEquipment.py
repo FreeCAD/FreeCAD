@@ -29,7 +29,6 @@ import ArchComponent
 import DraftVecUtils
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtGui
     from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -305,4 +304,3 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
                 self.coords.point.setValues([[p.x,p.y,p.z] for p in obj.SnapPoints])
             else:
                 self.coords.point.deleteValues(0)
-

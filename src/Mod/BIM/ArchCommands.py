@@ -324,6 +324,7 @@ def splitMesh(obj,mark=True):
 def makeFace(wires,method=2,cleanup=False):
     '''makeFace(wires): makes a face from a list of wires, finding which ones are holes'''
     #print("makeFace: start:", wires)
+    import DraftGeomUtils
     import Part
 
     if not isinstance(wires,list):
@@ -1379,4 +1380,3 @@ def makeIfcSpreadsheet(archobj=None):
             FreeCAD.ActiveDocument.removeObject(ifc_spreadsheet)
     else :
         return ifc_spreadsheet
-
