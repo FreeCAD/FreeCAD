@@ -66,7 +66,7 @@ long NavlibInterface::SetSelectionTransform(const navlib::matrix_t&)
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 }
 
-long NavlibInterface::GetPivotPosition(navlib::point_t& position) const
+long NavlibInterface::GetPivotPosition(navlib::point_t&) const
 {
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 }
@@ -223,12 +223,12 @@ long NavlibInterface::GetSelectionExtents(navlib::box_t& extents) const
                       return 0l;
                   });
 
-    extents = {boundingBox.MinX,
-               boundingBox.MinY,
-               boundingBox.MinZ,
-               boundingBox.MaxX,
-               boundingBox.MaxY,
-               boundingBox.MaxZ};
+    extents = {{boundingBox.MinX,
+                boundingBox.MinY,
+                boundingBox.MinZ},
+               {boundingBox.MaxX,
+                boundingBox.MaxY,
+                boundingBox.MaxZ}};
 
     return 0;
 }
