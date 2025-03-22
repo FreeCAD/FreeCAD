@@ -1095,7 +1095,7 @@ double Generic::slope()
 {
     Base::Vector3d v = asVector();
     if (v.x == 0.0) {
-        return DOUBLE_MAX;
+        return DBL_MAX;
     } else {
         return v.y/v.x;
     }
