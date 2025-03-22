@@ -646,7 +646,6 @@ def makePostVtkResult(doc, result_data, name="VtkResult"):
           needed for a multistep result: [results_list, value_list, unit, description]
     """
 
-
     Pipeline_Name = "Pipeline_" + name
     obj = doc.addObject("Fem::FemPostPipeline", Pipeline_Name)
     obj.load(*result_data)

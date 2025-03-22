@@ -129,9 +129,8 @@ bool ViewProviderFemPostFunctionProvider::onDelete(const std::vector<std::string
     // warn the user if the object has unselected children
     auto objs = claimChildren();
     return ViewProviderFemAnalysis::checkSelectedChildren(objs,
-                                                       this->getDocument(),
-                                                       "functions list");
-
+                                                          this->getDocument(),
+                                                          "functions list");
 }
 
 bool ViewProviderFemPostFunctionProvider::canDelete(App::DocumentObject* obj) const
