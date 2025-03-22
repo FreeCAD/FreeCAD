@@ -36,7 +36,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostBranchFilter, Fem::FemPostFilter);
 
 const char* FemPostBranchFilter::OutputEnums[] = {"Passthrough", "Append", nullptr};
 
-FemPostBranchFilter::FemPostBranchFilter() : Fem::FemPostFilter(), Fem::FemPostGroupExtension()
+FemPostBranchFilter::FemPostBranchFilter()
 {
     FemPostGroupExtension::initExtension(this);
 
@@ -78,8 +78,6 @@ FemPostBranchFilter::FemPostBranchFilter() : Fem::FemPostFilter(), Fem::FemPostG
     setActiveFilterPipeline("passthrough");
 }
 
-FemPostBranchFilter::~FemPostBranchFilter() = default;
-
 short FemPostBranchFilter::mustExecute() const
 {
     if (Mode.isTouched()) {
@@ -102,17 +100,17 @@ void FemPostBranchFilter::setupPipeline()
     // prepare output filter: we make all connections new!
     m_append->RemoveAllInputConnections(0);
 
-    FemPostFilter* filter = NULL;
+    FemPostFilter* filter = nullptr;
     for (auto& obj : objs) {
 
         // prepare the filter: make all connections new
-        FemPostFilter* nextFilter = static_cast<FemPostFilter*>(obj);
+        auto* nextFilter = static_cast<FemPostFilter*>(obj);
         nextFilter->getFilterInput()->RemoveAllInputConnections(0);
 
         // handle input modes
         if (Mode.getValue() == Fem::PostGroupMode::Serial) {
             // serial: the next filter gets the previous output, the first one gets our input
-            if (filter == NULL) {
+            if (!filter) {
                 nextFilter->getFilterInput()->SetInputConnection(m_passthrough->GetOutputPort());
             } else {
                 nextFilter->getFilterInput()->SetInputConnection(filter->getFilterOutput()->GetOutputPort());
@@ -209,7 +207,7 @@ void FemPostBranchFilter::filterChanged(FemPostFilter* filter)
     }
 }
 
-void FemPostBranchFilter::filterPipelineChanged(FemPostFilter*) {
+void FemPostBranchFilter::filterPipelineChanged([[maybe_unused]] FemPostFilter* postfilter) {
     // one of our filters has changed its active pipeline. We need to reconnect it properly.
     // As we are cheap we just reconnect everything
     // TODO: Do more efficiently

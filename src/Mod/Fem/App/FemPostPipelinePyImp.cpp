@@ -45,20 +45,13 @@ std::string FemPostPipelinePy::representation() const
 
 PyObject* FemPostPipelinePy::read(PyObject* args)
 {
-    char* Name;
-    if (PyArg_ParseTuple(args, "et", "utf-8", &Name)) {
-        getFemPostPipelinePtr()->read(Base::FileInfo(Name));
-        PyMem_Free(Name);
-        Py_Return;
-    }
-
     PyObject *files;
     PyObject *values = nullptr;
     PyObject *unitobj = nullptr;
     const char* value_type;
 
     if (PyArg_ParseTuple(args, "O|OO!s", &files, &values, &(Base::UnitPy::Type), &unitobj, &value_type)) {
-        if (values == nullptr) {
+        if (!values) {
 
             // single argument version was called!
 
@@ -69,7 +62,7 @@ PyObject* FemPostPipelinePy::read(PyObject* args)
             const char* path = PyUnicode_AsUTF8(files);
             getFemPostPipelinePtr()->read(Base::FileInfo(path));
         }
-        else if (values != nullptr && unitobj != nullptr) {
+        else if (values && unitobj) {
 
             //multistep version!
 
@@ -120,7 +113,6 @@ PyObject* FemPostPipelinePy::read(PyObject* args)
             Py_Return;
         }
     }
-
     return nullptr;
 }
 
@@ -143,7 +135,7 @@ PyObject* FemPostPipelinePy::load(PyObject* args)
 
     if (PyArg_ParseTuple(args, "O|OO!s", &py, &list, &(Base::UnitPy::Type), &unitobj, &value_type)) {
 
-        if (list == nullptr) {
+        if (!list) {
 
             // single argument version!
 
@@ -160,14 +152,14 @@ PyObject* FemPostPipelinePy::load(PyObject* args)
             getFemPostPipelinePtr()->load(static_cast<FemResultObject*>(obj));
             Py_Return;
         }
-        else if (list != nullptr && unitobj != nullptr) {
+        else if (list && unitobj) {
 
             //multistep version!
 
             if ( !(PyTuple_Check(py)   || PyList_Check(py)) ||
                 !(PyTuple_Check(list) || PyList_Check(list)) ) {
 
-                std::string error = std::string("Result and value must be list of ResultObjet and number respectively.");
+                std::string error = std::string("Result and value must be list of ResultObject and number respectively.");
                 throw Base::TypeError(error);
             }
 
@@ -214,10 +206,13 @@ PyObject* FemPostPipelinePy::load(PyObject* args)
             // Finally call the c++ function!
             getFemPostPipelinePtr()->load(results, values, unit, step_type);
             Py_Return;
+
+        } else {
+            std::string error = std::string("Multistep load requries 4 arguments: ResultList, ValueList, unit, type");
+            throw Base::TypeError(error);
         }
     }
-
-    Py_Return;
+    return nullptr;
 }
 
 

@@ -142,11 +142,7 @@ FemPostObject* FemPostGroupExtension::getLastPostObject()
 
 bool FemPostGroupExtension::holdsPostObject(FemPostObject* obj)
 {
-    for (const auto& group_obj : Group.getValues()) {
-
-        if (group_obj == obj) {
-            return true;
-        }
-    }
-    return false;
+    return std::ranges::any_of(Group.getValues(), [obj](const auto& group_obj) {
+        return group_obj == obj;
+    });
 }
