@@ -75,6 +75,7 @@ enum ObjectStatus
     RecomputeExtension = 19,        // mark the object to recompute its extensions
     TouchOnColorChange = 20,        // inform view provider touch object on color change
     Freeze = 21,                    // do not recompute ever
+    OfferRelabel = 22               // indicates that the object is new and should auto relabel
 };
 // clang-format on
 
@@ -236,6 +237,15 @@ public:
     {
         StatusBits.set(size_t(pos), on);
     }
+
+    bool shouldOfferRelabel() const
+    {
+        return StatusBits.test(ObjectStatus::OfferRelabel);
+    }
+
+    void setShouldOfferRelabel();
+
+    void setOfferedRelabel();
     //@}
 
     int isExporting() const;

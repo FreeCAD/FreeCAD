@@ -48,6 +48,7 @@ public:
     bool PreSelection;
     bool SyncPlacement;
     bool RecordSelection;
+    bool AutoRelabelNew;
     long DocumentMode;
     long StatusTimeout;
     long SelectionTimeout;
@@ -99,6 +100,8 @@ public:
         funcs["SyncPlacement"] = &TreeParamsP::updateSyncPlacement;
         RecordSelection = handle->GetBool("RecordSelection", true);
         funcs["RecordSelection"] = &TreeParamsP::updateRecordSelection;
+        AutoRelabelNew = handle->GetBool("AutoRelabelNew", false);
+        funcs["AutoRelabelNew"] = &TreeParamsP::updateAutoRelabelNew;
         DocumentMode = handle->GetInt("DocumentMode", 2);
         funcs["DocumentMode"] = &TreeParamsP::updateDocumentMode;
         StatusTimeout = handle->GetInt("StatusTimeout", 100);
@@ -179,7 +182,7 @@ public:
         if(it == funcs.end())
             return;
         it->second(this);
-
+        
     }
 
 
@@ -214,6 +217,14 @@ public:
     // Auto generated code (Tools/params_utils.py:288)
     static void updateRecordSelection(TreeParamsP *self) {
         self->RecordSelection = self->handle->GetBool("RecordSelection", true);
+    }
+    // Auto generated code (Tools/params_utils.py:296)
+    static void updateAutoRelabelNew(TreeParamsP *self) {
+        auto v = self->handle->GetBool("AutoRelabelNew", false);
+        if (self->AutoRelabelNew != v) {
+            self->AutoRelabelNew = v;
+            TreeParams::onAutoRelabelNewChanged();
+        }
     }
     // Auto generated code (Tools/params_utils.py:296)
     static void updateDocumentMode(TreeParamsP *self) {
@@ -594,6 +605,33 @@ void TreeParams::setRecordSelection(const bool &v) {
 // Auto generated code (Tools/params_utils.py:384)
 void TreeParams::removeRecordSelection() {
     instance()->handle->RemoveBool("RecordSelection");
+}
+
+// Auto generated code (Tools/params_utils.py:350)
+const char *TreeParams::docAutoRelabelNew() {
+    return "";
+}
+
+// Auto generated code (Tools/params_utils.py:358)
+const bool & TreeParams::getAutoRelabelNew() {
+    return instance()->AutoRelabelNew;
+}
+
+// Auto generated code (Tools/params_utils.py:366)
+const bool & TreeParams::defaultAutoRelabelNew() {
+    const static bool def = false;
+    return def;
+}
+
+// Auto generated code (Tools/params_utils.py:375)
+void TreeParams::setAutoRelabelNew(const bool &v) {
+    instance()->handle->SetBool("AutoRelabelNew",v);
+    instance()->AutoRelabelNew = v;
+}
+
+// Auto generated code (Tools/params_utils.py:384)
+void TreeParams::removeAutoRelabelNew() {
+    instance()->handle->RemoveBool("AutoRelabelNew");
 }
 
 // Auto generated code (Tools/params_utils.py:350)
@@ -1503,6 +1541,11 @@ void TreeParams::onSyncSelectionChanged() {
 }
 
 void TreeParams::onCheckBoxesSelectionChanged()
+{
+    TreeWidget::synchronizeSelectionCheckBoxes();
+}
+
+void TreeParams::onAutoRelabelNewChanged()
 {
     TreeWidget::synchronizeSelectionCheckBoxes();
 }

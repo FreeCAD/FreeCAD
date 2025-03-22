@@ -226,6 +226,7 @@ private:
 
     bool CheckForDependents();
     void addDependentToSelection(App::Document* doc, App::DocumentObject* docObject);
+    void tryOfferRelabel(App::DocumentObject*& object);
 
 private:
     QAction* createGroupAction;

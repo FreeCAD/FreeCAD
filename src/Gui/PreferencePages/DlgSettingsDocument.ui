@@ -610,6 +610,22 @@ icon in the tree view to fully reload it.</string>
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefTreeAutoRelabel">
+        <property name="toolTip">
+         <string>After a new top-level object is created, its tree label is automatically put into edit mode to quickly perform a rename (F2)</string>
+        </property>
+        <property name="text">
+         <string>Auto relabel objects after they are created</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AutoRelabelNew</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

@@ -367,6 +367,16 @@ const char* DocumentObject::getNameInDocument() const
     return pcNameInDocument->c_str();
 }
 
+void DocumentObject::setShouldOfferRelabel()
+{
+    StatusBits.set(ObjectStatus::OfferRelabel);
+}
+
+void DocumentObject::setOfferedRelabel()
+{
+    StatusBits.reset(ObjectStatus::OfferRelabel);
+}
+
 int DocumentObject::isExporting() const
 {
     if (!getDocument() || !isAttachedToDocument()) {
