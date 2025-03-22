@@ -230,9 +230,20 @@ class Label(DraftAnnotation):
         if not getattr(obj, "ViewObject", None):
             return
         vobj = obj.ViewObject
+        if not vobj:
+            return
+
+        if hasattr(vobj, "ArrowType") or hasattr(vobj, "ArrowSize"):
+            self.update_properties_1v1(obj, vobj)
+
         if hasattr(vobj, "FontName") and hasattr(vobj, "FontSize"):
             return
         self.update_properties_0v21(obj, vobj)
+
+    def update_properties_1v1(self, obj, vobj):
+        vobj.Proxy.set_graphics_properties(vobj, vobj.PropertiesList)
+        super().update_properties_1v1(obj, vobj)
+        
 
     def update_properties_0v21(self, obj, vobj):
         """Update view properties."""

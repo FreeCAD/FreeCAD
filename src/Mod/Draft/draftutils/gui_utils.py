@@ -194,7 +194,7 @@ def dim_symbol(symbol=None, invert=False):
     ----------
     symbol: int, optional
         It defaults to `None`, in which it gets the value from the parameter
-        database, `get_param("dimsymbol")`.
+        database, `get_param("dimsymbolend")`.
 
         A numerical value defines different markers
          * 0, `SoSphere`
@@ -202,6 +202,7 @@ def dim_symbol(symbol=None, invert=False):
          * 2, `SoSeparator` with a `soCone`
          * 3, `SoSeparator` with a `SoFaceSet`
          * 4, `SoSeparator` with a `SoLineSet`, calling `dim_dash`
+         * 5, Nothing
          * Otherwise, `SoSphere`
 
     invert: bool, optional
@@ -217,7 +218,7 @@ def dim_symbol(symbol=None, invert=False):
         that will be used as a dimension symbol.
     """
     if symbol is None:
-        symbol = params.get_param("dimsymbol")
+        symbol = params.get_param("dimsymbolend")
 
     if symbol == 0:
         # marker = coin.SoMarkerSet()
@@ -267,6 +268,8 @@ def dim_symbol(symbol=None, invert=False):
         return marker
     elif symbol == 4:
         return dim_dash((-1.5, -1.5, 0), (1.5, 1.5, 0))
+    elif symbol == 5:
+        return coin.SoSeparator()
     else:
         _wrn(translate("draft", "Symbol not implemented. Using a default symbol."))
         return coin.SoSphere()
