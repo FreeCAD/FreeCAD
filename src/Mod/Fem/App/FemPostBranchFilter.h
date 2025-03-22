@@ -42,7 +42,6 @@ class FemExport FemPostBranchFilter: public Fem::FemPostFilter, public FemPostGr
 public:
     /// Constructor
     FemPostBranchFilter();
-    ~FemPostBranchFilter() override;
 
     App::PropertyEnumeration Output;
 

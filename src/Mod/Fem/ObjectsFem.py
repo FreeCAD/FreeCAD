@@ -646,13 +646,10 @@ def makePostVtkResult(doc, result_data, name="VtkResult"):
           needed for a multistep result: [results_list, value_list, unit, description]
     """
 
-    print(result_data)
 
     Pipeline_Name = "Pipeline_" + name
     obj = doc.addObject("Fem::FemPostPipeline", Pipeline_Name)
-    print("load")
     obj.load(*result_data)
-    print("load done")
     if FreeCAD.GuiUp:
         obj.ViewObject.SelectionStyle = "BoundBox"
         # to assure the user sees something, set the default to Surface
