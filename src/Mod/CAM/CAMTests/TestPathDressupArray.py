@@ -42,6 +42,7 @@ class TestEngrave:
             return True
         return False
 
+
 class TestFeature:
     def __init__(self):
         self.Path = Path.Path()
@@ -60,15 +61,9 @@ class TestDressupArray(PathTestBase):
     def test00(self):
         """Verify array with zero copies provides original path."""
 
-        source_gcode = (
-        "G0 X0 Y0 Z0\n"
-        "G1 X10 Y10 Z0\n"
-        )
-        
-        expected_gcode = (
-        "G0 X0.000000 Y0.000000 Z0.000000\n"
-        "G1 X10.000000 Y10.000000 Z0.000000\n"
-        )
+        source_gcode = "G0 X0 Y0 Z0\n" "G1 X10 Y10 Z0\n"
+
+        expected_gcode = "G0 X0.000000 Y0.000000 Z0.000000\n" "G1 X10.000000 Y10.000000 Z0.000000\n"
 
         base = TestEngrave(source_gcode)
         obj = TestFeature()
@@ -79,17 +74,13 @@ class TestDressupArray(PathTestBase):
     def test01(self):
         """Verify linear x/y/z 1D array with 1 copy."""
 
-        source_gcode = (
-        "G0 X0 Y0 Z0\n"
-        "G1 X10 Y10 Z0\n"
-        )
-        
-        expected_gcode = (
-        "G0 X0.000000 Y0.000000 Z0.000000\n"
-        "G1 X10.000000 Y10.000000 Z0.000000\n"
+        source_gcode = "G0 X0 Y0 Z0\n" "G1 X10 Y10 Z0\n"
 
-        "G0 X12.000000 Y12.000000 Z5.000000\n"
-        "G1 X22.000000 Y22.000000 Z5.000000\n"
+        expected_gcode = (
+            "G0 X0.000000 Y0.000000 Z0.000000\n"
+            "G1 X10.000000 Y10.000000 Z0.000000\n"
+            "G0 X12.000000 Y12.000000 Z5.000000\n"
+            "G1 X22.000000 Y22.000000 Z5.000000\n"
         )
 
         base = TestEngrave(source_gcode)
@@ -104,29 +95,21 @@ class TestDressupArray(PathTestBase):
     def test01(self):
         """Verify linear x/y/z 2D array."""
 
-        source_gcode = (
-        "G0 X0 Y0 Z0\n"
-        "G1 X10 Y10 Z0\n"
-        )
-        
+        source_gcode = "G0 X0 Y0 Z0\n" "G1 X10 Y10 Z0\n"
+
         expected_gcode = (
-        "G0 X0.000000 Y0.000000 Z0.000000\n"
-        "G1 X10.000000 Y10.000000 Z0.000000\n"
-
-        "G0 X0.000000 Y6.000000 Z0.000000\n"
-        "G1 X10.000000 Y16.000000 Z0.000000\n"
-
-        "G0 X12.000000 Y6.000000 Z0.000000\n"
-        "G1 X22.000000 Y16.000000 Z0.000000\n"
-
-        "G0 X12.000000 Y0.000000 Z0.000000\n"
-        "G1 X22.000000 Y10.000000 Z0.000000\n"
-
-        "G0 X24.000000 Y0.000000 Z0.000000\n"
-        "G1 X34.000000 Y10.000000 Z0.000000\n"
-
-        "G0 X24.000000 Y6.000000 Z0.000000\n"
-        "G1 X34.000000 Y16.000000 Z0.000000\n"
+            "G0 X0.000000 Y0.000000 Z0.000000\n"
+            "G1 X10.000000 Y10.000000 Z0.000000\n"
+            "G0 X0.000000 Y6.000000 Z0.000000\n"
+            "G1 X10.000000 Y16.000000 Z0.000000\n"
+            "G0 X12.000000 Y6.000000 Z0.000000\n"
+            "G1 X22.000000 Y16.000000 Z0.000000\n"
+            "G0 X12.000000 Y0.000000 Z0.000000\n"
+            "G1 X22.000000 Y10.000000 Z0.000000\n"
+            "G0 X24.000000 Y0.000000 Z0.000000\n"
+            "G1 X34.000000 Y10.000000 Z0.000000\n"
+            "G0 X24.000000 Y6.000000 Z0.000000\n"
+            "G1 X34.000000 Y16.000000 Z0.000000\n"
         )
 
         base = TestEngrave(source_gcode)
@@ -141,10 +124,3 @@ class TestDressupArray(PathTestBase):
 
         da.execute(obj)
         self.assertTrue(obj.Path.toGCode() == expected_gcode, "Incorrect g-code generated")
-
-
-    
-
-    
-    
-
