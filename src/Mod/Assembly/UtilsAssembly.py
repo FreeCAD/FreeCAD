@@ -1051,10 +1051,6 @@ def findPlacement(ref, ignoreVertex=False):
             if vertex is None:
                 return App.Placement()
 
-            print(vtx)
-            print(vtx_type)
-            print(vertex)
-
             plc.Base = (vertex.X, vertex.Y, vertex.Z)
 
         # Then we find the Rotation
