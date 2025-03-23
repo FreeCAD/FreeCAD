@@ -20,19 +20,32 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD
-import Draft
-import ArchCommands
-import DraftVecUtils
-import ArchIFC
-import tempfile
+__title__  = "FreeCAD Arch BuildingPart"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
+
+## @package ArchBuildingPart
+#  \ingroup ARCH
+#  \brief The BuildingPart object and tools
+#
+#  This module provides tools to build BuildingPart objects.
+#  BuildingParts are used to group different Arch objects
+
 import os
+import tempfile
+
+import FreeCAD
+import ArchCommands
+import ArchIFC
+import Draft
+import DraftVecUtils
+
 from draftutils import params
 
 if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
     import draftutils.units as units
 else:
     # \cond
@@ -42,17 +55,6 @@ else:
         return txt
     # \endcond
 unicode = str
-
-## @package ArchBuildingPart
-#  \ingroup ARCH
-#  \brief The BuildingPart object and tools
-#
-#  This module provides tools to build BuildingPart objects.
-#  BuildingParts are used to group different Arch objects
-
-__title__  = "FreeCAD Arch BuildingPart"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
 
 
 BuildingTypes = ['Undefined',

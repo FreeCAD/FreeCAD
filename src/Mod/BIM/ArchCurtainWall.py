@@ -24,27 +24,6 @@ __title__  = "FreeCAD Arch Curtain Wall"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
-import math
-import FreeCAD
-import ArchComponent
-import ArchCommands
-import DraftVecUtils
-from draftutils import params
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
-
-ANGLETOLERANCE = 0.67 # vectors with angles below this are considered going in same dir
-
 ## @package ArchCurtainWall
 #  \ingroup ARCH
 #  \brief The Curtain Wall object and tools
@@ -68,6 +47,29 @@ panel filling is rectangular, or they don't, in which case
 the facet is triangulated and receives a third mullion
 (diagonal mullion).
 """
+
+import math
+
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import DraftVecUtils
+
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
+
+ANGLETOLERANCE = 0.67 # vectors with angles below this are considered going in same dir
 
 
 class CurtainWall(ArchComponent.Component):
@@ -198,7 +200,8 @@ class CurtainWall(ArchComponent.Component):
         if not self.ensureBase(obj):
             return
 
-        import Part,DraftGeomUtils
+        import Part
+        import DraftGeomUtils
 
         pl = obj.Placement
 
@@ -470,7 +473,8 @@ class CurtainWall(ArchComponent.Component):
 
         """returns a profile shape already properly oriented, ready for extrude"""
 
-        import Part,DraftGeomUtils
+        import Part
+        import DraftGeomUtils
 
         prof = getattr(obj,direction+"MullionProfile")
         proh = getattr(obj,direction+"MullionHeight").Value
@@ -562,4 +566,3 @@ class ViewProviderCurtainWall(ArchComponent.ViewProviderComponent):
                     colors.append(panelcolor)
         if self.areDifferentColors(colors,obj.ViewObject.DiffuseColor) or force:
             obj.ViewObject.DiffuseColor = colors
-
