@@ -25,7 +25,6 @@
 import difflib
 import os
 import tempfile
-import time
 import unittest
 
 import ifcopenshell
