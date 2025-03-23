@@ -41,13 +41,6 @@ from draftutils.messages import _msg
 if App.GuiUp:
     import FreeCADGui
 
-def like(a, b):
-    return abs(a-b) < 0.001
-
-def checkBB(a, b):
-    return like(a.XMin, b.XMin) and like(a.YMin, b.YMin) and like(a.ZMin, b.ZMin) and like(a.XMax, b.XMax) and like(a.YMax, b.YMax) and like(a.ZMax, b.ZMax)
-
-
 class ArchTest(unittest.TestCase):
 
     def setUp(self):
