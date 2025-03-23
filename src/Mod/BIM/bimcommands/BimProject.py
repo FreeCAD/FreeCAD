@@ -24,7 +24,6 @@
 
 """The BIM Project command - Includes previous Arch Project"""
 
-
 import FreeCAD
 import FreeCADGui
 

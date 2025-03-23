@@ -24,9 +24,9 @@
 
 """The BIM ShapeView command"""
 
-
 import FreeCAD
 import FreeCADGui
+
 from draftguitools import gui_shape2dview
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
