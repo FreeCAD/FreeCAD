@@ -22,13 +22,9 @@
 
 
 import FreeCAD
-import FreeCADGui
 import Path
-import PathScripts
 import PathScripts.PathUtils as PathUtils
 from Path.Dressup.Base import DressupBase
-from PySide import QtCore
-import math
 import random
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -124,7 +120,13 @@ class DressupArray(DressupBase):
         obj.Base = base
 
         obj.Active = True
+        # assigning array tells the type of possible enum choices
         obj.Type = ["Linear1D", "Linear2D", "Polar"]
+        # assign value
+        obj.Type = "Linear1D"
+
+        obj.Copies = 0
+        obj.JitterPercent = 0
 
         self.setEditorModes(obj)
         obj.Proxy = self
@@ -186,7 +188,7 @@ class DressupArray(DressupBase):
             Path.Log.error(translate("PathArray", "Base is empty or an invalid object."))
             return None
 
-        # Do not generate paths and clear current Path data if operation not
+        # Do not generate paths and clear current Path data if operation not active
         if not obj.Active:
             if obj.Path:
                 obj.Path = Path.Path()
@@ -270,7 +272,9 @@ class PathArray:
         base = self.base
 
         # build copies
-        output = ""
+        # initially output contains original base path, copies are added on top of that
+        output = PathUtils.getPathWithPlacement(base).toGCode()
+
         random.seed(self.seed)
 
         if self.arrayType == "Linear1D":
