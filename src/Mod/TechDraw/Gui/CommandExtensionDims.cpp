@@ -117,7 +117,7 @@ void execInsertPrefixChar(Gui::Command* cmd, std::string prefixFormat, const QAc
         const int MAX_PREFIX_LENGTH = 31;
 
         if (action) {
-            if (action->objectName() == QStringLiteral("TechDraw_ExtensionInsertRepetition")) {
+            if (action->objectName() == QLatin1String("TechDraw_ExtensionInsertRepetition")) {
                 ui.setFieldName(QT_TR_NOOP("Repeat Count"));
             }
         }
