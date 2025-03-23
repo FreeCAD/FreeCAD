@@ -209,9 +209,9 @@ def generate(
             # hole centre is already clear (hole inner radius<=tool_radius)
 
         # use G1 since tool tip still in contact with workpiece.
-        if center_clear and (prev_r == "NaN"):
+        if center_clear and (prev_r == None):
             retractcommands.append(Path.Command("G1", {"X": endPoint.x, "Y": endPoint.y}))
-        elif prev_r != "NaN":
+        elif prev_r != None:
             dwell_r = (r + prev_r) / 2
             retractcommands.append(
                 Path.Command(
@@ -232,7 +232,7 @@ def generate(
         radii = radii[::-1]
 
     commands = []
-    prev_r = "NaN"
+    prev_r = None
     for r in radii:
         commands.extend(helix_cut_r(r))
         commands.extend(retract())
