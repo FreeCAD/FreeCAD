@@ -139,6 +139,7 @@ class TestArchSpace(TestArchBase.TestArchBase):
                       if round(face.Area) == round(wallInnerFaceArea)]
 
         if App.GuiUp:
+            import FreeCADGui
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(wall, boundaries)
 
