@@ -2,12 +2,13 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from Path.Op.Base import ObjectOp
 
+
 class DressupBase:
     """
     Base class for all dressups to provide common interface with the rest of CAM
     One major example is making sure all dressups export base operation settings
     like coolant, tool controller, etc.
-    """  
+    """
 
     def setup_coolant_property(self, obj):
         if not hasattr(obj, "CoolantMode"):
@@ -25,14 +26,14 @@ class DressupBase:
     def setup_tool_controller_property(self, obj):
         if not hasattr(obj, "ToolController"):
             obj.addProperty(
-                    "App::PropertyLink",
-                    "ToolController",
-                    "Path",
-                    QT_TRANSLATE_NOOP(
-                        "App::Property",
-                        "The tool controller that will be used to calculate the path",
-                    ),
-                )
+                "App::PropertyLink",
+                "ToolController",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The tool controller that will be used to calculate the path",
+                ),
+            )
 
     def __init__(self, obj, base):
 
@@ -42,7 +43,7 @@ class DressupBase:
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
         )
-      
+
         obj.addProperty(
             "App::PropertyBool",
             "Active",
@@ -88,6 +89,3 @@ class DressupBase:
         Should be overwritten by subclasses.
         """
         pass
-        
-
-

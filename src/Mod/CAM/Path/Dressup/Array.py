@@ -115,7 +115,7 @@ class DressupArray(DressupBase):
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
         )
-        
+
         self.obj = obj
         obj.Base = base
 
@@ -179,12 +179,8 @@ class DressupArray(DressupBase):
         return True
 
     def dressupExecute(self, obj):
-   
-        if (
-            not obj.Base
-            or not obj.Base.isDerivedFrom("Path::Feature")
-            or not obj.Base.Path
-        ):
+
+        if not obj.Base or not obj.Base.isDerivedFrom("Path::Feature") or not obj.Base.Path:
             Path.Log.error(translate("PathArray", "Base is empty or an invalid object."))
             return None
 
@@ -312,7 +308,6 @@ class PathArray:
                             )
                         pos = self._calculateJitter(pos)
 
-
                         pl = FreeCAD.Placement()
                         # do not process the index 0,0. It will be processed by the base Paths themselves
                         if not (i == 0 and j == 0):
@@ -323,7 +318,7 @@ class PathArray:
                                     for cm in PathUtils.getPathWithPlacement(base).Commands
                                 ]
                             )
-                            output+= np.toGCode()
+                            output += np.toGCode()
             else:
                 for i in range(self.copiesX + 1):
                     for j in range(self.copiesY + 1):
@@ -372,9 +367,7 @@ def Create(base, name="DressupArray"):
     """Create(base, name='DressupPathBoundary') ... creates a dressup array."""
 
     if not base.isDerivedFrom("Path::Feature"):
-        Path.Log.error(
-            translate("CAM_DressupArray", "The selected object is not a path") + "\n"
-        )
+        Path.Log.error(translate("CAM_DressupArray", "The selected object is not a path") + "\n")
         return None
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
