@@ -18,41 +18,44 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the exporter for IFC files used above all in Arch and BIM.
 
-Internally it uses IfcOpenShell, which must be installed before using.
-"""
+__title__  = "FreeCAD IFC export"
+__author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
+__url__    = "https://www.freecad.org"
+
 ## @package exportIFC
 #  \ingroup ARCH
 #  \brief IFC file format exporter
 #
 #  This module provides tools to export IFC files.
 
+"""Provide the exporter for IFC files used above all in Arch and BIM.
+
+Internally it uses IfcOpenShell, which must be installed before using.
+"""
+
+import math
 import os
 import time
 import tempfile
-import math
 from builtins import open as pyopen
 
 import FreeCAD
-import Part
-import Draft
+import FreeCADGui
 import Arch
+import Draft
 import DraftVecUtils
+import Part
 import ArchIFCSchema
-from importers import exportIFCHelper
-from importers import exportIFCStructuralTools
 
 from DraftGeomUtils import vec
-from importers.importIFCHelper import dd2dms
 from draftutils import params
 from draftutils.messages import _msg, _err
 
-import FreeCADGui
+from importers import exportIFCHelper
+from importers import exportIFCStructuralTools
+from importers.importIFCHelper import dd2dms
 
-__title__  = "FreeCAD IFC export"
-__author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
-__url__    = "https://www.freecad.org"
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 

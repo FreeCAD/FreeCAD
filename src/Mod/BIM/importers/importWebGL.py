@@ -35,18 +35,27 @@
 # Development reload oneliner:
 # def re(): from importlib import reload;import importWebGL;reload(importWebGL);o=FreeCAD.getDocument("YourDocName");importWebGL.export([o.getObject("YourBodyName")],u"C:/path/to/your/file.htm");
 
+## @package importWebGL
+#  \ingroup ARCH
+#  \brief FreeCAD WebGL Exporter
+#
+#  This module provides tools to export HTML files containing the
+#  exported objects in WebGL format and a simple three.js-based viewer.
+
 """FreeCAD WebGL Exporter"""
 
-from typing import NotRequired, TypedDict
-
-import FreeCAD
-import Mesh
-import Draft
-import Part
-import OfflineRenderingUtils
 import json
 import textwrap
 from builtins import open as pyopen
+from typing import NotRequired, TypedDict
+
+import numpy as np
+
+import FreeCAD
+import Draft
+import Mesh
+import OfflineRenderingUtils
+import Part
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -57,15 +66,6 @@ else:
     def translate(ctxt, txt):
         return txt
 
-
-import numpy as np
-
-## @package importWebGL
-#  \ingroup ARCH
-#  \brief FreeCAD WebGL Exporter
-#
-#  This module provides tools to export HTML files containing the
-#  exported objects in WebGL format and a simple three.js-based viewer.
 
 disableCompression = False  # Compress object data before sending to JS
 base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!#$%&()*+-:;/=>?@[]^_,.{|}~`"  # safe str chars for js in all cases
