@@ -120,15 +120,21 @@ def bind(w1, w2, per_segment=False):
     """
 
     def create_face(w1, w2):
+
         try:
             w3 = Part.LineSegment(w1.Vertexes[0].Point,
                                   w2.Vertexes[0].Point).toShape()
             w4 = Part.LineSegment(w1.Vertexes[-1].Point,
                                   w2.Vertexes[-1].Point).toShape()
-            return Part.Face(Part.Wire(w1.Edges + [w3] + w2.Edges + [w4]))
         except Part.OCCError:
             print("DraftGeomUtils: unable to bind wires")
             return None
+        if w3.section(w4).Vertexes:
+            print("DraftGeomUtils: Problem, a segment is self-intersecting, please check!")
+        f = Part.Face(Part.Wire(w1.Edges + [w3] + w2.Edges + [w4]))
+        if f.normalAt(0,0).z == -1:
+            print("DraftGeomUtils: Problem, a segment direction is reversed, please check!")
+        return f
 
     if not w1 or not w2:
         print("DraftGeomUtils: unable to bind wires")
@@ -164,6 +170,7 @@ def bind(w1, w2, per_segment=False):
                 if face is None:
                     return None
                 faces.append(face)
+
         # Usually there is last series of face after above 'for' routine,
         # EXCEPT when the last edge pair touch, faces had been appended
         # to faces_list, and reset faces =[]
@@ -185,14 +192,25 @@ def bind(w1, w2, per_segment=False):
             faces_fused_list = []
             for faces in faces_list:
                 if len(faces) > 1 :
-                    faces_fused = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
-                    faces_fused_list.append(faces_fused)
+                    # Below not good if a face is self-intersecting or reversed
+                    #faces_fused = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+                    rf = faces[0]
+                    for f in faces[1:]:
+                        rf = rf.fuse(f).removeSplitter().Faces[0]
+                    faces_fused_list.append(rf)
+
                 # faces might be empty list [], see above; skip if empty
                 elif faces:
                     faces_fused_list.append(faces[0])  # Only 1 face
+
             return Part.Compound(faces_fused_list)
         else:
-            return faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+            # Below not good if a face is self-intersecting or reversed
+            #return faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+            rf = faces[0]
+            for f in faces[1:]:
+                rf = rf.fuse(f).removeSplitter().Faces[0]
+            return rf
 
     elif w1.isClosed() and w2.isClosed():
         d1 = w1.BoundBox.DiagonalLength
