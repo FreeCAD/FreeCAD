@@ -45,6 +45,8 @@ SET(Arch_SRCS
     ArchSketchObject.py
     BimSelect.py
     BimStatus.py
+    TestArch.py
+    TestArchGui.py
 )
 
 SET(importers_SRCS
@@ -196,8 +198,6 @@ SET(nativeifc_SRCS
 )
 
 SET(bimtests_SRCS
-    TestArch.py
-    TestArchGui.py
     bimtests/TestArchBase.py
     bimtests/TestArchRoof.py
     bimtests/TestArchSpace.py
@@ -281,6 +281,12 @@ INSTALL(
     FILES
         ${bimcommands_SRCS}
     DESTINATION Mod/BIM/bimcommands
+)
+
+INSTALL(
+    FILES
+        ${bimtests_SRCS}
+    DESTINATION Mod/BIM/bimtests
 )
 
 INSTALL(
