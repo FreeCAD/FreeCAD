@@ -35,13 +35,17 @@ from bimtests import TestArchBase
 class TestArchWall(TestArchBase.TestArchBase):
 
     def testWall(self):
-        App.Console.PrintMessage('Checking Arch Wall...\n')
+        operation = "Checking Arch Wall..."
+        self.printTestMessage(operation)
+
         l=Draft.makeLine(App.Vector(0,0,0),App.Vector(-2,0,0))
         w = Arch.makeWall(l)
         self.assertTrue(w,"Arch Wall failed")
 
     def testWallMultiMatAlign(self):
-        App.Console.PrintMessage('Checking Arch Wall with MultiMaterial and 3 alignments...\n')
+        operation = "Checking Arch Wall with MultiMaterial and 3 alignments..."
+        self.printTestMessage(operation)
+
         matA = Arch.makeMaterial()
         matB = Arch.makeMaterial()
         matMulti = Arch.makeMultiMaterial()
