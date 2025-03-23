@@ -33,3 +33,11 @@ class TestArchBase(unittest.TestCase):
 
     def tearDown(self):
         FreeCAD.closeDocument(self.document.Name)
+
+    def printTestMessage(self, text, prepend_text="Test ", end="\n"):
+        """Write messages to the console including the line ending.
+        
+        Messages will be prepended with "Test ", unless an empty string is
+        passed as the prepend_text argument
+        """
+        FreeCAD.Console.PrintMessage(prepend_text + text + end)
