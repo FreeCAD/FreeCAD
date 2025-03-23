@@ -35,10 +35,8 @@ my ryzen9 machine, for 2700 objects. Larger files like the King Arch file
 import time
 
 import ifcopenshell
-from PySide2 import QtCore, QtGui, QtWidgets
 
-import FreeCAD
-
+from PySide import QtWidgets
 
 
 class ViewProvider:
