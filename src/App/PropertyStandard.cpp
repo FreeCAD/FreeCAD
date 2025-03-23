@@ -601,7 +601,11 @@ bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier& path, Py::Objec
     std::string p = path.getSubPathStr();
     if (p == ".Enum" || p == ".All") {
         Base::PyGILStateLocker lock;
-        Py::Tuple res(_enum.maxValue() + 1);
+        auto maxEnumValue = _enum.maxValue();
+        if (maxEnumValue < 0) {
+            return false;  // The enum is invalid
+        }
+        Py::Tuple res(maxEnumValue + 1);
         std::vector<std::string> enums = _enum.getEnumVector();
         PropertyString tmp;
         for (int i = 0; i < int(enums.size()); ++i) {

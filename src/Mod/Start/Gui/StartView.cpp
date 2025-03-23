@@ -42,6 +42,7 @@
 #include "FileCardView.h"
 #include "FirstStartWidget.h"
 #include "FlowLayout.h"
+#include "NewFileButton.h"
 #include <App/DocumentObject.h>
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -58,69 +59,6 @@
 using namespace StartGui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(StartGui::StartView, Gui::MDIView)  // NOLINT
-
-namespace
-{
-
-struct NewButton
-{
-    QString heading;
-    QString description;
-    QString iconPath;
-};
-
-class NewFileButton: public QPushButton
-{
-
-public:
-    explicit NewFileButton(const NewButton& newButton)
-    {
-        auto hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Start");
-        const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 25));  // NOLINT
-        const auto newFileIconSize =
-            static_cast<int>(hGrp->GetInt("NewFileIconSize", 48));  // NOLINT
-        const auto cardLabelWith =
-            static_cast<int>(hGrp->GetInt("FileCardLabelWith", 180));  // NOLINT
-
-        auto mainLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(this));
-        mainLayout->setAlignment(Qt::AlignVCenter);
-        auto iconLabel = gsl::owner<QLabel*>(new QLabel(this));
-        mainLayout->addWidget(iconLabel);
-        QIcon baseIcon(newButton.iconPath);
-        iconLabel->setPixmap(baseIcon.pixmap(newFileIconSize, newFileIconSize));
-        iconLabel->setPixmap(baseIcon.pixmap(newFileIconSize, newFileIconSize));
-
-        auto textLayout = gsl::owner<QVBoxLayout*>(new QVBoxLayout);
-        auto textLabelLine1 = gsl::owner<QLabel*>(new QLabel(this));
-        textLabelLine1->setText(newButton.heading);
-        QFont font = textLabelLine1->font();
-        font.setWeight(QFont::Bold);
-        textLabelLine1->setFont(font);
-        auto textLabelLine2 = gsl::owner<QLabel*>(new QLabel(this));
-        textLabelLine2->setText(newButton.description);
-        textLabelLine2->setWordWrap(true);
-        textLayout->addWidget(textLabelLine1);
-        textLayout->addWidget(textLabelLine2);
-        textLayout->setSpacing(0);
-        mainLayout->addItem(textLayout);
-
-        mainLayout->addStretch();
-
-        textLabelLine1->adjustSize();
-        textLabelLine2->adjustSize();
-        int textHeight =
-            textLabelLine1->height() + textLabelLine2->height() + textLayout->spacing();
-
-        int minWidth = newFileIconSize + cardLabelWith + cardSpacing;
-        int minHeight = std::max(newFileIconSize, textHeight) + cardSpacing;
-
-        this->setMinimumHeight(minHeight);
-        this->setMinimumWidth(minWidth);
-    }
-};
-
-}  // namespace
 
 
 StartView::StartView(QWidget* parent)

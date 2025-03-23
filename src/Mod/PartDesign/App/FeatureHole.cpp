@@ -1371,6 +1371,9 @@ void Hole::findClosestDesignation()
     // Intended for thread type changes
     // finds the closest diameter of the new thread type
     int threadType = ThreadType.getValue();
+    if (threadType == -1) {
+        throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type is invalid"));
+    }
     int closestSize = 0;
     double diameter = ThreadDiameter.getValue();
     if (diameter == 0)
@@ -2165,9 +2168,7 @@ TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
 {
     TopoShape result(0);
 
-    int i = 0;
     for(const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
-        ++i;
         Standard_Real c_start;
         Standard_Real c_end;
         TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());

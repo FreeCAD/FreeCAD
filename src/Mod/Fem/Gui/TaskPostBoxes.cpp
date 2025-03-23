@@ -49,6 +49,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Fem/App/FemPostFilter.h>
+#include <Mod/Fem/App/FemPostBranchFilter.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
 
 #include "ui_TaskPostClip.h"
@@ -59,12 +60,16 @@
 #include "ui_TaskPostDisplay.h"
 #include "ui_TaskPostScalarClip.h"
 #include "ui_TaskPostWarpVector.h"
+#include "ui_TaskPostFrames.h"
+#include "ui_TaskPostBranch.h"
+
 
 #include "FemSettings.h"
 #include "TaskPostBoxes.h"
 #include "ViewProviderFemPostFilter.h"
 #include "ViewProviderFemPostFunction.h"
 #include "ViewProviderFemPostObject.h"
+#include "ViewProviderFemPostBranchFilter.h"
 
 
 using namespace FemGui;
@@ -325,9 +330,8 @@ void TaskDlgPost::clicked(int button)
 bool TaskDlgPost::accept()
 {
     try {
-        std::vector<TaskPostBox*>::iterator it = m_boxes.begin();
-        for (; it != m_boxes.end(); ++it) {
-            (*it)->applyPythonCode();
+        for (auto& box : m_boxes) {
+            box->applyPythonCode();
         }
     }
     catch (const Base::Exception& e) {
@@ -474,8 +478,119 @@ void TaskPostFunction::applyPythonCode()
 
 
 // ***************************************************************************
+// Frames
+TaskPostFrames::TaskPostFrames(ViewProviderFemPostObject* view, QWidget* parent)
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFrames"), tr("Result Frames"), parent)
+    , ui(new Ui_TaskPostFrames)
+{
+    // we load the views widget
+    proxy = new QWidget(this);
+    ui->setupUi(proxy);
+    this->groupLayout()->addWidget(proxy);
+    setupConnections();
+
+    // populate the data
+    auto pipeline = static_cast<Fem::FemPostPipeline*>(getObject());
+    ui->Type->setText(QString::fromStdString(pipeline->getFrameType()));
+
+    auto unit = pipeline->getFrameUnit();
+    auto steps = pipeline->getFrameValues();
+    for (unsigned long i = 0; i < steps.size(); i++) {
+        QTableWidgetItem* idx = new QTableWidgetItem(QString::number(i));
+        QTableWidgetItem* value = new QTableWidgetItem(
+            QString::fromStdString(Base::Quantity(steps[i], unit).getUserString()));
+
+        int rowIdx = ui->FrameTable->rowCount();
+        ui->FrameTable->insertRow(rowIdx);
+        ui->FrameTable->setItem(rowIdx, 0, idx);
+        ui->FrameTable->setItem(rowIdx, 1, value);
+    }
+    ui->FrameTable->selectRow(pipeline->Frame.getValue());
+}
+
+TaskPostFrames::~TaskPostFrames() = default;
+
+void TaskPostFrames::setupConnections()
+{
+    connect(ui->FrameTable,
+            qOverload<>(&QTableWidget::itemSelectionChanged),
+            this,
+            &TaskPostFrames::onSelectionChanged);
+}
+
+void TaskPostFrames::onSelectionChanged()
+{
+    auto selection = ui->FrameTable->selectedItems();
+    if (selection.count() > 0) {
+        static_cast<Fem::FemPostPipeline*>(getObject())->Frame.setValue(selection.front()->row());
+        recompute();
+    }
+}
+
+
+void TaskPostFrames::applyPythonCode()
+{
+    // we apply the views widgets python code
+}
+
+
+// ***************************************************************************
 // in the following, the different filters sorted alphabetically
 // ***************************************************************************
+
+
+// ***************************************************************************
+// Branch
+TaskPostBranch::TaskPostBranch(ViewProviderFemPostBranchFilter* view, QWidget* parent)
+    : TaskPostBox(view,
+                  Gui::BitmapFactory().pixmap("FEM_PostBranchFilter"),
+                  tr("Branch behaviour"),
+                  parent)
+    , ui(new Ui_TaskPostBranch)
+{
+    // we load the views widget
+    proxy = new QWidget(this);
+    ui->setupUi(proxy);
+    this->groupLayout()->addWidget(proxy);
+    setupConnections();
+
+    // populate the data
+    auto branch = static_cast<Fem::FemPostBranchFilter*>(getObject());
+
+    ui->ModeBox->setCurrentIndex(branch->Mode.getValue());
+    ui->OutputBox->setCurrentIndex(branch->Output.getValue());
+}
+
+TaskPostBranch::~TaskPostBranch() = default;
+
+void TaskPostBranch::setupConnections()
+{
+    connect(ui->ModeBox,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskPostBranch::onModeIndexChanged);
+
+    connect(ui->OutputBox,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskPostBranch::onOutputIndexChanged);
+}
+
+void TaskPostBranch::onModeIndexChanged(int idx)
+{
+    static_cast<Fem::FemPostBranchFilter*>(getObject())->Mode.setValue(idx);
+}
+
+void TaskPostBranch::onOutputIndexChanged(int idx)
+{
+    static_cast<Fem::FemPostBranchFilter*>(getObject())->Output.setValue(idx);
+}
+
+
+void TaskPostBranch::applyPythonCode()
+{
+    // we apply the views widgets python code
+}
 
 
 // ***************************************************************************
@@ -1323,17 +1438,15 @@ void TaskPostClip::collectImplicitFunctions()
     pipelines = getDocument()->getObjectsOfType<Fem::FemPostPipeline>();
     if (!pipelines.empty()) {
         Fem::FemPostPipeline* pipeline = pipelines.front();
-        if (pipeline->Functions.getValue()
-            && pipeline->Functions.getValue()->is<Fem::FemPostFunctionProvider>()) {
+        Fem::FemPostFunctionProvider* provider = pipeline->getFunctionProvider();
+        if (provider) {
 
             ui->FunctionBox->clear();
             QStringList items;
             std::size_t currentItem = 0;
             App::DocumentObject* currentFunction =
                 getObject<Fem::FemPostClipFilter>()->Function.getValue();
-            const std::vector<App::DocumentObject*>& funcs =
-                static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())
-                    ->Functions.getValues();
+            const std::vector<App::DocumentObject*>& funcs = provider->Group.getValues();
             for (std::size_t i = 0; i < funcs.size(); ++i) {
                 items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
                 if (currentFunction == funcs[i]) {
@@ -1373,12 +1486,10 @@ void TaskPostClip::onFunctionBoxCurrentIndexChanged(int idx)
     pipelines = getDocument()->getObjectsOfType<Fem::FemPostPipeline>();
     if (!pipelines.empty()) {
         Fem::FemPostPipeline* pipeline = pipelines.front();
-        if (pipeline->Functions.getValue()
-            && pipeline->Functions.getValue()->is<Fem::FemPostFunctionProvider>()) {
+        Fem::FemPostFunctionProvider* provider = pipeline->getFunctionProvider();
+        if (provider) {
 
-            const std::vector<App::DocumentObject*>& funcs =
-                static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())
-                    ->Functions.getValues();
+            const std::vector<App::DocumentObject*>& funcs = provider->Group.getValues();
             if (idx >= 0) {
                 getObject<Fem::FemPostClipFilter>()->Function.setValue(funcs[idx]);
             }
@@ -1633,17 +1744,15 @@ void TaskPostCut::collectImplicitFunctions()
     pipelines = getDocument()->getObjectsOfType<Fem::FemPostPipeline>();
     if (!pipelines.empty()) {
         Fem::FemPostPipeline* pipeline = pipelines.front();
-        if (pipeline->Functions.getValue()
-            && pipeline->Functions.getValue()->is<Fem::FemPostFunctionProvider>()) {
+        Fem::FemPostFunctionProvider* provider = pipeline->getFunctionProvider();
+        if (provider) {
 
             ui->FunctionBox->clear();
             QStringList items;
             std::size_t currentItem = 0;
             App::DocumentObject* currentFunction =
                 getObject<Fem::FemPostCutFilter>()->Function.getValue();
-            const std::vector<App::DocumentObject*>& funcs =
-                static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())
-                    ->Functions.getValues();
+            const std::vector<App::DocumentObject*>& funcs = provider->Group.getValues();
             for (std::size_t i = 0; i < funcs.size(); ++i) {
                 items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
                 if (currentFunction == funcs[i]) {
@@ -1683,12 +1792,10 @@ void TaskPostCut::onFunctionBoxCurrentIndexChanged(int idx)
     pipelines = getDocument()->getObjectsOfType<Fem::FemPostPipeline>();
     if (!pipelines.empty()) {
         Fem::FemPostPipeline* pipeline = pipelines.front();
-        if (pipeline->Functions.getValue()
-            && pipeline->Functions.getValue()->is<Fem::FemPostFunctionProvider>()) {
+        Fem::FemPostFunctionProvider* provider = pipeline->getFunctionProvider();
+        if (provider) {
 
-            const std::vector<App::DocumentObject*>& funcs =
-                static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())
-                    ->Functions.getValues();
+            const std::vector<App::DocumentObject*>& funcs = provider->Group.getValues();
             if (idx >= 0) {
                 getObject<Fem::FemPostCutFilter>()->Function.setValue(funcs[idx]);
             }

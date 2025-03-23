@@ -3587,14 +3587,86 @@ void View3DInventorViewer::alignToSelection()
     }
 
     const auto globalPlacement = App::GeoFeature::getGlobalPlacement(selection[0].pResolvedObject, selection[0].pObject, elementName.oldName);
-    const auto rotation = globalPlacement.getRotation() * geoFeature->Placement.getValue().getRotation().inverse();
+    const auto globalRotation = globalPlacement.getRotation() * geoFeature->Placement.getValue().getRotation().inverse();
     const auto splitSubName = Base::Tools::splitSubName(elementName.oldName);
     const auto geoFeatureSubName = !splitSubName.empty() ? splitSubName.back() : "";
 
-    Base::Vector3d direction;
-    if (geoFeature->getCameraAlignmentDirection(direction, geoFeatureSubName.c_str())) {
-        rotation.multVec(direction, direction);
-        const auto orientation = SbRotation(SbVec3f(0, 0, 1), Base::convertTo<SbVec3f>(direction));
+    Base::Vector3d alignmentZ;
+    if (geoFeature->getCameraAlignmentDirection(alignmentZ, geoFeatureSubName.c_str())) {
+
+        // Find the x alignment
+        Base::Vector3d alignmentX;
+        Base::Rotation(Base::Vector3d(0, 0, -1), alignmentZ).multVec(Base::Vector3d(1, 0, 0), alignmentX);
+
+        // Convert to global coordinates
+        globalRotation.multVec(alignmentZ, alignmentZ);
+        globalRotation.multVec(alignmentX, alignmentX);
+        
+        const auto cameraOrientation = getCameraOrientation();
+
+        auto directionZ = Base::convertTo<SbVec3f>(alignmentZ);
+        auto directionX = Base::convertTo<SbVec3f>(alignmentX);
+
+        SbVec3f cameraZ;
+        cameraOrientation.multVec(SbVec3f(0, 0, 1), cameraZ);
+
+        // Negate if the camera is closer to the opposite direction
+        if (cameraZ.dot(directionZ) < 0) {
+            directionZ.negate();
+        }
+
+        // Rotate the camera to align with directionZ by the smallest angle to align the z-axis
+        const SbRotation intermediateOrientation = cameraOrientation * SbRotation(cameraZ, directionZ);
+
+        SbVec3f intermediateX;
+        intermediateOrientation.multVec(SbVec3f(1, 0, 0), intermediateX);
+
+        // Find angle between directionX and intermediateX
+        const SbRotation rotation(directionX, intermediateX);
+        SbVec3f axis;
+        float angle;
+        rotation.getValue(axis, angle);
+
+        // Flip the sign of the angle if axis and directionZ are in opposite direction
+        if (axis.dot(directionZ) < 0 && angle != 0) {
+            angle *= -1;
+        }
+        
+        // Make angle positive
+        if (angle < 0) {
+            angle += 2 * M_PI;
+        }
+        
+        // Find the angle to rotate to the nearest horizontal or vertical alignment with directionX.
+        // f is a small value used to get more deterministic behavior when the camera is at directionX +- 45 degrees.
+        const float f = 0.00001F;
+        
+        if (angle <= M_PI_4 + f) {
+            angle = 0;
+        }
+        else if (angle <= 3 * M_PI_4 + f) {
+            angle = M_PI_2;
+        }
+        else if (angle < M_PI + M_PI_4 - f) {
+            angle = M_PI;
+        }
+        else if (angle < M_PI + 3 * M_PI_4 - f) {
+            angle = M_PI + M_PI_2;
+        }
+        else {
+            angle = 0;
+        }
+
+        SbRotation(directionZ, angle).multVec(directionX, directionX);
+
+        const SbVec3f directionY = directionZ.cross(directionX);
+
+        const auto orientation = SbRotation(SbMatrix(
+            directionX[0],  directionX[1],  directionX[2],  0,
+            directionY[0],  directionY[1],  directionY[2],  0,
+            directionZ[0],  directionZ[1],  directionZ[2],  0,
+            0,              0,              0,              1));
+        
         setCameraOrientation(orientation);
     }
 }

@@ -1033,6 +1033,12 @@ void MeshKernel::Read(std::istream& rclIn)
         MeshPointArray pointArray;
         MeshFacetArray facetArray;
 
+        // Sanity checks so we don't over-allocate below: limit the mesh to 1 billion points and
+        // 1 billion facets. Coverity issue 515697.
+        if (uCtPts > 1e9 || uCtFts > 1e9) {
+            throw Base::BadFormatError("Mesh seems to have over a billion points or facets");
+        }
+
         float ratio = 0;
         if (uCtPts > 0) {
             ratio = static_cast<float>(uCtFts) / static_cast<float>(uCtPts);
