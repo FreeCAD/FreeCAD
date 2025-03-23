@@ -966,17 +966,17 @@ def findPlacement(ref, ignoreVertex=False):
     plc = App.Placement()
 
     elt_type, elt_index = extract_type_and_number(elt)
-    vtx_type, vtx_index = extract_type_and_number(vtx)
+    vtx_type, _ = extract_type_and_number(vtx)
 
     isLine = False
 
     if elt_type == "Vertex":
-        vertex = get_element(obj.Shape.Vertexes, elt_index, elt)
+        vertex = get_element(obj.Shape, elt)
         if vertex is None:
             return App.Placement()
         plc.Base = (vertex.X, vertex.Y, vertex.Z)
     elif elt_type == "Edge":
-        edge = get_element(obj.Shape.Edges, elt_index, elt)
+        edge = get_element(obj.Shape, elt)
         if edge is None:
             return App.Placement()
 
@@ -993,7 +993,7 @@ def findPlacement(ref, ignoreVertex=False):
                 line_middle = (edge_points[0] + edge_points[1]) * 0.5
                 plc.Base = line_middle
         else:
-            vertex = get_element(obj.Shape.Vertexes, vtx_index, vtx)
+            vertex = get_element(obj.Shape, vtx)
             if vertex is None:
                 return App.Placement()
 
@@ -1010,7 +1010,7 @@ def findPlacement(ref, ignoreVertex=False):
             plane = Part.Plane(plane_origin, plane_normal)
             plc.Rotation = App.Rotation(plane.Rotation)
     elif elt_type == "Face":
-        face = get_element(obj.Shape.Faces, elt_index, elt)
+        face = get_element(obj.Shape, elt)
         if face is None:
             return App.Placement()
 
@@ -1031,7 +1031,7 @@ def findPlacement(ref, ignoreVertex=False):
                 plc.Base = face.CenterOfGravity
         elif vtx_type == "Edge":
             # In this case the edge is a circle/arc and the wanted vertex is its center.
-            edge = get_element(face.Edges, vtx_index, vtx)
+            edge = get_element(face, vtx)
             if edge is None:
                 return App.Placement()
 
@@ -1047,9 +1047,13 @@ def findPlacement(ref, ignoreVertex=False):
                 plc.Base = findCylindersIntersection(obj, surface, edge, elt_index)
 
         else:
-            vertex = get_element(obj.Shape.Vertexes, vtx_index, vtx)
+            vertex = get_element(obj.Shape, vtx)
             if vertex is None:
                 return App.Placement()
+
+            print(vtx)
+            print(vtx_type)
+            print(vertex)
 
             plc.Base = (vertex.X, vertex.Y, vertex.Z)
 
@@ -1082,12 +1086,12 @@ def findPlacement(ref, ignoreVertex=False):
 
     return plc
 
-
-def get_element(shape_elements, index, sub):
-    if index - 1 < 0 or index - 1 >= len(shape_elements):
-        print(f"Joint Corrupted: Index of {sub} out of bound.")
+def get_element(shape, name):
+    element = shape.getElement(name)
+    if element is None:
+        print(f"Unable to find element.")
         return None
-    return shape_elements[index - 1]
+    return element
 
 
 def isRefValid(ref, number_sub):
