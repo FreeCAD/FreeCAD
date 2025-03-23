@@ -23,9 +23,15 @@
 """This is the main NativeIFC module"""
 
 import os
+
+from PySide import QtCore
+
 import FreeCAD
-import Draft
 import Arch
+import ArchBuildingPart
+import Draft
+
+from draftviewproviders import view_layer
 
 translate = FreeCAD.Qt.translate
 
@@ -58,10 +64,6 @@ from . import ifc_layers
 from . import ifc_status
 from . import ifc_export
 from . import ifc_psets
-
-from draftviewproviders import view_layer
-import ArchBuildingPart
-from PySide import QtCore
 
 SCALE = 1000.0  # IfcOpenShell works in meters, FreeCAD works in mm
 SHORT = False  # If True, only Step ID attribute is created
