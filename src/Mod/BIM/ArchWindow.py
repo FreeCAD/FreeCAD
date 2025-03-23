@@ -32,7 +32,6 @@ __url__    = "https://www.freecad.org"
 #  of wires, and that can be inserted into other Arch objects,
 #  by defining a volume that gets subtracted from them.
 
-import os
 
 import FreeCAD
 import ArchCommands
@@ -433,7 +432,6 @@ class _Window(ArchComponent.Component):
 
         import Part
         import DraftGeomUtils
-        import math
         pl = obj.Placement
         base = None
         self.sshapes = []

@@ -28,9 +28,8 @@ import ArchComponent
 import draftobjects.patharray as patharray
 
 if FreeCAD.GuiUp:
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-    import PySide.QtGui as QtGui
     import FreeCADGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
     def translate(ctxt, txt):
@@ -236,6 +235,8 @@ class _Fence(ArchComponent.Component):
         return newShape.removeSplitter()
 
     def calculatePathWire(self, obj):
+        import Part
+
         if (hasattr(obj.Path.Shape, 'Wires') and obj.Path.Shape.Wires):
             return obj.Path.Shape.Wires[0]
         elif obj.Path.Shape.Edges:

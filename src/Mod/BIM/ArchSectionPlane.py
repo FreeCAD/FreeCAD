@@ -419,8 +419,8 @@ def getSVG(source,
         if should_update_svg_cache:
             svgcache = ""
             # render using the TechDraw module
-            import TechDraw
             import Part
+            import TechDraw
             if vshapes:
                 baseshape = Part.makeCompound(vshapes)
                 style = {'stroke':       "SVGLINECOLOR",

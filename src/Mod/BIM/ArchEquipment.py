@@ -37,7 +37,8 @@ import ArchComponent
 import DraftVecUtils
 
 if FreeCAD.GuiUp:
-    from PySide import QtGui
+    import FreeCADGui
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate

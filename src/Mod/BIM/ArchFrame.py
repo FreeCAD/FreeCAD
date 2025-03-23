@@ -118,7 +118,6 @@ class _Frame(ArchComponent.Component):
                 for w in obj.Profile.Shape.Wires:
                     if not w.isClosed():
                         return
-            import math
             import DraftGeomUtils
             import Part
             baseprofile = obj.Profile.Shape.copy()

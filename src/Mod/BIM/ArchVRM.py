@@ -429,6 +429,7 @@ class Renderer:
 
     def join(self,otype):
         "joins the objects of same type"
+        import Draft
         import Part
         walls = []
         structs = []

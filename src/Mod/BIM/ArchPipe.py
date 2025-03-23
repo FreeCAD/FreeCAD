@@ -266,7 +266,6 @@ class _ViewProviderPipe(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):
 
-        import Arch_rc
         return ":/icons/Arch_Pipe_Tree.svg"
 
 
