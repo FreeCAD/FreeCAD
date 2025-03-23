@@ -362,8 +362,6 @@ class Writer:
                 "Order of time stepping method 'BDF'",
             )
             solver.BDFOrder = (2, 1, 5, 1)
-        if not hasattr(self.solver, "ElmerTimeResults"):
-            solver.addProperty("App::PropertyLinkList", "ElmerTimeResults", "Base", "", 4 | 8)
         if not hasattr(self.solver, "OutputIntervals"):
             solver.addProperty(
                 "App::PropertyIntegerList",

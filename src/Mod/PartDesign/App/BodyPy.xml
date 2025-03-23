@@ -16,15 +16,15 @@
     <Methode Name="insertObject">
             <Documentation>
                     <UserDocu>insertObject(feature, target, after=False)
-                        Insert the feature into the body after the given feature.
+Insert the feature into the body after the given feature.
 
-                        @param feature  The feature to insert into the body
-                        @param target   The feature relative which one should be inserted the given.
-                          If target is NULL than insert into the end if where is InsertBefore
-                          and into the begin if where is InsertAfter.
-                        @param after    if true insert the feature after the target. Default is false.
+@param feature  The feature to insert into the body
+@param target   The feature relative which one should be inserted the given.
+  If target is NULL than insert into the end if where is InsertBefore
+  and into the begin if where is InsertAfter.
+@param after    if true insert the feature after the target. Default is false.
 
-                        @note the method doesn't modify the Tip unlike addObject()
+@note the method doesn't modify the Tip unlike addObject()
                     </UserDocu>
             </Documentation>
     </Methode>

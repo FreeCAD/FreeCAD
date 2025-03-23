@@ -80,6 +80,7 @@ private:
 
 class GuiExport ExpressionLineEdit : public QLineEdit {
     Q_OBJECT
+    Q_PROPERTY(ExpressionCompleter* completer READ getCompleter)
 public:
     ExpressionLineEdit(QWidget *parent = nullptr, bool noProperty=false,
             char checkPrefix=0, bool checkInList=true);
@@ -89,6 +90,7 @@ public:
     void hideCompleter();
     void setNoProperty(bool enabled=true);
     void setExactMatch(bool enabled=true);
+    ExpressionCompleter *getCompleter(void);
 Q_SIGNALS:
     void textChanged2(QString text, int pos);
 public Q_SLOTS:

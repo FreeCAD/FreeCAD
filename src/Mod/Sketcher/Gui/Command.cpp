@@ -1044,6 +1044,14 @@ void CmdSketcherMergeSketches::activated(int iMsg)
 
         int addedConstraints = mergesketch->addCopyOfConstraints(*Obj);
 
+        // Coverity issue 513796: make sure the loop below can complete
+        if (addedConstraints < 0) {
+            continue;  // There were no constraints
+        }
+        if (addedConstraints - baseConstraints < 0) {
+            throw Base::ValueError("Constraint error in CmdSketcherMergeSketches");
+        }
+
         for (int i = 0; i <= (addedConstraints - baseConstraints); i++) {
             Sketcher::Constraint* constraint =
                 mergesketch->Constraints.getValues()[i + baseConstraints];

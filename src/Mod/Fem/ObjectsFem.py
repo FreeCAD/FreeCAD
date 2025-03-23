@@ -603,10 +603,7 @@ def makePostVtkFilterClipRegion(doc, base_vtk_result, name="VtkFilterClipRegion"
     """makePostVtkFilterClipRegion(document, base_vtk_result, [name]):
     creates a FEM post processing region clip filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostClipFilter", name)
-    tmp_filter_list = base_vtk_result.Filter
-    tmp_filter_list.append(obj)
-    base_vtk_result.Filter = tmp_filter_list
-    del tmp_filter_list
+    base_vtk_result.addObject(obj)
     return obj
 
 
@@ -614,10 +611,7 @@ def makePostVtkFilterClipScalar(doc, base_vtk_result, name="VtkFilterClipScalar"
     """makePostVtkFilterClipScalar(document, base_vtk_result, [name]):
     creates a FEM post processing scalar clip filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostScalarClipFilter", name)
-    tmp_filter_list = base_vtk_result.Filter
-    tmp_filter_list.append(obj)
-    base_vtk_result.Filter = tmp_filter_list
-    del tmp_filter_list
+    base_vtk_result.addObject(obj)
     return obj
 
 
@@ -625,10 +619,7 @@ def makePostVtkFilterCutFunction(doc, base_vtk_result, name="VtkFilterCutFunctio
     """makePostVtkFilterCutFunction(document, base_vtk_result, [name]):
     creates a FEM post processing cut function filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostClipFilter", name)
-    tmp_filter_list = base_vtk_result.Filter
-    tmp_filter_list.append(obj)
-    base_vtk_result.Filter = tmp_filter_list
-    del tmp_filter_list
+    base_vtk_result.addObject(obj)
     return obj
 
 
@@ -636,10 +627,7 @@ def makePostVtkFilterWarp(doc, base_vtk_result, name="VtkFilterWarp"):
     """makePostVtkFilterWarp(document, base_vtk_result, [name]):
     creates a FEM post processing warp filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostWarpVectorFilter", name)
-    tmp_filter_list = base_vtk_result.Filter
-    tmp_filter_list.append(obj)
-    base_vtk_result.Filter = tmp_filter_list
-    del tmp_filter_list
+    base_vtk_result.addObject(obj)
     return obj
 
 
@@ -647,19 +635,20 @@ def makePostVtkFilterContours(doc, base_vtk_result, name="VtkFilterContours"):
     """makePostVtkFilterContours(document, base_vtk_result, [name]):
     creates a FEM post processing contours filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostContoursFilter", name)
-    tmp_filter_list = base_vtk_result.Filter
-    tmp_filter_list.append(obj)
-    base_vtk_result.Filter = tmp_filter_list
-    del tmp_filter_list
+    base_vtk_result.addObject(obj)
     return obj
 
 
-def makePostVtkResult(doc, base_result, name="VtkResult"):
+def makePostVtkResult(doc, result_data, name="VtkResult"):
     """makePostVtkResult(document, base_result, [name]):
-    creates a FEM post processing result object (vtk based) to hold FEM results"""
+    creates a FEM post processing result data (vtk based) to hold FEM results
+    Note: Result data get expanded, it can either be single result [result] or everything
+          needed for a multistep result: [results_list, value_list, unit, description]
+    """
+
     Pipeline_Name = "Pipeline_" + name
     obj = doc.addObject("Fem::FemPostPipeline", Pipeline_Name)
-    obj.load(base_result)
+    obj.load(*result_data)
     if FreeCAD.GuiUp:
         obj.ViewObject.SelectionStyle = "BoundBox"
         # to assure the user sees something, set the default to Surface

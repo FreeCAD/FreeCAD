@@ -10,6 +10,7 @@ include_directories(
 )
 
 generate_from_xml(ViewProviderPy)
+generate_from_py(ViewProvider)
 
 
 set(PartDesignGui_LIBS
