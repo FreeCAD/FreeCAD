@@ -59,6 +59,8 @@ SET(StartGui_SRCS
         GeneralSettingsWidget.h
         Manipulator.cpp
         Manipulator.h
+        NewFileButton.cpp
+        NewFileButton.h
         PreCompiled.cpp
         PreCompiled.h
         StartView.cpp

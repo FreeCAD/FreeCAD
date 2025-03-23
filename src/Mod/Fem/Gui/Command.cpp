@@ -1879,11 +1879,11 @@ void setupFilter(Gui::Command* cmd, std::string Name)
     auto objFilter = App::GetApplication().getActiveDocument()->getActiveObject();
     auto femFilter = static_cast<Fem::FemPostFilter*>(objFilter);
 
+    // TODO: FIX
+    /*
     auto selObjectView = static_cast<FemGui::ViewProviderFemPostObject*>(
         Gui::Application::Instance->getViewProvider(selObject));
-
-    // TODO: FIX
-    /*cmd->doCommand(Gui::Command::Doc,
+    cmd->doCommand(Gui::Command::Doc,
                    "App.activeDocument().ActiveObject.ViewObject.Field = \"%s\"",
                    selObjectView->Field.getValueAsString());
     cmd->doCommand(Gui::Command::Doc,
