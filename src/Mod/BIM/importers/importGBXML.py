@@ -29,6 +29,8 @@ __url__    = "https://www.freecad.org"
 #
 #  This module provides tools to export GBXML files.
 
+from builtins import open as pyopen
+
 import FreeCAD
 import Draft
 

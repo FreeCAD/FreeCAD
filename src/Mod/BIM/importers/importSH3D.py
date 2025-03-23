@@ -30,11 +30,9 @@ __url__    = "https://www.freecad.org"
 #  This module provides tools to import SH3D files created from Sweet Home 3D.
 
 import os
-import xml.sax
 import zipfile
 
 import FreeCAD
-
 from FreeCAD import Base
 
 

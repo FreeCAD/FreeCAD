@@ -145,11 +145,6 @@ def checkShapeFileLibrary():
                 f = pyopen(fp,"wb")
                 f.write(b)
                 f.close()
-                try:
-                    import shapefile
-                except Exception:
-                    FreeCAD.Console.PrintError(translate("Arch","Could not download shapefile module. Aborting.")+"\n")
-                    return False
             else:
                 FreeCAD.Console.PrintError(translate("Arch","Shapefile module not downloaded. Aborting.")+"\n")
                 return False

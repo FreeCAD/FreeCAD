@@ -29,13 +29,12 @@ __title__="FreeCAD IFC importer"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
 
-
 import math
 import os
 import re
-import sys
 import time
 import uuid
+
 from builtins import open as pyopen
 
 import FreeCAD
@@ -1276,7 +1275,6 @@ def getIfcExtrusionData(obj,scale=1,nosubs=False):
                     edges = Part.__sortEdges__(p.Edges)
                     for e in edges:
                         if isinstance(e.Curve,Part.Circle):
-                            import math
                             follow = True
                             if last:
                                 if not DraftVecUtils.equals(last,e.Vertexes[0].Point):
@@ -1794,7 +1792,7 @@ class IfcDocument:
 
 def explorer(filename,schema="IFC2X3_TC1.exp"):
     "returns a PySide dialog showing the contents of an IFC file"
-    from PySide import QtCore,QtGui
+    from PySide import QtGui
     ifc = IfcDocument(filename,schema)
     schema = IfcSchema(schema)
     tree = QtGui.QTreeWidget()
