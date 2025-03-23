@@ -318,6 +318,7 @@ SET(Tests_SRCS
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCore.py
     CAMTests/TestPathDepthParams.py
+    CAMTests/TestPathDressupArray.py
     CAMTests/TestPathDressupDogbone.py
     CAMTests/TestPathDressupDogboneII.py
     CAMTests/TestPathDressupHoldingTags.py
