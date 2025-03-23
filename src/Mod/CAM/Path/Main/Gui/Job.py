@@ -130,10 +130,11 @@ class ViewProvider:
         self.sep = coin.SoSeparator()
         self.axs = coin.SoType.fromName("SoAxisCrossKit").createInstance()
 
-        # Adjust the axis heads if needed, the scale here is just for the head
-        #self.axs.set("xHead.transform", "scaleFactor 1.5 1.5 1")
-        #self.axs.set("yHead.transform", "scaleFactor 1.5 1.5 1")
-        #self.axs.set("zHead.transform", "scaleFactor 1.5 1.5 1")
+        # Adjust the axis heads scale if needed
+        # Example to save you looking up Inventor API:
+        # self.axs.set("xHead.transform", "scaleFactor 1.5 1.5 1")
+        # self.axs.set("yHead.transform", "scaleFactor 1.5 1.5 1")
+        # self.axs.set("zHead.transform", "scaleFactor 1.5 1.5 1")
 
         # Adjust the axis heads if needed, the scale here is just for the head
         self.axs.set("xHead.transform", "translation 50 0 0")
