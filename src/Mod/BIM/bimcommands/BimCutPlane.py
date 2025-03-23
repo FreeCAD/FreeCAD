@@ -23,8 +23,6 @@
 
 """The Arch CutPlane command"""
 
-import os
-
 import FreeCAD
 import FreeCADGui
 

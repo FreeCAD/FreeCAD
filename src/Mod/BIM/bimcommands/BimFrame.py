@@ -22,8 +22,6 @@
 
 """BIM Frame command"""
 
-import os
-
 import FreeCAD
 import FreeCADGui
 

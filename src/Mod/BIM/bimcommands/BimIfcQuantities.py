@@ -83,7 +83,7 @@ class BIM_IfcQuantities:
         return v
 
     def Activated(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         # build objects list
         self.objectslist = {}
@@ -331,7 +331,7 @@ class BIM_IfcQuantities:
         """Updates a single line of the table, without updating
         the actual object"""
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         i = self.get_row(name)
         if i == -1:

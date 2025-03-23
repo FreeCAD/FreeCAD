@@ -45,7 +45,6 @@ class BIM_Cut:
         return v
 
     def Activated(self):
-        import PartGui
         FreeCADGui.runCommand("Part_Cut")
 
 

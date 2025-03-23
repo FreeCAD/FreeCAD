@@ -42,7 +42,6 @@ class BIM_Builder:
         }
 
     def Activated(self):
-        import PartGui
         FreeCADGui.runCommand("Part_Builder")
 
 

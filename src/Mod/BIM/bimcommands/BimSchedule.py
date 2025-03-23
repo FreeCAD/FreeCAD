@@ -22,8 +22,6 @@
 
 """BIM Schedule command"""
 
-import os
-
 import FreeCAD
 import FreeCADGui
 

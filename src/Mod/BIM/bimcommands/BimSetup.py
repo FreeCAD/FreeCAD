@@ -397,7 +397,7 @@ class BIM_Setup:
         )
 
     def setPreset(self, preset=None):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         unit = None
         decimals = None

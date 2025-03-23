@@ -46,7 +46,6 @@ class BIM_Common:
         return v
 
     def Activated(self):
-        import PartGui
         FreeCADGui.runCommand("Part_Common")
 
 

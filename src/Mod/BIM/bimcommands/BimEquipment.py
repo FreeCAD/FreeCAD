@@ -22,8 +22,6 @@
 
 """BIM equipment commands"""
 
-import os
-
 import FreeCAD
 import FreeCADGui
 

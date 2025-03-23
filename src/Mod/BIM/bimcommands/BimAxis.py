@@ -22,8 +22,6 @@
 
 """The BIM Axis-related commands"""
 
-import os
-
 import FreeCAD
 import FreeCADGui
 

@@ -22,8 +22,6 @@
 
 """This module contains FreeCAD commands for the BIM workbench"""
 
-import os
-
 import FreeCAD
 import FreeCADGui
 
@@ -43,8 +41,6 @@ class BIM_Welcome:
         }
 
     def Activated(self):
-        from PySide import QtCore, QtGui
-
         self.form = FreeCADGui.PySideUic.loadUi(":ui/dialogWelcome.ui")
 
         # handle the tutorial links

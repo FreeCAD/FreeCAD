@@ -22,8 +22,6 @@
 
 """Layers manager for FreeCAD"""
 
-import os
-
 import FreeCAD
 import FreeCADGui
 
@@ -37,7 +35,7 @@ def getColorIcon(color):
 
     "returns a QtGui.QIcon from a color 3-float tuple"
 
-    from PySide import QtCore, QtGui
+    from PySide import QtGui
 
     c = QtGui.QColor(int(color[0] * 255), int(color[1] * 255), int(color[2] * 255))
     im = QtGui.QImage(48, 48, QtGui.QImage.Format_ARGB32)
@@ -66,7 +64,7 @@ class BIM_Layers:
 
     def Activated(self):
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         # store changes to be committed
         self.deleteList = []
@@ -443,7 +441,7 @@ class BIM_Layers:
     def onToggle(self):
         "toggle selected layers on/off"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         state = None
         for index in self.dialog.tree.selectedIndexes():
@@ -462,7 +460,7 @@ class BIM_Layers:
     def onIsolate(self):
         "isolates the selected layers (turns all the others off"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         onrows = []
         for index in self.dialog.tree.selectedIndexes():
@@ -475,7 +473,7 @@ class BIM_Layers:
     def onIFC(self):
         "attributes this layer to an IFC project"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         for index in self.dialog.tree.selectedIndexes():
             if index.column() == 1:

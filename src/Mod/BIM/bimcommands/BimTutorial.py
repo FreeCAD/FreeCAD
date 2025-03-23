@@ -215,7 +215,7 @@ class BIM_Tutorial:
         self.update()
 
     def update(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         if not hasattr(self, "form") or not self.form or not hasattr(self, "dock"):
             return
@@ -274,7 +274,7 @@ class BIM_Tutorial:
             QtCore.QTimer.singleShot(TESTINTERVAL, self.checkGoals)
 
     def checkGoals(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         if not hasattr(self, "form"):
             return

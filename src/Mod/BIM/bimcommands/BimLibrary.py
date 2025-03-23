@@ -110,7 +110,7 @@ class BIM_Library_TaskPanel:
 
     def __init__(self, offlinemode=False):
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.mainDocName = FreeCAD.Gui.ActiveDocument.Document.Name
         self.previewDocName = "Viewer"
@@ -384,7 +384,6 @@ class BIM_Library_TaskPanel:
 
     def setSearchModel(self, text):
 
-        import PartGui
         from PySide import QtGui
 
         def add_line(f, dp):
@@ -449,7 +448,6 @@ class BIM_Library_TaskPanel:
     def setOnlineModel(self):
 
         from PySide import QtGui
-        import PartGui
 
         def addItems(root, d, path):
             for k, v in d.items():

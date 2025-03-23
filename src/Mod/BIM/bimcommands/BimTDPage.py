@@ -49,7 +49,7 @@ class BIM_TDPage:
         return v
 
     def Activated(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
         import TechDraw
 
         templatedir = FreeCAD.ParamGet(

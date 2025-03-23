@@ -22,8 +22,6 @@
 
 """BIM Roof command"""
 
-import os
-
 import FreeCAD
 import FreeCADGui
 

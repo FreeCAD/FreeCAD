@@ -43,7 +43,7 @@ class BIM_Examples:
         }
 
     def Activated(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
         QtGui.QDesktopServices.openUrl("https://github.com/yorikvanhavre/FreeCAD-BIM-examples")
 
 

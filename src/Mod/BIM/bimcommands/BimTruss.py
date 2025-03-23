@@ -22,8 +22,6 @@
 
 """BIM Truss command"""
 
-import os
-
 import FreeCAD
 import FreeCADGui
 
