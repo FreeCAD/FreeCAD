@@ -128,7 +128,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
         || pcHole->HoleCutCustomValues.isReadOnly()
     );
     // HoleCutDiameter must not be smaller or equal than the Diameter
-    ui->HoleCutDiameter->setMinimum(pcHole->Diameter.getValue() + 0.1);
+    updateHoleCutLimits(pcHole);
     ui->HoleCutDiameter->setValue(pcHole->HoleCutDiameter.getValue());
     ui->HoleCutDiameter->setDisabled(pcHole->HoleCutDiameter.isReadOnly());
     ui->HoleCutDepth->setValue(pcHole->HoleCutDepth.getValue());
@@ -731,8 +731,7 @@ void TaskHoleParameters::threadDiameterChanged(double value)
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->Diameter.setValue(value);
 
-        // HoleCutDiameter must not be smaller or equal than the Diameter
-        ui->HoleCutDiameter->setMinimum(value + 0.1);
+        updateHoleCutLimits(hole);
 
         recomputeFeature();
     }
@@ -838,6 +837,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
     else if (&Prop == &hole->Diameter) {
         ui->Diameter->setEnabled(true);
         updateSpinBox(ui->Diameter, hole->Diameter.getValue());
+        updateHoleCutLimits(hole);
     }
     else if (&Prop == &hole->ThreadDirection) {
         ui->directionRightHand->setEnabled(true);
@@ -1129,6 +1129,14 @@ void TaskHoleParameters::apply()
 
     isApplying = false;
 }
+
+void TaskHoleParameters::updateHoleCutLimits(PartDesign::Hole* hole)
+{
+    constexpr double minHoleCutDifference = 0.1;
+    // HoleCutDiameter must not be smaller or equal than the Diameter
+    ui->HoleCutDiameter->setMinimum(hole->Diameter.getValue() + minHoleCutDifference);
+}
+
 
 //**************************************************************************
 //**************************************************************************
