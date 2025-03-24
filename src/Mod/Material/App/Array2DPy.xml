@@ -25,7 +25,7 @@
       <Documentation>
         <UserDocu>The number of dimensions in the array, in this case 2.</UserDocu>
       </Documentation>
-      <Parameter Name="Dimensions" Type="Int"/>
+      <Parameter Name="Dimensions" Type="Long"/>
     </Attribute>
     <Attribute Name="Rows" ReadOnly="false">
       <Documentation>
@@ -39,12 +39,12 @@
       </Documentation>
       <Parameter Name="Columns" Type="Long"/>
     </Attribute>
-    <Methode Name="getRow" ReadOnly="true">
+    <Methode Name="getRow" Const="true">
       <Documentation>
         <UserDocu>Get the row given the first column value</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getValue" ReadOnly="true">
+    <Methode Name="getValue" Const="true">
       <Documentation>
         <UserDocu>Get the value at the given row and column</UserDocu>
       </Documentation>
