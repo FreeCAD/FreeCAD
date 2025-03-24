@@ -1092,8 +1092,7 @@ def findPlacement(ref, ignoreVertex=False):
 def get_element(shape, name):
     element = shape.getElement(name)
     if element is None:
-        print(f"Unable to find element.")
-        return None
+        App.Console.PrintWarning(f"Unable to find element {name}.")
     return element
 
 
