@@ -492,6 +492,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
 
     # Parse imports to compute module metadata
     module_name = _get_module_from_path(path)
+
     imported_from_module = imports_mapping[base_class_name]
     parent_module_name = _extract_module_name(imported_from_module, module_name)
 
