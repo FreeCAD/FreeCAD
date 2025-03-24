@@ -133,15 +133,8 @@ void CompassWidget::buildWidget()
     dsbAngle = new Gui::QuantitySpinBox(this);
     dsbAngle->setObjectName(QStringLiteral("dsbAngle"));
     dsbAngle->setUnit(Base::Unit::Angle);
-    sizePolicy2.setHeightForWidth(dsbAngle->sizePolicy().hasHeightForWidth());
-    dsbAngle->setSizePolicy(sizePolicy2);
-    dsbAngle->setMinimumSize(QSize(75, 26));
-    dsbAngle->setMouseTracking(true);
-    dsbAngle->setFocusPolicy(Qt::ClickFocus);
-    dsbAngle->setAlignment(Qt::AlignRight | Qt::AlignTrailing | Qt::AlignVCenter);
-    dsbAngle->setKeyboardTracking(false);
-    dsbAngle->setMaximum(360.000000000000000);
-    dsbAngle->setMinimum(-360.000000000000000);
+    connect(dsbAngle, QOverload<double>::of(&Gui::QuantitySpinBox::valueChanged),
+        this, &CompassWidget::slotSpinBoxEnter);
 
     compassControlLayout->addWidget(dsbAngle);
 
