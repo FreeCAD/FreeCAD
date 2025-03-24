@@ -143,35 +143,46 @@ macro(generate_from_xml BASE_NAME)
     )
 endmacro(generate_from_xml)
 
-macro(generate_from_py BASE_NAME)
+macro(generate_from_py_impl BASE_NAME SUFFIX)
     set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/bindings/generate.py")
     file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
     file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.pyi" SOURCE_NATIVE_PATH)
 
-    set(SOURCE_CPP_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}Py.cpp" )
-    set(SOURCE_H_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}Py.h" )
+    set(SOURCE_CPP_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}Py${SUFFIX}.cpp")
+    set(SOURCE_H_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}Py${SUFFIX}.h")
 
     # BASE_NAME may include also a path name
     GET_FILENAME_COMPONENT(OUTPUT_PATH "${SOURCE_CPP_PATH}" PATH)
     file(TO_NATIVE_PATH "${OUTPUT_PATH}" OUTPUT_NATIVE_PATH)
     if(NOT EXISTS "${SOURCE_CPP_PATH}")
-        # assures the source files are generated at least once
+        # Ensure the source files are generated at least once.
         message(STATUS "${SOURCE_CPP_PATH}")
-        execute_process(COMMAND "${Python3_EXECUTABLE}" "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}"
-                        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" COMMAND_ERROR_IS_FATAL ANY
+        execute_process(
+            COMMAND "${Python3_EXECUTABLE}" "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}"
+            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+            COMMAND_ERROR_IS_FATAL ANY
         )
     endif()
+
     add_custom_command(
         OUTPUT "${SOURCE_H_PATH}" "${SOURCE_CPP_PATH}"
         COMMAND ${Python3_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.pyi
         MAIN_DEPENDENCY "${BASE_NAME}.pyi"
         DEPENDS
-        "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateClassPyExport.py"
-        "${TOOL_PATH}"
+            "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateClassPyExport.py"
+            "${TOOL_PATH}"
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-        COMMENT "Building ${BASE_NAME}Py.h/.cpp out of ${BASE_NAME}.pyi"
+        COMMENT "Building ${BASE_NAME}Py${SUFFIX}.h/.cpp out of ${BASE_NAME}.pyi"
     )
+endmacro(generate_from_py_impl)
+
+macro(generate_from_py BASE_NAME)
+    generate_from_py_impl(${BASE_NAME} "")
 endmacro(generate_from_py)
+
+macro(generate_from_py_ BASE_NAME)
+    generate_from_py_impl(${BASE_NAME} "_")
+endmacro(generate_from_py_)
 
 macro(generate_embed_from_py BASE_NAME OUTPUT_FILE)
 		set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py")
