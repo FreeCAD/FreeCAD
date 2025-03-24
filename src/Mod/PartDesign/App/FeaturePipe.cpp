@@ -635,4 +635,7 @@ void Pipe::handleChangedPropertyName(Base::XMLReader& reader,
     else if (AuxiliaryCurvilinear.getClassTypeId() == type && strAuxilleryCurvelinear == PropName) {
         AuxiliaryCurvilinear.Restore(reader);
     }
+    else {
+        ProfileBased::handleChangedPropertyName(reader, TypeName, PropName);
+    }
 }
