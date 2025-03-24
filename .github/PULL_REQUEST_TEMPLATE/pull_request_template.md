@@ -32,4 +32,3 @@ Code Quality (Is code well-written and maintainable?)
 Release (Are there considerations related to release timing?)
   - Has the PR been considered for backporting?
   - Have the release notes been considered/updated?
-
