@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #include <QContextMenuEvent>
 #include <QImage>
+#include <QLineEdit>
 #include <QMenu>
 #include <QPainter>
 #include <QPixmap>
@@ -1695,6 +1696,10 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
 
 void TaskSketcherElements::onListWidgetElementsItemEntered(QListWidgetItem* item)
 {
+    QWidget* focusedWidget = QApplication::focusWidget();
+    if (qobject_cast<QLineEdit*>(focusedWidget)) {
+        return;
+    }
     ui->listWidgetElements->setFocus();
 
     focusItemIndex = ui->listWidgetElements->row(item);
@@ -1702,6 +1707,11 @@ void TaskSketcherElements::onListWidgetElementsItemEntered(QListWidgetItem* item
 
 void TaskSketcherElements::onListWidgetElementsMouseMoveOnItem(QListWidgetItem* it)
 {
+    QWidget* focusedWidget = QApplication::focusWidget();
+    if (qobject_cast<QLineEdit*>(focusedWidget)) {
+        return;
+    }
+
     ElementItem* item = static_cast<ElementItem*>(it);
 
     if (!item
