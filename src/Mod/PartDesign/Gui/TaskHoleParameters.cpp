@@ -1132,9 +1132,9 @@ void TaskHoleParameters::apply()
 
 void TaskHoleParameters::updateHoleCutLimits(PartDesign::Hole* hole)
 {
-    constexpr double MIN_HOLE_CUT_DIFFERENCE = 0.1;
+    constexpr double minHoleCutDifference = 0.1;
     // HoleCutDiameter must not be smaller or equal than the Diameter
-    ui->HoleCutDiameter->setMinimum(hole->Diameter.getValue() + MIN_HOLE_CUT_DIFFERENCE);
+    ui->HoleCutDiameter->setMinimum(hole->Diameter.getValue() + minHoleCutDifference);
 }
 
 
