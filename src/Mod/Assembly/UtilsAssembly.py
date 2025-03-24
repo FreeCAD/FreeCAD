@@ -571,7 +571,7 @@ def findVertexNameInObject(vertex, obj):
 
         if (
             obj.Shape.getElement(vertexName).Point == vertex.Point
-        ): # Don't use the vtx param from enumerate's 2nd output to avoid hasher warning
+        ):  # Don't use the vtx param from enumerate's 2nd output to avoid hasher warning
             return vertexName
     return ""
 
