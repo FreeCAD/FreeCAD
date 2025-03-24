@@ -288,6 +288,29 @@ PyObject* FemPostPipelinePy::holdsPostObject(PyObject* args)
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
+PyObject* FemPostPipelinePy::renameArrays(PyObject* args)
+{
+    PyObject* pyObj;
+    if (!PyArg_ParseTuple(args, "O!", &(PyDict_Type), &pyObj)) {
+        return nullptr;
+    }
+
+    Py::Dict pyNames {pyObj};
+    std::map<std::string, std::string> names {};
+    for (auto it = pyNames.begin(); it != pyNames.end(); ++it) {
+        const auto& value = *it;
+        if (!value.first.isString() || !static_cast<Py::Object>(value.second).isString()) {
+            PyErr_SetString(PyExc_TypeError, "Names must be string objects");
+            return nullptr;
+        }
+        names[value.first.as_string()] = static_cast<Py::Object>(value.second).as_string();
+    }
+
+    getFemPostPipelinePtr()->renameArrays(names);
+
+    Py_Return;
+}
+
 PyObject* FemPostPipelinePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
