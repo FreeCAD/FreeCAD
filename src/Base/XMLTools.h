@@ -28,6 +28,7 @@
 #include <memory>
 #include <ostream>
 #include <xercesc/util/TransService.hpp>
+#include <xercesc/framework/MemoryManager.hpp>
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER
@@ -56,6 +57,27 @@ public:
 
 private:
     static std::unique_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> transcoder;  // NOLINT
+};
+
+// Helper class for XStrLiteral macro
+// This implementation is almost same as Xerces default memory manager.
+class BaseExport XStrMemoryManager final: public XERCES_CPP_NAMESPACE::MemoryManager
+{
+public:
+    // XStrLiteral macro use this instance to prevent segfault on releasing cached string because
+    // xerces default memory manager is already deleted when destructing local static variable.
+    static XStrMemoryManager inst;
+
+    XStrMemoryManager() = default;
+    ~XStrMemoryManager() = default;
+
+    MemoryManager* getExceptionMemoryManager() override
+    {
+        return this;
+    }
+
+    void* allocate(XMLSize_t size) override;
+    void deallocate(void* p) override;
 };
 
 //**************************************************************************
@@ -163,12 +185,13 @@ private:
 
 
 inline XStr::XStr(const char* const toTranscode)
-    : fUnicodeForm(XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode))
+    : fUnicodeForm(XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode,
+                                                                       &XStrMemoryManager::inst))
 {}
 
 inline XStr::~XStr()
 {
-    XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&fUnicodeForm);
+    XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&fUnicodeForm, &XStrMemoryManager::inst);
 }
 
 // Uses the compiler to create a cache of transcoded string literals so that each subsequent call
