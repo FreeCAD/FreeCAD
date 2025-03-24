@@ -1083,6 +1083,7 @@ def findPlacement(ref, ignoreVertex=False):
 
     return plc
 
+
 def get_element(shape, name):
     element = shape.getElement(name)
     if element is None:
