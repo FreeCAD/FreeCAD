@@ -566,8 +566,12 @@ def findClosestPointToMousePos(candidates_points, mousePos):
 
 def findVertexNameInObject(vertex, obj):
     for i, _ in enumerate(obj.Shape.Vertexes):
-        if obj.Shape.getElement("Vertex" + str(i + 1)).Point == vertex.Point: # Don't use the vtx param from enumerate's 2nd output to avoid hasher warning
-            return "Vertex" + str(i + 1)
+        vertexName = "Vertex" + str(i + 1)
+
+        if (
+            obj.Shape.getElement(vertexName).Point == vertex.Point
+        ): # Don't use the vtx param from enumerate's 2nd output to avoid hasher warning
+            return vertexName
     return ""
 
 
