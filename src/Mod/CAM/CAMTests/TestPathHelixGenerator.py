@@ -188,7 +188,7 @@ G0 Z20.000000"
         """Test Helix Retraction"""
 
         # if center is clear, the second to last move should be a G1 away
-        # from the wall (was a rapid)
+        # from the wall
         args = _resetArgs()
         v1 = FreeCAD.Vector(0, 0, 20)
         v2 = FreeCAD.Vector(0, 0, 18)
