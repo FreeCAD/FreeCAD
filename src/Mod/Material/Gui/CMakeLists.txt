@@ -31,6 +31,7 @@ qt_create_resource_file(${Material_TR_QRC} ${QM_SRCS})
 qt_add_resources(MatGui_QRC_SRCS Resources/Material.qrc ${Material_TR_QRC})
 
 generate_from_xml(MaterialTreeWidgetPy)
+generate_from_py_(MaterialTreeWidget)
 
 SET(Python_SRCS
     MaterialTreeWidgetPy.xml

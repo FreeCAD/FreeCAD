@@ -25,31 +25,31 @@
       <Documentation>
         <UserDocu>The number of dimensions in the array, in this case 3.</UserDocu>
       </Documentation>
-      <Parameter Name="Dimensions" Type="Int"/>
+      <Parameter Name="Dimensions" Type="Long"/>
     </Attribute>
     <Attribute Name="Columns" ReadOnly="false">
       <Documentation>
         <UserDocu>The number of columns in the array.</UserDocu>
       </Documentation>
-      <Parameter Name="Columns" Type="Int"/>
+      <Parameter Name="Columns" Type="Long"/>
     </Attribute>
     <Attribute Name="Depth" ReadOnly="false">
       <Documentation>
         <UserDocu>The depth of the array (3rd dimension).</UserDocu>
       </Documentation>
-      <Parameter Name="Depth" Type="Int"/>
+      <Parameter Name="Depth" Type="Long"/>
     </Attribute>
-    <Methode Name="getRows" ReadOnly="true">
+    <Methode Name="getRows" Const="true">
       <Documentation>
         <UserDocu>Get the number of rows in the array at the specified depth.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getValue" ReadOnly="true">
+    <Methode Name="getValue" Const="true">
       <Documentation>
         <UserDocu>Get the value at the given row and column</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getDepthValue" ReadOnly="true">
+    <Methode Name="getDepthValue" Const="true">
       <Documentation>
         <UserDocu>Get the column value at the given depth</UserDocu>
       </Documentation>
