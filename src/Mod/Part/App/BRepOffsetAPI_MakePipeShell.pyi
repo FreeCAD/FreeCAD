@@ -6,7 +6,6 @@ from typing import overload
 
 @export(
     PythonName="Part.BRepOffsetAPI_MakePipeShell",
-    FatherInclude="Base/PyObjectBase.h",
     Include="BRepOffsetAPI_MakePipeShell.hxx",
     Constructor=True,
     Delete=True,
