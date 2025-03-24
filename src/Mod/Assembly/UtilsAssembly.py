@@ -443,7 +443,7 @@ def findElementClosestVertex(ref, mousePos):
         return element_name
 
     elif elt_type == "Edge":
-        edge = obj.Shape.Edges[elt_index - 1]
+        edge = obj.Shape.getElement(element_name)
         curve = edge.Curve
         if curve.TypeId == "Part::GeomCircle":
             # For centers, as they are not shape vertexes, we return the element name.
@@ -462,13 +462,15 @@ def findElementClosestVertex(ref, mousePos):
         if curve.TypeId == "Part::GeomLine" and closest_vertex_index == 2:
             # If line center is closest then we have no vertex name to set so we put element name
             return element_name
+        
+        vertexes = edge.Vertexes
 
-        vertex_name = findVertexNameInObject(edge.Vertexes[closest_vertex_index], obj)
+        vertex_name = findVertexNameInObject(vertexes[closest_vertex_index], obj)
 
         return vertex_name
 
     elif elt_type == "Face":
-        face = obj.Shape.Faces[elt_index - 1]
+        face = obj.Shape.getElement(element_name)
         surface = face.Surface
         _type = surface.TypeId
         if _type == "Part::GeomSphere" or _type == "Part::GeomTorus":
@@ -562,10 +564,9 @@ def findClosestPointToMousePos(candidates_points, mousePos):
 
     return closest_point_index, point_min_length
 
-
 def findVertexNameInObject(vertex, obj):
-    for i, vtx in enumerate(obj.Shape.Vertexes):
-        if vtx.Point == vertex.Point:
+    for i, _ in enumerate(obj.Shape.Vertexes):
+        if obj.Shape.getElement("Vertex" + str(i + 1)).Point == vertex.Point: # Don't use the vtx param from enumerate's 2nd output to avoid hasher warning
             return "Vertex" + str(i + 1)
     return ""
 
