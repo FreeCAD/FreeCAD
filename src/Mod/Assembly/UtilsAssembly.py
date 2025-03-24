@@ -462,7 +462,7 @@ def findElementClosestVertex(ref, mousePos):
         if curve.TypeId == "Part::GeomLine" and closest_vertex_index == 2:
             # If line center is closest then we have no vertex name to set so we put element name
             return element_name
-        
+
         vertexes = edge.Vertexes
 
         vertex_name = findVertexNameInObject(vertexes[closest_vertex_index], obj)
@@ -563,6 +563,7 @@ def findClosestPointToMousePos(candidates_points, mousePos):
             point_min_length = length
 
     return closest_point_index, point_min_length
+
 
 def findVertexNameInObject(vertex, obj):
     for i, _ in enumerate(obj.Shape.Vertexes):
