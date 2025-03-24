@@ -130,26 +130,14 @@ locations = [
         "../Mod/Draft/Resources/translations",
         "../Mod/Draft/Resources/Draft.qrc",
     ],
-    [
-    	"Base",
-    	"../Base/Resources/translations",
-    	"../Base/Resources/Base.qrc"
-    ],
+    ["Base", "../Base/Resources/translations", "../Base/Resources/Base.qrc"],
     [
         "Fem",
         "../Mod/Fem/Gui/Resources/translations",
         "../Mod/Fem/Gui/Resources/Fem.qrc",
     ],
-    [
-    	"FreeCAD",
-    	"../Gui/Language",
-    	"../Gui/Language/translation.qrc"
-    ],
-    [
-    	"Help",
-    	"../Mod/Help/Resources/translations",
-    	"../Mod/Help/Resources/Help.qrc"
-    ],
+    ["FreeCAD", "../Gui/Language", "../Gui/Language/translation.qrc"],
+    ["Help", "../Mod/Help/Resources/translations", "../Mod/Help/Resources/Help.qrc"],
     [
         "Inspection",
         "../Mod/Inspection/Gui/Resources/translations",
@@ -230,11 +218,7 @@ locations = [
         "../Mod/TechDraw/Gui/Resources/translations",
         "../Mod/TechDraw/Gui/Resources/TechDraw.qrc",
     ],
-    [
-    	"Tux",
-    	"../Mod/Tux/Resources/translations",
-    	"../Mod/Tux/Resources/Tux.qrc"
-    ],
+    ["Tux", "../Mod/Tux/Resources/translations", "../Mod/Tux/Resources/Tux.qrc"],
 ]
 
 THRESHOLD = 25  # how many % must be translated for the translation to be included in FreeCAD
