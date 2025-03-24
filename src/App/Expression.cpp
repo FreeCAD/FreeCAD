@@ -52,11 +52,6 @@
 #include "ExpressionParser.h"
 
 
-/** \defgroup Expression Expressions framework
-    \ingroup APP
-    \brief The expression system allows users to write expressions and formulas that produce values
-*/
-
 using namespace Base;
 using namespace App;
 
