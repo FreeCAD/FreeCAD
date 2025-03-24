@@ -943,7 +943,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1119"/>
       <source>Units</source>
-      <translation>유닛</translation>
+      <translation>단위</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1286"/>
@@ -1030,7 +1030,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../ModelSelect.cpp" line="358"/>
       <source>Units</source>
-      <translation>유닛</translation>
+      <translation>단위</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="441"/>

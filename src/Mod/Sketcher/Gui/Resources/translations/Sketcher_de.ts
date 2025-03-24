@@ -2054,7 +2054,7 @@ ungültiger Randbedingungen, degenerierter Geometrien usw.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1671"/>
       <source>Drag geometries</source>
-      <translation type="unfinished">Drag geometries</translation>
+      <translation>Geometrien ziehen</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1052"/>
@@ -3281,7 +3281,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="111"/>
       <source>Coincident</source>
-      <translation>Gleich</translation>
+      <translation>Koinzident</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="112"/>
@@ -3806,7 +3806,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../InsertDatum.ui" line="76"/>
       <source>Reference (or constraint) dimension</source>
-      <translation>Referenzmaß (aktivierter Haken, sonst Aktives Maß)</translation>
+      <translation>Zeigt eine Abmessung nur an (wenn aktiviert) oder legt sie andernfalls fest</translation>
     </message>
     <message>
       <location filename="../../InsertDatum.ui" line="79"/>
@@ -4069,12 +4069,12 @@ Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="222"/>
       <source>If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</source>
-      <translation type="unfinished">If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</translation>
+      <translation>Wenn aktiviert, wird die externe Geometrie immer als Referenz hinzugefügt, sonst wird sie entsprechend dem aktuellen Konstruktionsmodus hinzugefügt.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="225"/>
       <source>Always add external geometry as reference</source>
-      <translation type="unfinished">Always add external geometry as reference</translation>
+      <translation>Externe Geometrie immer als Referenz hinzufügen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="250"/>
@@ -4471,20 +4471,20 @@ Dann sind nur Objekte hinter der Skizzenebene sichtbar.</translation>
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>%1 umgekehrte Bögen mit externer Geometrie wurden gefunden. Ihre Endpunkte sind in der 3D-Ansicht eingekreist.
 
-%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
+%2 Zwangsbedingungen sind mit den Endpunkten verknüpft. Die Zwangsbedingungen wurden in der Berichtsansicht aufgelistet (Menü Ansicht -&gt; Fenster -&gt; Ausgabefenster).
 
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+Klicken Sie auf die Schaltfläche „Endpunkte in Zwangsbedingungen vertauschen“, um die Endpunkte neu zuzuordnen. Führen Sie dies nur einmal für Skizzen durch, die in FreeCAD vor Version 0.15 erstellt wurden.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="304"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>%1 umgekehrte Bögen mit externer Geometrie wurden gefunden. Ihre Endpunkte sind in der 3D-Ansicht eingekreist.
 
-However, no constraints linking to the endpoints were found.</translation>
+Es wurden jedoch keine Zwangsbedingungen gefunden, die mit den Endpunkten verbunden sind.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="315"/>
@@ -4657,7 +4657,7 @@ However, no constraints linking to the endpoints were found.</translation>
       <location filename="../../TaskSketcherElements.cpp" line="1885"/>
       <location filename="../../TaskSketcherElements.cpp" line="1891"/>
       <source>Construction</source>
-      <translation>Konstruktion</translation>
+      <translation>Hilfsgeometrie</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1185"/>
@@ -5976,12 +5976,12 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10233"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Geometry Property results in invalid constraint indices</translation>
+      <translation>Unveränderte Änderung der Geometrie-Eigenschaft führt zu ungültigen Constraint-Indizes</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10264"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Constraint Property results in invalid constraint indices</translation>
+      <translation>Unveränderte Änderung der Constraint-Eigenschaft führt zu ungültigen Constraint-Indizes</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10893"/>
@@ -7378,12 +7378,12 @@ Stattdessen werden Gleichheits-Randbedingungen zwischen den Originalobjekten und
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1448"/>
       <source>Create external</source>
-      <translation type="unfinished">Create external</translation>
+      <translation>Externe Geometrie erzeugen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1449"/>
       <source>Create external edges linked to external geometries.</source>
-      <translation type="unfinished">Create external edges linked to external geometries.</translation>
+      <translation>Erstellt eine mit einer externen Geometrie verknüpften Kante.</translation>
     </message>
   </context>
   <context>
@@ -7391,16 +7391,14 @@ Stattdessen werden Gleichheits-Randbedingungen zwischen den Originalobjekten und
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1503"/>
       <source>Create external projection geometry</source>
-      <translation type="unfinished">Create external projection geometry</translation>
+      <translation>Erstelle externe Projektionsgeometrie</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1504"/>
       <source>Create the projection edges of an external geometry.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the projection edges of an external geometry.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Erstellt die projizierten Kanten einer externen Geometrie. Externe Geometrien können entweder Linie oder als Hilfslinie erzeugt werden. Hierzu wird das Werkzeug Hilfsgeometrie umschalten benutzt.</translation>
     </message>
   </context>
   <context>
@@ -7408,16 +7406,14 @@ You can use the toggle construction tool.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create external intersection geometry</source>
-      <translation type="unfinished">Create external intersection geometry</translation>
+      <translation>Externe Schnittgeometrie erzeugen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1542"/>
       <source>Create the intersection edges of an external geometry with the sketch plane.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the intersection edges of an external geometry with the sketch plane.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Erstellt die Schnittkanten einer externen Geometrie mit der Skizzenebene. Externe Geometrien können entweder Linie oder als Hilfslinie erzeugt werden. Hierzu wird das Werkzeug Hilfsgeometrie umschalten benutzt.</translation>
     </message>
   </context>
 </TS>

@@ -1523,7 +1523,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="204"/>
       <source>Select the corresponding license file in your Addon</source>
-      <translation type="unfinished">Select the corresponding license file in your Addon</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="237"/>

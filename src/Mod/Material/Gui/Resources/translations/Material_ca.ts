@@ -1191,7 +1191,7 @@ Si no es marca, s'ordenaran pel seu nom.</translation>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>&amp;Appearance...</source>
-      <translation type="unfinished">&amp;Appearance...</translation>
+      <translation>&amp;Aparença...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -1205,7 +1205,7 @@ Si no es marca, s'ordenaran pel seu nom.</translation>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>&amp;Material...</source>
-      <translation type="unfinished">&amp;Material...</translation>
+      <translation>&amp;Material...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="119"/>

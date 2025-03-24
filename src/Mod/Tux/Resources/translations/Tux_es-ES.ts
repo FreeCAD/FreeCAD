@@ -11,7 +11,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="86"/>
       <source>Zoom</source>
-      <translation>Aumentar/Disminuir</translation>
+      <translation>Acercamiento</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="87"/>
@@ -86,12 +86,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="574"/>
       <source>Free Turntable</source>
-      <translation>Turntable libre</translation>
+      <translation>Mesa giratoria libre</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="575"/>
       <source>Trackball</source>
-      <translation>Trackball</translation>
+      <translation>Bola de seguimiento</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="576"/>

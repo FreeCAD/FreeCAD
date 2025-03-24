@@ -3829,7 +3829,7 @@ Ha van egy örökölt dokumentum AlkatrészTervező objektummal Test nélkül, h
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="228"/>
       <source>Edit datum</source>
-      <translation>Referencia szerkesztése</translation>
+      <translation>Dátum hivatkozás szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="74"/>

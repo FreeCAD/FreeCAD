@@ -169,7 +169,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation>Die Stie Semantic (1.2.3-beta) oder CalVer (2022.08.30) werden unterstützt</translation>
+      <translation>Die Stile Semantik (1.2.3-beta) oder CalVer (30.08.2022) werden unterstützt</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="120"/>
@@ -493,7 +493,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="27"/>
       <source>Automatically check for updates at start (requires Git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires Git)</translation>
+      <translation>Beim Start automatisch nach Updates suchen (erfordert Git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="43"/>
@@ -593,17 +593,17 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="369"/>
       <source>The path to the Git executable. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the Git executable. Autodetected if needed and not specified.</translation>
+      <translation>Der Pfad zur ausführbaren Git-Datei. Wird automatisch erkannt, falls erforderlich und nicht angegeben.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="396"/>
       <source>Show option to change branches (requires Git)</source>
-      <translation type="unfinished">Show option to change branches (requires Git)</translation>
+      <translation>Option zum Ändern von Zweigen anzeigen (erfordert Git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="409"/>
       <source>Disable Git (fall back to ZIP downloads only)</source>
-      <translation type="unfinished">Disable Git (fall back to ZIP downloads only)</translation>
+      <translation>Git deaktivieren (reine ZIP-Downloads)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="390"/>
@@ -850,7 +850,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation>Die Stie Semantic (1.2.3-beta) oder CalVer (2022.08.30) werden unterstützt</translation>
+      <translation>Die Stile Semantic (1.2.3-beta) oder CalVer (2022.08.30) werden unterstützt</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
@@ -937,7 +937,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../developer_mode_people.ui" line="20"/>
       <source>A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</source>
-      <translation>Ein Maintainer ist jemand mit aktuellem Commit-Zugriff auf dieses Projekt. Ein Autor ist jeder andere, dem man Anerkennung zuteil werden lassen möchte.</translation>
+      <translation>Ein Betreuer ist jemand mit aktuellem Commit-Zugriff auf dieses Projekt. Ein Autor ist jeder, dem Sie gerne Anerkennung schenken möchten.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
@@ -1141,17 +1141,17 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../AddonManager.py" line="524"/>
       <source>Creating addon list</source>
-      <translation type="unfinished">Creating addon list</translation>
+      <translation>Erstelle eine Liste mit den Erweiterungen</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="534"/>
       <source>Loading addon list</source>
-      <translation type="unfinished">Loading addon list</translation>
+      <translation>Lade Erweiterungsliste</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="570"/>
       <source>Creating macro list</source>
-      <translation type="unfinished">Creating macro list</translation>
+      <translation>Erstelle eine Liste mit den Makros</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="626"/>
@@ -1468,11 +1468,10 @@ Moved
 from: {}
 to: {}
 Please restart to use the new version.</source>
-      <translation type="unfinished">Branch change succeeded.
-Moved
-from: {}
-to: {}
-Please restart to use the new version.</translation>
+      <translation>Branch-Wechsel erfolgreich.
+Von: {}
+Zu: {}
+Bitte Neustarten, um die neue Version zu verwenden.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="116"/>
@@ -2100,7 +2099,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="184"/>
       <source>Downloaded {} for {}</source>
-      <translation type="unfinished">Downloaded {} for {}</translation>
+      <translation>{} für {} heruntergeladen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="243"/>
@@ -2206,13 +2205,13 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="281"/>
       <source>Git is disabled, skipping Git macros</source>
-      <translation type="unfinished">Git is disabled, skipping Git macros</translation>
+      <translation>Git ist deaktiviert, Git-Makros werden übersprungen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="328"/>
       <source>Attempting to change non-Git Macro setup to use Git
 </source>
-      <translation type="unfinished">Attempting to change non-Git Macro setup to use Git
+      <translation>Änderungsversuch des Nicht-Git-Makro-Einstellung, um Git zu verwenden
 </translation>
     </message>
     <message>
@@ -2243,17 +2242,17 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="548"/>
       <source>Checking {} for update</source>
-      <translation type="unfinished">Checking {} for update</translation>
+      <translation>{} wird auf Aktualisierung geprüft</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="606"/>
       <source>Unable to fetch Git updates for workbench {}</source>
-      <translation type="unfinished">Unable to fetch Git updates for workbench {}</translation>
+      <translation>Git-Updates für den Arbeitsbereich {} können nicht abgerufen werden</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="619"/>
       <source>Git status failed for {}</source>
-      <translation type="unfinished">Git status failed for {}</translation>
+      <translation>Git-Status für {} fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="846"/>
@@ -2331,7 +2330,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_git.py" line="153"/>
       <source>Basic Git update failed with the following message:</source>
-      <translation type="unfinished">Basic Git update failed with the following message:</translation>
+      <translation>Reguläres Git Update mit folgenden Nachricht fehlgeschlagen:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="161"/>
@@ -2341,7 +2340,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../addonmanager_git.py" line="266"/>
       <source>Failed to clone {} into {} using Git</source>
-      <translation type="unfinished">Failed to clone {} into {} using Git</translation>
+      <translation>Fehler beim Klonen von {} in {} mit Git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="407"/>

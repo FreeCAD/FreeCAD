@@ -416,7 +416,7 @@
     <message>
       <location filename="../Application.h" line="267"/>
       <source>&amp;Default</source>
-      <translation type="unfinished">&amp;Default</translation>
+      <translation>默认(&amp;D)</translation>
     </message>
     <message>
       <location filename="../Application.h" line="268"/>
@@ -748,7 +748,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgAbout.cpp" line="734"/>
       <source>Copied!</source>
-      <translation type="unfinished">Copied!</translation>
+      <translation>已复制</translation>
     </message>
   </context>
   <context>
@@ -1105,7 +1105,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="38"/>
       <source>Browse</source>
-      <translation type="unfinished">Browse</translation>
+      <translation>浏览</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="60"/>
@@ -1118,7 +1118,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="163"/>
       <source>Export Config</source>
-      <translation type="unfinished">Export Config</translation>
+      <translation>导出配置</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="171"/>
@@ -2421,27 +2421,27 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectInformation.ui" line="159"/>
       <source>Created &amp;by:</source>
-      <translation>作者(&amp;B):</translation>
+      <translation>作者(&amp;B)：</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="182"/>
       <source>Creation &amp;date:</source>
-      <translation>创建日期(&amp;D):</translation>
+      <translation>创建日期(&amp;D)：</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="208"/>
       <source>&amp;Last modified by:</source>
-      <translation>上次修改(&amp;L):</translation>
+      <translation>上次修改(&amp;L)：</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="231"/>
       <source>Last &amp;modification date:</source>
-      <translation>最后修改日期(&amp;M):</translation>
+      <translation>最后修改日期(&amp;M)：</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="257"/>
       <source>Com&amp;pany:</source>
-      <translation>公司(&amp;p):</translation>
+      <translation>公司(&amp;P)：</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="280"/>
@@ -2933,7 +2933,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="531"/>
       <source>Perspective renderin&amp;g</source>
-      <translation>以透视渲染(&amp;g)</translation>
+      <translation>以透视渲染 (&amp;G)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="544"/>
@@ -2943,7 +2943,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="547"/>
       <source>Or&amp;thographic rendering</source>
-      <translation>正视投影渲染(&amp;t)</translation>
+      <translation>正视投影渲染 (&amp;T)</translation>
     </message>
     <message>
       <source/>
@@ -3177,7 +3177,7 @@ will be displayed in gray</source>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="163"/>
       <source>Out g&amp;rayed</source>
-      <translation>外部&amp;呈灰色</translation>
+      <translation>外部呈灰色 (&amp;R)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="166"/>
@@ -3631,7 +3631,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../DlgSettingsImage.ui" line="199"/>
       <source>&amp;Width:</source>
-      <translation>宽度(&amp;W):</translation>
+      <translation>宽度 (&amp;W)：</translation>
     </message>
     <message>
       <location filename="../DlgSettingsImage.ui" line="219"/>
@@ -3642,7 +3642,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../DlgSettingsImage.ui" line="226"/>
       <source>&amp;Height:</source>
-      <translation>高度(&amp;H):</translation>
+      <translation>高度 (&amp;H)：</translation>
     </message>
     <message>
       <location filename="../DlgSettingsImage.ui" line="272"/>
@@ -3697,7 +3697,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../DlgSettingsImage.ui" line="345"/>
       <source>Back&amp;ground:</source>
-      <translation>背景(&amp;G):</translation>
+      <translation>背景 (&amp;G)：</translation>
     </message>
     <message>
       <location filename="../DlgSettingsImage.ui" line="356"/>
@@ -4752,7 +4752,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DocumentRecovery.cpp" line="343"/>
       <source>&amp;Finish</source>
-      <translation type="unfinished">&amp;Finish</translation>
+      <translation>完成(&amp;F)</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="501"/>
@@ -5209,7 +5209,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="204"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>旋转</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="284"/>
@@ -5379,12 +5379,12 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
       <source>No 3D view</source>
-      <translation type="unfinished">No 3D view</translation>
+      <translation>无三维视图</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
       <source>No active 3D view found.</source>
-      <translation type="unfinished">No active 3D view found.</translation>
+      <translation>未发现活动的三维视图。</translation>
     </message>
   </context>
   <context>
@@ -5453,7 +5453,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="157"/>
       <source>&amp;Use Original Selections</source>
-      <translation>&amp;U使用原有选择</translation>
+      <translation>使用原有选择 (&amp;U)</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="158"/>
@@ -5663,12 +5663,12 @@ originally selected prior to opening this dialog</source>
     <message>
       <location filename="../SelectionView.cpp" line="659"/>
       <source>To Python console</source>
-      <translation type="unfinished">To Python console</translation>
+      <translation>到 Python 控制台</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="662"/>
       <source>Reveals this object and its subelements in the Python console.</source>
-      <translation type="unfinished">Reveals this object and its subelements in the Python console.</translation>
+      <translation>在 Python 控制台中显示此对象及其子元素。</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="668"/>
@@ -6139,17 +6139,17 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../MainWindow.cpp" line="1576"/>
       <source>Safe mode enabled</source>
-      <translation type="unfinished">Safe mode enabled</translation>
+      <translation>安全模式已启用</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1577"/>
       <source>FreeCAD is now running in safe mode.</source>
-      <translation type="unfinished">FreeCAD is now running in safe mode.</translation>
+      <translation>FreeCAD 正在以安全模式运行。</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1581"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
-      <translation type="unfinished">Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</translation>
+      <translation>由于安全模式，您的配置和插件已被临时禁用，重启 FreeCAD 以退出安全模式。</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1921"/>
@@ -6172,7 +6172,7 @@ Do you want to save the document now?</source>
     <message>
       <location filename="../MainWindow.cpp" line="2318"/>
       <source>Safe Mode</source>
-      <translation type="unfinished">Safe Mode</translation>
+      <translation>安全模式</translation>
     </message>
   </context>
   <context>
@@ -7850,7 +7850,7 @@ However, if you save this file in the current version and reopen it in an older 
     <message>
       <location filename="../CommandDoc.cpp" line="136"/>
       <source>Don't show this warning again</source>
-      <translation type="unfinished">Don't show this warning again</translation>
+      <translation>不再显示此警告</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="280"/>
@@ -7945,12 +7945,12 @@ Please check the Report View for more details.</source>
     <message>
       <location filename="../CommandStd.cpp" line="348"/>
       <source>Restart in safe mode</source>
-      <translation type="unfinished">Restart in safe mode</translation>
+      <translation>以安全模式重启</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="349"/>
       <source>Are you sure you want to restart FreeCAD and enter safe mode?</source>
-      <translation type="unfinished">Are you sure you want to restart FreeCAD and enter safe mode?</translation>
+      <translation>您确定要重启 FreeCAD 以进入安全模式吗？</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="350"/>
@@ -7961,25 +7961,25 @@ Please check the Report View for more details.</source>
       <location filename="../CommandView.cpp" line="338"/>
       <location filename="../CommandView.cpp" line="571"/>
       <source>&amp;Save views...</source>
-      <translation type="unfinished">&amp;Save views...</translation>
+      <translation>保存视图(&amp;S)...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="340"/>
       <location filename="../CommandView.cpp" line="572"/>
       <source>&amp;Load views...</source>
-      <translation type="unfinished">&amp;Load views...</translation>
+      <translation>加载视图(&amp;L)...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="343"/>
       <location filename="../CommandView.cpp" line="573"/>
       <source>F&amp;reeze view</source>
-      <translation type="unfinished">F&amp;reeze view</translation>
+      <translation>冻结视图(&amp;R)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="346"/>
       <location filename="../CommandView.cpp" line="574"/>
       <source>&amp;Clear views</source>
-      <translation type="unfinished">&amp;Clear views</translation>
+      <translation>清除视图(&amp;C)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="392"/>
@@ -8930,7 +8930,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="2979"/>
       <source>Bo&amp;x element selection</source>
-      <translation type="unfinished">Bo&amp;x element selection</translation>
+      <translation>方框元素选择(&amp;X)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2980"/>
@@ -8944,7 +8944,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="2753"/>
       <source>&amp;Box selection</source>
-      <translation type="unfinished">&amp;Box selection</translation>
+      <translation>框选(&amp;B)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2754"/>
@@ -8985,7 +8985,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandWindow.cpp" line="172"/>
       <source>&amp;Next</source>
-      <translation type="unfinished">&amp;Next</translation>
+      <translation>下一页(&amp;N)</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="173"/>
@@ -8999,7 +8999,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandWindow.cpp" line="201"/>
       <source>&amp;Previous</source>
-      <translation type="unfinished">&amp;Previous</translation>
+      <translation>上一页(&amp;P)</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="202"/>
@@ -9069,7 +9069,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandWindow.cpp" line="144"/>
       <source>Close A&amp;ll</source>
-      <translation type="unfinished">Close A&amp;ll</translation>
+      <translation>关闭所有(&amp;L)</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="145"/>
@@ -9111,7 +9111,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="1143"/>
       <source>Cu&amp;t</source>
-      <translation type="unfinished">Cu&amp;t</translation>
+      <translation>剪切(&amp;T)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1144"/>
@@ -9181,7 +9181,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandMacro.cpp" line="94"/>
       <source>Ma&amp;cros...</source>
-      <translation type="unfinished">Ma&amp;cros...</translation>
+      <translation>宏(&amp;C)...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="95"/>
@@ -9195,7 +9195,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandMacro.cpp" line="123"/>
       <source>&amp;Execute macro</source>
-      <translation type="unfinished">&amp;Execute macro</translation>
+      <translation>执行宏(&amp;E)</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="124"/>
@@ -9209,7 +9209,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandMacro.cpp" line="51"/>
       <source>&amp;Macro recording...</source>
-      <translation type="unfinished">&amp;Macro recording...</translation>
+      <translation>宏录制(&amp;M)...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="52"/>
@@ -9233,7 +9233,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="381"/>
       <source>E&amp;dit parameters...</source>
-      <translation type="unfinished">E&amp;dit parameters...</translation>
+      <translation>编辑参数(&amp;E)...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="382"/>
@@ -9247,7 +9247,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="406"/>
       <source>Prefere&amp;nces ...</source>
-      <translation type="unfinished">Prefere&amp;nces ...</translation>
+      <translation>首选项(&amp;N)...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="407"/>
@@ -9261,7 +9261,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandWindow.cpp" line="281"/>
       <source>&amp;Panels</source>
-      <translation type="unfinished">&amp;Panels</translation>
+      <translation>面板(&amp;P)</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="282"/>
@@ -9275,7 +9275,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="648"/>
       <source>&amp;Draw style</source>
-      <translation type="unfinished">&amp;Draw style</translation>
+      <translation>绘图样式(&amp;D)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="649"/>
@@ -9373,7 +9373,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="688"/>
       <source>FreeCAD &amp;Forum</source>
-      <translation type="unfinished">FreeCAD &amp;Forum</translation>
+      <translation>FreeCAD 论坛(&amp;F)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="689"/>
@@ -9413,7 +9413,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1234"/>
       <source>Hide all &amp;objects</source>
-      <translation type="unfinished">Hide all &amp;objects</translation>
+      <translation>隐藏所有对象(&amp;O)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1235"/>
@@ -9427,7 +9427,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1086"/>
       <source>&amp;Hide selection</source>
-      <translation type="unfinished">&amp;Hide selection</translation>
+      <translation>隐藏选中(&amp;H)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1087"/>
@@ -9557,7 +9557,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandLink.cpp" line="852"/>
       <source>&amp;Link navigation</source>
-      <translation type="unfinished">&amp;Link navigation</translation>
+      <translation>链接导航(&amp;L)</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="853"/>
@@ -9651,7 +9651,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandMacro.cpp" line="258"/>
       <source>Step &amp;into</source>
-      <translation type="unfinished">Step &amp;into</translation>
+      <translation>步入(&amp;I)</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="259"/>
@@ -9665,7 +9665,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandMacro.cpp" line="231"/>
       <source>Step &amp;over</source>
-      <translation type="unfinished">Step &amp;over</translation>
+      <translation>步过(&amp;O)</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="232"/>
@@ -9679,7 +9679,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandMacro.cpp" line="204"/>
       <source>&amp;Stop debugging</source>
-      <translation type="unfinished">&amp;Stop debugging</translation>
+      <translation>停止调试(&amp;S)</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="205"/>
@@ -10083,7 +10083,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1114"/>
       <source>&amp;Select visible objects</source>
-      <translation type="unfinished">&amp;Select visible objects</translation>
+      <translation>选择可见对象(&amp;S)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1115"/>
@@ -10111,7 +10111,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1197"/>
       <source>Show &amp;all objects</source>
-      <translation type="unfinished">Show &amp;all objects</translation>
+      <translation>显示所有对象(&amp;A)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1198"/>
@@ -10125,7 +10125,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1058"/>
       <source>Sho&amp;w selection</source>
-      <translation type="unfinished">Sho&amp;w selection</translation>
+      <translation>显示所选(&amp;W)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1059"/>
@@ -10153,7 +10153,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="796"/>
       <source>Add te&amp;xt document</source>
-      <translation type="unfinished">Add te&amp;xt document</translation>
+      <translation>添加文本文档(&amp;X)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="797"/>
@@ -10195,7 +10195,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandMacro.cpp" line="285"/>
       <source>Toggle &amp;breakpoint</source>
-      <translation type="unfinished">Toggle &amp;breakpoint</translation>
+      <translation>启用/禁用断点(&amp;B)</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="286"/>
@@ -10209,7 +10209,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="595"/>
       <source>Clippin&amp;g plane</source>
-      <translation type="unfinished">Clippin&amp;g plane</translation>
+      <translation>剪切平面(&amp;G)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="596"/>
@@ -10265,7 +10265,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="868"/>
       <source>Toggle &amp;visibility</source>
-      <translation type="unfinished">Toggle &amp;visibility</translation>
+      <translation>切换显示/隐藏(&amp;V)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="869"/>
@@ -10279,7 +10279,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandWindow.cpp" line="317"/>
       <source>&amp;Toolbars</source>
-      <translation type="unfinished">&amp;Toolbars</translation>
+      <translation>工具栏(&amp;T)</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="318"/>
@@ -10377,7 +10377,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandStd.cpp" line="865"/>
       <source>Edit &amp;mode</source>
-      <translation type="unfinished">Edit &amp;mode</translation>
+      <translation>编辑模式(&amp;M)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="866"/>
@@ -10531,7 +10531,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1271"/>
       <source>&amp;Home</source>
-      <translation type="unfinished">&amp;Home</translation>
+      <translation>主页(&amp;H)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1272"/>
@@ -10643,7 +10643,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1347"/>
       <source>&amp;6 Left</source>
-      <translation type="unfinished">&amp;6 Left</translation>
+      <translation>左视(&amp;6)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1348"/>
@@ -10657,7 +10657,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1371"/>
       <source>&amp;4 Rear</source>
-      <translation type="unfinished">&amp;4 Rear</translation>
+      <translation>后视(&amp;4)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1372"/>
@@ -10685,7 +10685,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1395"/>
       <source>&amp;3 Right</source>
-      <translation type="unfinished">&amp;3 Right</translation>
+      <translation>右视(&amp;3)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1396"/>
@@ -10699,7 +10699,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1514"/>
       <source>Rotate &amp;Left</source>
-      <translation type="unfinished">Rotate &amp;Left</translation>
+      <translation>向左旋转(&amp;L)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1515"/>
@@ -10713,7 +10713,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1539"/>
       <source>Rotate &amp;Right</source>
-      <translation type="unfinished">Rotate &amp;Right</translation>
+      <translation>向右旋转(&amp;R)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1540"/>
@@ -10741,7 +10741,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1419"/>
       <source>&amp;2 Top</source>
-      <translation type="unfinished">&amp;2 Top</translation>
+      <translation>上视(&amp;2)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1420"/>
@@ -11084,7 +11084,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1754"/>
       <source>&amp;Fullscreen</source>
-      <translation type="unfinished">&amp;Fullscreen</translation>
+      <translation>全屏(&amp;F)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1755"/>
@@ -11098,7 +11098,7 @@ underscore, and must not start with a digit.</source>
     <message>
       <location filename="../CommandView.cpp" line="1926"/>
       <source>Save &amp;image...</source>
-      <translation type="unfinished">Save &amp;image...</translation>
+      <translation>保存图片(&amp;I)...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1927"/>

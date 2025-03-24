@@ -3209,7 +3209,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="20"/>
       <source>Surface</source>
-      <translation>Površina</translation>
+      <translation>Površ</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="45"/>

@@ -45,12 +45,12 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="187"/>
       <source>Show/hide B-spline control point weight</source>
-      <translation type="unfinished">Show/hide B-spline control point weight</translation>
+      <translation>Rodyti/slėpti B-splaino valdančiojo mazgo svorį</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="188"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the control point weight for all B-splines</translation>
+      <translation>Perjungia visų B-splainų valdymo mazgų rodymą/slėpimą</translation>
     </message>
   </context>
   <context>
@@ -122,7 +122,7 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="337"/>
       <source>Show/hide B-spline control point weight</source>
-      <translation type="unfinished">Show/hide B-spline control point weight</translation>
+      <translation>Rodyti/slėpti B-splaino valdančiojo mazgo svorį</translation>
     </message>
   </context>
   <context>
@@ -485,7 +485,7 @@ on the selected vertex</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8134"/>
       <source>Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</source>
-      <translation type="unfinished">Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</translation>
+      <translation>Nustatyti skersmenį, jei pasirinktas apskritimas, arba spindulį, jei pasirinktas lankas ar splaino polius</translation>
     </message>
   </context>
   <context>
@@ -1004,7 +1004,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="890"/>
       <source>Insert knot</source>
-      <translation type="unfinished">Insert knot</translation>
+      <translation>Įterpti mazgą</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="891"/>
@@ -1966,7 +1966,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="779"/>
       <source>Insert knot</source>
-      <translation type="unfinished">Insert knot</translation>
+      <translation>Įterpti mazgą</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1068"/>
@@ -2213,37 +2213,37 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="675"/>
       <source>Autoconstraint error: Unsolvable sketch while applying coincident constraints.</source>
-      <translation type="unfinished">Autoconstraint error: Unsolvable sketch while applying coincident constraints.</translation>
+      <translation>Savaiminio suvaržymo klaida: Neišsprendžiamas brėžinio suvaržymo uždavinys taikant sutampamčius apribojimus.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="722"/>
       <source>Autoconstraint error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
-      <translation type="unfinished">Autoconstraint error: Unsolvable sketch while applying vertical/horizontal constraints.</translation>
+      <translation>Savaiminio suvaržymo klaida: Neišsprendžiamas brėžinio suvaržymo uždavinys taikant statmenus/gulsčiuosius apribojimus.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="814"/>
       <source>Autoconstraint error: Unsolvable sketch while applying equality constraints.</source>
-      <translation type="unfinished">Autoconstraint error: Unsolvable sketch while applying equality constraints.</translation>
+      <translation>Savaiminio suvaržymo klaida: Neišsprendžiamas brėžinio suvaržymo uždavinys taikant lygybės apribojimus.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="854"/>
       <source>Autoconstraint error: Unsolvable sketch without constraints.</source>
-      <translation type="unfinished">Autoconstraint error: Unsolvable sketch without constraints.</translation>
+      <translation>Savaiminio suvaržymo klaida: Neišsprendžiamas brėžinio suvaržymo uždavinys nesant apribojimų.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="868"/>
       <source>Autoconstraint error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
-      <translation type="unfinished">Autoconstraint error: Unsolvable sketch after applying horizontal and vertical constraints.</translation>
+      <translation>Savaiminio suvaržymo klaida: Neišsprendžiamas brėžinio suvaržymo uždavinys po statmenų/gulsčių apribojimų taikymo.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="883"/>
       <source>Autoconstraint error: Unsolvable sketch after applying point-on-point constraints.</source>
-      <translation type="unfinished">Autoconstraint error: Unsolvable sketch after applying point-on-point constraints.</translation>
+      <translation>Savaiminio suvaržymo klaida: Neišsprendžiamas brėžinio suvaržymo uždavinys po sutampančių taškų apribojimo taikymo.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="904"/>
       <source>Autoconstraint error: Unsolvable sketch after applying equality constraints.</source>
-      <translation type="unfinished">Autoconstraint error: Unsolvable sketch after applying equality constraints.</translation>
+      <translation>Savaiminio suvaržymo klaida: Neišsprendžiamas brėžinio suvaržymo uždavinys po lygybės apribojimų taikymo.</translation>
     </message>
   </context>
   <context>
@@ -2606,7 +2606,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="7571"/>
       <location filename="../../CommandConstraints.cpp" line="8248"/>
       <source>Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
-      <translation type="unfinished">Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</translation>
+      <translation>Iš brėžinio pasirinkite tik vieną, arba daugiau B-splainų polių, arba tik vieną, arba daugiau lankų arba apskritimų, bet ne skirtingų rūšių įvairovę.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9735"/>
@@ -2629,7 +2629,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="787"/>
       <source>Unexpected error. More information may be available in the Report View.</source>
-      <translation type="unfinished">Unexpected error. More information may be available in the Report View.</translation>
+      <translation>Atsitiko netikėta klaida. Daugiau informacijos galite rasti ataskaitos rodinyje.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2963"/>
@@ -3150,7 +3150,7 @@ Priimtini deriniai: dvi kreivės; galinis taškas ir kreivė; du galiniai taška
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="288"/>
       <source>Value Error</source>
-      <translation type="unfinished">Value Error</translation>
+      <translation>Vertės klaida</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="350"/>
@@ -4017,7 +4017,7 @@ Requires to re-enter edit mode to take effect.</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="111"/>
       <source>Auto remove redundants</source>
-      <translation type="unfinished">Auto remove redundants</translation>
+      <translation>Savaime pašalinti perteklinius</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="127"/>
@@ -4557,17 +4557,17 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="40"/>
       <source>Check to toggle filters</source>
-      <translation type="unfinished">Check to toggle filters</translation>
+      <translation>Pažymėkite, norėdami įjungti arba išjungti atrankas</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="59"/>
       <source>Click to show filters</source>
-      <translation type="unfinished">Click to show filters</translation>
+      <translation>Spustelėkite, norėdami pamatyti atrankas</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="65"/>
       <source>Filters</source>
-      <translation type="unfinished">Filters</translation>
+      <translation>Atrankos</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="87"/>
@@ -4592,7 +4592,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="844"/>
       <source>Auto remove redundants</source>
-      <translation type="unfinished">Auto remove redundants</translation>
+      <translation>Savaime pašalinti perteklinius</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="845"/>
@@ -4602,7 +4602,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="846"/>
       <source>Extended information (in widget)</source>
-      <translation type="unfinished">Extended information (in widget)</translation>
+      <translation>Išplėstiniai duomenys (valdiklyje)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="847"/>
@@ -4631,17 +4631,17 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="40"/>
       <source>Check to toggle filters</source>
-      <translation type="unfinished">Check to toggle filters</translation>
+      <translation>Pažymėkite, norėdami įjungti arba išjungti atrankas</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="59"/>
       <source>Click to show filters</source>
-      <translation type="unfinished">Click to show filters</translation>
+      <translation>Spustelėkite, norėdami pamatyti atrankas</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="65"/>
       <source>Filters</source>
-      <translation type="unfinished">Filters</translation>
+      <translation>Atrankos</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="81"/>
@@ -4764,7 +4764,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="2038"/>
       <source>Extended information</source>
-      <translation type="unfinished">Extended information</translation>
+      <translation>Išplėstiniai duomenys</translation>
     </message>
   </context>
   <context>
@@ -5060,7 +5060,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3236"/>
       <source>Over-constrained:</source>
-      <translation type="unfinished">Over-constrained:</translation>
+      <translation>Pernelyg suvaržytas:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3242"/>
@@ -5085,7 +5085,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3269"/>
       <source>Under-constrained:</source>
-      <translation type="unfinished">Under-constrained:</translation>
+      <translation>Nevisiškai suvaržytas:</translation>
     </message>
     <message numerus="yes">
       <location filename="../../ViewProviderSketch.cpp" line="3271"/>
@@ -5100,7 +5100,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3275"/>
       <source>Fully constrained</source>
-      <translation type="unfinished">Fully constrained</translation>
+      <translation>Visiškai suvaržytas</translation>
     </message>
   </context>
   <context>
@@ -5154,7 +5154,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
       <location filename="../../CommandSketcherOverlay.cpp" line="339"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="342"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the control point weight for all B-splines</translation>
+      <translation>Perjungia visų B-splainų valdymo mazgų rodymą/slėpimą</translation>
     </message>
   </context>
   <context>
@@ -5232,7 +5232,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="850"/>
       <source>By knots</source>
-      <translation type="unfinished">By knots</translation>
+      <translation>Iš mazgų</translation>
     </message>
   </context>
   <context>
@@ -6103,17 +6103,17 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="379"/>
       <source>Error creating B-spline</source>
-      <translation type="unfinished">Error creating B-spline</translation>
+      <translation>Klaida kuriant B-splainą</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="610"/>
       <source>Error deleting last pole/knot</source>
-      <translation type="unfinished">Error deleting last pole/knot</translation>
+      <translation>Klaida trinant polių/mazgą</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="680"/>
       <source>Error adding B-spline pole/knot</source>
-      <translation type="unfinished">Error adding B-spline pole/knot</translation>
+      <translation>Klaida pridedant B-splaino polių/mazgą</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="188"/>
@@ -6197,7 +6197,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <location filename="../../TaskSketcherConstraints.cpp" line="1255"/>
       <location filename="../../EditDatumDialog.cpp" line="251"/>
       <source>Value Error</source>
-      <translation type="unfinished">Value Error</translation>
+      <translation>Vertės klaida</translation>
     </message>
     <message>
       <location filename="../../DrawSketchDefaultHandler.h" line="961"/>
@@ -6265,13 +6265,13 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1132"/>
       <source>B-spline by knots</source>
-      <translation type="unfinished">B-spline by knots</translation>
+      <translation>B-splainas iš mazgų</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1133"/>
       <location filename="../../CommandCreateGeo.cpp" line="1135"/>
       <source>Create a B-spline by knots</source>
-      <translation type="unfinished">Create a B-spline by knots</translation>
+      <translation>Nubrėžti B-splainą iš mazgų</translation>
     </message>
   </context>
   <context>
@@ -6377,12 +6377,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="918"/>
       <source>Create B-spline by knots</source>
-      <translation type="unfinished">Create B-spline by knots</translation>
+      <translation>Nubrėžti B-splainą iš mazgų</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="919"/>
       <source>Create a B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation type="unfinished">Create a B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+      <translation>Nubrėžti B-splainą iš mazgų pvz., interpoliuojant.</translation>
     </message>
   </context>
   <context>
@@ -6390,12 +6390,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="952"/>
       <source>Create periodic B-spline by knots</source>
-      <translation type="unfinished">Create periodic B-spline by knots</translation>
+      <translation>Nubrėžti periodinį B-splainą iš mazgų</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="954"/>
       <source>Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</translation>
+      <translation>Nubrėžti periodinį B-splainą iš mazgų pvz., interpoliuojant.</translation>
     </message>
   </context>
   <context>
@@ -6801,12 +6801,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="152"/>
       <source>Constrained</source>
-      <translation type="unfinished">Constrained</translation>
+      <translation>Suvaržytas</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="165"/>
       <source>Unconstrained</source>
-      <translation type="unfinished">Unconstrained</translation>
+      <translation>Nesuvaržytas</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="172"/>
@@ -7293,13 +7293,13 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1139"/>
       <source>Periodic B-spline by knots</source>
-      <translation type="unfinished">Periodic B-spline by knots</translation>
+      <translation>Periodinis B-splainas iš mazgų</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1142"/>
       <location filename="../../CommandCreateGeo.cpp" line="1145"/>
       <source>Create a periodic B-spline by knots</source>
-      <translation type="unfinished">Create a periodic B-spline by knots</translation>
+      <translation>Nubrėžti periodinį B-splainą iš mazgų</translation>
     </message>
   </context>
   <context>

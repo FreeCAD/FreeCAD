@@ -274,7 +274,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="202"/>
       <source>Diffuse Color</source>
-      <translation>Difuzna boja</translation>
+      <translation>Rasuta boja</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="211"/>
@@ -284,7 +284,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="220"/>
       <source>Emissive Color</source>
-      <translation>Emitujuća boja</translation>
+      <translation>Zračeća boja</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="229"/>
@@ -477,7 +477,7 @@
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="14"/>
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="20"/>
       <source>Default Material</source>
-      <translation>Podrazumevani materijal</translation>
+      <translation>Unapred zadani materijal</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsDefaultMaterial.cpp" line="51"/>
@@ -563,7 +563,7 @@ will be listed as available.</source>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
       <translation>Kartice materijala će se pojavljivati sortirane prema bibliotekama kojima pripadaju (lokacijama).
-Ako nije čekirano, biće sortirani po imenima.</translation>
+Ako nije potvrđeno, biće sortirani po imenima.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="184"/>
@@ -1191,7 +1191,7 @@ Ako nije čekirano, biće sortirani po imenima.</translation>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>&amp;Appearance...</source>
-      <translation type="unfinished">&amp;Appearance...</translation>
+      <translation>&amp;Izgled...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -1205,7 +1205,7 @@ Ako nije čekirano, biće sortirani po imenima.</translation>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>&amp;Material...</source>
-      <translation type="unfinished">&amp;Material...</translation>
+      <translation>&amp;Materijal...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="119"/>

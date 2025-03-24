@@ -564,7 +564,7 @@ Note that this option is disabled if a stock object from an existing solid is us
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="50"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>Створити циліндр</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="60"/>
@@ -2615,7 +2615,7 @@ See the file save policy below on how to deal with name conflicts.</source>
     <message>
       <location filename="../preferences/PathJob.ui" line="400"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>Створити циліндр</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="405"/>
@@ -3767,7 +3767,7 @@ FreeCAD не знає, де знаходиться певна система к�
     <message>
       <location filename="../panels/PathEdit.ui" line="483"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>Створити циліндр</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="488"/>
@@ -6975,7 +6975,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="346"/>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редагувати</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="615"/>
@@ -7695,7 +7695,7 @@ For example:
     <message>
       <location filename="../../../Path/Tool/Gui/Controller.py" line="116"/>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редагувати</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/generic_post.py" line="44"/>

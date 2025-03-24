@@ -3138,15 +3138,15 @@ with a harmonic/oscillating driving force</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="247"/>
       <source>Real part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni deo x-komponente potencijala
-Napomena: nema efekta ako je izabrano puno telo</translation>
+      <translation type="unfinished">Real part of potential x-component
+Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="292"/>
       <source>Imaginary part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni deo x-komponente potencijala
-Napomena: nema efekta ako je izabrano puno telo</translation>
+      <translation type="unfinished">Imaginary part of potential x-component
+Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="331"/>
@@ -3159,15 +3159,15 @@ Napomena: nema efekta ako je izabrano puno telo</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="347"/>
       <source>Real part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni deo y-komponente potencijala
-Napomena: nema efekta ako je izabrano puno telo</translation>
+      <translation type="unfinished">Real part of potential y-component
+Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="392"/>
       <source>Imaginary part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni deo y-komponente potencijala
-Napomena: nema efekta ako je izabrano puno telo</translation>
+      <translation type="unfinished">Imaginary part of potential y-component
+Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="431"/>
@@ -3180,15 +3180,15 @@ Napomena: nema efekta ako je izabrano puno telo</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
       <source>Real part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni deo z-komponente potencijala
-Napomena: nema efekta ako je izabrano puno telo</translation>
+      <translation type="unfinished">Real part of potential z-component
+Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
       <source>Imaginary part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni deo z-komponente potencijala
-Napomena: nema efekta ako je izabrano puno telo</translation>
+      <translation type="unfinished">Imaginary part of potential z-component
+Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="534"/>
@@ -3405,10 +3405,10 @@ Napomena: nema efekta ako je izabrano puno telo</translation>
 Note: if a face was selected this will be the value
           in normal face direction
           settings for y and z will be ignored</source>
-      <translation>Realni deo x-komponente potencijala
-Napomena: ako je izabrana stranica, ovo će biti vrednost
-          u pravcu normalnom na stranicu
-          podešavanja za y i z će biti zanemarena</translation>
+      <translation type="unfinished">Real part of potential x-component
+Note: if a face was selected this will be the value
+          in normal face direction
+          settings for y and z will be ignored</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="113"/>
@@ -3416,10 +3416,10 @@ Napomena: ako je izabrana stranica, ovo će biti vrednost
 Note: if a face was selected this will be the value
           in normal face direction
           settings for y and z will be ignored</source>
-      <translation>Imaginarni deo x-komponente potencijala
-Napomena: ako je izabrana stranica, ovo će biti vrednost
-          u pravcu normalnom na stranicu
-          podešavanja za y i z će biti zanemarena</translation>
+      <translation type="unfinished">Imaginary part of potential x-component
+Note: if a face was selected this will be the value
+          in normal face direction
+          settings for y and z will be ignored</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="170"/>
@@ -3447,34 +3447,34 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/Magnetization.ui" line="66"/>
       <source>Real part of potential x-component</source>
-      <translation>Realni deo x-komponente potencijala</translation>
+      <translation type="unfinished">Real part of potential x-component</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="110"/>
       <source>Imaginary part of potential x-component</source>
-      <translation>Imaginarni deo x-komponente potencijala</translation>
+      <translation type="unfinished">Imaginary part of potential x-component</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="164"/>
       <source>Real part of potential y-component</source>
-      <translation>Realni deo y-komponente potencijala</translation>
+      <translation type="unfinished">Real part of potential y-component</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="208"/>
       <source>Imaginary part of potential y-component</source>
-      <translation>Imaginarni deo y-komponente potencijala</translation>
+      <translation type="unfinished">Imaginary part of potential y-component</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="262"/>
       <location filename="../ui/CurrentDensity.ui" line="272"/>
       <source>Real part of potential z-component</source>
-      <translation>Realni deo z-komponente potencijala</translation>
+      <translation type="unfinished">Real part of potential z-component</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="306"/>
       <location filename="../ui/CurrentDensity.ui" line="316"/>
       <source>Imaginary part of potential z-component</source>
-      <translation>Imaginarni deo z-komponente potencijala</translation>
+      <translation type="unfinished">Imaginary part of potential z-component</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="164"/>
@@ -4044,7 +4044,7 @@ Za moguće promenljive, pogledaj okvir za opis ispod.</translation>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="32"/>
       <source>Surface</source>
-      <translation>Površina</translation>
+      <translation>Površ</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="49"/>
@@ -4621,7 +4621,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.ui" line="20"/>
       <source>Insert component's initial temperature:</source>
-      <translation>Unesi početnu temperaturu komponente:</translation>
+      <translation type="unfinished">Insert component's initial temperature:</translation>
     </message>
   </context>
   <context>
@@ -4952,19 +4952,19 @@ used for the Elmer solver</translation>
       <location filename="../../TaskPostDisplay.ui" line="47"/>
       <location filename="../../TaskPostDisplay.ui" line="98"/>
       <source>Surface</source>
-      <translation>Površina</translation>
+      <translation>Površ</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="52"/>
       <location filename="../../TaskPostDisplay.ui" line="103"/>
       <source>Surface with Edges</source>
-      <translation>Površina sa ivicama</translation>
+      <translation>Površ sa ivicama</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="57"/>
       <location filename="../../TaskPostDisplay.ui" line="108"/>
       <source>Wireframe</source>
-      <translation>Žičani ram</translation>
+      <translation>Žičani okvir</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="73"/>
@@ -5027,17 +5027,17 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="47"/>
       <source>Surface</source>
-      <translation>Površina</translation>
+      <translation>Površ</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="52"/>
       <source>Surface with Edges</source>
-      <translation>Površina sa ivicama</translation>
+      <translation>Površ sa ivicama</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="57"/>
       <source>Wireframe</source>
-      <translation>Žičani ram</translation>
+      <translation>Žičani okvir</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="101"/>
@@ -5943,7 +5943,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="287"/>
       <source>Solid</source>
-      <translation>Puno</translation>
+      <translation>Puno telo</translation>
     </message>
   </context>
   <context>

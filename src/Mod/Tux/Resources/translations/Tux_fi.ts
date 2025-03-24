@@ -81,7 +81,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="573"/>
       <source>Turntable</source>
-      <translation>Pyörähdyspöytä</translation>
+      <translation>Levypyöritys</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="574"/>

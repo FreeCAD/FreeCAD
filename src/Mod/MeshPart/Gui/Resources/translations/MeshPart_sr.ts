@@ -185,7 +185,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="364"/>
       <source>Close wire</source>
-      <translation>Затвори жицу</translation>
+      <translation>Затвори жичани оквир</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="366"/>
@@ -222,12 +222,12 @@ This command only works with a 'mesh' object.</source>
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
       <translation>Притисни 'Почетак', а затим изабери тачке на мрежи; када је изабрано довољно тачака, кликни десним тастером миша и изабери „Направи“. Понови овај процес да би направо више сплајнова. Затвори панел задатака да би довршио операцију.
 
-Ова команда ради само са објектом који је мрежа, а не са обичном страницом или површином. Да би претворио објекат у мрежу, користи алатке Mesh радног окружења.</translation>
+Ова команда ради само са објектом који је мрежа, а не са обичном страницом или површи. Да би претворио објекат у мрежу, користи алатке Mesh радног окружења.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
-      <translation>Жичани рам</translation>
+      <translation>Жичани оквир</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
@@ -275,7 +275,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../Tessellation.ui" line="14"/>
       <source>Tessellation</source>
-      <translation>Рад у мозаику</translation>
+      <translation>Апроксимација приказаног облика</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
@@ -448,7 +448,7 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
       <source>Elements per curvature radius:</source>
-      <translation>Елементи по радијусу закривљења:</translation>
+      <translation>Елементи по полупречнику закривљености:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>

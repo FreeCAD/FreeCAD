@@ -88,17 +88,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="98"/>
       <source>Number of gear teeth</source>
-      <translation type="unfinished">Number of gear teeth</translation>
+      <translation>Hammaspyörän hammasluku</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="104"/>
       <source>Pressure angle of gear teeth</source>
-      <translation type="unfinished">Pressure angle of gear teeth</translation>
+      <translation>Hammaspyörän hampaan painekulma</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="101"/>
       <source>Module of the gear</source>
-      <translation type="unfinished">Module of the gear</translation>
+      <translation>Hammasmoduuli</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>
@@ -141,12 +141,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1509"/>
       <source>Additive helix</source>
-      <translation type="unfinished">Additive helix</translation>
+      <translation>Spiraali</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1510"/>
       <source>Sweep a selected sketch along a helix</source>
-      <translation type="unfinished">Sweep a selected sketch along a helix</translation>
+      <translation>Seuraa valitulla luonoksella spiraalia</translation>
     </message>
   </context>
   <context>
@@ -285,7 +285,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1821"/>
       <source>Draft</source>
-      <translation>Syväys (vesirajasta pohjaan)</translation>
+      <translation>Draft</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1822"/>
@@ -298,12 +298,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="608"/>
       <source>PartDesign</source>
-      <translation>OsanSuunnittelu</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="609"/>
       <source>Duplicate selected &amp;object</source>
-      <translation type="unfinished">Duplicate selected &amp;object</translation>
+      <translation>Tee v&amp;alitusta objektista kaksoiskappale</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="610"/>
@@ -519,7 +519,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="504"/>
       <source>Create sketch</source>
-      <translation>Luo luonnos</translation>
+      <translation>Luo sketsi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="505"/>
@@ -542,7 +542,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1097"/>
       <source>Pad a selected sketch</source>
-      <translation>Pursota valittu luonnos</translation>
+      <translation>Pursota valittu sketsi</translation>
     </message>
   </context>
   <context>
@@ -627,7 +627,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1198"/>
       <source>Revolution</source>
-      <translation>Kiertoliike</translation>
+      <translation>Pyöräytys</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1199"/>
@@ -690,17 +690,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1582"/>
       <source>PartDesign</source>
-      <translation>OsanSuunnittelu</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1583"/>
       <source>Subtractive helix</source>
-      <translation type="unfinished">Subtractive helix</translation>
+      <translation>Vähentävä spiraali</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1584"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a helix and remove it from the body</translation>
+      <translation>Pyykäise valittua sketsiä spiraalia pitkin ja poista se kappaleesta</translation>
     </message>
   </context>
   <context>
@@ -708,17 +708,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1461"/>
       <source>PartDesign</source>
-      <translation>OsanSuunnittelu</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1462"/>
       <source>Subtractive loft</source>
-      <translation>Poistava profiilivenytys</translation>
+      <translation>Vähentävä profiilivenytys</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1463"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Venytä valittu profiili muiden profiilileikkausten kanssa ja leikkaa tulos irti kappaleesta</translation>
+      <translation>Venytä valittu profiili muiden profiilileikkausten läpi ja vähennä kappaleesta</translation>
     </message>
   </context>
   <context>
@@ -726,17 +726,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1365"/>
       <source>PartDesign</source>
-      <translation>OsanSuunnittelu</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1366"/>
       <source>Subtractive pipe</source>
-      <translation>Leikkaava putkimuoto</translation>
+      <translation>Vähentävä putki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1367"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Pyyhkäise valitulla luonnoksella pitkin polkua tai toiseen profiiliin, ja leikkaa tulos irti kappaleesta</translation>
+      <translation>Pyyhkäise valitulla luonnoksella pitkin polkua tai toiseen profiiliin, ja vähennä kappaleesta</translation>
     </message>
   </context>
   <context>
@@ -768,7 +768,7 @@ so that self intersection is avoided.</translation>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
       <location filename="../../CommandPrimitive.cpp" line="70"/>
       <source>Create an additive primitive</source>
-      <translation>Luo lisäävä alkeiskappale</translation>
+      <translation>Luo lisäävä perusmuoto</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="197"/>
@@ -816,53 +816,53 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="241"/>
       <source>PartDesign</source>
-      <translation>OsanSuunnittelu</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="242"/>
       <location filename="../../CommandPrimitive.cpp" line="243"/>
       <source>Create a subtractive primitive</source>
-      <translation>Luo leikkaava alkeiskappale</translation>
+      <translation>Luo vähentävä perusmuoto</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="349"/>
       <source>Subtractive Box</source>
-      <translation>Leikkaava laatikko</translation>
+      <translation>Vähentävä laatikko</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="353"/>
       <source>Subtractive Cylinder</source>
-      <translation>Leikkaava lieriö</translation>
+      <translation>Vähentävä lieriö</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="357"/>
       <source>Subtractive Sphere</source>
-      <translation>Leikkaava pallo</translation>
+      <translation>Vähentävä pallo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="361"/>
       <source>Subtractive Cone</source>
-      <translation>Leikkaava kartio</translation>
+      <translation>Vähentävä kartio</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="365"/>
       <source>Subtractive Ellipsoid</source>
-      <translation>Leikkaava ellipsoidi</translation>
+      <translation>Vähentävä ellipsoidi</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="369"/>
       <source>Subtractive Torus</source>
-      <translation>Leikkaava torus</translation>
+      <translation>Vähentävä torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="373"/>
       <source>Subtractive Prism</source>
-      <translation>Leikkaava prisma</translation>
+      <translation>Vähentävä prisma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="377"/>
       <source>Subtractive Wedge</source>
-      <translation>Leikkaava kiila</translation>
+      <translation>Vähentävä kiila</translation>
     </message>
   </context>
   <context>
@@ -896,7 +896,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="248"/>
       <source>Create a Sketch on Face</source>
-      <translation type="unfinished">Create a Sketch on Face</translation>
+      <translation>Luo luonnos pintaan</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="488"/>
@@ -928,12 +928,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="577"/>
       <source>Move tip to selected feature</source>
-      <translation type="unfinished">Move tip to selected feature</translation>
+      <translation>Siirrä osoitin haluttuun ominaisuuteen</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="622"/>
       <source>Duplicate a PartDesign object</source>
-      <translation type="unfinished">Duplicate a PartDesign object</translation>
+      <translation>Tee PartDesign -objektista kaksoiskappale</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="749"/>
@@ -1019,17 +1019,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Boolean tools</source>
-      <translation type="unfinished">Boolean tools</translation>
+      <translation>Boolen työkalut</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>Helper tools</source>
-      <translation type="unfinished">Helper tools</translation>
+      <translation>Avustaja</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Modeling tools</source>
-      <translation type="unfinished">Modeling tools</translation>
+      <translation>Mallinnustyökalut</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
@@ -1121,12 +1121,12 @@ Please select a body from below, or create a new body.</translation>
     <message>
       <location filename="../../DlgActiveBody.ui" line="36"/>
       <source>Create new body</source>
-      <translation type="unfinished">Create new body</translation>
+      <translation>Luo uusi runko</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="55"/>
       <source>Please select</source>
-      <translation type="unfinished">Please select</translation>
+      <translation>Valitse</translation>
     </message>
   </context>
   <context>
@@ -1548,7 +1548,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="80"/>
       <source>Flip direction</source>
-      <translation type="unfinished">Flip direction</translation>
+      <translation>Käännä suuntaa</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="101"/>
@@ -1707,13 +1707,13 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1217"/>
       <source>No face selected</source>
-      <translation>Yhtään tahkoa ei ole avlittu</translation>
+      <translation>Yhtään pintaa ei ole valittu</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="160"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="1052"/>
       <source>Face</source>
-      <translation>Tahko</translation>
+      <translation>Pinta</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="176"/>
@@ -1738,12 +1738,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="603"/>
       <source>Sketch normal</source>
-      <translation type="unfinished">Sketch normal</translation>
+      <translation>Sketsin normaali</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="606"/>
       <source>Face normal</source>
-      <translation type="unfinished">Face normal</translation>
+      <translation>Pinnan normaali</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="610"/>
@@ -1754,17 +1754,17 @@ click again to end selection</translation>
       <location filename="../../TaskExtrudeParameters.cpp" line="614"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="619"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>Mukautettu suunta</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1004"/>
       <source>Click on a shape in the model</source>
-      <translation type="unfinished">Click on a shape in the model</translation>
+      <translation>Napsauta mallissa olevaa muotoa</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1212"/>
       <source>Click on a face in the model</source>
-      <translation type="unfinished">Click on a face in the model</translation>
+      <translation>Napsauta mallin pintaa</translation>
     </message>
   </context>
   <context>
@@ -2140,7 +2140,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="63"/>
       <source>Overall Length</source>
-      <translation type="unfinished">Overall Length</translation>
+      <translation>Kokonaispituus</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
@@ -2303,7 +2303,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="43"/>
       <source>Reverses pad direction</source>
-      <translation type="unfinished">Reverses pad direction</translation>
+      <translation>Vaihtaa pursotussuunnan</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="70"/>
@@ -2388,7 +2388,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="252"/>
       <source>Direction/edge:</source>
-      <translation type="unfinished">Direction/edge:</translation>
+      <translation>Suunta/pinta:</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="259"/>
@@ -2400,7 +2400,7 @@ from the model as reference</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="264"/>
       <source>Sketch normal</source>
-      <translation type="unfinished">Sketch normal</translation>
+      <translation>Sketsin normaali</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="269"/>
@@ -2410,7 +2410,7 @@ from the model as reference</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="274"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>Mukautettu suunta</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="284"/>
@@ -2458,19 +2458,19 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="403"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
-      <translation type="unfinished">If unchecked, the length will be
-measured along the specified direction</translation>
+      <translation>Jos valittuna, pituus määritellään
+valittuun suuntaan</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="407"/>
       <source>Length along sketch normal</source>
-      <translation type="unfinished">Length along sketch normal</translation>
+      <translation>Sketsin normaalin suuntaan</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="145"/>
       <location filename="../../TaskPadPocketParameters.ui" line="227"/>
       <source>Applies length symmetrically to sketch plane</source>
-      <translation type="unfinished">Applies length symmetrically to sketch plane</translation>
+      <translation>Määrittää pituuden symmetrisesti sketsin tasosta</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="230"/>
@@ -2486,12 +2486,12 @@ measured along the specified direction</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="419"/>
       <location filename="../../TaskPadPocketParameters.ui" line="443"/>
       <source>Angle to taper the extrusion</source>
-      <translation type="unfinished">Angle to taper the extrusion</translation>
+      <translation>Pursotuksen kartiokulma</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="422"/>
       <source>Taper angle</source>
-      <translation type="unfinished">Taper angle</translation>
+      <translation>Kartiokulma</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="58"/>
@@ -2896,7 +2896,7 @@ measured along the specified direction</translation>
       <location filename="../../TaskRevolutionParameters.cpp" line="152"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="467"/>
       <source>Face</source>
-      <translation>Tahko</translation>
+      <translation>Pinta</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="192"/>
@@ -2931,7 +2931,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="454"/>
       <source>No face selected</source>
-      <translation>Yhtään tahkoa ei ole avlittu</translation>
+      <translation>Yhtään pintaa ei ole valittu</translation>
     </message>
   </context>
   <context>
@@ -2980,7 +2980,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="174"/>
       <source>Face</source>
-      <translation>Tahko</translation>
+      <translation>Pinta</translation>
     </message>
   </context>
   <context>
@@ -3261,7 +3261,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="198"/>
       <source>Create an additive box by its width, height, and length</source>
-      <translation type="unfinished">Create an additive box by its width, height, and length</translation>
+      <translation>Luo lisäävä laatikko määrittämällä leveys, korkeus, ja pituus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="202"/>
@@ -3304,42 +3304,42 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="350"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation>Luo leikkaava laatikko käyttäen leveyttä, korkeutta, ja pituutta</translation>
+      <translation>Luo vähentävä laatikko asettamalla leveys, korkeus ja pituus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="354"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Luo leikkaava lieriö käyttäen sädettä, korkeutta, ja kulmaa</translation>
+      <translation>Luo vähentävä lieriö asettamalla säde, korkeus ja kulma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="358"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation>Luo leikkaava pallo käyttäen sädettä ja useita kulmia</translation>
+      <translation>Luo vähentävä pallo asettamalla säde ja kulmia</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="362"/>
       <source>Create a subtractive cone</source>
-      <translation>Luo leikkaava kartio</translation>
+      <translation>Luo vähentävä kartio</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="366"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation>Luo leikkaava ellipsoidi</translation>
+      <translation>Luo vähentävä ellipsoidi</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="370"/>
       <source>Create a subtractive torus</source>
-      <translation>Luo leikkaava torus</translation>
+      <translation>Luo vähentävä torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="374"/>
       <source>Create a subtractive prism</source>
-      <translation>Luo leikkaava prisma</translation>
+      <translation>Luo vähentävä prisma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="378"/>
       <source>Create a subtractive wedge</source>
-      <translation>Luo leikkaava kiila</translation>
+      <translation>Luo vähentävä kiila</translation>
     </message>
   </context>
   <context>
@@ -3484,7 +3484,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="897"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation type="unfinished">Ensure that the body contains a feature before attempting a subtractive command.</translation>
+      <translation>Varmista, että keho sisältää ominaisuuden ennen kuin yrität vähentää.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="918"/>
@@ -3727,7 +3727,7 @@ Tämä voi johtaa odottamattomiin tuloksiin.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="264"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation>Ei ole mahdollista tehdä leikkaavaa piirrettä ilman olemassaolevaa peruspiirrettä</translation>
+      <translation>Vähentävää ominaisuutta ei voi tehdä ilman käytössä olevaa perusominaisuutta</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="445"/>
@@ -3749,7 +3749,7 @@ Tämä voi johtaa odottamattomiin tuloksiin.</translation>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="80"/>
       <source>Face</source>
-      <translation>Tahko</translation>
+      <translation>Pinta</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="140"/>
@@ -4458,7 +4458,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>&amp;Sketch</source>
-      <translation>&amp;Luonnos</translation>
+      <translation>S&amp;ketsi</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -4478,7 +4478,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Create a subtractive feature</source>
-      <translation type="unfinished">Create a subtractive feature</translation>
+      <translation>Luo vähentävä ominaisuus</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -4536,7 +4536,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="58"/>
       <source>Involute gear...</source>
-      <translation type="unfinished">Involute gear...</translation>
+      <translation>Hammaspyörä...</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="62"/>
@@ -4549,7 +4549,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../SprocketFeature.py" line="62"/>
       <source>Sprocket...</source>
-      <translation type="unfinished">Sprocket...</translation>
+      <translation>Ketjupyörä...</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.py" line="66"/>
@@ -4562,7 +4562,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
       <source>Length [mm]</source>
-      <translation type="unfinished">Length [mm]</translation>
+      <translation>Pituus [mm]</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
@@ -4577,7 +4577,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
       <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
+      <translation>Rajoitteen tyyppi</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
@@ -4689,7 +4689,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="189"/>
       <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
+      <translation>Akselin suunnittelutyökalu...</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="190"/>
@@ -4702,7 +4702,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
       <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
+      <translation>Akselin suunnittelutyökalu...</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="215"/>
@@ -4781,7 +4781,7 @@ over 90: larger hole radius at the bottom</translation>
       <location filename="../../../App/FeatureLoft.cpp" line="264"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <source>Resulting shape is not a solid</source>
-      <translation type="unfinished">Resulting shape is not a solid</translation>
+      <translation>Lopputulos ei ole kiinteä objekti</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="809"/>
@@ -4797,7 +4797,7 @@ over 90: larger hole radius at the bottom</translation>
       <location filename="../../../App/FeatureHole.cpp" line="2218"/>
       <location filename="../../../App/FeatureGroove.cpp" line="201"/>
       <source>Result has multiple solids: that is not currently supported.</source>
-      <translation type="unfinished">Result has multiple solids: that is not currently supported.</translation>
+      <translation>Lopputuloksessa on useampi kiinteä objekti: sitä ei tueta tällä hetkellä.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="159"/>
@@ -4875,34 +4875,34 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="488"/>
       <source>Length too small</source>
-      <translation type="unfinished">Length too small</translation>
+      <translation>Pituus liian pieni</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="495"/>
       <source>Second length too small</source>
-      <translation type="unfinished">Second length too small</translation>
+      <translation>Toinen pituus liian pieni</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="529"/>
       <source>Failed to obtain profile shape</source>
-      <translation type="unfinished">Failed to obtain profile shape</translation>
+      <translation>Profiilin muodon hankkiminen epäonnistui</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="581"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>Luominen epäonnistui, koska suunta on ortogonaalinen sketsin normaalivektoriin nähdne</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="639"/>
       <source>Extrude: Can only offset one face</source>
-      <translation type="unfinished">Extrude: Can only offset one face</translation>
+      <translation>Pursotus: Vain yhdelle tasolle voidaan antaa siirtymä</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="139"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="600"/>
       <location filename="../../../App/FeatureGroove.cpp" line="133"/>
       <source>Creating a face from sketch failed</source>
-      <translation type="unfinished">Creating a face from sketch failed</translation>
+      <translation>Sketsistä ei voitu muodostaa pintaa</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="682"/>
@@ -5034,7 +5034,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1977"/>
       <source>Hole error: Unsupported length specification</source>
-      <translation type="unfinished">Hole error: Unsupported length specification</translation>
+      <translation>Reikävirhe: ei tuettu pituuden määritys</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1980"/>
@@ -5281,7 +5281,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="206"/>
       <source>Length of box too small</source>
-      <translation type="unfinished">Length of box too small</translation>
+      <translation>Laatikon pituus liian pieni</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="208"/>
@@ -5414,12 +5414,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="319"/>
       <source>Shape of additive/subtractive feature is empty</source>
-      <translation type="unfinished">Shape of additive/subtractive feature is empty</translation>
+      <translation>Lisäävän / vähentävän ominaisuuden muoto on tyhjä</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="311"/>
       <source>Only additive and subtractive features can be transformed</source>
-      <translation type="unfinished">Only additive and subtractive features can be transformed</translation>
+      <translation>Vain lisääviä ja vähentäviä ominaisuuksia voidaan muuntaa</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureThickness.cpp" line="107"/>

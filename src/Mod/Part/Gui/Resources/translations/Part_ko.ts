@@ -1201,7 +1201,7 @@
     <message>
       <location filename="../../Command.cpp" line="2055"/>
       <source>Analyzes Geometry For Errors</source>
-      <translation>오류에 대 한 형상 분석</translation>
+      <translation>기하학적 오류 분석</translation>
     </message>
   </context>
   <context>
@@ -2257,7 +2257,7 @@ of projection.</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="469"/>
       <source>Shell</source>
-      <translation>쉘</translation>
+      <translation>껍질</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="521"/>
@@ -5707,7 +5707,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Shell</source>
-      <translation>쉘</translation>
+      <translation>껍질</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="82"/>
@@ -5717,7 +5717,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="85"/>
       <source>Shape</source>
-      <translation>셰이프</translation>
+      <translation>형상</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="100"/>
@@ -5847,7 +5847,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>Redundant Face</source>
-      <translation type="unfinished">Redundant Face</translation>
+      <translation>중복된 면</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="126"/>
@@ -6412,7 +6412,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
       <source>Shape type</source>
-      <translation type="unfinished">Shape type</translation>
+      <translation>형상 유형</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
@@ -6602,7 +6602,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="14"/>
       <source>Scale</source>
-      <translation>크기</translation>
+      <translation>척도</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="22"/>

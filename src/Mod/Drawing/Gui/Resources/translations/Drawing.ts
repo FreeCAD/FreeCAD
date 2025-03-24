@@ -328,36 +328,36 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DrawingView.cpp" line="597"/>
+        <location filename="../../DrawingView.cpp" line="598"/>
         <source>Different orientation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DrawingView.cpp" line="598"/>
+        <location filename="../../DrawingView.cpp" line="599"/>
         <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DrawingView.cpp" line="608"/>
-        <location filename="../../DrawingView.cpp" line="619"/>
+        <location filename="../../DrawingView.cpp" line="609"/>
+        <location filename="../../DrawingView.cpp" line="620"/>
         <source>Different paper size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DrawingView.cpp" line="609"/>
-        <location filename="../../DrawingView.cpp" line="620"/>
+        <location filename="../../DrawingView.cpp" line="610"/>
+        <location filename="../../DrawingView.cpp" line="621"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DrawingView.cpp" line="634"/>
+        <location filename="../../DrawingView.cpp" line="635"/>
         <source>Opening file failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DrawingView.cpp" line="635"/>
+        <location filename="../../DrawingView.cpp" line="636"/>
         <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -745,19 +745,19 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../../TaskOrthoViews.cpp" line="47"/>
-        <location filename="../../TaskOrthoViews.cpp" line="1041"/>
+        <location filename="../../TaskOrthoViews.cpp" line="1040"/>
         <source>Make axonometric...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskOrthoViews.cpp" line="48"/>
-        <location filename="../../TaskOrthoViews.cpp" line="1042"/>
+        <location filename="../../TaskOrthoViews.cpp" line="1041"/>
         <source>Edit axonometric settings...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskOrthoViews.cpp" line="49"/>
-        <location filename="../../TaskOrthoViews.cpp" line="1043"/>
+        <location filename="../../TaskOrthoViews.cpp" line="1042"/>
         <source>Make orthographic</source>
         <translation type="unfinished"></translation>
     </message>

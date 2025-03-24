@@ -1282,7 +1282,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../NetworkManager.py" line="511"/>
       <source>Error with encrypted connection</source>
-      <translation type="unfinished">Error with encrypted connection</translation>
+      <translation>Šifruoto ryšio sutrikimai</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="79"/>
@@ -2161,12 +2161,12 @@ Please restart to use the new version.</translation>
       <location filename="../../Addon.py" line="840"/>
       <location filename="../../Addon.py" line="856"/>
       <source>Got an error when trying to import {}</source>
-      <translation type="unfinished">Got an error when trying to import {}</translation>
+      <translation>Atsitiko klaida bandant įkelti {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="104"/>
       <source>An unknown error occurred</source>
-      <translation type="unfinished">An unknown error occurred</translation>
+      <translation>Atsitiko nežinoma klaida</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="127"/>

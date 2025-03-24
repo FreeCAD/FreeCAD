@@ -51,12 +51,12 @@
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2941"/>
       <source>Enum</source>
-      <translation type="unfinished">Enum</translation>
+      <translation>Enum</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyModel.cpp" line="276"/>
       <source>Base</source>
-      <translation>Perusta</translation>
+      <translation>Perustiedot</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
       <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
-      <translation>Muunna</translation>
+      <translation>Muuta</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2600"/>
       <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
+      <translation>Vaihda taulun elementtejä</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="3012"/>
@@ -175,7 +175,7 @@
     <message>
       <location filename="../CommandView.cpp" line="915"/>
       <source>Toggle transparency</source>
-      <translation>Vaihda läpinäkyvyys</translation>
+      <translation>Vaihda läpinäkyvyyttä</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1028"/>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../CommandFeat.cpp" line="178"/>
       <source>Toggle freeze</source>
-      <translation type="unfinished">Toggle freeze</translation>
+      <translation>Vaihda jäätymisen tilaa</translation>
     </message>
   </context>
   <context>
@@ -345,12 +345,12 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="26"/>
       <source>Expression editor</source>
-      <translation type="unfinished">Expression editor</translation>
+      <translation>Lausekkeen muokkain</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="38"/>
       <source>Variable Sets</source>
-      <translation type="unfinished">Variable Sets</translation>
+      <translation>Muuttujien Sarjat</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="49"/>
@@ -360,7 +360,7 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="75"/>
       <source>Variable Set:</source>
-      <translation type="unfinished">Variable Set:</translation>
+      <translation>Muuttujien Sarja:</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="85"/>
@@ -370,12 +370,12 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="92"/>
       <source>New Property:</source>
-      <translation type="unfinished">New Property:</translation>
+      <translation>Uusi ominaisuus:</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="114"/>
       <source>Show variable sets</source>
-      <translation type="unfinished">Show variable sets</translation>
+      <translation>Näytä muuttujien sarjat</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="149"/>
@@ -416,7 +416,7 @@
     <message>
       <location filename="../Application.h" line="267"/>
       <source>&amp;Default</source>
-      <translation type="unfinished">&amp;Default</translation>
+      <translation>&amp;Oletus</translation>
     </message>
     <message>
       <location filename="../Application.h" line="268"/>
@@ -426,12 +426,12 @@
     <message>
       <location filename="../Application.h" line="272"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>&amp;Muunna</translation>
     </message>
     <message>
       <location filename="../Application.h" line="277"/>
       <source>Cu&amp;tting</source>
-      <translation type="unfinished">Cu&amp;tting</translation>
+      <translation>&amp;Leikkaus</translation>
     </message>
     <message>
       <location filename="../Application.h" line="282"/>
@@ -451,7 +451,7 @@
     <message>
       <location filename="../Application.h" line="283"/>
       <source>The object will have the color of its individual faces editable with the Part FaceAppearances command</source>
-      <translation type="unfinished">The object will have the color of its individual faces editable with the Part FaceAppearances command</translation>
+      <translation>Objektin yksittäisten tahkojen väriä voidaan muokata Part FaceAppearances -komennolla</translation>
     </message>
   </context>
   <context>
@@ -459,12 +459,12 @@
     <message>
       <location filename="../QuantitySpinBox_p.h" line="53"/>
       <source>Enter an expression... (=)</source>
-      <translation type="unfinished">Enter an expression... (=)</translation>
+      <translation>Syötä lauseke... (=)</translation>
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
       <source>Expression:</source>
-      <translation type="unfinished">Expression:</translation>
+      <translation>Lauseke:</translation>
     </message>
   </context>
   <context>
@@ -601,7 +601,8 @@
       <location filename="../CADNavigationStyle.cpp" line="57"/>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Vieritä hiiren keskipainiketta tai pidä keskimmäistä painiketta painettuna kun painat vasenta tai oikeata hiiren nappia ja liikutat samalla hiirtä ylös tai alas</translation>
+      <translation>Vieritä hiiren keskipainiketta tai pidä keskimmäistä painiketta painettuna
+ja napsauta vasenta tai oikeaa painiketta hiirtä ylos tai alas siirtäen</translation>
     </message>
   </context>
   <context>
@@ -614,7 +615,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../WidgetFactory.cpp" line="367"/>
       <source>&amp;Cancel</source>
-      <translation>&amp;Peruuta</translation>
+      <translation>&amp;Kumoa</translation>
     </message>
   </context>
   <context>
@@ -748,7 +749,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgAbout.cpp" line="734"/>
       <source>Copied!</source>
-      <translation type="unfinished">Copied!</translation>
+      <translation>Kopioitu!</translation>
     </message>
   </context>
   <context>
@@ -896,7 +897,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DemoMode.ui" line="14"/>
       <source>View Turntable</source>
-      <translation>Näkymän kääntöpöytä</translation>
+      <translation>Näkymän levypyöritys</translation>
     </message>
     <message>
       <location filename="../DemoMode.ui" line="38"/>
@@ -1105,12 +1106,12 @@ Jos tämä ei ole rastitettuna, ominaisuus on nimettävä ainutlaatuisesti, ja s
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="38"/>
       <source>Browse</source>
-      <translation type="unfinished">Browse</translation>
+      <translation>Selaa</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="60"/>
       <source>Property group templates</source>
-      <translation type="unfinished">Property group templates</translation>
+      <translation>Ominaisuusryhmien pohjat</translation>
     </message>
   </context>
   <context>
@@ -1118,7 +1119,7 @@ Jos tämä ei ole rastitettuna, ominaisuus on nimettävä ainutlaatuisesti, ja s
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="163"/>
       <source>Export Config</source>
-      <translation type="unfinished">Export Config</translation>
+      <translation>Viennin asetukset</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="171"/>
@@ -1276,7 +1277,7 @@ Jos tämä ei ole rastitettuna, ominaisuus on nimettävä ainutlaatuisesti, ja s
     <message>
       <location filename="../DlgKeyboard.ui" line="107"/>
       <source>To change a current shortcut enter the new shortcut in the field below and press 'Assign'.</source>
-      <translation type="unfinished">To change a current shortcut enter the new shortcut in the field below and press 'Assign'.</translation>
+      <translation>Muuttaaksesi nykyistä pikakomentoa syötä uusi pikakomento alla olevaan kenttään ja paina 'Määritä'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="119"/>
@@ -1286,30 +1287,30 @@ Jos tämä ei ole rastitettuna, ominaisuus on nimettävä ainutlaatuisesti, ja s
     <message>
       <location filename="../DlgKeyboard.ui" line="137"/>
       <source>Multi-key sequence delay:</source>
-      <translation type="unfinished">Multi-key sequence delay:</translation>
+      <translation>Näppäinsekvenssin viive:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="156"/>
       <source>Time in milliseconds to wait for the next keystroke of the current key sequence.
 For example, pressing 'F' twice in less than the time delay setting here will be
 treated as shortcut key sequence 'F, F'.</source>
-      <translation type="unfinished">Time in milliseconds to wait for the next keystroke of the current key sequence.
-For example, pressing 'F' twice in less than the time delay setting here will be
-treated as shortcut key sequence 'F, F'.</translation>
+      <translation>Millisekunteina määritelty aika, joka odotetaan seuraavaa näppäinpainallusta näppäinsekvenssiin.
+Esimerkiksi kaksi painallusta F-näppäimellä annettua aikarajaa nopeammin käsitellään näppäinsekvenssinä
+'F, F'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="186"/>
       <source>This list shows commands having the same shortcut in the priority from high
 to low. If more than one command with the same shortcut are active at the
 same time. The one with the highest priority will be triggered.</source>
-      <translation type="unfinished">This list shows commands having the same shortcut in the priority from high
-to low. If more than one command with the same shortcut are active at the
-same time. The one with the highest priority will be triggered.</translation>
+      <translation>Tässä luettelossa näkyvät korkeimmasta prioriteetista alkaen komennot, joilla on sama pikakomento.
+Jos useampi samalla pikakomennolla käynnistyvä komento on aktiivisena, korkeimmalla prioriteetilla
+oleva käynnistetään.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="191"/>
       <source>Shortcut priority list:</source>
-      <translation type="unfinished">Shortcut priority list:</translation>
+      <translation>Pikakomentojen prioriteettiluettelo:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="238"/>
@@ -1489,7 +1490,7 @@ same time. The one with the highest priority will be triggered.</translation>
     <message>
       <location filename="../DlgToolbars.ui" line="334"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Huomautus:&lt;/span&gt; Muutokset aktivoituvat, kun lataat työpöydän&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../DlgToolbarsImp.cpp" line="86"/>
@@ -1674,7 +1675,7 @@ same time. The one with the highest priority will be triggered.</translation>
     <message>
       <location filename="../DlgMacroExecute.ui" line="106"/>
       <source>Filter by case-insensitive file content, regular expressions supported</source>
-      <translation type="unfinished">Filter by case-insensitive file content, regular expressions supported</translation>
+      <translation>Suodata merkkikokoriippuvasti tiedoston sisältöä, voit käyttää myös säännöllisiä lausekkeita</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="122"/>
@@ -1724,7 +1725,7 @@ same time. The one with the highest priority will be triggered.</translation>
     <message>
       <location filename="../DlgMacroExecute.ui" line="281"/>
       <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
-      <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+      <translation>Käynnistä kustomoitujen työkalupalkin makrojen määrittämisen ohje.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="284"/>
@@ -1734,7 +1735,7 @@ same time. The one with the highest priority will be triggered.</translation>
     <message>
       <location filename="../DlgMacroExecute.ui" line="307"/>
       <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
-      <translation type="unfinished">Open Addon Manager where macros created by the community and other addons can be downloaded.</translation>
+      <translation>Avaa Lisäosien hallinta, jossa voit ladata yhteisön ja toisten lisäosien makroja.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="310"/>
@@ -1822,7 +1823,7 @@ Note: your changes will be applied when you next switch workbenches
 </source>
       <translation>Tämä opastaa sinua asettamaan tämän makron mukautettuun yleiseen työkaluriviin. Ohjeet ovat punaisella tekstillä ikkunan sisällä.
 
-Huomautus: muutokset otetaan käyttöön, kun seuraavan kerran vaihdat työpöytiä
+Huomautus: muutokset otetaan käyttöön, kun seuraavan kerran vaihdat työtiloja
 </translation>
     </message>
     <message>
@@ -1848,12 +1849,12 @@ Huomautus: muutokset otetaan käyttöön, kun seuraavan kerran vaihdat työpöyt
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="780"/>
       <source>Walkthrough instructions: Select macro from list, then click right arrow button (-&gt;), then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Select macro from list, then click right arrow button (-&gt;), then Close.</translation>
+      <translation>Läpikulkuohjeet: Valitse makro luettelosta, napsauta nuolta oikealle (-&gt;), napsauta Sulje.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="806"/>
       <source>Walkthrough instructions: Click New, select macro, then right arrow (-&gt;) button, then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click New, select macro, then right arrow (-&gt;) button, then Close.</translation>
+      <translation>Läpikulkuohjeet: Valitse Uusi, valitse makro, napsauta nuoli oikealle (-&gt;), sitten Sulje.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="915"/>
@@ -2238,7 +2239,7 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
       <location filename="../DlgPreferencePackManagement.ui" line="14"/>
       <source>Manage Preference Packs</source>
-      <translation type="unfinished">Manage Preference Packs</translation>
+      <translation>Hallinnoi Tallennettuja Asetuspaketteja</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagement.ui" line="56"/>
@@ -2251,37 +2252,37 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="90"/>
       <source>User-Saved Preference Packs</source>
-      <translation type="unfinished">User-Saved Preference Packs</translation>
+      <translation>Käyttäjän Tallennetut Asetuspaketit</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="94"/>
       <source>Built-In Preference Packs</source>
-      <translation type="unfinished">Built-In Preference Packs</translation>
+      <translation>Sisäänrakennetut Asetuspaketit</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="128"/>
       <source>Toggle visibility of built-in preference pack '%1'</source>
-      <translation type="unfinished">Toggle visibility of built-in preference pack '%1'</translation>
+      <translation>Vaihda sisäänrakennetun Asetuspaketin '%1' näkyvyyttä</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="135"/>
       <source>Delete user-saved preference pack '%1'</source>
-      <translation type="unfinished">Delete user-saved preference pack '%1'</translation>
+      <translation>Poista käyttäjän tallentama asetuspaketti '%1'</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="145"/>
       <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
-      <translation type="unfinished">Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</translation>
+      <translation>Vaihda Lisäosan asetuspaketin '%1' näkyvyyttä (käytä Lisäosien Hallintaa, jos haluat poistaa pysyvästi)</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="157"/>
       <source>Delete saved preference pack?</source>
-      <translation type="unfinished">Delete saved preference pack?</translation>
+      <translation>Poista tallennettu asetuspaketti?</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="158"/>
       <source>Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</source>
-      <translation type="unfinished">Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</translation>
+      <translation>Oletko varma, että haluat poistaa asetuspaketin '%1'? Tätä ei voi perua.</translation>
     </message>
   </context>
   <context>
@@ -2311,22 +2312,22 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="589"/>
       <source>Reset page '%1'...</source>
-      <translation type="unfinished">Reset page '%1'...</translation>
+      <translation>Palauta sivu '%1'...</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="592"/>
       <source>Resets the user settings for the page '%1'</source>
-      <translation type="unfinished">Resets the user settings for the page '%1'</translation>
+      <translation>Palauttaa sivun '%1' käyttäjäasetukset</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="595"/>
       <source>Reset group '%1'...</source>
-      <translation type="unfinished">Reset group '%1'...</translation>
+      <translation>Palauta ryhmä '%1'...</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="598"/>
       <source>Resets the user settings for the group '%1'</source>
-      <translation type="unfinished">Resets the user settings for the group '%1'</translation>
+      <translation>Palauttaa ryhmän '%1' käyttäjäasetukset</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="601"/>
@@ -2336,7 +2337,7 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="604"/>
       <source>Resets the user settings entirely</source>
-      <translation type="unfinished">Resets the user settings entirely</translation>
+      <translation>Palauta käyttäjän asetukset kokonaan</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="620"/>
@@ -2476,12 +2477,12 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
       <location filename="../DlgProjectUtility.ui" line="14"/>
       <source>Document utility</source>
-      <translation type="unfinished">Document utility</translation>
+      <translation>Asiakirjatyökalu</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="22"/>
       <source>Extract document</source>
-      <translation type="unfinished">Extract document</translation>
+      <translation>Pura asiakirja</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="28"/>
@@ -2508,7 +2509,7 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
       <location filename="../DlgProjectUtility.ui" line="137"/>
       <source>Load document file after creation</source>
-      <translation type="unfinished">Load document file after creation</translation>
+      <translation>Avaa asiakirjatiedosto luonnin jälkeen</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="115"/>
@@ -2547,12 +2548,12 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="104"/>
       <source>Failed to extract document</source>
-      <translation type="unfinished">Failed to extract document</translation>
+      <translation>Asiakirjan purku epäonnistui</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="121"/>
       <source>Failed to create document</source>
-      <translation type="unfinished">Failed to create document</translation>
+      <translation>Tiedostoa ei voitu luoda</translation>
     </message>
   </context>
   <context>
@@ -2610,12 +2611,12 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
       <location filename="../DlgRevertToBackupConfig.ui" line="14"/>
       <source>Revert to Backup Config</source>
-      <translation type="unfinished">Revert to Backup Config</translation>
+      <translation>Palauta varmuuskopio</translation>
     </message>
     <message>
       <location filename="../DlgRevertToBackupConfig.ui" line="26"/>
       <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</source>
-      <translation type="unfinished">WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</translation>
+      <translation>VAROITUS: tämä prosessi kumoaa kaikki määritetyn päivämäärän jälkeen tehdyt asetusmuutokset, ja myös palauttaa Viimeisimmät tiedostot ja Makrot niiden tilalle kyseisenä päivänä.</translation>
     </message>
     <message>
       <location filename="../DlgRevertToBackupConfig.ui" line="52"/>
@@ -2628,7 +2629,7 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
       <location filename="../DlgRevertToBackupConfigImp.cpp" line="92"/>
       <source>No selection in dialog, cannot load backup file</source>
-      <translation type="unfinished">No selection in dialog, cannot load backup file</translation>
+      <translation>Ei valintaa valintaikkunassa, varmuuskopiotiedostoa ei voi ladata</translation>
     </message>
   </context>
   <context>
@@ -2702,8 +2703,8 @@ oikeassa alakulmassa avatuissa tiedostoissa</translation>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="73"/>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
-      <translation type="unfinished">Size of main coordinate system representation
-in the corner -- in % of height/width of viewport</translation>
+      <translation>Näkymän koordinaatioilmaisimen koko nurkassa
+prosentteina näkymän korkeudesta / leveydestä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="128"/>
@@ -2770,16 +2771,16 @@ can be rendered directly by GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
-      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU.
+      <translation>Jos valittu, käytetään Vertexin puskurin objekteja (VBO).
+VBO on OpenGL ominaisuus, joka tarjoaa menetelmiä lataamalla
+vektoridataa (sijainti, normaali vektori, väri jne.) näytönohjaimelle.
+VBOt tarjoaa merkittävää suoritusetua, koska tiedot sijaitsevat
+grafiikkamuistissa eikä järjestelmämuistissa, joten näytönohjainkortti
+voi tehdä renderoida suoraan.
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support on the FreeCAD forums</translation>
+Huomautus: Joskus tämä ominaisuus voi johtaa useisiin
+-ongelmiin, jotka vaihtelevat graafisista poikkeavuuksista GPU-kaatumisvikoihin. Muista
+raportoida, että tämä asetus on käytössä jos haet tukea FreeCAD-foorumeilta</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
@@ -2805,13 +2806,13 @@ There are 3 options available to achieve this:
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
-      <translation type="unfinished">'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this:
-1) 'Auto' (default), let Coin3D decide where to cache.
-2) 'Distributed', manually turn on cache for all view provider root node.
-3) 'Centralized', manually turn off cache in all nodes of all view provider, and
-only cache at the scene graph root node. This offers the fastest rendering speed
-but slower response to any scene changes.</translation>
+      <translation>'Render Caching' on toinen tapa sanoa 'Rendering Acceleration'.
+Tämä voidaan tehdä kolmella tavalla: 
+1) 'Auto' (oletus), anna Coin3D:n päättää missä välimuistissa.
+2) 'Jaetut', ota välimuisti manuaalisesti käyttöön kaikille näkymän juurisolmuille.
+3) 'Keskitetty', sammuta välimuisti manuaalisesti kaikkien näkymien tarjoajien solmujen kautta ja
+vain tallenna välimuistiin näkymän graafiset juurisolmut. Tämä tarjoaa nopeimman renderöinti nopeuden
+mutta hitaamman vasteen näkymän muuttuessa.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="245"/>
@@ -2836,7 +2837,7 @@ but slower response to any scene changes.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="276"/>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>Millaista multisample anti-aliasiointia käytetään</translation>
     </message>
     <message>
       <location filename="../Multisample.cpp" line="42"/>
@@ -2861,7 +2862,7 @@ but slower response to any scene changes.</translation>
     <message>
       <location filename="../Multisample.cpp" line="46"/>
       <source>MSAA 6x</source>
-      <translation type="unfinished">MSAA 6x</translation>
+      <translation>MSAA 6x</translation>
     </message>
     <message>
       <location filename="../Multisample.cpp" line="47"/>
@@ -2896,21 +2897,21 @@ but slower response to any scene changes.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="338"/>
       <source>Size of vertices in the Sketcher, TechDraw and other workbenches</source>
-      <translation type="unfinished">Size of vertices in the Sketcher, TechDraw and other workbenches</translation>
+      <translation>Kärkipisteitten koko Sketcherissä, TechDraw:ssa ja muissa työtiloissa</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="345"/>
       <source>Eye to eye distance for stereo modes</source>
-      <translation>Silmien välinen etäisyys stereotiloja varten</translation>
+      <translation>Silmien välinen etäisyys stereonäkymissä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="358"/>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Stereoprojektioiden silmästä-silmään -etäisyys.
+Annettu arvo on tekijä, jolla näkymässä näkyvää 3D-objektia
+ympäröivä laatikko kerrotaan.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="388"/>
@@ -2998,17 +2999,17 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="180"/>
       <source>20px</source>
-      <translation type="unfinished">20px</translation>
+      <translation>20px</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="181"/>
       <source>25px</source>
-      <translation type="unfinished">25px</translation>
+      <translation>25px</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="182"/>
       <source>30px</source>
-      <translation type="unfinished">30px</translation>
+      <translation>30px</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="235"/>
@@ -3149,7 +3150,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="106"/>
       <source>Color gradient is used with its full color range</source>
-      <translation type="unfinished">Color gradient is used with its full color range</translation>
+      <translation>Liukuvärejä käytetään koko alueella</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="109"/>
@@ -3164,7 +3165,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="122"/>
       <source>Color gradient starts from the zero value</source>
-      <translation type="unfinished">Color gradient starts from the zero value</translation>
+      <translation>Liukuvärit alkavat nolla-arvosta</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="125"/>
@@ -3185,8 +3186,8 @@ bounding box size of the 3D object that is currently displayed.</translation>
       <location filename="../DlgSettingsColorGradient.ui" line="159"/>
       <source>Data outside the specified min-max range
 will be displayed in gray</source>
-      <translation type="unfinished">Data outside the specified min-max range
-will be displayed in gray</translation>
+      <translation>Määritellyn min-maks -alueen ulkopuolella olevat
+arvot näytetään harmaana</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="163"/>
@@ -3202,13 +3203,13 @@ will be displayed in gray</translation>
       <location filename="../DlgSettingsColorGradient.ui" line="173"/>
       <source>Data outside the specified min-max range
 will be displayed with transparency</source>
-      <translation type="unfinished">Data outside the specified min-max range
-will be displayed with transparency</translation>
+      <translation>Määritellyn min-maks -alueen ulkopuolella olevat
+arvot näytetään läpinäkyvänä</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="177"/>
       <source>Out &amp;transparent</source>
-      <translation type="unfinished">Out &amp;transparent</translation>
+      <translation>Ulkoiset &amp;läpinäkyvänä</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="180"/>
@@ -3233,7 +3234,7 @@ will be displayed with transparency</translation>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="257"/>
       <source>Number of labels besides the color bar</source>
-      <translation type="unfinished">Number of labels besides the color bar</translation>
+      <translation>Väripalkin vieressä näytettävien tunnisteitten määrä</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="267"/>
@@ -3249,8 +3250,8 @@ will be displayed with transparency</translation>
       <location filename="../DlgSettingsColorGradient.ui" line="312"/>
       <source>Number of decimals for labels
 besides the color bar</source>
-      <translation type="unfinished">Number of decimals for labels
-besides the color bar</translation>
+      <translation>Väripalkin vieressä näkyvien
+lukujen desimaalimäärä</translation>
     </message>
     <message>
       <source/>
@@ -3296,8 +3297,8 @@ besides the color bar</translation>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
 (0 = none, 9 = highest, 7 = default)</source>
-      <translation type="unfinished">Document save compression level
-(0 = none, 9 = highest, 7 = default)</translation>
+      <translation>Asiakirjojen tallennuksen pakkaustaso
+(0 = ei pakata, 9 = korkein, 7 = oletus)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>
@@ -3312,12 +3313,12 @@ besides the color bar</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="132"/>
       <source>Using Undo/Redo on documents</source>
-      <translation>"Peruuta"/"Tee uudelleen" komentojen käyttö asiakirjoissa</translation>
+      <translation>"Kumoa"/"Tee uudelleen" komentojen käyttö asiakirjoissa</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="165"/>
       <source>Maximum Undo/Redo steps</source>
-      <translation>Suurin sallittu "Peruuta"/"Tee uudelleen" askelten määrä</translation>
+      <translation>Suurin sallittu "Kumoa"/"Tee uudelleen" askelten määrä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="172"/>
@@ -3440,7 +3441,7 @@ saavat mukaan päivämäärän määritellyn muodon mukaan</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="562"/>
       <source>Allow objects to have same label</source>
-      <translation type="unfinished">Allow objects to have same label</translation>
+      <translation>Salli objekteille sama nimi</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="565"/>
@@ -3562,17 +3563,17 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="50"/>
       <source>CERN Open Hardware Licence strongly-reciprocal</source>
-      <translation type="unfinished">CERN Open Hardware Licence strongly-reciprocal</translation>
+      <translation>CERN Open Hardware Licence strongly-reciprocal</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="51"/>
       <source>CERN Open Hardware Licence weakly-reciprocal</source>
-      <translation type="unfinished">CERN Open Hardware Licence weakly-reciprocal</translation>
+      <translation>CERN Open Hardware Licence weakly-reciprocal</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="52"/>
       <source>CERN Open Hardware Licence permissive</source>
-      <translation type="unfinished">CERN Open Hardware Licence permissive</translation>
+      <translation>CERN Open Hardware Licence permissive</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="53"/>
@@ -3860,7 +3861,7 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="195"/>
       <source>Show script commands in Python console</source>
-      <translation type="unfinished">Show script commands in Python console</translation>
+      <translation>Näytä skriptikomennot Python-konsolissa</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="211"/>
@@ -3890,7 +3891,7 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="285"/>
       <source>Keyboard shortcut count</source>
-      <translation type="unfinished">Keyboard shortcut count</translation>
+      <translation>Näppäinkomentojen määrä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="305"/>
@@ -3964,7 +3965,7 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="120"/>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>Kiertää lähimpään mahdolliseen tilaan, kun kuution tahkoja napsautetaan</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="123"/>
@@ -3994,12 +3995,12 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="208"/>
       <source>Opacity when inactive</source>
-      <translation type="unfinished">Opacity when inactive</translation>
+      <translation>Läpinäkyvyys passiivisena</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="224"/>
       <source>Opacity of the navigation cube when not focused</source>
-      <translation type="unfinished">Opacity of the navigation cube when not focused</translation>
+      <translation>Navigointikuution läpinäkyvyys, kun siihen ei ole kohdistettu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="249"/>
@@ -4069,15 +4070,15 @@ Valitse sarja ja paina sitten painiketta nähdäksesi mainitut asetukset.</trans
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the z-axis.</source>
-      <translation type="unfinished">Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis (with constrained axes).
-Free Turntable: the part will be rotated around the z-axis.</translation>
+      <translation>Navigointikuution pyöritystapa.
+Ohjauspallo: osa pyörii y-akselin ympäri, kun hiirtä liikutetaan vaakasuunnassa.
+Levypyöritys: osa pyörii z-akselin ympäri (rajoitettu akseleihin).
+Vapaa levypyöritys: osaa käännetään z-akselin ympäri.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="482"/>
       <source>Turntable</source>
-      <translation>Pyörähdyspöytä</translation>
+      <translation>Levypyöritys</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="487"/>
@@ -4087,7 +4088,7 @@ Free Turntable: the part will be rotated around the z-axis.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="492"/>
       <source>Free Turntable</source>
-      <translation type="unfinished">Free Turntable</translation>
+      <translation>Vapaa levypyöritys</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="500"/>
@@ -4144,12 +4145,12 @@ Arvo on pallon halkaisija, joka mahtuu ruudulle.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="727"/>
       <source>Space mouse</source>
-      <translation type="unfinished">Space mouse</translation>
+      <translation>Space mouse</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="733"/>
       <source>Enable support of legacy space mouse devices</source>
-      <translation type="unfinished">Enable support of legacy space mouse devices</translation>
+      <translation>Ota käyttöön tuki perinteisille Space Mouse -hiirilaitteille</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="749"/>
@@ -4159,7 +4160,7 @@ Arvo on pallon halkaisija, joka mahtuu ruudulle.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="815"/>
       <source>Enable spinning animations that are used in some navigation styles after dragging</source>
-      <translation type="unfinished">Enable spinning animations that are used in some navigation styles after dragging</translation>
+      <translation>Ota käyttöön pyörivät animaatiot, joita käytetään joissain navigointityyleissä vetämällä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="818"/>
@@ -4169,7 +4170,7 @@ Arvo on pallon halkaisija, joka mahtuu ruudulle.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="758"/>
       <source>Duration of navigation animations that have a fixed duration</source>
-      <translation type="unfinished">Duration of navigation animations that have a fixed duration</translation>
+      <translation>Sellaisten navigointianimaatioiden kesto, joiden kesto on kiinteä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="761"/>
@@ -4205,8 +4206,8 @@ Arvo on pallon halkaisija, joka mahtuu ruudulle.</translation>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="640"/>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>Kuinka paljon zoomataan.
+Zoomausaskel '1' tarkoittaa kerrointa 7,5 jokaista zoomausaskelta kohden.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="684"/>
@@ -4320,7 +4321,7 @@ vaakatilan Python-konsolissa</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="46"/>
       <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
+      <translation>Kursorin muoto on lohko</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="49"/>
@@ -4330,7 +4331,7 @@ vaakatilan Python-konsolissa</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="65"/>
       <source>Saves Python history across sessions</source>
-      <translation type="unfinished">Saves Python history across sessions</translation>
+      <translation>Tallentaa Pythonin historian eri istunnoissa</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="68"/>
@@ -4350,7 +4351,7 @@ vaakatilan Python-konsolissa</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="94"/>
       <source> ms</source>
-      <translation type="unfinished"> ms</translation>
+      <translation> ms</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="119"/>
@@ -4365,7 +4366,7 @@ vaakatilan Python-konsolissa</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="144"/>
       <source>Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</translation>
+      <translation>Käytetään asennettaessa pakettea pip-ohjelmalla ja suoritettaessa vianetsintää debugpy-ohjelmallaa. Tunnistetaan jos tarvitaan eikä määritetty.</translation>
     </message>
   </context>
   <context>
@@ -4398,15 +4399,15 @@ vaakatilan Python-konsolissa</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="121"/>
       <source>Pick radius (px):</source>
-      <translation>Poimi säde (px):</translation>
+      <translation>Poiminnan säde (px):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="149"/>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
       </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+      <translation>Alue, jolta poimitaan elementtejä 3D-näkymässä.
+Suurempi arvo helpottaa asioiden valitsemista, mutta pienet ominaisuudet voivat olla mahdottomia valita.
       </translation>
     </message>
     <message>
@@ -4422,7 +4423,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="205"/>
       <source>Preselect the object in 3D view when hovering the cursor over the tree item</source>
-      <translation type="unfinished">Preselect the object in 3D view when hovering the cursor over the tree item</translation>
+      <translation>Esivalitse objekti 3D-näkymässä, kun osoitin kulkee sen kohdalla puunäkymässä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="218"/>
@@ -4483,48 +4484,48 @@ Larger value eases to pick things, but can make small features impossible to sel
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="177"/>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="144"/>
       <source>Top:</source>
-      <translation type="unfinished">Top:</translation>
+      <translation>Ylä:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="204"/>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="145"/>
       <source>Middle:</source>
-      <translation type="unfinished">Middle:</translation>
+      <translation>Keskellä:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="412"/>
       <source>Color Bar</source>
-      <translation type="unfinished">Color Bar</translation>
+      <translation>Väripalkki</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="459"/>
       <source>Label text color</source>
-      <translation type="unfinished">Label text color</translation>
+      <translation>Nimiketekstin väri</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="475"/>
       <source>Color Bar (used in Mesh and FEM Wbs) Label text color</source>
-      <translation type="unfinished">Color Bar (used in Mesh and FEM Wbs) Label text color</translation>
+      <translation>Väripalkin (käytetään Mesh ja FEM -työtiloissa) otsikon väri</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="495"/>
       <source>Label text size</source>
-      <translation type="unfinished">Label text size</translation>
+      <translation>Selitetekstin koko</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="502"/>
       <source>Color Bar (used in Mesh and FEM Wbs) Label Text Size</source>
-      <translation type="unfinished">Color Bar (used in Mesh and FEM Wbs) Label Text Size</translation>
+      <translation>Väripalkin (käytetään Mesh ja FEM -työtiloissa) otsikon kirjasinkoko</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="163"/>
       <source>Switches the colors of the gradient</source>
-      <translation type="unfinished">Switches the colors of the gradient</translation>
+      <translation>Vaihtaa liukuvärin värejä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="166"/>
       <source>Switch</source>
-      <translation type="unfinished">Switch</translation>
+      <translation>Vaihda</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="231"/>
@@ -4540,7 +4541,7 @@ Larger value eases to pick things, but can make small features impossible to sel
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="247"/>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="146"/>
       <source>Bottom:</source>
-      <translation type="unfinished">Bottom:</translation>
+      <translation>Alareuna:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="281"/>
@@ -4570,17 +4571,17 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="152"/>
       <source>Central:</source>
-      <translation type="unfinished">Central:</translation>
+      <translation>Keskikohta:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="153"/>
       <source>Midway:</source>
-      <translation type="unfinished">Midway:</translation>
+      <translation>Keskellä:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="154"/>
       <source>End:</source>
-      <translation type="unfinished">End:</translation>
+      <translation>Loppu:</translation>
     </message>
   </context>
   <context>
@@ -4595,22 +4596,22 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="14"/>
       <source>Units converter</source>
-      <translation type="unfinished">Units converter</translation>
+      <translation>Yksikköjen muunnin</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="28"/>
       <source>Input the source value and unit</source>
-      <translation>Syötä lähdearvo ja yksikkö</translation>
+      <translation>Syötä lähtöarvo ja yksikkö</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="35"/>
       <source>as:</source>
-      <translation>kuten:</translation>
+      <translation>yksikköön:</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="48"/>
       <source>Input here the unit for the result</source>
-      <translation>Syötä yksikkö tähän saadaksesi tuloksen</translation>
+      <translation>Syötä tähän yksikkö, johon haluat muunnoksen</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="58"/>
@@ -4626,8 +4627,8 @@ Larger value eases to pick things, but can make small features impossible to sel
       <location filename="../DlgUnitsCalculator.ui" line="83"/>
       <source>List of last used calculations.
 To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations.
-To add a calculation press Return in the value input field</translation>
+      <translation>Viimeksi tehtyjen muunnosten luettelo.
+Laske muunnos painamalla Enter arvon syöttöruudussa</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="94"/>
@@ -4773,7 +4774,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DocumentRecovery.cpp" line="343"/>
       <source>&amp;Finish</source>
-      <translation type="unfinished">&amp;Finish</translation>
+      <translation>&amp;Viimeistele</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="501"/>
@@ -4993,7 +4994,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../MouseButtons.ui" line="20"/>
       <source>Configuration</source>
-      <translation>Asetustiedostot</translation>
+      <translation>Asetukset</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="28"/>
@@ -5003,7 +5004,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../MouseButtons.ui" line="48"/>
       <source>Panning:</source>
-      <translation type="unfinished">Panning:</translation>
+      <translation>Panerointi:</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="68"/>
@@ -5193,34 +5194,34 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="226"/>
       <source>Rotation axis and angle</source>
-      <translation type="unfinished">Rotation axis and angle</translation>
+      <translation>Rotaatioakseli ja kulma</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="231"/>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Euler kulmat (zy'x')</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="360"/>
       <location filename="../Placement.ui" line="367"/>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Kääntyminen (z-akselilla)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="380"/>
       <location filename="../Placement.ui" line="387"/>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Nyökkääminen (y-akselilla)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="20"/>
       <source>Translation</source>
-      <translation type="unfinished">Translation</translation>
+      <translation>Muutos</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="95"/>
       <source>Axial</source>
-      <translation type="unfinished">Axial</translation>
+      <translation>Aksiaalinen</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="118"/>
@@ -5245,12 +5246,12 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="400"/>
       <source>Roll (around x-axis)</source>
-      <translation type="unfinished">Roll (around x-axis)</translation>
+      <translation>Kallistus (x-akselilla)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="407"/>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Pyöritys (x-akselin ympäri)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="445"/>
@@ -5400,12 +5401,12 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
       <source>No 3D view</source>
-      <translation type="unfinished">No 3D view</translation>
+      <translation>Ei 3D-näkymää</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
       <source>No active 3D view found.</source>
-      <translation type="unfinished">No active 3D view found.</translation>
+      <translation>Aktiivista 3D-näkymää ei löytynyt.</translation>
     </message>
   </context>
   <context>
@@ -5414,7 +5415,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../Transform.cpp" line="288"/>
       <location filename="../Transform.cpp" line="413"/>
       <source>Transform</source>
-      <translation>Muunna</translation>
+      <translation>Muuta</translation>
     </message>
   </context>
   <context>
@@ -5432,7 +5433,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgObjectSelection.ui" line="157"/>
       <source>Auto select depending objects</source>
-      <translation type="unfinished">Auto select depending objects</translation>
+      <translation>Valitse riippuvat objektit automaattisesti</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.ui" line="164"/>
@@ -5442,7 +5443,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="115"/>
       <source>Depending on</source>
-      <translation type="unfinished">Depending on</translation>
+      <translation>Riippuu objektista</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="116"/>
@@ -5459,7 +5460,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="119"/>
       <source>Depended by</source>
-      <translation type="unfinished">Depended by</translation>
+      <translation>Riippuvuussuhde</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="123"/>
@@ -5480,8 +5481,8 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../DlgObjectSelection.cpp" line="158"/>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation type="unfinished">Ignore dependencies and proceed with objects
-originally selected prior to opening this dialog</translation>
+      <translation>Ohita riippuvuudet ja jatka ennen tämän valintaikkunan
+avaamista valittujen objektien työstämistä</translation>
     </message>
   </context>
   <context>
@@ -5541,12 +5542,12 @@ originally selected prior to opening this dialog</translation>
       <location filename="../ReportView.cpp" line="612"/>
       <location filename="../ReportView.cpp" line="636"/>
       <source>Critical messages</source>
-      <translation type="unfinished">Critical messages</translation>
+      <translation>Kriittiset viestit</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="617"/>
       <source>Show Report view on</source>
-      <translation type="unfinished">Show Report view on</translation>
+      <translation>Näytäraporttinäkymä</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="642"/>
@@ -5684,12 +5685,12 @@ originally selected prior to opening this dialog</translation>
     <message>
       <location filename="../SelectionView.cpp" line="659"/>
       <source>To Python console</source>
-      <translation type="unfinished">To Python console</translation>
+      <translation>Python -konsolissa</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="662"/>
       <source>Reveals this object and its subelements in the Python console.</source>
-      <translation type="unfinished">Reveals this object and its subelements in the Python console.</translation>
+      <translation>Näyttää tämän objektin ja sen aliobjektit Python -konsolissa.</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="668"/>
@@ -5883,12 +5884,12 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="861"/>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <translation>Vedä näyttöä yhdellä sormella TAI paina hiiren vasenta painiketta. Sketcher ja muut muokkaustilat, pidä myös Alt painettuna.</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="863"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
+      <translation>Nipistä (aseta kaksi sormea näytölle ja vedä niitä erilleen tai kohti toisiaan) TAI vieritä hiiren keskipainiketta TAI PgUp/PgDown näppäimistöllä.</translation>
     </message>
   </context>
   <context>
@@ -5963,7 +5964,7 @@ Do you want to save your changes?</source>
       <location filename="../GraphvizView.cpp" line="445"/>
       <location filename="../CommandDoc.cpp" line="667"/>
       <source>Graphviz format</source>
-      <translation type="unfinished">Graphviz format</translation>
+      <translation>Graphviz-muoto</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="459"/>
@@ -6160,17 +6161,17 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../MainWindow.cpp" line="1576"/>
       <source>Safe mode enabled</source>
-      <translation type="unfinished">Safe mode enabled</translation>
+      <translation>Vikasietotila käytössä</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1577"/>
       <source>FreeCAD is now running in safe mode.</source>
-      <translation type="unfinished">FreeCAD is now running in safe mode.</translation>
+      <translation>FreeCADia käytetään nyt vikasietotilassa.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1581"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
-      <translation type="unfinished">Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</translation>
+      <translation>Vikasietotila poistaa asetukset ja lisäosat väliaikaisesti käytöstä. Käynnistä sovellus uudelleen poistuaksesi vikasietotilasta.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1921"/>
@@ -6193,7 +6194,7 @@ Haluatko tallentaa asiakirjan nyt?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="2318"/>
       <source>Safe Mode</source>
-      <translation type="unfinished">Safe Mode</translation>
+      <translation>Vikasietotila</translation>
     </message>
   </context>
   <context>
@@ -6282,7 +6283,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../ManualAlignment.cpp" line="1121"/>
       <source>Point_%1</source>
-      <translation type="unfinished">Point_%1</translation>
+      <translation>Piste_%1</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1223"/>
@@ -6302,22 +6303,22 @@ How do you want to proceed?</source>
     <message>
       <location filename="../ManualAlignment.cpp" line="1248"/>
       <source>&amp;Align</source>
-      <translation type="unfinished">&amp;Align</translation>
+      <translation>&amp;Tasaus</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1249"/>
       <source>&amp;Remove last point</source>
-      <translation type="unfinished">&amp;Remove last point</translation>
+      <translation>&amp;Poista viimeinen piste</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1251"/>
       <source>&amp;Cancel</source>
-      <translation>&amp;Peruuta</translation>
+      <translation>&amp;Kumoa</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1255"/>
       <source>&amp;Synchronize views</source>
-      <translation type="unfinished">&amp;Synchronize views</translation>
+      <translation>&amp;Synkronoi näkymät</translation>
     </message>
   </context>
   <context>
@@ -6348,7 +6349,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../Widgets.cpp" line="473"/>
       <source>Press modifier keys</source>
-      <translation type="unfinished">Press modifier keys</translation>
+      <translation>Paina muokkausnäppäimiä</translation>
     </message>
   </context>
   <context>
@@ -6392,17 +6393,17 @@ How do you want to proceed?</source>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="51"/>
       <source>Press right mouse button and move mouse</source>
-      <translation type="unfinished">Press right mouse button and move mouse</translation>
+      <translation>Paina hiiren oikeaa painiketta ja siirrä hiirtä</translation>
     </message>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="53"/>
       <source>Press left mouse button and move mouse</source>
-      <translation type="unfinished">Press left mouse button and move mouse</translation>
+      <translation>Paina hiiren vasenta painiketta ja siirrä hiirtä</translation>
     </message>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="55"/>
       <source>Press middle mouse button or SHIFT and right mouse button</source>
-      <translation type="unfinished">Press middle mouse button or SHIFT and right mouse button</translation>
+      <translation>Paina hiiren keskimmäistä painiketta tai SHIFT ja hiiren oikealla painikkeella</translation>
     </message>
   </context>
   <context>
@@ -6511,7 +6512,7 @@ How do you want to proceed?</source>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="744"/>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="902"/>
       <source>Rename property group</source>
-      <translation type="unfinished">Rename property group</translation>
+      <translation>Nimeä ominaisuusryhmä uudelleen</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="760"/>
@@ -6601,7 +6602,7 @@ Do you want to exit without saving your data?</source>
     <message>
       <location filename="../PythonConsole.cpp" line="1328"/>
       <source>&amp;Copy</source>
-      <translation>&amp;Kopioi</translation>
+      <translation>K&amp;opioi</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1332"/>
@@ -6705,7 +6706,7 @@ Do you want to exit without saving your data?</source>
     <message>
       <location filename="../Action.cpp" line="1062"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
+      <translation>Suorita makro %1 (Shift+napsauta muokataksesi) pikavalintaa: %2</translation>
     </message>
   </context>
   <context>
@@ -6746,12 +6747,12 @@ Do you want to exit without saving your data?</source>
     <message>
       <location filename="../EditorView.cpp" line="811"/>
       <source>Case sensitive</source>
-      <translation type="unfinished">Case sensitive</translation>
+      <translation>Merkkikokoherkkä</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="812"/>
       <source>Whole words</source>
-      <translation type="unfinished">Whole words</translation>
+      <translation>Kokonaiset sanat</translation>
     </message>
   </context>
   <context>
@@ -6849,7 +6850,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../TaskCSysDragger.cpp" line="84"/>
       <source>Transform</source>
-      <translation>Muunna</translation>
+      <translation>Muuta</translation>
     </message>
     <message>
       <location filename="../TaskCSysDragger.cpp" line="89"/>
@@ -7048,12 +7049,12 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="Translator.cpp" line="139"/>
       <source>Belarusian</source>
-      <translation type="unfinished">Belarusian</translation>
+      <translation>Valkovenäläinen</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="140"/>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>Bulgarialainen</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="141"/>
@@ -7193,7 +7194,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="Translator.cpp" line="169"/>
       <source>Serbian, Latin</source>
-      <translation type="unfinished">Serbian, Latin</translation>
+      <translation>Serbialainen, latinalainen</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="170"/>
@@ -7213,7 +7214,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="Translator.cpp" line="173"/>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>Espanjalainen, Argentiina</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="174"/>
@@ -7243,12 +7244,12 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="Translator.cpp" line="179"/>
       <source>Danish</source>
-      <translation type="unfinished">Danish</translation>
+      <translation>Tanskalainen</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="152"/>
       <source>Georgian</source>
-      <translation type="unfinished">Georgian</translation>
+      <translation>Gruusialainen</translation>
     </message>
   </context>
   <context>
@@ -7297,7 +7298,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../Tree.cpp" line="1141"/>
       <source>Show description</source>
-      <translation type="unfinished">Show description</translation>
+      <translation>Näytä kuvaus</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1142"/>
@@ -7307,12 +7308,12 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../Tree.cpp" line="1143"/>
       <source>Show a description column for items. An item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</source>
-      <translation type="unfinished">Show a description column for items. An item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</translation>
+      <translation>Näytä lisäsarake, jossa näkyy tietueen kuvaus. Kuvaus voidaan asettaa näppäimellä F2 (tai käyttöjärjestelmän muokkaa-toiminnolla), tai muokkaamalla 'label2'-ominaisuutta.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1158"/>
       <source>Show an internal name column for items.</source>
-      <translation type="unfinished">Show an internal name column for items.</translation>
+      <translation>Näytä kohteitten sisäisen nimen sarake.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1199"/>
@@ -7337,22 +7338,22 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../Tree.cpp" line="3323"/>
       <source>Show items hidden in tree view</source>
-      <translation type="unfinished">Show items hidden in tree view</translation>
+      <translation>Näytä puunäkymässsä piilotetut kohteet</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3324"/>
       <source>Show items that are marked as 'hidden' in the tree view</source>
-      <translation type="unfinished">Show items that are marked as 'hidden' in the tree view</translation>
+      <translation>Näytä kohteet, jotka on asetettu 'piilotettu' tilaan puunäkymässä</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3326"/>
       <source>Toggle visibility in tree view</source>
-      <translation type="unfinished">Toggle visibility in tree view</translation>
+      <translation>Vaihda näkyvyyttä puunäkymässä</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3327"/>
       <source>Toggles the visibility of selected items in the tree view</source>
-      <translation type="unfinished">Toggles the visibility of selected items in the tree view</translation>
+      <translation>Vaihtaa valittujen kohteiden näkyvyyden puunäkymässä</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3329"/>
@@ -7481,12 +7482,12 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../VectorListEditor.cpp" line="326"/>
       <source>Copy table</source>
-      <translation type="unfinished">Copy table</translation>
+      <translation>Kopioi taulukko</translation>
     </message>
     <message>
       <location filename="../VectorListEditor.cpp" line="330"/>
       <source>Paste table</source>
-      <translation type="unfinished">Paste table</translation>
+      <translation>Liitä taulukko</translation>
     </message>
   </context>
   <context>
@@ -7518,7 +7519,7 @@ Haluatko valita toisen hakemiston?</translation>
       <location filename="../Action.cpp" line="693"/>
       <location filename="../Action.cpp" line="721"/>
       <source>Select the '%1' workbench</source>
-      <translation>Valitse työpöytä '%1'</translation>
+      <translation>Valitse työtila '%1'</translation>
     </message>
   </context>
   <context>
@@ -7662,7 +7663,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../DlgLocationPos.ui" line="162"/>
       <source>5 m</source>
-      <translation type="unfinished">5 m</translation>
+      <translation>5 m</translation>
     </message>
   </context>
   <context>
@@ -7705,7 +7706,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="679"/>
       <source>Task List</source>
-      <translation type="unfinished">Task List</translation>
+      <translation>Tehtäväluettelo</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="704"/>
@@ -7753,7 +7754,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../resource.cpp" line="90"/>
       <source>Workbenches</source>
-      <translation>Työpöydät</translation>
+      <translation>Työtilat</translation>
     </message>
     <message>
       <location filename="../resource.cpp" line="91"/>
@@ -7788,33 +7789,34 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../Application.cpp" line="987"/>
       <source>Recomputation required</source>
-      <translation type="unfinished">Recomputation required</translation>
+      <translation>Tarvitaan uudelleenlaskenta</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="988"/>
       <source>Some document(s) require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Do you want to recompute now?</source>
-      <translation type="unfinished">Some document(s) require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
+      <translation>Asiakirja(t) tarvitsevat uudelleenlaskennan muunnosta varten. On hyvin suositeltavaa suorittaa uudelleenlaskenta ennen mitään
+muokkausta yhteensopivuusongelmien välttämiseksi.
 
-Do you want to recompute now?</translation>
+Haluatko laskea uudelleen?</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="1005"/>
       <source>Recompute error</source>
-      <translation type="unfinished">Recompute error</translation>
+      <translation>Uudelleenlaskentavirhe</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="1006"/>
       <source>Failed to recompute some document(s).
 Please check report view for more details.</source>
-      <translation type="unfinished">Failed to recompute some document(s).
-Please check report view for more details.</translation>
+      <translation>Asiakirjaa tai asiakirjoja ei voitu uudelleenlaskea.
+Katso tarkemmat tiedot raporttinäkymästä.</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="1663"/>
       <source>Workbench failure</source>
-      <translation>Työpöydän häiriö</translation>
+      <translation>Työtilan häiriö</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="1664"/>
@@ -7824,7 +7826,7 @@ Please check report view for more details.</translation>
     <message>
       <location filename="../StartupProcess.cpp" line="331"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</source>
-      <translation type="unfinished">This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</translation>
+      <translation>Järjestelmässäsi on OpenGL %1.%2. FreeCAD vaatii OpenGL -version 2.0 tai uudemman. Päivitä näytönohjain ja/tai -kortti vaatimusten mukaiseksi.</translation>
     </message>
     <message>
       <location filename="../StartupProcess.cpp" line="340"/>
@@ -7860,21 +7862,21 @@ Please check report view for more details.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="127"/>
       <source>File Migration Warning</source>
-      <translation type="unfinished">File Migration Warning</translation>
+      <translation>Tiedoston muunnoksen varoitus</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="128"/>
       <source>This file was created with an older version of %1. Origin axes had incorrect placements, which have now been corrected.
 
 However, if you save this file in the current version and reopen it in an older version of %1, the origin axes will be misaligned. Additionally, if your file references these origin axes, your file will likely be broken.</source>
-      <translation type="unfinished">This file was created with an older version of %1. Origin axes had incorrect placements, which have now been corrected.
+      <translation>Tämä tiedosto on luotu vanhemmalla %1-versiolla. Origon akseleilla oli väärä sijoitus, ja sijoitukset on on nyt korjattu.
 
-However, if you save this file in the current version and reopen it in an older version of %1, the origin axes will be misaligned. Additionally, if your file references these origin axes, your file will likely be broken.</translation>
+Jos tallennat tämän tiedoston nykyiseen versioon ja avaat sen uudelleen vanhemmassa versiossa %1, origon akselit on sijoitettu väärin. Jos tiedostossa on viittauksia origon alkuperäisiin akseleihin, tiedosto on todennäköisesti rikki.</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="136"/>
       <source>Don't show this warning again</source>
-      <translation type="unfinished">Don't show this warning again</translation>
+      <translation>Älä näytä tätä varoitusta uudelleen</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="280"/>
@@ -7959,51 +7961,51 @@ Ole hyvä ja tarkista raporttinäkymä saadaksesi lisätietoja.</translation>
       <location filename="../CommandStd.cpp" line="104"/>
       <location filename="../CommandStd.cpp" line="107"/>
       <source>Cannot load workbench</source>
-      <translation>Ei voi ladata työpöytää</translation>
+      <translation>Ei voi ladata työtilaa</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="108"/>
       <source>A general error occurred while loading the workbench</source>
-      <translation>Yleinen virhe ladattaessa työpöytää</translation>
+      <translation>Yleinen virhe ladattaessa työtilaa</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="348"/>
       <source>Restart in safe mode</source>
-      <translation type="unfinished">Restart in safe mode</translation>
+      <translation>Käynnistä uudelleen vikasietotilassa</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="349"/>
       <source>Are you sure you want to restart FreeCAD and enter safe mode?</source>
-      <translation type="unfinished">Are you sure you want to restart FreeCAD and enter safe mode?</translation>
+      <translation>Oletko varma, että haluat käynnistää FreeCAD uudelleen ja siirtyä vikasietotilaan?</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="350"/>
       <source>Safe mode temporarily disables your configuration and addons.</source>
-      <translation type="unfinished">Safe mode temporarily disables your configuration and addons.</translation>
+      <translation>Vikasietotila poistaa asetukset ja lisäosat väliaikaisesti käytöstä.</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="338"/>
       <location filename="../CommandView.cpp" line="571"/>
       <source>&amp;Save views...</source>
-      <translation type="unfinished">&amp;Save views...</translation>
+      <translation>&amp;Tallenna näkymät...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="340"/>
       <location filename="../CommandView.cpp" line="572"/>
       <source>&amp;Load views...</source>
-      <translation type="unfinished">&amp;Load views...</translation>
+      <translation>&amp;Lataa näkymät...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="343"/>
       <location filename="../CommandView.cpp" line="573"/>
       <source>F&amp;reeze view</source>
-      <translation type="unfinished">F&amp;reeze view</translation>
+      <translation>&amp;Jäädytä näkymä</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="346"/>
       <location filename="../CommandView.cpp" line="574"/>
       <source>&amp;Clear views</source>
-      <translation type="unfinished">&amp;Clear views</translation>
+      <translation>&amp;Tyhjennä näkymät</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="392"/>
@@ -8176,7 +8178,7 @@ Haluatko jatkaa?</translation>
       <location filename="../NotificationArea.cpp" line="664"/>
       <location filename="../NotificationArea.cpp" line="1146"/>
       <source>Notifier</source>
-      <translation type="unfinished">Notifier</translation>
+      <translation>Ilmoitusalue</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="664"/>
@@ -8187,12 +8189,12 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="1087"/>
       <source>Notifier:</source>
-      <translation type="unfinished">Notifier:</translation>
+      <translation>Ilmoitusalue:</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1089"/>
       <source>Do you want to skip confirmation of further critical message notifications while loading the file?</source>
-      <translation type="unfinished">Do you want to skip confirmation of further critical message notifications while loading the file?</translation>
+      <translation>Haluatko ohittaa muiden kriittisten viestien ilmoitusten vahvistuksen kun lataat tiedostoa?</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1093"/>
@@ -8202,7 +8204,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="1159"/>
       <source>Too many opened non-intrusive notifications. Notifications are being omitted!</source>
-      <translation type="unfinished">Too many opened non-intrusive notifications. Notifications are being omitted!</translation>
+      <translation>Liian monta avattua ei-häiritsevää ilmoitusta. Ilmoitukset ohitetaan!</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1295"/>
@@ -8221,7 +8223,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../Document.cpp" line="1315"/>
       <source>Please check report view for more...</source>
-      <translation type="unfinished">Please check report view for more...</translation>
+      <translation>Katso raporttinäkymästä tarkemmin...</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1318"/>
@@ -8257,11 +8259,11 @@ Haluatko jatkaa?</translation>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+      <translation>Tiedostoa tallennettaessa tapahtui virhe. Tämä voi johtua siitä, että jotakin yläkansiota ei ole olemassa tai sinulla ei ole riittäviä oikeuksia tai muista syistä. Virhetiedot:
 
 "%1"
 
-Would you like to save the file with a different name?</translation>
+Haluatko tallentaa tiedoston eri nimellä?</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1356"/>
@@ -8336,12 +8338,12 @@ Would you like to save the file with a different name?</translation>
     <message>
       <location filename="../Document.cpp" line="2261"/>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Asiakirjaa ei tallennettu</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="2262"/>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+      <translation>Asiakirjaa%1 ei voitu tallentaa. Haluatko peruuttaa sen sulkemisen?</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="2595"/>
@@ -8389,7 +8391,7 @@ Valitse 'Abort' keskeyttääksesi</translation>
       <location filename="../MouseSelection.cpp" line="367"/>
       <location filename="../MouseSelection.cpp" line="419"/>
       <source>Cancel</source>
-      <translation>Peruuta</translation>
+      <translation>Kumoa</translation>
     </message>
     <message>
       <location filename="../MouseSelection.cpp" line="364"/>
@@ -8461,7 +8463,7 @@ Valitse 'Abort' keskeyttääksesi</translation>
       <location filename="../ViewProviderDragger.cpp" line="85"/>
       <location filename="../ViewProviderLink.cpp" line="2624"/>
       <source>Transform</source>
-      <translation>Muunna</translation>
+      <translation>Muuta</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskDialog.cpp" line="101"/>
@@ -8481,7 +8483,7 @@ Valitse 'Abort' keskeyttääksesi</translation>
     <message>
       <location filename="../MainWindow.cpp" line="796"/>
       <source>If you don't save, your changes will be lost.</source>
-      <translation>Jos et tallenna, niin tekemäsi muutokset menetetään.</translation>
+      <translation>Jos et tallenna, tekemäsi muutokset menetetään.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="801"/>
@@ -8491,12 +8493,12 @@ Valitse 'Abort' keskeyttääksesi</translation>
     <message>
       <location filename="../MainWindow.cpp" line="891"/>
       <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
+      <translation>%1 asiakirja(a) ei tallennettu</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="892"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+      <translation>Joitakin asiakirjoja ei voitu tallentaa. Haluatko peruuttaa sulkemisen?</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="578"/>
@@ -8531,7 +8533,7 @@ Valitse 'Abort' keskeyttääksesi</translation>
     <message>
       <location filename="../SoFCCSysDragger.cpp" line="616"/>
       <source>Translation XY:</source>
-      <translation type="unfinished">Translation XY:</translation>
+      <translation>Muutos XY:</translation>
     </message>
     <message>
       <location filename="../SoFCCSysDragger.cpp" line="943"/>
@@ -8618,7 +8620,7 @@ alaviivoja, eikä se saa alkaa numerolla.</translation>
       <location filename="../DlgAddProperty.cpp" line="118"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="410"/>
       <source>The property name is a reserved word.</source>
-      <translation type="unfinished">The property name is a reserved word.</translation>
+      <translation>Ominaisuuden nimi on varattu sana.</translation>
     </message>
     <message>
       <location filename="../DlgAddProperty.cpp" line="127"/>
@@ -8647,17 +8649,17 @@ alaviivoja, eikä se saa alkaa numerolla.</translation>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2451"/>
       <source>Setup configurable object</source>
-      <translation type="unfinished">Setup configurable object</translation>
+      <translation>Konfiguroitavan objektin asetukset</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2452"/>
       <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
-      <translation type="unfinished">Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</translation>
+      <translation>Valitse, mikä objekti kopioidaan tai poistetaan, kun konfiguraatio muuttuu. Kaikki ulkoiset linkitetyt objektit on oletusarvoisesti poissuljettu.</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2467"/>
       <source>Please select which objects to copy when the configuration is changed</source>
-      <translation type="unfinished">Please select which objects to copy when the configuration is changed</translation>
+      <translation>Valitse mitkä objektit kopioidaan, kun määritys on muuttunut</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2469"/>
@@ -8668,13 +8670,13 @@ alaviivoja, eikä se saa alkaa numerolla.</translation>
       <location filename="../ViewProviderLink.cpp" line="2470"/>
       <source>Apply the setting to all links. Or, uncheck this
 option to apply only to this link.</source>
-      <translation type="unfinished">Apply the setting to all links. Or, uncheck this
-option to apply only to this link.</translation>
+      <translation>Käytä asetusta kaikkiin linkkeihin. Tai, poista valinta
+ja käytä vain tätä linkkiä.</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2515"/>
       <source>Copy on change</source>
-      <translation type="unfinished">Copy on change</translation>
+      <translation>Kopioi muutoksesta</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2516"/>
@@ -8684,7 +8686,7 @@ option to apply only to this link.</translation>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2517"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
-      <translation type="unfinished">Enable auto copy of linked object when its configuration is changed</translation>
+      <translation>Kopioi linkitetty objekti kun sen konfiguraatio muuttuu</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2530"/>
@@ -8696,19 +8698,19 @@ option to apply only to this link.</translation>
       <source>Copy the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
-      <translation type="unfinished">Copy the linked object when its configuration is changed.
-Also auto redo the copy if the original linked object is changed.
+      <translation>Kopioi linkitetty objekti kun sen konfiguraatiot muuttuu.
+Tee kopiointi uudelleen jos alkuperäinen linkitetty objekti muuttuu.
 </translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2550"/>
       <source>Disable copy on change</source>
-      <translation type="unfinished">Disable copy on change</translation>
+      <translation>Poista kopionti käytöstä muutosten yhteydessä</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2565"/>
       <source>Refresh configurable object</source>
-      <translation type="unfinished">Refresh configurable object</translation>
+      <translation>Päivitä konfiguroitava objekti</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2566"/>
@@ -8716,25 +8718,25 @@ Also auto redo the copy if the original linked object is changed.
 creating a new deep copy. Note that any changes made to
 the current copy will be lost.
 </source>
-      <translation type="unfinished">Synchronize the original configurable source object by
-creating a new deep copy. Note that any changes made to
-the current copy will be lost.
+      <translation>Synkronoi alkuperäinen konfiguroitava objekti
+luomalla uusi syväkopio. Huomaa, että kaikki
+nykyiseen kopioon tehdyt muutokset menetetään.
 </translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2598"/>
       <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
+      <translation>Vaihda taulun elementtejä</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2607"/>
       <source>Change whether show each link array element as individual objects</source>
-      <translation type="unfinished">Change whether show each link array element as individual objects</translation>
+      <translation>Muuta näytetäänkö jokainen linkitettu taulukkoelementti erillisinä objekteina</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2625"/>
       <source>Transform at the origin of the placement</source>
-      <translation type="unfinished">Transform at the origin of the placement</translation>
+      <translation>Muuta sijainnin origosta</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2635"/>
@@ -8755,34 +8757,34 @@ the current copy will be lost.
     <message>
       <location filename="../SoFCColorGradient.cpp" line="103"/>
       <source>Color Gradient</source>
-      <translation type="unfinished">Color Gradient</translation>
+      <translation>Liukuväri</translation>
     </message>
     <message>
       <location filename="../SoFCColorLegend.cpp" line="87"/>
       <source>Color Legend</source>
-      <translation type="unfinished">Color Legend</translation>
+      <translation>Selitteen väri</translation>
     </message>
     <message>
       <location filename="../OverlayManager.cpp" line="984"/>
       <source>Toggle overlay</source>
-      <translation type="unfinished">Toggle overlay</translation>
+      <translation>Vaihda päällystettä</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="2368"/>
       <location filename="../OverlayManager.cpp" line="985"/>
       <source>Toggle floating window</source>
-      <translation type="unfinished">Toggle floating window</translation>
+      <translation>Vaihda kelluvan ikkunan tilaa</translation>
     </message>
     <message>
       <location filename="../OverlayManager.cpp" line="986"/>
       <source>Close dock window</source>
-      <translation type="unfinished">Close dock window</translation>
+      <translation>Sulje telakkaikkuna</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="117"/>
       <location filename="../OverlayWidgets.cpp" line="147"/>
       <source>Press ESC to hide hint</source>
-      <translation type="unfinished">Press ESC to hide hint</translation>
+      <translation>Paina ESC piilottaaksesi vihjeen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="438"/>
@@ -8792,12 +8794,12 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="440"/>
       <source>Item background padding</source>
-      <translation type="unfinished">Item background padding</translation>
+      <translation>Kohteen taustan täyttö</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="445"/>
       <source>Overlay</source>
-      <translation type="unfinished">Overlay</translation>
+      <translation>Peite</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="437"/>
@@ -8812,82 +8814,82 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="447"/>
       <source>Delay mouse wheel pass through</source>
-      <translation type="unfinished">Delay mouse wheel pass through</translation>
+      <translation>Hiiren rullan viive</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="450"/>
       <source>Alpha test radius</source>
-      <translation type="unfinished">Alpha test radius</translation>
+      <translation>Alfatestin säde</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="453"/>
       <source>Check Navigation Cube</source>
-      <translation type="unfinished">Check Navigation Cube</translation>
+      <translation>Tarkista Navigointikuutio</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="455"/>
       <source>Hint trigger size</source>
-      <translation type="unfinished">Hint trigger size</translation>
+      <translation>Vihjeen laukaisimen koko</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="458"/>
       <source>Hint width</source>
-      <translation type="unfinished">Hint width</translation>
+      <translation>Vihjeen leveys</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="461"/>
       <source>Left panel hint offset</source>
-      <translation type="unfinished">Left panel hint offset</translation>
+      <translation>Vasemman paneelin vihjeen siirtymä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="464"/>
       <source>Left panel hint length</source>
-      <translation type="unfinished">Left panel hint length</translation>
+      <translation>Vasemman paneelin vihjeen pituus</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="467"/>
       <source>Right panel hint offset</source>
-      <translation type="unfinished">Right panel hint offset</translation>
+      <translation>Oikean paneelin vihjeen siirtymä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="470"/>
       <source>Right panel hint length</source>
-      <translation type="unfinished">Right panel hint length</translation>
+      <translation>Oikean paneelin vihjeen pituus</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="473"/>
       <source>Top panel hint offset</source>
-      <translation type="unfinished">Top panel hint offset</translation>
+      <translation>Yläpuolisen paneelin vihjeen siirtymä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="476"/>
       <source>Top panel hint length</source>
-      <translation type="unfinished">Top panel hint length</translation>
+      <translation>Yläpuolisen paneelin vihjeen pituus</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="479"/>
       <source>Bottom panel hint offset</source>
-      <translation type="unfinished">Bottom panel hint offset</translation>
+      <translation>Alapuolisen paneelin vihjeen siirtymä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="482"/>
       <source>Bottom panel hint length</source>
-      <translation type="unfinished">Bottom panel hint length</translation>
+      <translation>Alapuolisen paneelin vihjeen pituus</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="485"/>
       <source>Hint delay</source>
-      <translation type="unfinished">Hint delay</translation>
+      <translation>Vihjeen viive</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="488"/>
       <source>Splitter auto hide delay</source>
-      <translation type="unfinished">Splitter auto hide delay</translation>
+      <translation>Splitterin automaattisen piilottamisen viive</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="493"/>
       <source>Layout delay</source>
-      <translation type="unfinished">Layout delay</translation>
+      <translation>Asettelun viive</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="496"/>
@@ -8897,39 +8899,38 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="491"/>
       <source>Activate on hover</source>
-      <translation type="unfinished">Activate on hover</translation>
+      <translation>Aktivoi kohdistimen kohdalla</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="499"/>
       <source>Animation curve type</source>
-      <translation type="unfinished">Animation curve type</translation>
+      <translation>Animaation käyrän tyyppi</translation>
     </message>
     <message>
       <location filename="../ViewProviderPart.cpp" line="73"/>
       <source>Active object</source>
-      <translation type="unfinished">Active object</translation>
+      <translation>Aktivoi objekti</translation>
     </message>
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="95"/>
       <source>Suppressed</source>
-      <translation type="unfinished">Suppressed</translation>
+      <translation>Peitetty</translation>
     </message>
     <message>
       <location filename="../DlgAddPropertyVarSet.cpp" line="191"/>
       <source>Add a property to %1</source>
-      <translation type="unfinished">Add a property to %1</translation>
+      <translation>Lisää ominaisuus %1:lle</translation>
     </message>
     <message>
       <location filename="../DlgAddPropertyVarSet.cpp" line="402"/>
       <source>The property name must only contain alpha numericals, underscore, and must not start with a digit.</source>
-      <translation type="unfinished">The property name must only contain alpha numericals, underscore, and must not start with a digit.</translation>
+      <translation>Ominaisuuden nimi saa sisältää vain alfanumeerisia merkkejä, alaviivoja, eikä se saa alkaa numerolla.</translation>
     </message>
     <message>
       <location filename="../DlgAddPropertyVarSet.cpp" line="434"/>
       <source>The group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
-      <translation type="unfinished">The group name must only contain alpha numericals,
-underscore, and must not start with a digit.</translation>
+      <translation>Ryhmän nimi saa sisältää vain alfanumeerisia merkkejä, alaviivoja, eikä se saa alkaa numerolla.</translation>
     </message>
     <message>
       <location filename="../SplashScreen.cpp" line="189"/>
@@ -8960,7 +8961,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2979"/>
       <source>Bo&amp;x element selection</source>
-      <translation type="unfinished">Bo&amp;x element selection</translation>
+      <translation>Ele&amp;menttien laatikkovalinta</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2980"/>
@@ -8974,13 +8975,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2753"/>
       <source>&amp;Box selection</source>
-      <translation type="unfinished">&amp;Box selection</translation>
+      <translation>&amp;Laatikkovalinta</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2754"/>
       <location filename="../CommandView.cpp" line="2756"/>
       <source>Activate the box selection tool</source>
-      <translation type="unfinished">Activate the box selection tool</translation>
+      <translation>Ota laatikkovalintatyökalu käyttöön</translation>
     </message>
   </context>
   <context>
@@ -8993,7 +8994,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="223"/>
       <source>Displays important information About %1</source>
-      <translation type="unfinished">Displays important information About %1</translation>
+      <translation>Näyttää tärkeitä tietoja kohteesta %1</translation>
     </message>
   </context>
   <context>
@@ -9015,7 +9016,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="172"/>
       <source>&amp;Next</source>
-      <translation type="unfinished">&amp;Next</translation>
+      <translation>&amp;Seuraava</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="173"/>
@@ -9029,7 +9030,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="201"/>
       <source>&amp;Previous</source>
-      <translation type="unfinished">&amp;Previous</translation>
+      <translation>&amp;Edellinen</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="202"/>
@@ -9043,7 +9044,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1674"/>
       <source>Ali&amp;gnment...</source>
-      <translation type="unfinished">Ali&amp;gnment...</translation>
+      <translation>Ta&amp;saus...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1675"/>
@@ -9057,13 +9058,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2221"/>
       <source>Toggle a&amp;xis cross</source>
-      <translation type="unfinished">Toggle a&amp;xis cross</translation>
+      <translation>Vaihda k&amp;oordinaattiristin näkymistä</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2222"/>
       <location filename="../CommandView.cpp" line="2223"/>
       <source>Turns on or off the axis cross at the origin</source>
-      <translation type="unfinished">Turns on or off the axis cross at the origin</translation>
+      <translation>Asettaa origossa olevan ristin näkyville tai pois</translation>
     </message>
   </context>
   <context>
@@ -9099,7 +9100,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="144"/>
       <source>Close A&amp;ll</source>
-      <translation type="unfinished">Close A&amp;ll</translation>
+      <translation>Sulje &amp;kaikki</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="145"/>
@@ -9127,7 +9128,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1171"/>
       <source>&amp;Copy</source>
-      <translation>&amp;Kopioi</translation>
+      <translation>K&amp;opioi</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1172"/>
@@ -9141,7 +9142,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1143"/>
       <source>Cu&amp;t</source>
-      <translation type="unfinished">Cu&amp;t</translation>
+      <translation>L&amp;eikkaa</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1144"/>
@@ -9169,13 +9170,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3212"/>
       <source>View &amp;turntable...</source>
-      <translation type="unfinished">View &amp;turntable...</translation>
+      <translation>Näytä &amp;levypyöritys...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3213"/>
       <location filename="../CommandView.cpp" line="3215"/>
       <source>View turntable</source>
-      <translation>Näytä pyörähdyspöytä</translation>
+      <translation>Näytä levypyöritys</translation>
     </message>
   </context>
   <context>
@@ -9183,7 +9184,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="623"/>
       <source>Dependency gra&amp;ph...</source>
-      <translation type="unfinished">Dependency gra&amp;ph...</translation>
+      <translation>Riippuvuus&amp;kaavio...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="624"/>
@@ -9211,7 +9212,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="94"/>
       <source>Ma&amp;cros...</source>
-      <translation type="unfinished">Ma&amp;cros...</translation>
+      <translation>Ma&amp;krot...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="95"/>
@@ -9225,7 +9226,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="123"/>
       <source>&amp;Execute macro</source>
-      <translation type="unfinished">&amp;Execute macro</translation>
+      <translation>&amp;Suorita makro</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="124"/>
@@ -9239,7 +9240,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="51"/>
       <source>&amp;Macro recording...</source>
-      <translation type="unfinished">&amp;Macro recording...</translation>
+      <translation>&amp;Makrojen tallennus...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="52"/>
@@ -9263,7 +9264,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="381"/>
       <source>E&amp;dit parameters...</source>
-      <translation type="unfinished">E&amp;dit parameters...</translation>
+      <translation>M&amp;uokkaa parametreja...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="382"/>
@@ -9277,7 +9278,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="406"/>
       <source>Prefere&amp;nces ...</source>
-      <translation type="unfinished">Prefere&amp;nces ...</translation>
+      <translation>&amp;Asetukset ...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="407"/>
@@ -9291,7 +9292,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="281"/>
       <source>&amp;Panels</source>
-      <translation type="unfinished">&amp;Panels</translation>
+      <translation>&amp;Paneelit</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="282"/>
@@ -9305,7 +9306,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="648"/>
       <source>&amp;Draw style</source>
-      <translation type="unfinished">&amp;Draw style</translation>
+      <translation>&amp;Piirrostyyli</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="649"/>
@@ -9319,7 +9320,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1246"/>
       <source>Duplicate selecti&amp;on</source>
-      <translation type="unfinished">Duplicate selecti&amp;on</translation>
+      <translation>&amp;Kopioi valinta</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1247"/>
@@ -9381,7 +9382,7 @@ underscore, and must not start with a digit.</translation>
       <location filename="../CommandDoc.cpp" line="1820"/>
       <location filename="../CommandDoc.cpp" line="1822"/>
       <source>Actions that apply to expressions</source>
-      <translation type="unfinished">Actions that apply to expressions</translation>
+      <translation>Lausekkeisiin vaikuttavat toimet</translation>
     </message>
   </context>
   <context>
@@ -9403,7 +9404,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="688"/>
       <source>FreeCAD &amp;Forum</source>
-      <translation type="unfinished">FreeCAD &amp;Forum</translation>
+      <translation>FreeCAD &amp;Foorumi</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="689"/>
@@ -9416,7 +9417,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="323"/>
       <source>F&amp;reeze display</source>
-      <translation type="unfinished">F&amp;reeze display</translation>
+      <translation>&amp;Jäädytä näkymä</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="324"/>
@@ -9435,7 +9436,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="96"/>
       <source>A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
-      <translation type="unfinished">A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</translation>
+      <translation>Ryhmä on yleiskäyttöinen, datatyypistä riippumaton säiliö jolla objekteja voi ryhmitellä Puunäkymässä. Se on yksinkertaisesti kansio jossa voi olla mallin objekteja.</translation>
     </message>
   </context>
   <context>
@@ -9443,7 +9444,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1234"/>
       <source>Hide all &amp;objects</source>
-      <translation type="unfinished">Hide all &amp;objects</translation>
+      <translation>Piilota kaikki &amp;objektit</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1235"/>
@@ -9457,7 +9458,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1086"/>
       <source>&amp;Hide selection</source>
-      <translation type="unfinished">&amp;Hide selection</translation>
+      <translation>Piilota valinta</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1087"/>
@@ -9501,7 +9502,7 @@ underscore, and must not start with a digit.</translation>
       <location filename="../CommandLink.cpp" line="879"/>
       <location filename="../CommandLink.cpp" line="881"/>
       <source>Actions that apply to link objects</source>
-      <translation type="unfinished">Actions that apply to link objects</translation>
+      <translation>Toimet, jotka koskevat linkitettyihin objekteihin</translation>
     </message>
   </context>
   <context>
@@ -9540,7 +9541,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandLink.cpp" line="211"/>
       <source>A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
-      <translation type="unfinished">A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</translation>
+      <translation>Linkki on objekti, joka viittaa tai linkittää toiseen objektiin samassa dokumentissa tai toisessa dokumentissa. Toisin kuin Kloonit, Linkit viittaavat suoraan alkuperäiseen muotoon joten ne ovat muistin käytön kannalta tehokkaampia, joka taas helpottaa monimutkaisia kokoonpanoja luotaessa.</translation>
     </message>
   </context>
   <context>
@@ -9587,7 +9588,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandLink.cpp" line="852"/>
       <source>&amp;Link navigation</source>
-      <translation type="unfinished">&amp;Link navigation</translation>
+      <translation>&amp;Linkeissä liikkuminen</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="853"/>
@@ -9601,7 +9602,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandLink.cpp" line="812"/>
       <source>Select &amp;all links</source>
-      <translation type="unfinished">Select &amp;all links</translation>
+      <translation>Valitse &amp;kaikki linkit</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="813"/>
@@ -9614,7 +9615,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandLink.cpp" line="649"/>
       <source>&amp;Go to linked object</source>
-      <translation type="unfinished">&amp;Go to linked object</translation>
+      <translation>&amp;Siirry linkitettyyn objektiin</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="650"/>
@@ -9627,7 +9628,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandLink.cpp" line="777"/>
       <source>Go to the &amp;deepest linked object</source>
-      <translation type="unfinished">Go to the &amp;deepest linked object</translation>
+      <translation>Siirry &amp;syvimpään linkitettyyn objektiin</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="778"/>
@@ -9653,7 +9654,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="149"/>
       <source>&amp;Attach to remote debugger...</source>
-      <translation type="unfinished">&amp;Attach to remote debugger...</translation>
+      <translation>&amp;Liitä etä-vianetsintään...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="150"/>
@@ -9667,7 +9668,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="174"/>
       <source>&amp;Debug macro</source>
-      <translation type="unfinished">&amp;Debug macro</translation>
+      <translation>&amp;Debuggaa makro</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="175"/>
@@ -9681,13 +9682,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="258"/>
       <source>Step &amp;into</source>
-      <translation type="unfinished">Step &amp;into</translation>
+      <translation>Siirry &amp;kohtaan</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="259"/>
       <location filename="../CommandMacro.cpp" line="261"/>
       <source>Step to the next line executed</source>
-      <translation type="unfinished">Step to the next line executed</translation>
+      <translation>Siirry seuraavalle suoritettavalle riville</translation>
     </message>
   </context>
   <context>
@@ -9695,13 +9696,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="231"/>
       <source>Step &amp;over</source>
-      <translation type="unfinished">Step &amp;over</translation>
+      <translation>Siirry &amp;ohittaen yli</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="232"/>
       <location filename="../CommandMacro.cpp" line="234"/>
       <source>Step to the next line in this file</source>
-      <translation type="unfinished">Step to the next line in this file</translation>
+      <translation>Siirry tämän tiedoston seuraavalle riville</translation>
     </message>
   </context>
   <context>
@@ -9709,7 +9710,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="204"/>
       <source>&amp;Stop debugging</source>
-      <translation type="unfinished">&amp;Stop debugging</translation>
+      <translation>&amp;Lopeta vianetsintä</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="205"/>
@@ -9723,7 +9724,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="570"/>
       <source>&amp;Merge document...</source>
-      <translation type="unfinished">&amp;Merge document...</translation>
+      <translation>&amp;Yhdistä asiakirja...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="571"/>
@@ -9741,7 +9742,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="593"/>
       <source>Cannot merge document with itself.</source>
-      <translation type="unfinished">Cannot merge document with itself.</translation>
+      <translation>Asiakirjaa ei voi yhdistää itseensä.</translation>
     </message>
   </context>
   <context>
@@ -9774,7 +9775,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="551"/>
       <source>Opens the help documentation</source>
-      <translation type="unfinished">Opens the help documentation</translation>
+      <translation>Avaa ohjeet</translation>
     </message>
   </context>
   <context>
@@ -9821,7 +9822,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="53"/>
       <source>A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
-      <translation type="unfinished">A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</translation>
+      <translation>Part on yleiskäyttöinen säiliö, jonka avulla objektiryhmä voidaan ryhmitellä niin että ne toimivat yksikkönä 3D-näkymässä. Osan avulla voidaan järjestellä objekteja joilla on Part TopoShape, kuten Part Primitives, PartDesign Bodies, ja muut Part -objektit.</translation>
     </message>
   </context>
   <context>
@@ -9843,7 +9844,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1592"/>
       <source>P&amp;lacement...</source>
-      <translation type="unfinished">P&amp;lacement...</translation>
+      <translation>&amp;Sijoittelu...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1593"/>
@@ -9871,7 +9872,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="998"/>
       <source>Export P&amp;DF...</source>
-      <translation type="unfinished">Export P&amp;DF...</translation>
+      <translation>Vie &amp;PDF...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="999"/>
@@ -9885,7 +9886,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="968"/>
       <source>Print previe&amp;w...</source>
-      <translation type="unfinished">Print previe&amp;w...</translation>
+      <translation>Tulostuksen esikatselu...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="969"/>
@@ -9931,13 +9932,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="80"/>
       <source>Random &amp;color</source>
-      <translation type="unfinished">Random &amp;color</translation>
+      <translation>Satunnainen &amp;väri</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="81"/>
       <location filename="../CommandFeat.cpp" line="83"/>
       <source>Set each selected object to a randomly-selected color</source>
-      <translation type="unfinished">Set each selected object to a randomly-selected color</translation>
+      <translation>Aseta valituille objekteille satunnainen väri</translation>
     </message>
   </context>
   <context>
@@ -9945,7 +9946,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="140"/>
       <source>Open &amp;Recent</source>
-      <translation type="unfinished">Open &amp;Recent</translation>
+      <translation>Avaa &amp;viimeisimmät</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="141"/>
@@ -9959,7 +9960,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="181"/>
       <source>&amp;Recent macros</source>
-      <translation type="unfinished">&amp;Recent macros</translation>
+      <translation>&amp;Viimeisimmät makrot</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="182"/>
@@ -9987,7 +9988,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1512"/>
       <source>Refres&amp;h</source>
-      <translation type="unfinished">Refres&amp;h</translation>
+      <translation>Päivitä</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1513"/>
@@ -10001,7 +10002,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="839"/>
       <source>Rever&amp;t</source>
-      <translation type="unfinished">Rever&amp;t</translation>
+      <translation>Palauta</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="840"/>
@@ -10029,7 +10030,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="811"/>
       <source>Sa&amp;ve All</source>
-      <translation type="unfinished">Sa&amp;ve All</translation>
+      <translation>Ta&amp;llenna kaikki</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="812"/>
@@ -10057,7 +10058,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="784"/>
       <source>Save a Cop&amp;y...</source>
-      <translation type="unfinished">Save a Cop&amp;y...</translation>
+      <translation>Tallenna k&amp;opio...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="785"/>
@@ -10071,7 +10072,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3152"/>
       <source>Scene i&amp;nspector...</source>
-      <translation type="unfinished">Scene i&amp;nspector...</translation>
+      <translation>Näkymän t&amp;arkastaja...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3153"/>
@@ -10113,7 +10114,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1114"/>
       <source>&amp;Select visible objects</source>
-      <translation type="unfinished">&amp;Select visible objects</translation>
+      <translation>&amp;Valitse näkyvät objektit</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1115"/>
@@ -10141,7 +10142,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1197"/>
       <source>Show &amp;all objects</source>
-      <translation type="unfinished">Show &amp;all objects</translation>
+      <translation>Näytä kaikki objektit</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1198"/>
@@ -10155,7 +10156,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1058"/>
       <source>Sho&amp;w selection</source>
-      <translation type="unfinished">Sho&amp;w selection</translation>
+      <translation>Näytä &amp;valitut</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1059"/>
@@ -10183,7 +10184,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="796"/>
       <source>Add te&amp;xt document</source>
-      <translation type="unfinished">Add te&amp;xt document</translation>
+      <translation>Lisää t&amp;ekstiasiakirja</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="797"/>
@@ -10197,7 +10198,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3185"/>
       <source>Text&amp;ure mapping...</source>
-      <translation type="unfinished">Text&amp;ure mapping...</translation>
+      <translation>Tekst&amp;uurin kartoitus...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3186"/>
@@ -10211,7 +10212,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="56"/>
       <source>&amp;Tile</source>
-      <translation>&amp;Laatta</translation>
+      <translation>&amp;Vierekkäin</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="57"/>
@@ -10225,13 +10226,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="285"/>
       <source>Toggle &amp;breakpoint</source>
-      <translation type="unfinished">Toggle &amp;breakpoint</translation>
+      <translation>Lisää/poista &amp;keskeytyskohta</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="286"/>
       <location filename="../CommandMacro.cpp" line="288"/>
       <source>Add or remove a breakpoint at this position</source>
-      <translation type="unfinished">Add or remove a breakpoint at this position</translation>
+      <translation>Lisää tai poista keskeytyspiste tähän kohtaan</translation>
     </message>
   </context>
   <context>
@@ -10239,7 +10240,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="595"/>
       <source>Clippin&amp;g plane</source>
-      <translation type="unfinished">Clippin&amp;g plane</translation>
+      <translation>Leikkau&amp;s taso</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="596"/>
@@ -10253,7 +10254,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2172"/>
       <source>Toggle navigation/&amp;Edit mode</source>
-      <translation type="unfinished">Toggle navigation/&amp;Edit mode</translation>
+      <translation>Vaihda navigointi/muokkaustilojen välillä</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2173"/>
@@ -10267,7 +10268,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1156"/>
       <source>To&amp;ggle all objects</source>
-      <translation type="unfinished">To&amp;ggle all objects</translation>
+      <translation>P&amp;iilota näkyvät ja näytä piilotetut</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1157"/>
@@ -10281,7 +10282,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1006"/>
       <source>Toggle se&amp;lectability</source>
-      <translation type="unfinished">Toggle se&amp;lectability</translation>
+      <translation>Vaihda v&amp;alittavuutta</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1007"/>
@@ -10295,7 +10296,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="868"/>
       <source>Toggle &amp;visibility</source>
-      <translation type="unfinished">Toggle &amp;visibility</translation>
+      <translation>Vaihda &amp;näkyvyyttä</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="869"/>
@@ -10309,7 +10310,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="317"/>
       <source>&amp;Toolbars</source>
-      <translation type="unfinished">&amp;Toolbars</translation>
+      <translation>&amp;Työkalupalkit</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="318"/>
@@ -10323,7 +10324,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1566"/>
       <source>Transform...</source>
-      <translation>Muunna...</translation>
+      <translation>Muuta...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1567"/>
@@ -10379,7 +10380,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3525"/>
       <source>TreeView actions</source>
-      <translation>Puunäkymän (TreeView) toiminnot</translation>
+      <translation>Puunäkymän toiminnot</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3526"/>
@@ -10407,13 +10408,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="865"/>
       <source>Edit &amp;mode</source>
-      <translation type="unfinished">Edit &amp;mode</translation>
+      <translation>Muokkaus&amp;tila</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="866"/>
       <location filename="../CommandStd.cpp" line="867"/>
       <source>Defines behavior when editing an object from tree</source>
-      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+      <translation>Määrittää toiminnan, kun muokataan puunäkymän kohdetta</translation>
     </message>
   </context>
   <context>
@@ -10435,7 +10436,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1299"/>
       <source>&amp;5 Bottom</source>
-      <translation type="unfinished">&amp;5 Bottom</translation>
+      <translation>&amp;5 Alapuoli</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1300"/>
@@ -10463,7 +10464,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1468"/>
       <source>&amp;Dimetric</source>
-      <translation type="unfinished">&amp;Dimetric</translation>
+      <translation>&amp;Dimetrinen</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1469"/>
@@ -10519,13 +10520,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1564"/>
       <source>&amp;Fit all</source>
-      <translation type="unfinished">&amp;Fit all</translation>
+      <translation>&amp;Sovita kaikki</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1565"/>
       <location filename="../CommandView.cpp" line="1567"/>
       <source>Fits the whole content on the screen</source>
-      <translation>Sovittaa koko ruudun sisällön</translation>
+      <translation>Sovittaa koko sisällön näytölle</translation>
     </message>
   </context>
   <context>
@@ -10533,7 +10534,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1595"/>
       <source>Fit &amp;selection</source>
-      <translation type="unfinished">Fit &amp;selection</translation>
+      <translation>Sovita &amp;valinta</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1596"/>
@@ -10547,7 +10548,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1323"/>
       <source>&amp;1 Front</source>
-      <translation type="unfinished">&amp;1 Front</translation>
+      <translation>&amp;1 Etupuoli</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1324"/>
@@ -10561,7 +10562,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1271"/>
       <source>&amp;Home</source>
-      <translation type="unfinished">&amp;Home</translation>
+      <translation>&amp;Koti</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1272"/>
@@ -10575,7 +10576,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1444"/>
       <source>&amp;Isometric</source>
-      <translation type="unfinished">&amp;Isometric</translation>
+      <translation>&amp;Isometrinen</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1445"/>
@@ -10589,7 +10590,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2494"/>
       <source>Issue camera &amp;position</source>
-      <translation type="unfinished">Issue camera &amp;position</translation>
+      <translation>Määritä kameran paikka</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2495"/>
@@ -10603,7 +10604,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2465"/>
       <source>Stereo Interleaved &amp;Columns</source>
-      <translation type="unfinished">Stereo Interleaved &amp;Columns</translation>
+      <translation>Stereo &amp;lomitetuilla sarakkeilla</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2466"/>
@@ -10617,7 +10618,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2437"/>
       <source>Stereo Interleaved &amp;Rows</source>
-      <translation type="unfinished">Stereo Interleaved &amp;Rows</translation>
+      <translation>Stereo lomitetuilla &amp;riveillä</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2438"/>
@@ -10631,7 +10632,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2352"/>
       <source>Stereo &amp;Off</source>
-      <translation type="unfinished">Stereo &amp;Off</translation>
+      <translation>Stereo &amp;pois</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2353"/>
@@ -10645,7 +10646,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2409"/>
       <source>Stereo &amp;quad buffer</source>
-      <translation type="unfinished">Stereo &amp;quad buffer</translation>
+      <translation>Stereo &amp;quad puskuri</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2410"/>
@@ -10659,7 +10660,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2381"/>
       <source>Stereo re&amp;d/cyan</source>
-      <translation type="unfinished">Stereo re&amp;d/cyan</translation>
+      <translation>Stereo p&amp;unainen/syaani</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2382"/>
@@ -10673,7 +10674,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1347"/>
       <source>&amp;6 Left</source>
-      <translation type="unfinished">&amp;6 Left</translation>
+      <translation>&amp;6 Vasen</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1348"/>
@@ -10687,7 +10688,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1371"/>
       <source>&amp;4 Rear</source>
-      <translation type="unfinished">&amp;4 Rear</translation>
+      <translation>&amp;4 Taka</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1372"/>
@@ -10715,7 +10716,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1395"/>
       <source>&amp;3 Right</source>
-      <translation type="unfinished">&amp;3 Right</translation>
+      <translation>&amp;3 Oikea</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1396"/>
@@ -10729,7 +10730,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1514"/>
       <source>Rotate &amp;Left</source>
-      <translation type="unfinished">Rotate &amp;Left</translation>
+      <translation>Kierrä &amp;vasemmalle</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1515"/>
@@ -10743,7 +10744,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1539"/>
       <source>Rotate &amp;Right</source>
-      <translation type="unfinished">Rotate &amp;Right</translation>
+      <translation>Kierrä &amp;oikealle</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1540"/>
@@ -10771,7 +10772,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1419"/>
       <source>&amp;2 Top</source>
-      <translation type="unfinished">&amp;2 Top</translation>
+      <translation>&amp;2 Yläpuoli</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1420"/>
@@ -10785,7 +10786,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1491"/>
       <source>&amp;Trimetric</source>
-      <translation type="unfinished">&amp;Trimetric</translation>
+      <translation>&amp;Trimetrinen</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1492"/>
@@ -10818,7 +10819,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="311"/>
       <source>Opens the documentation corresponding to the selection</source>
-      <translation type="unfinished">Opens the documentation corresponding to the selection</translation>
+      <translation>Avaa valintaan liittyvän dokumentaation</translation>
     </message>
   </context>
   <context>
@@ -10840,7 +10841,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="458"/>
       <source>Activate window</source>
-      <translation type="unfinished">Activate window</translation>
+      <translation>Aktivoi ikkuna</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="459"/>
@@ -10854,13 +10855,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="75"/>
       <source>&amp;Workbench</source>
-      <translation type="unfinished">&amp;Workbench</translation>
+      <translation>&amp;Työtila</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="76"/>
       <location filename="../CommandStd.cpp" line="78"/>
       <source>Switch between workbenches</source>
-      <translation>Vaihda työpöytien välillä</translation>
+      <translation>Vaihda työtilojen välillä</translation>
     </message>
   </context>
   <context>
@@ -10910,13 +10911,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3914"/>
       <source>R&amp;ecall working view</source>
-      <translation type="unfinished">R&amp;ecall working view</translation>
+      <translation>&amp;Muista työskentelynäkymä</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3915"/>
       <location filename="../CommandView.cpp" line="3916"/>
       <source>Recall previously stored temporary working view</source>
-      <translation type="unfinished">Recall previously stored temporary working view</translation>
+      <translation>Palauta aiemmin tallennettu väliaikainen työskentelynäkymä</translation>
     </message>
   </context>
   <context>
@@ -10924,13 +10925,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3884"/>
       <source>St&amp;ore working view</source>
-      <translation type="unfinished">St&amp;ore working view</translation>
+      <translation>Ta&amp;llenna työskentelynäkymä</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3885"/>
       <location filename="../CommandView.cpp" line="3886"/>
       <source>Store a document-specific temporary working view</source>
-      <translation type="unfinished">Store a document-specific temporary working view</translation>
+      <translation>Säilytä asiakirjakohtainen väliaikainen työnäkymä</translation>
     </message>
   </context>
   <context>
@@ -10938,7 +10939,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3363"/>
       <source>Collapse/E&amp;xpand</source>
-      <translation type="unfinished">Collapse/E&amp;xpand</translation>
+      <translation>Tiivistä/L&amp;aajenna</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3364"/>
@@ -10952,7 +10953,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3492"/>
       <source>Initiate &amp;dragging</source>
-      <translation type="unfinished">Initiate &amp;dragging</translation>
+      <translation>Aloita &amp;raahaaminen</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3493"/>
@@ -10965,7 +10966,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3346"/>
       <source>&amp;Multi document</source>
-      <translation type="unfinished">&amp;Multi document</translation>
+      <translation>&amp;Multidokumentti</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3347"/>
@@ -10979,12 +10980,12 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3456"/>
       <source>&amp;4 Pre-selection</source>
-      <translation type="unfinished">&amp;4 Pre-selection</translation>
+      <translation>&amp;4 Esivalinta</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3457"/>
       <source>Preselect the object in 3D view when hovering the cursor over the tree item</source>
-      <translation type="unfinished">Preselect the object in 3D view when hovering the cursor over the tree item</translation>
+      <translation>Esivalitse objekti 3D-näkymässä, kun osoitin kulkee sen kohdalla puunäkymässä</translation>
     </message>
   </context>
   <context>
@@ -10992,7 +10993,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3474"/>
       <source>&amp;5 Record selection</source>
-      <translation type="unfinished">&amp;5 Record selection</translation>
+      <translation>&amp;5 Tallenna valinta</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3475"/>
@@ -11005,7 +11006,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3024"/>
       <source>&amp;Go to selection</source>
-      <translation type="unfinished">&amp;Go to selection</translation>
+      <translation>&amp;Siirry valintaan</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3025"/>
@@ -11019,7 +11020,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3329"/>
       <source>&amp;Single document</source>
-      <translation type="unfinished">&amp;Single document</translation>
+      <translation>&amp;Yksi asiakirja</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3330"/>
@@ -11033,7 +11034,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3438"/>
       <source>&amp;3 Sync placement</source>
-      <translation type="unfinished">&amp;3 Sync placement</translation>
+      <translation>&amp;3 Synkronoi sijoittelu</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3439"/>
@@ -11046,7 +11047,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3420"/>
       <source>&amp;2 Sync selection</source>
-      <translation type="unfinished">&amp;2 Sync selection</translation>
+      <translation>&amp;2 Synkronoi valinta</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3421"/>
@@ -11059,7 +11060,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3402"/>
       <source>&amp;1 Sync view</source>
-      <translation type="unfinished">&amp;1 Sync view</translation>
+      <translation>&amp;1 Synkronoi näkymä</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3403"/>
@@ -11072,13 +11073,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2719"/>
       <source>&amp;Box zoom</source>
-      <translation type="unfinished">&amp;Box zoom</translation>
+      <translation>Zoomaa &amp;laatikkoon</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2720"/>
       <location filename="../CommandView.cpp" line="2722"/>
       <source>Activate the box zoom tool</source>
-      <translation type="unfinished">Activate the box zoom tool</translation>
+      <translation>Aktivoi laatikkozoomaustyökalu</translation>
     </message>
   </context>
   <context>
@@ -11086,7 +11087,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1664"/>
       <source>&amp;Docked</source>
-      <translation type="unfinished">&amp;Docked</translation>
+      <translation>&amp;Telakoitu</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1665"/>
@@ -11100,7 +11101,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1784"/>
       <source>D&amp;ocument window</source>
-      <translation type="unfinished">D&amp;ocument window</translation>
+      <translation>&amp;Asiakirjaikkuna</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1785"/>
@@ -11114,7 +11115,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1754"/>
       <source>&amp;Fullscreen</source>
-      <translation type="unfinished">&amp;Fullscreen</translation>
+      <translation>&amp;Koko näyttö</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1755"/>
@@ -11128,7 +11129,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1926"/>
       <source>Save &amp;image...</source>
-      <translation type="unfinished">Save &amp;image...</translation>
+      <translation>Tallenna &amp;kuva...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1927"/>
@@ -11142,7 +11143,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1693"/>
       <source>&amp;Undocked</source>
-      <translation type="unfinished">&amp;Undocked</translation>
+      <translation>&amp;Ei telakoitu</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1694"/>
@@ -11156,13 +11157,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2544"/>
       <source>Zoom &amp;In</source>
-      <translation type="unfinished">Zoom &amp;In</translation>
+      <translation>Zoomaa &amp;sisään</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2545"/>
       <location filename="../CommandView.cpp" line="2547"/>
       <source>Increase the zoom factor by a fixed amount</source>
-      <translation type="unfinished">Increase the zoom factor by a fixed amount</translation>
+      <translation>Kasvata zoomausta annetulla arvolla</translation>
     </message>
   </context>
   <context>
@@ -11170,13 +11171,13 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2573"/>
       <source>Zoom &amp;Out</source>
-      <translation type="unfinished">Zoom &amp;Out</translation>
+      <translation>Zoomaa &amp;ulos</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2574"/>
       <location filename="../CommandView.cpp" line="2576"/>
       <source>Decrease the zoom factor by a fixed amount</source>
-      <translation type="unfinished">Decrease the zoom factor by a fixed amount</translation>
+      <translation>Vähennä zoomausta annetulla arvolla</translation>
     </message>
   </context>
   <context>
@@ -11211,7 +11212,7 @@ Oletko varma, että haluat jatkaa?
     <message>
       <location filename="../CommandView.cpp" line="727"/>
       <source>&amp;1 As is</source>
-      <translation type="unfinished">&amp;1 As is</translation>
+      <translation>&amp;1 Sellaisenaan</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="729"/>
@@ -11221,32 +11222,32 @@ Oletko varma, että haluat jatkaa?
     <message>
       <location filename="../CommandView.cpp" line="732"/>
       <source>&amp;2 Points</source>
-      <translation type="unfinished">&amp;2 Points</translation>
+      <translation>&amp;2 Pisteinä</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="737"/>
       <source>&amp;3 Wireframe</source>
-      <translation type="unfinished">&amp;3 Wireframe</translation>
+      <translation>&amp;3 Rautalankamallina</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="742"/>
       <source>&amp;4 Hidden line</source>
-      <translation type="unfinished">&amp;4 Hidden line</translation>
+      <translation>&amp;4 Piilotettuina viivoina</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="747"/>
       <source>&amp;5 No shading</source>
-      <translation type="unfinished">&amp;5 No shading</translation>
+      <translation>&amp;5 Ei varjostusta</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="752"/>
       <source>&amp;6 Shaded</source>
-      <translation type="unfinished">&amp;6 Shaded</translation>
+      <translation>&amp;6 Varjostettuna</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="757"/>
       <source>&amp;7 Flat lines</source>
-      <translation type="unfinished">&amp;7 Flat lines</translation>
+      <translation>&amp;7 Tasaisina viivoina</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="734"/>
@@ -11339,42 +11340,42 @@ Haluatko silti jatkaa?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1168"/>
       <source>Tree view item background. Only effective in overlay.</source>
-      <translation type="unfinished">Tree view item background. Only effective in overlay.</translation>
+      <translation>Puunäkymän kohteen tausta. Toimii vain kohteen päällyksessä.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1196"/>
       <source>Tree view item background padding.</source>
-      <translation type="unfinished">Tree view item background padding.</translation>
+      <translation>Puunäkymä kohteen taustan täyte.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1224"/>
       <source>Hide extra tree view column for item description.</source>
-      <translation type="unfinished">Hide extra tree view column for item description.</translation>
+      <translation>Piilota puunäkymän sarake, jossa on kohteen kuvaus.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1252"/>
       <source>Hide extra tree view column - Internal Names.</source>
-      <translation type="unfinished">Hide extra tree view column - Internal Names.</translation>
+      <translation>Piilota puunäkymän sarake Sisäiset nimet.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1280"/>
       <source>Hide tree view scroll bar in dock overlay.</source>
-      <translation type="unfinished">Hide tree view scroll bar in dock overlay.</translation>
+      <translation>Piilota puunäkymän vierityspalkki telakkaikkunan päällekkäistilassa.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1308"/>
       <source>Hide tree view header view in dock overlay.</source>
-      <translation type="unfinished">Hide tree view header view in dock overlay.</translation>
+      <translation>Piilota puunäkymän otsikko telakan päällekkäistilassa.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1336"/>
       <source>Allow tree view columns to be manually resized.</source>
-      <translation type="unfinished">Allow tree view columns to be manually resized.</translation>
+      <translation>Salli puunäkymän sarakkeiden manuaalinen koon muuttaminen.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1472"/>
       <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</translation>
+      <translation>Jos käytössä, näytä kohteen näkyvyyden tila silmäkuvakkeessa ennen puunäkymän kohteita. Näkyvyyttä voi vaihtaa napsauttamalla</translation>
     </message>
   </context>
   <context>
@@ -11402,7 +11403,7 @@ Haluatko silti jatkaa?</translation>
     <message>
       <location filename="../Workbench.cpp" line="537"/>
       <source>Workbench</source>
-      <translation>Työpöytä</translation>
+      <translation>Työtila</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="538"/>
@@ -11412,7 +11413,7 @@ Haluatko silti jatkaa?</translation>
     <message>
       <location filename="../Workbench.cpp" line="540"/>
       <source>Individual views</source>
-      <translation type="unfinished">Individual views</translation>
+      <translation>Itsenäiset näkymät</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="542"/>
@@ -11427,17 +11428,17 @@ Haluatko silti jatkaa?</translation>
     <message>
       <location filename="../Workbench.cpp" line="539"/>
       <source>Standard &amp;views</source>
-      <translation type="unfinished">Standard &amp;views</translation>
+      <translation>Standardi&amp;näkymät</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="541"/>
       <source>A&amp;xonometric</source>
-      <translation type="unfinished">A&amp;xonometric</translation>
+      <translation>A&amp;ksonometrinen</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="544"/>
       <source>V&amp;isibility</source>
-      <translation type="unfinished">V&amp;isibility</translation>
+      <translation>&amp;Näkyvyys</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="545"/>
@@ -11523,41 +11524,41 @@ Haluatko silti jatkaa?</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, show the notification area in the status bar: a button with the current notification count, which can expand the detailed notification list. Optionally, with additional pop-up notifications.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, show the notification area in the status bar: a button with the current notification count, which can expand the detailed notification list. Optionally, with additional pop-up notifications.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Jos valittu, ilmoitusalueen tilapalkissa näytetään painike jossa on nykyinen ilmoitusten lukumäärä. Painikkeesta ilmoitukset voi avata yksityiskohtaisemmaksi ilmoitusluetteloksi. Voit myös valita ilmoitukset näytettäväksi ponnahdusikkunassa.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="23"/>
       <source>Enable notification area</source>
-      <translation type="unfinished">Enable notification area</translation>
+      <translation>Ota ilmoitusalue käyttöön</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="32"/>
       <source>If checked, non-intrusive pop-up notifications will appear above the status bar, around the notification area. Pop-up notifications can be manually dismissed by clicking on them, and also automatically dismissed by specifying a maximum and minimum duration for them to be displayed.
 
 Additionally, pop-up notifications can be disabled. In this case the user can still use the notification area as a quick-access location to view notifications, without the distracton of an additional pop-up.</source>
-      <translation type="unfinished">If checked, non-intrusive pop-up notifications will appear above the status bar, around the notification area. Pop-up notifications can be manually dismissed by clicking on them, and also automatically dismissed by specifying a maximum and minimum duration for them to be displayed.
+      <translation>Jos valittu, ei-häiritsevät ilmoitukset näkyvät tilapalkin yläpuolella ilmoitusalueen ympärillä. Ponnahdusilmoitukset voidaan manuaalisesti hylätä klikkaamalla niitä, ja ne suljetaan automaattisesti halutulla maksimi- ja vähimmäiskesto -aikamäärityksillä.
 
-Additionally, pop-up notifications can be disabled. In this case the user can still use the notification area as a quick-access location to view notifications, without the distracton of an additional pop-up.</translation>
+Ponnahdusilmoitukset voidaan myös poistaa käytöstä. Tässä tapauksessa käyttäjä voi edelleen käyttää ilmoitusaluetta oikoreittinä ilmoitusten avaamiseen ilman että ylimääräinen ponnahdusikkuna häiritsee.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="37"/>
       <source>Enable pop-up notifications</source>
-      <translation type="unfinished">Enable pop-up notifications</translation>
+      <translation>Ota ponnahdusilmoitukset käyttöön</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="49"/>
       <source>Minimum duration:</source>
-      <translation type="unfinished">Minimum duration:</translation>
+      <translation>Vähimmäiskesto:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="59"/>
       <source>Maximum duration:</source>
-      <translation type="unfinished">Maximum duration:</translation>
+      <translation>Enimmäiskesto:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="66"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum amount of time the notification will be shown (unless mouse buttons are clicked). It also controls when user notifications will be removed if the &amp;quot;Auto-remove user notifications&amp;quot; setting is checked.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum amount of time the notification will be shown (unless mouse buttons are clicked). It also controls when user notifications will be removed if the &amp;quot;Auto-remove user notifications&amp;quot; setting is checked.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enimmäismäärä aikaa, jolloin ilmoitus näytetään (ellei napsauteta hiirellä). Asetus määrittää ajan jolloin käyttäjäilmoitukset poistetaan, mikäli &amp;quot;Poista ilmoitukset automaattisesti&amp;quot; -asetus on valittuna.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="69"/>
@@ -11568,27 +11569,27 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="91"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum amount of time the notification will be shown (unless the notification bubble is dismissed by clicking on it).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum amount of time the notification will be shown (unless the notification bubble is dismissed by clicking on it).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ilmoitusten näyttämisen minimiaika (ellei ilmoituskuplaa hylätä napsauttamalla sitä).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="110"/>
       <source>Maximum concurrent notification count:</source>
-      <translation type="unfinished">Maximum concurrent notification count:</translation>
+      <translation>Suurin sallittu samanaikaisten ilmoitusten määrä:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="117"/>
       <source>Maximum number of notifications that will be simultaneously present on the notification bubble.</source>
-      <translation type="unfinished">Maximum number of notifications that will be simultaneously present on the notification bubble.</translation>
+      <translation>Enimmäismäärä ilmoituksia, jotka ovat samanaikaisesti esillä ilmoituskuplassa.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="133"/>
       <source>Notification bubble width:</source>
-      <translation type="unfinished">Notification bubble width:</translation>
+      <translation>Ilmoituskuplan leveys:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="140"/>
       <source>Width of the pop-up notification bubble in pixels.</source>
-      <translation type="unfinished">Width of the pop-up notification bubble in pixels.</translation>
+      <translation>Ilmoituskuplan leveys pikseleinä.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="143"/>
@@ -11598,62 +11599,62 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="168"/>
       <source>Any open pop-up notifications will disappear when another window is activated.</source>
-      <translation type="unfinished">Any open pop-up notifications will disappear when another window is activated.</translation>
+      <translation>Kaikki avoimet ponnahdusilmoitukset katoavat kun toinen ikkuna aktivoidaan.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="187"/>
       <source>Prevent pop-up notifications from appearing when the FreeCAD window is not the active window.</source>
-      <translation type="unfinished">Prevent pop-up notifications from appearing when the FreeCAD window is not the active window.</translation>
+      <translation>Estä ponnahdusilmoitukset, kun FreeCAD ei ole aktiivinen ikkuna.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="190"/>
       <source>Do not show when window is inactive</source>
-      <translation type="unfinished">Do not show when window is inactive</translation>
+      <translation>Älä näytä kun ikkuna ei ole aktiivinen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="209"/>
       <source>Additional notification sources to show in the notification area.</source>
-      <translation type="unfinished">Additional notification sources to show in the notification area.</translation>
+      <translation>Muut ilmoituslähteet, jotka näytetään ilmoitusalueella.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="218"/>
       <source>Errors intended for developers will appear in the notification area.</source>
-      <translation type="unfinished">Errors intended for developers will appear in the notification area.</translation>
+      <translation>Kehittäjille tarkoitetut virheet näkyvät ilmoitusalueella.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="237"/>
       <source>Warnings intended for developers will appear in the notification area.</source>
-      <translation type="unfinished">Warnings intended for developers will appear in the notification area.</translation>
+      <translation>Kehittäjille tarkoitetut varoitukset näkyvät ilmoitusalueella.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="259"/>
       <source>Controls the amount of notifications to show in the list.</source>
-      <translation type="unfinished">Controls the amount of notifications to show in the list.</translation>
+      <translation>Määrittelee luettelossa näkyvien ilmoitusten määrän.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="262"/>
       <source>Notifications list</source>
-      <translation type="unfinished">Notifications list</translation>
+      <translation>Ilmoitusluettelo</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="268"/>
       <source>Limits the number of notifications that will be kept in the list. If 0, there is no limit.</source>
-      <translation type="unfinished">Limits the number of notifications that will be kept in the list. If 0, there is no limit.</translation>
+      <translation>Rajaa luettelossa näkyvien ilmoitusten määrän. Jos 0, ei rajoitusta.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="287"/>
       <source>Maximum notification count:</source>
-      <translation type="unfinished">Maximum notification count:</translation>
+      <translation>Ilmoitusten enimmäismäärä:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="294"/>
       <source>Removes the user notifications from the notifications list after the maximum duration for pop-up notifications has lapsed.</source>
-      <translation type="unfinished">Removes the user notifications from the notifications list after the maximum duration for pop-up notifications has lapsed.</translation>
+      <translation>Poistaa ilmoitukset ilmoitusluettelosta sen jälkeen, kun ponnahdusilmoitusten enimmäiskesto on kulunut.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="297"/>
       <source>Auto-remove user notifications</source>
-      <translation type="unfinished">Auto-remove user notifications</translation>
+      <translation>Poista ilmoitukset automaattisesti</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="212"/>
@@ -11681,18 +11682,18 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="14"/>
       <source>Available Workbenches</source>
-      <translation>Saatavilla olevat työpöydät</translation>
+      <translation>Saatavilla olevat työtilat</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="148"/>
       <source>Start up workbench:</source>
-      <translation>Oletustyöpöytä käynnistyessä:</translation>
+      <translation>Oletustyötila käynnistyessä:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="155"/>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation>Valitse, mikä työpöytä aktivoituu ja näytetään
+      <translation>Valitse, mikä työtila aktivoituu ja näytetään
 FreeCAD käynnistyksen jälkeen</translation>
     </message>
     <message>
@@ -11703,34 +11704,34 @@ FreeCAD käynnistyksen jälkeen</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="80"/>
       <source>Choose the workbench selector widget type (restart required).</source>
-      <translation type="unfinished">Choose the workbench selector widget type (restart required).</translation>
+      <translation>Valitse työtilan valitsimen tyyppi (vaatii uudelleenkäynnistyksen).</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="37"/>
       <source>Workbench selector items style:</source>
-      <translation>Työpenkin valitsimen tyyli:</translation>
+      <translation>Työtilan valitsimen kohteiden tyyli:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="44"/>
       <source>Customize how the items are displayed.</source>
-      <translation type="unfinished">Customize how the items are displayed.</translation>
+      <translation>Mukauta kuinka kohteita näytetään.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop or sort them by right-clicking on any workbench and select &lt;span style="  font-weight:600; font-style:italic;"&gt;Sort alphabetically&lt;/span&gt;. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
 Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop or sort them by right-clicking on any workbench and select &lt;span style="  font-weight:600; font-style:italic;"&gt;Sort alphabetically&lt;/span&gt;. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
-Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Voit järjestellä työtiloja uudelleen vetämällä ja pudottamalla tai napsauttamalla mitä tahansa työtilaa ja valitsemalla  &lt;span style="  font-weight:600; font-style:italic;"&gt;Lajittele aakkosjärjestykseen&lt;/span&gt;. Voit myös asentaa lisää työtiloja lisäosien hallinnan kautta.&lt;/p&gt;&lt;p&gt;
+Tällä hetkellä järjestelmässäsi olevat työtilat:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="112"/>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
-      <translation>Jos valittu, sovellus muistaa, mikä työpöytä on aktiivinen kullekin näkymän välilehdelle</translation>
+      <translation>Jos valittu, sovellus muistaa, mikä työtila on aktiivinen kullekin näkymän välilehdelle</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="115"/>
       <source>Remember active workbench by tab</source>
-      <translation>Muista aktiivinen työpöytä välilehdellä</translation>
+      <translation>Muista aktiivinen työtila välilehdellä</translation>
     </message>
   </context>
   <context>
@@ -11743,7 +11744,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="20"/>
       <source>Planes</source>
-      <translation type="unfinished">Planes</translation>
+      <translation>Tasot</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="26"/>
@@ -11776,12 +11777,12 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../TaskView/TaskImage.ui" line="14"/>
       <source>Image plane settings</source>
-      <translation type="unfinished">Image plane settings</translation>
+      <translation>Kuvan tason asetukset</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="22"/>
       <source>Planes</source>
-      <translation type="unfinished">Planes</translation>
+      <translation>Tasot</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
@@ -11811,17 +11812,17 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../TaskView/TaskImage.ui" line="100"/>
       <source>X distance:</source>
-      <translation type="unfinished">X distance:</translation>
+      <translation>X -etäisyys:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="120"/>
       <source>Y distance:</source>
-      <translation type="unfinished">Y distance:</translation>
+      <translation>Y -etäisyys:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="140"/>
       <source>Rotation :</source>
-      <translation type="unfinished">Rotation :</translation>
+      <translation>Kierto :</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="156"/>
@@ -11851,7 +11852,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../TaskView/TaskImage.ui" line="244"/>
       <source>Interactively scale the image by setting a length between two points of the image.</source>
-      <translation type="unfinished">Interactively scale the image by setting a length between two points of the image.</translation>
+      <translation>Skaalaa kuvaa määrittämällä kahden pisteen välinen etäisyys.</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="247"/>
@@ -11861,7 +11862,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../TaskView/TaskImage.ui" line="254"/>
       <source>Calibration</source>
-      <translation type="unfinished">Calibration</translation>
+      <translation>Kalibrointi</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="260"/>
@@ -11871,7 +11872,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../TaskView/TaskImage.ui" line="267"/>
       <source>Cancel</source>
-      <translation>Peruuta</translation>
+      <translation>Kumoa</translation>
     </message>
   </context>
   <context>
@@ -11879,17 +11880,17 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="87"/>
       <source>If unchecked, %1 will not appear in the available workbenches.</source>
-      <translation type="unfinished">If unchecked, %1 will not appear in the available workbenches.</translation>
+      <translation>Jos ei valittuna, %1 ei näy käytettävissä olevissa työtiloissa.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="92"/>
       <source>This is the current startup module, and must be enabled.</source>
-      <translation type="unfinished">This is the current startup module, and must be enabled.</translation>
+      <translation>Tämä on nykyinen käynnistysmoduuli, ja se on otettava käyttöön.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="115"/>
       <source>Shortcut to activate this workbench.</source>
-      <translation type="unfinished">Shortcut to activate this workbench.</translation>
+      <translation>Pikakuvake tähän työtilaan.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="130"/>
@@ -11899,12 +11900,12 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="131"/>
       <source>If checked, %1 will be loaded automatically when FreeCAD starts up</source>
-      <translation type="unfinished">If checked, %1 will be loaded automatically when FreeCAD starts up</translation>
+      <translation>Jos valittu, %1 ladataan automaattisesti kun FreeCAD käynnistyy</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="137"/>
       <source>This is the current startup module, and must be autoloaded.</source>
-      <translation type="unfinished">This is the current startup module, and must be autoloaded.</translation>
+      <translation>Tämä on nykyinen käynnistysmoduuli, ja se on ladattava automaattisesti.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="144"/>
@@ -11919,7 +11920,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="148"/>
       <source>To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.</source>
-      <translation type="unfinished">To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.</translation>
+      <translation>Säästääkseen resursseja FreeCAD ei lataa työtiloja ennen kuin niitä käytetään. Niitten lataaminen voi lisätä niihin liittyviä toimintoja.</translation>
     </message>
   </context>
   <context>
@@ -11927,19 +11928,19 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="239"/>
       <source>Sort alphabetically</source>
-      <translation type="unfinished">Sort alphabetically</translation>
+      <translation>Lajittele aakkosjärjestyksessä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="525"/>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="540"/>
       <source>ComboBox</source>
-      <translation type="unfinished">ComboBox</translation>
+      <translation>Pudotusvalikko</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="526"/>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="541"/>
       <source>TabBar</source>
-      <translation type="unfinished">TabBar</translation>
+      <translation>Välilehdet</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="532"/>
@@ -11970,7 +11971,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../NotificationArea.cpp" line="696"/>
       <source>Delete user notifications</source>
-      <translation type="unfinished">Delete user notifications</translation>
+      <translation>Poista käyttäjän ilmoitukset</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="703"/>
@@ -11983,7 +11984,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../NotificationArea.cpp" line="978"/>
       <source>Delete user notifications</source>
-      <translation type="unfinished">Delete user notifications</translation>
+      <translation>Poista käyttäjän ilmoitukset</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="987"/>
@@ -11996,12 +11997,12 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../ImageView.cpp" line="75"/>
       <source>Failed to load image file</source>
-      <translation type="unfinished">Failed to load image file</translation>
+      <translation>Kuvatiedostoa ei voitu ladata</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="76"/>
       <source>Cannot load file %1: %2</source>
-      <translation type="unfinished">Cannot load file %1: %2</translation>
+      <translation>Tiedostoa %1 ei voi ladata: %2</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="182"/>
@@ -12024,13 +12025,13 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../CommandView.cpp" line="2097"/>
       <source>&amp;Load image...</source>
-      <translation type="unfinished">&amp;Load image...</translation>
+      <translation>&amp;Lataa kuva...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2098"/>
       <location filename="../CommandView.cpp" line="2100"/>
       <source>Loads an image</source>
-      <translation type="unfinished">Loads an image</translation>
+      <translation>Lataa kuvan</translation>
     </message>
   </context>
   <context>
@@ -12038,12 +12039,12 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../NaviCube.cpp" line="1181"/>
       <source>Movable navigation cube</source>
-      <translation type="unfinished">Movable navigation cube</translation>
+      <translation>Liikuteltava navigointikuutio</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="1182"/>
       <source>Drag and place NaviCube</source>
-      <translation type="unfinished">Drag and place NaviCube</translation>
+      <translation>Vedä ja sijoita navigointikuutio eri paikkaan</translation>
     </message>
   </context>
   <context>
@@ -12051,32 +12052,32 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../View3DSettings.cpp" line="561"/>
       <source>FRONT</source>
-      <translation type="unfinished">FRONT</translation>
+      <translation>ETU</translation>
     </message>
     <message>
       <location filename="../View3DSettings.cpp" line="563"/>
       <source>TOP</source>
-      <translation type="unfinished">TOP</translation>
+      <translation>YLÄ</translation>
     </message>
     <message>
       <location filename="../View3DSettings.cpp" line="565"/>
       <source>RIGHT</source>
-      <translation type="unfinished">RIGHT</translation>
+      <translation>OIKEA</translation>
     </message>
     <message>
       <location filename="../View3DSettings.cpp" line="567"/>
       <source>REAR</source>
-      <translation type="unfinished">REAR</translation>
+      <translation>TAKA</translation>
     </message>
     <message>
       <location filename="../View3DSettings.cpp" line="569"/>
       <source>BOTTOM</source>
-      <translation type="unfinished">BOTTOM</translation>
+      <translation>ALA</translation>
     </message>
     <message>
       <location filename="../View3DSettings.cpp" line="571"/>
       <source>LEFT</source>
-      <translation type="unfinished">LEFT</translation>
+      <translation>VASEN</translation>
     </message>
   </context>
   <context>
@@ -12085,7 +12086,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
       <location filename="../Widgets.cpp" line="1598"/>
       <location filename="../Widgets.cpp" line="1665"/>
       <source>An error occurred -- see Report View for information</source>
-      <translation type="unfinished">An error occurred -- see Report View for information</translation>
+      <translation>Tapahtui virhe -- katso Raporttinäkymästä tarkemmat tiedot</translation>
     </message>
   </context>
   <context>
@@ -12113,7 +12114,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="81"/>
       <source>The cursor shape will be a block</source>
-      <translation type="unfinished">The cursor shape will be a block</translation>
+      <translation>Kursorin muoto on lohko</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="84"/>
@@ -12301,7 +12302,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="20"/>
       <source>Language and number format</source>
-      <translation>Kieli ja numerojen muoto</translation>
+      <translation>Kieli ja luvut</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="41"/>
@@ -12326,17 +12327,17 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="78"/>
       <source>Number of decimals that should be shown for numbers and dimensions</source>
-      <translation>Numeroiden ja mittojen osalta esitettävä desimaalien määrä</translation>
+      <translation>Luvuissa ja mitoissa näytettävien desimaalien määrä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
       <source>Unit system for all parts of the application. Can be overridden by specifying a document unit system.</source>
-      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a document unit system.</translation>
+      <translation>Yksikköjärjestelmä koko sovelluksessa. Voidaan ohittaa määrittelemällä asiakirjakohtainen yksikköjärjestelmä.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
       <source>If enabled, document unit systems are ignored</source>
-      <translation type="unfinished">If enabled, document unit systems are ignored</translation>
+      <translation>Jos käytössä, asiakirjakohtaista yksikköjärjestelmää ei huomioida</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="96"/>
@@ -12356,7 +12357,7 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="152"/>
       <source>Number format:</source>
-      <translation>Numeron muoto:</translation>
+      <translation>Lukumuoto:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="166"/>
@@ -12379,10 +12380,10 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
 will be substituted with locale separator, except
 in Python Console and Macro Editor where a
 dot/period will always be printed.</source>
-      <translation type="unfinished">If enabled, numerical keypad decimal separator
-will be substituted with locale separator, except
-in Python Console and Macro Editor where a
-dot/period will always be printed.</translation>
+      <translation>Jos käytössä, numeeriset näppäimistön desimaalierottimet
+korvataan lokalisointiasetusten erottimella lukuun ottamatta
+Python Consolia ja Makrojen muokkainta, jossa näytetään aina
+piste.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="190"/>
@@ -12402,7 +12403,7 @@ dot/period will always be printed.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="234"/>
       <source>Customize how user interface will look like</source>
-      <translation type="unfinished">Customize how user interface will look like</translation>
+      <translation>Muokkaa käyttöliittymän ulkoasua</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="246"/>
@@ -12424,7 +12425,7 @@ tätä näytön koon tai henkilökohtaisen maun mukaan</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="271"/>
       <source>Tree view and Property view mode:</source>
-      <translation type="unfinished">Tree view and Property view mode:</translation>
+      <translation>Puunäkymä ja Ominaisuudet:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="278"/>
@@ -12432,10 +12433,10 @@ tätä näytön koon tai henkilökohtaisen maun mukaan</translation>
 
 'Combined': combine Tree view and Property view into one panel.
 'Independent': split Tree view and Property view into separate panels.</source>
-      <translation type="unfinished">Customize how tree view is shown in the panel (restart required).
+      <translation>Mukauta Puunäkymän ulkoasua paneelissa (vaatii uudelleenkäynnistyksen).
 
-'Combined': combine Tree view and Property view into one panel.
-'Independent': split Tree view and Property view into separate panels.</translation>
+'Yhdistetty': Yhdistä puunäkymä ja ominaisuusnäkymä yhdeksi paneeliksi.
+'Itsenäinen': Jaa puunäkymä ja ominaisuusnäkymä erillisiin paneeleihin.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="288"/>
@@ -12451,18 +12452,18 @@ tätä näytön koon tai henkilökohtaisen maun mukaan</translation>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="311"/>
       <source>Background of the main window (when no document is opened) will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation type="unfinished">Background of the main window (when no document is opened) will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</translation>
+      <translation>Pääikkunan tausta (kun asiakirjaa ei ole avattu) koostuu tietystä kuva muodostetuista vierekkäin ladoituist osista.
+Katso FreeCAD Wikistä lisätietoja kuvasta.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="315"/>
       <source>Enable tiled background</source>
-      <translation>Valitse tiilikuvio tausta</translation>
+      <translation>Valitse tiilikuviotausta</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="322"/>
       <source>The text cursor will be blinking</source>
-      <translation type="unfinished">The text cursor will be blinking</translation>
+      <translation>Tekstiosoitin vilkkuu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="325"/>
@@ -12486,12 +12487,12 @@ väläysikkunan.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="362"/>
       <source>Activate overlay handling of dock windows</source>
-      <translation>Ota käyttöön päällekkäisten elementtien käsittely telakoiduille ikkunoille</translation>
+      <translation>Ota telakkaikkunoitten päällekkäisyystila käyttöön</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="365"/>
       <source>Activate overlay handling</source>
-      <translation>Ota käyttöön päällekkäisten elementtien käsittely</translation>
+      <translation>Päällekkäiset telakkaikkunat</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="384"/>
@@ -12566,12 +12567,12 @@ väläysikkunan.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="598"/>
       <source>Combined</source>
-      <translation type="unfinished">Combined</translation>
+      <translation>Yhdistetty</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="599"/>
       <source>Independent</source>
-      <translation type="unfinished">Independent</translation>
+      <translation>Itsenäinen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="626"/>
@@ -12581,7 +12582,7 @@ väläysikkunan.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="627"/>
       <source>Tags</source>
-      <translation type="unfinished">Tags</translation>
+      <translation>Tagit</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="664"/>
@@ -12591,7 +12592,7 @@ väläysikkunan.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="677"/>
       <source>Apply the %1 preference pack</source>
-      <translation type="unfinished">Apply the %1 preference pack</translation>
+      <translation>Ota käyttöön asetuspaketti %1</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="740"/>
@@ -12606,7 +12607,7 @@ väläysikkunan.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="752"/>
       <source>A preference pack with that name already exists. Overwrite?</source>
-      <translation type="unfinished">A preference pack with that name already exists. Overwrite?</translation>
+      <translation>Kyseisellä nimellä varustettu asetuspaketti on jo olemassa. Haluatko korvata sen?</translation>
     </message>
   </context>
   <context>
@@ -12799,13 +12800,13 @@ Python-konsolista Raporttinäkymäpaneeliin</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="655"/>
       <source>Export dependency &amp;graph...</source>
-      <translation type="unfinished">Export dependency &amp;graph...</translation>
+      <translation>Vie riippuvuus&amp;kaavio...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="656"/>
       <location filename="../CommandDoc.cpp" line="657"/>
       <source>Export the dependency graph to a file</source>
-      <translation type="unfinished">Export the dependency graph to a file</translation>
+      <translation>Vie riippuvuuskaavio tiedostoon</translation>
     </message>
   </context>
   <context>
@@ -12813,12 +12814,12 @@ Python-konsolista Raporttinäkymäpaneeliin</translation>
     <message>
       <location filename="../CommandView.cpp" line="3241"/>
       <source>Selection &amp;back</source>
-      <translation type="unfinished">Selection &amp;back</translation>
+      <translation>&amp;Edellinen valinta</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3243"/>
       <source>Restore the previous Tree view selection. Only works if Tree RecordSelection mode is switched on.</source>
-      <translation type="unfinished">Restore the previous Tree view selection. Only works if Tree RecordSelection mode is switched on.</translation>
+      <translation>Palauta edellinen puunäkymävalinta. Käytettävissä vain jos Puunäkymän Tallenna valinta -tila on päällä.</translation>
     </message>
   </context>
   <context>
@@ -12826,12 +12827,12 @@ Python-konsolista Raporttinäkymäpaneeliin</translation>
     <message>
       <location filename="../CommandView.cpp" line="3275"/>
       <source>Selection &amp;forward</source>
-      <translation type="unfinished">Selection &amp;forward</translation>
+      <translation>&amp;Seuraava valinta</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3277"/>
       <source>Restore the next Tree view selection. Only works if Tree RecordSelection mode is switched on.</source>
-      <translation type="unfinished">Restore the next Tree view selection. Only works if Tree RecordSelection mode is switched on.</translation>
+      <translation>Palauta seuraava puunäkymävalinta. Käytettävissä vain jos Puunäkymän Tallenna valinta -tila on päällä.</translation>
     </message>
   </context>
   <context>
@@ -12844,12 +12845,12 @@ Python-konsolista Raporttinäkymäpaneeliin</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="202"/>
       <source>Push In</source>
-      <translation type="unfinished">Push In</translation>
+      <translation>Zoomaa lähemmäksi</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="222"/>
       <source>Pull Out</source>
-      <translation type="unfinished">Pull Out</translation>
+      <translation>Zoomaa kauemmaksi</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="260"/>
@@ -12869,7 +12870,7 @@ Python-konsolista Raporttinäkymäpaneeliin</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="26"/>
       <source>Adjust the orientation of the directional light source by dragging the handle with the mouse or use the spin boxes for fine tuning.</source>
-      <translation type="unfinished">Adjust the orientation of the directional light source by dragging the handle with the mouse or use the spin boxes for fine tuning.</translation>
+      <translation>Säädä valonlähteen suuntaa vetämällä kartiota hiirellä tai käytä suunnan laatikoita hienosäätöön.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="29"/>
@@ -12882,12 +12883,12 @@ Python-konsolista Raporttinäkymäpaneeliin</translation>
     <message>
       <location filename="../CommandView.cpp" line="899"/>
       <source>Toggle transparenc&amp;y</source>
-      <translation type="unfinished">Toggle transparenc&amp;y</translation>
+      <translation>Vaihda läpinäk&amp;yvyyttä</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="901"/>
       <source>Toggles transparency of the selected objects. You can also fine tune transparency value in the Appearance taskbox (right click an object in the tree, Appearance).</source>
-      <translation type="unfinished">Toggles transparency of the selected objects. You can also fine tune transparency value in the Appearance taskbox (right click an object in the tree, Appearance).</translation>
+      <translation>Vaihtaa valittujen objektien läpinäkyvyyttä. Voit myös hienosäätää läpinäkyvyyden arvoa Ulkoasun tehtävälaatikossa (klikkaa hiiren oikealla painikkeella kohdetta puunäkymässä, valitse Ulkoasu).</translation>
     </message>
   </context>
   <context>
@@ -12895,12 +12896,12 @@ Python-konsolista Raporttinäkymäpaneeliin</translation>
     <message>
       <location filename="../CommandView.cpp" line="3612"/>
       <source>Toggle overl&amp;ay for all</source>
-      <translation type="unfinished">Toggle overl&amp;ay for all</translation>
+      <translation>Vaihda &amp;kaikkien päällekkäisyystilaa</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3613"/>
       <source>Toggle overlay mode for all docked windows</source>
-      <translation type="unfinished">Toggle overlay mode for all docked windows</translation>
+      <translation>Vaihda kaikkien telakkaikkunoitten päällekkäisyystilaa</translation>
     </message>
   </context>
   <context>
@@ -12908,14 +12909,14 @@ Python-konsolista Raporttinäkymäpaneeliin</translation>
     <message>
       <location filename="../CommandView.cpp" line="3636"/>
       <source>Toggle tra&amp;nsparent for all</source>
-      <translation type="unfinished">Toggle tra&amp;nsparent for all</translation>
+      <translation>Vaihda kaikkien l&amp;äpinäkyvyyttä</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3637"/>
       <source>Toggle transparent mode for all docked overlay windows.
 This makes the docked windows stay transparent at all times.</source>
-      <translation type="unfinished">Toggle transparent mode for all docked overlay windows.
-This makes the docked windows stay transparent at all times.</translation>
+      <translation>Vaihda kaikkien telakkaikkunoitten läpinäkyvyyttä.
+Tämä asetus määrittää kaikki telakkaikkunat läpinäkyviksi kaiken aikaa.</translation>
     </message>
   </context>
   <context>
@@ -12923,12 +12924,12 @@ This makes the docked windows stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3661"/>
       <source>Toggle &amp;overlay</source>
-      <translation type="unfinished">Toggle &amp;overlay</translation>
+      <translation>Vaihda &amp;päällekkäisyystilaa</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3662"/>
       <source>Toggle overlay mode for the docked window under the cursor</source>
-      <translation type="unfinished">Toggle overlay mode for the docked window under the cursor</translation>
+      <translation>Vaihda osoittimen alla olevan ikkunan päällekkäisyystilaa</translation>
     </message>
   </context>
   <context>
@@ -12936,14 +12937,14 @@ This makes the docked windows stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3685"/>
       <source>Toggle tran&amp;sparent mode</source>
-      <translation type="unfinished">Toggle tran&amp;sparent mode</translation>
+      <translation>Vaihda &amp;läpinäkyvyystilaa</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3686"/>
       <source>Toggle transparent mode for the docked window under cursor.
 This makes the docked window stay transparent at all times.</source>
-      <translation type="unfinished">Toggle transparent mode for the docked window under cursor.
-This makes the docked window stay transparent at all times.</translation>
+      <translation>Vaihda osoittimen alla olevan ikkunan päällekkäisyystilaa.
+Tämä asetus asettaa telakkaikkunan läpinäkyväksi kaiken aikaa.</translation>
     </message>
   </context>
   <context>
@@ -12951,12 +12952,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3710"/>
       <source>Toggle &amp;left</source>
-      <translation type="unfinished">Toggle &amp;left</translation>
+      <translation>Vaihda &amp;vasenta</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3711"/>
       <source>Show/hide left overlay panel</source>
-      <translation type="unfinished">Show/hide left overlay panel</translation>
+      <translation>Näytä/piilota vasen päällekkäispaneeli</translation>
     </message>
   </context>
   <context>
@@ -12964,12 +12965,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3735"/>
       <source>Toggle &amp;right</source>
-      <translation type="unfinished">Toggle &amp;right</translation>
+      <translation>Vaihda &amp;oikeaa</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3736"/>
       <source>Show/hide right overlay panel</source>
-      <translation type="unfinished">Show/hide right overlay panel</translation>
+      <translation>Näytä/piilota oikea päällekkäispaneeli</translation>
     </message>
   </context>
   <context>
@@ -12977,12 +12978,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3760"/>
       <source>Toggle &amp;top</source>
-      <translation type="unfinished">Toggle &amp;top</translation>
+      <translation>Vaihda &amp;yläpuolista</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3761"/>
       <source>Show/hide top overlay panel</source>
-      <translation type="unfinished">Show/hide top overlay panel</translation>
+      <translation>Näytä/piilota yläreunassa oleva päällekkäispaneeli</translation>
     </message>
   </context>
   <context>
@@ -12990,12 +12991,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3785"/>
       <source>Toggle &amp;bottom</source>
-      <translation type="unfinished">Toggle &amp;bottom</translation>
+      <translation>Vaihda &amp;alapuolista</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3786"/>
       <source>Show/hide bottom overlay panel</source>
-      <translation type="unfinished">Show/hide bottom overlay panel</translation>
+      <translation>Näytä/piilota alareunassa oleva päällekkäispaneeli</translation>
     </message>
   </context>
   <context>
@@ -13003,12 +13004,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3810"/>
       <source>Bypass &amp;mouse events in docked overlay windows</source>
-      <translation type="unfinished">Bypass &amp;mouse events in docked overlay windows</translation>
+      <translation>Ohita &amp;hiiren tapahtumat telakoiduissa päällekkäisyysikkunoissa</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3811"/>
       <source>Bypass all mouse events in docked overlay windows</source>
-      <translation type="unfinished">Bypass all mouse events in docked overlay windows</translation>
+      <translation>Ohita kaikki hiiren tapahtumat telakoiduissa päällekkäisyysikkunoissa</translation>
     </message>
   </context>
   <context>
@@ -13016,12 +13017,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3852"/>
       <source>Dock window overlay</source>
-      <translation type="unfinished">Dock window overlay</translation>
+      <translation>Telakkaikkunan päällekkäisyys</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3853"/>
       <source>Setting docked window overlay mode</source>
-      <translation type="unfinished">Setting docked window overlay mode</translation>
+      <translation>Aseta telakkaikkunan päällekkäisyystila</translation>
     </message>
   </context>
   <context>
@@ -13029,36 +13030,36 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="317"/>
       <source>Overlay dock (re),layout delay.</source>
-      <translation type="unfinished">Overlay dock (re),layout delay.</translation>
+      <translation>Päällekkäisen telakan asetteluviive.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="372"/>
       <source>Overlay splitter handle auto hide delay. Set zero to disable auto hiding.</source>
-      <translation type="unfinished">Overlay splitter handle auto hide delay. Set zero to disable auto hiding.</translation>
+      <translation>Läpinäkyvän telakan jakokahvan automaattisen piilottamisen viive. Aseta nollaan jos haluat ettei piiloteta.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="400"/>
       <source>Show auto hidden dock overlay on mouse over.
 If disabled, then show on mouse click.</source>
-      <translation type="unfinished">Show auto hidden dock overlay on mouse over.
-If disabled, then show on mouse click.</translation>
+      <translation>Näytä automaattisesti piilotettu päällekkäinen telakka hiiren osoittimen alla.
+Jos ei käytössä, näytä kun napsautetaan hiirellä.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="429"/>
       <source>Auto mouse click through transparent part of dock overlay.</source>
-      <translation type="unfinished">Auto mouse click through transparent part of dock overlay.</translation>
+      <translation>Napsauta läpinäkyvästä telakasta läpi hiirellä automaattisesti napsautettaessa läpinäkyvällä osalla.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="457"/>
       <source>Auto pass through mouse wheel event on transparent dock overlay.</source>
-      <translation type="unfinished">Auto pass through mouse wheel event on transparent dock overlay.</translation>
+      <translation>Välitä hiiren pyöritysliike automaattisesti läpi kun rullataan läpinäkyvällä telakalla.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="485"/>
       <source>Delay capturing mouse wheel event for passing through if it is
 previously handled by other widget.</source>
-      <translation type="unfinished">Delay capturing mouse wheel event for passing through if it is
-previously handled by other widget.</translation>
+      <translation>Viivästytä hiiren rullan tapahtumaa läpi vietäessä jos sitä on käsitelty
+toisessa vimpaimessa.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="514"/>
@@ -13066,100 +13067,100 @@ previously handled by other widget.</translation>
 defines a region of alpha test under the mouse cursor.
 Auto click through is only activated if all pixels within
 the region are non-opaque.</source>
-      <translation type="unfinished">If auto mouse click through is enabled, then this radius
-defines a region of alpha test under the mouse cursor.
-Auto click through is only activated if all pixels within
-the region are non-opaque.</translation>
+      <translation>Jos hiiren painallusten läpivienti on päällä, tämä säde
+määrittää alueen hiiren osoittimen alphatestille.
+Painallusten läpivienti tapahtuu vain jos kaikki alueella
+ovat pikselit ovat ei-läpinäkyviä.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="545"/>
       <source>Leave space for Navigation Cube in dock overlay</source>
-      <translation type="unfinished">Leave space for Navigation Cube in dock overlay</translation>
+      <translation>Jätä tilaa Navigaatiokuutiolle päällekkäisessä telakassa</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="573"/>
       <source>Auto hide hint visual display triggering width</source>
-      <translation type="unfinished">Auto hide hint visual display triggering width</translation>
+      <translation>Vihjeen automaattisen piilottamisen leveys</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="601"/>
       <source>Auto hide hint visual display width</source>
-      <translation type="unfinished">Auto hide hint visual display width</translation>
+      <translation>Vihjeen automaattisen piilottamisen leveys</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="629"/>
       <source>Auto hide hint visual display length for left panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for left panel. Set to zero to fill the space.</translation>
+      <translation>Vasemman paneelin vihjeen pituus. Aseta nollaan jos haluat täyttää tilan.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="657"/>
       <source>Auto hide hint visual display length for right panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for right panel. Set to zero to fill the space.</translation>
+      <translation>Oikean paneelin vihjeen pituus. Aseta nollaan jos haluat täyttää tilan.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="685"/>
       <source>Auto hide hint visual display length for top panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for top panel. Set to zero to fill the space.</translation>
+      <translation>Yläpuolisen paneelin vihjeen pituus. Aseta nollaan jos haluat täyttää tilan.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="713"/>
       <source>Auto hide hint visual display length for bottom panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for bottom panel. Set to zero to fill the space.</translation>
+      <translation>Alapuolisen paneelin vihjeen pituus. Aseta nollaan jos haluat täyttää tilan.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="741"/>
       <source>Auto hide hint visual display offset for left panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for left panel</translation>
+      <translation>Vasemman paneelin vihjeen siirtymä</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="769"/>
       <source>Auto hide hint visual display offset for right panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for right panel</translation>
+      <translation>Oikean paneelin vihjeen siirtymä</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="797"/>
       <source>Auto hide hint visual display offset for top panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for top panel</translation>
+      <translation>Yläpuolisen paneelin vihjeen siirtymä</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="825"/>
       <source>Auto hide hint visual display offset for bottom panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for bottom panel</translation>
+      <translation>Alapuolisen paneelin vihjeen siirtymä</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="853"/>
       <source>Show tab bar on mouse over when auto hide</source>
-      <translation type="unfinished">Show tab bar on mouse over when auto hide</translation>
+      <translation>Näytä välilehtipalkki hiiren osoittimen alla kun se muuten on piilotettuna</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="881"/>
       <source>Hide tab bar in dock overlay</source>
-      <translation type="unfinished">Hide tab bar in dock overlay</translation>
+      <translation>Piilota välilehtipalkki päällekkäisessä telakassa</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="909"/>
       <source>Delay before show hint visual</source>
-      <translation type="unfinished">Delay before show hint visual</translation>
+      <translation>Viive ennen kuin vihje näytetään</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="937"/>
       <source>Auto hide animation duration, 0 to disable</source>
-      <translation type="unfinished">Auto hide animation duration, 0 to disable</translation>
+      <translation>Automaattisen piilottamisen animaation kesto, 0 = ei käytössä</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="965"/>
       <source>Auto hide animation curve type</source>
-      <translation type="unfinished">Auto hide animation curve type</translation>
+      <translation>Automaattisen piilottamisen animaation käyrän tyyppi</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="993"/>
       <source>Hide property view scroll bar in dock overlay</source>
-      <translation type="unfinished">Hide property view scroll bar in dock overlay</translation>
+      <translation>Piilota ominaisuus vierityspalkki telakkaikkunan päällekkäistilassa</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="1021"/>
       <source>Minimum overlay dock widget width/height</source>
-      <translation type="unfinished">Minimum overlay dock widget width/height</translation>
+      <translation>Päällekkäisen telakkaikkunan minimileveys/korkeus</translation>
     </message>
   </context>
   <context>
@@ -13167,7 +13168,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="868"/>
       <source>Toggle transparent mode</source>
-      <translation type="unfinished">Toggle transparent mode</translation>
+      <translation>Vaihda läpinäkyvyyttä</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="869"/>
@@ -13177,57 +13178,57 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="870"/>
       <source>Turn off auto hide/show</source>
-      <translation type="unfinished">Turn off auto hide/show</translation>
+      <translation>Poista automaattinen piilotus/näytä käytöstä</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="871"/>
       <source>Auto hide</source>
-      <translation type="unfinished">Auto hide</translation>
+      <translation>Piilota automaattisesti</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="872"/>
       <source>Auto hide docked widgets on leave</source>
-      <translation type="unfinished">Auto hide docked widgets on leave</translation>
+      <translation>Piilota telakoidut elementit poistuttaessa</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="873"/>
       <source>Hide on edit</source>
-      <translation type="unfinished">Hide on edit</translation>
+      <translation>Piilota muokattaessa</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="874"/>
       <source>Auto hide docked widgets on editing</source>
-      <translation type="unfinished">Auto hide docked widgets on editing</translation>
+      <translation>Piilota telakoidut elementit muokattaessa</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="875"/>
       <source>Show on edit</source>
-      <translation type="unfinished">Show on edit</translation>
+      <translation>Näytä muokattaessa</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="876"/>
       <source>Auto show docked widgets on editing</source>
-      <translation type="unfinished">Auto show docked widgets on editing</translation>
+      <translation>Näytä piilotetut telakoidut elementit muokattaessa</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="877"/>
       <source>Auto task</source>
-      <translation type="unfinished">Auto task</translation>
+      <translation>Automaattinen tehtävä</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="878"/>
       <source>Auto show task view for any current task, and hide the view when there is no task.</source>
-      <translation type="unfinished">Auto show task view for any current task, and hide the view when there is no task.</translation>
+      <translation>Näytä tehtävänäkymä nykyisille tehtäville ja piilota näkymä, kun tehtävää ei ole.</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="879"/>
       <source>Toggle overlay</source>
-      <translation type="unfinished">Toggle overlay</translation>
+      <translation>Vaihda päällystettä</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="1036"/>
       <source>Select auto show/hide mode</source>
-      <translation type="unfinished">Select auto show/hide mode</translation>
+      <translation>Valitse automaattisen näyttämisen/piilottamisen tila</translation>
     </message>
   </context>
   <context>
@@ -13235,7 +13236,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="2024"/>
       <source>Mouse pass through, ESC to stop</source>
-      <translation type="unfinished">Mouse pass through, ESC to stop</translation>
+      <translation>Hiiren läpikulku, ESC lopettaa</translation>
     </message>
   </context>
   <context>
@@ -13243,13 +13244,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="878"/>
       <source>Doc&amp;ument information...</source>
-      <translation type="unfinished">Doc&amp;ument information...</translation>
+      <translation>As&amp;iakirjan tiedot...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="879"/>
       <location filename="../CommandDoc.cpp" line="881"/>
       <source>Show details of the currently active document</source>
-      <translation type="unfinished">Show details of the currently active document</translation>
+      <translation>Näytä avoimena olevan asiakirjan tietoja</translation>
     </message>
   </context>
   <context>
@@ -13257,13 +13258,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="909"/>
       <source>Do&amp;cument utility...</source>
-      <translation type="unfinished">Do&amp;cument utility...</translation>
+      <translation>&amp;Asiakirjatyökalu...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="910"/>
       <location filename="../CommandDoc.cpp" line="911"/>
       <source>Utility to extract or create document files</source>
-      <translation type="unfinished">Utility to extract or create document files</translation>
+      <translation>Työkalu, jolla voit purkaa tai luoda asiakirjatiedostoja</translation>
     </message>
   </context>
   <context>
@@ -13271,13 +13272,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="352"/>
       <source>Lock toolbars</source>
-      <translation type="unfinished">Lock toolbars</translation>
+      <translation>Lukitse työkalupalkit</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
       <location filename="../CommandWindow.cpp" line="355"/>
       <source>Lock toolbars so they are no longer moveable</source>
-      <translation type="unfinished">Lock toolbars so they are no longer moveable</translation>
+      <translation>Lukitse työkalupalkit niin etteivät ne ole enää siirrettävissä</translation>
     </message>
   </context>
   <context>
@@ -13285,12 +13286,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1784"/>
       <source>Propert&amp;ies</source>
-      <translation type="unfinished">Propert&amp;ies</translation>
+      <translation>Ominais&amp;uudet</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1785"/>
       <source>Show the property view, which displays the properties of the selected object.</source>
-      <translation type="unfinished">Show the property view, which displays the properties of the selected object.</translation>
+      <translation>Näytä ominaisuusnäkymä, jossa näkyvät valitun objektin ominaisuudet.</translation>
     </message>
   </context>
   <context>
@@ -13298,12 +13299,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="160"/>
       <source>Toggle freeze</source>
-      <translation type="unfinished">Toggle freeze</translation>
+      <translation>Vaihda jäätymisen tilaa</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="162"/>
       <source>Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</source>
-      <translation type="unfinished">Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</translation>
+      <translation>Vaihtaa valittujen objektien jäätymistilaa. Jäädytettyä objektia ei lasketa uudelleen, kun sen vanhemmat muuttuvat.</translation>
     </message>
   </context>
   <context>
@@ -13311,13 +13312,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1625"/>
       <source>Standard &amp;views</source>
-      <translation type="unfinished">Standard &amp;views</translation>
+      <translation>Standardi&amp;näkymät</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1626"/>
       <location filename="../CommandView.cpp" line="1627"/>
       <source>Change to a standard view</source>
-      <translation type="unfinished">Change to a standard view</translation>
+      <translation>Vaihda standardinäkymään</translation>
     </message>
   </context>
   <context>
@@ -13341,13 +13342,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="957"/>
       <source>&amp;Reload stylesheet</source>
-      <translation type="unfinished">&amp;Reload stylesheet</translation>
+      <translation>&amp;Lataa tyylitiedosto uudelleen</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="958"/>
       <location filename="../CommandStd.cpp" line="960"/>
       <source>Reloads the current stylesheet</source>
-      <translation type="unfinished">Reloads the current stylesheet</translation>
+      <translation>Lataa nykyisen tyylitiedoston uudelleen</translation>
     </message>
   </context>
   <context>
@@ -13355,12 +13356,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3946"/>
       <source>&amp;Align to selection</source>
-      <translation type="unfinished">&amp;Align to selection</translation>
+      <translation>&amp;Keskitä valintaan</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3947"/>
       <source>Align the view with the selection</source>
-      <translation type="unfinished">Align the view with the selection</translation>
+      <translation>Keskitä näkymä valintaan</translation>
     </message>
   </context>
   <context>
@@ -13393,7 +13394,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../DlgAddPropertyVarSet.ui" line="58"/>
       <source>Add another</source>
-      <translation type="unfinished">Add another</translation>
+      <translation>Lisää toinen</translation>
     </message>
     <message>
       <location filename="../DlgAddPropertyVarSet.ui" line="65"/>
@@ -13411,44 +13412,44 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="20"/>
       <source>Theme customization</source>
-      <translation type="unfinished">Theme customization</translation>
+      <translation>Teeman muokkaus</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="38"/>
       <source>Accent color 1</source>
-      <translation type="unfinished">Accent color 1</translation>
+      <translation>Korostusväri 1</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="54"/>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="120"/>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="146"/>
       <source>This color might be used by your theme to let you customize it.</source>
-      <translation type="unfinished">This color might be used by your theme to let you customize it.</translation>
+      <translation>Tätä väriä voidaan käyttää teemassasi sen asetuksiin.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="74"/>
       <source>Accent color 2</source>
-      <translation type="unfinished">Accent color 2</translation>
+      <translation>Korostusväri 2</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="84"/>
       <source>Accent color 3</source>
-      <translation type="unfinished">Accent color 3</translation>
+      <translation>Korostusväri 3</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="94"/>
       <source>Style sheet (advanced):</source>
-      <translation type="unfinished">Style sheet (advanced):</translation>
+      <translation>Tyyli (tarkempi):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="104"/>
       <source>Overlay style sheet:</source>
-      <translation type="unfinished">Overlay style sheet:</translation>
+      <translation>Käyttöliittymän pinnan tyyli:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="166"/>
       <source>Style sheet how user interface will look like</source>
-      <translation type="unfinished">Style sheet how user interface will look like</translation>
+      <translation>Tyylisivu, miltä käyttöliittymä näyttää</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="200"/>
@@ -13458,32 +13459,32 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="206"/>
       <source>Hide extra tree view column - Internal Names.</source>
-      <translation type="unfinished">Hide extra tree view column - Internal Names.</translation>
+      <translation>Piilota puunäkymän sarake Sisäiset nimet.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="209"/>
       <source>Hide Internal Names</source>
-      <translation type="unfinished">Hide Internal Names</translation>
+      <translation>Piilota sisäiset nimet</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="225"/>
       <source>Icon size override, set to 0 for the default value.</source>
-      <translation type="unfinished">Icon size override, set to 0 for the default value.</translation>
+      <translation>Kuvakkeen koon ohitus, aseta 0 oletusarvolle.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="244"/>
       <source>Additional row spacing</source>
-      <translation type="unfinished">Additional row spacing</translation>
+      <translation>Rivivälin lisäys</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="254"/>
       <source>Allow tree view columns to be manually resized.</source>
-      <translation type="unfinished">Allow tree view columns to be manually resized.</translation>
+      <translation>Salli puunäkymän sarakkeiden manuaalinen koon muuttaminen.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="257"/>
       <source>Resizable columns</source>
-      <translation type="unfinished">Resizable columns</translation>
+      <translation>Sarakkeitten muuttuva koko</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="270"/>
@@ -13493,67 +13494,67 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="280"/>
       <source>Additional spacing for tree view rows. Bigger values will increase row item heights.</source>
-      <translation type="unfinished">Additional spacing for tree view rows. Bigger values will increase row item heights.</translation>
+      <translation>Puunäkymän rivien välistys. Suurempi arvo nostaa rivikorkeutta.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="435"/>
       <source>Automatically hide overlaid dock panels when in non 3D view (like TechDraw or Spreadsheet).</source>
-      <translation type="unfinished">Automatically hide overlaid dock panels when in non 3D view (like TechDraw or Spreadsheet).</translation>
+      <translation>Piilota päälläolevat telakkaikkunat kun ei olla 3D -näkymässä (esim. TechDraw ja Spreadsheet).</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
       <source>This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
-      <translation type="unfinished">This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
+      <translation>Tässä osiossa voit muokata käytössä olevan teeman asetuksia. Asetuksilla ei välttämättä ole vaikutusta, koska ne ovat teemojen kehittäjille valinnaisia.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="299"/>
       <source>If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</translation>
+      <translation>Jos käytössä, näytä kohteen näkyvyyden tila silmäkuvakkeessa ennen puunäkymän kohteita. Näkyvyyttä voi vaihtaa napsauttamalla.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="302"/>
       <source>Show visibility icon</source>
-      <translation type="unfinished">Show visibility icon</translation>
+      <translation>Näytä näkyvyyskuvake</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="318"/>
       <source>Hide header with column names from the tree view.</source>
-      <translation type="unfinished">Hide header with column names from the tree view.</translation>
+      <translation>Piilota otsikkorivi jossa on puunäkymän sarakkeen nimet.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="321"/>
       <source>Hide header</source>
-      <translation type="unfinished">Hide header</translation>
+      <translation>Piilota otsikko</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="337"/>
       <source>Hide scroll bar from the tree view, scrolling will still be possible using mouse wheel.</source>
-      <translation type="unfinished">Hide scroll bar from the tree view, scrolling will still be possible using mouse wheel.</translation>
+      <translation>Piilota vierityspalkki puunäkymästä, hiiren rullalla voi vierittää kuitenkin.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="340"/>
       <source>Hide scroll bar</source>
-      <translation type="unfinished">Hide scroll bar</translation>
+      <translation>Piilota vierityspalkki</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="356"/>
       <source>Hide column with object description in tree view.</source>
-      <translation type="unfinished">Hide column with object description in tree view.</translation>
+      <translation>Piilota kohteen kuvauksen sarake puunäkymässä.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="359"/>
       <source>Hide description</source>
-      <translation type="unfinished">Hide description</translation>
+      <translation>Piilota kuvaus</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="378"/>
       <source>Overlay</source>
-      <translation type="unfinished">Overlay</translation>
+      <translation>Läpinäkyvät telakkaikkunat</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="384"/>
       <source>Hide tab bar in dock overlay</source>
-      <translation type="unfinished">Hide tab bar in dock overlay</translation>
+      <translation>Piilota välilehtipalkki päällekkäisessä telakassa</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="387"/>
@@ -13563,47 +13564,47 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="403"/>
       <source>Show tab bar on mouse over when auto hide</source>
-      <translation type="unfinished">Show tab bar on mouse over when auto hide</translation>
+      <translation>Näytä välilehtipalkki hiiren osoittimen alla kun se muuten on piilotettuna</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="406"/>
       <source>Hint show tab bar</source>
-      <translation type="unfinished">Hint show tab bar</translation>
+      <translation>Näytä välilehtipalkki osoitettaessa</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="419"/>
       <source>Hide property view scroll bar in dock overlay</source>
-      <translation type="unfinished">Hide property view scroll bar in dock overlay</translation>
+      <translation>Piilota ominaisuus vierityspalkki telakkaikkunan päällekkäistilassa</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="422"/>
       <source>Hide property view scroll bar</source>
-      <translation type="unfinished">Hide property view scroll bar</translation>
+      <translation>Piilota ominaisuusnäkymän vierityspalkki</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="438"/>
       <source>Auto hide in non 3D view</source>
-      <translation type="unfinished">Auto hide in non 3D view</translation>
+      <translation>Piilota automaattisesti muussa kuin 3D-näkymässä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="454"/>
       <source>Auto mouse click through transparent part of dock overlay.</source>
-      <translation type="unfinished">Auto mouse click through transparent part of dock overlay.</translation>
+      <translation>Napsauta läpinäkyvästä telakasta läpi hiirellä automaattisesti napsautettaessa läpinäkyvällä osalla.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="457"/>
       <source>Auto mouse pass through</source>
-      <translation type="unfinished">Auto mouse pass through</translation>
+      <translation>Automaattinen hiiren tapahtumien välitys</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="473"/>
       <source>Auto pass through mouse wheel event on transparent dock overlay.</source>
-      <translation type="unfinished">Auto pass through mouse wheel event on transparent dock overlay.</translation>
+      <translation>Välitä hiiren pyöritysliike automaattisesti läpi kun rullataan läpinäkyvällä telakalla.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="476"/>
       <source>Auto mouse wheel pass through</source>
-      <translation type="unfinished">Auto mouse wheel pass through</translation>
+      <translation>Automaattinen hiiren rullauksen välitys</translation>
     </message>
   </context>
   <context>
@@ -13611,12 +13612,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="139"/>
       <source>Create a variable set</source>
-      <translation type="unfinished">Create a variable set</translation>
+      <translation>Lisää muutujien sarja</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="140"/>
       <source>A Variable Set is an object that maintains a set of properties to be used as variables.</source>
-      <translation type="unfinished">A Variable Set is an object that maintains a set of properties to be used as variables.</translation>
+      <translation>Muuttujien sarja on kohde jossa voi säilyttää muuttujina käytettäviä ominaisuuksia.</translation>
     </message>
   </context>
   <context>
@@ -13624,13 +13625,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="829"/>
       <source>&amp;Units converter...</source>
-      <translation type="unfinished">&amp;Units converter...</translation>
+      <translation>&amp;Yksikköjen muunnin...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="830"/>
       <location filename="../CommandStd.cpp" line="832"/>
       <source>Start the units converter</source>
-      <translation type="unfinished">Start the units converter</translation>
+      <translation>Käynnistää yksikköjen muuntimen</translation>
     </message>
   </context>
   <context>
@@ -13651,7 +13652,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../VectorListEditor.cpp" line="203"/>
       <source>Unsupported format.  Must be 3 values per row separated by tabs, semicolons, or commas:</source>
-      <translation type="unfinished">Unsupported format.  Must be 3 values per row separated by tabs, semicolons, or commas:</translation>
+      <translation>Muoto ei ole tuettu. Anna 3 arvoa riville, erottele sarkaimella, puolipisteellä tai pisteellä:</translation>
     </message>
   </context>
   <context>
@@ -13659,12 +13660,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="325"/>
       <source>Automatic Python &amp;Modules Documentation</source>
-      <translation type="unfinished">Automatic Python &amp;Modules Documentation</translation>
+      <translation>Automaattinen Python -&amp;Moduulien dokumentaatio</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="326"/>
       <source>Opens the Python Modules documentation</source>
-      <translation type="unfinished">Opens the Python Modules documentation</translation>
+      <translation>Avaa Python -Moduulien dokumentaation</translation>
     </message>
   </context>
   <context>
@@ -13672,12 +13673,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="334"/>
       <source>Restart in Safe Mode</source>
-      <translation type="unfinished">Restart in Safe Mode</translation>
+      <translation>Käynnistä uudelleen vikasietotilassa</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="335"/>
       <source>Starts FreeCAD without any modules or plugins loaded</source>
-      <translation type="unfinished">Starts FreeCAD without any modules or plugins loaded</translation>
+      <translation>Käynnistä FreeCAD ilman mitään moduuleja tai liitännäisiä</translation>
     </message>
   </context>
   <context>
@@ -13690,7 +13691,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="526"/>
       <source>Opens the Help documentation</source>
-      <translation type="unfinished">Opens the Help documentation</translation>
+      <translation>Avaa ohjeet</translation>
     </message>
   </context>
   <context>
@@ -13698,12 +13699,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="577"/>
       <source>Support FreeCA&amp;D</source>
-      <translation type="unfinished">Support FreeCA&amp;D</translation>
+      <translation>Tue FreeCA&amp;Dia</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="578"/>
       <source>Support FreeCAD development</source>
-      <translation type="unfinished">Support FreeCAD development</translation>
+      <translation>Tue FreeCADin kehittämistä</translation>
     </message>
   </context>
   <context>
@@ -13711,12 +13712,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="604"/>
       <source>FreeCAD W&amp;ebsite</source>
-      <translation type="unfinished">FreeCAD W&amp;ebsite</translation>
+      <translation>FreeCADin &amp;verkkosivusto</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="605"/>
       <source>Navigates to the official FreeCAD website</source>
-      <translation type="unfinished">Navigates to the official FreeCAD website</translation>
+      <translation>Siirtyy FreeCADin viralliselle verkkosivulle</translation>
     </message>
   </context>
   <context>
@@ -13724,12 +13725,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="632"/>
       <source>&amp;User Documentation</source>
-      <translation type="unfinished">&amp;User Documentation</translation>
+      <translation>&amp;Käyttäjän ohje</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="633"/>
       <source>Opens the documentation for users</source>
-      <translation type="unfinished">Opens the documentation for users</translation>
+      <translation>Avaa käyttäjien ohjeet</translation>
     </message>
   </context>
   <context>
@@ -13737,12 +13738,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="660"/>
       <source>&amp;Python Scripting Documentation</source>
-      <translation type="unfinished">&amp;Python Scripting Documentation</translation>
+      <translation>&amp;Python -skriptien ohjeet</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="661"/>
       <source>Opens the Python Scripting documentation</source>
-      <translation type="unfinished">Opens the Python Scripting documentation</translation>
+      <translation>Avaa Python -skriptien ohjeet</translation>
     </message>
   </context>
   <context>
@@ -13750,12 +13751,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="716"/>
       <source>FreeCAD FA&amp;Q</source>
-      <translation type="unfinished">FreeCAD FA&amp;Q</translation>
+      <translation>FreeCADin &amp;UKK</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="717"/>
       <source>Opens the Frequently Asked Questions</source>
-      <translation type="unfinished">Opens the Frequently Asked Questions</translation>
+      <translation>Avaa usein kysytyt kysymykset</translation>
     </message>
   </context>
   <context>
@@ -13763,12 +13764,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="769"/>
       <source>Report an &amp;Issue</source>
-      <translation type="unfinished">Report an &amp;Issue</translation>
+      <translation>Ilmoita &amp;ongelmasta</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="770"/>
       <source>Report an issue or suggest a new feature</source>
-      <translation type="unfinished">Report an issue or suggest a new feature</translation>
+      <translation>Ilmoita ongelmasta tai ehdota uutta ominaisuutta</translation>
     </message>
   </context>
   <context>
@@ -13776,13 +13777,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1639"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>&amp;Muuta</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1640"/>
       <location filename="../CommandDoc.cpp" line="1641"/>
       <source>Transform the selected object in the 3D view</source>
-      <translation type="unfinished">Transform the selected object in the 3D view</translation>
+      <translation>Muuta valittua objektia 3D-näkymässä</translation>
     </message>
   </context>
 </TS>

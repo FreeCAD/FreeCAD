@@ -416,7 +416,7 @@
     <message>
       <location filename="../Application.h" line="267"/>
       <source>&amp;Default</source>
-      <translation type="unfinished">&amp;Default</translation>
+      <translation>Por &amp;defecto</translation>
     </message>
     <message>
       <location filename="../Application.h" line="268"/>
@@ -426,7 +426,7 @@
     <message>
       <location filename="../Application.h" line="272"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>Trans&amp;formar</translation>
     </message>
     <message>
       <location filename="../Application.h" line="277"/>
@@ -749,7 +749,7 @@ mientras hace un clic izquierdo o derecho y mueve el mouse hacia arriba o hacia 
     <message>
       <location filename="../DlgAbout.cpp" line="734"/>
       <source>Copied!</source>
-      <translation type="unfinished">Copied!</translation>
+      <translation>¡Copiado!</translation>
     </message>
   </context>
   <context>
@@ -1106,7 +1106,7 @@ Si no está marcado, entonces la propiedad debe tener un nombre único y se acce
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="38"/>
       <source>Browse</source>
-      <translation type="unfinished">Browse</translation>
+      <translation>Examinar</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="60"/>
@@ -1119,7 +1119,7 @@ Si no está marcado, entonces la propiedad debe tener un nombre único y se acce
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="163"/>
       <source>Export Config</source>
-      <translation type="unfinished">Export Config</translation>
+      <translation>Exportar configuración</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="171"/>
@@ -2270,7 +2270,7 @@ Especifique otro directorio, por favor.</translation>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="145"/>
       <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
-      <translation>Alternar visibilidad del paquete de preferencias de complemento '%1' (use Administrador de Complementos para eliminar de forma permanente)</translation>
+      <translation>Alterna la visibilidad del paquete de preferencias de complemento '%1' (utilice el Administrador de Complementos para eliminarlo de forma permanente)</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="157"/>
@@ -2952,7 +2952,7 @@ del objeto 3D que se muestra actualmente.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="547"/>
       <source>Or&amp;thographic rendering</source>
-      <translation>Renderizado ortográfico</translation>
+      <translation>Renderizado or&amp;tográfico</translation>
     </message>
     <message>
       <source/>
@@ -4064,9 +4064,9 @@ Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the z-axis.</source>
       <translation>Estilo de órbita de rotación.
-Trackball: mover el ratón horizontalmente girará la pieza alrededor del eje Y
-Turntable: la pieza se girará alrededor del eje Z (con ejes restringidos).
-Turntable libre: la pieza se girará alrededor del eje z.</translation>
+Bola de seguimiento: mover el ratón horizontalmente girará la pieza alrededor del eje Y
+Mesa giratoria: la pieza se girará alrededor del eje Z (con ejes restringidos).
+Mesa giratoria libre: la pieza se girará alrededor del eje Z.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="482"/>
@@ -4076,12 +4076,12 @@ Turntable libre: la pieza se girará alrededor del eje z.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="487"/>
       <source>Trackball</source>
-      <translation>Trackball</translation>
+      <translation>Bola de seguimiento</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="492"/>
       <source>Free Turntable</source>
-      <translation>Turntable libre</translation>
+      <translation>Mesa giratoria libre</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="500"/>
@@ -4121,7 +4121,7 @@ Turntable libre: la pieza se girará alrededor del eje z.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="570"/>
       <source>Camera zoom</source>
-      <translation>Zoom de cámara</translation>
+      <translation>Acercamiento de cámara</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="577"/>
@@ -4217,7 +4217,9 @@ Paso de zoom de ´1´ significa un factor de 7.5 para cada paso de zoom.</transl
       <source>Prevents view tilting when pinch-zooming.
 Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
-      <translation>Impide que la vista se incline cuando se hace zoom. Afecta solo el estilo de navegación por gestos. La inclinación del ratón no está desactivada por esta configuración.</translation>
+      <translation>Impide que la vista se incline cuando se realiza un acercamiento.
+Solo afecta el estilo de navegación por gestos.
+La inclinación del ratón no está desactivada por esta configuración.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="708"/>
@@ -4342,7 +4344,7 @@ espacio horizontal disponible en la consola de Python</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="94"/>
       <source> ms</source>
-      <translation type="unfinished"> ms</translation>
+      <translation> ms</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="119"/>
@@ -5212,7 +5214,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     <message>
       <location filename="../Placement.ui" line="95"/>
       <source>Axial</source>
-      <translation type="unfinished">Axial</translation>
+      <translation>Axial</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="118"/>
@@ -5392,12 +5394,12 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
       <source>No 3D view</source>
-      <translation type="unfinished">No 3D view</translation>
+      <translation>No existe una vista en 3D</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
       <source>No active 3D view found.</source>
-      <translation type="unfinished">No active 3D view found.</translation>
+      <translation>No se ha encontrado una vista en 3D activa.</translation>
     </message>
   </context>
   <context>
@@ -5645,7 +5647,7 @@ originally selected prior to opening this dialog</source>
     <message>
       <location filename="../SelectionView.cpp" line="647"/>
       <source>Zoom fit</source>
-      <translation>Ampliar ajuste</translation>
+      <translation>Ajustar acercamiento</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="649"/>
@@ -5675,7 +5677,7 @@ originally selected prior to opening this dialog</source>
     <message>
       <location filename="../SelectionView.cpp" line="659"/>
       <source>To Python console</source>
-      <translation type="unfinished">To Python console</translation>
+      <translation>En la consola de Python</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="662"/>
@@ -7472,12 +7474,12 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../VectorListEditor.cpp" line="326"/>
       <source>Copy table</source>
-      <translation type="unfinished">Copy table</translation>
+      <translation>Copiar tabla</translation>
     </message>
     <message>
       <location filename="../VectorListEditor.cpp" line="330"/>
       <source>Paste table</source>
-      <translation type="unfinished">Paste table</translation>
+      <translation>Pegar tabla</translation>
     </message>
   </context>
   <context>
@@ -7865,7 +7867,7 @@ However, if you save this file in the current version and reopen it in an older 
     <message>
       <location filename="../CommandDoc.cpp" line="136"/>
       <source>Don't show this warning again</source>
-      <translation type="unfinished">Don't show this warning again</translation>
+      <translation>No volver a mostrar esta advertencia</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="280"/>
@@ -7976,13 +7978,13 @@ Por favor, compruebe la Vista de Informe para más detalles.</translation>
       <location filename="../CommandView.cpp" line="338"/>
       <location filename="../CommandView.cpp" line="571"/>
       <source>&amp;Save views...</source>
-      <translation type="unfinished">&amp;Save views...</translation>
+      <translation>Guardar vi&amp;stas...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="340"/>
       <location filename="../CommandView.cpp" line="572"/>
       <source>&amp;Load views...</source>
-      <translation type="unfinished">&amp;Load views...</translation>
+      <translation>Cargar vistas...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="343"/>
@@ -7994,7 +7996,7 @@ Por favor, compruebe la Vista de Informe para más detalles.</translation>
       <location filename="../CommandView.cpp" line="346"/>
       <location filename="../CommandView.cpp" line="574"/>
       <source>&amp;Clear views</source>
-      <translation type="unfinished">&amp;Clear views</translation>
+      <translation>Borrar vistas</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="392"/>
@@ -8907,7 +8909,7 @@ la copia actual se perderá.
     <message>
       <location filename="../DlgAddPropertyVarSet.cpp" line="191"/>
       <source>Add a property to %1</source>
-      <translation type="unfinished">Add a property to %1</translation>
+      <translation>Añadir una propiedad a %1</translation>
     </message>
     <message>
       <location filename="../DlgAddPropertyVarSet.cpp" line="402"/>
@@ -8950,7 +8952,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2979"/>
       <source>Bo&amp;x element selection</source>
-      <translation type="unfinished">Bo&amp;x element selection</translation>
+      <translation>Cuadro de selección de elemento/s</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2980"/>
@@ -8964,13 +8966,13 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2753"/>
       <source>&amp;Box selection</source>
-      <translation type="unfinished">&amp;Box selection</translation>
+      <translation>Cuadro de selección</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2754"/>
       <location filename="../CommandView.cpp" line="2756"/>
       <source>Activate the box selection tool</source>
-      <translation>Activar la herramienta de selección de caja</translation>
+      <translation>Activar la herramienta de cuadro de selección</translation>
     </message>
   </context>
   <context>
@@ -9005,7 +9007,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="172"/>
       <source>&amp;Next</source>
-      <translation type="unfinished">&amp;Next</translation>
+      <translation>&amp;Siguiente</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="173"/>
@@ -9019,7 +9021,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="201"/>
       <source>&amp;Previous</source>
-      <translation type="unfinished">&amp;Previous</translation>
+      <translation>&amp;Anterior</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="202"/>
@@ -9033,7 +9035,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1674"/>
       <source>Ali&amp;gnment...</source>
-      <translation type="unfinished">Ali&amp;gnment...</translation>
+      <translation>Alineamiento...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1675"/>
@@ -9089,7 +9091,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="144"/>
       <source>Close A&amp;ll</source>
-      <translation type="unfinished">Close A&amp;ll</translation>
+      <translation>Cerrar todo</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="145"/>
@@ -9131,7 +9133,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1143"/>
       <source>Cu&amp;t</source>
-      <translation type="unfinished">Cu&amp;t</translation>
+      <translation>Cor&amp;tar</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1144"/>
@@ -9159,7 +9161,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3212"/>
       <source>View &amp;turntable...</source>
-      <translation type="unfinished">View &amp;turntable...</translation>
+      <translation>Ver mesa giratoria...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3213"/>
@@ -9173,7 +9175,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="623"/>
       <source>Dependency gra&amp;ph...</source>
-      <translation type="unfinished">Dependency gra&amp;ph...</translation>
+      <translation>Gráfico de de&amp;pendencias...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="624"/>
@@ -9201,7 +9203,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="94"/>
       <source>Ma&amp;cros...</source>
-      <translation type="unfinished">Ma&amp;cros...</translation>
+      <translation>Ma&amp;cros...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="95"/>
@@ -9215,7 +9217,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="123"/>
       <source>&amp;Execute macro</source>
-      <translation type="unfinished">&amp;Execute macro</translation>
+      <translation>&amp;Ejecutar macro</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="124"/>
@@ -9229,7 +9231,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="51"/>
       <source>&amp;Macro recording...</source>
-      <translation type="unfinished">&amp;Macro recording...</translation>
+      <translation>Grabación de &amp;macro...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="52"/>
@@ -9253,7 +9255,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="381"/>
       <source>E&amp;dit parameters...</source>
-      <translation type="unfinished">E&amp;dit parameters...</translation>
+      <translation>E&amp;ditar parámetros...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="382"/>
@@ -9267,7 +9269,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="406"/>
       <source>Prefere&amp;nces ...</source>
-      <translation type="unfinished">Prefere&amp;nces ...</translation>
+      <translation>Prefere&amp;ncias...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="407"/>
@@ -9281,7 +9283,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="281"/>
       <source>&amp;Panels</source>
-      <translation type="unfinished">&amp;Panels</translation>
+      <translation>&amp;Paneles</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="282"/>
@@ -9295,7 +9297,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandView.cpp" line="648"/>
       <source>&amp;Draw style</source>
-      <translation type="unfinished">&amp;Draw style</translation>
+      <translation>&amp;Estilo de dibujo</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="649"/>
@@ -9309,7 +9311,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1246"/>
       <source>Duplicate selecti&amp;on</source>
-      <translation type="unfinished">Duplicate selecti&amp;on</translation>
+      <translation>Duplicar selecci&amp;ón</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1247"/>
@@ -9328,7 +9330,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1745"/>
       <source>Toggles the selected object's edit mode</source>
-      <translation>Activa o desactiva el modo de edición del objeto seleccionado</translation>
+      <translation>Alterna el modo de edición del objeto seleccionado</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1747"/>
@@ -9393,7 +9395,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="688"/>
       <source>FreeCAD &amp;Forum</source>
-      <translation type="unfinished">FreeCAD &amp;Forum</translation>
+      <translation>&amp;Foro de FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="689"/>
@@ -9406,7 +9408,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandView.cpp" line="323"/>
       <source>F&amp;reeze display</source>
-      <translation type="unfinished">F&amp;reeze display</translation>
+      <translation>Congelar pantalla</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="324"/>
@@ -9433,7 +9435,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1234"/>
       <source>Hide all &amp;objects</source>
-      <translation type="unfinished">Hide all &amp;objects</translation>
+      <translation>Ocultar todos los &amp;objetos</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1235"/>
@@ -9447,7 +9449,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1086"/>
       <source>&amp;Hide selection</source>
-      <translation type="unfinished">&amp;Hide selection</translation>
+      <translation>Ocultar selección</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1087"/>
@@ -9591,7 +9593,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandLink.cpp" line="812"/>
       <source>Select &amp;all links</source>
-      <translation type="unfinished">Select &amp;all links</translation>
+      <translation>Seleccion&amp;ar todos los enlaces</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="813"/>
@@ -9604,7 +9606,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandLink.cpp" line="649"/>
       <source>&amp;Go to linked object</source>
-      <translation type="unfinished">&amp;Go to linked object</translation>
+      <translation>&amp;Ir al objeto enlazado</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="650"/>
@@ -9617,7 +9619,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandLink.cpp" line="777"/>
       <source>Go to the &amp;deepest linked object</source>
-      <translation type="unfinished">Go to the &amp;deepest linked object</translation>
+      <translation>Ir al objeto enlazado más profundo</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="778"/>
@@ -9643,7 +9645,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="149"/>
       <source>&amp;Attach to remote debugger...</source>
-      <translation type="unfinished">&amp;Attach to remote debugger...</translation>
+      <translation>&amp;Adjuntar al depurador remoto...</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="150"/>
@@ -9657,7 +9659,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="174"/>
       <source>&amp;Debug macro</source>
-      <translation type="unfinished">&amp;Debug macro</translation>
+      <translation>&amp;Depurar macro</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="175"/>
@@ -9699,7 +9701,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="204"/>
       <source>&amp;Stop debugging</source>
-      <translation type="unfinished">&amp;Stop debugging</translation>
+      <translation>Detener depuración</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="205"/>
@@ -9713,7 +9715,7 @@ guión bajo, y no debe comenzar con un dígito.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="570"/>
       <source>&amp;Merge document...</source>
-      <translation type="unfinished">&amp;Merge document...</translation>
+      <translation>Fusionar documento...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="571"/>
@@ -9834,7 +9836,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandDoc.cpp" line="1592"/>
       <source>P&amp;lacement...</source>
-      <translation type="unfinished">P&amp;lacement...</translation>
+      <translation>Ubicación...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1593"/>
@@ -9862,7 +9864,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandDoc.cpp" line="998"/>
       <source>Export P&amp;DF...</source>
-      <translation type="unfinished">Export P&amp;DF...</translation>
+      <translation>Exportar P&amp;DF...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="999"/>
@@ -9876,7 +9878,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandDoc.cpp" line="968"/>
       <source>Print previe&amp;w...</source>
-      <translation type="unfinished">Print previe&amp;w...</translation>
+      <translation>Vista previa de impresión...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="969"/>
@@ -9922,7 +9924,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandFeat.cpp" line="80"/>
       <source>Random &amp;color</source>
-      <translation type="unfinished">Random &amp;color</translation>
+      <translation>&amp;Color aleatorio</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="81"/>
@@ -9936,7 +9938,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandStd.cpp" line="140"/>
       <source>Open &amp;Recent</source>
-      <translation type="unfinished">Open &amp;Recent</translation>
+      <translation>Abrir &amp;reciente</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="141"/>
@@ -9950,7 +9952,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandStd.cpp" line="181"/>
       <source>&amp;Recent macros</source>
-      <translation type="unfinished">&amp;Recent macros</translation>
+      <translation>Macros &amp;recientes</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="182"/>
@@ -9978,7 +9980,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandDoc.cpp" line="1512"/>
       <source>Refres&amp;h</source>
-      <translation type="unfinished">Refres&amp;h</translation>
+      <translation>Actualizar</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1513"/>
@@ -9992,7 +9994,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandDoc.cpp" line="839"/>
       <source>Rever&amp;t</source>
-      <translation type="unfinished">Rever&amp;t</translation>
+      <translation>Rever&amp;tir</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="840"/>
@@ -10020,7 +10022,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandDoc.cpp" line="811"/>
       <source>Sa&amp;ve All</source>
-      <translation type="unfinished">Sa&amp;ve All</translation>
+      <translation>Guardar todo</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="812"/>
@@ -10048,7 +10050,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandDoc.cpp" line="784"/>
       <source>Save a Cop&amp;y...</source>
-      <translation type="unfinished">Save a Cop&amp;y...</translation>
+      <translation>Guardar una copia...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="785"/>
@@ -10062,7 +10064,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="3152"/>
       <source>Scene i&amp;nspector...</source>
-      <translation type="unfinished">Scene i&amp;nspector...</translation>
+      <translation>I&amp;nspector de escena...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3153"/>
@@ -10132,7 +10134,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1197"/>
       <source>Show &amp;all objects</source>
-      <translation type="unfinished">Show &amp;all objects</translation>
+      <translation>Mostr&amp;ar todos los objetos</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1198"/>
@@ -10146,7 +10148,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1058"/>
       <source>Sho&amp;w selection</source>
-      <translation type="unfinished">Sho&amp;w selection</translation>
+      <translation>Mostrar selección</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1059"/>
@@ -10174,7 +10176,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandStd.cpp" line="796"/>
       <source>Add te&amp;xt document</source>
-      <translation type="unfinished">Add te&amp;xt document</translation>
+      <translation>Añadir documento de texto</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="797"/>
@@ -10188,7 +10190,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="3185"/>
       <source>Text&amp;ure mapping...</source>
-      <translation type="unfinished">Text&amp;ure mapping...</translation>
+      <translation>Mapeado de text&amp;ura...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3186"/>
@@ -10216,7 +10218,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandMacro.cpp" line="285"/>
       <source>Toggle &amp;breakpoint</source>
-      <translation type="unfinished">Toggle &amp;breakpoint</translation>
+      <translation>Alternar &amp;punto de interrupción</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="286"/>
@@ -10258,7 +10260,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1156"/>
       <source>To&amp;ggle all objects</source>
-      <translation type="unfinished">To&amp;ggle all objects</translation>
+      <translation>Alternar todos los objetos</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1157"/>
@@ -10272,7 +10274,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1006"/>
       <source>Toggle se&amp;lectability</source>
-      <translation type="unfinished">Toggle se&amp;lectability</translation>
+      <translation>Alternar se&amp;leccionabilidad</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1007"/>
@@ -10286,7 +10288,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="868"/>
       <source>Toggle &amp;visibility</source>
-      <translation type="unfinished">Toggle &amp;visibility</translation>
+      <translation>Alternar &amp;visibilidad</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="869"/>
@@ -10300,7 +10302,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandWindow.cpp" line="317"/>
       <source>&amp;Toolbars</source>
-      <translation type="unfinished">&amp;Toolbars</translation>
+      <translation>Barras de herramientas</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="318"/>
@@ -10398,7 +10400,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandStd.cpp" line="865"/>
       <source>Edit &amp;mode</source>
-      <translation type="unfinished">Edit &amp;mode</translation>
+      <translation>&amp;Modo de edición</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="866"/>
@@ -10426,7 +10428,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1299"/>
       <source>&amp;5 Bottom</source>
-      <translation type="unfinished">&amp;5 Bottom</translation>
+      <translation>&amp;5 Inferior</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1300"/>
@@ -10454,7 +10456,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1468"/>
       <source>&amp;Dimetric</source>
-      <translation type="unfinished">&amp;Dimetric</translation>
+      <translation>&amp;Dimétrica</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1469"/>
@@ -10510,7 +10512,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1564"/>
       <source>&amp;Fit all</source>
-      <translation type="unfinished">&amp;Fit all</translation>
+      <translation>Ajustar todo</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1565"/>
@@ -10524,7 +10526,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1595"/>
       <source>Fit &amp;selection</source>
-      <translation type="unfinished">Fit &amp;selection</translation>
+      <translation>Ajustar a la &amp;selección</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1596"/>
@@ -10538,7 +10540,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1323"/>
       <source>&amp;1 Front</source>
-      <translation type="unfinished">&amp;1 Front</translation>
+      <translation>&amp;1 Anterior</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1324"/>
@@ -10552,7 +10554,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1271"/>
       <source>&amp;Home</source>
-      <translation type="unfinished">&amp;Home</translation>
+      <translation>&amp;Inicio</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1272"/>
@@ -10566,7 +10568,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1444"/>
       <source>&amp;Isometric</source>
-      <translation type="unfinished">&amp;Isometric</translation>
+      <translation>&amp;Isométrica</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1445"/>
@@ -10664,7 +10666,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1347"/>
       <source>&amp;6 Left</source>
-      <translation type="unfinished">&amp;6 Left</translation>
+      <translation>&amp;6 Izquierda</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1348"/>
@@ -10678,7 +10680,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1371"/>
       <source>&amp;4 Rear</source>
-      <translation type="unfinished">&amp;4 Rear</translation>
+      <translation>&amp;4 Posterior</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1372"/>
@@ -10706,7 +10708,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1395"/>
       <source>&amp;3 Right</source>
-      <translation type="unfinished">&amp;3 Right</translation>
+      <translation>&amp;3 Derecha</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1396"/>
@@ -10762,7 +10764,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1419"/>
       <source>&amp;2 Top</source>
-      <translation type="unfinished">&amp;2 Top</translation>
+      <translation>&amp;2 Superior</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1420"/>
@@ -10776,7 +10778,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1491"/>
       <source>&amp;Trimetric</source>
-      <translation type="unfinished">&amp;Trimetric</translation>
+      <translation>&amp;Trimétrica</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1492"/>
@@ -10809,7 +10811,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandStd.cpp" line="311"/>
       <source>Opens the documentation corresponding to the selection</source>
-      <translation type="unfinished">Opens the documentation corresponding to the selection</translation>
+      <translation>Abre la documentación correspondiente a la selección</translation>
     </message>
   </context>
   <context>
@@ -10929,7 +10931,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="3363"/>
       <source>Collapse/E&amp;xpand</source>
-      <translation type="unfinished">Collapse/E&amp;xpand</translation>
+      <translation>Contraer/e&amp;xpandir</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3364"/>
@@ -10943,7 +10945,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="3492"/>
       <source>Initiate &amp;dragging</source>
-      <translation type="unfinished">Initiate &amp;dragging</translation>
+      <translation>Iniciar arrastre</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3493"/>
@@ -10956,7 +10958,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="3346"/>
       <source>&amp;Multi document</source>
-      <translation type="unfinished">&amp;Multi document</translation>
+      <translation>&amp;Documento múltiple</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3347"/>
@@ -10970,7 +10972,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="3456"/>
       <source>&amp;4 Pre-selection</source>
-      <translation type="unfinished">&amp;4 Pre-selection</translation>
+      <translation>&amp;4 Preselección</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3457"/>
@@ -10983,7 +10985,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="3474"/>
       <source>&amp;5 Record selection</source>
-      <translation type="unfinished">&amp;5 Record selection</translation>
+      <translation>&amp;5 Grabar selección</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3475"/>
@@ -10996,7 +10998,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="3024"/>
       <source>&amp;Go to selection</source>
-      <translation type="unfinished">&amp;Go to selection</translation>
+      <translation>Ir a la selección</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3025"/>
@@ -11010,7 +11012,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="3329"/>
       <source>&amp;Single document</source>
-      <translation type="unfinished">&amp;Single document</translation>
+      <translation>&amp;Documento único</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3330"/>
@@ -11037,7 +11039,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="3420"/>
       <source>&amp;2 Sync selection</source>
-      <translation type="unfinished">&amp;2 Sync selection</translation>
+      <translation>&amp;2 Sincronizar selección</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3421"/>
@@ -11050,7 +11052,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="3402"/>
       <source>&amp;1 Sync view</source>
-      <translation type="unfinished">&amp;1 Sync view</translation>
+      <translation>&amp;1 Sincronizar vista</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3403"/>
@@ -11105,7 +11107,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1754"/>
       <source>&amp;Fullscreen</source>
-      <translation type="unfinished">&amp;Fullscreen</translation>
+      <translation>Pantalla completa</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1755"/>
@@ -11119,7 +11121,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1926"/>
       <source>Save &amp;image...</source>
-      <translation type="unfinished">Save &amp;image...</translation>
+      <translation>Guardar &amp;imagen...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1927"/>
@@ -11133,7 +11135,7 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="1693"/>
       <source>&amp;Undocked</source>
-      <translation type="unfinished">&amp;Undocked</translation>
+      <translation>&amp;Desacoplado</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1694"/>
@@ -11147,13 +11149,13 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="2544"/>
       <source>Zoom &amp;In</source>
-      <translation type="unfinished">Zoom &amp;In</translation>
+      <translation>Acercarse</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2545"/>
       <location filename="../CommandView.cpp" line="2547"/>
       <source>Increase the zoom factor by a fixed amount</source>
-      <translation>Aumentar el factor de zoom en una cantidad fija</translation>
+      <translation>Incrementa el factor de acercamiento en una cantidad fija</translation>
     </message>
   </context>
   <context>
@@ -11161,13 +11163,13 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandView.cpp" line="2573"/>
       <source>Zoom &amp;Out</source>
-      <translation type="unfinished">Zoom &amp;Out</translation>
+      <translation>Alejarse</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2574"/>
       <location filename="../CommandView.cpp" line="2576"/>
       <source>Decrease the zoom factor by a fixed amount</source>
-      <translation>Disminuir el factor de zoom en una cantidad fija</translation>
+      <translation>Disminuye el factor de acercamiento en una cantidad fija</translation>
     </message>
   </context>
   <context>
@@ -11202,7 +11204,7 @@ Are you sure you want to continue?
     <message>
       <location filename="../CommandView.cpp" line="727"/>
       <source>&amp;1 As is</source>
-      <translation type="unfinished">&amp;1 As is</translation>
+      <translation>&amp;1 Como es</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="729"/>
@@ -11212,32 +11214,32 @@ Are you sure you want to continue?
     <message>
       <location filename="../CommandView.cpp" line="732"/>
       <source>&amp;2 Points</source>
-      <translation type="unfinished">&amp;2 Points</translation>
+      <translation>&amp;2 Puntos</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="737"/>
       <source>&amp;3 Wireframe</source>
-      <translation type="unfinished">&amp;3 Wireframe</translation>
+      <translation>&amp;3 Estructura alámbrica</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="742"/>
       <source>&amp;4 Hidden line</source>
-      <translation type="unfinished">&amp;4 Hidden line</translation>
+      <translation>&amp;4 Línea oculta</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="747"/>
       <source>&amp;5 No shading</source>
-      <translation type="unfinished">&amp;5 No shading</translation>
+      <translation>&amp;5 Sin sombreado</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="752"/>
       <source>&amp;6 Shaded</source>
-      <translation type="unfinished">&amp;6 Shaded</translation>
+      <translation>&amp;6 Sombreado</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="757"/>
       <source>&amp;7 Flat lines</source>
-      <translation type="unfinished">&amp;7 Flat lines</translation>
+      <translation>&amp;7 líneas planas</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="734"/>
@@ -11418,17 +11420,17 @@ Por favor, compruebe la Vista de Reportes para más detalles.
     <message>
       <location filename="../Workbench.cpp" line="539"/>
       <source>Standard &amp;views</source>
-      <translation type="unfinished">Standard &amp;views</translation>
+      <translation>&amp;Vistas estándar</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="541"/>
       <source>A&amp;xonometric</source>
-      <translation type="unfinished">A&amp;xonometric</translation>
+      <translation>A&amp;xonométrica</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="544"/>
       <source>V&amp;isibility</source>
-      <translation type="unfinished">V&amp;isibility</translation>
+      <translation>V&amp;isibilidad</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="545"/>
@@ -11519,7 +11521,7 @@ Por favor, compruebe la Vista de Reportes para más detalles.
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="23"/>
       <source>Enable notification area</source>
-      <translation type="unfinished">Enable notification area</translation>
+      <translation>Habilitar área de notificaciones</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="32"/>
@@ -11533,17 +11535,17 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="37"/>
       <source>Enable pop-up notifications</source>
-      <translation type="unfinished">Enable pop-up notifications</translation>
+      <translation>Habilitar notificaciones emergentes</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="49"/>
       <source>Minimum duration:</source>
-      <translation type="unfinished">Minimum duration:</translation>
+      <translation>Duración mínima:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="59"/>
       <source>Maximum duration:</source>
-      <translation type="unfinished">Maximum duration:</translation>
+      <translation>Duración máxima:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="66"/>
@@ -11599,42 +11601,42 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="190"/>
       <source>Do not show when window is inactive</source>
-      <translation type="unfinished">Do not show when window is inactive</translation>
+      <translation>No mostrar cuando la ventana está inactiva</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="209"/>
       <source>Additional notification sources to show in the notification area.</source>
-      <translation type="unfinished">Additional notification sources to show in the notification area.</translation>
+      <translation>Fuentes de notificaciones adicionales para mostrar en el área de notificaciones.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="218"/>
       <source>Errors intended for developers will appear in the notification area.</source>
-      <translation type="unfinished">Errors intended for developers will appear in the notification area.</translation>
+      <translation>Los errores destinados a los desarrolladores aparecerán en el área de notificaciones.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="237"/>
       <source>Warnings intended for developers will appear in the notification area.</source>
-      <translation type="unfinished">Warnings intended for developers will appear in the notification area.</translation>
+      <translation>Las advertencias destinadas a los desarrolladores aparecerán en el área de notificaciones.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="259"/>
       <source>Controls the amount of notifications to show in the list.</source>
-      <translation type="unfinished">Controls the amount of notifications to show in the list.</translation>
+      <translation>Controla la cantidad de notificaciones a mostrar en la lista.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="262"/>
       <source>Notifications list</source>
-      <translation type="unfinished">Notifications list</translation>
+      <translation>Lista de notificaciones</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="268"/>
       <source>Limits the number of notifications that will be kept in the list. If 0, there is no limit.</source>
-      <translation type="unfinished">Limits the number of notifications that will be kept in the list. If 0, there is no limit.</translation>
+      <translation>Limita el número de notificaciones que se mantendrán en la lista. Si es 0, no hay límite.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="287"/>
       <source>Maximum notification count:</source>
-      <translation type="unfinished">Maximum notification count:</translation>
+      <translation>Número máximo de notificaciones:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="294"/>
@@ -11644,7 +11646,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="297"/>
       <source>Auto-remove user notifications</source>
-      <translation type="unfinished">Auto-remove user notifications</translation>
+      <translation>Eliminar automaticamente las notificaciones del usuario</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="212"/>
@@ -12014,7 +12016,7 @@ Actualmente, su sistema tiene los siguientes bancos de trabajo:&lt;/p&gt;&lt;/bo
     <message>
       <location filename="../CommandView.cpp" line="2097"/>
       <source>&amp;Load image...</source>
-      <translation type="unfinished">&amp;Load image...</translation>
+      <translation>Cargar imagen...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2098"/>
@@ -12785,7 +12787,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandDoc.cpp" line="655"/>
       <source>Export dependency &amp;graph...</source>
-      <translation type="unfinished">Export dependency &amp;graph...</translation>
+      <translation>Exportar &amp;gráfico de dependencias...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="656"/>
@@ -12868,7 +12870,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="899"/>
       <source>Toggle transparenc&amp;y</source>
-      <translation type="unfinished">Toggle transparenc&amp;y</translation>
+      <translation>Alternar transparencia</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="901"/>
@@ -12886,7 +12888,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="3613"/>
       <source>Toggle overlay mode for all docked windows</source>
-      <translation>Alterna modo de superposición para todas las ventanas acoplables</translation>
+      <translation>Alterna el modo de superposición para todas las ventanas acoplables</translation>
     </message>
   </context>
   <context>
@@ -12909,7 +12911,7 @@ Esto hace que las ventanas acopladas permanezcan transparentes en todo momento.<
     <message>
       <location filename="../CommandView.cpp" line="3661"/>
       <source>Toggle &amp;overlay</source>
-      <translation type="unfinished">Toggle &amp;overlay</translation>
+      <translation>Alternar superp&amp;osición</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3662"/>
@@ -12922,7 +12924,7 @@ Esto hace que las ventanas acopladas permanezcan transparentes en todo momento.<
     <message>
       <location filename="../CommandView.cpp" line="3685"/>
       <source>Toggle tran&amp;sparent mode</source>
-      <translation type="unfinished">Toggle tran&amp;sparent mode</translation>
+      <translation>Alternar modo tran&amp;sparente</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3686"/>
@@ -13229,7 +13231,7 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="878"/>
       <source>Doc&amp;ument information...</source>
-      <translation type="unfinished">Doc&amp;ument information...</translation>
+      <translation>Información del doc&amp;umento...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="879"/>
@@ -13243,7 +13245,7 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="909"/>
       <source>Do&amp;cument utility...</source>
-      <translation type="unfinished">Do&amp;cument utility...</translation>
+      <translation>Utilidad del do&amp;cumento...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="910"/>
@@ -13271,7 +13273,7 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1784"/>
       <source>Propert&amp;ies</source>
-      <translation type="unfinished">Propert&amp;ies</translation>
+      <translation>&amp;Propiedades</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1785"/>
@@ -13297,7 +13299,7 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1625"/>
       <source>Standard &amp;views</source>
-      <translation type="unfinished">Standard &amp;views</translation>
+      <translation>&amp;Vistas estándar</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1626"/>
@@ -13341,12 +13343,12 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3946"/>
       <source>&amp;Align to selection</source>
-      <translation type="unfinished">&amp;Align to selection</translation>
+      <translation>Alinear a la selección</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3947"/>
       <source>Align the view with the selection</source>
-      <translation>Alinear la vista con la selección</translation>
+      <translation>Alinea la vista con la selección</translation>
     </message>
   </context>
   <context>
@@ -13637,7 +13639,7 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../VectorListEditor.cpp" line="203"/>
       <source>Unsupported format.  Must be 3 values per row separated by tabs, semicolons, or commas:</source>
-      <translation type="unfinished">Unsupported format.  Must be 3 values per row separated by tabs, semicolons, or commas:</translation>
+      <translation>Formato no soportado. Debe tener 3 valores por fila separados por tabulaciones, puntos y comas, o comas:</translation>
     </message>
   </context>
   <context>
@@ -13645,12 +13647,12 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="325"/>
       <source>Automatic Python &amp;Modules Documentation</source>
-      <translation type="unfinished">Automatic Python &amp;Modules Documentation</translation>
+      <translation>Documentación automática de módulos de Python</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="326"/>
       <source>Opens the Python Modules documentation</source>
-      <translation type="unfinished">Opens the Python Modules documentation</translation>
+      <translation>Abre la documentación de los módulos de Python</translation>
     </message>
   </context>
   <context>
@@ -13658,12 +13660,12 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="334"/>
       <source>Restart in Safe Mode</source>
-      <translation type="unfinished">Restart in Safe Mode</translation>
+      <translation>Reiniciar en modo seguro</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="335"/>
       <source>Starts FreeCAD without any modules or plugins loaded</source>
-      <translation type="unfinished">Starts FreeCAD without any modules or plugins loaded</translation>
+      <translation>Inicia FreeCAD sin ningún módulo o complemento cargado</translation>
     </message>
   </context>
   <context>
@@ -13676,7 +13678,7 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="526"/>
       <source>Opens the Help documentation</source>
-      <translation type="unfinished">Opens the Help documentation</translation>
+      <translation>Abre la documentación de ayuda</translation>
     </message>
   </context>
   <context>
@@ -13684,12 +13686,12 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="577"/>
       <source>Support FreeCA&amp;D</source>
-      <translation type="unfinished">Support FreeCA&amp;D</translation>
+      <translation>Soporte FreeCA&amp;D</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="578"/>
       <source>Support FreeCAD development</source>
-      <translation type="unfinished">Support FreeCAD development</translation>
+      <translation>Soporte al desarrollo de FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -13697,12 +13699,12 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="604"/>
       <source>FreeCAD W&amp;ebsite</source>
-      <translation type="unfinished">FreeCAD W&amp;ebsite</translation>
+      <translation>Sitio w&amp;eb de FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="605"/>
       <source>Navigates to the official FreeCAD website</source>
-      <translation type="unfinished">Navigates to the official FreeCAD website</translation>
+      <translation>Navega al sitio web oficial de FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -13710,12 +13712,12 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="632"/>
       <source>&amp;User Documentation</source>
-      <translation type="unfinished">&amp;User Documentation</translation>
+      <translation>Documentación del &amp;usuario</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="633"/>
       <source>Opens the documentation for users</source>
-      <translation type="unfinished">Opens the documentation for users</translation>
+      <translation>Abre la documentación para los usuarios</translation>
     </message>
   </context>
   <context>
@@ -13736,12 +13738,12 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="716"/>
       <source>FreeCAD FA&amp;Q</source>
-      <translation type="unfinished">FreeCAD FA&amp;Q</translation>
+      <translation>Preguntas frecuentes de FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="717"/>
       <source>Opens the Frequently Asked Questions</source>
-      <translation type="unfinished">Opens the Frequently Asked Questions</translation>
+      <translation>Abre las Preguntas Frecuentes</translation>
     </message>
   </context>
   <context>
@@ -13749,12 +13751,12 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="769"/>
       <source>Report an &amp;Issue</source>
-      <translation type="unfinished">Report an &amp;Issue</translation>
+      <translation>Informar de un problema</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="770"/>
       <source>Report an issue or suggest a new feature</source>
-      <translation type="unfinished">Report an issue or suggest a new feature</translation>
+      <translation>Informa de un error o sugerencia de una nueva característica</translation>
     </message>
   </context>
   <context>
@@ -13762,13 +13764,13 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1639"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>Trans&amp;formar</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1640"/>
       <location filename="../CommandDoc.cpp" line="1641"/>
       <source>Transform the selected object in the 3D view</source>
-      <translation type="unfinished">Transform the selected object in the 3D view</translation>
+      <translation>Transforma el objeto seleccionado en la vista 3D</translation>
     </message>
   </context>
 </TS>

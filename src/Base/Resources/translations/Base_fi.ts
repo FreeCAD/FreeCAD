@@ -16,7 +16,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="62"/>
       <source>US customary (in, lb)</source>
-      <translation>US tavalla (tuumat/ paunat)</translation>
+      <translation>USA:n yksikköjärjestelmä (tuumat/ paunat)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="64"/>
@@ -26,37 +26,37 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="66"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation>Rakennus Euro (cm/m²/m³)</translation>
+      <translation>Rakentaminen Euro (cm/m²/m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="68"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation>USA:n rakentaminen (ft-in, sqft, cft)</translation>
+      <translation>Rakentaminen USA (ft-in, sqft, cft)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="70"/>
       <source>Metric small parts &amp; CNC (mm, mm/min)</source>
-      <translation>Metriset pienet osat &amp; CNC(mm, mm/min)</translation>
+      <translation>Metrinen, pienet osat &amp; CNC (mm, mm/min)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="72"/>
       <source>Imperial for Civil Eng (ft, ft/s)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/s)</translation>
+      <translation>Brittiläinen, maa- ja vesirakentaminen (ft, ft/sec)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="74"/>
       <source>FEM (mm, N, s)</source>
-      <translation type="unfinished">FEM (mm, N, s)</translation>
+      <translation>FEM (mm, N, s)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="76"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation type="unfinished">Meter decimal (m, m², m³)</translation>
+      <translation>Metrinen desimaaliluku (m, m2, m3)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="78"/>
       <source>Unknown schema</source>
-      <translation type="unfinished">Unknown schema</translation>
+      <translation>Tuntematon skeema</translation>
     </message>
   </context>
 </TS>

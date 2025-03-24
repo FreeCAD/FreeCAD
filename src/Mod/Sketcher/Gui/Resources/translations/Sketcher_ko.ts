@@ -220,7 +220,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="431"/>
       <source>Rectangle</source>
-      <translation>사각형</translation>
+      <translation>직사각형</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="437"/>
@@ -253,7 +253,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2071"/>
       <source>Square</source>
-      <translation>사각형</translation>
+      <translation>정사각형</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2078"/>
@@ -2097,7 +2097,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="134"/>
       <source>Symmetry geometries</source>
-      <translation type="unfinished">Symmetry geometries</translation>
+      <translation>도형을 대칭</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="94"/>
@@ -4083,10 +4083,10 @@ Requires to re-enter edit mode to take effect.</translation>
 'Separated tools': Individual tools for each dimensioning constraint.
 'Both': You will have both the 'Dimension' tool and the separated tools.
 This setting is only for the toolbar. Whichever you choose, all tools are always available in the menu and through shortcuts.</source>
-      <translation>도구 모음에 대한 치수 구속 유형을 선택합니다:
-'단일 도구': 도구 모음의 모든 치수 구속에 대한 단일 도구입니다: 거리, 거리 X/Y, 각도, 반경. (기타는 드롭다운에 있음)
+      <translation>도구 모음에 배치할 치수 구속 유형을 선택합니다:
+'단일 도구': 도구 모음의 모든 치수 구속이 통합된 단일 도구입니다: 거리, 거리 X/Y, 각도, 반경. (기타는 드롭다운에 있음)
 '분리된 도구': 각 치수 구속에 대한 개별 도구.
-'둘 다': '치수' 도구와 분리된 도구가 모두 표시됩니다.
+'둘 다': 단일도구와 분리된 도구가 모두 표시됩니다.
 이 설정은 도구 모음에만 적용됩니다. 어떤 설정을 선택하든 모든 도구는 메뉴와 바로 가기를 통해 항상 사용할 수 있습니다.</translation>
     </message>
     <message>
@@ -4139,7 +4139,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../SketcherSettings.cpp" line="195"/>
       <source>Separated tools</source>
-      <translation type="unfinished">Separated tools</translation>
+      <translation>개별 도구</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="196"/>
@@ -4192,7 +4192,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="208"/>
       <source>Font size</source>
-      <translation>폰트 크기</translation>
+      <translation>글꼴 크기</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="160"/>

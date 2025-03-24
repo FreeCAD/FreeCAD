@@ -416,7 +416,7 @@
     <message>
       <location filename="../Application.h" line="267"/>
       <source>&amp;Default</source>
-      <translation type="unfinished">&amp;Default</translation>
+      <translation>&amp;Výchzí</translation>
     </message>
     <message>
       <location filename="../Application.h" line="268"/>
@@ -1105,7 +1105,7 @@ Pokud toto není zaškrtnuto, musí vlastnost dostat jedinečný název a bude p
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="38"/>
       <source>Browse</source>
-      <translation type="unfinished">Browse</translation>
+      <translation>Prohlížet</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="60"/>
@@ -1118,7 +1118,7 @@ Pokud toto není zaškrtnuto, musí vlastnost dostat jedinečný název a bude p
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="163"/>
       <source>Export Config</source>
-      <translation type="unfinished">Export Config</translation>
+      <translation>Exportovat nastavení</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="171"/>
@@ -3855,7 +3855,7 @@ Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="195"/>
       <source>Show script commands in Python console</source>
-      <translation type="unfinished">Show script commands in Python console</translation>
+      <translation>Ukázat skriptovací příkazy v Pythonové konzoli</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="211"/>
@@ -5394,7 +5394,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
       <source>No 3D view</source>
-      <translation type="unfinished">No 3D view</translation>
+      <translation>Bez 3D zobrazení</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="158"/>
@@ -5678,7 +5678,7 @@ původně vybranými před otevřením tohoto dialogu</translation>
     <message>
       <location filename="../SelectionView.cpp" line="659"/>
       <source>To Python console</source>
-      <translation type="unfinished">To Python console</translation>
+      <translation>Do konzole Pythonu</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="662"/>
@@ -7867,7 +7867,7 @@ However, if you save this file in the current version and reopen it in an older 
     <message>
       <location filename="../CommandDoc.cpp" line="136"/>
       <source>Don't show this warning again</source>
-      <translation type="unfinished">Don't show this warning again</translation>
+      <translation>Už znovu nezobrazovat toto upozornění</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="280"/>
@@ -7978,13 +7978,13 @@ Další podrobnosti najdete v zobrazení Přehledu.</translation>
       <location filename="../CommandView.cpp" line="338"/>
       <location filename="../CommandView.cpp" line="571"/>
       <source>&amp;Save views...</source>
-      <translation type="unfinished">&amp;Save views...</translation>
+      <translation>&amp;Uložit náhledy...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="340"/>
       <location filename="../CommandView.cpp" line="572"/>
       <source>&amp;Load views...</source>
-      <translation type="unfinished">&amp;Load views...</translation>
+      <translation>&amp;Načíst náhledy...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="343"/>
@@ -7996,7 +7996,7 @@ Další podrobnosti najdete v zobrazení Přehledu.</translation>
       <location filename="../CommandView.cpp" line="346"/>
       <location filename="../CommandView.cpp" line="574"/>
       <source>&amp;Clear views</source>
-      <translation type="unfinished">&amp;Clear views</translation>
+      <translation>&amp;Vyčistit náhledy</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="392"/>
@@ -9007,7 +9007,7 @@ podtržítko a nesmí začínat číslicí.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="172"/>
       <source>&amp;Next</source>
-      <translation type="unfinished">&amp;Next</translation>
+      <translation>&amp;Dlší</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="173"/>

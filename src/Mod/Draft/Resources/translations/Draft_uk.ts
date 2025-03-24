@@ -711,7 +711,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
       <source>Reset 3D point selection</source>
-      <translation type="unfinished">Reset 3D point selection</translation>
+      <translation>Скинути вибір 3D точки</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
@@ -3477,7 +3477,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="188"/>
       <source>Draft scale widget</source>
-      <translation type="unfinished">Draft scale widget</translation>
+      <translation>Віджет масштабування креслення</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="213"/>
@@ -3487,7 +3487,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="249"/>
       <source>Draft snap widget</source>
-      <translation type="unfinished">Draft snap widget</translation>
+      <translation>Віджет привʼязки креслення</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
@@ -3764,13 +3764,13 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="100"/>
       <source>Pick start point</source>
-      <translation type="unfinished">Pick start point</translation>
+      <translation>Вказати початкову точку</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="170"/>
       <location filename="../../draftguitools/gui_move.py" line="317"/>
       <source>Pick end point</source>
-      <translation type="unfinished">Pick end point</translation>
+      <translation>Вибрати кінцеву точку</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="219"/>
@@ -3880,7 +3880,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="484"/>
       <source>Edit node</source>
-      <translation type="unfinished">Edit node</translation>
+      <translation>Редагувати вузол</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="539"/>
@@ -4106,17 +4106,17 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="83"/>
       <source>Radius of fillet</source>
-      <translation type="unfinished">Radius of fillet</translation>
+      <translation>Радіус скруглення</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="111"/>
       <source>Enter radius.</source>
-      <translation type="unfinished">Enter radius.</translation>
+      <translation>Введіть радіус.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="149"/>
       <source>Fillet cannot be created</source>
-      <translation type="unfinished">Fillet cannot be created</translation>
+      <translation>Скруглення не може бути створено</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="166"/>

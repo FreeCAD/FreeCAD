@@ -773,7 +773,7 @@
       <location filename="../../AttacherTexts.cpp" line="65"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X ', Y', Z'-Achsen werden mit der Y, Z, X Lokalen des Objekts abgeglichen.</translation>
+      <translation>Die X'-, Y'- und Z'-Achsen werden den lokalen Y-, Z- und X-Achsen des Objekts angeglichen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="67"/>
@@ -785,7 +785,7 @@
       <location filename="../../AttacherTexts.cpp" line="68"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X'Y'-Ebene verläuft parallel zur Ebene (XY-Ebene des Objekts) und durch den Knoten.</translation>
+      <translation>Die X'Y'-Ebene verläuft parallel zur Ebene (XY-Ebene des Objekts) und durch den Knotenpunkt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="70"/>
@@ -797,31 +797,31 @@
       <location filename="../../AttacherTexts.cpp" line="71"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Die X'-Y-Ebene ist so ausgerichtet, dass sie mit der ebene Fläche übereinstimmt.</translation>
+      <translation>Die X'Y'-Ebene wird so ausgerichtet, dass sie mit der ebenen Fläche übereinstimmt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="73"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>XY Tangente zur Oberfläche</translation>
+      <translation>XY tangential zur Oberfläche</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="74"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X 'Y' Ebene wird tangential zur Oberfläche am Scheitelpunkt gemacht.</translation>
+      <translation>Die X'Y'-Ebene wird am Knotenpunkt tangential zur Oberfläche ausgerichtet.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="76"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Z tangential zum Rand</translation>
+      <translation>Z tangential zur Kante</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="77"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Z-Achse stimmt mit Tangente an Kante überein. Optional verknüpfter Scheitelpunkt definiert Position.</translation>
+      <translation>Die Z'-Achse wird tangential zur Kante ausgerichtet. Ein optionaler verknüpfter Knotenpunkt legt fest an welcher Stelle.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="79"/>
@@ -919,7 +919,7 @@
       <location filename="../../AttacherTexts.cpp" line="104"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Internes Koordinatensystem, auf Hauptachsen der Trägheit und des Massenmittelpunkts konstruiert.</translation>
+      <translation>Inertial-Koordinatensystem, das aus Hauptträgheitsachsen und Schwerpunkt abgeleitet wird.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="106"/>
@@ -1214,12 +1214,12 @@
     <message>
       <location filename="../../Command.cpp" line="2087"/>
       <source>Appearance per &amp;face</source>
-      <translation type="unfinished">Appearance per &amp;face</translation>
+      <translation>Aussehen per Fläche</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2088"/>
       <source>Set the appearance of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the appearance of each individual face of the selected object.</translation>
+      <translation>Das Aussehen jeder einzelnen Fläche des ausgewählten Objekts festlegen.</translation>
     </message>
   </context>
   <context>
@@ -2183,22 +2183,22 @@ der Projektion.</translation>
     <message>
       <location filename="../../Command.cpp" line="2257"/>
       <source>Add a coordinate system</source>
-      <translation type="unfinished">Add a coordinate system</translation>
+      <translation>Koordinatensystem hinzufügen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2291"/>
       <source>Add a datum plane</source>
-      <translation type="unfinished">Add a datum plane</translation>
+      <translation>Bezugsebene hinzufügen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2324"/>
       <source>Add a datum line</source>
-      <translation type="unfinished">Add a datum line</translation>
+      <translation>Bezugslinie hinzufügen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2357"/>
       <source>Add a datum point</source>
-      <translation type="unfinished">Add a datum point</translation>
+      <translation>Bezugspunkt hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
@@ -2624,7 +2624,7 @@ Hinweis: Die Positionierung wird im lokalen Raum des befestigten Objekts dargest
     <message>
       <location filename="../../DlgExportStep.ui" line="14"/>
       <source>STEP Export Settings</source>
-      <translation type="unfinished">STEP Export Settings</translation>
+      <translation>STEP-Export-Einstellungen</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="104"/>
@@ -2712,7 +2712,7 @@ die Größe der resultierenden STEP Datei zu minimieren.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
       <source>Click to start selecting an edge in 3D view.</source>
-      <translation type="unfinished">Click to start selecting an edge in 3D view.</translation>
+      <translation>Klicken, um mit der Auswahl einer Kante in der 3D-Ansicht zu beginnen.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
@@ -3176,7 +3176,7 @@ Bitte zuerst ein oder mehrere Kantenelemente markieren.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="14"/>
       <source>STEP Import Settings</source>
-      <translation type="unfinished">STEP Import Settings</translation>
+      <translation>STEP-Import-Einstellungen</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="20"/>
@@ -4064,7 +4064,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="104"/>
       <source>Angle Deflection</source>
-      <translation type="unfinished">Angle Deflection</translation>
+      <translation>Winkelablenkung</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="105"/>
@@ -4613,7 +4613,7 @@ Funktioniert nur richtig, wenn alle Objekte dieselben Werte besitzen.</translati
       <location filename="../../SectionCutting.ui" line="333"/>
       <location filename="../../SectionCutting.ui" line="476"/>
       <source>Transparency</source>
-      <translation>Tranparenz</translation>
+      <translation>Transparenz</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="371"/>
@@ -5252,7 +5252,7 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="457"/>
       <location filename="../../TaskCheckGeometry.cpp" line="468"/>
       <source>Skipped</source>
-      <translation type="unfinished">Skipped</translation>
+      <translation>Übersprungen</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="467"/>
@@ -5272,7 +5272,7 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="542"/>
       <source>No errors</source>
-      <translation type="unfinished">No errors</translation>
+      <translation>Keine Fehler</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="553"/>
@@ -6938,7 +6938,7 @@ eines Auswahlrechtecks in der 3D-Ansicht ausgewählt werden</translation>
     <message>
       <location filename="../../Command.cpp" line="2246"/>
       <source>Create a coordinate system</source>
-      <translation type="unfinished">Create a coordinate system</translation>
+      <translation>Koordinatensystem erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2247"/>
@@ -7015,7 +7015,7 @@ eines Auswahlrechtecks in der 3D-Ansicht ausgewählt werden</translation>
     <message>
       <location filename="../../Command.cpp" line="2382"/>
       <source>Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.</source>
-      <translation type="unfinished">Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.</translation>
+      <translation>Erstellt ein Bezugsobjekt (LKS, Ebene, Linie, Punkt), das an andere Objekte befestigt werden kann.</translation>
     </message>
   </context>
 </TS>

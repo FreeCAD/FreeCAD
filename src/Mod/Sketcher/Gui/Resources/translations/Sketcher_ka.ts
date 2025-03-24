@@ -2053,7 +2053,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1671"/>
       <source>Drag geometries</source>
-      <translation type="unfinished">Drag geometries</translation>
+      <translation>გეომეტრიების გადათრევა</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1052"/>
@@ -4069,12 +4069,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="222"/>
       <source>If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</source>
-      <translation type="unfinished">If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</translation>
+      <translation>თუ ჩართულია, მაშინ გარე გეომეტრია, ყოველთვის, დაემატება მიმართვის სახით. თუ არა, მაშინ ის მიმდინარე კონსტრუქციის რეჟიმის მიხედვით იქნება დამატებული.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="225"/>
       <source>Always add external geometry as reference</source>
-      <translation type="unfinished">Always add external geometry as reference</translation>
+      <translation>გარე გეომეტრიების მიმართვად, ყოველთვის, დამატება</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="250"/>
@@ -4471,20 +4471,20 @@ Then objects are only visible behind the sketch plane.</source>
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>ნაპოვნია %1 შებრუნებული გარე გეომეტრიის რკალი. მათი ბოლო წერტილები გარშემორტყმულია 3D ხედში.
 
-%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
+%2 შეზღუდვები ბოლო წერტილებს აკავშირებს. შეზღუდვები ჩამოთვლილია ანგარიშის ხედში (მენიუ ხედი -&gt; პანელები -&gt; ანგარიშის ხედი).
 
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+დააწკაპუნეთ ღილაკზე „შეცვალეთ ბოლო წერტილები შეზღუდვებში“ საბოლოო წერტილების ხელახლა მინიჭებისთვის. გააკეთეთ ეს მხოლოდ ერთხელ v0.15-ზე ძველი FreeCAD-ში შექმნილი ესკიზებისთვის</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="304"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>ნაპოვნია %1 შებრუნებული გარე-გეომეტრიული რკალი. მისი საბოლოო წერტილები შემორკალულია 3D ხედში.
 
-However, no constraints linking to the endpoints were found.</translation>
+მაგრამ შეზღუდვების ბმულები საბოლოო წერტილებთან ნაპოვნი არაა.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="315"/>
@@ -5351,7 +5351,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../Command.cpp" line="603"/>
       <source>Cannot attach sketch to itself!</source>
-      <translation type="unfinished">Cannot attach sketch to itself!</translation>
+      <translation>ესკიზს თავის თავს ვერ მიაბამთ!</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="604"/>
@@ -5366,7 +5366,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../Command.cpp" line="622"/>
       <source>Select a sketch (some sketches not shown to prevent a circular dependency)</source>
-      <translation type="unfinished">Select a sketch (some sketches not shown to prevent a circular dependency)</translation>
+      <translation>აირჩიეთ ესკიზი (ზოგიერთი ესკიზი, წრიული დამოკიდებულებების თავიდან ასაცილებლად, ნაჩვენები არაა)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="624"/>
@@ -5977,12 +5977,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10233"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Geometry Property results in invalid constraint indices</translation>
+      <translation>გეომეტრიის თვისების უმართავი ცვლილება არასწორი შეზღუდვის ინდექსების გაჩენას იწყვევს</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10264"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Constraint Property results in invalid constraint indices</translation>
+      <translation>შეზღუდვის თვისების უმართავი ცვლილება არასწორი შეზღუდვის ინდექსების გაჩენას იწყვევს</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10893"/>
@@ -7338,7 +7338,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="858"/>
       <source>Create a periodic B-spline.</source>
-      <translation type="unfinished">Create a periodic B-spline.</translation>
+      <translation>პერიოდული B-სპლაინის შექმნა.</translation>
     </message>
   </context>
   <context>
@@ -7379,12 +7379,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1448"/>
       <source>Create external</source>
-      <translation type="unfinished">Create external</translation>
+      <translation>გარეს შექმნა</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1449"/>
       <source>Create external edges linked to external geometries.</source>
-      <translation type="unfinished">Create external edges linked to external geometries.</translation>
+      <translation>გარე გეომეტრიებზე მიბმული გარეშე წიბოების შექმნა.</translation>
     </message>
   </context>
   <context>
@@ -7392,16 +7392,16 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1503"/>
       <source>Create external projection geometry</source>
-      <translation type="unfinished">Create external projection geometry</translation>
+      <translation>გარე პროექციის გეომეტრიის შექმნა</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1504"/>
       <source>Create the projection edges of an external geometry.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the projection edges of an external geometry.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>შექმნის გარე გეომეტრიის პროექციის წიბოებს.
+გარე წიბოები, შეიძლება, აღმწერ, ან კონსტრუქციის გეომეტრიებს წარმოადგენდეს.
+შეგიძლიათ, კონსტრუქციის ხელსაწყოს გადართვა გამოიყენოთ.</translation>
     </message>
   </context>
   <context>
@@ -7409,16 +7409,16 @@ You can use the toggle construction tool.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create external intersection geometry</source>
-      <translation type="unfinished">Create external intersection geometry</translation>
+      <translation>გარე კვეთის გეომეთრიის შექმნა</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1542"/>
       <source>Create the intersection edges of an external geometry with the sketch plane.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the intersection edges of an external geometry with the sketch plane.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>შექმნის გარე გეომეტრიის კვეთის წიბოებს ესკიზის სიბრტყით.
+გარე წიბოები, შეიძლება, აღმწერ, ან კონსტრუქციის გეომეტრიებს წარმოადგენდეს.
+შეგიძლიათ, კონსტრუქციის ხელსაწყოს გადართვა გამოიყენოთ.</translation>
     </message>
   </context>
 </TS>

@@ -2105,7 +2105,7 @@ http://www.openscad.org/index.html asentaaksesi sen.</translation>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Import-Export</source>
-      <translation>Tuo/Vie</translation>
+      <translation>Tuonti/Vienti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="336"/>

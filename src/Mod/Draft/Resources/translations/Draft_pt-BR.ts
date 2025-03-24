@@ -2314,8 +2314,8 @@ Isto pode falhar para modelos DXF R12.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
       <source>If checked, the outline of a human figure is displayed at the bottom left
 corner of the grid. Only effective if "Show grid border" is enabled.</source>
-      <translation type="unfinished">If checked, the outline of a human figure is displayed at the bottom left
-corner of the grid. Only effective if "Show grid border" is enabled.</translation>
+      <translation>Se marcado, o contorno de uma figura humana é exibido na parte inferior esquerda
+da grade. Somente eficaz se "Mostrar borda da grade" estiver habilitado.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="132"/>

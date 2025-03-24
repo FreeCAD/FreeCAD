@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="53"/>
       <source>Create an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</source>
-      <translation type="unfinished">Create an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</translation>
+      <translation>Geçerli belgede veya geçerli etkin montajda (varsa) bir montaj nesnesi oluşturun. Dosya başına bir kök derleme sınırı</translation>
     </message>
   </context>
   <context>

@@ -47,17 +47,17 @@
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Start</source>
-      <translation>開始</translation>
+      <translation>スタート</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="48"/>
       <source>&amp;Start Page</source>
-      <translation type="unfinished">&amp;Start Page</translation>
+      <translation>&amp;スタート・ページ</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
       <source>Displays the Start Page</source>
-      <translation type="unfinished">Displays the Start Page</translation>
+      <translation>スタート・ページを表示</translation>
     </message>
   </context>
   <context>

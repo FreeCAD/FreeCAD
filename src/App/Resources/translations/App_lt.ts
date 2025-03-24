@@ -7,7 +7,7 @@
       <location filename="../../Link.cpp" line="130"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation>Išsaugo paskutinį vartotojo pasirinkimą, ar taikyti KopijuotiPakeitus sąranką visoms nuorodoms kurios nurodo tą patį konfigūruojamą daiktą</translation>
+      <translation>Išsaugo paskutinį vartotojo pasirinkimą, ar taikyti Kopijuoti Pakeitus sąranką visoms nuorodoms kurios nurodo tą patį konfigūruojamą daiktą</translation>
     </message>
   </context>
   <context>

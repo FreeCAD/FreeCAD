@@ -710,7 +710,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
       <source>Reset 3D point selection</source>
-      <translation type="unfinished">Reset 3D point selection</translation>
+      <translation>3D点選択をリセット</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
@@ -1648,8 +1648,7 @@ pattern definitions to be added to the standard patterns</source>
       <source>The default font for texts, dimensions and labels. It can be a font name such
 as "Arial", a style such as "sans", "serif" or "mono", or a family such as
 "Arial,Helvetica,sans", or a name with a style such as "Arial:Bold".</source>
-      <translation>基本設計ワークベンチで使用する文字と寸法に用いる既定のフォントです。
-「Arial, Helvetica, sans」「Arial:Bold」のように、フォント名やスタイル名を組み合わせた形で指定することができます。</translation>
+      <translation>テキスト、寸法、ラベルのデフォルトのフォント。フォント名「Arial」、スタイル「sans」「serif」「mono」、フォントファミリー「Arial, Helvetica, sans」、またはスタイル付きの名前「Arial:Bold」といった設定ができます。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="119"/>
@@ -2081,7 +2080,7 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="261"/>
       <source>Draft objects</source>
-      <translation>基本設計オブジェクト</translation>
+      <translation>ドラフトオブジェクト</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="277"/>
@@ -2301,8 +2300,7 @@ R12形式より後のDXFテンプレートではエクスポートできない�
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
       <source>If checked, the outline of a human figure is displayed at the bottom left
 corner of the grid. Only effective if "Show grid border" is enabled.</source>
-      <translation type="unfinished">If checked, the outline of a human figure is displayed at the bottom left
-corner of the grid. Only effective if "Show grid border" is enabled.</translation>
+      <translation>チェックした場合、グリッドの左下に人物の輪郭が表示されます。「グリッドの枠を表示」が有効になっている場合のみ機能します。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="132"/>
@@ -2797,12 +2795,12 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="774"/>
       <source>If checked, the Snap widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Snap widget is displayed in the Draft status bar</translation>
+      <translation>チェックされている場合、スナップウィジェットがドラフトのステータスバーに表示されます。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="793"/>
       <source>If checked, the Annotation scale widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Annotation scale widget is displayed in the Draft status bar</translation>
+      <translation>チェックされている場合、注釈スケールウィジェットがドラフトのステータスバーに表示されます。</translation>
     </message>
   </context>
   <context>
@@ -3004,7 +3002,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="528"/>
       <source>Active Draft command</source>
-      <translation>アクティブな基本設計コマンド</translation>
+      <translation>アクティブなドラフトコマンド</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="529"/>
@@ -3440,7 +3438,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="188"/>
       <source>Draft scale widget</source>
-      <translation type="unfinished">Draft scale widget</translation>
+      <translation>ドラフトスケールウィジェット</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="213"/>
@@ -3450,7 +3448,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="249"/>
       <source>Draft snap widget</source>
-      <translation type="unfinished">Draft snap widget</translation>
+      <translation>ドラフトスナップウィジェット</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
@@ -3712,7 +3710,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="115"/>
       <source>Convert to Draft</source>
-      <translation>基本設計に変換する</translation>
+      <translation>ドラフトに変換</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="144"/>
@@ -3838,7 +3836,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="290"/>
       <source>Select a Draft object to edit</source>
-      <translation>編集する基本設計オブジェクトを選択</translation>
+      <translation>編集するドラフトオブジェクトを選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="484"/>
@@ -4424,7 +4422,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="73"/>
       <source>No active Draft Toolbar.</source>
-      <translation>アクティブな基本設計ツールバーがありません。</translation>
+      <translation>アクティブなドラフト・ツールバーがありません。</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="93"/>
@@ -4913,7 +4911,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Two edges are needed.</source>
-      <translation type="unfinished">Two edges are needed.</translation>
+      <translation>2つのエッジが必要です。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="79"/>
@@ -5578,22 +5576,22 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
     <message>
       <location filename="../../draftobjects/facebinder.py" line="128"/>
       <source>Unable to build Facebinder</source>
-      <translation type="unfinished">Unable to build Facebinder</translation>
+      <translation>フェイスバインダーを構築できません。</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="131"/>
       <source>No valid faces for Facebinder</source>
-      <translation type="unfinished">No valid faces for Facebinder</translation>
+      <translation>フェイスバインダーに有効な面がありません。</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="134"/>
       <source>Unable to build Facebinder, resuming with Sew disabled</source>
-      <translation type="unfinished">Unable to build Facebinder, resuming with Sew disabled</translation>
+      <translation>フェイスバインダーを構築できません。縫い合わせを無効にして再開します。</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="201"/>
       <source>Converting flat B-spline faces of Facebinder to planar faces failed</source>
-      <translation type="unfinished">Converting flat B-spline faces of Facebinder to planar faces failed</translation>
+      <translation>フェイスバインダーのフラットなB-スプライン面から平面への変換に失敗しました。</translation>
     </message>
   </context>
   <context>
@@ -5601,32 +5599,32 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
     <message>
       <location filename="../../InitGui.py" line="103"/>
       <source>Draft creation tools</source>
-      <translation>基本設計作成ツール</translation>
+      <translation>ドラフト作成ツール</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="106"/>
       <source>Draft annotation tools</source>
-      <translation>基本設計注釈ツール</translation>
+      <translation>ドラフト注釈ツール</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="109"/>
       <source>Draft modification tools</source>
-      <translation>基本設計修正ツール</translation>
+      <translation>ドラフト修正ツール</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="112"/>
       <source>Draft utility tools</source>
-      <translation>基本設計ユーティリティツール</translation>
+      <translation>ドラフトユーティリティーツール</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="115"/>
       <source>Draft snap</source>
-      <translation>基本設計スナップ</translation>
+      <translation>ドラフトスナップ</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="120"/>
       <source>&amp;Drafting</source>
-      <translation>&amp;基本設計</translation>
+      <translation>ドラフト(&amp;D)</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="123"/>
@@ -6110,7 +6108,7 @@ The lines must share a common point at the start or at the end for the operation
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="57"/>
       <source>Draft to sketch</source>
-      <translation>基本設計をスケッチにする</translation>
+      <translation>ドラフトからスケッチへ</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="60"/>
@@ -6685,7 +6683,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</sour
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="60"/>
       <source>B-spline</source>
-      <translation>B-スプライン</translation>
+      <translation>Bスプライン</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="63"/>

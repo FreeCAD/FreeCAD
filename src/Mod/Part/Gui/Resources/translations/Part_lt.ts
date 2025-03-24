@@ -6110,7 +6110,7 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="78"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Skaičiavimai baigėsi nesėkme dėl klaidos:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
@@ -6192,7 +6192,7 @@ Ar vistiek norite tęsti?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="492"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Skaičiavimai baigėsi nesėkme dėl klaidos:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>
@@ -6265,7 +6265,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Skaičiavimai baigėsi nesėkme dėl klaidos:</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
@@ -6897,7 +6897,7 @@ velkant pasirinkimo stačiakampį erdviniame rodinyje</translation>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="70"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Skaičiavimai baigėsi nesėkme dėl klaidos:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="71"/>

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>&amp;Create spreadsheet</source>
-      <translation type="unfinished">&amp;Create spreadsheet</translation>
+      <translation>&amp;Crear hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="949"/>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="237"/>
       <source>&amp;Export spreadsheet</source>
-      <translation type="unfinished">&amp;Export spreadsheet</translation>
+      <translation>&amp;Exportar hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="238"/>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="184"/>
       <source>&amp;Import spreadsheet</source>
-      <translation type="unfinished">&amp;Import spreadsheet</translation>
+      <translation>&amp;Importar hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="185"/>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>&amp;Merge cells</source>
-      <translation type="unfinished">&amp;Merge cells</translation>
+      <translation>Co&amp;mbinar celdas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="62"/>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../Command.cpp" line="793"/>
       <source>&amp;Underline text</source>
-      <translation type="unfinished">&amp;Underline text</translation>
+      <translation>S&amp;ubrayar texto</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="794"/>
@@ -885,12 +885,12 @@ Spreadsheet.mi_nombre_de_alias en lugar de Spreadsheet.B1
     <message>
       <location filename="../../Sheet.ui" line="147"/>
       <source>-</source>
-      <translation type="unfinished">-</translation>
+      <translation>-</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="197"/>
       <source>+</source>
-      <translation type="unfinished">+</translation>
+      <translation>+</translation>
     </message>
   </context>
   <context>
@@ -952,7 +952,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="48"/>
       <source>Set a zoom level for table view from 60% to 160%.</source>
-      <translation type="unfinished">Set a zoom level for table view from 60% to 160%.</translation>
+      <translation>Establece un nivel de acercamiento para la vista de tablas de 60% a 160%.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="51"/>
@@ -962,7 +962,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="76"/>
       <source>Default zoom level:</source>
-      <translation type="unfinished">Default zoom level:</translation>
+      <translation>Nivel de acercamiento por defecto:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="83"/>
@@ -1208,12 +1208,12 @@ Por defecto a: %V = %A
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>Zoom level</source>
-      <translation type="unfinished">Zoom level</translation>
+      <translation>Nivel de acercamiento</translation>
     </message>
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>New zoom level:</source>
-      <translation type="unfinished">New zoom level:</translation>
+      <translation>Nuevo nivel de acercamiento:</translation>
     </message>
   </context>
 </TS>

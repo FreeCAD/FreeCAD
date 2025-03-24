@@ -286,7 +286,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="160"/>
       <source>Iterations</source>
-      <translation>Iterações (repetições)</translation>
+      <translation>Iterações</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="189"/>
@@ -592,7 +592,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
       <source>Fit B-spline curve</source>
-      <translation type="unfinished">Fit B-spline curve</translation>
+      <translation>Ajustar curva B-Spline</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>
@@ -612,7 +612,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="42"/>
       <source>Centripetal</source>
-      <translation>Centripetal</translation>
+      <translation>Centrípeta</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>

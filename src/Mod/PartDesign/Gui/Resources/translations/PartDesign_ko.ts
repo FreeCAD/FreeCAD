@@ -85,7 +85,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="98"/>
       <source>Number of gear teeth</source>
-      <translation>기어 톱니 수</translation>
+      <translation>기어 잇수</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="104"/>
@@ -105,8 +105,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="111"/>
       <source>True=external Gear, False=internal Gear</source>
-      <translation>참=외기어
-거짓=내기어</translation>
+      <translation>참=외접 기어, 거짓=내접 기어</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="115"/>
@@ -481,7 +480,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="530"/>
       <source>Set tip</source>
-      <translation>끝단 설정</translation>
+      <translation>끝단으로 설정</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="531"/>
@@ -860,7 +859,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="377"/>
       <source>Subtractive Wedge</source>
-      <translation>쐐기(wedge) 잘라내기</translation>
+      <translation>쐐기 잘라내기</translation>
     </message>
   </context>
   <context>
@@ -1032,7 +1031,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>Create Geometry</source>
-      <translation>생성: 지오메트리(Geometry)</translation>
+      <translation>도형 생성</translation>
     </message>
   </context>
   <context>
@@ -1077,7 +1076,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="152"/>
       <source>External gear:</source>
-      <translation>외부 기어:</translation>
+      <translation>외접 기어:</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="179"/>
@@ -1314,12 +1313,12 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1645"/>
       <source>Right-handed</source>
-      <translation>오른 손잡이</translation>
+      <translation>오른나사</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1650"/>
       <source>Left-handed</source>
-      <translation>왼손잡이</translation>
+      <translation>왼나사</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1709"/>
@@ -1884,7 +1883,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="193"/>
       <source>Empty fillet created!</source>
-      <translation>빈 필렛이 생성되었습니다!</translation>
+      <translation>빈 모깎기가 생성되었습니다!！</translation>
     </message>
   </context>
   <context>
@@ -2052,7 +2051,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="48"/>
       <source>Countersink</source>
-      <translation>카운터싱크(Countersink)</translation>
+      <translation>접시형 구멍</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="49"/>
@@ -2151,7 +2150,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="156"/>
       <source>Occurrences</source>
-      <translation>생성 수(사용되지 않음)</translation>
+      <translation>발생 횟수</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="330"/>
@@ -2204,7 +2203,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="50"/>
       <source>Loft parameters</source>
-      <translation>뾰족탑 매개변수</translation>
+      <translation>로프트 매개변수</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="74"/>
@@ -2795,7 +2794,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="168"/>
       <source>Occurrences</source>
-      <translation>생성 수(사용되지 않음)</translation>
+      <translation>발생 횟수</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="329"/>
@@ -2936,7 +2935,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="48"/>
       <source>Occurrences</source>
-      <translation>생성 수(사용되지 않음)</translation>
+      <translation>발생 횟수</translation>
     </message>
   </context>
   <context>
@@ -4375,7 +4374,7 @@ the screw's top below the surface</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="633"/>
       <source>Countersink angle</source>
-      <translation>카운터싱크(Countersink) 각도</translation>
+      <translation>접시형 구멍 각도</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="705"/>
@@ -5053,7 +5052,7 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2054"/>
       <source>Hole error: Invalid countersink</source>
-      <translation type="unfinished">Hole error: Invalid countersink</translation>
+      <translation>구멍 오류: 무효한 접시형 구멍</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2087"/>

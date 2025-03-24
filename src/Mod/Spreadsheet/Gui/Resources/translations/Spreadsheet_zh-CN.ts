@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>&amp;Create spreadsheet</source>
-      <translation type="unfinished">&amp;Create spreadsheet</translation>
+      <translation>创建电子表格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="949"/>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Align &amp;bottom</source>
-      <translation type="unfinished">Align &amp;bottom</translation>
+      <translation>底部对齐</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="512"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="340"/>
       <source>Align &amp;center</source>
-      <translation type="unfinished">Align &amp;center</translation>
+      <translation>中心对齐</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="341"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="283"/>
       <source>Align &amp;left</source>
-      <translation type="unfinished">Align &amp;left</translation>
+      <translation>左对齐</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="284"/>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="397"/>
       <source>Align &amp;right</source>
-      <translation type="unfinished">Align &amp;right</translation>
+      <translation>右对齐</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="398"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="454"/>
       <source>Align &amp;top</source>
-      <translation type="unfinished">Align &amp;top</translation>
+      <translation>顶部对齐</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="455"/>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../Command.cpp" line="568"/>
       <source>&amp;Vertically center-align</source>
-      <translation type="unfinished">&amp;Vertically center-align</translation>
+      <translation>垂直居中</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="569"/>

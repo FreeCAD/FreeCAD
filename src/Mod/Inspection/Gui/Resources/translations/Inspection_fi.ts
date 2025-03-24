@@ -96,12 +96,12 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="489"/>
       <source>Remove annotations</source>
-      <translation>Poista huomautukset</translation>
+      <translation>Poista merkinnät</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="490"/>
       <source>Do you want to remove all annotations?</source>
-      <translation>Haluatko poistaa kaikki huomautukset?</translation>
+      <translation>Haluatko poistaa kaikki merkinnät?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="548"/>

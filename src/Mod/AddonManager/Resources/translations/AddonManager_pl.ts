@@ -233,7 +233,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
     <message>
       <location filename="../../developer_mode.ui" line="249"/>
       <source>Minimum Python</source>
-      <translation>Minimalna wersja Pythona</translation>
+      <translation>Wersja minimalna środowiska Python</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="258"/>
@@ -494,7 +494,7 @@ zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji</tra
     <message>
       <location filename="../../AddonManagerOptions.ui" line="27"/>
       <source>Automatically check for updates at start (requires Git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires Git)</translation>
+      <translation>Automatycznie sprawdzaj aktualizacje podczas uruchomienia (wymaga Git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="43"/>
@@ -594,17 +594,17 @@ zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji</tra
     <message>
       <location filename="../../AddonManagerOptions.ui" line="369"/>
       <source>The path to the Git executable. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the Git executable. Autodetected if needed and not specified.</translation>
+      <translation>Ścieżka do pliku wykonywalnego Git. W razie potrzeby wykrywana automatycznie, jeśli nie została określona.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="396"/>
       <source>Show option to change branches (requires Git)</source>
-      <translation type="unfinished">Show option to change branches (requires Git)</translation>
+      <translation>Pokaż opcję zmiany gałęzi (wymaga Git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="409"/>
       <source>Disable Git (fall back to ZIP downloads only)</source>
-      <translation type="unfinished">Disable Git (fall back to ZIP downloads only)</translation>
+      <translation>Wyłącz Git (powróć do pobierania tylko w formacie ZIP)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="390"/>
@@ -1141,17 +1141,17 @@ zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji</tra
     <message>
       <location filename="../../AddonManager.py" line="524"/>
       <source>Creating addon list</source>
-      <translation type="unfinished">Creating addon list</translation>
+      <translation>Tworzenie listy dodatków</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="534"/>
       <source>Loading addon list</source>
-      <translation type="unfinished">Loading addon list</translation>
+      <translation>Wczytywanie listy dodatków</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="570"/>
       <source>Creating macro list</source>
-      <translation type="unfinished">Creating macro list</translation>
+      <translation>Tworzenie listy makr</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="626"/>
@@ -1468,11 +1468,11 @@ Moved
 from: {}
 to: {}
 Please restart to use the new version.</source>
-      <translation type="unfinished">Branch change succeeded.
-Moved
-from: {}
-to: {}
-Please restart to use the new version.</translation>
+      <translation>Zmiana gałęzi powiodła się.
+Zmieniono
+z: {}
+na: {}
+Uruchom ponownie aby użyć nowej wersji.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="116"/>
@@ -1882,7 +1882,7 @@ i spróbuj ponownie. Polecenie, którego wykonanie się nie powiodło, to:</tran
       <location filename="../../addonmanager_devmode.py" line="665"/>
       <source>Failed to import vermin after installation -- cannot scan Addon.</source>
       <comment>&apos;vermin&apos; is the name of a Python package, do not translate</comment>
-      <translation>Nie udało się zaimportować vermin po instalacji -- nie można sprawdzić dodatku.</translation>
+      <translation>Nie udało się zaimportować Vermin po instalacji -- nie można sprawdzić dodatku.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="678"/>
@@ -2103,7 +2103,7 @@ i spróbuj ponownie. Polecenie, którego wykonanie się nie powiodło, to:</tran
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="184"/>
       <source>Downloaded {} for {}</source>
-      <translation type="unfinished">Downloaded {} for {}</translation>
+      <translation>Pobrano {} dla {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="243"/>
@@ -2184,7 +2184,7 @@ i spróbuj ponownie. Polecenie, którego wykonanie się nie powiodło, to:</tran
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="170"/>
       <source>Removed extra installed file {}</source>
-      <translation>Usunięto dodatkowy zainstalowany plik {}</translation>
+      <translation>Usunięto dodatkowo zainstalowany plik {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="184"/>
@@ -2209,13 +2209,13 @@ i spróbuj ponownie. Polecenie, którego wykonanie się nie powiodło, to:</tran
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="281"/>
       <source>Git is disabled, skipping Git macros</source>
-      <translation type="unfinished">Git is disabled, skipping Git macros</translation>
+      <translation>Git jest wyłączony, pomijanie makr Git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="328"/>
       <source>Attempting to change non-Git Macro setup to use Git
 </source>
-      <translation type="unfinished">Attempting to change non-Git Macro setup to use Git
+      <translation>Próba zmiany konfiguracji makrodefinicji niebędącej typu Git na używanie Git
 </translation>
     </message>
     <message>
@@ -2248,27 +2248,27 @@ i spróbuj ponownie. Polecenie, którego wykonanie się nie powiodło, to:</tran
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="548"/>
       <source>Checking {} for update</source>
-      <translation type="unfinished">Checking {} for update</translation>
+      <translation>Sprawdzanie {} do aktualizacji</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="606"/>
       <source>Unable to fetch Git updates for workbench {}</source>
-      <translation type="unfinished">Unable to fetch Git updates for workbench {}</translation>
+      <translation>Nie można pobrać aktualizacji Git dla środowiska pracy {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="619"/>
       <source>Git status failed for {}</source>
-      <translation type="unfinished">Git status failed for {}</translation>
+      <translation>Git status brak powodzenia dla {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="846"/>
       <source>Caching {} macro</source>
-      <translation type="unfinished">Caching {} macro</translation>
+      <translation>Buforowanie {} makra</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="849"/>
       <source>Caching macros</source>
-      <translation type="unfinished">Caching macros</translation>
+      <translation>Buforowanie makr</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="687"/>
@@ -2336,7 +2336,7 @@ i spróbuj ponownie. Polecenie, którego wykonanie się nie powiodło, to:</tran
     <message>
       <location filename="../../addonmanager_git.py" line="153"/>
       <source>Basic Git update failed with the following message:</source>
-      <translation type="unfinished">Basic Git update failed with the following message:</translation>
+      <translation>Podstawowa aktualizacja Git nie powiodła się z następującym komunikatem:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="161"/>
@@ -2346,7 +2346,7 @@ i spróbuj ponownie. Polecenie, którego wykonanie się nie powiodło, to:</tran
     <message>
       <location filename="../../addonmanager_git.py" line="266"/>
       <source>Failed to clone {} into {} using Git</source>
-      <translation type="unfinished">Failed to clone {} into {} using Git</translation>
+      <translation>Nie udało się sklonować {} do {} używając Git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="407"/>

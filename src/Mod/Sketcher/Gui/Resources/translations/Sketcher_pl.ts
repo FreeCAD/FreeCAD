@@ -2077,7 +2077,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1671"/>
       <source>Drag geometries</source>
-      <translation type="unfinished">Drag geometries</translation>
+      <translation>Przeciągnij geometrie</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1052"/>
@@ -4104,12 +4104,12 @@ Wymaga ponownego przejścia do trybu edycji, aby mógł być skuteczny.</transla
     <message>
       <location filename="../../SketcherSettings.ui" line="222"/>
       <source>If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</source>
-      <translation type="unfinished">If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</translation>
+      <translation>Jeśli zaznaczone, geometria zewnętrzna jest zawsze dodawana jako geometria odniesienia, w przeciwnym razie jest dodana zgodnie z bieżącym trybem konstrukcyjnym.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="225"/>
       <source>Always add external geometry as reference</source>
-      <translation type="unfinished">Always add external geometry as reference</translation>
+      <translation>Zawsze dodawaj geometrię zewnętrzną jako geometrię odniesienia</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="250"/>
@@ -4124,9 +4124,9 @@ Wymaga ponownego przejścia do trybu edycji, aby mógł być skuteczny.</transla
 'Both': You will have both the 'Dimension' tool and the separated tools.
 This setting is only for the toolbar. Whichever you choose, all tools are always available in the menu and through shortcuts.</source>
       <translation>Wybierz typ wiązań wymiarowania dla paska narzędzi:
-"Pojedyncze narzędzie": Pojedyncze narzędzie dla wszystkich wiązań wymiarowania: Odległość, Odległość X / Y, Kąt, Promień.
-"Oddzielne narzędzia": Oddzielne narzędzia dla każdego wiązania wymiarowania.
-"Oba": Dostępne będzie zarówno narzędzie "Wymiar", jak i oddzielne narzędzia.
+"Narzędzia zintegrowane": Pojedyncze narzędzie dla wszystkich wiązań wymiarowania: Odległość, Odległość X / Y, Kąt, Promień.
+"Narzędzia oddzielnie": Oddzielne narzędzia dla każdego wiązania wymiarowania.
+"Obyda": Dostępne będzie zarówno narzędzie "Wymiar", jak i oddzielne narzędzia.
 To ustawienie dotyczy tylko paska narzędzi. Niezależnie od wyboru, wszystkie narzędzia są zawsze dostępne w menu i za pomocą skrótów.</translation>
     </message>
     <message>
@@ -4508,20 +4508,20 @@ Widoczne będą obiekty tylko za płaszczyzną szkicu.</translation>
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>%1 znaleziono odwrócone łuki z geometrii zewnętrznych. Ich punkty końcowe zostały otoczone na widoku 3D.
 
-%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
+%2 wiązania odwołują się do punktów końcowych. Te wiązania zostały wymienione w oknie Widoku raportu (menu Widok -&gt; Panele -&gt; Widok raportu)
 
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+Wciśnij przycisk "Zamień punkty końcowe w wiązaniach" aby ponownie przyporządkować punkty końcowe. Zrób to tylko raz na rysunkach utworzonych w programie FreeCAD starszym niż v0.15</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="304"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>%1 znaleziono odwrócone łuki geometrii zewnętrznej. Ich punkty końcowe zostały otoczone na widoku 3D.
 
-However, no constraints linking to the endpoints were found.</translation>
+Nie znaleziono jednak żadnych wiązań odnoszących się do punktów końcowych.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="315"/>
@@ -6029,12 +6029,12 @@ Rozstaw siatki zmienia się, jeśli staje się mniejszy niż określona liczba p
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10233"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Geometry Property results in invalid constraint indices</translation>
+      <translation>Niezarządzana zmiana właściwości geometrii skutkuje nieprawidłowymi indeksami wiązań</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10264"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Constraint Property results in invalid constraint indices</translation>
+      <translation>Niezarządzana zmiana właściwości wiązań skutkuje nieprawidłowymi indeksami wiązań</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10893"/>
@@ -7454,12 +7454,12 @@ Zamiast tego stosuje się wiązania równości pomiędzy oryginalnymi obiektami 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1448"/>
       <source>Create external</source>
-      <translation type="unfinished">Create external</translation>
+      <translation>Utwórz geometrię zewnętrzną</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1449"/>
       <source>Create external edges linked to external geometries.</source>
-      <translation type="unfinished">Create external edges linked to external geometries.</translation>
+      <translation>Utwórz krawędzie zewnętrzne powiązane z geometriami zewnętrznymi.</translation>
     </message>
   </context>
   <context>
@@ -7467,16 +7467,16 @@ Zamiast tego stosuje się wiązania równości pomiędzy oryginalnymi obiektami 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1503"/>
       <source>Create external projection geometry</source>
-      <translation type="unfinished">Create external projection geometry</translation>
+      <translation>Utwórz zewnętrzną geometrię rzutowania</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1504"/>
       <source>Create the projection edges of an external geometry.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the projection edges of an external geometry.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Utwórz krawędzie rzutowania geometrii zewnętrznej.
+Krawędzie zewnętrzne mogą być geometriami definiującymi lub konstrukcyjnymi.
+Możesz użyć narzędzia Przełącz tryb konstrukcji.</translation>
     </message>
   </context>
   <context>
@@ -7484,16 +7484,16 @@ You can use the toggle construction tool.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create external intersection geometry</source>
-      <translation type="unfinished">Create external intersection geometry</translation>
+      <translation>Utwórz zewnętrzną geometrię przecięcia</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1542"/>
       <source>Create the intersection edges of an external geometry with the sketch plane.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the intersection edges of an external geometry with the sketch plane.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Utwórz krawędzie przecięcia geometrii zewnętrznej z płaszczyzną szkicu.
+Krawędzie zewnętrzne mogą być geometriami definiującymi lub konstrukcyjnymi.
+Możesz użyć narzędzia Przełącz tryb konstrukcji.</translation>
     </message>
   </context>
 </TS>

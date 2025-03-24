@@ -250,13 +250,13 @@ to count the objects, or property names like 'Length' or
 When used with native IFC objects, this can be used to
 retrieve any attribute or custom properties of the elements
 retrieved.</source>
-      <translation type="unfinished">The property to retrieve from each object.Can be 'Count'
-to count the objects, or property names like 'Length' or
-'Shape.Volume' to retrieve a certain property.
+      <translation>La propietat que cal recuperar de cada objecte. Pot ser 'Comptar'
+per comptar els objectes o els noms de propietats com 'Longitud' o
+'Forma.Volum' per recuperar una propietat determinada.
 
-When used with native IFC objects, this can be used to
-retrieve any attribute or custom properties of the elements
-retrieved.</translation>
+Quan s'utilitza amb objectes IFC natius, es pot utilitzar per
+recuperar qualsevol atribut o propietat personalitzada dels elements
+recuperats.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="93"/>
@@ -272,18 +272,17 @@ in FreeCAD or not.
 
 Use the name of the IFC project to get all the IFC entities
 of that project, no matter if they are expanded or not.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
+      <translation>Una llista de noms d'objectes separada amb punt i coma (;) opcional
+(noms interns, no etiquetes), a tenir en compte aquesta operació.
+Si la llista conté grups, s'afegiran els fills.
 
-Leave blank to use all objects from the document.
+Deixeu en blanc per utilitzar tots els objectes del document.
 
-If the document is an IFC project, all IFC entities of the
-document will be used, no matter if they are expanded
-in FreeCAD or not.
+Si el document és un projecte IFC, totes les entitats IFC del document
+s'utilitzaran, sense importar si s'amplien en FreeCAD o no.
 
-Use the name of the IFC project to get all the IFC entities
-of that project, no matter if they are expanded or not.</translation>
+Utilitzeu el nom del projecte IFC per obtenir totes les entitats IFC
+d'aquest projecte, no importa si s'amplien o no.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="112"/>

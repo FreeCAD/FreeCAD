@@ -138,7 +138,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="52"/>
       <source>Insert a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;</source>
-      <translation type="unfinished">Insert a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;</translation>
+      <translation>Vstavi sestavino v trenutno dejavni sestav. S tem naredite dinamične povezave do delov, teles, osnovnikov, sestavov. Če želite vstaviti zunanje sestavine, preverite, da je datoteka &lt;b&gt;odprta v trenutni seji&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="54"/>
@@ -372,7 +372,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="386"/>
       <source>Parts children : If checked, Parts children will be added to the bill of materials.</source>
-      <translation type="unfinished">Parts children : If checked, Parts children will be added to the bill of materials.</translation>
+      <translation>Delovi podrejeniki : Če je označeno, bodo delovi podrejeniki dodani v kosovnico.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="392"/>

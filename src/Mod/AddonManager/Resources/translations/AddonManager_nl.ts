@@ -1909,7 +1909,7 @@ Please restart to use the new version.</translation>
     <message>
       <location filename="../../package_list.py" line="211"/>
       <source>Click for details about workbench {}</source>
-      <translation type="unfinished">Click for details about workbench {}</translation>
+      <translation>Klik voor meer informatie over de werkbank {}</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="213"/>

@@ -6,12 +6,12 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="127"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation>Прикажи/сакриј дијаграм закривљености Б-сплајн криве</translation>
+      <translation>Прикажи/сакриј график закривљености Б-сплајн криве</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="129"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation>Пребацује између приказивања и сакривања дијаграм закривљености за све Б-сплајн криве</translation>
+      <translation>Пребацује између приказивања и сакривања график закривљености за све Б-сплајн криве</translation>
     </message>
   </context>
   <context>
@@ -58,12 +58,12 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="97"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation>Прикажи/сакриј линије Б-сплајн криве</translation>
+      <translation>Прикажи/сакриј конвексни омотач Б-сплајн криве</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="99"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>Пребацује између приказивања и сакривања линија контролних тачака за све Б-сплајн криве</translation>
+      <translation>Пребацује између приказивања и сакривања контролних полигонских линија конвексног омотача за све Б-сплајн криве</translation>
     </message>
   </context>
   <context>
@@ -107,12 +107,12 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="309"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation>Прикажи/сакриј линије Б-сплајн криве</translation>
+      <translation>Прикажи/сакриј конвексни омотач Б-сплајн криве</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="318"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation>Прикажи/сакриј дијаграм закривљености Б-сплајн криве</translation>
+      <translation>Прикажи/сакриј график закривљености Б-сплајн криве</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="327"/>
@@ -1456,7 +1456,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="782"/>
       <source>When in edit mode, set the camera orientation perpendicular to the sketch plane.</source>
-      <translation>Када си у режиму за уређивање, поставља оријентацију камере нормално на раван скице.</translation>
+      <translation>Када си у режиму за уређивање, поставља оријентацију камере управно на раван скице.</translation>
     </message>
   </context>
   <context>
@@ -1688,7 +1688,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5201"/>
       <source>Add fixed x-coordinate constraint</source>
-      <translation>Додај ограничење фиксне x-координате</translation>
+      <translation>Котирај x-координату</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5462"/>
@@ -1699,7 +1699,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5500"/>
       <source>Add fixed y-coordinate constraint</source>
-      <translation>Додај ограничење фиксне y-координате</translation>
+      <translation>Котирај y-координату</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5734"/>
@@ -1984,7 +1984,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1057"/>
       <source>Exposing Internal Geometry</source>
-      <translation type="unfinished">Exposing Internal Geometry</translation>
+      <translation>Разоткриј унутрашњу геометрију</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1256"/>
@@ -2053,7 +2053,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1671"/>
       <source>Drag geometries</source>
-      <translation type="unfinished">Drag geometries</translation>
+      <translation>Превлачи геометрију</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1052"/>
@@ -2479,7 +2479,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="181"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
-      <translation>Није могуће додати ограничење између две фиксне геометрије. Под фиксном геометријом подразумевамо спољашњу геометрију, блокирану геометрију и посебне тачке као што су тачке чворова Б-сплајн криве.</translation>
+      <translation>Није могуће додати ограничење између два непокретна геометријска елемента. Под непокретним геометријским елементима подразумевамо спољашњу геометрију, блокирану геометрију и посебне тачке као што су тачке чворова Б-сплајн криве.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="755"/>
@@ -2551,7 +2551,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3017"/>
       <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
-      <translation>Изабрано је више од једне фиксне тачке. Изабери највише једну фиксну тачку!</translation>
+      <translation>Изабрано је више непокретних тачака. Изабери највише једну непокретну тачку!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3322"/>
@@ -2683,7 +2683,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="8166"/>
       <location filename="../../CommandConstraints.cpp" line="8709"/>
       <source>Select the right things from the sketch.</source>
-      <translation>Изабери праве ствари са скице.</translation>
+      <translation>Изабери правилне елементе са скице.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3993"/>
@@ -3305,7 +3305,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="116"/>
       <source>Perpendicular</source>
-      <translation>Усправан</translation>
+      <translation>Управан</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="117"/>
@@ -3385,7 +3385,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="132"/>
       <source>Reference</source>
-      <translation>Референца</translation>
+      <translation>Референтна</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="133"/>
@@ -3810,7 +3810,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../InsertDatum.ui" line="79"/>
       <source>Reference</source>
-      <translation>Референца</translation>
+      <translation>Референтна</translation>
     </message>
   </context>
   <context>
@@ -3914,7 +3914,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="77"/>
       <source>Makes the inter-row and inter-col spacing the same if clicked</source>
-      <translation>Размак између редова и колона ће бити исти ако чекирате</translation>
+      <translation>Ако означите размак између редова и колона ће бити исти</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="80"/>
@@ -4051,7 +4051,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="184"/>
       <source>Unify Coincident and PointOnObject in a single tool.</source>
-      <translation>Ограничење подударности и Ограничење тачка на објекту уједини у једну алатку.</translation>
+      <translation>Уједини Ограничење подударности и Ограничење тачка на објекту у једну алатку.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="187"/>
@@ -4071,12 +4071,13 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="222"/>
       <source>If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</source>
-      <translation type="unfinished">If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</translation>
+      <translation>Ако је потврђено спољашња геометрија ће се увек направити као референтна,
+у супротном ће се направити у складу са тренутним режимом алатке Помоћна геометрија.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="225"/>
       <source>Always add external geometry as reference</source>
-      <translation type="unfinished">Always add external geometry as reference</translation>
+      <translation>Увек направи спољашњу геометрију као референтну</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="250"/>
@@ -4281,7 +4282,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="92"/>
       <source>If checked, displays the name on dimensional constraints (if exists).</source>
-      <translation>Ако је означено, приказује име на димензионалним ограничењима (ако постоје).</translation>
+      <translation>Ако је потврђено, приказује име на димензионалним ограничењима (ако постоје).</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="95"/>
@@ -4370,13 +4371,13 @@ Defaults to: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="403"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation>Када улазиш у режим за уређивање, принудно ће бити коришћен ортографски поглед.
+      <translation>Када улазиш у режим за уређивање, принудно ће бити коришћен ортогонални поглед.
 Ради само када је „Врати положај камере након уређивања“ чекирано.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="407"/>
       <source>Force orthographic camera when entering edit</source>
-      <translation>Форсирај ортографску камеру када улазиш у уређивање</translation>
+      <translation>Форсирај ортогоналну камеру када улазиш у уређивање</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="423"/>
@@ -4473,20 +4474,20 @@ Then objects are only visible behind the sketch plane.</source>
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>Пронађени су обрнути лукови спољашње геометрије (%1). Њихове крајње тачке су заокружене у 3Д погледу.
 
-%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
+%2 ограничења су повезана са поменутим крајњим тачкама и может их видети у Прегледачу објава (мени Поглед -&gt; Панели -&gt; Прегледач објава).
 
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+Кликни на дугме „Замени крајње тачке у ограничењима“ да би поново доделио крајње тачке. Ово је потребно урадити само једном за скице направљене у FreeCAD-у старијем од в0.15</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="304"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>Пронађени су обрнути лукови спољашње геометрије (%1). Њихове крајње тачке су заокружене у 3Д погледу.
 
-However, no constraints linking to the endpoints were found.</translation>
+Нису пронађена никаква ограничења везана за поменуте крајње тачке.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="315"/>
@@ -4556,7 +4557,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="40"/>
       <source>Check to toggle filters</source>
-      <translation>Чекирај да укљ/искљ филтере</translation>
+      <translation>Потврди да укључиш/искључиш филтере</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="59"/>
@@ -4630,7 +4631,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="40"/>
       <source>Check to toggle filters</source>
-      <translation>Чекирај да укљ/искљ филтере</translation>
+      <translation>Потврди да укључиш/искључиш филтере</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="59"/>
@@ -4864,7 +4865,7 @@ This is purely based on topological shape of the sketch and not on its geometry/
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="75"/>
       <source>If checked, construction geometries are ignored in the search</source>
-      <translation>Ако је означено, помоћна геометрија се игнорише у претрази</translation>
+      <translation>Ако је потврђено, помоћна геометрија се игнорише у претрази</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="78"/>
@@ -5059,7 +5060,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3236"/>
       <source>Over-constrained:</source>
-      <translation>Превише ограничено:</translation>
+      <translation>Превише ограничена:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3242"/>
@@ -5107,7 +5108,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherOverlay.cpp" line="320"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="323"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation>Пребацује између приказивања и сакривања дијаграм закривљености за све Б-сплајн криве</translation>
+      <translation>Пребацује између приказивања и сакривања график закривљености за све Б-сплајн криве</translation>
     </message>
   </context>
   <context>
@@ -5161,7 +5162,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherOverlay.cpp" line="311"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="314"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>Пребацује између приказивања и сакривања линија контролних тачака за све Б-сплајн криве</translation>
+      <translation>Пребацује између приказивања и сакривања контролних полигонских линија конвексног омотача за све Б-сплајн криве</translation>
     </message>
   </context>
   <context>
@@ -5980,12 +5981,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10233"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Geometry Property results in invalid constraint indices</translation>
+      <translation>Неуправљана промена својстава геометрије доводи до неисправних ограничења</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10264"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Constraint Property results in invalid constraint indices</translation>
+      <translation>Неуправљана промена својстава ограничења доводи до неисправних ограничења</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10893"/>
@@ -7382,12 +7383,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1448"/>
       <source>Create external</source>
-      <translation type="unfinished">Create external</translation>
+      <translation>Направи спољашњу геометрију</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1449"/>
       <source>Create external edges linked to external geometries.</source>
-      <translation type="unfinished">Create external edges linked to external geometries.</translation>
+      <translation>Направи спољашњу ивицу везану за спољашњу геометрију.</translation>
     </message>
   </context>
   <context>
@@ -7395,16 +7396,16 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1503"/>
       <source>Create external projection geometry</source>
-      <translation type="unfinished">Create external projection geometry</translation>
+      <translation>Направи спољашњу пројицирану геометрију</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1504"/>
       <source>Create the projection edges of an external geometry.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the projection edges of an external geometry.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Направи ивице пројицирањем спољашње геометрије на раван скице.
+Направљене спољашње ивице могу бити елементи скице или помоћна геометрија.
+Могуће је користити алатку Помоћна геометрија.</translation>
     </message>
   </context>
   <context>
@@ -7412,16 +7413,16 @@ You can use the toggle construction tool.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create external intersection geometry</source>
-      <translation type="unfinished">Create external intersection geometry</translation>
+      <translation>Направи спољашњу пресечну геометрију</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1542"/>
       <source>Create the intersection edges of an external geometry with the sketch plane.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the intersection edges of an external geometry with the sketch plane.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>Направи пресечне ивице спољашње геометрије са равни скице.
+Направљене спољашње ивице могу бити елементи скице или помоћна геометрија.
+Могуће је користити алатку Помоћна геометрија.</translation>
     </message>
   </context>
 </TS>

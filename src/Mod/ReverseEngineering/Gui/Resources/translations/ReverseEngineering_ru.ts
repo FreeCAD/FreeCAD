@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Reverse Engineering</source>
-      <translation>Обратный инжиниринг</translation>
+      <translation>Обратная разработка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="249"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="250"/>
       <source>Approximate a cylinder</source>
-      <translation>Аппроксимировать цилиндр</translation>
+      <translation>Обрисовать цилиндр</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="140"/>
       <source>Reverse Engineering</source>
-      <translation>Обратный инжиниринг</translation>
+      <translation>Обратная разработка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="141"/>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="142"/>
       <source>Approximate a plane</source>
-      <translation>Аппроксимировать плоскость</translation>
+      <translation>Обрисовать плоскость</translation>
     </message>
   </context>
   <context>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <source>Reverse Engineering</source>
-      <translation>Обратный инжиниринг</translation>
+      <translation>Обратная разработка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="365"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="366"/>
       <source>Approximate a polynomial surface</source>
-      <translation>Аппроксимировать полиномиальную поверхность</translation>
+      <translation>Обрисовать полиномиальную поверхность</translation>
     </message>
   </context>
   <context>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Reverse Engineering</source>
-      <translation>Обратный инжиниринг</translation>
+      <translation>Обратная разработка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="317"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="318"/>
       <source>Approximate a sphere</source>
-      <translation>Аппроксимировать сферу</translation>
+      <translation>Обрисовать сферу</translation>
     </message>
   </context>
   <context>
@@ -78,17 +78,17 @@
     <message>
       <location filename="../../Command.cpp" line="102"/>
       <source>Reverse Engineering</source>
-      <translation>Обратный инжиниринг</translation>
+      <translation>Обратная разработка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Approximate B-spline surface...</source>
-      <translation>Аппроксимировать поверхность B-сплайна...</translation>
+      <translation>Обрисовать B-сплайновую поверхность...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Approximate a B-spline surface</source>
-      <translation>Аппроксимировать поверхность B-сплайна</translation>
+      <translation>Приблизительно обрисовать B-сплайновую поверхность</translation>
     </message>
   </context>
   <context>
@@ -96,17 +96,17 @@
     <message>
       <location filename="../../Command.cpp" line="536"/>
       <source>Reverse Engineering</source>
-      <translation>Обратный инжиниринг</translation>
+      <translation>Обратная разработка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="537"/>
       <source>Wire from mesh boundary...</source>
-      <translation>Ломаная линия из границ сетки...</translation>
+      <translation>Ломаная линия из границ полигональной сетки...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="538"/>
       <source>Create wire from mesh boundaries</source>
-      <translation>Создать провод из границ сетки</translation>
+      <translation>Создать ломаную линию из границ полигональной сетки</translation>
     </message>
   </context>
   <context>
@@ -114,12 +114,12 @@
     <message>
       <location filename="../../Command.cpp" line="603"/>
       <source>Reverse Engineering</source>
-      <translation>Обратный инжиниринг</translation>
+      <translation>Обратная разработка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="604"/>
       <source>Poisson...</source>
-      <translation>Пуассона...</translation>
+      <translation>Метод Пуассона...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="605"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="422"/>
       <source>Reverse Engineering</source>
-      <translation>Обратный инжиниринг</translation>
+      <translation>Обратная разработка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="423"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="484"/>
       <source>Reverse Engineering</source>
-      <translation>Обратный инжиниринг</translation>
+      <translation>Обратная разработка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="485"/>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create mesh segments from components</source>
-      <translation>Создать сегменты сетки из компонентов</translation>
+      <translation>Создать сегменты полигональной сетки из компонентов</translation>
     </message>
   </context>
   <context>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="454"/>
       <source>Reverse Engineering</source>
-      <translation>Обратный инжиниринг</translation>
+      <translation>Обратная разработка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="455"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="456"/>
       <source>Create mesh segments manually</source>
-      <translation>Создать сегменты сетки вручную</translation>
+      <translation>Создать сегменты полигональной сетки вручную</translation>
     </message>
   </context>
   <context>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="638"/>
       <source>Reverse Engineering</source>
-      <translation>Обратный инжиниринг</translation>
+      <translation>Обратная разработка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="639"/>
@@ -241,7 +241,7 @@
     <message>
       <location filename="../../Poisson.cpp" line="83"/>
       <source>Poisson reconstruction</source>
-      <translation>Реконструирование поверхности Пуассона</translation>
+      <translation>Реконструкция поверхности Пуассона</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.cpp" line="281"/>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="160"/>
       <source>Iterations</source>
-      <translation>Итерации</translation>
+      <translation>Проходы</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="189"/>
@@ -326,7 +326,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="334"/>
       <source>Curvature variation</source>
-      <translation>Варианты кривизны</translation>
+      <translation>Варианты искривления</translation>
     </message>
   </context>
   <context>
@@ -353,7 +353,7 @@
     <message>
       <location filename="../../Poisson.ui" line="14"/>
       <source>Poisson</source>
-      <translation>Пуассона</translation>
+      <translation>Метод Пуассона</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="20"/>
@@ -393,12 +393,12 @@
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Please select a point cloud.</source>
-      <translation>Выбрать облако точек.</translation>
+      <translation>Выберите облако точек.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Please select a point cloud or mesh.</source>
-      <translation>Пожалуйста, выберите облако точек или сетку.</translation>
+      <translation>Пожалуйста, выберите облако точек или полигональную сетку.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="619"/>
@@ -449,12 +449,12 @@
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
       <source>Create mesh from unused triangles</source>
-      <translation>Создать сетку из неиспользуемых треугольников</translation>
+      <translation>Создать полигональную сетку из неиспользуемых треугольников</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create compound</source>
-      <translation>Создать состав</translation>
+      <translation>Создать объединение</translation>
     </message>
   </context>
   <context>
@@ -563,7 +563,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
       <source>Cut segment from mesh</source>
-      <translation>Вырезать сегмент из сетки</translation>
+      <translation>Вырезать сегмент из полигональной сетки</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
@@ -584,7 +584,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Reverse Engineering</source>
-      <translation>Обратный инжиниринг</translation>
+      <translation>Обратная разработка</translation>
     </message>
   </context>
   <context>
@@ -592,7 +592,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
       <source>Fit B-spline curve</source>
-      <translation type="unfinished">Fit B-spline curve</translation>
+      <translation>Разместить B-сплайновую кривую</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>
@@ -602,7 +602,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="26"/>
       <source>Maximum degree</source>
-      <translation>Максимальная степень</translation>
+      <translation>Максимальный угол</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="37"/>
@@ -667,12 +667,12 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="134"/>
       <source>Minimum degree</source>
-      <translation>Минимальная степень</translation>
+      <translation>Минимальный угол</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="141"/>
       <source>Closed curve</source>
-      <translation>Закрытая кривая</translation>
+      <translation>Замкнутая кривая</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="151"/>
@@ -700,17 +700,17 @@
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Reverse Engineering</source>
-      <translation>Обратный инжиниринг</translation>
+      <translation>Обратная разработка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="70"/>
       <source>Approximate B-spline curve...</source>
-      <translation>Аппроксимировать кривую B-сплайна...</translation>
+      <translation>Обрисовать B-сплайновую кривую...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="71"/>
       <source>Approximate a B-spline curve</source>
-      <translation>Аппроксимировать эту кривую B-сплайна</translation>
+      <translation>Приблизительно обрисовать B-сплайновую кривую</translation>
     </message>
   </context>
   <context>

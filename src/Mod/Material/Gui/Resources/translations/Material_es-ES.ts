@@ -12,7 +12,7 @@
       <location filename="../../Command.cpp" line="148"/>
       <location filename="../../Command.cpp" line="150"/>
       <source>Inspect the appearance properties of the selected object</source>
-      <translation>Inspeccionar las propiedades de apariencia del objeto seleccionado</translation>
+      <translation>Inspecciona las propiedades de apariencia del objeto seleccionado</translation>
     </message>
   </context>
   <context>
@@ -26,7 +26,7 @@
       <location filename="../../Command.cpp" line="175"/>
       <location filename="../../Command.cpp" line="177"/>
       <source>Inspect the material properties of the selected object</source>
-      <translation>Inspeccionar las propiedades del material del objeto seleccionado</translation>
+      <translation>Inspecciona las propiedades del material del objeto seleccionado</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Array2D.ui" line="14"/>
       <source>2D Array</source>
-      <translation>Arreglo 2D</translation>
+      <translation>Matriz 2D</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="78"/>
@@ -99,7 +99,7 @@
     <message>
       <location filename="../../Array3D.cpp" line="267"/>
       <source>Removing this will also remove all 2D contents.</source>
-      <translation>Al eliminar esto también se eliminará todo el contenido 2D.</translation>
+      <translation>Al eliminar esto también se eliminará todo el contenido en 2D.</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="87"/>
       <source>Plot mode:</source>
-      <translation>Modo impresión:</translation>
+      <translation>Modo de graficación:</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="106"/>
@@ -244,17 +244,17 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="64"/>
       <source>Label / Internal Name</source>
-      <translation>Etiqueta / Nombre interno</translation>
+      <translation>Etiqueta/nombre interno</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation>Sub.Forma / Tipo</translation>
+      <translation>Sub.Shape/Type</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation>ShaéTypeID / TypeID</translation>
+      <translation>Shape.TypeID/TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="100"/>
@@ -327,17 +327,17 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="64"/>
       <source>Label / Internal Name</source>
-      <translation>Etiqueta / Nombre interno</translation>
+      <translation>Etiqueta/nombre interno</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation>Sub.Forma / Tipo</translation>
+      <translation>Sub.Shape/Type</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation>ShaéTypeID / TypeID</translation>
+      <translation>Shape.TypeID/TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="94"/>
@@ -525,14 +525,14 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="72"/>
       <source>Use materials from Materials directory in user&apos;s FreeCAD preference directory</source>
-      <translation>Utilizar materiales del directorio de Materiales en el directorio de preferencias de usuario de FreeCAD</translation>
+      <translation>Utilizar materiales del directorio de materiales en el directorio de preferencias de usuario de FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
       <source>Also material cards also from the specified directory
 will be listed as available.</source>
-      <translation>También las tarjetas de materiales del directorio especificado
-serán listadas como disponibles.</translation>
+      <translation>También se listarán como disponibles las tarjetas 
+de materiales del directorio especificado.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="92"/>
@@ -738,7 +738,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="220"/>
       <source>This material already exists in this library. Would you like to save as a new material?</source>
-      <translation>Este material ya existe en esta biblioteca. ¿Quiere guardar como un nuevo material?</translation>
+      <translation>Este material ya existe en esta biblioteca. ¿Desea guardarlo como un material nuevo?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="242"/>
@@ -788,7 +788,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
       <location filename="../../MaterialTreeWidget.cpp" line="315"/>
       <location filename="../../MaterialTreeWidget.cpp" line="552"/>
       <source>Recent</source>
-      <translation>Reciente</translation>
+      <translation>Recientes</translation>
     </message>
   </context>
   <context>
@@ -901,12 +901,12 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="608"/>
       <source>This file is in the old material card format.</source>
-      <translation>Este archivo está en el formato de tarjeta material antigua.</translation>
+      <translation>Este archivo está en el formato antiguo de tarjeta de material.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="690"/>
       <source>This card uses the old format and must be saved before use</source>
-      <translation>Esta tarjeta utiliza el formato antiguo y debe guardarse antes de usarla</translation>
+      <translation>Esta tarjeta utiliza el formato antiguo y debe guardarse antes de ser usada</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="748"/>
@@ -914,7 +914,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
       <location filename="../../MaterialsEditor.cpp" line="1054"/>
       <location filename="../../MaterialsEditor.cpp" line="1116"/>
       <source>Property</source>
-      <translation>Propiedades</translation>
+      <translation>Propiedad</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="749"/>
@@ -1017,7 +1017,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../../ModelSelect.cpp" line="337"/>
       <source>Recent</source>
-      <translation>Reciente</translation>
+      <translation>Recientes</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="356"/>
@@ -1027,7 +1027,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../../ModelSelect.cpp" line="357"/>
       <source>Property</source>
-      <translation>Propiedades</translation>
+      <translation>Propiedad</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="358"/>
@@ -1045,7 +1045,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../../TextEdit.ui" line="14"/>
       <source>Text Edit</source>
-      <translation>Editar Texto</translation>
+      <translation>Editar texto</translation>
     </message>
   </context>
   <context>
@@ -1058,7 +1058,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
       <source>Material card</source>
-      <translation>Tarjeta de Material</translation>
+      <translation>Tarjeta de material</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
@@ -1083,7 +1083,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
       <source>Saves this material as a card</source>
-      <translation>Guarda este material como tarjeta</translation>
+      <translation>Guarda este material como una tarjeta</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
@@ -1098,7 +1098,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="115"/>
       <source>Add / remove parameter</source>
-      <translation>Añadir / eliminar parámetro</translation>
+      <translation>Añadir/eliminar parámetro</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
@@ -1124,7 +1124,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../../AppMatGui.cpp" line="106"/>
       <source>Material workbench</source>
-      <translation>Banco de trabajo Material</translation>
+      <translation>Banco de trabajo de materiales</translation>
     </message>
     <message>
       <location filename="../../AppMatGui.cpp" line="108"/>
@@ -1192,7 +1192,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>&amp;Appearance...</source>
-      <translation type="unfinished">&amp;Appearance...</translation>
+      <translation>&amp;Apariencia...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -1206,7 +1206,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>&amp;Material...</source>
-      <translation type="unfinished">&amp;Material...</translation>
+      <translation>&amp;Material...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="119"/>

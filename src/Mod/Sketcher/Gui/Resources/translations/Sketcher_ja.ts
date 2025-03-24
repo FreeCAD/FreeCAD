@@ -32,12 +32,12 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="157"/>
       <source>Show/hide B-spline knot multiplicity</source>
-      <translation>B-スプラインのノット多重度を表示/非表示</translation>
+      <translation>Bスプラインのノット多重度を表示/非表示</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="159"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation>すべてのB-スプラインのノット多重度の非表示と表示を切り替えます。</translation>
+      <translation>すべてのBスプラインのノット多重度の非表示と表示を切り替えます。</translation>
     </message>
   </context>
   <context>
@@ -58,7 +58,7 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="97"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation>B-スプラインの制御ポリゴンの表示/非表示</translation>
+      <translation>Bスプラインの制御ポリゴンの表示/非表示</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="99"/>
@@ -107,7 +107,7 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="309"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation>B-スプラインの制御ポリゴンの表示/非表示</translation>
+      <translation>Bスプラインの制御ポリゴンの表示/非表示</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="318"/>
@@ -117,7 +117,7 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="327"/>
       <source>Show/hide B-spline knot multiplicity</source>
-      <translation>B-スプラインのノット多重度を表示/非表示</translation>
+      <translation>Bスプラインのノット多重度を表示/非表示</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="337"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="637"/>
       <source>Modifies the multiplicity of the selected knot of a B-spline</source>
-      <translation>選択されたB-スプラインのノットの多重度を変更</translation>
+      <translation>選択されたBスプラインのノットの多重度を変更</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="702"/>
@@ -322,7 +322,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3575"/>
       <source>Constrain block</source>
-      <translation>ブロック拘束</translation>
+      <translation>固定拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3576"/>
@@ -642,7 +642,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="850"/>
       <source>Create a B-spline by control points in the sketch.</source>
-      <translation>スケッチの制御点からB-スプラインを作成</translation>
+      <translation>スケッチの制御点からBスプラインを作成</translation>
     </message>
   </context>
   <context>
@@ -702,7 +702,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1844"/>
       <source>Create heptagon</source>
-      <translation>七角形を作成</translation>
+      <translation>正七角形を作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1845"/>
@@ -728,7 +728,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="171"/>
       <source>Create line</source>
-      <translation>直線を作成</translation>
+      <translation>線分を作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="172"/>
@@ -772,7 +772,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1786"/>
       <source>Create a pentagon in the sketch</source>
-      <translation>スケッチに五角形を作成します。</translation>
+      <translation>スケッチに正五角形を作成します。</translation>
     </message>
   </context>
   <context>
@@ -780,12 +780,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="884"/>
       <source>Create periodic B-spline</source>
-      <translation>周期的なB-スプラインを作成</translation>
+      <translation>周期的なBスプラインを作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="885"/>
       <source>Create a periodic B-spline by control points in the sketch.</source>
-      <translation>スケッチの制御点から周期的なB-スプラインを作成</translation>
+      <translation>スケッチの制御点から周期的なBスプラインを作成</translation>
     </message>
   </context>
   <context>
@@ -897,12 +897,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="268"/>
       <source>Decrease B-spline degree</source>
-      <translation>B-スプラインの次数を減らす</translation>
+      <translation>Bスプラインの次数を減らす</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="269"/>
       <source>Decreases the degree of the B-spline</source>
-      <translation>B-スプラインの次数を減らす</translation>
+      <translation>Bスプラインの次数を減らす</translation>
     </message>
   </context>
   <context>
@@ -915,7 +915,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="499"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation>選択されたB-スプラインのノットの多重度を減らす</translation>
+      <translation>選択されたBスプラインのノットの多重度を減らす</translation>
     </message>
   </context>
   <context>
@@ -980,7 +980,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="192"/>
       <source>Increases the degree of the B-spline</source>
-      <translation>B-スプラインの次数を増加</translation>
+      <translation>Bスプラインの次数を増やす</translation>
     </message>
   </context>
   <context>
@@ -993,7 +993,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="351"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
-      <translation>選択されたB-スプラインのノットの多重度を増やす</translation>
+      <translation>選択されたBスプラインのノットの多重度を増やす</translation>
     </message>
   </context>
   <context>
@@ -1027,7 +1027,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../Command.cpp" line="341"/>
       <source>Leave sketch</source>
-      <translation>スケッチを終了</translation>
+      <translation>スケッチの編集を終了</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="342"/>
@@ -1317,7 +1317,7 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../Command.cpp" line="379"/>
       <source>Stop operation</source>
-      <translation>処理を停止</translation>
+      <translation>操作を停止</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="380"/>
@@ -1356,12 +1356,12 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10124"/>
       <source>Activate/deactivate constraint</source>
-      <translation>拘束をアクティブ化/非アクティブ化</translation>
+      <translation>拘束を有効化/無効化</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10125"/>
       <source>Activates or deactivates the selected constraints</source>
-      <translation>選択した拘束をアクティブ化・非アクティブ化</translation>
+      <translation>選択した拘束を有効化・無効化</translation>
     </message>
   </context>
   <context>
@@ -1474,12 +1474,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3666"/>
       <source>Add 'Block' constraint</source>
-      <translation>「ブロック」拘束を追加</translation>
+      <translation>「固定」拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3715"/>
       <source>Add block constraint</source>
-      <translation>ブロック拘束を追加</translation>
+      <translation>固定拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4057"/>
@@ -1603,7 +1603,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1995"/>
       <source>Add Block constraint</source>
-      <translation>ブロック拘束を追加</translation>
+      <translation>固定拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2010"/>
@@ -1944,7 +1944,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="296"/>
       <source>Decrease B-spline degree</source>
-      <translation>B-スプラインの次数を減らす</translation>
+      <translation>Bスプラインの次数を減らす</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="388"/>
@@ -2048,7 +2048,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1671"/>
       <source>Drag geometries</source>
-      <translation type="unfinished">Drag geometries</translation>
+      <translation>ジオメトリーをドラッグ</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1052"/>
@@ -2109,7 +2109,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../DrawSketchHandlerBSpline.h" line="558"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="696"/>
       <source>Add sketch B-spline</source>
-      <translation>スケッチB-スプラインを追加</translation>
+      <translation>スケッチ・Bスプラインを追加</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="449"/>
@@ -2146,13 +2146,13 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../../App/SketchObject.cpp" line="7031"/>
       <location filename="../../../App/SketchObject.cpp" line="7217"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
-      <translation>B-スプラインのジオメトリ番号（ジオID）が範囲外です。</translation>
+      <translation>Bスプラインのジオメトリー番号（GeoID）が範囲外です。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="7043"/>
       <location filename="../../../App/SketchObject.cpp" line="7227"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
-      <translation>入力されたジオメトリ番号（ジオID）はB-スプラインではありません。</translation>
+      <translation>入力されたジオメトリー番号（GeoID）はBスプラインではありません。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="7052"/>
@@ -2162,7 +2162,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="7063"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
-      <translation>B-スプラインの次数を越えて多重度を増やすことはできません。</translation>
+      <translation>Bスプラインの次数を越えて多重度を増やすことはできません。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="7071"/>
@@ -2182,12 +2182,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="7238"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
-      <translation>B-スプラインの次数を超えてノット多重度を増やすことはできません。</translation>
+      <translation>Bスプラインの次数を超えてノット多重度を増やすことはできません。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="7244"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
-      <translation>B-スプラインパラメーターの範囲外にノットを挿入することはできません。</translation>
+      <translation>Bスプラインパラメーターの範囲外にノットを挿入することはできません。</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.cpp" line="321"/>
@@ -2474,7 +2474,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="181"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
-      <translation>2つの固定ジオメトリの間に拘束を追加することができません。固定ジオメトリに外部ジオメトリ、ブロック拘束されたジオメトリ、B-スプラインの節点といった特殊な点が含まれています。</translation>
+      <translation>2つの固定ジオメトリの間に拘束を追加することができません。固定ジオメトリに外部ジオメトリ、固定拘束されたジオメトリ、Bスプラインの節点といった特殊な点が含まれています。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="755"/>
@@ -2541,7 +2541,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="3657"/>
       <location filename="../../CommandConstraints.cpp" line="3710"/>
       <source>The selected edge already has a Block constraint!</source>
-      <translation>選択されたエッジにはすでにブロック拘束が設定されています！</translation>
+      <translation>選択されたエッジにはすでに固定拘束が設定されています！</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3017"/>
@@ -2573,7 +2573,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3621"/>
       <source>A Block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
-      <translation>スケッチが求解されていない場合や冗長/競合する拘束がある場合はブロック拘束を追加できません。</translation>
+      <translation>スケッチが求解されていない場合や冗長/競合する拘束がある場合は固定拘束を追加できません。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3640"/>
@@ -2593,13 +2593,13 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7086"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
-      <translation>B-スプラインでは接線経由点モードのみがサポートされています。</translation>
+      <translation>Bスプラインでは端点同士の接線拘束のみが可能です。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7571"/>
       <location filename="../../CommandConstraints.cpp" line="8248"/>
       <source>Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
-      <translation>1つ以上のB-スプラインの極、または1つ以上の円・円弧をスケッチから選択してください。ただし混在はできません。</translation>
+      <translation>1つ以上のBスプラインの極、または1つ以上の円・円弧をスケッチから選択してください。ただし混在はできません。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9735"/>
@@ -2700,7 +2700,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="8995"/>
       <location filename="../../CommandConstraints.cpp" line="9814"/>
       <source>Select an edge that is not a B-spline weight.</source>
-      <translation>B-スプラインの重みではないエッジを選択してください。</translation>
+      <translation>Bスプラインの重みではないエッジを選択してください。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="229"/>
@@ -2852,12 +2852,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="6841"/>
       <location filename="../../CommandConstraints.cpp" line="6879"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
-      <translation>B-スプラインのノットでの接線拘束は線でのみサポートされています!</translation>
+      <translation>Bスプラインのノットでの接線拘束は線でのみサポートされています!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3892"/>
       <source>B-spline knot to endpoint tangency was applied instead.</source>
-      <translation>代わりにB-スプラインのノットと端点の正接拘束が適用されました。</translation>
+      <translation>代わりにBスプラインのノットと端点の正接拘束が適用されました。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5879"/>
@@ -2927,7 +2927,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="9209"/>
       <source>Equality for B-spline edge currently unsupported.</source>
-      <translation>B-スプラインエッジの等値拘束は現在サポートされていません。</translation>
+      <translation>Bスプラインエッジの等値拘束は現在サポートされていません。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2430"/>
@@ -3024,7 +3024,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="441"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="577"/>
       <source>None of the selected elements is a knot of a B-spline</source>
-      <translation>選択要素のなかにB-スプラインのノットがありません。</translation>
+      <translation>選択要素のなかにBスプラインのノットがありません。</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="920"/>
@@ -3036,17 +3036,17 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="245"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="328"/>
       <source>At least one of the selected objects was not a B-spline and was ignored.</source>
-      <translation>選択したオブジェクトの少なくとも 1 つは B-スプラインではなかったため無視されました。</translation>
+      <translation>選択したオブジェクトの少なくとも 1 つは Bスプラインではなかったため無視されました。</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="921"/>
       <source>Nothing is selected. Please select a B-spline.</source>
-      <translation>何も選択されていません。B-スプラインを選択してください。</translation>
+      <translation>何も選択されていません。Bスプラインを選択してください。</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="939"/>
       <source>Please select a B-spline to insert a knot (not a knot on it). If the curve is not a B-spline, please convert it into one first.</source>
-      <translation>ノットを挿入するには (ノットではなく) B-スプラインを選択してください。 曲線がB-スプラインでない場合は、まず曲線をB-スプラインに変換してください。</translation>
+      <translation>ノットを挿入するには (ノットではなく) Bスプラインを選択してください。 曲線がB-スプラインでない場合は、まず曲線をBスプラインに変換してください。</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="994"/>
@@ -3214,7 +3214,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="451"/>
       <source>B-spline parameters</source>
-      <translation>B-スプラインパラメーター</translation>
+      <translation>Bスプラインパラメーター</translation>
     </message>
   </context>
   <context>
@@ -3606,7 +3606,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="324"/>
       <source>B-spline</source>
-      <translation>B-スプライン</translation>
+      <translation>Bスプライン</translation>
     </message>
   </context>
   <context>
@@ -3659,7 +3659,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="71"/>
       <source>Block Constraint</source>
-      <translation>ブロック拘束</translation>
+      <translation>固定拘束</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="72"/>
@@ -4061,12 +4061,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="222"/>
       <source>If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</source>
-      <translation type="unfinished">If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</translation>
+      <translation>チェックされている場合、外部ジオメトリーは常に参照として追加されます。チェックされていない場合は現在の構築モードに従って追加されます。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="225"/>
       <source>Always add external geometry as reference</source>
-      <translation type="unfinished">Always add external geometry as reference</translation>
+      <translation>外部ジオメトリーを常に参照として追加</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="250"/>
@@ -4105,7 +4105,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../SketcherSettings.ui" line="306"/>
       <source>On-View-Parameters:</source>
-      <translation>オンビューパラメーター</translation>
+      <translation>ビュー上でのパラメター設定</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="256"/>
@@ -4123,10 +4123,10 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 'Disabled': On-View-Parameters are completely disabled.
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
 'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</source>
-      <translation>オンビューパラメーター用の表示モードを選択してください。
-'無効': オンビューパラメーターは完全に無効化されます。
-'寸法のみ': 寸法でのみオンビューパラメーターが表示されます。最も利用しやすいものです。例えば円の半径などが該当します。
-'すべて': 寸法と位置の両方のオンビューパラメーターが表示されます。位置はカーソルでの (x, y) 位置です。例えば円の中心などが該当します。</translation>
+      <translation>ビュー上のパラメター入力窓の表示モードを選択してください。
+「無効」ビュー上でのパラメター入力窓を完全に無効にします。
+「寸法のみ」ビュー上に寸法パラメターの入力窓のみ表示します。通常最も有用な選択肢です。寸法パラメターとは、例えば円の半径です。
+「位置と寸法」寸法パラメターと位置パラメターの両方の入力窓をビュー上に表示します。位置パラメターとはカーソルの(x,y)座標のことで、例えば円の中心の位置などです。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="194"/>
@@ -4463,20 +4463,20 @@ Then objects are only visible behind the sketch plane.</source>
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>%1 個の反転した外部ジオメトリー円弧を発見しました。3Dビュー上で端点が囲まれています。
 
-%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
+%2 個の拘束が端点にリンクしています。拘束のリストをレポートビューに表示しています（メニュー[表示]→[パネル]→[レポートビュー]）。
 
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+端点を再割り当てするには「拘束内の端点を交換」ボタンをクリックしてください。この処理はv0.15より古いFreeCADで作成したスケッチに1度だけ適用してください。</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="304"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3D view.
+      <translation>%1 個の反転した外部ジオメトリーの円弧が見つかりました。3Dビュー上で端点が囲まれています。
 
-However, no constraints linking to the endpoints were found.</translation>
+ただし端点にリンクする拘束が見つかりません。</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="315"/>
@@ -4740,7 +4740,7 @@ However, no constraints linking to the endpoints were found.</translation>
       <location filename="../../TaskSketcherElements.cpp" line="1995"/>
       <location filename="../../TaskSketcherElements.cpp" line="1996"/>
       <source>B-spline</source>
-      <translation>B-スプライン</translation>
+      <translation>Bスプライン</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1889"/>
@@ -5103,7 +5103,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherBSpline.cpp" line="714"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="717"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation>選択されたB-スプラインのノットの多重度を減らす</translation>
+      <translation>選択されたBスプラインのノットの多重度を減らす</translation>
     </message>
   </context>
   <context>
@@ -5121,7 +5121,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherBSpline.cpp" line="705"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="708"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
-      <translation>選択されたB-スプラインのノットの多重度を増やす</translation>
+      <translation>選択されたBスプラインのノットの多重度を増やす</translation>
     </message>
   </context>
   <context>
@@ -5130,7 +5130,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherOverlay.cpp" line="329"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="332"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation>すべてのB-スプラインのノット多重度の非表示と表示を切り替えます。</translation>
+      <translation>すべてのBスプラインのノット多重度の非表示と表示を切り替えます。</translation>
     </message>
   </context>
   <context>
@@ -5201,13 +5201,13 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1116"/>
       <source>B-spline by control points</source>
-      <translation>制御点によるB-スプライン</translation>
+      <translation>制御点によるBスプライン</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1118"/>
       <location filename="../../CommandCreateGeo.cpp" line="1120"/>
       <source>Create a B-spline by control points</source>
-      <translation>制御点によるB-スプラインを作成</translation>
+      <translation>制御点によるBスプラインを作成</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="849"/>
@@ -5322,13 +5322,13 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1122"/>
       <source>Periodic B-spline by control points</source>
-      <translation>制御点による周期的なB-スプライン</translation>
+      <translation>制御点による周期的なBスプライン</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1125"/>
       <location filename="../../CommandCreateGeo.cpp" line="1128"/>
       <source>Create a periodic B-spline by control points</source>
-      <translation>制御点による周期的なB-スプラインを作成</translation>
+      <translation>制御点による周期的なBスプラインを作成</translation>
     </message>
   </context>
   <context>
@@ -5779,7 +5779,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Sketcher B-spline tools</source>
-      <translation>スケッチャーB-スプラインツール</translation>
+      <translation>スケッチャーBスプラインツール</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -5964,12 +5964,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10233"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Geometry Property results in invalid constraint indices</translation>
+      <translation>ジオメトリープロパティーの管理されていない変更は無効な拘束インデックスを引き起こします。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10264"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
-      <translation type="unfinished">Unmanaged change of Constraint Property results in invalid constraint indices</translation>
+      <translation>拘束プロパティーの管理されていない変更は無効な拘束インデックスを引き起こします。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="10893"/>
@@ -6024,7 +6024,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2378"/>
       <source>Selection has no valid geometries. B-splines and points are not supported yet.</source>
-      <translation>選択したジオメトリが有効ではありません。B-スプライン、点はまだサポートされていません。</translation>
+      <translation>選択したジオメトリが有効ではありません。Bスプライン、点はまだサポートされていません。</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="134"/>
@@ -6085,7 +6085,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="379"/>
       <source>Error creating B-spline</source>
-      <translation>B-スプラインの作成エラー</translation>
+      <translation>Bスプラインの作成エラー</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="610"/>
@@ -6095,7 +6095,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="680"/>
       <source>Error adding B-spline pole/knot</source>
-      <translation>B-スプラインの極/ノットの追加でエラー</translation>
+      <translation>Bスプラインの極/ノットの追加でエラー</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="188"/>
@@ -6247,13 +6247,13 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1132"/>
       <source>B-spline by knots</source>
-      <translation>ノットによるB-スプライン</translation>
+      <translation>ノットによるBスプライン</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1133"/>
       <location filename="../../CommandCreateGeo.cpp" line="1135"/>
       <source>Create a B-spline by knots</source>
-      <translation>ノットによるB-スプラインを作成</translation>
+      <translation>ノットによるBスプラインを作成</translation>
     </message>
   </context>
   <context>
@@ -6359,12 +6359,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="918"/>
       <source>Create B-spline by knots</source>
-      <translation>ノットによるB-スプラインを作成</translation>
+      <translation>ノットによるBスプラインを作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="919"/>
       <source>Create a B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation>ノット、つまり補間によってスケッチにB-スプラインを作成。</translation>
+      <translation>ノット、つまり補間によってスケッチにBスプラインを作成。</translation>
     </message>
   </context>
   <context>
@@ -6372,12 +6372,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="952"/>
       <source>Create periodic B-spline by knots</source>
-      <translation>ノットによる周期的なB-スプラインを作成</translation>
+      <translation>ノットによる周期的なBスプラインを作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="954"/>
       <source>Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</source>
-      <translation>ノット、つまり補間によってスケッチに周期的なB-スプラインを作成。</translation>
+      <translation>ノット、つまり補間によってスケッチに周期的なBスプラインを作成。</translation>
     </message>
   </context>
   <context>
@@ -6402,7 +6402,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="363"/>
       <source>Show/hide circular helper for arcs</source>
-      <translation>円弧の円形補助の表示/非表示</translation>
+      <translation>円弧の補助円の表示/非表示</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="365"/>
@@ -6746,7 +6746,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="34"/>
       <source>Creating line</source>
-      <translation>直線を作成</translation>
+      <translation>線分を作成</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="41"/>
@@ -7275,13 +7275,13 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1139"/>
       <source>Periodic B-spline by knots</source>
-      <translation>ノットによる周期的なB-スプライン</translation>
+      <translation>ノットによる周期的なBスプライン</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1142"/>
       <location filename="../../CommandCreateGeo.cpp" line="1145"/>
       <source>Create a periodic B-spline by knots</source>
-      <translation>ノットによる周期的なB-スプラインを作成</translation>
+      <translation>ノットによる周期的なBスプラインを作成</translation>
     </message>
   </context>
   <context>
@@ -7325,7 +7325,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="858"/>
       <source>Create a periodic B-spline.</source>
-      <translation>周期的なB-スプラインを作成</translation>
+      <translation>周期的なBスプラインを作成</translation>
     </message>
   </context>
   <context>
@@ -7366,12 +7366,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1448"/>
       <source>Create external</source>
-      <translation type="unfinished">Create external</translation>
+      <translation>外部線を作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1449"/>
       <source>Create external edges linked to external geometries.</source>
-      <translation type="unfinished">Create external edges linked to external geometries.</translation>
+      <translation>外部ジオメトリーにリンクされた外部エッジを作成。</translation>
     </message>
   </context>
   <context>
@@ -7379,16 +7379,15 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1503"/>
       <source>Create external projection geometry</source>
-      <translation type="unfinished">Create external projection geometry</translation>
+      <translation>外部投影ジオメトリーを作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1504"/>
       <source>Create the projection edges of an external geometry.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the projection edges of an external geometry.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>外部ジオメトリーの投影エッジを作成。
+外部エッジは定義ジオメトリーまたは構築ジオメトリーにできます。切り替えには構築ツールを使用します。</translation>
     </message>
   </context>
   <context>
@@ -7396,16 +7395,15 @@ You can use the toggle construction tool.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1540"/>
       <source>Create external intersection geometry</source>
-      <translation type="unfinished">Create external intersection geometry</translation>
+      <translation>外部交差ジオメトリーを作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1542"/>
       <source>Create the intersection edges of an external geometry with the sketch plane.
 External edges can be either defining or construction geometries.
 You can use the toggle construction tool.</source>
-      <translation type="unfinished">Create the intersection edges of an external geometry with the sketch plane.
-External edges can be either defining or construction geometries.
-You can use the toggle construction tool.</translation>
+      <translation>スケッチ平面を使用して外部ジオメトリーの交差エッジを作成。
+外部エッジは定義ジオメトリーまたは構築ジオメトリーにできます。切り替えには構築ツールを使用します。</translation>
     </message>
   </context>
 </TS>

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>&amp;Create spreadsheet</source>
-      <translation type="unfinished">&amp;Create spreadsheet</translation>
+      <translation>&amp;Crear hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="949"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="510"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="339"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="340"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="282"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="283"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="396"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="397"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="454"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="567"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="568"/>
@@ -132,12 +132,12 @@
     <message>
       <location filename="../../Command.cpp" line="236"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="237"/>
       <source>&amp;Export spreadsheet</source>
-      <translation type="unfinished">&amp;Export spreadsheet</translation>
+      <translation>&amp;Exportar hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="238"/>
@@ -150,12 +150,12 @@
     <message>
       <location filename="../../Command.cpp" line="183"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="184"/>
       <source>&amp;Import spreadsheet</source>
-      <translation type="unfinished">&amp;Import spreadsheet</translation>
+      <translation>&amp;Importar hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="185"/>
@@ -168,17 +168,17 @@
     <message>
       <location filename="../../Command.cpp" line="60"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>&amp;Merge cells</source>
-      <translation type="unfinished">&amp;Merge cells</translation>
+      <translation>Co&amp;mbinar celdas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="62"/>
       <source>Merge selected cells</source>
-      <translation>Fusionar celdas seleccionadas</translation>
+      <translation>Combinar celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="876"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="877"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="122"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="624"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="625"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="708"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="709"/>
@@ -258,12 +258,12 @@
     <message>
       <location filename="../../Command.cpp" line="792"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="793"/>
       <source>&amp;Underline text</source>
-      <translation type="unfinished">&amp;Underline text</translation>
+      <translation>S&amp;ubrayar texto</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="794"/>
@@ -878,17 +878,17 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="131"/>
       <source>Zoom</source>
-      <translation>Aumentar/Disminuir</translation>
+      <translation>Acercamiento</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="147"/>
       <source>-</source>
-      <translation type="unfinished">-</translation>
+      <translation>-</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="197"/>
       <source>+</source>
-      <translation type="unfinished">+</translation>
+      <translation>+</translation>
     </message>
   </context>
   <context>
@@ -950,7 +950,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="48"/>
       <source>Set a zoom level for table view from 60% to 160%.</source>
-      <translation type="unfinished">Set a zoom level for table view from 60% to 160%.</translation>
+      <translation>Establece un nivel de acercamiento para la vista de tablas de 60% a 160%.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="51"/>
@@ -960,7 +960,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="76"/>
       <source>Default zoom level:</source>
-      <translation type="unfinished">Default zoom level:</translation>
+      <translation>Nivel de acercamiento por defecto:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="83"/>
@@ -1044,7 +1044,7 @@ Por defecto: %V = %A
       <source>Insert %n row(s) below</source>
       <translation>
         <numerusform>Insertar %n fila(s) debajo</numerusform>
-        <numerusform>Insertar %n fila(s) debajo</numerusform>
+        <numerusform>Insertar %n filas debajo</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1091,8 +1091,8 @@ Por defecto: %V = %A
       <location filename="../../SheetTableView.cpp" line="174"/>
       <source>Remove column(s)</source>
       <translation>
-        <numerusform>Remover columna(s)</numerusform>
-        <numerusform>Remover columna(s)</numerusform>
+        <numerusform>Eliminar columna</numerusform>
+        <numerusform>Eliminar columnas</numerusform>
       </translation>
     </message>
     <message>
@@ -1174,7 +1174,7 @@ Por defecto: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Spreadsheet</source>
-      <translation>Spreadsheet</translation>
+      <translation>Hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -1206,12 +1206,12 @@ Por defecto: %V = %A
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>Zoom level</source>
-      <translation type="unfinished">Zoom level</translation>
+      <translation>Nivel de acercamiento</translation>
     </message>
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>New zoom level:</source>
-      <translation type="unfinished">New zoom level:</translation>
+      <translation>Nuevo nivel de acercamiento:</translation>
     </message>
   </context>
 </TS>

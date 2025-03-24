@@ -74,7 +74,7 @@
       <location filename="../../Command.cpp" line="377"/>
       <location filename="../../Command.cpp" line="379"/>
       <source>Merge several point clouds into one</source>
-      <translation>Mesclar vários pontos nuvens em uma</translation>
+      <translation>Mesclar vários pontos nuvens em um</translation>
     </message>
   </context>
   <context>
@@ -305,12 +305,12 @@
     <message>
       <location filename="../../Command.cpp" line="117"/>
       <source>Points not at Origin</source>
-      <translation type="unfinished">Points not at Origin</translation>
+      <translation>Pontos que estão fora da origem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</source>
-      <translation type="unfinished">The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</translation>
+      <translation>A caixa delimitadora dos pontos importados não contém a origem. Você quer traduzi-la para a origem?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="260"/>

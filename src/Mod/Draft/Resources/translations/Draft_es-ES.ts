@@ -16,7 +16,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of your style. Existing style names can be edited.</source>
-      <translation>El nombre de tu estilo. Los nombres de estilo existentes pueden ser editados.</translation>
+      <translation>El nombre de su estilo. Los nombres de estilo existentes pueden ser editados.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
       <source>Renames the selected style</source>
-      <translation>Renombra el estilo seleccionado</translation>
+      <translation>Renombrar el estilo seleccionado</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="82"/>
@@ -82,12 +82,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
       <source>Import styles from json file</source>
-      <translation>Importar estilos de archivo json</translation>
+      <translation>Importar estilos de archivo JSON</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
       <source>Export styles to json file</source>
-      <translation>Exportar estilos a archivo json</translation>
+      <translation>Exportar estilos a archivo JSON</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="214"/>
@@ -138,7 +138,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
       <source>The color of lines and arrows</source>
-      <translation>El color de las líneas y las flechas</translation>
+      <translation>Color de la línea y flecha</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="429"/>
@@ -497,7 +497,7 @@ El número debe ser al menos 1 en cada dirección.</translation>
       <source>Distance between the elements in the X direction.
 Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation>Distancia entre los elementos en la dirección del eje X.
+      <translation>La distancia entre los elementos en la dirección del eje X.
 Normalmente, solo el valor X es necesario; los otros dos valores pueden dar lugar a un desplazamiento adicional en sus respectivas direcciones.
 Los valores negativos darán como resultado copias producidas en la dirección negativa.</translation>
     </message>
@@ -523,7 +523,7 @@ Los valores negativos darán como resultado copias producidas en la dirección n
       <source>Distance between the elements in the Y direction.
 Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation>Distancia entre los elementos en la dirección del eje Y.
+      <translation>La distancia entre los elementos en la dirección del eje Y.
 Normalmente, solo el valor Y es necesario; los otros dos valores pueden dar lugar a un desplazamiento adicional en sus respectivas direcciones.
 Los valores negativos darán como resultado copias producidas en la dirección negativa.</translation>
     </message>
@@ -542,7 +542,7 @@ Los valores negativos darán como resultado copias producidas en la dirección n
       <source>Distance between the elements in the Z direction.
 Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation>Distancia entre los elementos en la dirección del eje Z.
+      <translation>La distancia entre los elementos en la dirección del eje Z.
 Normalmente, solo el valor de Z es necesario; los otros dos valores pueden dar lugar a un cambio en sus respectivas direcciones.
 Los valores negativos darán como resultado copias generadas en la dirección negativa.</translation>
     </message>
@@ -709,7 +709,7 @@ Una matriz enlazada es más eficiente al crear múltiples copias, pero no pueden
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
       <source>Reset 3D point selection</source>
-      <translation type="unfinished">Reset 3D point selection</translation>
+      <translation>Restablecer selección de puntos 3D</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
@@ -744,7 +744,7 @@ Una matriz enlazada es más eficiente al crear múltiples copias, pero no pueden
     <message>
       <location filename="../ui/TaskShapeString.ui" line="183"/>
       <source>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</source>
-      <translation/>
+      <translation>Fuentes del archivo (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</translation>
     </message>
   </context>
   <context>
@@ -758,7 +758,8 @@ Una matriz enlazada es más eficiente al crear múltiples copias, pero no pueden
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
       <source>Select 3 vertices, one or more shapes or a WP Proxy. Then confirm by clicking in the 3D view.
 Or choose one of the options below.</source>
-      <translation>.</translation>
+      <translation>Seleccione 3 vértices, una o más formas o un plano de trabajo proxy. Luego, confirme haciendo clic en la vista 3D.
+Alternativamente, elija una de las opciones a continuación.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="31"/>
@@ -844,7 +845,7 @@ de los botones de arriba</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="135"/>
       <source>Or select a single vertex to move the current working plane without changing its orientation. Then press the button below.</source>
-      <translation/>
+      <translation>Alternativamente, seleccione un solo vértice para mover el plano de trabajo actual sin cambiar su orientación. Luego, presione el botón de abajo.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="145"/>
@@ -908,7 +909,7 @@ se moverá al centro de la vista.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="289"/>
       <source>Resets the working plane to its next position</source>
-      <translation/>
+      <translation>Restablece el plano de trabajo a su siguiente posición</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="292"/>
@@ -1082,7 +1083,7 @@ se moverá al centro de la vista.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
       <source>Point size</source>
-      <translation/>
+      <translation>Tamaño de Punto(s)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="260"/>
@@ -1877,7 +1878,7 @@ para las cotas lineales.</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="655"/>
       <source>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</source>
-      <translation/>
+      <translation>Fuentes del archivo (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="607"/>
@@ -2326,8 +2327,9 @@ This might fail for post DXF R12 templates.</source>
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
       <source>If checked, the outline of a human figure is displayed at the bottom left
 corner of the grid. Only effective if "Show grid border" is enabled.</source>
-      <translation type="unfinished">If checked, the outline of a human figure is displayed at the bottom left
-corner of the grid. Only effective if "Show grid border" is enabled.</translation>
+      <translation>Si está marcado, el contorno de una figura humana se muestra en la esquina inferior
+izquierda de la cuadrícula. Esta opción sólo es efectiva si la opción
+"Mostrar borde de cuadrícula" está habilitada.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="132"/>
@@ -3856,7 +3858,7 @@ Intente mover el archivo DWG a un directorio cuyo camino no contenga espacios ni
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="54"/>
       <source>Toggle grid</source>
-      <translation>Activa/desactiva cuadrícula</translation>
+      <translation>Alternar cuadrícula</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="109"/>
@@ -4263,7 +4265,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="203"/>
       <source>Close spline</source>
-      <translation>Cerrar ranura</translation>
+      <translation>Cerrar spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="206"/>
@@ -4881,7 +4883,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftobjects/patharray.py" line="428"/>
       <source>migrated 'Xlate' property to 'ExtraTranslation'</source>
-      <translation>se ha migrado la propiedad 'Xlate' a 'ExtraTranslation'</translation>
+      <translation>se ha migrado la propiedad "Xlate" a "ExtraTranslation"</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="141"/>
@@ -6416,7 +6418,7 @@ CTRL para ajustar, MAYÚS para restringir.</translation>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="60"/>
       <source>Toggle grid</source>
-      <translation>Activa/desactiva cuadrícula</translation>
+      <translation>Alternar cuadrícula</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="62"/>
@@ -6917,7 +6919,7 @@ A 'Point link array' is more efficient when handling many copies.</source>
       <location filename="../../draftguitools/gui_togglemodes.py" line="102"/>
       <source>Toggles the Construction mode.
 When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</source>
-      <translation>Activa el modo Construcción.
+      <translation>Alterna el modo de construcción.
 Cuando esté activo, los siguientes objetos creados serán incluidos en el grupo de construcción, y se dibujará con el color y las propiedades especificadas.</translation>
     </message>
   </context>
@@ -6933,7 +6935,7 @@ Cuando esté activo, los siguientes objetos creados serán incluidos en el grupo
       <source>Switches the display mode of selected objects from flatlines to wireframe and back.
 This is helpful to quickly visualize objects that are hidden by other objects.
 This is intended to be used with closed shapes and solids, and doesn't affect open wires.</source>
-      <translation>Cambia el modo de visualización de los objetos seleccionados de líneas planas a alambres y atrás.
+      <translation>Cambia el modo de visualización de los objetos seleccionados de líneas planas a modelo de alambres y viceversa.
 Esto es útil para visualizar rápidamente objetos ocultos por otros objetos.
 Esto está destinado a ser utilizado con formas y sólidos cerrados y no afecta a los alambres abiertos.</translation>
     </message>

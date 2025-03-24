@@ -1811,7 +1811,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="390"/>
       <source>Perpendicular</source>
-      <translation>Усправан</translation>
+      <translation>Управан</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="398"/>
@@ -3209,7 +3209,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="20"/>
       <source>Surface</source>
-      <translation>Површина</translation>
+      <translation>Површ</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="45"/>
@@ -6614,7 +6614,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="54"/>
       <source>Perpendicular</source>
-      <translation>Усправан</translation>
+      <translation>Управан</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="165"/>
@@ -7926,7 +7926,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="261"/>
       <source>Perpendicular</source>
-      <translation>Усправан</translation>
+      <translation>Управан</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="264"/>

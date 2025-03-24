@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation>Huomautus Tyylien Muokkain</translation>
+      <translation>Merkintöjen tyylien asetukset</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of your style. Existing style names can be edited.</source>
-      <translation>Tyylisi nimi. Olemassa olevien tyylien nimiä voidaan muokata.</translation>
+      <translation>Tyylin nimi. Tyylien nimiä voidaan muokata.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
@@ -72,7 +72,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="77"/>
       <source>Cancel</source>
-      <translation>Peruuta</translation>
+      <translation>Kumoa</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="84"/>
@@ -93,7 +93,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="214"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="236"/>
       <source>The font to use for texts and dimensions</source>
-      <translation>Tekstien ja mittojen osalta käytettävä kirjasin</translation>
+      <translation>Teksteissä ja mittaviivoissa käytettävä kirjasin</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="217"/>
@@ -115,7 +115,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="332"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="342"/>
       <source>The width of the lines</source>
-      <translation>Näiden viivojen leveys</translation>
+      <translation>Mittaviivojen ja mitta-apuviivojen leveys</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="345"/>
@@ -126,19 +126,19 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="352"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="374"/>
       <source>The type of arrows or markers to use for dimensions and labels</source>
-      <translation>Mittoissa ja etiketeissä käytettävien nuolten ja merkkien tyyppi</translation>
+      <translation>Mittaviivoissa ja selitteissä käytettävien päätteiden tyyppi</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="406"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="416"/>
       <source>The size of the arrows or markers in system units</source>
-      <translation>Järjestelmäyksiköissä olevien nuolten tai merkkien koko</translation>
+      <translation>Mittaviivojen päitten koko</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
       <source>The color of lines and arrows</source>
-      <translation>Viivojen ja nuolien väri</translation>
+      <translation>Mittaviivojen ja päitten väri</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="429"/>
@@ -149,23 +149,23 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="518"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="528"/>
       <source>The distance the dimension line is additionally extended</source>
-      <translation>Ulottuvuusrajan viivaa on lisäksi jatkettu</translation>
+      <translation>Pituus, jolla mittaviivaa jatketaan</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="521"/>
       <source>Dimension line overshoot</source>
-      <translation>Dimensioviivan jatke</translation>
+      <translation>Mittaviivan jatke</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="541"/>
       <source>Extension line length</source>
-      <translation>Jatkoviivan kulma</translation>
+      <translation>Mitta-apuviivan jatke</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="558"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="568"/>
       <source>The distance the extension lines are additionally extended beyond the dimension line</source>
-      <translation>Etäisyys lisäviivoista on lisäksi laajennettu ulottuvuusrajan ulkopuolelle</translation>
+      <translation>Pituus, jolla mitta-apuviivat jatketaan mittaviivan ohi</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="246"/>
@@ -182,7 +182,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="280"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="290"/>
       <source>The color of texts, dimension texts and label texts</source>
-      <translation>Tekstien, mittatekstien ja tunnistetekstien väri</translation>
+      <translation>Tekstien, mittaviivojen ja selitteitten väri</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="283"/>
@@ -209,7 +209,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="452"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="462"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation>Jos se on valittuna, se näyttää yksikön dimension arvon vieressä</translation>
+      <translation>Jos valittuna, mittaluvun yksikkö näytetään</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="455"/>
@@ -220,7 +220,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation>Määritä kelvollinen pituusyksikkö, kuten mm, m, in, ft, tämän yksikön mittariluvun näyttämiseksi</translation>
+      <translation>Määritä kelvollinen pituusyksikkö, esim. mm, m, in, ft, näyttääksesi tämän mittaluvun</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="478"/>
@@ -231,24 +231,24 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="492"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="502"/>
       <source>The number of decimals to show for dimension values</source>
-      <translation>Dimension arvon näytettävien desimaalien lukumäärä</translation>
+      <translation>Mittalukujen desimaalien määrä</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="578"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="588"/>
       <source>The distance between the dimension text and the dimension line</source>
-      <translation>Dimensioviivan ja mittaluvun tekstin välinen etäisyys</translation>
+      <translation>Mittaviivan ja mittaluvun tekstin välinen etäisyys</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="581"/>
       <source>Text spacing</source>
-      <translation>Tekstin väli</translation>
+      <translation>Tekstin välistys</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="306"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="316"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation>Jos se on valittuna, se näyttää dimensioviivan</translation>
+      <translation>Jos valittuna, mittaviiva näytetään</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="309"/>
       <source>Show dimension line</source>
-      <translation>Näytä dimensioviiva</translation>
+      <translation>Näytä mittaviiva</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="335"/>
@@ -278,7 +278,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="355"/>
       <source>Arrow type</source>
-      <translation>Nuolen tyyppi</translation>
+      <translation>Mittaviivan päätteen tyyppi</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="378"/>
@@ -298,17 +298,17 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="393"/>
       <source>Tick</source>
-      <translation>Rasti</translation>
+      <translation>Vinoviiva</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="398"/>
       <source>Tick-2</source>
-      <translation>Rasti-2</translation>
+      <translation>Vinoviiva 2</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="409"/>
       <source>Arrow size</source>
-      <translation>Nuolen koko</translation>
+      <translation>Päätteen koko</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="495"/>
@@ -318,12 +318,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="512"/>
       <source>Dimension details</source>
-      <translation>Dimension yksityiskohdat</translation>
+      <translation>Mittaviivan yksityiskohdat</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="561"/>
       <source>Extension line overshoot</source>
-      <translation type="unfinished">Extension line overshoot</translation>
+      <translation>Mitta-apuviivan ylitys</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="538"/>
@@ -337,50 +337,49 @@
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="26"/>
       <source>Circular array</source>
-      <translation>Kehämäinen matriisi</translation>
+      <translation>Luo kehämatriisi</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="53"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="63"/>
       <source>Distance from one layer of objects to the next layer of objects.</source>
-      <translation>Etäisyys esineiden yhdestä kerroksesta esineiden seuraavaan kerrokseen.</translation>
+      <translation>Kehien välinen etäisyys.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="56"/>
       <source>Radial distance</source>
-      <translation>Säteittäinen etäisyys</translation>
+      <translation>Kehien etäisyys</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="76"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="87"/>
       <source>Distance from one element in one ring of the array to the next element in the same ring.
 It cannot be zero.</source>
-      <translation>Etäisyys matriisin yhden renkaan yhdestä elementistä saman renkaan seuraavaan elementtiin.
-Se ei voi olla nolla.</translation>
+      <translation>Samalla kehällä olevien objektien välinen etäisyys. Ei voi olla nolla.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="80"/>
       <source>Tangential distance</source>
-      <translation>Tangentiaalinen etäisyys</translation>
+      <translation>Objektien etäisyys kehällä</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="101"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="112"/>
       <source>Number of circular layers or rings to create, including a copy of the original object.
 It must be at least 2.</source>
-      <translation>Luotavien pyöreiden kerrosten tai renkaiden määrä, mukaan lukien kopio alkuperäisestä kohteesta.
-Sen on oltava vähintään 2.</translation>
+      <translation>Luotavien kehien määrä, alkuperäinen kappale mukaanluettuna.
+Oltava vähintään 2.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="105"/>
       <source>Number of circular layers</source>
-      <translation>Pyöreiden kerrosten määrä</translation>
+      <translation>Kehien määrä</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="129"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="139"/>
       <source>The number of symmetry lines in the circular array.</source>
-      <translation>Symmetristen linjojen lukumäärä ympyrämatriisissa.</translation>
+      <translation>Symmetriaviivojen lukumäärä ympyrämatriisissa.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="132"/>
@@ -391,8 +390,8 @@ Sen on oltava vähintään 2.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="154"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation>Sen pisteen koordinaatit, jonka kautta kiertoakseli kulkee.
-Muuta itse akselin suuntaa ominaisuus -muokkaimessa.</translation>
+      <translation>Kiertoakselin koordinaatit.
+Muuta tarvittaessa akselin suuntaa Ominaisuudet -telakkaikkunassa.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="158"/>
@@ -422,26 +421,26 @@ Muuta itse akselin suuntaa ominaisuus -muokkaimessa.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="231"/>
       <source>Reset point</source>
-      <translation>Nollaus piste</translation>
+      <translation>Aseta origoon</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="243"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
       <translation>Jos valittu, taulukon objektit sulautuvat yhteen mikäli ne koskettavat toisiaan.
-Tämä toimii vain, jos "Linkkien järjestely" on pois päältä.</translation>
+Vain kopiot voidaan sulauttaa, ei linkkejä. Ei siis toimi jos Linkkimatriisi on valittuna.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="247"/>
       <source>Fuse</source>
-      <translation>Yhdistä</translation>
+      <translation>Sulauta</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="254"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Jos valittuna, tuloksena oleva objekti on "Linkkimatriisissa" säännöllisen taulukon sijaan.
-Linkkimatriisi on tehokkaampi, kun luodaan useita kopioita, mutta sitä ei voi fuusioida yhdessä.</translation>
+      <translation>Jos valittuna, tuloksena oleva matriisi sisältää linkkejä eikä varsinaisia kopiota.
+Linkkimatriisi on tehokkaampi, kun luodaan paljon kopioita, mutta sitä ei voi sulauttaa yhteen.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="258"/>
@@ -497,71 +496,71 @@ Numeron on oltava vähintään 1 kumpaankin suuntaan.</translation>
       <source>Distance between the elements in the X direction.
 Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation>X suunnassa olevien elementtien välinen etäisyys.
-Normaalisti vain X-arvo on tarpeellinen; kaksi muuta arvoa voivat aiheuttaa lisäsiirtymän niiden omiin suuntiin.
-Negatiiviset arvot johtavat negatiiviseen suuntaan tuotettuihin kopioihin.</translation>
+      <translation>X -suunnassa olevien elementtien välinen etäisyys.
+Yleensä käytetään vain X-arvoa: kahdella muulla arvolla voit asettaa lisäsiirtymää muille akseleille.
+Negatiiviset arvot asettamalla saat kopioita negatiiviseen suuntaan.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="133"/>
       <source>X intervals</source>
-      <translation>X- välit</translation>
+      <translation>Elementtien etäisyys, X-suunta</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="206"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="297"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="388"/>
       <source>Reset the distances.</source>
-      <translation>Nollaa etäisyydet.</translation>
+      <translation>Palauta etäisyydet.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="209"/>
       <source>Reset X</source>
-      <translation>Nollaa X</translation>
+      <translation>Palauta X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="219"/>
       <source>Distance between the elements in the Y direction.
 Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation>Y suunnassa olevien elementtien välinen etäisyys.
-Normaalisti vain Y-arvo on tarpeellinen; kaksi muuta arvoa voivat aiheuttaa lisäsiirtymän niiden omiin suuntiin.
-Negatiiviset arvot johtavat negatiiviseen suuntaan tuotettuihin kopioihin.</translation>
+      <translation>Y -suunnassa olevien elementtien välinen etäisyys.
+Yleensä käytetään vain Y-arvoa: kahdella muulla arvolla voit asettaa lisäsiirtymää muille akseleille.
+Negatiiviset arvot asettamalla saat kopioita negatiiviseen suuntaan.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="224"/>
       <source>Y intervals</source>
-      <translation>Y- välit</translation>
+      <translation>Elementtien etäisyys, Y-suunta</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="300"/>
       <source>Reset Y</source>
-      <translation>Nollaa Y</translation>
+      <translation>Palauta Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="310"/>
       <source>Distance between the elements in the Z direction.
 Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation>Z suunnassa olevien elementtien välinen etäisyys.
-Normaalisti vain Z-arvo on tarpeellinen; kaksi muuta arvoa voivat aiheuttaa lisäsiirtymän kumpaankin suuntaan.
-Negatiiviset arvot johtavat negatiiviseen suuntaan tuotettuihin kopioihin.</translation>
+      <translation>Z -suunnassa olevien elementtien välinen etäisyys.
+Yleensä käytetään vain Z-arvoa: kahdella muulla arvolla voit asettaa lisäsiirtymää muille akseleille.
+Negatiiviset arvot asettamalla saat kopioita negatiiviseen suuntaan.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="315"/>
       <source>Z intervals</source>
-      <translation>Z aikavälit</translation>
+      <translation>Elementtien etäisyys, Z-suunta</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="391"/>
       <source>Reset Z</source>
-      <translation>Nollaa Z</translation>
+      <translation>Palauta Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="403"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
       <translation>Jos valittu, taulukon objektit sulautuvat yhteen mikäli ne koskettavat toisiaan.
-Tämä toimii vain, jos "Linkkien järjestely" on pois päältä.</translation>
+Vain kopiot voidaan sulauttaa, ei linkkejä. Ei siis toimi jos Linkkimatriisi on valittuna.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="407"/>
@@ -572,8 +571,8 @@ Tämä toimii vain, jos "Linkkien järjestely" on pois päältä.</translation>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="414"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Jos valittuna, tuloksena oleva objekti on "Linkkimatriisissa" säännöllisen taulukon sijaan.
-Linkkimatriisi on tehokkaampi, kun luodaan useita kopioita, mutta sitä ei voi fuusioida yhdessä.</translation>
+      <translation>Jos valittuna, tuloksena oleva matriisi sisältää linkkejä eikä varsinaisia kopiota.
+Linkkimatriisi on tehokkaampi kun luodaan paljon kopioita, mutta sitä ei voi sulauttaa yhteen.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="418"/>
@@ -586,7 +585,7 @@ Linkkimatriisi on tehokkaampi, kun luodaan useita kopioita, mutta sitä ei voi f
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
       <source>Polar array</source>
-      <translation>Polar matriisi</translation>
+      <translation>Luo pyörähdysmatriisi</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="53"/>
@@ -594,14 +593,14 @@ Linkkimatriisi on tehokkaampi, kun luodaan useita kopioita, mutta sitä ei voi f
       <source>Sweeping angle of the polar distribution.
 A negative angle produces a polar pattern in the opposite direction.
 The maximum absolute value is 360 degrees.</source>
-      <translation>Napa-jakauman pyyhkäisevä kulma.
+      <translation>Pyörähdysmatriisin pyyhkäisevä kulma.
 Negatiivinen kulma tuottaa napakuvion vastakkaiseen suuntaan.
 Absoluuttinen enimmäisarvo on 360 astetta.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="58"/>
       <source>Polar angle</source>
-      <translation>Napakulma</translation>
+      <translation>Pyörähdyskulma</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="86"/>
@@ -620,8 +619,8 @@ Sen on oltava vähintään 2.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="116"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation>Sen pisteen koordinaatit, jonka kautta kiertoakseli kulkee.
-Muuta itse akselin suuntaa ominaisuus -muokkaimessa.</translation>
+      <translation>Kiertoakselin koordinaatit.
+Muuta tarvittaessa akselin suuntaa Ominaisuudet -ikkunassa.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="120"/>
@@ -651,26 +650,26 @@ Muuta itse akselin suuntaa ominaisuus -muokkaimessa.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="193"/>
       <source>Reset point</source>
-      <translation>Nollaus piste</translation>
+      <translation>Aseta origoon</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="205"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
       <translation>Jos valittu, taulukon objektit sulautuvat yhteen mikäli ne koskettavat toisiaan.
-Tämä toimii vain, jos "Linkkien järjestely" on pois päältä.</translation>
+Vain kopiot voidaan sulauttaa, ei linkkejä. Ei siis toimi jos Linkkimatriisi on valittuna.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="209"/>
       <source>Fuse</source>
-      <translation>Yhdistä</translation>
+      <translation>Sulauta</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Jos valittuna, tuloksena oleva objekti on "Linkkimatriisissa" säännöllisen taulukon sijaan.
-Linkkimatriisi on tehokkaampi, kun luodaan useita kopioita, mutta sitä ei voi fuusioida yhdessä.</translation>
+      <translation>Jos valittuna, tuloksena oleva matriisi sisältää linkkejä eikä varsinaisia kopiota.
+Linkkimatriisi on tehokkaampi, kun luodaan paljon kopioita, mutta sitä ei voi sulauttaa yhteen.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="220"/>
@@ -683,7 +682,7 @@ Linkkimatriisi on tehokkaampi, kun luodaan useita kopioita, mutta sitä ei voi f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="26"/>
       <source>ShapeString</source>
-      <translation>MuotoMerkkijono</translation>
+      <translation>Luo Muotomerkkijono</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="46"/>
@@ -710,12 +709,12 @@ Linkkimatriisi on tehokkaampi, kun luodaan useita kopioita, mutta sitä ei voi f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
       <source>Reset 3D point selection</source>
-      <translation type="unfinished">Reset 3D point selection</translation>
+      <translation>Asettaa aloituspisteen origoon</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
       <source>Reset Point</source>
-      <translation>Nollaa Piste</translation>
+      <translation>Aseta origoon</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="131"/>
@@ -725,7 +724,7 @@ Linkkimatriisi on tehokkaampi, kun luodaan useita kopioita, mutta sitä ei voi f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="138"/>
       <source>Text to be made into ShapeString</source>
-      <translation>MuotoMerkkijonoksi luotava teksti</translation>
+      <translation>Teksti, josta luodaan muoto</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="149"/>
@@ -735,7 +734,7 @@ Linkkimatriisi on tehokkaampi, kun luodaan useita kopioita, mutta sitä ei voi f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="156"/>
       <source>Height of the result</source>
-      <translation>Tuloksen korkeus</translation>
+      <translation>Muodon korkeus</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="176"/>
@@ -759,17 +758,18 @@ Linkkimatriisi on tehokkaampi, kun luodaan useita kopioita, mutta sitä ei voi f
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
       <source>Select 3 vertices, one or more shapes or a WP Proxy. Then confirm by clicking in the 3D view.
 Or choose one of the options below.</source>
-      <translation>Valitse 3 kärkipistettä, yksi tai enemmän muotoja tai WP Proxy. Vahvista napsauttamalla 3D-näkymää. Tai valitse yksi allaolevista vaihtoehdoista.</translation>
+      <translation>Valitse 3D-näkymästä 3 kärkipistettä, yksi tai enemmän muotoja tai Tallennettu työtaso. Vahvista napsauttamalla 3D-näkymää.
+Tai valitse yksi allaolevista vaihtoehdoista.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="31"/>
       <source>Sets the working plane to the XY plane (ground plane)</source>
-      <translation>Määrittää työtasoksi XY -tason (maanpinta)</translation>
+      <translation>Määrittää työtasoksi XY -tason (yläpuoli)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="34"/>
       <source>Top (XY)</source>
-      <translation>Ylä (XY)</translation>
+      <translation>Yläpuoli (XY)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="41"/>
@@ -779,17 +779,17 @@ Or choose one of the options below.</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="44"/>
       <source>Front (XZ)</source>
-      <translation>ETU (XZ)</translation>
+      <translation>Etupuoli (XZ)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="51"/>
       <source>Sets the working plane to the YZ plane (side plane)</source>
-      <translation>Määrittää työtasoksi YZ -tason (sivu)</translation>
+      <translation>Määrittää työtasoksi YZ -tason (sivupuoli)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="54"/>
       <source>Side (YZ)</source>
-      <translation>SIVU (YZ)</translation>
+      <translation>Sivupuoli (YZ)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="61"/>
@@ -799,13 +799,15 @@ Or choose one of the options below.</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="64"/>
       <source>Align to view</source>
-      <translation>Tasaa näkymään</translation>
+      <translation>Näkymän suuntaan</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="71"/>
       <source>The working plane will align to the current
 view each time a command is started</source>
-      <translation>Työtaso vaihtuu käytössä olevaan näkymäsuuntaan aina kun tämä komento käynnistetään</translation>
+      <translation>Aina kun piirtokomento käynnistetään, työtaso vaihdetaan sen hetkisen näkymän suuntaan.
+Jos komentoa käynnistettäessä on valittuna suora pinta, se asetetaan työtasoksi. Jos piirron
+aikana valitaan suoran pinnan kärkipiste, työtaso vaihtuu pinnalle.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="78"/>
@@ -822,9 +824,8 @@ view each time a command is started</source>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation type="unfinished">An optional offset to give to the working plane
-above its base position. Use this together with one
-of the buttons above</translation>
+      <translation>Valinnainen siirtymä työtason perustason yläpuolelle. Aseta siirtymä
+ja valitse sen jälkeen perustaso yläpuolella olevista painikkeista</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="106"/>
@@ -885,7 +886,7 @@ will be moved to the center of the view.</source>
       <location filename="../ui/TaskSelectPlane.ui" line="209"/>
       <location filename="../ui/TaskSelectPlane.ui" line="229"/>
       <source> squares</source>
-      <translation> neliöt</translation>
+      <translation> ruutua</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="216"/>
@@ -922,12 +923,12 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="179"/>
       <source>Grid spacing</source>
-      <translation>Ruudukon välit</translation>
+      <translation>Ruudukon tiheys</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="245"/>
       <source>Snapping radius</source>
-      <translation>Kohdistamisen säde</translation>
+      <translation>Tarttumisen säde</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="264"/>
@@ -972,17 +973,17 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="80"/>
       <source>Ambient shape color</source>
-      <translation type="unfinished">Ambient shape color</translation>
+      <translation>Ympäröivän muodon väri</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="91"/>
       <source>Emissive shape color</source>
-      <translation type="unfinished">Emissive shape color</translation>
+      <translation>Muodon emissiivinen väri</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="102"/>
       <source>Specular shape color</source>
-      <translation type="unfinished">Specular shape color</translation>
+      <translation>Muodon heijastuva väri</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="113"/>
@@ -1066,12 +1067,12 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="22"/>
       <source>Fill the values below from a stored style preset</source>
-      <translation type="unfinished">Fill the values below from a stored style preset</translation>
+      <translation>Täytä arvot allaolevista tyylien tallennetuista esiasetuksista</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="40"/>
       <source>Save the current style as a preset...</source>
-      <translation type="unfinished">Save the current style as a preset...</translation>
+      <translation>Tallenna nykyinen tyyli esiasetuksena...</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
@@ -1102,7 +1103,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="564"/>
       <source>Text spacing</source>
-      <translation>Tekstin väli</translation>
+      <translation>Tekstin välistys</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="372"/>
@@ -1122,7 +1123,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
       <source>Annotation</source>
-      <translation>Huomautus</translation>
+      <translation>Merkintä</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="315"/>
@@ -1132,19 +1133,18 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="358"/>
       <source>Line spacing factor</source>
-      <translation>Viivan välistyskerroin</translation>
+      <translation>Rivivälin kerroin</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="298"/>
       <source>The annotation scale multiplier is the inverse of the scale set in the
 Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
-      <translation type="unfinished">The annotation scale multiplier is the inverse of the scale set in the
-Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translation>
+      <translation>Merkintöjen mittakaavan kerroin on Annotation Scale -kohdassa asetetun asteikon käänteisarvo. Jos asteikko on 1:100, kerroin on 100.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="389"/>
       <source>Lines and arrows</source>
-      <translation>Viivat ja nuolet</translation>
+      <translation>Viivat ja mittaviivan päätteet</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
@@ -1159,17 +1159,17 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="432"/>
       <source>Tick</source>
-      <translation>Rasti</translation>
+      <translation>Vinoviiva</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="437"/>
       <source>Tick-2</source>
-      <translation>Rasti-2</translation>
+      <translation>Vinoviiva 2</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="486"/>
       <source>If checked, a unit symbol is added to dimension texts</source>
-      <translation>Jos valittu, yksikkö lisätään dimensioiden teksteihin</translation>
+      <translation>Jos valittu, mittaluvuissa näytetään yksikkö</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="503"/>
@@ -1179,12 +1179,12 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="517"/>
       <source>The distance the dimension line is extended past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended past the extension lines</translation>
+      <translation>Pituus, jolla mittaviivaa jatketaan mitta-apuviivojen ohitse</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="379"/>
       <source>The color for texts, dimension texts and label texts</source>
-      <translation>Tekstien, mittatekstien ja tunnistetekstien väri</translation>
+      <translation>Tekstien, mittatekstien ja selitteitten väri</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="321"/>
@@ -1194,7 +1194,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="334"/>
       <source>The font for texts, dimensions and labels</source>
-      <translation>Tekstien, dimensioiden ja tunnistetekstien kirjasin</translation>
+      <translation>Tekstien, dimensioiden ja selitteitten kirjasin</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="341"/>
@@ -1204,12 +1204,12 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="348"/>
       <source>The height for texts, dimension texts and label texts</source>
-      <translation>Tekstien, mittatekstien ja tunnistetekstien korkeus</translation>
+      <translation>Tekstien, mittatekstien ja selitteitten korkeus</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="365"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation>Monirivisten tekstien ja tekstilaatikoiden riviväli (suhteessa fontin kokoon)</translation>
+      <translation>Monirivisten tekstien ja selitteitten riviväli (suhteessa fontin kokoon)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
@@ -1224,12 +1224,12 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
       <source>Arrow type</source>
-      <translation>Nuolen tyyppi</translation>
+      <translation>Mittaviivan päätteen tyyppi</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="445"/>
       <source>Arrow size</source>
-      <translation>Nuolen koko</translation>
+      <translation>Päätteen koko</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="510"/>
@@ -1247,35 +1247,34 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
 for linear dimensions.</source>
-      <translation type="unfinished">The length of extension lines. Use 0 for full extension lines. A negative value
-defines the gap between the ends of the extension lines and the measured points.
-A positive value defines the maximum length of the extension lines. Only used
-for linear dimensions.</translation>
+      <translation>Mitta-apuviivojen pituus. Käytä 0 jos haluat täydet mitta-apuviivat. Negatiivinen arvo
+määrittää raon, joka jätetään mitta-apuviivojen ja mittauspisteen väliin. Positiivinen arvo määrittää
+mitta-apuviivojen maksimipituuden. Käytetään vain ulottuvuusmitoissa.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="547"/>
       <source>Ext line overshoot</source>
-      <translation type="unfinished">Ext line overshoot</translation>
+      <translation>Mitta-apuviivan ylitys</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="554"/>
       <source>The length of extension lines above the dimension line</source>
-      <translation type="unfinished">The length of extension lines above the dimension line</translation>
+      <translation>Mittaviivan yläpuolella näkyvän mitta-apuviivan pituus</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="571"/>
       <source>The space between the dimension line and the dimension text</source>
-      <translation>Mittaviivan ja mittatekstin välitila</translation>
+      <translation>Mittaviivan ja mittatekstin etäisyys</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="590"/>
       <source>Apply the above style to selected object(s)</source>
-      <translation type="unfinished">Apply the above style to selected object(s)</translation>
+      <translation>Käytä yllä olevaa tyyliä valittuihin kohteisiin</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="604"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
-      <translation type="unfinished">Apply the above style to all annotations (texts, dimensions and labels)</translation>
+      <translation>Käytä yllä olevaa tyyliä kaikkiin merkintöihin (tekstit, mittaviivat ja selitteet)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="479"/>
@@ -1310,7 +1309,7 @@ for linear dimensions.</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="34"/>
       <source>Pattern:</source>
-      <translation>Malli:</translation>
+      <translation>Kuvio:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
@@ -1349,10 +1348,10 @@ Arvot välillä 6–8 katsotaan yleensä parhaksi kompromissiksi.</translation>
 will automatically align with the current view whenever a command is started.
 Additionally it will align to preselected planar faces, or when points on planar
 faces are picked during commands.</source>
-      <translation type="unfinished">The default working plane for new views. If set to "Automatic" the working plane
-will automatically align with the current view whenever a command is started.
-Additionally it will align to preselected planar faces, or when points on planar
-faces are picked during commands.</translation>
+      <translation>Oletustyötaso uusille näkymille. Jos valinta on "Automaattinen", työtaso
+on automaattisesti linjassa komennon käynnistyshetkellä olevan näkymän kanssa.
+Lisäksi näkymä sovitetaan valittuihin tahkoihin tai kun komennon käynnistämisen
+aikana on valittu pisteitä samalla planaarisella tahkolla.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="94"/>
@@ -1373,25 +1372,24 @@ faces are picked during commands.</translation>
       <location filename="../ui/preferences-draft.ui" line="112"/>
       <source>If checked, a widget indicating the current working
 plane orientation appears when picking points</source>
-      <translation type="unfinished">If checked, a widget indicating the current working
-plane orientation appears when picking points</translation>
+      <translation>Jos valittuna, pisteitä valittaessa näkyy kuvake joka kertoo tämän hetkisen työtason suunnan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="116"/>
       <source>Show working plane tracker</source>
-      <translation type="unfinished">Show working plane tracker</translation>
+      <translation>Näytä työtason seuranta</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="129"/>
       <source>If checked, the layers drop-down list also includes groups.
 Objects can then automatically be added to groups as well.</source>
-      <translation type="unfinished">If checked, the layers drop-down list also includes groups.
-Objects can then automatically be added to groups as well.</translation>
+      <translation>Jos valittu, kerrosten avaamislista sisältää myös ryhmiä.
+Objektit voidaan lisätä automaattisesti myös ryhmiin.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="133"/>
       <source>Include groups in layer list</source>
-      <translation type="unfinished">Include groups in layer list</translation>
+      <translation>Näytä ryhmät tasoluettelossa</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="149"/>
@@ -1401,62 +1399,62 @@ Objects can then automatically be added to groups as well.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="155"/>
       <source>If checked, instructions are displayed in the Report view when using Draft commands</source>
-      <translation type="unfinished">If checked, instructions are displayed in the Report view when using Draft commands</translation>
+      <translation>Jos valittu, ohjeet näytetään raporttinäkymässä kun Draft -komentoja käytetään</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="158"/>
       <source>Show prompts in the Report view</source>
-      <translation type="unfinished">Show prompts in the Report view</translation>
+      <translation>Näytä kehotteet raporttinäkymässä</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="171"/>
       <source>If checked, Length input, instead of the X coordinate, will have the initial focus.
 This allows to indicate a direction and then type a distance.</source>
-      <translation type="unfinished">If checked, Length input, instead of the X coordinate, will have the initial focus.
-This allows to indicate a direction and then type a distance.</translation>
+      <translation>Jos valittu, fokus asetetaan valmiiksi pituusasetukseen X- koordinaatin sijasta.
+Tämän avulla voit määrittää suunnan ja sitten etäisyyden.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="188"/>
       <source>If checked, base objects, instead of created copies, are selected after copying</source>
-      <translation type="unfinished">If checked, base objects, instead of created copies, are selected after copying</translation>
+      <translation>Jos valittuna, kopionnin jälkeen perusobjekti jää valinnaksi kopioitujen objektien sijaan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="204"/>
       <source>If checked, Draft commands will create Part primitives instead of Draft objects.
 Note that this is not fully supported, and many objects will not be editable with
 Draft modification commands.</source>
-      <translation type="unfinished">If checked, Draft commands will create Part primitives instead of Draft objects.
-Note that this is not fully supported, and many objects will not be editable with
-Draft modification commands.</translation>
+      <translation>Jos valittu, Draft komennot luovat Part -primitiivejä eivätkä Draft -objekteja.
+Huomaa, että tämä ominaisuus ei ole täysin tuettu, ja monia objekteja ei voi muokata
+Draft -muokkauskomennoilla.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="209"/>
       <source>Create Part primitives if possible</source>
-      <translation type="unfinished">Create Part primitives if possible</translation>
+      <translation>Luo Part-primitiivejä jos mahdollista</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="222"/>
       <source>If checked, Draft Downgrade and Draft Upgrade will keep face colors.
 Only for the splitFaces and makeShell options.</source>
-      <translation type="unfinished">If checked, Draft Downgrade and Draft Upgrade will keep face colors.
-Only for the splitFaces and makeShell options.</translation>
+      <translation>Jos valittu, Draft Alennus ja Draft Ylennys -komennot säilyttävät tahkojen värit.
+Vaikuttaa vain tahkojen halkaisu- ja kuorten muodostus -komentoihin.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="226"/>
       <source>Keep face colors during downgrade/upgrade</source>
-      <translation type="unfinished">Keep face colors during downgrade/upgrade</translation>
+      <translation>Säilytä tahkojen väri ylennettäessä/alennettaessa</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="239"/>
       <source>If checked, Draft Downgrade and Draft Upgrade will keep face names.
 Only for the splitFaces and makeShell options.</source>
-      <translation type="unfinished">If checked, Draft Downgrade and Draft Upgrade will keep face names.
-Only for the splitFaces and makeShell options.</translation>
+      <translation>Jos valittu, Draft Alennus ja Draft Ylennys -komennot säilyttävät tahkojen nimet.
+Vaikuttaa vain tahkojen halkaisu- ja kuorten muodostus -komentoihin.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="243"/>
       <source>Keep face names during downgrade/upgrade</source>
-      <translation type="unfinished">Keep face names during downgrade/upgrade</translation>
+      <translation>Säilytä tahkojen nimi ylennettäessä/alennettaessa</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="263"/>
@@ -1465,11 +1463,11 @@ manually in any of the coordinate fields. Setting this to 0 disables the delay.
 If a delay of 1 is set, after entering a numeric value, the mouse will not
 update the field anymore during one second, to avoid moving the mouse
 accidentally and modifying the entered value.</source>
-      <translation type="unfinished">This is a delay during which the mouse is inactive, after entering numbers
-manually in any of the coordinate fields. Setting this to 0 disables the delay.
-If a delay of 1 is set, after entering a numeric value, the mouse will not
-update the field anymore during one second, to avoid moving the mouse
-accidentally and modifying the entered value.</translation>
+      <translation>Tämä on viive jonka aikana hiiri ei ole aktiivinen, kun kirjoitat numeroita
+manuaalisesti millä tahansa koordinaattikentällä. Määrittämällä tämän arvoon 0 poistaa viiveen.
+Jos viive on 1, numeerisen arvon kirjoittamisen jälkeen hiiri ei
+päivitä kenttää enää yhden sekunnin aikana, välttääksesi siirtämästä hiirtä
+vahingossa ja muuttamasta annettua arvoa.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="296"/>
@@ -1479,37 +1477,37 @@ accidentally and modifying the entered value.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="328"/>
       <source>Edit node pick radius</source>
-      <translation>Muokkaa solmun valinnan säde</translation>
+      <translation>Muokattavan solmun valinnan säde</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="335"/>
       <source>The pick radius of edit nodes</source>
-      <translation type="unfinished">The pick radius of edit nodes</translation>
+      <translation>Muokattavien solmujen poimintaetäisyys</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="357"/>
       <source>Label prefix for clones</source>
-      <translation>Kloonien nimikkeen etuliite</translation>
+      <translation>Kloonien nimen etuliite</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="370"/>
       <source>The default prefix added to the label of new clones</source>
-      <translation type="unfinished">The default prefix added to the label of new clones</translation>
+      <translation>Kloonien nimeen lisättävä oletusetuliite</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="386"/>
       <source>Construction group label</source>
-      <translation type="unfinished">Construction group label</translation>
+      <translation>Rakennegeometrian ryhmän nimi</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="399"/>
       <source>The default label for the construction geometry group</source>
-      <translation type="unfinished">The default label for the construction geometry group</translation>
+      <translation>Rakenne geometrian ryhmien oletusnimi</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="422"/>
       <source>The default color for Draft objects in construction mode</source>
-      <translation type="unfinished">The default color for Draft objects in construction mode</translation>
+      <translation>Draftin rakenneobjektien oletusväri</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="26"/>
@@ -1519,7 +1517,7 @@ accidentally and modifying the entered value.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="175"/>
       <source>Set focus on Length instead of X coordinate</source>
-      <translation type="unfinished">Set focus on Length instead of X coordinate</translation>
+      <translation>Aseta fokus Pituus- kenttään eikä X-koordinaatteihin</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="191"/>
@@ -1534,12 +1532,12 @@ accidentally and modifying the entered value.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="415"/>
       <source>Construction geometry color</source>
-      <translation>Rakentamisen geometria väri</translation>
+      <translation>Rakennegeometrian väri</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="318"/>
       <source>Draft classic style</source>
-      <translation>Vedos klassiseen tyyliin</translation>
+      <translation>Draftin klassinen tyyli</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="323"/>
@@ -1549,7 +1547,7 @@ accidentally and modifying the entered value.</translation>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="14"/>
       <source>Visual</source>
-      <translation type="unfinished">Visual</translation>
+      <translation>Visuaalinen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="20"/>
@@ -1559,29 +1557,28 @@ accidentally and modifying the entered value.</translation>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="26"/>
       <source>SVG pattern size</source>
-      <translation type="unfinished">SVG pattern size</translation>
+      <translation>SVG kuvion koko</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="39"/>
       <source>The default size for SVG patterns. A higher value results in a denser pattern.</source>
-      <translation type="unfinished">The default size for SVG patterns. A higher value results in a denser pattern.</translation>
+      <translation>SVG kuvioiden oletuskoko. Suurempi arvo johtaa tiheämpiin kuvioihin.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="65"/>
       <source>Additional SVG pattern location</source>
-      <translation type="unfinished">Additional SVG pattern location</translation>
+      <translation>SVG kuvion sijainti</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="75"/>
       <source>An optional directory with custom SVG files containing
 pattern definitions to be added to the standard patterns</source>
-      <translation type="unfinished">An optional directory with custom SVG files containing
-pattern definitions to be added to the standard patterns</translation>
+      <translation>Valinnainen hakemisto vakiokuvioihin lisättävillä SVG-tiedostoilla</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="92"/>
       <source>Drawing view line definitions</source>
-      <translation type="unfinished">Drawing view line definitions</translation>
+      <translation>Näkymäviivojen määritykset</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="98"/>
@@ -1641,12 +1638,12 @@ pattern definitions to be added to the standard patterns</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="578"/>
       <source>Extension line overshoot</source>
-      <translation type="unfinished">Extension line overshoot</translation>
+      <translation>Mitta-apuviivan ylitys</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="504"/>
       <source>Dimension line overshoot</source>
-      <translation>Dimensioviivan jatke</translation>
+      <translation>Mittaviivan jatke</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="72"/>
@@ -1663,12 +1660,12 @@ pattern definitions to be added to the standard patterns</translation>
       <source>The default font for texts, dimensions and labels. It can be a font name such
 as "Arial", a style such as "sans", "serif" or "mono", or a family such as
 "Arial,Helvetica,sans", or a name with a style such as "Arial:Bold".</source>
-      <translation>Oletusfontti teksteille, dimensioille ja otsikoille. Voi olla fontin nimi kuten "Arial", tai tyylin nimi kuten "sans", "serif" tai "mono" tai fonttiperheen nimi kuten "Arial,Helvetica,sans" tai fontin nimi ja tyyli kuten "Arial:Bold".</translation>
+      <translation>Tekstien, mittojen ja selitteitten oletuskirjasin. Voi olla fontin nimi kuten "Arial", tai tyylin nimi kuten "sans", "serif" tai "mono" tai fonttiperheen nimi kuten "Arial,Helvetica,sans" tai fontin nimi ja tyyli kuten "Arial:Bold".</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="119"/>
       <source>The default height for texts, dimension texts and label texts</source>
-      <translation>Tekstien, dimensioitten tekstien ja tunnistetekstien oletuskorkeus</translation>
+      <translation>Tekstien, mittatekstien ja nimien oletuskorkeus</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="151"/>
@@ -1678,7 +1675,7 @@ as "Arial", a style such as "sans", "serif" or "mono", or a family such as
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="158"/>
       <source>The default line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation>Monirivisten tekstien ja tekstilaatikoiden riviväli (suhteessa fontin kokoon)</translation>
+      <translation>Monirivisten tekstien ja selitteitten riviväli oletuksena (suhteessa fontin kokoon)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="26"/>
@@ -1694,8 +1691,7 @@ as "Arial", a style such as "sans", "serif" or "mono", or a family such as
       <location filename="../ui/preferences-drafttexts.ui" line="39"/>
       <source>The default annotation scale multiplier. This is the inverse of the scale set
 in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
-      <translation type="unfinished">The default annotation scale multiplier. This is the inverse of the scale set
-in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translation>
+      <translation>Merkintöjen mittakaavan kerroin. Merkintöjen skaala- vimpaimessa asetetun asteikon käänteisarvo. Jos asteikko on 1:100, kerroin on 100.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="177"/>
@@ -1705,7 +1701,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="184"/>
       <source>The default color for texts, dimension texts and label texts</source>
-      <translation type="unfinished">The default color for texts, dimension texts and label texts</translation>
+      <translation>Tekstien, mittatekstien ja selitteitten oletusväri</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="207"/>
@@ -1715,12 +1711,12 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="213"/>
       <source>If checked, the dimension line is displayed by default</source>
-      <translation type="unfinished">If checked, the dimension line is displayed by default</translation>
+      <translation>Jos valittuna, mittaviiva näytetään oletusarvoisesti</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="216"/>
       <source>Show dimension line</source>
-      <translation>Näytä dimensioviiva</translation>
+      <translation>Näytä mittaviiva</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="232"/>
@@ -1741,12 +1737,12 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="268"/>
       <source>Arrow type</source>
-      <translation>Nuolen tyyppi</translation>
+      <translation>Mittaviivan päätteen tyyppi</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="281"/>
       <source>The default symbol displayed at the ends of dimension lines</source>
-      <translation type="unfinished">The default symbol displayed at the ends of dimension lines</translation>
+      <translation>Mittaviivan päätteissä näytettävän symbolin oletusvaihtoehto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="291"/>
@@ -1766,17 +1762,17 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="306"/>
       <source>Tick</source>
-      <translation>Rasti</translation>
+      <translation>Vinoviiva</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="311"/>
       <source>Tick-2</source>
-      <translation>Rasti-2</translation>
+      <translation>Vinoviiva 2</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="319"/>
       <source>Arrow size</source>
-      <translation>Nuolen koko</translation>
+      <translation>Päätteen koko</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="326"/>
@@ -1791,7 +1787,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="358"/>
       <source>The default color for lines and arrows</source>
-      <translation type="unfinished">The default color for lines and arrows</translation>
+      <translation>Viivojen ja nuolien oletusväri</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="381"/>
@@ -1801,7 +1797,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="387"/>
       <source>If checked, a unit symbol is added to dimension texts by default</source>
-      <translation type="unfinished">If checked, a unit symbol is added to dimension texts by default</translation>
+      <translation>Jos valittuna, yksikkö lisätään mittateksteihin oletusarvoisesti</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="390"/>
@@ -1817,33 +1813,33 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
       <location filename="../ui/preferences-drafttexts.ui" line="419"/>
       <source>The default unit override for dimensions. Enter a unit such as m
 or cm, leave blank to use the current unit defined in FreeCAD.</source>
-      <translation type="unfinished">The default unit override for dimensions. Enter a unit such as m
-or cm, leave blank to use the current unit defined in FreeCAD.</translation>
+      <translation>Ohittava yksikkö mittoihin. Anna yksikkö kuten m tai cm, jätä tyhjäksi
+jos haluat käyttää FreeCADin asetuksissa asetettua yksikköä.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="447"/>
       <source>The default number of decimal places for dimension texts</source>
-      <translation type="unfinished">The default number of decimal places for dimension texts</translation>
+      <translation>Dimensioitten desimaalimäärän oletusarvo</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="482"/>
       <source>The optional string inserted between the feet and inches values in dimensions</source>
-      <translation type="unfinished">The optional string inserted between the feet and inches values in dimensions</translation>
+      <translation>Valinnainen merkkijono jalkojen ja tuumien välillä dimensioteksteissä</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="498"/>
       <source>Dimension details</source>
-      <translation>Dimension yksityiskohdat</translation>
+      <translation>Mittaviivan yksityiskohdat</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="517"/>
       <source>The default distance the dimension line is extended past the extension lines</source>
-      <translation type="unfinished">The default distance the dimension line is extended past the extension lines</translation>
+      <translation>Oletuspituus, jolla mittaviivaa jatketaan mitta-apuviivojen ohitse</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="546"/>
       <source>Extension line length</source>
-      <translation>Jatkoviivan kulma</translation>
+      <translation>Mitta-apuviivan jatke</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="553"/>
@@ -1851,25 +1847,24 @@ or cm, leave blank to use the current unit defined in FreeCAD.</translation>
 value defines the gap between the ends of the extension lines and the measured
 points. A positive value defines the maximum length of the extension lines. Only
 used for linear dimensions.</source>
-      <translation type="unfinished">The default length of extension lines. Use 0 for full extension lines. A negative
-value defines the gap between the ends of the extension lines and the measured
-points. A positive value defines the maximum length of the extension lines. Only
-used for linear dimensions.</translation>
+      <translation>Mitta-apuviivojen pituus. Käytä 0 jos haluat täydet mitta-apuviivat. Negatiivinen arvo
+määrittää raon, joka jätetään mitta-apuviivojen ja mittauspisteen väliin. Positiivinen arvo määrittää
+mitta-apuviivojen maksimipituuden. Käytetään vain ulottuvuusmitoissa.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="585"/>
       <source>The default length of extension lines above the dimension line</source>
-      <translation type="unfinished">The default length of extension lines above the dimension line</translation>
+      <translation>Mittaviivan yläpuolella näkyvän mitta-apuviivan oletuspituus</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="614"/>
       <source>The default space between the dimension line and the dimension text</source>
-      <translation type="unfinished">The default space between the dimension line and the dimension text</translation>
+      <translation>Mittaviivan ja mittatekstin välisen etäisyyden oletusarvo</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="642"/>
       <source>ShapeStrings</source>
-      <translation type="unfinished">ShapeStrings</translation>
+      <translation>Merkkijonomuoto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="655"/>
@@ -1879,7 +1874,7 @@ used for linear dimensions.</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="607"/>
       <source>Text spacing</source>
-      <translation>Tekstin väli</translation>
+      <translation>Tekstin välistys</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="469"/>
@@ -1889,7 +1884,7 @@ used for linear dimensions.</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="648"/>
       <source>Default ShapeString font file</source>
-      <translation type="unfinished">Default ShapeString font file</translation>
+      <translation>Merkkijonomuodon oletuskirjasin</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="658"/>
@@ -1909,7 +1904,7 @@ used for linear dimensions.</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
       <source>Method chosen for importing SVG object color to FreeCAD</source>
-      <translation type="unfinished">Method chosen for importing SVG object color to FreeCAD</translation>
+      <translation>Menetelmä, jolla SVG-objektin väri tuodaan FreeCADiin</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="60"/>
@@ -1930,8 +1925,8 @@ used for linear dimensions.</translation>
       <location filename="../ui/preferences-svg.ui" line="82"/>
       <source>If checked, no units conversion will occur.
 One unit in the SVG file will translate as one millimeter.</source>
-      <translation type="unfinished">If checked, no units conversion will occur.
-One unit in the SVG file will translate as one millimeter.</translation>
+      <translation>Jos valittu, yksiköitä ei muunneta.
+Yksikkö SVG-tiedostossa kääntyy yhdeksi millimetriksi.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="86"/>
@@ -1946,7 +1941,7 @@ One unit in the SVG file will translate as one millimeter.</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="128"/>
       <source>Style of SVG file to write when exporting a sketch</source>
-      <translation type="unfinished">Style of SVG file to write when exporting a sketch</translation>
+      <translation>SVG-tiedoston, johon sketsi viedään, tyyli</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="141"/>
@@ -1961,7 +1956,7 @@ One unit in the SVG file will translate as one millimeter.</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="158"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
-      <translation type="unfinished">All white lines will appear in black in the SVG for better readability against white backgrounds</translation>
+      <translation>Kaikki valkoiset viivat näkyvät mustana SVG:ssä valkoisella taustalla luettavuuden parantamiseksi</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="161"/>
@@ -1971,16 +1966,16 @@ One unit in the SVG file will translate as one millimeter.</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="181"/>
       <source>Max segment length for discretized arcs</source>
-      <translation type="unfinished">Max segment length for discretized arcs</translation>
+      <translation>Erillistettyjen kaarien segmentin maksimipituus</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="204"/>
       <source>Versions of OpenCASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length.</source>
-      <translation type="unfinished">Versions of OpenCASCADE older than version 6.8 don't support arc projection.
-In this case arcs will be discretized into small line segments.
-This value is the maximum segment length.</translation>
+      <translation>OpenCASCADEn 6.8 versiota vanhemmat versiot eivät tue arc-projektiota.
+Vanhempaa versiota käytettäessä kaaret on jaettava pieniksi viivasegmenteiksi.
+Tämä arvo on erillistetyn segmentin enimmäispituus.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="14"/>
@@ -1990,7 +1985,7 @@ This value is the maximum segment length.</translation>
     <message>
       <location filename="../ui/preferences-oca.ui" line="46"/>
       <source>Check this if you want the areas (3D faces) to be imported too.</source>
-      <translation>Valitse tämä, jos haluat alueet (3D tahkot) myös tuotaviksi.</translation>
+      <translation>Valitse tämä, jos haluat tuoda myös alueet (3D tahkot).</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="49"/>
@@ -2005,26 +2000,26 @@ This value is the maximum segment length.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
-      <translation type="unfinished">This preferences dialog will be shown when importing/ exporting DXF files</translation>
+      <translation>Tämä valintaikkuna näytetään DXF-tiedostoja tuotaessa ja vietäessä</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="29"/>
       <source>Show this dialog when importing and exporting</source>
-      <translation type="unfinished">Show this dialog when importing and exporting</translation>
+      <translation>Näytä tämä ikkuna tuotaessa ja vietäessä</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="45"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python importer is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet</translation>
+      <translation>Käytetään Python -tuojaa. Jos ei valittu, käytetään uudempaa C++ -tuojaa.
+Huomaa, että C++ -tuoja on nopeampi, mutta ei yhtä monipuolinen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="65"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ exporter is faster, but is not as featureful yet</translation>
+      <translation>Käytetään Python -tuojaa. Jos ei valittu, käytetään uudempaa C++ -tuojaa.
+Huomaa, että C++ -tuoja on nopeampi, mutta ei yhtä monipuolinen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="90"/>
@@ -2055,12 +2050,12 @@ Lisäosien hallinnassa.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="155"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
-      <translation type="unfinished">If unchecked, texts and mtexts won't be imported</translation>
+      <translation>Jos ei valittuna, text -objekteja (teksti) ja monirivisiä dxf mtext -objekteja ei tuoda</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="171"/>
       <source>If unchecked, points won't be imported</source>
-      <translation type="unfinished">If unchecked, points won't be imported</translation>
+      <translation>Jos ei valittuna, pisteitä ei tuoda</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="174"/>
@@ -2070,12 +2065,12 @@ Lisäosien hallinnassa.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If checked, paper space objects will be imported too</source>
-      <translation type="unfinished">If checked, paper space objects will be imported too</translation>
+      <translation>Jos valittu, myös paperitila-objektit tuodaan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="203"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation type="unfinished">If you want the non-named blocks (beginning with a *) to be imported too</translation>
+      <translation>Jos haluat että myös nimeämättömät plokit (alkavat *) tuodaan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="206"/>
@@ -2090,12 +2085,12 @@ Lisäosien hallinnassa.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="236"/>
       <source>Only standard Part objects will be created (fastest)</source>
-      <translation type="unfinished">Only standard Part objects will be created (fastest)</translation>
+      <translation>Luodaan vain standardeja Parts -objekteja (nopein)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="258"/>
       <source>Parametric Draft objects will be created whenever possible</source>
-      <translation type="unfinished">Parametric Draft objects will be created whenever possible</translation>
+      <translation>Luodan parametrisia Draft -objekteja aina kun mahdollista</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="261"/>
@@ -2105,7 +2100,7 @@ Lisäosien hallinnassa.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="277"/>
       <source>Sketches will be created whenever possible</source>
-      <translation type="unfinished">Sketches will be created whenever possible</translation>
+      <translation>Luonnoksia luodaan aina kun mahdollista</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="280"/>
@@ -2115,7 +2110,7 @@ Lisäosien hallinnassa.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="300"/>
       <source>Scale factor to apply to imported files</source>
-      <translation type="unfinished">Scale factor to apply to imported files</translation>
+      <translation>Tuotujen tiedostojen skaalauskerroin</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="320"/>
@@ -2123,71 +2118,71 @@ Lisäosien hallinnassa.</translation>
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
                              in meters: 1000, in inches: 25.4, in feet: 304.8</source>
-      <translation type="unfinished">Scale factor to apply to DXF files on import.
-The factor is the conversion between the unit of your DXF file and millimeters.
-Example: for files in millimeters: 1, in centimeters: 10,
-                             in meters: 1000, in inches: 25.4, in feet: 304.8</translation>
+      <translation>Tuotavien DXF -tiedostojen skaalauskerroin.
+Kerroin lasketaan DXF- tiedoston ja millimetrien suhteena.
+Esimerkiksi: tiedosto jossa yksikkö on millimetrit: 1, senttimetrit: 10,
+metrit: 1000, tuumat: 25,4, jalat: 304,8</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="394"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</source>
-      <translation type="unfinished">Objects from the same layers will be joined into Draft Blocks,
-turning the display faster, but making them less easily editable.</translation>
+      <translation>Samalla tasolla olevat objektit yhdistetään Compound -plokiksi,
+joka nopeuttaa näyttöä mutta tekee kappalesta työläämpiä muokata.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="655"/>
       <source>Project exported objects along current view direction</source>
-      <translation type="unfinished">Project exported objects along current view direction</translation>
+      <translation>Projekti vietiin objektit näkymän suuntaan asetettuina</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="373"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
-      <translation type="unfinished">FreeCAD will try to join coincident objects into wires.
-Note that this can take a while!</translation>
+      <translation>FreeCAD yrittää liittää samassa paikassa yhdistyvät objektit langoiksi.
+Tämä voi viedä aikaa!</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="349"/>
       <source>Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</source>
-      <translation type="unfinished">Colors will set as specified in the DXF file whenever possible.
-Otherwise default colors will be applied.</translation>
+      <translation>DXF-tiedostossa olevia värejä käytetään aina kun mahdollista.
+Muuten käytetään oletusvärejä.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="82"/>
       <source>Automatic update (legacy importer/exporter only)</source>
-      <translation type="unfinished">Automatic update (legacy importer/exporter only)</translation>
+      <translation>Automaattinen päivitys (vain perinteinen tuoja/viejä)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="49"/>
       <source>Use legacy Python importer</source>
-      <translation type="unfinished">Use legacy Python importer</translation>
+      <translation>Käytä perinteistä Python-tuontia</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="69"/>
       <source>Use legacy Python exporter</source>
-      <translation type="unfinished">Use legacy Python exporter</translation>
+      <translation>Käytä perinteistä Python-vientiä</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="139"/>
       <source>Some options are not yet available for the new importer</source>
-      <translation type="unfinished">Some options are not yet available for the new importer</translation>
+      <translation>Joitakin vaihtoehtoja ei ole vielä saatavana uudessa tuontiohjelmassa</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="190"/>
       <source>Layouts</source>
-      <translation type="unfinished">Layouts</translation>
+      <translation>Asettelu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="239"/>
       <source>Simple Part shapes</source>
-      <translation type="unfinished">Simple Part shapes</translation>
+      <translation>Yksinkertaisia Part (osa) muotoja</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="353"/>
       <source>Use colors from the DXF file</source>
-      <translation type="unfinished">Use colors from the DXF file</translation>
+      <translation>Käytä DXF-tiedoston värejä</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="377"/>
@@ -2203,8 +2198,8 @@ Otherwise default colors will be applied.</translation>
       <location filename="../ui/preferences-dxf.ui" line="418"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
-      <translation type="unfinished">Imported texts will get the standard Draft Text size,
-instead of the size they have in the DXF document</translation>
+      <translation>Tuodut tekstit muutetaan Draftin tekstikokoon,
+sen sijaan että ne olisivat DXF-asiakirjassa määritellyssä koossa</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="422"/>
@@ -2214,56 +2209,56 @@ instead of the size they have in the DXF document</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="439"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation type="unfinished">If this is checked, DXF layers will be imported as Draft Layers</translation>
+      <translation>Jos tämä on valittuna, DXF-tasot tuodaan Draft-tasoiksi</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="465"/>
       <source>Hatches will be converted into simple wires</source>
-      <translation type="unfinished">Hatches will be converted into simple wires</translation>
+      <translation>Täytekuviot muunnetaan yksinkertaisiksi Draftin Lanka -objekteiksi</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="468"/>
       <source>Import hatch boundaries as wires</source>
-      <translation type="unfinished">Import hatch boundaries as wires</translation>
+      <translation>Tuo täykuvioitten rajat lankoina</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="488"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
-      <translation type="unfinished">If polylines have a width defined, they will be rendered
-as closed wires with correct width</translation>
+      <translation>Jos murtoviivojen leveys on määritelty, ne näytetään oikean levyisinä
+suljettuina lankoina</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="492"/>
       <source>Render polylines with width</source>
-      <translation type="unfinished">Render polylines with width</translation>
+      <translation>Renderöi murtoviivat leveys huomioiden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="521"/>
       <source>Some options are not yet available for the new exporter</source>
-      <translation type="unfinished">Some options are not yet available for the new exporter</translation>
+      <translation>Joitakin vaihtoehtoja ei ole vielä saatavana uudessa vientiohjelmassa</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="530"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
-      <translation type="unfinished">Ellipse export is poorly supported. Use this to export them as polylines instead.</translation>
+      <translation>Ellipsin vientiä tuetaan huonosti. Tämän avulla voit viedä ne sen sijaan murtoviivoina.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="533"/>
       <source>Treat ellipses and splines as polylines</source>
-      <translation>Käsittele ellipsejä ja käyriä moniviivoina</translation>
+      <translation>Käsittele ellipsejä ja käyriä murtoviivoina</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="562"/>
       <source>Max Spline Segment:</source>
-      <translation type="unfinished">Max Spline Segment:</translation>
+      <translation>Max käyrän segmentti:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="572"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
-      <translation type="unfinished">Maximum length of each of the polyline segments.
-If it is set to '0' the whole spline is treated as a straight segment.</translation>
+      <translation>Murtoviivojen maksimipituus.
+Jos '0', koko käyrää käsitellään suorana segmenttinä.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="107"/>
@@ -2279,29 +2274,29 @@ If it is set to '0' the whole spline is treated as a straight segment.</translat
     <message>
       <location filename="../ui/preferences-dxf.ui" line="605"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
-      <translation type="unfinished">All objects containing faces will be exported as 3D polyfaces</translation>
+      <translation>Kaikki pintoja sisältävät objektit viedään 3D polyface -muotoisina</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="608"/>
       <source>Export 3D objects as polyface meshes</source>
-      <translation type="unfinished">Export 3D objects as polyface meshes</translation>
+      <translation>Vie 3D-objektit polyface mesh -verkkoina</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="625"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
-      <translation type="unfinished">TechDraw Views will be exported as blocks.
-This might fail for post DXF R12 templates.</translation>
+      <translation>TechDraw -näkymät viedään blokkeina.
+Vienti saattaa epäonnistua DXF R12 -versiota uudemmilla.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="629"/>
       <source>Export TechDraw Views as blocks</source>
-      <translation type="unfinished">Export TechDraw Views as blocks</translation>
+      <translation>Vie TechDraw -näkymät blokkeina</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="652"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
-      <translation type="unfinished">Exported objects will be projected to reflect the current view direction</translation>
+      <translation>Viedyt kohteet projisoidaan olemassaolevan näkymän suuntaan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="14"/>
@@ -2324,26 +2319,26 @@ This might fail for post DXF R12 templates.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
       <source>If checked, the outline of a human figure is displayed at the bottom left
 corner of the grid. Only effective if "Show grid border" is enabled.</source>
-      <translation type="unfinished">If checked, the outline of a human figure is displayed at the bottom left
-corner of the grid. Only effective if "Show grid border" is enabled.</translation>
+      <translation>Jos valittu, ihmisen kuvan ääriviivat näytetään ruudukon vasemmassa alakulmassa.
+Käytössä vain, jos "Näytä ruudukon reuna" on käytössä.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="132"/>
       <source>Major lines every</source>
-      <translation>Suuremmat viivat joka</translation>
+      <translation>Pääviivojen väli</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="145"/>
       <source>The number of squares between major grid lines.
 Major grid lines are thicker than minor grid lines.</source>
-      <translation type="unfinished">The number of squares between major grid lines.
-Major grid lines are thicker than minor grid lines.</translation>
+      <translation>Pääviivojen väliin jätettävät ruudut.
+Pääviivat ovat paksumpia kuin väliviivat.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="149"/>
       <location filename="../ui/preferences-draftsnap.ui" line="220"/>
       <source> squares</source>
-      <translation> neliöt</translation>
+      <translation> ruutua</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="217"/>
@@ -2353,7 +2348,7 @@ Major grid lines are thicker than minor grid lines.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="393"/>
       <source>Snap modifier</source>
-      <translation>Kiinnitä muokaajiin</translation>
+      <translation>Kiinnityksen muokkaus</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="409"/>
@@ -2377,29 +2372,29 @@ Major grid lines are thicker than minor grid lines.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="440"/>
       <source>Constrain modifier</source>
-      <translation type="unfinished">Constrain modifier</translation>
+      <translation>Rajoitteen näppäin</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="447"/>
       <source>The Constrain modifier key</source>
-      <translation type="unfinished">The Constrain modifier key</translation>
+      <translation>Kohdistustilan näppäin</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="475"/>
       <source>Alt modifier</source>
-      <translation type="unfinished">Alt modifier</translation>
+      <translation>Alt -näppäin</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="482"/>
       <source>The Alt modifier key. The function of this key depends on the command.</source>
-      <translation type="unfinished">The Alt modifier key. The function of this key depends on the command.</translation>
+      <translation>Alt -näppäimenä käytettävä näppäin. Toiminto riippuu kulloinkin käytössä olevasta komennosta.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="26"/>
       <source>If checked, the grid will always be visible in new views.
 Use Draft ToggleGrid to change this for the active view.</source>
-      <translation type="unfinished">If checked, the grid will always be visible in new views.
-Use Draft ToggleGrid to change this for the active view.</translation>
+      <translation>Jos valittu, ruudukko näkyy aina uusissa näkymissä.
+Käytä Ruudukko käytössä -painiketta vaihtaaksesi ruudukon näkymään tai pois.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="185"/>
@@ -2409,12 +2404,12 @@ Use Draft ToggleGrid to change this for the active view.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="303"/>
       <source>The maximum number of objects Draft Edit is allowed to process at the same time</source>
-      <translation type="unfinished">The maximum number of objects Draft Edit is allowed to process at the same time</translation>
+      <translation>Maksimimäärä objekteja, joita voidaan muokata samaan aikaan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="758"/>
       <source>Only show the Draft snap toolbar during commands</source>
-      <translation type="unfinished">Only show the Draft snap toolbar during commands</translation>
+      <translation>Näytä kohdistamisen työkalupalkki vain komentojen aikana</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="20"/>
@@ -2430,25 +2425,25 @@ Use Draft ToggleGrid to change this for the active view.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="49"/>
       <source>If checked, the grid will be visible during commands in new views.
 Use Draft ToggleGrid to change this for the active view.</source>
-      <translation type="unfinished">If checked, the grid will be visible during commands in new views.
-Use Draft ToggleGrid to change this for the active view.</translation>
+      <translation>Jos valittuna, ruudukko näytetään uusissa näkymissä komentojen aikana.
+Käytä Ruudukko käytössä -painiketta vaihtaaksesi ruudukon näkymään tai pois.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="53"/>
       <source>Show the grid during commands</source>
-      <translation type="unfinished">Show the grid during commands</translation>
+      <translation>Näytä ruudukko komentojen aikana</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="69"/>
       <source>If checked, an additional border is displayed around the grid,
 showing the main square size in the bottom left corner</source>
-      <translation type="unfinished">If checked, an additional border is displayed around the grid,
-showing the main square size in the bottom left corner</translation>
+      <translation>Jos valittu, ruudukon ympärillä näytetään reunaviiva,
+ja ruudukon pääviivojen koko vasemmassa kulmassa</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="73"/>
       <source>Show grid border</source>
-      <translation type="unfinished">Show grid border</translation>
+      <translation>Näytä ruudukon reunaviiva</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="96"/>
@@ -2459,18 +2454,18 @@ showing the main square size in the bottom left corner</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="112"/>
       <source>If checked, the two main axes of the grid are colored red, green or blue
 if they match the X, Y or Z axis of the global coordinate system</source>
-      <translation type="unfinished">If checked, the two main axes of the grid are colored red, green or blue
-if they match the X, Y or Z axis of the global coordinate system</translation>
+      <translation>Jos valittu, ruudukon kaksi pääakselia näytetään punaisena, vihreänä tai sinisenä
+jos ne vastaavat globaalin koordinaattijärjestelmän X, Y tai Z -akselia</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="116"/>
       <source>Use colored axes</source>
-      <translation type="unfinished">Use colored axes</translation>
+      <translation>Käytä värillisiä akseleita</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="178"/>
       <source>Grid spacing</source>
-      <translation>Ruudukon välit</translation>
+      <translation>Ruudukon tiheys</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="210"/>
@@ -2495,12 +2490,12 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="295"/>
       <source>Snapping and modifier keys</source>
-      <translation type="unfinished">Snapping and modifier keys</translation>
+      <translation>Tarttuminen ja muokkausnäppäimet</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="301"/>
       <source>Snap symbol style</source>
-      <translation type="unfinished">Snap symbol style</translation>
+      <translation>Kohdistussymbolien tyyli</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="256"/>
@@ -2515,22 +2510,22 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="308"/>
       <source>The style for snap symbols</source>
-      <translation type="unfinished">The style for snap symbols</translation>
+      <translation>Kohdistussymbolien tyyli</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="344"/>
       <source>Snap symbol color</source>
-      <translation type="unfinished">Snap symbol color</translation>
+      <translation>Kohdistussymbolien väri</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="351"/>
       <source>The color for snap symbols</source>
-      <translation type="unfinished">The color for snap symbols</translation>
+      <translation>Kohdistussymbolien väri</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="371"/>
       <source>If checked, snapping is activated without the need to press the Snap modifier key</source>
-      <translation type="unfinished">If checked, snapping is activated without the need to press the Snap modifier key</translation>
+      <translation>Jos tämä vaihtoehto on valittuna, tarttuminen aktivoituu ilman kohdistustilan pikanäppäintä</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="272"/>
@@ -2540,7 +2535,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="246"/>
       <source>The overall transparency of the grid</source>
-      <translation type="unfinished">The overall transparency of the grid</translation>
+      <translation>Ruudukon yleinen läpinäkyvyys</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="14"/>
@@ -2560,7 +2555,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
       <source>This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</source>
-      <translation type="unfinished">This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</translation>
+      <translation>Tämä on menetelmä jota FreeCAD käyttää muuntaessaan DWG-tiedostoja DXF-muotoon. Jos valitaan "Automaattinen", FreeCAD yrittää löytää yhden seuraavista muuntimista samassa järjestyksessä kuin ne näytetään täällä. Jos FreeCAD ei löydä mitään, sinun on ehkä valittava tietty muunnin ja ilmoitettava sen polku tähän alle. Valitse "dwg2dxf" apuohjelma, jos käytät LibreDWG: tä, "ODAFileConverter" -ohjelmaa, jos käytät ODA- muunninta, tai "dwg2dwg" -apuohjelmaa, jos käytät QCAD: n pro -versiota.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="51"/>
@@ -2591,12 +2586,12 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="85"/>
       <source>The path to your DWG file converter executable</source>
-      <translation type="unfinished">The path to your DWG file converter executable</translation>
+      <translation>Polku DWG-tiedostomuuntimen suoritustiedostoon</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Huomautus:&lt;/span&gt; DXF-asetukset koskevat myös DWG-tiedostoja.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
@@ -2641,12 +2636,12 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="14"/>
       <source>Interface</source>
-      <translation type="unfinished">Interface</translation>
+      <translation>Käyttöliittymä</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="20"/>
       <source>In-command shortcuts</source>
-      <translation type="unfinished">In-command shortcuts</translation>
+      <translation>Piirtokomentojen aikaiset pikanäppäimet</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="183"/>
@@ -2661,7 +2656,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="234"/>
       <source>Subelement mode</source>
-      <translation type="unfinished">Subelement mode</translation>
+      <translation>Alielementtitila</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="247"/>
@@ -2686,32 +2681,32 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="586"/>
       <source>Increase radius</source>
-      <translation type="unfinished">Increase radius</translation>
+      <translation>Kasvata sädettä</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="618"/>
       <source>Decrease radius</source>
-      <translation type="unfinished">Decrease radius</translation>
+      <translation>Pienennä sädettä</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="749"/>
       <source>UI options</source>
-      <translation type="unfinished">UI options</translation>
+      <translation>Käyttöliittymän asetukset</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="755"/>
       <source>If checked, the Draft snap toolbar will only be visible during commands</source>
-      <translation type="unfinished">If checked, the Draft snap toolbar will only be visible during commands</translation>
+      <translation>Jos valittu, Draftin Tartunta -työkalupalkki näytetään vain komentojen aikana</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="777"/>
       <source>Show the Snap widget in the Draft Workbench</source>
-      <translation type="unfinished">Show the Snap widget in the Draft Workbench</translation>
+      <translation>Näytä Tarttuminen -valinta tilarivillä</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="796"/>
       <source>Show the Annotation scale widget in the Draft Workbench</source>
-      <translation type="unfinished">Show the Annotation scale widget in the Draft Workbench</translation>
+      <translation>Näytä Merkintöjen skaala -valinta tilarivillä</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="215"/>
@@ -2766,12 +2761,12 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="458"/>
       <source>Cycle snap</source>
-      <translation type="unfinished">Cycle snap</translation>
+      <translation>Kierrä tarttumista</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="490"/>
       <source>Add hold</source>
-      <translation>Lisää ote</translation>
+      <translation>Lisää tartuntapiste</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="522"/>
@@ -2791,7 +2786,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="650"/>
       <source>Restrict X</source>
-      <translation type="unfinished">Restrict X</translation>
+      <translation>Rajoita X-akselille</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="663"/>
@@ -2801,7 +2796,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="682"/>
       <source>Restrict Y</source>
-      <translation type="unfinished">Restrict Y</translation>
+      <translation>Rajoita X-akselille</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="695"/>
@@ -2811,7 +2806,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="714"/>
       <source>Restrict Z</source>
-      <translation type="unfinished">Restrict Z</translation>
+      <translation>Rajoita Z-akselille</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="727"/>
@@ -2821,12 +2816,12 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="774"/>
       <source>If checked, the Snap widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Snap widget is displayed in the Draft status bar</translation>
+      <translation>Jos valittu, Tarttumisen valinta näytetään Draft -työtilassa tilarivillä</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="793"/>
       <source>If checked, the Annotation scale widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the Annotation scale widget is displayed in the Draft status bar</translation>
+      <translation>Jos valittu, Merkintöjen skaalan valinta näytetään Draft -työtilassa tilarivillä</translation>
     </message>
   </context>
   <context>
@@ -2870,7 +2865,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../DraftGui.py" line="63"/>
       <source>Subelement mode</source>
-      <translation type="unfinished">Subelement mode</translation>
+      <translation>Alielementtitila</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="64"/>
@@ -2890,27 +2885,27 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../DraftGui.py" line="67"/>
       <source>Increase snap radius</source>
-      <translation type="unfinished">Increase snap radius</translation>
+      <translation>Kasvata kohdistamisen sädettä</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="68"/>
       <source>Decrease snap radius</source>
-      <translation type="unfinished">Decrease snap radius</translation>
+      <translation>Laske kohdistamisen sädettä</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="69"/>
       <source>Restrict X</source>
-      <translation type="unfinished">Restrict X</translation>
+      <translation>Rajoita X-akselille</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="70"/>
       <source>Restrict Y</source>
-      <translation type="unfinished">Restrict Y</translation>
+      <translation>Rajoita X-akselille</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="71"/>
       <source>Restrict Z</source>
-      <translation type="unfinished">Restrict Z</translation>
+      <translation>Rajoita Z-akselille</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="72"/>
@@ -2942,12 +2937,12 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../DraftGui.py" line="77"/>
       <source>Cycle snap object</source>
-      <translation type="unfinished">Cycle snap object</translation>
+      <translation>Selaa kohdistusta</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="79"/>
       <source>Undo last segment</source>
-      <translation type="unfinished">Undo last segment</translation>
+      <translation>Peru viimeinen segmentti</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="946"/>
@@ -2988,12 +2983,12 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
       <location filename="../../WorkingPlane.py" line="1265"/>
       <location filename="../../WorkingPlane.py" line="1294"/>
       <source>Selected shapes do not define a plane</source>
-      <translation type="unfinished">Selected shapes do not define a plane</translation>
+      <translation>Valitut muodot eivät muodosta tasoa</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1620"/>
       <source>No previous working plane</source>
-      <translation type="unfinished">No previous working plane</translation>
+      <translation>Ei edellistä työtasoa</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1630"/>
@@ -3023,17 +3018,17 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../DraftGui.py" line="526"/>
       <source>active command:</source>
-      <translation type="unfinished">active command:</translation>
+      <translation>aktiivinen komento:</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="528"/>
       <source>Active Draft command</source>
-      <translation type="unfinished">Active Draft command</translation>
+      <translation>Aktiivinen Draft -komento</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="529"/>
       <source>X coordinate of next point</source>
-      <translation type="unfinished">X coordinate of next point</translation>
+      <translation>Seuraavan pisteen X-koordinaatti</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="530"/>
@@ -3053,12 +3048,12 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../DraftGui.py" line="533"/>
       <source>Y coordinate of next point</source>
-      <translation type="unfinished">Y coordinate of next point</translation>
+      <translation>Seuraavan pisteen Y-koordinaatti</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="534"/>
       <source>Z coordinate of next point</source>
-      <translation type="unfinished">Z coordinate of next point</translation>
+      <translation>Seuraavan pisteen Z-koordinaatti</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="535"/>
@@ -3068,7 +3063,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../DraftGui.py" line="537"/>
       <source>Enter a new point with the given coordinates</source>
-      <translation type="unfinished">Enter a new point with the given coordinates</translation>
+      <translation>Siirry annetuissa koordinaateissa olevaan seuraavaan pisteeseen</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="538"/>
@@ -3084,17 +3079,17 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../DraftGui.py" line="540"/>
       <source>Length of current segment</source>
-      <translation type="unfinished">Length of current segment</translation>
+      <translation>Nykyisen segmentin pituus</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="541"/>
       <source>Angle of current segment</source>
-      <translation type="unfinished">Angle of current segment</translation>
+      <translation>Nykyisen segmentin kulma</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="544"/>
       <source>Check this to lock the current angle</source>
-      <translation type="unfinished">Check this to lock the current angle</translation>
+      <translation>Valitse tämä jos haluat lukita nykyisen kulman</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="545"/>
@@ -3112,27 +3107,27 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
       <location filename="../../DraftGui.py" line="551"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
-      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
-if is the first point to set</translation>
+      <translation>Koordinaatit suhteessa edelliseen pisteeseen tai koordinaattijärjestelmän origoon,
+jos tämä on ensimmäinen asetettava piste</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="556"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
-      <translation type="unfinished">Coordinates relative to global coordinate system.
-Uncheck to use working plane coordinate system</translation>
+      <translation>Koordinaatit suhteessa globaaliin koordinaattijärjestelmään.
+Poista käytöstä jos haluat käyttää tämän työtason koordinaattijärjestelmää</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="558"/>
       <source>Filled</source>
-      <translation type="unfinished">Filled</translation>
+      <translation>Täyttö</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="562"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
-Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
+      <translation>Valitse tämä, jos haluat objektin näkyvän täytettynä, muuten se näkyy rautalankamallina.
+Ei käytettävissä, jos Draftin asetuksissa on asetettu 'Käytä Part primitiivejä jos mahdollista'</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="564"/>
@@ -3142,22 +3137,22 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="566"/>
       <source>Finishes the current drawing or editing operation</source>
-      <translation type="unfinished">Finishes the current drawing or editing operation</translation>
+      <translation>Päättää piirto- tai muokkausoperaation</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="569"/>
       <source>If checked, command will not finish until you press the command button again</source>
-      <translation type="unfinished">If checked, command will not finish until you press the command button again</translation>
+      <translation>Jos valittu, komento ei lopu ennen kuin painat komennon painiketta uudelleen</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="574"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation type="unfinished">If checked, an OCC-style offset will be performed instead of the classic offset</translation>
+      <translation>Jos valittu, siirtymä tehdään OCC-tyylillä</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="575"/>
       <source>OCC-style offset</source>
-      <translation type="unfinished">OCC-style offset</translation>
+      <translation>OCC-tyylinen siirtymä</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="577"/>
@@ -3167,7 +3162,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="591"/>
       <source>If checked, objects will be copied instead of moved</source>
-      <translation type="unfinished">If checked, objects will be copied instead of moved</translation>
+      <translation>Jos valittu, objektit kopioidaan eikä siirretä</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="578"/>
@@ -3177,27 +3172,27 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="580"/>
       <source>Finishes and closes the current line</source>
-      <translation type="unfinished">Finishes and closes the current line</translation>
+      <translation>Päättää ja sulkee nykyisen viivan</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="582"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
-      <translation type="unfinished">Wipes the existing segments of this line and starts again from the last point</translation>
+      <translation>Poistaa viivan olemassaolevat segmentit ja aloittaa piirtämisen uudelleen viimeisestä pisteestä</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="583"/>
       <source>Set WP</source>
-      <translation type="unfinished">Set WP</translation>
+      <translation>Aseta työtaso</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="584"/>
       <source>Reorients the working plane on the last segment</source>
-      <translation type="unfinished">Reorients the working plane on the last segment</translation>
+      <translation>Asettaa työtason viimeisimpään segmenttiin</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="586"/>
       <source>Selects an existing edge to be measured by this dimension</source>
-      <translation type="unfinished">Selects an existing edge to be measured by this dimension</translation>
+      <translation>Valitsee särmän joka mitataan tällä mittaviivalla</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="587"/>
@@ -3207,17 +3202,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="588"/>
       <source>Number of sides</source>
-      <translation type="unfinished">Number of sides</translation>
+      <translation>Sivujen määrä</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="592"/>
       <source>Modify subelements</source>
-      <translation type="unfinished">Modify subelements</translation>
+      <translation>Muokkaa alielementtejä</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="593"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
-      <translation type="unfinished">If checked, subelements will be modified instead of entire objects</translation>
+      <translation>Jos valittuna, objektien muokkaamisen sijaan muokataan alielementtejä</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="594"/>
@@ -3227,17 +3222,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="595"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
-      <translation type="unfinished">Press this button to create the text object, or finish your text with two blank lines</translation>
+      <translation>Paina tätä painiketta luodaksesi tekstiobjektin, päätä teksti kahdella tyhjällä rivillä</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="617"/>
       <source>Change default style for new objects</source>
-      <translation type="unfinished">Change default style for new objects</translation>
+      <translation>Vaihda uusien objektien oletustyyli</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="618"/>
       <source>Toggle construction mode</source>
-      <translation type="unfinished">Toggle construction mode</translation>
+      <translation>Rakennetila / Piirtotila</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="619"/>
@@ -3281,12 +3276,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="763"/>
       <source>Label</source>
-      <translation>Nimike</translation>
+      <translation>Selite</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="765"/>
       <source>Label type</source>
-      <translation type="unfinished">Label type</translation>
+      <translation>Selitteen tyyppi</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="781"/>
@@ -3308,12 +3303,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../DraftGui.py" line="804"/>
       <location filename="../../draftguitools/gui_trimex.py" line="230"/>
       <source>Offset distance</source>
-      <translation type="unfinished">Offset distance</translation>
+      <translation>Siirtymän etäisyys</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="800"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>Trimex</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="876"/>
@@ -3333,17 +3328,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../DraftGui.py" line="889"/>
       <location filename="../../DraftGui.py" line="890"/>
       <source>Global {}</source>
-      <translation type="unfinished">Global {}</translation>
+      <translation>Globaali {}</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1484"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Automaattinen ryhmä:</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1623"/>
       <source>Modify objects</source>
-      <translation type="unfinished">Modify objects</translation>
+      <translation>Muokkaa kohteita</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1772"/>
@@ -3363,12 +3358,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="1775"/>
       <source>Facebinder elements</source>
-      <translation type="unfinished">Facebinder elements</translation>
+      <translation>Facebinder -elementit</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="46"/>
       <source>Draft</source>
-      <translation>2D-piirustus</translation>
+      <translation>Draft</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="288"/>
@@ -3391,7 +3386,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../importDWG.py" line="297"/>
       <location filename="../../importDWG.py" line="376"/>
       <source>LibreDWG converter not found</source>
-      <translation type="unfinished">LibreDWG converter not found</translation>
+      <translation>LibreDWG-muunninta ei löydy</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="316"/>
@@ -3403,7 +3398,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../importDWG.py" line="334"/>
       <location filename="../../importDWG.py" line="401"/>
       <source>QCAD converter not found</source>
-      <translation type="unfinished">QCAD converter not found</translation>
+      <translation>QCAD-muunninta ei löydy</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="339"/>
@@ -3412,9 +3407,9 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
 Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation type="unfinished">No suitable external DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
-For more information see:
+      <translation>Sopivaa ulkoista DWG-muunninta ei löytynyt.
+Määritä se manuaalisesti valikosta Muokkaa -&gt; Asetukset -&gt; Tuonti/Vienti -&gt; DWG
+Lisätietoja:
 https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
@@ -3422,21 +3417,21 @@ https://wiki.freecad.org/Import_Export_Preferences</translation>
       <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.</source>
-      <translation type="unfinished">Error during DWG conversion.
-Try moving the DWG file to a directory path without spaces and non-english characters,
-or try saving to a lower DWG version.</translation>
+      <translation>DWG muuntamisessa tapahtui virhe.
+Yritä siirtää DWG-tiedosto hakemistoon ilman välilyöntejä ja ei-englanninkielisiä merkkejä,
+tai yritä tallentaa alempaan DWG-versioon.</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="853"/>
       <location filename="../../draftmake/make_sketch.py" line="120"/>
       <location filename="../../draftmake/make_sketch.py" line="132"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>Kaikkien Muotojen täytyy olla samalla planaaritasolla</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="861"/>
       <source>Selected Shapes must define a plane</source>
-      <translation type="unfinished">Selected Shapes must define a plane</translation>
+      <translation>Valittujen muotojen on määriteltävä tahko</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1300"/>
@@ -3453,7 +3448,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="139"/>
       <source>Unable to convert input into a scale factor</source>
-      <translation type="unfinished">Unable to convert input into a scale factor</translation>
+      <translation>Syötettä ei voi muuntaa skaalauskertoimeksi</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="153"/>
@@ -3463,22 +3458,22 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="155"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
-      <translation type="unfinished">Set custom annotation scale in format x:x, x=x</translation>
+      <translation>Määritä selitteitten skaalaus muodossa x:x, x=x</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="188"/>
       <source>Draft scale widget</source>
-      <translation type="unfinished">Draft scale widget</translation>
+      <translation>Draft skaalauksen valinta</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="213"/>
       <source>Set the scale used by draft annotation tools</source>
-      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
+      <translation>Määritä selitetyökalujen skaalaus</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="249"/>
       <source>Draft snap widget</source>
-      <translation type="unfinished">Draft snap widget</translation>
+      <translation>Draftin tarttumisen valinta</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
@@ -3499,23 +3494,23 @@ or try saving to a lower DWG version.</translation>
       <location filename="../../draftmake/make_layer.py" line="143"/>
       <location filename="../../draftfunctions/cut.py" line="57"/>
       <source>No active document. Aborting.</source>
-      <translation type="unfinished">No active document. Aborting.</translation>
+      <translation>Ei aktiivista asiakirjaa. Keskeytetään.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="131"/>
       <location filename="../../draftutils/gui_utils.py" line="873"/>
       <source>Wrong input: object {} not in document.</source>
-      <translation type="unfinished">Wrong input: object {} not in document.</translation>
+      <translation>Väärä syöte: objekti {} ei ole asiakirjassa.</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="165"/>
       <source>Unable to insert new object into a scaled part</source>
-      <translation type="unfinished">Unable to insert new object into a scaled part</translation>
+      <translation>Uutta objektia ei voi lisätä skaalattuun osaan</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="271"/>
       <source>Symbol not implemented. Using a default symbol.</source>
-      <translation type="unfinished">Symbol not implemented. Using a default symbol.</translation>
+      <translation>Symbolia ei voi käytää. Käytetään oletussymbolia.</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="749"/>
@@ -3525,7 +3520,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="755"/>
       <source>filename does not exist on the system or in the resource file</source>
-      <translation type="unfinished">filename does not exist on the system or in the resource file</translation>
+      <translation>tiedostonimeä ei ole järjestelmässä tai resurssitiedostossa</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="814"/>
@@ -3535,12 +3530,12 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="879"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
-      <translation type="unfinished">Does not have 'ViewObject.RootNode'.</translation>
+      <translation>Objektilla ei ole 'ViewObject.RootNode'.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="663"/>
       <source>Solids:</source>
-      <translation type="unfinished">Solids:</translation>
+      <translation>Kiinteät objektit:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="664"/>
@@ -3550,22 +3545,22 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftutils/utils.py" line="665"/>
       <source>Wires:</source>
-      <translation type="unfinished">Wires:</translation>
+      <translation>Langat:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="666"/>
       <source>Edges:</source>
-      <translation type="unfinished">Edges:</translation>
+      <translation>Reunat:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="667"/>
       <source>Vertices:</source>
-      <translation type="unfinished">Vertices:</translation>
+      <translation>Kärkipisteet:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="671"/>
       <source>Face</source>
-      <translation>Tahko</translation>
+      <translation>Pinta</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="676"/>
@@ -3576,22 +3571,22 @@ or try saving to a lower DWG version.</translation>
       <location filename="../../draftutils/utils.py" line="708"/>
       <location filename="../../draftutils/utils.py" line="712"/>
       <source>different types</source>
-      <translation type="unfinished">different types</translation>
+      <translation>eri tyypit</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="722"/>
       <source>Objects have different placements. Distance between the two base points:</source>
-      <translation type="unfinished">Objects have different placements. Distance between the two base points:</translation>
+      <translation>Objektit ovat eri paikoissa. Peruspisteitten välimatka:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="1116"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
-      <translation type="unfinished">This function will be deprecated in {}. Please use '{}'.</translation>
+      <translation>Tämä toiminto vanhenee {}. Ole hyvä ja käytä '{}'.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="1118"/>
       <source>This function will be deprecated. Please use '{}'.</source>
-      <translation type="unfinished">This function will be deprecated. Please use '{}'.</translation>
+      <translation>Tämä toiminto vanhentuu. Käytä '{}'.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="725"/>
@@ -3601,28 +3596,28 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftutils/utils.py" line="728"/>
       <source>doesn't exist in one of the objects</source>
-      <translation type="unfinished">doesn't exist in one of the objects</translation>
+      <translation>ei ole olemassa yhdessä objektissa</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="896"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
-      <translation type="unfinished">%s shares a base with %d other objects. Please check if you want to modify this.</translation>
+      <translation>%s:llä on yhteinen peruspiste %d muun objektin kanssa. Haluatko varmasti muuttaa tätä?</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="902"/>
       <source>%s cannot be modified because its placement is readonly.</source>
-      <translation type="unfinished">%s cannot be modified because its placement is readonly.</translation>
+      <translation>%s ei voi muokata, koska sen paikkaa voidaan vain lukea.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="1039"/>
       <source>Wrong input: unknown document {}</source>
-      <translation type="unfinished">Wrong input: unknown document {}</translation>
+      <translation>Väärä syöte: tuntematon asiakirja {}</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="102"/>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="79"/>
       <source>Please select exactly two objects, the base object and the path object, before calling this command.</source>
-      <translation type="unfinished">Please select exactly two objects, the base object and the path object, before calling this command.</translation>
+      <translation>Valitse täsmälleen kaksi objektia, perusobjekti ja polkuobjekti ennen kuin kutsut tätä komentoa.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="147"/>
@@ -3632,18 +3627,18 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="79"/>
       <source>Pick target point</source>
-      <translation type="unfinished">Pick target point</translation>
+      <translation>Valitse aloituspiste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="152"/>
       <source>Create Label</source>
-      <translation>Luo Nimike</translation>
+      <translation>Luo selite</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="186"/>
       <location filename="../../draftguitools/gui_labels.py" line="213"/>
       <source>Pick endpoint of leader line</source>
-      <translation type="unfinished">Pick endpoint of leader line</translation>
+      <translation>Valitse seliteviivan päätepiste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="196"/>
@@ -3685,22 +3680,22 @@ or try saving to a lower DWG version.</translation>
       <location filename="../../draftguitools/gui_beziers.py" line="152"/>
       <location filename="../../draftguitools/gui_beziers.py" line="155"/>
       <source>Pick next point</source>
-      <translation type="unfinished">Pick next point</translation>
+      <translation>Valitse seuraava piste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="334"/>
       <source>Unable to create a Wire from selected objects</source>
-      <translation type="unfinished">Unable to create a Wire from selected objects</translation>
+      <translation>Valituista objekteista ei voi luoda lankaa</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="359"/>
       <source>Convert to Wire</source>
-      <translation type="unfinished">Convert to Wire</translation>
+      <translation>Muunna langaksi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="64"/>
       <source>Select an object to join</source>
-      <translation type="unfinished">Select an object to join</translation>
+      <translation>Valitse objekti johon liitetään</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="88"/>
@@ -3710,7 +3705,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="91"/>
       <source>Only Draft Lines and Wires can be joined</source>
-      <translation type="unfinished">Only Draft Lines and Wires can be joined</translation>
+      <translation>Vain Draftin viivoja ja lankoja voidaan yhdistää</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="101"/>
@@ -3720,7 +3715,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_texts.py" line="76"/>
       <source>Pick location point</source>
-      <translation type="unfinished">Pick location point</translation>
+      <translation>Valitse sijaintipiste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_texts.py" line="126"/>
@@ -3730,27 +3725,27 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="67"/>
       <source>Select an object to convert.</source>
-      <translation type="unfinished">Select an object to convert.</translation>
+      <translation>Valitse muunnettava objekti.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="100"/>
       <source>Convert to Sketch</source>
-      <translation type="unfinished">Convert to Sketch</translation>
+      <translation>Muunna sketsiksi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="115"/>
       <source>Convert to Draft</source>
-      <translation>Muuntaa vedokseksi/draft</translation>
+      <translation>Muunna Draft-objektiksi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="144"/>
       <source>Convert Draft/Sketch</source>
-      <translation type="unfinished">Convert Draft/Sketch</translation>
+      <translation>Muunna Draft/Sketch</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="78"/>
       <source>Select an object to move</source>
-      <translation type="unfinished">Select an object to move</translation>
+      <translation>Valitse siirrettävä objekti</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="100"/>
@@ -3772,7 +3767,7 @@ or try saving to a lower DWG version.</translation>
       <location filename="../../draftguitools/gui_move.py" line="222"/>
       <location filename="../../draftguitools/gui_rotate.py" line="293"/>
       <source>Some subelements could not be moved.</source>
-      <translation type="unfinished">Some subelements could not be moved.</translation>
+      <translation>Joitakin alielementtejä ei voitu siirtää.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="85"/>
@@ -3788,7 +3783,7 @@ or try saving to a lower DWG version.</translation>
       <location filename="../../draftguitools/gui_polygons.py" line="207"/>
       <location filename="../../draftguitools/gui_polygons.py" line="268"/>
       <source>Pick radius</source>
-      <translation>Poimi säde</translation>
+      <translation>Poiminnan säde</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="274"/>
@@ -3810,7 +3805,7 @@ or try saving to a lower DWG version.</translation>
       <location filename="../../draftguitools/gui_arcs.py" line="449"/>
       <location filename="../../draftguitools/gui_arcs.py" line="450"/>
       <source>Aperture angle</source>
-      <translation type="unfinished">Aperture angle</translation>
+      <translation>Aukon kulma</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="289"/>
@@ -3820,7 +3815,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="316"/>
       <source>Create Circle (Part)</source>
-      <translation type="unfinished">Create Circle (Part)</translation>
+      <translation>Luo Ympyrä (Part)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="334"/>
@@ -3840,13 +3835,13 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="459"/>
       <source>Pick aperture angle</source>
-      <translation type="unfinished">Pick aperture angle</translation>
+      <translation>Valitse aukon kulma</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="502"/>
       <location filename="../../draftguitools/gui_arcs.py" line="544"/>
       <source>Arc by 3 points</source>
-      <translation type="unfinished">Arc by 3 points</translation>
+      <translation>Kaari 3 pisteellä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="563"/>
@@ -3856,42 +3851,42 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="54"/>
       <source>Toggle grid</source>
-      <translation>Ruudokko käytössä</translation>
+      <translation>Ruudukko käytössä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="109"/>
       <source>Select an object to edit</source>
-      <translation type="unfinished">Select an object to edit</translation>
+      <translation>Valitse muokattava objekti</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="290"/>
       <source>Select a Draft object to edit</source>
-      <translation type="unfinished">Select a Draft object to edit</translation>
+      <translation>Valitse muokattava Draft-objekti</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="484"/>
       <source>Edit node</source>
-      <translation type="unfinished">Edit node</translation>
+      <translation>Muokkaa solmua</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="539"/>
       <source>No edit point found for selected object</source>
-      <translation type="unfinished">No edit point found for selected object</translation>
+      <translation>Valitun objektin muokkauspistettä ei löytynyt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="802"/>
       <source>Too many objects selected, max number set to:</source>
-      <translation type="unfinished">Too many objects selected, max number set to:</translation>
+      <translation>Valittiin liikaa objekteja. Maksimimääräksi on asetettu:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="810"/>
       <source>: this object is not editable</source>
-      <translation type="unfinished">: this object is not editable</translation>
+      <translation>: tätä objektia ei voi muokata</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="67"/>
       <source>Annotation style editor</source>
-      <translation>Merkintöjen tyylin muokkain</translation>
+      <translation>Merkintöjen tyylin muokkaus</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="215"/>
@@ -3933,7 +3928,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="257"/>
       <source>This style is used by some objects in this document. Are you sure?</source>
-      <translation type="unfinished">This style is used by some objects in this document. Are you sure?</translation>
+      <translation>Tätä tyyliä käytetään joissakin tämän asiakirjan objekteissa. Oletko varma?</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="282"/>
@@ -3968,7 +3963,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="69"/>
       <source>Select an object to project</source>
-      <translation type="unfinished">Select an object to project</translation>
+      <translation>Valitse projisoitava kohde</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="122"/>
@@ -3979,12 +3974,12 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="79"/>
       <source>Select an object to rotate</source>
-      <translation type="unfinished">Select an object to rotate</translation>
+      <translation>Valitse kierrettävä objekti</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="99"/>
       <source>Pick rotation center</source>
-      <translation type="unfinished">Pick rotation center</translation>
+      <translation>Valitse kierron keskipiste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="192"/>
@@ -3996,13 +3991,13 @@ or try saving to a lower DWG version.</translation>
       <location filename="../../draftguitools/gui_rotate.py" line="193"/>
       <location filename="../../draftguitools/gui_rotate.py" line="397"/>
       <source>The base angle you wish to start the rotation from</source>
-      <translation type="unfinished">The base angle you wish to start the rotation from</translation>
+      <translation>Peruskulma, josta haluat aloittaan kiertämisen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="198"/>
       <location filename="../../draftguitools/gui_rotate.py" line="400"/>
       <source>Pick base angle</source>
-      <translation type="unfinished">Pick base angle</translation>
+      <translation>Valitse peruskulma</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="204"/>
@@ -4015,14 +4010,14 @@ or try saving to a lower DWG version.</translation>
       <location filename="../../draftguitools/gui_rotate.py" line="410"/>
       <source>The amount of rotation you wish to perform.
 The final angle will be the base angle plus this amount.</source>
-      <translation type="unfinished">The amount of rotation you wish to perform.
-The final angle will be the base angle plus this amount.</translation>
+      <translation>Kulma, jonka verran haluat kiertää.
+Loppukulma on tämä lisättynä peruskulmaan.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="212"/>
       <location filename="../../draftguitools/gui_rotate.py" line="418"/>
       <source>Pick rotation angle</source>
-      <translation type="unfinished">Pick rotation angle</translation>
+      <translation>Valitse kiertokulma</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="66"/>
@@ -4047,12 +4042,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="194"/>
       <source>No new selection. You must select non-empty groups or objects inside groups.</source>
-      <translation type="unfinished">No new selection. You must select non-empty groups or objects inside groups.</translation>
+      <translation>Ei uutta valintaa. Valitse käytössä olevia ryhmiä tai objekteja ryhmien sisällä.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="204"/>
       <source>Autogroup</source>
-      <translation type="unfinished">Autogroup</translation>
+      <translation>Automaattinen ryhmä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="248"/>
@@ -4062,12 +4057,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="302"/>
       <source>Add to construction group</source>
-      <translation type="unfinished">Add to construction group</translation>
+      <translation>Lisää rakenneryhmään</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="352"/>
       <source>Add a new group with a given name</source>
-      <translation type="unfinished">Add a new group with a given name</translation>
+      <translation>Lisää ryhmä annetulla nimellä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="380"/>
@@ -4087,7 +4082,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="55"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>Käännä mitta</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="80"/>
@@ -4107,7 +4102,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="149"/>
       <source>Fillet cannot be created</source>
-      <translation type="unfinished">Fillet cannot be created</translation>
+      <translation>Pyöristystä ei voi tehdä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="166"/>
@@ -4127,37 +4122,37 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="251"/>
       <source>Create Polygon</source>
-      <translation type="unfinished">Create Polygon</translation>
+      <translation>Luo monikulmio</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="59"/>
       <source>Click anywhere on a line to split it.</source>
-      <translation type="unfinished">Click anywhere on a line to split it.</translation>
+      <translation>Napsauta haluamassasi kohdassa viivaa jakaasesi sen.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="102"/>
       <source>Split line</source>
-      <translation>Split -viiva</translation>
+      <translation>Jaa viiva</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="94"/>
       <source>Select objects to trim or extend</source>
-      <translation type="unfinished">Select objects to trim or extend</translation>
+      <translation>Valitse trimmattavat tai jatkettavat objektit</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="120"/>
       <source>This object is not supported.</source>
-      <translation type="unfinished">This object is not supported.</translation>
+      <translation>Tätä objektia ei voi muokata.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="144"/>
       <source>Only a single face can be extruded.</source>
-      <translation type="unfinished">Only a single face can be extruded.</translation>
+      <translation>Vain yksittäinen sivu voidaan pursottaa.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="159"/>
       <source>Trimex is not supported yet on this type of object.</source>
-      <translation type="unfinished">Trimex is not supported yet on this type of object.</translation>
+      <translation>Trimex ei voi vielä käyttää tämäntyyppisessä objektissa.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="189"/>
@@ -4173,22 +4168,22 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="503"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
-      <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported.</translation>
+      <translation>Näitä objekteja ei voi trimmata, vain Draftin lankoja ja kaaria voi.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="508"/>
       <source>Unable to trim these objects, too many wires</source>
-      <translation type="unfinished">Unable to trim these objects, too many wires</translation>
+      <translation>Näitä objekteja ei voi leikata, liian monta lankaa</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="525"/>
       <source>These objects don't intersect.</source>
-      <translation type="unfinished">These objects don't intersect.</translation>
+      <translation>Nämä objektit eivät leikkaa toisiaan.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="528"/>
       <source>Too many intersection points.</source>
-      <translation type="unfinished">Too many intersection points.</translation>
+      <translation>Liian monta leikkauspistettä.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="68"/>
@@ -4205,7 +4200,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_beziers.py" line="144"/>
       <location filename="../../draftguitools/gui_beziers.py" line="377"/>
       <source>Last point has been removed</source>
-      <translation type="unfinished">Last point has been removed</translation>
+      <translation>Viimeinen piste on poistettu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="185"/>
@@ -4221,7 +4216,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="93"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="601"/>
       <source>This object does not support possible coincident points, please try again.</source>
-      <translation type="unfinished">This object does not support possible coincident points, please try again.</translation>
+      <translation>Tämä objekti ei tue mahdollisia yhteisiä pisteitä, yritä uudelleen.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="110"/>
@@ -4238,12 +4233,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="125"/>
       <source>Open wire</source>
-      <translation type="unfinished">Open wire</translation>
+      <translation>Avoin lanka</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="128"/>
       <source>Close wire</source>
-      <translation>Sulje viiva</translation>
+      <translation>Suljettu lanka</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="133"/>
@@ -4254,22 +4249,22 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="177"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="839"/>
       <source>Active object must have more than two points/nodes</source>
-      <translation type="unfinished">Active object must have more than two points/nodes</translation>
+      <translation>Aktiivisella objektilla on oltava enemmän kuin kaksi pistettä/solmua</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="200"/>
       <source>Open spline</source>
-      <translation>Avaa splini</translation>
+      <translation>Avoin splini</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="203"/>
       <source>Close spline</source>
-      <translation>Sulje splini</translation>
+      <translation>Suljettu splini</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="206"/>
       <source>Reverse spline</source>
-      <translation type="unfinished">Reverse spline</translation>
+      <translation>Käänteinen splini</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="371"/>
@@ -4279,12 +4274,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="375"/>
       <source>Set first angle</source>
-      <translation type="unfinished">Set first angle</translation>
+      <translation>Aseta ensimmäinen kulma</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="379"/>
       <source>Set last angle</source>
-      <translation type="unfinished">Set last angle</translation>
+      <translation>Aseta viimeinen kulma</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="383"/>
@@ -4309,7 +4304,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="621"/>
       <source>Make symmetric</source>
-      <translation type="unfinished">Make symmetric</translation>
+      <translation>Tee symmetrinen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="628"/>
@@ -4334,7 +4329,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="778"/>
       <source>Endpoint of Bézier curve can't be smoothed</source>
-      <translation type="unfinished">Endpoint of Bézier curve can't be smoothed</translation>
+      <translation>Bezier-käyrän päätepistettä ei voida tasoittaa</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="76"/>
@@ -4345,24 +4340,24 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_beziers.py" line="136"/>
       <location filename="../../draftguitools/gui_beziers.py" line="342"/>
       <source>Bézier curve has been closed</source>
-      <translation type="unfinished">Bézier curve has been closed</translation>
+      <translation>Bézier-käyrä on suljettu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="214"/>
       <location filename="../../draftguitools/gui_beziers.py" line="461"/>
       <source>Create BezCurve</source>
-      <translation type="unfinished">Create BezCurve</translation>
+      <translation>Luo Bezier-käyrä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="266"/>
       <source>Cubic Bézier curve</source>
-      <translation type="unfinished">Cubic Bézier curve</translation>
+      <translation>Neljän pisteen Bézier-käyrä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="385"/>
       <location filename="../../draftguitools/gui_beziers.py" line="389"/>
       <source>Click and drag to define next knot</source>
-      <translation type="unfinished">Click and drag to define next knot</translation>
+      <translation>Määritä seuraava solmu vetämällä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="67"/>
@@ -4373,45 +4368,45 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_ellipses.py" line="129"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="146"/>
       <source>Create Ellipse</source>
-      <translation type="unfinished">Create Ellipse</translation>
+      <translation>Luo ellipsi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="201"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="197"/>
       <source>Pick opposite point</source>
-      <translation type="unfinished">Pick opposite point</translation>
+      <translation>Valitse vastapiste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="70"/>
       <source>Select faces from existing objects</source>
-      <translation type="unfinished">Select faces from existing objects</translation>
+      <translation>Valitse pintoja olemassa olevista kohteista</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="87"/>
       <source>Select an object to scale</source>
-      <translation type="unfinished">Select an object to scale</translation>
+      <translation>Valitse skaalattava objekti</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="108"/>
       <source>Pick base point</source>
-      <translation type="unfinished">Pick base point</translation>
+      <translation>Valitse peruspiste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="136"/>
       <source>Pick reference distance from base point</source>
-      <translation type="unfinished">Pick reference distance from base point</translation>
+      <translation>Valitse referenssietäisyys peruspisteestä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="206"/>
       <location filename="../../draftguitools/gui_scale.py" line="236"/>
       <location filename="../../draftguitools/gui_scale.py" line="359"/>
       <source>Scale</source>
-      <translation>Mittakaava</translation>
+      <translation>Skaalaa</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="209"/>
       <source>Some subelements could not be scaled.</source>
-      <translation type="unfinished">Some subelements could not be scaled.</translation>
+      <translation>Joitakin alaelementtejä ei voitu skaalata.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="339"/>
@@ -4421,17 +4416,17 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="343"/>
       <source>Unable to scale objects:</source>
-      <translation type="unfinished">Unable to scale objects:</translation>
+      <translation>Objektia ei voitu skaalata:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="346"/>
       <source>This object type cannot be scaled directly. Please use the clone method.</source>
-      <translation type="unfinished">This object type cannot be scaled directly. Please use the clone method.</translation>
+      <translation>Tätä objektityyppiä ei voi skaalata suoraan. Käytä kloonausta.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="407"/>
       <source>Pick new distance from base point</source>
-      <translation type="unfinished">Pick new distance from base point</translation>
+      <translation>Valitse uusi etäisyys peruspisteestä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="63"/>
@@ -4442,7 +4437,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="95"/>
       <source>Please select exactly two objects, the base object and the point object, before calling this command.</source>
-      <translation type="unfinished">Please select exactly two objects, the base object and the point object, before calling this command.</translation>
+      <translation>Valitse täsmälleen kaksi objektia, perusobjekti ja pisteobjekti ennen kuin kutsut tätä komentoa.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="113"/>
@@ -4452,22 +4447,22 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="73"/>
       <source>No active Draft Toolbar.</source>
-      <translation type="unfinished">No active Draft Toolbar.</translation>
+      <translation>Ei aktiivista Draft-työkalupalkkia.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="93"/>
       <source>Construction mode</source>
-      <translation>Rakennustila</translation>
+      <translation>Rakennetila</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="129"/>
       <source>Toggle display mode</source>
-      <translation type="unfinished">Toggle display mode</translation>
+      <translation>Vaihda näyttötilaa</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="95"/>
       <source>Dimension</source>
-      <translation>Dimensio</translation>
+      <translation>Mitoitusalkio</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="200"/>
@@ -4479,47 +4474,47 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="261"/>
       <source>Create Dimension (radial)</source>
-      <translation type="unfinished">Create Dimension (radial)</translation>
+      <translation>Luo mitta (radiaalinen)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="471"/>
       <source>Edge too short!</source>
-      <translation type="unfinished">Edge too short!</translation>
+      <translation>Särmä on liian lyhyt!</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="481"/>
       <source>Edges don't intersect!</source>
-      <translation>Reunat eivät leikkaa toisiaan!</translation>
+      <translation>Särmät eivät leikkaa toisiaan!</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="75"/>
       <source>Select an object to stretch</source>
-      <translation type="unfinished">Select an object to stretch</translation>
+      <translation>Valitse venytettävä objekti</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="127"/>
       <source>Pick first point of selection rectangle</source>
-      <translation type="unfinished">Pick first point of selection rectangle</translation>
+      <translation>Valitse laatikkovalinnan ensimmäinen piste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="162"/>
       <source>Pick opposite point of selection rectangle</source>
-      <translation type="unfinished">Pick opposite point of selection rectangle</translation>
+      <translation>Valitse laatikkovalinnan vastakkainen piste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="171"/>
       <source>Pick start point of displacement</source>
-      <translation type="unfinished">Pick start point of displacement</translation>
+      <translation>Valitse siirtymän aloituspiste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="235"/>
       <source>Pick end point of displacement</source>
-      <translation type="unfinished">Pick end point of displacement</translation>
+      <translation>Valitse siirtymän päätepiste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="456"/>
       <source>Turning one Rectangle into a Wire</source>
-      <translation type="unfinished">Turning one Rectangle into a Wire</translation>
+      <translation>Muutetaan suorakulmio langaksi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="485"/>
@@ -4534,7 +4529,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="124"/>
       <source>Create Plane</source>
-      <translation>Luo taso</translation>
+      <translation>Luo Part Taso</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="141"/>
@@ -4544,43 +4539,43 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="74"/>
       <source>Select an object to mirror</source>
-      <translation type="unfinished">Select an object to mirror</translation>
+      <translation>Valitse peilattava objekti</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="92"/>
       <source>Pick start point of mirror line</source>
-      <translation type="unfinished">Pick start point of mirror line</translation>
+      <translation>Valitse peilauslinjan aloituspiste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="119"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Peilaa</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="164"/>
       <location filename="../../draftguitools/gui_mirror.py" line="190"/>
       <source>Pick end point of mirror line</source>
-      <translation type="unfinished">Pick end point of mirror line</translation>
+      <translation>Valitse peilauslinjan päätepiste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="101"/>
       <source>Path twisted array</source>
-      <translation type="unfinished">Path twisted array</translation>
+      <translation>Kierrepolkumatriisi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="81"/>
       <source>Select an object to clone</source>
-      <translation type="unfinished">Select an object to clone</translation>
+      <translation>Valitse kloonattava objekti</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="94"/>
       <source>Cannot clone object(s) without a Shape, aborting</source>
-      <translation type="unfinished">Cannot clone object(s) without a Shape, aborting</translation>
+      <translation>Objektia ei voi kloonata jollei sillä ole muotoa, keskeytetään</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="98"/>
       <source>Cannot clone object(s) without a Shape, skipping them</source>
-      <translation type="unfinished">Cannot clone object(s) without a Shape, skipping them</translation>
+      <translation>Objektia ei voi kloonata jollei sillä ole muotoa, ohitetaan muodottomat</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="60"/>
@@ -4591,47 +4586,47 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_upgrade.py" line="68"/>
       <location filename="../../draftguitools/gui_downgrade.py" line="68"/>
       <source>Select an object to upgrade</source>
-      <translation type="unfinished">Select an object to upgrade</translation>
+      <translation>Valitse ylennettävä objekti</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_upgrade.py" line="86"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>Ylennä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="76"/>
       <source>Select an object to offset</source>
-      <translation type="unfinished">Select an object to offset</translation>
+      <translation>Valitse objekti, jolle tehdään siirtymä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="82"/>
       <source>Offset only works on one object at a time.</source>
-      <translation type="unfinished">Offset only works on one object at a time.</translation>
+      <translation>Siirtymän voi tehdä vain yhdelle objektille kerrallaan.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="92"/>
       <source>Cannot offset this object type</source>
-      <translation type="unfinished">Cannot offset this object type</translation>
+      <translation>Tämän tyyppiselle objektille ei voi tehdä siirtymää</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
-      <translation type="unfinished">Offset of Bezier curves is currently not supported</translation>
+      <translation>Bézier -käyrälle ei voi vielä tehdä siirtymää</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="115"/>
       <source>Create 2D view</source>
-      <translation>Luo 2D-näkymä</translation>
+      <translation>Luo 2D-projektio</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shapestrings.py" line="77"/>
       <source>Pick ShapeString location point</source>
-      <translation type="unfinished">Pick ShapeString location point</translation>
+      <translation>Valitse muotomerkkijonon sijaintipiste</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="165"/>
       <source>Create ShapeString</source>
-      <translation type="unfinished">Create ShapeString</translation>
+      <translation>Luo Muotomerkkijono</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_heal.py" line="51"/>
@@ -4641,7 +4636,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="86"/>
       <source>Downgrade</source>
-      <translation type="unfinished">Downgrade</translation>
+      <translation>Alenna</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="82"/>
@@ -4654,21 +4649,21 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../drafttaskpanels/task_polararray.py" line="94"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="257"/>
       <source>Polar array</source>
-      <translation>Polar matriisi</translation>
+      <translation>Luo pyörähdysmatriisi</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="186"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="199"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="206"/>
       <source>At least one element must be selected.</source>
-      <translation type="unfinished">At least one element must be selected.</translation>
+      <translation>On valittava vähintään yksi elementti.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="193"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="210"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="217"/>
       <source>Selection is not suitable for array.</source>
-      <translation type="unfinished">Selection is not suitable for array.</translation>
+      <translation>Valinnasta ei voi tehdä matriisia.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="194"/>
@@ -4683,36 +4678,36 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="198"/>
       <source>Number of elements must be at least 2.</source>
-      <translation type="unfinished">Number of elements must be at least 2.</translation>
+      <translation>Elementtien määrän on oltava vähintään 2.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="202"/>
       <source>The angle is above 360 degrees. It is set to this value to proceed.</source>
-      <translation type="unfinished">The angle is above 360 degrees. It is set to this value to proceed.</translation>
+      <translation>Kulma on yli 360 astetta. Se on asetettu tähän arvoon.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="205"/>
       <source>The angle is below -360 degrees. It is set to this value to proceed.</source>
-      <translation type="unfinished">The angle is below -360 degrees. It is set to this value to proceed.</translation>
+      <translation>Kulma on alle -360 astetta. Se on asetettu tähän arvoon.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="291"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="330"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="335"/>
       <source>Fuse:</source>
-      <translation type="unfinished">Fuse:</translation>
+      <translation>Sulauta:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="304"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="343"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="348"/>
       <source>Create Link array:</source>
-      <translation type="unfinished">Create Link array:</translation>
+      <translation>Luo linkkimatriisi:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="321"/>
       <source>Number of elements:</source>
-      <translation type="unfinished">Number of elements:</translation>
+      <translation>Elementtien määrä:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="322"/>
@@ -4723,7 +4718,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../drafttaskpanels/task_polararray.py" line="324"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="371"/>
       <source>Center of rotation:</source>
-      <translation type="unfinished">Center of rotation:</translation>
+      <translation>Kierron keskipiste:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="82"/>
@@ -4735,7 +4730,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="203"/>
       <source>Number of elements must be at least 1.</source>
-      <translation type="unfinished">Number of elements must be at least 1.</translation>
+      <translation>Elementtien määrän on oltava vähintään 1.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="360"/>
@@ -4770,7 +4765,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="54"/>
       <source>ShapeString</source>
-      <translation>MuotoMerkkijono</translation>
+      <translation>Luo Muotomerkkijono</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="68"/>
@@ -4782,32 +4777,32 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="94"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="288"/>
       <source>Circular array</source>
-      <translation>Kehämäinen matriisi</translation>
+      <translation>Luo kehämatriisi</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="210"/>
       <source>Number of layers must be at least 2.</source>
-      <translation type="unfinished">Number of layers must be at least 2.</translation>
+      <translation>Kerrosten määrän on oltava vähintään 2.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="222"/>
       <source>Radial distance is zero. Resulting array may not look correct.</source>
-      <translation type="unfinished">Radial distance is zero. Resulting array may not look correct.</translation>
+      <translation>Kehien etäisyys on nolla. Tuloksena joukko ei ehkä näytä oikealta.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="224"/>
       <source>Radial distance is negative. It is made positive to proceed.</source>
-      <translation type="unfinished">Radial distance is negative. It is made positive to proceed.</translation>
+      <translation>Kehien etäisyys on negatiivinen. Se muutettiin positiiviseksi.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="228"/>
       <source>Tangential distance cannot be zero.</source>
-      <translation type="unfinished">Tangential distance cannot be zero.</translation>
+      <translation>Objektien etäisyys kehällä ei voi olla nolla.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="231"/>
       <source>Tangential distance is negative. It is made positive to proceed.</source>
-      <translation type="unfinished">Tangential distance is negative. It is made positive to proceed.</translation>
+      <translation>Objektien etäisyys kehällä on negatiivinen. Se muutettiin positiiviseksi.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="366"/>
@@ -4817,72 +4812,72 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="367"/>
       <source>Tangential distance:</source>
-      <translation type="unfinished">Tangential distance:</translation>
+      <translation>Objektien etäisyys kehällä:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="368"/>
       <source>Number of circular layers:</source>
-      <translation type="unfinished">Number of circular layers:</translation>
+      <translation>Kehien määrä:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="369"/>
       <source>Symmetry parameter:</source>
-      <translation type="unfinished">Symmetry parameter:</translation>
+      <translation>Symmetria:</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="121"/>
       <source>added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</source>
-      <translation type="unfinished">added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</translation>
+      <translation>lisättiin 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize' -ominaisuudet</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="123"/>
       <source>changed 'Tracking' property type</source>
-      <translation type="unfinished">changed 'Tracking' property type</translation>
+      <translation>muutettiin 'Tracking' -ominaisuustyyppiä</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="186"/>
       <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
-      <translation type="unfinished">ShapeString: oblique angle must be in the -80 to +80 degree range</translation>
+      <translation>ShapeString: kursiivikulma voi olla maksimissaan -80 - +80</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="198"/>
       <source>ShapeString: string has no wires</source>
-      <translation type="unfinished">ShapeString: string has no wires</translation>
+      <translation>ShapeString: merkkijonossa ei ole lankoja</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="231"/>
       <source>ShapeString: face creation failed for one character</source>
-      <translation type="unfinished">ShapeString: face creation failed for one character</translation>
+      <translation>ShapeString: yhdelle merkille ei voitu luoda pintaa</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="79"/>
       <source>added view property 'ScaleMultiplier'</source>
-      <translation type="unfinished">added view property 'ScaleMultiplier'</translation>
+      <translation>lisätty näkymän ominaisuus 'ScaleMultiplier'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="82"/>
       <source>added view property 'AnnotationStyle'</source>
-      <translation type="unfinished">added view property 'AnnotationStyle'</translation>
+      <translation>lisätty näkymän ominaisuus 'Selitteen tyyli'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="322"/>
       <source>, path object doesn't have 'Edges'.</source>
-      <translation type="unfinished">, path object doesn't have 'Edges'.</translation>
+      <translation>, polulla ei ole 'Reunaa'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="420"/>
       <source>migrated 'PathObj' property to 'PathObject'</source>
-      <translation type="unfinished">migrated 'PathObj' property to 'PathObject'</translation>
+      <translation>muutettiin 'PathObj' -ominaisuus Polkuobjektiksi</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="424"/>
       <source>migrated 'PathSubs' property to 'PathSubelements'</source>
-      <translation type="unfinished">migrated 'PathSubs' property to 'PathSubelements'</translation>
+      <translation>muutettiin 'PathSubs' -ominaisuus Polkualielementeiksi</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="428"/>
       <source>migrated 'Xlate' property to 'ExtraTranslation'</source>
-      <translation type="unfinished">migrated 'Xlate' property to 'ExtraTranslation'</translation>
+      <translation>muutettiin 'Xlate' -ominaisuus 'ExtraTranslation' -objektiksi</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="141"/>
@@ -4894,71 +4889,71 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftobjects/patharray.py" line="472"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
-      <translation type="unfinished">Start Offset too large for path length. Using zero instead.</translation>
+      <translation>Polun pituus huomioiden aloituksen siirtymä on liian suuri. Käytetään nollaa.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="484"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
-      <translation type="unfinished">End Offset too large for path length minus Start Offset. Using zero instead.</translation>
+      <translation>Lopetussiirtymä liian pitkä huomioiden polun pituus ja siitä vähennetty aloitussiirtymä. Käytetään nollaa.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="549"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
-      <translation type="unfinished">Length of tangent vector is zero. Copy not aligned.</translation>
+      <translation>Tangenttivektorin pituus on nolla. Kopiota ei tasata.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="563"/>
       <location filename="../../draftobjects/patharray.py" line="585"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
-      <translation type="unfinished">Length of normal vector is zero. Using a default axis instead.</translation>
+      <translation>Normaalivektorin pituus on nolla. Käytetään oletusakselia.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="569"/>
       <location filename="../../draftobjects/patharray.py" line="591"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
-      <translation type="unfinished">Tangent and normal vectors are parallel. Normal replaced by a default axis.</translation>
+      <translation>Tangentti- ja normaalivektorit ovat samansuuntaisia. Normaalin sijaan käytetään oletusakselia.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="581"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
-      <translation type="unfinished">Cannot calculate normal vector. Using the default normal instead.</translation>
+      <translation>Normaalivektoria ei voi laskea. Käytetään oletusnormaalia.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="597"/>
       <source>AlignMode {} is not implemented</source>
-      <translation type="unfinished">AlignMode {} is not implemented</translation>
+      <translation>Tasaustapaa {} ei ole vielä implementoitu</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_sketch.py" line="97"/>
       <source>No shape found</source>
-      <translation type="unfinished">No shape found</translation>
+      <translation>Muotoa ei löytynyt</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_sketch.py" line="104"/>
       <source>All Shapes must be planar</source>
-      <translation type="unfinished">All Shapes must be planar</translation>
+      <translation>Muotojen täytyy olla planaarisia</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Two edges are needed.</source>
-      <translation type="unfinished">Two edges are needed.</translation>
+      <translation>Tarvitaan kaksi reunaa.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="79"/>
       <source>Edges are not connected or radius is too large.</source>
-      <translation type="unfinished">Edges are not connected or radius is too large.</translation>
+      <translation>Reunat eivät ole yhteydessä tai säde on liian suuri.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="124"/>
       <location filename="../../draftmake/make_arc_3points.py" line="129"/>
       <source>Points:</source>
-      <translation type="unfinished">Points:</translation>
+      <translation>Pisteet:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="125"/>
       <location filename="../../draftmake/make_arc_3points.py" line="130"/>
       <source>Wrong input: must be list or tuple of three points exactly.</source>
-      <translation type="unfinished">Wrong input: must be list or tuple of three points exactly.</translation>
+      <translation>Väärä syöte: täytyy olla luettelo tai kolmen pisteen joukko.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="137"/>
@@ -4968,12 +4963,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="138"/>
       <source>Wrong input: incorrect type of placement.</source>
-      <translation type="unfinished">Wrong input: incorrect type of placement.</translation>
+      <translation>Väärä syöte: virheellinen sijoitustyyppi.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="148"/>
       <source>Wrong input: incorrect type of points.</source>
-      <translation type="unfinished">Wrong input: incorrect type of points.</translation>
+      <translation>Väärä syöte: väärä pistetyyppi.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="154"/>
@@ -4988,13 +4983,13 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_circulararray.py" line="125"/>
       <location filename="../../draftmake/make_polararray.py" line="97"/>
       <source>Wrong input: base_object not in document.</source>
-      <translation type="unfinished">Wrong input: base_object not in document.</translation>
+      <translation>Väärä syöte: base_objekti ei ole asiakirjassa.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="179"/>
       <location filename="../../draftmake/make_patharray.py" line="339"/>
       <source>Wrong input: path_object not in document.</source>
-      <translation type="unfinished">Wrong input: path_object not in document.</translation>
+      <translation>Väärä syöte: polkuobjekti ei ole asiakirjassa.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="186"/>
@@ -5006,7 +5001,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_polararray.py" line="109"/>
       <location filename="../../draftmake/make_layer.py" line="182"/>
       <source>Wrong input: must be a number.</source>
-      <translation type="unfinished">Wrong input: must be a number.</translation>
+      <translation>Väärä syöte: täytyy olla luku.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="194"/>
@@ -5025,80 +5020,80 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_circulararray.py" line="147"/>
       <location filename="../../draftmake/make_polararray.py" line="115"/>
       <source>Wrong input: must be a vector.</source>
-      <translation type="unfinished">Wrong input: must be a vector.</translation>
+      <translation>Väärä syöte: täytyy olla vektori.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="206"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
-      <translation type="unfinished">Wrong input: must be a list or tuple of strings, or a single string.</translation>
+      <translation>Väärä syöte: täyty olla luettelo, tai kaksi / yksi merkkijonoa.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="237"/>
       <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
-      <translation type="unfinished">Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</translation>
+      <translation>Väärä syöte: täytyy olla joko 'Alkuperäinen', 'Frenet' tai 'Tangentti'.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="81"/>
       <source>Wrong input: must be a number or vector.</source>
-      <translation type="unfinished">Wrong input: must be a number or vector.</translation>
+      <translation>Väärä syöte: täytyy olla luku tai vektori.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="86"/>
       <location filename="../../draftmake/make_orthoarray.py" line="89"/>
       <location filename="../../draftmake/make_orthoarray.py" line="92"/>
       <source>Input: single value expanded to vector.</source>
-      <translation type="unfinished">Input: single value expanded to vector.</translation>
+      <translation>Syöte: yksi arvo vektoriksi laajennettuna.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="108"/>
       <location filename="../../draftmake/make_circulararray.py" line="140"/>
       <location filename="../../draftmake/make_polararray.py" line="103"/>
       <source>Wrong input: must be an integer number.</source>
-      <translation type="unfinished">Wrong input: must be an integer number.</translation>
+      <translation>Väärä syöte: täytyy olla kokonaisluku.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="112"/>
       <location filename="../../draftmake/make_orthoarray.py" line="115"/>
       <location filename="../../draftmake/make_orthoarray.py" line="118"/>
       <source>Input: number of elements must be at least 1. It is set to 1.</source>
-      <translation type="unfinished">Input: number of elements must be at least 1. It is set to 1.</translation>
+      <translation>Syöte: elementtejä on oltava vähintään 1.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="212"/>
       <location filename="../../draftmake/make_pointarray.py" line="117"/>
       <location filename="../../draftmake/make_text.py" line="113"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
-      <translation type="unfinished">Wrong input: must be a placement, a vector, or a rotation.</translation>
+      <translation>Väärä syöte: on oltava sijoitus, vektori tai kierto.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="223"/>
       <source>Wrong input: target_object must not be a list.</source>
-      <translation type="unfinished">Wrong input: target_object must not be a list.</translation>
+      <translation>Väärä syöte: kohdeobjekti ei saa olla luettelo.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="228"/>
       <source>Wrong input: target_object not in document.</source>
-      <translation type="unfinished">Wrong input: target_object not in document.</translation>
+      <translation>Väärä syöte: kohdeobjekti ei ole asiakirjassa.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="240"/>
       <source>Wrong input: subelements must be a list or tuple of strings, or a single string.</source>
-      <translation type="unfinished">Wrong input: subelements must be a list or tuple of strings, or a single string.</translation>
+      <translation>Väärä syöte: alielementtien täytyy olla luettelo, sarja tai yksi merkkijonoa.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="251"/>
       <source>Wrong input: subelement {} not in object.</source>
-      <translation type="unfinished">Wrong input: subelement {} not in object.</translation>
+      <translation>Väärä syöte: alielementti {} ei objektissa.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="259"/>
       <source>Wrong input: label_type must be a string.</source>
-      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+      <translation>Väärä syöte: label_type täytyy olla merkkijono.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="264"/>
       <source>Wrong input: label_type must be one of the following:</source>
-      <translation type="unfinished">Wrong input: label_type must be one of the following:</translation>
+      <translation>Väärä syöte: label_type täytyy olla jokin seuraavista:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="272"/>
@@ -5106,129 +5101,129 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_text.py" line="98"/>
       <location filename="../../draftmake/make_text.py" line="103"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
-      <translation type="unfinished">Wrong input: must be a list of strings or a single string.</translation>
+      <translation>Väärä syöttö: täytyy olla merkkijonoluettelo tai merkkijono.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="285"/>
       <location filename="../../draftmake/make_label.py" line="289"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</translation>
+      <translation>Väärä syöttö: täytyy olla merkkijono, 'Vaakasuora', 'Pystytaso' tai 'Muokautettu'.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="301"/>
       <source>Wrong input: points {} must be a list of at least two vectors.</source>
-      <translation type="unfinished">Wrong input: points {} must be a list of at least two vectors.</translation>
+      <translation>Väärä syöte: pisteiden {} on oltava vähintään kahden vektorin luettelo.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="335"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
-      <translation type="unfinished">Direction is not 'Custom'; points won't be used.</translation>
+      <translation>Suunta ei ole 'Mukautettu'; pisteitä ei käytetä.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="362"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
-      <translation type="unfinished">Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</translation>
+      <translation>Väärä syöte: täytyy olla luettelo kahdesta elementistä. Esimerkiksi [objekti, 'Edge1'].</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_pointarray.py" line="99"/>
       <source>Wrong input: point_object not in document.</source>
-      <translation type="unfinished">Wrong input: point_object not in document.</translation>
+      <translation>Väärä syöte: point_object ei ole asiakirjassa.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_pointarray.py" line="105"/>
       <source>Wrong input: object has the wrong type.</source>
-      <translation type="unfinished">Wrong input: object has the wrong type.</translation>
+      <translation>Väärä syöte: objekti on väärä tyyppi.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="171"/>
       <source>This function is deprecated. Do not use this function directly.</source>
-      <translation type="unfinished">This function is deprecated. Do not use this function directly.</translation>
+      <translation>Tämä toiminto on vanhentunut. Älä käytä tätä funktiota suoraan.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="172"/>
       <source>Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</source>
-      <translation type="unfinished">Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</translation>
+      <translation>Käytä joko 'make_linear_dimension' tai 'make_linear_dimension_obj'.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="305"/>
       <source>Wrong input: edge_object must not be a list or tuple.</source>
-      <translation type="unfinished">Wrong input: edge_object must not be a list or tuple.</translation>
+      <translation>Väärä syöte: edge_object ei saa olla luettelo tai sarja.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="310"/>
       <location filename="../../draftmake/make_dimension.py" line="426"/>
       <source>Wrong input: edge_object not in document.</source>
-      <translation type="unfinished">Wrong input: edge_object not in document.</translation>
+      <translation>Väärä syöte: edge_object ei ole asiakirjassa.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="314"/>
       <location filename="../../draftmake/make_dimension.py" line="430"/>
       <source>Wrong input: object doesn't have a 'Shape' to measure.</source>
-      <translation type="unfinished">Wrong input: object doesn't have a 'Shape' to measure.</translation>
+      <translation>Väärä syöte: objektilla ei ole mitattavaa 'Shape':a.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="318"/>
       <source>Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</translation>
+      <translation>Väärä syöte: objektilla ei ole mitattavia kärkipisteitä.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="324"/>
       <location filename="../../draftmake/make_dimension.py" line="440"/>
       <source>Wrong input: must be an integer.</source>
-      <translation type="unfinished">Wrong input: must be an integer.</translation>
+      <translation>Väärä syöte: täytyy olla kokonaisluku.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="329"/>
       <source>i1: values below 1 are not allowed; will be set to 1.</source>
-      <translation type="unfinished">i1: values below 1 are not allowed; will be set to 1.</translation>
+      <translation>i1: arvot alle 1:n eivät ole sallittuja; arvo asetetaan 1:een.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="333"/>
       <location filename="../../draftmake/make_dimension.py" line="348"/>
       <source>Wrong input: vertex not in object.</source>
-      <translation type="unfinished">Wrong input: vertex not in object.</translation>
+      <translation>Väärä syöte: kärkipiste ei ole objektissa.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="344"/>
       <source>i2: values below 1 are not allowed; will be set to the last vertex in the object.</source>
-      <translation type="unfinished">i2: values below 1 are not allowed; will be set to the last vertex in the object.</translation>
+      <translation>i2: alle 1:n arvoja ei sallita; asetetaan objektin viimeiseen huippupisteeseen.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="434"/>
       <source>Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</translation>
+      <translation>Väärä syöte: objektilla ei ole mitattavia reunoja.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="445"/>
       <source>index: values below 1 are not allowed; will be set to 1.</source>
-      <translation type="unfinished">index: values below 1 are not allowed; will be set to 1.</translation>
+      <translation>index: arvot alle 1 eivät ole sallittuja; arvoksi asetetaan 1.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="449"/>
       <source>Wrong input: index doesn't correspond to an edge in the object.</source>
-      <translation type="unfinished">Wrong input: index doesn't correspond to an edge in the object.</translation>
+      <translation>Väärä syöte: indeksi ei vastaa objektin reunaa.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="453"/>
       <source>Wrong input: index doesn't correspond to a circular edge.</source>
-      <translation type="unfinished">Wrong input: index doesn't correspond to a circular edge.</translation>
+      <translation>Väärä syöte: indeksi ei vastaa ympyrän reunaa.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="459"/>
       <location filename="../../draftmake/make_dimension.py" line="463"/>
       <source>Wrong input: must be a string, 'radius' or 'diameter'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'radius' or 'diameter'.</translation>
+      <translation>Väärä syöttö: on oltava merkkijono, säde tai halkaisija.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="548"/>
       <location filename="../../draftmake/make_dimension.py" line="555"/>
       <source>Wrong input: must be a list with two angles.</source>
-      <translation type="unfinished">Wrong input: must be a list with two angles.</translation>
+      <translation>Väärä syöte: täytyy olla luettelo, jossa kaksi kulmaa.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_circulararray.py" line="133"/>
       <source>Wrong input: must be a number or quantity.</source>
-      <translation type="unfinished">Wrong input: must be a number or quantity.</translation>
+      <translation>Väärä syöte: täytyy olla luku tai määrä.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="65"/>
@@ -5238,7 +5233,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_layer.py" line="150"/>
       <source>Wrong input: it must be a string.</source>
-      <translation type="unfinished">Wrong input: it must be a string.</translation>
+      <translation>Väärä syöte: täytyy olla merkkijono.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="159"/>
@@ -5246,18 +5241,18 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_layer.py" line="170"/>
       <location filename="../../draftmake/make_layer.py" line="174"/>
       <source>Wrong input: must be a tuple of three floats 0.0 to 1.0.</source>
-      <translation type="unfinished">Wrong input: must be a tuple of three floats 0.0 to 1.0.</translation>
+      <translation>Väärä syöte: täytyy olla kolmen liukuluvun sarja arvovälillä 0.0 - 1.0.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="189"/>
       <location filename="../../draftmake/make_layer.py" line="193"/>
       <source>Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</source>
-      <translation type="unfinished">Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</translation>
+      <translation>Väärä syöttö: täytyy olla ”Solid”, ”Dashed”, ”Dotted” tai ”Dashdot”.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="201"/>
       <source>Wrong input: must be a number between 0 and 100.</source>
-      <translation type="unfinished">Wrong input: must be a number between 0 and 100.</translation>
+      <translation>Väärä syöte: täytyy olla luku väliltä 0 ja 100.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="495"/>
@@ -5292,68 +5287,68 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftviewproviders/view_base.py" line="446"/>
       <location filename="../../draftviewproviders/view_wire.py" line="160"/>
       <source>Flatten</source>
-      <translation type="unfinished">Flatten</translation>
+      <translation>Tasoita</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="243"/>
       <location filename="../../draftfunctions/upgrade.py" line="433"/>
       <source>Upgrade: Unknown force method:</source>
-      <translation type="unfinished">Upgrade: Unknown force method:</translation>
+      <translation>Ylennys: Tuntematon voimametodi:</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="251"/>
       <source>Found 1 block: exploding it</source>
-      <translation type="unfinished">Found 1 block: exploding it</translation>
+      <translation>Löytyi 1 plokki: räjäytetään</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="260"/>
       <source>Found 1 multi-solids compound: exploding it</source>
-      <translation type="unfinished">Found 1 multi-solids compound: exploding it</translation>
+      <translation>Löydettiin 1 useamman kiinteän objektin yhdiste: räjäytetään</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="269"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
-      <translation type="unfinished">Found 1 parametric object: breaking its dependencies</translation>
+      <translation>Löytyi 1 parametrinen objekti: rikotaan riippuvuudet</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="277"/>
       <source>Found 2 objects: subtracting them</source>
-      <translation type="unfinished">Found 2 objects: subtracting them</translation>
+      <translation>Löytyi 2 objektia: vähennetään ne</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="284"/>
       <source>Found several faces: splitting them</source>
-      <translation type="unfinished">Found several faces: splitting them</translation>
+      <translation>Löytyi useita tahkoja: jaetaan ne</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="289"/>
       <source>Found several objects: subtracting them from the first one</source>
-      <translation type="unfinished">Found several objects: subtracting them from the first one</translation>
+      <translation>Löytyi useita objekteja: vähennetään ne ensimmäisestä</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="295"/>
       <source>Found 1 face: extracting its wires</source>
-      <translation type="unfinished">Found 1 face: extracting its wires</translation>
+      <translation>Löytyi yksi tahko: puretaan sen langat</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="301"/>
       <source>Found only wires: extracting their edges</source>
-      <translation type="unfinished">Found only wires: extracting their edges</translation>
+      <translation>Löydettiin vain lankoja: puretaan reunat</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="305"/>
       <source>No more downgrade possible</source>
-      <translation type="unfinished">No more downgrade possible</translation>
+      <translation>Ei voi alentaa enempää</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/mirror.py" line="83"/>
       <source>No object given</source>
-      <translation type="unfinished">No object given</translation>
+      <translation>Objektia ei annettu</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/mirror.py" line="87"/>
       <source>The two points are coincident</source>
-      <translation type="unfinished">The two points are coincident</translation>
+      <translation>Kaksi pistettä ovat samassa paikassa</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/mirror.py" line="100"/>
@@ -5363,7 +5358,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="150"/>
       <source>Object must be a closed shape</source>
-      <translation type="unfinished">Object must be a closed shape</translation>
+      <translation>Objektin on oltava suljettu muoto</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="152"/>
@@ -5373,58 +5368,58 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="274"/>
       <source>Faces must be coplanar to be refined</source>
-      <translation type="unfinished">Faces must be coplanar to be refined</translation>
+      <translation>Tasojen on oltava samalla tasolla jotta ne voidaaan määrittää uudelleen</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="451"/>
       <source>Found groups: closing each open object inside</source>
-      <translation type="unfinished">Found groups: closing each open object inside</translation>
+      <translation>Löytyi ryhmiä: suljetaan jokaisen sisältä avoimet objektit</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="457"/>
       <source>Found meshes: turning into Part shapes</source>
-      <translation type="unfinished">Found meshes: turning into Part shapes</translation>
+      <translation>Löytyi mesh-verkkoja: muutetaan Part -muodoiksi</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="465"/>
       <source>Found 1 solidifiable object: solidifying it</source>
-      <translation type="unfinished">Found 1 solidifiable object: solidifying it</translation>
+      <translation>Löytyi 1 kiinteäksi muutettava objekti: muutetaan kiinteäksi</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="470"/>
       <source>Found 2 objects: fusing them</source>
-      <translation type="unfinished">Found 2 objects: fusing them</translation>
+      <translation>Löydettiin 2 objektia: sulautetaan ne</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="481"/>
       <source>Found object with several coplanar faces: refine them</source>
-      <translation type="unfinished">Found object with several coplanar faces: refine them</translation>
+      <translation>Löytyi objekti, jossa on useita samalla tasolla olevia pintoja: määritellään uudelleen</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="489"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
-      <translation type="unfinished">Found 1 non-parametric objects: draftifying it</translation>
+      <translation>Löytyi 1 ei-parametrinen objekti: muutetaan Draft-objektiksi</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="500"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
-      <translation type="unfinished">Found 1 closed sketch object: creating a face from it</translation>
+      <translation>Löytyi 1 suljettu sketsi: luodaan siitä pinta</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="505"/>
       <source>Found closed wires: creating faces</source>
-      <translation type="unfinished">Found closed wires: creating faces</translation>
+      <translation>Löytyi suljettuja lankoja: luodaan pintoja</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="510"/>
       <source>Found several wires or edges: wiring them</source>
-      <translation type="unfinished">Found several wires or edges: wiring them</translation>
+      <translation>Löytyi useita lankoja tai särmiä: muutetaan langoiksi</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="512"/>
       <location filename="../../draftfunctions/upgrade.py" line="540"/>
       <source>Found several non-treatable objects: creating compound</source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
+      <translation>Löytyi useita ei-muutettavia objekteja: luodaan yhdiste</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="517"/>
@@ -5434,22 +5429,22 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="519"/>
       <source>Found 1 open wire: closing it</source>
-      <translation type="unfinished">Found 1 open wire: closing it</translation>
+      <translation>Löytyi 1 avoin lanka: suljetaan</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="530"/>
       <source>Found 1 object: draftifying it</source>
-      <translation type="unfinished">Found 1 object: draftifying it</translation>
+      <translation>Löydettiin 1 objekti: muutetaan Draft-objektiksi</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="535"/>
       <source>Found points: creating compound</source>
-      <translation type="unfinished">Found points: creating compound</translation>
+      <translation>Löydettiin pisteet: luodaan yhdiste</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="543"/>
       <source>Unable to upgrade these objects.</source>
-      <translation type="unfinished">Unable to upgrade these objects.</translation>
+      <translation>Näitä objekteja ei voi ylentää.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_text.py" line="183"/>
@@ -5459,64 +5454,64 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftobjects/dimension.py" line="199"/>
       <source>added view property 'TextColor'</source>
-      <translation type="unfinished">added view property 'TextColor'</translation>
+      <translation>lisätty näkymän ominaisuus 'TextColor'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/text.py" line="95"/>
       <location filename="../../draftobjects/label.py" line="256"/>
       <location filename="../../draftobjects/dimension.py" line="201"/>
       <source>renamed 'DisplayMode' options to 'World/Screen'</source>
-      <translation type="unfinished">renamed 'DisplayMode' options to 'World/Screen'</translation>
+      <translation>Nimeä 'DisplayMode' asetukset muotoon 'World/Screen'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="252"/>
       <source>renamed view property 'TextFont' to 'FontName'</source>
-      <translation type="unfinished">renamed view property 'TextFont' to 'FontName'</translation>
+      <translation>Nimeä uudelleen näkymän ominaisuus 'TextFont' muotoon 'FontName'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="254"/>
       <source>renamed view property 'TextSize' to 'FontSize'</source>
-      <translation type="unfinished">renamed view property 'TextSize' to 'FontSize'</translation>
+      <translation>Nimeä uudelleen näkymän ominaisuus 'TextSize' muotoon 'FontSize'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="319"/>
       <source>No Target</source>
-      <translation type="unfinished">No Target</translation>
+      <translation>Ei kohdetta</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="400"/>
       <source>Invalid label type</source>
-      <translation>Virheellinen tunnistetyyppi</translation>
+      <translation>Virheellinen selitteen tyyppi</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="415"/>
       <source>Tag not available for object</source>
-      <translation type="unfinished">Tag not available for object</translation>
+      <translation>Objektilla ei ole Tag -ominaisuutta</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="422"/>
       <source>Material not available for object</source>
-      <translation type="unfinished">Material not available for object</translation>
+      <translation>Objektilla ei ole Material -ominaisuutta</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="431"/>
       <source>Position not available for (sub)object</source>
-      <translation type="unfinished">Position not available for (sub)object</translation>
+      <translation>Objektilla/aliobjektilla ei ole Position -ominaisuutta</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="447"/>
       <source>Length not available for (sub)object</source>
-      <translation type="unfinished">Length not available for (sub)object</translation>
+      <translation>Objektilla/aliobjektilla ei ole pituutta</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="461"/>
       <source>Area not available for (sub)object</source>
-      <translation type="unfinished">Area not available for (sub)object</translation>
+      <translation>Alue ei ole käytettävissä (ali)objektille</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="474"/>
       <source>Volume not available for (sub)object</source>
-      <translation type="unfinished">Volume not available for (sub)object</translation>
+      <translation>Tilavuus ei ole käytettävissä (ali)objektille</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="76"/>
@@ -5526,22 +5521,22 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="68"/>
       <source>Opening multiple hyperlinks</source>
-      <translation type="unfinished">Opening multiple hyperlinks</translation>
+      <translation>Avataan useita hyperlinkkejä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="74"/>
       <source>Multiple hyperlinks found.</source>
-      <translation type="unfinished">Multiple hyperlinks found.</translation>
+      <translation>Löydettiin useita hyperlinkkejä.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="80"/>
       <source>This may lead to the opening of various windows</source>
-      <translation type="unfinished">This may lead to the opening of various windows</translation>
+      <translation>Saattaa avata useamman ikkunan</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="111"/>
       <source>File not found:</source>
-      <translation type="unfinished">File not found:</translation>
+      <translation>Tiedostoa ei löydy:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="117"/>
@@ -5551,29 +5546,29 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="152"/>
       <source>Select 3 vertices, one or more shapes or an object to define a working plane</source>
-      <translation type="unfinished">Select 3 vertices, one or more shapes or an object to define a working plane</translation>
+      <translation>Määritä työtaso valitsemalla kolme kärkipistettä, yksi tai useampi muoto tai yksi objekti</translation>
     </message>
     <message>
       <location filename="../../draftutils/params.py" line="201"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
-      <translation type="unfinished">Do you want to update the SVG pattern options
-of existing objects in all opened documents?</translation>
+      <translation>Haluatko päivittää SVG-kuvioiden asetukset
+kaikkiin avoimena oleviin asiakirjoihin ja niiden objekteihin?</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="139"/>
       <source>added 'ExtraPlacement' property</source>
-      <translation type="unfinished">added 'ExtraPlacement' property</translation>
+      <translation>lisätty 'ExtraPlacement' ominaisuus</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="142"/>
       <source>migrated 'PointList' property to 'PointObject'</source>
-      <translation type="unfinished">migrated 'PointList' property to 'PointObject'</translation>
+      <translation>siirretty 'PointList' omaisuus kohtaan 'PointObject'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/layer.py" line="74"/>
       <source>changed 'Group' property type</source>
-      <translation type="unfinished">changed 'Group' property type</translation>
+      <translation>muuttui 'Ryhmä' ominaisuuden tyyppi</translation>
     </message>
     <message>
       <location filename="../../draftobjects/layer.py" line="100"/>
@@ -5590,39 +5585,38 @@ Please either allow FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either allow FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
+      <translation>DXF -tiedostojen käsittelyssä tarvittavia kirjastoja ei löytynyt.
+Anna FreeCADin ladata nämä kirjastot:
+  1 - Avaa Draft-työtila
+  2 - valikosta Muokkaa &gt; Asetukset &gt; Tuonti/Vienti &gt; DXF &gt; Salli lataukset 
+Tai lataat nämä kirjastot käsin. Ohje tähän löytyy osoitteesta
 https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</translation>
+Jos annat FreeCADin ladata kirjstot, vastaa Kyllä.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
       <source>Sketch is too complex to edit: it is suggested to use the default Sketcher editor</source>
-      <translation type="unfinished">Sketch is too complex to edit: it is suggested to use the default Sketcher editor</translation>
+      <translation>Luonnos on liian monimutkainen muokata: avaa se mieluummin Sketcher-työtilassa</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="128"/>
       <source>Unable to build Facebinder</source>
-      <translation type="unfinished">Unable to build Facebinder</translation>
+      <translation>Facebinder -objektia ei voitu muodostaa</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="131"/>
       <source>No valid faces for Facebinder</source>
-      <translation type="unfinished">No valid faces for Facebinder</translation>
+      <translation>Ei kelvollisia pintoja Facebinderille</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="134"/>
       <source>Unable to build Facebinder, resuming with Sew disabled</source>
-      <translation type="unfinished">Unable to build Facebinder, resuming with Sew disabled</translation>
+      <translation>Facebinderiä ei voitu muodostaa, yhdistäminen pois käytöstä</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="201"/>
       <source>Converting flat B-spline faces of Facebinder to planar faces failed</source>
-      <translation type="unfinished">Converting flat B-spline faces of Facebinder to planar faces failed</translation>
+      <translation>Facebindin tasaisten B-splini -pintojen muuntaminen planaaripinnoiksi epäonnistui</translation>
     </message>
   </context>
   <context>
@@ -5640,12 +5634,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../InitGui.py" line="109"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>Draft muokkaustyökalut</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="112"/>
       <source>Draft utility tools</source>
-      <translation type="unfinished">Draft utility tools</translation>
+      <translation>Draft apuvälineet</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="115"/>
@@ -5655,17 +5649,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../InitGui.py" line="120"/>
       <source>&amp;Drafting</source>
-      <translation type="unfinished">&amp;Drafting</translation>
+      <translation>&amp;Draft</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="123"/>
       <source>&amp;Annotation</source>
-      <translation>&amp;Huomautukset</translation>
+      <translation>&amp;Merkintä</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="126"/>
       <source>&amp;Modification</source>
-      <translation>&amp;Modification</translation>
+      <translation>&amp;Muokkaus</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="129"/>
@@ -5675,7 +5669,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftutils/init_tools.py" line="50"/>
       <source>Arc tools</source>
-      <translation type="unfinished">Arc tools</translation>
+      <translation>Kaarityökalut</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="58"/>
@@ -5695,14 +5689,14 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
-      <translation type="unfinished">Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -&gt; Addon Manager</translation>
+      <translation>DXF-kirjastojen lataus epäonnistui.
+Asenna DXF-kirjasto käsin
+valikosta Työkalut -&gt; Lisäosien hallinta</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="51"/>
       <source>You must choose a base object before using this command</source>
-      <translation type="unfinished">You must choose a base object before using this command</translation>
+      <translation>Valitse perusobjekti ennen tämän työkalun käyttämistä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="83"/>
@@ -5717,7 +5711,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="99"/>
       <source>Create chamfer</source>
-      <translation type="unfinished">Create chamfer</translation>
+      <translation>Luo viiste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="421"/>
@@ -5742,12 +5736,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="450"/>
       <source>Error: json module not found. Unable to load style</source>
-      <translation type="unfinished">Error: json module not found. Unable to load style</translation>
+      <translation>Virhe: json-moduulia ei löytynyt. Tyylin lataaminen epäonnistui</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="469"/>
       <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+      <translation>Virhe: json moduulia ei löytynyt. Tyylin tallennus epäonnistui</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="101"/>
@@ -5763,7 +5757,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="327"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
+      <translation>Siirtymän suuntaa ei ole määritelty. Valitse puoli siirtämällä hiirtä objektin jommalle kummalle puolelle</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="143"/>
@@ -5782,32 +5776,32 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="152"/>
       <source>Scale</source>
-      <translation>Mittakaava</translation>
+      <translation>Skaalaa</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="153"/>
       <source>X factor</source>
-      <translation type="unfinished">X factor</translation>
+      <translation>X- kerroin</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="154"/>
       <source>Y factor</source>
-      <translation type="unfinished">Y factor</translation>
+      <translation>Y-kerroin</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="155"/>
       <source>Z factor</source>
-      <translation type="unfinished">Z factor</translation>
+      <translation>Z-kerroin</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="156"/>
       <source>Uniform scaling</source>
-      <translation type="unfinished">Uniform scaling</translation>
+      <translation>Säilytä mittasuhteet</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="157"/>
       <source>Working plane orientation</source>
-      <translation type="unfinished">Working plane orientation</translation>
+      <translation>Työtason suunta</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="158"/>
@@ -5822,7 +5816,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="160"/>
       <source>Pick from/to points</source>
-      <translation type="unfinished">Pick from/to points</translation>
+      <translation>Valitse lähtö/loppupisteet</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="161"/>
@@ -5832,12 +5826,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="208"/>
       <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
-      <translation type="unfinished">Point object doesn't have a discrete point, it cannot be used for an array.</translation>
+      <translation>Pisteobjektilla ei ole yksiselitteistä pistettä, sitä ei voi käyttää matriisiin.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="117"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
-      <translation type="unfinished">_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</translation>
+      <translation>B Splini: Suljettiin samalla alku/loppupisteellä. Geometriaa ei päivitetä.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="103"/>
@@ -5847,7 +5841,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="120"/>
       <source>Writing objects shown/hidden state</source>
-      <translation type="unfinished">Writing objects shown/hidden state</translation>
+      <translation>Kirjoitetaan objektien näkyvissä/ei näkyvissä -tila</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="283"/>
@@ -5903,7 +5897,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftobjects/label.py" line="325"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>Selite</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="326"/>
@@ -5943,7 +5937,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftobjects/label.py" line="333"/>
       <source>Label + Length</source>
-      <translation type="unfinished">Label + Length</translation>
+      <translation>Tunniste + Pituus</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="334"/>
@@ -5953,7 +5947,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftobjects/label.py" line="335"/>
       <source>Label + Volume</source>
-      <translation type="unfinished">Label + Volume</translation>
+      <translation>Tunniste + Tilavuus</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="339"/>
@@ -5966,7 +5960,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../importOCA.py" line="413"/>
       <source>OCA: found no data to export</source>
-      <translation type="unfinished">OCA: found no data to export</translation>
+      <translation>OCA: vietäviä tietoja ei löytynyt</translation>
     </message>
     <message>
       <location filename="../../importOCA.py" line="458"/>
@@ -5979,7 +5973,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../importAirfoilDAT.py" line="163"/>
       <source>Did not find enough coordinates</source>
-      <translation type="unfinished">Did not find enough coordinates</translation>
+      <translation>Ei löytynyt tarpeeksi koordinaatteja</translation>
     </message>
   </context>
   <context>
@@ -5987,12 +5981,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../importSVG.py" line="1813"/>
       <source>Unknown SVG export style, switching to Translated</source>
-      <translation type="unfinished">Unknown SVG export style, switching to Translated</translation>
+      <translation>Tuntematon SVG-vientityyli, vaihdetaan käännettyyn</translation>
     </message>
     <message>
       <location filename="../../importSVG.py" line="1833"/>
       <source>The export list contains no object with a valid bounding box</source>
-      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
+      <translation>Vientiluettelo ei sisällä objektia, jolla on kelvollinen rajaava laatikko</translation>
     </message>
   </context>
   <context>
@@ -6005,7 +5999,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="62"/>
       <source>Select 3 vertices, one or more shapes or an object to define a working plane.</source>
-      <translation type="unfinished">Select 3 vertices, one or more shapes or an object to define a working plane.</translation>
+      <translation>Määritä työtaso valitsemalla kolme kärkipistettä, yksi tai useampi muoto tai yksi objekti.</translation>
     </message>
   </context>
   <context>
@@ -6020,9 +6014,9 @@ from menu Tools -&gt; Addon Manager</translation>
       <source>Creates copies of the selected object along a selected path.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>Luo valitun objektin kopioita valitulle polulle.
+Valitse ensin objekti ja valitse sitten polku.
+Polku voi olla murtoviiva(lanka), B-splini, Bézier-käyrä, tai toisten objektien yhtenäinen reuna.</translation>
     </message>
   </context>
   <context>
@@ -6030,14 +6024,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="167"/>
       <source>Path link array</source>
-      <translation type="unfinished">Path link array</translation>
+      <translation>Linkitetty polkumatriisi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="170"/>
       <source>Like the PathArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Kuten Polkumatriisi, mutta luo linkkejä eikä kopioita.
+Linkkimatriisi on tehokkaampi jos kopioita on enemmän, mutta niitä ei voi Sulauttaa yhteen myöhemmin.</translation>
     </message>
   </context>
   <context>
@@ -6045,7 +6039,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="63"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>Selite</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="66"/>
@@ -6058,15 +6052,15 @@ if any.
 
 If many objects or many subelements are selected, only the first one in each case
 will be used to provide information to the label.</source>
-      <translation type="unfinished">Creates a label, optionally attached to a selected object or subelement.
+      <translation>Luo selitteen, joka voi olla liitetty valittuun objektiin tai alielementtiin.
 
-First select a vertex, an edge, or a face of an object, then call this command,
-and then set the position of the leader line and the textual label.
-The label will be able to display information about this object, and about the selected subelement,
-if any.
+Valitse ensin piste, särmä tai objektin pinta, ja käynnistä tämä komento,
+ja aseta sitten selitteen viiva ja tekstiselite.
+Selite voi näyttää tietoja tästä objektista ja valitusta alaelementistä,
+jos sellainen on.
 
-If many objects or many subelements are selected, only the first one in each case
-will be used to provide information to the label.</translation>
+Jos valittuna on useita bjekteja tai alielementtejä, selitteessä näytetään vain
+ensimmäisen kohteen tietoja.</translation>
     </message>
   </context>
   <context>
@@ -6079,7 +6073,7 @@ will be used to provide information to the label.</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a 2-point line. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Luo 2 pisteen välisen viivan. CTRL tarttuu, SHIFT rajoittaa.</translation>
     </message>
   </context>
   <context>
@@ -6092,7 +6086,7 @@ will be used to provide information to the label.</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="313"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Luo murtoviivan (lanka). CTRL kohdistaa, SHIFT rajoittaa.</translation>
     </message>
   </context>
   <context>
@@ -6105,7 +6099,7 @@ will be used to provide information to the label.</translation>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="44"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
+      <translation>Luo täytteen valittujen objektien pinnoille</translation>
     </message>
   </context>
   <context>
@@ -6119,8 +6113,8 @@ will be used to provide information to the label.</translation>
       <location filename="../../draftguitools/gui_join.py" line="57"/>
       <source>Joins the selected lines or polylines into a single object.
 The lines must share a common point at the start or at the end for the operation to succeed.</source>
-      <translation type="unfinished">Joins the selected lines or polylines into a single object.
-The lines must share a common point at the start or at the end for the operation to succeed.</translation>
+      <translation>Yhdistää valitut viivat tai murtoviivat yhdeksi objektiksi.
+Viivoilla on oltava yhteinen alku- tai päätepiste jotta ne voidaan yhdistää.</translation>
     </message>
   </context>
   <context>
@@ -6133,7 +6127,7 @@ The lines must share a common point at the start or at the end for the operation
     <message>
       <location filename="../../draftguitools/gui_texts.py" line="63"/>
       <source>Creates a multi-line annotation. CTRL to snap.</source>
-      <translation type="unfinished">Creates a multi-line annotation. CTRL to snap.</translation>
+      <translation>Luo usean rivin selityksen. CTRL tarttuu.</translation>
     </message>
   </context>
   <context>
@@ -6141,16 +6135,16 @@ The lines must share a common point at the start or at the end for the operation
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="57"/>
       <source>Draft to sketch</source>
-      <translation type="unfinished">Draft to sketch</translation>
+      <translation>Draft Sketsiksi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="60"/>
       <source>Convert bidirectionally between Draft objects and Sketches.
 Many Draft objects will be converted into a single non-constrained Sketch.
 However, a single sketch with disconnected traces will be converted into several individual Draft objects.</source>
-      <translation type="unfinished">Convert bidirectionally between Draft objects and Sketches.
-Many Draft objects will be converted into a single non-constrained Sketch.
-However, a single sketch with disconnected traces will be converted into several individual Draft objects.</translation>
+      <translation>Muunna kahteen suuntaan Draft -objektien ja Sketch -objektien välillä.
+Monet Draft-objektit muunnetaan yhdeksi rajoittamattomaksi sketsiksi.
+Yksittäinen irrallisia viivoja sisältävä sketsi muunnetaan useaksi erilliseksi Draft -objektiksi.</translation>
     </message>
   </context>
   <context>
@@ -6158,12 +6152,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="66"/>
       <source>Snap lock</source>
-      <translation type="unfinished">Snap lock</translation>
+      <translation>Tarttuminen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="67"/>
       <source>Enables or disables snapping globally.</source>
-      <translation type="unfinished">Enables or disables snapping globally.</translation>
+      <translation>Ottaa tarttumisen käyttöön tai pois.</translation>
     </message>
   </context>
   <context>
@@ -6176,7 +6170,7 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="83"/>
       <source>Snaps to the midpoint of edges.</source>
-      <translation type="unfinished">Snaps to the midpoint of edges.</translation>
+      <translation>Tarttuu särmien keskipisteeseen</translation>
     </message>
   </context>
   <context>
@@ -6184,12 +6178,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="96"/>
       <source>Snap perpendicular</source>
-      <translation type="unfinished">Snap perpendicular</translation>
+      <translation>Kiinnitä kohtisuoraan</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="97"/>
       <source>Snaps to the perpendicular points on faces and edges.</source>
-      <translation type="unfinished">Snaps to the perpendicular points on faces and edges.</translation>
+      <translation>Kiinnittää tasojen ja särmien kohtisuoraan pisteeseen.</translation>
     </message>
   </context>
   <context>
@@ -6197,12 +6191,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="110"/>
       <source>Snap grid</source>
-      <translation type="unfinished">Snap grid</translation>
+      <translation>Tartu ruudukkoon</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="111"/>
       <source>Snaps to the intersections of grid lines.</source>
-      <translation type="unfinished">Snaps to the intersections of grid lines.</translation>
+      <translation>Tartu ruudukon viivojen leikkauskohtiin.</translation>
     </message>
   </context>
   <context>
@@ -6215,7 +6209,7 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="125"/>
       <source>Snaps to the intersection of two edges.</source>
-      <translation type="unfinished">Snaps to the intersection of two edges.</translation>
+      <translation>Tarttuu kahden särmän leikkauskohtaan.</translation>
     </message>
   </context>
   <context>
@@ -6228,7 +6222,7 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="139"/>
       <source>Snaps to an imaginary line parallel to straight edges.</source>
-      <translation type="unfinished">Snaps to an imaginary line parallel to straight edges.</translation>
+      <translation>Kohdistaa suorien viivojen kuvitteelliseen rinnakkaiseen viivaan.</translation>
     </message>
   </context>
   <context>
@@ -6241,7 +6235,7 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="153"/>
       <source>Snaps to the endpoints of edges.</source>
-      <translation type="unfinished">Snaps to the endpoints of edges.</translation>
+      <translation>Kohdistaa reunojen päätepisteisiin.</translation>
     </message>
   </context>
   <context>
@@ -6254,7 +6248,7 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="167"/>
       <source>Snaps to the special cardinal points on circular edges, at multiples of 30° and 45°.</source>
-      <translation type="unfinished">Snaps to the special cardinal points on circular edges, at multiples of 30° and 45°.</translation>
+      <translation>Kiinnittää pyöreitten pintojen kardinaalipisteisiin, 30° ja 45° kerrannaisiin.</translation>
     </message>
   </context>
   <context>
@@ -6267,7 +6261,7 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="181"/>
       <source>Snaps to the center point of faces and circular edges, and to the Placement point of Working Plane Proxies and Building Parts.</source>
-      <translation type="unfinished">Snaps to the center point of faces and circular edges, and to the Placement point of Working Plane Proxies and Building Parts.</translation>
+      <translation>Kiinnittää pintojen ja pyöreitten reunojen sekä tallennettujen työtasojen keskipisteisiin.</translation>
     </message>
   </context>
   <context>
@@ -6275,12 +6269,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="194"/>
       <source>Snap extension</source>
-      <translation type="unfinished">Snap extension</translation>
+      <translation>Tartu jatkeeseen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="195"/>
       <source>Snaps to an imaginary line that extends beyond the endpoints of straight edges.</source>
-      <translation type="unfinished">Snaps to an imaginary line that extends beyond the endpoints of straight edges.</translation>
+      <translation>Lukitsee suorien viivojen kuvitteellisiin jatkeisiin.</translation>
     </message>
   </context>
   <context>
@@ -6288,12 +6282,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="208"/>
       <source>Snap near</source>
-      <translation type="unfinished">Snap near</translation>
+      <translation>Tartu lähelle</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="209"/>
       <source>Snaps to the nearest point on faces and edges.</source>
-      <translation type="unfinished">Snaps to the nearest point on faces and edges.</translation>
+      <translation>Lukitsee pintojen ja reunojen lähimpään pisteeseen.</translation>
     </message>
   </context>
   <context>
@@ -6301,12 +6295,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="222"/>
       <source>Snap ortho</source>
-      <translation>Kiinnitä origoon</translation>
+      <translation>Tartu ortogonaalisesti</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="223"/>
       <source>Snaps to imaginary lines that cross the previous point at multiples of 45°.</source>
-      <translation type="unfinished">Snaps to imaginary lines that cross the previous point at multiples of 45°.</translation>
+      <translation>Tarttuu edellisestä pisteestä 45° kerrannaiskulmissa lähteviin kuvitteellisiin viivoihin.</translation>
     </message>
   </context>
   <context>
@@ -6319,7 +6313,7 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="237"/>
       <source>Snaps to special points defined by the object.</source>
-      <translation type="unfinished">Snaps to special points defined by the object.</translation>
+      <translation>Lukitsee objektin erityisiin pisteisiin.</translation>
     </message>
   </context>
   <context>
@@ -6327,12 +6321,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="250"/>
       <source>Snap dimensions</source>
-      <translation type="unfinished">Snap dimensions</translation>
+      <translation>Kiinnitä mittoihin</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="251"/>
       <source>Shows temporary X and Y dimensions.</source>
-      <translation type="unfinished">Shows temporary X and Y dimensions.</translation>
+      <translation>Näyttää väliaikaiset X- ja Y-mitat.</translation>
     </message>
   </context>
   <context>
@@ -6340,12 +6334,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="264"/>
       <source>Snap working plane</source>
-      <translation type="unfinished">Snap working plane</translation>
+      <translation>Kiinnitä työtasoon</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="265"/>
       <source>Projects snap points onto the current working plane.</source>
-      <translation type="unfinished">Projects snap points onto the current working plane.</translation>
+      <translation>Rajoita kiinnittyminen nykyiselle työtasolle.</translation>
     </message>
   </context>
   <context>
@@ -6358,7 +6352,7 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="279"/>
       <source>Shows the snap toolbar if it is hidden.</source>
-      <translation type="unfinished">Shows the snap toolbar if it is hidden.</translation>
+      <translation>Näyttää kohdistustyökalupalkin, jos se on piilotettu.</translation>
     </message>
   </context>
   <context>
@@ -6373,9 +6367,9 @@ However, a single sketch with disconnected traces will be converted into several
       <source>Moves the selected objects from one base point to another point.
 If the "copy" option is active, it will create displaced copies.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Moves the selected objects from one base point to another point.
-If the "copy" option is active, it will create displaced copies.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Siirtää valitut kohteet yhdestä peruspisteestä toiseen pisteeseen.
+Jos "kopio"-asetus on aktiivinen, se luo siirtyneitä kopioita.
+CTRL napsauttaa, SHIFT rajoittaa.</translation>
     </message>
   </context>
   <context>
@@ -6389,8 +6383,8 @@ CTRL to snap, SHIFT to constrain.</translation>
       <location filename="../../draftguitools/gui_arcs.py" line="66"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by a center point and a radius.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Luo kaaren keskipisteen ja säteen mukaan.
+CTRL napsauttaa, SHIFT rajoittaa.</translation>
     </message>
   </context>
   <context>
@@ -6398,14 +6392,14 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="477"/>
       <source>Arc by 3 points</source>
-      <translation type="unfinished">Arc by 3 points</translation>
+      <translation>Kaari 3 pisteellä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="480"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by picking 3 points.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Luo pyöreän kaaren poimimalla 3 pistettä.
+CTRL napsauttaa, SHIFT rajoittaa.</translation>
     </message>
   </context>
   <context>
@@ -6413,12 +6407,12 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="611"/>
       <source>Arc tools</source>
-      <translation type="unfinished">Arc tools</translation>
+      <translation>Kaarityökalut</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="614"/>
       <source>Create various types of circular arcs.</source>
-      <translation type="unfinished">Create various types of circular arcs.</translation>
+      <translation>Luo erilaisia pyöreitä kaaria.</translation>
     </message>
   </context>
   <context>
@@ -6431,7 +6425,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="62"/>
       <source>Toggles the Draft grid on and off.</source>
-      <translation type="unfinished">Toggles the Draft grid on and off.</translation>
+      <translation>Asettaa ruudukon käyttöön tai pois.</translation>
     </message>
   </context>
   <context>
@@ -6444,7 +6438,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="64"/>
       <source>Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</source>
-      <translation type="unfinished">Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</translation>
+      <translation>Korosta valittujen objektien alielementit niin, että niitä voidaan muokata työkaluilla Siirrä, Kierrä ja Skaalaa.</translation>
     </message>
   </context>
   <context>
@@ -6459,9 +6453,9 @@ CTRL to snap, SHIFT to constrain.</translation>
       <source>Edits the active object.
 Press E or ALT + Left Click to display context menu
 on supported nodes and on supported objects.</source>
-      <translation type="unfinished">Edits the active object.
-Press E or ALT + Left Click to display context menu
-on supported nodes and on supported objects.</translation>
+      <translation>Muokkaa aktiivista objektia.
+Paina E tai ALT + vasen Klikkaa näyttääksesi kontekstivalikon
+tuetuissa solmuissa ja tuetuissa objekteissa.</translation>
     </message>
   </context>
   <context>
@@ -6469,7 +6463,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="65"/>
       <source>Circular array</source>
-      <translation>Kehämäinen matriisi</translation>
+      <translation>Luo kehämatriisi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="68"/>
@@ -6477,10 +6471,10 @@ on supported nodes and on supported objects.</translation>
 creating various circular layers.
 
 The array can be turned into an orthogonal or a polar array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a radial pattern
-creating various circular layers.
+      <translation>Luo valitun objektin kopioita ja sijoittaa kopiot ympyrän muotoiseen kuvioon,
+jossa on kerroksia.
 
-The array can be turned into an orthogonal or a polar array by changing its type.</translation>
+Matriisi voidaan muuttaa ortogonaaliseksi (ruudukko) tai säteismatriisiksi muuttamalla sen tyyppiä.</translation>
     </message>
   </context>
   <context>
@@ -6488,12 +6482,12 @@ The array can be turned into an orthogonal or a polar array by changing its type
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="78"/>
       <source>Annotation styles...</source>
-      <translation>Huomautustyylit...</translation>
+      <translation>Merkintätyylit...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="82"/>
       <source>Manage or create annotation styles</source>
-      <translation type="unfinished">Manage or create annotation styles</translation>
+      <translation>Hallitse tai luo huomautustyylejä</translation>
     </message>
   </context>
   <context>
@@ -6506,7 +6500,7 @@ The array can be turned into an orthogonal or a polar array by changing its type
     <message>
       <location filename="../../draftguitools/gui_points.py" line="65"/>
       <source>Creates a point object. Click anywhere on the 3D view.</source>
-      <translation type="unfinished">Creates a point object. Click anywhere on the 3D view.</translation>
+      <translation>Luo pisteobjektin. Napsauta missä tahansa 3D-näkymässä.</translation>
     </message>
   </context>
   <context>
@@ -6521,9 +6515,9 @@ The array can be turned into an orthogonal or a polar array by changing its type
       <source>Rotates the selected objects. Choose the center of rotation, then the initial angle, and then the final angle.
 If the "copy" option is active, it will create rotated copies.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Rotates the selected objects. Choose the center of rotation, then the initial angle, and then the final angle.
-If the "copy" option is active, it will create rotated copies.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>Kiertää valittuja kohteita. Valitse kierroksen keskipiste, sitten ensimmäinen kulma, ja sitten lopullinen kulma.
+Jos "Kopioi" -vaihtoehto on aktiivinen, toiminto luo käännettyjä kopioita.
+CTRL napsauttaa, VAIHTO rajoittaa. Pidä ALT ja luo napsauttamalla kopioita.</translation>
     </message>
   </context>
   <context>
@@ -6537,8 +6531,8 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
       <location filename="../../draftguitools/gui_groups.py" line="77"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
-      <translation type="unfinished">Moves the selected objects to an existing group, or removes them from any group.
-Create a group first to use this tool.</translation>
+      <translation>Siirtää valitut objektit olemassa olevaan ryhmään tai poistaa ne ryhmästä.
+Luo ryhmä ensin käyttääksesi tätä työkalua.</translation>
     </message>
   </context>
   <context>
@@ -6551,7 +6545,7 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="168"/>
       <source>Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</source>
-      <translation type="unfinished">Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</translation>
+      <translation>Valitsee valittujen ryhmien sisällön. Valituille muille kuin ryhmäkohteille valitaan niitten ryhmän sisältö.</translation>
     </message>
   </context>
   <context>
@@ -6559,12 +6553,12 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="209"/>
       <source>Autogroup</source>
-      <translation type="unfinished">Autogroup</translation>
+      <translation>Ryhmittele Automaattisesti</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="212"/>
       <source>Select a group to add all Draft and BIM objects to.</source>
-      <translation type="unfinished">Select a group to add all Draft and BIM objects to.</translation>
+      <translation>Valitse ryhmä johon haluat lisätä kaikki Draft- ja BIM-objektit.</translation>
     </message>
   </context>
   <context>
@@ -6572,16 +6566,16 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="307"/>
       <source>Add to construction group</source>
-      <translation type="unfinished">Add to construction group</translation>
+      <translation>Lisää rakenneryhmään</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="310"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
-      <translation type="unfinished">Adds the selected objects to the construction group,
-and changes their appearance to the construction style.
-It creates a construction group if it doesn't exist.</translation>
+      <translation>Lisää valitut kohteet rakenneryhmään,
+ja muuttaa niiden ulkonäköä rakennetyyliin.
+Luo rakenneryhmän, jos sitä ei ole olemassa.</translation>
     </message>
   </context>
   <context>
@@ -6594,7 +6588,7 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="362"/>
       <source>Add a new group with a given name.</source>
-      <translation type="unfinished">Add a new group with a given name.</translation>
+      <translation>Luo uuden ryhmän annetulla nimellä.</translation>
     </message>
   </context>
   <context>
@@ -6602,16 +6596,16 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="46"/>
       <source>Create working plane proxy</source>
-      <translation type="unfinished">Create working plane proxy</translation>
+      <translation>Luo tallennettu työtaso</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="49"/>
       <source>Creates a proxy object from the current working plane.
 Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
 Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation type="unfinished">Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</translation>
+      <translation>Luo käytössä olevasta työtasosta tallennetun työtason.
+Kun objekti on luotu, voit kaksoisnapsauttaa sitä puunäkymässä ja voit palauttaa kameran paikan ja objektien näkyvyydetä.
+Voit tallentaa uuden kameran sijainnin ja objektien tilan aina tarvittaessa.</translation>
     </message>
   </context>
   <context>
@@ -6624,7 +6618,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="../../draftguitools/gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
-      <translation type="unfinished">Converts a selected polyline to a B-spline, or a B-spline to a polyline.</translation>
+      <translation>Muuntaa valitun murtoviivan B-spliniksi tai B-viivan murtoviivaksi.</translation>
     </message>
   </context>
   <context>
@@ -6632,14 +6626,14 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="62"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>Käännä mitta</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="66"/>
       <source>Flip the normal direction of the selected dimensions (linear, radial, angular).
 If other objects are selected they are ignored.</source>
-      <translation type="unfinished">Flip the normal direction of the selected dimensions (linear, radial, angular).
-If other objects are selected they are ignored.</translation>
+      <translation>Kääntää valittujen mittojen (pituus, säde, kulma).
+Jos valittuna on muita objekteja, ei tehdä mitään.</translation>
     </message>
   </context>
   <context>
@@ -6652,7 +6646,7 @@ If other objects are selected they are ignored.</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="71"/>
       <source>Creates a fillet between two selected wires or edges.</source>
-      <translation type="unfinished">Creates a fillet between two selected wires or edges.</translation>
+      <translation>Pyöristää kahden viivan tai särmän välin.</translation>
     </message>
   </context>
   <context>
@@ -6665,7 +6659,7 @@ If other objects are selected they are ignored.</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="67"/>
       <source>Sets default styles</source>
-      <translation type="unfinished">Sets default styles</translation>
+      <translation>Asettaa oletustyylit</translation>
     </message>
   </context>
   <context>
@@ -6679,8 +6673,8 @@ If other objects are selected they are ignored.</translation>
       <location filename="../../draftguitools/gui_polygons.py" line="60"/>
       <source>Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.
 CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.
-CTRL to snap, SHIFT to constrain</translation>
+      <translation>Luo säännöllisen monikulmion (kolmio, neliö, viisikulmio, ...), sivujen määrän ja säteen mukaan.
+CTRL kohdistaa, SHIFT rajoittaa</translation>
     </message>
   </context>
   <context>
@@ -6695,9 +6689,9 @@ CTRL to snap, SHIFT to constrain</translation>
       <source>Splits the selected line or polyline into two independent lines
 or polylines by clicking anywhere along the original object.
 It works best when choosing a point on a straight segment and not a corner vertex.</source>
-      <translation type="unfinished">Splits the selected line or polyline into two independent lines
-or polylines by clicking anywhere along the original object.
-It works best when choosing a point on a straight segment and not a corner vertex.</translation>
+      <translation>Jakaa valitun viivan tai murtoviivan kahteen itsenäiseen viivaan
+tai murtoviivoiksi siitä kohdasta missä napsautat alkuperäistä objektia.
+Toimii parhaiten, kun valitset pisteen suoralla segmentillä eikä kärkipistettä.</translation>
     </message>
   </context>
   <context>
@@ -6705,14 +6699,14 @@ It works best when choosing a point on a straight segment and not a corner verte
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="76"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>Trimex</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="82"/>
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
-      <translation type="unfinished">Trims or extends the selected object, or extrudes single faces.
-CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</translation>
+      <translation>Lyhentää tai jatkaa valittua objektia, tai pursottaa yksittäisiä pintoja.
+CTRL tarttuu, SHIFT kiinnittää nykyiseen segmenttiin tai normaaliin, ALT kääntää.</translation>
     </message>
   </context>
   <context>
@@ -6725,7 +6719,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="63"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Luo usean pisteen B-splinin. CTRL kohdistaa, SHIFT rajoittaa.</translation>
     </message>
   </context>
   <context>
@@ -6738,7 +6732,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="51"/>
       <source>Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</source>
-      <translation type="unfinished">Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</translation>
+      <translation>Ottaa työkalurivillä määritellyn tyylin (viivan leveys ja värit) käyttöön valituissa kohteissa ja ryhmissä.</translation>
     </message>
   </context>
   <context>
@@ -6752,8 +6746,8 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
       <location filename="../../draftguitools/gui_beziers.py" line="69"/>
       <source>Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Luo N-asteen Bézier-käyrän. Mitä enemmän pisteitä valitset, sitä korkeampi aste.
+CTRL kohdistaa, SHIFT rajoittaa.</translation>
     </message>
   </context>
   <context>
@@ -6761,16 +6755,16 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="253"/>
       <source>Cubic Bézier curve</source>
-      <translation type="unfinished">Cubic Bézier curve</translation>
+      <translation>Neljän pisteen Bézier-käyrä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="256"/>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Luo toisen ja kolmannen asteen Bézier -käyrän segmenttejä. Määritä kukin segmentti napsauttamalla ja vetämällä..
+Kun käyrä on luotu, voit palata takaisin ja muokata jokaisen ohjauspisteen sekä asettaa kunkin solmun ominaisuudet.
+CTRL kohdistaa, SHIFT rajoittaa.</translation>
     </message>
   </context>
   <context>
@@ -6783,7 +6777,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="488"/>
       <source>Create various types of Bézier curves.</source>
-      <translation type="unfinished">Create various types of Bézier curves.</translation>
+      <translation>Luo erilaisia Bézier -käyriä.</translation>
     </message>
   </context>
   <context>
@@ -6797,8 +6791,8 @@ CTRL to snap, SHIFT to constrain.</translation>
       <location filename="../../draftguitools/gui_circles.py" line="84"/>
       <source>Creates a circle (full circular arc).
 CTRL to snap, ALT to select tangent objects.</source>
-      <translation type="unfinished">Creates a circle (full circular arc).
-CTRL to snap, ALT to select tangent objects.</translation>
+      <translation>Luo ympyrän (eli täyden kierroksen kaaren).
+CTRL kohdistaa, ALT valitsee tangenttiobjekteja.</translation>
     </message>
   </context>
   <context>
@@ -6811,7 +6805,7 @@ CTRL to snap, ALT to select tangent objects.</translation>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="62"/>
       <source>Creates an ellipse. CTRL to snap.</source>
-      <translation type="unfinished">Creates an ellipse. CTRL to snap.</translation>
+      <translation>Luo ellipsin. CTRL kohdistaa.</translation>
     </message>
   </context>
   <context>
@@ -6819,12 +6813,12 @@ CTRL to snap, ALT to select tangent objects.</translation>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="60"/>
       <source>Facebinder</source>
-      <translation>Liitä pinnat</translation>
+      <translation>Facebinder</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="63"/>
       <source>Creates a facebinder object from selected faces.</source>
-      <translation type="unfinished">Creates a facebinder object from selected faces.</translation>
+      <translation>Luo Facebinder -objektin valituista pinnoista.</translation>
     </message>
   </context>
   <context>
@@ -6832,7 +6826,7 @@ CTRL to snap, ALT to select tangent objects.</translation>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="65"/>
       <source>Array</source>
-      <translation type="unfinished">Array</translation>
+      <translation>Matriisi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="68"/>
@@ -6840,10 +6834,10 @@ CTRL to snap, ALT to select tangent objects.</translation>
 meaning the copies follow the specified direction in the X, Y, Z axes.
 
 The array can be turned into a polar or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in an orthogonal pattern,
-meaning the copies follow the specified direction in the X, Y, Z axes.
+      <translation>Luo kopio valitusta objektista ja sijoittaa kopiot ruudukkomatriisiin,
+kopiot tulevat haluttuihin suuntiin X, Y ja Z-akseleilla.
 
-The array can be turned into a polar or a circular array by changing its type.</translation>
+Matriisin tyypiksi voidaan muuttaa pyärähdys- tai kehämatriisi.</translation>
     </message>
   </context>
   <context>
@@ -6851,14 +6845,14 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="71"/>
       <source>Scale</source>
-      <translation>Mittakaava</translation>
+      <translation>Skaalaa</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="74"/>
       <source>Scales the selected objects from a base point.
 CTRL to snap, SHIFT to constrain, ALT to copy.</source>
-      <translation type="unfinished">Scales the selected objects from a base point.
-CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
+      <translation>Skaalaa valitut objektit peruspisteestä.
+CTRL kohdistaa, SHIFT rajoittaa, ALT kopioi.</translation>
     </message>
   </context>
   <context>
@@ -6872,8 +6866,8 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
       <location filename="../../draftguitools/gui_layers.py" line="71"/>
       <source>Adds a layer to the document.
 Objects added to this layer can share the same visual properties.</source>
-      <translation type="unfinished">Adds a layer to the document.
-Objects added to this layer can share the same visual properties.</translation>
+      <translation>Lisää asiakirjaan uuden tason.
+Samalla tasolla olevat objektit voivat jakaa samat visuaaliset ominaisuudet.</translation>
     </message>
   </context>
   <context>
@@ -6887,8 +6881,8 @@ Objects added to this layer can share the same visual properties.</translation>
       <location filename="../../draftguitools/gui_pointarray.py" line="70"/>
       <source>Creates copies of the selected base object at the points of a point object.
 First select the base object, and then select the point object.</source>
-      <translation type="unfinished">Creates copies of the selected base object at the points of a point object.
-First select the base object, and then select the point object.</translation>
+      <translation>Luo valitusta perusobjektista kopioita ja sijoittaa ne pisteobjektin pisteisiin.
+Valitse perusobjekti ja sen jälkeen pisteobjekti.</translation>
     </message>
   </context>
   <context>
@@ -6896,14 +6890,14 @@ First select the base object, and then select the point object.</translation>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="132"/>
       <source>Point link array</source>
-      <translation>Osoita linkkimatriisiin</translation>
+      <translation>Linkitetty pistematriisi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="135"/>
       <source>Like the PointArray tool, but creates a 'Point link array' instead.
 A 'Point link array' is more efficient when handling many copies.</source>
-      <translation type="unfinished">Like the PointArray tool, but creates a 'Point link array' instead.
-A 'Point link array' is more efficient when handling many copies.</translation>
+      <translation>Kuten Pistematriisi, mutta luo sen sijaan matriisin linkkeinä.
+Linkitetty pistematriisi on tehokkaampi kun matriisiobjekteja on paljon.</translation>
     </message>
   </context>
   <context>
@@ -6916,7 +6910,7 @@ A 'Point link array' is more efficient when handling many copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="69"/>
       <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
-      <translation type="unfinished">Create various types of arrays, including rectangular, polar, circular, path, and point</translation>
+      <translation>Luo erilaisia matriiseja kuten suorakulmaisia, pyörähdys-, ympyrä-, polku- ja pistematriisit</translation>
     </message>
   </context>
   <context>
@@ -6924,14 +6918,14 @@ A 'Point link array' is more efficient when handling many copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="99"/>
       <source>Toggle construction mode</source>
-      <translation type="unfinished">Toggle construction mode</translation>
+      <translation>Rakennetila / Piirtotila</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="102"/>
       <source>Toggles the Construction mode.
 When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</source>
-      <translation type="unfinished">Toggles the Construction mode.
-When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</translation>
+      <translation>Vaihtaa rakennetilaa.
+Kun valittuna, seuraavat luodut kohteet sisällytetään rakenneryhmään, ja piirretään rakennerymän väreissä ja ominaisuuksin.</translation>
     </message>
   </context>
   <context>
@@ -6939,16 +6933,17 @@ When this is active, the following objects created will be included in the const
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="136"/>
       <source>Toggle normal/wireframe display</source>
-      <translation type="unfinished">Toggle normal/wireframe display</translation>
+      <translation>Vaihda tavallinen- / rautalankanäyttö</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="138"/>
       <source>Switches the display mode of selected objects from flatlines to wireframe and back.
 This is helpful to quickly visualize objects that are hidden by other objects.
 This is intended to be used with closed shapes and solids, and doesn't affect open wires.</source>
-      <translation type="unfinished">Switches the display mode of selected objects from flatlines to wireframe and back.
-This is helpful to quickly visualize objects that are hidden by other objects.
-This is intended to be used with closed shapes and solids, and doesn't affect open wires.</translation>
+      <translation>Vaihtaa valittujen objektien näyttötilan normaalista rautalankamalliin ja takaisin.
+Tämä on hyödyllistä katsottaessa muitten objektien takana olevia objekteja.
+Tämä on tarkoitettu käytettäväksi suljettujen muotojen ja kiinteiden objektien kanssa, eikä se vaikuta
+avoimiin lankoihin (murtoviivat, viivat).</translation>
     </message>
   </context>
   <context>
@@ -6956,7 +6951,7 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="85"/>
       <source>Dimension</source>
-      <translation>Dimensio</translation>
+      <translation>Mitta</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="88"/>
@@ -6972,18 +6967,17 @@ You may select a single line or single circular arc before launching this comman
 to create the corresponding linked dimension.
 You may also select an 'App::MeasureDistance' object before launching this command
 to turn it into a 'Draft Dimension' object.</source>
-      <translation type="unfinished">Creates a dimension.
+      <translation>Luo mitan.
 
-- Pick three points to create a simple linear dimension.
-- Select a straight line to create a linear dimension linked to that line.
-- Select an arc or circle to create a radius or diameter dimension linked to that arc.
-- Select two straight lines to create an angular dimension between them.
-CTRL to snap, SHIFT to constrain, ALT to select an edge or arc.
+- Anna kolme pistettä luodaksesi yksinkertaisen äärimitan.
+- Valitse suora viiva luodaksesi viivaan linkitetyn mitan.
+- Valitse kaari tai ympyrä luodaksesi säteen tai halkaisijan mitan.
+- Valitse kaksi suoraa viivaa luodaksesi niiden välisen kulmamitan.
 
-You may select a single line or single circular arc before launching this command
-to create the corresponding linked dimension.
-You may also select an 'App::MeasureDistance' object before launching this command
-to turn it into a 'Draft Dimension' object.</translation>
+Voit valita yksittäisen viivan tai kaaren ennen tämän komennon käynnistämistä
+luodaksesi siihen liittyvän mitan.
+Voit myös valita 'App::MeasureDistance' -objektin ennen kuin käynnistät komennon
+ja voit muuttaa valitun objektin 'Draft Dimension' -objektiksi.</translation>
     </message>
   </context>
   <context>
@@ -6998,9 +6992,9 @@ to turn it into a 'Draft Dimension' object.</translation>
       <source>Stretches the selected objects.
 Select an object, then draw a rectangle to pick the vertices that will be stretched,
 then draw a line to specify the distance and direction of stretching.</source>
-      <translation type="unfinished">Stretches the selected objects.
-Select an object, then draw a rectangle to pick the vertices that will be stretched,
-then draw a line to specify the distance and direction of stretching.</translation>
+      <translation>Venyttää valittuja objekteja.
+Valitse objekti ja piirrä suorakulmio valitaksesi venyvät kärkipisteet,
+piirrä sitten viiva valitaksesi venymisen etäisyyden ja suunnan.</translation>
     </message>
   </context>
   <context>
@@ -7013,7 +7007,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="57"/>
       <source>Creates a 2-point rectangle. CTRL to snap.</source>
-      <translation type="unfinished">Creates a 2-point rectangle. CTRL to snap.</translation>
+      <translation>Luo 2-pisteen suorakulmion. CTRL kohdistaa.</translation>
     </message>
   </context>
   <context>
@@ -7021,12 +7015,12 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="64"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Peilaa</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="67"/>
       <source>Mirrors the selected objects along a line defined by two points.</source>
-      <translation type="unfinished">Mirrors the selected objects along a line defined by two points.</translation>
+      <translation>Peilaa valitut objektit annetun, kahdella pisteellä määritellyn viivan suhteen.</translation>
     </message>
   </context>
   <context>
@@ -7034,16 +7028,16 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="66"/>
       <source>Path twisted array</source>
-      <translation type="unfinished">Path twisted array</translation>
+      <translation>Kierrepolkumatriisi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="69"/>
       <source>Creates copies of the selected object along a selected path, and twists the copies.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path, and twists the copies.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>Luo valitun objektin kopioita valitulle polulle, ja asettaa kopiot kierteelle.
+Valitse ensin objekti ja valitse sitten polku.
+Polku voi olla murtoviiva(lanka), B-splini, Bézier-käyrä, tai toisten objektien yhtenäinen reuna.</translation>
     </message>
   </context>
   <context>
@@ -7051,14 +7045,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="121"/>
       <source>Path twisted link array</source>
-      <translation type="unfinished">Path twisted link array</translation>
+      <translation>Linkitetty kierrepolkumatriisi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="124"/>
       <source>Like the PathTwistedArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathTwistedArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Kuten Kierrepolkumatriisi, mutta luo linkkejä eikä kopioita.
+Linkkimatriisi on tehokkaampi jos kopioita on enemmän, mutta niitä ei voi Sulauttaa yhteen myöhemmin.</translation>
     </message>
   </context>
   <context>
@@ -7072,8 +7066,8 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
       <location filename="../../draftguitools/gui_clone.py" line="74"/>
       <source>Creates a clone of the selected objects.
 The resulting clone can be scaled in each of its three directions.</source>
-      <translation type="unfinished">Creates a clone of the selected objects.
-The resulting clone can be scaled in each of its three directions.</translation>
+      <translation>Luo valittujen objektien kloonin.
+Tuloksena olevaa kloonia voidaan skaalata kolmeen suuntaan.</translation>
     </message>
   </context>
   <context>
@@ -7081,7 +7075,7 @@ The resulting clone can be scaled in each of its three directions.</translation>
     <message>
       <location filename="../../draftguitools/gui_polararray.py" line="65"/>
       <source>Polar array</source>
-      <translation>Polar matriisi</translation>
+      <translation>Luo pyörähdysmatriisi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polararray.py" line="68"/>
@@ -7089,10 +7083,10 @@ The resulting clone can be scaled in each of its three directions.</translation>
 defined by a center of rotation and its angle.
 
 The array can be turned into an orthogonal or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a polar pattern
-defined by a center of rotation and its angle.
+      <translation>Luo valitun objektin kopioita ja sijoittaa kopiot ympyrän muotoiseen kuvioon,
+jossa on kerroksia.
 
-The array can be turned into an orthogonal or a circular array by changing its type.</translation>
+Matriisi voidaan muuttaa ortogonaaliseksi (ruudukko) tai säteismatriisiksi muuttamalla sen tyyppiä.</translation>
     </message>
   </context>
   <context>
@@ -7100,7 +7094,7 @@ The array can be turned into an orthogonal or a circular array by changing its t
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="66"/>
       <source>Set slope</source>
-      <translation type="unfinished">Set slope</translation>
+      <translation>Aseta kaltevuus</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="69"/>
@@ -7109,11 +7103,11 @@ If a polyline is selected, it will apply the slope transformation to each of its
 
 The slope will always change the Z value, therefore this command only works well for
 straight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.</source>
-      <translation type="unfinished">Sets the slope of the selected line by changing the value of the Z value of one of its points.
-If a polyline is selected, it will apply the slope transformation to each of its segments.
+      <translation>Asettaa valitun viivan kaltevuuden muuttamalla Z-arvon arvoa, joka on yksi sen pisteistä.
+Jos valittuna on murtoviiva, kaltevuus sovelletaan sen segmenteille.
 
-The slope will always change the Z value, therefore this command only works well for
-straight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.</translation>
+Kaltevuus muuttaa aina Z-arvoa ja siksi tämä komento toimii hyvin vain suorille
+Draft -viivoille, jotka ovat XY-tasolla. Muun tyyppisiä objekteja ei huomioida.</translation>
     </message>
   </context>
   <context>
@@ -7121,7 +7115,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="../../draftguitools/gui_upgrade.py" line="58"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>Ylennä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_upgrade.py" line="61"/>
@@ -7129,10 +7123,10 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
 The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
 For example, it can join the selected objects into one, convert simple edges into parametric polylines,
 convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</source>
-      <translation type="unfinished">Upgrades the selected objects into more complex shapes.
-The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
-For example, it can join the selected objects into one, convert simple edges into parametric polylines,
-convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</translation>
+      <translation>Ylentää valitut kohteet monimutkaisemmiksi muodoiksi.
+Toiminnan tulos riippuu objektin tyypistä, joitakin voidaan ylentää useita kertoja peräkkäin.
+Voit esimerkiksi yhdistää valittuja objekteja yhdeksi, muuntaa reunoja parametrisiksi murtoviivoiksi,
+muuntaa suljetut reunat täytetyiksi pinnoiksi ja parametrisiksi monikulmioiksi, ja yhdistää pinnat yhdeksi pinnaksi.</translation>
     </message>
   </context>
   <context>
@@ -7147,9 +7141,9 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
       <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Offsets of the selected object.
-It can also create an offset copy of the original object.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>Valitun objektin siirtymät.
+Työkalulla voidaan luoda myös kopio siirtymään.
+CTRL kohdistaa, SHIFT rajoittaa. Pidä ALT ja voit napsauttaa uusia kopiota.</translation>
     </message>
   </context>
   <context>
@@ -7157,7 +7151,7 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="59"/>
       <source>Shape 2D view</source>
-      <translation>Muodon 2D-näkymä</translation>
+      <translation>Luo 2D-näkymä</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="62"/>
@@ -7165,10 +7159,10 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
 The initial projection direction is the negative of the current active view direction.
 You can select individual faces to project, or the entire solid, and also include hidden lines.
 These projections can be used to create technical drawings with the TechDraw Workbench.</source>
-      <translation type="unfinished">Creates a 2D projection of the selected objects on the XY plane.
-The initial projection direction is the negative of the current active view direction.
-You can select individual faces to project, or the entire solid, and also include hidden lines.
-These projections can be used to create technical drawings with the TechDraw Workbench.</translation>
+      <translation>Luo 2D-projektion valituista objekteista XY-tasolle.
+Alustava projektion suunta on negatiivinen nykyisestä aktiivisesta näkymäsuunnasta.
+Voit valita projektoitavat pinnat tai kiinteät osat, ja tarvittaessa näyttää piilotettuja viivoja.
+Projektioita voidaan käyttää TechDraw:ssa teknisten piirustusten luomiseen.</translation>
     </message>
   </context>
   <context>
@@ -7182,8 +7176,8 @@ These projections can be used to create technical drawings with the TechDraw Wor
       <location filename="../../draftguitools/gui_shapestrings.py" line="68"/>
       <source>Creates a shape from a text string by choosing a specific font and a placement.
 The closed shapes can be used for extrusions and boolean operations.</source>
-      <translation type="unfinished">Creates a shape from a text string by choosing a specific font and a placement.
-The closed shapes can be used for extrusions and boolean operations.</translation>
+      <translation>Luo merkkijonosta muodon valitulla fontilla valittuun paikkaan.
+Suljettuja muotoja voidaan pursottaa ja käyttää Boolen operaatioissa.</translation>
     </message>
   </context>
   <context>
@@ -7198,9 +7192,9 @@ The closed shapes can be used for extrusions and boolean operations.</translatio
       <source>Heal faulty Draft objects saved with an earlier version of the program.
 If an object is selected it will try to heal that object in particular,
 otherwise it will try to heal all objects in the active document.</source>
-      <translation type="unfinished">Heal faulty Draft objects saved with an earlier version of the program.
-If an object is selected it will try to heal that object in particular,
-otherwise it will try to heal all objects in the active document.</translation>
+      <translation>Paranna ohjelman aikaisemmalla versiolla luotuja rikkoontuneita Draft-objekteja.
+Jos objekti on valittuna, yritetään parantaa valittu objekti,
+muuten yritetään parantaa kaikki asiakirjan objektit.</translation>
     </message>
   </context>
   <context>
@@ -7208,16 +7202,17 @@ otherwise it will try to heal all objects in the active document.</translation>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="58"/>
       <source>Downgrade</source>
-      <translation type="unfinished">Downgrade</translation>
+      <translation>Alenna</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="61"/>
       <source>Downgrades the selected objects into simpler shapes.
 The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
 For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</source>
-      <translation type="unfinished">Downgrades the selected objects into simpler shapes.
-The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
-For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</translation>
+      <translation>Alentaa valitut kohteet monimutkaisemmiksi muodoiksi.
+Toiminnan tulos riippuu objektin tyypistä, joitakin voidaan alentaa useita kertoja peräkkäin.
+Voit esimerkiksi jakaa murtoviivoja yksinkertaisemmiksi viivoiksi, langoiksi ja särmiksi.
+Voit myös jakaa kiinteän objektin erillisiksi pinnoiksi.</translation>
     </message>
   </context>
   <context>
@@ -7225,14 +7220,14 @@ For example, it explodes the selected polylines into simpler faces, wires, and t
     <message>
       <location filename="../../draftobjects/text.py" line="56"/>
       <source>The placement of the base point of the first line</source>
-      <translation type="unfinished">The placement of the base point of the first line</translation>
+      <translation>Ensimmäisen viivan peruspisteen sijoitus</translation>
     </message>
     <message>
       <location filename="../../draftobjects/text.py" line="68"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
-      <translation type="unfinished">The text displayed by this object.
-It is a list of strings; each element in the list will be displayed in its own line.</translation>
+      <translation>Tässä objektissa näytettävä teksti.
+Se on merkkijonoluettelo; jokainen luettelon osa näytetään omalla rivillään.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="56"/>
@@ -7252,89 +7247,89 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="../../draftobjects/shapestring.py" line="68"/>
       <source>Horizontal and vertical alignment</source>
-      <translation type="unfinished">Horizontal and vertical alignment</translation>
+      <translation>Vaaka- ja pystysuuntainen tasaus</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="76"/>
       <source>Height reference used for justification</source>
-      <translation type="unfinished">Height reference used for justification</translation>
+      <translation>Korjaukseen käytettävän korkeuden referenssi</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="82"/>
       <source>Keep left margin and leading white space when justification is left</source>
-      <translation type="unfinished">Keep left margin and leading white space when justification is left</translation>
+      <translation>Säilytä vasen marginaali ja alussa olevat välilyönnit kun tasataan vasemmalle</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="86"/>
       <source>Scale to ensure cap height is equal to size</source>
-      <translation type="unfinished">Scale to ensure cap height is equal to size</translation>
+      <translation>Skaalaa niin että koko vastaa korkeinta kohtaa</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="90"/>
       <source>Inter-character spacing</source>
-      <translation type="unfinished">Inter-character spacing</translation>
+      <translation>Kirjaimien välistys</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="94"/>
       <source>Oblique (slant) angle</source>
-      <translation type="unfinished">Oblique (slant) angle</translation>
+      <translation>Kursiivikulma (vinous)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="98"/>
       <source>Fill letters with faces</source>
-      <translation type="unfinished">Fill letters with faces</translation>
+      <translation>Täytä kirjaimet pinnoilla</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="102"/>
       <source>Fuse faces if faces overlap, usually not required (can be very slow)</source>
-      <translation type="unfinished">Fuse faces if faces overlap, usually not required (can be very slow)</translation>
+      <translation>Sulauta pinnat jos ne kohtaavat, ei yleensä tarpeen (hidastaa)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="49"/>
       <source>The base object used by this object</source>
-      <translation type="unfinished">The base object used by this object</translation>
+      <translation>Tämän objektin käyttämä perusobjekti</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="52"/>
       <source>The PAT file used by this object</source>
-      <translation type="unfinished">The PAT file used by this object</translation>
+      <translation>Tämän objektin käyttämä PAT -tiedosto</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="55"/>
       <source>The pattern name used by this object</source>
-      <translation type="unfinished">The pattern name used by this object</translation>
+      <translation>Tässä objektissa käytettävän täytekuvion nimi</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="58"/>
       <source>The pattern scale used by this object</source>
-      <translation type="unfinished">The pattern scale used by this object</translation>
+      <translation>Tässä objektissa käytettävän täytekuvion skaala</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="61"/>
       <source>The pattern rotation used by this object</source>
-      <translation type="unfinished">The pattern rotation used by this object</translation>
+      <translation>Tässä objektissa käytettävän täytekuvion kierto</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="64"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+      <translation>Jos Epätosi, täyte täytekuvio asetetaan kuten pinnoille, muuntamattomana (saattaa vääristyä muilla kuin XY-suuntaisilla pinnoilla)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/clone.py" line="46"/>
       <source>The objects included in this clone</source>
-      <translation type="unfinished">The objects included in this clone</translation>
+      <translation>Tähän klooniin sisältyvät objektit</translation>
     </message>
     <message>
       <location filename="../../draftobjects/clone.py" line="51"/>
       <source>The scale factor of this clone</source>
-      <translation type="unfinished">The scale factor of this clone</translation>
+      <translation>Tämän kloonin skaalauskerroin</translation>
     </message>
     <message>
       <location filename="../../draftobjects/clone.py" line="57"/>
       <source>If Clones includes several objects,
 set True for fusion or False for compound</source>
-      <translation type="unfinished">If Clones includes several objects,
-set True for fusion or False for compound</translation>
+      <translation>Jos kloonit sisältävät useita objekteja,
+aseta Tosi sulauttaaksesi tai epätosi jos haluat luoda yhdisteen</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="45"/>
@@ -7345,8 +7340,8 @@ set True for fusion or False for compound</translation>
       <location filename="../../draftobjects/circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>Kaaren loppukulma (jos haluattäyden ympyrän, 
+                anna sille sama arvo kuin aloituskulma)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="54"/>
@@ -7359,7 +7354,7 @@ set True for fusion or False for compound</translation>
       <location filename="../../draftobjects/ellipse.py" line="58"/>
       <location filename="../../draftobjects/rectangle.py" line="58"/>
       <source>Create a face</source>
-      <translation type="unfinished">Create a face</translation>
+      <translation>Luo pinta</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="62"/>
@@ -7369,62 +7364,62 @@ set True for fusion or False for compound</translation>
       <location filename="../../draftobjects/wire.py" line="93"/>
       <location filename="../../draftobjects/bspline.py" line="57"/>
       <source>The area of this object</source>
-      <translation type="unfinished">The area of this object</translation>
+      <translation>Tämän objektin pinta-ala</translation>
     </message>
     <message>
       <location filename="../../draftobjects/layer.py" line="60"/>
       <source>The objects that are part of this layer</source>
-      <translation type="unfinished">The objects that are part of this layer</translation>
+      <translation>Objektit, jotka ovat osa tätä tasoa</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="48"/>
       <source>Number of faces</source>
-      <translation type="unfinished">Number of faces</translation>
+      <translation>Pintojen lukumäärä</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="52"/>
       <source>Radius of the control circle</source>
-      <translation type="unfinished">Radius of the control circle</translation>
+      <translation>Ohjausympyrän säde</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="56"/>
       <source>How the polygon must be drawn from the control circle</source>
-      <translation type="unfinished">How the polygon must be drawn from the control circle</translation>
+      <translation>Miten monikulmio piirretään suhteessa ohjausympyrään</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="60"/>
       <location filename="../../draftobjects/rectangle.py" line="52"/>
       <location filename="../../draftobjects/wire.py" line="77"/>
       <source>Radius to use to fillet the corners</source>
-      <translation type="unfinished">Radius to use to fillet the corners</translation>
+      <translation>Kulmien pyöristyssäde</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="64"/>
       <location filename="../../draftobjects/rectangle.py" line="55"/>
       <location filename="../../draftobjects/wire.py" line="81"/>
       <source>Size of the chamfer to give to the corners</source>
-      <translation type="unfinished">Size of the chamfer to give to the corners</translation>
+      <translation>Nurkkaviisteen koko</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="87"/>
       <source>The base object that will be duplicated.</source>
-      <translation type="unfinished">The base object that will be duplicated.</translation>
+      <translation>Perusobjekti, josta tehdään kaksoiskappale.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="94"/>
       <location filename="../../draftobjects/patharray.py" line="185"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
-      <translation type="unfinished">The object along which the copies will be distributed. It must contain 'Edges'.</translation>
+      <translation>Objekti, jolle kopiot levitetään. Objektilla on oltava reunoja.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="112"/>
       <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
+      <translation>Luotavien kopioiden määrä.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="119"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+      <translation>Kierretyn matriisin kiertokerroin.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="126"/>
@@ -7432,14 +7427,14 @@ set True for fusion or False for compound</translation>
       <location filename="../../draftobjects/array.py" line="335"/>
       <location filename="../../draftobjects/pointarray.py" line="111"/>
       <source>Show the individual array elements (only for Link arrays)</source>
-      <translation type="unfinished">Show the individual array elements (only for Link arrays)</translation>
+      <translation>Näytä yksittäiset matriisielementit (vain linkkimatriisit)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="67"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
-      <translation type="unfinished">The position of the tip of the leader line.
-This point can be decorated with an arrow or another symbol.</translation>
+      <translation>Viiteviivan kärjen paikka.
+Kärkeen voidaan määritellä nuoli tai muu symboli.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="81"/>
@@ -7447,10 +7442,8 @@ This point can be decorated with an arrow or another symbol.</translation>
 as 'Text', depending on 'Label Type'.
 
 'Target' won't be used if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">Object, and optionally subelement, whose properties will be displayed
-as 'Text', depending on 'Label Type'.
-
-'Target' won't be used if 'Label Type' is set to 'Custom'.</translation>
+      <translation>Objekti ja mahdollinen aliobjekti, jonka ominaisuudet näytetään
+tekstinä, riippuen 'Label Type' -ominaisuudesta</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="111"/>
@@ -7463,15 +7456,15 @@ The middle point is calculated automatically depending on the chosen
 
 If 'Straight Direction' is set to 'Custom', the 'Points' property
 can be set as a list of arbitrary points.</source>
-      <translation type="unfinished">The list of points defining the leader line; normally a list of three points.
+      <translation>Viiteviivan pisteet; yleensä kolme pistettä.
 
-The first point should be the position of the text, that is, the 'Placement',
-and the last point should be the tip of the line, that is, the 'Target Point'.
-The middle point is calculated automatically depending on the chosen
-'Straight Direction' and the 'Straight Distance' value and sign.
+Ensimmäinen osoittaa tekstin paikan, se sama kuin 'Placement',
+viimeinen osoittaa viiteviivan kärjen, 'Target Point'.
+Keskimmäinen piste lasketaan automaattisesti suunnan mukaan,
+riippuen siitä onko valittuna 'Straight Direction' ja 'Straight Distance'.
 
-If 'Straight Direction' is set to 'Custom', the 'Points' property
-can be set as a list of arbitrary points.</translation>
+Jos 'Straight Direction' on asetettu arvoon 'Custom', pisteet voi määritellä
+vapaasti.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="126"/>
@@ -7479,10 +7472,9 @@ can be set as a list of arbitrary points.</translation>
 
 If 'Custom' is chosen, the points of the leader can be specified by
 assigning a custom list to the 'Points' attribute.</source>
-      <translation type="unfinished">The direction of the straight segment of the leader line.
+      <translation>Viiteviivan suoran osan suunta.
 
-If 'Custom' is chosen, the points of the leader can be specified by
-assigning a custom list to the 'Points' attribute.</translation>
+Jos arvo on 'Custom', pisteet voi määrittää alla vapaasti.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="144"/>
@@ -7491,21 +7483,21 @@ assigning a custom list to the 'Points' attribute.</translation>
 This is an oriented distance; if it is negative, the line will be drawn
 to the left or below the 'Text', otherwise to the right or above it,
 depending on the value of 'Straight Direction'.</source>
-      <translation type="unfinished">The length of the straight segment of the leader line.
+      <translation>Viiteviivan suoran segmentin pituus.
 
-This is an oriented distance; if it is negative, the line will be drawn
-to the left or below the 'Text', otherwise to the right or above it,
-depending on the value of 'Straight Direction'.</translation>
+Tämä on pituus suunnassa; jos se on negatiivinen, viiva piirretään
+vasemmalle tai tekstin alle, muuten oikealle tai päälle, riippuen
+'Straight Direction' -määrityksestä.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="158"/>
       <source>The placement of the 'Text' element in 3D space</source>
-      <translation type="unfinished">The placement of the 'Text' element in 3D space</translation>
+      <translation>Tekstielementin sijoittaminen kolmiulotteiseen avaruuteen</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="168"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
-      <translation type="unfinished">The text to display when 'Label Type' is set to 'Custom'</translation>
+      <translation>Teksti, joka näytetään, kun 'Label Type' on asetettu arvoon 'Custom'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="183"/>
@@ -7514,11 +7506,11 @@ depending on the value of 'Straight Direction'.</translation>
 This property is read-only, as the final text depends on 'Label Type',
 and the object defined in 'Target'.
 The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">The text displayed by this label.
+      <translation>Tämän tunnisteen näyttämä teksti.
 
-This property is read-only, as the final text depends on 'Label Type',
-and the object defined in 'Target'.
-The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</translation>
+Tämä ominaisuus on vain luettavissa, koska lopullinen teksti riippuu 'Label Type'stä,
+ja objektista, joka on määritelty 'Target' -kohdassa.
+Mukautettu teksti näytetään vain, jos 'Label Type' on 'Custom'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="218"/>
@@ -7530,14 +7522,14 @@ For other types, the string will be calculated automatically from the object def
 
 For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
 or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</source>
-      <translation type="unfinished">The type of information displayed by this label.
+      <translation>Tämän selitteen näyttämien tietojen tyyppi.
 
-If 'Custom' is chosen, the contents of 'Custom Text' will be used.
-For other types, the string will be calculated automatically from the object defined in 'Target'.
-'Tag' and 'Material' only work for objects that have these properties, like Arch objects.
+Jos valitaan 'Custom', käytetään 'Custom Text' -kentän sisältöä.
+Muille tyypeille merkkijono lasketaan automaattisesti kohteesta, joka on valittu 'Target' -kohdassa.
+'Tag' ja 'Material' toimivat vain kohteille, joilla on näitä ominaisuuksia, esimerkiksi BIM-objektit.
 
-For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
-or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</translation>
+'Sijainti', 'Pituus' ja 'Area' varten nämä ominaisuudet poistetaan pääkohteesta 'Kohde',
+tai alielementistä 'VertexN', 'EdgeN' tai 'FaceN', jos se on määritetty.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="85"/>
@@ -7575,7 +7567,7 @@ Leave this property empty to create copies along the entire 'Path Object'.</tran
     <message>
       <location filename="../../draftobjects/patharray.py" line="219"/>
       <source>Number of copies to create</source>
-      <translation type="unfinished">Number of copies to create</translation>
+      <translation>Luotavien kopioiden määrä</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="238"/>
@@ -7653,17 +7645,17 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="../../draftobjects/array.py" line="151"/>
       <source>Number of copies in X direction</source>
-      <translation type="unfinished">Number of copies in X direction</translation>
+      <translation>Kopioiden määrä X-suunnassa</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="160"/>
       <source>Number of copies in Y direction</source>
-      <translation type="unfinished">Number of copies in Y direction</translation>
+      <translation>Kopioiden määrä Y-suunnassa</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="169"/>
       <source>Number of copies in Z direction</source>
-      <translation type="unfinished">Number of copies in Z direction</translation>
+      <translation>Kopioiden määrä Z-suunnassa</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="179"/>
@@ -7768,22 +7760,22 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="63"/>
       <source>The base object this 2D view must represent</source>
-      <translation type="unfinished">The base object this 2D view must represent</translation>
+      <translation>Perusobjekti, jota tämä 2D-projektio esittää</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="68"/>
       <source>The projection vector of this object</source>
-      <translation type="unfinished">The projection vector of this object</translation>
+      <translation>Tämän objektin projektiovektori</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="74"/>
       <source>The way the viewed object must be projected</source>
-      <translation type="unfinished">The way the viewed object must be projected</translation>
+      <translation>Tapa, jolla katsottu objekti projisoidaan</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="81"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
-      <translation type="unfinished">The indices of the faces to be projected in Individual Faces mode</translation>
+      <translation>Individual Faces -tilassa käytettävien pintojen indeksit</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="86"/>
@@ -7793,12 +7785,12 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="92"/>
       <source>Fuse wall and structure objects of same type and material</source>
-      <translation type="unfinished">Fuse wall and structure objects of same type and material</translation>
+      <translation>Sulauta samaa tyyppiä ja materiaalia olevat seinä ja rakenneobjektit</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="97"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
-      <translation type="unfinished">Tessellate Ellipses and B-splines into line segments</translation>
+      <translation>Jaa ellipsit ja B-splinit segmentteihin</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="103"/>
@@ -7808,47 +7800,47 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="109"/>
       <source>Length of line segments if tessellating Ellipses or B-splines into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines into line segments</translation>
+      <translation>Jaettujen ellipsien tai B-splinien segmenttien pituus</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="115"/>
       <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+      <translation>Jos Tosi, vain näkyvät objektit sisällytetään projektioon</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="121"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+      <translation>Pisteitten sulkuluettelo. Näitä pisteitä koskevat viivat eivät näy.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="126"/>
       <source>A list of exclusion object names. Any object viewed that matches a name from the list will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion object names. Any object viewed that matches a name from the list will not be drawn.</translation>
+      <translation>Objektien poissulkuluettelo. Luettelossa olevia objekteja ei piirretä.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="131"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Jos Tosi, vain projektoidaan vain kiinteät geometriat. Tämä ohittaa perusobjektin Only Solids -ominaisuuden</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="136"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+      <translation>Jos Tosi, sisältö rajataan valitun leikkausprojektion sisään. Tämä ohittaa perusobjektin Clip -ominaisuuden</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="141"/>
       <source>This object will be recomputed only if this is True.</source>
-      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
+      <translation>Tämä objekti lasketaan uudelleen vain, jos arvoksi on asetettu Tosi.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="46"/>
       <source>The points of the Bezier curve</source>
-      <translation type="unfinished">The points of the Bezier curve</translation>
+      <translation>Bézier -käyrän pisteet</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="50"/>
       <source>The degree of the Bezier function</source>
-      <translation type="unfinished">The degree of the Bezier function</translation>
+      <translation>Bézier -funktion asteluku</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="54"/>
@@ -7858,22 +7850,22 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="58"/>
       <source>If the Bezier curve should be closed or not</source>
-      <translation type="unfinished">If the Bezier curve should be closed or not</translation>
+      <translation>Suljetaanko Bézier -käyrä vai ei</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="62"/>
       <source>Create a face if this curve is closed</source>
-      <translation type="unfinished">Create a face if this curve is closed</translation>
+      <translation>Luo pinta, mikäli käyrä on suljettu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="66"/>
       <source>The length of this object</source>
-      <translation type="unfinished">The length of this object</translation>
+      <translation>Tämän objektin pituus</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wpproxy.py" line="43"/>
       <source>The placement of this object</source>
-      <translation type="unfinished">The placement of this object</translation>
+      <translation>Tämän objektin sijoittaminen</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="45"/>
@@ -7893,61 +7885,59 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/ellipse.py" line="45"/>
       <source>Start angle of the elliptical arc</source>
-      <translation type="unfinished">Start angle of the elliptical arc</translation>
+      <translation>Elliptisen kaaren lähtökulma</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="49"/>
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the elliptical arc 
-
-                (for a full circle, give it same value as First Angle)</translation>
+      <translation>Kaaren lopetuskulma (käytä aloituspistettä jos haluat ympyrän)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="52"/>
       <source>Minor radius of the ellipse</source>
-      <translation type="unfinished">Minor radius of the ellipse</translation>
+      <translation>Ellipsin pienempi säde</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="55"/>
       <source>Major radius of the ellipse</source>
-      <translation type="unfinished">Major radius of the ellipse</translation>
+      <translation>Ellipsin suurempi säde</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="61"/>
       <source>Area of this object</source>
-      <translation type="unfinished">Area of this object</translation>
+      <translation>Tämän objektin pinta-ala</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="50"/>
       <source>The start point of this line.</source>
-      <translation type="unfinished">The start point of this line.</translation>
+      <translation>Tämän viivan aloituspiste.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="58"/>
       <source>The end point of this line.</source>
-      <translation type="unfinished">The end point of this line.</translation>
+      <translation>Tämän viivan päätepiste.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="66"/>
       <source>The length of this line.</source>
-      <translation type="unfinished">The length of this line.</translation>
+      <translation>Tämän viivan pituus.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="74"/>
       <source>Radius to use to fillet the corner.</source>
-      <translation type="unfinished">Radius to use to fillet the corner.</translation>
+      <translation>Kulmien pyöristyssäde.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="135"/>
       <source>The normal direction of the text of the dimension</source>
-      <translation type="unfinished">The normal direction of the text of the dimension</translation>
+      <translation>Mittatekstin normaalisuunta</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="148"/>
       <source>The object measured by this dimension object</source>
-      <translation type="unfinished">The object measured by this dimension object</translation>
+      <translation>Objekti, jonka mitta tämä on</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="165"/>
@@ -7958,13 +7948,12 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>Objekti ja sen alielementti, jota tämä mittausobjekti mittaa.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+Useita vaihtoehtoja:
+- Objekti ja sen yksi särmä
+- Objekti ja sen kaksi pistettä
+- Kaariobjekti ja sen särmä.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="188"/>
@@ -8077,12 +8066,12 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="46"/>
       <source>Length of the rectangle</source>
-      <translation type="unfinished">Length of the rectangle</translation>
+      <translation>Suorakulmion pituus</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="49"/>
       <source>Height of the rectangle</source>
-      <translation type="unfinished">Height of the rectangle</translation>
+      <translation>Suorakulmion korkeus</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="61"/>
@@ -8102,72 +8091,72 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="50"/>
       <source>Specifies if splitter lines must be removed</source>
-      <translation type="unfinished">Specifies if splitter lines must be removed</translation>
+      <translation>Määrittää, poistetaanko erotusviivat</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="53"/>
       <source>An optional extrusion value to be applied to all faces</source>
-      <translation type="unfinished">An optional extrusion value to be applied to all faces</translation>
+      <translation>Valinnainen pursotus joka tehdään kaikille pinnoille</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="56"/>
       <source>An optional offset value to be applied to all faces</source>
-      <translation type="unfinished">An optional offset value to be applied to all faces</translation>
+      <translation>Valinnainen siirtymä joka tehdään kaikille pinnoille</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="59"/>
       <source>This specifies if the shapes sew</source>
-      <translation type="unfinished">This specifies if the shapes sew</translation>
+      <translation>Määrittää, sidotaanko muodot yhteen</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="62"/>
       <source>The area of the faces of this Facebinder</source>
-      <translation type="unfinished">The area of the faces of this Facebinder</translation>
+      <translation>Tämän Facebinder -objektin pintojen pinta-ala</translation>
     </message>
     <message>
       <location filename="../../draftobjects/block.py" line="44"/>
       <source>The components of this block</source>
-      <translation type="unfinished">The components of this block</translation>
+      <translation>Tämän plokin komponentit</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="49"/>
       <source>The vertices of the wire</source>
-      <translation type="unfinished">The vertices of the wire</translation>
+      <translation>Langan kärkipisteet</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="53"/>
       <source>If the wire is closed or not</source>
-      <translation type="unfinished">If the wire is closed or not</translation>
+      <translation>Onko lanka suljettu vai ei</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="57"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The base object is the wire, it's formed from 2 objects</translation>
+      <translation>Perusobjekti on lanka, joka on muodostettu 2 objektista</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="61"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The tool object is the wire, it's formed from 2 objects</translation>
+      <translation>Työkaluobjekti on lanka, se on muodostettu 2 objektista</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="65"/>
       <source>The start point of this line</source>
-      <translation type="unfinished">The start point of this line</translation>
+      <translation>Tämän viivan aloituspiste</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="69"/>
       <source>The end point of this line</source>
-      <translation type="unfinished">The end point of this line</translation>
+      <translation>Tämän viivan päätepiste</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="73"/>
       <source>The length of this line</source>
-      <translation type="unfinished">The length of this line</translation>
+      <translation>Tämän viivan pituus</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="85"/>
       <source>Create a face if this object is closed</source>
-      <translation type="unfinished">Create a face if this object is closed</translation>
+      <translation>Luo pinnat mikäli objekti on suljettu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="89"/>
@@ -8177,22 +8166,22 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftobjects/bspline.py" line="46"/>
       <source>The points of the B-spline</source>
-      <translation type="unfinished">The points of the B-spline</translation>
+      <translation>B-splinin pisteet</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="50"/>
       <source>If the B-spline is closed or not</source>
-      <translation type="unfinished">If the B-spline is closed or not</translation>
+      <translation>Onko B-splini suljettu vai ei</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="54"/>
       <source>Create a face if this spline is closed</source>
-      <translation type="unfinished">Create a face if this spline is closed</translation>
+      <translation>Luo pinta, mikäli B-splini on suljettu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="73"/>
       <source>Parameterization factor</source>
-      <translation type="unfinished">Parameterization factor</translation>
+      <translation>Parametrisointikerroin</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="100"/>
@@ -8329,7 +8318,7 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="133"/>
       <source>Rotate the dimension text 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension text 180 degrees</translation>
+      <translation>Käännä mittatekstiä 180 astetta</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="143"/>
@@ -8368,25 +8357,24 @@ Use 'arch' to force US arch notation</translation>
       <location filename="../../draftviewproviders/view_label.py" line="99"/>
       <location filename="../../draftviewproviders/view_dimension.py" line="200"/>
       <source>Arrow size</source>
-      <translation>Nuolen koko</translation>
+      <translation>Päätteen koko</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="108"/>
       <location filename="../../draftviewproviders/view_dimension.py" line="209"/>
       <source>Arrow type</source>
-      <translation>Nuolen tyyppi</translation>
+      <translation>Mittaviivan päätteen tyyppi</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="219"/>
       <source>Rotate the dimension arrows 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension arrows 180 degrees</translation>
+      <translation>Käännä mittaviivan päätteitä 180 astetta</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="230"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended
-past the extension lines</translation>
+      <translation>Pituus, jolla mittaviivaa jatketaan mitta-apuviivojen ohitse</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="239"/>
@@ -8412,7 +8400,7 @@ beyond the dimension line</translation>
       <location filename="../../draftviewproviders/view_base.py" line="462"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="90"/>
       <source>Transform</source>
-      <translation>Muunna</translation>
+      <translation>Muuta</translation>
     </message>
   </context>
   <context>
@@ -8437,7 +8425,7 @@ beyond the dimension line</translation>
       <location filename="../../InitGui.py" line="140"/>
       <location filename="../../InitGui.py" line="141"/>
       <source>Draft</source>
-      <translation>Syväys (vesirajasta pohjaan)</translation>
+      <translation>Draft</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="209"/>
@@ -8445,7 +8433,7 @@ beyond the dimension line</translation>
       <location filename="../../InitGui.py" line="211"/>
       <location filename="../../InitGui.py" line="212"/>
       <source>Import-Export</source>
-      <translation>Tuo/Vie</translation>
+      <translation>Tuonti/Vienti</translation>
     </message>
   </context>
   <context>

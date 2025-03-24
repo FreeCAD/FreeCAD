@@ -2753,7 +2753,7 @@ Specify another file please.</source>
       <location filename="../ui/MaterialReinforcement.ui" line="60"/>
       <location filename="../ui/MaterialReinforcement.ui" line="133"/>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редагувати</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="67"/>
@@ -5845,7 +5845,7 @@ used for the Elmer solver</source>
       <location filename="../../../femsolver/solver_taskpanel.py" line="304"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="308"/>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редагувати</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="241"/>
@@ -6118,7 +6118,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../TaskPostContours.ui" line="116"/>
       <source>No Color</source>
-      <translation type="unfinished">No Color</translation>
+      <translation>Без кольору</translation>
     </message>
   </context>
   <context>
@@ -6813,7 +6813,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="95"/>
       <source>Number of threads used for meshing</source>
-      <translation type="unfinished">Number of threads used for meshing</translation>
+      <translation>Кількість потоків, що використовуються для сітки</translation>
     </message>
   </context>
 </TS>

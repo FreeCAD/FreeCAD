@@ -52,12 +52,12 @@
     <message>
       <location filename="../../Manipulator.cpp" line="48"/>
       <source>&amp;Start Page</source>
-      <translation type="unfinished">&amp;Start Page</translation>
+      <translation>시작 화면</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
       <source>Displays the Start Page</source>
-      <translation type="unfinished">Displays the Start Page</translation>
+      <translation>시작 화면을 보여줍니다</translation>
     </message>
   </context>
   <context>
@@ -95,7 +95,7 @@
     <message>
       <location filename="../../StartView.cpp" line="301"/>
       <source>Assembly</source>
-      <translation>어셈블리</translation>
+      <translation>조립품</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="302"/>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../StartView.cpp" line="306"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation>작업대를 사용하여 2D 도면 생성</translation>
+      <translation>제도 작업대에서 2D 도면 생성</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="309"/>

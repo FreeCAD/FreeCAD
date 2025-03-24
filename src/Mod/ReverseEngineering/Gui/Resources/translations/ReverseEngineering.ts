@@ -94,17 +94,17 @@
 <context>
     <name>CmdMeshBoundary</name>
     <message>
-        <location filename="../../Command.cpp" line="536"/>
+        <location filename="../../Command.cpp" line="534"/>
         <source>Reverse Engineering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="537"/>
+        <location filename="../../Command.cpp" line="535"/>
         <source>Wire from mesh boundary...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="538"/>
+        <location filename="../../Command.cpp" line="536"/>
         <source>Create wire from mesh boundaries</source>
         <translation type="unfinished"></translation>
     </message>
@@ -112,17 +112,17 @@
 <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-        <location filename="../../Command.cpp" line="603"/>
+        <location filename="../../Command.cpp" line="599"/>
         <source>Reverse Engineering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="604"/>
+        <location filename="../../Command.cpp" line="600"/>
         <source>Poisson...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="605"/>
+        <location filename="../../Command.cpp" line="601"/>
         <source>Poisson surface reconstruction</source>
         <translation type="unfinished"></translation>
     </message>
@@ -184,18 +184,18 @@
 <context>
     <name>CmdViewTriangulation</name>
     <message>
-        <location filename="../../Command.cpp" line="638"/>
+        <location filename="../../Command.cpp" line="634"/>
         <source>Reverse Engineering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="639"/>
+        <location filename="../../Command.cpp" line="635"/>
         <source>Structured point clouds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="640"/>
-        <location filename="../../Command.cpp" line="641"/>
+        <location filename="../../Command.cpp" line="636"/>
+        <location filename="../../Command.cpp" line="637"/>
         <source>Triangulation of structured point clouds</source>
         <translation type="unfinished"></translation>
     </message>
@@ -223,7 +223,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="650"/>
+        <location filename="../../Command.cpp" line="646"/>
         <source>View triangulation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -233,8 +233,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FitBSplineSurface.cpp" line="231"/>
         <location filename="../../FitBSplineCurve.cpp" line="139"/>
+        <location filename="../../FitBSplineSurface.cpp" line="230"/>
         <source>Fit B-spline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -333,17 +333,17 @@
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
         <location filename="../../FitBSplineSurface.cpp" line="165"/>
-        <location filename="../../FitBSplineSurface.cpp" line="238"/>
+        <location filename="../../FitBSplineSurface.cpp" line="237"/>
         <source>Input error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FitBSplineSurface.cpp" line="206"/>
+        <location filename="../../FitBSplineSurface.cpp" line="205"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FitBSplineSurface.cpp" line="207"/>
+        <location filename="../../FitBSplineSurface.cpp" line="206"/>
         <source>Please select a single placement object to get local orientation.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -386,7 +386,7 @@
     <message>
         <location filename="../../Command.cpp" line="82"/>
         <location filename="../../Command.cpp" line="120"/>
-        <location filename="../../Command.cpp" line="618"/>
+        <location filename="../../Command.cpp" line="614"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -401,7 +401,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="619"/>
+        <location filename="../../Command.cpp" line="615"/>
         <source>Please select a single point cloud.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -409,7 +409,7 @@
 <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-        <location filename="../../Command.cpp" line="672"/>
+        <location filename="../../Command.cpp" line="668"/>
         <source>View triangulation failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -574,7 +574,7 @@
 <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-        <location filename="../../SegmentationManual.cpp" line="352"/>
+        <location filename="../../SegmentationManual.cpp" line="351"/>
         <source>Create</source>
         <translation type="unfinished"></translation>
     </message>
