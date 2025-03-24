@@ -57,6 +57,9 @@ public:
     /// Get the current quantity without unit
     double rawValue() const;
 
+    void normalize();
+    bool isNormalized();
+
     /// Gives the current state of the user input, gives true if it is a valid input with correct quantity
     /// or returns false if the input is a unparsable string or has a wrong unit.
     bool hasValidInput() const;

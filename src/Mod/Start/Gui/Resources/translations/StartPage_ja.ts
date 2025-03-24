@@ -46,14 +46,18 @@
     <name>CmdStart</name>
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
-      <location filename="../../Manipulator.cpp" line="48"/>
       <source>Start</source>
       <translation>開始</translation>
     </message>
     <message>
+      <location filename="../../Manipulator.cpp" line="48"/>
+      <source>&amp;Start Page</source>
+      <translation type="unfinished">&amp;Start Page</translation>
+    </message>
+    <message>
       <location filename="../../Manipulator.cpp" line="49"/>
-      <source>Displays the Start in an MDI view</source>
-      <translation>MDIビューでスタートを表示します</translation>
+      <source>Displays the Start Page</source>
+      <translation type="unfinished">Displays the Start Page</translation>
     </message>
   </context>
   <context>
@@ -66,7 +70,7 @@
     <message>
       <location filename="../../StartView.cpp" line="290"/>
       <source>Create a new empty FreeCAD file</source>
-      <translation>新しいFreeCADファイルを作成</translation>
+      <translation>新しい空のFreeCADファイルを作成</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="293"/>
@@ -136,7 +140,7 @@
     <message>
       <location filename="../../StartView.cpp" line="530"/>
       <source>Open first start setup</source>
-      <translation type="unfinished">Open first start setup</translation>
+      <translation>インストール直後のスタートアップウィンドウを表示する</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="532"/>
@@ -177,7 +181,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="239"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation>さらに多くのテーマをお探しですか？ &lt;a href="freecad:Std_AddonMgr"&gt;拡張機能の管理&lt;/a&gt;を使用して取得できます。</translation>
+      <translation>さらに多くのテーマをお探しですか？ &lt;a href="freecad:Std_AddonMgr"&gt;アドオン・マネージャー&lt;/a&gt;を使用して取得できます。</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="241"/>

@@ -64,28 +64,26 @@ QGIBreakLine::QGIBreakLine()
 
 
     setColor(PreferencesGui::sectionLineQColor());
-
-    // setFill(Qt::NoBrush);
-    setFill(Qt::SolidPattern);
+    m_brush.setStyle(Qt::SolidPattern);
 }
 
 void QGIBreakLine::draw()
 {
-    if (breakType() == 0) {
+    if (breakType() == DrawBrokenView::BreakType::NONE) {
         // none
         m_background->hide();
         m_line0->hide();
         m_line1->hide();
     }
 
-    if (breakType() == 1) {
+    if (breakType() == DrawBrokenView::BreakType::ZIGZAG) {
         drawLargeZigZag();
         m_background->show();
         m_line0->show();
         m_line1->show();
     }
 
-    if (breakType() == 2) {
+    if (breakType() == DrawBrokenView::BreakType::SIMPLE) {
         // simple line from pref
         drawSimpleLines();
         m_background->hide();
@@ -253,9 +251,6 @@ void QGIBreakLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
 
 void QGIBreakLine::setTools()
 {
-    m_pen.setWidthF(m_width);
-    m_pen.setColor(m_colCurrent);
-    m_brush.setStyle(m_brushCurrent);
     m_brush.setColor(PreferencesGui::pageQColor());
 
     m_line0->setPen(m_pen);

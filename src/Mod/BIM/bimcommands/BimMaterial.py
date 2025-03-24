@@ -36,14 +36,17 @@ if FreeCAD.GuiUp:
     class MatLineEdit(QtGui.QLineEdit):
         "custom QLineEdit widget that has the power to catch up/down arrow keypress"
 
+        up = QtCore.Signal()
+        down = QtCore.Signal()
+
         def __init__(self, parent=None):
             QtGui.QLineEdit.__init__(self, parent)
 
         def keyPressEvent(self, event):
             if event.key() == QtCore.Qt.Key_Up:
-                self.emit(QtCore.SIGNAL("up()"))
+                self.up.emit()
             elif event.key() == QtCore.Qt.Key_Down:
-                self.emit(QtCore.SIGNAL("down()"))
+                self.down.emit()
             else:
                 QtGui.QLineEdit.keyPressEvent(self, event)
 
@@ -118,13 +121,18 @@ class BIM_Material:
             buttonClear.clicked.connect(self.onClearSearch)
             lay.addLayout(searchLayout)
 
+            createButtonsLayoutBox = QtGui.QGroupBox(
+                translate("BIM", " Material operations"), self.dlg
+            )
+            createButtonsLayoutBox.setObjectName("matOpsGrpBox")
+            createButtonsLayout = QtGui.QGridLayout()
+
             # create
-            createLayout = QtGui.QHBoxLayout()
             buttonCreate = QtGui.QPushButton(
                 translate("BIM", "Create new material"), self.dlg
             )
             buttonCreate.setIcon(QtGui.QIcon(":/icons/Arch_Material.svg"))
-            createLayout.addWidget(buttonCreate)
+            createButtonsLayout.addWidget(buttonCreate, 0, 0)
             buttonCreate.clicked.connect(self.onCreate)
 
             # create multi
@@ -132,9 +140,8 @@ class BIM_Material:
                 translate("BIM", "Create new multi-material"), self.dlg
             )
             buttonMulti.setIcon(QtGui.QIcon(":/icons/Arch_Material_Multi.svg"))
-            createLayout.addWidget(buttonMulti)
+            createButtonsLayout.addWidget(buttonMulti, 0, 1)
             buttonMulti.clicked.connect(self.onMulti)
-            lay.addLayout(createLayout)
 
             # merge dupes
             opsLayout = QtGui.QHBoxLayout()
@@ -142,7 +149,7 @@ class BIM_Material:
                 translate("BIM", "Merge duplicates"), self.dlg
             )
             buttonMergeDupes.setIcon(QtGui.QIcon(":/icons/view-refresh.svg"))
-            opsLayout.addWidget(buttonMergeDupes)
+            createButtonsLayout.addWidget(buttonMergeDupes, 1, 0)
             buttonMergeDupes.clicked.connect(self.onMergeDupes)
 
             # delete unused
@@ -150,9 +157,11 @@ class BIM_Material:
                 translate("BIM", "Delete unused"), self.dlg
             )
             buttonDeleteUnused.setIcon(QtGui.QIcon(":/icons/delete.svg"))
-            opsLayout.addWidget(buttonDeleteUnused)
+            createButtonsLayout.addWidget(buttonDeleteUnused, 1, 1)
             buttonDeleteUnused.clicked.connect(self.onDeleteUnused)
-            lay.addLayout(opsLayout)
+
+            createButtonsLayoutBox.setLayout(createButtonsLayout)
+            lay.addWidget(createButtonsLayoutBox)
 
             # add standard buttons
             buttonBox = QtGui.QDialogButtonBox(self.dlg)
@@ -435,8 +444,8 @@ class BIM_Material:
                         FreeCAD.ActiveDocument.openTransaction("Change material")
                         for obj in self.dlg.objects:
                             if hasattr(obj, "StepId"):
-                                from nativeifc import ifc_tools
-                                ifc_tools.set_material(mat, obj)
+                                from nativeifc import ifc_materials
+                                ifc_materials.set_material(mat, obj)
                             else:
                                 obj.Material = mat
                         FreeCAD.ActiveDocument.commitTransaction()

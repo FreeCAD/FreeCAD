@@ -36,7 +36,7 @@
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
@@ -77,7 +77,7 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     }
     else if (subname.size() > 4) {
         int faceId = std::atoi(&subname[4]);
-        refStr = QString::fromLatin1(selObj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(faceId);
+        refStr = QString::fromLatin1(selObj->getNameInDocument()) + QStringLiteral(":") + QObject::tr("Face") + QString::number(faceId);
     }
 
     std::vector<std::string> upToFaces(1,subname);
@@ -226,7 +226,7 @@ QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QS
         return {};
     }
 
-    QString o = obj.left(obj.indexOf(QString::fromLatin1(":")));
+    QString o = obj.left(obj.indexOf(QStringLiteral(":")));
     if (o.isEmpty()) {
         return {};
     }
@@ -238,7 +238,7 @@ QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QS
 QString TaskSketchBasedParameters::make2DLabel(const App::DocumentObject* section,
                                                const std::vector<std::string>& subValues)
 {
-    if (section->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (section->isDerivedFrom<Part::Part2DObject>()) {
         return QString::fromUtf8(section->Label.getValue());
     }
     else if (subValues.empty()) {

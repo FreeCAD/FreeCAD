@@ -225,7 +225,7 @@ void ViewProviderBody::updateData(const App::Property* prop)
         // restore icons
         for (auto feature : features) {
             Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(feature);
-            if (vp && vp->isDerivedFrom(PartDesignGui::ViewProvider::getClassTypeId())) {
+            if (vp && vp->isDerivedFrom<PartDesignGui::ViewProvider>()) {
                 static_cast<PartDesignGui::ViewProvider*>(vp)->setTipIcon(feature == tip);
             }
         }
@@ -300,7 +300,7 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
     auto features = body->Group.getValues();
     for (auto feature : features) {
 
-        if (!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        if (!feature->isDerivedFrom<PartDesign::Feature>()) {
             continue;
         }
 
@@ -321,7 +321,7 @@ void ViewProviderBody::setVisualBodyMode(bool bodymode) {
     auto features = body->Group.getValues();
     for(auto feature : features) {
 
-        if(!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        if(!feature->isDerivedFrom<PartDesign::Feature>())
             continue;
 
         auto* vp = static_cast<PartDesignGui::ViewProvider*>(gdoc->getViewProvider(feature));
@@ -355,15 +355,15 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
     if (obj->isDerivedFrom<App::VarSet>()) {
         return true;
     }
-    else if (obj->isDerivedFrom(App::DatumElement::getClassTypeId())) {
+    else if (obj->isDerivedFrom<App::DatumElement>()) {
         // accept only datums that are not part of a LCS.
         auto* lcs = static_cast<App::DatumElement*>(obj)->getLCS();
         return !lcs;
     }
-    else if (obj->isDerivedFrom(App::LocalCoordinateSystem::getClassTypeId())) {
-        return !obj->isDerivedFrom(App::Origin::getClassTypeId());
+    else if (obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
+        return !obj->isDerivedFrom<App::Origin>();
     }
-    else if (!obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+    else if (!obj->isDerivedFrom<Part::Feature>()) {
         return false;
     }
     else if (PartDesign::Body::findBodyOf(obj)) {

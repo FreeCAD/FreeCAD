@@ -251,13 +251,12 @@ private:
                 Gui::Command::runCommand(Gui::Command::Gui, "_bsps = []");
                 for (auto& controlpoints : controlpointses) {
                     // TODO: variable degrees?
-                    QString cmdstr =
-                        QString::fromLatin1("_bsps.append(Part.BSplineCurve())\n"
-                                            "_bsps[-1].interpolate(%1, PeriodicFlag=%2)\n"
-                                            "_bsps[-1].increaseDegree(%3)")
-                            .arg(QString::fromLatin1(controlpoints.c_str()))
-                            .arg(QString::fromLatin1(periodic ? "True" : "False"))
-                            .arg(myDegree);
+                    QString cmdstr = QStringLiteral("_bsps.append(Part.BSplineCurve())\n"
+                                                    "_bsps[-1].interpolate(%1, PeriodicFlag=%2)\n"
+                                                    "_bsps[-1].increaseDegree(%3)")
+                                         .arg(QString::fromLatin1(controlpoints.c_str()))
+                                         .arg(QString::fromLatin1(periodic ? "True" : "False"))
+                                         .arg(myDegree);
                     Gui::Command::runCommand(Gui::Command::Gui, cmdstr.toLatin1());
                     // Adjust internal knots here (raise multiplicity)
                     // How this contributes to the final B-spline
@@ -414,19 +413,18 @@ private:
     {
         if (constructionMethod() == ConstructionMethod::ControlPoints) {
             if (periodic) {
-                return QString::fromLatin1("Sketcher_Pointer_Create_Periodic_BSpline");
+                return QStringLiteral("Sketcher_Pointer_Create_Periodic_BSpline");
             }
             else {
-                return QString::fromLatin1("Sketcher_Pointer_Create_BSpline");
+                return QStringLiteral("Sketcher_Pointer_Create_BSpline");
             }
         }
         else {
             if (periodic) {
-                return QString::fromLatin1(
-                    "Sketcher_Pointer_Create_Periodic_BSplineByInterpolation");
+                return QStringLiteral("Sketcher_Pointer_Create_Periodic_BSplineByInterpolation");
             }
             else {
-                return QString::fromLatin1("Sketcher_Pointer_Create_BSplineByInterpolation");
+                return QStringLiteral("Sketcher_Pointer_Create_BSplineByInterpolation");
             }
         }
     }

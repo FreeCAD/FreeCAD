@@ -24,9 +24,16 @@
 
 #ifndef _PreComp_
 #include <boost/tokenizer.hpp>
+#include <boost/regex.hpp>
 #include <deque>
 #include <memory>
 #include <sstream>
+#include <tuple>
+#include <list>
+#include <map>
+#include <string>
+#include <set>
+#include <vector>
 #endif
 
 #include <App/Application.h>
@@ -104,7 +111,15 @@ Sheet::Sheet()
 
 Sheet::~Sheet()
 {
-    clearAll();
+    try {
+        clearAll();
+    }
+    catch (...) {
+        // Don't let an exception propagate out of a destructor (calls terminate())
+        Base::Console().Error(
+            "clearAll() resulted in an exception when deleting the spreadsheet : %s\n",
+            getNameInDocument());
+    }
 }
 
 /**
@@ -329,17 +344,19 @@ bool Sheet::exportToFile(const std::string& filename,
 
         std::stringstream field;
 
-        if (prop->isDerivedFrom((PropertyQuantity::getClassTypeId()))) {
-            field << static_cast<PropertyQuantity*>(prop)->getValue();
+        using Base::freecad_dynamic_cast;
+
+        if (auto p = freecad_dynamic_cast<PropertyQuantity>(prop)) {
+            field << p->getValue();
         }
-        else if (prop->isDerivedFrom((PropertyFloat::getClassTypeId()))) {
-            field << static_cast<PropertyFloat*>(prop)->getValue();
+        else if (auto p = freecad_dynamic_cast<PropertyFloat>(prop)) {
+            field << p->getValue();
         }
-        else if (prop->isDerivedFrom((PropertyInteger::getClassTypeId()))) {
-            field << static_cast<PropertyInteger*>(prop)->getValue();
+        else if (auto p = freecad_dynamic_cast<PropertyInteger>(prop)) {
+            field << p->getValue();
         }
-        else if (prop->isDerivedFrom((PropertyString::getClassTypeId()))) {
-            field << static_cast<PropertyString*>(prop)->getValue();
+        else if (auto p = freecad_dynamic_cast<PropertyString>(prop)) {
+            field << p->getValue();
         }
         else {
             assert(0);
@@ -573,7 +590,7 @@ Property* Sheet::setFloatProperty(CellAddress key, double value)
     Property* prop = props.getDynamicPropertyByName(name.c_str());
     PropertyFloat* floatProp;
 
-    if (!prop || prop->getTypeId() != PropertyFloat::getClassTypeId()) {
+    if (!prop || !prop->is<PropertyFloat>()) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
@@ -601,7 +618,7 @@ Property* Sheet::setIntegerProperty(CellAddress key, long value)
     Property* prop = props.getDynamicPropertyByName(name.c_str());
     PropertyInteger* intProp;
 
-    if (!prop || prop->getTypeId() != PropertyInteger::getClassTypeId()) {
+    if (!prop || !prop->is<PropertyInteger>()) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
@@ -641,7 +658,7 @@ Property* Sheet::setQuantityProperty(CellAddress key, double value, const Base::
     Property* prop = props.getDynamicPropertyByName(name.c_str());
     PropertySpreadsheetQuantity* quantityProp;
 
-    if (!prop || prop->getTypeId() != PropertySpreadsheetQuantity::getClassTypeId()) {
+    if (!prop || !prop->is<PropertySpreadsheetQuantity>()) {
         if (prop) {
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
@@ -872,6 +889,17 @@ void Sheet::getPropertyNamedList(std::vector<std::pair<const char*, Property*>>&
     }
 }
 
+void Sheet::visitProperties(const std::function<void(App::Property*)>& visitor) const
+{
+    DocumentObject::visitProperties(visitor);
+    for (const auto& v : cells.aliasProp) {
+        auto prop = getProperty(v.first);
+        if (prop != nullptr) {
+            visitor(prop);
+        }
+    };
+}
+
 void Sheet::touchCells(Range range)
 {
     do {
@@ -910,7 +938,7 @@ void Sheet::recomputeCell(CellAddress p)
         }
     }
     catch (const Base::Exception& e) {
-        QString msg = QString::fromUtf8("ERR: %1").arg(QString::fromUtf8(e.what()));
+        QString msg = QStringLiteral("ERR: %1").arg(QString::fromUtf8(e.what()));
 
         setStringProperty(p, msg.toStdString());
         if (cell) {
@@ -924,7 +952,7 @@ void Sheet::recomputeCell(CellAddress p)
         cellErrors.insert(p);
         cellUpdated(p);
 
-        if (e.isDerivedFrom(Base::AbortException::getClassTypeId())) {
+        if (e.isDerivedFrom<Base::AbortException>()) {
             throw;
         }
     }
@@ -1134,7 +1162,7 @@ DocumentObjectExecReturn* Sheet::execute()
             catch (std::exception&) {  // TODO: evaluate using a more specific exception (not_a_dag)
                 // Cycle detected; flag all with errors
                 Base::Console().Error("Cyclic dependency detected in spreadsheet : %s\n",
-                                      *pcNameInDocument);
+                                      getNameInDocument());
                 std::ostringstream ss;
                 ss << "Cyclic dependency";
                 int count = 0;

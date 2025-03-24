@@ -27,7 +27,7 @@
 #endif
 
 #include <Gui/Command.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Smoothing.h>
@@ -53,13 +53,8 @@ DlgSmoothing::DlgSmoothing(QWidget* parent)
 
     connect(ui->checkBoxSelection, &QCheckBox::toggled,
             this, &DlgSmoothing::onCheckBoxSelectionToggled);
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(bg, qOverload<int>(&QButtonGroup::buttonClicked),
-            this, &DlgSmoothing::methodClicked);
-#else
     connect(bg, qOverload<int>(&QButtonGroup::idClicked),
             this, &DlgSmoothing::methodClicked);
-#endif
 
     ui->labelLambda->setText(QString::fromUtf8("\xce\xbb"));
     ui->labelMu->setText(QString::fromUtf8("\xce\xbc"));

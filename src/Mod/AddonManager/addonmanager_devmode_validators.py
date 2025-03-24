@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Validators used for various line edits """
+"""Validators used for various line edits"""
 
 import keyword
 

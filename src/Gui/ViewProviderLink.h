@@ -20,12 +20,17 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_LINK_H
-#define GUI_VIEWPROVIDER_LINK_H
+#ifndef SRC_GUI_VIEWPROVIDER_LINK_H_
+#define SRC_GUI_VIEWPROVIDER_LINK_H_
 
 #include <App/Link.h>
+#include <unordered_map>
+#include <map>
+#include <string>
+#include <vector>
+#include <memory>
 
-#include "SoFCUnifiedSelection.h"
+#include "Selection/SoFCUnifiedSelection.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
 #include "ViewProviderFeaturePython.h"
@@ -41,7 +46,7 @@ class LinkInfo;
 using LinkInfoPtr = boost::intrusive_ptr<LinkInfo>;
 
 #if defined(_MSC_VER)
-// forward declaration to please VC 2013
+// forward declaration to please MSVC
 void intrusive_ptr_add_ref(Gui::LinkInfo *px);
 void intrusive_ptr_release(Gui::LinkInfo *px);
 #endif
@@ -184,10 +189,10 @@ protected:
     Py::Object PythonObject;
 };
 
-class GuiExport ViewProviderLink : public ViewProviderDocumentObject
+class GuiExport ViewProviderLink : public ViewProviderDragger
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderLink);
-    using inherited = ViewProviderDocumentObject;
+    using inherited = ViewProviderDragger;
 
 public:
     App::PropertyBool OverrideMaterial;
@@ -248,13 +253,8 @@ public:
 
     static void updateLinks(ViewProvider *vp);
 
-    void updateDraggingPlacement(const Base::Placement &pla, bool force=false);
-    Base::Placement currentDraggingPlacement() const;
-    void enableCenterballDragger(bool enable);
-    bool isUsingCenterballDragger() const { return useCenterballDragger; }
-
-    std::map<std::string, App::Color> getElementColors(const char *subname=nullptr) const override;
-    void setElementColors(const std::map<std::string, App::Color> &colors) override;
+    std::map<std::string, Base::Color> getElementColors(const char *subname=nullptr) const override;
+    void setElementColors(const std::map<std::string, Base::Color> &colors) override;
 
     void setOverrideMode(const std::string &mode) override;
 
@@ -265,7 +265,9 @@ public:
 
     App::Property *getPropertyByName(const char* name) const override;
     void getPropertyMap(std::map<std::string,App::Property*> &Map) const override;
-    void getPropertyList(std::vector<App::Property*> &List) const override;
+    /// See PropertyContainer::visitProperties for semantics
+    void visitProperties(const std::function<void(App::Property*)>& visitor) const override;
+    void getPropertyList(std::vector<App::Property*>& List) const override;
 
     ViewProviderDocumentObject *getLinkedViewProvider(
             std::string *subname=nullptr, bool recursive=false) const override;
@@ -311,7 +313,7 @@ protected:
     ViewProvider *getLinkedView(bool real,const App::LinkBaseExtension *ext=nullptr) const;
 
     bool initDraggingPlacement();
-    bool callDraggerProxy(const char *fname, bool update);
+    bool callDraggerProxy(const char* fname);
 
 private:
     static void dragStartCallback(void * data, SoDragger * d);
@@ -323,7 +325,6 @@ protected:
     LinkType linkType;
     bool hasSubName;
     bool hasSubElement;
-    bool useCenterballDragger;
 
     struct DraggerContext{
         Base::Matrix4D preTransform;
@@ -333,7 +334,6 @@ protected:
         bool cmdPending;
     };
     std::unique_ptr<DraggerContext> dragCtx;
-    CoinPtr<SoDragger> pcDragger;
     ViewProviderDocumentObject *childVp;
     LinkInfoPtr childVpLink;
     mutable qint64 overlayCacheKey;
@@ -344,4 +344,4 @@ using ViewProviderLinkPython = ViewProviderFeaturePythonT<ViewProviderLink>;
 } //namespace Gui
 
 
-#endif // GUI_VIEWPROVIDER_LINK_H
+#endif // SRC_GUI_VIEWPROVIDER_LINK_H_

@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="512"/>
       <location filename="../../Command.cpp" line="514"/>
       <source>Inserts an Annotation view in the active drawing</source>
-      <translation>활성 드로잉에서 주석 보기 삽입</translation>
+      <translation>활성화된 도면에 주석 보기 삽입</translation>
     </message>
   </context>
   <context>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="485"/>
       <source>Export PDF</source>
-      <translation>PDF로 내보내기</translation>
+      <translation>PDF 내보내기</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="486"/>
@@ -567,7 +567,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="48"/>
       <source>Visible sewn edges</source>
-      <translation>눈에 보이는 날카로운 모서리</translation>
+      <translation>보이는 이어붙여진 모서리</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="49"/>
@@ -592,12 +592,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="53"/>
       <source>Hidden sewn edges</source>
-      <translation>숨겨진 날카로운 모서리</translation>
+      <translation>숨겨진 이어붙여진 모서리</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="54"/>
       <source>Hidden outline edges</source>
-      <translation>보이는 윤곽선 가장자리</translation>
+      <translation>숨겨진 윤곽선 모서리</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="55"/>
@@ -612,7 +612,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="85"/>
       <source>No active document</source>
-      <translation>활성 문서가 없습니다</translation>
+      <translation>활성 문서 없음</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="86"/>
@@ -635,7 +635,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Page</source>
-      <translation>Page</translation>
+      <translation>페이지</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="231"/>
@@ -690,7 +690,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="697"/>
       <location filename="../../Command.cpp" line="822"/>
       <source>Wrong selection</source>
-      <translation>잘못 된 선택</translation>
+      <translation>잘못된 선택</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="332"/>
@@ -705,7 +705,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="632"/>
       <location filename="../../Command.cpp" line="830"/>
       <source>No page found</source>
-      <translation>페이지를 찾을 수 없습니다</translation>
+      <translation>페이지를 찾을 수 없음</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="343"/>

@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" A Qt Widget for displaying Addon README information """
+"""A Qt Widget for displaying Addon README information"""
 
 import FreeCAD
 from Addon import Addon

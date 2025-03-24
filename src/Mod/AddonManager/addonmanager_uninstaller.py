@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Contains the classes to manage Addon removal: intended as a stable API, safe for
+"""Contains the classes to manage Addon removal: intended as a stable API, safe for
 external code to call and to rely upon existing. See classes AddonUninstaller and
 MacroUninstaller for details."""
 import json

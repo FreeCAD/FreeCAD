@@ -1,21 +1,18 @@
-if(FREETYPE_FOUND)
-    add_definitions(-DFCUseFreeType)
-endif(FREETYPE_FOUND)
+add_library(Part SHARED)
 
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${FREETYPE_INCLUDE_DIRS}
 )
 
-link_directories(${OCC_LIBRARY_DIR})
+target_include_directories(
+    Part
+    SYSTEM
+    PUBLIC
+    ${OCC_INCLUDE_DIR}
+)
 
 set(Part_LIBS
     ${OCC_LIBRARIES}
@@ -24,7 +21,15 @@ set(Part_LIBS
     Materials
 )
 
+target_link_directories(Part PUBLIC ${OCC_LIBRARY_DIR})
+
 if(FREETYPE_FOUND)
+    add_definitions(-DFCUseFreeType)
+
+    include_directories(
+        ${FREETYPE_INCLUDE_DIRS}
+    )
+
     set(Part_LIBS
         ${Part_LIBS}
         ${FREETYPE_LIBRARIES}
@@ -551,8 +556,8 @@ SET(Part_SRCS
     Interface.h
     PreCompiled.cpp
     PreCompiled.h
-    ProgressIndicator.cpp
-    ProgressIndicator.h
+    Services.cpp
+    Services.h
     TopoShape.cpp
     TopoShape.h
     TopoShapeCache.cpp
@@ -598,7 +603,7 @@ if(EIGEN3_NO_DEPRECATED_COPY)
         PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
 endif()
 
-add_library(Part SHARED ${Part_SRCS} ${FCBRepAlgoAPI_SRCS})
+target_sources(Part PRIVATE ${Part_SRCS} ${FCBRepAlgoAPI_SRCS})
 target_link_libraries(Part ${Part_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Part)

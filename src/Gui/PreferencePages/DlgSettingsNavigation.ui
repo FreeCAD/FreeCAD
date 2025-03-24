@@ -182,6 +182,9 @@
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
+        <property name="suffix">
+         <string notr="true"> px</string>
+        </property>
         <property name="minimum">
          <number>10</number>
         </property>
@@ -578,7 +581,7 @@ Free Turntable: the part will be rotated around the z-axis.</string>
 The value is the diameter of the sphere to fit on the screen.</string>
         </property>
         <property name="unit" stdset="0">
-         <string>mm</string>
+         <string notr="true">mm</string>
         </property>
         <property name="minimum">
          <double>0.000010000000000</double>
@@ -765,6 +768,25 @@ Mouse tilting is not disabled by this setting.</string>
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxSpinningAnimations">
+        <property name="toolTip">
+         <string>Enable spinning animations that are used in some navigation styles after dragging</string>
+        </property>
+        <property name="text">
+         <string>Enable spinning animations</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseSpinningAnimations</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="1">
        <widget class="Gui::PrefSpinBox" name="spinBoxAnimationDuration">
         <property name="maximumSize">
@@ -775,6 +797,9 @@ Mouse tilting is not disabled by this setting.</string>
         </property>
         <property name="toolTip">
          <string>The duration of navigation animations in milliseconds</string>
+        </property>
+        <property name="suffix">
+         <string notr="true"> ms</string>
         </property>
         <property name="minimum">
          <number>100</number>
@@ -808,25 +833,6 @@ Mouse tilting is not disabled by this setting.</string>
          </size>
         </property>
        </spacer>
-      </item>
-      <item row="2" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxSpinningAnimations">
-        <property name="toolTip">
-         <string>Enable spinning animations that are used in some navigation styles after dragging</string>
-        </property>
-        <property name="text">
-         <string>Enable spinning animations</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>UseSpinningAnimations</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>

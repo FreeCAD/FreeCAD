@@ -499,12 +499,10 @@ void ViewProviderDocumentObject::setActiveMode()
 
 bool ViewProviderDocumentObject::canDelete(App::DocumentObject* obj) const
 {
-    Q_UNUSED(obj)
-    if (getObject()->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
-        return true;
-    if (getObject()->isDerivedFrom(App::Origin::getClassTypeId()))
-        return true;
-    return false;
+    Q_UNUSED(obj);
+    auto* o = getObject();
+    return o->hasExtension(App::GroupExtension::getExtensionClassTypeId())
+           || o->isDerivedFrom<App::Origin>();
 }
 
 PyObject* ViewProviderDocumentObject::getPyObject()

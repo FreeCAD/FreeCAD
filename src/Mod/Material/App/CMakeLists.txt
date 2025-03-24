@@ -12,20 +12,20 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${YAML_CPP_INCLUDE_DIR}
 )
 link_directories(${YAML_CPP_LIBRARY_DIR})
 
 set(Materials_LIBS
-    ${Boost_LIBRARIES}
     FreeCADApp
 )
 
 include_directories(
+    SYSTEM
     ${QtConcurrent_INCLUDE_DIRS}
 )
 list(APPEND Materials_LIBS

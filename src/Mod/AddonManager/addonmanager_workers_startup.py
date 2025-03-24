@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Worker thread classes for Addon Manager startup """
+"""Worker thread classes for Addon Manager startup"""
 import hashlib
 import json
 import os

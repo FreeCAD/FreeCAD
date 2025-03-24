@@ -27,7 +27,7 @@
 #include <Mod/Part/App/DatumFeature.h>
 
 #include <Gui/Notifications.h>
-#include <Gui/SelectionFilter.h>
+#include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/View3DInventor.h>
@@ -40,6 +40,7 @@
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include <Mod/Part/App/Datums.h>
 
 
 namespace SketcherGui
@@ -97,18 +98,25 @@ public:
         // return false;
         //}
 
-        if (!sSubName || sSubName[0] == '\0') {
+        if (pObj->isDerivedFrom<Part::DatumLine>() || pObj->isDerivedFrom<Part::DatumPoint>()) {
+            return true;
+        }
+
+        if (pObj->isDerivedFrom<App::Plane>() || pObj->isDerivedFrom<Part::Datum>()) {
+            return true;
+        }
+
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
+
         std::string element(sSubName);
         if ((element.size() > 4 && element.substr(0, 4) == "Edge")
             || (element.size() > 6 && element.substr(0, 6) == "Vertex")
             || (element.size() > 4 && element.substr(0, 4) == "Face")) {
             return true;
         }
-        if (pObj->isDerivedFrom<App::Plane>() || pObj->isDerivedFrom<Part::Datum>()) {
-            return true;
-        }
+
         return false;
     }
 };
@@ -116,8 +124,9 @@ public:
 class DrawSketchHandlerExternal: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerExternal(bool intersection = false)
-        : intersection(intersection)
+    DrawSketchHandlerExternal(bool alwaysReference, bool intersection)
+        : alwaysReference {alwaysReference}
+        , intersection {intersection}
     {}
     ~DrawSketchHandlerExternal() override
     {
@@ -158,6 +167,7 @@ public:
             }
             std::string subName(msg.pSubName);
             if (obj->isDerivedFrom<App::Plane>() || obj->isDerivedFrom<Part::Datum>()
+                || obj->isDerivedFrom<Part::DatumLine>() || obj->isDerivedFrom<Part::DatumPoint>()
                 || (subName.size() > 4 && subName.substr(0, 4) == "Edge")
                 || (subName.size() > 6 && subName.substr(0, 6) == "Vertex")
                 || (subName.size() > 4 && subName.substr(0, 4) == "Face")) {
@@ -168,7 +178,8 @@ public:
                                           "addExternal(\"%s\",\"%s\", %s, %s)",
                                           msg.pObjectName,
                                           msg.pSubName,
-                                          isConstructionMode() ? "False" : "True",
+                                          alwaysReference || isConstructionMode() ? "False"
+                                                                                  : "True",
                                           intersection ? "True" : "False");
 
                     Gui::Command::commitCommand();
@@ -217,10 +228,10 @@ private:
     QString getCrosshairCursorSVGName() const override
     {
         if (intersection) {
-            return QString::fromLatin1("Sketcher_Pointer_External_Intersection");
+            return QStringLiteral("Sketcher_Pointer_External_Intersection");
         }
 
-        return QString::fromLatin1("Sketcher_Pointer_External");
+        return QStringLiteral("Sketcher_Pointer_External");
     }
 
     void deactivated() override
@@ -229,6 +240,7 @@ private:
         setAxisPickStyle(true);
     }
 
+    bool alwaysReference;
     bool intersection;
 };
 

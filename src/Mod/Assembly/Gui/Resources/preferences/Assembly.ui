@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="Gui::PrefCheckBox" name="checkBoxEnableEscape">
      <property name="toolTip">
-      <string>Allow to leave edit mode when pressing Esc button</string>
+      <string>Allows leaving edit mode when pressing Esc button</string>
      </property>
      <property name="text">
       <string>Esc leaves edit mode</string>

@@ -58,6 +58,7 @@
 #include <list>
 #include <memory>
 #include <vector>
+#include <optional>
 
 #include <boost/uuid/uuid_generators.hpp>
 
@@ -409,6 +410,7 @@ public:
      */
     Base::Vector3d getCenter() const;
     Base::Vector3d getLocation() const;
+    std::optional<Base::Rotation> getRotation() const;
     void setLocation(const Base::Vector3d& Center);
     /*!
      * \deprecated use setLocation
@@ -882,6 +884,8 @@ public:
 
     GeomPlane *toPlane(bool clone=true, double tol=1e-7) const;
 
+    virtual std::optional<Base::Rotation> getRotation() const;
+
     bool tangentU(double u, double v, gp_Dir& dirU) const;
     bool tangentV(double u, double v, gp_Dir& dirV) const;
     bool normal(double u, double v, gp_Dir& dir) const;
@@ -961,6 +965,7 @@ public:
     ~GeomElementarySurface() override;
 
     Base::Vector3d getLocation() const;
+
     Base::Vector3d getDir() const;
     Base::Vector3d getXDir() const;
     Base::Vector3d getYDir() const;
@@ -1013,6 +1018,8 @@ public:
 
     double getRadius() const;
     double getSemiAngle() const;
+
+    Base::Vector3d getApex() const;
 
     bool isSame(const Geometry &other, double tol, double atol) const override;
 
@@ -1090,6 +1097,8 @@ public:
     explicit GeomPlane(const gp_Pln &pln);
     ~GeomPlane() override;
     Geometry *copy() const override;
+
+    std::optional<Base::Rotation> getRotation() const override;
 
     // Persistence implementer ---------------------
     unsigned int getMemSize() const override;

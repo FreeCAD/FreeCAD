@@ -49,13 +49,13 @@
     <message>
       <location filename="../../Command.cpp" line="1491"/>
       <source>Regular solid...</source>
-      <translation>正多面体实体...</translation>
+      <translation>常规实体...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1492"/>
       <location filename="../../Command.cpp" line="1494"/>
       <source>Builds a regular solid</source>
-      <translation>建立正多面体实体</translation>
+      <translation>建立常规实体</translation>
     </message>
   </context>
   <context>
@@ -87,14 +87,14 @@
     <message>
       <location filename="../../Command.cpp" line="1335"/>
       <source>Decimation...</source>
-      <translation>十进制...</translation>
+      <translation>精简...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1336"/>
       <location filename="../../Command.cpp" line="1337"/>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Decimates a mesh</source>
-      <translation>破坏 网格</translation>
+      <translation>精简网格</translation>
     </message>
   </context>
   <context>
@@ -435,7 +435,7 @@
     <message>
       <location filename="../../Command.cpp" line="1184"/>
       <source>Refinement...</source>
-      <translation>精制...</translation>
+      <translation>优化...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1185"/>
@@ -1177,7 +1177,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="14"/>
       <source>Regular Solid</source>
-      <translation>合法实体</translation>
+      <translation>常规实体</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
@@ -1348,12 +1348,12 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="82"/>
       <source>Always export mesh as model type in 3MF format even if not a solid</source>
-      <translation type="unfinished">Always export mesh as model type in 3MF format even if not a solid</translation>
+      <translation>始终将网格导出为 3MF 格式的 model 类型，即便其不是实体</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="85"/>
       <source>Export 3MF files as model type</source>
-      <translation type="unfinished">Export 3MF files as model type</translation>
+      <translation>导出 3MF 文件为 model 类型</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="114"/>
@@ -2355,7 +2355,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Cutting</source>
-      <translation>锯切</translation>
+      <translation>切割</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>

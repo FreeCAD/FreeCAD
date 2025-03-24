@@ -21,12 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef APP_DYNAMICPROPERTY_H
-#define APP_DYNAMICPROPERTY_H
+#ifndef SRC_APP_DYNAMICPROPERTY_H_
+#define SRC_APP_DYNAMICPROPERTY_H_
 
 #include <map>
 #include <string>
 #include <vector>
+#include <utility>
 
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
@@ -87,6 +88,8 @@ public:
     void getPropertyList(std::vector<Property*>& List) const;
     /// get all properties with their names
     void getPropertyNamedList(std::vector<std::pair<const char*, Property*>>& List) const;
+    /// See PropertyContainer::visitProperties for semantics
+    void visitProperties(const std::function<void(Property*)>& visitor) const;
     /// Get all properties of the class (including parent)
     void getPropertyMap(std::map<std::string, Property*>& Map) const;
     /// Find a dynamic property by its name
@@ -166,7 +169,7 @@ public:
     Property* restore(PropertyContainer& pc,
                       const char* PropName,
                       const char* TypeName,
-                      Base::XMLReader& reader);
+                      const Base::XMLReader& reader);
 
     struct PropData
     {
@@ -208,7 +211,7 @@ public:
     bool changeDynamicProperty(const Property* prop, const char* group, const char* doc);
 
 private:
-    std::string getUniquePropertyName(PropertyContainer& pc, const char* Name) const;
+    std::string getUniquePropertyName(const PropertyContainer& pc, const char* Name) const;
 
 private:
     bmi::multi_index_container<
@@ -223,4 +226,4 @@ private:
 
 }  // namespace App
 
-#endif  // APP_DYNAMICPROPERTY_H
+#endif  // SRC_APP_DYNAMICPROPERTY_H_

@@ -43,7 +43,7 @@ DrawTile::DrawTile()
     ADD_PROPERTY_TYPE(TileRow, (0), group, App::Prop_None, "Row in parent object\n 0 for arrow side, -1 for other side");
     ADD_PROPERTY_TYPE(TileColumn, (0), group, App::Prop_None, "Column in parent object");
 
-    // there is currently only one column, this don't allow to edit
+    // there is currently only one column, this don't allow one to edit
     TileColumn.setStatus(App::Property::ReadOnly, true);
     // the row can only have the value 0 or -1
     // allow its editing because this way the tiles can be flipped

@@ -720,14 +720,14 @@ void PropertySheet::setStyle(CellAddress address, const std::set<std::string>& _
     cell->setStyle(_style);
 }
 
-void PropertySheet::setForeground(CellAddress address, const App::Color& color)
+void PropertySheet::setForeground(CellAddress address, const Base::Color& color)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);
     cell->setForeground(color);
 }
 
-void PropertySheet::setBackground(CellAddress address, const App::Color& color)
+void PropertySheet::setBackground(CellAddress address, const Base::Color& color)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);
@@ -787,7 +787,7 @@ void PropertySheet::setAlias(CellAddress address, const std::string& alias)
         App::ObjectIdentifier key(owner, oldAlias);
         App::ObjectIdentifier value(owner, alias.empty() ? address.toString() : alias);
 
-        m[key] = value;
+        m[key] = std::move(value);
 
         owner->getDocument()->renameObjectIdentifiers(m);
     }
@@ -1387,7 +1387,7 @@ void PropertySheet::addDependencies(CellAddress key)
                 cellToPropertyNameMap[key].insert(propName);
 
                 // Also an alias?
-                if (!name.empty() && docObj->isDerivedFrom(Sheet::getClassTypeId())) {
+                if (!name.empty() && docObj->isDerivedFrom<Sheet>()) {
                     auto other = static_cast<Sheet*>(docObj);
                     auto j = other->cells.revAliasProp.find(name);
 
@@ -1397,7 +1397,7 @@ void PropertySheet::addDependencies(CellAddress key)
 
                         // Insert into maps
                         propertyNameToCellMap[propName].insert(key);
-                        cellToPropertyNameMap[key].insert(propName);
+                        cellToPropertyNameMap[key].insert(std::move(propName));
                     }
                 }
             }
@@ -2063,7 +2063,7 @@ PropertySheet::BindingType PropertySheet::getBinding(const Range& range,
         path << ObjectIdentifier::SimpleComponent(range.from().toString().c_str());
         path << ObjectIdentifier::SimpleComponent(range.to().toString().c_str());
         auto res = owner->getExpression(path);
-        if (res.expression && res.expression->isDerivedFrom(FunctionExpression::getClassTypeId())) {
+        if (res.expression && res.expression->isDerivedFrom<FunctionExpression>()) {
             auto expr = static_cast<FunctionExpression*>(res.expression.get());
             if (href) {
                 if ((expr->getFunction() != FunctionExpression::HIDDENREF
@@ -2300,7 +2300,7 @@ void PropertySheet::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
             const auto [docObj, depsList] = *it;
             for (auto& [depName, paths] : depsList) {
                 if (!subname) {
-                    identifiers.emplace_back(owner, cellName.toString().c_str());
+                    identifiers.emplace_back(owner, cellName.toString());
                     break;
                 }
                 if (std::any_of(paths.begin(),
@@ -2314,7 +2314,7 @@ void PropertySheet::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
                                     return (sobjT.getSubObject() == subObject
                                             && sobjT.getOldElementName() == subElement);
                                 })) {
-                    identifiers.emplace_back(owner, cellName.toString().c_str());
+                    identifiers.emplace_back(owner, cellName.toString());
                 }
             }
         }

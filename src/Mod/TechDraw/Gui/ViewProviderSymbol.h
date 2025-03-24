@@ -33,42 +33,52 @@
 
 namespace TechDrawGui {
 
+//NOLINTBEGIN
 class TechDrawGuiExport ViewProviderSymbol : public ViewProviderDrawingView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderSymbol);
+//NOLINTEND
 
 public:
     /// constructor
     ViewProviderSymbol();
     /// destructor
-    ~ViewProviderSymbol() override;
+    ~ViewProviderSymbol() override  = default ;
+
+    App::PropertyBool LegacyScaling;
 
     bool useNewSelectionModel() const override {return false;}
-    void updateData(const App::Property*) override;
+    void updateData(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
 
     TechDraw::DrawViewSymbol* getViewObject() const override;
 };
 
+//NOLINTBEGIN
 class TechDrawGuiExport ViewProviderDraft : public ViewProviderSymbol
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderDraft);
+//NOLINTEND
 
 public:
     /// constructor
     ViewProviderDraft();
     /// destructor
-    ~ViewProviderDraft() override;
+    ~ViewProviderDraft() override = default ;
 };
 
+
+//NOLINTBEGIN
 class TechDrawGuiExport ViewProviderArch : public ViewProviderSymbol
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderArch);
+//NOLINTEND
 
 public:
     /// constructor
     ViewProviderArch();
     /// destructor
-    ~ViewProviderArch() override;
+    ~ViewProviderArch() override  = default ;
 };
 
 } // namespace TechDrawGui

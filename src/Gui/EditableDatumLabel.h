@@ -34,6 +34,8 @@
 
 class SoNodeSensor;
 class SoTransform;
+class SoAnnotation;
+class SoSwitch;
 
 namespace Gui {
 
@@ -97,7 +99,8 @@ private:
     SbVec3f getTextCenterPoint() const;
 
 private:
-    SoSeparator* root;
+    SoSwitch* root;
+    SoAnnotation* annotation;
     SoTransform* transform;
     QPointer<View3DInventorViewer> viewer;
     QuantitySpinBox* spinBox;

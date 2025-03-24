@@ -88,6 +88,8 @@ PyMOD_INIT_FUNC(_PartDesign)
     // clang-format off
     PartDesign::Feature                     ::init();
     PartDesign::FeaturePython               ::init();
+    PartDesign::FeatureRefine               ::init();
+    PartDesign::FeatureRefinePython         ::init();
     PartDesign::Solid                       ::init();
     PartDesign::FeatureAddSub               ::init();
     PartDesign::FeatureAddSubPython         ::init();

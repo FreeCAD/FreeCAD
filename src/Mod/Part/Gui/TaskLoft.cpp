@@ -40,7 +40,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 
 #include <Mod/Part/App/PartFeature.h>
@@ -159,19 +159,19 @@ bool LoftWidget::accept()
 {
     QString list, solid, ruled, closed;
     if (d->ui.checkSolid->isChecked())
-        solid = QString::fromLatin1("True");
+        solid = QStringLiteral("True");
     else
-        solid = QString::fromLatin1("False");
+        solid = QStringLiteral("False");
 
     if (d->ui.checkRuledSurface->isChecked())
-        ruled = QString::fromLatin1("True");
+        ruled = QStringLiteral("True");
     else
-        ruled = QString::fromLatin1("False");
+        ruled = QStringLiteral("False");
 
     if (d->ui.checkClosed->isChecked())
-        closed = QString::fromLatin1("True");
+        closed = QStringLiteral("True");
     else
-        closed = QString::fromLatin1("False");
+        closed = QStringLiteral("False");
 
     QTextStream str(&list);
 
@@ -188,7 +188,7 @@ bool LoftWidget::accept()
 
     try {
         QString cmd;
-        cmd = QString::fromLatin1(
+        cmd = QStringLiteral(
             "App.getDocument('%5').addObject('Part::Loft','Loft')\n"
             "App.getDocument('%5').ActiveObject.Sections=[%1]\n"
             "App.getDocument('%5').ActiveObject.Solid=%2\n"

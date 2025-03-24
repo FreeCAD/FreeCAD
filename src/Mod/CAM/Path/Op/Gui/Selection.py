@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Selection gates and observers to control selectability while building Path operations """
+"""Selection gates and observers to control selectability while building Path operations"""
 
 import FreeCAD
 import FreeCADGui

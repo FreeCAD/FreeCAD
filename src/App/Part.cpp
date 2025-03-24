@@ -75,7 +75,7 @@ static App::Part* _getPartOfObject(const DocumentObject* obj,
         }
         auto group = inObj->getExtensionByType<GeoFeatureGroupExtension>(true);
         if (group && group->hasObject(obj)) {
-            if (inObj->isDerivedFrom(App::Part::getClassTypeId())) {
+            if (inObj->isDerivedFrom<App::Part>()) {
                 return static_cast<App::Part*>(inObj);
             }
             else if (objset) {

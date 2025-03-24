@@ -15,14 +15,18 @@
     </Documentation>
     <Methode Name="positionBySupport">
       <Documentation>
-        <UserDocu>positionBySupport(): Reposition object based on AttachmentSupport, MapMode and MapPathParameter properties.
+        <UserDocu>positionBySupport() -> bool
+
+Reposition object based on AttachmentSupport, MapMode and MapPathParameter properties.
 Returns True if attachment calculation was successful, false if object is not attached and Placement wasn't updated,
 and raises an exception if attachment calculation fails.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name = "changeAttacherType">
       <Documentation>
-        <UserDocu>changeAttacherType(typename): Changes Attacher class of this object.
+        <UserDocu>changeAttacherType(typename) -> None
+
+Changes Attacher class of this object.
 typename: string. The following are accepted so far:
 'Attacher::AttachEngine3D'
 'Attacher::AttachEnginePlane'

@@ -165,11 +165,13 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/refactored_grbl_post.py
     Path/Post/scripts/refactored_linuxcnc_post.py
     Path/Post/scripts/refactored_mach3_mach4_post.py
+    Path/Post/scripts/refactored_masso_g3_post.py
     Path/Post/scripts/refactored_test_post.py
     Path/Post/scripts/rml_post.py
     Path/Post/scripts/rrf_post.py
     Path/Post/scripts/slic3r_pre.py
     Path/Post/scripts/smoothie_post.py
+    Path/Post/scripts/snapmaker_post.py
     Path/Post/scripts/uccnc_post.py
     Path/Post/scripts/wedm_post.py
 )
@@ -348,9 +350,11 @@ SET(Tests_SRCS
     CAMTests/TestRefactoredGrblPost.py
     CAMTests/TestRefactoredLinuxCNCPost.py
     CAMTests/TestRefactoredMach3Mach4Post.py
+    CAMTests/TestRefactoredMassoG3Post.py
     CAMTests/TestRefactoredTestPost.py
     CAMTests/TestRefactoredTestPostGCodes.py
     CAMTests/TestRefactoredTestPostMCodes.py
+    CAMTests/TestSnapmakerPost.py
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd

@@ -25,7 +25,7 @@
 #define GUI_TASKVIEW_TaskFemConstraint_H
 
 #include <Gui/DocumentObserver.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Fem/FemGlobal.h>

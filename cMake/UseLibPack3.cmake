@@ -19,6 +19,9 @@ if(FREECAD_LIBPACK_VERSION VERSION_GREATER_EQUAL "3.1.0")
     find_package(pybind11 REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/share/cmake/pybind11 NO_DEFAULT_PATH)
     message(STATUS "Found LibPack 3 pybind11 ${pybind11_VERSION}")
     set(FREECAD_USE_PYBIND11 ON)
+else()
+    # We have completely removed support for boost-python and require pybind11, which requires LibPack 3.1 or later
+    message(FATAL_ERROR "FreeCAD now requires LibPack 3.1.0 or newer (you are using ${FREECAD_LIBPACK_VERSION}): please upgrade your LibPack")
 endif()
 
 find_package(XercesC REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/cmake NO_DEFAULT_PATH)
@@ -28,6 +31,7 @@ find_package(yaml-cpp REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT
 message(STATUS "Found LibPack 3 yaml-cpp ${yaml-cpp_VERSION}")
 
 find_package(Coin REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
+
 message(STATUS "Found LibPack 3 Coin ${Coin_VERSION}")
 # For compatibility with the rest of the cMake scripts:
 set (COIN3D_FOUND TRUE)

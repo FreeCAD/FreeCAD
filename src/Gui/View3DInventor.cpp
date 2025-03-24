@@ -50,6 +50,8 @@
 # include <Inventor/SoPickedPoint.h>
 #endif
 
+
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <Base/Builder3D.h>
@@ -65,7 +67,7 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "NaviCube.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "SoFCDB.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCVectorizeSVGAction.h"
@@ -91,7 +93,7 @@ void GLOverlayWidget::paintEvent(QPaintEvent*)
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView)
 
 View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
-                               const QtGLWidget* sharewidget, Qt::WindowFlags wflags)
+                               const QOpenGLWidget* sharewidget, Qt::WindowFlags wflags)
     : MDIView(pcDocument, parent, wflags), _viewerPy(nullptr)
 {
     stack = new QStackedWidget(this);
@@ -104,7 +106,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     bool smoothing = false;
     bool glformat = false;
     int samples = View3DInventorViewer::getNumSamples();
-    QtGLFormat f;
+    QSurfaceFormat f;
 
     if (samples > 1) {
         glformat = true;
@@ -248,7 +250,7 @@ void View3DInventor::print()
 void View3DInventor::printPdf()
 {
     QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(),
-        QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+        QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         Gui::WaitCursor wc;
         QPrinter printer(QPrinter::ScreenResolution);
@@ -257,6 +259,7 @@ void View3DInventor::printPdf()
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFileName(filename);
+        printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
         print(&printer);
     }
 }
@@ -788,7 +791,7 @@ RayPickInfo View3DInventor::getObjInfoRay(Base::Vector3d* startvec, Base::Vector
     vdy = dirvec->y;
     vdz = dirvec->z;
     // near plane clipping is required to avoid false intersections
-    float nearClippingPlane = 0.1;
+    float nearClippingPlane = 0.1F;
 
     RayPickInfo ret = {false,
                        Base::Vector3d(),
@@ -808,7 +811,7 @@ RayPickInfo View3DInventor::getObjInfoRay(Base::Vector3d* startvec, Base::Vector
 
     ret.point = Base::convertTo<Base::Vector3d>(Point->getPoint());
     ViewProvider* vp = getViewer()->getViewProviderByPath(Point->getPath());
-    if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+    if (vp && vp->isDerivedFrom<ViewProviderDocumentObject>()) {
         if (!vp->isSelectable()) {
             return ret;
         }
@@ -872,7 +875,7 @@ bool View3DInventor::eventFilter(QObject* watched, QEvent* e)
 {
     // As long as this widget is a top-level window (either in 'TopLevel' or 'FullScreen' mode) we
     // need to be notified when an action is added to a widget. This action must also be added to
-    // this window to allow to make use of its shortcut (if defined).
+    // this window to allow one to make use of its shortcut (if defined).
     // Note: We don't need to care about removing an action if its parent widget gets destroyed.
     // This does the action itself for us.
     if (watched != this && e->type() == QEvent::ActionAdded) {

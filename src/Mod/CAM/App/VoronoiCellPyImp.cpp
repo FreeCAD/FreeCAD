@@ -134,10 +134,10 @@ Py::Long VoronoiCellPy::getSourceIndex() const
     return Py::Long(index);
 }
 
-Py::Int VoronoiCellPy::getSourceCategory() const
+Py::Long VoronoiCellPy::getSourceCategory() const
 {
     VoronoiCell* c = getVoronoiCellFromPy(this);
-    return Py::Int(c->ptr->source_category());
+    return Py::Long(c->ptr->source_category());
 }
 
 Py::String VoronoiCellPy::getSourceCategoryName() const

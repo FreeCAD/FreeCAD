@@ -96,7 +96,7 @@ private:
 
     static bool isTexture(const QString& value)
     {
-        return value.contains(QString::fromStdString("Texture"), Qt::CaseInsensitive);
+        return value.contains(QStringLiteral("Texture"), Qt::CaseInsensitive);
     }
 
     static bool readFile(const QString& path, QMap<QString, QString>& map);

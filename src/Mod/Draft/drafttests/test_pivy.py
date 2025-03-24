@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2025 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,41 +22,24 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 """Unit tests for the Draft Workbench, Coin (Pivy) tests."""
+
 ## @package test_pivy
 # \ingroup drafttests
 # \brief Unit tests for the Draft Workbench, Coin (Pivy) tests.
 
 ## \addtogroup drafttests
 # @{
-import unittest
 
-import FreeCAD as App
 import FreeCADGui as Gui
-import drafttests.auxiliary as aux
-
+from drafttests import auxiliary as aux
+from drafttests import test_base
 from draftutils.messages import _msg
 
 
-class DraftPivy(unittest.TestCase):
+class DraftPivy(test_base.DraftTestCaseDoc):
     """Test for the presence of Pivy and that it works with Coin3D."""
-
-    def setUp(self):
-        """Set up a new document to hold the tests.
-
-        This is executed before every test, so we create a document
-        to hold the objects.
-        """
-        aux.draw_header()
-        self.doc_name = self.__class__.__name__
-        if App.ActiveDocument:
-            if App.ActiveDocument.Name != self.doc_name:
-                App.newDocument(self.doc_name)
-        else:
-            App.newDocument(self.doc_name)
-        App.setActiveDocument(self.doc_name)
-        self.doc = App.ActiveDocument
-        _msg("  Temporary document '{}'".format(self.doc_name))
 
     def test_pivy_import(self):
         """Import Coin (Pivy)."""
@@ -68,15 +52,8 @@ class DraftPivy(unittest.TestCase):
         import pivy.coin as coin
         cube = coin.SoCube()
         _msg("  Draw cube")
-        Gui.ActiveDocument.ActiveView.getSceneGraph().addChild(cube)
+        Gui.getDocument(self.doc).ActiveView.getSceneGraph().addChild(cube)
         _msg("  Adding cube to the active view scene")
         self.assertTrue(cube, "Pivy is not working properly.")
-
-    def tearDown(self):
-        """Finish the test.
-
-        This is executed after each test, so we close the document.
-        """
-        App.closeDocument(self.doc_name)
 
 ## @}

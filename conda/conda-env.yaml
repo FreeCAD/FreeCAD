@@ -2,7 +2,7 @@ name: freecad
 channels:
 - conda-forge
 dependencies:
-- conda-forge/noarch::conda-libmamba-solver==24.7.0
+- conda-forge/noarch::conda-libmamba-solver==24.11.1
 - conda-devenv
 - mamba
 - python==3.11.*

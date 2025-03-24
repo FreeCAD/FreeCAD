@@ -46,6 +46,11 @@ DlgCAMSimulator::DlgCAMSimulator(QWindow* parent)
     mMillSimulator = new MillSimulation();
 }
 
+DlgCAMSimulator::~DlgCAMSimulator()
+{
+    delete mMillSimulator;
+}
+
 void DlgCAMSimulator::render(QPainter* painter)
 {
     Q_UNUSED(painter);
@@ -231,7 +236,6 @@ void DlgCAMSimulator::initialize()
 
     const qreal retinaScale = devicePixelRatio();
     glViewport(0, 0, width() * retinaScale, height() * retinaScale);
-    glEnable(GL_MULTISAMPLE);
 }
 
 void DlgCAMSimulator::checkInitialization()

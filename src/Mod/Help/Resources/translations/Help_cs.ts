@@ -23,8 +23,8 @@ field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
       <translation>Nastavit na vlastní URL nebo složku, kde se nacházejí soubory nápovědy.
 Dokumentaci pro offline použití můžete snadno získat stažením rozšíření
-&quot;offline dokumentace&quot; přes správce rozšíření. Pokud je toto pole
-ponecháno prázdné, FreeCAD automaticky vyhledá soubory nápovědy
+&quot;offline-dokumentation&quot; přes správce rozšíření. Pokud je toto pole
+ponecháno prázdné, FreeCAD bude automaticky hledat soubory nápovědy
 ve výchozím umístění ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
@@ -58,7 +58,7 @@ Momentálně není k dispozici...</translation>
       <location filename="../../dlgPreferencesHelp.ui" line="72"/>
       <source>A translation suffix to use, for example &quot;fr&quot;
 to get French translation of the documentation.</source>
-      <translation>Přípona překladu, kterou použít, například &quot;fr&quot; k získání francouzského překladu dokumentace.</translation>
+      <translation>Přípona požadovaného překladu, například &quot;fr&quot; k získání francouzského překladu dokumentace.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
@@ -73,9 +73,9 @@ FreeCAD wiki na https://wiki.freecad.org</translation>
 of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
 &apos;Pandoc&apos; Python module should be installed for optimal results.</source>
-      <translation>Dokumentační stránky budou načteny z automatického převodu Markdownu FreeCAD wiki,
-hostovaného na GitHub účtu FreeCADu. To může být stylizováno s vlastní šablonou stylů níže a
-může vypadat lépe než volba wiki. &apos;Markdown&apos; nebo &apos;Pandoc&apos;
+      <translation>Stránky dokumentace budou načteny z automatického Markdown převodu FreeCAD wiki,
+hostovaného na GitHub účtu FreeCADu. Převod může být stylizován vlastní šablonou stylů (níže) a
+může tak vypadat lépe než volba wiki. &apos;Markdown&apos; nebo &apos;Pandoc&apos;
 modul pro Python by měl být nainstalován pro optimální výsledky.</translation>
     </message>
     <message>

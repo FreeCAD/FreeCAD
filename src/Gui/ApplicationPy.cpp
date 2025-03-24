@@ -48,7 +48,7 @@
 #include "ApplicationPy.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "DlgPreferencesImp.h"
+#include "Dialogs/DlgPreferencesImp.h"
 #include "Document.h"
 #include "DocumentObserverPython.h"
 #include "DownloadManager.h"
@@ -773,10 +773,11 @@ PyObject* ApplicationPy::sExport(PyObject * /*self*/, PyObject *args)
                         view3d->viewAll();
                     }
                     QPrinter printer(QPrinter::ScreenResolution);
-                    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+                    // setPdfVersion sets the printed PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
                     printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
                     printer.setOutputFormat(QPrinter::PdfFormat);
                     printer.setOutputFileName(fileName);
+                    printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
                     view->print(&printer);
                 }
             }
@@ -1625,7 +1626,7 @@ PyObject* ApplicationPy::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
         //get the marker size
         auto sizeList = Gui::Inventor::MarkerBitmaps::getSupportedSizes(marker_arg);
 
-        if (std::find(std::begin(sizeList), std::end(sizeList), defSize) == std::end(sizeList)) {
+        if (std::ranges::find(sizeList, defSize) == std::end(sizeList)) {
             defSize = defaultSize;
         }
 

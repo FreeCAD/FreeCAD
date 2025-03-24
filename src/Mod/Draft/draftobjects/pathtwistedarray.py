@@ -127,6 +127,16 @@ class PathTwistedArray(DraftLink):
             obj.ExpandArray = False
             obj.setPropertyStatus('Shape', 'Transient')
 
+        if not self.use_link:
+            if "PlacementList" not in properties:
+                _tip = QT_TRANSLATE_NOOP("App::Property",
+                                         "The placement for each array element")
+                obj.addProperty("App::PropertyPlacementList",
+                                "PlacementList",
+                                "Objects",
+                                _tip)
+                obj.PlacementList = []
+
     def linkSetup(self, obj):
         """Set up the object as a link object."""
         super().linkSetup(obj)
@@ -134,11 +144,18 @@ class PathTwistedArray(DraftLink):
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
-        # Fuse property was added in v1.0, obj should be OK if it is present:
-        if hasattr(obj, "Fuse"):
+        # Fuse property was added in v1.0 and PlacementList property was added
+        # for non-link arrays in v1.1, obj should be OK if both are present:
+        if hasattr(obj, "Fuse") and hasattr(obj, "PlacementList"):
             return
+
+        if not hasattr(obj, "Fuse"):
+            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
+        if not hasattr(obj, "PlacementList"):
+            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added hidden property 'PlacementList'"))
+
         self.set_properties(obj)
-        _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
+        self.execute(obj) # Required to update PlacementList.
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""

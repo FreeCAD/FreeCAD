@@ -318,8 +318,11 @@ class _Wall(ArchComponent.Component):
 
         if self.clone(obj):
             return
-        if not self.ensureBase(obj):
-            return
+
+        # Wall can do without Base, validity to be tested in getExtrusionData()
+        # Remarked out ensureBase() below
+        #if not self.ensureBase(obj):
+        #    return
 
         import Part
         import DraftGeomUtils
@@ -544,6 +547,8 @@ class _Wall(ArchComponent.Component):
                             for e in self.connectEdges:
                                 l += e.Length
                             l = l / 2
+                            if self.layersNum:
+                                l = l / self.layersNum
                             if obj.Length.Value != l:
                                 obj.Length = l
                                 self.oldLength = None # delete the stored value to prevent triggering base change below
@@ -605,11 +610,8 @@ class _Wall(ArchComponent.Component):
                                     #print "modifying p2"
                                     obj.Base.End = p2
                                 elif Draft.getType(obj.Base) in ["Sketcher::SketchObject", "ArchSketch"]:
-                                    try:
-                                        obj.Base.recompute() # Fix for the 'GeoId index out range' error.
-                                        obj.Base.movePoint(0, 2, obj.Base.Placement.inverse().multVec(p2))
-                                    except Exception: # This 'GeoId index out range' error should no longer occur.
-                                        print("Debug: The base sketch of this wall could not be changed, because the sketch has not been edited yet in this session (this is a bug in FreeCAD). Try entering and exiting edit mode in this sketch first, and then changing the wall length should work.")
+                                    # obj.Base.recompute() # Fix for the 'GeoId index out range' error. Not required in V1.1.
+                                    obj.Base.moveGeometry(0, 2, obj.Base.Placement.inverse().multVec(p2))
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
 
@@ -832,7 +834,7 @@ class _Wall(ArchComponent.Component):
         if not height:
             return None
         if obj.Normal == Vector(0,0,0):
-            if obj.Base:
+            if obj.Base and hasattr(obj.Base,'Shape'):
                 normal = DraftGeomUtils.get_shape_normal(obj.Base.Shape)
                 if normal is None:
                     normal = Vector(0,0,1)
@@ -863,7 +865,8 @@ class _Wall(ArchComponent.Component):
                         elif varwidth:
                             layers.append(varwidth)
 
-        if obj.Base:
+        # Check if there is obj.Base and its validity to proceed
+        if self.ensureBase(obj):
             if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape:
                     if obj.Base.Shape.Solids:
@@ -985,6 +988,9 @@ class _Wall(ArchComponent.Component):
                     if self.basewires:
                         if (len(self.basewires) == 1) and layers:
                             self.basewires = [self.basewires[0] for l in layers]
+                            self.layersNum = len(layers)
+                        else:
+                            self.layersNum = 0
                         layeroffset = 0
                         baseface = None
                         self.connectEdges = []
@@ -1210,6 +1216,8 @@ class _Wall(ArchComponent.Component):
 
                         if baseface:
                             base,placement = self.rebase(baseface)
+
+        # Build Wall if there is no obj.Base or even obj.Base is not valid
         else:
             if layers:
                 totalwidth = sum([abs(l) for l in layers])

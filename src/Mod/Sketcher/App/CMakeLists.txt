@@ -1,3 +1,5 @@
+add_library(Sketcher SHARED)
+
 # Uncomment this code if you want to try Eigen's multithread
 #find_package(OpenMP)
 #if (OPENMP_FOUND)
@@ -14,14 +16,14 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}/..
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
+)
+
+target_include_directories(
+    Sketcher
+    SYSTEM
+    PUBLIC
     ${EIGEN3_INCLUDE_DIR}
 )
-link_directories(${OCC_LIBRARY_DIR})
 
 set(Sketcher_LIBS
     Part
@@ -143,7 +145,7 @@ SET(Sketcher_PCH_SRCS
     ${Datatypes_SRCS}
 )
 
-add_library(Sketcher SHARED ${Sketcher_SRCS})
+target_sources(Sketcher PRIVATE ${Sketcher_SRCS})
 target_link_libraries(Sketcher ${Sketcher_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Sketcher)

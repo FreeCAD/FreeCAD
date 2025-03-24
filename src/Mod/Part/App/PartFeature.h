@@ -25,7 +25,6 @@
 
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
-#include <App/PropertyUnits.h>
 #include <Mod/Material/App/PropertyMaterial.h>
 #include <Mod/Part/PartGlobal.h>
 
@@ -60,12 +59,6 @@ public:
 
     PropertyPartShape Shape;
     Materials::PropertyMaterial ShapeMaterial;
-
-    // Convenience properties set when material or shape changes
-    App::PropertyString MaterialName;
-    App::PropertyDensity Density;
-    App::PropertyMass Mass;
-    App::PropertyVolume Volume;
 
     /** @name methods override feature */
     //@{
@@ -175,12 +168,10 @@ protected:
     App::DocumentObjectExecReturn *execute() override;
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
+    void onDocumentRestored() override;
 
     void copyMaterial(Feature* feature);
     void copyMaterial(App::DocumentObject* link);
-
-    /// Update the mass and volume properties
-    void updatePhysicalProperties();
 
     void registerElementCache(const std::string &prefix, PropertyPartShape *prop);
 
@@ -211,7 +202,7 @@ private:
     std::vector<std::pair<std::string, PropertyPartShape*>> _elementCachePrefixMap;
 };
 
-class FilletBase : public Part::Feature
+class PartExport FilletBase : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::FilletBase);
 

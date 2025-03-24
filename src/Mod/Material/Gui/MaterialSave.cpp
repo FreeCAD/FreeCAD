@@ -44,8 +44,8 @@ MaterialSave::MaterialSave(const std::shared_ptr<Materials::Material>& material,
     , ui(new Ui_MaterialSave)
     , _material(material)
     , _saveInherited(true)
-    , _selectedPath(QString::fromStdString("/"))
-    , _selectedFull(QString::fromStdString("/"))
+    , _selectedPath(QStringLiteral("/"))
+    , _selectedFull(QStringLiteral("/"))
     , _selectedUUID()
     , _deleteAction(this)
 {
@@ -56,10 +56,10 @@ MaterialSave::MaterialSave(const std::shared_ptr<Materials::Material>& material,
     showSelectedTree();
 
     if (_material->getName().length() > 0) {
-        ui->editFilename->setText(_material->getName() + QString::fromStdString(".FCMat"));
+        ui->editFilename->setText(_material->getName() + QStringLiteral(".FCMat"));
     }
     else {
-        ui->editFilename->setText(QString::fromStdString("NewMaterial.FCMat"));
+        ui->editFilename->setText(QStringLiteral("NewMaterial.FCMat"));
     }
     _filename = QString(ui->editFilename->text());  // No filename by default
 
@@ -126,7 +126,7 @@ void MaterialSave::onOk(bool checked)
 {
     Q_UNUSED(checked)
 
-    QString name = _filename.remove(QString::fromStdString(".FCMat"), Qt::CaseInsensitive);
+    QString name = _filename.remove(QStringLiteral(".FCMat"), Qt::CaseInsensitive);
     if (name != _material->getName()) {
         _material->setName(name);
         _material->setEditStateAlter();  // ? Does a name change count?
@@ -134,8 +134,8 @@ void MaterialSave::onOk(bool checked)
 
     auto variant = ui->comboLibrary->currentData();
     auto library = variant.value<std::shared_ptr<Materials::MaterialLibrary>>();
-    QFileInfo filepath(_selectedPath + QString::fromStdString("/") + name
-                       + QString::fromStdString(".FCMat"));
+    QFileInfo filepath(_selectedPath + QStringLiteral("/") + name
+                       + QStringLiteral(".FCMat"));
 
     if (library->fileExists(filepath.filePath())) {
         // confirm overwrite
@@ -359,9 +359,9 @@ void MaterialSave::showSelectedTree()
         auto variant = ui->comboLibrary->currentData();
         auto library = variant.value<std::shared_ptr<Materials::MaterialLibrary>>();
         QIcon icon(library->getIconPath());
-        QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
+        QIcon folderIcon(QStringLiteral(":/icons/folder.svg"));
         _libraryName = library->getName();
-        _selectedPath = QString::fromStdString("/") + _libraryName;
+        _selectedPath = QStringLiteral("/") + _libraryName;
         _selectedFull = _selectedPath;
 
         auto lib = new QStandardItem(library->getName());
@@ -380,7 +380,7 @@ void MaterialSave::showSelectedTree()
 
 QString MaterialSave::getPath(const QStandardItem* item) const
 {
-    QString path = QString::fromStdString("/");
+    QString path = QStringLiteral("/");
     if (item) {
         path = path + item->text();
         if (item->parent()) {
@@ -400,7 +400,7 @@ void MaterialSave::onSelectModel(const QItemSelection& selected, const QItemSele
     auto model = static_cast<QStandardItemModel*>(ui->treeMaterials->model());
     QModelIndexList indexes = selected.indexes();
     if (indexes.count() == 0) {
-        _selectedPath = QString::fromStdString("/") + _libraryName;
+        _selectedPath = QStringLiteral("/") + _libraryName;
         _selectedFull = _selectedPath;
         _selectedUUID = QString();
         return;
@@ -487,7 +487,7 @@ void MaterialSave::onNewFolder(bool checked)
 
     // Folders have no associated data
     if (item->data(Qt::UserRole).isNull()) {
-        QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
+        QIcon folderIcon(QStringLiteral(":/icons/folder.svg"));
 
         QString folderName = tr("New Folder");
         if (newCount > 0) {

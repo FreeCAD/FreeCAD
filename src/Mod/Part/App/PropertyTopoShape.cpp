@@ -271,11 +271,14 @@ void PropertyPartShape::Save (Base::Writer &writer) const
     }
     std::string version;
     // If exporting, do not export mapped element name, but still make a mark
-    if(owner) {
-        if(!owner->isExporting())
-            version = _Ver.size()?_Ver:owner->getElementMapVersion(this);
-    }else
-        version = _Ver.size()?_Ver:_Shape.getElementMapVersion();
+    auto const version_valid = _Ver.size() && (_Ver != "?");
+    if (owner) {
+        if (!owner->isExporting()) {
+            version = version_valid ? _Ver : owner->getElementMapVersion(this);
+        }
+    } else {
+        version = version_valid ? _Ver : _Shape.getElementMapVersion();
+    }
     writer.Stream() << " ElementMap=\"" << version << '"';
 
     bool binary = writer.getMode("BinaryBrep");
@@ -476,7 +479,7 @@ void PropertyPartShape::saveToFile(Base::Writer &writer) const
         // We only print an error message but continue writing the next files to the
         // stream...
         App::PropertyContainer* father = this->getContainer();
-        if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        if (father && father->isDerivedFrom<App::DocumentObject>()) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
             Base::Console().Error("Shape of '%s' cannot be written to BRep file '%s'\n",
                 obj->Label.getValue(),fi.filePath().c_str());
@@ -528,7 +531,7 @@ void PropertyPartShape::loadFromFile(Base::Reader &reader)
             // We only print an error message but continue reading the next files from the
             // stream...
             App::PropertyContainer* father = this->getContainer();
-            if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+            if (father && father->isDerivedFrom<App::DocumentObject>()) {
                 App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
                 Base::Console().Error("BRep file '%s' with shape of '%s' seems to be empty\n",
                     fi.filePath().c_str(),obj->Label.getValue());
@@ -587,11 +590,25 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
 
 void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 {
+
+    // save the element map
+    auto elementMap = _Shape.resetElementMap();
+    auto hasher = _Shape.Hasher;
+
     Base::FileInfo brep(reader.getFileName());
+    TopoShape shape;
+
+    // In LS3 the following statement is executed right before shape.Hasher = hasher;
+    // https://github.com/realthunder/FreeCAD/blob/a9810d509a6f112b5ac03d4d4831b67e6bffd5b7/src/Mod/Part/App/PropertyTopoShape.cpp#L639
+    // Now it's not possible anymore because both PropertyPartShape::loadFromFile() and
+    // PropertyPartShape::loadFromStream() calls PropertyPartShape::setValue() which clears the
+    // value of _Ver.
+    // Therefor we're storing the value of _Ver here so that we don't lose it.
+
+    std::string ver = _Ver;
+
     if (brep.hasExtension("bin")) {
-        TopoShape shape;
         shape.importBinary(reader);
-        setValue(shape);
     }
     else {
         bool direct = App::GetApplication().GetParameterGroupByPath
@@ -604,7 +621,14 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
             loadFromStream(reader);
             reader.exceptions(iostate);
         }
+        shape = getValue();
     }
+
+    // restore the element map
+    shape.Hasher = hasher;
+    shape.resetElementMap(elementMap);
+    setValue(shape);
+    _Ver = ver;
 }
 
 // -------------------------------------------------------------------------

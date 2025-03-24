@@ -190,11 +190,8 @@ static bool callbackWithVertex(Voronoi::diagram_type* dia,
 #endif
             PyObject* vx = new VoronoiVertexPy(new VoronoiVertex(dia, v));
             PyObject* arglist = Py_BuildValue("(O)", vx);
-#if PY_VERSION_HEX < 0x03090000
-            PyObject* result = PyEval_CallObject(callback, arglist);
-#else
-        PyObject* result = PyObject_CallObject(callback, arglist);
-#endif
+            PyObject* result = PyObject_CallObject(callback, arglist);
+
             Py_DECREF(arglist);
             Py_DECREF(vx);
             if (!result) {

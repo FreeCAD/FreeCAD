@@ -48,8 +48,7 @@ from importers.importIFCHelper import dd2dms
 from draftutils import params
 from draftutils.messages import _msg, _err
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
+import FreeCADGui
 
 __title__  = "FreeCAD IFC export"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
@@ -175,7 +174,7 @@ def getPreferences():
     if hasattr(ifcopenshell, "schema_identifier"):
         schema = ifcopenshell.schema_identifier
     else:
-        # v0.6 onwards allows to set our own schema
+        # v0.6 onwards allows one to set our own schema
         schema = PARAMS.GetString("DefaultIfcExportVersion", "IFC4")
     preferences["SCHEMA"] = schema
 
@@ -216,7 +215,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
     starttime = time.time()
 
-    global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs, uids, template
+    global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs, uids, template, curvestyles
 
     if preferences is None:
         preferences = getPreferences()
@@ -267,19 +266,22 @@ def export(exportList, filename, colors=None, preferences=None):
     if history:
         history = history[0]
     else:
-        # IFC4 allows to not write any history
+        # IFC4 allows one to not write any history
         history = None
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
 
-    # separate 2D objects
+    # separate 2D and special objects. Special objects provide their own IFC export method
 
     annotations = []
+    specials = []
     for obj in objectslist:
         if obj.isDerivedFrom("Part::Part2DObject"):
             annotations.append(obj)
         elif obj.isDerivedFrom("App::Annotation") or (Draft.getType(obj) in ["DraftText","Text","Dimension","LinearDimension","AngularDimension"]):
             annotations.append(obj)
+        elif hasattr(obj, "Proxy") and hasattr(obj.Proxy, "export_ifc"):
+            specials.append(obj)
         elif obj.isDerivedFrom("Part::Feature"):
             if obj.Shape and (not obj.Shape.Solids) and obj.Shape.Edges:
                 if not obj.Shape.Faces:
@@ -290,6 +292,7 @@ def export(exportList, filename, colors=None, preferences=None):
     # clean objects list of unwanted types
 
     objectslist = [obj for obj in objectslist if obj not in annotations]
+    objectslist = [obj for obj in objectslist if obj not in specials]
     objectslist = Arch.pruneIncluded(objectslist,strict=True)
     objectslist = [obj for obj in objectslist if Draft.getType(obj) not in ["Dimension","Material","MaterialContainer","WorkingPlaneProxy"]]
     if preferences['FULL_PARAMETRIC']:
@@ -335,6 +338,8 @@ def export(exportList, filename, colors=None, preferences=None):
     shapedefs = {} # { ShapeDefString:[shapes],... }
     spatialelements = {} # {Name:IfcEntity, ... }
     uids = [] # store used UIDs to avoid reuse (some FreeCAD objects might have same IFC UID, ex. copy/pasted objects
+    classifications = {} # {Name:IfcEntity, ... }
+    curvestyles = {}
 
     # build clones table
 
@@ -930,6 +935,33 @@ def export(exportList, filename, colors=None, preferences=None):
                     pset
                 )
 
+        # Classifications
+
+        classification = getattr(obj, "StandardCode", "")
+        if classification:
+            name, code = classification.split(" ", 1)
+            if name in classifications:
+                system = classifications[name]
+            else:
+                system = ifcfile.createIfcClassification(None, None, None, name)
+                classifications[name] = system
+            for ref in getattr(system, "HasReferences", []):
+                if code.startswith(ref.Name):
+                    break
+            else:
+                ref = ifcfile.createIfcClassificationReference(None, code, None, system)
+            if getattr(ref, "ClassificationRefForObjects", None):
+                rel = ref.ClassificationRefForObjects[0]
+                rel.RelatedObjects = rel.RelatedObjects + [product]
+            else:
+                rel = ifcfile.createIfcRelAssociatesClassification(
+                    ifcopenshell.guid.new(),
+                    history,'FreeCADClassificationRel',
+                    None,
+                    [product],
+                    ref
+                )
+
         count += 1
 
     # relate structural analysis objects to the struct model
@@ -1289,12 +1321,19 @@ def export(exportList, filename, colors=None, preferences=None):
 
     annos = {}
     if preferences['EXPORT_2D']:
-        global curvestyles
         curvestyles = {}
         if annotations and preferences['DEBUG']: print("exporting 2D objects...")
         for anno in annotations:
             ann = create_annotation(anno, ifcfile, context, history, preferences)
             annos[anno.Name] = ann
+
+    # specials. Specials should take care of register themselves where needed under the project
+
+    specs = {}
+    for spec in specials:
+        if preferences['DEBUG']: print("exporting special object:",spec.Label)
+        elt = spec.Proxy.export_ifc(spec, ifcfile)
+        specs[spec.Name] = elt
 
     # groups
 
@@ -2384,7 +2423,8 @@ def getUID(obj,preferences):
                 obj.IfcData = d
             if hasattr(obj, "GlobalId"):
                 obj.GlobalId = uid
-    uids.append(uid)
+    if "uids" in globals():
+        uids.append(uid)
     return uid
 
 
@@ -2459,6 +2499,11 @@ def writeJson(filename,ifcfile):
 def create_annotation(anno, ifcfile, context, history, preferences):
     """Creates an annotation object"""
 
+    global curvestyles, ifcbin
+    reps = []
+    repid = "Annotation"
+    reptype = "Annotation2D"
+    description = getattr(anno, "Description", None)
     # uses global ifcbin, curvestyles
     objectType = None
     ovc = None
@@ -2485,15 +2530,8 @@ def create_annotation(anno, ifcfile, context, history, preferences):
                 axes.append(axis)
             if axes:
                 if len(axes) > 1:
-                    xvc =  ifcbin.createIfcDirection((1.0,0.0,0.0))
-                    zvc =  ifcbin.createIfcDirection((0.0,0.0,1.0))
-                    ovc =  ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-                    gpl =  ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-                    plac = ifcbin.createIfcLocalPlacement(gpl)
-                    grid = ifcfile.createIfcGrid(uid,history,name,description,None,plac,None,axes,None,None)
-                    return grid
-                else:
-                    return axes[0]
+                    print("DEBUG: exportIFC.create_annotation: Cannot create more than one axis",anno.Label)
+                return axes[0]
             else:
                 print("Unable to handle object",anno.Label)
                 return None

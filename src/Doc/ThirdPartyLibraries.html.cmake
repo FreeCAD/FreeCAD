@@ -157,7 +157,7 @@ Additional BSD Notice
 <hr>
 
 <h3><a name="_TocPython"></a>Python</h3>
-<p>Version: ${PYTHON_VERSION_STRING}</p>
+<p>Version: ${Python3_VERSION}</p>
 <p>Web site: <a href="https://www.python.org/">https://www.python.org/</a></p>
 <p>License: <a href="https://docs.python.org/3.6/license.html">https://docs.python.org/3.6/license.html</a></p>
 

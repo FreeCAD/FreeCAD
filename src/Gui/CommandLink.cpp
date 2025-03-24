@@ -302,7 +302,7 @@ void StdCmdLinkMakeRelative::activated(int) {
             auto element = Data::findElementName(sel.SubName);
             auto &info = linkInfo[key];
             info.first = sel.pResolvedObject;
-            if(element && element[0])
+            if(!Base::Tools::isNullOrEmpty(element))
                 info.second.emplace_back(element);
         }
 
@@ -413,7 +413,7 @@ static void linkConvert(bool unlink) {
                     continue;
             }else{
                 auto name = doc->getUniqueObjectName("Link");
-                auto link = static_cast<App::Link*>(doc->addObject("App::Link",name.c_str()));
+                auto link = doc->addObject<App::Link>(name.c_str());
                 if(!link)
                     FC_THROWM(Base::RuntimeError,"Failed to create link");
                 link->setLink(-1,obj);
@@ -877,7 +877,7 @@ public:
         sGroup        = "View";
         sMenuText     = QT_TR_NOOP("Link actions");
         sToolTipText  = QT_TR_NOOP("Actions that apply to link objects");
-        sWhatsThis    = "Std_LinkMakeRelative";
+        sWhatsThis    = "Std_LinkActions";
         sStatusTip    = QT_TR_NOOP("Actions that apply to link objects");
         eType         = AlterDoc;
         bCanLog       = false;

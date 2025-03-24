@@ -33,7 +33,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
@@ -72,6 +72,8 @@ TaskCosmeticCircle::TaskCosmeticCircle(TechDraw::DrawViewPart* partFeat,
 
     connect(ui->qsbRadius, qOverload<double>(&QuantitySpinBox::valueChanged),
             this, &TaskCosmeticCircle::radiusChanged);
+    connect(ui->rbArc, &QRadioButton::clicked, this, &TaskCosmeticCircle::arcButtonClicked);
+
 
 }
 
@@ -91,6 +93,11 @@ TaskCosmeticCircle::TaskCosmeticCircle(TechDraw::DrawViewPart* partFeat,
     ui->setupUi(this);
 
     setUiPrimary();
+
+    connect(ui->qsbRadius, qOverload<double>(&QuantitySpinBox::valueChanged),
+            this, &TaskCosmeticCircle::radiusChanged);
+    connect(ui->rbArc, &QRadioButton::clicked, this, &TaskCosmeticCircle::arcButtonClicked);
+
 }
 
 TaskCosmeticCircle::~TaskCosmeticCircle()
@@ -154,8 +161,13 @@ void TaskCosmeticCircle::setUiPrimary()
     double radius = (mathPoints[1] - mathPoints[0]).Length() / m_partFeat->getScale();
     ui->qsbRadius->setValue(radius);
 
-    ui->qsbStartAngle->setValue(Base::toDegrees(DU::angleWithX(mathPoints[1] - mathPoints[0])));
-    ui->qsbEndAngle->setValue(Base::toDegrees(DU::angleWithX(mathPoints[2] - mathPoints[0])));
+    ui->qsbStartAngle->setValue(0);
+    ui->qsbEndAngle->setValue(360);
+
+    enableArcWidgets(false);
+    ui->qsbStartAngle->setEnabled(false);
+    ui->qsbEndAngle->setEnabled(false);
+    ui->cbClockwise->setEnabled(false);
 }
 
 void TaskCosmeticCircle::setUiEdit()
@@ -174,6 +186,15 @@ void TaskCosmeticCircle::setUiEdit()
 
     ui->qsbStartAngle->setValue(Base::toDegrees(m_ce->m_geometry->getStartAngle()));
     ui->qsbEndAngle->setValue(Base::toDegrees(m_ce->m_geometry->getEndAngle()));
+
+    if (m_ce->m_geometry->getGeomType() == GeomType::ARCOFCIRCLE) {
+        ui->rbArc->setChecked(true);
+        enableArcWidgets(true);
+    } else {
+        ui->rbArc->setChecked(false);
+        enableArcWidgets(false);
+    }
+
 }
 
 void TaskCosmeticCircle::radiusChanged()
@@ -182,6 +203,23 @@ void TaskCosmeticCircle::radiusChanged()
         QString msg = tr("Radius must be non-zero positive number");
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Parameter Error"), msg);
     }
+}
+
+void TaskCosmeticCircle::arcButtonClicked()
+{
+    if (ui->rbArc->isChecked()) {
+        enableArcWidgets(true);
+    } else {
+        enableArcWidgets(false);
+    }
+}
+
+void TaskCosmeticCircle::enableArcWidgets(bool newState)
+{
+    ui->qsbStartAngle->setEnabled(newState);
+    ui->qsbEndAngle->setEnabled(newState);
+    ui->cbClockwise->setEnabled(newState);
+
 }
 
 
@@ -205,8 +243,7 @@ void TaskCosmeticCircle::createCosmeticCircle(void)
     }
 
     TechDraw::BaseGeomPtr bg;
-    if (ui->qsbStartAngle->value().getValue() == 0.0 &&
-        ui->qsbEndAngle->value().getValue() == 0.0)  {
+    if (!ui->rbArc->isChecked()) {
         bg = std::make_shared<TechDraw::Circle> (center, ui->qsbRadius->value().getValue());
     } else {
         bg = std::make_shared<TechDraw::AOC>(center, ui->qsbRadius->value().getValue(),
@@ -234,8 +271,7 @@ void TaskCosmeticCircle::updateCosmeticCircle(void)
     m_ce->permaRadius = ui->qsbRadius->value().getValue();
 
     TechDraw::BaseGeomPtr bg;
-    if (ui->qsbStartAngle->value().getValue() == 0.0 &&
-        ui->qsbEndAngle->value().getValue() == 0.0)  {
+    if (!ui->rbArc->isChecked()) {
         bg = std::make_shared<TechDraw::Circle> (p0, m_ce->permaRadius);
     } else {
         bg = std::make_shared<TechDraw::AOC>(p0, ui->qsbRadius->value().getValue(),

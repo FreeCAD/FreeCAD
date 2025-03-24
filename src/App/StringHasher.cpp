@@ -36,6 +36,7 @@
 #include <boost/bimap.hpp>
 #include <boost/bimap/set_of.hpp>
 #include <boost/bimap/unordered_set_of.hpp>
+#include <boost/io/ios_state.hpp>
 #include <boost/iostreams/stream.hpp>
 
 #include "MappedElement.h"

@@ -82,7 +82,7 @@ TEST_F(TestMaterialValue, TestBooleanType)
     EXPECT_FALSE(variant.toString().isNull());
     EXPECT_FALSE(variant.toString().isEmpty());
     EXPECT_EQ(variant.toString().size(), 5);
-    EXPECT_EQ(variant.toString(), QString::fromStdString("false"));
+    EXPECT_EQ(variant.toString(), QStringLiteral("false"));
     EXPECT_EQ(variant.toBool(), false);
 }
 
@@ -97,7 +97,7 @@ TEST_F(TestMaterialValue, TestIntegerType)
     EXPECT_FALSE(variant.toString().isNull());
     EXPECT_FALSE(variant.toString().isEmpty());
     EXPECT_EQ(variant.toString().size(), 1);
-    EXPECT_EQ(variant.toString(), QString::fromStdString("0"));
+    EXPECT_EQ(variant.toString(), QStringLiteral("0"));
     EXPECT_EQ(variant.toInt(), 0);
 }
 
@@ -112,7 +112,7 @@ TEST_F(TestMaterialValue, TestFloatType)
     EXPECT_FALSE(variant.toString().isNull());
     EXPECT_FALSE(variant.toString().isEmpty());
     EXPECT_EQ(variant.toString().size(), 1);
-    EXPECT_EQ(variant.toString(), QString::fromStdString("0"));
+    EXPECT_EQ(variant.toString(), QStringLiteral("0"));
     EXPECT_EQ(variant.toFloat(), 0);
 }
 

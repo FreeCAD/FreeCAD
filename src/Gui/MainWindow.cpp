@@ -40,6 +40,7 @@
 # include <QMenuBar>
 # include <QMessageBox>
 # include <QMimeData>
+# include <QOpenGLWidget>
 # include <QPainter>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
@@ -114,8 +115,8 @@
 #include "SpaceballEvent.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
-#include "DlgObjectSelection.h"
-#include <App/Color.h>
+#include "Dialogs/DlgObjectSelection.h"
+#include <Base/Color.h>
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
 
@@ -366,7 +367,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         tab->setTabsClosable(true);
         // The tabs might be very wide
         tab->setExpanding(false);
-        tab->setObjectName(QString::fromLatin1("mdiAreaTabBar"));
+        tab->setObjectName(QStringLiteral("mdiAreaTabBar"));
     }
     d->mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -377,7 +378,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->mdiArea->setBackground(QBrush(QColor(160,160,160)));
     setCentralWidget(d->mdiArea);
 
-    statusBar()->setObjectName(QString::fromLatin1("statusBar"));
+    statusBar()->setObjectName(QStringLiteral("statusBar"));
     connect(statusBar(), &QStatusBar::messageChanged, this, &MainWindow::statusMessageChanged);
 
     // labels and progressbar
@@ -401,24 +402,24 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     if(notificationAreaEnabled) {
         NotificationArea* notificationArea = new NotificationArea(statusBar());
-        notificationArea->setObjectName(QString::fromLatin1("notificationArea"));
+        notificationArea->setObjectName(QStringLiteral("notificationArea"));
         notificationArea->setStyleSheet(QStringLiteral("text-align:left;"));
         statusBar()->addPermanentWidget(notificationArea);
     }
 
     // clears the action label
     d->actionTimer = new QTimer( this );
-    d->actionTimer->setObjectName(QString::fromLatin1("actionTimer"));
+    d->actionTimer->setObjectName(QStringLiteral("actionTimer"));
     connect(d->actionTimer, &QTimer::timeout, d->actionLabel, &QLabel::clear);
 
     // clear status type
     d->statusTimer = new QTimer( this );
-    d->statusTimer->setObjectName(QString::fromLatin1("statusTimer"));
+    d->statusTimer->setObjectName(QStringLiteral("statusTimer"));
     connect(d->statusTimer, &QTimer::timeout, this, &MainWindow::clearStatus);
 
     // update gui timer
     d->activityTimer = new QTimer(this);
-    d->activityTimer->setObjectName(QString::fromLatin1("activityTimer"));
+    d->activityTimer->setObjectName(QStringLiteral("activityTimer"));
     connect(d->activityTimer, &QTimer::timeout, this, &MainWindow::_updateActions);
     d->activityTimer->setSingleShot(false);
     d->activityTimer->start(150);
@@ -430,10 +431,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->windowMapper = new QSignalMapper(this);
 
     // connection between workspace, window menu and tab bar
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(d->windowMapper, qOverload<QWidget*>(&QSignalMapper::mapped),
-            this, &MainWindow::onSetActiveSubWindow);
-#elif QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     connect(d->windowMapper, &QSignalMapper::mappedWidget,
             this, &MainWindow::onSetActiveSubWindow);
 #else
@@ -784,6 +782,7 @@ void MainWindow::closeActiveWindow ()
 
 int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckbox) {
     QMessageBox box(parent?parent:this);
+    box.setObjectName(QStringLiteral("confirmSave"));
     box.setIcon(QMessageBox::Question);
     box.setWindowFlags(box.windowFlags() | Qt::WindowStaysOnTopHint);
     box.setWindowTitle(QObject::tr("Unsaved document"));
@@ -798,7 +797,7 @@ int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckb
     box.setDefaultButton(QMessageBox::Save);
     box.setEscapeButton(QMessageBox::Cancel);
 
-    QCheckBox checkBox(QObject::tr("Apply answer to all"));
+    QCheckBox checkBox(QObject::tr("Apply to all"));
     ParameterGrp::handle hGrp;
     if(addCheckbox) {
          hGrp = App::GetApplication().GetUserParameter().
@@ -1316,16 +1315,16 @@ void MainWindow::onWindowsMenuAboutToShow()
         QAction* action = actions.at(index);
         QString text;
         QString title = child->windowTitle();
-        int lastIndex = title.lastIndexOf(QString::fromLatin1("[*]"));
+        int lastIndex = title.lastIndexOf(QStringLiteral("[*]"));
         if (lastIndex > 0) {
             title = title.left(lastIndex);
             if (child->isWindowModified())
-                title = QString::fromLatin1("%1*").arg(title);
+                title = QStringLiteral("%1*").arg(title);
         }
         if (index < 9)
-            text = QString::fromLatin1("&%1 %2").arg(index+1).arg(title);
+            text = QStringLiteral("&%1 %2").arg(index+1).arg(title);
         else
-            text = QString::fromLatin1("%1 %2").arg(index+1).arg(title);
+            text = QStringLiteral("%1 %2").arg(index+1).arg(title);
         action->setText(text);
         action->setVisible(true);
         action->setChecked(child == active);
@@ -1492,7 +1491,7 @@ void MainWindow::processMessages(const QList<QString> & msg)
     try {
         WaitCursor wc;
         std::list<std::string> files;
-        QString action = QString::fromStdString("OpenFile:");
+        QString action = QStringLiteral("OpenFile:");
         for (const auto & it : msg) {
             if (it.startsWith(action))
                 files.emplace_back(it.mid(action.size()).toStdString());
@@ -1590,7 +1589,7 @@ void MainWindow::delayedStartup()
 void MainWindow::appendRecentFile(const QString& filename)
 {
     auto recent = this->findChild<RecentFilesAction *>
-        (QString::fromLatin1("recentFiles"));
+        (QStringLiteral("recentFiles"));
     if (recent) {
         recent->appendFile(filename);
     }
@@ -1599,7 +1598,7 @@ void MainWindow::appendRecentFile(const QString& filename)
 void MainWindow::appendRecentMacro(const QString& filename)
 {
     auto recent = this->findChild<RecentMacrosAction *>
-        (QString::fromLatin1("recentMacros"));
+        (QStringLiteral("recentMacros"));
     if (recent) {
         recent->appendFile(filename);
     }
@@ -1765,6 +1764,8 @@ void MainWindow::loadWindowSettings()
 #endif
 
     statusBar()->setVisible(showStatusBar);
+
+    setAttribute(Qt::WA_AlwaysShowToolTips);
 
     ToolBarManager::getInstance()->restoreState();
     std::clog << "Toolbars restored" << std::endl;
@@ -2152,7 +2153,7 @@ void MainWindow::changeEvent(QEvent *e)
 
 void MainWindow::clearStatus() {
     d->currentStatusType = 100;
-    statusBar()->setStyleSheet(QString::fromLatin1("#statusBar{}"));
+    statusBar()->setStyleSheet(QStringLiteral("#statusBar{}"));
 }
 
 void MainWindow::statusMessageChanged() {
@@ -2211,7 +2212,7 @@ void MainWindow::showStatus(int type, const QString& message)
         statusBar()->setStyleSheet(d->status->wrn);
         break;
     case MainWindow::Pane:
-        statusBar()->setStyleSheet(QString::fromLatin1("#statusBar{}"));
+        statusBar()->setStyleSheet(QStringLiteral("#statusBar{}"));
         break;
     default:
         statusBar()->setStyleSheet(d->status->msg);
@@ -2296,30 +2297,25 @@ void MainWindow::setWindowTitle(const QString& string)
         appname = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
     }
 
-    // allow to disable version number
+    // allow one to disable version number
     ParameterGrp::handle hGen = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/General");
     bool showVersion = hGen->GetBool("ShowVersionInTitle", true);
 
     if (showVersion) {
         // set main window title with FreeCAD Version
-        auto config = App::Application::Config();
-        QString major = QString::fromUtf8(config["BuildVersionMajor"].c_str());
-        QString minor = QString::fromUtf8(config["BuildVersionMinor"].c_str());
-        QString point = QString::fromUtf8(config["BuildVersionPoint"].c_str());
-        QString suffix = QString::fromUtf8(config["BuildVersionSuffix"].c_str());
-        title = QString::fromUtf8("%1 %2.%3.%4%5").arg(appname, major, minor, point, suffix);
+        title = QString::fromStdString(App::Application::getNameWithVersion());
     }
     else {
         title = appname;
     }
 
     if (SafeMode::SafeModeEnabled()) {
-        title = QString::fromUtf8("%1 (%2)").arg(title, tr("Safe Mode"));
+        title = QStringLiteral("%1 (%2)").arg(title, tr("Safe Mode"));
     }
 
     if (!string.isEmpty()) {
-        title = QString::fromUtf8("[*] %1 - %2").arg(string, title);
+        title = QStringLiteral("[*] %1 - %2").arg(string, title);
     }
 
     QMainWindow::setWindowTitle(title);
@@ -2330,9 +2326,9 @@ void MainWindow::setWindowTitle(const QString& string)
     StatusBarObserver::StatusBarObserver()
         : WindowParameter("OutputWindow")
     {
-        msg = QString::fromLatin1("#statusBar{color: #000000}");  // black
-        wrn = QString::fromLatin1("#statusBar{color: #ffaa00}");  // orange
-        err = QString::fromLatin1("#statusBar{color: #ff0000}");  // red
+        msg = QStringLiteral("#statusBar{color: #000000}");  // black
+        wrn = QStringLiteral("#statusBar{color: #ffaa00}");  // orange
+        err = QStringLiteral("#statusBar{color: #ff0000}");  // red
         Base::Console().AttachObserver(this);
         getWindowParameter()->Attach(this);
         getWindowParameter()->NotifyAll();
@@ -2347,18 +2343,18 @@ void MainWindow::setWindowTitle(const QString& string)
     void StatusBarObserver::OnChange(Base::Subject<const char*> & rCaller, const char* sReason)
     {
         ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
-        auto format = QString::fromLatin1("#statusBar{color: %1}");
+        auto format = QStringLiteral("#statusBar{color: %1}");
         if (strcmp(sReason, "colorText") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);
-            this->msg = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+            this->msg = format.arg(Base::Color::fromPackedRGB<QColor>(col).name());
         }
         else if (strcmp(sReason, "colorWarning") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);
-            this->wrn = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+            this->wrn = format.arg(Base::Color::fromPackedRGB<QColor>(col).name());
         }
         else if (strcmp(sReason, "colorError") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);
-            this->err = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+            this->err = format.arg(Base::Color::fromPackedRGB<QColor>(col).name());
         }
         else if (strcmp(sReason, "colorCritical") == 0) {
             unsigned long col = rclGrp.GetUnsigned(sReason);

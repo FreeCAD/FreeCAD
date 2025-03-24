@@ -43,7 +43,7 @@ CompassDialWidget::CompassDialWidget(QWidget* parent) : QWidget(parent),
     m_defaultMargin(10),
     m_designRadius(64)
 {
-    setObjectName(QString::fromUtf8("Compass"));
+    setObjectName(QStringLiteral("Compass"));
     m_rect = QRect(0, 0, m_defaultSize, m_defaultSize);
     m_angle = 0.0;
     m_margin = m_defaultMargin;

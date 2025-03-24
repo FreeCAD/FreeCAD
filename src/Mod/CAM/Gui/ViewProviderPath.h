@@ -24,7 +24,7 @@
 #define PATH_ViewProviderPath_H
 
 #include <App/PropertyGeo.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>

@@ -317,8 +317,7 @@ void ShapeBinder::slotChangedObject(const App::DocumentObject& Obj, const App::P
             list = obj->getInListRecursive();
             chain.insert(chain.end(), list.begin(), list.end());
 
-            auto it = std::find(chain.begin(), chain.end(), &Obj);
-            if (it != chain.end()) {
+            if (const auto it = std::ranges::find(chain, &Obj); it != chain.end()) {
                 if (hasPlacementChanged()) {
                     enforceRecompute();
                 }
@@ -397,8 +396,6 @@ SubShapeBinder::~SubShapeBinder() {
 void SubShapeBinder::setupObject() {
     _Version.setValue(2);
     checkPropertyStatus();
-
-    this->Refine.setValue(getPDRefineModelParameter());
 }
 
 App::DocumentObject* SubShapeBinder::getSubObject(const char* subname, PyObject** pyObj,
@@ -597,8 +594,11 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 recomputeCopy = true;
                 clearCopiedObjects();
 
-                auto tmpDoc = App::GetApplication().newDocument(
-                    "_tmp_binder", nullptr, false, true);
+                App::DocumentInitFlags initFlags {
+                    .createView = false,
+                    .temporary = true
+                };
+                auto tmpDoc = App::GetApplication().newDocument("_tmp_binder", nullptr, initFlags);
                 tmpDoc->setUndoMode(0);
                 auto objs = tmpDoc->copyObject({ obj }, true, true);
                 if (!objs.empty()) {
@@ -838,7 +838,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     for (auto& v : mats) {
         const char* name = cacheName(v.first);
         auto prop = getDynamicPropertyByName(name);
-        if (!prop || !prop->isDerivedFrom(App::PropertyMatrix::getClassTypeId())) {
+        if (!prop || !prop->isDerivedFrom<App::PropertyMatrix>()) {
             if (prop)
                 removeDynamicProperty(name);
             prop = addDynamicProperty("App::PropertyMatrix", name, "Cache", nullptr, 0, false, true);

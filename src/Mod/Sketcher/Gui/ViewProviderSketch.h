@@ -26,14 +26,14 @@
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <memory>
 
 #include <Base/Parameter.h>
 #include <Base/Placement.h>
 #include <Gui/Document.h>
 #include <Gui/GLPainter.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Part/Gui/ViewProvider2DObject.h>
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/Part/Gui/ViewProviderGridExtension.h>

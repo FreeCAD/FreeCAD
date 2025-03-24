@@ -72,7 +72,7 @@ Tento příkaz funguje pouze se 'síťovým' objektem.</translation>
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <source>Section</source>
-      <translation>Výběr</translation>
+      <translation>Řez</translation>
     </message>
   </context>
   <context>
@@ -398,7 +398,7 @@ Nejmenší hodnota je 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="239"/>
       <source>Coarse</source>
-      <translation>Hrubé</translation>
+      <translation>Hrubá</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
@@ -408,7 +408,7 @@ Nejmenší hodnota je 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation>Jemný</translation>
+      <translation>Jemná</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>

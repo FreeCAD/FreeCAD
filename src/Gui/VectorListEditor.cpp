@@ -26,6 +26,7 @@
 #include "ui_VectorListEditor.h"
 #include "QuantitySpinBox.h"
 
+#include <App/Application.h>
 #include <Base/Console.h>
 
 #include <QClipboard>
@@ -115,7 +116,7 @@ QVariant VectorTableModel::data(const QModelIndex &index, int role) const
                 d = vectors[r].z;
 
             if (role == Qt::DisplayRole) {
-                QString str = QString::fromLatin1("%1").arg(d, 0, 'f', decimals);
+                QString str = QStringLiteral("%1").arg(d, 0, 'f', decimals);
                 return str;
             }
 
@@ -142,11 +143,14 @@ void Gui::VectorTableModel::copyToClipboard() const
 {
     QString clipboardText;
     QTextStream stream(&clipboardText);
+    int precision = App::GetApplication()
+                         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units")
+                         ->GetInt("PropertyVectorListCopyPrecision", 16);
 
     for (const auto& vector : vectors) {
-        stream << QString::number(vector.x, 'f', decimals) << '\t'
-               << QString::number(vector.y, 'f', decimals) << '\t'
-               << QString::number(vector.z, 'f', decimals) << '\n';
+        stream << QString::number(vector.x, 'f', precision) << '\t'
+               << QString::number(vector.y, 'f', precision) << '\t'
+               << QString::number(vector.z, 'f', precision) << '\n';
     }
 
     QApplication::clipboard()->setText(clipboardText);

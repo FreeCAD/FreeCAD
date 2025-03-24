@@ -29,7 +29,7 @@
 #include <Base/Parameter.h>
 #include <Base/Tools2D.h>
 
-#include "Selection.h"
+#include "Selection/Selection.h"
 
 
 namespace Gui

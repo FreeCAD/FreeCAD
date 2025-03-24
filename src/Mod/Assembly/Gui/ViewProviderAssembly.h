@@ -28,7 +28,7 @@
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProviderPart.h>
 
 class SoSwitch;

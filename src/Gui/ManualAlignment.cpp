@@ -30,6 +30,7 @@
 # include <QMessageBox>
 # include <QPainter>
 # include <QSplitter>
+# include <QSurfaceFormat>
 # include <QTimer>
 # include <QVBoxLayout>
 # include <Inventor/SoPickedPoint.h>
@@ -51,7 +52,7 @@
 #include <Gui/Document.h>
 #include <Gui/Inventor/SoAxisCrossKit.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/SplitView3DInventor.h>
 #include <Gui/Tools.h>
 #include <Gui/View3DInventorViewer.h>
@@ -136,7 +137,7 @@ void AlignmentGroup::setRandomColor()
         float r = /*(float)rand()/(float)RAND_MAX*/0.0f;
         float g = (float)rand()/(float)RAND_MAX;
         float b = (float)rand()/(float)RAND_MAX;
-        if ((*it)->isDerivedFrom(Gui::ViewProviderGeometryObject::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<Gui::ViewProviderGeometryObject>()) {
             SoSearchAction searchAction;
             searchAction.setType(SoMaterial::getClassTypeId());
             searchAction.setInterest(SoSearchAction::FIRST);
@@ -239,7 +240,7 @@ Base::BoundBox3d AlignmentGroup::getBoundingBox() const
     Base::BoundBox3d box;
     std::vector<Gui::ViewProviderDocumentObject*>::const_iterator it;
     for (it = this->_views.begin(); it != this->_views.end(); ++it) {
-        if ((*it)->isDerivedFrom(Gui::ViewProviderGeometryObject::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<Gui::ViewProviderGeometryObject>()) {
             auto geo = (*it)->getObject<App::GeoFeature>();
             const App::PropertyComplexGeoData* prop = geo->getPropertyOfGeometry();
             if (prop)
@@ -352,7 +353,7 @@ public:
         bool smoothing = false;
         bool glformat = false;
         int samples = View3DInventorViewer::getNumSamples();
-        QtGLFormat f;
+        QSurfaceFormat f;
 
         if (samples > 1) {
             glformat = true;
@@ -958,7 +959,7 @@ void ManualAlignment::align()
                             .arg(myFixedGroup.countPoints()));
     }
     else {
-        // do not allow to pick further points
+        // do not allow one to pick further points
         myAlignModel.activeGroup().removeFromViewer(myViewer->getViewer(0));
         myAlignModel.activeGroup().setAlignable(false);
         std::vector<App::DocumentObject*> pViews = myAlignModel.activeGroup().getViews();

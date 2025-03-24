@@ -285,8 +285,8 @@ const TopoDS_Shape& Feature::getBaseShape() const {
     if (!BaseObject)
         throw Base::ValueError("Base feature's shape is not defined");
 
-    if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())||
-        BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
+    if (BaseObject->isDerivedFrom<PartDesign::ShapeBinder>()||
+        BaseObject->isDerivedFrom<PartDesign::SubShapeBinder>())
     {
         throw Base::ValueError("Base shape of shape binder cannot be used");
     }
@@ -318,8 +318,8 @@ Part::TopoShape Feature::getBaseTopoShape(bool silent) const
             }
             throw Base::RuntimeError("Missing container body");
         }
-        if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
-            || BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())) {
+        if (BaseObject->isDerivedFrom<PartDesign::ShapeBinder>()
+            || BaseObject->isDerivedFrom<PartDesign::SubShapeBinder>()) {
             if (silent) {
                 return result;
             }
@@ -395,7 +395,7 @@ Body* Feature::getFeatureBody() const {
 
     auto list = getInList();
     for (auto in : list) {
-        if(in->isDerivedFrom(Body::getClassTypeId()) && //is Body?
+        if(in->isDerivedFrom<Body>() && //is Body?
            static_cast<Body*>(in)->hasObject(this)) {    //is part of this Body?
 
                return static_cast<Body*>(in);

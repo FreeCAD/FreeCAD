@@ -3,20 +3,17 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
 )
-link_directories(${OCC_LIBRARY_DIR})
 
 set(PartGui_LIBS
     Part
     FreeCADGui
     MatGui
 )
+
+if(BUILD_TRACY_FRAME_PROFILER)
+    list(APPEND PartGui_LIBS TracyClient)
+endif()
 
 if(MSVC)
     include_directories(
@@ -25,6 +22,7 @@ if(MSVC)
 endif(MSVC)
 
 include_directories(
+    SYSTEM
     ${QtConcurrent_INCLUDE_DIRS}
 )
 list(APPEND PartGui_LIBS

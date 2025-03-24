@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Material</source>
-      <translation>Material</translation>
+      <translation>Gérer les matériaux</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="53"/>
@@ -105,12 +105,12 @@
   <context>
     <name>MatGui::ArrayDelegate</name>
     <message>
-      <location filename="../../ArrayDelegate.cpp" line="153"/>
+      <location filename="../../ArrayDelegate.cpp" line="150"/>
       <source>False</source>
       <translation>Faux</translation>
     </message>
     <message>
-      <location filename="../../ArrayDelegate.cpp" line="154"/>
+      <location filename="../../ArrayDelegate.cpp" line="151"/>
       <source>True</source>
       <translation>Vrai</translation>
     </message>
@@ -118,12 +118,12 @@
   <context>
     <name>MatGui::BaseDelegate</name>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="441"/>
+      <location filename="../../BaseDelegate.cpp" line="439"/>
       <source>False</source>
       <translation>Faux</translation>
     </message>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="442"/>
+      <location filename="../../BaseDelegate.cpp" line="440"/>
       <source>True</source>
       <translation>Vrai</translation>
     </message>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="338"/>
       <source>Material</source>
-      <translation>Material</translation>
+      <translation>Gérer les matériaux</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="365"/>
@@ -342,7 +342,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="94"/>
       <source>Material</source>
-      <translation>Material</translation>
+      <translation>Gérer les matériaux</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
@@ -468,7 +468,7 @@
     <message>
       <location filename="../../DlgMaterial.ui" line="14"/>
       <source>Material</source>
-      <translation>Material</translation>
+      <translation>Gérer les matériaux</translation>
     </message>
   </context>
   <context>
@@ -779,13 +779,13 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="315"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="546"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="545"/>
       <source>Favorites</source>
       <translation>Favoris</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="315"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="553"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="552"/>
       <source>Recent</source>
       <translation>Récents</translation>
     </message>
@@ -1115,7 +1115,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../DlgMaterialImp.cpp" line="57"/>
       <source>Material</source>
-      <translation>Material</translation>
+      <translation>Gérer les matériaux</translation>
     </message>
   </context>
   <context>
@@ -1129,7 +1129,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
       <location filename="../../AppMatGui.cpp" line="108"/>
       <location filename="../../AppMatGui.cpp" line="110"/>
       <source>Material</source>
-      <translation>Material</translation>
+      <translation>Gérer les matériaux</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="187"/>
@@ -1190,8 +1190,8 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <name>StdCmdSetAppearance</name>
     <message>
       <location filename="../../Command.cpp" line="89"/>
-      <source>Appearance...</source>
-      <translation>Définir l'apparence...</translation>
+      <source>&amp;Appearance...</source>
+      <translation type="unfinished">&amp;Appearance...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -1204,8 +1204,8 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <name>StdCmdSetMaterial</name>
     <message>
       <location filename="../../Command.cpp" line="118"/>
-      <source>Material...</source>
-      <translation>Définir le matériau...</translation>
+      <source>&amp;Material...</source>
+      <translation type="unfinished">&amp;Material...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="119"/>

@@ -226,8 +226,8 @@ void DlgScale::apply()
             name = sourceObj->getDocument()->getUniqueObjectName("Scale").c_str();
             if (addBaseName) {
                 //FIXME: implement
-                //QString baseName = QString::fromLatin1("Scale_%1").arg(sourceObjectName);
-                //label = QString::fromLatin1("%1_Scale").arg((*it)->text(0));
+                //QString baseName = QStringLiteral("Scale_%1").arg(sourceObjectName);
+                //label = QStringLiteral("%1_Scale").arg((*it)->text(0));
             }
 
             FCMD_OBJ_DOC_CMD(sourceObj,"addObject('Part::Scale','" << name << "')");
@@ -257,7 +257,7 @@ void DlgScale::apply()
     }
     catch(...) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Creating Scale failed.\n%1").arg(QString::fromUtf8("Unknown error")));
+            tr("Creating Scale failed.\n%1").arg(QStringLiteral("Unknown error")));
         return;
     }
 }

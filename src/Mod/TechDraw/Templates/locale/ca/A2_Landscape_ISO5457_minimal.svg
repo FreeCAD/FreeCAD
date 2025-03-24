@@ -484,7 +484,7 @@
          id="Identification number data field"
          x="405"
          y="407.2"
-         freecadeditable="drawing_number"><tspan
+         freecad:editable="drawing_number"><tspan
            id="tspan1">ND</tspan></text>
       <text
          id="Revision index data field"
@@ -544,7 +544,7 @@
          x="534"
          y="371.2"
          style="text-align:center;text-anchor:middle"
-         freecad:editable="page_scale"
+         freecad:editable="scale"
          freecad:autofill="scale"><tspan
            id="tspan9">1 : 1</tspan></text>
       <text

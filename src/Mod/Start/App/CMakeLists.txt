@@ -21,11 +21,6 @@
 #  *                                                                          *
 #  ***************************************************************************/
 
-include_directories(
-        ${PYTHON_INCLUDE_DIRS}
-        ${QtCore_INCLUDE_DIRS}
-)
-
 set(Start_LIBS
         FreeCADApp
         )
@@ -36,6 +31,8 @@ SET(Start_SRCS
         DisplayedFilesModel.h
         ExamplesModel.cpp
         ExamplesModel.h
+        CustomFolderModel.cpp
+        CustomFolderModel.h
         PreCompiled.cpp
         PreCompiled.h
         RecentFilesModel.cpp

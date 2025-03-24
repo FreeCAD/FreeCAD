@@ -39,21 +39,22 @@ class TechDrawGuiExport ViewProviderProjGroup : public ViewProviderDrawingView
 public:
 
      ViewProviderProjGroup();  /// constructor
-     ~ViewProviderProjGroup() override; /// destructor
+     ~ViewProviderProjGroup() override = default; /// destructor
 
     bool useNewSelectionModel() const override {return false;}
 
-    /// Claim all the views for the page
+    /// Claim all the views for the group
     std::vector<App::DocumentObject*> claimChildren() const override;
 
     /// Is called by the tree if the user double click on the object
     bool doubleClicked() override;
-    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     TechDraw::DrawProjGroup* getObject() const;
     TechDraw::DrawProjGroup* getViewObject() const override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string> &parms) override;
     bool canDelete(App::DocumentObject* obj) const override;
+
+    void regroupSubViews();
 
 protected:
     bool setEdit(int ModNum) override;

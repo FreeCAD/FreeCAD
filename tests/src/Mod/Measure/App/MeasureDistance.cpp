@@ -48,13 +48,12 @@ private:
 TEST_F(MeasureDistance, testCircleCircle)
 {
     App::Document* doc = getDocument();
-    auto p1 = dynamic_cast<Part::Feature*>(doc->addObject("Part::Feature", "Shape1"));
+    auto p1 = doc->addObject<Part::Feature>("Shape1");
     p1->Shape.setValue(makeCircle(gp_Pnt(0.0, 0.0, 0.0)));
-    auto p2 = dynamic_cast<Part::Feature*>(doc->addObject("Part::Feature", "Shape2"));
+    auto p2 = doc->addObject<Part::Feature>("Shape2");
     p2->Shape.setValue(makeCircle(gp_Pnt(3.0, 4.0, 0.0)));
 
-    auto md = dynamic_cast<Measure::MeasureDistance*>(
-        doc->addObject("Measure::MeasureDistance", "Distance"));
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
     md->Element1.setValue(p1, {"Edge1"});
     md->Element2.setValue(p2, {"Edge1"});
 

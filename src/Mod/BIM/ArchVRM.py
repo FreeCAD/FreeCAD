@@ -34,7 +34,7 @@ from draftutils import params
 #  \ingroup ARCH
 #  \brief The Arch Vector Rendering Module
 #
-#  This module provides the Renderer Class, that allows to
+#  This module provides the Renderer Class, that allows one to
 #  produce SVG renderings of projected shapes, with filled faces.
 #  It is used by the "Solid" mode of Arch views in TechDraw and Drawing,
 #  and is called from ArchSectionPlane code.

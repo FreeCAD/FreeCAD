@@ -102,31 +102,31 @@ void FitBSplineCurveWidget::tryAccept()
 
     QStringList arguments;
     arguments.append(
-        QString::fromLatin1("Points=getattr(%1, %1.getPropertyNameOfGeometry())").arg(object));
+        QStringLiteral("Points=getattr(%1, %1.getPropertyNameOfGeometry())").arg(object));
     if (!d->ui.groupBoxSmooth->isChecked()) {
-        arguments.append(QString::fromLatin1("MinDegree = %1").arg(d->ui.degreeMin->value()));
+        arguments.append(QStringLiteral("MinDegree = %1").arg(d->ui.degreeMin->value()));
     }
-    arguments.append(QString::fromLatin1("MaxDegree = %1").arg(d->ui.degreeMax->value()));
-    arguments.append(QString::fromLatin1("Continuity = %1").arg(d->ui.continuity->currentIndex()));
+    arguments.append(QStringLiteral("MaxDegree = %1").arg(d->ui.degreeMax->value()));
+    arguments.append(QStringLiteral("Continuity = %1").arg(d->ui.continuity->currentIndex()));
     if (d->ui.checkBoxClosed->isChecked()) {
-        arguments.append(QString::fromLatin1("Closed = True"));
+        arguments.append(QStringLiteral("Closed = True"));
     }
     else {
-        arguments.append(QString::fromLatin1("Closed = False"));
+        arguments.append(QStringLiteral("Closed = False"));
     }
     if (d->ui.checkBox->isChecked()) {
         int index = d->ui.paramType->currentIndex();
-        arguments.append(QString::fromLatin1("ParametrizationType = %1").arg(index));
+        arguments.append(QStringLiteral("ParametrizationType = %1").arg(index));
     }
     if (d->ui.groupBoxSmooth->isChecked()) {
-        arguments.append(QString::fromLatin1("Weight1 = %1").arg(d->ui.curveLength->value()));
-        arguments.append(QString::fromLatin1("Weight2 = %1").arg(d->ui.curvature->value()));
-        arguments.append(QString::fromLatin1("Weight3 = %1").arg(d->ui.torsion->value()));
+        arguments.append(QStringLiteral("Weight1 = %1").arg(d->ui.curveLength->value()));
+        arguments.append(QStringLiteral("Weight2 = %1").arg(d->ui.curvature->value()));
+        arguments.append(QStringLiteral("Weight3 = %1").arg(d->ui.torsion->value()));
     }
 
     QString argument = arguments.join(QLatin1String(", "));
-    QString command = QString::fromLatin1("%1.addObject(\"Part::Spline\", \"Spline\").Shape = "
-                                          "ReverseEngineering.approxCurve(%2).toShape()")
+    QString command = QStringLiteral("%1.addObject(\"Part::Spline\", \"Spline\").Shape = "
+                                     "ReverseEngineering.approxCurve(%2).toShape()")
                           .arg(document, argument);
 
     tryCommand(command);

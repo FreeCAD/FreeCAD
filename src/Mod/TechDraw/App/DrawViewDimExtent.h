@@ -51,7 +51,7 @@ public:
 
     App::DocumentObjectExecReturn *execute() override;
 
-    int getRefType() const override { return extent; }
+    RefType getRefType() const override { return RefType::extent; }
 
     PyObject *getPyObject() override;
 

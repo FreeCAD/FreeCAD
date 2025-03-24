@@ -796,7 +796,7 @@ public:
 };
 
 /**
- * MeshPointModifier is a helper class that allows to modify the
+ * MeshPointModifier is a helper class that allows one to modify the
  * point array of a mesh kernel but with limited access.
  */
 class MeshExport MeshPointModifier
@@ -823,7 +823,7 @@ private:
 };
 
 /**
- * MeshFacetModifier is a helper class that allows to modify the
+ * MeshFacetModifier is a helper class that allows one to modify the
  * facet array of a mesh kernel but with limited access.
  */
 class MeshExport MeshFacetModifier

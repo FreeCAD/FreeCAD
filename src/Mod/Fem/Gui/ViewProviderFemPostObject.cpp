@@ -56,8 +56,8 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/SoFCColorBarNotifier.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -68,6 +68,8 @@
 #include "TaskPostBoxes.h"
 #include "ViewProviderAnalysis.h"
 #include "ViewProviderFemPostObject.h"
+
+#include <Base/Tools.h>
 
 
 using namespace FemGui;
@@ -428,7 +430,7 @@ void ViewProviderFemPostObject::updateProperties()
     m_coloringEnum.setEnums(colorArrays);
     Field.setValue(m_coloringEnum);
 
-    std::vector<std::string>::iterator it = std::find(colorArrays.begin(), colorArrays.end(), val);
+    auto it = std::ranges::find(colorArrays, val);
     if (!val.empty() && it != colorArrays.end()) {
         Field.setValue(val.c_str());
     }
@@ -470,7 +472,7 @@ void ViewProviderFemPostObject::updateProperties()
     m_vectorEnum.setEnums(colorArrays);
     VectorMode.setValue(m_vectorEnum);
 
-    it = std::find(colorArrays.begin(), colorArrays.end(), val);
+    it = std::ranges::find(colorArrays, val);
     if (!val.empty() && it != colorArrays.end()) {
         VectorMode.setValue(val.c_str());
     }
@@ -659,7 +661,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
 
     if (Field.getEnumVector().empty() || Field.getValue() == 0) {
         m_material->diffuseColor.setValue(SbColor(0.8, 0.8, 0.8));
-        float trans = float(Transparency.getValue()) / 100.0;
+        float trans = Base::fromPercent(Transparency.getValue());
         m_material->transparency.setValue(trans);
         m_materialBinding->value = SoMaterialBinding::OVERALL;
         m_materialBinding->touch();
@@ -696,13 +698,13 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
     SbColor* diffcol = m_material->diffuseColor.startEditing();
     SbColor* edgeDiffcol = m_matPlainEdges->diffuseColor.startEditing();
 
-    float overallTransp = Transparency.getValue() / 100.0f;
+    float overallTransp = Base::fromPercent(Transparency.getValue());
     m_material->transparency.setNum(numPts);
     m_matPlainEdges->transparency.setNum(numPts);
     float* transp = m_material->transparency.startEditing();
     float* edgeTransp = m_matPlainEdges->transparency.startEditing();
-    App::Color c;
-    App::Color cEdge = EdgeColor.getValue();
+    Base::Color c;
+    Base::Color cEdge = EdgeColor.getValue();
     for (int i = 0; i < numPts; i++) {
 
         double value = 0;
@@ -737,7 +739,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
 
 void ViewProviderFemPostObject::WriteTransparency()
 {
-    float trans = static_cast<float>(Transparency.getValue()) / 100.0;
+    float trans = Base::fromPercent(Transparency.getValue());
     float* value = m_material->transparency.startEditing();
     float* edgeValue = m_matPlainEdges->transparency.startEditing();
     // m_material and m_matPlainEdges field containers have same size
@@ -848,15 +850,9 @@ bool ViewProviderFemPostObject::setupPipeline()
 
     auto postObject = getObject<Fem::FemPostObject>();
 
-    vtkDataObject* data = postObject->Data.getValue();
-    if (!data) {
-        return false;
-    }
-
     // check all fields if there is a real/imaginary one and if so
     // add a field with an absolute value
-    vtkSmartPointer<vtkDataObject> SPdata = data;
-    vtkDataSet* dset = vtkDataSet::SafeDownCast(SPdata);
+    vtkDataSet* dset = postObject->getDataSet();
     if (!dset) {
         return false;
     }
@@ -928,7 +924,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
         m_drawStyle->pointSize.setValue(PointSize.getValue());
     }
     else if (prop == &EdgeColor && setupPipeline()) {
-        App::Color c = EdgeColor.getValue();
+        Base::Color c = EdgeColor.getValue();
         SbColor* edgeColor = m_matPlainEdges->diffuseColor.startEditing();
         for (int i = 0; i < m_matPlainEdges->diffuseColor.getNum(); ++i) {
             edgeColor[i].setValue(c.r, c.g, c.b);
@@ -962,7 +958,7 @@ bool ViewProviderFemPostObject::setEdit(int ModNum)
             postDlg = nullptr;  // another pad left open its task panel
         }
         if (dlg && !postDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -1036,7 +1032,7 @@ void ViewProviderFemPostObject::hide()
     for (auto it : ObjectsList) {
         if (it->isDerivedFrom<Fem::FemPostObject>()) {
             if (!firstVisiblePostObject && it->Visibility.getValue()
-                && !it->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
+                && !it->isDerivedFrom<Fem::FemPostDataAtPointFilter>()) {
                 firstVisiblePostObject = it;
                 break;
             }
@@ -1071,7 +1067,15 @@ bool ViewProviderFemPostObject::onDelete(const std::vector<std::string>&)
 {
     // warn the user if the object has unselected children
     auto objs = claimChildren();
-    return ViewProviderFemAnalysis::checkSelectedChildren(objs, this->getDocument(), "pipeline");
+    if (!ViewProviderFemAnalysis::checkSelectedChildren(objs, this->getDocument(), "pipeline")) {
+        return false;
+    };
+
+    // delete all subelements
+    for (auto obj : objs) {
+        getObject()->getDocument()->removeObject(obj->getNameInDocument());
+    }
+    return true;
 }
 
 bool ViewProviderFemPostObject::canDelete(App::DocumentObject* obj) const

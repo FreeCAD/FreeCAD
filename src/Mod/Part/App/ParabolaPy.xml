@@ -17,8 +17,9 @@
         </Documentation>
         <Methode Name="compute">
             <Documentation>
-                <UserDocu>compute(p1,p2,p3)
-                    The three points must lie on a plane parallel to xy plane and must not be collinear</UserDocu>
+                <UserDocu>compute(p1,p2,p3) -> None
+
+The three points must lie on a plane parallel to xy plane and must not be collinear</UserDocu>
             </Documentation>
         </Methode>
         <Attribute Name="Focal" ReadOnly="false">

@@ -321,7 +321,7 @@ DrawLeaderLine* DrawLeaderLine::makeLeader(DrawViewPart* parent, std::vector<Bas
 
 
     App::DocumentObject* obj = parent->getDocument()->getObject(leaderName.c_str());
-    if (!obj || !obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
+    if (!obj || !obj->isDerivedFrom<TechDraw::DrawLeaderLine>()) {
         throw Base::RuntimeError("DrawLeaderLine::makeLeader - new object not found");
     }
 

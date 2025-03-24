@@ -316,7 +316,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="103"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation>Remove fusion, apply placement to children, and color randomly</translation>
+      <translation>移除融合，套用至子項目位置並隨機著色</translation>
     </message>
   </context>
   <context>

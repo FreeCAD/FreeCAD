@@ -42,9 +42,8 @@
 #include <XCAFDoc_DocumentTool.hxx>
 #include <XSControl_TransferReader.hxx>
 #include <XSControl_WorkSession.hxx>
-#if OCC_VERSION_HEX >= 0x070500
 #include <Message_ProgressRange.hxx>
-#endif
+
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif
@@ -62,7 +61,6 @@
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/PartFeaturePy.h>
-#include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/encodeFilename.h>
 
@@ -281,7 +279,7 @@ private:
         try {
             Py::Sequence list(object);
             std::vector<App::DocumentObject*> objs;
-            std::map<Part::Feature*, std::vector<App::Color>> partColor;
+            std::map<Part::Feature*, std::vector<Base::Color>> partColor;
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 PyObject* item = (*it).ptr();
                 if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
@@ -310,7 +308,7 @@ private:
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
             auto getShapeColors = [partColor](App::DocumentObject* obj, const char* subname) {
-                std::map<std::string, App::Color> cols;
+                std::map<std::string, Base::Color> cols;
                 auto it = partColor.find(dynamic_cast<Part::Feature*>(obj));
                 if (it != partColor.end() && boost::starts_with(subname, "Face")) {
                     const auto& colors = it->second;

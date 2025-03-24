@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Execute Solver and obtain Reports and Results.
+"""Execute Solver and obtain Reports and Results.
 
 Integral part of the Solver Framework which contains components responsible for
 executing the solver in the background. Also provides an asynchronous

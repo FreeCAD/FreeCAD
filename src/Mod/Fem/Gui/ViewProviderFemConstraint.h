@@ -131,11 +131,6 @@ inline bool ViewProviderFemConstraint::getRotateSymbol() const
     return rotateSymbol;
 }
 
-inline void ViewProviderFemConstraint::setRotateSymbol(bool rotate)
-{
-    rotateSymbol = rotate;
-}
-
 using ViewProviderFemConstraintPython = Gui::ViewProviderFeaturePythonT<ViewProviderFemConstraint>;
 
 

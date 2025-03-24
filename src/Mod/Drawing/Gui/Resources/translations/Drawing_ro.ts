@@ -11,13 +11,13 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>&amp;Annotation</source>
-      <translation>&amp;Adnotație</translation>
+      <translation>&amp;Anotare</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="512"/>
       <location filename="../../Command.cpp" line="514"/>
       <source>Inserts an Annotation view in the active drawing</source>
-      <translation>Inserează o vizualizare de adnotație în desenul activ</translation>
+      <translation>Inserează o vedere de adnotare în desenul activ</translation>
     </message>
   </context>
   <context>
@@ -49,13 +49,13 @@
     <message>
       <location filename="../../Command.cpp" line="776"/>
       <source>&amp;Draft View</source>
-      <translation>Vue &amp;Draft</translation>
+      <translation>&amp;Vedere desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="778"/>
       <location filename="../../Command.cpp" line="780"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation>Insère une vue brouillon des objets sélectionnés dans le dessin actif</translation>
+      <translation>Introduceți o vedere cu obiectul(ele) selectate în desenul activ</translation>
     </message>
   </context>
   <context>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../Command.cpp" line="683"/>
       <source>File</source>
-      <translation>Fişier</translation>
+      <translation>Fișier</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="684"/>
@@ -74,7 +74,7 @@
       <location filename="../../Command.cpp" line="685"/>
       <location filename="../../Command.cpp" line="687"/>
       <source>Export a page to an SVG file</source>
-      <translation>Exportă pagina într-un fişier SVG</translation>
+      <translation>Exportă pagina într-un fișier SVG</translation>
     </message>
   </context>
   <context>
@@ -175,7 +175,7 @@
     <message>
       <location filename="../../Command.cpp" line="418"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
-      <translation>Inseraţi o proiecţie ortogonală a unei componente în desenul activ</translation>
+      <translation>Inserați o proiecție ortogonală a unei componente în desenul activ</translation>
     </message>
   </context>
   <context>
@@ -207,7 +207,7 @@
     <message>
       <location filename="../../Command.cpp" line="808"/>
       <source>&amp;Spreadsheet View</source>
-      <translation>Vedere &amp; Foaie de calcul</translation>
+      <translation>Vedere &amp;Foaie de calcul</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="809"/>
@@ -270,12 +270,12 @@
     <message>
       <location filename="../../DrawingView.cpp" line="278"/>
       <source>Open SVG File</source>
-      <translation>Deschide fişier SVG </translation>
+      <translation>Deschide fișier SVG </translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="279"/>
       <source>Could not open file '%1'.</source>
-      <translation>Fişierul '%1' nu a putut fi deschis.</translation>
+      <translation>Fișierul '%1' nu a putut fi deschis.</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="370"/>
@@ -336,7 +336,7 @@
       <location filename="../../DrawingView.cpp" line="598"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
-      <translation>Imprimanta utilizează o orientare diferită a hârtiei decât desenul. Doriţi să continuaţi?</translation>
+      <translation>Imprimanta utilizează o orientare diferită a hârtiei decât desenul. Doriți să continuați?</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="608"/>
@@ -349,7 +349,7 @@ Do you want to continue?</source>
       <location filename="../../DrawingView.cpp" line="620"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation>Imprimanta utilizează o altă dimensiune de hârtie decât desenul. Doriţi să continuaţi?</translation>
+      <translation>Imprimanta utilizează o altă dimensiune de hârtie decât desenul. Doriți să continuați?</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="634"/>
@@ -359,7 +359,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DrawingView.cpp" line="635"/>
       <source>Can't open file '%1' for writing.</source>
-      <translation>Fișierul r '%1' nu acceptă scrierea.</translation>
+      <translation>Fișierul '%1' nu acceptă scrierea.</translation>
     </message>
   </context>
   <context>
@@ -367,22 +367,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="26"/>
       <source>Orthographic Projection</source>
-      <translation>Proiecţie Ortogonală</translation>
+      <translation>Proiecție Ortogonală</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="34"/>
       <source>Projection</source>
-      <translation>Proiecţie</translation>
+      <translation>Proiecție</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="45"/>
       <source>Third Angle</source>
-      <translation>Convenția/proiecția americană</translation>
+      <translation>Proiecție in al treilea triedru</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="50"/>
       <source>First Angle</source>
-      <translation>Convenția/proiecția europeană</translation>
+      <translation>Proiecție in primul triedru</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="62"/>
@@ -655,7 +655,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="242"/>
       <source>Insert new %1%2 %3 drawing</source>
-      <translation>Inserează un nou %1%2%3 desen</translation>
+      <translation>Inserează un nou %1%2 %3 desen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="246"/>
@@ -726,7 +726,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="486"/>
       <location filename="../../Command.cpp" line="698"/>
       <source>Select one Page object.</source>
-      <translation>Selectează un obiect pagină</translation>
+      <translation>Selectează un obiect pagină.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="704"/>

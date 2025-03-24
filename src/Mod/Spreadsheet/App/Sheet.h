@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Spreadsheet_Spreadsheet_H
-#define Spreadsheet_Spreadsheet_H
+#ifndef SRC_MOD_SPREADSHEET_APP_SHEET_H_
+#define SRC_MOD_SPREADSHEET_APP_SHEET_H_
 
 #ifdef signals
 #undef signals
@@ -29,6 +29,10 @@
 #endif
 
 #include <map>
+#include <tuple>
+#include <set>
+#include <string>
+#include <vector>
 
 #include <App/DocumentObject.h>
 #include <App/DynamicProperty.h>
@@ -154,9 +158,9 @@ public:
 
     void setStyle(App::CellAddress address, const std::set<std::string>& style);
 
-    void setForeground(App::CellAddress address, const App::Color& color);
+    void setForeground(App::CellAddress address, const Base::Color& color);
 
-    void setBackground(App::CellAddress address, const App::Color& color);
+    void setBackground(App::CellAddress address, const Base::Color& color);
 
     void setDisplayUnit(App::CellAddress address, const std::string& unit);
 
@@ -188,6 +192,9 @@ public:
 
     void
     getPropertyNamedList(std::vector<std::pair<const char*, App::Property*>>& List) const override;
+
+    /// See PropertyContainer::visitProperties for semantics
+    void visitProperties(const std::function<void(App::Property*)>& visitor) const override;
 
     short mustExecute() const override;
 
@@ -307,4 +314,4 @@ using SheetPython = App::FeaturePythonT<Sheet>;
 }  // namespace Spreadsheet
 
 
-#endif  // Spreadsheet_Spreadsheet_H
+#endif  // SRC_MOD_SPREADSHEET_APP_SHEET_H_

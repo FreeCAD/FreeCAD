@@ -26,7 +26,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="89"/>
       <source>Tilt</source>
-      <translation>Наклон (вращение)</translation>
+      <translation>Наклон</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="90"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="570"/>
       <source>Orbit style</source>
-      <translation>Орбитальный стиль</translation>
+      <translation>Способ вращения</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="571"/>
@@ -81,12 +81,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="573"/>
       <source>Turntable</source>
-      <translation>Поворотный стол</translation>
+      <translation>Вращение</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="574"/>
       <source>Free Turntable</source>
-      <translation>Свободный Поворотный стол</translation>
+      <translation>Свободное вращение</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="575"/>

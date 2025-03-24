@@ -96,7 +96,7 @@ void TaskHatch::setUiPrimary()
 {
     setWindowTitle(QObject::tr("Create Face Hatch"));
     ui->fcFile->setFileName(QString::fromStdString(DrawHatch::prefSvgHatch()));
-    ui->fcFile->setFilter(QString::fromUtf8(
+    ui->fcFile->setFilter(QStringLiteral(
             "SVG files (*.svg *.SVG);;Bitmap files(*.jpg *.jpeg *.png *.bmp);;All files (*)"));
     ui->sbScale->setValue(1.0);
     ui->sbScale->setSingleStep(0.1);
@@ -108,7 +108,7 @@ void TaskHatch::setUiEdit()
 {
     setWindowTitle(QObject::tr("Edit Face Hatch"));
     ui->fcFile->setFileName(QString::fromStdString(m_saveFile));
-    ui->fcFile->setFilter(QString::fromUtf8(
+    ui->fcFile->setFilter(QStringLiteral(
             "SVG files (*.svg *.SVG);;Bitmap files(*.jpg *.jpeg *.png *.bmp);;All files (*)"));
     ui->sbScale->setValue(m_saveScale);
     ui->sbScale->setSingleStep(0.1);
@@ -218,7 +218,7 @@ void TaskHatch::createHatch()
     Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(doc)->getViewProvider(m_hatch);
     m_vp = dynamic_cast<TechDrawGui::ViewProviderHatch*>(vp);
     if (m_vp) {
-        App::Color ac;
+        Base::Color ac;
         ac.setValue<QColor>(ui->ccColor->color());
         m_vp->HatchColor.setValue(ac);
         m_vp->HatchScale.setValue(ui->sbScale->value().getValue());
@@ -244,7 +244,7 @@ void TaskHatch::updateHatch()
                        FeatName.c_str(),
                        filespec.c_str());
 
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->ccColor->color());
     m_vp->HatchColor.setValue(ac);
     m_vp->HatchScale.setValue(ui->sbScale->value().getValue());

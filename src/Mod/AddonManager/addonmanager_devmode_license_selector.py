@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Contains a class to manage selection of a license for an Addon. """
+"""Contains a class to manage selection of a license for an Addon."""
 
 import os
 from datetime import date

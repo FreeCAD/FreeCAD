@@ -4,6 +4,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 files: |
     (?x)^(
+        .github|
         src/Base|
         src/Main|
         src/Tools|
@@ -62,11 +63,11 @@ repos:
     -   id: check-added-large-files
     -   id: mixed-line-ending
 -   repo: https://github.com/psf/black
-    rev: 1b2427a2b785cc4aac97c19bb4b9a0de063f9547 # frozen: 24.10.0
+    rev: 8a737e727ac5ab2f1d4cf5876720ed276dc8dc4b  # frozen: 25.1.0
     hooks:
         -   id: black
             args: ['--line-length', '100']
 -   repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: fed9a1f62c22af0bc846a260ebfeb0844368fd93  # frozen: v19.1.4
+    rev: 458d954d175f16d216d7d04d5c182e3b10ddfbb4  # frozen: v20.1.0
     hooks:
         -   id: clang-format

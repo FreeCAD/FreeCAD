@@ -143,12 +143,8 @@ void DemoMode::hideEvent(QHideEvent*)
 
 Gui::View3DInventor* DemoMode::activeView() const
 {
-    Document* doc = Application::Instance->activeDocument();
-    if (doc) {
-        MDIView* view = doc->getActiveView();
-        if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-            return static_cast<Gui::View3DInventor*>(view);
-        }
+    if (Document* doc = Application::Instance->activeDocument()) {
+        return Base::freecad_dynamic_cast<Gui::View3DInventor>(doc->getActiveView());
     }
 
     return nullptr;

@@ -24,10 +24,47 @@
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/elements/SoElement.h>
 #include <FCGlobal.h>
 
 namespace Gui
 {
+
+class GuiExport SoDelayedAnnotationsElement: public SoElement
+{
+    using inherited = SoElement;
+
+    SO_ELEMENT_HEADER(SoDelayedAnnotationsElement);
+
+protected:
+    ~SoDelayedAnnotationsElement() override = default;
+
+    SoDelayedAnnotationsElement& operator=(const SoDelayedAnnotationsElement& other) = default;
+    SoDelayedAnnotationsElement& operator=(SoDelayedAnnotationsElement&& other) noexcept = default;
+
+public:
+    SoDelayedAnnotationsElement(const SoDelayedAnnotationsElement& other) = delete;
+    SoDelayedAnnotationsElement(SoDelayedAnnotationsElement&& other) noexcept = delete;
+
+    void init(SoState* state) override;
+
+    static void initClass();
+
+    static void addDelayedPath(SoState* state, SoPath* path);
+    static SoPathList getDelayedPaths(SoState* state);
+
+    SbBool matches([[maybe_unused]] const SoElement* element) const override
+    {
+        return FALSE;
+    }
+
+    SoElement* copyMatchInfo() const override
+    {
+        return nullptr;
+    }
+
+    SoPathList paths;
+};
 
 /*! @brief 3D Annotation Node - Annotation with depth buffer
  *
@@ -39,21 +76,29 @@ namespace Gui
  */
 class GuiExport So3DAnnotation: public SoSeparator
 {
-    typedef SoSeparator inherited;
+    using inherited = SoSeparator;
 
     SO_NODE_HEADER(So3DAnnotation);
 
 public:
-    static void initClass();
+    static bool render;
+
     So3DAnnotation();
 
-    virtual void GLRender(SoGLRenderAction* action);
-    virtual void GLRenderBelowPath(SoGLRenderAction* action);
-    virtual void GLRenderInPath(SoGLRenderAction* action);
-    virtual void GLRenderOffPath(SoGLRenderAction* action);
+    So3DAnnotation(const So3DAnnotation& other) = delete;
+    So3DAnnotation(So3DAnnotation&& other) noexcept = delete;
+    So3DAnnotation& operator=(const So3DAnnotation& other) = delete;
+    So3DAnnotation& operator=(So3DAnnotation&& other) noexcept = delete;
+
+    static void initClass();
+
+    void GLRender(SoGLRenderAction* action) override;
+    void GLRenderBelowPath(SoGLRenderAction* action) override;
+    void GLRenderInPath(SoGLRenderAction* action) override;
+    void GLRenderOffPath(SoGLRenderAction* action) override;
 
 protected:
-    virtual ~So3DAnnotation() = default;
+    ~So3DAnnotation() override = default;
 };
 
 }  // namespace Gui

@@ -35,7 +35,7 @@
 #endif
 
 #include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintTransform.h>
 #include <Mod/Part/App/PartFeature.h>
 
@@ -349,9 +349,7 @@ void TaskFemConstraintTransform::addToSelection()
                     }
                 }
             }
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -382,12 +380,13 @@ void TaskFemConstraintTransform::addToSelection()
                     }
                 }
                 if (Objects.empty()) {
-                    QMessageBox::warning(
-                        this,
-                        tr("Selection error"),
-                        tr("Only transformable faces can be selected! Apply displacement boundary "
-                           "condition to surface first then apply local coordinate system to "
-                           "surface"));
+                    QMessageBox::warning(this,
+                                         tr("Selection error"),
+                                         tr("Only transformable faces can be selected! Apply a "
+                                            "displacement boundary "
+                                            "condition or a force load to a face first then apply "
+                                            "local coordinate system to "
+                                            "the face."));
                     Gui::Selection().clearSelection();
                     return;
                 }
@@ -432,9 +431,7 @@ void TaskFemConstraintTransform::removeFromSelection()
         const App::DocumentObject* obj = it.getObject();
 
         for (const auto& subName : subNames) {  // for every selected sub element
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -449,7 +446,7 @@ void TaskFemConstraintTransform::removeFromSelection()
             }
         }
     }
-    std::sort(itemsToDel.begin(), itemsToDel.end());
+    std::ranges::sort(itemsToDel);
     while (!itemsToDel.empty()) {
         Objects.erase(Objects.begin() + itemsToDel.back());
         SubElements.erase(SubElements.begin() + itemsToDel.back());

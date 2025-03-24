@@ -48,6 +48,11 @@ PROPERTY_SOURCE(App::GeoFeature, App::DocumentObject)
 GeoFeature::GeoFeature()
 {
     ADD_PROPERTY_TYPE(Placement, (Base::Placement()), nullptr, Prop_NoRecompute, nullptr);
+    ADD_PROPERTY_TYPE(_ElementMapVersion,
+                    (""),
+                    "Base",
+                    (App::PropertyType)(Prop_Output | Prop_Hidden | Prop_Transient),
+                    "");
 }
 
 GeoFeature::~GeoFeature() = default;
@@ -61,12 +66,7 @@ void GeoFeature::transformPlacement(const Base::Placement& transform)
 
 Base::Placement GeoFeature::globalPlacement() const
 {
-    auto* group = GeoFeatureGroupExtension::getGroupOfObject(this);
-    if (group) {
-        auto ext = group->getExtensionByType<GeoFeatureGroupExtension>();
-        return ext->globalGroupPlacement() * Placement.getValue();
-    }
-    return Placement.getValue();
+    return GeoFeature::getGlobalPlacement(this);
 }
 
 const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry() const
@@ -223,14 +223,6 @@ bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& direction, const ch
 bool GeoFeature::hasMissingElement(const char* subname)
 {
     return Data::hasMissingElement(subname);
-    if (!subname) {
-        return false;
-    }
-    auto dot = strrchr(subname, '.');
-    if (!dot) {
-        return subname[0] == '?';
-    }
-    return dot[1] == '?';
 }
 
 void GeoFeature::updateElementReference()
@@ -244,6 +236,16 @@ void GeoFeature::updateElementReference()
         return;
     }
     bool reset = false;
+
+    auto version = getElementMapVersion(prop);
+    if (_ElementMapVersion.getStrValue().empty()) {
+        _ElementMapVersion.setValue(version);
+    }
+    else if (_ElementMapVersion.getStrValue() != version) {
+        reset = true;
+        _ElementMapVersion.setValue(version);
+    }
+
     PropertyLinkBase::updateElementReferences(this, reset);
 }
 
@@ -256,6 +258,14 @@ void GeoFeature::onChanged(const Property* prop)
         }
     }
     DocumentObject::onChanged(prop);
+}
+
+void GeoFeature::onDocumentRestored()
+{
+    if (!getDocument()->testStatus(Document::Status::Importing)) {
+        _ElementMapVersion.setValue(getElementMapVersion(getPropertyOfGeometry(), true));
+    }
+    DocumentObject::onDocumentRestored();
 }
 
 const std::vector<std::string>& GeoFeature::searchElementCache(const std::string& element,
@@ -316,6 +326,11 @@ Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
         return plc;
     }
 
+    if (rootObj->isLink()) {
+        // Update doc in case its an external link.
+        doc = rootObj->getLinkedObject()->getDocument();
+    }
+
     for (auto& name : names) {
         App::DocumentObject* obj = doc->getObject(name.c_str());
         if (!obj) {
@@ -350,4 +365,21 @@ Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
     }
 
     return getGlobalPlacement(targetObj, prop->getValue(), subs[0]);
+}
+
+Base::Placement GeoFeature::getGlobalPlacement(const DocumentObject* obj)
+{
+    auto placementProperty = obj->getPropertyByName<App::PropertyPlacement>("Placement");
+
+    if (!placementProperty) {
+        return {};
+    }
+
+    auto* group = GeoFeatureGroupExtension::getGroupOfObject(obj);
+    if (group) {
+        auto ext = group->getExtensionByType<GeoFeatureGroupExtension>();
+        return ext->globalGroupPlacement() * placementProperty->getValue();
+    }
+
+    return placementProperty->getValue();
 }

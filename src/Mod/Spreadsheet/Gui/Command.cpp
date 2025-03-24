@@ -200,9 +200,8 @@ void CmdSpreadsheetImport::activated(int iMsg)
                                                         &selectedFilter);
     if (!fileName.isEmpty()) {
         std::string FeatName = getUniqueObjectName("Spreadsheet");
-        Sheet* sheet = freecad_dynamic_cast<Sheet>(
-            App::GetApplication().getActiveDocument()->addObject("Spreadsheet::Sheet",
-                                                                 FeatName.c_str()));
+        auto* doc = App::GetApplication().getActiveDocument();
+        Sheet* sheet = doc->addObject<Spreadsheet::Sheet>(FeatName.c_str());
         if (sheet) {
             char delim, quote, escape;
             std::string errMsg = "Import";

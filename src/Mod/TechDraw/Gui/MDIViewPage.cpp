@@ -37,7 +37,7 @@
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QPrinter>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <cmath>
 #endif
 
@@ -51,8 +51,8 @@
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Window.h>
@@ -62,6 +62,7 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "MDIViewPage.h"
+#include "QGIDatumLabel.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
 #include "QGIVertex.h"
@@ -108,7 +109,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     isContextualMenuEnabled = true;
 
     QString tabText = QString::fromUtf8(pageVp->getDrawPage()->getNameInDocument());
-    tabText += QString::fromUtf8("[*]");
+    tabText += QStringLiteral("[*]");
     setWindowTitle(tabText);
 
     //NOLINTBEGIN
@@ -168,7 +169,7 @@ void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
 {
     //if this page has a QView for this obj, delete it.
     blockSceneSelection(true);
-    if (obj.isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+    if (obj.isDerivedFrom<TechDraw::DrawView>()) {
         (void)m_scene->removeQViewByName(obj.getNameInDocument());
     }
     blockSceneSelection(false);
@@ -283,7 +284,7 @@ void MDIViewPage::zoomOut()
 void MDIViewPage::setTabText(std::string tabText)
 {
     if (!isPassive() && !tabText.empty()) {
-        QString cap = QString::fromLatin1("%1 [*]").arg(QString::fromUtf8(tabText.c_str()));
+        QString cap = QStringLiteral("%1 [*]").arg(QString::fromUtf8(tabText.c_str()));
         setWindowTitle(cap);
     }
 }
@@ -457,6 +458,22 @@ void MDIViewPage::viewAll()
     m_vpPage->getQGVPage()->fitInView(m_scene->itemsBoundingRect(), Qt::KeepAspectRatio);
 }
 
+QString MDIViewPage::defaultFileName()
+{
+    const std::string separator{"_"};
+
+    auto doc = getPage()->getDocument();
+    std::string docLabel{doc->Label.getValue()};
+    std::string pageLabel{getPage()->Label.getValue()};
+    auto pageTemplate = dynamic_cast<TechDraw::DrawTemplate*>(getPage()->Template.getValue());
+    auto textMap = pageTemplate->EditableTexts.getValues();
+    auto drawingNumber = textMap["drawing_number"];
+    auto revision = textMap["revision_index"];
+    auto defaultName = docLabel + separator + pageLabel + separator + drawingNumber + separator + revision;
+
+    return QString::fromStdString(defaultName);
+}
+
 void MDIViewPage::saveSVG(std::string filename)
 {
     auto vpp = getViewProviderPage();
@@ -474,7 +491,7 @@ void MDIViewPage::saveSVG()
     filter << QObject::tr("All Files (*.*)");
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
-                                         QString(), filter.join(QLatin1String(";;")));
+                                         defaultFileName(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
     }
@@ -490,15 +507,16 @@ void MDIViewPage::saveDXF(std::string filename)
 
 void MDIViewPage::saveDXF()
 {
-    QString defaultDir;
-    QString fileName = Gui::FileDialog::getSaveFileName(
-        Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save DXF file")), defaultDir,
-        QString::fromUtf8("DXF (*.dxf)"));
-    if (fileName.isEmpty()) {
+    QStringList filter;
+    filter << QStringLiteral("DXF (*.dxf)");
+    filter << QObject::tr("All Files (*.*)");
+    QString fn =
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as DXF"),
+                                         defaultFileName(), filter.join(QLatin1String(";;")));
+    if (fn.isEmpty()) {
         return;
     }
-
-    std::string sFileName = fileName.toUtf8().constData();
+    std::string sFileName = fn.toUtf8().constData();
     saveDXF(sFileName);
 }
 
@@ -513,15 +531,16 @@ void MDIViewPage::savePDF(std::string filename)
 
 void MDIViewPage::savePDF()
 {
-    QString defaultDir;
-    QString fileName = Gui::FileDialog::getSaveFileName(
-        Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save PDF file")), defaultDir,
-        QString::fromUtf8("PDF (*.pdf)"));
-    if (fileName.isEmpty()) {
+    QStringList filter;
+    filter << QStringLiteral("PDF (*.pdf)");
+    filter << QObject::tr("All Files (*.*)");
+    QString fn =
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as PDF"),
+                                         defaultFileName(), filter.join(QLatin1String(";;")));
+    if (fn.isEmpty()) {
         return;
     }
-
-    std::string sFileName = fileName.toUtf8().constData();
+    std::string sFileName = fn.toUtf8().constData();
     savePDF(sFileName);
 }
 
@@ -657,7 +676,7 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::vector<Gui::SelectionObject> selObjs = Gui::Selection().getSelectionEx(msg.pDocName);
             for (auto &so : selObjs) {
                 App::DocumentObject *docObj = so.getObject();
-                if (docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+                if (docObj->isDerivedFrom<TechDraw::DrawView>()) {
                     selectQGIView(docObj, true, so.getSubNames());
                 }
             }
@@ -665,7 +684,7 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
     else if (msg.Type == Gui::SelectionChanges::AddSelection || msg.Type == Gui::SelectionChanges::RmvSelection) {
         App::DocumentObject *docObj = msg.Object.getSubObject();
-        if (docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+        if (docObj->isDerivedFrom<TechDraw::DrawView>()) {
             bool isSelected = msg.Type != Gui::SelectionChanges::RmvSelection;
             selectQGIView(docObj, isSelected, std::vector(1, std::string(msg.pSubName ? msg.pSubName : "")));
         }
@@ -991,7 +1010,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel,
     std::vector<std::string> sceneNames;
 
     for (auto tn : treeSel) {
-        if (tn.getObject()->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+        if (tn.getObject()->isDerivedFrom<TechDraw::DrawView>()) {
             std::string s = tn.getObject()->getNameInDocument();
             treeNames.push_back(s);
             subCount += tn.getSubNames().size();
@@ -1057,7 +1076,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel,
 
 void MDIViewPage::showStatusMsg(const char* string1, const char* string2, const char* string3) const
 {
-    QString msg = QString::fromLatin1("%1 %2.%3.%4 ")
+    QString msg = QStringLiteral("%1 %2.%3.%4 ")
                       .arg(tr("Selected:"), QString::fromUtf8(string1), QString::fromUtf8(string2),
                            QString::fromUtf8(string3));
     if (Gui::getMainWindow()) {

@@ -35,5 +35,9 @@ from femviewprovider import view_base_femobject
 class VPBaseFemMaterial(view_base_femobject.VPBaseFemObject):
     """Proxy View Provider for Python base material."""
 
+    def __init__(self, vobj):
+        super().__init__(vobj)
+        vobj.addExtension("Gui::ViewProviderSuppressibleExtensionPython")
+
     def isShow(self):
         return self.ViewObject.Visibility

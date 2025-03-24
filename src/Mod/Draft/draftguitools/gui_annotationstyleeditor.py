@@ -194,7 +194,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                             if hasattr(vobj, attr):
                                 try:
                                     if vobj.getTypeIdOfProperty(attr) == "App::PropertyColor":
-                                        value = value & 0xFFFFFF00
+                                        value = value | 0x000000FF
                                     setattr(vobj, attr, value)
                                 except:
                                     pass

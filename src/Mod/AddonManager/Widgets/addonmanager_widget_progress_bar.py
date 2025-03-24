@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Defines a QWidget-derived class for displaying the cache load status. """
+"""Defines a QWidget-derived class for displaying the cache load status."""
 
 try:
     import FreeCAD

@@ -78,6 +78,7 @@ SET(Dice3DS_SRCS
 SET(Arch_presets
     Presets/profiles.csv
     Presets/pset_definitions.csv
+    Presets/qto_definitions.csv
     Presets/ifc_products_IFC2X3.json
     Presets/ifc_products_IFC4.json
     Presets/ifc_types_IFC2X3.json
@@ -192,6 +193,7 @@ SET(nativeifc_SRCS
     nativeifc/ifc_openshell.py
     nativeifc/ifc_types.py
     nativeifc/ifc_export.py
+    nativeifc/ifc_classification.py
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})

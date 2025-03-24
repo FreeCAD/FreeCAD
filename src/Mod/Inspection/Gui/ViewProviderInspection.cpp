@@ -385,7 +385,7 @@ void ViewProviderInspection::setDistances()
         SoDebugError::post("ViewProviderInspection::setDistances", "Unknown property 'Distances'");
         return;
     }
-    if (pDistances->getTypeId() != Inspection::PropertyDistanceList::getClassTypeId()) {
+    if (!pDistances->is<Inspection::PropertyDistanceList>()) {
         SoDebugError::post(
             "ViewProviderInspection::setDistances",
             "Property 'Distances' has type %s (Inspection::PropertyDistanceList was expected)",
@@ -413,7 +413,7 @@ void ViewProviderInspection::setDistances()
 
     unsigned long j = 0;
     for (std::vector<float>::const_iterator jt = fValues.begin(); jt != fValues.end(); ++jt, j++) {
-        App::Color col = pcColorBar->getColor(*jt);
+        Base::Color col = pcColorBar->getColor(*jt);
         cols[j] = SbColor(col.r, col.g, col.b);
         if (pcColorBar->isVisible(*jt)) {
             tran[j] = 0.0f;

@@ -112,7 +112,7 @@ void QGISVGTemplate::load(const QByteArray& svgCode)
 
 TechDraw::DrawSVGTemplate* QGISVGTemplate::getSVGTemplate()
 {
-    if (pageTemplate && pageTemplate->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
+    if (pageTemplate && pageTemplate->isDerivedFrom<TechDraw::DrawSVGTemplate>()) {
         return static_cast<TechDraw::DrawSVGTemplate*>(pageTemplate);
     }
     else {
@@ -176,19 +176,19 @@ void QGISVGTemplate::createClickHandles()
     // XPath query to select all <text> nodes with "freecad:editable" attribute
     // XPath query to select all <tspan> nodes whose <text> parent
     // has "freecad:editable" attribute
-    query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
+    query.processItems(QStringLiteral("declare default element namespace \"" SVG_NS_URI "\"; "
                                          "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
                                          "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
                        [&](QDomElement& tspan) -> bool {
-        QString fontSizeString = tspan.attribute(QString::fromUtf8("font-size"));
+        QString fontSizeString = tspan.attribute(QStringLiteral("font-size"));
         QDomElement textElement = tspan.parentNode().toElement();
-        QString textAnchorString = textElement.attribute(QString::fromUtf8("text-anchor"));
+        QString textAnchorString = textElement.attribute(QStringLiteral("text-anchor"));
         QString name = textElement.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
 
         double x = Rez::guiX(
-            textElement.attribute(QString::fromUtf8("x"), QString::fromUtf8("0.0")).toDouble());
+            textElement.attribute(QStringLiteral("x"), QStringLiteral("0.0")).toDouble());
         double y = Rez::guiX(
-            textElement.attribute(QString::fromUtf8("y"), QString::fromUtf8("0.0")).toDouble());
+            textElement.attribute(QStringLiteral("y"), QStringLiteral("0.0")).toDouble());
         if (name.isEmpty()) {
             Base::Console().Warning(
                 "QGISVGTemplate::createClickHandles - no name for editable text at %f, %f\n", x, y);
@@ -198,7 +198,7 @@ void QGISVGTemplate::createClickHandles()
 
         // default box size
         double textHeight{0};
-        QString style = textElement.attribute(QString::fromUtf8("style"));
+        QString style = textElement.attribute(QStringLiteral("style"));
         if (!style.isEmpty()) {
             // get text attributes from style element
             textHeight = getFontSizeFromStyle(style);
@@ -221,7 +221,7 @@ void QGISVGTemplate::createClickHandles()
         auto newLength = brect.width();
 
         double charWidth = newLength / editableNameString.length();
-        if (textAnchorString == QString::fromUtf8("middle")) {
+        if (textAnchorString == QStringLiteral("middle")) {
             x = x - editableNameString.length() * charWidth / 2;
         }
 
@@ -258,7 +258,7 @@ double QGISVGTemplate::getFontSizeFromStyle(QString style)
     }
 
     // get text attributes from style element
-    QRegularExpression rxFontSize(QString::fromUtf8("font-size:([0-9]*.?[0-9]*)px;"));
+    QRegularExpression rxFontSize(QStringLiteral("font-size:([0-9]*.?[0-9]*)px;"));
     QRegularExpressionMatch match;
 
     int pos{0};
@@ -278,7 +278,7 @@ double QGISVGTemplate::getFontSizeFromElement(QString element)
     }
 
     //                                               font-size="3.95px"
-    QRegularExpression rxFontSize(QString::fromUtf8("([0-9]*.?[0-9]*)px"));
+    QRegularExpression rxFontSize(QStringLiteral("([0-9]*.?[0-9]*)px"));
     QRegularExpressionMatch match;
 
     int pos{0};

@@ -29,7 +29,7 @@
 # include <mutex>
 #endif
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <boost/algorithm/string.hpp>
 #include <QDir>
 
@@ -48,15 +48,15 @@
 
 using namespace Gui;
 using namespace xercesc;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
-static boost::filesystem::path getSavedPrefPacksPath()
+static std::filesystem::path getSavedPrefPacksPath()
 {
     return fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir()))
         / "SavedPreferencePacks";
 }
 
-static boost::filesystem::path getResourcePrefPacksPath()
+static std::filesystem::path getResourcePrefPacksPath()
 {
     return fs::path(Base::FileInfo::stringToPath(App::Application::getResourceDir())) / "Gui"
         / "PreferencePacks";
@@ -69,17 +69,17 @@ PreferencePack::PreferencePack(const fs::path& path, const App::Metadata& metada
         throw std::runtime_error{ "Cannot access " + path.string() };
     }
 
-    auto qssPaths = QDir::searchPaths(QString::fromUtf8("qss"));
-    auto cssPaths = QDir::searchPaths(QString::fromUtf8("css"));
-    auto overlayPaths = QDir::searchPaths(QString::fromUtf8("overlay"));
+    auto qssPaths = QDir::searchPaths(QStringLiteral("qss"));
+    auto cssPaths = QDir::searchPaths(QStringLiteral("css"));
+    auto overlayPaths = QDir::searchPaths(QStringLiteral("overlay"));
 
     qssPaths.append(QString::fromStdString(Base::FileInfo::pathToString(_path)));
     cssPaths.append(QString::fromStdString(Base::FileInfo::pathToString(_path)));
     overlayPaths.append(QString::fromStdString(Base::FileInfo::pathToString(_path) + "/overlay"));
 
-    QDir::setSearchPaths(QString::fromUtf8("qss"), qssPaths);
-    QDir::setSearchPaths(QString::fromUtf8("css"), cssPaths);
-    QDir::setSearchPaths(QString::fromUtf8("overlay"), overlayPaths);
+    QDir::setSearchPaths(QStringLiteral("qss"), qssPaths);
+    QDir::setSearchPaths(QStringLiteral("css"), cssPaths);
+    QDir::setSearchPaths(QStringLiteral("overlay"), overlayPaths);
 }
 
 std::string PreferencePack::name() const
@@ -228,29 +228,25 @@ void Gui::PreferencePackManager::AddPackToMetadata(const std::string &packName) 
 }
 
 void Gui::PreferencePackManager::importConfig(const std::string& packName,
-    const boost::filesystem::path& path)
+    const std::filesystem::path& path)
 {
     AddPackToMetadata(packName);
 
     auto savedPreferencePacksDirectory = getSavedPreferencePacksPath();
     auto cfgFilename = savedPreferencePacksDirectory / packName / (packName + ".cfg");
-#if BOOST_VERSION >= 107400
     fs::copy_file(path, cfgFilename, fs::copy_options::overwrite_existing);
-#else
-    fs::copy_file(path, cfgFilename, fs::copy_option::overwrite_if_exists);
-#endif
     rescan();
 }
 
 // TODO(Shvedov): Is this suitable place for this method? It is more generic,
 // and maybe more suitable place at Application?
-std::vector<boost::filesystem::path> Gui::PreferencePackManager::modPaths() const
+std::vector<std::filesystem::path> Gui::PreferencePackManager::modPaths() const
 {
     auto userModPath = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "Mod";
 
     auto& config = App::Application::Config();
     auto additionalModules = config.find("AdditionalModulePaths");
-    std::vector<boost::filesystem::path> result;
+    std::vector<std::filesystem::path> result;
 
     if (additionalModules != config.end()) {
         boost::split(result,
@@ -262,12 +258,12 @@ std::vector<boost::filesystem::path> Gui::PreferencePackManager::modPaths() cons
     return result;
 }
 
-boost::filesystem::path Gui::PreferencePackManager::getSavedPreferencePacksPath() const
+std::filesystem::path Gui::PreferencePackManager::getSavedPreferencePacksPath() const
 {
     return getSavedPrefPacksPath();
 }
 
-boost::filesystem::path Gui::PreferencePackManager::getResourcePreferencePacksPath() const
+std::filesystem::path Gui::PreferencePackManager::getResourcePreferencePacksPath() const
 {
     return getResourcePrefPacksPath();
 }
@@ -309,7 +305,7 @@ void Gui::PreferencePackManager::FindPreferencePacksInPackage(const fs::path &mo
     }
 }
 
-void PreferencePackManager::TryFindPreferencePacksInPackage(const boost::filesystem::path& mod)
+void PreferencePackManager::TryFindPreferencePacksInPackage(const std::filesystem::path& mod)
 {
     auto packageMetadataFile = mod / "package.xml";
     static const auto modDirectory = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "Mod" / "SavedPreferencePacks";
@@ -625,6 +621,16 @@ void Gui::PreferencePackManager::BackupCurrentConfig() const
     App::GetApplication().GetUserParameter().SaveDocument(Base::FileInfo::pathToString(filename).c_str());
 }
 
+// FIXME: Replace with more accurate C++20 solution once its usable: https://stackoverflow.com/a/68593141
+template <typename TP>
+static std::time_t to_time_t(TP tp)
+{
+    using namespace std::chrono;
+    auto sctp = time_point_cast<system_clock::duration>(tp - TP::clock::now()
+              + system_clock::now());
+    return system_clock::to_time_t(sctp);
+}
+
 void Gui::PreferencePackManager::DeleteOldBackups() const
 {
     constexpr auto oneWeek = 60.0 * 60.0 * 24.0 * 7.0;
@@ -632,7 +638,7 @@ void Gui::PreferencePackManager::DeleteOldBackups() const
     auto backupDirectory = getSavedPreferencePacksPath() / "Backups";
     if (fs::exists(backupDirectory) && fs::is_directory(backupDirectory)) {
         for (const auto& backup : fs::directory_iterator(backupDirectory)) {
-            if (std::difftime(now, fs::last_write_time(backup)) > oneWeek) {
+            if (std::difftime(now, to_time_t(fs::last_write_time(backup))) > oneWeek) {
                 try {
                     fs::remove(backup);
                 }
@@ -642,9 +648,10 @@ void Gui::PreferencePackManager::DeleteOldBackups() const
     }
 }
 
-std::vector<boost::filesystem::path> Gui::PreferencePackManager::configBackups() const
+// FIXME: Replace with more accurate C++20 solution once its usable: https://stackoverflow.com/a/68593141
+std::vector<std::filesystem::path> Gui::PreferencePackManager::configBackups() const
 {
-    std::vector<boost::filesystem::path> results;
+    std::vector<std::filesystem::path> results;
     auto backupDirectory = getSavedPreferencePacksPath() / "Backups";
     if (fs::exists(backupDirectory) && fs::is_directory(backupDirectory)) {
         for (const auto& backup : fs::directory_iterator(backupDirectory)) {

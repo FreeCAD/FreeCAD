@@ -141,6 +141,7 @@ SET(MaterialLib_Files
     Resources/Materials/Standard/Thermoplast/PP-Generic.FCMat
     Resources/Materials/Standard/Thermoplast/PTFE-Generic.FCMat
     Resources/Materials/Standard/Thermoplast/PVC-Generic.FCMat
+    Resources/Materials/Standard/Thermoplast/PC-Molded.FCMat
     Resources/Materials/Standard/Wood/Wood-Generic.FCMat
 )
 

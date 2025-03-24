@@ -67,6 +67,7 @@ void DlgPrefsTechDrawScaleImp::saveSettings()
     ui->pdsbCenterScale->onSave();
     ui->pdsbTemplateMark->onSave();
     ui->pdsbSymbolScale->onSave();
+    ui->cbLegacyScale->onSave();
 }
 
 void DlgPrefsTechDrawScaleImp::loadSettings()
@@ -80,6 +81,7 @@ void DlgPrefsTechDrawScaleImp::loadSettings()
     ui->pdsbTemplateMark->setValue(markDefault);
     ui->pdsbTemplateMark->onRestore();
     ui->pdsbSymbolScale->onRestore();
+    ui->cbLegacyScale->onRestore();
 }
 
 /**

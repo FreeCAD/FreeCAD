@@ -341,7 +341,7 @@ using PyMethodDef = struct PyMethodDef;
  *
  */
 
-// NOLINTBEGIN(bugprone-reserved-identifier,bugprone-macro-parentheses,cppcoreguidelines-macro-usage)
+// NOLINTBEGIN(bugprone-reserved-identifier,bugprone-macro-parentheses,cppcoreguidelines-macro-usage,cppcoreguidelines-avoid-do-while)
 // clang-format off
 #define FC_LOGLEVEL_DEFAULT -1
 #define FC_LOGLEVEL_ERR 0
@@ -364,7 +364,7 @@ using PyMethodDef = struct PyMethodDef;
             std::stringstream _str;                                                                \
             _instance.prefix(_str, _file, _line) << _msg;                                          \
             if (_instance.add_eol)                                                                 \
-                _str << std::endl;                                                                 \
+                _str << '\n';                                                                      \
             Base::Console()._func(_notifier, _str.str().c_str());                                  \
             if (_instance.refresh)                                                                 \
                 Base::Console().Refresh();                                                         \
@@ -482,7 +482,7 @@ using PyMethodDef = struct PyMethodDef;
 
 #endif  // FC_LOG_NO_TIMING
 // clang-format on
-// NOLINTEND(bugprone-reserved-identifier,bugprone-macro-parentheses,cppcoreguidelines-macro-usage)
+// NOLINTEND(bugprone-reserved-identifier,bugprone-macro-parentheses,cppcoreguidelines-macro-usage,cppcoreguidelines-avoid-do-while)
 
 // TODO: Get rid of this typedef
 using ConsoleMsgFlags = unsigned int;
@@ -1169,7 +1169,17 @@ template<Base::LogStyle category,
 inline void
 Base::ConsoleSingleton::Send(const std::string& notifiername, const char* pMsg, Args&&... args)
 {
-    std::string format = fmt::sprintf(pMsg, args...);
+    std::string format;
+    try {
+        format = fmt::sprintf(pMsg, args...);
+    }
+    catch (fmt::format_error& e) {
+        // We can't allow an exception to propagate out of this method, which gets used in some
+        // destructors. Instead, make the string's contents the error message that fmt::sprintf gave
+        // us.
+        format = std::string("ERROR: Invalid format string or arguments provided.\n");
+        format += e.what();
+    }
 
     if (connectionMode == Direct) {
         Notify<category, recipient, contenttype>(notifiername, format);

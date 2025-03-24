@@ -42,8 +42,8 @@
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionFilter.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -223,8 +223,7 @@ bool CmdFemAddPart::isActive(void)
 {
     if (Gui::Control().activeDialog())
         return false;
-    Base::Type type = Base::Type::fromName("Part::Feature");
-    return Gui::Selection().countObjectsOfType(type) > 0;
+    return Gui::Selection().countObjectsOfType<Part::Feature>(type) > 0;
 }
 */
 
@@ -685,6 +684,7 @@ void CmdFemConstraintHeatflux::activated(int)
     doCommand(Doc,
               "App.activeDocument().addObject(\"Fem::ConstraintHeatflux\",\"%s\")",
               FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.ConstraintType = \"DFlux\"", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.AmbientTemp = 300.0",
               FeatName.c_str());  // OvG: set default not equal to 0
@@ -1165,12 +1165,12 @@ void CmdFemDefineNodesSet::activated(int)
 bool CmdFemDefineNodesSet::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    if (getSelection().countObjectsOfType(Fem::FemMeshObject::getClassTypeId()) != 1) {
+    if (getSelection().countObjectsOfType<Fem::FemMeshObject>() != 1) {
         return false;
     }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
@@ -1297,7 +1297,7 @@ void CmdFemDefineElementsSet::activated(int)
         if (it == docObj.begin()) {
             Gui::Document* doc = getActiveGuiDocument();
             Gui::MDIView* view = doc->getActiveView();
-            if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+            if (view->isDerivedFrom<Gui::View3DInventor>()) {
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
                 viewer->startSelection(Gui::View3DInventorViewer::Clip);
@@ -1314,12 +1314,12 @@ void CmdFemDefineElementsSet::activated(int)
 bool CmdFemDefineElementsSet::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    if (getSelection().countObjectsOfType(Fem::FemMeshObject::getClassTypeId()) != 1) {
+    if (getSelection().countObjectsOfType<Fem::FemMeshObject>() != 1) {
         return false;
     }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
@@ -1543,6 +1543,9 @@ void CmdFemCompEmEquations::activated(int iMsg)
     else if (iMsg == 3) {
         rcCmdMgr.runCommandByName("FEM_EquationMagnetodynamic2D");
     }
+    else if (iMsg == 4) {
+        rcCmdMgr.runCommandByName("FEM_EquationStaticCurrent");
+    }
     else {
         return;
     }
@@ -1570,6 +1573,8 @@ Gui::Action* CmdFemCompEmEquations::createAction()
     cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationMagnetodynamic"));
     QAction* cmd3 = pcAction->addAction(QString());
     cmd3->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationMagnetodynamic2D"));
+    QAction* cmd4 = pcAction->addAction(QString());
+    cmd4->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationStaticCurrent"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1637,6 +1642,17 @@ void CmdFemCompEmEquations::languageChange()
                                                  EquationMagnetodynamic2D->getToolTipText()));
         cmd3->setStatusTip(QApplication::translate("FEM_EquationMagnetodynamic2D",
                                                    EquationMagnetodynamic2D->getStatusTip()));
+    }
+
+    Gui::Command* EquationStaticCurrent = rcCmdMgr.getCommandByName("FEM_EquationStaticCurrent");
+    if (EquationStaticCurrent) {
+        QAction* cmd4 = a[4];
+        cmd4->setText(QApplication::translate("FEM_EquationStaticCurrent",
+                                              EquationStaticCurrent->getMenuText()));
+        cmd4->setToolTip(QApplication::translate("FEM_EquationStaticCurrent",
+                                                 EquationStaticCurrent->getToolTipText()));
+        cmd4->setStatusTip(QApplication::translate("FEM_EquationStaticCurrent",
+                                                   EquationStaticCurrent->getStatusTip()));
     }
 }
 
@@ -1822,29 +1838,21 @@ void setupFilter(Gui::Command* cmd, std::string Name)
 
     // at first we must determine the pipeline of the selection object
     // (which can be a pipeline itself)
-    bool selectionIsPipeline = false;
-    Fem::FemPostPipeline* pipeline = nullptr;
-    if (selObject->isDerivedFrom<Fem::FemPostPipeline>()) {
-        pipeline = static_cast<Fem::FemPostPipeline*>(selObject);
-        selectionIsPipeline = true;
+    App::DocumentObject* pipeline = nullptr;
+    if (selObject->hasExtension(Fem::FemPostGroupExtension::getExtensionClassTypeId())) {
+        pipeline = selObject;
     }
     else {
-        auto parents = selObject->getInList();
-        if (!parents.empty()) {
-            for (auto parentObject : parents) {
-                if (parentObject->isDerivedFrom<Fem::FemPostPipeline>()) {
-                    pipeline = static_cast<Fem::FemPostPipeline*>(parentObject);
-                }
-            }
+        pipeline = Fem::FemPostGroupExtension::getGroupOfObject(selObject);
+        if (!pipeline || !pipeline->isDerivedFrom<Fem::FemPostObject>()) {
+            QMessageBox::warning(
+                Gui::getMainWindow(),
+                qApp->translate("setupFilter", "Error: Object not in a post processing group"),
+                qApp->translate(
+                    "setupFilter",
+                    "The filter could not be set up: Object not in a post processing group."));
+            return;
         }
-    }
-
-    if (!pipeline) {
-        QMessageBox::warning(
-            Gui::getMainWindow(),
-            qApp->translate("setupFilter", "Error: no post processing object selected."),
-            qApp->translate("setupFilter", "The filter could not be set up."));
-        return;
     }
 
     // create the object and add it to the pipeline
@@ -1855,13 +1863,9 @@ void setupFilter(Gui::Command* cmd, std::string Name)
                    FeatName.c_str());
     // add it as subobject to the pipeline
     cmd->doCommand(Gui::Command::Doc,
-                   "__list__ = App.ActiveDocument.%s.Filter",
-                   pipeline->getNameInDocument());
-    cmd->doCommand(Gui::Command::Doc, "__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
-    cmd->doCommand(Gui::Command::Doc,
-                   "App.ActiveDocument.%s.Filter = __list__",
-                   pipeline->getNameInDocument());
-    cmd->doCommand(Gui::Command::Doc, "del __list__");
+                   "App.ActiveDocument.%s.addObject(App.ActiveDocument.%s)",
+                   pipeline->getNameInDocument(),
+                   FeatName.c_str());
 
     // set display to assure the user sees the new object
     cmd->doCommand(Gui::Command::Doc,
@@ -1872,23 +1876,20 @@ void setupFilter(Gui::Command* cmd, std::string Name)
     cmd->doCommand(Gui::Command::Doc,
                    "App.activeDocument().ActiveObject.ViewObject.SelectionStyle = \"BoundBox\"");
 
-    // in case selObject is no pipeline we must set it as input object
     auto objFilter = App::GetApplication().getActiveDocument()->getActiveObject();
     auto femFilter = static_cast<Fem::FemPostFilter*>(objFilter);
-    if (!selectionIsPipeline) {
-        femFilter->Input.setValue(selObject);
-    }
 
-    femFilter->Data.setValue(static_cast<Fem::FemPostObject*>(selObject)->Data.getValue());
+    // TODO: FIX
+    /*
     auto selObjectView = static_cast<FemGui::ViewProviderFemPostObject*>(
         Gui::Application::Instance->getViewProvider(selObject));
-
     cmd->doCommand(Gui::Command::Doc,
                    "App.activeDocument().ActiveObject.ViewObject.Field = \"%s\"",
                    selObjectView->Field.getValueAsString());
     cmd->doCommand(Gui::Command::Doc,
                    "App.activeDocument().ActiveObject.ViewObject.VectorMode = \"%s\"",
                    selObjectView->VectorMode.getValueAsString());
+    */
 
     // hide selected filter
     if (!femFilter->isDerivedFrom<Fem::FemPostDataAlongLineFilter>()
@@ -2024,30 +2025,15 @@ void CmdFemPostClipFilter::activated(int)
 bool CmdFemPostClipFilter::isActive()
 {
     // only allow one object
-    if (getSelection().getSelection().size() > 1) {
+    auto selection = getSelection().getSelection();
+    if (selection.size() > 1) {
         return false;
     }
-    // only activate if a result is either a post pipeline or a possible filter
-    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1) {
-        return true;
+    // only activate if a post object is selected
+    for (auto obj : selection) {
+        if (obj.pObject->isDerivedFrom<Fem::FemPostObject>()) {
+            return true;
+        }
     }
     return false;
 }
@@ -2076,30 +2062,15 @@ void CmdFemPostCutFilter::activated(int)
 bool CmdFemPostCutFilter::isActive()
 {
     // only allow one object
-    if (getSelection().getSelection().size() > 1) {
+    auto selection = getSelection().getSelection();
+    if (selection.size() > 1) {
         return false;
     }
-    // only activate if a result is either a post pipeline or a possible filter
-    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1) {
-        return true;
+    // only activate if a post object is selected
+    for (auto obj : selection) {
+        if (obj.pObject->isDerivedFrom<Fem::FemPostObject>()) {
+            return true;
+        }
     }
     return false;
 }
@@ -2128,27 +2099,15 @@ void CmdFemPostDataAlongLineFilter::activated(int)
 bool CmdFemPostDataAlongLineFilter::isActive()
 {
     // only allow one object
-    if (getSelection().getSelection().size() > 1) {
+    auto selection = getSelection().getSelection();
+    if (selection.size() > 1) {
         return false;
     }
-    // only activate if a result is either a post pipeline or a possible filter
-    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1) {
-        return true;
+    // only activate if a post object is selected
+    for (auto obj : selection) {
+        if (obj.pObject->isDerivedFrom<Fem::FemPostObject>()) {
+            return true;
+        }
     }
     return false;
 }
@@ -2178,27 +2137,15 @@ void CmdFemPostDataAtPointFilter::activated(int)
 bool CmdFemPostDataAtPointFilter::isActive()
 {
     // only allow one object
-    if (getSelection().getSelection().size() > 1) {
+    auto selection = getSelection().getSelection();
+    if (selection.size() > 1) {
         return false;
     }
-    // only activate if a result is either a post pipeline or a possible filter
-    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1) {
-        return true;
+    // only activate if a post object is selected
+    for (auto obj : selection) {
+        if (obj.pObject->isDerivedFrom<Fem::FemPostObject>()) {
+            return true;
+        }
     }
     return false;
 }
@@ -2303,27 +2250,15 @@ void CmdFemPostScalarClipFilter::activated(int)
 bool CmdFemPostScalarClipFilter::isActive()
 {
     // only allow one object
-    if (getSelection().getSelection().size() > 1) {
+    auto selection = getSelection().getSelection();
+    if (selection.size() > 1) {
         return false;
     }
-    // only activate if a result is either a post pipeline or a possible other filter
-    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1) {
-        return true;
+    // only activate if a post object is selected
+    for (auto obj : selection) {
+        if (obj.pObject->isDerivedFrom<Fem::FemPostObject>()) {
+            return true;
+        }
     }
     return false;
 }
@@ -2352,27 +2287,15 @@ void CmdFemPostWarpVectorFilter::activated(int)
 bool CmdFemPostWarpVectorFilter::isActive()
 {
     // only allow one object
-    if (getSelection().getSelection().size() > 1) {
+    auto selection = getSelection().getSelection();
+    if (selection.size() > 1) {
         return false;
     }
-    // only activate if a result is either a post pipeline or a possible other filter
-    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostContoursFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1) {
-        return true;
+    // only activate if a post object is selected
+    for (auto obj : selection) {
+        if (obj.pObject->isDerivedFrom<Fem::FemPostObject>()) {
+            return true;
+        }
     }
     return false;
 }
@@ -2401,27 +2324,15 @@ void CmdFemPostContoursFilter::activated(int)
 bool CmdFemPostContoursFilter::isActive()
 {
     // only allow one object
-    if (getSelection().getSelection().size() > 1) {
+    auto selection = getSelection().getSelection();
+    if (selection.size() > 1) {
         return false;
     }
-    // only activate if a result is either a post pipeline or a possible other filter
-    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostDataAlongLineFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1) {
-        return true;
-    }
-    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1) {
-        return true;
+    // only activate if a post object is selected
+    for (auto obj : selection) {
+        if (obj.pObject->isDerivedFrom<Fem::FemPostObject>()) {
+            return true;
+        }
     }
     return false;
 }
@@ -2471,23 +2382,17 @@ void CmdFemPostFunctions::activated(int iMsg)
         openCommand(QT_TRANSLATE_NOOP("Command", "Create function"));
 
         // check if the pipeline has a filter provider and add one if needed
-        Fem::FemPostFunctionProvider* provider;
-        if (!pipeline->Functions.getValue()
-            || pipeline->Functions.getValue()->getTypeId()
-                != Fem::FemPostFunctionProvider::getClassTypeId()) {
+        Fem::FemPostFunctionProvider* provider = pipeline->getFunctionProvider();
+        if (!provider) {
             std::string FuncName = getUniqueObjectName("Functions");
             doCommand(Doc,
                       "App.ActiveDocument.addObject('Fem::FemPostFunctionProvider','%s')",
                       FuncName.c_str());
             doCommand(Doc,
-                      "App.ActiveDocument.%s.Functions = App.ActiveDocument.%s",
+                      "App.ActiveDocument.%s.addObject(App.ActiveDocument.%s)",
                       pipeline->getNameInDocument(),
                       FuncName.c_str());
-            provider = static_cast<Fem::FemPostFunctionProvider*>(
-                getDocument()->getObject(FuncName.c_str()));
-        }
-        else {
-            provider = static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue());
+            provider = pipeline->getFunctionProvider();
         }
 
         // build the object
@@ -2496,10 +2401,10 @@ void CmdFemPostFunctions::activated(int iMsg)
                   "App.activeDocument().addObject('Fem::FemPost%sFunction','%s')",
                   name.c_str(),
                   FeatName.c_str());
-        doCommand(Doc, "__list__ = App.ActiveDocument.%s.Functions", provider->getNameInDocument());
-        doCommand(Doc, "__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
-        doCommand(Doc, "App.ActiveDocument.%s.Functions = __list__", provider->getNameInDocument());
-        doCommand(Doc, "del __list__");
+        doCommand(Doc,
+                  "App.ActiveDocument.%s.addObject(App.ActiveDocument.%s)",
+                  provider->getNameInDocument(),
+                  FeatName.c_str());
 
         // set the default values, for this get the bounding box
         vtkBoundingBox box = pipeline->getBoundingBox();
@@ -2756,7 +2661,7 @@ void CmdFemPostPipelineFromResult::activated(int)
         // create the pipeline object
         openCommand(QT_TRANSLATE_NOOP("Command", "Create pipeline from result"));
         if (foundAnalysis) {
-            pcAnalysis->addObject("Fem::FemPostPipeline", FeatName.c_str());
+            pcAnalysis->addObject<Fem::FemPostPipeline>(FeatName.c_str());
         }
         else {
             doCommand(Doc,
@@ -2793,6 +2698,42 @@ bool CmdFemPostPipelineFromResult::isActive()
     std::vector<Fem::FemResultObject*> results =
         getSelection().getObjectsOfType<Fem::FemResultObject>();
     return (results.size() == 1) ? true : false;
+}
+
+//================================================================================================
+DEF_STD_CMD_A(CmdFemPostBranchFilter)
+
+CmdFemPostBranchFilter::CmdFemPostBranchFilter()
+    : Command("FEM_PostBranchFilter")
+{
+    sAppModule = "Fem";
+    sGroup = QT_TR_NOOP("Fem");
+    sMenuText = QT_TR_NOOP("Pipeline branch");
+    sToolTipText = QT_TR_NOOP("Branches the pipeline into a new path");
+    sWhatsThis = "FEM_PostBranchFilter";
+    sStatusTip = sToolTipText;
+    sPixmap = "FEM_PostBranchFilter";
+}
+
+void CmdFemPostBranchFilter::activated(int)
+{
+    setupFilter(this, "Branch");
+}
+
+bool CmdFemPostBranchFilter::isActive()
+{
+    // only allow one object
+    auto selection = getSelection().getSelection();
+    if (selection.size() > 1) {
+        return false;
+    }
+    // only activate if a post object is selected
+    for (auto obj : selection) {
+        if (obj.pObject->isDerivedFrom<Fem::FemPostObject>()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 #endif
@@ -2850,6 +2791,7 @@ void CreateFemCommands()
     rcCmdMgr.addCommand(new CmdFemPostLinearizedStressesFilter);
     rcCmdMgr.addCommand(new CmdFemPostFunctions);
     rcCmdMgr.addCommand(new CmdFemPostPipelineFromResult);
+    rcCmdMgr.addCommand(new CmdFemPostBranchFilter);
     rcCmdMgr.addCommand(new CmdFemPostScalarClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);
 #endif

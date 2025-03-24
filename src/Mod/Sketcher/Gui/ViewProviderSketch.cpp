@@ -49,9 +49,9 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MenuManager.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
+#include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -141,7 +141,7 @@ void ViewProviderSketch::ParameterObserver::updateColorProperty(const std::strin
 
     colorprop->setValue(r, g, b);
 
-    App::Color elementAppColor = colorprop->getValue();
+    Base::Color elementAppColor = colorprop->getValue();
     unsigned long color = (unsigned long)(elementAppColor.getPackedValue());
     color = hGrp->GetUnsigned(string.c_str(), color);
     elementAppColor.setPackedValue((uint32_t)color);
@@ -345,7 +345,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
          {[this, packedDefaultGridColor](const std::string& string,
                                          [[maybe_unused]] App::Property* property) {
               auto v = getSketcherGeneralParameter(string, packedDefaultGridColor);
-              auto color = App::Color(v);
+              auto color = Base::Color(v);
               Client.setGridLineColor(color);
           },
           nullptr}},
@@ -353,7 +353,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
          {[this, packedDefaultGridColor](const std::string& string,
                                          [[maybe_unused]] App::Property* property) {
               auto v = getSketcherGeneralParameter(string, packedDefaultGridColor);
-              auto color = App::Color(v);
+              auto color = Base::Color(v);
               Client.setGridDivLineColor(color);
           },
           nullptr}},
@@ -1275,7 +1275,7 @@ void ViewProviderSketch::toggleWireSelelection(int clickedGeoId)
     while (partHasBeenAdded) {
         partHasBeenAdded = false;
         for (int geoId = 0; geoId <= obj->getHighestCurveIndex(); geoId++) {
-            if (geoId == clickedGeoId || std::find(connectedEdges.begin(), connectedEdges.end(), geoId) != connectedEdges.end()) {
+            if (geoId == clickedGeoId || std::ranges::find(connectedEdges, geoId) != connectedEdges.end()) {
                 continue;
             }
 
@@ -2618,7 +2618,7 @@ float ViewProviderSketch::getScaleFactor() const
     assert(isInEditMode());
     Gui::MDIView* mdi =
         Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
-    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
         SoCamera* camera = viewer->getSoRenderManager()->getCamera();
         float scale = camera->getViewVolume(camera->aspectRatio.getValue())
@@ -2645,7 +2645,7 @@ float ViewProviderSketch::getScaleFactor() const
 void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
     GeoListFacade& geolistfacade, bool geometrywithmemoryallocation)
 {
-    // In order to allow to tweak geometry and insert scaling factors, this function needs to
+    // In order to allow one to tweak geometry and insert scaling factors, this function needs to
     // change the geometry vector. This is highly exceptional for a drawing function and special
     // care needs to be taken. This is valid because:
     // 1. The treatment is exceptional and no other appropriate place is available to perform this
@@ -2711,10 +2711,9 @@ void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGe
 
                                 for (auto ic : getSketchObject()->Constraints.getValues()) {
                                     if (ic->Type == Weight) {
-                                        auto pos = std::find(
-                                            polegeoids.begin(), polegeoids.end(), ic->First);
 
-                                        if (pos != polegeoids.end()) {
+                                        if (auto pos = std::ranges::find(polegeoids, ic->First);
+                                            pos != polegeoids.end()) {
                                             vradius = ic->getValue() * scalefactor;
                                             break;// one is enough, otherwise it would not be
                                                   // non-rational
@@ -2825,7 +2824,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationoverl
     }
 
     Gui::MDIView* mdi = this->getActiveView();
-    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
         static_cast<Gui::View3DInventor*>(mdi)->getViewer()->redraw();
     }
 }
@@ -2889,7 +2888,7 @@ void ViewProviderSketch::slotSolverUpdate()
             + getSketchObject()->getHighestCurveIndex() + 1
         == getSolvedSketch().getGeometrySize()) {
         Gui::MDIView* mdi = Gui::Application::Instance->editDocument()->getActiveView();
-        if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
+        if (mdi->isDerivedFrom<Gui::View3DInventor>())
             draw(false, true);
 
         signalConstraintsChanged();
@@ -2923,8 +2922,7 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
         return;
     }
 
-    // call father
-    ViewProviderPart::onChanged(prop);
+    ViewProvider2DObject::onChanged(prop);
 }
 
 void SketcherGui::ViewProviderSketch::startRestoring()
@@ -2942,7 +2940,7 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
     // that meaans that we need to run migration strategy and come up with a proper value
     if (!AutoColor.isTouched()) {
         // white is the normally provided default for FreeCAD sketch colors
-        auto white = App::Color(1.f, 1.f, 1.f, 1.f);
+        auto white = Base::Color(1.f, 1.f, 1.f, 1.f);
 
         auto colorWasNeverChanged =
             LineColor.getValue() == white &&
@@ -2960,14 +2958,14 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
 
 void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 {
-    ViewProviderPart::attach(pcFeat);
+    ViewProvider2DObject::attach(pcFeat);
 }
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     menu->addAction(tr("Edit sketch"), receiver, member);
     // Call the extensions
-    Gui::ViewProvider::setupContextMenu(menu, receiver, member);
+    ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderSketch::setEdit(int ModNum)
@@ -2981,7 +2979,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     if (sketchDlg && sketchDlg->getSketchView() != this)
         sketchDlg = nullptr;// another sketch left open its task panel
     if (dlg && !sketchDlg) {
-        QMessageBox msgBox;
+        QMessageBox msgBox(Gui::getMainWindow());
         msgBox.setText(tr("A dialog is already open in the task panel"));
         msgBox.setInformativeText(tr("Do you want to close this dialog?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -3051,7 +3049,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
         Gui::Command::addModule(Gui::Command::Gui, "Show");
         try {
             QString cmdstr =
-                QString::fromLatin1(
+                QStringLiteral(
                     "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
                     "tv = Show.TempoVis(App.ActiveDocument, tag= ActiveSketch.ViewObject.TypeId)\n"
                     "ActiveSketch.ViewObject.TempoVis = tv\n"
@@ -3201,16 +3199,16 @@ inline QString intListHelper(const std::vector<int>& ints)
     if (ints.size() < 8) {// The 8 is a bit heuristic... more than that and we shift formats
         for (const auto i : ints) {
             if (results.isEmpty())
-                results.append(QString::fromUtf8("%1").arg(i));
+                results.append(QStringLiteral("%1").arg(i));
             else
-                results.append(QString::fromUtf8(", %1").arg(i));
+                results.append(QStringLiteral(", %1").arg(i));
         }
     }
     else {
         const int numToShow = 3;
         int more = ints.size() - numToShow;
         for (int i = 0; i < numToShow; ++i) {
-            results.append(QString::fromUtf8("%1, ").arg(ints[i]));
+            results.append(QStringLiteral("%1, ").arg(ints[i]));
         }
         results.append(QCoreApplication::translate("ViewProviderSketch", "and %1 more").arg(more));
     }
@@ -3228,51 +3226,51 @@ void ViewProviderSketch::UpdateSolverInformation()
     bool hasMalformed = getSketchObject()->getLastHasMalformedConstraints();
 
     if (getSketchObject()->Geometry.getSize() == 0) {
-        signalSetUp(QString::fromUtf8("empty_sketch"), tr("Empty sketch"), QString(), QString());
+        signalSetUp(QStringLiteral("empty_sketch"), tr("Empty sketch"), QString(), QString());
     }
     else if (dofs < 0 || hasConflicts) {// over-constrained sketch
         signalSetUp(
-            QString::fromUtf8("conflicting_constraints"),
+            QStringLiteral("conflicting_constraints"),
             tr("Over-constrained:") + QLatin1String(" "),
-            QString::fromUtf8("#conflicting"),
-            QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastConflicting())));
+            QStringLiteral("#conflicting"),
+            QStringLiteral("(%1)").arg(intListHelper(getSketchObject()->getLastConflicting())));
     }
     else if (hasMalformed) {// malformed constraints
-        signalSetUp(QString::fromUtf8("malformed_constraints"),
+        signalSetUp(QStringLiteral("malformed_constraints"),
                     tr("Malformed constraints:") + QLatin1String(" "),
-                    QString::fromUtf8("#malformed"),
-                    QString::fromUtf8("(%1)").arg(
+                    QStringLiteral("#malformed"),
+                    QStringLiteral("(%1)").arg(
                         intListHelper(getSketchObject()->getLastMalformedConstraints())));
     }
     else if (hasRedundancies) {
         signalSetUp(
-            QString::fromUtf8("redundant_constraints"),
+            QStringLiteral("redundant_constraints"),
             tr("Redundant constraints:") + QLatin1String(" "),
-            QString::fromUtf8("#redundant"),
-            QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastRedundant())));
+            QStringLiteral("#redundant"),
+            QStringLiteral("(%1)").arg(intListHelper(getSketchObject()->getLastRedundant())));
     }
     else if (hasPartiallyRedundant) {
-        signalSetUp(QString::fromUtf8("partially_redundant_constraints"),
+        signalSetUp(QStringLiteral("partially_redundant_constraints"),
                     tr("Partially redundant:") + QLatin1String(" "),
-                    QString::fromUtf8("#partiallyredundant"),
-                    QString::fromUtf8("(%1)").arg(
+                    QStringLiteral("#partiallyredundant"),
+                    QStringLiteral("(%1)").arg(
                         intListHelper(getSketchObject()->getLastPartiallyRedundant())));
     }
     else if (getSketchObject()->getLastSolverStatus() != 0) {
-        signalSetUp(QString::fromUtf8("solver_failed"),
+        signalSetUp(QStringLiteral("solver_failed"),
                     tr("Solver failed to converge"),
-                    QString::fromUtf8(""),
-                    QString::fromUtf8(""));
+                    QStringLiteral(""),
+                    QStringLiteral(""));
     }
     else if (dofs > 0) {
-        signalSetUp(QString::fromUtf8("under_constrained"),
+        signalSetUp(QStringLiteral("under_constrained"),
                     tr("Under-constrained:") + QLatin1String(" "),
-                    QString::fromUtf8("#dofs"),
+                    QStringLiteral("#dofs"),
                     tr("%n DoF(s)", "", dofs));
     }
     else {
         signalSetUp(
-            QString::fromUtf8("fully_constrained"), tr("Fully constrained"), QString(), QString());
+            QStringLiteral("fully_constrained"), tr("Fully constrained"), QString(), QString());
     }
 }
 
@@ -3294,31 +3292,6 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     if (isInEditMode()) {
         if (sketchHandler)
             deactivateHandler();
-
-        Gui::MDIView* mdi = getInventorView();
-
-        // handle the override draw style mode only if there's a 3D view, otherwise SIGSEGV may
-        // occur as described in https://github.com/FreeCAD/FreeCAD/issues/15918
-        if (mdi) {
-
-            // Resets the override draw style mode when leaving the sketch edit mode.
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-            auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
-            if (disableShadedView) {
-                Gui::View3DInventorViewer* viewer =
-                    static_cast<Gui::View3DInventor*>(mdi)->getViewer();
-
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                    "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-                auto OverrideMode = hGrp->GetASCII("OverrideMode", "As Is");
-
-                if (viewer) {
-                    viewer->updateOverrideMode(OverrideMode);
-                    viewer->setOverrideMode(OverrideMode);
-                }
-            }
-        }
 
         editCoinManager = nullptr;
         snapManager = nullptr;
@@ -3350,7 +3323,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     // visibility automation
     try {
         QString cmdstr =
-            QString::fromLatin1("ActiveSketch = App.getDocument('%1').getObject('%2')\n"
+            QStringLiteral("ActiveSketch = App.getDocument('%1').getObject('%2')\n"
                                 "tv = ActiveSketch.ViewObject.TempoVis\n"
                                 "if tv:\n"
                                 "  tv.restore()\n"
@@ -3378,7 +3351,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     if (!this->TempoVis.getValue().isNone()) {
         try {
             QString cmdstr =
-                QString::fromLatin1(
+                QStringLiteral(
                     "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
                     "if ActiveSketch.ViewObject.RestoreCamera:\n"
                     "  ActiveSketch.ViewObject.TempoVis.saveCamera()\n"
@@ -3397,24 +3370,6 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
                 e.what());
         }
     }
-
-    // Sets the view mode to no shading to prevent visibility issues against parallel surfaces with shininess when entering the sketch mode.
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
-
-    hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    hGrp->SetASCII("OverrideMode", viewer->getOverrideMode());
-
-    if (disableShadedView) {
-
-
-            viewer->updateOverrideMode("No Shading");
-            viewer->setOverrideMode("No Shading");
-
-    }
-
 
     auto editDoc = Gui::Application::Instance->editDocument();
     editDocName.clear();
@@ -3944,7 +3899,7 @@ std::unique_ptr<SoRayPickAction> ViewProviderSketch::getRayPickAction() const
     assert(isInEditMode());
     Gui::MDIView* mdi =
         Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
-    if (!(mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())))
+    if (!(mdi && mdi->isDerivedFrom<Gui::View3DInventor>()))
         return nullptr;
     Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
 
@@ -4028,7 +3983,7 @@ double ViewProviderSketch::getRotation(SbVec3f pos0, SbVec3f pos1) const
 
     Gui::MDIView* mdi =
         Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
-    if (!(mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())))
+    if (!(mdi && mdi->isDerivedFrom<Gui::View3DInventor>()))
         return 0;
     Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
     SoCamera* pCam = viewer->getSoRenderManager()->getCamera();

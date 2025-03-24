@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Classes and structures related to Addon sidecar information """
+"""Classes and structures related to Addon sidecar information"""
 from __future__ import annotations
 
 from dataclasses import dataclass

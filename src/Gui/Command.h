@@ -28,7 +28,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <Base/Type.h>
 #include <Gui/Application.h>
@@ -418,8 +418,6 @@ public:
     static bool hasPendingCommand();
     /// Updates the (active) document (propagate changes)
     static void updateActive();
-    /// Updates the (all or listed) documents (propagate changes)
-    static void updateAll(std::list<Gui::Document*> cList);
     /// Checks if the active object of the active document is valid
     static bool isActiveObjectValid();
     /// Translate command
@@ -1117,7 +1115,7 @@ protected: \
     virtual bool isActive(void)\
     {\
         Gui::MDIView* view = Gui::getMainWindow()->activeWindow();\
-        return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId());\
+        return view && view->isDerivedFrom<Gui::View3DInventor>();\
     }\
 private:\
     X(const X&) = delete;\

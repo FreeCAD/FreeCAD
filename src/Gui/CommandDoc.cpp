@@ -55,13 +55,13 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "Selection.h"
-#include "DlgObjectSelection.h"
-#include "DlgProjectInformationImp.h"
-#include "DlgProjectUtility.h"
+#include "Dialogs/DlgObjectSelection.h"
+#include "Dialogs/DlgProjectInformationImp.h"
+#include "Dialogs/DlgProjectUtility.h"
 #include "GraphvizView.h"
 #include "ManualAlignment.h"
 #include "MergeDocuments.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "Placement.h"
 #include "Transform.h"
 #include "View3DInventor.h"
@@ -96,56 +96,6 @@ StdCmdOpen::StdCmdOpen()
 
 void StdCmdOpen::activated(int iMsg)
 {
-    // clang-format off
-    auto checkPartialRestore = [](App::Document* doc) {
-        if (doc && doc->testStatus(App::Document::PartialRestore)) {
-            QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
-            QObject::tr("There were errors while loading the file. Some data might have been "
-                        "modified or not recovered at all. Look in the report view for more "
-                        "specific information about the objects involved."));
-        }
-    };
-
-    auto checkRestoreError = [](App::Document* doc) {
-        if (doc && doc->testStatus(App::Document::RestoreError)) {
-            QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
-            QObject::tr("There were serious errors while loading the file. Some data might have "
-                        "been modified or not recovered at all. Saving the project will most "
-                        "likely result in loss of data."));
-        }
-    };
-
-    auto checkMigrationLCS = [](App::Document* doc) {
-        if (doc && doc->testStatus(App::Document::MigrateLCS)) {
-            auto grp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-            if (!grp->GetBool("ShowLCSMigrationWarning", true)) {
-                return;
-            }
-
-            // Display the warning message
-            QMessageBox msgBox(QMessageBox::Warning,
-                QObject::tr("File Migration Warning"),
-                QObject::tr("This file was created with an older version of %1. "
-                    "Origin axes had incorrect placements, which have now been corrected.\n\n"
-                    "However, if you save this file in the current version and reopen it in an"
-                    " older version of %1, the origin axes will be misaligned. Additionally, "
-                    "if your file references these origin axes, your file will likely be broken.")
-                .arg(QApplication::applicationName()),
-                QMessageBox::Ok);
-
-            QCheckBox* checkBox = new QCheckBox(QObject::tr("Don't show this warning again"));
-            msgBox.setCheckBox(checkBox);
-
-            msgBox.exec();
-
-            // Save preference if the user selects "Don't show again"
-            if (checkBox->isChecked()) {
-                grp->SetBool("ShowLCSMigrationWarning", false);
-            }
-        }
-    };
-    // clang-format on
-
     Q_UNUSED(iMsg);
 
     // fill the list of registered endings
@@ -156,9 +106,8 @@ void StdCmdOpen::activated(int iMsg)
     formatList += QLatin1String(" (");
 
     std::vector<std::string> filetypes = App::GetApplication().getImportTypes();
-    std::vector<std::string>::iterator it;
     // Make sure FCStd is the very first fileformat
-    it = std::find(filetypes.begin(), filetypes.end(), "FCStd");
+    auto it = std::ranges::find(filetypes, "FCStd");
     if (it != filetypes.end()) {
         filetypes.erase(it);
         filetypes.insert(filetypes.begin(), "FCStd");
@@ -213,9 +162,8 @@ void StdCmdOpen::activated(int iMsg)
 
             App::Document *doc = App::GetApplication().getActiveDocument();
 
-            checkPartialRestore(doc);
-            checkRestoreError(doc);
-            checkMigrationLCS(doc);
+            getGuiApplication()->checkPartialRestore(doc);
+            getGuiApplication()->checkRestoreError(doc);
         }
     }
 }
@@ -452,6 +400,7 @@ void StdCmdExport::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     static QString lastExportFullPath = QString();
+    static App::DocumentObject* lastExportedObject = nullptr;
     static bool lastExportUsedGeneratedFilename = true;
     static QString lastExportFilterUsed = QString();
     static Document* lastActiveDocument;
@@ -485,12 +434,14 @@ void StdCmdExport::activated(int iMsg)
     //     * If the user accepted the default filename last time, regenerate a new
     //       default, potentially updating the object label.
     //     * If not, default to their previously-set export filename.
+    // * If this is an export of a different object than last time
     QString defaultFilename = lastExportFullPath;
 
     bool filenameWasGenerated = false;
     bool didActiveDocumentChange = lastActiveDocument != getActiveGuiDocument();
-    // We want to generate a new default name in three cases:
-    if (defaultFilename.isEmpty() || lastExportUsedGeneratedFilename || didActiveDocumentChange) {
+    bool didExportedObjectChange = lastExportedObject != selection.front();
+    // We want to generate a new default name in four cases:
+    if (defaultFilename.isEmpty() || lastExportUsedGeneratedFilename || didActiveDocumentChange || didExportedObjectChange) {
         // First, get the name and path of the current .FCStd file, if there is one:
         QString docFilename = QString::fromUtf8(
             App::GetApplication().getActiveDocument()->getFileName());
@@ -509,7 +460,7 @@ void StdCmdExport::activated(int iMsg)
             defaultExportPath = Gui::FileDialog::getWorkingDirectory();
         }
 
-        if (lastExportUsedGeneratedFilename   || didActiveDocumentChange) {  /*<- static, true on first call*/
+        if (lastExportUsedGeneratedFilename || didActiveDocumentChange || didExportedObjectChange) {  /*<- static, true on first call*/
             defaultFilename = defaultExportPath + QLatin1Char('/') + createDefaultExportBasename();
 
             // Append the last extension used, if there is one.
@@ -546,8 +497,10 @@ void StdCmdExport::activated(int iMsg)
             lastExportUsedGeneratedFilename = true;
         else
             lastExportUsedGeneratedFilename = false;
+
         lastExportFullPath = fileName;
         lastActiveDocument = getActiveGuiDocument();
+        lastExportedObject = selection.front();
     }
 }
 
@@ -664,7 +617,7 @@ void StdCmdExportDependencyGraph::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
-    QString format = QString::fromLatin1("%1 (*.gv)").arg(Gui::GraphvizView::tr("Graphviz format"));
+    QString format = QStringLiteral("%1 (*.gv)").arg(Gui::GraphvizView::tr("Graphviz format"));
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), Gui::GraphvizView::tr("Export graph"), QString(), format);
     if (!fn.isEmpty()) {
         QFile file(fn);
@@ -705,7 +658,7 @@ void StdCmdNew::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString cmd;
-    cmd = QString::fromLatin1("App.newDocument()");
+    cmd = QStringLiteral("App.newDocument()");
     runCommand(Command::Doc,cmd.toUtf8());
     doCommand(Command::Gui,"Gui.activeDocument().activeView().viewDefaultOrientation()");
 
@@ -1411,6 +1364,11 @@ void StdCmdDelete::activated(int iMsg)
             bool autoDeletion = true;
             for(auto &sel : sels) {
                 auto obj = sel.getObject();
+                if (obj == nullptr){
+                    Base::Console().DeveloperWarning("StdCmdDelete::activated",
+                                                     "App::DocumentObject pointer is nullptr\n");
+                    continue;
+                }
                 for(auto parent : obj->getInList()) {
                     if(!Selection().isSelected(parent)) {
                         ViewProvider* vp = Application::Instance->getViewProvider(parent);
@@ -1422,7 +1380,7 @@ void StdCmdDelete::activated(int iMsg)
                             else
                                 label = QLatin1String(parent->getNameInDocument());
                             if(parent->Label.getStrValue() != parent->getNameInDocument())
-                                label += QString::fromLatin1(" (%1)").arg(
+                                label += QStringLiteral(" (%1)").arg(
                                         QString::fromUtf8(parent->Label.getValue()));
                             affectedLabels.insert(label);
                             if(affectedLabels.size()>=10) {
@@ -1488,7 +1446,7 @@ void StdCmdDelete::activated(int iMsg)
         e.ReportException();
     } catch (...) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
-                QString::fromLatin1("Unknown error"));
+                QStringLiteral("Unknown error"));
     }
     commitCommand();
     Gui::getMainWindow()->setUpdatesEnabled(true);
@@ -1528,24 +1486,25 @@ StdCmdRefresh::StdCmdRefresh()
         eType = eType | NoTransaction;
 }
 
-void StdCmdRefresh::activated(int iMsg)
+void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
 {
-    Q_UNUSED(iMsg);
-    if (getActiveGuiDocument()) {
-        App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
-        try {
-            doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
-        }
-        catch (Base::Exception& /*e*/) {
-            auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
-                qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
-                            "Please check the Report View for more details.\n\n"
-                            "Do you still want to proceed?"),
-                    QMessageBox::Yes, QMessageBox::No);
-            if(ret == QMessageBox::No)
-                return;
-            doCommand(Doc,"App.activeDocument().recompute(None,True)");
-        }
+    if (!getActiveGuiDocument()) {
+        return;
+    }
+
+    App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
+    try {
+        doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
+    }
+    catch (Base::Exception& /*e*/) {
+        auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
+            qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
+                        "Please check the Report View for more details.\n\n"
+                        "Do you still want to proceed?"),
+                QMessageBox::Yes, QMessageBox::No);
+        if(ret == QMessageBox::No)
+            return;
+        doCommand(Doc,"App.activeDocument().recompute(None,True)");
     }
 }
 
@@ -1729,7 +1688,7 @@ bool StdCmdAlignment::isActive()
 {
     if (ManualAlignment::hasInstance())
         return false;
-    return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) == 2;
+    return Gui::Selection().countObjectsOfType<App::GeoFeature>() == 2;
 }
 
 //===========================================================================
@@ -1754,7 +1713,7 @@ void StdCmdEdit::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         if (viewer->isEditingViewProvider()) {
             doCommand(Command::Gui,"Gui.activeDocument().resetEdit()");

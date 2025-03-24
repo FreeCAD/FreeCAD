@@ -42,6 +42,7 @@ import Draft_rc
 from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
 from draftmake import make_fillet
+from draftutils import params
 from draftutils import utils
 from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
@@ -73,9 +74,8 @@ class Fillet(gui_base_original.Creator):
         super().Activated(name=name)
 
         if self.ui:
-            self.rad = 100
-            self.chamfer = False
-            self.delete = False
+            self.chamfer = params.get_param("FilletChamferMode")
+            self.delete = params.get_param("FilletDeleteMode")
             label = translate("draft", "Fillet radius")
             tooltip = translate("draft", "Radius of fillet")
 
@@ -85,7 +85,8 @@ class Fillet(gui_base_original.Creator):
             self.ui.sourceCmd = self
             self.ui.labelRadius.setText(label)
             self.ui.radiusValue.setToolTip(tooltip)
-            self.ui.setRadiusValue(self.rad, "Length")
+            self.ui.radius = params.get_param("FilletRadius")
+            self.ui.setRadiusValue(self.ui.radius, "Length")
             self.ui.check_delete = self.ui._checkbox("isdelete",
                                                      self.ui.layout,
                                                      checked=self.delete)
@@ -127,18 +128,18 @@ class Fillet(gui_base_original.Creator):
     def set_delete(self):
         """Execute as a callback when the delete checkbox changes."""
         self.delete = self.ui.check_delete.isChecked()
+        params.set_param("FilletDeleteMode", self.delete)
 
     def set_chamfer(self):
         """Execute as a callback when the chamfer checkbox changes."""
         self.chamfer = self.ui.check_chamfer.isChecked()
+        params.set_param("FilletChamferMode", self.chamfer)
 
     def numericRadius(self, rad):
-        """Validate the entry radius in the user interface.
-
-        This function is called by the toolbar or taskpanel interface
-        when a valid radius has been entered in the input field.
+        """This function is called by the taskpanel interface
+        when a radius has been entered in the input field.
         """
-        self.rad = rad
+        params.set_param("FilletRadius", rad)
         self.draw_arc(rad, self.chamfer, self.delete)
 
     def draw_arc(self, rad, chamfer, delete):

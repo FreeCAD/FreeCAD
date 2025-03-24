@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" A collection of functions to handle installing a macro icon to the toolbar. """
+"""A collection of functions to handle installing a macro icon to the toolbar."""
 
 import os
 

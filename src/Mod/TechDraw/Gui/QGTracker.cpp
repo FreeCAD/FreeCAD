@@ -41,7 +41,9 @@
 
 #include "PreferencesGui.h"
 #include "QGTracker.h"
+#include "QGIVertex.h"
 #include "QGIView.h"
+#include "QGIViewPart.h"
 #include "QGSPage.h"
 #include "Rez.h"
 #include "ZVALUE.h"
@@ -438,12 +440,15 @@ void QGTracker::setPoint(std::vector<QPointF> pts)
         return;
     }
     prepareGeometryChange();
-    QPainterPath newPath;
-    QPointF center = pts.front();
-    double radius = 50.0;
-    newPath.addEllipse(center, radius, radius);
-    setPath(newPath);
-    setPrettyNormal();
+
+    auto point = new QGIVertex(-1);
+    point->setParentItem(this);
+    point->setPos(pts.front());
+    point->setRadius(static_cast<QGIViewPart *>(m_qgParent)->getVertexSize());
+    point->setNormalColor(Qt::blue);
+    point->setFillColor(Qt::blue);
+    point->setPrettyNormal();
+    point->setZValue(ZVALUE::VERTEX);
 }
 
 std::vector<Base::Vector3d> QGTracker::convertPoints()
@@ -477,7 +482,7 @@ void QGTracker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 QColor QGTracker::getTrackerColor()
 {
-    App::Color trackColor = App::Color((uint32_t) Preferences::getPreferenceGroup("Tracker")->GetUnsigned("TrackerColor", 0xFF000000));
+    Base::Color trackColor = Base::Color((uint32_t) Preferences::getPreferenceGroup("Tracker")->GetUnsigned("TrackerColor", 0xFF000000));
     return PreferencesGui::getAccessibleQColor(trackColor.asValue<QColor>());
 }
 

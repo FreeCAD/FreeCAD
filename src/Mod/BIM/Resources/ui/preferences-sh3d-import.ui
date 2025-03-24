@@ -37,19 +37,21 @@
                 <property name="prefPath" stdset="0">
                   <cstring>Mod/Arch</cstring>
                 </property>
+                <property name="checked">
+                  <bool>true</bool>
+                </property>
               </widget>
             </item>
             <item>
-              <widget class="Gui::PrefCheckBox" name="checkBox_2">
+              <widget class="Gui::PrefCheckBox" name="checkBox_debugGeometry">
                 <property name="toolTip">
-                  <string>Shows verbose debug messages during import of SH3D files in the Report
-                    view panel. Log level message must be allowed for this setting to have an effect.</string>
+                  <string>DEBUG: keep the construction geometries in the ActiveDocument. Useful when debugging a failed import</string>
                 </property>
                 <property name="text">
-                  <string>Show debug messages</string>
+                  <string>Debug Geometry</string>
                 </property>
                 <property name="prefEntry" stdset="0">
-                  <cstring>sh3dDebug</cstring>
+                  <cstring>sh3dDebugGeometry</cstring>
                 </property>
                 <property name="prefPath" stdset="0">
                   <cstring>Mod/Arch</cstring>
@@ -66,6 +68,23 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
             <item>
+              <widget class="Gui::PrefCheckBox" name="checkBox_9">
+                <property name="toolTip">
+                  <string>Merge imported element with existing FC object</string>
+                </property>
+                <property name="text">
+                  <string>Merge into existing document</string>
+                </property>
+                <property name="prefEntry" stdset="0">
+                  <cstring>sh3dMerge</cstring>
+                </property>
+                <property name="prefPath" stdset="0">
+                  <cstring>Mod/Arch</cstring>
+                </property>
+              </widget>
+            </item>
+
+            <item>
               <widget class="Gui::PrefCheckBox" name="checkBox_3">
                 <property name="toolTip">
                   <string>Whether to import the model's doors and windows</string>
@@ -78,6 +97,9 @@
                 </property>
                 <property name="prefPath" stdset="0">
                   <cstring>Mod/Arch</cstring>
+                </property>
+                <property name="checked">
+                  <bool>true</bool>
                 </property>
               </widget>
             </item>
@@ -94,6 +116,9 @@
                 </property>
                 <property name="prefPath" stdset="0">
                   <cstring>Mod/Arch</cstring>
+                </property>
+                <property name="checked">
+                  <bool>true</bool>
                 </property>
               </widget>
             </item>
@@ -163,21 +188,22 @@
               </widget>
             </item>
             <item>
-              <widget class="Gui::PrefCheckBox" name="checkBox_9">
+              <widget class="Gui::PrefCheckBox" name="checkBox_10">
                 <property name="toolTip">
-                  <string>Merge imported element with existing FC object</string>
+                  <string>Create a default Render project with the newly created Site</string>
                 </property>
                 <property name="text">
-                  <string>Merge into existing document</string>
+                  <string>Create Render Project (requires Render)</string>
                 </property>
                 <property name="prefEntry" stdset="0">
-                  <cstring>sh3dMerge</cstring>
+                  <cstring>sh3dCreateRenderProject</cstring>
                 </property>
                 <property name="prefPath" stdset="0">
                   <cstring>Mod/Arch</cstring>
                 </property>
               </widget>
             </item>
+
             <item>
               <layout class="QGridLayout" columnstretch="2,1,0">
                 <item row="0" column="0">
@@ -203,9 +229,9 @@
                     </property>
                     <property name="color" stdset="0">
                       <color>
-                        <red>150</red>
-                        <green>169</green>
-                        <blue>186</blue>
+                        <red>168</red>
+                        <green>168</green>
+                        <blue>168</blue>
                       </color>
                     </property>
                     <property name="prefEntry" stdset="0">
@@ -243,9 +269,9 @@
                     </property>
                     <property name="color" stdset="0">
                       <color>
-                        <red>255</red>
-                        <green>255</green>
-                        <blue>255</blue>
+                        <red>246</red>
+                        <green>246</green>
+                        <blue>246</blue>
                       </color>
                     </property>
                     <property name="prefEntry" stdset="0">
@@ -259,20 +285,178 @@
               </layout>
             </item>
             <item>
-              <widget class="Gui::PrefCheckBox" name="checkBox_10">
+              <widget class="Gui::PrefCheckBox" name="checkBox_12">
                 <property name="toolTip">
-                  <string>Create a default Render project with the newly Site</string>
+                  <string>Create a default IFC project with the newly created Site.</string>
                 </property>
                 <property name="text">
-                  <string>Create Render Project (requires Render)</string>
+                  <string>Create IFC Project</string>
                 </property>
                 <property name="prefEntry" stdset="0">
-                  <cstring>sh3dCreateRenderProject</cstring>
+                  <cstring>sh3dCreateIFCProject</cstring>
                 </property>
                 <property name="prefPath" stdset="0">
                   <cstring>Mod/Arch</cstring>
                 </property>
               </widget>
+            </item>
+            <item>
+              <widget class="Gui::PrefCheckBox" name="checkBox_13">
+                <property name="toolTip">
+                  <string>Create a Mesh to represent the default ground level.</string>
+                </property>
+                <property name="text">
+                  <string>Create ground level Mesh</string>
+                </property>
+                <property name="prefEntry" stdset="0">
+                  <cstring>sh3dCreateGroundMesh</cstring>
+                </property>
+                <property name="prefPath" stdset="0">
+                  <cstring>Mod/Arch</cstring>
+                </property>
+                <property name="checked">
+                  <bool>true</bool>
+                </property>
+              </widget>
+            </item>
+            <item>
+              <layout class="QGridLayout" columnstretch="2,1,0">
+                <item row="0" column="0">
+                  <widget class="QLabel" name="label1">
+                    <property name="text">
+                      <string>Default ground Color</string>
+                    </property>
+                    <property name="buddy">
+                      <cstring>sh3dDefaultGroundColor</cstring>
+                    </property>
+                  </widget>
+                </item>
+                <item row="0" column="1">
+                  <widget class="Gui::PrefColorButton" name="ArchSH3DDefaultGroundColor">
+                    <property name="sizePolicy">
+                      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                      </sizepolicy>
+                    </property>
+                    <property name="toolTip">
+                      <string>This color might be used when the environment does not define a color for the ground.</string>
+                    </property>
+                    <property name="color" stdset="0">
+                      <color>
+                        <red>230</red>
+                        <green>230</green>
+                        <blue>230</blue>
+                      </color>
+                    </property>
+                    <property name="prefEntry" stdset="0">
+                      <cstring>sh3dDefaultGroundColor</cstring>
+                    </property>
+                    <property name="prefPath" stdset="0">
+                      <cstring>Mod/Arch</cstring>
+                    </property>
+                  </widget>
+                </item>
+              </layout>
+            </item>
+            <item>
+              <layout class="QGridLayout" columnstretch="2,1,0">
+                <item row="0" column="0">
+                  <widget class="QLabel" name="label1">
+                    <property name="text">
+                      <string>Default sky Color</string>
+                    </property>
+                    <property name="buddy">
+                      <cstring>sh3dDefaultSkyColor</cstring>
+                    </property>
+                  </widget>
+                </item>
+                <item row="0" column="1">
+                  <widget class="Gui::PrefColorButton" name="ArchSH3DDefaultSkyColor">
+                    <property name="sizePolicy">
+                      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                      </sizepolicy>
+                    </property>
+                    <property name="toolTip">
+                      <string>This color might be used when the environment does not define a color for the sky.</string>
+                    </property>
+                    <property name="color" stdset="0">
+                      <color>
+                        <red>204</red>
+                        <green>228</green>
+                        <blue>252</blue>
+                      </color>
+                    </property>
+                    <property name="prefEntry" stdset="0">
+                      <cstring>sh3dDefaultSkyColor</cstring>
+                    </property>
+                    <property name="prefPath" stdset="0">
+                      <cstring>Mod/Arch</cstring>
+                    </property>
+                  </widget>
+                </item>
+              </layout>
+            </item>
+            <item>
+              <widget class="Gui::PrefCheckBox" name="checkBox_decorate_surfaces">
+                <property name="toolTip">
+                  <string>Create Facebinders, Baseboards for walls, floors and ceilings for Rooms</string>
+                </property>
+                <property name="text">
+                  <string>Decorate surfaces</string>
+                </property>
+                <property name="prefEntry" stdset="0">
+                  <cstring>sh3dDecorateSurfaces</cstring>
+                </property>
+                <property name="prefPath" stdset="0">
+                  <cstring>Mod/Arch</cstring>
+                </property>
+                <property name="checked">
+                  <bool>true</bool>
+                </property>
+              </widget>
+            </item>
+            <item>
+              <layout class="QGridLayout" columnstretch="2,1,0">
+                <item row="0" column="0">
+                  <widget class="QLabel" name="label1">
+                    <property name="text">
+                      <string>Default furniture Color</string>
+                    </property>
+                    <property name="buddy">
+                      <cstring>sh3dDefaultFurnitureColor</cstring>
+                    </property>
+                  </widget>
+                </item>
+                <item row="0" column="1">
+                  <widget class="Gui::PrefColorButton" name="ArchSH3DDefaultFurnitureColor">
+                    <property name="sizePolicy">
+                      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                      </sizepolicy>
+                    </property>
+                    <property name="toolTip">
+                      <string>This color is used when a furniture does not define its own color.</string>
+                    </property>
+                    <property name="color" stdset="0">
+                      <color>
+                        <red>168</red>
+                        <green>150</green>
+                        <blue>26</blue>
+                      </color>
+                    </property>
+                    <property name="prefEntry" stdset="0">
+                      <cstring>sh3dDefaultFurnitureColor</cstring>
+                    </property>
+                    <property name="prefPath" stdset="0">
+                      <cstring>Mod/Arch</cstring>
+                    </property>
+                  </widget>
+                </item>
+              </layout>
             </item>
             <item>
               <widget class="Gui::PrefCheckBox" name="checkBox_11">
@@ -284,22 +468,6 @@
                 </property>
                 <property name="prefEntry" stdset="0">
                   <cstring>sh3dFitView</cstring>
-                </property>
-                <property name="prefPath" stdset="0">
-                  <cstring>Mod/Arch</cstring>
-                </property>
-              </widget>
-            </item>
-            <item>
-              <widget class="Gui::PrefCheckBox" name="checkBox_12">
-                <property name="toolTip">
-                  <string>Create a default IFC project with the newly created Site.</string>
-                </property>
-                <property name="text">
-                  <string>Create IFC Project</string>
-                </property>
-                <property name="prefEntry" stdset="0">
-                  <cstring>sh3dCreateIFCProject</cstring>
                 </property>
                 <property name="prefPath" stdset="0">
                   <cstring>Mod/Arch</cstring>

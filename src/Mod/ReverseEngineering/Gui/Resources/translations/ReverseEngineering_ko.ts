@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="249"/>
       <source>Cylinder</source>
-      <translation>실린더</translation>
+      <translation>원통</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="250"/>
       <source>Approximate a cylinder</source>
-      <translation type="unfinished">Approximate a cylinder</translation>
+      <translation>원기둥을 근사</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="142"/>
       <source>Approximate a plane</source>
-      <translation type="unfinished">Approximate a plane</translation>
+      <translation>평면을 근사</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="365"/>
       <source>Polynomial surface</source>
-      <translation type="unfinished">Polynomial surface</translation>
+      <translation>다항식 표면</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="366"/>
       <source>Approximate a polynomial surface</source>
-      <translation type="unfinished">Approximate a polynomial surface</translation>
+      <translation>다항식 표면을 근사</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="318"/>
       <source>Approximate a sphere</source>
-      <translation type="unfinished">Approximate a sphere</translation>
+      <translation>구를 근사</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Approximate B-spline surface...</source>
-      <translation type="unfinished">Approximate B-spline surface...</translation>
+      <translation>B-스플라인 곡선 표면을 근사</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Approximate a B-spline surface</source>
-      <translation type="unfinished">Approximate a B-spline surface</translation>
+      <translation>B-스플라인 곡선 표면을 근사</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="537"/>
       <source>Wire from mesh boundary...</source>
-      <translation type="unfinished">Wire from mesh boundary...</translation>
+      <translation>메쉬 경계선 와이어</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="538"/>
       <source>Create wire from mesh boundaries</source>
-      <translation type="unfinished">Create wire from mesh boundaries</translation>
+      <translation>메쉬 경계선에서 와이어 생성</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="604"/>
       <source>Poisson...</source>
-      <translation type="unfinished">Poisson...</translation>
+      <translation>포아송...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="605"/>
       <source>Poisson surface reconstruction</source>
-      <translation type="unfinished">Poisson surface reconstruction</translation>
+      <translation>포아송 표면 재구성</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="423"/>
       <source>Mesh segmentation...</source>
-      <translation type="unfinished">Mesh segmentation...</translation>
+      <translation>메쉬 분할...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="424"/>
       <source>Create mesh segments</source>
-      <translation type="unfinished">Create mesh segments</translation>
+      <translation>메쉬 세그먼트 생성</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="485"/>
       <source>From components</source>
-      <translation type="unfinished">From components</translation>
+      <translation>구성 요소로부터</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create mesh segments from components</source>
-      <translation type="unfinished">Create mesh segments from components</translation>
+      <translation>구성 요소로부터 메쉬 세그먼트 생성</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="455"/>
       <source>Manual segmentation...</source>
-      <translation type="unfinished">Manual segmentation...</translation>
+      <translation>직접 분할...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="456"/>
       <source>Create mesh segments manually</source>
-      <translation type="unfinished">Create mesh segments manually</translation>
+      <translation>메쉬 세그먼트 직접 생성</translation>
     </message>
   </context>
   <context>
@@ -191,13 +191,13 @@
     <message>
       <location filename="../../Command.cpp" line="639"/>
       <source>Structured point clouds</source>
-      <translation type="unfinished">Structured point clouds</translation>
+      <translation>구조화된 점 구름</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="640"/>
       <location filename="../../Command.cpp" line="641"/>
       <source>Triangulation of structured point clouds</source>
-      <translation type="unfinished">Triangulation of structured point clouds</translation>
+      <translation>구조화된 점 구름들을 삼각형화</translation>
     </message>
   </context>
   <context>
@@ -205,48 +205,48 @@
     <message>
       <location filename="../../Command.cpp" line="226"/>
       <source>Fit plane</source>
-      <translation type="unfinished">Fit plane</translation>
+      <translation>평면을 일치시킴</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="258"/>
       <source>Fit cylinder</source>
-      <translation type="unfinished">Fit cylinder</translation>
+      <translation>원기둥을 일치시킴</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="326"/>
       <source>Fit sphere</source>
-      <translation type="unfinished">Fit sphere</translation>
+      <translation>구를 일치시킴</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="375"/>
       <source>Fit polynomial surface</source>
-      <translation type="unfinished">Fit polynomial surface</translation>
+      <translation>다항식 표면을 일치시킴</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="650"/>
       <source>View triangulation</source>
-      <translation type="unfinished">View triangulation</translation>
+      <translation>삼각형화 보기</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="154"/>
       <source>Placement</source>
-      <translation>위치 설정</translation>
+      <translation>배치</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <source>Fit B-spline</source>
-      <translation type="unfinished">Fit B-spline</translation>
+      <translation>B-스플라인을 일치시킴</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="83"/>
       <source>Poisson reconstruction</source>
-      <translation type="unfinished">Poisson reconstruction</translation>
+      <translation>포아송 재구성</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.cpp" line="281"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>분할</translation>
     </message>
   </context>
   <context>
@@ -254,79 +254,79 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-spline surface</source>
-      <translation type="unfinished">Fit B-spline surface</translation>
+      <translation>B-스플라인 표면을 일치시킴</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
       <source>u-Direction</source>
-      <translation type="unfinished">u-Direction</translation>
+      <translation>u-방향</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="26"/>
       <location filename="../../FitBSplineSurface.ui" line="93"/>
       <source>Degree</source>
-      <translation type="unfinished">Degree</translation>
+      <translation>각도</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="55"/>
       <location filename="../../FitBSplineSurface.ui" line="122"/>
       <source>Control points</source>
-      <translation type="unfinished">Control points</translation>
+      <translation>제어 점</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
       <source>v-Direction</source>
-      <translation type="unfinished">v-Direction</translation>
+      <translation>v-방향</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>설정</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="160"/>
       <source>Iterations</source>
-      <translation type="unfinished">Iterations</translation>
+      <translation>반복</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="189"/>
       <source>Size factor</source>
-      <translation type="unfinished">Size factor</translation>
+      <translation>크기 인자</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>
       <source>User-defined u/v directions</source>
-      <translation type="unfinished">User-defined u/v directions</translation>
+      <translation>유저가 정의한 u/v 방향</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
       <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
+      <translation>배치 생성</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
       <source>Smoothing</source>
-      <translation type="unfinished">Smoothing</translation>
+      <translation>평활화</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="247"/>
       <source>Total Weight</source>
-      <translation type="unfinished">Total Weight</translation>
+      <translation>총 가중치</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="276"/>
       <source>Length of gradient</source>
-      <translation type="unfinished">Length of gradient</translation>
+      <translation>기울기의 크기</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="305"/>
       <source>Bending energy</source>
-      <translation type="unfinished">Bending energy</translation>
+      <translation>곡률 변화</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="334"/>
       <source>Curvature variation</source>
-      <translation type="unfinished">Curvature variation</translation>
+      <translation>곡률 변형</translation>
     </message>
   </context>
   <context>
@@ -340,12 +340,12 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="206"/>
       <source>Wrong selection</source>
-      <translation>잘못 된 선택</translation>
+      <translation>잘못된 선택</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="207"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
+      <translation>로컬 방향을 얻기위해서 단일 배치 객체를 선택해주세요.</translation>
     </message>
   </context>
   <context>
@@ -353,27 +353,27 @@
     <message>
       <location filename="../../Poisson.ui" line="14"/>
       <source>Poisson</source>
-      <translation type="unfinished">Poisson</translation>
+      <translation>포아송</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="20"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>매개변수</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="26"/>
       <source>Octree depth</source>
-      <translation type="unfinished">Octree depth</translation>
+      <translation>옥트리 깊이</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="46"/>
       <source>Solver divide</source>
-      <translation type="unfinished">Solver divide</translation>
+      <translation>솔버 분할</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="66"/>
       <source>Samples per node</source>
-      <translation type="unfinished">Samples per node</translation>
+      <translation>노드 당 샘플 수 </translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="90"/>
@@ -388,22 +388,22 @@
       <location filename="../../Command.cpp" line="120"/>
       <location filename="../../Command.cpp" line="618"/>
       <source>Wrong selection</source>
-      <translation>잘못 된 선택</translation>
+      <translation>잘못된 선택</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Please select a point cloud.</source>
-      <translation type="unfinished">Please select a point cloud.</translation>
+      <translation>점 구름을 선택해주세요</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Please select a point cloud or mesh.</source>
-      <translation type="unfinished">Please select a point cloud or mesh.</translation>
+      <translation>점 구름이나 메쉬를 선택해주세요</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="619"/>
       <source>Please select a single point cloud.</source>
-      <translation type="unfinished">Please select a single point cloud.</translation>
+      <translation>단일 점 구름을 선택해주세요.</translation>
     </message>
   </context>
   <context>
@@ -411,7 +411,7 @@
     <message>
       <location filename="../../Command.cpp" line="672"/>
       <source>View triangulation failed</source>
-      <translation type="unfinished">View triangulation failed</translation>
+      <translation>삼각형화 보기 실패</translation>
     </message>
   </context>
   <context>
@@ -419,12 +419,12 @@
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation type="unfinished">Mesh segmentation</translation>
+      <translation>메쉬 분할</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
-      <translation type="unfinished">Smooth mesh</translation>
+      <translation>메쉬 평활화</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
@@ -434,27 +434,27 @@
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
       <source>Curvature tolerance</source>
-      <translation type="unfinished">Curvature tolerance</translation>
+      <translation>곡률 허용 오차</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
       <source>Distance to plane</source>
-      <translation type="unfinished">Distance to plane</translation>
+      <translation>평면의 거리</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="80"/>
       <source>Minimum number of faces</source>
-      <translation type="unfinished">Minimum number of faces</translation>
+      <translation>면의 최소 수</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
       <source>Create mesh from unused triangles</source>
-      <translation type="unfinished">Create mesh from unused triangles</translation>
+      <translation>사용되지 않은 삼각형으로 메쉬 생성</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
+      <translation>컴파운드 생성</translation>
     </message>
   </context>
   <context>
@@ -462,7 +462,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual segmentation</source>
-      <translation type="unfinished">Manual segmentation</translation>
+      <translation>직접 분할</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
@@ -472,7 +472,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="41"/>
       <source>Region</source>
-      <translation type="unfinished">Region</translation>
+      <translation>영역</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="61"/>
@@ -482,7 +482,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="81"/>
       <source>Components</source>
-      <translation type="unfinished">Components</translation>
+      <translation>구성 요소</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="88"/>
@@ -492,12 +492,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
       <source>Pick triangle</source>
-      <translation type="unfinished">Pick triangle</translation>
+      <translation>삼각형 선택</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
       <source>Select whole component</source>
-      <translation type="unfinished">Select whole component</translation>
+      <translation>전체 구성 요소 선택</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="112"/>
@@ -514,26 +514,26 @@
       <location filename="../../SegmentationManual.ui" line="181"/>
       <location filename="../../SegmentationManual.ui" line="234"/>
       <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
+      <translation>감지</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="135"/>
       <location filename="../../SegmentationManual.ui" line="188"/>
       <location filename="../../SegmentationManual.ui" line="241"/>
       <source>Tolerance</source>
-      <translation>공차</translation>
+      <translation>허용 오차</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="155"/>
       <location filename="../../SegmentationManual.ui" line="208"/>
       <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
-      <translation type="unfinished">Minimum number of faces</translation>
+      <translation>면의 최소 수</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
       <source>Cylinder</source>
-      <translation>실린더</translation>
+      <translation>원통</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="228"/>
@@ -543,32 +543,32 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region options</source>
-      <translation type="unfinished">Region options</translation>
+      <translation>영역 옵션</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
-      <translation type="unfinished">Respect only visible triangles</translation>
+      <translation>화면에 보이는 삼각형만 고려</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation type="unfinished">Respect only triangles with normals facing screen</translation>
+      <translation>법선 벡터가 컴퓨터 화면을 향하는 삼각형만 고려</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>분할</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
       <source>Cut segment from mesh</source>
-      <translation type="unfinished">Cut segment from mesh</translation>
+      <translation>메쉬에서 세그먼트 잘라내기</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
       <source>Hide segment</source>
-      <translation type="unfinished">Hide segment</translation>
+      <translation>세그먼트 숨기기</translation>
     </message>
   </context>
   <context>
@@ -591,33 +591,33 @@
     <name>ReenGui::FitBSplineCurve</name>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
-      <source>Fit B-spline surface</source>
-      <translation type="unfinished">Fit B-spline surface</translation>
+      <source>Fit B-spline curve</source>
+      <translation type="unfinished">Fit B-spline curve</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>매개변수</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="26"/>
       <source>Maximum degree</source>
-      <translation type="unfinished">Maximum degree</translation>
+      <translation>최대 각도</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="37"/>
       <source>Chord length</source>
-      <translation type="unfinished">Chord length</translation>
+      <translation>현의 길이</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="42"/>
       <source>Centripetal</source>
-      <translation type="unfinished">Centripetal</translation>
+      <translation>구심</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
       <source>Iso-Parametric</source>
-      <translation type="unfinished">Iso-Parametric</translation>
+      <translation>등매개변수</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -627,72 +627,72 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="88"/>
       <source>Parametrization type</source>
-      <translation type="unfinished">Parametrization type</translation>
+      <translation>매개변수화 유형</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="96"/>
       <source>C0</source>
-      <translation type="unfinished">C0</translation>
+      <translation>C0</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="101"/>
       <source>G1</source>
-      <translation type="unfinished">G1</translation>
+      <translation>G1</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="106"/>
       <source>C1</source>
-      <translation type="unfinished">C1</translation>
+      <translation>C1</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="111"/>
       <source>G2</source>
-      <translation type="unfinished">G2</translation>
+      <translation>G2</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="116"/>
       <source>C2</source>
-      <translation type="unfinished">C2</translation>
+      <translation>C2</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="121"/>
       <source>C3</source>
-      <translation type="unfinished">C3</translation>
+      <translation>C3</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="126"/>
       <source>CN</source>
-      <translation type="unfinished">CN</translation>
+      <translation>CN</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="134"/>
       <source>Minimum degree</source>
-      <translation type="unfinished">Minimum degree</translation>
+      <translation>최소 각도</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="141"/>
       <source>Closed curve</source>
-      <translation type="unfinished">Closed curve</translation>
+      <translation>폐곡선</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="151"/>
       <source>Smoothing</source>
-      <translation type="unfinished">Smoothing</translation>
+      <translation>평활화</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="160"/>
       <source>Torsion</source>
-      <translation type="unfinished">Torsion</translation>
+      <translation>비틀림</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="167"/>
       <source>Curve length</source>
-      <translation type="unfinished">Curve length</translation>
+      <translation>곡선 길이</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="174"/>
       <source>Curvature</source>
-      <translation type="unfinished">Curvature</translation>
+      <translation>곡률</translation>
     </message>
   </context>
   <context>
@@ -705,12 +705,12 @@
     <message>
       <location filename="../../Command.cpp" line="70"/>
       <source>Approximate B-spline curve...</source>
-      <translation type="unfinished">Approximate B-spline curve...</translation>
+      <translation>B-스플라인 곡선을 근사</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="71"/>
       <source>Approximate a B-spline curve</source>
-      <translation type="unfinished">Approximate a B-spline curve</translation>
+      <translation>B-스플라인 곡선을 근사</translation>
     </message>
   </context>
   <context>

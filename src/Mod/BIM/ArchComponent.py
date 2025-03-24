@@ -778,7 +778,7 @@ class Component(ArchIFC.IfcProduct):
 
                 if (Draft.getType(o.getLinkedObject()) == "Window") or (Draft.isClone(o,"Window",True)):
                     # windows can be additions or subtractions, treated the same way
-                    subvolume = o.getLinkedObject().Proxy.getSubVolume(o)
+                    subvolume = o.getLinkedObject().Proxy.getSubVolume(o,host=obj)  # pass host obj (mostly Wall)
                 elif (Draft.getType(o) == "Roof") or (Draft.isClone(o,"Roof")):
                     # roofs define their own special subtraction volume
                     subvolume = o.Proxy.getSubVolume(o)
@@ -986,7 +986,6 @@ class Component(ArchIFC.IfcProduct):
             return
 
         import Part
-        import TechDraw
         import DraftGeomUtils
 
         fmax = params.get_param_arch("MaxComputeAreas")
@@ -1022,6 +1021,7 @@ class Component(ArchIFC.IfcProduct):
             pset = []
             for f in fset:
                 try:
+                    import TechDraw
                     pf = Part.Face(DraftGeomUtils.findWires(TechDraw.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
                 except Part.OCCError:
                     # error in computing the areas. Better set them to zero than show a wrong value

@@ -29,7 +29,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include <Gui/SoFCSelection.h>
+#include <Gui/Selection/SoFCSelection.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 
 #include "ViewProviderTransform.h"

@@ -21,8 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef APP_EXTENSION_H
-#define APP_EXTENSION_H
+#ifndef SRC_APP_EXTENSION_H_
+#define SRC_APP_EXTENSION_H_
+
+#include <map>
+#include <string>
 
 #include "PropertyContainer.h"
 #include <Base/SmartPtrPy.h>
@@ -46,7 +49,7 @@ private: \
 #define EXTENSION_TYPESYSTEM_HEADER_WITH_OVERRIDE() \
 public: \
   static Base::Type getExtensionClassTypeId(void); \
-  virtual Base::Type getExtensionTypeId(void) const override; \
+  Base::Type getExtensionTypeId(void) const override; \
   static void init(void);\
   static void *create(void);\
 private: \
@@ -56,7 +59,7 @@ private: \
 #define EXTENSION_TYPESYSTEM_SOURCE_P(_class_) \
 Base::Type _class_::getExtensionClassTypeId(void) { return _class_::classTypeId; } \
 Base::Type _class_::getExtensionTypeId(void) const { return _class_::classTypeId; } \
-Base::Type _class_::classTypeId = Base::Type::badType();  \
+Base::Type _class_::classTypeId = Base::Type::BadType; \
 void * _class_::create(void){\
    return new _class_ ();\
 }
@@ -65,7 +68,7 @@ void * _class_::create(void){\
 #define EXTENSION_TYPESYSTEM_SOURCE_ABSTRACT_P(_class_) \
 Base::Type _class_::getExtensionClassTypeId(void) { return _class_::classTypeId; } \
 Base::Type _class_::getExtensionTypeId(void) const { return _class_::classTypeId; } \
-Base::Type _class_::classTypeId = Base::Type::badType();  \
+Base::Type _class_::classTypeId = Base::Type::BadType; \
 void * _class_::create(void){return 0;}
 
 /// define to implement a subclass of Base::BaseClass
@@ -76,7 +79,7 @@ void _class_::init(void){\
 }
 
 #define EXTENSION_TYPESYSTEM_SOURCE_TEMPLATE(_class_) \
-template<> Base::Type _class_::classTypeId = Base::Type::badType();  \
+template<> Base::Type _class_::classTypeId = Base::Type::BadType; \
 template<> Base::Type _class_::getExtensionClassTypeId(void) { return _class_::classTypeId; } \
 template<> Base::Type _class_::getExtensionTypeId(void) const { return _class_::classTypeId; } \
 template<> void * _class_::create(void){\
@@ -97,7 +100,7 @@ private: \
   EXTENSION_TYPESYSTEM_HEADER_WITH_OVERRIDE(); \
 protected: \
   static const App::PropertyData * extensionGetPropertyDataPtr(void); \
-  virtual const App::PropertyData &extensionGetPropertyData(void) const override; \
+  const App::PropertyData &extensionGetPropertyData(void) const override; \
 private: \
   static App::PropertyData propertyData
 
@@ -254,6 +257,8 @@ public:
     virtual const char* extensionGetPropertyName(const Property* prop) const;
     /// get all properties of the class (including properties of the parent)
     virtual void extensionGetPropertyMap(std::map<std::string,Property*> &Map) const;
+    /// See PropertyContainer::visitProperties for semantics
+    virtual void extensionVisitProperties(const std::function<void(Property*)>& visitor) const;
     /// get all properties of the class (including properties of the parent)
     virtual void extensionGetPropertyList(std::vector<Property*> &List) const;
 
@@ -327,6 +332,6 @@ private:
 // clang-format on
 
 
-} //App
+} // namespace App
 
-#endif // APP_EXTENSION_H
+#endif // SRC_APP_EXTENSION_H_

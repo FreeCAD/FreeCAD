@@ -354,11 +354,11 @@ App::DocumentObjectExecReturn* LinkBaseExtension::extensionExecute()
             auto xlink = Base::freecad_dynamic_cast<PropertyXLink>(getLinkedObjectProperty());
             if (xlink) {
                 const char* objname = xlink->getObjectName();
-                if (objname && objname[0]) {
+                if (!Base::Tools::isNullOrEmpty(objname)) {
                     ss << "\nObject: " << objname;
                 }
                 const char* filename = xlink->getFilePath();
-                if (filename && filename[0]) {
+                if (!Base::Tools::isNullOrEmpty(filename)) {
                     ss << "\nFile: " << filename;
                 }
             }
@@ -409,7 +409,7 @@ App::DocumentObjectExecReturn* LinkBaseExtension::extensionExecute()
                         else {
                             const auto& elements = _getElementListValue();
                             for (int i = 0; i < _getElementCountValue(); ++i) {
-                                args.setItem(2, Py::Int(i));
+                                args.setItem(2, Py::Long(i));
                                 if (i < (int)elements.size()) {
                                     args.setItem(3, Py::asObject(elements[i]->getPyObject()));
                                 }
@@ -1167,7 +1167,7 @@ int LinkBaseExtension::extensionIsElementVisible(const char* element)
 const DocumentObject* LinkBaseExtension::getContainer() const
 {
     auto ext = getExtendedContainer();
-    if (!ext || !ext->isDerivedFrom(DocumentObject::getClassTypeId())) {
+    if (!ext || !ext->isDerivedFrom<DocumentObject>()) {
         LINK_THROW(Base::RuntimeError, "Link: container not derived from document object");
     }
     return static_cast<const DocumentObject*>(ext);
@@ -1176,7 +1176,7 @@ const DocumentObject* LinkBaseExtension::getContainer() const
 DocumentObject* LinkBaseExtension::getContainer()
 {
     auto ext = getExtendedContainer();
-    if (!ext || !ext->isDerivedFrom(DocumentObject::getClassTypeId())) {
+    if (!ext || !ext->isDerivedFrom<DocumentObject>()) {
         LINK_THROW(Base::RuntimeError, "Link: container not derived from document object");
     }
     return static_cast<DocumentObject*>(ext);
@@ -1756,7 +1756,7 @@ void LinkBaseExtension::parseSubName() const
     for (std::size_t i = 1; i < subs.size(); ++i) {
         auto& sub = subs[i];
         element = Data::findElementName(sub.c_str());
-        if (element && element[0] && boost::starts_with(sub, mySubName)) {
+        if (!Base::Tools::isNullOrEmpty(element) && boost::starts_with(sub, mySubName)) {
             mySubElements.emplace_back(element);
         }
     }
@@ -2265,7 +2265,7 @@ void LinkBaseExtension::onExtendedDocumentRestored()
             std::set<std::string> subset(mySubElements.begin(), mySubElements.end());
             auto sub = xlink->getSubValues().front();
             auto element = Data::findElementName(sub.c_str());
-            if (element && element[0]) {
+            if (!Base::Tools::isNullOrEmpty(element)) {
                 subset.insert(element);
                 sub.resize(element - sub.c_str());
             }
@@ -2374,7 +2374,7 @@ void LinkBaseExtension::setLink(int index,
             }
 
             int idx = -1;
-            if (getLinkModeValue() >= LinkModeAutoLink || (subname && subname[0])
+            if (getLinkModeValue() >= LinkModeAutoLink || !Base::Tools::isNullOrEmpty(subname)
                 || !subElements.empty() || obj->getDocument() != parent->getDocument()
                 || (getElementListProperty()->find(obj->getNameInDocument(), &idx)
                     && idx != index)) {
@@ -2433,7 +2433,7 @@ void LinkBaseExtension::setLink(int index,
     }
 
     if (!xlink) {
-        if (!subElements.empty() || (subname && subname[0])) {
+        if (!subElements.empty() || !Base::Tools::isNullOrEmpty(subname)) {
             LINK_THROW(Base::RuntimeError, "SubName/SubElement link requires PropertyXLink");
         }
         linkProp->setValue(obj);
@@ -2448,7 +2448,7 @@ void LinkBaseExtension::setLink(int index,
             subs.back() += s;
         }
     }
-    else if (subname && subname[0]) {
+    else if (!Base::Tools::isNullOrEmpty(subname)) {
         subs.emplace_back(subname);
     }
     xlink->setValue(obj, std::move(subs));

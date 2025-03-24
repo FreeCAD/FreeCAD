@@ -72,7 +72,7 @@ public:
 // NOLINTBEGIN
 class MeasureGuiExport ViewProviderMeasureBase: public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(ViewProviderMeasureBase);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeasureGui::ViewProviderMeasureBase);
 
 public:
     /// constructor.

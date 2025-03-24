@@ -42,7 +42,7 @@
 #include <Gui/DockWindowManager.h>
 #include <Gui/Document.h>
 #include <Gui/PythonWrapper.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Window.h>
 
@@ -338,7 +338,7 @@ void PlacementHandler::applyPlacement(const App::DocumentObject* obj, const QStr
 
 QString PlacementHandler::getIncrementalPlacement(const App::DocumentObject* obj, const QString& data) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         R"(App.getDocument("%1").%2.%3=%4.multiply(App.getDocument("%1").%2.%3))")
         .arg(QString::fromLatin1(obj->getDocument()->getName()),
              QString::fromLatin1(obj->getNameInDocument()),
@@ -348,7 +348,7 @@ QString PlacementHandler::getIncrementalPlacement(const App::DocumentObject* obj
 
 QString PlacementHandler::getSimplePlacement(const App::DocumentObject* obj, const QString& data) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.getDocument(\"%1\").%2.%3=%4")
         .arg(QString::fromLatin1(obj->getDocument()->getName()),
              QString::fromLatin1(obj->getNameInDocument()),
@@ -530,13 +530,8 @@ void Placement::setupSignalMapper()
         signalMapper->setMapping(it, id++);
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(signalMapper, qOverload<int>(&QSignalMapper::mapped),
-            this, &Placement::onPlacementChanged);
-#else
     connect(signalMapper, &QSignalMapper::mappedInt,
             this, &Placement::onPlacementChanged);
-#endif
 }
 
 void Placement::setupRotationMethod()
@@ -713,7 +708,7 @@ void Placement::onSelectedVertexClicked()
 
     if (!success) {
         Base::Console().Warning("Placement selection error.  Select either 1 or 2 points.\n");
-        QMessageBox msgBox;
+        QMessageBox msgBox(this);
         msgBox.setText(tr("Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, \
 face, or edge.  If on a face or edge the point used will be the point at the mouse position along \
 face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are \
@@ -1036,7 +1031,7 @@ QString Placement::getPlacementFromEulerAngles() const
     Base::Vector3d pos = getPositionData();
     Base::Vector3d ypr = getAnglesData();
     Base::Vector3d cnt = getCenterData();
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.Placement(App.Vector(%1,%2,%3), App.Rotation(%4,%5,%6), App.Vector(%7,%8,%9))")
         .arg(pos.x)
         .arg(pos.y)
@@ -1055,7 +1050,7 @@ QString Placement::getPlacementFromAxisWithAngle() const
     Base::Vector3d cnt = getCenterData();
     Base::Vector3d dir = getDirection();
     double angle = ui->angle->value().getValue();
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.Placement(App.Vector(%1,%2,%3), App.Rotation(App.Vector(%4,%5,%6),%7), App.Vector(%8,%9,%10))")
         .arg(pos.x)
         .arg(pos.y)

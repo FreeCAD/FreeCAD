@@ -56,5 +56,17 @@
         <file>icons/PartDesign_SubtractiveWedge.svg</file>
         <file>icons/PartDesign_Thickness.svg</file>
         <file>icons/PartDesignWorkbench.svg</file>
+        <file>images/hole_counterbore_angled.svg</file>
+        <file>images/hole_counterbore_angled_included.svg</file>
+        <file>images/hole_counterdrill_angled.svg</file>
+        <file>images/hole_counterdrill_angled_included.svg</file>
+        <file>images/hole_countersink_angled.svg</file>
+        <file>images/hole_countersink_angled_included.svg</file>
+        <file>images/hole_none_angled.svg</file>
+        <file>images/hole_none_angled_included.svg</file>
+        <file>images/hole_counterbore_flat.svg</file>
+        <file>images/hole_counterdrill_flat.svg</file>
+        <file>images/hole_countersink_flat.svg</file>
+        <file>images/hole_none_flat.svg</file>
     </qresource>
 </RCC>

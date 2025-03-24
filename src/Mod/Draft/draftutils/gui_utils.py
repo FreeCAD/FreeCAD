@@ -462,8 +462,6 @@ def apply_current_style(objs):
                 if style[prop][0] == "index":
                     if style[prop][2] in vobj.getEnumerationsOfProperty(prop):
                         setattr(vobj, prop, style[prop][2])
-                elif style[prop][0] == "color":
-                    setattr(vobj, prop, style[prop][1] & 0xFFFFFF00)
                 else:
                     setattr(vobj, prop, style[prop][1])
 
@@ -501,7 +499,7 @@ def restore_view_object(obj, vp_module, vp_class, format=True, format_ref=None):
             format_object(obj, format_ref)
 
 
-def format_object(target, origin=None):
+def format_object(target, origin=None, ignore_construction=False):
     """Apply visual properties to an object.
 
     This function only works if the graphical interface is available.
@@ -523,6 +521,10 @@ def format_object(target, origin=None):
         If construction mode is not active, its visual properties are assigned
         to `target`, with the exception of `BoundingBox`, `Proxy`, `RootNode`
         and `Visibility`.
+
+    ignore_construction: bool, optional
+        Defaults to `False`.
+        Set to `True` to ignore construction mode.
     """
     if not target:
         return
@@ -530,30 +532,38 @@ def format_object(target, origin=None):
         return
     if not hasattr(Gui, "draftToolBar"):
         return
-    if not hasattr(target, 'ViewObject'):
+    if not hasattr(target, "ViewObject"):
         return
+    if hasattr(target, "Shape") and target.Shape.Faces:
+        len_faces = len(target.Shape.Faces)
+    else:
+        len_faces = 1
     obrep = target.ViewObject
     obprops = obrep.PropertiesList
-    if origin and hasattr(origin, 'ViewObject'):
+    if origin and hasattr(origin, "ViewObject"):
         matchrep = origin.ViewObject
         for p in matchrep.PropertiesList:
-            if p not in ("DisplayMode", "BoundingBox",
-                         "Proxy", "RootNode", "Visibility"):
-                if p in obprops:
-                    if not obrep.getEditorMode(p):
-                        if hasattr(getattr(matchrep, p), "Value"):
-                            val = getattr(matchrep, p).Value
-                        else:
-                            val = getattr(matchrep, p)
-                        try:
-                            setattr(obrep, p, val)
-                        except Exception:
-                            pass
+            if p in ("DisplayMode", "BoundingBox", "Proxy", "RootNode", "Visibility"):
+                continue
+            if p not in obprops:
+                continue
+            if obrep.getEditorMode(p):
+                continue
+            val = getattr(matchrep, p)
+            if isinstance(val, tuple):
+                if len(val) != len_faces:
+                    val = (val[0], )
+            elif hasattr(val, "Value"):
+                val = val.Value
+            try:
+                setattr(obrep, p, val)
+            except Exception:
+                pass
         if matchrep.DisplayMode in obrep.listDisplayModes():
             obrep.DisplayMode = matchrep.DisplayMode
         if hasattr(obrep, "DiffuseColor"):
             difcol = get_diffuse_color(origin)
-            if difcol:
+            if difcol and len(difcol) == len_faces:
                 obrep.DiffuseColor = difcol
     elif "FontName" not in obprops:
         # Apply 2 Draft style preferences, other style preferences are applied by Core.
@@ -563,9 +573,11 @@ def format_object(target, origin=None):
             dm = utils.DISPLAY_MODES[params.get_param("DefaultDisplayMode")]
             if dm in obrep.listDisplayModes():
                 obrep.DisplayMode = dm
+    if ignore_construction:
+        return
     if Gui.draftToolBar.isConstructionMode():
         doc = App.ActiveDocument
-        col = params.get_param("constructioncolor") & 0xFFFFFF00
+        col = params.get_param("constructioncolor") | 0x000000FF
         grp = doc.getObject("Draft_Construction")
         if not grp:
             grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
@@ -675,10 +687,12 @@ def select(objs=None, gui=App.GuiUp):
 
     Parameters
     ----------
-    objs: list of App::DocumentObject, optional
+    objs: list of App::DocumentObjects or tuples, or a single object or tuple, optional
         It defaults to `None`.
-        Any type of scripted object.
-        It may be a list of objects or a single object.
+        Format for tuples:
+        `(doc.Name or "", sel.Object.Name, sel.SubElementName or "")`
+        For example (Box nested in Part):
+        `("", "Part", "Box.Edge1")`
 
     gui: bool, optional
         It defaults to the value of `App.GuiUp`, which is `True`
@@ -689,12 +703,25 @@ def select(objs=None, gui=App.GuiUp):
     """
     if gui:
         Gui.Selection.clearSelection()
-        if objs:
+        if objs is not None:
             if not isinstance(objs, list):
                 objs = [objs]
             for obj in objs:
-                if obj:
-                    Gui.Selection.addSelection(obj)
+                if not obj:
+                    continue
+                if isinstance(obj, tuple):
+                    # Example of tuple (Rectangle in Part):
+                    #   ("", "Part", "Rectangle.")
+                    # See:
+                    #   utils._modifiers_process_selection()
+                    #   utils._modifiers_process_subselection()
+                    parent = App.ActiveDocument.getObject(obj[1])
+                    if parent and parent.getSubObject(obj[2]):
+                        Gui.Selection.addSelection(*obj)
+                    continue
+                if utils.is_deleted(obj):
+                    continue
+                Gui.Selection.addSelection(obj)
 
 
 def load_texture(filename, size=None, gui=App.GuiUp):

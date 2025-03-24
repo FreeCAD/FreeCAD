@@ -250,7 +250,7 @@ void MaterialDelegate::showColorModal(const QString& propertyName, QStandardItem
         if (result == QDialog::Accepted) {
             QColor color = dlg->selectedColor();
             if (color.isValid()) {
-                QString colorText = QString(QString::fromStdString("(%1,%2,%3,%4)"))
+                QString colorText = QString(QStringLiteral("(%1,%2,%3,%4)"))
                                         .arg(color.red() / 255.0)
                                         .arg(color.green() / 255.0)
                                         .arg(color.blue() / 255.0)
@@ -445,7 +445,7 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent,
     }
     else if (type == Materials::MaterialValue::Boolean) {
         auto combo = new Gui::PrefComboBox(parent);
-        combo->insertItem(0, QString::fromStdString(""));
+        combo->insertItem(0, QStringLiteral(""));
         combo->insertItem(1, tr("False"));
         combo->insertItem(2, tr("True"));
         combo->setCurrentText(item.toString());

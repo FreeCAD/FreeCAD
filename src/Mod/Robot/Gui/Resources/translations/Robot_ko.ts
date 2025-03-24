@@ -6,17 +6,17 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="240"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="241"/>
       <source>Add tool</source>
-      <translation>추가 도구</translation>
+      <translation>도구 추가</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="242"/>
       <source>Add a tool shape to the robot</source>
-      <translation>로봇을 도구 셰이프 추가</translation>
+      <translation>로봇에 도구 모양 추가</translation>
     </message>
   </context>
   <context>
@@ -24,12 +24,12 @@
     <message>
       <location filename="../../Command.cpp" line="163"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="164"/>
       <source>Place robot...</source>
-      <translation>장소 로봇...</translation>
+      <translation>로봇 배치...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="165"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="55"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="56"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="57"/>
       <source>Create a new empty trajectory</source>
-      <translation type="unfinished">Create a new empty trajectory</translation>
+      <translation>로봇의 새 동작 경로 생성</translation>
     </message>
   </context>
   <context>
@@ -60,17 +60,17 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="360"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="361"/>
       <source>Edge to Trajectory...</source>
-      <translation type="unfinished">Edge to Trajectory...</translation>
+      <translation>모서리를 경로로 변경</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="362"/>
       <source>Generate a Trajectory from a set of edges</source>
-      <translation type="unfinished">Generate a Trajectory from a set of edges</translation>
+      <translation>모서리들로부터 경로를 생성</translation>
     </message>
   </context>
   <context>
@@ -78,17 +78,17 @@
     <message>
       <location filename="../../CommandExport.cpp" line="46"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="47"/>
       <source>Kuka compact subroutine...</source>
-      <translation type="unfinished">Kuka compact subroutine...</translation>
+      <translation>Kuka 컴팩트 서브루틴</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="48"/>
       <source>Export the trajectory as a compact KRL subroutine.</source>
-      <translation type="unfinished">Export the trajectory as a compact KRL subroutine.</translation>
+      <translation>경로를 추출해서 Kuka 컴팩트 서브루틴으로 전송</translation>
     </message>
   </context>
   <context>
@@ -96,17 +96,17 @@
     <message>
       <location filename="../../CommandExport.cpp" line="121"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="122"/>
       <source>Kuka full subroutine...</source>
-      <translation type="unfinished">Kuka full subroutine...</translation>
+      <translation>Kuka 전체 서브루틴</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="123"/>
       <source>Export the trajectory as a full KRL subroutine.</source>
-      <translation type="unfinished">Export the trajectory as a full KRL subroutine.</translation>
+      <translation>경로를 추출해서 Kuka 컴팩트 서브루틴으로 전송</translation>
     </message>
   </context>
   <context>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="192"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="193"/>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="194"/>
       <source>Insert a Kuka IR125 into the document.</source>
-      <translation type="unfinished">Insert a Kuka IR125 into the document.</translation>
+      <translation>Kuka IR125 로봇 모델 문서에 추가</translation>
     </message>
   </context>
   <context>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="97"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="98"/>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="99"/>
       <source>Insert a Kuka IR16 into the document.</source>
-      <translation type="unfinished">Insert a Kuka IR16 into the document.</translation>
+      <translation>Kuka IR16 로봇 모델 문서에 추가</translation>
     </message>
   </context>
   <context>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="145"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="146"/>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="147"/>
       <source>Insert a Kuka IR210 into the document.</source>
-      <translation type="unfinished">Insert a Kuka IR210 into the document.</translation>
+      <translation>Kuka IR210 로봇 모델 문서에 추가</translation>
     </message>
   </context>
   <context>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="46"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="47"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="48"/>
       <source>Insert a Kuka IR500 into the document.</source>
-      <translation type="unfinished">Insert a Kuka IR500 into the document.</translation>
+      <translation>Kuka IR500 로봇 모델 문서에 추가</translation>
     </message>
   </context>
   <context>
@@ -186,17 +186,17 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="89"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="90"/>
       <source>Insert in trajectory</source>
-      <translation type="unfinished">Insert in trajectory</translation>
+      <translation>경로에 삽입</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="91"/>
       <source>Insert robot Tool location into trajectory</source>
-      <translation type="unfinished">Insert robot Tool location into trajectory</translation>
+      <translation>경로에 로봇툴의 작업 위치 삽입</translation>
     </message>
   </context>
   <context>
@@ -204,17 +204,17 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="158"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="159"/>
       <source>Insert in trajectory</source>
-      <translation type="unfinished">Insert in trajectory</translation>
+      <translation>경로에 삽입</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="160"/>
       <source>Insert preselection position into trajectory (W)</source>
-      <translation type="unfinished">Insert preselection position into trajectory (W)</translation>
+      <translation>경로에 미리 설정한 위치를 삽입(위치)</translation>
     </message>
   </context>
   <context>
@@ -222,13 +222,13 @@
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="111"/>
       <location filename="../../Command.cpp" line="112"/>
       <source>Move to home</source>
-      <translation type="unfinished">Move to home</translation>
+      <translation>홈 위치로 이동</translation>
     </message>
   </context>
   <context>
@@ -236,17 +236,17 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="235"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="236"/>
       <source>Set default orientation</source>
-      <translation type="unfinished">Set default orientation</translation>
+      <translation>기본 방향 설정</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="238"/>
       <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>도착지점 생성을 위한 명령의 기본 방향 설정</translation>
     </message>
   </context>
   <context>
@@ -254,17 +254,17 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="279"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="280"/>
       <source>Set default values</source>
-      <translation type="unfinished">Set default values</translation>
+      <translation>기본 값 설정</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="281"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+      <translation>도착지점 생성을 위한 명령의 속도, 가속도, 연속성의 기본 값 설정</translation>
     </message>
   </context>
   <context>
@@ -272,13 +272,13 @@
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="53"/>
       <source>Set the home position</source>
-      <translation type="unfinished">Set the home position</translation>
+      <translation>홈 위치 설정</translation>
     </message>
   </context>
   <context>
@@ -286,17 +286,17 @@
     <message>
       <location filename="../../Command.cpp" line="211"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="212"/>
       <source>Simulate a trajectory</source>
-      <translation type="unfinished">Simulate a trajectory</translation>
+      <translation>경로 시뮬레이션</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Run a simulation on a trajectory</source>
-      <translation type="unfinished">Run a simulation on a trajectory</translation>
+      <translation>경로를 바탕으로 동작 시뮬레이션</translation>
     </message>
   </context>
   <context>
@@ -304,17 +304,17 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="483"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="484"/>
       <source>Trajectory compound...</source>
-      <translation type="unfinished">Trajectory compound...</translation>
+      <translation>경로 합침</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="485"/>
       <source>Group and connect some trajectories to one</source>
-      <translation type="unfinished">Group and connect some trajectories to one</translation>
+      <translation>경로를 그룹화 하여 하나로 연결</translation>
     </message>
   </context>
   <context>
@@ -322,17 +322,17 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="426"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="427"/>
       <source>Dress-up trajectory...</source>
-      <translation type="unfinished">Dress-up trajectory...</translation>
+      <translation>경로 정보 수정</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="429"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation type="unfinished">Create a dress-up object which overrides some aspects of a trajectory</translation>
+      <translation>경로의 일부 조건을 수정하거나 덮어쓰기 위한 수정 객체 생성</translation>
     </message>
   </context>
   <context>
@@ -340,7 +340,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Trajectory tools</source>
-      <translation type="unfinished">Trajectory tools</translation>
+      <translation>경로 도구모음</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -350,7 +350,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Insert Robot</source>
-      <translation type="unfinished">Insert Robot</translation>
+      <translation>로봇 추가</translation>
     </message>
   </context>
   <context>
@@ -367,12 +367,12 @@
       <location filename="../../CommandExport.cpp" line="62"/>
       <location filename="../../CommandExport.cpp" line="137"/>
       <source>Wrong selection</source>
-      <translation>잘못 된 선택</translation>
+      <translation>잘못된 선택</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="72"/>
       <source>Select one Robot to set home position</source>
-      <translation type="unfinished">Select one Robot to set home position</translation>
+      <translation>홈 위치 설정을 위한 로봇 선택</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="131"/>
@@ -385,17 +385,17 @@
       <location filename="../../CommandExport.cpp" line="63"/>
       <location filename="../../CommandExport.cpp" line="138"/>
       <source>Select one Robot and one Trajectory object.</source>
-      <translation type="unfinished">Select one Robot and one Trajectory object.</translation>
+      <translation>로봇 하나, 경로 하나 선택</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Trajectory not valid</source>
-      <translation type="unfinished">Trajectory not valid</translation>
+      <translation>경로가 타당하지 않음</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation type="unfinished">You need at least two waypoints in a trajectory to simulate.</translation>
+      <translation>경로를 시뮬레이션 하기 위해서는 적어도 2개 이상의 도착지점이 필요합니다.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="89"/>
@@ -413,33 +413,33 @@
       <location filename="../../CommandExport.cpp" line="92"/>
       <location filename="../../CommandExport.cpp" line="167"/>
       <source>Export program</source>
-      <translation type="unfinished">Export program</translation>
+      <translation>프로그램 내보내기</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="261"/>
       <source>Select one robot and one shape or VRML object.</source>
-      <translation type="unfinished">Select one robot and one shape or VRML object.</translation>
+      <translation>로봇 하나와 3D 모형 혹은 VRML 객체 하나 선택</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="174"/>
       <location filename="../../CommandTrajectory.cpp" line="193"/>
       <source>Select one Trajectory object.</source>
-      <translation type="unfinished">Select one Trajectory object.</translation>
+      <translation>경로 하나 선택</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="201"/>
       <source>No preselection</source>
-      <translation type="unfinished">No preselection</translation>
+      <translation>사전선택 없음</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="202"/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-      <translation type="unfinished">You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</translation>
+      <translation>이 커맨드를 사용하기 위해서는 객체 위에 마우스 커서를 올려놓으셔야 합니다. 문서에서 자세한 것을 확인하세요.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="294"/>
       <source>Set default speed</source>
-      <translation type="unfinished">Set default speed</translation>
+      <translation>기본 속도 지정</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="295"/>
@@ -449,42 +449,42 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="308"/>
       <source>Set default continuity</source>
-      <translation type="unfinished">Set default continuity</translation>
+      <translation>기본 연속성 지정</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="309"/>
       <source>continuous ?</source>
-      <translation type="unfinished">continuous ?</translation>
+      <translation>연속적 ?</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="322"/>
       <source>Set default acceleration</source>
-      <translation type="unfinished">Set default acceleration</translation>
+      <translation>기본 가속도 설정</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="323"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
-      <translation type="unfinished">acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</translation>
+      <translation>가속도: (예시: 1 m/s^2 or 3 cm/s^2)</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="465"/>
       <source>Select the Trajectory which you want to dress up.</source>
-      <translation type="unfinished">Select the Trajectory which you want to dress up.</translation>
+      <translation>수정하고 싶은 경로 선택</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTrajectory.cpp" line="145"/>
       <source>Modify</source>
-      <translation type="unfinished">Modify</translation>
+      <translation>수정</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="74"/>
       <source>No robot files installed</source>
-      <translation type="unfinished">No robot files installed</translation>
+      <translation>로봇 파일이 설치되지 않음</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
       <source>Please visit %1 and copy the files to %2</source>
-      <translation type="unfinished">Please visit %1 and copy the files to %2</translation>
+      <translation>파일을 %1에서 %2로 복사해 주세요</translation>
     </message>
   </context>
   <context>
@@ -560,22 +560,22 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="47"/>
       <source>Edges: 0</source>
-      <translation type="unfinished">Edges: 0</translation>
+      <translation>모서리: 0</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="61"/>
       <source>Cluster: 0</source>
-      <translation type="unfinished">Cluster: 0</translation>
+      <translation>클러스터: 0</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="72"/>
       <source>Sizing Value:</source>
-      <translation type="unfinished">Sizing Value:</translation>
+      <translation>값 크기 설정</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="103"/>
       <source>Use orientation of edge</source>
-      <translation type="unfinished">Use orientation of edge</translation>
+      <translation>모서리의 방향을 활용</translation>
     </message>
   </context>
   <context>
@@ -706,17 +706,17 @@
     <message>
       <location filename="../../TaskRobotControl.ui" line="268"/>
       <source>Base 0</source>
-      <translation type="unfinished">Base 0</translation>
+      <translation>베이스 0</translation>
     </message>
     <message>
       <location filename="../../TaskRobotControl.ui" line="273"/>
       <source>Base</source>
-      <translation type="unfinished">Base</translation>
+      <translation>베이스</translation>
     </message>
     <message>
       <location filename="../../TaskRobotControl.ui" line="278"/>
       <source>World</source>
-      <translation type="unfinished">World</translation>
+      <translation>월드</translation>
     </message>
     <message>
       <location filename="../../TaskRobotControl.ui" line="287"/>
@@ -754,7 +754,7 @@
     <message>
       <location filename="../../TaskRobotMessages.ui" line="20"/>
       <source>clear</source>
-      <translation type="unfinished">clear</translation>
+      <translation>초기화</translation>
     </message>
   </context>
   <context>
@@ -787,12 +787,12 @@
     <message>
       <location filename="../../TaskTrajectory.ui" line="254"/>
       <source>10 ms</source>
-      <translation>10 밀리초</translation>
+      <translation>10 ms</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="259"/>
       <source>50 ms</source>
-      <translation>50 밀리초</translation>
+      <translation>50 ms</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="264"/>
@@ -812,7 +812,7 @@
     <message>
       <location filename="../../TaskTrajectory.ui" line="291"/>
       <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
-      <translation type="unfinished">Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</translation>
+      <translation>위치: (200.23, 300.23, 400.23, 234, 343, 343)</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="317"/>
@@ -860,7 +860,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="29"/>
       <source>Speed:</source>
-      <translation type="unfinished">Speed:</translation>
+      <translation>속도:</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="55"/>
@@ -871,27 +871,27 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="66"/>
       <source>Accel:</source>
-      <translation type="unfinished">Accel:</translation>
+      <translation>가속도:</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="102"/>
       <source>Don't change Cont</source>
-      <translation type="unfinished">Don't change Cont</translation>
+      <translation>Cont를 변경하지 마세요</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="107"/>
       <source>Continues</source>
-      <translation type="unfinished">Continues</translation>
+      <translation>계속하다</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="112"/>
       <source>Discontinues</source>
-      <translation type="unfinished">Discontinues</translation>
+      <translation>중지하다</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="127"/>
       <source>Position and Orientation:</source>
-      <translation type="unfinished">Position and Orientation:</translation>
+      <translation>위치와 방향</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="159"/>
@@ -901,17 +901,17 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="164"/>
       <source>Use Orientation</source>
-      <translation type="unfinished">Use Orientation</translation>
+      <translation>방향 사용</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="169"/>
       <source>Add Position</source>
-      <translation type="unfinished">Add Position</translation>
+      <translation>위치 추가</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="174"/>
       <source>Add Orientation</source>
-      <translation type="unfinished">Add Orientation</translation>
+      <translation>방향 추가</translation>
     </message>
   </context>
   <context>
@@ -919,12 +919,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Robot</source>
-      <translation>Robot</translation>
+      <translation>로봇</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Insert Robots</source>
-      <translation type="unfinished">Insert Robots</translation>
+      <translation>로봇 삽입</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -934,7 +934,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Export trajectory</source>
-      <translation type="unfinished">Export trajectory</translation>
+      <translation>경로 추출</translation>
     </message>
   </context>
 </TS>

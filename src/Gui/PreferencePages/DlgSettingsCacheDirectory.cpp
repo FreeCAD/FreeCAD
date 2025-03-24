@@ -63,12 +63,12 @@ DlgSettingsCacheDirectory::DlgSettingsCacheDirectory(QWidget* parent)
     QString path = QString::fromStdString(App::Application::getUserCachePath());
     ui->cacheLocation->setText(path);
 
-    ui->comboBoxLimit->addItem(QString::fromLatin1("100 MB"), 100);
-    ui->comboBoxLimit->addItem(QString::fromLatin1("300 MB"), 300);
-    ui->comboBoxLimit->addItem(QString::fromLatin1("500 MB"), 500);
-    ui->comboBoxLimit->addItem(QString::fromLatin1("1 GB"), 1024);
-    ui->comboBoxLimit->addItem(QString::fromLatin1("2 GB"), 2048);
-    ui->comboBoxLimit->addItem(QString::fromLatin1("3 GB"), 3072);
+    ui->comboBoxLimit->addItem(QStringLiteral("100 MB"), 100);
+    ui->comboBoxLimit->addItem(QStringLiteral("300 MB"), 300);
+    ui->comboBoxLimit->addItem(QStringLiteral("500 MB"), 500);
+    ui->comboBoxLimit->addItem(QStringLiteral("1 GB"), 1024);
+    ui->comboBoxLimit->addItem(QStringLiteral("2 GB"), 2048);
+    ui->comboBoxLimit->addItem(QStringLiteral("3 GB"), 3072);
 
     connect(ui->pushButtonCheck, &QPushButton::clicked, this, &DlgSettingsCacheDirectory::runCheck);
     connect(ui->openButton, &QPushButton::clicked, this, &DlgSettingsCacheDirectory::openDirectory);
@@ -92,7 +92,7 @@ void DlgSettingsCacheDirectory::loadSettings()
 
     // if not found then add a new item with this value
     if (index < 0) {
-        ui->comboBoxLimit->addItem(QString::fromLatin1("%1 MB").arg(limit), limit);
+        ui->comboBoxLimit->addItem(QStringLiteral("%1 MB").arg(limit), limit);
         index = ui->comboBoxLimit->count() - 1;
     }
     ui->comboBoxLimit->setCurrentIndex(index);
@@ -208,7 +208,7 @@ bool ApplicationCache::periodicCheckOfSize() const
     QString application = QString::fromStdString(App::Application::getExecutableName());
 
     QSettings settings(vendor, application);
-    QString key = QString::fromLatin1("LastCacheCheck");
+    QString key = QStringLiteral("LastCacheCheck");
     QDate date = settings.value(key).toDate();
     QDate now = QDate::currentDate();
 
@@ -245,7 +245,7 @@ bool ApplicationCache::performAction(qint64 total)
         QString warn = tr("Warning: Please make sure that this is the only running %1 instance "
                           "and that no documents are opened as this may result into data loss!").arg(QCoreApplication::applicationName());
 
-        msgBox.setText(QString::fromLatin1("%1 %2\n\n\n%3").arg(hint, ask, warn));
+        msgBox.setText(QStringLiteral("%1 %2\n\n\n%3").arg(hint, ask, warn));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Open);
         msgBox.setDefaultButton(QMessageBox::No);
 
@@ -286,7 +286,7 @@ void ApplicationCache::clearDirectory(const QString& path)
 {
     // Add the transient directories and the lock files to the ignore list
     QDir tmp = QString::fromUtf8(App::Application::getUserCachePath().c_str());
-    tmp.setNameFilters(QStringList() << QString::fromLatin1("*.lock"));
+    tmp.setNameFilters(QStringList() << QStringLiteral("*.lock"));
     tmp.setFilter(QDir::Files);
 
     QList<QFileInfo> dirs;
@@ -347,10 +347,10 @@ qint64 ApplicationCache::toBytes(unsigned int sizeInMB)
 
 QString ApplicationCache::toString(qint64 size)
 {
-    QStringList units = {QString::fromLatin1("Bytes"),
-                         QString::fromLatin1("KB"),
-                         QString::fromLatin1("MB"),
-                         QString::fromLatin1("GB")};
+    QStringList units = {QStringLiteral("Bytes"),
+                         QStringLiteral("KB"),
+                         QStringLiteral("MB"),
+                         QStringLiteral("GB")};
     int i;
     double outputSize = size;
     for (i=0; i<units.size()-1; i++) {
@@ -359,7 +359,7 @@ QString ApplicationCache::toString(qint64 size)
         outputSize /= 1024;
     }
 
-    return QString::fromLatin1("%1 %2").arg(QLocale().toString(outputSize, 'f', 2), units[i]);
+    return QStringLiteral("%1 %2").arg(QLocale().toString(outputSize, 'f', 2), units[i]);
 }
 
 // ----------------------------------------------------------------------------

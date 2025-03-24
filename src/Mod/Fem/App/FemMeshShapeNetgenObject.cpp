@@ -62,19 +62,19 @@ FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
         (0.3),
         "MeshParams",
         Prop_None,
-        " allows to define how much the linear dimensions of two adjacent cells can differ");
+        " allows defining how much the linear dimensions of two adjacent cells can differ");
     ADD_PROPERTY_TYPE(
         NbSegsPerEdge,
         (1),
         "MeshParams",
         Prop_None,
-        "allows to define the minimum number of mesh segments in which edges will be split");
+        "allows defining the minimum number of mesh segments in which edges will be split");
     ADD_PROPERTY_TYPE(
         NbSegsPerRadius,
         (2),
         "MeshParams",
         Prop_None,
-        "allows to define the minimum number of mesh segments in which radiuses will be split");
+        "allows defining the minimum number of mesh segments in which radii will be split");
     ADD_PROPERTY_TYPE(Optimize, (true), "MeshParams", Prop_None, "Optimize the resulting mesh");
 }
 

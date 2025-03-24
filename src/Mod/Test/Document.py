@@ -187,8 +187,6 @@ class DocumentBasicCases(unittest.TestCase):
         self.assertTrue(L1.Float - 47.11 < 0.001)
         self.assertTrue(L1.Bool == True)
         self.assertTrue(L1.String == "4711")
-        # temporarily not checked because of strange behavior of boost::filesystem JR
-        # self.assertTrue(L1.Path  == "c:/temp")
         self.assertTrue(float(L1.Angle) - 3.0 < 0.001)
         self.assertTrue(float(L1.Distance) - 47.11 < 0.001)
 
@@ -357,17 +355,17 @@ class DocumentBasicCases(unittest.TestCase):
 
         res = obj.getSubObject("X_Axis", retType=2)
         self.assertEqual(
-            res[1].multVec(FreeCAD.Vector(0, 0, 1)).getAngle(FreeCAD.Vector(1, 0, 0)), 0.0
+            res[1].multVec(FreeCAD.Vector(1, 0, 0)).getAngle(FreeCAD.Vector(1, 0, 0)), 0.0
         )
 
         res = obj.getSubObject("Y_Axis", retType=2)
         self.assertEqual(
-            res[1].multVec(FreeCAD.Vector(0, 0, 1)).getAngle(FreeCAD.Vector(0, 1, 0)), 0.0
+            res[1].multVec(FreeCAD.Vector(1, 0, 0)).getAngle(FreeCAD.Vector(0, 1, 0)), 0.0
         )
 
         res = obj.getSubObject("Z_Axis", retType=2)
         self.assertEqual(
-            res[1].multVec(FreeCAD.Vector(0, 0, 1)).getAngle(FreeCAD.Vector(0, 0, 1)), 0.0
+            res[1].multVec(FreeCAD.Vector(1, 0, 0)).getAngle(FreeCAD.Vector(0, 0, 1)), 0.0
         )
 
         res = obj.getSubObject("XY_Plane", retType=2)

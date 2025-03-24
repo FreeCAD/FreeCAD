@@ -48,22 +48,23 @@ SET (Draft_geoutils
 
 SET(Draft_tests
     drafttests/__init__.py
+    drafttests/README.md
     drafttests/auxiliary.py
+    drafttests/draft_test_objects.py
+    drafttests/test_airfoildat.py
+    drafttests/test_array.py
+    drafttests/test_base.py
+    drafttests/test_creation.py
+    drafttests/test_draftgeomutils.py
+    drafttests/test_dwg.py
+    drafttests/test_dxf.py
     drafttests/test_import.py
     drafttests/test_import_gui.py
     drafttests/test_import_tools.py
-    drafttests/test_pivy.py
-    drafttests/test_array.py
-    drafttests/test_creation.py
     drafttests/test_modification.py
-    drafttests/test_svg.py
-    drafttests/test_dxf.py
-    drafttests/test_dwg.py
     drafttests/test_oca.py
-    drafttests/test_airfoildat.py
-    drafttests/test_draftgeomutils.py
-    drafttests/draft_test_objects.py
-    drafttests/README.md
+    drafttests/test_pivy.py
+    drafttests/test_svg.py
 )
 
 SET(Draft_utilities

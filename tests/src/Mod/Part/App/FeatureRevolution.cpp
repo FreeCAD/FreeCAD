@@ -25,7 +25,7 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _revolution = dynamic_cast<Part::Revolution*>(_doc->addObject("Part::Revolution"));
+        _revolution = _doc->addObject<Part::Revolution>();
         PartTestHelpers::rectangle(len, wid, "Rect1");
         _revolution->Source.setValue(_doc->getObjects().back());
         _revolution->Axis.setValue(0, 1, 0);
@@ -95,7 +95,7 @@ TEST_F(FeatureRevolutionTest, testAxisLink)
 {
     // Arrange
     BRepBuilderAPI_MakeEdge e1(gp_Pnt(0, 0, 0), gp_Pnt(0, 0, ext1));
-    auto edge = dynamic_cast<Part::Feature*>(_doc->addObject("Part::Feature", "Edge"));
+    auto edge = _doc->addObject<Part::Feature>("Edge");
     edge->Shape.setValue(e1);
     _revolution->AxisLink.setValue(edge);
     // double puckVolume = wid * wid * M_PI * len;  // Area is PIr2; apply height

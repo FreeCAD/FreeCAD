@@ -37,7 +37,7 @@
 #include "StartupProcess.h"
 #include "Application.h"
 #include "AutoSaver.h"
-#include "DlgCheckableMessageBox.h"
+#include "Dialogs/DlgCheckableMessageBox.h"
 #include "FileDialog.h"
 #include "GuiApplication.h"
 #include "MainWindow.h"
@@ -54,10 +54,7 @@ StartupProcess::StartupProcess() = default;
 void StartupProcess::setupApplication()
 {
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
-#endif
 
     // Automatic scaling for legacy apps (disable once all parts of GUI are aware of HiDpi)
     ParameterGrp::handle hDPI =
@@ -76,7 +73,7 @@ void StartupProcess::setupApplication()
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0) && defined(Q_OS_WIN)
+#if defined(Q_OS_WIN)
         QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
     }
@@ -93,8 +90,6 @@ void StartupProcess::setupApplication()
     if (useSoftwareOpenGL) {
         QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     }
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
     // By default (on platforms that support it, see docs for
     // Qt::AA_CompressHighFrequencyEvents) QT applies compression
     // for high frequency events (mouse move, touch, window resizes)
@@ -106,7 +101,6 @@ void StartupProcess::setupApplication()
     // leading to unacceptable slowdowns using a tablet pen. Enable
     // compression for tablet events here to solve that.
     QCoreApplication::setAttribute(Qt::AA_CompressTabletEvents);
-#endif
 }
 
 void StartupProcess::execute()
@@ -135,7 +129,7 @@ void StartupProcess::setStyleSheetPaths()
         (App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str())
             << QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str())
             << QLatin1String(":/stylesheets");
-    QDir::setSearchPaths(QString::fromLatin1("qss"), qssPaths);
+    QDir::setSearchPaths(QStringLiteral("qss"), qssPaths);
     // setup the search paths for Qt overlay style sheets
     QStringList qssOverlayPaths;
     qssOverlayPaths << QString::fromUtf8((App::Application::getUserAppDataDir()
@@ -152,7 +146,7 @@ void StartupProcess::setImagePaths()
     imagePaths << QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/images").c_str())
             << QString::fromUtf8((App::Application::getUserAppDataDir() + "pixmaps").c_str())
             << QLatin1String(":/icons");
-    QDir::setSearchPaths(QString::fromLatin1("images"), imagePaths);
+    QDir::setSearchPaths(QStringLiteral("images"), imagePaths);
 }
 
 void StartupProcess::registerEventType()
@@ -165,7 +159,7 @@ void StartupProcess::setThemePaths()
 {
 #if !defined(Q_OS_LINUX)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths()
-                            << QString::fromLatin1(":/icons/FreeCAD-default"));
+                            << QStringLiteral(":/icons/FreeCAD-default"));
 #endif
 
     ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(

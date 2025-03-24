@@ -87,7 +87,7 @@ class GeometryFacadePy;
  *
  *  Part::Geometry* copy = v->copy();
  *
- *  if(construction && copy->getTypeId() != Part::GeomPoint::getClassTypeId()) {
+ *  if(construction && !copy->is<Part::GeomPoint>()) {
  *      GeometryFacade::setConstruction(copy, construction);
  *  }
  *
@@ -372,7 +372,7 @@ private:
 // GeometryTypedFacade
 
 /** @brief  It provides all the functionality of GeometryFacade (derives from it), but in addition
- * allows to indicate the type of a Part::Geometry derived class.
+ * allows one to indicate the type of a Part::Geometry derived class.
  *
  * @details
  *

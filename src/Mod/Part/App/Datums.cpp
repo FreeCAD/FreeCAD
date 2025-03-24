@@ -41,6 +41,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Part::DatumLine, App::Line)
 
 Part::DatumLine::DatumLine()
 {
+    setBaseDirection(Base::Vector3d(0, 0, 1));
     AttachExtension::initExtension(this);
     this->setAttacher(new AttachEngineLine);
 }

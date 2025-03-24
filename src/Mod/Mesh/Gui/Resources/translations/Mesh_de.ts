@@ -642,7 +642,7 @@
       <location filename="../../Command.cpp" line="559"/>
       <location filename="../../Command.cpp" line="561"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
-      <translation>Berechnet die Krümmungen in den Vertexen eines Netzes</translation>
+      <translation>Berechnet die Krümmung an den Knotenpunkten eines Netzes</translation>
     </message>
   </context>
   <context>

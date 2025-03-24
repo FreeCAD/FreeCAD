@@ -24,10 +24,10 @@
 #define BASE_UNITSSCHEMA_H
 
 #include <string>
-#include <Base/Quantity.h>
 
 namespace Base
 {
+class Quantity;
 
 /** Units systems */
 enum class UnitSystem

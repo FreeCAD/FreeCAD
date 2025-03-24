@@ -27,7 +27,7 @@
 #include <string>
 #include <App/ObjectIdentifier.h>
 #include <QPalette>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 
 namespace App {

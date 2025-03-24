@@ -34,11 +34,7 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0,                                                /*tp_itemsize*/
     /* methods */
     FeaturePyT::PyDestructor,                         /*tp_dealloc*/
-#if PY_VERSION_HEX >= 0x03080000
     0,                                                /*tp_vectorcall_offset*/
-#else
-    nullptr,                                          /*tp_print*/
-#endif
     nullptr,                                          /*tp_getattr*/
     nullptr,                                          /*tp_setattr*/
     nullptr,                                          /*tp_compare*/
@@ -83,11 +79,9 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     nullptr,                                          /*tp_del */
     0,                                                /*tp_version_tag */
     nullptr                                           /*tp_finalize */
-#if PY_VERSION_HEX >= 0x03080000
     ,0                                                /*tp_vectorcall */
 #if PY_VERSION_HEX >= 0x030c0000
     ,0                                                /*tp_watched */
-#endif
 #endif
 };
 
@@ -111,7 +105,7 @@ int FeaturePythonPyT<FeaturePyT>::__setattro(PyObject *obj, PyObject *attro, PyO
 {
     const char *attr;
     attr = PyUnicode_AsUTF8(attro);
-    // This overwrites PyObjectBase::__setattr because this actively disallows to delete an attribute
+    // This overwrites PyObjectBase::__setattr because this actively disallows one to delete an attribute
     //
 
     if (!static_cast<Base::PyObjectBase*>(obj)->isValid()){

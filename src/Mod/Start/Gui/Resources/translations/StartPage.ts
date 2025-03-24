@@ -46,13 +46,17 @@
     <name>CmdStart</name>
     <message>
         <location filename="../../Manipulator.cpp" line="47"/>
-        <location filename="../../Manipulator.cpp" line="48"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Manipulator.cpp" line="48"/>
+        <source>&amp;Start Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Manipulator.cpp" line="49"/>
-        <source>Displays the Start in an MDI view</source>
+        <source>Displays the Start Page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -65,7 +65,7 @@ using DU = DrawUtil;
     QT_TRANSLATE_NOOP("DrawViewAnnotation", "Annotation");
     QT_TRANSLATE_NOOP("DrawViewImage", "Image");
     QT_TRANSLATE_NOOP("DrawViewSymbol", "Symbol");
-    QT_TRANSLATE_NOOP("DrawViewArch", "Arch");
+    QT_TRANSLATE_NOOP("DrawViewArch", "BIM");
     QT_TRANSLATE_NOOP("DrawViewDraft", "Draft");
     QT_TRANSLATE_NOOP("DrawLeaderLine", "LeaderLine");
     QT_TRANSLATE_NOOP("DrawViewBalloon", "Balloon");
@@ -573,7 +573,7 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
             }
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId())
+    else if (prop->isDerivedFrom<App::PropertyLinkList>()
         && strcmp(prop->getName(), "Source") == 0) {
         App::PropertyLinkGlobal glink;
         App::PropertyLink link;

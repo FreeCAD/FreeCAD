@@ -34,7 +34,7 @@
 #include <Base/Parameter.h>
 #include <Base/Persistence.h>
 #include <Gui/DockWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/TreeItemMode.h>
 
 class QLineEdit;
@@ -190,6 +190,7 @@ protected Q_SLOTS:
     void onShowHidden();
     void onToggleVisibilityInTree();
     void onSearchObjects();
+    void onOpenFileLocation();
 
 private Q_SLOTS:
     void onItemSelectionChanged();
@@ -240,6 +241,7 @@ private:
     QAction* reloadDocAction;
     QAction* closeDocAction;
     QAction* searchObjectsAction;
+    QAction* openFileLocationAction;
     QTreeWidgetItem *contextItem;
     App::DocumentObject *searchObject;
     Gui::Document *searchDoc;

@@ -36,7 +36,7 @@ import Part
 from draftgeoutils import faces
 from draftobjects.base import DraftObject
 from draftutils import gui_utils
-from draftutils.messages import _wrn
+from draftutils.messages import _err, _wrn
 from draftutils.translate import translate
 
 
@@ -134,8 +134,21 @@ class ShapeString(DraftObject):
             if obj.FontFile[0] == ".":
                 # FontFile path relative to the FreeCAD file directory.
                 font_file = os.path.join(os.path.dirname(obj.Document.FileName), obj.FontFile)
+                # We need the absolute path to do some file checks.
+                font_file = os.path.abspath(font_file)
             else:
                 font_file = obj.FontFile
+
+            # File checks:
+            if not os.path.exists(font_file):
+                _err(obj.Label + ": " + translate("draft", "Font file not found"))
+                return
+            if not os.path.isfile(font_file):
+                _err(obj.Label + ": " + translate("draft", "Specified font file is not a file"))
+                return
+            if not os.path.splitext(font_file)[1].upper() in (".TTF", ".OTF", ".PFB"):
+                _err(obj.Label + ": " + translate("draft", "Specified font type is not supported"))
+                return
 
             fill = obj.MakeFace
             if fill is True:

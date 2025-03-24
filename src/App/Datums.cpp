@@ -29,6 +29,7 @@
 #include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
+#include <Base/Tools.h>
 
 #include "Datums.h"
 
@@ -45,6 +46,7 @@ PROPERTY_SOURCE(App::Point, App::DatumElement)
 PROPERTY_SOURCE(App::LocalCoordinateSystem, App::GeoFeature)
 
 DatumElement::DatumElement(bool hideRole)
+    : baseDir{0.0, 0.0, 1.0}
 {
     ADD_PROPERTY_TYPE(Role,
                       (""),
@@ -63,12 +65,12 @@ DatumElement::~DatumElement() = default;
 bool DatumElement::getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const
 {
     Q_UNUSED(subname);
-    Placement.getValue().getRotation().multVec(Base::Vector3d(0., 0., 1.), direction);
+    Placement.getValue().getRotation().multVec(baseDir, direction);
 
     return true;
 }
 
-App::LocalCoordinateSystem* DatumElement::getLCS()
+App::LocalCoordinateSystem* DatumElement::getLCS() const
 {
     auto inList = getInList();
     for (auto* obj : inList) {
@@ -81,10 +83,47 @@ App::LocalCoordinateSystem* DatumElement::getLCS()
     return nullptr;
 }
 
-bool DatumElement::isOriginFeature()
+bool DatumElement::isOriginFeature() const
 {
-    auto lcs = getLCS();
+    const auto* lcs = getLCS();
     return lcs ? lcs->isOrigin() : false;
+}
+
+Base::Vector3d DatumElement::getBasePoint() const
+{
+    Base::Placement plc = Placement.getValue();
+    return plc.getPosition();
+}
+
+Base::Vector3d DatumElement::getDirection() const
+{
+    Base::Vector3d dir(baseDir);
+    Base::Placement plc = Placement.getValue();
+    Base::Rotation rot = plc.getRotation();
+    rot.multVec(dir, dir);
+    return dir;
+}
+
+Base::Vector3d DatumElement::getBaseDirection() const
+{
+    return baseDir;
+}
+
+void DatumElement::setBaseDirection(const Base::Vector3d& dir)
+{
+    baseDir = dir;
+}
+
+// ----------------------------------------------------------------------------
+
+Line::Line()
+{
+    setBaseDirection(Base::Vector3d(1, 0, 0));
+}
+
+Point::Point()
+{
+    setBaseDirection(Base::Vector3d(0, 0, 0));
 }
 
 // ----------------------------------------------------------------------------
@@ -118,7 +157,7 @@ App::DatumElement* LocalCoordinateSystem::getDatumElement(const char* role) cons
 {
     const auto& features = OriginFeatures.getValues();
     auto featIt = std::find_if(features.begin(), features.end(), [role](App::DocumentObject* obj) {
-        return obj->isDerivedFrom(App::DatumElement::getClassTypeId())
+        return obj->isDerivedFrom<App::DatumElement>()
             && strcmp(static_cast<App::DatumElement*>(obj)->Role.getValue(), role) == 0;
     });
     if (featIt != features.end()) {
@@ -133,7 +172,7 @@ App::DatumElement* LocalCoordinateSystem::getDatumElement(const char* role) cons
 App::Line* LocalCoordinateSystem::getAxis(const char* role) const
 {
     App::DatumElement* feat = getDatumElement(role);
-    if (feat->isDerivedFrom(App::Line::getClassTypeId())) {
+    if (feat->isDerivedFrom<App::Line>()) {
         return static_cast<App::Line*>(feat);
     }
     std::stringstream err;
@@ -145,7 +184,7 @@ App::Line* LocalCoordinateSystem::getAxis(const char* role) const
 App::Plane* LocalCoordinateSystem::getPlane(const char* role) const
 {
     App::DatumElement* feat = getDatumElement(role);
-    if (feat->isDerivedFrom(App::Plane::getClassTypeId())) {
+    if (feat->isDerivedFrom<App::Plane>()) {
         return static_cast<App::Plane*>(feat);
     }
     std::stringstream err;
@@ -157,7 +196,7 @@ App::Plane* LocalCoordinateSystem::getPlane(const char* role) const
 App::Point* LocalCoordinateSystem::getPoint(const char* role) const
 {
     App::DatumElement* feat = getDatumElement(role);
-    if (feat->isDerivedFrom(App::Point::getClassTypeId())) {
+    if (feat->isDerivedFrom<App::Point>()) {
         return static_cast<App::Point*>(feat);
     }
     std::stringstream err;
@@ -169,7 +208,7 @@ App::Point* LocalCoordinateSystem::getPoint(const char* role) const
 bool LocalCoordinateSystem::hasObject(const DocumentObject* obj) const
 {
     const auto& features = OriginFeatures.getValues();
-    return std::find(features.begin(), features.end(), obj) != features.end();
+    return std::ranges::find(features, obj) != features.end();
 }
 
 short LocalCoordinateSystem::mustExecute() const
@@ -206,9 +245,9 @@ const std::vector<LocalCoordinateSystem::SetupData>& LocalCoordinateSystem::getS
 {
     static const std::vector<SetupData> setupData = {
         // clang-format off
-        {App::Line::getClassTypeId(),  AxisRoles[0],  tr("X-axis"),   Base::Rotation(Base::Vector3d(1, 1, 1), M_PI * 2 / 3)},
-        {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(-1, 1, 1), M_PI * 2 / 3)},
-        {App::Line::getClassTypeId(),  AxisRoles[2],  tr("Z-axis"),   Base::Rotation()},
+        {App::Line::getClassTypeId(),  AxisRoles[0],  tr("X-axis"),   Base::Rotation()},
+        {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(1, 1, 1), M_PI * 2 / 3)},
+        {App::Line::getClassTypeId(),  AxisRoles[2],  tr("Z-axis"),   Base::Rotation(Base::Vector3d(1,-1, 1), M_PI * 2 / 3)},
         {App::Plane::getClassTypeId(), PlaneRoles[0], tr("XY-plane"), Base::Rotation()},
         {App::Plane::getClassTypeId(), PlaneRoles[1], tr("XZ-plane"), Base::Rotation(1.0, 0.0, 0.0, 1.0)},
         {App::Plane::getClassTypeId(), PlaneRoles[2], tr("YZ-plane"), Base::Rotation(Base::Vector3d(1, 1, 1), M_PI * 2 / 3)},
@@ -218,13 +257,13 @@ const std::vector<LocalCoordinateSystem::SetupData>& LocalCoordinateSystem::getS
     return setupData;
 }
 
-DatumElement* LocalCoordinateSystem::createDatum(SetupData& data)
+DatumElement* LocalCoordinateSystem::createDatum(const SetupData& data)
 {
     App::Document* doc = getDocument();
     std::string objName = doc->getUniqueObjectName(data.role);
     App::DocumentObject* featureObj = doc->addObject(data.type.getName(), objName.c_str());
 
-    assert(featureObj && featureObj->isDerivedFrom(App::DatumElement::getClassTypeId()));
+    assert(featureObj && featureObj->isDerivedFrom<App::DatumElement>());
 
     QByteArray byteArray = data.label.toUtf8();
     featureObj->Label.setValue(byteArray.constData());
@@ -263,12 +302,12 @@ void LocalCoordinateSystem::unsetupObject()
 {
     const auto& objsLnk = OriginFeatures.getValues();
     // Copy to set to assert we won't call method more then one time for each object
-    std::set<App::DocumentObject*> objs(objsLnk.begin(), objsLnk.end());
+    const std::set<App::DocumentObject*> objs(objsLnk.begin(), objsLnk.end());
     // Remove all controlled objects
     for (auto obj : objs) {
         // Check that previous deletes didn't indirectly remove one of our objects
-        const auto& objsLnk = OriginFeatures.getValues();
-        if (std::find(objsLnk.begin(), objsLnk.end(), obj) != objsLnk.end()) {
+        const auto& objsLnk2 = OriginFeatures.getValues();
+        if (std::ranges::find(objsLnk2, obj) != objsLnk2.end()) {
             if (!obj->isRemoving()) {
                 obj->getDocument()->removeObject(obj->getNameInDocument());
             }
@@ -282,10 +321,6 @@ void LocalCoordinateSystem::onDocumentRestored()
 
     // In 0.22 origins did not have point.
     migrateOriginPoint();
-
-    // In 0.22 the axis placement were wrong. The X axis had identity placement instead of the Z.
-    // This was fixed but we need to migrate old files.
-    migrateXAxisPlacement();
 }
 
 void LocalCoordinateSystem::migrateOriginPoint()
@@ -296,33 +331,12 @@ void LocalCoordinateSystem::migrateOriginPoint()
         return obj->isDerivedFrom<App::DatumElement>() &&
             strcmp(static_cast<App::DatumElement*>(obj)->Role.getValue(), PointRoles[0]) == 0;
     };
-    if (std::none_of(features.begin(), features.end(), isOrigin)) {
+    if (std::ranges::none_of(features, isOrigin)) {
         auto data = getData(PointRoles[0]);
         auto* origin = createDatum(data);
+        origin->purgeTouched();
         features.push_back(origin);
         OriginFeatures.setValues(features);
-    }
-}
-
-void LocalCoordinateSystem::migrateXAxisPlacement()
-{
-    constexpr const double tolerance = 1e-5;
-    auto features = OriginFeatures.getValues();
-
-    const auto& setupData = getSetupData();
-    for (auto* obj : features) {
-        auto* feature = dynamic_cast <App::DatumElement*> (obj);
-        if (!feature) { continue; }
-        for (auto data : setupData) {
-            // ensure the rotation is correct for the role
-            if (std::strcmp(feature->Role.getValue(), data.role) == 0) {
-                if (!feature->Placement.getValue().getRotation().isSame(data.rot, tolerance)) {
-                    feature->Placement.setValue(Base::Placement(Base::Vector3d(), data.rot));
-                    getDocument()->setStatus(App::Document::MigrateLCS, true);
-                }
-                break;
-            }
-        }
     }
 }
 
@@ -346,7 +360,7 @@ bool LocalCoordinateSystem::LCSExtension::extensionGetSubObject(DocumentObject*&
                                                                 bool,
                                                                 int depth) const
 {
-    if (!subname || subname[0] == '\0') {
+    if (Base::Tools::isNullOrEmpty(subname)) {
         return false;
     }
 

@@ -64,7 +64,7 @@ App::DocumentObjectExecReturn* FeatureBase::execute()
             QT_TRANSLATE_NOOP("Exception", "BaseFeature link is not set"));
     }
 
-    if (!BaseFeature.getValue()->isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (!BaseFeature.getValue()->isDerivedFrom<Part::Feature>()) {
         return new App::DocumentObjectExecReturn(
             QT_TRANSLATE_NOOP("Exception", "BaseFeature must be a Part::Feature"));
     }

@@ -158,13 +158,13 @@ class _Rebar(ArchComponent.Component):
             axis = DraftGeomUtils.getNormal(obj.Base.Shape)
         if not axis:
             axis = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
-        size = 0
-        if father:
-            size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
         if hasattr(obj,"Direction"):
             if not DraftVecUtils.isNull(obj.Direction):
                 axis = FreeCAD.Vector(obj.Direction)
                 axis.normalize()
+        size = 0
+        if father:
+            size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
         if hasattr(obj,"Distance"):
             if obj.Distance.Value:
                 size = obj.Distance.Value

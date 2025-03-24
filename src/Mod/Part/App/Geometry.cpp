@@ -149,6 +149,8 @@
 #include "ToroidPy.h"
 #include "TopoShape.h"
 
+#include <gp_Quaternion.hxx>
+
 
 #if OCC_VERSION_HEX >= 0x070600
 using GeomAdaptor_HCurve = GeomAdaptor_Curve;
@@ -285,7 +287,7 @@ void Geometry::Save(Base::Writer &writer) const
     // Get the number of persistent extensions
     int counter = 0;
     for(const auto& att : extensions) {
-        if(att->isDerivedFrom(Part::GeometryPersistenceExtension::getClassTypeId()))
+        if(att->isDerivedFrom<Part::GeometryPersistenceExtension>())
             counter++;
     }
 
@@ -294,7 +296,7 @@ void Geometry::Save(Base::Writer &writer) const
     writer.incInd();
 
     for(const auto& att : extensions) {
-        if(att->isDerivedFrom(Part::GeometryPersistenceExtension::getClassTypeId()))
+        if(att->isDerivedFrom<Part::GeometryPersistenceExtension>())
             std::static_pointer_cast<Part::GeometryPersistenceExtension>(att)->Save(writer);
     }
 
@@ -467,7 +469,7 @@ void Geometry::createNewTag()
     boost::lock_guard<boost::mutex> guard(random_number_mutex);
 
     if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
+        ran.seed(static_cast<std::uint64_t>(std::time(nullptr)));
         seeded = true;
     }
     static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
@@ -762,7 +764,7 @@ GeomLineSegment* GeomCurve::toLineSegment(KeepTag clone) const
         return nullptr;
 
     Base::Vector3d start, end;
-    if (isDerivedFrom(GeomBoundedCurve::getClassTypeId())) {
+    if (isDerivedFrom<GeomBoundedCurve>()) {
         start = dynamic_cast<const GeomBoundedCurve*>(this)->getStartPoint();
         end = dynamic_cast<const GeomBoundedCurve*>(this)->getEndPoint();
     } else {
@@ -2062,7 +2064,7 @@ PyObject *GeomBSplineCurve::getPyObject()
 bool GeomBSplineCurve::isSame(const Geometry &_other, double tol, double atol) const
 {
     if(_other.getTypeId() != getTypeId()) {
-        if (isLinear() && _other.isDerivedFrom(GeomCurve::getClassTypeId())) {
+        if (isLinear() && _other.isDerivedFrom<GeomCurve>()) {
             std::unique_ptr<Geometry> geo(toLineSegment());
             if (geo)
                 return geo->isSame(_other, tol, atol);
@@ -2127,10 +2129,25 @@ void GeomConic::setLocation(const Base::Vector3d& Center)
 
 Base::Vector3d GeomConic::getCenter() const
 {
-    Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(handle());
     gp_Ax1 axis = conic->Axis();
     const gp_Pnt& loc = axis.Location();
-    return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
+    return Base::Vector3d(loc.X(), loc.Y(), loc.Z());
+}
+
+std::optional<Base::Rotation> GeomConic::getRotation() const
+{
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(handle());
+
+    if (!conic) {
+        return {};
+    }
+
+    gp_Trsf trsf;
+    trsf.SetTransformation(conic->Position(), gp_Ax3());
+
+    auto q = trsf.GetRotation();
+    return Base::Rotation(q.X(), q.Y(), q.Z(), q.W());
 }
 
 void GeomConic::setCenter(const Base::Vector3d& Center)
@@ -2142,7 +2159,6 @@ void GeomConic::setCenter(const Base::Vector3d& Center)
         conic->SetLocation(p1);
     }
     catch (Standard_Failure& e) {
-
         THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
@@ -2240,7 +2256,7 @@ GeomBSplineCurve* GeomConic::toNurbs(double first, double last) const
 
 bool GeomConic::isSame(const Geometry &_other, double tol, double atol) const
 {
-    if(!_other.isDerivedFrom(GeomConic::getClassTypeId()))
+    if(!_other.isDerivedFrom<GeomConic>())
         return false;
 
     auto &other = static_cast<const GeomConic &>(_other);
@@ -4510,7 +4526,7 @@ PyObject *GeomLine::getPyObject()
 bool GeomLine::isSame(const Geometry &_other, double tol, double atol) const
 {
     if(_other.getTypeId() != getTypeId()) {
-        if (_other.isDerivedFrom(GeomCurve::getClassTypeId())) {
+        if (_other.isDerivedFrom<GeomCurve>()) {
             std::unique_ptr<Geometry> geo(dynamic_cast<const GeomCurve&>(_other).toLine());
             if (geo)
                 return isSame(*geo, tol, atol);
@@ -4800,31 +4816,39 @@ bool GeomSurface::isPlanar(const Handle(Geom_Surface) &s, gp_Pln *pln, double to
 
 GeomPlane* GeomSurface::toPlane(bool clone, double tol) const
 {
-    if (isDerivedFrom(GeomPlane::getClassTypeId())) {
+    if (isDerivedFrom<GeomPlane>()) {
         if (clone) {
             return dynamic_cast<GeomPlane*>(this->clone());
-        } else {
+        }
+        else {
             return dynamic_cast<GeomPlane*>(this->copy());
         }
     }
 
     gp_Pln pln;
-    if (!isPlanar(&pln, tol))
+    if (!isPlanar(&pln, tol)) {
         return nullptr;
+    }
 
     auto res = new GeomPlane(pln);
     res->copyNonTag(this);
-    if (clone)
+    if (clone) {
         res->tag = this->tag;
+    }
     return res;
+}
+
+std::optional<Base::Rotation> GeomSurface::getRotation() const
+{
+    return {};
 }
 
 TopoDS_Shape GeomSurface::toShape() const
 {
     Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
-    Standard_Real u1,u2,v1,v2;
-    s->Bounds(u1,u2,v1,v2);
-    BRepBuilderAPI_MakeFace mkBuilder(s, u1, u2, v1, v2, Precision::Confusion() );
+    Standard_Real u1, u2, v1, v2;
+    s->Bounds(u1, u2, v1, v2);
+    BRepBuilderAPI_MakeFace mkBuilder(s, u1, u2, v1, v2, Precision::Confusion());
     return mkBuilder.Shape();
 }
 
@@ -5121,7 +5145,7 @@ PyObject *GeomBSplineSurface::getPyObject()
 bool GeomBSplineSurface::isSame(const Geometry &_other, double tol, double atol) const
 {
     if(_other.getTypeId() != getTypeId()) {
-        if (_other.isDerivedFrom(GeomSurface::getClassTypeId()) && isPlanar()) {
+        if (_other.isDerivedFrom<GeomSurface>() && isPlanar()) {
             std::unique_ptr<Geometry> geo(toPlane());
             if (geo)
                 return geo->isSame(_other, tol, atol);
@@ -5180,9 +5204,24 @@ GeomElementarySurface::~GeomElementarySurface()
 
 Base::Vector3d GeomElementarySurface::getLocation(void) const
 {
-    Handle(Geom_ElementarySurface) surf =  Handle(Geom_ElementarySurface)::DownCast(handle());
+    Handle(Geom_ElementarySurface) surf = Handle(Geom_ElementarySurface)::DownCast(handle());
     gp_Pnt loc = surf->Location();
-    return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
+    return Base::Vector3d(loc.X(), loc.Y(), loc.Z());
+}
+
+std::optional<Base::Rotation> GeomPlane::getRotation() const
+{
+    Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast(handle());
+
+    if (!s) {
+        return {};
+    }
+
+    gp_Trsf trsf;
+    trsf.SetTransformation(s->Position().Ax2(),gp_Ax3());
+    auto q = trsf.GetRotation();
+
+    return Base::Rotation(q.X(),q.Y(),q.Z(),q.W());
 }
 
 Base::Vector3d GeomElementarySurface::getDir(void) const
@@ -5208,7 +5247,7 @@ Base::Vector3d GeomElementarySurface::getYDir(void) const
 
 bool GeomElementarySurface::isSame(const Geometry &_other, double tol, double atol) const
 {
-    if(!_other.isDerivedFrom(GeomElementarySurface::getClassTypeId()))
+    if(!_other.isDerivedFrom<GeomElementarySurface>())
         return false;
 
     auto &other = static_cast<const GeomElementarySurface &>(_other);
@@ -5409,6 +5448,12 @@ double GeomCone::getRadius() const
 double GeomCone::getSemiAngle() const
 {
     return mySurface->SemiAngle();
+}
+
+Base::Vector3d GeomCone::getApex() const
+{
+    Handle(Geom_ConicalSurface) s = Handle(Geom_ConicalSurface)::DownCast(handle());
+    return Base::convertTo<Base::Vector3d>(s->Apex());
 }
 
 bool GeomCone::isSame(const Geometry &_other, double tol, double atol) const
@@ -5639,7 +5684,7 @@ PyObject *GeomPlane::getPyObject()
 bool GeomPlane::isSame(const Geometry &_other, double tol, double atol) const
 {
     if(_other.getTypeId() != getTypeId()) {
-        if (_other.isDerivedFrom(GeomSurface::getClassTypeId())) {
+        if (_other.isDerivedFrom<GeomSurface>()) {
             std::unique_ptr<Geometry> geo(static_cast<const GeomSurface&>(_other).toPlane());
             if (geo)
                 return isSame(*geo, tol, atol);
@@ -5895,7 +5940,7 @@ Base::Vector3d GeomSweptSurface::getDir(void) const
 
 bool GeomSweptSurface::isSame(const Geometry &_other, double tol, double atol) const
 {
-    if(!_other.isDerivedFrom(GeomSweptSurface::getClassTypeId()))
+    if(!_other.isDerivedFrom<GeomSweptSurface>())
         return false;
 
     auto &other = static_cast<const GeomSweptSurface &>(_other);

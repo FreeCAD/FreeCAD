@@ -28,7 +28,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
@@ -108,7 +108,7 @@ TechDraw::LineFormat *TaskLineDecor::getFormatAccessPtr(const std::string &edgeN
     BaseGeomPtr bg = m_partFeat->getEdge(edgeName);
     if (bg) {
         if (bg->getCosmetic()) {
-            if (bg->source() == SourceType::COSEDGE) {
+            if (bg->source() == SourceType::COSMETICEDGE) {
                 TechDraw::CosmeticEdge *ce = m_partFeat->getCosmeticEdgeBySelection(edgeName);
                 if (ce) {
                     return &ce->m_format;

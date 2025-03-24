@@ -110,9 +110,9 @@ PyObject* ComplexGeoDataPy::getFacesFromSubElement(PyObject* args)
     Py::List facet;
     for (const auto& it : facets) {
         Py::Tuple f(3);
-        f.setItem(0, Py::Int(int(it.I1)));
-        f.setItem(1, Py::Int(int(it.I2)));
-        f.setItem(2, Py::Int(int(it.I3)));
+        f.setItem(0, Py::Long(int(it.I1)));
+        f.setItem(1, Py::Long(int(it.I2)));
+        f.setItem(2, Py::Long(int(it.I3)));
         facet.append(f);
     }
     tuple.setItem(1, facet);
@@ -147,8 +147,8 @@ PyObject* ComplexGeoDataPy::getLinesFromSubElement(PyObject* args)
     Py::List line;
     for (const auto& it : lines) {
         Py::Tuple l(2);
-        l.setItem(0, Py::Int((int)it.I1));
-        l.setItem(1, Py::Int((int)it.I2));
+        l.setItem(0, Py::Long((int)it.I1));
+        l.setItem(1, Py::Long((int)it.I2));
         line.append(l);
     }
     tuple.setItem(1, line);
@@ -213,8 +213,8 @@ PyObject* ComplexGeoDataPy::getLines(PyObject* args)
     Py::List line;
     for (const auto& it : lines) {
         Py::Tuple l(2);
-        l.setItem(0, Py::Int((int)it.I1));
-        l.setItem(1, Py::Int((int)it.I2));
+        l.setItem(0, Py::Long((int)it.I1));
+        l.setItem(1, Py::Long((int)it.I2));
         line.append(l);
     }
     tuple.setItem(1, line);
@@ -247,9 +247,9 @@ PyObject* ComplexGeoDataPy::getFaces(PyObject* args)
     Py::List facet;
     for (const auto& it : facets) {
         Py::Tuple f(3);
-        f.setItem(0, Py::Int((int)it.I1));
-        f.setItem(1, Py::Int((int)it.I2));
-        f.setItem(2, Py::Int((int)it.I3));
+        f.setItem(0, Py::Long((int)it.I1));
+        f.setItem(1, Py::Long((int)it.I2));
+        f.setItem(2, Py::Long((int)it.I3));
         facet.append(f);
     }
     tuple.setItem(1, facet);
@@ -509,9 +509,9 @@ Py::Dict ComplexGeoDataPy::getElementReverseMap() const
     return ret;
 }
 
-Py::Int ComplexGeoDataPy::getElementMapSize() const
+Py::Long ComplexGeoDataPy::getElementMapSize() const
 {
-    return Py::Int((long)getComplexGeoDataPtr()->getElementMapSize());
+    return Py::Long((long)getComplexGeoDataPtr()->getElementMapSize());
 }
 
 void ComplexGeoDataPy::setHasher(Py::Object obj)
@@ -575,12 +575,12 @@ Py::String ComplexGeoDataPy::getElementMapVersion() const
 }
 
 
-Py::Int ComplexGeoDataPy::getTag() const
+Py::Long ComplexGeoDataPy::getTag() const
 {
-    return Py::Int(getComplexGeoDataPtr()->Tag);
+    return Py::Long(getComplexGeoDataPtr()->Tag);
 }
 
-void ComplexGeoDataPy::setTag(Py::Int tag)
+void ComplexGeoDataPy::setTag(Py::Long tag)
 {
     getComplexGeoDataPtr()->Tag = tag;
 }

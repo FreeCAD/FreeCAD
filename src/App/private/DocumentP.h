@@ -20,22 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_DOCUMENTP_H
-#define APP_DOCUMENTP_H
+#ifndef SRC_APP_PRIVATE_DOCUMENTP_H_
+#define SRC_APP_PRIVATE_DOCUMENTP_H_
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4834)
 #endif
 
-#include <App/DocumentObject.h>
-#include <App/DocumentObserver.h>
-#include <App/StringHasher.h>
-#include <CXX/Objects.hxx>
-#include <boost/bimap.hpp>
-#include <boost/graph/adjacency_list.hpp>
+#include <map>
+#include <string>
+#include <memory>
+#include <vector>
 #include <unordered_map>
 #include <unordered_set>
 
+#include <boost/bimap.hpp>
+#include <boost/graph/adjacency_list.hpp>
+
+#include <CXX/Objects.hxx>
+
+#include <App/DocumentObject.h>
+#include <App/DocumentObserver.h>
+#include <App/StringHasher.h>
+#include <Base/UniqueNameManager.h>
 
 // using VertexProperty = boost::property<boost::vertex_root_t, DocumentObject* >;
 using DependencyList = boost::adjacency_list<
@@ -65,6 +72,8 @@ struct DocumentP
     std::vector<DocumentObject*> objectArray;
     std::unordered_set<App::DocumentObject*> touchedObjs;
     std::unordered_map<std::string, DocumentObject*> objectMap;
+    Base::UniqueNameManager objectNameManager;
+    Base::UniqueNameManager objectLabelManager;
     std::unordered_map<long, DocumentObject*> objectIdMap;
     std::unordered_map<std::string, bool> partialLoadObjects;
     std::vector<DocumentObjectT> pendingRemove;
@@ -84,11 +93,6 @@ struct DocumentP
     unsigned int UndoMaxStackSize;
     std::string programVersion;
     mutable HasherMap hashers;
-#ifdef USE_OLD_DAG
-    DependencyList DepList;
-    std::map<DocumentObject*, Vertex> VertexObjectList;
-    std::map<Vertex, DocumentObject*> vertexMap;
-#endif  // USE_OLD_DAG
     std::multimap<const App::DocumentObject*, std::unique_ptr<App::DocumentObjectExecReturn>>
         _RecomputeLog;
 
@@ -129,6 +133,7 @@ struct DocumentP
 
     void clearDocument()
     {
+        objectLabelManager.clear();
         objectArray.clear();
         for (auto& v : objectMap) {
             v.second->setStatus(ObjectStatus::Destroy, true);
@@ -136,6 +141,7 @@ struct DocumentP
             v.second = nullptr;
         }
         objectMap.clear();
+        objectNameManager.clear();
         objectIdMap.clear();
     }
 
@@ -161,4 +167,4 @@ struct DocumentP
 
 }  // namespace App
 
-#endif  // APP_DOCUMENTP_H
+#endif  // SRC_APP_PRIVATE_DOCUMENTP_H_

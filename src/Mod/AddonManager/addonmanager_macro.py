@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Unified handler for FreeCAD macros that can be obtained from different sources. """
+"""Unified handler for FreeCAD macros that can be obtained from different sources."""
 
 import os
 import re

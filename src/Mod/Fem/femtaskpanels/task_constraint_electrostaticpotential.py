@@ -2,6 +2,7 @@
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Copyright (c) 2023 Uwe Stöhr <uwestoehr@lyx.org>                      *
+# *   Copyright (c) 2024 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -24,7 +25,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM constraint electrostatic potential task panel for the document object"
-__author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr"
+__author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr, André Kapelrud, Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
 ## @package task_constraint_electrostaticpotential
@@ -46,10 +47,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def __init__(self, obj):
         super().__init__(obj)
 
-        self._paramWidget = FreeCADGui.PySideUic.loadUi(
+        self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElectrostaticPotential.ui"
         )
-        self._initParamWidget()
 
         # geometry selection widget
         # start with Solid in list!
@@ -58,7 +58,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         )
 
         # form made from param and selection widget
-        self.form = [self._paramWidget, self._selectionWidget]
+        self.form = [self.parameter_widget, self._selectionWidget]
 
         analysis = obj.getParentGroup()
         self._mesh = None
@@ -70,26 +70,113 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self._partVisible = None
         self._meshVisible = None
 
-        # start with vector inputs hidden if no vector is set
-        if (
-            self.obj.AV_re_1_Disabled
-            and self.obj.AV_re_2_Disabled
-            and self.obj.AV_re_3_Disabled
-            and self.obj.AV_im_Disabled
-            and self.obj.AV_im_1_Disabled
-            and self.obj.AV_im_2_Disabled
-            and self.obj.AV_im_3_Disabled
-        ):
-            self._vectorField_visibility(False)
-            self._paramWidget.vectorFieldBox.setChecked(False)
         QtCore.QObject.connect(
-            self._paramWidget.vectorFieldBox,
+            self.parameter_widget.ckb_electromagnetic,
             QtCore.SIGNAL("toggled(bool)"),
-            self._vectorField_visibility,
+            self.electromagnetic_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.cb_boundary_condition,
+            QtCore.SIGNAL("currentIndexChanged(int)"),
+            self.boundary_condition_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_potential,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.potential_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_potential,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.potential_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_av,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.av_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_av_re,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.av_re_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_av_1,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.av_1_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_av_re_1,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.av_re_1_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_av_2,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.av_2_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_av_re_2,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.av_re_2_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_av_3,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.av_3_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_av_re_3,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.av_re_3_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_av_im,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.av_im_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_av_im_1,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.av_im_1_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_av_im_2,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.av_im_2_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_av_im_3,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.av_im_3_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_capacitance_body,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.capacitance_body_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.spb_capacitance_body,
+            QtCore.SIGNAL("valueChanged(int)"),
+            self.capacitance_body_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_potential_constant,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.potential_constant_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_electric_infinity,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.electric_infinity_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_surface_charge_density,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.surface_charge_density_changed,
         )
 
-    def _vectorField_visibility(self, visible):
-        self._paramWidget.vectorFieldGB.setVisible(visible)
+        self.init_parameter_widget()
 
     def open(self):
         if self._mesh is not None and self._part is not None:
@@ -106,7 +193,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def accept(self):
         if self.obj.References != self._selectionWidget.references:
             self.obj.References = self._selectionWidget.references
-        self._applyWidgetChanges()
+        self._set_params()
         self._selectionWidget.finish_selection()
         self._restoreVisibility()
         return super().accept()
@@ -122,100 +209,202 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             else:
                 self._part.ViewObject.hide()
 
-    def _initParamWidget(self):
-        self._paramWidget.potentialQSB.setProperty("value", self.obj.Potential)
-        FreeCADGui.ExpressionBinding(self._paramWidget.potentialQSB).bind(self.obj, "Potential")
-        self._paramWidget.potentialBox.setChecked(not self.obj.PotentialEnabled)
+    def _get_params(self):
+        self.potential = self.obj.Potential
+        self.potential_enabled = self.obj.PotentialEnabled
 
-        # the vector potentials
-        # realScalarQSB always the same value as potentialQSB
-        self._paramWidget.realScalarQSB.setProperty("value", self.obj.Potential)
-        FreeCADGui.ExpressionBinding(self._paramWidget.realScalarQSB).bind(self.obj, "Potential")
-        self._paramWidget.realXQSB.setProperty("value", self.obj.AV_re_1)
-        FreeCADGui.ExpressionBinding(self._paramWidget.realXQSB).bind(self.obj, "AV_re_1")
-        self._paramWidget.realYQSB.setProperty("value", self.obj.AV_re_2)
-        FreeCADGui.ExpressionBinding(self._paramWidget.realYQSB).bind(self.obj, "AV_re_2")
-        self._paramWidget.realZQSB.setProperty("value", self.obj.AV_re_3)
-        FreeCADGui.ExpressionBinding(self._paramWidget.realZQSB).bind(self.obj, "AV_re_3")
-        self._paramWidget.imagScalarQSB.setProperty("value", self.obj.AV_im)
-        FreeCADGui.ExpressionBinding(self._paramWidget.imagScalarQSB).bind(self.obj, "AV_im")
-        self._paramWidget.imagXQSB.setProperty("value", self.obj.AV_im_1)
-        FreeCADGui.ExpressionBinding(self._paramWidget.imagXQSB).bind(self.obj, "AV_im_1")
-        self._paramWidget.imagYQSB.setProperty("value", self.obj.AV_im_2)
-        FreeCADGui.ExpressionBinding(self._paramWidget.imagYQSB).bind(self.obj, "AV_im_2")
-        self._paramWidget.imagZQSB.setProperty("value", self.obj.AV_im_3)
-        FreeCADGui.ExpressionBinding(self._paramWidget.imagZQSB).bind(self.obj, "AV_im_3")
+        self.av_re = self.obj.AV_re
+        self.av_re_1 = self.obj.AV_re_1
+        self.av_re_2 = self.obj.AV_re_2
+        self.av_re_3 = self.obj.AV_re_3
+        self.av_im = self.obj.AV_im
+        self.av_im_1 = self.obj.AV_im_1
+        self.av_im_2 = self.obj.AV_im_2
+        self.av_im_3 = self.obj.AV_im_3
 
-        self._paramWidget.reXunspecBox.setChecked(self.obj.AV_re_1_Disabled)
-        self._paramWidget.reYunspecBox.setChecked(self.obj.AV_re_2_Disabled)
-        self._paramWidget.reZunspecBox.setChecked(self.obj.AV_re_3_Disabled)
-        self._paramWidget.imScalarunspecBox.setChecked(self.obj.AV_im_Disabled)
-        self._paramWidget.imXunspecBox.setChecked(self.obj.AV_im_1_Disabled)
-        self._paramWidget.imYunspecBox.setChecked(self.obj.AV_im_2_Disabled)
-        self._paramWidget.imZunspecBox.setChecked(self.obj.AV_im_3_Disabled)
+        self.av_enabled = self.obj.EnableAV
+        self.av_1_enabled = self.obj.EnableAV_1
+        self.av_2_enabled = self.obj.EnableAV_2
+        self.av_3_enabled = self.obj.EnableAV_3
 
-        self._paramWidget.potentialConstantBox.setChecked(self.obj.PotentialConstant)
+        self.boundary_condition = self.obj.BoundaryCondition
+        self.potential_constant = self.obj.PotentialConstant
+        self.electric_infinity = self.obj.ElectricInfinity
+        self.capacitance_body_enabled = self.obj.CapacitanceBodyEnabled
+        self.capacitance_body = self.obj.CapacitanceBody
+        self.surface_charge_density = self.obj.SurfaceChargeDensity
 
-        self._paramWidget.electricInfinityBox.setChecked(self.obj.ElectricInfinity)
+    def _set_params(self):
+        self.obj.Potential = self.potential
+        self.obj.PotentialEnabled = self.potential_enabled
 
-        self._paramWidget.electricForcecalculationBox.setChecked(self.obj.ElectricForcecalculation)
+        self.obj.AV_re = self.av_re
+        self.obj.AV_re_1 = self.av_re_1
+        self.obj.AV_re_2 = self.av_re_2
+        self.obj.AV_re_3 = self.av_re_3
+        self.obj.AV_im = self.av_im
+        self.obj.AV_im_1 = self.av_im_1
+        self.obj.AV_im_2 = self.av_im_2
+        self.obj.AV_im_3 = self.av_im_3
 
-        self._paramWidget.capacitanceBodyBox.setChecked(not self.obj.CapacitanceBodyEnabled)
-        self._paramWidget.capacitanceBody_spinBox.setValue(self.obj.CapacitanceBody)
-        self._paramWidget.capacitanceBody_spinBox.setEnabled(
-            not self._paramWidget.capacitanceBodyBox.isChecked()
+        self.obj.EnableAV = self.av_enabled
+        self.obj.EnableAV_1 = self.av_1_enabled
+        self.obj.EnableAV_2 = self.av_2_enabled
+        self.obj.EnableAV_3 = self.av_3_enabled
+
+        self.obj.BoundaryCondition = self.boundary_condition
+        self.obj.PotentialConstant = self.potential_constant
+        self.obj.ElectricInfinity = self.electric_infinity
+        self.obj.CapacitanceBodyEnabled = self.capacitance_body_enabled
+        self.obj.CapacitanceBody = self.capacitance_body
+
+        self.obj.SurfaceChargeDensity = self.surface_charge_density
+
+    def init_parameter_widget(self):
+        self._get_params()
+
+        self.parameter_widget.qsb_potential.setProperty("value", self.potential)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_potential).bind(
+            self.obj, "Potential"
+        )
+        self.parameter_widget.ckb_potential.setChecked(self.potential_enabled)
+
+        # scalar potential
+        self.parameter_widget.qsb_av_re.setProperty("value", self.av_re)
+        self.parameter_widget.qsb_av_re.setEnabled(self.av_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_re).bind(self.obj, "AV_re")
+        self.parameter_widget.qsb_av_im.setProperty("value", self.av_im)
+        self.parameter_widget.qsb_av_im.setEnabled(self.av_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_im).bind(self.obj, "AV_im")
+
+        # vector potential
+        self.parameter_widget.qsb_av_re_1.setProperty("value", self.av_re_1)
+        self.parameter_widget.qsb_av_re_1.setEnabled(self.av_1_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_re_1).bind(self.obj, "AV_re_1")
+        self.parameter_widget.qsb_av_re_2.setProperty("value", self.av_re_2)
+        self.parameter_widget.qsb_av_re_2.setEnabled(self.av_2_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_re_2).bind(self.obj, "AV_re_2")
+        self.parameter_widget.qsb_av_re_3.setProperty("value", self.av_re_3)
+        self.parameter_widget.qsb_av_re_3.setEnabled(self.av_3_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_re_3).bind(self.obj, "AV_re_3")
+
+        self.parameter_widget.qsb_av_im_1.setProperty("value", self.av_im_1)
+        self.parameter_widget.qsb_av_im_1.setEnabled(self.av_1_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_im_1).bind(self.obj, "AV_im_1")
+        self.parameter_widget.qsb_av_im_2.setProperty("value", self.av_im_2)
+        self.parameter_widget.qsb_av_im_2.setEnabled(self.av_2_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_im_2).bind(self.obj, "AV_im_2")
+        self.parameter_widget.qsb_av_im_3.setProperty("value", self.av_im_3)
+        self.parameter_widget.qsb_av_im_3.setEnabled(self.av_3_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_av_im_3).bind(self.obj, "AV_im_3")
+
+        self.parameter_widget.ckb_av.setChecked(self.av_enabled)
+        self.parameter_widget.ckb_av_1.setChecked(self.av_1_enabled)
+        self.parameter_widget.ckb_av_2.setChecked(self.av_2_enabled)
+        self.parameter_widget.ckb_av_3.setChecked(self.av_3_enabled)
+
+        self.parameter_widget.ckb_potential_constant.setChecked(self.potential_constant)
+
+        self.parameter_widget.ckb_electric_infinity.setChecked(self.electric_infinity)
+
+        self.parameter_widget.ckb_capacitance_body.setChecked(self.capacitance_body_enabled)
+        self.parameter_widget.spb_capacitance_body.setProperty("value", self.capacitance_body)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.spb_capacitance_body).bind(
+            self.obj, "CapacitanceBody"
         )
 
-    def _applyPotentialChanges(self, enabledBox, potentialQSB):
-        enabled = enabledBox.isChecked()
-        potential = None
-        try:
-            potential = potentialQSB.property("value")
-        except ValueError:
-            FreeCAD.Console.PrintMessage(
-                "Wrong input. Not recognised input: '{}' "
-                "Potential has not been set.\n".format(potentialQSB.text())
-            )
-            potential = "0.0 mm^2*kg/(s^3*A)"
-        return enabled, potential
+        self.parameter_widget.qsb_surface_charge_density.setProperty(
+            "value", self.surface_charge_density
+        )
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_surface_charge_density).bind(
+            self.obj, "SurfaceChargeDensity"
+        )
 
-    def _applyWidgetChanges(self):
-        # apply the voltages and their enabled state
-        self.obj.PotentialEnabled, self.obj.Potential = self._applyPotentialChanges(
-            self._paramWidget.potentialBox, self._paramWidget.potentialQSB
-        )
-        self.obj.AV_re_1_Disabled, self.obj.AV_re_1 = self._applyPotentialChanges(
-            self._paramWidget.reXunspecBox, self._paramWidget.realXQSB
-        )
-        self.obj.AV_re_2_Disabled, self.obj.AV_re_2 = self._applyPotentialChanges(
-            self._paramWidget.reYunspecBox, self._paramWidget.realYQSB
-        )
-        self.obj.AV_re_3_Disabled, self.obj.AV_re_3 = self._applyPotentialChanges(
-            self._paramWidget.reZunspecBox, self._paramWidget.realZQSB
-        )
-        self.obj.AV_im_Disabled, self.obj.AV_im = self._applyPotentialChanges(
-            self._paramWidget.imScalarunspecBox, self._paramWidget.imagScalarQSB
-        )
-        self.obj.AV_im_1_Disabled, self.obj.AV_im_1 = self._applyPotentialChanges(
-            self._paramWidget.imXunspecBox, self._paramWidget.imagXQSB
-        )
-        self.obj.AV_im_2_Disabled, self.obj.AV_im_2 = self._applyPotentialChanges(
-            self._paramWidget.imYunspecBox, self._paramWidget.imagYQSB
-        )
-        self.obj.AV_im_3_Disabled, self.obj.AV_im_3 = self._applyPotentialChanges(
-            self._paramWidget.imZunspecBox, self._paramWidget.imagZQSB
-        )
-        # because this is an enable the others are disabled, reverse
-        self.obj.PotentialEnabled = not self.obj.PotentialEnabled
+        self.bc_enum = self.obj.getEnumerationsOfProperty("BoundaryCondition")
+        index = self.bc_enum.index(self.boundary_condition)
+        self.parameter_widget.cb_boundary_condition.addItems(self.bc_enum)
+        self.parameter_widget.cb_boundary_condition.setCurrentIndex(index)
 
-        self.obj.PotentialConstant = self._paramWidget.potentialConstantBox.isChecked()
+        # start with electromagnetic inputs hidden if no field is set
+        if not (self.av_enabled or self.av_1_enabled or self.av_2_enabled or self.av_3_enabled):
+            self.parameter_widget.ckb_electromagnetic.setChecked(False)
 
-        self.obj.ElectricInfinity = self._paramWidget.electricInfinityBox.isChecked()
+    def potential_changed(self, value):
+        self.potential = value
 
-        calc_is_checked = self._paramWidget.electricForcecalculationBox.isChecked()
-        self.obj.ElectricForcecalculation = calc_is_checked  # two lines because max line length
+    def potential_enabled_changed(self, value):
+        self.potential_enabled = value
+        self.parameter_widget.qsb_potential.setEnabled(value)
 
-        self.obj.CapacitanceBodyEnabled = not self._paramWidget.capacitanceBodyBox.isChecked()
-        if self.obj.CapacitanceBodyEnabled:
-            self._paramWidget.capacitanceBody_spinBox.setEnabled(True)
-            self.obj.CapacitanceBody = self._paramWidget.capacitanceBody_spinBox.value()
+    def electromagnetic_enabled_changed(self, value):
+        self.parameter_widget.gb_electromagnetic.setVisible(value)
+
+    def av_enabled_changed(self, value):
+        self.av_enabled = value
+        self.parameter_widget.qsb_av_re.setEnabled(value)
+        self.parameter_widget.qsb_av_im.setEnabled(value)
+
+    def av_1_enabled_changed(self, value):
+        self.av_1_enabled = value
+        self.parameter_widget.qsb_av_re_1.setEnabled(value)
+        self.parameter_widget.qsb_av_im_1.setEnabled(value)
+
+    def av_2_enabled_changed(self, value):
+        self.av_2_enabled = value
+        self.parameter_widget.qsb_av_re_2.setEnabled(value)
+        self.parameter_widget.qsb_av_im_2.setEnabled(value)
+
+    def av_3_enabled_changed(self, value):
+        self.av_3_enabled = value
+        self.parameter_widget.qsb_av_re_3.setEnabled(value)
+        self.parameter_widget.qsb_av_im_3.setEnabled(value)
+
+    def av_re_changed(self, value):
+        self.av_re = value
+
+    def av_re_1_changed(self, value):
+        self.av_re_1 = value
+
+    def av_re_2_changed(self, value):
+        self.av_re_2 = value
+
+    def av_re_3_changed(self, value):
+        self.av_re_3 = value
+
+    def av_im_changed(self, value):
+        self.av_im = value
+
+    def av_im_1_changed(self, value):
+        self.av_im_1 = value
+
+    def av_im_2_changed(self, value):
+        self.av_im_2 = value
+
+    def av_im_3_changed(self, value):
+        self.av_im_3 = value
+
+    def potential_constant_changed(self, value):
+        self.potential_constant = value
+
+    def electric_infinity_changed(self, value):
+        self.electric_infinity = value
+
+    def capacitance_body_enabled_changed(self, value):
+        self.capacitance_body_enabled = value
+        self.parameter_widget.spb_capacitance_body.setEnabled(value)
+
+    def capacitance_body_changed(self, value):
+        self.capacitance_body = value
+        self.parameter_widget.spb_capacitance_body.setValue(value)
+
+    def surface_charge_density_changed(self, value):
+        self.surface_charge_density = value
+
+    def boundary_condition_changed(self, index):
+        self.boundary_condition = self.bc_enum[index]
+        if self.boundary_condition == "Dirichlet":
+            self.parameter_widget.gb_neumann.setEnabled(False)
+            self.parameter_widget.gb_dirichlet.setEnabled(True)
+        elif self.boundary_condition == "Neumann":
+            self.parameter_widget.gb_neumann.setEnabled(True)
+            self.parameter_widget.gb_dirichlet.setEnabled(False)

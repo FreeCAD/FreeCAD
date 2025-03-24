@@ -204,8 +204,10 @@ class DraftLink(DraftObject):
                     and getattr(obj, 'AlwaysSyncPlacement', False):
                 for pla,child in zip(pls,obj.ElementList):
                     child.Placement = pla
-        elif obj.Count != len(pls):
-            obj.Count = len(pls)
+        else:
+            obj.PlacementList = pls
+            if obj.Count != len(pls):
+                obj.Count = len(pls)
 
         if obj.Base:
             shape = getattr(obj.Base, 'Shape', None)

@@ -54,20 +54,47 @@ class Arch_Stairs:
         from draftutils import params
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Stairs"))
         FreeCADGui.addModule("Arch")
-        if FreeCADGui.Selection.getSelection():
+        sel = FreeCADGui.Selection.getSelection()
+        if sel:
             n = []
             nStr = ""
-            for obj in FreeCADGui.Selection.getSelection():
+            for obj in sel:
                 if nStr != "":
                     nStr += ","
                 nStr += "FreeCAD.ActiveDocument." + obj.Name
-            FreeCADGui.doCommand("obj = Arch.makeStairs(baseobj=["+nStr+"])")
+            #'obj' in GUI not the same as obj in script,
+            # make it 'stairs' to distinguish one from another
+            #Create Stairs object with steps numbers in user preference
+            FreeCADGui.doCommand("stairs = Arch.makeStairs(baseobj=["+nStr+"],steps="+str(params.get_param_arch("StairsSteps"))+")")
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(stairs)")
+
+            #ArchSketch Support
+            if len(sel)==1 and Draft.getType(obj)=="ArchSketch":
+                # Get ArchSketch.FloorHeight as default and assign to Stairs
+                try:
+                    height = str(obj.FloorHeight.Value)  # vs obj.FloorHeight
+                    # Can only use Value to assign to PropertyLength
+                    FreeCADGui.doCommand("stairs.Height = " + height)
+                except:
+                    pass
+                #If base is ArchSketch, ArchSketchObject is already loaded, no
+                #need to load again : FreeCADGui.addModule("ArchSketchObject")
+                try:
+                    FreeCADGui.runCommand("EditStairs")
+                except:
+                    pass
+
         else:
-            FreeCADGui.doCommand("obj = Arch.makeStairs(steps="+str(params.get_param_arch("StairsSteps"))+")")
+            FreeCADGui.doCommand("stairs = Arch.makeStairs(steps="+str(params.get_param_arch("StairsSteps"))+")")
         FreeCADGui.addModule("Draft")
-        FreeCADGui.doCommand("Draft.autogroup(obj)")
+
+        #FreeCADGui.doCommand("Draft.autogroup(obj)")
+        FreeCADGui.doCommand("Draft.autogroup(stairs)")
+
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+        print(" ActiveDocument.recompute, done ")
 
 
 FreeCADGui.addCommand('Arch_Stairs', Arch_Stairs())

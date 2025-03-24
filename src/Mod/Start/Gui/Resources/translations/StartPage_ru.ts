@@ -16,7 +16,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>To get started, set your basic configuration options below.</source>
-      <translation>Чтобы начать, установите основные параметры конфигурации ниже.</translation>
+      <translation>Чтобы начать настройте основные параметры конфигурации ниже.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="100"/>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
       <source>Unit System</source>
-      <translation>Система единиц</translation>
+      <translation>Единицы измерения</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
@@ -46,14 +46,18 @@
     <name>CmdStart</name>
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
-      <location filename="../../Manipulator.cpp" line="48"/>
       <source>Start</source>
-      <translation>Запустить</translation>
+      <translation>Запуск</translation>
+    </message>
+    <message>
+      <location filename="../../Manipulator.cpp" line="48"/>
+      <source>&amp;Start Page</source>
+      <translation type="unfinished">&amp;Start Page</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
-      <source>Displays the Start in an MDI view</source>
-      <translation>Отображает начало в виде MDI</translation>
+      <source>Displays the Start Page</source>
+      <translation type="unfinished">Displays the Start Page</translation>
     </message>
   </context>
   <context>
@@ -61,12 +65,12 @@
     <message>
       <location filename="../../StartView.cpp" line="289"/>
       <source>Empty file</source>
-      <translation>Пустой файл</translation>
+      <translation>Новый файл</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="290"/>
       <source>Create a new empty FreeCAD file</source>
-      <translation>Создать пустой файл FreeCAD</translation>
+      <translation>Создать новый пустой файл FreeCAD</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="293"/>
@@ -96,17 +100,17 @@
     <message>
       <location filename="../../StartView.cpp" line="302"/>
       <source>Create an assembly project</source>
-      <translation>Создать сборку проекта</translation>
+      <translation>Создать проект сборки деталей</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="305"/>
       <source>2D Draft</source>
-      <translation>2D эскиз</translation>
+      <translation>Двумерный эскиз</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="306"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation>Создать 2D эскиз на верстаке эскизов</translation>
+      <translation>Создать двумерный эскиз на верстаке эскизов</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="309"/>
@@ -136,12 +140,12 @@
     <message>
       <location filename="../../StartView.cpp" line="530"/>
       <source>Open first start setup</source>
-      <translation>Открыть первую настройку запуска</translation>
+      <translation>Открыть настройку первого запуска</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="532"/>
       <source>Don't show this Start page again (start with blank screen)</source>
-      <translation>Не показывать эту начальную страницу снова (начните с пустого экрана)</translation>
+      <translation>Больше не показывать эту начальную страницу (начать с пустого экрана)</translation>
     </message>
   </context>
   <context>
@@ -149,7 +153,7 @@
     <message>
       <location filename="../../StartView.cpp" line="519"/>
       <source>Start</source>
-      <translation>Запустить</translation>
+      <translation>Начало</translation>
     </message>
   </context>
   <context>
@@ -177,7 +181,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="239"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation>Ищете новые темы? Вы можете получить их с помощью &lt;a href="freecad:Std_AddonMgr"&gt;Менеджера дополнений&lt;/a&gt;.</translation>
+      <translation>Ищете другие темы? Вы можете получить их с помощью &lt;a href="freecad:Std_AddonMgr"&gt;Менеджера дополнений&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="241"/>

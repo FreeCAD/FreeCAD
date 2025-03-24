@@ -49,12 +49,11 @@ public:
     enum {Type = QGraphicsItem::UserType + 130};
     int type() const override { return Type;}
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
-    QRectF boundingRect() const override;
+
     QRectF tightBoundingRect() const;
+    QRectF alignmentRect() const;
     QPointF tightBoundingAdjust() const;
-    // void setPos(const QPointF &pos);
-    // void setPos(qreal x, qreal y);
-    // QPointF pos() const;
+
 
     void setHighlighted(bool state);
     virtual void setPrettyNormal();
@@ -88,9 +87,7 @@ protected:
 
     Base::Reference<ParameterGrp> getParmGroup();
 
-    bool isHighlighted;
     bool tightBounding;  // Option to use tighter boundingRect(), works only for plaintext QGCustomText
-    QColor m_colCurrent;
     QColor m_colNormal;
 
 private:

@@ -46,14 +46,18 @@
     <name>CmdStart</name>
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
-      <location filename="../../Manipulator.cpp" line="48"/>
       <source>Start</source>
       <translation>Iniciar</translation>
     </message>
     <message>
+      <location filename="../../Manipulator.cpp" line="48"/>
+      <source>&amp;Start Page</source>
+      <translation type="unfinished">&amp;Start Page</translation>
+    </message>
+    <message>
       <location filename="../../Manipulator.cpp" line="49"/>
-      <source>Displays the Start in an MDI view</source>
-      <translation>Exibe a página de início em uma vista MDI</translation>
+      <source>Displays the Start Page</source>
+      <translation type="unfinished">Displays the Start Page</translation>
     </message>
   </context>
   <context>

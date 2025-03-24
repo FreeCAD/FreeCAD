@@ -25,7 +25,7 @@
 
 #include <map>
 #include <string>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 class SoGroup;
 class SoNode;

@@ -22,12 +22,16 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <cmath>
+#endif
 #ifdef __GNUC__
 #include <unistd.h>
 #endif
 
+#include "Quantity.h"
+#include "Unit.h"
 #include "UnitsSchemaMKS.h"
-#include <cmath>
 
 using namespace Base;
 
@@ -311,6 +315,10 @@ UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, std::stri
     else if (unit == Unit::ElectricCharge) {
         unitString = "C";
         factor = 1.0;
+    }
+    else if (unit == Unit::SurfaceChargeDensity) {
+        unitString = "C/m^2";
+        factor = 1e-6;
     }
     else if (unit == Unit::CurrentDensity) {
         if (UnitValue <= 1e3) {

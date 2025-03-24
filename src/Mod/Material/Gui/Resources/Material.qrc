@@ -2,7 +2,7 @@
     <qresource>
         <file>icons/list.svg</file>
         <file>icons/MaterialWorkbench.svg</file>
-        <file>icons/Materials_Edit.svg</file>
+        <file>icons/Material_Edit.svg</file>
         <file>icons/multiline.svg</file>
         <file>icons/preferences-material.svg</file>
         <file>icons/preview-rendered.svg</file>

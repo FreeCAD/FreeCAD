@@ -156,7 +156,7 @@ void TaskExtrudeParameters::setupDialog()
     }
     else if (obj && faceId >= 0) {
         ui->lineFaceName->setText(
-            QString::fromLatin1("%1:%2%3").arg(QString::fromUtf8(obj->Label.getValue()),
+            QStringLiteral("%1:%2%3").arg(QString::fromUtf8(obj->Label.getValue()),
                                                tr("Face"),
                                                QString::number(faceId)));
         ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
@@ -179,10 +179,8 @@ void TaskExtrudeParameters::setupDialog()
         auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
         unselectShapeFaceAction->setShortcut(QKeySequence(shortcut));
     }
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     unselectShapeFaceAction->setShortcutVisibleInContextMenu(true);
-#endif
 
     ui->listWidgetReferences->addAction(unselectShapeFaceAction);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -404,19 +402,18 @@ void TaskExtrudeParameters::selectedShapeFace(const Gui::SelectionChanges& msg)
     }
 
     std::vector<std::string> faces = getShapeFaces();
-    std::string subName(msg.pSubName);
+    const std::string subName(msg.pSubName);
 
     if (subName.empty()) {
         return;
     }
 
-    auto positionInList = std::find(faces.begin(), faces.end(), subName);
-
-    if (positionInList != faces.end()) {  // If it's found then it's in the list so we remove it.
-        faces.erase(positionInList);
+    if (const auto positionInList = std::ranges::find(faces, subName);
+        positionInList != faces.end()) {  // it's in the list
+        faces.erase(positionInList);  // remove it.
     }
-    else {  // if it's not found then it's not yet in the list so we add it.
-        faces.push_back(subName);
+    else {
+        faces.push_back(subName);  // not yet in the list so add it.
     }
 
     extrude->UpToShape.setValue(base, faces);
@@ -925,7 +922,7 @@ void TaskExtrudeParameters::setDirectionMode(int index)
         extrude->UseCustomVector.setValue(false);
     }
 
-    // if we don't use custom direction, only allow to show its direction
+    // if we don't use custom direction, only allow one to show its direction
     if (index != DirectionModes::Custom) {
         ui->XDirectionEdit->setEnabled(false);
         ui->YDirectionEdit->setEnabled(false);
@@ -1023,7 +1020,7 @@ void TaskExtrudeParameters::onFaceName(const QString& text)
         QVariant name = objectNameByLabel(label, ui->lineFaceName->property("FeatureName"));
         if (name.isValid()) {
             parts[0] = name.toString();
-            QString uptoface = parts.join(QString::fromLatin1(":"));
+            QString uptoface = parts.join(QStringLiteral(":"));
             ui->lineFaceName->setProperty("FeatureName", name);
             ui->lineFaceName->setProperty("FaceName", setUpToFace(uptoface));
         }
@@ -1049,7 +1046,7 @@ void TaskExtrudeParameters::translateFaceName()
 
         if (ok) {
             ui->lineFaceName->setText(
-                QString::fromLatin1("%1:%2%3").arg(parts[0], tr("Face")).arg(faceId));
+                QStringLiteral("%1:%2%3").arg(parts[0], tr("Face")).arg(faceId));
         }
         else {
             ui->lineFaceName->setText(parts[0]);
@@ -1118,7 +1115,7 @@ QString TaskExtrudeParameters::getFaceName() const
         return getFaceReference(featureName.toString(), faceName);
     }
 
-    return QString::fromLatin1("None");
+    return QStringLiteral("None");
 }
 
 void TaskExtrudeParameters::changeEvent(QEvent* e)

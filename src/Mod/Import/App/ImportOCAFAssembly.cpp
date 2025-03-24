@@ -241,7 +241,7 @@ void ImportOCAFAssembly::createShape(const TopoDS_Shape& aShape,
                                      const TopLoc_Location& loc,
                                      const std::string& name)
 {
-    Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
+    Part::Feature* part = doc->addObject<Part::Feature>();
     if (!loc.IsIdentity()) {
         part->Shape.setValue(aShape.Moved(loc));
     }
@@ -251,14 +251,14 @@ void ImportOCAFAssembly::createShape(const TopoDS_Shape& aShape,
     part->Label.setValue(name);
 
     Quantity_Color aColor;
-    App::Color color(0.8f, 0.8f, 0.8f);
+    Base::Color color(0.8f, 0.8f, 0.8f);
     if (aColorTool->GetColor(aShape, XCAFDoc_ColorGen, aColor)
         || aColorTool->GetColor(aShape, XCAFDoc_ColorSurf, aColor)
         || aColorTool->GetColor(aShape, XCAFDoc_ColorCurv, aColor)) {
         color.r = (float)aColor.Red();
         color.g = (float)aColor.Green();
         color.b = (float)aColor.Blue();
-        std::vector<App::Color> colors;
+        std::vector<Base::Color> colors;
         colors.push_back(color);
         applyColors(part, colors);
     }
@@ -270,7 +270,7 @@ void ImportOCAFAssembly::createShape(const TopoDS_Shape& aShape,
         xp.Next();
     }
     bool found_face_color = false;
-    std::vector<App::Color> faceColors;
+    std::vector<Base::Color> faceColors;
     faceColors.resize(faces.Extent(), color);
     xp.Init(aShape, TopAbs_FACE);
     while (xp.More()) {

@@ -200,7 +200,7 @@ class TaskPanelCircularArray:
         """Check that the input is valid.
 
         Some values may not need to be checked because
-        the interface may not allow to input wrong data.
+        the interface may not allow one to input wrong data.
         """
         if not selection:
             _err(translate("draft","At least one element must be selected."))

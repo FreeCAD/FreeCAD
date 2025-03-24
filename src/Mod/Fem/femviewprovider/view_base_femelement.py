@@ -35,5 +35,9 @@ from femviewprovider import view_base_femobject
 class VPBaseFemElement(view_base_femobject.VPBaseFemObject):
     """Proxy View Provider for Python base element."""
 
+    def __init__(self, vobj):
+        super().__init__(vobj)
+        vobj.addExtension("Gui::ViewProviderSuppressibleExtensionPython")
+
     def isShow(self):
         return self.ViewObject.Visibility

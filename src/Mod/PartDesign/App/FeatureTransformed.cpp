@@ -57,7 +57,7 @@ namespace PartDesign
 {
 extern bool getPDRefineModelParameter();
 
-PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::Feature)
+PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::FeatureRefine)
 
 std::array<char const*, 3> transformModeEnums = {"Transform tool shapes",
                                                  "Transform body",
@@ -71,14 +71,6 @@ Transformed::Transformed()
 
     ADD_PROPERTY(TransformMode, (static_cast<long>(Mode::TransformToolShapes)));
     TransformMode.setEnums(transformModeEnums.data());
-
-    ADD_PROPERTY_TYPE(Refine,
-                      (0),
-                      "Part Design",
-                      (App::PropertyType)(App::Prop_None),
-                      "Refine shape (clean up redundant edges) after adding/subtracting");
-
-    this->Refine.setValue(getPDRefineModelParameter());
 }
 
 void Transformed::positionBySupport()
@@ -349,15 +341,6 @@ App::DocumentObjectExecReturn* Transformed::execute()
     rejected = getRemainingSolids(supportShape.getShape());
 
     return App::DocumentObject::StdReturn;
-}
-
-
-TopoShape Transformed::refineShapeIfActive(const TopoShape& oldShape) const
-{
-    if (this->Refine.getValue()) {
-        return oldShape.makeElementRefine();
-    }
-    return oldShape;
 }
 
 TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)

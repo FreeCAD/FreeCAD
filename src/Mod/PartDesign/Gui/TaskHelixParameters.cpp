@@ -31,7 +31,7 @@
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -174,7 +174,7 @@ void TaskHelixParameters::showCoordinateAxes()
             ViewProviderCoordinateSystem* vpOrigin;
             vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
                 Gui::Application::Instance->getViewProvider(origin));
-            vpOrigin->setTemporaryVisibility(true, false);
+            vpOrigin->setTemporaryVisibility(Gui::DatumElement::Axes);
         }
         catch (const Base::Exception& ex) {
             ex.ReportException();

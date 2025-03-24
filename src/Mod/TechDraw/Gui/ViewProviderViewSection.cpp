@@ -33,7 +33,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Parameter.h>
 #include <Gui/Control.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include <Mod/TechDraw/App/DrawComplexSection.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
@@ -152,7 +152,7 @@ bool ViewProviderViewSection::doubleClicked()
 
 void ViewProviderViewSection::getParameters()
 {
-    App::Color cutColor = App::Color((uint32_t) Preferences::getPreferenceGroup("Colors")->GetUnsigned("CutSurfaceColor", 0xD3D3D3FF));
+    Base::Color cutColor = Base::Color((uint32_t) Preferences::getPreferenceGroup("Colors")->GetUnsigned("CutSurfaceColor", 0xD3D3D3FF));
     CutSurfaceColor.setValue(cutColor);
 
     double lineWeight = Preferences::getPreferenceGroup("PAT")->GetFloat("GeomWeight", 0.1);

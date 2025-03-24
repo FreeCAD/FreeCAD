@@ -194,7 +194,7 @@
       <location filename="../../Command.cpp" line="742"/>
       <location filename="../../Command.cpp" line="743"/>
       <source>Project shape onto a user-defined plane</source>
-      <translation>Projectar silueta a un plano definido por el usuario</translation>
+      <translation>Proyectar forma en un plano definido por el usuario</translation>
     </message>
   </context>
   <context>
@@ -207,7 +207,7 @@
     <message>
       <location filename="../../Command.cpp" line="808"/>
       <source>&amp;Spreadsheet View</source>
-      <translation>Vista &amp;Hoja de cálculo</translation>
+      <translation>&amp;Vista de hoja de cálculo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="809"/>

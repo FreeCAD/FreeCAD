@@ -71,7 +71,6 @@
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
-#include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/encodeFilename.h>
 #include <Mod/Part/Gui/DlgExportStep.h>
 #include <Mod/Part/Gui/DlgImportStep.h>
@@ -341,8 +340,8 @@ private:
         return Py::None();
     }
 
-    static std::map<std::string, App::Color> getShapeColors(App::DocumentObject* obj,
-                                                            const char* subname)
+    static std::map<std::string, Base::Color> getShapeColors(App::DocumentObject* obj,
+                                                             const char* subname)
     {
         auto vp = Gui::Application::Instance->getViewProvider(obj);
         if (vp) {
@@ -535,7 +534,7 @@ private:
                     "User parameter:BaseApp/Preferences/Mod/Part/STEP");
                 std::string scheme = hGrp->GetASCII("Scheme", Part::Interface::writeStepScheme());
                 std::list<std::string> supported = Part::supportedSTEPSchemes();
-                if (std::find(supported.begin(), supported.end(), scheme) != supported.end()) {
+                if (std::ranges::find(supported, scheme) != supported.end()) {
                     Part::Interface::writeStepScheme(scheme.c_str());
                 }
 

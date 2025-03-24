@@ -188,9 +188,9 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters()
 
     switch (currentindex) {
         case 0:  // BFGS
-            ui->labelSolverParam1->setText(QString::fromLatin1(""));
-            ui->labelSolverParam2->setText(QString::fromLatin1(""));
-            ui->labelSolverParam3->setText(QString::fromLatin1(""));
+            ui->labelSolverParam1->setText(QStringLiteral(""));
+            ui->labelSolverParam2->setText(QStringLiteral(""));
+            ui->labelSolverParam3->setText(QStringLiteral(""));
             ui->lineEditSolverParam1->clear();
             ui->lineEditSolverParam2->clear();
             ui->lineEditSolverParam3->clear();
@@ -200,9 +200,9 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters()
             break;
         case 1:  // LM
         {
-            ui->labelSolverParam1->setText(QString::fromLatin1("Eps"));
-            ui->labelSolverParam2->setText(QString::fromLatin1("Eps1"));
-            ui->labelSolverParam3->setText(QString::fromLatin1("Tau"));
+            ui->labelSolverParam1->setText(QStringLiteral("Eps"));
+            ui->labelSolverParam2->setText(QStringLiteral("Eps1"));
+            ui->labelSolverParam3->setText(QStringLiteral("Tau"));
             ui->lineEditSolverParam1->setEnabled(true);
             ui->lineEditSolverParam2->setEnabled(true);
             ui->lineEditSolverParam3->setEnabled(true);
@@ -211,17 +211,11 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters()
                 ::atof(hGrp->GetASCII("LM_eps1", QString::number(LM_EPS1).toUtf8()).c_str());
             double tau = ::atof(hGrp->GetASCII("LM_tau", QString::number(LM_TAU).toUtf8()).c_str());
             ui->lineEditSolverParam1->setText(QString::number(eps).remove(
-                QString::fromLatin1("+")
-                    .replace(QString::fromLatin1("e0"), QString::fromLatin1("E"))
-                    .toUpper()));
+                QStringLiteral("+").replace(QStringLiteral("e0"), QStringLiteral("E")).toUpper()));
             ui->lineEditSolverParam2->setText(QString::number(eps1).remove(
-                QString::fromLatin1("+")
-                    .replace(QString::fromLatin1("e0"), QString::fromLatin1("E"))
-                    .toUpper()));
+                QStringLiteral("+").replace(QStringLiteral("e0"), QStringLiteral("E")).toUpper()));
             ui->lineEditSolverParam3->setText(QString::number(tau).remove(
-                QString::fromLatin1("+")
-                    .replace(QString::fromLatin1("e0"), QString::fromLatin1("E"))
-                    .toUpper()));
+                QStringLiteral("+").replace(QStringLiteral("e0"), QStringLiteral("E")).toUpper()));
             // SketchObject has encapsulated write-access. The current use of const_cast just for
             // configuration is deemed acceptable. Eventually this dialog should be rewritten to
             // include only useful information and the configuration centralised in an individual
@@ -237,9 +231,9 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters()
         }
         case 2:  // DogLeg
         {
-            ui->labelSolverParam1->setText(QString::fromLatin1("Tolg"));
-            ui->labelSolverParam2->setText(QString::fromLatin1("Tolx"));
-            ui->labelSolverParam3->setText(QString::fromLatin1("Tolf"));
+            ui->labelSolverParam1->setText(QStringLiteral("Tolg"));
+            ui->labelSolverParam2->setText(QStringLiteral("Tolx"));
+            ui->labelSolverParam3->setText(QStringLiteral("Tolf"));
             ui->lineEditSolverParam1->setEnabled(true);
             ui->lineEditSolverParam2->setEnabled(true);
             ui->lineEditSolverParam3->setEnabled(true);
@@ -250,17 +244,11 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters()
             double tolf =
                 ::atof(hGrp->GetASCII("DL_tolf", QString::number(DL_TOLF).toUtf8()).c_str());
             ui->lineEditSolverParam1->setText(QString::number(tolg).remove(
-                QString::fromLatin1("+")
-                    .replace(QString::fromLatin1("e0"), QString::fromLatin1("E"))
-                    .toUpper()));
+                QStringLiteral("+").replace(QStringLiteral("e0"), QStringLiteral("E")).toUpper()));
             ui->lineEditSolverParam2->setText(QString::number(tolx).remove(
-                QString::fromLatin1("+")
-                    .replace(QString::fromLatin1("e0"), QString::fromLatin1("E"))
-                    .toUpper()));
+                QStringLiteral("+").replace(QStringLiteral("e0"), QStringLiteral("E")).toUpper()));
             ui->lineEditSolverParam3->setText(QString::number(tolf).remove(
-                QString::fromLatin1("+")
-                    .replace(QString::fromLatin1("e0"), QString::fromLatin1("E"))
-                    .toUpper()));
+                QStringLiteral("+").replace(QStringLiteral("e0"), QStringLiteral("E")).toUpper()));
             const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
                 .setDL_tolg(tolg);
             const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
@@ -289,9 +277,9 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters()
 
     switch (redundantcurrentindex) {
         case 0:  // BFGS
-            ui->labelRedundantSolverParam1->setText(QString::fromLatin1(""));
-            ui->labelRedundantSolverParam2->setText(QString::fromLatin1(""));
-            ui->labelRedundantSolverParam3->setText(QString::fromLatin1(""));
+            ui->labelRedundantSolverParam1->setText(QStringLiteral(""));
+            ui->labelRedundantSolverParam2->setText(QStringLiteral(""));
+            ui->labelRedundantSolverParam3->setText(QStringLiteral(""));
             ui->lineEditRedundantSolverParam1->clear();
             ui->lineEditRedundantSolverParam2->clear();
             ui->lineEditRedundantSolverParam3->clear();
@@ -301,9 +289,9 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters()
             break;
         case 1:  // LM
         {
-            ui->labelRedundantSolverParam1->setText(QString::fromLatin1("R.Eps"));
-            ui->labelRedundantSolverParam2->setText(QString::fromLatin1("R.Eps1"));
-            ui->labelRedundantSolverParam3->setText(QString::fromLatin1("R.Tau"));
+            ui->labelRedundantSolverParam1->setText(QStringLiteral("R.Eps"));
+            ui->labelRedundantSolverParam2->setText(QStringLiteral("R.Eps1"));
+            ui->labelRedundantSolverParam3->setText(QStringLiteral("R.Tau"));
             ui->lineEditRedundantSolverParam1->setEnabled(true);
             ui->lineEditRedundantSolverParam2->setEnabled(true);
             ui->lineEditRedundantSolverParam3->setEnabled(true);
@@ -314,17 +302,11 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters()
             double tau = ::atof(
                 hGrp->GetASCII("Redundant_LM_tau", QString::number(LM_TAU).toUtf8()).c_str());
             ui->lineEditRedundantSolverParam1->setText(QString::number(eps).remove(
-                QString::fromLatin1("+")
-                    .replace(QString::fromLatin1("e0"), QString::fromLatin1("E"))
-                    .toUpper()));
+                QStringLiteral("+").replace(QStringLiteral("e0"), QStringLiteral("E")).toUpper()));
             ui->lineEditRedundantSolverParam2->setText(QString::number(eps1).remove(
-                QString::fromLatin1("+")
-                    .replace(QString::fromLatin1("e0"), QString::fromLatin1("E"))
-                    .toUpper()));
+                QStringLiteral("+").replace(QStringLiteral("e0"), QStringLiteral("E")).toUpper()));
             ui->lineEditRedundantSolverParam3->setText(QString::number(tau).remove(
-                QString::fromLatin1("+")
-                    .replace(QString::fromLatin1("e0"), QString::fromLatin1("E"))
-                    .toUpper()));
+                QStringLiteral("+").replace(QStringLiteral("e0"), QStringLiteral("E")).toUpper()));
             const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
                 .setLM_epsRedundant(eps);
             const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
@@ -335,9 +317,9 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters()
         }
         case 2:  // DogLeg
         {
-            ui->labelRedundantSolverParam1->setText(QString::fromLatin1("R.Tolg"));
-            ui->labelRedundantSolverParam2->setText(QString::fromLatin1("R.Tolx"));
-            ui->labelRedundantSolverParam3->setText(QString::fromLatin1("R.Tolf"));
+            ui->labelRedundantSolverParam1->setText(QStringLiteral("R.Tolg"));
+            ui->labelRedundantSolverParam2->setText(QStringLiteral("R.Tolx"));
+            ui->labelRedundantSolverParam3->setText(QStringLiteral("R.Tolf"));
             ui->lineEditRedundantSolverParam1->setEnabled(true);
             ui->lineEditRedundantSolverParam2->setEnabled(true);
             ui->lineEditRedundantSolverParam3->setEnabled(true);
@@ -348,17 +330,11 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters()
             double tolf = ::atof(
                 hGrp->GetASCII("Redundant_DL_tolf", QString::number(DL_TOLF).toUtf8()).c_str());
             ui->lineEditRedundantSolverParam1->setText(QString::number(tolg).remove(
-                QString::fromLatin1("+")
-                    .replace(QString::fromLatin1("e0"), QString::fromLatin1("E"))
-                    .toUpper()));
+                QStringLiteral("+").replace(QStringLiteral("e0"), QStringLiteral("E")).toUpper()));
             ui->lineEditRedundantSolverParam2->setText(QString::number(tolx).remove(
-                QString::fromLatin1("+")
-                    .replace(QString::fromLatin1("e0"), QString::fromLatin1("E"))
-                    .toUpper()));
+                QStringLiteral("+").replace(QStringLiteral("e0"), QStringLiteral("E")).toUpper()));
             ui->lineEditRedundantSolverParam3->setText(QString::number(tolf).remove(
-                QString::fromLatin1("+")
-                    .replace(QString::fromLatin1("e0"), QString::fromLatin1("E"))
-                    .toUpper()));
+                QStringLiteral("+").replace(QStringLiteral("e0"), QStringLiteral("E")).toUpper()));
             const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
                 .setDL_tolgRedundant(tolg);
             const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
@@ -375,8 +351,8 @@ void TaskSketcherSolverAdvanced::onLineEditSolverParam1EditingFinished()
     QString text = ui->lineEditSolverParam1->text();
     double val = text.toDouble();
     QString sci = QString::number(val);
-    sci.remove(QString::fromLatin1("+"));
-    sci.replace(QString::fromLatin1("e0"), QString::fromLatin1("E"));
+    sci.remove(QStringLiteral("+"));
+    sci.replace(QStringLiteral("e0"), QStringLiteral("E"));
     ui->lineEditSolverParam1->setText(sci.toUpper());
 
     switch (ui->comboBoxDefaultSolver->currentIndex()) {
@@ -404,8 +380,8 @@ void TaskSketcherSolverAdvanced::onLineEditRedundantSolverParam1EditingFinished(
     QString text = ui->lineEditRedundantSolverParam1->text();
     double val = text.toDouble();
     QString sci = QString::number(val);
-    sci.remove(QString::fromLatin1("+"));
-    sci.replace(QString::fromLatin1("e0"), QString::fromLatin1("E"));
+    sci.remove(QStringLiteral("+"));
+    sci.replace(QStringLiteral("e0"), QStringLiteral("E"));
     ui->lineEditRedundantSolverParam1->setText(sci.toUpper());
 
     switch (ui->comboBoxDefaultSolver->currentIndex()) {
@@ -433,8 +409,8 @@ void TaskSketcherSolverAdvanced::onLineEditSolverParam2EditingFinished()
     QString text = ui->lineEditSolverParam2->text();
     double val = text.toDouble();
     QString sci = QString::number(val);
-    sci.remove(QString::fromLatin1("+"));
-    sci.replace(QString::fromLatin1("e0"), QString::fromLatin1("E"));
+    sci.remove(QStringLiteral("+"));
+    sci.replace(QStringLiteral("e0"), QStringLiteral("E"));
     ui->lineEditSolverParam2->setText(sci.toUpper());
 
     switch (ui->comboBoxDefaultSolver->currentIndex()) {
@@ -462,8 +438,8 @@ void TaskSketcherSolverAdvanced::onLineEditRedundantSolverParam2EditingFinished(
     QString text = ui->lineEditRedundantSolverParam2->text();
     double val = text.toDouble();
     QString sci = QString::number(val);
-    sci.remove(QString::fromLatin1("+"));
-    sci.replace(QString::fromLatin1("e0"), QString::fromLatin1("E"));
+    sci.remove(QStringLiteral("+"));
+    sci.replace(QStringLiteral("e0"), QStringLiteral("E"));
     ui->lineEditRedundantSolverParam2->setText(sci.toUpper());
 
     switch (ui->comboBoxDefaultSolver->currentIndex()) {
@@ -491,8 +467,8 @@ void TaskSketcherSolverAdvanced::onLineEditSolverParam3EditingFinished()
     QString text = ui->lineEditSolverParam3->text();
     double val = text.toDouble();
     QString sci = QString::number(val);
-    sci.remove(QString::fromLatin1("+"));
-    sci.replace(QString::fromLatin1("e0"), QString::fromLatin1("E"));
+    sci.remove(QStringLiteral("+"));
+    sci.replace(QStringLiteral("e0"), QStringLiteral("E"));
     ui->lineEditSolverParam3->setText(sci.toUpper());
 
     switch (ui->comboBoxDefaultSolver->currentIndex()) {
@@ -520,8 +496,8 @@ void TaskSketcherSolverAdvanced::onLineEditRedundantSolverParam3EditingFinished(
     QString text = ui->lineEditRedundantSolverParam3->text();
     double val = text.toDouble();
     QString sci = QString::number(val);
-    sci.remove(QString::fromLatin1("+"));
-    sci.replace(QString::fromLatin1("e0"), QString::fromLatin1("E"));
+    sci.remove(QStringLiteral("+"));
+    sci.replace(QStringLiteral("e0"), QStringLiteral("E"));
     ui->lineEditRedundantSolverParam3->setText(sci.toUpper());
 
     switch (ui->comboBoxDefaultSolver->currentIndex()) {
@@ -585,8 +561,8 @@ void TaskSketcherSolverAdvanced::onLineEditQRPivotThresholdEditingFinished()
     QString text = ui->lineEditQRPivotThreshold->text();
     double val = text.toDouble();
     QString sci = QString::number(val);
-    sci.remove(QString::fromLatin1("+"));
-    sci.replace(QString::fromLatin1("e0"), QString::fromLatin1("E"));
+    sci.remove(QStringLiteral("+"));
+    sci.replace(QStringLiteral("e0"), QStringLiteral("E"));
     ui->lineEditQRPivotThreshold->setText(sci.toUpper());
 
     ui->lineEditQRPivotThreshold->onSave();
@@ -600,8 +576,8 @@ void TaskSketcherSolverAdvanced::onLineEditConvergenceEditingFinished()
     QString text = ui->lineEditConvergence->text();
     double val = text.toDouble();
     QString sci = QString::number(val);
-    sci.remove(QString::fromLatin1("+"));
-    sci.replace(QString::fromLatin1("e0"), QString::fromLatin1("E"));
+    sci.remove(QStringLiteral("+"));
+    sci.replace(QStringLiteral("e0"), QStringLiteral("E"));
     ui->lineEditConvergence->setText(sci.toUpper());
 
     ui->lineEditConvergence->onSave();
@@ -615,8 +591,8 @@ void TaskSketcherSolverAdvanced::onLineEditRedundantConvergenceEditingFinished()
     QString text = ui->lineEditRedundantConvergence->text();
     double val = text.toDouble();
     QString sci = QString::number(val);
-    sci.remove(QString::fromLatin1("+"));
-    sci.replace(QString::fromLatin1("e0"), QString::fromLatin1("E"));
+    sci.remove(QStringLiteral("+"));
+    sci.replace(QStringLiteral("e0"), QStringLiteral("E"));
     ui->lineEditRedundantConvergence->setText(sci.toUpper());
 
     ui->lineEditRedundantConvergence->onSave();

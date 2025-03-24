@@ -27,7 +27,7 @@
 #include <TopoDS_Shape.hxx>
 #include <XCAFDoc_ColorTool.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
-#include <App/Color.h>
+#include <Base/Color.h>
 
 #include <Standard_Version.hxx>
 
@@ -60,8 +60,8 @@ struct LabelHasher
 
 struct Tools
 {
-    static App::Color convertColor(const Quantity_ColorRGBA& rgba);
-    static Quantity_ColorRGBA convertColor(const App::Color& col);
+    static Base::Color convertColor(const Quantity_ColorRGBA& rgba);
+    static Quantity_ColorRGBA convertColor(const Base::Color& col);
     static std::string labelName(TDF_Label label);
     static void printLabel(TDF_Label label,
                            Handle(XCAFDoc_ShapeTool) aShapeTool,

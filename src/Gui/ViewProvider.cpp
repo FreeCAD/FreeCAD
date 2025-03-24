@@ -40,6 +40,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
+#include <Base/Tools.h>
 
 #include "Inventor/SoMouseWheelEvent.h"
 #include "Inventor/SoFCTransform.h"
@@ -55,6 +56,8 @@
 #include "ViewProviderExtension.h"
 #include "ViewProviderLink.h"
 #include "ViewProviderPy.h"
+
+#include <Utilities.h>
 
 
 FC_LOG_LEVEL_INIT("ViewProvider", true, true)
@@ -94,10 +97,10 @@ ViewProvider::ViewProvider()
     setStatus(UpdateData, true);
 
 
-    // SoFCSeparater and SoFCSelectionRoot can both track render cache setting.
+    // SoFCSeparator and SoFCSelectionRoot can both track render cache setting.
     // We change to SoFCSelectionRoot so that we can dynamically change full
     // selection mode (full highlight vs. boundbox). Note that comparing to
-    // SoFCSeparater, there are some small overhead with SoFCSelectionRoot for
+    // SoFCSeparator, there are some small overhead with SoFCSelectionRoot for
     // selection context tracking.
     //
     // pcRoot = new SoFCSeparator(true);
@@ -105,6 +108,7 @@ ViewProvider::ViewProvider()
     pcRoot->ref();
     pcModeSwitch = new SoSwitch();
     pcModeSwitch->ref();
+    pcModeSwitch->setName("ModeSwitch");
     pcTransform  = new SoFCTransform();
     pcTransform->ref();
     pcRoot->addChild(pcTransform);
@@ -345,13 +349,7 @@ QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
 
 void ViewProvider::setTransformation(const Base::Matrix4D &rcMatrix)
 {
-    double dMtrx[16];
-    rcMatrix.getGLMatrix(dMtrx);
-
-    pcTransform->setMatrix(SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3],
-                                    dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
-                                    dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
-                                    dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]));
+    pcTransform->setMatrix(convert(rcMatrix));
 }
 
 void ViewProvider::setTransformation(const SbMatrix &rcMatrix)
@@ -361,24 +359,12 @@ void ViewProvider::setTransformation(const SbMatrix &rcMatrix)
 
 SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix)
 {
-    //NOLINTBEGIN
-    double dMtrx[16];
-    rcMatrix.getGLMatrix(dMtrx);
-    return SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3], // clazy:exclude=rule-of-two-soft
-                    dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
-                    dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
-                    dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]);
-    //NOLINTEND
+    return Base::convertTo<SbMatrix>(rcMatrix);
 }
 
 Base::Matrix4D ViewProvider::convert(const SbMatrix &smat)
 {
-    Base::Matrix4D mat;
-    for(int i=0;i<4;++i) {
-        for(int j=0;j<4;++j)
-            mat[i][j] = smat[j][i];
-    }
-    return mat;
+    return Base::convertTo<Base::Matrix4D>(smat);
 }
 
 void ViewProvider::addDisplayMaskMode(SoNode *node, const char* type)
@@ -921,6 +907,7 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren3D() const
     }
     return vec;
 }
+
 bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
     if(!isSelectable())
         return false;
@@ -1046,7 +1033,7 @@ Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transfor
 
     SoTempPath path(20);
     path.ref();
-    if(subname && subname[0]) {
+    if(!Base::Tools::isNullOrEmpty(subname)) {
         SoDetail *det=nullptr;
         if(!getDetailPath(subname,&path,true,det)) {
             if(mode < 0)

@@ -11,12 +11,12 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="96"/>
       <source>Welcome to %1</source>
-      <translation type="unfinished">Welcome to %1</translation>
+      <translation>Bine ați venit la %1</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>To get started, set your basic configuration options below.</source>
-      <translation type="unfinished">To get started, set your basic configuration options below.</translation>
+      <translation>Pentru a începe, setați opțiunile pentru configurare de bază mai jos.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="100"/>
@@ -34,26 +34,30 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
       <source>Unit System</source>
-      <translation>Sistem unitar</translation>
+      <translation>Sistem de unități</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
       <source>Navigation Style</source>
-      <translation>Stilul de Navigare</translation>
+      <translation>Stilul de navigare</translation>
     </message>
   </context>
   <context>
     <name>CmdStart</name>
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
-      <location filename="../../Manipulator.cpp" line="48"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>
     <message>
+      <location filename="../../Manipulator.cpp" line="48"/>
+      <source>&amp;Start Page</source>
+      <translation type="unfinished">&amp;Start Page</translation>
+    </message>
+    <message>
       <location filename="../../Manipulator.cpp" line="49"/>
-      <source>Displays the Start in an MDI view</source>
-      <translation>Afişează începutul într-o vizualizare MDI</translation>
+      <source>Displays the Start Page</source>
+      <translation type="unfinished">Displays the Start Page</translation>
     </message>
   </context>
   <context>
@@ -66,7 +70,7 @@
     <message>
       <location filename="../../StartView.cpp" line="290"/>
       <source>Create a new empty FreeCAD file</source>
-      <translation>Crează un fișier nou FreeCAD gol</translation>
+      <translation>Creează un nou fișier FreeCAD gol</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="293"/>
@@ -81,7 +85,7 @@
     <message>
       <location filename="../../StartView.cpp" line="297"/>
       <source>Parametric Part</source>
-      <translation>Parte parametrică</translation>
+      <translation>Componentă parametrică</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="298"/>
@@ -101,12 +105,12 @@
     <message>
       <location filename="../../StartView.cpp" line="305"/>
       <source>2D Draft</source>
-      <translation>Ciornă 2D</translation>
+      <translation>Desen tehnic 2D</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="306"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation>Creați o ciornă 2D cu atelierul de lucru Draft</translation>
+      <translation>Creează un desen tehnic 2D cu atelierul de lucru Desen Tehnic</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="309"/>
@@ -136,7 +140,7 @@
     <message>
       <location filename="../../StartView.cpp" line="530"/>
       <source>Open first start setup</source>
-      <translation type="unfinished">Open first start setup</translation>
+      <translation>Deschide prima pornire a configurării</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="532"/>

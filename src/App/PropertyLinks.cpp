@@ -31,6 +31,7 @@
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <Base/Tools.h>
 
 #include "PropertyLinks.h"
 #include "Application.h"
@@ -99,7 +100,7 @@ bool PropertyLinkBase::isSame(const Property& other) const
     if (&other == this) {
         return true;
     }
-    if (other.isDerivedFrom(PropertyLinkBase::getClassTypeId())
+    if (other.isDerivedFrom<PropertyLinkBase>()
         || getScope() != static_cast<const PropertyLinkBase*>(&other)->getScope()) {
         return false;
     }
@@ -689,10 +690,9 @@ PropertyLink::~PropertyLink()
 void PropertyLink::resetLink()
 {
     // in case this property gets dynamically removed
-#ifndef USE_OLD_DAG
     // maintain the back link in the DocumentObject class if it is from a document object
     if (_pcScope != LinkScope::Hidden && _pcLink && getContainer()
-        && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        && getContainer()->isDerivedFrom<App::DocumentObject>()) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -702,7 +702,6 @@ void PropertyLink::resetLink()
             }
         }
     }
-#endif
     _pcLink = nullptr;
 }
 
@@ -715,7 +714,7 @@ void PropertyLink::setValue(App::DocumentObject* lValue)
     }
 
     aboutToSetValue();
-#ifndef USE_OLD_DAG
+
     // maintain the back link in the DocumentObject class if it is from a document object
     if (_pcScope != LinkScope::Hidden && parent) {
         // before accessing internals make sure the object is not about to be destroyed
@@ -729,7 +728,7 @@ void PropertyLink::setValue(App::DocumentObject* lValue)
             }
         }
     }
-#endif
+
     _pcLink = lValue;
     hasSetValue();
 }
@@ -741,7 +740,7 @@ App::DocumentObject* PropertyLink::getValue() const
 
 App::DocumentObject* PropertyLink::getValue(Base::Type t) const
 {
-    return (_pcLink && _pcLink->getTypeId().isDerivedFrom(t)) ? _pcLink : nullptr;
+    return (_pcLink && _pcLink->isDerivedFrom(t)) ? _pcLink : nullptr;
 }
 
 PyObject* PropertyLink::getPyObject()
@@ -817,7 +816,7 @@ Property* PropertyLink::Copy() const
 
 void PropertyLink::Paste(const Property& from)
 {
-    if (!from.isDerivedFrom(PropertyLink::getClassTypeId())) {
+    if (!from.isDerivedFrom<PropertyLink>()) {
         throw Base::TypeError("Incompatible property to paste to");
     }
 
@@ -894,10 +893,10 @@ PropertyLinkList::PropertyLinkList() = default;
 PropertyLinkList::~PropertyLinkList()
 {
     // in case this property gety dynamically removed
-#ifndef USE_OLD_DAG
+
     // maintain the back link in the DocumentObject class
     if (_pcScope != LinkScope::Hidden && !_lValueList.empty() && getContainer()
-        && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        && getContainer()->isDerivedFrom<App::DocumentObject>()) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -909,7 +908,6 @@ PropertyLinkList::~PropertyLinkList()
             }
         }
     }
-#endif
 }
 
 void PropertyLinkList::setSize(int newSize)
@@ -920,11 +918,10 @@ void PropertyLinkList::setSize(int newSize)
             continue;
         }
         _nameMap.erase(obj->getNameInDocument());
-#ifndef USE_OLD_DAG
+
         if (_pcScope != LinkScope::Hidden) {
             obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
         }
-#endif
     }
     _lValueList.resize(newSize);
 }
@@ -954,8 +951,7 @@ void PropertyLinkList::set1Value(int idx, DocumentObject* const& value)
 
     _nameMap.clear();
 
-#ifndef USE_OLD_DAG
-    if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    if (getContainer() && getContainer()->isDerivedFrom<App::DocumentObject>()) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -968,7 +964,6 @@ void PropertyLinkList::set1Value(int idx, DocumentObject* const& value)
             }
         }
     }
-#endif
 
     inherited::set1Value(idx, value);
 }
@@ -992,7 +987,6 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& value)
     }
     _nameMap.clear();
 
-#ifndef USE_OLD_DAG
     // maintain the back link in the DocumentObject class
     if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
@@ -1010,7 +1004,7 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& value)
             }
         }
     }
-#endif
+
     inherited::setValues(value);
 }
 
@@ -1150,7 +1144,7 @@ Property* PropertyLinkList::Copy() const
 
 void PropertyLinkList::Paste(const Property& from)
 {
-    if (!from.isDerivedFrom(PropertyLinkList::getClassTypeId())) {
+    if (!from.isDerivedFrom<PropertyLinkList>()) {
         throw Base::TypeError("Incompatible property to paste to");
     }
 
@@ -1297,9 +1291,9 @@ PropertyLinkSub::PropertyLinkSub() = default;
 PropertyLinkSub::~PropertyLinkSub()
 {
     // in case this property is dynamically removed
-#ifndef USE_OLD_DAG
+
     if (_pcLinkSub && getContainer()
-        && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        && getContainer()->isDerivedFrom<App::DocumentObject>()) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -1309,7 +1303,6 @@ PropertyLinkSub::~PropertyLinkSub()
             }
         }
     }
-#endif
 }
 
 void PropertyLinkSub::setSyncSubObject(bool enable)
@@ -1339,7 +1332,7 @@ void PropertyLinkSub::setValue(App::DocumentObject* lValue,
         }
     }
     aboutToSetValue();
-#ifndef USE_OLD_DAG
+
     if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -1352,7 +1345,7 @@ void PropertyLinkSub::setValue(App::DocumentObject* lValue,
             }
         }
     }
-#endif
+
     _pcLinkSub = lValue;
     _cSubList = std::move(subs);
     if (shadows.size() == _cSubList.size()) {
@@ -1430,7 +1423,7 @@ std::vector<std::string> PropertyLinkSub::getSubValuesStartsWith(const char* sta
 
 App::DocumentObject* PropertyLinkSub::getValue(Base::Type t) const
 {
-    return (_pcLinkSub && _pcLinkSub->getTypeId().isDerivedFrom(t)) ? _pcLinkSub : nullptr;
+    return (_pcLinkSub && _pcLinkSub->isDerivedFrom(t)) ? _pcLinkSub : nullptr;
 }
 
 PyObject* PropertyLinkSub::getPyObject()
@@ -1962,7 +1955,7 @@ std::vector<std::string> updateLinkSubs(const App::DocumentObject* obj,
     std::vector<std::string> res;
     for (auto it = subs.begin(); it != subs.end(); ++it) {
         const auto& sub = *it;
-        auto new_sub = (*f)(obj, sub.c_str(), std::forward<Args>(args)...);
+        auto new_sub = (*f)(obj, sub.c_str(), args...);
         if (new_sub.size()) {
             if (res.empty()) {
                 res.reserve(subs.size());
@@ -2054,7 +2047,7 @@ Property* PropertyLinkSub::Copy() const
 
 void PropertyLinkSub::Paste(const Property& from)
 {
-    if (!from.isDerivedFrom(PropertyLinkSub::getClassTypeId())) {
+    if (!from.isDerivedFrom<PropertyLinkSub>()) {
         throw Base::TypeError("Incompatible property to paste to");
     }
     auto& link = static_cast<const PropertyLinkSub&>(from);
@@ -2175,10 +2168,10 @@ PropertyLinkSubList::PropertyLinkSubList() = default;
 PropertyLinkSubList::~PropertyLinkSubList()
 {
     // in case this property is dynamically removed
-#ifndef USE_OLD_DAG
+
     // maintain backlinks
     if (!_lValueList.empty() && getContainer()
-        && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        && getContainer()->isDerivedFrom<App::DocumentObject>()) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
@@ -2190,7 +2183,6 @@ PropertyLinkSubList::~PropertyLinkSubList()
             }
         }
     }
-#endif
 }
 
 void PropertyLinkSubList::setSyncSubObject(bool enable)
@@ -2227,7 +2219,6 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const char* SubName)
     auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     verifyObject(lValue, parent);
 
-#ifndef USE_OLD_DAG
     // maintain backlinks
     if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
@@ -2243,7 +2234,6 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const char* SubName)
             }
         }
     }
-#endif
 
     if (lValue) {
         aboutToSetValue();
@@ -2275,7 +2265,6 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
             "PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     }
 
-#ifndef USE_OLD_DAG
     // maintain backlinks.
     if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
@@ -2298,7 +2287,6 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
             }
         }
     }
-#endif
 
     aboutToSetValue();
     _lValueList = lValue;
@@ -2337,7 +2325,6 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
             "PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     }
 
-#ifndef USE_OLD_DAG
     // maintain backlinks.
     if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
@@ -2360,7 +2347,6 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
             }
         }
     }
-#endif
 
     aboutToSetValue();
     _lValueList = std::move(lValue);
@@ -2381,7 +2367,6 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<std
     auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
     verifyObject(lValue, parent);
 
-#ifndef USE_OLD_DAG
     // maintain backlinks.
     if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
@@ -2402,7 +2387,6 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<std
             }
         }
     }
-#endif
 
     aboutToSetValue();
     std::size_t size = SubList.size();
@@ -2430,7 +2414,6 @@ void PropertyLinkSubList::addValue(App::DocumentObject* obj,
     auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     verifyObject(obj, parent);
 
-#ifndef USE_OLD_DAG
     // maintain backlinks.
     if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
@@ -2453,7 +2436,6 @@ void PropertyLinkSubList::addValue(App::DocumentObject* obj,
             }
         }
     }
-#endif
 
     std::vector<DocumentObject*> valueList;
     std::vector<std::string> subList;
@@ -3112,7 +3094,7 @@ Property* PropertyLinkSubList::Copy() const
 
 void PropertyLinkSubList::Paste(const Property& from)
 {
-    if (!from.isDerivedFrom(PropertyLinkSubList::getClassTypeId())) {
+    if (!from.isDerivedFrom<PropertyLinkSubList>()) {
         throw Base::TypeError("Incompatible property to paste to");
     }
     auto& link = static_cast<const PropertyLinkSubList&>(from);
@@ -3749,7 +3731,11 @@ PropertyXLink::PropertyXLink(bool _allowPartial, PropertyLinkBase* parent)
 
 PropertyXLink::~PropertyXLink()
 {
-    unlink();
+    try {
+        unlink();
+    } catch (std::bad_weak_ptr &) {
+        FC_WARN("Bad pointer exception caught when destroying PropertyXLink\n");
+    }
 }
 
 void PropertyXLink::setSyncSubObject(bool enable)
@@ -3800,7 +3786,7 @@ void PropertyXLink::hasSetValue()
 void PropertyXLink::setSubName(const char* subname)
 {
     std::vector<std::string> subs;
-    if (subname && subname[0]) {
+    if (!Base::Tools::isNullOrEmpty(subname)) {
         subs.emplace_back(subname);
     }
     aboutToSetValue();
@@ -3830,7 +3816,7 @@ void PropertyXLink::setValue(App::DocumentObject* lValue)
 void PropertyXLink::setValue(App::DocumentObject* lValue, const char* subname)
 {
     std::vector<std::string> subs;
-    if (subname && subname[0]) {
+    if (!Base::Tools::isNullOrEmpty(subname)) {
         subs.emplace_back(subname);
     }
     setValue(lValue, std::move(subs));
@@ -3849,11 +3835,11 @@ void PropertyXLink::restoreLink(App::DocumentObject* lValue)
     setFlag(LinkDetached, false);
     setFlag(LinkRestoring);
     aboutToSetValue();
-#ifndef USE_OLD_DAG
+
     if (!owner->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
         lValue->_addBackLink(owner);
     }
-#endif
+
     _pcLink = lValue;
     updateElementReference(nullptr);
     hasSetValue();
@@ -3909,7 +3895,7 @@ void PropertyXLink::setValue(App::DocumentObject* lValue,
     }
 
     setFlag(LinkDetached, false);
-#ifndef USE_OLD_DAG
+
     if (!owner->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
         if (_pcLink) {
             _pcLink->_removeBackLink(owner);
@@ -3918,7 +3904,7 @@ void PropertyXLink::setValue(App::DocumentObject* lValue,
             lValue->_addBackLink(owner);
         }
     }
-#endif
+
     if (docInfo != info) {
         unlink();
         docInfo = info;
@@ -3968,11 +3954,11 @@ void PropertyXLink::setValue(std::string&& filename,
     }
     setFlag(LinkDetached, false);
     aboutToSetValue();
-#ifndef USE_OLD_DAG
+
     if (_pcLink && !owner->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
         _pcLink->_removeBackLink(owner);
     }
-#endif
+
     _pcLink = nullptr;
     if (docInfo != info) {
         unlink();
@@ -4147,7 +4133,7 @@ void PropertyXLink::Save(Base::Writer& writer) const
             else {
                 auto pDoc = owner->getDocument();
                 const char* docPath = pDoc->getFileName();
-                if (docPath && docPath[0]) {
+                if (!Base::Tools::isNullOrEmpty(docPath)) {
                     if (!filePath.empty()) {
                         _path = DocInfo::getDocPath(filePath.c_str(), pDoc, false);
                     }
@@ -4430,7 +4416,7 @@ Property* PropertyXLink::Copy() const
 
 void PropertyXLink::Paste(const Property& from)
 {
-    if (!from.isDerivedFrom(PropertyXLink::getClassTypeId())) {
+    if (!from.isDerivedFrom<PropertyXLink>()) {
         throw Base::TypeError("Incompatible property to paste to");
     }
 
@@ -4461,9 +4447,9 @@ void PropertyXLink::Paste(const Property& from)
 
 bool PropertyXLink::supportXLink(const App::Property* prop)
 {
-    return prop->isDerivedFrom(PropertyXLink::getClassTypeId())
-        || prop->isDerivedFrom(PropertyXLinkSubList::getClassTypeId())
-        || prop->isDerivedFrom(PropertyXLinkContainer::getClassTypeId());
+    return prop->isDerivedFrom<PropertyXLink>()
+        || prop->isDerivedFrom<PropertyXLinkSubList>()
+        || prop->isDerivedFrom<PropertyXLinkContainer>();
 }
 
 bool PropertyXLink::hasXLink(const App::Document* doc)
@@ -5299,7 +5285,7 @@ Property* PropertyXLinkSubList::Copy() const
 
 void PropertyXLinkSubList::Paste(const Property& from)
 {
-    if (!from.isDerivedFrom(PropertyXLinkSubList::getClassTypeId())) {
+    if (!from.isDerivedFrom<PropertyXLinkSubList>()) {
         throw Base::TypeError("Incompatible property to paste to");
     }
 
@@ -5964,7 +5950,7 @@ void PropertyXLinkContainer::clearDeps()
     if (!owner || !owner->isAttachedToDocument()) {
         return;
     }
-#ifndef USE_OLD_DAG
+
     if (!owner->testStatus(ObjectStatus::Destroy)) {
         for (auto& v : _Deps) {
             auto obj = v.first;
@@ -5974,7 +5960,7 @@ void PropertyXLinkContainer::clearDeps()
             }
         }
     }
-#endif
+
     _Deps.clear();
     _XLinks.clear();
     _LinkRestored = false;

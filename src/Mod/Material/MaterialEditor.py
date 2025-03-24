@@ -107,7 +107,7 @@ class MaterialEditor:
         standardButtons.button(QtGui.QDialogButtonBox.Ok).setAutoDefault(False)
         standardButtons.button(QtGui.QDialogButtonBox.Cancel).setAutoDefault(False)
         self.updateCardsInCombo()
-        # TODO allow to enter a custom property by pressing Enter in the lineedit
+        # TODO allow one to enter a custom property by pressing Enter in the lineedit
         # currently closes the dialog
 
         standardButtons.rejected.connect(self.reject)
@@ -950,7 +950,7 @@ def openEditor(obj=None, prop=None):
     #     editor = MaterialEditor(obj, prop)
     #     editor.exec_()
     # else:
-    FreeCADGui.runCommand('Materials_Edit',0)
+    FreeCADGui.runCommand('Material_Edit',0)
 
 
 def editMaterial(material=None, card_path=None, category="Solid"):

@@ -25,6 +25,7 @@
 #define GUI_WINDOW_H
 
 #include <Base/Parameter.h>
+#include <functional>
 
 namespace Gui {
 

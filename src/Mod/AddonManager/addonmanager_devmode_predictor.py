@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Class to guess metadata based on folder contents. Note that one of the functions
+"""Class to guess metadata based on folder contents. Note that one of the functions
 of this file is to guess the license being applied to the new software package based
 in its contents. It is up to the user to make the final determination about whether
 the selected license is the correct one, and inclusion here shouldn't be construed as

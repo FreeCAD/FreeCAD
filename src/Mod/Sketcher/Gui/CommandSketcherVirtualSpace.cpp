@@ -34,8 +34,8 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Notifications.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 
 #include "DrawSketchHandler.h"
 #include "ViewProviderSketch.h"
@@ -55,15 +55,13 @@ bool isSketcherVirtualSpaceActive(Gui::Document* doc, bool actsOnSelection)
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
                 == ViewProviderSketch::STATUS_NONE) {
                 if (!actsOnSelection) {
                     return true;
                 }
-                else if (Gui::Selection().countObjectsOfType(
-                             Sketcher::SketchObject::getClassTypeId())
-                         > 0) {
+                else if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0) {
                     return true;
                 }
             }
@@ -77,7 +75,7 @@ void ActivateVirtualSpaceHandler(Gui::Document* doc, DrawSketchHandler* handler)
     std::unique_ptr<DrawSketchHandler> ptr(handler);
     if (doc) {
         if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             SketcherGui::ViewProviderSketch* vp =
                 static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
             vp->purgeHandler();
@@ -111,7 +109,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection;
 
-    if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0) {
+    if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0) {
         // Now we check whether we have a constraint selected or not.
         selection = getSelection().getSelectionEx();
 

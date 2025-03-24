@@ -65,39 +65,29 @@ TaskTrajectory::TaskTrajectory(Robot::RobotObject* pcRobotObject,
         Robot::Waypoint pt = trac.getWaypoint(i);
         switch (pt.Type) {
             case Robot::Waypoint::UNDEF:
-                ui->trajectoryTable->setItem(i,
-                                             0,
-                                             new QTableWidgetItem(QString::fromLatin1("UNDEF")));
+                ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QStringLiteral("UNDEF")));
                 break;
             case Robot::Waypoint::CIRC:
-                ui->trajectoryTable->setItem(i,
-                                             0,
-                                             new QTableWidgetItem(QString::fromLatin1("CIRC")));
+                ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QStringLiteral("CIRC")));
                 break;
             case Robot::Waypoint::PTP:
-                ui->trajectoryTable->setItem(i,
-                                             0,
-                                             new QTableWidgetItem(QString::fromLatin1("PTP")));
+                ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QStringLiteral("PTP")));
                 break;
             case Robot::Waypoint::LINE:
-                ui->trajectoryTable->setItem(i,
-                                             0,
-                                             new QTableWidgetItem(QString::fromLatin1("LIN")));
+                ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QStringLiteral("LIN")));
                 break;
             default:
-                ui->trajectoryTable->setItem(i,
-                                             0,
-                                             new QTableWidgetItem(QString::fromLatin1("UNDEF")));
+                ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QStringLiteral("UNDEF")));
                 break;
         }
         ui->trajectoryTable->setItem(i,
                                      1,
                                      new QTableWidgetItem(QString::fromUtf8(pt.Name.c_str())));
         if (pt.Cont) {
-            ui->trajectoryTable->setItem(i, 2, new QTableWidgetItem(QString::fromLatin1("|")));
+            ui->trajectoryTable->setItem(i, 2, new QTableWidgetItem(QStringLiteral("|")));
         }
         else {
-            ui->trajectoryTable->setItem(i, 2, new QTableWidgetItem(QString::fromLatin1("-")));
+            ui->trajectoryTable->setItem(i, 2, new QTableWidgetItem(QStringLiteral("-")));
         }
         ui->trajectoryTable->setItem(i, 3, new QTableWidgetItem(QString::number(pt.Velocity)));
         ui->trajectoryTable->setItem(i, 4, new QTableWidgetItem(QString::number(pt.Acceleration)));
@@ -140,7 +130,7 @@ void TaskTrajectory::viewTool(const Base::Placement& pos)
     double A, B, C;
     pos.getRotation().getYawPitchRoll(A, B, C);
 
-    QString result = QString::fromLatin1("Pos:(%1, %2, %3, %4, %5, %6)")
+    QString result = QStringLiteral("Pos:(%1, %2, %3, %4, %5, %6)")
                          .arg(pos.getPosition().x, 0, 'f', 1)
                          .arg(pos.getPosition().y, 0, 'f', 1)
                          .arg(pos.getPosition().z, 0, 'f', 1)

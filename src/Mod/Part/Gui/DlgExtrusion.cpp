@@ -39,6 +39,8 @@
 #include <App/Link.h>
 #include <App/Part.h>
 #include <Base/UnitsApi.h>
+#include <Base/Tools.h>
+
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -51,7 +53,8 @@
 #include "DlgExtrusion.h"
 
 
-FC_LOG_LEVEL_INIT("Part",true,true)
+
+FC_LOG_LEVEL_INIT("Part", true, true)
 
 using namespace PartGui;
 
@@ -69,7 +72,7 @@ public:
     {
         this->canSelect = false;
 
-        if (!sSubName || sSubName[0] == '\0')
+        if (Base::Tools::isNullOrEmpty(sSubName))
             return false;
         std::string element(sSubName);
         if (element.substr(0,4) != "Edge")
@@ -207,7 +210,7 @@ void DlgExtrusion::onSelectEdgeClicked()
 
         //visibility automation
         try{
-            QString code = QString::fromLatin1(
+            QString code = QStringLiteral(
                         "import Show\n"
                         "tv = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::DlgExtrusion')\n"
                         "tv.hide([%1])"
@@ -217,9 +220,9 @@ void DlgExtrusion::onSelectEdgeClicked()
             for (App::DocumentObject* obj: sources){
                 if (!obj)
                     continue;
-                features_to_hide.append(QString::fromLatin1("App.ActiveDocument."));
+                features_to_hide.append(QStringLiteral("App.ActiveDocument."));
                 features_to_hide.append(QString::fromLatin1(obj->getNameInDocument()));
-                features_to_hide.append(QString::fromLatin1(", \n"));
+                features_to_hide.append(QStringLiteral(", \n"));
             }
             QByteArray code_2 = code.arg(features_to_hide).toLatin1();
             Base::Interpreter().runString(code_2.constData());
@@ -474,8 +477,8 @@ void DlgExtrusion::apply()
             name = sourceObj->getDocument()->getUniqueObjectName("Extrude").c_str();
             if (addBaseName) {
                 //FIXME: implement
-                //QString baseName = QString::fromLatin1("Extrude_%1").arg(sourceObjectName);
-                //label = QString::fromLatin1("%1_Extrude").arg((*it)->text(0));
+                //QString baseName = QStringLiteral("Extrude_%1").arg(sourceObjectName);
+                //label = QStringLiteral("%1_Extrude").arg((*it)->text(0));
             }
 
             FCMD_OBJ_DOC_CMD(sourceObj,"addObject('Part::Extrusion','" << name << "')");
@@ -505,7 +508,7 @@ void DlgExtrusion::apply()
     }
     catch(...) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Creating Extrusion failed.\n%1").arg(QString::fromUtf8("Unknown error")));
+            tr("Creating Extrusion failed.\n%1").arg(QStringLiteral("Unknown error")));
         return;
     }
 }
@@ -604,7 +607,7 @@ void DlgExtrusion::setAxisLink(const char* objname, const char* subname)
     if(objname && strlen(objname) > 0){
         QString txt = QString::fromLatin1(objname);
         if (subname && strlen(subname) > 0){
-            txt = txt + QString::fromLatin1(":") + QString::fromLatin1(subname);
+            txt = txt + QStringLiteral(":") + QString::fromLatin1(subname);
         }
         ui->txtLink->setText(txt);
     } else {
@@ -677,7 +680,7 @@ bool DlgExtrusion::validate()
         } catch(Standard_Failure &err) {
             errmsg = QString::fromLocal8Bit(err.GetMessageString());
         } catch(...) {
-            errmsg = QString::fromUtf8("Unknown error");
+            errmsg = QStringLiteral("Unknown error");
         }
         if (errmsg.length() > 0){
             QMessageBox::critical(this, windowTitle(), tr("Can't determine normal vector of shape to be extruded. Please use other mode. \n\n(%1)").arg(errmsg));

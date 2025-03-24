@@ -644,7 +644,7 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
 {
     if (m_preserveLayers) {
         // Hidden layers are implemented in the wrapup code after the entire file has been read.
-        App::Color appColor = ObjectColor(color);
+        Base::Color appColor = ObjectColor(color);
         PyObject* draftModule = nullptr;
         PyObject* layer = nullptr;
         draftModule = getDraftModule();
@@ -736,8 +736,7 @@ std::string ImpExpDxfRead::Deformat(const char* text)
 void ImpExpDxfRead::DrawingEntityCollector::AddObject(const TopoDS_Shape& shape,
                                                       const char* nameBase)
 {
-    auto pcFeature =
-        dynamic_cast<Part::Feature*>(Reader.document->addObject("Part::Feature", nameBase));
+    auto pcFeature = Reader.document->addObject<Part::Feature>(nameBase);
     pcFeature->Shape.setValue(shape);
     Reader.MoveToLayer(pcFeature);
     Reader.ApplyGuiStyles(pcFeature);

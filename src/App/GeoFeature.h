@@ -42,6 +42,7 @@ class AppExport GeoFeature: public App::DocumentObject
 
 public:
     PropertyPlacement Placement;
+    PropertyString _ElementMapVersion;
 
     /// Constructor
     GeoFeature();
@@ -195,10 +196,11 @@ public:
     static Base::Placement
     getGlobalPlacement(DocumentObject* targetObj, DocumentObject* rootObj, const std::string& sub);
     static Base::Placement getGlobalPlacement(DocumentObject* targetObj, PropertyXLinkSub* prop);
+    static Base::Placement getGlobalPlacement(const DocumentObject* obj);
 
 protected:
     void onChanged(const Property* prop) override;
-    //    void onDocumentRestored() override;
+    void onDocumentRestored() override;
     void updateElementReference();
 
 protected:

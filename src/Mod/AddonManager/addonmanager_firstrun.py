@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Class to display a first-run dialog for the Addon Manager """
+"""Class to display a first-run dialog for the Addon Manager"""
 
 import os
 

@@ -648,7 +648,7 @@ class DraftBezCurveGuiTools(GuiTools):
         (object, Points as list, nodeIndex as Int, App.Vector of new point, moveTrackers as Bool)
         return the new point list, applying the App.Vector to the given index point
         """
-        # DNC: allows to close the curve by placing ends close to each other
+        # DNC: allows one to close the curve by placing ends close to each other
         tol = 0.001
         if ( ( idx == 0 ) and ( (v - pts[-1]).Length < tol) ) or (
                 idx == len(pts) - 1 ) and ( (v - pts[0]).Length < tol):
@@ -716,7 +716,7 @@ class DraftBezCurveGuiTools(GuiTools):
         if deg < 2:
             return
         if point % deg != 0:  # point is a pole
-            if deg >=3:  # allow to select poles
+            if deg >=3:  # allow one to select poles
                 if (point % deg == 1) and (point > 2 or obj.Closed): #right pole
                     knot = point -1
                     keepp = point

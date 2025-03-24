@@ -20,7 +20,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Inspect Material...</source>
-      <translation type="unfinished">Inspect Material...</translation>
+      <translation>Tutki materiaalia...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="175"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Edit material properties</source>
-      <translation type="unfinished">Edit material properties</translation>
+      <translation>Muokkaa materiaalin ominaisuuksia</translation>
     </message>
   </context>
   <context>
@@ -76,7 +76,7 @@
       <location filename="../../Array3D.cpp" line="77"/>
       <location filename="../../Array3D.cpp" line="81"/>
       <source>Delete row</source>
-      <translation type="unfinished">Delete row</translation>
+      <translation>Poista rivi</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="231"/>
@@ -88,29 +88,29 @@
       <location filename="../../Array3D.cpp" line="263"/>
       <location filename="../../Array3D.cpp" line="335"/>
       <source>Confirm Delete</source>
-      <translation type="unfinished">Confirm Delete</translation>
+      <translation>Vahvista poistaminen</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="265"/>
       <location filename="../../Array3D.cpp" line="337"/>
       <source>Are you sure you want to delete the row?</source>
-      <translation type="unfinished">Are you sure you want to delete the row?</translation>
+      <translation>Haluatko varmasti poistaa tämän rivin?</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="267"/>
       <source>Removing this will also remove all 2D contents.</source>
-      <translation type="unfinished">Removing this will also remove all 2D contents.</translation>
+      <translation>Tämän poistaminen poistaa myös kaiken 2D- sisällön.</translation>
     </message>
   </context>
   <context>
     <name>MatGui::ArrayDelegate</name>
     <message>
-      <location filename="../../ArrayDelegate.cpp" line="153"/>
+      <location filename="../../ArrayDelegate.cpp" line="150"/>
       <source>False</source>
       <translation>Epätosi</translation>
     </message>
     <message>
-      <location filename="../../ArrayDelegate.cpp" line="154"/>
+      <location filename="../../ArrayDelegate.cpp" line="151"/>
       <source>True</source>
       <translation>Tosi</translation>
     </message>
@@ -118,12 +118,12 @@
   <context>
     <name>MatGui::BaseDelegate</name>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="441"/>
+      <location filename="../../BaseDelegate.cpp" line="439"/>
       <source>False</source>
       <translation>Epätosi</translation>
     </message>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="442"/>
+      <location filename="../../BaseDelegate.cpp" line="440"/>
       <source>True</source>
       <translation>Tosi</translation>
     </message>
@@ -133,7 +133,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="14"/>
       <source>Display properties</source>
-      <translation type="unfinished">Display properties</translation>
+      <translation>Näytön ominaisuudet</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="20"/>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="289"/>
       <source>Line transparency:</source>
-      <translation type="unfinished">Line transparency:</translation>
+      <translation>Viivan läpinäkyvyys:</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="338"/>
@@ -352,7 +352,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="151"/>
       <source>Document: </source>
-      <translation type="unfinished">Document: </translation>
+      <translation>Asiakirja: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="166"/>
@@ -362,13 +362,13 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="172"/>
       <source>Internal Name: </source>
-      <translation type="unfinished">Internal Name: </translation>
+      <translation>Sisäinen nimi: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="190"/>
       <location filename="../../DlgInspectMaterial.cpp" line="331"/>
       <source>Type: </source>
-      <translation type="unfinished">Type: </translation>
+      <translation>Tyyppi: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="192"/>
@@ -382,7 +382,7 @@
       <location filename="../../DlgInspectMaterial.cpp" line="292"/>
       <location filename="../../DlgInspectMaterial.cpp" line="314"/>
       <source>Name: </source>
-      <translation type="unfinished">Name: </translation>
+      <translation>Nimi: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="246"/>
@@ -396,13 +396,13 @@
       <location filename="../../DlgInspectMaterial.cpp" line="266"/>
       <location filename="../../DlgInspectMaterial.cpp" line="341"/>
       <source>UUID: </source>
-      <translation type="unfinished">UUID: </translation>
+      <translation>UUID: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="269"/>
       <location filename="../../DlgInspectMaterial.cpp" line="343"/>
       <source>Library: </source>
-      <translation type="unfinished">Library: </translation>
+      <translation>Kirjasto: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="273"/>
@@ -537,12 +537,12 @@ will be listed as available.</translation>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="92"/>
       <source>Use materials from user defined directory</source>
-      <translation type="unfinished">Use materials from user defined directory</translation>
+      <translation>Käytä käyttäjän määrittämän hakemiston materiaaleja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="119"/>
       <source>User directory</source>
-      <translation type="unfinished">User directory</translation>
+      <translation>Käyttäjän hakemisto</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="155"/>
@@ -580,13 +580,13 @@ If unchecked, they will be sorted by their name.</translation>
       <location filename="../../DlgSettingsMaterial.ui" line="209"/>
       <location filename="../../DlgSettingsMaterial.ui" line="292"/>
       <source>Show favorites</source>
-      <translation type="unfinished">Show favorites</translation>
+      <translation>Näytä suosikit</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="225"/>
       <location filename="../../DlgSettingsMaterial.ui" line="308"/>
       <source>Show recent</source>
-      <translation type="unfinished">Show recent</translation>
+      <translation>Näytä viimeisimmät</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="241"/>
@@ -598,7 +598,7 @@ If unchecked, they will be sorted by their name.</translation>
       <location filename="../../DlgSettingsMaterial.ui" line="257"/>
       <location filename="../../DlgSettingsMaterial.ui" line="340"/>
       <source>Show empty folders</source>
-      <translation type="unfinished">Show empty folders</translation>
+      <translation>Näytä tyhjät kansiot</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="270"/>
@@ -627,7 +627,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ImageEdit.ui" line="95"/>
       <source>File...</source>
-      <translation type="unfinished">File...</translation>
+      <translation>Tiedosto...</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="104"/>
@@ -647,12 +647,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ImageEdit.cpp" line="206"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</translation>
+      <translation>Kuvatiedostot (*.jpg *.jpeg *.png *.bmp);;Kaikki tiedostot (*)</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="218"/>
       <source>Image files (*.svg);;All files (*)</source>
-      <translation type="unfinished">Image files (*.svg);;All files (*)</translation>
+      <translation>Kuvatiedostot (*.svg);;Kaikki tiedostot (*)</translation>
     </message>
   </context>
   <context>
@@ -686,24 +686,24 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialSave.ui" line="14"/>
       <source>Save Material</source>
-      <translation type="unfinished">Save Material</translation>
+      <translation>Tallenna materiaali</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="22"/>
       <source>Library:</source>
-      <translation type="unfinished">Library:</translation>
+      <translation>Kirjasto:</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
       <location filename="../../MaterialSave.cpp" line="482"/>
       <location filename="../../MaterialSave.cpp" line="492"/>
       <source>New Folder</source>
-      <translation type="unfinished">New Folder</translation>
+      <translation>Uusi kansio</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="70"/>
       <source>Filename:</source>
-      <translation type="unfinished">Filename:</translation>
+      <translation>Tiedostonimi:</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="104"/>
@@ -780,15 +780,15 @@ If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="315"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="546"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="545"/>
       <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
+      <translation>Suosikit</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="315"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="553"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="552"/>
       <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
+      <translation>Viimeisimmät</translation>
     </message>
   </context>
   <context>
@@ -856,7 +856,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="202"/>
       <source>Add to favorites</source>
-      <translation type="unfinished">Add to favorites</translation>
+      <translation>Lisää suosikkeihin</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="215"/>
@@ -935,12 +935,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="846"/>
       <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
+      <translation>Suosikit</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="853"/>
       <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
+      <translation>Viimeisimmät</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1119"/>
@@ -1000,7 +1000,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="159"/>
       <source>Add to favorites</source>
-      <translation type="unfinished">Add to favorites</translation>
+      <translation>Lisää suosikkeihin</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>
@@ -1012,12 +1012,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ModelSelect.cpp" line="332"/>
       <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
+      <translation>Suosikit</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="337"/>
       <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
+      <translation>Viimeisimmät</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="356"/>
@@ -1161,7 +1161,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1313"/>
       <source>Unsaved Material</source>
-      <translation type="unfinished">Unsaved Material</translation>
+      <translation>Tallentamaton materiaali</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1314"/>
@@ -1178,21 +1178,21 @@ If unchecked, they will be sorted by their name.</translation>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="561"/>
       <source>Confirm Delete</source>
-      <translation type="unfinished">Confirm Delete</translation>
+      <translation>Vahvista poistaminen</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="174"/>
       <location filename="../../ListEdit.cpp" line="144"/>
       <source>Are you sure you want to delete the row?</source>
-      <translation type="unfinished">Are you sure you want to delete the row?</translation>
+      <translation>Haluatko varmasti poistaa tämän rivin?</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
       <location filename="../../Command.cpp" line="89"/>
-      <source>Appearance...</source>
-      <translation type="unfinished">Appearance...</translation>
+      <source>&amp;Appearance...</source>
+      <translation type="unfinished">&amp;Appearance...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -1205,8 +1205,8 @@ If unchecked, they will be sorted by their name.</translation>
     <name>StdCmdSetMaterial</name>
     <message>
       <location filename="../../Command.cpp" line="118"/>
-      <source>Material...</source>
-      <translation type="unfinished">Material...</translation>
+      <source>&amp;Material...</source>
+      <translation type="unfinished">&amp;Material...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="119"/>

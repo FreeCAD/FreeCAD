@@ -48,7 +48,7 @@
 #include "QuantitySpinBox.h"
 #include "QuantitySpinBox_p.h"
 #include "Command.h"
-#include "DlgExpressionInput.h"
+#include "Dialogs/DlgExpressionInput.h"
 #include "Tools.h"
 
 
@@ -173,7 +173,7 @@ public:
 
         //Prep for expression parser
         //This regex matches chunks between +,-,$,^ accounting for matching parenthesis.
-        QRegularExpression chunkRe(QString::fromUtf8("(?<=^|[\\+\\-])((\\((?>[^()]|(?2))*\\))|[^\\+\\-\n])*(?=$|[\\+\\-])"));
+        QRegularExpression chunkRe(QStringLiteral("(?<=^|[\\+\\-])((\\((?>[^()]|(?2))*\\))|[^\\+\\-\n])*(?=$|[\\+\\-])"));
         QRegularExpressionMatchIterator expressionChunk = chunkRe.globalMatch(copy);
         unsigned int lengthOffset = 0;
         while (expressionChunk.hasNext()) {
@@ -198,7 +198,7 @@ public:
                 if (fixUnitsMatch.lastCapturedIndex() == 2 || (fixUnitsMatch.lastCapturedIndex() == 3 && fixUnitsMatch.captured(3).isEmpty())){
                     QString matchUnits = fixUnitsMatch.captured(1);
                     QString matchNumbers = fixUnitsMatch.captured(2);
-                    copyChunk.replace(matchUnits+matchNumbers, QString::fromUtf8(")")+matchUnits+QString::fromUtf8("1(*")+matchNumbers);
+                    copyChunk.replace(matchUnits+matchNumbers, QStringLiteral(")")+matchUnits+QStringLiteral("1(*")+matchNumbers);
                 }
             }
 
@@ -208,7 +208,7 @@ public:
 
                 QRegularExpressionMatch match = unitsRe.match(copyChunk);
                 if (!match.hasMatch() && !copyChunk.isEmpty()) //If no units are found, use default units
-                    copyChunk.prepend(QString::fromUtf8(")")+reverseUnitStr+QString::fromUtf8("1(*")); // Add units to the end of chunk *(1unit)
+                    copyChunk.prepend(QStringLiteral(")")+reverseUnitStr+QStringLiteral("1(*")); // Add units to the end of chunk *(1unit)
             }
 
             std::reverse(copyChunk.begin(), copyChunk.end());
@@ -282,14 +282,6 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
             this, [&]{
         this->handlePendingEmit(true);
     });
-
-    // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
-#ifndef Q_OS_MAC
-    lineEdit()->setTextMargins(0, 2, 0, 2);
-#else
-    // https://forum.freecad.org/viewtopic.php?f=8&t=50615
-    lineEdit()->setTextMargins(0, 2, 0, 0);
-#endif
 }
 
 QuantitySpinBox::~QuantitySpinBox() = default;
@@ -405,10 +397,18 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
     resizeWidget();
 }
 
-void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
+void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
 {
-    if (!handleKeyEvent(event->text()))
+    const auto isEnter = event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return;
+
+    if (isEnter && !isNormalized()) {
+        normalize();
+        return;
+    }
+
+    if (!handleKeyEvent(event->text())) {
         QAbstractSpinBox::keyPressEvent(event);
+    }
 }
 
 void Gui::QuantitySpinBox::paintEvent(QPaintEvent*)
@@ -441,7 +441,7 @@ void QuantitySpinBox::updateEdit(const QString& text)
 
     edit->setText(text);
 
-    cursor = qBound(0, cursor, edit->displayText().size() - d->unitStr.size());
+    cursor = qBound(0, cursor, qMax(0, edit->displayText().size() - d->unitStr.size()));
     if (selsize > 0) {
         edit->setSelection(0, cursor);
     }
@@ -475,6 +475,24 @@ double QuantitySpinBox::rawValue() const
 {
     Q_D(const QuantitySpinBox);
     return d->quantity.getValue();
+}
+
+void QuantitySpinBox::normalize()
+{
+    // this does not really change the value, only the representation
+    QSignalBlocker blocker(this);
+
+    Q_D(const QuantitySpinBox);
+    return setValue(d->quantity);
+}
+
+bool QuantitySpinBox::isNormalized()
+{
+    static const QRegularExpression operators(QStringLiteral("[+\\-/*]"),
+                                              QRegularExpression::CaseInsensitiveOption);
+
+    Q_D(const QuantitySpinBox);
+    return !d->validStr.contains(operators);
 }
 
 void QuantitySpinBox::setValue(const Base::Quantity& value)
@@ -808,7 +826,7 @@ QSize QuantitySpinBox::sizeHintCalculator(int h) const
 
     const QFontMetrics fm(fontMetrics());
     int w = 0;
-    constexpr int maxStrLen = 12;
+    constexpr int maxStrLen = 9;
 
     QString s;
     QString fixedContent = QLatin1String(" ");
@@ -884,6 +902,7 @@ void QuantitySpinBox::focusInEvent(QFocusEvent * event)
 void QuantitySpinBox::focusOutEvent(QFocusEvent * event)
 {
     validateInput();
+    normalize();
 
     QToolTip::hideText();
     QAbstractSpinBox::focusOutEvent(event);
@@ -896,7 +915,7 @@ void QuantitySpinBox::clear()
 
 void QuantitySpinBox::selectNumber()
 {
-    QString expr = QString::fromLatin1("^([%1%2]?[0-9\\%3]*)\\%4?([0-9]+(%5[%1%2]?[0-9]+)?)")
+    QString expr = QStringLiteral("^([%1%2]?[0-9\\%3]*)\\%4?([0-9]+(%5[%1%2]?[0-9]+)?)")
                    .arg(locale().negativeSign())
                    .arg(locale().positiveSign())
                    .arg(locale().groupSeparator())

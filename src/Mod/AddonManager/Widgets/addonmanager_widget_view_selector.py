@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Defines a QWidget-derived class for displaying the view selection buttons. """
+"""Defines a QWidget-derived class for displaying the view selection buttons."""
 
 from enum import IntEnum
 

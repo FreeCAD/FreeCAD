@@ -39,7 +39,7 @@
 #include "Gui/Command.h"
 #include "Gui/Control.h"
 #include "Gui/Document.h"
-#include "Gui/Selection.h"
+#include "Gui/Selection/Selection.h"
 #include "Mod/Fem/App/FemConstraint.h"
 
 #include "ViewProviderFemConstraint.h"
@@ -200,9 +200,19 @@ void ViewProviderFemConstraint::handleChangedPropertyName(Base::XMLReader& reade
     }
 }
 
+void ViewProviderFemConstraint::setRotateSymbol(bool rotate)
+{
+    rotateSymbol = rotate;
+    updateSymbol();
+}
+
 void ViewProviderFemConstraint::updateSymbol()
 {
     auto obj = this->getObject<const Fem::Constraint>();
+    if (!obj) {
+        return;
+    }
+
     const std::vector<Base::Vector3d>& points = obj->Points.getValue();
     const std::vector<Base::Vector3d>& normals = obj->Normals.getValue();
     if (points.size() != normals.size()) {

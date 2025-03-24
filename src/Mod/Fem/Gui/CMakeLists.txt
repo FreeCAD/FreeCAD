@@ -17,16 +17,14 @@ include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+)
+
+include_directories(
+    SYSTEM
     ${SMESH_INCLUDE_DIR}
     ${VTK_INCLUDE_DIRS}
 )
 
-link_directories(${OCC_LIBRARY_DIR})
 link_directories(${SMESH_LIB_PATH})
 
 set(FemGui_LIBS
@@ -97,6 +95,8 @@ if(BUILD_FEM_VTK)
         TaskPostDisplay.ui
         TaskPostScalarClip.ui
         TaskPostWarpVector.ui
+        TaskPostFrames.ui
+        TaskPostBranch.ui
     )
 endif(BUILD_FEM_VTK)
 
@@ -335,6 +335,8 @@ if(BUILD_FEM_VTK)
         ViewProviderFemPostObject.cpp
         ViewProviderFemPostPipeline.h
         ViewProviderFemPostPipeline.cpp
+        ViewProviderFemPostBranchFilter.h
+        ViewProviderFemPostBranchFilter.cpp
         ViewProviderFemPostFunction.h
         ViewProviderFemPostFunction.cpp
         ViewProviderFemPostFilter.h
@@ -368,6 +370,7 @@ SET(FemGuiSymbol_IV
     Resources/symbols/ConstraintContact.iv
     Resources/symbols/ConstraintDisplacement.iv
     Resources/symbols/ConstraintElectrostaticPotential.iv
+    Resources/symbols/ConstraintCurrentDensity.iv
     Resources/symbols/ConstraintFixed.iv
     Resources/symbols/ConstraintForce.iv
     Resources/symbols/ConstraintHeatFlux.iv

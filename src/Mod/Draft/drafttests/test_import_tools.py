@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2025 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,28 +23,20 @@
 # *                                                                         *
 # ***************************************************************************
 """Unit tests for the Draft Workbench, tools import tests."""
+
 ## @package test_import_tools
 # \ingroup drafttests
 # \brief Unit tests for the Draft Workbench, tools import tests.
 
 ## \addtogroup drafttests
 # @{
-import unittest
 
-import drafttests.auxiliary as aux
+from drafttests import auxiliary as aux
+from drafttests import test_base
 
 
-class DraftImportTools(unittest.TestCase):
+class DraftImportTools(test_base.DraftTestCaseNoDoc):
     """Test for each individual module that defines a tool."""
-
-    def setUp(self):
-        """Draw the header.
-
-        This is executed before every test.
-        No document is needed to test the import of modules so no document
-        is created, and `tearDown` isn't defined.
-        """
-        aux.draw_header()
 
     def test_import_gui_draftedit(self):
         """Import Draft Edit."""

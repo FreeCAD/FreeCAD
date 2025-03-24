@@ -491,7 +491,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     freecad:editable="Scale"
+     freecad:editable="scale"
      freecad:autofill="scale"><tspan
        id="tspan3333-6-6"
        x="515.77374"
@@ -524,7 +524,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     freecad:editable="DrawingNumber"><tspan
+     freecad:editable="drawing_number"><tspan
        id="tspan3333-6-6-3-8"
        x="551.94928"
        y="966.17102"

@@ -45,8 +45,8 @@
 #include <Gui/Notifications.h>
 #include <Gui/PrefWidgets.h>
 #include <Gui/QuantitySpinBox.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionFilter.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Mod/Part/App/Attacher.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/Gui/AttacherTexts.h>
@@ -163,8 +163,23 @@ void CmdSketcherNewSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Attacher::eMapMode mapmode = Attacher::mmDeactivated;
+    std::string groupName;
     bool bAttach = false;
-    if (Gui::Selection().hasSelection()) {
+    bool groupSelected = false;
+    if (Gui::Selection().countObjectsOfType<App::DocumentObjectGroup>() > 0) {
+        auto selection = Gui::Selection().getSelection();
+        if (selection.size() > 1) {
+            Gui::TranslatedUserWarning(
+                getActiveGuiDocument(),
+                QObject::tr("Invalid selection"),
+                QObject::tr("Too many objects selected"));
+                return;
+        }
+
+        groupName = selection[0].FeatName;
+        groupSelected = true;
+    }
+    else if (Gui::Selection().hasSelection()) {
         Attacher::SuggestResult::eSuggestResult msgid = Attacher::SuggestResult::srOK;
         QString msg_str;
         std::vector<Attacher::eMapMode> validModes;
@@ -270,9 +285,18 @@ void CmdSketcherNewSketch::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("Sketch");
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Create a new sketch"));
-        doCommand(Doc,
+        if (groupSelected) {
+            doCommand(Doc,
+                    "App.activeDocument().getObject('%s').addObject(App.activeDocument().addObject('Sketcher::SketchObject', '%s'))",
+                    groupName.c_str(),
+                    FeatName.c_str());
+        }
+        else {
+            doCommand(Doc,
                   "App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
                   FeatName.c_str());
+        }
+
         doCommand(Doc,
                   "App.activeDocument().%s.Placement = App.Placement(App.Vector(%f, %f, %f), "
                   "App.Rotation(%f, %f, %f, %f))",
@@ -328,7 +352,7 @@ void CmdSketcherEditSketch::activated(int iMsg)
 
 bool CmdSketcherEditSketch::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() == 1;
 }
 
 DEF_STD_CMD_A(CmdSketcherLeaveSketch)
@@ -539,7 +563,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
 
 bool CmdSketcherReorientSketch::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() == 1;
 }
 
 DEF_STD_CMD_A(CmdSketcherMapSketch)
@@ -583,16 +607,15 @@ void CmdSketcherMapSketch::activated(int iMsg)
          *  in its own outlist, so we remove it from the dialog list proactively
          *  rather than wait and generate an error after the fact.
          */
-        auto newEnd = std::remove_if(sketches.begin(), sketches.end(),
+        const auto newEnd = std::ranges::remove_if(sketches,
             [&selectedSketches, &sketchInSelection](App::DocumentObject* obj) {
-                Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(obj);
-                if (sketch && std::find(selectedSketches.begin(),
-                        selectedSketches.end(), sketch) != selectedSketches.end()) {
+                if (const auto sketch = dynamic_cast<Part::Part2DObject*>(obj);
+                    sketch && std::ranges::find(selectedSketches, sketch) != selectedSketches.end()) {
                     sketchInSelection = true;
                     return true;
                 }
                 return false;
-            });
+            }).begin();
         sketches.erase(newEnd, sketches.end());
 
         if (sketches.empty()) {
@@ -641,8 +664,8 @@ void CmdSketcherMapSketch::activated(int iMsg)
                 throw Base::ValueError(
                     "Unexpected null pointer in CmdSketcherMapSketch::activated");
             }
-            std::vector<App::DocumentObject*> input = part->getOutListRecursive();
-            if (std::find(input.begin(), input.end(), sketch) != input.end()) {
+            if (std::vector<App::DocumentObject*> input = part->getOutListRecursive();
+                std::ranges::find(input, sketch) != input.end()) {
                 throw ExceptionWrongInput(
                     QT_TR_NOOP("Some of the selected objects depend on the sketch to be mapped. "
                                "Circular dependencies are not allowed."));
@@ -661,9 +684,9 @@ void CmdSketcherMapSketch::activated(int iMsg)
         bool bAttach = true;
         bool bCurIncompatible = false;
         // * find out the modes that are compatible with selection.
-        eMapMode curMapMode = eMapMode(sketch->MapMode.getValue());
+        const auto  curMapMode = eMapMode(sketch->MapMode.getValue());
         // * Test if current mode is OK.
-        if (std::find(validModes.begin(), validModes.end(), curMapMode) == validModes.end())
+        if (std::ranges::find(validModes, curMapMode) == validModes.end())
             bCurIncompatible = true;
 
         // * fill in the dialog
@@ -763,12 +786,8 @@ void CmdSketcherMapSketch::activated(int iMsg)
 bool CmdSketcherMapSketch::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    Base::Type sketch_type = Base::Type::fromName("Part::Part2DObject");
     std::vector<Gui::SelectionObject> selobjs = Gui::Selection().getSelectionEx();
-    if (doc && doc->countObjectsOfType(sketch_type) > 0 && !selobjs.empty())
-        return true;
-
-    return false;
+    return doc && doc->countObjectsOfType<Part::Part2DObject>() > 0 && !selobjs.empty();
 }
 
 DEF_STD_CMD_A(CmdSketcherViewSketch)
@@ -843,7 +862,7 @@ bool CmdSketcherValidateSketch::isActive()
 {
     if (Gui::Control().activeDialog())
         return false;
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() == 1;
 }
 
 DEF_STD_CMD_A(CmdSketcherMirrorSketch)
@@ -970,7 +989,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
 
 bool CmdSketcherMirrorSketch::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
 }
 
 DEF_STD_CMD_A(CmdSketcherMergeSketches)
@@ -1025,6 +1044,14 @@ void CmdSketcherMergeSketches::activated(int iMsg)
 
         int addedConstraints = mergesketch->addCopyOfConstraints(*Obj);
 
+        // Coverity issue 513796: make sure the loop below can complete
+        if (addedConstraints < 0) {
+            continue;  // There were no constraints
+        }
+        if (addedConstraints - baseConstraints < 0) {
+            throw Base::ValueError("Constraint error in CmdSketcherMergeSketches");
+        }
+
         for (int i = 0; i <= (addedConstraints - baseConstraints); i++) {
             Sketcher::Constraint* constraint =
                 mergesketch->Constraints.getValues()[i + baseConstraints];
@@ -1059,7 +1086,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
 
 bool CmdSketcherMergeSketches::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 1;
+    return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 1;
 }
 
 // Acknowledgement of idea and original python macro goes to SpritKopf:

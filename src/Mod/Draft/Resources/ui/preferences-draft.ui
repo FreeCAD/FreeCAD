@@ -169,7 +169,7 @@ Objects can then automatically be added to groups as well.</string>
        <widget class="Gui::PrefCheckBox" name="checkBox_focusOnLength">
         <property name="toolTip">
          <string>If checked, Length input, instead of the X coordinate, will have the initial focus.
-This allows to indicate a direction and then type a distance.</string>
+This allows indicating a direction and then type a distance.</string>
         </property>
         <property name="text">
          <string>Set focus on Length instead of X coordinate</string>

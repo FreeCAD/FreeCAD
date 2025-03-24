@@ -38,7 +38,7 @@
 #include "Action.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "DlgPreferencesImp.h"
+#include "Dialogs/DlgPreferencesImp.h"
 #include "MainWindow.h"
 #include "WorkbenchSelector.h"
 #include "ToolBarAreaWidget.h"
@@ -108,7 +108,7 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     setToolTip(aGroup->toolTip());
     setStatusTip(aGroup->action()->statusTip());
     setWhatsThis(aGroup->action()->whatsThis());
-    setObjectName(QString::fromLatin1("WbTabBar"));
+    setObjectName(QStringLiteral("WbTabBar"));
 
     tabBar = new WbTabBar(this);
     moreButton = new QToolButton(this);
@@ -125,7 +125,7 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     moreButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
     moreButton->setPopupMode(QToolButton::InstantPopup);
     moreButton->setMenu(new QMenu(moreButton));
-    moreButton->setObjectName(QString::fromLatin1("WbTabBarMore"));
+    moreButton->setObjectName(QStringLiteral("WbTabBarMore"));
 
     if (parent->inherits("QToolBar")) {
         // when toolbar is created it is not yet placed in its designated area
@@ -404,7 +404,7 @@ void WorkbenchTabWidget::buildPrefMenu()
 
     // Add disabled workbenches, sorted alphabetically.
     for (auto action : wbActionGroup->getDisabledWbActions()) {
-        if (action->text() == QString::fromLatin1("<none>")) {
+        if (action->text() == QStringLiteral("<none>")) {
             continue;
         }
 
@@ -416,7 +416,7 @@ void WorkbenchTabWidget::buildPrefMenu()
     QAction* preferencesAction = menu->addAction(tr("Preferences"));
     connect(preferencesAction, &QAction::triggered, this, []() {
         Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
-        cDlg.activateGroupPage(QString::fromUtf8("Workbenches"), 0);
+        cDlg.activateGroupPage(QStringLiteral("Workbenches"), 0);
         cDlg.exec();
     });
 }

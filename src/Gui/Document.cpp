@@ -23,11 +23,20 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <tuple>
+# include <memory>
+# include <list>
+# include <string>
+# include <map>
+# include <set>
+# include <unordered_map>
+# include <vector>
 # include <cctype>
 # include <mutex>
 # include <QApplication>
 # include <QFileInfo>
 # include <QMessageBox>
+# include <QOpenGLWidget>
 # include <QTextStream>
 # include <QTimer>
 # include <QStatusBar>
@@ -109,7 +118,7 @@ struct DocumentP
     std::map<SoSeparator *,ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
-    
+
     using Connection = boost::signals2::connection;
     Connection connectNewObject;
     Connection connectDelObject;
@@ -695,7 +704,7 @@ void Document::_resetEdit()
         // the editing object gets deleted inside the above call to
         // 'finishEditing()', which will trigger our slotDeletedObject(), which
         // nullifies _editViewProvider.
-        if (d->_editViewProvider && d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+        if (d->_editViewProvider && d->_editViewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
             auto vpd = static_cast<ViewProviderDocumentObject*>(d->_editViewProvider);
             vpd->getDocument()->signalResetEdit(*vpd);
         }
@@ -823,7 +832,7 @@ std::vector<ViewProvider*> Document::getViewProvidersOfType(const Base::Type& ty
     std::vector<ViewProvider*> Objects;
     for (std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it =
          d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it ) {
-        if (it->second->getTypeId().isDerivedFrom(typeId))
+        if (it->second->isDerivedFrom(typeId))
             Objects.push_back(it->second);
     }
     return Objects;
@@ -993,7 +1002,7 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 
     handleChildren3D(viewProvider,true);
 
-    if (viewProvider && viewProvider->getTypeId().isDerivedFrom
+    if (viewProvider && viewProvider->isDerivedFrom
         (ViewProviderDocumentObject::getClassTypeId())) {
         // go through the views
         for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
@@ -1034,7 +1043,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
             if(d->_editingViewer
                     && d->_editingObject
                     && d->_editViewProviderParent
-                    && (Prop.isDerivedFrom(App::PropertyPlacement::getClassTypeId())
+                    && (Prop.isDerivedFrom<App::PropertyPlacement>()
                         // Issue ID 0004230 : getName() can return null in which case strstr() crashes
                         || (Prop.getName() && strstr(Prop.getName(),"Scale")))
                     && d->_editObjs.count(&Obj))
@@ -1063,7 +1072,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
 
         handleChildren3D(viewProvider);
 
-        if (viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+        if (viewProvider->isDerivedFrom<ViewProviderDocumentObject>())
             signalChangedObject(static_cast<ViewProviderDocumentObject&>(*viewProvider), Prop);
     }
 
@@ -1079,7 +1088,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
 void Document::slotRelabelObject(const App::DocumentObject& Obj)
 {
     ViewProvider* viewProvider = getViewProvider(&Obj);
-    if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+    if (viewProvider && viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
         signalRelabelObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
     }
 }
@@ -1087,7 +1096,7 @@ void Document::slotRelabelObject(const App::DocumentObject& Obj)
 void Document::slotTransactionAppend(const App::DocumentObject& obj, App::Transaction* transaction)
 {
     ViewProvider* viewProvider = getViewProvider(&obj);
-    if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+    if (viewProvider && viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
         transaction->addObjectDel(viewProvider);
     }
 }
@@ -1116,7 +1125,7 @@ void Document::slotTransactionRemove(const App::DocumentObject& obj, App::Transa
 void Document::slotActivatedObject(const App::DocumentObject& Obj)
 {
     ViewProvider* viewProvider = getViewProvider(&Obj);
-    if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+    if (viewProvider && viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
         signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
     }
 }
@@ -1298,7 +1307,7 @@ static bool checkCanonicalPath(const std::map<App::Document*, bool> &docs)
     auto docName = [](App::Document *doc) -> QString {
         if (doc->Label.getStrValue() == doc->getName())
             return QString::fromLatin1(doc->getName());
-        return QString::fromLatin1("%1 (%2)").arg(QString::fromUtf8(doc->Label.getValue()),
+        return QStringLiteral("%1 (%2)").arg(QString::fromUtf8(doc->Label.getValue()),
                                                   QString::fromLatin1(doc->getName()));
     };
     int count = 0;
@@ -1458,7 +1467,7 @@ bool Document::saveAs()
     }
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe),
         name,
-        QString::fromLatin1("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document")));
+        QStringLiteral("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document")));
 
     if (!fn.isEmpty()) {
         QFileInfo fi;
@@ -1544,7 +1553,7 @@ void Document::saveAll()
         catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(),
                     QObject::tr("Failed to save document") +
-                        QString::fromLatin1(": %1").arg(QString::fromUtf8(doc->getName())),
+                        QStringLiteral(": %1").arg(QString::fromUtf8(doc->getName())),
                     QString::fromLatin1(e.what()));
             break;
         }
@@ -1701,7 +1710,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
         localreader->readElement("Camera");
         const char* ppReturn = localreader->getAttribute("settings");
         cameraSettings.clear();
-        if(ppReturn && ppReturn[0]) {
+        if(!Base::Tools::isNullOrEmpty(ppReturn)) {
             saveCameraSettings(ppReturn);
             try {
                 const char** pReturnIgnore=nullptr;
@@ -1749,7 +1758,7 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
     App::DocumentObject* act = doc.getActiveObject();
     if (act) {
         ViewProvider* viewProvider = getViewProvider(act);
-        if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+        if (viewProvider && viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
             signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
         }
     }
@@ -1938,8 +1947,9 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
     localreader->readEndElement("Document");
 
     // In the file GuiDocument.xml new data files might be added
-    if (!localreader->getFilenames().empty())
+    if (localreader->hasFilenames()) {
         reader.initLocalReader(localreader);
+    }
 }
 
 void Document::slotFinishImportObjects(const std::vector<App::DocumentObject*> &objs) {
@@ -1990,11 +2000,11 @@ MDIView *Document::createView(const Base::Type& typeId)
     std::list<MDIView*> theViews = this->getMDIViewsOfType(typeId);
     if (typeId == View3DInventor::getClassTypeId()) {
 
-        QtGLWidget* shareWidget = nullptr;
+        QOpenGLWidget* shareWidget = nullptr;
         // VBO rendering doesn't work correctly when we don't share the OpenGL widgets
         if (!theViews.empty()) {
             auto firstView = static_cast<View3DInventor*>(theViews.front());
-            shareWidget = qobject_cast<QtGLWidget*>(firstView->getViewer()->getGLWidget());
+            shareWidget = qobject_cast<QOpenGLWidget*>(firstView->getViewer()->getGLWidget());
 
             const char *ppReturn = nullptr;
             firstView->onMsg("GetCamera",&ppReturn);
@@ -2029,7 +2039,7 @@ MDIView *Document::createView(const Base::Type& typeId)
             view3D->getViewer()->removeViewProvider(getViewProvider(obj));
 
         const char* name = getDocument()->Label.getValue();
-        QString title = QString::fromLatin1("%1 : %2[*]")
+        QString title = QStringLiteral("%1 : %2[*]")
             .arg(QString::fromUtf8(name)).arg(d->_iWinCount++);
 
         view3D->setWindowTitle(title);
@@ -2260,7 +2270,7 @@ bool Document::canClose (bool checkModify, bool checkLink)
                     getActiveView(),
                     QObject::tr("Document not saved"),
                     QObject::tr("The document%1 could not be saved. Do you want to cancel closing it?")
-                    .arg(docName?(QString::fromUtf8(" ")+QString::fromUtf8(docName)):QString()),
+                    .arg(docName?(QStringLiteral(" ")+QString::fromUtf8(docName)):QString()),
                     QMessageBox::Discard | QMessageBox::Cancel,
                     QMessageBox::Discard);
                 if (ret == QMessageBox::Discard)
@@ -2389,7 +2399,7 @@ MDIView* Document::getActiveView() const
         // hidden page has view but not in the list. By right, the view will
         // self delete, but not the case for TechDraw, especially during
         // document restore.
-        if(windows.contains(*rit) || (*rit)->isDerivedFrom(View3DInventor::getClassTypeId()))
+        if(windows.contains(*rit) || (*rit)->isDerivedFrom<View3DInventor>())
             return *rit;
     }
     return nullptr;
@@ -2434,7 +2444,7 @@ MDIView *Document::setActiveView(const ViewProviderDocumentObject* vp, Base::Typ
     if (!view || (!typeId.isBad() && !view->isDerivedFrom(typeId))) {
         view = nullptr;
         for (auto *v : d->baseViews) {
-            if (v->isDerivedFrom(MDIView::getClassTypeId()) &&
+            if (v->isDerivedFrom<MDIView>() &&
                (typeId.isBad() || v->isDerivedFrom(typeId))) {
                 view = static_cast<MDIView*>(v);
                 break;
@@ -2456,7 +2466,7 @@ MDIView *Document::setActiveView(const ViewProviderDocumentObject* vp, Base::Typ
 /**
  * @brief Document::setActiveWindow
  * If this document is active and the view is part of it then it will be
- * activated. If the document is not active of the view is already active
+ * activated. If the document is not active or if the view is already active
  * nothing is done.
  * @param view
  */
@@ -2473,11 +2483,11 @@ void Document::setActiveWindow(Gui::MDIView* view)
     std::list<MDIView*> mdis = getMDIViews();
 
     // this document is not active
-    if (std::find(mdis.begin(), mdis.end(), active) == mdis.end())
+    if (std::ranges::find(mdis, active) == mdis.end())
         return;
 
     // the view is not part of the document
-    if (std::find(mdis.begin(), mdis.end(), view) == mdis.end())
+    if (std::ranges::find(mdis, view) == mdis.end())
         return;
 
     getMainWindow()->setActiveWindow(view);
@@ -2593,7 +2603,7 @@ bool Document::checkTransactionID(bool undo, int iSteps) {
             str << "    " << doc->getName() << "\n";
         }
         int ret = QMessageBox::warning(getMainWindow(), undo ? QObject::tr("Undo") : QObject::tr("Redo"),
-                    QString::fromLatin1("%1,\n%2%3").arg(
+                    QStringLiteral("%1,\n%2%3").arg(
                         QObject::tr("There are grouped transactions in the following documents with "
                                     "other preceding transactions"),
                         QString::fromStdString(str.str()),

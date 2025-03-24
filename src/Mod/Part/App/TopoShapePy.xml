@@ -109,7 +109,7 @@ importBinary(filename)</UserDocu>
         <UserDocu>Load the shape from a string that keeps the content in BREP format.
 importBrepFromString(string, [displayProgressBar=True])
 --
-importBrepFromString(str,False) to not display a progress bar.
+importBrepFromString(str, False) to not display a progress bar.
         </UserDocu>
       </Documentation>
     </Methode>
@@ -311,11 +311,11 @@ sewShape()
         <UserDocu>Return a list of sub-shapes that are direct children of this shape.
 childShapes([cumOri=True, cumLoc=True]) -> list
 --
- * If cumOri is true, the function composes all
-   sub-shapes with the orientation of this shape.
- * If cumLoc is true, the function multiplies all
-   sub-shapes by the location of this shape, i.e. it applies to
-   each sub-shape the transformation that is associated with this shape.
+* If cumOri is true, the function composes all
+  sub-shapes with the orientation of this shape.
+* If cumLoc is true, the function multiplies all
+  sub-shapes by the location of this shape, i.e. it applies to
+  each sub-shape the transformation that is associated with this shape.
         </UserDocu>
       </Documentation>
     </Methode>
@@ -368,7 +368,7 @@ underlying geometry then use the methods translate or rotate.
     <Methode Name="transformShape">
       <Documentation>
         <UserDocu>Apply transformation on a shape without changing the underlying geometry.
-transformShape(Matrix,[boolean copy=False, checkScale=False]) -> None
+transformShape(Matrix, [boolean copy=False, checkScale=False]) -> None
 --
 If checkScale is True, it will use transformGeometry if non-uniform
 scaling is detected.</UserDocu>
@@ -397,49 +397,49 @@ translated(vector) -> shape
     </Methode>
     <Methode Name="rotate">
       <Documentation>
-        <UserDocu>Apply the rotation (base,dir,degree) to the current location of this shape
-rotate(base,dir,degree)
+        <UserDocu>Apply the rotation (base, dir, degree) to the current location of this shape
+rotate(base, dir, degree)
 --
-Shp.rotate(App.Vector(0,0,0),App.Vector(0,0,1),180) - rotate the shape around the Z Axis 180 degrees.
+Shp.rotate(App.Vector(0,0,0), App.Vector(0,0,1), 180) - rotate the shape around the Z Axis 180 degrees.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="rotated" Const="true">
       <Documentation>
         <UserDocu>Create a new shape with rotation.
-rotated(base,dir,degree) -> shape
+rotated(base, dir, degree) -> shape
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="scale">
       <Documentation>
         <UserDocu>Apply scaling with point and factor to this shape.
-scale(factor,[base=App.Vector(0,0,0)])
+scale(factor, [base=App.Vector(0,0,0)])
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="scaled" Const="true">
       <Documentation>
           <UserDocu>Create a new shape with scale.
-scaled(factor,[base=App.Vector(0,0,0)]) -> shape
+scaled(factor, [base=App.Vector(0,0,0)]) -> shape
           </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeFillet" Const="true">
       <Documentation>
         <UserDocu>Make fillet.
-makeFillet(radius,edgeList) -> Shape
+makeFillet(radius, edgeList) -> Shape
 or
-makeFillet(radius1,radius2,edgeList) -> Shape
+makeFillet(radius1, radius2, edgeList) -> Shape
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeChamfer" Const="true">
       <Documentation>
         <UserDocu>Make chamfer.
-makeChamfer(radius,edgeList) -> Shape
+makeChamfer(radius, edgeList) -> Shape
 or
-makeChamfer(radius1,radius2,edgeList) -> Shape</UserDocu>
+makeChamfer(radius1, radius2, edgeList) -> Shape</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeThickness" Const="true">
@@ -454,14 +454,12 @@ the hollowed solid, their thickness defined at the time of construction.</UserDo
     </Methode>
     <Methode Name="makeOffsetShape" Const="true"  Keyword="true">
       <Documentation>
-        <UserDocu>makes an offset shape (3d offsetting).
-makeOffsetShape(offset, tolerance, [inter = False, self_inter = False,
-offsetMode = 0, join = 0, fill = False]) -> Shape
+        <UserDocu>Makes an offset shape (3d offsetting).
+makeOffsetShape(offset, tolerance, [inter=False, self_inter=False, offsetMode=0, join=0, fill=False]) -> Shape
 --
 The function supports keyword arguments.
 
-* offset: distance to expand the shape by. Negative value will shrink the
-shape.
+* offset: distance to expand the shape by. Negative value will shrink the shape.
 
 * tolerance: precision of approximation.
 
@@ -481,18 +479,15 @@ Returns: result of offsetting.</UserDocu>
     </Methode>
     <Methode Name="makeOffset2D" Const="true"  Keyword="true">
       <Documentation>
-      <UserDocu>makes an offset shape (2d offsetting).
-makeOffset2D(offset, [join = 0, fill = False, openResult = false, intersection =
-false]) -> Shape
+      <UserDocu>Makes an offset shape (2d offsetting).
+makeOffset2D(offset, [join=0, fill=False, openResult=False, intersection=False]) -> Shape
 --
-The function supports keyword
-arguments. Input shape (self) can be edge, wire, face, or a compound of those.
+The function supports keyword arguments.
+Input shape (self) can be edge, wire, face, or a compound of those.
 
-* offset: distance to expand the shape by. Negative value will shrink the
-shape.
+* offset: distance to expand the shape by. Negative value will shrink the shape.
 
-* join: method of offsetting non-tangent joints. 0 = arcs, 1 = tangent, 2 =
-intersection
+* join: method of offsetting non-tangent joints. 0 = arcs, 1 = tangent, 2 = intersection
 
 * fill: if true, the output is a face filling the space covered by offset. If
 false, the output is a wire.
@@ -518,7 +513,7 @@ structure follows that of source shape.</UserDocu>
       </Methode>
     <Methode Name="makeWires" Const="true">
       <Documentation>
-        <UserDocu>make wire(s) using the edges of this shape
+        <UserDocu>Make wire(s) using the edges of this shape
 makeWires([op=None])
 --
 The function will sort any edges inside the current shape, and connect them
@@ -570,7 +565,7 @@ isClosed() -> bool
 --
 If the shape is a shell it returns True if it has no free boundaries (edges).
 If the shape is a wire it returns True if it has no free ends (vertices).
-(Internal and External sub-shepes are ignored in these checks)
+(Internal and External sub-shapes are ignored in these checks)
 If the shape is an edge it returns True if its vertices are the same.
 </UserDocu>
       </Documentation>
@@ -586,7 +581,7 @@ isPartner(shape) -> bool
     <Methode Name="isSame" Const="true">
       <Documentation>
         <UserDocu>Checks if both shapes share the same geometry
-        and placement. Orientation may differ.
+and placement. Orientation may differ.
 isSame(shape) -> bool
         </UserDocu>
       </Documentation>
@@ -594,7 +589,7 @@ isSame(shape) -> bool
     <Methode Name="isEqual" Const="true">
       <Documentation>
         <UserDocu>Checks if both shapes are equal.
-        This means geometry, placement and orientation are equal.
+This means geometry, placement and orientation are equal.
 isEqual(shape) -> bool
         </UserDocu>
       </Documentation>
@@ -628,7 +623,7 @@ isInfinite() -> bool
     </Methode>
     <Methode Name="findPlane" Const="true">
       <Documentation>
-          <UserDocu>return a plane if the shape is planar
+          <UserDocu>Returns a plane if the shape is planar
 findPlane(tol=None) -> Shape
           </UserDocu>
       </Documentation>
@@ -808,7 +803,7 @@ infos contains additional info on the solutions. It is a list of tuples:
 
     params1, params2 are parameters of internal space of the elements. For
     vertices, params is None. For edges, params is one float, u. For faces,
-    params is a tuple (u,v). </UserDocu>
+    params is a tuple (u,v).</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getElement" Const="true">
@@ -832,39 +827,39 @@ countElement(type) -> int
       <Methode Name="mapSubElement">
           <Documentation>
               <UserDocu>
-                  mapSubElement(shape|[shape...], op='') - maps the sub element of other shape
+mapSubElement(shape|[shape...], op='') - maps the sub element of other shape
 
-                  shape:  other shape or sequence of shapes to map the sub-elements
-                  op:     optional string prefix to append before the mapped sub element names
+shape:  other shape or sequence of shapes to map the sub-elements
+op:     optional string prefix to append before the mapped sub element names
               </UserDocu>
           </Documentation>
       </Methode>
       <Methode Name="mapShapes">
           <Documentation>
               <UserDocu>
-                  mapShapes(generated, modified, op='')
+mapShapes(generated, modified, op='')
 
-                  generate element names with user defined mapping
+generate element names with user defined mapping
 
-                  generated: a list of tuple(src, dst) that indicating src shape or shapes
-                  generates dst shape or shapes. Note that the dst shape or shapes
-                  must be sub-shapes of this shape.
-                  modified: a list of tuple(src, dst) that indicating src shape or shapes
-                  modifies into dst shape or shapes. Note that the dst shape or
-                  shapes must be sub-shapes of this shape.
-                  op: optional string prefix to append before the mapped sub element names
+generated: a list of tuple(src, dst) that indicating src shape or shapes
+generates dst shape or shapes. Note that the dst shape or shapes
+must be sub-shapes of this shape.
+modified: a list of tuple(src, dst) that indicating src shape or shapes
+modifies into dst shape or shapes. Note that the dst shape or
+shapes must be sub-shapes of this shape.
+op: optional string prefix to append before the mapped sub element names
               </UserDocu>
           </Documentation>
       </Methode>
       <Methode Name="getElementHistory" Const="true">
           <Documentation>
               <UserDocu>
-                  getElementHistory(name) - returns the element mapped name history
+getElementHistory(name) - returns the element mapped name history
 
-                  name: mapped element name belonging to this shape
+name: mapped element name belonging to this shape
 
-                  Returns tuple(sourceShapeTag, sourceName, [intermediateNames...]),
-                  or None if no history.
+Returns tuple(sourceShapeTag, sourceName, [intermediateNames...]),
+or None if no history.
               </UserDocu>
           </Documentation>
       </Methode>
@@ -898,7 +893,7 @@ ShapeType is interpreted as in the method getTolerance
     <Methode Name="inTolerance" Const="true">
       <Documentation>
         <UserDocu>Determines which shapes have a tolerance within a given interval
-inTolerance(value, [ShapeType=Shape]) -> ShapeList
+inTolerance(valmin, valmax, [ShapeType=Shape]) -> ShapeList
 --
 ShapeType is interpreted as in the method getTolerance
         </UserDocu>
@@ -962,44 +957,44 @@ optimalBoundingBox([useTriangulation = True, useShapeTolerance = False]) -> boun
       <Methode Name="findSubShape" Const="true">
           <Documentation>
               <UserDocu>
-                  findSubShape(shape) -> (type_name, index)
+findSubShape(shape) -> (type_name, index)
 
-                  Find sub shape and return the shape type name and index. If not found,
-                  then return (None, 0)
+Find sub shape and return the shape type name and index. If not found,
+then return (None, 0)
               </UserDocu>
           </Documentation>
       </Methode>
       <Methode Name="findSubShapesWithSharedVertex" Const="true" Keyword="true">
           <Documentation>
               <UserDocu>
-                  findSubShapesWithSharedVertex(shape, needName=False, checkGeometry=True, tol=1e-7, atol=1e-12) -> Shape
+findSubShapesWithSharedVertex(shape, needName=False, checkGeometry=True, tol=1e-7, atol=1e-12) -> Shape
 
-                  shape: input elementary shape, currently only support Face, Edge, or Vertex
+shape: input elementary shape, currently only support Face, Edge, or Vertex
 
-                  needName: if True, return a list of tuple(name, shape), or else return a list
-                  of shapes.
+needName: if True, return a list of tuple(name, shape), or else return a list
+of shapes.
 
-                  checkGeometry: whether to compare geometry
+checkGeometry: whether to compare geometry
 
-                  tol: distance tolerance
+tol: distance tolerance
 
-                  atol: angular tolerance
+atol: angular tolerance
 
-                  Search sub shape by checking vertex coordinates and comparing the underlying
-                  geometries, This can find shapes that are copied. It currently only works with
-                  elementary shapes, Face, Edge, Vertex.
+Search sub shape by checking vertex coordinates and comparing the underlying
+geometries, This can find shapes that are copied. It currently only works with
+elementary shapes, Face, Edge, Vertex.
               </UserDocu>
           </Documentation>
       </Methode>
       <Methode Name="getChildShapes" Const="true">
           <Documentation>
               <UserDocu>
-                  getChildShapes(shapetype, avoidtype='') -> list(Shape)
+getChildShapes(shapetype, avoidtype='') -> list(Shape)
 
-                  Return a list of child sub-shapes of given type.
+Return a list of child sub-shapes of given type.
 
-                  shapetype: the type of requesting sub shapes
-                  avoidtype: optional shape type to skip when exploring
+shapetype: the type of requesting sub shapes
+avoidtype: optional shape type to skip when exploring
               </UserDocu>
           </Documentation>
       </Methode>

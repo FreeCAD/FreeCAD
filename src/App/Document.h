@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_DOCUMENT_H
-#define APP_DOCUMENT_H
+#ifndef SRC_APP_DOCUMENT_H_
+#define SRC_APP_DOCUMENT_H_
 
 #include <CXX/Objects.hxx>
 #include <Base/Observer.h>
@@ -35,6 +35,9 @@
 
 #include <map>
 #include <vector>
+#include <utility>
+#include <list>
+#include <string>
 #include <QString>
 
 namespace Base
@@ -268,6 +271,21 @@ public:
                               bool isNew = true,
                               const char* viewType = nullptr,
                               bool isPartial = false);
+    //@{
+    /** Add a feature of T type with sName (ASCII) to this document and set it active.
+     * Unicode names are set through the Label property.
+     * @param pObjectName if nonNULL use that name otherwise generate a new unique name based on the
+     * \a sType
+     * @param isNew       if false don't call the \c DocumentObject::setupObject() callback (default
+     * is true)
+     * @param viewType    override object's view provider name
+     * @param isPartial   indicate if this object is meant to be partially loaded
+     */
+    template<typename T>
+    T* addObject(const char* pObjectName = nullptr,
+                 bool isNew = true,
+                 const char* viewType = nullptr,
+                 bool isPartial = false);
     /** Add an array of features of the given types and names.
      * Unicode names are set through the Label property.
      * @param sType       The type of created object
@@ -288,6 +306,10 @@ public:
      */
     void addObject(DocumentObject*, const char* pObjectName = nullptr);
 
+    /// returns whether this is actually contains the DocumentObject.
+    /// Testing the DocumentObject's pDoc pointer is not sufficient because the object
+    /// removeObject and _removeObject leave _pDoc unchanged
+    bool containsObject(const DocumentObject*) const;
 
     /** Copy objects from another document to this document
      *
@@ -319,11 +341,13 @@ public:
     /// Returns true if the DocumentObject is contained in this document
     bool isIn(const DocumentObject* pFeat) const;
     /// Returns a Name of an Object or 0
-    const char* getObjectName(DocumentObject* pFeat) const;
-    /// Returns a Name of an Object or 0
-    std::string getUniqueObjectName(const char* Name) const;
-    /// Returns a name of the form prefix_number. d specifies the number of digits.
-    std::string getStandardObjectName(const char* Name, int d) const;
+    const char *getObjectName(DocumentObject* pFeat) const;
+    /// Returns a Name for a new Object or empty if proposedName is null or empty.
+    std::string getUniqueObjectName(const char* proposedName) const;
+    /// Returns a name different from any of the Labels of any objects in this document, based on the given modelName.
+    std::string getStandardObjectLabel(const char* modelName, int d) const;
+    /// Determine if a given DocumentObject Name and a proposed Label are based on the same base name
+    bool haveSameBaseName(const std::string& name, const std::string& label);
     /// Returns a list of document's objects including the dependencies
     std::vector<DocumentObject*> getDependingObjects() const;
     /// Returns a list of all Objects
@@ -338,7 +362,9 @@ public:
     /// Returns an array with the correct types already.
     template<typename T>
     inline std::vector<T*> getObjectsOfType() const;
-    int countObjectsOfType(const Base::Type& typeId) const;
+    template<typename T>
+    inline int countObjectsOfType() const;
+    int countObjectsOfType(const char* typeName) const;
     /// get the number of objects in the document
     int countObjects() const;
     //@}
@@ -568,6 +594,11 @@ public:
     /// Indicate if there is any document restoring/importing
     static bool isAnyRestoring();
 
+    void registerLabel(const std ::string& newLabel);
+    void unregisterLabel(const std::string& oldLabel);
+    bool containsLabel(const std::string& label);
+    std::string makeUniqueLabel(const std::string& modelLabel);
+
     friend class Application;
     /// because of transaction handling
     friend class TransactionalObject;
@@ -590,6 +621,7 @@ protected:
     std::vector<App::DocumentObject*> readObjects(Base::XMLReader& reader);
     void writeObjects(const std::vector<App::DocumentObject*>&, Base::Writer& writer) const;
     bool saveToFile(const char* filename) const;
+    int countObjectsOfType(const Base::Type& typeId) const;
 
     void onBeforeChange(const Property* prop) override;
     void onChanged(const Property* prop) override;
@@ -651,7 +683,21 @@ inline std::vector<T*> Document::getObjectsOfType() const
     return type;
 }
 
+template<typename T>
+inline int Document::countObjectsOfType() const
+{
+    static_assert(std::is_base_of<App::DocumentObject, T>::value,
+                  "T must be derived from App::DocumentObject");
+    return this->countObjectsOfType(T::getClassTypeId());
+}
+
+template<typename T>
+T* Document::addObject(const char* pObjectName, bool isNew, const char* viewType, bool isPartial)
+{
+    static_assert(std::is_base_of<DocumentObject, T>::value, "T must be derived from DocumentObject");
+    return static_cast<T*>(addObject(T::getClassName(), pObjectName, isNew, viewType, isPartial));
+}
 
 }  // namespace App
 
-#endif  // APP_DOCUMENT_H
+#endif  // SRC_APP_DOCUMENT_H_

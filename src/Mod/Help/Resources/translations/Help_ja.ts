@@ -22,7 +22,7 @@ Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
       <translation>ここにヘルプファイルがあるカスタム URL またはフォルダを設定してください。
-拡張機能の管理を使用して &quot;offline-documentation&quot; 拡張機能をインストールするとオフラインで利用するためのドキュメントのダウンロードを簡単に行えます。この入力欄が空白の場合には FreeCAD はデフォルト位置 ($USERAPPDATADIR/Mod/offline-documentation) にあるヘルプファイルを自動で検索します。</translation>
+アドオンマネージャーを使用して &quot;offline-documentation&quot; アドオンをインストールするとオフラインで利用するためのドキュメントのダウンロードを簡単に行えます。この入力欄が空白の場合には FreeCAD はデフォルト位置 ($USERAPPDATADIR/Mod/offline-documentation) にあるヘルプファイルを自動で検索します。</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>

@@ -100,7 +100,7 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return 0;
 }
 
-Py::Object TopoShapeSolidPy::getMass() const
+Py::Float TopoShapeSolidPy::getMass() const
 {
     GProp_GProps props;
     BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);

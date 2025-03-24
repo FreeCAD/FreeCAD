@@ -98,7 +98,8 @@ def InitApplications():
     LibFcDir = os.path.realpath(LibFcDir)
     if (os.path.exists(LibFcDir) and not LibFcDir in libpaths):
         libpaths.append(LibFcDir)
-    AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";")
+    AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";") + \
+            FreeCAD.ConfigGet("AdditionalMacroPaths").split(";")
     HomeMod = FreeCAD.getUserAppDataDir()+"Mod"
     HomeMod = os.path.realpath(HomeMod)
     MacroStd = App.getUserMacroDir(False)

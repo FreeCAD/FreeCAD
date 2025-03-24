@@ -45,10 +45,10 @@
 
 #include <Gui/Action.h>
 #include <Gui/Application.h>
-#include <Gui/DlgCreateNewPreferencePackImp.h>
-#include <Gui/DlgPreferencesImp.h>
-#include <Gui/DlgPreferencePackManagementImp.h>
-#include <Gui/DlgRevertToBackupConfigImp.h>
+#include <Gui/Dialogs/DlgCreateNewPreferencePackImp.h>
+#include <Gui/Dialogs/DlgPreferencesImp.h>
+#include <Gui/Dialogs/DlgPreferencePackManagementImp.h>
+#include <Gui/Dialogs/DlgRevertToBackupConfigImp.h>
 #include <Gui/MainWindow.h>
 #include <Gui/OverlayManager.h>
 #include <Gui/ParamHandler.h>
@@ -62,7 +62,7 @@
 
 using namespace Gui;
 using namespace Gui::Dialog;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 using namespace Base;
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsGeneral */
@@ -322,7 +322,7 @@ void DlgSettingsGeneral::loadSettings()
     int index = 1;
     TStringMap list = Translator::instance()->supportedLocales();
     ui->Languages->clear();
-    ui->Languages->addItem(QString::fromLatin1("English"), QByteArray("English"));
+    ui->Languages->addItem(QStringLiteral("English"), QByteArray("English"));
     for (auto it = list.begin(); it != list.end(); ++it, index++) {
         QByteArray lang = it->first.c_str();
         QString langname = QString::fromLatin1(lang.constData());
@@ -739,13 +739,13 @@ void DlgSettingsGeneral::onImportConfigClicked()
     auto path = fs::path(QFileDialog::getOpenFileName(this,
         tr("Choose a FreeCAD config file to import"),
         QString(),
-        QString::fromUtf8("*.cfg")).toStdString());
+        QStringLiteral("*.cfg")).toStdString());
     if (!path.empty()) {
         // Create a name from the filename:
         auto packName = path.filename().stem().string();
         std::replace(packName.begin(), packName.end(), '_', ' ');
         auto existingPacks = Application::Instance->prefPackManager()->preferencePackNames();
-        if (std::find(existingPacks.begin(), existingPacks.end(), packName)
+        if (std::ranges::find(existingPacks, packName)
             != existingPacks.end()) {
             auto result = QMessageBox::question(
                 this, tr("File exists"),
@@ -803,7 +803,7 @@ void DlgSettingsGeneral::onLinkActivated(const QString& link)
     // This is a quick and dirty way to open Addon Manager with only themes.
     auto pref = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Addons");
     pref->SetInt("PackageTypeSelection", 3); // 3 stands for Preference Packs
-    pref->SetInt("StatusSelection", 0);      // 0 stands for any installation status 
+    pref->SetInt("StatusSelection", 0);      // 0 stands for any installation status
 
     Gui::Application::Instance->commandManager().runCommandByName("Std_AddonMgr");
 }

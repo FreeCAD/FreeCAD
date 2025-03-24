@@ -56,7 +56,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
       <source>Actual</source>
-      <translation>Aktuální</translation>
+      <translation>Skutečný</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="39"/>

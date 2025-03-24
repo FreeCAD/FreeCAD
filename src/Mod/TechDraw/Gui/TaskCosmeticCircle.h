@@ -66,6 +66,7 @@ public:
 
 protected Q_SLOTS:
     void radiusChanged();
+    void arcButtonClicked();
 
 protected:
     void changeEvent(QEvent *e) override;
@@ -75,6 +76,8 @@ protected:
 
     void createCosmeticCircle();
     void updateCosmeticCircle();
+
+    void enableArcWidgets(bool newState);
 
 private:
     std::unique_ptr<Ui_TaskCosmeticCircle> ui;

@@ -30,6 +30,7 @@
 #include <QTextDocument>
 #endif
 
+#include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <App/Range.h>
 #include <Base/Tools.h>
@@ -132,13 +133,13 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
     ui->cells->setPalette(palette);
 
     QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-        QString::fromLatin1("Spreadsheet_BackgroundColor"));
+        QStringLiteral("Spreadsheet_BackgroundColor"));
     if (!bgList.empty()) {
         bgList[0]->setCurrentColor(palette.color(QPalette::Base));
     }
 
     QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-        QString::fromLatin1("Spreadsheet_ForegroundColor"));
+        QStringLiteral("Spreadsheet_ForegroundColor"));
     if (!fgList.empty()) {
         fgList[0]->setCurrentColor(palette.color(QPalette::Text));
     }
@@ -298,7 +299,7 @@ void SheetView::printPdf()
         FileDialog::getSaveFileName(this,
                                     tr("Export PDF"),
                                     QString(),
-                                    QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+                                    QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
         // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under:
@@ -307,6 +308,7 @@ void SheetView::printPdf()
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
+        printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
         print(&printer);
     }
 }

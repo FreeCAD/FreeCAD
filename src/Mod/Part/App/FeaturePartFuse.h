@@ -45,7 +45,7 @@ protected:
     //@}
 };
 
-class MultiFuse : public Part::Feature
+class PartExport MultiFuse : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::MultiFuse);
 

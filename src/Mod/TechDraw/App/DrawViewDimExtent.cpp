@@ -114,7 +114,7 @@ pointPair DrawViewDimExtent::getPointsExtent(ReferenceVector references)
 //    Base::Console().Message("DVD::getPointsExtent() - %s\n", getNameInDocument());
     App::DocumentObject* refObject = references.front().getObject();
     int direction = DirExtent.getValue();
-    if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    if (refObject->isDerivedFrom<TechDraw::DrawViewPart>()) {
         auto dvp = static_cast<TechDraw::DrawViewPart*>(refObject);
 
         std::vector<std::string> edgeNames;     //empty list means we are using all the edges

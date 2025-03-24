@@ -60,7 +60,7 @@ Show the object.</UserDocu>
         </Methode>
         <Methode Name="hide">
             <Documentation>
-                <UserDocu>show() -> None
+                <UserDocu>hide() -> None
 
 Hide the object.</UserDocu>
             </Documentation>
@@ -314,7 +314,7 @@ view: View3DInventorPy
       <Documentation>
         <UserDocu>Get/Set the default display mode in turns of coin node index.</UserDocu>
       </Documentation>
-      <Parameter Name="DefaultNode" Type="Int" />
+      <Parameter Name="DefaultNode" Type="Long" />
     </Attribute>
     <Attribute Name="IV" ReadOnly="true">
       <Documentation>

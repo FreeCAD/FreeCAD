@@ -292,7 +292,7 @@ class BIM_Views:
                         top.addChild(i)
                     vm.viewtree.addTopLevelItem(top)
 
-                # set TreeVinew Item selected if obj is selected
+                # set TreeView Item selected if obj is selected
                 bold = QtGui.QFont()
                 bold.setBold(True)
                 objSelected = FreeCADGui.Selection.getSelection()
@@ -615,7 +615,7 @@ def show(item, column=None):
                     for storey in storeys:
                         if storey != obj:
                             storey.ViewObject.Visibility = False
-            elif obj.IfcType == "IfcBuilding":
+            elif hasattr(obj, "IfcType") and obj.IfcType == "IfcBuilding":
                 # show all storeys
                 storeys = [o for o in obj.OutList if Draft.getType(o) == "IfcBuildingStorey"]
                 for storey in storeys:

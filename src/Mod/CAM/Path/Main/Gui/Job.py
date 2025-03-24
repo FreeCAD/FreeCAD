@@ -265,13 +265,14 @@ class ViewProvider:
 
     def claimChildren(self):
         children = []
-        children.append(self.obj.Operations)
+        if hasattr(self.obj, "Operations"):
+            children.append(self.obj.Operations)
         if hasattr(self.obj, "Model"):
             # unfortunately this function is called before the object has been fully loaded
             # which means we could be dealing with an old job which doesn't have the new Model
             # yet.
             children.append(self.obj.Model)
-        if self.obj.Stock:
+        if hasattr(self.obj, "Stock"):
             children.append(self.obj.Stock)
         if hasattr(self.obj, "SetupSheet"):
             # when loading a job that didn't have a setup sheet they might not've been created yet

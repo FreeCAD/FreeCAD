@@ -26,8 +26,7 @@
 
 #include "ServiceProvider.h"
 
-Base::ServiceProvider& Base::ServiceProvider::get()
+namespace Base
 {
-    static Base::ServiceProvider instance;
-    return instance;
+Base::ServiceProvider globalServiceProvider;
 }

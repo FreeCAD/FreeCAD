@@ -43,15 +43,14 @@ using namespace TechDraw;
 using namespace TechDrawGui;
 
 QGCustomText::QGCustomText(QGraphicsItem* parent) :
-    QGraphicsTextItem(parent), isHighlighted(false)
+    QGraphicsTextItem(parent)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
 
-    m_colCurrent = getNormalColor();
-    m_colNormal  = m_colCurrent;
+    m_colNormal  = getNormalColor();
     tightBounding = false;
 }
 
@@ -144,27 +143,23 @@ void QGCustomText::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 }
 
 void QGCustomText::setPrettyNormal() {
-    m_colCurrent = m_colNormal;
-    setDefaultTextColor(m_colCurrent);
+    setDefaultTextColor(m_colNormal);
     update();
 }
 
 void QGCustomText::setPrettyPre() {
-    m_colCurrent = getPreColor();
-    setDefaultTextColor(m_colCurrent);
+    setDefaultTextColor(getPreColor());
     update();
 }
 
 void QGCustomText::setPrettySel() {
-    m_colCurrent = getSelectColor();
-    setDefaultTextColor(m_colCurrent);
+    setDefaultTextColor(getSelectColor());
     update();
 }
 
 void QGCustomText::setColor(QColor c)
 {
     m_colNormal = c;
-    m_colCurrent = c;
     QGraphicsTextItem::setDefaultTextColor(c);
 }
 
@@ -178,20 +173,9 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
     myOption.state &= ~QStyle::State_Selected;
 
 //    painter->setPen(Qt::green);
-//    painter->drawRect(boundingRect());          //good for debugging
+//    painter->drawRect(alignmentRect());          //good for debugging
 
     QGraphicsTextItem::paint (painter, &myOption, widget);
-}
-
-QRectF QGCustomText::boundingRect() const
-{
-    if (toPlainText().isEmpty()) {
-        return QRectF();
-    } else if (tightBounding) {
-        return tightBoundingRect();
-    } else {
-        return QGraphicsTextItem::boundingRect();
-    }
 }
 
 QRectF QGCustomText::tightBoundingRect() const
@@ -204,9 +188,22 @@ QRectF QGCustomText::tightBoundingRect() const
 
     // Adjust the bounding box 50% towards the Qt tightBoundingRect(),
     // except chomp some extra empty space above the font (1.75*y_adj)
+    // wf: this does not work with all fonts.  it depends on where the glyph is located within
+    //     the em square.  see https://github.com/FreeCAD/FreeCAD/issues/11452
+    // TODO: how to know where the glyph is going to be placed?
     result.adjust(x_adj, 1.75*y_adj, -x_adj, -y_adj);
 
     return result;
+}
+
+//! a boundingRect for text alignment, that does not adversely affect rendering.
+QRectF QGCustomText::alignmentRect() const
+{
+    if (tightBounding) {
+        return tightBoundingRect();
+    } else {
+        return boundingRect();
+    }
 }
 
 // Calculate the amount of difference between tight and relaxed bounding boxes

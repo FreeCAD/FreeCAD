@@ -72,7 +72,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     m_lineFeat(m_lineVP->getFeature()),
     m_qgParent(nullptr),
     m_createMode(false),
-    m_trackerMode(QGTracker::None),
+    m_trackerMode(QGTracker::TrackerMode::None),
     m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
     m_qgLeader(nullptr),
@@ -92,7 +92,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     }
     App::DocumentObject* obj = m_lineFeat->LeaderParent.getValue();
     if (obj) {
-        if (obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) )  {
+        if (obj->isDerivedFrom<TechDraw::DrawView>() )  {
             m_baseFeat = static_cast<TechDraw::DrawView*>(m_lineFeat->LeaderParent.getValue());
         }
     }
@@ -145,7 +145,7 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
     m_lineFeat(nullptr),
     m_qgParent(nullptr),
     m_createMode(true),
-    m_trackerMode(QGTracker::None),
+    m_trackerMode(QGTracker::TrackerMode::None),
     m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
     m_qgLeader(nullptr),
@@ -233,11 +233,11 @@ void TaskLeaderLine::setUiPrimary()
     }
 
     DrawGuiUtil::loadArrowBox(ui->cboxStartSym);
-    int aStyle = PreferencesGui::dimArrowStyle();
-    ui->cboxStartSym->setCurrentIndex(aStyle);
+    ArrowType aStyle = PreferencesGui::dimArrowStyle();
+    ui->cboxStartSym->setCurrentIndex(static_cast<int>(aStyle));
 
     DrawGuiUtil::loadArrowBox(ui->cboxEndSym);
-    ui->cboxEndSym->setCurrentIndex(TechDraw::ArrowType::NONE);
+    ui->cboxEndSym->setCurrentIndex(static_cast<int>(TechDraw::ArrowType::NONE));
 
     ui->dsbWeight->setUnit(Base::Unit::Length);
     ui->dsbWeight->setMinimum(0);
@@ -296,7 +296,7 @@ void TaskLeaderLine::recomputeFeature()
 {
     App::DocumentObject* objVP = m_lineVP->getObject();
     assert(objVP);
-    objVP->getDocument()->recomputeFeature(objVP);
+    objVP->recomputeFeature();
 }
 
 void TaskLeaderLine::onStartSymbolChanged()
@@ -313,7 +313,7 @@ void TaskLeaderLine::onEndSymbolChanged()
 
 void TaskLeaderLine::onColorChanged()
 {
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     m_lineVP->Color.setValue(ac);
     recomputeFeature();
@@ -364,7 +364,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
         throw Base::RuntimeError("TaskLeaderLine - new markup object not found");
     }
 
-    if (obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawLeaderLine>()) {
         m_lineFeat = static_cast<TechDraw::DrawLeaderLine*>(obj);
         auto forMath{m_attachPoint};
         if (baseRotation != 0) {
@@ -395,7 +395,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
         Gui::ViewProvider* vp = QGIView::getViewProvider(m_lineFeat);
         auto leadVP = dynamic_cast<ViewProviderLeader*>(vp);
         if (leadVP) {
-            App::Color ac;
+            Base::Color ac;
             ac.setValue<QColor>(ui->cpLineColor->color());
             leadVP->Color.setValue(ac);
             leadVP->LineWidth.setValue(ui->dsbWeight->rawValue());
@@ -433,7 +433,7 @@ void TaskLeaderLine::updateLeaderFeature()
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Leader"));
     //waypoints & x, y are updated by QGILeaderLine (for edits only!)
     commonFeatureUpdate();
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     m_lineVP->Color.setValue(ac);
     m_lineVP->LineWidth.setValue(ui->dsbWeight->rawValue());

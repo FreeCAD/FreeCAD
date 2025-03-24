@@ -11,7 +11,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="96"/>
       <source>Welcome to %1</source>
-      <translation>Tervetuloa %1 ohjelmaan</translation>
+      <translation>Tervetuloa %1-ohjelmaan</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="99"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="100"/>
       <source>These options (and many more) can be changed later in Preferences.</source>
-      <translation>Näitä asetuksia (ja monia muita) voidaan muuttaa myöhemmin Asetuksista.</translation>
+      <translation>Näitä asetuksia (ja monia muita) voidaan muuttaa myöhemmin ohjelman asetuksista.</translation>
     </message>
   </context>
   <context>
@@ -46,14 +46,18 @@
     <name>CmdStart</name>
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
-      <location filename="../../Manipulator.cpp" line="48"/>
       <source>Start</source>
       <translation>Aloita</translation>
     </message>
     <message>
+      <location filename="../../Manipulator.cpp" line="48"/>
+      <source>&amp;Start Page</source>
+      <translation type="unfinished">&amp;Start Page</translation>
+    </message>
+    <message>
       <location filename="../../Manipulator.cpp" line="49"/>
-      <source>Displays the Start in an MDI view</source>
-      <translation>Näyttää aloitusnäkymän MDI-ikkunassa</translation>
+      <source>Displays the Start Page</source>
+      <translation type="unfinished">Displays the Start Page</translation>
     </message>
   </context>
   <context>
@@ -162,12 +166,12 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
       <source>FreeCAD Dark</source>
-      <translation type="unfinished">FreeCAD Dark</translation>
+      <translation>FreeCAD, tumma</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
       <source>FreeCAD Light</source>
-      <translation type="unfinished">FreeCAD Light</translation>
+      <translation>FreeCAD, vaalea</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="238"/>
@@ -177,19 +181,19 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="239"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Etsitkö lisää teemoja? Hanki niitä &lt;a href="freecad:Std_AddonMgr"&gt;lisäosien hallinnasta&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="241"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Dark</translation>
+      <translation>FreeCAD, tumma</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="242"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Light</translation>
+      <translation>FreeCAD, vaalea</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="243"/>

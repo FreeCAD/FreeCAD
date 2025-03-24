@@ -43,6 +43,8 @@ class MaterialMechanicalNonlinear(base_fempythonobject.BaseFemPythonObject):
         super().__init__(obj)
         self.add_properties(obj)
 
+        obj.addExtension("App::SuppressibleExtensionPython")
+
     def onDocumentRestored(self, obj):
 
         # YieldPoints was (until 0.19) stored as 3 separate variables. Consolidate them if present.
@@ -64,6 +66,8 @@ class MaterialMechanicalNonlinear(base_fempythonobject.BaseFemPythonObject):
         if yield_points:
             obj.YieldPoints = yield_points
 
+        if not obj.hasExtension("App::SuppressibleExtensionPython"):
+            obj.addExtension("App::SuppressibleExtensionPython")
         # TODO: If in the future more nonlinear options are added, update choices here.
 
     def add_properties(self, obj):

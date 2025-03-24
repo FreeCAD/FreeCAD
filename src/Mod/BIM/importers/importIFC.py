@@ -229,7 +229,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
 
     global parametrics
 
-    # allow to override the root element
+    # allow one to override the root element
     if root:
         preferences['ROOT_ELEMENT'] = root
 

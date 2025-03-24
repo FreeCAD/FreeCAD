@@ -51,6 +51,7 @@ public:
     App::PropertyInteger      LineSpace;
     App::PropertyEnumeration  TextStyle; // Plain, Bold, Italic, Bold-Italic
     App::PropertyFloat        MaxWidth;
+    App::PropertyLink         Owner;
 
     QRectF getRect() const override;
 
@@ -64,6 +65,11 @@ public:
     const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderAnnotation";
     }
+
+    short mustExecute() const override;
+
+    bool checkFit() const override {return true;}
+    App::PropertyLink *getOwnerProperty() override { return &Owner; }
 
 protected:
     void onChanged(const App::Property* prop) override;

@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Worker thread classes for Addon Manager installation and removal """
+"""Worker thread classes for Addon Manager installation and removal"""
 
 # pylint: disable=c-extension-no-member,too-few-public-methods,too-many-instance-attributes
 

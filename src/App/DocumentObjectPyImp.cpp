@@ -383,7 +383,7 @@ PyObject* DocumentObjectPy::setExpression(PyObject* args)
             shared_expr->comment = comment;
         }
 
-        getDocumentObjectPtr()->setExpression(p, shared_expr);
+        getDocumentObjectPtr()->setExpression(p, std::move(shared_expr));
         Py_Return;
     }
 
@@ -898,9 +898,9 @@ int DocumentObjectPy::setCustomAttributes(const char*, PyObject*)
     return 0;
 }
 
-Py::Int DocumentObjectPy::getID() const
+Py::Long DocumentObjectPy::getID() const
 {
-    return Py::Int(getDocumentObjectPtr()->getID());
+    return Py::Long(getDocumentObjectPtr()->getID());
 }
 
 Py::Boolean DocumentObjectPy::getRemoving() const

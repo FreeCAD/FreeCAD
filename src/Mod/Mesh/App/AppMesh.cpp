@@ -74,7 +74,7 @@ PyMOD_INIT_FUNC(Mesh)
 
     Mesh::Extension3MFFactory::addProducer(new Mesh::GuiExtension3MFProducer);
 
-    // This registration is sufficient to allow to measure free distances with a mesh
+    // This registration is sufficient to allow one to measure free distances with a mesh
     App::MeasureManager::addMeasureHandler("Mesh", [](App::DocumentObject*, const char*) {
         return App::MeasureElementType::INVALID;
     });

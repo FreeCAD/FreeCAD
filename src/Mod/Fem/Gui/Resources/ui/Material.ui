@@ -338,13 +338,53 @@
          </widget>
         </item>
         <item row="2" column="0">
+         <widget class="QLabel" name="label_expansion_reference_temperature">
+          <property name="text">
+           <string>Expansion Reference Temperature:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_expansion_reference_temperature">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+           </size>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000000.00000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">K</string>
+          </property>
+          <property name="value" stdset="0">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
          <widget class="QLabel" name="label_14">
           <property name="text">
            <string>Specific Heat Capacity:</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="Gui::QuantitySpinBox" name="qsb_specific_heat">
           <property name="enabled">
            <bool>false</bool>
@@ -413,150 +453,4 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>chbu_allow_edit</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>qsb_density</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>272</x>
-     <y>162</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>250</x>
-     <y>364</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chbu_allow_edit</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>qsb_young_modulus</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>272</x>
-     <y>162</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>242</x>
-     <y>425</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chbu_allow_edit</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>qsb_poisson_ratio</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>272</x>
-     <y>162</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>242</x>
-     <y>451</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chbu_allow_edit</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>qsb_kinematic_viscosity</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>272</x>
-     <y>162</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>247</x>
-     <y>512</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chbu_allow_edit</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>qsb_thermal_conductivity</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>272</x>
-     <y>162</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>254</x>
-     <y>573</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chbu_allow_edit</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>qsb_expansion_coefficient</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>272</x>
-     <y>162</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>254</x>
-     <y>599</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chbu_allow_edit</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>qsb_specific_heat</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>272</x>
-     <y>162</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>254</x>
-     <y>625</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chbu_allow_edit</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label_vol_expansion_coefficient</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>272</x>
-     <y>162</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>67</x>
-     <y>651</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chbu_allow_edit</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>pushButton_editMat</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>272</x>
-     <y>162</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>91</x>
-     <y>162</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
 </ui>

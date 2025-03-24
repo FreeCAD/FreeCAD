@@ -34,7 +34,7 @@
 #endif
 
 #include <Base/Console.h>
-#include <Gui/SoFCSelection.h>
+#include <Gui/Selection/SoFCSelection.h>
 
 #include <Mod/Mesh/App/Core/Iterator.h>
 #include <Mod/Mesh/App/MeshFeature.h>
