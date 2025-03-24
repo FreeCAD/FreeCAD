@@ -1352,12 +1352,12 @@ class gridTracker(Tracker):
         self.on()
 
     def on(self):
-        """Set the visibility to True and update the checked state grid button."""
+        """Set the visibility to True and update the checked state of the grid button."""
         super().on()
         grid_observer._update_grid_gui()
 
     def off(self):
-        """Set the visibility to False and update the checked state grid button."""
+        """Set the visibility to False and update the checked state of the grid button."""
         super().off()
         grid_observer._update_grid_gui()
 
